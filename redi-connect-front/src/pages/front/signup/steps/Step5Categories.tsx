@@ -56,8 +56,8 @@ export const Comp = (props: FormikProps<SignUpFormValues> & {type: SignUpFormTyp
 
   return (
     <>
-      {type === 'mentee' && <h2>Please select all the topics you would like help with from your mentor.</h2>}
-      {type === 'mentor' && <h2>How would you like to support your mentee? Please select the topics that apply.</h2>}
+      {type === 'public-sign-up-mentee-pending-review' && <h2>Please select all the topics you would like help with from your mentor.</h2>}
+      {type === 'public-sign-up-mentor-pending-review' && <h2>How would you like to support your mentee? Please select the topics that apply.</h2>}
       <Grid container>
         {formCategories.map(({ id, label }) => 
           <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={id}>
@@ -77,7 +77,7 @@ export const Comp = (props: FormikProps<SignUpFormValues> & {type: SignUpFormTyp
           </Grid>
         )}
       </Grid>
-      {type === 'mentor' &&
+      {type === 'public-sign-up-mentor-pending-review' &&
         <FormControl
           className={classes.margin}
           fullWidth

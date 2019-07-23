@@ -1,6 +1,6 @@
 const Rx = require('rxjs');
 const { bindNodeCallback, from } = Rx;
-const { mergeMap, count, tap, switchMap } = require('rxjs/operators')
+const { filter, mergeMap, count, tap, switchMap } = require('rxjs/operators')
 
 const app = require('../server/server');
 
@@ -12,6 +12,7 @@ const updateRedProfileAttribute = redProfileInst => bindNodeCallback(redProfileI
 findRedProfile()
   .pipe(
     switchMap(redProfiles => from(redProfiles)),
+    filter(profile => profile.toJSON().userType),
     mergeMap(redProfileInst => {
       const propName = 'loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName'
       const toJson = redProfileInst.toJSON()

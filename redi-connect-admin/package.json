@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "lodash": "^4.17.11",
+    "papaparse": "^5.0.0",
     "ra-data-simple-rest": "^2.9.0",
     "react": "^16.8.6",
     "react-admin": "^2.9.0",

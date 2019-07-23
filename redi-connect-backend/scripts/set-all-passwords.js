@@ -12,6 +12,6 @@ const setPassword = redUserInst =>
 findUsers()
   .pipe(
     switchMap(redUsers => from(redUsers)),
-    mergeMap(redUserInst => setPassword(redUserInst)('yalla'))
+    mergeMap(redUserInst => setPassword(redUserInst)('yalla'), 20)
   )
   .subscribe(console.log, err => console.log(err), () => console.log('done'));

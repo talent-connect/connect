@@ -7,27 +7,27 @@ import * as Yup from 'yup';
 import { Step1Intro, validationSchema as step1Val } from './steps/Step1Intro';
 import {
   Step2Background,
-  validationSchema as step2Val
+  validationSchema as step2Val,
 } from './steps/Step2Background';
 import {
   Step3Profile,
-  validationSchema as step3Val
+  validationSchema as step3Val,
 } from './steps/Step3Profile';
 import {
   Button,
   Paper,
   Theme,
   createStyles,
-  withStyles
+  withStyles,
 } from '@material-ui/core';
 import { SignUpFormStepper } from './SignUpFormStepper';
 import {
   Step4ContactData,
-  validationSchema as step4Val
+  validationSchema as step4Val,
 } from './steps/Step4ContactData';
 import {
   Step5Categories,
-  validationSchema as step5Val
+  validationSchema as step5Val,
 } from './steps/Step5Categories';
 import { http } from '../../../services/http/http';
 import { signUp } from '../../../services/api/api';
@@ -39,11 +39,15 @@ const styles = (theme: Theme) =>
     submitError: {
       padding: theme.spacing.unit,
       backgroundColor: theme.palette.error.main,
-      color: 'white'
-    }
+      color: 'white',
+    },
   });
 
-export type SignUpFormType = 'mentor' | 'mentee';
+export type SignUpFormType =
+  | 'mentor'
+  | 'mentee'
+  | 'public-sign-up-mentor-pending-review'
+  | 'public-sign-up-mentee-pending-review';
 
 export interface SignUpFormValues {
   formType: SignUpFormType;
@@ -80,7 +84,7 @@ export interface SignUpFormValues {
 
 const initialValues: SignUpFormValues = {
   formType: 'mentee',
-  username: 'eric@binarylights.com',
+  username: '',
   password: '',
   passwordConfirm: '',
   mentor_occupation: '',
@@ -102,14 +106,13 @@ const initialValues: SignUpFormValues = {
   age: undefined,
   languages: ['English'],
   otherLanguages: '',
-  personalDescription:
-    '',
-  contactEmail: 'eric@binarylights.com',
+  personalDescription: '',
+  contactEmail: '',
   linkedInProfileUrl: '',
   slackUsername: '',
   telephoneNumber: '',
   categories: [],
-  menteeCountCapacity: 1
+  menteeCountCapacity: 1,
 };
 
 const validationSchemas = [step1Val, step2Val, step3Val, step4Val, step5Val];
@@ -124,16 +127,17 @@ export const buildSignUpForm = (
     values: FormikValues,
     actions: FormikActions<SignUpFormValues>
   ) => {
-    setSubmitError(false)
+    setSubmitError(false);
     const profile = values as RedProfile;
     // TODO: this needs to be done in a smarter way, like iterating over the RedProfile definition or something
     const cleanProfile: RedProfile = omit(profile, [
       'password',
       'passwordConfirm',
-      'formType'
+      'formType',
     ]);
     cleanProfile.userType = type;
-    cleanProfile.userActivated = true;
+    cleanProfile.userActivated = false;
+    cleanProfile.signupSource = 'public-sign-up';
     try {
       await signUp(values.username, values.password, cleanProfile);
       history.push('/front/signup/complete/' + type);
@@ -148,7 +152,7 @@ export const buildSignUpForm = (
     props.children(props.classes)
   );
 
-  initialValues.formType = type
+  initialValues.formType = type;
 
   return (
     <>
@@ -166,7 +170,9 @@ export const buildSignUpForm = (
             {submitError && (
               <GetClasses>
                 {(classes: any) => (
-                  <Paper className={classes.submitError}>An error occurred, please try again.</Paper>
+                  <Paper className={classes.submitError}>
+                    An error occurred, please try again.
+                  </Paper>
                 )}
               </GetClasses>
             )}
