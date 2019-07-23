@@ -71,6 +71,7 @@ export const Applications = withStyles(styles)(
 
     return (
       <LoggedInLayout>
+        <button onClick={()=>{ throw new TypeError("its a joke")}}>Break the world</button>
         <FullScreenCircle loading={(props as any).loading} />
         {mentees.length === 0 && applicants.length === 0 && (
           <h4>You currently have no applicants or mentees.</h4>

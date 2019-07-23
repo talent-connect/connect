@@ -6,6 +6,7 @@
     "@date-io/moment": "^1.3.5",
     "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "^3.0.2",
+    "@sentry/browser": "5.4.3",
     "@types/axios": "^0.14.0",
     "@types/classnames": "^2.2.7",
     "@types/date-fns": "^2.6.0",
