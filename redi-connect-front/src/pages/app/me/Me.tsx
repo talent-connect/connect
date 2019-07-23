@@ -45,7 +45,7 @@ const styles = (theme: Theme) =>
     },
   });
 
-export type SignUpFormType = 'mentor' | 'mentee';
+export type SignUpFormType = 'mentor' | 'mentee' | 'public-sign-up-mentor-pending-review' | 'public-sign-up-mentee-pending-review';
 
 export interface SignUpFormValues {
   formType: SignUpFormType;

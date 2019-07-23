@@ -281,7 +281,7 @@ const Comp: any = (
         id="expectations"
         name="expectations"
         label={
-          type === 'mentee'
+          type === 'public-sign-up-mentee-pending-review'
             ? 'What do you expect from your mentor?'
             : 'Feel free to share expectations towards your mentees (shown on your profile)'
         }

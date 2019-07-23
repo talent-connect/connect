@@ -11,7 +11,11 @@ const config = {
 const ses = new aws.SES(config);
 
 const sendEmail = Rx.bindNodeCallback(ses.sendEmail.bind(ses));
-const sendEmailFactory = (to, subject, body) =>
+const sendEmailFactory = (to, subject, body) => {
+  const toSanitized =
+    process.env.NODE_ENV === 'production' ? to : 'eric@binarylights.com';
+  console.log(toSanitized);
+  process.exit();
   sendEmail({
     Source: 'career@redi-school.org',
     Destination: { ToAddresses: [to], BccAddresses: ['eric@binarylights.com'] },
@@ -28,6 +32,7 @@ const sendEmailFactory = (to, subject, body) =>
       },
     },
   });
+};
 
 const RECIPIENT = 'career@redi-school.org';
 

@@ -19,6 +19,7 @@ import {
   Show,
   ShowButton,
   LongTextInput,
+  DateInput,
   EditButton,
   SelectInput,
   ArrayInput,
@@ -34,10 +35,12 @@ import {
   SelectArrayInput,
   SingleFieldList,
   EditGuesser,
+  downloadCSV,
   ReferenceField,
   ReferenceManyField,
 } from 'react-admin';
 import classNames from 'classnames';
+import { unparse as convertToCSV } from 'papaparse/papaparse.min';
 import { createStyles, withStyles } from '@material-ui/core';
 import { Person as PersonIcon } from '@material-ui/icons';
 
@@ -76,6 +79,22 @@ const categories= [
   { id: 'webDevelopment', label: 'Web Development', colour: '#8484db' },
   { id: 'freelancing', label: 'Freelancing', colour: '#91549a' },
 ];
+
+const mentoringSessionDurationOptions = [
+  15,
+  30,
+  45,
+  60,
+  75,
+  90,
+  105,
+  120,
+  135,
+  150,
+  165,
+  180,
+];
+
 const categoriesIdToLabelMap = mapValues(
   keyBy(categories, 'id'),
   'label'
@@ -403,8 +422,29 @@ const RedMatchEdit = props => (
   </Edit>
 );
 
+const exporter = async (mentoringSessions, fetchRelatedRecords) => {
+  const mentors = await fetchRelatedRecords(mentoringSessions, 'mentorId', 'redProfiles')
+  const mentees = await fetchRelatedRecords(mentoringSessions, 'menteeId', 'redProfiles')
+  const data = mentoringSessions.map(x => {
+    const mentor = mentors[x.mentorId]
+    const mentee = mentees[x.menteeId]
+    if (mentor) {
+      x.mentorName = `${mentor.firstName} ${mentor.lastName}`
+    }
+    if (mentee) {
+      x.menteeName = `${mentee.firstName} ${mentee.lastName}`
+    }
+    return x
+  })
+  const csv = convertToCSV({
+    data,
+    fields: ['id', 'date', 'minuteDuration', 'mentorName', 'menteeName', 'createdAt', 'updatedAt']
+  })
+  downloadCSV(csv, 'yalla');
+}
+
 const RedMentoringSessionList = props => (
-  <List {...props}>
+  <List {...props} exporter={exporter}>
     <Datagrid>
       <ReferenceField label="Mentee" source="menteeId" reference="redProfiles">
         <FullName source="mentee" />
@@ -423,8 +463,102 @@ const RedMentoringSessionShow = props => (
   <Show {...props}>
     <SimpleShowLayout>
       <TextField source="status" />
+      <ReferenceField label="Mentee" source="menteeId" reference="redProfiles">
+        <FullName source="mentee" />
+      </ReferenceField>
+      <ReferenceField label="Mentor" source="mentorId" reference="redProfiles">
+        <FullName source="mentor" />
+      </ReferenceField>
+      <TextField
+        label="Date of mentoring session"
+        source="date"
+      />
+      <TextField
+        source="minuteDuration"
+      />
+      <RecordCreatedAt />
+      <RecordUpdatedAt />
     </SimpleShowLayout>
   </Show>
+);
+
+const RedMentoringSessionCreate = props => (
+  <Create {...props}>
+    <SimpleForm>
+      <ReferenceInput
+        label="Mentor"
+        source="mentorId"
+        reference="redProfiles"
+        perPage={0}
+        filter={{ userType: 'mentor' }}
+      >
+        <AutocompleteInput
+          optionText={op => `${op.firstName} ${op.lastName}`}
+        />
+      </ReferenceInput>
+      <ReferenceInput
+        label="Mentee"
+        source="menteeId"
+        reference="redProfiles"
+        perPage={0}
+        filter={{ userType: 'mentee' }}
+      >
+        <AutocompleteInput
+          optionText={op => `${op.firstName} ${op.lastName}`}
+        />
+      </ReferenceInput>
+      <DateInput
+        label="Date of mentoring session"
+        source="date"
+      />
+      <SelectInput
+        source="minuteDuration"
+        choices={mentoringSessionDurationOptions.map(duration => ({
+          id: duration,
+          name: duration
+        }))}
+      />
+    </SimpleForm>
+  </Create>
+);
+const RedMentoringSessionEdit = props => (
+  <Edit {...props}>
+    <SimpleForm>
+      <ReferenceInput
+        label="Mentor"
+        source="mentorId"
+        reference="redProfiles"
+        perPage={0}
+        filter={{ userType: 'mentor' }}
+      >
+        <AutocompleteInput
+          optionText={op => `${op.firstName} ${op.lastName}`}
+        />
+      </ReferenceInput>
+      <ReferenceInput
+        label="Mentee"
+        source="menteeId"
+        reference="redProfiles"
+        perPage={0}
+        filter={{ userType: 'mentee' }}
+      >
+        <AutocompleteInput
+          optionText={op => `${op.firstName} ${op.lastName}`}
+        />
+      </ReferenceInput>
+      <DateInput
+        label="Date of mentoring session"
+        source="date"
+      />
+      <SelectInput
+        source="minuteDuration"
+        choices={mentoringSessionDurationOptions.map(duration => ({
+          id: duration,
+          name: duration
+        }))}
+      />
+    </SimpleForm>
+  </Edit>
 );
 
 const buildDataProvider = normalDataProvider => (verb, resource, params) => {
@@ -476,6 +610,8 @@ function App() {
           name="redMentoringSessions"
           show={RedMentoringSessionShow}
           list={RedMentoringSessionList}
+          create={RedMentoringSessionCreate}
+          edit={RedMentoringSessionEdit}
         />
       </Admin>
     </div>

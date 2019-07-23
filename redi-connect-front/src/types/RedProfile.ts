@@ -1,10 +1,12 @@
 import { RedMatch } from './RedMatch';
 import { RedMentoringSession } from './RedMentoringSession';
 import { UserType } from './UserType';
+import { SignupSource } from './SignupSource';
 
 export type RedProfile = {
   id: string;
   userType: UserType;
+  signupSource: SignupSource;
   mentor_occupation: string;
   mentor_workPlace: string;
   expectations: string; // Field was used in Mentor typeform, as of today 14.05.2019 not asked in sign-up flow

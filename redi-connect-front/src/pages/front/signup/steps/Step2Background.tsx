@@ -103,11 +103,11 @@ export const Comp = (
 
   return (
     <>
-      {type === 'mentee' && (
+      {type === 'public-sign-up-mentee-pending-review' && (
         <p>We would like to know more about what you study.</p>
       )}
-      {type === 'mentor' && <p>We would like to know more about your work.</p>}
-      {type === 'mentor' && (
+      {type === 'public-sign-up-mentor-pending-review' && <p>We would like to know more about your work.</p>}
+      {type === 'public-sign-up-mentor-pending-review' && (
         <>
           <TextField
             id="mentor_occupation"
@@ -137,7 +137,7 @@ export const Comp = (
           />
         </>
       )}
-      {type === 'mentee' && (
+      {type === 'public-sign-up-mentee-pending-review' && (
         <>
           <FormControl className={classes.margin} fullWidth>
             <InputLabel htmlFor="mentee_occupationCategoryId">

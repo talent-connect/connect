@@ -22,16 +22,11 @@ export const SignUpComplete: FunctionComponent<
   const Comp: any = (props: any) => <Link {...props} to="/app/dashboard" />;
   return (
     <LoggedOutLayout>
-      {type === 'mentor' && (
-        <p>
-          Great! The registration was successfully completed. Now you can view
-          your profile. Mentees will apply according to your profile.
-        </p>
-      )}
-
-      <Button color="primary" fullWidth variant="contained" component={Comp}>
-        Go to profile
-      </Button>
+      <p>
+        Thanks for registering! We're thrilled that you're ReDI :) We promise to
+        review your profile as quickly as possible. We'll send you an email once
+        we're done.
+      </p>
     </LoggedOutLayout>
   );
 };
