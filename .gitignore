@@ -1,0 +1,5 @@
+ssl/
+mongodb-data/
+databkps/
+
+redi-connect-backend/scripts/assets
