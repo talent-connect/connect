@@ -22,19 +22,12 @@ import {
   DateInput,
   EditButton,
   SelectInput,
-  ArrayInput,
-  Labeled,
   Edit,
   SimpleForm,
-  SimpleFormIterator,
-  DisabledInput,
-  NumberInput,
   ArrayField,
   BooleanField,
   SimpleShowLayout,
   SelectArrayInput,
-  SingleFieldList,
-  EditGuesser,
   downloadCSV,
   ReferenceField,
   ReferenceManyField,
@@ -45,6 +38,7 @@ import { createStyles, withStyles } from '@material-ui/core';
 import { Person as PersonIcon } from '@material-ui/icons';
 
 import loopbackClient, { authProvider } from './lib/react-admin-loopback/src';
+import { ApproveRejectButton } from './components/ApproveRejectButton';
 
 const API_URL =
   process.env.NODE_ENV === 'production'
@@ -242,7 +236,7 @@ const RedProfileShow = props => (
   </Show>
 );
 const RedProfileEdit = props => (
-  <Edit {...props}>
+  <Edit {...props} actions={<ApproveRejectButton />}>
     <SimpleForm>
       <SelectInput
         source="userType"
