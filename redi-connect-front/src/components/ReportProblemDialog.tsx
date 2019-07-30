@@ -46,6 +46,7 @@ import { reportProblem } from '../services/api/api';
 import { RedProfile } from '../types/RedProfile';
 import { RedProblemReportDto } from '../types/RedProblemReportDto';
 import { profilesFetchOneStart } from '../redux/profiles/actions';
+import { getRedProfile } from '../services/auth/auth';
 
 type ReportProblemDialogProps = {
   redProfileId: string;
@@ -227,6 +228,8 @@ const Form = withStyles(styles)(
       setFieldTouched(name, true, false);
     };
 
+    const { userType } = getRedProfile()
+
     return (
       <>
         {submitResult === 'error' && (
@@ -258,7 +261,7 @@ const Form = withStyles(styles)(
               rows="4"
               onChange={change.bind(null, 'problemDescription')}
             />
-            {type === 'mentee' && (
+            {userType === 'mentor' && (
               <>
                 <FormControlLabel
                   label="Immediately cancel mentorship with this mentee"
