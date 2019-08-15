@@ -16,7 +16,7 @@ const userFind = bindNodeCallback(RedUser.find.bind(RedUser));
 const rolePrincipalCreate = role =>
   bindNodeCallback(role.principals.create.bind(role));
 
-let menteeRole, mentorRole;
+let menteeRole, mentorRole, adminRole;
 
 roleFindOne({ where: { name: 'mentee' } })
   .pipe(
@@ -25,19 +25,39 @@ roleFindOne({ where: { name: 'mentee' } })
       () => roleFindOne({ where: { name: 'mentor' } }),
       (data, mentorRole) => ({ ...data, mentorRole })
     ),
-    tap(({ mentorRole: _mentorRole, menteeRole: _menteeRole }) => {
-      menteeRole = _menteeRole;
-      mentorRole = _mentorRole;
-      console.log(menteeRole);
-      console.log(mentorRole);
-    }),
+    switchMap(
+      () => roleFindOne({ where: { name: 'admin' } }),
+      (data, adminRole) => ({ ...data, adminRole })
+    ),
+    tap(
+      ({
+        mentorRole: _mentorRole,
+        menteeRole: _menteeRole,
+        adminRole: _adminRole,
+      }) => {
+        menteeRole = _menteeRole;
+        mentorRole = _mentorRole;
+        adminRole = _adminRole;
+      }
+    ),
     switchMap(() => userFind({ include: 'redProfile' })),
     switchMap(users => from(users)),
-    concatMap(user =>
-      rolePrincipalCreate(
-        user.toJSON().redProfile.userType === 'mentor' ? mentorRole : menteeRole
-      )({ principalType: RoleMapping.USER, principalId: user.toJSON().id })
-    ),
+    concatMap(user => {
+      let role;
+      const userType = user.toJSON().redProfile.userType;
+      const accountEmail = user.toJSON().email;
+      if (accountEmail === 'cloud-accounts@redi-school.org') {
+        role = adminRole;
+      } else if (userType === 'mentor') {
+        role = mentorRole;
+      } else {
+        role = menteeRole;
+      }
+      return rolePrincipalCreate(role)({
+        principalType: RoleMapping.USER,
+        principalId: user.toJSON().id,
+      });
+    }),
     count()
 
     /*

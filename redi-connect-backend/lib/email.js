@@ -14,9 +14,7 @@ const sendEmail = Rx.bindNodeCallback(ses.sendEmail.bind(ses));
 const sendEmailFactory = (to, subject, body) => {
   const toSanitized =
     process.env.NODE_ENV === 'production' ? to : 'eric@binarylights.com';
-  console.log(toSanitized);
-  process.exit();
-  sendEmail({
+  return sendEmail({
     Source: 'career@redi-school.org',
     Destination: { ToAddresses: [to], BccAddresses: ['eric@binarylights.com'] },
     Message: {
@@ -245,6 +243,88 @@ const sendMenteeSignupReminderEmail = (recipient, firstName, accessToken) =>
     Your Career Support Team`
   );
 
+const sendMentorPendingReviewAcceptedEmail = (recipient, firstName) =>
+  sendEmailFactory(
+    recipient,
+    'ReDI Connect: your user was activated!',
+    `Dear ${firstName},
+
+Your profile has been accepted and we are very happy that you are now part of the ReDI Community.
+
+Now that your profile is visible you should receive applications from mentees. We will notify you by email of any application.
+
+You can always get to ReDI Connect by going to: https://connect.redi-school.org.
+
+In order to stay tuned on what is happening in the ReDI mentor community join our slack universe here: https://app.slack.com/client/T0HN7F83D/GCJ708D53
+Or check our pages:
+Facebook: https://www.facebook.com/redischool
+Meetup: https://www.meetup.com/ReDI-school
+Instagram: https://www.instagram.com/redischool
+
+We also kindly remind you to be aware of the following:
+Code of Conduct: https://connect.redi-school.org/downloadeables/redi-connect-code-of-conduct.pdf
+Guidelines: https://connect.redi-school.org/downloadeables/redi-connect-guidelines.pdf
+
+Please feel free to write us an email at career@redi-school.org if you have any questions or encounter problems.
+
+Are you ReDI?
+
+Thank you for being a mentor, we couldn’t do it without you.
+
+
+Your Career Support Team at ReDI Connect`
+  );
+
+const sendMenteePendingReviewAcceptedEmail = (recipient, firstName) =>
+  sendEmailFactory(
+    recipient,
+    'ReDI Connect: your user was activated!',
+    `Dear ${firstName},
+
+Your profile has been accepted and you are now able to see and apply to you future mentor. Just go to ReDI Connect here: https://connect.redi-school.org.
+
+Please make sure, that once your mentor has accepted your application, to schedule regular meetings with him or her.
+
+Please note: The mentorship program is mandatory for current students at ReDI School and you have to complete at least five sessions with your mentor to receive your certificate at the end of the semester.
+
+We also kindly remind you to be aware of the following:
+Code of Conduct: https://connect.redi-school.org/downloadeables/redi-connect-code-of-conduct.pdf
+Guidelines: https://connect.redi-school.org/downloadeables/redi-connect-guidelines.pdf
+
+Please feel free to write us an email at career@redi-school.org if you have any questions or encounter problems.
+
+
+Your Career Support Team at ReDI Connect`
+  );
+
+const sendMentorPendingReviewDeclinedEmail = (recipient, firstName) =>
+  sendEmailFactory(
+    recipient,
+    'ReDI Connect: your user sign-up was declined',
+    `Dear ${firstName},
+
+Unfortunately your profile has not been accepted yet because we would like to get to know you a little better before.
+
+Please let us know at career@redi-school.org how we can reach you best so that we can have a little chat. 
+
+
+Your Career Support Team at ReDI Connect`
+  );
+
+const sendMenteePendingReviewDeclinedEmail = (recipient, firstName) =>
+  sendEmailFactory(
+    recipient,
+    'ReDI Connect: your user sign-up was declined',
+    `Dear ${firstName},
+
+Unfortunately your profile has not been accepted yet because we would like to get to know you a little better before.
+
+Please let us know at career@redi-school.org how we can reach you best so that we can have a little chat. 
+
+
+Your Career Support Team at ReDI Connect`
+  );
+
 module.exports = {
   sendReportProblemEmail,
   sendDataImportMentorSignupEmail,
@@ -256,5 +336,9 @@ module.exports = {
   sendToMentorConfirmationOfMentorshipCancelled,
   sendMentorSignupReminderEmail,
   sendMenteeSignupReminderEmail,
+  sendMentorPendingReviewAcceptedEmail,
+  sendMenteePendingReviewAcceptedEmail,
+  sendMentorPendingReviewDeclinedEmail,
+  sendMenteePendingReviewDeclinedEmail,
   sendEmailFactory,
 };
