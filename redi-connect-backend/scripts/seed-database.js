@@ -88,6 +88,17 @@ const randomString = (charset = 'abcdefghijklmnopqrstuvwxyz', length = 10) => {
   return str;
 };
 
+const pickRandomUserType = () => {
+  const possibleUserTypes = [
+    'mentor',
+    'mentee',
+    'public-sign-up-mentor-pending-review',
+    'public-sign-up-mentee-pending-review',
+  ];
+  const randomIndex = Math.floor(Math.random() * possibleUserTypes.length);
+  return possibleUserTypes[randomIndex];
+};
+
 const users = fp.compose(
   fp.take(50),
   fp.map(({ name, surname, gender }) => {
@@ -100,7 +111,7 @@ const users = fp.compose(
       },
       redProfile: {
         userActivated: true,
-        userType: Math.random() > 0.5 ? 'mentor' : 'mentee',
+        userType: pickRandomUserType(),
         gender,
         firstName: name,
         lastName: surname,
@@ -342,8 +353,8 @@ Rx.of({})
     concatMap(redMatchCreate)
   )
   .subscribe(() => console.log('next'), console.log, () => {
-    console.log('done')
-    process.exit()
+    console.log('done');
+    process.exit();
   });
 
 app.models.RedUser.destroyAll();

@@ -164,5 +164,68 @@
       "permission": "ALLOW"
     }
   ],
-  "methods": {}
+  "methods": {
+    "pendingReviewDoAccept": {
+      "accepts": [
+        {
+          "arg": "data",
+          "type": "object",
+          "http": {
+            "source": "body"
+          }
+        },
+        {
+          "arg": "options",
+          "type": "object",
+          "http": "optionsFromRequest"
+        }
+      ],
+      "returns": [
+        {
+          "arg": "redProfile",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
+      "description": "",
+      "http": [
+        {
+          "path": "/pendingReviewDoAccept",
+          "verb": "post"
+        }
+      ]
+    },
+    "pendingReviewDoDecline": {
+      "accepts": [
+        {
+          "arg": "data",
+          "type": "object",
+          "http": {
+            "source": "body"
+          }
+        },
+        {
+          "arg": "options",
+          "type": "object",
+          "http": "optionsFromRequest"
+        }
+      ],
+      "returns": [
+        {
+          "arg": "redProfile",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
+      "description": "",
+      "http": [
+        {
+          "path": "/pendingReviewDoDecline",
+          "verb": "post"
+        }
+      ]
+    }
+  }
 }
