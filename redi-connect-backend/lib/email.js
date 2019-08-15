@@ -249,7 +249,7 @@ const sendMentorPendingReviewAcceptedEmail = (recipient, firstName) =>
     'ReDI Connect: your user was activated!',
     `Dear ${firstName},
 
-Your profile has been accepted and we are very happy that you are now part of the ReDI Community. Please make sure you update your profile regularly.
+Your profile has been accepted and we are very happy that you are now part of the ReDI Community. Please make sure you update your profile regularly and upload your profile picture.
 
 Now that your profile is visible you should receive applications from mentees. We will notify you by email of any application.
 
@@ -285,6 +285,8 @@ const sendMenteePendingReviewAcceptedEmail = (recipient, firstName) =>
     `Dear ${firstName},
 
 Your profile has been accepted and you are now able to see and apply to you future mentor. Just go to ReDI Connect here: https://connect.redi-school.org.
+
+Please make sure you update your profile regularly and upload your profile picture.
 
 Please make sure that once your mentor has accepted your application, to schedule regular meetings with him or her. They are giving their precious time to support you. You should have: 
 
