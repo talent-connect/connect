@@ -19,6 +19,7 @@ import {
   Show,
   ShowButton,
   LongTextInput,
+  CardActions,
   DateInput,
   EditButton,
   SelectInput,
@@ -38,16 +39,14 @@ import { createStyles, withStyles } from '@material-ui/core';
 import { Person as PersonIcon } from '@material-ui/icons';
 
 import loopbackClient, { authProvider } from './lib/react-admin-loopback/src';
-import { ApproveRejectButton } from './components/ApproveRejectButton';
+import { ApproveButton } from './components/ApproveButton';
+import { DeclineButton } from './components/DeclineButton';
 
-const API_URL =
-  process.env.NODE_ENV === 'production'
-    ? 'https://connect-api.redi-school.org/api'
-    : 'http://127.0.0.1:3003/api';
+import { API_URL } from './config';
 
 /** REFERENCE DATA */
 
-const categories= [
+const categories = [
   { id: 'blockchain', label: 'Blockchain', colour: '#db8484' },
   { id: 'basicComputer', label: 'Basic Computer', colour: '#9a5454' },
   { id: 'react', label: 'React', colour: '#c984db' },
@@ -89,10 +88,7 @@ const mentoringSessionDurationOptions = [
   180,
 ];
 
-const categoriesIdToLabelMap = mapValues(
-  keyBy(categories, 'id'),
-  'label'
-);
+const categoriesIdToLabelMap = mapValues(keyBy(categories, 'id'), 'label');
 const AWS_PROFILE_AVATARS_BUCKET_BASE_URL =
   'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/';
 
@@ -110,13 +106,19 @@ RecordUpdatedAt.defaultProps = {
   label: 'Record updated at',
 };
 
-const LangaugeList = (props) => {
-  return <span>{Object.values(props.data).join(', ')}</span>
-}
+const LangaugeList = props => {
+  return <span>{Object.values(props.data).join(', ')}</span>;
+};
 
-const CategoryList = (props) => {
-  return <span>{Object.values(props.data).map(catId => categoriesIdToLabelMap[catId]).join(', ')}</span>
-}
+const CategoryList = props => {
+  return (
+    <span>
+      {Object.values(props.data)
+        .map(catId => categoriesIdToLabelMap[catId])
+        .join(', ')}
+    </span>
+  );
+};
 
 const styles = createStyles({
   avatarImage: {
@@ -124,28 +126,30 @@ const styles = createStyles({
     height: '500px',
     backgroundSize: 'cover',
     backgroundPosition: 'center center',
-  }
+  },
 });
 
-const Avatar = withStyles(styles)(
-  ({ record, className, classes, style }) => (
-    <>
-      {!record && (
-        <PersonIcon
-          className={classNames(classes.avatarImage, className)}
-          color="primary"
-        />
-      )}
-      {record && record.profileAvatarImageS3Key && (
-        <div
-          id="yalla"
-          style={{ backgroundImage: `url(${AWS_PROFILE_AVATARS_BUCKET_BASE_URL + record.profileAvatarImageS3Key})`, ...style }}
-          className={classNames(classes.avatarImage, className)}
-        />
-      )}
-    </>
-  )
-);
+const Avatar = withStyles(styles)(({ record, className, classes, style }) => (
+  <>
+    {!record && (
+      <PersonIcon
+        className={classNames(classes.avatarImage, className)}
+        color="primary"
+      />
+    )}
+    {record && record.profileAvatarImageS3Key && (
+      <div
+        id="yalla"
+        style={{
+          backgroundImage: `url(${AWS_PROFILE_AVATARS_BUCKET_BASE_URL +
+            record.profileAvatarImageS3Key})`,
+          ...style,
+        }}
+        className={classNames(classes.avatarImage, className)}
+      />
+    )}
+  </>
+));
 
 
 /** END OF SHARED STUFF */
@@ -162,11 +166,11 @@ const RedProfileList = props => (
     </Datagrid>
   </List>
 );
-const RedProfileListFilters = (props) => (
+const RedProfileListFilters = props => (
   <Filter {...props}>
     <TextInput label="Search by name" source="q" />
   </Filter>
-)
+);
 const RedProfileShow = props => (
   <Show {...props}>
     <SimpleShowLayout>
@@ -213,51 +217,117 @@ const RedProfileShow = props => (
       <h4>Mentor-specific fields:</h4>
       <TextField source="mentor_occupation" label="Occupation" />
       <TextField source="mentor_workPlace" label="Place of work" />
-      <NumberField source="menteeCountCapacity" label="Total mentee count capacity" />
+      <NumberField
+        source="menteeCountCapacity"
+        label="Total mentee count capacity"
+      />
       <h4>Mentee-specific fields:</h4>
-      <TextField source="mentee_occupationCategoryId" label="Type of occupation" />
-      <TextField source="mentee_occupationJob_placeOfEmployment" label="If occupation = job, place of employment" />
-      <TextField source="mentee_occupationJob_position" label="If occupation = job, position" />
-      <TextField source="mentee_occupationStudent_studyPlace" label="If occupation = student, place of study" />
-      <TextField source="mentee_occupationStudent_studyName" label="If occupation = student, name of study" />
-      <TextField source="mentee_occupationLookingForJob_what" label="If occupation = looking for a job, description of what" />
-      <TextField source="mentee_occupationOther_description" label="If occupation = other, description of what" />
-      <TextField source="mentee_highestEducationLevel" label="Highest education level" />
-      <TextField source="mentee_currentlyEnrolledInCourse" label="Currently enrolled in which course" />
+      <TextField
+        source="mentee_occupationCategoryId"
+        label="Type of occupation"
+      />
+      <TextField
+        source="mentee_occupationJob_placeOfEmployment"
+        label="If occupation = job, place of employment"
+      />
+      <TextField
+        source="mentee_occupationJob_position"
+        label="If occupation = job, position"
+      />
+      <TextField
+        source="mentee_occupationStudent_studyPlace"
+        label="If occupation = student, place of study"
+      />
+      <TextField
+        source="mentee_occupationStudent_studyName"
+        label="If occupation = student, name of study"
+      />
+      <TextField
+        source="mentee_occupationLookingForJob_what"
+        label="If occupation = looking for a job, description of what"
+      />
+      <TextField
+        source="mentee_occupationOther_description"
+        label="If occupation = other, description of what"
+      />
+      <TextField
+        source="mentee_highestEducationLevel"
+        label="Highest education level"
+      />
+      <TextField
+        source="mentee_currentlyEnrolledInCourse"
+        label="Currently enrolled in which course"
+      />
       <h4>Record information</h4>
       <RecordCreatedAt />
       <RecordUpdatedAt />
-      <h4>Typeform information (for mentors/mentees originally signed up via typeform)</h4>
-      <TextField source="mentor_ifTypeForm_submittedAt" label="Typeform: submitted at" />
+      <h4>
+        Typeform information (for mentors/mentees originally signed up via
+        typeform)
+      </h4>
+      <TextField
+        source="mentor_ifTypeForm_submittedAt"
+        label="Typeform: submitted at"
+      />
       <TextField source="mentee_ifTypeForm_additionalComments" />
-      <TextField source="ifTypeForm_additionalComments" label="Typeform: additional comments" />
-      
+      <TextField
+        source="ifTypeForm_additionalComments"
+        label="Typeform: additional comments"
+      />
     </SimpleShowLayout>
   </Show>
 );
+
+const RedProfileEditActions = props => {
+  const userType = props && props.data && props.data.userType;
+  if (
+    ![
+      'public-sign-up-mentor-pending-review',
+      'public-sign-up-mentee-pending-review',
+    ].includes(userType)
+  )
+    return null;
+  return (
+    <CardActions>
+      User is pending. Please
+      <ApproveButton {...props} /> or
+      <DeclineButton {...props} />
+    </CardActions>
+  );
+};
+
 const RedProfileEdit = props => (
-  <Edit {...props} actions={<ApproveRejectButton />}>
+  <Edit {...props} actions={<RedProfileEditActions />}>
     <SimpleForm>
-      <SelectInput
-        source="userType"
-        choices={[
-          { id: 'mentee', name: 'Mentee' },
-          { id: 'mentor', name: 'Mentor' },
-        ]}
-      />
+      <TextField source="userType" />
       <BooleanInput source="userActivated" />
-      <TextInput source="profileAvatarImageS3Key" label="Photo file name" helperText="Empty this field to clear the user's photo" />
+      <TextInput
+        source="profileAvatarImageS3Key"
+        label="Photo file name"
+        helperText="Empty this field to clear the user's photo"
+      />
       <TextInput source="firstName" />
       <TextInput source="lastName" />
-      <SelectInput source="gender" choices={[{id: 'male', name: 'Male'}, {id: 'female', name: 'Female'}, {id:'other', name: 'Other'}, {id:'', name: 'Prefers not to answer'}]} />
+      <SelectInput
+        source="gender"
+        choices={[
+          { id: 'male', name: 'Male' },
+          { id: 'female', name: 'Female' },
+          { id: 'other', name: 'Other' },
+          { id: '', name: 'Prefers not to answer' },
+        ]}
+      />
       <NumberField source="age" />
-      <SelectArrayInput source="languages" choices={[
-        { id: 'English', name: 'English' },
-        { id: 'German', name: 'German' },
-        { id: 'Arabic', name: 'Arabic' },
-        { id: 'Farsi', name: 'Farsi' },
-        { id: 'Tigrinya', name: 'Tigrinya' },
-      ]} />
+      <SelectArrayInput
+        source="languages"
+        choices={[
+          { id: 'English', name: 'English' },
+          { id: 'German', name: 'German' },
+          { id: 'Arabic', name: 'Arabic' },
+          { id: 'Farsi', name: 'Farsi' },
+          { id: 'Tigrinya', name: 'Tigrinya' },
+        ]}
+      />
       <TextInput source="otherLanguages" />
       <TextInput source="personalDescription" multiline />
       <TextInput source="expectations" multiline />
@@ -265,7 +335,10 @@ const RedProfileEdit = props => (
       <TextInput source="linkedInProfileUrl" />
       <TextInput source="slackUsername" />
       <TextInput source="telephoneNumber" />
-      <SelectArrayInput source="categories" choices={categories.map(({ id, label }) => ({ id, name: label }))} />
+      <SelectArrayInput
+        source="categories"
+        choices={categories.map(({ id, label }) => ({ id, name: label }))}
+      />
     </SimpleForm>
   </Edit>
 );
@@ -417,25 +490,41 @@ const RedMatchEdit = props => (
 );
 
 const exporter = async (mentoringSessions, fetchRelatedRecords) => {
-  const mentors = await fetchRelatedRecords(mentoringSessions, 'mentorId', 'redProfiles')
-  const mentees = await fetchRelatedRecords(mentoringSessions, 'menteeId', 'redProfiles')
+  const mentors = await fetchRelatedRecords(
+    mentoringSessions,
+    'mentorId',
+    'redProfiles'
+  );
+  const mentees = await fetchRelatedRecords(
+    mentoringSessions,
+    'menteeId',
+    'redProfiles'
+  );
   const data = mentoringSessions.map(x => {
-    const mentor = mentors[x.mentorId]
-    const mentee = mentees[x.menteeId]
+    const mentor = mentors[x.mentorId];
+    const mentee = mentees[x.menteeId];
     if (mentor) {
-      x.mentorName = `${mentor.firstName} ${mentor.lastName}`
+      x.mentorName = `${mentor.firstName} ${mentor.lastName}`;
     }
     if (mentee) {
-      x.menteeName = `${mentee.firstName} ${mentee.lastName}`
+      x.menteeName = `${mentee.firstName} ${mentee.lastName}`;
     }
-    return x
-  })
+    return x;
+  });
   const csv = convertToCSV({
     data,
-    fields: ['id', 'date', 'minuteDuration', 'mentorName', 'menteeName', 'createdAt', 'updatedAt']
-  })
+    fields: [
+      'id',
+      'date',
+      'minuteDuration',
+      'mentorName',
+      'menteeName',
+      'createdAt',
+      'updatedAt',
+    ],
+  });
   downloadCSV(csv, 'yalla');
-}
+};
 
 const RedMentoringSessionList = props => (
   <List {...props} exporter={exporter}>
@@ -463,13 +552,8 @@ const RedMentoringSessionShow = props => (
       <ReferenceField label="Mentor" source="mentorId" reference="redProfiles">
         <FullName source="mentor" />
       </ReferenceField>
-      <TextField
-        label="Date of mentoring session"
-        source="date"
-      />
-      <TextField
-        source="minuteDuration"
-      />
+      <TextField label="Date of mentoring session" source="date" />
+      <TextField source="minuteDuration" />
       <RecordCreatedAt />
       <RecordUpdatedAt />
     </SimpleShowLayout>
@@ -501,15 +585,12 @@ const RedMentoringSessionCreate = props => (
           optionText={op => `${op.firstName} ${op.lastName}`}
         />
       </ReferenceInput>
-      <DateInput
-        label="Date of mentoring session"
-        source="date"
-      />
+      <DateInput label="Date of mentoring session" source="date" />
       <SelectInput
         source="minuteDuration"
         choices={mentoringSessionDurationOptions.map(duration => ({
           id: duration,
-          name: duration
+          name: duration,
         }))}
       />
     </SimpleForm>
@@ -540,15 +621,12 @@ const RedMentoringSessionEdit = props => (
           optionText={op => `${op.firstName} ${op.lastName}`}
         />
       </ReferenceInput>
-      <DateInput
-        label="Date of mentoring session"
-        source="date"
-      />
+      <DateInput label="Date of mentoring session" source="date" />
       <SelectInput
         source="minuteDuration"
         choices={mentoringSessionDurationOptions.map(duration => ({
           id: duration,
-          name: duration
+          name: duration,
         }))}
       />
     </SimpleForm>
@@ -556,7 +634,7 @@ const RedMentoringSessionEdit = props => (
 );
 
 const buildDataProvider = normalDataProvider => (verb, resource, params) => {
-  console.log(verb, resource, params)
+  console.log(verb, resource, params);
   if (verb === 'GET_LIST' && resource === 'redProfiles') {
     if (params.filter) {
       const filter = params.filter;

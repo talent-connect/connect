@@ -2,8 +2,16 @@
 const _ = require('lodash');
 
 const Rx = require('rxjs');
+const { of } = Rx;
+const { switchMap, tap, map } = require('rxjs/operators');
 
 const app = require('../../server/server');
+const {
+  sendMentorPendingReviewAcceptedEmail,
+  sendMenteePendingReviewAcceptedEmail,
+  sendMentorPendingReviewDeclinedEmail,
+  sendMenteePendingReviewDeclinedEmail,
+} = require('../../lib/email');
 
 const addFullNamePropertyForAdminSearch = ctx => {
   let thingToUpdate;
@@ -15,7 +23,9 @@ const addFullNamePropertyForAdminSearch = ctx => {
   const lastName = thingToUpdate.lastName;
 
   if (firstName || lastName) {
-    const merged = `${firstName ? (firstName + ' ') : ''}${lastName ? lastName : ''}`;
+    const merged = `${firstName ? firstName + ' ' : ''}${
+      lastName ? lastName : ''
+    }`;
     thingToUpdate.loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName = merged;
   }
 };
@@ -176,4 +186,112 @@ module.exports = function(RedProfile) {
       next();
     }
   });
+
+  RedProfile.pendingReviewDoAccept = function(data, options, callback) {
+    return pendingReviewAcceptOrDecline('ACCEPT')(data, options, callback);
+  };
+
+  RedProfile.pendingReviewDoDecline = function(data, options, callback) {
+    return pendingReviewAcceptOrDecline('DECLINE')(data, options, callback);
+  };
+
+  const pendingReviewAcceptOrDecline = acceptDecline => (
+    data,
+    options,
+    callback
+  ) => {
+    if (!_.includes(['ACCEPT', 'DECLINE'], acceptDecline))
+      throw new Error('Invalid acceptDecline parameter');
+    const { redProfileId } = data;
+    const findRedProfile = switchMap(({ redProfileId }) =>
+      loopbackModelMethodToObservable(RedProfile, 'findById')(redProfileId)
+    );
+    const validateCurrentUserType = switchMap(redProfileInst => {
+      const userType = redProfileInst.toJSON().userType;
+      if (_.includes(pendingReviewTypes, userType)) {
+        return of(redProfileInst);
+      } else {
+        throw new Error(
+          'Invalid current userType (user is not pending review)'
+        );
+      }
+    });
+    const setNewRedProfileProperties = switchMap(redProfileInst =>
+      loopbackModelMethodToObservable(redProfileInst, 'updateAttributes')(
+        currentUserTypeToPostReviewUpdates[acceptDecline][
+          redProfileInst.toJSON().userType
+        ]
+      )
+    );
+
+    Rx.of({ redProfileId })
+      .pipe(
+        findRedProfile,
+        validateCurrentUserType,
+        setNewRedProfileProperties,
+        sendEmailUserReviewedAcceptedOrDenied
+      )
+      .subscribe(
+        redMatchInst => {
+          callback(null, redMatchInst);
+        },
+        err => console.log(err)
+      );
+  };
 };
+
+/**
+ * Send email to user whose pending status has just been accepted/rejected.
+ * Important to note: should be executed AFTER redProfile.userType has been
+ * run - the function relies on this to determine what kind of email to send.
+ */
+
+const sendEmailUserReviewedAcceptedOrDenied = switchMap(redProfileInst => {
+  const userType = redProfileInst.toJSON().userType;
+  const userTypeToEmailMap = {
+    mentor: sendMentorPendingReviewAcceptedEmail,
+    mentee: sendMenteePendingReviewAcceptedEmail,
+    'public-sign-up-mentor-rejected': sendMentorPendingReviewDeclinedEmail,
+    'public-sign-up-mentee-rejected': sendMenteePendingReviewDeclinedEmail,
+  };
+  if (!_.has(userTypeToEmailMap, userType))
+    throw new Error('User does not have valid user type');
+  const emailFunc = userTypeToEmailMap[userType];
+  const { contactEmail, firstName } = redProfileInst.toJSON();
+  return emailFunc(contactEmail, firstName);
+})
+
+const pendingReviewTypes = [
+  'public-sign-up-mentor-pending-review',
+  'public-sign-up-mentee-pending-review',
+];
+const currentUserTypeToPostReviewUpdates = {
+  ACCEPT: {
+    'public-sign-up-mentor-pending-review': {
+      userType: 'mentor',
+      userActivated: true,
+    },
+    'public-sign-up-mentee-pending-review': {
+      userType: 'mentee',
+      userActivated: true,
+    },
+  },
+  DECLINE: {
+    'public-sign-up-mentor-pending-review': {
+      userType: 'public-sign-up-mentor-rejected',
+      userActivated: false,
+    },
+    'public-sign-up-mentee-pending-review': {
+      userType: 'public-sign-up-mentee-rejected',
+      userActivated: false,
+    },
+  },
+};
+
+const loopbackModelMethodToObservable = (
+  loopbackModel,
+  modelMethod
+) => methodParameter =>
+  Rx.bindNodeCallback(loopbackModel[modelMethod].bind(loopbackModel))(
+    methodParameter
+  );
