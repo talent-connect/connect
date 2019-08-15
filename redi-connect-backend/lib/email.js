@@ -249,21 +249,24 @@ const sendMentorPendingReviewAcceptedEmail = (recipient, firstName) =>
     'ReDI Connect: your user was activated!',
     `Dear ${firstName},
 
-Your profile has been accepted and we are very happy that you are now part of the ReDI Community.
+Your profile has been accepted and we are very happy that you are now part of the ReDI Community. Please make sure you update your profile regularly.
 
 Now that your profile is visible you should receive applications from mentees. We will notify you by email of any application.
 
-You can always get to ReDI Connect by going to: https://connect.redi-school.org.
+We kindly ask you to read the guidelines and information of the mentorship program carefully: https://connect.redi-school.org/downloadeables/redi-connect-guidelines.pdf
 
-In order to stay tuned on what is happening in the ReDI mentor community join our slack universe here: https://app.slack.com/client/T0HN7F83D/GCJ708D53
+Please also be aware of the following:
+Code of Conduct: https://connect.redi-school.org/downloadeables/redi-connect-code-of-conduct.pdf
+
+We are organising events regularly where you can meet fellow mentors and get to know ReDI School more.
+In order to stay tuned on what is happening in the mentorship program in the ReDI mentor community join our slack universe here: https://app.slack.com/client/T0HN7F83D/GCJ708D53
+
 Or check our pages:
 Facebook: https://www.facebook.com/redischool
 Meetup: https://www.meetup.com/ReDI-school
 Instagram: https://www.instagram.com/redischool
 
-We also kindly remind you to be aware of the following:
-Code of Conduct: https://connect.redi-school.org/downloadeables/redi-connect-code-of-conduct.pdf
-Guidelines: https://connect.redi-school.org/downloadeables/redi-connect-guidelines.pdf
+You can always log back into ReDI Connect here: https://connect.redi-school.org
 
 Please feel free to write us an email at career@redi-school.org if you have any questions or encounter problems.
 
@@ -283,13 +286,19 @@ const sendMenteePendingReviewAcceptedEmail = (recipient, firstName) =>
 
 Your profile has been accepted and you are now able to see and apply to you future mentor. Just go to ReDI Connect here: https://connect.redi-school.org.
 
-Please make sure, that once your mentor has accepted your application, to schedule regular meetings with him or her.
+Please make sure that once your mentor has accepted your application, to schedule regular meetings with him or her. They are giving their precious time to support you. You should have: 
 
-Please note: The mentorship program is mandatory for current students at ReDI School and you have to complete at least five sessions with your mentor to receive your certificate at the end of the semester.
+At least 6 meetings in total ( 1:1 or in a small group) // Approx. one session (60 mins.) per month (can be more)
+Last semester, those students who had a mentor were more successful in their courses, found jobs and internships easier and understood their own goals much better.  A mentor can support you throughout the semester with:  
+help with your course
+career advice 
+job orientation 
+help to find an internship/job 
+Please note: First come, first serve. Whoever applies first, will get a mentor first. And remember: All successful people have a mentor: Do you know who the mentor of Bill Gates was?
+
 
 We also kindly remind you to be aware of the following:
 Code of Conduct: https://connect.redi-school.org/downloadeables/redi-connect-code-of-conduct.pdf
-Guidelines: https://connect.redi-school.org/downloadeables/redi-connect-guidelines.pdf
 
 Please feel free to write us an email at career@redi-school.org if you have any questions or encounter problems.
 
