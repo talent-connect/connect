@@ -4,4 +4,5 @@ export const steps: Array<string> = [
   "Step 3",
   "Step 4",
   "Step 5",
+  "Step 6",
 ]

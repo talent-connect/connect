@@ -18,7 +18,7 @@ import {
 
 export const validationSchema = Yup.object({
   mentor_occupation: Yup.string().when('formType', {
-    is: 'mentor',
+    is: 'public-sign-up-mentor-pending-review',
     then: Yup.string()
       .required()
       .max(255)
@@ -28,7 +28,7 @@ export const validationSchema = Yup.object({
     .max(255)
     .label('Work place'),
   mentee_occupationCategoryId: Yup.string().when('formType', {
-    is: 'mentee',
+    is: 'public-sign-up-mentee-pending-review',
     then: Yup.string()
       .required()
       .oneOf(menteeOccupationCategories.map(v => v.id))
@@ -55,9 +55,13 @@ export const validationSchema = Yup.object({
   mentee_highestEducationLevel: Yup.string()
     .oneOf(educationLevels.map(level => level.id))
     .label('Highest Education Level'),
-  mentee_currentlyEnrolledInCourse: Yup.string()
-    .oneOf(courses.map(level => level.id))
-    .label('Currently enrolled in course'),
+  mentee_currentlyEnrolledInCourse: Yup.string().when('formType', {
+    is: 'public-sign-up-mentee-pending-review',
+    then: Yup.string()
+      .required()
+      .oneOf(courses.map(level => level.id))
+      .label('Currently enrolled in course'),
+  }),
 });
 
 const styles = (theme: any) => ({
@@ -106,7 +110,9 @@ export const Comp = (
       {type === 'public-sign-up-mentee-pending-review' && (
         <p>We would like to know more about what you study.</p>
       )}
-      {type === 'public-sign-up-mentor-pending-review' && <p>We would like to know more about your work.</p>}
+      {type === 'public-sign-up-mentor-pending-review' && (
+        <p>We would like to know more about your work.</p>
+      )}
       {type === 'public-sign-up-mentor-pending-review' && (
         <>
           <TextField
@@ -322,7 +328,7 @@ export const Comp = (
           </FormControl>
           <FormControl className={classes.margin} fullWidth>
             <InputLabel htmlFor="mentee_currentlyEnrolledInCourse">
-              Which course are you taking at ReDI?
+              Which course are you taking at ReDI?*
             </InputLabel>
             <Select
               value={mentee_currentlyEnrolledInCourse}
