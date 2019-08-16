@@ -4,6 +4,10 @@ import Grid from '@material-ui/core/Grid';
 import { omit } from 'lodash';
 import * as Yup from 'yup';
 
+import {
+  Step0DataConsent,
+  validationSchema as step0Val,
+} from './steps/Step0DataConsent';
 import { Step1Intro, validationSchema as step1Val } from './steps/Step1Intro';
 import {
   Step2Background,
@@ -51,6 +55,7 @@ export type SignUpFormType =
 
 export interface SignUpFormValues {
   formType: SignUpFormType;
+  gaveGdprConsentAt: string;
   username: string;
   password: string;
   passwordConfirm: string;
@@ -80,10 +85,12 @@ export interface SignUpFormValues {
   telephoneNumber: string;
   categories: Array<string>;
   menteeCountCapacity: number;
+  agreesWithCodeOfConduct: boolean;
 }
 
 const initialValues: SignUpFormValues = {
   formType: 'mentee',
+  gaveGdprConsentAt: '',
   username: '',
   password: '',
   passwordConfirm: '',
@@ -113,9 +120,17 @@ const initialValues: SignUpFormValues = {
   telephoneNumber: '',
   categories: [],
   menteeCountCapacity: 1,
+  agreesWithCodeOfConduct: false,
 };
 
-const validationSchemas = [step1Val, step2Val, step3Val, step4Val, step5Val];
+const validationSchemas = [
+  step0Val,
+  step1Val,
+  step2Val,
+  step3Val,
+  step4Val,
+  step5Val,
+];
 
 export const buildSignUpForm = (
   type: SignUpFormType
@@ -134,6 +149,7 @@ export const buildSignUpForm = (
       'password',
       'passwordConfirm',
       'formType',
+      'agreesWithCodeOfConduct',
     ]);
     cleanProfile.userType = type;
     cleanProfile.userActivated = false;
@@ -176,11 +192,12 @@ export const buildSignUpForm = (
                 )}
               </GetClasses>
             )}
-            {step === 0 && <Step1Intro type={type} {...props} />}
-            {step === 1 && <Step2Background type={type} {...props} />}
-            {step === 2 && <Step3Profile type={type} {...props} />}
-            {step === 3 && <Step4ContactData type={type} {...props} />}
-            {step === 4 && <Step5Categories type={type} {...props} />}
+            {step === 0 && <Step0DataConsent type={type} {...props} />}
+            {step === 1 && <Step1Intro type={type} {...props} />}
+            {step === 2 && <Step2Background type={type} {...props} />}
+            {step === 3 && <Step3Profile type={type} {...props} />}
+            {step === 4 && <Step4ContactData type={type} {...props} />}
+            {step === 5 && <Step5Categories type={type} {...props} />}
             <Grid container spacing={8}>
               <Grid item xs={6}>
                 <Button
@@ -199,7 +216,7 @@ export const buildSignUpForm = (
               <Grid item xs={6}>
                 <Button
                   onClick={() => {
-                    if (step === 4) {
+                    if (step === 5) {
                       props.handleSubmit();
                     } else {
                       next();
@@ -212,8 +229,8 @@ export const buildSignUpForm = (
                   disabled={!props.isValid || props.isSubmitting}
                   type="submit"
                 >
-                  {step < 4 && <>Next</>}
-                  {step === 4 && <>Complete</>}
+                  {step < 5 && <>Next</>}
+                  {step === 5 && <>Complete</>}
                 </Button>
               </Grid>
             </Grid>

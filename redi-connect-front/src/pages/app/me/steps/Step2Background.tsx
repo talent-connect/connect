@@ -296,7 +296,7 @@ export const Comp = (
           </FormControl>
           <FormControl className={classes.margin} fullWidth>
             <InputLabel htmlFor="mentee_currentlyEnrolledInCourse">
-              Which course are you taking at ReDI?
+              Which course are you taking at ReDI?*
             </InputLabel>
             <Select
               value={mentee_currentlyEnrolledInCourse}
