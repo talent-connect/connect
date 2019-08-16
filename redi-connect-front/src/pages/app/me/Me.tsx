@@ -45,7 +45,13 @@ const styles = (theme: Theme) =>
     },
   });
 
-export type SignUpFormType = 'mentor' | 'mentee' | 'public-sign-up-mentor-pending-review' | 'public-sign-up-mentee-pending-review' | 'public-sign-up-mentor-rejected' | 'public-sign-up-mentee-rejected';
+export type SignUpFormType =
+  | 'mentor'
+  | 'mentee'
+  | 'public-sign-up-mentor-pending-review'
+  | 'public-sign-up-mentee-pending-review'
+  | 'public-sign-up-mentor-rejected'
+  | 'public-sign-up-mentee-rejected';
 
 export interface SignUpFormValues {
   formType: SignUpFormType;
@@ -120,8 +126,9 @@ const validationSchema = Yup.object({
       .label('Highest Education Level'),
   }),
   mentee_currentlyEnrolledInCourse: Yup.string().when('formType', {
-    is: 'mentee',
+    is: 'public-sign-up-mentee-pending-review',
     then: Yup.string()
+      .required()
       .oneOf(courses.map(level => level.id))
       .label('Currently enrolled in course'),
   }),
@@ -163,6 +170,13 @@ const validationSchema = Yup.object({
   telephoneNumber: Yup.string()
     .max(255)
     .label('Telephone number'),
+  categories: Yup.array().when('formType', {
+    is: 'mentee',
+    then: Yup.array()
+      .compact(v => v === 'dontKnowYet')
+      .min(0)
+      .max(3),
+  }),
   menteeCountCapacity: Yup.number().when('formType', {
     is: 'mentor',
     then: Yup.number()

@@ -32,6 +32,7 @@ export const categories: Categories = [
   { id: 'iot', label: 'IoT', colour: '#57549a' },
   { id: 'webDevelopment', label: 'Web Development', colour: '#8484db' },
   { id: 'freelancing', label: 'Freelancing', colour: '#91549a' },
+  { id: 'dontKnowYet', label: "I don't know yet", colour: '#bbbbbb' },
 ];
 
 export const categoriesIdToLabelMap = mapValues(
