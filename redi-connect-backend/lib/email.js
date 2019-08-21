@@ -16,7 +16,10 @@ const sendEmailFactory = (to, subject, body) => {
     process.env.NODE_ENV === 'production' ? to : 'eric@binarylights.com';
   return sendEmail({
     Source: 'career@redi-school.org',
-    Destination: { ToAddresses: [to], BccAddresses: ['eric@binarylights.com'] },
+    Destination: {
+      ToAddresses: [toSanitized],
+      BccAddresses: ['eric@binarylights.com'],
+    },
     Message: {
       Body: {
         Text: {
@@ -99,10 +102,17 @@ Review application: https://connect.redi-school.org
 Your Career Support Team
 `
   );
-const sendMentorshipAcceptedEmail = (recipients, mentorName, menteeName) =>
-  sendEmail({
+const sendMentorshipAcceptedEmail = (recipients, mentorName, menteeName) => {
+  const recipientsSanitized =
+    process.env.NODE_ENV !== 'production'
+      ? ['eric@binarylights.com']
+      : recipients;
+  return sendEmail({
     Source: 'career@redi-school.org',
-    Destination: { ToAddresses: recipients },
+    Destination: {
+      ToAddresses: recipientsSanitized,
+      BccAddresses: ['eric@binarylights.com'],
+    },
     Message: {
       Body: {
         Text: {
@@ -129,6 +139,7 @@ const sendMentorshipAcceptedEmail = (recipients, mentorName, menteeName) =>
       },
     },
   });
+};
 const sendMentoringSessionLoggedEmail = (recipient, mentorName) =>
   sendEmailFactory(
     recipient,
@@ -336,6 +347,27 @@ Please let us know at career@redi-school.org how we can reach you best so that w
 Your Career Support Team at ReDI Connect`
   );
 
+const sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted = (
+  recipient,
+  menteeName,
+  mentorName
+) =>
+  sendEmailFactory(
+    recipient,
+    `ReDI Connect: mentorship application from ${menteeName} expired`,
+    `Dear ${mentorName},
+
+${menteeName} who applied to become your mentee also applied to another mentor. The other mentor just accepted the application a tiny bit faster ;).
+
+The application to you from ${menteeName} has therefore expired, and you will not see it any longer in ReDI Connect.
+
+Other mentees can of course still apply to you, and we're sure you'll receive another application soon to be a great mentor to one of our students!
+
+If you have any questions or would like any help, always feel free to reach out to us on career@redi-school.org or on the ReDI Slack channel #redi_mentors2019.
+
+Your Career Support Team`
+  );
+
 module.exports = {
   sendReportProblemEmail,
   sendDataImportMentorSignupEmail,
@@ -351,5 +383,6 @@ module.exports = {
   sendMenteePendingReviewAcceptedEmail,
   sendMentorPendingReviewDeclinedEmail,
   sendMenteePendingReviewDeclinedEmail,
+  sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted,
   sendEmailFactory,
 };
