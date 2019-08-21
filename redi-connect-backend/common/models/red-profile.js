@@ -2,7 +2,7 @@
 const _ = require('lodash');
 
 const Rx = require('rxjs');
-const { of } = Rx;
+const { of, from } = Rx;
 const { switchMap, tap, map } = require('rxjs/operators');
 
 const app = require('../../server/server');
@@ -188,14 +188,14 @@ module.exports = function(RedProfile) {
   });
 
   RedProfile.pendingReviewDoAccept = function(data, options, callback) {
-    return pendingReviewAcceptOrDecline('ACCEPT')(data, options, callback);
+    pendingReviewAcceptOrDecline('ACCEPT')(data, options, callback);
   };
 
   RedProfile.pendingReviewDoDecline = function(data, options, callback) {
-    return pendingReviewAcceptOrDecline('DECLINE')(data, options, callback);
+    pendingReviewAcceptOrDecline('DECLINE')(data, options, callback);
   };
 
-  const pendingReviewAcceptOrDecline = acceptDecline => (
+  const pendingReviewAcceptOrDecline = acceptDecline => async (
     data,
     options,
     callback
@@ -203,6 +203,12 @@ module.exports = function(RedProfile) {
     if (!_.includes(['ACCEPT', 'DECLINE'], acceptDecline))
       throw new Error('Invalid acceptDecline parameter');
     const { redProfileId } = data;
+    const mentorRole = await app.models.Role.findOne({
+      where: { name: 'mentor' },
+    });
+    const menteeRole = await app.models.Role.findOne({
+      where: { name: 'mentee' },
+    });
     const findRedProfile = switchMap(({ redProfileId }) =>
       loopbackModelMethodToObservable(RedProfile, 'findById')(redProfileId)
     );
@@ -223,12 +229,24 @@ module.exports = function(RedProfile) {
         ]
       )
     );
+    const createRoleMapping = switchMap(redProfileInst => {
+      const { userType, redUserId } = redProfileInst.toJSON()
+      if (!_.includes(['mentee', 'mentor'], userType))
+        return of(redProfileInst);
+      const role = userType === 'mentor' ? mentorRole : menteeRole;
+      role.principals.create({
+        principalType: app.models.RoleMapping.USER,
+        principalId: redUserId,
+      });
+      return of(redProfileInst);
+    });
 
     Rx.of({ redProfileId })
       .pipe(
         findRedProfile,
         validateCurrentUserType,
         setNewRedProfileProperties,
+        createRoleMapping,
         sendEmailUserReviewedAcceptedOrDenied
       )
       .subscribe(
@@ -246,20 +264,22 @@ module.exports = function(RedProfile) {
  * run - the function relies on this to determine what kind of email to send.
  */
 
-const sendEmailUserReviewedAcceptedOrDenied = switchMap(redProfileInst => {
-  const userType = redProfileInst.toJSON().userType;
-  const userTypeToEmailMap = {
-    mentor: sendMentorPendingReviewAcceptedEmail,
-    mentee: sendMenteePendingReviewAcceptedEmail,
-    'public-sign-up-mentor-rejected': sendMentorPendingReviewDeclinedEmail,
-    'public-sign-up-mentee-rejected': sendMenteePendingReviewDeclinedEmail,
-  };
-  if (!_.has(userTypeToEmailMap, userType))
-    throw new Error('User does not have valid user type');
-  const emailFunc = userTypeToEmailMap[userType];
-  const { contactEmail, firstName } = redProfileInst.toJSON();
-  return emailFunc(contactEmail, firstName);
-})
+const sendEmailUserReviewedAcceptedOrDenied = switchMap(
+  redProfileInst => {
+    const userType = redProfileInst.toJSON().userType;
+    const userTypeToEmailMap = {
+      mentor: sendMentorPendingReviewAcceptedEmail,
+      mentee: sendMenteePendingReviewAcceptedEmail,
+      'public-sign-up-mentor-rejected': sendMentorPendingReviewDeclinedEmail,
+      'public-sign-up-mentee-rejected': sendMenteePendingReviewDeclinedEmail,
+    };
+    if (!_.has(userTypeToEmailMap, userType))
+      throw new Error('User does not have valid user type');
+    const emailFunc = userTypeToEmailMap[userType];
+    const { contactEmail, firstName } = redProfileInst.toJSON();
+    return emailFunc(contactEmail, firstName);
+  }
+);
 
 const pendingReviewTypes = [
   'public-sign-up-mentor-pending-review',

@@ -1,12 +1,14 @@
 'use strict';
 
 const Rx = require('rxjs');
-const { switchMap, tap, map } = require('rxjs/operators');
+const { from } = Rx;
+const { switchMap, tap, map, mergeMap } = require('rxjs/operators');
 
 const app = require('../../server/server');
 const {
   sendMentorshipRequestReceivedEmail,
   sendMentorshipAcceptedEmail,
+  sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted,
 } = require('../../lib/email');
 
 module.exports = function(RedMatch) {
@@ -63,56 +65,58 @@ module.exports = function(RedMatch) {
     next();
   });
 
-  RedMatch.acceptMentorship = function(data, options, callback) {
+  RedMatch.acceptMentorship = async (data, options, callback) => {
     const { redMatchId } = data;
-    const redMatchFindById = redMatchId =>
-      Rx.bindNodeCallback(RedMatch.findById.bind(RedMatch))(redMatchId);
-    const redProfileFindOne = Rx.bindNodeCallback(
-      app.models.RedProfile.findOne.bind(app.models.RedProfile)
-    );
-    // TODO: enforce following rules
-    // 1. Requesting user must be a mentor
-    // 2. matchId must correspond to a Match where
-    //    a. the .mentor is the current user
-    //    b. the .status === 'applied'
 
-    Rx.of({ redMatchId })
-      .pipe(
-        switchMap(({ redMatchId }) => redMatchFindById(redMatchId)),
-        switchMap(redMatchInst =>
-          Rx.bindNodeCallback(redMatchInst.updateAttribute.bind(redMatchInst))(
-            'status',
-            'accepted'
-          )
-        ),
-        switchMap(redMatchInst =>
-          Rx.bindNodeCallback(redMatchInst.updateAttribute.bind(redMatchInst))(
-            'matchMadeActiveOn',
-            new Date()
-          )
-        ),
-        // Fire off email firing in a separate process
-        tap(redMatchInst => {
-          Rx.zip(
-            redProfileFindOne({ where: { id: redMatchInst.menteeId } }),
-            redProfileFindOne({ where: { id: redMatchInst.mentorId } })
-          )
-            .pipe(
-              map(([mentee, mentor]) => ({ mentee, mentor })),
-              switchMap(({ mentee, mentor }) =>
-                sendMentorshipAcceptedEmail(
-                  [mentee.contactEmail, mentor.contactEmail],
-                  mentor.firstName,
-                  mentee.firstName
-                )
-              )
-            )
-            .subscribe();
-        })
-      )
-      .subscribe(redMatchInst => {
-        callback(null, redMatchInst);
-      });
+    const RedProfile = app.models.RedProfile;
+
+    let redMatch = await RedMatch.findById(redMatchId);
+    const redMatchData = redMatch.toJSON();
+    const [mentor, mentee] = await Promise.all([
+      RedProfile.findById(redMatchData.mentorId),
+      RedProfile.findById(redMatchData.menteeId),
+    ]);
+
+    redMatch = await redMatch.updateAttributes({
+      status: 'accepted',
+      matchMadeActiveOn: new Date(),
+    });
+
+    await sendMentorshipAcceptedEmail(
+      [mentee.contactEmail, mentor.contactEmail],
+      mentor.firstName,
+      mentee.firstName
+    ).toPromise();
+
+    const menteePendingMatches = await RedMatch.find({
+      where: {
+        menteeId: redMatchData.menteeId,
+        status: 'applied',
+      },
+      include: ['mentee', 'mentor'],
+    });
+
+    await Promise.all(
+      menteePendingMatches.map(pendingMatch => {
+        return pendingMatch.updateAttribute(
+          'status',
+          'invalidated-as-other-mentor-accepted'
+        );
+      })
+    );
+
+    await Promise.all(
+      menteePendingMatches.map(pendingMatch => {
+        const pendingMatchData = pendingMatch.toJSON();
+        return sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted(
+          pendingMatchData.mentor.contactEmail,
+          pendingMatchData.mentee.firstName,
+          pendingMatchData.mentor.firstName
+        ).toPromise();
+      })
+    );
+
+    callback(null, redMatch.toJSON());
   };
 
   RedMatch.requestMentorship = function(data, options, callback) {

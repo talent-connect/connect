@@ -2,7 +2,7 @@ import { RedProfile } from './RedProfile';
 
 export type RedMatch = {
   id?: string;
-  status: 'applied' | 'accepted' | 'completed' | 'cancelled';
+  status: 'applied' | 'invalidated-as-other-mentor-accepted' | 'accepted' | 'completed' | 'cancelled';
   matchMadeActiveOn: string;
   applicationText: string;
   mentor?: RedProfile;

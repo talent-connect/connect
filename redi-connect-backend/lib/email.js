@@ -16,7 +16,10 @@ const sendEmailFactory = (to, subject, body) => {
     process.env.NODE_ENV === 'production' ? to : 'eric@binarylights.com';
   return sendEmail({
     Source: 'career@redi-school.org',
-    Destination: { ToAddresses: [to], BccAddresses: ['eric@binarylights.com'] },
+    Destination: {
+      ToAddresses: [toSanitized],
+      BccAddresses: ['eric@binarylights.com'],
+    },
     Message: {
       Body: {
         Text: {
@@ -99,10 +102,17 @@ Review application: https://connect.redi-school.org
 Your Career Support Team
 `
   );
-const sendMentorshipAcceptedEmail = (recipients, mentorName, menteeName) =>
-  sendEmail({
+const sendMentorshipAcceptedEmail = (recipients, mentorName, menteeName) => {
+  const recipientsSanitized =
+    process.env.NODE_ENV !== 'production'
+      ? ['eric@binarylights.com']
+      : recipients;
+  return sendEmail({
     Source: 'career@redi-school.org',
-    Destination: { ToAddresses: recipients },
+    Destination: {
+      ToAddresses: recipientsSanitized,
+      BccAddresses: ['eric@binarylights.com'],
+    },
     Message: {
       Body: {
         Text: {
@@ -129,6 +139,7 @@ const sendMentorshipAcceptedEmail = (recipients, mentorName, menteeName) =>
       },
     },
   });
+};
 const sendMentoringSessionLoggedEmail = (recipient, mentorName) =>
   sendEmailFactory(
     recipient,
@@ -249,21 +260,24 @@ const sendMentorPendingReviewAcceptedEmail = (recipient, firstName) =>
     'ReDI Connect: your user was activated!',
     `Dear ${firstName},
 
-Your profile has been accepted and we are very happy that you are now part of the ReDI Community.
+Your profile has been accepted and we are very happy that you are now part of the ReDI Community. Please make sure you update your profile regularly and upload your profile picture.
 
 Now that your profile is visible you should receive applications from mentees. We will notify you by email of any application.
 
-You can always get to ReDI Connect by going to: https://connect.redi-school.org.
+We kindly ask you to read the guidelines and information of the mentorship program carefully: https://connect.redi-school.org/downloadeables/redi-connect-guidelines.pdf
 
-In order to stay tuned on what is happening in the ReDI mentor community join our slack universe here: https://app.slack.com/client/T0HN7F83D/GCJ708D53
+Please also be aware of the following:
+Code of Conduct: https://connect.redi-school.org/downloadeables/redi-connect-code-of-conduct.pdf
+
+We are organising events regularly where you can meet fellow mentors and get to know ReDI School more.
+In order to stay tuned on what is happening in the mentorship program in the ReDI mentor community join our slack universe here: https://app.slack.com/client/T0HN7F83D/GCJ708D53
+
 Or check our pages:
 Facebook: https://www.facebook.com/redischool
 Meetup: https://www.meetup.com/ReDI-school
 Instagram: https://www.instagram.com/redischool
 
-We also kindly remind you to be aware of the following:
-Code of Conduct: https://connect.redi-school.org/downloadeables/redi-connect-code-of-conduct.pdf
-Guidelines: https://connect.redi-school.org/downloadeables/redi-connect-guidelines.pdf
+You can always log back into ReDI Connect here: https://connect.redi-school.org
 
 Please feel free to write us an email at career@redi-school.org if you have any questions or encounter problems.
 
@@ -283,13 +297,21 @@ const sendMenteePendingReviewAcceptedEmail = (recipient, firstName) =>
 
 Your profile has been accepted and you are now able to see and apply to you future mentor. Just go to ReDI Connect here: https://connect.redi-school.org.
 
-Please make sure, that once your mentor has accepted your application, to schedule regular meetings with him or her.
+Please make sure you update your profile regularly and upload your profile picture.
 
-Please note: The mentorship program is mandatory for current students at ReDI School and you have to complete at least five sessions with your mentor to receive your certificate at the end of the semester.
+Please make sure that once your mentor has accepted your application, to schedule regular meetings with him or her. They are giving their precious time to support you. You should have: 
+
+At least 6 meetings in total ( 1:1 or in a small group) // Approx. one session (60 mins.) per month (can be more)
+Last semester, those students who had a mentor were more successful in their courses, found jobs and internships easier and understood their own goals much better.  A mentor can support you throughout the semester with:  
+help with your course
+career advice 
+job orientation 
+help to find an internship/job 
+Please note: First come, first serve. Whoever applies first, will get a mentor first. And remember: All successful people have a mentor: Do you know who the mentor of Bill Gates was?
+
 
 We also kindly remind you to be aware of the following:
 Code of Conduct: https://connect.redi-school.org/downloadeables/redi-connect-code-of-conduct.pdf
-Guidelines: https://connect.redi-school.org/downloadeables/redi-connect-guidelines.pdf
 
 Please feel free to write us an email at career@redi-school.org if you have any questions or encounter problems.
 
@@ -325,6 +347,27 @@ Please let us know at career@redi-school.org how we can reach you best so that w
 Your Career Support Team at ReDI Connect`
   );
 
+const sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted = (
+  recipient,
+  menteeName,
+  mentorName
+) =>
+  sendEmailFactory(
+    recipient,
+    `ReDI Connect: mentorship application from ${menteeName} expired`,
+    `Dear ${mentorName},
+
+${menteeName} who applied to become your mentee also applied to another mentor. The other mentor just accepted the application a tiny bit faster ;).
+
+The application to you from ${menteeName} has therefore expired, and you will not see it any longer in ReDI Connect.
+
+Other mentees can of course still apply to you, and we're sure you'll receive another application soon to be a great mentor to one of our students!
+
+If you have any questions or would like any help, always feel free to reach out to us on career@redi-school.org or on the ReDI Slack channel #redi_mentors2019.
+
+Your Career Support Team`
+  );
+
 module.exports = {
   sendReportProblemEmail,
   sendDataImportMentorSignupEmail,
@@ -340,5 +383,6 @@ module.exports = {
   sendMenteePendingReviewAcceptedEmail,
   sendMentorPendingReviewDeclinedEmail,
   sendMenteePendingReviewDeclinedEmail,
+  sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted,
   sendEmailFactory,
 };

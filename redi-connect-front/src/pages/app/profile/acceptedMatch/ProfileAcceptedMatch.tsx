@@ -123,7 +123,7 @@ export const ProfileAcceptedMatch = connect(mapState)(
           </Grid>
           <Grid item xs={12}>
             <div style={{ marginTop: '50px' }}>
-              <ReportProblemBtn type="mentee" redProfileId={profile.id} />
+              <ReportProblemBtn type={currentUser.userType} redProfileId={profile.id} />
             </div>
           </Grid>
         </Grid>

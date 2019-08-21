@@ -187,6 +187,7 @@ const RedProfileShow = props => (
       </ArrayField>
       <TextField source="otherLanguages" />
       <TextField source="personalDescription" />
+      <TextField source="expectations" />
       <TextField source="contactEmail" />
       <TextField source="linkedInProfileUrl" />
       <TextField source="slackUsername" />
