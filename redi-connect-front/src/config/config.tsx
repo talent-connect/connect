@@ -81,6 +81,7 @@ export const courses: Array<Course> = [
   { id: 'introIosAppsSwift', label: 'Intro to iOS Apps with Swift' },
   { id: 'introJava', label: 'Intro to Java' },
   { id: 'uiUxWomen', label: 'UI/UX Women' },
+  { id: 'introNetworking', label: 'Intro to Networking' },
 ];
 
 export const courseIdToLabelMap = mapValues(keyBy(courses, 'id'), 'label');
