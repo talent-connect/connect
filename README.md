@@ -2,16 +2,16 @@
 ReDI Connect is a tool to connect mentors and mentees. It is built for ReDI School and its community of teachers, students and volunteers.
 
 ## Features
-• sign-up for mentors/mentees
-• profiles that contain misc. personalia, and checkboxes for what areas of support mentors can offer and mentees are looking for
-• form for mentees to submit an application to mentors for mentorship
-• mentorship session logging
-• problem reporting
-• administration panel
+* sign-up for mentors/mentees
+* profiles that contain misc. personalia, and checkboxes for what areas of support mentors can offer and mentees are looking for
+* form for mentees to submit an application to mentors for mentorship
+* mentorship session logging
+* problem reporting
+* administration panel
 
 ## Milestones
-• improve overall design, UX and code quality (current state is result of rushed work and has technical debt)
-• consider supplementing the front-end web application by a native/hybrid/cross-platform Android / iOS mobile application
+* improve overall design, UX and code quality (current state is result of rushed work and has technical debt)
+* consider supplementing the front-end web application by a native/hybrid/cross-platform Android / iOS mobile application
 
 ## Components
 database: MongoDB
