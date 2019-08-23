@@ -14,10 +14,10 @@ ReDI Connect is a tool to connect mentors and mentees. It is built for ReDI Scho
 * consider supplementing the front-end web application by a native/hybrid/cross-platform Android / iOS mobile application
 
 ## Components
-database: MongoDB
-redi-connect-backend: Loopback/Express.js-based REST server
-redi-connect-front: frontend coded in React
-redi-connect-admin: simple administration panel (based on react-admin)
+* database: MongoDB
+* redi-connect-backend: Loopback/Express.js-based REST server
+* redi-connect-front: frontend coded in React
+* redi-connect-admin: simple administration panel (based on react-admin)
 
 All can be run locally in development mode using below instructions. The production version is hosted on AWS - consult @ericbolikowski for details.
 
