@@ -7,6 +7,7 @@ import {
   Resource,
   List,
   Create,
+  Pagination,
   Filter,
   Datagrid,
   TextField,
@@ -16,6 +17,7 @@ import {
   TextInput,
   BooleanInput,
   NumberField,
+  SelectField,
   Show,
   ShowButton,
   LongTextInput,
@@ -152,15 +154,22 @@ const Avatar = withStyles(styles)(({ record, className, classes, style }) => (
   </>
 ));
 
-
 /** END OF SHARED STUFF */
+const RedProfileListPagination = props => (
+  <Pagination rowsPerPageOptions={[10, 25, 50, 100, 250, 500, 1000]} {...props} />
+);
 
 const RedProfileList = props => (
-  <List {...props} filters={<RedProfileListFilters />}>
+  <List
+    {...props}
+    filters={<RedProfileListFilters />}
+    pagination={<RedProfileListPagination />}
+  >
     <Datagrid>
       <TextField source="firstName" />
       <TextField source="lastName" />
       <TextField source="userType" />
+      <TextField source="menteeCountCapacity" />
       <BooleanField source="userActivated" />
       <ShowButton />
       <EditButton />
@@ -170,6 +179,14 @@ const RedProfileList = props => (
 const RedProfileListFilters = props => (
   <Filter {...props}>
     <TextInput label="Search by name" source="q" />
+    <SelectInput source="userType" choices={[
+      { id: 'mentor', name: 'mentor' },
+      { id: 'mentee', name: 'mentee' },
+      { id: 'public-sign-up-mentor-pending-review', name: 'Mentor pending review (signed up via public sign-up form)' },
+      { id: 'public-sign-up-mentee-pending-review', name: 'Mentee pending review (signed up via public sign-up form)' },
+      { id: 'public-sign-up-mentor-rejected', name: 'Rejected mentor' },
+      { id: 'public-sign-up-mentee-rejected', name: 'Rejected mentee' },
+    ]} />
   </Filter>
 );
 const RedProfileShow = props => (
