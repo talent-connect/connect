@@ -117,7 +117,8 @@ export const saveRedProfile = async (
 export const getProfiles = (userType: UserType): Promise<Array<RedProfile>> =>
   http(
     `${API_URL}/redProfiles?filter=${JSON.stringify({
-      where: { userType: 'mentor' },
+      where: { userType },
+      limit: 0,
     })}`
   ).then(resp => resp.data);
 export const getMentors = () => getProfiles('mentor');
