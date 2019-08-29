@@ -155,21 +155,25 @@ const Avatar = withStyles(styles)(({ record, className, classes, style }) => (
 ));
 
 /** END OF SHARED STUFF */
-const RedProfileListPagination = props => (
-  <Pagination rowsPerPageOptions={[10, 25, 50, 100, 250, 500, 1000]} {...props} />
+const AllModelsPagination = props => (
+  <Pagination
+    rowsPerPageOptions={[10, 25, 50, 100, 250, 500, 1000]}
+    {...props}
+  />
 );
 
 const RedProfileList = props => (
   <List
     {...props}
     filters={<RedProfileListFilters />}
-    pagination={<RedProfileListPagination />}
+    pagination={<AllModelsPagination />}
   >
     <Datagrid>
       <TextField source="firstName" />
       <TextField source="lastName" />
       <TextField source="userType" />
-      <TextField source="menteeCountCapacity" />
+      <TextField source="currentMenteeCount" label="Current mentee count" />
+      <TextField source="menteeCountCapacity" label="Total mentee capacity" />
       <BooleanField source="userActivated" />
       <ShowButton />
       <EditButton />
@@ -179,14 +183,23 @@ const RedProfileList = props => (
 const RedProfileListFilters = props => (
   <Filter {...props}>
     <TextInput label="Search by name" source="q" />
-    <SelectInput source="userType" choices={[
-      { id: 'mentor', name: 'mentor' },
-      { id: 'mentee', name: 'mentee' },
-      { id: 'public-sign-up-mentor-pending-review', name: 'Mentor pending review (signed up via public sign-up form)' },
-      { id: 'public-sign-up-mentee-pending-review', name: 'Mentee pending review (signed up via public sign-up form)' },
-      { id: 'public-sign-up-mentor-rejected', name: 'Rejected mentor' },
-      { id: 'public-sign-up-mentee-rejected', name: 'Rejected mentee' },
-    ]} />
+    <SelectInput
+      source="userType"
+      choices={[
+        { id: 'mentor', name: 'mentor' },
+        { id: 'mentee', name: 'mentee' },
+        {
+          id: 'public-sign-up-mentor-pending-review',
+          name: 'Mentor pending review (signed up via public sign-up form)',
+        },
+        {
+          id: 'public-sign-up-mentee-pending-review',
+          name: 'Mentee pending review (signed up via public sign-up form)',
+        },
+        { id: 'public-sign-up-mentor-rejected', name: 'Rejected mentor' },
+        { id: 'public-sign-up-mentee-rejected', name: 'Rejected mentee' },
+      ]}
+    />
   </Filter>
 );
 const RedProfileShow = props => (
@@ -376,7 +389,11 @@ FullName.defaultProps = {
 };
 
 const RedMatchList = props => (
-  <List {...props} sort={{ field: 'createdAt', order: 'DESC' }}>
+  <List
+    {...props}
+    sort={{ field: 'createdAt', order: 'DESC' }}
+    pagination={<AllModelsPagination />}
+  >
     <Datagrid>
       <DateField source="createdAt" label="Record created at" />
       <ReferenceField label="Mentee" source="menteeId" reference="redProfiles">
@@ -546,7 +563,7 @@ const exporter = async (mentoringSessions, fetchRelatedRecords) => {
 };
 
 const RedMentoringSessionList = props => (
-  <List {...props} exporter={exporter}>
+  <List {...props} exporter={exporter} pagination={<AllModelsPagination />}>
     <Datagrid>
       <ReferenceField label="Mentee" source="menteeId" reference="redProfiles">
         <FullName source="mentee" />
