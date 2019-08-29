@@ -7,6 +7,7 @@ import {
   Resource,
   List,
   Create,
+  Pagination,
   Filter,
   Datagrid,
   TextField,
@@ -152,15 +153,22 @@ const Avatar = withStyles(styles)(({ record, className, classes, style }) => (
   </>
 ));
 
-
 /** END OF SHARED STUFF */
+const RedProfileListPagination = props => (
+  <Pagination rowsPerPageOptions={[10, 25, 50, 100, 250, 500]} {...props} />
+);
 
 const RedProfileList = props => (
-  <List {...props} filters={<RedProfileListFilters />}>
+  <List
+    {...props}
+    filters={<RedProfileListFilters />}
+    pagination={<RedProfileListPagination />}
+  >
     <Datagrid>
       <TextField source="firstName" />
       <TextField source="lastName" />
       <TextField source="userType" />
+      <TextField source="menteeCountCapacity" />
       <BooleanField source="userActivated" />
       <ShowButton />
       <EditButton />
@@ -170,6 +178,7 @@ const RedProfileList = props => (
 const RedProfileListFilters = props => (
   <Filter {...props}>
     <TextInput label="Search by name" source="q" />
+    <TextInput label="User type" source="userType" />
   </Filter>
 );
 const RedProfileShow = props => (
