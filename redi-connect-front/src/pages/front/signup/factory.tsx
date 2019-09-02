@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Formik, FormikValues, FormikActions } from 'formik';
 import Grid from '@material-ui/core/Grid';
-import { omit } from 'lodash';
+import omit from 'lodash/omit';
 import * as Yup from 'yup';
 
 import {

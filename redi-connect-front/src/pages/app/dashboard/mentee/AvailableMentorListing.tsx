@@ -1,6 +1,6 @@
 import { Grid, createStyles, withStyles, Paper } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import { intersection } from 'lodash';
+import intersection from 'lodash/intersection';
 import { MentorCard } from '../../../../components/MentorCard';
 import { useLoading } from '../../../../hooks/WithLoading';
 import { getMentors } from '../../../../services/api/api';

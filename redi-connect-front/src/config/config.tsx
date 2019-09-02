@@ -1,4 +1,6 @@
-import { flow, keyBy, mapValues } from 'lodash';
+import flow from 'lodash/flow';
+import keyBy from 'lodash/keyBy';
+import mapValues from 'lodash/mapValues';
 
 import { Category } from '../types/Category';
 import { Categories } from '../types/Categories';

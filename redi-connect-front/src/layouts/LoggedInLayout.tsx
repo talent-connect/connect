@@ -1,5 +1,5 @@
 import React, { useState, FormEvent } from 'react';
-import { range } from 'lodash';
+import range from 'lodash/range';
 
 import {
   AppBar,
