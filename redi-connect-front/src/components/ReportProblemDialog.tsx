@@ -91,9 +91,7 @@ const ReportProblemDialogConnected = connect()((props: any) => {
     actions: FormikActions<FormValues>
   ) => {
     if (values.ifFromMentor_cancelMentorshipImmediately) {
-      const userIsCertain = confirm(
-        'Are you sure you want to cancel this mentorship?'
-      );
+      const userIsCertain = window.confirm('Are you sure you want to cancel this mentorship?');
       if (!userIsCertain) return actions.setSubmitting(false);
     }
     setFormSubmitResult('submitting');
@@ -180,7 +178,7 @@ interface FormValues {
 const styles = (theme: Theme) =>
   createStyles({
     submitResult: {
-      padding: theme.spacing.unit,
+      padding: theme.spacing(1),
       color: 'white',
     },
     submitError: {

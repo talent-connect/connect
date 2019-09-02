@@ -21,8 +21,8 @@ import {
 } from '../../../../config/config';
 import { withStyles, Grid } from '@material-ui/core';
 import {
-  withLoading,
-  withLoadingProgress,
+  useLoading,
+  useLoadingProgress,
 } from '../../../../hooks/WithLoading';
 import { Avatar } from '../../../../components/Avatar';
 const ReactS3Uploader: any = require('react-s3-uploader');
@@ -83,7 +83,7 @@ const MenuProps = {
   },
 };
 
-const Comp: any = (
+const Comp: React.FunctionComponent = (
   props: FormikProps<SignUpFormValues> & { type: SignUpFormType } & {
     classes: any;
   }
@@ -122,7 +122,7 @@ const Comp: any = (
     setFieldTouched('languages', true, false);
   };
 
-  const { Loading, setLoading } = withLoading();
+  const { Loading, setLoading } = useLoading();
   const [uploadInput, setUploadInput] = useState<HTMLInputElement>();
   useEffect(() => {
     if (uploadInput !== undefined) {

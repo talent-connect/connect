@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { LoggedOutLayout } from '../../../layouts/LoggedOutLayout';
 import { RouteComponentProps } from 'react-router';
-import { withLoading } from '../../../hooks/WithLoading';
+import { useLoading } from '../../../hooks/WithLoading';
 import { saveAccessToken } from '../../../services/auth/auth';
 import { fetchSaveRedProfile } from '../../../services/api/api';
 import { history } from '../../../services/history/history';
@@ -47,10 +47,10 @@ type Props = {
   };
 };
 
-export const SignUpExisting = withStyles(styles)(
+export const SignUpExisting: React.FunctionComponent = withStyles(styles)(
   (props: RouteComponentProps<RouteParams> & Props) => {
     const classes = props.classes;
-    const { loading, Loading, setLoading } = withLoading();
+    const { loading, Loading, setLoading } = useLoading();
     const [consentGiven, setConsentGiven] = useState(false);
     const [profile, setProfile] = useState<RedProfile>();
     const [errorMsg, setErrorMsg] = useState<string | null>(null);

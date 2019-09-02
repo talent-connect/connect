@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core';
 import { FadeProps } from '@material-ui/core/Fade';
 
-export const withLoading = () => {
+export const useLoading = function() {
   const [loading, setLoading] = useState(false);
 
   return {
@@ -19,7 +19,8 @@ export const withLoading = () => {
     loading,
   };
 };
-export const withLoadingProgress = () => {
+
+export const useLoadingProgress = function() {
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
 

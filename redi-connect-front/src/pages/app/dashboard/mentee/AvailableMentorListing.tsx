@@ -2,7 +2,7 @@ import { Grid, createStyles, withStyles, Paper } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { intersection } from 'lodash';
 import { MentorCard } from '../../../../components/MentorCard';
-import { withLoading } from '../../../../hooks/WithLoading';
+import { useLoading } from '../../../../hooks/WithLoading';
 import { getMentors } from '../../../../services/api/api';
 import { history } from '../../../../services/history/history';
 import { RedProfile } from '../../../../types/RedProfile';
@@ -49,9 +49,9 @@ const addCategoryMatchCount = (
     })
   );
 
-export const AvailableMentorListing = withStyles(styles)((props: any) => {
+export const AvailableMentorListing: React.FunctionComponent = withStyles(styles)((props: any) => {
   const classes: any = props.classes;
-  const { Loading, setLoading } = withLoading();
+  const { Loading, setLoading } = useLoading();
   const [_mentors, setMentors] = useState<Array<RedProfile>>([]);
   const currentUserCategories = getRedProfile().categories;
   const [activeCategories, { toggle }] = useList(currentUserCategories);

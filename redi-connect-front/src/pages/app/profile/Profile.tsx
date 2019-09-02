@@ -1,7 +1,7 @@
 import { Button, Theme, createStyles, withStyles } from '@material-ui/core';
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { withLoading, FullScreenCircle } from '../../../hooks/WithLoading';
+import { useLoading, FullScreenCircle } from '../../../hooks/WithLoading';
 import { LoggedInLayout } from '../../../layouts/LoggedInLayout';
 import { getProfile } from '../../../services/api/api';
 import { RedProfile } from '../../../types/RedProfile';
