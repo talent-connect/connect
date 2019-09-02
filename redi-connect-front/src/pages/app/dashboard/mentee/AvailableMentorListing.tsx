@@ -124,7 +124,7 @@ export const AvailableMentorListing = withStyles(styles)((props: any) => {
               selected of interest in your profile.
             </Grid>
           </Grid>
-          <Grid container spacing={1}>
+          <Grid container spacing={2}>
             {mentorsWithSharedCategories.map((mentor: RedProfile) => (
               <Grid item xs={12} sm={6} lg={4} xl={2} key={mentor.id}>
                 <MentorCard
@@ -141,7 +141,7 @@ export const AvailableMentorListing = withStyles(styles)((props: any) => {
           <h1 className={(props as any).classes.header}>
             All available mentors
           </h1>
-          <Grid container spacing={1}>
+          <Grid container spacing={2}>
             {mentorsWithoutSharedCategories.map((mentor: RedProfile) => (
               <Grid item xs={12} sm={6} lg={4} xl={2} key={mentor.id}>
                 <MentorCard
