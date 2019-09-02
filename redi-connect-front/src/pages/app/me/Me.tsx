@@ -302,7 +302,7 @@ export const buildSignUpForm = (
   );
 };
 
-export const Me = () => {
+export default function me() {
   return (
     <ProfileLoader profileId={getRedProfile().id}>
       {({ loading, profile, currentUser }: any) => (

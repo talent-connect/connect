@@ -46,7 +46,7 @@ type Props = {
   };
 };
 
-export const SignUpExisting = withStyles(styles)(
+const SignUpExisting = withStyles(styles)(
   (props: RouteComponentProps<RouteParams> & Props) => {
     const classes = props.classes;
     const { loading, Loading, setLoading } = useLoading();
@@ -316,3 +316,5 @@ export const SignUpExisting = withStyles(styles)(
     );
   }
 );
+
+export default SignUpExisting;

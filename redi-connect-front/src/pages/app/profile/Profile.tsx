@@ -1,5 +1,5 @@
 import { Button, Theme, createStyles, withStyles } from '@material-ui/core';
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { FullScreenCircle } from '../../../hooks/WithLoading';
 import { LoggedInLayout } from '../../../layouts/LoggedInLayout';
@@ -23,11 +23,11 @@ const styles = (theme: Theme) =>
     },
   });
 
-export const Profile: FunctionComponent<RouteComponentProps<RouteParams>> = ({
+export default function Profile({
   match: {
     params: { profileId },
   },
-}) => {
+}: RouteComponentProps<RouteParams>) {
   return (
     <ProfileLoader profileId={profileId}>
       {({ loading, profile, currentUser }: any) => (

@@ -48,7 +48,7 @@ const validationSchema = Yup.object({
     .oneOf([Yup.ref('password')], 'Password does not match'),
 });
 
-export const ResetPassword = () => {
+const ResetPassword = () => {
   const [formError, setFormError] = useState<string>('');
 
   const submitForm = async (
@@ -77,6 +77,7 @@ export const ResetPassword = () => {
     </LoggedOutLayout>
   );
 };
+export default ResetPassword;
 
 const Form = withStyles(styles)(
   (

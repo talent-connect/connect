@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense } from 'react';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 
 import { Provider as StoreProvider } from 'react-redux';
@@ -60,7 +60,9 @@ const App = () => {
     <MuiThemeProvider theme={theme}>
       <StoreProvider store={store}>
         <Router history={history}>
-          <Routes />
+          <Suspense fallback={<h3>Loading...</h3>}>
+            <Routes />
+          </Suspense>
         </Router>
       </StoreProvider>
     </MuiThemeProvider>

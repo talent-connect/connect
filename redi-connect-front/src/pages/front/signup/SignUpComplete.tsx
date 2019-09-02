@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 import { LoggedOutLayout } from '../../../layouts/LoggedOutLayout';
 import { RouteComponentProps } from 'react-router';
 
@@ -6,13 +6,11 @@ interface RouteParams {
   type: string;
 }
 
-export const SignUpComplete: FunctionComponent<
-  RouteComponentProps<RouteParams>
-> = ({
+export default function SignUpComplete ({
   match: {
     params: { type },
   },
-}) => {
+}: RouteComponentProps<RouteParams>) {
   // TODO: Replace 'any' with whatever is TS-appropriate
   // const Comp: any = (props: any) => <Link {...props} to="/app/dashboard" />;
   return (

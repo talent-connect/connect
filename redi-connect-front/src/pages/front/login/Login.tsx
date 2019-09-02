@@ -47,7 +47,7 @@ const validationSchema = Yup.object({
     .max(255),
 });
 
-export const Login = () => {
+export default function Login() {
   const [loginError, setLoginError] = useState<string>('');
 
   const submitForm = async (

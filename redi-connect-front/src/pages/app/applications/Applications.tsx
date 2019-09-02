@@ -54,7 +54,7 @@ const styles = (theme: any) => ({
 });
 
 // TODO: add type to Props
-export const Applications = withStyles(styles)(
+export default withStyles(styles)(
   connect(mapState)((props: any) => {
     useEffect(() => {
       (props as any).dispatch(matchesFetchStart());
