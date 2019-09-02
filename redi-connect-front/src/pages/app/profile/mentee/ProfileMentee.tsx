@@ -7,13 +7,8 @@ import { ProfileWorkPlace } from '../../../../components/ProfileWorkPlace';
 import { ProfileLanguages } from '../../../../components/ProfileLanguages';
 import { CategoryChip } from '../../../../components/CategoryChip';
 import { Avatar } from '../../../../components/Avatar';
-import { courseIdToLabelMap } from '../../../../config/config';
 import { ProfileCourse } from '../../../../components/ProfileCourse';
 import { ConnectButton } from '../../../../components/ConnectButton';
-import { ContactInfo } from '../../../../components/ContactInfo';
-import { LogMentoringSessionBtn } from '../../../../components/LogMentoringSessionBtn';
-import { MentoringSessionsLog } from '../../../../components/MentoringSessionsLog';
-import { ReportProblemBtn } from '../../../../components/ReportProblemBtn';
 
 type Props = {
   mentee: RedProfile;

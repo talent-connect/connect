@@ -1,13 +1,11 @@
 import { Button, Theme, createStyles, withStyles } from '@material-ui/core';
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { useLoading, FullScreenCircle } from '../../../hooks/WithLoading';
+import { FullScreenCircle } from '../../../hooks/WithLoading';
 import { LoggedInLayout } from '../../../layouts/LoggedInLayout';
-import { getProfile } from '../../../services/api/api';
 import { RedProfile } from '../../../types/RedProfile';
 import { ProfileMentee } from './mentee/ProfileMentee';
 import { ProfileMentor } from './mentor/ProfileMentor';
-import { history } from '../../../services/history/history';
 import { connect } from 'react-redux';
 import { profilesFetchOneStart } from '../../../redux/profiles/actions';
 import { RootState } from '../../../redux/types';

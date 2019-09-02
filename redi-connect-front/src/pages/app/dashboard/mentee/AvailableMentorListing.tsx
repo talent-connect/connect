@@ -1,4 +1,4 @@
-import { Grid, createStyles, withStyles, Paper, StyledComponentProps, Theme } from '@material-ui/core';
+import { Grid, createStyles, withStyles, Paper, Theme } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import intersection from 'lodash/intersection';
 import { MentorCard } from '../../../../components/MentorCard';
@@ -79,7 +79,7 @@ export const AvailableMentorListing = withStyles(styles)((props: any) => {
       setMentors(mentors);
       setLoading(false);
     });
-  }, []);
+  }, [setLoading]);
   return (
     <>
       <Loading />

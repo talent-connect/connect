@@ -15,7 +15,6 @@ import {
   Paper,
 } from '@material-ui/core';
 import { RedProfile } from '../../../types/RedProfile';
-import { profileFetchStart } from '../../../redux/user/actions';
 
 type RouteParams = {
   accessToken: string;
@@ -154,6 +153,7 @@ export const SignUpExisting = withStyles(styles)(
                     <a
                       href="http://www.redi-school.org/data-privacy-policy"
                       target="_blank"
+                      rel="noopener noreferrer"
                     >
                       www.redi-school.org/data-privacy-policy
                     </a>
@@ -241,6 +241,7 @@ export const SignUpExisting = withStyles(styles)(
                     <a
                       href="http://www.redi-school.org/data-privacy-policy."
                       target="_blank"
+                      rel="noopener noreferrer"
                     >
                       www.redi-school.org/data-privacy-policy
                     </a>

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Formik, FormikValues, FormikActions } from 'formik';
 import Grid from '@material-ui/core/Grid';
 import omit from 'lodash/omit';
-import * as Yup from 'yup';
 
 import {
   Step0DataConsent,
@@ -33,7 +32,6 @@ import {
   Step5Categories,
   validationSchema as step5Val,
 } from './steps/Step5Categories';
-import { http } from '../../../services/http/http';
 import { signUp } from '../../../services/api/api';
 import { RedProfile } from '../../../types/RedProfile';
 import { history } from '../../../services/history/history';

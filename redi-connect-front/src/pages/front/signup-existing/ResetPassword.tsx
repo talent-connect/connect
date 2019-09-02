@@ -10,17 +10,14 @@ import {
   createStyles,
   withStyles,
 } from '@material-ui/core';
-import { Lock as LockIcon, Person as PersonIcon } from '@material-ui/icons';
+import { Lock as LockIcon } from '@material-ui/icons';
 import { Formik, FormikProps, FormikActions, FormikValues } from 'formik';
 import { history } from '../../../services/history/history';
 import {
-  login,
-  fetchSaveRedProfile,
   setPassword,
   giveGdprConsent,
   activateUser,
 } from '../../../services/api/api';
-import { saveAccessToken } from '../../../services/auth/auth';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -58,7 +55,6 @@ export const ResetPassword = () => {
     values: FormikValues,
     actions: FormikActions<ResetPasswordValues>
   ) => {
-    const formValues = values as ResetPasswordValues;
     try {
       await setPassword(values.password);
       await giveGdprConsent();

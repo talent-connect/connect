@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import * as Yup from 'yup';
 import { FormikProps } from 'formik';
 import Input from '@material-ui/core/Input';
-import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import InputLabel from '@material-ui/core/InputLabel';
 import Typography from '@material-ui/core/Typography';
@@ -10,19 +9,16 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
-import PersonIcon from '@material-ui/icons/Person';
 import Checkbox from '@material-ui/core/Checkbox';
 import ListItemText from '@material-ui/core/ListItemText';
 import { SignUpFormValues, SignUpFormType } from '../factory';
 import {
   genders as formGenders,
-  Languages as formLanguages,
-  AWS_PROFILE_AVATARS_BUCKET_BASE_URL,
+  Languages as formLanguages
 } from '../../../../config/config';
 import { withStyles, Grid } from '@material-ui/core';
 import {
-  useLoading,
-  useLoadingProgress,
+  useLoading
 } from '../../../../hooks/WithLoading';
 import { Avatar } from '../../../../components/Avatar';
 const ReactS3Uploader: any = require('react-s3-uploader');
@@ -103,7 +99,7 @@ const Comp: any = (
     errors,
     touched,
     handleChange,
-    isValid,
+    // isValid,
     setFieldTouched,
     setFieldValue,
     classes,
@@ -132,7 +128,7 @@ const Comp: any = (
     }
   }, [uploadInput]);
 
-  const [uploadError, setUploadError] = useState<string>('');
+  // const [uploadError, setUploadError] = useState<string>('');
   const onUploadStart = (file: any, next: any) => {
     setLoading(true);
     next(file);

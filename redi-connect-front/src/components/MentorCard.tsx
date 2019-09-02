@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import { RedProfile } from '../types/RedProfile';
 import {
   Card,
@@ -7,16 +6,10 @@ import {
   createStyles,
   withStyles,
   Grid,
-  Chip,
   Theme,
 } from '@material-ui/core';
 import { Language as LanguageIcon } from '@material-ui/icons';
 import { Avatar } from './Avatar';
-import {
-  categories,
-  categoriesIdToColourMap,
-  categoriesIdToLabelMap,
-} from '../config/config';
 import { CategoryChip } from './CategoryChip';
 
 type Props = {

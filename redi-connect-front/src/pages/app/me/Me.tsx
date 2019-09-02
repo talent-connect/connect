@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Formik, FormikValues, FormikActions } from 'formik';
 import Grid from '@material-ui/core/Grid';
-import omit from 'lodash/omit';
 import * as Yup from 'yup';
 import classNames from 'classnames';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { Step2Background } from './steps/Step2Background';
 import { Step3Profile } from './steps/Step3Profile';
@@ -17,10 +16,7 @@ import {
 } from '@material-ui/core';
 import { Step4ContactData } from './steps/Step4ContactData';
 import { Step5Categories } from './steps/Step5Categories';
-import { http } from '../../../services/http/http';
-import { signUp } from '../../../services/api/api';
 import { RedProfile } from '../../../types/RedProfile';
-import { history } from '../../../services/history/history';
 import { getRedProfile } from '../../../services/auth/auth';
 import { FullScreenCircle } from '../../../hooks/WithLoading';
 import { LoggedInLayout } from '../../../layouts/LoggedInLayout';
@@ -35,7 +31,7 @@ import {
   courses,
   menteeOccupationCategories,
 } from '../../../config/config';
-import { Styles } from '@material-ui/styles/withStyles';
+// import { Styles } from '@material-ui/styles/withStyles';
 
 // const styles = (theme: Theme) =>
 //   createStyles({
@@ -195,14 +191,14 @@ export const buildSignUpForm = (
   profile: RedProfile,
   dispatch: any
 ): Function => (): React.ReactFragment => {
-  const [submitError, setSubmitError] = useState(false);
+  // const [submitError, setSubmitError] = useState(false);
   const type = profile.userType;
 
   const submitForm = async (
     values: FormikValues,
     actions: FormikActions<SignUpFormValues>
   ) => {
-    setSubmitError(false);
+    // setSubmitError(false);
     const profile = values as RedProfile;
     // TODO: this needs to be done in a smarter way, like iterating over the RedProfile definition or something
     // const cleanProfile: RedProfile = omit(profile, [

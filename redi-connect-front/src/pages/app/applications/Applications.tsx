@@ -1,11 +1,5 @@
 import React, { useEffect } from 'react';
 import { LoggedInLayout } from '../../../layouts/LoggedInLayout';
-import { RedProfile } from '../../../types/RedProfile';
-import {
-  fetchSaveRedProfile,
-  fetchApplicants,
-} from '../../../services/api/api';
-import { getAccessToken } from '../../../services/auth/auth';
 import { RootState } from '../../../redux/types';
 import { getApplicants, getMentees } from '../../../redux/matches/selectors';
 import { connect } from 'react-redux';
@@ -27,14 +21,14 @@ const withData = (): {
 };
 */
 
-const withData = (): {
-  applicants: any;
-  me: any;
-} => {
-  const me = fetchSaveRedProfile(getAccessToken());
-  const applicants = fetchApplicants();
-  return { me, applicants };
-};
+// const withData = (): {
+//   applicants: any;
+//   me: any;
+// } => {
+//   const me = fetchSaveRedProfile(getAccessToken());
+//   const applicants = fetchApplicants();
+//   return { me, applicants };
+// };
 
 type Props = {
   mentees: Array<RedMatch>;

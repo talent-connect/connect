@@ -1,9 +1,8 @@
 import { ActionsObservable, ofType } from 'redux-observable';
-import { map, switchMap, tap, catchError } from 'rxjs/operators';
-import { from, concat, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { API_URL } from '../../config/config';
 import { http } from '../../services/http/http';
-import { profilesFetchOneSuccess, profilesFetchOneStart } from './actions';
+import { profilesFetchOneSuccess } from './actions';
 import { ProfilesActions, ProfilesActionType } from './types';
 
 export const profilesFetchOneEpic = (

@@ -6,16 +6,10 @@ import {
   createStyles,
   Theme,
   withStyles,
-  Button,
   Card,
   CardContent,
-  Tooltip,
 } from '@material-ui/core';
 import { Avatar } from '../../../components/Avatar';
-import { connect } from 'react-redux';
-import { matchesAcceptMentorshipStart } from '../../../redux/matches/actions';
-import { getHasReachedMenteeLimit } from '../../../redux/user/selectors';
-import { RootState } from '../../../redux/types';
 import { history } from '../../../services/history/history';
 import { ConnectButton } from '../../../components/ConnectButton';
 import { menteeOccupationCategory_idToLabelMap } from '../../../config/config';

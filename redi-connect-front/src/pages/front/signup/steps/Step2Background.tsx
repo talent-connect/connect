@@ -92,9 +92,9 @@ export const Comp = (
     errors,
     touched,
     handleChange,
-    isValid,
+    // isValid,
     setFieldTouched,
-    setFieldValue,
+    // setFieldValue,
     type,
     classes,
   } = props;

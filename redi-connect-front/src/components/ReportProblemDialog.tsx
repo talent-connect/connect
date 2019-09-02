@@ -1,4 +1,3 @@
-import DateFnsUtils from '@date-io/moment';
 import {
   Button,
   createStyles,
@@ -6,12 +5,8 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  FormControl,
   Grid,
-  InputLabel,
-  MenuItem,
   Paper,
-  Select,
   Theme,
   withStyles,
   TextField,
@@ -21,25 +16,11 @@ import {
 } from '@material-ui/core';
 import classNames from 'classnames';
 import { Formik, FormikActions, FormikProps } from 'formik';
-import { DatePicker, MuiPickersUtilsProvider } from 'material-ui-pickers';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import * as Yup from 'yup';
-import {
-  mentoringSessionDurationOptions,
-  reportProblemCategories,
-} from '../config/config';
-import {
-  mentoringSessionsClearAsyncResult,
-  mentoringSessionsCreateStart,
-} from '../redux/mentoringSessions/actions';
-import {
-  MentoringSessionsClearAsyncResultAction,
-  MentoringSessionsCreateStartAction,
-} from '../redux/mentoringSessions/types';
-import { RootState } from '../redux/types';
+
 import { FormSubmitResult } from '../types/FormSubmitResult';
-import { RedMentoringSession } from '../types/RedMentoringSession';
 import { FullScreenCircle } from '../hooks/WithLoading';
 import { ReportProblemBtnProps } from './ReportProblemBtn';
 import { reportProblem } from '../services/api/api';

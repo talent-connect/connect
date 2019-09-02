@@ -1,16 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import * as Yup from 'yup';
 import {
   FormControlLabel,
   Checkbox,
-  Button,
   createStyles,
   withStyles,
   Theme,
-  Paper,
 } from '@material-ui/core';
 import { SignUpFormType, SignUpFormValues } from '../factory';
-import { history } from '../../../../services/history/history';
 import { FormikProps } from 'formik';
 
 export const validationSchema = Yup.object({
@@ -52,9 +49,9 @@ export const Step0DataConsent = withStyles(styles)(
       classes,
       values: { gaveGdprConsentAt },
       type,
-      errors,
+      // errors,
       handleChange,
-      isValid,
+      // isValid,
       setFieldTouched,
     } = props;
 
@@ -142,6 +139,7 @@ export const Step0DataConsent = withStyles(styles)(
               <a
                 href="http://www.redi-school.org/data-privacy-policy"
                 target="_blank"
+                rel="noopener noreferrer"
               >
                 www.redi-school.org/data-privacy-policy
               </a>
@@ -258,6 +256,7 @@ export const Step0DataConsent = withStyles(styles)(
               <a
                 href="http://www.redi-school.org/data-privacy-policy."
                 target="_blank"
+                rel="noopener noreferrer"
               >
                 www.redi-school.org/data-privacy-policy
               </a>

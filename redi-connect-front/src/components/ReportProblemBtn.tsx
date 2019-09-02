@@ -1,7 +1,6 @@
-import { Button, Link } from '@material-ui/core';
+import { Link } from '@material-ui/core';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { LogMentoringSessionDialog } from './LogMentoringSessionDialog';
 import { ReportProblemDialog } from './ReportProblemDialog';
 
 export type ReportProblemBtnProps = {

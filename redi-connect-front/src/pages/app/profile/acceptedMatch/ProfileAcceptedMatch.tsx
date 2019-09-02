@@ -51,8 +51,7 @@ const mapState = (state: RootState) => ({
 // TODO: ': any' to be replaced with proper type
 export const ProfileAcceptedMatch = connect(mapState)(
   withStyles(styles)(({ profile, classes, currentUser }: any) => {
-    const match =
-      profile.redMatchesWithCurrentUser && profile.redMatchesWithCurrentUser[0];
+    // const match = profile.redMatchesWithCurrentUser && profile.redMatchesWithCurrentUser[0];
     const occupation = occupationFormatter(profile);
     const workPlace = workPlaceFormatter(profile);
     const currentUserIsMentor = currentUser.userType === 'mentor';

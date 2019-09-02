@@ -1,7 +1,6 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
 import range from 'lodash/range';
-import { RedProfile } from '../types/RedProfile';
 import {
   Person as PersonIcon,
   PersonOutline as PersonOutlineIcon,
