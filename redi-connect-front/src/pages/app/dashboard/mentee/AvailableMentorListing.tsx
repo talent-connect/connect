@@ -1,4 +1,4 @@
-import { Grid, createStyles, withStyles, Paper } from '@material-ui/core';
+import { Grid, createStyles, withStyles, Paper, StyledComponentProps, Theme } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import intersection from 'lodash/intersection';
 import { MentorCard } from '../../../../components/MentorCard';
@@ -10,7 +10,7 @@ import { getRedProfile } from '../../../../services/auth/auth';
 import { CategoryChip } from '../../../../components/CategoryChip';
 import { useList } from '../../../../hooks/useList';
 
-const styles = createStyles((theme: any) => ({
+const styles = createStyles((theme: Theme) => ({
   categoryChip: {
     marginTop: '0.5em',
     marginRight: '1em',
@@ -20,8 +20,8 @@ const styles = createStyles((theme: any) => ({
   },
   paper: {
     ...theme.mixins.gutters(),
-    paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 2,
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
     marginBottom: '2em',
   },
   header: {
@@ -49,7 +49,7 @@ const addCategoryMatchCount = (
     })
   );
 
-export const AvailableMentorListing: React.FunctionComponent = withStyles(styles)((props: any) => {
+export const AvailableMentorListing = withStyles(styles)((props: any) => {
   const classes: any = props.classes;
   const { Loading, setLoading } = useLoading();
   const [_mentors, setMentors] = useState<Array<RedProfile>>([]);
@@ -124,7 +124,7 @@ export const AvailableMentorListing: React.FunctionComponent = withStyles(styles
               selected of interest in your profile.
             </Grid>
           </Grid>
-          <Grid container spacing={16}>
+          <Grid container spacing={1}>
             {mentorsWithSharedCategories.map((mentor: RedProfile) => (
               <Grid item xs={12} sm={6} lg={4} xl={2} key={mentor.id}>
                 <MentorCard
@@ -141,7 +141,7 @@ export const AvailableMentorListing: React.FunctionComponent = withStyles(styles
           <h1 className={(props as any).classes.header}>
             All available mentors
           </h1>
-          <Grid container spacing={16}>
+          <Grid container spacing={1}>
             {mentorsWithoutSharedCategories.map((mentor: RedProfile) => (
               <Grid item xs={12} sm={6} lg={4} xl={2} key={mentor.id}>
                 <MentorCard

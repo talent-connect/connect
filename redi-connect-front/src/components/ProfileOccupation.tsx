@@ -9,7 +9,7 @@ export const ProfileOccupation = ({
   occupation: RedProfile['mentor_occupation'];
 }) => {
   return (
-    <Grid container spacing={8} alignItems="center" style={{ margin: '5px 0' }}>
+    <Grid container spacing={1} alignItems="center" style={{ margin: '5px 0' }}>
       <Grid item>
         <WorkIcon />
       </Grid>

@@ -78,7 +78,7 @@ export const Applications = withStyles(styles)(
         {mentees.length > 0 && (
           <Paper className={(props as any).classes.paper}>
             <h1 className={(props as any).classes.header}>Your mentees</h1>
-            <Grid container spacing={8}>
+            <Grid container spacing={1}>
               {mentees.map(
                 (mentee: RedMatch) =>
                   mentee.mentee && (
@@ -101,7 +101,7 @@ export const Applications = withStyles(styles)(
         {applicants.length > 0 && (
           <Paper className={(props as any).classes.paper}>
             <h1 className={(props as any).classes.header}>Application list</h1>
-            <Grid container spacing={8}>
+            <Grid container spacing={1}>
               {applicants.map((application: RedMatch) => (
                 <Grid item xs={12} key={application.id}>
                   <ApplicationCard application={application} />

@@ -19,7 +19,7 @@ import { saveAccessToken } from '../../../services/auth/auth';
 const styles = (theme: Theme) =>
   createStyles({
     loginError: {
-      padding: theme.spacing.unit,
+      padding: theme.spacing(1),
       backgroundColor: theme.palette.error.main,
       color: 'white',
     },

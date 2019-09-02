@@ -47,7 +47,7 @@ type Props = {
   };
 };
 
-export const SignUpExisting: React.FunctionComponent = withStyles(styles)(
+export const SignUpExisting = withStyles(styles)(
   (props: RouteComponentProps<RouteParams> & Props) => {
     const classes = props.classes;
     const { loading, Loading, setLoading } = useLoading();

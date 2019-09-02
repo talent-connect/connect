@@ -38,9 +38,9 @@
     "@types/react-router-dom": "^4.3.5",
     "@types/redux": "^3.6.0",
     "@types/yup": "^0.26.23",
+    "babel-loader": "^8.0.6",
     "react-scripts": "3.1.1",
-    "typescript": "3.6.2",
-    "babel-loader": "^8.0.6"
+    "typescript": "^3.5.3"
   },
   "scripts": {
     "start": "react-scripts start",

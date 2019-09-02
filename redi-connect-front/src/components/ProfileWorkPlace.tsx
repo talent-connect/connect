@@ -5,7 +5,7 @@ import { Place as PlaceIcon } from '@material-ui/icons';
 
 export const ProfileWorkPlace = ({ workPlace }: { workPlace: RedProfile['mentor_workPlace'] }) => {
   return (
-    <Grid container spacing={8} alignItems="center" style={{ margin: '5px 0' }}>
+    <Grid container spacing={1} alignItems="center" style={{ margin: '5px 0' }}>
       <Grid item>
         <PlaceIcon />
       </Grid>

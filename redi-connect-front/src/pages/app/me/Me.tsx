@@ -35,15 +35,16 @@ import {
   courses,
   menteeOccupationCategories,
 } from '../../../config/config';
+import { Styles } from '@material-ui/styles/withStyles';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    submitError: {
-      padding: theme.spacing.unit,
-      backgroundColor: theme.palette.error.main,
-      color: 'white',
-    },
-  });
+// const styles = (theme: Theme) =>
+//   createStyles({
+//     submitError: {
+//       padding: theme.spacing,
+//       backgroundColor: theme.palette.error.main,
+//       color: 'white',
+//     },
+//   });
 
 export type SignUpFormType =
   | 'mentor'
@@ -204,22 +205,22 @@ export const buildSignUpForm = (
     setSubmitError(false);
     const profile = values as RedProfile;
     // TODO: this needs to be done in a smarter way, like iterating over the RedProfile definition or something
-    const cleanProfile: RedProfile = omit(profile, [
-      'password',
-      'passwordConfirm',
-      'formType',
-      'redMatchesWithCurrentUser',
-      'redMentoringSessionsWithCurrentUser',
-      'updatedAt',
-      'userType',
-      'redMatchesWithCurrentUser',
-      'redMentoringSessionsWithCurrentUser',
-      'matchCountWithCurrentUser',
-      'currentApplicantCount',
-      'currentFreeMenteeSpots',
-      'currentMenteeCount',
-      'ifTypeForm_additionalComments',
-    ]);
+    // const cleanProfile: RedProfile = omit(profile, [
+    //   'password',
+    //   'passwordConfirm',
+    //   'formType',
+    //   'redMatchesWithCurrentUser',
+    //   'redMentoringSessionsWithCurrentUser',
+    //   'updatedAt',
+    //   'userType',
+    //   'redMatchesWithCurrentUser',
+    //   'redMentoringSessionsWithCurrentUser',
+    //   'matchCountWithCurrentUser',
+    //   'currentApplicantCount',
+    //   'currentFreeMenteeSpots',
+    //   'currentMenteeCount',
+    //   'ifTypeForm_additionalComments',
+    // ]);
     dispatch(profileSaveStart(profile));
   };
 
@@ -230,7 +231,7 @@ export const buildSignUpForm = (
   const styles = (theme: Theme) =>
     createStyles({
       submitResult: {
-        padding: theme.spacing.unit,
+        padding: theme.spacing(1),
         color: 'white',
       },
       submitError: {
@@ -272,7 +273,7 @@ export const buildSignUpForm = (
           <Step3Profile type={type} {...props} />
           <Step4ContactData type={type} {...props} />
           <Step5Categories type={type} {...props} />
-          <Grid container spacing={8}>
+          <Grid container spacing={1}>
             <Grid item xs={12}>
               <Button
                 onClick={() => {

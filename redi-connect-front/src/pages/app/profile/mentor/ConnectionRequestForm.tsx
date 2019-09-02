@@ -18,7 +18,7 @@ import { FormSubmitResult } from '../../../../types/FormSubmitResult';
 const styles = (theme: Theme) =>
   createStyles({
     submitResult: {
-      padding: theme.spacing.unit,
+      padding: theme.spacing(1),
       color: 'white',
     },
     submitError: {

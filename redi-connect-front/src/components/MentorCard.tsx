@@ -48,7 +48,7 @@ export const MentorCard = withStyles(styles)(
     return (
       <Card onClick={() => typeof onClick === 'function' && onClick()}>
         <CardContent>
-          <Grid container spacing={8}>
+          <Grid container spacing={1}>
             <Grid item>
               <Avatar
                 className={classes.avatar}
@@ -66,7 +66,7 @@ export const MentorCard = withStyles(styles)(
           </Grid>
           <Grid
             container
-            spacing={8}
+            spacing={1}
             alignItems="center"
             style={{ margin: '5px 0' }}
           >

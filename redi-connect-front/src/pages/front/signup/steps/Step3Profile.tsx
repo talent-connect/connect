@@ -83,7 +83,7 @@ const MenuProps = {
   },
 };
 
-const Comp: React.FunctionComponent = (
+const Comp: any = (
   props: FormikProps<SignUpFormValues> & { type: SignUpFormType } & {
     classes: any;
   }
@@ -149,7 +149,7 @@ const Comp: React.FunctionComponent = (
         <Typography component="h3" variant="h6">
           Upload your photo
         </Typography>
-        <Grid container spacing={8} alignItems="center">
+        <Grid container spacing={1} alignItems="center">
           <Grid item>
             <div className={classes.avatarImageFrame}>
               <Avatar s3Key={profileAvatarImageS3Key} />
@@ -177,7 +177,7 @@ const Comp: React.FunctionComponent = (
           </Grid>
         </Grid>
       </div>
-      <Grid container spacing={8}>
+      <Grid container spacing={1}>
         <Grid item xs={6}>
           <TextField
             className={classes.margin}

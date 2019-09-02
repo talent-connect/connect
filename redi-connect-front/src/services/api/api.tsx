@@ -19,7 +19,7 @@ import { RedProblemReportDto } from '../../types/RedProblemReportDto';
 export const signUp = async (
   email: string,
   password: string,
-  redProfile: RedProfile
+  redProfile: Partial<RedProfile>
 ) => {
   const userResponse = await http(`${API_URL}/redUsers`, {
     method: 'post',

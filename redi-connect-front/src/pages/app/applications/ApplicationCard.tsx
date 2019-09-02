@@ -58,7 +58,7 @@ export const ApplicationCard = withStyles(styles)(
         <CardContent>
           <Grid container direction="row">
             <Grid item xs={12} md={5}>
-              <Grid container spacing={8}>
+              <Grid container spacing={1}>
                 <Grid item>
                   <Avatar
                     className={classes.avatar}
@@ -80,7 +80,7 @@ export const ApplicationCard = withStyles(styles)(
               </Grid>
               <Grid
                 container
-                spacing={8}
+                spacing={1}
                 alignItems="center"
                 style={{ margin: '5px 0' }}
               >

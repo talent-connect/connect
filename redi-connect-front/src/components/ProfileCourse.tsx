@@ -10,7 +10,7 @@ export const ProfileCourse = ({
   courseId: RedProfile['mentee_currentlyEnrolledInCourse'];
 }) => {
   return (
-    <Grid container spacing={8} alignItems="center" style={{ margin: '5px 0' }}>
+    <Grid container spacing={1} alignItems="center" style={{ margin: '5px 0' }}>
       <Grid item>Course: {courseIdToLabelMap[courseId]}</Grid>
     </Grid>
   );

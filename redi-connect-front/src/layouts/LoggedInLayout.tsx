@@ -23,9 +23,10 @@ import { getRedProfile } from '../services/auth/auth';
 import { Link, withRouter } from 'react-router-dom';
 import { PersonOutline, Menu as MenuIcon } from '@material-ui/icons';
 import { logout } from '../services/api/api';
-import { connect } from 'react-redux';
+import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '../redux/types';
 import { routes__loggedIn } from '../routes/routes__logged-in';
+import { RouteComponentProps } from 'react-router';
 
 type LoggedInLayoutProps = {
   children: React.ReactNode;
@@ -123,7 +124,7 @@ export const LoggedInLayout = withStyles(styles)(
   }
 );
 
-type ButtonsProps = {
+type ButtonsProps = RouteComponentProps & {applicationCount?: number|undefined, menteeCount?: number|undefined} & {
   classes: {
     root: string;
     grow: string;

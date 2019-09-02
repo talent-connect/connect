@@ -25,7 +25,7 @@ import { saveAccessToken } from '../../../services/auth/auth';
 const styles = (theme: Theme) =>
   createStyles({
     formError: {
-      padding: theme.spacing.unit,
+      padding: theme.spacing(1),
       backgroundColor: theme.palette.error.main,
       color: 'white',
     },

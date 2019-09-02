@@ -20,8 +20,8 @@ interface RouteParams {
 const styles = (theme: Theme) =>
   createStyles({
     button: {
-      marginTop: theme.spacing.unit * 2,
-      marginBottom: theme.spacing.unit * 2,
+      marginTop: theme.spacing(2),
+      marginBottom: theme.spacing(2),
     },
   });
 

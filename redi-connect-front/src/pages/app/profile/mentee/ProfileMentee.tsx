@@ -37,8 +37,8 @@ const styles = (theme: Theme) =>
       height: '20px',
     },
     personalDescription: {
-      marginTop: theme.spacing.unit * 6,
-      marginBottom: theme.spacing.unit * 6,
+      marginTop: theme.spacing(6),
+      marginBottom: theme.spacing(6),
       overflowWrap: 'break-word',
     },
   });
@@ -51,7 +51,7 @@ export const ProfileMentee = withStyles(styles)(
     const workPlace = workPlaceFormatter(mentee);
     return (
       <>
-        <Grid container spacing={16}>
+        <Grid container spacing={2}>
           <Grid item xs={12} sm={5}>
             <Avatar
               className={classes.avatar}
