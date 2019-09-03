@@ -23,7 +23,7 @@ All can be run locally in development mode using below instructions. The product
 
 ## Contribution guide
 Contribution guide will be elaborated. For now, please:
-* Please follow the [gitflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) model for branching (minus release branches). TL;DR: create `feat/xxx` branches off `develop` and file a PR once done. merge `develop` into `master` by maintainers once ready for release. Use `hotfix` branches off `master`.
+* Please follow the [gitflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) model for branching (minus release branches). TL;DR: create `feat/xxx` branches off `develop` and file a PR once the feature is ready. Merge of `develop` into `master` done by maintainers only, once `develop` is release-ready. Use `hotfix` branches off `master`.
 
 ## Getting started
 
