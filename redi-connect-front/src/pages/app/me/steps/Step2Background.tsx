@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import * as Yup from 'yup';
 import {
   TextField,
   FormControl,
@@ -45,18 +44,19 @@ export const Comp = (
     touched,
     isSubmitting,
     handleChange,
-    isValid,
+    // isValid,
     setFieldTouched,
-    setFieldValue,
+    // setFieldValue,
     type,
     classes,
+    validateForm
   } = props;
 
   // TODO: below should be in <Me>. It's used to trigger an immediate validation after
   // form is loaded. Since this is an edit-profile form editing profiles that were manually
   // imported, some not being valid according to this form, we want to show errors immediately.
   useEffect(() => {
-    props.validateForm();
+    validateForm();
   }, []);
 
   const change = (name: any, e: any) => {

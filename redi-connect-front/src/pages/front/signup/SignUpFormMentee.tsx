@@ -4,8 +4,10 @@ import { LoggedOutLayout } from "../../../layouts/LoggedOutLayout";
 
 const Form = buildSignUpForm("public-sign-up-mentee-pending-review");
 
-export const SignUpFormMentee = () => (
-  <LoggedOutLayout>
-    <Form />
-  </LoggedOutLayout>
-)
+export default function SignUpFormMentee () {
+  return (
+    <LoggedOutLayout>
+      <Form />
+    </LoggedOutLayout>
+  )
+}

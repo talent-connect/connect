@@ -38,9 +38,9 @@ export const ConnectButton = connect(mapState)((props: any) => {
         disabled={props.hasReachedMenteeLimit}
         onClick={e => {
           e.stopPropagation();
-          confirm(
-            'Are you certain you would like to connect to this mentee?'
-          ) && props.dispatch(matchesAcceptMentorshipStart(props.matchId));
+          if (window.confirm('Are you certain you would like to connect to this mentee?')) {
+            props.dispatch(matchesAcceptMentorshipStart(props.matchId));
+          } 
         }}
       >
         Connect

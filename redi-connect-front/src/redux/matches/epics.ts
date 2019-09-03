@@ -38,7 +38,7 @@ export const matchesAcceptMentorshipEpic = (action$: ActionsObservable<any>) =>
         http(`${API_URL}/redMatches/acceptMentorship`, {
           method: 'post',
           data: {
-            redMatchId: (<MatchesAcceptMentorshipStartAction>action).payload
+            redMatchId: (action as MatchesAcceptMentorshipStartAction).payload
               .redMatchId,
           },
         })

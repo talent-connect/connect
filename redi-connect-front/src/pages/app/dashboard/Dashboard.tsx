@@ -4,7 +4,7 @@ import { getRedProfile } from '../../../services/auth/auth';
 import { DashboardMentee } from './mentee/DashboardMentee';
 import { DashboardMentor } from './mentor/DashboardMentor';
 
-export const Dashboard = () => {
+export default () => {
   const profile = getRedProfile();
   return (
     <>

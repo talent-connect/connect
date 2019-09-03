@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Formik, FormikValues, FormikActions } from 'formik';
 import Grid from '@material-ui/core/Grid';
-import { omit } from 'lodash';
-import * as Yup from 'yup';
+import omit from 'lodash/omit';
 
 import {
   Step0DataConsent,
@@ -33,7 +32,6 @@ import {
   Step5Categories,
   validationSchema as step5Val,
 } from './steps/Step5Categories';
-import { http } from '../../../services/http/http';
 import { signUp } from '../../../services/api/api';
 import { RedProfile } from '../../../types/RedProfile';
 import { history } from '../../../services/history/history';
@@ -41,7 +39,7 @@ import { history } from '../../../services/history/history';
 const styles = (theme: Theme) =>
   createStyles({
     submitError: {
-      padding: theme.spacing.unit,
+      padding: theme.spacing(1),
       backgroundColor: theme.palette.error.main,
       color: 'white',
     },
@@ -145,7 +143,7 @@ export const buildSignUpForm = (
     setSubmitError(false);
     const profile = values as RedProfile;
     // TODO: this needs to be done in a smarter way, like iterating over the RedProfile definition or something
-    const cleanProfile: RedProfile = omit(profile, [
+    const cleanProfile: Partial<RedProfile> = omit(profile, [
       'password',
       'passwordConfirm',
       'formType',
@@ -198,7 +196,7 @@ export const buildSignUpForm = (
             {step === 3 && <Step3Profile type={type} {...props} />}
             {step === 4 && <Step4ContactData type={type} {...props} />}
             {step === 5 && <Step5Categories type={type} {...props} />}
-            <Grid container spacing={8}>
+            <Grid container spacing={1}>
               <Grid item xs={6}>
                 <Button
                   onClick={() => {

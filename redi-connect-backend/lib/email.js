@@ -272,7 +272,7 @@ Please also be aware of the following:
 Code of Conduct: https://connect.redi-school.org/downloadeables/redi-connect-code-of-conduct.pdf
 
 We are organising events regularly where you can meet fellow mentors and get to know ReDI School more.
-In order to stay tuned on what is happening in the mentorship program in the ReDI mentor community join our slack universe here: https://app.slack.com/client/T0HN7F83D/GCJ708D53
+In order to stay tuned on what is happening in the mentorship program in the ReDI mentor community join our slack universe here: https://app.slack.com/client/T0HN7F83D/CGJFBLBH6
 
 Or check our pages:
 Facebook: https://www.facebook.com/redischool

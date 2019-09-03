@@ -1,10 +1,9 @@
-import { Observable, from, of } from 'rxjs';
-import { map, switchMap, filter, tap, catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { map, switchMap, filter } from 'rxjs/operators';
 import { ofType, ActionsObservable } from 'redux-observable';
 import { UserActions, UserActionType, ProfileSaveStartAction } from './types';
 import { fetchSaveRedProfile, saveRedProfile } from '../../services/api/api';
 import { getAccessToken, isLoggedIn } from '../../services/auth/auth';
-import { RedProfile } from '../../types/RedProfile';
 
 const profileFetchEpic = (action$: ActionsObservable<UserActions>) =>
   action$.pipe(

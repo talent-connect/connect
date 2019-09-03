@@ -11,15 +11,14 @@ import {
   getAccessToken,
 } from '../auth/auth';
 import { history } from '../history/history';
-import { http, nonLoggedInHttp } from '../http/http';
+import { http } from '../http/http';
 import { UserType } from '../../types/UserType';
-import { store } from '../../redux/store';
 import { RedProblemReportDto } from '../../types/RedProblemReportDto';
 
 export const signUp = async (
   email: string,
   password: string,
-  redProfile: RedProfile
+  redProfile: Partial<RedProfile>
 ) => {
   const userResponse = await http(`${API_URL}/redUsers`, {
     method: 'post',
@@ -117,7 +116,8 @@ export const saveRedProfile = async (
 export const getProfiles = (userType: UserType): Promise<Array<RedProfile>> =>
   http(
     `${API_URL}/redProfiles?filter=${JSON.stringify({
-      where: { userType: 'mentor' },
+      where: { userType },
+      limit: 0,
     })}`
   ).then(resp => resp.data);
 export const getMentors = () => getProfiles('mentor');

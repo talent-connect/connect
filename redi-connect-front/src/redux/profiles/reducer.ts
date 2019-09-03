@@ -17,7 +17,6 @@ export const profilesReducer = (
       return { ...state, oneProfile: action.payload, loading: false };
 
     case ProfilesActionType.PROFILES_FETCH_ONE_ERROR:
-
     default:
       return { ...state };
   }

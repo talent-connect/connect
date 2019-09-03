@@ -1,16 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense } from 'react';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 
 import { Provider as StoreProvider } from 'react-redux';
-import { rootReducer } from './redux/reducers';
-
-import { rootEpic } from './redux/epics';
-import logo from './logo.svg';
 import './App.css';
 import { history, Router } from './services/history/history';
 import { Routes } from './components/Routes';
 import { store } from './redux/store';
-import { UserActionType } from './redux/user/types';
 import { profileFetchStart } from './redux/user/actions';
 
 const mainColour = '#58adc4';
@@ -65,7 +60,9 @@ const App = () => {
     <MuiThemeProvider theme={theme}>
       <StoreProvider store={store}>
         <Router history={history}>
-          <Routes />
+          <Suspense fallback={<h3>Loading...</h3>}>
+            <Routes />
+          </Suspense>
         </Router>
       </StoreProvider>
     </MuiThemeProvider>

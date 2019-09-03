@@ -38,8 +38,8 @@ const styles = (theme: Theme) =>
       height: '20px',
     },
     personalDescription: {
-      marginTop: theme.spacing.unit * 6,
-      marginBottom: theme.spacing.unit * 6,
+      marginTop: theme.spacing(6),
+      marginBottom: theme.spacing(6),
       overflowWrap: 'break-word',
     },
   });
@@ -51,8 +51,7 @@ const mapState = (state: RootState) => ({
 // TODO: ': any' to be replaced with proper type
 export const ProfileAcceptedMatch = connect(mapState)(
   withStyles(styles)(({ profile, classes, currentUser }: any) => {
-    const match =
-      profile.redMatchesWithCurrentUser && profile.redMatchesWithCurrentUser[0];
+    // const match = profile.redMatchesWithCurrentUser && profile.redMatchesWithCurrentUser[0];
     const occupation = occupationFormatter(profile);
     const workPlace = workPlaceFormatter(profile);
     const currentUserIsMentor = currentUser.userType === 'mentor';
@@ -61,9 +60,9 @@ export const ProfileAcceptedMatch = connect(mapState)(
     return (
       <>
         {currentUserIsMentee && <h1>Information about your mentor</h1>}
-        <Grid container spacing={8}>
+        <Grid container spacing={1}>
           <Grid item xs={12} md={6}>
-            <Grid container spacing={16}>
+            <Grid container spacing={2}>
               <Grid item xs={12} sm={5}>
                 <Avatar
                   className={classes.avatar}
