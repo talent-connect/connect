@@ -1,4 +1,4 @@
-import DateFnsUtils from '@date-io/moment';
+import MomentUtils from '@date-io/moment';
 import {
   Button,
   createStyles,
@@ -17,7 +17,7 @@ import {
 } from '@material-ui/core';
 import classNames from 'classnames';
 import { Formik, FormikActions, FormikProps } from 'formik';
-import { DatePicker, MuiPickersUtilsProvider } from 'material-ui-pickers';
+import { DatePicker, MuiPickersUtilsProvider, MaterialUiPickersDate } from '@material-ui/pickers';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import * as Yup from 'yup';
@@ -180,7 +180,7 @@ const Form = withStyles(styles)(
       handleChange(e);
       setFieldTouched(name, true, false);
     };
-    const changeDate = (date: Date) => {
+    const changeDate = (date: MaterialUiPickersDate) => {
       setFieldTouched('date');
       setFieldValue('date', date);
     };
@@ -189,7 +189,7 @@ const Form = withStyles(styles)(
     }, [])
 
     return (
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+      <MuiPickersUtilsProvider utils={MomentUtils}>
         {submitResult === 'error' && (
           <Paper
             className={classNames(classes.submitError, classes.submitResult)}
