@@ -3,3 +3,5 @@ mongodb-data/
 databkps/
 
 redi-connect-backend/scripts/assets
+
+.DS_Store
