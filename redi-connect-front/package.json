@@ -41,13 +41,16 @@
     "@welldone-software/why-did-you-render": "^3.3.3",
     "babel-loader": "^8.0.6",
     "react-scripts": "3.1.1",
+    "source-map-explorer": "^2.0.1",
     "typescript": "^3.5.3"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && yarn sw-epilog",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
+    "sw-epilog": "cat src/sw-epilog.js >> build/service-worker.js",
     "invalidate-cache:prod": "aws cloudfront create-invalidation --distribution-id E3MVMTF8ANMDW --paths '/*' --profile redi-connect-deployment",
     "deploy-production": "yarn build && aws s3 sync build/ s3://connect.redi-school.org --delete --acl public-read --profile redi-connect-deployment --region eu-west-1 && yarn invalidate-cache:prod"
   },

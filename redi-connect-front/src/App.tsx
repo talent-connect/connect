@@ -7,6 +7,7 @@ import { history, Router } from './services/history/history';
 import { Routes } from './components/Routes';
 import { store } from './redux/store';
 import { profileFetchStart } from './redux/user/actions';
+import { Notifier } from './components/Notifier';
 
 const mainColour = '#58adc4';
 
@@ -59,6 +60,7 @@ const App = () => {
   return (
     <MuiThemeProvider theme={theme}>
       <StoreProvider store={store}>
+        <Notifier></Notifier>
         <Router history={history}>
           <Suspense fallback={<h3>Loading...</h3>}>
             <Routes />
