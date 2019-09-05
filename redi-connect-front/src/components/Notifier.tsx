@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, SetStateAction } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import Snackbar from '@material-ui/core/Snackbar'
 
 let openSnackbarFn: ({message, action}: {message: string, action?: any}) => void
