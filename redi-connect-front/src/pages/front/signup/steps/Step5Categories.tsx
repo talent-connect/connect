@@ -68,7 +68,7 @@ export const Comp = (
     if (e.target.checked) {
       newCategories = categories.concat(value);
     } else {
-      newCategories = categories.filter(cat => cat !== value);
+      newCategories = categories.filter(cat => cat != value);
     }
     setFieldValue('categories', newCategories);
     setFieldTouched(name, true, false);
@@ -137,7 +137,6 @@ export const Comp = (
             I agree to follow the{' '}
             <a
               target="_blank"
-              rel="noopener noreferrer"
               href="https://connect.redi-school.org/downloadeables/redi-connect-code-of-conduct.pdf"
             >
               ReDI Connect Code of Conduct

@@ -28,9 +28,9 @@ export const Step1Intro = (
     errors,
     touched,
     handleChange,
-    // isValid,
+    isValid,
     setFieldTouched,
-    // type,
+    type,
   } = props;
 
   const change = (name: any, e: any) => {

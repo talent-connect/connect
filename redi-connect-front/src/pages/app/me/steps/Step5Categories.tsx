@@ -1,4 +1,5 @@
 import React from "react";
+import * as Yup from 'yup';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
@@ -43,7 +44,7 @@ export const Comp = (props: FormikProps<SignUpFormValues> & {type: SignUpFormTyp
     if (e.target.checked) {
       newCategories = categories.concat(value);
     } else {
-      newCategories = categories.filter(cat => cat !== value);
+      newCategories = categories.filter(cat => cat != value);
     }
     setFieldValue("categories", newCategories);
     setFieldTouched(name, true, false);

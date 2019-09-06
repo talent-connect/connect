@@ -1,5 +1,11 @@
 import React, { useEffect } from 'react';
 import { LoggedInLayout } from '../../../layouts/LoggedInLayout';
+import { RedProfile } from '../../../types/RedProfile';
+import {
+  fetchSaveRedProfile,
+  fetchApplicants,
+} from '../../../services/api/api';
+import { getAccessToken } from '../../../services/auth/auth';
 import { RootState } from '../../../redux/types';
 import { getApplicants, getMentees } from '../../../redux/matches/selectors';
 import { connect } from 'react-redux';
@@ -21,14 +27,14 @@ const withData = (): {
 };
 */
 
-// const withData = (): {
-//   applicants: any;
-//   me: any;
-// } => {
-//   const me = fetchSaveRedProfile(getAccessToken());
-//   const applicants = fetchApplicants();
-//   return { me, applicants };
-// };
+const withData = (): {
+  applicants: any;
+  me: any;
+} => {
+  const me = fetchSaveRedProfile(getAccessToken());
+  const applicants = fetchApplicants();
+  return { me, applicants };
+};
 
 type Props = {
   mentees: Array<RedMatch>;
@@ -54,7 +60,7 @@ const styles = (theme: any) => ({
 });
 
 // TODO: add type to Props
-export default withStyles(styles)(
+export const Applications = withStyles(styles)(
   connect(mapState)((props: any) => {
     useEffect(() => {
       (props as any).dispatch(matchesFetchStart());
@@ -72,7 +78,7 @@ export default withStyles(styles)(
         {mentees.length > 0 && (
           <Paper className={(props as any).classes.paper}>
             <h1 className={(props as any).classes.header}>Your mentees</h1>
-            <Grid container spacing={1}>
+            <Grid container spacing={8}>
               {mentees.map(
                 (mentee: RedMatch) =>
                   mentee.mentee && (
@@ -95,7 +101,7 @@ export default withStyles(styles)(
         {applicants.length > 0 && (
           <Paper className={(props as any).classes.paper}>
             <h1 className={(props as any).classes.header}>Application list</h1>
-            <Grid container spacing={1}>
+            <Grid container spacing={8}>
               {applicants.map((application: RedMatch) => (
                 <Grid item xs={12} key={application.id}>
                   <ApplicationCard application={application} />

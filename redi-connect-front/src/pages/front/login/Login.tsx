@@ -19,7 +19,7 @@ import { saveAccessToken } from '../../../services/auth/auth';
 const styles = (theme: Theme) =>
   createStyles({
     loginError: {
-      padding: theme.spacing(1),
+      padding: theme.spacing.unit,
       backgroundColor: theme.palette.error.main,
       color: 'white',
     },
@@ -47,7 +47,7 @@ const validationSchema = Yup.object({
     .max(255),
 });
 
-export default function Login() {
+export const Login = () => {
   const [loginError, setLoginError] = useState<string>('');
 
   const submitForm = async (

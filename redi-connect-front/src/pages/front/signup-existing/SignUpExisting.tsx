@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { LoggedOutLayout } from '../../../layouts/LoggedOutLayout';
 import { RouteComponentProps } from 'react-router';
-import { useLoading } from '../../../hooks/WithLoading';
+import { withLoading } from '../../../hooks/WithLoading';
 import { saveAccessToken } from '../../../services/auth/auth';
 import { fetchSaveRedProfile } from '../../../services/api/api';
 import { history } from '../../../services/history/history';
@@ -15,6 +15,7 @@ import {
   Paper,
 } from '@material-ui/core';
 import { RedProfile } from '../../../types/RedProfile';
+import { profileFetchStart } from '../../../redux/user/actions';
 
 type RouteParams = {
   accessToken: string;
@@ -46,10 +47,10 @@ type Props = {
   };
 };
 
-const SignUpExisting = withStyles(styles)(
+export const SignUpExisting = withStyles(styles)(
   (props: RouteComponentProps<RouteParams> & Props) => {
     const classes = props.classes;
-    const { loading, Loading, setLoading } = useLoading();
+    const { loading, Loading, setLoading } = withLoading();
     const [consentGiven, setConsentGiven] = useState(false);
     const [profile, setProfile] = useState<RedProfile>();
     const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -153,7 +154,6 @@ const SignUpExisting = withStyles(styles)(
                     <a
                       href="http://www.redi-school.org/data-privacy-policy"
                       target="_blank"
-                      rel="noopener noreferrer"
                     >
                       www.redi-school.org/data-privacy-policy
                     </a>
@@ -241,7 +241,6 @@ const SignUpExisting = withStyles(styles)(
                     <a
                       href="http://www.redi-school.org/data-privacy-policy."
                       target="_blank"
-                      rel="noopener noreferrer"
                     >
                       www.redi-school.org/data-privacy-policy
                     </a>
@@ -316,5 +315,3 @@ const SignUpExisting = withStyles(styles)(
     );
   }
 );
-
-export default SignUpExisting;

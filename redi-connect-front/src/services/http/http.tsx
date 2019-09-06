@@ -1,7 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import has from 'lodash/has';
-import includes from 'lodash/includes'
+import _ from 'lodash';
 
 import { history } from '../history/history';
 import { getAccessToken, isLoggedIn, purgeAllSessionData } from '../auth/auth';
@@ -12,7 +11,7 @@ export const http = axios.create();
 
 http.interceptors.request.use(
   function(config) {
-    const isAuthorizationHeaderSet = has(config, 'headers.Authorization');
+    const isAuthorizationHeaderSet = _.has(config, 'headers.Authorization');
     const _isLoggedIn = isLoggedIn();
     if (_isLoggedIn && !isAuthorizationHeaderSet) {
       const accessToken = getAccessToken();
@@ -38,7 +37,7 @@ http.interceptors.response.use(
     }
     console.log(err);
     
-    if (includes([401, 403], err.response.status)) {
+    if (_.includes([401, 403], err.response.status)) {
       purgeAllSessionData()
       history.push(`/front/login?goto=${encodeURIComponent(history.location.pathname)}`);
     } else {

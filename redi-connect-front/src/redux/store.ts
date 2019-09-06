@@ -1,5 +1,5 @@
-import { createStore, applyMiddleware, compose } from 'redux';
-import { createEpicMiddleware } from 'redux-observable';
+import { createStore, applyMiddleware, compose, AnyAction } from 'redux';
+import { createEpicMiddleware, Options } from 'redux-observable';
 import { rootEpic } from './epics';
 import { rootReducer } from './reducers';
 

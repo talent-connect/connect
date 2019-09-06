@@ -23,7 +23,7 @@ export const ContactInfo = ({ profile }: { profile: RedProfile }) => (
 );
 
 const Placeholder = ({ icon, content }: any) => (
-  <Grid container spacing={1} alignItems="center" style={{ margin: '5px 0' }}>
+  <Grid container spacing={8} alignItems="center" style={{ margin: '5px 0' }}>
     <Grid item>{icon}</Grid>
     <Grid item>{content}</Grid>
   </Grid>

@@ -13,7 +13,7 @@ export const LoggedOutLayout = ({ children }: Props) => (
   <>
     <CssBaseline />
     <AppBar position="static">
-      <img src={rediLogo} style={{ height: '36px', width: '96px', margin: '12px' }} alt='redi logo' />
+      <img src={rediLogo} style={{ height: '36px', width: '96px', margin: '12px' }} />
     </AppBar>
     <div style={{ margin: '12px' }}>
       {children}

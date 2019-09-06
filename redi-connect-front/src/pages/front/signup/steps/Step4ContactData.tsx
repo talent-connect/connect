@@ -39,7 +39,7 @@ export const Step4ContactData = (
     errors,
     touched,
     handleChange,
-    // isValid,
+    isValid,
     setFieldTouched,
   } = props;
 

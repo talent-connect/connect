@@ -1,4 +1,5 @@
 import React from 'react';
+import * as Yup from 'yup';
 import classNames from 'classnames';
 import { TextField, InputAdornment } from '@material-ui/core';
 import { SignUpFormValues, SignUpFormType } from "../Me";
@@ -20,7 +21,7 @@ export const Step4ContactData = (
     errors,
     touched,
     handleChange,
-    // isValid,
+    isValid,
     isSubmitting,
     setFieldTouched,
   } = props;

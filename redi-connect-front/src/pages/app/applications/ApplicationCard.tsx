@@ -6,10 +6,16 @@ import {
   createStyles,
   Theme,
   withStyles,
+  Button,
   Card,
   CardContent,
+  Tooltip,
 } from '@material-ui/core';
 import { Avatar } from '../../../components/Avatar';
+import { connect } from 'react-redux';
+import { matchesAcceptMentorshipStart } from '../../../redux/matches/actions';
+import { getHasReachedMenteeLimit } from '../../../redux/user/selectors';
+import { RootState } from '../../../redux/types';
 import { history } from '../../../services/history/history';
 import { ConnectButton } from '../../../components/ConnectButton';
 import { menteeOccupationCategory_idToLabelMap } from '../../../config/config';
@@ -52,7 +58,7 @@ export const ApplicationCard = withStyles(styles)(
         <CardContent>
           <Grid container direction="row">
             <Grid item xs={12} md={5}>
-              <Grid container spacing={1}>
+              <Grid container spacing={8}>
                 <Grid item>
                   <Avatar
                     className={classes.avatar}
@@ -74,7 +80,7 @@ export const ApplicationCard = withStyles(styles)(
               </Grid>
               <Grid
                 container
-                spacing={1}
+                spacing={8}
                 alignItems="center"
                 style={{ margin: '5px 0' }}
               >

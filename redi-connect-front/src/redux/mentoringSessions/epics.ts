@@ -1,16 +1,18 @@
 import { ActionsObservable, ofType } from 'redux-observable';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, tap, catchError } from 'rxjs/operators';
 import { from, concat, of } from 'rxjs';
 import { API_URL } from '../../config/config';
 import { http } from '../../services/http/http';
 import {
   mentoringSessionsCreateSuccess,
   mentoringSessionsFetchSuccess,
-  mentoringSessionsFetchStart
+  mentoringSessionsCreateError,
+  mentoringSessionsFetchStart,
 } from './actions';
 import {
   MentoringSessionsActions,
-  MentoringSessionsActionType
+  MentoringSessionsActionType,
+  MentoringSessionsCreateStartAction,
 } from './types';
 import { profileFetchStart } from '../user/actions';
 import { profilesFetchOneStart } from '../profiles/actions';

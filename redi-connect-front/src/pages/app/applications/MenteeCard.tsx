@@ -40,7 +40,7 @@ export const MenteeCard = withStyles(styles)(({ mentee, classes }: Props) => {
       <CardContent>
         <Grid container direction="column">
           <Grid item xs={12}>
-            <Grid container spacing={1}>
+            <Grid container spacing={8}>
               <Grid item>
                 <Avatar
                   className={classes.avatar}
@@ -59,7 +59,7 @@ export const MenteeCard = withStyles(styles)(({ mentee, classes }: Props) => {
             </Grid>
             <Grid
               container
-              spacing={1}
+              spacing={8}
               alignItems="center"
               style={{ margin: '5px 0' }}
             >

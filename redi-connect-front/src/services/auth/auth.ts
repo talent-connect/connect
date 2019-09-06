@@ -15,21 +15,21 @@ export const isLoggedIn = (): boolean => {
 };
 
 export const getRedUser = (): RedUser =>
-  JSON.parse(window.localStorage.getItem('redUser') as string);
+  JSON.parse(<string>window.localStorage.getItem('redUser'));
 
 export const saveRedUser = (redUser: RedUser) => {
   window.localStorage.setItem('redUser', JSON.stringify(redUser));
 };
 
 export const getRedProfile = (): RedProfile =>
-  JSON.parse(window.localStorage.getItem('redProfile') as string);
+  JSON.parse(<string>window.localStorage.getItem('redProfile'));
 
 export const saveRedProfile = (redProfile: RedProfile) => {
   window.localStorage.setItem('redProfile', JSON.stringify(redProfile));
 };
 
 export const getAccessToken = (): AccessToken =>
-  JSON.parse(window.localStorage.getItem('accessToken') as string);
+  JSON.parse(<string>window.localStorage.getItem('accessToken'));
 
 export const saveAccessToken = (accessToken: AccessToken) => {
   window.localStorage.setItem('accessToken', JSON.stringify(accessToken));

@@ -12,6 +12,8 @@ const mapState = (state: RootState) => ({
     state.user.profile && state.user.profile.ifUserIsMentee_activeMentor,
 });
 
+connect;
+
 export const DashboardMentee = connect(mapState)((props: any) => (
   <LoggedInLayout>
     {!props.currentMenteeUserHasActiveMentor && <AvailableMentorListing />}

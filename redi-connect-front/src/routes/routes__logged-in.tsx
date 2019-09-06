@@ -1,10 +1,8 @@
-import { lazy } from 'react'
+import { Applications } from '../pages/app/applications/Applications';
+import { Dashboard } from '../pages/app/dashboard/Dashboard';
+import { Profile } from '../pages/app/profile/Profile';
 import { RouteDefinition } from './index';
-
-const Applications = lazy(() => import(/* webpackChunkName: "Applications", webpackPreload: true  */ '../pages/app/applications/Applications'));
-const Dashboard = lazy(() => import(/* webpackChunkName: "Dashboard", webpackPreload: true  */ '../pages/app/dashboard/Dashboard'));
-const Profile = lazy(() => import(/* webpackChunkName: "Profile", webpackPreload: true  */ '../pages/app/profile/Profile'));
-const Me = lazy(() => import(/* webpackChunkName: "Me", webpackPreload: true  */'../pages/app/me/Me'));
+import { Me } from '../pages/app/me/Me';
 
 const routes: Array<RouteDefinition> = [
   {

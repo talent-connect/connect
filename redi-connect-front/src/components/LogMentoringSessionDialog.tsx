@@ -134,7 +134,7 @@ interface FormValues {
 const styles = (theme: Theme) =>
   createStyles({
     submitResult: {
-      padding: theme.spacing(1),
+      padding: theme.spacing.unit,
       color: 'white',
     },
     submitError: {

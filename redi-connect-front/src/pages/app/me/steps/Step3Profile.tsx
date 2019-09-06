@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import * as Yup from 'yup';
 import { FormikProps } from 'formik';
 import Input from '@material-ui/core/Input';
+import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import InputLabel from '@material-ui/core/InputLabel';
 import Typography from '@material-ui/core/Typography';
@@ -9,16 +10,19 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
+import PersonIcon from '@material-ui/icons/Person';
 import Checkbox from '@material-ui/core/Checkbox';
 import ListItemText from '@material-ui/core/ListItemText';
 import { SignUpFormValues, SignUpFormType } from '../Me';
 import {
   genders as formGenders,
-  Languages as formLanguages
+  Languages as formLanguages,
+  AWS_PROFILE_AVATARS_BUCKET_BASE_URL,
 } from '../../../../config/config';
 import { withStyles, Grid } from '@material-ui/core';
 import {
-  useLoading
+  withLoading,
+  withLoadingProgress,
 } from '../../../../hooks/WithLoading';
 import { Avatar } from '../../../../components/Avatar';
 const ReactS3Uploader: any = require('react-s3-uploader');
@@ -79,20 +83,10 @@ const MenuProps = {
   },
 };
 
-type Props = {
-  values: any,
-  errors: any,
-  touched: any,
-  handleChange: any,
-  isValid: boolean,
-  isSubmitting: boolean,
-  setFieldTouched: any
-  setFieldValue: any,
-  classes: any,
-  type: SignUpFormType
-}
 const Comp: any = (
-  props: FormikProps<SignUpFormValues> & Props
+  props: FormikProps<SignUpFormValues> & { type: SignUpFormType } & {
+    classes: any;
+  }
 ) => {
   const {
     values: {
@@ -107,9 +101,9 @@ const Comp: any = (
       expectations,
     },
     errors,
-    // touched,
+    touched,
     handleChange,
-    // isValid,
+    isValid,
     isSubmitting,
     setFieldTouched,
     setFieldValue,
@@ -128,7 +122,7 @@ const Comp: any = (
     setFieldTouched('languages', true, false);
   };
 
-  const { Loading, setLoading } = useLoading();
+  const { Loading, setLoading } = withLoading();
   const [uploadInput, setUploadInput] = useState<HTMLInputElement>();
   useEffect(() => {
     if (uploadInput !== undefined) {
@@ -139,7 +133,7 @@ const Comp: any = (
     }
   }, [uploadInput]);
 
-  // const [uploadError, setUploadError] = useState<string>('');
+  const [uploadError, setUploadError] = useState<string>('');
   const onUploadStart = (file: any, next: any) => {
     setLoading(true);
     next(file);
@@ -156,7 +150,7 @@ const Comp: any = (
         <Typography component="h3" variant="h6">
           Upload your photo
         </Typography>
-        <Grid container spacing={1} alignItems="center">
+        <Grid container spacing={8} alignItems="center">
           <Grid item>
             <div className={classes.avatarImageFrame}>
               <Avatar s3Key={profileAvatarImageS3Key} />
@@ -184,7 +178,7 @@ const Comp: any = (
           </Grid>
         </Grid>
       </div>
-      <Grid container spacing={1}>
+      <Grid container spacing={8}>
         <Grid item xs={6}>
           <TextField
             className={classes.margin}

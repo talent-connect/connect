@@ -11,14 +11,15 @@ import {
   getAccessToken,
 } from '../auth/auth';
 import { history } from '../history/history';
-import { http } from '../http/http';
+import { http, nonLoggedInHttp } from '../http/http';
 import { UserType } from '../../types/UserType';
+import { store } from '../../redux/store';
 import { RedProblemReportDto } from '../../types/RedProblemReportDto';
 
 export const signUp = async (
   email: string,
   password: string,
-  redProfile: Partial<RedProfile>
+  redProfile: RedProfile
 ) => {
   const userResponse = await http(`${API_URL}/redUsers`, {
     method: 'post',
