@@ -48,7 +48,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy-production": "yarn run build && aws s3 cp build/ s3://connect.redi-school.org --recursive --acl public-read --profile redi-connect-deployment --region eu-west-1 && aws cloudfront create-invalidation --distribution-id E3MVMTF8ANMDW --paths '/*' --profile redi-connect-deployment"
+    "invalidate-cache:prod": "aws cloudfront create-invalidation --distribution-id E3MVMTF8ANMDW --paths '/*' --profile redi-connect-deployment",
+    "deploy-production": "yarn build && aws s3 sync build/ s3://connect.redi-school.org --delete --acl public-read --profile redi-connect-deployment --region eu-west-1 && yarn invalidate-cache:prod"
   },
   "eslintConfig": {
     "extends": "react-app"
