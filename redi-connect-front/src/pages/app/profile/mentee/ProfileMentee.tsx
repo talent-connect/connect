@@ -7,13 +7,8 @@ import { ProfileWorkPlace } from '../../../../components/ProfileWorkPlace';
 import { ProfileLanguages } from '../../../../components/ProfileLanguages';
 import { CategoryChip } from '../../../../components/CategoryChip';
 import { Avatar } from '../../../../components/Avatar';
-import { courseIdToLabelMap } from '../../../../config/config';
 import { ProfileCourse } from '../../../../components/ProfileCourse';
 import { ConnectButton } from '../../../../components/ConnectButton';
-import { ContactInfo } from '../../../../components/ContactInfo';
-import { LogMentoringSessionBtn } from '../../../../components/LogMentoringSessionBtn';
-import { MentoringSessionsLog } from '../../../../components/MentoringSessionsLog';
-import { ReportProblemBtn } from '../../../../components/ReportProblemBtn';
 
 type Props = {
   mentee: RedProfile;
@@ -37,8 +32,8 @@ const styles = (theme: Theme) =>
       height: '20px',
     },
     personalDescription: {
-      marginTop: theme.spacing.unit * 6,
-      marginBottom: theme.spacing.unit * 6,
+      marginTop: theme.spacing(6),
+      marginBottom: theme.spacing(6),
       overflowWrap: 'break-word',
     },
   });
@@ -51,7 +46,7 @@ export const ProfileMentee = withStyles(styles)(
     const workPlace = workPlaceFormatter(mentee);
     return (
       <>
-        <Grid container spacing={16}>
+        <Grid container spacing={2}>
           <Grid item xs={12} sm={5}>
             <Avatar
               className={classes.avatar}

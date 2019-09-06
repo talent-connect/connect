@@ -1,7 +1,5 @@
 import { RedProfile } from '../../types/RedProfile';
-import { Action } from 'redux';
 import {
-  UserActions,
   ProfileFetchStartAction,
   ProfileFetchSuccessAction,
   UserActionType,

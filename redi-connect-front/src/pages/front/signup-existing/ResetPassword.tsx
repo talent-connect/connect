@@ -10,22 +10,19 @@ import {
   createStyles,
   withStyles,
 } from '@material-ui/core';
-import { Lock as LockIcon, Person as PersonIcon } from '@material-ui/icons';
+import { Lock as LockIcon } from '@material-ui/icons';
 import { Formik, FormikProps, FormikActions, FormikValues } from 'formik';
 import { history } from '../../../services/history/history';
 import {
-  login,
-  fetchSaveRedProfile,
   setPassword,
   giveGdprConsent,
   activateUser,
 } from '../../../services/api/api';
-import { saveAccessToken } from '../../../services/auth/auth';
 
 const styles = (theme: Theme) =>
   createStyles({
     formError: {
-      padding: theme.spacing.unit,
+      padding: theme.spacing(1),
       backgroundColor: theme.palette.error.main,
       color: 'white',
     },
@@ -51,14 +48,13 @@ const validationSchema = Yup.object({
     .oneOf([Yup.ref('password')], 'Password does not match'),
 });
 
-export const ResetPassword = () => {
+const ResetPassword = () => {
   const [formError, setFormError] = useState<string>('');
 
   const submitForm = async (
     values: FormikValues,
     actions: FormikActions<ResetPasswordValues>
   ) => {
-    const formValues = values as ResetPasswordValues;
     try {
       await setPassword(values.password);
       await giveGdprConsent();
@@ -81,6 +77,7 @@ export const ResetPassword = () => {
     </LoggedOutLayout>
   );
 };
+export default ResetPassword;
 
 const Form = withStyles(styles)(
   (

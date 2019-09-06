@@ -1,13 +1,11 @@
 import { Button, Theme, createStyles, withStyles } from '@material-ui/core';
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { withLoading, FullScreenCircle } from '../../../hooks/WithLoading';
+import { FullScreenCircle } from '../../../hooks/WithLoading';
 import { LoggedInLayout } from '../../../layouts/LoggedInLayout';
-import { getProfile } from '../../../services/api/api';
 import { RedProfile } from '../../../types/RedProfile';
 import { ProfileMentee } from './mentee/ProfileMentee';
 import { ProfileMentor } from './mentor/ProfileMentor';
-import { history } from '../../../services/history/history';
 import { connect } from 'react-redux';
 import { profilesFetchOneStart } from '../../../redux/profiles/actions';
 import { RootState } from '../../../redux/types';
@@ -20,16 +18,16 @@ interface RouteParams {
 const styles = (theme: Theme) =>
   createStyles({
     button: {
-      marginTop: theme.spacing.unit * 2,
-      marginBottom: theme.spacing.unit * 2,
+      marginTop: theme.spacing(2),
+      marginBottom: theme.spacing(2),
     },
   });
 
-export const Profile: FunctionComponent<RouteComponentProps<RouteParams>> = ({
+export default function Profile({
   match: {
     params: { profileId },
   },
-}) => {
+}: RouteComponentProps<RouteParams>) {
   return (
     <ProfileLoader profileId={profileId}>
       {({ loading, profile, currentUser }: any) => (

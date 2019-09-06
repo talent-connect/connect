@@ -1,4 +1,3 @@
-import React from 'react';
 import { routes__loggedOut } from './routes__logged-out';
 import { routes__loggedIn } from './routes__logged-in';
 import { RouteProps } from 'react-router';

@@ -1,21 +1,18 @@
 import React, { useState, FormEvent } from 'react';
-import { range } from 'lodash';
+import range from 'lodash/range';
 
 import {
   AppBar,
   createStyles,
   withStyles,
-  Typography,
   Toolbar,
   Button,
   Badge,
   Theme,
   IconButton,
   Menu,
-  MenuItem,
-  Divider,
+  MenuItem
 } from '@material-ui/core';
-import { CssBaseline } from '@material-ui/core';
 
 import rediLogo from '../assets/rediLogo.svg';
 import { Avatar } from '../components/Avatar';
@@ -26,6 +23,7 @@ import { logout } from '../services/api/api';
 import { connect } from 'react-redux';
 import { RootState } from '../redux/types';
 import { routes__loggedIn } from '../routes/routes__logged-in';
+import { RouteComponentProps } from 'react-router';
 
 type LoggedInLayoutProps = {
   children: React.ReactNode;
@@ -88,7 +86,7 @@ export const LoggedInLayout = withStyles(styles)(
               style={{ margin: 0, padding: 0 }}
               component={LinkToDashboard}
             >
-              <img src={rediLogo} style={{ height: '36px', width: '96px' }} />
+              <img src={rediLogo} style={{ height: '36px', width: '96px' }} alt='redi logo'/>
             </Button>
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
@@ -123,7 +121,7 @@ export const LoggedInLayout = withStyles(styles)(
   }
 );
 
-type ButtonsProps = {
+type ButtonsProps = RouteComponentProps & {applicationCount?: number|undefined, menteeCount?: number|undefined} & {
   classes: {
     root: string;
     grow: string;
@@ -161,7 +159,7 @@ const Buttons = withRouter(
       );
       const currentUser = getRedProfile();
       const isMentor = currentUser.userType === 'mentor';
-      const isMentee = currentUser.userType === 'mentee';
+      // const isMentee = currentUser.userType === 'mentee';
       return (
         <>
           {isMentor && !currentPageIsMenteeApplicants && (
@@ -174,7 +172,7 @@ const Buttons = withRouter(
           {isMentor && menteeCount > 0 && (
             <Button className={classes.button} component={LinkToApplications}>
               Your mentees&nbsp;
-              {range(0, menteeCount).map((undefined, i) => (
+              {range(0, menteeCount).map((_, i) => (
                 <PersonOutline key={i} />
               ))}
             </Button>
@@ -231,7 +229,7 @@ const ButtonsMobile = withRouter(
           {isMentor && menteeCount > 0 && (
             <MenuItem component={LinkToApplications}>
               Your mentees&nbsp;
-              {range(0, menteeCount).map((undefined, i) => (
+              {range(0, menteeCount).map((_, i) => (
                 <PersonOutline key={i} />
               ))}
             </MenuItem>

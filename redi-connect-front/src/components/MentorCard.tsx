@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import { RedProfile } from '../types/RedProfile';
 import {
   Card,
@@ -7,16 +6,10 @@ import {
   createStyles,
   withStyles,
   Grid,
-  Chip,
   Theme,
 } from '@material-ui/core';
 import { Language as LanguageIcon } from '@material-ui/icons';
 import { Avatar } from './Avatar';
-import {
-  categories,
-  categoriesIdToColourMap,
-  categoriesIdToLabelMap,
-} from '../config/config';
 import { CategoryChip } from './CategoryChip';
 
 type Props = {
@@ -48,7 +41,7 @@ export const MentorCard = withStyles(styles)(
     return (
       <Card onClick={() => typeof onClick === 'function' && onClick()}>
         <CardContent>
-          <Grid container spacing={8}>
+          <Grid container spacing={1}>
             <Grid item>
               <Avatar
                 className={classes.avatar}
@@ -66,7 +59,7 @@ export const MentorCard = withStyles(styles)(
           </Grid>
           <Grid
             container
-            spacing={8}
+            spacing={1}
             alignItems="center"
             style={{ margin: '5px 0' }}
           >

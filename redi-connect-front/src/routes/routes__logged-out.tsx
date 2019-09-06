@@ -1,10 +1,12 @@
-import { SignUpFormMentee } from '../pages/front/signup/SignUpFormMentee';
-import { SignUpFormMentor } from '../pages/front/signup/SignUpFormMentor';
 import { RouteDefinition } from './index';
-import { SignUpComplete } from '../pages/front/signup/SignUpComplete';
-import { Login } from '../pages/front/login/Login';
-import { SignUpExisting } from '../pages/front/signup-existing/SignUpExisting';
-import { ResetPassword } from '../pages/front/signup-existing/ResetPassword';
+import { lazy } from 'react'
+import Login from '../pages/front/login/Login'
+const SignUpFormMentee= lazy(() => import(/* webpackChunkName: "SignUpFormMentee", webpackPreload: true */ '../pages/front/signup/SignUpFormMentee'));
+const SignUpFormMentor= lazy(() => import(/* webpackChunkName: "SignUpFormMentor", webpackPreload: true */ '../pages/front/signup/SignUpFormMentor'));
+const SignUpComplete= lazy(() => import(/* webpackChunkName: "SignUpComplete", webpackPreload: true */ '../pages/front/signup/SignUpComplete'));
+// const Login= lazy(() => import(/* webpackChunkName: "Login", webpackPreload: true */ '../pages/front/login/Login'));
+const SignUpExisting= lazy(() => import(/* webpackChunkName: "SignUpExisting", webpackPreload: true */ '../pages/front/signup-existing/SignUpExisting'));
+const ResetPassword= lazy(() => import(/* webpackChunkName: "ResetPassword", webpackPreload: true */ '../pages/front/signup-existing/ResetPassword'));
 
 export const routes__loggedOut: Array<RouteDefinition> = [
   {

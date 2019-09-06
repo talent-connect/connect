@@ -5,4 +5,10 @@ import App from './App';
 // Needed for datepicker in <LogMentoringSessionDialog>
 import 'date-fns'
 
-ReactDOM.render(<App />, document.getElementById('root'));
+// uncomment this to see wasted/unnecessary renders of your components
+// if (process.env.NODE_ENV !== 'production') {
+  // const whyDidYouRender = require('@welldone-software/why-did-you-render');
+  // whyDidYouRender(React, {include: [/.*/]});
+// }
+
+ReactDOM.render(<React.StrictMode><App /></React.StrictMode>, document.getElementById('root'));

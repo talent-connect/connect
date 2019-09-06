@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Formik, FormikValues, FormikActions } from 'formik';
 import Grid from '@material-ui/core/Grid';
-import { omit } from 'lodash';
 import * as Yup from 'yup';
 import classNames from 'classnames';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { Step2Background } from './steps/Step2Background';
 import { Step3Profile } from './steps/Step3Profile';
@@ -17,10 +16,7 @@ import {
 } from '@material-ui/core';
 import { Step4ContactData } from './steps/Step4ContactData';
 import { Step5Categories } from './steps/Step5Categories';
-import { http } from '../../../services/http/http';
-import { signUp } from '../../../services/api/api';
 import { RedProfile } from '../../../types/RedProfile';
-import { history } from '../../../services/history/history';
 import { getRedProfile } from '../../../services/auth/auth';
 import { FullScreenCircle } from '../../../hooks/WithLoading';
 import { LoggedInLayout } from '../../../layouts/LoggedInLayout';
@@ -35,15 +31,16 @@ import {
   courses,
   menteeOccupationCategories,
 } from '../../../config/config';
+// import { Styles } from '@material-ui/styles/withStyles';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    submitError: {
-      padding: theme.spacing.unit,
-      backgroundColor: theme.palette.error.main,
-      color: 'white',
-    },
-  });
+// const styles = (theme: Theme) =>
+//   createStyles({
+//     submitError: {
+//       padding: theme.spacing,
+//       backgroundColor: theme.palette.error.main,
+//       color: 'white',
+//     },
+//   });
 
 export type SignUpFormType =
   | 'mentor'
@@ -194,32 +191,32 @@ export const buildSignUpForm = (
   profile: RedProfile,
   dispatch: any
 ): Function => (): React.ReactFragment => {
-  const [submitError, setSubmitError] = useState(false);
+  // const [submitError, setSubmitError] = useState(false);
   const type = profile.userType;
 
   const submitForm = async (
     values: FormikValues,
     actions: FormikActions<SignUpFormValues>
   ) => {
-    setSubmitError(false);
+    // setSubmitError(false);
     const profile = values as RedProfile;
     // TODO: this needs to be done in a smarter way, like iterating over the RedProfile definition or something
-    const cleanProfile: RedProfile = omit(profile, [
-      'password',
-      'passwordConfirm',
-      'formType',
-      'redMatchesWithCurrentUser',
-      'redMentoringSessionsWithCurrentUser',
-      'updatedAt',
-      'userType',
-      'redMatchesWithCurrentUser',
-      'redMentoringSessionsWithCurrentUser',
-      'matchCountWithCurrentUser',
-      'currentApplicantCount',
-      'currentFreeMenteeSpots',
-      'currentMenteeCount',
-      'ifTypeForm_additionalComments',
-    ]);
+    // const cleanProfile: RedProfile = omit(profile, [
+    //   'password',
+    //   'passwordConfirm',
+    //   'formType',
+    //   'redMatchesWithCurrentUser',
+    //   'redMentoringSessionsWithCurrentUser',
+    //   'updatedAt',
+    //   'userType',
+    //   'redMatchesWithCurrentUser',
+    //   'redMentoringSessionsWithCurrentUser',
+    //   'matchCountWithCurrentUser',
+    //   'currentApplicantCount',
+    //   'currentFreeMenteeSpots',
+    //   'currentMenteeCount',
+    //   'ifTypeForm_additionalComments',
+    // ]);
     dispatch(profileSaveStart(profile));
   };
 
@@ -230,7 +227,7 @@ export const buildSignUpForm = (
   const styles = (theme: Theme) =>
     createStyles({
       submitResult: {
-        padding: theme.spacing.unit,
+        padding: theme.spacing(1),
         color: 'white',
       },
       submitError: {
@@ -272,7 +269,7 @@ export const buildSignUpForm = (
           <Step3Profile type={type} {...props} />
           <Step4ContactData type={type} {...props} />
           <Step5Categories type={type} {...props} />
-          <Grid container spacing={8}>
+          <Grid container spacing={1}>
             <Grid item xs={12}>
               <Button
                 onClick={() => {
@@ -305,7 +302,7 @@ export const buildSignUpForm = (
   );
 };
 
-export const Me = () => {
+export default function me() {
   return (
     <ProfileLoader profileId={getRedProfile().id}>
       {({ loading, profile, currentUser }: any) => (

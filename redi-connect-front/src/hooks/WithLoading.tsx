@@ -1,4 +1,4 @@
-import React, { useState, Component } from 'react';
+import React, { useState } from 'react';
 import {
   Dialog,
   Grid,
@@ -8,9 +8,8 @@ import {
   createStyles,
   LinearProgress,
 } from '@material-ui/core';
-import { FadeProps } from '@material-ui/core/Fade';
 
-export const withLoading = () => {
+export const useLoading = function() {
   const [loading, setLoading] = useState(false);
 
   return {
@@ -19,7 +18,8 @@ export const withLoading = () => {
     loading,
   };
 };
-export const withLoadingProgress = () => {
+
+export const useLoadingProgress = function() {
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
 
@@ -51,9 +51,9 @@ type Props = {
   children: React.ReactNode;
 };
 
-const Trans: React.FunctionComponent<FadeProps> = props => (
-  <Fade {...props} timeout={500} />
-);
+// const Trans: React.FunctionComponent<FadeProps> = props => (
+//   <Fade {...props} timeout={500} />
+// );
 
 const FullScreenDialog = withStyles(styles)(
   ({ loading, classes, children }: Props) => (
