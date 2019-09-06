@@ -21,6 +21,11 @@ ReDI Connect is a tool to connect mentors and mentees. It is built for ReDI Scho
 
 All can be run locally in development mode using below instructions. The production version is hosted on AWS - consult @ericbolikowski for details.
 
+## Contribution guide
+Contribution guide will be elaborated. For now, please:
+* Please follow the [gitflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) model for branching (minus release branches). TL;DR: create `feat/xxx` branches off `develop` and file a PR once the feature is ready. Merge of `develop` into `master` done by maintainers only, once `develop` is release-ready. Use `hotfix` branches off `master`.
+* Please follow [conventional commits](https://www.conventionalcommits.org/en/v1.0.0-beta.4) when writing your commit messages. This is required for merge commits to `develop` and `master`, and encouraged for all other commits. TL;DR: use this syntax for commit summary: `<type<[(<scope<)]: <description>`, where `type = fix|feat|chore|docs|style|refactor|perf|test|`, `scope=backend|front|admin` (sub-scope optional).
+
 ## Getting started
 
 ### Installation
