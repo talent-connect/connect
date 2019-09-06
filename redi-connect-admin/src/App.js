@@ -18,6 +18,7 @@ import {
   BooleanInput,
   NumberField,
   SelectField,
+  NumberInput,
   Show,
   ShowButton,
   LongTextInput,
@@ -373,6 +374,7 @@ const RedProfileEdit = props => (
         source="categories"
         choices={categories.map(({ id, label }) => ({ id, name: label }))}
       />
+      <NumberInput source="menteeCountCapacity" />
     </SimpleForm>
   </Edit>
 );
