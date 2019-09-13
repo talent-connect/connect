@@ -15,12 +15,12 @@ if (!process.env.HTTP) {
   }
   exports.privateKey = fs
     .readFileSync(
-      path.join(__dirname, './' + environmentFolder + 'ssl/privkey.pem')
+      path.join(__dirname, './' + environmentFolder + '/ssl/privkey.pem')
     )
     .toString();
   exports.certificate = fs
     .readFileSync(
-      path.join(__dirname, './' + environmentFolder + 'ssl/cert.pem')
+      path.join(__dirname, './' + environmentFolder + '/ssl/cert.pem')
     )
     .toString();
 } else {
