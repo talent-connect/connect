@@ -18,6 +18,7 @@ import {
   BooleanInput,
   NumberField,
   SelectField,
+  NumberInput,
   Show,
   ShowButton,
   LongTextInput,
@@ -68,10 +69,12 @@ const categories = [
   { id: 'mobileDevelopment', label: 'Mobile Development', colour: '#89db84' },
   { id: 'jobOrientation', label: 'Job Orientation', colour: '#54969a' },
   { id: 'pythonDataScience', label: 'Python Data Science', colour: '#dbd784' },
+  { id: 'dataAnalytics', label: 'Data Analytics', colour: '#4242ab' },
   { id: 'entrepreneurship', label: 'Entrepreneurship', colour: '#547b9a' },
   { id: 'javaDevelopment', label: 'Java Development', colour: '#db9c84' },
   { id: 'iot', label: 'IoT', colour: '#57549a' },
   { id: 'webDevelopment', label: 'Web Development', colour: '#8484db' },
+  { id: 'javascript', label: 'JavaScript', colour: '#8e39a3' },
   { id: 'freelancing', label: 'Freelancing', colour: '#91549a' },
   { id: 'dontKnowYet', label: "I don't know yet", colour: '#bbbbbb' },
 ];
@@ -371,6 +374,7 @@ const RedProfileEdit = props => (
         source="categories"
         choices={categories.map(({ id, label }) => ({ id, name: label }))}
       />
+      <NumberInput source="menteeCountCapacity" />
     </SimpleForm>
   </Edit>
 );
