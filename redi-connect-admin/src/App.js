@@ -320,12 +320,15 @@ const RedProfileShow = props => (
           <p>
             <em>
               The following fields are only visible to ReDI Connect
-              administrators, i.e. mostly Eric, I label="Profile"sabelle and
-              Timothy who use the cloud-accounts@redi-school.org user. Distinct
-              admin users is planned.
+              administrators, i.e. mostly Eric, Isabelle and Timothy who use the
+              cloud-accounts@redi-school.org user. Distinct admin users is
+              planned.
             </em>
           </p>
-          <TextField source="administratorInternalComment" />
+          <TextField
+            source="administratorInternalComment"
+            style={{ whiteSpace: 'pre' }}
+          />
         </Tab>
       </TabbedShowLayout>
     </SimpleShowLayout>
@@ -405,7 +408,7 @@ const RedProfileEdit = props => (
             planned.
           </em>
         </p>
-        <TextInput source="administratorInternalComment" />
+        <LongTextInput source="administratorInternalComment" />
       </FormTab>
     </TabbedForm>
   </Edit>
