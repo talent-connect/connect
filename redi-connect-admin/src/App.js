@@ -327,7 +327,7 @@ const RedProfileShow = props => (
           </p>
           <TextField
             source="administratorInternalComment"
-            style={{ whiteSpace: 'pre' }}
+            style={{ whiteSpace: 'pre-wrap' }}
           />
         </Tab>
       </TabbedShowLayout>
