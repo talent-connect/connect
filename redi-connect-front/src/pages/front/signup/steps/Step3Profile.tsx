@@ -14,12 +14,11 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { SignUpFormValues, SignUpFormType } from '../factory';
 import {
   genders as formGenders,
-  Languages as formLanguages
+  Languages as formLanguages,
+  API_URL,
 } from '../../../../config/config';
 import { withStyles, Grid } from '@material-ui/core';
-import {
-  useLoading
-} from '../../../../hooks/WithLoading';
+import { useLoading } from '../../../../hooks/WithLoading';
 import { Avatar } from '../../../../components/Avatar';
 const ReactS3Uploader: any = require('react-s3-uploader');
 
@@ -158,7 +157,7 @@ const Comp: any = (
             >
               Upload
               <ReactS3Uploader
-                signingUrl="https://connect-api.redi-school.org/s3/sign"
+                signingUrl={`${API_URL}/s3/sign`}
                 accept="image/*"
                 uploadRequestHeaders={{ 'x-amz-acl': 'public-read' }}
                 preprocess={onUploadStart}
