@@ -14,12 +14,11 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { SignUpFormValues, SignUpFormType } from '../Me';
 import {
   genders as formGenders,
-  Languages as formLanguages
+  Languages as formLanguages,
+  API_URL,
 } from '../../../../config/config';
 import { withStyles, Grid } from '@material-ui/core';
-import {
-  useLoading
-} from '../../../../hooks/WithLoading';
+import { useLoading } from '../../../../hooks/WithLoading';
 import { Avatar } from '../../../../components/Avatar';
 const ReactS3Uploader: any = require('react-s3-uploader');
 
@@ -80,20 +79,18 @@ const MenuProps = {
 };
 
 type Props = {
-  values: any,
-  errors: any,
-  touched: any,
-  handleChange: any,
-  isValid: boolean,
-  isSubmitting: boolean,
-  setFieldTouched: any
-  setFieldValue: any,
-  classes: any,
-  type: SignUpFormType
-}
-const Comp: any = (
-  props: FormikProps<SignUpFormValues> & Props
-) => {
+  values: any;
+  errors: any;
+  touched: any;
+  handleChange: any;
+  isValid: boolean;
+  isSubmitting: boolean;
+  setFieldTouched: any;
+  setFieldValue: any;
+  classes: any;
+  type: SignUpFormType;
+};
+const Comp: any = (props: FormikProps<SignUpFormValues> & Props) => {
   const {
     values: {
       profileAvatarImageS3Key,
@@ -169,7 +166,7 @@ const Comp: any = (
             >
               Upload
               <ReactS3Uploader
-                signingUrl="https://connect-api.redi-school.org/s3/sign"
+                signingUrl={`${API_URL}/s3/sign`}
                 accept="image/*"
                 uploadRequestHeaders={{ 'x-amz-acl': 'public-read' }}
                 preprocess={onUploadStart}
@@ -313,14 +310,8 @@ const Comp: any = (
         id="personalDescription"
         name="personalDescription"
         label="Tell us a few words about yourself (this will be displayed on your profile)* (100-600 characters)"
-        error={
-          Boolean(errors.personalDescription)
-        }
-        helperText={
-          
-            errors.personalDescription
-            
-        }
+        error={Boolean(errors.personalDescription)}
+        helperText={errors.personalDescription}
         value={personalDescription}
         multiline
         fullWidth

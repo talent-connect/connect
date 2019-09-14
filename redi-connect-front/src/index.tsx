@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 // Needed for datepicker in <LogMentoringSessionDialog>
-import 'date-fns'
 
 // uncomment this to see wasted/unnecessary renders of your components
 // if (process.env.NODE_ENV !== 'production') {

@@ -2,14 +2,19 @@ import React, { useState } from 'react';
 import { LoggedOutLayout } from '../../../layouts/LoggedOutLayout';
 import * as Yup from 'yup';
 import {
+  Container,
   TextField,
   InputAdornment,
+  Link,
   Button,
   Paper,
   Theme,
   createStyles,
   withStyles,
+  Typography,
+  Box,
 } from '@material-ui/core';
+import { Link as RouterLink } from 'react-router-dom';
 import { Lock as LockIcon, Person as PersonIcon } from '@material-ui/icons';
 import { Formik, FormikProps, FormikActions, FormikValues } from 'formik';
 import { history } from '../../../services/history/history';
@@ -22,6 +27,13 @@ const styles = (theme: Theme) =>
       padding: theme.spacing(1),
       backgroundColor: theme.palette.error.main,
       color: 'white',
+    },
+    headingMargin: {
+      marginTop: theme.spacing(6),
+      marginBottom: theme.spacing(5),
+    },
+    navigationBox: {
+      marginTop: theme.spacing(4),
     },
   });
 
@@ -76,13 +88,17 @@ export default function Login() {
       />
     </LoggedOutLayout>
   );
-};
+}
 
 const Form = withStyles(styles)(
   (
     props: FormikProps<LoginFormValues> & {
       loginError: string;
-      classes: { loginError: string };
+      classes: {
+        loginError: string;
+        headingMargin: string;
+        navigationBox: string;
+      };
     }
   ) => {
     const {
@@ -105,8 +121,14 @@ const Form = withStyles(styles)(
     };
 
     return (
-      <>
-        <h3>Log in to ReDI Connect</h3>
+      <Container maxWidth="sm">
+        <Typography
+          variant="h5"
+          align="center"
+          className={classes.headingMargin}
+        >
+          Login to ReDI Connect
+        </Typography>
         {loginError && (
           <Paper className={classes.loginError}>{loginError}</Paper>
         )}
@@ -161,8 +183,21 @@ const Form = withStyles(styles)(
           >
             Log in
           </Button>
+          <Box className={classes.navigationBox}>
+            <Typography align="center">
+              New to ReDI Connect? Join as a{' '}
+              <Link component={RouterLink} to="/front/signup/mentee">
+                student
+              </Link>{' '}
+              or{' '}
+              <Link component={RouterLink} to="/front/signup/mentor">
+                mentor
+              </Link>
+              .
+            </Typography>
+          </Box>
         </form>
-      </>
+      </Container>
     );
   }
 );
