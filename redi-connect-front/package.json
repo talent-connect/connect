@@ -36,6 +36,7 @@
     "@types/yup": "^0.26.23",
     "@welldone-software/why-did-you-render": "^3.3.3",
     "babel-loader": "^8.0.6",
+    "env-cmd": "^10.0.1",
     "react-scripts": "3.1.1",
     "typescript": "^3.5.3"
   },
@@ -46,8 +47,8 @@
     "eject": "react-scripts eject",
     "invalidate-cache:prod": "aws cloudfront create-invalidation --distribution-id E3MVMTF8ANMDW --paths '/*' --profile redi-connect-deployment",
     "invalidate-cache:demonstration": "aws cloudfront create-invalidation --distribution-id E11DMK1GIVHK3G --paths '/*' --profile redi-connect-deployment",
-    "deploy-production": "yarn build && aws s3 sync build/ s3://connect.redi-school.org --delete --acl public-read --profile redi-connect-deployment --region eu-west-1 && yarn invalidate-cache:prod",
-    "deploy-demonstration": "yarn build && aws s3 sync build/ s3://app.demo.connect.redi-school.org --delete --acl public-read --profile redi-connect-deployment --region eu-west-1 && yarn invalidate-cache:demonstration"
+    "deploy-production": "env-cmd -f .env.production yarn build && aws s3 sync build/ s3://connect.redi-school.org --delete --acl public-read --profile redi-connect-deployment --region eu-west-1 && yarn invalidate-cache:prod",
+    "deploy-demonstration": "env-cmd -f .env.demonstration yarn build && aws s3 sync build/ s3://app.demo.connect.redi-school.org --delete --acl public-read --profile redi-connect-deployment --region eu-west-1 && yarn invalidate-cache:demonstration"
   },
   "eslintConfig": {
     "extends": "react-app"
