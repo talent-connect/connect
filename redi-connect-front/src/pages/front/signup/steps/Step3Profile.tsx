@@ -16,6 +16,7 @@ import {
   genders as formGenders,
   Languages as formLanguages,
   API_URL,
+  S3_UPLOAD_SIGN_URL,
 } from '../../../../config/config';
 import { withStyles, Grid } from '@material-ui/core';
 import { useLoading } from '../../../../hooks/WithLoading';
@@ -157,7 +158,7 @@ const Comp: any = (
             >
               Upload
               <ReactS3Uploader
-                signingUrl={`${API_URL}/s3/sign`}
+                signingUrl={S3_UPLOAD_SIGN_URL}
                 accept="image/*"
                 uploadRequestHeaders={{ 'x-amz-acl': 'public-read' }}
                 preprocess={onUploadStart}
