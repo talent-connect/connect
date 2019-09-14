@@ -7,8 +7,16 @@ import { matchesFetchStart } from '../../../redux/matches/actions';
 import { FullScreenCircle } from '../../../hooks/WithLoading';
 import { RedMatch } from '../../../types/RedMatch';
 import { ApplicationCard } from './ApplicationCard';
-import { Grid, Paper, withStyles } from '@material-ui/core';
+import ClockwiseRotationIcon from '../../../assets/clockwise-rotation.png';
+import {
+  Grid,
+  Paper,
+  withStyles,
+  Typography,
+  Container,
+} from '@material-ui/core';
 import { MenteeCard } from './MenteeCard';
+import { makeStyles } from '@material-ui/styles';
 
 /*
 const withData = (): {
@@ -50,7 +58,7 @@ const styles = (theme: any) => ({
   },
   header: {
     marginTop: 0,
-  }
+  },
 });
 
 // TODO: add type to Props
@@ -67,7 +75,7 @@ export default withStyles(styles)(
       <LoggedInLayout>
         <FullScreenCircle loading={(props as any).loading} />
         {mentees.length === 0 && applicants.length === 0 && (
-          <h4>You currently have no applicants or mentees.</h4>
+          <NoApplicantsOrMentees />
         )}
         {mentees.length > 0 && (
           <Paper className={(props as any).classes.paper}>
@@ -108,3 +116,36 @@ export default withStyles(styles)(
     );
   })
 );
+
+const useStyles = makeStyles({
+  topMargin: {
+    marginTop: '4em',
+  },
+  clockIcon: {
+    maxWidth: '7em',
+    margin: '0 auto',
+    textAlign: 'center',
+    marginTop: '4em',
+    marginBottom: '4em',
+  },
+  infoText: {
+    color: '#8E8E8E',
+  },
+});
+
+const NoApplicantsOrMentees = () => {
+  const classes = useStyles();
+  return (
+    <Container maxWidth="sm">
+      <Typography variant="h5" align="center" className={classes.topMargin}>
+        Currently you have no applicants or mentees.
+      </Typography>
+      <Typography align="center">
+        <img src={ClockwiseRotationIcon} className={classes.clockIcon} />
+      </Typography>
+      <Typography className={classes.infoText} align="center">
+        We will send you email when students apply for the mentorship.
+      </Typography>
+    </Container>
+  );
+};
