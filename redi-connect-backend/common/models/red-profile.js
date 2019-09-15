@@ -46,7 +46,19 @@ module.exports = function(RedProfile) {
     if (ctx.isNewInstance) {
       return next();
       // TODO: the next two else-if blocks can definitely be DRY-ed. Merge them.
-    } else if (ctx.data && ctx.data.userType === 'mentor') {
+    }
+
+    // Strip away RedProfile.administratorInternalComment if user is NOT cloud-accounts@redi-school.org
+    if (
+      ctx.options &&
+      ctx.options.currentUser &&
+      ctx.options.currentUser.email === 'cloud-accounts@redi-school.org'
+    ) {
+    } else {
+      delete ctx.data.administratorInternalComment;
+    }
+
+    if (ctx.data && ctx.data.userType === 'mentor') {
       // In case RedProfile belongs to a mentor, add "computed properties"
       // currentMenteeCount, currentFreeMenteeSpots, and matchCountWithCurrentUser,
       // currentApplicantCount
@@ -230,7 +242,7 @@ module.exports = function(RedProfile) {
       )
     );
     const createRoleMapping = switchMap(redProfileInst => {
-      const { userType, redUserId } = redProfileInst.toJSON()
+      const { userType, redUserId } = redProfileInst.toJSON();
       if (!_.includes(['mentee', 'mentor'], userType))
         return of(redProfileInst);
       const role = userType === 'mentor' ? mentorRole : menteeRole;
@@ -264,22 +276,20 @@ module.exports = function(RedProfile) {
  * run - the function relies on this to determine what kind of email to send.
  */
 
-const sendEmailUserReviewedAcceptedOrDenied = switchMap(
-  redProfileInst => {
-    const userType = redProfileInst.toJSON().userType;
-    const userTypeToEmailMap = {
-      mentor: sendMentorPendingReviewAcceptedEmail,
-      mentee: sendMenteePendingReviewAcceptedEmail,
-      'public-sign-up-mentor-rejected': sendMentorPendingReviewDeclinedEmail,
-      'public-sign-up-mentee-rejected': sendMenteePendingReviewDeclinedEmail,
-    };
-    if (!_.has(userTypeToEmailMap, userType))
-      throw new Error('User does not have valid user type');
-    const emailFunc = userTypeToEmailMap[userType];
-    const { contactEmail, firstName } = redProfileInst.toJSON();
-    return emailFunc(contactEmail, firstName);
-  }
-);
+const sendEmailUserReviewedAcceptedOrDenied = switchMap(redProfileInst => {
+  const userType = redProfileInst.toJSON().userType;
+  const userTypeToEmailMap = {
+    mentor: sendMentorPendingReviewAcceptedEmail,
+    mentee: sendMenteePendingReviewAcceptedEmail,
+    'public-sign-up-mentor-rejected': sendMentorPendingReviewDeclinedEmail,
+    'public-sign-up-mentee-rejected': sendMenteePendingReviewDeclinedEmail,
+  };
+  if (!_.has(userTypeToEmailMap, userType))
+    throw new Error('User does not have valid user type');
+  const emailFunc = userTypeToEmailMap[userType];
+  const { contactEmail, firstName } = redProfileInst.toJSON();
+  return emailFunc(contactEmail, firstName);
+});
 
 const pendingReviewTypes = [
   'public-sign-up-mentor-pending-review',
