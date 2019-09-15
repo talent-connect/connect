@@ -2,6 +2,7 @@
 
 const aws = require('aws-sdk');
 const Rx = require('rxjs');
+const _ = require('lodash');
 const config = {
   accessKeyId: process.env.EMAILER_AWS_ACCESS_KEY,
   secretAccessKey: process.env.EMAILER_AWS_SECRET_KEY,
@@ -12,9 +13,13 @@ const ses = new aws.SES(config);
 
 const sendEmail = Rx.bindNodeCallback(ses.sendEmail.bind(ses));
 const sendEmailFactory = (to, subject, body) => {
-  let toSanitized =
-    process.env.NODE_ENV === 'production' ? to : 'eric@binarylights.com';
-  if (process.env.DEV_MODE_EMAIL_RECIPIENT) toSanitized = process.env.DEV_MODE_EMAIL_RECIPIENT;
+  const doOverride = _.includes(
+    ['production', 'demonstration'],
+    process.env.NODE_ENV
+  );
+  let toSanitized = doOverride ? to : 'eric@binarylights.com';
+  if (process.env.DEV_MODE_EMAIL_RECIPIENT)
+    toSanitized = process.env.DEV_MODE_EMAIL_RECIPIENT;
   return sendEmail({
     Source: 'career@redi-school.org',
     Destination: {
@@ -35,6 +40,21 @@ const sendEmailFactory = (to, subject, body) => {
     },
   });
 };
+
+function buildFrontendUrl(env) {
+  switch (env) {
+    case 'production':
+      return 'https://connect.redi-school.org';
+
+    case 'demonstration':
+      return 'https://front.demo.connect.redi-school.org';
+
+    default:
+    case 'development':
+    case 'dev':
+      return 'http://127.0.0.1:3000';
+  }
+}
 
 const RECIPIENT = 'career@redi-school.org';
 
@@ -98,17 +118,19 @@ const sendMentorshipRequestReceivedEmail = (
 
 You have received an application from mentee ${menteeFullName}. Please review it as soon as you have time.
 
-Review application: https://connect.redi-school.org
+Review application: ${buildFrontendUrl(process.env.NODE_ENV)}
 
 Your Career Support Team
 `
   );
 const sendMentorshipAcceptedEmail = (recipients, mentorName, menteeName) => {
-  let recipientsSanitized =
-    process.env.NODE_ENV !== 'production'
-      ? ['eric@binarylights.com']
-      : recipients;
-  if (process.env.DEV_MODE_EMAIL_RECIPIENT) recipientsSanitized = [process.env.DEV_MODE_EMAIL_RECIPIENT];
+  const doOverride = _.includes(
+    ['production', 'demonstration'],
+    process.env.NODE_ENV
+  );
+  let recipientsSanitized = doOverride ? ['eric@binarylights.com'] : recipients;
+  if (process.env.DEV_MODE_EMAIL_RECIPIENT)
+    recipientsSanitized = [process.env.DEV_MODE_EMAIL_RECIPIENT];
   return sendEmail({
     Source: 'career@redi-school.org',
     Destination: {
@@ -150,7 +172,7 @@ const sendMentoringSessionLoggedEmail = (recipient, mentorName) =>
 
 Thank you for logging the first session. This is very helpful for us in order to track the students progress. Please keep logging your sessions!
 
-Log next session: https://connect.redi-school.org
+Log next session: ${buildFrontendUrl(process.env.NODE_ENV)}
 
 Your Career Support Team`
   );
@@ -175,7 +197,9 @@ You are now able to log into our new platform. You’ll be able to log your sess
 
 You will see our data protection policy, which we kindly ask you to read through and consent to.
 
-Access ReDI Connect here: https://connect.redi-school.org/front/signup/existing/${accessToken}
+Access ReDI Connect here: ${buildFrontendUrl(
+  process.env.NODE_ENV
+)}/front/signup/existing/${accessToken}
 
 You’ll be asked to choose your own password. Your username is your email address: ${recipientEmail}
 
@@ -199,7 +223,9 @@ You are now able to log into our new platform. You’ll be able to upload a prof
 
 You will see our data protection policy, which we kindly ask you to read through and consent to.
 
-Access ReDI Connect here: https://connect.redi-school.org/front/signup/existing/${accessToken}
+Access ReDI Connect here: ${buildFrontendUrl(
+  process.env.NODE_ENV
+)}/front/signup/existing/${accessToken}
 
 You’ll be asked to choose your own password. Your username is your email address: ${recipientEmail}
 
@@ -224,7 +250,9 @@ const sendMentorSignupReminderEmail = (recipient, firstName, accessToken) =>
     
     You will see our data protection policy, which we kindly ask you to read through and consent to.
     
-    Access ReDI Connect here: Access ReDI Connect here: https://connect.redi-school.org/front/signup/existing/${accessToken}
+    Access ReDI Connect here: Access ReDI Connect here: ${buildFrontendUrl(
+      process.env.NODE_ENV
+    )}/front/signup/existing/${accessToken}
     
     You’ll be asked to choose your own password. Your username is your email address: ${recipient}
     
@@ -247,7 +275,9 @@ const sendMenteeSignupReminderEmail = (recipient, firstName, accessToken) =>
     
     You will see our data protection policy, which we kindly ask you to read through and consent to.
     
-    Access ReDI Connect here: https://connect.redi-school.org/front/signup/existing/${accessToken}
+    Access ReDI Connect here: ${buildFrontendUrl(
+      process.env.NODE_ENV
+    )}/front/signup/existing/${accessToken}
     
     You’ll be asked to choose your own password. Your username is your email address: ${recipient}
     
@@ -266,10 +296,14 @@ Your profile has been accepted and we are very happy that you are now part of th
 
 Now that your profile is visible you should receive applications from mentees. We will notify you by email of any application.
 
-We kindly ask you to read the guidelines and information of the mentorship program carefully: https://connect.redi-school.org/downloadeables/redi-connect-guidelines.pdf
+We kindly ask you to read the guidelines and information of the mentorship program carefully: ${buildFrontendUrl(
+      process.env.NODE_ENV
+    )}/downloadeables/redi-connect-guidelines.pdf
 
 Please also be aware of the following:
-Code of Conduct: https://connect.redi-school.org/downloadeables/redi-connect-code-of-conduct.pdf
+Code of Conduct: ${buildFrontendUrl(
+      process.env.NODE_ENV
+    )}/downloadeables/redi-connect-code-of-conduct.pdf
 
 We are organising events regularly where you can meet fellow mentors and get to know ReDI School more.
 In order to stay tuned on what is happening in the mentorship program in the ReDI mentor community join our slack universe here: https://app.slack.com/client/T0HN7F83D/CGJFBLBH6
@@ -279,7 +313,9 @@ Facebook: https://www.facebook.com/redischool
 Meetup: https://www.meetup.com/ReDI-school
 Instagram: https://www.instagram.com/redischool
 
-You can always log back into ReDI Connect here: https://connect.redi-school.org
+You can always log back into ReDI Connect here: ${buildFrontendUrl(
+      process.env.NODE_ENV
+    )}
 
 Please feel free to write us an email at career@redi-school.org if you have any questions or encounter problems.
 
@@ -297,7 +333,9 @@ const sendMenteePendingReviewAcceptedEmail = (recipient, firstName) =>
     'ReDI Connect: your user was activated!',
     `Dear ${firstName},
 
-Your profile has been accepted and you are now able to see and apply to you future mentor. Just go to ReDI Connect here: https://connect.redi-school.org.
+Your profile has been accepted and you are now able to see and apply to you future mentor. Just go to ReDI Connect here: ${buildFrontendUrl(
+      process.env.NODE_ENV
+    )}.
 
 Please make sure you update your profile regularly and upload your profile picture.
 
@@ -313,7 +351,9 @@ Please note: First come, first serve. Whoever applies first, will get a mentor f
 
 
 We also kindly remind you to be aware of the following:
-Code of Conduct: https://connect.redi-school.org/downloadeables/redi-connect-code-of-conduct.pdf
+Code of Conduct: ${buildFrontendUrl(
+      process.env.NODE_ENV
+    )}/downloadeables/redi-connect-code-of-conduct.pdf
 
 Please feel free to write us an email at career@redi-school.org if you have any questions or encounter problems.
 

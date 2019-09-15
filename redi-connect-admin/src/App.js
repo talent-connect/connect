@@ -6,10 +6,13 @@ import {
   Admin,
   Resource,
   List,
+  Tab,
   Create,
   Pagination,
   Filter,
   Datagrid,
+  TabbedForm,
+  TabbedShowLayout,
   TextField,
   ReferenceInput,
   AutocompleteInput,
@@ -18,6 +21,8 @@ import {
   BooleanInput,
   NumberField,
   SelectField,
+  FormTab,
+  NumberInput,
   Show,
   ShowButton,
   LongTextInput,
@@ -68,10 +73,12 @@ const categories = [
   { id: 'mobileDevelopment', label: 'Mobile Development', colour: '#89db84' },
   { id: 'jobOrientation', label: 'Job Orientation', colour: '#54969a' },
   { id: 'pythonDataScience', label: 'Python Data Science', colour: '#dbd784' },
+  { id: 'dataAnalytics', label: 'Data Analytics', colour: '#4242ab' },
   { id: 'entrepreneurship', label: 'Entrepreneurship', colour: '#547b9a' },
   { id: 'javaDevelopment', label: 'Java Development', colour: '#db9c84' },
   { id: 'iot', label: 'IoT', colour: '#57549a' },
   { id: 'webDevelopment', label: 'Web Development', colour: '#8484db' },
+  { id: 'javascript', label: 'JavaScript', colour: '#8e39a3' },
   { id: 'freelancing', label: 'Freelancing', colour: '#91549a' },
   { id: 'dontKnowYet', label: "I don't know yet", colour: '#bbbbbb' },
 ];
@@ -205,107 +212,125 @@ const RedProfileListFilters = props => (
 const RedProfileShow = props => (
   <Show {...props}>
     <SimpleShowLayout>
-      <TextField source="userType" />
-      <BooleanField source="userActivated" />
-      <Avatar />
-      <TextField source="firstName" />
-      <TextField source="lastName" />
-      <TextField source="gender" />
-      <NumberField source="age" />
-      <ArrayField source="languages">
-        <LangaugeList />
-      </ArrayField>
-      <TextField source="otherLanguages" />
-      <TextField source="personalDescription" />
-      <TextField source="expectations" />
-      <TextField source="contactEmail" />
-      <TextField source="linkedInProfileUrl" />
-      <TextField source="slackUsername" />
-      <TextField source="telephoneNumber" />
+      <TabbedShowLayout>
+        <Tab label="Profile">
+          <TextField source="userType" />
+          <BooleanField source="userActivated" />
+          <Avatar />
+          <TextField source="firstName" />
+          <TextField source="lastName" />
+          <TextField source="gender" />
+          <NumberField source="age" />
+          <ArrayField source="languages">
+            <LangaugeList />
+          </ArrayField>
+          <TextField source="otherLanguages" />
+          <TextField source="personalDescription" />
+          <TextField source="expectations" />
+          <TextField source="contactEmail" />
+          <TextField source="linkedInProfileUrl" />
+          <TextField source="slackUsername" />
+          <TextField source="telephoneNumber" />
 
-      <ArrayField source="categories">
-        <CategoryList />
-      </ArrayField>
-      <ReferenceManyField
-        label="Mentees (applied/accepted/completed/cancelled)"
-        reference="redMatches"
-        target="mentorId"
-      >
-        <Datagrid>
-          <FullName sourcePrefix="mentee." />
-          <TextField source="status" />
-        </Datagrid>
-      </ReferenceManyField>
-      <ReferenceManyField
-        label="Mentors (applied/accepted/completed/cancelled)"
-        reference="redMatches"
-        target="menteeId"
-      >
-        <Datagrid>
-          <FullName sourcePrefix="mentor." />
-          <TextField source="status" />
-        </Datagrid>
-      </ReferenceManyField>
-      <h4>Mentor-specific fields:</h4>
-      <TextField source="mentor_occupation" label="Occupation" />
-      <TextField source="mentor_workPlace" label="Place of work" />
-      <NumberField
-        source="menteeCountCapacity"
-        label="Total mentee count capacity"
-      />
-      <h4>Mentee-specific fields:</h4>
-      <TextField
-        source="mentee_occupationCategoryId"
-        label="Type of occupation"
-      />
-      <TextField
-        source="mentee_occupationJob_placeOfEmployment"
-        label="If occupation = job, place of employment"
-      />
-      <TextField
-        source="mentee_occupationJob_position"
-        label="If occupation = job, position"
-      />
-      <TextField
-        source="mentee_occupationStudent_studyPlace"
-        label="If occupation = student, place of study"
-      />
-      <TextField
-        source="mentee_occupationStudent_studyName"
-        label="If occupation = student, name of study"
-      />
-      <TextField
-        source="mentee_occupationLookingForJob_what"
-        label="If occupation = looking for a job, description of what"
-      />
-      <TextField
-        source="mentee_occupationOther_description"
-        label="If occupation = other, description of what"
-      />
-      <TextField
-        source="mentee_highestEducationLevel"
-        label="Highest education level"
-      />
-      <TextField
-        source="mentee_currentlyEnrolledInCourse"
-        label="Currently enrolled in which course"
-      />
-      <h4>Record information</h4>
-      <RecordCreatedAt />
-      <RecordUpdatedAt />
-      <h4>
-        Typeform information (for mentors/mentees originally signed up via
-        typeform)
-      </h4>
-      <TextField
-        source="mentor_ifTypeForm_submittedAt"
-        label="Typeform: submitted at"
-      />
-      <TextField source="mentee_ifTypeForm_additionalComments" />
-      <TextField
-        source="ifTypeForm_additionalComments"
-        label="Typeform: additional comments"
-      />
+          <ArrayField source="categories">
+            <CategoryList />
+          </ArrayField>
+          <ReferenceManyField
+            label="Mentees (applied/accepted/completed/cancelled)"
+            reference="redMatches"
+            target="mentorId"
+          >
+            <Datagrid>
+              <FullName sourcePrefix="mentee." />
+              <TextField source="status" />
+            </Datagrid>
+          </ReferenceManyField>
+          <ReferenceManyField
+            label="Mentors (applied/accepted/completed/cancelled)"
+            reference="redMatches"
+            target="menteeId"
+          >
+            <Datagrid>
+              <FullName sourcePrefix="mentor." />
+              <TextField source="status" />
+            </Datagrid>
+          </ReferenceManyField>
+          <h4>Mentor-specific fields:</h4>
+          <TextField source="mentor_occupation" label="Occupation" />
+          <TextField source="mentor_workPlace" label="Place of work" />
+          <NumberField
+            source="menteeCountCapacity"
+            label="Total mentee count capacity"
+          />
+          <h4>Mentee-specific fields:</h4>
+          <TextField
+            source="mentee_occupationCategoryId"
+            label="Type of occupation"
+          />
+          <TextField
+            source="mentee_occupationJob_placeOfEmployment"
+            label="If occupation = job, place of employment"
+          />
+          <TextField
+            source="mentee_occupationJob_position"
+            label="If occupation = job, position"
+          />
+          <TextField
+            source="mentee_occupationStudent_studyPlace"
+            label="If occupation = student, place of study"
+          />
+          <TextField
+            source="mentee_occupationStudent_studyName"
+            label="If occupation = student, name of study"
+          />
+          <TextField
+            source="mentee_occupationLookingForJob_what"
+            label="If occupation = looking for a job, description of what"
+          />
+          <TextField
+            source="mentee_occupationOther_description"
+            label="If occupation = other, description of what"
+          />
+          <TextField
+            source="mentee_highestEducationLevel"
+            label="Highest education level"
+          />
+          <TextField
+            source="mentee_currentlyEnrolledInCourse"
+            label="Currently enrolled in which course"
+          />
+          <h4>Record information</h4>
+          <RecordCreatedAt />
+          <RecordUpdatedAt />
+          <h4>
+            Typeform information (for mentors/mentees originally signed up via
+            typeform)
+          </h4>
+          <TextField
+            source="mentor_ifTypeForm_submittedAt"
+            label="Typeform: submitted at"
+          />
+          <TextField source="mentee_ifTypeForm_additionalComments" />
+          <TextField
+            source="ifTypeForm_additionalComments"
+            label="Typeform: additional comments"
+          />
+        </Tab>
+        <Tab label="Internal comments">
+          <p>
+            <em>
+              The following fields are only visible to ReDI Connect
+              administrators, i.e. mostly Eric, Isabelle and Timothy who use the
+              cloud-accounts@redi-school.org user. Distinct admin users is
+              planned.
+            </em>
+          </p>
+          <TextField
+            source="administratorInternalComment"
+            style={{ whiteSpace: 'pre-wrap' }}
+          />
+        </Tab>
+      </TabbedShowLayout>
     </SimpleShowLayout>
   </Show>
 );
@@ -330,48 +355,62 @@ const RedProfileEditActions = props => {
 
 const RedProfileEdit = props => (
   <Edit {...props} actions={<RedProfileEditActions />}>
-    <SimpleForm>
-      <TextField source="userType" />
-      <BooleanInput source="userActivated" />
-      <TextInput
-        source="profileAvatarImageS3Key"
-        label="Photo file name"
-        helperText="Empty this field to clear the user's photo"
-      />
-      <TextInput source="firstName" />
-      <TextInput source="lastName" />
-      <SelectInput
-        source="gender"
-        choices={[
-          { id: 'male', name: 'Male' },
-          { id: 'female', name: 'Female' },
-          { id: 'other', name: 'Other' },
-          { id: '', name: 'Prefers not to answer' },
-        ]}
-      />
-      <NumberField source="age" />
-      <SelectArrayInput
-        source="languages"
-        choices={[
-          { id: 'English', name: 'English' },
-          { id: 'German', name: 'German' },
-          { id: 'Arabic', name: 'Arabic' },
-          { id: 'Farsi', name: 'Farsi' },
-          { id: 'Tigrinya', name: 'Tigrinya' },
-        ]}
-      />
-      <TextInput source="otherLanguages" />
-      <TextInput source="personalDescription" multiline />
-      <TextInput source="expectations" multiline />
-      <TextInput source="contactEmail" />
-      <TextInput source="linkedInProfileUrl" />
-      <TextInput source="slackUsername" />
-      <TextInput source="telephoneNumber" />
-      <SelectArrayInput
-        source="categories"
-        choices={categories.map(({ id, label }) => ({ id, name: label }))}
-      />
-    </SimpleForm>
+    <TabbedForm>
+      <FormTab label="Profile">
+        <TextField source="userType" />
+        <BooleanInput source="userActivated" />
+        <TextInput
+          source="profileAvatarImageS3Key"
+          label="Photo file name"
+          helperText="Empty this field to clear the user's photo"
+        />
+        <TextInput source="firstName" />
+        <TextInput source="lastName" />
+        <SelectInput
+          source="gender"
+          choices={[
+            { id: 'male', name: 'Male' },
+            { id: 'female', name: 'Female' },
+            { id: 'other', name: 'Other' },
+            { id: '', name: 'Prefers not to answer' },
+          ]}
+        />
+        <NumberField source="age" />
+        <SelectArrayInput
+          source="languages"
+          choices={[
+            { id: 'English', name: 'English' },
+            { id: 'German', name: 'German' },
+            { id: 'Arabic', name: 'Arabic' },
+            { id: 'Farsi', name: 'Farsi' },
+            { id: 'Tigrinya', name: 'Tigrinya' },
+          ]}
+        />
+        <TextInput source="otherLanguages" />
+        <TextInput source="personalDescription" multiline />
+        <TextInput source="expectations" multiline />
+        <TextInput source="contactEmail" />
+        <TextInput source="linkedInProfileUrl" />
+        <TextInput source="slackUsername" />
+        <TextInput source="telephoneNumber" />
+        <SelectArrayInput
+          source="categories"
+          choices={categories.map(({ id, label }) => ({ id, name: label }))}
+        />
+        <NumberInput source="menteeCountCapacity" />
+      </FormTab>
+      <FormTab label="Internal comments">
+        <p>
+          <em>
+            The following fields are only visible to ReDI Connect
+            administrators, i.e. mostly Eric, Isabelle and Timothy who use the
+            cloud-accounts@redi-school.org user. Distinct admin users is
+            planned.
+          </em>
+        </p>
+        <LongTextInput source="administratorInternalComment" />
+      </FormTab>
+    </TabbedForm>
   </Edit>
 );
 

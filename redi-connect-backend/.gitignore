@@ -18,7 +18,10 @@ coverage
 node_modules
 npm-debug.log
 
+server/ssl/
+
 start-prod.sh
+start-demonstration.sh
 send-single-reminder-email.sh
 send-reminder-emails.sh
 secound-round.sh
