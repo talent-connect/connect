@@ -10,6 +10,8 @@ import { Course } from '../types/Course';
 export const categories: Categories = [
   { id: 'blockchain', label: 'Blockchain', colour: '#db8484' },
   { id: 'basicComputer', label: 'Basic Computer', colour: '#9a5454' },
+  { id: 'basicJava', label: 'Basic Java', colour: '#9a5454' },
+  { id: 'basicPython', label: 'Basic Python', colour: '#9a5454' },
   { id: 'react', label: 'React', colour: '#c984db' },
   { id: 'itAndNetworking', label: 'IT & Networking', colour: '#979a54' },
   { id: 'swift', label: 'Swift', colour: '#84b2db' },
