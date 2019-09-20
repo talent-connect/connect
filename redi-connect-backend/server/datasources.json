@@ -5,7 +5,7 @@
   },
   "mongodb": {
     "host": "",
-    "port": 0,
+    "port": 27018,
     "url": "",
     "database": "mongodb",
     "password": "",
