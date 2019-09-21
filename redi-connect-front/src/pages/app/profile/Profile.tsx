@@ -1,15 +1,15 @@
-import { Button, Theme, createStyles, withStyles } from '@material-ui/core';
-import React, { useEffect } from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { FullScreenCircle } from '../../../hooks/WithLoading';
-import { LoggedInLayout } from '../../../layouts/LoggedInLayout';
-import { RedProfile } from '../../../types/RedProfile';
-import { ProfileMentee } from './mentee/ProfileMentee';
-import { ProfileMentor } from './mentor/ProfileMentor';
-import { connect } from 'react-redux';
-import { profilesFetchOneStart } from '../../../redux/profiles/actions';
-import { RootState } from '../../../redux/types';
-import { ProfileAcceptedMatch } from './acceptedMatch/ProfileAcceptedMatch';
+import { Button, Theme, createStyles, withStyles } from "@material-ui/core";
+import React, { useEffect } from "react";
+import { Link, RouteComponentProps } from "react-router-dom";
+import { FullScreenCircle } from "../../../hooks/WithLoading";
+import { LoggedInLayout } from "../../../layouts/LoggedInLayout";
+import { RedProfile } from "../../../types/RedProfile";
+import { ProfileMentee } from "./mentee/ProfileMentee";
+import { ProfileMentor } from "./mentor/ProfileMentor";
+import { connect } from "react-redux";
+import { profilesFetchOneStart } from "../../../redux/profiles/actions";
+import { RootState } from "../../../redux/types";
+import { ProfileAcceptedMatch } from "./acceptedMatch/ProfileAcceptedMatch";
 
 interface RouteParams {
   profileId: string;
@@ -19,14 +19,14 @@ const styles = (theme: Theme) =>
   createStyles({
     button: {
       marginTop: theme.spacing(2),
-      marginBottom: theme.spacing(2),
-    },
+      marginBottom: theme.spacing(2)
+    }
   });
 
 export default function Profile({
   match: {
-    params: { profileId },
-  },
+    params: { profileId }
+  }
 }: RouteComponentProps<RouteParams>) {
   return (
     <ProfileLoader profileId={profileId}>
@@ -38,12 +38,12 @@ export default function Profile({
       )}
     </ProfileLoader>
   );
-};
+}
 
 const ProfileLoader = connect((state: RootState) => ({
   loading: state.profiles.loading,
   profile: state.profiles.oneProfile,
-  currentUser: state.user.profile,
+  currentUser: state.user.profile
 }))((props: any) => {
   useEffect(() => {
     props.dispatch(profilesFetchOneStart(props.profileId));
@@ -51,17 +51,17 @@ const ProfileLoader = connect((state: RootState) => ({
   return props.children({
     loading: props.loading,
     profile: props.profile,
-    currentUser: props.currentUser,
+    currentUser: props.currentUser
   });
 });
 
-type PresentationProps = {
+interface PresentationProps {
   classes: {
     button: string;
   };
   profile: RedProfile | undefined;
   currentUser: RedProfile | undefined;
-};
+}
 
 const Presentation = withStyles(styles)(
   ({ classes, profile, currentUser }: PresentationProps) => {
@@ -69,9 +69,9 @@ const Presentation = withStyles(styles)(
       profile &&
       profile.redMatchesWithCurrentUser &&
       profile.redMatchesWithCurrentUser[0] &&
-      profile.redMatchesWithCurrentUser[0].status === 'accepted';
+      profile.redMatchesWithCurrentUser[0].status === "accepted";
     const currentUserIsMentor =
-      currentUser && currentUser.userType === 'mentor';
+      currentUser && currentUser.userType === "mentor";
     const LinkToDashboard: any = (props: any) => (
       <Link {...props} to="/app/dashboard" />
     );
@@ -91,11 +91,11 @@ const Presentation = withStyles(styles)(
           <ProfileAcceptedMatch profile={profile} />
         )}
         {!isAcceptedMatch &&
-          typeof profile !== 'undefined' &&
-          profile.userType === 'mentee' && <ProfileMentee mentee={profile} />}
+          typeof profile !== "undefined" &&
+          profile.userType === "mentee" && <ProfileMentee mentee={profile} />}
         {!isAcceptedMatch &&
-          typeof profile !== 'undefined' &&
-          profile.userType === 'mentor' && <ProfileMentor mentor={profile} />}
+          typeof profile !== "undefined" &&
+          profile.userType === "mentor" && <ProfileMentor mentor={profile} />}
       </LoggedInLayout>
     );
   }

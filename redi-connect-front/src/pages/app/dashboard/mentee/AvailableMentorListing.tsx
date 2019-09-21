@@ -1,58 +1,64 @@
-import { Grid, createStyles, withStyles, Paper, Theme } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
-import intersection from 'lodash/intersection';
-import { MentorCard } from '../../../../components/MentorCard';
-import { useLoading } from '../../../../hooks/WithLoading';
-import { getMentors } from '../../../../services/api/api';
-import { history } from '../../../../services/history/history';
-import { RedProfile } from '../../../../types/RedProfile';
-import { getRedProfile } from '../../../../services/auth/auth';
-import { CategoryChip } from '../../../../components/CategoryChip';
-import { useList } from '../../../../hooks/useList';
+import {
+  Grid,
+  createStyles,
+  withStyles,
+  Paper,
+  Theme
+} from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import intersection from "lodash/intersection";
+import { MentorCard } from "../../../../components/MentorCard";
+import { useLoading } from "../../../../hooks/WithLoading";
+import { getMentors } from "../../../../services/api/api";
+import { history } from "../../../../services/history/history";
+import { RedProfile } from "../../../../types/RedProfile";
+import { getRedProfile } from "../../../../services/auth/auth";
+import { CategoryChip } from "../../../../components/CategoryChip";
+import { useList } from "../../../../hooks/useList";
 
 const styles = createStyles((theme: Theme) => ({
   categoryChip: {
-    marginTop: '0.5em',
-    marginRight: '1em',
-    color: 'white',
-    fontSize: '12px',
-    float: 'left',
+    marginTop: "0.5em",
+    marginRight: "1em",
+    color: "white",
+    fontSize: "12px",
+    float: "left"
   },
   paper: {
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
-    marginBottom: '2em',
+    marginBottom: "2em"
   },
   header: {
-    marginTop: 0,
-  },
+    marginTop: 0
+  }
 }));
 
-type Props = {
+interface Props {
   classes: {
     categoryChip: string;
     paper: string;
     header: string;
   };
-};
+}
 
 type MentorCatCount = RedProfile & { categoryMatchCount: number };
 
 const addCategoryMatchCount = (
-  mentors: Array<RedProfile>,
-  categories: Array<string>
-): Array<MentorCatCount> =>
+  mentors: RedProfile[],
+  categories: string[]
+): MentorCatCount[] =>
   mentors.map(mentor =>
     Object.assign(mentor, {
-      categoryMatchCount: intersection(categories, mentor.categories).length,
+      categoryMatchCount: intersection(categories, mentor.categories).length
     })
   );
 
 export const AvailableMentorListing = withStyles(styles)((props: any) => {
   const classes: any = props.classes;
   const { Loading, setLoading } = useLoading();
-  const [_mentors, setMentors] = useState<Array<RedProfile>>([]);
+  const [_mentors, setMentors] = useState<RedProfile[]>([]);
   const currentUserCategories = getRedProfile().categories;
   const [activeCategories, { toggle }] = useList(currentUserCategories);
 
@@ -113,13 +119,13 @@ export const AvailableMentorListing = withStyles(styles)((props: any) => {
                   categoryId={catId}
                   className={classes.categoryChip}
                   overrideBackgroundColour={
-                    !activeCategories.includes(catId) ? '#b2b2b2' : ''
+                    !activeCategories.includes(catId) ? "#b2b2b2" : ""
                   }
                   onClick={() => toggle(catId)}
                 />
               ))}
             </Grid>
-            <Grid item style={{ margin: '10px 0', fontWeight: 300 }}>
+            <Grid item style={{ margin: "10px 0", fontWeight: 300 }}>
               These mentors have expertise in one or more of the domains you
               selected of interest in your profile.
             </Grid>

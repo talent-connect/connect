@@ -1,23 +1,23 @@
-import { ActionsObservable, ofType } from 'redux-observable';
-import { concat, from, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
-import { API_URL } from '../../config/config';
-import { http } from '../../services/http/http';
-import { profilesFetchOneStart } from '../profiles/actions';
-import { profileFetchStart } from '../user/actions';
+import { ActionsObservable, ofType } from "redux-observable";
+import { concat, from, of } from "rxjs";
+import { map, switchMap } from "rxjs/operators";
+import { API_URL } from "../../config/config";
+import { http } from "../../services/http/http";
+import { profilesFetchOneStart } from "../profiles/actions";
+import { profileFetchStart } from "../user/actions";
 import {
   matchesAcceptMentorshipSuccess,
   matchesFetchStart,
-  matchesFetchSuccess,
-} from './actions';
+  matchesFetchSuccess
+} from "./actions";
 import {
   MatchesAcceptMentorshipStartAction,
   MatchesActions,
-  MatchesActionType,
-} from './types';
+  MatchesActionType
+} from "./types";
 
 const fetchFilter = {
-  include: ['mentee', 'mentor'],
+  include: ["mentee", "mentor"]
 };
 
 export const matchesFetchEpic = (action$: ActionsObservable<MatchesActions>) =>
@@ -36,11 +36,11 @@ export const matchesAcceptMentorshipEpic = (action$: ActionsObservable<any>) =>
     switchMap(action => {
       const request = from(
         http(`${API_URL}/redMatches/acceptMentorship`, {
-          method: 'post',
+          method: "post",
           data: {
             redMatchId: (action as MatchesAcceptMentorshipStartAction).payload
-              .redMatchId,
-          },
+              .redMatchId
+          }
         })
       ).pipe(
         map(resp => resp.data),
@@ -71,5 +71,5 @@ export const matchesAcceptMentorshipEpic = (action$: ActionsObservable<any>) =>
 
 export const matchesEpics = {
   matchesFetchEpic,
-  matchesAcceptMentorshipEpic,
+  matchesAcceptMentorshipEpic
 };
