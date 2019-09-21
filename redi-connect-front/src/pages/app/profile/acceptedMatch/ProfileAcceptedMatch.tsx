@@ -1,21 +1,21 @@
-import { createStyles, Grid, Theme, withStyles } from '@material-ui/core';
-import React from 'react';
-import { connect } from 'react-redux';
-import { Avatar } from '../../../../components/Avatar';
-import { CategoryChip } from '../../../../components/CategoryChip';
-import { ContactInfo } from '../../../../components/ContactInfo';
-import { LogMentoringSessionBtn } from '../../../../components/LogMentoringSessionBtn';
-import { MentoringSessionsLog } from '../../../../components/MentoringSessionsLog';
-import { ProfileCourse } from '../../../../components/ProfileCourse';
-import { ProfileLanguages } from '../../../../components/ProfileLanguages';
-import { ProfileName } from '../../../../components/ProfileName';
-import { ProfileOccupation } from '../../../../components/ProfileOccupation';
-import { ProfileWorkPlace } from '../../../../components/ProfileWorkPlace';
-import { ReportProblemBtn } from '../../../../components/ReportProblemBtn';
-import { RootState } from '../../../../redux/types';
-import { RedProfile } from '../../../../types/RedProfile';
+import { createStyles, Grid, Theme, withStyles } from "@material-ui/core";
+import React from "react";
+import { connect } from "react-redux";
+import { Avatar } from "../../../../components/Avatar";
+import { CategoryChip } from "../../../../components/CategoryChip";
+import { ContactInfo } from "../../../../components/ContactInfo";
+import { LogMentoringSessionBtn } from "../../../../components/LogMentoringSessionBtn";
+import { MentoringSessionsLog } from "../../../../components/MentoringSessionsLog";
+import { ProfileCourse } from "../../../../components/ProfileCourse";
+import { ProfileLanguages } from "../../../../components/ProfileLanguages";
+import { ProfileName } from "../../../../components/ProfileName";
+import { ProfileOccupation } from "../../../../components/ProfileOccupation";
+import { ProfileWorkPlace } from "../../../../components/ProfileWorkPlace";
+import { ReportProblemBtn } from "../../../../components/ReportProblemBtn";
+import { RootState } from "../../../../redux/types";
+import { RedProfile } from "../../../../types/RedProfile";
 
-type Props = {
+interface Props {
   profile: RedProfile;
   classes: {
     avatar: string;
@@ -23,19 +23,19 @@ type Props = {
     personalDescription: string;
   };
   currentUser: RedProfile;
-};
+}
 
 const styles = (theme: Theme) =>
   createStyles({
     avatar: {
-      width: '100px',
-      height: '100px',
+      width: "100px",
+      height: "100px"
     },
     category: {
-      color: 'white',
-      fontSize: '12px',
-      margin: '3px',
-      height: '20px',
+      color: "white",
+      fontSize: "12px",
+      margin: "3px",
+      height: "20px"
     },
     personalDescription: {
       marginTop: theme.spacing(6),
@@ -45,7 +45,7 @@ const styles = (theme: Theme) =>
   });
 
 const mapState = (state: RootState) => ({
-  currentUser: state.user.profile,
+  currentUser: state.user.profile
 });
 
 // TODO: ': any' to be replaced with proper type
@@ -54,8 +54,8 @@ export const ProfileAcceptedMatch = connect(mapState)(
     // const match = profile.redMatchesWithCurrentUser && profile.redMatchesWithCurrentUser[0];
     const occupation = occupationFormatter(profile);
     const workPlace = workPlaceFormatter(profile);
-    const currentUserIsMentor = currentUser.userType === 'mentor';
-    const currentUserIsMentee = currentUser.userType === 'mentee';
+    const currentUserIsMentor = currentUser.userType === "mentor";
+    const currentUserIsMentee = currentUser.userType === "mentee";
 
     return (
       <>
@@ -67,12 +67,12 @@ export const ProfileAcceptedMatch = connect(mapState)(
                 <Avatar
                   className={classes.avatar}
                   s3Key={profile.profileAvatarImageS3Key}
-                  style={{ width: '100%', height: '20vh' }}
+                  style={{ width: "100%", height: "20vh" }}
                 />
               </Grid>
               <Grid item xs={12} sm={7}>
                 <h3
-                  style={{ fontWeight: 700, fontFamily: 'Roboto', margin: 0 }}
+                  style={{ fontWeight: 700, fontFamily: "Roboto", margin: 0 }}
                 >
                   <ProfileName
                     name={`${profile.firstName} ${profile.lastName}`}
@@ -90,15 +90,20 @@ export const ProfileAcceptedMatch = connect(mapState)(
             <p className={classes.personalDescription}>
               {profile.personalDescription}
             </p>
-            {profile.expectations && <>
-              <h4 style={{ marginBottom: 0 }}>
-                {currentUserIsMentee && <>Expectations to my mentee:</>}
-                {currentUserIsMentor && <>Expectations to my mentor:</>}
-              </h4>
-              <p className={classes.personalDescription} style={{ marginTop: '0.3em' }}>
-                {profile.expectations}
-              </p>
-            </>}
+            {profile.expectations && (
+              <>
+                <h4 style={{ marginBottom: 0 }}>
+                  {currentUserIsMentee && <>Expectations to my mentee:</>}
+                  {currentUserIsMentor && <>Expectations to my mentor:</>}
+                </h4>
+                <p
+                  className={classes.personalDescription}
+                  style={{ marginTop: "0.3em" }}
+                >
+                  {profile.expectations}
+                </p>
+              </>
+            )}
 
             <ContactInfo profile={profile} />
 
@@ -121,8 +126,11 @@ export const ProfileAcceptedMatch = connect(mapState)(
             />
           </Grid>
           <Grid item xs={12}>
-            <div style={{ marginTop: '50px' }}>
-              <ReportProblemBtn type={currentUser.userType} redProfileId={profile.id} />
+            <div style={{ marginTop: "50px" }}>
+              <ReportProblemBtn
+                type={currentUser.userType}
+                redProfileId={profile.id}
+              />
             </div>
           </Grid>
         </Grid>
@@ -133,28 +141,28 @@ export const ProfileAcceptedMatch = connect(mapState)(
 
 const occupationFormatter = (mentee: RedProfile) => {
   switch (mentee.mentee_occupationCategoryId) {
-    case 'job':
+    case "job":
       return (
         `Job` +
         (mentee.mentee_occupationJob_position
           ? ` (${mentee.mentee_occupationJob_position})`
-          : '')
+          : "")
       );
-    case 'student':
+    case "student":
       return (
         `Student` +
         (mentee.mentee_occupationStudent_studyName
           ? ` (${mentee.mentee_occupationStudent_studyName})`
-          : '')
+          : "")
       );
-    case 'lookingForJob':
+    case "lookingForJob":
       return (
         `Looking for a job` +
         (mentee.mentee_occupationLookingForJob_what
           ? ` ${mentee.mentee_occupationLookingForJob_what})`
-          : '')
+          : "")
       );
-    case 'other':
+    case "other":
       return mentee.mentee_occupationOther_description;
     default:
       return undefined;
@@ -163,12 +171,12 @@ const occupationFormatter = (mentee: RedProfile) => {
 
 const workPlaceFormatter = (mentee: RedProfile) => {
   switch (mentee.mentee_occupationCategoryId) {
-    case 'job':
+    case "job":
       return mentee.mentee_occupationJob_placeOfEmployment;
-    case 'student':
+    case "student":
       return mentee.mentee_occupationStudent_studyPlace;
-    case 'lookingForJob':
-    case 'other':
+    case "lookingForJob":
+    case "other":
     default:
       return undefined;
   }

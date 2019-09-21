@@ -1,6 +1,6 @@
 // Copied from https://github.com/streamich/react-use/blob/master/src/useList.ts
 
-import { useState } from 'react';
+import { useState } from "react";
 
 export interface Actions<T> {
   set: (list: T[]) => void;
@@ -25,12 +25,12 @@ export const useList = <T>(initialList: T[] = []): [T[], Actions<T>] => {
         set(currentList => [
           ...currentList.slice(0, index),
           entry,
-          ...list.slice(index + 1),
+          ...list.slice(index + 1)
         ]),
       remove: index =>
         set(currentList => [
           ...currentList.slice(0, index),
-          ...list.slice(index + 1),
+          ...list.slice(index + 1)
         ]),
       push: entry => set(currentList => [...currentList, entry]),
       filter: fn => set(currentList => currentList.filter(fn)),
@@ -40,10 +40,9 @@ export const useList = <T>(initialList: T[] = []): [T[], Actions<T>] => {
           const index = currentList.indexOf(entry);
           if (index === -1) {
             return [...currentList, entry];
-          } else {
-            return currentList.filter(v => v !== entry);
           }
-        }),
-    },
+          return currentList.filter(v => v !== entry);
+        })
+    }
   ];
 };

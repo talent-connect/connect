@@ -1,5 +1,5 @@
-import { Action } from 'redux';
-import { RedProfile } from '../../types/RedProfile';
+import { Action } from "redux";
+import { RedProfile } from "../../types/RedProfile";
 
 export interface ProfilesState {
   oneProfile?: RedProfile;
@@ -7,13 +7,13 @@ export interface ProfilesState {
 }
 
 export enum ProfilesActionType {
-  PROFILES_FETCH_ONE_START = 'PROFILES_FETCH_ONE_START',
-  PROFILES_FETCH_ONE_SUCCESS = 'PROFILES_FETCH_ONE_SUCCESS',
-  PROFILES_FETCH_ONE_ERROR = 'PROFILES_FETCH_ONE_ERROR',
+  PROFILES_FETCH_ONE_START = "PROFILES_FETCH_ONE_START",
+  PROFILES_FETCH_ONE_SUCCESS = "PROFILES_FETCH_ONE_SUCCESS",
+  PROFILES_FETCH_ONE_ERROR = "PROFILES_FETCH_ONE_ERROR"
 }
 export interface ProfilesFetchOneStartAction extends Action {
   type: ProfilesActionType.PROFILES_FETCH_ONE_START;
-  payload: RedProfile['id'];
+  payload: RedProfile["id"];
 }
 export interface ProfilesFetchOneSuccessAction extends Action {
   type: ProfilesActionType.PROFILES_FETCH_ONE_SUCCESS;

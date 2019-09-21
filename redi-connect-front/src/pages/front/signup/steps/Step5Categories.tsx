@@ -52,7 +52,7 @@ export const Comp = (
     setFieldTouched,
     setFieldValue,
     classes,
-    type,
+    type
   } = props;
 
   const change = (name: any, e: any) => {
@@ -99,7 +99,7 @@ export const Comp = (
                   name={`categories-${id}`}
                   checked={categories.includes(id)}
                   value={id}
-                  onChange={categoriesChange.bind(null, 'categories')}
+                  onChange={categoriesChange.bind(null, "categories")}
                   disabled={isSubmitting}
                 />
               }
@@ -119,8 +119,8 @@ export const Comp = (
             }
             onChange={change.bind(null, 'menteeCountCapacity')}
             inputProps={{
-              name: 'menteeCountCapacity',
-              id: 'menteeCountCapacity',
+              name: "menteeCountCapacity",
+              id: "menteeCountCapacity"
             }}
           >
             {menteeCountCapacityOptions.map(menteeCountCapacity => (

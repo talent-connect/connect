@@ -60,5 +60,17 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "@types/styled-components": "^4.1.18",
+    "@typescript-eslint/eslint-plugin": "^1.13.0",
+    "@typescript-eslint/parser": "^1.13.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-jest": "^22.13.6",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "^7.14.3",
+    "husky": "^3.0.1",
+    "lint-staged": "^9.2.0",
+    "prettier": "^1.18.2"
+  }
 }

@@ -1,8 +1,8 @@
-import React from 'react';
-import { LoggedInLayout } from '../../../layouts/LoggedInLayout';
-import { getRedProfile } from '../../../services/auth/auth';
-import { DashboardMentee } from './mentee/DashboardMentee';
-import { DashboardMentor } from './mentor/DashboardMentor';
+import React from "react";
+import { LoggedInLayout } from "../../../layouts/LoggedInLayout";
+import { getRedProfile } from "../../../services/auth/auth";
+import { DashboardMentee } from "./mentee/DashboardMentee";
+import { DashboardMentor } from "./mentor/DashboardMentor";
 
 export default () => {
   const profile = getRedProfile();

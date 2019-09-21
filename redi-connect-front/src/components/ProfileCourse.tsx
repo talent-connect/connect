@@ -4,9 +4,9 @@ import { RedProfile } from '../types/RedProfile';
 import { courseIdToLabelMap } from '../config/config';
 
 export const ProfileCourse = ({
-  courseId,
+  courseId
 }: {
-  courseId: RedProfile['mentee_currentlyEnrolledInCourse'];
+  courseId: RedProfile["mentee_currentlyEnrolledInCourse"];
 }) => {
   return (
     <Grid container spacing={1} alignItems="center" style={{ margin: '5px 0' }}>

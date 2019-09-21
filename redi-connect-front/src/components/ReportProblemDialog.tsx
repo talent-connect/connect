@@ -29,9 +29,9 @@ import { RedProblemReportDto } from '../types/RedProblemReportDto';
 import { profilesFetchOneStart } from '../redux/profiles/actions';
 import { getRedProfile } from '../services/auth/auth';
 
-type ReportProblemDialogProps = {
+interface ReportProblemDialogProps {
   redProfileId: string;
-  type: ReportProblemBtnProps['type'];
+  type: ReportProblemBtnProps["type"];
   isOpen: boolean;
   onClose: () => void;
   asyncResult: FormSubmitResult;
@@ -44,7 +44,7 @@ type ReportProblemDialogProps = {
       | MentoringSessionsClearAsyncResultAction
   ) => void;
   */
-};
+}
 /*
 const mapState = (state: RootState) => ({
   asyncResult: state.mentoringSessions.asyncResult,
@@ -64,7 +64,7 @@ const ReportProblemDialogConnected = connect()((props: any) => {
     }, [isOpen]);*/
 
   const [formSubmitResult, setFormSubmitResult] = useState<FormSubmitResult>(
-    'notSubmitted'
+    "notSubmitted"
   );
 
   const submit = async (
@@ -75,27 +75,27 @@ const ReportProblemDialogConnected = connect()((props: any) => {
       const userIsCertain = window.confirm('Are you sure you want to cancel this mentorship?');
       if (!userIsCertain) return actions.setSubmitting(false);
     }
-    setFormSubmitResult('submitting');
+    setFormSubmitResult("submitting");
     try {
       const report: RedProblemReportDto = {
         problemDescription: values.problemDescription,
         reportType:
-          type === 'mentee'
-            ? 'mentor-report-about-mentee'
-            : 'mentee-report-about-mentor',
-        reporteeId: redProfileId,
+          type === "mentee"
+            ? "mentor-report-about-mentee"
+            : "mentee-report-about-mentor",
+        reporteeId: redProfileId
       };
-      if (type === 'mentee') {
+      if (type === "mentee") {
         report.ifFromMentor_cancelMentorshipImmediately =
           values.ifFromMentor_cancelMentorshipImmediately;
       }
       await reportProblem(report);
-      setFormSubmitResult('success');
+      setFormSubmitResult("success");
       // TODO: can this be decoupled? Here the component "knows" that it's inside a <Profile>
       // and triggers a refresh of that <Profile>
       dispatch(profilesFetchOneStart(redProfileId));
     } catch (err) {
-      setFormSubmitResult('error');
+      setFormSubmitResult("error");
     } finally {
       actions.setSubmitting(false);
     }
@@ -103,7 +103,7 @@ const ReportProblemDialogConnected = connect()((props: any) => {
 
   return (
     <>
-      <FullScreenCircle loading={formSubmitResult === 'submitting'} />
+      <FullScreenCircle loading={formSubmitResult === "submitting"} />
       <Dialog
         open={isOpen}
         onClose={onClose}
@@ -140,15 +140,15 @@ export const ReportProblemDialog = (props: any) => (
 );
 
 const initialFormValues: FormValues = {
-  problemDescription: '',
-  ifFromMentor_cancelMentorshipImmediately: false,
+  problemDescription: "",
+  ifFromMentor_cancelMentorshipImmediately: false
 };
 
 const validationSchema = Yup.object({
   problemDescription: Yup.string()
     .required()
-    .label('Problem description')
-    .max(1000),
+    .label("Problem description")
+    .max(1000)
 });
 
 interface FormValues {
@@ -163,27 +163,27 @@ const styles = (theme: Theme) =>
       color: 'white',
     },
     submitError: {
-      backgroundColor: theme.palette.error.main,
+      backgroundColor: theme.palette.error.main
     },
     submitSuccess: {
-      backgroundColor: theme.palette.primary.main,
+      backgroundColor: theme.palette.primary.main
     },
     margin: {
-      margin: '6px 0',
-    },
+      margin: "6px 0"
+    }
   });
 
-type FormProps = {
+interface FormProps {
   classes: {
     submitResult: string;
     submitError: string;
     submitSuccess: string;
     margin: string;
   };
-  type: RedProfile['userType'];
+  type: RedProfile["userType"];
   submitResult: FormSubmitResult;
   onClose: () => void;
-};
+}
 
 const Form = withStyles(styles)(
   ({
@@ -199,7 +199,7 @@ const Form = withStyles(styles)(
     isValid,
     classes,
     onClose,
-    type,
+    type
   }: FormikProps<FormValues> & FormProps) => {
     const change = (name: any, e: any) => {
       e.persist();
@@ -207,19 +207,19 @@ const Form = withStyles(styles)(
       setFieldTouched(name, true, false);
     };
 
-    const { userType } = getRedProfile()
+    const { userType } = getRedProfile();
 
     return (
       <>
-        {submitResult === 'error' && (
+        {submitResult === "error" && (
           <Paper
             className={classNames(classes.submitError, classes.submitResult)}
           >
             An error occurred, please try again.
           </Paper>
         )}
-        {submitResult === 'success' && <>The problem report was sent.</>}
-        {submitResult !== 'success' && (
+        {submitResult === "success" && <>The problem report was sent.</>}
+        {submitResult !== "success" && (
           <>
             <TextField
               className={classes.margin}
@@ -232,15 +232,15 @@ const Form = withStyles(styles)(
               helperText={
                 touched.problemDescription
                   ? errors.problemDescription
-                  : 'Please describe the problem'
+                  : "Please describe the problem"
               }
               value={problemDescription}
               multiline
               fullWidth
               rows="4"
-              onChange={change.bind(null, 'problemDescription')}
+              onChange={change.bind(null, "problemDescription")}
             />
-            {userType === 'mentor' && (
+            {userType === "mentor" && (
               <>
                 <FormControlLabel
                   label="Immediately cancel mentorship with this mentee"
@@ -251,14 +251,14 @@ const Form = withStyles(styles)(
                       checked={ifFromMentor_cancelMentorshipImmediately}
                       onChange={change.bind(
                         null,
-                        'ifFromMentor_cancelMentorshipImmediately'
+                        "ifFromMentor_cancelMentorshipImmediately"
                       )}
                       disabled={isSubmitting}
                     />
                   }
                 />
                 {ifFromMentor_cancelMentorshipImmediately && (
-                  <FormHelperText style={{ marginBottom: '1em' }}>
+                  <FormHelperText style={{ marginBottom: "1em" }}>
                     <em>
                       Not ReDI? We regret you want to cancel this mentorship.
                       Someone from our Career Department will be in touch with

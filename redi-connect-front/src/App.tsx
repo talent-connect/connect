@@ -14,48 +14,48 @@ const theme = createMuiTheme({
   palette: {
     primary: {
       main: mainColour,
-      contrastText: '#fff',
+      contrastText: "#fff"
     },
     secondary: {
-      main: '#ea5b25',
+      main: "#ea5b25"
     },
     error: {
-      main: '#b00020',
-    },
+      main: "#b00020"
+    }
   },
   typography: {
-    fontFamily: 'Roboto',
+    fontFamily: "Roboto"
   },
   overrides: {
     MuiStepIcon: {
       root: {
-        color: '#eaeaea',
-        '&$active': {
-          color: '#ea5b25',
+        color: "#eaeaea",
+        "&$active": {
+          color: "#ea5b25"
         },
-        '&$completed': {
-          color: '#ea5b25',
-        },
-      },
+        "&$completed": {
+          color: "#ea5b25"
+        }
+      }
     },
     MuiStepLabel: {
       label: {
-        color: '#eaeaea',
-        '&$active': {
-          color: '#ea5b25',
+        color: "#eaeaea",
+        "&$active": {
+          color: "#ea5b25"
         },
-        '&$completed': {
-          color: '#ea5b25',
-        },
-      },
-    },
-  },
+        "&$completed": {
+          color: "#ea5b25"
+        }
+      }
+    }
+  }
 });
 
 const App = () => {
   useEffect(() => {
-    store.dispatch(profileFetchStart())
-  }, [])
+    store.dispatch(profileFetchStart());
+  }, []);
   return (
     <MuiThemeProvider theme={theme}>
       <StoreProvider store={store}>

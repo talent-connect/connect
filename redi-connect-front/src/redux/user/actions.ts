@@ -6,39 +6,39 @@ import {
   ProfileFetchErrorAction,
   ProfileSaveStartAction,
   ProfileSaveSuccessAction,
-  ProfileSaveErrorAction,
-} from './types';
+  ProfileSaveErrorAction
+} from "./types";
 
 export const profileFetchStart = (): ProfileFetchStartAction => ({
-  type: UserActionType.USER_PROFILE_FETCH_START,
+  type: UserActionType.USER_PROFILE_FETCH_START
 });
 
 export const profileFetchSuccess = (
   profile: RedProfile
 ): ProfileFetchSuccessAction => ({
   type: UserActionType.USER_PROFILE_FETCH_SUCCESS,
-  payload: profile,
+  payload: profile
 });
 
 export const profileFetchError = (error: Error): ProfileFetchErrorAction => ({
   type: UserActionType.USER_PROFILE_FETCH_ERROR,
-  payload: error,
+  payload: error
 });
 
 export const profileSaveStart = (
   redProfile: RedProfile
 ): ProfileSaveStartAction => ({
   type: UserActionType.USER_PROFILE_SAVE_START,
-  payload: redProfile,
+  payload: redProfile
 });
 export const profileSaveSuccess = (
   profile: RedProfile
 ): ProfileSaveSuccessAction => ({
   type: UserActionType.USER_PROFILE_SAVE_SUCCESS,
-  payload: profile,
+  payload: profile
 });
 
 export const profileSaveError = (error: Error): ProfileSaveErrorAction => ({
   type: UserActionType.USER_PROFILE_SAVE_ERROR,
-  payload: error,
+  payload: error
 });

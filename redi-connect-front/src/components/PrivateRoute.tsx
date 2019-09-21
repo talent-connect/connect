@@ -1,6 +1,6 @@
-import React, { FunctionComponent } from 'react';
-import { Route, RouteProps } from 'react-router-dom';
-import { useNotAuthenticatedRedirector } from '../hooks/useNotAuthenticatedRedirector';
+import React, { FunctionComponent } from "react";
+import { Route, RouteProps } from "react-router-dom";
+import { useNotAuthenticatedRedirector } from "../hooks/useNotAuthenticatedRedirector";
 
 export const PrivateRoute: FunctionComponent<RouteProps> = props => {
   const { isRedirectingToLogin } = useNotAuthenticatedRedirector();

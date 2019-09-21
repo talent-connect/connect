@@ -3,12 +3,12 @@ import { Grid } from '@material-ui/core';
 import range from 'lodash/range';
 import {
   Person as PersonIcon,
-  PersonOutline as PersonOutlineIcon,
-} from '@material-ui/icons';
+  PersonOutline as PersonOutlineIcon
+} from "@material-ui/icons";
 
 export const ProfileAvailableMenteeSlots = ({
   totalCapacity,
-  currentFreeCapacity,
+  currentFreeCapacity
 }: {
   totalCapacity: number;
   currentFreeCapacity: number;

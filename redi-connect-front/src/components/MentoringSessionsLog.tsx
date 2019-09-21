@@ -1,11 +1,11 @@
-import React from 'react';
-import { RedMentoringSession } from '../types/RedMentoringSession';
-import { Stepper, Step, StepLabel } from '@material-ui/core';
-import moment from 'moment';
+import React from "react";
+import { RedMentoringSession } from "../types/RedMentoringSession";
+import { Stepper, Step, StepLabel } from "@material-ui/core";
+import moment from "moment";
 
-type Props = {
-  mentoringSessions: Array<RedMentoringSession>;
-};
+interface Props {
+  mentoringSessions: RedMentoringSession[];
+}
 
 export const MentoringSessionsLog = ({ mentoringSessions }: Props) => {
   if (!mentoringSessions || mentoringSessions.length === 0)
@@ -17,8 +17,8 @@ export const MentoringSessionsLog = ({ mentoringSessions }: Props) => {
         {mentoringSessions.map((mentoringSession, i) => (
           <Step key={mentoringSession.id} active={true}>
             <StepLabel>
-              Session {i + 1} on the{' '}
-              {moment(mentoringSession.date).format('Do of MMMM YYYY')} for{' '}
+              Session {i + 1} on the{" "}
+              {moment(mentoringSession.date).format("Do of MMMM YYYY")} for{" "}
               {mentoringSession.minuteDuration} minutes
             </StepLabel>
             >

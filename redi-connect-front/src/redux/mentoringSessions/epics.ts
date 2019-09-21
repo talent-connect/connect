@@ -16,7 +16,7 @@ import { profileFetchStart } from '../user/actions';
 import { profilesFetchOneStart } from '../profiles/actions';
 
 const fetchFilter = {
-  include: ['mentee', 'mentor'],
+  include: ["mentee", "mentor"]
 };
 
 export const mentoringSessionsFetchEpic = (
@@ -39,8 +39,8 @@ export const mentoringSessionsCreateEpic = (action$: ActionsObservable<any>) =>
     switchMap(action => {
       const request = from(
         http(`${API_URL}/redMentoringSessions`, {
-          method: 'post',
-          data: action.payload,
+          method: "post",
+          data: action.payload
         })
       ).pipe(
         map(resp => resp.data),
@@ -56,7 +56,7 @@ export const mentoringSessionsCreateEpic = (action$: ActionsObservable<any>) =>
         of(profileFetchStart()),
         // This one is a terrible idea for the same reason explained in
         // matches/epics.ts
-        of(profilesFetchOneStart(successAction.payload.menteeId)),
+        of(profilesFetchOneStart(successAction.payload.menteeId))
       );
     })
 
@@ -66,5 +66,5 @@ export const mentoringSessionsCreateEpic = (action$: ActionsObservable<any>) =>
 
 export const mentoringSessionsEpics = {
   mentoringSessionsFetchEpic,
-  mentoringSessionsCreateEpic,
+  mentoringSessionsCreateEpic
 };

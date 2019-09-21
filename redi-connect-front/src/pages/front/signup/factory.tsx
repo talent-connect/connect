@@ -10,24 +10,24 @@ import {
 import { Step1Intro, validationSchema as step1Val } from './steps/Step1Intro';
 import {
   Step2Background,
-  validationSchema as step2Val,
-} from './steps/Step2Background';
+  validationSchema as step2Val
+} from "./steps/Step2Background";
 import {
   Step3Profile,
-  validationSchema as step3Val,
-} from './steps/Step3Profile';
+  validationSchema as step3Val
+} from "./steps/Step3Profile";
 import {
   Button,
   Paper,
   Theme,
   createStyles,
-  withStyles,
-} from '@material-ui/core';
-import { SignUpFormStepper } from './SignUpFormStepper';
+  withStyles
+} from "@material-ui/core";
+import { SignUpFormStepper } from "./SignUpFormStepper";
 import {
   Step4ContactData,
-  validationSchema as step4Val,
-} from './steps/Step4ContactData';
+  validationSchema as step4Val
+} from "./steps/Step4ContactData";
 import {
   Step5Categories,
   validationSchema as step5Val,
@@ -41,15 +41,15 @@ const styles = (theme: Theme) =>
     submitError: {
       padding: theme.spacing(1),
       backgroundColor: theme.palette.error.main,
-      color: 'white',
-    },
+      color: "white"
+    }
   });
 
 export type SignUpFormType =
-  | 'mentor'
-  | 'mentee'
-  | 'public-sign-up-mentor-pending-review'
-  | 'public-sign-up-mentee-pending-review';
+  | "mentor"
+  | "mentee"
+  | "public-sign-up-mentor-pending-review"
+  | "public-sign-up-mentee-pending-review";
 
 export interface SignUpFormValues {
   formType: SignUpFormType;
@@ -74,14 +74,14 @@ export interface SignUpFormValues {
   lastName: string;
   gender: string;
   age?: number;
-  languages: Array<String>;
+  languages: string[];
   otherLanguages: string;
   personalDescription: string;
   contactEmail: string;
   linkedInProfileUrl: string;
   slackUsername: string;
   telephoneNumber: string;
-  categories: Array<string>;
+  categories: string[];
   menteeCountCapacity: number;
   agreesWithCodeOfConduct: boolean;
 }
@@ -109,13 +109,13 @@ const initialValues: SignUpFormValues = {
   lastName: '',
   gender: '',
   age: undefined,
-  languages: ['English'],
-  otherLanguages: '',
-  personalDescription: '',
-  contactEmail: '',
-  linkedInProfileUrl: '',
-  slackUsername: '',
-  telephoneNumber: '',
+  languages: ["English"],
+  otherLanguages: "",
+  personalDescription: "",
+  contactEmail: "",
+  linkedInProfileUrl: "",
+  slackUsername: "",
+  telephoneNumber: "",
   categories: [],
   menteeCountCapacity: 1,
   agreesWithCodeOfConduct: false,
@@ -151,10 +151,10 @@ export const buildSignUpForm = (
     ]);
     cleanProfile.userType = type;
     cleanProfile.userActivated = false;
-    cleanProfile.signupSource = 'public-sign-up';
+    cleanProfile.signupSource = "public-sign-up";
     try {
       await signUp(values.username, values.password, cleanProfile);
-      history.push('/front/signup/complete/' + type);
+      history.push("/front/signup/complete/" + type);
     } catch (error) {
       setSubmitError(Boolean(error));
     }
@@ -241,7 +241,7 @@ export const buildSignUpForm = (
 
 function useStepper(
   initialStep = 0
-): [number, Function, Function, Function, Object] {
+): [number, Function, Function, Function, Record<string, any>] {
   const [step, setStep] = useState(initialStep);
 
   const prev = () => setStep(page => page - 1);

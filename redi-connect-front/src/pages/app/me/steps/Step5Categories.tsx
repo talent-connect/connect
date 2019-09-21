@@ -5,19 +5,26 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { SignUpFormValues, SignUpFormType } from "../Me";
 import { FormikProps } from "formik";
-import { categories as formCategories, menteeCountCapacityOptions } from '../../../../config/config';
-import Grid from '@material-ui/core/Grid';
-import Checkbox from '@material-ui/core/Checkbox';
-import { withStyles, FormHelperText } from '@material-ui/core';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
+import {
+  categories as formCategories,
+  menteeCountCapacityOptions
+} from "../../../../config/config";
+import Grid from "@material-ui/core/Grid";
+import Checkbox from "@material-ui/core/Checkbox";
+import { withStyles, FormHelperText } from "@material-ui/core";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 const styles = (theme: any) => ({
   margin: {
-    margin: '24px 0'
-  },
-})
+    margin: "24px 0"
+  }
+});
 
-export const Comp = (props: FormikProps<SignUpFormValues> & {type: SignUpFormType} & {classes: any}) => {
+export const Comp = (
+  props: FormikProps<SignUpFormValues> & { type: SignUpFormType } & {
+    classes: any;
+  }
+) => {
   const {
     values: { menteeCountCapacity, categories },
     errors,
@@ -27,7 +34,7 @@ export const Comp = (props: FormikProps<SignUpFormValues> & {type: SignUpFormTyp
     setFieldTouched,
     setFieldValue,
     classes,
-    type,
+    type
   } = props;
 
   const change = (name: any, e: any) => {
@@ -51,10 +58,20 @@ export const Comp = (props: FormikProps<SignUpFormValues> & {type: SignUpFormTyp
 
   return (
     <>
-      {type === 'mentee' && <h2>Please select all the topics you would like help with from your mentor.</h2>}
-      {type === 'mentor' && <h2>How would you like to support your mentee? Please select the topics that apply.</h2>}
+      {type === "mentee" && (
+        <h2>
+          Please select all the topics you would like help with from your
+          mentor.
+        </h2>
+      )}
+      {type === "mentor" && (
+        <h2>
+          How would you like to support your mentee? Please select the topics
+          that apply.
+        </h2>
+      )}
       <Grid container>
-        {formCategories.map(({ id, label }) => 
+        {formCategories.map(({ id, label }) => (
           <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={id}>
             <FormControlLabel
               label={label}
@@ -64,38 +81,43 @@ export const Comp = (props: FormikProps<SignUpFormValues> & {type: SignUpFormTyp
                   name={`categories-${id}`}
                   checked={categories.includes(id)}
                   value={id}
-                  onChange={categoriesChange.bind(null, 'categories')}
+                  onChange={categoriesChange.bind(null, "categories")}
                   disabled={isSubmitting}
                 />
               }
             />
           </Grid>
-        )}
+        ))}
       </Grid>
-      {type === 'mentor' &&
-        <FormControl
-          className={classes.margin}
-          fullWidth
-        >
-          <InputLabel htmlFor="menteeCountCapacity">How many mentees would you be willing to mentor this semester?</InputLabel>
+      {type === "mentor" && (
+        <FormControl className={classes.margin} fullWidth>
+          <InputLabel htmlFor="menteeCountCapacity">
+            How many mentees would you be willing to mentor this semester?
+          </InputLabel>
           <Select
             value={menteeCountCapacity}
-            error={touched.menteeCountCapacity && Boolean(errors.menteeCountCapacity)}
+            error={
+              touched.menteeCountCapacity && Boolean(errors.menteeCountCapacity)
+            }
             onChange={change.bind(null, "menteeCountCapacity")}
             inputProps={{
-              name: 'menteeCountCapacity',
-              id: 'menteeCountCapacity',
+              name: "menteeCountCapacity",
+              id: "menteeCountCapacity"
             }}
           >
-            {menteeCountCapacityOptions.map(menteeCountCapacity => 
-              <MenuItem key={menteeCountCapacity} value={menteeCountCapacity}>{menteeCountCapacity}</MenuItem>  
-            )}
+            {menteeCountCapacityOptions.map(menteeCountCapacity => (
+              <MenuItem key={menteeCountCapacity} value={menteeCountCapacity}>
+                {menteeCountCapacity}
+              </MenuItem>
+            ))}
           </Select>
           {Boolean(errors.menteeCountCapacity) && (
-            <FormHelperText error={true}>{errors.menteeCountCapacity}</FormHelperText>
+            <FormHelperText error={true}>
+              {errors.menteeCountCapacity}
+            </FormHelperText>
           )}
         </FormControl>
-      }
+      )}
     </>
   );
 };

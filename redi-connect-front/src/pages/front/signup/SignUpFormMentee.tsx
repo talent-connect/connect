@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import { buildSignUpForm } from "./factory";
 import { LoggedOutLayout } from "../../../layouts/LoggedOutLayout";
 

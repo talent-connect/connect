@@ -16,5 +16,5 @@ export const profilesFetchOneEpic = (
   );
 
 export const profilesEpics = {
-  profilesFetchOneEpic,
+  profilesFetchOneEpic
 };

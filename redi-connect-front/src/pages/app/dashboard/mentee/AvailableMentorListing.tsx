@@ -12,11 +12,11 @@ import { useList } from '../../../../hooks/useList';
 
 const styles = createStyles((theme: Theme) => ({
   categoryChip: {
-    marginTop: '0.5em',
-    marginRight: '1em',
-    color: 'white',
-    fontSize: '12px',
-    float: 'left',
+    marginTop: "0.5em",
+    marginRight: "1em",
+    color: "white",
+    fontSize: "12px",
+    float: "left"
   },
   paper: {
     ...theme.mixins.gutters(),
@@ -25,27 +25,27 @@ const styles = createStyles((theme: Theme) => ({
     marginBottom: '2em',
   },
   header: {
-    marginTop: 0,
-  },
+    marginTop: 0
+  }
 }));
 
-type Props = {
+interface Props {
   classes: {
     categoryChip: string;
     paper: string;
     header: string;
   };
-};
+}
 
 type MentorCatCount = RedProfile & { categoryMatchCount: number };
 
 const addCategoryMatchCount = (
-  mentors: Array<RedProfile>,
-  categories: Array<string>
-): Array<MentorCatCount> =>
+  mentors: RedProfile[],
+  categories: string[]
+): MentorCatCount[] =>
   mentors.map(mentor =>
     Object.assign(mentor, {
-      categoryMatchCount: intersection(categories, mentor.categories).length,
+      categoryMatchCount: intersection(categories, mentor.categories).length
     })
   );
 
@@ -113,13 +113,13 @@ export const AvailableMentorListing = withStyles(styles)((props: any) => {
                   categoryId={catId}
                   className={classes.categoryChip}
                   overrideBackgroundColour={
-                    !activeCategories.includes(catId) ? '#b2b2b2' : ''
+                    !activeCategories.includes(catId) ? "#b2b2b2" : ""
                   }
                   onClick={() => toggle(catId)}
                 />
               ))}
             </Grid>
-            <Grid item style={{ margin: '10px 0', fontWeight: 300 }}>
+            <Grid item style={{ margin: "10px 0", fontWeight: 300 }}>
               These mentors have expertise in one or more of the domains you
               selected of interest in your profile.
             </Grid>

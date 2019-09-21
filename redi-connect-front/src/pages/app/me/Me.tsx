@@ -5,8 +5,8 @@ import * as Yup from 'yup';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 
-import { Step2Background } from './steps/Step2Background';
-import { Step3Profile } from './steps/Step3Profile';
+import { Step2Background } from "./steps/Step2Background";
+import { Step3Profile } from "./steps/Step3Profile";
 import {
   Button,
   Paper,
@@ -24,8 +24,8 @@ import { RootState } from '../../../redux/types';
 import { connect } from 'react-redux';
 import {
   profileFetchStart,
-  profileSaveStart,
-} from '../../../redux/user/actions';
+  profileSaveStart
+} from "../../../redux/user/actions";
 import {
   educationLevels,
   courses,
@@ -69,65 +69,65 @@ export interface SignUpFormValues {
   lastName: string;
   gender: string;
   age?: number;
-  languages: Array<String>;
+  languages: string[];
   otherLanguages: string;
   personalDescription: string;
   contactEmail: string;
   linkedInProfileUrl: string;
   slackUsername: string;
   telephoneNumber: string;
-  categories: Array<string>;
+  categories: string[];
   menteeCountCapacity: number;
 }
 
 const validationSchema = Yup.object({
-  mentor_occupation: Yup.string().when('formType', {
-    is: 'mentor',
+  mentor_occupation: Yup.string().when("formType", {
+    is: "mentor",
     then: Yup.string()
       .required()
       .max(255)
-      .label('Occupation'),
+      .label("Occupation")
   }),
   mentor_workPlace: Yup.string()
     .max(255)
-    .label('Work place'),
-  mentee_occupationCategoryId: Yup.string().when('formType', {
-    is: 'mentee',
+    .label("Work place"),
+  mentee_occupationCategoryId: Yup.string().when("formType", {
+    is: "mentee",
     then: Yup.string()
       .required()
       .oneOf(menteeOccupationCategories.map(v => v.id))
-      .label('Current occupation'),
+      .label("Current occupation")
   }),
   mentee_occupationJob_placeOfEmployment: Yup.string()
     .max(255)
-    .label('Where are you employed'),
+    .label("Where are you employed"),
   mentee_occupationJob_position: Yup.string()
     .max(255)
-    .label('At what university do you study'),
+    .label("At what university do you study"),
   mentee_occupationStudent_studyPlace: Yup.string()
     .max(255)
-    .label('Where do you study'),
+    .label("Where do you study"),
   mentee_occupationStudent_studyName: Yup.string()
     .max(255)
-    .label('What do you study'),
+    .label("What do you study"),
   mentee_occupationLookingForJob_what: Yup.string()
     .max(255)
-    .label('What kind of job'),
+    .label("What kind of job"),
   mentee_occupationOther_description: Yup.string()
     .max(255)
-    .label('What are you currently doing'),
-  mentee_highestEducationLevel: Yup.string().when('formType', {
-    is: 'mentee',
+    .label("What are you currently doing"),
+  mentee_highestEducationLevel: Yup.string().when("formType", {
+    is: "mentee",
     then: Yup.string()
       .oneOf(educationLevels.map(level => level.id))
-      .label('Highest Education Level'),
+      .label("Highest Education Level")
   }),
   mentee_currentlyEnrolledInCourse: Yup.string().when('formType', {
     is: 'public-sign-up-mentee-pending-review',
     then: Yup.string()
       .required()
       .oneOf(courses.map(level => level.id))
-      .label('Currently enrolled in course'),
+      .label("Currently enrolled in course")
   }),
   profileAvatarImageS3Key: Yup.string().max(255),
   firstName: Yup.string()
@@ -137,33 +137,33 @@ const validationSchema = Yup.object({
     .required()
     .max(255),
   gender: Yup.string()
-    .oneOf(['male', 'female', 'other'])
-    .label('Gender'),
+    .oneOf(["male", "female", "other"])
+    .label("Gender"),
   age: Yup.number()
     .min(16)
     .max(99)
-    .label('Age'),
+    .label("Age"),
   languages: Yup.array()
     .min(1)
     .of(Yup.string().max(255))
-    .label('Languages'),
+    .label("Languages"),
   personalDescription: Yup.string()
     .required()
     .min(100)
     .max(600)
-    .label('Personal description'),
+    .label("Personal description"),
   contactEmail: Yup.string()
     .email()
     .required()
     .max(255)
-    .label('Contact email'),
+    .label("Contact email"),
   linkedInProfileUrl: Yup.string()
     .max(255)
     .url()
-    .label('LinkedIn Profile'),
+    .label("LinkedIn Profile"),
   slackUsername: Yup.string()
     .max(255)
-    .label('Slack username'),
+    .label("Slack username"),
   telephoneNumber: Yup.string()
     .max(255)
     .label('Telephone number'),
@@ -177,14 +177,14 @@ const validationSchema = Yup.object({
   menteeCountCapacity: Yup.number().when('formType', {
     is: 'mentor',
     then: Yup.number()
-      .required('Please specify the number of mentees you can take on')
+      .required("Please specify the number of mentees you can take on")
       .min(1)
-      .max(4),
-  }),
+      .max(4)
+  })
 });
 
 const mapState = (state: RootState) => ({
-  saveResult: state.user.saveResult,
+  saveResult: state.user.saveResult
 });
 
 export const buildSignUpForm = (
@@ -231,14 +231,14 @@ export const buildSignUpForm = (
         color: 'white',
       },
       submitError: {
-        backgroundColor: theme.palette.error.main,
+        backgroundColor: theme.palette.error.main
       },
       submitSuccess: {
-        backgroundColor: theme.palette.primary.main,
+        backgroundColor: theme.palette.primary.main
       },
       margin: {
-        margin: '6px 0',
-      },
+        margin: "6px 0"
+      }
     });
 
   const LinkToDashboard: any = (props: any) => (
@@ -248,11 +248,11 @@ export const buildSignUpForm = (
   const InnerForm = withStyles(styles)(
     connect(mapState)((props: any) => (
       <>
-        <FullScreenCircle loading={props.saveResult === 'submitting'} />
+        <FullScreenCircle loading={props.saveResult === "submitting"} />
         <Button component={LinkToDashboard} variant="contained" color="primary">
           Back
         </Button>
-        {props.saveResult === 'error' && (
+        {props.saveResult === "error" && (
           <Paper
             className={classNames(
               props.classes.submitError,
@@ -262,7 +262,7 @@ export const buildSignUpForm = (
             An error occurred, please try again.
           </Paper>
         )}
-        {props.saveResult === 'success' && <>Your profile was saved.</>}
+        {props.saveResult === "success" && <>Your profile was saved.</>}
         <form onSubmit={e => e.preventDefault()}>
           <h2>Update your profile</h2>
           <Step2Background type={type} {...props} />
@@ -278,7 +278,7 @@ export const buildSignUpForm = (
                 color="primary"
                 variant="contained"
                 fullWidth
-                disabled={props.saveResult === 'submitting'}
+                disabled={props.saveResult === "submitting"}
                 type="submit"
               >
                 Save
@@ -317,7 +317,7 @@ export default function me() {
 
 const ProfileLoader = connect((state: RootState) => ({
   loading: state.user.loading,
-  profile: state.user.profile,
+  profile: state.user.profile
 }))((props: any) => {
   useEffect(() => {
     props.dispatch(profileFetchStart());
@@ -325,17 +325,17 @@ const ProfileLoader = connect((state: RootState) => ({
   return props.children({
     loading: props.loading,
     profile: props.profile,
-    currentUser: props.currentUser,
+    currentUser: props.currentUser
   });
 });
 
-type PresentationProps = {
+interface PresentationProps {
   classes: {
     button: string;
   };
   profile: RedProfile | undefined;
   currentUser: RedProfile | undefined;
-};
+}
 
 const Presentation = connect()(
   ({ profile, dispatch }: { profile: RedProfile } & { dispatch: any }) => {

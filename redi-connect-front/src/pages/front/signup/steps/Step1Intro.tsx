@@ -9,12 +9,12 @@ import { SignUpFormValues, SignUpFormType } from '../factory';
 export const validationSchema = Yup.object({
   username: Yup.string()
     .email()
-    .label('Email')
+    .label("Email")
     .max(255),
   password: Yup.string()
-    .min(8, 'Password must contain at least 8 characters')
-    .required('Enter your password')
-    .label('Password'),
+    .min(8, "Password must contain at least 8 characters")
+    .required("Enter your password")
+    .label("Password"),
   passwordConfirm: Yup.string()
     .required('Confirm your password')
     .oneOf([Yup.ref('password')], 'Password does not match'),
@@ -50,7 +50,7 @@ export const Step1Intro = (
         error={touched.username && Boolean(errors.username)}
         label="Username (your email address)*"
         value={username}
-        onChange={change.bind(null, 'username')}
+        onChange={change.bind(null, "username")}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
@@ -69,7 +69,7 @@ export const Step1Intro = (
         error={touched.password && Boolean(errors.password)}
         label="Password*"
         value={password}
-        onChange={change.bind(null, 'password')}
+        onChange={change.bind(null, "password")}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
@@ -88,7 +88,7 @@ export const Step1Intro = (
         error={touched.passwordConfirm && Boolean(errors.passwordConfirm)}
         label="Repeat password*"
         value={passwordConfirm}
-        onChange={change.bind(null, 'passwordConfirm')}
+        onChange={change.bind(null, "passwordConfirm")}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">

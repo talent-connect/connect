@@ -6,14 +6,14 @@ import {
   Paper,
   TextField,
   Theme,
-  withStyles,
-} from '@material-ui/core';
-import classNames from 'classnames';
-import { Formik, FormikActions, FormikProps } from 'formik';
-import React, { useState } from 'react';
-import * as Yup from 'yup';
-import { requestMentorship } from '../../../../services/api/api';
-import { FormSubmitResult } from '../../../../types/FormSubmitResult';
+  withStyles
+} from "@material-ui/core";
+import classNames from "classnames";
+import { Formik, FormikActions, FormikProps } from "formik";
+import React, { useState } from "react";
+import * as Yup from "yup";
+import { requestMentorship } from "../../../../services/api/api";
+import { FormSubmitResult } from "../../../../types/FormSubmitResult";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -22,11 +22,11 @@ const styles = (theme: Theme) =>
       color: 'white',
     },
     submitError: {
-      backgroundColor: theme.palette.error.main,
+      backgroundColor: theme.palette.error.main
     },
     submitSuccess: {
-      backgroundColor: theme.palette.primary.main,
-    },
+      backgroundColor: theme.palette.primary.main
+    }
   });
 
 interface ConnectionRequestFormValues {
@@ -35,8 +35,8 @@ interface ConnectionRequestFormValues {
 }
 
 const initialValues = {
-  applicationText: '',
-  dataSharingAccepted: false,
+  applicationText: "",
+  dataSharingAccepted: false
 };
 
 const validationSchema = Yup.object({
@@ -44,30 +44,30 @@ const validationSchema = Yup.object({
     .required()
     .min(250)
     .max(600)
-    .label('Application message'),
+    .label("Application message"),
   dataSharingAccepted: Yup.boolean()
     .required()
-    .oneOf([true], 'Sharing profile data with your mentor is required'),
+    .oneOf([true], "Sharing profile data with your mentor is required")
 });
 
-type Props = {
+interface Props {
   mentorId: string;
-};
+}
 
 export const ConnectionRequestForm = ({ mentorId }: Props) => {
   const [submitResult, setSubmitResult] = useState<FormSubmitResult>(
-    'notSubmitted'
+    "notSubmitted"
   );
   const submit = async (
     values: ConnectionRequestFormValues,
     actions: FormikActions<ConnectionRequestFormValues>
   ) => {
-    setSubmitResult('submitting');
+    setSubmitResult("submitting");
     try {
       await requestMentorship(values.applicationText, mentorId);
-      setSubmitResult('success');
+      setSubmitResult("success");
     } catch (error) {
-      setSubmitResult('error');
+      setSubmitResult("error");
     } finally {
       actions.setSubmitting(false);
     }
@@ -92,7 +92,7 @@ const Form = ({
   handleChange,
   handleSubmit,
   setFieldTouched,
-  isValid,
+  isValid
 }: FormikProps<ConnectionRequestFormValues> & {
   submitResult: FormSubmitResult;
 }) => {
@@ -108,7 +108,7 @@ const Form = ({
   return (
     <form>
       <h3>Write a short application text message to this mentor</h3>
-      {submitResult === 'error' && (
+      {submitResult === "error" && (
         <GetClasses>
           {(classes: any) => (
             <Paper
@@ -119,7 +119,7 @@ const Form = ({
           )}
         </GetClasses>
       )}
-      {submitResult === 'success' && (
+      {submitResult === "success" && (
         <GetClasses>
           {(classes: any) => (
             <Paper
@@ -133,16 +133,16 @@ const Form = ({
           )}
         </GetClasses>
       )}
-      {submitResult !== 'success' && (
+      {submitResult !== "success" && (
         <>
           <TextField
             id="applicationText"
             name="applicationText"
-            helperText={touched.applicationText ? errors.applicationText : ''}
+            helperText={touched.applicationText ? errors.applicationText : ""}
             error={touched.applicationText && Boolean(errors.applicationText)}
             label="Write something about yourself..."
             value={applicationText}
-            onChange={change.bind(null, 'applicationText')}
+            onChange={change.bind(null, "applicationText")}
             multiline
             fullWidth
             rows="4"
@@ -155,7 +155,7 @@ const Form = ({
                 id="dataSharingAccepted"
                 name="dataSharingAccepted"
                 checked={dataSharingAccepted}
-                onChange={change.bind(null, 'dataSharingAccepted')}
+                onChange={change.bind(null, "dataSharingAccepted")}
                 disabled={isSubmitting}
               />
             }

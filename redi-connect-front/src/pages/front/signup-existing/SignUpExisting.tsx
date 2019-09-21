@@ -16,35 +16,35 @@ import {
 } from '@material-ui/core';
 import { RedProfile } from '../../../types/RedProfile';
 
-type RouteParams = {
+interface RouteParams {
   accessToken: string;
-};
+}
 
 const styles = (theme: Theme) =>
   createStyles({
     paragraph: {
-      fontWeight: 300,
+      fontWeight: 300
     },
     paragraphBelowSubheader: {
-      marginTop: '0.3em',
-      fontWeight: 300,
+      marginTop: "0.3em",
+      fontWeight: 300
     },
     subHeader: {
-      marginBottom: 0,
+      marginBottom: 0
     },
     error: {
-      backgroundColor: theme.palette.error.main,
-    },
+      backgroundColor: theme.palette.error.main
+    }
   });
 
-type Props = {
+interface Props {
   classes: {
     paragraph: string;
     paragraphBelowSubheader: string;
     subHeader: string;
     error: string;
   };
-};
+}
 
 const SignUpExisting = withStyles(styles)(
   (props: RouteComponentProps<RouteParams> & Props) => {
@@ -68,7 +68,7 @@ const SignUpExisting = withStyles(styles)(
           saveAccessToken(accessToken);
         } catch (err) {
           return setErrorMsg(
-            'Sorry, this address seems to be invalid. Please contact career@redi-school.org to receive your invite again.'
+            "Sorry, this address seems to be invalid. Please contact career@redi-school.org to receive your invite again."
           );
         }
         try {
@@ -77,7 +77,7 @@ const SignUpExisting = withStyles(styles)(
           setLoading(false);
         } catch (err) {
           return setErrorMsg(
-            'Sorry, the link you used seems to have expired. Please contact career@redi-school.org to receive a new one.'
+            "Sorry, the link you used seems to have expired. Please contact career@redi-school.org to receive a new one."
           );
         }
       };
@@ -92,7 +92,7 @@ const SignUpExisting = withStyles(styles)(
             <Paper className={props.classes.error}>
               <p>{errorMsg}</p>
               <p>
-                You can also go here{' '}
+                You can also go here{" "}
                 <a href="/front/login">to log in if you have a user.</a>
               </p>
             </Paper>
@@ -106,7 +106,7 @@ const SignUpExisting = withStyles(styles)(
           )}
           {!loading && !errorMsg && (
             <>
-              {profile && profile.userType === 'mentee' && (
+              {profile && profile.userType === "mentee" && (
                 <>
                   <h2>Data protection</h2>
                   <p className={classes.paragraph}>
@@ -196,7 +196,7 @@ const SignUpExisting = withStyles(styles)(
                   </p>
                 </>
               )}
-              {profile && profile.userType === 'mentor' && (
+              {profile && profile.userType === "mentor" && (
                 <>
                   <h2>Data protection</h2>
                   <p className={classes.paragraph}>
@@ -300,7 +300,7 @@ const SignUpExisting = withStyles(styles)(
               />
               <Button
                 onClick={() => {
-                  history.push('/front/signup/existing-reset-password');
+                  history.push("/front/signup/existing-reset-password");
                 }}
                 color="primary"
                 variant="contained"

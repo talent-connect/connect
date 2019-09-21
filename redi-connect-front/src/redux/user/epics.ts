@@ -12,15 +12,15 @@ const profileFetchEpic = (action$: ActionsObservable<UserActions>) =>
     filter(() => isLoggedIn()),
     switchMap(async () => {
       try {
-        const res = await fetchSaveRedProfile(getAccessToken())
-        return res
+        const res = await fetchSaveRedProfile(getAccessToken());
+        return res;
       } catch (err) {
-        return of(err)
+        return of(err);
       }
     }),
     map(profile => ({
       type: UserActionType.USER_PROFILE_FETCH_SUCCESS,
-      payload: profile,
+      payload: profile
     }))
   );
 
@@ -30,11 +30,11 @@ const profileSaveEpic = (action$: ActionsObservable<ProfileSaveStartAction>) =>
     switchMap(action => saveRedProfile(action.payload)),
     map(profile => ({
       type: UserActionType.USER_PROFILE_SAVE_SUCCESS,
-      payload: profile,
+      payload: profile
     }))
   );
 
 export const userEpics = {
   profileFetchEpic,
-  profileSaveEpic,
+  profileSaveEpic
 };
