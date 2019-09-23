@@ -1,27 +1,27 @@
-import { Action } from 'redux';
-import { RedMentoringSession } from '../../types/RedMentoringSession';
-import { FormSubmitResult } from '../../types/FormSubmitResult';
+import { Action } from "redux";
+import { RedMentoringSession } from "../../types/RedMentoringSession";
+import { FormSubmitResult } from "../../types/FormSubmitResult";
 
 export interface MentoringSessionsState {
-  matches: Array<RedMentoringSession>;
+  matches: RedMentoringSession[];
   asyncResult: FormSubmitResult;
 }
 
 export enum MentoringSessionsActionType {
-  MENTORING_SESSIONS_FETCH_START = 'MENTORING_SESSIONS_FETCH_START',
-  MENTORING_SESSIONS_FETCH_SUCCESS = 'MENTORING_SESSIONS_FETCH_SUCCESS',
-  MENTORING_SESSIONS_FETCH_ERROR = 'MENTORING_SESSIONS_FETCH_ERROR',
-  MENTORING_SESSIONS_CREATE_START = 'MENTORING_SESSIONS_CREATE_START',
-  MENTORING_SESSIONS_CREATE_SUCCESS = 'MENTORING_SESSIONS_CREATE_SUCCESS',
-  MENTORING_SESSIONS_CREATE_ERROR = 'MENTORING_SESSIONS_CREATE_ERROR',
-  MENTORING_SESSIONS_CLEAR_ASYNC_RESULT = 'MENTORING_SESSIONS_CLEAR_ASYNC_RESULT',
+  MENTORING_SESSIONS_FETCH_START = "MENTORING_SESSIONS_FETCH_START",
+  MENTORING_SESSIONS_FETCH_SUCCESS = "MENTORING_SESSIONS_FETCH_SUCCESS",
+  MENTORING_SESSIONS_FETCH_ERROR = "MENTORING_SESSIONS_FETCH_ERROR",
+  MENTORING_SESSIONS_CREATE_START = "MENTORING_SESSIONS_CREATE_START",
+  MENTORING_SESSIONS_CREATE_SUCCESS = "MENTORING_SESSIONS_CREATE_SUCCESS",
+  MENTORING_SESSIONS_CREATE_ERROR = "MENTORING_SESSIONS_CREATE_ERROR",
+  MENTORING_SESSIONS_CLEAR_ASYNC_RESULT = "MENTORING_SESSIONS_CLEAR_ASYNC_RESULT"
 }
 export interface MentoringSessionsFetchStartAction extends Action {
   type: MentoringSessionsActionType.MENTORING_SESSIONS_FETCH_START;
 }
 export interface MentoringSessionsFetchSuccessAction extends Action {
   type: MentoringSessionsActionType.MENTORING_SESSIONS_FETCH_SUCCESS;
-  payload: Array<RedMentoringSession>;
+  payload: RedMentoringSession[];
 }
 export interface MentoringSessionsFetchErrorAction extends Action {
   type: MentoringSessionsActionType.MENTORING_SESSIONS_FETCH_ERROR;

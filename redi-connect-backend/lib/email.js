@@ -13,13 +13,11 @@ const ses = new aws.SES(config);
 
 const sendEmail = Rx.bindNodeCallback(ses.sendEmail.bind(ses));
 const sendEmailFactory = (to, subject, body) => {
-  const doOverride = _.includes(
-    ['production', 'demonstration'],
-    process.env.NODE_ENV
-  );
-  let toSanitized = doOverride ? to : 'eric@binarylights.com';
-  if (process.env.DEV_MODE_EMAIL_RECIPIENT)
+  let toSanitized =
+    process.env.NODE_ENV === 'production' ? to : 'eric@binarylights.com';
+  if (process.env.DEV_MODE_EMAIL_RECIPIENT) {
     toSanitized = process.env.DEV_MODE_EMAIL_RECIPIENT;
+  }
   return sendEmail({
     Source: 'career@redi-school.org',
     Destination: {
@@ -124,11 +122,10 @@ Your Career Support Team
 `
   );
 const sendMentorshipAcceptedEmail = (recipients, mentorName, menteeName) => {
-  const doOverride = _.includes(
-    ['production', 'demonstration'],
-    process.env.NODE_ENV
-  );
-  let recipientsSanitized = doOverride ? ['eric@binarylights.com'] : recipients;
+  let recipientsSanitized =
+    process.env.NODE_ENV !== 'production'
+      ? ['eric@binarylights.com']
+      : recipients;
   if (process.env.DEV_MODE_EMAIL_RECIPIENT)
     recipientsSanitized = [process.env.DEV_MODE_EMAIL_RECIPIENT];
   return sendEmail({
@@ -143,17 +140,17 @@ const sendMentorshipAcceptedEmail = (recipients, mentorName, menteeName) => {
           Charset: 'UTF-8',
           Data: `Dear ${mentorName} and ${menteeName},
 
-        Congratulations. Mentor ${mentorName} has accepted your application, ${menteeName}.
-        
-        Are you ReDI?!
-        
-        It would be great if you, ${mentorName}, as the mentor, could send ${menteeName} suggestions for the time, date and place of your first session.
-        
-        Happy connectin’,
-        
-        Please let us know at career@redi-school.org if you have any questions!
-        
-        Your Career Support Team
+Congratulations. Mentor ${mentorName} has accepted your application, ${menteeName}.
+
+Are you ReDI?!
+
+It would be great if you, ${mentorName}, as the mentor, could send ${menteeName} suggestions for the time, date and place of your first session.
+
+Happy connectin’,
+
+Please let us know at career@redi-school.org if you have any questions!
+
+Your Career Support Team
         `,
         },
       },

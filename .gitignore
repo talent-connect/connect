@@ -1,5 +1,6 @@
 ssl/
 mongodb-data/
 databkps/
+.idea/
 
 redi-connect-backend/scripts/assets

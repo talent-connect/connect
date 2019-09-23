@@ -1,23 +1,23 @@
-import React from 'react';
-import * as Yup from 'yup';
-import { TextField, InputAdornment } from '@material-ui/core';
-import LockIcon from '@material-ui/icons/Lock';
-import PersonIcon from '@material-ui/icons/Person';
-import { FormikProps } from 'formik';
-import { SignUpFormValues, SignUpFormType } from '../factory';
+import React from "react";
+import * as Yup from "yup";
+import { TextField, InputAdornment } from "@material-ui/core";
+import LockIcon from "@material-ui/icons/Lock";
+import PersonIcon from "@material-ui/icons/Person";
+import { FormikProps } from "formik";
+import { SignUpFormValues, SignUpFormType } from "../factory";
 
 export const validationSchema = Yup.object({
   username: Yup.string()
     .email()
-    .label('Email')
+    .label("Email")
     .max(255),
   password: Yup.string()
-    .min(8, 'Password must contain at least 8 characters')
-    .required('Enter your password')
-    .label('Password'),
+    .min(8, "Password must contain at least 8 characters")
+    .required("Enter your password")
+    .label("Password"),
   passwordConfirm: Yup.string()
-    .required('Confirm your password')
-    .oneOf([Yup.ref('password')], 'Password does not match'),
+    .required("Confirm your password")
+    .oneOf([Yup.ref("password")], "Password does not match")
 });
 
 export const Step1Intro = (
@@ -29,7 +29,7 @@ export const Step1Intro = (
     touched,
     handleChange,
     // isValid,
-    setFieldTouched,
+    setFieldTouched
     // type,
   } = props;
 
@@ -46,17 +46,17 @@ export const Step1Intro = (
         id="username"
         name="username"
         type="email"
-        helperText={touched.username ? errors.username : ''}
+        helperText={touched.username ? errors.username : ""}
         error={touched.username && Boolean(errors.username)}
         label="Username (your email address)*"
         value={username}
-        onChange={change.bind(null, 'username')}
+        onChange={change.bind(null, "username")}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
               <PersonIcon />
             </InputAdornment>
-          ),
+          )
         }}
         fullWidth
         margin="normal"
@@ -65,17 +65,17 @@ export const Step1Intro = (
         id="password"
         name="password"
         type="password"
-        helperText={touched.password ? errors.password : ''}
+        helperText={touched.password ? errors.password : ""}
         error={touched.password && Boolean(errors.password)}
         label="Password*"
         value={password}
-        onChange={change.bind(null, 'password')}
+        onChange={change.bind(null, "password")}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
               <LockIcon />
             </InputAdornment>
-          ),
+          )
         }}
         fullWidth
         margin="normal"
@@ -84,17 +84,17 @@ export const Step1Intro = (
         id="passwordConfirm"
         name="passwordConfirm"
         type="password"
-        helperText={touched.passwordConfirm ? errors.passwordConfirm : ''}
+        helperText={touched.passwordConfirm ? errors.passwordConfirm : ""}
         error={touched.passwordConfirm && Boolean(errors.passwordConfirm)}
         label="Repeat password*"
         value={passwordConfirm}
-        onChange={change.bind(null, 'passwordConfirm')}
+        onChange={change.bind(null, "passwordConfirm")}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
               <LockIcon />
             </InputAdornment>
-          ),
+          )
         }}
         fullWidth
         margin="normal"

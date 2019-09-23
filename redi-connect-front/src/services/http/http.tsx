@@ -1,10 +1,10 @@
-import React from 'react';
-import axios from 'axios';
-import has from 'lodash/has';
-import includes from 'lodash/includes'
+import React from "react";
+import axios from "axios";
+import has from "lodash/has";
+import includes from "lodash/includes";
 
-import { history } from '../history/history';
-import { getAccessToken, isLoggedIn, purgeAllSessionData } from '../auth/auth';
+import { history } from "../history/history";
+import { getAccessToken, isLoggedIn, purgeAllSessionData } from "../auth/auth";
 
 export const nonLoggedInHttp = axios.create();
 
@@ -12,7 +12,7 @@ export const http = axios.create();
 
 http.interceptors.request.use(
   function(config) {
-    const isAuthorizationHeaderSet = has(config, 'headers.Authorization');
+    const isAuthorizationHeaderSet = has(config, "headers.Authorization");
     const _isLoggedIn = isLoggedIn();
     if (_isLoggedIn && !isAuthorizationHeaderSet) {
       const accessToken = getAccessToken();
@@ -32,19 +32,20 @@ http.interceptors.response.use(
     if (err.response) {
       err.userMessage = err.response.data.error.message;
     } else if (err.request) {
-      err.userMessage = 'Please check your internet connection.';
+      err.userMessage = "Please check your internet connection.";
     } else {
-      err.userMessage = 'An error occurred; please try again.';
+      err.userMessage = "An error occurred; please try again.";
     }
     console.log(err);
-    
+
     if (includes([401, 403], err.response.status)) {
-      purgeAllSessionData()
-      history.push(`/front/login?goto=${encodeURIComponent(history.location.pathname)}`);
+      purgeAllSessionData();
+      history.push(
+        `/front/login?goto=${encodeURIComponent(history.location.pathname)}`
+      );
     } else {
-      history.push('/error/4xx');
+      history.push("/error/4xx");
     }
-    
   }
 );
 
