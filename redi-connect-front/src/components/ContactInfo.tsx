@@ -1,11 +1,11 @@
-import React from 'react';
-import classNames from 'classnames';
-import { RedProfile } from '../types/RedProfile';
-import { Grid, Icon } from '@material-ui/core';
-import EmailIcon from '@material-ui/icons/Email';
-import PhoneIcon from '@material-ui/icons/Phone';
+import React from "react";
+import classNames from "classnames";
+import { RedProfile } from "../types/RedProfile";
+import { Grid, Icon } from "@material-ui/core";
+import EmailIcon from "@material-ui/icons/Email";
+import PhoneIcon from "@material-ui/icons/Phone";
 
-const SlackIcon = <Icon className={classNames('fab fa-slack')} />;
+const SlackIcon = <Icon className={classNames("fab fa-slack")} />;
 
 export const ContactInfo = ({ profile }: { profile: RedProfile }) => (
   <>
@@ -23,7 +23,7 @@ export const ContactInfo = ({ profile }: { profile: RedProfile }) => (
 );
 
 const Placeholder = ({ icon, content }: any) => (
-  <Grid container spacing={1} alignItems="center" style={{ margin: '5px 0' }}>
+  <Grid container spacing={1} alignItems="center" style={{ margin: "5px 0" }}>
     <Grid item>{icon}</Grid>
     <Grid item>{content}</Grid>
   </Grid>

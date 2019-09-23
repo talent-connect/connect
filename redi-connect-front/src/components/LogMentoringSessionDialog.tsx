@@ -1,4 +1,4 @@
-import MomentUtils from '@date-io/moment';
+import MomentUtils from "@date-io/moment";
 import {
   Button,
   createStyles,
@@ -13,29 +13,33 @@ import {
   Paper,
   Select,
   Theme,
-  withStyles,
-} from '@material-ui/core';
-import classNames from 'classnames';
-import { Formik, FormikActions, FormikProps } from 'formik';
-import { DatePicker, MuiPickersUtilsProvider, MaterialUiPickersDate } from '@material-ui/pickers';
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import * as Yup from 'yup';
-import { mentoringSessionDurationOptions } from '../config/config';
+  withStyles
+} from "@material-ui/core";
+import classNames from "classnames";
+import { Formik, FormikActions, FormikProps } from "formik";
+import {
+  DatePicker,
+  MuiPickersUtilsProvider,
+  MaterialUiPickersDate
+} from "@material-ui/pickers";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import * as Yup from "yup";
+import { mentoringSessionDurationOptions } from "../config/config";
 import {
   mentoringSessionsClearAsyncResult,
-  mentoringSessionsCreateStart,
-} from '../redux/mentoringSessions/actions';
+  mentoringSessionsCreateStart
+} from "../redux/mentoringSessions/actions";
 import {
   MentoringSessionsClearAsyncResultAction,
-  MentoringSessionsCreateStartAction,
-} from '../redux/mentoringSessions/types';
-import { RootState } from '../redux/types';
-import { FormSubmitResult } from '../types/FormSubmitResult';
-import { RedMentoringSession } from '../types/RedMentoringSession';
-import { FullScreenCircle } from '../hooks/WithLoading';
+  MentoringSessionsCreateStartAction
+} from "../redux/mentoringSessions/types";
+import { RootState } from "../redux/types";
+import { FormSubmitResult } from "../types/FormSubmitResult";
+import { RedMentoringSession } from "../types/RedMentoringSession";
+import { FullScreenCircle } from "../hooks/WithLoading";
 
-type LogMentoringSessionDialogProps = {
+interface LogMentoringSessionDialogProps {
   menteeId: string;
   isOpen: boolean;
   onClose: () => void;
@@ -46,10 +50,10 @@ type LogMentoringSessionDialogProps = {
       | MentoringSessionsCreateStartAction
       | MentoringSessionsClearAsyncResultAction
   ) => void;
-};
+}
 
 const mapState = (state: RootState) => ({
-  asyncResult: state.mentoringSessions.asyncResult,
+  asyncResult: state.mentoringSessions.asyncResult
 });
 
 /*
@@ -64,7 +68,7 @@ export const LogMentoringSessionDialog = connect(mapState)(
     onClose,
     asyncResult,
     menteeId,
-    dispatch,
+    dispatch
   }: LogMentoringSessionDialogProps) => {
     useEffect(() => {
       dispatch(mentoringSessionsClearAsyncResult());
@@ -73,13 +77,13 @@ export const LogMentoringSessionDialog = connect(mapState)(
       const mentoringSession: RedMentoringSession = {
         date: values.date,
         minuteDuration: Number(values.minuteDuration),
-        menteeId: menteeId,
+        menteeId: menteeId
       };
       dispatch(mentoringSessionsCreateStart(mentoringSession));
     };
     return (
       <>
-        <FullScreenCircle loading={asyncResult === 'submitting'} />
+        <FullScreenCircle loading={asyncResult === "submitting"} />
         <Dialog
           open={isOpen}
           onClose={onClose}
@@ -114,16 +118,16 @@ export const LogMentoringSessionDialog = connect(mapState)(
 
 const initialFormValues: FormValues = {
   date: new Date(),
-  minuteDuration: 60,
+  minuteDuration: 60
 };
 
 const validationSchema = Yup.object({
   date: Yup.date()
     .required()
-    .label('Date'),
+    .label("Date"),
   minuteDuration: Yup.number()
     .required()
-    .oneOf(mentoringSessionDurationOptions, 'Please select a duration'),
+    .oneOf(mentoringSessionDurationOptions, "Please select a duration")
 });
 
 interface FormValues {
@@ -135,20 +139,20 @@ const styles = (theme: Theme) =>
   createStyles({
     submitResult: {
       padding: theme.spacing(1),
-      color: 'white',
+      color: "white"
     },
     submitError: {
-      backgroundColor: theme.palette.error.main,
+      backgroundColor: theme.palette.error.main
     },
     submitSuccess: {
-      backgroundColor: theme.palette.primary.main,
+      backgroundColor: theme.palette.primary.main
     },
     margin: {
-      margin: '6px 0',
-    },
+      margin: "6px 0"
+    }
   });
 
-type FormProps = {
+interface FormProps {
   classes: {
     submitResult: string;
     submitError: string;
@@ -157,7 +161,7 @@ type FormProps = {
   };
   submitResult: FormSubmitResult;
   onClose: () => void;
-};
+}
 
 const Form = withStyles(styles)(
   ({
@@ -173,7 +177,7 @@ const Form = withStyles(styles)(
     isValid,
     classes,
     onClose,
-    validateForm,
+    validateForm
   }: FormikProps<FormValues> & FormProps) => {
     const change = (name: any, e: any) => {
       e.persist();
@@ -181,32 +185,32 @@ const Form = withStyles(styles)(
       setFieldTouched(name, true, false);
     };
     const changeDate = (date: MaterialUiPickersDate) => {
-      setFieldTouched('date');
-      setFieldValue('date', date);
+      setFieldTouched("date");
+      setFieldValue("date", date);
     };
     useEffect(() => {
-      validateForm()
-    }, [])
+      validateForm();
+    }, []);
 
     return (
       <MuiPickersUtilsProvider utils={MomentUtils}>
-        {submitResult === 'error' && (
+        {submitResult === "error" && (
           <Paper
             className={classNames(classes.submitError, classes.submitResult)}
           >
             An error occurred, please try again.
           </Paper>
         )}
-        {submitResult === 'success' && (
+        {submitResult === "success" && (
           <>The mentoring session was successfully logged.</>
         )}
-        {submitResult !== 'success' && (
+        {submitResult !== "success" && (
           <>
             <DatePicker
               id="date"
               name="date"
               label="Pick a date"
-              helperText={touched.date ? errors.date : ''}
+              helperText={touched.date ? errors.date : ""}
               error={touched.date && Boolean(errors.date)}
               value={date}
               onChange={changeDate}
@@ -224,11 +228,11 @@ const Form = withStyles(styles)(
                 value={minuteDuration}
                 type="number"
                 error={touched.minuteDuration && Boolean(errors.minuteDuration)}
-                onChange={change.bind(null, 'minuteDuration')}
+                onChange={change.bind(null, "minuteDuration")}
                 disabled={isSubmitting}
                 inputProps={{
-                  name: 'minuteDuration',
-                  id: 'minuteDuration',
+                  name: "minuteDuration",
+                  id: "minuteDuration"
                 }}
               >
                 {mentoringSessionDurationOptions.map(minuteDuration => (
