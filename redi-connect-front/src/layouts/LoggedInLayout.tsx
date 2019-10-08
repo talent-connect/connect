@@ -1,5 +1,5 @@
-import React, { useState, FormEvent } from 'react';
-import range from 'lodash/range';
+import React, { useState, FormEvent } from "react";
+import range from "lodash/range";
 
 import {
   AppBar,
@@ -12,20 +12,20 @@ import {
   IconButton,
   Menu,
   MenuItem
-} from '@material-ui/core';
+} from "@material-ui/core";
 
-import rediLogo from '../assets/rediLogo.svg';
-import { Avatar } from '../components/Avatar';
-import { getRedProfile } from '../services/auth/auth';
-import { Link, withRouter } from 'react-router-dom';
-import { PersonOutline, Menu as MenuIcon } from '@material-ui/icons';
-import { logout } from '../services/api/api';
-import { connect } from 'react-redux';
-import { RootState } from '../redux/types';
-import { routes__loggedIn } from '../routes/routes__logged-in';
-import { RouteComponentProps } from 'react-router';
+import rediLogo from "../assets/rediLogo.svg";
+import { Avatar } from "../components/Avatar";
+import { getRedProfile } from "../services/auth/auth";
+import { Link, withRouter } from "react-router-dom";
+import { PersonOutline, Menu as MenuIcon } from "@material-ui/icons";
+import { logout } from "../services/api/api";
+import { connect } from "react-redux";
+import { RootState } from "../redux/types";
+import { routes__loggedIn } from "../routes/routes__logged-in";
+import { RouteComponentProps } from "react-router";
 
-type LoggedInLayoutProps = {
+interface LoggedInLayoutProps {
   children: React.ReactNode;
   classes: {
     root: string;
@@ -35,45 +35,45 @@ type LoggedInLayoutProps = {
     sectionDesktop: string;
     sectionMobile: string;
   };
-};
+}
 
 const styles = (theme: Theme) =>
   createStyles({
     root: {
-      width: '100%',
+      width: "100%"
     },
     grow: {
-      flexGrow: 1,
+      flexGrow: 1
     },
     // TODO: Can this go into the root ThemeProvider instead?
     button: {
-      color: '#fff',
+      color: "#fff"
     },
     avatar: {
-      color: '#fff',
+      color: "#fff"
     },
     avatarMobile: {
-      color: '#000'
+      color: "#000"
     },
     sectionDesktop: {
-      display: 'none',
-      [theme.breakpoints.up('sm')]: {
-        display: 'flex',
-      },
+      display: "none",
+      [theme.breakpoints.up("sm")]: {
+        display: "flex"
+      }
     },
     sectionMobile: {
-      display: 'flex',
-      [theme.breakpoints.up('sm')]: {
-        display: 'none',
-      },
-    },
+      display: "flex",
+      [theme.breakpoints.up("sm")]: {
+        display: "none"
+      }
+    }
   });
 
 export const LoggedInLayout = withStyles(styles)(
   ({ children, classes }: LoggedInLayoutProps) => {
     const [
       mobileMenuAnchorEl,
-      setMobileMenuAnchorEl,
+      setMobileMenuAnchorEl
     ] = useState<HTMLElement | null>(null);
     const LinkToDashboard: any = (props: any) => (
       <Link {...props} to="/app/dashboard" />
@@ -86,7 +86,11 @@ export const LoggedInLayout = withStyles(styles)(
               style={{ margin: 0, padding: 0 }}
               component={LinkToDashboard}
             >
-              <img src={rediLogo} style={{ height: '36px', width: '96px' }} alt='redi logo'/>
+              <img
+                src={rediLogo}
+                style={{ height: "36px", width: "96px" }}
+                alt="redi logo"
+              />
             </Button>
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
@@ -107,21 +111,24 @@ export const LoggedInLayout = withStyles(styles)(
         </AppBar>
         <Menu
           anchorEl={mobileMenuAnchorEl}
-          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          transformOrigin={{ vertical: "top", horizontal: "right" }}
           open={Boolean(mobileMenuAnchorEl)}
           onClose={() => setMobileMenuAnchorEl(null)}
           color="primary"
         >
           <ButtonsMobile />
         </Menu>
-        <div style={{ margin: '12px' }}>{children}</div>
+        <div style={{ margin: "12px" }}>{children}</div>
       </div>
     );
   }
 );
 
-type ButtonsProps = RouteComponentProps & {applicationCount?: number|undefined, menteeCount?: number|undefined} & {
+type ButtonsProps = RouteComponentProps & {
+  applicationCount?: number | undefined;
+  menteeCount?: number | undefined;
+} & {
   classes: {
     root: string;
     grow: string;
@@ -138,12 +145,12 @@ const Buttons = withRouter(
   connect((state: RootState) => ({
     applicantCount:
       state.user.profile && state.user.profile.currentApplicantCount,
-    menteeCount: state.user.profile && state.user.profile.currentMenteeCount,
+    menteeCount: state.user.profile && state.user.profile.currentMenteeCount
   }))(
     withStyles(styles)((props: ButtonsProps) => {
       // TODO: Replace 'any' with whatever is TS-appropriate
       const menteeApplicantsPath = routes__loggedIn.filter(
-        route => route.name && route.name === 'mentee-applicants'
+        route => route.name && route.name === "mentee-applicants"
       );
       const currentPath = (props as any).match.path;
       const currentPageIsMenteeApplicants =
@@ -158,7 +165,7 @@ const Buttons = withRouter(
         <Link {...props} to="/app/applications" />
       );
       const currentUser = getRedProfile();
-      const isMentor = currentUser.userType === 'mentor';
+      const isMentor = currentUser.userType === "mentor";
       // const isMentee = currentUser.userType === 'mentee';
       return (
         <>
@@ -196,11 +203,11 @@ const ButtonsMobile = withRouter(
   connect((state: RootState) => ({
     applicantCount:
       state.user.profile && state.user.profile.currentApplicantCount,
-    menteeCount: state.user.profile && state.user.profile.currentMenteeCount,
+    menteeCount: state.user.profile && state.user.profile.currentMenteeCount
   }))(
     withStyles(styles)((props: ButtonsProps) => {
       const menteeApplicantsPath = routes__loggedIn.filter(
-        route => route.name && route.name === 'mentee-applicants'
+        route => route.name && route.name === "mentee-applicants"
       );
       const currentPath = (props as any).match.path;
       const currentPageIsMenteeApplicants =
@@ -216,7 +223,7 @@ const ButtonsMobile = withRouter(
         <Link {...props} to="/app/applications" />
       );
       const currentUser = getRedProfile();
-      const isMentor = currentUser.userType === 'mentor';
+      const isMentor = currentUser.userType === "mentor";
       return (
         <>
           {isMentor && !currentPageIsMenteeApplicants && (

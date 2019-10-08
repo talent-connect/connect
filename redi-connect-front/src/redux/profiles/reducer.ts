@@ -1,8 +1,8 @@
-import { ProfilesState, ProfilesActions, ProfilesActionType } from './types';
+import { ProfilesState, ProfilesActions, ProfilesActionType } from "./types";
 
 const initialState: ProfilesState = {
   oneProfile: undefined,
-  loading: false,
+  loading: false
 };
 
 export const profilesReducer = (

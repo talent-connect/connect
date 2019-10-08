@@ -1,3 +1,7 @@
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
@@ -42,3 +46,35 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+## Releasing
+
+This repo uses [semantic-release](https://github.com/semantic-release/semantic-release), [commitizen](https://github.com/commitizen/cz-cli), [commitlint](http://commitlint.js.org), [husky](https://github.com/typicode/husky) and [conventional commits](https://conventionalcommits.org/en/v1.0.0-beta.4/) in order to automate the release proccess
+
+### Setup/Prequisites
+
+1. The user needs to have a `GH_TOKEN` environment variable set with a valid git token that has push access to the repository which can be generated following these [steps](https://help.github.com/en/articles/creating-a-personal-access-token-for-the-command-line)
+2. the token can be added into a `~/.bash_profile` to avoid manually setting it before running the command.
+3. The script should be run from the release branch only (default: master) otherwise it will fail. To change the release branch you can edit the "release" section in the `package.json` file to temporarily set the release branch as follows
+```
+"release": {
+  ...
+  "branch": "feature/integrate-semantic-release"
+  ...
+}
+```
+
+### Usage
+
+- `yarn commit` will run commitizen cli to generate a conventional style commit message
+- `yarn release` will do a dry-run of the release without pushing or changing any files
+- `yarn release --no-ci` will do a real release.
+We could potentially use this to automate releases when new commits/PRs land in the master branch
+Details
+
+### A release will:
+
+- Bump the version in `package.json` according to semantic versioning (semver) based on the changes/commit messages (fix/perf = patch, feat = minor, breaking = major)
+- Create a git tag
+- Generate a CHANGELOG.md with the latest changes since the last release
+- Push the changes to the repository & create a git release

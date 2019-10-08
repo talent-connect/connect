@@ -7,6 +7,9 @@ import {
   Resource,
   List,
   Tab,
+  ReferenceArrayField,
+  SingleFieldList,
+  ChipField,
   Create,
   Pagination,
   Filter,
@@ -56,6 +59,8 @@ import { API_URL } from './config';
 const categories = [
   { id: 'blockchain', label: 'Blockchain', colour: '#db8484' },
   { id: 'basicComputer', label: 'Basic Computer', colour: '#9a5454' },
+  { id: 'basicJava', label: 'Basic Java', colour: '#9a5454' },
+  { id: 'basicPython', label: 'Basic Python', colour: '#9a5454' },
   { id: 'react', label: 'React', colour: '#c984db' },
   { id: 'itAndNetworking', label: 'IT & Networking', colour: '#979a54' },
   { id: 'swift', label: 'Swift', colour: '#84b2db' },
@@ -169,27 +174,46 @@ const AllModelsPagination = props => (
   />
 );
 
-const RedProfileList = props => (
-  <List
-    {...props}
-    filters={<RedProfileListFilters />}
-    pagination={<AllModelsPagination />}
-  >
-    <Datagrid>
-      <TextField source="firstName" />
-      <TextField source="lastName" />
-      <TextField source="userType" />
-      <TextField source="currentMenteeCount" label="Current mentee count" />
-      <TextField source="menteeCountCapacity" label="Total mentee capacity" />
-      <BooleanField source="userActivated" />
-      <ShowButton />
-      <EditButton />
-    </Datagrid>
-  </List>
-);
+const RedProfileList = props => {
+  console.log(props);
+  return (
+    <List
+      {...props}
+      filters={<RedProfileListFilters />}
+      pagination={<AllModelsPagination />}
+    >
+      <Datagrid expand={<RedProfileListExpandPane />}>
+        <TextField source="firstName" />
+        <TextField source="lastName" />
+        <TextField source="userType" />
+        <TextField source="currentMenteeCount" label="Current mentee count" />
+        <TextField source="menteeCountCapacity" label="Total mentee capacity" />
+        <BooleanField source="userActivated" />
+        <ShowButton />
+        <EditButton />
+      </Datagrid>
+    </List>
+  );
+};
+const RedProfileListExpandPane = props => {
+  console.log(props);
+  return (
+    <Show {...props} title="">
+      <SimpleShowLayout>
+        <ArrayField source="categories">
+          <CategoryList />
+        </ArrayField>
+      </SimpleShowLayout>
+    </Show>
+  );
+};
 const RedProfileListFilters = props => (
   <Filter {...props}>
     <TextInput label="Search by name" source="q" />
+    <SelectInput
+      source="categories"
+      choices={categories.map(({ id, label }) => ({ id, name: label }))}
+    />
     <SelectInput
       source="userType"
       choices={[
