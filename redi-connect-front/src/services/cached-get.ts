@@ -1,5 +1,12 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { isLoggedIn } from './auth/auth';
+
+interface CachedRequestOptions {
+  cacheKey: string
+  dontShowErrorMessage: boolean
+  showErrorMessage: ({message}: {message: string}) => void 
+}
+
 export function cachedGet (url: string, config: AxiosRequestConfig, { cacheKey = url, isOnlineFirst = false, dontShowErrorMessage = false, showErrorMessage } = { cacheKey: url, isOnlineFirst: false, dontShowErrorMessage: false, showErrorMessage: () => {}}): Promise<AxiosResponse> {
   // Get from cache and resolve if the access token is valid for best online performance as well as offline / lie-fi support, but make the call to the network anyway to update the cache for next visit. if there's nothing in the cache, fallback to the network
   if (isOnlineFirst) {
@@ -13,7 +20,7 @@ export function cachedGet (url: string, config: AxiosRequestConfig, { cacheKey =
   }
 }
 
-function offlineFirstApproach(url: string, config: AxiosRequestConfig, {cacheKey, dontShowErrorMessage, showErrorMessage}: {cacheKey: string, dontShowErrorMessage: boolean, showErrorMessage: ({message}: {message: string}) => void} ): Promise<AxiosResponse> {
+function offlineFirstApproach(url: string, config: AxiosRequestConfig, {cacheKey, dontShowErrorMessage, showErrorMessage}: CachedRequestOptions ): Promise<AxiosResponse> {
   return Promise.race([
     Promise.all([getFromCache(url, config, cacheKey), isTokenValid()]).then(([p1Res, p2Res]) => p1Res),
     getFromNetworkAndSaveToCache(url, config, cacheKey)
@@ -36,7 +43,7 @@ function offlineFirstApproach(url: string, config: AxiosRequestConfig, {cacheKey
     })
 }
 
-function onlineFirstApproach(url: string, config: AxiosRequestConfig, {cacheKey, dontShowErrorMessage, showErrorMessage}: {cacheKey: string, dontShowErrorMessage: boolean, showErrorMessage: ({message}: {message: string}) => void }): Promise<AxiosResponse> {
+function onlineFirstApproach(url: string, config: AxiosRequestConfig, {cacheKey, dontShowErrorMessage, showErrorMessage}: CachedRequestOptions): Promise<AxiosResponse> {
   return getFromNetworkAndSaveToCache(url, config, cacheKey)
       .catch(error => {
         if (!error.response) {

@@ -1,7 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import Snackbar from '@material-ui/core/Snackbar'
 
-let openSnackbarFn: ({message, action}: {message: string, action?: any}) => void
+interface OpenSnackBarOptions {
+  message: string
+  action?: any
+}
+
+let openSnackbarFn: ({message, action}: OpenSnackBarOptions) => void
 let closeSnackbarFn: () => void
 
 export const Notifier = React.memo(function Notifier (props) {
@@ -13,7 +18,7 @@ export const Notifier = React.memo(function Notifier (props) {
     setOpen(false)
   }
 
-  const _openSnackbar = ({ message, action }: {message: string, action?: any}) => {
+  const _openSnackbar = ({ message, action }: OpenSnackBarOptions) => {
     setOpen(true)
     setMessage(message)
     setAction(action)
