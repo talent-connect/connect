@@ -2,8 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-// Needed for datepicker in <LogMentoringSessionDialog>
-import 'date-fns'
 import { openSnackbar, closeSnackbar } from './components/Notifier'
 import Button from '@material-ui/core/Button'
 import * as serviceWorker from './serviceWorker'
