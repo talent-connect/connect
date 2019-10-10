@@ -75,14 +75,20 @@ export const RequestResetPasswordEmail = (props: any) => {
   };
 
   const onServerRequestSuccess = () => {
-    showNotification('Success!', {
-      variant: 'success',
-      autoHideDuration: 6000,
-    });
+    showNotification(
+      'All good! Please check your email to set a new password :)',
+      {
+        variant: 'success',
+        autoHideDuration: 6000,
+      }
+    );
   };
 
   const onServerRequestError = (err: any) => {
-    showNotification('Oh no :(', { variant: 'error' });
+    showNotification(
+      'Oh no, something went wrong :( Did you type your email address correctly?',
+      { variant: 'error' }
+    );
   };
 
   return (
