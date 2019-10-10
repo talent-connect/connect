@@ -12,10 +12,14 @@ const config = {
 
 const ses = new aws.SES(config);
 
+const isProductionOrDemonstration = () =>
+  ['production', 'demonstration'].includes(process.env.NODE_ENV);
+
 const sendEmail = Rx.bindNodeCallback(ses.sendEmail.bind(ses));
 const sendEmailFactory = (to, subject, body) => {
-  let toSanitized =
-    process.env.NODE_ENV === 'production' ? to : 'eric@binarylights.com';
+  let toSanitized = isProductionOrDemonstration()
+    ? to
+    : 'eric@binarylights.com';
   if (process.env.DEV_MODE_EMAIL_RECIPIENT) {
     toSanitized = process.env.DEV_MODE_EMAIL_RECIPIENT;
   }
@@ -123,10 +127,9 @@ Your Career Support Team
 `
   );
 const sendMentorshipAcceptedEmail = (recipients, mentorName, menteeName) => {
-  let recipientsSanitized =
-    process.env.NODE_ENV !== 'production'
-      ? ['eric@binarylights.com']
-      : recipients;
+  let recipientsSanitized = !isProductionOrDemonstration()
+    ? ['eric@binarylights.com']
+    : recipients;
   if (process.env.DEV_MODE_EMAIL_RECIPIENT)
     recipientsSanitized = [process.env.DEV_MODE_EMAIL_RECIPIENT];
   return sendEmail({
