@@ -2,6 +2,7 @@ import { RouteDefinition } from './index';
 import { lazy } from 'react';
 import Login from '../pages/front/login/Login';
 import { RequestResetPasswordEmail } from '../pages/front/reset-password/RequestResetPasswordEmail';
+import { SetNewPassword } from '../pages/front/reset-password/SetNewPassword';
 const SignUpFormMentee = lazy(() =>
   import(
     /* webpackChunkName: "SignUpFormMentee", webpackPreload: true */ '../pages/front/signup/SignUpFormMentee'
@@ -67,7 +68,7 @@ export const routes__loggedOut: RouteDefinition[] = [
   },
   {
     path: '/front/reset-password/set-new-password/:accessToken',
-    component: RequestResetPasswordEmail,
+    component: SetNewPassword,
     exact: true,
   },
 ];

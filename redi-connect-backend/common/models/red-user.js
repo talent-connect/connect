@@ -21,7 +21,7 @@ module.exports = function(RedUser) {
       },
       function(err) {
         if (err) return cb(err);
-        return cb(null);
+        cb(null);
       }
     );
   };
@@ -31,9 +31,9 @@ module.exports = function(RedUser) {
     returns: { arg: 'resp', type: 'object', root: true },
   });
 
-  RedUser.on('resetPasswordRequest', async function(info) {
-    const accessToken = info.accessToken.id;
+  RedUser.on('resetPasswordRequest', function(info) {
+    const accessToken = encodeURIComponent(JSON.stringify(info.accessToken));
     const email = info.user.email;
-    sendResetPasswordEmail(email, accessToken);
+    sendResetPasswordEmail(email, accessToken).subscribe();
   });
 };
