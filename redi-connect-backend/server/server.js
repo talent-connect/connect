@@ -8,7 +8,10 @@ var https = require('https');
 var sslConfig = require('./ssl-config');
 
 var app = (module.exports = loopback());
-
+/*
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: true }));
+*/
 require('../lib/email');
 
 app.start = function() {
@@ -74,7 +77,11 @@ app.start = function(httpOnly) {
     server = http.createServer(app);
   }
   server.listen(app.get('port'), function() {
-    var baseUrl = (httpOnly ? 'http://' : 'https://') + app.get('host') + ':' + app.get('port');
+    var baseUrl =
+      (httpOnly ? 'http://' : 'https://') +
+      app.get('host') +
+      ':' +
+      app.get('port');
     app.emit('started', baseUrl);
     console.log('LoopBack server listening @ %s%s', baseUrl, '/');
     if (app.get('loopback-component-explorer')) {

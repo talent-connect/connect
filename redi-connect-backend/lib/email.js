@@ -45,7 +45,7 @@ function buildFrontendUrl(env) {
       return 'https://connect.redi-school.org';
 
     case 'demonstration':
-      return 'https://front.demo.connect.redi-school.org';
+      return 'https://app.demo.connect.redi-school.org';
 
     default:
     case 'development':
@@ -407,6 +407,28 @@ If you have any questions or would like any help, always feel free to reach out 
 Your Career Support Team`
   );
 
+const sendResetPasswordEmail = (recipient, accessToken) =>
+  sendEmailFactory(
+    recipient,
+    'Choose a new password for ReDI Connect',
+    `Hey there, 
+
+Someone requested a new password for your ReDI Connect account.
+
+If you didn't make this request then you can safely ignore this email :)
+
+Reset Password: ${buildFrontendUrl(
+      process.env.NODE_ENV
+    )}/front/reset-password/set-new-password/${accessToken}
+
+You’ll be asked to choose your own password. Your username is your email address: ${recipient}
+
+Let us know if you need any help or assistance at career@redi-school.org or on slack #redi_mentors2019.
+
+Your Career Support Team
+    `
+  );
+
 module.exports = {
   sendReportProblemEmail,
   sendDataImportMentorSignupEmail,
@@ -423,5 +445,6 @@ module.exports = {
   sendMentorPendingReviewDeclinedEmail,
   sendMenteePendingReviewDeclinedEmail,
   sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted,
+  sendResetPasswordEmail,
   sendEmailFactory,
 };
