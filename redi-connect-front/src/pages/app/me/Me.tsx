@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Formik, FormikValues, FormikActions } from "formik";
 import Grid from "@material-ui/core/Grid";
 import * as Yup from "yup";
-import classNames from "classnames";
+import clsx from "clsx";
 import { Link } from "react-router-dom";
 
 import { Step2Background } from "./steps/Step2Background";
@@ -254,7 +254,7 @@ export const buildSignUpForm = (
         </Button>
         {props.saveResult === "error" && (
           <Paper
-            className={classNames(
+            className={clsx(
               props.classes.submitError,
               props.classes.submitResult
             )}
