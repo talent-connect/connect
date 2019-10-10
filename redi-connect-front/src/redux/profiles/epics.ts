@@ -1,9 +1,9 @@
-import { ActionsObservable, ofType } from 'redux-observable';
-import { map, switchMap } from 'rxjs/operators';
-import { API_URL } from '../../config/config';
-import { http } from '../../services/http/http';
-import { profilesFetchOneSuccess } from './actions';
-import { ProfilesActions, ProfilesActionType } from './types';
+import { ActionsObservable, ofType } from "redux-observable";
+import { map, switchMap } from "rxjs/operators";
+import { API_URL } from "../../config/config";
+import { http } from "../../services/http/http";
+import { profilesFetchOneSuccess } from "./actions";
+import { ProfilesActions, ProfilesActionType } from "./types";
 
 export const profilesFetchOneEpic = (
   action$: ActionsObservable<ProfilesActions>
@@ -16,5 +16,5 @@ export const profilesFetchOneEpic = (
   );
 
 export const profilesEpics = {
-  profilesFetchOneEpic,
+  profilesFetchOneEpic
 };

@@ -1,14 +1,36 @@
 import { RouteDefinition } from './index';
-import { lazy } from 'react'
-import Login from '../pages/front/login/Login'
-const SignUpFormMentee= lazy(() => import(/* webpackChunkName: "SignUpFormMentee", webpackPreload: true */ '../pages/front/signup/SignUpFormMentee'));
-const SignUpFormMentor= lazy(() => import(/* webpackChunkName: "SignUpFormMentor", webpackPreload: true */ '../pages/front/signup/SignUpFormMentor'));
-const SignUpComplete= lazy(() => import(/* webpackChunkName: "SignUpComplete", webpackPreload: true */ '../pages/front/signup/SignUpComplete'));
+import { lazy } from 'react';
+import Login from '../pages/front/login/Login';
+import { RequestResetPasswordEmail } from '../pages/front/reset-password/RequestResetPasswordEmail';
+import { SetNewPassword } from '../pages/front/reset-password/SetNewPassword';
+const SignUpFormMentee = lazy(() =>
+  import(
+    /* webpackChunkName: "SignUpFormMentee", webpackPreload: true */ '../pages/front/signup/SignUpFormMentee'
+  )
+);
+const SignUpFormMentor = lazy(() =>
+  import(
+    /* webpackChunkName: "SignUpFormMentor", webpackPreload: true */ '../pages/front/signup/SignUpFormMentor'
+  )
+);
+const SignUpComplete = lazy(() =>
+  import(
+    /* webpackChunkName: "SignUpComplete", webpackPreload: true */ '../pages/front/signup/SignUpComplete'
+  )
+);
 // const Login= lazy(() => import(/* webpackChunkName: "Login", webpackPreload: true */ '../pages/front/login/Login'));
-const SignUpExisting= lazy(() => import(/* webpackChunkName: "SignUpExisting", webpackPreload: true */ '../pages/front/signup-existing/SignUpExisting'));
-const ResetPassword= lazy(() => import(/* webpackChunkName: "ResetPassword", webpackPreload: true */ '../pages/front/signup-existing/ResetPassword'));
+const SignUpExisting = lazy(() =>
+  import(
+    /* webpackChunkName: "SignUpExisting", webpackPreload: true */ '../pages/front/signup-existing/SignUpExisting'
+  )
+);
+const ResetPassword = lazy(() =>
+  import(
+    /* webpackChunkName: "ResetPassword", webpackPreload: true */ '../pages/front/signup-existing/ResetPassword'
+  )
+);
 
-export const routes__loggedOut: Array<RouteDefinition> = [
+export const routes__loggedOut: RouteDefinition[] = [
   {
     path: '/front/login',
     component: Login,
@@ -39,4 +61,14 @@ export const routes__loggedOut: Array<RouteDefinition> = [
     component: ResetPassword,
     exact: true,
   },
-]
+  {
+    path: '/front/reset-password/request-reset-password-email',
+    component: RequestResetPasswordEmail,
+    exact: true,
+  },
+  {
+    path: '/front/reset-password/set-new-password/:accessToken',
+    component: SetNewPassword,
+    exact: true,
+  },
+];

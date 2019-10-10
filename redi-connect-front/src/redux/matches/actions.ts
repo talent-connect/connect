@@ -5,24 +5,24 @@ import {
   MatchesFetchErrorAction,
   MatchesAcceptMentorshipStartAction,
   MatchesAcceptMentorshipSuccessAction,
-  MatchesAcceptMentorshipErrorAction,
-} from './types';
-import { RedMatch } from '../../types/RedMatch';
+  MatchesAcceptMentorshipErrorAction
+} from "./types";
+import { RedMatch } from "../../types/RedMatch";
 
 export const matchesFetchStart = (): MatchesFetchStartAction => ({
-  type: MatchesActionType.MATCHES_FETCH_START,
+  type: MatchesActionType.MATCHES_FETCH_START
 });
 
 export const matchesFetchSuccess = (
-  matches: Array<RedMatch>
+  matches: RedMatch[]
 ): MatchesFetchSuccessAction => ({
   type: MatchesActionType.MATCHES_FETCH_SUCCESS,
-  payload: matches,
+  payload: matches
 });
 
 export const matchesFetchError = (error: Error): MatchesFetchErrorAction => ({
   type: MatchesActionType.MATCHES_FETCH_ERROR,
-  payload: error,
+  payload: error
 });
 
 export const matchesAcceptMentorshipStart = (
@@ -30,20 +30,20 @@ export const matchesAcceptMentorshipStart = (
 ): MatchesAcceptMentorshipStartAction => ({
   type: MatchesActionType.MATCHES_ACCEPT_MENTORSHIP_START,
   payload: {
-    redMatchId,
-  },
+    redMatchId
+  }
 });
 
 export const matchesAcceptMentorshipSuccess = (
-  matches: Array<RedMatch>
+  matches: RedMatch[]
 ): MatchesAcceptMentorshipSuccessAction => ({
   type: MatchesActionType.MATCHES_ACCEPT_MENTORSHIP_SUCCESS,
-  payload: matches,
+  payload: matches
 });
 
 export const matchesAcceptMentorshipError = (
   error: Error
 ): MatchesAcceptMentorshipErrorAction => ({
   type: MatchesActionType.MATCHES_ACCEPT_MENTORSHIP_ERROR,
-  payload: error,
+  payload: error
 });

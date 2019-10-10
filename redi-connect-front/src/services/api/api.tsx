@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { API_URL } from '../../config/config';
 import { AccessToken } from '../../types/AccessToken';
 import { RedProfile } from '../../types/RedProfile';
@@ -58,6 +59,13 @@ export const logout = () => {
   history.push('/front/login');
 };
 
+export const requestResetPasswordEmail = async (email: string) => {
+  await axios(`${API_URL}/redUsers/requestResetPasswordEmail`, {
+    method: 'post',
+    data: { email },
+  });
+};
+
 export const setPassword = async (password: string) => {
   const userId = getAccessToken().userId;
   await http(`${API_URL}/redUsers/${userId}`, {
@@ -67,7 +75,7 @@ export const setPassword = async (password: string) => {
 };
 
 export const giveGdprConsent = async () => {
-  const profileId = getRedProfile().id
+  const profileId = getRedProfile().id;
   await http(`${API_URL}/redProfiles/${profileId}`, {
     method: 'patch',
     data: { gaveGdprConsentAt: new Date() },
@@ -75,7 +83,7 @@ export const giveGdprConsent = async () => {
 };
 
 export const activateUser = async () => {
-  const profileId = getRedProfile().id
+  const profileId = getRedProfile().id;
   await http(`${API_URL}/redProfiles/${profileId}`, {
     method: 'patch',
     data: { userActivated: true },
@@ -113,7 +121,7 @@ export const saveRedProfile = async (
   return savedProfile;
 };
 
-export const getProfiles = (userType: UserType): Promise<Array<RedProfile>> =>
+export const getProfiles = (userType: UserType): Promise<RedProfile[]> =>
   http(
     `${API_URL}/redProfiles?filter=${JSON.stringify({
       where: { userType },
@@ -127,7 +135,7 @@ export const getProfile = (profileId: string): Promise<RedProfile> =>
   http(`${API_URL}/redProfiles/${profileId}`).then(resp => resp.data);
 
 // TODO: status: 'applied' here should be matched against RedMatch['status']
-export const fetchApplicants = async (): Promise<Array<RedProfile>> =>
+export const fetchApplicants = async (): Promise<RedProfile[]> =>
   http(
     `${API_URL}/redMatches?filter=` +
       JSON.stringify({

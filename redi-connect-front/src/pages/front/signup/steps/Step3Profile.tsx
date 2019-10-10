@@ -1,27 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import * as Yup from 'yup';
-import { FormikProps } from 'formik';
-import Input from '@material-ui/core/Input';
-import TextField from '@material-ui/core/TextField';
-import InputLabel from '@material-ui/core/InputLabel';
-import Typography from '@material-ui/core/Typography';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Checkbox from '@material-ui/core/Checkbox';
-import ListItemText from '@material-ui/core/ListItemText';
-import { SignUpFormValues, SignUpFormType } from '../factory';
+import React, { useState, useEffect } from "react";
+import * as Yup from "yup";
+import { FormikProps } from "formik";
+import Input from "@material-ui/core/Input";
+import TextField from "@material-ui/core/TextField";
+import InputLabel from "@material-ui/core/InputLabel";
+import Typography from "@material-ui/core/Typography";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import FormControl from "@material-ui/core/FormControl";
+import Checkbox from "@material-ui/core/Checkbox";
+import ListItemText from "@material-ui/core/ListItemText";
+import { SignUpFormValues, SignUpFormType } from "../factory";
 import {
   genders as formGenders,
   Languages as formLanguages,
-  API_URL,
-  S3_UPLOAD_SIGN_URL,
-} from '../../../../config/config';
-import { withStyles, Grid } from '@material-ui/core';
-import { useLoading } from '../../../../hooks/WithLoading';
-import { Avatar } from '../../../../components/Avatar';
-const ReactS3Uploader: any = require('react-s3-uploader');
+  S3_UPLOAD_SIGN_URL
+} from "../../../../config/config";
+import { withStyles, Grid } from "@material-ui/core";
+import { useLoading } from "../../../../hooks/WithLoading";
+import { Avatar } from "../../../../components/Avatar";
+const ReactS3Uploader: any = require("react-s3-uploader");
 
 export const validationSchema = Yup.object({
   profileAvatarImageS3Key: Yup.string().max(255),
@@ -32,40 +31,40 @@ export const validationSchema = Yup.object({
     .required()
     .max(255),
   gender: Yup.string()
-    .oneOf(['male', 'female', 'other'])
-    .label('Gender'),
+    .oneOf(["male", "female", "other"])
+    .label("Gender"),
   age: Yup.number()
     .min(16)
     .max(99)
-    .label('Age'),
+    .label("Age"),
   languages: Yup.array()
     .min(1)
     .of(Yup.string().max(255))
-    .label('Languages'),
+    .label("Languages"),
   personalDescription: Yup.string()
     .required()
     .min(100)
     .max(600)
-    .label('Personal description'),
+    .label("Personal description")
 });
 
 const styles = (theme: any) => ({
   margin: {
-    margin: '24px 0',
+    margin: "24px 0"
   },
   avatarImageFrame: {
-    padding: '10px',
-    borderRadius: '4px',
-    border: 'solid 2px #58adc4',
+    padding: "10px",
+    borderRadius: "4px",
+    border: "solid 2px #58adc4"
   },
   fileUploadLabel: {
-    padding: '15px 20px',
-    borderRadius: '10px',
-    backgroundColor: '#58adc4',
-    color: 'white',
-    cursor: 'pointer',
-    display: 'inline-block',
-  },
+    padding: "15px 20px",
+    borderRadius: "10px",
+    backgroundColor: "#58adc4",
+    color: "white",
+    cursor: "pointer",
+    display: "inline-block"
+  }
 });
 
 const ITEM_HEIGHT = 48;
@@ -74,9 +73,9 @@ const MenuProps = {
   PaperProps: {
     style: {
       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
+      width: 250
+    }
+  }
 };
 
 const Comp: any = (
@@ -94,7 +93,7 @@ const Comp: any = (
       languages,
       otherLanguages,
       personalDescription,
-      expectations,
+      expectations
     },
     errors,
     touched,
@@ -103,7 +102,7 @@ const Comp: any = (
     setFieldTouched,
     setFieldValue,
     classes,
-    type,
+    type
   } = props;
 
   const change = (name: any, e: any) => {
@@ -113,18 +112,18 @@ const Comp: any = (
   };
 
   const handleLanguagesChange = (e: any) => {
-    setFieldValue('languages', e.target.value);
-    setFieldTouched('languages', true, false);
+    setFieldValue("languages", e.target.value);
+    setFieldTouched("languages", true, false);
   };
 
   const { Loading, setLoading } = useLoading();
   const [uploadInput, setUploadInput] = useState<HTMLInputElement>();
   useEffect(() => {
     if (uploadInput !== undefined) {
-      uploadInput.style.width = '0.1px';
-      uploadInput.style.height = '0.1px';
-      uploadInput.id = 'avatar-upload';
-      uploadInput.name = 'avatar-upload';
+      uploadInput.style.width = "0.1px";
+      uploadInput.style.height = "0.1px";
+      uploadInput.id = "avatar-upload";
+      uploadInput.name = "avatar-upload";
     }
   }, [uploadInput]);
 
@@ -134,7 +133,7 @@ const Comp: any = (
     next(file);
   };
   const onUploadSuccess = (result: any) => {
-    setFieldValue('profileAvatarImageS3Key', result.fileKey);
+    setFieldValue("profileAvatarImageS3Key", result.fileKey);
     setLoading(false);
   };
 
@@ -160,7 +159,7 @@ const Comp: any = (
               <ReactS3Uploader
                 signingUrl={S3_UPLOAD_SIGN_URL}
                 accept="image/*"
-                uploadRequestHeaders={{ 'x-amz-acl': 'public-read' }}
+                uploadRequestHeaders={{ "x-amz-acl": "public-read" }}
                 preprocess={onUploadStart}
                 onSignedUrl={(c: any) => console.log(c)}
                 onProgress={(c: any) => {}}
@@ -179,11 +178,11 @@ const Comp: any = (
             className={classes.margin}
             id="firstName"
             name="firstName"
-            helperText={touched.firstName ? errors.firstName : ''}
+            helperText={touched.firstName ? errors.firstName : ""}
             error={touched.firstName && Boolean(errors.firstName)}
             label="First name*"
             value={firstName}
-            onChange={change.bind(null, 'firstName')}
+            onChange={change.bind(null, "firstName")}
             fullWidth
             margin="normal"
           />
@@ -193,11 +192,11 @@ const Comp: any = (
             className={classes.margin}
             id="lastName"
             name="lastName"
-            helperText={touched.lastName ? errors.lastName : ''}
+            helperText={touched.lastName ? errors.lastName : ""}
             error={touched.lastName && Boolean(errors.lastName)}
             label="Last name*"
             value={lastName}
-            onChange={change.bind(null, 'lastName')}
+            onChange={change.bind(null, "lastName")}
             fullWidth
             margin="normal"
           />
@@ -208,10 +207,10 @@ const Comp: any = (
         <Select
           value={gender}
           error={touched.gender && Boolean(errors.gender)}
-          onChange={change.bind(null, 'gender')}
+          onChange={change.bind(null, "gender")}
           inputProps={{
-            name: 'gender',
-            id: 'gender',
+            name: "gender",
+            id: "gender"
           }}
         >
           <MenuItem value="">
@@ -229,11 +228,11 @@ const Comp: any = (
         id="age"
         name="age"
         type="number"
-        helperText={touched.age ? errors.age : ''}
+        helperText={touched.age ? errors.age : ""}
         error={touched.age && Boolean(errors.age)}
         label="Age?"
         value={age}
-        onChange={change.bind(null, 'age')}
+        onChange={change.bind(null, "age")}
         fullWidth
         margin="normal"
       />
@@ -246,7 +245,7 @@ const Comp: any = (
           value={languages}
           onChange={handleLanguagesChange}
           input={<Input id="select-multiple-checkbox" />}
-          renderValue={(selected: any) => selected.join(', ')}
+          renderValue={(selected: any) => selected.join(", ")}
           MenuProps={MenuProps}
         >
           {formLanguages.map(lang => (
@@ -264,11 +263,11 @@ const Comp: any = (
         className={classes.margin}
         id="otherLanguages"
         name="otherLanguages"
-        helperText={touched.otherLanguages ? errors.otherLanguages : ''}
+        helperText={touched.otherLanguages ? errors.otherLanguages : ""}
         error={touched.otherLanguages && Boolean(errors.otherLanguages)}
         label="Any other languages?"
         value={otherLanguages}
-        onChange={change.bind(null, 'otherLanguages')}
+        onChange={change.bind(null, "otherLanguages")}
         fullWidth
         margin="normal"
       />
@@ -277,21 +276,21 @@ const Comp: any = (
         id="expectations"
         name="expectations"
         label={
-          type === 'public-sign-up-mentee-pending-review'
-            ? 'What do you expect from your mentor?'
-            : 'Feel free to share expectations towards your mentees (shown on your profile)'
+          type === "public-sign-up-mentee-pending-review"
+            ? "What do you expect from your mentor?"
+            : "Feel free to share expectations towards your mentees (shown on your profile)"
         }
         error={touched.expectations && Boolean(errors.expectations)}
         helperText={
           touched.expectations
             ? errors.expectations
-            : 'Write something about your expectations...'
+            : "Write something about your expectations..."
         }
         value={expectations}
         multiline
         fullWidth
         rows="4"
-        onChange={change.bind(null, 'expectations')}
+        onChange={change.bind(null, "expectations")}
       />
       <TextField
         className={classes.margin}
@@ -304,13 +303,13 @@ const Comp: any = (
         helperText={
           touched.personalDescription
             ? errors.personalDescription
-            : 'Write something about yourself...'
+            : "Write something about yourself..."
         }
         value={personalDescription}
         multiline
         fullWidth
         rows="4"
-        onChange={change.bind(null, 'personalDescription')}
+        onChange={change.bind(null, "personalDescription")}
       />
     </>
   );

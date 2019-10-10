@@ -1,5 +1,7 @@
 'use strict';
 
+const { sendResetPasswordEmail } = require('../../lib/email');
+
 module.exports = function(RedUser) {
   RedUser.observe('before save', function updateTimestamp(ctx, next) {
     if (ctx.instance) {
@@ -9,5 +11,29 @@ module.exports = function(RedUser) {
       ctx.data.updatedAt = new Date();
     }
     next();
+  });
+
+  RedUser.requestResetPasswordEmail = function(body, cb) {
+    const email = body.email;
+    RedUser.resetPassword(
+      {
+        email: email,
+      },
+      function(err) {
+        if (err) return cb(err);
+        cb(null);
+      }
+    );
+  };
+
+  RedUser.remoteMethod('requestResetPasswordEmail', {
+    accepts: { arg: 'data', type: 'object', http: { source: 'body' } },
+    returns: { arg: 'resp', type: 'object', root: true },
+  });
+
+  RedUser.on('resetPasswordRequest', function(info) {
+    const accessToken = encodeURIComponent(JSON.stringify(info.accessToken));
+    const email = info.user.email;
+    sendResetPasswordEmail(email, accessToken).subscribe();
   });
 };

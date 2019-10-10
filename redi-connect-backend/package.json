@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "aws-sdk": "^2.418.0",
+    "body-parser": "^1.19.0",
     "compression": "^1.0.3",
     "cors": "^2.5.2",
     "helmet": "^3.10.0",

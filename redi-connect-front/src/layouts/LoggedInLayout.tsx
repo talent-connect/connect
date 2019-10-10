@@ -11,7 +11,7 @@ import {
   Theme,
   IconButton,
   Menu,
-  MenuItem
+  MenuItem,
 } from '@material-ui/core';
 
 import rediLogo from '../assets/rediLogo.svg';
@@ -25,7 +25,7 @@ import { RootState } from '../redux/types';
 import { routes__loggedIn } from '../routes/routes__logged-in';
 import { RouteComponentProps } from 'react-router';
 
-type LoggedInLayoutProps = {
+interface LoggedInLayoutProps {
   children: React.ReactNode;
   classes: {
     root: string;
@@ -35,7 +35,7 @@ type LoggedInLayoutProps = {
     sectionDesktop: string;
     sectionMobile: string;
   };
-};
+}
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -53,7 +53,7 @@ const styles = (theme: Theme) =>
       color: '#fff',
     },
     avatarMobile: {
-      color: '#000'
+      color: '#000',
     },
     sectionDesktop: {
       display: 'none',
@@ -86,7 +86,11 @@ export const LoggedInLayout = withStyles(styles)(
               style={{ margin: 0, padding: 0 }}
               component={LinkToDashboard}
             >
-              <img src={rediLogo} style={{ height: '36px', width: '96px' }} alt='redi logo'/>
+              <img
+                src={rediLogo}
+                style={{ height: '36px', width: '96px' }}
+                alt="redi logo"
+              />
             </Button>
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
@@ -121,7 +125,10 @@ export const LoggedInLayout = withStyles(styles)(
   }
 );
 
-type ButtonsProps = RouteComponentProps & {applicationCount?: number|undefined, menteeCount?: number|undefined} & {
+type ButtonsProps = RouteComponentProps & {
+  applicationCount?: number | undefined;
+  menteeCount?: number | undefined;
+} & {
   classes: {
     root: string;
     grow: string;

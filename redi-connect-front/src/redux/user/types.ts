@@ -1,7 +1,7 @@
-import { RedProfile } from '../../types/RedProfile';
-import { Action } from 'redux';
-import { AccessToken } from '../../types/AccessToken';
-import { FormSubmitResult } from '../../types/FormSubmitResult';
+import { RedProfile } from "../../types/RedProfile";
+import { Action } from "redux";
+import { AccessToken } from "../../types/AccessToken";
+import { FormSubmitResult } from "../../types/FormSubmitResult";
 
 export interface UserState {
   profile?: RedProfile;
@@ -11,12 +11,12 @@ export interface UserState {
 }
 
 export enum UserActionType {
-  USER_PROFILE_FETCH_START = 'USER_PROFILE_FETCH_START',
-  USER_PROFILE_FETCH_SUCCESS = 'USER_PROFILE_FETCH_SUCCESS',
-  USER_PROFILE_FETCH_ERROR = 'USER_PROFILE_FETCH_ERROR',
-  USER_PROFILE_SAVE_START = 'USER_PROFILE_SAVE_START',
-  USER_PROFILE_SAVE_SUCCESS = 'USER_PROFILE_SAVE_SUCCESS',
-  USER_PROFILE_SAVE_ERROR = 'USER_PROFILE_SAVE_ERROR',
+  USER_PROFILE_FETCH_START = "USER_PROFILE_FETCH_START",
+  USER_PROFILE_FETCH_SUCCESS = "USER_PROFILE_FETCH_SUCCESS",
+  USER_PROFILE_FETCH_ERROR = "USER_PROFILE_FETCH_ERROR",
+  USER_PROFILE_SAVE_START = "USER_PROFILE_SAVE_START",
+  USER_PROFILE_SAVE_SUCCESS = "USER_PROFILE_SAVE_SUCCESS",
+  USER_PROFILE_SAVE_ERROR = "USER_PROFILE_SAVE_ERROR"
 }
 export interface ProfileFetchStartAction extends Action {
   type: UserActionType.USER_PROFILE_FETCH_START;

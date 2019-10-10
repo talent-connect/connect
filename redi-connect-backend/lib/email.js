@@ -2,6 +2,7 @@
 
 const aws = require('aws-sdk');
 const Rx = require('rxjs');
+const { tap, catchError } = require('rxjs/operators');
 const _ = require('lodash');
 const config = {
   accessKeyId: process.env.EMAILER_AWS_ACCESS_KEY,
@@ -11,10 +12,14 @@ const config = {
 
 const ses = new aws.SES(config);
 
+const isProductionOrDemonstration = () =>
+  ['production', 'demonstration'].includes(process.env.NODE_ENV);
+
 const sendEmail = Rx.bindNodeCallback(ses.sendEmail.bind(ses));
 const sendEmailFactory = (to, subject, body) => {
-  let toSanitized =
-    process.env.NODE_ENV === 'production' ? to : 'eric@binarylights.com';
+  let toSanitized = isProductionOrDemonstration()
+    ? to
+    : 'eric@binarylights.com';
   if (process.env.DEV_MODE_EMAIL_RECIPIENT) {
     toSanitized = process.env.DEV_MODE_EMAIL_RECIPIENT;
   }
@@ -45,7 +50,7 @@ function buildFrontendUrl(env) {
       return 'https://connect.redi-school.org';
 
     case 'demonstration':
-      return 'https://front.demo.connect.redi-school.org';
+      return 'https://app.demo.connect.redi-school.org';
 
     default:
     case 'development':
@@ -122,10 +127,9 @@ Your Career Support Team
 `
   );
 const sendMentorshipAcceptedEmail = (recipients, mentorName, menteeName) => {
-  let recipientsSanitized =
-    process.env.NODE_ENV !== 'production'
-      ? ['eric@binarylights.com']
-      : recipients;
+  let recipientsSanitized = !isProductionOrDemonstration()
+    ? ['eric@binarylights.com']
+    : recipients;
   if (process.env.DEV_MODE_EMAIL_RECIPIENT)
     recipientsSanitized = [process.env.DEV_MODE_EMAIL_RECIPIENT];
   return sendEmail({
@@ -407,6 +411,28 @@ If you have any questions or would like any help, always feel free to reach out 
 Your Career Support Team`
   );
 
+const sendResetPasswordEmail = (recipient, accessToken) =>
+  sendEmailFactory(
+    recipient,
+    'Choose a new password for ReDI Connect',
+    `Hey there, 
+
+Someone requested a new password for your ReDI Connect account.
+
+If you didn't make this request then you can safely ignore this email :)
+
+Reset Password: ${buildFrontendUrl(
+      process.env.NODE_ENV
+    )}/front/reset-password/set-new-password/${accessToken}
+
+You’ll be asked to choose your own password. Your username is your email address: ${recipient}
+
+Let us know if you need any help or assistance at career@redi-school.org or on slack #redi_mentors2019.
+
+Your Career Support Team
+    `
+  );
+
 module.exports = {
   sendReportProblemEmail,
   sendDataImportMentorSignupEmail,
@@ -423,5 +449,6 @@ module.exports = {
   sendMentorPendingReviewDeclinedEmail,
   sendMenteePendingReviewDeclinedEmail,
   sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted,
+  sendResetPasswordEmail,
   sendEmailFactory,
 };

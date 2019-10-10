@@ -185,6 +185,16 @@ const Form = withStyles(styles)(
           </Button>
           <Box className={classes.navigationBox}>
             <Typography align="center">
+              <Link
+                component={RouterLink}
+                to="/front/reset-password/request-reset-password-email"
+              >
+                Forgot your password?
+              </Link>
+            </Typography>
+          </Box>
+          <Box className={classes.navigationBox}>
+            <Typography align="center">
               New to ReDI Connect? Join as a{' '}
               <Link component={RouterLink} to="/front/signup/mentee">
                 student
