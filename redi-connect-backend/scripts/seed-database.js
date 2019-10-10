@@ -253,6 +253,47 @@ const ericMentorRedProfile = {
   username: 'info@binarylights.com',
 };
 
+const isabelleMentorRedUser = {
+  password: 'isabelle@redi-school.org',
+  email: 'isabelle@redi-school.org',
+};
+const isabelleMentorRedProfile = {
+  userActivated: true,
+  userType: 'mentor',
+  mentor_occupation: 'Test',
+  mentor_workPlace: 'Test',
+  mentee_occupationCategoryId: 'job',
+  mentee_occupationJob_placeOfEmployment: randomString(),
+  mentee_occupationJob_position: randomString(),
+  mentee_occupationStudent_studyPlace: randomString(),
+  mentee_occupationStudent_studyName: randomString(),
+  mentee_occupationLookingForJob_what: randomString(),
+  mentee_occupationOther_description: randomString(),
+  mentee_highestEducationLevel: randomString(),
+  mentee_currentlyEnrolledInCourse: randomString(),
+  profileAvatarImageS3Key:
+    'c1774822-9495-4bd6-866a-bf4d28aaddc8_ScreenShot2019-03-12at22.22.20.png',
+  firstName: 'Isabelle',
+  lastName: 'ReDI School',
+  gender: 'female',
+  languages: ['German', 'Farsi'],
+  otherLanguages: '',
+  personalDescription:
+    'eric@binarylights.comeric@binarylights.comeric@binarylights.comeric@binarylights.comeric@binarylights.comeric@binarylights.comeric@binarylights.comeric@binarylights.com',
+  contactEmail: 'isabelle@redi-school.org',
+  slackUsername: '',
+  telephoneNumber: '',
+  categories: [
+    'blockchain',
+    'swift',
+    'pythonDataScience',
+    'cvPersonalPresentation',
+    'itAndNetworking',
+  ],
+  menteeCountCapacity: 2,
+  username: 'isabelle@redi-school.org',
+};
+
 const ericAdminUser = {
   email: 'cloud-accounts@redi-school.org',
   password: 'cloud-accounts@redi-school.org',
@@ -312,6 +353,11 @@ Rx.of({})
     tap(console.log),
     switchMap(redUser =>
       redProfileCreateOnRedUser(redUser)(ericMentorRedProfile)
+    ),
+    switchMap(() => redUserCreate(isabelleMentorRedUser)),
+    tap(console.log),
+    switchMap(redUser =>
+      redProfileCreateOnRedUser(redUser)(isabelleMentorRedProfile)
     ),
     tap(console.log),
     switchMapTo(users),

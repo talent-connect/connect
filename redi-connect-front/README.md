@@ -78,3 +78,9 @@ Details
 - Create a git tag
 - Generate a CHANGELOG.md with the latest changes since the last release
 - Push the changes to the repository & create a git release
+
+## Maintenance
+
+### Upgrade packages
+
+Run `yarn run yarn-check -u` to interactively upgrade packages (major/minor/patch) .

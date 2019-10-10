@@ -1,11 +1,11 @@
 import React from "react";
-import classNames from "classnames";
+import clsx from "clsx";
 import { RedProfile } from "../types/RedProfile";
 import { Grid, Icon } from "@material-ui/core";
 import EmailIcon from "@material-ui/icons/Email";
 import PhoneIcon from "@material-ui/icons/Phone";
 
-const SlackIcon = <Icon className={classNames("fab fa-slack")} />;
+const SlackIcon = <Icon className={clsx("fab fa-slack")} />;
 
 export const ContactInfo = ({ profile }: { profile: RedProfile }) => (
   <>

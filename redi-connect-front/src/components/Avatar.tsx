@@ -1,5 +1,5 @@
 import React from "react";
-import classNames from "classnames";
+import clsx from "clsx";
 
 import { AWS_PROFILE_AVATARS_BUCKET_BASE_URL } from "../config/config";
 import { createStyles, withStyles } from "@material-ui/core";
@@ -28,7 +28,7 @@ export const Avatar = withStyles(styles)(
     <>
       {!s3Key && (
         <PersonIcon
-          className={classNames(classes.avatarImage, className)}
+          className={clsx(classes.avatarImage, className)}
           color="primary"
         />
       )}
@@ -40,7 +40,7 @@ export const Avatar = withStyles(styles)(
               s3Key})`,
             ...style
           }}
-          className={classNames(classes.avatarImage, className)}
+          className={clsx(classes.avatarImage, className)}
         />
       )}
     </>

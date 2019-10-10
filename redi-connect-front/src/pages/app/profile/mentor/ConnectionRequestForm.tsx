@@ -8,7 +8,7 @@ import {
   Theme,
   withStyles
 } from "@material-ui/core";
-import classNames from "classnames";
+import clsx from "clsx";
 import { Formik, FormikActions, FormikProps } from "formik";
 import React, { useState } from "react";
 import * as Yup from "yup";
@@ -112,7 +112,7 @@ const Form = ({
         <GetClasses>
           {(classes: any) => (
             <Paper
-              className={classNames(classes.submitError, classes.submitResult)}
+              className={clsx(classes.submitError, classes.submitResult)}
             >
               An error occurred, please try again.
             </Paper>
@@ -123,7 +123,7 @@ const Form = ({
         <GetClasses>
           {(classes: any) => (
             <Paper
-              className={classNames(
+              className={clsx(
                 classes.submitSuccess,
                 classes.submitResult
               )}

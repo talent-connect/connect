@@ -14,7 +14,7 @@ import {
   Checkbox,
   FormHelperText
 } from "@material-ui/core";
-import classNames from "classnames";
+import clsx from "clsx";
 import { Formik, FormikActions, FormikProps } from "formik";
 import React, { useState } from "react";
 import { connect } from "react-redux";
@@ -215,7 +215,7 @@ const Form = withStyles(styles)(
       <>
         {submitResult === "error" && (
           <Paper
-            className={classNames(classes.submitError, classes.submitResult)}
+            className={clsx(classes.submitError, classes.submitResult)}
           >
             An error occurred, please try again.
           </Paper>

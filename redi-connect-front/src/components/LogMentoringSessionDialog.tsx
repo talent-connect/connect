@@ -15,7 +15,7 @@ import {
   Theme,
   withStyles
 } from "@material-ui/core";
-import classNames from "classnames";
+import clsx from "clsx";
 import { Formik, FormikActions, FormikProps } from "formik";
 import {
   DatePicker,
@@ -196,7 +196,7 @@ const Form = withStyles(styles)(
       <MuiPickersUtilsProvider utils={MomentUtils}>
         {submitResult === "error" && (
           <Paper
-            className={classNames(classes.submitError, classes.submitResult)}
+            className={clsx(classes.submitError, classes.submitResult)}
           >
             An error occurred, please try again.
           </Paper>

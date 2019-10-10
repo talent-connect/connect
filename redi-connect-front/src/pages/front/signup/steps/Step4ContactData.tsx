@@ -1,6 +1,6 @@
 import React from "react";
 import * as Yup from "yup";
-import classNames from "classnames";
+import clsx from "clsx";
 import { TextField, InputAdornment } from "@material-ui/core";
 import { SignUpFormValues, SignUpFormType } from "../factory";
 import { FormikProps } from "formik";
@@ -83,7 +83,7 @@ export const Step4ContactData = (
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <Icon className={classNames("fab fa-linkedin")} />
+              <Icon className={clsx("fab fa-linkedin")} />
             </InputAdornment>
           )
         }}
@@ -101,7 +101,7 @@ export const Step4ContactData = (
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <Icon className={classNames("fab fa-slack")} />
+              <Icon className={clsx("fab fa-slack")} />
             </InputAdornment>
           )
         }}
