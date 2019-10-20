@@ -195,9 +195,7 @@ const Form = withStyles(styles)(
     return (
       <MuiPickersUtilsProvider utils={MomentUtils}>
         {submitResult === "error" && (
-          <Paper
-            className={clsx(classes.submitError, classes.submitResult)}
-          >
+          <Paper className={clsx(classes.submitError, classes.submitResult)}>
             An error occurred, please try again.
           </Paper>
         )}
@@ -216,6 +214,7 @@ const Form = withStyles(styles)(
               onChange={changeDate}
               fullWidth
               disabled={isSubmitting}
+              maxDate={new Date()}
             />
             <FormControl className={classes.margin} fullWidth>
               <InputLabel
