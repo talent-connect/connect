@@ -76,6 +76,9 @@
     "slackUsername": {
       "type": "string"
     },
+    "githubProfileUrl": {
+      "type": "string"
+    },
     "telephoneNumber": {
       "type": "string"
     },

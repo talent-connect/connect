@@ -18,6 +18,10 @@ export const validationSchema = Yup.object({
     .max(255)
     .url()
     .label("LinkedIn Profile"),
+  githubProfileUrl: Yup.string()
+    .max(255)
+    .url()
+    .label("Github Profile"),
   slackUsername: Yup.string()
     .max(255)
     .label("Slack username"),
@@ -33,6 +37,7 @@ export const Step4ContactData = (
     values: {
       contactEmail,
       linkedInProfileUrl,
+      githubProfileUrl,
       slackUsername,
       telephoneNumber
     },
@@ -120,6 +125,24 @@ export const Step4ContactData = (
           startAdornment: (
             <InputAdornment position="start">
               <PhoneIcon />
+            </InputAdornment>
+          )
+        }}
+      />
+      <TextField
+        id="githubProfileUrl"
+        name="githubProfileUrl"
+        helperText={touched.githubProfileUrl ? errors.githubProfileUrl : ""}
+        error={touched.githubProfileUrl && Boolean(errors.githubProfileUrl)}
+        label="LinkedIn Profile"
+        value={githubProfileUrl}
+        onChange={change.bind(null, "githubProfileUrl")}
+        fullWidth
+        margin="normal"
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <Icon className={clsx("fab fa-github")} />
             </InputAdornment>
           )
         }}

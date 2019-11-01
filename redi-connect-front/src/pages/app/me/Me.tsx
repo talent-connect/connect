@@ -74,6 +74,7 @@ export interface SignUpFormValues {
   personalDescription: string;
   contactEmail: string;
   linkedInProfileUrl: string;
+  githubProfileUrl: string;
   slackUsername: string;
   telephoneNumber: string;
   categories: string[];
@@ -161,6 +162,10 @@ const validationSchema = Yup.object({
     .max(255)
     .url()
     .label("LinkedIn Profile"),
+  githubProfileUrl: Yup.string()
+    .max(255)
+    .url()
+    .label("Github Profile"),
   slackUsername: Yup.string()
     .max(255)
     .label("Slack username"),

@@ -253,6 +253,7 @@ const RedProfileShow = props => (
           <TextField source="expectations" />
           <TextField source="contactEmail" />
           <TextField source="linkedInProfileUrl" />
+          <TextField source="githubProfileUrl" />
           <TextField source="slackUsername" />
           <TextField source="telephoneNumber" />
 
@@ -415,6 +416,7 @@ const RedProfileEdit = props => (
         <TextInput source="expectations" multiline />
         <TextInput source="contactEmail" />
         <TextInput source="linkedInProfileUrl" />
+        <TextInput source="githubProfileUrl" />
         <TextInput source="slackUsername" />
         <TextInput source="telephoneNumber" />
         <SelectArrayInput
