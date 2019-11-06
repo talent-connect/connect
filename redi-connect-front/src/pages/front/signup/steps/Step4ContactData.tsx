@@ -134,7 +134,7 @@ export const Step4ContactData = (
         name="githubProfileUrl"
         helperText={touched.githubProfileUrl ? errors.githubProfileUrl : ""}
         error={touched.githubProfileUrl && Boolean(errors.githubProfileUrl)}
-        label="LinkedIn Profile"
+        label="Github Profile"
         value={githubProfileUrl}
         onChange={change.bind(null, "githubProfileUrl")}
         fullWidth
