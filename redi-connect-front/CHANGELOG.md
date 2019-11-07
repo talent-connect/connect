@@ -1,3 +1,15 @@
+# [0.6.0](https://github.com/talent-connect/connect/compare/v0.5.0...v0.6.0) (2019-11-07)
+
+
+### Bug Fixes
+
+* **front:** update label on textfield to match github profile ([4f466b0](https://github.com/talent-connect/connect/commit/4f466b0))
+
+
+### Features
+
+* **all:** add github profile url to mentor/mentee contact information ([d2daaa4](https://github.com/talent-connect/connect/commit/d2daaa4))
+
 # [0.5.0](https://github.com/redi-connect/redi-connect/compare/v0.4.0...v0.5.0) (2019-10-10)
 
 
