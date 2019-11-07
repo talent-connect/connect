@@ -33,6 +33,7 @@ export type RedProfile = {
   personalDescription: string;
   contactEmail: string;
   linkedInProfileUrl: string;
+  githubProfileUrl: string;
   slackUsername: string;
   telephoneNumber: string;
   categories: Array<string>;

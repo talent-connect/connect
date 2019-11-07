@@ -119,7 +119,7 @@ const users = fp.compose(
         mentor_workPlace: randomString(),
         mentee_occupationCategoryId:
           menteeOccupationCategoriesIds[
-            Math.floor(Math.random() * menteeOccupationCategoriesIds.length)
+          Math.floor(Math.random() * menteeOccupationCategoriesIds.length)
           ],
         mentee_occupationJob_placeOfEmployment: randomString(),
         mentee_occupationJob_position: randomString(),
@@ -136,6 +136,7 @@ const users = fp.compose(
         personalDescription: randomString(undefined, 300),
         contactEmail: email,
         slackUsername: randomString(),
+        githubProfileUrl: randomString(),
         telephoneNumber: randomString(),
         categories: categories.map(c => c.id).filter(() => Math.random() < 0.2),
         menteeCountCapacity: Math.floor(Math.random() * 4),
@@ -198,6 +199,7 @@ const ericMenteeRedProfile = {
     'eric@binarylights.comeric@binarylights.comeric@binarylights.comeric@binarylights.comeric@binarylights.comeric@binarylights.comeric@binarylights.comeric@binarylights.com',
   contactEmail: 'eric@binarylights.com',
   slackUsername: '',
+  githubProfileUrl: '',
   telephoneNumber: '',
   categories: [
     'blockchain',
@@ -241,6 +243,7 @@ const ericMentorRedProfile = {
     'eric@binarylights.comeric@binarylights.comeric@binarylights.comeric@binarylights.comeric@binarylights.comeric@binarylights.comeric@binarylights.comeric@binarylights.com',
   contactEmail: 'info@binarylights.com',
   slackUsername: '',
+  githubProfileUrl: '',
   telephoneNumber: '',
   categories: [
     'blockchain',
@@ -282,6 +285,7 @@ const isabelleMentorRedProfile = {
     'eric@binarylights.comeric@binarylights.comeric@binarylights.comeric@binarylights.comeric@binarylights.comeric@binarylights.comeric@binarylights.comeric@binarylights.com',
   contactEmail: 'isabelle@redi-school.org',
   slackUsername: '',
+  githubProfileUrl: '',
   telephoneNumber: '',
   categories: [
     'blockchain',
@@ -323,6 +327,7 @@ const ericAdminRedProfile = {
     'eric@binarylights.comeric@binarylights.comeric@binarylights.comeric@binarylights.comeric@binarylights.comeric@binarylights.comeric@binarylights.comeric@binarylights.com',
   contactEmail: 'cloud-accounts@redi-school.org',
   slackUsername: '',
+  githubProfileUrl: '',
   telephoneNumber: '',
   categories: [
     'blockchain',

@@ -79,6 +79,7 @@ export interface SignUpFormValues {
   personalDescription: string;
   contactEmail: string;
   linkedInProfileUrl: string;
+  githubProfileUrl: string;
   slackUsername: string;
   telephoneNumber: string;
   categories: string[];
@@ -114,6 +115,7 @@ const initialValues: SignUpFormValues = {
   personalDescription: "",
   contactEmail: "",
   linkedInProfileUrl: "",
+  githubProfileUrl: "",
   slackUsername: "",
   telephoneNumber: "",
   categories: [],

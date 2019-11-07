@@ -14,6 +14,7 @@ export const Step4ContactData = (
     values: {
       contactEmail,
       linkedInProfileUrl,
+      githubProfileUrl,
       slackUsername,
       telephoneNumber
     },
@@ -106,6 +107,25 @@ export const Step4ContactData = (
           startAdornment: (
             <InputAdornment position="start">
               <PhoneIcon />
+            </InputAdornment>
+          )
+        }}
+      />
+       <TextField
+        id="githubProfileUrl"
+        name="githubProfileUrl"
+        helperText={touched.githubProfileUrl ? errors.githubProfileUrl : ""}
+        error={touched.githubProfileUrl && Boolean(errors.githubProfileUrl)}
+        label="Github Profile"
+        value={githubProfileUrl}
+        onChange={change.bind(null, "githubProfileUrl")}
+        disabled={isSubmitting}
+        fullWidth
+        margin="normal"
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <Icon className={clsx("fab fa-github")} />
             </InputAdornment>
           )
         }}
