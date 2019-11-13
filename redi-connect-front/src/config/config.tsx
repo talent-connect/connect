@@ -34,6 +34,7 @@ export const categories: Categories = [
   { id: "iot", label: "IoT", colour: "#57549a" },
   { id: "webDevelopment", label: "Web Development", colour: "#8484db" },
   { id: "freelancing", label: "Freelancing", colour: "#91549a" },
+  { id: "salesforce", label: "Salesforce", colour: "#91549a" },
   { id: "dontKnowYet", label: "I don't know yet", colour: "#bbbbbb" }
 ];
 
@@ -84,6 +85,7 @@ export const courses: Course[] = [
   { id: "introJava", label: "Intro to Java" },
   { id: "uiUxWomen", label: "UI/UX Women" },
   { id: "introNetworking", label: "Intro to Networking" }
+  { id: "alumni", label: "I'm a ReDI School alumni (I took a course before)" }
 ];
 
 export const courseIdToLabelMap = mapValues(keyBy(courses, "id"), "label");
