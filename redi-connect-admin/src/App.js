@@ -1,7 +1,7 @@
-import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
-import { get, mapValues, keyBy } from "lodash";
+import React, { useEffect, useCallback } from 'react';
+import logo from './logo.svg';
+import './App.css';
+import { get, mapValues, keyBy } from 'lodash';
 import {
   Admin,
   Resource,
@@ -23,6 +23,7 @@ import {
   TextInput,
   BooleanInput,
   NumberField,
+  Query,
   SelectField,
   FormTab,
   NumberInput,
@@ -47,6 +48,19 @@ import classNames from "classnames";
 import { unparse as convertToCSV } from "papaparse/papaparse.min";
 import { createStyles, withStyles } from "@material-ui/core";
 import { Person as PersonIcon } from "@material-ui/icons";
+import Button from '@material-ui/core/Button';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Typography from '@material-ui/core/Typography';
+import DateFnsUtils from '@date-io/date-fns';
+
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
 
 import loopbackClient, { authProvider } from "./lib/react-admin-loopback/src";
 import { ApproveButton } from "./components/ApproveButton";
@@ -174,7 +188,6 @@ const AllModelsPagination = props => (
 );
 
 const RedProfileList = props => {
-  console.log(props);
   return (
     <List
       {...props}
@@ -195,7 +208,6 @@ const RedProfileList = props => {
   );
 };
 const RedProfileListExpandPane = props => {
-  console.log(props);
   return (
     <Show {...props} title="">
       <SimpleShowLayout>
@@ -482,6 +494,7 @@ const RedMatchShow = props => (
       <ReferenceField label="Mentor" source="mentorId" reference="redProfiles">
         <FullName source="mentor" />
       </ReferenceField>
+
       <TextField
         source="applicationText"
         label="Application text"
@@ -493,9 +506,65 @@ const RedMatchShow = props => (
       />
       <RecordCreatedAt />
       <RecordUpdatedAt />
+      <RedMatchShow_RelatedMentoringSessions />
     </SimpleShowLayout>
   </Show>
 );
+const RedMatchShow_RelatedMentoringSessions = ({
+  record: { mentorId, menteeId },
+}) => {
+  const [mentoringSessions, setMentoringSessions] = React.useState([]);
+  useEffect(() => {
+    dataProvider('GET_LIST', 'redMentoringSessions', {
+      pagination: { page: 1, perPage: 0 },
+      sort: { field: 'date', order: 'ASC' },
+      filter: { mentorId, menteeId },
+    }).then(({ data }) => setMentoringSessions(data));
+  }, []);
+  const totalDuration = mentoringSessions.reduce(
+    (acc, curr) => acc + curr.minuteDuration,
+    0
+  );
+  return (
+    mentoringSessions &&
+    mentoringSessions.length > 0 && (
+      <>
+        <h3>Mentoring sessions registered</h3>
+        <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+          <Table size="small" aria-label="a dense table">
+            <TableHead>
+              <TableRow>
+                <TableCell>#</TableCell>
+                <TableCell align="right">Date</TableCell>
+                <TableCell align="right">Duration in minutes</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {mentoringSessions.map((row, index) => (
+                <TableRow key={row.id}>
+                  <TableCell>{index + 1}</TableCell>
+                  <TableCell align="right">
+                    {new Date(row.date).toLocaleDateString('de-DE')}
+                  </TableCell>
+                  <TableCell align="right">{row.minuteDuration}</TableCell>
+                </TableRow>
+              ))}
+              <TableRow>
+                <TableCell></TableCell>
+                <TableCell align="right">
+                  <strong>Total</strong>
+                </TableCell>
+                <TableCell align="right">
+                  <strong>{totalDuration}</strong>
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </div>
+      </>
+    )
+  );
+};
 const RedMatchCreate = props => (
   <Create {...props}>
     <SimpleForm>
@@ -627,7 +696,12 @@ const exporter = async (mentoringSessions, fetchRelatedRecords) => {
 };
 
 const RedMentoringSessionList = props => (
-  <List {...props} exporter={exporter} pagination={<AllModelsPagination />}>
+  <List
+    {...props}
+    exporter={exporter}
+    pagination={<AllModelsPagination />}
+    aside={<RedMentoringSessionListAside />}
+  >
     <Datagrid>
       <ReferenceField label="Mentee" source="menteeId" reference="redProfiles">
         <FullName source="mentee" />
@@ -642,6 +716,89 @@ const RedMentoringSessionList = props => (
     </Datagrid>
   </List>
 );
+const RedMentoringSessionListAside = () => {
+  const [fromDate, setFromDate] = React.useState(null);
+  const [toDate, setToDate] = React.useState(null);
+  const [loadState, setLoadState] = React.useState('pending');
+  const [result, setResult] = React.useState(null);
+  const [step, setStep] = React.useState(0);
+  const increaseStep = React.useCallback(() => setStep(step => step + 1));
+
+  const picker = (getter, setter, label) => (
+    <KeyboardDatePicker
+      disableToolbar
+      variant="inline"
+      format="MM/dd/yyyy"
+      margin="normal"
+      id="date-picker-inline"
+      label={label}
+      value={getter}
+      onChange={setter}
+      disabled={result === 'loading'}
+      KeyboardButtonProps={{
+        'aria-label': 'change date',
+      }}
+    />
+  );
+
+  const valid = fromDate && toDate && toDate > fromDate;
+  const doLoad = React.useCallback(() =>
+    (async () => {
+      console.log('hello');
+      if (valid) {
+        setLoadState('loading');
+        setStep(0);
+        const sessions = await dataProvider(
+          'GET_LIST',
+          'redMentoringSessions',
+          {
+            pagination: { page: 1, perPage: 0 },
+            sort: {},
+            filter: { date: { gte: fromDate, lte: toDate } },
+          }
+        );
+        setLoadState('success');
+        setResult(
+          sessions.data.reduce((acc, curr) => acc + curr.minuteDuration, 0)
+        );
+      }
+    })()
+  );
+
+  return (
+    <div style={{ width: 200, margin: '1em' }}>
+      <Typography variant="title">Isabelle Calculator</Typography>
+      <Typography variant="body1"></Typography>
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        {picker(fromDate, setFromDate, 'From date')}
+        {picker(toDate, setToDate, 'To date')}
+      </MuiPickersUtilsProvider>
+      <div>
+        <Button onClick={doLoad} disabled={!valid && loadState !== 'loading'}>
+          Load
+        </Button>
+      </div>
+      <div>
+        {loadState === 'success' && step < 10 && (
+          <Button onClick={increaseStep}>
+            Are you{' '}
+            {new Array(step)
+              .fill()
+              .map(() => 'really')
+              .join(' ')}{' '}
+            ReDI?
+          </Button>
+        )}
+      </div>
+      {step === 10 && (
+        <Typography>
+          Total: {result} minutes! That's {Math.floor(result / 60)} hours and{' '}
+          {result % 60} minutes
+        </Typography>
+      )}
+    </div>
+  );
+};
 const RedMentoringSessionShow = props => (
   <Show {...props}>
     <SimpleShowLayout>
@@ -734,7 +891,6 @@ const RedMentoringSessionEdit = props => (
 );
 
 const buildDataProvider = normalDataProvider => (verb, resource, params) => {
-  console.log(verb, resource, params);
   if (verb === "GET_LIST" && resource === "redProfiles") {
     if (params.filter) {
       const filter = params.filter;
