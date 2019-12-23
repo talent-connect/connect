@@ -469,6 +469,7 @@ const RedMatchList = props => (
     {...props}
     sort={{ field: "createdAt", order: "DESC" }}
     pagination={<AllModelsPagination />}
+    filters={<RedMatchListFilters />}
   >
     <Datagrid>
       <DateField source="createdAt" label="Record created at" />
@@ -483,6 +484,23 @@ const RedMatchList = props => (
       <EditButton />
     </Datagrid>
   </List>
+);
+const RedMatchListFilters = props => (
+  <Filter {...props}>
+    <SelectInput
+      source="status"
+      choices={[
+        { id: 'accepted', name: 'Accepted' },
+        { id: 'completed', name: 'Completed' },
+        { id: 'cancelled', name: 'Cancelled' },
+        { id: 'applied', name: 'Applied' },
+        {
+          id: 'invalidated-as-other-mentor-accepted',
+          name: 'Invalidated due to other mentor accepting',
+        },
+      ]}
+    />
+  </Filter>
 );
 const RedMatchShow = props => (
   <Show {...props}>
