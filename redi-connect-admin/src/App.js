@@ -101,6 +101,12 @@ const categories = [
   { id: 'javaDevelopment', label: 'Java Development', colour: '#db9c84' },
   { id: 'iot', label: 'IoT', colour: '#57549a' },
   { id: 'webDevelopment', label: 'Web Development', colour: '#8484db' },
+  { id: 'javascript', label: 'JavaScript', colour: '#8484db' },
+  {
+    id: 'findingInternship',
+    label: 'Finding an internship',
+    colour: '#91549a',
+  },
   { id: 'freelancing', label: 'Freelancing', colour: '#91549a' },
   { id: 'salesforce', label: 'Salesforce', colour: '#91549a' },
   { id: 'dontKnowYet', label: "I don't know yet", colour: '#bbbbbb' },
