@@ -42,12 +42,12 @@ import {
   SelectArrayInput,
   downloadCSV,
   ReferenceField,
-  ReferenceManyField
-} from "react-admin";
-import classNames from "classnames";
-import { unparse as convertToCSV } from "papaparse/papaparse.min";
-import { createStyles, withStyles } from "@material-ui/core";
-import { Person as PersonIcon } from "@material-ui/icons";
+  ReferenceManyField,
+} from 'react-admin';
+import classNames from 'classnames';
+import { unparse as convertToCSV } from 'papaparse/papaparse.min';
+import { createStyles, withStyles } from '@material-ui/core';
+import { Person as PersonIcon } from '@material-ui/icons';
 import Button from '@material-ui/core/Button';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -62,43 +62,48 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 
-import loopbackClient, { authProvider } from "./lib/react-admin-loopback/src";
-import { ApproveButton } from "./components/ApproveButton";
-import { DeclineButton } from "./components/DeclineButton";
+import loopbackClient, { authProvider } from './lib/react-admin-loopback/src';
+import { ApproveButton } from './components/ApproveButton';
+import { DeclineButton } from './components/DeclineButton';
 
-import { API_URL } from "./config";
+import { API_URL } from './config';
 
 /** REFERENCE DATA */
 
+const rediLocations = [
+  { id: 'berlin', label: 'Berlin' },
+  { id: 'munich', label: 'Munich' },
+];
+
 const categories = [
-  { id: "blockchain", label: "Blockchain", colour: "#db8484" },
-  { id: "basicComputer", label: "Basic Computer", colour: "#9a5454" },
-  { id: "basicJava", label: "Basic Java", colour: "#9a5454" },
-  { id: "basicPython", label: "Basic Python", colour: "#9a5454" },
-  { id: "react", label: "React", colour: "#c984db" },
-  { id: "itAndNetworking", label: "IT & Networking", colour: "#979a54" },
-  { id: "swift", label: "Swift", colour: "#84b2db" },
+  { id: 'blockchain', label: 'Blockchain', colour: '#db8484' },
+  { id: 'basicComputer', label: 'Basic Computer', colour: '#9a5454' },
+  { id: 'basicJava', label: 'Basic Java', colour: '#9a5454' },
+  { id: 'basicPython', label: 'Basic Python', colour: '#9a5454' },
+  { id: 'react', label: 'React', colour: '#c984db' },
+  { id: 'itAndNetworking', label: 'IT & Networking', colour: '#979a54' },
+  { id: 'swift', label: 'Swift', colour: '#84b2db' },
   {
-    id: "interviewsAndCommunication",
-    label: "Interviews & Communications",
-    colour: "#5c9a54"
+    id: 'interviewsAndCommunication',
+    label: 'Interviews & Communications',
+    colour: '#5c9a54',
   },
-  { id: "graphicsAndUxUi", label: "Graphics & UX/UI", colour: "#84dbca" },
+  { id: 'graphicsAndUxUi', label: 'Graphics & UX/UI', colour: '#84dbca' },
   {
-    id: "cvPersonalPresentation",
-    label: "CV & Personal presentation",
-    colour: "#549a7b"
+    id: 'cvPersonalPresentation',
+    label: 'CV & Personal presentation',
+    colour: '#549a7b',
   },
-  { id: "mobileDevelopment", label: "Mobile Development", colour: "#89db84" },
-  { id: "jobOrientation", label: "Job Orientation", colour: "#54969a" },
-  { id: "pythonDataScience", label: "Python Data Science", colour: "#dbd784" },
-  { id: "entrepreneurship", label: "Entrepreneurship", colour: "#547b9a" },
-  { id: "javaDevelopment", label: "Java Development", colour: "#db9c84" },
-  { id: "iot", label: "IoT", colour: "#57549a" },
-  { id: "webDevelopment", label: "Web Development", colour: "#8484db" },
-  { id: "freelancing", label: "Freelancing", colour: "#91549a" },
-  { id: "salesforce", label: "Salesforce", colour: "#91549a" },
-  { id: "dontKnowYet", label: "I don't know yet", colour: "#bbbbbb" }
+  { id: 'mobileDevelopment', label: 'Mobile Development', colour: '#89db84' },
+  { id: 'jobOrientation', label: 'Job Orientation', colour: '#54969a' },
+  { id: 'pythonDataScience', label: 'Python Data Science', colour: '#dbd784' },
+  { id: 'entrepreneurship', label: 'Entrepreneurship', colour: '#547b9a' },
+  { id: 'javaDevelopment', label: 'Java Development', colour: '#db9c84' },
+  { id: 'iot', label: 'IoT', colour: '#57549a' },
+  { id: 'webDevelopment', label: 'Web Development', colour: '#8484db' },
+  { id: 'freelancing', label: 'Freelancing', colour: '#91549a' },
+  { id: 'salesforce', label: 'Salesforce', colour: '#91549a' },
+  { id: 'dontKnowYet', label: "I don't know yet", colour: '#bbbbbb' },
 ];
 
 const mentoringSessionDurationOptions = [
@@ -113,29 +118,29 @@ const mentoringSessionDurationOptions = [
   135,
   150,
   165,
-  180
+  180,
 ];
 
-const categoriesIdToLabelMap = mapValues(keyBy(categories, "id"), "label");
+const categoriesIdToLabelMap = mapValues(keyBy(categories, 'id'), 'label');
 const AWS_PROFILE_AVATARS_BUCKET_BASE_URL =
-  "https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/";
+  'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/';
 
 /** START OF SHARED STUFF */
 
 const RecordCreatedAt = props => <DateField source="createdAt" {...props} />;
 RecordCreatedAt.defaultProps = {
   addLabel: true,
-  label: "Record created at"
+  label: 'Record created at',
 };
 
 const RecordUpdatedAt = props => <DateField source="updatedAt" {...props} />;
 RecordUpdatedAt.defaultProps = {
   addLabel: true,
-  label: "Record updated at"
+  label: 'Record updated at',
 };
 
 const LangaugeList = props => {
-  return <span>{Object.values(props.data).join(", ")}</span>;
+  return <span>{Object.values(props.data).join(', ')}</span>;
 };
 
 const CategoryList = props => {
@@ -143,18 +148,18 @@ const CategoryList = props => {
     <span>
       {Object.values(props.data)
         .map(catId => categoriesIdToLabelMap[catId])
-        .join(", ")}
+        .join(', ')}
     </span>
   );
 };
 
 const styles = createStyles({
   avatarImage: {
-    width: "500px",
-    height: "500px",
-    backgroundSize: "cover",
-    backgroundPosition: "center center"
-  }
+    width: '500px',
+    height: '500px',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center center',
+  },
 });
 
 const Avatar = withStyles(styles)(({ record, className, classes, style }) => (
@@ -171,7 +176,7 @@ const Avatar = withStyles(styles)(({ record, className, classes, style }) => (
         style={{
           backgroundImage: `url(${AWS_PROFILE_AVATARS_BUCKET_BASE_URL +
             record.profileAvatarImageS3Key})`,
-          ...style
+          ...style,
         }}
         className={classNames(classes.avatarImage, className)}
       />
@@ -195,6 +200,7 @@ const RedProfileList = props => {
       pagination={<AllModelsPagination />}
     >
       <Datagrid expand={<RedProfileListExpandPane />}>
+        <TextField source="rediLocation" label="City" />
         <TextField source="firstName" />
         <TextField source="lastName" />
         <TextField source="userType" />
@@ -228,19 +234,23 @@ const RedProfileListFilters = props => (
     <SelectInput
       source="userType"
       choices={[
-        { id: "mentor", name: "mentor" },
-        { id: "mentee", name: "mentee" },
+        { id: 'mentor', name: 'mentor' },
+        { id: 'mentee', name: 'mentee' },
         {
-          id: "public-sign-up-mentor-pending-review",
-          name: "Mentor pending review (signed up via public sign-up form)"
+          id: 'public-sign-up-mentor-pending-review',
+          name: 'Mentor pending review (signed up via public sign-up form)',
         },
         {
-          id: "public-sign-up-mentee-pending-review",
-          name: "Mentee pending review (signed up via public sign-up form)"
+          id: 'public-sign-up-mentee-pending-review',
+          name: 'Mentee pending review (signed up via public sign-up form)',
         },
-        { id: "public-sign-up-mentor-rejected", name: "Rejected mentor" },
-        { id: "public-sign-up-mentee-rejected", name: "Rejected mentee" }
+        { id: 'public-sign-up-mentor-rejected', name: 'Rejected mentor' },
+        { id: 'public-sign-up-mentee-rejected', name: 'Rejected mentee' },
       ]}
+    />
+    <SelectInput
+      source="rediLocation"
+      choices={rediLocations.map(({ id, label }) => ({ id, name: label }))}
     />
   </Filter>
 );
@@ -249,6 +259,7 @@ const RedProfileShow = props => (
     <SimpleShowLayout>
       <TabbedShowLayout>
         <Tab label="Profile">
+          <TextField source="rediLocation" label="ReDI City" />
           <TextField source="userType" />
           <BooleanField source="userActivated" />
           <Avatar />
@@ -363,7 +374,7 @@ const RedProfileShow = props => (
           </p>
           <TextField
             source="administratorInternalComment"
-            style={{ whiteSpace: "pre-wrap" }}
+            style={{ whiteSpace: 'pre-wrap' }}
           />
         </Tab>
       </TabbedShowLayout>
@@ -375,8 +386,8 @@ const RedProfileEditActions = props => {
   const userType = props && props.data && props.data.userType;
   if (
     ![
-      "public-sign-up-mentor-pending-review",
-      "public-sign-up-mentee-pending-review"
+      'public-sign-up-mentor-pending-review',
+      'public-sign-up-mentee-pending-review',
     ].includes(userType)
   )
     return null;
@@ -393,6 +404,11 @@ const RedProfileEdit = props => (
   <Edit {...props} actions={<RedProfileEditActions />}>
     <TabbedForm>
       <FormTab label="Profile">
+        <SelectInput
+          source="rediLocation"
+          label="ReDI City"
+          choices={rediLocations.map(({ id, label }) => ({ id, name: label }))}
+        />
         <TextField source="userType" />
         <BooleanInput source="userActivated" />
         <TextInput
@@ -405,21 +421,21 @@ const RedProfileEdit = props => (
         <SelectInput
           source="gender"
           choices={[
-            { id: "male", name: "Male" },
-            { id: "female", name: "Female" },
-            { id: "other", name: "Other" },
-            { id: "", name: "Prefers not to answer" }
+            { id: 'male', name: 'Male' },
+            { id: 'female', name: 'Female' },
+            { id: 'other', name: 'Other' },
+            { id: '', name: 'Prefers not to answer' },
           ]}
         />
         <NumberField source="age" />
         <SelectArrayInput
           source="languages"
           choices={[
-            { id: "English", name: "English" },
-            { id: "German", name: "German" },
-            { id: "Arabic", name: "Arabic" },
-            { id: "Farsi", name: "Farsi" },
-            { id: "Tigrinya", name: "Tigrinya" }
+            { id: 'English', name: 'English' },
+            { id: 'German', name: 'German' },
+            { id: 'Arabic', name: 'Arabic' },
+            { id: 'Farsi', name: 'Farsi' },
+            { id: 'Tigrinya', name: 'Tigrinya' },
           ]}
         />
         <TextInput source="otherLanguages" />
@@ -454,20 +470,20 @@ const RedProfileEdit = props => (
 const FullName = ({ record, sourcePrefix }) => {
   return (
     <span>
-      {get(record, `${sourcePrefix}firstName`)}{" "}
+      {get(record, `${sourcePrefix}firstName`)}{' '}
       {get(record, `${sourcePrefix}lastName`)}
     </span>
   );
 };
 FullName.defaultProps = {
-  sourcePrefix: "",
-  label: "Full name"
+  sourcePrefix: '',
+  label: 'Full name',
 };
 
 const RedMatchList = props => (
   <List
     {...props}
-    sort={{ field: "createdAt", order: "DESC" }}
+    sort={{ field: 'createdAt', order: 'DESC' }}
     pagination={<AllModelsPagination />}
     filters={<RedMatchListFilters />}
   >
@@ -589,10 +605,10 @@ const RedMatchCreate = props => (
       <SelectInput
         source="status"
         choices={[
-          { id: "applied", name: "Applied" },
-          { id: "accepted", name: "Accepted" },
-          { id: "completed", name: "Completed" },
-          { id: "cancelled", name: "Cancelled" }
+          { id: 'applied', name: 'Applied' },
+          { id: 'accepted', name: 'Accepted' },
+          { id: 'completed', name: 'Completed' },
+          { id: 'cancelled', name: 'Cancelled' },
         ]}
       />
       <ReferenceInput
@@ -600,7 +616,7 @@ const RedMatchCreate = props => (
         source="mentorId"
         reference="redProfiles"
         perPage={0}
-        filter={{ userType: "mentor" }}
+        filter={{ userType: 'mentor' }}
       >
         <AutocompleteInput
           optionText={op => `${op.firstName} ${op.lastName}`}
@@ -611,7 +627,7 @@ const RedMatchCreate = props => (
         source="menteeId"
         reference="redProfiles"
         perPage={0}
-        filter={{ userType: "mentee" }}
+        filter={{ userType: 'mentee' }}
       >
         <AutocompleteInput
           optionText={op => `${op.firstName} ${op.lastName}`}
@@ -635,10 +651,10 @@ const RedMatchEdit = props => (
       <SelectInput
         source="status"
         choices={[
-          { id: "applied", name: "Applied" },
-          { id: "accepted", name: "Accepted" },
-          { id: "completed", name: "Completed" },
-          { id: "cancelled", name: "Cancelled" }
+          { id: 'applied', name: 'Applied' },
+          { id: 'accepted', name: 'Accepted' },
+          { id: 'completed', name: 'Completed' },
+          { id: 'cancelled', name: 'Cancelled' },
         ]}
       />
       <ReferenceInput
@@ -646,7 +662,7 @@ const RedMatchEdit = props => (
         source="mentorId"
         reference="redProfiles"
         perPage={0}
-        filter={{ userType: "mentor" }}
+        filter={{ userType: 'mentor' }}
       >
         <AutocompleteInput
           optionText={op => `${op.firstName} ${op.lastName}`}
@@ -657,7 +673,7 @@ const RedMatchEdit = props => (
         source="menteeId"
         reference="redProfiles"
         perPage={0}
-        filter={{ userType: "mentee" }}
+        filter={{ userType: 'mentee' }}
       >
         <AutocompleteInput
           optionText={op => `${op.firstName} ${op.lastName}`}
@@ -679,13 +695,13 @@ const RedMatchEdit = props => (
 const exporter = async (mentoringSessions, fetchRelatedRecords) => {
   const mentors = await fetchRelatedRecords(
     mentoringSessions,
-    "mentorId",
-    "redProfiles"
+    'mentorId',
+    'redProfiles'
   );
   const mentees = await fetchRelatedRecords(
     mentoringSessions,
-    "menteeId",
-    "redProfiles"
+    'menteeId',
+    'redProfiles'
   );
   const data = mentoringSessions.map(x => {
     const mentor = mentors[x.mentorId];
@@ -701,16 +717,16 @@ const exporter = async (mentoringSessions, fetchRelatedRecords) => {
   const csv = convertToCSV({
     data,
     fields: [
-      "id",
-      "date",
-      "minuteDuration",
-      "mentorName",
-      "menteeName",
-      "createdAt",
-      "updatedAt"
-    ]
+      'id',
+      'date',
+      'minuteDuration',
+      'mentorName',
+      'menteeName',
+      'createdAt',
+      'updatedAt',
+    ],
   });
-  downloadCSV(csv, "yalla");
+  downloadCSV(csv, 'yalla');
 };
 
 const RedMentoringSessionList = props => (
@@ -843,7 +859,7 @@ const RedMentoringSessionCreate = props => (
         source="mentorId"
         reference="redProfiles"
         perPage={0}
-        filter={{ userType: "mentor" }}
+        filter={{ userType: 'mentor' }}
       >
         <AutocompleteInput
           optionText={op => `${op.firstName} ${op.lastName}`}
@@ -854,7 +870,7 @@ const RedMentoringSessionCreate = props => (
         source="menteeId"
         reference="redProfiles"
         perPage={0}
-        filter={{ userType: "mentee" }}
+        filter={{ userType: 'mentee' }}
       >
         <AutocompleteInput
           optionText={op => `${op.firstName} ${op.lastName}`}
@@ -865,7 +881,7 @@ const RedMentoringSessionCreate = props => (
         source="minuteDuration"
         choices={mentoringSessionDurationOptions.map(duration => ({
           id: duration,
-          name: duration
+          name: duration,
         }))}
       />
     </SimpleForm>
@@ -879,7 +895,7 @@ const RedMentoringSessionEdit = props => (
         source="mentorId"
         reference="redProfiles"
         perPage={0}
-        filter={{ userType: "mentor" }}
+        filter={{ userType: 'mentor' }}
       >
         <AutocompleteInput
           optionText={op => `${op.firstName} ${op.lastName}`}
@@ -890,7 +906,7 @@ const RedMentoringSessionEdit = props => (
         source="menteeId"
         reference="redProfiles"
         perPage={0}
-        filter={{ userType: "mentee" }}
+        filter={{ userType: 'mentee' }}
       >
         <AutocompleteInput
           optionText={op => `${op.firstName} ${op.lastName}`}
@@ -901,7 +917,7 @@ const RedMentoringSessionEdit = props => (
         source="minuteDuration"
         choices={mentoringSessionDurationOptions.map(duration => ({
           id: duration,
-          name: duration
+          name: duration,
         }))}
       />
     </SimpleForm>
@@ -909,18 +925,18 @@ const RedMentoringSessionEdit = props => (
 );
 
 const buildDataProvider = normalDataProvider => (verb, resource, params) => {
-  if (verb === "GET_LIST" && resource === "redProfiles") {
+  if (verb === 'GET_LIST' && resource === 'redProfiles') {
     if (params.filter) {
       const filter = params.filter;
       const q = filter.q;
       delete filter.q;
       const newFilter = { and: [filter] };
       if (q) {
-        const andConditions = q.split(" ").map(word => ({
+        const andConditions = q.split(' ').map(word => ({
           loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName: {
             like: word,
-            options: "i"
-          }
+            options: 'i',
+          },
         }));
         newFilter.and = [...newFilter.and, ...andConditions];
       }
