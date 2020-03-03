@@ -3,36 +3,36 @@ import {
   createStyles,
   withStyles,
   Paper,
-  Theme
-} from "@material-ui/core";
-import React, { useEffect, useState } from "react";
-import intersection from "lodash/intersection";
-import { MentorCard } from "../../../../components/MentorCard";
-import { useLoading } from "../../../../hooks/WithLoading";
-import { getMentors } from "../../../../services/api/api";
-import { history } from "../../../../services/history/history";
-import { RedProfile } from "../../../../types/RedProfile";
-import { getRedProfile } from "../../../../services/auth/auth";
-import { CategoryChip } from "../../../../components/CategoryChip";
-import { useList } from "../../../../hooks/useList";
+  Theme,
+} from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import intersection from 'lodash/intersection';
+import { MentorCard } from '../../../../components/MentorCard';
+import { useLoading } from '../../../../hooks/WithLoading';
+import { getMentors } from '../../../../services/api/api';
+import { history } from '../../../../services/history/history';
+import { RedProfile } from '../../../../types/RedProfile';
+import { getRedProfile } from '../../../../services/auth/auth';
+import { CategoryChip } from '../../../../components/CategoryChip';
+import { useList } from '../../../../hooks/useList';
 
 const styles = createStyles((theme: Theme) => ({
   categoryChip: {
-    marginTop: "0.5em",
-    marginRight: "1em",
-    color: "white",
-    fontSize: "12px",
-    float: "left"
+    marginTop: '0.5em',
+    marginRight: '1em',
+    color: 'white',
+    fontSize: '12px',
+    float: 'left',
   },
   paper: {
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
-    marginBottom: "2em"
+    marginBottom: '2em',
   },
   header: {
-    marginTop: 0
-  }
+    marginTop: 0,
+  },
 }));
 
 interface Props {
@@ -51,7 +51,7 @@ const addCategoryMatchCount = (
 ): MentorCatCount[] =>
   mentors.map(mentor =>
     Object.assign(mentor, {
-      categoryMatchCount: intersection(categories, mentor.categories).length
+      categoryMatchCount: intersection(categories, mentor.categories).length,
     })
   );
 
@@ -74,7 +74,7 @@ export const AvailableMentorListing = withStyles(styles)((props: any) => {
 
   const mentorsWithSharedCategories = mentors
     .filter(m => m.categoryMatchCount > 0)
-    .sort((a, b) => a.categoryMatchCount - b.categoryMatchCount);
+    .sort((a, b) => b.categoryMatchCount - a.categoryMatchCount);
   const mentorsWithoutSharedCategories = mentors.filter(
     m => m.categoryMatchCount === 0
   );
@@ -119,13 +119,13 @@ export const AvailableMentorListing = withStyles(styles)((props: any) => {
                   categoryId={catId}
                   className={classes.categoryChip}
                   overrideBackgroundColour={
-                    !activeCategories.includes(catId) ? "#b2b2b2" : ""
+                    !activeCategories.includes(catId) ? '#b2b2b2' : ''
                   }
                   onClick={() => toggle(catId)}
                 />
               ))}
             </Grid>
-            <Grid item style={{ margin: "10px 0", fontWeight: 300 }}>
+            <Grid item style={{ margin: '10px 0', fontWeight: 300 }}>
               These mentors have expertise in one or more of the domains you
               selected of interest in your profile.
             </Grid>
