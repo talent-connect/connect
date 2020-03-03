@@ -1,14 +1,14 @@
-import { createStyles, Grid, Theme, withStyles } from "@material-ui/core";
-import React from "react";
-import { Avatar } from "../../../../components/Avatar";
-import { CategoryChip } from "../../../../components/CategoryChip";
-import { ProfileAvailableMenteeSlots } from "../../../../components/ProfileAvailableMenteeSlots";
-import { ProfileLanguages } from "../../../../components/ProfileLanguages";
-import { ProfileName } from "../../../../components/ProfileName";
-import { ProfileOccupation } from "../../../../components/ProfileOccupation";
-import { ProfileWorkPlace } from "../../../../components/ProfileWorkPlace";
-import { RedProfile } from "../../../../types/RedProfile";
-import { ConnectionRequestForm } from "./ConnectionRequestForm";
+import { createStyles, Grid, Theme, withStyles } from '@material-ui/core';
+import React from 'react';
+import { Avatar } from '../../../../components/Avatar';
+import { CategoryChip } from '../../../../components/CategoryChip';
+import { ProfileAvailableMenteeSlots } from '../../../../components/ProfileAvailableMenteeSlots';
+import { ProfileLanguages } from '../../../../components/ProfileLanguages';
+import { ProfileName } from '../../../../components/ProfileName';
+import { ProfileOccupation } from '../../../../components/ProfileOccupation';
+import { ProfileWorkPlace } from '../../../../components/ProfileWorkPlace';
+import { RedProfile } from '../../../../types/RedProfile';
+import { ConnectionRequestForm } from './ConnectionRequestForm';
 
 interface Props {
   mentor: RedProfile;
@@ -22,20 +22,20 @@ interface Props {
 const styles = (theme: Theme) =>
   createStyles({
     avatar: {
-      width: "100px",
-      height: "100px"
+      width: '100px',
+      height: '100px',
     },
     category: {
-      color: "white",
-      fontSize: "12px",
-      margin: "3px",
-      height: "20px"
+      color: 'white',
+      fontSize: '12px',
+      margin: '3px',
+      height: '20px',
     },
     personalDescription: {
       marginTop: theme.spacing(6),
       marginBottom: theme.spacing(6),
-      overflowWrap: "break-word"
-    }
+      overflowWrap: 'break-word',
+    },
   });
 
 export const ProfileMentor = withStyles(styles)(
@@ -46,11 +46,11 @@ export const ProfileMentor = withStyles(styles)(
           <Avatar
             className={classes.avatar}
             s3Key={mentor.profileAvatarImageS3Key}
-            style={{ width: "100%", height: "20vh" }}
+            style={{ width: '100%', height: '20vh' }}
           />
         </Grid>
         <Grid item xs={12} sm={7}>
-          <h3 style={{ fontWeight: 700, fontFamily: "Roboto" }}>
+          <h3 style={{ fontWeight: 700, fontFamily: 'Roboto' }}>
             <ProfileName name={`${mentor.firstName} ${mentor.lastName}`} />
             <ProfileOccupation occupation={mentor.mentor_occupation} />
             <ProfileWorkPlace workPlace={mentor.mentor_workPlace} />
@@ -79,17 +79,17 @@ export const ProfileMentor = withStyles(styles)(
           <h4 style={{ marginBottom: 0 }}>Expectations to my mentee:</h4>
           <p
             className={classes.personalDescription}
-            style={{ marginTop: "0.3em" }}
+            style={{ marginTop: '0.3em' }}
           >
             {mentor.expectations}
           </p>
         </>
       )}
 
-      {mentor.matchCountWithCurrentUser === 0 && (
+      {mentor.numberOfPendingApplicationWithCurrentUser === 0 && (
         <ConnectionRequestForm mentorId={mentor.id} />
       )}
-      {mentor.matchCountWithCurrentUser > 0 && (
+      {mentor.numberOfPendingApplicationWithCurrentUser > 0 && (
         <p>You have already applied to this mentor.</p>
       )}
     </>

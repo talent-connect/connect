@@ -60,7 +60,7 @@ module.exports = function(RedProfile) {
 
     if (ctx.data && ctx.data.userType === "mentor") {
       // In case RedProfile belongs to a mentor, add "computed properties"
-      // currentMenteeCount, currentFreeMenteeSpots, and matchCountWithCurrentUser,
+      // currentMenteeCount, currentFreeMenteeSpots, and numberOfPendingApplicationWithCurrentUser,
       // currentApplicantCount
       const RedMatch = app.models.RedMatch;
       const RedMentoringSession = app.models.RedMentoringSession;
@@ -72,12 +72,12 @@ module.exports = function(RedProfile) {
       const countAcceptedMatches = () => countMatchesByType("accepted");
       const countAppliedMatches = () => countMatchesByType("applied");
 
-      const currentUserHasAppliedToMentor = () =>
+      const numberOfPendingApplicationWithCurrentUser = () =>
         ctx.options.currentUser
           ? Rx.bindNodeCallback(RedMatch.count.bind(RedMatch))({
               mentorId: ctx.data.id,
               menteeId: ctx.options.currentUser.redProfile.id,
-              status: "accepted"
+              status: "applied"
             })
           : Rx.of([null]);
 
@@ -105,14 +105,14 @@ module.exports = function(RedProfile) {
       Rx.zip(
         countAcceptedMatches(),
         countAppliedMatches(),
-        currentUserHasAppliedToMentor(),
+        numberOfPendingApplicationWithCurrentUser(),
         getRedMatchesToCurrentMentor(),
         getRedMentoringSessionsToCurrentMentor()
       ).subscribe(
         ([
           currentMenteeCount,
           currentApplicantCount,
-          matchCountWithCurrentUser,
+          numberOfPendingApplicationWithCurrentUser,
           redMatchesWithCurrentUser,
           redMentoringSessionsWithCurrentUser
         ]) => {
@@ -121,7 +121,7 @@ module.exports = function(RedProfile) {
             currentApplicantCount,
             currentFreeMenteeSpots:
               ctx.data.menteeCountCapacity - currentMenteeCount,
-            matchCountWithCurrentUser,
+            numberOfPendingApplicationWithCurrentUser,
             redMatchesWithCurrentUser,
             redMentoringSessionsWithCurrentUser
           });
@@ -131,7 +131,7 @@ module.exports = function(RedProfile) {
       );
     } else if (ctx.data && ctx.data.userType === "mentee") {
       // In case RedProfile belongs to a mentee, add "computed properties"
-      // matchCountWithCurrentUser,
+      // numberOfPendingApplicationWithCurrentUser,
       const RedMatch = app.models.RedMatch;
       const RedMentoringSession = app.models.RedMentoringSession;
 

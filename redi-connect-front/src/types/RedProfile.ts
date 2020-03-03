@@ -13,7 +13,7 @@ export type RedProfile = {
   mentor_ifTypeForm_submittedAt: Date;
   mentee_ifTypeForm_preferredMentorSex: 'male' | 'female' | 'none';
   ifTypeForm_additionalComments: string;
-  mentee_currentCategory: 'student' | 'rediAlumnus'
+  mentee_currentCategory: 'student' | 'rediAlumnus';
   mentee_occupationCategoryId: string; // TODO: do TS magic to make this a union type
   mentee_occupationJob_placeOfEmployment: string;
   mentee_occupationJob_position: string;
@@ -48,7 +48,7 @@ export type RedProfile = {
   menteeCountCapacity: number;
   currentMenteeCount: number;
   currentFreeMenteeSpots: number;
-  matchCountWithCurrentUser: number;
+  numberOfPendingApplicationWithCurrentUser: number;
   redMatchesWithCurrentUser: Array<RedMatch>;
   redMentoringSessionsWithCurrentUser: Array<RedMentoringSession>;
   ifUserIsMentee_hasActiveMentor: boolean;
