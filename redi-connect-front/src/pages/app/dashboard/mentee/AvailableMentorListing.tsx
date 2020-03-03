@@ -57,7 +57,7 @@ const addCategoryMatchCount = (
 
 export const AvailableMentorListing = withStyles(styles)((props: any) => {
   const classes: any = props.classes;
-  const { Loading, setLoading } = useLoading();
+  const { Loading, isLoading, setLoading } = useLoading();
   const [_mentors, setMentors] = useState<RedProfile[]>([]);
   const currentUserCategories = getRedProfile().categories;
   const [activeCategories, { toggle }] = useList(currentUserCategories);
@@ -97,7 +97,8 @@ export const AvailableMentorListing = withStyles(styles)((props: any) => {
             Please check in again later.
           </h4>
         )}
-      {mentorsWhoHaveSpotsButAreNotActivatedCount === 0 &&
+      {!isLoading &&
+        mentorsWhoHaveSpotsButAreNotActivatedCount === 0 &&
         mentors.length === 0 && (
           <h4>
             Unfortunately there are no available mentors right now. We are

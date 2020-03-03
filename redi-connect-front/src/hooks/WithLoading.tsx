@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Dialog,
   Grid,
@@ -6,16 +6,17 @@ import {
   Fade,
   withStyles,
   createStyles,
-  LinearProgress
-} from "@material-ui/core";
+  LinearProgress,
+} from '@material-ui/core';
 
 export const useLoading = function() {
   const [loading, setLoading] = useState(false);
 
   return {
     Loading: () => <FullScreenCircle loading={loading} />,
+    isLoading: loading,
     setLoading,
-    loading
+    loading,
   };
 };
 
@@ -28,18 +29,18 @@ export const useLoadingProgress = function() {
       <FullScreenLinearProgress loading={loading} progress={progress} />
     ),
     setLoading,
-    setProgress
+    setProgress,
   };
 };
 
 const styles = createStyles({
   grid: {
-    height: "100%"
+    height: '100%',
   },
   paperStyle: {
-    backgroundColor: "transparent",
-    boxShadow: "none"
-  }
+    backgroundColor: 'transparent',
+    boxShadow: 'none',
+  },
 });
 
 interface Props {
@@ -62,7 +63,7 @@ const FullScreenDialog = withStyles(styles)(
       fullScreen
       open={loading}
       PaperProps={{
-        className: classes.paperStyle
+        className: classes.paperStyle,
       }}
       TransitionComponent={Fade}
     >
