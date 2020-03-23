@@ -1,0 +1,32 @@
+// ::selection {
+//   background-color: $turkisActive;
+//   color: $white;
+// }
+
+*,
+*::before,
+*::after {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: inherit;
+  margin: 0px;
+  padding: 0px;
+  scroll-behavior: smooth;
+  font-family: 'Roboto', sans-serif; // this has to be changed !!!
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 62.5%;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.row {
+  max-width: 120rem;
+  padding: 0 2rem;
+  margin: 0 auto;
+  width: 100%;
+}

@@ -1,8 +1,6 @@
 import React, { useEffect, Suspense } from 'react';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-
 import { Provider as StoreProvider } from 'react-redux';
-import './App.css';
 import { history, Router } from './services/history/history';
 import { Routes } from './components/Routes';
 import { store } from './redux/store';

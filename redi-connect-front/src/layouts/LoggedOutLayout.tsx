@@ -27,6 +27,6 @@ export const LoggedOutLayout = ({ children }: Props) => (
         </Button>
       </Toolbar>
     </AppBar>
-    <div style={{ margin: '12px' }}>{children}</div>
+    <div>{children}</div>
   </>
 );
