@@ -20,7 +20,7 @@ export const Routes = () => (
           <Route exact={exact} path={path} component={component} key={i} />
         )
       )}
-      <Redirect to="/front/login" />
+      <Redirect to="/front/home" />
     </Switch>
   </div>
 );
