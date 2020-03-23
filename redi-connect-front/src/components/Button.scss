@@ -1,0 +1,48 @@
+@import '../styles/ColorPalette.scss';
+
+.btn {
+  &__wrapper {
+    height: 6.4rem;
+    width: 21.2rem;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    // width: min-content;
+    border: 2px solid $black;
+    transition: all .3s;
+    &:active {
+      background-color: $black;
+    }
+    &.btn__background:active {
+      background-color: transparent;
+      border: none;
+    }
+    &.btn__background:hover {
+      background-color: $orange;
+      border: 2px solid $orange;
+    }
+  }
+  &__background {
+    position: relative;
+    right: .8rem;
+    bottom: 5.6rem;
+    z-index: -1;
+    border: 2px solid $orangeLight;
+    background-color: $orangeLight;
+  }
+  &__text {
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 1.6rem;
+    line-height: 2.4rem;
+    font-weight: 900;
+    color: $black;
+    letter-spacing: 1.7px;
+    padding: 1.7rem 3.3rem 1.5rem;
+    text-align: center;
+    &:active {
+      color: $white;
+    }
+  }
+}

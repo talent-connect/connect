@@ -1,0 +1,13 @@
+@import '../styles/ColorPalette.scss';
+
+.headline {
+  &__text {
+    color: $black;
+    font-size: 6.4rem;
+    line-height: 7.2rem;
+    font-weight: 400;
+    &-bold {
+      font-weight: 500;
+    }
+  }
+}

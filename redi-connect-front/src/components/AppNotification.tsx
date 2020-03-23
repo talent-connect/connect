@@ -133,7 +133,7 @@ export function AppNotification() {
             onClick={hide}
           >
             <CloseIcon className={styleClasses.icon} />
-          </IconButton>,
+          </IconButton>
         ]}
       />
     </Snackbar>

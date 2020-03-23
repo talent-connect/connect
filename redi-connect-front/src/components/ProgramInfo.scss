@@ -1,0 +1,27 @@
+@import '../styles/ColorPalette.scss';
+
+.program {
+  &__wrapper {
+    padding-top: 3.2rem;
+    padding-bottom: 4.8rem;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+  }
+  &__icons-wrapper {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+  }
+  &__icon {
+    max-width: 24rem;
+  }
+  &__icon-text {
+    color: $black;
+    font-size: 2rem;
+    font-weight: 500;
+    line-height: 3.2rem;
+    text-align: center;
+    margin: 2.4rem 2rem 1.4rem;
+  }
+}
