@@ -56,7 +56,7 @@ export const login = async (
 
 export const logout = () => {
   purgeAllSessionData();
-  history.push('/front/login');
+  history.push('/front/home');
 };
 
 export const requestResetPasswordEmail = async (email: string) => {

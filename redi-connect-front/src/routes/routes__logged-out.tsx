@@ -1,8 +1,18 @@
 import { RouteDefinition } from './index';
 import { lazy } from 'react';
-import Login from '../pages/front/login/Login';
+import Home from '../pages/front/landing/Home';
 import { RequestResetPasswordEmail } from '../pages/front/reset-password/RequestResetPasswordEmail';
 import { SetNewPassword } from '../pages/front/reset-password/SetNewPassword';
+const Login = lazy(() =>
+  import(
+    /* webpackChunkName: "Login", webpackPreload: true */ '../pages/front/login/Login'
+  )
+);
+const SignUpLanding = lazy(() =>
+  import(
+    /* webpackChunkName: "SignUpLanding", webpackPreload: true */ '../pages/front/signup/SignUpLanding'
+  )
+);
 const SignUpFormMentee = lazy(() =>
   import(
     /* webpackChunkName: "SignUpFormMentee", webpackPreload: true */ '../pages/front/signup/SignUpFormMentee'
@@ -32,8 +42,18 @@ const ResetPassword = lazy(() =>
 
 export const routes__loggedOut: RouteDefinition[] = [
   {
+    path: '/front/home',
+    component: Home,
+    exact: true,
+  },
+  {
     path: '/front/login',
     component: Login,
+    exact: true,
+  },
+  {
+    path: '/front/signup/landing',
+    component: SignUpLanding,
     exact: true,
   },
   {
