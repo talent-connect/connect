@@ -114,11 +114,9 @@ const Form = withStyles(styles)(
       submitForm,
     } = props;
 
-    const change = (name: any, e: any) => {
-      e.persist();
-      handleChange(e);
-      setFieldTouched(name, true, false);
-    };
+    const anotherChange = () => {
+      console.log('just testing the confifs')
+    }
 
     return (
       <Container maxWidth="sm">
