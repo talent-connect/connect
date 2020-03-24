@@ -17,7 +17,7 @@ export const LoggedOutLayout = ({ children }: Props) => (
       <Toolbar>
         <Button
           style={{ margin: 0, padding: 0 }}
-          component={props => <Link {...props} to="/front/login" />}
+          component={props => <Link {...props} to="/front/home" />}
         >
           <img
             src={rediLogo}
