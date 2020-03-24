@@ -1,0 +1,35 @@
+@import '../styles/ColorPalette.scss';
+
+.navbar {
+  &__wrapper {
+    padding: .8rem 0;
+  }
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    &-logo {
+      color: $black;
+      font-size: 1.4rem;
+      font-weight: 900;
+      letter-spacing: 1.71px;
+      line-height: 1.6rem;
+      text-align: center;
+    }
+    &-nav {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      &__login {
+        font-size: 14px;
+        font-weight: 900;
+        letter-spacing: 1.71px;
+        line-height: 24px;
+        margin-right: 2.4rem;
+      }
+      &__signup {
+        height: min-content;
+      }
+    }
+  }
+}

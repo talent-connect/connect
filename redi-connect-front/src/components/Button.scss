@@ -2,6 +2,8 @@
 
 .btn {
   &__wrapper {
+    overflow: hidden;
+    border: 2px solid red;
     height: 6.4rem;
     width: 21.2rem;
     display: block;
@@ -14,22 +16,14 @@
     &:active {
       background-color: $black;
     }
-    &.btn__background:active {
-      background-color: transparent;
-      border: none;
+    &:nth-child(2) {
+      position: relative;
+      right: .8rem;
+      bottom: 5.6rem;
+      z-index: -1;
+      border: 2px solid $orangeLight;
+      background-color: $orangeLight;
     }
-    &.btn__background:hover {
-      background-color: $orange;
-      border: 2px solid $orange;
-    }
-  }
-  &__background {
-    position: relative;
-    right: .8rem;
-    bottom: 5.6rem;
-    z-index: -1;
-    border: 2px solid $orangeLight;
-    background-color: $orangeLight;
   }
   &__text {
     text-decoration: none;
