@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { LoggedOutLayout } from '../../../layouts/LoggedOutLayout';
-import * as Yup from 'yup';
+import React, { useState } from "react";
+import { LoggedOutLayout } from "../../../layouts/LoggedOutLayout";
+import * as Yup from "yup";
 import {
   Container,
   TextField,
@@ -13,20 +13,20 @@ import {
   withStyles,
   Typography,
   Box,
-} from '@material-ui/core';
-import { Link as RouterLink } from 'react-router-dom';
-import { Lock as LockIcon, Person as PersonIcon } from '@material-ui/icons';
-import { Formik, FormikProps, FormikActions, FormikValues } from 'formik';
-import { history } from '../../../services/history/history';
-import { login, fetchSaveRedProfile } from '../../../services/api/api';
-import { saveAccessToken } from '../../../services/auth/auth';
+} from "@material-ui/core";
+import { Link as RouterLink } from "react-router-dom";
+import { Lock as LockIcon, Person as PersonIcon } from "@material-ui/icons";
+import { Formik, FormikProps, FormikActions, FormikValues } from "formik";
+import { history } from "../../../services/history/history";
+import { login, fetchSaveRedProfile } from "../../../services/api/api";
+import { saveAccessToken } from "../../../services/auth/auth";
 
 const styles = (theme: Theme) =>
   createStyles({
     loginError: {
       padding: theme.spacing(1),
       backgroundColor: theme.palette.error.main,
-      color: 'white',
+      color: "white",
     },
     headingMargin: {
       marginTop: theme.spacing(6),
@@ -43,24 +43,24 @@ interface LoginFormValues {
 }
 
 const initialValues: LoginFormValues = {
-  username: '',
-  password: '',
+  username: "",
+  password: "",
 };
 
 const validationSchema = Yup.object({
   username: Yup.string()
     .email()
     .required()
-    .label('Email')
+    .label("Email")
     .max(255),
   password: Yup.string()
     .required()
-    .label('Password')
+    .label("Password")
     .max(255),
 });
 
 export default function Login() {
-  const [loginError, setLoginError] = useState<string>('');
+  const [loginError, setLoginError] = useState<string>("");
 
   const submitForm = async (
     values: FormikValues,
@@ -70,10 +70,10 @@ export default function Login() {
     try {
       const accessToken = await login(formValues.username, formValues.password);
       saveAccessToken(accessToken);
-      await fetchSaveRedProfile(accessToken);
-      history.push('/app/dashboard');
+      const myProfile = await fetchSaveRedProfile(accessToken);
+      history.push("/app/dashboard");
     } catch (err) {
-      setLoginError('Invalid username or password');
+      setLoginError("Invalid username or password");
     }
     actions.setSubmitting(false);
   };
@@ -137,11 +137,11 @@ const Form = withStyles(styles)(
             id="username"
             name="username"
             type="email"
-            helperText={touched.username ? errors.username : ''}
+            helperText={touched.username ? errors.username : ""}
             error={touched.username && Boolean(errors.username)}
             label="Username (your email address)*"
             value={username}
-            onChange={change.bind(null, 'username')}
+            onChange={change.bind(null, "username")}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -157,11 +157,11 @@ const Form = withStyles(styles)(
             id="password"
             name="password"
             type="password"
-            helperText={touched.password ? errors.password : ''}
+            helperText={touched.password ? errors.password : ""}
             error={touched.password && Boolean(errors.password)}
             label="Password*"
             value={password}
-            onChange={change.bind(null, 'password')}
+            onChange={change.bind(null, "password")}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -195,12 +195,12 @@ const Form = withStyles(styles)(
           </Box>
           <Box className={classes.navigationBox}>
             <Typography align="center">
-              New to ReDI Connect? Join as a{' '}
-              <Link component={RouterLink} to="/front/signup/mentee">
+              New to ReDI Connect? Join as a{" "}
+              <Link component={RouterLink} to="/app/create-profile/mentee">
                 student
-              </Link>{' '}
-              or{' '}
-              <Link component={RouterLink} to="/front/signup/mentor">
+              </Link>{" "}
+              or{" "}
+              <Link component={RouterLink} to="/app/create-profile/mentor">
                 mentor
               </Link>
               .
