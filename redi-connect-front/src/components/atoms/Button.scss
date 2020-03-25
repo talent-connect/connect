@@ -1,0 +1,116 @@
+@import '../..//styles/variables.scss';
+
+.button {
+  &__container {
+    position: relative;
+    margin: .8rem;
+    margin-left: 0;
+    border: none;
+    cursor: pointer;
+    outline: none;
+
+    &-big {
+      height: 6.4rem;
+      width: 14.3rem;
+    }
+
+    &-medium {
+      height: 5.6rem;
+      width: 13.3rem;
+    }
+
+    &-small {
+      height: 4.8rem;
+      width: 11.4rem;
+    }
+
+    &-icon {
+      height: 5.6rem;
+      width: 16.1rem;
+    }
+
+    &:hover>.button__background {
+      background-color: $orangeMedium;
+    }
+
+    &:hover>.button__box {
+      background-color: transparent;
+    }
+
+    &:active>.button__box {
+      background-color: $black;
+      margin: 0;
+    }
+
+    &:active .button__text-default {
+      color: $white;
+    }
+  }
+
+  &__background {
+    width: 100%;
+    height: 100%;
+    background-color: $orangeLight;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  &__box {
+    z-index: 9;
+    margin: -.8rem .8rem;
+    border: 2px solid $black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    transition: all .3s;
+  }
+
+  &__text-default {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: 900;
+    color: $black;
+    text-align: center;
+    transition: all .3s;
+  }
+
+  &__text-big {
+    line-height: 2.4rem;
+    font-size: 1.6rem;
+    letter-spacing: 1.7px;
+  }
+
+  &__text-medium {
+    line-height: 1.6rem;
+    font-size: 1.6rem;
+    letter-spacing: 1.7px;
+  }
+
+  &__text-small {
+    line-height: 1.6rem;
+    font-size: 1.2rem;
+    letter-spacing: 1.3px;
+  }
+
+  &__text-icon {
+    line-height: 1.6rem;
+    font-size: 1.6rem;
+    letter-spacing: 1.7px;
+    margin-right: .8rem;
+  }
+
+  &__simple {
+    font-size: 1.4rem;
+    font-weight: 900;
+    letter-spacing: 1.7px;
+    line-height: 2.4rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    outline: none;
+  }
+}
