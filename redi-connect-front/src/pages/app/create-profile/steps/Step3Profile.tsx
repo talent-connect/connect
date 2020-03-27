@@ -11,11 +11,11 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import Checkbox from "@material-ui/core/Checkbox";
 import ListItemText from "@material-ui/core/ListItemText";
-import { SignUpFormValues, SignUpFormType } from "../factory";
+import { CreateProfileFormValues, SignUpFormType } from "../factory";
 import {
   genders as formGenders,
   Languages as formLanguages,
-  S3_UPLOAD_SIGN_URL
+  S3_UPLOAD_SIGN_URL,
 } from "../../../../config/config";
 import { withStyles, Grid } from "@material-ui/core";
 import { useLoading } from "../../../../hooks/WithLoading";
@@ -45,17 +45,17 @@ export const validationSchema = Yup.object({
     .required()
     .min(100)
     .max(600)
-    .label("Personal description")
+    .label("Personal description"),
 });
 
 const styles = (theme: any) => ({
   margin: {
-    margin: "24px 0"
+    margin: "24px 0",
   },
   avatarImageFrame: {
     padding: "10px",
     borderRadius: "4px",
-    border: "solid 2px #58adc4"
+    border: "solid 2px #58adc4",
   },
   fileUploadLabel: {
     padding: "15px 20px",
@@ -63,8 +63,8 @@ const styles = (theme: any) => ({
     backgroundColor: "#58adc4",
     color: "white",
     cursor: "pointer",
-    display: "inline-block"
-  }
+    display: "inline-block",
+  },
 });
 
 const ITEM_HEIGHT = 48;
@@ -73,13 +73,13 @@ const MenuProps = {
   PaperProps: {
     style: {
       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250
-    }
-  }
+      width: 250,
+    },
+  },
 };
 
 const Comp: any = (
-  props: FormikProps<SignUpFormValues> & { type: SignUpFormType } & {
+  props: FormikProps<CreateProfileFormValues> & { type: SignUpFormType } & {
     classes: any;
   }
 ) => {
@@ -93,7 +93,7 @@ const Comp: any = (
       languages,
       otherLanguages,
       personalDescription,
-      expectations
+      expectations,
     },
     errors,
     touched,
@@ -102,7 +102,7 @@ const Comp: any = (
     setFieldTouched,
     setFieldValue,
     classes,
-    type
+    type,
   } = props;
 
   const change = (name: any, e: any) => {
@@ -210,7 +210,7 @@ const Comp: any = (
           onChange={change.bind(null, "gender")}
           inputProps={{
             name: "gender",
-            id: "gender"
+            id: "gender",
           }}
         >
           <MenuItem value="">
