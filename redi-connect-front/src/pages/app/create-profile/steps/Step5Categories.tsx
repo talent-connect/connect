@@ -4,11 +4,11 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import { SignUpFormValues, SignUpFormType } from "../factory";
+import { CreateProfileFormValues, SignUpFormType } from "../factory";
 import { FormikProps } from "formik";
 import {
   categories as formCategories,
-  menteeCountCapacityOptions
+  menteeCountCapacityOptions,
 } from "../../../../config/config";
 import Grid from "@material-ui/core/Grid";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -21,7 +21,7 @@ export const validationSchema = Yup.object({
     then: Yup.array()
       .compact(v => v === "dontKnowYet")
       .min(0)
-      .max(3)
+      .max(3),
   }),
   menteeCountCapacity: Yup.number()
     .required()
@@ -29,17 +29,17 @@ export const validationSchema = Yup.object({
     .max(4),
   agreesWithCodeOfConduct: Yup.boolean()
     .required()
-    .oneOf([true])
+    .oneOf([true]),
 });
 
 const styles = (theme: any) => ({
   margin: {
-    margin: "24px 0"
-  }
+    margin: "24px 0",
+  },
 });
 
 export const Comp = (
-  props: FormikProps<SignUpFormValues> & { type: SignUpFormType } & {
+  props: FormikProps<CreateProfileFormValues> & { type: SignUpFormType } & {
     classes: any;
   }
 ) => {
@@ -52,7 +52,7 @@ export const Comp = (
     setFieldTouched,
     setFieldValue,
     classes,
-    type
+    type,
   } = props;
 
   const change = (name: any, e: any) => {
@@ -120,7 +120,7 @@ export const Comp = (
             onChange={change.bind(null, "menteeCountCapacity")}
             inputProps={{
               name: "menteeCountCapacity",
-              id: "menteeCountCapacity"
+              id: "menteeCountCapacity",
             }}
           >
             {menteeCountCapacityOptions.map(menteeCountCapacity => (

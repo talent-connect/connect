@@ -6,14 +6,14 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  withStyles
+  withStyles,
 } from "@material-ui/core";
-import { SignUpFormValues, SignUpFormType } from "../factory";
+import { CreateProfileFormValues, SignUpFormType } from "../factory";
 import { FormikProps } from "formik";
 import {
   educationLevels,
   courses,
-  menteeOccupationCategories
+  menteeOccupationCategories,
 } from "../../../../config/config";
 
 export const validationSchema = Yup.object({
@@ -22,7 +22,7 @@ export const validationSchema = Yup.object({
     then: Yup.string()
       .required()
       .max(255)
-      .label("Occupation")
+      .label("Occupation"),
   }),
   mentor_workPlace: Yup.string()
     .max(255)
@@ -32,7 +32,7 @@ export const validationSchema = Yup.object({
     then: Yup.string()
       .required()
       .oneOf(menteeOccupationCategories.map(v => v.id))
-      .label("Current occupation")
+      .label("Current occupation"),
   }),
   mentee_occupationJob_placeOfEmployment: Yup.string()
     .max(255)
@@ -60,18 +60,18 @@ export const validationSchema = Yup.object({
     then: Yup.string()
       .required()
       .oneOf(courses.map(level => level.id))
-      .label("Currently enrolled in course")
-  })
+      .label("Currently enrolled in course"),
+  }),
 });
 
 const styles = (theme: any) => ({
   margin: {
-    margin: "6px 0"
-  }
+    margin: "6px 0",
+  },
 });
 
 export const Comp = (
-  props: FormikProps<SignUpFormValues> & { type: SignUpFormType } & {
+  props: FormikProps<CreateProfileFormValues> & { type: SignUpFormType } & {
     classes: any;
   }
 ) => {
@@ -87,7 +87,7 @@ export const Comp = (
       mentee_occupationLookingForJob_what,
       mentee_occupationOther_description,
       mentee_highestEducationLevel,
-      mentee_currentlyEnrolledInCourse
+      mentee_currentlyEnrolledInCourse,
     },
     errors,
     touched,
@@ -96,7 +96,7 @@ export const Comp = (
     setFieldTouched,
     // setFieldValue,
     type,
-    classes
+    classes,
   } = props;
 
   const change = (name: any, e: any) => {
@@ -158,7 +158,7 @@ export const Comp = (
               onChange={change.bind(null, "mentee_occupationCategoryId")}
               inputProps={{
                 name: "mentee_occupationCategoryId",
-                id: "mentee_occupationCategoryId"
+                id: "mentee_occupationCategoryId",
               }}
             >
               {menteeOccupationCategories.map(cat => (
@@ -313,7 +313,7 @@ export const Comp = (
               onChange={change.bind(null, "mentee_highestEducationLevel")}
               inputProps={{
                 name: "mentee_highestEducationLevel",
-                id: "mentee_highestEducationLevel"
+                id: "mentee_highestEducationLevel",
               }}
             >
               {educationLevels.map(mentee_highestEducationLevel => (
@@ -339,7 +339,7 @@ export const Comp = (
               onChange={change.bind(null, "mentee_currentlyEnrolledInCourse")}
               inputProps={{
                 name: "mentee_currentlyEnrolledInCourse",
-                id: "mentee_currentlyEnrolledInCourse"
+                id: "mentee_currentlyEnrolledInCourse",
               }}
             >
               {courses.map(course => (

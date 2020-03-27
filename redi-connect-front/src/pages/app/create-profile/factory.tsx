@@ -5,32 +5,32 @@ import omit from "lodash/omit";
 
 import {
   Step0DataConsent,
-  validationSchema as step0Val
+  validationSchema as step0Val,
 } from "./steps/Step0DataConsent";
 import { Step1Intro, validationSchema as step1Val } from "./steps/Step1Intro";
 import {
   Step2Background,
-  validationSchema as step2Val
+  validationSchema as step2Val,
 } from "./steps/Step2Background";
 import {
   Step3Profile,
-  validationSchema as step3Val
+  validationSchema as step3Val,
 } from "./steps/Step3Profile";
 import {
   Button,
   Paper,
   Theme,
   createStyles,
-  withStyles
+  withStyles,
 } from "@material-ui/core";
 import { SignUpFormStepper } from "./SignUpFormStepper";
 import {
   Step4ContactData,
-  validationSchema as step4Val
+  validationSchema as step4Val,
 } from "./steps/Step4ContactData";
 import {
   Step5Categories,
-  validationSchema as step5Val
+  validationSchema as step5Val,
 } from "./steps/Step5Categories";
 import { signUp } from "../../../services/api/api";
 import { RedProfile } from "../../../types/RedProfile";
@@ -41,8 +41,8 @@ const styles = (theme: Theme) =>
     submitError: {
       padding: theme.spacing(1),
       backgroundColor: theme.palette.error.main,
-      color: "white"
-    }
+      color: "white",
+    },
   });
 
 export type SignUpFormType =
@@ -51,7 +51,7 @@ export type SignUpFormType =
   | "public-sign-up-mentor-pending-review"
   | "public-sign-up-mentee-pending-review";
 
-export interface SignUpFormValues {
+export interface CreateProfileFormValues {
   formType: SignUpFormType;
   gaveGdprConsentAt: string;
   username: string;
@@ -87,7 +87,7 @@ export interface SignUpFormValues {
   agreesWithCodeOfConduct: boolean;
 }
 
-const initialValues: SignUpFormValues = {
+const initialValues: CreateProfileFormValues = {
   formType: "mentee",
   gaveGdprConsentAt: "",
   username: "",
@@ -120,7 +120,7 @@ const initialValues: SignUpFormValues = {
   telephoneNumber: "",
   categories: [],
   menteeCountCapacity: 1,
-  agreesWithCodeOfConduct: false
+  agreesWithCodeOfConduct: false,
 };
 
 const validationSchemas = [
@@ -129,7 +129,7 @@ const validationSchemas = [
   step2Val,
   step3Val,
   step4Val,
-  step5Val
+  step5Val,
 ];
 
 export const buildSignUpForm = (
@@ -140,7 +140,7 @@ export const buildSignUpForm = (
 
   const submitForm = async (
     values: FormikValues,
-    actions: FormikActions<SignUpFormValues>
+    actions: FormikActions<CreateProfileFormValues>
   ) => {
     setSubmitError(false);
     const profile = values as RedProfile;
@@ -149,14 +149,14 @@ export const buildSignUpForm = (
       "password",
       "passwordConfirm",
       "formType",
-      "agreesWithCodeOfConduct"
+      "agreesWithCodeOfConduct",
     ]);
     cleanProfile.userType = type;
     cleanProfile.userActivated = false;
     cleanProfile.signupSource = "public-sign-up";
     try {
       await signUp(values.username, values.password, cleanProfile);
-      history.push("/front/signup/complete/" + type);
+      history.push("/app/create-profile/complete/" + type);
     } catch (error) {
       setSubmitError(Boolean(error));
     }
@@ -192,8 +192,8 @@ export const buildSignUpForm = (
                 )}
               </GetClasses>
             )}
-            {step === 0 && <Step0DataConsent type={type} {...props} />}
-            {step === 1 && <Step1Intro type={type} {...props} />}
+            {/* {step === 0 && <Step0DataConsent type={type} {...props} />}
+            {step === 1 && <Step1Intro type={type} {...props} />} */}
             {step === 2 && <Step2Background type={type} {...props} />}
             {step === 3 && <Step3Profile type={type} {...props} />}
             {step === 4 && <Step4ContactData type={type} {...props} />}

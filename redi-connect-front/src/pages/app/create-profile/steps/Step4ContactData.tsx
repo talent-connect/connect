@@ -2,7 +2,7 @@ import React from "react";
 import * as Yup from "yup";
 import clsx from "clsx";
 import { TextField, InputAdornment } from "@material-ui/core";
-import { SignUpFormValues, SignUpFormType } from "../factory";
+import { CreateProfileFormValues, SignUpFormType } from "../factory";
 import { FormikProps } from "formik";
 import Icon from "@material-ui/core/Icon";
 import EmailIcon from "@material-ui/icons/Email";
@@ -27,11 +27,11 @@ export const validationSchema = Yup.object({
     .label("Slack username"),
   telephoneNumber: Yup.string()
     .max(255)
-    .label("Telephone number")
+    .label("Telephone number"),
 });
 
 export const Step4ContactData = (
-  props: FormikProps<SignUpFormValues> & { type: SignUpFormType }
+  props: FormikProps<CreateProfileFormValues> & { type: SignUpFormType }
 ) => {
   const {
     values: {
@@ -39,13 +39,13 @@ export const Step4ContactData = (
       linkedInProfileUrl,
       githubProfileUrl,
       slackUsername,
-      telephoneNumber
+      telephoneNumber,
     },
     errors,
     touched,
     handleChange,
     // isValid,
-    setFieldTouched
+    setFieldTouched,
   } = props;
 
   const change = (name: any, e: any) => {
@@ -72,7 +72,7 @@ export const Step4ContactData = (
             <InputAdornment position="start">
               <EmailIcon />
             </InputAdornment>
-          )
+          ),
         }}
       />
       <TextField
@@ -90,7 +90,7 @@ export const Step4ContactData = (
             <InputAdornment position="start">
               <Icon className={clsx("fab fa-linkedin")} />
             </InputAdornment>
-          )
+          ),
         }}
       />
       <TextField
@@ -108,7 +108,7 @@ export const Step4ContactData = (
             <InputAdornment position="start">
               <Icon className={clsx("fab fa-slack")} />
             </InputAdornment>
-          )
+          ),
         }}
       />
       <TextField
@@ -126,7 +126,7 @@ export const Step4ContactData = (
             <InputAdornment position="start">
               <PhoneIcon />
             </InputAdornment>
-          )
+          ),
         }}
       />
       <TextField
@@ -144,7 +144,7 @@ export const Step4ContactData = (
             <InputAdornment position="start">
               <Icon className={clsx("fab fa-github")} />
             </InputAdornment>
-          )
+          ),
         }}
       />
     </>

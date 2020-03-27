@@ -4,9 +4,15 @@ import { TextField, InputAdornment } from "@material-ui/core";
 import LockIcon from "@material-ui/icons/Lock";
 import PersonIcon from "@material-ui/icons/Person";
 import { FormikProps } from "formik";
-import { SignUpFormValues, SignUpFormType } from "../factory";
+import { CreateProfileFormValues, SignUpFormType } from "../factory";
 
 export const validationSchema = Yup.object({
+  firstName: Yup.string()
+    .required()
+    .max(255),
+  lastName: Yup.string()
+    .required()
+    .max(255),
   username: Yup.string()
     .email()
     .label("Email")
@@ -17,19 +23,19 @@ export const validationSchema = Yup.object({
     .label("Password"),
   passwordConfirm: Yup.string()
     .required("Confirm your password")
-    .oneOf([Yup.ref("password")], "Password does not match")
+    .oneOf([Yup.ref("password")], "Password does not match"),
 });
 
 export const Step1Intro = (
-  props: FormikProps<SignUpFormValues> & { type: SignUpFormType }
+  props: FormikProps<CreateProfileFormValues> & { type: SignUpFormType }
 ) => {
   const {
-    values: { username, password, passwordConfirm },
+    values: { firstName, lastName, username, password, passwordConfirm },
     errors,
     touched,
     handleChange,
     // isValid,
-    setFieldTouched
+    setFieldTouched,
     // type,
   } = props;
 
@@ -42,6 +48,30 @@ export const Step1Intro = (
   return (
     <>
       <p>Your account requires a password to set up your profile:</p>
+      <TextField
+        id="firstName"
+        name="firstName"
+        helperText={touched.firstName ? errors.firstName : ""}
+        error={touched.firstName && Boolean(errors.firstName)}
+        label="First name*"
+        value={firstName}
+        onChange={change.bind(null, "firstName")}
+        fullWidth
+        margin="normal"
+      />
+
+      <TextField
+        id="lastName"
+        name="lastName"
+        helperText={touched.lastName ? errors.lastName : ""}
+        error={touched.lastName && Boolean(errors.lastName)}
+        label="Last name*"
+        value={lastName}
+        onChange={change.bind(null, "lastName")}
+        fullWidth
+        margin="normal"
+      />
+
       <TextField
         id="username"
         name="username"
@@ -56,7 +86,7 @@ export const Step1Intro = (
             <InputAdornment position="start">
               <PersonIcon />
             </InputAdornment>
-          )
+          ),
         }}
         fullWidth
         margin="normal"
@@ -75,7 +105,7 @@ export const Step1Intro = (
             <InputAdornment position="start">
               <LockIcon />
             </InputAdornment>
-          )
+          ),
         }}
         fullWidth
         margin="normal"
@@ -94,7 +124,7 @@ export const Step1Intro = (
             <InputAdornment position="start">
               <LockIcon />
             </InputAdornment>
-          )
+          ),
         }}
         fullWidth
         margin="normal"
