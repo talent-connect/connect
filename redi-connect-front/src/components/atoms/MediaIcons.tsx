@@ -5,30 +5,29 @@ import twitter from "../../assets/images/twitter.svg";
 import instagram from "../../assets/images/instagram.svg";
 import medium from "../../assets/images/medium.svg";
 
-const SocialMediaIcons = () => {
-  const icons = [
-    {
-      name: linkedin,
-      link:
-        "https://www.linkedin.com/school/redi-school-of-digital-integration/",
-    },
-    { name: twitter, link: "https://twitter.com/redischool?lang=en" },
-    { name: instagram, link: "https://www.instagram.com/redischool/" },
-    { name: medium, link: "https://www.meetup.com/en-AU/ReDI-school/" },
-  ];
+const icons = [
+  {
+    image: linkedin,
+    link: "https://www.linkedin.com/school/redi-school-of-digital-integration/",
+  },
+  { image: twitter, link: "https://twitter.com/redischool?lang=en" },
+  { image: instagram, link: "https://www.instagram.com/redischool/" },
+  { image: medium, link: "https://www.meetup.com/en-AU/ReDI-school/" },
+];
 
+const SocialMediaIcons = () => {
   return (
-    <div className="media-icons">
+    <div className="media-icons__wrapper">
       {icons.map(icon => {
         return (
           <a
             href={icon.link}
-            className="media-icon"
-            key={icon.name}
+            className="media-icons--icon"
+            key={icon.image}
             target="_blank"
             rel="noopener noreferrer"
           >
-            <img src={icon.name} alt="icon" className="media-icon__img" />
+            <img src={icon.image} alt="icon" className="media-icon__img" />
           </a>
         );
       })}

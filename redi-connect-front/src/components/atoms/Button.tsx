@@ -1,14 +1,14 @@
-import React, { SFC } from "react";
+import React from "react";
 import "./Button.scss";
 
-interface ButtonProps {
+interface Props {
   text: string;
   size: "large" | "medium" | "small";
   type?: "default" | "simple";
   icon?: "arrow-right";
 }
 
-const Button: SFC<ButtonProps> = ({ text, type = "default", size, icon }) => {
+const Button = ({ text, type = "default", size, icon }: Props) => {
   const baseClass = "button";
 
   return (

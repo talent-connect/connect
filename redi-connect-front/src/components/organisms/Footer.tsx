@@ -37,7 +37,7 @@ const Footer = () => {
             </p>
             <p>
               <a
-                href="https://www.redi-school.org/berlin-transparency"
+                href="https://www.redi-school.org/berlin-transparency/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
