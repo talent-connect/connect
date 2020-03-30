@@ -1,13 +1,6 @@
-import React from 'react';
-import { LoggedOutLayout } from '../../../layouts/LoggedOutLayout';
-import { Link } from 'react-router-dom';
+import React from "react";
+import LoggedOutWrapper from "../../../components/organismms/LoggedOutWrapper";
 
 export default function Home() {
-  return (
-    <LoggedOutLayout>
-      <div>hello home</div>
-      <Link to="/front/login">LOGIN</Link> <br />
-      <Link to="/front/signup/landing">SIGN UP</Link>
-    </LoggedOutLayout>
-  );
+  return <LoggedOutWrapper>content goes here</LoggedOutWrapper>;
 }

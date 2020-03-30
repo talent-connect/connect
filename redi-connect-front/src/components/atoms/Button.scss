@@ -1,0 +1,89 @@
+@import "../..//styles/variables.scss";
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: 1.6rem;
+  letter-spacing: 1.7px;
+  line-height: 1.6rem;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  transition: all .3s;
+
+  &--default {
+    position: relative;
+    background-color: $orangeLight;
+    margin-top: .8rem;
+    margin-right: .8rem;
+
+    &:hover {
+      background-color: $orangeMedium;
+    }
+
+    &:active {
+      background-color: $black;
+      color: $white;
+    }
+
+    &::before {
+      content: "";
+      border: 2px solid $black;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      bottom: .8rem;
+      left: .8rem;
+    }
+
+    &:active::before {
+      display: none;
+    }
+  }
+
+  &--simple {
+    background-color: transparent;
+    margin-top: .8rem;
+  }
+
+  &--large {
+    line-height: 2.4rem;
+    padding: .9rem 2.1rem 2.3rem 3.7rem;
+
+    &:active {
+      padding: 1.6rem 2.9rem;
+    }
+  }
+
+  &--medium {
+    padding: .9rem 1.6rem 2.3rem 3.2rem;
+
+    &:active {
+      padding: 1.6rem 2.4rem;
+    }
+  }
+
+  &--small {
+    font-size: 1.2rem;
+    letter-spacing: 1.3px;
+    padding: .5rem 1.6rem 1.9rem 3.2rem;
+
+    &:active {
+      padding: 1.2rem 2.4rem;
+    }
+  }
+
+  &--icon {
+    padding: .8rem 1.6rem 2.4rem 3.2rem;
+
+    &:active {
+      padding: 1.6rem 3.2rem 1.6rem 1.6rem;
+    }
+  }
+
+  &--img {
+    margin-left: .8rem;
+  }
+}

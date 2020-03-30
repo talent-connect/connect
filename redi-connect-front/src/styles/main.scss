@@ -1,6 +1,7 @@
 // bulma global dependencies
 @import '~bulma/sass/utilities/_all';
 @import '~bulma/sass/base/_all.sass';
+@import '~bulma/sass/components/navbar.sass';
 
 // custom variable overwrites for bulma
 @import '_variablesBulma.sass';
@@ -16,7 +17,18 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+html {
+  font-size: 62.5%;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.container {
+  max-width: 112.8rem;
+  margin: 0 auto;
+  padding: 0 2.4px;
+  width: auto;
 }
