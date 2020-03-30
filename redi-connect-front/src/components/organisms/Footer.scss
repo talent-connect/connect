@@ -1,7 +1,8 @@
-@import '../../styles/variables.scss';
+@import "~bulma/sass/utilities/_all";
+@import "../../styles/_variables.scss";
 
 .footer {
-  background-color: $blueLight;
+  background-color: $redi-blue-light;
   padding-top: 3.2rem;
   padding-bottom: 4.8rem;
   font-size: 2rem;
@@ -10,7 +11,7 @@
   color: $black;
   border-top: 2px solid $black;
 
-  @media only screen and (max-width: $mobile) {
+  @include mobile() {
     padding-top: 1.2rem;
     padding-bottom: 2.4rem;
     font-size: 1rem;

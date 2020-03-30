@@ -1,0 +1,62 @@
+// bulma colors
+$black: #000;
+$white: #fff;
+$grey-dark: #5d5d5d;
+$grey: #a0a0a0;
+$grey-light: #dadada;
+$red: #ea3f25;
+$green: #33ba5f;
+
+// fonts
+
+$family-primary: Avenir LT Std;
+$family-secondary: Jubilat;
+
+// bulma size
+$size-1: 4rem; // 64px
+$size-2: 2.5rem; // 40px
+$size-3: 2rem; // 24px
+$size-4: 1.25rem; // 20px
+$size-5: 1rem; // 16px
+$size-6: 0.875rem; // 14px
+$size-7: 0.6875rem; // 11px
+
+$size-normal: $size-5;
+
+$weight-light: 400;
+$weight-normal: 500;
+$weight-bold: 900;
+
+$title-family: $family-secondary;
+$title-weight: $weight-normal;
+
+$title-line-height: calc(100% + 8px);
+$subtitle-line-height: calc(100% + 12px);
+
+// redi colors
+$redi-blue-dark: #58adc4;
+$redi-blue: #92c3d0;
+$redi-blue-light: #deeff3;
+
+$redi-orange-dark: #ea5b29;
+$redi-orange: #f6b9a2;
+$redi-orange-light: #f6b9a2;
+
+// Grid
+$column-gap: 1em;
+$block-spacing: 2.5rem;
+
+// Forms
+// $radius: 2px;
+$input-shadow: inset 0 2px 6px rgba(178, 180, 181, 0.3);
+$input-border-color: $grey;
+$input-focus-border-color: $redi-orange;
+$input-hover-border-color: $redi-orange;
+$input-focus: $grey-light;
+$input-focus-color: $grey;
+
+$help-size: 0.875rem;
+
+// texts
+$link: $redi-orange-dark;
+$link-hover: $redi-orange-dark;

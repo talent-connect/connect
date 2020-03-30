@@ -1,28 +1,22 @@
-// bulma global dependencies
-@import '~bulma/sass/utilities/_all';
-@import '~bulma/sass/base/_all.sass';
-@import '~bulma/sass/components/navbar.sass';
-
 // custom variable overwrites for bulma
-@import '_variablesBulma.sass';
+@import "_variables.scss";
+
+//custom modifiers
+@import "_fonts.scss";
+@import "_heading.scss";
+
+// bulma global dependencies
+@import "~bulma/sass/utilities/_all";
+@import "~bulma/sass/base/_all.sass";
+@import "~bulma/sass/components/navbar.sass";
 
 // styles for the components used from bulma
-@import '~bulma/sass/grid/columns.sass';
-
-body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Roboto', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-html {
-  font-size: 62.5%;
-}
+@import "~bulma/sass/grid/columns.sass";
+@import "~bulma/sass/form/_all.sass";
+@import "~bulma/sass/elements/title.sass";
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
@@ -31,4 +25,52 @@ code {
   margin: 0 auto;
   padding: 0 2.4px;
   width: auto;
+}
+
+// TODO: really ugly, need to think how to solve this a bit more simpler
+// this is needed for the solution of the 50-50 page color
+html,
+body,
+#root,
+.routes {
+  height: 100%;
+}
+
+// TODO: not sure where to keep this, or is this the best solution for it
+.input,
+.textarea,
+.select select,
+.file-cta,
+.file-name {
+  height: 3em;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.field:not(:last-child) {
+  margin-bottom: 1em;
+}
+
+.is-uppercase {
+  letter-spacing: 1.5px;
+}
+
+// TODO: should be transfered to a layout template
+// will be done the next time this view is reused
+.page {
+  height: 100%;
+
+  &--color-half {
+    @include tablet() {
+      background: linear-gradient(90deg, $redi-blue-light 50%, $white 50%);
+    }
+  }
+}
+
+.welcome-2 {
+  width: calc(100% + 4em);
+  height: 100%;
+  margin: 0 -1em 3.625em -1em;
 }

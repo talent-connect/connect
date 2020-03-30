@@ -1,4 +1,4 @@
-@import "../..//styles/variables.scss";
+@import "../../styles/_variables.scss";
 
 .button {
   display: inline-flex;
@@ -11,16 +11,16 @@
   outline: none;
   border: none;
   cursor: pointer;
-  transition: all .3s;
+  transition: all 0.3s;
 
   &--default {
     position: relative;
-    background-color: $orangeLight;
-    margin-top: .8rem;
-    margin-right: .8rem;
+    background-color: $redi-orange-light;
+    margin-top: 0.8rem;
+    margin-right: 0.8rem;
 
     &:hover {
-      background-color: $orangeMedium;
+      background-color: $redi-orange-dark;
     }
 
     &:active {
@@ -34,8 +34,8 @@
       width: 100%;
       height: 100%;
       position: absolute;
-      bottom: .8rem;
-      left: .8rem;
+      bottom: 0.8rem;
+      left: 0.8rem;
     }
 
     &:active::before {
@@ -45,12 +45,12 @@
 
   &--simple {
     background-color: transparent;
-    margin-top: .8rem;
+    margin-top: 0.8rem;
   }
 
   &--large {
     line-height: 2.4rem;
-    padding: .9rem 2.1rem 2.3rem 3.7rem;
+    padding: 0.9rem 2.1rem 2.3rem 3.7rem;
 
     &:active {
       padding: 1.6rem 2.9rem;
@@ -58,7 +58,7 @@
   }
 
   &--medium {
-    padding: .9rem 1.6rem 2.3rem 3.2rem;
+    padding: 0.9rem 1.6rem 2.3rem 3.2rem;
 
     &:active {
       padding: 1.6rem 2.4rem;
@@ -68,7 +68,7 @@
   &--small {
     font-size: 1.2rem;
     letter-spacing: 1.3px;
-    padding: .5rem 1.6rem 1.9rem 3.2rem;
+    padding: 0.5rem 1.6rem 1.9rem 3.2rem;
 
     &:active {
       padding: 1.2rem 2.4rem;
@@ -76,7 +76,7 @@
   }
 
   &--icon {
-    padding: .8rem 1.6rem 2.4rem 3.2rem;
+    padding: 0.8rem 1.6rem 2.4rem 3.2rem;
 
     &:active {
       padding: 1.6rem 3.2rem 1.6rem 1.6rem;
@@ -84,6 +84,6 @@
   }
 
   &--img {
-    margin-left: .8rem;
+    margin-left: 0.8rem;
   }
 }
