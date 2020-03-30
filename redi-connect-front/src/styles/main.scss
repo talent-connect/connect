@@ -1,22 +1,40 @@
-// bulma global dependencies
 @import '~bulma/sass/utilities/_all';
 @import '~bulma/sass/base/_all.sass';
+@import "~bulma/sass/utilities/_all";
+@import "~bulma/sass/components/navbar.sass";
+@import "~bulma/sass/base/_all.sass";
 
 // custom variable overwrites for bulma
 @import '_variablesBulma.sass';
+@import "_variablesBulma.sass";
 
 // styles for the components used from bulma
 @import '~bulma/sass/grid/columns.sass';
+@import "~bulma/sass/grid/_all";
 
-body {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   font-family: 'Roboto', sans-serif;
+  font-family: "Lato", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.container {
+  max-width: 114rem;
+  padding: 0 .6rem;
+  margin: 0 auto;
+  width: auto;
 }

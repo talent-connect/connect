@@ -1,0 +1,38 @@
+@import '../../styles/variables.scss';
+
+.media {
+  &-icons {
+    display: flex;
+    border: 1.5px solid $black;
+    width: min-content;
+
+    @media only screen and (max-width: $mobile) {
+      border: .7px solid $black;
+    }
+  }
+
+  &-icon {
+    height: 4.4rem;
+    width: 4.4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    @media only screen and (max-width: $mobile) {
+      width: 3.3rem;
+      height: 3.3rem;
+    }
+
+    &:not(:last-child) {
+      border-right: 1.5px solid $black;
+
+      @media only screen and (max-width: $mobile) {
+        border-right: .7px solid $black;
+      }
+    }
+
+    &:hover {
+      opacity: .8;
+    }
+  }
+}

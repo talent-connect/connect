@@ -1,116 +1,89 @@
-@import '../..//styles/variables.scss';
+@import "../..//styles/variables.scss";
 
 .button {
-  &__container {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: 1.6rem;
+  letter-spacing: 1.7px;
+  line-height: 1.6rem;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  transition: all .3s;
+
+  &--default {
     position: relative;
-    margin: .8rem;
-    margin-left: 0;
-    border: none;
-    cursor: pointer;
-    outline: none;
+    background-color: $orangeLight;
+    margin-top: .8rem;
+    margin-right: .8rem;
 
-    &-big {
-      height: 6.4rem;
-      width: 14.3rem;
-    }
-
-    &-medium {
-      height: 5.6rem;
-      width: 13.3rem;
-    }
-
-    &-small {
-      height: 4.8rem;
-      width: 11.4rem;
-    }
-
-    &-icon {
-      height: 5.6rem;
-      width: 16.1rem;
-    }
-
-    &:hover>.button__background {
+    &:hover {
       background-color: $orangeMedium;
     }
 
-    &:hover>.button__box {
-      background-color: transparent;
-    }
-
-    &:active>.button__box {
+    &:active {
       background-color: $black;
-      margin: 0;
-    }
-
-    &:active .button__text-default {
       color: $white;
     }
+
+    &::before {
+      content: "";
+      border: 2px solid $black;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      bottom: .8rem;
+      left: .8rem;
+    }
+
+    &:active::before {
+      display: none;
+    }
   }
 
-  &__background {
-    width: 100%;
-    height: 100%;
-    background-color: $orangeLight;
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
-
-  &__box {
-    z-index: 9;
-    margin: -.8rem .8rem;
-    border: 2px solid $black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  &--simple {
     background-color: transparent;
-    transition: all .3s;
+    margin-top: .8rem;
   }
 
-  &__text-default {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    text-transform: uppercase;
-    font-weight: 900;
-    color: $black;
-    text-align: center;
-    transition: all .3s;
-  }
-
-  &__text-big {
+  &--large {
     line-height: 2.4rem;
-    font-size: 1.6rem;
-    letter-spacing: 1.7px;
+    padding: .9rem 2.1rem 2.3rem 3.7rem;
+
+    &:active {
+      padding: 1.6rem 2.9rem;
+    }
   }
 
-  &__text-medium {
-    line-height: 1.6rem;
-    font-size: 1.6rem;
-    letter-spacing: 1.7px;
+  &--medium {
+    padding: .9rem 1.6rem 2.3rem 3.2rem;
+
+    &:active {
+      padding: 1.6rem 2.4rem;
+    }
   }
 
-  &__text-small {
-    line-height: 1.6rem;
+  &--small {
     font-size: 1.2rem;
     letter-spacing: 1.3px;
+    padding: .5rem 1.6rem 1.9rem 3.2rem;
+
+    &:active {
+      padding: 1.2rem 2.4rem;
+    }
   }
 
-  &__text-icon {
-    line-height: 1.6rem;
-    font-size: 1.6rem;
-    letter-spacing: 1.7px;
-    margin-right: .8rem;
+  &--icon {
+    padding: .8rem 1.6rem 2.4rem 3.2rem;
+
+    &:active {
+      padding: 1.6rem 3.2rem 1.6rem 1.6rem;
+    }
   }
 
-  &__simple {
-    font-size: 1.4rem;
-    font-weight: 900;
-    letter-spacing: 1.7px;
-    line-height: 2.4rem;
-    text-transform: uppercase;
-    cursor: pointer;
-    border: none;
-    outline: none;
+  &--img {
+    margin-left: .8rem;
   }
 }
