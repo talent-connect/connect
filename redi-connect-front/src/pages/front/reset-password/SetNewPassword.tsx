@@ -15,7 +15,12 @@ import {
   useTheme,
 } from '@material-ui/core';
 import { Lock as LockIcon } from '@material-ui/icons';
-import { Formik, FormikProps, FormikActions, FormikValues } from 'formik';
+import {
+  Formik,
+  FormikProps,
+  FormikHelpers as FormikActions,
+  FormikValues,
+} from 'formik';
 import { history } from '../../../services/history/history';
 import {
   setPassword,

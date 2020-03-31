@@ -14,17 +14,12 @@
 @import "~bulma/sass/grid/columns.sass";
 @import "~bulma/sass/form/_all.sass";
 @import "~bulma/sass/elements/title.sass";
+@import "~bulma/sass/elements/container.sass";
+@import "~bulma/sass/layout/section.sass";
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
-}
-
-.container {
-  max-width: 112.8rem;
-  margin: 0 auto;
-  padding: 0 2.4px;
-  width: auto;
 }
 
 // TODO: really ugly, need to think how to solve this a bit more simpler
@@ -69,8 +64,8 @@ a:hover {
   }
 }
 
-.welcome-2 {
+.illustration {
   width: calc(100% + 4em);
   height: 100%;
-  margin: 0 -1em 3.625em -1em;
+  margin: 0 -2em 3.625em -2em;
 }

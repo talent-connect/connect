@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import * as Yup from 'yup';
 
-import { Formik, FormikValues, FormikActions } from 'formik';
+import { Formik, FormikValues, FormikHelpers as FormikActions } from 'formik';
 import Grid from '@material-ui/core/Grid';
 import {
   TextField,
