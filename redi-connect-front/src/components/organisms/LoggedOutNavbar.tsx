@@ -3,7 +3,7 @@ import { Navbar } from "react-bulma-components";
 import Button from "../atoms/Button";
 import Logo from "../atoms/Logo";
 
-const LoggedOutNavbar = ({ children }: any) => {
+const LoggedOutNavbar = () => {
   const [active, setActive] = useState(false);
 
   return (
