@@ -1,4 +1,4 @@
-import React, { SFC } from "react";
+import React from "react";
 import "./MediaIcons.scss";
 import linkedin from "../../assets/images/linkedin.svg";
 import twitter from "../../assets/images/twitter.svg";

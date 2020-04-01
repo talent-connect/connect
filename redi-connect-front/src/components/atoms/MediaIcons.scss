@@ -13,15 +13,15 @@
   }
 
   &__icon {
-    height: 4.4rem;
-    width: 4.4rem;
+    height: 2.75rem;
+    width: 2.75rem;
     display: flex;
     justify-content: center;
     align-items: center;
 
     @include mobile() {
-      width: 3.3rem;
-      height: 3.3rem;
+      width: 2rem;
+      height: 2rem;
     }
 
     &:not(:last-child) {
