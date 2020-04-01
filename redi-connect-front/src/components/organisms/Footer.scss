@@ -3,19 +3,19 @@
 
 .footer {
   background-color: $redi-blue-light;
-  padding-top: 3.2rem;
-  padding-bottom: 4.8rem;
-  font-size: 2rem;
+  padding-top: 2rem;
+  padding-bottom: 3rem;
+  font-size: $size-4;
   font-weight: 500;
-  line-height: 3.2rem;
+  line-height: 2rem;
   color: $black;
   border-top: 2px solid $black;
 
   @include mobile() {
-    padding-top: 1.2rem;
-    padding-bottom: 2.4rem;
-    font-size: 1rem;
-    line-height: 2.1rem;
+    padding-top: .75rem;
+    padding-bottom: 1.25rem;
+    font-size: $size-7;
+    line-height: $size-4;
   }
 
   & a {

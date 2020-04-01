@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Navbar } from "react-bulma-components";
+import { Navbar, Container } from "react-bulma-components";
 import Button from "../atoms/Button";
 import Logo from "../atoms/Logo";
 
@@ -8,7 +8,7 @@ const LoggedOutNavbar = () => {
 
   return (
     <Navbar active={active}>
-      <div className="container">
+      <Container>
         <Navbar.Brand>
           <Navbar.Item>
             <Logo />
@@ -29,7 +29,7 @@ const LoggedOutNavbar = () => {
             </Navbar.Item>
           </Navbar.Container>
         </Navbar.Menu>
-      </div>
+      </Container>
     </Navbar>
   );
 };

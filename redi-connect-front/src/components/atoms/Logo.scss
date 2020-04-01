@@ -2,13 +2,17 @@
 @import "../../styles/_variables.scss";
 
 .logo {
-  font-size: 1.6rem;
-  line-height: 2.4rem;
+  font-size: $size-5;
+  line-height: $size-3;
   display: inline;
   color: $black;
 
+  &:hover {
+    color: $black;
+  }
+
   @include mobile() {
-    font-size: 2rem;
+    font-size: $size-4;
     letter-spacing: 1.25px;
   }
 }
