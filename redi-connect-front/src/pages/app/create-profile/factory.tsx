@@ -1,55 +1,55 @@
-import React, { useState } from "react";
-import { Formik, FormikValues, FormikActions } from "formik";
-import Grid from "@material-ui/core/Grid";
-import omit from "lodash/omit";
+import React, { useState } from 'react';
+import { Formik, FormikValues, FormikHelpers as FormikActions } from 'formik';
+import Grid from '@material-ui/core/Grid';
+import omit from 'lodash/omit';
 
 import {
   Step0DataConsent,
   validationSchema as step0Val,
-} from "./steps/Step0DataConsent";
-import { Step1Intro, validationSchema as step1Val } from "./steps/Step1Intro";
+} from './steps/Step0DataConsent';
+import { Step1Intro, validationSchema as step1Val } from './steps/Step1Intro';
 import {
   Step2Background,
   validationSchema as step2Val,
-} from "./steps/Step2Background";
+} from './steps/Step2Background';
 import {
   Step3Profile,
   validationSchema as step3Val,
-} from "./steps/Step3Profile";
+} from './steps/Step3Profile';
 import {
   Button,
   Paper,
   Theme,
   createStyles,
   withStyles,
-} from "@material-ui/core";
-import { SignUpFormStepper } from "./SignUpFormStepper";
+} from '@material-ui/core';
+import { SignUpFormStepper } from './SignUpFormStepper';
 import {
   Step4ContactData,
   validationSchema as step4Val,
-} from "./steps/Step4ContactData";
+} from './steps/Step4ContactData';
 import {
   Step5Categories,
   validationSchema as step5Val,
-} from "./steps/Step5Categories";
-import { signUp } from "../../../services/api/api";
-import { RedProfile } from "../../../types/RedProfile";
-import { history } from "../../../services/history/history";
+} from './steps/Step5Categories';
+import { signUp } from '../../../services/api/api';
+import { RedProfile } from '../../../types/RedProfile';
+import { history } from '../../../services/history/history';
 
 const styles = (theme: Theme) =>
   createStyles({
     submitError: {
       padding: theme.spacing(1),
       backgroundColor: theme.palette.error.main,
-      color: "white",
+      color: 'white',
     },
   });
 
 export type SignUpFormType =
-  | "mentor"
-  | "mentee"
-  | "public-sign-up-mentor-pending-review"
-  | "public-sign-up-mentee-pending-review";
+  | 'mentor'
+  | 'mentee'
+  | 'public-sign-up-mentor-pending-review'
+  | 'public-sign-up-mentee-pending-review';
 
 export interface CreateProfileFormValues {
   formType: SignUpFormType;
@@ -88,36 +88,36 @@ export interface CreateProfileFormValues {
 }
 
 const initialValues: CreateProfileFormValues = {
-  formType: "mentee",
-  gaveGdprConsentAt: "",
-  username: "",
-  password: "",
-  passwordConfirm: "",
-  mentor_occupation: "",
-  mentor_workPlace: "",
-  expectations: "",
-  mentee_highestEducationLevel: "",
-  mentee_currentlyEnrolledInCourse: "",
-  mentee_occupationCategoryId: "",
-  mentee_occupationJob_placeOfEmployment: "",
-  mentee_occupationJob_position: "",
-  mentee_occupationStudent_studyPlace: "",
-  mentee_occupationStudent_studyName: "",
-  mentee_occupationLookingForJob_what: "",
-  mentee_occupationOther_description: "",
-  profileAvatarImageS3Key: "",
-  firstName: "",
-  lastName: "",
-  gender: "",
+  formType: 'mentee',
+  gaveGdprConsentAt: '',
+  username: '',
+  password: '',
+  passwordConfirm: '',
+  mentor_occupation: '',
+  mentor_workPlace: '',
+  expectations: '',
+  mentee_highestEducationLevel: '',
+  mentee_currentlyEnrolledInCourse: '',
+  mentee_occupationCategoryId: '',
+  mentee_occupationJob_placeOfEmployment: '',
+  mentee_occupationJob_position: '',
+  mentee_occupationStudent_studyPlace: '',
+  mentee_occupationStudent_studyName: '',
+  mentee_occupationLookingForJob_what: '',
+  mentee_occupationOther_description: '',
+  profileAvatarImageS3Key: '',
+  firstName: '',
+  lastName: '',
+  gender: '',
   age: undefined,
-  languages: ["English"],
-  otherLanguages: "",
-  personalDescription: "",
-  contactEmail: "",
-  linkedInProfileUrl: "",
-  githubProfileUrl: "",
-  slackUsername: "",
-  telephoneNumber: "",
+  languages: ['English'],
+  otherLanguages: '',
+  personalDescription: '',
+  contactEmail: '',
+  linkedInProfileUrl: '',
+  githubProfileUrl: '',
+  slackUsername: '',
+  telephoneNumber: '',
   categories: [],
   menteeCountCapacity: 1,
   agreesWithCodeOfConduct: false,
@@ -146,17 +146,17 @@ export const buildSignUpForm = (
     const profile = values as RedProfile;
     // TODO: this needs to be done in a smarter way, like iterating over the RedProfile definition or something
     const cleanProfile: Partial<RedProfile> = omit(profile, [
-      "password",
-      "passwordConfirm",
-      "formType",
-      "agreesWithCodeOfConduct",
+      'password',
+      'passwordConfirm',
+      'formType',
+      'agreesWithCodeOfConduct',
     ]);
     cleanProfile.userType = type;
     cleanProfile.userActivated = false;
-    cleanProfile.signupSource = "public-sign-up";
+    cleanProfile.signupSource = 'public-sign-up';
     try {
       await signUp(values.username, values.password, cleanProfile);
-      history.push("/app/create-profile/complete/" + type);
+      history.push('/app/create-profile/complete/' + type);
     } catch (error) {
       setSubmitError(Boolean(error));
     }

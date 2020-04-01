@@ -1,4 +1,5 @@
-@import '../../styles/variables.scss';
+@import "~bulma/sass/utilities/_all";
+@import "../../styles/_variables.scss";
 
 .media-icons {
   &__wrapper {
@@ -6,8 +7,8 @@
     border: 1.5px solid $black;
     width: min-content;
 
-    @media only screen and (max-width: $mobile) {
-      border: .7px solid $black;
+    @include mobile() {
+      border: 0.7px solid $black;
     }
   }
 
@@ -18,7 +19,7 @@
     justify-content: center;
     align-items: center;
 
-    @media only screen and (max-width: $mobile) {
+    @include mobile() {
       width: 3.3rem;
       height: 3.3rem;
     }
@@ -26,13 +27,13 @@
     &:not(:last-child) {
       border-right: 1.5px solid $black;
 
-      @media only screen and (max-width: $mobile) {
-        border-right: .7px solid $black;
+      @include mobile() {
+        border-right: 0.7px solid $black;
       }
     }
 
     &:hover {
-      opacity: .8;
+      opacity: 0.8;
     }
   }
 }

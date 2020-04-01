@@ -1,0 +1,44 @@
+@font-face {
+  font-family: 'Jubilat';
+  src: local('Jubilat Medium'), local('JubilatMedium'),
+    url('../assets/fonts/JubilatMedium.woff2') format('woff2'),
+    url('../assets/fonts/JubilatMedium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Jubilat';
+  src: local('Jubilat Regular'), local('Jubilat-Regular'),
+    url('../assets/fonts/Jubilat-Regular.woff2') format('woff2'),
+    url('../assets/fonts/Jubilat-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Avenir LT Std';
+  src: local('Avenir LT Std 65 Medium'), local('AvenirLTStd-Medium'),
+    url('../assets/fonts/AvenirLTStd-Medium.woff2') format('woff2'),
+    url('../assets/fonts/AvenirLTStd-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Avenir LT Std';
+  src: local('Avenir LT Std 55 Roman'), local('AvenirLTStd-Roman'),
+    url('../assets/fonts/AvenirLTStd-Roman.woff2') format('woff2'),
+    url('../assets/fonts/AvenirLTStd-Roman.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Avenir LT Std';
+  src: local('Avenir LT Std 45 Book'), local('AvenirLTStd-Book'),
+    url('../assets/fonts/AvenirLTStd-Book.woff2') format('woff2'),
+    url('../assets/fonts/AvenirLTStd-Book.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+}

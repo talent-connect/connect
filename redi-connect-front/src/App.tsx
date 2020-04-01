@@ -1,5 +1,4 @@
 import React, { useEffect, Suspense } from 'react';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 
 import { Provider as StoreProvider } from 'react-redux';
 import './App.scss';
@@ -9,54 +8,12 @@ import { store } from './redux/store';
 import { profileFetchStart } from './redux/user/actions';
 import AppNotification from './components/AppNotification';
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#58adc4',
-      contrastText: '#fff',
-    },
-    secondary: {
-      main: '#ea5b25',
-    },
-    error: {
-      main: '#b00020',
-    },
-  },
-  typography: {
-    fontFamily: 'Roboto',
-  },
-  overrides: {
-    MuiStepIcon: {
-      root: {
-        color: '#eaeaea',
-        '&$active': {
-          color: '#ea5b25',
-        },
-        '&$completed': {
-          color: '#ea5b25',
-        },
-      },
-    },
-    MuiStepLabel: {
-      label: {
-        color: '#eaeaea',
-        '&$active': {
-          color: '#ea5b25',
-        },
-        '&$completed': {
-          color: '#ea5b25',
-        },
-      },
-    },
-  },
-});
-
 const App = () => {
   useEffect(() => {
     store.dispatch(profileFetchStart());
   }, []);
   return (
-    <MuiThemeProvider theme={theme}>
+    <>
       <AppNotification />
       <StoreProvider store={store}>
         <Router history={history}>
@@ -65,7 +22,7 @@ const App = () => {
           </Suspense>
         </Router>
       </StoreProvider>
-    </MuiThemeProvider>
+    </>
   );
 };
 

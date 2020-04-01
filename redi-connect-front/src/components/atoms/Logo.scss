@@ -1,4 +1,5 @@
-@import '../../styles/variables.scss';
+@import "~bulma/sass/utilities/_all";
+@import "../../styles/_variables.scss";
 
 .logo {
   font-size: 1.6rem;
@@ -6,7 +7,7 @@
   display: inline;
   color: $black;
 
-  @media only screen and (max-width: $mobile) {
+  @include mobile() {
     font-size: 2rem;
     letter-spacing: 1.25px;
   }

@@ -1,0 +1,11 @@
+@import "../../../styles/_variables";
+
+.login-form {
+  &__reset-password {
+    text-align: right;
+    font-size: $size-6;
+  }
+  &__submit {
+    margin-top: 3em;
+  }
+}
