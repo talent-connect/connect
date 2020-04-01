@@ -1,0 +1,13 @@
+@import '../../styles/variables.scss';
+
+.logo {
+  font-size: 1.6rem;
+  line-height: 2.4rem;
+  display: inline;
+  color: $black;
+
+  @media only screen and (max-width: $mobile) {
+    font-size: 2rem;
+    letter-spacing: 1.25px;
+  }
+}
