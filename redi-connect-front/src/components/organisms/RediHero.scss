@@ -1,0 +1,32 @@
+@import "~bulma/sass/utilities/_all";
+@import '../../styles/variables.scss';
+
+.hero {
+  &-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+
+    &-heading.title {
+      margin-bottom: 1rem;
+
+      @include mobile() {
+        font-size: 3rem;
+        line-height: 3.125rem;
+      }
+    }
+
+    &-content {
+      font-size: $size-4;
+      color: $black;
+      margin-bottom: 3rem;
+
+      @include mobile() {
+        margin-bottom: .75rem;
+        font-size: $size-5;
+        line-height: 1.5rem;
+      }
+    }
+  }
+}

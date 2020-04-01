@@ -22,6 +22,10 @@
     @include mobile() {
       width: 2rem;
       height: 2rem;
+
+      img {
+        width: 1rem;
+      }
     }
 
     &:not(:last-child) {

@@ -1,6 +1,11 @@
 import React from "react";
 import LoggedOutWrapper from "../../../components/organisms/LoggedOutWrapper";
+import Hero from "../../../components/organisms/RediHero";
 
 export default function Home() {
-  return <LoggedOutWrapper>content goes here</LoggedOutWrapper>;
+  return (
+    <LoggedOutWrapper>
+      <Hero />
+    </LoggedOutWrapper>
+  );
 }

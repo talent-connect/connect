@@ -18,7 +18,7 @@ const Footer = () => {
               <p>&copy; {year} By ReDI School</p>
             </Columns.Column>
             <Columns.Column size={4} className="is-hidden-tablet">
-              <p className="has-text-weight-bold is-size-4">Follow us</p>
+              <p className="is-size-5">Follow us</p>
               <Icons />
             </Columns.Column>
             <Columns.Column size={6}>
@@ -62,7 +62,12 @@ const Footer = () => {
               <p>Follow us</p>
               <Icons />
             </Columns.Column>
-            <Columns.Column className="is-hidden-tablet has-text-weight-semibold">
+            <Columns.Column
+              mobile={{
+                size: "four-fifths",
+              }}
+              className="is-hidden-tablet"
+            >
               <span>
                 <a href="https://www.redi-school.org/">ReDI School Website</a>
               </span>

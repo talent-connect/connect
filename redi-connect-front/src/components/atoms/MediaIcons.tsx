@@ -3,7 +3,8 @@ import "./MediaIcons.scss";
 import linkedin from "../../assets/images/linkedin.svg";
 import twitter from "../../assets/images/twitter.svg";
 import instagram from "../../assets/images/instagram.svg";
-import medium from "../../assets/images/medium.svg";
+import meetup from "../../assets/images/meetup.svg";
+import fb from "../../assets/images/fb.svg";
 
 const icons = [
   {
@@ -12,7 +13,8 @@ const icons = [
   },
   { image: twitter, link: "https://twitter.com/redischool?lang=en" },
   { image: instagram, link: "https://www.instagram.com/redischool/" },
-  { image: medium, link: "https://www.meetup.com/en-AU/ReDI-school/" },
+  { image: fb, link: "https://www.facebook.com/redischool/" },
+  { image: meetup, link: "https://www.meetup.com/en-AU/ReDI-school/" },
 ];
 
 const SocialMediaIcons = () => (
