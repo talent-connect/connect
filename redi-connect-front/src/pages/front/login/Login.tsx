@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
-import { LoggedOutLayout } from '../../../layouts/LoggedOutLayout';
-import * as Yup from 'yup';
-import { Button } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { LoggedOutLayout } from "../../../layouts/LoggedOutLayout";
+import * as Yup from "yup";
+import { Button } from "@material-ui/core";
+import { Link } from "react-router-dom";
 import {
   FormikHelpers as FormikActions,
   FormikValues,
   useFormik,
-} from 'formik';
-import { history } from '../../../services/history/history';
-import { login, fetchSaveRedProfile } from '../../../services/api/api';
-import { saveAccessToken } from '../../../services/auth/auth';
+} from "formik";
+import { history } from "../../../services/history/history";
+import { login, fetchSaveRedProfile } from "../../../services/api/api";
+import { saveAccessToken } from "../../../services/auth/auth";
 
-import { ReactComponent as WelcomeIllustration } from '../../../assets/welcome-user.svg';
+import { ReactComponent as WelcomeIllustration } from "../../../assets/welcome-user.svg";
 
-import './Login.scss';
+import "./Login.scss";
 import {
   Columns,
   Form,
@@ -22,7 +22,7 @@ import {
   Content,
   Container,
   Section,
-} from 'react-bulma-components';
+} from "react-bulma-components";
 
 interface LoginFormValues {
   username: string;
@@ -30,24 +30,24 @@ interface LoginFormValues {
 }
 
 const initialValues: LoginFormValues = {
-  username: '',
-  password: '',
+  username: "",
+  password: "",
 };
 
 const validationSchema = Yup.object({
   username: Yup.string()
     .email()
     .required()
-    .label('Email')
+    .label("Email")
     .max(255),
   password: Yup.string()
     .required()
-    .label('Password')
+    .label("Password")
     .max(255),
 });
 
 export default function Login() {
-  const [loginError, setLoginError] = useState<string>('');
+  const [loginError, setLoginError] = useState<string>("");
 
   const submitForm = async (
     values: FormikValues,
@@ -58,9 +58,9 @@ export default function Login() {
       const accessToken = await login(formValues.username, formValues.password);
       saveAccessToken(accessToken);
       await fetchSaveRedProfile(accessToken);
-      history.push('/app/dashboard');
+      history.push("/app/dashboard");
     } catch (err) {
-      setLoginError('You entered an incorrect email, password, or both.');
+      setLoginError("You entered an incorrect email, password, or both.");
     }
     actions.setSubmitting(false);
   };
@@ -88,7 +88,7 @@ export default function Login() {
             >
               <WelcomeIllustration className="illustration" />
               <Content textTransform="uppercase">
-                Don't have an account yet?{' '}
+                Don't have an account yet?{" "}
                 <Link to="/front/signup/landing">signup here</Link>
               </Content>
             </Columns.Column>
@@ -115,12 +115,12 @@ export default function Login() {
                       color={
                         formik.touched.username &&
                         Boolean(formik.errors.username)
-                          ? 'danger'
+                          ? "danger"
                           : null
                       }
                       placeholder="Email"
                       value={formik.values.username}
-                      onChange={onChange.bind(null, 'username')}
+                      onChange={onChange.bind(null, "username")}
                       disabled={formik.isSubmitting}
                     />
                   </Form.Control>
@@ -141,12 +141,12 @@ export default function Login() {
                       color={
                         formik.touched.password &&
                         Boolean(formik.errors.password)
-                          ? 'danger'
+                          ? "danger"
                           : null
                       }
                       placeholder="Password*"
                       value={formik.values.password}
-                      onChange={onChange.bind(null, 'password')}
+                      onChange={onChange.bind(null, "password")}
                       disabled={formik.isSubmitting}
                     />
                   </Form.Control>
