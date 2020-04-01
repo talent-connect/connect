@@ -15,24 +15,22 @@ const icons = [
   { image: medium, link: "https://www.meetup.com/en-AU/ReDI-school/" },
 ];
 
-const SocialMediaIcons = () => {
-  return (
-    <div className="media-icons__wrapper">
-      {icons.map(icon => {
-        return (
-          <a
-            href={icon.link}
-            className="media-icons--icon"
-            key={icon.image}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img src={icon.image} alt="icon" className="media-icon__img" />
-          </a>
-        );
-      })}
-    </div>
-  );
-};
+const SocialMediaIcons = () => (
+  <div className="media-icons__wrapper">
+    {icons.map(icon => {
+      return (
+        <a
+          href={icon.link}
+          className="media-icons__icon"
+          key={icon.image}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img src={icon.image} alt="icon" className="media-icon__img" />
+        </a>
+      );
+    })}
+  </div>
+);
 
 export default SocialMediaIcons;
