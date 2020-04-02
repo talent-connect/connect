@@ -16,28 +16,46 @@
 @import "~bulma/sass/elements/title.sass";
 @import "~bulma/sass/elements/container.sass";
 @import "~bulma/sass/layout/section.sass";
+@import "~bulma/sass/elements/button.sass";
+
+@import "~bulma-checkradio/src/sass/index.sass";
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
-// TODO: really ugly, need to think how to solve this a bit more simpler
-// this is needed for the solution of the 50-50 page color
-html,
-body,
-#root,
-.routes {
+html {
   height: 100%;
+  background-color: $redi-blue-light;
 }
 
-// TODO: not sure where to keep this, or is this the best solution for it
-.input,
-.textarea,
-.select select,
-.file-cta,
-.file-name {
-  height: 3em;
+%arrow {
+  border: 1px solid $redi-orange-dark;
+  border-right: 0;
+  border-top: 0;
+  content: " ";
+  display: block;
+  height: 0.625em;
+  margin-top: -0.4375em;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  transform: rotate(-45deg);
+  transform-origin: center;
+  width: 0.625em;
+}
+
+input,
+textarea,
+select {
+  &::placeholder {
+    font-style: italic;
+  }
+}
+
+.select select {
+  box-shadow: $input-shadow;
 }
 
 a:hover {
@@ -54,18 +72,24 @@ a:hover {
 
 // TODO: should be transfered to a layout template
 // will be done the next time this view is reused
-.page {
-  height: 100%;
-
-  &--color-half {
-    @include tablet() {
-      background: linear-gradient(90deg, $redi-blue-light 50%, $white 50%);
-    }
+.color-half {
+  background-color: $white;
+  @include tablet() {
+    background: linear-gradient(90deg, $redi-blue-light 50%, $white 50%);
   }
 }
 
 .illustration {
-  width: calc(100% + 4em);
+  width: calc(100% + 3em);
   height: 100%;
-  margin: 0 -2em 3.625em -2em;
+  margin: 0 -2em 3.625em -1em;
+}
+
+.is-checkradio--redi[type="checkbox"] + label {
+  display: inline-block;
+  margin: 0;
+}
+
+.submit-spacer {
+  margin-top: 3em;
 }

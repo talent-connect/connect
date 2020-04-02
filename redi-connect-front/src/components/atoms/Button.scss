@@ -15,6 +15,14 @@
   cursor: pointer;
   transition: all 0.3s;
 
+  &[disabled] {
+    background-color: $grey;
+    color: $black;
+    &:hover {
+      background-color: $grey;
+      color: $black;
+    }
+  }
 
   &--default {
     position: relative;
@@ -23,7 +31,7 @@
     margin-right: $size-5 / 2;
 
     @include mobile() {
-      width: calc(100% - .5rem);
+      width: calc(100% - 0.5rem);
       justify-content: center;
     }
 
@@ -58,10 +66,11 @@
 
   &--large {
     line-height: 1.5em;
-    padding: .5em 1.25em 1.25em 2.25em;
+    // padding: 0.8rem 2rem 2rem 3.6rem;
+    padding: 0.5em 1.25em 1.25em 2.25em;
 
     &:active {
-      padding: .875em 1.75rem;
+      padding: 0.875em 1.75rem;
     }
   }
 
@@ -79,7 +88,7 @@
     padding: 0.25em 1em 1.25em 2em;
 
     &:active {
-      padding: .75em 1.5em;
+      padding: 0.75em 1.5em;
     }
   }
 
@@ -92,6 +101,6 @@
   }
 
   &--img {
-    margin-left: .5em;
+    margin-left: 0.5em;
   }
 }
