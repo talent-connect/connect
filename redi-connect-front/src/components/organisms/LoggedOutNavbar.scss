@@ -1,0 +1,44 @@
+@import "~bulma/sass/utilities/_all";
+@import "../../styles/_variables.scss";
+
+.navbar {
+  &__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &-mobile {
+      position: absolute;
+      width: 100vw;
+      height: 100vh;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      padding: 8rem 1rem;
+      background-color: $white;
+      background-image: url('../../assets/images/bubbles.svg');
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: 100% 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      flex-direction: column;
+    }
+
+  }
+
+  &__close {
+    position: absolute;
+    cursor: pointer;
+    top: 2rem;
+    right: 1rem;
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+    color: $redi-orange-dark;
+  }
+
+  &__image {
+    cursor: pointer;
+  }
+}

@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "react-bulma-components";
 import "./Button.scss";
 
 interface Props {
@@ -8,11 +9,11 @@ interface Props {
   icon?: "arrow-right";
 }
 
-const Button = ({ text, type = "default", size, icon }: Props) => {
+const CustomButton = ({ text, type = "default", size, icon }: Props) => {
   const baseClass = "button";
 
   return (
-    <button
+    <Button
       className={`${baseClass} ${baseClass}--${type} ${baseClass}--${size}`}
     >
       {text}
@@ -23,8 +24,8 @@ const Button = ({ text, type = "default", size, icon }: Props) => {
           className="button--img"
         />
       )}
-    </button>
+    </Button>
   );
 };
 
-export default Button;
+export default CustomButton;

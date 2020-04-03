@@ -1,36 +1,52 @@
 import React, { useState } from "react";
-import { Navbar, Container } from "react-bulma-components";
+import { Section, Container, Content, Image } from "react-bulma-components";
 import Button from "../atoms/Button";
 import Logo from "../atoms/Logo";
+import burger from "../../assets/images/hamburger.svg";
+import "./LoggedOutNavbar.scss";
 
 const LoggedOutNavbar = () => {
-  const [active, setActive] = useState(false);
+  const [menuActive, setMenuActive] = useState(false);
+
+  const mobileMenu = (
+    <Section className="navbar__wrapper-mobile">
+      <Content
+        className="navbar__close"
+        onClick={() => setMenuActive(!menuActive)}
+      >
+        &times;
+      </Content>
+      <Button size="medium" text="Sign-up now!" />
+      <Button size="medium" text="log-in" type="simple" />
+    </Section>
+  );
 
   return (
-    <Navbar active={active}>
-      <Container>
-        <Navbar.Brand>
-          <Navbar.Item>
-            <Logo />
-          </Navbar.Item>
-          <Navbar.Burger
-            className="center"
-            active={active}
-            onClick={() => setActive(!active)}
-          />
-        </Navbar.Brand>
-        <Navbar.Menu>
-          <Navbar.Container position="end">
-            <Navbar.Item>
-              <Button size="small" text="log-in" type="simple" />
-            </Navbar.Item>
-            <Navbar.Item>
-              <Button size="small" text="Sign-up" />
-            </Navbar.Item>
-          </Navbar.Container>
-        </Navbar.Menu>
-      </Container>
-    </Navbar>
+    <Container>
+      <Section className="navbar__wrapper">
+        <Content>
+          <Logo />
+        </Content>
+        <Content
+          responsive={{ mobile: { hide: { value: true } } }}
+          className="is-flex"
+        >
+          <Content>
+            <Button size="small" text="log-in" type="simple" />
+          </Content>
+          <Content>
+            <Button size="small" text="Sign-up" />
+          </Content>
+        </Content>
+        <Content
+          responsive={{ tablet: { hide: { value: true } } }}
+          onClick={() => setMenuActive(!menuActive)}
+        >
+          <Image src={burger} alt="hamburger icon" className="navbar__image" />
+        </Content>
+        {menuActive && mobileMenu}
+      </Section>
+    </Container>
   );
 };
 
