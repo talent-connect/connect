@@ -16,10 +16,9 @@
   transition: all 0.3s;
 
   &[disabled] {
-    background-color: $grey;
     color: $black;
     &:hover {
-      background-color: $grey;
+      background-color: $grey-light;
       color: $black;
     }
   }
@@ -75,7 +74,7 @@
   }
 
   &--medium {
-    padding: 0.5em 1em 1.5em 2em;
+    padding: 0.8em 1em 1.5em 2em;
 
     &:active {
       padding: 1em 1.5em;

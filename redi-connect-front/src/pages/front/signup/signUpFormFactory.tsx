@@ -8,9 +8,9 @@ import {
 } from "formik";
 import omit from "lodash/omit";
 
-// import Button from "../../../components/atoms/Button";
+import FormInput from "../../../components/atoms/FormInput";
 
-import SignUp from "../../../components/molecules/teaser/SignUp";
+import Teaser from "../../../components/molecules/Teaser";
 
 import { Columns, Form, Heading, Button } from "react-bulma-components";
 
@@ -123,13 +123,16 @@ export const buildSignUpForm = (
     formik.setFieldTouched(name, true, false);
   };
 
+  const determineInputColor = (field: keyof SignUpFormValues) =>
+    formik.touched[field] && Boolean(formik.errors[field]) ? "danger" : null;
+
   return (
     <Columns vCentered>
       <Columns.Column
         size={6}
         responsive={{ mobile: { hide: { value: true } } }}
       >
-        <SignUp />
+        <Teaser.SignIn />
       </Columns.Column>
 
       <Columns.Column size={5} offset={1}>
@@ -142,90 +145,62 @@ export const buildSignUpForm = (
           >
             Sign-up
           </Heading>
-          <Form.Field>
-            <Form.Control>
-              <Form.Input
-                id="firstName"
-                name="firstName"
-                color={
-                  formik.touched.firstName && Boolean(formik.errors.firstName)
-                    ? "danger"
-                    : null
-                }
-                placeholder="First name*"
-                value={formik.values.firstName}
-                onChange={onChange.bind(null, "firstName")}
-              />
-            </Form.Control>
-          </Form.Field>
-          <Form.Field>
-            <Form.Control>
-              <Form.Input
-                id="lastName"
-                name="lastName"
-                color={
-                  formik.touched.lastName && Boolean(formik.errors.lastName)
-                    ? "danger"
-                    : null
-                }
-                placeholder="Last name*"
-                value={formik.values.lastName}
-                onChange={onChange.bind(null, "lastName")}
-              />
-            </Form.Control>
-          </Form.Field>
-          <Form.Field>
-            <Form.Control>
-              <Form.Input
-                id="username"
-                name="username"
-                type="email"
-                color={
-                  formik.touched.username && Boolean(formik.errors.username)
-                    ? "danger"
-                    : null
-                }
-                placeholder="Username (your email address)*"
-                value={formik.values.username}
-                onChange={onChange.bind(null, "username")}
-              />
-            </Form.Control>
-          </Form.Field>
-          <Form.Field>
-            <Form.Control>
-              <Form.Input
-                id="password"
-                name="password"
-                type="password"
-                color={
-                  formik.touched.password && Boolean(formik.errors.password)
-                    ? "danger"
-                    : null
-                }
-                placeholder="Password*"
-                value={formik.values.password}
-                onChange={onChange.bind(null, "password")}
-              />
-            </Form.Control>
-          </Form.Field>
-          <Form.Field>
-            <Form.Control>
-              <Form.Input
-                id="passwordConfirm"
-                name="passwordConfirm"
-                type="password"
-                color={
-                  formik.touched.passwordConfirm &&
-                  Boolean(formik.errors.passwordConfirm)
-                    ? "danger"
-                    : null
-                }
-                placeholder="Repeat password*"
-                value={formik.values.passwordConfirm}
-                onChange={onChange.bind(null, "passwordConfirm")}
-              />
-            </Form.Control>
-          </Form.Field>
+
+          <FormInput
+            name="firstName"
+            value={formik.values.firstName}
+            placeholder="First name"
+            setFieldTouched={formik.setFieldTouched}
+            handleChange={formik.handleChange}
+            isSubmitting={formik.isSubmitting}
+            hasError={!!formik.touched.firstName && !!formik.errors.firstName}
+          />
+
+          <FormInput
+            name="lastName"
+            value={formik.values.lastName}
+            placeholder="Last name"
+            setFieldTouched={formik.setFieldTouched}
+            handleChange={formik.handleChange}
+            isSubmitting={formik.isSubmitting}
+            hasError={!!formik.touched.lastName && !!formik.errors.lastName}
+          />
+
+          <FormInput
+            name="username"
+            type="email"
+            value={formik.values.username}
+            placeholder="Username (your email address)"
+            setFieldTouched={formik.setFieldTouched}
+            handleChange={formik.handleChange}
+            isSubmitting={formik.isSubmitting}
+            hasError={!!formik.touched.username && !!formik.errors.username}
+          />
+
+          <FormInput
+            name="password"
+            type="password"
+            value={formik.values.password}
+            placeholder="Password"
+            setFieldTouched={formik.setFieldTouched}
+            handleChange={formik.handleChange}
+            isSubmitting={formik.isSubmitting}
+            hasError={!!formik.touched.password && !!formik.errors.password}
+          />
+
+          <FormInput
+            name="passwordConfirm"
+            type="password"
+            value={formik.values.passwordConfirm}
+            placeholder="Repeat password"
+            setFieldTouched={formik.setFieldTouched}
+            handleChange={formik.handleChange}
+            isSubmitting={formik.isSubmitting}
+            hasError={
+              !!formik.touched.passwordConfirm &&
+              !!formik.errors.passwordConfirm
+            }
+          />
           {type === "public-sign-up-mentee-pending-review" && (
             <>
               <Form.Field>
@@ -241,12 +216,9 @@ export const buildSignUpForm = (
                       null,
                       "mentee_currentlyEnrolledInCourse"
                     )}
-                    color={
-                      formik.touched.mentee_currentlyEnrolledInCourse &&
-                      Boolean(formik.errors.mentee_currentlyEnrolledInCourse)
-                        ? "danger"
-                        : null
-                    }
+                    color={determineInputColor(
+                      "mentee_currentlyEnrolledInCourse"
+                    )}
                   >
                     <option id="" value="" disabled>
                       Your current ReDI Course

@@ -1,7 +1,9 @@
 @import "~bulma/sass/utilities/_all";
-@import '../../styles/variables.scss';
+@import "../../styles/variables.scss";
 
 .hero {
+  background-color: $white;
+
   &-column {
     display: flex;
     flex-direction: column;
@@ -23,7 +25,7 @@
       margin-bottom: 3rem;
 
       @include mobile() {
-        margin-bottom: .75rem;
+        margin-bottom: 0.75rem;
         font-size: $size-5;
         line-height: 1.5rem;
       }

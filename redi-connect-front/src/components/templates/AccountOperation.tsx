@@ -4,11 +4,7 @@ import Logo from "../atoms/Logo";
 
 import { Container, Section } from "react-bulma-components";
 
-interface Props {
-  children: React.ReactNode;
-}
-
-const Account = ({ children }: Props) => (
+const AccountOperation: React.FunctionComponent = ({ children }) => (
   <>
     <Section className="color-half">
       <Container>
@@ -22,4 +18,4 @@ const Account = ({ children }: Props) => (
   </>
 );
 
-export default Account;
+export default AccountOperation;

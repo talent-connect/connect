@@ -47,6 +47,8 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 
+To learn about Atomic Design (used to orgnize the UI components) [Official documentation](https://bradfrost.com/blog/post/atomic-web-design/) and an [arcile](https://cheesecakelabs.com/blog/rethinking-atomic-design-react-projects/) about the topic from a react developer perspective.
+
 ## Releasing
 
 This repo uses [semantic-release](https://github.com/semantic-release/semantic-release), [commitizen](https://github.com/commitizen/cz-cli), [commitlint](http://commitlint.js.org), [husky](https://github.com/typicode/husky) and [conventional commits](https://conventionalcommits.org/en/v1.0.0-beta.4/) in order to automate the release proccess
@@ -56,6 +58,7 @@ This repo uses [semantic-release](https://github.com/semantic-release/semantic-r
 1. The user needs to have a `GH_TOKEN` environment variable set with a valid git token that has push access to the repository which can be generated following these [steps](https://help.github.com/en/articles/creating-a-personal-access-token-for-the-command-line)
 2. the token can be added into a `~/.bash_profile` to avoid manually setting it before running the command.
 3. The script should be run from the release branch only (default: master) otherwise it will fail. To change the release branch you can edit the "release" section in the `package.json` file to temporarily set the release branch as follows
+
 ```
 "release": {
   ...
@@ -69,8 +72,8 @@ This repo uses [semantic-release](https://github.com/semantic-release/semantic-r
 - `yarn commit` will run commitizen cli to generate a conventional style commit message
 - `yarn release` will do a dry-run of the release without pushing or changing any files
 - `yarn release --no-ci` will do a real release.
-We could potentially use this to automate releases when new commits/PRs land in the master branch
-Details
+  We could potentially use this to automate releases when new commits/PRs land in the master branch
+  Details
 
 ### A release will:
 

@@ -1,13 +1,13 @@
 import React from "react";
-import Default from "../../../components/templates/Default";
+import Landing from "../../../components/templates/Landing";
 import Hero from "../../../components/organisms/RediHero";
 import PreFooter from "../../../components/organisms/PreFooter";
 
 export default function Home() {
   return (
-    <Default>
+    <Landing>
       <Hero />
       <PreFooter />
-    </Default>
+    </Landing>
   );
 }
