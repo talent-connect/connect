@@ -13,8 +13,8 @@ import hello from "../../assets/images/hello.svg";
 import "./PreFooter.scss";
 
 const PreFooter = () => (
-  <Container className="pre-footer-container">
-    <Section>
+  <Section className="pre-footer-container">
+    <Container>
       <Columns>
         <Columns.Column className="one-thirds is-four-fifths-mobile">
           <Heading size={1} className="pre-footer-heading">
@@ -37,8 +37,8 @@ const PreFooter = () => (
           <Image src={hello} alt="hello" />
         </Columns.Column>
       </Columns>
-    </Section>
-  </Container>
+    </Container>
+  </Section>
 );
 
 export default PreFooter;

@@ -3,7 +3,8 @@
 
 .pre-footer {
   &-container {
-    margin: 1.5rem auto;
+    background-color: $white;
+    padding: 3rem 0;
 
     @include mobile() {
       margin-bottom: -2.5rem;

@@ -1,13 +1,13 @@
 import React from "react";
-import LoggedOutWrapper from "../../../components/organisms/LoggedOutWrapper";
+import Landing from "../../../components/templates/Landing";
 import Hero from "../../../components/organisms/RediHero";
 import PreFooter from "../../../components/organisms/PreFooter";
 
 export default function Home() {
   return (
-    <LoggedOutWrapper>
+    <Landing>
       <Hero />
       <PreFooter />
-    </LoggedOutWrapper>
+    </Landing>
   );
 }

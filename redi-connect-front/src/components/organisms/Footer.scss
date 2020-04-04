@@ -2,7 +2,6 @@
 @import "../../styles/_variables.scss";
 
 .footer {
-  background-color: $redi-blue-light;
   padding-top: 2rem;
   padding-bottom: 3rem;
   font-size: $size-4;
@@ -12,7 +11,7 @@
   border-top: 2px solid $black;
 
   @include mobile() {
-    padding-top: .75rem;
+    padding-top: 0.75rem;
     padding-bottom: 1.25rem;
     font-size: $size-7;
     line-height: $size-4;
