@@ -102,6 +102,7 @@ const categories = [
   { id: 'iot', label: 'IoT', colour: '#57549a' },
   { id: 'webDevelopment', label: 'Web Development', colour: '#8484db' },
   { id: 'javascript', label: 'JavaScript', colour: '#8484db' },
+  { id: 'htmlcss', label: 'HTML&CSS', colour: '#8484db' },
   {
     id: 'findingInternship',
     label: 'Finding an internship',
