@@ -56,10 +56,6 @@
     "babel-loader": "^8.0.6",
     "cz-conventional-changelog": "^3.0.2",
     "env-cmd": "^10.0.1",
-    "eslint-config-prettier": "6.4.0",
-    "eslint-plugin-jest": "^22.17.0",
-    "eslint-plugin-prettier": "^3.1.1",
-    "eslint-plugin-react": "7.16.0",
     "husky": "3.0.8",
     "prettier": "^1.18.2",
     "react-scripts": "3.2.0",
@@ -81,12 +77,6 @@
     "commit": "npx git-cz",
     "release": "npx semantic-release"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
   "release": {
     "plugins": [
       "@semantic-release/commit-analyzer",
@@ -94,9 +84,6 @@
       "@semantic-release/changelog",
       "@semantic-release/git"
     ]
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   },
   "browserslist": [
     ">0.2%",
