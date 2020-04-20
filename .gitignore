@@ -4,3 +4,6 @@ databkps/
 .idea/
 
 redi-connect-backend/scripts/assets
+
+yarn-error.log
+node_modules
