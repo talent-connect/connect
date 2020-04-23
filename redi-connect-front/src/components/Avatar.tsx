@@ -1,27 +1,27 @@
-import React from "react";
-import clsx from "clsx";
+import React from 'react'
+import clsx from 'clsx'
 
-import { AWS_PROFILE_AVATARS_BUCKET_BASE_URL } from "../config/config";
-import { createStyles, withStyles } from "@material-ui/core";
-import { Person as PersonIcon } from "@material-ui/icons";
+import { AWS_PROFILE_AVATARS_BUCKET_BASE_URL } from '../config/config'
+import { createStyles, withStyles } from '@material-ui/core'
+import { Person as PersonIcon } from '@material-ui/icons'
 
 interface Props {
-  s3Key?: string;
-  className?: string;
+  s3Key?: string
+  className?: string
   classes: {
-    avatarImage: string;
-  };
-  style?: object;
+    avatarImage: string
+  }
+  style?: object
 }
 
 const styles = createStyles({
   avatarImage: {
-    width: "50px",
-    height: "50px",
-    backgroundSize: "cover",
-    backgroundPosition: "center center"
+    width: '50px',
+    height: '50px',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center center'
   }
-});
+})
 
 export const Avatar = withStyles(styles)(
   ({ s3Key, className, classes, style }: Props) => (
@@ -45,4 +45,4 @@ export const Avatar = withStyles(styles)(
       )}
     </>
   )
-);
+)

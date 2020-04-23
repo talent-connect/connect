@@ -1,50 +1,50 @@
-"use strict";
-const _ = require("lodash");
+'use strict'
+const _ = require('lodash')
 
-const Rx = require("rxjs");
-const { of, from } = Rx;
-const { switchMap, tap, map } = require("rxjs/operators");
+const Rx = require('rxjs')
+const { of } = Rx
+const { switchMap } = require('rxjs/operators')
 
-const app = require("../../server/server");
+const app = require('../../server/server')
 const {
   sendMentorPendingReviewAcceptedEmail,
   sendMenteePendingReviewAcceptedEmail,
   sendMentorPendingReviewDeclinedEmail,
   sendMenteePendingReviewDeclinedEmail
-} = require("../../lib/email");
+} = require('../../lib/email')
 
 const addFullNamePropertyForAdminSearch = ctx => {
-  let thingToUpdate;
-  if (ctx.instance) thingToUpdate = ctx.instance;
-  else if (ctx.data) thingToUpdate = ctx.data;
-  else return;
+  let thingToUpdate
+  if (ctx.instance) thingToUpdate = ctx.instance
+  else if (ctx.data) thingToUpdate = ctx.data
+  else return
 
-  const firstName = thingToUpdate.firstName;
-  const lastName = thingToUpdate.lastName;
+  const firstName = thingToUpdate.firstName
+  const lastName = thingToUpdate.lastName
 
   if (firstName || lastName) {
-    const merged = `${firstName ? firstName + " " : ""}${
-      lastName ? lastName : ""
-    }`;
-    thingToUpdate.loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName = merged;
+    const merged = `${firstName ? firstName + ' ' : ''}${
+      lastName || ''
+    }`
+    thingToUpdate.loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName = merged
   }
-};
+}
 
-module.exports = function(RedProfile) {
-  RedProfile.observe("before save", function updateTimestamp(ctx, next) {
-    addFullNamePropertyForAdminSearch(ctx);
+module.exports = function (RedProfile) {
+  RedProfile.observe('before save', function updateTimestamp (ctx, next) {
+    addFullNamePropertyForAdminSearch(ctx)
     if (ctx.instance) {
-      if (ctx.isNewInstance) ctx.instance.createdAt = new Date();
-      ctx.instance.updatedAt = new Date();
+      if (ctx.isNewInstance) ctx.instance.createdAt = new Date()
+      ctx.instance.updatedAt = new Date()
     } else {
-      ctx.data.updatedAt = new Date();
+      ctx.data.updatedAt = new Date()
     }
-    next();
-  });
+    next()
+  })
 
-  RedProfile.observe("loaded", (ctx, next) => {
+  RedProfile.observe('loaded', (ctx, next) => {
     if (ctx.isNewInstance) {
-      return next();
+      return next()
       // TODO: the next two else-if blocks can definitely be DRY-ed. Merge them.
     }
 
@@ -52,55 +52,55 @@ module.exports = function(RedProfile) {
     if (
       ctx.options &&
       ctx.options.currentUser &&
-      ctx.options.currentUser.email === "cloud-accounts@redi-school.org"
+      ctx.options.currentUser.email === 'cloud-accounts@redi-school.org'
     ) {
     } else {
-      delete ctx.data.administratorInternalComment;
+      delete ctx.data.administratorInternalComment
     }
 
-    if (ctx.data && ctx.data.userType === "mentor") {
+    if (ctx.data && ctx.data.userType === 'mentor') {
       // In case RedProfile belongs to a mentor, add "computed properties"
       // currentMenteeCount, currentFreeMenteeSpots, and numberOfPendingApplicationWithCurrentUser,
       // currentApplicantCount
-      const RedMatch = app.models.RedMatch;
-      const RedMentoringSession = app.models.RedMentoringSession;
+      const RedMatch = app.models.RedMatch
+      const RedMentoringSession = app.models.RedMentoringSession
       const countMatchesByType = type =>
         Rx.bindNodeCallback(RedMatch.count.bind(RedMatch))({
           mentorId: ctx.data.id,
           status: type
-        });
-      const countAcceptedMatches = () => countMatchesByType("accepted");
-      const countAppliedMatches = () => countMatchesByType("applied");
+        })
+      const countAcceptedMatches = () => countMatchesByType('accepted')
+      const countAppliedMatches = () => countMatchesByType('applied')
 
       const numberOfPendingApplicationWithCurrentUser = () =>
         ctx.options.currentUser
           ? Rx.bindNodeCallback(RedMatch.count.bind(RedMatch))({
-              mentorId: ctx.data.id,
-              menteeId: ctx.options.currentUser.redProfile.id,
-              status: "applied"
-            })
-          : Rx.of([null]);
+            mentorId: ctx.data.id,
+            menteeId: ctx.options.currentUser.redProfile.id,
+            status: 'applied'
+          })
+          : Rx.of([null])
 
       const getRedMatchesToCurrentMentor = () =>
         ctx.options.currentUser
           ? Rx.bindNodeCallback(RedMatch.find.bind(RedMatch))({
-              where: {
-                menteeId: ctx.options.currentUser.redProfile.id,
-                mentorId: ctx.data.id
-              }
-            })
-          : Rx.of([null]);
+            where: {
+              menteeId: ctx.options.currentUser.redProfile.id,
+              mentorId: ctx.data.id
+            }
+          })
+          : Rx.of([null])
       const getRedMentoringSessionsToCurrentMentor = () =>
         ctx.options.currentUser
           ? Rx.bindNodeCallback(
-              RedMentoringSession.find.bind(RedMentoringSession)
-            )({
-              where: {
-                menteeId: ctx.options.currentUser.redProfile.id,
-                mentorId: ctx.data.id
-              }
-            })
-          : Rx.of([null]);
+            RedMentoringSession.find.bind(RedMentoringSession)
+          )({
+            where: {
+              menteeId: ctx.options.currentUser.redProfile.id,
+              mentorId: ctx.data.id
+            }
+          })
+          : Rx.of([null])
 
       Rx.zip(
         countAcceptedMatches(),
@@ -124,45 +124,45 @@ module.exports = function(RedProfile) {
             numberOfPendingApplicationWithCurrentUser,
             redMatchesWithCurrentUser,
             redMentoringSessionsWithCurrentUser
-          });
-          next();
+          })
+          next()
         },
         err => next(err)
-      );
-    } else if (ctx.data && ctx.data.userType === "mentee") {
+      )
+    } else if (ctx.data && ctx.data.userType === 'mentee') {
       // In case RedProfile belongs to a mentee, add "computed properties"
       // numberOfPendingApplicationWithCurrentUser,
-      const RedMatch = app.models.RedMatch;
-      const RedMentoringSession = app.models.RedMentoringSession;
+      const RedMatch = app.models.RedMatch
+      const RedMentoringSession = app.models.RedMentoringSession
 
       const getAllRedMatches = () =>
         Rx.bindNodeCallback(RedMatch.find.bind(RedMatch))({
           where: {
             menteeId: ctx.data.id
           },
-          include: "mentor"
-        });
+          include: 'mentor'
+        })
 
       const getRedMatchesToCurrentMentor = () =>
         ctx.options.currentUser
           ? Rx.bindNodeCallback(RedMatch.find.bind(RedMatch))({
-              where: {
-                menteeId: ctx.data.id,
-                mentorId: ctx.options.currentUser.redProfile.id
-              }
-            })
-          : Rx.of([null]);
+            where: {
+              menteeId: ctx.data.id,
+              mentorId: ctx.options.currentUser.redProfile.id
+            }
+          })
+          : Rx.of([null])
       const getRedMentoringSessionsToCurrentMentor = () =>
         ctx.options.currentUser
           ? Rx.bindNodeCallback(
-              RedMentoringSession.find.bind(RedMentoringSession)
-            )({
-              where: {
-                menteeId: ctx.data.id,
-                mentorId: ctx.options.currentUser.redProfile.id
-              }
-            })
-          : Rx.of([null]);
+            RedMentoringSession.find.bind(RedMentoringSession)
+          )({
+            where: {
+              menteeId: ctx.data.id,
+              mentorId: ctx.options.currentUser.redProfile.id
+            }
+          })
+          : Rx.of([null])
 
       Rx.zip(
         getRedMatchesToCurrentMentor(),
@@ -175,13 +175,13 @@ module.exports = function(RedProfile) {
           allRedMatches
         ]) => {
           const currentActiveMentors = allRedMatches.filter(
-            match => match.status === "accepted"
-          );
+            match => match.status === 'accepted'
+          )
           const currentActiveMentor =
             currentActiveMentors.length > 0
               ? currentActiveMentors[0]
-              : undefined;
-          const hasActiveMentor = !!currentActiveMentor;
+              : undefined
+          const hasActiveMentor = !!currentActiveMentor
           Object.assign(ctx.data, {
             redMatchesWithCurrentUser,
             redMentoringSessionsWithCurrentUser,
@@ -190,72 +190,70 @@ module.exports = function(RedProfile) {
               currentActiveMentor &&
               currentActiveMentor.toJSON &&
               currentActiveMentor.toJSON().mentor
-          });
-          next();
+          })
+          next()
         },
         err => next(err)
-      );
+      )
     } else {
-      next();
+      next()
     }
-  });
+  })
 
-  RedProfile.pendingReviewDoAccept = function(data, options, callback) {
-    pendingReviewAcceptOrDecline("ACCEPT")(data, options, callback);
-  };
+  RedProfile.pendingReviewDoAccept = function (data, options, callback) {
+    pendingReviewAcceptOrDecline('ACCEPT')(data, options, callback)
+  }
 
-  RedProfile.pendingReviewDoDecline = function(data, options, callback) {
-    pendingReviewAcceptOrDecline("DECLINE")(data, options, callback);
-  };
+  RedProfile.pendingReviewDoDecline = function (data, options, callback) {
+    pendingReviewAcceptOrDecline('DECLINE')(data, options, callback)
+  }
 
   const pendingReviewAcceptOrDecline = acceptDecline => async (
     data,
     options,
     callback
   ) => {
-    if (!_.includes(["ACCEPT", "DECLINE"], acceptDecline))
-      throw new Error("Invalid acceptDecline parameter");
-    const { redProfileId } = data;
+    if (!_.includes(['ACCEPT', 'DECLINE'], acceptDecline)) { throw new Error('Invalid acceptDecline parameter') }
+    const { redProfileId } = data
     const mentorRole = await app.models.Role.findOne({
-      where: { name: "mentor" }
-    });
+      where: { name: 'mentor' }
+    })
     const menteeRole = await app.models.Role.findOne({
-      where: { name: "mentee" }
-    });
+      where: { name: 'mentee' }
+    })
     const findRedProfile = switchMap(({ redProfileId }) =>
-      loopbackModelMethodToObservable(RedProfile, "findById")(redProfileId)
-    );
+      loopbackModelMethodToObservable(RedProfile, 'findById')(redProfileId)
+    )
     const validateCurrentUserType = switchMap(redProfileInst => {
-      const userType = redProfileInst.toJSON().userType;
+      const userType = redProfileInst.toJSON().userType
       if (_.includes(pendingReviewTypes, userType)) {
-        return of(redProfileInst);
+        return of(redProfileInst)
       } else {
         throw new Error(
-          "Invalid current userType (user is not pending review)"
-        );
+          'Invalid current userType (user is not pending review)'
+        )
       }
-    });
+    })
     const setNewRedProfileProperties = switchMap(redProfileInst =>
       loopbackModelMethodToObservable(
         redProfileInst,
-        "updateAttributes"
+        'updateAttributes'
       )(
         currentUserTypeToPostReviewUpdates[acceptDecline][
           redProfileInst.toJSON().userType
         ]
       )
-    );
+    )
     const createRoleMapping = switchMap(redProfileInst => {
-      const { userType, redUserId } = redProfileInst.toJSON();
-      if (!_.includes(["mentee", "mentor"], userType))
-        return of(redProfileInst);
-      const role = userType === "mentor" ? mentorRole : menteeRole;
+      const { userType, redUserId } = redProfileInst.toJSON()
+      if (!_.includes(['mentee', 'mentor'], userType)) { return of(redProfileInst) }
+      const role = userType === 'mentor' ? mentorRole : menteeRole
       role.principals.create({
         principalType: app.models.RoleMapping.USER,
         principalId: redUserId
-      });
-      return of(redProfileInst);
-    });
+      })
+      return of(redProfileInst)
+    })
 
     Rx.of({ redProfileId })
       .pipe(
@@ -267,12 +265,12 @@ module.exports = function(RedProfile) {
       )
       .subscribe(
         redMatchInst => {
-          callback(null, redMatchInst);
+          callback(null, redMatchInst)
         },
         err => console.log(err)
-      );
-  };
-};
+      )
+  }
+}
 
 /**
  * Send email to user whose pending status has just been accepted/rejected.
@@ -281,46 +279,45 @@ module.exports = function(RedProfile) {
  */
 
 const sendEmailUserReviewedAcceptedOrDenied = switchMap(redProfileInst => {
-  const userType = redProfileInst.toJSON().userType;
+  const userType = redProfileInst.toJSON().userType
   const userTypeToEmailMap = {
     mentor: sendMentorPendingReviewAcceptedEmail,
     mentee: sendMenteePendingReviewAcceptedEmail,
-    "public-sign-up-mentor-rejected": sendMentorPendingReviewDeclinedEmail,
-    "public-sign-up-mentee-rejected": sendMenteePendingReviewDeclinedEmail
-  };
-  if (!_.has(userTypeToEmailMap, userType))
-    throw new Error("User does not have valid user type");
-  const emailFunc = userTypeToEmailMap[userType];
-  const { contactEmail, firstName } = redProfileInst.toJSON();
-  return emailFunc(contactEmail, firstName);
-});
+    'public-sign-up-mentor-rejected': sendMentorPendingReviewDeclinedEmail,
+    'public-sign-up-mentee-rejected': sendMenteePendingReviewDeclinedEmail
+  }
+  if (!_.has(userTypeToEmailMap, userType)) { throw new Error('User does not have valid user type') }
+  const emailFunc = userTypeToEmailMap[userType]
+  const { contactEmail, firstName } = redProfileInst.toJSON()
+  return emailFunc(contactEmail, firstName)
+})
 
 const pendingReviewTypes = [
-  "public-sign-up-mentor-pending-review",
-  "public-sign-up-mentee-pending-review"
-];
+  'public-sign-up-mentor-pending-review',
+  'public-sign-up-mentee-pending-review'
+]
 const currentUserTypeToPostReviewUpdates = {
   ACCEPT: {
-    "public-sign-up-mentor-pending-review": {
-      userType: "mentor",
+    'public-sign-up-mentor-pending-review': {
+      userType: 'mentor',
       userActivated: true
     },
-    "public-sign-up-mentee-pending-review": {
-      userType: "mentee",
+    'public-sign-up-mentee-pending-review': {
+      userType: 'mentee',
       userActivated: true
     }
   },
   DECLINE: {
-    "public-sign-up-mentor-pending-review": {
-      userType: "public-sign-up-mentor-rejected",
+    'public-sign-up-mentor-pending-review': {
+      userType: 'public-sign-up-mentor-rejected',
       userActivated: false
     },
-    "public-sign-up-mentee-pending-review": {
-      userType: "public-sign-up-mentee-rejected",
+    'public-sign-up-mentee-pending-review': {
+      userType: 'public-sign-up-mentee-rejected',
       userActivated: false
     }
   }
-};
+}
 
 const loopbackModelMethodToObservable = (
   loopbackModel,
@@ -328,4 +325,4 @@ const loopbackModelMethodToObservable = (
 ) => methodParameter =>
   Rx.bindNodeCallback(loopbackModel[modelMethod].bind(loopbackModel))(
     methodParameter
-  );
+  )

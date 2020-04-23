@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
   Dialog,
   Grid,
@@ -6,50 +6,50 @@ import {
   Fade,
   withStyles,
   createStyles,
-  LinearProgress,
-} from '@material-ui/core';
+  LinearProgress
+} from '@material-ui/core'
 
-export const useLoading = function() {
-  const [loading, setLoading] = useState(false);
+export const useLoading = function () {
+  const [loading, setLoading] = useState(false)
 
   return {
     Loading: () => <FullScreenCircle loading={loading} />,
     isLoading: loading,
     setLoading,
-    loading,
-  };
-};
+    loading
+  }
+}
 
-export const useLoadingProgress = function() {
-  const [loading, setLoading] = useState(false);
-  const [progress, setProgress] = useState(0);
+export const useLoadingProgress = function () {
+  const [loading, setLoading] = useState(false)
+  const [progress, setProgress] = useState(0)
 
   return {
     Loading: () => (
       <FullScreenLinearProgress loading={loading} progress={progress} />
     ),
     setLoading,
-    setProgress,
-  };
-};
+    setProgress
+  }
+}
 
 const styles = createStyles({
   grid: {
-    height: '100%',
+    height: '100%'
   },
   paperStyle: {
     backgroundColor: 'transparent',
-    boxShadow: 'none',
-  },
-});
+    boxShadow: 'none'
+  }
+})
 
 interface Props {
-  loading: boolean;
+  loading: boolean
   classes: {
-    paperStyle: string;
-    grid: string;
-  };
-  children: React.ReactNode;
+    paperStyle: string
+    grid: string
+  }
+  children: React.ReactNode
 }
 
 // const Trans: React.FunctionComponent<FadeProps> = props => (
@@ -63,7 +63,7 @@ const FullScreenDialog = withStyles(styles)(
       fullScreen
       open={loading}
       PaperProps={{
-        className: classes.paperStyle,
+        className: classes.paperStyle
       }}
       TransitionComponent={Fade}
     >
@@ -77,18 +77,18 @@ const FullScreenDialog = withStyles(styles)(
       </Grid>
     </Dialog>
   )
-);
+)
 
 export const FullScreenCircle = (props: { loading: boolean }) => (
   <FullScreenDialog {...props} loading={props.loading}>
     <CircularProgress size={100} />
   </FullScreenDialog>
-);
+)
 const FullScreenLinearProgress = (props: {
-  loading: boolean;
-  progress: number;
+  loading: boolean
+  progress: number
 }) => (
   <FullScreenDialog {...props} loading={true}>
     <LinearProgress color="primary" value={50} />
   </FullScreenDialog>
-);
+)

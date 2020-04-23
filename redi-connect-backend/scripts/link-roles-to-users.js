@@ -1,22 +1,21 @@
-const { bindNodeCallback, from } = require('rxjs');
+const { bindNodeCallback, from } = require('rxjs')
 const {
   switchMap,
   concatMap,
   map,
   tap,
-  mergeMap,
-  count,
-} = require('rxjs/operators');
+  count
+} = require('rxjs/operators')
 
-const app = require('../server/server');
-const { Role, RedUser, RoleMapping } = app.models;
+const app = require('../server/server')
+const { Role, RedUser, RoleMapping } = app.models
 
-const roleFindOne = bindNodeCallback(Role.findOne.bind(Role));
-const userFind = bindNodeCallback(RedUser.find.bind(RedUser));
+const roleFindOne = bindNodeCallback(Role.findOne.bind(Role))
+const userFind = bindNodeCallback(RedUser.find.bind(RedUser))
 const rolePrincipalCreate = role =>
-  bindNodeCallback(role.principals.create.bind(role));
+  bindNodeCallback(role.principals.create.bind(role))
 
-let menteeRole, mentorRole, adminRole;
+let menteeRole, mentorRole, adminRole
 
 roleFindOne({ where: { name: 'mentee' } })
   .pipe(
@@ -33,35 +32,35 @@ roleFindOne({ where: { name: 'mentee' } })
       ({
         mentorRole: _mentorRole,
         menteeRole: _menteeRole,
-        adminRole: _adminRole,
+        adminRole: _adminRole
       }) => {
-        menteeRole = _menteeRole;
-        mentorRole = _mentorRole;
-        adminRole = _adminRole;
+        menteeRole = _menteeRole
+        mentorRole = _mentorRole
+        adminRole = _adminRole
       }
     ),
     switchMap(() => userFind({ include: 'redProfile' })),
     switchMap(users => from(users)),
     concatMap(user => {
-      let role;
-      const userType = user.toJSON().redProfile.userType;
-      const accountEmail = user.toJSON().email;
+      let role
+      const userType = user.toJSON().redProfile.userType
+      const accountEmail = user.toJSON().email
       if (accountEmail === 'cloud-accounts@redi-school.org') {
-        role = adminRole;
+        role = adminRole
       } else if (userType === 'mentor') {
-        role = mentorRole;
+        role = mentorRole
       } else {
-        role = menteeRole;
+        role = menteeRole
       }
       return rolePrincipalCreate(role)({
         principalType: RoleMapping.USER,
-        principalId: user.toJSON().id,
-      });
+        principalId: user.toJSON().id
+      })
     }),
     count()
 
     /*
-    
+
     map(redUser => ({ redUser })),
     switchMap(
       () => roleFindOne({ where: { name: 'mentee' } }),
@@ -77,4 +76,4 @@ roleFindOne({ where: { name: 'mentee' } })
     )
     */
   )
-  .subscribe(null, null, () => process.exit());
+  .subscribe(null, null, () => process.exit())

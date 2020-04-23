@@ -1,28 +1,28 @@
-var path = require('path'),
-  fs = require('fs');
+var path = require('path')
+var fs = require('fs')
 
 if (!process.env.HTTP) {
-  let environmentFolder;
+  let environmentFolder
   switch (process.env.NODE_ENV) {
     case 'production':
-      environmentFolder = 'production';
-      break;
+      environmentFolder = 'production'
+      break
 
     case 'demonstration':
     default:
-      environmentFolder = 'demonstration';
-      break;
+      environmentFolder = 'demonstration'
+      break
   }
   exports.privateKey = fs
     .readFileSync(
       path.join(__dirname, './ssl/' + environmentFolder + '/privkey.pem')
     )
-    .toString();
+    .toString()
   exports.certificate = fs
     .readFileSync(
       path.join(__dirname, './ssl/' + environmentFolder + '/cert.pem')
     )
-    .toString();
+    .toString()
 } else {
-  exports = {};
+  exports = {}
 }

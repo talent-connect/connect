@@ -1,15 +1,12 @@
-const app = require('../server/server');
-const Rx = require('rxjs');
-const { mergeMap, switchMap, tap } = require('rxjs/operators');
-const { bindNodeCallback, from } = Rx;
+const app = require('../server/server')
 
-const { RedUser } = app.models;
+const { RedUser } = app.models
 
-const emailOfUserToUpdate = '';
+const emailOfUserToUpdate = ''
 
-async function updatePassword(){
+async function updatePassword () {
   const redUserInst = await RedUser.findOne({ where: { email: emailOfUserToUpdate } })
-  console.log(redUserInst);
+  console.log(redUserInst)
   await redUserInst.setPassword('')
 }
 

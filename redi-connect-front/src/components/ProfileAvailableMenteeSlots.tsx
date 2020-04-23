@@ -1,17 +1,17 @@
-import React from "react";
-import { Grid } from "@material-ui/core";
-import range from "lodash/range";
+import React from 'react'
+import { Grid } from '@material-ui/core'
+import range from 'lodash/range'
 import {
   Person as PersonIcon,
   PersonOutline as PersonOutlineIcon
-} from "@material-ui/icons";
+} from '@material-ui/icons'
 
 export const ProfileAvailableMenteeSlots = ({
   totalCapacity,
   currentFreeCapacity
 }: {
-  totalCapacity: number;
-  currentFreeCapacity: number;
+  totalCapacity: number
+  currentFreeCapacity: number
 }) => {
   return (
     <Grid container direction="column">
@@ -26,5 +26,5 @@ export const ProfileAvailableMenteeSlots = ({
         )}
       </Grid>
     </Grid>
-  );
-};
+  )
+}

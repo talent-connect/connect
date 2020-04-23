@@ -1,19 +1,19 @@
-import React from "react";
-import { RootState } from "../redux/types";
-import { getHasReachedMenteeLimit } from "../redux/user/selectors";
-import { connect } from "react-redux";
-import { Tooltip, Button } from "@material-ui/core";
-import { matchesAcceptMentorshipStart } from "../redux/matches/actions";
+import React from 'react'
+import { RootState } from '../redux/types'
+import { getHasReachedMenteeLimit } from '../redux/user/selectors'
+import { connect } from 'react-redux'
+import { Tooltip, Button } from '@material-ui/core'
+import { matchesAcceptMentorshipStart } from '../redux/matches/actions'
 
 interface ConnectButtonProps {
-  dispatch: Function;
-  matchId: string;
-  hasReachedMenteeLimit: boolean;
+  dispatch: Function
+  matchId: string
+  hasReachedMenteeLimit: boolean
 }
 
 const mapState = (state: RootState) => ({
   hasReachedMenteeLimit: getHasReachedMenteeLimit(state.user)
-});
+})
 
 // TODO: This throws a TS error: { dispatch, matchId }: ConnectButtonProps
 // What to replace with instead of below hack?
@@ -29,7 +29,7 @@ export const ConnectButton = connect(mapState)((props: any) => {
       </Tooltip>
     ) : (
       <>{children}</>
-    );
+    )
   return (
     <Wrapper>
       <Button
@@ -37,18 +37,18 @@ export const ConnectButton = connect(mapState)((props: any) => {
         variant="contained"
         disabled={props.hasReachedMenteeLimit}
         onClick={e => {
-          e.stopPropagation();
+          e.stopPropagation()
           if (
             window.confirm(
-              "Are you certain you would like to connect to this mentee?"
+              'Are you certain you would like to connect to this mentee?'
             )
           ) {
-            props.dispatch(matchesAcceptMentorshipStart(props.matchId));
+            props.dispatch(matchesAcceptMentorshipStart(props.matchId))
           }
         }}
       >
         Connect
       </Button>
     </Wrapper>
-  );
-});
+  )
+})

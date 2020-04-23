@@ -1,11 +1,11 @@
-import keyBy from 'lodash/keyBy';
-import mapValues from 'lodash/mapValues';
+import keyBy from 'lodash/keyBy'
+import mapValues from 'lodash/mapValues'
 
-import { Categories } from '../types/Categories';
-import { Language } from '../types/Language';
-import { Gender } from '../types/Gender';
-import { EducationLevel } from '../types/EducationLevel';
-import { Course } from '../types/Course';
+import { Categories } from '../types/Categories'
+import { Language } from '../types/Language'
+import { Gender } from '../types/Gender'
+import { EducationLevel } from '../types/EducationLevel'
+import { Course } from '../types/Course'
 
 export const categories: Categories = [
   { id: 'blockchain', label: 'Blockchain', colour: '#db8484' },
@@ -18,13 +18,13 @@ export const categories: Categories = [
   {
     id: 'interviewsAndCommunication',
     label: 'Interviews & Communications',
-    colour: '#5c9a54',
+    colour: '#5c9a54'
   },
   { id: 'graphicsAndUxUi', label: 'Graphics & UX/UI', colour: '#84dbca' },
   {
     id: 'cvPersonalPresentation',
     label: 'CV & Personal presentation',
-    colour: '#549a7b',
+    colour: '#549a7b'
   },
   { id: 'mobileDevelopment', label: 'Mobile Development', colour: '#89db84' },
   { id: 'jobOrientation', label: 'Job Orientation', colour: '#54969a' },
@@ -37,35 +37,35 @@ export const categories: Categories = [
   {
     id: 'findingInternship',
     label: 'Finding an internship',
-    colour: '#91549a',
+    colour: '#91549a'
   },
   { id: 'freelancing', label: 'Freelancing', colour: '#91549a' },
   { id: 'salesforce', label: 'Salesforce', colour: '#91549a' },
-  { id: 'dontKnowYet', label: "I don't know yet", colour: '#bbbbbb' },
-];
+  { id: 'dontKnowYet', label: "I don't know yet", colour: '#bbbbbb' }
+]
 
 export const categoriesIdToLabelMap = mapValues(
   keyBy(categories, 'id'),
   'label'
-);
+)
 export const categoriesIdToColourMap = mapValues(
   keyBy(categories, 'id'),
   'colour'
-);
+)
 
 export const Languages: Language[] = [
   'English',
   'German',
   'Arabic',
   'Farsi',
-  'Tigrinya',
-];
+  'Tigrinya'
+]
 
 export const genders: Gender[] = [
   { id: 'male', label: 'Male' },
   { id: 'female', label: 'Female' },
-  { id: 'other', label: 'Other' },
-];
+  { id: 'other', label: 'Other' }
+]
 
 export const educationLevels: EducationLevel[] = [
   { id: 'middleSchool', label: 'Middle School' },
@@ -73,8 +73,8 @@ export const educationLevels: EducationLevel[] = [
   { id: 'apprenticeship', label: 'Apprenticeship' },
   { id: 'universityBachelor', label: 'University Degree (Bachelor)' },
   { id: 'universityMaster', label: 'University Degree (Master)' },
-  { id: 'universityPhd', label: 'University Degree (PhD)' },
-];
+  { id: 'universityPhd', label: 'University Degree (PhD)' }
+]
 
 export const courses: Course[] = [
   { id: 'basicComputerTraining', label: 'Basic Computer Training' },
@@ -91,19 +91,19 @@ export const courses: Course[] = [
   { id: 'introJava', label: 'Intro to Java' },
   { id: 'uiUxWomen', label: 'UI/UX Women' },
   { id: 'introNetworking', label: 'Intro to Networking' },
-  { id: 'alumni', label: "I'm a ReDI School alumni (I took a course before)" },
-];
+  { id: 'alumni', label: "I'm a ReDI School alumni (I took a course before)" }
+]
 
-export const courseIdToLabelMap = mapValues(keyBy(courses, 'id'), 'label');
+export const courseIdToLabelMap = mapValues(keyBy(courses, 'id'), 'label')
 
 interface ReportProblemCategory {
-  id: string;
-  label: string;
+  id: string
+  label: string
 }
 
 export const reportProblemCategories: ReportProblemCategory[] = [
-  { id: 'wantToQuit', label: 'I want to quit' },
-];
+  { id: 'wantToQuit', label: 'I want to quit' }
+]
 
 export const mentoringSessionDurationOptions: number[] = [
   15,
@@ -117,34 +117,34 @@ export const mentoringSessionDurationOptions: number[] = [
   135,
   150,
   165,
-  180,
-];
+  180
+]
 
 interface MenteeOccupationCategory {
-  id: string;
-  label: string;
+  id: string
+  label: string
 }
 
 export const menteeOccupationCategories: MenteeOccupationCategory[] = [
   { id: 'job', label: 'Job (full-time/part-time)' },
   { id: 'student', label: 'Student (enrolled at university)' },
   { id: 'lookingForJob', label: 'Looking for a job' },
-  { id: 'other', label: 'Other' },
-];
+  { id: 'other', label: 'Other' }
+]
 
 export const menteeOccupationCategory_idToLabelMap = mapValues(
   keyBy(menteeOccupationCategories, 'id'),
   'label'
-);
+)
 
-export const menteeCountCapacityOptions: number[] = [1, 2];
+export const menteeCountCapacityOptions: number[] = [1, 2]
 
 export const AWS_PROFILE_AVATARS_BUCKET_BASE_URL =
-  'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/';
+  'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/'
 
 export const API_URL = process.env.REACT_APP_API_URL
   ? process.env.REACT_APP_API_URL
-  : 'http://127.0.0.1:3003/api';
+  : 'http://127.0.0.1:3003/api'
 export const S3_UPLOAD_SIGN_URL = process.env.REACT_APP_S3_UPLOAD_SIGN_URL
   ? process.env.REACT_APP_S3_UPLOAD_SIGN_URL
-  : 'http://127.0.0.1:3003/s3/sign';
+  : 'http://127.0.0.1:3003/s3/sign'

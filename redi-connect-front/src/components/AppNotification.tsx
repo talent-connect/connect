@@ -1,24 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 import {
   Snackbar,
   Slide,
   SnackbarContent,
   makeStyles,
   Theme,
-  IconButton,
-} from '@material-ui/core';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import ErrorIcon from '@material-ui/icons/Error';
-import InfoIcon from '@material-ui/icons/Info';
-import WarningIcon from '@material-ui/icons/Warning';
-import CloseIcon from '@material-ui/icons/Close';
-import { amber, green } from '@material-ui/core/colors';
-import { Subject } from 'rxjs';
-import { Optional } from 'utility-types';
-import clsx from 'clsx';
+  IconButton
+} from '@material-ui/core'
+import CheckCircleIcon from '@material-ui/icons/CheckCircle'
+import ErrorIcon from '@material-ui/icons/Error'
+import InfoIcon from '@material-ui/icons/Info'
+import WarningIcon from '@material-ui/icons/Warning'
+import CloseIcon from '@material-ui/icons/Close'
+import { amber, green } from '@material-ui/core/colors'
+import { Subject } from 'rxjs'
+import { Optional } from 'utility-types'
+import clsx from 'clsx'
 
-const subjectShowNotification = new Subject<ISubjectShowNotification>();
-const subjectHideNotification = new Subject();
+const subjectShowNotification = new Subject<SubjectShowNotification>()
+const subjectHideNotification = new Subject()
 
 // Variant types w/ icon + backgroundclor obtained from: https://material-ui.com/components/snackbars/
 type NotificationVariant = 'success' | 'error' | 'info' | 'warning';
@@ -27,86 +27,86 @@ const variantIcon = {
   success: CheckCircleIcon,
   warning: WarningIcon,
   error: ErrorIcon,
-  info: InfoIcon,
-};
+  info: InfoIcon
+}
 
 const useNotificationStyles = makeStyles((theme: Theme) => ({
   success: {
-    backgroundColor: green[600],
+    backgroundColor: green[600]
   },
   error: {
-    backgroundColor: theme.palette.error.dark,
+    backgroundColor: theme.palette.error.dark
   },
   info: {
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.primary.main
   },
   warning: {
-    backgroundColor: amber[700],
+    backgroundColor: amber[700]
   },
   icon: {
-    fontSize: 20,
+    fontSize: 20
   },
   iconVariant: {
     opacity: 0.9,
-    marginRight: theme.spacing(1),
+    marginRight: theme.spacing(1)
   },
   message: {
     display: 'flex',
-    alignItems: 'center',
-  },
-}));
+    alignItems: 'center'
+  }
+}))
 
-export interface IAppNotificationOptions {
-  variant: NotificationVariant;
-  autoHideDuration: number | undefined;
+export interface AppNotificationOptions {
+  variant: NotificationVariant
+  autoHideDuration: number | undefined
 }
-interface ISubjectShowNotification extends IAppNotificationOptions {
-  message: string | null;
+interface SubjectShowNotification extends AppNotificationOptions {
+  message: string | null
 }
-type AppNotificationState = ISubjectShowNotification | null;
+type AppNotificationState = SubjectShowNotification | null;
 
 export const showNotification = (
   message: string,
-  options?: Optional<IAppNotificationOptions>
+  options?: Optional<AppNotificationOptions>
 ) => {
-  const finalOptions: IAppNotificationOptions = {
+  const finalOptions: AppNotificationOptions = {
     autoHideDuration: 3000,
     variant: 'info',
-    ...options,
-  };
-  subjectShowNotification.next({ ...finalOptions, message });
-};
+    ...options
+  }
+  subjectShowNotification.next({ ...finalOptions, message })
+}
 
-export const hideNotification = () => subjectHideNotification.next();
+export const hideNotification = () => subjectHideNotification.next()
 
-export function AppNotification() {
-  const [state, setState] = useState<AppNotificationState>(null);
+export function AppNotification () {
+  const [state, setState] = useState<AppNotificationState>(null)
 
-  const show = (options: ISubjectShowNotification) => {
-    console.log(options);
-    setState({ ...options });
-  };
+  const show = (options: SubjectShowNotification) => {
+    console.log(options)
+    setState({ ...options })
+  }
 
-  const hide = () => setState(null);
+  const hide = () => setState(null)
   useEffect(() => {
-    const subscriptionShow = subjectShowNotification.subscribe(show);
-    const subscriptionHide = subjectHideNotification.subscribe(hide);
+    const subscriptionShow = subjectShowNotification.subscribe(show)
+    const subscriptionHide = subjectHideNotification.subscribe(hide)
 
     return () => {
-      subscriptionShow.unsubscribe();
-      subscriptionHide.unsubscribe();
-    };
-  }, []);
+      subscriptionShow.unsubscribe()
+      subscriptionHide.unsubscribe()
+    }
+  }, [])
 
-  const styleClasses = useNotificationStyles();
+  const styleClasses = useNotificationStyles()
 
-  const Icon = state ? variantIcon[state.variant] : null;
+  const Icon = state ? variantIcon[state.variant] : null
 
   return (
     <Snackbar
       anchorOrigin={{
         vertical: 'bottom',
-        horizontal: 'center',
+        horizontal: 'center'
       }}
       TransitionComponent={props => <Slide {...props} direction="up" />}
       open={!!state}
@@ -133,11 +133,11 @@ export function AppNotification() {
             onClick={hide}
           >
             <CloseIcon className={styleClasses.icon} />
-          </IconButton>,
+          </IconButton>
         ]}
       />
     </Snackbar>
-  );
+  )
 }
 
-export default AppNotification;
+export default AppNotification

@@ -1,40 +1,40 @@
 export default {
-  save : function(key, value, expirationSec){
-    if (typeof (Storage) === "undefined") { return false; }
-    var expirationMS = expirationSec * 1000;
-    var record = {value: value, timestamp: new Date().getTime() + expirationMS};
-    localStorage.setItem(key, JSON.stringify(record));
+  save: function (key, value, expirationSec) {
+    if (typeof (Storage) === 'undefined') { return false }
+    var expirationMS = expirationSec * 1000
+    var record = { value: value, timestamp: new Date().getTime() + expirationMS }
+    localStorage.setItem(key, JSON.stringify(record))
 
-    return value;
+    return value
   },
-  load : function(key){
-    if (typeof (Storage) === "undefined") { return false; }
+  load: function (key) {
+    if (typeof (Storage) === 'undefined') { return false }
     try {
-      var record = JSON.parse(localStorage.getItem(key));
+      var record = JSON.parse(localStorage.getItem(key))
       if (!record) {
-        return false;
+        return false
       }
-      return (new Date().getTime() < record.timestamp && record.value);
+      return (new Date().getTime() < record.timestamp && record.value)
     } catch (e) {
-      return false;
+      return false
     }
   },
-  remove : function(key){
-    if (typeof (Storage) === "undefined") { return false; }
-    localStorage.removeItem(key);
+  remove: function (key) {
+    if (typeof (Storage) === 'undefined') { return false }
+    localStorage.removeItem(key)
   },
-  update : function(key, value){
-    if (typeof (Storage) === "undefined") { return false; }
+  update: function (key, value) {
+    if (typeof (Storage) === 'undefined') { return false }
     try {
-      var record = JSON.parse(localStorage.getItem(key));
+      var record = JSON.parse(localStorage.getItem(key))
       if (!record) {
-        return false;
+        return false
       }
-      var updatedRecord = {value: value, timestamp: record.timestamp};
-      localStorage.setItem(key, JSON.stringify(updatedRecord));
-      return updatedRecord;
+      var updatedRecord = { value: value, timestamp: record.timestamp }
+      localStorage.setItem(key, JSON.stringify(updatedRecord))
+      return updatedRecord
     } catch (e) {
-      return false;
+      return false
     }
-  },
-};
+  }
+}

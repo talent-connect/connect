@@ -1,4 +1,4 @@
 export type RedUser = {
-  email: string;
-  id: string;
+  email: string
+  id: string
 };

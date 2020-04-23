@@ -1,42 +1,42 @@
-import { createStyles, Grid, Theme, withStyles } from '@material-ui/core';
-import React from 'react';
-import { Avatar } from '../../../../components/Avatar';
-import { CategoryChip } from '../../../../components/CategoryChip';
-import { ProfileAvailableMenteeSlots } from '../../../../components/ProfileAvailableMenteeSlots';
-import { ProfileLanguages } from '../../../../components/ProfileLanguages';
-import { ProfileName } from '../../../../components/ProfileName';
-import { ProfileOccupation } from '../../../../components/ProfileOccupation';
-import { ProfileWorkPlace } from '../../../../components/ProfileWorkPlace';
-import { RedProfile } from '../../../../types/RedProfile';
-import { ConnectionRequestForm } from './ConnectionRequestForm';
+import { createStyles, Grid, Theme, withStyles } from '@material-ui/core'
+import React from 'react'
+import { Avatar } from '../../../../components/Avatar'
+import { CategoryChip } from '../../../../components/CategoryChip'
+import { ProfileAvailableMenteeSlots } from '../../../../components/ProfileAvailableMenteeSlots'
+import { ProfileLanguages } from '../../../../components/ProfileLanguages'
+import { ProfileName } from '../../../../components/ProfileName'
+import { ProfileOccupation } from '../../../../components/ProfileOccupation'
+import { ProfileWorkPlace } from '../../../../components/ProfileWorkPlace'
+import { RedProfile } from '../../../../types/RedProfile'
+import { ConnectionRequestForm } from './ConnectionRequestForm'
 
 interface Props {
-  mentor: RedProfile;
+  mentor: RedProfile
   classes: {
-    avatar: string;
-    category: string;
-    personalDescription: string;
-  };
+    avatar: string
+    category: string
+    personalDescription: string
+  }
 }
 
 const styles = (theme: Theme) =>
   createStyles({
     avatar: {
       width: '100px',
-      height: '100px',
+      height: '100px'
     },
     category: {
       color: 'white',
       fontSize: '12px',
       margin: '3px',
-      height: '20px',
+      height: '20px'
     },
     personalDescription: {
       marginTop: theme.spacing(6),
       marginBottom: theme.spacing(6),
-      overflowWrap: 'break-word',
-    },
-  });
+      overflowWrap: 'break-word'
+    }
+  })
 
 export const ProfileMentor = withStyles(styles)(
   ({ mentor, classes }: Props) => (
@@ -94,4 +94,4 @@ export const ProfileMentor = withStyles(styles)(
       )}
     </>
   )
-);
+)

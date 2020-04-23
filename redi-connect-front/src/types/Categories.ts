@@ -1,2 +1,2 @@
-import { Category } from "./Category";
+import { Category } from './Category'
 export type Categories = Array<Category>;

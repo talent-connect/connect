@@ -1,9 +1,9 @@
-import { ProfilesState, ProfilesActions, ProfilesActionType } from "./types";
+import { ProfilesState, ProfilesActions, ProfilesActionType } from './types'
 
 const initialState: ProfilesState = {
   oneProfile: undefined,
   loading: false
-};
+}
 
 export const profilesReducer = (
   state: ProfilesState = initialState,
@@ -11,13 +11,13 @@ export const profilesReducer = (
 ): ProfilesState => {
   switch (action.type) {
     case ProfilesActionType.PROFILES_FETCH_ONE_START:
-      return { ...state, loading: true };
+      return { ...state, loading: true }
 
     case ProfilesActionType.PROFILES_FETCH_ONE_SUCCESS:
-      return { ...state, oneProfile: action.payload, loading: false };
+      return { ...state, oneProfile: action.payload, loading: false }
 
     case ProfilesActionType.PROFILES_FETCH_ONE_ERROR:
     default:
-      return { ...state };
+      return { ...state }
   }
-};
+}

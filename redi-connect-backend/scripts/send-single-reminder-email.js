@@ -1,41 +1,32 @@
-'use strict';
+'use strict'
 
-const app = require('../server/server.js');
-const Rx = require('rxjs');
-const { bindNodeCallback, from } = Rx;
+const app = require('../server/server.js')
+const Rx = require('rxjs')
+const { bindNodeCallback, from } = Rx
 const {
-  concatMap,
   mergeMap,
   switchMap,
-  mapTo,
   filter,
   map,
-  switchMapTo,
   tap,
-  toArray,
-  count,
-} = require('rxjs/operators');
+  count
+} = require('rxjs/operators')
 
 const {
   sendMentorSignupReminderEmail,
-  sendMenteeSignupReminderEmail,
-} = require('../lib/email');
+  sendMenteeSignupReminderEmail
+} = require('../lib/email')
 
 const {
-  RedUser,
-  RedProfile,
-  RedMatch,
-  RedMentoringSession,
-  RedProblemReport,
-  AccessToken,
-} = app.models;
+  RedUser
+} = app.models
 
-const redUserFind = q => bindNodeCallback(RedUser.find.bind(RedUser))(q);
-const ONE_MONTH = 60 * 60 * 24 * 30;
+const redUserFind = q => bindNodeCallback(RedUser.find.bind(RedUser))(q)
+const ONE_MONTH = 60 * 60 * 24 * 30
 const accessTokenCreateOnRedUser = redUserInst =>
   Rx.bindNodeCallback(redUserInst.createAccessToken.bind(redUserInst))(
     ONE_MONTH
-  );
+  )
 
 redUserFind({ include: 'redProfile', where: { id: '5cdd5560718d7958e7103b99' } })
   .pipe(
@@ -45,8 +36,8 @@ redUserFind({ include: 'redProfile', where: { id: '5cdd5560718d7958e7103b99' } }
         redUser: data.toJSON(),
         redProfile: data.toJSON().redProfile,
         redUserInst: data,
-        redProfileInst: data.redProfile,
-      };
+        redProfileInst: data.redProfile
+      }
     }),
     filter(data => !data.redProfile.userActivated),
     mergeMap(
@@ -58,24 +49,24 @@ redUserFind({ include: 'redProfile', where: { id: '5cdd5560718d7958e7103b99' } }
       userData =>
         userData.redProfile.userType === 'mentor'
           ? sendMentorSignupReminderEmail(
-              userData.redProfile.contactEmail,
-              userData.redProfile.firstName,
-              encodeURIComponent(JSON.stringify(userData.accessToken.toJSON()))
-            )
+            userData.redProfile.contactEmail,
+            userData.redProfile.firstName,
+            encodeURIComponent(JSON.stringify(userData.accessToken.toJSON()))
+          )
           : sendMenteeSignupReminderEmail(
-              userData.redProfile.contactEmail,
-              userData.redProfile.firstName,
-              encodeURIComponent(JSON.stringify(userData.accessToken.toJSON()))
-            ),
+            userData.redProfile.contactEmail,
+            userData.redProfile.firstName,
+            encodeURIComponent(JSON.stringify(userData.accessToken.toJSON()))
+          ),
       (userData, sendResult) => ({ ...userData, sendResult })
     ),
-    count(),
+    count()
   )
   .subscribe(
     count => console.log('did this ' + count + ' times'),
     e => console.log('Error: ', e),
     () => console.log('done')
-  );
+  )
 
 /*
     mergeMap(

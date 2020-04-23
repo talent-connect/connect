@@ -35,10 +35,10 @@
     "yup": "^0.27.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "8.2.0",
-    "@commitlint/config-conventional": "8.2.0",
-    "@semantic-release/changelog": "^3.0.4",
-    "@semantic-release/commit-analyzer": "^6.3.0",
+    "@commitlint/cli": "8.3.5",
+    "@commitlint/config-conventional": "8.3.4",
+    "@semantic-release/changelog": "^5.0.1",
+    "@semantic-release/commit-analyzer": "^8.0.1",
     "@semantic-release/git": "^7.0.16",
     "@semantic-release/release-notes-generator": "^7.3.0",
     "@types/axios": "^0.14.0",
@@ -56,13 +56,9 @@
     "babel-loader": "^8.0.6",
     "cz-conventional-changelog": "^3.0.2",
     "env-cmd": "^10.0.1",
-    "eslint-config-prettier": "6.4.0",
-    "eslint-plugin-jest": "^22.17.0",
-    "eslint-plugin-prettier": "^3.1.1",
-    "eslint-plugin-react": "7.16.0",
     "husky": "3.0.8",
     "prettier": "^1.18.2",
-    "react-scripts": "3.2.0",
+    "react-scripts": "3.4.1",
     "semantic-release": "^15.13.24",
     "typescript": "3.6.3",
     "utility-types": "^3.8.0",
@@ -81,12 +77,6 @@
     "commit": "npx git-cz",
     "release": "npx semantic-release"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
   "release": {
     "plugins": [
       "@semantic-release/commit-analyzer",
@@ -94,9 +84,6 @@
       "@semantic-release/changelog",
       "@semantic-release/git"
     ]
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   },
   "browserslist": [
     ">0.2%",

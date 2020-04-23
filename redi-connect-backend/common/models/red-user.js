@@ -1,39 +1,39 @@
-'use strict';
+'use strict'
 
-const { sendResetPasswordEmail } = require('../../lib/email');
+const { sendResetPasswordEmail } = require('../../lib/email')
 
-module.exports = function(RedUser) {
-  RedUser.observe('before save', function updateTimestamp(ctx, next) {
+module.exports = function (RedUser) {
+  RedUser.observe('before save', function updateTimestamp (ctx, next) {
     if (ctx.instance) {
-      if (ctx.isNewInstance) ctx.instance.createdAt = new Date();
-      ctx.instance.updatedAt = new Date();
+      if (ctx.isNewInstance) ctx.instance.createdAt = new Date()
+      ctx.instance.updatedAt = new Date()
     } else {
-      ctx.data.updatedAt = new Date();
+      ctx.data.updatedAt = new Date()
     }
-    next();
-  });
+    next()
+  })
 
-  RedUser.requestResetPasswordEmail = function(body, cb) {
-    const email = body.email;
+  RedUser.requestResetPasswordEmail = function (body, cb) {
+    const email = body.email
     RedUser.resetPassword(
       {
-        email: email,
+        email: email
       },
-      function(err) {
-        if (err) return cb(err);
-        cb(null);
+      function (err) {
+        if (err) return cb(err)
+        cb(null)
       }
-    );
-  };
+    )
+  }
 
   RedUser.remoteMethod('requestResetPasswordEmail', {
     accepts: { arg: 'data', type: 'object', http: { source: 'body' } },
-    returns: { arg: 'resp', type: 'object', root: true },
-  });
+    returns: { arg: 'resp', type: 'object', root: true }
+  })
 
-  RedUser.on('resetPasswordRequest', function(info) {
-    const accessToken = encodeURIComponent(JSON.stringify(info.accessToken));
-    const email = info.user.email;
-    sendResetPasswordEmail(email, accessToken).subscribe();
-  });
-};
+  RedUser.on('resetPasswordRequest', function (info) {
+    const accessToken = encodeURIComponent(JSON.stringify(info.accessToken))
+    const email = info.user.email
+    sendResetPasswordEmail(email, accessToken).subscribe()
+  })
+}

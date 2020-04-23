@@ -1,95 +1,92 @@
-import React from 'react';
-import { LoggedOutLayout } from '../../../layouts/LoggedOutLayout';
+import React from 'react'
+import { LoggedOutLayout } from '../../../layouts/LoggedOutLayout'
 import {
   Link,
   Button,
   Typography,
   useTheme,
   Container,
-  InputAdornment,
-  Snackbar,
-  SnackbarContent,
-  Slide,
-} from '@material-ui/core';
-import { Email as EmailIcon } from '@material-ui/icons';
-import { Form, Field } from 'react-final-form';
-import { TextField } from 'final-form-material-ui';
-import * as yup from 'yup';
+  InputAdornment
+} from '@material-ui/core'
+import { Email as EmailIcon } from '@material-ui/icons'
+import { Form, Field } from 'react-final-form'
+import { TextField } from 'final-form-material-ui'
+import * as yup from 'yup'
 import {
   yupErrorToSimpleObject,
-  ErrorSimpleObject,
-} from '../../../utils/yup-error-to-simple-object';
-import { makeStyles } from '@material-ui/styles';
-import { Link as RouterLink } from 'react-router-dom';
-import AppNotification, {
-  showNotification,
-} from '../../../components/AppNotification';
-import { requestResetPasswordEmail } from '../../../services/api/api';
+  ErrorSimpleObject
+} from '../../../utils/yup-error-to-simple-object'
+import { makeStyles } from '@material-ui/styles'
+import { Link as RouterLink } from 'react-router-dom'
+import {
+  showNotification
+} from '../../../components/AppNotification'
+import { requestResetPasswordEmail } from '../../../services/api/api'
 
 const useStyles = (props: any) => {
-  const theme = useTheme();
+  const theme = useTheme()
   return makeStyles({
     heading: {
-      margin: theme.spacing(5),
+      margin: theme.spacing(5)
     },
     elementsBelowFormTopMargin: {
-      marginTop: theme.spacing(6),
-    },
-  })(props);
-};
+      marginTop: theme.spacing(6)
+    }
+  })(props)
+}
 
-interface IFormValues {
-  email?: string;
+interface FormValues {
+  email?: string
 }
 
 const validationSchema = yup.object().shape({
   email: yup
     .string()
-    .email(`That doesn’t look quite right... please provide a valid email.`)
-    .required('Please provide an email address.'),
-});
+    .email('That doesn’t look quite right... please provide a valid email.')
+    .required('Please provide an email address.')
+})
 
 const validateForm = async (
-  values: IFormValues
+  values: FormValues
 ): Promise<ErrorSimpleObject> => {
   try {
-    await validationSchema.validate(values, { abortEarly: false });
-    return {};
+    await validationSchema.validate(values, { abortEarly: false })
+    return {}
   } catch (err) {
-    const finalFormCompatibleErrors = yupErrorToSimpleObject(err);
-    return finalFormCompatibleErrors;
+    const finalFormCompatibleErrors = yupErrorToSimpleObject(err)
+    return finalFormCompatibleErrors
   }
-};
+}
 
 export const RequestResetPasswordEmail = (props: any) => {
-  const styleClasses = useStyles(props);
+  const styleClasses = useStyles(props)
 
-  const onSubmit = async (values: IFormValues) => {
+  const onSubmit = async (values: FormValues) => {
     try {
       // Cast to string is safe as this only called if validated
-      await requestResetPasswordEmail(values.email as string);
-      onServerRequestSuccess();
+      await requestResetPasswordEmail(values.email as string)
+      onServerRequestSuccess()
     } catch (err) {
-      onServerRequestError({});
+      onServerRequestError()
     }
-  };
+  }
 
   const onServerRequestSuccess = () => {
     showNotification(
       'All good! Please check your email to set a new password :)',
       {
         variant: 'success',
-        autoHideDuration: 6000,
+        autoHideDuration: 6000
       }
-    );
-  };
+    )
+  }
 
-  const onServerRequestError = (err: any) => {
+  const onServerRequestError = () => {
     showNotification(
       'Oh no, something went wrong :( Did you type your email address correctly?',
       { variant: 'error' }
-    );
-  };
+    )
+  }
 
   return (
     <LoggedOutLayout>
@@ -113,7 +110,7 @@ export const RequestResetPasswordEmail = (props: any) => {
             submitting: isSubmitting,
             values,
             errors,
-            valid: isValid,
+            valid: isValid
           }) => (
             <form onSubmit={handleSubmit} noValidate>
               <Field
@@ -130,7 +127,7 @@ export const RequestResetPasswordEmail = (props: any) => {
                     <InputAdornment position="start">
                       <EmailIcon />
                     </InputAdornment>
-                  ),
+                  )
                 }}
               />
               <Button
@@ -156,5 +153,5 @@ export const RequestResetPasswordEmail = (props: any) => {
         </Typography>
       </Container>
     </LoggedOutLayout>
-  );
-};
+  )
+}

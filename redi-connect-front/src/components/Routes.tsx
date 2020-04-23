@@ -1,9 +1,8 @@
-/* eslint-disable react/no-array-index-key */
-import React from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
-import { allRoutes } from "../routes/index";
+import React from 'react'
+import { Route, Switch, Redirect } from 'react-router-dom'
+import { allRoutes } from '../routes/index'
 
-import { PrivateRoute } from "./PrivateRoute";
+import { PrivateRoute } from './PrivateRoute'
 
 export const Routes = () => (
   <div className="routes">
@@ -23,4 +22,4 @@ export const Routes = () => (
       <Redirect to="/front/home" />
     </Switch>
   </div>
-);
+)

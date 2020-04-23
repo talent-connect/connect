@@ -12,29 +12,29 @@ import {
   TextField,
   FormControlLabel,
   Checkbox,
-  FormHelperText,
-} from '@material-ui/core';
-import clsx from 'clsx';
-import { Formik, FormikHelpers as FormikActions, FormikProps } from 'formik';
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import * as Yup from 'yup';
+  FormHelperText
+} from '@material-ui/core'
+import clsx from 'clsx'
+import { Formik, FormikHelpers as FormikActions, FormikProps } from 'formik'
+import React, { useState } from 'react'
+import { connect } from 'react-redux'
+import * as Yup from 'yup'
 
-import { FormSubmitResult } from '../types/FormSubmitResult';
-import { FullScreenCircle } from '../hooks/WithLoading';
-import { ReportProblemBtnProps } from './ReportProblemBtn';
-import { reportProblem } from '../services/api/api';
-import { RedProfile } from '../types/RedProfile';
-import { RedProblemReportDto } from '../types/RedProblemReportDto';
-import { profilesFetchOneStart } from '../redux/profiles/actions';
-import { getRedProfile } from '../services/auth/auth';
+import { FormSubmitResult } from '../types/FormSubmitResult'
+import { FullScreenCircle } from '../hooks/WithLoading'
+import { ReportProblemBtnProps } from './ReportProblemBtn'
+import { reportProblem } from '../services/api/api'
+import { RedProfile } from '../types/RedProfile'
+import { RedProblemReportDto } from '../types/RedProblemReportDto'
+import { profilesFetchOneStart } from '../redux/profiles/actions'
+import { getRedProfile } from '../services/auth/auth'
 
 interface ReportProblemDialogProps {
-  redProfileId: string;
-  type: ReportProblemBtnProps['type'];
-  isOpen: boolean;
-  onClose: () => void;
-  asyncResult: FormSubmitResult;
+  redProfileId: string
+  type: ReportProblemBtnProps['type']
+  isOpen: boolean
+  onClose: () => void
+  asyncResult: FormSubmitResult
 
   // Replace dispatch with something proper imported from redux typings file
   /*
@@ -54,18 +54,18 @@ const mapState = (state: RootState) => ({
 const submit = async (
     values: FormValues,
     actions: FormikActions<FormValues>
-  ) => {*/
+  ) => { */
 
 const ReportProblemDialogConnected = connect()((props: any) => {
-  const { isOpen, onClose, type, redProfileId } = props;
-  const dispatch: any = (props as any).dispatch;
-  /*useEffect(() => {
+  const { isOpen, onClose, type, redProfileId } = props
+  const dispatch: any = (props as any).dispatch
+  /* useEffect(() => {
       dispatch(mentoringSessionsClearAsyncResult());
-    }, [isOpen]);*/
+    }, [isOpen]); */
 
   const [formSubmitResult, setFormSubmitResult] = useState<FormSubmitResult>(
     'notSubmitted'
-  );
+  )
 
   const submit = async (
     values: FormValues,
@@ -74,10 +74,10 @@ const ReportProblemDialogConnected = connect()((props: any) => {
     if (values.ifFromMentor_cancelMentorshipImmediately) {
       const userIsCertain = window.confirm(
         'Are you sure you want to cancel this mentorship?'
-      );
-      if (!userIsCertain) return actions.setSubmitting(false);
+      )
+      if (!userIsCertain) return actions.setSubmitting(false)
     }
-    setFormSubmitResult('submitting');
+    setFormSubmitResult('submitting')
     try {
       const report: RedProblemReportDto = {
         problemDescription: values.problemDescription,
@@ -85,23 +85,23 @@ const ReportProblemDialogConnected = connect()((props: any) => {
           type === 'mentee'
             ? 'mentor-report-about-mentee'
             : 'mentee-report-about-mentor',
-        reporteeId: redProfileId,
-      };
+        reporteeId: redProfileId
+      }
       if (type === 'mentee') {
         report.ifFromMentor_cancelMentorshipImmediately =
-          values.ifFromMentor_cancelMentorshipImmediately;
+          values.ifFromMentor_cancelMentorshipImmediately
       }
-      await reportProblem(report);
-      setFormSubmitResult('success');
+      await reportProblem(report)
+      setFormSubmitResult('success')
       // TODO: can this be decoupled? Here the component "knows" that it's inside a <Profile>
       // and triggers a refresh of that <Profile>
-      dispatch(profilesFetchOneStart(redProfileId));
+      dispatch(profilesFetchOneStart(redProfileId))
     } catch (err) {
-      setFormSubmitResult('error');
+      setFormSubmitResult('error')
     } finally {
-      actions.setSubmitting(false);
+      actions.setSubmitting(false)
     }
-  };
+  }
 
   return (
     <>
@@ -134,57 +134,57 @@ const ReportProblemDialogConnected = connect()((props: any) => {
         </DialogActions>
       </Dialog>
     </>
-  );
-});
+  )
+})
 
 export const ReportProblemDialog = (props: any) => (
   <ReportProblemDialogConnected {...props} />
-);
+)
 
 const initialFormValues: FormValues = {
   problemDescription: '',
-  ifFromMentor_cancelMentorshipImmediately: false,
-};
+  ifFromMentor_cancelMentorshipImmediately: false
+}
 
 const validationSchema = Yup.object({
   problemDescription: Yup.string()
     .required()
     .label('Problem description')
-    .max(1000),
-});
+    .max(1000)
+})
 
 interface FormValues {
-  problemDescription: string;
-  ifFromMentor_cancelMentorshipImmediately: boolean;
+  problemDescription: string
+  ifFromMentor_cancelMentorshipImmediately: boolean
 }
 
 const styles = (theme: Theme) =>
   createStyles({
     submitResult: {
       padding: theme.spacing(1),
-      color: 'white',
+      color: 'white'
     },
     submitError: {
-      backgroundColor: theme.palette.error.main,
+      backgroundColor: theme.palette.error.main
     },
     submitSuccess: {
-      backgroundColor: theme.palette.primary.main,
+      backgroundColor: theme.palette.primary.main
     },
     margin: {
-      margin: '6px 0',
-    },
-  });
+      margin: '6px 0'
+    }
+  })
 
 interface FormProps {
   classes: {
-    submitResult: string;
-    submitError: string;
-    submitSuccess: string;
-    margin: string;
-  };
-  type: RedProfile['userType'];
-  submitResult: FormSubmitResult;
-  onClose: () => void;
+    submitResult: string
+    submitError: string
+    submitSuccess: string
+    margin: string
+  }
+  type: RedProfile['userType']
+  submitResult: FormSubmitResult
+  onClose: () => void
 }
 
 const Form = withStyles(styles)(
@@ -201,15 +201,15 @@ const Form = withStyles(styles)(
     isValid,
     classes,
     onClose,
-    type,
+    type
   }: FormikProps<FormValues> & FormProps) => {
     const change = (name: any, e: any) => {
-      e.persist();
-      handleChange(e);
-      setFieldTouched(name, true, false);
-    };
+      e.persist()
+      handleChange(e)
+      setFieldTouched(name, true, false)
+    }
 
-    const { userType } = getRedProfile();
+    const { userType } = getRedProfile()
 
     return (
       <>
@@ -287,6 +287,6 @@ const Form = withStyles(styles)(
           </>
         )}
       </>
-    );
+    )
   }
-);
+)

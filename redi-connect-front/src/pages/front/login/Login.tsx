@@ -1,68 +1,68 @@
-import React, { useState, useCallback } from "react";
-import AccountOperation from "../../../components/templates/AccountOperation";
-import Teaser from "../../../components/molecules/Teaser";
-import FormInput from "../../../components/atoms/FormInput";
-import * as Yup from "yup";
-import { Link } from "react-router-dom";
+import React, { useState, useCallback } from 'react'
+import AccountOperation from '../../../components/templates/AccountOperation'
+import Teaser from '../../../components/molecules/Teaser'
+import FormInput from '../../../components/atoms/FormInput'
+import * as Yup from 'yup'
+import { Link } from 'react-router-dom'
 import {
   FormikHelpers as FormikActions,
   FormikValues,
-  useFormik,
-} from "formik";
-import { history } from "../../../services/history/history";
-import { login, fetchSaveRedProfile } from "../../../services/api/api";
-import { saveAccessToken } from "../../../services/auth/auth";
+  useFormik
+} from 'formik'
+import { history } from '../../../services/history/history'
+import { login, fetchSaveRedProfile } from '../../../services/api/api'
+import { saveAccessToken } from '../../../services/auth/auth'
 
-import "./Login.scss";
-import { Columns, Form, Heading, Button } from "react-bulma-components";
+import './Login.scss'
+import { Columns, Form, Heading, Button } from 'react-bulma-components'
 interface LoginFormValues {
-  username: string;
-  password: string;
+  username: string
+  password: string
 }
 
 const initialValues: LoginFormValues = {
-  username: "",
-  password: "",
-};
+  username: '',
+  password: ''
+}
 
 const validationSchema = Yup.object({
   username: Yup.string()
     .email()
     .required()
-    .label("Email")
+    .label('Email')
     .max(255),
   password: Yup.string()
     .required()
-    .label("Password")
-    .max(255),
-});
+    .label('Password')
+    .max(255)
+})
 
-export default function Login() {
-  const [loginError, setLoginError] = useState<string>("");
+export default function Login () {
+  const [loginError, setLoginError] = useState<string>('')
 
   const submitForm = useCallback((values, actions) => {
     (async (values: FormikValues, actions: FormikActions<LoginFormValues>) => {
-      const formValues = values as LoginFormValues;
+      const formValues = values as LoginFormValues
       try {
         const accessToken = await login(
           formValues.username,
           formValues.password
-        );
-        saveAccessToken(accessToken);
-        await fetchSaveRedProfile(accessToken);
-        history.push("/app/dashboard");
+        )
+        saveAccessToken(accessToken)
+        await fetchSaveRedProfile(accessToken)
+        history.push('/app/dashboard')
       } catch (err) {
-        setLoginError("You entered an incorrect email, password, or both.");
+        setLoginError('You entered an incorrect email, password, or both.')
       }
-      actions.setSubmitting(false);
-    })(values, actions);
-  }, []);
+      actions.setSubmitting(false)
+    })(values, actions)
+  }, [])
 
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema,
-    onSubmit: submitForm,
-  });
+    onSubmit: submitForm
+  })
 
   return (
     <AccountOperation>
@@ -124,7 +124,7 @@ export default function Login() {
                 className="button--default button--medium"
                 fullwidth={true}
                 onClick={formik.submitForm}
-                disabled={formik.dirty && formik.isValid ? false : true}
+                disabled={!(formik.dirty && formik.isValid)}
               >
                 Log in
               </Button>
@@ -133,5 +133,5 @@ export default function Login() {
         </Columns.Column>
       </Columns>
     </AccountOperation>
-  );
+  )
 }

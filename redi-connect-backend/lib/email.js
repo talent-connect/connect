@@ -1,84 +1,82 @@
-'use strict';
+'use strict'
 
-const aws = require('aws-sdk');
-const Rx = require('rxjs');
-const { tap, catchError } = require('rxjs/operators');
-const _ = require('lodash');
+const aws = require('aws-sdk')
+const Rx = require('rxjs')
 const config = {
   accessKeyId: process.env.EMAILER_AWS_ACCESS_KEY,
   secretAccessKey: process.env.EMAILER_AWS_SECRET_KEY,
-  region: process.env.EMAILER_AWS_REGION,
-};
+  region: process.env.EMAILER_AWS_REGION
+}
 
-const ses = new aws.SES(config);
+const ses = new aws.SES(config)
 
 const isProductionOrDemonstration = () =>
-  ['production', 'demonstration'].includes(process.env.NODE_ENV);
+  ['production', 'demonstration'].includes(process.env.NODE_ENV)
 
-const sendEmail = Rx.bindNodeCallback(ses.sendEmail.bind(ses));
+const sendEmail = Rx.bindNodeCallback(ses.sendEmail.bind(ses))
 const sendEmailFactory = (to, subject, body) => {
   let toSanitized = isProductionOrDemonstration()
     ? to
-    : 'eric@binarylights.com';
+    : 'eric@binarylights.com'
   if (process.env.DEV_MODE_EMAIL_RECIPIENT) {
-    toSanitized = process.env.DEV_MODE_EMAIL_RECIPIENT;
+    toSanitized = process.env.DEV_MODE_EMAIL_RECIPIENT
   }
   return sendEmail({
     Source: 'career@redi-school.org',
     Destination: {
       ToAddresses: [toSanitized],
-      BccAddresses: ['eric@binarylights.com'],
+      BccAddresses: ['eric@binarylights.com']
     },
     Message: {
       Body: {
         Text: {
           Charset: 'UTF-8',
-          Data: body,
-        },
+          Data: body
+        }
       },
       Subject: {
         Charset: 'UTF-8',
-        Data: subject,
-      },
-    },
-  });
-};
+        Data: subject
+      }
+    }
+  })
+}
 
-function buildFrontendUrl(env) {
+function buildFrontendUrl (env) {
   switch (env) {
     case 'production':
-      return 'https://connect.redi-school.org';
+      return 'https://connect.redi-school.org'
 
     case 'demonstration':
-      return 'https://app.demo.connect.redi-school.org';
+      return 'https://app.demo.connect.redi-school.org'
 
     default:
     case 'development':
     case 'dev':
-      return 'http://127.0.0.1:3000';
+      return 'http://127.0.0.1:3000'
   }
 }
 
-const RECIPIENT = 'career@redi-school.org';
+const RECIPIENT = 'career@redi-school.org'
 
 const sendReportProblemEmail = (sendingUserEmail, problemDescription) =>
   sendEmailFactory(
     RECIPIENT,
     'Problem report',
     templateReportProblemEmail(sendingUserEmail, problemDescription)
-  );
+  )
 const sendDataImportMentorSignupEmail = (recipient, firstName, accessToken) =>
   sendEmailFactory(
     recipient,
     'ReDI Connect is finally online!',
     templateDataImportMentorSignupEmail(firstName, accessToken, recipient)
-  );
+  )
 const sendDataImportMenteeSignupEmail = (recipient, firstName, accessToken) =>
   sendEmailFactory(
     recipient,
     'ReDI Connect is finally online!',
     templateDataImportMenteeSignupEmail(firstName, accessToken, recipient)
-  );
+  )
 const sendMentorCancelledMentorshipNotificationEmail = (recipient, firstName) =>
   sendEmailFactory(
     recipient,
@@ -90,7 +88,7 @@ const sendMentorCancelledMentorshipNotificationEmail = (recipient, firstName) =>
     
     Your Career Support Team
     `
-  );
+  )
 const sendToMentorConfirmationOfMentorshipCancelled = (
   recipient,
   mentorFirstName,
@@ -107,7 +105,7 @@ const sendToMentorConfirmationOfMentorshipCancelled = (
     
     Your Career Support Team
     `
-  );
+  )
 
 const sendMentorshipRequestReceivedEmail = (
   recipient,
@@ -125,18 +123,17 @@ Review application: ${buildFrontendUrl(process.env.NODE_ENV)}
 
 Your Career Support Team
 `
-  );
+  )
 const sendMentorshipAcceptedEmail = (recipients, mentorName, menteeName) => {
   let recipientsSanitized = !isProductionOrDemonstration()
     ? ['eric@binarylights.com']
-    : recipients;
-  if (process.env.DEV_MODE_EMAIL_RECIPIENT)
-    recipientsSanitized = [process.env.DEV_MODE_EMAIL_RECIPIENT];
+    : recipients
+  if (process.env.DEV_MODE_EMAIL_RECIPIENT) { recipientsSanitized = [process.env.DEV_MODE_EMAIL_RECIPIENT] }
   return sendEmail({
     Source: 'career@redi-school.org',
     Destination: {
       ToAddresses: recipientsSanitized,
-      BccAddresses: ['eric@binarylights.com'],
+      BccAddresses: ['eric@binarylights.com']
     },
     Message: {
       Body: {
@@ -155,16 +152,16 @@ Happy connectin’,
 Please let us know at career@redi-school.org if you have any questions!
 
 Your Career Support Team
-        `,
-        },
+        `
+        }
       },
       Subject: {
         Charset: 'UTF-8',
-        Data: "It's a Match!",
-      },
-    },
-  });
-};
+        Data: "It's a Match!"
+      }
+    }
+  })
+}
 const sendMentoringSessionLoggedEmail = (recipient, mentorName) =>
   sendEmailFactory(
     recipient,
@@ -176,10 +173,10 @@ Thank you for logging the first session. This is very helpful for us in order to
 Log next session: ${buildFrontendUrl(process.env.NODE_ENV)}
 
 Your Career Support Team`
-  );
+  )
 
 const templateReportProblemEmail = (sendingUserEmail, message) =>
-  `New problem report. Source: ${sendingUserEmail}. Message: \n\n${message}`;
+  `New problem report. Source: ${sendingUserEmail}. Message: \n\n${message}`
 const templateDataImportMentorSignupEmail = (
   firstName,
   accessToken,
@@ -206,7 +203,7 @@ You’ll be asked to choose your own password. Your username is your email addre
 
 Let us know if you need any help or assistance at career@redi-school.org or on slack #redi_mentors2019.
 
-Your Career Support Team`;
+Your Career Support Team`
 
 const templateDataImportMenteeSignupEmail = (
   firstName,
@@ -233,7 +230,7 @@ You’ll be asked to choose your own password. Your username is your email addre
 Let us know if you need any help or assistance at career@redi-school.org.
 
 Your Career Support Team
-`;
+`
 
 const sendMentorSignupReminderEmail = (recipient, firstName, accessToken) =>
   sendEmailFactory(
@@ -261,7 +258,7 @@ const sendMentorSignupReminderEmail = (recipient, firstName, accessToken) =>
     
     Your Career Support Team
     `
-  );
+  )
 const sendMenteeSignupReminderEmail = (recipient, firstName, accessToken) =>
   sendEmailFactory(
     recipient,
@@ -285,7 +282,7 @@ const sendMenteeSignupReminderEmail = (recipient, firstName, accessToken) =>
     Let us know if you need any help or assistance at career@redi-school.org.
     
     Your Career Support Team`
-  );
+  )
 
 const sendMentorPendingReviewAcceptedEmail = (recipient, firstName) =>
   sendEmailFactory(
@@ -326,7 +323,7 @@ Thank you for being a mentor, we couldn’t do it without you.
 
 
 Your Career Support Team at ReDI Connect`
-  );
+  )
 
 const sendMenteePendingReviewAcceptedEmail = (recipient, firstName) =>
   sendEmailFactory(
@@ -360,7 +357,7 @@ Please feel free to write us an email at career@redi-school.org if you have any 
 
 
 Your Career Support Team at ReDI Connect`
-  );
+  )
 
 const sendMentorPendingReviewDeclinedEmail = (recipient, firstName) =>
   sendEmailFactory(
@@ -374,7 +371,7 @@ Please let us know at career@redi-school.org how we can reach you best so that w
 
 
 Your Career Support Team at ReDI Connect`
-  );
+  )
 
 const sendMenteePendingReviewDeclinedEmail = (recipient, firstName) =>
   sendEmailFactory(
@@ -388,7 +385,7 @@ Please let us know at career@redi-school.org how we can reach you best so that w
 
 
 Your Career Support Team at ReDI Connect`
-  );
+  )
 
 const sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted = (
   recipient,
@@ -409,7 +406,7 @@ Other mentees can of course still apply to you, and we're sure you'll receive an
 If you have any questions or would like any help, always feel free to reach out to us on career@redi-school.org or on the ReDI Slack channel #redi_mentors2019.
 
 Your Career Support Team`
-  );
+  )
 
 const sendResetPasswordEmail = (recipient, accessToken) =>
   sendEmailFactory(
@@ -431,7 +428,7 @@ Let us know if you need any help or assistance at career@redi-school.org or on s
 
 Your Career Support Team
     `
-  );
+  )
 
 module.exports = {
   sendReportProblemEmail,
@@ -450,5 +447,5 @@ module.exports = {
   sendMenteePendingReviewDeclinedEmail,
   sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted,
   sendResetPasswordEmail,
-  sendEmailFactory,
-};
+  sendEmailFactory
+}

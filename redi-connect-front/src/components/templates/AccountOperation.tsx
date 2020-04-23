@@ -1,8 +1,8 @@
-import React from "react";
-import Footer from "../organisms/Footer";
-import Logo from "../atoms/Logo";
+import React from 'react'
+import Footer from '../organisms/Footer'
+import Logo from '../atoms/Logo'
 
-import { Container, Section } from "react-bulma-components";
+import { Container, Section } from 'react-bulma-components'
 
 const AccountOperation: React.FunctionComponent = ({ children }) => (
   <>
@@ -16,6 +16,6 @@ const AccountOperation: React.FunctionComponent = ({ children }) => (
     </Section>
     <Footer />
   </>
-);
+)
 
-export default AccountOperation;
+export default AccountOperation

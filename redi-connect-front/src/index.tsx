@@ -1,7 +1,7 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './styles/main.scss';
-import App from './App';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import './styles/main.scss'
+import App from './App'
 // Needed for datepicker in <LogMentoringSessionDialog>
 
 // uncomment this to see wasted/unnecessary renders of your components
@@ -15,4 +15,4 @@ ReactDOM.render(
     <App />
   </React.StrictMode>,
   document.getElementById('root')
-);
+)

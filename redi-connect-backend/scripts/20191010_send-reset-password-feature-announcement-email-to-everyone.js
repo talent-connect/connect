@@ -1,55 +1,43 @@
-'use strict';
+'use strict'
 
-const app = require('../server/server.js');
-const nodemailer = require('nodemailer');
-const Rx = require('rxjs');
-const { bindNodeCallback, from } = Rx;
+const app = require('../server/server.js')
+const nodemailer = require('nodemailer')
+const Rx = require('rxjs')
+const { bindNodeCallback, from } = Rx
 const {
-  concatMap,
-  mergeMap,
   delay,
   switchMap,
-  skip,
-  mapTo,
   filter,
-  take,
   map,
-  switchMapTo,
   tap,
-  toArray,
-  count,
-} = require('rxjs/operators');
-
-const { sendEmailFactory } = require('../lib/email');
+  count
+} = require('rxjs/operators')
 
 const {
-  RedUser,
-  RedProfile,
-  RedMatch,
-  RedMentoringSession,
-  RedProblemReport,
-  AccessToken,
-} = app.models;
+  RedUser
+} = app.models
 
-let transporter;
+let transporter
 nodemailer.createTestAccount((err, account) => {
+  if (err) throw err
   transporter = nodemailer.createTransport({
     host: 'smtp.googlemail.com', // Gmail Host
     port: 465, // Port
     secure: true, // this is true as port is 465
     auth: {
-      user: 'career@redi-school.org', //Gmail username
-      pass: process.env.GMAIL_PASSWORD_CAREER_AT_REDI_SCHOOL_DOT_ORG, // Gmail password
-    },
-  });
-  console.log('created');
-});
+      user: 'career@redi-school.org', // Gmail username
+      pass: process.env.GMAIL_PASSWORD_CAREER_AT_REDI_SCHOOL_DOT_ORG // Gmail password
+    }
+  })
+  console.log('created')
+})
 
+/* eslint-disable-next-line */
 const sendMentorEmail = (recipient, firstName) => {
-  let mailOptions = {
+  const mailOptions = {
     from: '<career@redi-school.org>',
     to: recipient, // Recepient email address. Multiple emails can send separated by commas
-    subject: `You're ReDI, but forgot your ReDI Connect password? We have you covered!`,
+    subject: 'You\'re ReDI, but forgot your ReDI Connect password? We have you covered!',
     text: `Hi everyone!
 
 Are you ReDI? We finally did it: The Reset Password Function is ReDI to use.
@@ -60,26 +48,26 @@ ReDI for some more fun? Come to the Monthly Mentorship Meet-Up next week! https:
 
 Oh, and mentors, as always: please make sure to log your mentoring sessions. Thank you! <3
 
-Your Career Support Team`,
-  };
+Your Career Support Team`
+  }
 
-  return bindNodeCallback(transporter.sendMail.bind(transporter))(mailOptions);
-};
+  return bindNodeCallback(transporter.sendMail.bind(transporter))(mailOptions)
+}
 
-const redUserFind = q => bindNodeCallback(RedUser.find.bind(RedUser))(q);
+const redUserFind = q => bindNodeCallback(RedUser.find.bind(RedUser))(q)
 
 redUserFind({ include: 'redProfile' })
   .pipe(
     delay(1000),
     switchMap(users => from(users)),
     map(data => {
-      const pojo = JSON.parse(JSON.stringify(data));
+      const pojo = JSON.parse(JSON.stringify(data))
       return {
         redUser: pojo,
         redProfile: pojo.redProfile,
         redUserInst: data,
-        redProfileInst: data.redProfile,
-      };
+        redProfileInst: data.redProfile
+      }
     }),
     filter(({ redProfile }) => !!redProfile),
     filter(({ redProfile }) => redProfile.userActivated),
@@ -110,4 +98,4 @@ redUserFind({ include: 'redProfile' })
     count => console.log('did this ' + count + ' times'),
     e => console.log('Error: ', e),
     () => console.log('done')
-  );
+  )

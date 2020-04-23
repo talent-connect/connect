@@ -1,52 +1,52 @@
-import { lazy } from "react";
-import { RouteDefinition } from "./index";
+import { lazy } from 'react'
+import { RouteDefinition } from './index'
 
 const Applications = lazy(() =>
   import(
-    /* webpackChunkName: "Applications", webpackPreload: true  */ "../pages/app/applications/Applications"
+    /* webpackChunkName: "Applications", webpackPreload: true  */ '../pages/app/applications/Applications'
   )
-);
+)
 const Dashboard = lazy(() =>
   import(
-    /* webpackChunkName: "Dashboard", webpackPreload: true  */ "../pages/app/dashboard/Dashboard"
+    /* webpackChunkName: "Dashboard", webpackPreload: true  */ '../pages/app/dashboard/Dashboard'
   )
-);
+)
 const Profile = lazy(() =>
   import(
-    /* webpackChunkName: "Profile", webpackPreload: true  */ "../pages/app/profile/Profile"
+    /* webpackChunkName: "Profile", webpackPreload: true  */ '../pages/app/profile/Profile'
   )
-);
+)
 const Me = lazy(() =>
   import(
-    /* webpackChunkName: "Me", webpackPreload: true  */ "../pages/app/me/Me"
+    /* webpackChunkName: "Me", webpackPreload: true  */ '../pages/app/me/Me'
   )
-);
+)
 
 const routes: RouteDefinition[] = [
   {
-    path: "/app/dashboard",
+    path: '/app/dashboard',
     component: Dashboard,
     exact: true
   },
   {
-    path: "/app/profile/:profileId",
+    path: '/app/profile/:profileId',
     component: Profile,
     exact: true
   },
   {
-    path: "/app/applications",
+    path: '/app/applications',
     component: Applications,
     exact: true,
-    name: "mentee-applicants"
+    name: 'mentee-applicants'
   },
   {
-    path: "/app/me",
+    path: '/app/me',
     component: Me,
     exact: true
   }
-];
+]
 const routesRequiringLoggedIn = routes.map(route =>
   Object.assign(route, { requiresLoggedIn: true })
-);
+)
 
-export const routes__loggedIn = routesRequiringLoggedIn;
+export const routes__loggedIn = routesRequiringLoggedIn
