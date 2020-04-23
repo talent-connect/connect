@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { Navbar, Container } from "react-bulma-components";
-import Button from "../atoms/Button";
-import Logo from "../atoms/Logo";
+import React, { useState } from 'react'
+import { Navbar, Container } from 'react-bulma-components'
+import Button from '../atoms/Button'
+import Logo from '../atoms/Logo'
 
 const LoggedOutNavbar = () => {
-  const [active, setActive] = useState(false);
+  const [active, setActive] = useState(false)
 
   return (
     <Navbar active={active}>
@@ -31,7 +31,7 @@ const LoggedOutNavbar = () => {
         </Navbar.Menu>
       </Container>
     </Navbar>
-  );
-};
+  )
+}
 
-export default LoggedOutNavbar;
+export default LoggedOutNavbar

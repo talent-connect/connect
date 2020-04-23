@@ -1,9 +1,9 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { Columns } from "react-bulma-components";
-import { LoggedOutLayout } from "../../../layouts/LoggedOutLayout";
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { Columns } from 'react-bulma-components'
+import { LoggedOutLayout } from '../../../layouts/LoggedOutLayout'
 
-export default function SignUpLanding() {
+export default function SignUpLanding () {
   return (
     <LoggedOutLayout>
       <Columns>
@@ -34,5 +34,5 @@ export default function SignUpLanding() {
         </Columns.Column>
       </Columns>
     </LoggedOutLayout>
-  );
+  )
 }

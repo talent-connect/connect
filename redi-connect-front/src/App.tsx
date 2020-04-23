@@ -1,17 +1,17 @@
-import React, { useEffect, Suspense } from 'react';
+import React, { useEffect, Suspense } from 'react'
 
-import { Provider as StoreProvider } from 'react-redux';
-import './App.scss';
-import { history, Router } from './services/history/history';
-import { Routes } from './components/Routes';
-import { store } from './redux/store';
-import { profileFetchStart } from './redux/user/actions';
-import AppNotification from './components/AppNotification';
+import { Provider as StoreProvider } from 'react-redux'
+import './App.scss'
+import { history, Router } from './services/history/history'
+import { Routes } from './components/Routes'
+import { store } from './redux/store'
+import { profileFetchStart } from './redux/user/actions'
+import AppNotification from './components/AppNotification'
 
 const App = () => {
   useEffect(() => {
-    store.dispatch(profileFetchStart());
-  }, []);
+    store.dispatch(profileFetchStart())
+  }, [])
   return (
     <>
       <AppNotification />
@@ -23,7 +23,7 @@ const App = () => {
         </Router>
       </StoreProvider>
     </>
-  );
-};
+  )
+}
 
-export default App;
+export default App

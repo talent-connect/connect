@@ -6,38 +6,38 @@ import {
   Paper,
   TextField,
   Theme,
-  withStyles,
-} from '@material-ui/core';
-import clsx from 'clsx';
-import { Formik, FormikHelpers as FormikActions, FormikProps } from 'formik';
-import React, { useState } from 'react';
-import * as Yup from 'yup';
-import { requestMentorship } from '../../../../services/api/api';
-import { FormSubmitResult } from '../../../../types/FormSubmitResult';
+  withStyles
+} from '@material-ui/core'
+import clsx from 'clsx'
+import { Formik, FormikHelpers as FormikActions, FormikProps } from 'formik'
+import React, { useState } from 'react'
+import * as Yup from 'yup'
+import { requestMentorship } from '../../../../services/api/api'
+import { FormSubmitResult } from '../../../../types/FormSubmitResult'
 
 const styles = (theme: Theme) =>
   createStyles({
     submitResult: {
       padding: theme.spacing(1),
-      color: 'white',
+      color: 'white'
     },
     submitError: {
-      backgroundColor: theme.palette.error.main,
+      backgroundColor: theme.palette.error.main
     },
     submitSuccess: {
-      backgroundColor: theme.palette.primary.main,
-    },
-  });
+      backgroundColor: theme.palette.primary.main
+    }
+  })
 
 interface ConnectionRequestFormValues {
-  applicationText: string;
-  dataSharingAccepted: boolean;
+  applicationText: string
+  dataSharingAccepted: boolean
 }
 
 const initialValues = {
   applicationText: '',
-  dataSharingAccepted: false,
-};
+  dataSharingAccepted: false
+}
 
 const validationSchema = Yup.object({
   applicationText: Yup.string()
@@ -47,31 +47,31 @@ const validationSchema = Yup.object({
     .label('Application message'),
   dataSharingAccepted: Yup.boolean()
     .required()
-    .oneOf([true], 'Sharing profile data with your mentor is required'),
-});
+    .oneOf([true], 'Sharing profile data with your mentor is required')
+})
 
 interface Props {
-  mentorId: string;
+  mentorId: string
 }
 
 export const ConnectionRequestForm = ({ mentorId }: Props) => {
   const [submitResult, setSubmitResult] = useState<FormSubmitResult>(
     'notSubmitted'
-  );
+  )
   const submit = async (
     values: ConnectionRequestFormValues,
     actions: FormikActions<ConnectionRequestFormValues>
   ) => {
-    setSubmitResult('submitting');
+    setSubmitResult('submitting')
     try {
-      await requestMentorship(values.applicationText, mentorId);
-      setSubmitResult('success');
+      await requestMentorship(values.applicationText, mentorId)
+      setSubmitResult('success')
     } catch (error) {
-      setSubmitResult('error');
+      setSubmitResult('error')
     } finally {
-      actions.setSubmitting(false);
+      actions.setSubmitting(false)
     }
-  };
+  }
 
   return (
     <Formik
@@ -80,8 +80,8 @@ export const ConnectionRequestForm = ({ mentorId }: Props) => {
       initialValues={initialValues}
       validationSchema={validationSchema}
     />
-  );
-};
+  )
+}
 
 const Form = ({
   isSubmitting,
@@ -92,19 +92,19 @@ const Form = ({
   handleChange,
   handleSubmit,
   setFieldTouched,
-  isValid,
+  isValid
 }: FormikProps<ConnectionRequestFormValues> & {
-  submitResult: FormSubmitResult;
+  submitResult: FormSubmitResult
 }) => {
   const change = (name: any, e: any) => {
-    e.persist();
-    handleChange(e);
-    setFieldTouched(name, true, false);
-  };
+    e.persist()
+    handleChange(e)
+    setFieldTouched(name, true, false)
+  }
   // TODO: Ugly way of getting classes -- fix this
   const GetClasses = withStyles(styles)((props: any) =>
     props.children(props.classes)
-  );
+  )
   return (
     <form>
       <h3>Write a short application text message to this mentor</h3>
@@ -167,5 +167,5 @@ const Form = ({
         </>
       )}
     </form>
-  );
-};
+  )
+}

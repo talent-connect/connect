@@ -1,3 +1,3 @@
-import React from "react";
+import React from 'react'
 
-export const CurrentMentorProfile = () => <h3>Current mentor profile</h3>;
+export const CurrentMentorProfile = () => <h3>Current mentor profile</h3>

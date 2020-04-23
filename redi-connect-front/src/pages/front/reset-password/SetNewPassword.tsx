@@ -1,77 +1,74 @@
-import React, { useState, useEffect } from 'react';
-import { LoggedOutLayout } from '../../../layouts/LoggedOutLayout';
-import * as Yup from 'yup';
+import React, { useState, useEffect } from 'react'
+import { LoggedOutLayout } from '../../../layouts/LoggedOutLayout'
+import * as Yup from 'yup'
 import {
   TextField,
   InputAdornment,
   Button,
   Paper,
-  Theme,
-  createStyles,
-  withStyles,
   Container,
   Typography,
   makeStyles,
-  useTheme,
-} from '@material-ui/core';
-import { Lock as LockIcon } from '@material-ui/icons';
+  useTheme
+} from '@material-ui/core'
+import { Lock as LockIcon } from '@material-ui/icons'
 import {
   Formik,
   FormikProps,
   FormikHelpers as FormikActions,
-  FormikValues,
-} from 'formik';
-import { history } from '../../../services/history/history';
+  FormikValues
+} from 'formik'
+import { history } from '../../../services/history/history'
 import {
   setPassword,
   giveGdprConsent,
   activateUser,
-  fetchSaveRedProfile,
-} from '../../../services/api/api';
-import { saveAccessToken } from '../../../services/auth/auth';
-import { RouteComponentProps } from 'react-router';
-import { showNotification } from '../../../components/AppNotification';
+  fetchSaveRedProfile
+} from '../../../services/api/api'
+import { saveAccessToken } from '../../../services/auth/auth'
+import { RouteComponentProps } from 'react-router'
+import { showNotification } from '../../../components/AppNotification'
 
 const useStyles = (props: any) => {
-  const theme = useTheme();
+  const theme = useTheme()
   return makeStyles({
     heading: {
-      margin: theme.spacing(5),
+      margin: theme.spacing(5)
     },
     elementsBelowFormTopMargin: {
-      marginTop: theme.spacing(6),
+      marginTop: theme.spacing(6)
     },
     formError: {
       padding: theme.spacing(1),
       backgroundColor: theme.palette.error.main,
-      color: 'white',
+      color: 'white'
     },
     paragraph: {
-      fontWeight: 300,
+      fontWeight: 300
     },
     paragraphBelowSubheader: {
       marginTop: '0.3em',
-      fontWeight: 300,
+      fontWeight: 300
     },
     subHeader: {
-      marginBottom: 0,
+      marginBottom: 0
     },
     error: {
       backgroundColor: theme.palette.error.main,
-      color: 'white',
-    },
-  })(props);
-};
+      color: 'white'
+    }
+  })(props)
+}
 
 interface SetNewPasswordValues {
-  password: string;
-  passwordConfirm: string;
+  password: string
+  passwordConfirm: string
 }
 
 const initialValues: SetNewPasswordValues = {
   password: '',
-  passwordConfirm: '',
-};
+  passwordConfirm: ''
+}
 
 const validationSchema = Yup.object({
   password: Yup.string()
@@ -80,64 +77,64 @@ const validationSchema = Yup.object({
     .label('Password'),
   passwordConfirm: Yup.string()
     .required('Confirm your password')
-    .oneOf([Yup.ref('password')], 'Password does not match'),
-});
+    .oneOf([Yup.ref('password')], 'Password does not match')
+})
 
-interface IRouteParams {
-  accessToken: string;
+interface RouteParams {
+  accessToken: string
 }
 
-export const SetNewPassword = (props: RouteComponentProps<IRouteParams>) => {
-  const styleClasses = useStyles(props);
+export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
+  const styleClasses = useStyles(props)
 
-  const [formError, setFormError] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
-  const [errorMsg, setErrorMsg] = useState<string>('');
+  const [formError, setFormError] = useState<string>('')
+  const [loading, setLoading] = useState<boolean>(false)
+  const [errorMsg, setErrorMsg] = useState<string>('')
 
   useEffect(() => {
     const load = async () => {
-      setLoading(true);
-      const accessTokenStr = decodeURIComponent(props.match.params.accessToken);
-      let accessToken;
+      setLoading(true)
+      const accessTokenStr = decodeURIComponent(props.match.params.accessToken)
+      let accessToken
       try {
-        accessToken = JSON.parse(accessTokenStr);
-        saveAccessToken(accessToken);
+        accessToken = JSON.parse(accessTokenStr)
+        saveAccessToken(accessToken)
       } catch (err) {
-        console.log('test');
+        console.log('test')
         return setErrorMsg(
           'Sorry, there seems to have been an error. Please try to reset your password again, or contact career@redi-school.org for assistance.'
-        );
+        )
       }
       try {
-        await fetchSaveRedProfile(accessToken);
-        setLoading(false);
+        await fetchSaveRedProfile(accessToken)
+        setLoading(false)
       } catch (err) {
         return setErrorMsg(
           'Sorry, the link you used seems to have expired. Please contact career@redi-school.org to receive a new one.'
-        );
+        )
       }
-    };
-    load();
-  }, []);
+    }
+    load()
+  }, [props.match.params.accessToken])
 
   const submitForm = async (
     values: FormikValues,
     actions: FormikActions<SetNewPasswordValues>
   ) => {
     try {
-      await setPassword(values.password);
-      await giveGdprConsent();
-      await activateUser();
-      showNotification(`Your new password is set and you're logged in :)`, {
+      await setPassword(values.password)
+      await giveGdprConsent()
+      await activateUser()
+      showNotification('Your new password is set and you\'re logged in :)', {
         variant: 'success',
-        autoHideDuration: 8000,
-      });
-      history.push('/app/dashboard');
+        autoHideDuration: 8000
+      })
+      history.push('/app/dashboard')
     } catch (err) {
-      setFormError('Invalid username or password');
+      setFormError('Invalid username or password')
     }
-    actions.setSubmitting(false);
-  };
+    actions.setSubmitting(false)
+  }
 
   return (
     <LoggedOutLayout>
@@ -159,13 +156,13 @@ export const SetNewPassword = (props: RouteComponentProps<IRouteParams>) => {
         />
       )}
     </LoggedOutLayout>
-  );
-};
-export default SetNewPassword;
+  )
+}
+export default SetNewPassword
 
 const Form = (
   props: FormikProps<SetNewPasswordValues> & {
-    formError: string;
+    formError: string
   }
 ) => {
   const {
@@ -177,16 +174,16 @@ const Form = (
     isValid,
     isSubmitting,
     setFieldTouched,
-    submitForm,
-  } = props;
+    submitForm
+  } = props
 
-  const styleClasses = useStyles(props);
+  const styleClasses = useStyles(props)
 
   const change = (name: any, e: any) => {
-    e.persist();
-    handleChange(e);
-    setFieldTouched(name, true, false);
-  };
+    e.persist()
+    handleChange(e)
+    setFieldTouched(name, true, false)
+  }
 
   return (
     <Container maxWidth="sm">
@@ -215,7 +212,7 @@ const Form = (
               <InputAdornment position="start">
                 <LockIcon />
               </InputAdornment>
-            ),
+            )
           }}
           fullWidth
           margin="normal"
@@ -235,7 +232,7 @@ const Form = (
               <InputAdornment position="start">
                 <LockIcon />
               </InputAdornment>
-            ),
+            )
           }}
           fullWidth
           margin="normal"
@@ -252,5 +249,5 @@ const Form = (
         </Button>
       </form>
     </Container>
-  );
-};
+  )
+}

@@ -1,16 +1,16 @@
-import React from "react";
+import React from 'react'
 import {
   Container,
   Section,
   Hero,
   Columns,
   Heading,
-  Content,
-} from "react-bulma-components";
-import Button from "../atoms/Button";
-import team from "../../assets/images/hero.svg";
-import teamMobile from "../../assets/images/hero-mobile.svg";
-import "./RediHero.scss";
+  Content
+} from 'react-bulma-components'
+import Button from '../atoms/Button'
+import team from '../../assets/images/hero.svg'
+import teamMobile from '../../assets/images/hero-mobile.svg'
+import './RediHero.scss'
 
 const RediHero = () => (
   <Hero>
@@ -27,7 +27,7 @@ const RediHero = () => (
             <Content className="hero-column-content">
               Are you ready for the future of work? We connect thriving
               professionals from the digital industry with students and alumni
-              of our Digital Career Program.{" "}
+              of our Digital Career Program.{' '}
             </Content>
             <Button size="large" text="sign-up now!" />
           </Columns.Column>
@@ -38,6 +38,6 @@ const RediHero = () => (
       </Section>
     </Container>
   </Hero>
-);
+)
 
-export default RediHero;
+export default RediHero

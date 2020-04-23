@@ -1,11 +1,11 @@
 const Rx = require('rxjs')
 const _ = require('lodash')
-const { bindNodeCallback, from } = Rx;
+const { bindNodeCallback, from } = Rx
 const { switchMap, mergeMap, count, map } = require('rxjs/operators')
 
 const app = require('../server/server')
 
-const { RedProfile } = app.models;
+const { RedProfile } = app.models
 
 const redProfileFind = bindNodeCallback(RedProfile.find.bind(RedProfile))
 
@@ -18,7 +18,7 @@ redProfileFind()
       return redProfile
     }),
     mergeMap(redProfile => {
-      return redProfile.updateAttribute("languages", redProfile.languages)
+      return redProfile.updateAttribute('languages', redProfile.languages)
     }),
     count()
   )

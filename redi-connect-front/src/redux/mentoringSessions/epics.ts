@@ -1,20 +1,20 @@
-import { ActionsObservable, ofType } from "redux-observable";
-import { map, switchMap } from "rxjs/operators";
-import { from, concat, of } from "rxjs";
-import { API_URL } from "../../config/config";
-import { http } from "../../services/http/http";
+import { ActionsObservable, ofType } from 'redux-observable'
+import { map, switchMap } from 'rxjs/operators'
+import { from, concat, of } from 'rxjs'
+import { API_URL } from '../../config/config'
+import { http } from '../../services/http/http'
 import {
   mentoringSessionsCreateSuccess,
   mentoringSessionsFetchSuccess,
   mentoringSessionsFetchStart
-} from "./actions";
-import { MentoringSessionsActions, MentoringSessionsActionType } from "./types";
-import { profileFetchStart } from "../user/actions";
-import { profilesFetchOneStart } from "../profiles/actions";
+} from './actions'
+import { MentoringSessionsActions, MentoringSessionsActionType } from './types'
+import { profileFetchStart } from '../user/actions'
+import { profilesFetchOneStart } from '../profiles/actions'
 
 const fetchFilter = {
-  include: ["mentee", "mentor"]
-};
+  include: ['mentee', 'mentor']
+}
 
 export const mentoringSessionsFetchEpic = (
   action$: ActionsObservable<MentoringSessionsActions>
@@ -28,7 +28,7 @@ export const mentoringSessionsFetchEpic = (
     ),
     map(resp => resp.data),
     map(mentoringSessionsFetchSuccess)
-  );
+  )
 
 export const mentoringSessionsCreateEpic = (action$: ActionsObservable<any>) =>
   action$.pipe(
@@ -36,15 +36,15 @@ export const mentoringSessionsCreateEpic = (action$: ActionsObservable<any>) =>
     switchMap(action => {
       const request = from(
         http(`${API_URL}/redMentoringSessions`, {
-          method: "post",
+          method: 'post',
           data: action.payload
         })
       ).pipe(
         map(resp => resp.data),
         map(mentoringSessionsCreateSuccess)
-      );
+      )
 
-      return request;
+      return request
     }),
     switchMap((successAction: any) => {
       return concat(
@@ -54,14 +54,14 @@ export const mentoringSessionsCreateEpic = (action$: ActionsObservable<any>) =>
         // This one is a terrible idea for the same reason explained in
         // matches/epics.ts
         of(profilesFetchOneStart(successAction.payload.menteeId))
-      );
+      )
     })
 
     // TODO: fix this
     // catchError((err as Error) => mentoringSessionsCreateError(err))
-  );
+  )
 
 export const mentoringSessionsEpics = {
   mentoringSessionsFetchEpic,
   mentoringSessionsCreateEpic
-};
+}

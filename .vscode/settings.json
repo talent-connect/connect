@@ -1,0 +1,7 @@
+{
+  "eslint.workingDirectories": [
+    { "directory": "redi-connect-front", "changeProcessCWD": true },
+    { "directory": "redi-connect-admin", "changeProcessCWD": true },
+    { "directory": "redi-connect-backend", "changeProcessCWD": true },
+  ]
+}

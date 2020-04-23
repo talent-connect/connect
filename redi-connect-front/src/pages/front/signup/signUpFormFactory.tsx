@@ -1,24 +1,24 @@
-import React, { useState } from "react";
-import * as Yup from "yup";
+import React, { useState } from 'react'
+import * as Yup from 'yup'
 
 import {
   FormikValues,
   FormikHelpers as FormikActions,
-  useFormik,
-} from "formik";
-import omit from "lodash/omit";
+  useFormik
+} from 'formik'
+import omit from 'lodash/omit'
 
-import FormInput from "../../../components/atoms/FormInput";
+import FormInput from '../../../components/atoms/FormInput'
 
-import Teaser from "../../../components/molecules/Teaser";
+import Teaser from '../../../components/molecules/Teaser'
 
-import { Columns, Form, Heading, Button } from "react-bulma-components";
+import { Columns, Form, Heading, Button } from 'react-bulma-components'
 
-import { signUp } from "../../../services/api/api";
-import { RedProfile } from "../../../types/RedProfile";
-import { history } from "../../../services/history/history";
+import { signUp } from '../../../services/api/api'
+import { RedProfile } from '../../../types/RedProfile'
+import { history } from '../../../services/history/history'
 
-import { courses } from "../../../config/config";
+import { courses } from '../../../config/config'
 
 export const validationSchema = Yup.object({
   firstName: Yup.string()
@@ -29,102 +29,102 @@ export const validationSchema = Yup.object({
     .max(255),
   username: Yup.string()
     .email()
-    .label("Email")
+    .label('Email')
     .max(255),
   password: Yup.string()
-    .min(8, "Password must contain at least 8 characters")
-    .required("Enter your password")
-    .label("Password"),
+    .min(8, 'Password must contain at least 8 characters')
+    .required('Enter your password')
+    .label('Password'),
   passwordConfirm: Yup.string()
-    .required("Confirm your password")
-    .oneOf([Yup.ref("password")], "Password does not match"),
+    .required('Confirm your password')
+    .oneOf([Yup.ref('password')], 'Password does not match'),
   agreesWithCodeOfConduct: Yup.boolean()
     .required()
     .oneOf([true]),
   gaveGdprConsentAt: Yup.string()
     .required()
-    .label("Data usage consent"),
-  mentee_currentlyEnrolledInCourse: Yup.string().when("formType", {
-    is: "public-sign-up-mentee-pending-review",
+    .label('Data usage consent'),
+  mentee_currentlyEnrolledInCourse: Yup.string().when('formType', {
+    is: 'public-sign-up-mentee-pending-review',
     then: Yup.string()
       .oneOf(courses.map(level => level.id))
-      .label("Currently enrolled in course"),
-  }),
-});
+      .label('Currently enrolled in course')
+  })
+})
 
 export type SignUpFormType =
-  | "public-sign-up-mentor-pending-review"
-  | "public-sign-up-mentee-pending-review";
+  | 'public-sign-up-mentor-pending-review'
+  | 'public-sign-up-mentee-pending-review';
 
 export interface SignUpFormValues {
-  formType: SignUpFormType;
-  gaveGdprConsentAt: string;
-  username: string;
-  password: string;
-  passwordConfirm: string;
-  firstName: string;
-  lastName: string;
-  agreesWithCodeOfConduct: boolean;
-  mentee_currentlyEnrolledInCourse: string;
+  formType: SignUpFormType
+  gaveGdprConsentAt: string
+  username: string
+  password: string
+  passwordConfirm: string
+  firstName: string
+  lastName: string
+  agreesWithCodeOfConduct: boolean
+  mentee_currentlyEnrolledInCourse: string
 }
 
 const initialValues: SignUpFormValues = {
-  formType: "public-sign-up-mentee-pending-review",
-  gaveGdprConsentAt: "",
-  username: "",
-  password: "",
-  passwordConfirm: "",
-  firstName: "",
-  lastName: "",
+  formType: 'public-sign-up-mentee-pending-review',
+  gaveGdprConsentAt: '',
+  username: '',
+  password: '',
+  passwordConfirm: '',
+  firstName: '',
+  lastName: '',
   agreesWithCodeOfConduct: false,
-  mentee_currentlyEnrolledInCourse: "",
-};
+  mentee_currentlyEnrolledInCourse: ''
+}
 
 export const buildSignUpForm = (
   type: SignUpFormType
 ): Function => (): React.ReactFragment => {
-  const [submitError, setSubmitError] = useState(false);
+  const [submitError, setSubmitError] = useState(false)
   const submitForm = async (
     values: FormikValues,
     actions: FormikActions<SignUpFormValues>
   ) => {
-    setSubmitError(false);
-    const profile = values as Partial<RedProfile>;
+    setSubmitError(false)
+    const profile = values as Partial<RedProfile>
     // TODO: this needs to be done in a smarter way, like iterating over the RedProfile definition or something
     const cleanProfile: Partial<RedProfile> = omit(profile, [
-      "password",
-      "passwordConfirm",
-      "formType",
-      "agreesWithCodeOfConduct",
-    ]);
-    cleanProfile.userType = type;
-    cleanProfile.userActivated = false;
-    cleanProfile.signupSource = "public-sign-up";
+      'password',
+      'passwordConfirm',
+      'formType',
+      'agreesWithCodeOfConduct'
+    ])
+    cleanProfile.userType = type
+    cleanProfile.userActivated = false
+    cleanProfile.signupSource = 'public-sign-up'
     try {
-      await signUp(values.username, values.password, cleanProfile);
-      history.push("/front/signup/complete/" + type);
+      await signUp(values.username, values.password, cleanProfile)
+      history.push('/front/signup/complete/' + type)
     } catch (error) {
-      setSubmitError(Boolean(error));
+      setSubmitError(Boolean(error))
     }
-    actions.setSubmitting(false);
-  };
+    actions.setSubmitting(false)
+  }
 
-  initialValues.formType = type;
+  initialValues.formType = type
 
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema,
-    onSubmit: submitForm,
-  });
+    onSubmit: submitForm
+  })
 
   const onChange = (name: any, e: any) => {
-    e.persist();
-    formik.handleChange(e);
-    formik.setFieldTouched(name, true, false);
-  };
+    e.persist()
+    formik.handleChange(e)
+    formik.setFieldTouched(name, true, false)
+  }
 
   const determineInputColor = (field: keyof SignUpFormValues) =>
-    formik.touched[field] && Boolean(formik.errors[field]) ? "danger" : null;
+    formik.touched[field] && Boolean(formik.errors[field]) ? 'danger' : null
 
   return (
     <Columns vCentered>
@@ -201,7 +201,7 @@ export const buildSignUpForm = (
               !!formik.errors.passwordConfirm
             }
           />
-          {type === "public-sign-up-mentee-pending-review" && (
+          {type === 'public-sign-up-mentee-pending-review' && (
             <>
               <Form.Field>
                 <Form.Label size="small">
@@ -214,10 +214,10 @@ export const buildSignUpForm = (
                     value={formik.values.mentee_currentlyEnrolledInCourse}
                     onChange={onChange.bind(
                       null,
-                      "mentee_currentlyEnrolledInCourse"
+                      'mentee_currentlyEnrolledInCourse'
                     )}
                     color={determineInputColor(
-                      "mentee_currentlyEnrolledInCourse"
+                      'mentee_currentlyEnrolledInCourse'
                     )}
                   >
                     <option id="" value="" disabled>
@@ -241,18 +241,18 @@ export const buildSignUpForm = (
                 type="checkbox"
                 name="agreesWithCodeOfConduct"
                 checked={formik.values.agreesWithCodeOfConduct}
-                onChange={onChange.bind(null, "agreesWithCodeOfConduct")}
+                onChange={onChange.bind(null, 'agreesWithCodeOfConduct')}
                 disabled={formik.isSubmitting}
               />
               <label htmlFor="agreesWithCodeOfConduct">
-                I agree to the{" "}
+                I agree to the{' '}
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
                   href="https://connect.redi-school.org/downloadeables/redi-connect-code-of-conduct.pdf"
                 >
                   Code of Conduct
-                </a>{" "}
+                </a>{' '}
                 of the ReDI School
               </label>
             </Form.Control>
@@ -267,11 +267,11 @@ export const buildSignUpForm = (
                 name="gaveGdprConsentAt"
                 value={new Date().toString()}
                 checked={!!formik.values.gaveGdprConsentAt.length}
-                onChange={onChange.bind(null, "gaveGdprConsentAt")}
+                onChange={onChange.bind(null, 'gaveGdprConsentAt')}
                 disabled={formik.isSubmitting}
               />
               <label htmlFor="gaveGdprConsentAt">
-                I give permission to the ReDI School Terms stated in the{" "}
+                I give permission to the ReDI School Terms stated in the{' '}
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
@@ -293,7 +293,7 @@ export const buildSignUpForm = (
                 className="button--default button--medium"
                 fullwidth={true}
                 onClick={() => formik.handleSubmit()}
-                disabled={formik.dirty && formik.isValid ? false : true}
+                disabled={!(formik.dirty && formik.isValid)}
               >
                 Submit
               </Button>
@@ -302,5 +302,5 @@ export const buildSignUpForm = (
         </form>
       </Columns.Column>
     </Columns>
-  );
-};
+  )
+}

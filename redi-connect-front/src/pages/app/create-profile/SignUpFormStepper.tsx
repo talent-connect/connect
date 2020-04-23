@@ -1,14 +1,14 @@
-import React from "react";
-import Stepper from "@material-ui/core/Stepper";
-import Step from "@material-ui/core/Step";
-import StepButton from "@material-ui/core/StepButton";
+import React from 'react'
+import Stepper from '@material-ui/core/Stepper'
+import Step from '@material-ui/core/Step'
+import StepButton from '@material-ui/core/StepButton'
 
-import { steps } from "./steps";
+import { steps } from './steps'
 
 interface Props {
-  activeStep: number;
-  handleStepChange: (step: number) => void;
-  disabled?: boolean;
+  activeStep: number
+  handleStepChange: (step: number) => void
+  disabled?: boolean
 }
 
 export const SignUpFormStepper = ({
@@ -28,4 +28,4 @@ export const SignUpFormStepper = ({
       </Step>
     ))}
   </Stepper>
-);
+)

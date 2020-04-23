@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { LoggedOutLayout } from '../../../layouts/LoggedOutLayout';
-import * as Yup from 'yup';
+import React, { useState } from 'react'
+import { LoggedOutLayout } from '../../../layouts/LoggedOutLayout'
+import * as Yup from 'yup'
 import {
   TextField,
   InputAdornment,
@@ -8,40 +8,40 @@ import {
   Paper,
   Theme,
   createStyles,
-  withStyles,
-} from '@material-ui/core';
-import { Lock as LockIcon } from '@material-ui/icons';
+  withStyles
+} from '@material-ui/core'
+import { Lock as LockIcon } from '@material-ui/icons'
 import {
   Formik,
   FormikProps,
   FormikHelpers as FormikActions,
-  FormikValues,
-} from 'formik';
-import { history } from '../../../services/history/history';
+  FormikValues
+} from 'formik'
+import { history } from '../../../services/history/history'
 import {
   setPassword,
   giveGdprConsent,
-  activateUser,
-} from '../../../services/api/api';
+  activateUser
+} from '../../../services/api/api'
 
 const styles = (theme: Theme) =>
   createStyles({
     formError: {
       padding: theme.spacing(1),
       backgroundColor: theme.palette.error.main,
-      color: 'white',
-    },
-  });
+      color: 'white'
+    }
+  })
 
 interface ResetPasswordValues {
-  password: string;
-  passwordConfirm: string;
+  password: string
+  passwordConfirm: string
 }
 
 const initialValues: ResetPasswordValues = {
   password: '',
-  passwordConfirm: '',
-};
+  passwordConfirm: ''
+}
 
 const validationSchema = Yup.object({
   password: Yup.string()
@@ -50,26 +50,26 @@ const validationSchema = Yup.object({
     .label('Password'),
   passwordConfirm: Yup.string()
     .required('Confirm your password')
-    .oneOf([Yup.ref('password')], 'Password does not match'),
-});
+    .oneOf([Yup.ref('password')], 'Password does not match')
+})
 
 const ResetPassword = () => {
-  const [formError, setFormError] = useState<string>('');
+  const [formError, setFormError] = useState<string>('')
 
   const submitForm = async (
     values: FormikValues,
     actions: FormikActions<ResetPasswordValues>
   ) => {
     try {
-      await setPassword(values.password);
-      await giveGdprConsent();
-      await activateUser();
-      history.push('/app/dashboard');
+      await setPassword(values.password)
+      await giveGdprConsent()
+      await activateUser()
+      history.push('/app/dashboard')
     } catch (err) {
-      setFormError('Invalid username or password');
+      setFormError('Invalid username or password')
     }
-    actions.setSubmitting(false);
-  };
+    actions.setSubmitting(false)
+  }
 
   return (
     <LoggedOutLayout>
@@ -80,15 +80,15 @@ const ResetPassword = () => {
         render={props => <Form {...props} formError={formError} />}
       />
     </LoggedOutLayout>
-  );
-};
-export default ResetPassword;
+  )
+}
+export default ResetPassword
 
 const Form = withStyles(styles)(
   (
     props: FormikProps<ResetPasswordValues> & {
-      formError: string;
-      classes: { formError: string };
+      formError: string
+      classes: { formError: string }
     }
   ) => {
     const {
@@ -101,14 +101,14 @@ const Form = withStyles(styles)(
       isValid,
       isSubmitting,
       setFieldTouched,
-      submitForm,
-    } = props;
+      submitForm
+    } = props
 
     const change = (name: any, e: any) => {
-      e.persist();
-      handleChange(e);
-      setFieldTouched(name, true, false);
-    };
+      e.persist()
+      handleChange(e)
+      setFieldTouched(name, true, false)
+    }
 
     return (
       <>
@@ -129,7 +129,7 @@ const Form = withStyles(styles)(
                 <InputAdornment position="start">
                   <LockIcon />
                 </InputAdornment>
-              ),
+              )
             }}
             fullWidth
             margin="normal"
@@ -149,7 +149,7 @@ const Form = withStyles(styles)(
                 <InputAdornment position="start">
                   <LockIcon />
                 </InputAdornment>
-              ),
+              )
             }}
             fullWidth
             margin="normal"
@@ -166,6 +166,6 @@ const Form = withStyles(styles)(
           </Button>
         </form>
       </>
-    );
+    )
   }
-);
+)

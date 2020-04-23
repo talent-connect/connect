@@ -1,10 +1,10 @@
-import React from "react";
-import { Columns, Container, Section } from "react-bulma-components";
-import Icons from "../atoms/MediaIcons";
-import "./Footer.scss";
+import React from 'react'
+import { Columns, Container, Section } from 'react-bulma-components'
+import Icons from '../atoms/MediaIcons'
+import './Footer.scss'
 
 const Footer = () => {
-  const year = new Date().getFullYear();
+  const year = new Date().getFullYear()
 
   return (
     <footer className="footer">
@@ -64,7 +64,7 @@ const Footer = () => {
             </Columns.Column>
             <Columns.Column
               mobile={{
-                size: "four-fifths",
+                size: 'four-fifths'
               }}
               className="is-hidden-tablet"
             >
@@ -79,7 +79,7 @@ const Footer = () => {
         </Section>
       </Container>
     </footer>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer

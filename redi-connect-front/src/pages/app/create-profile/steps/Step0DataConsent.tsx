@@ -1,46 +1,47 @@
-import React from "react";
-import * as Yup from "yup";
+/* eslint-disable no-irregular-whitespace */
+import React from 'react'
+import * as Yup from 'yup'
 import {
   FormControlLabel,
   Checkbox,
   createStyles,
   withStyles,
-  Theme,
-} from "@material-ui/core";
-import { SignUpFormType, CreateProfileFormValues } from "../factory";
-import { FormikProps } from "formik";
+  Theme
+} from '@material-ui/core'
+import { SignUpFormType, CreateProfileFormValues } from '../factory'
+import { FormikProps } from 'formik'
 
 export const validationSchema = Yup.object({
   gaveGdprConsentAt: Yup.string()
     .required()
-    .label("Data usage consent"),
-});
+    .label('Data usage consent')
+})
 
 const styles = (theme: Theme) =>
   createStyles({
     paragraph: {
-      fontWeight: 300,
+      fontWeight: 300
     },
     paragraphBelowSubheader: {
-      marginTop: "0.3em",
-      fontWeight: 300,
+      marginTop: '0.3em',
+      fontWeight: 300
     },
     subHeader: {
-      marginBottom: 0,
+      marginBottom: 0
     },
     error: {
-      backgroundColor: theme.palette.error.main,
-    },
-  });
+      backgroundColor: theme.palette.error.main
+    }
+  })
 
 interface Props {
   classes: {
-    paragraph: string;
-    paragraphBelowSubheader: string;
-    subHeader: string;
-    error: string;
-  };
-  type: SignUpFormType;
+    paragraph: string
+    paragraphBelowSubheader: string
+    subHeader: string
+    error: string
+  }
+  type: SignUpFormType
 }
 
 export const Step0DataConsent = withStyles(styles)(
@@ -51,18 +52,18 @@ export const Step0DataConsent = withStyles(styles)(
       // errors,
       handleChange,
       // isValid,
-      setFieldTouched,
-    } = props;
+      setFieldTouched
+    } = props
 
     const handleGdprConsentClick = (e: any) => {
-      e.persist();
-      handleChange(e);
-      setFieldTouched("gaveGdprConsentAt", true, false);
-    };
+      e.persist()
+      handleChange(e)
+      setFieldTouched('gaveGdprConsentAt', true, false)
+    }
 
     return (
       <>
-        {type === "public-sign-up-mentee-pending-review" && (
+        {type === 'public-sign-up-mentee-pending-review' && (
           <React.Fragment>
             <p>Welcome to ReDI Connect! What is the mentorship program?</p>
             <p>
@@ -74,12 +75,12 @@ export const Step0DataConsent = withStyles(styles)(
               from people with more work experience, build personal &
               professional network, help with orientation in the job market,
               support with your courses. You have to attend at least 5 meetings
-              minimum of 1 hour per month (or as discussed with your mentor).{" "}
+              minimum of 1 hour per month (or as discussed with your mentor).{' '}
             </p>
             <p>So let’s get started in matching you with the right mentor!</p>
             <p>
               You can now fill out your profile, we will guide you through the
-              process.{" "}
+              process.{' '}
             </p>
             <p>
               Once you have filled out your profile you will receive profiles of
@@ -88,7 +89,7 @@ export const Step0DataConsent = withStyles(styles)(
             </p>
             <p>
               Please write us an email if you encounter any problems while
-              filling out your profile:{" "}
+              filling out your profile:{' '}
               <a href="mailto:Career@redi-school.org">Career@redi-school.org</a>
             </p>
             <p>Your Career Support Team</p>
@@ -104,7 +105,7 @@ export const Step0DataConsent = withStyles(styles)(
               Integration. In order for ReDI School to effectively manage you as
               a student in our organization, and the ReDI Connect platform, we
               need to collect, process and store your personal information. This
-              information may contain your personal data. If the processing of
+              information may contain your personal data. If the processing of
               personal data is necessary and there is no statutory basis for
               such processing, we generally obtain consent from the data
               subject.
@@ -134,7 +135,7 @@ export const Step0DataConsent = withStyles(styles)(
               For definitions and more information see our data protection
               policy under www.redi-school.org/data-privacy-policy.For
               definitions and more information see our data protection policy
-              under 
+              under
               <a
                 href="http://www.redi-school.org/data-privacy-policy"
                 target="_blank"
@@ -181,7 +182,7 @@ export const Step0DataConsent = withStyles(styles)(
           </React.Fragment>
         )}
 
-        {type === "public-sign-up-mentor-pending-review" && (
+        {type === 'public-sign-up-mentor-pending-review' && (
           <React.Fragment>
             <p>Hi!</p>
             <p>
@@ -242,7 +243,7 @@ export const Step0DataConsent = withStyles(styles)(
             </p>
             <p className={classes.paragraph}>
               For definitions and more information see our data protection
-              policy under 
+              policy under
               <a
                 href="http://www.redi-school.org/data-privacy-policy."
                 target="_blank"
@@ -297,12 +298,12 @@ export const Step0DataConsent = withStyles(styles)(
               name="gaveGdprConsentAt"
               value={new Date().toString()}
               onChange={e => {
-                handleGdprConsentClick(e);
+                handleGdprConsentClick(e)
               }}
             />
           }
         />
       </>
-    );
+    )
   }
-);
+)

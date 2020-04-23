@@ -1,49 +1,49 @@
-import React from "react";
-import { RedProfile } from "../../../../types/RedProfile";
-import { Theme, createStyles, withStyles, Grid } from "@material-ui/core";
-import { ProfileName } from "../../../../components/ProfileName";
-import { ProfileOccupation } from "../../../../components/ProfileOccupation";
-import { ProfileWorkPlace } from "../../../../components/ProfileWorkPlace";
-import { ProfileLanguages } from "../../../../components/ProfileLanguages";
-import { CategoryChip } from "../../../../components/CategoryChip";
-import { Avatar } from "../../../../components/Avatar";
-import { ProfileCourse } from "../../../../components/ProfileCourse";
-import { ConnectButton } from "../../../../components/ConnectButton";
+import React from 'react'
+import { RedProfile } from '../../../../types/RedProfile'
+import { Theme, createStyles, withStyles, Grid } from '@material-ui/core'
+import { ProfileName } from '../../../../components/ProfileName'
+import { ProfileOccupation } from '../../../../components/ProfileOccupation'
+import { ProfileWorkPlace } from '../../../../components/ProfileWorkPlace'
+import { ProfileLanguages } from '../../../../components/ProfileLanguages'
+import { CategoryChip } from '../../../../components/CategoryChip'
+import { Avatar } from '../../../../components/Avatar'
+import { ProfileCourse } from '../../../../components/ProfileCourse'
+import { ConnectButton } from '../../../../components/ConnectButton'
 
 interface Props {
-  mentee: RedProfile;
+  mentee: RedProfile
   classes: {
-    avatar: string;
-    category: string;
-    personalDescription: string;
-  };
+    avatar: string
+    category: string
+    personalDescription: string
+  }
 }
 
 const styles = (theme: Theme) =>
   createStyles({
     avatar: {
-      width: "100px",
-      height: "100px"
+      width: '100px',
+      height: '100px'
     },
     category: {
-      color: "white",
-      fontSize: "12px",
-      margin: "3px",
-      height: "20px"
+      color: 'white',
+      fontSize: '12px',
+      margin: '3px',
+      height: '20px'
     },
     personalDescription: {
       marginTop: theme.spacing(6),
       marginBottom: theme.spacing(6),
-      overflowWrap: "break-word"
+      overflowWrap: 'break-word'
     }
-  });
+  })
 
 export const ProfileMentee = withStyles(styles)(
   ({ mentee, classes }: Props) => {
     const match =
-      mentee.redMatchesWithCurrentUser && mentee.redMatchesWithCurrentUser[0];
-    const occupation = occupationFormatter(mentee);
-    const workPlace = workPlaceFormatter(mentee);
+      mentee.redMatchesWithCurrentUser && mentee.redMatchesWithCurrentUser[0]
+    const occupation = occupationFormatter(mentee)
+    const workPlace = workPlaceFormatter(mentee)
     return (
       <>
         <Grid container spacing={2}>
@@ -51,11 +51,11 @@ export const ProfileMentee = withStyles(styles)(
             <Avatar
               className={classes.avatar}
               s3Key={mentee.profileAvatarImageS3Key}
-              style={{ width: "100%", height: "20vh" }}
+              style={{ width: '100%', height: '20vh' }}
             />
           </Grid>
           <Grid item xs={12} sm={7}>
-            <h3 style={{ fontWeight: 700, fontFamily: "Roboto", margin: 0 }}>
+            <h3 style={{ fontWeight: 700, fontFamily: 'Roboto', margin: 0 }}>
               <ProfileName name={`${mentee.firstName} ${mentee.lastName}`} />
             </h3>
             <ProfileCourse courseId={mentee.mentee_currentlyEnrolledInCourse} />
@@ -81,17 +81,17 @@ export const ProfileMentee = withStyles(styles)(
             <h4 style={{ marginBottom: 0 }}>Expectations to my mentor:</h4>
             <p
               className={classes.personalDescription}
-              style={{ marginTop: "0.3em" }}
+              style={{ marginTop: '0.3em' }}
             >
               {mentee.expectations}
             </p>
           </>
         )}
 
-        {match && match.status === "applied" && (
+        {match && match.status === 'applied' && (
           <>
             <h3>Application message from the student</h3>
-            <p style={{ overflowWrap: "break-word" }}>
+            <p style={{ overflowWrap: 'break-word' }}>
               {match.applicationText}
             </p>
             <Grid container justify="center">
@@ -100,49 +100,49 @@ export const ProfileMentee = withStyles(styles)(
           </>
         )}
       </>
-    );
+    )
   }
-);
+)
 
 const occupationFormatter = (mentee: RedProfile) => {
   switch (mentee.mentee_occupationCategoryId) {
-    case "job":
+    case 'job':
       return (
-        `Job` +
+        'Job' +
         (mentee.mentee_occupationJob_position
           ? ` (${mentee.mentee_occupationJob_position})`
-          : "")
-      );
-    case "student":
+          : '')
+      )
+    case 'student':
       return (
-        `Student` +
+        'Student' +
         (mentee.mentee_occupationStudent_studyName
           ? ` (${mentee.mentee_occupationStudent_studyName})`
-          : "")
-      );
-    case "lookingForJob":
+          : '')
+      )
+    case 'lookingForJob':
       return (
-        `Looking for a job` +
+        'Looking for a job' +
         (mentee.mentee_occupationLookingForJob_what
           ? ` ${mentee.mentee_occupationLookingForJob_what})`
-          : "")
-      );
-    case "other":
-      return mentee.mentee_occupationOther_description;
+          : '')
+      )
+    case 'other':
+      return mentee.mentee_occupationOther_description
     default:
-      return undefined;
+      return undefined
   }
-};
+}
 
 const workPlaceFormatter = (mentee: RedProfile) => {
   switch (mentee.mentee_occupationCategoryId) {
-    case "job":
-      return mentee.mentee_occupationJob_placeOfEmployment;
-    case "student":
-      return mentee.mentee_occupationStudent_studyPlace;
-    case "lookingForJob":
-    case "other":
+    case 'job':
+      return mentee.mentee_occupationJob_placeOfEmployment
+    case 'student':
+      return mentee.mentee_occupationStudent_studyPlace
+    case 'lookingForJob':
+    case 'other':
     default:
-      return undefined;
+      return undefined
   }
-};
+}

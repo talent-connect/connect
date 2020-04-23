@@ -1,19 +1,18 @@
-import React from "react";
-import { Form } from "react-bulma-components";
-import { useFormikContext } from "formik";
+import React from 'react'
+import { Form } from 'react-bulma-components'
 
 interface Props {
-  name: String;
-  type?: "email" | "text" | "password";
-  placeholder: String;
-  value: String;
-  handleChange: Function;
-  setFieldTouched: Function;
-  isSubmitting: Boolean;
-  hasError: Boolean;
+  name: string
+  type?: 'email' | 'text' | 'password'
+  placeholder: string
+  value: string
+  handleChange: Function
+  setFieldTouched: Function
+  isSubmitting: boolean
+  hasError: boolean
 }
 
-function FormInput(props: Props) {
+function FormInput (props: Props) {
   const {
     value,
     type,
@@ -22,14 +21,14 @@ function FormInput(props: Props) {
     handleChange,
     setFieldTouched,
     isSubmitting,
-    hasError,
-  } = props;
+    hasError
+  } = props
 
   const onChange = (name: any, e: any) => {
-    e.persist();
-    handleChange(e);
-    setFieldTouched(name, true, false);
-  };
+    e.persist()
+    handleChange(e)
+    setFieldTouched(name, true, false)
+  }
 
   return (
     <Form.Field>
@@ -37,8 +36,8 @@ function FormInput(props: Props) {
         <Form.Input
           id={name}
           name={name}
-          type={type ? type : "text"}
-          color={hasError ? "danger" : null}
+          type={type || 'text'}
+          color={hasError ? 'danger' : null}
           placeholder={placeholder}
           value={value}
           onChange={onChange.bind(null, name)}
@@ -51,7 +50,7 @@ function FormInput(props: Props) {
         </Form.Help>
       )}
     </Form.Field>
-  );
+  )
 }
 
-export default FormInput;
+export default FormInput

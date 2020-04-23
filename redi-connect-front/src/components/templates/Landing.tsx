@@ -1,6 +1,6 @@
-import React from "react";
-import LoggedOutNavbar from "../organisms/LoggedOutNavbar";
-import Footer from "../organisms/Footer";
+import React from 'react'
+import LoggedOutNavbar from '../organisms/LoggedOutNavbar'
+import Footer from '../organisms/Footer'
 
 const Landing: React.FunctionComponent = ({ children }) => (
   <>
@@ -8,6 +8,6 @@ const Landing: React.FunctionComponent = ({ children }) => (
     {children}
     <Footer />
   </>
-);
+)
 
-export default Landing;
+export default Landing

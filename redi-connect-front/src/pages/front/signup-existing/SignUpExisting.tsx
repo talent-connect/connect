@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { LoggedOutLayout } from '../../../layouts/LoggedOutLayout';
-import { RouteComponentProps } from 'react-router';
-import { useLoading } from '../../../hooks/WithLoading';
-import { saveAccessToken } from '../../../services/auth/auth';
-import { fetchSaveRedProfile } from '../../../services/api/api';
-import { history } from '../../../services/history/history';
+import React, { useEffect, useState } from 'react'
+import { LoggedOutLayout } from '../../../layouts/LoggedOutLayout'
+import { RouteComponentProps } from 'react-router'
+import { useLoading } from '../../../hooks/WithLoading'
+import { saveAccessToken } from '../../../services/auth/auth'
+import { fetchSaveRedProfile } from '../../../services/api/api'
+import { history } from '../../../services/history/history'
 import {
   FormControlLabel,
   Checkbox,
@@ -12,77 +12,77 @@ import {
   createStyles,
   withStyles,
   Theme,
-  Paper,
-} from '@material-ui/core';
-import { RedProfile } from '../../../types/RedProfile';
+  Paper
+} from '@material-ui/core'
+import { RedProfile } from '../../../types/RedProfile'
 
 interface RouteParams {
-  accessToken: string;
+  accessToken: string
 }
 
 const styles = (theme: Theme) =>
   createStyles({
     paragraph: {
-      fontWeight: 300,
+      fontWeight: 300
     },
     paragraphBelowSubheader: {
       marginTop: '0.3em',
-      fontWeight: 300,
+      fontWeight: 300
     },
     subHeader: {
-      marginBottom: 0,
+      marginBottom: 0
     },
     error: {
-      backgroundColor: theme.palette.error.main,
-    },
-  });
+      backgroundColor: theme.palette.error.main
+    }
+  })
 
 interface Props {
   classes: {
-    paragraph: string;
-    paragraphBelowSubheader: string;
-    subHeader: string;
-    error: string;
-  };
+    paragraph: string
+    paragraphBelowSubheader: string
+    subHeader: string
+    error: string
+  }
 }
 
 const SignUpExisting = withStyles(styles)(
   (props: RouteComponentProps<RouteParams> & Props) => {
-    const classes = props.classes;
-    const { loading, Loading, setLoading } = useLoading();
-    const [consentGiven, setConsentGiven] = useState(false);
-    const [profile, setProfile] = useState<RedProfile>();
-    const [errorMsg, setErrorMsg] = useState<string | null>(null);
+    const classes = props.classes
+    const { loading, Loading, setLoading } = useLoading()
+    const [consentGiven, setConsentGiven] = useState(false)
+    const [profile, setProfile] = useState<RedProfile>()
+    const [errorMsg, setErrorMsg] = useState<string | null>(null)
 
     // TODO: use the profileFetchStart() infrastructure instead to centralize comms
     // and error handling
     useEffect(() => {
       const load = async () => {
-        setLoading(true);
+        setLoading(true)
         const accessTokenStr = decodeURIComponent(
           props.match.params.accessToken
-        );
-        let accessToken;
+        )
+        let accessToken
         try {
-          accessToken = JSON.parse(accessTokenStr);
-          saveAccessToken(accessToken);
+          accessToken = JSON.parse(accessTokenStr)
+          saveAccessToken(accessToken)
         } catch (err) {
           return setErrorMsg(
             'Sorry, this address seems to be invalid. Please contact career@redi-school.org to receive your invite again.'
-          );
+          )
         }
         try {
-          const profile = await fetchSaveRedProfile(accessToken);
-          setProfile(profile);
-          setLoading(false);
+          const profile = await fetchSaveRedProfile(accessToken)
+          setProfile(profile)
+          setLoading(false)
         } catch (err) {
           return setErrorMsg(
             'Sorry, the link you used seems to have expired. Please contact career@redi-school.org to receive a new one.'
-          );
+          )
         }
-      };
-      load();
-    }, []);
+      }
+      load()
+    }, [props.match.params.accessToken, setLoading])
 
     return (
       <>
@@ -117,7 +117,7 @@ const SignUpExisting = withStyles(styles)(
                     effectively manage you as a student in our organization, and
                     the ReDI Connect platform, we need to collect, process and
                     store your personal information. This information may
-                    contain your personal data. If the processing of personal
+                    contain your personal data. If the processing of personal
                     data is necessary and there is no statutory basis for such
                     processing, we generally obtain consent from the data
                     subject.
@@ -133,7 +133,7 @@ const SignUpExisting = withStyles(styles)(
                     the nature, scope, term, and purpose of the personal data we
                     collect, use and process. Furthermore, data subjects are
                     informed, by means of this data protection declaration, of
-                    the rights to which they are entitled. 
+                    the rights to which they are entitled.
                   </p>
                   <p className={classes.paragraph}>
                     As the controller, ReDI School has implemented numerous
@@ -147,9 +147,9 @@ const SignUpExisting = withStyles(styles)(
                   </p>
                   <p className={classes.paragraph}>
                     For definitions and more information see our data protection
-                    policy under www.redi-school.org/data-privacy-policy.For
+                    policy under www.redi-school.org/data-privacy-policy.For
                     definitions and more information see our data protection
-                    policy under 
+                    policy under
                     <a
                       href="http://www.redi-school.org/data-privacy-policy"
                       target="_blank"
@@ -207,7 +207,7 @@ const SignUpExisting = withStyles(styles)(
                     effectively manage you as a mentor in our organization, and
                     the ReDI Connect platform, we need to collect, process and
                     store your personal information. This information may
-                    contain your personal data. If the processing of personal
+                    contain your personal data. If the processing of personal
                     data is necessary and there is no statutory basis for such
                     processing, we generally obtain consent from the data
                     subject.
@@ -237,7 +237,7 @@ const SignUpExisting = withStyles(styles)(
                   </p>
                   <p className={classes.paragraph}>
                     For definitions and more information see our data protection
-                    policy under 
+                    policy under
                     <a
                       href="http://www.redi-school.org/data-privacy-policy."
                       target="_blank"
@@ -293,14 +293,14 @@ const SignUpExisting = withStyles(styles)(
                     name="consentGiven"
                     value="true"
                     onChange={e => {
-                      setConsentGiven(Boolean(e.target.checked));
+                      setConsentGiven(Boolean(e.target.checked))
                     }}
                   />
                 }
               />
               <Button
                 onClick={() => {
-                  history.push('/app/create-profile/existing-reset-password');
+                  history.push('/app/create-profile/existing-reset-password')
                 }}
                 color="primary"
                 variant="contained"
@@ -313,8 +313,8 @@ const SignUpExisting = withStyles(styles)(
           )}
         </LoggedOutLayout>
       </>
-    );
+    )
   }
-);
+)
 
-export default SignUpExisting;
+export default SignUpExisting

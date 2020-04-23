@@ -1,15 +1,15 @@
-import React from "react";
-import "./Button.scss";
+import React from 'react'
+import './Button.scss'
 
 interface Props {
-  text: string;
-  size: "large" | "medium" | "small";
-  type?: "default" | "simple";
-  icon?: "arrow-right";
+  text: string
+  size: 'large' | 'medium' | 'small'
+  type?: 'default' | 'simple'
+  icon?: 'arrow-right'
 }
 
-const Button = ({ text, type = "default", size, icon }: Props) => {
-  const baseClass = "button";
+const Button = ({ text, type = 'default', size, icon }: Props) => {
+  const baseClass = 'button'
 
   return (
     <button
@@ -24,7 +24,7 @@ const Button = ({ text, type = "default", size, icon }: Props) => {
         />
       )}
     </button>
-  );
-};
+  )
+}
 
-export default Button;
+export default Button

@@ -1,36 +1,36 @@
-import React, { useEffect } from 'react';
-import { Formik, FormikValues, FormikHelpers as FormikActions } from 'formik';
-import Grid from '@material-ui/core/Grid';
-import * as Yup from 'yup';
-import clsx from 'clsx';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react'
+import { Formik, FormikValues, FormikHelpers as FormikActions } from 'formik'
+import Grid from '@material-ui/core/Grid'
+import * as Yup from 'yup'
+import clsx from 'clsx'
+import { Link } from 'react-router-dom'
 
-import { Step2Background } from './steps/Step2Background';
-import { Step3Profile } from './steps/Step3Profile';
+import { Step2Background } from './steps/Step2Background'
+import { Step3Profile } from './steps/Step3Profile'
 import {
   Button,
   Paper,
   Theme,
   createStyles,
-  withStyles,
-} from '@material-ui/core';
-import { Step4ContactData } from './steps/Step4ContactData';
-import { Step5Categories } from './steps/Step5Categories';
-import { RedProfile } from '../../../types/RedProfile';
-import { getRedProfile } from '../../../services/auth/auth';
-import { FullScreenCircle } from '../../../hooks/WithLoading';
-import { LoggedInLayout } from '../../../layouts/LoggedInLayout';
-import { RootState } from '../../../redux/types';
-import { connect } from 'react-redux';
+  withStyles
+} from '@material-ui/core'
+import { Step4ContactData } from './steps/Step4ContactData'
+import { Step5Categories } from './steps/Step5Categories'
+import { RedProfile } from '../../../types/RedProfile'
+import { getRedProfile } from '../../../services/auth/auth'
+import { FullScreenCircle } from '../../../hooks/WithLoading'
+import { LoggedInLayout } from '../../../layouts/LoggedInLayout'
+import { RootState } from '../../../redux/types'
+import { connect } from 'react-redux'
 import {
   profileFetchStart,
-  profileSaveStart,
-} from '../../../redux/user/actions';
+  profileSaveStart
+} from '../../../redux/user/actions'
 import {
   educationLevels,
   courses,
-  menteeOccupationCategories,
-} from '../../../config/config';
+  menteeOccupationCategories
+} from '../../../config/config'
 // import { Styles } from '@material-ui/styles/withStyles';
 
 // const styles = (theme: Theme) =>
@@ -51,34 +51,34 @@ export type SignUpFormType =
   | 'public-sign-up-mentee-rejected';
 
 export interface SignUpFormValues {
-  formType: SignUpFormType;
-  mentor_occupation: string;
-  mentor_workPlace: string;
-  expectations: string;
-  mentee_occupationCategoryId: string; // TODO: do TS magic to make this a union type
-  mentee_occupationJob_placeOfEmployment: string;
-  mentee_occupationJob_position: string;
-  mentee_occupationStudent_studyPlace: string;
-  mentee_occupationStudent_studyName: string;
-  mentee_occupationLookingForJob_what: string;
-  mentee_occupationOther_description: string;
-  mentee_highestEducationLevel: string;
-  mentee_currentlyEnrolledInCourse: string;
-  profileAvatarImageS3Key: string;
-  firstName: string;
-  lastName: string;
-  gender: string;
-  age?: number;
-  languages: string[];
-  otherLanguages: string;
-  personalDescription: string;
-  contactEmail: string;
-  linkedInProfileUrl: string;
-  githubProfileUrl: string;
-  slackUsername: string;
-  telephoneNumber: string;
-  categories: string[];
-  menteeCountCapacity: number;
+  formType: SignUpFormType
+  mentor_occupation: string
+  mentor_workPlace: string
+  expectations: string
+  mentee_occupationCategoryId: string // TODO: do TS magic to make this a union type
+  mentee_occupationJob_placeOfEmployment: string
+  mentee_occupationJob_position: string
+  mentee_occupationStudent_studyPlace: string
+  mentee_occupationStudent_studyName: string
+  mentee_occupationLookingForJob_what: string
+  mentee_occupationOther_description: string
+  mentee_highestEducationLevel: string
+  mentee_currentlyEnrolledInCourse: string
+  profileAvatarImageS3Key: string
+  firstName: string
+  lastName: string
+  gender: string
+  age?: number
+  languages: string[]
+  otherLanguages: string
+  personalDescription: string
+  contactEmail: string
+  linkedInProfileUrl: string
+  githubProfileUrl: string
+  slackUsername: string
+  telephoneNumber: string
+  categories: string[]
+  menteeCountCapacity: number
 }
 
 const validationSchema = Yup.object({
@@ -87,7 +87,7 @@ const validationSchema = Yup.object({
     then: Yup.string()
       .required()
       .max(255)
-      .label('Occupation'),
+      .label('Occupation')
   }),
   mentor_workPlace: Yup.string()
     .max(255)
@@ -97,7 +97,7 @@ const validationSchema = Yup.object({
     then: Yup.string()
       .required()
       .oneOf(menteeOccupationCategories.map(v => v.id))
-      .label('Current occupation'),
+      .label('Current occupation')
   }),
   mentee_occupationJob_placeOfEmployment: Yup.string()
     .max(255)
@@ -121,14 +121,14 @@ const validationSchema = Yup.object({
     is: 'mentee',
     then: Yup.string()
       .oneOf(educationLevels.map(level => level.id))
-      .label('Highest Education Level'),
+      .label('Highest Education Level')
   }),
   mentee_currentlyEnrolledInCourse: Yup.string().when('formType', {
     is: 'public-sign-up-mentee-pending-review',
     then: Yup.string()
       .required()
       .oneOf(courses.map(level => level.id))
-      .label('Currently enrolled in course'),
+      .label('Currently enrolled in course')
   }),
   profileAvatarImageS3Key: Yup.string().max(255),
   firstName: Yup.string()
@@ -177,34 +177,34 @@ const validationSchema = Yup.object({
     then: Yup.array()
       .compact(v => v === 'dontKnowYet')
       .min(0)
-      .max(3),
+      .max(3)
   }),
   menteeCountCapacity: Yup.number().when('formType', {
     is: 'mentor',
     then: Yup.number()
       .required('Please specify the number of mentees you can take on')
       .min(1)
-      .max(4),
-  }),
-});
+      .max(4)
+  })
+})
 
 const mapState = (state: RootState) => ({
-  saveResult: state.user.saveResult,
-});
+  saveResult: state.user.saveResult
+})
 
 export const buildSignUpForm = (
   profile: RedProfile,
   dispatch: any
 ): Function => (): React.ReactFragment => {
   // const [submitError, setSubmitError] = useState(false);
-  const type = profile.userType;
+  const type = profile.userType
 
   const submitForm = async (
     values: FormikValues,
     actions: FormikActions<SignUpFormValues>
   ) => {
     // setSubmitError(false);
-    const profile = values as RedProfile;
+    const profile = values as RedProfile
     // TODO: this needs to be done in a smarter way, like iterating over the RedProfile definition or something
     // const cleanProfile: RedProfile = omit(profile, [
     //   'password',
@@ -222,33 +222,33 @@ export const buildSignUpForm = (
     //   'currentMenteeCount',
     //   'ifTypeForm_additionalComments',
     // ]);
-    dispatch(profileSaveStart(profile));
-  };
+    dispatch(profileSaveStart(profile))
+  }
 
   // TODO: fix this TS uglyness
-  const initialValues: SignUpFormValues = (profile as unknown) as SignUpFormValues;
-  initialValues.formType = type;
+  const initialValues: SignUpFormValues = (profile as unknown) as SignUpFormValues
+  initialValues.formType = type
 
   const styles = (theme: Theme) =>
     createStyles({
       submitResult: {
         padding: theme.spacing(1),
-        color: 'white',
+        color: 'white'
       },
       submitError: {
-        backgroundColor: theme.palette.error.main,
+        backgroundColor: theme.palette.error.main
       },
       submitSuccess: {
-        backgroundColor: theme.palette.primary.main,
+        backgroundColor: theme.palette.primary.main
       },
       margin: {
-        margin: '6px 0',
-      },
-    });
+        margin: '6px 0'
+      }
+    })
 
   const LinkToDashboard: any = (props: any) => (
     <Link {...props} to="/app/dashboard" />
-  );
+  )
 
   const InnerForm = withStyles(styles)(
     connect(mapState)((props: any) => (
@@ -278,7 +278,7 @@ export const buildSignUpForm = (
             <Grid item xs={12}>
               <Button
                 onClick={() => {
-                  props.handleSubmit();
+                  props.handleSubmit()
                 }}
                 color="primary"
                 variant="contained"
@@ -293,7 +293,7 @@ export const buildSignUpForm = (
         </form>
       </>
     ))
-  );
+  )
 
   return (
     <>
@@ -304,10 +304,10 @@ export const buildSignUpForm = (
         render={props => <InnerForm {...props} />}
       />
     </>
-  );
-};
+  )
+}
 
-export default function me() {
+export default function me () {
   return (
     <ProfileLoader profileId={getRedProfile().id}>
       {({ loading, profile, currentUser }: any) => (
@@ -317,38 +317,38 @@ export default function me() {
         </>
       )}
     </ProfileLoader>
-  );
+  )
 }
 
 const ProfileLoader = connect((state: RootState) => ({
   loading: state.user.loading,
-  profile: state.user.profile,
+  profile: state.user.profile
 }))((props: any) => {
   useEffect(() => {
-    props.dispatch(profileFetchStart());
-  }, []);
+    props.dispatch(profileFetchStart())
+  }, [props])
   return props.children({
     loading: props.loading,
     profile: props.profile,
-    currentUser: props.currentUser,
-  });
-});
+    currentUser: props.currentUser
+  })
+})
 
 interface PresentationProps {
   classes: {
-    button: string;
-  };
-  profile: RedProfile | undefined;
-  currentUser: RedProfile | undefined;
+    button: string
+  }
+  profile: RedProfile | undefined
+  currentUser: RedProfile | undefined
 }
 
 const Presentation = connect()(
   ({ profile, dispatch }: { profile: RedProfile } & { dispatch: any }) => {
-    const Form = buildSignUpForm(profile, dispatch);
+    const Form = buildSignUpForm(profile, dispatch)
     return (
       <LoggedInLayout>
         <Form />
       </LoggedInLayout>
-    );
+    )
   }
-);
+)

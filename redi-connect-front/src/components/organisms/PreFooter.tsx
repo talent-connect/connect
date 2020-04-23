@@ -1,16 +1,16 @@
-import React from "react";
+import React from 'react'
 import {
   Container,
   Section,
   Columns,
   Heading,
   Content,
-  Image,
-} from "react-bulma-components";
-import Button from "../atoms/Button";
-import hello from "../../assets/images/hello.svg";
+  Image
+} from 'react-bulma-components'
+import Button from '../atoms/Button'
+import hello from '../../assets/images/hello.svg'
 // import helloMobile from "../../assets/images/hello-mobile.svg";
-import "./PreFooter.scss";
+import './PreFooter.scss'
 
 const PreFooter = () => (
   <Section className="pre-footer-container">
@@ -39,6 +39,6 @@ const PreFooter = () => (
       </Columns>
     </Container>
   </Section>
-);
+)
 
-export default PreFooter;
+export default PreFooter

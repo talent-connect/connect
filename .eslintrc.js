@@ -1,1 +1,4 @@
-module.exports = { "extends": "standard" };
+module.exports = {
+  "extends": "standard",
+  "root": true
+};
