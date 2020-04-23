@@ -1,105 +1,95 @@
 @import "~bulma/sass/utilities/_all";
 @import "../../styles/_variables.scss";
 
-.button {
+.custom-button {
   display: inline-flex;
-  align-items: center;
+  margin-bottom: .375rem;
+  margin-left: .375rem;
+  background: none;
+  border: none;
+  box-sizing: border-box;
   font-weight: $weight-bold;
   text-transform: uppercase;
   text-decoration: none;
-  font-size: $size-normal;
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
   letter-spacing: 1.7px;
-  line-height: $size-normal;
+  line-height: 1rem;
   outline: none;
-  border: none;
+  position: relative;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all .3s;
+  border: 2px solid black;
 
-  &[disabled] {
-    color: $black;
-    &:hover {
-      background-color: $grey-light;
-      color: $black;
-    }
+  @include mobile() {
+    width: calc(100% - .5rem);
+    justify-content: center;
   }
 
   &--default {
-    position: relative;
-    background-color: $redi-orange-light;
-    margin-top: $size-5 / 2;
-    margin-right: $size-5 / 2;
 
-    @include mobile() {
-      width: calc(100% - 0.5rem);
-      justify-content: center;
+    &:after {
+      content: '';
+      z-index: -1;
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 100%;
+      height: 100%;
+      background-color: $redi-orange-light;
     }
 
-    &:hover {
+    &:hover::after {
       background-color: $redi-orange;
     }
 
     &:active {
-      background-color: $black;
-      color: $white;
+      background-color: black;
+      color: white;
     }
 
-    &::before {
-      content: "";
-      border: 2px solid $black;
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      bottom: $size-5 / 2;
-      left: $size-5 / 2;
+    &:active::after {
+      background-color: transparent;
     }
 
-    &:active::before {
-      display: none;
+    &:disabled {
+      color: black;
+
+      &:after {
+        background-color: $grey-light;
+      }
+    }
+  }
+
+  &--fullwidth {
+    width: calc(100% - .5rem);
+    justify-content: center;
+  }
+
+  &--small {
+    font-size: .875rem;
+    padding: .8125rem 1.5rem;
+  }
+
+  &--large {
+    line-height: 1.5rem;
+    padding: 1rem 1.8125rem;
+
+    @include mobile() {
+      line-height: 1rem;
     }
   }
 
   &--simple {
-    background-color: transparent;
-    margin-top: $size-5 / 2;
-  }
+    margin-top: 2px;
+    border: none;
 
-  &--large {
-    line-height: 1.5em;
-    // padding: 0.8rem 2rem 2rem 3.6rem;
-    padding: 0.5em 1.25em 1.25em 2.25em;
-
-    &:active {
-      padding: 0.875em 1.75rem;
-    }
-  }
-
-  &--medium {
-    padding: 0.8em 1em 1.5em 2em;
-
-    &:active {
-      padding: 1em 1.5em;
-    }
-  }
-
-  &--small {
-    font-size: $size-7;
-    letter-spacing: 1.3px;
-    padding: 0.25em 1em 1.25em 2em;
-
-    &:active {
-      padding: 0.75em 1.5em;
-    }
-  }
-
-  &--icon {
-    padding: 0.5em 1em 1.5em 2em;
-
-    &:active {
-      padding: 1em 2em 1em 1em;
+    &:hover {
+      color: $redi-orange-dark;
     }
   }
 
   &--img {
-    margin-left: 0.5em;
+    margin-left: .5rem;
   }
 }

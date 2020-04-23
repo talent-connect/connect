@@ -7,17 +7,22 @@ import {
   Content,
   Image
 } from 'react-bulma-components'
+import { withRouter } from 'react-router-dom'
 import Button from '../atoms/Button'
 import hello from '../../assets/images/hello.svg'
-// import helloMobile from "../../assets/images/hello-mobile.svg";
+import helloMobile from '../../assets/images/hello-mobile.svg'
 import './PreFooter.scss'
 
-const PreFooter = () => (
-  <Section className="pre-footer-container">
+interface Props {
+  history: any
+}
+
+const PreFooter = ({ history }: Props) => (
+  <Section className="pre-footer">
     <Container>
       <Columns>
-        <Columns.Column className="one-thirds is-four-fifths-mobile">
-          <Heading size={1} className="pre-footer-heading">
+        <Columns.Column size={4} className="is-four-fifths-mobile">
+          <Heading size={1} className="pre-footer-heading has-text-black">
             Want to get in touch?
           </Heading>
           <Content className="pre-footer-content">
@@ -25,8 +30,8 @@ const PreFooter = () => (
             hesitate to contact us!
           </Content>
           <Columns>
-            <Columns.Column className="is-two-thirds-mobile">
-              <Button size="large" text="say hello!" />
+            <Columns.Column className="is-four-fifths-mobile">
+              <Button size="large" text="say hello!" onButtonPress={() => history.push('/front/login')} />
             </Columns.Column>
           </Columns>
         </Columns.Column>
@@ -34,11 +39,11 @@ const PreFooter = () => (
           <Image src={hello} alt="hello" className="pre-footer-image" />
         </Columns.Column>
         <Columns.Column className="is-hidden-tablet">
-          <Image src={hello} alt="hello" />
+          <Image src={helloMobile} alt="hello" className="pre-footer-image" />
         </Columns.Column>
       </Columns>
     </Container>
   </Section>
 )
 
-export default PreFooter
+export default withRouter(PreFooter)
