@@ -33,8 +33,12 @@ const addFullNamePropertyForAdminSearch = ctx => {
 module.exports = function (RedProfile) {
   RedProfile.observe('before save', function updateTimestamp (ctx, next) {
     addFullNamePropertyForAdminSearch(ctx)
+    const currentDate = new Date()
     if (ctx.instance) {
-      if (ctx.isNewInstance) ctx.instance.createdAt = new Date()
+      if (ctx.isNewInstance) {
+        ctx.instance.createdAt = currentDate
+        ctx.instance.gaveGdprConsentAt = currentDate
+      }
       ctx.instance.updatedAt = new Date()
     } else {
       ctx.data.updatedAt = new Date()
