@@ -3,25 +3,23 @@ import { Form } from 'react-bulma-components'
 
 interface Props {
   name: string
-  type?: 'email' | 'text' | 'password'
-  placeholder: string
-  value: string
+  value: boolean
   handleChange: Function
   setFieldTouched: Function
   isSubmitting: boolean
-  hasError: boolean
+  children: React.ReactNode
+  className?: string
 }
 
-function FormInput (props: Props) {
+function FormCheckbox (props: Props) {
   const {
-    value,
-    type,
-    placeholder,
     name,
+    value,
     handleChange,
     setFieldTouched,
     isSubmitting,
-    hasError
+    className,
+    children
   } = props
 
   const onChange = (name: any, e: any) => {
@@ -31,26 +29,22 @@ function FormInput (props: Props) {
   }
 
   return (
-    <Form.Field>
+    <Form.Field className={className}>
       <Form.Control>
-        <Form.Input
+        <input
           id={name}
           name={name}
-          type={type || 'text'}
-          color={hasError ? 'danger' : null}
-          placeholder={placeholder}
-          value={value}
+          checked={value}
+          type="checkbox"
+          className="is-checkradio is-checkradio--redi is-small"
           onChange={onChange.bind(null, name)}
           disabled={isSubmitting}
         />
+        <label htmlFor={name}>
+          {children}
+        </label>
       </Form.Control>
-      {hasError && (
-        <Form.Help color="danger">
-          The {placeholder.toLowerCase()} is invalid
-        </Form.Help>
-      )}
     </Form.Field>
   )
 }
-
-export default FormInput
+export default FormCheckbox

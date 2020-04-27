@@ -3,7 +3,7 @@
   // is just a way of adding our own styles
   &--border {
     position: relative;
-    padding-bottom: 2rem;
+    padding-bottom: 1.5rem;
     &::after {
       content: '';
       width: 3.25rem;
@@ -13,5 +13,6 @@
       bottom: 0;
       border-radius: 2px;
     }
+    
   }
 }
