@@ -19,8 +19,7 @@ import {
 } from 'formik'
 import { history } from '../../../services/history/history'
 import {
-  setPassword,
-  activateUser
+  setPassword
 } from '../../../services/api/api'
 
 const styles = (theme: Theme) =>
@@ -61,7 +60,6 @@ const ResetPassword = () => {
   ) => {
     try {
       await setPassword(values.password)
-      await activateUser()
       history.push('/app/dashboard')
     } catch (err) {
       setFormError('Invalid username or password')

@@ -74,14 +74,6 @@ export const setPassword = async (password: string) => {
   })
 }
 
-export const activateUser = async () => {
-  const profileId = getRedProfile().id
-  await http(`${API_URL}/redProfiles/${profileId}`, {
-    method: 'patch',
-    data: { userActivated: true }
-  })
-}
-
 export const fetchSaveRedProfile = async (
   accessToken: AccessToken
 ): Promise<RedProfile> => {

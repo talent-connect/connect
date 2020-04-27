@@ -21,7 +21,6 @@ import {
 import { history } from '../../../services/history/history'
 import {
   setPassword,
-  activateUser,
   fetchSaveRedProfile
 } from '../../../services/api/api'
 import { saveAccessToken } from '../../../services/auth/auth'
@@ -122,7 +121,6 @@ export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
   ) => {
     try {
       await setPassword(values.password)
-      await activateUser()
       showNotification('Your new password is set and you\'re logged in :)', {
         variant: 'success',
         autoHideDuration: 8000

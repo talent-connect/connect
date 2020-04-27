@@ -95,7 +95,8 @@ export const buildSignUpForm = (
       'password',
       'passwordConfirm',
       'formType',
-      'agreesWithCodeOfConduct'
+      'agreesWithCodeOfConduct',
+      'gaveGdprConsent'
     ])
     cleanProfile.userType = type
     cleanProfile.userActivated = false
