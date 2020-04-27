@@ -41,9 +41,9 @@ export const validationSchema = Yup.object({
   agreesWithCodeOfConduct: Yup.boolean()
     .required()
     .oneOf([true]),
-  gaveGdprConsentAt: Yup.string()
+  gaveGdprConsent: Yup.boolean()
     .required()
-    .label('Data usage consent'),
+    .oneOf([true]),
   mentee_currentlyEnrolledInCourse: Yup.string().when('formType', {
     is: 'public-sign-up-mentee-pending-review',
     then: Yup.string()
@@ -58,7 +58,7 @@ export type SignUpFormType =
 
 export interface SignUpFormValues {
   formType: SignUpFormType
-  gaveGdprConsentAt: string
+  gaveGdprConsent: boolean
   username: string
   password: string
   passwordConfirm: string
@@ -70,7 +70,7 @@ export interface SignUpFormValues {
 
 const initialValues: SignUpFormValues = {
   formType: 'public-sign-up-mentee-pending-review',
-  gaveGdprConsentAt: '',
+  gaveGdprConsent: false,
   username: '',
   password: '',
   passwordConfirm: '',
@@ -261,16 +261,15 @@ export const buildSignUpForm = (
           <Form.Field>
             <Form.Control>
               <input
-                id="gaveGdprConsentAt"
+                id="gaveGdprConsent"
                 type="checkbox"
                 className="is-checkradio is-small is-checkradio--redi"
-                name="gaveGdprConsentAt"
-                value={new Date().toString()}
-                checked={!!formik.values.gaveGdprConsentAt.length}
-                onChange={onChange.bind(null, 'gaveGdprConsentAt')}
+                name="gaveGdprConsent"
+                checked={formik.values.gaveGdprConsent}
+                onChange={onChange.bind(null, 'gaveGdprConsent')}
                 disabled={formik.isSubmitting}
               />
-              <label htmlFor="gaveGdprConsentAt">
+              <label htmlFor="gaveGdprConsent">
                 I give permission to the ReDI School Terms stated in the{' '}
                 <a
                   target="_blank"

@@ -74,14 +74,6 @@ export const setPassword = async (password: string) => {
   })
 }
 
-export const giveGdprConsent = async () => {
-  const profileId = getRedProfile().id
-  await http(`${API_URL}/redProfiles/${profileId}`, {
-    method: 'patch',
-    data: { gaveGdprConsentAt: new Date() }
-  })
-}
-
 export const activateUser = async () => {
   const profileId = getRedProfile().id
   await http(`${API_URL}/redProfiles/${profileId}`, {
@@ -138,9 +130,9 @@ export const getProfile = (profileId: string): Promise<RedProfile> =>
 export const fetchApplicants = async (): Promise<RedProfile[]> =>
   http(
     `${API_URL}/redMatches?filter=` +
-      JSON.stringify({
-        where: { mentorId: getRedProfile().id, status: 'applied' }
-      })
+    JSON.stringify({
+      where: { mentorId: getRedProfile().id, status: 'applied' }
+    })
   ).then(resp => resp.data)
 
 export const requestMentorship = (

@@ -21,7 +21,6 @@ import {
 import { history } from '../../../services/history/history'
 import {
   setPassword,
-  giveGdprConsent,
   activateUser,
   fetchSaveRedProfile
 } from '../../../services/api/api'
@@ -123,7 +122,6 @@ export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
   ) => {
     try {
       await setPassword(values.password)
-      await giveGdprConsent()
       await activateUser()
       showNotification('Your new password is set and you\'re logged in :)', {
         variant: 'success',

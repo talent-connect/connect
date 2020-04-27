@@ -40,7 +40,6 @@ export type RedProfile = {
 
   createdAt: Date
   updatedAt: Date
-  gaveGdprConsentAt: Date
   userActivated?: boolean
 
   // Computed properties returned by loopback

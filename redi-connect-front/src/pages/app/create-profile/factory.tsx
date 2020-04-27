@@ -53,7 +53,7 @@ export type SignUpFormType =
 
 export interface CreateProfileFormValues {
   formType: SignUpFormType
-  gaveGdprConsentAt: string
+  gaveGdprConsent: boolean
   username: string
   password: string
   passwordConfirm: string
@@ -89,7 +89,7 @@ export interface CreateProfileFormValues {
 
 const initialValues: CreateProfileFormValues = {
   formType: 'mentee',
-  gaveGdprConsentAt: '',
+  gaveGdprConsent: false,
   username: '',
   password: '',
   passwordConfirm: '',
@@ -241,7 +241,7 @@ export const buildSignUpForm = (
   )
 }
 
-function useStepper (
+function useStepper(
   initialStep = 0
 ): [number, Function, Function, Function, Record<string, any>] {
   const [step, setStep] = useState(initialStep)

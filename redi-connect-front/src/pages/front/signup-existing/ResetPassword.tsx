@@ -20,7 +20,6 @@ import {
 import { history } from '../../../services/history/history'
 import {
   setPassword,
-  giveGdprConsent,
   activateUser
 } from '../../../services/api/api'
 
@@ -62,7 +61,6 @@ const ResetPassword = () => {
   ) => {
     try {
       await setPassword(values.password)
-      await giveGdprConsent()
       await activateUser()
       history.push('/app/dashboard')
     } catch (err) {
