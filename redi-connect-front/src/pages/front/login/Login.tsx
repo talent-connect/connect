@@ -14,7 +14,9 @@ import { login, fetchSaveRedProfile } from '../../../services/api/api'
 import { saveAccessToken } from '../../../services/auth/auth'
 
 import './Login.scss'
-import { Columns, Form, Heading, Button } from 'react-bulma-components'
+import { Columns, Form, Heading } from 'react-bulma-components'
+import Button from '../../../components/atoms/Button'
+
 interface LoginFormValues {
   username: string
   password: string
@@ -78,7 +80,7 @@ export default function Login () {
         <Columns.Column size={5} offset={1}>
           <Heading
             size={1}
-            responsive={{ mobile: { textSize: { value: 2 } } } }
+            responsive={{ mobile: { textSize: { value: 2 } } }}
             weight="normal"
             renderAs="h1"
             className="title--border"
@@ -127,13 +129,12 @@ export default function Login () {
 
             <Form.Field className="submit-spacer">
               <Button
-                className="button--default button--medium"
-                fullwidth={true}
-                onClick={formik.submitForm}
+                fullWidth
+                size="large"
+                text="log in"
+                onButtonPress={formik.submitForm}
                 disabled={!(formik.dirty && formik.isValid)}
-              >
-                Log in
-              </Button>
+              />
             </Form.Field>
           </form>
         </Columns.Column>
