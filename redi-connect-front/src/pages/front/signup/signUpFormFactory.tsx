@@ -9,6 +9,7 @@ import {
 import omit from 'lodash/omit'
 
 import FormInput from '../../../components/atoms/FormInput'
+import FormCheckbox from '../../../components/atoms/FormCheckbox'
 
 import Teaser from '../../../components/molecules/Teaser'
 
@@ -137,16 +138,16 @@ export const buildSignUpForm = (
       </Columns.Column>
 
       <Columns.Column size={5} offset={1}>
-        <form onSubmit={e => e.preventDefault()}>
-          <Heading
-            size={1}
-            weight="normal"
-            renderAs="h1"
-            className="title--border"
-          >
-            Sign-up
-          </Heading>
-
+        <Heading
+          size={1}
+          weight="normal"
+          renderAs="h1"
+          responsive={{ mobile: { textSize: { value: 2 } } } }
+          className="title--border"
+        >
+          Sign-up
+        </Heading>
+        <form onSubmit={e => e.preventDefault()} className="form">
           <FormInput
             name="firstName"
             value={formik.values.firstName}
@@ -206,7 +207,7 @@ export const buildSignUpForm = (
             <>
               <Form.Field>
                 <Form.Label size="small">
-                  Which course are you taking at ReDI?*
+                  Current ReDI Course (*for alumni last taken course)
                 </Form.Label>
                 <Form.Control>
                   <Form.Select
@@ -234,53 +235,44 @@ export const buildSignUpForm = (
               </Form.Field>
             </>
           )}
-          <Form.Field className="submit-spacer">
-            <Form.Control>
-              <input
-                id="agreesWithCodeOfConduct"
-                className="is-checkradio is-small"
-                type="checkbox"
-                name="agreesWithCodeOfConduct"
-                checked={formik.values.agreesWithCodeOfConduct}
-                onChange={onChange.bind(null, 'agreesWithCodeOfConduct')}
-                disabled={formik.isSubmitting}
-              />
-              <label htmlFor="agreesWithCodeOfConduct">
-                I agree to the{' '}
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href="https://connect.redi-school.org/downloadeables/redi-connect-code-of-conduct.pdf"
-                >
+
+          <FormCheckbox
+            name="agreesWithCodeOfConduct"
+            value={formik.values.agreesWithCodeOfConduct}
+            setFieldTouched={formik.setFieldTouched}
+            handleChange={formik.handleChange}
+            isSubmitting={formik.isSubmitting}
+            className="submit-spacer"
+          >
+            I agree to the{' '}
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://connect.redi-school.org/downloadeables/redi-connect-code-of-conduct.pdf"
+            >
                   Code of Conduct
-                </a>{' '}
+            </a>{' '}
                 of the ReDI School
-              </label>
-            </Form.Control>
-          </Form.Field>
+          </FormCheckbox>
+
+          <FormCheckbox
+            name="gaveGdprConsent"
+            value={formik.values.gaveGdprConsent}
+            setFieldTouched={formik.setFieldTouched}
+            handleChange={formik.handleChange}
+            isSubmitting={formik.isSubmitting}
+          >
+            I give permission to the ReDI School Terms stated in the{' '}
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://www.redi-school.org/data-privacy-policy"
+            >
+              Data Protection
+            </a>
+          </FormCheckbox>
 
           <Form.Field>
-            <Form.Control>
-              <input
-                id="gaveGdprConsent"
-                type="checkbox"
-                className="is-checkradio is-small is-checkradio--redi"
-                name="gaveGdprConsent"
-                checked={formik.values.gaveGdprConsent}
-                onChange={onChange.bind(null, 'gaveGdprConsent')}
-                disabled={formik.isSubmitting}
-              />
-              <label htmlFor="gaveGdprConsent">
-                I give permission to the ReDI School Terms stated in the{' '}
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href="https://www.redi-school.org/data-privacy-policy"
-                >
-                  Data Protection
-                </a>
-              </label>
-            </Form.Control>
             {submitError && (
               <Form.Help color="danger">
                 An error occurred, please try again.

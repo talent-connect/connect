@@ -1,13 +1,14 @@
 import React from 'react'
 import { ReactComponent as WelcomeIllustration } from '../../assets/welcome-user.svg'
-import { Content } from 'react-bulma-components'
+import { Element } from 'react-bulma-components'
 import { Link } from 'react-router-dom'
 
 const Teaser: React.FunctionComponent = ({ children }) => {
   return (
     <>
       <WelcomeIllustration className="illustration" />
-      <Content textTransform="uppercase">{children}</Content>
+
+      <Element renderAs="p" textTransform="uppercase" textSize={6}>{children}</Element>
     </>
   )
 }
@@ -21,7 +22,7 @@ export default {
   ),
   SignIn: () => (
     <Teaser>
-      Already have an account? <Link to="/front/login">sign-in hereeeee</Link>
+      Already have an account? <Link to="/front/login">sign-in here</Link>
     </Teaser>
   )
 }

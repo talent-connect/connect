@@ -77,16 +77,18 @@ export default function Login () {
         <Columns.Column size={5} offset={1}>
           <Heading
             size={1}
+            responsive={{ mobile: { textSize: { value: 2 } } } }
             weight="normal"
             renderAs="h1"
             className="title--border"
+            spaced={true}
           >
             Sign-in
           </Heading>
           <Heading size={4} renderAs="p" subtitle>
             Enter your email and password below.
           </Heading>
-          <form onSubmit={e => e.preventDefault()} className="login-form">
+          <form onSubmit={e => e.preventDefault()} className="form login__form">
             <FormInput
               name="username"
               type="email"
@@ -109,7 +111,9 @@ export default function Login () {
               hasError={!!formik.touched.password && !!formik.errors.password}
             />
 
-            {loginError && <Form.Help color="danger">{loginError}</Form.Help>}
+            <Form.Field>
+              {loginError && <Form.Help color="danger">{loginError}</Form.Help>}
+            </Form.Field>
 
             <Form.Field
               className="login-form__reset-password"
@@ -119,6 +123,7 @@ export default function Login () {
                 Forgot your password?
               </Link>
             </Form.Field>
+
             <Form.Field className="submit-spacer">
               <Button
                 className="button--default button--medium"
