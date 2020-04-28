@@ -11,7 +11,7 @@ const AccountOperation: React.FunctionComponent = ({ children }) => (
         <Logo />
       </Container>
     </Section>
-    <Section className="color-half" size="large">
+    <Section className="color-half section--bottom-large-spaceing">
       <Container>{children}</Container>
     </Section>
     <Footer />

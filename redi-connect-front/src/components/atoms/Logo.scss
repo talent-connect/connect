@@ -1,11 +1,16 @@
 @import "~bulma/sass/utilities/_all";
-@import "../../styles/_variables.scss";
+@import '../../styles/_variables.scss';
 
 .logo {
   font-size: $size-5;
   line-height: $size-3;
   display: inline;
   color: $black;
+  font-weight: 500;
+
+  strong {  
+    font-weight: 900;
+  }
 
   &:hover {
     color: $black;

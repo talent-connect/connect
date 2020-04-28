@@ -25,13 +25,8 @@ code {
     monospace;
 }
 
-html {
-  height: 100%;
-  background-color: $redi-blue-light;
-}
-
 %arrow {
-  border: 1px solid $redi-orange-dark;
+  border: 2px solid $redi-orange-dark;
   border-right: 0;
   border-top: 0;
   content: " ";
@@ -54,8 +49,29 @@ select {
   }
 }
 
+a {
+  font-weight: 800;
+}
+
+.form {
+  margin-top: 2rem;
+}
+
 .select select {
   box-shadow: $input-shadow;
+}
+
+.section {
+  @include tablet {
+    padding: $section-padding-medium;
+  }
+
+  &--bottom-large-spaceing {
+    padding-bottom: 4rem;
+    @include tablet {
+      padding-bottom: 10rem;
+    }
+  }
 }
 
 a:hover {
@@ -88,6 +104,7 @@ a:hover {
 .is-checkradio--redi[type="checkbox"] + label {
   display: inline-block;
   margin: 0;
+  padding: 0;
 }
 
 .submit-spacer {
