@@ -1,42 +1,28 @@
 import React from 'react'
-import { LoggedOutLayout } from '../../../layouts/LoggedOutLayout'
+import AccountOperation from '../../../components/templates/AccountOperation'
+import { Columns, Heading, Form } from 'react-bulma-components'
+import Teaser from '../../../components/molecules/Teaser'
+import FormInput from '../../../components/atoms/FormInput'
+import Button from '../../../components/atoms/Button'
+
 import {
-  Link,
-  Button,
-  Typography,
-  useTheme,
-  Container,
-  InputAdornment
-} from '@material-ui/core'
-import { Email as EmailIcon } from '@material-ui/icons'
-import { Form, Field } from 'react-final-form'
-import { TextField } from 'final-form-material-ui'
+  FormikValues,
+  useFormik
+} from 'formik'
+
 import * as yup from 'yup'
-import {
-  yupErrorToSimpleObject,
-  ErrorSimpleObject
-} from '../../../utils/yup-error-to-simple-object'
-import { makeStyles } from '@material-ui/styles'
-import { Link as RouterLink } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import {
   showNotification
 } from '../../../components/AppNotification'
 import { requestResetPasswordEmail } from '../../../services/api/api'
 
-const useStyles = (props: any) => {
-  const theme = useTheme()
-  return makeStyles({
-    heading: {
-      margin: theme.spacing(5)
-    },
-    elementsBelowFormTopMargin: {
-      marginTop: theme.spacing(6)
-    }
-  })(props)
+interface FormValues {
+  email: string
 }
 
-interface FormValues {
-  email?: string
+const initialValues: FormValues = {
+  email: ''
 }
 
 const validationSchema = yup.object().shape({
@@ -46,22 +32,8 @@ const validationSchema = yup.object().shape({
     .required('Please provide an email address.')
 })
 
-const validateForm = async (
-  values: FormValues
-): Promise<ErrorSimpleObject> => {
-  try {
-    await validationSchema.validate(values, { abortEarly: false })
-    return {}
-  } catch (err) {
-    const finalFormCompatibleErrors = yupErrorToSimpleObject(err)
-    return finalFormCompatibleErrors
-  }
-}
-
 export const RequestResetPasswordEmail = (props: any) => {
-  const styleClasses = useStyles(props)
-
-  const onSubmit = async (values: FormValues) => {
+  const onSubmit = async (values: FormikValues) => {
     try {
       // Cast to string is safe as this only called if validated
       await requestResetPasswordEmail(values.email as string)
@@ -88,70 +60,67 @@ export const RequestResetPasswordEmail = (props: any) => {
     )
   }
 
+  const formik = useFormik({
+    initialValues: initialValues,
+    validationSchema,
+    onSubmit: onSubmit
+  })
+
   return (
-    <LoggedOutLayout>
-      <Container maxWidth="sm">
-        <Typography
-          variant="h5"
-          align="center"
-          className={styleClasses.heading}
+    <AccountOperation>
+      <Columns vCentered>
+        <Columns.Column
+          size={6}
+          responsive={{ mobile: { hide: { value: true } } }}
         >
-          Reset your password
-        </Typography>
-        <p>
-          Just let us know the email you use to sign in to ReDI Connect and
-          we’ll help you get your password back.
-        </p>
-        <Form
-          onSubmit={onSubmit}
-          validate={validateForm}
-          render={({
-            handleSubmit,
-            submitting: isSubmitting,
-            values,
-            errors,
-            valid: isValid
-          }) => (
-            <form onSubmit={handleSubmit} noValidate>
-              <Field
-                fullWidth
-                id="email"
-                name="email"
-                component={TextField}
-                disabled={isSubmitting}
-                type="text"
-                label="Email"
-                margin="normal"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <EmailIcon />
-                    </InputAdornment>
-                  )
-                }}
-              />
+          <Teaser.SignUp />
+        </Columns.Column>
+        <Columns.Column size={5} offset={1}>
+          <Heading
+            size={1}
+            responsive={{ mobile: { textSize: { value: 2 } } } }
+            weight="normal"
+            renderAs="h1"
+            className="title--border"
+            spaced={true}
+          >
+            Forgot your password?
+          </Heading>
+          <Heading size={4} renderAs="p" subtitle>
+            We’ll help you reset it and get back on track. We will send a recovery link to:
+          </Heading>
+          <form onSubmit={e => e.preventDefault()} noValidate>
+            <FormInput
+              name="email"
+              type="email"
+              value={formik.values.email}
+              placeholder="Email"
+              setFieldTouched={formik.setFieldTouched}
+              handleChange={formik.handleChange}
+              isSubmitting={formik.isSubmitting}
+              hasError={!!formik.touched.email && !!formik.errors.email}
+            />
+            <Form.Field className="submit-spacer">
               <Button
-                onClick={() => isValid && handleSubmit()}
-                type="submit"
-                color="primary"
-                variant="contained"
                 fullWidth
-                disabled={isSubmitting}
+                onClick={formik.submitForm}
+                disabled={!(formik.dirty && formik.isValid)}
               >
-                Send Password Reset Email
+                Reset Password
               </Button>
-            </form>
-          )}
-        />
-        <Typography
-          align="center"
-          className={styleClasses.elementsBelowFormTopMargin}
-        >
-          <Link component={RouterLink} to="/front/login">
-            Take me back to log in
-          </Link>
-        </Typography>
-      </Container>
-    </LoggedOutLayout>
+            </Form.Field>
+
+            <Form.Field
+              className="submit-link submit-link--post"
+              textTransform="uppercase"
+            >
+              <Link to="/front/login">
+                Back to log in
+              </Link>
+            </Form.Field>
+          </form>
+        </Columns.Column>
+      </Columns>
+    </AccountOperation>
   )
 }

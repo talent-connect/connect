@@ -1,0 +1,14 @@
+@import "./_variables";
+.submit {
+    &-link {
+        font-size: $size-7;
+
+        &--pre {
+            text-align: right;
+        }
+
+        &--post {
+            text-align: center;
+        }
+    }
+}

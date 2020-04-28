@@ -4,12 +4,13 @@ import * as Yup from 'yup'
 import {
   TextField,
   InputAdornment,
-  Button,
   Paper,
   Theme,
   createStyles,
   withStyles
 } from '@material-ui/core'
+import Button from '../../../components/atoms/Button'
+
 import { Lock as LockIcon } from '@material-ui/icons'
 import {
   Formik,
@@ -152,9 +153,6 @@ const Form = withStyles(styles)(
           />
           <Button
             onClick={submitForm}
-            type="submit"
-            color="primary"
-            variant="contained"
             fullWidth
             disabled={isSubmitting || !isValid}
           >
