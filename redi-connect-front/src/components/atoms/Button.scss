@@ -1,7 +1,7 @@
 @import "~bulma/sass/utilities/_all";
 @import "../../styles/_variables.scss";
 
-.custom-button {
+.button {
   display: inline-flex;
   margin-bottom: .375rem;
   margin-left: .375rem;
@@ -20,6 +20,7 @@
   cursor: pointer;
   transition: all .3s;
   border: 2px solid black;
+  transform-style: preserve-3d;
 
   @include mobile() {
     width: calc(100% - .5rem);
@@ -30,7 +31,7 @@
 
     &:after {
       content: '';
-      z-index: -1;
+      transform: translateZ(-1px);
       position: absolute;
       top: 8px;
       right: 8px;

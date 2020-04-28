@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import AccountOperation from '../../../components/templates/AccountOperation'
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router'
 
 import * as Yup from 'yup'
 
@@ -16,7 +16,9 @@ import FormCheckbox from '../../../components/atoms/FormCheckbox'
 
 import Teaser from '../../../components/molecules/Teaser'
 
-import { Columns, Form, Heading, Button } from 'react-bulma-components'
+import { Columns, Form, Heading } from 'react-bulma-components'
+
+import Button from '../../../components/atoms/Button'
 
 import { signUp } from '../../../services/api/api'
 import { RedProfile } from '../../../types/RedProfile'
@@ -291,13 +293,12 @@ export default function SignUp () {
             <Form.Field>
               <Form.Control>
                 <Button
-                  className="button--default button--medium"
-                  fullwidth={true}
-                  onClick={() => formik.handleSubmit()}
+                  fullWidth
+                  onButtonPress={() => formik.handleSubmit()}
                   disabled={!(formik.dirty && formik.isValid)}
-                >
-                Submit
-                </Button>
+                  text="submit"
+                  size="large"
+                />
               </Form.Control>
             </Form.Field>
           </form>

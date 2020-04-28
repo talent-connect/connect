@@ -11,7 +11,7 @@ interface Props {
   disabled?: boolean
 }
 
-const CustomButton = ({
+const Button = ({
   text,
   type = 'default',
   size,
@@ -20,11 +20,11 @@ const CustomButton = ({
   onButtonPress,
   disabled
 }: Props) => {
-  const baseClass = 'custom-button'
+  const baseClass = 'button'
 
   return (
     <button
-      className={`${baseClass} ${baseClass}--${type} ${baseClass}--${size} ${fullWidth ? 'custom-button--fullwidth' : null}`}
+      className={`${baseClass} ${baseClass}--${type} ${baseClass}--${size} ${fullWidth ? 'button--fullwidth' : null}`}
       onClick={onButtonPress}
       disabled={disabled}
     >
@@ -40,4 +40,4 @@ const CustomButton = ({
   )
 }
 
-export default CustomButton
+export default Button

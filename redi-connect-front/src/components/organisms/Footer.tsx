@@ -3,13 +3,13 @@ import { Columns, Container, Section } from 'react-bulma-components'
 import Icons from '../atoms/MediaIcons'
 import './Footer.scss'
 
-const Footer = () => {
+const RediFooter = () => {
   const year = new Date().getFullYear()
 
   return (
     <footer className="footer">
-      <Container>
-        <Section className="footer__section">
+      <Section>
+        <Container>
           <Columns>
             <Columns.Column className="is-hidden-mobile">
               <p>
@@ -76,10 +76,10 @@ const Footer = () => {
               </span>
             </Columns.Column>
           </Columns>
-        </Section>
-      </Container>
+        </Container>
+      </Section>
     </footer>
   )
 }
 
-export default Footer
+export default RediFooter

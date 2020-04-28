@@ -2,7 +2,6 @@ import React from 'react'
 import {
   Container,
   Section,
-  Hero,
   Columns,
   Heading,
   Content
@@ -18,31 +17,29 @@ interface Props {
 }
 
 const RediHero = ({ history }: Props) => (
-  <Hero>
-    <Section className="custom-hero">
-      <Container>
-        <Columns>
-          <Columns.Column size={5} className="custom-hero-column">
-            <Heading size={1} className="custom-hero-column-heading has-text-black">
+  <Section className="hero">
+    <Container>
+      <Columns>
+        <Columns.Column size={5} className="hero-column">
+          <Heading size={1} className="hero-column-heading has-text-black">
               Welcome to ReDI Connect
-            </Heading>
-            <Columns.Column className="is-hidden-tablet">
-              <img src={teamMobile} alt="team" className="custom-hero-column-img" />
-            </Columns.Column>
-            <Content className="custom-hero-column-content">
+          </Heading>
+          <Columns.Column className="is-hidden-tablet">
+            <img src={teamMobile} alt="team" className="hero-column-img" />
+          </Columns.Column>
+          <Content className="hero-column-content">
               Are you ready for the future of work?<br />We connect thriving
               professionals from the digital industry with students and alumni
               of our Digital Career Program.{' '}
-            </Content>
-            <Button size="large" text="sign-up now!" onButtonPress={() => history.push('/front/signup/landing')} />
-          </Columns.Column>
-          <Columns.Column offset={1} className="is-hidden-mobile">
-            <img src={team} alt="team" className="custom-hero-column-img" />
-          </Columns.Column>
-        </Columns>
-      </Container>
-    </Section>
-  </Hero>
+          </Content>
+          <Button size="large" text="sign-up now!" onButtonPress={() => history.push('/front/signup/landing')} />
+        </Columns.Column>
+        <Columns.Column offset={1} className="is-hidden-mobile">
+          <img src={team} alt="team" className="hero-column-img" />
+        </Columns.Column>
+      </Columns>
+    </Container>
+  </Section>
 )
 
 export default withRouter(RediHero)
