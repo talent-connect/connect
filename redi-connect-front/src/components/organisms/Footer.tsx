@@ -3,13 +3,13 @@ import { Columns, Container, Section } from 'react-bulma-components'
 import Icons from '../atoms/MediaIcons'
 import './Footer.scss'
 
-const Footer = () => {
+const RediFooter = () => {
   const year = new Date().getFullYear()
 
   return (
     <footer className="footer">
-      <Container>
-        <Section>
+      <Section>
+        <Container>
           <Columns>
             <Columns.Column className="is-hidden-mobile">
               <p>
@@ -17,11 +17,11 @@ const Footer = () => {
               </p>
               <p>&copy; {year} By ReDI School</p>
             </Columns.Column>
-            <Columns.Column size={4} className="is-hidden-tablet">
+            <Columns.Column className="is-hidden-tablet footer--headline">
               <p className="is-size-5">Follow us</p>
               <Icons />
             </Columns.Column>
-            <Columns.Column size={6}>
+            <Columns.Column className="footer--links">
               <p>
                 <a
                   href="https://www.redi-school.org/imprint"
@@ -58,7 +58,7 @@ const Footer = () => {
                 </a>
               </p>
             </Columns.Column>
-            <Columns.Column className="is-hidden-mobile is-narrow">
+            <Columns.Column className="is-hidden-mobile is-narrow footer--headline">
               <p>Follow us</p>
               <Icons />
             </Columns.Column>
@@ -76,10 +76,10 @@ const Footer = () => {
               </span>
             </Columns.Column>
           </Columns>
-        </Section>
-      </Container>
+        </Container>
+      </Section>
     </footer>
   )
 }
 
-export default Footer
+export default RediFooter
