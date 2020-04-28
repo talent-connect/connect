@@ -13,14 +13,9 @@ const SignUpLanding = lazy(() =>
     /* webpackChunkName: "SignUpLanding", webpackPreload: true */ '../pages/front/signup/SignUpLanding'
   )
 )
-const SignUpFormMentee = lazy(() =>
+const SignUp = lazy(() =>
   import(
-    /* webpackChunkName: "SignUpFormMentee", webpackPreload: true */ '../pages/front/signup/SignUpFormMentee'
-  )
-)
-const SignUpFormMentor = lazy(() =>
-  import(
-    /* webpackChunkName: "SignUpFormMentor", webpackPreload: true */ '../pages/front/signup/SignUpFormMentor'
+    /* webpackChunkName: "SignUp", webpackPreload: true */ '../pages/front/signup/SignUp'
   )
 )
 const SignUpComplete = lazy(() =>
@@ -57,13 +52,8 @@ export const routes__loggedOut: RouteDefinition[] = [
     exact: true
   },
   {
-    path: '/front/signup/mentor',
-    component: SignUpFormMentor,
-    exact: true
-  },
-  {
-    path: '/front/signup/mentee',
-    component: SignUpFormMentee,
+    path: '/front/signup/:type',
+    component: SignUp,
     exact: true
   },
   {
