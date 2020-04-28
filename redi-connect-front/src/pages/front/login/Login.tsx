@@ -50,11 +50,12 @@ export default function Login () {
         )
         saveAccessToken(accessToken)
         await fetchSaveRedProfile(accessToken)
+        actions.setSubmitting(false)
         history.push('/app/dashboard')
       } catch (err) {
+        actions.setSubmitting(false)
         setLoginError('You entered an incorrect email, password, or both.')
       }
-      actions.setSubmitting(false)
     })(values, actions)
   }, [])
 
