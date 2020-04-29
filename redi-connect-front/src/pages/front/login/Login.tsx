@@ -130,11 +130,11 @@ export default function Login () {
             <Form.Field className="submit-spacer">
               <Button
                 fullWidth
-                size="large"
-                text="log in"
-                onButtonPress={formik.submitForm}
+                onClick={formik.submitForm}
                 disabled={!(formik.dirty && formik.isValid)}
-              />
+              >
+                Log in
+              </Button>
             </Form.Field>
           </form>
         </Columns.Column>

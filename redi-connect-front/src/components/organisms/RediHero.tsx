@@ -32,7 +32,9 @@ const RediHero = ({ history }: Props) => (
               professionals from the digital industry with students and alumni
               of our Digital Career Program.{' '}
           </Content>
-          <Button size="large" text="sign-up now!" onButtonPress={() => history.push('/front/signup/landing')} />
+          <Button size="large" onClick={() => history.push('/front/signup/landing')} >
+            sign-up now!
+          </Button>
         </Columns.Column>
         <Columns.Column offset={1} className="is-hidden-mobile">
           <img src={team} alt="team" className="hero-column-img" />

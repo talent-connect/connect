@@ -294,11 +294,9 @@ export default function SignUp () {
               <Form.Control>
                 <Button
                   fullWidth
-                  onButtonPress={() => formik.handleSubmit()}
+                  onClick={() => formik.handleSubmit()}
                   disabled={!(formik.dirty && formik.isValid)}
-                  text="submit"
-                  size="large"
-                />
+                >submit</Button>
               </Form.Control>
             </Form.Field>
           </form>

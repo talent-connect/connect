@@ -23,16 +23,17 @@ const LoggedOutNavbar = ({ history }: Props) => {
         &times;
       </Content>
       <Button
-        size="medium"
-        text="Sign-up now!"
-        onButtonPress={() => history.push('/front/signup/landing')}
-      />
+        onClick={() => history.push('/front/signup/landing')}
+      >
+        Sign-up now!
+      </Button>
       <Button
         size="medium"
-        text="log-in"
-        type="simple"
-        onButtonPress={() => history.push('/front/login')}
-      />
+        onClick={() => history.push('/front/login')}
+        simple
+      >
+        log-in
+      </Button>
     </Container>
     // </Section>
   )
@@ -44,8 +45,8 @@ const LoggedOutNavbar = ({ history }: Props) => {
         <Content
           responsive={{ mobile: { hide: { value: true } } }}
         >
-          <Button size="small" text="log-in" type="simple" onButtonPress={() => history.push('/front/login')} />
-          <Button size="small" text="Sign-up" onButtonPress={() => history.push('/front/signup/landing')} />
+          <Button onClick={() => history.push('/front/login')} simple>log-in</Button>
+          <Button onClick={() => history.push('/front/signup/landing')} >Sign-up</Button>
         </Content>
         <Content
           responsive={{ tablet: { hide: { value: true } } }}

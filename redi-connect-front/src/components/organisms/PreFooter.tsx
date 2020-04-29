@@ -31,7 +31,9 @@ const PreFooter = ({ history }: Props) => (
           </Content>
           <Columns>
             <Columns.Column className="is-four-fifths-mobile">
-              <Button size="large" text="say hello!" onButtonPress={() => history.push('/front/login')} />
+              <Button size="large" onClick={() => history.push('/front/login')}>
+                say hello!
+              </Button>
             </Columns.Column>
           </Columns>
         </Columns.Column>
