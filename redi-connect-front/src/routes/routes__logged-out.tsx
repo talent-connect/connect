@@ -23,17 +23,6 @@ const SignUpComplete = lazy(() =>
     /* webpackChunkName: "SignUpComplete", webpackPreload: true */ '../pages/front/signup/SignUpComplete'
   )
 )
-// const Login= lazy(() => import(/* webpackChunkName: "Login", webpackPreload: true */ '../pages/front/login/Login'));
-const SignUpExisting = lazy(() =>
-  import(
-    /* webpackChunkName: "SignUpExisting", webpackPreload: true */ '../pages/front/signup-existing/SignUpExisting'
-  )
-)
-const ResetPassword = lazy(() =>
-  import(
-    /* webpackChunkName: "ResetPassword", webpackPreload: true */ '../pages/front/signup-existing/ResetPassword'
-  )
-)
 
 export const routes__loggedOut: RouteDefinition[] = [
   {
@@ -59,16 +48,6 @@ export const routes__loggedOut: RouteDefinition[] = [
   {
     path: '/front/signup/complete/:type',
     component: SignUpComplete,
-    exact: true
-  },
-  {
-    path: '/app/create-profile/existing/:accessToken',
-    component: SignUpExisting,
-    exact: true
-  },
-  {
-    path: '/app/create-profile/existing-reset-password',
-    component: ResetPassword,
     exact: true
   },
   {
