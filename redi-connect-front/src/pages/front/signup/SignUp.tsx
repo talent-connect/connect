@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import AccountOperation from '../../../components/templates/AccountOperation'
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router'
 
 import * as Yup from 'yup'
 
@@ -16,7 +16,9 @@ import FormCheckbox from '../../../components/atoms/FormCheckbox'
 
 import Teaser from '../../../components/molecules/Teaser'
 
-import { Columns, Form, Heading, Button } from 'react-bulma-components'
+import { Columns, Form, Heading } from 'react-bulma-components'
+
+import Button from '../../../components/atoms/Button'
 
 import { signUp } from '../../../services/api/api'
 import { RedProfile } from '../../../types/RedProfile'
@@ -151,10 +153,10 @@ export default function SignUp () {
             size={1}
             weight="normal"
             renderAs="h1"
-            responsive={{ mobile: { textSize: { value: 2 } } } }
+            responsive={{ mobile: { textSize: { value: 2 } } }}
             className="title--border"
           >
-          Sign-up
+            Sign-up
           </Heading>
           <form onSubmit={e => e.preventDefault()} className="form">
             <FormInput
@@ -209,14 +211,14 @@ export default function SignUp () {
               isSubmitting={formik.isSubmitting}
               hasError={
                 !!formik.touched.passwordConfirm &&
-              !!formik.errors.passwordConfirm
+                !!formik.errors.passwordConfirm
               }
             />
             {userType === 'public-sign-up-mentee-pending-review' && (
               <>
                 <Form.Field>
                   <Form.Label size="small">
-                  Current ReDI Course (*for alumni last taken course)
+                    Current ReDI Course (*for alumni last taken course)
                   </Form.Label>
                   <Form.Control>
                     <Form.Select
@@ -232,7 +234,7 @@ export default function SignUp () {
                       )}
                     >
                       <option id="" value="" disabled>
-                      Your current ReDI Course
+                        Your current ReDI Course
                       </option>
                       {courses.map(course => (
                         <option key={course.id} value={course.id}>
@@ -253,13 +255,13 @@ export default function SignUp () {
               isSubmitting={formik.isSubmitting}
               className="submit-spacer"
             >
-            I agree to the{' '}
+              I agree to the{' '}
               <a
                 target="_blank"
                 rel="noopener noreferrer"
                 href="https://connect.redi-school.org/downloadeables/redi-connect-code-of-conduct.pdf"
               >
-                  Code of Conduct
+                Code of Conduct
               </a>{' '}
                 of the ReDI School
             </FormCheckbox>
@@ -271,33 +273,32 @@ export default function SignUp () {
               handleChange={formik.handleChange}
               isSubmitting={formik.isSubmitting}
             >
-            I give permission to the ReDI School Terms stated in the{' '}
+              I give permission to the ReDI School Terms stated in the{' '}
               <a
                 target="_blank"
                 rel="noopener noreferrer"
                 href="https://www.redi-school.org/data-privacy-policy"
               >
-              Data Protection
+                Data Protection
               </a>
             </FormCheckbox>
 
             <Form.Field>
               {submitError && (
                 <Form.Help color="danger">
-                An error occurred, please try again.
+                  An error occurred, please try again.
                 </Form.Help>
               )}
             </Form.Field>
             <Form.Field>
               <Form.Control>
                 <Button
-                  className="button--default button--medium"
-                  fullwidth={true}
-                  onClick={() => formik.handleSubmit()}
+                  fullWidth
+                  onButtonPress={() => formik.handleSubmit()}
                   disabled={!(formik.dirty && formik.isValid)}
-                >
-                Submit
-                </Button>
+                  text="submit"
+                  size="large"
+                />
               </Form.Control>
             </Form.Field>
           </form>

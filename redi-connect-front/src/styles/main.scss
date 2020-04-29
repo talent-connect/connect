@@ -16,7 +16,6 @@
 @import "~bulma/sass/elements/title.sass";
 @import "~bulma/sass/elements/container.sass";
 @import "~bulma/sass/layout/section.sass";
-@import "~bulma/sass/elements/button.sass";
 
 @import "~bulma-checkradio/src/sass/index.sass";
 
@@ -68,6 +67,7 @@ a {
 
   &--bottom-large-spaceing {
     padding-bottom: 4rem;
+
     @include tablet {
       padding-bottom: 10rem;
     }
@@ -90,6 +90,7 @@ a:hover {
 // will be done the next time this view is reused
 .color-half {
   background-color: $white;
+
   @include tablet() {
     background: linear-gradient(90deg, $redi-blue-light 50%, $white 50%);
   }
@@ -101,7 +102,7 @@ a:hover {
   margin: 0 -2em 3.625em -1em;
 }
 
-.is-checkradio--redi[type="checkbox"] + label {
+.is-checkradio--redi[type="checkbox"]+label {
   display: inline-block;
   margin: 0;
   padding: 0;
@@ -109,4 +110,9 @@ a:hover {
 
 .submit-spacer {
   margin-top: 3em;
+}
+
+.default-background {
+  background: white;
+  z-index: -2;
 }

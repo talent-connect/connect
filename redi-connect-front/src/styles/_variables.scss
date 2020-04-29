@@ -31,7 +31,7 @@ $family-secondary: Jubilat;
 // bulma size
 $size-1: 4rem; // 64px
 $size-2: 2.5rem; // 40px
-$size-3: 2rem; // 24px
+$size-3: 2rem; // 32px
 $size-4: 1.25rem; // 20px
 $size-5: 1rem; // 16px
 $size-6: 0.875rem; // 14px
@@ -52,6 +52,9 @@ $column-gap: 1em;
 $block-spacing: 1rem;
 $section-padding: 0.75rem 1.25rem;
 $section-padding-medium: 2rem 1.25rem;
+
+// Button
+$control-radius: 0;
 
 
 // Forms
@@ -78,5 +81,4 @@ $title-color: $black;
 $subtitle-color: $black;
 $subtitle-line-height: calc(100% + 12px);
 $link: $redi-orange-dark;
-$link-hover: $redi-orange-dark;
 $radius-small: 0;
