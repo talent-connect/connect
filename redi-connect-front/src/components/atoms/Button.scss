@@ -3,16 +3,12 @@
 
 .button {
   display: inline-flex;
-  margin-bottom: .5rem;
-  margin-left: .5rem;
   background: none;
-  border: none;
-  box-sizing: border-box;
-  font-weight: $weight-bold;
+  font-weight: $weight-heavy;
   text-transform: uppercase;
   text-decoration: none;
-  padding: 1rem 1.5rem;
-  font-size: 1rem;
+  padding: 0 1.5rem;
+  font-size: $size-6;
   letter-spacing: 1.7px;
   line-height: 1rem;
   outline: none;
@@ -28,6 +24,7 @@
   }
 
   &--default {
+    margin-left: .5rem;
 
     &:after {
       content: '';
@@ -35,8 +32,8 @@
       position: absolute;
       top: .5rem;
       right: .5rem;
-      width: calc(100% + 2px);
-      height: calc(100% + 2px);
+      width: calc(100% + 4px);
+      height: calc(100% + 4px);
       background-color: $redi-orange-light;
     }
 
@@ -54,7 +51,6 @@
     }
 
     &:disabled {
-      border: 2px solid $grey-dark;
       color: $grey-dark;
 
       &:after {
@@ -63,27 +59,7 @@
     }
   }
 
-  &--fullwidth {
-    width: calc(100% - .5rem);
-    justify-content: center;
-  }
-
-  &--small {
-    font-size: .875rem;
-    padding: .8125rem 1.5rem;
-  }
-
-  &--large {
-    line-height: 1.5rem;
-    padding: 1rem 1.8125rem;
-
-    @include mobile() {
-      line-height: 1rem;
-    }
-  }
-
   &--simple {
-    margin-top: 2px;
     border: none;
 
     &:hover {
@@ -91,7 +67,30 @@
     }
   }
 
-  &--img {
+  &--small {
+    height: 3rem;
+  }
+
+  &--medium {
+    height: 3.5rem;
+  }
+
+  &--large {
+    font-size: $size-5;
+    height: 4rem;
+    padding: 0 1.875rem;
+
+    @include mobile() {
+      height: 3.5rem;
+    }
+  }
+
+  &--fullWidth {
+    width: calc(100% - .5rem);
+    justify-content: center;
+  }
+
+  &__arrow {
     margin-left: .5rem;
   }
 }
