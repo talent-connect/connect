@@ -1,0 +1,116 @@
+<mj-style>
+  @font-face {
+    font-family: 'Jubilat';
+    font-style: normal;
+    font-weight: 500;
+    src: local('Jubilat Regular'), local('Jubilat-Regular'), url('../../../assets/fonts/Jubilat-Regular.woff2') format('woff2');
+    unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+
+  .divider {
+    display: inline-block;
+  }
+
+  .section {
+    padding: 0 40px;
+  }
+
+  .text-link {
+    color: #F15A22;
+  }
+
+  .table-cell {
+    color: #5D5D5D;
+    font-size: 12px;
+    line-height: 20px;
+    padding-right: 16px;
+  }
+
+  .table-headline {
+    color: #000;
+    font-size: 14px;
+    line-height: 24px;
+  }
+
+  .table-img {
+    vertical-align: top;
+    padding-right: 15px;
+  }
+
+  .hide-cell-desktop {
+    display: none;
+  }
+
+  .email-button {
+    display: inline-flex;
+    background: none;
+    font-weight: 500;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 16px 24px;
+    font-size: 16px;
+    letter-spacing: 1.7px;
+    line-height: 16px;
+    outline: none;
+    position: relative;
+    cursor: pointer;
+    transition: all .3s;
+    color: black;
+    border: 2px solid black;
+    transform-style: preserve-3d;
+  }
+
+  .email-button:hover {
+    color: black;
+  }
+
+  .email-button:after {
+    content: '';
+    transform: translateZ(-1px);
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: calc(100% + 2px);
+    height: calc(100% + 2px);
+    background-color: #FAD7CA;
+  }
+
+  .email-button:hover::after {
+    background-color: #F6B9A2;
+  }
+
+  .button-img {
+    margin-left: 8px;
+  }
+
+  @media only screen and (max-width: 600px) {
+    .section {
+      padding: 0 20px;
+    }
+
+    .td-mobile {
+      display: block;
+    }
+
+    .margin-link {
+      margin-bottom: 24px;
+    }
+
+    .hide-cell-mobile {
+      display: none;
+    }
+
+    .hide-cell-desktop {
+      display: block;
+    }
+
+    .email-button {
+      width: calc(100% - 44px);
+      justify-content: center;
+    }
+
+    .button-img {
+      display: none;
+    }
+  }
+</mj-style>
