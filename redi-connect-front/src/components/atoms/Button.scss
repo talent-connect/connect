@@ -3,8 +3,8 @@
 
 .button {
   display: inline-flex;
-  margin-bottom: .375rem;
-  margin-left: .375rem;
+  margin-bottom: .5rem;
+  margin-left: .5rem;
   background: none;
   border: none;
   box-sizing: border-box;
@@ -19,7 +19,7 @@
   position: relative;
   cursor: pointer;
   transition: all .3s;
-  border: 2px solid black;
+  border: 2px solid $black;
   transform-style: preserve-3d;
 
   @include mobile() {
@@ -33,10 +33,10 @@
       content: '';
       transform: translateZ(-1px);
       position: absolute;
-      top: 8px;
-      right: 8px;
-      width: 100%;
-      height: 100%;
+      top: .5rem;
+      right: .5rem;
+      width: calc(100% + 2px);
+      height: calc(100% + 2px);
       background-color: $redi-orange-light;
     }
 
@@ -54,7 +54,8 @@
     }
 
     &:disabled {
-      color: black;
+      border: 2px solid $grey-dark;
+      color: $grey-dark;
 
       &:after {
         background-color: $grey-light;
