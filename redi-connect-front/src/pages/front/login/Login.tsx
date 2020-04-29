@@ -12,8 +12,6 @@ import {
 import { history } from '../../../services/history/history'
 import { login, fetchSaveRedProfile } from '../../../services/api/api'
 import { saveAccessToken } from '../../../services/auth/auth'
-
-import './Login.scss'
 import { Columns, Form, Heading } from 'react-bulma-components'
 import Button from '../../../components/atoms/Button'
 
@@ -119,7 +117,7 @@ export default function Login () {
             </Form.Field>
 
             <Form.Field
-              className="login-form__reset-password"
+              className="submit-link submit-link--pre"
               textTransform="uppercase"
             >
               <Link to="/front/reset-password/request-reset-password-email">

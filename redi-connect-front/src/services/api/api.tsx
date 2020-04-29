@@ -88,6 +88,7 @@ export const fetchSaveRedProfile = async (
     localStorageSaveRedProfile(profile)
     return profile
   } catch (err) {
+    console.log('trowing')
     throw new Error("I'm throwing an error")
   }
 }

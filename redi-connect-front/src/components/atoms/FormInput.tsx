@@ -10,6 +10,7 @@ interface Props {
   setFieldTouched: Function
   isSubmitting: boolean
   hasError: boolean
+  disabled?: boolean
 }
 
 function FormInput (props: Props) {
@@ -21,7 +22,8 @@ function FormInput (props: Props) {
     handleChange,
     setFieldTouched,
     isSubmitting,
-    hasError
+    hasError,
+    disabled
   } = props
 
   const onChange = (name: any, e: any) => {
@@ -41,7 +43,7 @@ function FormInput (props: Props) {
           placeholder={placeholder}
           value={value}
           onChange={onChange.bind(null, name)}
-          disabled={isSubmitting}
+          disabled={isSubmitting || disabled}
         />
       </Form.Control>
       {hasError && (
