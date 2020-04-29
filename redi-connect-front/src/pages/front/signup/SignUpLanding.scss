@@ -1,0 +1,52 @@
+@import "~bulma/sass/utilities/_all";
+@import '../../../styles/variables';
+
+.signup {
+  margin-top: 2rem;
+  margin-bottom: 3.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  @include mobile() {
+    flex-direction: column;
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  &__type {
+    padding: 1.125rem 2.5rem;
+    border: 2px solid transparent;
+    box-shadow: $default-shadow;
+    cursor: pointer;
+
+    &:first-child {
+      margin-right: .5rem;
+
+      @include mobile() {
+        margin-right: 0;
+        margin-bottom: 1.5rem;
+      }
+    }
+
+    &--name {
+      font-size: 1.5rem;
+      text-align: center;
+      line-height: 2rem;
+      margin-top: .625rem;
+      ;
+    }
+  }
+}
+
+.border-mentor {
+  border: 2px solid $redi-blue-dark;
+}
+
+.border-mentee {
+  border: 2px solid $redi-orange-dark;
+}
+
+.no-shadow {
+  box-shadow: none;
+}
