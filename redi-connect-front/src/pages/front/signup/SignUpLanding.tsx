@@ -1,30 +1,37 @@
-import React, { useState, useEffect } from 'react'
-import { withRouter } from 'react-router-dom'
-import { Image, Heading, Columns } from 'react-bulma-components'
+import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
+import { Heading, Columns } from 'react-bulma-components'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import Teaser from '../../../components/molecules/Teaser'
 import Button from '../../../components/atoms/Button'
-import mentee from '../../../assets/images/mentee.svg'
-import mentor from '../../../assets/images/mentor.svg'
+import classnames from 'classnames'
+import { ReactComponent as Mentee } from '../../../assets/images/mentee.svg'
+import { ReactComponent as Mentor } from '../../../assets/images/mentor.svg'
+
 import './SignUpLanding.scss'
 
-interface Props {
-  history: any
+const Illustration: { [key: string]: React.FunctionComponent<React.SVGProps<SVGSVGElement>> } = {
+  mentee: Mentee,
+  mentor: Mentor
 }
 
-const SignUpLanding = ({ history }: Props) => {
-  const [selectedRole, setSelectedRole] = useState('')
-  const [isDisabled, setIsDisabled] = useState(true)
-  const [mentorClass, setMentorClass] = useState('')
-  const [menteeClass, setMenteeClass] = useState('')
+const SignUpLanding = () => {
+  const [selectedType, setSelectedType] = useState('')
+  const history = useHistory()
 
-  useEffect(() => {
-    if (selectedRole !== '') {
-      setIsDisabled(false)
-      setMenteeClass(selectedRole === 'mentee' ? 'border-mentee' : 'no-shadow')
-      setMentorClass(selectedRole === 'mentor' ? 'border-mentor' : 'no-shadow')
-    }
-  }, [selectedRole])
+  const renderType = (name: string) => {
+    const type = name.toLowerCase()
+    const Image = Illustration[type]
+
+    return <div
+      className={classnames('signup__type', { [`border-${type}`]: type === selectedType })}
+      onClick={() => setSelectedType(type)}>
+      <Image />
+      <Heading className="signup__type__name" renderAs="p">
+        {name}
+      </Heading>
+    </div>
+  }
 
   return (
     <AccountOperation>
@@ -51,19 +58,13 @@ const SignUpLanding = ({ history }: Props) => {
             Do you want to become a <strong>mentor</strong> or a <strong>mentee</strong>?
           </Heading>
           <div className="signup">
-            <div className={`signup__type ${menteeClass}`} onClick={() => setSelectedRole('mentee')}>
-              <Image src={mentee} alt="mentee" />
-              <Heading className="signup__type--name" renderAs="p">Mentee</Heading>
-            </div>
-            <div className={`signup__type ${mentorClass}`} onClick={() => setSelectedRole('mentor')}>
-              <Image src={mentor} alt="mentor" />
-              <Heading className="signup__type--name" renderAs="p">Mentor</Heading>
-            </div>
+            {renderType('Mentee')}
+            {renderType('Mentor')}
           </div>
           <Button
             fullWidth
-            onClick={() => history.push(`/front/signup/${selectedRole}`)}
-            disabled={isDisabled}
+            onClick={() => history.push(`/front/signup/${selectedType}`)}
+            disabled={!selectedType}
             size="medium"
           >
             next step
@@ -74,4 +75,4 @@ const SignUpLanding = ({ history }: Props) => {
   )
 }
 
-export default withRouter(SignUpLanding)
+export default SignUpLanding

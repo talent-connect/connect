@@ -17,7 +17,6 @@
   &__type {
     padding: 1.125rem 2.5rem;
     border: 2px solid transparent;
-    box-shadow: $default-shadow;
     cursor: pointer;
 
     &:first-child {
@@ -29,24 +28,21 @@
       }
     }
 
-    &--name {
+    &__name {
       font-size: 1.5rem;
       text-align: center;
       line-height: 2rem;
       margin-top: .625rem;
-      ;
     }
   }
 }
 
 .border-mentor {
-  border: 2px solid $redi-blue-dark;
+  border-color: $redi-blue-dark;
+  box-shadow: $default-shadow;
 }
 
 .border-mentee {
-  border: 2px solid $redi-orange-dark;
-}
-
-.no-shadow {
-  box-shadow: none;
+  border-color: $redi-orange-dark;
+  box-shadow: $default-shadow;
 }
