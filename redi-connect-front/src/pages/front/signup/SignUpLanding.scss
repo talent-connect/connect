@@ -15,8 +15,11 @@
   }
 
   &__type {
-    padding: 1.125rem 2.5rem;
+    padding: 1.125rem;
+    width: 100%;
+    text-align: center;
     border: 2px solid transparent;
+    box-shadow: $default-shadow;
     cursor: pointer;
 
     &:first-child {
@@ -37,12 +40,14 @@
   }
 }
 
+.no-shadow {
+  box-shadow: none;
+}
+
 .border-mentor {
   border-color: $redi-blue-dark;
-  box-shadow: $default-shadow;
 }
 
 .border-mentee {
   border-color: $redi-orange-dark;
-  box-shadow: $default-shadow;
 }

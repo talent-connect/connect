@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { Heading, Columns } from 'react-bulma-components'
+import { Heading, Columns, Image } from 'react-bulma-components'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import Teaser from '../../../components/molecules/Teaser'
 import Button from '../../../components/atoms/Button'
@@ -24,7 +24,7 @@ const SignUpLanding = () => {
     const Image = Illustration[type]
 
     return <div
-      className={classnames('signup__type', { [`border-${type}`]: type === selectedType })}
+      className={classnames('signup__type', { [`border-${type}`]: type === selectedType, 'no-shadow': type !== selectedType && selectedType !== '' })}
       onClick={() => setSelectedType(type)}>
       <Image />
       <Heading className="signup__type__name" renderAs="p">
