@@ -1,6 +1,6 @@
 import React from 'react'
 import AccountOperation from '../../../components/templates/AccountOperation'
-import { Columns, Heading } from 'react-bulma-components'
+import { Columns, Heading, Content } from 'react-bulma-components'
 import Teaser from '../../../components/molecules/Teaser'
 import { useParams } from 'react-router'
 
@@ -33,28 +33,31 @@ export default function SignUpComplete () {
             Welcome to ReDI Connect
           </Heading>
 
-          <Heading size={4} renderAs="p" subtitle>
+          <Content size="large" renderAs="div">
             {type === 'mentee' && (
               <>
-                Thanks for registering! We're thrilled that you're ReDI :) But there
-                is one last step before we can activate your profile because we want
-                to make sure you find the right mentor:
-                <br /><br />
-                Simply contact Isabelle via e-mail isabelle@redi-school.org to
-                schedule a meeting. Or just turn up anytime between 5 and 8 on a
-                Tuesday at ReDI School.
-                <br /><br />
-                You can also find and write to Isabelle on the ReDI Slack.
+                <p>
+                  Thanks for registering! We're thrilled that you're ReDI :) But there
+                  is one last step before we can activate your profile because we want
+                  to make sure you find the right mentor:
+                </p>
+
+                <p>
+                  Simply contact Isabelle via e-mail isabelle@redi-school.org to
+                  schedule a meeting. Or just turn up anytime between 5 and 8 on a
+                  Tuesday at ReDI School.
+                </p>
+                <p>You can also find and write to Isabelle on the ReDI Slack.</p>
               </>
             )}
             {type === 'mentor' && (
-              <>
+              <p>
                 Thanks for registering! We're thrilled that you're ReDI :) We
                 promise to review your profile as quickly as possible. We'll send
                 you an email once we're done.
-              </>
+              </p>
             )}
-          </Heading>
+          </Content>
         </Columns.Column>
       </Columns>
     </AccountOperation>
