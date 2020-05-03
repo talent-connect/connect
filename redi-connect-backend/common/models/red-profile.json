@@ -11,6 +11,10 @@
       "type": "string",
       "required": true
     },
+    "rediLocation": {
+      "type": "string",
+      "required": true
+    },
     "mentor_occupation": {
       "type": "string"
     },
