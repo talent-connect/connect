@@ -14,10 +14,9 @@ const LoggedOutNavbar = ({ history }: Props) => {
   const [menuActive, setMenuActive] = useState(false)
 
   const mobileMenu = (
-    // <Section className="custom-navbar__mobile">
-    <Container className="custom-navbar__mobile">
+    <Container className="navbar__mobile">
       <Content
-        className="custom-navbar__close"
+        className="navbar__close"
         onClick={() => setMenuActive(!menuActive)}
       >
         &times;
@@ -35,28 +34,29 @@ const LoggedOutNavbar = ({ history }: Props) => {
         log-in
       </Button>
     </Container>
-    // </Section>
   )
 
   return (
-    <Section className="custom-navbar">
-      <Container className="custom-navbar__wrapper">
-        <Logo />
-        <Content
-          responsive={{ mobile: { hide: { value: true } } }}
-        >
-          <Button onClick={() => history.push('/front/login')} simple>log-in</Button>
-          <Button onClick={() => history.push('/front/signup/landing')} >Sign-up</Button>
-        </Content>
-        <Content
-          responsive={{ tablet: { hide: { value: true } } }}
-          onClick={() => setMenuActive(!menuActive)}
-        >
-          <Image src={burger} alt="hamburger icon" className="custom-navbar__image" />
-        </Content>
-      </Container>
+    <>
       {menuActive && mobileMenu}
-    </Section>
+      <Section className="navbar">
+        <Container className="navbar__wrapper">
+          <Logo />
+          <Content
+            responsive={{ mobile: { hide: { value: true } } }}
+          >
+            <Button onClick={() => history.push('/front/login')} simple>log-in</Button>
+            <Button onClick={() => history.push('/front/signup/landing')} >Sign-up</Button>
+          </Content>
+          <Content
+            responsive={{ tablet: { hide: { value: true } } }}
+            onClick={() => setMenuActive(!menuActive)}
+          >
+            <Image src={burger} alt="hamburger icon" className="navbar__image" />
+          </Content>
+        </Container>
+      </Section>
+    </>
   )
 }
 
