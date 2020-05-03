@@ -49,11 +49,11 @@ module.exports = function(RedProfile) {
   RedProfile.observe("access", function filterToOnlyLoadProfilesInCurrentUsersLocation(ctx, next) {
     if (!ctx.options.currentUser) return next();
 
-    const currentUserRediLocation = ctx.options.currentUser.redProfile.rediLocation;
-
-    if (!ctx.query.where) ctx.query.where = {};
-
-    ctx.query.where = { rediLocation: currentUserRediLocation }
+    if (ctx.options.currentUser.email !== 'cloud-accounts@redi-school.org') {
+      const currentUserRediLocation = ctx.options.currentUser.redProfile.rediLocation;
+      if (!ctx.query.where) ctx.query.where = {}
+      ctx.query.where = { and: [ {rediLocation: currentUserRediLocation }, ...ctx.query.where ] }
+    }
 
     return next()
   })
