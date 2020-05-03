@@ -52,7 +52,7 @@ module.exports = function(RedProfile) {
     if (ctx.options.currentUser.email !== 'cloud-accounts@redi-school.org') {
       const currentUserRediLocation = ctx.options.currentUser.redProfile.rediLocation;
       if (!ctx.query.where) ctx.query.where = {}
-      ctx.query.where = { and: [ {rediLocation: currentUserRediLocation }, ...ctx.query.where ] }
+      ctx.query.where = { and: [ {rediLocation: currentUserRediLocation }, ctx.query.where ] }
     }
 
     return next()
