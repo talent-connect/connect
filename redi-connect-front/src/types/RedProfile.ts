@@ -2,10 +2,12 @@ import { RedMatch } from './RedMatch';
 import { RedMentoringSession } from './RedMentoringSession';
 import { UserType } from './UserType';
 import { SignupSource } from './SignupSource';
+import { RediLocation } from './RediLocation';
 
 export type RedProfile = {
   id: string;
   userType: UserType;
+  rediLocation: RediLocation;
   signupSource: SignupSource;
   mentor_occupation: string;
   mentor_workPlace: string;
