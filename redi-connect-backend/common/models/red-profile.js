@@ -47,7 +47,7 @@ module.exports = function(RedProfile) {
   // Berlin users only see profiles of other Berlin users. The same thing applies to 
   // Munich users, and future users in other ReDI locations.
   RedProfile.observe("access", function filterToOnlyLoadProfilesInCurrentUsersLocation(ctx, next) {
-    if (!ctx.options.currentUser) return next();
+    if (!ctx.options.currentUser || !ctx.options.currentUser.redProfile) return next();
 
     if (ctx.options.currentUser.email !== 'cloud-accounts@redi-school.org') {
       const currentUserRediLocation = ctx.options.currentUser.redProfile.rediLocation;
