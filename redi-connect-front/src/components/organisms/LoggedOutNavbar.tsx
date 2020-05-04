@@ -44,7 +44,7 @@ const LoggedOutNavbar = () => {
             responsive={{ mobile: { hide: { value: true } } }}
           >
             <Button onClick={() => history.push('/front/login')} simple>log-in</Button>
-            <Button onClick={() => history.push('/front/signup/landing')} >Sign-up</Button>
+            <Button onClick={() => history.push('/front/signup-landing')} >Sign-up</Button>
           </Content>
           <Content
             responsive={{ tablet: { hide: { value: true } } }}
