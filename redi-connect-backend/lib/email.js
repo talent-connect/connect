@@ -11,7 +11,7 @@ const config = {
 const ses = new aws.SES(config)
 
 const isProductionOrDemonstration = () =>
-  ['production', 'demonstration'].includes(process.env.NODE_ENV)
+  ['production', 'demonstration', 'staging'].includes(process.env.NODE_ENV)
 
 const sendEmail = Rx.bindNodeCallback(ses.sendEmail.bind(ses))
 const sendEmailFactory = (to, subject, body) => {
