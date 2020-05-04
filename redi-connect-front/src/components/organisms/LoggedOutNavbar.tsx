@@ -20,7 +20,7 @@ const LoggedOutNavbar = () => {
         &times;
       </Content>
       <Button
-        onClick={() => history.push('/front/signup/landing')}
+        onClick={() => history.push('/front/signup-landing')}
       >
         Sign-up now!
       </Button>

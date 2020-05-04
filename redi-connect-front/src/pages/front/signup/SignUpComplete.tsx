@@ -1,15 +1,12 @@
 import React from 'react'
 import AccountOperation from '../../../components/templates/AccountOperation'
-import { Columns, Heading, Content } from 'react-bulma-components'
+import { Columns, Heading, Form, Content } from 'react-bulma-components'
 import Teaser from '../../../components/molecules/Teaser'
-import { useParams } from 'react-router'
-
-interface RouteParams {
-  type: string
-}
+import Button from '../../../components/atoms/Button'
+import { useHistory } from 'react-router'
 
 export default function SignUpComplete () {
-  const { type } = useParams<RouteParams>()
+  const history = useHistory()
 
   return (
     <AccountOperation>
@@ -20,7 +17,6 @@ export default function SignUpComplete () {
         >
           <Teaser.Isabelle />
         </Columns.Column>
-
         <Columns.Column size={5} offset={2}>
           <Heading
             size={1}
@@ -30,33 +26,24 @@ export default function SignUpComplete () {
             className="title--border"
             spaced={true}
           >
-            Welcome to ReDI Connect
+            Meet Isabelle
           </Heading>
-
           <Content size="large" renderAs="div">
-            {type === 'mentee' && (
-              <>
-                <p>
-                  Thanks for registering! We're thrilled that you're ReDI :) But there
-                  is one last step before we can activate your profile because we want
-                  to make sure you find the right mentor:
-                </p>
+            <p>Your email address has been successfully confirmed!</p>
 
-                <p>
-                  Simply contact Isabelle via e-mail isabelle@redi-school.org to
-                  schedule a meeting. Or just turn up anytime between 5 and 8 on a
-                  Tuesday at ReDI School.
-                </p>
-                <p>You can also find and write to Isabelle on the ReDI Slack.</p>
-              </>
-            )}
-            {type === 'mentor' && (
-              <p>
-                Thanks for registering! We're thrilled that you're ReDI :) We
-                promise to review your profile as quickly as possible. We'll send
-                you an email once we're done.
-              </p>
-            )}
+            <p>Now, we would like to get to know you better. To activate your account,
+            please <strong>schedule a 15 Minute meeting with Isabelle</strong>.
+            Just write her an email with suitable meeting times!</p>
+          </Content>
+          <Form.Field className="submit-spacer">
+            <Form.Control>
+              <Button
+                onClick={() => history.push('/home')}
+              >Return to ReDI Connect Website</Button>
+            </Form.Control>
+          </Form.Field>
+          <Content size="small" renderAs="p">
+            Do you have questions? Feel free to contact us <a href="mailto:isabelle@redi-school.org">here</a> or visit our <a href="https://www.redi-school.org/" target="__blank">ReDI school website</a> for more information.
           </Content>
         </Columns.Column>
       </Columns>
