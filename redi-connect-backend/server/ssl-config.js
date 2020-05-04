@@ -7,6 +7,10 @@ if (!process.env.HTTP) {
     case 'production':
       environmentFolder = 'production'
       break
+   
+    case 'staging':
+      environmentFolder = 'staging'
+      break
 
     case 'demonstration':
     default:
