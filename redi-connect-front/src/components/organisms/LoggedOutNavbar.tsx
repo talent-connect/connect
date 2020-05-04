@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Section, Container, Content, Image } from 'react-bulma-components'
+import { Section, Container, Content } from 'react-bulma-components'
 import { useHistory } from 'react-router-dom'
 import Button from '../atoms/Button'
 import Logo from '../atoms/Logo'
@@ -50,7 +50,7 @@ const LoggedOutNavbar = () => {
             responsive={{ tablet: { hide: { value: true } } }}
             onClick={() => setMenuActive(!menuActive)}
           >
-            <Image src={burger} alt="hamburger icon" className="navbar__image" />
+            <img src={burger} alt="hamburger icon" className="navbar__image" />
           </Content>
         </Container>
       </Section>
