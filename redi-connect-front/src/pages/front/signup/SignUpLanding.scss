@@ -2,7 +2,6 @@
 @import '../../../styles/variables';
 
 .signup {
-  margin-top: 2rem;
   margin-bottom: 3.875rem;
   display: flex;
   align-items: center;
@@ -10,25 +9,20 @@
 
   @include mobile() {
     flex-direction: column;
-    margin-top: 1.5rem;
     margin-bottom: 2rem;
   }
 
   &__type {
-    padding: 1.125rem;
-    width: 100%;
+    padding: 1.125rem 0;
+    width: 48%;
     text-align: center;
     border: 2px solid transparent;
     box-shadow: $default-shadow;
     cursor: pointer;
 
-    &:first-child {
-      margin-right: .5rem;
-
-      @include mobile() {
-        margin-right: 0;
-        margin-bottom: 1.5rem;
-      }
+    @include mobile() {
+      width: 100%;
+      margin-bottom: 1.5rem;
     }
 
     &__name {
