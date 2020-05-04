@@ -30,7 +30,7 @@ const RediHero = () => {
               professionals from the digital industry with students and alumni
               of our Digital Career Program.{' '}
             </Content>
-            <Button size="large" onClick={() => history.push('/front/signup/landing')} >
+            <Button size="large" onClick={() => history.push('/front/signup-landing')} >
             sign-up now!
             </Button>
           </Columns.Column>

@@ -41,23 +41,23 @@ export const routes__loggedOut: RouteDefinition[] = [
     exact: true
   },
   {
-    path: '/front/signup/landing',
+    path: '/front/signup-landing',
     component: SignUpLanding,
+    exact: true
+  },
+  {
+    path: '/front/signup-email-verification',
+    component: SignUpEmailVerification,
+    exact: true
+  },
+  {
+    path: '/front/signup-complete',
+    component: SignUpComplete,
     exact: true
   },
   {
     path: '/front/signup/:type',
     component: SignUp,
-    exact: true
-  },
-  {
-    path: '/front/signup/email-verification',
-    component: SignUpEmailVerification,
-    exact: true
-  },
-  {
-    path: '/front/signup/complete',
-    component: SignUpComplete,
     exact: true
   },
   {

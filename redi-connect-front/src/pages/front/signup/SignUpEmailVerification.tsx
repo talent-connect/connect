@@ -3,7 +3,7 @@ import AccountOperation from '../../../components/templates/AccountOperation'
 import { Columns, Heading, Content } from 'react-bulma-components'
 import Teaser from '../../../components/molecules/Teaser'
 
-export default function SignUpComplete () {
+export default function SignUpEmailVerification () {
   return (
     <AccountOperation>
       <Columns vCentered>

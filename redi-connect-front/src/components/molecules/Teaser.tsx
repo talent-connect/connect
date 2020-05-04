@@ -19,7 +19,7 @@ export default {
   SignUp: () => (
     <TopIllustration>
       Don't have an account yet?{' '}
-      <Link to="/front/signup/landing">signup here</Link>
+      <Link to="/front/signup-landing">signup here</Link>
     </TopIllustration>
   ),
   SignIn: () => (

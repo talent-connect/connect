@@ -1,6 +1,6 @@
 import React from 'react'
 import AccountOperation from '../../../components/templates/AccountOperation'
-import { Columns, Heading, Form, Element, Content } from 'react-bulma-components'
+import { Columns, Heading, Form, Content } from 'react-bulma-components'
 import Teaser from '../../../components/molecules/Teaser'
 import Button from '../../../components/atoms/Button'
 import { useHistory } from 'react-router'
