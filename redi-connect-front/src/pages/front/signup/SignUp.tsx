@@ -58,12 +58,11 @@ export const validationSchema = Yup.object({
   })
 })
 
-export type SignUpFormType =
-  | 'public-sign-up-mentor-pending-review'
-  | 'public-sign-up-mentee-pending-review';
+export type SignUpFormType = {
+  type: | 'mentor' | 'mentee'
+}
 
 export interface SignUpFormValues {
-  formType: SignUpFormType
   gaveGdprConsent: boolean
   username: string
   password: string
@@ -75,7 +74,6 @@ export interface SignUpFormValues {
 }
 
 const initialValues: SignUpFormValues = {
-  formType: 'public-sign-up-mentee-pending-review',
   gaveGdprConsent: false,
   username: '',
   password: '',
@@ -87,9 +85,10 @@ const initialValues: SignUpFormValues = {
 }
 
 export default function SignUp () {
-  const { type } = useParams()
+  const { type } = useParams<SignUpFormType>()
 
-  const userType: SignUpFormType = (type === 'mentee')
+  // we may consider removing the backend types from frontend
+  const userType = (type === 'mentee')
     ? 'public-sign-up-mentee-pending-review'
     : 'public-sign-up-mentor-pending-review'
 
@@ -104,7 +103,6 @@ export default function SignUp () {
     const cleanProfile: Partial<RedProfile> = omit(profile, [
       'password',
       'passwordConfirm',
-      'formType',
       'agreesWithCodeOfConduct',
       'gaveGdprConsent'
     ])
@@ -114,14 +112,12 @@ export default function SignUp () {
     try {
       await signUp(values.username, values.password, cleanProfile)
       actions.setSubmitting(false)
-      history.push('/front/signup/complete/' + userType)
+      history.push('/front/signup/complete/' + type)
     } catch (error) {
       actions.setSubmitting(false)
       setSubmitError(Boolean(error))
     }
   }
-
-  initialValues.formType = userType
 
   const formik = useFormik({
     initialValues: initialValues,
@@ -214,7 +210,7 @@ export default function SignUp () {
                 !!formik.errors.passwordConfirm
               }
             />
-            {userType === 'public-sign-up-mentee-pending-review' && (
+            {type === 'mentee' && (
               <>
                 <Form.Field>
                   <Form.Label size="small">

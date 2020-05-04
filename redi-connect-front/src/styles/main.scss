@@ -17,6 +17,7 @@
 @import "~bulma/sass/elements/title.sass";
 @import "~bulma/sass/elements/container.sass";
 @import "~bulma/sass/layout/section.sass";
+@import "~bulma/sass/elements/content.sass";
 
 @import "~bulma-checkradio/src/sass/index.sass";
 
@@ -95,12 +96,6 @@ a:hover {
   @include tablet() {
     background: linear-gradient(90deg, $redi-blue-light 50%, $white 50%);
   }
-}
-
-.illustration {
-  width: calc(100% + 3em);
-  height: 100%;
-  margin: 0 -2em 3.625em -1em;
 }
 
 .is-checkradio--redi[type="checkbox"]+label {

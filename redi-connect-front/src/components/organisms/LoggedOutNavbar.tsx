@@ -1,17 +1,15 @@
 import React, { useState } from 'react'
 import { Section, Container, Content, Image } from 'react-bulma-components'
-import { withRouter } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import Button from '../atoms/Button'
 import Logo from '../atoms/Logo'
 import burger from '../../assets/images/hamburger.svg'
 import './LoggedOutNavbar.scss'
 
-interface Props {
-  history: any
-}
-
-const LoggedOutNavbar = ({ history }: Props) => {
+const LoggedOutNavbar = () => {
   const [menuActive, setMenuActive] = useState(false)
+
+  const history = useHistory()
 
   const mobileMenu = (
     <Container className="navbar__mobile">
@@ -60,4 +58,4 @@ const LoggedOutNavbar = ({ history }: Props) => {
   )
 }
 
-export default withRouter(LoggedOutNavbar)
+export default LoggedOutNavbar
