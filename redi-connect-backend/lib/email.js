@@ -50,6 +50,9 @@ function buildFrontendUrl (env) {
     case 'demonstration':
       return 'https://app.demo.connect.redi-school.org'
 
+    case 'staging':
+      return 'https://app.staging.connect.redi-school.org'
+
     default:
     case 'development':
     case 'dev':
