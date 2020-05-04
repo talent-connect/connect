@@ -53,16 +53,22 @@ export const validationSchema = Yup.object({
   mentee_currentlyEnrolledInCourse: Yup.string().when('formType', {
     is: 'public-sign-up-mentee-pending-review',
     then: Yup.string()
+      .required()
       .oneOf(courses.map(level => level.id))
       .label('Currently enrolled in course')
   })
 })
 
-export type SignUpFormType = {
+export type SignUpPageType = {
   type: | 'mentor' | 'mentee'
 }
 
+export type SignUpUserType =
+| 'public-sign-up-mentee-pending-review'
+| 'public-sign-up-mentor-pending-review'
+
 export interface SignUpFormValues {
+  formType: string
   gaveGdprConsent: boolean
   username: string
   password: string
@@ -74,6 +80,7 @@ export interface SignUpFormValues {
 }
 
 const initialValues: SignUpFormValues = {
+  formType: '',
   gaveGdprConsent: false,
   username: '',
   password: '',
@@ -85,12 +92,14 @@ const initialValues: SignUpFormValues = {
 }
 
 export default function SignUp () {
-  const { type } = useParams<SignUpFormType>()
+  const { type } = useParams<SignUpPageType>()
 
   // we may consider removing the backend types from frontend
-  const userType = (type === 'mentee')
+  const userType: SignUpUserType = (type === 'mentee')
     ? 'public-sign-up-mentee-pending-review'
     : 'public-sign-up-mentor-pending-review'
+
+  initialValues.formType = userType
 
   const [submitError, setSubmitError] = useState(false)
   const submitForm = async (
@@ -104,7 +113,8 @@ export default function SignUp () {
       'password',
       'passwordConfirm',
       'agreesWithCodeOfConduct',
-      'gaveGdprConsent'
+      'gaveGdprConsent',
+      'formType'
     ])
     cleanProfile.userType = userType
     cleanProfile.userActivated = false
