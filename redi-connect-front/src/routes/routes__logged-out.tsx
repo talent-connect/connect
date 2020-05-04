@@ -18,20 +18,14 @@ const SignUp = lazy(() =>
     /* webpackChunkName: "SignUp", webpackPreload: true */ '../pages/front/signup/SignUp'
   )
 )
+const SignUpEmailVerification = lazy(() =>
+  import(
+    /* webpackChunkName: "SignUpEmailVerification", webpackPreload: true */ '../pages/front/signup/SignUpEmailVerification'
+  )
+)
 const SignUpComplete = lazy(() =>
   import(
     /* webpackChunkName: "SignUpComplete", webpackPreload: true */ '../pages/front/signup/SignUpComplete'
-  )
-)
-// const Login= lazy(() => import(/* webpackChunkName: "Login", webpackPreload: true */ '../pages/front/login/Login'));
-const SignUpExisting = lazy(() =>
-  import(
-    /* webpackChunkName: "SignUpExisting", webpackPreload: true */ '../pages/front/signup-existing/SignUpExisting'
-  )
-)
-const ResetPassword = lazy(() =>
-  import(
-    /* webpackChunkName: "ResetPassword", webpackPreload: true */ '../pages/front/signup-existing/ResetPassword'
   )
 )
 
@@ -47,28 +41,23 @@ export const routes__loggedOut: RouteDefinition[] = [
     exact: true
   },
   {
-    path: '/front/signup/landing',
+    path: '/front/signup-landing',
     component: SignUpLanding,
+    exact: true
+  },
+  {
+    path: '/front/signup-email-verification',
+    component: SignUpEmailVerification,
+    exact: true
+  },
+  {
+    path: '/front/signup-complete',
+    component: SignUpComplete,
     exact: true
   },
   {
     path: '/front/signup/:type',
     component: SignUp,
-    exact: true
-  },
-  {
-    path: '/front/signup/complete/:type',
-    component: SignUpComplete,
-    exact: true
-  },
-  {
-    path: '/app/create-profile/existing/:accessToken',
-    component: SignUpExisting,
-    exact: true
-  },
-  {
-    path: '/app/create-profile/existing-reset-password',
-    component: ResetPassword,
     exact: true
   },
   {

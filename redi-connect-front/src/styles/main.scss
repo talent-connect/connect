@@ -4,11 +4,11 @@
 //custom modifiers
 @import "_fonts.scss";
 @import "_heading.scss";
+@import "_forms.scss";
 
 // bulma global dependencies
 @import "~bulma/sass/utilities/_all";
 @import "~bulma/sass/base/_all.sass";
-@import "~bulma/sass/components/navbar.sass";
 
 // styles for the components used from bulma
 @import "~bulma/sass/grid/columns.sass";
@@ -16,7 +16,7 @@
 @import "~bulma/sass/elements/title.sass";
 @import "~bulma/sass/elements/container.sass";
 @import "~bulma/sass/layout/section.sass";
-@import "~bulma/sass/elements/button.sass";
+@import "~bulma/sass/elements/content.sass";
 
 @import "~bulma-checkradio/src/sass/index.sass";
 
@@ -68,6 +68,7 @@ a {
 
   &--bottom-large-spaceing {
     padding-bottom: 4rem;
+
     @include tablet {
       padding-bottom: 10rem;
     }
@@ -90,18 +91,13 @@ a:hover {
 // will be done the next time this view is reused
 .color-half {
   background-color: $white;
+
   @include tablet() {
     background: linear-gradient(90deg, $redi-blue-light 50%, $white 50%);
   }
 }
 
-.illustration {
-  width: calc(100% + 3em);
-  height: 100%;
-  margin: 0 -2em 3.625em -1em;
-}
-
-.is-checkradio--redi[type="checkbox"] + label {
+.is-checkradio--redi[type="checkbox"]+label {
   display: inline-block;
   margin: 0;
   padding: 0;
@@ -109,4 +105,9 @@ a:hover {
 
 .submit-spacer {
   margin-top: 3em;
+}
+
+.default-background {
+  background: white;
+  z-index: -2;
 }

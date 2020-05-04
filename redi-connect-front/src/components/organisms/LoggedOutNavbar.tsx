@@ -1,36 +1,60 @@
 import React, { useState } from 'react'
-import { Navbar, Container } from 'react-bulma-components'
+import { Section, Container, Content } from 'react-bulma-components'
+import { useHistory } from 'react-router-dom'
 import Button from '../atoms/Button'
 import Logo from '../atoms/Logo'
+import burger from '../../assets/images/hamburger.svg'
+import './LoggedOutNavbar.scss'
 
 const LoggedOutNavbar = () => {
-  const [active, setActive] = useState(false)
+  const [menuActive, setMenuActive] = useState(false)
+
+  const history = useHistory()
+
+  const mobileMenu = (
+    <Container className="navbar__mobile">
+      <Content
+        className="navbar__close"
+        onClick={() => setMenuActive(!menuActive)}
+      >
+        &times;
+      </Content>
+      <Button
+        onClick={() => history.push('/front/signup-landing')}
+      >
+        Sign-up now!
+      </Button>
+      <Button
+        size="medium"
+        onClick={() => history.push('/front/login')}
+        simple
+      >
+        log-in
+      </Button>
+    </Container>
+  )
 
   return (
-    <Navbar active={active}>
-      <Container>
-        <Navbar.Brand>
-          <Navbar.Item>
-            <Logo />
-          </Navbar.Item>
-          <Navbar.Burger
-            className="center"
-            active={active}
-            onClick={() => setActive(!active)}
-          />
-        </Navbar.Brand>
-        <Navbar.Menu>
-          <Navbar.Container position="end">
-            <Navbar.Item>
-              <Button size="small" text="log-in" type="simple" />
-            </Navbar.Item>
-            <Navbar.Item>
-              <Button size="small" text="Sign-up" />
-            </Navbar.Item>
-          </Navbar.Container>
-        </Navbar.Menu>
-      </Container>
-    </Navbar>
+    <>
+      {menuActive && mobileMenu}
+      <Section className="navbar">
+        <Container className="navbar__wrapper">
+          <Logo />
+          <Content
+            responsive={{ mobile: { hide: { value: true } } }}
+          >
+            <Button onClick={() => history.push('/front/login')} simple>log-in</Button>
+            <Button onClick={() => history.push('/front/signup-landing')} >Sign-up</Button>
+          </Content>
+          <Content
+            responsive={{ tablet: { hide: { value: true } } }}
+            onClick={() => setMenuActive(!menuActive)}
+          >
+            <img src={burger} alt="hamburger icon" className="navbar__image" />
+          </Content>
+        </Container>
+      </Section>
+    </>
   )
 }
 

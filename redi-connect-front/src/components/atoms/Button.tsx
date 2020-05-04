@@ -1,28 +1,40 @@
 import React from 'react'
+import classnames from 'classnames'
+import { ReactComponent as ArrowRight } from '../../assets/images/arrow-right.svg'
 import './Button.scss'
 
 interface Props {
-  text: string
-  size: 'large' | 'medium' | 'small'
-  type?: 'default' | 'simple'
-  icon?: 'arrow-right'
+  children: any
+  size?: 'large' | 'medium' | 'small'
+  arrow?: boolean
+  fullWidth?: boolean
+  disabled?: boolean
+  onClick: any
+  simple?: boolean
 }
 
-const Button = ({ text, type = 'default', size, icon }: Props) => {
+const Button = ({
+  children,
+  size = 'small',
+  simple = false,
+  arrow,
+  fullWidth,
+  onClick,
+  disabled
+}: Props) => {
   const baseClass = 'button'
 
   return (
     <button
-      className={`${baseClass} ${baseClass}--${type} ${baseClass}--${size}`}
+      onClick={disabled ? undefined : onClick}
+      disabled={disabled}
+      className={classnames(baseClass, `${baseClass}--${simple ? 'simple' : 'default'}`, {
+        [`${baseClass}--${size}`]: size,
+        [`${baseClass}--fullWidth`]: fullWidth
+      })}
     >
-      {text}
-      {icon && (
-        <img
-          src={require(`../../assets/images/${icon}.svg`)}
-          alt="icon"
-          className="button--img"
-        />
-      )}
+      {children}
+      {arrow && <ArrowRight className="button__arrow" />}
     </button>
   )
 }

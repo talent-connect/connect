@@ -1,38 +1,78 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { Columns } from 'react-bulma-components'
-import { LoggedOutLayout } from '../../../layouts/LoggedOutLayout'
+import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
+import { Heading, Columns, Image } from 'react-bulma-components'
+import AccountOperation from '../../../components/templates/AccountOperation'
+import Teaser from '../../../components/molecules/Teaser'
+import Button from '../../../components/atoms/Button'
+import classnames from 'classnames'
+import { ReactComponent as Mentee } from '../../../assets/images/mentee.svg'
+import { ReactComponent as Mentor } from '../../../assets/images/mentor.svg'
 
-export default function SignUpLanding () {
+import './SignUpLanding.scss'
+
+const Illustration: { [key: string]: React.FunctionComponent<React.SVGProps<SVGSVGElement>> } = {
+  mentee: Mentee,
+  mentor: Mentor
+}
+
+const SignUpLanding = () => {
+  const [selectedType, setSelectedType] = useState('')
+  const history = useHistory()
+
+  const renderType = (name: string) => {
+    const type = name.toLowerCase()
+    const Image = Illustration[type]
+
+    return <div
+      className={classnames('signup__type', { [`border-${type}`]: type === selectedType, 'no-shadow': type !== selectedType && selectedType !== '' })}
+      onClick={() => setSelectedType(type)}>
+      <Image />
+      <Heading className="signup__type__name" renderAs="p">
+        {name}
+      </Heading>
+    </div>
+  }
+
   return (
-    <LoggedOutLayout>
-      <Columns>
-        <Columns.Column size={6}>
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-          nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-          sed diam voluptua. At vero eos et accusam et justo duo dolores et ea
-          rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem
-          ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
-          sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-          dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam
-          et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
-          takimata sanctus est Lorem ipsum dolor sit amet.
-          <Link to="/front/signup/mentee">mentee</Link>
+    <AccountOperation>
+      <Columns vCentered>
+        <Columns.Column
+          size={6}
+          responsive={{ mobile: { hide: { value: true } } }}
+        >
+          <Teaser.SignIn />
         </Columns.Column>
 
-        <Columns.Column size={6}>
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-          nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-          sed diam voluptua. At vero eos et accusam et justo duo dolores et ea
-          rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem
-          ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
-          sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-          dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam
-          et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
-          takimata sanctus est Lorem ipsum dolor sit amet.
-          <Link to="/front/signup/mentor">mentor</Link>
+        <Columns.Column size={5} offset={1}>
+          <Heading
+            size={1}
+            weight="normal"
+            renderAs="h1"
+            responsive={{ mobile: { textSize: { value: 2 } } }}
+            className="title--border"
+            spaced={true}
+          >
+            Sign-up
+          </Heading>
+          <Heading size={4} renderAs="p" subtitle>
+            Do you want to become a <strong>mentor</strong> or a <strong>mentee</strong>?
+          </Heading>
+          <div className="signup">
+            {renderType('Mentee')}
+            {renderType('Mentor')}
+          </div>
+          <Button
+            fullWidth
+            onClick={() => history.push(`/front/signup/${selectedType}`)}
+            disabled={!selectedType}
+            size="medium"
+          >
+            next step
+          </Button>
         </Columns.Column>
       </Columns>
-    </LoggedOutLayout>
+    </AccountOperation>
   )
 }
+
+export default SignUpLanding

@@ -2,14 +2,7 @@
 @import "../../styles/_variables.scss";
 
 .pre-footer {
-  &-container {
-    background-color: $white;
-    padding: 3rem 0;
-
-    @include mobile() {
-      margin-bottom: -2.5rem;
-    }
-  }
+  background-color: $white;
 
   &-heading.title {
     margin-bottom: 1.5rem;
@@ -24,6 +17,7 @@
   &-content {
     margin-bottom: 2.5rem;
     line-height: 2rem;
+    font-size: 1.25rem;
     color: $black;
 
     @include mobile() {
@@ -33,7 +27,12 @@
 
   &-image {
     position: absolute;
-    bottom: -2rem;
+    bottom: -1.5rem;
     right: 0;
+
+    @include mobile() {
+      position: relative;
+      margin: 0 1rem .25rem;
+    }
   }
 }

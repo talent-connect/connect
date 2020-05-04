@@ -12,9 +12,9 @@ import {
 import { history } from '../../../services/history/history'
 import { login, fetchSaveRedProfile } from '../../../services/api/api'
 import { saveAccessToken } from '../../../services/auth/auth'
+import { Columns, Form, Heading } from 'react-bulma-components'
+import Button from '../../../components/atoms/Button'
 
-import './Login.scss'
-import { Columns, Form, Heading, Button } from 'react-bulma-components'
 interface LoginFormValues {
   username: string
   password: string
@@ -78,7 +78,7 @@ export default function Login () {
         <Columns.Column size={5} offset={1}>
           <Heading
             size={1}
-            responsive={{ mobile: { textSize: { value: 2 } } } }
+            responsive={{ mobile: { textSize: { value: 2 } } }}
             weight="normal"
             renderAs="h1"
             className="title--border"
@@ -117,7 +117,7 @@ export default function Login () {
             </Form.Field>
 
             <Form.Field
-              className="login-form__reset-password"
+              className="submit-link submit-link--pre"
               textTransform="uppercase"
             >
               <Link to="/front/reset-password/request-reset-password-email">
@@ -127,8 +127,7 @@ export default function Login () {
 
             <Form.Field className="submit-spacer">
               <Button
-                className="button--default button--medium"
-                fullwidth={true}
+                fullWidth
                 onClick={formik.submitForm}
                 disabled={!(formik.dirty && formik.isValid)}
               >
