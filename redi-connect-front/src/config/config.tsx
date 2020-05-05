@@ -6,6 +6,7 @@ import { Language } from '../types/Language';
 import { Gender } from '../types/Gender';
 import { EducationLevel } from '../types/EducationLevel';
 import { Course } from '../types/Course';
+import { RediLocation } from '../types/RediLocation';
 
 export const categories: Categories = [
   { id: 'blockchain', label: 'Blockchain', colour: '#db8484' },
@@ -77,23 +78,45 @@ export const educationLevels: EducationLevel[] = [
   { id: 'universityPhd', label: 'University Degree (PhD)' },
 ];
 
-export const courses: Course[] = [
-  { id: 'basicComputerTraining', label: 'Basic Computer Training' },
-  { id: 'introPython', label: 'Intro to Python' },
-  { id: 'javaScript', label: 'Javascript' },
-  { id: 'react', label: 'React' },
-  { id: 'intermediateJava', label: 'Intermediate Java' },
-  { id: 'iotInAction', label: 'IoT in Action!' },
-  { id: 'dataSciencePython', label: 'Data Science with Python' },
-  { id: 'htmlCss', label: 'HTML&CSS' },
-  { id: 'salesforceFundamentals', label: 'Salesforce Fundamentals' },
-  { id: 'blockchainBasics', label: 'Blockchain Basics' },
-  { id: 'introIosAppsSwift', label: 'Intro to iOS Apps with Swift' },
-  { id: 'introJava', label: 'Intro to Java' },
-  { id: 'uiUxWomen', label: 'UI/UX Women' },
-  { id: 'introNetworking', label: 'Intro to Networking' },
-  { id: 'alumni', label: "I'm a ReDI School alumni (I took a course before)" },
-];
+let _courses: Course[]
+if ((process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'berlin') {
+  _courses = [
+    { id: 'basicComputerTraining', label: 'Basic Computer Training' },
+    { id: 'introPython', label: 'Intro to Python' },
+    { id: 'javaScript', label: 'Javascript' },
+    { id: 'react', label: 'React' },
+    { id: 'intermediateJava', label: 'Intermediate Java' },
+    { id: 'iotInAction', label: 'IoT in Action!' },
+    { id: 'dataSciencePython', label: 'Data Science with Python' },
+    { id: 'htmlCss', label: 'HTML&CSS' },
+    { id: 'salesforceFundamentals', label: 'Salesforce Fundamentals' },
+    { id: 'blockchainBasics', label: 'Blockchain Basics' },
+    { id: 'introIosAppsSwift', label: 'Intro to iOS Apps with Swift' },
+    { id: 'introJava', label: 'Intro to Java' },
+    { id: 'uiUxWomen', label: 'UI/UX Women' },
+    { id: 'introNetworking', label: 'Intro to Networking' },
+    { id: 'alumni', label: "I'm a ReDI School alumni (I took a course before)" },
+  ];
+} else if ((process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'munich') {
+  _courses = [
+    { id: 'munich_dcp_frontEndDevelopment1', label: 'Front-End Development 1' },
+    { id: 'munich_dcp_frontEndDevelopment2', label: 'Front-End Development 2' },
+    { id: 'munich_dcp_softwareDevelopment1', label: 'Software Development 1' },
+    { id: 'munich_dcp_softwareDevelopment2', label: 'Software Development 2' },
+    { id: 'munich_dcp_dataAnalytics1', label: 'Data Analytics 1' },
+    { id: 'munich_dcp_dataAnalytics2', label: 'Data Analytics 2' },
+    { id: 'munich_dcp_devOps', label: 'DevOps' },
+    { id: 'munich_dcp_networking', label: 'Networking' },
+    { id: 'munich_women_beginners', label: 'Women Program Beginners' },
+    { id: 'munich_women_programBasics1', label: 'Women Program Basics 1' },
+    { id: 'munich_women_programBasics2', label: 'Women Program Basics 2' },
+    { id: 'munich_women_basicsEnglish', label: 'Women Program Basics English' },
+    { id: 'munich_women_introToProgramming', label: 'Women Program Intro to programming' },
+  ];
+} else {
+  throw new Error('Invalid RediLocation')
+}
+export const courses = _courses;
 
 export const courseIdToLabelMap = mapValues(keyBy(courses, 'id'), 'label');
 

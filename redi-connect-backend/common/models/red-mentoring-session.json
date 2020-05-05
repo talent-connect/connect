@@ -17,6 +17,9 @@
     },
     "createdAt": {
       "type": "date"
+    },
+    "rediLocation": {
+      "type": "string"
     }
   },
   "validations": [],

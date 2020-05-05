@@ -110,6 +110,7 @@ const users = fp.compose(
         password,
       },
       redProfile: {
+        rediLocation: Math.random() > 0.5 ? "berlin" : "munich",
         userActivated: true,
         userType: pickRandomUserType(),
         gender,
@@ -175,6 +176,7 @@ const ericMenteeRedUser = {
   email: 'eric@binarylights.com',
 };
 const ericMenteeRedProfile = {
+  rediLocation: "berlin",
   userActivated: true,
   userType: 'mentee',
   mentor_occupation: 'Test',
@@ -219,6 +221,7 @@ const ericMentorRedUser = {
   email: 'info@binarylights.com',
 };
 const ericMentorRedProfile = {
+  rediLocation: "berlin",
   userActivated: true,
   userType: 'mentor',
   mentor_occupation: 'Test',
@@ -261,6 +264,7 @@ const isabelleMentorRedUser = {
   email: 'isabelle@redi-school.org',
 };
 const isabelleMentorRedProfile = {
+  rediLocation: "berlin",
   userActivated: true,
   userType: 'mentor',
   mentor_occupation: 'Test',
@@ -303,6 +307,7 @@ const ericAdminUser = {
   password: 'cloud-accounts@redi-school.org',
 };
 const ericAdminRedProfile = {
+  rediLocation: "berlin",
   userActivated: true,
   userType: 'mentor',
   mentor_occupation: 'Test',

@@ -54,6 +54,10 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
 import DateFnsUtils from '@date-io/date-fns';
 
@@ -495,6 +499,7 @@ const RedMatchList = props => (
     filters={<RedMatchListFilters />}
   >
     <Datagrid>
+      <TextField source="rediLocation" label="City" />
       <DateField source="createdAt" label="Record created at" />
       <ReferenceField label="Mentee" source="menteeId" reference="redProfiles">
         <FullName source="mentee" />
@@ -522,6 +527,10 @@ const RedMatchListFilters = props => (
           name: 'Invalidated due to other mentor accepting',
         },
       ]}
+    />
+    <SelectInput
+      source="rediLocation"
+      choices={rediLocations.map(({ id, label }) => ({ id, name: label }))}
     />
   </Filter>
 );
@@ -742,8 +751,10 @@ const RedMentoringSessionList = props => (
     exporter={exporter}
     pagination={<AllModelsPagination />}
     aside={<RedMentoringSessionListAside />}
+    filters={<RedMentoringSessionListFilters />}
   >
     <Datagrid>
+      <TextField source="rediLocation" label="City" />
       <ReferenceField label="Mentee" source="menteeId" reference="redProfiles">
         <FullName source="mentee" />
       </ReferenceField>
@@ -757,9 +768,18 @@ const RedMentoringSessionList = props => (
     </Datagrid>
   </List>
 );
+const RedMentoringSessionListFilters = props => (
+  <Filter {...props}>
+    <SelectInput
+      source="rediLocation"
+      choices={rediLocations.map(({ id, label }) => ({ id, name: label }))}
+    />
+  </Filter>
+);
 const RedMentoringSessionListAside = () => {
   const [fromDate, setFromDate] = React.useState(null);
   const [toDate, setToDate] = React.useState(null);
+  const [rediLocation, setRediLocation] = React.useState(undefined);
   const [loadState, setLoadState] = React.useState('pending');
   const [result, setResult] = React.useState(null);
   const [step, setStep] = React.useState(0);
@@ -795,7 +815,7 @@ const RedMentoringSessionListAside = () => {
           {
             pagination: { page: 1, perPage: 0 },
             sort: {},
-            filter: { date: { gte: fromDate, lte: toDate } },
+            filter: { date: { gte: fromDate, lte: toDate }, rediLocation },
           }
         );
         setLoadState('success');
@@ -814,6 +834,17 @@ const RedMentoringSessionListAside = () => {
         {picker(fromDate, setFromDate, 'From date')}
         {picker(toDate, setToDate, 'To date')}
       </MuiPickersUtilsProvider>
+      <FormControl style={{ width: '100%' }}>
+        <InputLabel>City</InputLabel>
+        <Select
+          value={rediLocation}
+          onChange={e => setRediLocation(e.target.value)}
+        >
+          <MenuItem value={undefined}>All cities</MenuItem>
+          <MenuItem value={'berlin'}>Berlin</MenuItem>
+          <MenuItem value={'munich'}>Munich</MenuItem>
+        </Select>
+      </FormControl>
       <div>
         <Button onClick={doLoad} disabled={!valid && loadState !== 'loading'}>
           Load
