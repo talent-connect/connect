@@ -22,6 +22,7 @@ import Button from '../../../components/atoms/Button'
 
 import { signUp } from '../../../services/api/api'
 import { RedProfile } from '../../../types/RedProfile'
+import { Extends } from '../../../types/utility-types/Extends'
 import { history } from '../../../services/history/history'
 
 import { courses } from '../../../config/config'
@@ -50,19 +51,26 @@ export const validationSchema = Yup.object({
   gaveGdprConsent: Yup.boolean()
     .required()
     .oneOf([true]),
-  mentee_currentlyEnrolledInCourse: Yup.string().when('formType', {
+  mentee_currentlyEnrolledInCourse: Yup.string().when('userType', {
     is: 'public-sign-up-mentee-pending-review',
     then: Yup.string()
+      .required()
       .oneOf(courses.map(level => level.id))
       .label('Currently enrolled in course')
   })
 })
 
-export type SignUpFormType = {
+type SignUpPageType = {
   type: | 'mentor' | 'mentee'
 }
 
+type SignUpUserType = Extends<
+  RedProfile['userType'],
+  'public-sign-up-mentee-pending-review' | 'public-sign-up-mentor-pending-review'
+>
+
 export interface SignUpFormValues {
+  userType: SignUpUserType
   gaveGdprConsent: boolean
   username: string
   password: string
@@ -73,24 +81,25 @@ export interface SignUpFormValues {
   mentee_currentlyEnrolledInCourse: string
 }
 
-const initialValues: SignUpFormValues = {
-  gaveGdprConsent: false,
-  username: '',
-  password: '',
-  passwordConfirm: '',
-  firstName: '',
-  lastName: '',
-  agreesWithCodeOfConduct: false,
-  mentee_currentlyEnrolledInCourse: ''
-}
-
-export default function SignUp () {
-  const { type } = useParams<SignUpFormType>()
+export default function SignUp() {
+  const { type } = useParams<SignUpPageType>()
 
   // we may consider removing the backend types from frontend
-  const userType = (type === 'mentee')
+  const userType: SignUpUserType = (type === 'mentee')
     ? 'public-sign-up-mentee-pending-review'
     : 'public-sign-up-mentor-pending-review'
+
+  const initialValues: SignUpFormValues = {
+    userType,
+    gaveGdprConsent: false,
+    username: '',
+    password: '',
+    passwordConfirm: '',
+    firstName: '',
+    lastName: '',
+    agreesWithCodeOfConduct: false,
+    mentee_currentlyEnrolledInCourse: ''
+  }
 
   const [submitError, setSubmitError] = useState(false)
   const submitForm = async (
@@ -104,9 +113,8 @@ export default function SignUp () {
       'password',
       'passwordConfirm',
       'agreesWithCodeOfConduct',
-      'gaveGdprConsent'
+      'gaveGdprConsent',
     ])
-    cleanProfile.userType = userType
     cleanProfile.userActivated = false
     cleanProfile.signupSource = 'public-sign-up'
     try {
