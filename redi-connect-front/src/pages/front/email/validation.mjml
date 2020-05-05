@@ -1,0 +1,35 @@
+<mjml>
+  <mj-head>
+    <mj-title>Email verification successful!</mj-title>
+    <mj-include path="./style.mjml" />
+    <mj-attributes>
+      <mj-class name="divider-top" width="50px" padding="20px 0" border-color="#F15A22" />
+      <mj-class name="divider-bottom" width="100%" padding="0 0 24px" border-color="#DADADA" border-width="1px" />
+      <mj-class name="text" font-size="16px" line-height="24px" color="#000" padding="0" />
+      <mj-class name="text-padding" padding="20px 0 30px 0" />
+      <mj-class name="wrapper" padding="0" />
+      <mj-class name="column" padding="0 20px 0 0" />
+      <mj-class name="text-footer" font-size="12px" color="#5D5D5D" padding="0" font-weight="300" />
+      <mj-class name="headline" font-size="40px" line-height="48px" color="#000" font-family="Jubilat" font-weight="900" padding="0" />
+      <mj-class name="headline-footer" font-size="14px" line-height="24px" color="#000" padding="0" />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#FFF">
+    <mj-wrapper mj-class="wrapper">
+      <mj-section css-class="section">
+        <mj-column>
+          <mj-text mj-class="headline">Verification has been successful!</mj-text>
+          <mj-divider mj-class="divider-top" css-class="divider" />
+          <mj-text mj-class="text">Hello Darja,</mj-text>
+          <mj-text mj-class="text text-padding">Your Email address was successfully verified.</mj-text>
+          <mj-text mj-class="text">Now, we would like to get to know you a little better. Please schedule a time for a meeting with me at ReDI School.
+            Just check out our <a href='' class="text-link">calendar</a> and make a suitable appointment.</mj-text>
+          <mj-text mj-class="text" padding="20px 0 30px 0">I am excited to get to know you soon!</mj-text>
+          <mj-text mj-class="text">Best,</mj-text>
+          <mj-text mj-class="text">Isabelle</mj-text>
+        </mj-column>
+      </mj-section>
+      <mj-include path="./footer.mjml" />
+    </mj-wrapper>
+  </mj-body>
+</mjml>
