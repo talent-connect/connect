@@ -22,8 +22,10 @@ module.exports = function(RedMatch) {
     if (ctx.instance) {
       if (ctx.isNewInstance) ctx.instance.createdAt = new Date();
       ctx.instance.updatedAt = new Date();
+      ctx.instance.rediLocation = ctx.options.currentUser.redProfile.id;
     } else {
       ctx.data.updatedAt = new Date();
+      ctx.data.rediLocation = ctx.options.currentUser.redProfile.id;
     }
     next();
   });
