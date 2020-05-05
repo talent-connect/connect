@@ -77,10 +77,10 @@ module.exports = function(RedMentoringSession) {
         ctx.instance.createdAt = new Date();
       }
       ctx.instance.updatedAt = new Date();
-      ctx.instance.rediLocation = ctx.options.currentUser.redProfile.id;
+      ctx.instance.rediLocation = ctx.options.currentUser.redProfile.rediLocation;
     } else {
       ctx.data.updatedAt = new Date();
-      ctx.data.rediLocation = ctx.options.currentUser.redProfile.id;
+      ctx.data.rediLocation = ctx.options.currentUser.redProfile.rediLocation;
     }
     next();
   });
