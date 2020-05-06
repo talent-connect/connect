@@ -2,10 +2,8 @@
 @import '../../styles/_variables.scss';
 
 .logo {
-  font-size: $size-5;
-  line-height: $size-3;
-  display: inline;
   color: $black;
+  font-size: $size-5;
   font-weight: 500;
 
   strong {  
@@ -14,7 +12,7 @@
 
   &:hover {
     color: $black;
-    text-decoration: none !important;
+    text-decoration: none;
   }
 
   @include mobile() {

@@ -3,11 +3,18 @@
 
 .navbar {
   background: $white;
+  // not happy with this overwrite, there should be a nices solution
+  padding: $section-padding;
 
   &__wrapper {
     display: flex;
     justify-content: space-between;
     width: 100%;
+    align-items: center;
+
+    @include tablet() {
+      font-size: $size-4;
+    }
   }
 
   &__mobile {
@@ -39,5 +46,9 @@
 
   &__image {
     cursor: pointer;
+  }
+
+  &--with-separator {
+    border-bottom: solid 1px $grey-light;
   }
 }
