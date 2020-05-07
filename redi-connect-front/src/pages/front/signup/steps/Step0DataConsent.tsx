@@ -68,7 +68,7 @@ export const Step0DataConsent = withStyles(styles)(
             <p>
               We want to help you reach your (career) goals by finding you a
               personal mentor who can give you guidance. We invite professionals
-              that are working in the IT sector or in other companies in Berlin
+              that are working in the IT sector or in other companies
               to register at ReDI Connect in order to share their knowledge &
               experience with you. You get personal & career advice, learning
               from people with more work experience, build personal &
@@ -105,10 +105,10 @@ export const Step0DataConsent = withStyles(styles)(
               a student in our organization, and the ReDI Connect platform, we
               need to collect, process and store your personal information. This
               information may contain your personal data. If the processing of
-              personal data is necessary and there is no statutory basis for
+                            personal data is necessary and there is no statutory basis for
               such processing, we generally obtain consent from the data
               subject.
-            </p>
+              p>
             <p className={classes.paragraph}>
               The processing of personal data, such as name, email address, or
               telephone number of a data subject, shall always be in line with
@@ -120,7 +120,7 @@ export const Step0DataConsent = withStyles(styles)(
               personal data we collect, use and process. Furthermore, data
               subjects are informed, by means of this data protection
               declaration, of the rights to which they are entitled. 
-            </p>
+              p>
             <p className={classes.paragraph}>
               As the controller, ReDI School has implemented numerous technical
               and organizational measures to ensure the most complete protection
@@ -129,56 +129,56 @@ export const Step0DataConsent = withStyles(styles)(
               gaps, so absolute protection may not be guaranteed. For this
               reason, every data subject is free to transfer personal data to us
               via alternative means, e.g. by telephone.
-            </p>
-            <p className={classes.paragraph}>
+              p>
+               className={classes.paragraph}>
               For definitions and more information see our data protection
               policy under www.redi-school.org/data-privacy-policy.For
               definitions and more information see our data protection policy
               under 
               <a
-                href="http://www.redi-school.org/data-privacy-policy"
+                hre="http://www.redi-school.org/data-privacy-policy"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 www.redi-school.org/data-privacy-policy
               </a>
-              .
+                
             </p>
             <h4 className={classes.subHeader}>
               Permission to collect, process and store your data
             </h4>
-            <p className={classes.paragraphBelowSubheader}>
+               className={classes.paragraphBelowSubheader}>
               The personal data collected via your various interactions with
               ReDI Connect will only be used for administrative purposes. These
               include education, research and support services, alumni
               relations, public relations, security, attendance tracking, and
               crime prevention.
-            </p>
-            <p className={classes.paragraph}>
+              p>
+               className={classes.paragraph}>
               Wherever possible, ReDI School commits to anonymizing data to
               further ensure the protection of our mentors, students,
               volunteers, partners, and employees.
-            </p>
-            <p className={classes.paragraph}>
+              p>
+               className={classes.paragraph}>
               ReDI School will not disclose personal data to third parties
               without specific and prior consent, unless required to by law.
-            </p>
-            <p className={classes.paragraph}>
+              p>
+               className={classes.paragraph}>
               By consenting you agree to the fact that ReDI Connect will
               randomly monitor some profiles for the ongoing improvement of
               features within the platform.
-            </p>
-            <h4 className={classes.subHeader}>
+              p>
+              4 className={classes.subHeader}>
               Where will your data be stored?
             </h4>
-            <p className={classes.paragraphBelowSubheader}>
+               className={classes.paragraphBelowSubheader}>
               Your data will be stored in a restricted access database,
               accessible by the ReDI Data Controller or authorized ReDI staff
               and subcontractors only. Beyond your active student activity in
               ReDI, your data may continue to be securely and anonymously, or
               via alias, stored for archival purposes.
-            </p>
-          </React.Fragment>
+              p>
+              act.Fragment>
         )}
 
         {type === 'public-sign-up-mentor-pending-review' && (
@@ -195,18 +195,18 @@ export const Step0DataConsent = withStyles(styles)(
               able to share your knowledge with new talents, maybe get new
               ideas, look at things from a different perspective or simply meet
               a great person!
-            </p>
-            <p>
+              p>
+              >
               Once you have filled out your profile you will be visible to
               students and you can receive applications. Please review any
               applications you receive and accept those you think you are ReDI
               to take on!
-            </p>
-            <p>
+              p>
+              >
               First we just need to make sure you understand how we'd like to
               use your data. Please read the below:
-            </p>
-            <h2>Data protection</h2>
+              p>
+              2>Data protection</h2>
             <p className={classes.paragraph}>
               We are delighted that you have shown interest in our organization
               and the ReDI Connect platform. Data protection is a particularly
@@ -217,9 +217,9 @@ export const Step0DataConsent = withStyles(styles)(
               information may contain your personal data. If the processing of
               personal data is necessary and there is no statutory basis for
               such processing, we generally obtain consent from the data
-              subject.
-            </p>
-            <p className={classes.paragraph}>
+                            subject.
+              p>
+               className={classes.paragraph}>
               The processing of personal data, such as name, email address, or
               telephone number of a data subject, shall always be in line with
               the General Data Protection Regulation (GDPR). Confidentiality
@@ -230,8 +230,8 @@ export const Step0DataConsent = withStyles(styles)(
               personal data we collect, use and process. Furthermore, data
               subjects are informed, by means of this data protection
               declaration, of the rights to which they are entitled.
-            </p>
-            <p className={classes.paragraph}>
+              p>
+               className={classes.paragraph}>
               As the controller, ReDI School has implemented numerous technical
               and organizational measures to ensure the most complete protection
               of personal data processed through this website. However,
@@ -239,19 +239,19 @@ export const Step0DataConsent = withStyles(styles)(
               gaps, so absolute protection may not be guaranteed. For this
               reason, every data subject is free to transfer personal data to us
               via alternative means, e.g. by telephone.
-            </p>
-            <p className={classes.paragraph}>
+              p>
+               className={classes.paragraph}>
               For definitions and more information see our data protection
               policy under 
               <a
                 href="http://www.redi-school.org/data-privacy-policy."
-                target="_blank"
+                target="_bank"
                 rel="noopener noreferrer"
               >
                 www.redi-school.org/data-privacy-policy
               </a>
               .
-            </p>
+                
             <h4 className={classes.subHeader}>
               Permission to collect, process and store your data
             </h4>
@@ -261,22 +261,22 @@ export const Step0DataConsent = withStyles(styles)(
               include education, research and support services, alumni
               relations, public relations, security, attendance tracking, and
               crime prevention.
-            </p>
-            <p className={classes.paragraph}>
+              p>
+               className={classes.paragraph}>
               Wherever possible, ReDI School commits to anonymizing data to
               further ensure the protection of our mentors, students,
               volunteers, partners, and employees.
-            </p>
-            <p className={classes.paragraph}>
+              p>
+               className={classes.paragraph}>
               ReDI School will not disclose personal data to third parties
               without specific and prior consent, unless required to by law.
             </p>
-            <p className={classes.paragraph}>
+               className={classes.paragraph}>
               By consenting you agree to the fact that ReDI Connect will
               randomly monitor some profiles for the ongoing improvement of
               features within the platform.
-            </p>
-            <h4 className={classes.subHeader}>
+              p>
+              4 className={classes.subHeader}>
               Where will your data be stored?
             </h4>
             <p className={classes.paragraphBelowSubheader}>
@@ -285,9 +285,9 @@ export const Step0DataConsent = withStyles(styles)(
               and subcontractors only. Beyond your active mentor activity in
               ReDI, your data may continue to be securely and anonymously, or
               via alias, stored for archival purposes.
-            </p>
-          </React.Fragment>
-        )}
+              p>
+              act.Fragment>
+              
 
         <FormControlLabel
           label="I understand how my data will be used and consent to it"
