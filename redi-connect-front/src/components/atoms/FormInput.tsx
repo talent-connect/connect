@@ -46,11 +46,15 @@ function FormInput (props: Props) {
           disabled={isSubmitting || disabled}
         />
       </Form.Control>
-      {hasError && (
-        <Form.Help color="danger">
+
+      <Form.Help color="danger" className={hasError && 'help--show'}>
+        {hasError && (
+          <>
           The {placeholder.toLowerCase()} is invalid
-        </Form.Help>
-      )}
+          </>
+        )}
+      </Form.Help>
+
     </Form.Field>
   )
 }
