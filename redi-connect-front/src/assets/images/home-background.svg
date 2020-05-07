@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1440px" height="2914px" viewBox="0 0 1440 2914" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>Background_Visuals</title>
+    <desc>Created with Sketch.</desc>
+    <g id="SP01_Landing-Page" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="SP1_LandingPage_Navhover" transform="translate(0.000000, -72.000000)">
+            <g id="Background_Visuals" transform="translate(0.000000, 72.000000)">
+                <rect id="Rectangle" fill="#FFFFFF" x="0" y="0" width="1440" height="2914"></rect>
+                <path d="M1253.38003,1070.42839 C1249.00896,1077.79864 1239.48644,1080.23263 1232.11073,1075.8639 C1224.73655,1071.49516 1222.29974,1061.97923 1226.67233,1054.60746 C1231.0434,1047.23569 1240.56592,1044.8017 1247.94011,1049.17044 C1255.31429,1053.53917 1257.7511,1063.05662 1253.38003,1070.42839 Z" id="Stroke-2" stroke="#EA5B25" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+                <polygon id="Stroke-18" stroke="#E1EEF2" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" points="1349.55358 1925.80424 1317.42265 1950.25794 1314.5 1910"></polygon>
+                <polygon id="Stroke-24" stroke="#E1EEF2" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" points="1343.76904 881.884756 1315.76904 877.934335 1334.2792 855.884756"></polygon>
+                <path d="M1376.52082,1981.80772 C1374.25102,1993.57251 1362.86711,2001.26902 1351.09604,1998.99891 C1339.32649,1996.72881 1331.62588,1985.35249 1333.8972,1973.5877 C1336.167,1961.82443 1347.55091,1954.12792 1359.32045,1956.39651 C1371.09152,1958.66661 1378.79213,1970.04445 1376.52082,1981.80772 Z" id="Stroke-30" stroke="#58ADC4" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+                <polygon id="Stroke-46" stroke="#58ADC4" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" points="1303.02131 859.884756 1333.76904 832.407365 1293.76904 821.884756"></polygon>
+                <polygon id="Stroke-24" stroke="#E1EEF2" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" points="69 1174 37 1169.7457 58.1544683 1146"></polygon>
+                <polyline id="Stroke-36" stroke="#FAD7CA" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" points="165.36472 803.412067 180.374066 835.412067 199.36472 805.534842"></polyline>
+                <polygon id="Stroke-46" stroke="#58ADC4" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" points="92.1281926 1209.26854 127.488079 1177.45261 81.488079 1165.26854"></polygon>
+                <polygon id="Stroke-46-Copy" stroke="#58ADC4" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" transform="translate(69.000000, 601.000000) rotate(76.000000) translate(-69.000000, -601.000000) " points="56.6401136 623 92 591.184073 46 579"></polygon>
+                <path d="M133.258447,816.267235 C138.148379,818.001507 143.517317,815.439888 145.250674,810.545518 C146.983374,805.650491 144.424077,800.277338 139.534145,798.542409 C134.643555,796.808137 129.275274,799.370414 127.541917,804.264125 C125.809217,809.158495 128.369171,814.532305 133.258447,816.267235 Z" id="Stroke-52" stroke="#EA5B25" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+                <polygon id="Stroke-60" stroke="#FAD7CA" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" points="1246.9451 1130.76246 1260.26367 1098.76246 1226.26367 1105.07272"></polygon>
+                <line x1="81" y1="1843" x2="47" y2="1805" id="Stroke-50-Copy" stroke="#E1EEF2" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></line>
+                <line x1="47" y1="1787" x2="79" y2="1813" id="Stroke-66-Copy" stroke="#58ADC4" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></line>
+            </g>
+        </g>
+    </g>
+</svg>
