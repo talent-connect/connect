@@ -19,7 +19,7 @@ const { RedUser, RedProfile, RedMatch, RedMentoringSession } = app.models;
 
 const persons = require('./random-names.json');
 
-const categories = [
+const berlinCategories = [
   { id: 'blockchain', label: 'Blockchain' },
   { id: 'basicComputer', label: 'Basic Computer' },
   { id: 'react', label: 'React' },
@@ -37,6 +37,17 @@ const categories = [
   { id: 'webDevelopment', label: 'Web Development' },
   { id: 'freelancing', label: 'Freelancing' },
 ];
+const munichCategories = [
+  { id: "munich_programmingSkillsAndHelpForLearning", colour: "#db8484", label: "(Munich) Programming skills and help for learning" },
+  { id: "munich_careerPlanningAndJobOrientation", colour: "#db8484", label: "(Munich) Career planning and job orientation" },
+  { id: "munich_helpForCvPreparationAndApplicationProcess", colour: "#db8484", label: "(Munich) Help for CV preparation and application process" },
+  { id: "munich_helpForInterviewPreparation", colour: "#db8484", label: "(Munich) Help for interview preparation" },
+  { id: "munich_helpToImproveEnglish", colour: "#db8484", label: "(Munich) Help to improve English" },
+  { id: "munich_helpToImproveGerman", colour: "#db8484", label: "(Munich) Help to improve German" },
+  { id: "munich_helpAndGuidanceOnHowToUseAComputer", colour: "#db8484", label: "(Munich) Help and guidance on how to use a computer" },
+  { id: "munich_motivationAndEncouragement", colour: "#db8484", label: "(Munich) Motivation and encouragement" },
+  { id: "munich_beAFriendToHelpInNewAndDifficultSituationsHereInGermany", colour: "#db8484", label: "(Munich) Be a friend to help in new and difficult situations here in Germany" }
+]
 
 const Languages = ['German', 'Arabic', 'Farsi', 'Tigrinya'];
 
@@ -100,8 +111,10 @@ const pickRandomUserType = () => {
 };
 
 const users = fp.compose(
-  fp.take(50),
+  fp.take(100),
   fp.map(({ name, surname, gender }) => {
+    const rediLocation = Math.random() > 0.5 ? "berlin" : "munich";
+    const cats = rediLocation === "berlin" ? berlinCategories : munichCategories;
     const email = randomString() + '@' + randomString() + '.com';
     const password = randomString();
     return {
@@ -110,7 +123,7 @@ const users = fp.compose(
         password,
       },
       redProfile: {
-        rediLocation: Math.random() > 0.5 ? "berlin" : "munich",
+        rediLocation: rediLocation,
         userActivated: true,
         userType: pickRandomUserType(),
         gender,
@@ -139,7 +152,7 @@ const users = fp.compose(
         slackUsername: randomString(),
         githubProfileUrl: randomString(),
         telephoneNumber: randomString(),
-        categories: categories.map(c => c.id).filter(() => Math.random() < 0.2),
+        categories: cats.map(c => c.id).filter(() => Math.random() < 0.5),
         menteeCountCapacity: Math.floor(Math.random() * 4),
         mentee_highestEducationLevel:
           educationLevels[Math.floor(Math.random() * educationLevels.length)]
@@ -389,21 +402,36 @@ Rx.of({})
       const mentees = data.filter(
         userData => userData.redProfile.userType === 'mentee'
       );
-      const matches = mentors.map(mentor => {
-        return _.sampleSize(mentees, Math.floor(Math.random() * 3)).map(
-          mentee => {
-            return {
-              applicationText: randomString(),
-              status: ['applied', 'accepted', 'completed'][
-                Math.floor(Math.random() * 3)
-              ],
-              mentorId: mentor.redProfileInst.id,
-              menteeId: mentee.redProfileInst.id,
-            };
-          }
-        );
-      });
-      const matchesFlat = _.flatten(matches);
+
+      let matchesFlat = []
+      const locations = ['berlin', 'munich']
+      for (let i = 0; i < locations.length; i++) {
+        const location = locations[i]
+        const mentorsInLocation = mentors.filter(data => data.redProfile.rediLocation === location)
+        const menteesInLocation = mentees.filter(data => data.redProfile.rediLocation === location)
+        console.log("******************************")
+        console.log("location", location)
+        console.log(mentorsInLocation.length)
+        console.log(menteesInLocation.length)
+        console.log("******************************")
+        const matches = mentorsInLocation.map(mentor => {
+          return _.sampleSize(menteesInLocation, Math.floor(Math.random() * 10)).map(
+            mentee => {
+              console.log(location)
+              return {
+                rediLocation: "" + location + "",
+                applicationText: randomString(),
+                status: ['applied', 'accepted', 'completed'][
+                  Math.floor(Math.random() * 3)
+                ],
+                mentorId: mentor.redProfileInst.id,
+                menteeId: mentee.redProfileInst.id,
+              };
+            }
+          );
+        });
+        matchesFlat = [...matchesFlat, ..._.flatten(matches)]
+      }
       return Rx.from(matchesFlat);
     }),
     concatMap(redMatchCreate)
