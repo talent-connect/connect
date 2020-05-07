@@ -61,20 +61,6 @@ a {
   box-shadow: $input-shadow;
 }
 
-.section {
-  @include tablet {
-    padding: $section-padding-medium;
-  }
-
-  &--bottom-large-spaceing {
-    padding-bottom: 4rem;
-
-    @include tablet {
-      padding-bottom: 10rem;
-    }
-  }
-}
-
 a:hover {
   text-decoration: underline;
 }
@@ -87,6 +73,24 @@ a:hover {
   letter-spacing: 1.5px;
 }
 
+
+.section {
+  @include tablet {
+    padding: $section-padding-medium;
+  }
+
+  &.section--bottom-large-spaceing {
+    padding-bottom: 4rem;
+
+    @include tablet {
+      padding-bottom: 10rem;
+      .container {
+        margin-bottom: -10rem;
+        padding-bottom: 10rem;
+      }
+    }
+  }
+}
 // TODO: should be transfered to a layout template
 // will be done the next time this view is reused
 .color-half {
@@ -94,6 +98,17 @@ a:hover {
 
   @include tablet() {
     background: linear-gradient(90deg, $redi-blue-light 50%, $white 50%);
+  }
+}
+
+.color-side-menu {
+  margin:-0.75rem auto;
+  padding: 0.75rem 0;
+
+  @include tablet() {
+    margin:-2rem auto;
+    padding: 2rem 0;
+    background: linear-gradient(90deg, $redi-blue-light 15.8%, $white 15.8%);
   }
 }
 

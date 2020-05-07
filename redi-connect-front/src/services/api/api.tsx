@@ -94,7 +94,7 @@ export const fetchSaveRedProfile = async (
 }
 
 export const saveRedProfile = async (
-  redProfile: RedProfile
+  redProfile: Partial<RedProfile>
 ): Promise<RedProfile> => {
   const id = redProfile.id
   const saveProfileResp = await http(`${API_URL}/redProfiles/${id}`, {

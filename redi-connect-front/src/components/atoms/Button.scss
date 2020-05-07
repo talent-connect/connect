@@ -7,7 +7,6 @@
   font-weight: $weight-heavy;
   text-transform: uppercase;
   text-decoration: none;
-  padding: 0 1.5rem;
   font-size: $size-6;
   letter-spacing: 1.7px;
   line-height: 1rem;
@@ -18,6 +17,10 @@
   border: 2px solid $black;
   transform-style: preserve-3d;
 
+  + .button {
+    margin-left: 1rem;
+  }
+
   @include mobile() {
     width: calc(100% - .5rem);
     justify-content: center;
@@ -25,7 +28,9 @@
 
   &--default {
     margin-left: .5rem;
-    margin-bottom: .5rem;
+    padding: 0 1.5rem;
+
+    // margin-bottom: .5rem;
 
     &:after {
       content: '';
@@ -62,6 +67,7 @@
 
   &--simple {
     border: none;
+    padding: 0 1rem;
 
     &:hover {
       color: $redi-orange-dark;

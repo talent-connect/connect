@@ -81,7 +81,7 @@ export interface SignUpFormValues {
   mentee_currentlyEnrolledInCourse: string
 }
 
-export default function SignUp() {
+export default function SignUp () {
   const { type } = useParams<SignUpPageType>()
 
   // we may consider removing the backend types from frontend
@@ -113,7 +113,7 @@ export default function SignUp() {
       'password',
       'passwordConfirm',
       'agreesWithCodeOfConduct',
-      'gaveGdprConsent',
+      'gaveGdprConsent'
     ])
     cleanProfile.userActivated = false
     cleanProfile.signupSource = 'public-sign-up'
@@ -253,7 +253,7 @@ export default function SignUp() {
 
             <FormCheckbox
               name="agreesWithCodeOfConduct"
-              value={formik.values.agreesWithCodeOfConduct}
+              checked={formik.values.agreesWithCodeOfConduct}
               setFieldTouched={formik.setFieldTouched}
               handleChange={formik.handleChange}
               isSubmitting={formik.isSubmitting}
@@ -272,7 +272,7 @@ export default function SignUp() {
 
             <FormCheckbox
               name="gaveGdprConsent"
-              value={formik.values.gaveGdprConsent}
+              checked={formik.values.gaveGdprConsent}
               setFieldTouched={formik.setFieldTouched}
               handleChange={formik.handleChange}
               isSubmitting={formik.isSubmitting}

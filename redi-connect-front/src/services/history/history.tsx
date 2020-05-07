@@ -8,12 +8,15 @@ import { isLoggedIn } from '../auth/auth'
 
 const history = createBrowserHistory()
 
+// FIRST KEEP THIS COMMENTED OUT AS A REMINDER
+// THE PLAN IS TO GET RID OD THIS FILE COMPLETLY
+
 // TODO: replace this with something less ludicrous
-history.listen(() => {
-  if (isLoggedIn()) {
-    store.dispatch({ type: UserActionType.USER_PROFILE_FETCH_START })
-  }
-})
+// history.listen(() => {
+//   if (isLoggedIn()) {
+//     store.dispatch({ type: UserActionType.USER_PROFILE_FETCH_START })
+//   }
+// })
 
 export const HistoryContext = React.createContext(history)
 
