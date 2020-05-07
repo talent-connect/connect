@@ -79,7 +79,7 @@
     "deploy-production": "yarn deploy-production:berlin && yarn deploy-production:munich",
     "deploy-production:berlin": "REACT_APP_REDI_LOCATION=berlin env-cmd -f .env.production yarn build && aws s3 rm s3://connect.redi-school.org/ --recursive --profile redi-connect-deployment --region eu-west-1 && aws s3 sync build/ s3://connect.redi-school.org --delete --acl public-read --profile redi-connect-deployment --region eu-west-1 && yarn invalidate-cache:prod:berlin",
     "deploy-production:munich": "REACT_APP_REDI_LOCATION=munich env-cmd -f .env.production yarn build && aws s3 rm s3://connect.munich.redi-school.org/ --recursive --profile redi-connect-deployment --region eu-west-1 && aws s3 sync build/ s3://connect.munich.redi-school.org --delete --acl public-read --profile redi-connect-deployment --region eu-west-1 && yarn invalidate-cache:prod:munich",
-    "deploy-demonstration": "env-cmd -f .env.demonstration yarn build && aws s3 rm s3://app.demo.connect.redi-school.org/ --recursive --profile redi-connect-deployment --region eu-west-1 && aws s3 sync build/ s3://app.demo.connect.redi-school.org --delete --acl public-read --profile redi-connect-deployment --region eu-west-1 && yarn invalidate-cache:demonstration",
+    "deploy-demonstration": "REACT_APP_REDI_LOCATION=munich env-cmd -f .env.demonstration yarn build && aws s3 rm s3://app.demo.connect.redi-school.org/ --recursive --profile redi-connect-deployment --region eu-west-1 && aws s3 sync build/ s3://app.demo.connect.redi-school.org --delete --acl public-read --profile redi-connect-deployment --region eu-west-1 && yarn invalidate-cache:demonstration",
     "check-versions": "yarn-check -u",
     "commit": "npx git-cz",
     "release": "npx semantic-release"
