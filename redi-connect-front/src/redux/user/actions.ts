@@ -26,7 +26,7 @@ export const profileFetchError = (error: Error): ProfileFetchErrorAction => ({
 })
 
 export const profileSaveStart = (
-  redProfile: RedProfile
+  redProfile: Partial<RedProfile>
 ): ProfileSaveStartAction => ({
   type: UserActionType.USER_PROFILE_SAVE_START,
   payload: redProfile

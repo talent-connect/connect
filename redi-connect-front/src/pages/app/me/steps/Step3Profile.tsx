@@ -40,12 +40,7 @@ export const validationSchema = Yup.object({
   languages: Yup.array()
     .min(1)
     .of(Yup.string().max(255))
-    .label('Languages'),
-  personalDescription: Yup.string()
-    .required()
-    .min(100)
-    .max(600)
-    .label('Personal description')
+    .label('Languages')
 })
 
 const styles = (theme: any) => ({
@@ -100,7 +95,6 @@ const Comp: any = (props: FormikProps<SignUpFormValues> & Props) => {
       age,
       languages,
       otherLanguages,
-      personalDescription,
       expectations
     },
     errors,
@@ -302,20 +296,6 @@ const Comp: any = (props: FormikProps<SignUpFormValues> & Props) => {
         fullWidth
         rows="4"
         onChange={change.bind(null, 'expectations')}
-        disabled={isSubmitting}
-      />
-      <TextField
-        className={classes.margin}
-        id="personalDescription"
-        name="personalDescription"
-        label="Tell us a few words about yourself (this will be displayed on your profile)* (100-600 characters)"
-        error={Boolean(errors.personalDescription)}
-        helperText={errors.personalDescription}
-        value={personalDescription}
-        multiline
-        fullWidth
-        rows="4"
-        onChange={change.bind(null, 'personalDescription')}
         disabled={isSubmitting}
       />
     </>

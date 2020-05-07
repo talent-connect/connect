@@ -32,7 +32,7 @@ export interface ProfileFetchErrorAction extends Action {
 
 export interface ProfileSaveStartAction extends Action {
   type: UserActionType.USER_PROFILE_SAVE_START
-  payload: RedProfile
+  payload: Partial<RedProfile>
 }
 export interface ProfileSaveSuccessAction extends Action {
   type: UserActionType.USER_PROFILE_SAVE_SUCCESS

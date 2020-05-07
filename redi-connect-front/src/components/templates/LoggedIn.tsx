@@ -3,6 +3,7 @@ import Navbar from '../organisms/Navbar'
 import Button from '../atoms/Button'
 import { Container, Section, Columns } from 'react-bulma-components'
 import { logout } from '../../services/api/api'
+import { Link } from 'react-router-dom'
 
 import Footer from '../organisms/Footer'
 
@@ -24,7 +25,7 @@ const LoggedIn: React.FunctionComponent = ({ children }) => {
               size={2}
               responsive={{ mobile: { hide: { value: true } } }}
             >
-            Sidemenu
+              <Link to="/app/dashboard">Dashboard</Link> <br/>
             </Columns.Column>
             <Columns.Column
               offset={1}

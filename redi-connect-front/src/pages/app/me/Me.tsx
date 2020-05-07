@@ -1,26 +1,19 @@
 import React, { useEffect } from 'react'
-import { FormikValues, FormikHelpers as FormikActions, useFormik } from 'formik'
-import Grid from '@material-ui/core/Grid'
 import * as Yup from 'yup'
-import { Link } from 'react-router-dom'
 
+import About from './About'
+import Mentoring from './Mentoring'
 import { Step2Background } from './steps/Step2Background'
 import { Step3Profile } from './steps/Step3Profile'
-import {
-  Button,
-  Paper
-} from '@material-ui/core'
 
 import LoggedIn from '../../../components/templates/LoggedIn'
 import { Step4ContactData } from './steps/Step4ContactData'
 import { Step5Categories } from './steps/Step5Categories'
-import { RedProfile } from '../../../types/RedProfile'
 import { FullScreenCircle } from '../../../hooks/WithLoading'
 import { RootState } from '../../../redux/types'
 import { connect } from 'react-redux'
 import {
-  profileFetchStart,
-  profileSaveStart
+  profileFetchStart
 } from '../../../redux/user/actions'
 import {
   educationLevels,
@@ -174,104 +167,50 @@ const validationSchema = Yup.object({
   })
 })
 
-const Me = ({ loading, profile, saveResult, profileFetchStart, profileSaveStart }: any) => {
+const Me = ({ loading, saveResult, profileFetchStart }: any) => {
   // not sure if this is really neede since the profile is loaded when the user is logged in
   useEffect(() => {
     profileFetchStart()
   }, [profileFetchStart])
 
-  // TODO: fix this TS uglyness
-  const initialValues: SignUpFormValues = (profile as unknown) as SignUpFormValues
-  initialValues.formType = profile.type
-
-  const LinkToDashboard: any = (props: any) => (
-    <Link {...props} to="/app/dashboard" />
-  )
-  const submitForm = async (
-    values: FormikValues,
-    actions: FormikActions<SignUpFormValues>
-  ) => {
-    // setSubmitError(false);
-    const profile = values as RedProfile
-    // TODO: this needs to be done in a smarter way, like iterating over the RedProfile definition or something
-    // const cleanProfile: RedProfile = omit(profile, [
-    //   'password',
-    //   'passwordConfirm',
-    //   'formType',
-    //   'redMatchesWithCurrentUser',
-    //   'redMentoringSessionsWithCurrentUser',
-    //   'updatedAt',
-    //   'userType',
-    //   'redMatchesWithCurrentUser',
-    //   'redMentoringSessionsWithCurrentUser',
-    //   'numberOfPendingApplicationWithCurrentUser',
-    //   'currentApplicantCount',
-    //   'currentFreeMenteeSpots',
-    //   'currentMenteeCount',
-    //   'ifTypeForm_additionalComments',
-    // ]);
-    profileSaveStart(profile)
-  }
-
-  const formik = useFormik({
-    initialValues: initialValues,
-    validationSchema,
-    onSubmit: submitForm
-  })
-
   return (
     <LoggedIn>
       <FullScreenCircle loading={loading} />
       {!loading &&
-          <>
-            <FullScreenCircle loading={saveResult === 'submitting'} />
-            <Button component={LinkToDashboard} variant="contained" color="primary">
-              Back
-            </Button>
-            {saveResult === 'error' && (
-              <Paper>
-                An error occurred, please try again.
-              </Paper>
-            )}
-            {saveResult === 'success' && <>Your profile was saved.</>}
-            <form onSubmit={e => e.preventDefault()}>
-              <h2>Update your profile</h2>
-              <Step2Background type={profile.userType} {...formik} />
-              <Step3Profile type={profile.userType} {...formik} />
-              <Step4ContactData type={profile.userType} {...formik} />
-              <Step5Categories type={profile.userType} {...formik} />
-              <Grid container spacing={1}>
-                <Grid item xs={12}>
-                  <Button
-                    onClick={() => {
-                      formik.handleSubmit()
-                    }}
-                    color="primary"
-                    variant="contained"
-                    fullWidth
-                    disabled={saveResult === 'submitting'}
-                    type="submit"
-                  >
-                    Save
-                  </Button>
-                </Grid>
-              </Grid>
-            </form>
-          </>
+        <>
+          <FullScreenCircle loading={saveResult === 'submitting'} />
+          {/* <Button
+            onClick={() => {
+              formik.handleSubmit()
+            }}
+            disabled={saveResult === 'submitting'}
+          >
+                  Save
+          </Button> */}
+          {/*
+          <form onSubmit={e => e.preventDefault()}> */}
+          <About />
+          <Mentoring />
+          {/* <Step2Background type={profile.userType} {...formik} />
+            <Step3Profile type={profile.userType} {...formik} />
+            <Step4ContactData type={profile.userType} {...formik} />
+            <Step5Categories type={profile.userType} {...formik} /> */}
+          {/* </form> */}
+
+          {saveResult === 'error' && <><br/><br/><br/>An error occurred, please try again.</>}
+          {saveResult === 'success' && <>Your profile was saved.</>}
+        </>
       }
     </LoggedIn>
   )
 }
 
 const mapStateToProps = (state: RootState) => ({
-  loading: state.user.loading,
-  profile: state.user.profile,
   saveResult: state.user.saveResult
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
-  profileFetchStart: () => dispatch(profileFetchStart()),
-  profileSaveStart: (profile: RedProfile) => dispatch(profileSaveStart(profile))
+  profileFetchStart: () => dispatch(profileFetchStart())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Me)
