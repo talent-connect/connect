@@ -8,43 +8,61 @@ import { EducationLevel } from '../types/EducationLevel';
 import { Course } from '../types/Course';
 import { RediLocation } from '../types/RediLocation';
 
-export const categories: Categories = [
-  { id: 'blockchain', label: 'Blockchain', colour: '#db8484' },
-  { id: 'basicComputer', label: 'Basic Computer', colour: '#9a5454' },
-  { id: 'basicJava', label: 'Basic Java', colour: '#9a5454' },
-  { id: 'basicPython', label: 'Basic Python', colour: '#9a5454' },
-  { id: 'react', label: 'React', colour: '#c984db' },
-  { id: 'itAndNetworking', label: 'IT & Networking', colour: '#979a54' },
-  { id: 'swift', label: 'Swift', colour: '#84b2db' },
-  {
-    id: 'interviewsAndCommunication',
-    label: 'Interviews & Communications',
-    colour: '#5c9a54',
-  },
-  { id: 'graphicsAndUxUi', label: 'Graphics & UX/UI', colour: '#84dbca' },
-  {
-    id: 'cvPersonalPresentation',
-    label: 'CV & Personal presentation',
-    colour: '#549a7b',
-  },
-  { id: 'mobileDevelopment', label: 'Mobile Development', colour: '#89db84' },
-  { id: 'jobOrientation', label: 'Job Orientation', colour: '#54969a' },
-  { id: 'pythonDataScience', label: 'Python Data Science', colour: '#dbd784' },
-  { id: 'entrepreneurship', label: 'Entrepreneurship', colour: '#547b9a' },
-  { id: 'javaDevelopment', label: 'Java Development', colour: '#db9c84' },
-  { id: 'iot', label: 'IoT', colour: '#57549a' },
-  { id: 'webDevelopment', label: 'Web Development', colour: '#8484db' },
-  { id: 'javascript', label: 'JavaScript', colour: '#8484db' },
-  { id: 'htmlcss', label: 'HTML&CSS', colour: '#8484db' },
-  {
-    id: 'findingInternship',
-    label: 'Finding an internship',
-    colour: '#91549a',
-  },
-  { id: 'freelancing', label: 'Freelancing', colour: '#91549a' },
-  { id: 'salesforce', label: 'Salesforce', colour: '#91549a' },
-  { id: 'dontKnowYet', label: "I don't know yet", colour: '#bbbbbb' },
-];
+export let categories: Categories;
+
+if ((process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'berlin') {
+  categories = [
+    { id: 'blockchain', label: 'Blockchain', colour: '#db8484' },
+    { id: 'basicComputer', label: 'Basic Computer', colour: '#9a5454' },
+    { id: 'basicJava', label: 'Basic Java', colour: '#9a5454' },
+    { id: 'basicPython', label: 'Basic Python', colour: '#9a5454' },
+    { id: 'react', label: 'React', colour: '#c984db' },
+    { id: 'itAndNetworking', label: 'IT & Networking', colour: '#979a54' },
+    { id: 'swift', label: 'Swift', colour: '#84b2db' },
+    {
+      id: 'interviewsAndCommunication',
+      label: 'Interviews & Communications',
+      colour: '#5c9a54',
+    },
+    { id: 'graphicsAndUxUi', label: 'Graphics & UX/UI', colour: '#84dbca' },
+    {
+      id: 'cvPersonalPresentation',
+      label: 'CV & Personal presentation',
+      colour: '#549a7b',
+    },
+    { id: 'mobileDevelopment', label: 'Mobile Development', colour: '#89db84' },
+    { id: 'jobOrientation', label: 'Job Orientation', colour: '#54969a' },
+    { id: 'pythonDataScience', label: 'Python Data Science', colour: '#dbd784' },
+    { id: 'entrepreneurship', label: 'Entrepreneurship', colour: '#547b9a' },
+    { id: 'javaDevelopment', label: 'Java Development', colour: '#db9c84' },
+    { id: 'iot', label: 'IoT', colour: '#57549a' },
+    { id: 'webDevelopment', label: 'Web Development', colour: '#8484db' },
+    { id: 'javascript', label: 'JavaScript', colour: '#8484db' },
+    { id: 'htmlcss', label: 'HTML&CSS', colour: '#8484db' },
+    {
+      id: 'findingInternship',
+      label: 'Finding an internship',
+      colour: '#91549a',
+    },
+    { id: 'freelancing', label: 'Freelancing', colour: '#91549a' },
+    { id: 'salesforce', label: 'Salesforce', colour: '#91549a' },
+    { id: 'dontKnowYet', label: "I don't know yet", colour: '#bbbbbb' },
+  ];
+} else if ((process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'munich') {
+  categories = [
+    { id: "munich_programmingSkillsAndHelpForLearning", colour: "#db8484", label: "Programming skills and help for learning" },
+    { id: "munich_careerPlanningAndJobOrientation", colour: "#db8484", label: "Career planning and job orientation" },
+    { id: "munich_helpForCvPreparationAndApplicationProcess", colour: "#db8484", label: "Help for CV preparation and application process" },
+    { id: "munich_helpForInterviewPreparation", colour: "#db8484", label: "Help for interview preparation" },
+    { id: "munich_helpToImproveEnglish", colour: "#db8484", label: "Help to improve English" },
+    { id: "munich_helpToImproveGerman", colour: "#db8484", label: "Help to improve German" },
+    { id: "munich_helpAndGuidanceOnHowToUseAComputer", colour: "#db8484", label: "Help and guidance on how to use a computer" },
+    { id: "munich_motivationAndEncouragement", colour: "#db8484", label: "Motivation and encouragement" },
+    { id: "munich_beAFriendToHelpInNewAndDifficultSituationsHereInGermany", colour: "#db8484", label: "Be a friend to help in new and difficult situations here in Germany" }
+  ];
+} else {
+  throw new Error('Invalid RediLocation')
+}
 
 export const categoriesIdToLabelMap = mapValues(
   keyBy(categories, 'id'),

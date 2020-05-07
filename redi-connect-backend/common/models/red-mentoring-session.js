@@ -77,11 +77,18 @@ module.exports = function(RedMentoringSession) {
         ctx.instance.createdAt = new Date();
       }
       ctx.instance.updatedAt = new Date();
-      ctx.instance.rediLocation = ctx.options.currentUser.redProfile.rediLocation;
     } else {
       ctx.data.updatedAt = new Date();
-      ctx.data.rediLocation = ctx.options.currentUser.redProfile.rediLocation;
     }
+
+    if (process.env.NODE_ENV !== 'seeding') {
+      if (ctx.instance) {
+        ctx.instance.rediLocation = ctx.options.currentUser.redProfile.rediLocation;
+      } else {
+        ctx.data.rediLocation = ctx.options.currentUser.redProfile.rediLocation;
+      }
+    }
+
     next();
   });
 };

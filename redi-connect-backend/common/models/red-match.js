@@ -19,13 +19,14 @@ module.exports = function(RedMatch) {
    */
 
   RedMatch.observe('before save', function updateTimestamp(ctx, next) {
+    if (process.env.NODE_ENV === 'seeding') return next()
     if (ctx.instance) {
       if (ctx.isNewInstance) ctx.instance.createdAt = new Date();
       ctx.instance.updatedAt = new Date();
-      ctx.instance.rediLocation = ctx.options.currentUser.redProfile.rediLocation;
+      ctx.instance.rediLocation = ctx.options.currentUser.redProfile.rediLocation
     } else {
       ctx.data.updatedAt = new Date();
-      ctx.data.rediLocation = ctx.options.currentUser.redProfile.rediLocation;
+      ctx.data.rediLocation = ctx.options.currentUser.redProfile.rediLocation
     }
     next();
   });
