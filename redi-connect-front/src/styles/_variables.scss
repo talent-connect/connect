@@ -45,9 +45,9 @@ $size-small: $size-6;
 $weight-light: 400;
 $weight-normal: 500;
 $weight-bold: 800;
-$weight-heavy: 900;
+$weight-heavy: 900; // not sure if this is really needed, check and remove
 
-$strong-weight: $weight-heavy;
+$strong-weight: $weight-bold;
 
 // Grid
 $desktop: 1192px; // 1128px + 2x32px (2xgutter)
@@ -55,8 +55,8 @@ $widescreen-enabled: false;
 $fullhd-enabled: false;
 $column-gap: 1em;
 $block-spacing: 2rem;
-$section-padding: 0.75rem 1.25rem;
-$section-padding-medium: 2rem 1.25rem;
+$section-padding: 1rem 1.25rem;
+$section-padding-medium: 3.25rem 1.25rem;
 
 // Forms
 // $radius: 2px;

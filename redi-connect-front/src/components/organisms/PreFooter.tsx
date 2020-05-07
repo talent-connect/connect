@@ -9,8 +9,9 @@ import {
 } from 'react-bulma-components'
 import { useHistory } from 'react-router-dom'
 import Button from '../atoms/Button'
-import hello from '../../assets/images/hello.svg'
-import helloMobile from '../../assets/images/hello-mobile.svg'
+import { ReactComponent as Hello } from '../../assets/images/hello.svg'
+import { ReactComponent as HelloMobile } from '../../assets/images/hello-mobile.svg'
+
 import './PreFooter.scss'
 
 const PreFooter = () => {
@@ -37,10 +38,10 @@ const PreFooter = () => {
             </Columns>
           </Columns.Column>
           <Columns.Column className="is-hidden-mobile">
-            <Image src={hello} alt="hello" className="pre-footer-image" />
+            <Hello className="pre-footer-image" />
           </Columns.Column>
           <Columns.Column className="is-hidden-tablet">
-            <Image src={helloMobile} alt="hello" className="pre-footer-image" />
+            <HelloMobile className="pre-footer-image" />
           </Columns.Column>
         </Columns>
       </Container>

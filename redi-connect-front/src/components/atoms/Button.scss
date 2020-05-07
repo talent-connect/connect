@@ -4,7 +4,7 @@
 .button {
   display: inline-flex;
   background: none;
-  font-weight: $weight-heavy;
+  font-weight: $weight-bold;
   text-transform: uppercase;
   text-decoration: none;
   font-size: $size-6;
@@ -27,7 +27,7 @@
   }
 
   &--default {
-    margin-left: .5rem;
+    margin-right: .5rem;
     padding: 0 1.5rem;
 
     // margin-bottom: .5rem;
@@ -37,14 +37,14 @@
       transform: translateZ(-1px);
       position: absolute;
       top: 0.375rem;
-      right: 0.375rem;
+      left: 0.375rem;
       width: calc(100% + 4px);
       height: calc(100% + 4px);
-      background-color: $redi-orange-light;
+      background-color: $redi-orange;
     }
 
     &:hover::after {
-      background-color: $redi-orange;
+      background-color: $redi-orange-dark;
     }
 
     &:active {

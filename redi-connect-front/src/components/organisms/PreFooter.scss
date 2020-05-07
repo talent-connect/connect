@@ -27,12 +27,13 @@
 
   &-image {
     position: absolute;
-    bottom: -1.5rem;
+    bottom: -2.25rem;
     right: 0;
 
     @include mobile() {
       position: relative;
-      margin: 0 1rem .25rem;
+      bottom: -1.5rem;
+      margin: 0 1rem 0;
     }
   }
 }
