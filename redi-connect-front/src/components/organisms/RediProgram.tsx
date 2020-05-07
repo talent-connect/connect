@@ -9,36 +9,39 @@ import {
   Heading as BulmaHeading
 } from 'react-bulma-components'
 import Heading from '../atoms/Heading'
+import { useTranslation } from 'react-i18next'
 import career from '../../assets/images/career.svg'
 import search from '../../assets/images/search.svg'
 import calender from '../../assets/images/calender.svg'
 import offline from '../../assets/images/offline.svg'
 import './RediProgram.scss'
 
-const programSteps = [
-  {
-    image: search,
-    content: 'Connect yourself with the right mentor/ mentee ',
-    headline: '1. Set up your profile'
-  },
-  {
-    image: career,
-    content: 'Get/ give career and personal advice and support ',
-    headline: '2. Get connected'
-  },
-  {
-    image: calender,
-    content: 'Schedule meetings to stay on track',
-    headline: '3. Plan meetings'
-  },
-  {
-    image: offline,
-    content: 'Get advice on how to best connect offline',
-    headline: '4. Meet in real life'
-  }
-]
-
 const RediProgram = () => {
+  const { t } = useTranslation()
+
+  const programSteps = [
+    {
+      image: search,
+      content: t('loggedOutArea.homePage.program.steps.step1.content'),
+      headline: t('loggedOutArea.homePage.program.steps.step1.headline')
+    },
+    {
+      image: career,
+      content: t('loggedOutArea.homePage.program.steps.step2.content'),
+      headline: t('loggedOutArea.homePage.program.steps.step2.headline')
+    },
+    {
+      image: calender,
+      content: t('loggedOutArea.homePage.program.steps.step3.content'),
+      headline: t('loggedOutArea.homePage.program.steps.step3.headline')
+    },
+    {
+      image: offline,
+      content: t('loggedOutArea.homePage.program.steps.step4.content'),
+      headline: t('loggedOutArea.homePage.program.steps.step4.headline')
+    }
+  ]
+
   return (
     <Section className="default-background">
       <Container>
@@ -46,9 +49,9 @@ const RediProgram = () => {
           className="is-uppercase is-size-6 is-size-7-mobile has-text-centered"
           renderAs="h4"
         >
-          about redi connect
+          {t('loggedOutArea.homePage.program.subHeadline')}
         </Element>
-        <Heading size="small" border="topCenter" center>What our Mentorship Program is all about ...</Heading>
+        <Heading size="small" border="topCenter" center>{t('loggedOutArea.homePage.program.headline')}</Heading>
       </Container>
       <Container>
         <Columns>
