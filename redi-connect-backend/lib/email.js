@@ -1,14 +1,28 @@
 'use strict'
 
+const pwd = "Match_me19"
+
+const mjml2html = require('mjml')
 const aws = require('aws-sdk')
+const fs = require('fs')
+const nodemailer = require('nodemailer')
 const Rx = require('rxjs')
+const path = require('path')
 const config = {
   accessKeyId: process.env.EMAILER_AWS_ACCESS_KEY,
   secretAccessKey: process.env.EMAILER_AWS_SECRET_KEY,
   region: process.env.EMAILER_AWS_REGION
 }
 
+aws.config.update(config)
+
 const ses = new aws.SES(config)
+
+let transporter = nodemailer.createTransport({
+  SES: new aws.SES({
+      apiVersion: '2010-12-01'
+  })
+});
 
 const isProductionOrDemonstration = () =>
   ['production', 'demonstration'].includes(process.env.NODE_ENV)
@@ -430,6 +444,30 @@ Your Career Support Team
     `
   )
 
+  // signUpType = 'mentor' | 'mentee'
+const sendWelcomeEmail = (recipient, firstName, signUpType) => {
+  const welcomeEmailTemplateFileContents = fs.readFileSync(path.resolve(__dirname, '..', 'welcome.mjml'), 'utf-8')
+  const welcomeEmail = mjml2html(welcomeEmailTemplateFileContents)
+
+  const welcomeEmailHtml = welcomeEmail.html
+    .replace('${firstName}', firstName)
+    .replace('${mentorOrMentee}', signUpType)
+
+  console.log(welcomeEmail)
+ 
+  const mailOptions = {
+    from: '<career@redi-school.org>',
+    to: recipient, // Recepient email address. Multiple emails can send separated by commas
+    subject: 'Welcome to ReDI School',
+    text: `We'll write a text message here later`,
+    html: welcomeEmailHtml,
+  }
+
+  transporter.sendMail(mailOptions)
+
+  //return bindNodeCallback(transporter.sendMail.bind(transporter))(mailOptions)
+}
+
 module.exports = {
   sendReportProblemEmail,
   sendDataImportMentorSignupEmail,
@@ -447,5 +485,6 @@ module.exports = {
   sendMenteePendingReviewDeclinedEmail,
   sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted,
   sendResetPasswordEmail,
+  sendWelcomeEmail,
   sendEmailFactory
 }

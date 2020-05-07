@@ -18,10 +18,10 @@
     <mj-wrapper mj-class="wrapper">
       <mj-section css-class="section">
         <mj-column>
-          <mj-text mj-class="headline">Welcome to ReDI Connect!</mj-text>
+          <mj-text mj-class="headline">Welco  me to ReDI Connect!</mj-text>
           <mj-divider mj-class="divider-top" css-class="divider" />
-          <mj-text mj-class="text">Hello Darja,</mj-text>
-          <mj-text mj-class="text text-padding">we are very happy to welcome you as a <strong>mentee</strong> to ReDI Connect. </mj-text>
+          <mj-text mj-class="text">Hello ${firstName},</mj-text>
+          <mj-text mj-class="text text-padding">we are very happy to welcome you as a <strong>${mentorOrMentee}</strong> to ReDI Connect. </mj-text>
           <mj-text mj-class="text">What are the next steps? You can now create your personal profile and look for the right mentor. We will ask you to provide some additional information about yourself on the platform during your profile creation. So that your mentor and you are really a match!</mj-text>
           <mj-text mj-class="text">To create your ReDI Connect profile, sign-in here:</mj-text>
           <mj-table padding="24px 8px">
