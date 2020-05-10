@@ -44,19 +44,20 @@ const sendEmailFactory = (to, subject, body) => {
   });
 };
 
-function buildFrontendUrl(env) {
-  switch (env) {
-    case 'production':
-      return 'https://connect.redi-school.org';
-
-    case 'demonstration':
-      return 'https://app.demo.connect.redi-school.org';
-
-    default:
-    case 'development':
-    case 'dev':
-      return 'http://127.0.0.1:3000';
-  }
+function buildFrontendUrl(env, rediLocation) {
+  if (env === 'production' && rediLocation === 'berlin') {
+    return 'https://connect.redi-school.org'
+  } else if (env === 'production' && rediLocation === 'munich') {
+    return 'https://connect.munich.redi-school.org'
+  } else if (env === 'demonstration') {
+    return 'https://app.demo.connect.redi-school.org'
+  } else if (env === 'development') {
+    return 'http://127.0.0.1:3000'
+  } else if (env === 'development') {
+    return 'http://127.0.0.1:3000'
+  } else {
+    return 'http://127.0.0.1:3000'
+  } 
 }
 
 const RECIPIENT = 'career@redi-school.org';
@@ -112,7 +113,8 @@ const sendToMentorConfirmationOfMentorshipCancelled = (
 const sendMentorshipRequestReceivedEmail = (
   recipient,
   mentorName,
-  menteeFullName
+  menteeFullName,
+  rediLocation,
 ) =>
   sendEmailFactory(
     recipient,
@@ -121,7 +123,7 @@ const sendMentorshipRequestReceivedEmail = (
 
 You have received an application from mentee ${menteeFullName}. Please review it as soon as you have time.
 
-Review application: ${buildFrontendUrl(process.env.NODE_ENV)}
+Review application: ${buildFrontendUrl(process.env.NODE_ENV, rediLocation)}
 
 Your Career Support Team
 `
@@ -165,7 +167,7 @@ Your Career Support Team
     },
   });
 };
-const sendMentoringSessionLoggedEmail = (recipient, mentorName) =>
+const sendMentoringSessionLoggedEmail = (recipient, mentorName, rediLocation) =>
   sendEmailFactory(
     recipient,
     'You successfully logged your first session with your mentee',
@@ -173,121 +175,15 @@ const sendMentoringSessionLoggedEmail = (recipient, mentorName) =>
 
 Thank you for logging the first session. This is very helpful for us in order to track the students progress. Please keep logging your sessions!
 
-Log next session: ${buildFrontendUrl(process.env.NODE_ENV)}
+Log next session: ${buildFrontendUrl(process.env.NODE_ENV, rediLocation)}
 
 Your Career Support Team`
   );
 
 const templateReportProblemEmail = (sendingUserEmail, message) =>
   `New problem report. Source: ${sendingUserEmail}. Message: \n\n${message}`;
-const templateDataImportMentorSignupEmail = (
-  firstName,
-  accessToken,
-  recipientEmail
-) => `Dear ${firstName}, 
 
-Thank you for being part of the ReDI Mentorship program.
-
-Are you ReDI for some good news??? Are you ReDI??
-
-ReDI Connect is finally here!
-
-We know it’s taken us a little bit longer than expected, but we wanted to make sure that you are ReDI! Thank you for your patience :)
-
-You are now able to log into our new platform. You’ll be able to log your sessions and connect with mentees.
-
-You will see our data protection policy, which we kindly ask you to read through and consent to.
-
-Access ReDI Connect here: ${buildFrontendUrl(
-  process.env.NODE_ENV
-)}/front/signup/existing/${accessToken}
-
-You’ll be asked to choose your own password. Your username is your email address: ${recipientEmail}
-
-Let us know if you need any help or assistance at career@redi-school.org or on slack #redi_mentors2019.
-
-Your Career Support Team`;
-
-const templateDataImportMenteeSignupEmail = (
-  firstName,
-  accessToken,
-  recipientEmail
-) => `Dear ${firstName}, 
-
-Are you ReDI for some good news??? Are you really ReDI??
-
-ReDI Connect is finally here!
-
-We know it’s taken us a little bit longer than expected, but we wanted to make sure that you are ReDI! Thank you for your patience :)
-
-You are now able to log into our new platform. You’ll be able to upload a profile picture, view your mentor’s profile, and share any issues you may be facing. If you haven't been assigned a mentor, you are now able to find and connect with your future personal mentor.
-
-You will see our data protection policy, which we kindly ask you to read through and consent to.
-
-Access ReDI Connect here: ${buildFrontendUrl(
-  process.env.NODE_ENV
-)}/front/signup/existing/${accessToken}
-
-You’ll be asked to choose your own password. Your username is your email address: ${recipientEmail}
-
-Let us know if you need any help or assistance at career@redi-school.org.
-
-Your Career Support Team
-`;
-
-const sendMentorSignupReminderEmail = (recipient, firstName, accessToken) =>
-  sendEmailFactory(
-    recipient,
-    'Aren’t you ReDI? :-( ReDI Connect is ReDI for you!',
-    `Dear ${firstName}, 
-
-    Thank you for being part of the ReDI Mentorship program.
-    
-    We sent you some ReDI good news last week, but perhaps you weren’t ReDI? Well, we hope that you are now ReDI!
-    
-    Now that summer has come, we are certain that you are ReDI to take five minutes to activate your user profile and then connect to all the mentees who are ReDI to connect to you!
-    
-    After you’ve activated your user profile you’ll be able to log your sessions and connect with mentees.
-    
-    You will see our data protection policy, which we kindly ask you to read through and consent to.
-    
-    Access ReDI Connect here: Access ReDI Connect here: ${buildFrontendUrl(
-      process.env.NODE_ENV
-    )}/front/signup/existing/${accessToken}
-    
-    You’ll be asked to choose your own password. Your username is your email address: ${recipient}
-    
-    Let us know if you need any help or assistance at career@redi-school.org or on slack  #redi_mentors2019.
-    
-    Your Career Support Team
-    `
-  );
-const sendMenteeSignupReminderEmail = (recipient, firstName, accessToken) =>
-  sendEmailFactory(
-    recipient,
-    'Aren’t you ReDI? :-( ReDI Connect is ReDI for you!',
-    `Dear ${firstName},
-
-    We sent you some ReDI good news last week, but perhaps you weren’t ReDI? Well, we hope that you are now ReDI!
-    
-    Now that summer has come, we are certain that you are ReDI to take five minutes to activate your user profile and then connect to all the mentors who are ReDI to connect to you!
-    
-    After you’ve activated your user profile you’ll be able to upload a profile picture, view your mentor’s profile, and share any issues you may be facing.
-    
-    You will see our data protection policy, which we kindly ask you to read through and consent to.
-    
-    Access ReDI Connect here: ${buildFrontendUrl(
-      process.env.NODE_ENV
-    )}/front/signup/existing/${accessToken}
-    
-    You’ll be asked to choose your own password. Your username is your email address: ${recipient}
-    
-    Let us know if you need any help or assistance at career@redi-school.org.
-    
-    Your Career Support Team`
-  );
-
-const sendMentorPendingReviewAcceptedEmail = (recipient, firstName) =>
+  const sendMentorPendingReviewAcceptedEmail = (recipient, firstName, rediLocation) =>
   sendEmailFactory(
     recipient,
     'ReDI Connect: your user was activated!',
@@ -298,7 +194,7 @@ Your profile has been accepted and we are very happy that you are now part of th
 Now that your profile is visible you should receive applications from mentees. We will notify you by email of any application.
 
 We kindly ask you to read the guidelines and information of the mentorship program carefully: ${buildFrontendUrl(
-      process.env.NODE_ENV
+      process.env.NODE_ENV, rediLocation
     )}/downloadeables/redi-connect-guidelines.pdf
 
 Please also be aware of the following:
@@ -315,7 +211,7 @@ Meetup: https://www.meetup.com/ReDI-school
 Instagram: https://www.instagram.com/redischool
 
 You can always log back into ReDI Connect here: ${buildFrontendUrl(
-      process.env.NODE_ENV
+      process.env.NODE_ENV, rediLocation
     )}
 
 Please feel free to write us an email at career@redi-school.org if you have any questions or encounter problems.
@@ -328,7 +224,7 @@ Thank you for being a mentor, we couldn’t do it without you.
 Your Career Support Team at ReDI Connect`
   );
 
-const sendMenteePendingReviewAcceptedEmail = (recipient, firstName) =>
+const sendMenteePendingReviewAcceptedEmail = (recipient, firstName, rediLocation) =>
   sendEmailFactory(
     recipient,
     'ReDI Connect: your user was activated!',
@@ -353,11 +249,10 @@ Please note: First come, first serve. Whoever applies first, will get a mentor f
 
 We also kindly remind you to be aware of the following:
 Code of Conduct: ${buildFrontendUrl(
-      process.env.NODE_ENV
+      process.env.NODE_ENV, rediLocation
     )}/downloadeables/redi-connect-code-of-conduct.pdf
 
 Please feel free to write us an email at career@redi-school.org if you have any questions or encounter problems.
-
 
 Your Career Support Team at ReDI Connect`
   );
@@ -372,7 +267,6 @@ Unfortunately your profile has not been accepted yet because we would like to ge
 
 Please let us know at career@redi-school.org how we can reach you best so that we can have a little chat. 
 
-
 Your Career Support Team at ReDI Connect`
   );
 
@@ -385,7 +279,6 @@ const sendMenteePendingReviewDeclinedEmail = (recipient, firstName) =>
 Unfortunately your profile has not been accepted yet because we would like to get to know you a little better before.
 
 Please let us know at career@redi-school.org how we can reach you best so that we can have a little chat. 
-
 
 Your Career Support Team at ReDI Connect`
   );
@@ -411,7 +304,7 @@ If you have any questions or would like any help, always feel free to reach out 
 Your Career Support Team`
   );
 
-const sendResetPasswordEmail = (recipient, accessToken) =>
+const sendResetPasswordEmail = (recipient, accessToken, rediLocation) =>
   sendEmailFactory(
     recipient,
     'Choose a new password for ReDI Connect',
@@ -422,7 +315,7 @@ Someone requested a new password for your ReDI Connect account.
 If you didn't make this request then you can safely ignore this email :)
 
 Reset Password: ${buildFrontendUrl(
-      process.env.NODE_ENV
+      process.env.NODE_ENV, rediLocation
     )}/front/reset-password/set-new-password/${accessToken}
 
 You’ll be asked to choose your own password. Your username is your email address: ${recipient}
@@ -442,8 +335,6 @@ module.exports = {
   sendMentorshipAcceptedEmail,
   sendMentoringSessionLoggedEmail,
   sendToMentorConfirmationOfMentorshipCancelled,
-  sendMentorSignupReminderEmail,
-  sendMenteeSignupReminderEmail,
   sendMentorPendingReviewAcceptedEmail,
   sendMenteePendingReviewAcceptedEmail,
   sendMentorPendingReviewDeclinedEmail,

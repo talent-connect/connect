@@ -307,8 +307,8 @@ const sendEmailUserReviewedAcceptedOrDenied = switchMap(redProfileInst => {
   if (!_.has(userTypeToEmailMap, userType))
     throw new Error("User does not have valid user type");
   const emailFunc = userTypeToEmailMap[userType];
-  const { contactEmail, firstName } = redProfileInst.toJSON();
-  return emailFunc(contactEmail, firstName);
+  const { contactEmail, firstName, rediLocation } = redProfileInst.toJSON();
+  return emailFunc(contactEmail, firstName, rediLocation);
 });
 
 const pendingReviewTypes = [

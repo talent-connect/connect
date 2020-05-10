@@ -147,7 +147,8 @@ module.exports = function(RedMatch) {
             mentorProfile.firstName,
             `${options.currentUser.redProfile.firstName} ${
               options.currentUser.redProfile.lastName
-            }`
+            }`,
+            options.currentUser.redProfile.rediLocation,
           )
         )
       )

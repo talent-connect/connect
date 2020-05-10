@@ -63,7 +63,8 @@ module.exports = function(RedMentoringSession) {
               switchMap(([mentor, mentee]) =>
                 sendMentoringSessionLoggedEmail(
                   mentor.contactEmail,
-                  mentor.firstName
+                  mentor.firstName,
+                  ctx.options.currentUser.redProfile.rediLocation,
                 )
               )
             )
