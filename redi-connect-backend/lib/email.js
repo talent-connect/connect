@@ -199,7 +199,7 @@ We kindly ask you to read the guidelines and information of the mentorship progr
 
 Please also be aware of the following:
 Code of Conduct: ${buildFrontendUrl(
-      process.env.NODE_ENV
+      process.env.NODE_ENV, rediLocation
     )}/downloadeables/redi-connect-code-of-conduct.pdf
 
 We are organising events regularly where you can meet fellow mentors and get to know ReDI School more.
