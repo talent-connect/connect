@@ -1,36 +1,18 @@
 <mjml>
-  <mj-head>
-    <mj-title>Welcome to ReDI Connect!</mj-title>
-    <mj-include path="./style.mjml" />
-    <mj-attributes>
-      <mj-class name="divider-top" width="50px" padding="20px 0" border-color="#F15A22" />
-      <mj-class name="divider-bottom" width="100%" padding="0 0 24px" border-color="#DADADA" border-width="1px" />
-      <mj-class name="text" font-size="16px" line-height="24px" color="#000" padding="0" />
-      <mj-class name="text-padding" padding="20px 0 30px 0" />
-      <mj-class name="wrapper" padding="0" />
-      <mj-class name="column" padding="0 20px 0 0" />
-      <mj-class name="text-footer" font-size="12px" color="#5D5D5D" padding="0" font-weight="300" />
-      <mj-class name="headline" font-size="40px" line-height="48px" color="#000" font-family="Jubilat" font-weight="900" padding="0" />
-      <mj-class name="headline-footer" font-size="14px" line-height="24px" color="#000" padding="0" />
-    </mj-attributes>
-  </mj-head>
-  <mj-body background-color="#FFF">
-    <mj-wrapper mj-class="wrapper">
+  <mj-include path="./head.mjml" />
+  <mj-body mj-class="body">
+    <mj-wrapper background-color="#F0F0F0">
+      <mj-section />
       <mj-section css-class="section">
         <mj-column>
-          <mj-text mj-class="headline">Welco  me to ReDI Connect!</mj-text>
+          <mj-text mj-class="headline">Welcome to ReDI Connect!</mj-text>
           <mj-divider mj-class="divider-top" css-class="divider" />
           <mj-text mj-class="text">Hello ${firstName},</mj-text>
           <mj-text mj-class="text text-padding">we are very happy to welcome you as a <strong>${mentorOrMentee}</strong> to ReDI Connect. </mj-text>
-          <mj-text mj-class="text">What are the next steps? You can now create your personal profile and look for the right mentor. We will ask you to provide some additional information about yourself on the platform during your profile creation. So that your mentor and you are really a match!</mj-text>
+          <mj-text mj-class="text">What are the next steps? You can now create you personal profile. We will ask you to provide some additional information about yourself on the platform during your profile creation. So that you and your future mentee(s) are a great match!</mj-text>
           <mj-text mj-class="text">To create your ReDI Connect profile, sign-in here:</mj-text>
-          <mj-table padding="24px 8px">
-            <tr>
-              <td>
-                <a href="https://connect.redi-school.org/front/login" target="_blank" class="email-button">sign-in</div><img src="../../../assets/images/arrow-right.svg" class="button-img" />
-              </td>
-            </tr>
-          </mj-table>
+          <mj-image src="./signin-web.png" align="left" padding="30px 0" target="_blank" width="158px" css-class="button-desktop" href="https://connect.redi-school.org/front/login" />
+          <mj-image src="./signin-mobile.png" align="left" padding="30px 0" target="_blank" css-class="button-mobile" href="https://connect.redi-school.org/front/login" />
           <mj-text mj-class="text" padding="20px 0 0">We wish you a great experience with your mentorship! </mj-text>
           <mj-text mj-class="text" padding="0 0 30px 0">If you have any questions or feedback at any point, feel free to reach out.</mj-text>
           <mj-text mj-class="text">Best,</mj-text>
@@ -38,6 +20,7 @@
         </mj-column>
       </mj-section>
       <mj-include path="./footer.mjml" />
+      <mj-section />
     </mj-wrapper>
   </mj-body>
 </mjml>

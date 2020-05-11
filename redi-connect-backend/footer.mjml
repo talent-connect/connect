@@ -6,7 +6,7 @@
     <mj-table padding="0">
       <tr>
         <td class="table-cell table-img" rowspan="4">
-          <img src="../../../assets/images/isabelle_profile.svg" width="52px" />
+          <img src="./isabelle.png" width="52px" />
         </td>
         <td class="table-cell table-headline td-mobile" colspan="2">
           Isabelle Köhncke
@@ -42,6 +42,6 @@
           <a href="https://www.redi-school.org" class="text-link" target="_blank">www.redi-school.org</a>
         </td>
       </tr>
-      <mj-table>
+    </mj-table>
   </mj-column>
 </mj-section>
