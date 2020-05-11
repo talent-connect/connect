@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { Element } from 'react-bulma-components'
+import { Heading } from 'react-bulma-components'
+import classnames from 'classnames'
 import './Editable.scss'
 
 interface Props {
@@ -7,6 +8,8 @@ interface Props {
   onSave: Function
   read: React.ReactNode
   children: React.ReactNode
+  className?: string
+  savePossible?: boolean
 }
 
 function Editable (props: Props) {
@@ -14,23 +17,25 @@ function Editable (props: Props) {
     title,
     children,
     read,
-    onSave
+    onSave,
+    savePossible,
+    className
   } = props
 
   const [editable, setEditable] = useState(false)
 
   return (
-    <div className="editable">
+    <div className={classnames('editable', { [`${className}`]: className })}>
       <div className="editable__header">
-        <Element
-          size={4}
+        <Heading
+          size={5}
           weight="normal"
-          renderAs="h2"
+          renderAs="h3"
           subtitle
           textTransform="uppercase"
         >
           {title}
-        </Element>
+        </Heading>
         <div className="editable__header__buttons">
           { editable ? (<>
             <button
@@ -38,6 +43,7 @@ function Editable (props: Props) {
                 onSave()
                 setEditable(false)
               }}
+              disabled={savePossible}
               type="submit"
             >
             Save

@@ -1,1 +1,4 @@
-export type Language = string;
+export type Language = {
+  id: string
+  label: string
+};

@@ -1,6 +1,19 @@
+@import "../../styles/_variables.scss";
+
 .editable {
-    &__header {
-        display: flex;
-        justify-content: space-between;
-    }
+  padding-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid $grey-light;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__body {
+    margin-top: -0.5rem;
+  }
 }

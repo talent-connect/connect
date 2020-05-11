@@ -10,7 +10,6 @@ import { Link } from 'react-router-dom'
 import * as Yup from 'yup'
 
 import {
-  FormikProps,
   FormikHelpers as FormikActions,
   FormikValues,
   useFormik
@@ -50,12 +49,10 @@ interface RouteParams {
 
 export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
   const [formError, setFormError] = useState<string>('')
-  const [loading, setLoading] = useState<boolean>(false)
   const [errorMsg, setErrorMsg] = useState<string>('')
 
   useEffect(() => {
     const load = async () => {
-      setLoading(true)
       const accessTokenStr = decodeURIComponent(props.match.params.accessToken)
       let accessToken
       try {
@@ -71,7 +68,6 @@ export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
       try {
         await fetchSaveRedProfile(accessToken)
         console.log('saveprofile')
-        setLoading(false)
       } catch (err) {
         console.log('saveprofile error')
 
@@ -138,25 +134,15 @@ export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
             <FormInput
               name="password"
               type="password"
-              value={formik.values.password}
               placeholder="Password"
-              setFieldTouched={formik.setFieldTouched}
-              handleChange={formik.handleChange}
-              isSubmitting={formik.isSubmitting}
-              hasError={!!formik.touched.password && !!formik.errors.password}
-              disabled={!!errorMsg}
+              {...formik}
             />
 
             <FormInput
               name="passwordConfirm"
               type="password"
-              value={formik.values.passwordConfirm}
-              placeholder="Repeat password"
-              setFieldTouched={formik.setFieldTouched}
-              handleChange={formik.handleChange}
-              isSubmitting={formik.isSubmitting}
-              hasError={!!formik.touched.passwordConfirm && !!formik.errors.passwordConfirm}
-              disabled={!!errorMsg}
+              placeholder="Repeat rassword"
+              {...formik}
             />
 
             {errorMsg && (

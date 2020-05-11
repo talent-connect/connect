@@ -93,7 +93,7 @@ a:hover {
 }
 // TODO: should be transfered to a layout template
 // will be done the next time this view is reused
-.color-half {
+.section.color-half {
   background-color: $white;
 
   @include tablet() {
@@ -107,7 +107,7 @@ a:hover {
 
   @include tablet() {
     margin:-3.25rem auto;
-    padding: 2rem 0;
+    padding: 3.25rem 0;
     background: linear-gradient(90deg, $redi-blue-light 15.8%, $white 15.8%);
   }
 }

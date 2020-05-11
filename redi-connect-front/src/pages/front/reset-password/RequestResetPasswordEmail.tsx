@@ -93,12 +93,8 @@ export const RequestResetPasswordEmail = (props: any) => {
             <FormInput
               name="email"
               type="email"
-              value={formik.values.email}
               placeholder="Email"
-              setFieldTouched={formik.setFieldTouched}
-              handleChange={formik.handleChange}
-              isSubmitting={formik.isSubmitting}
-              hasError={!!formik.touched.email && !!formik.errors.email}
+              {...formik}
             />
             <Form.Field className="submit-spacer">
               <Button

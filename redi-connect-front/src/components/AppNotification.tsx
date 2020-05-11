@@ -83,7 +83,6 @@ export function AppNotification () {
   const [state, setState] = useState<AppNotificationState>(null)
 
   const show = (options: SubjectShowNotification) => {
-    console.log(options)
     setState({ ...options })
   }
 

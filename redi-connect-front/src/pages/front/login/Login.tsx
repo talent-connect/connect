@@ -93,23 +93,15 @@ export default function Login () {
             <FormInput
               name="username"
               type="email"
-              value={formik.values.username}
               placeholder="Email"
-              setFieldTouched={formik.setFieldTouched}
-              handleChange={formik.handleChange}
-              isSubmitting={formik.isSubmitting}
-              hasError={!!formik.touched.username && !!formik.errors.username}
+              {...formik}
             />
 
             <FormInput
               name="password"
               type="password"
-              value={formik.values.password}
               placeholder="Password"
-              setFieldTouched={formik.setFieldTouched}
-              handleChange={formik.handleChange}
-              isSubmitting={formik.isSubmitting}
-              hasError={!!formik.touched.password && !!formik.errors.password}
+              {...formik}
             />
 
             <Form.Field>

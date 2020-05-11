@@ -1,25 +1,37 @@
 import React, { useEffect } from 'react'
 import * as Yup from 'yup'
 
+import { Heading, Columns } from 'react-bulma-components'
+
 import About from './About'
 import Mentoring from './Mentoring'
-import { Step2Background } from './steps/Step2Background'
-import { Step3Profile } from './steps/Step3Profile'
+import Contacts from './Contacts'
+import SocialMedia from './SocialMedia'
+import PersonalDetail from './PersonalDetail'
+import Languages from './Languages'
+import RediClass from './RediClass'
+import Occupation from './Occupation'
 
 import LoggedIn from '../../../components/templates/LoggedIn'
-import { Step4ContactData } from './steps/Step4ContactData'
-import { Step5Categories } from './steps/Step5Categories'
-import { FullScreenCircle } from '../../../hooks/WithLoading'
+// CHECK OUT THE LOADER
+// import { FullScreenCircle } from '../../../hooks/WithLoading'
 import { RootState } from '../../../redux/types'
 import { connect } from 'react-redux'
 import {
-  profileFetchStart
+  profileFetchStart,
+  profileSaveStart
 } from '../../../redux/user/actions'
+
 import {
-  educationLevels,
-  courses,
-  menteeOccupationCategories
+  S3_UPLOAD_SIGN_URL
 } from '../../../config/config'
+
+import { FormikValues, useFormik } from 'formik'
+import { RedProfile } from '../../../types/RedProfile'
+
+import ReactS3Uploader from 'react-s3-uploader'
+
+// import { Avatar } from '../../../../components/Avatar'
 
 export type SignUpFormType =
   | 'mentor'
@@ -29,176 +41,149 @@ export type SignUpFormType =
   | 'public-sign-up-mentor-rejected'
   | 'public-sign-up-mentee-rejected';
 
-export interface SignUpFormValues {
-  formType: SignUpFormType
-  mentor_occupation: string
-  mentor_workPlace: string
-  expectations: string
-  mentee_occupationCategoryId: string // TODO: do TS magic to make this a union type
-  mentee_occupationJob_placeOfEmployment: string
-  mentee_occupationJob_position: string
-  mentee_occupationStudent_studyPlace: string
-  mentee_occupationStudent_studyName: string
-  mentee_occupationLookingForJob_what: string
-  mentee_occupationOther_description: string
-  mentee_highestEducationLevel: string
-  mentee_currentlyEnrolledInCourse: string
+export interface MeFormValues {
   profileAvatarImageS3Key: string
-  firstName: string
-  lastName: string
-  gender: string
-  age?: number
-  languages: string[]
-  otherLanguages: string
-  personalDescription: string
-  contactEmail: string
-  linkedInProfileUrl: string
-  githubProfileUrl: string
-  slackUsername: string
-  telephoneNumber: string
-  categories: string[]
-  menteeCountCapacity: number
 }
 
 const validationSchema = Yup.object({
-  mentor_occupation: Yup.string().when('formType', {
-    is: 'mentor',
-    then: Yup.string()
-      .required()
-      .max(255)
-      .label('Occupation')
-  }),
-  mentor_workPlace: Yup.string()
-    .max(255)
-    .label('Work place'),
-  mentee_occupationCategoryId: Yup.string().when('formType', {
-    is: 'mentee',
-    then: Yup.string()
-      .required()
-      .oneOf(menteeOccupationCategories.map(v => v.id))
-      .label('Current occupation')
-  }),
-  mentee_occupationJob_placeOfEmployment: Yup.string()
-    .max(255)
-    .label('Where are you employed'),
-  mentee_occupationJob_position: Yup.string()
-    .max(255)
-    .label('At what university do you study'),
-  mentee_occupationStudent_studyPlace: Yup.string()
-    .max(255)
-    .label('Where do you study'),
-  mentee_occupationStudent_studyName: Yup.string()
-    .max(255)
-    .label('What do you study'),
-  mentee_occupationLookingForJob_what: Yup.string()
-    .max(255)
-    .label('What kind of job'),
-  mentee_occupationOther_description: Yup.string()
-    .max(255)
-    .label('What are you currently doing'),
-  mentee_highestEducationLevel: Yup.string().when('formType', {
-    is: 'mentee',
-    then: Yup.string()
-      .oneOf(educationLevels.map(level => level.id))
-      .label('Highest Education Level')
-  }),
-  mentee_currentlyEnrolledInCourse: Yup.string().when('formType', {
-    is: 'public-sign-up-mentee-pending-review',
-    then: Yup.string()
-      .required()
-      .oneOf(courses.map(level => level.id))
-      .label('Currently enrolled in course')
-  }),
-  profileAvatarImageS3Key: Yup.string().max(255),
-  firstName: Yup.string()
-    .required()
-    .max(255),
-  lastName: Yup.string()
-    .required()
-    .max(255),
-  gender: Yup.string()
-    .oneOf(['male', 'female', 'other'])
-    .label('Gender'),
-  age: Yup.number()
-    .min(16)
-    .max(99)
-    .label('Age'),
-  languages: Yup.array()
-    .min(1)
-    .of(Yup.string().max(255))
-    .label('Languages'),
-  personalDescription: Yup.string()
-    .required()
-    .min(100)
-    .max(600)
-    .label('Personal description'),
-  contactEmail: Yup.string()
-    .email()
-    .required()
-    .max(255)
-    .label('Contact email'),
-  linkedInProfileUrl: Yup.string()
-    .max(255)
-    .url()
-    .label('LinkedIn Profile'),
-  githubProfileUrl: Yup.string()
-    .max(255)
-    .url()
-    .label('Github Profile'),
-  slackUsername: Yup.string()
-    .max(255)
-    .label('Slack username'),
-  telephoneNumber: Yup.string()
-    .max(255)
-    .label('Telephone number'),
-  categories: Yup.array().when('formType', {
-    is: 'mentee',
-    then: Yup.array()
-      .compact(v => v === 'dontKnowYet')
-      .min(0)
-      .max(3)
-  }),
-  menteeCountCapacity: Yup.number().when('formType', {
-    is: 'mentor',
-    then: Yup.number()
-      .required('Please specify the number of mentees you can take on')
-      .min(1)
-      .max(4)
-  })
+  profileAvatarImageS3Key: Yup.string().max(255)
 })
 
-const Me = ({ loading, saveResult, profileFetchStart }: any) => {
-  // not sure if this is really neede since the profile is loaded when the user is logged in
+const Me = ({ loading, saveResult, profileFetchStart, profileSaveStart, profile }: any) => {
+  // const [uploadInput, setUploadInput] = useState<HTMLInputElement>()
+
+  // not sure if this is really needed since the profile is loaded when the user is logged in
   useEffect(() => {
     profileFetchStart()
   }, [profileFetchStart])
 
+  const initialValues: MeFormValues = {
+    profileAvatarImageS3Key: profile.profileAvatarImageS3Key
+  }
+
+  const submitForm = async (
+    values: FormikValues
+  ) => {
+    const profileMe = values as Partial<RedProfile>
+    profileSaveStart({ ...profileMe, id: profile.id })
+  }
+
+  const formik = useFormik({
+    initialValues: initialValues,
+    validationSchema,
+    onSubmit: submitForm
+  })
+
+  // THIS COULD BE HELPFUL LATER
+  // const onUploadStart = (file: any, next: any) => {
+  //   setLoading(true)
+  //   next(file)
+  // }
+  const onUploadSuccess = (result: any) => {
+    formik.setFieldValue('profileAvatarImageS3Key', result.fileKey)
+    formik.handleSubmit()
+  }
+
   return (
     <LoggedIn>
-      <FullScreenCircle loading={loading} />
+      {loading && 'page loading...'}
+
+      {saveResult === 'error' && <><br/><br/><br/>An error occurred, please try again.</>}
+      {saveResult === 'success' && <>Your profile was saved.</>}
       {!loading &&
         <>
-          <FullScreenCircle loading={saveResult === 'submitting'} />
-          {/* <Button
-            onClick={() => {
-              formik.handleSubmit()
-            }}
-            disabled={saveResult === 'submitting'}
-          >
-                  Save
-          </Button> */}
-          {/*
-          <form onSubmit={e => e.preventDefault()}> */}
+          {saveResult === 'submitting' && 'part of the page loading...'}
+
+          <Columns>
+            <Columns.Column
+              size={3}
+            >
+              <div className="file is-boxed">
+                {/* SHOWING THE AVATAR
+                 <Avatar s3Key={profileAvatarImageS3Key} /> */}
+                <label className="file-label" htmlFor="avatar-upload">
+                  <span className="file-cta">
+                    <span className="file-label">Upload file</span>
+                  </span>
+                  <ReactS3Uploader
+                    name="avatar-upload"
+                    id="avatar-upload"
+                    className="file-input"
+                    signingUrl={S3_UPLOAD_SIGN_URL}
+                    accept="image/*"
+                    uploadRequestHeaders={{ 'x-amz-acl': 'public-read' }}
+                    // preprocess={onUploadStart}
+                    onSignedUrl={(c: any) => console.log(c)}
+                    onError={(c: any) => console.log(c)}
+                    onFinish={onUploadSuccess}
+                    contentDisposition="auto"
+                    // inputRef={(cmp: any) => setUploadInput(cmp)}
+                  />
+                </label>
+              </div>
+
+            </Columns.Column>
+
+            <Columns.Column
+              size={9}
+            >
+              <Heading
+                size={1}
+                responsive={{ mobile: { textSize: { value: 2 } } }}
+                weight="normal"
+                renderAs="h1"
+                spaced={true}
+              >
+                Hi, {profile.firstName}
+              </Heading>
+
+            </Columns.Column>
+          </Columns>
+
           <About />
           <Mentoring />
-          {/* <Step2Background type={profile.userType} {...formik} />
-            <Step3Profile type={profile.userType} {...formik} />
-            <Step4ContactData type={profile.userType} {...formik} />
-            <Step5Categories type={profile.userType} {...formik} /> */}
-          {/* </form> */}
+          <Columns>
+            <Columns.Column
+              size={6}
+            >
+              <Contacts/>
+            </Columns.Column>
 
-          {saveResult === 'error' && <><br/><br/><br/>An error occurred, please try again.</>}
-          {saveResult === 'success' && <>Your profile was saved.</>}
+            <Columns.Column
+              size={6}
+            >
+              <SocialMedia/>
+            </Columns.Column>
+          </Columns>
+
+          <Columns>
+            <Columns.Column
+              size={6}
+            >
+              <PersonalDetail/>
+            </Columns.Column>
+
+            <Columns.Column
+              size={6}
+            >
+              <Languages/>
+            </Columns.Column>
+          </Columns>
+
+          <Columns>
+            <Columns.Column
+              size={6}
+            >
+              <Occupation/>
+            </Columns.Column>
+
+            <Columns.Column
+              size={6}
+            >
+              { profile.userType === 'mentee' && <RediClass/>}
+
+            </Columns.Column>
+          </Columns>
         </>
       }
     </LoggedIn>
@@ -206,10 +191,13 @@ const Me = ({ loading, saveResult, profileFetchStart }: any) => {
 }
 
 const mapStateToProps = (state: RootState) => ({
-  saveResult: state.user.saveResult
+  saveResult: state.user.saveResult,
+  loading: state.user.loading,
+  profile: state.user.profile
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
+  profileSaveStart: (profile: Partial<RedProfile>) => dispatch(profileSaveStart(profile)),
   profileFetchStart: () => dispatch(profileFetchStart())
 })
 

@@ -13,6 +13,7 @@ import omit from 'lodash/omit'
 
 import FormInput from '../../../components/atoms/FormInput'
 import FormCheckbox from '../../../components/atoms/FormCheckbox'
+import FormSelect from '../../../components/atoms/FormSelect'
 
 import Teaser from '../../../components/molecules/Teaser'
 
@@ -133,15 +134,6 @@ export default function SignUp () {
     onSubmit: submitForm
   })
 
-  const onChange = (name: any, e: any) => {
-    e.persist()
-    formik.handleChange(e)
-    formik.setFieldTouched(name, true, false)
-  }
-
-  const determineInputColor = (field: keyof SignUpFormValues) =>
-    formik.touched[field] && Boolean(formik.errors[field]) ? 'danger' : null
-
   return (
     <AccountOperation>
       <Columns vCentered>
@@ -165,90 +157,45 @@ export default function SignUp () {
           <form onSubmit={e => e.preventDefault()} className="form">
             <FormInput
               name="firstName"
-              value={formik.values.firstName}
               placeholder="First name"
-              setFieldTouched={formik.setFieldTouched}
-              handleChange={formik.handleChange}
-              isSubmitting={formik.isSubmitting}
-              hasError={!!formik.touched.firstName && !!formik.errors.firstName}
+              {...formik}
             />
 
             <FormInput
               name="lastName"
-              value={formik.values.lastName}
               placeholder="Last name"
-              setFieldTouched={formik.setFieldTouched}
-              handleChange={formik.handleChange}
-              isSubmitting={formik.isSubmitting}
-              hasError={!!formik.touched.lastName && !!formik.errors.lastName}
+              {...formik}
             />
 
             <FormInput
               name="username"
               type="email"
-              value={formik.values.username}
               placeholder="Username (your email address)"
-              setFieldTouched={formik.setFieldTouched}
-              handleChange={formik.handleChange}
-              isSubmitting={formik.isSubmitting}
-              hasError={!!formik.touched.username && !!formik.errors.username}
+              {...formik}
             />
 
             <FormInput
               name="password"
               type="password"
-              value={formik.values.password}
               placeholder="Password"
-              setFieldTouched={formik.setFieldTouched}
-              handleChange={formik.handleChange}
-              isSubmitting={formik.isSubmitting}
-              hasError={!!formik.touched.password && !!formik.errors.password}
+              {...formik}
             />
 
             <FormInput
               name="passwordConfirm"
               type="password"
-              value={formik.values.passwordConfirm}
               placeholder="Repeat password"
-              setFieldTouched={formik.setFieldTouched}
-              handleChange={formik.handleChange}
-              isSubmitting={formik.isSubmitting}
-              hasError={
-                !!formik.touched.passwordConfirm &&
-                !!formik.errors.passwordConfirm
-              }
+              {...formik}
             />
+
             {type === 'mentee' && (
-              <>
-                <Form.Field>
-                  <Form.Label size="small">
-                    Current ReDI Course (*for alumni last taken course)
-                  </Form.Label>
-                  <Form.Control>
-                    <Form.Select
-                      name="mentee_currentlyEnrolledInCourse"
-                      className="is-fullwidth"
-                      value={formik.values.mentee_currentlyEnrolledInCourse}
-                      onChange={onChange.bind(
-                        null,
-                        'mentee_currentlyEnrolledInCourse'
-                      )}
-                      color={determineInputColor(
-                        'mentee_currentlyEnrolledInCourse'
-                      )}
-                    >
-                      <option id="" value="" disabled>
-                        Your current ReDI Course
-                      </option>
-                      {courses.map(course => (
-                        <option key={course.id} value={course.id}>
-                          {course.label}
-                        </option>
-                      ))}
-                    </Form.Select>
-                  </Form.Control>
-                </Form.Field>
-              </>
+              <FormSelect
+                label="Current ReDI Course (*for alumni last taken course)"
+                name="mentee_currentlyEnrolledInCourse"
+                placeholder="Your current ReDI Course"
+                items={courses}
+                {...formik}
+              />
             )}
 
             <FormCheckbox
