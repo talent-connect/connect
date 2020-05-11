@@ -8,7 +8,7 @@ import {
 } from 'react-bulma-components'
 import { useHistory } from 'react-router-dom'
 import Button from '../atoms/Button'
-import team from '../../assets/images/hero-new.svg'
+import team from '../../assets/images/hero.svg'
 import './RediHero.scss'
 
 const RediHero = () => {
