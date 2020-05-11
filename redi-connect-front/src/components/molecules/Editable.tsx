@@ -22,7 +22,7 @@ function Editable (props: Props) {
     className
   } = props
 
-  const [editable, setEditable] = useState(false)
+  const [isEditing, setIsEditing] = useState(false)
 
   return (
     <div className={classnames('editable', { [`${className}`]: className })}>
@@ -37,11 +37,11 @@ function Editable (props: Props) {
           {title}
         </Heading>
         <div className="editable__header__buttons">
-          { editable ? (<>
+          { isEditing ? (<>
             <button
               onClick={() => {
                 onSave()
-                setEditable(false)
+                setIsEditing(false)
               }}
               disabled={savePossible}
               type="submit"
@@ -50,7 +50,7 @@ function Editable (props: Props) {
             </button>
             <button
               onClick={() => {
-                setEditable(false)
+                setIsEditing(false)
               }}
               type="submit"
             >
@@ -59,7 +59,7 @@ function Editable (props: Props) {
           </>) : (
             <button
               onClick={() => {
-                setEditable(true)
+                setIsEditing(true)
               }}
               type="submit"
             >
@@ -68,7 +68,7 @@ function Editable (props: Props) {
           )}</div>
       </div>
       <div className="editable__body">
-        { editable ? children : read }
+        { isEditing ? children : read }
       </div>
     </div>
   )

@@ -54,11 +54,11 @@ export const categoriesIdToColourMap = mapValues(
 )
 
 export const Languages: Language[] = [
-  { id: 'en', label: 'English' },
-  { id: 'de', label: 'German' },
-  { id: 'ar', label: 'Arabic' },
-  { id: 'fa', label: 'Farsi' },
-  { id: 'ti', label: 'Tigrinya' }
+  'English',
+  'German',
+  'Arabic',
+  'Farsi',
+  'Tigrinya'
 ]
 
 export const genders: Gender[] = [

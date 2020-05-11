@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { Form } from 'react-bulma-components'
 
 interface Props {
@@ -27,11 +27,11 @@ function FormInput (props: any) {
     disabled
   } = props
 
-  const onChange = (name: any, e: any) => {
-    e.persist()
-    setFieldTouched(name, true, false)
-    handleChange(e)
-  }
+  const onChange = useCallback((event: any) => {
+    event.persist()
+    setFieldTouched(event.target.name, true, false)
+    handleChange(event)
+  }, [])
 
   const handleOnChange = customOnChange || onChange
 
@@ -49,7 +49,7 @@ function FormInput (props: any) {
           className="is-fullwidth"
           value={values[name]}
           multiple={multiselect}
-          onChange={handleOnChange.bind(null, name)}
+          onChange={handleOnChange}
         >
           {placeholder && <option id="" value="" disabled>
             {placeholder}

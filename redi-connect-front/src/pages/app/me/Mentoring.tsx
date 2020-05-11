@@ -50,7 +50,7 @@ const Mentoring = ({ profile, profileSaveStart }: any) => {
     return profile.categories && profile.categories.map((categorie: any, index: number) => <div key={`${categorie}_${index}`}>{categorie}</div>)
   }
 
-  const categoriesChange = (name: any, e: any) => {
+  const categoriesChange = (e: any) => {
     e.persist()
     const value = e.target.value
     let newCategories

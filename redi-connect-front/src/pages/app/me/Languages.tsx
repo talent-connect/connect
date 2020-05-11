@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 import { RootState } from '../../../redux/types'
 
 import {
-  Languages as formLanguages
+  Languages as availableLanguages
 } from '../../../config/config'
 
 import {
@@ -17,6 +17,8 @@ import {
 import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
+
+const formLanguages = availableLanguages.map(language => ({ id: language, label: language }))
 
 export interface LanguagesFormValues {
   languages: string[]

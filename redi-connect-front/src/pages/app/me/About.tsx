@@ -21,11 +21,7 @@ import { FormikValues, useFormik } from 'formik'
 // do we really need all these type???
 export type UserType =
   | 'mentor'
-  | 'mentee'
-  | 'public-sign-up-mentor-pending-review'
-  | 'public-sign-up-mentee-pending-review'
-  | 'public-sign-up-mentor-rejected'
-  | 'public-sign-up-mentee-rejected';
+  | 'mentee';
 
 export interface AboutFormValues {
   userType: UserType
@@ -45,7 +41,7 @@ const validationSchema = Yup.object({
     then: Yup.number()
       .required('Please specify the number of mentees you can take on')
       .min(1)
-      .max(3)
+      .max(2)
   })
 })
 // props: FormikProps<AboutFormValues>

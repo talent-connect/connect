@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { Form } from 'react-bulma-components'
 
 interface Props {
@@ -23,11 +23,11 @@ function FormInput (props: any) {
     disabled
   } = props
 
-  const onChange = (name: any, e: any) => {
-    e.persist()
-    setFieldTouched(name, true, false)
-    handleChange(e)
-  }
+  const onChange = useCallback((event: any) => {
+    event.persist()
+    setFieldTouched(event.target.name, true, false)
+    handleChange(event)
+  }, [])
 
   const hasError = !!touched[name] && !!errors[name]
 
@@ -44,7 +44,7 @@ function FormInput (props: any) {
           color={hasError ? 'danger' : null}
           placeholder={placeholder}
           value={values[name]}
-          onChange={onChange.bind(null, name)}
+          onChange={onChange}
           disabled={isSubmitting || disabled}
         />
       </Form.Control>
@@ -56,7 +56,6 @@ function FormInput (props: any) {
           </>
         )}
       </Form.Help>
-
     </Form.Field>
   )
 }

@@ -95,9 +95,7 @@ const Me = ({ loading, saveResult, profileFetchStart, profileSaveStart, profile 
           {saveResult === 'submitting' && 'part of the page loading...'}
 
           <Columns>
-            <Columns.Column
-              size={3}
-            >
+            <Columns.Column size={3}>
               <div className="file is-boxed">
                 {/* SHOWING THE AVATAR
                  <Avatar s3Key={profileAvatarImageS3Key} /> */}
@@ -124,9 +122,7 @@ const Me = ({ loading, saveResult, profileFetchStart, profileSaveStart, profile 
 
             </Columns.Column>
 
-            <Columns.Column
-              size={9}
-            >
+            <Columns.Column size={9}>
               <Heading
                 size={1}
                 responsive={{ mobile: { textSize: { value: 2 } } }}
@@ -136,52 +132,35 @@ const Me = ({ loading, saveResult, profileFetchStart, profileSaveStart, profile 
               >
                 Hi, {profile.firstName}
               </Heading>
-
             </Columns.Column>
           </Columns>
 
           <About />
           <Mentoring />
           <Columns>
-            <Columns.Column
-              size={6}
-            >
+            <Columns.Column size={6}>
               <Contacts/>
             </Columns.Column>
-
-            <Columns.Column
-              size={6}
-            >
+            <Columns.Column size={6}>
               <SocialMedia/>
             </Columns.Column>
           </Columns>
 
           <Columns>
-            <Columns.Column
-              size={6}
-            >
+            <Columns.Column size={6}>
               <PersonalDetail/>
             </Columns.Column>
-
-            <Columns.Column
-              size={6}
-            >
+            <Columns.Column size={6}>
               <Languages/>
             </Columns.Column>
           </Columns>
 
           <Columns>
-            <Columns.Column
-              size={6}
-            >
+            <Columns.Column size={6}>
               <Occupation/>
             </Columns.Column>
-
-            <Columns.Column
-              size={6}
-            >
+            <Columns.Column size={6}>
               { profile.userType === 'mentee' && <RediClass/>}
-
             </Columns.Column>
           </Columns>
         </>
