@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import Teaser from '../../../components/molecules/Teaser'
 import FormInput from '../../../components/atoms/FormInput'
+import Heading from '../../../components/atoms/Heading'
 import * as Yup from 'yup'
 import { Link } from 'react-router-dom'
 import {
@@ -12,7 +13,7 @@ import {
 import { history } from '../../../services/history/history'
 import { login, fetchSaveRedProfile } from '../../../services/api/api'
 import { saveAccessToken } from '../../../services/auth/auth'
-import { Columns, Form, Heading } from 'react-bulma-components'
+import { Columns, Form, Content } from 'react-bulma-components'
 import Button from '../../../components/atoms/Button'
 
 interface LoginFormValues {
@@ -76,19 +77,10 @@ export default function Login () {
         </Columns.Column>
 
         <Columns.Column size={5} offset={1}>
-          <Heading
-            size={1}
-            responsive={{ mobile: { textSize: { value: 2 } } }}
-            weight="normal"
-            renderAs="h1"
-            className="title--border"
-            spaced={true}
-          >
-            Sign-in
-          </Heading>
-          <Heading size={4} renderAs="p" subtitle>
+          <Heading border>Sign-in</Heading>
+          <Content size="large" renderAs="p">
             Enter your email and password below.
-          </Heading>
+          </Content>
           <form onSubmit={e => e.preventDefault()} className="form login__form">
             <FormInput
               name="username"

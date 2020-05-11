@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { Heading, Columns } from 'react-bulma-components'
+import { Content, Columns, Element } from 'react-bulma-components'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import Teaser from '../../../components/molecules/Teaser'
 import Button from '../../../components/atoms/Button'
+import Heading from '../../../components/atoms/Heading'
 import classnames from 'classnames'
 import { ReactComponent as Mentee } from '../../../assets/images/mentee.svg'
 import { ReactComponent as Mentor } from '../../../assets/images/mentor.svg'
@@ -27,9 +28,9 @@ const SignUpLanding = () => {
       className={classnames('signup__type', { [`border-${type}`]: type === selectedType, 'no-shadow': type !== selectedType && selectedType !== '' })}
       onClick={() => setSelectedType(type)}>
       <Image />
-      <Heading className="signup__type__name" renderAs="p">
+      <Element className="signup__type__name" renderAs="p">
         {name}
-      </Heading>
+      </Element>
     </div>
   }
 
@@ -44,19 +45,10 @@ const SignUpLanding = () => {
         </Columns.Column>
 
         <Columns.Column size={5} offset={1}>
-          <Heading
-            size={1}
-            weight="normal"
-            renderAs="h1"
-            responsive={{ mobile: { textSize: { value: 2 } } }}
-            className="title--border"
-            spaced={true}
-          >
-            Sign-up
-          </Heading>
-          <Heading size={4} renderAs="p" subtitle>
+          <Heading border>Sign-up</Heading>
+          <Content size="large" renderAs="p">
             Do you want to become a <strong>mentor</strong> or a <strong>mentee</strong>?
-          </Heading>
+          </Content>
           <div className="signup">
             {renderType('Mentee')}
             {renderType('Mentor')}

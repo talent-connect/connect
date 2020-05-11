@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import Teaser from '../../../components/molecules/Teaser'
-import { Columns, Heading, Form } from 'react-bulma-components'
+import { Columns, Content, Form } from 'react-bulma-components'
 import Button from '../../../components/atoms/Button'
+import Heading from '../../../components/atoms/Heading'
 
 import FormInput from '../../../components/atoms/FormInput'
 import { Link } from 'react-router-dom'
@@ -112,20 +113,10 @@ export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
           <Teaser.SignUp />
         </Columns.Column>
         <Columns.Column size={5} offset={1}>
-
-          <Heading
-            size={1}
-            responsive={{ mobile: { textSize: { value: 2 } } } }
-            weight="normal"
-            renderAs="h1"
-            className="title--border"
-            spaced={true}
-          >
-                Enter your new password
-          </Heading>
-          <Heading size={4} renderAs="p" subtitle>
-                Please make sure that your new password has more than 8 characters.
-          </Heading>
+          <Heading border>Enter your new password</Heading>
+          <Content size="large" renderAs="p">
+            Please make sure that your new password has more than 8 characters.
+          </Content>
 
           {formError && (
             { formError }

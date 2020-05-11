@@ -78,6 +78,7 @@ const Languages = ({ profile, profileSaveStart }: any) => {
 
       <FormInput
         name="otherLanguages"
+        label="Other languages"
         placeholder="Any other languages?"
         {...formik}
       />

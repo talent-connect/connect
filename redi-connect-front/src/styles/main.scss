@@ -3,7 +3,6 @@
 
 //custom modifiers
 @import "_fonts.scss";
-@import "_heading.scss";
 @import "_forms.scss";
 
 // bulma global dependencies
@@ -112,30 +111,7 @@ a:hover {
   }
 }
 
-.is-checkradio--redi[type="checkbox"]+label {
-  display: inline-block;
-  margin: 0;
-  padding: 0;
-}
-
-.submit-spacer {
-  margin-top: 3em;
-}
-
 .default-background {
   background: white;
   z-index: -2;
-}
-
-// test solution for the slide in errors
-.help {
-  height: 0px;
-  margin: 0px;
-  overflow: hidden;
-  transition: ease-out all 0.3s;
-
-  &--show {
-    margin-top: 0.25rem;
-    height: 21px;
-  }
 }

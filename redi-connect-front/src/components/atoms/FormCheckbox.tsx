@@ -3,17 +3,14 @@ import { Form } from 'react-bulma-components'
 
 interface Props {
   name: string
+  value: string
   checked: boolean
-  handleChange: Function
-  setFieldTouched: Function
-  isSubmitting: boolean
   children: React.ReactNode
-  value?: string
   className?: string
   customOnChange?: Function
 }
 
-function FormCheckbox (props: Props) {
+function FormCheckbox (props: any) {
   const {
     name,
     value,
@@ -26,7 +23,7 @@ function FormCheckbox (props: Props) {
     customOnChange
   } = props
 
-  const onChange = (name: any, e: any) => {
+  const onChange = (e: any) => {
     e.persist()
     setFieldTouched(name, true, false)
     handleChange(e)
@@ -44,7 +41,7 @@ function FormCheckbox (props: Props) {
           checked={checked}
           type="checkbox"
           className="is-checkradio is-checkradio--redi is-small"
-          onChange={handleOnChange.bind(null, name)}
+          onChange={handleOnChange}
           disabled={isSubmitting}
         />
         <label htmlFor={name}>

@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react'
 import * as Yup from 'yup'
 
-import { Heading, Columns } from 'react-bulma-components'
+import { Columns } from 'react-bulma-components'
+import Heading from '../../../components/atoms/Heading'
 
 import About from './About'
 import Mentoring from './Mentoring'
@@ -33,14 +34,6 @@ import ReactS3Uploader from 'react-s3-uploader'
 
 // import { Avatar } from '../../../../components/Avatar'
 
-export type SignUpFormType =
-  | 'mentor'
-  | 'mentee'
-  | 'public-sign-up-mentor-pending-review'
-  | 'public-sign-up-mentee-pending-review'
-  | 'public-sign-up-mentor-rejected'
-  | 'public-sign-up-mentee-rejected';
-
 export interface MeFormValues {
   profileAvatarImageS3Key: string
 }
@@ -58,7 +51,7 @@ const Me = ({ loading, saveResult, profileFetchStart, profileSaveStart, profile 
   }, [profileFetchStart])
 
   const initialValues: MeFormValues = {
-    profileAvatarImageS3Key: profile.profileAvatarImageS3Key
+    profileAvatarImageS3Key: profile && profile.profileAvatarImageS3Key
   }
 
   const submitForm = async (
@@ -87,7 +80,6 @@ const Me = ({ loading, saveResult, profileFetchStart, profileSaveStart, profile 
   return (
     <LoggedIn>
       {loading && 'page loading...'}
-
       {saveResult === 'error' && <><br/><br/><br/>An error occurred, please try again.</>}
       {saveResult === 'success' && <>Your profile was saved.</>}
       {!loading &&
@@ -119,19 +111,9 @@ const Me = ({ loading, saveResult, profileFetchStart, profileSaveStart, profile 
                   />
                 </label>
               </div>
-
             </Columns.Column>
-
             <Columns.Column size={9}>
-              <Heading
-                size={1}
-                responsive={{ mobile: { textSize: { value: 2 } } }}
-                weight="normal"
-                renderAs="h1"
-                spaced={true}
-              >
-                Hi, {profile.firstName}
-              </Heading>
+              <Heading>Hi, {profile.firstName}</Heading>
             </Columns.Column>
           </Columns>
 

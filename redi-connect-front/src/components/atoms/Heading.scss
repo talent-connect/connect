@@ -1,10 +1,20 @@
-.title {
+@import "~bulma/sass/utilities/_all";
+@import '../../styles/_variables.scss';
 
+.title {
   // is a class used in bulma, the border modifier
   // is just a way of adding our own styles
   &--border {
     position: relative;
     padding-bottom: 2rem;
+
+    @include mobile() {
+      padding-bottom: 1rem;
+
+      &.is-1 {
+        margin-bottom: 1rem;
+      }
+    }
 
     &::after {
       content: '';
@@ -12,9 +22,8 @@
       border: 2px solid $redi-orange-dark;
       position: absolute;
       left: 0;
-      bottom: 0;
+      bottom: -2px;
       border-radius: 2px;
     }
-
   }
 }

@@ -78,12 +78,14 @@ const Contacts = ({ profile, profileSaveStart }: any) => {
       <FormInput
         name="firstName"
         placeholder="First name"
+        label="First name"
         {...formik}
       />
 
       <FormInput
         name="lastName"
         placeholder="Last name"
+        label="Last name"
         {...formik}
       />
 
@@ -91,12 +93,14 @@ const Contacts = ({ profile, profileSaveStart }: any) => {
         name="contactEmail"
         type="email"
         placeholder="Email"
+        label="E-mail address"
         {...formik}
       />
 
       <FormInput
         name="telephoneNumber"
         placeholder="Telephone number"
+        label="Telephone number"
         {...formik}
       />
     </Editable>

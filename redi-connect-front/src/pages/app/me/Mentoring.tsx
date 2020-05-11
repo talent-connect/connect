@@ -1,5 +1,5 @@
 import React from 'react'
-import { Columns } from 'react-bulma-components'
+import { Columns, Content } from 'react-bulma-components'
 import FormCheckbox from '../../../components/atoms/FormCheckbox'
 import Editable from '../../../components/molecules/Editable'
 import { RedProfile } from '../../../types/RedProfile'
@@ -47,10 +47,13 @@ const Mentoring = ({ profile, profileSaveStart }: any) => {
   })
 
   const readMentoring = () => {
-    return profile.categories && profile.categories.map((categorie: any, index: number) => <div key={`${categorie}_${index}`}>{categorie}</div>)
+    return <Content>
+      {profile.categories && profile.categories.map((categorie: any, index: number) => <p key={`${categorie}_${index}`}>{categorie}</p>)}
+    </Content>
   }
 
   const categoriesChange = (e: any) => {
+    console.log(e)
     e.persist()
     const value = e.target.value
     let newCategories
@@ -81,10 +84,8 @@ const Mentoring = ({ profile, profileSaveStart }: any) => {
               name={`categories-${id}`}
               value={id}
               checked={formik.values.categories.includes(id)}
-              setFieldTouched={formik.setFieldTouched}
-              handleChange={formik.handleChange}
-              isSubmitting={formik.isSubmitting}
               customOnChange={categoriesChange}
+              {...formik}
             >
               {label}
             </FormCheckbox>

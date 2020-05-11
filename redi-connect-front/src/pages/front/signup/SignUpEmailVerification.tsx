@@ -1,7 +1,8 @@
 import React from 'react'
 import AccountOperation from '../../../components/templates/AccountOperation'
-import { Columns, Heading, Content } from 'react-bulma-components'
+import { Columns, Content } from 'react-bulma-components'
 import Teaser from '../../../components/molecules/Teaser'
+import Heading from '../../../components/atoms/Heading'
 
 export default function SignUpEmailVerification () {
   return (
@@ -15,17 +16,7 @@ export default function SignUpEmailVerification () {
         </Columns.Column>
 
         <Columns.Column size={5} offset={2}>
-          <Heading
-            size={1}
-            weight="normal"
-            renderAs="h1"
-            responsive={{ mobile: { textSize: { value: 2 } } }}
-            className="title--border"
-            spaced={true}
-          >
-            Welcome to ReDI Connect
-          </Heading>
-
+          <Heading border>Welcome to ReDI Connect</Heading>
           <Content size="large" renderAs="div">
             <p>Thank you for signing up!</p>
             <p>Please first <strong>verify your email address</strong> with the email we just sent to you.</p>

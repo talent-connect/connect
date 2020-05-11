@@ -1,14 +1,38 @@
 @import "./_variables";
 .submit {
-    &-link {
-        font-size: $size-7;
+  &-link {
+   font-size: $size-7;
 
-        &--pre {
-            text-align: right;
-        }
-
-        &--post {
-            text-align: center;
-        }
+    &--pre {
+      text-align: right;
     }
+
+    &--post {
+      text-align: center;
+    }
+  }
 }
+
+// test solution for the slide in errors
+.help {
+  height: 0px;
+  margin: 0px;
+  overflow: hidden;
+  transition: ease-out all 0.3s;
+  
+  &--show {
+    margin-top: 0.25rem;
+    height: 21px;
+  }
+}
+
+.submit-spacer {
+  margin-top: 3em;
+}
+
+.is-checkradio--redi[type="checkbox"]+label {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+}
+  

@@ -19,7 +19,7 @@ const RediHero = () => {
       <Container>
         <Columns>
           <Columns.Column size={5} className="hero-column">
-            <Heading size={1} className="hero-column-heading has-text-black">
+            <Heading size={1} className="hero-column-heading">
             Welcome to ReDI Connect
             </Heading>
             <Columns.Column className="is-hidden-tablet">

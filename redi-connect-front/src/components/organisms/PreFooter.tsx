@@ -21,7 +21,7 @@ const PreFooter = () => {
       <Container>
         <Columns>
           <Columns.Column size={4} className="is-four-fifths-mobile">
-            <Heading size={1} className="pre-footer-heading has-text-black">
+            <Heading size={1} className="pre-footer-heading">
               Want to get in touch?
             </Heading>
             <Content className="pre-footer-content">

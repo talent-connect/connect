@@ -10,14 +10,14 @@ import {
   useFormik
 } from 'formik'
 import omit from 'lodash/omit'
-
+import Heading from '../../../components/atoms/Heading'
 import FormInput from '../../../components/atoms/FormInput'
 import FormCheckbox from '../../../components/atoms/FormCheckbox'
 import FormSelect from '../../../components/atoms/FormSelect'
 
 import Teaser from '../../../components/molecules/Teaser'
 
-import { Columns, Form, Heading } from 'react-bulma-components'
+import { Columns, Form } from 'react-bulma-components'
 
 import Button from '../../../components/atoms/Button'
 
@@ -145,15 +145,7 @@ export default function SignUp () {
         </Columns.Column>
 
         <Columns.Column size={5} offset={1}>
-          <Heading
-            size={1}
-            weight="normal"
-            renderAs="h1"
-            responsive={{ mobile: { textSize: { value: 2 } } }}
-            className="title--border"
-          >
-            Sign-up
-          </Heading>
+          <Heading border>Sign-up</Heading>
           <form onSubmit={e => e.preventDefault()} className="form">
             <FormInput
               name="firstName"
@@ -201,10 +193,8 @@ export default function SignUp () {
             <FormCheckbox
               name="agreesWithCodeOfConduct"
               checked={formik.values.agreesWithCodeOfConduct}
-              setFieldTouched={formik.setFieldTouched}
-              handleChange={formik.handleChange}
-              isSubmitting={formik.isSubmitting}
               className="submit-spacer"
+              {...formik}
             >
               I agree to the{' '}
               <a
@@ -220,9 +210,7 @@ export default function SignUp () {
             <FormCheckbox
               name="gaveGdprConsent"
               checked={formik.values.gaveGdprConsent}
-              setFieldTouched={formik.setFieldTouched}
-              handleChange={formik.handleChange}
-              isSubmitting={formik.isSubmitting}
+              {...formik}
             >
               I give permission to the ReDI School Terms stated in the{' '}
               <a

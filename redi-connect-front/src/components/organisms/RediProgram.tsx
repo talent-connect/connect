@@ -57,7 +57,7 @@ const RediProgram = () => {
               >
                 {step.headline}
               </Heading>
-              <Level className="is-size-4 is-size-5-mobile has-text-black program__column--text">
+              <Level className="is-size-4 is-size-5-mobile program__column--text">
                 {step.content}
               </Level>
             </Columns.Column>

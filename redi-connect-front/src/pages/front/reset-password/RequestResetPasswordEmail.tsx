@@ -1,6 +1,7 @@
 import React from 'react'
 import AccountOperation from '../../../components/templates/AccountOperation'
-import { Columns, Heading, Form } from 'react-bulma-components'
+import Heading from '../../../components/atoms/Heading'
+import { Columns, Content, Form } from 'react-bulma-components'
 import Teaser from '../../../components/molecules/Teaser'
 import FormInput from '../../../components/atoms/FormInput'
 import Button from '../../../components/atoms/Button'
@@ -76,19 +77,10 @@ export const RequestResetPasswordEmail = (props: any) => {
           <Teaser.SignUp />
         </Columns.Column>
         <Columns.Column size={5} offset={1}>
-          <Heading
-            size={1}
-            responsive={{ mobile: { textSize: { value: 2 } } } }
-            weight="normal"
-            renderAs="h1"
-            className="title--border"
-            spaced={true}
-          >
-            Forgot your password?
-          </Heading>
-          <Heading size={4} renderAs="p" subtitle>
+          <Heading border>Forgot your password?</Heading>
+          <Content size="large" renderAs="p">
             We’ll help you reset it and get back on track. We will send a recovery link to:
-          </Heading>
+          </Content>
           <form onSubmit={e => e.preventDefault()} noValidate>
             <FormInput
               name="email"

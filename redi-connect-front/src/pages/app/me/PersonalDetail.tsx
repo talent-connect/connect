@@ -77,6 +77,7 @@ const PersonalDetail = ({ profile, profileSaveStart }: any) => {
       <FormInput
         name="age"
         placeholder="Age"
+        label="Your age"
         {...formik}
       />
     </Editable>

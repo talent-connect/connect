@@ -1,8 +1,9 @@
 import React from 'react'
 import AccountOperation from '../../../components/templates/AccountOperation'
-import { Columns, Heading, Form, Content } from 'react-bulma-components'
+import { Columns, Form, Content } from 'react-bulma-components'
 import Teaser from '../../../components/molecules/Teaser'
 import Button from '../../../components/atoms/Button'
+import Heading from '../../../components/atoms/Heading'
 import { useHistory } from 'react-router'
 
 export default function SignUpComplete () {
@@ -18,16 +19,7 @@ export default function SignUpComplete () {
           <Teaser.Isabelle />
         </Columns.Column>
         <Columns.Column size={5} offset={2}>
-          <Heading
-            size={1}
-            weight="normal"
-            renderAs="h1"
-            responsive={{ mobile: { textSize: { value: 2 } } }}
-            className="title--border"
-            spaced={true}
-          >
-            Meet Isabelle
-          </Heading>
+          <Heading border>Meet Isabelle</Heading>
           <Content size="large" renderAs="div">
             <p>Your email address has been successfully confirmed!</p>
 

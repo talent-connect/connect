@@ -71,18 +71,21 @@ const SocialMedia = ({ profile, profileSaveStart }: any) => {
       <FormInput
         name="linkedInProfileUrl"
         placeholder="LinkedIn Profile"
+        label="LinkedIn Profile"
         {...formik}
       />
 
       <FormInput
         name="githubProfileUrl"
         placeholder="Github Profile"
+        label="Github Profile"
         {...formik}
       />
 
       <FormInput
         name="slackUsername"
         placeholder="Username in ReDI Slack"
+        label="Username in ReDI Slack"
         {...formik}
       />
     </Editable>
