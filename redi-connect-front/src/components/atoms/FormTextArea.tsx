@@ -3,6 +3,7 @@ import { Form } from 'react-bulma-components'
 
 interface Props {
   name: string
+  label: string
   placeholder: string
   disabled?: boolean
   rows?: number
@@ -13,6 +14,7 @@ interface Props {
 function FormTextArea (props: any) {
   const {
     name,
+    label,
     placeholder,
     rows,
     values,
@@ -26,7 +28,7 @@ function FormTextArea (props: any) {
 
   const onChange = (name: any, e: any) => {
     e.persist()
-    // setFieldTouched(name, true, false)
+    setFieldTouched(name, true, false)
     handleChange(e)
   }
 
@@ -34,6 +36,9 @@ function FormTextArea (props: any) {
 
   return (
     <Form.Field>
+      {label && <Form.Label size="small">
+        {label}
+      </Form.Label>}
       <Form.Control>
         <Form.Textarea
           id={name}

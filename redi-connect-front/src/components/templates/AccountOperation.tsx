@@ -6,8 +6,8 @@ import { Container, Section } from 'react-bulma-components'
 
 const AccountOperation: React.FunctionComponent = ({ children }) => (
   <>
-    <Section className="color-half">
-      <Container>
+    <Section className="navbar color-half">
+      <Container className="navbar__wrapper">
         <Logo />
       </Container>
     </Section>

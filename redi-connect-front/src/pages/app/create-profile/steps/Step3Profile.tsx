@@ -172,7 +172,7 @@ const Comp: any = (
         </Grid>
       </div>
       <Grid container spacing={1}>
-        <Grid item xs={6}>
+        {/* <Grid item xs={6}>
           <TextField
             className={classes.margin}
             id="firstName"
@@ -185,8 +185,8 @@ const Comp: any = (
             fullWidth
             margin="normal"
           />
-        </Grid>
-        <Grid item xs={6}>
+        </Grid> */}
+        {/* <Grid item xs={6}>
           <TextField
             className={classes.margin}
             id="lastName"
@@ -199,11 +199,11 @@ const Comp: any = (
             fullWidth
             margin="normal"
           />
-        </Grid>
+        </Grid> */}
       </Grid>
       <FormControl className={classes.margin} fullWidth>
         <InputLabel htmlFor="gender">Gender</InputLabel>
-        <Select
+        {/* <Select
           value={gender}
           error={touched.gender && Boolean(errors.gender)}
           onChange={change.bind(null, 'gender')}
@@ -220,9 +220,9 @@ const Comp: any = (
               {gender.label}
             </MenuItem>
           ))}
-        </Select>
+        </Select> */}
       </FormControl>
-      <TextField
+      {/* <TextField
         className={classes.margin}
         id="age"
         name="age"
@@ -234,8 +234,8 @@ const Comp: any = (
         onChange={change.bind(null, 'age')}
         fullWidth
         margin="normal"
-      />
-      <FormControl className={classes.margin} fullWidth>
+      /> */}
+      {/* <FormControl className={classes.margin} fullWidth>
         <InputLabel htmlFor="select-multiple-checkbox">
           Which of these languages do you speak?*
         </InputLabel>
@@ -248,17 +248,17 @@ const Comp: any = (
           MenuProps={MenuProps}
         >
           {formLanguages.map(lang => (
-            <MenuItem key={lang} value={lang}>
-              <Checkbox checked={languages.includes(lang)} />
-              <ListItemText primary={lang} />
+            <MenuItem key={lang.id} value={lang.label}>
+              <Checkbox checked={languages.includes(lang.label)} />
+              <ListItemText primary={lang.label} />
             </MenuItem>
           ))}
         </Select>
         {touched.languages && Boolean(errors.languages) && (
           <FormHelperText>{errors.languages}</FormHelperText>
         )}
-      </FormControl>
-      <TextField
+      </FormControl> */}
+      {/* <TextField
         className={classes.margin}
         id="otherLanguages"
         name="otherLanguages"
@@ -269,7 +269,7 @@ const Comp: any = (
         onChange={change.bind(null, 'otherLanguages')}
         fullWidth
         margin="normal"
-      />
+      /> */}
       <TextField
         className={classes.margin}
         id="expectations"

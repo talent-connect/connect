@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { Element } from 'react-bulma-components'
+import { Heading } from 'react-bulma-components'
+import classnames from 'classnames'
 import './Editable.scss'
 
 interface Props {
@@ -7,6 +8,8 @@ interface Props {
   onSave: Function
   read: React.ReactNode
   children: React.ReactNode
+  className?: string
+  savePossible?: boolean
 }
 
 function Editable (props: Props) {
@@ -14,37 +17,40 @@ function Editable (props: Props) {
     title,
     children,
     read,
-    onSave
+    onSave,
+    savePossible,
+    className
   } = props
 
-  const [editable, setEditable] = useState(false)
+  const [isEditing, setIsEditing] = useState(false)
 
   return (
-    <div className="editable">
+    <div className={classnames('editable', { [`${className}`]: className })}>
       <div className="editable__header">
-        <Element
-          size={4}
+        <Heading
+          size={5}
           weight="normal"
-          renderAs="h2"
+          renderAs="h3"
           subtitle
           textTransform="uppercase"
         >
           {title}
-        </Element>
+        </Heading>
         <div className="editable__header__buttons">
-          { editable ? (<>
+          { isEditing ? (<>
             <button
               onClick={() => {
                 onSave()
-                setEditable(false)
+                setIsEditing(false)
               }}
+              disabled={savePossible}
               type="submit"
             >
             Save
             </button>
             <button
               onClick={() => {
-                setEditable(false)
+                setIsEditing(false)
               }}
               type="submit"
             >
@@ -53,7 +59,7 @@ function Editable (props: Props) {
           </>) : (
             <button
               onClick={() => {
-                setEditable(true)
+                setIsEditing(true)
               }}
               type="submit"
             >
@@ -62,7 +68,7 @@ function Editable (props: Props) {
           )}</div>
       </div>
       <div className="editable__body">
-        { editable ? children : read }
+        { isEditing ? children : read }
       </div>
     </div>
   )

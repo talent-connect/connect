@@ -3,20 +3,24 @@ import { Form } from 'react-bulma-components'
 
 interface Props {
   name: string
+  items: string[]
   placeholder: string
   label?: string
-  type?: 'email' | 'text' | 'password'
+  multiselect?: boolean
+  customOnChange?: Function
 }
 
 function FormInput (props: any) {
   const {
     name,
+    items,
     placeholder,
-    type,
     label,
+    customOnChange,
     values,
     handleChange,
     setFieldTouched,
+    multiselect,
     isSubmitting,
     touched,
     errors,
@@ -29,33 +33,43 @@ function FormInput (props: any) {
     handleChange(event)
   }, [])
 
-  const hasError = !!touched[name] && !!errors[name]
+  const handleOnChange = customOnChange || onChange
+
+  // const hasError = !!touched[name] && !!errors[name]
 
   return (
     <Form.Field>
       {label && <Form.Label size="small">
         {label}
       </Form.Label>}
-      <Form.Control>
-        <Form.Input
-          id={name}
-          name={name}
-          type={type || 'text'}
-          color={hasError ? 'danger' : null}
-          placeholder={placeholder}
-          value={values[name]}
-          onChange={onChange}
-          disabled={isSubmitting || disabled}
-        />
-      </Form.Control>
 
-      <Form.Help color="danger" className={hasError ? 'help--show' : ''}>
+      <Form.Control>
+        <Form.Select
+          name={name}
+          className="is-fullwidth"
+          value={values[name]}
+          multiple={multiselect}
+          onChange={handleOnChange}
+        >
+          {placeholder && <option id="" value="" disabled>
+            {placeholder}
+          </option>}
+          {items.map((item: any) => {
+            return <option key={item.id} value={item.id} >
+              {item.label}
+            </option>
+          })}
+        </Form.Select>
+      </Form.Control>
+      {/*
+      <Form.Help color="danger" className={hasError && 'help--show'}>
         {hasError && (
           <>
           The {placeholder.toLowerCase()} is invalid
           </>
         )}
-      </Form.Help>
+      </Form.Help> */}
+
     </Form.Field>
   )
 }

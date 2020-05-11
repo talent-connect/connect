@@ -1,10 +1,11 @@
 import React from 'react'
-import FormTextArea from '../../../components/atoms/FormTextArea'
+import { Columns } from 'react-bulma-components'
 import FormCheckbox from '../../../components/atoms/FormCheckbox'
 import Editable from '../../../components/molecules/Editable'
 import { RedProfile } from '../../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../../redux/types'
+import './Mentoring.scss'
 import {
   categories as formCategories
 } from '../../../config/config'
@@ -14,7 +15,7 @@ import {
 } from '../../../redux/user/actions'
 import * as Yup from 'yup'
 
-import { FormikValues, FormikHelpers as FormikActions, useFormik, FormikProps } from 'formik'
+import { FormikValues, useFormik } from 'formik'
 
 export interface MentoringFormValues {
   categories: string[]
@@ -32,12 +33,11 @@ const Mentoring = ({ profile, profileSaveStart }: any) => {
     values: FormikValues
   ) => {
     const profileMentoring = values as Partial<RedProfile>
-    console.log(profileMentoring)
     profileSaveStart({ ...profileMentoring, id: profile.id })
   }
 
   const initialValues: MentoringFormValues = {
-    categories: profile.categories
+    categories: profile.categories || []
   }
 
   const formik = useFormik({
@@ -47,10 +47,10 @@ const Mentoring = ({ profile, profileSaveStart }: any) => {
   })
 
   const readMentoring = () => {
-    return profile.categories.map((categorie: any) => <div>{categorie}</div>)
+    return profile.categories && profile.categories.map((categorie: any, index: number) => <div key={`${categorie}_${index}`}>{categorie}</div>)
   }
 
-  const categoriesChange = (name: any, e: any) => {
+  const categoriesChange = (e: any) => {
     e.persist()
     const value = e.target.value
     let newCategories
@@ -67,21 +67,30 @@ const Mentoring = ({ profile, profileSaveStart }: any) => {
     <Editable
       title="Mentoring Topics"
       onSave={() => formik.handleSubmit()}
+      savePossible={!(formik.dirty && formik.isValid)}
       read={readMentoring()}
+      className="mentoring"
     >
-      {formCategories.map(({ id, label }) => (
-        <FormCheckbox
-          name={`categories-${id}`}
-          value={id}
-          checked={formik.values.categories.includes(id)}
-          setFieldTouched={formik.setFieldTouched}
-          handleChange={formik.handleChange}
-          isSubmitting={formik.isSubmitting}
-          customOnChange={categoriesChange}
-        >
-          {label}
-        </FormCheckbox>
-      ))}
+      <Columns>
+        {formCategories.map(({ id, label }) => (
+          <Columns.Column
+            size={4}
+            key={id}
+          >
+            <FormCheckbox
+              name={`categories-${id}`}
+              value={id}
+              checked={formik.values.categories.includes(id)}
+              setFieldTouched={formik.setFieldTouched}
+              handleChange={formik.handleChange}
+              isSubmitting={formik.isSubmitting}
+              customOnChange={categoriesChange}
+            >
+              {label}
+            </FormCheckbox>
+          </Columns.Column>
+        ))}
+      </Columns>
     </Editable>
   )
 }

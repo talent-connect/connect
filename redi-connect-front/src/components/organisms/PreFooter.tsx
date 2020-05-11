@@ -4,8 +4,7 @@ import {
   Section,
   Columns,
   Heading,
-  Content,
-  Image
+  Content
 } from 'react-bulma-components'
 import { useHistory } from 'react-router-dom'
 import Button from '../atoms/Button'
