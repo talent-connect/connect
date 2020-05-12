@@ -9,7 +9,6 @@ import {
 import { useHistory } from 'react-router-dom'
 import Button from '../atoms/Button'
 import team from '../../assets/images/hero.svg'
-import teamMobile from '../../assets/images/hero-mobile.svg'
 import './RediHero.scss'
 
 const RediHero = () => {
@@ -23,7 +22,7 @@ const RediHero = () => {
             Welcome to ReDI Connect
             </Heading>
             <Columns.Column className="is-hidden-tablet">
-              <img src={teamMobile} alt="team" className="hero-column-img" />
+              <img src={team} alt="team" className="hero-column-img" />
             </Columns.Column>
             <Content className="hero-column-content">
             Are you ready for the future of work?<br />We connect thriving
