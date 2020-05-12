@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import * as Yup from 'yup'
 
-import { Columns } from 'react-bulma-components'
+import { Columns, Element } from 'react-bulma-components'
 import Heading from '../../../components/atoms/Heading'
 
 import About from './About'
@@ -32,6 +32,7 @@ import { RedProfile } from '../../../types/RedProfile'
 
 import ReactS3Uploader from 'react-s3-uploader'
 
+import './Me.scss'
 // import { Avatar } from '../../../../components/Avatar'
 
 export interface MeFormValues {
@@ -117,34 +118,46 @@ const Me = ({ loading, saveResult, profileFetchStart, profileSaveStart, profile 
             </Columns.Column>
           </Columns>
 
-          <About />
-          <Mentoring />
-          <Columns>
-            <Columns.Column size={6}>
-              <Contacts/>
-            </Columns.Column>
-            <Columns.Column size={6}>
-              <SocialMedia/>
-            </Columns.Column>
-          </Columns>
+          <Element className="me__block">
+            <About />
+          </Element>
 
-          <Columns>
-            <Columns.Column size={6}>
-              <PersonalDetail/>
-            </Columns.Column>
-            <Columns.Column size={6}>
-              <Languages/>
-            </Columns.Column>
-          </Columns>
+          <Element className="me__block">
+            <Mentoring />
+          </Element>
 
-          <Columns>
-            <Columns.Column size={6}>
-              <Occupation/>
-            </Columns.Column>
-            <Columns.Column size={6}>
-              { profile.userType === 'mentee' && <RediClass/>}
-            </Columns.Column>
-          </Columns>
+          <Element className="me__block">
+            <Columns>
+              <Columns.Column size={6}>
+                <Contacts/>
+              </Columns.Column>
+              <Columns.Column size={6}>
+                <SocialMedia/>
+              </Columns.Column>
+            </Columns>
+          </Element>
+
+          <Element className="me__block">
+            <Columns>
+              <Columns.Column size={6}>
+                <PersonalDetail/>
+              </Columns.Column>
+              <Columns.Column size={6}>
+                <Languages/>
+              </Columns.Column>
+            </Columns>
+          </Element>
+
+          <Element className="me__block">
+            <Columns>
+              <Columns.Column size={6}>
+                <Occupation/>
+              </Columns.Column>
+              <Columns.Column size={6}>
+                { profile.userType === 'mentee' && <RediClass/>}
+              </Columns.Column>
+            </Columns>
+          </Element>
         </>
       }
     </LoggedIn>

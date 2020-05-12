@@ -27,6 +27,7 @@ import { Extends } from '../../../types/utility-types/Extends'
 import { history } from '../../../services/history/history'
 
 import { courses } from '../../../config/config'
+const formCourses = courses.map(course => ({ value: course.id, label: course.label }))
 
 export const validationSchema = Yup.object({
   firstName: Yup.string()
@@ -185,7 +186,7 @@ export default function SignUp () {
                 label="Current ReDI Course (*for alumni last taken course)"
                 name="mentee_currentlyEnrolledInCourse"
                 placeholder="Your current ReDI Course"
-                items={courses}
+                items={formCourses}
                 {...formik}
               />
             )}

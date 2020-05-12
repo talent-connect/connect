@@ -32,41 +32,52 @@ const validationSchema = Yup.object({
     .max(255)
     .label('Slack username')
 })
+
 // props: FormikProps<AboutFormValues>
 const SocialMedia = ({ profile, profileSaveStart }: any) => {
+  const {
+    id,
+    linkedInProfileUrl,
+    githubProfileUrl,
+    slackUsername
+  } = profile
+
   const submitForm = async (
     values: FormikValues
   ) => {
     const profileSocialMedia = values as Partial<RedProfile>
-    profileSaveStart({ ...profileSocialMedia, id: profile.id })
+    profileSaveStart({ ...profileSocialMedia, id })
   }
 
   const initialValues: SocialMediaFormValues = {
-    linkedInProfileUrl: profile.linkedInProfileUrl,
-    githubProfileUrl: profile.githubProfileUrl,
-    slackUsername: profile.slackUsername
+    linkedInProfileUrl,
+    githubProfileUrl,
+    slackUsername
   }
 
   const formik = useFormik({
-    initialValues: initialValues,
+    initialValues,
     validationSchema,
     onSubmit: submitForm
   })
 
   const readSocialMedia = () => {
     return <Content>
-      <p>{profile.linkedInProfileUrl}</p>
-      <p>{profile.githubProfileUrl}</p>
-      <p>{profile.slackUsername}</p>
+      {linkedInProfileUrl && <p>{linkedInProfileUrl}</p>}
+      {githubProfileUrl && <p>{githubProfileUrl}</p>}
+      {slackUsername && <p>{slackUsername}</p>}
     </Content>
   }
+
+  const isEmptyProfile = !!linkedInProfileUrl || !!githubProfileUrl || !!slackUsername
 
   return (
     <Editable
       title="Social Media"
       onSave={ () => formik.handleSubmit()}
-      savePossible={!(formik.dirty && formik.isValid)}
-      read={readSocialMedia()}
+      savePossible={(formik.dirty && formik.isValid)}
+      placeholder="Input your social media channels here."
+      read={isEmptyProfile && readSocialMedia()}
     >
       <FormInput
         name="linkedInProfileUrl"
@@ -74,14 +85,12 @@ const SocialMedia = ({ profile, profileSaveStart }: any) => {
         label="LinkedIn Profile"
         {...formik}
       />
-
       <FormInput
         name="githubProfileUrl"
         placeholder="Github Profile"
         label="Github Profile"
         {...formik}
       />
-
       <FormInput
         name="slackUsername"
         placeholder="Username in ReDI Slack"

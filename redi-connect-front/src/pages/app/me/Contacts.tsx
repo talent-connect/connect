@@ -39,32 +39,39 @@ const validationSchema = Yup.object({
 
 // props: FormikProps<AboutFormValues>
 const Contacts = ({ profile, profileSaveStart }: any) => {
+  const {
+    id,
+    firstName,
+    lastName,
+    contactEmail,
+    telephoneNumber
+  } = profile
+
   const submitForm = async (
     values: FormikValues
   ) => {
     const profileContacts = values as Partial<RedProfile>
-    profileSaveStart({ ...profileContacts, id: profile.id })
+    profileSaveStart({ ...profileContacts, id })
   }
 
   const initialValues: ContactsFormValues = {
-    firstName: profile.firstName,
-    lastName: profile.lastName,
-    contactEmail: profile.contactEmail,
-    telephoneNumber: profile.telephoneNumber
+    firstName,
+    lastName,
+    contactEmail,
+    telephoneNumber
   }
 
   const formik = useFormik({
-    initialValues: initialValues,
+    initialValues,
     validationSchema,
     onSubmit: submitForm
   })
 
   const readContacts = () => {
     return <Content>
-      <p>{profile.firstName}</p>
-      <p>{profile.lastName}</p>
-      <p>{profile.contactEmail}</p>
-      <p>{profile.telephoneNumber}</p>
+      {contactEmail && <p>{contactEmail}</p>}
+      {(firstName || firstName) && <p>{firstName} {lastName}</p>}
+      {telephoneNumber && <p>{telephoneNumber}</p>}
     </Content>
   }
 
@@ -72,7 +79,7 @@ const Contacts = ({ profile, profileSaveStart }: any) => {
     <Editable
       title="Contact Detail"
       onSave={ () => formik.handleSubmit()}
-      savePossible={!(formik.dirty && formik.isValid)}
+      savePossible={(formik.dirty && formik.isValid)}
       read={readContacts()}
     >
       <FormInput
@@ -81,14 +88,12 @@ const Contacts = ({ profile, profileSaveStart }: any) => {
         label="First name"
         {...formik}
       />
-
       <FormInput
         name="lastName"
         placeholder="Last name"
         label="Last name"
         {...formik}
       />
-
       <FormInput
         name="contactEmail"
         type="email"
@@ -96,7 +101,6 @@ const Contacts = ({ profile, profileSaveStart }: any) => {
         label="E-mail address"
         {...formik}
       />
-
       <FormInput
         name="telephoneNumber"
         placeholder="Telephone number"

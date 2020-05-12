@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
-import { Heading } from 'react-bulma-components'
+import { Heading, Content } from 'react-bulma-components'
+import { ReactComponent as Save } from '../../assets/images/save.svg'
+import { ReactComponent as Edit } from '../../assets/images/edit.svg'
+import { ReactComponent as Close } from '../../assets/images/close.svg'
 import classnames from 'classnames'
 import './Editable.scss'
 
@@ -9,6 +12,7 @@ interface Props {
   read: React.ReactNode
   children: React.ReactNode
   className?: string
+  placeholder?: string
   savePossible?: boolean
 }
 
@@ -19,10 +23,17 @@ function Editable (props: Props) {
     read,
     onSave,
     savePossible,
+    placeholder,
     className
   } = props
 
   const [isEditing, setIsEditing] = useState(false)
+  const readOnly = read || (<Content italic>{placeholder}</Content>)
+
+  const handleSave = () => {
+    onSave()
+    setIsEditing(false)
+  }
 
   return (
     <div className={classnames('editable', { [`${className}`]: className })}>
@@ -38,37 +49,21 @@ function Editable (props: Props) {
         </Heading>
         <div className="editable__header__buttons">
           { isEditing ? (<>
-            <button
-              onClick={() => {
-                onSave()
-                setIsEditing(false)
-              }}
-              disabled={savePossible}
-              type="submit"
-            >
-            Save
-            </button>
-            <button
-              onClick={() => {
-                setIsEditing(false)
-              }}
-              type="submit"
-            >
-            Cancel
-            </button>
+            <Save
+              onClick={savePossible ? handleSave : undefined}
+              className={classnames('icon__button', { 'icon__button--disabled': !savePossible })}
+            />
+            <Close className='icon__button' onClick={() => {
+              setIsEditing(false)
+            }}/>
           </>) : (
-            <button
-              onClick={() => {
-                setIsEditing(true)
-              }}
-              type="submit"
-            >
-              Edit
-            </button>
+            <Edit className='icon__button' onClick={() => {
+              setIsEditing(true)
+            }}/>
           )}</div>
       </div>
       <div className="editable__body">
-        { isEditing ? children : read }
+        { isEditing ? children : readOnly }
       </div>
     </div>
   )

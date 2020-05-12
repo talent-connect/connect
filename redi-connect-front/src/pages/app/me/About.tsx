@@ -1,15 +1,11 @@
 import React from 'react'
 import { Content } from 'react-bulma-components'
 import FormTextArea from '../../../components/atoms/FormTextArea'
-import FormInput from '../../../components/atoms/FormInput'
+import FormSelect from '../../../components/atoms/FormSelect'
 import Editable from '../../../components/molecules/Editable'
 import { RedProfile } from '../../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../../redux/types'
-
-// import {
-//   menteeCountCapacityOptions
-// } from '../../../config/config'
 
 import {
   profileSaveStart
@@ -17,6 +13,12 @@ import {
 import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
+
+import {
+  menteeCountCapacityOptions
+} from '../../../config/config'
+
+const formMenteeCountCapacity = menteeCountCapacityOptions.map(option => ({ value: option, label: option }))
 
 // do we really need all these type???
 export type UserType =
@@ -46,40 +48,52 @@ const validationSchema = Yup.object({
 })
 // props: FormikProps<AboutFormValues>
 const About = ({ profile, profileSaveStart }: any) => {
+  const {
+    id,
+    userType,
+    personalDescription,
+    expectations,
+    menteeCountCapacity
+  } = profile
+
   const submitForm = async (
     values: FormikValues
   ) => {
     const profileAbout = values as Partial<RedProfile>
-    profileSaveStart({ ...profileAbout, id: profile.id })
+    profileSaveStart({ ...profileAbout, id })
   }
 
   const initialValues: AboutFormValues = {
-    userType: profile.userType,
-    personalDescription: profile.personalDescription,
-    expectations: profile.expectations,
-    menteeCountCapacity: profile.menteeCountCapacity
+    userType,
+    personalDescription,
+    expectations,
+    menteeCountCapacity
   }
 
   const formik = useFormik({
-    initialValues: initialValues,
+    initialValues,
     validationSchema,
     onSubmit: submitForm
   })
 
   const readAbout = () => {
     return <Content>
-      <p>{profile.personalDescription}</p>
-      <p>{profile.expectations}</p>
-      <p>{profile.menteeCountCapacity}</p>
+      {personalDescription && <p>{personalDescription}</p>}
+      {expectations && <p>{expectations}</p>}
+      {menteeCountCapacity && <p>{menteeCountCapacity}</p>}
     </Content>
   }
+
+  // should fine a nicer solution here
+  const isEmptyProfile = !!personalDescription || !!expectations || !!menteeCountCapacity
 
   return (
     <Editable
       title="About me"
       onSave={ () => formik.handleSubmit()}
-      savePossible={!(formik.dirty && formik.isValid)}
-      read={readAbout()}
+      savePossible={(formik.dirty && formik.isValid)}
+      placeholder="Please tell us a bit about yourself"
+      read={isEmptyProfile && readAbout()}
     >
       <FormTextArea
         label="Tell us a few words about yourself (this will be displayed on your profile)* (100-600 characters)"
@@ -88,10 +102,9 @@ const About = ({ profile, profileSaveStart }: any) => {
         placeholder="About you"
         {...formik}
       />
-
       <FormTextArea
         label={
-          profile.userType === 'mentee'
+          userType === 'mentee'
             ? 'What do you expect from your mentor?'
             : 'Feel free to share expectations towards your mentees (shown on your profile)'
         }
@@ -100,23 +113,15 @@ const About = ({ profile, profileSaveStart }: any) => {
         placeholder="Expectations"
         {...formik}
       />
-
-      {formik.values.userType === 'mentor' && (
-        <>
-          {/* <FormSelect
-            label="How many mentees would you be willing to mentor this semester?"
-            name="menteeCountCapacity"
-            items={menteeCountCapacityOptions}
-            {...formik}
-          /> */}
-          <FormInput
-            name="menteeCountCapacity"
-            label="How many mentees would you be willing to mentor this semester?"
-            placeholder="1,2 or 3?"
-            {...formik}
-          />
-        </>
-      )}
+      {userType === 'mentor' &&
+        <FormSelect
+          label="How many mentees would you be willing to mentor this semester?"
+          name="menteeCountCapacity"
+          placeholder="Mentee count"
+          items={formMenteeCountCapacity}
+          {...formik}
+        />
+      }
     </Editable>
   )
 }

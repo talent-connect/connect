@@ -25,7 +25,9 @@ const LoggedIn: React.FunctionComponent = ({ children }) => {
               size={2}
               responsive={{ mobile: { hide: { value: true } } }}
             >
-              <Link to="/app/dashboard">Dashboard</Link> <br/>
+              <Link to="/app/me">My Profile</Link> <br/>
+              <Link to="/app/dashboard">Find a mentor</Link><br/>
+              <Link to="/app/applications">My applications</Link>
             </Columns.Column>
             <Columns.Column
               offset={1}

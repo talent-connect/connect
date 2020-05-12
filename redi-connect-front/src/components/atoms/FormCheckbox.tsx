@@ -1,5 +1,6 @@
 import React from 'react'
 import { Form } from 'react-bulma-components'
+import _uniqueId from 'lodash/uniqueId'
 
 interface Props {
   name: string
@@ -30,12 +31,13 @@ function FormCheckbox (props: any) {
   }
 
   const handleOnChange = customOnChange || onChange
+  const uid = _uniqueId('cx_')
 
   return (
     <Form.Field className={className}>
       <Form.Control>
         <input
-          id={name}
+          id={uid}
           value={value}
           name={name}
           checked={checked}
@@ -44,7 +46,7 @@ function FormCheckbox (props: any) {
           onChange={handleOnChange}
           disabled={isSubmitting}
         />
-        <label htmlFor={name}>
+        <label htmlFor={uid}>
           {children}
         </label>
       </Form.Control>

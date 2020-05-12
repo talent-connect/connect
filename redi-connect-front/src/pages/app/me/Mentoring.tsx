@@ -1,14 +1,11 @@
 import React from 'react'
-import { Columns, Content } from 'react-bulma-components'
+import { Columns, Tag } from 'react-bulma-components'
 import FormCheckbox from '../../../components/atoms/FormCheckbox'
 import Editable from '../../../components/molecules/Editable'
 import { RedProfile } from '../../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../../redux/types'
 import './Mentoring.scss'
-import {
-  categories as formCategories
-} from '../../../config/config'
 
 import {
   profileSaveStart
@@ -16,6 +13,11 @@ import {
 import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
+import {
+  categories
+} from '../../../config/config'
+
+const formCategories = Object.assign({}, ...categories.map(category => ({ [category.id]: category.label })))
 
 export interface MentoringFormValues {
   categories: string[]
@@ -27,33 +29,43 @@ const validationSchema = Yup.object({
     .min(0)
     .max(3)
 })
+
 // props: FormikProps<AboutFormValues>
 const Mentoring = ({ profile, profileSaveStart }: any) => {
+  const {
+    id,
+    categories
+  } = profile
+
   const submitForm = async (
     values: FormikValues
   ) => {
     const profileMentoring = values as Partial<RedProfile>
-    profileSaveStart({ ...profileMentoring, id: profile.id })
+    profileSaveStart({ ...profileMentoring, id })
   }
 
   const initialValues: MentoringFormValues = {
-    categories: profile.categories || []
+    categories: categories || []
   }
 
   const formik = useFormik({
-    initialValues: initialValues,
+    initialValues,
     validationSchema,
     onSubmit: submitForm
   })
 
   const readMentoring = () => {
-    return <Content>
-      {profile.categories && profile.categories.map((categorie: any, index: number) => <p key={`${categorie}_${index}`}>{categorie}</p>)}
-    </Content>
+    return <Tag.Group>
+      {categories.map(
+        (categorie: any, index: number) =>
+          <Tag key={`${categorie}_${index}`} size="large" rounded>
+            {formCategories[categorie]}
+          </Tag>
+      )}
+    </Tag.Group>
   }
 
   const categoriesChange = (e: any) => {
-    console.log(e)
     e.persist()
     const value = e.target.value
     let newCategories
@@ -70,24 +82,25 @@ const Mentoring = ({ profile, profileSaveStart }: any) => {
     <Editable
       title="Mentoring Topics"
       onSave={() => formik.handleSubmit()}
-      savePossible={!(formik.dirty && formik.isValid)}
-      read={readMentoring()}
+      savePossible={(formik.dirty && formik.isValid)}
+      read={categories && readMentoring()}
+      placeholder="Please pick up to three mentoring topics."
       className="mentoring"
     >
       <Columns>
-        {formCategories.map(({ id, label }) => (
+        {Object.keys(formCategories).map((key) => (
           <Columns.Column
             size={4}
-            key={id}
+            key={key}
           >
             <FormCheckbox
-              name={`categories-${id}`}
-              value={id}
-              checked={formik.values.categories.includes(id)}
+              name={`categories-${key}`}
+              value={key}
+              checked={formik.values.categories.includes(key)}
               customOnChange={categoriesChange}
               {...formik}
             >
-              {label}
+              {formCategories[key]}
             </FormCheckbox>
           </Columns.Column>
         ))}

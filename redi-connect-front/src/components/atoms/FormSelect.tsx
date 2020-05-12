@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 import { Form } from 'react-bulma-components'
+import _uniqueId from 'lodash/uniqueId'
 
 interface Props {
   name: string
@@ -35,7 +36,7 @@ function FormInput (props: any) {
 
   const handleOnChange = customOnChange || onChange
 
-  // const hasError = !!touched[name] && !!errors[name]
+  const hasError = !!touched[name] && !!errors[name]
 
   return (
     <Form.Field>
@@ -55,21 +56,17 @@ function FormInput (props: any) {
             {placeholder}
           </option>}
           {items.map((item: any) => {
-            return <option key={item.id} value={item.id} >
+            const uid = _uniqueId('st_')
+            return <option key={uid} id={uid} value={item.value} >
               {item.label}
             </option>
           })}
         </Form.Select>
       </Form.Control>
-      {/*
-      <Form.Help color="danger" className={hasError && 'help--show'}>
-        {hasError && (
-          <>
-          The {placeholder.toLowerCase()} is invalid
-          </>
-        )}
-      </Form.Help> */}
 
+      <Form.Help color="danger" className={hasError ? 'help--show' : null}>
+        {hasError && `The ${placeholder.toLowerCase()} is invalid`}
+      </Form.Help>
     </Form.Field>
   )
 }

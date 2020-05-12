@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>icon/functional/edit copy 14</title>
+    <desc>Created with Sketch.</desc>
+    <g id="SP02_Profile-Page" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="ReDI_Menteeflow_Editmode" transform="translate(-1263.000000, -623.000000)" fill="#EA5B25">
+            <g id="Group-15" transform="translate(1220.000000, 620.000000)">
+                <g id="icons/functional/close" transform="translate(40.000000, 0.000000)">
+                    <g id="icon/functional/cancel" transform="translate(3.000000, 3.000000)">
+                        <g id="cancel" fill-rule="nonzero">
+                            <path d="M10.3100456,9.01259023 L17.7078007,1.64704173 C18.0624702,1.29556125 18.0624702,0.726572326 17.7078007,0.375988477 C17.3540268,0.0245079929 16.7794055,0.0245079929 16.4256316,0.375988477 L9.03422053,7.73526054 L1.57444303,0.266300264 C1.22066915,-0.0887667548 0.646047825,-0.0887667548 0.292273947,0.266300264 C-0.0614999316,0.622263918 -0.0614999316,1.19842591 0.292273947,1.55349293 L7.74660303,9.0170734 L0.265330409,16.4653364 C-0.0884434696,16.8168169 -0.0884434696,17.3858058 0.265330409,17.7363896 C0.619104287,18.0878701 1.19372561,18.0878701 1.54749949,17.7363896 L9.02242807,10.2944031 L16.4525005,17.7336997 C16.8062744,18.0887668 17.3808957,18.0887668 17.7346696,17.7336997 C18.0884435,17.3777361 18.0884435,16.8015741 17.7346696,16.4465071 L10.3100456,9.01259023 Z" id="Close"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

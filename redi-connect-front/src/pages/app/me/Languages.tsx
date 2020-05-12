@@ -8,17 +8,16 @@ import { connect } from 'react-redux'
 import { RootState } from '../../../redux/types'
 
 import {
-  Languages as availableLanguages
-} from '../../../config/config'
-
-import {
   profileSaveStart
 } from '../../../redux/user/actions'
 import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
 
-const formLanguages = availableLanguages.map(language => ({ id: language, label: language }))
+import {
+  Languages as availableLanguages
+} from '../../../config/config'
+const formLanguages = availableLanguages.map(language => ({ value: language, label: language }))
 
 export interface LanguagesFormValues {
   languages: string[]
@@ -34,39 +33,48 @@ const validationSchema = Yup.object({
 
 // props: FormikProps<AboutFormValues>
 const Languages = ({ profile, profileSaveStart }: any) => {
+  const {
+    id,
+    languages,
+    otherLanguages
+  } = profile
+
   const submitForm = async (
     values: FormikValues
   ) => {
     const languagesContacts = values as Partial<RedProfile>
-    profileSaveStart({ ...languagesContacts, id: profile.id })
+    profileSaveStart({ ...languagesContacts, id })
   }
 
   const initialValues: LanguagesFormValues = {
-    languages: profile.languages || [],
-    otherLanguages: profile.otherLanguages
+    languages: languages || [],
+    otherLanguages
   }
 
   const formik = useFormik({
-    initialValues: initialValues,
+    initialValues,
     validationSchema,
     onSubmit: submitForm
   })
 
   const readLanguages = () => {
     return (
-      <Content>
-        {profile.languages && profile.languages.map((language: any, index: number) => <p key={`${language}_${index}`}>{language}</p>)}
-        <p>{profile.otherLanguages}</p>
+      <Content className="profile__list">
+        {languages && languages.map((language: any, index: number) => <span key={`${language}_${index}`}>{language}</span>)}
+        {otherLanguages && <span>{otherLanguages}</span>}
       </Content>
     )
   }
+
+  const isEmptyProfile = !!languages || !!otherLanguages
 
   return (
     <Editable
       title="Languages"
       onSave={ () => formik.handleSubmit()}
-      savePossible={!(formik.dirty && formik.isValid)}
-      read={readLanguages()}
+      placeholder="Input languages you speak here."
+      savePossible={(formik.dirty && formik.isValid)}
+      read={isEmptyProfile && readLanguages()}
     >
       <FormSelect
         label="Which of these languages do you speak?*"
@@ -75,14 +83,12 @@ const Languages = ({ profile, profileSaveStart }: any) => {
         multiselect
         {...formik}
       />
-
       <FormInput
         name="otherLanguages"
         label="Other languages"
         placeholder="Any other languages?"
         {...formik}
       />
-
     </Editable>
   )
 }

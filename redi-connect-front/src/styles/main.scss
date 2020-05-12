@@ -16,6 +16,7 @@
 @import "~bulma/sass/elements/container.sass";
 @import "~bulma/sass/layout/section.sass";
 @import "~bulma/sass/elements/content.sass";
+@import "~bulma/sass/elements/tag.sass";
 
 @import "~bulma-checkradio/src/sass/index.sass";
 
@@ -114,4 +115,17 @@ a:hover {
 .default-background {
   background: white;
   z-index: -2;
+}
+
+.tag.is-large {
+  height: 2.5rem;
+}
+
+.profile__list {
+  span + span {
+    &::before {
+      content: '|';
+      margin: 0 0.3rem;
+    }
+  }
 }

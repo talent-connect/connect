@@ -8,17 +8,19 @@ import { connect } from 'react-redux'
 import { RootState } from '../../../redux/types'
 
 import {
-  educationLevels,
-  menteeOccupationCategories
-} from '../../../config/config'
-
-import {
   profileSaveStart
 } from '../../../redux/user/actions'
 import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
 
+import {
+  educationLevels,
+  menteeOccupationCategories
+} from '../../../config/config'
+
+const formEducationLevels = educationLevels.map(level => ({ value: level.id, label: level.label }))
+const formMenteeOccupationCategories = menteeOccupationCategories.map(level => ({ value: level.id, label: level.label }))
 // do we really need all these type???
 export type UserType =
   | 'mentor'
@@ -85,86 +87,106 @@ const validationSchema = Yup.object({
 
 // props: FormikProps<AboutFormValues>
 const Occupation = ({ profile, profileSaveStart }: any) => {
+  const {
+    id,
+    userType,
+    mentor_occupation,
+    mentor_workPlace,
+    mentee_highestEducationLevel,
+    mentee_occupationCategoryId,
+    mentee_occupationJob_placeOfEmployment,
+    mentee_occupationJob_position,
+    mentee_occupationStudent_studyPlace,
+    mentee_occupationStudent_studyName,
+    mentee_occupationLookingForJob_what,
+    mentee_occupationOther_description
+  } = profile
+
   const submitForm = async (
     values: FormikValues
   ) => {
     const education = values as Partial<RedProfile>
-    profileSaveStart({ ...education, id: profile.id })
+    profileSaveStart({ ...education, id })
   }
 
   const initialValues: OccupationFormValues = {
-    userType: profile.userType,
-    mentor_occupation: profile.mentor_occupation,
-    mentor_workPlace: profile.mentor_workPlace,
-    mentee_highestEducationLevel: profile.mentee_highestEducationLevel,
-    mentee_occupationCategoryId: profile.mentee_occupationCategoryId,
-    mentee_occupationJob_placeOfEmployment: profile.mentee_occupationJob_placeOfEmployment,
-    mentee_occupationJob_position: profile.mentee_occupationJob_position,
-    mentee_occupationStudent_studyPlace: profile.mentee_occupationStudent_studyPlace,
-    mentee_occupationStudent_studyName: profile.mentee_occupationStudent_studyName,
-    mentee_occupationLookingForJob_what: profile.mentee_occupationLookingForJob_what,
-    mentee_occupationOther_description: profile.mentee_occupationOther_description
+    userType,
+    mentor_occupation,
+    mentor_workPlace,
+    mentee_highestEducationLevel,
+    mentee_occupationCategoryId,
+    mentee_occupationJob_placeOfEmployment,
+    mentee_occupationJob_position,
+    mentee_occupationStudent_studyPlace,
+    mentee_occupationStudent_studyName,
+    mentee_occupationLookingForJob_what,
+    mentee_occupationOther_description
   }
 
   const formik = useFormik({
-    initialValues: initialValues,
+    initialValues,
     validationSchema,
     onSubmit: submitForm
   })
 
   const {
-    mentee_occupationCategoryId,
-    userType
+    mentee_occupationCategoryId: occupation,
+    userType: user
   } = formik.values
 
   const readOccupation = () => {
     return <Content>
-      {userType === 'mentor' && (
+      {user === 'mentor' && (
         <>
-          <p>{profile.mentor_occupation}</p>
-          <p>{profile.mentor_workPlace}</p>
+          <p>{mentor_occupation}</p>
+          <p>{mentor_workPlace}</p>
         </>
       )}
-      {userType === 'mentee' && (
+      {user === 'mentee' && (
         <>
-          <p>{menteeOccupationCategories.filter(level => level.id === profile.mentee_occupationCategoryId).map(course => course.label)}</p>
-          {mentee_occupationCategoryId === 'job' && (
+          <p>{formMenteeOccupationCategories.filter(level => level.value === mentee_occupationCategoryId).map(level => level.label)}</p>
+          {occupation === 'job' && (
             <>
-              <p>{profile.mentee_occupationJob_placeOfEmployment}</p>
-              <p>{profile.mentee_occupationJob_position}</p>
+              <p>{mentee_occupationJob_placeOfEmployment}</p>
+              <p>{mentee_occupationJob_position}</p>
             </>
           )}
-          {mentee_occupationCategoryId === 'student' && (
+          {occupation === 'student' && (
             <>
-              <p>{profile.mentee_occupationStudent_studyPlace}</p>
-              <p>{profile.mentee_occupationStudent_studyName}</p>
+              <p>{mentee_occupationStudent_studyPlace}</p>
+              <p>{mentee_occupationStudent_studyName}</p>
             </>
           )}
-          {mentee_occupationCategoryId === 'lookingForJob' && (
+          {occupation === 'lookingForJob' && (
             <>
-              <p>{profile.mentee_occupationLookingForJob_what}</p>
+              <p>{mentee_occupationLookingForJob_what}</p>
             </>
           )}
-          {mentee_occupationCategoryId === 'other' && (
+          {occupation === 'other' && (
             <>
-              <p>{profile.mentee_occupationOther_description}</p>
+              <p>{mentee_occupationOther_description}</p>
             </>
           )}
-          <p>{educationLevels.filter(level => level.id === profile.mentee_highestEducationLevel).map(course => course.label)}</p>
+          <p>{formEducationLevels.filter(level => level.value === mentee_highestEducationLevel).map(level => level.label)}</p>
         </>
       )}
-
     </Content>
   }
+
+  const isEmptyProfile =
+    !!mentor_occupation ||
+    !!mentor_workPlace ||
+    !!mentee_occupationCategoryId
 
   return (
     <Editable
       title="Occupation"
       onSave={() => formik.handleSubmit()}
-      savePossible={!(formik.dirty && formik.isValid)}
-      read={readOccupation()}
+      placeholder="Input your information about your Education and Occupation here."
+      savePossible={(formik.dirty && formik.isValid)}
+      read={isEmptyProfile && readOccupation()}
     >
-      {userType === 'mentor' && (
+      {user === 'mentor' && (
         <>
           <FormInput
             name="mentor_occupation"
@@ -181,21 +203,23 @@ const Occupation = ({ profile, profileSaveStart }: any) => {
         </>
       )}
 
-      {userType === 'mentee' && (
+      {user === 'mentee' && (
         <>
           <FormSelect
             label="What is your highest Education Level?"
             name="mentee_highestEducationLevel"
-            items={educationLevels}
+            placeholder="Education Level"
+            items={formEducationLevels}
             {...formik}
           />
           <FormSelect
             label="What is your current occupation?"
             name="mentee_occupationCategoryId"
-            items={menteeOccupationCategories}
+            placeholder="Current Occupation"
+            items={formMenteeOccupationCategories}
             {...formik}
           />
-          {mentee_occupationCategoryId === 'job' && (
+          {occupation === 'job' && (
             <>
               <FormInput
                 name="mentee_occupationJob_placeOfEmployment"
@@ -211,7 +235,7 @@ const Occupation = ({ profile, profileSaveStart }: any) => {
               />
             </>
           )}
-          {mentee_occupationCategoryId === 'student' && (
+          {occupation === 'student' && (
             <>
               <FormInput
                 name="mentee_occupationStudent_studyPlace"
@@ -227,7 +251,7 @@ const Occupation = ({ profile, profileSaveStart }: any) => {
               />
             </>
           )}
-          {mentee_occupationCategoryId === 'lookingForJob' &&
+          {occupation === 'lookingForJob' &&
             <FormInput
               name="mentee_occupationLookingForJob_what"
               label="What kind of job?"
@@ -235,16 +259,14 @@ const Occupation = ({ profile, profileSaveStart }: any) => {
               {...formik}
             />
           }
-          {mentee_occupationCategoryId === 'other' && (
-            <>
-              <FormInput
-                name="mentee_occupationOther_description"
-                label="What are you currently doing?"
-                placeholder="Whats up?"
-                {...formik}
-              />
-            </>
-          )}
+          {occupation === 'other' &&
+            <FormInput
+              name="mentee_occupationOther_description"
+              label="What are you currently doing?"
+              placeholder="Whats up?"
+              {...formik}
+            />
+          }
         </>
       )}
     </Editable>
