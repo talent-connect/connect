@@ -17,7 +17,7 @@ import {
   categories
 } from '../../../config/config'
 
-const formCategories = Object.assign({}, ...categories.map(category => ({ [category.id]: category.label })))
+const availableCategories = Object.assign({}, ...categories.map(category => ({ [category.id]: category.label })))
 
 export interface MentoringFormValues {
   categories: string[]
@@ -54,12 +54,14 @@ const Mentoring = ({ profile, profileSaveStart }: any) => {
     onSubmit: submitForm
   })
 
+  const { categories: selectedCategories } = formik.values
+
   const readMentoring = () => {
     return <Tag.Group>
       {categories.map(
         (categorie: any, index: number) =>
           <Tag key={`${categorie}_${index}`} size="large" rounded>
-            {formCategories[categorie]}
+            {availableCategories[categorie]}
           </Tag>
       )}
     </Tag.Group>
@@ -70,9 +72,9 @@ const Mentoring = ({ profile, profileSaveStart }: any) => {
     const value = e.target.value
     let newCategories
     if (e.target.checked) {
-      newCategories = formik.values.categories.concat(value)
+      newCategories = selectedCategories.concat(value)
     } else {
-      newCategories = formik.values.categories.filter((cat: any) => cat !== value)
+      newCategories = selectedCategories.filter((cat: any) => cat !== value)
     }
     formik.setFieldValue('categories', newCategories)
     formik.setFieldTouched('categories', true, false)
@@ -88,7 +90,7 @@ const Mentoring = ({ profile, profileSaveStart }: any) => {
       className="mentoring"
     >
       <Columns>
-        {Object.keys(formCategories).map((key) => (
+        {Object.keys(availableCategories).map((key) => (
           <Columns.Column
             size={4}
             key={key}
@@ -96,11 +98,12 @@ const Mentoring = ({ profile, profileSaveStart }: any) => {
             <FormCheckbox
               name={`categories-${key}`}
               value={key}
-              checked={formik.values.categories.includes(key)}
+              checked={selectedCategories.includes(key)}
               customOnChange={categoriesChange}
+              disabled={selectedCategories.length > 2 && !selectedCategories.includes(key)}
               {...formik}
             >
-              {formCategories[key]}
+              {availableCategories[key]}
             </FormCheckbox>
           </Columns.Column>
         ))}
