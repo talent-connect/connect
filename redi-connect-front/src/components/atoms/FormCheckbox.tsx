@@ -1,6 +1,7 @@
 import React from 'react'
-import { Form } from 'react-bulma-components'
+import { Form, Element } from 'react-bulma-components'
 import _uniqueId from 'lodash/uniqueId'
+import './FormCheckbox.scss'
 
 interface Props {
   name: string
@@ -32,20 +33,25 @@ function FormCheckbox (props: any) {
   return (
     <Form.Field className={className}>
       <Form.Control>
-        <input
+        <Element
+          renderAs="input"
+          type="checkbox"
+          className="redi-checkbox"
           id={uid}
           value={value}
           name={name}
           checked={checked}
-          type="checkbox"
-          className="is-checkradio is-checkradio--redi is-small"
           onChange={handleOnChange}
           onBlur={handleBlur}
           disabled={isSubmitting || disabled}
         />
-        <label htmlFor={uid}>
+        <Element
+          renderAs="label"
+          textSize={6}
+          htmlFor={uid}
+          className="redi-checkbox-label">
           {children}
-        </label>
+        </Element>
       </Form.Control>
     </Form.Field>
   )

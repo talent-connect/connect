@@ -185,7 +185,7 @@ export default function SignUp () {
               <FormSelect
                 label="Current ReDI Course (*for alumni last taken course)"
                 name="mentee_currentlyEnrolledInCourse"
-                placeholder=""
+                placeholder=" "
                 items={formCourses}
                 {...formik}
               />
@@ -197,7 +197,7 @@ export default function SignUp () {
               className="submit-spacer"
               {...formik}
             >
-              I agree to the{' '}
+              I agree to the {' '}
               <a
                 target="_blank"
                 rel="noopener noreferrer"

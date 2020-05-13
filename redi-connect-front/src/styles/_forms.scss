@@ -18,7 +18,7 @@
   height: 0px;
   margin: 0px;
   overflow: hidden;
-  transition: ease-out all 0.3s;
+  transition: $transition;
   
   &--show {
     margin-top: 0.25rem;
@@ -30,9 +30,5 @@
   margin-top: 3em;
 }
 
-.is-checkradio--redi[type="checkbox"]+label {
-  display: inline-block;
-  margin: 0;
-  padding: 0;
-}
+
   

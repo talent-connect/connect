@@ -17,7 +17,9 @@
     margin-left: 1rem;
   }
 
-
+  path {
+    transition: $transition;
+  }
 
   &--disabled {
     path {
