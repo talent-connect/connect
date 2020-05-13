@@ -31,22 +31,22 @@ const formCourses = courses.map(course => ({ value: course.id, label: course.lab
 
 export const validationSchema = Yup.object({
   firstName: Yup.string()
-    .required()
+    .required('Your first name is invalid')
     .max(255),
   lastName: Yup.string()
-    .required()
+    .required('Your last name is invalid')
     .max(255),
-  username: Yup.string()
-    .email()
+  contactEmail: Yup.string()
+    .email('Your email is invalid')
     .label('Email')
     .max(255),
   password: Yup.string()
-    .min(8, 'Password must contain at least 8 characters')
-    .required('Enter your password')
+    .min(8, 'The password has to consist of at least eight characters')
+    .required('You need to set a password')
     .label('Password'),
   passwordConfirm: Yup.string()
     .required('Confirm your password')
-    .oneOf([Yup.ref('password')], 'Password does not match'),
+    .oneOf([Yup.ref('password')], 'Passwords does not match'),
   agreesWithCodeOfConduct: Yup.boolean()
     .required()
     .oneOf([true]),
@@ -74,7 +74,7 @@ type SignUpUserType = Extends<
 export interface SignUpFormValues {
   userType: SignUpUserType
   gaveGdprConsent: boolean
-  username: string
+  contactEmail: string
   password: string
   passwordConfirm: string
   firstName: string
@@ -94,7 +94,7 @@ export default function SignUp () {
   const initialValues: SignUpFormValues = {
     userType,
     gaveGdprConsent: false,
-    username: '',
+    contactEmail: '',
     password: '',
     passwordConfirm: '',
     firstName: '',
@@ -120,7 +120,7 @@ export default function SignUp () {
     cleanProfile.userActivated = false
     cleanProfile.signupSource = 'public-sign-up'
     try {
-      await signUp(values.username, values.password, cleanProfile)
+      await signUp(values.contactEmail, values.password, cleanProfile)
       actions.setSubmitting(false)
       history.push('/front/signup-email-verification')
     } catch (error) {
@@ -150,34 +150,34 @@ export default function SignUp () {
           <form onSubmit={e => e.preventDefault()} className="form">
             <FormInput
               name="firstName"
-              placeholder="First name"
+              placeholder="Your first name"
               {...formik}
             />
 
             <FormInput
               name="lastName"
-              placeholder="Last name"
+              placeholder="Your last name"
               {...formik}
             />
 
             <FormInput
-              name="username"
+              name="contactEmail"
               type="email"
-              placeholder="Username (your email address)"
+              placeholder="Your Email"
               {...formik}
             />
 
             <FormInput
               name="password"
               type="password"
-              placeholder="Password"
+              placeholder="Your password"
               {...formik}
             />
 
             <FormInput
               name="passwordConfirm"
               type="password"
-              placeholder="Repeat password"
+              placeholder="Repeat your password"
               {...formik}
             />
 
@@ -185,7 +185,7 @@ export default function SignUp () {
               <FormSelect
                 label="Current ReDI Course (*for alumni last taken course)"
                 name="mentee_currentlyEnrolledInCourse"
-                placeholder="Your current ReDI Course"
+                // placeholder="Your current ReDI Course"
                 items={formCourses}
                 {...formik}
               />

@@ -5,7 +5,7 @@ import _uniqueId from 'lodash/uniqueId'
 interface Props {
   name: string
   items: string[]
-  placeholder: string
+  placeholder?: string
   label?: string
   multiselect?: boolean
   customOnChange?: Function
@@ -37,6 +37,7 @@ function FormInput (props: any) {
   const handleOnChange = customOnChange || onChange
 
   const hasError = !!touched[name] && !!errors[name]
+  console.log(errors[name])
 
   return (
     <Form.Field>
@@ -52,8 +53,8 @@ function FormInput (props: any) {
           multiple={multiselect}
           onChange={handleOnChange}
         >
-          {placeholder && <option id="" value="" disabled>
-            {placeholder}
+          {<option id="" value="" disabled>
+            {placeholder || ''}
           </option>}
           {items.map((item: any) => {
             const uid = _uniqueId('st_')
@@ -65,7 +66,7 @@ function FormInput (props: any) {
       </Form.Control>
 
       <Form.Help color="danger" className={hasError ? 'help--show' : ''}>
-        {hasError && `The ${placeholder.toLowerCase()} is invalid`}
+        {hasError && <>{errors[name]}</>}
       </Form.Help>
     </Form.Field>
   )
