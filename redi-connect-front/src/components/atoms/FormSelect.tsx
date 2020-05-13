@@ -8,6 +8,7 @@ interface Props {
   placeholder?: string
   label?: string
   multiselect?: boolean
+  disabled?: boolean
   customOnChange?: Function
 }
 
@@ -20,7 +21,7 @@ function FormInput (props: any) {
     customOnChange,
     values,
     handleChange,
-    setFieldTouched,
+    handleBlur,
     multiselect,
     isSubmitting,
     touched,
@@ -28,16 +29,9 @@ function FormInput (props: any) {
     disabled
   } = props
 
-  const onChange = useCallback((event: any) => {
-    event.persist()
-    setFieldTouched(event.target.name, true, false)
-    handleChange(event)
-  }, [])
-
-  const handleOnChange = customOnChange || onChange
+  const handleOnChange = customOnChange || handleChange
 
   const hasError = !!touched[name] && !!errors[name]
-  console.log(errors[name])
 
   return (
     <Form.Field>
@@ -52,6 +46,8 @@ function FormInput (props: any) {
           value={values[name]}
           multiple={multiselect}
           onChange={handleOnChange}
+          onBlur={handleBlur}
+          disabled={isSubmitting || disabled}
         >
           {<option id="" value="" disabled>
             {placeholder || ''}

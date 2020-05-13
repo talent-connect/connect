@@ -7,6 +7,7 @@ interface Props {
   value: string
   checked: boolean
   children: React.ReactNode
+  disabled: boolean
   className?: string
   customOnChange?: Function
 }
@@ -16,21 +17,16 @@ function FormCheckbox (props: any) {
     name,
     value,
     checked,
+    disabled,
     handleChange,
-    setFieldTouched,
+    handleBlur,
     isSubmitting,
     className,
     children,
     customOnChange
   } = props
 
-  const onChange = (e: any) => {
-    e.persist()
-    setFieldTouched(name, true, false)
-    handleChange(e)
-  }
-
-  const handleOnChange = customOnChange || onChange
+  const handleOnChange = customOnChange || handleChange
   const uid = _uniqueId('cx_')
 
   return (
@@ -44,7 +40,8 @@ function FormCheckbox (props: any) {
           type="checkbox"
           className="is-checkradio is-checkradio--redi is-small"
           onChange={handleOnChange}
-          disabled={isSubmitting}
+          onBlur={handleBlur}
+          disabled={isSubmitting || disabled}
         />
         <label htmlFor={uid}>
           {children}

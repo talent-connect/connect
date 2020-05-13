@@ -16,18 +16,12 @@ function FormInput (props: any) {
     label,
     values,
     handleChange,
-    setFieldTouched,
     isSubmitting,
+    handleBlur,
     touched,
     errors,
     disabled
   } = props
-
-  const onChange = useCallback((event: any) => {
-    event.persist()
-    setFieldTouched(event.target.name, true, false)
-    handleChange(event)
-  }, [])
 
   const hasError = !!touched[name] && !!errors[name]
 
@@ -44,7 +38,8 @@ function FormInput (props: any) {
           color={hasError ? 'danger' : null}
           placeholder={placeholder}
           value={values[name]}
-          onChange={onChange}
+          onChange={handleChange}
+          onBlur={handleBlur}
           disabled={isSubmitting || disabled}
         />
       </Form.Control>
