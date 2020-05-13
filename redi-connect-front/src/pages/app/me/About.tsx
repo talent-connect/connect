@@ -72,6 +72,7 @@ const About = ({ profile, profileSaveStart }: any) => {
 
   const formik = useFormik({
     initialValues,
+    enableReinitialize: true,
     validationSchema,
     onSubmit: submitForm
   })

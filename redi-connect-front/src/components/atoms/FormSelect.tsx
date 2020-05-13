@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import { Form } from 'react-bulma-components'
 import _uniqueId from 'lodash/uniqueId'
 
@@ -49,8 +49,8 @@ function FormInput (props: any) {
           onBlur={handleBlur}
           disabled={isSubmitting || disabled}
         >
-          {<option id="" value="" disabled>
-            {placeholder || ''}
+          {placeholder && <option id="" value="" disabled>
+            {placeholder}
           </option>}
           {items.map((item: any) => {
             const uid = _uniqueId('st_')

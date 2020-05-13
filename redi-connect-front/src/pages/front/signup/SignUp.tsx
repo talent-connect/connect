@@ -185,7 +185,7 @@ export default function SignUp () {
               <FormSelect
                 label="Current ReDI Course (*for alumni last taken course)"
                 name="mentee_currentlyEnrolledInCourse"
-                // placeholder="Your current ReDI Course"
+                placeholder=""
                 items={formCourses}
                 {...formik}
               />
