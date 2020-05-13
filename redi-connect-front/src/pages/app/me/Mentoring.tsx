@@ -1,5 +1,5 @@
 import React from 'react'
-import { Columns, Tag } from 'react-bulma-components'
+import { Columns, Tag, Heading, Element } from 'react-bulma-components'
 import FormCheckbox from '../../../components/atoms/FormCheckbox'
 import Editable from '../../../components/molecules/Editable'
 import { RedProfile } from '../../../types/RedProfile'
@@ -14,10 +14,8 @@ import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
 import {
-  categories
+  categories as availableCategories
 } from '../../../config/config'
-
-const availableCategories = Object.assign({}, ...categories.map(category => ({ [category.id]: category.label })))
 
 export interface MentoringFormValues {
   categories: string[]
@@ -57,12 +55,14 @@ const Mentoring = ({ profile, profileSaveStart }: any) => {
 
   const { categories: selectedCategories } = formik.values
 
+  const categoryObject = Object.assign({}, ...availableCategories.map(category => ({ [category.id]: category.label })))
+
   const readMentoring = () => {
     return <Tag.Group>
       {categories.map(
         (categorie: any, index: number) =>
           <Tag key={`${categorie}_${index}`} size="large" rounded>
-            {availableCategories[categorie]}
+            {categoryObject[categorie]}
           </Tag>
       )}
     </Tag.Group>
@@ -81,6 +81,39 @@ const Mentoring = ({ profile, profileSaveStart }: any) => {
     formik.setFieldTouched('categories', true, false)
   }
 
+  const Category = ({ id, label }: any) => {
+    return (<>
+      <Columns.Column
+        size={4}
+      >
+        <Heading
+          size={6}
+          weight="normal"
+          renderAs="h3"
+          subtitle
+          textTransform="uppercase"
+        >
+          {label}
+        </Heading>
+        <Element className="mentoring__group">
+          {availableCategories.filter((cat: any) => cat.group === id).map((groupItem: any) => (
+            <FormCheckbox
+              name={`categories-${groupItem.id}`}
+              key={groupItem.id}
+              value={groupItem.id}
+              checked={selectedCategories.includes(groupItem.id)}
+              customOnChange={categoriesChange}
+              disabled={selectedCategories.length > 2 && !selectedCategories.includes(groupItem.id)}
+              {...formik}
+            >
+              {groupItem.label}
+            </FormCheckbox>
+          ))}
+        </Element>
+      </Columns.Column>
+    </>)
+  }
+
   return (
     <Editable
       title="Mentoring Topics"
@@ -91,23 +124,9 @@ const Mentoring = ({ profile, profileSaveStart }: any) => {
       className="mentoring"
     >
       <Columns>
-        {Object.keys(availableCategories).map((key) => (
-          <Columns.Column
-            size={4}
-            key={key}
-          >
-            <FormCheckbox
-              name={`categories-${key}`}
-              value={key}
-              checked={selectedCategories.includes(key)}
-              customOnChange={categoriesChange}
-              disabled={selectedCategories.length > 2 && !selectedCategories.includes(key)}
-              {...formik}
-            >
-              {availableCategories[key]}
-            </FormCheckbox>
-          </Columns.Column>
-        ))}
+        <Category id="coding" label="Coding"/>
+        <Category id="careerSupport" label="Career Support"/>
+        <Category id="other" label="Other topics"/>
       </Columns>
     </Editable>
   )
