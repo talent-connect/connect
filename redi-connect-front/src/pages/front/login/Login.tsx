@@ -61,7 +61,7 @@ export default function Login () {
   }, [])
 
   const formik = useFormik({
-    initialValues: initialValues,
+    initialValues,
     validationSchema,
     onSubmit: submitForm
   })
@@ -97,7 +97,7 @@ export default function Login () {
             />
 
             <Form.Field>
-              {loginError && <Form.Help color="danger">{loginError}</Form.Help>}
+              <Form.Help color="danger" className={loginError ? 'help--show' : ''}>{loginError && loginError}</Form.Help>
             </Form.Field>
 
             <Form.Field

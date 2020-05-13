@@ -51,11 +51,10 @@ function FormTextArea (props: any) {
           disabled={isSubmitting || disabled}
         />
       </Form.Control>
-      {hasError && (
-        <Form.Help color="danger">
-          The {placeholder.toLowerCase()} is invalid
-        </Form.Help>
-      )}
+
+      <Form.Help color="danger" className={hasError ? 'help--show' : ''}>
+        {hasError && <>The {placeholder.toLowerCase()} is invalid</>}
+      </Form.Help>
     </Form.Field>
   )
 }

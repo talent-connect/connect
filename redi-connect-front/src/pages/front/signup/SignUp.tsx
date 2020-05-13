@@ -224,11 +224,7 @@ export default function SignUp () {
             </FormCheckbox>
 
             <Form.Field>
-              {submitError && (
-                <Form.Help color="danger">
-                  An error occurred, please try again.
-                </Form.Help>
-              )}
+              <Form.Help color="danger" className={submitError ? 'help--show' : ''}>{submitError && 'An error occurred, please try again.'}</Form.Help>
             </Form.Field>
             <Form.Field>
               <Form.Control>

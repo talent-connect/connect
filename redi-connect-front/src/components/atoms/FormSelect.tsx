@@ -64,7 +64,7 @@ function FormInput (props: any) {
         </Form.Select>
       </Form.Control>
 
-      <Form.Help color="danger" className={hasError ? 'help--show' : null}>
+      <Form.Help color="danger" className={hasError ? 'help--show' : ''}>
         {hasError && `The ${placeholder.toLowerCase()} is invalid`}
       </Form.Help>
     </Form.Field>
