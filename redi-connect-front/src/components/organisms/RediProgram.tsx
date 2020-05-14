@@ -4,7 +4,6 @@ import {
   Section,
   Columns,
   Image,
-  Content,
   Level,
   Heading
 } from 'react-bulma-components'
@@ -39,17 +38,22 @@ const programSteps = [
 
 const RediProgram = () => {
   return (
-    <Section className="program">
-      <Container className="program__title">
-        <Content className="program__title--teaser">about redi connect</Content>
-        <div className="program__title--line" />
-        <Content className="program__title--headline">What our Mentorship Program is all about ...</Content>
+    <Section className="default-background">
+      <Container>
+        <Heading
+          className="is-uppercase is-size-6 is-size-7-mobile has-text-centered"
+          renderAs="h4"
+          subtitle
+        >
+          about redi connect
+        </Heading>
+        <Heading className="is-size-2 is-size-4-mobile has-text-centered" marginless>What our Mentorship Program is all about ...</Heading>
       </Container>
-      <Container className="program__container">
+      <Container>
         <Columns>
           {programSteps.map(step => (
             <Columns.Column className="has-text-centered" key={step.content}>
-              <Image src={step.image} className="program__column--img" />
+              <Image src={step.image} className="program__img" />
               <Heading
                 size={4}
                 renderAs="h3"
@@ -57,7 +61,7 @@ const RediProgram = () => {
               >
                 {step.headline}
               </Heading>
-              <Level className="is-size-4 is-size-5-mobile program__column--text">
+              <Level className="is-size-4 is-size-5-mobile program__text">
                 {step.content}
               </Level>
             </Columns.Column>

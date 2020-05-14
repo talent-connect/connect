@@ -2,18 +2,21 @@
 @import '../../styles/_variables.scss';
 
 .title {
+
   // is a class used in bulma, the border modifier
   // is just a way of adding our own styles
+  @include mobile() {
+    &.is-1 {
+      margin-bottom: 1rem;
+    }
+  }
+
   &--border {
     position: relative;
     padding-bottom: 2rem;
 
     @include mobile() {
       padding-bottom: 1rem;
-
-      &.is-1 {
-        margin-bottom: 1rem;
-      }
     }
 
     &::after {

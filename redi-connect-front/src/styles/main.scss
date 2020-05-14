@@ -84,6 +84,7 @@ a:hover {
 
     @include tablet {
       padding-bottom: 10rem;
+
       .container {
         margin-bottom: -10rem;
         padding-bottom: 10rem;
@@ -91,6 +92,7 @@ a:hover {
     }
   }
 }
+
 // TODO: should be transfered to a layout template
 // will be done the next time this view is reused
 .section.color-half {
@@ -102,11 +104,11 @@ a:hover {
 }
 
 .color-side-menu {
-  margin:-0.75rem auto;
+  margin: -0.75rem auto;
   padding: 0.75rem 0;
 
   @include tablet() {
-    margin:-3.25rem auto;
+    margin: -3.25rem auto;
     padding: 3.25rem 0;
     background: linear-gradient(90deg, $redi-blue-light 15.8%, $white 15.8%);
   }
@@ -122,10 +124,31 @@ a:hover {
 }
 
 .profile__list {
-  span + span {
+  span+span {
     &::before {
       content: '|';
       margin: 0 0.3rem;
     }
+  }
+}
+
+h4.is-size-6,
+h4.is-size-7 {
+  padding-bottom: 1.25rem;
+  position: relative;
+
+  @include mobile() {
+    padding-top: 1.5rem;
+    padding-bottom: .75rem;
+  }
+
+  &:after {
+    content: '';
+    width: 3.25rem;
+    border: 2px solid #ea5b29;
+    position: absolute;
+    left: calc(50% - 3.25rem /2);
+    bottom: -2px;
+    border-radius: 2px;
   }
 }

@@ -3,9 +3,9 @@ import {
   Container,
   Section,
   Columns,
-  Heading,
   Content
 } from 'react-bulma-components'
+import Heading from '../atoms/Heading'
 import { useHistory } from 'react-router-dom'
 import Button from '../atoms/Button'
 import { ReactComponent as Hello } from '../../assets/images/hello.svg'
@@ -17,30 +17,31 @@ const PreFooter = () => {
   const history = useHistory()
 
   return (
-    <Section className="pre-footer">
+    <Section className="default-background">
       <Container>
-        <Columns>
+        <Columns vCentered>
           <Columns.Column size={4} className="is-four-fifths-mobile">
-            <Heading size={1} className="pre-footer-heading">
+            <Heading>
               Want to get in touch?
             </Heading>
-            <Content className="pre-footer-content">
+            <Content
+              renderAs="p"
+              className="is-size-4 is-size-5-mobile"
+            >
               If you have questions or just want to say hello, please do not
               hesitate to contact us!
             </Content>
-            <Columns>
-              <Columns.Column className="is-four-fifths-mobile">
-                <Button size="large" onClick={() => history.push('/front/login')}>
-                  say hello!
-                </Button>
-              </Columns.Column>
-            </Columns>
+            <Content>
+              <Button size="large" onClick={() => history.push('/front/signup-landing')} >
+                say hello!
+              </Button>
+            </Content>
           </Columns.Column>
           <Columns.Column className="is-hidden-mobile">
-            <Hello className="pre-footer-image" />
+            <Hello className="pre-footer__image" />
           </Columns.Column>
           <Columns.Column className="is-hidden-tablet">
-            <HelloMobile className="pre-footer-image" />
+            <HelloMobile className="pre-footer__image" />
           </Columns.Column>
         </Columns>
       </Container>

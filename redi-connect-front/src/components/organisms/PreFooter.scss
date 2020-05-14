@@ -2,30 +2,7 @@
 @import "../../styles/_variables.scss";
 
 .pre-footer {
-  background-color: $white;
-
-  &-heading.title {
-    margin-bottom: 1.5rem;
-
-    @include mobile() {
-      margin-bottom: 1rem;
-      font-size: 2.5rem;
-      line-height: 3rem;
-    }
-  }
-
-  &-content {
-    margin-bottom: 2.5rem;
-    line-height: 2rem;
-    font-size: 1.25rem;
-    color: $black;
-
-    @include mobile() {
-      margin-bottom: 1.5rem;
-    }
-  }
-
-  &-image {
+  &__image {
     position: absolute;
     bottom: -2.25rem;
     right: 0;
