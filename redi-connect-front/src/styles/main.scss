@@ -46,6 +46,7 @@ textarea,
 select {
   &::placeholder {
     font-style: italic;
+    color: $grey !important;
   }
 }
 

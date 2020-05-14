@@ -1,0 +1,30 @@
+@import "../../styles/_variables.scss";
+
+.side-menu {
+  &__item {
+
+    &:not(:last-child) {
+      margin-bottom: 1rem;
+    }
+    &__link {
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: $weight-normal;
+      color: $grey-dark;
+      display: block;
+      width: calc(100% + 16px);
+      padding: 0.8rem 0;
+      margin-right: -1rem;
+
+      &--active {
+        font-weight: $weight-bold;
+        color: $black;
+        border-right: 5px solid $redi-blue;
+      }
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+}
