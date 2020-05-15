@@ -231,7 +231,7 @@ const sendMenteePendingReviewAcceptedEmail = (recipient, firstName, rediLocation
     `Dear ${firstName},
 
 Your profile has been accepted and you are now able to see and apply to you future mentor. Just go to ReDI Connect here: ${buildFrontendUrl(
-      process.env.NODE_ENV
+      process.env.NODE_ENV, rediLocation
     )}.
 
 Please make sure you update your profile regularly and upload your profile picture.
