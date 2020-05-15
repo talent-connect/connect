@@ -5,20 +5,36 @@ import './Heading.scss'
 
 interface Props {
   children: any
+  size?: 'large' | 'small'
   tag?: string
-  border?: boolean
+  border?: 'topCenter' | 'bottomLeft'
+  center?: boolean
 }
 
-const Heading = ({ children, border, tag }: Props) => {
+const sizes = {
+  large: {
+    desktop: 1,
+    mobile: 2
+  },
+  small: {
+    desktop: 2,
+    mobile: 4
+  }
+}
+
+const Heading = ({ children, border, tag, size, center }: Props) => {
   const className = classnames({
-    'title--border': border
+    [`decoration decoration--${border}`]: border
   })
+
+  const currentSize = size || 'large'
 
   return (
     <BulmaHeading
-      size={1}
-      responsive={{ mobile: { textSize: { value: 2 } } }}
+      size={ sizes[currentSize].desktop }
+      responsive={{ mobile: { textSize: { value: sizes[currentSize].mobile } } }}
       weight="normal"
+      textAlignment={center ? 'centered' : null}
       renderAs={tag || 'h1'}
       className={className}
       // spaced={true}

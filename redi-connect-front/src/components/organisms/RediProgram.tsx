@@ -5,8 +5,10 @@ import {
   Columns,
   Image,
   Level,
-  Heading
+  Element,
+  Heading as BulmaHeading
 } from 'react-bulma-components'
+import Heading from '../atoms/Heading'
 import career from '../../assets/images/career.svg'
 import search from '../../assets/images/search.svg'
 import calender from '../../assets/images/calender.svg'
@@ -40,27 +42,26 @@ const RediProgram = () => {
   return (
     <Section className="default-background">
       <Container>
-        <Heading
+        <Element
           className="is-uppercase is-size-6 is-size-7-mobile has-text-centered"
           renderAs="h4"
-          subtitle
         >
           about redi connect
-        </Heading>
-        <Heading className="is-size-2 is-size-4-mobile has-text-centered" marginless>What our Mentorship Program is all about ...</Heading>
+        </Element>
+        <Heading size="small" border="topCenter" center>What our Mentorship Program is all about ...</Heading>
       </Container>
       <Container>
         <Columns>
           {programSteps.map(step => (
             <Columns.Column className="has-text-centered" key={step.content}>
               <Image src={step.image} className="program__img" />
-              <Heading
+              <BulmaHeading
                 size={4}
                 renderAs="h3"
                 className="is-hidden-tablet is-marginless"
               >
                 {step.headline}
-              </Heading>
+              </BulmaHeading>
               <Level className="is-size-4 is-size-5-mobile program__text">
                 {step.content}
               </Level>
