@@ -12,7 +12,12 @@ var app = (module.exports = loopback())
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 */
-require('../lib/email')
+const emailLib = require('../lib/email')
+const {
+  sendWelcomeEmail
+} = emailLib
+
+sendWelcomeEmail('marcuszierke@gmail.com', 'Marcus', 'mentor')
 
 app.start = function () {
   // start the web server
@@ -32,11 +37,14 @@ app
   .remotes()
   .phases.addBefore('invoke', 'options-from-request')
   .use(function (ctx, next) {
-    if (!ctx.args || !ctx.args.options || !ctx.args.options.accessToken) { return next() }
+    if (!ctx.args || !ctx.args.options || !ctx.args.options.accessToken) {
+      return next()
+    }
     const RedUser = app.models.RedUser
     RedUser.findById(
-      ctx.args.options.accessToken.userId,
-      { include: 'redProfile' },
+      ctx.args.options.accessToken.userId, {
+        include: 'redProfile'
+      },
       function (err, user) {
         if (err) return next(err)
         ctx.args.options.currentUser = user.toJSON()
@@ -51,7 +59,9 @@ app.use(
     bucket: 'redi-connect-profile-avatars',
     region: 'eu-west-1', // optional
     signatureVersion: 'v4', // optional (use for some amazon regions: frankfurt and others)
-    headers: { 'Access-Control-Allow-Origin': '*' }, // optional
+    headers: {
+      'Access-Control-Allow-Origin': '*'
+    }, // optional
     ACL: 'public-read', // this is default
     uniquePrefix: true // (4.0.2 and above) default is true, setting the attribute to false preserves the original filename in S3
   })

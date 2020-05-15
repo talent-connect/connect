@@ -1,17 +1,30 @@
 'use strict'
 
+const pwd = 'Match_me19'
+
+const mjml2html = require('mjml')
 const aws = require('aws-sdk')
+const fs = require('fs')
+const nodemailer = require('nodemailer')
 const Rx = require('rxjs')
+const path = require('path')
 const config = {
   accessKeyId: process.env.EMAILER_AWS_ACCESS_KEY,
   secretAccessKey: process.env.EMAILER_AWS_SECRET_KEY,
   region: process.env.EMAILER_AWS_REGION
 }
 
+aws.config.update(config)
+
 const ses = new aws.SES(config)
 
-const isProductionOrDemonstration = () =>
-  ['production', 'demonstration', 'staging'].includes(process.env.NODE_ENV)
+const transporter = nodemailer.createTransport({
+  SES: new aws.SES({
+    apiVersion: '2010-12-01'
+  })
+})
+
+const isProductionOrDemonstration = () => ['production', 'demonstration'].includes(process.env.NODE_ENV)
 
 const sendEmail = Rx.bindNodeCallback(ses.sendEmail.bind(ses))
 const sendEmailFactory = (to, subject, body) => {
@@ -50,9 +63,6 @@ function buildFrontendUrl (env) {
     case 'demonstration':
       return 'https://app.demo.connect.redi-school.org'
 
-    case 'staging':
-      return 'https://app.staging.connect.redi-school.org'
-
     default:
     case 'development':
     case 'dev':
@@ -84,11 +94,11 @@ const sendMentorCancelledMentorshipNotificationEmail = (recipient, firstName) =>
   sendEmailFactory(
     recipient,
     'Your mentor has quit your connection',
-    `Dear ${firstName}, 
+    `Dear ${firstName},
 
-    Your mentor has decided to quit your connection. We are sorry to hear that. 
+    Your mentor has decided to quit your connection. We are sorry to hear that.
     You are now ready to see other available mentors and apply to another one. The sessions you have done already will be counted towards the 6 sessions total.
-    
+
     Your Career Support Team
     `
   )
@@ -103,9 +113,9 @@ const sendToMentorConfirmationOfMentorshipCancelled = (
     `Dear ${mentorFirstName},
 
     We have processed your request to cancel your mentorship of mentee ${menteeFullName}. We have informed the mentee. Now other mentees are able to apply to the spot that freed up.
-    
+
     If you like, let us know why you have decided to cancel the mentorship.
-    
+
     Your Career Support Team
     `
   )
@@ -128,10 +138,11 @@ Your Career Support Team
 `
   )
 const sendMentorshipAcceptedEmail = (recipients, mentorName, menteeName) => {
-  let recipientsSanitized = !isProductionOrDemonstration()
-    ? ['eric@binarylights.com']
+  let recipientsSanitized = !isProductionOrDemonstration() ? ['eric@binarylights.com']
     : recipients
-  if (process.env.DEV_MODE_EMAIL_RECIPIENT) { recipientsSanitized = [process.env.DEV_MODE_EMAIL_RECIPIENT] }
+  if (process.env.DEV_MODE_EMAIL_RECIPIENT) {
+    recipientsSanitized = [process.env.DEV_MODE_EMAIL_RECIPIENT]
+  }
   return sendEmail({
     Source: 'career@redi-school.org',
     Destination: {
@@ -184,7 +195,7 @@ const templateDataImportMentorSignupEmail = (
   firstName,
   accessToken,
   recipientEmail
-) => `Dear ${firstName}, 
+) => `Dear ${firstName},
 
 Thank you for being part of the ReDI Mentorship program.
 
@@ -212,7 +223,7 @@ const templateDataImportMenteeSignupEmail = (
   firstName,
   accessToken,
   recipientEmail
-) => `Dear ${firstName}, 
+) => `Dear ${firstName},
 
 Are you ReDI for some good news??? Are you really ReDI??
 
@@ -239,26 +250,26 @@ const sendMentorSignupReminderEmail = (recipient, firstName, accessToken) =>
   sendEmailFactory(
     recipient,
     'Aren’t you ReDI? :-( ReDI Connect is ReDI for you!',
-    `Dear ${firstName}, 
+    `Dear ${firstName},
 
     Thank you for being part of the ReDI Mentorship program.
-    
+
     We sent you some ReDI good news last week, but perhaps you weren’t ReDI? Well, we hope that you are now ReDI!
-    
+
     Now that summer has come, we are certain that you are ReDI to take five minutes to activate your user profile and then connect to all the mentees who are ReDI to connect to you!
-    
+
     After you’ve activated your user profile you’ll be able to log your sessions and connect with mentees.
-    
+
     You will see our data protection policy, which we kindly ask you to read through and consent to.
-    
+
     Access ReDI Connect here: Access ReDI Connect here: ${buildFrontendUrl(
       process.env.NODE_ENV
     )}/front/signup/existing/${accessToken}
-    
+
     You’ll be asked to choose your own password. Your username is your email address: ${recipient}
-    
+
     Let us know if you need any help or assistance at career@redi-school.org or on slack  #redi_mentors2019.
-    
+
     Your Career Support Team
     `
   )
@@ -269,21 +280,21 @@ const sendMenteeSignupReminderEmail = (recipient, firstName, accessToken) =>
     `Dear ${firstName},
 
     We sent you some ReDI good news last week, but perhaps you weren’t ReDI? Well, we hope that you are now ReDI!
-    
+
     Now that summer has come, we are certain that you are ReDI to take five minutes to activate your user profile and then connect to all the mentors who are ReDI to connect to you!
-    
+
     After you’ve activated your user profile you’ll be able to upload a profile picture, view your mentor’s profile, and share any issues you may be facing.
-    
+
     You will see our data protection policy, which we kindly ask you to read through and consent to.
-    
+
     Access ReDI Connect here: ${buildFrontendUrl(
       process.env.NODE_ENV
     )}/front/signup/existing/${accessToken}
-    
+
     You’ll be asked to choose your own password. Your username is your email address: ${recipient}
-    
+
     Let us know if you need any help or assistance at career@redi-school.org.
-    
+
     Your Career Support Team`
   )
 
@@ -340,14 +351,14 @@ Your profile has been accepted and you are now able to see and apply to you futu
 
 Please make sure you update your profile regularly and upload your profile picture.
 
-Please make sure that once your mentor has accepted your application, to schedule regular meetings with him or her. They are giving their precious time to support you. You should have: 
+Please make sure that once your mentor has accepted your application, to schedule regular meetings with him or her. They are giving their precious time to support you. You should have:
 
 At least 6 meetings in total ( 1:1 or in a small group) // Approx. one session (60 mins.) per month (can be more)
-Last semester, those students who had a mentor were more successful in their courses, found jobs and internships easier and understood their own goals much better.  A mentor can support you throughout the semester with:  
+Last semester, those students who had a mentor were more successful in their courses, found jobs and internships easier and understood their own goals much better.  A mentor can support you throughout the semester with:
 help with your course
-career advice 
-job orientation 
-help to find an internship/job 
+career advice
+job orientation
+help to find an internship/job
 Please note: First come, first serve. Whoever applies first, will get a mentor first. And remember: All successful people have a mentor: Do you know who the mentor of Bill Gates was?
 
 
@@ -370,7 +381,7 @@ const sendMentorPendingReviewDeclinedEmail = (recipient, firstName) =>
 
 Unfortunately your profile has not been accepted yet because we would like to get to know you a little better before.
 
-Please let us know at career@redi-school.org how we can reach you best so that we can have a little chat. 
+Please let us know at career@redi-school.org how we can reach you best so that we can have a little chat.
 
 
 Your Career Support Team at ReDI Connect`
@@ -384,7 +395,7 @@ const sendMenteePendingReviewDeclinedEmail = (recipient, firstName) =>
 
 Unfortunately your profile has not been accepted yet because we would like to get to know you a little better before.
 
-Please let us know at career@redi-school.org how we can reach you best so that we can have a little chat. 
+Please let us know at career@redi-school.org how we can reach you best so that we can have a little chat.
 
 
 Your Career Support Team at ReDI Connect`
@@ -415,7 +426,7 @@ const sendResetPasswordEmail = (recipient, accessToken) =>
   sendEmailFactory(
     recipient,
     'Choose a new password for ReDI Connect',
-    `Hey there, 
+    `Hey there,
 
 Someone requested a new password for your ReDI Connect account.
 
@@ -432,6 +443,30 @@ Let us know if you need any help or assistance at career@redi-school.org or on s
 Your Career Support Team
     `
   )
+
+// signUpType = 'mentor' | 'mentee'
+const sendWelcomeEmail = (recipient, firstName, signUpType) => {
+  const welcomeEmailTemplateFileContents = fs.readFileSync(path.resolve(__dirname, '..', 'welcome.mjml'), 'utf-8')
+  const welcomeEmail = mjml2html(welcomeEmailTemplateFileContents)
+
+  const welcomeEmailHtml = welcomeEmail.html
+    .replace('${firstName}', firstName)
+    .replace('${mentorOrMentee}', signUpType)
+
+  console.log(welcomeEmail)
+
+  const mailOptions = {
+    from: '<career@redi-school.org>',
+    to: recipient, // Recepient email address. Multiple emails can send separated by commas
+    subject: 'Welcome to ReDI School',
+    text: 'We\'ll write a text message here later',
+    html: welcomeEmailHtml
+  }
+
+  transporter.sendMail(mailOptions)
+
+  // return bindNodeCallback(transporter.sendMail.bind(transporter))(mailOptions)
+}
 
 module.exports = {
   sendReportProblemEmail,
@@ -450,5 +485,6 @@ module.exports = {
   sendMenteePendingReviewDeclinedEmail,
   sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted,
   sendResetPasswordEmail,
+  sendWelcomeEmail,
   sendEmailFactory
 }
