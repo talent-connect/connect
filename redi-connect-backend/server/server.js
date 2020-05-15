@@ -1,5 +1,7 @@
 'use strict';
 
+var sentry = require('@sentry/node');
+
 var loopback = require('loopback');
 var boot = require('loopback-boot');
 
@@ -7,7 +9,10 @@ var http = require('http');
 var https = require('https');
 var sslConfig = require('./ssl-config');
 
+Sentry.init({dsn: 'https://4b305f45af614628b9e723f856ccd2ed@o393301.ingest.sentry.io/5242277'});
+
 var app = (module.exports = loopback());
+
 /*
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -37,7 +42,7 @@ app
     const RedUser = app.models.RedUser;
     RedUser.findById(
       ctx.args.options.accessToken.userId,
-      { include: 'redProfile' },
+      {include: 'redProfile'},
       function(err, user) {
         if (err) return next(err);
         ctx.args.options.currentUser = user.toJSON();
@@ -52,7 +57,7 @@ app.use(
     bucket: 'redi-connect-profile-avatars',
     region: 'eu-west-1', // optional
     signatureVersion: 'v4', // optional (use for some amazon regions: frankfurt and others)
-    headers: { 'Access-Control-Allow-Origin': '*' }, // optional
+    headers: {'Access-Control-Allow-Origin': '*'}, // optional
     ACL: 'public-read', // this is default
     uniquePrefix: true, // (4.0.2 and above) default is true, setting the attribute to false preserves the original filename in S3
   })
