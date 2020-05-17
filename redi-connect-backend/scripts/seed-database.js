@@ -116,7 +116,7 @@ const users = fp.compose(
     const rediLocation = Math.random() > 0.5 ? "berlin" : "munich";
     const cats = rediLocation === "berlin" ? berlinCategories : munichCategories;
     const email = randomString() + '@' + randomString() + '.com';
-    const password = randomString();
+    const password = email
     return {
       redUser: {
         email,
