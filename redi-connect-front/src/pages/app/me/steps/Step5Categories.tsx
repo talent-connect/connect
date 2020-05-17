@@ -61,7 +61,7 @@ export const Comp = (
       {type === "mentee" && (
         <h2>
           Please select all the topics you would like help with from your
-          mentor.
+          mentor (maximum 3).
         </h2>
       )}
       {type === "mentor" && (
