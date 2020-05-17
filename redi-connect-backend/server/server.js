@@ -1,15 +1,11 @@
 'use strict';
 
-var sentry = require('@sentry/node');
-
 var loopback = require('loopback');
 var boot = require('loopback-boot');
 
 var http = require('http');
 var https = require('https');
 var sslConfig = require('./ssl-config');
-
-Sentry.init({dsn: 'https://4b305f45af614628b9e723f856ccd2ed@o393301.ingest.sentry.io/5242277'});
 
 var app = (module.exports = loopback());
 
