@@ -1,5 +1,6 @@
 import React from 'react'
-import { Columns, Tag } from 'react-bulma-components'
+import groupBy from 'lodash/groupBy'
+import { Columns, Tag, Heading, Element } from 'react-bulma-components'
 import FormCheckbox from '../../../components/atoms/FormCheckbox'
 import Editable from '../../../components/molecules/Editable'
 import { RedProfile } from '../../../types/RedProfile'
@@ -14,10 +15,8 @@ import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
 import {
-  categories
+  categories as availableCategories, categoriesIdToLabelMap
 } from '../../../config/config'
-
-const availableCategories = Object.assign({}, ...categories.map(category => ({ [category.id]: category.label })))
 
 export interface MentoringFormValues {
   categories: string[]
@@ -30,12 +29,18 @@ const validationSchema = Yup.object({
     .max(3)
 })
 
-// props: FormikProps<AboutFormValues>
-const Mentoring = ({ profile, profileSaveStart }: any) => {
+const categoriesByGroup = groupBy(availableCategories, category => category.group)
+
+interface Props {
+  profile: RedProfile | undefined;
+  profileSaveStart: Function;
+}
+
+const Mentoring = ({ profile, profileSaveStart }: Props) => {
   const {
     id,
     categories
-  } = profile
+  } = (profile as RedProfile)
 
   const submitForm = async (
     values: FormikValues
@@ -57,12 +62,14 @@ const Mentoring = ({ profile, profileSaveStart }: any) => {
 
   const { categories: selectedCategories } = formik.values
 
+  // const categoryObject = Object.assign({}, ...availableCategories.map(category => ({ [category.id]: category.label })))
+
   const readMentoring = () => {
     return <Tag.Group>
       {categories.map(
-        (categorie: any, index: number) =>
-          <Tag key={`${categorie}_${index}`} size="large" rounded>
-            {availableCategories[categorie]}
+        categoryId =>
+          <Tag key={categoryId} size="large" rounded>
+            {categoriesIdToLabelMap[categoryId]}
           </Tag>
       )}
     </Tag.Group>
@@ -91,26 +98,45 @@ const Mentoring = ({ profile, profileSaveStart }: any) => {
       className="mentoring"
     >
       <Columns>
-        {Object.keys(availableCategories).map((key) => (
-          <Columns.Column
-            size={4}
-            key={key}
-          >
-            <FormCheckbox
-              name={`categories-${key}`}
-              value={key}
-              checked={selectedCategories.includes(key)}
-              customOnChange={categoriesChange}
-              disabled={selectedCategories.length > 2 && !selectedCategories.includes(key)}
-              {...formik}
-            >
-              {availableCategories[key]}
-            </FormCheckbox>
-          </Columns.Column>
-        ))}
+        <CategoryGroup id="coding" label="Coding" selectedCategories={selectedCategories} onChange={categoriesChange} formik={formik} />
+        <CategoryGroup id="careerSupport" label="Career Support" selectedCategories={selectedCategories} onChange={categoriesChange} formik={formik} />
+        <CategoryGroup id="other" label="Other topics" selectedCategories={selectedCategories} onChange={categoriesChange} formik={formik} />
       </Columns>
     </Editable>
   )
+}
+
+const CategoryGroup = ({ id, label, selectedCategories, onChange, formik }: any) => {
+  return (<>
+    <Columns.Column
+      size={4}
+    >
+      <Heading
+        size={6}
+        weight="normal"
+        renderAs="h3"
+        subtitle
+        textTransform="uppercase"
+      >
+        {label}
+      </Heading>
+      <Element className="mentoring__group">
+        {categoriesByGroup[id].map((groupItem) => (
+          <FormCheckbox
+            name={`categories-${groupItem.id}`}
+            key={groupItem.id}
+            value={groupItem.id}
+            checked={selectedCategories.includes(groupItem.id)}
+            customOnChange={onChange}
+            disabled={selectedCategories.length > 2 && !selectedCategories.includes(groupItem.id)}
+            {...formik}
+          >
+            {groupItem.label}
+          </FormCheckbox>
+        ))}
+      </Element>
+    </Columns.Column>
+  </>)
 }
 
 const mapStateToProps = (state: RootState) => ({
