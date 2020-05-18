@@ -88,39 +88,6 @@ const Mentoring = ({ profile, profileSaveStart }: Props) => {
     formik.setFieldTouched('categories', true, false)
   }
 
-  const CategoryGroup = ({ id, label }: any) => {
-    return (<>
-      <Columns.Column
-        size={4}
-      >
-        <Heading
-          size={6}
-          weight="normal"
-          renderAs="h3"
-          subtitle
-          textTransform="uppercase"
-        >
-          {label}
-        </Heading>
-        <Element className="mentoring__group">
-          {categoriesByGroup[id].map((groupItem) => (
-            <FormCheckbox
-              name={`categories-${groupItem.id}`}
-              key={groupItem.id}
-              value={groupItem.id}
-              checked={selectedCategories.includes(groupItem.id)}
-              customOnChange={categoriesChange}
-              disabled={selectedCategories.length > 2 && !selectedCategories.includes(groupItem.id)}
-              {...formik}
-            >
-              {groupItem.label}
-            </FormCheckbox>
-          ))}
-        </Element>
-      </Columns.Column>
-    </>)
-  }
-
   return (
     <Editable
       title="Mentoring Topics"
@@ -131,12 +98,46 @@ const Mentoring = ({ profile, profileSaveStart }: Props) => {
       className="mentoring"
     >
       <Columns>
-        <CategoryGroup id="coding" label="Coding" />
-        <CategoryGroup id="careerSupport" label="Career Support" />
-        <CategoryGroup id="other" label="Other topics" />
+        <CategoryGroup id="coding" label="Coding" selectedCategories={selectedCategories} onChange={categoriesChange} formik={formik} />
+        <CategoryGroup id="careerSupport" label="Career Support" selectedCategories={selectedCategories} onChange={categoriesChange} formik={formik} />
+        <CategoryGroup id="other" label="Other topics" selectedCategories={selectedCategories} onChange={categoriesChange} formik={formik} />
       </Columns>
     </Editable>
   )
+}
+
+const CategoryGroup = ({ id, label, selectedCategories, onChange, formik }: any) => {
+  console.log("re-render")
+  return (<>
+    <Columns.Column
+      size={4}
+    >
+      <Heading
+        size={6}
+        weight="normal"
+        renderAs="h3"
+        subtitle
+        textTransform="uppercase"
+      >
+        {label}
+      </Heading>
+      <Element className="mentoring__group">
+        {categoriesByGroup[id].map((groupItem) => (
+          <FormCheckbox
+            name={`categories-${groupItem.id}`}
+            key={groupItem.id}
+            value={groupItem.id}
+            checked={selectedCategories.includes(groupItem.id)}
+            customOnChange={onChange}
+            disabled={selectedCategories.length > 2 && !selectedCategories.includes(groupItem.id)}
+            {...formik}
+          >
+            {groupItem.label}
+          </FormCheckbox>
+        ))}
+      </Element>
+    </Columns.Column>
+  </>)
 }
 
 const mapStateToProps = (state: RootState) => ({
