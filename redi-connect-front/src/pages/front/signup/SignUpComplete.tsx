@@ -21,10 +21,9 @@ export default function SignUpComplete () {
         <Columns.Column size={5} offset={2}>
           <Heading border="bottomLeft">Meet Isabelle</Heading>
           <Content size="large" renderAs="div">
-            <p>Your email address has been successfully confirmed!</p>
+            <p>Your email address was successfully verified!</p>
 
-            <p>Now, we would like to get to know you better. To activate your account,
-            please <strong>schedule a 15 Minute meeting with Isabelle</strong>.
+            <p>Now, we would like to get to know you better. To activate your account, please <strong>schedule a 15 minute meeting with Isabelle.</strong>
             Just write her an email with suitable meeting times!</p>
           </Content>
           <Form.Field className="submit-spacer">
