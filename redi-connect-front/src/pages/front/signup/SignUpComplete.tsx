@@ -19,7 +19,7 @@ export default function SignUpComplete () {
           <Teaser.Isabelle />
         </Columns.Column>
         <Columns.Column size={5} offset={2}>
-          <Heading border>Meet Isabelle</Heading>
+          <Heading border="bottomLeft">Meet Isabelle</Heading>
           <Content size="large" renderAs="div">
             <p>Your email address has been successfully confirmed!</p>
 

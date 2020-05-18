@@ -147,7 +147,7 @@ export default function SignUp () {
         </Columns.Column>
 
         <Columns.Column size={5} offset={1}>
-          <Heading border>Sign-up</Heading>
+          <Heading border="bottomLeft">Sign-up</Heading>
           <form onSubmit={e => e.preventDefault()} className="form">
             <FormInput
               name="firstName"

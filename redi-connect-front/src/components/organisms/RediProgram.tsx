@@ -4,10 +4,11 @@ import {
   Section,
   Columns,
   Image,
-  Content,
   Level,
-  Heading
+  Element,
+  Heading as BulmaHeading
 } from 'react-bulma-components'
+import Heading from '../atoms/Heading'
 import career from '../../assets/images/career.svg'
 import search from '../../assets/images/search.svg'
 import calender from '../../assets/images/calender.svg'
@@ -39,25 +40,29 @@ const programSteps = [
 
 const RediProgram = () => {
   return (
-    <Section className="program">
-      <Container className="program__title">
-        <Content className="program__title--teaser">about redi connect</Content>
-        <div className="program__title--line" />
-        <Content className="program__title--headline">What our Mentorship Program is all about ...</Content>
+    <Section className="default-background">
+      <Container>
+        <Element
+          className="is-uppercase is-size-6 is-size-7-mobile has-text-centered"
+          renderAs="h4"
+        >
+          about redi connect
+        </Element>
+        <Heading size="small" border="topCenter" center>What our Mentorship Program is all about ...</Heading>
       </Container>
-      <Container className="program__container">
+      <Container>
         <Columns>
           {programSteps.map(step => (
             <Columns.Column className="has-text-centered" key={step.content}>
-              <Image src={step.image} className="program__column--img" />
-              <Heading
+              <Image src={step.image} className="program__img" />
+              <BulmaHeading
                 size={4}
                 renderAs="h3"
                 className="is-hidden-tablet is-marginless"
               >
                 {step.headline}
-              </Heading>
-              <Level className="is-size-4 is-size-5-mobile program__column--text">
+              </BulmaHeading>
+              <Level className="is-size-4 is-size-5-mobile program__text">
                 {step.content}
               </Level>
             </Columns.Column>

@@ -16,7 +16,7 @@ export default function SignUpEmailVerification () {
         </Columns.Column>
 
         <Columns.Column size={5} offset={2}>
-          <Heading border>Welcome to ReDI Connect</Heading>
+          <Heading border="bottomLeft">Welcome to ReDI Connect</Heading>
           <Content size="large" renderAs="div">
             <p>Thank you for signing up!</p>
             <p>Please first <strong>verify your email address</strong> with the email we just sent to you.</p>
