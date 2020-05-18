@@ -1,4 +1,5 @@
 import React from 'react'
+import groupBy from 'lodash/groupBy'
 import { Columns, Tag, Heading, Element } from 'react-bulma-components'
 import FormCheckbox from '../../../components/atoms/FormCheckbox'
 import Editable from '../../../components/molecules/Editable'
@@ -14,7 +15,7 @@ import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
 import {
-  categories as availableCategories
+  categories as availableCategories, categoriesIdToLabelMap
 } from '../../../config/config'
 
 export interface MentoringFormValues {
@@ -28,12 +29,18 @@ const validationSchema = Yup.object({
     .max(3)
 })
 
-// props: FormikProps<AboutFormValues>
-const Mentoring = ({ profile, profileSaveStart }: any) => {
+const categoriesByGroup = groupBy(availableCategories, category => category.group)
+
+interface Props {
+  profile: RedProfile | undefined,
+  profileSaveStart: Function
+}
+
+const Mentoring = ({ profile, profileSaveStart }: Props) => {
   const {
     id,
     categories
-  } = profile
+  } = (profile as RedProfile)
 
   const submitForm = async (
     values: FormikValues
@@ -55,14 +62,14 @@ const Mentoring = ({ profile, profileSaveStart }: any) => {
 
   const { categories: selectedCategories } = formik.values
 
-  const categoryObject = Object.assign({}, ...availableCategories.map(category => ({ [category.id]: category.label })))
+  // const categoryObject = Object.assign({}, ...availableCategories.map(category => ({ [category.id]: category.label })))
 
   const readMentoring = () => {
     return <Tag.Group>
       {categories.map(
-        (categorie: any, index: number) =>
-          <Tag key={`${categorie}_${index}`} size="large" rounded>
-            {categoryObject[categorie]}
+        categoryId =>
+          <Tag key={categoryId} size="large" rounded>
+            {categoriesIdToLabelMap[categoryId]}
           </Tag>
       )}
     </Tag.Group>
@@ -81,7 +88,8 @@ const Mentoring = ({ profile, profileSaveStart }: any) => {
     formik.setFieldTouched('categories', true, false)
   }
 
-  const Category = ({ id, label }: any) => {
+  const CategoryGroup = ({ id, label }: any) => {
+    console.log("re-render")
     return (<>
       <Columns.Column
         size={4}
@@ -96,7 +104,7 @@ const Mentoring = ({ profile, profileSaveStart }: any) => {
           {label}
         </Heading>
         <Element className="mentoring__group">
-          {availableCategories.filter((cat: any) => cat.group === id).map((groupItem: any) => (
+          {categoriesByGroup[id].map((groupItem) => (
             <FormCheckbox
               name={`categories-${groupItem.id}`}
               key={groupItem.id}
@@ -124,9 +132,9 @@ const Mentoring = ({ profile, profileSaveStart }: any) => {
       className="mentoring"
     >
       <Columns>
-        <Category id="coding" label="Coding"/>
-        <Category id="careerSupport" label="Career Support"/>
-        <Category id="other" label="Other topics"/>
+        <CategoryGroup id="coding" label="Coding" />
+        <CategoryGroup id="careerSupport" label="Career Support" />
+        <CategoryGroup id="other" label="Other topics" />
       </Columns>
     </Editable>
   )
