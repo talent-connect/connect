@@ -88,7 +88,7 @@ const About = ({ profile, profileSaveStart }: any) => {
 
   return (
     <Editable
-      title="About me"
+      title="About You"
       onSave={ () => formik.handleSubmit()}
       savePossible={(formik.dirty && formik.isValid)}
       placeholder="Please tell us a bit about yourself"

@@ -9,7 +9,7 @@ import {
   Card,
   CardContent
 } from '@material-ui/core'
-import { Avatar } from '../../../components/Avatar'
+// import { Avatar } from '../../../components/Avatar'
 import { history } from '../../../services/history/history'
 import { ConnectButton } from '../../../components/ConnectButton'
 import { menteeOccupationCategory_idToLabelMap } from '../../../config/config'
@@ -58,10 +58,10 @@ export const ApplicationCard = withStyles(styles)(
             <Grid item xs={12} md={5}>
               <Grid container spacing={1}>
                 <Grid item>
-                  <Avatar
+                  {/* <Avatar
                     className={classes.avatar}
                     s3Key={application.mentee.profileAvatarImageS3Key}
-                  />
+                  /> */}
                 </Grid>
                 <Grid item>
                   <h3 style={{ fontWeight: 700, fontFamily: 'Roboto' }}>

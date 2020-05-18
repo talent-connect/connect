@@ -1,7 +1,7 @@
 import { createStyles, Grid, Theme, withStyles } from '@material-ui/core'
 import React from 'react'
 import { connect } from 'react-redux'
-import { Avatar } from '../../../../components/Avatar'
+// import { Avatar } from '../../../../components/Avatar'
 import { CategoryChip } from '../../../../components/CategoryChip'
 import { ContactInfo } from '../../../../components/ContactInfo'
 import { LogMentoringSessionBtn } from '../../../../components/LogMentoringSessionBtn'
@@ -64,11 +64,11 @@ export const ProfileAcceptedMatch = connect(mapState)(
           <Grid item xs={12} md={6}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={5}>
-                <Avatar
+                {/* <Avatar
                   className={classes.avatar}
                   s3Key={profile.profileAvatarImageS3Key}
                   style={{ width: '100%', height: '20vh' }}
-                />
+                /> */}
               </Grid>
               <Grid item xs={12} sm={7}>
                 <h3

@@ -19,7 +19,7 @@ import {
 } from '../../../../config/config'
 import { withStyles, Grid } from '@material-ui/core'
 import { useLoading } from '../../../../hooks/WithLoading'
-import { Avatar } from '../../../../components/Avatar'
+// import { Avatar } from '../../../../components/Avatar'
 import ReactS3Uploader from 'react-s3-uploader'
 
 export const validationSchema = Yup.object({
@@ -147,7 +147,7 @@ const Comp: any = (
         <Grid container spacing={1} alignItems="center">
           <Grid item>
             <div className={classes.avatarImageFrame}>
-              <Avatar s3Key={profileAvatarImageS3Key} />
+              {/* <Avatar s3Key={profileAvatarImageS3Key} /> */}
             </div>
           </Grid>
           <Grid item>

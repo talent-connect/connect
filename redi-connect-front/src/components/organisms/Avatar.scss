@@ -1,0 +1,104 @@
+@import "~bulma/sass/utilities/_all";
+@import "../../styles/_variables.scss";
+
+.avatar {
+  position: relative;
+  border-radius: 50%;
+  border: 4px solid $redi-orange-dark;
+  box-shadow: 2px 0 15px 0 rgba(255,92,31,0.34);
+  overflow: hidden;
+  display: inline-flex;
+  cursor: pointer;
+
+  &::before {
+    content: '';
+    border-radius: 50%;
+    width: calc(100% - 16px);
+    height: calc(100% - 16px);
+    margin: 0.5rem;
+    position: absolute;
+    display: inline-flex;
+    top: 0;
+    left: 0;
+  }
+
+  &--large {
+    padding: 0.5rem;
+    &::before { 
+      opacity: 0;
+      background-color: rgba(0,0,0,0.5);
+      transition: $transition;
+    }
+
+    &:hover {
+      &::before {
+        opacity: 1;
+      } 
+
+      .avatar__button {
+        opacity: 1;
+      }
+    }
+  }
+
+  &--placeholder {
+    width: 100%;
+    padding-top: calc(100% - 8px);
+    height: auto;
+
+    &:before {
+      border: 1px solid #a0a0a0;
+      background-color: #dadada;
+    }
+  }
+
+  &__image {
+    border-radius: 50%;
+  } 
+
+  &__button {
+    position: absolute;
+    transition: $transition;
+    width: 70%;
+    line-height: 2.2rem;
+    text-align: center;
+    opacity: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    border: 1px solid $grey-light;
+    color: $grey-light;
+    border-radius: $radius;
+  }
+
+  &__placeholder {
+    position: absolute;
+    width: 80%;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+
+    &__image {
+      display: block;
+      width: 50%;
+      height: 50%;
+      margin: 0 25% .5rem;
+      @include mobile() {
+        margin: 0 25%;
+      }
+    }
+  }
+
+  &__input {
+    cursor: pointer;
+    height: 100%;
+    left: 0;
+    opacity: 0;
+    outline: none;
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
+}

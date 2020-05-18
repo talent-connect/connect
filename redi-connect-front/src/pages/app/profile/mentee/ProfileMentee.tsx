@@ -6,7 +6,7 @@ import { ProfileOccupation } from '../../../../components/ProfileOccupation'
 import { ProfileWorkPlace } from '../../../../components/ProfileWorkPlace'
 import { ProfileLanguages } from '../../../../components/ProfileLanguages'
 import { CategoryChip } from '../../../../components/CategoryChip'
-import { Avatar } from '../../../../components/Avatar'
+// import { Avatar } from '../../../../components/Avatar'
 import { ProfileCourse } from '../../../../components/ProfileCourse'
 import { ConnectButton } from '../../../../components/ConnectButton'
 import { ContactInfo } from '../../../../components/ContactInfo'
@@ -49,11 +49,11 @@ export const ProfileMentee = withStyles(styles)(
       <>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={5}>
-            <Avatar
+            {/* <Avatar
               className={classes.avatar}
               s3Key={mentee.profileAvatarImageS3Key}
               style={{ width: '100%', height: '20vh' }}
-            />
+            /> */}
           </Grid>
           <Grid item xs={12} sm={7}>
             <h3 style={{ fontWeight: 700, fontFamily: 'Roboto', margin: 0 }}>
