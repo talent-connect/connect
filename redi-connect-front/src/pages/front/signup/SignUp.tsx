@@ -130,6 +130,7 @@ export default function SignUp () {
   }
 
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: initialValues,
     validationSchema,
     onSubmit: submitForm
@@ -185,7 +186,7 @@ export default function SignUp () {
               <FormSelect
                 label="Current ReDI Course (*for alumni last taken course)"
                 name="mentee_currentlyEnrolledInCourse"
-                placeholder=" "
+                placeholder="Choose your ReDI Course"
                 items={formCourses}
                 {...formik}
               />

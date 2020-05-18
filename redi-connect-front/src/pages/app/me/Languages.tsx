@@ -21,7 +21,6 @@ const formLanguages = availableLanguages.map(language => ({ value: language, lab
 
 export interface LanguagesFormValues {
   languages: string[]
-  otherLanguages: string
 }
 
 const validationSchema = Yup.object({
@@ -35,8 +34,7 @@ const validationSchema = Yup.object({
 const Languages = ({ profile, profileSaveStart }: any) => {
   const {
     id,
-    languages,
-    otherLanguages
+    languages
   } = profile
 
   const submitForm = async (
@@ -47,8 +45,7 @@ const Languages = ({ profile, profileSaveStart }: any) => {
   }
 
   const initialValues: LanguagesFormValues = {
-    languages: languages || [],
-    otherLanguages
+    languages: languages || []
   }
 
   const formik = useFormik({
@@ -62,12 +59,9 @@ const Languages = ({ profile, profileSaveStart }: any) => {
     return (
       <Content className="profile__list">
         {languages && languages.map((language: any, index: number) => <span key={`${language}_${index}`}>{language}</span>)}
-        {otherLanguages && <span>{otherLanguages}</span>}
       </Content>
     )
   }
-
-  const isEmptyProfile = !!languages || !!otherLanguages
 
   return (
     <Editable
@@ -75,19 +69,13 @@ const Languages = ({ profile, profileSaveStart }: any) => {
       onSave={ () => formik.handleSubmit()}
       placeholder="Input languages you speak here."
       savePossible={(formik.dirty && formik.isValid)}
-      read={isEmptyProfile && readLanguages()}
+      read={!!languages && readLanguages()}
     >
       <FormSelect
         label="Which of these languages do you speak?*"
         name="languages"
         items={formLanguages}
         multiselect
-        {...formik}
-      />
-      <FormInput
-        name="otherLanguages"
-        label="Other languages"
-        placeholder="Any other languages?"
         {...formik}
       />
     </Editable>

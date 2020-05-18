@@ -1,6 +1,7 @@
 import React from 'react'
 import { Form } from 'react-bulma-components'
 import _uniqueId from 'lodash/uniqueId'
+import Select from 'react-select'
 
 interface Props {
   name: string
@@ -20,47 +21,103 @@ function FormInput (props: any) {
     label,
     customOnChange,
     values,
-    handleChange,
+    setFieldTouched,
     handleBlur,
     multiselect,
     isSubmitting,
+    setFieldValue,
     touched,
     errors,
     disabled
   } = props
 
-  const handleOnChange = customOnChange || handleChange
+  console.log(values)
+
+  const customStyles = {
+    option: (provided: any, state: any) => ({
+      ...provided,
+      heihg: '40px',
+      padding: '13px',
+      color: state.isSelected ? 'black' : '',
+      backgroundColor: state.isSelected ? '#dadada' : '',
+      '&:hover': {
+        color: 'black',
+        backgroundColor: '#dadada'
+      }
+    }),
+    dropdownIndicator: (provided: any, state: any) => ({
+      ...provided,
+      color: state.isFocused ? '#ea5b29' : '#a0a0a0',
+      transform: state.menuIsOpen ? 'rotate(180deg)' : 'none'
+    }),
+    control: (provided: any, state: any) => ({
+      ...provided,
+      borderColor: state.isFocused ? '#ea5b29' : '#a0a0a0',
+      minHeight: '48px',
+      boxShadow: 'inset 0 2px 6px rgba(178, 180, 181, 0.3)',
+      '&:hover': {
+        borderColor: state.isFocused ? '#ea5b29' : '#f6b9a2'
+      }
+    }),
+    multiValue: (provided: any) => ({
+      ...provided,
+      color: '#ea5b29',
+      borderRadius: '4px',
+      backgroundColor: '#fad7ca'
+    }),
+    multiValueLabel: (provided: any) => ({
+      ...provided,
+      fontSize: 'inherit',
+      color: '#ea5b29'
+    }),
+    placeholder: (provided: any) => ({
+      ...provided,
+      fontStyle: 'italic',
+      color: '#a0a0a0'
+    })
+  }
+
+  const handleOnChangeDefault = (option: any = []) => {
+    setFieldValue(
+      name,
+      multiselect
+        ? option ? option.map((item: any) => item.value) : []
+        : option.value,
+      true
+    )
+    setFieldTouched(name, true, false)
+  }
+
+  const handleOnBlur = (e: any) => {
+    e.target.name = name
+    handleBlur(e)
+  }
 
   const hasError = !!touched[name] && !!errors[name]
+  const handleOnChange = customOnChange || handleOnChangeDefault
+
+  const selectedValues =
+    multiselect
+      ? values[name].map((selValue: any) => items.filter((availItem: any) => availItem.value === selValue)).flat()
+      : items.find((item: any) => item.value === values[name])
 
   return (
     <Form.Field>
       {label && <Form.Label size="small">
         {label}
       </Form.Label>}
-
       <Form.Control>
-        <Form.Select
-          name={name}
-          className="is-fullwidth"
-          value={values[name]}
-          multiple={multiselect}
+        <Select
+          value={selectedValues}
+          options={items}
           onChange={handleOnChange}
-          onBlur={handleBlur}
-          disabled={isSubmitting || disabled}
-        >
-          {placeholder && <option id="" value="" disabled>
-            {placeholder}
-          </option>}
-          {items.map((item: any) => {
-            const uid = _uniqueId('st_')
-            return <option key={uid} id={uid} value={item.value} >
-              {item.label}
-            </option>
-          })}
-        </Form.Select>
+          placeholder={placeholder}
+          onBlur={handleOnBlur}
+          isDisabled={isSubmitting || disabled}
+          isMulti={multiselect}
+          styles={customStyles}
+        />
       </Form.Control>
-
       <Form.Help color="danger" className={hasError ? 'help--show' : ''}>
         {hasError && <>{errors[name]}</>}
       </Form.Help>
