@@ -205,7 +205,7 @@ export default function SignUp () {
               >
                 Code of Conduct
               </a>{' '}
-                of the ReDI School
+                of ReDI School
             </FormCheckbox>
 
             <FormCheckbox
