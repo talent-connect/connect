@@ -231,7 +231,8 @@ export const courses: Course[] = [
   { id: 'introIosAppsSwift', label: 'Intro to iOS Apps with Swift' },
   { id: 'introJava', label: 'Intro to Java' },
   { id: 'uiUxWomen', label: 'UI/UX Women' },
-  { id: 'introNetworking', label: 'Intro to Networking' }
+  { id: 'introNetworking', label: 'Intro to Networking' },
+  { id: 'alumni', label: "I'm a ReDI School alumni (I took a course before)" }
 ]
 
 export const courseIdToLabelMap = mapValues(keyBy(courses, 'id'), 'label')

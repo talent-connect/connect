@@ -184,7 +184,7 @@ export default function SignUp () {
 
             {type === 'mentee' && (
               <FormSelect
-                label="Current ReDI Course (*for alumni last taken course)"
+                label="Current ReDI Course"
                 name="mentee_currentlyEnrolledInCourse"
                 placeholder="Choose your ReDI Course"
                 items={formCourses}
