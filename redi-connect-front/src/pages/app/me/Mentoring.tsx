@@ -89,7 +89,6 @@ const Mentoring = ({ profile, profileSaveStart }: Props) => {
   }
 
   const CategoryGroup = ({ id, label }: any) => {
-    console.log("re-render")
     return (<>
       <Columns.Column
         size={4}
