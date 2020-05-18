@@ -251,48 +251,51 @@ export const buildSignUpForm = (
   );
 
   const InnerForm = withStyles(styles)(
-    connect(mapState)((props: any) => (
-      <>
-        <FullScreenCircle loading={props.saveResult === 'submitting'} />
-        <Button component={LinkToDashboard} variant="contained" color="primary">
-          Back
-        </Button>
-        {props.saveResult === 'error' && (
-          <Paper
-            className={clsx(
-              props.classes.submitError,
-              props.classes.submitResult
-            )}
-          >
-            An error occurred, please try again.
-          </Paper>
-        )}
-        {props.saveResult === 'success' && <>Your profile was saved.</>}
-        <form onSubmit={e => e.preventDefault()}>
-          <h2>Update your profile</h2>
-          <Step2Background type={type} {...props} />
-          <Step3Profile type={type} {...props} />
-          <Step4ContactData type={type} {...props} />
-          <Step5Categories type={type} {...props} />
-          <Grid container spacing={1}>
-            <Grid item xs={12}>
-              <Button
-                onClick={() => {
-                  props.handleSubmit();
-                }}
-                color="primary"
-                variant="contained"
-                fullWidth
-                disabled={props.saveResult === 'submitting'}
-                type="submit"
-              >
-                Save
-              </Button>
+    connect(mapState)((props: any) => {
+      console.log(props)
+      return (
+        <>
+          <FullScreenCircle loading={props.saveResult === 'submitting'} />
+          <Button component={LinkToDashboard} variant="contained" color="primary">
+            Back
+          </Button>
+          {props.saveResult === 'error' && (
+            <Paper
+              className={clsx(
+                props.classes.submitError,
+                props.classes.submitResult
+              )}
+            >
+              An error occurred, please try again.
+            </Paper>
+          )}
+          {props.saveResult === 'success' && <>Your profile was saved.</>}
+          <form onSubmit={e => e.preventDefault()}>
+            <h2>Update your profile</h2>
+            <Step2Background type={type} {...props} />
+            <Step3Profile type={type} {...props} />
+            <Step4ContactData type={type} {...props} />
+            <Step5Categories type={type} {...props} />
+            <Grid container spacing={1}>
+              <Grid item xs={12}>
+                <Button
+                  onClick={() => {
+                    props.handleSubmit();
+                  }}
+                  color="primary"
+                  variant="contained"
+                  fullWidth
+                  disabled={props.saveResult === 'submitting'}
+                  type="submit"
+                >
+                  Save
+                </Button>
+              </Grid>
             </Grid>
-          </Grid>
-        </form>
-      </>
-    ))
+          </form>
+        </>
+      )
+    })
   );
 
   return (

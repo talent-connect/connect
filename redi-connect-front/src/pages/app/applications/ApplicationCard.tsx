@@ -13,6 +13,7 @@ import { Avatar } from "../../../components/Avatar";
 import { history } from "../../../services/history/history";
 import { ConnectButton } from "../../../components/ConnectButton";
 import { menteeOccupationCategory_idToLabelMap } from "../../../config/config";
+import { ContactInfo } from '../../../components/ContactInfo';
 
 interface Props {
   application: RedMatch;
@@ -48,6 +49,9 @@ export const ApplicationCard = withStyles(styles)(
         onClick={() =>
           history.push(`/app/profile/${(application as any).mentee.id}`)
         }
+        style={{
+          cursor: 'pointer'
+        }}
       >
         <CardContent>
           <Grid container direction="row">
@@ -66,7 +70,7 @@ export const ApplicationCard = withStyles(styles)(
                   <h4 style={{ fontWeight: 400, fontFamily: "Roboto" }}>
                     {
                       menteeOccupationCategory_idToLabelMap[
-                        application.mentee.mentee_occupationCategoryId
+                      application.mentee.mentee_occupationCategoryId
                       ]
                     }
                   </h4>
@@ -89,6 +93,8 @@ export const ApplicationCard = withStyles(styles)(
               <p style={{ overflowWrap: "break-word" }}>
                 {application.applicationText}
               </p>
+              <ContactInfo profile={application.mentee} />
+              <p>Feel free to communicate with your potential mentee before accepting their mentorship request.</p>
             </Grid>
             <Grid item xs={12} md={3}>
               <Grid

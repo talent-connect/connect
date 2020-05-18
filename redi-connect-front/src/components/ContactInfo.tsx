@@ -7,12 +7,16 @@ import PhoneIcon from "@material-ui/icons/Phone";
 
 const slackIcon = <Icon className={clsx("fab fa-slack")} />;
 const githubIcon = <Icon className={clsx("fab fa-github")} />;
+const linkedInIcon = <Icon className={clsx("fab fa-linkedin")} />
 
 export const ContactInfo = ({ profile }: { profile: RedProfile }) => (
   <>
     <h3>Contact info</h3>
     {profile.contactEmail && (
       <Placeholder icon={<EmailIcon />} content={profile.contactEmail} />
+    )}
+    {profile.linkedInProfileUrl && (
+      <Placeholder icon={linkedInIcon} content={profile.linkedInProfileUrl} />
     )}
     {profile.slackUsername && (
       <Placeholder icon={slackIcon} content={profile.slackUsername} />

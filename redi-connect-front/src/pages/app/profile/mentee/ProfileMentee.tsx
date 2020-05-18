@@ -9,6 +9,7 @@ import { CategoryChip } from "../../../../components/CategoryChip";
 import { Avatar } from "../../../../components/Avatar";
 import { ProfileCourse } from "../../../../components/ProfileCourse";
 import { ConnectButton } from "../../../../components/ConnectButton";
+import { ContactInfo } from '../../../../components/ContactInfo';
 
 interface Props {
   mentee: RedProfile;
@@ -94,6 +95,8 @@ export const ProfileMentee = withStyles(styles)(
             <p style={{ overflowWrap: "break-word" }}>
               {match.applicationText}
             </p>
+            <ContactInfo profile={mentee} />
+            <p>Feel free to communicate with your potential mentee before accepting their mentorship request.</p>
             <Grid container justify="center">
               <ConnectButton matchId={match.id} />
             </Grid>
