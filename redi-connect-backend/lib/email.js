@@ -183,11 +183,10 @@ Your Career Support Team`
 const templateReportProblemEmail = (sendingUserEmail, message) =>
   `New problem report. Source: ${sendingUserEmail}. Message: \n\n${message}`;
 
-  const sendMentorPendingReviewAcceptedEmail = (recipient, firstName, rediLocation) =>
-  sendEmailFactory(
-    recipient,
-    'ReDI Connect: your user was activated!',
-    `Dear ${firstName},
+const sendMentorPendingReviewAcceptedEmail = (recipient, firstName, rediLocation) => {
+  let body
+  if (rediLocation === 'berlin') {
+    body = `Dear ${firstName},
 
 Your profile has been accepted and we are very happy that you are now part of the ReDI Community. Please make sure you update your profile regularly and upload your profile picture.
 
@@ -222,13 +221,58 @@ Thank you for being a mentor, we couldn’t do it without you.
 
 
 Your Career Support Team at ReDI Connect`
-  );
+  } else if (rediLocation === 'munich') {
+    body = `Dear ${firstName},
 
-const sendMenteePendingReviewAcceptedEmail = (recipient, firstName, rediLocation) =>
-  sendEmailFactory(
+Your profile has been accepted and we are very happy that you are now part of the ReDI Community. Please make sure you update your profile regularly and upload your profile picture.
+
+Now that your profile is visible you should receive applications from mentees. We will notify you by email of any application.
+
+We kindly ask you to read the guidelines and information of the mentorship program carefully: ${buildFrontendUrl(
+  process.env.NODE_ENV, rediLocation
+)}/downloadeables/redi-connect-guidelines.pdf
+
+Please also be aware of the following:
+Code of Conduct: ${buildFrontendUrl(
+  process.env.NODE_ENV, rediLocation
+)}/downloadeables/redi-connect-code-of-conduct.pdf
+
+We are organising events regularly where you can meet fellow mentors and get to know ReDI School more.
+In order to stay tuned on what is happening in the mentorship program and in our community, make sure you are in our slack universe here: https://join.slack.com/t/redimunich/shared_invite/zt-6nkpjwpc-_eqGMQFETvhbP2OiLan5pQ 
+
+And check our social media pages:
+Facebook: https://www.facebook.com/redimunich
+LinkedIn: https://www.linkedin.com/company/redi-munich/
+Instagram: https://www.instagram.com/redimunich/
+
+You can always log back into ReDI Connect here: ${buildFrontendUrl(
+  process.env.NODE_ENV, rediLocation
+)}
+
+Please feel free to write us an email at career@redi-school.org or christa@redi-school.org if you have any questions or encounter problems.
+
+Are you ReDI?
+
+Thank you for being a mentor, we couldn’t do it without you.
+
+
+Your Career Support Team at ReDI Connect`
+  } else {
+    throw new Error('Invalid rediLocation')
+  }
+
+  return sendEmailFactory(
     recipient,
     'ReDI Connect: your user was activated!',
-    `Dear ${firstName},
+    body
+  );
+}
+  
+
+const sendMenteePendingReviewAcceptedEmail = (recipient, firstName, rediLocation) => {
+  let body
+  if (rediLocation === 'berlin') {
+    body = `Dear ${firstName},
 
 Your profile has been accepted and you are now able to see and apply to you future mentor. Just go to ReDI Connect here: ${buildFrontendUrl(
       process.env.NODE_ENV, rediLocation
@@ -255,7 +299,48 @@ Code of Conduct: ${buildFrontendUrl(
 Please feel free to write us an email at career@redi-school.org if you have any questions or encounter problems.
 
 Your Career Support Team at ReDI Connect`
+  } else if (rediLocation === 'munich') {
+    body = `Dear ${firstName},
+    
+Your profile has been accepted and you are now able to see and apply to your future mentor. Just go to ReDI Connect here: ${buildFrontendUrl(
+  process.env.NODE_ENV, rediLocation
+)}.
+
+Please make sure you update your profile regularly and upload your profile picture.
+
+Please make sure that once your mentor has accepted your application, to schedule regular meetings with him or her. They are giving their precious time to support you. You should have:
+
+At least 3 meetings per month (can be more). We recommend each session should be around 60 mins, but you can decide that together with your mentor. 
+
+Last semester, those students who had a mentor were more successful in their courses, found jobs and internships easier and understood their own goals much better. 
+
+A mentor can support you throughout the semester with: 
+- help with your course
+- career advice
+- job orientation
+- help to find an internship/job
+
+Please note: First come, first serve. Whoever applies first, will get a mentor first. And remember: All successful people have a mentor: Do you know who the mentor of Bill Gates was?
+
+We also kindly remind you to be aware of the following:
+Code of Conduct: ${buildFrontendUrl(
+  process.env.NODE_ENV, rediLocation
+)}/downloadeables/redi-connect-code-of-conduct.pdf
+
+Please feel free to write us an email at career@redi-school.org or to Christa at christa@redi-school.org if you have any questions or encounter problems.
+
+Your Career Support Team at ReDI Connect`
+  } else {
+    throw new Error('Invalid rediLocation')
+  }
+
+  return sendEmailFactory(
+    recipient,
+    'ReDI Connect: your user was activated!',
+    body
   );
+}
+  
 
 const sendMentorPendingReviewDeclinedEmail = (recipient, firstName) =>
   sendEmailFactory(
