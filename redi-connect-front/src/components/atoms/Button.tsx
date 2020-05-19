@@ -1,6 +1,6 @@
 import React from 'react'
 import classnames from 'classnames'
-import { ReactComponent as ArrowRight } from '../../assets/images/arrow-right.svg'
+import { ReactComponent as ArrowLeft } from '../../assets/images/arrow-left.svg'
 import './Button.scss'
 
 interface Props {
@@ -11,6 +11,7 @@ interface Props {
   disabled?: boolean
   onClick: any
   simple?: boolean
+  color?: 'orangeDark'
 }
 
 const Button = ({
@@ -20,7 +21,8 @@ const Button = ({
   arrow,
   fullWidth,
   onClick,
-  disabled
+  disabled,
+  color
 }: Props) => {
   const baseClass = 'button'
 
@@ -30,11 +32,12 @@ const Button = ({
       disabled={disabled}
       className={classnames(baseClass, `${baseClass}--${simple ? 'simple' : 'default'}`, {
         [`${baseClass}--${size}`]: size,
-        [`${baseClass}--fullWidth`]: fullWidth
+        [`${baseClass}--fullWidth`]: fullWidth,
+        [`${baseClass}--${color}`]: color
       })}
     >
+      {arrow && <ArrowLeft className="button__arrow" />}
       {children}
-      {arrow && <ArrowRight className="button__arrow" />}
     </button>
   )
 }

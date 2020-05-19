@@ -17,7 +17,7 @@
   border: 2px solid $black;
   transform-style: preserve-3d;
 
-  + .button {
+  +.button {
     margin-left: 1rem;
   }
 
@@ -98,6 +98,10 @@
   }
 
   &__arrow {
-    margin-left: .5rem;
+    margin-right: .5rem;
+  }
+
+  &--orangeDark {
+    color: $redi-orange-dark
   }
 }
