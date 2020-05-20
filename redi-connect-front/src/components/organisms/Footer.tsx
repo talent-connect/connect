@@ -20,7 +20,7 @@ const RediFooter = () => {
               <p>&copy; {year} {t('footer.copyright')}</p>
             </Columns.Column>
             <Columns.Column className="is-hidden-tablet footer--headline">
-              <p className="is-size-5">{t('footer.SMHeadline')}</p>
+              <p className="is-size-5">{t('footer.socialMediaHeadline')}</p>
               <Icons />
             </Columns.Column>
             <Columns.Column className="footer--links">
