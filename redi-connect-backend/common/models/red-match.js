@@ -111,7 +111,8 @@ module.exports = function(RedMatch) {
     await sendMentorshipAcceptedEmail(
       [mentee.contactEmail, mentor.contactEmail],
       mentor.firstName,
-      mentee.firstName
+      mentee.firstName,
+      options.currentUser.redProfile.rediLocation,
     ).toPromise();
 
     const menteePendingMatches = await RedMatch.find({
@@ -137,7 +138,8 @@ module.exports = function(RedMatch) {
         return sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted(
           pendingMatchData.mentor.contactEmail,
           pendingMatchData.mentee.firstName,
-          pendingMatchData.mentor.firstName
+          pendingMatchData.mentor.firstName,
+          options.currentUser.redProfile.rediLocation,
         ).toPromise();
       })
     );

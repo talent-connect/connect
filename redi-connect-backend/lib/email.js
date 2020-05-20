@@ -16,15 +16,23 @@ const isProductionOrDemonstration = () =>
   ['production', 'demonstration'].includes(process.env.NODE_ENV);
 
 const sendEmail = Rx.bindNodeCallback(ses.sendEmail.bind(ses));
-const sendEmailFactory = (to, subject, body) => {
+const sendEmailFactory = (to, subject, body, rediLocation) => {
   let toSanitized = isProductionOrDemonstration()
     ? to
     : 'eric@binarylights.com';
   if (process.env.DEV_MODE_EMAIL_RECIPIENT) {
     toSanitized = process.env.DEV_MODE_EMAIL_RECIPIENT;
   }
+  let sender
+  if (rediLocation === 'berlin') {
+    sender = 'career@redi-school.org'
+  } else if (rediLocation === 'munich') {
+    sender = 'munich-career@redi-school.org'
+  } else {
+    sender = 'career@redi-school.org'
+  }
   return sendEmail({
-    Source: 'career@redi-school.org',
+    Source: sender,
     Destination: {
       ToAddresses: [toSanitized],
       BccAddresses: ['eric@binarylights.com'],
@@ -68,46 +76,37 @@ const sendReportProblemEmail = (sendingUserEmail, problemDescription) =>
     'Problem report',
     templateReportProblemEmail(sendingUserEmail, problemDescription)
   );
-const sendDataImportMentorSignupEmail = (recipient, firstName, accessToken) =>
-  sendEmailFactory(
-    recipient,
-    'ReDI Connect is finally online!',
-    templateDataImportMentorSignupEmail(firstName, accessToken, recipient)
-  );
-const sendDataImportMenteeSignupEmail = (recipient, firstName, accessToken) =>
-  sendEmailFactory(
-    recipient,
-    'ReDI Connect is finally online!',
-    templateDataImportMenteeSignupEmail(firstName, accessToken, recipient)
-  );
-const sendMentorCancelledMentorshipNotificationEmail = (recipient, firstName) =>
+const sendMentorCancelledMentorshipNotificationEmail = (recipient, firstName, rediLocation) =>
   sendEmailFactory(
     recipient,
     'Your mentor has quit your connection',
     `Dear ${firstName}, 
 
-    Your mentor has decided to quit your connection. We are sorry to hear that. 
-    You are now ready to see other available mentors and apply to another one. The sessions you have done already will be counted towards the 6 sessions total.
-    
-    Your Career Support Team
-    `
+Your mentor has decided to quit your connection. We are sorry to hear that. 
+You are now ready to see other available mentors and apply to another one. The sessions you have done already will be counted towards the 6 sessions total.
+
+Your Career Support Team
+    `,
+    rediLocation
   );
 const sendToMentorConfirmationOfMentorshipCancelled = (
   recipient,
   mentorFirstName,
-  menteeFullName
+  menteeFullName,
+  rediLocation,
 ) =>
   sendEmailFactory(
     recipient,
     `Your mentorship of ${menteeFullName} has ben cancelled`,
     `Dear ${mentorFirstName},
 
-    We have processed your request to cancel your mentorship of mentee ${menteeFullName}. We have informed the mentee. Now other mentees are able to apply to the spot that freed up.
-    
-    If you like, let us know why you have decided to cancel the mentorship.
-    
-    Your Career Support Team
-    `
+We have processed your request to cancel your mentorship of mentee ${menteeFullName}. We have informed the mentee. Now other mentees are able to apply to the spot that freed up.
+
+If you like, let us know why you have decided to cancel the mentorship.
+
+Your Career Support Team
+    `,
+    rediLocation,
   );
 
 const sendMentorshipRequestReceivedEmail = (
@@ -126,16 +125,24 @@ You have received an application from mentee ${menteeFullName}. Please review it
 Review application: ${buildFrontendUrl(process.env.NODE_ENV, rediLocation)}
 
 Your Career Support Team
-`
+`, rediLocation
   );
-const sendMentorshipAcceptedEmail = (recipients, mentorName, menteeName) => {
+const sendMentorshipAcceptedEmail = (recipients, mentorName, menteeName, rediLocation) => {
   let recipientsSanitized = !isProductionOrDemonstration()
     ? ['eric@binarylights.com']
     : recipients;
   if (process.env.DEV_MODE_EMAIL_RECIPIENT)
     recipientsSanitized = [process.env.DEV_MODE_EMAIL_RECIPIENT];
+  let sender
+  if (rediLocation === 'berlin') {
+    sender = 'career@redi-school.org'
+  } else if (rediLocation === 'munich') {
+    sender = 'munich-career@redi-school.org'
+  } else {
+    sender = 'career@redi-school.org'
+  }
   return sendEmail({
-    Source: 'career@redi-school.org',
+    Source: sender,
     Destination: {
       ToAddresses: recipientsSanitized,
       BccAddresses: ['eric@binarylights.com'],
@@ -154,7 +161,7 @@ It would be great if you, ${mentorName}, as the mentor, could send ${menteeName}
 
 Happy connectin’,
 
-Please let us know at career@redi-school.org if you have any questions!
+Please let us know at ${rediLocation === 'munich' ? 'munich-' : ''}career@redi-school.org if you have any questions!
 
 Your Career Support Team
         `,
@@ -177,7 +184,7 @@ Thank you for logging the first session. This is very helpful for us in order to
 
 Log next session: ${buildFrontendUrl(process.env.NODE_ENV, rediLocation)}
 
-Your Career Support Team`
+Your Career Support Team`, rediLocation
   );
 
 const templateReportProblemEmail = (sendingUserEmail, message) =>
@@ -249,7 +256,7 @@ You can always log back into ReDI Connect here: ${buildFrontendUrl(
   process.env.NODE_ENV, rediLocation
 )}
 
-Please feel free to write us an email at career@redi-school.org or christa@redi-school.org if you have any questions or encounter problems.
+Please feel free to write us an email at munich-career@redi-school.org or christa@redi-school.org if you have any questions or encounter problems.
 
 Are you ReDI?
 
@@ -264,7 +271,8 @@ Your Career Support Team at ReDI Connect`
   return sendEmailFactory(
     recipient,
     'ReDI Connect: your user was activated!',
-    body
+    body,
+    rediLocation
   );
 }
   
@@ -327,7 +335,7 @@ Code of Conduct: ${buildFrontendUrl(
   process.env.NODE_ENV, rediLocation
 )}/downloadeables/redi-connect-code-of-conduct.pdf
 
-Please feel free to write us an email at career@redi-school.org or to Christa at christa@redi-school.org if you have any questions or encounter problems.
+Please feel free to write us an email at munich-career@redi-school.org or to Christa at christa@redi-school.org if you have any questions or encounter problems.
 
 Your Career Support Team at ReDI Connect`
   } else {
@@ -337,12 +345,13 @@ Your Career Support Team at ReDI Connect`
   return sendEmailFactory(
     recipient,
     'ReDI Connect: your user was activated!',
-    body
+    body,
+    rediLocation,
   );
 }
   
 
-const sendMentorPendingReviewDeclinedEmail = (recipient, firstName) =>
+const sendMentorPendingReviewDeclinedEmail = (recipient, firstName, rediLocation) =>
   sendEmailFactory(
     recipient,
     'ReDI Connect: your user sign-up was declined',
@@ -350,12 +359,12 @@ const sendMentorPendingReviewDeclinedEmail = (recipient, firstName) =>
 
 Unfortunately your profile has not been accepted yet because we would like to get to know you a little better before.
 
-Please let us know at career@redi-school.org how we can reach you best so that we can have a little chat. 
+Please let us know at ${rediLocation === 'munich' ? 'munich-' : ''}career@redi-school.org how we can reach you best so that we can have a little chat. 
 
-Your Career Support Team at ReDI Connect`
+Your Career Support Team at ReDI Connect`, rediLocation
   );
 
-const sendMenteePendingReviewDeclinedEmail = (recipient, firstName) =>
+const sendMenteePendingReviewDeclinedEmail = (recipient, firstName, rediLocation) =>
   sendEmailFactory(
     recipient,
     'ReDI Connect: your user sign-up was declined',
@@ -363,15 +372,16 @@ const sendMenteePendingReviewDeclinedEmail = (recipient, firstName) =>
 
 Unfortunately your profile has not been accepted yet because we would like to get to know you a little better before.
 
-Please let us know at career@redi-school.org how we can reach you best so that we can have a little chat. 
+Please let us know at ${rediLocation === 'munich' ? 'munich-' : ''}career@redi-school.org how we can reach you best so that we can have a little chat. 
 
-Your Career Support Team at ReDI Connect`
+Your Career Support Team at ReDI Connect`, rediLocation,
   );
 
 const sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted = (
   recipient,
   menteeName,
-  mentorName
+  mentorName,
+  rediLocation
 ) =>
   sendEmailFactory(
     recipient,
@@ -384,9 +394,9 @@ The application to you from ${menteeName} has therefore expired, and you will no
 
 Other mentees can of course still apply to you, and we're sure you'll receive another application soon to be a great mentor to one of our students!
 
-If you have any questions or would like any help, always feel free to reach out to us on career@redi-school.org or on the ReDI Slack channel #redi_mentors2019.
+If you have any questions or would like any help, always feel free to reach out to us on ${rediLocation === 'munich' ? 'munich-' : ''}career@redi-school.org or on the ReDI Slack channel ${rediLocation === 'munich' ? '#mentors_s2020' : '#redi_mentors2019'}.
 
-Your Career Support Team`
+Your Career Support Team`, rediLocation
   );
 
 const sendResetPasswordEmail = (recipient, accessToken, rediLocation) =>
@@ -405,16 +415,14 @@ Reset Password: ${buildFrontendUrl(
 
 You’ll be asked to choose your own password. Your username is your email address: ${recipient}
 
-Let us know if you need any help or assistance at career@redi-school.org or on slack #redi_mentors2019.
+Let us know if you need any help or assistance at ${rediLocation === 'munich' ? 'munich-' : ''}career@redi-school.org or on the ReDI Slack channel ${rediLocation === 'munich' ? '#mentors_s2020' : '#redi_mentors2019'}.
 
 Your Career Support Team
-    `
+    `, rediLocation
   );
 
 module.exports = {
   sendReportProblemEmail,
-  sendDataImportMentorSignupEmail,
-  sendDataImportMenteeSignupEmail,
   sendMentorCancelledMentorshipNotificationEmail,
   sendMentorshipRequestReceivedEmail,
   sendMentorshipAcceptedEmail,
