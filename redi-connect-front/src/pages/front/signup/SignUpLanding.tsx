@@ -46,7 +46,7 @@ const SignUpLanding = () => {
 
         <Columns.Column size={5} offset={1}>
           <Heading border="bottomLeft">Sign-up</Heading>
-          <Content size="large" renderAs="p">
+          <Content size="large" renderAs="p" className="double-block-space">
             Do you want to become a <strong>mentor</strong> or a <strong>mentee</strong>?
           </Content>
           <div className="signup">

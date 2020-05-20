@@ -223,10 +223,7 @@ export default function SignUp () {
                 Data Protection
               </a>
             </FormCheckbox>
-
-            <Form.Field>
-              <Form.Help color="danger" className={submitError ? 'help--show' : ''}>{submitError && 'An error occurred, please try again.'}</Form.Help>
-            </Form.Field>
+            <Form.Help color="danger" className={submitError ? 'help--show' : ''}>{submitError && 'An error occurred, please try again.'}</Form.Help>
             <Form.Field>
               <Form.Control>
                 <Button

@@ -24,7 +24,8 @@ const sizes = {
 
 const Heading = ({ children, border, tag, size, center }: Props) => {
   const className = classnames({
-    [`decoration decoration--${border}`]: border
+    [`decoration decoration--${border}`]: border,
+    'double-block-space': border === 'bottomLeft'
   })
 
   const currentSize = size || 'large'

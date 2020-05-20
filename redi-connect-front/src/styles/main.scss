@@ -54,14 +54,6 @@ a {
   font-weight: 800;
 }
 
-.form {
-  margin-top: 2rem;
-}
-
-.select select {
-  box-shadow: $input-shadow;
-}
-
 a:hover {
   text-decoration: underline;
 }
@@ -73,7 +65,6 @@ a:hover {
 .is-uppercase {
   letter-spacing: 1.5px;
 }
-
 
 .section {
   @include tablet {
@@ -130,5 +121,11 @@ a:hover {
       content: '|';
       margin: 0 0.3rem;
     }
+  }
+}
+
+.double-block-space {
+  @include tablet() {
+    margin-bottom: 2rem !important;
   }
 }

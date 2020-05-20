@@ -28,7 +28,7 @@ const RediHero = () => {
             </Columns.Column>
             <Content
               renderAs="p"
-              className="is-size-4 is-size-5-mobile"
+              className="is-size-4 is-size-5-mobile double-block-space"
             >
               {t('loggedOutArea.homePage.hero.content1')}<br />{t('loggedOutArea.homePage.hero.content2')}
             </Content>
@@ -39,7 +39,7 @@ const RediHero = () => {
             </Content>
           </Columns.Column>
           <Columns.Column offset={1} responsive={{ mobile: { hide: { value: true } } }}>
-y            <img src={team} alt="team" />
+            <img src={team} alt="team" />
           </Columns.Column>
         </Columns>
       </Container>

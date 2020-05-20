@@ -81,7 +81,7 @@ export default function Login () {
           <Content size="large" renderAs="p">
             Enter your email and password below.
           </Content>
-          <form onSubmit={e => e.preventDefault()} className="form login__form">
+          <form onSubmit={e => e.preventDefault()}>
             <FormInput
               name="username"
               type="email"

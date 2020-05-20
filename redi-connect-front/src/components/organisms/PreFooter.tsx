@@ -28,7 +28,7 @@ const PreFooter = () => {
             </Heading>
             <Content
               renderAs="p"
-              className="is-size-4 is-size-5-mobile"
+              className="is-size-4 is-size-5-mobile double-block-space"
             >
               {t('preFooter.content')}
             </Content>
