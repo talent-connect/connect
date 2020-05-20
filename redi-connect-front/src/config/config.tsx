@@ -208,6 +208,8 @@ export const genders: Gender[] = [
   { id: 'other', label: 'Other' }
 ]
 
+export const gendersIdToLabelMap = mapValues(keyBy(genders, 'id'), 'label')
+
 export const educationLevels: EducationLevel[] = [
   { id: 'middleSchool', label: 'Middle School' },
   { id: 'highSchool', label: 'High School' },

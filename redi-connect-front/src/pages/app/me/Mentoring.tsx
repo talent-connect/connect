@@ -32,8 +32,8 @@ const validationSchema = Yup.object({
 const categoriesByGroup = groupBy(availableCategories, category => category.group)
 
 interface Props {
-  profile: RedProfile | undefined;
-  profileSaveStart: Function;
+  profile: RedProfile | undefined
+  profileSaveStart: Function
 }
 
 const Mentoring = ({ profile, profileSaveStart }: Props) => {

@@ -31,8 +31,6 @@ function FormInput (props: any) {
     disabled
   } = props
 
-  console.log(values)
-
   const customStyles = {
     option: (provided: any, state: any) => ({
       ...provided,

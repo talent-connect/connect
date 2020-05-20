@@ -1,11 +1,11 @@
 import React from 'react'
-import { Content } from 'react-bulma-components'
 import FormInput from '../../../components/atoms/FormInput'
 import FormSelect from '../../../components/atoms/FormSelect'
 import Editable from '../../../components/molecules/Editable'
 import { RedProfile } from '../../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../../redux/types'
+import PipeList from '../../../components/molecules/PipeList'
 
 import {
   profileSaveStart
@@ -15,7 +15,8 @@ import * as Yup from 'yup'
 import { FormikValues, useFormik } from 'formik'
 
 import {
-  genders
+  genders,
+  gendersIdToLabelMap
 } from '../../../config/config'
 
 const formGenders = genders.map(gender => ({ value: gender.id, label: gender.label }))
@@ -35,7 +36,6 @@ const validationSchema = Yup.object({
     .label('Age')
 })
 
-// props: FormikProps<AboutFormValues>
 const PersonalDetail = ({ profile, profileSaveStart }: any) => {
   const {
     id,
@@ -63,11 +63,9 @@ const PersonalDetail = ({ profile, profileSaveStart }: any) => {
   })
 
   const readPersonalDetail = () => {
-    // TODO: check if there is a nicer soulution with bulma as the profile__list
-    return <Content className="profile__list">
-      {gender && <span>{formGenders.filter(formGender => formGender.value === gender).map(formGender => formGender.label) }</span>}
-      {age && <span>{`${age} years old`}</span>}
-    </Content>
+    const detailsList = [gendersIdToLabelMap[gender]]
+    if (age) detailsList.push(`${age} years old`)
+    return <PipeList items={detailsList} />
   }
 
   const emptyProfile =

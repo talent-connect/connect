@@ -1,8 +1,7 @@
 import React from 'react'
-import { Content } from 'react-bulma-components'
 import FormSelect from '../../../components/atoms/FormSelect'
-import FormInput from '../../../components/atoms/FormInput'
 import Editable from '../../../components/molecules/Editable'
+import PipeList from '../../../components/molecules/PipeList'
 import { RedProfile } from '../../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../../redux/types'
@@ -57,9 +56,7 @@ const Languages = ({ profile, profileSaveStart }: any) => {
 
   const readLanguages = () => {
     return (
-      <Content className="profile__list">
-        {languages && languages.map((language: any, index: number) => <span key={`${language}_${index}`}>{language}</span>)}
-      </Content>
+      <PipeList items={languages} />
     )
   }
 

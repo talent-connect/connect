@@ -85,7 +85,6 @@ const validationSchema = Yup.object({
     .label('What are you currently doing')
 })
 
-// props: FormikProps<AboutFormValues>
 const Occupation = ({ profile, profileSaveStart }: any) => {
   const {
     id,
