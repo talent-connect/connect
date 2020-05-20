@@ -1,0 +1,55 @@
+{
+  "button": {
+    "signUp": "sign-up",
+    "signUpNow": "sign-up now!",
+    "login": "log-in",
+    "sayHello": "say hello!"
+  },
+  "footer": {
+    "name": "ReDI School Website",
+    "copyright": "By ReDI School",
+    "socialMediaHeadline": "Follow Us",
+    "contact": "Contact",
+    "faq": "FAQ",
+    "transparency": "Transparency",
+    "cookies": "Cookie policy",
+    "dataPolicy": "Data privacy policy"
+  },
+  "preFooter": {
+    "headline": "Want to get in touch?",
+    "content": "If you have questions or just want to say hello, please do not hesitate to contact us!"
+  },
+  "common": {},
+  "loggedInArea": {},
+  "loggedOutArea": {
+    "homePage": {
+      "hero": {
+        "headline": "Welcome to ReDI Connect",
+        "content1": "Are you ready for the future of work?",
+        "content2": "We connect thriving professionals from the digital industry with students and alumni of our Digital Career Program."
+      },
+      "program": {
+        "subHeadline": "about redi connect",
+        "headline": "What our Mentorship Program is all about ...",
+        "steps": {
+          "step1": {
+            "content": "Connect yourself with the right mentor/ mentee",
+            "headline": "1. Set up your profile"
+          },
+          "step2": {
+            "content": "Get/ give career and personal advice and support",
+            "headline": "2. Get connected"
+          },
+          "step3": {
+            "content": "Schedule meetings to stay on track",
+            "headline": "3. Plan meetings"
+          },
+          "step4": {
+            "content": "Get advice on how to best connect offline",
+            "headline": "4. Meet in real life"
+          }
+        }
+      }
+    }
+  }
+}

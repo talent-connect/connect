@@ -1,10 +1,12 @@
 import React from 'react'
 import { Columns, Container, Section } from 'react-bulma-components'
+import { useTranslation } from 'react-i18next'
 import Icons from '../atoms/MediaIcons'
 import './Footer.scss'
 
 const RediFooter = () => {
   const year = new Date().getFullYear()
+  const { t } = useTranslation()
 
   return (
     <footer className="footer">
@@ -13,12 +15,12 @@ const RediFooter = () => {
           <Columns>
             <Columns.Column className="is-hidden-mobile">
               <p>
-                <a href="https://www.redi-school.org/">ReDI School Website</a>
+                <a href="https://www.redi-school.org/">{t('footer.name')}</a>
               </p>
-              <p>&copy; {year} By ReDI School</p>
+              <p>&copy; {year} {t('footer.copyright')}</p>
             </Columns.Column>
             <Columns.Column className="is-hidden-tablet footer--headline">
-              <p className="is-size-5">Follow us</p>
+              <p className="is-size-5">{t('footer.SMHeadline')}</p>
               <Icons />
             </Columns.Column>
             <Columns.Column className="footer--links">
@@ -28,12 +30,12 @@ const RediFooter = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Contact
+                  {t('footer.contact')}
                 </a>
               </p>
               <p>
                 <a href="/" target="_blank" rel="noopener noreferrer">
-                  FAQ
+                  {t('footer.faq')}
                 </a>
               </p>
               <p>
@@ -42,11 +44,11 @@ const RediFooter = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Transparency
+                  {t('footer.transparency')}
                 </a>
               </p>
               <p>
-                <a href="/">Cookie policy</a>
+                <a href="/">{t('footer.cookies')}</a>
               </p>
               <p>
                 <a
@@ -54,12 +56,12 @@ const RediFooter = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Data privacy policy
+                  {t('footer.dataPolicy')}
                 </a>
               </p>
             </Columns.Column>
             <Columns.Column className="is-hidden-mobile is-narrow footer--headline">
-              <p>Follow us</p>
+              <p>{t('footer.socialMediaHeadline')}</p>
               <Icons />
             </Columns.Column>
             <Columns.Column
@@ -69,10 +71,10 @@ const RediFooter = () => {
               className="is-hidden-tablet"
             >
               <span>
-                <a href="https://www.redi-school.org/">ReDI School Website</a>
+                <a href="https://www.redi-school.org/">{t('footer.name')}</a>
               </span>
               <span className="is-pulled-right">
-                &copy; {year} By ReDI School
+                &copy; {year} {t('footer.copyright')}
               </span>
             </Columns.Column>
           </Columns>

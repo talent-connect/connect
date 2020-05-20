@@ -7,6 +7,7 @@ import {
 } from 'react-bulma-components'
 import Heading from '../atoms/Heading'
 import { useHistory } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import Button from '../atoms/Button'
 import { ReactComponent as Hello } from '../../assets/images/hello.svg'
 import { ReactComponent as HelloMobile } from '../../assets/images/hello-mobile.svg'
@@ -15,6 +16,7 @@ import './PreFooter.scss'
 
 const PreFooter = () => {
   const history = useHistory()
+  const { t } = useTranslation()
 
   return (
     <Section className="default-background">
@@ -22,18 +24,17 @@ const PreFooter = () => {
         <Columns vCentered>
           <Columns.Column size={4} className="is-four-fifths-mobile">
             <Heading>
-              Want to get in touch?
+              {t('preFooter.headline')}
             </Heading>
             <Content
               renderAs="p"
               className="is-size-4 is-size-5-mobile"
             >
-              If you have questions or just want to say hello, please do not
-              hesitate to contact us!
+              {t('preFooter.content')}
             </Content>
             <Content>
               <Button size="large" onClick={() => history.push('/front/signup-landing')} >
-                say hello!
+                {t('button.sayHello')}
               </Button>
             </Content>
           </Columns.Column>
