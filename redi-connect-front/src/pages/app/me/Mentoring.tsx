@@ -62,18 +62,11 @@ const Mentoring = ({ profile, profileSaveStart }: Props) => {
 
   const { categories: selectedCategories } = formik.values
 
-  // const categoryObject = Object.assign({}, ...availableCategories.map(category => ({ [category.id]: category.label })))
-
-  const readMentoring = () => {
-    return <Tag.Group>
-      {categories.map(
-        categoryId =>
-          <Tag key={categoryId} size="large" rounded>
-            {categoriesIdToLabelMap[categoryId]}
-          </Tag>
-      )}
-    </Tag.Group>
-  }
+  const readMentoring = categories.map(categoryId =>
+    <Tag key={categoryId} size="large" rounded>
+      {categoriesIdToLabelMap[categoryId]}
+    </Tag>
+  )
 
   const categoriesChange = (e: any) => {
     e.persist()
@@ -93,7 +86,7 @@ const Mentoring = ({ profile, profileSaveStart }: Props) => {
       title="Mentoring Topics"
       onSave={() => formik.handleSubmit()}
       savePossible={(formik.dirty && formik.isValid)}
-      read={categories && readMentoring()}
+      read={categories && <Tag.Group>{readMentoring}</Tag.Group>}
       placeholder="Please pick up to three mentoring topics."
       className="mentoring"
     >

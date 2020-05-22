@@ -9,7 +9,7 @@ interface Props {
 const PipList = ({ items }: Props) => {
   return (
     <Element renderAs="ul" className="pipe-list">
-      {items.map((language: any, index: number) => <Element renderAs="li" key={`${language}_${index}`}>{language}</Element>)}
+      {items.map((item) => <Element renderAs="li" key={item}>{item}</Element>)}
     </Element>
   )
 }

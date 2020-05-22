@@ -68,20 +68,18 @@ const Contacts = ({ profile, profileSaveStart }: any) => {
     onSubmit: submitForm
   })
 
-  const readContacts = () => {
-    return <Content>
-      {contactEmail && <p>{contactEmail}</p>}
-      {(firstName || firstName) && <p>{firstName} {lastName}</p>}
-      {telephoneNumber && <p>{telephoneNumber}</p>}
-    </Content>
-  }
+  const readContacts = <>
+    {contactEmail && <p>{contactEmail}</p>}
+    {(firstName || firstName) && <p>{firstName} {lastName}</p>}
+    {telephoneNumber && <p>{telephoneNumber}</p>}
+  </>
 
   return (
     <Editable
       title="Contact Detail"
       onSave={ () => formik.handleSubmit()}
       savePossible={(formik.dirty && formik.isValid)}
-      read={readContacts()}
+      read={<Content>{readContacts}</Content>}
     >
       <FormInput
         name="firstName"

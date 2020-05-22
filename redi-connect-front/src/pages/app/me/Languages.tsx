@@ -54,19 +54,13 @@ const Languages = ({ profile, profileSaveStart }: any) => {
     onSubmit: submitForm
   })
 
-  const readLanguages = () => {
-    return (
-      <PipeList items={languages} />
-    )
-  }
-
   return (
     <Editable
       title="Languages"
       onSave={ () => formik.handleSubmit()}
       placeholder="Input languages you speak here."
       savePossible={(formik.dirty && formik.isValid)}
-      read={!!languages && readLanguages()}
+      read={!!languages && <PipeList items={languages} />}
     >
       <FormSelect
         label="Which of these languages do you speak?*"

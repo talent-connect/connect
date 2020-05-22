@@ -62,11 +62,8 @@ const PersonalDetail = ({ profile, profileSaveStart }: any) => {
     onSubmit: submitForm
   })
 
-  const readPersonalDetail = () => {
-    const detailsList = [gendersIdToLabelMap[gender]]
-    if (age) detailsList.push(`${age} years old`)
-    return <PipeList items={detailsList} />
-  }
+  const detailsList = [gendersIdToLabelMap[gender]]
+  if (age) detailsList.push(`${age} years old`)
 
   const emptyProfile =
     !!age ||
@@ -78,7 +75,7 @@ const PersonalDetail = ({ profile, profileSaveStart }: any) => {
       onSave={ () => formik.handleSubmit()}
       placeholder="Input your gender and age."
       savePossible={(formik.dirty && formik.isValid)}
-      read={emptyProfile && readPersonalDetail()}
+      read={emptyProfile && <PipeList items={detailsList} />}
     >
       <FormSelect
         label="Gender"
