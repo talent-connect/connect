@@ -104,7 +104,6 @@ export const AvailableMentorListing = (props: any) => {
               <Columns.Column size={4} key={mentor.id}>
                 <ProfileCard
                   profile={mentor}
-                  onClick={() => history.push(`/app/profile/${mentor.id}`)}
                 />
               </Columns.Column>
             ))}
@@ -121,7 +120,6 @@ export const AvailableMentorListing = (props: any) => {
               <Columns.Column size={4} key={mentor.id}>
                 <ProfileCard
                   profile={mentor}
-                  onClick={() => history.push(`/app/profile/${mentor.id}`)}
                 />
               </Columns.Column>
             ))}

@@ -1,23 +1,23 @@
 import React, { useEffect } from 'react'
-import { Element } from 'react-bulma-components'
-import Heading from '../../../components/atoms/Heading'
+import { Columns, Element } from 'react-bulma-components'
 import LoggedIn from '../../../components/templates/LoggedIn'
+import Heading from '../../../components/atoms/Heading'
+import { ProfileCard } from '../../../components/organisms/ProfileCard'
 import { RootState } from '../../../redux/types'
-import { getApplicants } from '../../../redux/matches/selectors'
+import { getMentees } from '../../../redux/matches/selectors'
 import { connect } from 'react-redux'
 import { matchesFetchStart } from '../../../redux/matches/actions'
 import { FullScreenCircle } from '../../../hooks/WithLoading'
 import { RedMatch } from '../../../types/RedMatch'
-import { ApplicationCard } from './ApplicationCard'
 
 interface Props {
   loading: boolean
-  applicants: RedMatch[]
+  mentees: RedMatch[]
   matchesFetchStart: Function
 }
 
 // TODO: add type to Props
-function Applications ({ loading, applicants, matchesFetchStart }: Props) {
+function Mentorship ({ loading, mentees, matchesFetchStart }: Props) {
   useEffect(() => {
     matchesFetchStart()
   }, [matchesFetchStart])
@@ -25,19 +25,26 @@ function Applications ({ loading, applicants, matchesFetchStart }: Props) {
   return (
     <LoggedIn>
       <FullScreenCircle loading={loading} />
-      {applicants.length === 0 && <>
+      {mentees.length === 0 && <>
         <Element>
-            Currently you have no applicants.
+            Currently you have no mentees.
         </Element>
         <Element>
             We will send you email when students apply for the mentorship.
         </Element>
       </>}
-      {applicants.length > 0 && <>
-        <Heading size="small">Application list</Heading>
-        { applicants.map((application: RedMatch) => (
-          <ApplicationCard key={application.id} application={application} />
-        ))}
+      {mentees.length > 0 && <>
+        <Heading size="small">Your mentees</Heading>
+        <Columns>
+          {mentees.map(
+            (mentee: RedMatch) =>
+              mentee.mentee && (
+                <Columns.Column size={4} key={mentee.id}>
+                  <ProfileCard profile={mentee.mentee} />
+                </Columns.Column>
+              )
+          )}
+        </Columns>
       </>}
     </LoggedIn>
   )
@@ -49,7 +56,7 @@ const mapDispatchToProps = (dispatch: any) => ({
 
 const mapStateToProps = (state: RootState) => ({
   loading: state.matches.loading,
-  applicants: getApplicants(state.matches)
+  mentees: getMentees(state.matches)
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Applications)
+export default connect(mapStateToProps, mapDispatchToProps)(Mentorship)

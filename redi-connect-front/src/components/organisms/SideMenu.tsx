@@ -34,8 +34,10 @@ const SideMenu = () => {
       {profile.userType === 'mentee' &&
         <MenuItem url="/app/dashboard">Find a mentor</MenuItem>
       }
-      {profile.userType === 'mentor' &&
+      {profile.userType === 'mentor' && <>
+        <MenuItem url="/app/mentorship">My Mentorship</MenuItem>
         <MenuItem url="/app/applications">Applications</MenuItem>
+      </>
       }
     </ul>
   )

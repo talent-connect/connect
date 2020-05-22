@@ -1,5 +1,7 @@
 import React from 'react'
 import { Card, Element, Tag } from 'react-bulma-components'
+import { useHistory } from 'react-router-dom'
+// import { LogMentoringSessionBtn } from '../../components/LogMentoringSessionBtn'
 import PipeList from '../../components/molecules/PipeList'
 import {
   AWS_PROFILE_AVATARS_BUCKET_BASE_URL,
@@ -10,13 +12,10 @@ import './ProfileCard.scss'
 
 import { RedProfile } from '../../types/RedProfile'
 
-interface Props {
-  profile: RedProfile
-  onClick?: Function
-}
+export const ProfileCard = ({ profile }: { profile: RedProfile }) => {
+  const history = useHistory()
 
-export const ProfileCard = ({ profile, onClick }: Props) => (
-  <Card className="profile-card" onClick={() => typeof onClick === 'function' && onClick()}>
+  return <Card className="profile-card" onClick={() => history.push(`/app/profile/${profile.id}`)}>
     {/* The avatar component may replace this image but for now it's a working solution */}
     <Card.Image className="profile-card__image" src={`${AWS_PROFILE_AVATARS_BUCKET_BASE_URL}${profile.profileAvatarImageS3Key}`} alt="" />
     <Card.Content>
@@ -31,6 +30,8 @@ export const ProfileCard = ({ profile, onClick }: Props) => (
           </Tag>
         ))}
       </Tag.Group>
+      {/* need a solution for displaying the button for loggin a sessioin
+      <LogMentoringSessionBtn menteeId={mentee.id} /> */}
     </Card.Content>
   </Card>
-)
+}
