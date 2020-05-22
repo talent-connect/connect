@@ -1,0 +1,11 @@
+.pipe-list {
+  li {
+    display: inline-block;
+  }
+  li+li {
+    &::before {
+    content: '|';
+    margin: 0 0.3rem;
+    }
+  }
+}

@@ -14,7 +14,8 @@ import * as Yup from 'yup'
 import { FormikValues, useFormik } from 'formik'
 
 import {
-  courses
+  courses,
+  courseIdToLabelMap
 } from '../../../config/config'
 
 const formCourses = courses.map(course => ({ value: course.id, label: course.label }))
@@ -55,18 +56,14 @@ const RediClass = ({ profile, profileSaveStart }: any) => {
     onSubmit: submitForm
   })
 
-  const readRediClass = () => {
-    return <Content>
-      <p>{formCourses.filter(course => course.value === mentee_currentlyEnrolledInCourse).map(course => course.label)}</p>
-    </Content>
-  }
+  const readRediClass = <p>{courseIdToLabelMap[mentee_currentlyEnrolledInCourse]}</p>
 
   return (
     <Editable
       title="Redi Class"
       onSave={ () => formik.handleSubmit()}
       savePossible={(formik.dirty && formik.isValid)}
-      read={readRediClass()}
+      read={<Content>{readRediClass}</Content>}
     >
       <FormSelect
         label="Which course are you taking at ReDI?"

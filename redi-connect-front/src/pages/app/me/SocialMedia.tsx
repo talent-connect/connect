@@ -62,13 +62,11 @@ const SocialMedia = ({ profile, profileSaveStart }: any) => {
     onSubmit: submitForm
   })
 
-  const readSocialMedia = () => {
-    return <Content>
-      {linkedInProfileUrl && <p>{linkedInProfileUrl}</p>}
-      {githubProfileUrl && <p>{githubProfileUrl}</p>}
-      {slackUsername && <p>{slackUsername}</p>}
-    </Content>
-  }
+  const readSocialMedia = <>
+    {linkedInProfileUrl && <p>{linkedInProfileUrl}</p>}
+    {githubProfileUrl && <p>{githubProfileUrl}</p>}
+    {slackUsername && <p>{slackUsername}</p>}
+  </>
 
   const isEmptyProfile = !!linkedInProfileUrl || !!githubProfileUrl || !!slackUsername
 
@@ -78,7 +76,7 @@ const SocialMedia = ({ profile, profileSaveStart }: any) => {
       onSave={ () => formik.handleSubmit()}
       savePossible={(formik.dirty && formik.isValid)}
       placeholder="Input your social media channels here."
-      read={isEmptyProfile && readSocialMedia()}
+      read={isEmptyProfile && <Content>{readSocialMedia}</Content>}
     >
       <FormInput
         name="linkedInProfileUrl"

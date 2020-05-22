@@ -85,7 +85,6 @@ const validationSchema = Yup.object({
     .label('What are you currently doing')
 })
 
-// props: FormikProps<AboutFormValues>
 const Occupation = ({ profile, profileSaveStart }: any) => {
   const {
     id,
@@ -135,44 +134,42 @@ const Occupation = ({ profile, profileSaveStart }: any) => {
     userType: user
   } = formik.values
 
-  const readOccupation = () => {
-    return <Content>
-      {user === 'mentor' && (
-        <>
-          <p>{mentor_occupation}</p>
-          <p>{mentor_workPlace}</p>
-        </>
-      )}
-      {user === 'mentee' && (
-        <>
-          <p>{formMenteeOccupationCategories.filter(level => level.value === mentee_occupationCategoryId).map(level => level.label)}</p>
-          {occupation === 'job' && (
-            <>
-              <p>{mentee_occupationJob_placeOfEmployment}</p>
-              <p>{mentee_occupationJob_position}</p>
-            </>
-          )}
-          {occupation === 'student' && (
-            <>
-              <p>{mentee_occupationStudent_studyPlace}</p>
-              <p>{mentee_occupationStudent_studyName}</p>
-            </>
-          )}
-          {occupation === 'lookingForJob' && (
-            <>
-              <p>{mentee_occupationLookingForJob_what}</p>
-            </>
-          )}
-          {occupation === 'other' && (
-            <>
-              <p>{mentee_occupationOther_description}</p>
-            </>
-          )}
-          <p>{formEducationLevels.filter(level => level.value === mentee_highestEducationLevel).map(level => level.label)}</p>
-        </>
-      )}
-    </Content>
-  }
+  const readOccupation = <>
+    {user === 'mentor' && (
+      <>
+        <p>{mentor_occupation}</p>
+        <p>{mentor_workPlace}</p>
+      </>
+    )}
+    {user === 'mentee' && (
+      <>
+        <p>{formMenteeOccupationCategories.filter(level => level.value === mentee_occupationCategoryId).map(level => level.label)}</p>
+        {occupation === 'job' && (
+          <>
+            <p>{mentee_occupationJob_placeOfEmployment}</p>
+            <p>{mentee_occupationJob_position}</p>
+          </>
+        )}
+        {occupation === 'student' && (
+          <>
+            <p>{mentee_occupationStudent_studyPlace}</p>
+            <p>{mentee_occupationStudent_studyName}</p>
+          </>
+        )}
+        {occupation === 'lookingForJob' && (
+          <>
+            <p>{mentee_occupationLookingForJob_what}</p>
+          </>
+        )}
+        {occupation === 'other' && (
+          <>
+            <p>{mentee_occupationOther_description}</p>
+          </>
+        )}
+        <p>{formEducationLevels.filter(level => level.value === mentee_highestEducationLevel).map(level => level.label)}</p>
+      </>
+    )}
+  </>
 
   const isEmptyProfile =
     !!mentor_occupation ||
@@ -185,7 +182,7 @@ const Occupation = ({ profile, profileSaveStart }: any) => {
       onSave={() => formik.handleSubmit()}
       placeholder="Input your information about your Education and Occupation here."
       savePossible={(formik.dirty && formik.isValid)}
-      read={isEmptyProfile && readOccupation()}
+      read={isEmptyProfile && <Content>{readOccupation}</Content>}
     >
       {user === 'mentor' && (
         <>

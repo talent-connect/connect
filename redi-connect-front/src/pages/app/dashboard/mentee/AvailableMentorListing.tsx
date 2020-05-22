@@ -1,13 +1,10 @@
 import {
-  Grid,
-  createStyles,
-  withStyles,
-  Paper,
-  Theme
+  Grid
 } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import intersection from 'lodash/intersection'
-import { MentorCard } from '../../../../components/MentorCard'
+import { Columns } from 'react-bulma-components'
+import { ProfileCard } from '../../../../components/organisms/ProfileCard'
 import { useLoading } from '../../../../hooks/WithLoading'
 import { getMentors } from '../../../../services/api/api'
 import { history } from '../../../../services/history/history'
@@ -15,33 +12,6 @@ import { RedProfile } from '../../../../types/RedProfile'
 import { getRedProfile } from '../../../../services/auth/auth'
 import { CategoryChip } from '../../../../components/CategoryChip'
 import { useList } from '../../../../hooks/useList'
-
-const styles = createStyles((theme: Theme) => ({
-  categoryChip: {
-    marginTop: '0.5em',
-    marginRight: '1em',
-    color: 'white',
-    fontSize: '12px',
-    float: 'left'
-  },
-  paper: {
-    ...theme.mixins.gutters(),
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
-    marginBottom: '2em'
-  },
-  header: {
-    marginTop: 0
-  }
-}))
-
-interface Props {
-  classes: {
-    categoryChip: string
-    paper: string
-    header: string
-  }
-}
 
 type MentorCatCount = RedProfile & { categoryMatchCount: number };
 
@@ -55,8 +25,7 @@ const addCategoryMatchCount = (
     })
   )
 
-export const AvailableMentorListing = withStyles(styles)((props: any) => {
-  const classes: any = props.classes
+export const AvailableMentorListing = (props: any) => {
   const { Loading, isLoading, setLoading } = useLoading()
   const [_mentors, setMentors] = useState<RedProfile[]>([])
   const currentUserCategories = getRedProfile().categories
@@ -106,10 +75,10 @@ export const AvailableMentorListing = withStyles(styles)((props: any) => {
         </h4>
       )}
       {mentorsWithSharedCategories.length > 0 && (
-        <Paper className={(props as any).classes.paper}>
+        <>
           <Grid container direction="column">
             <Grid item>
-              <h1 className={(props as any).classes.header}>
+              <h1>
                 Recommended mentors
               </h1>
             </Grid>
@@ -118,7 +87,6 @@ export const AvailableMentorListing = withStyles(styles)((props: any) => {
                 <CategoryChip
                   key={catId}
                   categoryId={catId}
-                  className={classes.categoryChip}
                   overrideBackgroundColour={
                     !activeCategories.includes(catId) ? '#b2b2b2' : ''
                   }
@@ -131,35 +99,35 @@ export const AvailableMentorListing = withStyles(styles)((props: any) => {
               selected of interest in your profile.
             </Grid>
           </Grid>
-          <Grid container spacing={2}>
+          <Columns>
             {mentorsWithSharedCategories.map((mentor: RedProfile) => (
-              <Grid item xs={12} sm={6} lg={4} xl={2} key={mentor.id}>
-                <MentorCard
-                  mentor={mentor}
+              <Columns.Column size={4} key={mentor.id}>
+                <ProfileCard
+                  profile={mentor}
                   onClick={() => history.push(`/app/profile/${mentor.id}`)}
                 />
-              </Grid>
+              </Columns.Column>
             ))}
-          </Grid>
-        </Paper>
+          </Columns>
+        </>
       )}
       {mentorsWithoutSharedCategories.length > 0 && (
-        <Paper className={(props as any).classes.paper}>
-          <h1 className={(props as any).classes.header}>
+        <>
+          <h1>
             All available mentors
           </h1>
-          <Grid container spacing={2}>
+          <Columns>
             {mentorsWithoutSharedCategories.map((mentor: RedProfile) => (
-              <Grid item xs={12} sm={6} lg={4} xl={2} key={mentor.id}>
-                <MentorCard
-                  mentor={mentor}
+              <Columns.Column size={4} key={mentor.id}>
+                <ProfileCard
+                  profile={mentor}
                   onClick={() => history.push(`/app/profile/${mentor.id}`)}
                 />
-              </Grid>
+              </Columns.Column>
             ))}
-          </Grid>
-        </Paper>
+          </Columns>
+        </>
       )}
     </>
   )
-})
+}

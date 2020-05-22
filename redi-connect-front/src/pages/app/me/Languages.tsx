@@ -1,8 +1,7 @@
 import React from 'react'
-import { Content } from 'react-bulma-components'
 import FormSelect from '../../../components/atoms/FormSelect'
-import FormInput from '../../../components/atoms/FormInput'
 import Editable from '../../../components/molecules/Editable'
+import PipeList from '../../../components/molecules/PipeList'
 import { RedProfile } from '../../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../../redux/types'
@@ -55,21 +54,13 @@ const Languages = ({ profile, profileSaveStart }: any) => {
     onSubmit: submitForm
   })
 
-  const readLanguages = () => {
-    return (
-      <Content className="profile__list">
-        {languages && languages.map((language: any, index: number) => <span key={`${language}_${index}`}>{language}</span>)}
-      </Content>
-    )
-  }
-
   return (
     <Editable
       title="Languages"
       onSave={ () => formik.handleSubmit()}
       placeholder="Input languages you speak here."
       savePossible={(formik.dirty && formik.isValid)}
-      read={!!languages && readLanguages()}
+      read={!!languages && <PipeList items={languages} />}
     >
       <FormSelect
         label="Which of these languages do you speak?*"

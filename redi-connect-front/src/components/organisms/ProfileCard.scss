@@ -1,0 +1,18 @@
+.profile-card {
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+
+  &__image {
+    img {
+      height: 9.5rem;
+      overflow: hidden;
+      object-fit: cover;
+    }
+  }
+
+  &__tags {
+    margin-top: 1rem;
+  }
+}
+
