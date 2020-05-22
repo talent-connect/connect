@@ -9,6 +9,7 @@ const config = {
   secretAccessKey: process.env.EMAILER_AWS_SECRET_KEY,
   region: process.env.EMAILER_AWS_REGION,
 };
+const { buildFrontendUrl } = require('./build-frontend-url')
 
 const ses = new aws.SES(config);
 
@@ -51,22 +52,6 @@ const sendEmailFactory = (to, subject, body, rediLocation) => {
     },
   });
 };
-
-function buildFrontendUrl(env, rediLocation) {
-  if (env === 'production' && rediLocation === 'berlin') {
-    return 'https://connect.redi-school.org'
-  } else if (env === 'production' && rediLocation === 'munich') {
-    return 'https://connect.munich.redi-school.org'
-  } else if (env === 'demonstration') {
-    return 'https://app.demo.connect.redi-school.org'
-  } else if (env === 'development') {
-    return 'http://127.0.0.1:3000'
-  } else if (env === 'development') {
-    return 'http://127.0.0.1:3000'
-  } else {
-    return 'http://127.0.0.1:3000'
-  } 
-}
 
 const RECIPIENT = 'career@redi-school.org';
 

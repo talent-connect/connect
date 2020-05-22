@@ -14,12 +14,15 @@ import {
   Typography,
   Box,
 } from '@material-ui/core';
+import { capitalize } from 'lodash'
 import { Link as RouterLink } from 'react-router-dom';
 import { Lock as LockIcon, Person as PersonIcon } from '@material-ui/icons';
 import { Formik, FormikProps, FormikActions, FormikValues } from 'formik';
 import { history } from '../../../services/history/history';
 import { login, fetchSaveRedProfile } from '../../../services/api/api';
-import { saveAccessToken } from '../../../services/auth/auth';
+import { saveAccessToken, getRedProfile } from '../../../services/auth/auth';
+import { RediLocation } from '../../../types/RediLocation'
+import { buildFrontendUrl } from '../../../utils/build-frontend-url';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -59,8 +62,13 @@ const validationSchema = Yup.object({
     .max(255),
 });
 
+function makeLocationString(location: string) {
+  return `${location.charAt(0).toUpperCase()}${location.substr(1)}`
+}
+
 export default function Login() {
   const [loginError, setLoginError] = useState<string>('');
+  const [isWrongRediLocationError, setIsWrongRediLocationError] = useState<boolean>(false);
 
   const submitForm = async (
     values: FormikValues,
@@ -70,7 +78,10 @@ export default function Login() {
     try {
       const accessToken = await login(formValues.username, formValues.password);
       saveAccessToken(accessToken);
-      await fetchSaveRedProfile(accessToken);
+      const redProfile = await fetchSaveRedProfile(accessToken);
+      if (redProfile.rediLocation !== (process.env.REACT_APP_REDI_LOCATION as RediLocation)) {
+        return setIsWrongRediLocationError(true)
+      }
       history.push('/app/dashboard');
     } catch (err) {
       setLoginError('Invalid username or password');
@@ -84,7 +95,7 @@ export default function Login() {
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={submitForm}
-        render={props => <Form {...props} loginError={loginError} />}
+        render={props => <Form {...props} loginError={loginError} isWrongRediLocationError={isWrongRediLocationError} />}
       />
     </LoggedOutLayout>
   );
@@ -94,6 +105,7 @@ const Form = withStyles(styles)(
   (
     props: FormikProps<LoginFormValues> & {
       loginError: string;
+      isWrongRediLocationError: boolean;
       classes: {
         loginError: string;
         headingMargin: string;
@@ -104,6 +116,7 @@ const Form = withStyles(styles)(
     const {
       classes,
       loginError,
+      isWrongRediLocationError,
       values: { username, password },
       errors,
       touched,
@@ -129,6 +142,14 @@ const Form = withStyles(styles)(
         >
           Login to ReDI Connect
         </Typography>
+        {isWrongRediLocationError && (
+          <Paper className={classes.loginError}>
+            You've tried to log into ReDI Connect <strong>{capitalize((process.env.REACT_APP_REDI_LOCATION as RediLocation))}</strong>. 
+            <br /><br />Your user account is linked to ReDI Connect <strong>{capitalize(getRedProfile().rediLocation)}</strong>.
+            <br /><br />Please use ReDI Connect <strong>{capitalize(getRedProfile().rediLocation)}</strong> that you may always access at this address:
+            <br /><br /><a href={buildFrontendUrl(process.env.NODE_ENV, getRedProfile().rediLocation)}>{buildFrontendUrl(process.env.NODE_ENV, getRedProfile().rediLocation)}</a>
+          </Paper>
+        )}
         {loginError && (
           <Paper className={classes.loginError}>{loginError}</Paper>
         )}
