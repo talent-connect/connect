@@ -10,10 +10,11 @@ import {
 } from 'react-bulma-components'
 import Heading from '../atoms/Heading'
 import { useTranslation } from 'react-i18next'
-import career from '../../assets/images/career.svg'
-import search from '../../assets/images/search.svg'
-import calender from '../../assets/images/calender.svg'
-import offline from '../../assets/images/offline.svg'
+import { ReactComponent as Career } from '../../assets/images/career.svg'
+import { ReactComponent as Search } from '../../assets/images/search.svg'
+import { ReactComponent as Calender } from '../../assets/images/calender.svg'
+import { ReactComponent as Offline } from '../../assets/images/offline.svg'
+
 import './RediProgram.scss'
 
 const RediProgram = () => {
@@ -21,22 +22,22 @@ const RediProgram = () => {
 
   const programSteps = [
     {
-      image: search,
+      image: Career,
       content: t('loggedOutArea.homePage.program.steps.step1.content'),
       headline: t('loggedOutArea.homePage.program.steps.step1.headline')
     },
     {
-      image: career,
+      image: Search,
       content: t('loggedOutArea.homePage.program.steps.step2.content'),
       headline: t('loggedOutArea.homePage.program.steps.step2.headline')
     },
     {
-      image: calender,
+      image: Calender,
       content: t('loggedOutArea.homePage.program.steps.step3.content'),
       headline: t('loggedOutArea.homePage.program.steps.step3.headline')
     },
     {
-      image: offline,
+      image: Offline,
       content: t('loggedOutArea.homePage.program.steps.step4.content'),
       headline: t('loggedOutArea.homePage.program.steps.step4.headline')
     }
@@ -55,21 +56,21 @@ const RediProgram = () => {
       </Container>
       <Container>
         <Columns>
-          {programSteps.map(step => (
-            <Columns.Column className="has-text-centered" key={step.content}>
-              <Image src={step.image} className="program__img" />
+          {programSteps.map(({ image: MyImage, content, headline }) =>
+            <Columns.Column className="has-text-centered" key={content}>
+              <MyImage className="program__img"/>
               <BulmaHeading
                 size={4}
                 renderAs="h3"
                 className="is-hidden-tablet is-marginless"
               >
-                {step.headline}
+                {headline}
               </BulmaHeading>
               <Level className="is-size-4 is-size-5-mobile program__text">
-                {step.content}
+                {content}
               </Level>
             </Columns.Column>
-          ))}
+          )}
         </Columns>
       </Container>
     </Section>

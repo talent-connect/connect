@@ -4,7 +4,6 @@
 .program {
   &__img {
     margin-top: 3.5rem;
-    margin-bottom: 1.5rem;
 
     @include mobile() {
       margin-bottom: .75rem;
@@ -12,7 +11,7 @@
   }
 
   &__text {
-    margin: 1rem 1.25rem;
+    margin: 1.5rem 1.25rem 1rem 1.25rem;
 
     @include mobile() {
       margin: .25rem 4rem;
