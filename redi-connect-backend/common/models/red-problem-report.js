@@ -51,14 +51,16 @@ module.exports = function (RedProblemReport) {
             tap(({ menteeProfile }) => {
               sendMentorCancelledMentorshipNotificationEmail(
                 menteeProfile.contactEmail,
-                menteeProfile.firstName
+                menteeProfile.firstName,
+                ctx.options.currentUser.redProfile.rediLocation
               )
                 .pipe(
                   switchMap(() =>
                     sendToMentorConfirmationOfMentorshipCancelled(
                       ctx.options.currentUser.redProfile.contactEmail,
                       ctx.options.currentUser.redProfile.firstName,
-                      `${menteeProfile.firstName} ${menteeProfile.lastName}`
+                      `${menteeProfile.firstName} ${menteeProfile.lastName}`,
+                      ctx.options.currentUser.redProfile.rediLocation
                     )
                   )
                 )
@@ -66,13 +68,15 @@ module.exports = function (RedProblemReport) {
             }),
             switchMap(({ redMatchInst }) =>
               Rx.bindNodeCallback(
-                redMatchInst.updateAttribute.bind(redMatchInst)
-              )('status', 'cancelled')
+                redMatchInst.updateAttributes.bind(redMatchInst)
+              )({ status: 'cancelled', rediLocation: ctx.options.currentUser.redProfile.id })
             )
           )
           .subscribe(
             redMatchInst => null,
-            err => console.log('Error occured: ' + err)
+            err => {
+              console.log('Error occured: ' + err)
+            }
           )
       }
       sendReportProblemEmail(

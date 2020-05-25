@@ -107,6 +107,9 @@ const Mentoring = ({ profile, profileSaveStart }: Props) => {
 }
 
 const CategoryGroup = ({ id, label, selectedCategories, onChange, formik }: any) => {
+  // The current REDI_LOCATION might not use the current CategoryGroup (e.g.
+  // Munich doesnt, at the time or writing, use 'coding' or 'other'. If it's the case, return null
+  if (!categoriesByGroup[id]) return null
   return (<>
     <Columns.Column
       size={4}

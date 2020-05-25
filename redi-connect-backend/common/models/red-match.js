@@ -18,12 +18,37 @@ module.exports = function (RedMatch) {
    */
 
   RedMatch.observe('before save', function updateTimestamp (ctx, next) {
+    if (process.env.NODE_ENV === 'seeding') return next()
     if (ctx.instance) {
       if (ctx.isNewInstance) ctx.instance.createdAt = new Date()
       ctx.instance.updatedAt = new Date()
     } else {
       ctx.data.updatedAt = new Date()
     }
+
+    // if current user is admin, don't run any of the logic below
+    if (ctx.options && ctx.options.currentUser && ctx.options.currentUser.email === 'cloud-accounts@redi-school.org') return next()
+
+    // Note: tricky handling of the .rediLocation property coming up. This fix was done on 17 May 2020.
+    // Ideally, we should get .rediLocation from ctx.options.currentUser.redProfle. This was how it was coded,
+    // but it caused a bug. When a mentee user requests a mentorship from a mentor, the remote method further
+    // down in this file is triggered: requestMentorship. That method does a RedMatch.create operation, which
+    // triggers this method. When run, ctx.options.currentUser is NOT popuplated. After some googling and perusing
+    // the Loopback docs, there does not seem to be an easy way of ensuring the context given to a remote method
+    // propagates down to the operation hooks (e.g. "before save"). So, we've included a "hack" where we for this
+    // special case check if the instance (ctx.instance or ctx.data) _already_ has the .rediLocation property set.
+    // If so, we allow it to stay the way it is. This does open the door for users specifying this by themselves,
+    // but given the usage of ReDI Connect, this is an "acceptable risk". However, whenever Loopback as the backend
+    // is replaced, make sure to TODO: replace it.
+    if (ctx.instance) {
+      if (ctx.isNewInstance) ctx.instance.createdAt = new Date()
+      ctx.instance.updatedAt = new Date()
+      if (!ctx.instance.rediLocation) ctx.instance.rediLocation = ctx.options.currentUser.redProfile.rediLocation
+    } else {
+      ctx.data.updatedAt = new Date()
+      if (!ctx.data.rediLocation) ctx.data.rediLocation = ctx.options.currentUser.redProfile.rediLocation
+    }
+
     next()
   })
 
@@ -78,13 +103,15 @@ module.exports = function (RedMatch) {
 
     redMatch = await redMatch.updateAttributes({
       status: 'accepted',
-      matchMadeActiveOn: new Date()
+      matchMadeActiveOn: new Date(),
+      rediLocation: options.currentUser.redProfile.rediLocation
     })
 
     await sendMentorshipAcceptedEmail(
       [mentee.contactEmail, mentor.contactEmail],
       mentor.firstName,
-      mentee.firstName
+      mentee.firstName,
+      options.currentUser.redProfile.rediLocation
     ).toPromise()
 
     const menteePendingMatches = await RedMatch.find({
@@ -97,10 +124,10 @@ module.exports = function (RedMatch) {
 
     await Promise.all(
       menteePendingMatches.map(pendingMatch => {
-        return pendingMatch.updateAttribute(
-          'status',
-          'invalidated-as-other-mentor-accepted'
-        )
+        return pendingMatch.updateAttributes({
+          status: 'invalidated-as-other-mentor-accepted',
+          rediLocation: options.currentUser.redProfile.rediLocation
+        })
       })
     )
 
@@ -110,7 +137,8 @@ module.exports = function (RedMatch) {
         return sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted(
           pendingMatchData.mentor.contactEmail,
           pendingMatchData.mentee.firstName,
-          pendingMatchData.mentor.firstName
+          pendingMatchData.mentor.firstName,
+          options.currentUser.redProfile.rediLocation
         ).toPromise()
       })
     )
@@ -133,7 +161,8 @@ module.exports = function (RedMatch) {
       status: 'applied',
       applicationText,
       mentorId,
-      menteeId: options.currentUser.redProfile.id
+      menteeId: options.currentUser.redProfile.id,
+      rediLocation: options.currentUser.redProfile.rediLocation
     }
     redProfileFind({ where: { id: mentorId } })
       .pipe(
@@ -143,7 +172,8 @@ module.exports = function (RedMatch) {
             mentorProfile.firstName,
             `${options.currentUser.redProfile.firstName} ${
               options.currentUser.redProfile.lastName
-            }`
+            }`,
+            options.currentUser.redProfile.rediLocation
           )
         )
       )

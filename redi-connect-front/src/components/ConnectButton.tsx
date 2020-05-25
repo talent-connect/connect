@@ -28,8 +28,8 @@ export const ConnectButton = connect(mapState)((props: any) => {
         <div onClick={e => e.stopPropagation()}>{children}</div>
       </Tooltip>
     ) : (
-      <>{children}</>
-    )
+        <>{children}</>
+      );
   return (
     <Wrapper>
       <Button
@@ -40,14 +40,14 @@ export const ConnectButton = connect(mapState)((props: any) => {
           e.stopPropagation()
           if (
             window.confirm(
-              'Are you certain you would like to connect to this mentee?'
+              "Are you certain you would like to accept this mentorship request?"
             )
           ) {
             props.dispatch(matchesAcceptMentorshipStart(props.matchId))
           }
         }}
       >
-        Connect
+        Accept mentorship request
       </Button>
     </Wrapper>
   )

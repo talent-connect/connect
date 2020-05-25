@@ -2,6 +2,8 @@ ssl/
 mongodb-data/
 databkps/
 .idea/
+.vscode/
+.DS_Store
 
 redi-connect-backend/scripts/assets
 

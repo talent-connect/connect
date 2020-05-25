@@ -34,6 +34,9 @@ module.exports = function (RedUser) {
   RedUser.on('resetPasswordRequest', function (info) {
     const accessToken = encodeURIComponent(JSON.stringify(info.accessToken))
     const email = info.user.email
-    sendResetPasswordEmail(email, accessToken).subscribe()
+    info.user.redProfile(function getRedProfile (err, redProfileInst) {
+      const rediLocation = redProfileInst.toJSON().rediLocation
+      sendResetPasswordEmail(email, accessToken, rediLocation).subscribe()
+    })
   })
 }

@@ -69,7 +69,7 @@ export const Step0DataConsent = withStyles(styles)(
             <p>
               We want to help you reach your (career) goals by finding you a
               personal mentor who can give you guidance. We invite professionals
-              that are working in the IT sector or in other companies in Berlin
+              that are working in the IT sector or in other companies
               to register at ReDI Connect in order to share their knowledge &
               experience with you. You get personal & career advice, learning
               from people with more work experience, build personal &

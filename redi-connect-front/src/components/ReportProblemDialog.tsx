@@ -86,8 +86,8 @@ const ReportProblemDialogConnected = connect()((props: any) => {
             ? 'mentor-report-about-mentee'
             : 'mentee-report-about-mentor',
         reporteeId: redProfileId
-      }
-      if (type === 'mentee') {
+      };
+      if (type === "mentor") {
         report.ifFromMentor_cancelMentorshipImmediately =
           values.ifFromMentor_cancelMentorshipImmediately
       }

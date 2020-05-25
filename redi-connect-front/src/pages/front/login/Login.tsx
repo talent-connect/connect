@@ -12,9 +12,12 @@ import {
 } from 'formik'
 import { history } from '../../../services/history/history'
 import { login, fetchSaveRedProfile } from '../../../services/api/api'
-import { saveAccessToken } from '../../../services/auth/auth'
+import { saveAccessToken, getRedProfile } from '../../../services/auth/auth'
 import { Columns, Form, Content } from 'react-bulma-components'
+import { capitalize } from 'lodash'
 import Button from '../../../components/atoms/Button'
+import { RediLocation } from '../../../types/RediLocation'
+import { buildFrontendUrl } from '../../../utils/build-frontend-url';
 
 interface LoginFormValues {
   username: string
@@ -38,8 +41,13 @@ const validationSchema = Yup.object({
     .max(255)
 })
 
+function makeLocationString(location: string) {
+  return `${location.charAt(0).toUpperCase()}${location.substr(1)}`
+}
+
 export default function Login () {
   const [loginError, setLoginError] = useState<string>('')
+  const [isWrongRediLocationError, setIsWrongRediLocationError] = useState<boolean>(false)
 
   const submitForm = useCallback((values, actions) => {
     (async (values: FormikValues, actions: FormikActions<LoginFormValues>) => {
@@ -50,7 +58,10 @@ export default function Login () {
           formValues.password
         )
         saveAccessToken(accessToken)
-        await fetchSaveRedProfile(accessToken)
+        const redProfile = await fetchSaveRedProfile(accessToken)
+        if (redProfile.rediLocation !== (process.env.REACT_APP_REDI_LOCATION as RediLocation)) {
+          return setIsWrongRediLocationError(true)
+        }
         actions.setSubmitting(false)
         history.push('/app/me')
       } catch (err) {
@@ -98,6 +109,15 @@ export default function Login () {
 
             <Form.Field>
               <Form.Help color="danger" className={loginError ? 'help--show' : ''}>{loginError && loginError}</Form.Help>
+              {isWrongRediLocationError && <>
+              
+                You've tried to log into ReDI Connect <strong>{capitalize((process.env.REACT_APP_REDI_LOCATION as RediLocation))}</strong>. 
+            <br /><br />Your user account is linked to ReDI Connect <strong>{capitalize(getRedProfile().rediLocation)}</strong>.
+            <br /><br />Please use ReDI Connect <strong>{capitalize(getRedProfile().rediLocation)}</strong> that you may always access at this address:
+            <br /><br /><a href={buildFrontendUrl(process.env.NODE_ENV, getRedProfile().rediLocation)}>{buildFrontendUrl(process.env.NODE_ENV, getRedProfile().rediLocation)}</a>
+
+              
+              </>}
             </Form.Field>
 
             <Form.Field
