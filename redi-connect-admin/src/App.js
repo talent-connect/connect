@@ -487,12 +487,14 @@ const RedProfileEdit = props => (
 
 const CategoriesInput = (props) => {
   const categories = categoriesByLocation[props.record.rediLocation]
-  return (<SelectArrayInput
-    {...props}
-    source='categories'
-    label={`Categories (ONLY for ${props.record.rediLocation})  `}
-    choices={categories.map(({ id, label }) => ({ id, name: label }))}
-  />)
+  return (
+    <SelectArrayInput
+      {...props}
+      source='categories'
+      label={`Categories (ONLY for ${props.record.rediLocation})  `}
+      choices={categories.map(({ id, label }) => ({ id, name: label }))}
+    />
+  )
 }
 
 const FullName = ({ record, sourcePrefix }) => {

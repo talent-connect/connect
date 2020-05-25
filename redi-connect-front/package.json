@@ -76,6 +76,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "eslint": "npx eslint . --ext .js,.jsx,.ts,.tsx",
+    "eslint:autofix": "npx eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "invalidate-cache:staging": "aws cloudfront create-invalidation --distribution-id E1HRU1RBE5MXQE --paths '/*' --profile redi-connect-deployment",
     "invalidate-cache:prod:berlin": "aws cloudfront create-invalidation --distribution-id E3MVMTF8ANMDW --paths '/*' --profile redi-connect-deployment",
     "invalidate-cache:prod:munich": "aws cloudfront create-invalidation --distribution-id E94A2JJ5XRS3M --paths '/*' --profile redi-connect-deployment",

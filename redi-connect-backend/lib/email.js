@@ -2,8 +2,6 @@
 
 const aws = require('aws-sdk')
 const Rx = require('rxjs')
-const { tap, catchError } = require('rxjs/operators')
-const _ = require('lodash')
 const config = {
   accessKeyId: process.env.EMAILER_AWS_ACCESS_KEY,
   secretAccessKey: process.env.EMAILER_AWS_SECRET_KEY,

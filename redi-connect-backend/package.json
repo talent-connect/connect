@@ -6,7 +6,9 @@
     "node": ">=6"
   },
   "scripts": {
-    "start": "node ."
+    "start": "node .",
+    "eslint": "npx eslint . --ext .js --fix",
+    "eslint:autofix": "npx eslint . --ext .js --fix --fix"
   },
   "dependencies": {
     "aws-sdk": "^2.418.0",
