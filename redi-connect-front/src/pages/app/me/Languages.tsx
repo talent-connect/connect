@@ -1,8 +1,7 @@
 import React from 'react'
-import { Content } from 'react-bulma-components'
 import FormSelect from '../../../components/atoms/FormSelect'
-import FormInput from '../../../components/atoms/FormInput'
 import Editable from '../../../components/molecules/Editable'
+import PipeList from '../../../components/molecules/PipeList'
 import { RedProfile } from '../../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../../redux/types'
@@ -21,7 +20,6 @@ const formLanguages = availableLanguages.map(language => ({ value: language, lab
 
 export interface LanguagesFormValues {
   languages: string[]
-  otherLanguages: string
 }
 
 const validationSchema = Yup.object({
@@ -35,8 +33,7 @@ const validationSchema = Yup.object({
 const Languages = ({ profile, profileSaveStart }: any) => {
   const {
     id,
-    languages,
-    otherLanguages
+    languages
   } = profile
 
   const submitForm = async (
@@ -47,8 +44,7 @@ const Languages = ({ profile, profileSaveStart }: any) => {
   }
 
   const initialValues: LanguagesFormValues = {
-    languages: languages || [],
-    otherLanguages
+    languages: languages || []
   }
 
   const formik = useFormik({
@@ -58,36 +54,19 @@ const Languages = ({ profile, profileSaveStart }: any) => {
     onSubmit: submitForm
   })
 
-  const readLanguages = () => {
-    return (
-      <Content className="profile__list">
-        {languages && languages.map((language: any, index: number) => <span key={`${language}_${index}`}>{language}</span>)}
-        {otherLanguages && <span>{otherLanguages}</span>}
-      </Content>
-    )
-  }
-
-  const isEmptyProfile = !!languages || !!otherLanguages
-
   return (
     <Editable
       title="Languages"
       onSave={ () => formik.handleSubmit()}
       placeholder="Input languages you speak here."
       savePossible={(formik.dirty && formik.isValid)}
-      read={isEmptyProfile && readLanguages()}
+      read={!!languages && <PipeList items={languages} />}
     >
       <FormSelect
         label="Which of these languages do you speak?*"
         name="languages"
         items={formLanguages}
         multiselect
-        {...formik}
-      />
-      <FormInput
-        name="otherLanguages"
-        label="Other languages"
-        placeholder="Any other languages?"
         {...formik}
       />
     </Editable>

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Redirect } from 'react-router'
 import { RootState } from '../../../../redux/types'
 import { AvailableMentorListing } from './AvailableMentorListing'
-import { LoggedInLayout } from '../../../../layouts/LoggedInLayout'
+import LoggedIn from '../../../../components/templates/LoggedIn'
 
 const mapState = (state: RootState) => ({
   currentMenteeUserHasActiveMentor:
@@ -13,10 +13,10 @@ const mapState = (state: RootState) => ({
 })
 
 export const DashboardMentee = connect(mapState)((props: any) => (
-  <LoggedInLayout>
+  <LoggedIn>
     {!props.currentMenteeUserHasActiveMentor && <AvailableMentorListing />}
     {props.currentMenteeUserHasActiveMentor && (
       <Redirect to={`/app/profile/${props.activeMentor.id}`} />
     )}
-  </LoggedInLayout>
+  </LoggedIn>
 ))

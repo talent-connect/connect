@@ -3,38 +3,43 @@ import {
   Container,
   Section,
   Columns,
-  Heading,
   Content
 } from 'react-bulma-components'
+import Heading from '../atoms/Heading'
 import { useHistory } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import Button from '../atoms/Button'
 import team from '../../assets/images/hero.svg'
-import './RediHero.scss'
 
 const RediHero = () => {
   const history = useHistory()
+  const { t } = useTranslation()
+
   return (
-    <Section className="hero">
+    <Section className="default-background">
       <Container>
-        <Columns>
-          <Columns.Column size={5} className="hero-column">
-            <Heading size={1} className="hero-column-heading">
-            Welcome to ReDI Connect
+        <Columns vCentered>
+          <Columns.Column size={5}>
+            <Heading>
+              {t('loggedOutArea.homePage.hero.headline')}
             </Heading>
-            <Columns.Column className="is-hidden-tablet">
-              <img src={team} alt="team" className="hero-column-img" />
+            <Columns.Column responsive={{ tablet: { hide: { value: true } } }}>
+              <img src={team} alt="team" />
             </Columns.Column>
-            <Content className="hero-column-content">
-            Are you ready for the future of work?<br />We connect thriving
-              professionals from the digital industry with students and alumni
-              of our Digital Career Program.{' '}
+            <Content
+              renderAs="p"
+              className="is-size-4 is-size-5-mobile double-block-space"
+            >
+              {t('loggedOutArea.homePage.hero.content1')}<br />{t('loggedOutArea.homePage.hero.content2')}
             </Content>
-            <Button size="large" onClick={() => history.push('/front/signup-landing')} >
-            sign-up now!
-            </Button>
+            <Content>
+              <Button size="large" onClick={() => history.push('/front/signup-landing')} >
+                {t('button.signUpNow')}
+              </Button>
+            </Content>
           </Columns.Column>
-          <Columns.Column offset={1} className="is-hidden-mobile">
-            <img src={team} alt="team" className="hero-column-img" />
+          <Columns.Column offset={1} responsive={{ mobile: { hide: { value: true } } }}>
+            <img src={team} alt="team" />
           </Columns.Column>
         </Columns>
       </Container>

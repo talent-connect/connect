@@ -77,7 +77,7 @@ export const RequestResetPasswordEmail = (props: any) => {
           <Teaser.SignUp />
         </Columns.Column>
         <Columns.Column size={5} offset={1}>
-          <Heading border>Forgot your password?</Heading>
+          <Heading border="bottomLeft">Forgot your password?</Heading>
           <Content size="large" renderAs="p">
             We’ll help you reset it and get back on track. We will send a recovery link to:
           </Content>

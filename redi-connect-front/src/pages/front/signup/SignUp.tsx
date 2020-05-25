@@ -130,6 +130,7 @@ export default function SignUp () {
   }
 
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: initialValues,
     validationSchema,
     onSubmit: submitForm
@@ -146,7 +147,7 @@ export default function SignUp () {
         </Columns.Column>
 
         <Columns.Column size={5} offset={1}>
-          <Heading border>Sign-up</Heading>
+          <Heading border="bottomLeft">Sign-up</Heading>
           <form onSubmit={e => e.preventDefault()} className="form">
             <FormInput
               name="firstName"
@@ -183,9 +184,9 @@ export default function SignUp () {
 
             {type === 'mentee' && (
               <FormSelect
-                label="Current ReDI Course (*for alumni last taken course)"
+                label="Current ReDI Course"
                 name="mentee_currentlyEnrolledInCourse"
-                placeholder=" "
+                placeholder="Choose your ReDI Course"
                 items={formCourses}
                 {...formik}
               />
@@ -205,7 +206,7 @@ export default function SignUp () {
               >
                 Code of Conduct
               </a>{' '}
-                of the ReDI School
+                of ReDI School
             </FormCheckbox>
 
             <FormCheckbox
@@ -222,10 +223,7 @@ export default function SignUp () {
                 Data Protection
               </a>
             </FormCheckbox>
-
-            <Form.Field>
-              <Form.Help color="danger" className={submitError ? 'help--show' : ''}>{submitError && 'An error occurred, please try again.'}</Form.Help>
-            </Form.Field>
+            <Form.Help color="danger" className={submitError ? 'help--show' : ''}>{submitError && 'An error occurred, please try again.'}</Form.Help>
             <Form.Field>
               <Form.Control>
                 <Button

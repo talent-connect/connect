@@ -77,13 +77,11 @@ const About = ({ profile, profileSaveStart }: any) => {
     onSubmit: submitForm
   })
 
-  const readAbout = () => {
-    return <Content>
-      {personalDescription && <p>{personalDescription}</p>}
-      {expectations && <p>{expectations}</p>}
-      {menteeCountCapacity && <p>{menteeCountCapacity}</p>}
-    </Content>
-  }
+  const readAbout = <>
+    {personalDescription && <p>{personalDescription}</p>}
+    {expectations && <p>{expectations}</p>}
+    {menteeCountCapacity && <p>{menteeCountCapacity}</p>}
+  </>
 
   // should fine a nicer solution here
   const isEmptyProfile = !!personalDescription || !!expectations || !!menteeCountCapacity
@@ -94,7 +92,7 @@ const About = ({ profile, profileSaveStart }: any) => {
       onSave={ () => formik.handleSubmit()}
       savePossible={(formik.dirty && formik.isValid)}
       placeholder="Please tell us a bit about yourself"
-      read={isEmptyProfile && readAbout()}
+      read={isEmptyProfile && <Content>{readAbout}</Content>}
     >
       <FormTextArea
         label="Tell us a few words about yourself (this will be displayed on your profile)* (100-600 characters)"

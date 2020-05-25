@@ -13,7 +13,10 @@
 @import "~bulma/sass/layout/section.sass";
 @import "~bulma/sass/elements/content.sass";
 @import "~bulma/sass/elements/tag.sass";
-
+@import "~bulma/sass/elements/box.sass";
+@import "~bulma/sass/components/modal.sass";
+@import "~bulma/sass/components/card.sass";
+@import "~bulma/sass/elements/image.sass";
 @import "~bulma-checkradio/src/sass/index.sass";
 
 //custom modifiers
@@ -54,14 +57,6 @@ a {
   font-weight: 800;
 }
 
-.form {
-  margin-top: 2rem;
-}
-
-.select select {
-  box-shadow: $input-shadow;
-}
-
 a:hover {
   text-decoration: underline;
 }
@@ -74,7 +69,6 @@ a:hover {
   letter-spacing: 1.5px;
 }
 
-
 .section {
   @include tablet {
     padding: $section-padding-medium;
@@ -85,6 +79,7 @@ a:hover {
 
     @include tablet {
       padding-bottom: 10rem;
+
       .container {
         margin-bottom: -10rem;
         padding-bottom: 10rem;
@@ -92,6 +87,7 @@ a:hover {
     }
   }
 }
+
 // TODO: should be transfered to a layout template
 // will be done the next time this view is reused
 .section.color-half {
@@ -103,11 +99,11 @@ a:hover {
 }
 
 .color-side-menu {
-  margin:-0.75rem auto;
+  margin: -0.75rem auto;
   padding: 0.75rem 0;
 
   @include tablet() {
-    margin:-3.25rem auto;
+    margin: -3.25rem auto;
     padding: 3.25rem 0;
     background: linear-gradient(90deg, $redi-blue-light 15.8%, $white 15.8%);
   }
@@ -121,12 +117,8 @@ a:hover {
 .tag.is-large {
   height: 2.5rem;
 }
-
-.profile__list {
-  span + span {
-    &::before {
-      content: '|';
-      margin: 0 0.3rem;
-    }
+.double-block-space {
+  @include tablet() {
+    margin-bottom: 2rem !important;
   }
 }

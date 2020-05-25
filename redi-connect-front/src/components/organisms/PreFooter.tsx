@@ -3,10 +3,11 @@ import {
   Container,
   Section,
   Columns,
-  Heading,
   Content
 } from 'react-bulma-components'
+import Heading from '../atoms/Heading'
 import { useHistory } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import Button from '../atoms/Button'
 import { ReactComponent as Hello } from '../../assets/images/hello.svg'
 import { ReactComponent as HelloMobile } from '../../assets/images/hello-mobile.svg'
@@ -15,32 +16,33 @@ import './PreFooter.scss'
 
 const PreFooter = () => {
   const history = useHistory()
+  const { t } = useTranslation()
 
   return (
-    <Section className="pre-footer">
+    <Section className="default-background">
       <Container>
-        <Columns>
+        <Columns vCentered>
           <Columns.Column size={4} className="is-four-fifths-mobile">
-            <Heading size={1} className="pre-footer-heading">
-              Want to get in touch?
+            <Heading>
+              {t('preFooter.headline')}
             </Heading>
-            <Content className="pre-footer-content">
-              If you have questions or just want to say hello, please do not
-              hesitate to contact us!
+            <Content
+              renderAs="p"
+              className="is-size-4 is-size-5-mobile double-block-space"
+            >
+              {t('preFooter.content')}
             </Content>
-            <Columns>
-              <Columns.Column className="is-four-fifths-mobile">
-                <Button size="large" onClick={() => history.push('/front/login')}>
-                  say hello!
-                </Button>
-              </Columns.Column>
-            </Columns>
+            <Content>
+              <Button size="large" onClick={() => history.push('/front/signup-landing')} >
+                {t('button.sayHello')}
+              </Button>
+            </Content>
           </Columns.Column>
           <Columns.Column className="is-hidden-mobile">
-            <Hello className="pre-footer-image" />
+            <Hello className="pre-footer__image" />
           </Columns.Column>
           <Columns.Column className="is-hidden-tablet">
-            <HelloMobile className="pre-footer-image" />
+            <HelloMobile className="pre-footer__image" />
           </Columns.Column>
         </Columns>
       </Container>

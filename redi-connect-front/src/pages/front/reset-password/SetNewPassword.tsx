@@ -113,7 +113,7 @@ export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
           <Teaser.SignUp />
         </Columns.Column>
         <Columns.Column size={5} offset={1}>
-          <Heading border>Enter your new password</Heading>
+          <Heading border="bottomLeft">Enter your new password</Heading>
           <Content size="large" renderAs="p">
             Please make sure that your new password has more than 8 characters.
           </Content>

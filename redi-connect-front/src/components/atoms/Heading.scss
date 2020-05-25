@@ -4,26 +4,49 @@
 .title {
   // is a class used in bulma, the border modifier
   // is just a way of adding our own styles
-  &--border {
-    position: relative;
-    padding-bottom: 2rem;
+  @include mobile() {
+    &.is-1 {
+      margin-bottom: 1rem;
+    }
+  }
+}
 
-    @include mobile() {
+.decoration {
+  position: relative;
+  padding-bottom: 2rem;
+
+  @include mobile() {
+    padding-bottom: 1rem;
+  }
+
+  &::after, &::before {
+    width: 3.25rem;
+    border: 2px solid $redi-orange-dark;
+    position: absolute;
+    border-radius: 2px;
+
+  }
+
+  &--topCenter {
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+
+    @include tablet() {
+      margin-top: 1rem;
       padding-bottom: 1rem;
-
-      &.is-1 {
-        margin-bottom: 1rem;
-      }
     }
 
-    &::after {
+    &::before {
       content: '';
-      width: 3.25rem;
-      border: 2px solid $redi-orange-dark;
-      position: absolute;
-      left: 0;
-      bottom: -2px;
-      border-radius: 2px;
+      left: 50%;
+      top: -2px;
+      transform: translate(-50%);
     }
+  }
+
+  &--bottomLeft::after {
+    content: '';
+    left: 0;
+    bottom: -2px;
   }
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 import groupBy from 'lodash/groupBy'
-import { Columns, Tag, Heading, Element } from 'react-bulma-components'
+import { Columns, Tag, Heading, Element, Content } from 'react-bulma-components'
 import FormCheckbox from '../../../components/atoms/FormCheckbox'
 import Editable from '../../../components/molecules/Editable'
 import { RedProfile } from '../../../types/RedProfile'
@@ -32,8 +32,8 @@ const validationSchema = Yup.object({
 const categoriesByGroup = groupBy(availableCategories, category => category.group)
 
 interface Props {
-  profile: RedProfile | undefined;
-  profileSaveStart: Function;
+  profile: RedProfile | undefined
+  profileSaveStart: Function
 }
 
 const Mentoring = ({ profile, profileSaveStart }: Props) => {
@@ -62,18 +62,11 @@ const Mentoring = ({ profile, profileSaveStart }: Props) => {
 
   const { categories: selectedCategories } = formik.values
 
-  // const categoryObject = Object.assign({}, ...availableCategories.map(category => ({ [category.id]: category.label })))
-
-  const readMentoring = () => {
-    return <Tag.Group>
-      {categories.map(
-        categoryId =>
-          <Tag key={categoryId} size="large" rounded>
-            {categoriesIdToLabelMap[categoryId]}
-          </Tag>
-      )}
-    </Tag.Group>
-  }
+  const readMentoring = categories && categories.map(categoryId =>
+    <Tag key={categoryId} size="large" rounded>
+      {categoriesIdToLabelMap[categoryId]}
+    </Tag>
+  )
 
   const categoriesChange = (e: any) => {
     e.persist()
@@ -93,10 +86,11 @@ const Mentoring = ({ profile, profileSaveStart }: Props) => {
       title="Mentoring Topics"
       onSave={() => formik.handleSubmit()}
       savePossible={(formik.dirty && formik.isValid)}
-      read={categories && readMentoring()}
+      read={categories && <Tag.Group>{readMentoring}</Tag.Group>}
       placeholder="Please pick up to three mentoring topics."
       className="mentoring"
     >
+      <Content>You can select between 1 and up to 3 topics.</Content>
       <Columns>
         <CategoryGroup id="coding" label="Coding" selectedCategories={selectedCategories} onChange={categoriesChange} formik={formik} />
         <CategoryGroup id="careerSupport" label="Career Support" selectedCategories={selectedCategories} onChange={categoriesChange} formik={formik} />

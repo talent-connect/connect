@@ -4,64 +4,73 @@ import {
   Section,
   Columns,
   Image,
-  Content,
   Level,
-  Heading
+  Element,
+  Heading as BulmaHeading
 } from 'react-bulma-components'
-import career from '../../assets/images/career.svg'
-import search from '../../assets/images/search.svg'
-import calender from '../../assets/images/calender.svg'
-import offline from '../../assets/images/offline.svg'
+import Heading from '../atoms/Heading'
+import { useTranslation } from 'react-i18next'
+import { ReactComponent as Career } from '../../assets/images/career.svg'
+import { ReactComponent as Search } from '../../assets/images/search.svg'
+import { ReactComponent as Calender } from '../../assets/images/calender.svg'
+import { ReactComponent as Offline } from '../../assets/images/offline.svg'
+
 import './RediProgram.scss'
 
-const programSteps = [
-  {
-    image: search,
-    content: 'Connect yourself with the right mentor/ mentee ',
-    headline: '1. Set up your profile'
-  },
-  {
-    image: career,
-    content: 'Get/ give career and personal advice and support ',
-    headline: '2. Get connected'
-  },
-  {
-    image: calender,
-    content: 'Schedule meetings to stay on track',
-    headline: '3. Plan meetings'
-  },
-  {
-    image: offline,
-    content: 'Get advice on how to best connect offline',
-    headline: '4. Meet in real life'
-  }
-]
-
 const RediProgram = () => {
+  const { t } = useTranslation()
+
+  const programSteps = [
+    {
+      image: Career,
+      content: t('loggedOutArea.homePage.program.steps.step1.content'),
+      headline: t('loggedOutArea.homePage.program.steps.step1.headline')
+    },
+    {
+      image: Search,
+      content: t('loggedOutArea.homePage.program.steps.step2.content'),
+      headline: t('loggedOutArea.homePage.program.steps.step2.headline')
+    },
+    {
+      image: Calender,
+      content: t('loggedOutArea.homePage.program.steps.step3.content'),
+      headline: t('loggedOutArea.homePage.program.steps.step3.headline')
+    },
+    {
+      image: Offline,
+      content: t('loggedOutArea.homePage.program.steps.step4.content'),
+      headline: t('loggedOutArea.homePage.program.steps.step4.headline')
+    }
+  ]
+
   return (
-    <Section className="program">
-      <Container className="program__title">
-        <Content className="program__title--teaser">about redi connect</Content>
-        <div className="program__title--line" />
-        <Content className="program__title--headline">What our Mentorship Program is all about ...</Content>
+    <Section className="default-background">
+      <Container>
+        <Element
+          className="is-uppercase is-size-6 is-size-7-mobile has-text-centered"
+          renderAs="h4"
+        >
+          {t('loggedOutArea.homePage.program.subHeadline')}
+        </Element>
+        <Heading size="small" border="topCenter" center>{t('loggedOutArea.homePage.program.headline')}</Heading>
       </Container>
-      <Container className="program__container">
+      <Container>
         <Columns>
-          {programSteps.map(step => (
-            <Columns.Column className="has-text-centered" key={step.content}>
-              <Image src={step.image} className="program__column--img" />
-              <Heading
+          {programSteps.map(({ image: MyImage, content, headline }) =>
+            <Columns.Column className="has-text-centered" key={content}>
+              <MyImage className="program__img"/>
+              <BulmaHeading
                 size={4}
                 renderAs="h3"
                 className="is-hidden-tablet is-marginless"
               >
-                {step.headline}
-              </Heading>
-              <Level className="is-size-4 is-size-5-mobile program__column--text">
-                {step.content}
+                {headline}
+              </BulmaHeading>
+              <Level className="is-size-4 is-size-5-mobile program__text">
+                {content}
               </Level>
             </Columns.Column>
-          ))}
+          )}
         </Columns>
       </Container>
     </Section>

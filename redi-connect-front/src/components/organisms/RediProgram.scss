@@ -2,81 +2,19 @@
 @import "../../styles/_variables.scss";
 
 .program {
-  background-color: $white;
-
-  &__section {
-    padding-top: 2.5rem;
-    padding-bottom: 5rem;
+  &__img {
+    margin-top: 3.5rem;
 
     @include mobile() {
-      padding-bottom: 1.5rem;
+      margin-bottom: .75rem;
     }
   }
 
-  &__column {
-    &--img {
-      margin-bottom: 1.5rem;
-
-      @include mobile() {
-        margin-bottom: .75rem;
-      }
-    }
-
-    &--text {
-      margin: 0 1.25rem;
-
-      @include mobile() {
-        margin: .25rem 4rem;
-      }
-    }
-  }
-
-  &__title {
-    color: $black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-
-    &--line {
-      border: .125rem solid $redi-orange-dark;
-      border-radius: 2px;
-      width: 3.5rem;
-      margin-top: $size-4;
-      margin-bottom: $size-6;
-
-      @include mobile() {
-        margin-top: $size-7;
-        margin-bottom: $size-5 / 2;
-      }
-    }
+  &__text {
+    margin: 1.5rem 1.25rem 1rem 1.25rem;
 
     @include mobile() {
-      font-size: .75rem;
-      line-height: 1rem;
-      letter-spacing: 1.5px;
-      font-weight: $weight-normal;
-    }
-
-    &--headline {
-      font-size: $size-2;
-      line-height: 3rem;
-      text-align: center;
-      margin-bottom: 4rem;
-      font-family: $family-secondary;
-      font-weight: $weight-normal;
-
-      @include mobile() {
-        font-size: $size-4;
-        line-height: 2rem;
-        margin-bottom: 2rem;
-      }
-    }
-
-    &--teaser {
-      text-transform: uppercase;
-      letter-spacing: 1.7px;
-      font-size: $size-6;
+      margin: .25rem 4rem;
     }
   }
 }

@@ -9,6 +9,7 @@ import { ProfileOccupation } from '../../../../components/ProfileOccupation'
 import { ProfileWorkPlace } from '../../../../components/ProfileWorkPlace'
 import { RedProfile } from '../../../../types/RedProfile'
 import { ConnectionRequestForm } from './ConnectionRequestForm'
+import { getRedProfile } from '../../../../services/auth/auth'
 
 interface Props {
   mentor: RedProfile
@@ -39,8 +40,10 @@ const styles = (theme: Theme) =>
   })
 
 export const ProfileMentor = withStyles(styles)(
-  ({ mentor, classes }: Props) => (
-    <>
+  ({ mentor, classes }: Props) => {
+    const profile = getRedProfile()
+
+    return <>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={5}>
           <Avatar
@@ -86,12 +89,12 @@ export const ProfileMentor = withStyles(styles)(
         </>
       )}
 
-      {mentor.numberOfPendingApplicationWithCurrentUser === 0 && (
+      {(mentor.numberOfPendingApplicationWithCurrentUser === 0 && profile.userType === 'mentee') && (
         <ConnectionRequestForm mentorId={mentor.id} />
       )}
       {mentor.numberOfPendingApplicationWithCurrentUser > 0 && (
         <p>You have already applied to this mentor.</p>
       )}
     </>
-  )
+  }
 )

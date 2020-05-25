@@ -54,7 +54,7 @@ $desktop: 1192px; // 1128px + 2x32px (2xgutter)
 $widescreen-enabled: false;
 $fullhd-enabled: false;
 $column-gap: 1em;
-$block-spacing: 2rem;
+$block-spacing: 1rem;
 $section-padding: 1rem 1.25rem;
 $section-padding-medium: 3.25rem 1.25rem;
 
@@ -88,3 +88,7 @@ $tag-color: $redi-orange-dark;
 $tag-background-color: $redi-orange-light;
 
 $transition: ease-in-out all 0.2s;
+
+// card
+$card-content-padding: 1rem;
+$card-shadow: 0 3px 15px 0 rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.2);

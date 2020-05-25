@@ -88,11 +88,11 @@ export default function Login () {
         </Columns.Column>
 
         <Columns.Column size={5} offset={1}>
-          <Heading border>Sign-in</Heading>
+          <Heading border="bottomLeft">Sign-in</Heading>
           <Content size="large" renderAs="p">
             Enter your email and password below.
           </Content>
-          <form onSubmit={e => e.preventDefault()} className="form login__form">
+          <form onSubmit={e => e.preventDefault()}>
             <FormInput
               name="username"
               type="email"

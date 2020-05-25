@@ -1,27 +1,15 @@
 import React from 'react'
 import Navbar from '../organisms/Navbar'
+import SideMenu from '../organisms/SideMenu'
 import Button from '../atoms/Button'
-import { Container, Section, Columns } from 'react-bulma-components'
+import { Container, Section, Columns, Content } from 'react-bulma-components'
 import { logout } from '../../services/api/api'
-import { NavLink } from 'react-router-dom'
-import './LoggedIn.scss'
+import { getRedProfile } from '../../services/auth/auth'
 
 import Footer from '../organisms/Footer'
 
-const MenuItem = ({ url, children }: {url: string, children: string}) => {
-  return (
-    <li className="side-menu__item">
-      <NavLink
-        to={url}
-        className="side-menu__item__link"
-        activeClassName="side-menu__item__link--active">
-        {children}
-      </NavLink>
-    </li>
-  )
-}
-
 const LoggedIn: React.FunctionComponent = ({ children }) => {
+  const profile = getRedProfile()
   return (
     <>
       <Navbar separator>
@@ -39,16 +27,33 @@ const LoggedIn: React.FunctionComponent = ({ children }) => {
               size={2}
               responsive={{ mobile: { hide: { value: true } } }}
             >
-              <ul className="side-menu">
-                <MenuItem url="/app/me">My Profile</MenuItem>
-                <MenuItem url="/app/dashboard">Find a mentor</MenuItem>
-                <MenuItem url="/app/applications">Applications</MenuItem>
-              </ul>
+              <SideMenu />
             </Columns.Column>
             <Columns.Column
               offset={1}
               size={9}
             >
+              {profile.userType === 'public-sign-up-mentee-pending-review' &&
+                <Content>
+                  <p>
+                    Thanks for signing up! We are reviewing your profile and will send
+                    you an email once we're done.
+                  </p>
+                  <p>You'll be able to find a mentor once your account is active.</p>
+                </Content>
+              }
+              {profile.userType === 'public-sign-up-mentor-pending-review' &&
+                <Content>
+                  <p>
+                    Thanks for signing up! We are reviewing your profile and will send
+                    you an email once we're done.
+                  </p>
+                  <p>
+                    Students will be able to apply to become your mentee once your
+                    account is active.
+                  </p>
+                </Content>
+              }
               {children}
             </Columns.Column>
           </Columns>

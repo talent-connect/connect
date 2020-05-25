@@ -1,5 +1,4 @@
 import React from 'react'
-import { LoggedOutLayout } from '../../../layouts/LoggedOutLayout'
 import { RouteComponentProps } from 'react-router'
 
 interface RouteParams {
@@ -14,7 +13,7 @@ export default function SignUpComplete ({
   // TODO: Replace 'any' with whatever is TS-appropriate
   // const Comp: any = (props: any) => <Link {...props} to="/app/dashboard" />;
   return (
-    <LoggedOutLayout>
+    <>
       {type === 'public-sign-up-mentee-pending-review' && (
         <>
           <p>
@@ -39,6 +38,6 @@ export default function SignUpComplete ({
           </p>
         </>
       )}
-    </LoggedOutLayout>
+    </>
   )
 }
