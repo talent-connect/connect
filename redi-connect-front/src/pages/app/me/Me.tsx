@@ -82,7 +82,6 @@ const Me = ({ loading, saveResult, profileFetchStart, profileSaveStart, profile 
     <LoggedIn>
       {loading && 'page loading...'}
       {saveResult === 'error' && <><br/><br/><br/>An error occurred, please try again.</>}
-      {saveResult === 'success' && <>Your profile was saved.</>}
       {!loading &&
         <>
           {saveResult === 'submitting' && 'part of the page loading...'}

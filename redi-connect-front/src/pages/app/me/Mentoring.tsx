@@ -1,6 +1,6 @@
 import React from 'react'
 import groupBy from 'lodash/groupBy'
-import { Columns, Tag, Heading, Element } from 'react-bulma-components'
+import { Columns, Tag, Heading, Element, Content } from 'react-bulma-components'
 import FormCheckbox from '../../../components/atoms/FormCheckbox'
 import Editable from '../../../components/molecules/Editable'
 import { RedProfile } from '../../../types/RedProfile'
@@ -62,7 +62,7 @@ const Mentoring = ({ profile, profileSaveStart }: Props) => {
 
   const { categories: selectedCategories } = formik.values
 
-  const readMentoring = categories.map(categoryId =>
+  const readMentoring = categories && categories.map(categoryId =>
     <Tag key={categoryId} size="large" rounded>
       {categoriesIdToLabelMap[categoryId]}
     </Tag>
@@ -90,6 +90,7 @@ const Mentoring = ({ profile, profileSaveStart }: Props) => {
       placeholder="Please pick up to three mentoring topics."
       className="mentoring"
     >
+      <Content>You can select between 1 and up to 3 topics.</Content>
       <Columns>
         <CategoryGroup id="coding" label="Coding" selectedCategories={selectedCategories} onChange={categoriesChange} formik={formik} />
         <CategoryGroup id="careerSupport" label="Career Support" selectedCategories={selectedCategories} onChange={categoriesChange} formik={formik} />

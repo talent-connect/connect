@@ -1,18 +1,14 @@
-import React, { useState } from 'react'
-import { Section, Container, Element } from 'react-bulma-components'
-import Logo from '../atoms/Logo'
-import burger from '../../assets/images/hamburger.svg'
-import classnames from 'classnames'
+import React from 'react'
 import { getRedProfile } from '../../services/auth/auth'
 import './SideMenu.scss'
 import { NavLink } from 'react-router-dom'
 
-interface Props {
-  children: any
-  url: boolean
+interface MenuItemProps {
+  url: string
+  children: string
 }
 
-const MenuItem = ({ url, children }: {url: string, children: string}) => {
+const MenuItem = ({ url, children }: MenuItemProps) => {
   return (
     <li className="side-menu__item">
       <NavLink
@@ -31,7 +27,7 @@ const SideMenu = () => {
   return (
     <ul className="side-menu">
       <MenuItem url="/app/me">My Profile</MenuItem>
-      {profile.userType === 'mentee' &&
+      {(profile.userType === 'mentee' || profile.userType === 'public-sign-up-mentee-pending-review') &&
         <MenuItem url="/app/dashboard">Find a mentor</MenuItem>
       }
       {profile.userType === 'mentor' && <>
