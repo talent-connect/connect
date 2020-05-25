@@ -1,64 +1,64 @@
 import keyBy from 'lodash/keyBy'
 import mapValues from 'lodash/mapValues'
 
-import { Categories } from '../types/Categories';
-import { Language } from '../types/Language';
-import { Gender } from '../types/Gender';
-import { EducationLevel } from '../types/EducationLevel';
-import { Course } from '../types/Course';
-import { RediLocation } from '../types/RediLocation';
+import { Categories } from '../types/Categories'
+import { Language } from '../types/Language'
+import { Gender } from '../types/Gender'
+import { EducationLevel } from '../types/EducationLevel'
+import { Course } from '../types/Course'
+import { RediLocation } from '../types/RediLocation'
 
-export let categories: Categories;
+export let categories: Categories
 
 if ((process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'berlin') {
   categories = [
-  { id: 'blockchain', label: 'Blockchain', group: 'coding' },
-  { id: 'basicComputer', label: 'Basic Computer', group: 'coding' },
-  { id: 'basicJava', label: 'Basic Java', group: 'coding' },
-  { id: 'basicPython', label: 'Basic Python', group: 'coding' },
-  { id: 'react', label: 'React', group: 'coding' },
-  { id: 'itAndNetworking', label: 'IT & Networking',group: 'careerSupport' },
-  { id: 'swift', label: 'Swift', group: 'coding' },
-  {
-    id: 'interviewsAndCommunication',
-    label: 'Interviews & Communications',
-    group: 'careerSupport'
-  },
-  { id: 'graphicsAndUxUi', label: 'Graphics & UX/UI', group: 'other' },
-  {
-    id: 'cvPersonalPresentation',
-    label: 'CV & Personal presentation',
-    group: 'careerSupport'
-  },
-  { id: 'mobileDevelopment', label: 'Mobile Development', group: 'coding' },
-  { id: 'jobOrientation', label: 'Job Orientation', group: 'careerSupport' },
-  { id: 'pythonDataScience', label: 'Python Data Science', group: 'coding' },
-  { id: 'entrepreneurship', label: 'Entrepreneurship', group: 'other' },
-  { id: 'javaDevelopment', label: 'Java Development', group: 'coding' },
-  { id: 'iot', label: 'IoT', group: 'coding' },
-  { id: 'webDevelopment', label: 'Web Development', group: 'coding' },
-  { id: 'javascript', label: 'JavaScript', group: 'coding' },
-  { id: 'htmlcss', label: 'HTML&CSS', group: 'coding' },
-  {
-    id: 'findingInternship',
-    label: 'Finding an internship',
-    group: 'careerSupport'
-  },
-  { id: 'freelancing', label: 'Freelancing', group: 'other' },
-  { id: 'salesforce', label: 'Salesforce', group: 'other' },
-  { id: 'dontKnowYet', label: "I don't know yet", group: 'other' }
-  ];
+    { id: 'blockchain', label: 'Blockchain', group: 'coding' },
+    { id: 'basicComputer', label: 'Basic Computer', group: 'coding' },
+    { id: 'basicJava', label: 'Basic Java', group: 'coding' },
+    { id: 'basicPython', label: 'Basic Python', group: 'coding' },
+    { id: 'react', label: 'React', group: 'coding' },
+    { id: 'itAndNetworking', label: 'IT & Networking', group: 'careerSupport' },
+    { id: 'swift', label: 'Swift', group: 'coding' },
+    {
+      id: 'interviewsAndCommunication',
+      label: 'Interviews & Communications',
+      group: 'careerSupport'
+    },
+    { id: 'graphicsAndUxUi', label: 'Graphics & UX/UI', group: 'other' },
+    {
+      id: 'cvPersonalPresentation',
+      label: 'CV & Personal presentation',
+      group: 'careerSupport'
+    },
+    { id: 'mobileDevelopment', label: 'Mobile Development', group: 'coding' },
+    { id: 'jobOrientation', label: 'Job Orientation', group: 'careerSupport' },
+    { id: 'pythonDataScience', label: 'Python Data Science', group: 'coding' },
+    { id: 'entrepreneurship', label: 'Entrepreneurship', group: 'other' },
+    { id: 'javaDevelopment', label: 'Java Development', group: 'coding' },
+    { id: 'iot', label: 'IoT', group: 'coding' },
+    { id: 'webDevelopment', label: 'Web Development', group: 'coding' },
+    { id: 'javascript', label: 'JavaScript', group: 'coding' },
+    { id: 'htmlcss', label: 'HTML&CSS', group: 'coding' },
+    {
+      id: 'findingInternship',
+      label: 'Finding an internship',
+      group: 'careerSupport'
+    },
+    { id: 'freelancing', label: 'Freelancing', group: 'other' },
+    { id: 'salesforce', label: 'Salesforce', group: 'other' },
+    { id: 'dontKnowYet', label: "I don't know yet", group: 'other' }
+  ]
 } else if ((process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'munich') {
   categories = [
-    { id: "munich_programmingSkillsAndHelpForLearning", label: "Programming skills and help for learning", group: 'careerSupport' },
-    { id: "munich_careerPlanningAndJobOrientation", label: "Career planning and job orientation", group: 'careerSupport' },
-    { id: "munich_helpForCvPreparationAndApplicationProcess", label: "Help for CV preparation and application process", group: 'careerSupport' },
-    { id: "munich_helpForInterviewPreparation", label: "Help for interview preparation", group: 'careerSupport' },
-    { id: "munich_helpToImproveEnglish", label: "Help to improve English", group: 'careerSupport' },
-    { id: "munich_helpToImproveGerman", label: "Help to improve German", group: 'careerSupport' },
-    { id: "munich_helpAndGuidanceOnHowToUseAComputer", label: "Help and guidance on how to use a computer", group: 'careerSupport' },
-    { id: "munich_motivationAndEncouragement", label: "Motivation and encouragement", group: 'careerSupport' },
-    { id: "munich_beAFriendToHelpInNewAndDifficultSituationsHereInGermany", label: "Be a friend to help in new and difficult situations here in Germany", group: 'careerSupport' }
+    { id: 'munich_programmingSkillsAndHelpForLearning', label: 'Programming skills and help for learning', group: 'careerSupport' },
+    { id: 'munich_careerPlanningAndJobOrientation', label: 'Career planning and job orientation', group: 'careerSupport' },
+    { id: 'munich_helpForCvPreparationAndApplicationProcess', label: 'Help for CV preparation and application process', group: 'careerSupport' },
+    { id: 'munich_helpForInterviewPreparation', label: 'Help for interview preparation', group: 'careerSupport' },
+    { id: 'munich_helpToImproveEnglish', label: 'Help to improve English', group: 'careerSupport' },
+    { id: 'munich_helpToImproveGerman', label: 'Help to improve German', group: 'careerSupport' },
+    { id: 'munich_helpAndGuidanceOnHowToUseAComputer', label: 'Help and guidance on how to use a computer', group: 'careerSupport' },
+    { id: 'munich_motivationAndEncouragement', label: 'Motivation and encouragement', group: 'careerSupport' },
+    { id: 'munich_beAFriendToHelpInNewAndDifficultSituationsHereInGermany', label: 'Be a friend to help in new and difficult situations here in Germany', group: 'careerSupport' }
   ]
 } else {
   throw new Error('Invalid RediLocation')
@@ -253,8 +253,8 @@ if ((process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'berlin') {
     { id: 'introJava', label: 'Intro to Java' },
     { id: 'uiUxWomen', label: 'UI/UX Women' },
     { id: 'introNetworking', label: 'Intro to Networking' },
-    { id: 'alumni', label: "I'm a ReDI School alumni (I took a course before)" },
-  ];
+    { id: 'alumni', label: "I'm a ReDI School alumni (I took a course before)" }
+  ]
 } else if ((process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'munich') {
   _courses = [
     { id: 'munich_dcp_frontEndDevelopment1', label: 'Front-End Development 1' },
@@ -269,12 +269,12 @@ if ((process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'berlin') {
     { id: 'munich_women_programBasics1', label: 'Women Program Basics 1' },
     { id: 'munich_women_programBasics2', label: 'Women Program Basics 2' },
     { id: 'munich_women_basicsEnglish', label: 'Women Program Basics English' },
-    { id: 'munich_women_introToProgramming', label: 'Women Program Intro to programming' },
-  ];
+    { id: 'munich_women_introToProgramming', label: 'Women Program Intro to programming' }
+  ]
 } else {
   throw new Error('Invalid RediLocation')
 }
-export const courses = _courses;
+export const courses = _courses
 
 export const courseIdToLabelMap = mapValues(keyBy(courses, 'id'), 'label')
 

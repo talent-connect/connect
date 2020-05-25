@@ -9,7 +9,7 @@ import { CategoryChip } from '../../../../components/CategoryChip'
 import { Avatar } from '../../../../components/Avatar'
 import { ProfileCourse } from '../../../../components/ProfileCourse'
 import { ConnectButton } from '../../../../components/ConnectButton'
-import { ContactInfo } from '../../../../components/ContactInfo';
+import { ContactInfo } from '../../../../components/ContactInfo'
 
 interface Props {
   mentee: RedProfile

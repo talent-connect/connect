@@ -2,7 +2,7 @@
 
 import { RediLocation } from '../types/RediLocation'
 
-export function buildFrontendUrl(env: string, rediLocation: RediLocation) {
+export function buildFrontendUrl (env: string, rediLocation: RediLocation) {
   if (env === 'production' && rediLocation === 'berlin') {
     return 'https://connect.redi-school.org'
   } else if (env === 'production' && rediLocation === 'munich') {

@@ -15,7 +15,7 @@ import { history } from '../history/history'
 import { http } from '../http/http'
 import { UserType } from '../../types/UserType'
 import { RedProblemReportDto } from '../../types/RedProblemReportDto'
-import { RediLocation } from '../../types/RediLocation';
+import { RediLocation } from '../../types/RediLocation'
 
 export const signUp = async (
   email: string,

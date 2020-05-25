@@ -13,7 +13,7 @@ import { Avatar } from '../../../components/Avatar'
 import { history } from '../../../services/history/history'
 import { ConnectButton } from '../../../components/ConnectButton'
 import { menteeOccupationCategory_idToLabelMap } from '../../../config/config'
-import { ContactInfo } from '../../../components/ContactInfo';
+import { ContactInfo } from '../../../components/ContactInfo'
 
 interface Props {
   application: RedMatch

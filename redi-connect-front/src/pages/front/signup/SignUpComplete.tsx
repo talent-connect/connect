@@ -25,7 +25,7 @@ export default function SignUpComplete () {
             <p>Your email address was successfully verified!</p>
 
             {(process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'berlin' && (
-            <p>Now, we would like to get to know you better. To activate your account, please <strong>schedule a 15 minute meeting with Isabelle.</strong>
+              <p>Now, we would like to get to know you better. To activate your account, please <strong>schedule a 15 minute meeting with Isabelle.</strong>
               Just write her an email with suitable meeting times!</p>
             )}
             {(process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'munich' && (
