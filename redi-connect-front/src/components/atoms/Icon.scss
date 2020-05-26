@@ -1,0 +1,12 @@
+@import "~bulma/sass/utilities/_all";
+@import "../../styles/_variables.scss";
+
+.icon {
+  &--space-left {
+    margin-left: .5rem;
+  }
+
+  &--space-right {
+    margin-right: .5rem;
+  }
+}

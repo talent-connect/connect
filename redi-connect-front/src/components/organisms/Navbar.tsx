@@ -41,10 +41,10 @@ const LoggedInButtons = ({ mobile }: { mobile?: boolean }) => {
 
     <Button
       onClick={() => history.push('/app/me')}
-      icon="account"
       simple
       separator={!mobile}
     >
+      <Button.Icon icon="account" />
     </Button>
   </>
   )
@@ -85,9 +85,9 @@ const LoggedOutNavbar = () => {
           >
             <Button
               onClick={() => setMenuActive(!menuActive)}
-              icon="hamburger"
               simple
             >
+              <Button.Icon icon="hamburger" />
             </Button>
           </Element>
         </Container>

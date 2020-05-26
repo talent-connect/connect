@@ -113,17 +113,13 @@
     justify-content: center;
   }
 
-  &__icon {
+  .icon {
     path {
       transition: $transition;
     }
+  }
 
-    &--spaceLeft {
-      margin-left: .5rem;
-    }
-    
-    &:hover path {
-      fill: $redi-orange-dark; 
-    }
+  &:hover path {
+    fill: $redi-orange-dark; 
   }
 }

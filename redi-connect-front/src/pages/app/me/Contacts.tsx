@@ -68,16 +68,16 @@ const Contacts = ({ profile, profileSaveStart }: any) => {
     onSubmit: submitForm
   })
 
-  const readContacts = <>
+  const readContacts = <Content className="me__block--mobile">
     {contactEmail && <p>{contactEmail}</p>}
     {(firstName || firstName) && <p>{firstName} {lastName}</p>}
     {telephoneNumber && <p>{telephoneNumber}</p>}
-  </>
+  </Content>
 
   return (
     <Editable
       title="Contact Detail"
-      onSave={ () => formik.handleSubmit()}
+      onSave={() => formik.handleSubmit()}
       savePossible={(formik.dirty && formik.isValid)}
       read={<Content>{readContacts}</Content>}
     >

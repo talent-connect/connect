@@ -35,23 +35,27 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
   return (
     <LoggedIn>
       {loading && 'page loading...'}
-      {saveResult === 'error' && <><br/><br/><br/>An error occurred, please try again.</>}
+      {saveResult === 'error' && <><br /><br /><br />An error occurred, please try again.</>}
       {!loading &&
         <>
           {saveResult === 'submitting' && 'part of the page loading...'}
 
           <Columns vCentered breakpoint="mobile">
             <Columns.Column size={3}>
-              <Avatar />
+              <Avatar mePage />
             </Columns.Column>
             <Columns.Column size={8}>
               <Heading>Hi, {profile.firstName}</Heading>
-              <Content size="medium" renderAs="p">
-              You have completed 15% of your profile. Let potential mentors know a little bit more about you, so you can find the perfect fit.
+              <Content size="medium" renderAs="p" responsive={{ mobile: { hide: { value: true } } }}>
+                You have completed 15% of your profile. Let potential mentors know a little bit more about you, so you can find the perfect fit.
               </Content>
             </Columns.Column>
           </Columns>
-
+          <Element className="me__block" responsive={{ tablet: { hide: { value: true } } }}>
+            <Content size="medium" renderAs="p">
+              You have completed 15% of your profile. Let potential mentors know a little bit more about you, so you can find the perfect fit.
+              </Content>
+          </Element>
           <Element className="me__block">
             <About />
           </Element>
@@ -63,21 +67,10 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
           <Element className="me__block">
             <Columns>
               <Columns.Column size={6}>
-                <Contacts/>
+                <Contacts />
               </Columns.Column>
               <Columns.Column size={6}>
-                <SocialMedia/>
-              </Columns.Column>
-            </Columns>
-          </Element>
-
-          <Element className="me__block">
-            <Columns>
-              <Columns.Column size={6}>
-                <PersonalDetail/>
-              </Columns.Column>
-              <Columns.Column size={6}>
-                <Languages/>
+                <SocialMedia />
               </Columns.Column>
             </Columns>
           </Element>
@@ -85,10 +78,21 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
           <Element className="me__block">
             <Columns>
               <Columns.Column size={6}>
-                <Occupation/>
+                <PersonalDetail />
               </Columns.Column>
               <Columns.Column size={6}>
-                { profile.userType === 'mentee' && <RediClass/>}
+                <Languages />
+              </Columns.Column>
+            </Columns>
+          </Element>
+
+          <Element className="me__block">
+            <Columns>
+              <Columns.Column size={6}>
+                <Occupation />
+              </Columns.Column>
+              <Columns.Column size={6}>
+                {profile.userType === 'mentee' && <RediClass />}
               </Columns.Column>
             </Columns>
           </Element>

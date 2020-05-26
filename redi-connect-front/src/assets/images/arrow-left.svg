@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="12px" viewBox="0 0 18 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>arrow</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Prototyp-Mentee-+-Mentor-|-Design-" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="ReDI_Menteeflow_49" transform="translate(-420.000000, -111.000000)">
+            <g id="button/secondary/with-icon_outline" transform="translate(420.000000, 109.000000)">
+                <g id="icons/functional/arrow/orange" transform="translate(9.000000, 8.000000) scale(-1, 1) translate(-9.000000, -8.000000) ">
+                    <rect id="Rectangle" x="0" y="0" width="18" height="16"></rect>
+                    <path d="M12.4939203,12.9212312 C12.4437952,12.9735639 12.3776508,13 12.3115064,13 C12.245362,13 12.1792175,12.9735639 12.1285757,12.9212312 C12.0278089,12.8154867 12.0278089,12.6450007 12.1285757,12.5397958 L16.2181606,8.27009347 L1.15837661,8.27009347 C1.01575272,8.27009347 0.9,8.14924266 0.9,8.0003372 C0.9,7.85089222 1.01575272,7.73058092 1.15837661,7.73058092 L16.2181606,7.73058092 L12.1285757,3.46033908 C12.0278089,3.35513414 12.0278089,3.18464817 12.1285757,3.07890371 C12.2298594,2.97369876 12.3931534,2.97369876 12.4939203,3.07890371 L17.0242957,7.80881024 C17.0485831,7.83416733 17.0671862,7.86438003 17.0806218,7.89675079 C17.1064594,7.96311083 17.1064594,8.03702405 17.0806218,8.10338409 C17.0671862,8.13575485 17.0485831,8.16596755 17.0242957,8.19132464 L12.4939203,12.9212312 Z" id="Fill-1" stroke="#EA5B25" stroke-width="1"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

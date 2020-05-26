@@ -13,6 +13,8 @@ import { ProfileAcceptedMatch } from './acceptedMatch/ProfileAcceptedMatch'
 
 import { useParams, useHistory } from 'react-router'
 
+import { Columns } from 'react-bulma-components'
+
 interface RouteParams {
   profileId: string
 }
@@ -45,14 +47,24 @@ function Profile ({ loading, profile, currentUser, profilesFetchOneStart }: Prof
     <>
       <FullScreenCircle loading={loading} />
       {!loading && <LoggedIn>
-        {(!isAcceptedMatch || currentUserIsMentor) && (
-          <Button
-            onClick={() => history.goBack()}
-            simple
-          >
-            Back
-          </Button>
-        )}
+        <Columns>
+          <Columns.Column>
+            {(!isAcceptedMatch || currentUserIsMentor) && (
+              <Button
+                onClick={() => history.push('/app/dashboard')}
+                simple
+              >
+                <Button.Icon icon="arrowLeft" space="right" />
+                back
+              </Button>
+            )}
+          </Columns.Column>
+          <Columns.Column className="is-narrow">
+            {!isAcceptedMatch &&
+              typeof profile !== 'undefined' &&
+              profile.userType !== 'mentee' && <Button onClick={() => history.push('/app/dashboard')}>apply for this mentor</Button>}
+          </Columns.Column>
+        </Columns>
         {isAcceptedMatch && profile && (
           <ProfileAcceptedMatch profile={profile} />
         )}

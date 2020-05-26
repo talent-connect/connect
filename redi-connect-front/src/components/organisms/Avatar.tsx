@@ -25,7 +25,7 @@ const validationSchema = Yup.object({
   profileAvatarImageS3Key: Yup.string().max(255)
 })
 
-const Avatar = ({ profile, profileSaveStart }: any) => {
+const Avatar = ({ profile, profileSaveStart, mePage }: any) => {
   const { profileAvatarImageS3Key } = profile
   const imgURL = AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
 
@@ -52,23 +52,24 @@ const Avatar = ({ profile, profileSaveStart }: any) => {
   }
 
   return (
-    <div className={classnames('avatar', {
+    <div className={classnames('avatar', `avatar--border${mePage ? '__me' : '__other'}`, {
+      'avatar--cursor': mePage,
       'avatar--large': profileAvatarImageS3Key,
       'avatar--placeholder': !profileAvatarImageS3Key
     })}>
       {profileAvatarImageS3Key && <>
-        <img src={imgURL} className="avatar__image"/>
-        <Element renderAs="span" className="avatar__button" textSize={7} textTransform="uppercase" >Edit Photo</Element>
+        <img src={imgURL} className="avatar__image" />
+        {mePage && <Element renderAs="span" className="avatar__button" textSize={7} textTransform="uppercase" >Edit Photo</Element>}
       </>}
 
       {!profileAvatarImageS3Key && <>
         <div className="avatar__placeholder">
           <UploadImage className="avatar__placeholder__image" />
-          <Element className="is-size-6" responsive={{ mobile: { hide: { value: true } } }}>Add your picture</Element>
+          {mePage && <Element className="is-size-6" responsive={{ mobile: { hide: { value: true } } }}>Add your picture</Element>}
         </div>
       </>}
 
-      <ReactS3Uploader
+      {mePage && <ReactS3Uploader
         name="avatar-upload"
         id="avatar-upload"
         className="avatar__input"
@@ -79,7 +80,7 @@ const Avatar = ({ profile, profileSaveStart }: any) => {
         onError={(c: any) => console.log(c)}
         onFinish={onUploadSuccess}
         contentDisposition="auto"
-      />
+      />}
     </div>
   )
 }

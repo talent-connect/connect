@@ -6,6 +6,7 @@ import { RedProfile } from '../../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../../redux/types'
 import PipeList from '../../../components/molecules/PipeList'
+import { Element } from 'react-bulma-components'
 
 import {
   profileSaveStart
@@ -72,10 +73,10 @@ const PersonalDetail = ({ profile, profileSaveStart }: any) => {
   return (
     <Editable
       title="Personal Detail"
-      onSave={ () => formik.handleSubmit()}
+      onSave={() => formik.handleSubmit()}
       placeholder="Input your gender and age."
       savePossible={(formik.dirty && formik.isValid)}
-      read={emptyProfile && <PipeList items={detailsList} />}
+      read={emptyProfile && <Element className="me__block--mobile"><PipeList items={detailsList} /></Element>}
     >
       <FormSelect
         label="Gender"
