@@ -1,0 +1,56 @@
+@import "~bulma/sass/utilities/_all";
+@import "../../styles/_variables.scss";
+
+.application-card {
+  border: 1px solid $grey;
+  padding: $block-spacing;
+  border-radius: $radius;
+  margin-bottom: $block-spacing;
+  
+  &__link {
+    font-weight: $weight-bold;
+    color: $primary;
+    cursor: pointer;
+    text-decoration: underline;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  &-details {
+    transition: $transition;
+    overflow: hidden;
+
+    &--hide {
+      max-height: 0;
+    }
+
+    &--show {
+      max-height: 500px;
+      margin-bottom: $block-spacing * 2;
+    }
+  }
+
+  &-dropdown {
+    width: 1rem;
+    height: 1rem;
+    display: inline-block;
+    border-right: 1px solid $grey;
+    border-bottom: 1px solid $grey;
+    transition: $transition;
+    vertical-align: middle;
+    cursor: pointer;
+
+    &--up {  
+      transform: rotate(225deg);
+      margin-bottom: -25%;
+    }
+
+    &--down {
+      transform: rotate(45deg);
+      margin-top: -25%;
+    }
+  }
+}
+

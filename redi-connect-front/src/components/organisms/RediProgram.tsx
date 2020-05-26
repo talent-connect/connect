@@ -52,7 +52,7 @@ const RediProgram = () => {
         >
           {t('loggedOutArea.homePage.program.subHeadline')}
         </Element>
-        <Heading size="small" border="topCenter" center>{t('loggedOutArea.homePage.program.headline')}</Heading>
+        <Heading size="medium" border="topCenter" center>{t('loggedOutArea.homePage.program.headline')}</Heading>
       </Container>
       <Container>
         <Columns>

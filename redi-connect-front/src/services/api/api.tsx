@@ -130,14 +130,6 @@ export const fetchApplicants = async (): Promise<RedProfile[]> =>
     })
   ).then(resp => resp.data)
 
-export const fetchApplicationsByCurrentUser = async (): Promise<RedMatch[]> =>
-  http(
-    `${API_URL}/redMatches?filter=` +
-    JSON.stringify({
-      where: { menteeId: getRedProfile().id, status: 'applied' }
-    })
-  ).then(resp => resp.data)
-
 export const requestMentorship = (
   applicationText: string,
   mentorId: string

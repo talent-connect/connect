@@ -6,7 +6,7 @@ import intersection from 'lodash/intersection'
 import { Columns } from 'react-bulma-components'
 import { ProfileCard } from '../../../../components/organisms/ProfileCard'
 import { useLoading } from '../../../../hooks/WithLoading'
-import { getMentors, fetchApplicationsByCurrentUser } from '../../../../services/api/api'
+import { getMentors } from '../../../../services/api/api'
 import { history } from '../../../../services/history/history'
 import { RedProfile } from '../../../../types/RedProfile'
 import { getRedProfile } from '../../../../services/auth/auth'
@@ -54,7 +54,6 @@ export const AvailableMentorListing = (props: any) => {
       setMentors(mentors)
       setLoading(false)
     })
-    fetchApplicationsByCurrentUser().then(console.log)
   }, [setLoading])
   return (
     <>

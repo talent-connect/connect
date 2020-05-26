@@ -30,11 +30,10 @@ const SideMenu = () => {
       {(profile.userType === 'mentee' || profile.userType === 'public-sign-up-mentee-pending-review') &&
         <MenuItem url="/app/dashboard">Find a mentor</MenuItem>
       }
-      {profile.userType === 'mentor' && <>
+      {profile.userType === 'mentor' &&
         <MenuItem url="/app/mentorship">My Mentorship</MenuItem>
-        <MenuItem url="/app/applications">Applications</MenuItem>
-      </>
       }
+      <MenuItem url="/app/applications">Applications</MenuItem>
     </ul>
   )
 }

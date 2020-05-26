@@ -34,7 +34,7 @@ function Mentorship ({ loading, mentees, matchesFetchStart }: Props) {
         </Element>
       </>}
       {mentees.length > 0 && <>
-        <Heading size="small">Your mentees</Heading>
+        <Heading size="medium">Your mentees</Heading>
         <Columns>
           {mentees.map(
             (mentee: RedMatch) =>
