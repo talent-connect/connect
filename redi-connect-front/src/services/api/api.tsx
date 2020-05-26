@@ -15,12 +15,14 @@ import { history } from '../history/history'
 import { http } from '../http/http'
 import { UserType } from '../../types/UserType'
 import { RedProblemReportDto } from '../../types/RedProblemReportDto'
+import { RediLocation } from '../../types/RediLocation'
 
 export const signUp = async (
   email: string,
   password: string,
   redProfile: Partial<RedProfile>
 ) => {
+  redProfile.rediLocation = process.env.REACT_APP_REDI_LOCATION as RediLocation
   const userResponse = await http(`${API_URL}/redUsers`, {
     method: 'post',
     data: { email, password }

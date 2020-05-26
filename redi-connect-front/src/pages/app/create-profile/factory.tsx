@@ -241,7 +241,7 @@ export const buildSignUpForm = (
   )
 }
 
-function useStepper(
+function useStepper (
   initialStep = 0
 ): [number, Function, Function, Function, Record<string, any>] {
   const [step, setStep] = useState(initialStep)

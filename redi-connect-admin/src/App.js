@@ -48,6 +48,10 @@ import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
+import FormControl from '@material-ui/core/FormControl'
+import InputLabel from '@material-ui/core/InputLabel'
+import Select from '@material-ui/core/Select'
+import MenuItem from '@material-ui/core/MenuItem'
 import Typography from '@material-ui/core/Typography'
 import DateFnsUtils from '@date-io/date-fns'
 
@@ -69,41 +73,59 @@ const rediLocations = [
   { id: 'munich', label: 'Munich' }
 ]
 
-const categories = [
-  { id: 'blockchain', label: 'Blockchain', colour: '#db8484' },
-  { id: 'basicComputer', label: 'Basic Computer', colour: '#9a5454' },
-  { id: 'basicJava', label: 'Basic Java', colour: '#9a5454' },
-  { id: 'basicPython', label: 'Basic Python', colour: '#9a5454' },
-  { id: 'react', label: 'React', colour: '#c984db' },
-  { id: 'itAndNetworking', label: 'IT & Networking', colour: '#979a54' },
-  { id: 'swift', label: 'Swift', colour: '#84b2db' },
-  {
-    id: 'interviewsAndCommunication',
-    label: 'Interviews & Communications',
-    colour: '#5c9a54'
-  },
-  { id: 'graphicsAndUxUi', label: 'Graphics & UX/UI', colour: '#84dbca' },
-  {
-    id: 'cvPersonalPresentation',
-    label: 'CV & Personal presentation',
-    colour: '#549a7b'
-  },
-  { id: 'mobileDevelopment', label: 'Mobile Development', colour: '#89db84' },
-  { id: 'jobOrientation', label: 'Job Orientation', colour: '#54969a' },
-  { id: 'pythonDataScience', label: 'Python Data Science', colour: '#dbd784' },
-  { id: 'entrepreneurship', label: 'Entrepreneurship', colour: '#547b9a' },
-  { id: 'javaDevelopment', label: 'Java Development', colour: '#db9c84' },
-  { id: 'iot', label: 'IoT', colour: '#57549a' },
-  { id: 'webDevelopment', label: 'Web Development', colour: '#8484db' },
-  { id: 'javascript', label: 'JavaScript', colour: '#8484db' },
-  {
-    id: 'findingInternship',
-    label: 'Finding an internship',
-    colour: '#91549a'
-  },
-  { id: 'freelancing', label: 'Freelancing', colour: '#91549a' },
-  { id: 'salesforce', label: 'Salesforce', colour: '#91549a' },
-  { id: 'dontKnowYet', label: "I don't know yet", colour: '#bbbbbb' }
+const categoriesByLocation = {
+  berlin: [
+    { id: 'blockchain', label: 'Blockchain', colour: '#db8484' },
+    { id: 'basicComputer', label: 'Basic Computer', colour: '#9a5454' },
+    { id: 'basicJava', label: 'Basic Java', colour: '#9a5454' },
+    { id: 'basicPython', label: 'Basic Python', colour: '#9a5454' },
+    { id: 'react', label: 'React', colour: '#c984db' },
+    { id: 'itAndNetworking', label: 'IT & Networking', colour: '#979a54' },
+    { id: 'swift', label: 'Swift', colour: '#84b2db' },
+    {
+      id: 'interviewsAndCommunication',
+      label: 'Interviews & Communications',
+      colour: '#5c9a54'
+    },
+    { id: 'graphicsAndUxUi', label: 'Graphics & UX/UI', colour: '#84dbca' },
+    {
+      id: 'cvPersonalPresentation',
+      label: 'CV & Personal presentation',
+      colour: '#549a7b'
+    },
+    { id: 'mobileDevelopment', label: 'Mobile Development', colour: '#89db84' },
+    { id: 'jobOrientation', label: 'Job Orientation', colour: '#54969a' },
+    { id: 'pythonDataScience', label: 'Python Data Science', colour: '#dbd784' },
+    { id: 'entrepreneurship', label: 'Entrepreneurship', colour: '#547b9a' },
+    { id: 'javaDevelopment', label: 'Java Development', colour: '#db9c84' },
+    { id: 'iot', label: 'IoT', colour: '#57549a' },
+    { id: 'webDevelopment', label: 'Web Development', colour: '#8484db' },
+    { id: 'javascript', label: 'JavaScript', colour: '#8484db' },
+    { id: 'htmlcss', label: 'HTML&CSS', colour: '#8484db' },
+    {
+      id: 'findingInternship',
+      label: 'Finding an internship',
+      colour: '#91549a'
+    },
+    { id: 'freelancing', label: 'Freelancing', colour: '#91549a' },
+    { id: 'salesforce', label: 'Salesforce', colour: '#91549a' },
+    { id: 'dontKnowYet', label: "I don't know yet", colour: '#bbbbbb' }
+  ],
+  munich: [
+    { id: 'munich_programmingSkillsAndHelpForLearning', colour: '#db8484', label: 'Programming skills and help for learning' },
+    { id: 'munich_careerPlanningAndJobOrientation', colour: '#db8484', label: 'Career planning and job orientation' },
+    { id: 'munich_helpForCvPreparationAndApplicationProcess', colour: '#db8484', label: 'Help for CV preparation and application process' },
+    { id: 'munich_helpForInterviewPreparation', colour: '#db8484', label: 'Help for interview preparation' },
+    { id: 'munich_helpToImproveEnglish', colour: '#db8484', label: 'Help to improve English' },
+    { id: 'munich_helpToImproveGerman', colour: '#db8484', label: 'Help to improve German' },
+    { id: 'munich_helpAndGuidanceOnHowToUseAComputer', colour: '#db8484', label: 'Help and guidance on how to use a computer' },
+    { id: 'munich_motivationAndEncouragement', colour: '#db8484', label: 'Motivation and encouragement' },
+    { id: 'munich_beAFriendToHelpInNewAndDifficultSituationsHereInGermany', colour: '#db8484', label: 'Be a friend to help in new and difficult situations here in Germany' }
+  ]
+}
+const categoriesFlat = [
+  ...categoriesByLocation.berlin.map(cat => Object.assign(cat, { label: `Berlin: ${cat.label}` })),
+  ...categoriesByLocation.munich.map(cat => Object.assign(cat, { label: `Munich: ${cat.label}` }))
 ]
 
 const mentoringSessionDurationOptions = [
@@ -121,7 +143,7 @@ const mentoringSessionDurationOptions = [
   180
 ]
 
-const categoriesIdToLabelMap = mapValues(keyBy(categories, 'id'), 'label')
+const categoriesIdToLabelMap = mapValues(keyBy(categoriesFlat, 'id'), 'label')
 const AWS_PROFILE_AVATARS_BUCKET_BASE_URL =
   'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/'
 
@@ -229,7 +251,7 @@ const RedProfileListFilters = props => (
     <TextInput label='Search by name' source='q' />
     <SelectInput
       source='categories'
-      choices={categories.map(({ id, label }) => ({ id, name: label }))}
+      choices={categoriesFlat.map(({ id, label }) => ({ id, name: label }))}
     />
     <SelectInput
       source='userType'
@@ -445,10 +467,7 @@ const RedProfileEdit = props => (
         <TextInput source='githubProfileUrl' />
         <TextInput source='slackUsername' />
         <TextInput source='telephoneNumber' />
-        <SelectArrayInput
-          source='categories'
-          choices={categories.map(({ id, label }) => ({ id, name: label }))}
-        />
+        <CategoriesInput />
         <NumberInput source='menteeCountCapacity' />
       </FormTab>
       <FormTab label='Internal comments'>
@@ -465,6 +484,18 @@ const RedProfileEdit = props => (
     </TabbedForm>
   </Edit>
 )
+
+const CategoriesInput = (props) => {
+  const categories = categoriesByLocation[props.record.rediLocation]
+  return (
+    <SelectArrayInput
+      {...props}
+      source='categories'
+      label={`Categories (ONLY for ${props.record.rediLocation})  `}
+      choices={categories.map(({ id, label }) => ({ id, name: label }))}
+    />
+  )
+}
 
 const FullName = ({ record, sourcePrefix }) => {
   return (
@@ -487,6 +518,7 @@ const RedMatchList = props => (
     filters={<RedMatchListFilters />}
   >
     <Datagrid>
+      <TextField source='rediLocation' label='City' />
       <DateField source='createdAt' label='Record created at' />
       <ReferenceField label='Mentee' source='menteeId' reference='redProfiles'>
         <FullName source='mentee' />
@@ -514,6 +546,10 @@ const RedMatchListFilters = props => (
           name: 'Invalidated due to other mentor accepting'
         }
       ]}
+    />
+    <SelectInput
+      source='rediLocation'
+      choices={rediLocations.map(({ id, label }) => ({ id, name: label }))}
     />
   </Filter>
 )
@@ -734,8 +770,10 @@ const RedMentoringSessionList = props => (
     exporter={exporter}
     pagination={<AllModelsPagination />}
     aside={<RedMentoringSessionListAside />}
+    filters={<RedMentoringSessionListFilters />}
   >
     <Datagrid>
+      <TextField source='rediLocation' label='City' />
       <ReferenceField label='Mentee' source='menteeId' reference='redProfiles'>
         <FullName source='mentee' />
       </ReferenceField>
@@ -749,9 +787,18 @@ const RedMentoringSessionList = props => (
     </Datagrid>
   </List>
 )
+const RedMentoringSessionListFilters = props => (
+  <Filter {...props}>
+    <SelectInput
+      source='rediLocation'
+      choices={rediLocations.map(({ id, label }) => ({ id, name: label }))}
+    />
+  </Filter>
+)
 const RedMentoringSessionListAside = () => {
   const [fromDate, setFromDate] = React.useState(null)
   const [toDate, setToDate] = React.useState(null)
+  const [rediLocation, setRediLocation] = React.useState(undefined)
   const [loadState, setLoadState] = React.useState('pending')
   const [result, setResult] = React.useState(null)
   const [step, setStep] = React.useState(0)
@@ -787,7 +834,7 @@ const RedMentoringSessionListAside = () => {
           {
             pagination: { page: 1, perPage: 0 },
             sort: {},
-            filter: { date: { gte: fromDate, lte: toDate } }
+            filter: { date: { gte: fromDate, lte: toDate }, rediLocation }
           }
         )
         setLoadState('success')
@@ -806,6 +853,17 @@ const RedMentoringSessionListAside = () => {
         {picker(fromDate, setFromDate, 'From date')}
         {picker(toDate, setToDate, 'To date')}
       </MuiPickersUtilsProvider>
+      <FormControl style={{ width: '100%' }}>
+        <InputLabel>City</InputLabel>
+        <Select
+          value={rediLocation}
+          onChange={e => setRediLocation(e.target.value)}
+        >
+          <MenuItem value={undefined}>All cities</MenuItem>
+          <MenuItem value='berlin'>Berlin</MenuItem>
+          <MenuItem value='munich'>Munich</MenuItem>
+        </Select>
+      </FormControl>
       <div>
         <Button onClick={doLoad} disabled={!valid && loadState !== 'loading'}>
           Load

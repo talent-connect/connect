@@ -7,12 +7,22 @@ import PhoneIcon from '@material-ui/icons/Phone'
 
 const slackIcon = <Icon className={clsx('fab fa-slack')} />
 const githubIcon = <Icon className={clsx('fab fa-github')} />
+const linkedInIcon = <Icon className={clsx('fab fa-linkedin')} />
 
 export const ContactInfo = ({ profile }: { profile: RedProfile }) => (
   <>
     <h3>Contact info</h3>
     {profile.contactEmail && (
-      <Placeholder icon={<EmailIcon />} content={profile.contactEmail} />
+      <Placeholder
+        icon={<EmailIcon />}
+        content={<a href={`mailto:${profile.contactEmail}`} onClick={e => e.stopPropagation()}>{profile.contactEmail}</a>}
+      />
+    )}
+    {profile.linkedInProfileUrl && (
+      <Placeholder
+        icon={linkedInIcon}
+        content={<a href={profile.linkedInProfileUrl} target="_blank" onClick={e => e.stopPropagation()}>{profile.linkedInProfileUrl}</a>}
+      />
     )}
     {profile.slackUsername && (
       <Placeholder icon={slackIcon} content={profile.slackUsername} />
@@ -21,7 +31,10 @@ export const ContactInfo = ({ profile }: { profile: RedProfile }) => (
       <Placeholder icon={<PhoneIcon />} content={profile.telephoneNumber} />
     )}
     {profile.githubProfileUrl && (
-      <Placeholder icon={githubIcon} content={profile.githubProfileUrl} />
+      <Placeholder
+        icon={githubIcon}
+        content={<a href={profile.linkedInProfileUrl} target="_blank" onClick={e => e.stopPropagation()}>{profile.linkedInProfileUrl}</a>}
+      />
     )}
   </>
 )

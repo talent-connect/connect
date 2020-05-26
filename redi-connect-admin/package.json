@@ -22,9 +22,11 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy-production": "env-cmd -f .env.production yarn run build && aws s3 sync build/ s3://connect-admin.redi-school.org --delete --acl public-read --profile redi-connect-deployment --region eu-west-1 && aws cloudfront create-invalidation --distribution-id E3ANNDV8BM7FUB --paths /* --profile redi-connect-deployment",
-    "deploy-staging": "env-cmd -f .env.staging yarn run build && aws s3 sync build/ s3://admin.staging.connect.redi-school.org --delete --acl public-read --profile redi-connect-deployment --region eu-west-1 && aws cloudfront create-invalidation --distribution-id E3PNLW70H60KAZ --paths /* --profile redi-connect-deployment",
-    "deploy-demonstration": "env-cmd -f .env.demonstration yarn run build && aws s3 sync build/ s3://admin.demo.connect.redi-school.org --delete --acl public-read --profile redi-connect-deployment --region eu-west-1 && aws cloudfront create-invalidation --distribution-id E2UAAZQ3NXK4N6 --paths /* --profile redi-connect-deployment"
+    "deploy-staging": "env-cmd -f .env.staging yarn run build && aws s3 rm s3://admin.staging.connect.redi-school.org/ --recursive --profile redi-connect-deployment --region eu-west-1 && aws s3 sync build/ s3://admin.staging.connect.redi-school.org --delete --acl public-read --profile redi-connect-deployment --region eu-west-1 && aws cloudfront create-invalidation --distribution-id E3PNLW70H60KAZ --paths /* --profile redi-connect-deployment",
+    "deploy-production": "env-cmd -f .env.production yarn run build && aws s3 rm s3://connect-admin.redi-school.org/ --recursive --profile redi-connect-deployment --region eu-west-1 && aws s3 sync build/ s3://connect-admin.redi-school.org --delete --acl public-read --profile redi-connect-deployment --region eu-west-1 && aws cloudfront create-invalidation --distribution-id E3ANNDV8BM7FUB --paths /* --profile redi-connect-deployment",
+    "deploy-demonstration": "env-cmd -f .env.demonstration yarn run build && aws s3 rm s3://admin.demo.connect.redi-school.org/ --recursive --profile redi-connect-deployment --region eu-west-1 && aws s3 sync build/ s3://admin.demo.connect.redi-school.org --delete --acl public-read --profile redi-connect-deployment --region eu-west-1 && aws cloudfront create-invalidation --distribution-id E2UAAZQ3NXK4N6 --paths /* --profile redi-connect-deployment",
+    "eslint": "npx eslint . --ext .js,.jsx",
+    "eslint:autofix": "npx eslint . --ext .js,.jsx --fix"
   },
   "browserslist": {
     "production": [

@@ -63,7 +63,8 @@ module.exports = function (RedMentoringSession) {
               switchMap(([mentor, mentee]) =>
                 sendMentoringSessionLoggedEmail(
                   mentor.contactEmail,
-                  mentor.firstName
+                  mentor.firstName,
+                  ctx.options.currentUser.redProfile.rediLocation
                 )
               )
             )
@@ -80,6 +81,15 @@ module.exports = function (RedMentoringSession) {
     } else {
       ctx.data.updatedAt = new Date()
     }
+
+    if (process.env.NODE_ENV !== 'seeding') {
+      if (ctx.instance) {
+        ctx.instance.rediLocation = ctx.options.currentUser.redProfile.rediLocation
+      } else {
+        ctx.data.rediLocation = ctx.options.currentUser.redProfile.rediLocation
+      }
+    }
+
     next()
   })
 }
