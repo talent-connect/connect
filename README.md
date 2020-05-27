@@ -33,13 +33,13 @@ Contribution guide will be elaborated. For now, please:
    - mongod
    - node v10
 2. Optionally, to easily browse the MongoDB database, install *Studio 3T*
-3. Install dependencies: run `yarn` in `redi-connect-front` folder, run `npm install` in `redi-connect-backend` folder
+3. Install dependencies: run `yarn` in `redi-connect-front` folder, `yarn` in `redi-connect-admin` folder, run `npm install` in `redi-connect-backend` folder
 4. Optionally, create a folder named `mongodb-data` for MongoDB's data files
 
 ### Run
 1. For a clean development session, clear the old database (via Studio 3T, any other GUI, or simply deleting and re-creating the MongoDB data folder)
 2. Open the monogdb data folder (e.g. `cd mongodb-data`) and start the mongodb daemon: `mongod --dbpath .`
-3. To seed the database with anonymous data, run `./seed-random-data.sh` in `redi-connect-backend`
-4. Run `yarn start` in `redi-connect-front`
+3. To seed the database with anonymous data, run `REDI_LOCATION=berlin ./seed-random-data.sh` in `redi-connect-backend`
+4. Run `yarn start:berlin` in `redi-connect-front`
 5. Run `./start-dev.sh` in `redi-connect-backend` 
 6. Run `./yarn start` in `redi-connect-admin`
