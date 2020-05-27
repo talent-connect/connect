@@ -22,8 +22,6 @@ import {
   profileFetchStart
 } from '../../../redux/user/actions'
 
-import './Me.scss'
-
 const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
   // const [uploadInput, setUploadInput] = useState<HTMLInputElement>()
 
@@ -42,7 +40,7 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
 
           <Columns vCentered breakpoint="mobile">
             <Columns.Column size={3}>
-              <Avatar mePage />
+              <Avatar />
             </Columns.Column>
             <Columns.Column size={8}>
               <Heading>Hi, {profile.firstName}</Heading>
@@ -51,23 +49,25 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
               </Content>
             </Columns.Column>
           </Columns>
-          <Element className="me__block" responsive={{ tablet: { hide: { value: true } } }}>
+          <Element className="block-separator" responsive={{ tablet: { hide: { value: true } } }}>
             <Content size="medium" renderAs="p">
               You have completed 15% of your profile. Let potential mentors know a little bit more about you, so you can find the perfect fit.
-              </Content>
+            </Content>
           </Element>
-          <Element className="me__block">
+          <Element className="block-separator">
             <About />
           </Element>
 
-          <Element className="me__block">
+          <Element className="block-separator">
             <Mentoring />
           </Element>
 
-          <Element className="me__block">
+          <Element className="block-separator">
             <Columns>
               <Columns.Column size={6}>
-                <Contacts />
+                <Element className="block-separator">
+                  <Contacts />
+                </Element>
               </Columns.Column>
               <Columns.Column size={6}>
                 <SocialMedia />
@@ -75,10 +75,12 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
             </Columns>
           </Element>
 
-          <Element className="me__block">
+          <Element className="block-separator">
             <Columns>
               <Columns.Column size={6}>
-                <PersonalDetail />
+                <Element className="block-separator">
+                  <PersonalDetail />
+                </Element>
               </Columns.Column>
               <Columns.Column size={6}>
                 <Languages />
@@ -86,10 +88,12 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
             </Columns>
           </Element>
 
-          <Element className="me__block">
+          <Element className="block-separator">
             <Columns>
               <Columns.Column size={6}>
-                <Occupation />
+                <Element className="block-separator">
+                  <Occupation />
+                </Element>
               </Columns.Column>
               <Columns.Column size={6}>
                 {profile.userType === 'mentee' && <RediClass />}

@@ -13,7 +13,7 @@ import { ProfileAcceptedMatch } from './acceptedMatch/ProfileAcceptedMatch'
 
 import { useParams, useHistory } from 'react-router'
 
-import { Columns } from 'react-bulma-components'
+import { Columns, Heading } from 'react-bulma-components'
 
 interface RouteParams {
   profileId: string
@@ -49,20 +49,28 @@ function Profile ({ loading, profile, currentUser, profilesFetchOneStart }: Prof
       {!loading && <LoggedIn>
         <Columns>
           <Columns.Column>
-            {(!isAcceptedMatch || currentUserIsMentor) && (
+            {(!isAcceptedMatch || currentUserIsMentor) &&
               <Button
-                onClick={() => history.push('/app/dashboard')}
+                onClick={() => history.goBack()}
                 simple
               >
                 <Button.Icon icon="arrowLeft" space="right" />
                 back
               </Button>
-            )}
+            }
           </Columns.Column>
           <Columns.Column className="is-narrow">
-            {!isAcceptedMatch &&
-              typeof profile !== 'undefined' &&
-              profile.userType !== 'mentee' && <Button onClick={() => history.push('/app/dashboard')}>apply for this mentor</Button>}
+            {
+              (
+                !isAcceptedMatch &&
+                typeof profile !== 'undefined' &&
+                profile.numberOfPendingApplicationWithCurrentUser === 0
+              ) &&
+              <Button onClick={() => history.push('/app/dashboard')}>apply for this mentor</Button>
+            }
+            {typeof profile !== 'undefined' && profile.numberOfPendingApplicationWithCurrentUser > 0 && (
+              <Heading renderAs='p' subtitle size={5}>You have already applied to this mentor.</Heading>
+            )}
           </Columns.Column>
         </Columns>
         {isAcceptedMatch && profile && (

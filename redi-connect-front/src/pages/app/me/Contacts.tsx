@@ -68,7 +68,7 @@ const Contacts = ({ profile, profileSaveStart }: any) => {
     onSubmit: submitForm
   })
 
-  const readContacts = <Content className="me__block--mobile">
+  const readContacts = <Content className="block-separator">
     {contactEmail && <p>{contactEmail}</p>}
     {(firstName || firstName) && <p>{firstName} {lastName}</p>}
     {telephoneNumber && <p>{telephoneNumber}</p>}

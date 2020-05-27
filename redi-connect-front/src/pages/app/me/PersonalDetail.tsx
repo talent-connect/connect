@@ -76,7 +76,7 @@ const PersonalDetail = ({ profile, profileSaveStart }: any) => {
       onSave={() => formik.handleSubmit()}
       placeholder="Input your gender and age."
       savePossible={(formik.dirty && formik.isValid)}
-      read={emptyProfile && <Element className="me__block--mobile"><PipeList items={detailsList} /></Element>}
+      read={emptyProfile && <Element className="me__block--split"><PipeList items={detailsList} /></Element>}
     >
       <FormSelect
         label="Gender"

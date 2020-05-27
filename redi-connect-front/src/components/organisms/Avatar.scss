@@ -4,22 +4,11 @@
 .avatar {
   position: relative;
   border-radius: 50%;
+  border: 4px solid $redi-orange-dark;
+  box-shadow: 2px 0 15px 0 rgba(255, 92, 31, 0.34);
   overflow: hidden;
   display: inline-flex;
-
-  &--cursor {
-    cursor: pointer;
-  }
-
-  &--border__me {
-    border: 4px solid $redi-orange-dark;
-    box-shadow: 2px 0 15px 0 rgba(255, 92, 31, 0.34);
-  }
-
-  &--border__other {
-    border: 4px solid transparent;
-    box-shadow: 2px 2px 36px 0 rgba(60, 63, 66, 0.18);
-  }
+  cursor: pointer;
 
   &::before {
     content: '';

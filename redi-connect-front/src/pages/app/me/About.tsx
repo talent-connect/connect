@@ -6,7 +6,7 @@ import Editable from '../../../components/molecules/Editable'
 import { RedProfile } from '../../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../../redux/types'
-
+import InfoText from '../../../components/atoms/InfoText'
 import {
   profileSaveStart
 } from '../../../redux/user/actions'
@@ -77,22 +77,16 @@ const About = ({ profile, profileSaveStart }: any) => {
     onSubmit: submitForm
   })
 
-  const readAbout = <>
-    {personalDescription && <p>{personalDescription}</p>}
-    {expectations && <p>{expectations}</p>}
-    {menteeCountCapacity && <p>{menteeCountCapacity}</p>}
-  </>
-
   // should fine a nicer solution here
   const isEmptyProfile = !!personalDescription || !!expectations || !!menteeCountCapacity
 
   return (
     <Editable
       title="About You"
-      onSave={ () => formik.handleSubmit()}
+      onSave={() => formik.handleSubmit()}
       savePossible={(formik.dirty && formik.isValid)}
       placeholder="Please tell us a bit about yourself"
-      read={isEmptyProfile && <Content>{readAbout}</Content>}
+      read={isEmptyProfile && <InfoText infos={[personalDescription, expectations, menteeCountCapacity]} />}
     >
       <FormTextArea
         label="Tell us a few words about yourself (this will be displayed on your profile)* (100-600 characters)"

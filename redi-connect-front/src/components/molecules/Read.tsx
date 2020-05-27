@@ -1,6 +1,5 @@
 import React from 'react';
 import { Heading } from 'react-bulma-components'
-import '../../pages/app/me/Me.scss'
 
 interface Props {
   title: string
