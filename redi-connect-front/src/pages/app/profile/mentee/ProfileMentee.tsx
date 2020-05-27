@@ -67,7 +67,7 @@ export const ProfileMentee = withStyles(styles)(
         </Grid>
 
         <p>I want help with:</p>
-        {mentee.categories.map(catId => (
+        {mentee.categories && mentee.categories.map(catId => (
           <CategoryChip
             key={catId}
             className={classes.category}

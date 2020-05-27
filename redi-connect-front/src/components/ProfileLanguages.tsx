@@ -13,7 +13,7 @@ export const ProfileLanguages = ({
       <Grid item>
         <LanguageIcon />
       </Grid>
-      <Grid item>{languages.join(', ')}</Grid>
+      <Grid item>{languages && languages.join(', ')}</Grid>
     </Grid>
   )
 }

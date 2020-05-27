@@ -47,7 +47,7 @@ function Profile ({ loading, profile, currentUser, profilesFetchOneStart }: Prof
       {!loading && <LoggedIn>
         {(!isAcceptedMatch || currentUserIsMentor) && (
           <Button
-            onClick={() => history.push('/app/dashboard')}
+            onClick={() => history.goBack()}
             simple
           >
             Back
