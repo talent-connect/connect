@@ -23,6 +23,7 @@ const MenuItem = ({ url, children }: MenuItemProps) => {
 
 const SideMenu = () => {
   const profile = getRedProfile()
+  const isProfileActive = profile.userType === 'mentee' || profile.userType === 'mentor'
 
   return (
     <ul className="side-menu">
@@ -33,7 +34,9 @@ const SideMenu = () => {
       {profile.userType === 'mentor' &&
         <MenuItem url="/app/mentorship">My Mentorship</MenuItem>
       }
-      <MenuItem url="/app/applications">Applications</MenuItem>
+      {isProfileActive &&
+        <MenuItem url="/app/applications">Applications</MenuItem>
+      }
     </ul>
   )
 }
