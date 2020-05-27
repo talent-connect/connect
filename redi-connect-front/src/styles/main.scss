@@ -117,7 +117,10 @@ a:hover {
 .tag.is-large {
   height: 2.5rem;
 }
+
 .double-block-space {
+  margin-bottom: 1rem;
+
   @include tablet() {
     margin-bottom: 2rem !important;
   }
