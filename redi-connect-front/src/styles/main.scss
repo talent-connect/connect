@@ -74,6 +74,10 @@ a:hover {
     padding: $section-padding-medium;
   }
 
+  &--separator {
+    border-top: 1px solid $grey-light;
+  }
+
   &.section--bottom-large-spaceing {
     padding-bottom: 4rem;
 

@@ -1,9 +1,7 @@
 import React from 'react'
 import Navbar from '../organisms/Navbar'
 import SideMenu from '../organisms/SideMenu'
-import Button from '../atoms/Button'
 import { Container, Section, Columns, Content } from 'react-bulma-components'
-import { logout } from '../../services/api/api'
 import { getRedProfile } from '../../services/auth/auth'
 
 import Footer from '../organisms/Footer'
@@ -12,15 +10,8 @@ const LoggedIn: React.FunctionComponent = ({ children }) => {
   const profile = getRedProfile()
   return (
     <>
-      <Navbar separator>
-        <Button
-          onClick={() => logout()}
-          simple
-        >
-        log-out
-        </Button>
-      </Navbar>
-      <Section className="section--bottom-large-spaceing color-half">
+      <Navbar />
+      <Section className="section--bottom-large-spaceing color-half section--separator">
         <Container className="color-side-menu">
           <Columns>
             <Columns.Column

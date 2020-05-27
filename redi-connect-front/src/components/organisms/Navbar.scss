@@ -18,6 +18,11 @@
     }
   }
 
+  &__buttons {
+    display: flex;
+    align-items: center;
+  }
+
   &__mobile {
     position: fixed;
     width: 100%;
@@ -43,13 +48,5 @@
     font-size: 1.5rem;
     line-height: 1.5rem;
     color: $redi-orange-dark;
-  }
-
-  &__image {
-    cursor: pointer;
-  }
-
-  &--with-separator {
-    border-bottom: solid 1px $grey-light;
   }
 }

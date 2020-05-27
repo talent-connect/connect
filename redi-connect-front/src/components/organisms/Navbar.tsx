@@ -1,16 +1,56 @@
 import React, { useState } from 'react'
+import Button from '../atoms/Button'
+import { isLoggedIn } from '../../services/auth/auth'
+import { logout } from '../../services/api/api'
 import { Section, Container, Element } from 'react-bulma-components'
 import Logo from '../atoms/Logo'
-import burger from '../../assets/images/hamburger.svg'
 import classnames from 'classnames'
+import { useHistory } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import './Navbar.scss'
 
-interface Props {
-  children: any
-  separator?: boolean
+const LoggedOutButtons = () => {
+  const history = useHistory()
+  const { t } = useTranslation()
+
+  return (<>
+    <Button
+      onClick={() => history.push('/front/login')}
+      simple
+    >
+      {t('button.login')}
+    </Button>
+    <Button
+      onClick={() => history.push('/front/signup-landing')}
+    >
+      {t('button.signUp')}
+    </Button>
+  </>)
 }
 
-const LoggedOutNavbar = ({ children, separator }: Props) => {
+const LoggedInButtons = ({ mobile }: { mobile?: boolean }) => {
+  const history = useHistory()
+
+  return (<>
+    <Button
+      onClick={() => logout()}
+      simple
+    >
+      log-out
+    </Button>
+
+    <Button
+      onClick={() => history.push('/app/me')}
+      icon="account"
+      simple
+      separator={!mobile}
+    >
+    </Button>
+  </>
+  )
+}
+
+const LoggedOutNavbar = () => {
   const [menuActive, setMenuActive] = useState(false)
 
   const mobileMenu = (
@@ -21,26 +61,34 @@ const LoggedOutNavbar = ({ children, separator }: Props) => {
       >
         &times;
       </Element>
-      {children}
+      {isLoggedIn() && <LoggedInButtons mobile={true}/>}
+      {!isLoggedIn() && <LoggedOutButtons/>}
     </Container>
   )
 
   return (
     <>
       {menuActive && mobileMenu}
-      <Section className={classnames('navbar', { 'navbar--with-separator': separator })}>
+      <Section className={classnames('navbar')}>
         <Container className="navbar__wrapper">
           <Logo />
           <Element
             responsive={{ mobile: { hide: { value: true } } }}
+            className="navbar__buttons"
           >
-            {children}
+            {isLoggedIn() && <LoggedInButtons/>}
+            {!isLoggedIn() && <LoggedOutButtons/>}
           </Element>
           <Element
             responsive={{ tablet: { hide: { value: true } } }}
-            onClick={() => setMenuActive(!menuActive)}
+            className="navbar__buttons"
           >
-            <img src={burger} alt="hamburger icon" className="navbar__image" />
+            <Button
+              onClick={() => setMenuActive(!menuActive)}
+              icon="hamburger"
+              simple
+            >
+            </Button>
           </Element>
         </Container>
       </Section>
