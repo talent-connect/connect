@@ -1,7 +1,7 @@
 import React from 'react'
-import { Form } from 'react-bulma-components'
-import _uniqueId from 'lodash/uniqueId'
 import Select from 'react-select'
+import _uniqueId from 'lodash/uniqueId'
+import { Form } from 'react-bulma-components'
 
 interface Props {
   name: string
@@ -13,7 +13,7 @@ interface Props {
   customOnChange?: Function
 }
 
-function FormInput (props: any) {
+function FormSelect (props: any) {
   const {
     name,
     items,
@@ -123,4 +123,4 @@ function FormInput (props: any) {
   )
 }
 
-export default FormInput
+export default FormSelect

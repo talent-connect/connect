@@ -11,7 +11,7 @@ interface Props {
   application: RedMatch & { createdAt?: string }
 }
 
-export const ApplicationCard = ({ application }: Props) => {
+const ApplicationCard = ({ application }: Props) => {
   const history = useHistory()
   const profile = getRedProfile()
   const [showDetails, setShowDetails] = useState(false)
@@ -65,3 +65,5 @@ export const ApplicationCard = ({ application }: Props) => {
   </>
   )
 }
+
+export default ApplicationCard

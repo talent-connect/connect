@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react'
 
 import { Columns, Content, Element } from 'react-bulma-components'
-import Heading from '../../../components/atoms/Heading'
-import Avatar from '../../../components/organisms/Avatar'
-
-import About from './About'
+import { Heading } from '../../../components/atoms'
+import { Avatar, ProfileAbout } from '../../../components/organisms'
 import Mentoring from './Mentoring'
 import Contacts from './Contacts'
 import SocialMedia from './SocialMedia'
@@ -23,8 +21,6 @@ import {
 } from '../../../redux/user/actions'
 
 const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
-  // const [uploadInput, setUploadInput] = useState<HTMLInputElement>()
-
   // not sure if this is really needed since the profile is loaded when the user is logged in
   useEffect(() => {
     profileFetchStart()
@@ -55,7 +51,7 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
             </Content>
           </Element>
           <Element className="block-separator">
-            <About />
+            <ProfileAbout />
           </Element>
 
           <Element className="block-separator">

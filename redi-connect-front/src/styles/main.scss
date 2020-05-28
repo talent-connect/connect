@@ -1,6 +1,8 @@
 // custom variable overwrites for bulma
 @import "_variables.scss";
 
+@import "_global.scss";
+
 // bulma global dependencies
 @import "~bulma/sass/utilities/_all";
 @import "~bulma/sass/base/_all.sass";
@@ -22,7 +24,6 @@
 //custom modifiers
 @import "_fonts.scss";
 @import "_forms.scss";
-@import "_global.scss";
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
@@ -91,6 +92,11 @@ a:hover {
       }
     }
   }
+}
+
+// fix word wrapping in the content... maybe a bulma bug? 
+.content {
+  word-break: break-word;
 }
 
 // TODO: should be transfered to a layout template

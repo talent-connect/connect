@@ -1,11 +1,10 @@
 import React from 'react'
+import { Heading } from '../../../../components/atoms'
+import { PipeList, ReadAbout, Read } from '../../../../components/molecules'
 import StaticAvatar from '../../../../components/organisms/StaticAvatar'
 import { RedProfile } from '../../../../types/RedProfile'
 import { categoriesIdToLabelMap } from '../../../../config/config'
-import { Columns, Element, Content, Tag, Heading as BulmaHeading } from 'react-bulma-components'
-import Heading from '../../../../components/atoms/Heading'
-import PipeList from '../../../../components/molecules/PipeList'
-import Read from '../../../../components/molecules/Read'
+import { Columns, Element, Content, Tag } from 'react-bulma-components'
 
 interface Props {
   mentor: RedProfile
@@ -21,12 +20,11 @@ export const ProfileMentor = ({ mentor }: Props) => (
         <Heading>{`${mentor.firstName} ${mentor.lastName}`}</Heading>
       </Columns.Column>
     </Columns>
-    {mentor.personalDescription && <Element className="block-separator">
-      <Read title={`about ${mentor.firstName} ${mentor.lastName}`}>
-        <BulmaHeading subtitle renderAs='p' size={5}>{`${mentor.personalDescription}`}</BulmaHeading>
-      </Read>
+
+    <Element className="block-separator">
+      <ReadAbout.Some profile={mentor} />
     </Element>
-    }
+
     {
       mentor.categories && <Element className="block-separator">
         <Columns>

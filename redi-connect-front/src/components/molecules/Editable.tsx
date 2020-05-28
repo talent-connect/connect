@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Heading, Content } from 'react-bulma-components'
+import { Caption } from '../../components/atoms'
 import { ReactComponent as Save } from '../../assets/images/save.svg'
 import { ReactComponent as Edit } from '../../assets/images/edit.svg'
 import { ReactComponent as Close } from '../../assets/images/close.svg'
@@ -23,12 +23,10 @@ function Editable (props: Props) {
     read,
     onSave,
     savePossible,
-    placeholder,
     className
   } = props
 
   const [isEditing, setIsEditing] = useState(false)
-  const readOnly = read || (<Content italic>{placeholder}</Content>)
 
   const handleSave = () => {
     onSave()
@@ -38,15 +36,7 @@ function Editable (props: Props) {
   return (
     <div className={classnames('editable', { [`${className}`]: className })}>
       <div className="editable__header">
-        <Heading
-          size={5}
-          weight="normal"
-          renderAs="h3"
-          subtitle
-          textTransform="uppercase"
-        >
-          {title}
-        </Heading>
+        <Caption>{title}</Caption>
         <div className="editable__header__buttons">
           { isEditing ? (<>
             <Save
@@ -63,7 +53,7 @@ function Editable (props: Props) {
           )}</div>
       </div>
       <div className="editable__body">
-        { isEditing ? children : readOnly }
+        { isEditing ? children : read }
       </div>
     </div>
   )

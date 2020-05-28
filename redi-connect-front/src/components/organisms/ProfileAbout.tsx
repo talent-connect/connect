@@ -1,22 +1,19 @@
 import React from 'react'
-import { Content } from 'react-bulma-components'
-import FormTextArea from '../../../components/atoms/FormTextArea'
-import FormSelect from '../../../components/atoms/FormSelect'
-import Editable from '../../../components/molecules/Editable'
-import { RedProfile } from '../../../types/RedProfile'
+import { FormTextArea, FormSelect } from '../atoms'
+import { Editable, ReadAbout } from '../molecules'
+import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
-import { RootState } from '../../../redux/types'
-import InfoText from '../../../components/atoms/InfoText'
+import { RootState } from '../../redux/types'
 import {
   profileSaveStart
-} from '../../../redux/user/actions'
+} from '../../redux/user/actions'
 import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
 
 import {
   menteeCountCapacityOptions
-} from '../../../config/config'
+} from '../../config/config'
 
 const formMenteeCountCapacity = menteeCountCapacityOptions.map(option => ({ value: option, label: option }))
 
@@ -47,7 +44,7 @@ const validationSchema = Yup.object({
   })
 })
 // props: FormikProps<AboutFormValues>
-const About = ({ profile, profileSaveStart }: any) => {
+const ProfileAbout = ({ profile, profileSaveStart }: any) => {
   const {
     id,
     userType,
@@ -77,16 +74,12 @@ const About = ({ profile, profileSaveStart }: any) => {
     onSubmit: submitForm
   })
 
-  // should fine a nicer solution here
-  const isEmptyProfile = !!personalDescription || !!expectations || !!menteeCountCapacity
-
   return (
     <Editable
       title="About You"
       onSave={() => formik.handleSubmit()}
       savePossible={(formik.dirty && formik.isValid)}
-      placeholder="Please tell us a bit about yourself"
-      read={isEmptyProfile && <InfoText infos={[personalDescription, expectations, menteeCountCapacity]} />}
+      read={<ReadAbout.Me />}
     >
       <FormTextArea
         label="Tell us a few words about yourself (this will be displayed on your profile)* (100-600 characters)"
@@ -127,4 +120,4 @@ const mapDispatchToProps = (dispatch: any) => ({
   profileSaveStart: (profile: Partial<RedProfile>) => dispatch(profileSaveStart(profile))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(About)
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileAbout)

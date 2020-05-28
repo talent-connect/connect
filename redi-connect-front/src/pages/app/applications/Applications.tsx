@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Content, Element } from 'react-bulma-components'
 import Heading from '../../../components/atoms/Heading'
-import { ApplicationCard } from '../../../components/organisms/ApplicationCard'
+import { ApplicationCard } from '../../../components/organisms'
 import LoggedIn from '../../../components/templates/LoggedIn'
 import { RootState } from '../../../redux/types'
 import { getApplicants } from '../../../redux/matches/selectors'
