@@ -1,16 +1,14 @@
 import React from 'react'
-import FormInput from '../../../components/atoms/FormInput'
-import FormSelect from '../../../components/atoms/FormSelect'
-import Editable from '../../../components/molecules/Editable'
-import { RedProfile } from '../../../types/RedProfile'
+import { FormInput, FormSelect } from '../atoms'
+import { Editable, PipeList } from '../molecules'
+import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
-import { RootState } from '../../../redux/types'
-import PipeList from '../../../components/molecules/PipeList'
+import { RootState } from '../../redux/types'
 import { Element } from 'react-bulma-components'
 
 import {
   profileSaveStart
-} from '../../../redux/user/actions'
+} from '../../redux/user/actions'
 import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
@@ -18,7 +16,7 @@ import { FormikValues, useFormik } from 'formik'
 import {
   genders,
   gendersIdToLabelMap
-} from '../../../config/config'
+} from '../../config/config'
 
 const formGenders = genders.map(gender => ({ value: gender.id, label: gender.label }))
 
@@ -37,7 +35,7 @@ const validationSchema = Yup.object({
     .label('Age')
 })
 
-const PersonalDetail = ({ profile, profileSaveStart }: any) => {
+const EditablePersonalDetail = ({ profile, profileSaveStart }: any) => {
   const {
     id,
     gender,
@@ -104,4 +102,4 @@ const mapDispatchToProps = (dispatch: any) => ({
   profileSaveStart: (profile: Partial<RedProfile>) => dispatch(profileSaveStart(profile))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(PersonalDetail)
+export default connect(mapStateToProps, mapDispatchToProps)(EditablePersonalDetail)

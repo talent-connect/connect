@@ -1,22 +1,21 @@
 import React from 'react'
 import groupBy from 'lodash/groupBy'
 import { Columns, Tag, Heading, Element, Content } from 'react-bulma-components'
-import FormCheckbox from '../../../components/atoms/FormCheckbox'
-import Editable from '../../../components/molecules/Editable'
-import { RedProfile } from '../../../types/RedProfile'
+import { FormCheckbox } from '../atoms'
+import { Editable } from '../molecules'
+import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
-import { RootState } from '../../../redux/types'
-import './Mentoring.scss'
+import { RootState } from '../../redux/types'
 
 import {
   profileSaveStart
-} from '../../../redux/user/actions'
+} from '../../redux/user/actions'
 import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
 import {
   categories as availableCategories, categoriesIdToLabelMap
-} from '../../../config/config'
+} from '../../config/config'
 
 export interface MentoringFormValues {
   categories: string[]
@@ -36,7 +35,7 @@ interface Props {
   profileSaveStart: Function
 }
 
-const Mentoring = ({ profile, profileSaveStart }: Props) => {
+const EditableMentoring = ({ profile, profileSaveStart }: Props) => {
   const {
     id,
     categories
@@ -144,4 +143,4 @@ const mapDispatchToProps = (dispatch: any) => ({
   profileSaveStart: (profile: Partial<RedProfile>) => dispatch(profileSaveStart(profile))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Mentoring)
+export default connect(mapStateToProps, mapDispatchToProps)(EditableMentoring)

@@ -44,7 +44,7 @@ const validationSchema = Yup.object({
   })
 })
 // props: FormikProps<AboutFormValues>
-const ProfileAbout = ({ profile, profileSaveStart }: any) => {
+const EditableAbout = ({ profile, profileSaveStart }: any) => {
   const {
     id,
     userType,
@@ -120,4 +120,4 @@ const mapDispatchToProps = (dispatch: any) => ({
   profileSaveStart: (profile: Partial<RedProfile>) => dispatch(profileSaveStart(profile))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileAbout)
+export default connect(mapStateToProps, mapDispatchToProps)(EditableAbout)

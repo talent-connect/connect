@@ -1,14 +1,14 @@
 import React from 'react'
 import { Content } from 'react-bulma-components'
-import { FormInput } from '../../../components/atoms'
-import { Editable } from '../../../components/molecules'
-import { RedProfile } from '../../../types/RedProfile'
+import { FormInput } from '../atoms'
+import { Editable } from '../molecules'
+import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
-import { RootState } from '../../../redux/types'
+import { RootState } from '../../redux/types'
 
 import {
   profileSaveStart
-} from '../../../redux/user/actions'
+} from '../../redux/user/actions'
 import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
@@ -38,7 +38,7 @@ const validationSchema = Yup.object({
 })
 
 // props: FormikProps<AboutFormValues>
-const Contacts = ({ profile, profileSaveStart }: any) => {
+const EditableContacts = ({ profile, profileSaveStart }: any) => {
   const {
     id,
     firstName,
@@ -118,4 +118,4 @@ const mapDispatchToProps = (dispatch: any) => ({
   profileSaveStart: (profile: Partial<RedProfile>) => dispatch(profileSaveStart(profile))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Contacts)
+export default connect(mapStateToProps, mapDispatchToProps)(EditableContacts)

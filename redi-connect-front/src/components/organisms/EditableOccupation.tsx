@@ -1,15 +1,14 @@
 import React from 'react'
 import { Content } from 'react-bulma-components'
-import FormSelect from '../../../components/atoms/FormSelect'
-import FormInput from '../../../components/atoms/FormInput'
-import Editable from '../../../components/molecules/Editable'
-import { RedProfile } from '../../../types/RedProfile'
+import { FormInput, FormSelect } from '../atoms'
+import { Editable } from '../molecules'
+import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
-import { RootState } from '../../../redux/types'
+import { RootState } from '../../redux/types'
 
 import {
   profileSaveStart
-} from '../../../redux/user/actions'
+} from '../../redux/user/actions'
 import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
@@ -17,7 +16,7 @@ import { FormikValues, useFormik } from 'formik'
 import {
   educationLevels,
   menteeOccupationCategories
-} from '../../../config/config'
+} from '../../config/config'
 
 const formEducationLevels = educationLevels.map(level => ({ value: level.id, label: level.label }))
 const formMenteeOccupationCategories = menteeOccupationCategories.map(level => ({ value: level.id, label: level.label }))
@@ -85,7 +84,7 @@ const validationSchema = Yup.object({
     .label('What are you currently doing')
 })
 
-const Occupation = ({ profile, profileSaveStart }: any) => {
+const EditableOccupation = ({ profile, profileSaveStart }: any) => {
   const {
     id,
     userType,
@@ -279,4 +278,4 @@ const mapDispatchToProps = (dispatch: any) => ({
   profileSaveStart: (profile: Partial<RedProfile>) => dispatch(profileSaveStart(profile))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Occupation)
+export default connect(mapStateToProps, mapDispatchToProps)(EditableOccupation)

@@ -1,24 +1,24 @@
 import React, { useEffect } from 'react'
-
+import { connect } from 'react-redux'
+import { RootState } from '../../../redux/types'
+import { profileFetchStart } from '../../../redux/user/actions'
 import { Columns, Content, Element } from 'react-bulma-components'
 import { Heading } from '../../../components/atoms'
-import { Avatar, ProfileAbout } from '../../../components/organisms'
-import Mentoring from './Mentoring'
-import Contacts from './Contacts'
-import SocialMedia from './SocialMedia'
-import PersonalDetail from './PersonalDetail'
-import Languages from './Languages'
-import RediClass from './RediClass'
-import Occupation from './Occupation'
+import {
+  Avatar,
+  EditableAbout,
+  EditableContacts,
+  EditableLanguages,
+  EditableMentoring,
+  EditableOccupation,
+  EditablePersonalDetail,
+  EditableRediClass,
+  EditableSocialMedia
+} from '../../../components/organisms'
 
-import LoggedIn from '../../../components/templates/LoggedIn'
+import { LoggedIn } from '../../../components/templates'
 // CHECK OUT THE LOADER
 // import { FullScreenCircle } from '../../../hooks/WithLoading'
-import { RootState } from '../../../redux/types'
-import { connect } from 'react-redux'
-import {
-  profileFetchStart
-} from '../../../redux/user/actions'
 
 const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
   // not sure if this is really needed since the profile is loaded when the user is logged in
@@ -51,22 +51,22 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
             </Content>
           </Element>
           <Element className="block-separator">
-            <ProfileAbout />
+            <EditableAbout />
           </Element>
 
           <Element className="block-separator">
-            <Mentoring />
+            <EditableMentoring />
           </Element>
 
           <Element className="block-separator">
             <Columns>
               <Columns.Column size={6}>
                 <Element className="block-separator">
-                  <Contacts />
+                  <EditableContacts />
                 </Element>
               </Columns.Column>
               <Columns.Column size={6}>
-                <SocialMedia />
+                <EditableSocialMedia />
               </Columns.Column>
             </Columns>
           </Element>
@@ -75,11 +75,11 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
             <Columns>
               <Columns.Column size={6}>
                 <Element className="block-separator">
-                  <PersonalDetail />
+                  <EditablePersonalDetail />
                 </Element>
               </Columns.Column>
               <Columns.Column size={6}>
-                <Languages />
+                <EditableLanguages />
               </Columns.Column>
             </Columns>
           </Element>
@@ -88,11 +88,11 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
             <Columns>
               <Columns.Column size={6}>
                 <Element className="block-separator">
-                  <Occupation />
+                  <EditableOccupation />
                 </Element>
               </Columns.Column>
               <Columns.Column size={6}>
-                {profile.userType === 'mentee' && <RediClass />}
+                {profile.userType === 'mentee' && <EditableRediClass />}
               </Columns.Column>
             </Columns>
           </Element>
