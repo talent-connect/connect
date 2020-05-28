@@ -1,7 +1,6 @@
 import React from 'react'
 import { Heading } from '../../../../components/atoms'
 import {
-  PipeList,
   ReadAbout,
   ReadMentoring,
   ReadLanguages,
@@ -19,7 +18,7 @@ export const ProfileMentor = ({ mentor }: Props) => {
   return (<>
     <Columns vCentered breakpoint="mobile">
       <Columns.Column size={3}>
-        <Avatar profile={mentor}/>
+        <Avatar profile={mentor} />
       </Columns.Column>
       <Columns.Column size={9}>
         <Heading>{`${mentor.firstName} ${mentor.lastName}`}</Heading>

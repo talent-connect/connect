@@ -1,7 +1,7 @@
 import React from 'react'
 import { Content } from 'react-bulma-components'
 import { FormSelect } from '../atoms'
-import { Editable } from '../molecules'
+import { Editable, ReadRediClass } from '../molecules'
 import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
@@ -56,14 +56,12 @@ const EditableRediClass = ({ profile, profileSaveStart }: any) => {
     onSubmit: submitForm
   })
 
-  const readRediClass = <p>{courseIdToLabelMap[mentee_currentlyEnrolledInCourse]}</p>
-
   return (
     <Editable
       title="Redi Class"
       onSave={() => formik.handleSubmit()}
       savePossible={(formik.dirty && formik.isValid)}
-      read={<Content>{readRediClass}</Content>}
+      read={<ReadRediClass.Me />}
     >
       <FormSelect
         label="Which course are you taking at ReDI?"

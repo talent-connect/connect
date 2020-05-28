@@ -15,6 +15,14 @@ export {
 }
 from './ReadMentoring'
 export {
+  default as ReadSocialMedia
+}
+from './ReadSocialMedia'
+export {
+  default as ReadRediClass
+}
+from './ReadRediClass'
+export {
   default as ReadLanguages
 }
 from './ReadLanguages'

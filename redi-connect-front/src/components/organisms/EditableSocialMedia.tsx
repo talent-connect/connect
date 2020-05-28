@@ -1,7 +1,7 @@
 import React from 'react'
 import { Content } from 'react-bulma-components'
 import { FormInput } from '../atoms'
-import { Editable } from '../molecules'
+import { Editable, ReadSocialMedia } from '../molecules'
 import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
@@ -62,21 +62,12 @@ const EditableSocialMedia = ({ profile, profileSaveStart }: any) => {
     onSubmit: submitForm
   })
 
-  const readSocialMedia = <>
-    {linkedInProfileUrl && <p>{linkedInProfileUrl}</p>}
-    {githubProfileUrl && <p>{githubProfileUrl}</p>}
-    {slackUsername && <p>{slackUsername}</p>}
-  </>
-
-  const isEmptyProfile = !!linkedInProfileUrl || !!githubProfileUrl || !!slackUsername
-
   return (
     <Editable
       title="Social Media"
-      onSave={ () => formik.handleSubmit()}
+      onSave={() => formik.handleSubmit()}
       savePossible={(formik.dirty && formik.isValid)}
-      placeholder="Input your social media channels here."
-      read={isEmptyProfile && <Content>{readSocialMedia}</Content>}
+      read={<ReadSocialMedia.Me />}
     >
       <FormInput
         name="linkedInProfileUrl"
