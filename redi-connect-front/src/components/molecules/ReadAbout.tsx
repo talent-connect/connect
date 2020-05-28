@@ -5,9 +5,13 @@ import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
 import { Caption } from '../atoms'
 
+interface Props {
+  profile: RedProfile
+}
+
 const Placeholder = () => <Content italic>Please tell us a bit about yourself</Content>
 
-const Me = ({ profile }: { profile: RedProfile }) => {
+const Me = ({ profile }: Props) => {
   const {
     personalDescription,
     expectations,
@@ -25,7 +29,7 @@ const Me = ({ profile }: { profile: RedProfile }) => {
   )
 }
 
-const Some = ({ profile }: { profile: RedProfile }) => {
+const Some = ({ profile }: Props) => {
   const {
     firstName,
     lastName,
@@ -48,5 +52,5 @@ const mapStateToProps = (state: RootState) => ({
 
 export default {
   Me: connect(mapStateToProps, {})(Me),
-  Some: ({ profile }: { profile: RedProfile }) => <Some profile={profile} />
+  Some: ({ profile }: Props) => <Some profile={profile} />
 }

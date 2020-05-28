@@ -1,11 +1,12 @@
 import React from 'react'
 import { Card, Element, Tag } from 'react-bulma-components'
+import { ReadMentoring } from '../molecules'
+
 import { useHistory } from 'react-router-dom'
 // import { LogMentoringSessionBtn } from '../../components/LogMentoringSessionBtn'
 import PipeList from '../../components/molecules/PipeList'
 import {
-  AWS_PROFILE_AVATARS_BUCKET_BASE_URL,
-  categoriesIdToLabelMap
+  AWS_PROFILE_AVATARS_BUCKET_BASE_URL
 } from '../../config/config'
 
 import './ProfileCard.scss'
@@ -22,14 +23,8 @@ export const ProfileCard = ({ profile }: { profile: RedProfile }) => {
       <Element renderAs="h3" textWeight="bold" textSize={4}>
         {profile.firstName} {profile.lastName}
       </Element>
-      <PipeList items={profile.languages} />
-      <Tag.Group className="profile-card__tags">
-        {profile.categories.map(catId => (
-          <Tag key={catId} size="large" rounded>
-            {categoriesIdToLabelMap[catId]}
-          </Tag>
-        ))}
-      </Tag.Group>
+      {profile.languages && <PipeList items={profile.languages} />}
+      {profile.categories && <ReadMentoring.Tags items={profile.categories} />}
       {/* need a solution for displaying the button for loggin a sessioin
       <LogMentoringSessionBtn menteeId={mentee.id} /> */}
     </Card.Content>

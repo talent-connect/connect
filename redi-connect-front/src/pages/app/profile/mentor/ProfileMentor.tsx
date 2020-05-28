@@ -1,17 +1,21 @@
 import React from 'react'
 import { Heading } from '../../../../components/atoms'
-import { PipeList, ReadAbout, Read } from '../../../../components/molecules'
+import {
+  PipeList,
+  ReadAbout,
+  ReadMentoring,
+  Read
+} from '../../../../components/molecules'
 import StaticAvatar from '../../../../components/organisms/StaticAvatar'
 import { RedProfile } from '../../../../types/RedProfile'
-import { categoriesIdToLabelMap } from '../../../../config/config'
-import { Columns, Element, Content, Tag } from 'react-bulma-components'
+import { Columns, Element, Content } from 'react-bulma-components'
 
 interface Props {
   mentor: RedProfile
 }
 
-export const ProfileMentor = ({ mentor }: Props) => (
-  <>
+export const ProfileMentor = ({ mentor }: Props) => {
+  return (<>
     <Columns vCentered breakpoint="mobile">
       <Columns.Column size={3}>
         <StaticAvatar />
@@ -25,23 +29,10 @@ export const ProfileMentor = ({ mentor }: Props) => (
       <ReadAbout.Some profile={mentor} />
     </Element>
 
-    {
-      mentor.categories && <Element className="block-separator">
-        <Columns>
-          <Columns.Column>
-            <Read title="mentoring topics">
-              <Tag.Group>
-                {mentor.categories.map(catId => (
-                  <Tag key={catId} size="large" rounded>
-                    {categoriesIdToLabelMap[catId]}
-                  </Tag>
-                ))}
-              </Tag.Group>
-            </Read>
-          </Columns.Column>
-        </Columns>
-      </Element>
-    }
+    {mentor.categories && <Element className="block-separator">
+      <ReadMentoring.Some profile={mentor} />
+    </Element>}
+
     <Element className="block-separator">
       <Columns>
         {mentor.gender && <Columns.Column>
@@ -78,5 +69,5 @@ export const ProfileMentor = ({ mentor }: Props) => (
         </Columns>
       </Element>
     }
-  </>
-)
+  </>)
+}

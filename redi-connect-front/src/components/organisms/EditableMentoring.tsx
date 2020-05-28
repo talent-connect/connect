@@ -1,8 +1,8 @@
 import React from 'react'
 import groupBy from 'lodash/groupBy'
-import { Columns, Tag, Heading, Element, Content } from 'react-bulma-components'
+import { Columns, Heading, Element, Content } from 'react-bulma-components'
 import { FormCheckbox } from '../atoms'
-import { Editable } from '../molecules'
+import { Editable, ReadMentoring } from '../molecules'
 import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
@@ -14,7 +14,7 @@ import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
 import {
-  categories as availableCategories, categoriesIdToLabelMap
+  categories as availableCategories
 } from '../../config/config'
 
 export interface MentoringFormValues {
@@ -61,12 +61,6 @@ const EditableMentoring = ({ profile, profileSaveStart }: Props) => {
 
   const { categories: selectedCategories } = formik.values
 
-  const readMentoring = categories && categories.map(categoryId =>
-    <Tag key={categoryId} size="large" rounded>
-      {categoriesIdToLabelMap[categoryId]}
-    </Tag>
-  )
-
   const categoriesChange = (e: any) => {
     e.persist()
     const value = e.target.value
@@ -85,8 +79,7 @@ const EditableMentoring = ({ profile, profileSaveStart }: Props) => {
       title="Mentoring Topics"
       onSave={() => formik.handleSubmit()}
       savePossible={(formik.dirty && formik.isValid)}
-      read={categories && <Tag.Group>{readMentoring}</Tag.Group>}
-      placeholder="Please pick up to three mentoring topics."
+      read={ <ReadMentoring.Me /> }
       className="mentoring"
     >
       <Content>You can select between 1 and up to 3 topics.</Content>
