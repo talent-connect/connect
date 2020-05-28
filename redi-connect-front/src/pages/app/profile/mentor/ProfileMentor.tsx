@@ -34,7 +34,7 @@ export const ProfileMentor = ({ mentor }: Props) => {
       <ReadMentoring.Some profile={mentor} />
     </Element>}
 
-    <Element className="block-separator">
+    {(mentor.languages && mentor.gender) && <Element className="block-separator">
       <Columns>
         {mentor.gender && <Columns.Column>
           <Read title="personal details">
@@ -43,9 +43,12 @@ export const ProfileMentor = ({ mentor }: Props) => {
             </Content>
           </Read>
         </Columns.Column>}
-        <ReadLanguages.Some profile={mentor} />
+        <Columns.Column>
+          <ReadLanguages.Some profile={mentor} />
+        </Columns.Column>
       </Columns>
     </Element>
+    }
     {(mentor.mentor_occupation || mentor.mentor_workPlace) &&
       <Element className="block-separator">
         <Columns>

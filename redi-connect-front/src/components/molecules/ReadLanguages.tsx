@@ -1,5 +1,5 @@
 import React from 'react'
-import { Content, Columns } from 'react-bulma-components'
+import { Content } from 'react-bulma-components'
 import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
@@ -28,10 +28,8 @@ const Some = ({ profile }: Props) => {
   } = profile
 
   return <>
-    <Columns.Column>
-      <Caption>{`languages`}</Caption>
-      {languages && <PipeList items={languages} />}
-    </Columns.Column>
+    <Caption>Languages</Caption>
+    {languages && <PipeList items={languages} />}
   </>
 }
 

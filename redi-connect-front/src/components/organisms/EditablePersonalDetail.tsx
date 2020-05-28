@@ -61,7 +61,7 @@ const EditablePersonalDetail = ({ profile, profileSaveStart }: any) => {
     onSubmit: submitForm
   })
 
-  const detailsList = [gendersIdToLabelMap[gender]]
+  const detailsList = gender ? [gendersIdToLabelMap[gender]] : []
   if (age) detailsList.push(`${age} years old`)
 
   const emptyProfile =
