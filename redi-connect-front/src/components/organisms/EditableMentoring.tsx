@@ -79,7 +79,7 @@ const EditableMentoring = ({ profile, profileSaveStart }: Props) => {
       title="Mentoring Topics"
       onSave={() => formik.handleSubmit()}
       savePossible={(formik.dirty && formik.isValid)}
-      read={ <ReadMentoring.Me /> }
+      read={<ReadMentoring.Me />}
       className="mentoring"
     >
       <Content>You can select between 1 and up to 3 topics.</Content>

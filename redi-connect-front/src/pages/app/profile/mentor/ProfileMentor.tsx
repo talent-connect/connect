@@ -4,6 +4,7 @@ import {
   PipeList,
   ReadAbout,
   ReadMentoring,
+  ReadLanguages,
   Read
 } from '../../../../components/molecules'
 import StaticAvatar from '../../../../components/organisms/StaticAvatar'
@@ -42,11 +43,7 @@ export const ProfileMentor = ({ mentor }: Props) => {
             </Content>
           </Read>
         </Columns.Column>}
-        {mentor.languages && <Columns.Column>
-          <Read title="languages">
-            <PipeList items={mentor.languages} />
-          </Read>
-        </Columns.Column>}
+        <ReadLanguages.Some profile={mentor} />
       </Columns>
     </Element>
     {(mentor.mentor_occupation || mentor.mentor_workPlace) &&

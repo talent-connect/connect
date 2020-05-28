@@ -47,6 +47,6 @@ const mapStateToProps = (state: RootState) => ({
 
 export default {
   Me: connect(mapStateToProps, {})(ReadMentoring),
-  Some: ({ profile }: ReadMentoringProps) => <ReadMentoring profile={profile} caption/>,
+  Some: ({ profile }: ReadMentoringProps) => <ReadMentoring profile={profile} caption />,
   Tags: ({ items }: TagsProps) => <ProfileTags items={items} />
 }

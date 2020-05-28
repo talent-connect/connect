@@ -1,6 +1,6 @@
 import React from 'react'
 import { FormSelect } from '../atoms'
-import { Editable, PipeList } from '../molecules'
+import { Editable, ReadLanguages } from '../molecules'
 import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
@@ -56,10 +56,10 @@ const EditableLanguages = ({ profile, profileSaveStart }: any) => {
   return (
     <Editable
       title="Languages"
-      onSave={ () => formik.handleSubmit()}
+      onSave={() => formik.handleSubmit()}
       placeholder="Input languages you speak here."
       savePossible={(formik.dirty && formik.isValid)}
-      read={!!languages && <PipeList items={languages} />}
+      read={<ReadLanguages.Me />}
     >
       <FormSelect
         label="Which of these languages do you speak?*"
