@@ -1,7 +1,7 @@
 import React from 'react'
 import { Content } from 'react-bulma-components'
 import { FormInput } from '../atoms'
-import { Editable } from '../molecules'
+import { Editable, ReadContacts } from '../molecules'
 import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
@@ -68,18 +68,12 @@ const EditableContacts = ({ profile, profileSaveStart }: any) => {
     onSubmit: submitForm
   })
 
-  const readContacts = <Content className="block-separator">
-    {contactEmail && <p>{contactEmail}</p>}
-    {(firstName || firstName) && <p>{firstName} {lastName}</p>}
-    {telephoneNumber && <p>{telephoneNumber}</p>}
-  </Content>
-
   return (
     <Editable
-      title="Contact Detail"
+      title="Contact Details"
       onSave={() => formik.handleSubmit()}
       savePossible={(formik.dirty && formik.isValid)}
-      read={<Content>{readContacts}</Content>}
+      read={<ReadContacts.Me />}
     >
       <FormInput
         name="firstName"

@@ -4,6 +4,7 @@ import {
   ReadAbout,
   ReadMentoring,
   ReadLanguages,
+  ReadPersonalDetail,
   Read
 } from '../../../../components/molecules'
 import Avatar from '../../../../components/organisms/Avatar'
@@ -35,13 +36,9 @@ export const ProfileMentor = ({ mentor }: Props) => {
 
     {(mentor.languages && mentor.gender) && <Element className="block-separator">
       <Columns>
-        {mentor.gender && <Columns.Column>
-          <Read title="personal details">
-            <Content className="block-separator">
-              {mentor.gender}
-            </Content>
-          </Read>
-        </Columns.Column>}
+        <Columns.Column>
+          <ReadPersonalDetail.Some profile={mentor} />
+        </Columns.Column>
         <Columns.Column>
           <ReadLanguages.Some profile={mentor} />
         </Columns.Column>

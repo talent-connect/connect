@@ -1,10 +1,9 @@
 import React from 'react'
 import { FormInput, FormSelect } from '../atoms'
-import { Editable, PipeList } from '../molecules'
+import { Editable, ReadPersonalDetail } from '../molecules'
 import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
-import { Element } from 'react-bulma-components'
 
 import {
   profileSaveStart
@@ -15,7 +14,6 @@ import { FormikValues, useFormik } from 'formik'
 
 import {
   genders,
-  gendersIdToLabelMap
 } from '../../config/config'
 
 const formGenders = genders.map(gender => ({ value: gender.id, label: gender.label }))
@@ -61,20 +59,12 @@ const EditablePersonalDetail = ({ profile, profileSaveStart }: any) => {
     onSubmit: submitForm
   })
 
-  const detailsList = gender ? [gendersIdToLabelMap[gender]] : []
-  if (age) detailsList.push(`${age} years old`)
-
-  const emptyProfile =
-    !!age ||
-    !!gender
-
   return (
     <Editable
-      title="Personal Detail"
+      title="Personal Details"
       onSave={() => formik.handleSubmit()}
-      placeholder="Input your gender and age."
       savePossible={(formik.dirty && formik.isValid)}
-      read={emptyProfile && <Element className="me__block--split"><PipeList items={detailsList} /></Element>}
+      read={<ReadPersonalDetail.Me />}
     >
       <FormSelect
         label="Gender"

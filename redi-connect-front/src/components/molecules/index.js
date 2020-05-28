@@ -27,6 +27,14 @@ export {
 }
 from './ReadLanguages'
 export {
+  default as ReadPersonalDetail
+}
+from './ReadPersonalDetail'
+export {
+  default as ReadContacts
+}
+from './ReadContacts'
+export {
   default as Read
 }
 from './Read'
