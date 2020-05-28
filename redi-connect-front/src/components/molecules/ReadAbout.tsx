@@ -38,7 +38,7 @@ const Some = ({ profile }: Props) => {
   } = profile
 
   return <>
-    <Caption>{`About ${firstName} ${lastName}`}</Caption>
+    <Caption>About {firstName} {lastName}</Caption>
     <Content>
       {personalDescription && <p>{personalDescription}</p>}
       {expectations && <p>{expectations}</p>}

@@ -7,7 +7,7 @@ import {
   ReadLanguages,
   Read
 } from '../../../../components/molecules'
-import StaticAvatar from '../../../../components/organisms/StaticAvatar'
+import Avatar from '../../../../components/organisms/Avatar'
 import { RedProfile } from '../../../../types/RedProfile'
 import { Columns, Element, Content } from 'react-bulma-components'
 
@@ -19,7 +19,7 @@ export const ProfileMentor = ({ mentor }: Props) => {
   return (<>
     <Columns vCentered breakpoint="mobile">
       <Columns.Column size={3}>
-        <StaticAvatar />
+        <Avatar profile={mentor}/>
       </Columns.Column>
       <Columns.Column size={9}>
         <Heading>{`${mentor.firstName} ${mentor.lastName}`}</Heading>

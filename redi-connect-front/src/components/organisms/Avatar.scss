@@ -8,7 +8,10 @@
   box-shadow: 2px 0 15px 0 rgba(255, 92, 31, 0.34);
   overflow: hidden;
   display: inline-flex;
-  cursor: pointer;
+
+  width: 100%;
+  padding-top: calc(100% - 8px);
+  height: auto;
 
   &::before {
     content: '';
@@ -22,13 +25,13 @@
     left: 0;
   }
 
-  &--large {
-    padding: 0.5rem;
-
+  &--editable {
+    cursor: pointer;
     &::before {
       opacity: 0;
       background-color: rgba(0, 0, 0, 0.5);
       transition: $transition;
+      z-index: 2;
     }
 
     &:hover {
@@ -38,23 +41,25 @@
 
       .avatar__button {
         opacity: 1;
+        z-index: 3;
       }
     }
   }
 
-  &--placeholder {
-    width: 100%;
-    padding-top: calc(100% - 8px);
-    height: auto;
-
-    &:before {
-      border: 1px solid #a0a0a0;
-      background-color: $grey-extra-light;
-    }
+  &--placeholder:before {
+    border: 1px solid #a0a0a0;
+    background-color: $grey-extra-light;
   }
 
   &__image {
     border-radius: 50%;
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    width: calc(100% - 16px);
+    height: calc(100% - 16px);
+    object-fit: cover;
+    z-index: 1;
   }
 
   &__button {
@@ -102,5 +107,6 @@
     position: absolute;
     top: 0;
     width: 100%;
+    z-index: 5;
   }
 }

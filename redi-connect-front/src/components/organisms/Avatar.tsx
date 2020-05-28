@@ -17,7 +17,15 @@ import {
   profileSaveStart
 } from '../../redux/user/actions'
 
-export interface MeFormValues {
+interface AvatarProps {
+  profile: RedProfile
+}
+interface AvatarEditable {
+  profile: RedProfile
+  profileSaveStart: Function
+}
+
+interface AvatarFormValues {
   profileAvatarImageS3Key: string
 }
 
@@ -25,7 +33,28 @@ const validationSchema = Yup.object({
   profileAvatarImageS3Key: Yup.string().max(255)
 })
 
-const Avatar = ({ profile, profileSaveStart }: any) => {
+const Avatar = ({ profile }: AvatarProps) => {
+  const { profileAvatarImageS3Key } = profile
+  const imgURL = AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
+
+  return (
+    <div className={classnames('avatar', {
+      'avatar--placeholder': !profileAvatarImageS3Key
+    })}>
+      {profileAvatarImageS3Key &&
+        <img src={imgURL} className="avatar__image" />
+      }
+
+      {!profileAvatarImageS3Key &&
+        <div className="avatar__placeholder">
+          <UploadImage className="avatar__placeholder__image" />
+        </div>
+      }
+    </div>
+  )
+}
+
+const AvatarEditable = ({ profile, profileSaveStart }: AvatarEditable) => {
   const { profileAvatarImageS3Key } = profile
   const imgURL = AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
 
@@ -36,7 +65,7 @@ const Avatar = ({ profile, profileSaveStart }: any) => {
     profileSaveStart({ ...profileMe, id: profile.id })
   }
 
-  const initialValues: MeFormValues = {
+  const initialValues: AvatarFormValues = {
     profileAvatarImageS3Key: profileAvatarImageS3Key
   }
 
@@ -53,7 +82,7 @@ const Avatar = ({ profile, profileSaveStart }: any) => {
 
   return (
     <div className={classnames('avatar', {
-      'avatar--large': profileAvatarImageS3Key,
+      'avatar--editable': profileAvatarImageS3Key,
       'avatar--placeholder': !profileAvatarImageS3Key
     })}>
       {profileAvatarImageS3Key && <>
@@ -85,10 +114,13 @@ const Avatar = ({ profile, profileSaveStart }: any) => {
 }
 
 const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile
+  profile: state.user.profile as RedProfile
 })
+
 const mapDispatchToProps = (dispatch: any) => ({
   profileSaveStart: (profile: Partial<RedProfile>) => dispatch(profileSaveStart(profile))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Avatar)
+Avatar.Editable = connect(mapStateToProps, mapDispatchToProps)(AvatarEditable)
+
+export default Avatar

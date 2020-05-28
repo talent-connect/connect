@@ -36,7 +36,7 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
 
           <Columns vCentered breakpoint="mobile">
             <Columns.Column size={3}>
-              <Avatar />
+              <Avatar.Editable />
             </Columns.Column>
             <Columns.Column size={8}>
               <Heading>Hi, {profile.firstName}</Heading>
