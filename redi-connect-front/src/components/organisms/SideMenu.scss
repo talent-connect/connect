@@ -1,31 +1,88 @@
+@import "~bulma/sass/utilities/_all";
 @import "../../styles/_variables.scss";
 
 .side-menu {
-  &__item {
+  @include mobile() {
+    display: flex;
+    justify-content: space-around;
+  }
 
-    &:not(:last-child) {
-      margin-bottom: 1rem;
+  &__item {
+    @include tablet() {
+      &:not(:last-child) {
+        margin-bottom: 1rem;
+      }
     }
+
     &__link {
       font-size: $size-6;
-      text-transform: uppercase;
-      letter-spacing: 2px;
       font-weight: $weight-normal;
       color: $grey-dark;
       display: block;
-      width: calc(100% + 16px);
-      padding: 0.8rem 0;
-      margin-right: -1rem;
+
+      @include tablet() {
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        width: calc(100% + 16px);
+        padding: 0.8rem 0;
+        margin-right: -1rem;
+      }
+
+      @include mobile() {
+        display: inline-flex;
+        align-items: center;
+        flex-direction: column;
+        font-size: $size-6;
+      }
 
       &--active {
         font-weight: $weight-bold;
         color: $black;
         border-right: 5px solid $redi-blue;
+
+        @include mobile() {
+          &:hover {
+            color: $red;
+          }
+        }
+
+        & g {
+          fill: $red;
+        }
+
+        @include mobile() {
+          font-weight: $weight-normal;
+          color: $red;
+          border-right: none;
+        }
       }
 
       &:hover {
         text-decoration: none;
       }
+    }
+  }
+
+  &__icon {
+    display: none;
+
+    @include mobile() {
+      display: inline;
+    }
+  }
+}
+
+@include mobile() {
+  .logged-in {
+    &__nav {
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      width: 100%;
+      background-color: $white;
+      z-index: 10;
+      border-top: 1px solid $grey-extra-light;
+      box-shadow: 0 -1px 9px 0 rgba(179, 179, 179, 0.36);
     }
   }
 }

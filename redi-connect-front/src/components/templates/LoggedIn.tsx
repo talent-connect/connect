@@ -46,7 +46,7 @@ const LoggedIn = ({ children, matches, matchesFetchStart, matchesMarkAsDismissed
           <Columns>
             <Columns.Column
               size={2}
-              responsive={{ mobile: { hide: { value: true } } }}
+              className="logged-in__nav"
             >
               <SideMenu />
             </Columns.Column>
