@@ -132,11 +132,12 @@ export const fetchApplicants = async (): Promise<RedProfile[]> =>
 
 export const requestMentorship = (
   applicationText: string,
+  expectationText: string,
   mentorId: string
 ): Promise<RedMatch> =>
   http(`${API_URL}/redMatches/requestMentorship`, {
     method: 'post',
-    data: { applicationText, mentorId }
+    data: { applicationText, expectationText, mentorId }
   }).then(resp => resp.data)
 
 export const reportProblem = async (

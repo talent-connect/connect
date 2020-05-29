@@ -147,7 +147,7 @@ module.exports = function (RedMatch) {
   }
 
   RedMatch.requestMentorship = function (data, options, callback) {
-    const { applicationText, mentorId } = data
+    const { applicationText, expectationText, mentorId } = data
     const redMatchCreate = Rx.bindNodeCallback(RedMatch.create.bind(RedMatch))
     const redProfileFind = Rx.bindNodeCallback(
       app.models.RedProfile.findOne.bind(app.models.RedProfile)
@@ -160,6 +160,7 @@ module.exports = function (RedMatch) {
     const redMatch = {
       status: 'applied',
       applicationText,
+      expectationText,
       mentorId,
       menteeId: options.currentUser.redProfile.id,
       rediLocation: options.currentUser.redProfile.rediLocation

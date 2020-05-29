@@ -17,16 +17,23 @@ import { profilesFetchOneStart } from '../../redux/profiles/actions'
 
 interface ConnectionRequestFormValues {
   applicationText: string
+  expectationText: string
   dataSharingAccepted: boolean
 }
 
 const initialValues = {
   applicationText: '',
+  expectationText: '',
   dataSharingAccepted: false
 }
 
 const validationSchema = Yup.object({
   applicationText: Yup.string()
+    .required()
+    .min(250)
+    .max(600)
+    .label('Application message'),
+  expectationText: Yup.string()
     .required()
     .min(250)
     .max(600)
@@ -52,7 +59,7 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
   ) => {
     setSubmitResult('submitting')
     try {
-      await requestMentorship(values.applicationText, mentor.id)
+      await requestMentorship(values.applicationText, values.expectationText, mentor.id)
       profilesFetchOneStart(mentor.id)
     } catch (error) {
       setSubmitResult('error')
@@ -77,20 +84,30 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
           {/* <ApplyForMentor mentor={profile} /> */}
 
           <form>
-            <Caption>Motivation </Caption>
-            <Content>
-              <p>Write an application to the Steve Williams in which you describe why you think he would be a good mentor for you.</p>
-            </Content>
-
             {submitResult === 'success' && (
               <Paper>Your application was successfully submitted.</Paper>
             )}
             {submitResult !== 'success' && (
               <>
+                <Caption>Motivation </Caption>
+                <Content>
+                  <p>Write an application to the Steve Williams in which you describe why you think he would be a good mentor for you.</p>
+                </Content>
                 <FormTextArea
                   name="applicationText"
                   rows={4}
                   placeholder={`Dear ${mentor.firstName}...`}
+                  {...formik}
+                />
+
+                <Caption>Expectation </Caption>
+                <Content>
+                  <p>Please also write a few words about your expectations on the mentorship with this mentor.</p>
+                </Content>
+                <FormTextArea
+                  name="expectationText"
+                  rows={4}
+                  placeholder="My expectations for this mentorship…"
                   {...formik}
                 />
 

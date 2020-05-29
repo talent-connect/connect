@@ -567,7 +567,12 @@ const RedMatchShow = props => (
       <TextField
         source='applicationText'
         label='Application text'
-        helperText='Field contains the text that a mentee as an application to a mentor when asking for mentorship.'
+        helperText='Field contains the aplication text that a mentee as an application to a mentor when asking for mentorship.'
+      />
+      <TextField
+        source='expectationText'
+        label='Expectation text'
+        helperText='Field contains the expectation text that a mentee as an application to a mentor when asking for mentorship.'
       />
       <TextField
         source='matchMadeActiveOn'
@@ -717,7 +722,12 @@ const RedMatchEdit = props => (
       <LongTextInput
         source='applicationText'
         label='Application text'
-        helperText='Field contains the text that a mentee as an application to a mentor when asking for mentorship.'
+        helperText='Field contains the application text that a mentee as an application to a mentor when asking for mentorship.'
+      />
+      <LongTextInput
+        source='expectationText'
+        label='Expectation text'
+        helperText='Field contains the expectation text that a mentee as an application to a mentor when asking for mentorship.'
       />
       <TextInput
         source='matchMadeActiveOn'

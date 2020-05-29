@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Columns, Heading, Element } from 'react-bulma-components'
+import { Columns, Heading, Content } from 'react-bulma-components'
 import { getRedProfile } from '../../services/auth/auth'
 import { RedMatch } from '../../types/RedMatch'
 // import { Avatar } from '../../../components/Avatar'
@@ -58,9 +58,25 @@ const ApplicationCard = ({ application }: Props) => {
       >
         Motivation
       </Heading>
-      <Element>
+      <Content>
         {application.applicationText}
-      </Element>
+      </Content>
+
+      {application.expectationText && <>
+        <Heading
+          size={5}
+          weight="normal"
+          renderAs="h3"
+          subtitle
+          textTransform="uppercase"
+        >
+        Expectation
+        </Heading>
+        <Content>
+          {application.expectationText}
+        </Content>
+      </>
+      }
     </div>
   </>
   )
