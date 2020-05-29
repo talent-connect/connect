@@ -31,13 +31,13 @@ export {
 }
 from './ReadPersonalDetail'
 export {
+  default as ReadOccupation
+}
+from './ReadOccupation'
+export {
   default as ReadContacts
 }
 from './ReadContacts'
-export {
-  default as Read
-}
-from './Read'
 export {
   default as Teaser
 }

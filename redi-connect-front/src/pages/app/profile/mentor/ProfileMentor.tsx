@@ -5,11 +5,11 @@ import {
   ReadMentoring,
   ReadLanguages,
   ReadPersonalDetail,
-  Read
+  ReadOccupation
 } from '../../../../components/molecules'
 import Avatar from '../../../../components/organisms/Avatar'
 import { RedProfile } from '../../../../types/RedProfile'
-import { Columns, Element, Content } from 'react-bulma-components'
+import { Columns, Element } from 'react-bulma-components'
 
 interface Props {
   mentor: RedProfile
@@ -34,36 +34,20 @@ export const ProfileMentor = ({ mentor }: Props) => {
       <ReadMentoring.Some profile={mentor} />
     </Element>}
 
-    {(mentor.languages && mentor.gender) && <Element className="block-separator">
+    {(mentor.languages && (mentor.gender || mentor.age)) && <Element className="block-separator">
       <Columns>
-        <Columns.Column>
+        {(mentor.gender || mentor.age) && <Columns.Column>
           <ReadPersonalDetail.Some profile={mentor} />
-        </Columns.Column>
+        </Columns.Column>}
         <Columns.Column>
           <ReadLanguages.Some profile={mentor} />
         </Columns.Column>
       </Columns>
     </Element>
     }
-    {(mentor.mentor_occupation || mentor.mentor_workPlace) &&
-      <Element className="block-separator">
-        <Columns>
-          {mentor.mentor_occupation && <Columns.Column>
-            <Read title="occupation">
-              <Content className="block-separator">
-                {mentor.mentor_occupation}
-              </Content>
-            </Read>
-          </Columns.Column>}
-          {mentor.mentor_workPlace && <Columns.Column>
-            <Read title="company">
-              <Content>
-                {mentor.mentor_workPlace}
-              </Content>
-            </Read>
-          </Columns.Column>}
-        </Columns>
-      </Element>
+    {mentor.mentor_occupation && <Element className="block-separator">
+      <ReadOccupation.Some profile={mentor} />
+    </Element>
     }
   </>)
 }
