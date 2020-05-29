@@ -26,7 +26,7 @@
       "hero": {
         "headline": "Welcome to ReDI Connect",
         "content1": "Are you ready for the future of work?",
-        "content2": "We connect thriving professionals from the digital industry with students and alumni of our Digital Career Program."
+        "content2": "We connect thriving professionals from the digital industry with students and alumni of all of our programs across our four different locations."
       },
       "program": {
         "subHeadline": "about redi connect",
@@ -41,12 +41,12 @@
             "headline": "2. Get connected"
           },
           "step3": {
-            "content": "Schedule meetings to stay on track",
+            "content": "Get/ Give support with your ReDI Course/ Coding & technical skills",
             "headline": "3. Plan meetings"
           },
           "step4": {
-            "content": "Get advice on how to best connect offline",
-            "headline": "4. Meet in real life"
+            "content": "Grow your personal and professional network",
+            "headline": "4. Meet in person/ virtually"
           }
         }
       }

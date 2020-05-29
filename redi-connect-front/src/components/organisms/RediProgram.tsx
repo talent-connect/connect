@@ -12,8 +12,8 @@ import Heading from '../atoms/Heading'
 import { useTranslation } from 'react-i18next'
 import { ReactComponent as Career } from '../../assets/images/career.svg'
 import { ReactComponent as Search } from '../../assets/images/search.svg'
-import { ReactComponent as Calender } from '../../assets/images/calender.svg'
-import { ReactComponent as Offline } from '../../assets/images/offline.svg'
+import { ReactComponent as Chat } from '../../assets/images/chat.svg'
+import { ReactComponent as Handshake } from '../../assets/images/handshake.svg'
 
 import './RediProgram.scss'
 
@@ -32,12 +32,12 @@ const RediProgram = () => {
       headline: t('loggedOutArea.homePage.program.steps.step2.headline')
     },
     {
-      image: Calender,
+      image: Chat,
       content: t('loggedOutArea.homePage.program.steps.step3.content'),
       headline: t('loggedOutArea.homePage.program.steps.step3.headline')
     },
     {
-      image: Offline,
+      image: Handshake,
       content: t('loggedOutArea.homePage.program.steps.step4.content'),
       headline: t('loggedOutArea.homePage.program.steps.step4.headline')
     }
@@ -58,7 +58,7 @@ const RediProgram = () => {
         <Columns>
           {programSteps.map(({ image: MyImage, content, headline }) =>
             <Columns.Column className="has-text-centered" key={content}>
-              <MyImage className="program__img"/>
+              <MyImage className="program__img" />
               <BulmaHeading
                 size={4}
                 renderAs="h3"
