@@ -34,6 +34,11 @@ const routes: RouteDefinition[] = [
     exact: true
   },
   {
+    path: '/app/dashboard/profile/:profileId',
+    component: Profile,
+    exact: true
+  },
+  {
     path: '/app/profile/:profileId',
     component: Profile,
     exact: true
@@ -43,6 +48,11 @@ const routes: RouteDefinition[] = [
     component: Applications,
     exact: true,
     name: 'mentee-applicants'
+  },
+  {
+    path: '/app/applications/profile/:profileId',
+    component: Profile,
+    exact: true
   },
   {
     path: '/app/mentorship',

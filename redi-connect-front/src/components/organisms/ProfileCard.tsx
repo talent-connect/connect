@@ -16,7 +16,7 @@ import { RedProfile } from '../../types/RedProfile'
 export const ProfileCard = ({ profile }: { profile: RedProfile }) => {
   const history = useHistory()
 
-  return <Card className="profile-card" onClick={() => history.push(`/app/profile/${profile.id}`)}>
+  return <Card className="profile-card" onClick={() => history.push(`/app/dashboard/profile/${profile.id}`)}>
     {/* The avatar component may replace this image but for now it's a working solution */}
     <Card.Image className="profile-card__image" src={`${AWS_PROFILE_AVATARS_BUCKET_BASE_URL}${profile.profileAvatarImageS3Key}`} alt="" />
     <Card.Content>

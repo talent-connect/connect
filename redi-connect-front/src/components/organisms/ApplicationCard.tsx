@@ -39,7 +39,7 @@ const ApplicationCard = ({ application }: Props) => {
         </Columns.Column>
 
         <Columns.Column size={2}>
-          <span className="application-card__link" onClick={() => history.push(`/app/profile/${applicationUser && applicationUser.id}`)}>See Profile</span>
+          <span className="application-card__link" onClick={() => history.push(`/app/applications/profile/${applicationUser && applicationUser.id}`)}>See Profile</span>
         </Columns.Column>
 
         <Columns.Column size={1}>
