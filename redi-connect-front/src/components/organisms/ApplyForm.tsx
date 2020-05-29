@@ -12,8 +12,8 @@ import clsx from 'clsx'
 import { Formik, FormikHelpers as FormikActions, FormikProps } from 'formik'
 import React, { useState } from 'react'
 import * as Yup from 'yup'
-import { requestMentorship } from '../../../../services/api/api'
-import { FormSubmitResult } from '../../../../types/FormSubmitResult'
+import { requestMentorship } from '../../services/api/api'
+import { FormSubmitResult } from '../../types/FormSubmitResult'
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -54,7 +54,7 @@ interface Props {
   mentorId: string
 }
 
-export const ConnectionRequestForm = ({ mentorId }: Props) => {
+const ApplyForm = ({ mentorId }: Props) => {
   const [submitResult, setSubmitResult] = useState<FormSubmitResult>(
     'notSubmitted'
   )
@@ -169,3 +169,5 @@ const Form = ({
     </form>
   )
 }
+
+export default ApplyForm

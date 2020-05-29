@@ -1,21 +1,20 @@
 import React from 'react'
-import FormSelect from '../../../components/atoms/FormSelect'
-import Editable from '../../../components/molecules/Editable'
-import PipeList from '../../../components/molecules/PipeList'
-import { RedProfile } from '../../../types/RedProfile'
+import { FormSelect } from '../atoms'
+import { Editable, ReadLanguages } from '../molecules'
+import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
-import { RootState } from '../../../redux/types'
+import { RootState } from '../../redux/types'
 
 import {
   profileSaveStart
-} from '../../../redux/user/actions'
+} from '../../redux/user/actions'
 import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
 
 import {
   Languages as availableLanguages
-} from '../../../config/config'
+} from '../../config/config'
 const formLanguages = availableLanguages.map(language => ({ value: language, label: language }))
 
 export interface LanguagesFormValues {
@@ -30,7 +29,7 @@ const validationSchema = Yup.object({
 })
 
 // props: FormikProps<AboutFormValues>
-const Languages = ({ profile, profileSaveStart }: any) => {
+const EditableLanguages = ({ profile, profileSaveStart }: any) => {
   const {
     id,
     languages
@@ -57,10 +56,9 @@ const Languages = ({ profile, profileSaveStart }: any) => {
   return (
     <Editable
       title="Languages"
-      onSave={ () => formik.handleSubmit()}
-      placeholder="Input languages you speak here."
+      onSave={() => formik.handleSubmit()}
       savePossible={(formik.dirty && formik.isValid)}
-      read={!!languages && <PipeList items={languages} />}
+      read={<ReadLanguages.Me />}
     >
       <FormSelect
         label="Which of these languages do you speak?*"
@@ -81,4 +79,4 @@ const mapDispatchToProps = (dispatch: any) => ({
   profileSaveStart: (profile: Partial<RedProfile>) => dispatch(profileSaveStart(profile))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Languages)
+export default connect(mapStateToProps, mapDispatchToProps)(EditableLanguages)

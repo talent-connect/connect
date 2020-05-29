@@ -1,100 +1,53 @@
-import { createStyles, Grid, Theme, withStyles } from '@material-ui/core'
 import React from 'react'
-// import { Avatar } from '../../../../components/Avatar'
-import { CategoryChip } from '../../../../components/CategoryChip'
-import { ProfileAvailableMenteeSlots } from '../../../../components/ProfileAvailableMenteeSlots'
-import { ProfileLanguages } from '../../../../components/ProfileLanguages'
-import { ProfileName } from '../../../../components/ProfileName'
-import { ProfileOccupation } from '../../../../components/ProfileOccupation'
-import { ProfileWorkPlace } from '../../../../components/ProfileWorkPlace'
+import { Heading } from '../../../../components/atoms'
+import {
+  ReadAbout,
+  ReadMentoring,
+  ReadLanguages,
+  ReadPersonalDetail,
+  ReadOccupation
+} from '../../../../components/molecules'
+import Avatar from '../../../../components/organisms/Avatar'
 import { RedProfile } from '../../../../types/RedProfile'
-import { ConnectionRequestForm } from './ConnectionRequestForm'
-import { getRedProfile } from '../../../../services/auth/auth'
+import { Columns, Element } from 'react-bulma-components'
 
 interface Props {
   mentor: RedProfile
-  classes: {
-    avatar: string
-    category: string
-    personalDescription: string
-  }
 }
 
-const styles = (theme: Theme) =>
-  createStyles({
-    avatar: {
-      width: '100px',
-      height: '100px'
-    },
-    category: {
-      color: 'white',
-      fontSize: '12px',
-      margin: '3px',
-      height: '20px'
-    },
-    personalDescription: {
-      marginTop: theme.spacing(6),
-      marginBottom: theme.spacing(6),
-      overflowWrap: 'break-word'
+export const ProfileMentor = ({ mentor }: Props) => {
+  return (<>
+    <Columns vCentered breakpoint="mobile">
+      <Columns.Column size={3}>
+        <Avatar profile={mentor} />
+      </Columns.Column>
+      <Columns.Column size={9}>
+        <Heading>{`${mentor.firstName} ${mentor.lastName}`}</Heading>
+      </Columns.Column>
+    </Columns>
+
+    <Element className="block-separator">
+      <ReadAbout.Some profile={mentor} />
+    </Element>
+
+    {mentor.categories && <Element className="block-separator">
+      <ReadMentoring.Some profile={mentor} />
+    </Element>}
+
+    {(mentor.languages && (mentor.gender || mentor.age)) && <Element className="block-separator">
+      <Columns>
+        {(mentor.gender || mentor.age) && <Columns.Column>
+          <ReadPersonalDetail.Some profile={mentor} />
+        </Columns.Column>}
+        <Columns.Column>
+          <ReadLanguages.Some profile={mentor} />
+        </Columns.Column>
+      </Columns>
+    </Element>
     }
-  })
-
-export const ProfileMentor = withStyles(styles)(
-  ({ mentor, classes }: Props) => {
-    const profile = getRedProfile()
-
-    return <>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={5}>
-          {/* <Avatar
-            className={classes.avatar}
-            s3Key={mentor.profileAvatarImageS3Key}
-            style={{ width: '100%', height: '20vh' }}
-          /> */}
-        </Grid>
-        <Grid item xs={12} sm={7}>
-          <h3 style={{ fontWeight: 700, fontFamily: 'Roboto' }}>
-            <ProfileName name={`${mentor.firstName} ${mentor.lastName}`} />
-            <ProfileOccupation occupation={mentor.mentor_occupation} />
-            <ProfileWorkPlace workPlace={mentor.mentor_workPlace} />
-            <ProfileLanguages languages={mentor.languages} />
-          </h3>
-        </Grid>
-      </Grid>
-
-      <ProfileAvailableMenteeSlots
-        totalCapacity={mentor.menteeCountCapacity}
-        currentFreeCapacity={mentor.currentFreeMenteeSpots}
-      />
-      <p>I can help you with:</p>
-      {mentor.categories.map(catId => (
-        <CategoryChip
-          key={catId}
-          className={classes.category}
-          categoryId={catId}
-        />
-      ))}
-      <p className={classes.personalDescription}>
-        {mentor.personalDescription}
-      </p>
-      {mentor.expectations && (
-        <>
-          <h4 style={{ marginBottom: 0 }}>Expectations to my mentee:</h4>
-          <p
-            className={classes.personalDescription}
-            style={{ marginTop: '0.3em' }}
-          >
-            {mentor.expectations}
-          </p>
-        </>
-      )}
-
-      {(mentor.numberOfPendingApplicationWithCurrentUser === 0 && profile.userType === 'mentee') && (
-        <ConnectionRequestForm mentorId={mentor.id} />
-      )}
-      {mentor.numberOfPendingApplicationWithCurrentUser > 0 && (
-        <p>You have already applied to this mentor.</p>
-      )}
-    </>
-  }
-)
+    {mentor.mentor_occupation && <Element className="block-separator">
+      <ReadOccupation.Some profile={mentor} />
+    </Element>
+    }
+  </>)
+}

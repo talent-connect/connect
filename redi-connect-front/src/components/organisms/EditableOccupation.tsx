@@ -1,15 +1,13 @@
 import React from 'react'
-import { Content } from 'react-bulma-components'
-import FormSelect from '../../../components/atoms/FormSelect'
-import FormInput from '../../../components/atoms/FormInput'
-import Editable from '../../../components/molecules/Editable'
-import { RedProfile } from '../../../types/RedProfile'
+import { FormInput, FormSelect } from '../atoms'
+import { Editable, ReadOccupation } from '../molecules'
+import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
-import { RootState } from '../../../redux/types'
+import { RootState } from '../../redux/types'
 
 import {
   profileSaveStart
-} from '../../../redux/user/actions'
+} from '../../redux/user/actions'
 import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
@@ -17,7 +15,7 @@ import { FormikValues, useFormik } from 'formik'
 import {
   educationLevels,
   menteeOccupationCategories
-} from '../../../config/config'
+} from '../../config/config'
 
 const formEducationLevels = educationLevels.map(level => ({ value: level.id, label: level.label }))
 const formMenteeOccupationCategories = menteeOccupationCategories.map(level => ({ value: level.id, label: level.label }))
@@ -85,7 +83,7 @@ const validationSchema = Yup.object({
     .label('What are you currently doing')
 })
 
-const Occupation = ({ profile, profileSaveStart }: any) => {
+const EditableOccupation = ({ profile, profileSaveStart }: any) => {
   const {
     id,
     userType,
@@ -134,55 +132,12 @@ const Occupation = ({ profile, profileSaveStart }: any) => {
     userType: user
   } = formik.values
 
-  const readOccupation = <>
-    {user === 'mentor' && (
-      <>
-        <p>{mentor_occupation}</p>
-        <p>{mentor_workPlace}</p>
-      </>
-    )}
-    {user === 'mentee' && (
-      <>
-        <p>{formMenteeOccupationCategories.filter(level => level.value === mentee_occupationCategoryId).map(level => level.label)}</p>
-        {occupation === 'job' && (
-          <>
-            <p>{mentee_occupationJob_placeOfEmployment}</p>
-            <p>{mentee_occupationJob_position}</p>
-          </>
-        )}
-        {occupation === 'student' && (
-          <>
-            <p>{mentee_occupationStudent_studyPlace}</p>
-            <p>{mentee_occupationStudent_studyName}</p>
-          </>
-        )}
-        {occupation === 'lookingForJob' && (
-          <>
-            <p>{mentee_occupationLookingForJob_what}</p>
-          </>
-        )}
-        {occupation === 'other' && (
-          <>
-            <p>{mentee_occupationOther_description}</p>
-          </>
-        )}
-        <p>{formEducationLevels.filter(level => level.value === mentee_highestEducationLevel).map(level => level.label)}</p>
-      </>
-    )}
-  </>
-
-  const isEmptyProfile =
-    !!mentor_occupation ||
-    !!mentor_workPlace ||
-    !!mentee_occupationCategoryId
-
   return (
     <Editable
       title="Occupation"
       onSave={() => formik.handleSubmit()}
-      placeholder="Input your information about your Education and Occupation here."
       savePossible={(formik.dirty && formik.isValid)}
-      read={isEmptyProfile && <Content>{readOccupation}</Content>}
+      read={<ReadOccupation.Me />}
     >
       {user === 'mentor' && (
         <>
@@ -279,4 +234,4 @@ const mapDispatchToProps = (dispatch: any) => ({
   profileSaveStart: (profile: Partial<RedProfile>) => dispatch(profileSaveStart(profile))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Occupation)
+export default connect(mapStateToProps, mapDispatchToProps)(EditableOccupation)

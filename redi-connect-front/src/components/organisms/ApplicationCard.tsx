@@ -11,7 +11,7 @@ interface Props {
   application: RedMatch & { createdAt?: string }
 }
 
-export const ApplicationCard = ({ application }: Props) => {
+const ApplicationCard = ({ application }: Props) => {
   const history = useHistory()
   const profile = getRedProfile()
   const [showDetails, setShowDetails] = useState(false)
@@ -39,7 +39,7 @@ export const ApplicationCard = ({ application }: Props) => {
         </Columns.Column>
 
         <Columns.Column size={2}>
-          <span className="application-card__link" onClick={() => history.push(`/app/profile/${applicationUser && applicationUser.id}`)}>See Profile</span>
+          <span className="application-card__link" onClick={() => history.push(`/app/applications/profile/${applicationUser && applicationUser.id}`)}>See Profile</span>
         </Columns.Column>
 
         <Columns.Column size={1}>
@@ -65,3 +65,5 @@ export const ApplicationCard = ({ application }: Props) => {
   </>
   )
 }
+
+export default ApplicationCard

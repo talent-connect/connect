@@ -1,31 +1,20 @@
 import React from 'react'
 import classnames from 'classnames'
-import { ReactComponent as ArrowRight } from '../../assets/images/arrow-right.svg'
-import { ReactComponent as Hamburger } from '../../assets/images/hamburger.svg'
-import { ReactComponent as Account } from '../../assets/images/account.svg'
+import Icon from './Icon'
 import './Button.scss'
-
-const Icons = {
-  arrowRight: ArrowRight,
-  account: Account,
-  hamburger: Hamburger
-}
 
 interface Props {
   children: any
   size?: 'large' | 'medium' | 'small'
-  arrow?: boolean
   fullWidth?: boolean
   disabled?: boolean
   separator?: boolean
   onClick: any
   simple?: boolean
-  icon?: 'arrowRight' | 'hamburger' | 'account'
 }
 
 const Button = ({
   children,
-  icon,
   size = 'small',
   simple = false,
   fullWidth,
@@ -34,8 +23,6 @@ const Button = ({
   disabled
 }: Props) => {
   const baseClass = 'button'
-
-  const Icon = icon ? Icons[icon] : undefined
 
   return (
     <button
@@ -48,13 +35,10 @@ const Button = ({
       })}
     >
       {children}
-      {Icon &&
-        <Icon className={classnames('button__icon', {
-          'button__icon--spaceLeft': children
-        })}/>
-      }
     </button>
   )
 }
+
+Button.Icon = Icon
 
 export default Button

@@ -1,23 +1,20 @@
 import React from 'react'
-import FormInput from '../../../components/atoms/FormInput'
-import FormSelect from '../../../components/atoms/FormSelect'
-import Editable from '../../../components/molecules/Editable'
-import { RedProfile } from '../../../types/RedProfile'
+import { FormInput, FormSelect } from '../atoms'
+import { Editable, ReadPersonalDetail } from '../molecules'
+import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
-import { RootState } from '../../../redux/types'
-import PipeList from '../../../components/molecules/PipeList'
+import { RootState } from '../../redux/types'
 
 import {
   profileSaveStart
-} from '../../../redux/user/actions'
+} from '../../redux/user/actions'
 import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
 
 import {
   genders,
-  gendersIdToLabelMap
-} from '../../../config/config'
+} from '../../config/config'
 
 const formGenders = genders.map(gender => ({ value: gender.id, label: gender.label }))
 
@@ -36,7 +33,7 @@ const validationSchema = Yup.object({
     .label('Age')
 })
 
-const PersonalDetail = ({ profile, profileSaveStart }: any) => {
+const EditablePersonalDetail = ({ profile, profileSaveStart }: any) => {
   const {
     id,
     gender,
@@ -62,20 +59,12 @@ const PersonalDetail = ({ profile, profileSaveStart }: any) => {
     onSubmit: submitForm
   })
 
-  const detailsList = [gendersIdToLabelMap[gender]]
-  if (age) detailsList.push(`${age} years old`)
-
-  const emptyProfile =
-    !!age ||
-    !!gender
-
   return (
     <Editable
-      title="Personal Detail"
-      onSave={ () => formik.handleSubmit()}
-      placeholder="Input your gender and age."
+      title="Personal Details"
+      onSave={() => formik.handleSubmit()}
       savePossible={(formik.dirty && formik.isValid)}
-      read={emptyProfile && <PipeList items={detailsList} />}
+      read={<ReadPersonalDetail.Me />}
     >
       <FormSelect
         label="Gender"
@@ -103,4 +92,4 @@ const mapDispatchToProps = (dispatch: any) => ({
   profileSaveStart: (profile: Partial<RedProfile>) => dispatch(profileSaveStart(profile))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(PersonalDetail)
+export default connect(mapStateToProps, mapDispatchToProps)(EditablePersonalDetail)

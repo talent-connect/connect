@@ -1,14 +1,14 @@
 import React from 'react'
 import { Content } from 'react-bulma-components'
-import FormInput from '../../../components/atoms/FormInput'
-import Editable from '../../../components/molecules/Editable'
-import { RedProfile } from '../../../types/RedProfile'
+import { FormInput } from '../atoms'
+import { Editable, ReadSocialMedia } from '../molecules'
+import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
-import { RootState } from '../../../redux/types'
+import { RootState } from '../../redux/types'
 
 import {
   profileSaveStart
-} from '../../../redux/user/actions'
+} from '../../redux/user/actions'
 import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
@@ -34,7 +34,7 @@ const validationSchema = Yup.object({
 })
 
 // props: FormikProps<AboutFormValues>
-const SocialMedia = ({ profile, profileSaveStart }: any) => {
+const EditableSocialMedia = ({ profile, profileSaveStart }: any) => {
   const {
     id,
     linkedInProfileUrl,
@@ -62,21 +62,12 @@ const SocialMedia = ({ profile, profileSaveStart }: any) => {
     onSubmit: submitForm
   })
 
-  const readSocialMedia = <>
-    {linkedInProfileUrl && <p>{linkedInProfileUrl}</p>}
-    {githubProfileUrl && <p>{githubProfileUrl}</p>}
-    {slackUsername && <p>{slackUsername}</p>}
-  </>
-
-  const isEmptyProfile = !!linkedInProfileUrl || !!githubProfileUrl || !!slackUsername
-
   return (
     <Editable
       title="Social Media"
-      onSave={ () => formik.handleSubmit()}
+      onSave={() => formik.handleSubmit()}
       savePossible={(formik.dirty && formik.isValid)}
-      placeholder="Input your social media channels here."
-      read={isEmptyProfile && <Content>{readSocialMedia}</Content>}
+      read={<ReadSocialMedia.Me />}
     >
       <FormInput
         name="linkedInProfileUrl"
@@ -108,4 +99,4 @@ const mapDispatchToProps = (dispatch: any) => ({
   profileSaveStart: (profile: Partial<RedProfile>) => dispatch(profileSaveStart(profile))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(SocialMedia)
+export default connect(mapStateToProps, mapDispatchToProps)(EditableSocialMedia)

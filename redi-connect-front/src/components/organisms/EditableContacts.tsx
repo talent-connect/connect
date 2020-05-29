@@ -1,14 +1,14 @@
 import React from 'react'
 import { Content } from 'react-bulma-components'
-import FormInput from '../../../components/atoms/FormInput'
-import Editable from '../../../components/molecules/Editable'
-import { RedProfile } from '../../../types/RedProfile'
+import { FormInput } from '../atoms'
+import { Editable, ReadContacts } from '../molecules'
+import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
-import { RootState } from '../../../redux/types'
+import { RootState } from '../../redux/types'
 
 import {
   profileSaveStart
-} from '../../../redux/user/actions'
+} from '../../redux/user/actions'
 import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
@@ -38,7 +38,7 @@ const validationSchema = Yup.object({
 })
 
 // props: FormikProps<AboutFormValues>
-const Contacts = ({ profile, profileSaveStart }: any) => {
+const EditableContacts = ({ profile, profileSaveStart }: any) => {
   const {
     id,
     firstName,
@@ -68,18 +68,12 @@ const Contacts = ({ profile, profileSaveStart }: any) => {
     onSubmit: submitForm
   })
 
-  const readContacts = <>
-    {contactEmail && <p>{contactEmail}</p>}
-    {(firstName || firstName) && <p>{firstName} {lastName}</p>}
-    {telephoneNumber && <p>{telephoneNumber}</p>}
-  </>
-
   return (
     <Editable
-      title="Contact Detail"
-      onSave={ () => formik.handleSubmit()}
+      title="Contact Details"
+      onSave={() => formik.handleSubmit()}
       savePossible={(formik.dirty && formik.isValid)}
-      read={<Content>{readContacts}</Content>}
+      read={<ReadContacts.Me />}
     >
       <FormInput
         name="firstName"
@@ -118,4 +112,4 @@ const mapDispatchToProps = (dispatch: any) => ({
   profileSaveStart: (profile: Partial<RedProfile>) => dispatch(profileSaveStart(profile))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Contacts)
+export default connect(mapStateToProps, mapDispatchToProps)(EditableContacts)

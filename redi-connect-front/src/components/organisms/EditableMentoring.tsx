@@ -1,22 +1,21 @@
 import React from 'react'
 import groupBy from 'lodash/groupBy'
-import { Columns, Tag, Heading, Element, Content } from 'react-bulma-components'
-import FormCheckbox from '../../../components/atoms/FormCheckbox'
-import Editable from '../../../components/molecules/Editable'
-import { RedProfile } from '../../../types/RedProfile'
+import { Columns, Heading, Element, Content } from 'react-bulma-components'
+import { FormCheckbox } from '../atoms'
+import { Editable, ReadMentoring } from '../molecules'
+import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
-import { RootState } from '../../../redux/types'
-import './Mentoring.scss'
+import { RootState } from '../../redux/types'
 
 import {
   profileSaveStart
-} from '../../../redux/user/actions'
+} from '../../redux/user/actions'
 import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
 import {
-  categories as availableCategories, categoriesIdToLabelMap
-} from '../../../config/config'
+  categories as availableCategories
+} from '../../config/config'
 
 export interface MentoringFormValues {
   categories: string[]
@@ -36,7 +35,7 @@ interface Props {
   profileSaveStart: Function
 }
 
-const Mentoring = ({ profile, profileSaveStart }: Props) => {
+const EditableMentoring = ({ profile, profileSaveStart }: Props) => {
   const {
     id,
     categories
@@ -62,12 +61,6 @@ const Mentoring = ({ profile, profileSaveStart }: Props) => {
 
   const { categories: selectedCategories } = formik.values
 
-  const readMentoring = categories && categories.map(categoryId =>
-    <Tag key={categoryId} size="large" rounded>
-      {categoriesIdToLabelMap[categoryId]}
-    </Tag>
-  )
-
   const categoriesChange = (e: any) => {
     e.persist()
     const value = e.target.value
@@ -86,8 +79,7 @@ const Mentoring = ({ profile, profileSaveStart }: Props) => {
       title="Mentoring Topics"
       onSave={() => formik.handleSubmit()}
       savePossible={(formik.dirty && formik.isValid)}
-      read={categories && <Tag.Group>{readMentoring}</Tag.Group>}
-      placeholder="Please pick up to three mentoring topics."
+      read={<ReadMentoring.Me />}
       className="mentoring"
     >
       <Content>You can select between 1 and up to 3 topics.</Content>
@@ -144,4 +136,4 @@ const mapDispatchToProps = (dispatch: any) => ({
   profileSaveStart: (profile: Partial<RedProfile>) => dispatch(profileSaveStart(profile))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Mentoring)
+export default connect(mapStateToProps, mapDispatchToProps)(EditableMentoring)
