@@ -1,6 +1,6 @@
 import Button from '../../../components/atoms/Button'
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FullScreenCircle } from '../../../hooks/WithLoading'
 import LoggedIn from '../../../components/templates/LoggedIn'
 import { RedProfile } from '../../../types/RedProfile'
@@ -10,10 +10,11 @@ import { connect } from 'react-redux'
 import { profilesFetchOneStart } from '../../../redux/profiles/actions'
 import { RootState } from '../../../redux/types'
 import { ProfileAcceptedMatch } from './acceptedMatch/ProfileAcceptedMatch'
+import { ConnectionRequestForm } from './mentor/ConnectionRequestForm'
 
 import { useParams, useHistory } from 'react-router'
 
-import { Columns, Heading } from 'react-bulma-components'
+import { Columns, Heading, Modal, Box } from 'react-bulma-components'
 
 interface RouteParams {
   profileId: string
@@ -28,6 +29,7 @@ interface ProfileProps {
 
 function Profile ({ loading, profile, currentUser, profilesFetchOneStart }: ProfileProps) {
   const { profileId } = useParams<RouteParams>()
+  const [show, setShow] = useState(false)
 
   useEffect(() => {
     profilesFetchOneStart(profileId)
@@ -47,6 +49,7 @@ function Profile ({ loading, profile, currentUser, profilesFetchOneStart }: Prof
     <>
       <FullScreenCircle loading={loading} />
       {!loading && <LoggedIn>
+
         <Columns>
           <Columns.Column>
             {(!isAcceptedMatch || currentUserIsMentor) &&
@@ -64,15 +67,27 @@ function Profile ({ loading, profile, currentUser, profilesFetchOneStart }: Prof
               (
                 !isAcceptedMatch &&
                 typeof profile !== 'undefined' &&
-                profile.numberOfPendingApplicationWithCurrentUser === 0
-              ) &&
-              <Button onClick={() => history.push('/app/dashboard')}>apply for this mentor</Button>
+                profile.numberOfPendingApplicationWithCurrentUser === 0 &&
+                currentUser &&
+                currentUser.userType === 'mentee'
+              ) && <>
+                <Button onClick={() => setShow(true)}>apply for this mentor</Button>
+                <Modal show={show} onClose={() => setShow(false)}>
+                  <Modal.Content>
+                    <Box>
+                      <ConnectionRequestForm mentorId={profile.id} />
+                    </Box>
+                  </Modal.Content>
+                </Modal>
+              </>
             }
+
             {typeof profile !== 'undefined' && profile.numberOfPendingApplicationWithCurrentUser > 0 && (
-              <Heading renderAs='p' subtitle size={5}>You have already applied to this mentor.</Heading>
+              <Heading subtitle size="small">You have already applied to this mentor.</Heading>
             )}
           </Columns.Column>
         </Columns>
+
         {isAcceptedMatch && profile && (
           <ProfileAcceptedMatch profile={profile} />
         )}
