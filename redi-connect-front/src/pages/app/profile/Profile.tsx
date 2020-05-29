@@ -10,7 +10,7 @@ import { connect } from 'react-redux'
 import { profilesFetchOneStart } from '../../../redux/profiles/actions'
 import { RootState } from '../../../redux/types'
 import { ProfileAcceptedMatch } from './acceptedMatch/ProfileAcceptedMatch'
-import { ConnectionRequestForm } from './mentor/ConnectionRequestForm'
+import { ApplyForm } from '../../../components/organisms'
 
 import { useParams, useHistory } from 'react-router'
 
@@ -75,7 +75,7 @@ function Profile ({ loading, profile, currentUser, profilesFetchOneStart }: Prof
                 <Modal show={show} onClose={() => setShow(false)}>
                   <Modal.Content>
                     <Box>
-                      <ConnectionRequestForm mentorId={profile.id} />
+                      <ApplyForm mentorId={profile.id} />
                     </Box>
                   </Modal.Content>
                 </Modal>

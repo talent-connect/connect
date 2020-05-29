@@ -1,5 +1,6 @@
 
 export { default as ApplicationCard } from './ApplicationCard'
+export { default as ApplyForm } from './ApplyForm'
 export { default as Avatar } from './Avatar'
 export { default as EditableAbout } from './EditableAbout'
 export { default as EditableContacts } from './EditableContacts'
