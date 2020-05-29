@@ -28,6 +28,7 @@ const Button = ({
     <button
       onClick={disabled ? undefined : onClick}
       disabled={disabled}
+      type="button"
       className={classnames(baseClass, `${baseClass}--${simple ? 'simple' : 'default'}`, {
         [`${baseClass}--${size}`]: size,
         [`${baseClass}--fullWidth`]: fullWidth,

@@ -19,6 +19,7 @@
 @import "~bulma/sass/components/modal.sass";
 @import "~bulma/sass/components/card.sass";
 @import "~bulma/sass/elements/image.sass";
+@import "~bulma/sass/elements/notification.sass";
 @import "~bulma-checkradio/src/sass/index.sass";
 
 //custom modifiers
@@ -92,6 +93,13 @@ a:hover {
       }
     }
   }
+}
+
+.box__heading {
+  margin: -1rem -2rem 0 -2rem;
+  padding: 0 2rem 1rem;
+  border-bottom: 1px solid $grey-light;
+  // width: calc(100% + 32px);
 }
 
 // fix word wrapping in the content... maybe a bulma bug? 
