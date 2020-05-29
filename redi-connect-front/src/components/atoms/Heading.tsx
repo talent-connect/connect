@@ -39,12 +39,12 @@ const Heading = ({ children, border, tag, size, center, subtitle, className }: P
 
   return (
     <BulmaHeading
-      size={ sizes[currentSize].desktop }
+      size={sizes[currentSize].desktop}
       responsive={{ mobile: { textSize: { value: sizes[currentSize].mobile } } }}
       weight="normal"
       textAlignment={center ? 'centered' : null}
       renderAs={tag || 'h1'}
-      className={className}
+      className={classNames}
       subtitle={subtitle}
     >
       {children}
