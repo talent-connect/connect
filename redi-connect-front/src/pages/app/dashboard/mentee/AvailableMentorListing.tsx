@@ -4,6 +4,7 @@ import {
 import React, { useEffect, useState } from 'react'
 import intersection from 'lodash/intersection'
 import { Columns } from 'react-bulma-components'
+import Heading from '../../../../components/atoms/Heading'
 import { ProfileCard } from '../../../../components/organisms/ProfileCard'
 import { useLoading } from '../../../../hooks/WithLoading'
 import { getMentors } from '../../../../services/api/api'
@@ -76,12 +77,9 @@ export const AvailableMentorListing = (props: any) => {
       )}
       {mentorsWithSharedCategories.length > 0 && (
         <>
+          <Heading subtitle size="small" className="double-block-space">Recommended mentors</Heading>
+
           <Grid container direction="column">
-            <Grid item>
-              <h1>
-                Recommended mentors
-              </h1>
-            </Grid>
             <Grid item>
               {currentUserCategories.map(catId => (
                 <CategoryChip
@@ -112,9 +110,8 @@ export const AvailableMentorListing = (props: any) => {
       )}
       {mentorsWithoutSharedCategories.length > 0 && (
         <>
-          <h1>
-            All available mentors
-          </h1>
+          <Heading subtitle size="small" className="double-block-space">All available mentors</Heading>
+
           <Columns>
             {mentorsWithoutSharedCategories.map((mentor: RedProfile) => (
               <Columns.Column size={4} key={mentor.id}>
