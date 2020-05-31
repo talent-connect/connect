@@ -7,6 +7,7 @@ export type RedMatch = {
   applicationText: string
   expectationText: string
   mentorReplyMessageOnAccept: string
+  hasMenteeDismissedMentorshipApplicationAcceptedNotification: boolean
   mentor?: RedProfile
   mentee?: RedProfile
 };
