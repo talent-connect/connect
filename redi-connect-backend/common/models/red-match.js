@@ -90,7 +90,7 @@ module.exports = function (RedMatch) {
   })
 
   RedMatch.acceptMentorship = async (data, options, callback) => {
-    const { redMatchId } = data
+    const { redMatchId, mentorReplyMessageOnAccept } = data
 
     const RedProfile = app.models.RedProfile
 
@@ -104,6 +104,7 @@ module.exports = function (RedMatch) {
     redMatch = await redMatch.updateAttributes({
       status: 'accepted',
       matchMadeActiveOn: new Date(),
+      mentorReplyMessageOnAccept,
       rediLocation: options.currentUser.redProfile.rediLocation
     })
 
@@ -111,6 +112,7 @@ module.exports = function (RedMatch) {
       [mentee.contactEmail, mentor.contactEmail],
       mentor.firstName,
       mentee.firstName,
+      mentorReplyMessageOnAccept,
       options.currentUser.redProfile.rediLocation
     ).toPromise()
 
