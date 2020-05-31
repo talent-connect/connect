@@ -575,6 +575,11 @@ const RedMatchShow = props => (
         helperText='Field contains the expectation text that a mentee as an application to a mentor when asking for mentorship.'
       />
       <TextField
+        source='mentorReplyMessageOnAccept'
+        label="Mentor's reply message to mentee's application (on accepting the application)"
+        helperText="This field contains the message a mentor sends to his mentee when accepting the mentee's application"
+      />
+      <TextField
         source='matchMadeActiveOn'
         label='If match is/was active, when was it made active?'
       />
@@ -728,6 +733,11 @@ const RedMatchEdit = props => (
         source='expectationText'
         label='Expectation text'
         helperText='Field contains the expectation text that a mentee as an application to a mentor when asking for mentorship.'
+      />
+      <LongTextInput
+        source='mentorReplyMessageOnAccept'
+        label="Mentor's reply message to mentee's application (on accepting the application)"
+        helperText="This field contains the message a mentor sends to his mentee when accepting the mentee's application"
       />
       <TextInput
         source='matchMadeActiveOn'
