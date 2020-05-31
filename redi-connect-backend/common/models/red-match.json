@@ -22,6 +22,9 @@
     "mentorReplyMessageOnAccept": {
       "type": "string"
     },
+    "hasMenteeDismissedMentorshipApplicationAcceptedNotification": {
+      "type": "boolean"
+    },
     "matchMadeActiveOn": {
       "type": "string"
     },
