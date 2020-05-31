@@ -579,6 +579,11 @@ const RedMatchShow = props => (
         label="Mentor's reply message to mentee's application (on accepting the application)"
         helperText="This field contains the message a mentor sends to his mentee when accepting the mentee's application"
       />
+      <BooleanField
+        source='hasMenteeDismissedMentorshipApplicationAcceptedNotification'
+        valueLabelTrue='Mentee has seen the notification'
+        valueLabelFalse='Mentee has not seen the notification'
+      />
       <TextField
         source='matchMadeActiveOn'
         label='If match is/was active, when was it made active?'
