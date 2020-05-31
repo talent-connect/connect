@@ -6,6 +6,7 @@ export type RedMatch = {
   matchMadeActiveOn: string
   applicationText: string
   expectationText: string
+  mentorReplyMessageOnAccept: string
   mentor?: RedProfile
   mentee?: RedProfile
 };
