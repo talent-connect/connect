@@ -19,6 +19,9 @@
       "type": "string",
       "required": true
     },
+    "mentorReplyMessageOnAccept": {
+      "type": "string"
+    },
     "matchMadeActiveOn": {
       "type": "string"
     },
