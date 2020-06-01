@@ -39,4 +39,24 @@ module.exports = function (RedUser) {
       sendResetPasswordEmail(email, accessToken, rediLocation).subscribe()
     })
   })
+
+  RedUser.afterRemote('create', function (context, user, next) {
+    var verifyOptions = {
+      type: 'email',
+      mailer: {
+        send: (verifyOptions, context, cb) => {
+          console.log('mailer func called')
+          cb(null)
+        }
+      },
+      to: user.email,
+      from: 'dummy@dummy.com'
+    }
+
+    user.verify(verifyOptions, function (err, response) {
+      console.log(err)
+      console.log(response)
+      next()
+    })
+  })
 }
