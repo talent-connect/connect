@@ -13,9 +13,6 @@
       "./mixins"
     ]
   },
-  "User": {
-    "dataSource": "db"
-  },
   "AccessToken": {
     "dataSource": "mongodb",
     "public": false
@@ -37,7 +34,10 @@
   },
   "RedUser": {
     "dataSource": "mongodb",
-    "public": true
+    "public": true,
+    "options": {
+      "emailVerificationRequired": true
+    }
   },
   "RedProfile": {
     "dataSource": "mongodb",
