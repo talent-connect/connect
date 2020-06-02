@@ -91,7 +91,7 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
               <>
                 <Caption>Motivation </Caption>
                 <Content>
-                  <p>Write an application to the Steve Williams in which you describe why you think he would be a good mentor for you.</p>
+                  <p>Write an application to the {mentor.firstName} {mentor.lastName} in which you describe why you think he would be a good mentor for you.</p>
                 </Content>
                 <FormTextArea
                   name="applicationText"
