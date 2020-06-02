@@ -22,10 +22,11 @@ export const signUp = async (
   password: string,
   redProfile: Partial<RedProfile>
 ) => {
-  redProfile.rediLocation = process.env.REACT_APP_REDI_LOCATION as RediLocation
+  const rediLocation = process.env.REACT_APP_REDI_LOCATION as RediLocation
+  redProfile.rediLocation = rediLocation
   const userResponse = await http(`${API_URL}/redUsers`, {
     method: 'post',
-    data: { email, password }
+    data: { email, password, rediLocation }
   })
   const user = userResponse.data as RedUser
   saveRedUser(user)
