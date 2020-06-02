@@ -2,13 +2,24 @@
 @import "../../styles/_variables.scss";
 
 .side-menu {
-  @include mobile() {
+  @include touch() {
     display: flex;
     justify-content: space-around;
+
+    &__nav {
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      width: 100%;
+      background-color: $white;
+      z-index: 10;
+      border-top: 1px solid $grey-extra-light;
+      box-shadow: 0 -1px 9px 0 rgba(179, 179, 179, 0.36);
+    }
   }
 
   &__item {
-    @include tablet() {
+    @include desktop() {
       &:not(:last-child) {
         margin-bottom: 1rem;
       }
@@ -20,7 +31,7 @@
       color: $grey-dark;
       display: block;
 
-      @include tablet() {
+      @include desktop() {
         text-transform: uppercase;
         letter-spacing: 2px;
         width: calc(100% + 16px);
@@ -28,7 +39,7 @@
         margin-right: -1rem;
       }
 
-      @include mobile() {
+      @include touch() {
         display: inline-flex;
         align-items: center;
         flex-direction: column;
@@ -40,7 +51,11 @@
         color: $black;
         border-right: 5px solid $redi-blue;
 
-        @include mobile() {
+        @include touch() {
+          font-weight: $weight-normal;
+          color: $red;
+          border-right: none;
+
           &:hover {
             color: $red;
           }
@@ -48,12 +63,6 @@
 
         & g {
           fill: $red;
-        }
-
-        @include mobile() {
-          font-weight: $weight-normal;
-          color: $red;
-          border-right: none;
         }
       }
 
@@ -66,23 +75,8 @@
   &__icon {
     display: none;
 
-    @include mobile() {
+    @include touch() {
       display: inline;
-    }
-  }
-}
-
-@include mobile() {
-  .logged-in {
-    &__nav {
-      position: fixed;
-      bottom: 0;
-      right: 0;
-      width: 100%;
-      background-color: $white;
-      z-index: 10;
-      border-top: 1px solid $grey-extra-light;
-      box-shadow: 0 -1px 9px 0 rgba(179, 179, 179, 0.36);
     }
   }
 }
