@@ -4,7 +4,7 @@ const Rx = require('rxjs')
 const { switchMap } = require('rxjs/operators')
 
 const app = require('../../server/server')
-const { sendMentoringSessionLoggedEmail } = require('../../lib/email')
+const { sendMentoringSessionLoggedEmail } = require('../../lib/email/email')
 
 module.exports = function (RedMentoringSession) {
   // IMPORTANT ACL-related method: this combines with the ACL $authenticated-can-execute-find,

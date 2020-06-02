@@ -11,7 +11,7 @@ const {
   sendMenteePendingReviewAcceptedEmail,
   sendMentorPendingReviewDeclinedEmail,
   sendMenteePendingReviewDeclinedEmail
-} = require('../../lib/email')
+} = require('../../lib/email/email')
 
 const addFullNamePropertyForAdminSearch = ctx => {
   let thingToUpdate

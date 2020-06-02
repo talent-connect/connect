@@ -12,7 +12,7 @@ var app = (module.exports = loopback())
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 */
-require('../lib/email')
+require('../lib/email/email')
 
 app.start = function () {
   // start the web server

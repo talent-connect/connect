@@ -7,7 +7,7 @@ const config = {
   secretAccessKey: process.env.EMAILER_AWS_SECRET_KEY,
   region: process.env.EMAILER_AWS_REGION
 }
-const { buildFrontendUrl } = require('./build-frontend-url')
+const { buildFrontendUrl } = require('../build-frontend-url')
 
 const ses = new aws.SES(config)
 

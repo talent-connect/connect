@@ -15,7 +15,7 @@ const {
 const {
   sendMentorSignupReminderEmail,
   sendMenteeSignupReminderEmail
-} = require('../lib/email')
+} = require('../lib/email/email')
 
 const {
   RedUser

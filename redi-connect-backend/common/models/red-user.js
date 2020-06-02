@@ -1,6 +1,6 @@
 'use strict'
 
-const { sendResetPasswordEmail } = require('../../lib/email')
+const { sendResetPasswordEmail } = require('../../lib/email/email')
 
 module.exports = function (RedUser) {
   RedUser.observe('before save', function updateTimestamp (ctx, next) {
