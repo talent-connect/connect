@@ -3,16 +3,7 @@ import Select from 'react-select'
 import _uniqueId from 'lodash/uniqueId'
 import { Form } from 'react-bulma-components'
 
-interface Props {
-  name: string
-  items: string[]
-  placeholder?: string
-  label?: string
-  multiselect?: boolean
-  disabled?: boolean
-  customOnChange?: Function
-}
-
+// TODO add typed safe props
 function FormSelect (props: any) {
   const {
     name,

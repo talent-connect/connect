@@ -10,7 +10,7 @@ interface Props {
   caption?: boolean
 }
 
-const ReadContacts = ({ profile, caption }: Props) => {
+const ReadContactDetails = ({ profile, caption }: Props) => {
   const {
     firstName,
     lastName,
@@ -33,6 +33,6 @@ const mapStateToProps = (state: RootState) => ({
 })
 
 export default {
-  Me: connect(mapStateToProps, {})(ReadContacts),
-  Some: ({ profile }: Props) => <ReadContacts profile={profile} caption />
+  Me: connect(mapStateToProps, {})(ReadContactDetails),
+  Some: ({ profile }: Props) => <ReadContactDetails profile={profile} caption />
 }

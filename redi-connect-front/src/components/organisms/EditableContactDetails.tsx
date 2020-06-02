@@ -1,7 +1,6 @@
 import React from 'react'
-import { Content } from 'react-bulma-components'
 import { FormInput } from '../atoms'
-import { Editable, ReadContacts } from '../molecules'
+import { Editable, ReadContactDetails } from '../molecules'
 import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
@@ -38,7 +37,7 @@ const validationSchema = Yup.object({
 })
 
 // props: FormikProps<AboutFormValues>
-const EditableContacts = ({ profile, profileSaveStart }: any) => {
+const EditableContactDetails = ({ profile, profileSaveStart }: any) => {
   const {
     id,
     firstName,
@@ -73,7 +72,7 @@ const EditableContacts = ({ profile, profileSaveStart }: any) => {
       title="Contact Details"
       onSave={() => formik.handleSubmit()}
       savePossible={(formik.dirty && formik.isValid)}
-      read={<ReadContacts.Me />}
+      read={<ReadContactDetails.Me />}
     >
       <FormInput
         name="firstName"
@@ -112,4 +111,4 @@ const mapDispatchToProps = (dispatch: any) => ({
   profileSaveStart: (profile: Partial<RedProfile>) => dispatch(profileSaveStart(profile))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditableContacts)
+export default connect(mapStateToProps, mapDispatchToProps)(EditableContactDetails)

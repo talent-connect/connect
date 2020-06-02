@@ -1,6 +1,6 @@
 import React from 'react'
-import { Card, Element, Tag } from 'react-bulma-components'
-import { ReadMentoring } from '../molecules'
+import { Card, Element } from 'react-bulma-components'
+import { ReadMentoringTopics } from '../molecules'
 
 import { useHistory } from 'react-router-dom'
 // import { LogMentoringSessionBtn } from '../../components/LogMentoringSessionBtn'
@@ -24,7 +24,7 @@ export const ProfileCard = ({ profile }: { profile: RedProfile }) => {
         {profile.firstName} {profile.lastName}
       </Element>
       {profile.languages && <PipeList items={profile.languages} />}
-      {profile.categories && <ReadMentoring.Tags items={profile.categories} />}
+      {profile.categories && <ReadMentoringTopics.Tags items={profile.categories} />}
       {/* need a solution for displaying the button for loggin a sessioin
       <LogMentoringSessionBtn menteeId={mentee.id} /> */}
     </Card.Content>

@@ -7,9 +7,9 @@ import { Heading } from '../../../components/atoms'
 import {
   Avatar,
   EditableAbout,
-  EditableContacts,
+  EditableContactDetails,
   EditableLanguages,
-  EditableMentoring,
+  EditableMentoringTopics,
   EditableOccupation,
   EditablePersonalDetail,
   EditableRediClass,
@@ -55,14 +55,14 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
           </Element>
 
           <Element className="block-separator">
-            <EditableMentoring />
+            <EditableMentoringTopics />
           </Element>
 
           <Element className="block-separator">
             <Columns>
               <Columns.Column size={6}>
                 <Element className="block-separator">
-                  <EditableContacts />
+                  <EditableContactDetails />
                 </Element>
               </Columns.Column>
               <Columns.Column size={6}>

@@ -19,7 +19,7 @@ const Me = ({ profile }: Props) => {
 
   if (!languages) return <Placeholder />
 
-  return languages && <PipeList items={languages} />
+  return <PipeList items={languages} />
 }
 
 const Some = ({ profile }: Props) => {

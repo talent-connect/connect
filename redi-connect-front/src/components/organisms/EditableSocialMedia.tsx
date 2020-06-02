@@ -1,5 +1,4 @@
 import React from 'react'
-import { Content } from 'react-bulma-components'
 import { FormInput } from '../atoms'
 import { Editable, ReadSocialMedia } from '../molecules'
 import { RedProfile } from '../../types/RedProfile'

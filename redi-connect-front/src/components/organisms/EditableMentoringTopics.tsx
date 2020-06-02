@@ -2,7 +2,7 @@ import React from 'react'
 import groupBy from 'lodash/groupBy'
 import { Columns, Heading, Element, Content } from 'react-bulma-components'
 import { FormCheckbox } from '../atoms'
-import { Editable, ReadMentoring } from '../molecules'
+import { Editable, ReadMentoringTopics } from '../molecules'
 import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
@@ -35,7 +35,7 @@ interface Props {
   profileSaveStart: Function
 }
 
-const EditableMentoring = ({ profile, profileSaveStart }: Props) => {
+const EditableMentoringTopics = ({ profile, profileSaveStart }: Props) => {
   const {
     id,
     categories
@@ -79,7 +79,7 @@ const EditableMentoring = ({ profile, profileSaveStart }: Props) => {
       title="Mentoring Topics"
       onSave={() => formik.handleSubmit()}
       savePossible={(formik.dirty && formik.isValid)}
-      read={<ReadMentoring.Me />}
+      read={<ReadMentoringTopics.Me />}
       className="mentoring"
     >
       <Content>You can select between 1 and up to 3 topics.</Content>
@@ -136,4 +136,4 @@ const mapDispatchToProps = (dispatch: any) => ({
   profileSaveStart: (profile: Partial<RedProfile>) => dispatch(profileSaveStart(profile))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditableMentoring)
+export default connect(mapStateToProps, mapDispatchToProps)(EditableMentoringTopics)

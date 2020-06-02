@@ -27,7 +27,7 @@ const ProfileTags = ({ items }: TagsProps) => (
   </Tag.Group>
 )
 
-const ReadMentoring = ({ profile, caption }: ReadMentoringProps) => {
+const ReadMentoringTopics = ({ profile, caption }: ReadMentoringProps) => {
   const {
     categories
   } = profile
@@ -46,7 +46,7 @@ const mapStateToProps = (state: RootState) => ({
 })
 
 export default {
-  Me: connect(mapStateToProps, {})(ReadMentoring),
-  Some: ({ profile }: ReadMentoringProps) => <ReadMentoring profile={profile} caption />,
+  Me: connect(mapStateToProps, {})(ReadMentoringTopics),
+  Some: ({ profile }: ReadMentoringProps) => <ReadMentoringTopics profile={profile} caption />,
   Tags: ({ items }: TagsProps) => <ProfileTags items={items} />
 }

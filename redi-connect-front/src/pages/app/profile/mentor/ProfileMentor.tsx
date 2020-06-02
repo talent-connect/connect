@@ -2,7 +2,7 @@ import React from 'react'
 import { Heading } from '../../../../components/atoms'
 import {
   ReadAbout,
-  ReadMentoring,
+  ReadMentoringTopics,
   ReadLanguages,
   ReadPersonalDetail,
   ReadOccupation
@@ -22,7 +22,7 @@ export const ProfileMentor = ({ mentor }: Props) => {
         <Avatar profile={mentor} />
       </Columns.Column>
       <Columns.Column size={9}>
-        <Heading>{`${mentor.firstName} ${mentor.lastName}`}</Heading>
+        <Heading>{mentor.firstName} {mentor.lastName}</Heading>
       </Columns.Column>
     </Columns>
 
@@ -31,7 +31,7 @@ export const ProfileMentor = ({ mentor }: Props) => {
     </Element>
 
     {mentor.categories && <Element className="block-separator">
-      <ReadMentoring.Some profile={mentor} />
+      <ReadMentoringTopics.Some profile={mentor} />
     </Element>}
 
     {(mentor.languages && (mentor.gender || mentor.age)) && <Element className="block-separator">
