@@ -355,11 +355,13 @@ const currentUserTypeToPostReviewUpdates = {
   ACCEPT: {
     'public-sign-up-mentor-pending-review': {
       userType: 'mentor',
-      userActivated: true
+      userActivated: true,
+      emailVerified: true
     },
     'public-sign-up-mentee-pending-review': {
       userType: 'mentee',
-      userActivated: true
+      userActivated: true,
+      emailVerified: true
     }
   },
   DECLINE: {
