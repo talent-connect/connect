@@ -10,7 +10,8 @@ const {
   sendMentorPendingReviewAcceptedEmail,
   sendMenteePendingReviewAcceptedEmail,
   sendMentorPendingReviewDeclinedEmail,
-  sendMenteePendingReviewDeclinedEmail
+  sendMenteePendingReviewDeclinedEmail,
+  sendVerificationEmail
 } = require('../../lib/email/email')
 
 const addFullNamePropertyForAdminSearch = ctx => {
@@ -290,6 +291,40 @@ module.exports = function (RedProfile) {
         err => console.log(err)
       )
   }
+
+  RedProfile.observe('after save', async function (context, next) {
+    // Onky continue if this is a brand new user
+    if (!context.isNewInstance) return next()
+    const redProfileInst = context.instance
+    const redUserInst = await redProfileInst.redUser.get()
+    const redProfile = redProfileInst.toJSON()
+    const redUser = redUserInst.toJSON()
+    console.log()
+
+    var verifyOptions = {
+      type: 'email',
+      mailer: {
+        send: async (verifyOptions, context, cb) => {
+          sendVerificationEmail({
+            recipient: verifyOptions.to,
+            redUserId: redUser.id,
+            firstName: redProfile.firstName,
+            userType: redProfile.userType,
+            verificationToken: verifyOptions.verificationToken,
+            rediLocation: redProfile.rediLocation
+          })
+        }
+      },
+      to: redUser.email,
+      from: 'dummy@dummy.com'
+    }
+
+    redUserInst.verify(verifyOptions, function (err, response) {
+      console.log(err)
+      console.log(response)
+      next()
+    })
+  })
 }
 
 /**

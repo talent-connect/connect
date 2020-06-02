@@ -1,6 +1,6 @@
 'use strict'
 
-const { sendResetPasswordEmail } = require('../../lib/email/email')
+const { sendResetPasswordEmail, sendVerificationEmail } = require('../../lib/email/email')
 
 module.exports = function (RedUser) {
   RedUser.observe('before save', function updateTimestamp (ctx, next) {
@@ -37,26 +37,6 @@ module.exports = function (RedUser) {
     info.user.redProfile(function getRedProfile (err, redProfileInst) {
       const rediLocation = redProfileInst.toJSON().rediLocation
       sendResetPasswordEmail(email, accessToken, rediLocation).subscribe()
-    })
-  })
-
-  RedUser.afterRemote('create', function (context, user, next) {
-    var verifyOptions = {
-      type: 'email',
-      mailer: {
-        send: (verifyOptions, context, cb) => {
-          console.log('mailer func called')
-          cb(null)
-        }
-      },
-      to: user.email,
-      from: 'dummy@dummy.com'
-    }
-
-    user.verify(verifyOptions, function (err, response) {
-      console.log(err)
-      console.log(response)
-      next()
     })
   })
 }

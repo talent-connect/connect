@@ -34,10 +34,7 @@
   },
   "RedUser": {
     "dataSource": "mongodb",
-    "public": true,
-    "options": {
-      "emailVerificationRequired": true
-    }
+    "public": true
   },
   "RedProfile": {
     "dataSource": "mongodb",
