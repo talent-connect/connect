@@ -1,8 +1,10 @@
 import React from 'react'
+import classnames from 'classnames'
 import { Form } from 'react-bulma-components'
 
 interface Props {
   name: string
+  className: string
   label: string
   placeholder: string
   disabled?: boolean
@@ -14,6 +16,7 @@ interface Props {
 function FormTextArea (props: any) {
   const {
     name,
+    className,
     label,
     placeholder,
     rows,
@@ -35,7 +38,7 @@ function FormTextArea (props: any) {
   const hasError = !!touched[name] && !!errors[name]
 
   return (
-    <Form.Field>
+    <Form.Field className={classnames({ [`${className}`]: className })}>
       {label && <Form.Label size="small">
         {label}
       </Form.Label>}
