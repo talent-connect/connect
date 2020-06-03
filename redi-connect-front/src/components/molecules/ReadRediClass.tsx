@@ -8,23 +8,16 @@ import { courseIdToLabelMap } from '../../config/config'
 
 interface Props {
   profile: RedProfile
+  shortInfo?: boolean
 }
 
-const Me = ({ profile }: Props) => {
-  const {
-    mentee_currentlyEnrolledInCourse
-  } = profile
-
-  return <Content>{mentee_currentlyEnrolledInCourse && <p>{courseIdToLabelMap[mentee_currentlyEnrolledInCourse]}</p>}</Content>
-}
-
-const Some = ({ profile }: Props) => {
+const ReadRediClass = ({ profile, shortInfo }: Props) => {
   const {
     mentee_currentlyEnrolledInCourse
   } = profile
 
   return <>
-    <Caption>Redi Class</Caption>
+    {shortInfo && <Caption>Redi Class</Caption> }
     <Content>{mentee_currentlyEnrolledInCourse && <p>{courseIdToLabelMap[mentee_currentlyEnrolledInCourse]}</p>}</Content>
   </>
 }
@@ -34,6 +27,6 @@ const mapStateToProps = (state: RootState) => ({
 })
 
 export default {
-  Me: connect(mapStateToProps, {})(Me),
-  Some: ({ profile }: Props) => <Some profile={profile} />
+  Me: connect(mapStateToProps, {})(ReadRediClass),
+  Some: ({ profile }: Props) => <ReadRediClass profile={profile} shortInfo/>
 }

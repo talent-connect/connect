@@ -1,20 +1,26 @@
-import Button from '../../../components/atoms/Button'
-
 import React, { useEffect } from 'react'
-import { FullScreenCircle } from '../../../hooks/WithLoading'
-import LoggedIn from '../../../components/templates/LoggedIn'
-import { RedProfile } from '../../../types/RedProfile'
-import { ProfileMentee } from './mentee/ProfileMentee'
-import { ProfileMentor } from './mentor/ProfileMentor'
 import { connect } from 'react-redux'
-import { profilesFetchOneStart } from '../../../redux/profiles/actions'
-import { RootState } from '../../../redux/types'
-import { ProfileAcceptedMatch } from './acceptedMatch/ProfileAcceptedMatch'
-import { ApplyForMentor } from '../../../components/organisms'
-
 import { useParams, useHistory } from 'react-router'
-
-import { Columns, Notification } from 'react-bulma-components'
+import { RootState } from '../../../redux/types'
+import { Columns, Element, Notification } from 'react-bulma-components'
+import { Button, Heading } from '../../../components/atoms'
+import {
+  ReadAbout,
+  ReadMentoringTopics,
+  ReadContactDetails,
+  ReadSocialMedia,
+  ReadLanguages,
+  ReadPersonalDetail,
+  ReadRediClass,
+  ReadOccupation
+} from '../../../components/molecules'
+import { ApplyForMentor, Avatar } from '../../../components/organisms'
+import { LoggedIn } from '../../../components/templates'
+import { ConnectButton } from '../../../components/ConnectButton'
+import { FullScreenCircle } from '../../../hooks/WithLoading'
+import { RedProfile } from '../../../types/RedProfile'
+import { profilesFetchOneStart } from '../../../redux/profiles/actions'
+import { ProfileAcceptedMatch } from './acceptedMatch/ProfileAcceptedMatch'
 
 interface RouteParams {
   profileId: string
@@ -29,57 +35,83 @@ interface ProfileProps {
 
 function Profile ({ loading, profile, currentUser, profilesFetchOneStart }: ProfileProps) {
   const { profileId } = useParams<RouteParams>()
+  const history = useHistory()
 
   useEffect(() => {
     profilesFetchOneStart(profileId)
   }, [profilesFetchOneStart])
+
+  const currentUserIsMentor =
+  currentUser && currentUser.userType === 'mentor'
+
+  const currentUserIsMentee =
+  currentUser && currentUser.userType === 'mentee'
 
   const isAcceptedMatch =
     profile &&
     profile.redMatchesWithCurrentUser &&
     profile.redMatchesWithCurrentUser[0] &&
     profile.redMatchesWithCurrentUser[0].status === 'accepted'
-  const currentUserIsMentor =
-    currentUser && currentUser.userType === 'mentor'
 
-  const history = useHistory()
+  const hasOpenApplication =
+    profile &&
+    profile.numberOfPendingApplicationWithCurrentUser > 0
+
+  const userCanApplyForMentorship = !isAcceptedMatch &&
+    currentUserIsMentee &&
+    profile &&
+    profile.numberOfPendingApplicationWithCurrentUser === 0
+
+  const contactInfoAvailable =
+    currentUserIsMentor &&
+    profile && (
+      profile.firstName ||
+      profile.lastName ||
+      profile.contactEmail ||
+      profile.telephoneNumber ||
+      profile.linkedInProfileUrl ||
+      profile.githubProfileUrl ||
+      profile.slackUsername
+    )
+
+  const match =
+    profile &&
+    profile.userType === 'mentee' &&
+    profile.redMatchesWithCurrentUser &&
+    profile.redMatchesWithCurrentUser[0]
 
   return (
     <>
       <FullScreenCircle loading={loading} />
       {!loading && <LoggedIn>
 
-        {typeof profile !== 'undefined' && profile.numberOfPendingApplicationWithCurrentUser > 0 && (
+        {hasOpenApplication &&
           <Notification>
             Awesome, your application has been sent.
             If you want to read it later on you can find it
             in <a onClick={() => history.push('/app/applications') }>your applications.</a>
           </Notification>
-        )}
+        }
 
         <Columns>
           <Columns.Column>
             {(!isAcceptedMatch || currentUserIsMentor) &&
-              <Button
-                onClick={() => history.goBack()}
-                simple
-              >
+              <Button onClick={() => history.goBack()} simple>
                 <Button.Icon icon="arrowLeft" space="right" />
                 back
               </Button>
             }
           </Columns.Column>
-          {(
-            !isAcceptedMatch &&
-                typeof profile !== 'undefined' &&
-                profile.numberOfPendingApplicationWithCurrentUser === 0 &&
-                currentUser &&
-                currentUser.userType === 'mentee'
-          ) &&
+
+          {userCanApplyForMentorship &&
             <Columns.Column className="is-narrow">
               <ApplyForMentor />
             </Columns.Column>
           }
+
+          {match && match.status === 'applied' && <Columns.Column className="is-narrow">
+            <ConnectButton matchId={match.id} />
+          </Columns.Column>}
         </Columns>
 
         {isAcceptedMatch && profile && (
@@ -87,12 +119,71 @@ function Profile ({ loading, profile, currentUser, profilesFetchOneStart }: Prof
         )}
 
         {!isAcceptedMatch &&
-          typeof profile !== 'undefined' &&
-          profile.userType === 'mentee' && <ProfileMentee mentee={profile} />}
+          typeof profile !== 'undefined' && <>
+          <Columns vCentered breakpoint="mobile">
+            <Columns.Column size={3}>
+              <Avatar profile={profile} />
+            </Columns.Column>
+            <Columns.Column size={9}>
+              <Heading>{profile.firstName} {profile.lastName}</Heading>
+            </Columns.Column>
+          </Columns>
 
-        {!isAcceptedMatch &&
-          typeof profile !== 'undefined' &&
-          profile.userType === 'mentor' && <ProfileMentor mentor={profile} />}
+          <Element className="block-separator">
+            <ReadAbout.Some profile={profile} />
+          </Element>
+
+          {profile.categories &&
+            <Element className="block-separator">
+              <ReadMentoringTopics.Some profile={profile} />
+            </Element>
+          }
+
+          {contactInfoAvailable &&
+            <Element className="block-separator">
+              <Columns>
+                {(profile.firstName || profile.age) && <Columns.Column>
+                  <Element className="block-separator">
+                    <ReadContactDetails.Some profile={profile} />
+                  </Element>
+                </Columns.Column>}
+                <Columns.Column>
+                  <ReadSocialMedia.Some profile={profile} />
+                </Columns.Column>
+              </Columns>
+            </Element>
+          }
+
+          {(profile.languages || profile.gender || profile.age) &&
+           <Element className="block-separator">
+             <Columns>
+               {(profile.gender || profile.age) && <Columns.Column>
+                 <Element className="block-separator">
+                   <ReadPersonalDetail.Some profile={profile} />
+                 </Element>
+               </Columns.Column>}
+               <Columns.Column>
+                 <ReadLanguages.Some profile={profile} />
+               </Columns.Column>
+             </Columns>
+           </Element>
+          }
+
+          {(profile.mentor_occupation || profile.mentee_occupationCategoryId || profile.mentee_currentlyEnrolledInCourse) &&
+            <Element className="block-separator">
+              <Columns>
+                {(profile.mentor_occupation || profile.mentee_occupationCategoryId) && <Columns.Column>
+                  <Element className="block-separator">
+                    <ReadOccupation.Some profile={profile} />
+                  </Element>
+                </Columns.Column>}
+                <Columns.Column>
+                  <ReadRediClass.Some profile={profile} />
+                </Columns.Column>
+              </Columns>
+            </Element>
+          }
+        </>}
       </LoggedIn>}
     </>
   )

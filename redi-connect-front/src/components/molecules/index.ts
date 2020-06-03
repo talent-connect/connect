@@ -37,7 +37,7 @@ export {
 export {
   default as ReadContactDetails
 }
-  from './ReadContactReadContactDetails'
+  from './ReadContactDetails'
 export {
   default as Teaser
 }
