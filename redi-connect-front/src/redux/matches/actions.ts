@@ -26,11 +26,13 @@ export const matchesFetchError = (error: Error): MatchesFetchErrorAction => ({
 })
 
 export const matchesAcceptMentorshipStart = (
-  redMatchId: string
+  redMatchId: string,
+  mentorReplyMessageOnAccept: string
 ): MatchesAcceptMentorshipStartAction => ({
   type: MatchesActionType.MATCHES_ACCEPT_MENTORSHIP_START,
   payload: {
-    redMatchId
+    redMatchId,
+    mentorReplyMessageOnAccept
   }
 })
 

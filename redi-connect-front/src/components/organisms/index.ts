@@ -2,6 +2,7 @@
 export { default as ApplicationCard } from './ApplicationCard'
 export { default as ApplyForMentor } from './ApplyForMentor'
 export { default as Avatar } from './Avatar'
+export { default as ConfirmMentorship } from './ConfirmMentorship'
 export { default as EditableAbout } from './EditableAbout'
 export { default as EditableContactDetails } from './EditableContactDetails'
 export { default as EditableLanguages } from './EditableLanguages'

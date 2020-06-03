@@ -29,6 +29,7 @@ export interface MatchesAcceptMentorshipStartAction extends Action {
   type: MatchesActionType.MATCHES_ACCEPT_MENTORSHIP_START
   payload: {
     redMatchId: string
+    mentorReplyMessageOnAccept: string
   }
 }
 export interface MatchesAcceptMentorshipSuccessAction extends Action {
