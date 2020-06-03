@@ -20,7 +20,7 @@ const Icon = ({ icon, space }: IconProps) => {
   const Icon = icon ? Icons[icon] : undefined
 
   return Icon
-    ? <Icon className={classnames('icon', { [`icon--space-${space}`]: space })}/>
+    ? <Icon className={classnames('icon', { [`icon--space-${space}`]: space })} />
     : null
 }
 

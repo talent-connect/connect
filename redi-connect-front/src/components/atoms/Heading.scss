@@ -19,7 +19,8 @@
     padding-bottom: 1rem;
   }
 
-  &::after, &::before {
+  &::after,
+  &::before {
     width: 3.25rem;
     border: 2px solid $redi-orange-dark;
     position: absolute;
