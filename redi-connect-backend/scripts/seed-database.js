@@ -396,6 +396,7 @@ Rx.of({})
               return {
                 rediLocation: '' + location + '',
                 applicationText: randomString(),
+                expectationText: randomString(),
                 status: ['applied', 'accepted', 'completed'][
                   Math.floor(Math.random() * 3)
                 ],
