@@ -18,8 +18,8 @@ const RediHero = () => {
   return (
     <Section className="default-background">
       <Container>
-        <Columns vCentered>
-          <Columns.Column size={5}>
+        <Columns>
+          <Columns.Column size={5} className="center-block">
             <Heading>
               {t('loggedOutArea.homePage.hero.headline')}
             </Heading>

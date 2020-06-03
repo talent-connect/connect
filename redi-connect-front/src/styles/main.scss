@@ -102,7 +102,7 @@ a:hover {
   // width: calc(100% + 32px);
 }
 
-// fix word wrapping in the content... maybe a bulma bug? 
+// fix word wrapping in the content... maybe a bulma bug?
 .content {
   word-break: break-word;
 }
@@ -143,4 +143,9 @@ a:hover {
   @include tablet() {
     margin-bottom: 2rem !important;
   }
+}
+
+.center-block {
+  margin-top: auto;
+  margin-bottom: 1rem;
 }
