@@ -23,7 +23,7 @@ const LoggedIn = ({ children, matches, matchesFetchStart, matchesMarkAsDismissed
 
   const match = matches && matches.find(match => match.status === 'accepted')
 
-  const newMatch =
+  const isNewMatch =
     profile.userType === 'mentee' &&
     match &&
     !match.hasMenteeDismissedMentorshipApplicationAcceptedNotification
@@ -34,6 +34,7 @@ const LoggedIn = ({ children, matches, matchesFetchStart, matchesMarkAsDismissed
 
   const handleModalClose = (redMatchId: string) => {
     matchesMarkAsDismissed(redMatchId)
+    // dashboard will be reafctored and this should be too
     history.push('/app/dashboard')
   }
 
@@ -74,15 +75,15 @@ const LoggedIn = ({ children, matches, matchesFetchStart, matchesMarkAsDismissed
                   </p>
                 </Content>
               }
-              {match && newMatch &&
-                <Modal show={newMatch} showClose={false}>
+              {match && isNewMatch &&
+                <Modal show={isNewMatch} showClose={false}>
                   <Modal.Content>
                     <Box>
                       <Heading className="box__heading" size="small">You’ve got a mentor match!</Heading>
                       <Content>
                         Hey {match.mentee && match.mentee.firstName}, good news!
-                        Steve Williams accepted your application. Here are already a
-                        few welcome words from your new mentor.
+                        {match.mentor && ` ${match.mentor.firstName} ${match.mentor.lastName} `}
+                        accepted your application. Here are already a few welcome words from your new mentor.
                       </Content>
                       <Content italic>
                         "{match.mentorReplyMessageOnAccept}"
