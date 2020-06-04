@@ -32,7 +32,7 @@ const validationSchema = Yup.object({
 // TODO: This throws a TS error: { dispatch, matchId }: ConnectButtonProps
 // What to replace with instead of below hack?
 const ConfirmMentorship = ({ matchId, menteeName, hasReachedMenteeLimit, matchesAcceptMentorshipStart }: ConfirmMentorshipProps) => {
-  const [show, setShow] = useState(false)
+  const [isModalActive, setModalActive] = useState(false)
 
   //  Keeping this to make sure we address this as its not planned in the desing, yet
   //   <Tooltip> requires child <Button> to be wrapped in a div since it's disabled
@@ -52,7 +52,7 @@ const ConfirmMentorship = ({ matchId, menteeName, hasReachedMenteeLimit, matches
   ) => {
     try {
       matchesAcceptMentorshipStart(matchId, values.mentorReplyMessageOnAccept)
-      setShow(false)
+      setModalActive(false)
     } catch (error) {
       console.log('error ', error)
     }
@@ -65,9 +65,11 @@ const ConfirmMentorship = ({ matchId, menteeName, hasReachedMenteeLimit, matches
     onSubmit: submitForm
   })
 
+  const isFormSubmittable = formik.dirty && formik.isValid
+
   return <>
-    <Button onClick={() => setShow(true)} disabled={hasReachedMenteeLimit}>Accept</Button>
-    <Modal show={show} onClose={() => setShow(false)} closeOnEsc closeOnBlur>
+    <Button onClick={() => setModalActive(true)} disabled={hasReachedMenteeLimit}>Accept</Button>
+    <Modal show={isModalActive} onClose={() => setModalActive(false)} closeOnEsc closeOnBlur>
       <Modal.Content>
         <Box>
           <Heading className="box__heading" size="small">Accept Application</Heading>
@@ -87,7 +89,7 @@ const ConfirmMentorship = ({ matchId, menteeName, hasReachedMenteeLimit, matches
           <Columns>
             <Columns.Column textAlignment="right">
               <Button
-                disabled={!(formik.dirty && formik.isValid)}
+                disabled={!isFormSubmittable}
                 onClick={() => formik.handleSubmit()}
               >
                 Accept mentorship request
