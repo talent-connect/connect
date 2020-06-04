@@ -41,17 +41,13 @@ const LoggedIn = ({ children, matches, matchesFetchStart, matchesMarkAsDismissed
   return (
     <>
       <Navbar />
-      <Section className="section--bottom-large-spaceing color-half--side-menu section--separator">
+      <Section className="section--bottom-large-spaceing color-half-tablet section--separator">
         <Container className="color-side-menu">
           <Columns>
-            <Columns.Column
-              className="side-menu__nav is-2 is-12-touch"
-            >
+            <Columns.Column desktop={{ size: 2 }} className="column--side-menu">
               <SideMenu />
             </Columns.Column>
-            <Columns.Column
-              className="is-9 is-offset-1 is-12-touch is-offset-0-touch"
-            >
+            <Columns.Column desktop={{ size: 9, offset: 1 }}>
               {profile.userType === 'public-sign-up-mentee-pending-review' &&
                 <Content>
                   <p>

@@ -109,19 +109,19 @@ a:hover {
 
 // TODO: should be transfered to a layout template
 // will be done the next time this view is reused
-.section.color-half {
+.section.color-half-desktop {
   background-color: $white;
 
   @include tablet() {
     background: linear-gradient(90deg, $redi-blue-light 50%, $white 50%);
   }
+}
 
-  &--side-menu {
-    background-color: $white;
+.section.color-half-tablet {
+  background-color: $white;
 
-    @include desktop() {
-      background: linear-gradient(90deg, $redi-blue-light 50%, $white 50%);
-    }
+  @include desktop() {
+    background: linear-gradient(90deg, $redi-blue-light 50%, $white 50%);
   }
 }
 
