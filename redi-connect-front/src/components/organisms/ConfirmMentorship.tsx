@@ -7,10 +7,10 @@ import { Caption, FormTextArea, Button, Heading } from '../atoms'
 import { matchesAcceptMentorshipStart } from '../../redux/matches/actions'
 
 interface ConfirmMentorshipProps {
-  matchId?: string
+  matchId: string
   menteeName?: string
   hasReachedMenteeLimit: boolean
-  matchesAcceptMentorshipStart: Function
+  matchesAcceptMentorshipStart: (redMatchId: string, mentorReplyMessageOnAccept: string) => void
 }
 
 interface ConfirmMentorshipFormValues {

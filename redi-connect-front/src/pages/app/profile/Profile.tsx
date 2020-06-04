@@ -112,7 +112,7 @@ function Profile ({ loading, profile, currentUser, hasReachedMenteeLimit, profil
         {match && match.status === 'applied' &&
           <Columns.Column className="is-narrow">
             <ConfirmMentorship
-              matchId={match && match.id}
+              matchId={match.id}
               menteeName={profile && profile.firstName}
               hasReachedMenteeLimit={hasReachedMenteeLimit}
             />
