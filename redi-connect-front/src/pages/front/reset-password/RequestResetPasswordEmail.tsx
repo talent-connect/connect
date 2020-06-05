@@ -1,21 +1,12 @@
-import React from 'react'
-import AccountOperation from '../../../components/templates/AccountOperation'
-import Heading from '../../../components/atoms/Heading'
-import { Columns, Content, Form } from 'react-bulma-components'
-import Teaser from '../../../components/molecules/Teaser'
-import FormInput from '../../../components/atoms/FormInput'
-import Button from '../../../components/atoms/Button'
-
-import {
-  FormikValues,
-  useFormik
-} from 'formik'
+import React, { useState } from 'react'
+import { Columns, Content, Element, Form } from 'react-bulma-components'
+import { Heading, Button, FormInput } from '../../../components/atoms'
+import { Teaser } from '../../../components/molecules'
+import { AccountOperation } from '../../../components/templates'
+import { FormikValues, useFormik } from 'formik'
 
 import * as yup from 'yup'
 import { Link } from 'react-router-dom'
-import {
-  showNotification
-} from '../../../components/AppNotification'
 import { requestResetPasswordEmail } from '../../../services/api/api'
 
 interface FormValues {
@@ -33,32 +24,18 @@ const validationSchema = yup.object().shape({
     .required('Please provide an email address.')
 })
 
-export const RequestResetPasswordEmail = (props: any) => {
+export const RequestResetPasswordEmail: React.FC = () => {
+  const [resetPasswordSuccess, setResetPasswordSuccess] = useState<string>('')
+  const [resetPasswordError, setResetPasswordError] = useState<string>('')
+
   const onSubmit = async (values: FormikValues) => {
     try {
       // Cast to string is safe as this only called if validated
       await requestResetPasswordEmail(values.email as string)
-      onServerRequestSuccess()
+      setResetPasswordSuccess('If you have an account,we have sent you the  password reset link to your email address.')
     } catch (err) {
-      onServerRequestError()
+      setResetPasswordError('Oh no, something went wrong :( Did you type your email address correctly?')
     }
-  }
-
-  const onServerRequestSuccess = () => {
-    showNotification(
-      'All good! Please check your email to set a new password :)',
-      {
-        variant: 'success',
-        autoHideDuration: 6000
-      }
-    )
-  }
-
-  const onServerRequestError = () => {
-    showNotification(
-      'Oh no, something went wrong :( Did you type your email address correctly?',
-      { variant: 'error' }
-    )
   }
 
   const formik = useFormik({
@@ -66,6 +43,14 @@ export const RequestResetPasswordEmail = (props: any) => {
     validationSchema,
     onSubmit: onSubmit
   })
+
+  const heading = resetPasswordSuccess
+    ? 'Password reset link sent!'
+    : 'Forgot your password?'
+
+  const text = resetPasswordSuccess
+    ? 'If you have an account,we have sent you the  password reset link to your email address.'
+    : 'We’ll help you reset it and get back on track. We will send a recovery link to:'
 
   return (
     <AccountOperation>
@@ -77,36 +62,39 @@ export const RequestResetPasswordEmail = (props: any) => {
           <Teaser.SignUp />
         </Columns.Column>
         <Columns.Column size={5} offset={1}>
-          <Heading border="bottomLeft">Forgot your password?</Heading>
-          <Content size="large" renderAs="p">
-            We’ll help you reset it and get back on track. We will send a recovery link to:
-          </Content>
-          <form onSubmit={e => e.preventDefault()} noValidate>
-            <FormInput
-              name="email"
-              type="email"
-              placeholder="Email"
-              {...formik}
-            />
-            <Form.Field className="submit-spacer">
-              <Button
-                fullWidth
-                onClick={formik.submitForm}
-                disabled={!(formik.dirty && formik.isValid)}
-              >
-                Reset Password
-              </Button>
-            </Form.Field>
+          <Heading border="bottomLeft">{heading}</Heading>
+          <Content size="large" renderAs="p">{text}</Content>
 
-            <Form.Field
-              className="submit-link submit-link--post"
-              textTransform="uppercase"
-            >
-              <Link to="/front/login">
-                Back to log in
-              </Link>
-            </Form.Field>
-          </form>
+          {!resetPasswordSuccess &&
+            <form onSubmit={e => e.preventDefault()}>
+              <FormInput
+                name="email"
+                type="email"
+                placeholder="Email"
+                {...formik}
+              />
+              <Form.Field >
+                <Form.Help color="danger" className={resetPasswordError ? 'help--show' : ''}>
+                  {resetPasswordError && resetPasswordError}
+                </Form.Help>
+              </Form.Field>
+              <Form.Field>
+                <Button
+                  fullWidth
+                  onClick={formik.submitForm}
+                  disabled={!(formik.dirty && formik.isValid)}
+                >
+                  Reset Password
+                </Button>
+              </Form.Field>
+            </form>
+          }
+          <Element
+            className={`submit-link ${!resetPasswordSuccess && 'submit-link--post'}`}
+            textTransform="uppercase"
+          >
+            <Link to="/front/login">Back to log in</Link>
+          </Element>
         </Columns.Column>
       </Columns>
     </AccountOperation>
