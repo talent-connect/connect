@@ -3,13 +3,11 @@ import { Content } from 'react-bulma-components'
 import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
-import { Caption } from '../atoms'
+import { Caption, Placeholder } from '../atoms'
 
 interface Props {
   profile: RedProfile
 }
-
-const Placeholder = () => <Content italic>Please tell us a bit about yourself</Content>
 
 const Me = ({ profile }: Props) => {
   const {
@@ -18,7 +16,9 @@ const Me = ({ profile }: Props) => {
     menteeCountCapacity
   } = profile
 
-  if (!personalDescription && !expectations && !menteeCountCapacity) return <Placeholder />
+  if (!personalDescription && !expectations && !menteeCountCapacity) {
+    return <Placeholder>Please tell us a bit about yourself</Placeholder>
+  }
 
   return (
     <Content>

@@ -44,7 +44,8 @@ const LoggedInButtons = ({ mobile }: { mobile?: boolean }) => {
       simple
       separator={!mobile}
     >
-      <Button.Icon icon="account" />
+      <Button.Icon icon="account" size="small" space="right"/>
+      Account
     </Button>
   </>
   )

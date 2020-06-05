@@ -2,6 +2,10 @@
 @import "../../styles/_variables.scss";
 
 .icon {
+  &--small {
+    width: 16px;
+  }
+  
   &--space-left {
     margin-left: .5rem;
   }

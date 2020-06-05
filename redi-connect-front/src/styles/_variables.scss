@@ -16,6 +16,7 @@ $redi-blue-light: #DAF0F4;
 $redi-orange-dark: #FD4D00;
 $redi-orange: #FF7D55;
 $redi-orange-light: #FFB298;
+$redi-orange-extra-light: #FFEAE2;
 
 $primary: $redi-orange-dark;
 $warning: $redi-orange-dark;
@@ -71,6 +72,7 @@ $input-focus-box-shadow-size: 0;
 $input-focus: $grey-light;
 $input-focus-color: $grey;
 $label-color: $grey-dark;
+$label-weight: $weight-normal;
 $help-size: 0.875rem;
 $checkbox-border: 1px $grey solid;
 $button-disabled-opacity: 1;
@@ -87,8 +89,8 @@ $subtitle-line-height: calc(100% + 12px);
 $link: $redi-orange-dark;
 $radius-small: 0;
 
-$tag-color: $redi-orange-dark;
-$tag-background-color: $redi-orange-light;
+$tag-color: $redi-orange;
+$tag-background-color: $redi-orange-extra-light;
 
 $transition: ease-in-out all 0.2s;
 

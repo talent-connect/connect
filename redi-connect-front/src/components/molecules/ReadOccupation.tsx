@@ -1,9 +1,9 @@
 import React from 'react'
-import { Content, Columns } from 'react-bulma-components'
+import { Content } from 'react-bulma-components'
 import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
-import { Caption } from '../atoms'
+import { Caption, Placeholder } from '../atoms'
 import {
   menteeOccupationCategories,
   educationLevels
@@ -13,8 +13,6 @@ interface Props {
   profile: RedProfile
   shortInfo?: boolean
 }
-
-const Placeholder = () => <Content italic>Input your information about your Education and Occupation here.</Content>
 
 const formMenteeOccupationCategories = menteeOccupationCategories.map(level => ({ value: level.id, label: level.label }))
 const formEducationLevels = educationLevels.map(level => ({ value: level.id, label: level.label }))
@@ -35,7 +33,9 @@ const ReadOccupation = ({ profile, shortInfo }: Props) => {
 
   } = profile
 
-  if (!mentor_occupation && !mentee_occupationCategoryId) return <Placeholder />
+  if (!mentor_occupation && !mentee_occupationCategoryId) {
+    return <Placeholder>Input your information about your Education and Occupation here.</Placeholder>
+  }
 
   return <>
     {shortInfo && <Caption>Occupation</Caption>}

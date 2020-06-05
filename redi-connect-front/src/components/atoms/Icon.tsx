@@ -7,6 +7,7 @@ import './Icon.scss'
 
 interface IconProps {
   icon: 'arrowLeft' | 'hamburger' | 'account'
+  size?: 'small'
   space?: 'left' | 'right'
 }
 
@@ -16,11 +17,11 @@ const Icons = {
   hamburger: Hamburger
 }
 
-const Icon = ({ icon, space }: IconProps) => {
+const Icon = ({ icon, space, size }: IconProps) => {
   const Icon = icon ? Icons[icon] : undefined
 
   return Icon
-    ? <Icon className={classnames('icon', { [`icon--space-${space}`]: space })}/>
+    ? <Icon className={classnames('icon', { [`icon--space-${space}`]: space, [`icon--${size}`]: size })}/>
     : null
 }
 

@@ -3,13 +3,11 @@ import { Content } from 'react-bulma-components'
 import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
-import { Caption } from '../atoms'
+import { Caption, Placeholder } from '../atoms'
 
 interface Props {
   profile: RedProfile
 }
-
-const Placeholder = () => <Content italic>Input your social media channels here.</Content>
 
 const Me = ({ profile }: Props) => {
   const {
@@ -18,7 +16,9 @@ const Me = ({ profile }: Props) => {
     slackUsername
   } = profile
 
-  if (!linkedInProfileUrl && !githubProfileUrl && !slackUsername) return <Placeholder />
+  if (!linkedInProfileUrl && !githubProfileUrl && !slackUsername) {
+    return <Placeholder>Input your social media channels here.</Placeholder>
+  }
 
   return (
     <Content>

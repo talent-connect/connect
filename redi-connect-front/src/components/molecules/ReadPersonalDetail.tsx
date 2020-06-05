@@ -1,10 +1,9 @@
 import React from 'react'
-import { Content } from 'react-bulma-components'
 import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
 import PipeList from './PipeList'
-import { Caption } from '../atoms'
+import { Caption, Placeholder } from '../atoms'
 import {
   gendersIdToLabelMap
 } from '../../config/config'
@@ -13,8 +12,6 @@ interface Props {
   profile: RedProfile
   caption?: boolean
 }
-
-const Placeholder = () => <Content italic>Input your gender and age.</Content>
 
 const ReadPersonalDetail = ({ profile, caption }: Props) => {
   const {
@@ -25,7 +22,7 @@ const ReadPersonalDetail = ({ profile, caption }: Props) => {
   const detailsList = gender ? [gendersIdToLabelMap[gender]] : []
   if (age) detailsList.push(`${age} years old`)
 
-  if (!gender && !age) return <Placeholder />
+  if (!gender && !age) return <Placeholder>Input your gender and age.</Placeholder>
 
   return <>
     {caption && <Caption>Personal Details</Caption>}

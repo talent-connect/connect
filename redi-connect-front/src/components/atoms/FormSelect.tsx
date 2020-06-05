@@ -37,7 +37,12 @@ function FormSelect (props: any) {
     dropdownIndicator: (provided: any, state: any) => ({
       ...provided,
       color: state.isFocused ? '#ea5b29' : '#a0a0a0',
-      transform: state.menuIsOpen ? 'rotate(180deg)' : 'none'
+      transform: state.menuIsOpen ? 'rotate(180deg)' : 'none',
+      svg: {
+        width: '26px',
+        height: '26px',
+        fill: '#ea5b29'
+      }
     }),
     control: (provided: any, state: any) => ({
       ...provided,
@@ -50,19 +55,26 @@ function FormSelect (props: any) {
     }),
     multiValue: (provided: any) => ({
       ...provided,
-      color: '#ea5b29',
+      color: '#FFB298',
       borderRadius: '4px',
-      backgroundColor: '#fad7ca'
+      backgroundColor: '#FFEAE2'
     }),
     multiValueLabel: (provided: any) => ({
       ...provided,
       fontSize: 'inherit',
-      color: '#ea5b29'
+      color: '#FF7D55'
     }),
     placeholder: (provided: any) => ({
       ...provided,
       fontStyle: 'italic',
       color: '#a0a0a0'
+    }),
+    multiValueRemove: (provided: any) => ({
+      ...provided,
+      svg: {
+        width: '20px',
+        height: '20px'
+      }
     })
   }
 

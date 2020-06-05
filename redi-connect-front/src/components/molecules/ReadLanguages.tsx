@@ -1,23 +1,20 @@
 import React from 'react'
-import { Content } from 'react-bulma-components'
 import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
 import PipeList from './PipeList'
-import { Caption } from '../atoms'
+import { Caption, Placeholder } from '../atoms'
 
 interface Props {
   profile: RedProfile
 }
-
-const Placeholder = () => <Content italic>Input languages you speak here.</Content>
 
 const Me = ({ profile }: Props) => {
   const {
     languages
   } = profile
 
-  if (!languages) return <Placeholder />
+  if (!languages) return <Placeholder>Input languages you speak here.</Placeholder>
 
   return <PipeList items={languages} />
 }

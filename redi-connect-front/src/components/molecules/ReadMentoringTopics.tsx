@@ -1,9 +1,9 @@
 import React from 'react'
-import { Content, Tag } from 'react-bulma-components'
+import { Tag } from 'react-bulma-components'
 import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
-import { Caption } from '../atoms'
+import { Caption, Placeholder } from '../atoms'
 import { categoriesIdToLabelMap } from '../../config/config'
 
 interface ReadMentoringProps {
@@ -14,8 +14,6 @@ interface ReadMentoringProps {
 interface TagsProps {
   items: string[]
 }
-
-const Placeholder = () => <Content italic>Please pick up to three mentoring topics.</Content>
 
 const ProfileTags = ({ items }: TagsProps) => (
   <Tag.Group>
@@ -32,7 +30,7 @@ const ReadMentoringTopics = ({ profile, caption }: ReadMentoringProps) => {
     categories
   } = profile
 
-  if (!categories && !caption) return <Placeholder />
+  if (!categories && !caption) return <Placeholder>Please pick up to three mentoring topics.</Placeholder>
 
   return (<>
     {caption && <Caption>{'Mentoring Topics'}</Caption>}
