@@ -1,5 +1,4 @@
 import React from 'react'
-import { Content } from 'react-bulma-components'
 import { FormSelect } from '../atoms'
 import { Editable, ReadRediClass } from '../molecules'
 import { RedProfile } from '../../types/RedProfile'
@@ -14,8 +13,7 @@ import * as Yup from 'yup'
 import { FormikValues, useFormik } from 'formik'
 
 import {
-  courses,
-  courseIdToLabelMap
+  courses
 } from '../../config/config'
 
 const formCourses = courses.map(course => ({ value: course.id, label: course.label }))

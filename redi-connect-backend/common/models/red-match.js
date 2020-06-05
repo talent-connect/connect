@@ -20,7 +20,10 @@ module.exports = function (RedMatch) {
   RedMatch.observe('before save', function updateTimestamp (ctx, next) {
     if (process.env.NODE_ENV === 'seeding') return next()
     if (ctx.instance) {
-      if (ctx.isNewInstance) ctx.instance.createdAt = new Date()
+      if (ctx.isNewInstance) {
+        ctx.instance.createdAt = new Date()
+        ctx.instance.hasMenteeDismissedMentorshipApplicationAcceptedNotification = false
+      }
       ctx.instance.updatedAt = new Date()
     } else {
       ctx.data.updatedAt = new Date()
@@ -90,7 +93,7 @@ module.exports = function (RedMatch) {
   })
 
   RedMatch.acceptMentorship = async (data, options, callback) => {
-    const { redMatchId } = data
+    const { redMatchId, mentorReplyMessageOnAccept } = data
 
     const RedProfile = app.models.RedProfile
 
@@ -104,6 +107,7 @@ module.exports = function (RedMatch) {
     redMatch = await redMatch.updateAttributes({
       status: 'accepted',
       matchMadeActiveOn: new Date(),
+      mentorReplyMessageOnAccept,
       rediLocation: options.currentUser.redProfile.rediLocation
     })
 
@@ -111,6 +115,7 @@ module.exports = function (RedMatch) {
       [mentee.contactEmail, mentor.contactEmail],
       mentor.firstName,
       mentee.firstName,
+      mentorReplyMessageOnAccept,
       options.currentUser.redProfile.rediLocation
     ).toPromise()
 
@@ -183,5 +188,23 @@ module.exports = function (RedMatch) {
       inst => callback(null, inst),
       err => callback(err)
     )
+  }
+
+  RedMatch.markAsDismissed = async function (data, options, callback) {
+    const { redMatchId } = data
+
+    try {
+      console.log(redMatchId)
+      let redMatch = await RedMatch.findById(redMatchId)
+
+      redMatch = await redMatch.updateAttributes({
+        hasMenteeDismissedMentorshipApplicationAcceptedNotification: true,
+        rediLocation: options.currentUser.redProfile.rediLocation
+      })
+
+      callback(null, redMatch.toJSON())
+    } catch (err) {
+      callback(err)
+    }
   }
 }

@@ -19,6 +19,12 @@
       "type": "string",
       "required": true
     },
+    "mentorReplyMessageOnAccept": {
+      "type": "string"
+    },
+    "hasMenteeDismissedMentorshipApplicationAcceptedNotification": {
+      "type": "boolean"
+    },
     "matchMadeActiveOn": {
       "type": "string"
     },
@@ -75,6 +81,13 @@
       "principalId": "mentee",
       "permission": "ALLOW",
       "property": "requestMentorship"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "mentee",
+      "permission": "ALLOW",
+      "property": "markAsDismissed"
     },
     {
       "accessType": "*",
@@ -142,6 +155,37 @@
       "http": [
         {
           "path": "/acceptMentorship",
+          "verb": "post"
+        }
+      ]
+    },
+    "markAsDismissed": {
+      "accepts": [
+        {
+          "arg": "data",
+          "type": "object",
+          "http": {
+            "source": "body"
+          }
+        },
+        {
+          "arg": "options",
+          "type": "object",
+          "http": "optionsFromRequest"
+        }
+      ],
+      "returns": [
+        {
+          "arg": "redMatch",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
+      "description": "",
+      "http": [
+        {
+          "path": "/markAsDismissed",
           "verb": "post"
         }
       ]

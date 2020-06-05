@@ -144,7 +144,7 @@ Review application: ${buildFrontendUrl(process.env.NODE_ENV, rediLocation)}
 Your Career Support Team
 `, rediLocation
   )
-const sendMentorshipAcceptedEmail = (recipients, mentorName, menteeName, rediLocation) => {
+const sendMentorshipAcceptedEmail = (recipients, mentorName, menteeName, mentorReplyMessageOnAccept, rediLocation) => {
   let recipientsSanitized = !isProductionOrDemonstration()
     ? ['eric@binarylights.com']
     : recipients
@@ -170,6 +170,12 @@ const sendMentorshipAcceptedEmail = (recipients, mentorName, menteeName, rediLoc
           Data: `Dear ${mentorName} and ${menteeName},
 
 Congratulations. Mentor ${mentorName} has accepted your application, ${menteeName}.
+
+${menteeName}, here's a message to you from ${mentorName}:
+
+********************************
+${mentorReplyMessageOnAccept}
+********************************
 
 Are you ReDI?!
 

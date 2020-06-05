@@ -7,10 +7,10 @@ import { Caption } from '../atoms'
 
 interface Props {
   profile: RedProfile
-  caption?: boolean
+  shortInfo?: boolean
 }
 
-const ReadContacts = ({ profile, caption }: Props) => {
+const ReadContactDetails = ({ profile, shortInfo }: Props) => {
   const {
     firstName,
     lastName,
@@ -19,10 +19,10 @@ const ReadContacts = ({ profile, caption }: Props) => {
   } = profile
 
   return <>
-    {caption && <Caption>Contact Details</Caption>}
+    {shortInfo && <Caption>Contact Details</Caption>}
     <Content>
       {contactEmail && <p>{contactEmail}</p>}
-      {(firstName || lastName) && <p>{firstName} {lastName}</p>}
+      {!shortInfo && (firstName || lastName) && <p>{firstName} {lastName}</p>}
       {telephoneNumber && <p>{telephoneNumber}</p>}
     </Content>
   </>
@@ -33,6 +33,6 @@ const mapStateToProps = (state: RootState) => ({
 })
 
 export default {
-  Me: connect(mapStateToProps, {})(ReadContacts),
-  Some: ({ profile }: Props) => <ReadContacts profile={profile} caption />
+  Me: connect(mapStateToProps, {})(ReadContactDetails),
+  Some: ({ profile }: Props) => <ReadContactDetails profile={profile} shortInfo/>
 }

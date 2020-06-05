@@ -11,6 +11,7 @@ import {
 
 interface Props {
   profile: RedProfile
+  shortInfo?: boolean
 }
 
 const Placeholder = () => <Content italic>Input your information about your Education and Occupation here.</Content>
@@ -18,7 +19,7 @@ const Placeholder = () => <Content italic>Input your information about your Educ
 const formMenteeOccupationCategories = menteeOccupationCategories.map(level => ({ value: level.id, label: level.label }))
 const formEducationLevels = educationLevels.map(level => ({ value: level.id, label: level.label }))
 
-const Me = ({ profile }: Props) => {
+const ReadOccupation = ({ profile, shortInfo }: Props) => {
   const {
     userType,
     mentor_occupation,
@@ -36,7 +37,8 @@ const Me = ({ profile }: Props) => {
 
   if (!mentor_occupation && !mentee_occupationCategoryId) return <Placeholder />
 
-  return (
+  return <>
+    {shortInfo && <Caption>Occupation</Caption>}
     <Content>
       {userType === 'mentor' && (
         <>
@@ -47,56 +49,29 @@ const Me = ({ profile }: Props) => {
       {userType === 'mentee' && (
         <>
           <p>{formMenteeOccupationCategories.filter(level => level.value === mentee_occupationCategoryId).map(level => level.label)}</p>
-          {mentee_occupationCategoryId === 'job' && (
-            <>
-              <p>{mentee_occupationJob_placeOfEmployment}</p>
-              <p>{mentee_occupationJob_position}</p>
-            </>
-          )}
-          {mentee_occupationCategoryId === 'student' && (
-            <>
-              <p>{mentee_occupationStudent_studyPlace}</p>
-              <p>{mentee_occupationStudent_studyName}</p>
-            </>
-          )}
-          {mentee_occupationCategoryId === 'lookingForJob' && (
-            <>
-              <p>{mentee_occupationLookingForJob_what}</p>
-            </>
-          )}
-          {mentee_occupationCategoryId === 'other' && (
-            <>
-              <p>{mentee_occupationOther_description}</p>
-            </>
-          )}
+
+          {mentee_occupationCategoryId === 'job' && <>
+            <p>{mentee_occupationJob_placeOfEmployment}</p>
+            <p>{mentee_occupationJob_position}</p>
+          </>}
+
+          {mentee_occupationCategoryId === 'student' && <>
+            <p>{mentee_occupationStudent_studyPlace}</p>
+            <p>{mentee_occupationStudent_studyName}</p>
+          </>}
+          {mentee_occupationCategoryId === 'lookingForJob' && <>
+            <p>{mentee_occupationLookingForJob_what}</p>
+          </>}
+
+          {mentee_occupationCategoryId === 'other' && <>
+            <p>{mentee_occupationOther_description}</p>
+          </>}
+
           <p>{formEducationLevels.filter(level => level.value === mentee_highestEducationLevel).map(level => level.label)}</p>
         </>
       )}
     </Content>
-  )
-}
-
-const Some = ({ profile }: Props) => {
-  const {
-    mentor_occupation,
-    mentor_workPlace
-  } = profile
-
-  return <Columns>
-    {mentor_occupation && <Columns.Column>
-      <Caption>Occupation</Caption>
-      <Content className="block-separator">
-        {mentor_occupation}
-      </Content>
-    </Columns.Column>}
-    {mentor_workPlace && <Columns.Column>
-      <Caption>Company</Caption>
-      <Content>
-        {mentor_workPlace}
-      </Content>
-    </Columns.Column>}
-  </Columns>
-
+  </>
 }
 
 const mapStateToProps = (state: RootState) => ({
@@ -104,6 +79,6 @@ const mapStateToProps = (state: RootState) => ({
 })
 
 export default {
-  Me: connect(mapStateToProps, {})(Me),
-  Some: ({ profile }: Props) => <Some profile={profile} />
+  Me: connect(mapStateToProps, {})(ReadOccupation),
+  Some: ({ profile }: Props) => <ReadOccupation profile={profile} shortInfo />
 }

@@ -5,7 +5,8 @@ import {
   MatchesFetchErrorAction,
   MatchesAcceptMentorshipStartAction,
   MatchesAcceptMentorshipSuccessAction,
-  MatchesAcceptMentorshipErrorAction
+  MatchesAcceptMentorshipErrorAction,
+  MatchesMarkAsDismissedStartAction
 } from './types'
 import { RedMatch } from '../../types/RedMatch'
 
@@ -26,9 +27,20 @@ export const matchesFetchError = (error: Error): MatchesFetchErrorAction => ({
 })
 
 export const matchesAcceptMentorshipStart = (
-  redMatchId: string
+  redMatchId: string,
+  mentorReplyMessageOnAccept: string
 ): MatchesAcceptMentorshipStartAction => ({
   type: MatchesActionType.MATCHES_ACCEPT_MENTORSHIP_START,
+  payload: {
+    redMatchId,
+    mentorReplyMessageOnAccept
+  }
+})
+
+export const matchesMarkAsDismissed = (
+  redMatchId: string
+): MatchesMarkAsDismissedStartAction => ({
+  type: MatchesActionType.MATCHES_MARK_AS_DISMISSED_START,
   payload: {
     redMatchId
   }

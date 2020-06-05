@@ -1,13 +1,43 @@
-import React from 'react'
-import Navbar from '../organisms/Navbar'
-import SideMenu from '../organisms/SideMenu'
-import { Container, Section, Columns, Content } from 'react-bulma-components'
+import React, { ReactNode, useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { RootState } from '../../redux/types'
+import { Button, Heading } from '../atoms'
+import { Navbar, SideMenu } from '../organisms'
+import { Container, Section, Columns, Content, Modal, Box } from 'react-bulma-components'
 import { getRedProfile } from '../../services/auth/auth'
+import { matchesFetchStart, matchesMarkAsDismissed } from '../../redux/matches/actions'
 
 import Footer from '../organisms/Footer'
+import { RedMatch } from '../../types/RedMatch'
 
-const LoggedIn: React.FunctionComponent = ({ children }) => {
+export interface Props {
+  children: ReactNode
+  matches: RedMatch[]
+  matchesFetchStart: () => void
+  matchesMarkAsDismissed: (redMatchId: string) => void
+}
+const LoggedIn = ({ children, matches, matchesFetchStart, matchesMarkAsDismissed }: Props) => {
   const profile = getRedProfile()
+  const history = useHistory()
+
+  const match = matches && matches.find(match => match.status === 'accepted')
+
+  const isNewMatch =
+    profile.userType === 'mentee' &&
+    match &&
+    !match.hasMenteeDismissedMentorshipApplicationAcceptedNotification
+
+  useEffect(() => {
+    matchesFetchStart()
+  }, [matchesFetchStart])
+
+  const handleModalClose = (redMatchId: string) => {
+    matchesMarkAsDismissed(redMatchId)
+    // dashboard will be reafctored and this should be too
+    history.push('/app/dashboard')
+  }
+
   return (
     <>
       <Navbar />
@@ -45,6 +75,26 @@ const LoggedIn: React.FunctionComponent = ({ children }) => {
                   </p>
                 </Content>
               }
+              {match && isNewMatch &&
+                <Modal show={isNewMatch} showClose={false}>
+                  <Modal.Content>
+                    <Box>
+                      <Heading className="box__heading" size="small">You’ve got a mentor match!</Heading>
+                      <Content>
+                        Hey {match.mentee && match.mentee.firstName}, good news!
+                        {match.mentor && ` ${match.mentor.firstName} ${match.mentor.lastName} `}
+                        accepted your application. Here are already a few welcome words from your new mentor.
+                      </Content>
+                      <Content italic>
+                        "{match.mentorReplyMessageOnAccept}"
+                      </Content>
+                      <Button onClick={() => handleModalClose(match.id as string)}>
+                        Go to Dashboard
+                      </Button>
+                    </Box>
+                  </Modal.Content>
+                </Modal>
+              }
               {children}
             </Columns.Column>
           </Columns>
@@ -55,4 +105,13 @@ const LoggedIn: React.FunctionComponent = ({ children }) => {
   )
 }
 
-export default LoggedIn
+const mapDispatchToProps = (dispatch: any) => ({
+  matchesFetchStart: () => dispatch(matchesFetchStart()),
+  matchesMarkAsDismissed: (redMatchId: string) => dispatch(matchesMarkAsDismissed(redMatchId))
+})
+
+const mapStateToProps = (state: RootState) => ({
+  matches: state.matches.matches
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoggedIn)

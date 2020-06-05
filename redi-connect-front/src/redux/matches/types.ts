@@ -12,7 +12,8 @@ export enum MatchesActionType {
   MATCHES_FETCH_ERROR = 'MATCHES_FETCH_ERROR',
   MATCHES_ACCEPT_MENTORSHIP_START = 'MATCHES_ACCEPT_MENTORSHIP_START',
   MATCHES_ACCEPT_MENTORSHIP_SUCCESS = 'MATCHES_ACCEPT_MENTORSHIP_SUCCESS',
-  MATCHES_ACCEPT_MENTORSHIP_ERROR = 'MATCHES_ACCEPT_MENTORSHIP_ERROR'
+  MATCHES_ACCEPT_MENTORSHIP_ERROR = 'MATCHES_ACCEPT_MENTORSHIP_ERROR',
+  MATCHES_MARK_AS_DISMISSED_START = 'MATCHES_MARK_AS_DISMISSED_START'
 }
 export interface MatchesFetchStartAction extends Action {
   type: MatchesActionType.MATCHES_FETCH_START
@@ -29,6 +30,7 @@ export interface MatchesAcceptMentorshipStartAction extends Action {
   type: MatchesActionType.MATCHES_ACCEPT_MENTORSHIP_START
   payload: {
     redMatchId: string
+    mentorReplyMessageOnAccept: string
   }
 }
 export interface MatchesAcceptMentorshipSuccessAction extends Action {
@@ -40,10 +42,18 @@ export interface MatchesAcceptMentorshipErrorAction extends Action {
   payload: Error
 }
 
+export interface MatchesMarkAsDismissedStartAction extends Action {
+  type: MatchesActionType.MATCHES_MARK_AS_DISMISSED_START
+  payload: {
+    redMatchId: string
+  }
+}
+
 export type MatchesActions =
   | MatchesFetchStartAction
   | MatchesFetchSuccessAction
   | MatchesFetchErrorAction
   | MatchesAcceptMentorshipStartAction
   | MatchesAcceptMentorshipSuccessAction
-  | MatchesAcceptMentorshipErrorAction;
+  | MatchesAcceptMentorshipErrorAction
+  | MatchesMarkAsDismissedStartAction;

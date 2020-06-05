@@ -1,44 +1,44 @@
 export {
   default as Editable
 }
-from './Editable'
+  from './Editable'
 export {
   default as PipeList
 }
-from './PipeList'
+  from './PipeList'
 export {
   default as ReadAbout
 }
-from './ReadAbout'
+  from './ReadAbout'
 export {
-  default as ReadMentoring
+  default as ReadMentoringTopics
 }
-from './ReadMentoring'
+  from './ReadMentoringTopics'
 export {
   default as ReadSocialMedia
 }
-from './ReadSocialMedia'
+  from './ReadSocialMedia'
 export {
   default as ReadRediClass
 }
-from './ReadRediClass'
+  from './ReadRediClass'
 export {
   default as ReadLanguages
 }
-from './ReadLanguages'
+  from './ReadLanguages'
 export {
   default as ReadPersonalDetail
 }
-from './ReadPersonalDetail'
+  from './ReadPersonalDetail'
 export {
   default as ReadOccupation
 }
-from './ReadOccupation'
+  from './ReadOccupation'
 export {
-  default as ReadContacts
+  default as ReadContactDetails
 }
-from './ReadContacts'
+  from './ReadContactDetails'
 export {
   default as Teaser
 }
-from './Teaser'
+  from './Teaser'

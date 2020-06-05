@@ -24,13 +24,14 @@ function FormInput (props: any) {
   } = props
 
   const hasError = !!touched[name] && !!errors[name]
+  const isValidField = touched[name] && !errors[name]
 
   return (
     <Form.Field>
       {label && <Form.Label size="small">
         {label}
       </Form.Label>}
-      <Form.Control>
+      <Form.Control className={isValidField && 'field-clean'}>
         <Form.Input
           id={name}
           name={name}

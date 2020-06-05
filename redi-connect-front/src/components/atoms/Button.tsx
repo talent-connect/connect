@@ -9,7 +9,7 @@ interface Props {
   fullWidth?: boolean
   disabled?: boolean
   separator?: boolean
-  onClick: any
+  onClick: () => void
   simple?: boolean
 }
 
@@ -26,7 +26,7 @@ const Button = ({
 
   return (
     <button
-      onClick={disabled ? undefined : onClick}
+      onClick={onClick}
       disabled={disabled}
       type="button"
       className={classnames(baseClass, `${baseClass}--${simple ? 'simple' : 'default'}`, {

@@ -115,7 +115,7 @@ export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
         <Columns.Column size={5} offset={1}>
           <Heading border="bottomLeft">Enter your new password</Heading>
           <Content size="large" renderAs="p">
-            Please make sure that your new password has more than 8 characters.
+            Please make sure that your new password has more than <strong>8 characters</strong>.
           </Content>
 
           {formError && (
@@ -146,7 +146,7 @@ export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
               </div>
             )}
 
-            <Form.Field className="submit-spacer">
+            <Form.Field>
               <Button
                 fullWidth
                 onClick={formik.submitForm}

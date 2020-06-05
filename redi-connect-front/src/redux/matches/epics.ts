@@ -12,6 +12,7 @@ import {
 } from './actions'
 import {
   MatchesAcceptMentorshipStartAction,
+  MatchesMarkAsDismissedStartAction,
   MatchesActions,
   MatchesActionType
 } from './types'
@@ -30,6 +31,21 @@ export const matchesFetchEpic = (action$: ActionsObservable<MatchesActions>) =>
     map(matchesFetchSuccess)
   )
 
+export const matchesMarkAsDismissed = (action$: ActionsObservable<MatchesActions>) =>
+  action$.pipe(
+    ofType(MatchesActionType.MATCHES_MARK_AS_DISMISSED_START),
+    switchMap(action =>
+      http(`${API_URL}/redMatches/markAsDismissed`, {
+        method: 'post',
+        data: {
+          redMatchId: (action as MatchesMarkAsDismissedStartAction).payload.redMatchId
+        }
+      })
+    ),
+    map(resp => resp.data),
+    map(matchesFetchStart)
+  )
+
 export const matchesAcceptMentorshipEpic = (action$: ActionsObservable<any>) =>
   action$.pipe(
     ofType(MatchesActionType.MATCHES_ACCEPT_MENTORSHIP_START),
@@ -38,8 +54,8 @@ export const matchesAcceptMentorshipEpic = (action$: ActionsObservable<any>) =>
         http(`${API_URL}/redMatches/acceptMentorship`, {
           method: 'post',
           data: {
-            redMatchId: (action as MatchesAcceptMentorshipStartAction).payload
-              .redMatchId
+            redMatchId: (action as MatchesAcceptMentorshipStartAction).payload.redMatchId,
+            mentorReplyMessageOnAccept: (action as MatchesAcceptMentorshipStartAction).payload.mentorReplyMessageOnAccept
           }
         })
       ).pipe(
@@ -71,5 +87,6 @@ export const matchesAcceptMentorshipEpic = (action$: ActionsObservable<any>) =>
 
 export const matchesEpics = {
   matchesFetchEpic,
-  matchesAcceptMentorshipEpic
+  matchesAcceptMentorshipEpic,
+  matchesMarkAsDismissed
 }

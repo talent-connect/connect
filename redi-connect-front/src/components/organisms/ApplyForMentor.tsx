@@ -90,18 +90,19 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
             {submitResult !== 'success' && (
               <>
                 <Caption>Motivation </Caption>
-                <Content>
-                  <p>Write an application to the Steve Williams in which you describe why you think he would be a good mentor for you.</p>
+                <Content size="small">
+                  <p>Write an application to the {mentor.firstName} {mentor.lastName} in which you describe why you think he would be a good mentor for you.</p>
                 </Content>
                 <FormTextArea
                   name="applicationText"
+                  className="double-block-space"
                   rows={4}
                   placeholder={`Dear ${mentor.firstName}...`}
                   {...formik}
                 />
 
                 <Caption>Expectation </Caption>
-                <Content>
+                <Content size="small">
                   <p>Please also write a few words about your expectations on the mentorship with this mentor.</p>
                 </Content>
                 <FormTextArea
