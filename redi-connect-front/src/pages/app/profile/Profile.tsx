@@ -182,9 +182,9 @@ function Profile ({ loading, profile, currentUser, hasReachedMenteeLimit, profil
                   <ReadOccupation.Some profile={profile} />
                 </Element>
               </Columns.Column>}
-              <Columns.Column>
+              {currentUserIsMentor && <Columns.Column>
                 <ReadRediClass.Some profile={profile} />
-              </Columns.Column>
+              </Columns.Column>}
             </Columns>
           </Element>
         }
