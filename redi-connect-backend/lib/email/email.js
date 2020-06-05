@@ -2,19 +2,30 @@
 
 const aws = require('aws-sdk')
 const Rx = require('rxjs')
+const mjml2html = require('mjml')
+const nodemailer = require('nodemailer')
+const fs = require('fs')
+const path = require('path')
+
 const config = {
   accessKeyId: process.env.EMAILER_AWS_ACCESS_KEY,
   secretAccessKey: process.env.EMAILER_AWS_SECRET_KEY,
   region: process.env.EMAILER_AWS_REGION
 }
-const { buildFrontendUrl } = require('./build-frontend-url')
+const { buildFrontendUrl } = require('../build-frontend-url')
+const { buildBackendUrl } = require('../build-backend-url')
 
 const ses = new aws.SES(config)
+
+const transporter = nodemailer.createTransport({
+  SES: ses
+})
 
 const isProductionOrDemonstration = () =>
   ['production', 'demonstration', 'staging'].includes(process.env.NODE_ENV)
 
 const sendEmail = Rx.bindNodeCallback(ses.sendEmail.bind(ses))
+const sendMjmlEmail = Rx.bindNodeCallback(transporter.sendMail.bind(transporter))
 const sendEmailFactory = (to, subject, body, rediLocation) => {
   let toSanitized = isProductionOrDemonstration()
     ? to
@@ -48,6 +59,29 @@ const sendEmailFactory = (to, subject, body, rediLocation) => {
         Data: subject
       }
     }
+  })
+}
+const sendMjmlEmailFactory = ({ to, subject, html, rediLocation }) => {
+  let toSanitized = isProductionOrDemonstration()
+    ? to
+    : 'eric@binarylights.com'
+  if (process.env.DEV_MODE_EMAIL_RECIPIENT) {
+    toSanitized = process.env.DEV_MODE_EMAIL_RECIPIENT
+  }
+  let sender
+  if (rediLocation === 'berlin') {
+    sender = 'career@redi-school.org'
+  } else if (rediLocation === 'munich') {
+    sender = 'munich-career@redi-school.org'
+  } else {
+    sender = 'career@redi-school.org'
+  }
+  return sendMjmlEmail({
+    from: sender,
+    to: toSanitized,
+    bcc: 'eric@binarylights.com',
+    subject: subject,
+    html: html
   })
 }
 
@@ -407,6 +441,28 @@ Your Career Support Team
     `, rediLocation
   )
 
+const verificationEmailTemplate = fs.readFileSync(path.resolve(__dirname, 'templates', 'validate-email-address.mjml'), 'utf-8')
+const verificationEmailParsed = mjml2html(verificationEmailTemplate, { filePath: path.resolve(__dirname, 'templates') })
+
+const sendVerificationEmail = ({ recipient, redUserId, firstName, userType, verificationToken, rediLocation }) => {
+  const userTypeToUserTypeInEmail = {
+    'public-sign-up-mentor-pending-review': 'mentor',
+    'public-sign-up-mentee-pending-review': 'mentee'
+  }
+  const verificationSuccessPageUrl = `${buildFrontendUrl(process.env.NODE_ENV, rediLocation)}/front/signup-complete`
+  const verificationUrl = `${buildBackendUrl(process.env.NODE_ENV)}/api/redUsers/confirm?uid=${redUserId}&token=${verificationToken}&redirect=${encodeURI(verificationSuccessPageUrl)}`
+  const html = verificationEmailParsed.html
+    .replace('${firstName}', firstName)
+    .replace('${mentorOrMentee}', userTypeToUserTypeInEmail[userType])
+    .replace('${verificationUrl}', verificationUrl)
+  sendMjmlEmailFactory({
+    to: recipient,
+    subject: 'Welcome to ReDI School',
+    html: html,
+    rediLocation
+  }).subscribe()
+}
+
 module.exports = {
   sendReportProblemEmail,
   sendMentorCancelledMentorshipNotificationEmail,
@@ -420,5 +476,6 @@ module.exports = {
   sendMenteePendingReviewDeclinedEmail,
   sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted,
   sendResetPasswordEmail,
+  sendVerificationEmail,
   sendEmailFactory
 }

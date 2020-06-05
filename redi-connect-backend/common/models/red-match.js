@@ -8,7 +8,7 @@ const {
   sendMentorshipRequestReceivedEmail,
   sendMentorshipAcceptedEmail,
   sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted
-} = require('../../lib/email')
+} = require('../../lib/email/email')
 
 module.exports = function (RedMatch) {
   /**
