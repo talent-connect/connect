@@ -10,6 +10,7 @@ import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Button from '../atoms/Button'
 import team from '../../assets/images/hero.svg'
+import './RediHero.scss'
 
 const RediHero = () => {
   const history = useHistory()
@@ -18,8 +19,8 @@ const RediHero = () => {
   return (
     <Section className="default-background">
       <Container>
-        <Columns vCentered>
-          <Columns.Column size={5}>
+        <Columns>
+          <Columns.Column size={5} className="rediHero__content">
             <Heading>
               {t('loggedOutArea.homePage.hero.headline')}
             </Heading>
@@ -28,7 +29,9 @@ const RediHero = () => {
             </Columns.Column>
             <Content
               renderAs="p"
-              className="is-size-4 is-size-5-mobile double-block-space"
+              textSize={4}
+              className="double-block-space"
+              responsive={{ mobile: { textSize: { value: 5 } } }}
             >
               {t('loggedOutArea.homePage.hero.content1')}<br />{t('loggedOutArea.homePage.hero.content2')}
             </Content>

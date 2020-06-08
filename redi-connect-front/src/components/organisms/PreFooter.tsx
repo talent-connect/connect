@@ -22,13 +22,15 @@ const PreFooter = () => {
     <Section className="default-background">
       <Container>
         <Columns vCentered>
-          <Columns.Column size={4} className="is-four-fifths-mobile">
+          <Columns.Column size={4} mobile={{ size: 'four-fifths' }}>
             <Heading>
               {t('preFooter.headline')}
             </Heading>
             <Content
               renderAs="p"
-              className="is-size-4 is-size-5-mobile double-block-space"
+              textSize={4}
+              responsive={{ mobile: { textSize: { value: 5 } } }}
+              className="double-block-space"
             >
               {t('preFooter.content')}
             </Content>
@@ -38,10 +40,10 @@ const PreFooter = () => {
               </Button>
             </Content>
           </Columns.Column>
-          <Columns.Column className="is-hidden-mobile">
+          <Columns.Column responsive={{ mobile: { hide: { value: true } } }}>
             <Hello className="pre-footer__image" />
           </Columns.Column>
-          <Columns.Column className="is-hidden-tablet">
+          <Columns.Column responsive={{ tablet: { hide: { value: true } } }}>
             <HelloMobile className="pre-footer__image" />
           </Columns.Column>
         </Columns>

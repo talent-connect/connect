@@ -3,7 +3,6 @@ import {
   Container,
   Section,
   Columns,
-  Image,
   Level,
   Element,
   Heading as BulmaHeading
