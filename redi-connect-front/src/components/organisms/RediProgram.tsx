@@ -47,8 +47,11 @@ const RediProgram = () => {
     <Section className="default-background">
       <Container>
         <Element
-          className="is-uppercase is-size-6 is-size-7-mobile has-text-centered"
+          textSize={6}
           renderAs="h4"
+          textAlignment="centered"
+          textTransform="uppercase"
+          responsive={{ mobile: { textSize: { value: 7 } } }}
         >
           {t('loggedOutArea.homePage.program.subHeadline')}
         </Element>
@@ -57,16 +60,21 @@ const RediProgram = () => {
       <Container>
         <Columns>
           {programSteps.map(({ image: MyImage, content, headline }) =>
-            <Columns.Column className="has-text-centered" key={content}>
+            <Columns.Column textAlignment="centered" key={content}>
               <MyImage className="program__img" />
               <BulmaHeading
                 size={4}
+                marginless
                 renderAs="h3"
-                className="is-hidden-tablet is-marginless"
+                responsive={{ tablet: { hide: { value: true } } }}
               >
                 {headline}
               </BulmaHeading>
-              <Level className="is-size-4 is-size-5-mobile program__text">
+              <Level
+                textSize={4}
+                responsive={{ mobile: { textSize: { value: 5 } } }}
+                className="program__text"
+              >
                 {content}
               </Level>
             </Columns.Column>
