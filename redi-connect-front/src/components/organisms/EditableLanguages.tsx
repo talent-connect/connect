@@ -57,6 +57,7 @@ const EditableLanguages = ({ profile, profileSaveStart }: any) => {
     <Editable
       title="Languages"
       onSave={() => formik.handleSubmit()}
+      onClose={() => formik.resetForm()}
       savePossible={(formik.dirty && formik.isValid)}
       read={<ReadLanguages.Me />}
     >

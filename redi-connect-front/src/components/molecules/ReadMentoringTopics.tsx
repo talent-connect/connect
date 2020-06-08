@@ -18,7 +18,7 @@ interface TagsProps {
 const ProfileTags = ({ items }: TagsProps) => (
   <Tag.Group>
     {items.map(tagId =>
-      <Tag key={tagId} size="large" rounded>
+      <Tag key={tagId} size="large" rounded textWeight="bold">
         {categoriesIdToLabelMap[tagId]}
       </Tag>
     )}

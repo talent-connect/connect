@@ -71,6 +71,7 @@ const EditableContactDetails = ({ profile, profileSaveStart }: any) => {
     <Editable
       title="Contact Details"
       onSave={() => formik.handleSubmit()}
+      onClose={() => formik.resetForm()}
       savePossible={(formik.dirty && formik.isValid)}
       read={<ReadContactDetails.Me />}
     >

@@ -65,6 +65,7 @@ const EditableSocialMedia = ({ profile, profileSaveStart }: any) => {
     <Editable
       title="Social Media"
       onSave={() => formik.handleSubmit()}
+      onClose={() => formik.resetForm()}
       savePossible={(formik.dirty && formik.isValid)}
       read={<ReadSocialMedia.Me />}
     >

@@ -99,6 +99,9 @@ const EditableOccupation = ({ profile, profileSaveStart }: any) => {
     mentee_occupationOther_description
   } = profile
 
+  const isMentee = userType === 'mentee' || userType === 'public-sign-up-mentee-pending-review'
+  const isMentor = userType === 'mentor' || userType === 'public-sign-up-mentor-pending-review'
+
   const submitForm = async (
     values: FormikValues
   ) => {
@@ -128,18 +131,18 @@ const EditableOccupation = ({ profile, profileSaveStart }: any) => {
   })
 
   const {
-    mentee_occupationCategoryId: occupation,
-    userType: user
+    mentee_occupationCategoryId: occupation
   } = formik.values
 
   return (
     <Editable
       title="Occupation"
       onSave={() => formik.handleSubmit()}
+      onClose={() => formik.resetForm()}
       savePossible={(formik.dirty && formik.isValid)}
       read={<ReadOccupation.Me />}
     >
-      {user === 'mentor' && (
+      {isMentor && (
         <>
           <FormInput
             name="mentor_occupation"
@@ -156,7 +159,7 @@ const EditableOccupation = ({ profile, profileSaveStart }: any) => {
         </>
       )}
 
-      {user === 'mentee' && (
+      {isMentee && (
         <>
           <FormSelect
             label="What is your highest Education Level?"

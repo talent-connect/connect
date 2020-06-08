@@ -30,23 +30,25 @@ const ReadOccupation = ({ profile, shortInfo }: Props) => {
     mentee_occupationStudent_studyName,
     mentee_occupationLookingForJob_what,
     mentee_occupationOther_description
-
   } = profile
 
   if (!mentor_occupation && !mentee_occupationCategoryId) {
     return <Placeholder>Input your information about your Education and Occupation here.</Placeholder>
   }
 
+  const isMentee = userType === 'mentee' || userType === 'public-sign-up-mentee-pending-review'
+  const isMentor = userType === 'mentor' || userType === 'public-sign-up-mentor-pending-review'
+
   return <>
     {shortInfo && <Caption>Occupation</Caption>}
     <Content>
-      {userType === 'mentor' && (
+      {isMentor && (
         <>
           <p>{mentor_occupation}</p>
           <p>{mentor_workPlace}</p>
         </>
       )}
-      {userType === 'mentee' && (
+      {isMentee && (
         <>
           <p>{formMenteeOccupationCategories.filter(level => level.value === mentee_occupationCategoryId).map(level => level.label)}</p>
 

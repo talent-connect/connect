@@ -78,6 +78,7 @@ const EditableAbout = ({ profile, profileSaveStart }: any) => {
     <Editable
       title="About You"
       onSave={() => formik.handleSubmit()}
+      onClose={() => formik.resetForm()}
       savePossible={(formik.dirty && formik.isValid)}
       read={<ReadAbout.Me />}
     >

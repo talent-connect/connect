@@ -8,7 +8,8 @@ import './Editable.scss'
 
 interface Props {
   title: string
-  onSave: Function
+  onSave: () => void
+  onClose: () => void
   read: React.ReactNode
   children: React.ReactNode
   className?: string
@@ -22,6 +23,7 @@ function Editable (props: Props) {
     children,
     read,
     onSave,
+    onClose,
     savePossible,
     className
   } = props
@@ -30,6 +32,11 @@ function Editable (props: Props) {
 
   const handleSave = () => {
     onSave()
+    setIsEditing(false)
+  }
+
+  const handleClose = () => {
+    onClose()
     setIsEditing(false)
   }
 
@@ -43,9 +50,7 @@ function Editable (props: Props) {
               onClick={savePossible ? handleSave : undefined}
               className={classnames('icon__button', { 'icon__button--disabled': !savePossible })}
             />
-            <Close className='icon__button' onClick={() => {
-              setIsEditing(false)
-            }}/>
+            <Close className='icon__button' onClick={handleClose}/>
           </>) : (
             <Edit className='icon__button' onClick={() => {
               setIsEditing(true)

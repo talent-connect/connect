@@ -13,7 +13,7 @@ import * as Yup from 'yup'
 import { FormikValues, useFormik } from 'formik'
 
 import {
-  genders,
+  genders
 } from '../../config/config'
 
 const formGenders = genders.map(gender => ({ value: gender.id, label: gender.label }))
@@ -63,6 +63,7 @@ const EditablePersonalDetail = ({ profile, profileSaveStart }: any) => {
     <Editable
       title="Personal Details"
       onSave={() => formik.handleSubmit()}
+      onClose={() => formik.resetForm()}
       savePossible={(formik.dirty && formik.isValid)}
       read={<ReadPersonalDetail.Me />}
     >

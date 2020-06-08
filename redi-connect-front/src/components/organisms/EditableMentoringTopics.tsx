@@ -78,6 +78,7 @@ const EditableMentoringTopics = ({ profile, profileSaveStart }: Props) => {
     <Editable
       title="Mentoring Topics"
       onSave={() => formik.handleSubmit()}
+      onClose={() => formik.resetForm()}
       savePossible={(formik.dirty && formik.isValid)}
       read={<ReadMentoringTopics.Me />}
       className="mentoring"

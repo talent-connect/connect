@@ -56,11 +56,11 @@
       left: 0.375rem;
       width: calc(100% + 4px);
       height: calc(100% + 4px);
-      background-color: $redi-orange;
+      background-color: $redi-orange-light;
     }
 
     &:hover::after {
-      background-color: $redi-orange-dark;
+      background-color: $redi-orange;
     }
 
     &:active {

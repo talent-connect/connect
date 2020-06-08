@@ -58,6 +58,7 @@ const EditableRediClass = ({ profile, profileSaveStart }: any) => {
     <Editable
       title="Redi Class"
       onSave={() => formik.handleSubmit()}
+      onClose={() => formik.resetForm()}
       savePossible={(formik.dirty && formik.isValid)}
       read={<ReadRediClass.Me />}
     >
