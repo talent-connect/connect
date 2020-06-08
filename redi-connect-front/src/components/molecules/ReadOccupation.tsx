@@ -5,8 +5,7 @@ import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
 import { Caption, Placeholder } from '../atoms'
 import {
-  menteeOccupationCategories,
-  educationLevels
+  menteeOccupationCategories
 } from '../../config/config'
 
 interface Props {
@@ -15,14 +14,12 @@ interface Props {
 }
 
 const formMenteeOccupationCategories = menteeOccupationCategories.map(level => ({ value: level.id, label: level.label }))
-const formEducationLevels = educationLevels.map(level => ({ value: level.id, label: level.label }))
 
 const ReadOccupation = ({ profile, shortInfo }: Props) => {
   const {
     userType,
     mentor_occupation,
     mentor_workPlace,
-    mentee_highestEducationLevel,
     mentee_occupationCategoryId,
     mentee_occupationJob_placeOfEmployment,
     mentee_occupationJob_position,
@@ -68,8 +65,6 @@ const ReadOccupation = ({ profile, shortInfo }: Props) => {
           {mentee_occupationCategoryId === 'other' && <>
             <p>{mentee_occupationOther_description}</p>
           </>}
-
-          <p>{formEducationLevels.filter(level => level.value === mentee_highestEducationLevel).map(level => level.label)}</p>
         </>
       )}
     </Content>

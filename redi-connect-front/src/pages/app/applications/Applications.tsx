@@ -30,11 +30,8 @@ function Applications ({ loading, applicants, matchesFetchStart }: Props) {
   return (
     <LoggedIn>
       <FullScreenCircle loading={loading} />
-      <Heading subtitle size="small" className="double-block-space">Your pending applications</Heading>
+      <Heading subtitle size="small" className="double-block-space">Applications <span className="heading__thin"></span>({applicants.length})</Heading>
       {applicants.length === 0 && <>
-        <Element textTransform="uppercase" className="double-block-space">
-            0 applicantions
-        </Element>
         {profile.userType === 'mentee' &&
           <Content italic>
             You have not applied for a mentor yet. <a onClick={() => history.push('/app/dashboard') }>Find your mentor here.</a>

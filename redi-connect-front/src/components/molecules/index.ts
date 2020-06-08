@@ -11,6 +11,10 @@ export {
 }
   from './ReadAbout'
 export {
+  default as ReadEducation
+}
+  from './ReadEducation'
+export {
   default as ReadMentoringTopics
 }
   from './ReadMentoringTopics'

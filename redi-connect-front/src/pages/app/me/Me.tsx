@@ -8,6 +8,7 @@ import {
   Avatar,
   EditableAbout,
   EditableContactDetails,
+  EditableEducation,
   EditableLanguages,
   EditableMentoringTopics,
   EditableOccupation,
@@ -84,15 +85,25 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
             </Columns>
           </Element>
 
+          {profile.userType === 'mentee' &&
+            <Element className="block-separator">
+              <Columns>
+                <Columns.Column size={6}>
+                  <Element className="block-separator">
+                    <EditableEducation />
+                  </Element>
+                </Columns.Column>
+                <Columns.Column size={6}>
+                  <EditableRediClass />
+                </Columns.Column>
+              </Columns>
+            </Element>
+          }
+
           <Element className="block-separator">
             <Columns>
               <Columns.Column size={6}>
-                <Element className="block-separator">
-                  <EditableOccupation />
-                </Element>
-              </Columns.Column>
-              <Columns.Column size={6}>
-                {profile.userType === 'mentee' && <EditableRediClass />}
+                <EditableOccupation />
               </Columns.Column>
             </Columns>
           </Element>

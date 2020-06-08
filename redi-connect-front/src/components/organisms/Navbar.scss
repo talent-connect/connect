@@ -21,6 +21,10 @@
   &__buttons {
     display: flex;
     align-items: center;
+    
+    .button:last-child {
+      padding-right: 0;
+    }
   }
 
   &__mobile {

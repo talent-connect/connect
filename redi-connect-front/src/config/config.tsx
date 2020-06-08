@@ -236,6 +236,8 @@ export const educationLevels: EducationLevel[] = [
   { id: 'universityPhd', label: 'University Degree (PhD)' }
 ]
 
+export const educationLevelsIdToLabelMap = mapValues(keyBy(educationLevels, 'id'), 'label')
+
 let _courses: Course[]
 if ((process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'berlin') {
   _courses = [

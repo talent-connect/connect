@@ -13,11 +13,9 @@ import * as Yup from 'yup'
 import { FormikValues, useFormik } from 'formik'
 
 import {
-  educationLevels,
   menteeOccupationCategories
 } from '../../config/config'
 
-const formEducationLevels = educationLevels.map(level => ({ value: level.id, label: level.label }))
 const formMenteeOccupationCategories = menteeOccupationCategories.map(level => ({ value: level.id, label: level.label }))
 // do we really need all these type???
 export type UserType =
@@ -32,7 +30,6 @@ export interface OccupationFormValues {
   userType: UserType
   mentor_occupation: string
   mentor_workPlace: string
-  mentee_highestEducationLevel: string
   mentee_occupationCategoryId: string
   mentee_occupationJob_placeOfEmployment: string
   mentee_occupationJob_position: string
@@ -53,9 +50,6 @@ const validationSchema = Yup.object({
   mentor_workPlace: Yup.string()
     .max(255)
     .label('Work place'),
-  mentee_highestEducationLevel: Yup.string()
-    .oneOf(educationLevels.map(level => level.id))
-    .label('Highest Education Level'),
   mentee_occupationCategoryId: Yup.string().when('userType', {
     is: 'mentee',
     then: Yup.string()
@@ -89,7 +83,6 @@ const EditableOccupation = ({ profile, profileSaveStart }: any) => {
     userType,
     mentor_occupation,
     mentor_workPlace,
-    mentee_highestEducationLevel,
     mentee_occupationCategoryId,
     mentee_occupationJob_placeOfEmployment,
     mentee_occupationJob_position,
@@ -113,7 +106,6 @@ const EditableOccupation = ({ profile, profileSaveStart }: any) => {
     userType,
     mentor_occupation,
     mentor_workPlace,
-    mentee_highestEducationLevel,
     mentee_occupationCategoryId,
     mentee_occupationJob_placeOfEmployment,
     mentee_occupationJob_position,
@@ -161,13 +153,6 @@ const EditableOccupation = ({ profile, profileSaveStart }: any) => {
 
       {isMentee && (
         <>
-          <FormSelect
-            label="What is your highest Education Level?"
-            name="mentee_highestEducationLevel"
-            placeholder="Education Level"
-            items={formEducationLevels}
-            {...formik}
-          />
           <FormSelect
             label="What is your current occupation?"
             name="mentee_occupationCategoryId"

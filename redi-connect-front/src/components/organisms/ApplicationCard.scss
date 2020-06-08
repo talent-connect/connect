@@ -20,6 +20,7 @@
 
   &-details {
     transition: $transition;
+    padding: 0 1.5rem;
     overflow: hidden;
 
     &--hide {
@@ -33,18 +34,18 @@
   }
 
   &-dropdown {
-    width: 1rem;
-    height: 1rem;
+    width: .7rem;
+    height: .7rem;
     display: inline-block;
-    border-right: 1px solid $grey;
-    border-bottom: 1px solid $grey;
+    border-right: 1px solid $primary;
+    border-bottom: 1px solid $primary;
     transition: $transition;
     vertical-align: middle;
     cursor: pointer;
-
+    
     &--up {  
       transform: rotate(225deg);
-      margin-bottom: -25%;
+      margin-top: 15%;
     }
 
     &--down {

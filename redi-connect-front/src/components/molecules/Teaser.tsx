@@ -38,7 +38,7 @@ export default {
         <strong>Isabelle Köhncke</strong>
       </Element>
       <Element renderAs="p" textAlignment="centered" textSize={ 6 }>
-        Mentorship program Coordinator <br />
+        Manager Mentorship Program <br />
         Career Department ReDI School <br />
         <a href="mailto:isabelle@redi-school.org">isabelle@redi-school.org</a>
       </Element>

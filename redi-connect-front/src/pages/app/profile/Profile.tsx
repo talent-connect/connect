@@ -8,6 +8,7 @@ import { Button, Heading } from '../../../components/atoms'
 import {
   ReadAbout,
   ReadMentoringTopics,
+  ReadEducation,
   ReadContactDetails,
   ReadSocialMedia,
   ReadLanguages,
@@ -134,9 +135,11 @@ function Profile ({ loading, profile, currentUser, hasReachedMenteeLimit, profil
           </Columns.Column>
         </Columns>
 
-        <Element className="block-separator">
-          <ReadAbout.Some profile={profile} />
-        </Element>
+        {(profile.personalDescription || profile.expectations || profile.menteeCountCapacity) &&
+          <Element className="block-separator">
+            <ReadAbout.Some profile={profile} />
+          </Element>
+        }
 
         {profile.categories &&
           <Element className="block-separator">
@@ -152,9 +155,11 @@ function Profile ({ loading, profile, currentUser, hasReachedMenteeLimit, profil
                   <ReadContactDetails.Some profile={profile} />
                 </Element>
               </Columns.Column>}
+              {(profile.linkedInProfileUrl || profile.githubProfileUrl || profile.slackUsername) &&
               <Columns.Column>
                 <ReadSocialMedia.Some profile={profile} />
               </Columns.Column>
+              }
             </Columns>
           </Element>
         }
@@ -174,17 +179,27 @@ function Profile ({ loading, profile, currentUser, hasReachedMenteeLimit, profil
            </Element>
         }
 
-        {(profile.mentor_occupation || profile.mentee_occupationCategoryId || profile.mentee_currentlyEnrolledInCourse) &&
+        {currentUserIsMentor &&
           <Element className="block-separator">
             <Columns>
-              {(profile.mentor_occupation || profile.mentee_occupationCategoryId) && <Columns.Column>
+              {profile.mentee_highestEducationLevel && <Columns.Column>
                 <Element className="block-separator">
-                  <ReadOccupation.Some profile={profile} />
+                  <ReadEducation.Some profile={profile}/>
                 </Element>
               </Columns.Column>}
-              {currentUserIsMentor && <Columns.Column>
+              <Columns.Column>
                 <ReadRediClass.Some profile={profile} />
-              </Columns.Column>}
+              </Columns.Column>
+            </Columns>
+          </Element>
+        }
+
+        {(profile.mentor_occupation || profile.mentee_occupationCategoryId) &&
+          <Element className="block-separator">
+            <Columns>
+              <Columns.Column>
+                <ReadOccupation.Some profile={profile} />
+              </Columns.Column>
             </Columns>
           </Element>
         }

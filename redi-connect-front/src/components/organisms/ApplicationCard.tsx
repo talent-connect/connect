@@ -26,23 +26,23 @@ const ApplicationCard = ({ application }: Props) => {
           {/* will be delivered separatly */}
         </Columns.Column>
 
-        <Columns.Column size={4}>
+        <Columns.Column size={3}>
           {applicationUser && `${applicationUser.firstName} ${applicationUser.lastName}`}
         </Columns.Column>
 
         <Columns.Column size={2}>
-          {`${applicationDate.getDay()}.${applicationDate.getMonth()}.${applicationDate.getFullYear()}`}
+          <span className="application-card__link" onClick={() => history.push(`/app/applications/profile/${applicationUser && applicationUser.id}`)}>Visit Profile</span>
+        </Columns.Column>
+
+        <Columns.Column size={3}>
+          From {`${applicationDate.getDay()}.${applicationDate.getMonth()}.${applicationDate.getFullYear()}`}
         </Columns.Column>
 
         <Columns.Column size={2}>
           {application.status}
         </Columns.Column>
 
-        <Columns.Column size={2}>
-          <span className="application-card__link" onClick={() => history.push(`/app/applications/profile/${applicationUser && applicationUser.id}`)}>See Profile</span>
-        </Columns.Column>
-
-        <Columns.Column size={1}>
+        <Columns.Column size={1} textAlignment="centered">
           <span className={`application-card-dropdown application-card-dropdown--${showDetails ? 'up' : 'down'}`} onClick={() => setShowDetails(!showDetails)}></span>
         </Columns.Column>
       </Columns>
@@ -50,7 +50,7 @@ const ApplicationCard = ({ application }: Props) => {
 
     <div className={`application-card-details application-card-details--${showDetails ? 'show' : 'hide'}`}>
       <Heading
-        size={5}
+        size={6}
         weight="normal"
         renderAs="h3"
         subtitle
@@ -58,19 +58,19 @@ const ApplicationCard = ({ application }: Props) => {
       >
         Motivation
       </Heading>
-      <Content>
+      <Content className="double-block-space">
         {application.applicationText}
       </Content>
 
       {application.expectationText && <>
         <Heading
-          size={5}
+          size={6}
           weight="normal"
           renderAs="h3"
           subtitle
           textTransform="uppercase"
         >
-        Expectation
+          Expectation
         </Heading>
         <Content>
           {application.expectationText}
