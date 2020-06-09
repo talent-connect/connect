@@ -7,6 +7,10 @@ export {
 }
   from './PipeList'
 export {
+  default as Modal
+}
+  from './Modal'
+export {
   default as ReadAbout
 }
   from './ReadAbout'

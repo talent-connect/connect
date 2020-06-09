@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
-import { Content, Columns, Modal, Box } from 'react-bulma-components'
-import { Caption, FormTextArea, Button, Heading } from '../atoms'
+import { Content } from 'react-bulma-components'
+import { Caption, FormTextArea, Button } from '../atoms'
+import { Modal } from '../molecules'
 import { matchesAcceptMentorshipStart } from '../../redux/matches/actions'
 
 interface ConfirmMentorshipProps {
@@ -69,31 +70,31 @@ const ConfirmMentorship = ({ matchId, menteeName, hasReachedMenteeLimit, matches
 
   return <>
     <Button onClick={() => setModalActive(true)} disabled={hasReachedMenteeLimit}>Accept</Button>
-    <Modal show={isModalActive} onClose={() => setModalActive(false)} closeOnEsc closeOnBlur>
-      <Modal.Content>
-        <Box>
-          <Heading className="box__heading oneandhalf-bs" size="small">Accept Application</Heading>
-          <form>
-            <Caption>Start the conversation </Caption>
-            <Content>
-              <p>Please write a few welcoming words to your future mentee and give an info about the next step for your first meeting:</p>
-            </Content>
-            <FormTextArea
-              name="mentorReplyMessageOnAccept"
-              className="oneandhalf-bs"
-              rows={4}
-              placeholder={`Dear ${menteeName && menteeName}...`}
-              {...formik}
-            />
-          </form>
-          <Button
-            disabled={!isFormSubmittable}
-            onClick={() => formik.handleSubmit()}
-          >
+    <Modal
+      show={isModalActive}
+      stateFn={setModalActive}
+      title="Accept Application"
+    >
+      <form>
+        <Caption>Start the conversation </Caption>
+        <Content>
+          <p>Please write a few welcoming words to your future mentee and give an info about the next step for your first meeting:</p>
+        </Content>
+        <FormTextArea
+          name="mentorReplyMessageOnAccept"
+          rows={4}
+          placeholder={`Dear ${menteeName && menteeName}...`}
+          {...formik}
+        />
+      </form>
+      <Modal.Buttons>
+        <Button
+          disabled={!isFormSubmittable}
+          onClick={() => formik.handleSubmit()}
+        >
             Accept mentorship request
-          </Button>
-        </Box>
-      </Modal.Content>
+        </Button>
+      </Modal.Buttons>
     </Modal>
   </>
 }

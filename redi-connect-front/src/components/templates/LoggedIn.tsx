@@ -3,20 +3,22 @@ import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
 import { Button, Heading } from '../atoms'
+import { Modal } from '../molecules'
 import { Navbar, SideMenu } from '../organisms'
-import { Container, Section, Columns, Content, Modal, Box } from 'react-bulma-components'
+import { Container, Section, Columns, Content, Box } from 'react-bulma-components'
 import { getRedProfile } from '../../services/auth/auth'
 import { matchesFetchStart, matchesMarkAsDismissed } from '../../redux/matches/actions'
 
 import Footer from '../organisms/Footer'
 import { RedMatch } from '../../types/RedMatch'
 
-export interface Props {
+interface Props {
   children: ReactNode
   matches: RedMatch[]
   matchesFetchStart: () => void
   matchesMarkAsDismissed: (redMatchId: string) => void
 }
+
 const LoggedIn = ({ children, matches, matchesFetchStart, matchesMarkAsDismissed }: Props) => {
   const profile = getRedProfile()
   const history = useHistory()
@@ -70,23 +72,24 @@ const LoggedIn = ({ children, matches, matchesFetchStart, matchesMarkAsDismissed
                 </Content>
               }
               {match && isNewMatch &&
-                <Modal show={isNewMatch} showClose={false} closeOnEsc={false}>
-                  <Modal.Content>
-                    <Box>
-                      <Heading className="box__heading oneandhalf-bs" size="small">You’ve got a mentor match!</Heading>
-                      <Content>
-                        Hey <strong>{match.mentee && match.mentee.firstName}</strong>, good news!
-                        <strong>{match.mentor && ` ${match.mentor.firstName} ${match.mentor.lastName} `}</strong>
-                        accepted your application. Here are already a few welcome words from your new mentor.
-                      </Content>
-                      <Content className="oneandhalf-bs" italic>
-                        "{match.mentorReplyMessageOnAccept}"
-                      </Content>
-                      <Button onClick={() => handleModalClose(match.id as string)}>
-                        Go to Dashboard
-                      </Button>
-                    </Box>
-                  </Modal.Content>
+                <Modal
+                  show={isNewMatch}
+                  confirm
+                  title="You’ve got a mentor match!"
+                >
+                  <Content>
+                    Hey <strong>{match.mentee && match.mentee.firstName}</strong>, good news!
+                    <strong>{match.mentor && ` ${match.mentor.firstName} ${match.mentor.lastName} `}</strong>
+                      accepted your application. Here are already a few welcome words from your new mentor.
+                  </Content>
+                  <Content italic>
+                    "{match.mentorReplyMessageOnAccept}"
+                  </Content>
+                  <Modal.Buttons>
+                    <Button onClick={() => handleModalClose(match.id as string)}>
+                    Go to Dashboard
+                    </Button>
+                  </Modal.Buttons>
                 </Modal>
               }
               {children}
