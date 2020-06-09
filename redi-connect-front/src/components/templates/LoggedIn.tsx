@@ -70,16 +70,16 @@ const LoggedIn = ({ children, matches, matchesFetchStart, matchesMarkAsDismissed
                 </Content>
               }
               {match && isNewMatch &&
-                <Modal show={isNewMatch} showClose={false}>
+                <Modal show={isNewMatch} showClose={false} closeOnEsc={false}>
                   <Modal.Content>
                     <Box>
-                      <Heading className="box__heading" size="small">You’ve got a mentor match!</Heading>
+                      <Heading className="box__heading oneandhalf-bs" size="small">You’ve got a mentor match!</Heading>
                       <Content>
-                        Hey {match.mentee && match.mentee.firstName}, good news!
-                        {match.mentor && ` ${match.mentor.firstName} ${match.mentor.lastName} `}
+                        Hey <strong>{match.mentee && match.mentee.firstName}</strong>, good news!
+                        <strong>{match.mentor && ` ${match.mentor.firstName} ${match.mentor.lastName} `}</strong>
                         accepted your application. Here are already a few welcome words from your new mentor.
                       </Content>
-                      <Content italic>
+                      <Content className="oneandhalf-bs" italic>
                         "{match.mentorReplyMessageOnAccept}"
                       </Content>
                       <Button onClick={() => handleModalClose(match.id as string)}>
