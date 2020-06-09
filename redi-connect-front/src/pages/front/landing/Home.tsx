@@ -10,7 +10,7 @@ export default function Home() {
     <Landing>
       <Hero />
       <RediProgram />
-      <Checklist.Default type='mentor' />
+      <Checklist type='mentee' />
       <PreFooter />
     </Landing>
   )
