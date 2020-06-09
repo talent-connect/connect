@@ -1,5 +1,7 @@
 @import "~bulma/sass/utilities/_all";
 @import "../../styles/_variables.scss";
+@import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css";
 
 .slick-dots li {
   width: .75rem;
@@ -21,7 +23,7 @@
     outline: none;
   }
 
-  &__image-border {
+  &__image {
     border: 10px solid;
 
     @include mobile() {
@@ -30,11 +32,11 @@
       width: 100%;
     }
 
-    &--orange {
+    &--border-orange {
       border-image: linear-gradient(to right, $redi-orange 30%, white 30%) 10%;
     }
 
-    &--blue {
+    &--border-blue {
       border-image: linear-gradient(to right, $redi-blue 30%, white 30%) 10%;
     }
   }

@@ -69,6 +69,24 @@
           "point4": "I can make time to meet with a mentor on a regular basis",
           "point5": "I am open to get feedback on the topics I disscuss with my mentor"
         }
+      },
+      "carousel": {
+        "headline": "What our mentors/ mentees say...",
+        "title": "Success Stories",
+        "quotes": {
+          "quoteKhaled": {
+            "title": "Anna, mentee and almumna of RedI School",
+            "text": "A friend in React, my course, made me sign up for the mentoring program, this is how I met Khaled. He was my mentor for a year. (so grateful to her and to Khaled!) ... last year I started an internship and I now work as a frontend developer."
+          },
+          "quoteHalil": {
+            "title": "Halil Esmer, student of the Digital Career Program, Berlin",
+            "text": "I joined the mentorship program in 2019. My mentor gave me important incentives how I can start a career in IT. He showed me how a recruiter would look at my application and how to create specific applications for each position I apply for."
+          },
+          "quoteDragos": {
+            "title": "Dragos Nedelcu, Mentor at RedI School & Software Developer",
+            "text": "I first came in touch with mentoring as a mentee. It was not until I joined the Mentorship Program at RedI School in Berlin that I became a mentor myself. I believe mentoring is crucial and critical to individual and organizational success."
+          }
+        }
       }
     }
   }

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Section, Container, Element, Columns, Content } from 'react-bulma-components'
+import { useTranslation } from 'react-i18next'
 import Slider from 'react-slick'
 import classnames from 'classnames'
 import Heading from '../atoms/Heading'
@@ -8,24 +9,6 @@ import khaled from '../../assets/images/profile-khaled.svg'
 import halil from '../../assets/images/profile-halil.svg'
 import './Carousel.scss'
 
-const quotes = [
-  {
-    title: 'Anna, mentee and almumna of RedI School',
-    text: 'A friend in React, my course, made me sign up for the mentoring program, this is how I met Khaled. He was my mentor for a year. (so grateful to her and to Khaled!) ... last year I started an internship and I now work as a frontend developer.',
-    img: khaled
-  },
-  {
-    title: 'Dragos Nedelcu, Mentor at RedI School & Software Developer',
-    text: 'I first came in touch with mentoring as a mentee. It was not until I joined the Mentorship Program at RedI School in Berlin that I became a mentor myself. I believe mentoring is crucial and critical to individual and organizational success.',
-    img: dragos
-  },
-  {
-    title: 'Halil Esmer, student of the Digital Career Program, Berlin',
-    text: 'I joined the mentorship program in 2019. My mentor gave me important incentives how I can start a career in IT. He showed me how a recruiter would look at my application and how to create specific applications for each position I apply for.',
-    img: halil
-  }
-]
-
 interface Props {
   headline: string
   title: string
@@ -33,6 +16,26 @@ interface Props {
 }
 
 const Carousel = ({ headline, title, border }: Props) => {
+  const { t } = useTranslation()
+
+  const quotes = [
+    {
+      title: t('loggedOutArea.homePage.carousel.quotes.quoteKhaled.title'),
+      text: t('loggedOutArea.homePage.carousel.quotes.quoteKhaled.text'),
+      img: khaled
+    },
+    {
+      title: t('loggedOutArea.homePage.carousel.quotes.quoteDragos.title'),
+      text: t('loggedOutArea.homePage.carousel.quotes.quoteDragos.text'),
+      img: dragos
+    },
+    {
+      title: t('loggedOutArea.homePage.carousel.quotes.quoteHalil.title'),
+      text: t('loggedOutArea.homePage.carousel.quotes.quoteHalil.text'),
+      img: halil
+    }
+  ]
+
   const settings = {
     dots: true,
     infinite: true,
@@ -62,7 +65,7 @@ const Carousel = ({ headline, title, border }: Props) => {
           center
           size="medium"
           border="topCenter"
-          className="double-block-space"
+          className="oneandhalf-bs"
         >
           {headline}
         </Heading>
@@ -73,14 +76,16 @@ const Carousel = ({ headline, title, border }: Props) => {
             <div className="carousel">
               <Columns key={quote.img} vCentered>
                 <Columns.Column size={6}>
-                  <img src={quote.img} className={classnames('carousel__image-border', { [`carousel__image-border--${border}`]: border })} />
+                  <img src={quote.img} className={classnames('carousel__image', {
+                    [`carousel__image--border-${border}`]: border
+                  })} />
                 </Columns.Column>
                 <Columns.Column size={6}>
                   <Element
                     textSize={6}
                     renderAs="h4"
                     textTransform="uppercase"
-                    className="decoration decoration--bottomLeft double-block-space"
+                    className="decoration decoration--bottomLeft oneandhalf-bs"
                     responsive={{ mobile: { hide: { value: true } } }}
                   >
                     {quote.title}
@@ -96,7 +101,7 @@ const Carousel = ({ headline, title, border }: Props) => {
                     textSize={7}
                     renderAs="h4"
                     textTransform="uppercase"
-                    className="double-block-space"
+                    className="oneandhalf-bs"
                     responsive={{ desktop: { hide: { value: true } } }}
                   >
                     {quote.title}

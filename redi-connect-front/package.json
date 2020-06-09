@@ -40,6 +40,7 @@
     "redux": "^4.0.4",
     "redux-observable": "1.2.0",
     "rxjs": "^6.5.2",
+    "slick-carousel": "^1.8.1",
     "yup": "^0.27.0"
   },
   "devDependencies": {
