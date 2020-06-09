@@ -93,6 +93,11 @@
     "menteeCountCapacity": {
       "type": "number"
     },
+    "favouritedRedProfileIds": {
+      "type": [
+        "string"
+      ]
+    },
     "createdAt": {
       "type": "date"
     }

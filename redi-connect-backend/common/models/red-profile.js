@@ -80,6 +80,8 @@ module.exports = function (RedProfile) {
       delete ctx.data.administratorInternalComment
     }
 
+    ctx.data.favouritedRedProfileIds = ctx.data.favouritedRedProfileIds || []
+
     if (ctx.data && ctx.data.userType === 'mentor') {
       // In case RedProfile belongs to a mentor, add "computed properties"
       // currentMenteeCount, currentFreeMenteeSpots, and numberOfPendingApplicationWithCurrentUser,
