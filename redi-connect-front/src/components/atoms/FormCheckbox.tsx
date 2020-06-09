@@ -47,7 +47,7 @@ function FormCheckbox (props: any) {
         />
         <Element
           renderAs="label"
-          textSize={6}
+          textSize={5}
           htmlFor={uid}
           className="redi-checkbox-label">
           {children}

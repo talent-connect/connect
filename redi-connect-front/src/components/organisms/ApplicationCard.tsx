@@ -58,7 +58,7 @@ const ApplicationCard = ({ application }: Props) => {
       >
         Motivation
       </Heading>
-      <Content className="double-block-space">
+      <Content className="oneandhalf-bs">
         {application.applicationText}
       </Content>
 

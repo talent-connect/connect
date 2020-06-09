@@ -75,12 +75,17 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
     onSubmit: submitForm
   })
 
+  const handleCancel = () => {
+    setShow(false)
+    formik.resetForm()
+  }
+
   return <>
     <Button onClick={() => setShow(true)}>apply for this mentor</Button>
     <Modal show={show} onClose={() => setShow(false)} closeOnEsc closeOnBlur>
       <Modal.Content>
         <Box>
-          <Heading className="box__heading" size="small">Application to {mentor.firstName} {mentor.lastName}</Heading>
+          <Heading className="box__heading oneandhalf-bs" size="small" >Application to {mentor.firstName} {mentor.lastName}</Heading>
           {/* <ApplyForMentor mentor={profile} /> */}
 
           <form>
@@ -90,19 +95,19 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
             {submitResult !== 'success' && (
               <>
                 <Caption>Motivation </Caption>
-                <Content size="small">
+                <Content>
                   <p>Write an application to the {mentor.firstName} {mentor.lastName} in which you describe why you think he would be a good mentor for you.</p>
                 </Content>
                 <FormTextArea
                   name="applicationText"
-                  className="double-block-space"
+                  className="oneandhalf-bs"
                   rows={4}
                   placeholder={`Dear ${mentor.firstName}...`}
                   {...formik}
                 />
 
                 <Caption>Expectation </Caption>
-                <Content size="small">
+                <Content>
                   <p>Please also write a few words about your expectations on the mentorship with this mentor.</p>
                 </Content>
                 <FormTextArea
@@ -116,22 +121,21 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
                   {submitResult === 'error' && 'An error occurred, please try again.'}
                 </Form.Help>
 
-                <Columns>
-                  <Columns.Column>
-                    <FormCheckbox
-                      name="dataSharingAccepted"
-                      checked={formik.values.dataSharingAccepted}
-                      {...formik}
-                    >
-                I understand that my profile data will be shared with this mentor
-                    </FormCheckbox></Columns.Column>
-                  <Columns.Column textAlignment="right">
-                    <Button
-                      onClick={() => formik.handleSubmit()}
-                      disabled={!(formik.dirty && formik.isValid)}
-                    >Apply</Button>
-                  </Columns.Column>
-                </Columns>
+                <FormCheckbox
+                  name="dataSharingAccepted"
+                  className="oneandhalf-bs"
+                  checked={formik.values.dataSharingAccepted}
+                  {...formik}
+                >
+                  I understand that my profile data will be shared with this mentor
+                </FormCheckbox>
+
+                <Button
+                  onClick={() => formik.handleSubmit()}
+                  disabled={!(formik.dirty && formik.isValid)}
+                >Send application</Button>
+
+                <Button onClick={handleCancel} simple>Cancel</Button>
               </>
             )}
           </form>

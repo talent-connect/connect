@@ -28,7 +28,7 @@ const RediHero = () => {
             </Columns.Column>
             <Content
               renderAs="p"
-              className="is-size-4 is-size-5-mobile double-block-space"
+              className="is-size-4 is-size-5-mobile oneandhalf-bs"
             >
               {t('loggedOutArea.homePage.hero.content1')}<br />{t('loggedOutArea.homePage.hero.content2')}
             </Content>

@@ -72,30 +72,26 @@ const ConfirmMentorship = ({ matchId, menteeName, hasReachedMenteeLimit, matches
     <Modal show={isModalActive} onClose={() => setModalActive(false)} closeOnEsc closeOnBlur>
       <Modal.Content>
         <Box>
-          <Heading className="box__heading" size="small">Accept Application</Heading>
+          <Heading className="box__heading oneandhalf-bs" size="small">Accept Application</Heading>
           <form>
             <Caption>Start the conversation </Caption>
-            <Content size="small">
+            <Content>
               <p>Please write a few welcoming words to your future mentee and give an info about the next step for your first meeting:</p>
             </Content>
             <FormTextArea
               name="mentorReplyMessageOnAccept"
-              className="double-block-space"
+              className="oneandhalf-bs"
               rows={4}
               placeholder={`Dear ${menteeName && menteeName}...`}
               {...formik}
             />
           </form>
-          <Columns>
-            <Columns.Column textAlignment="right">
-              <Button
-                disabled={!isFormSubmittable}
-                onClick={() => formik.handleSubmit()}
-              >
-                Accept mentorship request
-              </Button>
-            </Columns.Column>
-          </Columns>
+          <Button
+            disabled={!isFormSubmittable}
+            onClick={() => formik.handleSubmit()}
+          >
+            Accept mentorship request
+          </Button>
         </Box>
       </Modal.Content>
     </Modal>

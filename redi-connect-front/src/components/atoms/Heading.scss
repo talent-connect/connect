@@ -13,11 +13,6 @@
 
 .decoration {
   position: relative;
-  padding-bottom: 2rem;
-
-  @include mobile() {
-    padding-bottom: 1rem;
-  }
 
   &::after, &::before {
     width: 3.25rem;
@@ -33,7 +28,7 @@
 
     @include tablet() {
       margin-top: 1rem;
-      padding-bottom: 1rem;
+      padding-top: 1rem;
     }
 
     &::before {
@@ -44,9 +39,17 @@
     }
   }
 
-  &--bottomLeft::after {
-    content: '';
-    left: 0;
-    bottom: -2px;
+  &--bottomLeft {
+    padding-bottom: 1.5rem;
+
+    @include mobile() {
+      padding-bottom: 1rem;
+    }
+    
+    &::after {
+      content: '';
+      left: 0;
+      bottom: -2px;
+    }
   }
 }

@@ -77,7 +77,7 @@ export const AvailableMentorListing = (props: any) => {
       )}
       {mentorsWithSharedCategories.length > 0 && (
         <>
-          <Heading subtitle size="small" className="double-block-space">Recommended mentors</Heading>
+          <Heading subtitle size="small" className="oneandhalf-bs">Recommended mentors</Heading>
 
           <Grid container direction="column">
             <Grid item>
@@ -110,7 +110,7 @@ export const AvailableMentorListing = (props: any) => {
       )}
       {mentorsWithoutSharedCategories.length > 0 && (
         <>
-          <Heading subtitle size="small" className="double-block-space">All available mentors</Heading>
+          <Heading subtitle size="small" className="oneandhalf-bs">All available mentors</Heading>
 
           <Columns>
             {mentorsWithoutSharedCategories.map((mentor: RedProfile) => (

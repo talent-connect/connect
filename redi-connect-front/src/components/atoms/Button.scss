@@ -24,6 +24,15 @@
     }
   }
 
+  @include mobile() {
+    width: calc(100% - .5rem);
+    justify-content: center;
+
+    + .button {
+      margin-top: 1rem;
+    }
+  }
+
   &--separator {
     margin-left: 0 !important;
 
@@ -42,10 +51,7 @@
     margin-right: .5rem;
     padding: 0 1.5rem;
 
-    @include mobile() {
-      width: calc(100% - .5rem);
-      justify-content: center;
-    }
+
     // margin-bottom: .5rem;
 
     &:after {

@@ -35,7 +35,7 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
         <>
           {saveResult === 'submitting' && 'part of the page loading...'}
 
-          <Columns vCentered breakpoint="mobile" className="double-block-space">
+          <Columns vCentered breakpoint="mobile" className="oneandhalf-bs">
             <Columns.Column size={3}>
               <Avatar.Editable />
             </Columns.Column>

@@ -126,7 +126,7 @@ function Profile ({ loading, profile, currentUser, hasReachedMenteeLimit, profil
       )}
 
       {!isAcceptedMatch && profile && <>
-        <Columns vCentered breakpoint="mobile" className="double-block-space">
+        <Columns vCentered breakpoint="mobile" className="oneandhalf-bs">
           <Columns.Column size={3}>
             <Avatar profile={profile} />
           </Columns.Column>

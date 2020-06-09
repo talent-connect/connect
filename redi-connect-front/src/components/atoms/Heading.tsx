@@ -31,7 +31,7 @@ const sizes = {
 const Heading = ({ children, border, tag, size, center, subtitle, className }: Props) => {
   const classNames = classnames({
     [`decoration decoration--${border}`]: border,
-    'double-block-space': border === 'bottomLeft',
+    'oneandhalf-bs': border === 'bottomLeft',
     [`${className}`]: className
   })
 
