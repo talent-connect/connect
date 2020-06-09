@@ -102,17 +102,25 @@ a:hover {
   // width: calc(100% + 32px);
 }
 
-// fix word wrapping in the content... maybe a bulma bug? 
+// fix word wrapping in the content... maybe a bulma bug?
 .content {
   word-break: break-word;
 }
 
 // TODO: should be transfered to a layout template
 // will be done the next time this view is reused
-.section.color-half {
+.section.color-half-desktop {
   background-color: $white;
 
   @include tablet() {
+    background: linear-gradient(90deg, $redi-blue-light 50%, $white 50%);
+  }
+}
+
+.section.color-half-tablet {
+  background-color: $white;
+
+  @include desktop() {
     background: linear-gradient(90deg, $redi-blue-light 50%, $white 50%);
   }
 }
@@ -121,7 +129,7 @@ a:hover {
   margin: -0.75rem auto;
   padding: 0.75rem 0;
 
-  @include tablet() {
+  @include desktop() {
     margin: -3.25rem auto;
     padding: 3.25rem 0;
     background: linear-gradient(90deg, $redi-blue-light 15.8%, $white 15.8%);

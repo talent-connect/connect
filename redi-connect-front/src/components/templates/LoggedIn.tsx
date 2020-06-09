@@ -41,19 +41,13 @@ const LoggedIn = ({ children, matches, matchesFetchStart, matchesMarkAsDismissed
   return (
     <>
       <Navbar />
-      <Section className="section--bottom-large-spaceing color-half section--separator">
+      <Section className="section--bottom-large-spaceing color-half-tablet section--separator">
         <Container className="color-side-menu">
           <Columns>
-            <Columns.Column
-              size={2}
-              responsive={{ mobile: { hide: { value: true } } }}
-            >
+            <Columns.Column desktop={{ size: 2 }} className="column--side-menu">
               <SideMenu />
             </Columns.Column>
-            <Columns.Column
-              offset={1}
-              size={9}
-            >
+            <Columns.Column desktop={{ size: 9, offset: 1 }}>
               {profile.userType === 'public-sign-up-mentee-pending-review' &&
                 <Content>
                   <p>
