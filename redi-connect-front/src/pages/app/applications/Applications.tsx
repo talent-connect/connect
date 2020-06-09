@@ -31,13 +31,15 @@ function Applications ({ loading, applicants, matchesFetchStart }: Props) {
     <LoggedIn>
       <FullScreenCircle loading={loading} />
       <Heading subtitle size="small" className="double-block-space">Applications <span className="heading__thin"></span>({applicants.length})</Heading>
-      {applicants.length === 0 && <>
-        {profile.userType === 'mentee' &&
-          <Content italic>
-            You have not applied for a mentor yet. <a onClick={() => history.push('/app/dashboard') }>Find your mentor here.</a>
-          </Content>
-        }
-      </>}
+      {applicants.length === 0 && <Content italic>
+        {profile.userType === 'mentee' && <>
+          You have not applied for a mentor yet. <a onClick={() => history.push('/app/dashboard') }>Find your mentor here.</a>
+        </>}
+        {profile.userType === 'mentor' && <>
+          You have not received mentee applications yet. Make sure your profile is up to date and complete.
+        </>}
+      </Content>
+      }
       {applicants.length > 0 && <>
         { applicants.map((application: RedMatch) => (
           <ApplicationCard key={application.id} application={application} />
