@@ -2,26 +2,23 @@
 @import "../../styles/_variables.scss";
 
 .checklist {
-  &__headline {
-    margin-bottom: 4.5rem !important;
+  margin: 4.5rem auto 0;
+  width: fit-content;
 
-    @include mobile() {
-      margin-bottom: 2.5rem !important;
-    }
+  @include mobile() {
+    margin-top: 2.5rem;
   }
 
-  &__icon {
+  &--icon {
     padding: 0 2.75rem 2.75rem 2.75rem;
-    margin-left: 22.5%;
     display: inline-block;
     position: relative;
 
-    @include tablet-only() {
-      margin-left: 12.5%;
+    @include touch() {
+      margin-left: 1.25rem;
     }
 
     @include mobile() {
-      margin-left: 1.25rem;
       padding-bottom: 1.5rem;
       padding-left: 1.75rem;
     }

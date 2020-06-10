@@ -27,20 +27,23 @@ const Checklist = ({ type }: Props) => {
           center
           size="medium"
           border="topCenter"
-          className="checklist__headline"
         >
           {t(`loggedOutArea.homePage.checklist.${type}.headline`)}
         </Heading>
-        {[1, 2, 3, 4, 5].map((number) => (
-          <Element
-            key={number}
-            textSize={4}
-            className="checklist__icon"
-            responsive={{ mobile: { textSize: { value: 5 } } }}
-          >
-            {t(`loggedOutArea.homePage.checklist.${type}.point${number}`)}
-          </Element>
-        ))}
+        <ul className="checklist">
+          {[1, 2, 3, 4, 5].map((number) => (
+            <li>
+              <Element
+                key={number}
+                textSize={4}
+                className="checklist--icon"
+                responsive={{ mobile: { textSize: { value: 5 } } }}
+              >
+                {t(`loggedOutArea.homePage.checklist.${type}.point${number}`)}
+              </Element>
+            </li>
+          ))}
+        </ul>
       </Container>
     </Section >
   );
