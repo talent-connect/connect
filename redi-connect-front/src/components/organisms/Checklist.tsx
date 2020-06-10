@@ -30,20 +30,19 @@ const Checklist = ({ type }: Props) => {
         >
           {t(`loggedOutArea.homePage.checklist.${type}.headline`)}
         </Heading>
-        <ul className="checklist">
+        <Element renderAs="ul" className="checklist">
           {[1, 2, 3, 4, 5].map((number) => (
-            <li>
-              <Element
-                key={number}
-                textSize={4}
-                className="checklist--icon"
-                responsive={{ mobile: { textSize: { value: 5 } } }}
-              >
-                {t(`loggedOutArea.homePage.checklist.${type}.point${number}`)}
-              </Element>
-            </li>
+            <Element
+              key={number}
+              textSize={4}
+              renderAs="li"
+              className="checklist__item"
+              responsive={{ mobile: { textSize: { value: 5 } } }}
+            >
+              {t(`loggedOutArea.homePage.checklist.${type}.point${number}`)}
+            </Element>
           ))}
-        </ul>
+        </Element>
       </Container>
     </Section >
   );

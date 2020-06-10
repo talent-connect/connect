@@ -5,13 +5,17 @@
   margin: 4.5rem auto 0;
   width: fit-content;
 
+  @include tablet() {
+    max-width: 80%;
+  }
+
   @include mobile() {
     margin-top: 2.5rem;
   }
 
-  &--icon {
-    padding: 0 2.75rem 2.75rem 2.75rem;
-    display: inline-block;
+  &__item {
+    padding-bottom: 2.75rem;
+    padding-left: 2.75rem;
     position: relative;
 
     @include touch() {
