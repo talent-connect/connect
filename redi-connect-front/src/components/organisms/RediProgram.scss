@@ -3,8 +3,6 @@
 
 .program {
   &__img {
-    margin-top: 3.5rem;
-
     @include mobile() {
       margin-bottom: .75rem;
     }

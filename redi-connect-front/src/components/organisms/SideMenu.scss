@@ -19,7 +19,7 @@
     display: flex;
     justify-content: space-around;
   }
-  
+
   &__item {
     @include desktop() {
       &:not(:last-child) {

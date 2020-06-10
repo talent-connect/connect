@@ -1,0 +1,139 @@
+@import "~bulma/sass/utilities/_all";
+@import "../../styles/_variables.scss";
+
+.redi-hero {
+  &__background--mentee {
+    background-image: linear-gradient(to bottom, $redi-orange-light 80%, $white 80%);
+
+    @include mobile() {
+      background-image: linear-gradient(to bottom, $redi-orange-light 95%, $white 95%);
+    }
+  }
+
+  &__background--mentor {
+    background-image: linear-gradient(to bottom, $redi-blue-light 80%, $white 80%);
+
+    @include mobile() {
+      background-image: linear-gradient(to bottom, $redi-blue-light 95%, $white 95%);
+    }
+  }
+
+  &__content {
+    @include desktop() {
+      margin: 0 auto;
+      margin-top: auto;
+      margin-bottom: 2rem;
+      max-width: 70%;
+    }
+  }
+
+  &__illustration {
+
+    @include desktop() {
+      position: absolute;
+      top: 3rem;
+
+      &--mentor {
+        right: -6rem;
+      }
+
+      &--mentee {
+        left: -5rem;
+      }
+    }
+
+    @include mobile() {
+      max-height: 12.5rem;
+    }
+  }
+
+  &__columns {
+    padding: 2rem;
+    border-radius: .25rem;
+    margin: 4rem 0;
+    box-shadow: $default-shadow;
+
+    @include mobile() {
+      padding: 1rem 2rem;
+      margin-top: 1.5rem;
+    }
+  }
+
+  &__column {
+    &:not(:last-child)>hr {
+      margin-right: -2rem;
+    }
+
+    @include mobile() {
+      border-left: 2px solid;
+      padding: 0 1rem;
+
+      &:not(:last-child) {
+        padding-bottom: 2rem;
+      }
+
+      &:last-child {
+        margin-bottom: 1rem;
+      }
+
+      &--mentee {
+        border-color: $redi-orange-dark;
+      }
+
+      &--mentor {
+        border-color: $redi-blue-dark;
+      }
+    }
+  }
+
+  &__icon {
+    height: 3.75rem;
+
+    &--arrow {
+      @include tablet() {
+        margin-top: 3.5rem;
+      }
+
+      @include mobile() {
+        transform: rotate(90deg);
+        transform-origin: top left;
+        margin-left: 1rem;
+      }
+    }
+
+    &--name {
+      margin-top: -1.5rem;
+
+      @include mobile() {
+        margin-top: -3rem;
+        margin-bottom: 2rem;
+      }
+    }
+
+    &--mentee g {
+      fill: $redi-orange-dark;
+    }
+
+    &--mentor g {
+      fill: $redi-blue-dark;
+    }
+  }
+
+  &__separator {
+    border: 1px solid;
+    margin: 1rem 0;
+
+    &--mentee {
+      border-color: $redi-orange-dark;
+    }
+
+    &--mentor {
+
+      border-color: $redi-blue-dark;
+    }
+
+    @include mobile() {
+      display: none;
+    }
+  }
+}

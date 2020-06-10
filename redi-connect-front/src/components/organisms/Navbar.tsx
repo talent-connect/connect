@@ -2,16 +2,44 @@ import React, { useState } from 'react'
 import Button from '../atoms/Button'
 import { isLoggedIn } from '../../services/auth/auth'
 import { logout } from '../../services/api/api'
-import { Section, Container, Element } from 'react-bulma-components'
+import { Section, Container, Element, Content } from 'react-bulma-components'
 import Logo from '../atoms/Logo'
 import classnames from 'classnames'
-import { useHistory } from 'react-router-dom'
+import { useHistory, NavLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import './Navbar.scss'
 
-const LoggedOutButtons = () => {
-  const history = useHistory()
+interface NavItemProps {
+  url: string
+  children: any
+}
+
+const LoggedOutNavItems = () => {
   const { t } = useTranslation()
+
+  const NavItem = ({ url, children }: NavItemProps) => (
+    <NavLink
+      exact
+      to={url}
+      className="navbar__item button button--simple button--small"
+      activeClassName="navbar__item--active"
+    >
+      {children}
+    </NavLink>
+  )
+
+  return (
+    <>
+      <NavItem url='/front/home'>{t('button.about')}</NavItem>
+      <NavItem url='/front/home/mentee'>{t('button.mentees')}</NavItem>
+      <NavItem url='/front/home/mentor'>{t('button.mentors')}</NavItem>
+    </>
+  )
+}
+
+const LoggedOutButtons = () => {
+  const { t } = useTranslation()
+  const history = useHistory()
 
   return (<>
     <Button
@@ -29,6 +57,7 @@ const LoggedOutButtons = () => {
 }
 
 const LoggedInButtons = ({ mobile }: { mobile?: boolean }) => {
+  const { t } = useTranslation()
   const history = useHistory()
 
   return (<>
@@ -36,7 +65,7 @@ const LoggedInButtons = ({ mobile }: { mobile?: boolean }) => {
       onClick={() => logout()}
       simple
     >
-      log-out
+      {t('button.logout')}
     </Button>
 
     <Button
@@ -45,7 +74,7 @@ const LoggedInButtons = ({ mobile }: { mobile?: boolean }) => {
       separator={!mobile}
     >
       <Button.Icon icon="account" size="small" space="right"/>
-      Account
+      {t('button.account')}
     </Button>
   </>
   )
@@ -63,22 +92,34 @@ const LoggedOutNavbar = () => {
         &times;
       </Element>
       {isLoggedIn() && <LoggedInButtons mobile={true}/>}
-      {!isLoggedIn() && <LoggedOutButtons/>}
+      {!isLoggedIn() &&
+        <>
+          <LoggedOutNavItems />
+          <hr/>
+          <LoggedOutButtons/>
+        </>
+      }
     </Container>
   )
 
   return (
     <>
       {menuActive && mobileMenu}
-      <Section className={classnames('navbar')}>
+      <Section className={classnames('navbar default-background')}>
         <Container className="navbar__wrapper">
           <Logo />
           <Element
             responsive={{ mobile: { hide: { value: true } } }}
             className="navbar__buttons"
           >
+            {!isLoggedIn() && <LoggedOutNavItems />}
+          </Element>
+          <Element
+            responsive={{ mobile: { hide: { value: true } } }}
+            className="navbar__buttons"
+          >
             {isLoggedIn() && <LoggedInButtons/>}
-            {!isLoggedIn() && <LoggedOutButtons/>}
+            {!isLoggedIn() && <LoggedOutButtons />}
           </Element>
           <Element
             responsive={{ tablet: { hide: { value: true } } }}
