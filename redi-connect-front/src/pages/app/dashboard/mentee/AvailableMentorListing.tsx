@@ -1,18 +1,15 @@
-import {
-  Grid
-} from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import intersection from 'lodash/intersection'
-import { Columns } from 'react-bulma-components'
-import Heading from '../../../../components/atoms/Heading'
+import { Columns, Tag } from 'react-bulma-components'
+import { Heading, Icon } from '../../../../components/atoms'
 import { ProfileCard } from '../../../../components/organisms/ProfileCard'
 import { useLoading } from '../../../../hooks/WithLoading'
 import { getMentors } from '../../../../services/api/api'
-import { history } from '../../../../services/history/history'
 import { RedProfile } from '../../../../types/RedProfile'
 import { getRedProfile } from '../../../../services/auth/auth'
-import { CategoryChip } from '../../../../components/CategoryChip'
 import { useList } from '../../../../hooks/useList'
+import { categoriesIdToLabelMap } from '../../../../config/config'
+import './AvailableMentorListing.scss'
 
 type MentorCatCount = RedProfile & { categoryMatchCount: number };
 
@@ -77,26 +74,29 @@ export const AvailableMentorListing = (props: any) => {
       )}
       {mentorsWithSharedCategories.length > 0 && (
         <>
-          <Heading subtitle size="small" className="oneandhalf-bs">Recommended mentors</Heading>
+          <Heading subtitle size="small" className="oneandhalf-bs">Available mentors ({mentorsFiltered.length})</Heading>
 
-          <Grid container direction="column">
-            <Grid item>
-              {currentUserCategories.map(catId => (
-                <CategoryChip
+          <div className="active-filters">
+            <span className="active-filters__label">{mentorsWithSharedCategories.length} results for:</span>
+            <Tag.Group className="selected-filters">
+              {activeCategories.map(catId => (
+                <Tag
                   key={catId}
                   categoryId={catId}
                   overrideBackgroundColour={
                     !activeCategories.includes(catId) ? '#b2b2b2' : ''
                   }
-                  onClick={() => toggle(catId)}
-                />
+                  size="large"
+                  rounded
+                  textWeight="bold"
+                >
+                  {categoriesIdToLabelMap[catId]}
+                  <Icon icon="cancel" onClick={() => toggle(catId)} className="selected-filters__remove"/>
+                </Tag>
               ))}
-            </Grid>
-            <Grid item style={{ margin: '10px 0', fontWeight: 300 }}>
-              These mentors have expertise in one or more of the domains you
-              selected of interest in your profile.
-            </Grid>
-          </Grid>
+            </Tag.Group>
+          </div>
+
           <Columns>
             {mentorsWithSharedCategories.map((mentor: RedProfile) => (
               <Columns.Column size={4} key={mentor.id}>

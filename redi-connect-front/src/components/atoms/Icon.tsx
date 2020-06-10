@@ -12,6 +12,8 @@ interface IconProps {
   icon: 'arrowLeft' | 'hamburger' | 'account' | 'check' | 'edit' | 'cancel'
   size?: 'small' | 'medium'
   space?: 'left' | 'right'
+  className?: string
+  onClick?: () => void
 }
 
 const Icons = {
@@ -23,13 +25,21 @@ const Icons = {
   cancel: Cancel
 }
 
-const Icon = ({ icon, space, size }: IconProps) => {
+const Icon = ({ icon, space, size, className, onClick }: IconProps) => {
   const Icon = icon ? Icons[icon] : undefined
 
   const iconSize = size || 'medium'
 
   return Icon
-    ? <Icon className={classnames('icon', { [`icon--space-${space}`]: space, [`icon--${iconSize}`]: iconSize })}/>
+    ? <Icon
+      className={classnames('icon', {
+        [`icon--space-${space}`]: space,
+        [`icon--${iconSize}`]: iconSize,
+        'icon--active': onClick,
+        [`${className}`]: className
+      })}
+      onClick={onClick}
+    />
     : null
 }
 
