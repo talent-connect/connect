@@ -22,22 +22,4 @@
   &:focus {
     outline: none;
   }
-
-  &__image {
-    border: 10px solid;
-
-    @include mobile() {
-      border: 6px solid;
-      border-right: none;
-      width: 100%;
-    }
-
-    &--border-orange {
-      border-image: linear-gradient(to right, $redi-orange 30%, white 30%) 10%;
-    }
-
-    &--border-blue {
-      border-image: linear-gradient(to right, $redi-blue 30%, white 30%) 10%;
-    }
-  }
 }
