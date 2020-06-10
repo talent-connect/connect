@@ -14,9 +14,10 @@
 // this is not used ATM anywhere else but it may make sense to refactor this to a standalone component
 .icon__button {
   cursor: pointer;
-  width: 2rem;
-  height: 2rem;
-  padding: 0.25rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0.5rem;
+  margin: -0.5rem 0;
   border-radius: 50%;
 
   &:not(:first-child) {
