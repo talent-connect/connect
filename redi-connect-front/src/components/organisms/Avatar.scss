@@ -1,24 +1,21 @@
 @import "~bulma/sass/utilities/_all";
 @import "../../styles/_variables.scss";
 
+// getting complicated an hard to maintain, needs refactoring
 .avatar {
   position: relative;
   border-radius: 50%;
-  border: 4px solid $redi-orange-dark;
-  box-shadow: 2px 0 15px 0 rgba(255, 92, 31, 0.34);
   overflow: hidden;
   display: inline-flex;
-
   width: 100%;
-  padding-top: calc(100% - 8px);
+  padding-top: 100%;
   height: auto;
 
   &::before {
     content: '';
     border-radius: 50%;
-    width: calc(100% - 16px);
-    height: calc(100% - 16px);
-    margin: 0.5rem;
+    width: 100%;
+    height: 100%;
     position: absolute;
     display: inline-flex;
     top: 0;
@@ -26,8 +23,25 @@
   }
 
   &--editable {
+    border: 4px solid $redi-orange-dark;
+    box-shadow: 2px 0 15px 0 rgba(255, 92, 31, 0.34);
+    padding-top: calc(100% - 8px);
+
+    &:before {
+      width: calc(100% - 16px);
+      height: calc(100% - 16px);
+      margin: 0.5rem;    
+    }
+
+    .avatar__image {
+      top: 8px;
+      left: 8px;
+      width: calc(100% - 16px);
+      height: calc(100% - 16px);
+    }
+
     cursor: pointer;
-    &::before {
+    &:not(.avatar--placeholder)::before {
       opacity: 0;
       background-color: rgba(0, 0, 0, 0.5);
       transition: $transition;
@@ -54,13 +68,14 @@
   &__image {
     border-radius: 50%;
     position: absolute;
-    top: 8px;
-    left: 8px;
-    width: calc(100% - 16px);
-    height: calc(100% - 16px);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     z-index: 1;
   }
+
 
   &__button {
     position: absolute;
@@ -90,11 +105,11 @@
       display: block;
       width: 50%;
       height: 50%;
-      margin: 0 25% .5rem;
+      margin: 0 25%;
+    }
 
-      @include mobile() {
-        margin: 0 25%;
-      }
+    &__text {
+      margin-top: 0.5rem;
     }
   }
 

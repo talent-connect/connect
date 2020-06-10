@@ -7,6 +7,18 @@
   border-radius: $radius;
   margin-bottom: $block-spacing;
   
+  // not happy with the solution, time for refactoring together with avatar
+  &__avatar {
+    display: flex;
+    align-items: center;
+    .avatar {
+      width: 2rem;
+      height: 2rem;
+      padding-top: 2rem;
+      margin-right: 0.5rem;
+    }
+  }
+
   &__link {
     font-weight: $weight-bold;
     color: $primary;
@@ -20,7 +32,7 @@
 
   &-details {
     transition: $transition;
-    padding: 0 1.5rem;
+    padding: 0 2rem;
     overflow: hidden;
 
     &--hide {

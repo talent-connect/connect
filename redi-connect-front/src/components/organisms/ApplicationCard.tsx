@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Columns, Heading, Content } from 'react-bulma-components'
 import { getRedProfile } from '../../services/auth/auth'
 import { RedMatch } from '../../types/RedMatch'
-// import { Avatar } from '../../../components/Avatar'
+import { Avatar } from '../organisms'
 import { useHistory } from 'react-router-dom'
 
 import './ApplicationCard.scss'
@@ -21,24 +21,20 @@ const ApplicationCard = ({ application }: Props) => {
   return (<>
     <div className="application-card">
       <Columns vCentered>
-        <Columns.Column size={1}>
-          avatar
-          {/* will be delivered separatly */}
-        </Columns.Column>
-
-        <Columns.Column size={3}>
-          {applicationUser && `${applicationUser.firstName} ${applicationUser.lastName}`}
+        <Columns.Column size={4} className="application-card__avatar">
+          <Avatar profile={applicationUser} />
+          {applicationUser && <span>{applicationUser.firstName} {applicationUser.lastName}</span>}
         </Columns.Column>
 
         <Columns.Column size={2}>
           <span className="application-card__link" onClick={() => history.push(`/app/applications/profile/${applicationUser && applicationUser.id}`)}>Visit Profile</span>
         </Columns.Column>
 
-        <Columns.Column size={3}>
+        <Columns.Column size={3} textAlignment="right">
           From {`${applicationDate.getDay()}.${applicationDate.getMonth()}.${applicationDate.getFullYear()}`}
         </Columns.Column>
 
-        <Columns.Column size={2}>
+        <Columns.Column size={2} textAlignment="right">
           {application.status}
         </Columns.Column>
 

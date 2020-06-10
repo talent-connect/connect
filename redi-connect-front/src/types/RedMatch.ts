@@ -8,6 +8,6 @@ export type RedMatch = {
   expectationText: string
   mentorReplyMessageOnAccept: string
   hasMenteeDismissedMentorshipApplicationAcceptedNotification: boolean
-  mentor?: RedProfile
-  mentee?: RedProfile
+  mentor: RedProfile
+  mentee: RedProfile
 };

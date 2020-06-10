@@ -81,8 +81,7 @@ const AvatarEditable = ({ profile, profileSaveStart }: AvatarEditable) => {
   }
 
   return (
-    <div className={classnames('avatar', {
-      'avatar--editable': profileAvatarImageS3Key,
+    <div className={classnames('avatar avatar--editable', {
       'avatar--placeholder': !profileAvatarImageS3Key
     })}>
       {profileAvatarImageS3Key && <>
@@ -93,7 +92,7 @@ const AvatarEditable = ({ profile, profileSaveStart }: AvatarEditable) => {
       {!profileAvatarImageS3Key && <>
         <div className="avatar__placeholder">
           <UploadImage className="avatar__placeholder__image" />
-          <Element className="is-size-6" responsive={{ mobile: { hide: { value: true } } }}>Add your picture</Element>
+          <Element textSize={6} className="avatar__placeholder__text" responsive={{ mobile: { hide: { value: true } } }}>Add your picture</Element>
         </div>
       </>}
 
@@ -121,6 +120,7 @@ const mapDispatchToProps = (dispatch: any) => ({
   profileSaveStart: (profile: Partial<RedProfile>) => dispatch(profileSaveStart(profile))
 })
 
+Avatar.Some = (profile: RedProfile) => <Avatar profile={profile} />
 Avatar.Editable = connect(mapStateToProps, mapDispatchToProps)(AvatarEditable)
 
 export default Avatar
