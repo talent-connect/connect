@@ -1,8 +1,5 @@
 import React, { useState } from 'react'
-import { Caption } from '../../components/atoms'
-import { ReactComponent as Save } from '../../assets/images/save.svg'
-import { ReactComponent as Edit } from '../../assets/images/edit.svg'
-import { ReactComponent as Close } from '../../assets/images/close.svg'
+import { Caption, Icon } from '../../components/atoms'
 import classnames from 'classnames'
 import './Editable.scss'
 
@@ -46,16 +43,23 @@ function Editable (props: Props) {
         <Caption>{title}</Caption>
         <div className="editable__header__buttons">
           { isEditing ? (<>
-            <Save
+            <div
               onClick={savePossible ? handleSave : undefined}
-              className={classnames('icon__button', { 'icon__button--disabled': !savePossible })}
-            />
-            <Close className='icon__button' onClick={handleClose}/>
+              className={classnames('icon__button',
+                { 'icon__button--disabled': !savePossible }
+              )}
+            >
+              <Icon icon="check" />
+            </div>
+            <div className='icon__button' onClick={handleClose}>
+              <Icon icon="cancel" />
+            </div>
           </>) : (
-            <Edit className='icon__button' onClick={() => {
-              setIsEditing(true)
-            }}/>
-          )}</div>
+            <div className='icon__button' onClick={() => { setIsEditing(true) }}>
+              <Icon icon="edit" />
+            </div>
+          )}
+        </div>
       </div>
       <div className="editable__body">
         { isEditing ? children : read }

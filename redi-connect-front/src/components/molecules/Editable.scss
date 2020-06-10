@@ -4,16 +4,27 @@
   &__header {
     display: flex;
     justify-content: space-between;
+  
+    &__buttons {
+      display: flex;
+    }
   }
 }
 
+// this is not used ATM anywhere else but it may make sense to refactor this to a standalone component
 .icon__button {
   cursor: pointer;
-  width: 1.4rem;
-  height: 1.4rem;
+  width: 2rem;
+  height: 2rem;
+  padding: 0.25rem;
+  border-radius: 50%;
 
   &:not(:first-child) {
-    margin-left: 1rem;
+    margin-left: 0.25rem;
+  }
+
+  &:not(.icon__button--disabled):hover {
+    background-color: $redi-orange-extra-light; 
   }
 
   path {
