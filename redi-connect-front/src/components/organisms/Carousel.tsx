@@ -1,8 +1,9 @@
 import React from 'react';
 import { Section, Container, Element, Columns, Content } from 'react-bulma-components'
 import { useTranslation } from 'react-i18next'
+import classnames from 'classnames'
 import Slider from 'react-slick'
-import CarouselImage from '../atoms/CarouselImage'
+import SVGImage from '../atoms/SVGImage'
 import Heading from '../atoms/Heading'
 import './Carousel.scss'
 
@@ -72,7 +73,9 @@ const Carousel = ({ headline, title, border }: Props) => {
               <div className="carousel">
                 <Columns key={quote.img} vCentered>
                   <Columns.Column size={6}>
-                    <CarouselImage image={quote.img} border={border} />
+                    <SVGImage image={quote.img} className={classnames('carousel__image', {
+                      [`carousel__image--border-${border}`]: border
+                    })} />
                   </Columns.Column>
                   <Columns.Column size={6}>
                     <Element

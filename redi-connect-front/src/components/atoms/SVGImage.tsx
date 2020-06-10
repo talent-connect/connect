@@ -1,13 +1,11 @@
 import React from 'react'
-import classnames from 'classnames'
 import { ReactComponent as Dragos } from '../../assets/images/profile-dragos.svg'
 import { ReactComponent as Khaled } from '../../assets/images/profile-khaled.svg'
 import { ReactComponent as Halil } from '../../assets/images/profile-halil.svg'
-import './CarouselImage.scss'
 
 interface Props {
   image: 'dragos' | 'halil' | 'khaled'
-  border: 'orange' | 'blue'
+  className?: string
 }
 
 const CarouselImages = {
@@ -16,13 +14,11 @@ const CarouselImages = {
   halil: Halil
 }
 
-const CarouselImage = ({ image, border }: Props) => {
+const SVGImage = ({ image, className }: Props) => {
   const Image = image ? CarouselImages[image] : undefined
   return Image
-    ? <Image className={classnames('carousel-image', {
-      [`carousel-image--border-${border}`]: border
-    })} />
+    ? <Image className={className} />
     : null
 }
 
-export default CarouselImage
+export default SVGImage
