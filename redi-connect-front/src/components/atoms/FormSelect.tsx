@@ -1,7 +1,26 @@
 import React from 'react'
-import Select from 'react-select'
+import Select, { components } from 'react-select'
 import _uniqueId from 'lodash/uniqueId'
 import { Form } from 'react-bulma-components'
+import { Icon } from '../../components/atoms'
+
+const DropdownIndicator = (props: any) => (
+  <components.DropdownIndicator {...props}>
+    <Icon icon="chevron" size="small" />
+  </components.DropdownIndicator>
+)
+
+const ClearIndicator = (props: any) => (
+  <components.ClearIndicator {...props}>
+    <Icon icon="cancel" size="small"/>
+  </components.ClearIndicator>
+)
+
+const MultiValueRemove = (props: any) => (
+  <components.MultiValueRemove {...props}>
+    <Icon icon="cancel" size="small"/>
+  </components.MultiValueRemove>
+)
 
 // TODO add typed safe props
 function FormSelect (props: any) {
@@ -34,14 +53,18 @@ function FormSelect (props: any) {
         backgroundColor: '#dadada'
       }
     }),
+    clearIndicator: (provided: any, state: any) => ({
+      ...provided,
+      svg: {
+        margin: '0 0.1rem'
+      }
+    }),
     dropdownIndicator: (provided: any, state: any) => ({
       ...provided,
       color: state.isFocused ? '#ea5b29' : '#a0a0a0',
       transform: state.menuIsOpen ? 'rotate(180deg)' : 'none',
       svg: {
-        width: '26px',
-        height: '26px',
-        fill: '#ea5b29'
+        margin: '0 0.1rem'
       }
     }),
     control: (provided: any, state: any) => ({
@@ -72,8 +95,7 @@ function FormSelect (props: any) {
     multiValueRemove: (provided: any) => ({
       ...provided,
       svg: {
-        width: '20px',
-        height: '20px'
+        padding: '0 2px'
       }
     })
   }
@@ -110,6 +132,7 @@ function FormSelect (props: any) {
       <Form.Control>
         <Select
           value={selectedValues}
+          components={{ DropdownIndicator, ClearIndicator, MultiValueRemove }}
           options={items}
           onChange={handleOnChange}
           placeholder={placeholder}

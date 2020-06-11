@@ -6,10 +6,11 @@ import { ReactComponent as Account } from '../../assets/images/account.svg'
 import { ReactComponent as Checkmark } from '../../assets/images/checkmark.svg'
 import { ReactComponent as Edit } from '../../assets/images/edit.svg'
 import { ReactComponent as Cancel } from '../../assets/images/cancel.svg'
+import { ReactComponent as Chevron } from '../../assets/images/chevron.svg'
 import './Icon.scss'
 
 interface IconProps {
-  icon: 'arrowLeft' | 'hamburger' | 'account' | 'check' | 'edit' | 'cancel'
+  icon: 'arrowLeft' | 'hamburger' | 'account' | 'check' | 'edit' | 'cancel' | 'chevron'
   size?: 'small' | 'medium'
   space?: 'left' | 'right'
   className?: string
@@ -22,7 +23,8 @@ const Icons = {
   hamburger: Hamburger,
   check: Checkmark,
   edit: Edit,
-  cancel: Cancel
+  cancel: Cancel,
+  chevron: Chevron
 }
 
 const Icon = ({ icon, space, size, className, onClick }: IconProps) => {
