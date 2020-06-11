@@ -1,7 +1,7 @@
 import React from 'react'
 import { Section, Container, Element } from 'react-bulma-components'
 import { useTranslation } from 'react-i18next'
-import TitleHeadline from '../atoms/TitleHeadline'
+import DecoratedHeadline from '../atoms/DecoratedHeadline'
 import './Checklist.scss'
 
 interface Props {
@@ -14,7 +14,7 @@ const Checklist = ({ type }: Props) => {
   return (
     <Section className="default-background">
       <Container>
-        <TitleHeadline
+        <DecoratedHeadline
           title={t(`loggedOutArea.homePage.checklist.${type}.title`)}
           headline={t(`loggedOutArea.homePage.checklist.${type}.headline`)}
         />
