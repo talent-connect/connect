@@ -1,0 +1,9 @@
+@import "~bulma/sass/utilities/_all";
+
+.decorated-headline {
+  margin-bottom: 4.5rem;
+
+  @include mobile {
+    margin-bottom: 2.5rem;
+  }
+}

@@ -49,6 +49,26 @@
             "headline": "4. Meet in person/ virtually"
           }
         }
+      },
+      "checklist": {
+        "mentor": {
+          "title": "the mentor checklist",
+          "headline": "Are you ready to become a mentor?",
+          "point1": "I work in the digital industry",
+          "point2": "I am willing to share knowledge and experiences with others",
+          "point3": "I am open to meet other nationalities",
+          "point4": "I have the time to meet mentees during my free time",
+          "point5": "I have time to support on a personal and professional level"
+        },
+        "mentee": {
+          "title": "the mentee checklist",
+          "headline": "Are you ready to become a mentee?",
+          "point1": "I am a student or student alumni at ReDI school",
+          "point2": "I would like help on my classes and/or career development",
+          "point3": "I would like to get guidance from an expert from the digital industry",
+          "point4": "I can make time to meet with a mentor on a regular basis",
+          "point5": "I am open to get feedback on the topics I disscuss with my mentor"
+        }
       }
     }
   }
