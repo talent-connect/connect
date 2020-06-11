@@ -10,14 +10,13 @@
   }
 
   &__item {
-    padding-bottom: 2.75rem;
-    padding-left: 2.75rem;
-    margin-left: 1.25rem;
+    margin-bottom: 2.75rem;
+    padding-left: 4rem;
     position: relative;
 
     @include mobile() {
-      padding-bottom: 1.5rem;
-      padding-left: 1.75rem;
+      margin-bottom: 1.5rem;
+      padding-left: 3rem;
     }
 
     &:before {
@@ -26,14 +25,14 @@
       width: 2.5rem;
       height: 2.5rem;
       background-color: rgba(2, 167, 129, 0.08);
-      left: -1.25rem;
+      left: 0;
       top: -.25rem;
       border-radius: 50%;
 
       @include mobile() {
         width: 2rem;
         height: 2rem;
-        left: -1.125rem;
+        left: 0;
       }
     }
 
@@ -43,7 +42,7 @@
       width: 0.5rem;
       height: 1rem;
       top: .25rem;
-      left: -.25rem;
+      left: 1rem;
       border: solid $green;
       border-width: 0 2px 2px 0;
       transform: rotate(40deg);
@@ -51,6 +50,7 @@
       @include mobile() {
         width: .3rem;
         height: .6rem;
+        left: .875rem;
       }
     }
   }

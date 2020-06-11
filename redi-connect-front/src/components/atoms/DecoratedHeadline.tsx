@@ -10,7 +10,7 @@ interface Props {
 
 const DecoratedHeadline = ({ title, headline }: Props) => {
   return (
-    <>
+    <div className="decorated-headline">
       <Element
         renderAs="h4"
         textAlignment="centered"
@@ -24,11 +24,10 @@ const DecoratedHeadline = ({ title, headline }: Props) => {
         center
         size="medium"
         border="topCenter"
-        className="decorated-headline"
       >
         {headline}
       </Heading>
-    </>
+    </div>
   )
 }
 
