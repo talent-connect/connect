@@ -1,5 +1,6 @@
-import React from 'react';
+import React from 'react'
 import { Section, Container, Element, Columns, Content } from 'react-bulma-components'
+import DecoratedHeadline from '../atoms/DecoratedHeadline'
 import { useTranslation } from 'react-i18next'
 import classnames from 'classnames'
 import Slider from 'react-slick'
@@ -44,29 +45,13 @@ const Carousel = ({ headline, title, border }: Props) => {
     slidesToScroll: 1,
     fade: true,
     autoplay: true,
-    pauseOnHover: true,
-  };
+    pauseOnHover: true
+  }
 
   return (
     <Section className="default-background">
       <Container>
-        <Element
-          textTransform="uppercase"
-          textSize={6}
-          textAlignment="centered"
-          responsive={{ mobile: { textSize: { value: 7 } } }}
-          renderAs="h4"
-        >
-          {title}
-        </Element>
-        <Heading
-          center
-          size="medium"
-          border="topCenter"
-          className="oneandhalf-bs"
-        >
-          {headline}
-        </Heading>
+        <DecoratedHeadline title={title} headline={headline}/>
         <Slider {...settings}>
           {quotes.map((quote: any) => {
             return (
@@ -111,7 +96,7 @@ const Carousel = ({ headline, title, border }: Props) => {
         </Slider>
       </Container>
     </Section>
-  );
-};
+  )
+}
 
-export default Carousel;
+export default Carousel

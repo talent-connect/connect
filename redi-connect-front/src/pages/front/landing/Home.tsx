@@ -13,6 +13,7 @@ export default function Home () {
     <Landing>
       <Hero />
       <RediProgram />
+      <Checklist type='mentee' />
       <Carousel
         border="orange"
         headline={t('loggedOutArea.homePage.carousel.headline')}
