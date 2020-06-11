@@ -221,6 +221,32 @@ Your Career Support Team`, rediLocation
 const templateReportProblemEmail = (sendingUserEmail, message) =>
   `New problem report. Source: ${sendingUserEmail}. Message: \n\n${message}`
 
+const sendMentorPendingReviewDeclinedEmail = (recipient, firstName, rediLocation) =>
+  sendEmailFactory(
+    recipient,
+    'ReDI Connect: your user sign-up was declined',
+    `Dear ${firstName},
+
+Unfortunately your profile has not been accepted yet because we would like to get to know you a little better before.
+
+Please let us know at ${rediLocation === 'munich' ? 'munich-' : ''}career@redi-school.org how we can reach you best so that we can have a little chat.
+
+Your Career Support Team at ReDI Connect`, rediLocation
+  )
+
+const sendMenteePendingReviewDeclinedEmail = (recipient, firstName, rediLocation) =>
+  sendEmailFactory(
+    recipient,
+    'ReDI Connect: your user sign-up was declined',
+    `Dear ${firstName},
+
+Unfortunately your profile has not been accepted yet because we would like to get to know you a little better before.
+
+Please let us know at ${rediLocation === 'munich' ? 'munich-' : ''}career@redi-school.org how we can reach you best so that we can have a little chat.
+
+Your Career Support Team at ReDI Connect`, rediLocation
+  )
+
 const sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted = (
     recipient,
     menteeName,
@@ -296,18 +322,19 @@ const sendVerificationEmail = ({
   }).subscribe()
 }
 
-const sendMentorPendingReviewDeclinedEmailTemplate = fs.readFileSync(path.resolve(__dirname, 'templates', 'validate-email-address-successful.mjml'), 'utf-8')
-const sendMentorPendingReviewDeclinedEmailParsed = mjml2html(sendMentorPendingReviewDeclinedEmailTemplate, {
+const sendMentorRequestAppointmentEmailTemplate = fs.readFileSync(path.resolve(__dirname, 'templates', 'validate-email-address-successful.mjml'), 'utf-8')
+const sendMentorRequestAppointmentEmailParsed = mjml2html(sendMentorRequestAppointmentEmailTemplate, {
   filePath: path.resolve(__dirname, 'templates')
 })
 
-const sendMentorPendingReviewDeclinedEmail = ({
+const sendMentorRequestAppointmentEmail = ({
   recipient,
   firstName,
   rediLocation
 }) => {
-  const html = sendMentorPendingReviewDeclinedEmailParsed.html
+  const html = sendMentorRequestAppointmentEmailParsed.html
     .replace('${firstName}', firstName)
+    .replace('${rediLocation}', rediLocation)
   sendMjmlEmailFactory({
     to: recipient,
     subject: 'Verification has been successful!',
@@ -316,18 +343,19 @@ const sendMentorPendingReviewDeclinedEmail = ({
   }).subscribe()
 }
 
-const sendMenteePendingReviewDeclinedEmailTemplate = fs.readFileSync(path.resolve(__dirname, 'templates', 'validate-email-address-successful.mjml'), 'utf-8')
-const sendMenteePendingReviewDeclinedEmailParsed = mjml2html(sendMenteePendingReviewDeclinedEmailTemplate, {
+const sendMenteeRequestAppointmentEmailTemplate = fs.readFileSync(path.resolve(__dirname, 'templates', 'validate-email-address-successful.mjml'), 'utf-8')
+const sendMenteeRequestAppointmentEmailParsed = mjml2html(sendMenteeRequestAppointmentEmailTemplate, {
   filePath: path.resolve(__dirname, 'templates')
 })
 
-const sendMenteePendingReviewDeclinedEmail = ({
+const sendMenteeRequestAppointmentEmail = ({
   recipient,
   firstName,
   rediLocation
 }) => {
-  const html = sendMenteePendingReviewDeclinedEmailParsed.html
+  const html = sendMenteeRequestAppointmentEmailParsed.html
     .replace('${firstName}', firstName)
+    .replace('${rediLocation}', rediLocation)
   sendMjmlEmailFactory({
     to: recipient,
     subject: 'Verification has been successful!',
@@ -346,9 +374,12 @@ const sendMentorPendingReviewAcceptedEmail = ({
   firstName,
   rediLocation
 }) => {
+  const homePageUrl = `${buildFrontendUrl(process.env.NODE_ENV, rediLocation)}/front/login/`
   const html = sendMentorPendingReviewAcceptedEmailParsed.html
     .replace('${firstName}', firstName)
     .replace('${mentorOrMentee}', 'mentor')
+    .replace('${homePageUrl}', homePageUrl)
+    .replace('${rediLocation}', rediLocation)
   sendMjmlEmailFactory({
     to: recipient,
     subject: 'Welcome to ReDI Connect!',
@@ -367,9 +398,12 @@ const sendMenteePendingReviewAcceptedEmail = ({
   firstName,
   rediLocation
 }) => {
+  const homePageUrl = `${buildFrontendUrl(process.env.NODE_ENV, rediLocation)}/front/login/`
   const html = sendMenteePendingReviewAcceptedEmailParsed.html
     .replace('${firstName}', firstName)
     .replace('${mentorOrMentee}', 'mentee')
+    .replace('${homePageUrl}', homePageUrl)
+    .replace('${rediLocation}', rediLocation)
   sendMjmlEmailFactory({
     to: recipient,
     subject: 'Welcome to ReDI Connect!',
@@ -389,6 +423,8 @@ module.exports = {
   sendMenteePendingReviewAcceptedEmail,
   sendMentorPendingReviewDeclinedEmail,
   sendMenteePendingReviewDeclinedEmail,
+  sendMentorRequestAppointmentEmail,
+  sendMenteeRequestAppointmentEmail,
   sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted,
   sendResetPasswordEmail,
   sendVerificationEmail,

@@ -1,0 +1,47 @@
+<mj-section css-class="section">
+  <mj-column width="100%">
+    <mj-divider mj-class="divider-bottom" />
+  </mj-column>
+  <mj-column mj-class="column" width="100%">
+    <mj-table padding="0">
+      <tr>
+        <td class="table-cell table-img" rowspan="4">
+          <img src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/isabelle.png" width="52px" />
+        </td>
+        <td class="table-cell table-headline td-mobile" colspan="2">
+          Not Isabelle
+        </td>
+      </tr>
+      <tr>
+        <td class="table-cell td-mobile">
+          Manager Mentorship Program
+        </td>
+        <td class="table-cell td-mobile hide-cell-mobile">
+          ReDI School of Digital Integration
+        </td>
+      </tr>
+      <tr>
+        <td class="table-cell td-mobile">
+          Career Department ReDI School
+        </td>
+        <td class="table-cell td-mobile hide-cell-mobile">
+          Am Nordbahnhof 3, 10115 Munich
+        </td>
+      </tr>
+      <tr>
+        <td class="table-cell td-mobile margin-link">
+          <a href="mailto:isabelle@redi-school.org" class="text-link">isabelle@redi-school.org</a>
+        </td>
+        <td class="table-cell td-mobile hide-cell-desktop">
+          ReDI School of Digital Integration
+        </td>
+        <td class="table-cell td-mobile hide-cell-desktop">
+          Am Nordbahnhof 3, 10115 Munich
+        </td>
+        <td class="table-cell td-mobile">
+          <a href="https://www.redi-school.org" class="text-link" target="_blank">www.redi-school.org</a>
+        </td>
+      </tr>
+    </mj-table>
+  </mj-column>
+</mj-section>
