@@ -1,0 +1,9 @@
+@import "~bulma/sass/utilities/_all";
+
+.title-headline {
+  padding-bottom: 3.5rem;
+
+  @include mobile {
+    padding-bottom: 1.5rem;
+  }
+}

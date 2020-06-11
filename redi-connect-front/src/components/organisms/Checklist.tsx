@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 import { Section, Container, Element } from 'react-bulma-components'
 import { useTranslation } from 'react-i18next'
-import Heading from '../atoms/Heading'
+import TitleHeadline from '../atoms/TitleHeadline'
 import './Checklist.scss'
 
 interface Props {
@@ -14,22 +14,10 @@ const Checklist = ({ type }: Props) => {
   return (
     <Section className="default-background">
       <Container>
-        <Element
-          renderAs="h4"
-          textAlignment="centered"
-          textTransform="uppercase"
-          textSize={6}
-          responsive={{ mobile: { textSize: { value: 7 } } }}
-        >
-          {t(`loggedOutArea.homePage.checklist.${type}.title`)}
-        </Element>
-        <Heading
-          center
-          size="medium"
-          border="topCenter"
-        >
-          {t(`loggedOutArea.homePage.checklist.${type}.headline`)}
-        </Heading>
+        <TitleHeadline
+          title={t(`loggedOutArea.homePage.checklist.${type}.title`)}
+          headline={t(`loggedOutArea.homePage.checklist.${type}.headline`)}
+        />
         <Element renderAs="ul" className="checklist">
           {[1, 2, 3, 4, 5].map((number) => (
             <Element
@@ -45,7 +33,7 @@ const Checklist = ({ type }: Props) => {
         </Element>
       </Container>
     </Section >
-  );
-};
+  )
+}
 
 export default Checklist

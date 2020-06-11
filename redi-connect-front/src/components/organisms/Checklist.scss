@@ -2,25 +2,18 @@
 @import "../../styles/_variables.scss";
 
 .checklist {
-  margin: 4.5rem auto 0;
+  margin: 0 auto;
   width: fit-content;
 
   @include tablet() {
     max-width: 80%;
   }
 
-  @include mobile() {
-    margin-top: 2.5rem;
-  }
-
   &__item {
     padding-bottom: 2.75rem;
     padding-left: 2.75rem;
+    margin-left: 1.25rem;
     position: relative;
-
-    @include touch() {
-      margin-left: 1.25rem;
-    }
 
     @include mobile() {
       padding-bottom: 1.5rem;
