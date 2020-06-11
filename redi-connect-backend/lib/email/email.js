@@ -30,9 +30,9 @@ const isProductionOrDemonstration = () => ['production', 'demonstration', 'stagi
 const sendEmail = Rx.bindNodeCallback(ses.sendEmail.bind(ses))
 const sendMjmlEmail = Rx.bindNodeCallback(transporter.sendMail.bind(transporter))
 const sendEmailFactory = (to, subject, body, rediLocation) => {
-  let toSanitized = isProductionOrDemonstration() ?
-    to :
-    'eric@binarylights.com'
+  let toSanitized = isProductionOrDemonstration()
+    ? to
+    : 'eric@binarylights.com'
   if (process.env.DEV_MODE_EMAIL_RECIPIENT) {
     toSanitized = process.env.DEV_MODE_EMAIL_RECIPIENT
   }
@@ -70,9 +70,9 @@ const sendMjmlEmailFactory = ({
   html,
   rediLocation
 }) => {
-  let toSanitized = isProductionOrDemonstration() ?
-    to :
-    'eric@binarylights.com'
+  let toSanitized = isProductionOrDemonstration()
+    ? to
+    : 'eric@binarylights.com'
   if (process.env.DEV_MODE_EMAIL_RECIPIENT) {
     toSanitized = process.env.DEV_MODE_EMAIL_RECIPIENT
   }
@@ -115,11 +115,11 @@ Your Career Support Team
     rediLocation
   )
 const sendToMentorConfirmationOfMentorshipCancelled = (
-    recipient,
-    mentorFirstName,
-    menteeFullName,
-    rediLocation
-  ) =>
+  recipient,
+  mentorFirstName,
+  menteeFullName,
+  rediLocation
+) =>
   sendEmailFactory(
     recipient,
     `Your mentorship of ${menteeFullName} has ben cancelled`,
@@ -135,11 +135,11 @@ Your Career Support Team
   )
 
 const sendMentorshipRequestReceivedEmail = (
-    recipient,
-    mentorName,
-    menteeFullName,
-    rediLocation
-  ) =>
+  recipient,
+  mentorName,
+  menteeFullName,
+  rediLocation
+) =>
   sendEmailFactory(
     recipient,
     `You have received an application from ${menteeFullName}`,
@@ -153,8 +153,8 @@ Your Career Support Team
 `, rediLocation
   )
 const sendMentorshipAcceptedEmail = (recipients, mentorName, menteeName, mentorReplyMessageOnAccept, rediLocation) => {
-  let recipientsSanitized = !isProductionOrDemonstration() ? ['eric@binarylights.com'] :
-    recipients
+  let recipientsSanitized = !isProductionOrDemonstration() ? ['eric@binarylights.com']
+    : recipients
   if (process.env.DEV_MODE_EMAIL_RECIPIENT) {
     recipientsSanitized = [process.env.DEV_MODE_EMAIL_RECIPIENT]
   }
@@ -248,11 +248,11 @@ Your Career Support Team at ReDI Connect`, rediLocation
   )
 
 const sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted = (
-    recipient,
-    menteeName,
-    mentorName,
-    rediLocation
-  ) =>
+  recipient,
+  menteeName,
+  mentorName,
+  rediLocation
+) =>
   sendEmailFactory(
     recipient,
     `ReDI Connect: mentorship application from ${menteeName} expired`,
@@ -364,20 +364,24 @@ const sendMenteeRequestAppointmentEmail = ({
   }).subscribe()
 }
 
-const sendMentorPendingReviewAcceptedEmailTemplate = fs.readFileSync(path.resolve(__dirname, 'templates', 'welcome-to-redi.mjml'), 'utf-8')
-const sendMentorPendingReviewAcceptedEmailParsed = mjml2html(sendMentorPendingReviewAcceptedEmailTemplate, {
-  filePath: path.resolve(__dirname, 'templates')
-})
+const convertTemplateToHtml = (rediLocation, templateString) => {
+  const convertTemplate = fs.readFileSync(path.resolve(__dirname, 'templates', `${templateString}-${rediLocation.toLowerCase()}.mjml`), 'utf-8')
+  const parsedTemplate = mjml2html(convertTemplate, {
+    filePath: path.resolve(__dirname, 'templates')
+  })
+  return parsedTemplate.html
+}
 
-const sendMentorPendingReviewAcceptedEmail = ({
+const sendMenteePendingReviewAcceptedEmail = ({
   recipient,
   firstName,
   rediLocation
 }) => {
   const homePageUrl = `${buildFrontendUrl(process.env.NODE_ENV, rediLocation)}/front/login/`
-  const html = sendMentorPendingReviewAcceptedEmailParsed.html
+  const sendMenteePendingReviewAcceptedEmailParsed = convertTemplateToHtml(rediLocation, 'welcome-to-redi')
+  const html = sendMenteePendingReviewAcceptedEmailParsed
     .replace('${firstName}', firstName)
-    .replace('${mentorOrMentee}', 'mentor')
+    .replace('${mentorOrMentee}', 'mentee')
     .replace('${homePageUrl}', homePageUrl)
     .replace('${rediLocation}', rediLocation)
   sendMjmlEmailFactory({
@@ -388,20 +392,16 @@ const sendMentorPendingReviewAcceptedEmail = ({
   }).subscribe()
 }
 
-const sendMenteePendingReviewAcceptedEmailTemplate = fs.readFileSync(path.resolve(__dirname, 'templates', 'welcome-to-redi.mjml'), 'utf-8')
-const sendMenteePendingReviewAcceptedEmailParsed = mjml2html(sendMenteePendingReviewAcceptedEmailTemplate, {
-  filePath: path.resolve(__dirname, 'templates')
-})
-
-const sendMenteePendingReviewAcceptedEmail = ({
+const sendMentorPendingReviewAcceptedEmail = ({
   recipient,
   firstName,
   rediLocation
 }) => {
   const homePageUrl = `${buildFrontendUrl(process.env.NODE_ENV, rediLocation)}/front/login/`
-  const html = sendMenteePendingReviewAcceptedEmailParsed.html
+  const sendMenteePendingReviewAcceptedEmailParsed = convertTemplateToHtml(rediLocation, 'welcome-to-redi')
+  const html = sendMenteePendingReviewAcceptedEmailParsed
     .replace('${firstName}', firstName)
-    .replace('${mentorOrMentee}', 'mentee')
+    .replace('${mentorOrMentee}', 'mentor')
     .replace('${homePageUrl}', homePageUrl)
     .replace('${rediLocation}', rediLocation)
   sendMjmlEmailFactory({
