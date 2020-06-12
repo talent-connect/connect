@@ -16,7 +16,7 @@
           <mj-text mj-class="text">Isabelle</mj-text>
         </mj-column>
       </mj-section>
-      <mj-include path="./footer.${rediLocation}.mjml" />
+      <mj-include path="./footer.berlin.mjml" />
       <mj-section />
     </mj-wrapper>
   </mj-body>

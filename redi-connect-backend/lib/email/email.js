@@ -269,103 +269,36 @@ If you have any questions or would like any help, always feel free to reach out 
 Your Career Support Team`, rediLocation
   )
 
-const sendResetPasswordEmail = (recipient, accessToken, rediLocation) =>
-  sendEmailFactory(
-    recipient,
-    'Choose a new password for ReDI Connect',
-    `Hey there,
-
-Someone requested a new password for your ReDI Connect account.
-
-If you didn't make this request then you can safely ignore this email :)
-
-Reset Password: ${buildFrontendUrl(
-      process.env.NODE_ENV, rediLocation
-    )}/front/reset-password/set-new-password/${accessToken}
-
-You’ll be asked to choose your own password. Your username is your email address: ${recipient}
-
-Let us know if you need any help or assistance at ${rediLocation === 'munich' ? 'munich-' : ''}career@redi-school.org or on the ReDI Slack channel ${rediLocation === 'munich' ? '#mentors_s2020' : '#redi_mentors2019'}.
-
-Your Career Support Team
-    `, rediLocation
-  )
-
-const verificationEmailTemplate = fs.readFileSync(path.resolve(__dirname, 'templates', 'validate-email-address.mjml'), 'utf-8')
-const verificationEmailParsed = mjml2html(verificationEmailTemplate, {
+const sendResetPasswordEmailTemplate = fs.readFileSync(path.resolve(__dirname, 'templates', 'reset-password.mjml'), 'utf-8')
+const sendResetPasswordEmailParsed = mjml2html(sendResetPasswordEmailTemplate, {
   filePath: path.resolve(__dirname, 'templates')
 })
 
-const sendVerificationEmail = ({
+const sendResetPasswordEmail = ({
   recipient,
-  redUserId,
   firstName,
-  userType,
-  verificationToken,
+  accessToken,
   rediLocation
 }) => {
-  const userTypeToUserTypeInEmail = {
-    'public-sign-up-mentor-pending-review': 'mentor',
-    'public-sign-up-mentee-pending-review': 'mentee'
-  }
-  const verificationSuccessPageUrl = `${buildFrontendUrl(process.env.NODE_ENV, rediLocation)}/front/signup-complete`
-  const verificationUrl = `${buildBackendUrl(process.env.NODE_ENV)}/api/redUsers/confirm?uid=${redUserId}&token=${verificationToken}&redirect=${encodeURI(verificationSuccessPageUrl)}`
-  const html = verificationEmailParsed.html
+  const resetPasswordUrl = `${buildFrontendUrl(process.env.NODE_ENV, rediLocation)}/front/reset-password/set-new-password/${accessToken}`
+  const rediEmailAdress = `${rediLocation === 'munich' ? 'munich-' : ''}career@redi-school.org`
+  const html = sendResetPasswordEmailParsed.html
     .replace('${firstName}', firstName)
-    .replace('${mentorOrMentee}', userTypeToUserTypeInEmail[userType])
-    .replace('${verificationUrl}', verificationUrl)
+    .replace('${resetPasswordUrl}', resetPasswordUrl)
+    .replace(/\${rediEmailAdress}/g, rediEmailAdress)
+    .replace('${emailAdress}', recipient)
   sendMjmlEmailFactory({
     to: recipient,
-    subject: 'Welcome to ReDI School',
+    subject: 'Welcome to ReDI Connect!',
     html: html,
     rediLocation
   }).subscribe()
 }
 
-const sendMentorRequestAppointmentEmailTemplate = fs.readFileSync(path.resolve(__dirname, 'templates', 'validate-email-address-successful.mjml'), 'utf-8')
-const sendMentorRequestAppointmentEmailParsed = mjml2html(sendMentorRequestAppointmentEmailTemplate, {
-  filePath: path.resolve(__dirname, 'templates')
-})
-
-const sendMentorRequestAppointmentEmail = ({
-  recipient,
-  firstName,
-  rediLocation
-}) => {
-  const html = sendMentorRequestAppointmentEmailParsed.html
-    .replace('${firstName}', firstName)
-    .replace('${rediLocation}', rediLocation)
-  sendMjmlEmailFactory({
-    to: recipient,
-    subject: 'Verification has been successful!',
-    html: html,
-    rediLocation
-  }).subscribe()
-}
-
-const sendMenteeRequestAppointmentEmailTemplate = fs.readFileSync(path.resolve(__dirname, 'templates', 'validate-email-address-successful.mjml'), 'utf-8')
-const sendMenteeRequestAppointmentEmailParsed = mjml2html(sendMenteeRequestAppointmentEmailTemplate, {
-  filePath: path.resolve(__dirname, 'templates')
-})
-
-const sendMenteeRequestAppointmentEmail = ({
-  recipient,
-  firstName,
-  rediLocation
-}) => {
-  const html = sendMenteeRequestAppointmentEmailParsed.html
-    .replace('${firstName}', firstName)
-    .replace('${rediLocation}', rediLocation)
-  sendMjmlEmailFactory({
-    to: recipient,
-    subject: 'Verification has been successful!',
-    html: html,
-    rediLocation
-  }).subscribe()
-}
+sendResetPasswordEmail({ recipient: 'marcuszierke@gmail.com', firstName: 'Marcus', accessToken: 'asdf9032432njr', rediLocation: 'berlin' })
 
 const convertTemplateToHtml = (rediLocation, templateString) => {
-  const convertTemplate = fs.readFileSync(path.resolve(__dirname, 'templates', `${templateString}-${rediLocation.toLowerCase()}.mjml`), 'utf-8')
+  const convertTemplate = fs.readFileSync(path.resolve(__dirname, 'templates', `${templateString}.${rediLocation.toLowerCase()}.mjml`), 'utf-8')
   const parsedTemplate = mjml2html(convertTemplate, {
     filePath: path.resolve(__dirname, 'templates')
   })
@@ -383,7 +316,6 @@ const sendMenteePendingReviewAcceptedEmail = ({
     .replace('${firstName}', firstName)
     .replace('${mentorOrMentee}', 'mentee')
     .replace('${homePageUrl}', homePageUrl)
-    .replace('${rediLocation}', rediLocation)
   sendMjmlEmailFactory({
     to: recipient,
     subject: 'Welcome to ReDI Connect!',
@@ -403,7 +335,61 @@ const sendMentorPendingReviewAcceptedEmail = ({
     .replace('${firstName}', firstName)
     .replace('${mentorOrMentee}', 'mentor')
     .replace('${homePageUrl}', homePageUrl)
-    .replace('${rediLocation}', rediLocation)
+  sendMjmlEmailFactory({
+    to: recipient,
+    subject: 'Welcome to ReDI Connect!',
+    html: html,
+    rediLocation
+  }).subscribe()
+}
+
+const sendMenteeRequestAppointmentEmail = ({
+  recipient,
+  firstName,
+  rediLocation
+}) => {
+  const sendMenteeRequestAppointmentEmailParsed = convertTemplateToHtml(rediLocation, 'validate-email-address-successful-mentee')
+  const html = sendMenteeRequestAppointmentEmailParsed
+    .replace('${firstName}', firstName)
+  sendMjmlEmailFactory({
+    to: recipient,
+    subject: 'Welcome to ReDI Connect!',
+    html: html,
+    rediLocation
+  }).subscribe()
+}
+
+const sendMentorRequestAppointmentEmail = ({
+  recipient,
+  firstName,
+  rediLocation
+}) => {
+  const sendMenteeRequestAppointmentEmailParsed = convertTemplateToHtml(rediLocation, 'validate-email-address-successful-mentor')
+  const html = sendMenteeRequestAppointmentEmailParsed
+    .replace('${firstName}', firstName)
+  sendMjmlEmailFactory({
+    to: recipient,
+    subject: 'Welcome to ReDI Connect!',
+    html: html,
+    rediLocation
+  }).subscribe()
+}
+
+const sendVerificationEmail = ({
+  recipient,
+  redUserId,
+  firstName,
+  userType,
+  verificationToken,
+  rediLocation
+}) => {
+  const verificationSuccessPageUrl = `${buildFrontendUrl(process.env.NODE_ENV, rediLocation)}/front/signup-complete`
+  const verificationUrl = `${buildBackendUrl(process.env.NODE_ENV)}/api/redUsers/confirm?uid=${redUserId}&token=${verificationToken}&redirect=${encodeURI(verificationSuccessPageUrl)}`
+  const sendMenteeRequestAppointmentEmailParsed = convertTemplateToHtml(rediLocation, 'validate-email-address')
+  const html = sendMenteeRequestAppointmentEmailParsed
+    .replace('${firstName}', firstName)
+    .replace('${mentorOrMentee}', userType)
+    .replace('${verificationUrl}', verificationUrl)
   sendMjmlEmailFactory({
     to: recipient,
     subject: 'Welcome to ReDI Connect!',
