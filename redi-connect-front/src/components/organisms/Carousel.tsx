@@ -59,7 +59,7 @@ const Carousel = ({ headline, title, border }: Props) => {
               <div className="carousel">
                 <Columns key={quote.img} vCentered>
                   <Columns.Column size={6}>
-                    <Image src={quote.img} alt="profile picture" className={classnames('carousel__image', {
+                    <Image src={quote.img} alt={quote.title} className={classnames('carousel__image', {
                       [`carousel__image--border-${border}`]: border
                     })} />
                   </Columns.Column>
