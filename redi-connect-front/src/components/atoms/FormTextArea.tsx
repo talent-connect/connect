@@ -22,18 +22,12 @@ function FormTextArea (props: any) {
     rows,
     values,
     handleChange,
-    setFieldTouched,
+    handleBlur,
     isSubmitting,
     touched,
     errors,
     disabled
   } = props
-
-  const onChange = (name: any, e: any) => {
-    e.persist()
-    setFieldTouched(name, true, false)
-    handleChange(e)
-  }
 
   const hasError = !!touched[name] && !!errors[name]
 
@@ -50,7 +44,8 @@ function FormTextArea (props: any) {
           rows={rows}
           placeholder={placeholder}
           value={values[name]}
-          onChange={onChange.bind(null, name)}
+          onChange={handleChange}
+          onBlur={handleBlur}
           disabled={isSubmitting || disabled}
         />
       </Form.Control>
