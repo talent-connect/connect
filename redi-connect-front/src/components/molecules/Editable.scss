@@ -20,11 +20,7 @@
   margin: -0.5rem 0;
   border-radius: 50%;
 
-  &:not(:first-child) {
-    margin-left: 0.25rem;
-  }
-
-  &:not(.icon__button--disabled):hover {
+  &:hover {
     background-color: $redi-orange-extra-light; 
   }
 
