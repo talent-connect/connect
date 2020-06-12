@@ -13,10 +13,10 @@
           <mj-image src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/verify.png" align="left" padding="30px 0" target="_blank" width="353px" href="${verificationUrl}" />
           <mj-text mj-class="text" padding="20px 0 30px 0">I am excited to get to know you soon!</mj-text>
           <mj-text mj-class="text">Best,</mj-text>
-          <mj-text mj-class="text">Isabelle</mj-text>
+          <mj-text mj-class="text">Christa</mj-text>
         </mj-column>
       </mj-section>
-      <mj-include path="./footer.mjml" />
+      <mj-include path="./footer.munich.mjml" />
       <mj-section />
     </mj-wrapper>
   </mj-body>

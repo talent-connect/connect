@@ -35,8 +35,13 @@ module.exports = function (RedUser) {
     const accessToken = encodeURIComponent(JSON.stringify(info.accessToken))
     const email = info.user.email
     info.user.redProfile(function getRedProfile (err, redProfileInst) {
-      const rediLocation = redProfileInst.toJSON().rediLocation
-      sendResetPasswordEmail(email, accessToken, rediLocation).subscribe()
+      const { rediLocation, firstName } = redProfileInst.toJSON()
+      sendResetPasswordEmail({
+        recipient: email,
+        firstName,
+        accessToken,
+        rediLocation
+      }).subscribe()
     })
   })
 }
