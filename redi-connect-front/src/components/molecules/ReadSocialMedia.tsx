@@ -7,43 +7,28 @@ import { Caption, Placeholder } from '../atoms'
 
 interface Props {
   profile: RedProfile
+  shortInfo?: boolean
 }
 
-const Me = ({ profile }: Props) => {
+const ReadSocialMedia = ({ profile, shortInfo }: Props) => {
   const {
     linkedInProfileUrl,
     githubProfileUrl,
     slackUsername
   } = profile
 
-  if (!linkedInProfileUrl && !githubProfileUrl && !slackUsername) {
+  if (!shortInfo && !linkedInProfileUrl && !githubProfileUrl && !slackUsername) {
     return <Placeholder>Input your social media channels here.</Placeholder>
   }
 
-  return (
+  return (<>
+    {shortInfo && <Caption>Social Media</Caption>}
     <Content>
-      {linkedInProfileUrl && <p>{linkedInProfileUrl}</p>}
-      {githubProfileUrl && <p>{githubProfileUrl}</p>}
+      {linkedInProfileUrl && <p><a href={linkedInProfileUrl} target="_blank">{linkedInProfileUrl}</a></p>}
+      {githubProfileUrl && <p><a href={githubProfileUrl} target="_blank">{githubProfileUrl}</a></p>}
       {slackUsername && <p>{slackUsername}</p>}
     </Content>
-  )
-}
-
-const Some = ({ profile }: Props) => {
-  const {
-    linkedInProfileUrl,
-    githubProfileUrl,
-    slackUsername
-  } = profile
-
-  return <>
-    <Caption>Social Media</Caption>
-    <Content>
-      {linkedInProfileUrl && <p>{linkedInProfileUrl}</p>}
-      {githubProfileUrl && <p>{githubProfileUrl}</p>}
-      {slackUsername && <p>{slackUsername}</p>}
-    </Content>
-  </>
+  </>)
 }
 
 const mapStateToProps = (state: RootState) => ({
@@ -51,6 +36,6 @@ const mapStateToProps = (state: RootState) => ({
 })
 
 export default {
-  Me: connect(mapStateToProps, {})(Me),
-  Some: ({ profile }: Props) => <Some profile={profile} />
+  Me: connect(mapStateToProps, {})(ReadSocialMedia),
+  Some: ({ profile }: Props) => <ReadSocialMedia profile={profile} shortInfo/>
 }
