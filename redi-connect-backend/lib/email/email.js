@@ -287,15 +287,13 @@ const sendResetPasswordEmail = ({
     .replace('${resetPasswordUrl}', resetPasswordUrl)
     .replace(/\${rediEmailAdress}/g, rediEmailAdress)
     .replace('${emailAdress}', recipient)
-  sendMjmlEmailFactory({
+  return sendMjmlEmailFactory({
     to: recipient,
     subject: 'Welcome to ReDI Connect!',
     html: html,
     rediLocation
-  }).subscribe()
+  })
 }
-
-sendResetPasswordEmail({ recipient: 'marcuszierke@gmail.com', firstName: 'Marcus', accessToken: 'asdf9032432njr', rediLocation: 'berlin' })
 
 const convertTemplateToHtml = (rediLocation, templateString) => {
   const convertTemplate = fs.readFileSync(path.resolve(__dirname, 'templates', `${templateString}.${rediLocation.toLowerCase()}.mjml`), 'utf-8')
