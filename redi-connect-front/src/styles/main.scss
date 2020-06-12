@@ -95,13 +95,6 @@ a:hover {
   }
 }
 
-.box__heading {
-  margin: -0.5rem -2rem 0 -2rem;
-  padding: 0 2rem 1.5rem;
-  border-bottom: 1px solid $grey-light;
-  // width: calc(100% + 32px);
-}
-
 // fix word wrapping in the content... maybe a bulma bug?
 .content {
   word-break: break-word;

@@ -31,13 +31,13 @@ const Modal = ({ title, children, stateFn, show, confirm }: Props) => {
   >
     <BulmaModal.Content>
       <Box>
-        <button
+        {!confirm && <button
           type="button"
           onClick={setShowModal}
           className="modal-close is-large"
           aria-label="close"
-        />
-        <Heading className="box__heading oneandhalf-bs" size="small" >{title}</Heading>
+        />}
+        <Heading className="modal__heading oneandhalf-bs" size="small" >{title}</Heading>
         {children}
       </Box>
     </BulmaModal.Content>
