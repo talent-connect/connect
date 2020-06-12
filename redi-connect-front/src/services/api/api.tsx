@@ -109,14 +109,19 @@ export const saveRedProfile = async (
   return savedProfile
 }
 
-export const getProfiles = (userType: UserType): Promise<RedProfile[]> =>
-  http(
+export const getProfiles = (userType: UserType, categories?: string[], languages?: string[]): Promise<RedProfile[]> => {
+  const filterLanguages = (languages && languages.length !== 0) ? { inq: languages } : undefined
+  const filterCategories = (categories && categories.length !== 0) ? { inq: categories } : undefined
+
+  return http(
     `${API_URL}/redProfiles?filter=${JSON.stringify({
-      where: { userType },
+      where: { userType, languages: filterLanguages, categories: filterCategories },
       limit: 0
     })}`
   ).then(resp => resp.data)
-export const getMentors = () => getProfiles('mentor')
+}
+
+export const getMentors = (categories?: string[], languages?: string[]) => getProfiles('mentor', categories, languages)
 export const getMentees = () => getProfiles('mentee')
 
 export const getProfile = (profileId: string): Promise<RedProfile> =>

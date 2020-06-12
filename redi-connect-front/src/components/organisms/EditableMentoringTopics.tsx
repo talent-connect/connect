@@ -1,7 +1,7 @@
 import React from 'react'
 import groupBy from 'lodash/groupBy'
 import { Columns, Heading, Element, Content } from 'react-bulma-components'
-import { FormCheckbox } from '../atoms'
+import { Checkbox } from '../atoms'
 import { Editable, ReadMentoringTopics } from '../molecules'
 import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
@@ -130,7 +130,7 @@ const CategoryGroup = ({ id, label, selectedCategories, onChange, formik }: any)
       </Heading>
       <Element className="mentoring__group">
         {categoriesByGroup[id].map((groupItem) => (
-          <FormCheckbox
+          <Checkbox.Form
             name={`categories-${groupItem.id}`}
             key={groupItem.id}
             value={groupItem.id}
@@ -140,7 +140,7 @@ const CategoryGroup = ({ id, label, selectedCategories, onChange, formik }: any)
             {...formik}
           >
             {groupItem.label}
-          </FormCheckbox>
+          </Checkbox.Form>
         ))}
       </Element>
     </Columns.Column>

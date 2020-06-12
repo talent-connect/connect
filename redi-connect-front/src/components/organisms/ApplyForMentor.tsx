@@ -1,7 +1,7 @@
 import {
   Paper
 } from '@material-ui/core'
-import { Caption, FormTextArea, FormCheckbox, Button } from '../atoms'
+import { Caption, FormTextArea, Checkbox, Button } from '../atoms'
 import { Modal } from '../molecules'
 import { Content, Form } from 'react-bulma-components'
 import { RedProfile } from '../../types/RedProfile'
@@ -119,13 +119,13 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
               {submitResult === 'error' && 'An error occurred, please try again.'}
             </Form.Help>
 
-            <FormCheckbox
+            <Checkbox.Form
               name="dataSharingAccepted"
               checked={formik.values.dataSharingAccepted}
               {...formik}
             >
                   I understand that my profile data will be shared with this mentor
-            </FormCheckbox>
+            </Checkbox.Form>
 
             <Modal.Buttons>
               <Button

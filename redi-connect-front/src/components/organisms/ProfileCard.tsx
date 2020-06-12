@@ -13,7 +13,7 @@ import './ProfileCard.scss'
 
 import { RedProfile } from '../../types/RedProfile'
 
-export const ProfileCard = ({ profile }: { profile: RedProfile }) => {
+const ProfileCard = ({ profile }: { profile: RedProfile }) => {
   const history = useHistory()
 
   return <Card className="profile-card" onClick={() => history.push(`/app/dashboard/profile/${profile.id}`)}>
@@ -30,3 +30,5 @@ export const ProfileCard = ({ profile }: { profile: RedProfile }) => {
     </Card.Content>
   </Card>
 }
+
+export default ProfileCard
