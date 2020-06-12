@@ -1,11 +1,12 @@
 import React from 'react'
-import { Section, Container, Element, Columns, Content } from 'react-bulma-components'
+import { Section, Container, Element, Columns, Content, Image } from 'react-bulma-components'
 import DecoratedHeadline from '../atoms/DecoratedHeadline'
 import { useTranslation } from 'react-i18next'
 import classnames from 'classnames'
 import Slider from 'react-slick'
-import SVGImage from '../atoms/SVGImage'
-import Heading from '../atoms/Heading'
+import khaled from '../../assets/images/profile-khaled.jpg'
+import halil from '../../assets/images/profile-halil.jpg'
+import dragos from '../../assets/images/profile-dragos.jpg'
 import './Carousel.scss'
 
 interface Props {
@@ -21,17 +22,17 @@ const Carousel = ({ headline, title, border }: Props) => {
     {
       title: t('loggedOutArea.homePage.carousel.quotes.quoteKhaled.title'),
       text: t('loggedOutArea.homePage.carousel.quotes.quoteKhaled.text'),
-      img: 'khaled'
+      img: khaled
     },
     {
       title: t('loggedOutArea.homePage.carousel.quotes.quoteDragos.title'),
       text: t('loggedOutArea.homePage.carousel.quotes.quoteDragos.text'),
-      img: 'dragos'
+      img: dragos
     },
     {
       title: t('loggedOutArea.homePage.carousel.quotes.quoteHalil.title'),
       text: t('loggedOutArea.homePage.carousel.quotes.quoteHalil.text'),
-      img: 'halil'
+      img: halil
     }
   ]
 
@@ -58,7 +59,7 @@ const Carousel = ({ headline, title, border }: Props) => {
               <div className="carousel">
                 <Columns key={quote.img} vCentered>
                   <Columns.Column size={6}>
-                    <SVGImage image={quote.img} className={classnames('carousel__image', {
+                    <Image src={quote.img} alt="profile picture" className={classnames('carousel__image', {
                       [`carousel__image--border-${border}`]: border
                     })} />
                   </Columns.Column>
