@@ -27,6 +27,9 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
     profileFetchStart()
   }, [profileFetchStart])
 
+  const userIsMentee =
+    profile.userType === 'mentee' || profile.userType === 'public-sign-up-mentee-pending-review'
+
   return (
     <LoggedIn>
       {loading && 'page loading...'}
@@ -42,13 +45,13 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
             <Columns.Column size={8}>
               <Heading>Hi, {profile.firstName}</Heading>
               <Content size="medium" renderAs="p" responsive={{ mobile: { hide: { value: true } } }}>
-                You have completed 15% of your profile. Let potential mentors know a little bit more about you, so you can find the perfect fit.
+                {`Please fill out your profile. Let potential ${userIsMentee ? 'mentors' : 'mentees'} know a little bit more about you, so you can find the perfect fit.`}
               </Content>
             </Columns.Column>
           </Columns>
           <Element className="block-separator" responsive={{ tablet: { hide: { value: true } } }}>
             <Content size="medium" renderAs="p">
-              You have completed 15% of your profile. Let potential mentors know a little bit more about you, so you can find the perfect fit.
+              {`Please fill out your profile. Let potential ${userIsMentee ? 'mentors' : 'mentees'} know a little bit more about you, so you can find the perfect fit.`}
             </Content>
           </Element>
           <Element className="block-separator">
@@ -85,7 +88,7 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
             </Columns>
           </Element>
 
-          {profile.userType === 'mentee' &&
+          {userIsMentee &&
             <Element className="block-separator">
               <Columns>
                 <Columns.Column size={6}>

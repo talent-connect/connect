@@ -17,15 +17,22 @@ import {
   categories as availableCategories
 } from '../../config/config'
 
+export type UserType =
+  | 'mentor'
+  | 'mentee'
+  | 'public-sign-up-mentor-pending-review'
+  | 'public-sign-up-mentee-pending-review';
+
 export interface MentoringFormValues {
+  isMentor: boolean
   categories: string[]
 }
 
 const validationSchema = Yup.object({
   categories: Yup.array()
     .compact(v => v === 'dontKnowYet')
-    .min(0)
-    .max(3)
+    .min(1)
+    .when('isMentor', { is: false, then: Yup.array().max(3) })
 })
 
 const categoriesByGroup = groupBy(availableCategories, category => category.group)
@@ -38,6 +45,7 @@ interface Props {
 const EditableMentoringTopics = ({ profile, profileSaveStart }: Props) => {
   const {
     id,
+    userType,
     categories
   } = (profile as RedProfile)
 
@@ -48,7 +56,12 @@ const EditableMentoringTopics = ({ profile, profileSaveStart }: Props) => {
     profileSaveStart({ ...profileMentoring, id })
   }
 
+  const isMentor =
+    userType === 'mentor' ||
+    userType === 'public-sign-up-mentor-pending-review'
+
   const initialValues: MentoringFormValues = {
+    isMentor,
     categories: categories || []
   }
 
@@ -83,7 +96,12 @@ const EditableMentoringTopics = ({ profile, profileSaveStart }: Props) => {
       read={<ReadMentoringTopics.Me />}
       className="mentoring"
     >
-      <Content>You can select between 1 and up to 3 topics.</Content>
+      <Content>
+        {isMentor
+          ? 'Select at least one topic where you would like to support mentees.'
+          : 'You can select between 1 and up to 3 topics.'
+        }
+      </Content>
       <Columns>
         <CategoryGroup id="coding" label="Coding" selectedCategories={selectedCategories} onChange={categoriesChange} formik={formik} />
         <CategoryGroup id="careerSupport" label="Career Support" selectedCategories={selectedCategories} onChange={categoriesChange} formik={formik} />
@@ -118,7 +136,7 @@ const CategoryGroup = ({ id, label, selectedCategories, onChange, formik }: any)
             value={groupItem.id}
             checked={selectedCategories.includes(groupItem.id)}
             customOnChange={onChange}
-            disabled={selectedCategories.length > 2 && !selectedCategories.includes(groupItem.id)}
+            disabled={!formik.values.isMentor && selectedCategories.length > 2 && !selectedCategories.includes(groupItem.id)}
             {...formik}
           >
             {groupItem.label}
