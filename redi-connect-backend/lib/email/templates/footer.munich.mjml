@@ -13,7 +13,7 @@
         </td>
       </tr>
       <tr>
-        <td class="table-cell td-mobile">
+        <td class="table-cell td-mobile" rowspan='2'>
           Head of Community Development
         </td>
         <td class="table-cell td-mobile hide-cell-mobile">
@@ -21,9 +21,6 @@
         </td>
       </tr>
       <tr>
-        <td class="table-cell td-mobile">
-          Career Department ReDI School
-        </td>
         <td class="table-cell td-mobile hide-cell-mobile">
           Balanstraße 73, Haus 21A, 3. Stock, 81541 München
         </td>
