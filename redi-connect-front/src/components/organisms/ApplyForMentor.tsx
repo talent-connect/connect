@@ -30,15 +30,13 @@ const initialValues = {
 
 const validationSchema = Yup.object({
   applicationText: Yup.string()
-    .required()
-    .min(250)
-    .max(600)
-    .label('Application message'),
+    .required('Write at least 250 characters to introduce yourself to your mentee.')
+    .min(250, 'Write at least 250 characters to introduce yourself to your mentee.')
+    .max(600, 'The introduction text can be up to 600 characters long.'),
   expectationText: Yup.string()
-    .required()
-    .min(250)
-    .max(600)
-    .label('Motivation message'),
+    .required('Write at least 250 characters about your expectations.')
+    .min(250, 'Write at least 250 characters about your expectations.')
+    .max(600, 'The expectations text can be up to 600 characters long.'),
   dataSharingAccepted: Yup.boolean()
     .required()
     .oneOf([true], 'Sharing profile data with your mentor is required')

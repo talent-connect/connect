@@ -41,7 +41,7 @@ function Profile ({ loading, profile, currentUser, hasReachedMenteeLimit, profil
 
   useEffect(() => {
     profilesFetchOneStart(profileId)
-  }, [profilesFetchOneStart])
+  }, [profilesFetchOneStart, profileId])
 
   const currentUserIsMentor =
   currentUser && currentUser.userType === 'mentor'

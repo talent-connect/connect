@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
 import { Content } from 'react-bulma-components'
-import { Caption, FormTextArea, Button } from '../atoms'
+import { FormTextArea, Button } from '../atoms'
 import { Modal } from '../molecules'
 import { matchesAcceptMentorshipStart } from '../../redux/matches/actions'
 

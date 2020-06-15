@@ -1,6 +1,5 @@
 import React from 'react'
 import Select, { components } from 'react-select'
-import _uniqueId from 'lodash/uniqueId'
 import { Form } from 'react-bulma-components'
 import { Icon } from '../../components/atoms'
 

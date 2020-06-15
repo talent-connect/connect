@@ -31,9 +31,9 @@ export interface AboutFormValues {
 
 const validationSchema = Yup.object({
   personalDescription: Yup.string()
-    .required()
-    .min(100)
-    .max(600)
+    .required('Write at least 100 characters about yourself.')
+    .min(100, 'Write at least 100 characters about yourself.')
+    .max(600, 'The introduction text can be up to 600 characters long.')
     .label('Personal description'),
   menteeCountCapacity: Yup.number().when('userType', {
     is: 'mentor',

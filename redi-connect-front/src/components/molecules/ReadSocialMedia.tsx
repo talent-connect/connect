@@ -24,8 +24,8 @@ const ReadSocialMedia = ({ profile, shortInfo }: Props) => {
   return (<>
     {shortInfo && <Caption>Social Media</Caption>}
     <Content>
-      {linkedInProfileUrl && <p><a href={linkedInProfileUrl} target="_blank">{linkedInProfileUrl}</a></p>}
-      {githubProfileUrl && <p><a href={githubProfileUrl} target="_blank">{githubProfileUrl}</a></p>}
+      {linkedInProfileUrl && <p><a href={linkedInProfileUrl} target="_blank" rel="noopener noreferrer">{linkedInProfileUrl}</a></p>}
+      {githubProfileUrl && <p><a href={githubProfileUrl} target="_blank" rel="noopener noreferrer">{githubProfileUrl}</a></p>}
       {slackUsername && <p>{slackUsername}</p>}
     </Content>
   </>)

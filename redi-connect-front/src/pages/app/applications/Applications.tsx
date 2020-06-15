@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Content, Element } from 'react-bulma-components'
+import { Content } from 'react-bulma-components'
 import Heading from '../../../components/atoms/Heading'
 import { ApplicationCard } from '../../../components/organisms'
 import LoggedIn from '../../../components/templates/LoggedIn'

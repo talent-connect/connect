@@ -42,7 +42,7 @@ const Avatar = ({ profile }: AvatarProps) => {
       'avatar--placeholder': !profileAvatarImageS3Key
     })}>
       {profileAvatarImageS3Key &&
-        <img src={imgURL} className="avatar__image" />
+        <img src={imgURL} alt={`${profile.firstName} ${profile.lastName}`} className="avatar__image" />
       }
 
       {!profileAvatarImageS3Key &&
@@ -85,7 +85,7 @@ const AvatarEditable = ({ profile, profileSaveStart }: AvatarEditable) => {
       'avatar--placeholder': !profileAvatarImageS3Key
     })}>
       {profileAvatarImageS3Key && <>
-        <img src={imgURL} className="avatar__image" />
+        <img src={imgURL} alt={`${profile.firstName} ${profile.lastName}`} className="avatar__image" />
         <Element renderAs="span" className="avatar__button" textSize={7} textTransform="uppercase" >Edit Photo</Element>
       </>}
 
