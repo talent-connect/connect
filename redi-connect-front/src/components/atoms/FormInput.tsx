@@ -25,7 +25,7 @@ function FormInput (props: any) {
   } = props
 
   const hasError = !!touched[name] && !!errors[name]
-  const isValidField = dirty && !errors[name]
+  const isValidField = dirty && !!touched[name] && !errors[name]
 
   return (
     <Form.Field>
