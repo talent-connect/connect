@@ -6,7 +6,7 @@ interface Props {
   items: string[]
 }
 
-const PipList = ({ items }: Props) => {
+const PipeList = ({ items }: Props) => {
   return (
     <Element renderAs="ul" className="pipe-list">
       {items.map((item) => <Element renderAs="li" key={item}>{item}</Element>)}
@@ -14,4 +14,4 @@ const PipList = ({ items }: Props) => {
   )
 }
 
-export default PipList
+export default PipeList
