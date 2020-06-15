@@ -24,10 +24,9 @@ const initialValues = {
 
 const validationSchema = Yup.object({
   mentorReplyMessageOnAccept: Yup.string()
-    .required()
-    .min(250)
-    .max(600)
-    .label('Write a message to your new mentee')
+    .required('Write at least 250 characters to introduce yourself to your mentee.')
+    .min(250, 'Write at least 250 characters to introduce yourself to your mentee.')
+    .max(600, 'The introduction text can be up to 600 characters long.')
 })
 
 // TODO: This throws a TS error: { dispatch, matchId }: ConnectButtonProps
@@ -76,9 +75,8 @@ const ConfirmMentorship = ({ matchId, menteeName, hasReachedMenteeLimit, matches
       title="Accept Application"
     >
       <form>
-        <Caption>Start the conversation </Caption>
         <Content>
-          <p>Please write a few welcoming words to your future mentee and give an info about the next step for your first meeting:</p>
+          <p>Please write a few welcoming words to your future mentee and give some information on your first meeting. (write at least 250 characters)</p>
         </Content>
         <FormTextArea
           name="mentorReplyMessageOnAccept"
