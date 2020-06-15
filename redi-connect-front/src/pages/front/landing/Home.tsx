@@ -3,7 +3,6 @@ import Landing from '../../../components/templates/Landing'
 import { useTranslation } from 'react-i18next'
 import Hero from '../../../components/organisms/RediHero'
 import RediProgram from '../../../components/organisms/RediProgram'
-import Checklist from '../../../components/organisms/Checklist'
 import Carousel from '../../../components/organisms/Carousel'
 import PreFooter from '../../../components/organisms/PreFooter'
 
@@ -13,7 +12,6 @@ export default function Home () {
     <Landing>
       <Hero />
       <RediProgram />
-      <Checklist type='mentee' />
       <Carousel
         border="orange"
         headline={t('loggedOutArea.homePage.carousel.headline')}
