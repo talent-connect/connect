@@ -5,8 +5,11 @@
   border: 1px solid $grey;
   padding: $block-spacing;
   border-radius: $radius;
-  margin-bottom: $block-spacing;
   
+  &:not(:last-child) {
+    margin-bottom: $block-spacing;
+  }
+
   // not happy with the solution, time for refactoring together with avatar
   &__avatar {
     display: flex;
@@ -15,7 +18,7 @@
       width: 2rem;
       height: 2rem;
       padding-top: 2rem;
-      margin-right: 0.5rem;
+      margin: 0 0.5rem;
       flex-shrink: 0;
     }
   }
@@ -33,7 +36,7 @@
 
   &-details {
     transition: $transition;
-    padding: 0 2rem;
+    padding: 0 1.5rem;
     overflow: hidden;
 
     &--hide {
@@ -42,7 +45,7 @@
 
     &--show {
       max-height: 500px;
-      margin-bottom: $block-spacing * 2;
+      margin: 1.5rem 0;
     }
   }
 

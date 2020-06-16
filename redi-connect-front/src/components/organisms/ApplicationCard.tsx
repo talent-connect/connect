@@ -21,7 +21,7 @@ const ApplicationCard = ({ application }: Props) => {
   return (<>
     <div className="application-card">
       <Columns vCentered>
-        <Columns.Column size={5} className="application-card__avatar">
+        <Columns.Column size={4} className="application-card__avatar">
           <Avatar profile={applicationUser} />
           {applicationUser && <span>{applicationUser.firstName} {applicationUser.lastName}</span>}
         </Columns.Column>
@@ -30,7 +30,7 @@ const ApplicationCard = ({ application }: Props) => {
           <span className="application-card__link" onClick={() => history.push(`/app/applications/profile/${applicationUser && applicationUser.id}`)}>Visit Profile</span>
         </Columns.Column>
 
-        <Columns.Column size={2} textAlignment="right">
+        <Columns.Column size={3} textAlignment="centered">
           From {`${applicationDate.getDay()}.${applicationDate.getMonth()}.${applicationDate.getFullYear()}`}
         </Columns.Column>
 
