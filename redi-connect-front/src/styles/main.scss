@@ -100,8 +100,9 @@ a:hover {
   word-break: break-word;
 }
 
-.title, .subtitle {
-  + .content {
+.title,
+.subtitle {
+  +.content {
     margin-top: -0.5rem;
   }
 }
@@ -156,6 +157,21 @@ a:hover {
   }
 }
 
+.mentee-border-color {
+  border-color: $redi-orange-dark;
+
+  & g {
+    fill: $redi-orange-dark;
+  }
+}
+
+.mentor-border-color {
+  border-color: $redi-blue-dark;
+
+  & g {
+    fill: $redi-bluey-dark;
+  }
+}
 .double-bs {
   margin-bottom: 1rem;
 

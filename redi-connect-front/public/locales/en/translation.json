@@ -37,49 +37,86 @@
         "mentor": {
           "headline": "How to become a mentor?",
           "content": "Putting two minds together is always more fun and interesting than coming up with something by yourself! That’s why we want to connect you as mentors with the students and alumni of our Digital Career Program. Share your experience, your network and your knowledge. In exchange, you will look at things from a different perspective or simply meet a great person!",
-          "steps": {
-            "name": "steps",
-            "step1": "Register on the platform & get approved by ReDI",
-            "step2": "Create your profile to let mentees get to know you better",
-            "step3": "Browse around for finding a suitable mentee",
-            "step4": "Review applications from mentees & accept or decline",
-            "step5": "Get to know a person and culture better"
-          }
+          "programName": "steps",
+          "steps": [{
+              "name": "Register on the platform & get approved by ReDI",
+              "image": "career"
+            },
+            {
+              "name": "Create your profile to let mentees get to know you better",
+              "image": "clipboard"
+
+            },
+            {
+              "name": "Browse around for finding a suitable mentee",
+              "image": "search"
+
+            },
+            {
+              "name": "Review applications from mentees & accept or decline",
+              "image": "calendar"
+
+            },
+            {
+              "name": "Get to know a person and culture better",
+              "image": "certificate"
+            }
+          ]
         },
         "mentee": {
           "headline": "How to become a mentee?",
           "content": "With the mentorship program we connect our students and alumni of the Digital Career Programm with (IT) professionals from leading companies. As a student or “mentee” you get guidance, career advice and high level support with your personal and professional environment.",
-          "steps": {
-            "name": "steps",
-            "step1": "Register on the platform & get approved by ReDI",
-            "step2": "Create your profile to tell potential mentors about you",
-            "step3": "Apply for your prefered mentor and get approved",
-            "step4": "Plan sessions and meet  with your mentor on a regular basis ",
-            "step5": "Get support on achieving your career goals"
-          }
+          "programName": "steps",
+          "steps": [{
+              "name": "Register on the platform & get approved by ReDI",
+              "image": "career"
+            },
+            {
+              "name": "Create your profile to tell potential mentors about you",
+              "image": "clipboard"
+
+            },
+            {
+              "name": "Apply for your prefered mentor and get approved",
+              "image": "search"
+
+            },
+            {
+              "name": "Plan sessions and meet  with your mentor on a regular basis ",
+              "image": "calendar"
+
+            },
+            {
+              "name": "Get support on achieving your career goals",
+              "image": "certificate"
+            }
+          ]
         }
       },
       "program": {
         "subHeadline": "about redi connect",
         "headline": "What our Mentorship Program is all about ...",
-        "steps": {
-          "step1": {
+        "steps": [{
             "content": "Connect yourself with the right mentor/ mentee",
-            "headline": "1. Set up your profile"
+            "headline": "1. Set up your profile",
+            "image": "career"
           },
-          "step2": {
+          {
             "content": "Get/ give career and personal advice and support",
-            "headline": "2. Get connected"
+            "headline": "2. Get connected",
+            "image": "search"
           },
-          "step3": {
+          {
             "content": "Get/ Give support with your ReDI Course/ Coding & technical skills",
-            "headline": "3. Plan meetings"
+            "headline": "3. Plan meetings",
+            "image": "chat"
           },
-          "step4": {
+          {
             "content": "Grow your personal and professional network",
-            "headline": "4. Meet in person/ virtually"
+            "headline": "4. Meet in person/ virtually",
+            "image": "handshake"
           }
-        }
+        ]
       },
       "checklist": {
         "mentor": {

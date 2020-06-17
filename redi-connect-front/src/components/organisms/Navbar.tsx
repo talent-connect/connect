@@ -31,8 +31,8 @@ const LoggedOutNavItems = () => {
   return (
     <>
       <NavItem url='/front/home'>{t('button.about')}</NavItem>
-      <NavItem url='/front/home/mentee'>{t('button.mentees')}</NavItem>
-      <NavItem url='/front/home/mentor'>{t('button.mentors')}</NavItem>
+      <NavItem url='/front/landing/mentee'>{t('button.mentees')}</NavItem>
+      <NavItem url='/front/landing/mentor'>{t('button.mentors')}</NavItem>
     </>
   )
 }

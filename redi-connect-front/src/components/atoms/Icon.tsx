@@ -10,6 +10,16 @@ import { ReactComponent as Chevron } from '../../assets/images/chevron.svg'
 import { ReactComponent as Mail } from '../../assets/images/mail.svg'
 import { ReactComponent as Heart } from '../../assets/images/heart.svg'
 import { ReactComponent as HeartFilled } from '../../assets/images/heart-filled.svg'
+import { ReactComponent as Clipboard } from '../../assets/images/clipboard.svg'
+import { ReactComponent as Calendar } from '../../assets/images/calendar.svg'
+import { ReactComponent as Certificate } from '../../assets/images/certificate.svg'
+import { ReactComponent as Search } from '../../assets/images/search.svg'
+import { ReactComponent as Career } from '../../assets/images/career.svg'
+import { ReactComponent as Arrow } from '../../assets/images/arrow-step.svg'
+import { ReactComponent as Mentee } from '../../assets/images/hero-mentee.svg'
+import { ReactComponent as Mentor } from '../../assets/images/hero-mentor.svg'
+import { ReactComponent as Chat } from '../../assets/images/chat.svg'
+import { ReactComponent as Handshake } from '../../assets/images/handshake.svg'
 
 import './Icon.scss'
 
@@ -24,7 +34,17 @@ interface IconProps {
     'chevron'|
     'heart'|
     'heartFilled'|
-    'mail'
+    'mail' |
+    'clipboard' |
+    'certificate' |
+    'search' |
+    'arrow' |
+    'calendar' |
+    'career' |
+    'mentee' |
+    'mentor' |
+    'chat' |
+    'handshake'
   size?: 'small' | 'medium' | 'large'
   space?: 'left' | 'right'
   className?: string
@@ -41,6 +61,16 @@ const Icons = {
   chevron: Chevron,
   heart: Heart,
   heartFilled: HeartFilled,
+  clipboard: Clipboard,
+  calendar: Calendar,
+  certificate: Certificate,
+  search: Search,
+  career: Career,
+  arrow: Arrow,
+  mentee: Mentee,
+  mentor: Mentor,
+  handshake: Handshake,
+  chat: Chat,
   mail: Mail
 }
 

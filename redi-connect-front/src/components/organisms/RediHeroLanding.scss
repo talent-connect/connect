@@ -2,15 +2,16 @@
 @import "../../styles/_variables.scss";
 
 .redi-hero {
-  &__background--mentee {
+  &--mentee {
     background-image: linear-gradient(to bottom, $redi-orange-light 80%, $white 80%);
+
 
     @include mobile() {
       background-image: linear-gradient(to bottom, $redi-orange-light 95%, $white 95%);
     }
   }
 
-  &__background--mentor {
+  &--mentor {
     background-image: linear-gradient(to bottom, $redi-blue-light 80%, $white 80%);
 
     @include mobile() {
@@ -21,20 +22,19 @@
   &__content {
     @include desktop() {
       margin: 0 auto;
-      margin-top: auto;
-      margin-bottom: 2rem;
+      margin-top: auto; // not applied on landing but on home page
+      margin-bottom: 2rem; // not applied on landing but on home page
       max-width: 70%;
     }
   }
 
   &__illustration {
-
     @include desktop() {
       position: absolute;
-      top: 3rem;
+      bottom: 5rem;
 
       &--mentor {
-        right: -6rem;
+        right: -5rem;
       }
 
       &--mentee {
@@ -65,7 +65,8 @@
     }
 
     @include mobile() {
-      border-left: 2px solid;
+      border-width: 2px;
+      border-left-style: solid;
       padding: 0 1rem;
 
       &:not(:last-child) {
@@ -75,20 +76,10 @@
       &:last-child {
         margin-bottom: 1rem;
       }
-
-      &--mentee {
-        border-color: $redi-orange-dark;
-      }
-
-      &--mentor {
-        border-color: $redi-blue-dark;
-      }
     }
   }
 
   &__icon {
-    height: 3.75rem;
-
     &--arrow {
       @include tablet() {
         margin-top: 3.5rem;
@@ -109,31 +100,11 @@
         margin-bottom: 2rem;
       }
     }
-
-    &--mentee g {
-      fill: $redi-orange-dark;
-    }
-
-    &--mentor g {
-      fill: $redi-blue-dark;
-    }
   }
 
   &__separator {
-    border: 1px solid;
+    border-width: 1px;
+    border-style: solid;
     margin: 1rem 0;
-
-    &--mentee {
-      border-color: $redi-orange-dark;
-    }
-
-    &--mentor {
-
-      border-color: $redi-blue-dark;
-    }
-
-    @include mobile() {
-      display: none;
-    }
   }
 }
