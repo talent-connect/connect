@@ -1,7 +1,10 @@
 import React from 'react'
 import classnames from 'classnames'
+import { NavLink } from 'react-router-dom'
 import Icon from './Icon'
 import './Button.scss'
+
+const baseClass = 'button'
 
 interface Props {
   children: any
@@ -13,6 +16,12 @@ interface Props {
   simple?: boolean
 }
 
+interface NavProps {
+  children: any
+  to: string
+  size?: 'large' | 'medium' | 'small'
+}
+
 const Button = ({
   children,
   size = 'small',
@@ -22,8 +31,6 @@ const Button = ({
   separator,
   disabled
 }: Props) => {
-  const baseClass = 'button'
-
   return (
     <button
       onClick={onClick}
@@ -37,6 +44,23 @@ const Button = ({
     >
       {children}
     </button>
+  )
+}
+
+Button.Nav = ({
+  children,
+  to,
+  size = 'small'
+}: NavProps) => {
+  return (
+    <NavLink
+      to={to !== undefined ? to : '/'}
+      activeClassName={`${baseClass}__nav--active`}
+      className={classnames(baseClass, `${baseClass}__nav`, {
+        [`${baseClass}--${size}`]: size
+      })}>
+      {children}
+    </NavLink>
   )
 }
 

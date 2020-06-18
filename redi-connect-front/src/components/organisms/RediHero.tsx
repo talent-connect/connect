@@ -14,9 +14,9 @@ const RediHero = () => {
   return (
     <Section className="default-background">
       <Container>
-        <Columns>
-          <Columns.Column size={5} className="redi-hero__content">
-            <Heading>
+        <Columns vCentered>
+          <Columns.Column size={5}>
+            <Heading className="five-bs">
               {t('loggedOutArea.homePage.hero.about.headline')}
             </Heading>
             <Deloitte className="oneandhalf-bs" />

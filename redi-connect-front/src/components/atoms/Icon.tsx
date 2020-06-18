@@ -16,8 +16,6 @@ import { ReactComponent as Certificate } from '../../assets/images/certificate.s
 import { ReactComponent as Search } from '../../assets/images/search.svg'
 import { ReactComponent as Career } from '../../assets/images/career.svg'
 import { ReactComponent as Arrow } from '../../assets/images/arrow-step.svg'
-import { ReactComponent as Mentee } from '../../assets/images/hero-mentee.svg'
-import { ReactComponent as Mentor } from '../../assets/images/hero-mentor.svg'
 import { ReactComponent as Chat } from '../../assets/images/chat.svg'
 import { ReactComponent as Handshake } from '../../assets/images/handshake.svg'
 
@@ -41,8 +39,6 @@ interface IconProps {
     'arrow' |
     'calendar' |
     'career' |
-    'mentee' |
-    'mentor' |
     'chat' |
     'handshake'
   size?: 'small' | 'medium' | 'large'
@@ -67,8 +63,6 @@ const Icons = {
   search: Search,
   career: Career,
   arrow: Arrow,
-  mentee: Mentee,
-  mentor: Mentor,
   handshake: Handshake,
   chat: Chat,
   mail: Mail

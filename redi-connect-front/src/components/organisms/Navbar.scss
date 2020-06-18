@@ -25,17 +25,6 @@
     }
   }
 
-  &__item {
-    color: $black;
-    font-weight: $weight-normal;
-
-    &--active,
-    &:hover {
-      text-decoration: none;
-      color: $redi-orange-dark;
-    }
-  }
-
   &__mobile {
     display: flex;
     flex-direction: column;

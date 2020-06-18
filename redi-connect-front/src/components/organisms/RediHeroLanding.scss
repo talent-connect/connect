@@ -1,7 +1,7 @@
 @import "~bulma/sass/utilities/_all";
 @import "../../styles/_variables.scss";
 
-.redi-hero {
+.hero-landing {
   &--mentee {
     background-image: linear-gradient(to bottom, $redi-orange-light 80%, $white 80%);
 
@@ -22,8 +22,6 @@
   &__content {
     @include desktop() {
       margin: 0 auto;
-      margin-top: auto; // not applied on landing but on home page
-      margin-bottom: 2rem; // not applied on landing but on home page
       max-width: 70%;
     }
   }
@@ -31,14 +29,15 @@
   &__illustration {
     @include desktop() {
       position: absolute;
-      bottom: 5rem;
 
       &--mentor {
         right: -5rem;
+        top: 5rem;
       }
 
       &--mentee {
         left: -5rem;
+        top: 3rem;
       }
     }
 

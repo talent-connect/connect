@@ -3,6 +3,7 @@ import classnames from 'classnames'
 import { Section, Container, Element, Heading, Content, Columns } from 'react-bulma-components'
 import { useTranslation } from 'react-i18next'
 import Icon from '../atoms/Icon'
+import Image from '../atoms/Image'
 import './RediHeroLanding.scss'
 
 interface Props {
@@ -11,13 +12,13 @@ interface Props {
 
 const RediHeroLanding = ({ type }: Props) => {
   const { t } = useTranslation()
-  const programSteps: Array<{name: string, image: any }> =
-  t(`loggedOutArea.homePage.hero.${type}.steps`, { returnObjects: true })
+  const programSteps: Array<{ name: string, image: any }> =
+    t(`loggedOutArea.homePage.hero.${type}.steps`, { returnObjects: true })
   const baseClass = `${type}-border-color`
 
   return (
     <>
-      <Section className={classnames({ [`redi-hero--${type}`]: type })}>
+      <Section className={classnames({ [`hero-landing--${type}`]: type })}>
         <Container>
           <Heading
             size={1}
@@ -32,8 +33,8 @@ const RediHeroLanding = ({ type }: Props) => {
             mobile: { textAlignment: { value: 'centered' } },
             'tablet-only': { hide: { value: true } }
           }}>
-            <Icon icon={type} size="default" className={classnames('redi-hero__illustration', {
-              [`redi-hero__illustration--${type}`]: type
+            <Image image={type} className={classnames('hero-landing__illustration', {
+              [`hero-landing__illustration--${type}`]: type
             })} />
           </Content>
           <Element
@@ -43,29 +44,29 @@ const RediHeroLanding = ({ type }: Props) => {
               tablet: { textAlignment: { value: 'centered' } },
               mobile: { textSize: { value: 5 } }
             }}
-            className="redi-hero__content"
+            className="hero-landing__content"
           >
             {t(`loggedOutArea.homePage.hero.${type}.content`)}
           </Element>
-          <Columns className="default-background redi-hero__columns">
+          <Columns className="default-background hero-landing__columns">
             <Columns.Column narrow>
-              <Icon icon='arrow' size="large" className={`${baseClass} redi-hero__icon--arrow`} />
+              <Icon icon='arrow' size="large" className={`${baseClass} hero-landing__icon--arrow`} />
               <Element
                 textSize={7}
                 renderAs="p"
                 textTransform="uppercase"
-                className="redi-hero__icon--name"
+                className="hero-landing__icon--name"
               >
                 {t(`loggedOutArea.homePage.hero.${type}.programName`)}
               </Element>
             </Columns.Column>
             {programSteps.map((step, index) =>
-              <Columns.Column key={index} className={`${baseClass} redi-hero__column`}>
+              <Columns.Column key={index} className={`${baseClass} hero-landing__column`}>
                 <Icon icon={step.image} size="large" className={baseClass} />
                 <Element
                   renderAs="hr"
                   responsive={{ mobile: { hide: { value: true } } }}
-                  className={`${baseClass} redi-hero__separator`}
+                  className={`${baseClass} hero-landing__separator`}
                 />
                 <Element
                   textSize={5}

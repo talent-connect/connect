@@ -2,37 +2,21 @@ import React, { useState } from 'react'
 import Button from '../atoms/Button'
 import { isLoggedIn } from '../../services/auth/auth'
 import { logout } from '../../services/api/api'
-import { Section, Container, Element, Content } from 'react-bulma-components'
+import { Section, Container, Element } from 'react-bulma-components'
 import Logo from '../atoms/Logo'
 import classnames from 'classnames'
-import { useHistory, NavLink } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import './Navbar.scss'
-
-interface NavItemProps {
-  url: string
-  children: any
-}
 
 const LoggedOutNavItems = () => {
   const { t } = useTranslation()
 
-  const NavItem = ({ url, children }: NavItemProps) => (
-    <NavLink
-      exact
-      to={url}
-      className="navbar__item button button--simple button--small"
-      activeClassName="navbar__item--active"
-    >
-      {children}
-    </NavLink>
-  )
-
   return (
     <>
-      <NavItem url='/front/home'>{t('button.about')}</NavItem>
-      <NavItem url='/front/landing/mentee'>{t('button.mentees')}</NavItem>
-      <NavItem url='/front/landing/mentor'>{t('button.mentors')}</NavItem>
+      <Button.Nav to='/front/home'>{t('button.about')}</Button.Nav>
+      <Button.Nav to='/front/landing/mentee'>{t('button.mentees')}</Button.Nav>
+      <Button.Nav to='/front/landing/mentor'>{t('button.mentors')}</Button.Nav>
     </>
   )
 }

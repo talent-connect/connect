@@ -95,6 +95,18 @@
     }
   }
 
+  &__nav {
+    border: none;
+    font-weight: $weight-normal;
+    color: $black;
+
+    &:hover,
+    &--active {
+      text-decoration: none;
+      color: $redi-orange-dark;
+    }
+  }
+
   &--small {
     height: 3rem;
   }

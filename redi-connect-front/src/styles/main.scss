@@ -157,6 +157,10 @@ a:hover {
   }
 }
 
+.five-bs {
+  margin-top: 5rem;
+}
+
 .mentee-border-color {
   border-color: $redi-orange-dark;
 
@@ -169,10 +173,9 @@ a:hover {
   border-color: $redi-blue-dark;
 
   & g {
-    fill: $redi-bluey-dark;
+    fill: $redi-blue-dark;
   }
-}
-.double-bs {
+}.double-bs {
   margin-bottom: 1rem;
 
   @include tablet() {
