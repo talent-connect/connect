@@ -2,9 +2,14 @@
 @import "../../styles/_variables.scss";
 
 .application-card {
-  border: 1px solid $grey;
   padding: $block-spacing;
   border-radius: $radius;
+  transition: $transition;
+  box-shadow: $card-shadow;
+
+  &:hover {
+    box-shadow: $card-shadow-hover;
+  }
   
   &:not(:last-child) {
     margin-bottom: $block-spacing;
@@ -38,10 +43,7 @@
     transition: $transition;
     padding: 0 1.5rem;
     overflow: hidden;
-
-    &--hide {
-      max-height: 0;
-    }
+    max-height: 0;
 
     &--show {
       max-height: 500px;
@@ -50,23 +52,11 @@
   }
 
   &-dropdown {
-    width: .7rem;
-    height: .7rem;
-    display: inline-block;
-    border-right: 1px solid $primary;
-    border-bottom: 1px solid $primary;
     transition: $transition;
-    vertical-align: middle;
-    cursor: pointer;
-    
-    &--up {  
-      transform: rotate(225deg);
-      margin-top: 15%;
-    }
+    float: right;
 
-    &--down {
-      transform: rotate(45deg);
-      margin-top: -25%;
+    &--show {  
+      transform: rotate(180deg);
     }
   }
 }

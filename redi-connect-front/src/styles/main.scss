@@ -151,3 +151,11 @@ a:hover {
     margin-bottom: 1.5rem !important;
   }
 }
+
+.double-bs {
+  margin-bottom: 1rem;
+
+  @include tablet() {
+    margin-bottom: 2rem !important;
+  }
+}

@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
+import classnames from 'classnames'
 import { Columns, Heading, Content } from 'react-bulma-components'
 import { getRedProfile } from '../../services/auth/auth'
 import { RedMatch } from '../../types/RedMatch'
+import { Icon } from '../atoms'
 import { Avatar } from '../organisms'
 import { useHistory } from 'react-router-dom'
 
@@ -11,12 +13,17 @@ interface Props {
   application: RedMatch & { createdAt?: string }
 }
 
+const STATUS_LABELS: any = {
+  applied: 'Pending'
+}
+
 const ApplicationCard = ({ application }: Props) => {
   const history = useHistory()
   const profile = getRedProfile()
   const [showDetails, setShowDetails] = useState(false)
   const applicationDate = new Date(application.createdAt || '')
   const applicationUser = profile.userType === 'mentee' ? application.mentor : application.mentee
+  const padDate = (date: number) => `${date < 10 && '0'}${date}`
 
   return (<>
     <div className="application-card">
@@ -31,20 +38,29 @@ const ApplicationCard = ({ application }: Props) => {
         </Columns.Column>
 
         <Columns.Column size={3} textAlignment="centered">
-          From {`${applicationDate.getDay()}.${applicationDate.getMonth()}.${applicationDate.getFullYear()}`}
+          From {`${padDate(applicationDate.getDay())}.${padDate(applicationDate.getMonth())}.${applicationDate.getFullYear()}`}
         </Columns.Column>
 
         <Columns.Column size={2} textAlignment="right">
-          {application.status}
+          {STATUS_LABELS[application.status]}
         </Columns.Column>
 
         <Columns.Column size={1} textAlignment="centered">
-          <span className={`application-card-dropdown application-card-dropdown--${showDetails ? 'up' : 'down'}`} onClick={() => setShowDetails(!showDetails)}></span>
+          <Icon
+            icon="chevron"
+            size="small"
+            className={classnames('application-card-dropdown',
+              { 'application-card-dropdown--show': showDetails }
+            )}
+            onClick={() => setShowDetails(!showDetails)}
+          />
         </Columns.Column>
       </Columns>
     </div>
 
-    <div className={`application-card-details application-card-details--${showDetails ? 'show' : 'hide'}`}>
+    <div className={classnames('application-card-details',
+      { 'application-card-details--show': showDetails })
+    }>
       <Heading
         size={6}
         weight="normal"
