@@ -19,6 +19,11 @@
   &__avatar {
     display: flex;
     align-items: center;
+
+    @include mobile() {
+      justify-content: center;
+    }
+
     .avatar {
       width: 2rem;
       height: 2rem;
@@ -46,15 +51,16 @@
     max-height: 0;
 
     &--show {
-      max-height: 500px;
+      max-height: 1000px;
       margin: 1.5rem 0;
     }
   }
 
   &-dropdown {
     transition: $transition;
-    float: right;
-
+    @include tablet() {
+      float: right;
+    }
     &--show {  
       transform: rotate(180deg);
     }
