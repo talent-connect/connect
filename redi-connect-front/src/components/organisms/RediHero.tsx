@@ -4,8 +4,9 @@ import Heading from '../atoms/Heading'
 import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Button from '../atoms/Button'
-import team from '../../assets/images/hero.svg'
 import { ReactComponent as Deloitte } from '../../assets/images/deloitte.svg'
+import SVGImage from '../atoms/SVGImage'
+import './RediHero.scss'
 
 const RediHero = () => {
   const history = useHistory()
@@ -16,12 +17,12 @@ const RediHero = () => {
       <Container>
         <Columns vCentered>
           <Columns.Column size={5}>
-            <Heading className="five-bs">
+            <Heading className="redi-hero__headline">
               {t('loggedOutArea.homePage.hero.about.headline')}
             </Heading>
             <Deloitte className="oneandhalf-bs" />
             <Columns.Column responsive={{ tablet: { hide: { value: true } } }}>
-              <img src={team} alt="team" />
+              <SVGImage image="hero" className="redi-hero__image" />
             </Columns.Column>
             <Element
               renderAs="p"
@@ -38,7 +39,7 @@ const RediHero = () => {
             </Content>
           </Columns.Column>
           <Columns.Column offset={1} responsive={{ mobile: { hide: { value: true } } }}>
-            <img src={team} alt="team" />
+            <SVGImage image="hero" className="redi-hero__image" />
           </Columns.Column>
         </Columns>
       </Container>

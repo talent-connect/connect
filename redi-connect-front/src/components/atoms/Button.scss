@@ -95,16 +95,19 @@
     }
   }
 
-  &__nav {
+  &--nav {
     border: none;
     font-weight: $weight-normal;
     color: $black;
 
-    &:hover,
-    &--active {
+    &:hover {
       text-decoration: none;
       color: $redi-orange-dark;
     }
+  }
+
+  &--active {
+    color: $redi-orange-dark;
   }
 
   &--small {

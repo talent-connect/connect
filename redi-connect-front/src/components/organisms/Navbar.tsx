@@ -14,9 +14,9 @@ const LoggedOutNavItems = () => {
 
   return (
     <>
-      <Button.Nav to='/front/home'>{t('button.about')}</Button.Nav>
-      <Button.Nav to='/front/landing/mentee'>{t('button.mentees')}</Button.Nav>
-      <Button.Nav to='/front/landing/mentor'>{t('button.mentors')}</Button.Nav>
+      <Button to='/front/home'>{t('button.about')}</Button>
+      <Button to='/front/landing/mentee'>{t('button.mentees')}</Button>
+      <Button to='/front/landing/mentor'>{t('button.mentors')}</Button>
     </>
   )
 }
@@ -64,7 +64,7 @@ const LoggedInButtons = ({ mobile }: { mobile?: boolean }) => {
   )
 }
 
-const LoggedOutNavbar = () => {
+const Navbar = () => {
   const [menuActive, setMenuActive] = useState(false)
 
   const mobileMenu = (
@@ -122,4 +122,4 @@ const LoggedOutNavbar = () => {
   )
 }
 
-export default LoggedOutNavbar
+export default Navbar

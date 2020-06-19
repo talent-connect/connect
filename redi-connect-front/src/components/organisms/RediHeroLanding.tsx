@@ -3,7 +3,7 @@ import classnames from 'classnames'
 import { Section, Container, Element, Heading, Content, Columns } from 'react-bulma-components'
 import { useTranslation } from 'react-i18next'
 import Icon from '../atoms/Icon'
-import Image from '../atoms/Image'
+import SVGImage from '../atoms/SVGImage'
 import './RediHeroLanding.scss'
 
 interface Props {
@@ -18,7 +18,7 @@ const RediHeroLanding = ({ type }: Props) => {
 
   return (
     <>
-      <Section className={classnames({ [`hero-landing--${type}`]: type })}>
+      <Section className={classnames({ [`hero-landing__section--${type}`]: type })}>
         <Container>
           <Heading
             size={1}
@@ -33,7 +33,7 @@ const RediHeroLanding = ({ type }: Props) => {
             mobile: { textAlignment: { value: 'centered' } },
             'tablet-only': { hide: { value: true } }
           }}>
-            <Image image={type} className={classnames('hero-landing__illustration', {
+            <SVGImage image={type} className={classnames('hero-landing__illustration', {
               [`hero-landing__illustration--${type}`]: type
             })} />
           </Content>
@@ -48,9 +48,9 @@ const RediHeroLanding = ({ type }: Props) => {
           >
             {t(`loggedOutArea.homePage.hero.${type}.content`)}
           </Element>
-          <Columns className="default-background hero-landing__columns">
+          <Columns className={`${baseClass} hero-landing__columns`}>
             <Columns.Column narrow>
-              <Icon icon='arrow' size="large" className={`${baseClass} hero-landing__icon--arrow`} />
+              <Icon icon='arrow' size="large" className="hero-landing__icon--arrow" />
               <Element
                 textSize={7}
                 renderAs="p"
@@ -61,12 +61,12 @@ const RediHeroLanding = ({ type }: Props) => {
               </Element>
             </Columns.Column>
             {programSteps.map((step, index) =>
-              <Columns.Column key={index} className={`${baseClass} hero-landing__column`}>
-                <Icon icon={step.image} size="large" className={baseClass} />
+              <Columns.Column key={index} className="hero-landing__column">
+                <Icon icon={step.image} size="large" />
                 <Element
                   renderAs="hr"
                   responsive={{ mobile: { hide: { value: true } } }}
-                  className={`${baseClass} hero-landing__separator`}
+                  className="hero-landing__separator"
                 />
                 <Element
                   textSize={5}

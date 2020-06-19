@@ -4,22 +4,15 @@ import { NavLink } from 'react-router-dom'
 import Icon from './Icon'
 import './Button.scss'
 
-const baseClass = 'button'
-
 interface Props {
   children: any
   size?: 'large' | 'medium' | 'small'
   fullWidth?: boolean
   disabled?: boolean
   separator?: boolean
-  onClick: () => void
+  onClick?: () => void
   simple?: boolean
-}
-
-interface NavProps {
-  children: any
-  to: string
-  size?: 'large' | 'medium' | 'small'
+  to?: string
 }
 
 const Button = ({
@@ -29,9 +22,12 @@ const Button = ({
   fullWidth,
   onClick,
   separator,
-  disabled
+  disabled,
+  to
 }: Props) => {
-  return (
+  const baseClass = 'button'
+
+  const button = (
     <button
       onClick={onClick}
       disabled={disabled}
@@ -45,23 +41,19 @@ const Button = ({
       {children}
     </button>
   )
-}
 
-Button.Nav = ({
-  children,
-  to,
-  size = 'small'
-}: NavProps) => {
-  return (
+  const navLink = (
     <NavLink
-      to={to !== undefined ? to : '/'}
-      activeClassName={`${baseClass}__nav--active`}
-      className={classnames(baseClass, `${baseClass}__nav`, {
+      to={to || '/'}
+      activeClassName={`${baseClass}--active`}
+      className={classnames(baseClass, `${baseClass}--nav`, {
         [`${baseClass}--${size}`]: size
       })}>
       {children}
     </NavLink>
   )
+
+  return to ? navLink : button
 }
 
 Button.Icon = Icon

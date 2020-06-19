@@ -2,20 +2,22 @@
 @import "../../styles/_variables.scss";
 
 .hero-landing {
-  &--mentee {
-    background-image: linear-gradient(to bottom, $redi-orange-light 80%, $white 80%);
+  &__section {
+    &--mentee {
+      background-image: linear-gradient(to bottom, $redi-orange-light 80%, $white 80%);
 
 
-    @include mobile() {
-      background-image: linear-gradient(to bottom, $redi-orange-light 95%, $white 95%);
+      @include mobile() {
+        background-image: linear-gradient(to bottom, $redi-orange-light 95%, $white 95%);
+      }
     }
-  }
 
-  &--mentor {
-    background-image: linear-gradient(to bottom, $redi-blue-light 80%, $white 80%);
+    &--mentor {
+      background-image: linear-gradient(to bottom, $redi-blue-light 80%, $white 80%);
 
-    @include mobile() {
-      background-image: linear-gradient(to bottom, $redi-blue-light 95%, $white 95%);
+      @include mobile() {
+        background-image: linear-gradient(to bottom, $redi-blue-light 95%, $white 95%);
+      }
     }
   }
 
@@ -47,6 +49,7 @@
   }
 
   &__columns {
+    background: $white;
     padding: 2rem;
     border-radius: .25rem;
     margin: 4rem 0;
