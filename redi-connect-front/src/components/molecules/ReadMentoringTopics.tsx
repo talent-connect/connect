@@ -13,17 +13,24 @@ interface ReadMentoringProps {
 
 interface TagsProps {
   items: string[]
+  shortList?: boolean
 }
 
-const ProfileTags = ({ items }: TagsProps) => (
-  <Tag.Group>
-    {items.map(tagId =>
-      <Tag key={tagId} size="large" rounded textWeight="bold">
+const ProfileTags = ({ items, shortList }: TagsProps) => {
+  const additionalTagsCount = items.length - 3
+  const tagList = shortList ? items.slice(0, 3) : items
+
+  return <Tag.Group>
+    {tagList.map(tagId =>
+      <Tag key={tagId} size="medium" rounded textWeight="bold">
         {categoriesIdToLabelMap[tagId]}
       </Tag>
     )}
+    {(shortList && additionalTagsCount > 0) && <Tag size="medium" rounded textWeight="bold">
+      {'+' + additionalTagsCount}
+    </Tag>}
   </Tag.Group>
-)
+}
 
 const ReadMentoringTopics = ({ profile, caption }: ReadMentoringProps) => {
   const {
@@ -46,5 +53,5 @@ const mapStateToProps = (state: RootState) => ({
 export default {
   Me: connect(mapStateToProps, {})(ReadMentoringTopics),
   Some: ({ profile }: ReadMentoringProps) => <ReadMentoringTopics profile={profile} caption />,
-  Tags: ({ items }: TagsProps) => <ProfileTags items={items} />
+  Tags: ({ items, shortList }: TagsProps) => <ProfileTags items={items} shortList/>
 }

@@ -56,7 +56,7 @@ const LoggedIn = ({ children, matches, matchesFetchStart, matchesMarkAsDismissed
             <Columns.Column desktop={{ size: 2 }} className="column--side-menu">
               <SideMenu />
             </Columns.Column>
-            <Columns.Column desktop={{ size: 9, offset: 1 }}>
+            <Columns.Column desktop={{ size: 9, offset: 1 }} className="column--main-content">
               {profile.userType === 'public-sign-up-mentee-pending-review' &&
                 <AccountNotReDI>
                   <strong>Thanks for signing up!</strong> We are reviewing your profile and will send

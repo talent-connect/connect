@@ -9,8 +9,10 @@ import { getMentors } from '../../../../services/api/api'
 import { RedProfile } from '../../../../types/RedProfile'
 import { getRedProfile } from '../../../../services/auth/auth'
 import { useList } from '../../../../hooks/useList'
-import { categoriesIdToLabelMap } from '../../../../config/config'
+import { categoriesIdToLabelMap, categories } from '../../../../config/config'
 import './AvailableMentorListing.scss'
+
+const filterCategories = categories.map(categorie => ({ value: categorie.id, label: categorie.label }))
 
 // type MentorCatCount = RedProfile & { categoryMatchCount: number, languageMatchCount: number };
 
@@ -35,7 +37,7 @@ interface FilterTagProps {
 const FilterTag = ({ id, label, onClickHandler }: FilterTagProps) => <Tag
   key={id}
   categoryId={id}
-  size="large"
+  size="medium"
   rounded
   textWeight="bold"
 >
@@ -71,17 +73,17 @@ export const AvailableMentorListing = (props: any) => {
   //   m => m.categoryMatchCount === 0 && m.languageMatchCount === 0
   // )
 
-  const filterCategories = Array.from(
-    new Set(
-      mentors
-        .map(mentor => mentor.categories || [])
-        .flat()
-        .sort()
-    )
-  ).map(categorie => ({
-    value: categorie,
-    label: categoriesIdToLabelMap[categorie]
-  }))
+  // const filterCategories = Array.from(
+  //   new Set(
+  //     mentors
+  //       .map(mentor => mentor.categories || [])
+  //       .flat()
+  //       .sort()
+  //   )
+  // ).map(categorie => ({
+  //   value: categorie,
+  //   label: categoriesIdToLabelMap[categorie]
+  // }))
 
   const filterLanguages = Array.from(
     new Set(
@@ -136,8 +138,6 @@ export const AvailableMentorListing = (props: any) => {
         </Columns>
       </div>
 
-      {console.log(activeLanguages)}
-
       {(activeCategories.length !== 0 || activeLanguages.length !== 0) && <div className="active-filters">
         <Tag.Group>
           {activeCategories.map(catId =>
@@ -179,6 +179,10 @@ export const AvailableMentorListing = (props: any) => {
             <ProfileCard profile={mentor} />
           </Columns.Column>
         ))}
+
+        {mentors.length === 0 && <Columns.Column size={4}>
+          <>No mentors found</>
+        </Columns.Column>}
       </Columns>
 
       {/* {mentorsWithoutSharedCategories.length > 0 && (

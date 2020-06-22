@@ -29,11 +29,7 @@ const FilterDropdown = ({ items, selected, label, onChange }: Props) => {
   }, [])
 
   return (
-    <div
-      className={`${baseClass}`}
-      onClick={(e) => console.log(e)}
-      ref={filterDropdown}
-    >
+    <div className={`${baseClass}`} ref={filterDropdown}>
       <div
         className={classnames(`${baseClass}__label`, {
           [`${baseClass}__label--active`]: showDropdown
