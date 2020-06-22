@@ -1,30 +1,25 @@
 <mj-section css-class="section">
-  <mj-column width="100%">
-    <mj-divider mj-class="divider-bottom" />
-  </mj-column>
   <mj-column mj-class="column" width="100%">
+    <mj-divider mj-class="divider-bottom" />
     <mj-table padding="0">
       <tr>
         <td class="table-cell table-img" rowspan="4">
-          <img src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/christa.png" width="52px" />
+          <img src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/christa.png" width="52" />
         </td>
         <td class="table-cell table-headline td-mobile" colspan="2">
           Christa Baron
         </td>
       </tr>
       <tr>
-        <td class="table-cell td-mobile">
+        <td class="table-cell td-mobile" rowspan='2'>
           Head of Community Development
         </td>
-        <td class="table-cell td-mobile hide-cell-mobile">
+        <td class="table-cell td-mobile hide-cell-mobile" style="mso-hide: all">
           ReDI School of Digital Integration München
         </td>
       </tr>
       <tr>
-        <td class="table-cell td-mobile">
-          Career Department ReDI School
-        </td>
-        <td class="table-cell td-mobile hide-cell-mobile">
+        <td class="table-cell td-mobile hide-cell-mobile" style="mso-hide: all">
           Balanstraße 73, Haus 21A, 3. Stock, 81541 München
         </td>
       </tr>

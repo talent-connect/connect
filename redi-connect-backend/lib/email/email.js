@@ -103,8 +103,8 @@ const sendReportProblemEmail = ({
   message
 }) => {
   const html = sendReportProblemEmailParsed.html
-    .replace('${sendingUserEmail}', sendingUserEmail)
-    .replace('${message}', message)
+    .replace(/\${sendingUserEmail}/g, sendingUserEmail)
+    .replace(/\${message}/g, message)
   return sendMjmlEmailFactory({
     to: 'career@redi-school.org',
     subject: 'New problem report',
@@ -126,10 +126,10 @@ const sendResetPasswordEmail = ({
   const resetPasswordUrl = `${buildFrontendUrl(process.env.NODE_ENV, rediLocation)}/front/reset-password/set-new-password/${accessToken}`
   const rediEmailAdress = `${rediLocation.toLowerCase() === 'munich' ? 'munich-' : ''}career@redi-school.org`
   const html = sendResetPasswordEmailParsed.html
-    .replace('${firstName}', firstName)
-    .replace('${resetPasswordUrl}', resetPasswordUrl)
+    .replace(/\${firstName}/g, firstName)
+    .replace(/\${resetPasswordUrl}/g, resetPasswordUrl)
     .replace(/\${rediEmailAdress}/g, rediEmailAdress)
-    .replace('${emailAdress}', recipient)
+    .replace(/\${emailAdress}/g, recipient)
   return sendMjmlEmailFactory({
     to: recipient,
     subject: 'Welcome to ReDI Connect!',
@@ -151,15 +151,15 @@ const sendPendingReviewDeclinedEmail = ({
 }) => {
   const rediEmailAdress = `${rediLocation.toLowerCase() === 'munich' ? 'munich-' : ''}career@redi-school.org`
   const html = sendPendingReviewDeclinedEmailParsed.html
-    .replace('${firstName}', firstName)
-    .replace('${rediLocation}', rediLocation)
-    .replace('${rediEmailAdress}', rediEmailAdress)
+    .replace(/\${firstName}/g, firstName)
+    .replace(/\${rediLocation}/g, rediLocation)
+    .replace(/\${rediEmailAdress}/g, rediEmailAdress)
   sendMjmlEmailFactory({
     to: recipient,
     subject: 'ReDI Connect: your user sign-up was declined',
     html: html,
     rediLocation
-  }).subscribe()
+  })
 }
 
 const convertTemplateToHtml = (rediLocation, templateString) => {
@@ -179,15 +179,15 @@ const sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccep
   const rediEmailAdress = `${rediLocation.toLowerCase() === 'munich' ? 'munich-' : ''}career@redi-school.org`
   const sendMenteePendingReviewAcceptedEmailParsed = convertTemplateToHtml(rediLocation, 'expired-notification-application')
   const html = sendMenteePendingReviewAcceptedEmailParsed
-    .replace('${mentorName}', mentorName)
+    .replace(/\${mentorName}/g, mentorName)
     .replace(/\${menteeName}/g, menteeName)
-    .replace('${rediEmailAdress}', rediEmailAdress)
+    .replace(/\${rediEmailAdress}/g, rediEmailAdress)
   sendMjmlEmailFactory({
     to: recipient,
     subject: `ReDI Connect: mentorship application from ${menteeName} expired`,
     html: html,
     rediLocation
-  }).subscribe()
+  })
 }
 
 const sendMenteePendingReviewAcceptedEmail = ({
@@ -198,15 +198,15 @@ const sendMenteePendingReviewAcceptedEmail = ({
   const homePageUrl = `${buildFrontendUrl(process.env.NODE_ENV, rediLocation)}/front/login/`
   const sendMenteePendingReviewAcceptedEmailParsed = convertTemplateToHtml(rediLocation, 'welcome-to-redi')
   const html = sendMenteePendingReviewAcceptedEmailParsed
-    .replace('${firstName}', firstName)
-    .replace('${mentorOrMentee}', 'mentee')
-    .replace('${homePageUrl}', homePageUrl)
+    .replace(/\${firstName}/g, firstName)
+    .replace(/\${mentorOrMentee}/g, 'mentee')
+    .replace(/\${homePageUrl}/g, homePageUrl)
   sendMjmlEmailFactory({
     to: recipient,
     subject: 'Welcome to ReDI Connect!',
     html: html,
     rediLocation
-  }).subscribe()
+  })
 }
 
 const sendMentorPendingReviewAcceptedEmail = ({
@@ -217,15 +217,15 @@ const sendMentorPendingReviewAcceptedEmail = ({
   const homePageUrl = `${buildFrontendUrl(process.env.NODE_ENV, rediLocation)}/front/login/`
   const sendMenteePendingReviewAcceptedEmailParsed = convertTemplateToHtml(rediLocation, 'welcome-to-redi')
   const html = sendMenteePendingReviewAcceptedEmailParsed
-    .replace('${firstName}', firstName)
-    .replace('${mentorOrMentee}', 'mentor')
-    .replace('${homePageUrl}', homePageUrl)
+    .replace(/\${firstName}/g, firstName)
+    .replace(/\${mentorOrMentee}/g, 'mentor')
+    .replace(/\${homePageUrl}/g, homePageUrl)
   sendMjmlEmailFactory({
     to: recipient,
     subject: 'Welcome to ReDI Connect!',
     html: html,
     rediLocation
-  }).subscribe()
+  })
 }
 
 const sendMenteeRequestAppointmentEmail = ({
@@ -235,13 +235,13 @@ const sendMenteeRequestAppointmentEmail = ({
 }) => {
   const sendMenteeRequestAppointmentEmailParsed = convertTemplateToHtml(rediLocation, 'validate-email-address-successful-mentee')
   const html = sendMenteeRequestAppointmentEmailParsed
-    .replace('${firstName}', firstName)
+    .replace(/\${firstName}/g, firstName)
   sendMjmlEmailFactory({
     to: recipient,
     subject: 'Welcome to ReDI Connect!',
     html: html,
     rediLocation
-  }).subscribe()
+  })
 }
 
 const sendMentorRequestAppointmentEmail = ({
@@ -251,13 +251,13 @@ const sendMentorRequestAppointmentEmail = ({
 }) => {
   const sendMenteeRequestAppointmentEmailParsed = convertTemplateToHtml(rediLocation, 'validate-email-address-successful-mentor')
   const html = sendMenteeRequestAppointmentEmailParsed
-    .replace('${firstName}', firstName)
+    .replace(/\${firstName}/g, firstName)
   sendMjmlEmailFactory({
     to: recipient,
     subject: 'Welcome to ReDI Connect!',
     html: html,
     rediLocation
-  }).subscribe()
+  })
 }
 
 const sendVerificationEmail = ({
@@ -272,15 +272,15 @@ const sendVerificationEmail = ({
   const verificationUrl = `${buildBackendUrl(process.env.NODE_ENV)}/api/redUsers/confirm?uid=${redUserId}&token=${verificationToken}&redirect=${encodeURI(verificationSuccessPageUrl)}`
   const sendMenteeRequestAppointmentEmailParsed = convertTemplateToHtml(rediLocation, 'validate-email-address')
   const html = sendMenteeRequestAppointmentEmailParsed
-    .replace('${firstName}', firstName)
-    .replace('${mentorOrMentee}', userType)
-    .replace('${verificationUrl}', verificationUrl)
+    .replace(/\${firstName}/g, firstName)
+    .replace(/\${mentorOrMentee}/g, userType)
+    .replace(/\${verificationUrl}/g, verificationUrl)
   sendMjmlEmailFactory({
     to: recipient,
     subject: 'Welcome to ReDI Connect!',
     html: html,
     rediLocation
-  }).subscribe()
+  })
 }
 
 const sendMentoringSessionLoggedEmail = ({
@@ -291,14 +291,14 @@ const sendMentoringSessionLoggedEmail = ({
   const loginUrl = buildFrontendUrl(process.env.NODE_ENV, rediLocation)
   const sendMentoringSessionLoggedEmailParsed = convertTemplateToHtml(rediLocation, 'mentoring-session-logged-email')
   const html = sendMentoringSessionLoggedEmailParsed
-    .replace('${mentorName}', mentorName)
+    .replace(/\${mentorName}/g, mentorName)
     .replace(/\${loginUrl}/g, loginUrl)
   sendMjmlEmailFactory({
     to: recipient,
     subject: 'You successfully logged your first session with your mentee',
     html: html,
     rediLocation
-  }).subscribe()
+  })
 }
 
 const sendMentorCancelledMentorshipNotificationEmail = ({
@@ -308,13 +308,13 @@ const sendMentorCancelledMentorshipNotificationEmail = ({
 }) => {
   const sendMentorCancelledMentorshipNotificationEmailParsed = convertTemplateToHtml(rediLocation, 'mentorship-cancelation-email-mentee')
   const html = sendMentorCancelledMentorshipNotificationEmailParsed
-    .replace('${firstName}', firstName)
+    .replace(/\${firstName}/g, firstName)
   sendMjmlEmailFactory({
     to: recipient,
     subject: 'Your mentor has quit your connection',
     html: html,
     rediLocation
-  }).subscribe()
+  })
 }
 
 const sendToMentorConfirmationOfMentorshipCancelled = ({
@@ -325,14 +325,14 @@ const sendToMentorConfirmationOfMentorshipCancelled = ({
 }) => {
   const sendMentorCancelledMentorshipNotificationEmailParsed = convertTemplateToHtml(rediLocation, 'mentorship-cancelation-email-mentor')
   const html = sendMentorCancelledMentorshipNotificationEmailParsed
-    .replace('${mentorFirstName}', mentorFirstName)
+    .replace(/\${mentorFirstName}/g, mentorFirstName)
     .replace(/\${menteeFullName}/g, menteeFullName)
   sendMjmlEmailFactory({
     to: recipient,
     subject: `Your mentorship of ${menteeFullName} has ben cancelled`,
     html: html,
     rediLocation
-  }).subscribe()
+  })
 }
 
 const sendMentorshipRequestReceivedEmail = ({
@@ -344,7 +344,7 @@ const sendMentorshipRequestReceivedEmail = ({
   const loginUrl = buildFrontendUrl(process.env.NODE_ENV, rediLocation)
   const sendMentorshipRequestReceivedEmailParsed = convertTemplateToHtml(rediLocation, 'mentorship-request-email')
   const html = sendMentorshipRequestReceivedEmailParsed
-    .replace('${mentorName}', mentorName)
+    .replace(/\${mentorName}/g, mentorName)
     .replace(/\${menteeFullName}/g, menteeFullName)
     .replace(/\${loginUrl}/g, loginUrl)
   sendMjmlEmailFactory({
@@ -352,7 +352,7 @@ const sendMentorshipRequestReceivedEmail = ({
     subject: `You have received an application from ${menteeFullName}`,
     html: html,
     rediLocation
-  }).subscribe()
+  })
 }
 
 const sendMentorshipAcceptedEmail = ({
@@ -368,13 +368,13 @@ const sendMentorshipAcceptedEmail = ({
     .replace(/\${mentorName}/g, mentorName)
     .replace(/\${menteeName}/g, menteeName)
     .replace(/\${rediEmailAdress}/g, rediEmailAdress)
-    .replace('${mentorReplyMessageOnAccept}', mentorReplyMessageOnAccept)
+    .replace(/\${mentorReplyMessageOnAccept}/g, mentorReplyMessageOnAccept)
   sendMjmlEmailFactory({
     to: recipient,
     subject: `Congratulations. Mentor ${mentorName} has accepted your application, ${menteeName}!`,
     html: html,
     rediLocation
-  }).subscribe()
+  })
 }
 
 module.exports = {
