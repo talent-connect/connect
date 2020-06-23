@@ -1,17 +1,28 @@
+.filters {
+  margin-bottom: 1.5rem;
+}
+
 .active-filters {
   display: flex;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 3rem;
 
-  &__label {
-    margin-right: 1rem;
+  &__remove {
+      margin-left: 0.2em !important;
+      padding: 0.4em;
   }
 
-  .selected-filters {
-    &__remove {
-      margin-left: 0.2rem !important;
-      padding: 0.3rem;
+  &__clear-all {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin: 0 0 0.5rem 0.5rem;
+
+    .icon {
+      padding: 0.1rem;
+      path {
+        fill: black
+      }
     }
   }
-
 }

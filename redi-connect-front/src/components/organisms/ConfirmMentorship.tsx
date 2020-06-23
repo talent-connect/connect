@@ -59,8 +59,7 @@ const ConfirmMentorship = ({ matchId, menteeName, hasReachedMenteeLimit, matches
   }
 
   const formik = useFormik({
-    enableReinitialize: true,
-    initialValues: initialValues,
+    initialValues,
     validationSchema,
     onSubmit: submitForm
   })

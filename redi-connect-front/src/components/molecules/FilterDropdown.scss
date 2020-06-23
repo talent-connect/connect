@@ -1,0 +1,59 @@
+@import "~bulma/sass/utilities/_all";
+@import "../../styles/_variables.scss";
+.filter-dropdown {
+  display: flex;
+  position: relative;
+
+  &__label {
+    border: 1px solid $input-border-color;
+    border-radius: $radius;
+    box-shadow: $input-shadow;
+    height: $control-height;
+    transition: $transition;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    width: 100%;
+    cursor: pointer;
+
+    &:hover, &--active {
+      border-color: $input-hover-border-color;
+    }
+
+    .icon { 
+      transition: $transition;
+    }
+
+    &--active .icon {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__list {
+    position: absolute;
+    display: none;
+    top: calc(100% + 6px);
+    width: 100%;
+    z-index: 1000;
+    background-color: white;
+    padding: 1rem 0;
+    border-radius: $radius;
+    box-shadow: 0 3px 15px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.2);
+    max-height: 210px; 
+    overflow: scroll;   
+
+    &--show {
+      display: block;
+    }
+
+    li {
+      display: block;
+      padding: 0 1rem;
+
+      + li {
+        margin-top: 0.5rem;
+      }
+    }
+  }
+}

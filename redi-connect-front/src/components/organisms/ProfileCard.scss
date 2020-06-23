@@ -1,8 +1,14 @@
 .profile-card {
   border-radius: 4px;
-  height: 22rem;
+  height: 25rem;
   overflow: hidden;
   cursor: pointer;
+
+  &__name {
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 
   &__image {
     img {
@@ -14,5 +20,14 @@
 
   .tags {
     margin-top: 1rem;
+    
+    .tag {
+      overflow: hidden; 
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      display: inline-block;
+      line-height: 2rem;
+    }
   }
 }

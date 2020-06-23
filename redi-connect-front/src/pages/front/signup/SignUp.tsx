@@ -12,7 +12,7 @@ import {
 import omit from 'lodash/omit'
 import Heading from '../../../components/atoms/Heading'
 import FormInput from '../../../components/atoms/FormInput'
-import FormCheckbox from '../../../components/atoms/FormCheckbox'
+import { Checkbox } from '../../../components/atoms'
 import FormSelect from '../../../components/atoms/FormSelect'
 
 import Teaser from '../../../components/molecules/Teaser'
@@ -192,7 +192,7 @@ export default function SignUp () {
               />
             )}
 
-            <FormCheckbox
+            <Checkbox.Form
               name="agreesWithCodeOfConduct"
               checked={formik.values.agreesWithCodeOfConduct}
               className="submit-spacer"
@@ -207,9 +207,9 @@ export default function SignUp () {
                 Code of Conduct
               </a>{' '}
                 of ReDI School
-            </FormCheckbox>
+            </Checkbox.Form>
 
-            <FormCheckbox
+            <Checkbox.Form
               name="gaveGdprConsent"
               checked={formik.values.gaveGdprConsent}
               {...formik}
@@ -222,7 +222,7 @@ export default function SignUp () {
               >
                 Data Protection
               </a>
-            </FormCheckbox>
+            </Checkbox.Form>
             <Form.Help color="danger" className={submitError ? 'help--show' : ''}>{submitError && 'An error occurred, please try again.'}</Form.Help>
             <Form.Field>
               <Form.Control>

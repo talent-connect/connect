@@ -3,6 +3,9 @@ export {
 }
   from './Editable'
 export {
+  default as FilterDropdown
+} from '../molecules/FilterDropdown'
+export {
   default as PipeList
 }
   from './PipeList'
