@@ -2,10 +2,10 @@ import React, { ReactNode, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
-import { Button } from '../atoms'
+import { Button, Icon } from '../atoms'
 import { Modal } from '../molecules'
 import { Navbar, SideMenu } from '../organisms'
-import { Container, Section, Columns, Content } from 'react-bulma-components'
+import { Container, Section, Columns, Content, Notification } from 'react-bulma-components'
 import { getRedProfile } from '../../services/auth/auth'
 import { matchesFetchStart, matchesMarkAsDismissed } from '../../redux/matches/actions'
 
@@ -18,6 +18,13 @@ interface Props {
   matchesFetchStart: () => void
   matchesMarkAsDismissed: (redMatchId: string) => void
 }
+
+const AccountNotReDI: React.FC = ({ children }) => (
+  <Notification className="account-not-active double-bs">
+    <Icon className="account-not-active__icon" icon="mail" size="large" space="right"/>
+    <Content size="small">{children}</Content>
+  </Notification>
+)
 
 const LoggedIn = ({ children, matches, matchesFetchStart, matchesMarkAsDismissed }: Props) => {
   const profile = getRedProfile()
@@ -51,25 +58,17 @@ const LoggedIn = ({ children, matches, matchesFetchStart, matchesMarkAsDismissed
             </Columns.Column>
             <Columns.Column desktop={{ size: 9, offset: 1 }}>
               {profile.userType === 'public-sign-up-mentee-pending-review' &&
-                <Content>
-                  <p>
-                    Thanks for signing up! We are reviewing your profile and will send
-                    you an email once we're done.
-                  </p>
-                  <p>You'll be able to find a mentor once your account is active.</p>
-                </Content>
+                <AccountNotReDI>
+                  <strong>Thanks for signing up!</strong> We are reviewing your profile and will send
+                    you an email once we're done. You'll be able to find a mentor once your account is active.
+                </AccountNotReDI>
               }
               {profile.userType === 'public-sign-up-mentor-pending-review' &&
-                <Content>
-                  <p>
-                    Thanks for signing up! We are reviewing your profile and will send
-                    you an email once we're done.
-                  </p>
-                  <p>
-                    Students will be able to apply to become your mentee once your
+                <AccountNotReDI>
+                  <strong>Thanks for signing up!</strong> We are reviewing your profile and will send
+                    you an email once we're done. Students will be able to apply to become your mentee once your
                     account is active.
-                  </p>
-                </Content>
+                </AccountNotReDI>
               }
               {match && isNewMatch &&
                 <Modal

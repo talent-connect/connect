@@ -43,9 +43,14 @@ function Editable (props: Props) {
         <Caption>{title}</Caption>
         <div className="editable__header__buttons">
           { isEditing ? (<>
-            {savePossible && <div onClick={handleSave} className="icon__button">
+            <div
+              onClick={savePossible ? handleSave : undefined}
+              className={classnames('icon__button',
+                { 'icon__button--disabled': !savePossible }
+              )}
+            >
               <Icon icon="check" />
-            </div>}
+            </div>
 
             <div className='icon__button' onClick={handleClose}>
               <Icon icon="cancel" />

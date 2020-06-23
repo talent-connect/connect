@@ -7,11 +7,12 @@ import { ReactComponent as Checkmark } from '../../assets/images/checkmark.svg'
 import { ReactComponent as Edit } from '../../assets/images/edit.svg'
 import { ReactComponent as Cancel } from '../../assets/images/cancel.svg'
 import { ReactComponent as Chevron } from '../../assets/images/chevron.svg'
+import { ReactComponent as Mail } from '../../assets/images/mail.svg'
 import './Icon.scss'
 
 interface IconProps {
-  icon: 'arrowLeft' | 'hamburger' | 'account' | 'check' | 'edit' | 'cancel' | 'chevron'
-  size?: 'small' | 'medium'
+  icon: 'arrowLeft' | 'hamburger' | 'account' | 'check' | 'edit' | 'cancel' | 'chevron'| 'mail'
+  size?: 'small' | 'medium' | 'large'
   space?: 'left' | 'right'
   className?: string
   onClick?: () => void
@@ -24,7 +25,8 @@ const Icons = {
   check: Checkmark,
   edit: Edit,
   cancel: Cancel,
-  chevron: Chevron
+  chevron: Chevron,
+  mail: Mail
 }
 
 const Icon = ({ icon, space, size, className, onClick }: IconProps) => {
