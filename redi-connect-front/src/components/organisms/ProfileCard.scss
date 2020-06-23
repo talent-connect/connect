@@ -1,3 +1,5 @@
+@import "../../styles/_variables.scss";
+
 .profile-card {
   border-radius: 4px;
   height: 25rem;
@@ -16,6 +18,26 @@
       overflow: hidden;
       object-fit: cover;
     }
+  }
+
+  &__favorite {
+    padding: 0.5rem;
+    position: absolute;
+    top: 0.3rem;
+    right: 0.4rem;
+
+    &__icon {
+      transition: $transition;
+
+      path {
+        fill: white;
+      }
+
+      &:hover {
+        transform: scale(1.2);
+      }
+    }
+
   }
 
   .tags {

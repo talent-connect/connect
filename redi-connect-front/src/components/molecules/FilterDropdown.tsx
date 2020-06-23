@@ -7,6 +7,7 @@ type Item = { label: string, value: string }
 
 interface Props {
   label: string
+  className: string
   selected: string[]
   items: Item[]
   onChange: (item: string) => void
@@ -14,7 +15,7 @@ interface Props {
 
 const baseClass = 'filter-dropdown'
 
-const FilterDropdown = ({ items, selected, label, onChange }: Props) => {
+const FilterDropdown = ({ label, className, selected, items, onChange }: Props) => {
   const filterDropdown = useRef<any>(null)
   const [showDropdown, setShowDropdown] = useState(false)
 
@@ -32,7 +33,7 @@ const FilterDropdown = ({ items, selected, label, onChange }: Props) => {
   }, [handleClick])
 
   return (
-    <div className={`${baseClass}`} ref={filterDropdown}>
+    <div className={classnames(baseClass, { [`${className}`]: className })} ref={filterDropdown}>
       <div
         className={classnames(`${baseClass}__label`, {
           [`${baseClass}__label--active`]: showDropdown
@@ -53,7 +54,7 @@ const FilterDropdown = ({ items, selected, label, onChange }: Props) => {
         [`${baseClass}__list--show`]: showDropdown
       })}>
         {items.map((item) =>
-          <li>
+          <li key={item.value}>
             <Checkbox
               handleChange={() => onChange(item.value)}
               checked={selected.includes(item.value)}

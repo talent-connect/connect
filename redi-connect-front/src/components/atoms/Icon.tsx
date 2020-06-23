@@ -8,10 +8,23 @@ import { ReactComponent as Edit } from '../../assets/images/edit.svg'
 import { ReactComponent as Cancel } from '../../assets/images/cancel.svg'
 import { ReactComponent as Chevron } from '../../assets/images/chevron.svg'
 import { ReactComponent as Mail } from '../../assets/images/mail.svg'
+import { ReactComponent as Heart } from '../../assets/images/heart.svg'
+import { ReactComponent as HeartFilled } from '../../assets/images/heart-filled.svg'
+
 import './Icon.scss'
 
 interface IconProps {
-  icon: 'arrowLeft' | 'hamburger' | 'account' | 'check' | 'edit' | 'cancel' | 'chevron'| 'mail'
+  icon:
+    'arrowLeft' |
+    'hamburger' |
+    'account' |
+    'check' |
+    'edit' |
+    'cancel' |
+    'chevron'|
+    'heart'|
+    'heartFilled'|
+    'mail'
   size?: 'small' | 'medium' | 'large'
   space?: 'left' | 'right'
   className?: string
@@ -26,6 +39,8 @@ const Icons = {
   edit: Edit,
   cancel: Cancel,
   chevron: Chevron,
+  heart: Heart,
+  heartFilled: HeartFilled,
   mail: Mail
 }
 
