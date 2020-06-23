@@ -109,7 +109,13 @@ export const saveRedProfile = async (
   return savedProfile
 }
 
-export const getProfiles = (userType: UserType, categories?: string[], languages?: string[]): Promise<RedProfile[]> => {
+export interface RedProfileFilters {
+  userType: UserType
+  categories?: string[]
+  languages?: string[]
+}
+
+export const getProfiles = ({ userType, categories, languages }: RedProfileFilters): Promise<RedProfile[]> => {
   const filterLanguages = (languages && languages.length !== 0) ? { inq: languages } : undefined
   const filterCategories = (categories && categories.length !== 0) ? { inq: categories } : undefined
 
@@ -121,8 +127,10 @@ export const getProfiles = (userType: UserType, categories?: string[], languages
   ).then(resp => resp.data)
 }
 
-export const getMentors = (categories?: string[], languages?: string[]) => getProfiles('mentor', categories, languages)
-export const getMentees = () => getProfiles('mentee')
+export const getMentors = ({ categories, languages }: Partial<RedProfileFilters>) =>
+  getProfiles({ userType: 'mentor', categories, languages })
+
+export const getMentees = () => getProfiles({ userType: 'mentee' })
 
 export const getProfile = (profileId: string): Promise<RedProfile> =>
   http(`${API_URL}/redProfiles/${profileId}`).then(resp => resp.data)

@@ -27,7 +27,7 @@ function Checkbox (props: any) {
     customOnChange
   } = props
 
-  const handleOnChange = customOnChange || handleChange
+  const handleOnChange = customOnChange ?? handleChange
   const uid = _uniqueId('cx_')
 
   return <>

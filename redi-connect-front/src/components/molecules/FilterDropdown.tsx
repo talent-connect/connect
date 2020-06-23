@@ -1,32 +1,35 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { Checkbox, Icon } from '../atoms'
 import classnames from 'classnames'
 import './FilterDropdown.scss'
 
+type Item = { label: string, value: string }
+
 interface Props {
   label: string
   selected: string[]
-  items: {label: string, value: string}[]
+  items: Item[]
   onChange: (item: string) => void
 }
 
+const baseClass = 'filter-dropdown'
+
 const FilterDropdown = ({ items, selected, label, onChange }: Props) => {
-  const baseClass = 'filter-dropdown'
   const filterDropdown = useRef<any>(null)
   const [showDropdown, setShowDropdown] = useState(false)
 
-  const handleClick = (e: any) => {
-    if (filterDropdown && !filterDropdown.current.contains(e.target)) {
+  const handleClick = useCallback((e: MouseEvent) => {
+    if (!filterDropdown?.current?.contains(e.target)) {
       setShowDropdown(false)
     }
-  }
+  }, [])
 
   useEffect(() => {
     document.addEventListener('click', handleClick)
     return () => {
       document.removeEventListener('click', handleClick)
     }
-  }, [])
+  }, [handleClick])
 
   return (
     <div className={`${baseClass}`} ref={filterDropdown}>
@@ -49,7 +52,7 @@ const FilterDropdown = ({ items, selected, label, onChange }: Props) => {
       <ul className={classnames(`${baseClass}__list`, {
         [`${baseClass}__list--show`]: showDropdown
       })}>
-        {items.map((item: any) =>
+        {items.map((item) =>
           <li>
             <Checkbox
               handleChange={() => onChange(item.value)}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ReactNode } from 'react'
+import React, { useEffect, useState } from 'react'
 // import intersection from 'lodash/intersection'
 import { Columns, Tag } from 'react-bulma-components'
 import { Heading, Icon } from '../../../../components/atoms'
@@ -12,7 +12,7 @@ import { useList } from '../../../../hooks/useList'
 import { categoriesIdToLabelMap, categories } from '../../../../config/config'
 import './AvailableMentorListing.scss'
 
-const filterCategories = categories.map(categorie => ({ value: categorie.id, label: categorie.label }))
+const filterCategories = categories.map(category => ({ value: category.id, label: category.label }))
 
 // type MentorCatCount = RedProfile & { categoryMatchCount: number, languageMatchCount: number };
 
@@ -34,19 +34,20 @@ interface FilterTagProps {
   onClickHandler: (item: string) => void
 }
 
-const FilterTag = ({ id, label, onClickHandler }: FilterTagProps) => <Tag
-  key={id}
-  categoryId={id}
-  size="medium"
-  rounded
-  textWeight="bold"
->
-  {label}
-  <Icon icon="cancel" onClick={() => {
-    console.log(id)
-    onClickHandler(id)
-  }} className="active-filters__remove" />
-</Tag>
+const FilterTag = ({ id, label, onClickHandler }: FilterTagProps) => (
+  <Tag
+    key={id}
+    categoryId={id}
+    size="medium"
+    rounded
+    textWeight="bold"
+  >
+    {label}
+    <Icon icon="cancel" onClick={() => {
+      onClickHandler(id)
+    }} className="active-filters__remove" />
+  </Tag>
+)
 
 export const AvailableMentorListing = (props: any) => {
   const { Loading, isLoading, setLoading } = useLoading()
@@ -99,7 +100,7 @@ export const AvailableMentorListing = (props: any) => {
 
   useEffect(() => {
     setLoading(true)
-    getMentors(activeCategories, activeLanguages).then(mentors => {
+    getMentors({ categories: activeCategories, languages: activeLanguages }).then(mentors => {
       setMentors(mentors)
       setLoading(false)
     })
@@ -107,7 +108,7 @@ export const AvailableMentorListing = (props: any) => {
 
   useEffect(() => {
     setLoading(true)
-    getMentors(currentUserCategories).then(mentors => {
+    getMentors({ categories: currentUserCategories }).then(mentors => {
       setMentors(mentors)
       setLoading(false)
     })
