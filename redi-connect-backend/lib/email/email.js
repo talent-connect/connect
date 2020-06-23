@@ -132,7 +132,7 @@ const sendResetPasswordEmail = ({
     .replace(/\${emailAdress}/g, recipient)
   return sendMjmlEmailFactory({
     to: recipient,
-    subject: 'Password reset requested',
+    subject: 'Password Reset for ReDI Connect',
     html: html,
     rediLocation
   })
@@ -199,10 +199,11 @@ const sendMenteePendingReviewAcceptedEmail = ({
   const html = sendMenteePendingReviewAcceptedEmailParsed
     .replace(/\${firstName}/g, firstName)
     .replace(/\${mentorOrMentee}/g, 'mentee')
+    .replace(/\${mentorOrMenteeOpposite}/g, 'mentor')
     .replace(/\${homePageUrl}/g, homePageUrl)
   return sendMjmlEmailFactory({
     to: recipient,
-    subject: 'Welcome to ReDI Connect!',
+    subject: 'Your ReDI Connect account is confirmed now!',
     html: html,
     rediLocation
   })
@@ -218,10 +219,11 @@ const sendMentorPendingReviewAcceptedEmail = ({
   const html = sendMentorPendingReviewAcceptedEmailParsed
     .replace(/\${firstName}/g, firstName)
     .replace(/\${mentorOrMentee}/g, 'mentor')
+    .replace(/\${mentorOrMenteeOpposite}/g, 'mentee')
     .replace(/\${homePageUrl}/g, homePageUrl)
   return sendMjmlEmailFactory({
     to: recipient,
-    subject: 'Welcome to ReDI Connect!',
+    subject: 'Your ReDI Connect account is confirmed now!',
     html: html,
     rediLocation
   })
@@ -237,7 +239,7 @@ const sendMenteeRequestAppointmentEmail = ({
     .replace(/\${firstName}/g, firstName)
   return sendMjmlEmailFactory({
     to: recipient,
-    subject: 'Verification has been successful!',
+    subject: 'Your email has been verified for ReDI Connect',
     html: html,
     rediLocation
   })
@@ -253,7 +255,7 @@ const sendMentorRequestAppointmentEmail = ({
     .replace(/\${firstName}/g, firstName)
   return sendMjmlEmailFactory({
     to: recipient,
-    subject: 'Verification has been successful!',
+    subject: 'Your email has been verified for ReDI Connect',
     html: html,
     rediLocation
   })
