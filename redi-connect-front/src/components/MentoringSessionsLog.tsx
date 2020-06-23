@@ -20,7 +20,6 @@ export const MentoringSessionsLog = ({ mentoringSessions }: Props) => {
               {moment(mentoringSession.date).format('Do of MMMM YYYY')} for{' '}
               {mentoringSession.minuteDuration} minutes
             </StepLabel>
-            >
           </Step>
         ))}
       </Stepper>
