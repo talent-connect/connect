@@ -61,11 +61,11 @@ module.exports = function (RedMentoringSession) {
           )
             .pipe(
               switchMap(([mentor, mentee]) =>
-                sendMentoringSessionLoggedEmail(
-                  mentor.contactEmail,
-                  mentor.firstName,
-                  ctx.options.currentUser.redProfile.rediLocation
-                )
+                sendMentoringSessionLoggedEmail({
+                  recipient: mentor.contactEmail,
+                  mentorName: mentor.firstName,
+                  rediLocation: ctx.options.currentUser.redProfile.rediLocation
+                })
               )
             )
             .subscribe()

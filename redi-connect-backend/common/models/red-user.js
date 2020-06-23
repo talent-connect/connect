@@ -19,7 +19,6 @@ module.exports = function (RedUser) {
   })
 
   RedUser.afterRemote('confirm', async function (ctx, inst, next) {
-    console.log("i am called")
     const redUserInst = await RedUser.findById(ctx.args.uid, { include: 'redProfile' })
     const redUser = redUserInst.toJSON()
     
@@ -27,22 +26,20 @@ module.exports = function (RedUser) {
 
     switch(userType) {
       case 'public-sign-up-mentee-pending-review':
-        sendMenteeRequestAppointmentEmail({
+        await sendMenteeRequestAppointmentEmail({
           recipient: redUser.email,
           firstName: redUser.redProfile.firstName,
           rediLocation: redUser.redProfile.rediLocation
-        })
-        next()
-        break;
+        }).toPromise()
+        return
 
       case 'public-sign-up-mentor-pending-review':
-        sendMentorRequestAppointmentEmail({
+        await sendMentorRequestAppointmentEmail({
           recipient: redUser.email,
           firstName: redUser.redProfile.firstName,
           rediLocation: redUser.redProfile.rediLocation
-        })
-        next()
-        break;
+        }).toPromise()
+        return
 
       default:
         throw new Error('Invalid user type')

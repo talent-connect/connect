@@ -6,6 +6,7 @@ import Button from '../../../components/atoms/Button'
 import Heading from '../../../components/atoms/Heading'
 import { useHistory } from 'react-router'
 import { RediLocation } from '../../../types/RediLocation'
+import { envRediLocation } from '../../../utils/env-redi-location'
 
 export default function SignUpComplete () {
   const history = useHistory()
@@ -17,18 +18,22 @@ export default function SignUpComplete () {
           size={5}
           responsive={{ mobile: { hide: { value: true } } }}
         >
-          <Teaser.Isabelle />
+          {envRediLocation() === 'berlin' && <Teaser.Isabelle />}
+          {envRediLocation() === 'munich' && <Teaser.Christa />}
         </Columns.Column>
         <Columns.Column size={5} offset={2}>
-          <Heading border="bottomLeft">Meet Isabelle</Heading>
+          <Heading border="bottomLeft">
+            {envRediLocation() === 'berlin' && <>Meet Isabelle</>}
+            {envRediLocation() === 'munich' && <>Meet Christa</>}
+          </Heading>
           <Content size="large" renderAs="div">
             <p>Your email address was successfully verified!</p>
 
-            {(process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'berlin' && (
-              <p>Now, we would like to get to know you better. To activate your account, please <strong>schedule a 15 minute meeting with Isabelle.</strong>
+            {envRediLocation() === 'berlin' && (
+              <p>Now, we would like to get to know you better. To activate your account, please <strong>schedule a 15 minute meeting with Isabelle. </strong>
               Just write her an email with suitable meeting times!</p>
             )}
-            {(process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'munich' && (
+            {envRediLocation() === 'munich' && (
               <p>We will review your profile and get in touch with you if there is anything missing. We'll send you an email once we're done.</p>
             )}
           </Content>
