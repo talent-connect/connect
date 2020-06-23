@@ -1,6 +1,6 @@
 <mj-style>
   .divider {
-    display: inline-block;
+    float: left;
   }
 
   .section {

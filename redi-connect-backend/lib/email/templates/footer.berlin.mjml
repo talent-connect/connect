@@ -1,8 +1,6 @@
 <mj-section css-class="section">
-  <mj-column width="100%">
-    <mj-divider mj-class="divider-bottom" />
-  </mj-column>
   <mj-column mj-class="column" width="100%">
+    <mj-divider mj-class="divider-bottom" />
     <mj-table padding="0">
       <tr>
         <td class="table-cell table-img" rowspan="4">
@@ -16,7 +14,7 @@
         <td class="table-cell td-mobile">
           Manager Mentorship Program
         </td>
-        <td class="table-cell td-mobile hide-cell-mobile">
+        <td class="table-cell td-mobile hide-cell-mobile" style="mso-hide: all">
           ReDI School of Digital Integration
         </td>
       </tr>
@@ -24,7 +22,7 @@
         <td class="table-cell td-mobile">
           Career Department ReDI School
         </td>
-        <td class="table-cell td-mobile hide-cell-mobile">
+        <td class="table-cell td-mobile hide-cell-mobile" style="mso-hide: all">
           Am Nordbahnhof 3, 10115 Berlin
         </td>
       </tr>
