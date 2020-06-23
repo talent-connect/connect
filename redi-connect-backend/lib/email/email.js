@@ -132,7 +132,7 @@ const sendResetPasswordEmail = ({
     .replace(/\${emailAdress}/g, recipient)
   return sendMjmlEmailFactory({
     to: recipient,
-    subject: 'Welcome to ReDI Connect!',
+    subject: 'Password reset requested',
     html: html,
     rediLocation
   })
@@ -237,7 +237,7 @@ const sendMenteeRequestAppointmentEmail = ({
     .replace(/\${firstName}/g, firstName)
   return sendMjmlEmailFactory({
     to: recipient,
-    subject: 'Welcome to ReDI Connect!',
+    subject: 'Verification has been successful!',
     html: html,
     rediLocation
   })
@@ -253,7 +253,7 @@ const sendMentorRequestAppointmentEmail = ({
     .replace(/\${firstName}/g, firstName)
   return sendMjmlEmailFactory({
     to: recipient,
-    subject: 'Welcome to ReDI Connect!',
+    subject: 'Verification has been successful!',
     html: html,
     rediLocation
   })
@@ -269,7 +269,7 @@ const sendVerificationEmail = ({
 }) => {
   userType = {
     'public-sign-up-mentor-pending-review': 'mentor',
-    'public-sign-up-mentee-pending-review': 'mentee',
+    'public-sign-up-mentee-pending-review': 'mentee'
   }[userType]
   const verificationSuccessPageUrl = `${buildFrontendUrl(process.env.NODE_ENV, rediLocation)}/front/signup-complete`
   const verificationUrl = `${buildBackendUrl(process.env.NODE_ENV)}/api/redUsers/confirm?uid=${redUserId}&token=${verificationToken}&redirect=${encodeURI(verificationSuccessPageUrl)}`
@@ -280,7 +280,7 @@ const sendVerificationEmail = ({
     .replace(/\${verificationUrl}/g, verificationUrl)
   return sendMjmlEmailFactory({
     to: recipient,
-    subject: 'Welcome to ReDI Connect!',
+    subject: 'Verify your email address!',
     html: html,
     rediLocation
   })
