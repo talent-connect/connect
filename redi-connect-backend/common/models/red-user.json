@@ -52,6 +52,13 @@
       "principalId": "$everyone",
       "permission": "ALLOW",
       "property": "requestResetPasswordEmail"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "customConfirmEmail"
     }
   ],
   "methods": {}

@@ -9,8 +9,7 @@ const app = require('../../server/server')
 const {
   sendMentorPendingReviewAcceptedEmail,
   sendMenteePendingReviewAcceptedEmail,
-  sendMentorPendingReviewDeclinedEmail,
-  sendMenteePendingReviewDeclinedEmail,
+  sendPendingReviewDeclinedEmail,
   sendVerificationEmail
 } = require('../../lib/email/email')
 
@@ -68,6 +67,8 @@ module.exports = function (RedProfile) {
       return next()
       // TODO: the next two else-if blocks can definitely be DRY-ed. Merge them.
     }
+
+    if (!ctx.data.categories) ctx.data.categories = []
 
     // Strip away RedProfile.administratorInternalComment if user is NOT cloud-accounts@redi-school.org
     if (
@@ -299,7 +300,6 @@ module.exports = function (RedProfile) {
     const redUserInst = await redProfileInst.redUser.get()
     const redProfile = redProfileInst.toJSON()
     const redUser = redUserInst.toJSON()
-    console.log()
 
     var verifyOptions = {
       type: 'email',
@@ -312,7 +312,7 @@ module.exports = function (RedProfile) {
             userType: redProfile.userType,
             verificationToken: verifyOptions.verificationToken,
             rediLocation: redProfile.rediLocation
-          })
+          }).subscribe()
         }
       },
       to: redUser.email,
@@ -338,13 +338,17 @@ const sendEmailUserReviewedAcceptedOrDenied = switchMap(redProfileInst => {
   const userTypeToEmailMap = {
     mentor: sendMentorPendingReviewAcceptedEmail,
     mentee: sendMenteePendingReviewAcceptedEmail,
-    'public-sign-up-mentor-rejected': sendMentorPendingReviewDeclinedEmail,
-    'public-sign-up-mentee-rejected': sendMenteePendingReviewDeclinedEmail
+    'public-sign-up-mentor-rejected': sendPendingReviewDeclinedEmail,
+    'public-sign-up-mentee-rejected': sendPendingReviewDeclinedEmail
   }
   if (!_.has(userTypeToEmailMap, userType)) { throw new Error('User does not have valid user type') }
   const emailFunc = userTypeToEmailMap[userType]
   const { contactEmail, firstName, rediLocation } = redProfileInst.toJSON()
-  return emailFunc(contactEmail, firstName, rediLocation)
+  return emailFunc({
+    recipient: contactEmail,
+    firstName,
+    rediLocation
+  })
 })
 
 const pendingReviewTypes = [

@@ -3,8 +3,17 @@ import AccountOperation from '../../../components/templates/AccountOperation'
 import { Columns, Content } from 'react-bulma-components'
 import Teaser from '../../../components/molecules/Teaser'
 import Heading from '../../../components/atoms/Heading'
+import { envRediLocation } from '../../../utils/env-redi-location'
+import { UserType } from '../../../types/UserType'
+import { useParams } from 'react-router'
+
+type RouteParams = {
+  userType: UserType
+}
 
 export default function SignUpEmailVerification () {
+  const { userType } = useParams<RouteParams>() as RouteParams
+  
   return (
     <AccountOperation>
       <Columns vCentered>
@@ -12,7 +21,8 @@ export default function SignUpEmailVerification () {
           size={5}
           responsive={{ mobile: { hide: { value: true } } }}
         >
-          <Teaser.Isabelle />
+          {envRediLocation() === 'berlin' && <Teaser.Isabelle />}
+          {envRediLocation() === 'munich' && <Teaser.Christa targetUserGroup={userType} />}
         </Columns.Column>
 
         <Columns.Column size={5} offset={2}>

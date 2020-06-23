@@ -111,13 +111,13 @@ module.exports = function (RedMatch) {
       rediLocation: options.currentUser.redProfile.rediLocation
     })
 
-    await sendMentorshipAcceptedEmail(
-      [mentee.contactEmail, mentor.contactEmail],
-      mentor.firstName,
-      mentee.firstName,
-      mentorReplyMessageOnAccept,
-      options.currentUser.redProfile.rediLocation
-    ).toPromise()
+    await sendMentorshipAcceptedEmail({
+      recipients: [mentee.contactEmail, mentor.contactEmail],
+      mentorName: mentor.firstName,
+      menteeName: mentee.firstName,
+      mentorReplyMessageOnAccept: mentorReplyMessageOnAccept,
+      rediLocation: options.currentUser.redProfile.rediLocation
+    }).toPromise()
 
     const menteePendingMatches = await RedMatch.find({
       where: {
@@ -139,16 +139,16 @@ module.exports = function (RedMatch) {
     await Promise.all(
       menteePendingMatches.map(pendingMatch => {
         const pendingMatchData = pendingMatch.toJSON()
-        return sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted(
-          pendingMatchData.mentor.contactEmail,
-          pendingMatchData.mentee.firstName,
-          pendingMatchData.mentor.firstName,
-          options.currentUser.redProfile.rediLocation
-        ).toPromise()
+        return sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted({
+          recipient: pendingMatchData.mentor.contactEmail,
+          mentorName: pendingMatchData.mentee.firstName,
+          menteeName: pendingMatchData.mentor.firstName,
+          rediLocation: options.currentUser.redProfile.rediLocation
+        }).toPromise()
       })
     )
 
-    callback(null, redMatch.toJSON())
+    return redMatch.toJSON()
   }
 
   RedMatch.requestMentorship = function (data, options, callback) {
@@ -173,14 +173,14 @@ module.exports = function (RedMatch) {
     redProfileFind({ where: { id: mentorId } })
       .pipe(
         switchMap(mentorProfile =>
-          sendMentorshipRequestReceivedEmail(
-            mentorProfile.contactEmail,
-            mentorProfile.firstName,
-            `${options.currentUser.redProfile.firstName} ${
+          sendMentorshipRequestReceivedEmail({
+            recipient: mentorProfile.contactEmail,
+            mentorName: mentorProfile.firstName,
+            menteeFullName: `${options.currentUser.redProfile.firstName} ${
               options.currentUser.redProfile.lastName
             }`,
-            options.currentUser.redProfile.rediLocation
-          )
+            rediLocation: options.currentUser.redProfile.rediLocation
+          })
         )
       )
       .subscribe()
@@ -202,9 +202,9 @@ module.exports = function (RedMatch) {
         rediLocation: options.currentUser.redProfile.rediLocation
       })
 
-      callback(null, redMatch.toJSON())
+      return redMatch.toJSON()
     } catch (err) {
-      callback(err)
+      throw err
     }
   }
 }

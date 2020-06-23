@@ -49,19 +49,19 @@ module.exports = function (RedProblemReport) {
               })
             ),
             tap(({ menteeProfile }) => {
-              sendMentorCancelledMentorshipNotificationEmail(
-                menteeProfile.contactEmail,
-                menteeProfile.firstName,
-                ctx.options.currentUser.redProfile.rediLocation
-              )
+              sendMentorCancelledMentorshipNotificationEmail({
+                recipient: menteeProfile.contactEmail,
+                firstName: menteeProfile.firstName,
+                rediLocation: ctx.options.currentUser.redProfile.rediLocation
+              })
                 .pipe(
                   switchMap(() =>
-                    sendToMentorConfirmationOfMentorshipCancelled(
-                      ctx.options.currentUser.redProfile.contactEmail,
-                      ctx.options.currentUser.redProfile.firstName,
-                      `${menteeProfile.firstName} ${menteeProfile.lastName}`,
-                      ctx.options.currentUser.redProfile.rediLocation
-                    )
+                    sendToMentorConfirmationOfMentorshipCancelled({
+                      recipient: ctx.options.currentUser.redProfile.contactEmail,
+                      mentorFirstName: ctx.options.currentUser.redProfile.firstName,
+                      menteeFullName: `${menteeProfile.firstName} ${menteeProfile.lastName}`,
+                      rediLocation: ctx.options.currentUser.redProfile.rediLocation
+                    })
                   )
                 )
                 .subscribe()
@@ -79,10 +79,10 @@ module.exports = function (RedProblemReport) {
             }
           )
       }
-      sendReportProblemEmail(
-        ctx.options.currentUser.email,
-        ctx.instance.problemDescription
-      ).subscribe(null, err => console.log('Sending email error: ', err))
+      sendReportProblemEmail({
+        sendingUserEmail: ctx.options.currentUser.email,
+        message: ctx.instance.problemDescription
+      }).subscribe(null, err => console.log('Sending email error: ', err))
       ctx.instance.redProfileId = ctx.options.currentUser.redProfile.id
       ctx.instance.createdAt = new Date()
     }

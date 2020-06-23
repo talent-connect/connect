@@ -27,6 +27,10 @@ app.start = function () {
   })
 }
 
+app.get('/yalla', async (req, res) => {
+  res.send('hello')
+})
+
 // Inject current user into context
 app
   .remotes()

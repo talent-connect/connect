@@ -122,7 +122,7 @@ export default function SignUp () {
     try {
       await signUp(values.contactEmail, values.password, cleanProfile)
       actions.setSubmitting(false)
-      history.push('/front/signup-email-verification')
+      history.push(`/front/signup-email-verification/${cleanProfile.userType}`)
     } catch (error) {
       actions.setSubmitting(false)
       setSubmitError(Boolean(error))

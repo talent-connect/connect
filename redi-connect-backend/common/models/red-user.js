@@ -1,6 +1,11 @@
 'use strict'
 
-const { sendResetPasswordEmail, sendVerificationEmail } = require('../../lib/email/email')
+const {
+  sendResetPasswordEmail,
+  sendVerificationEmail,
+  sendMenteeRequestAppointmentEmail,
+  sendMentorRequestAppointmentEmail
+} = require('../../lib/email/email')
 
 module.exports = function (RedUser) {
   RedUser.observe('before save', function updateTimestamp (ctx, next) {
@@ -13,7 +18,36 @@ module.exports = function (RedUser) {
     next()
   })
 
+  RedUser.afterRemote('confirm', async function (ctx, inst, next) {
+    const redUserInst = await RedUser.findById(ctx.args.uid, { include: 'redProfile' })
+    const redUser = redUserInst.toJSON()
+    
+    const userType = redUser.redProfile.userType
+
+    switch(userType) {
+      case 'public-sign-up-mentee-pending-review':
+        await sendMenteeRequestAppointmentEmail({
+          recipient: redUser.email,
+          firstName: redUser.redProfile.firstName,
+          rediLocation: redUser.redProfile.rediLocation
+        }).toPromise()
+        return
+
+      case 'public-sign-up-mentor-pending-review':
+        await sendMentorRequestAppointmentEmail({
+          recipient: redUser.email,
+          firstName: redUser.redProfile.firstName,
+          rediLocation: redUser.redProfile.rediLocation
+        }).toPromise()
+        return
+
+      default:
+        throw new Error('Invalid user type')
+    }
+  })
+  
   RedUser.requestResetPasswordEmail = function (body, cb) {
+    console.log('i am actually working...')
     const email = body.email
     RedUser.resetPassword(
       {
