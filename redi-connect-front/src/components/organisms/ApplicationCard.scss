@@ -6,6 +6,7 @@
   border-radius: $radius;
   transition: $transition;
   box-shadow: $card-shadow;
+  cursor: pointer;
 
   &:hover {
     box-shadow: $card-shadow-hover;
@@ -35,12 +36,10 @@
 
   &__link {
     font-weight: $weight-bold;
-    color: $primary;
-    cursor: pointer;
-    text-decoration: underline;
+    color: $primary;    
 
     &:hover {
-      text-decoration: none;
+      text-decoration: underline;
     }
   }
 
@@ -57,12 +56,20 @@
   }
 
   &-dropdown {
-    transition: $transition;
-    @include tablet() {
-      float: right;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .icon {
+      transition: $transition;
+
+      &--rotate {
+        transform: rotate(180deg);
+      }
     }
-    &--show {  
-      transform: rotate(180deg);
+    
+    @include tablet() {
+      // float: right;
     }
   }
 }

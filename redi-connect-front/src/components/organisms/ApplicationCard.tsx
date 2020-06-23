@@ -26,7 +26,7 @@ const ApplicationCard = ({ application }: Props) => {
   const padDate = (date: number) => `${date < 10 && '0'}${date}`
 
   return (<>
-    <div className="application-card">
+    <div className="application-card" onClick={() => setShowDetails(!showDetails)}>
       <Columns vCentered>
         <Columns.Column
           size={4}
@@ -50,14 +50,11 @@ const ApplicationCard = ({ application }: Props) => {
           {STATUS_LABELS[application.status]}
         </Columns.Column>
 
-        <Columns.Column size={1} textAlignment="centered">
+        <Columns.Column size={1} className="application-card-dropdown" textAlignment="centered">
           <Icon
             icon="chevron"
             size="small"
-            className={classnames('application-card-dropdown',
-              { 'application-card-dropdown--show': showDetails }
-            )}
-            onClick={() => setShowDetails(!showDetails)}
+            className={classnames({ 'icon--rotate': showDetails })}
           />
         </Columns.Column>
       </Columns>
