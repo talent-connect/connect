@@ -22,7 +22,7 @@ const RediProgram = () => {
         <Columns>
           {programSteps.map((step: any) =>
             <Columns.Column textAlignment="centered" key={step.content}>
-              <Icon icon={step.image} size="large" className="program__img" />
+              <Icon icon={step.image} size="x-large" className="program__img" />
               <Heading
                 size={4}
                 renderAs="h3"

@@ -41,7 +41,7 @@ interface IconProps {
     'career' |
     'chat' |
     'handshake'
-  size?: 'small' | 'medium' | 'large'
+  size?: 'small' | 'medium' | 'large' | 'x-large'
   space?: 'left' | 'right'
   className?: string
   onClick?: () => void

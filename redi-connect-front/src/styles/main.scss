@@ -157,22 +157,6 @@ a:hover {
   }
 }
 
-.mentee-border-color * {
-  border-color: $redi-orange-dark;
-
-  & g {
-    fill: $redi-orange-dark;
-  }
-}
-
-.mentor-border-color * {
-  border-color: $redi-blue-dark;
-
-  & g {
-    fill: $redi-blue-dark;
-  }
-}
-
 .double-bs {
   margin-bottom: 1rem;
 
@@ -184,7 +168,7 @@ a:hover {
 .account-not-active {
   display: flex;
   align-items: center;
-  
+
   &__icon {
     flex-shrink: 0;
   }

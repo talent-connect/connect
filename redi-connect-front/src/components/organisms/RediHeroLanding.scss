@@ -2,26 +2,41 @@
 @import "../../styles/_variables.scss";
 
 .hero-landing {
-  &__section {
-    &--mentee {
-      background-image: linear-gradient(to bottom, $redi-orange-light 80%, $white 80%);
+  &--mentee {
+    background-image: linear-gradient(to bottom, $redi-orange-light 80%, $white 80%);
 
-
-      @include mobile() {
-        background-image: linear-gradient(to bottom, $redi-orange-light 95%, $white 95%);
-      }
+    @include mobile() {
+      background-image: linear-gradient(to bottom, $redi-orange-light 95%, $white 95%);
     }
 
-    &--mentor {
-      background-image: linear-gradient(to bottom, $redi-blue-light 80%, $white 80%);
+    g {
+      fill: $redi-orange-dark;
+    }
 
-      @include mobile() {
-        background-image: linear-gradient(to bottom, $redi-blue-light 95%, $white 95%);
-      }
+    .column,
+    hr {
+      border-color: $redi-orange-dark
     }
   }
 
-  &__content {
+  &--mentor {
+    background-image: linear-gradient(to bottom, $redi-blue-light 80%, $white 80%);
+
+    @include mobile() {
+      background-image: linear-gradient(to bottom, $redi-blue-light 95%, $white 95%);
+    }
+
+    g {
+      fill: $redi-blue-dark;
+    }
+
+    .column,
+    hr {
+      border-color: $redi-blue-dark
+    }
+  }
+
+  &__text {
     @include desktop() {
       margin: 0 auto;
       max-width: 70%;
@@ -39,7 +54,7 @@
 
       &--mentee {
         left: -5rem;
-        top: 3rem;
+        top: 2rem;
       }
     }
 
@@ -56,33 +71,29 @@
     box-shadow: $default-shadow;
 
     @include mobile() {
-      padding: 1rem 2rem;
       margin-top: 1.5rem;
     }
-  }
 
-  &__column {
-    &:not(:last-child)>hr {
-      margin-right: -2rem;
-    }
-
-    @include mobile() {
-      border-width: 2px;
-      border-left-style: solid;
-      padding: 0 1rem;
-
-      &:not(:last-child) {
-        padding-bottom: 2rem;
+    .column {
+      &:not(:last-child)>hr {
+        margin-right: -2rem;
       }
 
-      &:last-child {
-        margin-bottom: 1rem;
+      @include mobile() {
+        &:not(:first-child) {
+          border-left-style: solid;
+          border-width: 2px;
+        }
+
+        padding: 0 0 0 1rem;
+
+        &:not(:last-child) {
+          padding-bottom: 2rem;
+        }
       }
     }
-  }
 
-  &__icon {
-    &--arrow {
+    &__arrow {
       @include tablet() {
         margin-top: 3.5rem;
       }
@@ -94,7 +105,7 @@
       }
     }
 
-    &--name {
+    &__name {
       margin-top: -1.5rem;
 
       @include mobile() {
@@ -102,11 +113,10 @@
         margin-bottom: 2rem;
       }
     }
-  }
 
-  &__separator {
-    border-width: 1px;
-    border-style: solid;
-    margin: 1rem 0;
+    &--separator {
+      border: 1px solid;
+      margin: 1rem 0;
+    }
   }
 }

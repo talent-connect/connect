@@ -14,11 +14,10 @@ const RediHeroLanding = ({ type }: Props) => {
   const { t } = useTranslation()
   const programSteps: Array<{ name: string, image: any }> =
     t(`loggedOutArea.homePage.hero.${type}.steps`, { returnObjects: true })
-  const baseClass = `${type}-border-color`
 
   return (
     <>
-      <Section className={classnames({ [`hero-landing__section--${type}`]: type })}>
+      <Section className={classnames('hero-landing', { [`hero-landing--${type}`]: type })}>
         <Container>
           <Heading
             size={1}
@@ -44,29 +43,29 @@ const RediHeroLanding = ({ type }: Props) => {
               tablet: { textAlignment: { value: 'centered' } },
               mobile: { textSize: { value: 5 } }
             }}
-            className="hero-landing__content"
+            className="hero-landing__text"
           >
             {t(`loggedOutArea.homePage.hero.${type}.content`)}
           </Element>
-          <Columns className={`${baseClass} hero-landing__columns`}>
+          <Columns className="hero-landing__columns">
             <Columns.Column narrow>
-              <Icon icon='arrow' size="large" className="hero-landing__icon--arrow" />
+              <Icon icon='arrow' size="x-large" className="hero-landing__columns__arrow" />
               <Element
                 textSize={7}
                 renderAs="p"
                 textTransform="uppercase"
-                className="hero-landing__icon--name"
+                className="hero-landing__columns__name"
               >
                 {t(`loggedOutArea.homePage.hero.${type}.programName`)}
               </Element>
             </Columns.Column>
             {programSteps.map((step, index) =>
-              <Columns.Column key={index} className="hero-landing__column">
-                <Icon icon={step.image} size="large" />
+              <Columns.Column key={index}>
+                <Icon icon={step.image} size="x-large" />
                 <Element
                   renderAs="hr"
                   responsive={{ mobile: { hide: { value: true } } }}
-                  className="hero-landing__separator"
+                  className="hero-landing__columns--separator"
                 />
                 <Element
                   textSize={5}
