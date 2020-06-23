@@ -199,6 +199,7 @@ const sendMenteePendingReviewAcceptedEmail = ({
   const html = sendMenteePendingReviewAcceptedEmailParsed
     .replace(/\${firstName}/g, firstName)
     .replace(/\${mentorOrMentee}/g, 'mentee')
+    .replace(/\${mentorOrMenteeOpposite}/g, 'mentor')
     .replace(/\${homePageUrl}/g, homePageUrl)
   return sendMjmlEmailFactory({
     to: recipient,
@@ -218,6 +219,7 @@ const sendMentorPendingReviewAcceptedEmail = ({
   const html = sendMentorPendingReviewAcceptedEmailParsed
     .replace(/\${firstName}/g, firstName)
     .replace(/\${mentorOrMentee}/g, 'mentor')
+    .replace(/\${mentorOrMenteeOpposite}/g, 'mentee')
     .replace(/\${homePageUrl}/g, homePageUrl)
   return sendMjmlEmailFactory({
     to: recipient,
