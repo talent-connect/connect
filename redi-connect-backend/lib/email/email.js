@@ -300,7 +300,7 @@ const sendMentoringSessionLoggedEmail = ({
     .replace(/\${loginUrl}/g, loginUrl)
   return sendMjmlEmailFactory({
     to: recipient,
-    subject: 'You successfully logged your first session with your mentee',
+    subject: 'You successfully logged your session with your mentee',
     html: html,
     rediLocation
   })
