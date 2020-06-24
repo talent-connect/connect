@@ -39,6 +39,7 @@ export type RedProfile = {
   slackUsername: string
   telephoneNumber: string
   categories: Array<string>
+  favouritedRedProfileIds: Array<string>
 
   createdAt: Date
   updatedAt: Date

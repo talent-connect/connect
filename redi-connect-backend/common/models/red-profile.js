@@ -80,6 +80,12 @@ module.exports = function (RedProfile) {
       delete ctx.data.administratorInternalComment
     }
 
+    // If favouritedRedProfileIds[] isn't set, set it. But delete it if the accessing user doesn't own it.
+    ctx.data.favouritedRedProfileIds = ctx.data.favouritedRedProfileIds || []
+    const currentUserRedProfileId = ctx?.options?.currentUser?.redProfile?.id.toString()
+    const isRedProfileOwnedByCurrentUser = currentUserRedProfileId && currentUserRedProfileId === ctx.data.id.toString()
+    if (!isRedProfileOwnedByCurrentUser) delete ctx.data.favouritedRedProfileIds
+
     if (ctx.data && ctx.data.userType === 'mentor') {
       // In case RedProfile belongs to a mentor, add "computed properties"
       // currentMenteeCount, currentFreeMenteeSpots, and numberOfPendingApplicationWithCurrentUser,

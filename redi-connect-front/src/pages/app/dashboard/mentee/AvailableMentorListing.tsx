@@ -9,6 +9,13 @@ import { getMentors } from '../../../../services/api/api'
 import { RedProfile } from '../../../../types/RedProfile'
 import { getRedProfile } from '../../../../services/auth/auth'
 import { useList } from '../../../../hooks/useList'
+import classNames from 'classnames'
+import {
+  profileSaveStart
+} from '../../../../redux/user/actions'
+import { connect } from 'react-redux'
+import { RootState } from '../../../../redux/types'
+
 import { categoriesIdToLabelMap, categories } from '../../../../config/config'
 import './AvailableMentorListing.scss'
 
@@ -36,8 +43,6 @@ interface FilterTagProps {
 
 const FilterTag = ({ id, label, onClickHandler }: FilterTagProps) => (
   <Tag
-    key={id}
-    categoryId={id}
     size="medium"
     rounded
     textWeight="bold"
@@ -49,13 +54,26 @@ const FilterTag = ({ id, label, onClickHandler }: FilterTagProps) => (
   </Tag>
 )
 
-export const AvailableMentorListing = (props: any) => {
+const mapStateToProps = (state: RootState) => ({
+  profile: state.user.profile
+})
+
+const mapDispatchToProps = (dispatch: any) => ({
+  profileSaveStart: (profile: Partial<RedProfile>) => dispatch(profileSaveStart(profile))
+})
+
+export const AvailableMentorListing = connect(mapStateToProps, mapDispatchToProps)(({ profile, profileSaveStart }: any) => {
   const { Loading, isLoading, setLoading } = useLoading()
+  const [showFavorites, setShowFavorites] = useState<boolean>(false)
   const [mentors, setMentors] = useState<RedProfile[]>([])
   const currentUserCategories = getRedProfile().categories
+  const currentUserFavorites = getRedProfile().favouritedRedProfileIds
+
   const [activeCategories, { toggle: toggleCategories, clear: clearCategories }] = useList(currentUserCategories)
   const [activeLanguages, { toggle: toggleLanguages, clear: clearLanguages }] = useList<any>([])
+  const [favorites, { toggle: toggleFavorites }] = useList<any>(currentUserFavorites)
 
+  const { id } = profile
   // const mentorsFiltered = _mentors.filter(
   //   m => m.currentFreeMenteeSpots > 0 && m.userActivated
   // )
@@ -119,38 +137,46 @@ export const AvailableMentorListing = (props: any) => {
       <Loading />
       <Heading subtitle size="small" className="oneandhalf-bs">Available mentors ({mentors.length})</Heading>
       <div className="filters">
-        <Columns>
-          <Columns.Column size={4}>
-            <FilterDropdown
-              items={filterCategories}
-              label="Topics"
-              selected={activeCategories}
-              onChange={toggleCategories}
-            />
-          </Columns.Column>
-          <Columns.Column size={4}>
-            <FilterDropdown
-              items={filterLanguages}
-              label="Languages"
-              selected={activeLanguages}
-              onChange={toggleLanguages}
-            />
-          </Columns.Column>
-        </Columns>
+        <FilterDropdown
+          items={filterCategories}
+          className="filters__dropdown"
+          label="Topics"
+          selected={activeCategories}
+          onChange={toggleCategories}
+        />
+        <FilterDropdown
+          items={filterLanguages}
+          className="filters__dropdown"
+          label="Languages"
+          selected={activeLanguages}
+          onChange={toggleLanguages}
+        />
+        <div
+          className="filter-favourites"
+          onClick={() => setShowFavorites(!showFavorites)}>
+          <Icon icon={showFavorites ? 'heartFilled' : 'heart'} className="filter-favourites__icon" space="right"/>
+              Only Favorites
+        </div>
       </div>
 
       {(activeCategories.length !== 0 || activeLanguages.length !== 0) && <div className="active-filters">
         <Tag.Group>
           {activeCategories.map(catId =>
-            <FilterTag id={catId} label={categoriesIdToLabelMap[catId]}onClickHandler={toggleCategories}/>
+            <FilterTag
+              key={catId}
+              id={catId}
+              label={categoriesIdToLabelMap[catId]}
+              onClickHandler={toggleCategories}/>
           )}
           {activeLanguages.map(langId =>
-            <FilterTag id={langId} label={langId} onClickHandler={toggleLanguages}/>
+            <FilterTag key={langId} id={langId} label={langId} onClickHandler={toggleLanguages}/>
           )}
-          <span className="active-filters__clear-all" onClick={() => {
-            clearCategories()
-            clearLanguages()
-          }}
+          <span
+            className="active-filters__clear-all"
+            onClick={() => {
+              clearCategories()
+              clearLanguages()
+            }}
           >
             Delete all filters <Icon icon="cancel" size="small" space="left"/>
           </span>
@@ -175,11 +201,19 @@ export const AvailableMentorListing = (props: any) => {
       )} */}
 
       <Columns>
-        {mentors.map((mentor: RedProfile) => (
-          <Columns.Column size={4} key={mentor.id}>
-            <ProfileCard profile={mentor} />
+        {mentors.map((mentor: RedProfile) => {
+          const isFavorite = favorites.includes(mentor.id)
+
+          if (!isFavorite && showFavorites) return
+
+          return <Columns.Column size={4} key={mentor.id}>
+            <ProfileCard
+              profile={mentor}
+              toggleFavorite={toggleFavorites}
+              isFavorite={isFavorite}
+            />
           </Columns.Column>
-        ))}
+        })}
 
         {mentors.length === 0 && <Columns.Column size={4}>
           <>No mentors found</>
@@ -203,4 +237,4 @@ export const AvailableMentorListing = (props: any) => {
       )} */}
     </>
   )
-}
+})
