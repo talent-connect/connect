@@ -64,7 +64,7 @@ const mapDispatchToProps = (dispatch: any) => ({
 
 export const AvailableMentorListing = connect(mapStateToProps, mapDispatchToProps)(({ profile, profileSaveStart }: any) => {
   const { Loading, isLoading, setLoading } = useLoading()
-  const [showFavorits, setShowFavorites] = useState<boolean>(false)
+  const [showFavorites, setShowFavorites] = useState<boolean>(false)
   const [mentors, setMentors] = useState<RedProfile[]>([])
   const currentUserCategories = getRedProfile().categories
   const currentUserFavorites = getRedProfile().favouritedRedProfileIds
@@ -153,8 +153,8 @@ export const AvailableMentorListing = connect(mapStateToProps, mapDispatchToProp
         />
         <div
           className="filter-favourites"
-          onClick={() => setShowFavorites(!showFavorits)}>
-          <Icon icon={showFavorits ? 'heartFilled' : 'heart'} className="filter-favourites__icon" space="right"/>
+          onClick={() => setShowFavorites(!showFavorites)}>
+          <Icon icon={showFavorites ? 'heartFilled' : 'heart'} className="filter-favourites__icon" space="right"/>
               Only Favorites
         </div>
       </div>
@@ -204,7 +204,7 @@ export const AvailableMentorListing = connect(mapStateToProps, mapDispatchToProp
         {mentors.map((mentor: RedProfile) => {
           const isFavorite = favorites.includes(mentor.id)
 
-          if (!isFavorite && showFavorits) return
+          if (!isFavorite && showFavorites) return
 
           return <Columns.Column size={4} key={mentor.id}>
             <ProfileCard
