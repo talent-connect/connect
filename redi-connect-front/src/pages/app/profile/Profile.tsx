@@ -21,7 +21,6 @@ import { LoggedIn } from '../../../components/templates'
 import { FullScreenCircle } from '../../../hooks/WithLoading'
 import { RedProfile } from '../../../types/RedProfile'
 import { profilesFetchOneStart } from '../../../redux/profiles/actions'
-import { ProfileAcceptedMatch } from './acceptedMatch/ProfileAcceptedMatch'
 
 interface RouteParams {
   profileId: string
@@ -121,11 +120,7 @@ function Profile ({ loading, profile, currentUser, hasReachedMenteeLimit, profil
         }
       </Columns>
 
-      {isAcceptedMatch && profile && (
-        <ProfileAcceptedMatch profile={profile} />
-      )}
-
-      {!isAcceptedMatch && profile && <>
+      { profile && <>
         <Columns vCentered breakpoint="mobile" className="oneandhalf-bs">
           <Columns.Column size={3}>
             <Avatar profile={profile} />

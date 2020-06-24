@@ -24,7 +24,14 @@ const MenuItem = ({ url, children }: MenuItemProps) => (
 
 const SideMenu = () => {
   const profile = getRedProfile()
-  const isProfileActive = profile.userType === 'mentee' || profile.userType === 'mentor'
+  const isActivatedMentor = profile.userType === 'mentor'
+  const isActivatedMentee = profile.userType === 'mentee'
+  const isMentee = isActivatedMentee || profile.userType === 'public-sign-up-mentee-pending-review'
+  const isMenteeWithoutMentor = isActivatedMentee && !profile.ifUserIsMentee_hasActiveMentor
+  const isMentorBookedOut = isActivatedMentor && (profile.currentMenteeCount === profile.menteeCountCapacity)
+  const isMenteeWithMentor = isActivatedMentee && profile.ifUserIsMentee_hasActiveMentor
+
+  const showApplications = isMentee ? isMenteeWithoutMentor : !isMentorBookedOut
 
   return (
     <ul className="side-menu">
@@ -32,19 +39,29 @@ const SideMenu = () => {
         <Profile className="side-menu__icon" />
         My Profile
       </MenuItem>
-      {(profile.userType === 'mentee' || profile.userType === 'public-sign-up-mentee-pending-review') &&
-        <MenuItem url="/app/dashboard">
+
+      {isMenteeWithoutMentor &&
+        <MenuItem url="/app/find-a-mentor">
           <Mentorship className="side-menu__icon" />
           Find a mentor
         </MenuItem>
       }
-      {profile.userType === 'mentor' &&
-        <MenuItem url="/app/mentorship">
+
+      {isMenteeWithMentor &&
+        <MenuItem url={`/app/mentorships/${profile.ifUserIsMentee_activeMentor.id}`}>
           <Mentorship className="side-menu__icon" />
           My Mentorship
         </MenuItem>
       }
-      {isProfileActive &&
+
+      {isActivatedMentor &&
+        <MenuItem url="/app/mentorships">
+          <Mentorship className="side-menu__icon" />
+          My Mentorship
+        </MenuItem>
+      }
+
+      {showApplications &&
         <MenuItem url="/app/applications">
           <Applications className="side-menu__icon" />
           Applications

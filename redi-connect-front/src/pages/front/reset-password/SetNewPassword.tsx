@@ -90,7 +90,7 @@ export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
         variant: 'success',
         autoHideDuration: 8000
       })
-      history.push('/app/dashboard')
+      history.push('/app/me')
     } catch (err) {
       setFormError('Invalid username or password')
     }

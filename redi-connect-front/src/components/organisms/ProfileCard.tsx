@@ -4,7 +4,7 @@ import { Icon } from '../atoms'
 import { ReadMentoringTopics } from '../molecules'
 import classNames from 'classnames'
 
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 // import { LogMentoringSessionBtn } from '../../components/LogMentoringSessionBtn'
 import PipeList from '../../components/molecules/PipeList'
 import {
@@ -17,11 +17,12 @@ import { RedProfile } from '../../types/RedProfile'
 
 interface ProfileCardProps {
   profile: RedProfile
+  linkTo: string
   isFavorite?: boolean
   toggleFavorite?: (id: string) => void
 }
 
-const ProfileCard = ({ profile, toggleFavorite, isFavorite }: ProfileCardProps) => {
+const ProfileCard = ({ profile, linkTo, toggleFavorite, isFavorite }: ProfileCardProps) => {
   const history = useHistory()
 
   const handleFavorite = (e: React.MouseEvent) => {
@@ -29,7 +30,7 @@ const ProfileCard = ({ profile, toggleFavorite, isFavorite }: ProfileCardProps) 
     toggleFavorite && toggleFavorite(profile.id)
   }
 
-  return <Card className="profile-card" onClick={() => history.push(`/app/dashboard/profile/${profile.id}`)}>
+  return <Card className="profile-card" onClick={() => history.push(linkTo)}>
     {/* The avatar component may replace this image but for now it's a working solution */}
     {profile.profileAvatarImageS3Key && <Card.Image className="profile-card__image" src={`${AWS_PROFILE_AVATARS_BUCKET_BASE_URL}${profile.profileAvatarImageS3Key}`} alt="" />}
     <Card.Content>
