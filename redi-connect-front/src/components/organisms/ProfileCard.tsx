@@ -31,7 +31,7 @@ const ProfileCard = ({ profile, toggleFavorite, isFavorite }: ProfileCardProps) 
 
   return <Card className="profile-card" onClick={() => history.push(`/app/dashboard/profile/${profile.id}`)}>
     {/* The avatar component may replace this image but for now it's a working solution */}
-    <Card.Image className="profile-card__image" src={`${AWS_PROFILE_AVATARS_BUCKET_BASE_URL}${profile.profileAvatarImageS3Key}`} alt="" />
+    {profile.profileAvatarImageS3Key && <Card.Image className="profile-card__image" src={`${AWS_PROFILE_AVATARS_BUCKET_BASE_URL}${profile.profileAvatarImageS3Key}`} alt="" />}
     <Card.Content>
       <div
         className='profile-card__favorite'

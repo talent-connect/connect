@@ -6,6 +6,10 @@
   overflow: hidden;
   cursor: pointer;
 
+  &:hover {
+    box-shadow: $card-shadow-hover;
+  }
+
   &__name {
     overflow: hidden; 
     text-overflow: ellipsis;
