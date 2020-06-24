@@ -126,6 +126,12 @@ export const AvailableMentorListing = connect(mapStateToProps, mapDispatchToProp
 
   useEffect(() => {
     setLoading(true)
+    profileSaveStart({ favouritedRedProfileIds: favorites, id })
+    setLoading(false)
+  }, [favorites])
+
+  useEffect(() => {
+    setLoading(true)
     getMentors({ categories: currentUserCategories }).then(mentors => {
       setMentors(mentors)
       setLoading(false)
