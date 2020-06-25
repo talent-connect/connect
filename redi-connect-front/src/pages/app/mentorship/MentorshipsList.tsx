@@ -5,7 +5,7 @@ import LoggedIn from '../../../components/templates/LoggedIn'
 import Heading from '../../../components/atoms/Heading'
 import { ProfileCard } from '../../../components/organisms'
 import { RootState } from '../../../redux/types'
-import { getMentees } from '../../../redux/matches/selectors'
+import { getMatches } from '../../../redux/matches/selectors'
 import { connect } from 'react-redux'
 import { matchesFetchStart } from '../../../redux/matches/actions'
 import { FullScreenCircle } from '../../../hooks/WithLoading'
@@ -18,7 +18,7 @@ interface Props {
 }
 
 // TODO: add type to Props
-function Mentorship ({ loading, mentees, matchesFetchStart }: Props) {
+function MentorshipList ({ loading, mentees, matchesFetchStart }: Props) {
   useEffect(() => {
     matchesFetchStart()
   }, [matchesFetchStart])
@@ -63,7 +63,7 @@ const mapDispatchToProps = (dispatch: any) => ({
 
 const mapStateToProps = (state: RootState) => ({
   loading: state.matches.loading,
-  mentees: getMentees(state.matches)
+  mentees: getMatches(state.matches)
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Mentorship)
+export default connect(mapStateToProps, mapDispatchToProps)(MentorshipList)

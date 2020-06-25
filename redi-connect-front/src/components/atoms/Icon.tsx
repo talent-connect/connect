@@ -18,6 +18,7 @@ import { ReactComponent as Career } from '../../assets/images/career.svg'
 import { ReactComponent as Arrow } from '../../assets/images/arrow-step.svg'
 import { ReactComponent as Chat } from '../../assets/images/chat.svg'
 import { ReactComponent as Handshake } from '../../assets/images/handshake.svg'
+import { ReactComponent as Plus } from '../../assets/images/plus.svg'
 
 import './Icon.scss'
 
@@ -40,7 +41,8 @@ interface IconProps {
     'calendar' |
     'career' |
     'chat' |
-    'handshake'
+    'handshake'|
+    'plus'
   size?: 'small' | 'medium' | 'large' | 'x-large'
   space?: 'left' | 'right'
   className?: string
@@ -65,7 +67,8 @@ const Icons = {
   arrow: Arrow,
   handshake: Handshake,
   chat: Chat,
-  mail: Mail
+  mail: Mail,
+  plus: Plus
 }
 
 const Icon = ({ icon, space, size, className, onClick }: IconProps) => {
