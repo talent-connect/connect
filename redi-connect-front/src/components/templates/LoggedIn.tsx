@@ -14,6 +14,7 @@ import { RedMatch } from '../../types/RedMatch'
 
 interface Props {
   children: ReactNode
+  loading: boolean
   matches: RedMatch[]
   matchesFetchStart: () => void
   matchesMarkAsDismissed: (redMatchId: string) => void
@@ -26,7 +27,7 @@ const AccountNotReDI: React.FC = ({ children }) => (
   </Notification>
 )
 
-const LoggedIn = ({ children, matches, matchesFetchStart, matchesMarkAsDismissed }: Props) => {
+const LoggedIn = ({ children, loading, matches, matchesFetchStart, matchesMarkAsDismissed }: Props) => {
   const profile = getRedProfile()
   const history = useHistory()
 
@@ -43,8 +44,7 @@ const LoggedIn = ({ children, matches, matchesFetchStart, matchesMarkAsDismissed
 
   const handleModalClose = (redMatchId: string) => {
     matchesMarkAsDismissed(redMatchId)
-    // dashboard will be reafctored and this should be too
-    history.push('/app/dashboard')
+    history.push(`/app/mentorships/${profile.ifUserIsMentee_activeMentor.id}`)
   }
 
   return (
@@ -86,12 +86,13 @@ const LoggedIn = ({ children, matches, matchesFetchStart, matchesMarkAsDismissed
                   </Content>
                   <Modal.Buttons>
                     <Button onClick={() => handleModalClose(match.id as string)}>
-                    Go to Dashboard
+                      Go to Mentorship
                     </Button>
                   </Modal.Buttons>
                 </Modal>
               }
-              {children}
+
+              {loading || children}
             </Columns.Column>
           </Columns>
         </Container>
@@ -107,7 +108,8 @@ const mapDispatchToProps = (dispatch: any) => ({
 })
 
 const mapStateToProps = (state: RootState) => ({
-  matches: state.matches.matches
+  matches: state.matches.matches,
+  loading: state.matches.loading
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoggedIn)

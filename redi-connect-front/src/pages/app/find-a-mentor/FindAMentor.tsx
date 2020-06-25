@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from 'react'
 // import intersection from 'lodash/intersection'
-import { Columns, Tag } from 'react-bulma-components'
-import { Heading, Icon } from '../../../../components/atoms'
-import { FilterDropdown } from '../../../../components/molecules'
-import { ProfileCard } from '../../../../components/organisms'
-import { useLoading } from '../../../../hooks/WithLoading'
-import { getMentors } from '../../../../services/api/api'
-import { RedProfile } from '../../../../types/RedProfile'
-import { getRedProfile } from '../../../../services/auth/auth'
-import { useList } from '../../../../hooks/useList'
+import { Content, Columns, Tag } from 'react-bulma-components'
+import { Heading, Icon } from '../../../components/atoms'
+import { FilterDropdown } from '../../../components/molecules'
+import { ProfileCard } from '../../../components/organisms'
+import { useLoading } from '../../../hooks/WithLoading'
+import { getMentors } from '../../../services/api/api'
+import { RedProfile } from '../../../types/RedProfile'
+import { getRedProfile } from '../../../services/auth/auth'
+import { useList } from '../../../hooks/useList'
 import classNames from 'classnames'
 import {
   profileSaveStart
-} from '../../../../redux/user/actions'
+} from '../../../redux/user/actions'
 import { connect } from 'react-redux'
-import { RootState } from '../../../../redux/types'
+import { RootState } from '../../../redux/types'
+import { LoggedIn } from '../../../components/templates'
 
-import { categoriesIdToLabelMap, categories } from '../../../../config/config'
-import './AvailableMentorListing.scss'
+import { categoriesIdToLabelMap, categories } from '../../../config/config'
+import './FindAMentor.scss'
 
 const filterCategories = categories.map(category => ({ value: category.id, label: category.label }))
 
@@ -62,7 +63,7 @@ const mapDispatchToProps = (dispatch: any) => ({
   profileSaveStart: (profile: Partial<RedProfile>) => dispatch(profileSaveStart(profile))
 })
 
-export const AvailableMentorListing = connect(mapStateToProps, mapDispatchToProps)(({ profile, profileSaveStart }: any) => {
+const FindAMentor = connect(mapStateToProps, mapDispatchToProps)(({ profile, profileSaveStart }: any) => {
   const { Loading, isLoading, setLoading } = useLoading()
   const [showFavorites, setShowFavorites] = useState<boolean>(false)
   const [mentors, setMentors] = useState<RedProfile[]>([])
@@ -139,7 +140,7 @@ export const AvailableMentorListing = connect(mapStateToProps, mapDispatchToProp
   }, [setLoading])
 
   return (
-    <>
+    <LoggedIn>
       <Loading />
       <Heading subtitle size="small" className="oneandhalf-bs">Available mentors ({mentors.length})</Heading>
       <div className="filters">
@@ -215,16 +216,18 @@ export const AvailableMentorListing = connect(mapStateToProps, mapDispatchToProp
           return <Columns.Column size={4} key={mentor.id}>
             <ProfileCard
               profile={mentor}
+              linkTo={`/app/find-a-mentor/profile/${mentor.id}`}
               toggleFavorite={toggleFavorites}
               isFavorite={isFavorite}
             />
           </Columns.Column>
         })}
 
-        {mentors.length === 0 && <Columns.Column size={4}>
-          <>No mentors found</>
-        </Columns.Column>}
       </Columns>
+
+      {mentors.length === 0 && <Content>
+        <>Unfortunately <strong>could not find any mentors</strong> matching your search criterias.</>
+      </Content>}
 
       {/* {mentorsWithoutSharedCategories.length > 0 && (
         <>
@@ -241,6 +244,8 @@ export const AvailableMentorListing = connect(mapStateToProps, mapDispatchToProp
           </Columns>
         </>
       )} */}
-    </>
+    </LoggedIn>
   )
 })
+
+export default FindAMentor

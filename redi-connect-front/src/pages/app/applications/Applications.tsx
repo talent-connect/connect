@@ -33,7 +33,7 @@ function Applications ({ loading, applicants, matchesFetchStart }: Props) {
       <Heading subtitle size="small" className="double-bs">Applications <span className="heading__thin"></span>({applicants.length})</Heading>
       {applicants.length === 0 && <Content italic>
         {profile.userType === 'mentee' && <>
-          You have not applied for a mentor yet. <a onClick={() => history.push('/app/dashboard') }>Find your mentor here.</a>
+          You have not applied for a mentor yet. <a onClick={() => history.push('/app/find-a-mentor') }>Find your mentor here.</a>
         </>}
         {profile.userType === 'mentor' && <>
           You have not received mentee applications yet. Make sure your profile is up to date and complete.

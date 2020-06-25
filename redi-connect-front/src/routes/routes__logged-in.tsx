@@ -8,12 +8,17 @@ const Applications = lazy(() =>
 )
 const Mentorship = lazy(() =>
   import(
-    /* webpackChunkName: "Applications", webpackPreload: true  */ '../pages/app/mentorship/Mentorship'
+    /* webpackChunkName: "Mentorship", webpackPreload: true  */ '../pages/app/mentorship/Mentorship'
   )
 )
-const Dashboard = lazy(() =>
+const MentorshipsList = lazy(() =>
   import(
-    /* webpackChunkName: "Dashboard", webpackPreload: true  */ '../pages/app/dashboard/Dashboard'
+    /* webpackChunkName: "MentorshipList", webpackPreload: true  */ '../pages/app/mentorship/MentorshipsList'
+  )
+)
+const FindAMentor = lazy(() =>
+  import(
+    /* webpackChunkName: "FindAMentor", webpackPreload: true  */ '../pages/app/find-a-mentor/FindAMentor'
   )
 )
 const Profile = lazy(() =>
@@ -29,17 +34,12 @@ const Me = lazy(() =>
 
 const routes: RouteDefinition[] = [
   {
-    path: '/app/dashboard',
-    component: Dashboard,
+    path: '/app/find-a-mentor',
+    component: FindAMentor,
     exact: true
   },
   {
-    path: '/app/dashboard/profile/:profileId',
-    component: Profile,
-    exact: true
-  },
-  {
-    path: '/app/profile/:profileId',
+    path: '/app/find-a-mentor/profile/:profileId',
     component: Profile,
     exact: true
   },
@@ -55,8 +55,18 @@ const routes: RouteDefinition[] = [
     exact: true
   },
   {
-    path: '/app/mentorship',
+    path: '/app/mentorships',
+    component: MentorshipsList,
+    exact: true
+  },
+  {
+    path: '/app/mentorships/:profileId',
     component: Mentorship,
+    exact: true
+  },
+  {
+    path: '/app/profile/:profileId',
+    component: Profile,
     exact: true
   },
   {
@@ -65,6 +75,7 @@ const routes: RouteDefinition[] = [
     exact: true
   }
 ]
+
 const routesRequiringLoggedIn = routes.map(route =>
   Object.assign(route, { requiresLoggedIn: true })
 )
