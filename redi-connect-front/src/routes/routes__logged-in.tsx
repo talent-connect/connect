@@ -8,12 +8,12 @@ const Applications = lazy(() =>
 )
 const Mentorship = lazy(() =>
   import(
-    /* webpackChunkName: "Applications", webpackPreload: true  */ '../pages/app/mentorship/Mentorship'
+    /* webpackChunkName: "Mentorship", webpackPreload: true  */ '../pages/app/mentorship/Mentorship'
   )
 )
 const MentorshipsList = lazy(() =>
   import(
-    /* webpackChunkName: "Applications", webpackPreload: true  */ '../pages/app/mentorship/MentorshipsList'
+    /* webpackChunkName: "MentorshipList", webpackPreload: true  */ '../pages/app/mentorship/MentorshipsList'
   )
 )
 const FindAMentor = lazy(() =>
