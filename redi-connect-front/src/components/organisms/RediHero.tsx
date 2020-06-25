@@ -10,6 +10,7 @@ import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Button from '../atoms/Button'
 import team from '../../assets/images/hero.svg'
+import { ReactComponent as Deloitte } from '../../assets/images/deloitte.svg'
 
 const RediHero = () => {
   const history = useHistory()
@@ -23,6 +24,7 @@ const RediHero = () => {
             <Heading>
               {t('loggedOutArea.homePage.hero.headline')}
             </Heading>
+            <Deloitte className="oneandhalf-bs" />
             <Columns.Column responsive={{ tablet: { hide: { value: true } } }}>
               <img src={team} alt="team" />
             </Columns.Column>
