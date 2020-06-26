@@ -141,8 +141,8 @@ module.exports = function (RedMatch) {
         const pendingMatchData = pendingMatch.toJSON()
         return sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted({
           recipient: pendingMatchData.mentor.contactEmail,
-          mentorName: pendingMatchData.mentee.firstName,
-          menteeName: pendingMatchData.mentor.firstName,
+          mentorName: pendingMatchData.mentor.firstName,
+          menteeName: pendingMatchData.mentee.firstName,
           rediLocation: options.currentUser.redProfile.rediLocation
         }).toPromise()
       })
