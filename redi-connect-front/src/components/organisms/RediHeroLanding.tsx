@@ -65,7 +65,7 @@ const RediHeroLanding = ({ type }: Props) => {
                 <Element
                   renderAs="hr"
                   responsive={{ mobile: { hide: { value: true } } }}
-                  className="hero-landing__columns--separator"
+                  className="hero-landing__columns__separator"
                 />
                 <Element
                   textSize={5}
