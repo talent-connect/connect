@@ -6,7 +6,6 @@ import {
   Content
 } from 'react-bulma-components'
 import Heading from '../atoms/Heading'
-import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Button from '../atoms/Button'
 import SVGImage from '../atoms/SVGImage'
@@ -14,7 +13,6 @@ import SVGImage from '../atoms/SVGImage'
 import './PreFooter.scss'
 
 const PreFooter = () => {
-  const history = useHistory()
   const { t } = useTranslation()
 
   return (
@@ -32,7 +30,7 @@ const PreFooter = () => {
               {t('preFooter.content')}
             </Content>
             <Content>
-              <Button size="large" onClick={() => history.push('/front/signup-landing')} >
+              <Button size="large" onClick={() => (window.location.href = 'mailto:career@redi-school.org')}>
                 {t('button.sayHello')}
               </Button>
             </Content>

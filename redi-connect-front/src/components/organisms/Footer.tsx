@@ -1,6 +1,8 @@
 import React from 'react'
-import { Columns, Container, Section } from 'react-bulma-components'
+import { Element, Columns, Container, Section, Heading } from 'react-bulma-components'
 import { useTranslation } from 'react-i18next'
+import { ReactComponent as RediSchool } from '../../assets/images/redi-school-logo.svg'
+import { ReactComponent as Deloitte } from '../../assets/images/deloitte.svg'
 import Icons from '../atoms/MediaIcons'
 import './Footer.scss'
 
@@ -8,76 +10,86 @@ const RediFooter = () => {
   const year = new Date().getFullYear()
   const { t } = useTranslation()
 
+  const supportLinks = [
+    {
+      url: 'https://connect.redi-school.org/downloadeables/redi-connect-code-of-conduct.pdf',
+      name: t('footer.faq')
+    },
+    {
+      url: 'mailto:career@redi-school.org',
+      name: t('footer.contact')
+    },
+    {
+      url: 'https://www.redi-school.org',
+      name: t('footer.name')
+    }
+  ]
+
+  const legalLinks = [
+    {
+      url: 'https://www.redi-school.org/berlin-transparency/',
+      name: t('footer.transparency')
+    },
+    {
+      url: 'https://www.redi-school.org/imprint/',
+      name: t('footer.cookies')
+    },
+    {
+      url: 'https://www.redi-school.org/data-privacy-policy',
+      name: t('footer.privacy')
+    }
+  ]
+
   return (
-    <footer className="footer">
+    <footer className="footer footer--border">
       <Section>
         <Container>
-          <Columns>
-            <Columns.Column className="is-hidden-mobile">
-              <p>
-                <a href="https://www.redi-school.org/">{t('footer.name')}</a>
-              </p>
-              <p>&copy; {year} {t('footer.copyright')}</p>
+          <Columns breakpoint="mobile">
+            <Columns.Column mobile={{ size: 'full' }}>
+              <Element>
+                <RediSchool className="oneandhalf-bs" />
+              </Element>
+              <Element>
+                <Deloitte />
+              </Element>
             </Columns.Column>
-            <Columns.Column className="is-hidden-tablet footer--headline">
-              <p className="is-size-5">{t('footer.socialMediaHeadline')}</p>
+            <Columns.Column mobile={{ offset: 'zero', size: 'half' }} desktop={{ offset: 1 }} className="double-bs">
+              <Heading subtitle size={6} textTransform="uppercase" textWeight="bold">
+                {t('footer.support')}
+              </Heading>
+              <Element renderAs="hr"/>
+              {supportLinks.map(link => (
+                <Heading subtitle size={6} textTransform="uppercase">
+                  <Element renderAs="a" href={link.url} target="_blank">
+                    {link.name}
+                  </Element>
+                </Heading>
+              ))}
+            </Columns.Column>
+            <Columns.Column mobile={{ size: 'half' }}>
+              <Heading subtitle size={6} textTransform="uppercase" textWeight="bold">
+                {t('footer.legal')}
+              </Heading>
+              <Element renderAs="hr" />
+              {legalLinks.map(link => (
+                <Heading subtitle size={6} textTransform="uppercase">
+                  <Element renderAs="a" href={link.url} target="_blank">
+                    {link.name}
+                  </Element>
+                </Heading>
+              ))}
+            </Columns.Column>
+            <Columns.Column>
+              <Heading subtitle size={6} textTransform="uppercase" textWeight="bold">
+                {t('footer.socialMediaHeadline')}
+              </Heading>
+              <Element renderAs="hr" />
               <Icons />
-            </Columns.Column>
-            <Columns.Column className="footer--links">
-              <p>
-                <a
-                  href="https://www.redi-school.org/imprint"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {t('footer.contact')}
-                </a>
-              </p>
-              <p>
-                <a href="/" target="_blank" rel="noopener noreferrer">
-                  {t('footer.faq')}
-                </a>
-              </p>
-              <p>
-                <a
-                  href="https://www.redi-school.org/berlin-transparency/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {t('footer.transparency')}
-                </a>
-              </p>
-              <p>
-                <a href="/">{t('footer.cookies')}</a>
-              </p>
-              <p>
-                <a
-                  href="https://www.redi-school.org/data-privacy-policy"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {t('footer.dataPolicy')}
-                </a>
-              </p>
-            </Columns.Column>
-            <Columns.Column className="is-hidden-mobile is-narrow footer--headline">
-              <p>{t('footer.socialMediaHeadline')}</p>
-              <Icons />
-            </Columns.Column>
-            <Columns.Column
-              mobile={{
-                size: 'four-fifths'
-              }}
-              className="is-hidden-tablet"
-            >
-              <span>
-                <a href="https://www.redi-school.org/">{t('footer.name')}</a>
-              </span>
-              <span className="is-pulled-right">
-                &copy; {year} {t('footer.copyright')}
-              </span>
             </Columns.Column>
           </Columns>
+          <Heading size={6} subtitle className="footer--border" renderAs="p">
+            &copy; {year} {t('footer.name')}
+          </Heading>
         </Container>
       </Section>
     </footer>

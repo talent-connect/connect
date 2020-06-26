@@ -11,14 +11,15 @@
     "sayHello": "say hello!"
   },
   "footer": {
-    "name": "ReDI School Website",
-    "copyright": "By ReDI School",
+    "name": "ReDI School",
+    "legal": "legal",
+    "support": "Support",
     "socialMediaHeadline": "Follow Us",
-    "contact": "Contact",
+    "contact": "Contact-us",
     "faq": "FAQ",
     "transparency": "Transparency",
     "cookies": "Cookie policy",
-    "dataPolicy": "Data privacy policy"
+    "privacy": "Data privacy policy"
   },
   "preFooter": {
     "headline": "Want to get in touch?",

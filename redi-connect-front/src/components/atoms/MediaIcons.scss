@@ -4,12 +4,7 @@
 .media-icons {
   &__wrapper {
     display: flex;
-    border: 1.5px solid $black;
     width: min-content;
-
-    @include mobile() {
-      border: 0.7px solid $black;
-    }
   }
 
   &__icon {
@@ -17,27 +12,19 @@
     width: 2.75rem;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
+
+    &:first-child {
+      margin-left: -.75rem;
+
+      @include mobile() {
+        margin-left: -.5rem;
+      }
+    }
 
     @include mobile() {
       width: 2rem;
       height: 2rem;
-
-      img {
-        width: 1rem;
-      }
-    }
-
-    &:not(:last-child) {
-      border-right: 1.5px solid $black;
-
-      @include mobile() {
-        border-right: 0.7px solid $black;
-      }
-    }
-
-    &:hover {
-      opacity: 0.8;
     }
   }
 }

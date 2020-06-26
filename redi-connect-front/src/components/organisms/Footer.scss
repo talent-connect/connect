@@ -2,42 +2,29 @@
 @import "../../styles/_variables.scss";
 
 .footer {
-  padding-bottom: 1rem;
-  font-size: $size-4;
-  font-weight: 500;
-  line-height: 2rem;
-  color: $black;
-  border-top: 2px solid $black;
+  background: $white;
 
-  @include mobile() {
-    border-top: 1px solid $black;
-    padding-bottom: 0;
-    font-size: $size-7;
-    line-height: $size-4;
-  }
+  &--border {
+    border-top: 1px solid $grey-light;
 
-  &__section {
-    @include mobile {
-      padding: .875rem 1rem 1.5rem;
+    p {
+      padding-top: 1.5rem;
     }
   }
 
-  &--headline p {
-    margin-bottom: .5rem;
-  }
-
-  &--links {
-    margin-right: 3rem;
-
-    @include mobile {
-      text-transform: uppercase;
-      padding-top: 0;
-    }
-  }
-
-
-  & a {
+  a {
     color: $black;
-    text-decoration: underline;
+    font-weight: $weight-normal;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  hr {
+    width: 1.5rem;
+    border: 1px solid $redi-orange-dark;
+    margin-top: 0;
+    margin-bottom: 1rem;
   }
 }
