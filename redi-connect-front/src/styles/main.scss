@@ -100,8 +100,9 @@ a:hover {
   word-break: break-word;
 }
 
-.title, .subtitle {
-  + .content {
+.title,
+.subtitle {
+  +.content {
     margin-top: -0.5rem;
   }
 }
@@ -167,7 +168,7 @@ a:hover {
 .account-not-active {
   display: flex;
   align-items: center;
-  
+
   &__icon {
     flex-shrink: 0;
   }

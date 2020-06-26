@@ -14,8 +14,8 @@ export default function Home () {
       <RediProgram />
       <Carousel
         border="orange"
-        headline={t('loggedOutArea.homePage.carousel.headline')}
-        title={t('loggedOutArea.homePage.carousel.title')}
+        headline={t('loggedOutArea.homePage.carousel.headlineAbout')}
+        title={t('loggedOutArea.homePage.carousel.titleAbout')}
       />
       <PreFooter />
     </Landing>

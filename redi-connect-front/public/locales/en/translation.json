@@ -3,6 +3,11 @@
     "signUp": "sign-up",
     "signUpNow": "sign-up now!",
     "login": "log-in",
+    "logout": "log-out",
+    "account": "account",
+    "about": "about us",
+    "mentees": "for mentees",
+    "mentors": "for mentors",
     "sayHello": "say hello!"
   },
   "footer": {
@@ -24,55 +29,120 @@
   "loggedOutArea": {
     "homePage": {
       "hero": {
-        "headline": "Welcome to ReDI Connect",
-        "content1": "Are you ready for the future of work?",
-        "content2": "We connect thriving professionals from the digital industry with students and alumni of all of our programs across our four different locations."
+        "about": {
+          "headline": "Welcome to ReDI Connect",
+          "content1": "Are you ready for the future of work?",
+          "content2": "We connect thriving professionals from the digital industry with students and alumni of all of our programs across our four different locations."
+        },
+        "mentor": {
+          "headline": "How to become a mentor?",
+          "content": "Putting two minds together is always more fun and interesting than coming up with something by yourself! That’s why we want to connect you as mentors with the students and alumni of our Digital Career Program. Share your experience, your network and your knowledge. In exchange, you will look at things from a different perspective or simply meet a great person!",
+          "programName": "steps",
+          "steps": [{
+              "name": "Register on the platform & get approved by ReDI",
+              "image": "career"
+            },
+            {
+              "name": "Create your profile to let mentees get to know you better",
+              "image": "clipboard"
+
+            },
+            {
+              "name": "Browse around for finding a suitable mentee",
+              "image": "search"
+
+            },
+            {
+              "name": "Review applications from mentees & accept or decline",
+              "image": "calendar"
+
+            },
+            {
+              "name": "Get to know a person and culture better",
+              "image": "certificate"
+            }
+          ]
+        },
+        "mentee": {
+          "headline": "How to become a mentee?",
+          "content": "With the mentorship program we connect our students and alumni of the Digital Career Programm with (IT) professionals from leading companies. As a student or “mentee” you get guidance, career advice and high level support with your personal and professional environment.",
+          "programName": "steps",
+          "steps": [{
+              "name": "Register on the platform & get approved by ReDI",
+              "image": "career"
+            },
+            {
+              "name": "Create your profile to tell potential mentors about you",
+              "image": "clipboard"
+
+            },
+            {
+              "name": "Apply for your prefered mentor and get approved",
+              "image": "search"
+
+            },
+            {
+              "name": "Plan sessions and meet  with your mentor on a regular basis ",
+              "image": "calendar"
+
+            },
+            {
+              "name": "Get support on achieving your career goals",
+              "image": "certificate"
+            }
+          ]
+        }
       },
       "program": {
         "subHeadline": "about redi connect",
         "headline": "What our Mentorship Program is all about ...",
-        "steps": {
-          "step1": {
+        "steps": [{
             "content": "Connect yourself with the right mentor/ mentee",
-            "headline": "1. Set up your profile"
+            "headline": "1. Set up your profile",
+            "image": "career"
           },
-          "step2": {
+          {
             "content": "Get/ give career and personal advice and support",
-            "headline": "2. Get connected"
+            "headline": "2. Get connected",
+            "image": "search"
           },
-          "step3": {
+          {
             "content": "Get/ Give support with your ReDI Course/ Coding & technical skills",
-            "headline": "3. Plan meetings"
+            "headline": "3. Plan meetings",
+            "image": "chat"
           },
-          "step4": {
+          {
             "content": "Grow your personal and professional network",
-            "headline": "4. Meet in person/ virtually"
+            "headline": "4. Meet in person/ virtually",
+            "image": "handshake"
           }
-        }
+        ]
       },
       "checklist": {
         "mentor": {
           "title": "the mentor checklist",
           "headline": "Are you ready to become a mentor?",
-          "point1": "I work in the digital industry",
-          "point2": "I am willing to share knowledge and experiences with others",
-          "point3": "I am open to meet other nationalities",
-          "point4": "I have the time to meet mentees during my free time",
-          "point5": "I have time to support on a personal and professional level"
+          "point1": "I work in the digital industry.",
+          "point2": "I am willing to  share knowledge and experiences with others.",
+          "point3": "I am open to meet other nationalities.",
+          "point4": "I have the time to meet mentees during my free time.",
+          "point5": "I have time to support on a personal and professional level."
         },
         "mentee": {
           "title": "the mentee checklist",
           "headline": "Are you ready to become a mentee?",
-          "point1": "I am a student or student alumni at ReDI school",
-          "point2": "I would like help on my classes and/or career development",
-          "point3": "I would like to get guidance from an expert from the digital industry",
-          "point4": "I can make time to meet with a mentor on a regular basis",
-          "point5": "I am open to get feedback on the topics I disscuss with my mentor"
+          "point1": "I am a student or student alumni at ReDI school.",
+          "point2": "I would like help on my classes and/or career development.",
+          "point3": "I would like to get guidance from an expert from the digital industry.",
+          "point4": "I can make time to meet with a mentor on a regular basis.",
+          "point5": "I am open to get feedback on the topics I disscuss with my mentor."
         }
       },
       "carousel": {
-        "headline": "What our mentors/ mentees say...",
-        "title": "Success Stories",
+        "headlineAbout": "What our mentors/ mentees say...",
+        "titleAbout": "Success Stories",
+        "headlineMentorOrMentee": "What mentees say about our mentorship",
+        "titleMentorOrMentee": "testimonials",
         "quotes": {
           "quoteKhaled": {
             "title": "Anna, mentee and almumna of RedI School",

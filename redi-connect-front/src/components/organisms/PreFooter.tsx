@@ -9,8 +9,7 @@ import Heading from '../atoms/Heading'
 import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Button from '../atoms/Button'
-import { ReactComponent as Hello } from '../../assets/images/hello.svg'
-import { ReactComponent as HelloMobile } from '../../assets/images/hello-mobile.svg'
+import SVGImage from '../atoms/SVGImage'
 
 import './PreFooter.scss'
 
@@ -39,10 +38,10 @@ const PreFooter = () => {
             </Content>
           </Columns.Column>
           <Columns.Column className="is-hidden-mobile">
-            <Hello className="pre-footer__image" />
+            <SVGImage image="hello" className="pre-footer__image" />
           </Columns.Column>
           <Columns.Column className="is-hidden-tablet">
-            <HelloMobile className="pre-footer__image" />
+            <SVGImage image="helloMobile" className="pre-footer__image" />
           </Columns.Column>
         </Columns>
       </Container>

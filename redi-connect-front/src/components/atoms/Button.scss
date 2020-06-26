@@ -5,7 +5,6 @@
   display: inline-flex;
   align-items: center;
   background: none;
-  font-weight: $weight-bold;
   text-transform: uppercase;
   text-decoration: none;
   font-size: $size-6;
@@ -18,7 +17,7 @@
   border: 2px solid $black;
   transform-style: preserve-3d;
 
-  + .button {
+  +.button {
     @include tablet() {
       margin-left: 1rem;
     }
@@ -28,7 +27,7 @@
     width: calc(100% - .5rem);
     justify-content: center;
 
-    + .button {
+    +.button {
       margin-top: 1rem;
     }
   }
@@ -40,7 +39,7 @@
       content: '';
       position: relative;
       left: -1rem;
-      
+
       height: 2rem;
       width: 1px;
       border-left: 1px solid $grey !important;
@@ -96,6 +95,21 @@
     }
   }
 
+  &--nav {
+    border: none;
+    font-weight: $weight-normal;
+    color: $black;
+
+    &:hover {
+      text-decoration: none;
+      color: $redi-orange-dark;
+    }
+  }
+
+  &--active {
+    color: $redi-orange-dark;
+  }
+
   &--small {
     height: 3rem;
   }
@@ -127,6 +141,6 @@
   }
 
   &:hover path {
-    fill: $redi-orange-dark; 
+    fill: $redi-orange-dark;
   }
 }
