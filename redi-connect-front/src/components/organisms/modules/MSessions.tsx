@@ -103,7 +103,11 @@ const MSessions = ({ sessions, menteeId, editable, mentoringSessionsCreateStart 
         ? <ul className="m-sessions__list">
           {sessions.map(session => <SessionRow session={session} />)}
         </ul>
-        : <Content textColor="grey-dark" italic>Log your first session with your mentee.</Content>
+        : <Content textColor="grey-dark" italic>
+          {editable
+            ? 'Log your first session with your mentee.'
+            : 'Please remind your mentor to log your mentoring sessions.'}
+        </Content>
       }
 
       {editable && <Modal
