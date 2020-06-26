@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { useParams } from 'react-router'
-import { Heading } from '../../../components/atoms'
+import { useParams, useHistory } from 'react-router'
+import { Heading, Button } from '../../../components/atoms'
 import { ProfileCard, MContacts, MSessions, ReportProblem } from '../../../components/organisms'
-import { Columns, Content, Element } from 'react-bulma-components'
+import { Columns, Content } from 'react-bulma-components'
 
 import { RedMentoringSession } from '../../../types/RedMentoringSession'
 
@@ -33,6 +33,7 @@ interface Props {
 const Mentorship = ({ profile, matches, currentUser, profilesFetchOneStart }: any) => {
   // const match = profile.redMatchesWithCurrentUser && profile.redMatchesWithCurrentUser[0];
   const { profileId } = useParams<RouteParams>()
+  const history = useHistory()
 
   useEffect(() => {
     profilesFetchOneStart(profileId)
@@ -48,12 +49,32 @@ const Mentorship = ({ profile, matches, currentUser, profilesFetchOneStart }: an
   const currentUserIsMentor = currentUser.userType === 'mentor'
   const currentUserIsMentee = currentUser.userType === 'mentee'
 
+  const pageHeading = currentUserIsMentor
+    ? `Mentorship with ${profile.firstName} ${profile.lastName}`
+    : 'My Mentorship'
+
+  const isMentorWithMultipleActiveMentees =
+  currentUserIsMentor &&
+  (currentUser?.currentMenteeCount > 1)
+
   return (
     <LoggedIn>
-      <Heading subtitle size="small" className="double-bs">My Mentorship</Heading>
-      <Content size="medium" renderAs="p" responsive={{ mobile: { hide: { value: true } } }}>
+
+      <Columns>
+        <Columns.Column>
+          { isMentorWithMultipleActiveMentees && (
+            <Button onClick={() => history.goBack()} simple>
+              <Button.Icon icon="arrowLeft" space="right" />
+          Back to mentee overview
+            </Button>
+          )}
+        </Columns.Column>
+      </Columns>
+
+      <Heading subtitle size="small" className="double-bs">{pageHeading}</Heading>
+      {currentUserIsMentee && <Content size="medium" renderAs="p" responsive={{ mobile: { hide: { value: true } } }}>
         Below you can see your ongoing mentorship with your mentor <strong>{profile?.firstName} {profile?.lastName}</strong>.
-      </Content>
+      </Content>}
 
       <Columns>
         <Columns.Column size={4}>

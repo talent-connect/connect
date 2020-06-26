@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { Redirect } from 'react-router'
-import { Columns, Element } from 'react-bulma-components'
+import { Columns, Content, Element } from 'react-bulma-components'
 import LoggedIn from '../../../components/templates/LoggedIn'
 import Heading from '../../../components/atoms/Heading'
 import { ProfileCard } from '../../../components/organisms'
@@ -39,7 +39,12 @@ function MentorshipList ({ loading, mentees, matchesFetchStart }: Props) {
       {mentees.length === 1 && <Redirect to={`/app/mentorships/${mentees[0].mentee.id}`} />}
 
       {(mentees.length > 1) && <>
-        <Heading size="medium">Your mentees</Heading>
+        <Heading size="medium" className="double-bs">My mentees</Heading>
+
+        <Content size="medium" className="double-bs" renderAs="p" responsive={{ mobile: { hide: { value: true } } }}>
+          You currently mentor <strong>{mentees.length} mentees</strong>.
+        </Content>
+
         <Columns>
           {mentees.map(
             (mentee: RedMatch) =>
