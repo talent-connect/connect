@@ -1,6 +1,3 @@
-import {
-  Paper
-} from '@material-ui/core'
 import { Caption, FormTextArea, Checkbox, Button } from '../atoms'
 import { Modal } from '../molecules'
 import { Content, Form } from 'react-bulma-components'
@@ -88,7 +85,7 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
     >
       <form>
         {submitResult === 'success' &&
-          <Paper>Your application was successfully submitted.</Paper>
+          <>Your application was successfully submitted.</>
         }
         {submitResult !== 'success' &&
           <>

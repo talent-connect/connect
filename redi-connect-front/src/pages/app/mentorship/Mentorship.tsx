@@ -1,201 +1,95 @@
-import { createStyles, Grid, Theme, withStyles } from '@material-ui/core'
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { useParams } from 'react-router'
+import { useParams, useHistory } from 'react-router'
+import { Heading, Button } from '../../../components/atoms'
+import { ProfileCard, MContacts, MSessions, ReportProblem } from '../../../components/organisms'
+import { Columns, Content } from 'react-bulma-components'
+
+import { RedMentoringSession } from '../../../types/RedMentoringSession'
+
 // import { Avatar } from '../../../../components/Avatar'
-import { CategoryChip } from '../../../components/CategoryChip'
-import { ContactInfo } from '../../../components/ContactInfo'
-import { LogMentoringSessionBtn } from '../../../components/LogMentoringSessionBtn'
-import { MentoringSessionsLog } from '../../../components/MentoringSessionsLog'
-import { ProfileCourse } from '../../../components/ProfileCourse'
-import { ProfileLanguages } from '../../../components/ProfileLanguages'
-import { ProfileName } from '../../../components/ProfileName'
-import { ProfileOccupation } from '../../../components/ProfileOccupation'
-import { ProfileWorkPlace } from '../../../components/ProfileWorkPlace'
-import { ReportProblemBtn } from '../../../components/ReportProblemBtn'
 import { RootState } from '../../../redux/types'
 import { RedProfile } from '../../../types/RedProfile'
 import { profilesFetchOneStart } from '../../../redux/profiles/actions'
 import { LoggedIn } from '../../../components/templates'
-import { getMentees } from '../../../redux/matches/selectors'
 
 interface RouteParams {
   profileId: string
 }
-interface Props {
-  profile: RedProfile
-  classes: {
-    avatar: string
-    category: string
-    personalDescription: string
-  }
-  currentUser: RedProfile
+interface MentorshipProps {
+  profile?: RedProfile
+  currentUser?: RedProfile
+  profilesFetchOneStart: (profileId: string) => void
 }
 
-const styles = (theme: Theme) =>
-  createStyles({
-    avatar: {
-      width: '100px',
-      height: '100px'
-    },
-    category: {
-      color: 'white',
-      fontSize: '12px',
-      margin: '3px',
-      height: '20px'
-    },
-    personalDescription: {
-      marginTop: theme.spacing(6),
-      marginBottom: theme.spacing(6),
-      overflowWrap: 'break-word'
-    }
-  })
+const Mentorship = ({ profile, currentUser, profilesFetchOneStart }: MentorshipProps) => {
+  const { profileId } = useParams<RouteParams>()
+  const history = useHistory()
+
+  useEffect(() => {
+    profilesFetchOneStart(profileId)
+  }, [profileId])
+
+  if (!profile) return <>loading...</>
+
+  const currentUserIsMentor = currentUser?.userType === 'mentor'
+  const currentUserIsMentee = currentUser?.userType === 'mentee'
+
+  const pageHeading = currentUserIsMentor
+    ? `Mentorship with ${profile.firstName} ${profile.lastName}`
+    : 'My Mentorship'
+
+  const isMentorWithMultipleActiveMentees =
+  currentUserIsMentor &&
+  currentUser &&
+  currentUser.currentMenteeCount > 1
+
+  return (
+    <LoggedIn>
+      <Columns>
+        <Columns.Column>
+          { isMentorWithMultipleActiveMentees && (
+            <Button onClick={() => history.goBack()} simple>
+              <Button.Icon icon="arrowLeft" space="right" />
+              Back to mentee overview
+            </Button>
+          )}
+        </Columns.Column>
+      </Columns>
+
+      <Heading subtitle size="small" className="double-bs">{pageHeading}</Heading>
+      {currentUserIsMentee && <Content size="medium" renderAs="p" responsive={{ mobile: { hide: { value: true } } }}>
+        Below you can see your ongoing mentorship with your mentor <strong>{profile?.firstName} {profile?.lastName}</strong>.
+      </Content>}
+
+      <Columns>
+        <Columns.Column size={4}>
+          <ProfileCard profile={profile} />
+          <MSessions
+            sessions={profile?.redMentoringSessionsWithCurrentUser}
+            menteeId={profile.id}
+            editable={currentUserIsMentor}
+          />
+          {currentUser && <ReportProblem
+            type={currentUser.userType}
+            redProfileId={profile.id}
+          />}
+        </Columns.Column>
+        <Columns.Column size={8}>
+          <MContacts profile={profile as RedProfile} />
+        </Columns.Column>
+      </Columns>
+    </LoggedIn>
+  )
+}
 
 const mapStateToProps = (state: RootState) => ({
   currentUser: state.user.profile,
-  profile: state.profiles.oneProfile,
-  matches: getMentees(state.matches)
+  profile: state.profiles.oneProfile
 })
+
 const mapDispatchToProps = (dispatch: any) => ({
   profilesFetchOneStart: (profileId: string) => dispatch(profilesFetchOneStart(profileId))
 })
 
-// TODO: ': any' to be replaced with proper type
-const Mentorship = connect(mapStateToProps, mapDispatchToProps)(
-  withStyles(styles)(({ matches, classes, currentUser, profilesFetchOneStart }: any) => {
-    // const match = profile.redMatchesWithCurrentUser && profile.redMatchesWithCurrentUser[0];
-    const { profileId } = useParams<RouteParams>()
-    const profileType = currentUser.userType === 'mentee' ? 'mentor' : 'mentee'
-    const myMatch = matches.find((match: any) => match[`${profileType}Id`] === profileId)
-    const profile = myMatch && myMatch[profileType]
-    const occupation = profile && occupationFormatter(profile)
-    const workPlace = profile && workPlaceFormatter(profile)
-    const currentUserIsMentor = currentUser.userType === 'mentor'
-    const currentUserIsMentee = currentUser.userType === 'mentee'
-
-    return (
-      <LoggedIn>
-        {currentUserIsMentee && <h1>Information about your mentor</h1>}
-        <Grid container spacing={1}>
-          <Grid item xs={12} md={6}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={5}>
-                {/* <Avatar
-                  className={classes.avatar}
-                  s3Key={profile.profileAvatarImageS3Key}
-                  style={{ width: '100%', height: '20vh' }}
-                /> */}
-              </Grid>
-              <Grid item xs={12} sm={7}>
-                <h3
-                  style={{ fontWeight: 700, fontFamily: 'Roboto', margin: 0 }}
-                >
-                  <ProfileName
-                    name={`${profile?.firstName} ${profile?.lastName}`}
-                  />
-                </h3>
-                <ProfileCourse
-                  courseId={profile?.mentee_currentlyEnrolledInCourse}
-                />
-                {occupation && <ProfileOccupation occupation={occupation} />}
-                {workPlace && <ProfileWorkPlace workPlace={workPlace} />}
-                <ProfileLanguages languages={profile?.languages} />
-              </Grid>
-            </Grid>
-
-            <p className={classes.personalDescription}>
-              {profile?.personalDescription}
-            </p>
-            {profile?.expectations && (
-              <>
-                <h4 style={{ marginBottom: 0 }}>
-                  {currentUserIsMentee && <>Expectations to my mentee:</>}
-                  {currentUserIsMentor && <>Expectations to my mentor:</>}
-                </h4>
-                <p
-                  className={classes.personalDescription}
-                  style={{ marginTop: '0.3em' }}
-                >
-                  {profile?.expectations}
-                </p>
-              </>
-            )}
-
-            {profile && <ContactInfo profile={ profile} />}
-
-            {currentUserIsMentor && <p>I want help with:</p>}
-            {currentUserIsMentee && <p>I can help you with</p>}
-            {profile?.categories.map((catId: string) => (
-              <CategoryChip
-                key={catId}
-                className={classes.category}
-                categoryId={catId}
-              />
-            ))}
-          </Grid>
-          <Grid item xs={12} md={6}>
-            {currentUserIsMentor && (
-              <LogMentoringSessionBtn menteeId={profile?.id} />
-            )}
-            <MentoringSessionsLog
-              mentoringSessions={profile?.redMentoringSessionsWithCurrentUser}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <div style={{ marginTop: '50px' }}>
-              <ReportProblemBtn
-                type={currentUser?.userType}
-                redProfileId={profile?.id}
-              />
-            </div>
-          </Grid>
-        </Grid>
-      </LoggedIn>
-    )
-  })
-)
-
-const occupationFormatter = (mentee: RedProfile) => {
-  switch (mentee.mentee_occupationCategoryId) {
-    case 'job':
-      return (
-        'Job' +
-        (mentee.mentee_occupationJob_position
-          ? ` (${mentee.mentee_occupationJob_position})`
-          : '')
-      )
-    case 'student':
-      return (
-        'Student' +
-        (mentee.mentee_occupationStudent_studyName
-          ? ` (${mentee.mentee_occupationStudent_studyName})`
-          : '')
-      )
-    case 'lookingForJob':
-      return (
-        'Looking for a job' +
-        (mentee.mentee_occupationLookingForJob_what
-          ? ` ${mentee.mentee_occupationLookingForJob_what})`
-          : '')
-      )
-    case 'other':
-      return mentee.mentee_occupationOther_description
-    default:
-      return undefined
-  }
-}
-
-const workPlaceFormatter = (mentee: RedProfile) => {
-  switch (mentee.mentee_occupationCategoryId) {
-    case 'job':
-      return mentee.mentee_occupationJob_placeOfEmployment
-    case 'student':
-      return mentee.mentee_occupationStudent_studyPlace
-    case 'lookingForJob':
-    case 'other':
-    default:
-      return undefined
-  }
-}
-
-export default Mentorship
+export default connect(mapStateToProps, mapDispatchToProps)(Mentorship)

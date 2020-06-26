@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
 import { Redirect } from 'react-router'
-import { Columns, Element } from 'react-bulma-components'
+import { Columns, Content, Element } from 'react-bulma-components'
 import LoggedIn from '../../../components/templates/LoggedIn'
 import Heading from '../../../components/atoms/Heading'
 import { ProfileCard } from '../../../components/organisms'
 import { RootState } from '../../../redux/types'
-import { getMentees } from '../../../redux/matches/selectors'
+import { getMatches } from '../../../redux/matches/selectors'
 import { connect } from 'react-redux'
 import { matchesFetchStart } from '../../../redux/matches/actions'
 import { FullScreenCircle } from '../../../hooks/WithLoading'
@@ -18,7 +18,7 @@ interface Props {
 }
 
 // TODO: add type to Props
-function Mentorship ({ loading, mentees, matchesFetchStart }: Props) {
+function MentorshipList ({ loading, mentees, matchesFetchStart }: Props) {
   useEffect(() => {
     matchesFetchStart()
   }, [matchesFetchStart])
@@ -39,7 +39,12 @@ function Mentorship ({ loading, mentees, matchesFetchStart }: Props) {
       {mentees.length === 1 && <Redirect to={`/app/mentorships/${mentees[0].mentee.id}`} />}
 
       {(mentees.length > 1) && <>
-        <Heading size="medium">Your mentees</Heading>
+        <Heading size="medium" className="double-bs">My mentees</Heading>
+
+        <Content size="medium" className="double-bs" renderAs="p" responsive={{ mobile: { hide: { value: true } } }}>
+          You currently mentor <strong>{mentees.length} mentees</strong>.
+        </Content>
+
         <Columns>
           {mentees.map(
             (mentee: RedMatch) =>
@@ -63,7 +68,7 @@ const mapDispatchToProps = (dispatch: any) => ({
 
 const mapStateToProps = (state: RootState) => ({
   loading: state.matches.loading,
-  mentees: getMentees(state.matches)
+  mentees: getMatches(state.matches)
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Mentorship)
+export default connect(mapStateToProps, mapDispatchToProps)(MentorshipList)

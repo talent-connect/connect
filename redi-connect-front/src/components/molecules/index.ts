@@ -22,6 +22,10 @@ export {
 }
   from './ReadEducation'
 export {
+  default as Module
+}
+  from './Module'
+export {
   default as ReadMentoringTopics
 }
   from './ReadMentoringTopics'

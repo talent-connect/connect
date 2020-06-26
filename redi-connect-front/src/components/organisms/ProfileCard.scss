@@ -4,10 +4,13 @@
   border-radius: 4px;
   height: 25rem;
   overflow: hidden;
-  cursor: pointer;
 
-  &:hover {
-    box-shadow: $card-shadow-hover;
+  &--active {
+    cursor: pointer;
+    
+    &:hover {
+      box-shadow: $card-shadow-hover;
+    }
   }
 
   &__name {
