@@ -293,7 +293,7 @@ const sendMentoringSessionLoggedEmail = ({
   mentorName,
   rediLocation
 }) => {
-  const loginUrl = buildFrontendUrl(process.env.NODE_ENV, rediLocation)
+  const loginUrl = `${buildFrontendUrl(process.env.NODE_ENV, rediLocation)}/front/login`
   const sendMentoringSessionLoggedEmailParsed = convertTemplateToHtml(rediLocation, 'mentoring-session-logged-email')
   const html = sendMentoringSessionLoggedEmailParsed
     .replace(/\${mentorName}/g, mentorName)
@@ -346,7 +346,7 @@ const sendMentorshipRequestReceivedEmail = ({
   menteeFullName,
   rediLocation
 }) => {
-  const loginUrl = buildFrontendUrl(process.env.NODE_ENV, rediLocation)
+  const loginUrl = `${buildFrontendUrl(process.env.NODE_ENV, rediLocation)}/front/login`
   const sendMentorshipRequestReceivedEmailParsed = convertTemplateToHtml(rediLocation, 'mentorship-request-email')
   const html = sendMentorshipRequestReceivedEmailParsed
     .replace(/\${mentorName}/g, mentorName)

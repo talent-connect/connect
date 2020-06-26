@@ -44,7 +44,6 @@ const Carousel = ({ headline, title, border }: Props) => {
     autoplaySpeed: 10000,
     slidesToShow: 1,
     slidesToScroll: 1,
-    // fade: true,
     autoplay: true,
     pauseOnHover: true
   }
