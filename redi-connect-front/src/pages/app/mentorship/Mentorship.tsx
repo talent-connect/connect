@@ -8,30 +8,21 @@ import { Columns, Content } from 'react-bulma-components'
 import { RedMentoringSession } from '../../../types/RedMentoringSession'
 
 // import { Avatar } from '../../../../components/Avatar'
-import { LogMentoringSessionBtn } from '../../../components/LogMentoringSessionBtn'
-import { MentoringSessionsLog } from '../../../components/MentoringSessionsLog'
-import { ProfileCourse } from '../../../components/ProfileCourse'
-import { ProfileOccupation } from '../../../components/ProfileOccupation'
-import { ProfileWorkPlace } from '../../../components/ProfileWorkPlace'
 import { RootState } from '../../../redux/types'
 import { RedProfile } from '../../../types/RedProfile'
 import { profilesFetchOneStart } from '../../../redux/profiles/actions'
 import { LoggedIn } from '../../../components/templates'
-import { getMatches } from '../../../redux/matches/selectors'
 
 interface RouteParams {
   profileId: string
 }
-interface Props {
-  profile: RedProfile
-  currentUser: RedProfile
-  matches: any
-  profilesFetchOneStart: any
+interface MentorshipProps {
+  profile?: RedProfile
+  currentUser?: RedProfile
+  profilesFetchOneStart: (profileId: string) => void
 }
 
-// TODO: ': any' to be replaced with proper type
-const Mentorship = ({ profile, matches, currentUser, profilesFetchOneStart }: any) => {
-  // const match = profile.redMatchesWithCurrentUser && profile.redMatchesWithCurrentUser[0];
+const Mentorship = ({ profile, currentUser, profilesFetchOneStart }: MentorshipProps) => {
   const { profileId } = useParams<RouteParams>()
   const history = useHistory()
 
@@ -39,15 +30,10 @@ const Mentorship = ({ profile, matches, currentUser, profilesFetchOneStart }: an
     profilesFetchOneStart(profileId)
   }, [profileId])
 
-  if (!profile) return <>...</>
+  if (!profile) return <>loading...</>
 
-  const profileType = currentUser.userType === 'mentee' ? 'mentor' : 'mentee'
-  const myMatch = matches.find((match: any) => match[`${profileType}Id`] === profileId)
-  // const profile = myMatch && myMatch[profileType]
-  const occupation = profile && occupationFormatter(profile)
-  const workPlace = profile && workPlaceFormatter(profile)
-  const currentUserIsMentor = currentUser.userType === 'mentor'
-  const currentUserIsMentee = currentUser.userType === 'mentee'
+  const currentUserIsMentor = currentUser?.userType === 'mentor'
+  const currentUserIsMentee = currentUser?.userType === 'mentee'
 
   const pageHeading = currentUserIsMentor
     ? `Mentorship with ${profile.firstName} ${profile.lastName}`
@@ -55,17 +41,17 @@ const Mentorship = ({ profile, matches, currentUser, profilesFetchOneStart }: an
 
   const isMentorWithMultipleActiveMentees =
   currentUserIsMentor &&
-  (currentUser?.currentMenteeCount > 1)
+  currentUser &&
+  currentUser.currentMenteeCount > 1
 
   return (
     <LoggedIn>
-
       <Columns>
         <Columns.Column>
           { isMentorWithMultipleActiveMentees && (
             <Button onClick={() => history.goBack()} simple>
               <Button.Icon icon="arrowLeft" space="right" />
-          Back to mentee overview
+              Back to mentee overview
             </Button>
           )}
         </Columns.Column>
@@ -78,31 +64,16 @@ const Mentorship = ({ profile, matches, currentUser, profilesFetchOneStart }: an
 
       <Columns>
         <Columns.Column size={4}>
-          <ProfileCard
-            profile={profile} />
-
-          {/* maybe for mentee
-          <ProfileCourse
-            courseId={profile?.mentee_currentlyEnrolledInCourse}
-          />
-
-          {occupation && <ProfileOccupation occupation={occupation} />}
-          {workPlace && <ProfileWorkPlace workPlace={workPlace} />}
-          */}
-          {/* {currentUserIsMentor && (
-            <LogMentoringSessionBtn menteeId={profile?.id} />
-          )} */}
-
+          <ProfileCard profile={profile} />
           <MSessions
             sessions={profile?.redMentoringSessionsWithCurrentUser}
             menteeId={profile.id}
             editable={currentUserIsMentor}
           />
-
-          <ReportProblem
-            type={currentUser?.userType}
-            redProfileId={profile?.id}
-          />
+          {currentUser && <ReportProblem
+            type={currentUser.userType}
+            redProfileId={profile.id}
+          />}
         </Columns.Column>
         <Columns.Column size={8}>
           <MContacts profile={profile as RedProfile} />
@@ -112,53 +83,9 @@ const Mentorship = ({ profile, matches, currentUser, profilesFetchOneStart }: an
   )
 }
 
-const occupationFormatter = (mentee: RedProfile) => {
-  switch (mentee.mentee_occupationCategoryId) {
-    case 'job':
-      return (
-        'Job' +
-        (mentee.mentee_occupationJob_position
-          ? ` (${mentee.mentee_occupationJob_position})`
-          : '')
-      )
-    case 'student':
-      return (
-        'Student' +
-        (mentee.mentee_occupationStudent_studyName
-          ? ` (${mentee.mentee_occupationStudent_studyName})`
-          : '')
-      )
-    case 'lookingForJob':
-      return (
-        'Looking for a job' +
-        (mentee.mentee_occupationLookingForJob_what
-          ? ` ${mentee.mentee_occupationLookingForJob_what})`
-          : '')
-      )
-    case 'other':
-      return mentee.mentee_occupationOther_description
-    default:
-      return undefined
-  }
-}
-
-const workPlaceFormatter = (mentee: RedProfile) => {
-  switch (mentee.mentee_occupationCategoryId) {
-    case 'job':
-      return mentee.mentee_occupationJob_placeOfEmployment
-    case 'student':
-      return mentee.mentee_occupationStudent_studyPlace
-    case 'lookingForJob':
-    case 'other':
-    default:
-      return undefined
-  }
-}
-
 const mapStateToProps = (state: RootState) => ({
   currentUser: state.user.profile,
-  profile: state.profiles.oneProfile,
-  matches: getMatches(state.matches)
+  profile: state.profiles.oneProfile
 })
 
 const mapDispatchToProps = (dispatch: any) => ({

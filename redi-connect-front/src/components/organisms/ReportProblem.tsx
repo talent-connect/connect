@@ -8,6 +8,7 @@ import { FormSubmitResult } from '../../types/FormSubmitResult'
 import { profilesFetchOneStart } from '../../redux/profiles/actions'
 import { getRedProfile } from '../../services/auth/auth'
 import { reportProblem } from '../../services/api/api'
+import { UserType } from '../../types/UserType'
 import { Content } from 'react-bulma-components'
 import { connect } from 'react-redux'
 import './ReportProblem.scss'
@@ -15,7 +16,7 @@ import './ReportProblem.scss'
 export interface ReportProblemProps {
   redProfileId: string
   profilesFetchOneStart: Function
-  type: 'mentor' | 'mentee'
+  type: UserType
 }
 
 interface FormValues {
