@@ -122,11 +122,12 @@
         "mentor": {
           "title": "the mentor checklist",
           "headline": "Are you ready to become a mentor?",
-          "point1": "I work as a trained professional & am willing to support people to find a job in the digital industry.",
-          "point2": "I am willing to  share knowledge and experiences with others.",
-          "point3": "I am open to meet other nationalities.",
-          "point4": "I have the time to meet mentees during my free time.",
-          "point5": "I have time to support on a personal and professional level."
+          "point1": "I work as a trained professional.",
+          "point2": "I can support people in their career development in the digital industry.",
+          "point3": "I am willing to  share knowledge and experiences with others.",
+          "point4": "I am open to meet other nationalities.",
+          "point5": "I have the time to meet mentees during my free time.",
+          "point6": "I have time to support on a personal and professional level."
         },
         "mentee": {
           "title": "the mentee checklist",

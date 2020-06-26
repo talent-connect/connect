@@ -11,6 +11,11 @@ interface Props {
 const Checklist = ({ type }: Props) => {
   const { t } = useTranslation()
 
+  const steps = {
+    mentor: [1, 2, 3, 4, 5, 6],
+    mentee: [1, 2, 3, 4, 5]
+  }
+
   return (
     <Section className="default-background">
       <Container>
@@ -19,7 +24,7 @@ const Checklist = ({ type }: Props) => {
           headline={t(`loggedOutArea.homePage.checklist.${type}.headline`)}
         />
         <Element renderAs="ul" className="checklist">
-          {[1, 2, 3, 4, 5].map((number) => (
+          {steps[type].map((number) => (
             <Element
               key={number}
               textSize={4}
