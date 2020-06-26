@@ -27,20 +27,16 @@ function MentorshipList ({ loading, mentees, matchesFetchStart }: Props) {
 
   return (
     <LoggedIn>
+      <Heading size="small" subtitle className="double-bs" >My mentees</Heading>
       {mentees.length === 0 && <>
-        <Element>
-            Currently you have no mentees.
-        </Element>
-        <Element>
-            We will send you email when students apply for the mentorship.
-        </Element>
+        <Content italic size="medium" className="double-bs" renderAs="p" responsive={{ mobile: { hide: { value: true } } }}>
+            Currently you have no mentees. We will send you email when students apply for the mentorship.
+        </Content>
       </>}
 
       {mentees.length === 1 && <Redirect to={`/app/mentorships/${mentees[0].mentee.id}`} />}
 
       {(mentees.length > 1) && <>
-        <Heading size="medium" className="double-bs">My mentees</Heading>
-
         <Content size="medium" className="double-bs" renderAs="p" responsive={{ mobile: { hide: { value: true } } }}>
           You currently mentor <strong>{mentees.length} mentees</strong>.
         </Content>

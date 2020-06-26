@@ -42,16 +42,15 @@ const Mentorship = ({ profile, currentUser, profilesFetchOneStart }: MentorshipP
 
   return (
     <LoggedIn>
-      <Columns>
+      { isMentorWithMultipleActiveMentees && (<Columns>
         <Columns.Column>
-          { isMentorWithMultipleActiveMentees && (
-            <Button onClick={() => history.goBack()} simple>
-              <Button.Icon icon="arrowLeft" space="right" />
+          <Button onClick={() => history.goBack()} simple>
+            <Button.Icon icon="arrowLeft" space="right" />
               Back to mentee overview
-            </Button>
-          )}
+          </Button>
         </Columns.Column>
       </Columns>
+      )}
 
       <Heading subtitle size="small" className="double-bs">{pageHeading}</Heading>
       {currentUserIsMentee && <Content size="medium" renderAs="p" responsive={{ mobile: { hide: { value: true } } }}>
