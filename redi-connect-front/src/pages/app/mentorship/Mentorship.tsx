@@ -4,10 +4,6 @@ import { useParams, useHistory } from 'react-router'
 import { Heading, Button } from '../../../components/atoms'
 import { ProfileCard, MContacts, MSessions, ReportProblem } from '../../../components/organisms'
 import { Columns, Content } from 'react-bulma-components'
-
-import { RedMentoringSession } from '../../../types/RedMentoringSession'
-
-// import { Avatar } from '../../../../components/Avatar'
 import { RootState } from '../../../redux/types'
 import { RedProfile } from '../../../types/RedProfile'
 import { profilesFetchOneStart } from '../../../redux/profiles/actions'
