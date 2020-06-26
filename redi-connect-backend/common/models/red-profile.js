@@ -301,6 +301,7 @@ module.exports = function (RedProfile) {
 
   RedProfile.observe('after save', async function (context, next) {
     // Onky continue if this is a brand new user
+    if (process.env.NODE_ENV === 'seeding') return next()
     if (!context.isNewInstance) return next()
     const redProfileInst = context.instance
     const redUserInst = await redProfileInst.redUser.get()
