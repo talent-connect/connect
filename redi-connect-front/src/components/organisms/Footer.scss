@@ -13,12 +13,17 @@
   }
 
   a {
+    display: block;
     color: $black;
     font-weight: $weight-normal;
 
     &:hover {
       text-decoration: none;
     }
+  }
+
+  li {
+    line-height: 2rem;
   }
 
   hr {

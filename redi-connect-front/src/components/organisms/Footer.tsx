@@ -1,9 +1,9 @@
 import React from 'react'
-import { Element, Columns, Container, Section, Heading } from 'react-bulma-components'
+import { Element, Columns, Container, Section } from 'react-bulma-components'
 import { useTranslation } from 'react-i18next'
 import { ReactComponent as RediSchool } from '../../assets/images/redi-school-logo.svg'
 import { ReactComponent as Deloitte } from '../../assets/images/deloitte.svg'
-import Icons from '../atoms/MediaIcons'
+import SocialMediaIcons from '../atoms/MediaIcons'
 import './Footer.scss'
 
 const RediFooter = () => {
@@ -46,50 +46,56 @@ const RediFooter = () => {
         <Container>
           <Columns breakpoint="mobile">
             <Columns.Column mobile={{ size: 'full' }}>
-              <Element>
+              <Element renderAs="a" href="https://www.redi-school.org" target="_blank">
                 <RediSchool className="oneandhalf-bs" />
               </Element>
-              <Element>
+              <Element renderAs="a" href="https://www.deloitte.de" target="_blank">
                 <Deloitte />
               </Element>
             </Columns.Column>
             <Columns.Column mobile={{ offset: 'zero', size: 'half' }} desktop={{ offset: 1 }} className="double-bs">
-              <Heading subtitle size={6} textTransform="uppercase" textWeight="bold">
-                {t('footer.support')}
-              </Heading>
-              <Element renderAs="hr"/>
-              {supportLinks.map(link => (
-                <Heading subtitle size={6} textTransform="uppercase">
-                  <Element renderAs="a" href={link.url} target="_blank">
-                    {link.name}
+              <Element renderAs="ul">
+                <Element renderAs="li" textSize={6} textTransform="uppercase" textWeight="bold">
+                  {t('footer.support')}
+                </Element>
+                <Element renderAs="hr"/>
+                {supportLinks.map(link => (
+                  <Element renderAs="li" textSize={6} textTransform="uppercase">
+                    <Element renderAs="a" href={link.url} target="_blank">
+                      {link.name}
+                    </Element>
                   </Element>
-                </Heading>
-              ))}
+                ))}
+              </Element>
             </Columns.Column>
             <Columns.Column mobile={{ size: 'half' }}>
-              <Heading subtitle size={6} textTransform="uppercase" textWeight="bold">
-                {t('footer.legal')}
-              </Heading>
-              <Element renderAs="hr" />
-              {legalLinks.map(link => (
-                <Heading subtitle size={6} textTransform="uppercase">
-                  <Element renderAs="a" href={link.url} target="_blank">
-                    {link.name}
+              <Element renderAs="ul">
+                <Element renderAs="li" textSize={6} textTransform="uppercase" textWeight="bold">
+                  {t('footer.legal')}
+                  <Element renderAs="hr" />
+                </Element>
+                {legalLinks.map(link => (
+                  <Element renderAs="li" textSize={6} textTransform="uppercase">
+                    <Element renderAs="a" href={link.url} target="_blank">
+                      {link.name}
+                    </Element>
                   </Element>
-                </Heading>
-              ))}
+                ))}
+              </Element>
             </Columns.Column>
             <Columns.Column>
-              <Heading subtitle size={6} textTransform="uppercase" textWeight="bold">
-                {t('footer.socialMediaHeadline')}
-              </Heading>
-              <Element renderAs="hr" />
-              <Icons />
+              <Element renderAs="ul">
+                <Element renderAs="li" textSize={6} textTransform="uppercase" textWeight="bold">
+                  {t('footer.socialMediaHeadline')}
+                </Element>
+                <Element renderAs="hr" />
+                <SocialMediaIcons />
+              </Element>
             </Columns.Column>
           </Columns>
-          <Heading size={6} subtitle className="footer--border" renderAs="p">
+          <Element size={6} className="footer--border" renderAs="p">
             &copy; {year} {t('footer.name')}
-          </Heading>
+          </Element>
         </Container>
       </Section>
     </footer>

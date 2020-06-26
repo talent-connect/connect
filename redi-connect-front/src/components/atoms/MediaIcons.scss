@@ -15,11 +15,7 @@
     align-items: flex-start;
 
     &:first-child {
-      margin-left: -.75rem;
-
-      @include mobile() {
-        margin-left: -.5rem;
-      }
+      margin-left: -.25rem;
     }
 
     @include mobile() {
