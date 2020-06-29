@@ -1,35 +1,25 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Content } from 'react-bulma-components'
-import Heading from '../../../components/atoms/Heading'
+import { Heading } from '../../../components/atoms'
 import { ApplicationCard } from '../../../components/organisms'
 import LoggedIn from '../../../components/templates/LoggedIn'
 import { RootState } from '../../../redux/types'
 import { getApplicants } from '../../../redux/matches/selectors'
 import { connect } from 'react-redux'
-import { matchesFetchStart } from '../../../redux/matches/actions'
-import { FullScreenCircle } from '../../../hooks/WithLoading'
 import { RedMatch } from '../../../types/RedMatch'
 import { useHistory } from 'react-router-dom'
 import { getRedProfile } from '../../../services/auth/auth'
 
 interface Props {
-  loading: boolean
   applicants: RedMatch[]
-  matchesFetchStart: Function
 }
 
-// TODO: add type to Props
-function Applications ({ loading, applicants, matchesFetchStart }: Props) {
+function Applications ({ applicants }: Props) {
   const history = useHistory()
   const profile = getRedProfile()
 
-  useEffect(() => {
-    matchesFetchStart()
-  }, [matchesFetchStart])
-
   return (
     <LoggedIn>
-      <FullScreenCircle loading={loading} />
       <Heading subtitle size="small" className="double-bs">Applications {Boolean(applicants.length) && `(${applicants.length})`}</Heading>
       {applicants.length === 0 && <Content italic>
         {profile.userType === 'mentee' && <>
@@ -49,13 +39,8 @@ function Applications ({ loading, applicants, matchesFetchStart }: Props) {
   )
 }
 
-const mapDispatchToProps = (dispatch: any) => ({
-  matchesFetchStart: () => dispatch(matchesFetchStart())
-})
-
 const mapStateToProps = (state: RootState) => ({
-  loading: state.matches.loading,
   applicants: getApplicants(state.matches)
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Applications)
+export default connect(mapStateToProps, null)(Applications)

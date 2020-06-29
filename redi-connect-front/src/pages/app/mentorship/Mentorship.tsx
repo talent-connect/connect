@@ -8,6 +8,7 @@ import { RootState } from '../../../redux/types'
 import { RedProfile } from '../../../types/RedProfile'
 import { profilesFetchOneStart } from '../../../redux/profiles/actions'
 import { LoggedIn } from '../../../components/templates'
+import { useLoading } from '../../../hooks/WithLoading'
 
 interface RouteParams {
   profileId: string
@@ -22,17 +23,19 @@ const Mentorship = ({ profile, currentUser, profilesFetchOneStart }: MentorshipP
   const { profileId } = useParams<RouteParams>()
   const history = useHistory()
 
+  const { Loading } = useLoading()
+
   useEffect(() => {
     profilesFetchOneStart(profileId)
   }, [profileId])
 
-  if (!profile) return <>loading...</>
+  if (!profile) return <Loading />
 
   const currentUserIsMentor = currentUser?.userType === 'mentor'
   const currentUserIsMentee = currentUser?.userType === 'mentee'
 
   const pageHeading = currentUserIsMentor
-    ? `Mentorship with ${profile.firstName} ${profile.lastName}`
+    ? `Mentorship with ${profile?.firstName} ${profile?.lastName}`
     : 'My Mentorship'
 
   const isMentorWithMultipleActiveMentees =

@@ -1,4 +1,5 @@
 import React from 'react'
+import classnames from 'classnames'
 import { Form } from 'react-bulma-components'
 
 interface Props {
@@ -32,7 +33,7 @@ function FormInput (props: any) {
       {label && <Form.Label size="small">
         {label}
       </Form.Label>}
-      <Form.Control className={isValidField && 'field-clean'}>
+      <Form.Control className={classnames({ 'field-clean': isValidField })}>
         <Form.Input
           id={name}
           name={name}
@@ -46,7 +47,7 @@ function FormInput (props: any) {
         />
       </Form.Control>
 
-      <Form.Help color="danger" className={hasError ? 'help--show' : ''}>
+      <Form.Help color="danger" className={classnames({ 'help--show': hasError })}>
         {hasError && <>{errors[name]}</>}
       </Form.Help>
     </Form.Field>

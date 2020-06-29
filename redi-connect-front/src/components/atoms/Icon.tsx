@@ -24,6 +24,7 @@ import { ReactComponent as Twitter } from '../../assets/images/twitter.svg'
 import { ReactComponent as Instagram } from '../../assets/images/instagram.svg'
 import { ReactComponent as Meetup } from '../../assets/images/meetup.svg'
 import { ReactComponent as Fb } from '../../assets/images/fb.svg'
+import { ReactComponent as Loader } from '../../assets/images/loader.svg'
 
 import './Icon.scss'
 
@@ -52,7 +53,8 @@ interface IconProps {
     'meetup' |
     'linkedin' |
     'instagram' |
-    'fb'
+    'fb'|
+    'loader'
   size?: 'small' | 'medium' | 'large' | 'x-large'
   space?: 'left' | 'right'
   className?: string
@@ -83,7 +85,8 @@ const Icons = {
   meetup: Meetup,
   twitter: Twitter,
   fb: Fb,
-  linkedin: Linkedin
+  linkedin: Linkedin,
+  loader: Loader
 }
 
 const Icon = ({ icon, space, size, className, onClick }: IconProps) => {

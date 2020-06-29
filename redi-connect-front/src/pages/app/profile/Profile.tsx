@@ -18,7 +18,6 @@ import {
 } from '../../../components/molecules'
 import { ApplyForMentor, Avatar, ConfirmMentorship } from '../../../components/organisms'
 import { LoggedIn } from '../../../components/templates'
-import { FullScreenCircle } from '../../../hooks/WithLoading'
 import { RedProfile } from '../../../types/RedProfile'
 import { profilesFetchOneStart } from '../../../redux/profiles/actions'
 
@@ -27,14 +26,13 @@ interface RouteParams {
 }
 
 interface ProfileProps {
-  loading: boolean
   profile: RedProfile | undefined
   currentUser: RedProfile | undefined
   hasReachedMenteeLimit: boolean
   profilesFetchOneStart: Function
 }
 
-function Profile ({ loading, profile, currentUser, hasReachedMenteeLimit, profilesFetchOneStart }: ProfileProps) {
+function Profile ({ profile, currentUser, hasReachedMenteeLimit, profilesFetchOneStart }: ProfileProps) {
   const { profileId } = useParams<RouteParams>()
   const history = useHistory()
 
@@ -80,8 +78,6 @@ function Profile ({ loading, profile, currentUser, hasReachedMenteeLimit, profil
     profile.userType === 'mentee' &&
     profile.redMatchesWithCurrentUser &&
     profile.redMatchesWithCurrentUser[0]
-
-  if (loading) return (<FullScreenCircle loading={loading} />)
 
   return (
     <LoggedIn>
@@ -201,7 +197,6 @@ function Profile ({ loading, profile, currentUser, hasReachedMenteeLimit, profil
   )
 }
 const mapStateToProps = (state: RootState) => ({
-  loading: state.profiles.loading,
   profile: state.profiles.oneProfile,
   currentUser: state.user.profile,
   hasReachedMenteeLimit: getHasReachedMenteeLimit(state.user)

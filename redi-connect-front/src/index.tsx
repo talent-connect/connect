@@ -14,9 +14,7 @@ import './services/i18n/i18n'
 
 ReactDOM.render(
   <React.StrictMode>
-    <Suspense fallback="loading">
-      <App />
-    </Suspense>
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 )

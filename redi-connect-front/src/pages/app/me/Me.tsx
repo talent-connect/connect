@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { RootState } from '../../../redux/types'
 import { profileFetchStart } from '../../../redux/user/actions'
 import { Columns, Content, Element } from 'react-bulma-components'
-import { Heading } from '../../../components/atoms'
+import { Heading, Loader } from '../../../components/atoms'
 import {
   Avatar,
   EditableAbout,
@@ -19,23 +19,21 @@ import {
 
 import { LoggedIn } from '../../../components/templates'
 // CHECK OUT THE LOADER
-// import { FullScreenCircle } from '../../../hooks/WithLoading'
 
 const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
-  // not sure if this is really needed since the profile is loaded when the user is logged in
   useEffect(() => {
     profileFetchStart()
   }, [profileFetchStart])
 
-  if (loading) return <>'page loader placeholder...'</>
+  if (loading) return <Loader loading={true}/>
 
   const userIsMentee =
     profile.userType === 'mentee' || profile.userType === 'public-sign-up-mentee-pending-review'
 
   return (
     <LoggedIn>
-      {saveResult === 'error' && <><br /><br /><br />An error occurred, please try again.</>}
-      {saveResult === 'submitting' && 'part of the page loading...'}
+      {saveResult === 'error' && <>An error occurred, please try again.</>}
+      {saveResult === 'submitting' && <Loader loading={true}/>}
 
       <Columns vCentered breakpoint="mobile" className="oneandhalf-bs">
         <Columns.Column size={3}>

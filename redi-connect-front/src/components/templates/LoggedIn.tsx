@@ -2,7 +2,7 @@ import React, { ReactNode, useEffect, Suspense } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
-import { Button, Icon } from '../atoms'
+import { Button, Icon, Loader } from '../atoms'
 import { Modal } from '../molecules'
 import { Navbar, SideMenu } from '../organisms'
 import { Container, Section, Columns, Content, Notification } from 'react-bulma-components'
@@ -13,6 +13,7 @@ import Footer from '../organisms/Footer'
 import { RedMatch } from '../../types/RedMatch'
 
 interface Props {
+  loading: boolean
   children: ReactNode
   matches: RedMatch[]
   matchesFetchStart: () => void
@@ -26,10 +27,9 @@ const AccountNotReDI: React.FC = ({ children }) => (
   </Notification>
 )
 
-const LoggedIn = ({ children, matches, matchesFetchStart, matchesMarkAsDismissed }: Props) => {
+const LoggedIn = ({ loading, children, matches, matchesFetchStart, matchesMarkAsDismissed }: Props) => {
   const profile = getRedProfile()
   const history = useHistory()
-
   const match = matches && matches.find(match => match.status === 'accepted')
 
   const isNewMatch =
@@ -56,6 +56,7 @@ const LoggedIn = ({ children, matches, matchesFetchStart, matchesMarkAsDismissed
               <SideMenu />
             </Columns.Column>
             <Columns.Column desktop={{ size: 9, offset: 1 }} className="column--main-content">
+              <Loader loading={loading}/>
               {profile.userType === 'public-sign-up-mentee-pending-review' &&
                 <AccountNotReDI>
                   <strong>Thanks for signing up!</strong> We are reviewing your profile and will send
@@ -90,7 +91,7 @@ const LoggedIn = ({ children, matches, matchesFetchStart, matchesMarkAsDismissed
                   </Modal.Buttons>
                 </Modal>
               }
-              {children}
+              {!loading && children}
             </Columns.Column>
           </Columns>
         </Container>
@@ -106,7 +107,8 @@ const mapDispatchToProps = (dispatch: any) => ({
 })
 
 const mapStateToProps = (state: RootState) => ({
-  matches: state.matches.matches
+  matches: state.matches.matches,
+  loading: state.user.loading || state.profiles.loading || state.matches.loading
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoggedIn)
