@@ -9,7 +9,7 @@
           <mj-divider mj-class="divider-top" css-class="divider" />
           <mj-text mj-class="text">Dear ${mentorFirstName},</mj-text>
           <mj-text mj-class="text text-padding">we have processed your request to cancel your mentorship of mentee ${menteeFullName}. We have informed the mentee. Now other mentees are able to apply to the spot that freed up.</mj-text>
-          <mj-text mj-class="text" padding="0 0 30px 0">If you like, let us know why you have decided to cancel the mentorship.</mj-text>
+          <mj-text mj-class="text" padding="0 0 30px 0">It would be great if you could let us know why you have decided to cancel the mentorship so we know how to make the mentorship program even better. Simply write us an <a href="mailto:isabelle@redi-school.org?subject=Cancelation of Mentorship" class="text-link">email</a>.</mj-text>
           <mj-text mj-class="text">Best,</mj-text>
           <mj-text mj-class="text">Christa</mj-text>
         </mj-column>
