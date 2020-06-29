@@ -2,25 +2,16 @@
 @import "../../styles/_variables.scss";
 
 .media-icons {
-  &__wrapper {
+  &__list {
     display: flex;
-    width: min-content;
+    flex-wrap: wrap;
   }
 
   &__icon {
-    height: 2.75rem;
-    width: 2.75rem;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    margin-right: 1rem;
 
     &:first-child {
       margin-left: -.25rem;
-    }
-
-    @include mobile() {
-      width: 2rem;
-      height: 2rem;
     }
   }
 }

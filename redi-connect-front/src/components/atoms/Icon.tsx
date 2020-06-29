@@ -19,6 +19,11 @@ import { ReactComponent as Arrow } from '../../assets/images/arrow-step.svg'
 import { ReactComponent as Chat } from '../../assets/images/chat.svg'
 import { ReactComponent as Handshake } from '../../assets/images/handshake.svg'
 import { ReactComponent as Plus } from '../../assets/images/plus.svg'
+import { ReactComponent as Linkedin } from '../../assets/images/linkedin.svg'
+import { ReactComponent as Twitter } from '../../assets/images/twitter.svg'
+import { ReactComponent as Instagram } from '../../assets/images/instagram.svg'
+import { ReactComponent as Meetup } from '../../assets/images/meetup.svg'
+import { ReactComponent as Fb } from '../../assets/images/fb.svg'
 
 import './Icon.scss'
 
@@ -42,7 +47,12 @@ interface IconProps {
     'career' |
     'chat' |
     'handshake'|
-    'plus'
+    'plus' |
+    'twitter' |
+    'meetup' |
+    'linkedin' |
+    'instagram' |
+    'fb'
   size?: 'small' | 'medium' | 'large' | 'x-large'
   space?: 'left' | 'right'
   className?: string
@@ -68,7 +78,12 @@ const Icons = {
   handshake: Handshake,
   chat: Chat,
   mail: Mail,
-  plus: Plus
+  plus: Plus,
+  instagram: Instagram,
+  meetup: Meetup,
+  twitter: Twitter,
+  fb: Fb,
+  linkedin: Linkedin
 }
 
 const Icon = ({ icon, space, size, className, onClick }: IconProps) => {

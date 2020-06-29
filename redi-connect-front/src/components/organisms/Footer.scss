@@ -4,17 +4,18 @@
 .footer {
   background: $white;
 
-  &--border {
+  &__border {
     border-top: 1px solid $grey-light;
 
-    p {
+    &--copyright {
       padding-top: 1.5rem;
     }
   }
 
-  a {
+  &__link {
     display: block;
     color: $black;
+    line-height: 2rem;
     font-weight: $weight-normal;
 
     &:hover {
@@ -22,11 +23,7 @@
     }
   }
 
-  li {
-    line-height: 2rem;
-  }
-
-  h3 {
+  &__headline {
     position: relative;
     padding-bottom: 0.5rem;
     margin-bottom: 1rem;
