@@ -11,6 +11,9 @@ interface Props {
 const Checklist = ({ type }: Props) => {
   const { t } = useTranslation()
 
+  const checklist: Array<{ content: string, headline: string, image: any }> =
+    t(`loggedOutArea.homePage.checklist.${type}.items`, { returnObjects: true })
+
   return (
     <Section className="default-background">
       <Container>
@@ -19,15 +22,15 @@ const Checklist = ({ type }: Props) => {
           headline={t(`loggedOutArea.homePage.checklist.${type}.headline`)}
         />
         <Element renderAs="ul" className="checklist">
-          {[1, 2, 3, 4, 5].map((number) => (
+          {checklist.map((item) => (
             <Element
-              key={number}
+              key={item}
               textSize={4}
               renderAs="li"
               className="checklist__item"
               responsive={{ mobile: { textSize: { value: 5 } } }}
             >
-              {t(`loggedOutArea.homePage.checklist.${type}.point${number}`)}
+              {item}
             </Element>
           ))}
         </Element>
