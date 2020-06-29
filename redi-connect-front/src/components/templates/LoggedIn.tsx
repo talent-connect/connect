@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect } from 'react'
+import React, { ReactNode, useEffect, Suspense } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
@@ -14,7 +14,6 @@ import { RedMatch } from '../../types/RedMatch'
 
 interface Props {
   children: ReactNode
-  loading: boolean
   matches: RedMatch[]
   matchesFetchStart: () => void
   matchesMarkAsDismissed: (redMatchId: string) => void
@@ -27,7 +26,7 @@ const AccountNotReDI: React.FC = ({ children }) => (
   </Notification>
 )
 
-const LoggedIn = ({ children, loading, matches, matchesFetchStart, matchesMarkAsDismissed }: Props) => {
+const LoggedIn = ({ children, matches, matchesFetchStart, matchesMarkAsDismissed }: Props) => {
   const profile = getRedProfile()
   const history = useHistory()
 
@@ -91,8 +90,7 @@ const LoggedIn = ({ children, loading, matches, matchesFetchStart, matchesMarkAs
                   </Modal.Buttons>
                 </Modal>
               }
-
-              {loading || children}
+              {children}
             </Columns.Column>
           </Columns>
         </Container>
@@ -108,8 +106,7 @@ const mapDispatchToProps = (dispatch: any) => ({
 })
 
 const mapStateToProps = (state: RootState) => ({
-  matches: state.matches.matches,
-  loading: state.matches.loading
+  matches: state.matches.matches
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoggedIn)

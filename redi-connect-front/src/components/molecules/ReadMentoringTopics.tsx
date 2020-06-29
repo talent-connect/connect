@@ -16,19 +16,41 @@ interface TagsProps {
   shortList?: boolean
 }
 
+interface TagProps {
+  children: string
+  className?: string
+  key?: string
+}
+
+const ProfileTag = ({ children, key, className }: TagProps) => (
+  <Tag
+    key={key}
+    className={className}
+    size="medium"
+    textWeight="bold"
+    rounded
+  >
+    {children}
+  </Tag>
+)
+
 const ProfileTags = ({ items, shortList }: TagsProps) => {
   const additionalTagsCount = items.length - 3
   const tagList = shortList ? items.slice(0, 3) : items
+  const hasAdditionalTags = shortList && additionalTagsCount > 0
 
   return <Tag.Group>
-    {tagList.map(tagId =>
-      <Tag key={tagId} size="medium" rounded textWeight="bold">
-        {categoriesIdToLabelMap[tagId]}
-      </Tag>
-    )}
-    {(shortList && additionalTagsCount > 0) && <Tag size="medium" rounded textWeight="bold">
-      {'+' + additionalTagsCount}
-    </Tag>}
+    {tagList.map((tagId, i) => {
+      const currentTag = <ProfileTag key={tagId}>{categoriesIdToLabelMap[tagId]}</ProfileTag>
+      const isLastVisibleTag = i === 2
+
+      return (hasAdditionalTags && isLastVisibleTag)
+        ? <div className="tags__last-row">
+          {currentTag}
+          <ProfileTag className="tag--rest">{'+' + additionalTagsCount}</ProfileTag>
+        </div>
+        : currentTag
+    })}
   </Tag.Group>
 }
 
