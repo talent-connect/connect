@@ -10,35 +10,11 @@ const RediFooter = () => {
   const year = new Date().getFullYear()
   const { t } = useTranslation()
 
-  const supportLinks = [
-    {
-      url: 'https://connect.redi-school.org/downloadeables/redi-connect-code-of-conduct.pdf',
-      name: t('footer.faq')
-    },
-    {
-      url: 'mailto:career@redi-school.org',
-      name: t('footer.contact')
-    },
-    {
-      url: 'https://www.redi-school.org',
-      name: t('footer.name')
-    }
-  ]
+  const supportLinks: Array<{ url: string, name: string }> =
+    t('footer.supportLinks', { returnObjects: true })
 
-  const legalLinks = [
-    {
-      url: 'https://www.redi-school.org/berlin-transparency/',
-      name: t('footer.transparency')
-    },
-    {
-      url: 'https://www.redi-school.org/imprint/',
-      name: t('footer.cookies')
-    },
-    {
-      url: 'https://www.redi-school.org/data-privacy-policy',
-      name: t('footer.privacy')
-    }
-  ]
+  const legalLinks: Array<{ url: string, name: string }> =
+    t('footer.legalLinks', { returnObjects: true })
 
   return (
     <footer className="footer footer--border">
@@ -49,16 +25,15 @@ const RediFooter = () => {
               <Element renderAs="a" href="https://www.redi-school.org" target="_blank">
                 <RediSchool className="oneandhalf-bs" />
               </Element>
-              <Element renderAs="a" href="https://www.deloitte.de" target="_blank">
+              <Element renderAs="a" href="https://www2.deloitte.com/" target="_blank">
                 <Deloitte />
               </Element>
             </Columns.Column>
             <Columns.Column mobile={{ offset: 'zero', size: 'half' }} desktop={{ offset: 1 }} className="double-bs">
+              <Element renderAs="h3" textSize={6} textTransform="uppercase" textWeight="bold">
+                {t('footer.support')}
+              </Element>
               <Element renderAs="ul">
-                <Element renderAs="li" textSize={6} textTransform="uppercase" textWeight="bold">
-                  {t('footer.support')}
-                </Element>
-                <Element renderAs="hr"/>
                 {supportLinks.map(link => (
                   <Element renderAs="li" textSize={6} textTransform="uppercase">
                     <Element renderAs="a" href={link.url} target="_blank">
@@ -69,11 +44,10 @@ const RediFooter = () => {
               </Element>
             </Columns.Column>
             <Columns.Column mobile={{ size: 'half' }}>
+              <Element renderAs="h3" textSize={6} textTransform="uppercase" textWeight="bold">
+                {t('footer.legal')}
+              </Element>
               <Element renderAs="ul">
-                <Element renderAs="li" textSize={6} textTransform="uppercase" textWeight="bold">
-                  {t('footer.legal')}
-                  <Element renderAs="hr" />
-                </Element>
                 {legalLinks.map(link => (
                   <Element renderAs="li" textSize={6} textTransform="uppercase">
                     <Element renderAs="a" href={link.url} target="_blank">
@@ -84,13 +58,10 @@ const RediFooter = () => {
               </Element>
             </Columns.Column>
             <Columns.Column>
-              <Element renderAs="ul">
-                <Element renderAs="li" textSize={6} textTransform="uppercase" textWeight="bold">
-                  {t('footer.socialMediaHeadline')}
-                </Element>
-                <Element renderAs="hr" />
-                <SocialMediaIcons />
+              <Element renderAs="h3" textSize={6} textTransform="uppercase" textWeight="bold">
+                {t('footer.socialMediaHeadline')}
               </Element>
+              <SocialMediaIcons />
             </Columns.Column>
           </Columns>
           <Element size={6} className="footer--border" renderAs="p">

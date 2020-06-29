@@ -26,10 +26,18 @@
     line-height: 2rem;
   }
 
-  hr {
-    width: 1.5rem;
-    border: 1px solid $redi-orange-dark;
-    margin-top: 0;
+  h3 {
+    position: relative;
+    padding-bottom: 0.5rem;
     margin-bottom: 1rem;
+
+    &:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 1.5rem;
+      border-bottom: 2px solid $redi-orange-dark;
+    }
   }
 }
