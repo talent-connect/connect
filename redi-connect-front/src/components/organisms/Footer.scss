@@ -3,13 +3,15 @@
 
 .footer {
   background: $white;
+  border-top: 1px solid $grey-light;
+  
+  &__logo {
+    display: block;
+  }
 
-  &__border {
+  &__copyright {
+    padding-top: 1.5rem;
     border-top: 1px solid $grey-light;
-
-    &--copyright {
-      padding-top: 1.5rem;
-    }
   }
 
   &__link {
@@ -17,6 +19,8 @@
     color: $black;
     line-height: 2rem;
     font-weight: $weight-normal;
+    font-size: $size-6;
+    text-transform: uppercase;
 
     &:hover {
       text-decoration: none;

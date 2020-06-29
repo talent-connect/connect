@@ -17,16 +17,16 @@ const RediFooter = () => {
     t('footer.legalLinks', { returnObjects: true })
 
   return (
-    <footer className="footer footer__border">
+    <footer className="footer">
       <Section>
         <Container>
           <Columns breakpoint="mobile">
             <Columns.Column mobile={{ size: 'full' }}>
-              <Element renderAs="a" href="https://www.redi-school.org" target="_blank">
-                <RediSchool className="oneandhalf-bs footer__link" />
+              <Element renderAs="a" href="https://www.redi-school.org" target="_blank" className="footer__logo oneandhalf-bs">
+                <RediSchool />
               </Element>
-              <Element renderAs="a" href="https://www2.deloitte.com/" target="_blank">
-                <Deloitte className="footer__link"/>
+              <Element renderAs="a" href="https://www2.deloitte.com/" target="_blank" className="footer__logo">
+                <Deloitte />
               </Element>
             </Columns.Column>
             <Columns.Column mobile={{ offset: 'zero', size: 'half' }} desktop={{ offset: 1 }} className="double-bs">
@@ -41,8 +41,13 @@ const RediFooter = () => {
               </Element>
               <Element renderAs="ul">
                 {supportLinks.map(link => (
-                  <Element renderAs="li" textSize={6} textTransform="uppercase">
-                    <Element renderAs="a" href={link.url} target="_blank" className="footer__link">
+                  <Element renderAs="li">
+                    <Element
+                      renderAs="a"
+                      href={link.url}
+                      target="_blank"
+                      className="footer__link"
+                    >
                       {link.name}
                     </Element>
                   </Element>
@@ -61,15 +66,20 @@ const RediFooter = () => {
               </Element>
               <Element renderAs="ul">
                 {legalLinks.map(link => (
-                  <Element renderAs="li" textSize={6} textTransform="uppercase">
-                    <Element renderAs="a" href={link.url} target="_blank" className="footer__link">
+                  <Element renderAs="li" >
+                    <Element
+                      renderAs="a"
+                      href={link.url}
+                      target="_blank"
+                      className="footer__link"
+                    >
                       {link.name}
                     </Element>
                   </Element>
                 ))}
               </Element>
             </Columns.Column>
-            <Columns.Column>
+            <Columns.Column tablet={{ size: 2 }} >
               <Element
                 renderAs="h3"
                 textSize={6}
@@ -82,7 +92,7 @@ const RediFooter = () => {
               <SocialMediaIcons />
             </Columns.Column>
           </Columns>
-          <Element size={6} className="footer__border footer__border--copyright" renderAs="p">
+          <Element size={6} className="footer__copyright" renderAs="p">
             &copy; {year} {t('footer.name')}
           </Element>
         </Container>

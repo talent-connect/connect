@@ -4,14 +4,6 @@
 .media-icons {
   &__list {
     display: flex;
-    flex-wrap: wrap;
-  }
-
-  &__icon {
-    margin-right: 1rem;
-
-    &:first-child {
-      margin-left: -.25rem;
-    }
+    justify-content: space-between;  
   }
 }

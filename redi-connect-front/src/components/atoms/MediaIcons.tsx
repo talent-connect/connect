@@ -30,7 +30,7 @@ const SocialMediaIcons = () => (
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Icon icon={item.icon} size="large" className="media-icons__icon" />
+            <Icon icon={item.icon} size="medium" className="media-icons__icon" />
           </a>
         </li>
       )
