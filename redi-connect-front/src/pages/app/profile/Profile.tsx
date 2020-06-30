@@ -95,12 +95,10 @@ function Profile ({ loading, profile, currentUser, hasReachedMenteeLimit, profil
 
       <Columns>
         <Columns.Column>
-          {(!isAcceptedMatch || currentUserIsMentor) &&
-            <Button onClick={() => history.goBack()} simple>
-              <Button.Icon icon="arrowLeft" space="right" />
+          <Button onClick={() => history.goBack()} simple>
+            <Button.Icon icon="arrowLeft" space="right" />
               back
-            </Button>
-          }
+          </Button>
         </Columns.Column>
 
         {userCanApplyForMentorship &&

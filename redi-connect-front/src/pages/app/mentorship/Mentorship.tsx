@@ -59,7 +59,11 @@ const Mentorship = ({ profile, currentUser, profilesFetchOneStart }: MentorshipP
 
       <Columns>
         <Columns.Column size={4}>
-          <ProfileCard profile={profile} />
+          <ProfileCard
+            profile={profile}
+            linkTo={`/app/mentorships/profile/${profile.id}`}
+          />
+          <MContacts profile={profile as RedProfile} className="is-hidden-tablet" />
           <MSessions
             sessions={profile?.redMentoringSessionsWithCurrentUser}
             menteeId={profile.id}
@@ -71,7 +75,7 @@ const Mentorship = ({ profile, currentUser, profilesFetchOneStart }: MentorshipP
           />}
         </Columns.Column>
         <Columns.Column size={8}>
-          <MContacts profile={profile as RedProfile} />
+          <MContacts profile={profile as RedProfile} className="is-hidden-mobile" />
         </Columns.Column>
       </Columns>
     </LoggedIn>

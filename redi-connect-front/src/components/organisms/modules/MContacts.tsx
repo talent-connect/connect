@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { Columns, Content, Element } from 'react-bulma-components'
+import classnames from 'classnames'
 import { RedProfile } from '../../../types/RedProfile'
 import { Module } from '../../molecules'
 
@@ -7,7 +7,7 @@ import './MContacts.scss'
 
 interface ContactRow {
   label: string
-  children: string
+  children: ReactNode
 }
 const ContactRow = ({ label, children }: ContactRow) => (
   children
@@ -20,15 +20,34 @@ const ContactRow = ({ label, children }: ContactRow) => (
 
 interface MContact {
   profile: RedProfile
+  className?: string
 }
 
-const MContacts = ({ profile }: MContact) => (
-  <Module title="Contact Info" className="m-contacts">
-    <ContactRow label="Email">{profile.contactEmail}</ContactRow>
-    <ContactRow label="Phone">{profile.telephoneNumber}</ContactRow>
-    <ContactRow label="LinkedIn">{profile.linkedInProfileUrl}</ContactRow>
-    <ContactRow label="Slack">{profile.slackUsername}</ContactRow>
-  </Module>
-)
+const MContacts = ({ profile, className }: MContact) => {
+  const { contactEmail, telephoneNumber, linkedInProfileUrl, slackUsername } = profile
+
+  return (
+    <Module title="Contact Info" className={classnames('m-contacts', { [`${className}`]: className })}>
+      <ContactRow label="Email">
+        {contactEmail && (
+          <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+        )}
+      </ContactRow>
+      <ContactRow label="Phone">{telephoneNumber}</ContactRow>
+      <ContactRow label="LinkedIn">
+        {linkedInProfileUrl && (
+          <a
+            href={linkedInProfileUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >{linkedInProfileUrl}
+          </a>
+        )
+        }
+      </ContactRow>
+      <ContactRow label="Slack">{slackUsername}</ContactRow>
+    </Module>
+  )
+}
 
 export default MContacts

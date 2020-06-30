@@ -65,6 +65,11 @@ const routes: RouteDefinition[] = [
     exact: true
   },
   {
+    path: '/app/mentorships/profile/:profileId',
+    component: Profile,
+    exact: true
+  },
+  {
     path: '/app/profile/:profileId',
     component: Profile,
     exact: true

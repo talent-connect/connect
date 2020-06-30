@@ -27,11 +27,11 @@ const SideMenu = () => {
   const isActivatedMentor = profile.userType === 'mentor'
   const isActivatedMentee = profile.userType === 'mentee'
   const isMentee = isActivatedMentee || profile.userType === 'public-sign-up-mentee-pending-review'
-  const isMenteeWithoutMentor = isActivatedMentee && !profile.ifUserIsMentee_hasActiveMentor
+  const isMenteeWithoutMentor = isMentee && !profile.ifUserIsMentee_hasActiveMentor
   const isMentorBookedOut = isActivatedMentor && (profile.currentMenteeCount === profile.menteeCountCapacity)
   const isMenteeWithMentor = isActivatedMentee && profile.ifUserIsMentee_hasActiveMentor
 
-  const showApplications = isMentee ? isMenteeWithoutMentor : !isMentorBookedOut
+  const showApplications = isMentee ? isMenteeWithoutMentor && isActivatedMentee : !isMentorBookedOut
 
   return (
     <ul className="side-menu">
