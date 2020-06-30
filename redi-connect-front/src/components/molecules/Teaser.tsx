@@ -1,7 +1,7 @@
 import React from 'react'
 import { ReactComponent as WelcomeIllustration } from '../../assets/images/welcome-user.svg'
 import { ReactComponent as Isabelle } from '../../assets/images/isabelle.svg'
-import Christa from '../../assets/images/christa.png'
+import { ReactComponent as Christa } from '../../assets/images/christa.svg'
 import { ReactComponent as RedCircle } from '../../assets/images/red-circle.svg'
 import { Element } from 'react-bulma-components'
 import { Link } from 'react-router-dom'
@@ -49,9 +49,9 @@ export default {
   ),
   Christa: ({ targetUserGroup }: { targetUserGroup?: UserType }) => (
     <>
-      <img src={Christa} className="illustration illustration--bothOut" />
+      <Christa className="illustration illustration--bothOut" />
       <Element renderAs="p" textAlignment="centered" textSize={ 4 } className="about-isabelle">
-        “Hi, I am <strong>Christa</strong>, the mentorship coordinator of ReDI Connect. 
+        “Hi, I am <strong>Christa</strong>, the mentorship coordinator of ReDI Connect.
         {targetUserGroup === 'public-sign-up-mentor-pending-review' && <> I take the time to meet each mentor before they join our program.</>}
         {targetUserGroup === 'public-sign-up-mentee-pending-review' && <> I take the time to go through your application before you join our program.</>}
       </Element>
