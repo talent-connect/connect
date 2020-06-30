@@ -13,7 +13,7 @@ import {
 import { history } from '../../../services/history/history'
 import { login, fetchSaveRedProfile } from '../../../services/api/api'
 import { saveAccessToken, getRedProfile } from '../../../services/auth/auth'
-import { Columns, Form, Content } from 'react-bulma-components'
+import { Columns, Form, Content, Notification } from 'react-bulma-components'
 import { capitalize } from 'lodash'
 import Button from '../../../components/atoms/Button'
 import { RediLocation } from '../../../types/RediLocation'
@@ -92,6 +92,14 @@ export default function Login () {
           <Content size="large" renderAs="p">
             Enter your email and password below.
           </Content>
+
+          {isWrongRediLocationError && (
+            <Notification color="info" className="is-light">
+              You've tried to log into ReDI Connect <strong>{capitalize((process.env.REACT_APP_REDI_LOCATION as RediLocation))}</strong> your account is linked to ReDI Connect <strong>{capitalize(getRedProfile().rediLocation)}</strong>.
+              To access ReDI Connect <strong>{capitalize(getRedProfile().rediLocation)}</strong>, go <a href={buildFrontendUrl(process.env.NODE_ENV, getRedProfile().rediLocation)}>here</a>.
+            </Notification>
+          )}
+
           <form onSubmit={e => e.preventDefault()}>
             <FormInput
               name="username"
@@ -109,14 +117,6 @@ export default function Login () {
 
             <Form.Field>
               <Form.Help color="danger" className={loginError ? 'help--show' : ''}>{loginError && loginError}</Form.Help>
-              {isWrongRediLocationError && <>
-
-                You've tried to log into ReDI Connect <strong>{capitalize((process.env.REACT_APP_REDI_LOCATION as RediLocation))}</strong>.
-                <br /><br />Your user account is linked to ReDI Connect <strong>{capitalize(getRedProfile().rediLocation)}</strong>.
-                <br /><br />Please use ReDI Connect <strong>{capitalize(getRedProfile().rediLocation)}</strong> that you may always access at this address:
-                <br /><br /><a href={buildFrontendUrl(process.env.NODE_ENV, getRedProfile().rediLocation)}>{buildFrontendUrl(process.env.NODE_ENV, getRedProfile().rediLocation)}</a>
-
-              </>}
             </Form.Field>
 
             <Form.Field

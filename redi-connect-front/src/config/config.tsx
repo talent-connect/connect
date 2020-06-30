@@ -39,26 +39,34 @@ if ((process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'berlin') {
     { id: 'webDevelopment', label: 'Web Development', group: 'coding' },
     { id: 'javascript', label: 'JavaScript', group: 'coding' },
     { id: 'htmlcss', label: 'HTML&CSS', group: 'coding' },
-    {
-      id: 'findingInternship',
-      label: 'Finding an internship',
-      group: 'careerSupport'
-    },
+    { id: 'findingInternship', label: 'Finding an internship', group: 'careerSupport' },
     { id: 'freelancing', label: 'Freelancing', group: 'other' },
     { id: 'salesforce', label: 'Salesforce', group: 'other' },
     { id: 'dontKnowYet', label: "I don't know yet", group: 'other' }
   ]
 } else if ((process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'munich') {
   categories = [
-    { id: 'munich_programmingSkillsAndHelpForLearning', label: 'Programming skills and help for learning', group: 'careerSupport' },
-    { id: 'munich_careerPlanningAndJobOrientation', label: 'Career planning and job orientation', group: 'careerSupport' },
-    { id: 'munich_helpForCvPreparationAndApplicationProcess', label: 'Help for CV preparation and application process', group: 'careerSupport' },
-    { id: 'munich_helpForInterviewPreparation', label: 'Help for interview preparation', group: 'careerSupport' },
-    { id: 'munich_helpToImproveEnglish', label: 'Help to improve English', group: 'careerSupport' },
-    { id: 'munich_helpToImproveGerman', label: 'Help to improve German', group: 'careerSupport' },
-    { id: 'munich_helpAndGuidanceOnHowToUseAComputer', label: 'Help and guidance on how to use a computer', group: 'careerSupport' },
-    { id: 'munich_motivationAndEncouragement', label: 'Motivation and encouragement', group: 'careerSupport' },
-    { id: 'munich_beAFriendToHelpInNewAndDifficultSituationsHereInGermany', label: 'Be a friend to help in new and difficult situations here in Germany', group: 'careerSupport' }
+    { id: 'munich_frontEndDevelopmentHTMLCSS', label: 'Front-End Dev with HTML/CSS', group: 'coding' },
+    { id: 'munich_frontEndDevelopmentJavaScript', label: 'Front-End Dev with JavaScript', group: 'coding' },
+    { id: 'munich_softwareDevelopmentBasicJava', label: 'Software Dev basic (Java)', group: 'coding' },
+    { id: 'munich_softwareDevelopmentIntermediateJava', label: 'Software Dev intermediate (Java)', group: 'coding' },
+    { id: 'munich_dataAnalyticsBasic', label: 'Basic Data Analytics', group: 'coding' },
+    { id: 'munich_dataAnalyticsIntermediate', label: 'Intermediate Data Analytics ', group: 'coding' },
+    { id: 'munich_devOps', label: 'DevOps', group: 'coding' },
+    { id: 'munich_itAndNetworking', label: 'Networking', group: 'coding' },
+    { id: 'munich_helpAndGuidanceOnHowToUseAComputer', label: 'Basic Computer Skills in English', group: 'coding' },
+    { id: 'munich_helpAndGuidanceOnHowToUseAComputer_de', label: 'Basic Computer Skills in German', group: 'coding' },
+    { id: 'munich_programmingSkillsAndHelpForLearning', label: 'Basic programming skills', group: 'coding' },
+    { id: 'munich_careerPlanningAndJobOrientation', label: 'Career planning & job orientation', group: 'careerSupport' },
+    { id: 'munich_helpForCvPreparationAndApplicationProcess', label: 'CV preparation & applications', group: 'careerSupport' },
+    { id: 'munich_helpForInterviewPreparation', label: 'Interview preparation', group: 'careerSupport' },
+    { id: 'munich_motivationAndEncouragement', label: 'Motivation & encouragement', group: 'other' },
+    { id: 'munich_helpToImproveEnglish', label: 'English language skills', group: 'other' },
+    { id: 'munich_helpToImproveGerman', label: 'German language skills', group: 'other' },
+    { id: 'munich_freelancing', label: 'Freelancing', group: 'other' },
+    { id: 'munich_entrepreneurship', label: 'Entrepreneurship', group: 'other' },
+    { id: 'munich_beAFriendToHelpInNewAndDifficultSituationsHereInGermany', label: 'Be a friend and help', group: 'other' },
+    { id: 'munich_dontKnowYet', label: "I don't know yet", group: 'other' }
   ]
 } else {
   throw new Error('Invalid RediLocation')
