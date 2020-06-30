@@ -20,7 +20,7 @@
                         <mask id="mask-2" fill="white">
                             <use xlink:href="#path-1"></use>
                         </mask>
-                        <use id="Stroke-50" stroke="#DAF0F4" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" xlink:href="#path-1"></use>
+                        <!-- <use id="Stroke-50" stroke="#DAF0F4" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" xlink:href="#path-1"></use> -->
                         <mask id="mask-4" fill="white">
                             <use xlink:href="#path-3"></use>
                         </mask>

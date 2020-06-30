@@ -11,14 +11,36 @@
     "sayHello": "say hello!"
   },
   "footer": {
-    "name": "ReDI School Website",
-    "copyright": "By ReDI School",
+    "name": "ReDI School",
+    "legal": "legal",
+    "support": "Support",
     "socialMediaHeadline": "Follow Us",
-    "contact": "Contact",
-    "faq": "FAQ",
-    "transparency": "Transparency",
-    "cookies": "Cookie policy",
-    "dataPolicy": "Data privacy policy"
+    "supportLinks": [{
+        "url": "https://connect.redi-school.org/downloadeables/redi-connect-code-of-conduct.pdf",
+        "name": "FAQ"
+      },
+      {
+        "url": "mailto:career@redi-school.org",
+        "name": "Contact-us"
+      },
+      {
+        "url": "https://www.redi-school.org",
+        "name": "ReDI School"
+      }
+    ],
+    "legalLinks": [{
+        "url": "https://www.redi-school.org/berlin-transparency/",
+        "name": "Transparency"
+      },
+      {
+        "url": "https://www.redi-school.org/imprint/",
+        "name": "Cookie policy"
+      },
+      {
+        "url": "https://www.redi-school.org/data-privacy-policy/",
+        "name": "Data privacy policy"
+      }
+    ]
   },
   "preFooter": {
     "headline": "Want to get in touch?",

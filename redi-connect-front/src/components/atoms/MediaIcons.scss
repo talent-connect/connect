@@ -2,42 +2,8 @@
 @import "../../styles/_variables.scss";
 
 .media-icons {
-  &__wrapper {
+  &__list {
     display: flex;
-    border: 1.5px solid $black;
-    width: min-content;
-
-    @include mobile() {
-      border: 0.7px solid $black;
-    }
-  }
-
-  &__icon {
-    height: 2.75rem;
-    width: 2.75rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    @include mobile() {
-      width: 2rem;
-      height: 2rem;
-
-      img {
-        width: 1rem;
-      }
-    }
-
-    &:not(:last-child) {
-      border-right: 1.5px solid $black;
-
-      @include mobile() {
-        border-right: 0.7px solid $black;
-      }
-    }
-
-    &:hover {
-      opacity: 0.8;
-    }
+    justify-content: space-between;  
   }
 }

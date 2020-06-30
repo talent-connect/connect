@@ -2,42 +2,43 @@
 @import "../../styles/_variables.scss";
 
 .footer {
-  padding-bottom: 1rem;
-  font-size: $size-4;
-  font-weight: 500;
-  line-height: 2rem;
-  color: $black;
-  border-top: 2px solid $black;
-
-  @include mobile() {
-    border-top: 1px solid $black;
-    padding-bottom: 0;
-    font-size: $size-7;
-    line-height: $size-4;
+  background: $white;
+  border-top: 1px solid $grey-light;
+  
+  &__logo {
+    display: block;
   }
 
-  &__section {
-    @include mobile {
-      padding: .875rem 1rem 1.5rem;
-    }
+  &__copyright {
+    padding-top: 1.5rem;
+    border-top: 1px solid $grey-light;
   }
 
-  &--headline p {
-    margin-bottom: .5rem;
-  }
-
-  &--links {
-    margin-right: 3rem;
-
-    @include mobile {
-      text-transform: uppercase;
-      padding-top: 0;
-    }
-  }
-
-
-  & a {
+  &__link {
+    display: block;
     color: $black;
-    text-decoration: underline;
+    line-height: 2rem;
+    font-weight: $weight-normal;
+    font-size: $size-6;
+    text-transform: uppercase;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  &__headline {
+    position: relative;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+
+    &:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 1.5rem;
+      border-bottom: 2px solid $redi-orange-dark;
+    }
   }
 }
