@@ -7,6 +7,7 @@ import * as Yup from 'yup'
 import { RedProfile } from '../../types/RedProfile'
 import { AWS_PROFILE_AVATARS_BUCKET_BASE_URL, S3_UPLOAD_SIGN_URL } from '../../config/config'
 import classnames from 'classnames'
+import placeholderImage from '../../assets/images/img-placeholder.png'
 
 import { RootState } from '../../redux/types'
 import { connect } from 'react-redux'
@@ -35,21 +36,15 @@ const validationSchema = Yup.object({
 
 const Avatar = ({ profile }: AvatarProps) => {
   const { profileAvatarImageS3Key } = profile
-  const imgURL = AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
+  const imgSrc = profileAvatarImageS3Key
+    ? AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
+    : placeholderImage
 
   return (
     <div className={classnames('avatar', {
       'avatar--placeholder': !profileAvatarImageS3Key
     })}>
-      {profileAvatarImageS3Key &&
-        <img src={imgURL} alt={`${profile.firstName} ${profile.lastName}`} className="avatar__image" />
-      }
-
-      {!profileAvatarImageS3Key &&
-        <div className="avatar__placeholder">
-          <UploadImage className="avatar__placeholder__image" />
-        </div>
-      }
+      <img src={imgSrc} alt={`${profile.firstName} ${profile.lastName}`} className="avatar__image" />
     </div>
   )
 }

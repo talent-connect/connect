@@ -10,6 +10,7 @@ import {
   AWS_PROFILE_AVATARS_BUCKET_BASE_URL
 } from '../../config/config'
 
+import placeholderImage from '../../assets/images/img-placeholder.png'
 import './ProfileCard.scss'
 
 import { RedProfile } from '../../types/RedProfile'
@@ -24,6 +25,14 @@ interface ProfileCardProps {
 const ProfileCard = ({ profile, linkTo, toggleFavorite, isFavorite }: ProfileCardProps) => {
   const history = useHistory()
 
+  const {
+    firstName,
+    lastName,
+    languages,
+    categories,
+    profileAvatarImageS3Key
+  } = profile
+
   const handleFavorite = (e: React.MouseEvent) => {
     e.stopPropagation()
     toggleFavorite && toggleFavorite(profile.id)
@@ -31,27 +40,36 @@ const ProfileCard = ({ profile, linkTo, toggleFavorite, isFavorite }: ProfileCar
 
   const handleLinkTo = () => linkTo && history.push(linkTo)
 
-  return <Card
-    className={classnames('profile-card', { 'profile-card--active': linkTo })}
-    onClick={linkTo ? handleLinkTo : undefined}
-  >
-    {/* The avatar component may replace this image but for now it's a working solution */}
-    {<Card.Image className="profile-card__image" src={`${AWS_PROFILE_AVATARS_BUCKET_BASE_URL}${profile.profileAvatarImageS3Key}`} alt="" />}
-    <Card.Content>
-      {toggleFavorite && <div
-        className='profile-card__favorite'
-        onClick={handleFavorite}>
-        <Icon
-          icon={isFavorite ? 'heartFilled' : 'heart'}
-          className="profile-card__favorite__icon"/>
-      </div>}
-      <Element renderAs="h3" textWeight="bold" textSize={4} className="profile-card__name">
-        {profile.firstName} {profile.lastName}
-      </Element>
-      {profile.languages && <PipeList items={profile.languages} />}
-      {profile.categories && <ReadMentoringTopics.Tags items={profile.categories} shortList />}
-    </Card.Content>
-  </Card>
+  const imgSrc = profileAvatarImageS3Key
+    ? AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
+    : placeholderImage
+
+  return (
+    <Card
+      className={classnames('profile-card', { 'profile-card--active': linkTo })}
+      onClick={linkTo ? handleLinkTo : undefined}
+    >
+      <Card.Image
+        className="profile-card__image"
+        src={imgSrc}
+        alt={`${firstName} ${lastName}`}
+      />
+      <Card.Content>
+        {toggleFavorite && <div
+          className='profile-card__favorite'
+          onClick={handleFavorite}>
+          <Icon
+            icon={isFavorite ? 'heartFilled' : 'heart'}
+            className="profile-card__favorite__icon"/>
+        </div>}
+        <Element renderAs="h3" textWeight="bold" textSize={4} className="profile-card__name">
+          {firstName} {lastName}
+        </Element>
+        {languages && <PipeList items={languages} />}
+        {categories && <ReadMentoringTopics.Tags items={categories} shortList />}
+      </Card.Content>
+    </Card>
+  )
 }
 
 export default ProfileCard
