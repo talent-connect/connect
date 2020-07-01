@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
+import _uniqueId from 'lodash/uniqueId'
 import * as Yup from 'yup'
 import moment from 'moment'
 import { Button, Icon, FormSelect, FormDatePicker } from '../../atoms'
@@ -12,17 +13,7 @@ import { mentoringSessionDurationOptions } from '../../../config/config'
 import { mentoringSessionsCreateStart } from '../../../redux/mentoringSessions/actions'
 import './MSessions.scss'
 
-const formMentoringSessionDurationOptions = mentoringSessionDurationOptions.map(sesstionDuration => ({ value: sesstionDuration, label: sesstionDuration }))
-
-interface SessionRow {
-  session: RedMentoringSession
-}
-
-const SessionRow = ({ session }: SessionRow) => (
-  <li className="m-sessions__list__item">
-    {moment(session.date).format('DD.MM.YYYY')} - <Element renderAs="span" textColor="grey">{session.minuteDuration} min</Element>
-  </li>
-)
+const formMentoringSessionDurationOptions = mentoringSessionDurationOptions.map(sesstionDuration => ({ value: sesstionDuration, label: `${sesstionDuration} min` }))
 
 interface AddSessionProps {
   onClickHandler: Function
@@ -101,7 +92,11 @@ const MSessions = ({ sessions, menteeId, editable, mentoringSessionsCreateStart 
     >
       {(sessions.length > 0)
         ? <ul className="m-sessions__list">
-          {sessions.map(session => <SessionRow session={session} />)}
+          {sessions.map(session =>
+            <li className="m-sessions__list__item" key={session.date.toString()}>
+              {moment(session.date).format('DD.MM.YYYY')} - <Element renderAs="span" textColor="grey">{session.minuteDuration} min</Element>
+            </li>
+          )}
         </ul>
         : <Content textColor="grey-dark" italic>
           {editable

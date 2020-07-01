@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, Suspense } from 'react'
+import React, { ReactNode, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
@@ -22,7 +22,7 @@ interface Props {
 
 const AccountNotReDI: React.FC = ({ children }) => (
   <Notification className="account-not-active double-bs">
-    <Icon className="account-not-active__icon" icon="mail" size="large" space="right"/>
+    <Icon className="account-not-active__icon" icon="mail" size="large" space="right" />
     <Content size="small">{children}</Content>
   </Notification>
 )
@@ -39,11 +39,11 @@ const LoggedIn = ({ loading, children, matches, matchesFetchStart, matchesMarkAs
 
   useEffect(() => {
     matchesFetchStart()
-  }, [matchesFetchStart])
+  }, [])
 
   const handleModalClose = (redMatchId: string) => {
     matchesMarkAsDismissed(redMatchId)
-    history.push(`/app/mentorships/${profile.ifUserIsMentee_activeMentor.id}`)
+    history.push(`/app/mentorships/${redMatchId}`)
   }
 
   return (
@@ -56,7 +56,7 @@ const LoggedIn = ({ loading, children, matches, matchesFetchStart, matchesMarkAs
               <SideMenu />
             </Columns.Column>
             <Columns.Column desktop={{ size: 9, offset: 1 }} className="column--main-content">
-              <Loader loading={loading}/>
+              <Loader loading={loading} />
               {profile.userType === 'public-sign-up-mentee-pending-review' &&
                 <AccountNotReDI>
                   <strong>Thanks for signing up!</strong> We are reviewing your profile and will send

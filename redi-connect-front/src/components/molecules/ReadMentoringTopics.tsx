@@ -19,12 +19,11 @@ interface TagsProps {
 interface TagProps {
   children: string
   className?: string
-  key?: string
+  key: string
 }
 
-const ProfileTag = ({ children, key, className }: TagProps) => (
+const ProfileTag = ({ children, className }: TagProps) => (
   <Tag
-    key={key}
     className={className}
     size="medium"
     textWeight="bold"
@@ -47,7 +46,7 @@ const ProfileTags = ({ items, shortList }: TagsProps) => {
       return (hasAdditionalTags && isLastVisibleTag)
         ? <div className="tags__last-row">
           {currentTag}
-          <ProfileTag className="tag--rest">{'+' + additionalTagsCount}</ProfileTag>
+          <ProfileTag key="restNr" className="tag--rest">{'+' + additionalTagsCount}</ProfileTag>
         </div>
         : currentTag
     })}
@@ -75,5 +74,5 @@ const mapStateToProps = (state: RootState) => ({
 export default {
   Me: connect(mapStateToProps, {})(ReadMentoringTopics),
   Some: ({ profile }: ReadMentoringProps) => <ReadMentoringTopics profile={profile} caption />,
-  Tags: ({ items, shortList }: TagsProps) => <ProfileTags items={items} shortList/>
+  Tags: ({ items, shortList }: TagsProps) => <ProfileTags items={items} shortList />
 }
