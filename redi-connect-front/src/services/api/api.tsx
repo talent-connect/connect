@@ -121,7 +121,12 @@ export const getProfiles = ({ userType, categories, languages }: RedProfileFilte
 
   return http(
     `${API_URL}/redProfiles?filter=${JSON.stringify({
-      where: { userType, languages: filterLanguages, categories: filterCategories },
+      where: {
+        userType,
+        languages: filterLanguages,
+        categories: filterCategories,
+        userActivated: true
+      },
       limit: 0
     })}`
   ).then(resp => resp.data)

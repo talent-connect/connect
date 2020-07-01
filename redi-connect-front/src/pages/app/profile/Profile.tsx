@@ -32,7 +32,7 @@ interface ProfileProps {
   profilesFetchOneStart: Function
 }
 
-function Profile ({ profile, currentUser, hasReachedMenteeLimit, profilesFetchOneStart }: ProfileProps) {
+function Profile({ profile, currentUser, hasReachedMenteeLimit, profilesFetchOneStart }: ProfileProps) {
   const { profileId } = useParams<RouteParams>()
   const history = useHistory()
 
@@ -41,10 +41,10 @@ function Profile ({ profile, currentUser, hasReachedMenteeLimit, profilesFetchOn
   }, [profilesFetchOneStart, profileId])
 
   const currentUserIsMentor =
-  currentUser && currentUser.userType === 'mentor'
+    currentUser && currentUser.userType === 'mentor'
 
   const currentUserIsMentee =
-  currentUser && currentUser.userType === 'mentee'
+    currentUser && currentUser.userType === 'mentee'
 
   const isAcceptedMatch =
     profile &&
@@ -85,7 +85,7 @@ function Profile ({ profile, currentUser, hasReachedMenteeLimit, profilesFetchOn
         <Notification>
           Awesome, your application has been sent.
           If you want to read it later on you can find it
-          in <a onClick={() => history.push('/app/applications') }>your applications.</a>
+          in <a onClick={() => history.push('/app/applications')}>your applications.</a>
         </Notification>
       }
 
@@ -114,7 +114,7 @@ function Profile ({ profile, currentUser, hasReachedMenteeLimit, profilesFetchOn
         }
       </Columns>
 
-      { profile && <>
+      {profile && <>
         <Columns vCentered breakpoint="mobile" className="oneandhalf-bs">
           <Columns.Column size={3}>
             <Avatar profile={profile} />
@@ -145,27 +145,27 @@ function Profile ({ profile, currentUser, hasReachedMenteeLimit, profilesFetchOn
                 </Element>
               </Columns.Column>}
               {(profile.linkedInProfileUrl || profile.githubProfileUrl || profile.slackUsername) &&
-              <Columns.Column>
-                <ReadSocialMedia.Some profile={profile} />
-              </Columns.Column>
+                <Columns.Column>
+                  <ReadSocialMedia.Some profile={profile} />
+                </Columns.Column>
               }
             </Columns>
           </Element>
         }
 
         {(profile.languages || profile.gender || profile.age) &&
-           <Element className="block-separator">
-             <Columns>
-               {(profile.gender || profile.age) && <Columns.Column>
-                 <Element className="block-separator">
-                   <ReadPersonalDetail.Some profile={profile} />
-                 </Element>
-               </Columns.Column>}
-               <Columns.Column>
-                 <ReadLanguages.Some profile={profile} />
-               </Columns.Column>
-             </Columns>
-           </Element>
+          <Element className="block-separator">
+            <Columns>
+              {(profile.gender || profile.age) && <Columns.Column>
+                <Element className="block-separator">
+                  <ReadPersonalDetail.Some profile={profile} />
+                </Element>
+              </Columns.Column>}
+              <Columns.Column>
+                <ReadLanguages.Some profile={profile} />
+              </Columns.Column>
+            </Columns>
+          </Element>
         }
 
         {currentUserIsMentor &&
@@ -173,7 +173,7 @@ function Profile ({ profile, currentUser, hasReachedMenteeLimit, profilesFetchOn
             <Columns>
               {profile.mentee_highestEducationLevel && <Columns.Column>
                 <Element className="block-separator">
-                  <ReadEducation.Some profile={profile}/>
+                  <ReadEducation.Some profile={profile} />
                 </Element>
               </Columns.Column>}
               <Columns.Column>

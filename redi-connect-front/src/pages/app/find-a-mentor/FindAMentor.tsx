@@ -65,7 +65,8 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
   useEffect(() => {
     setLoading(true)
     getMentors({ categories: activeCategories, languages: activeLanguages }).then(mentors => {
-      setMentors(mentors)
+
+      setMentors(mentors.filter(mentor => mentor.currentFreeMenteeSpots > 0))
       setLoading(false)
     })
   }, [activeCategories, activeLanguages])
@@ -78,7 +79,7 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
 
   return (
     <LoggedIn>
-      <Loading/>
+      <Loading />
       <Heading subtitle size="small" className="oneandhalf-bs">Available mentors ({mentors.length})</Heading>
       <div className="filters">
         <FilterDropdown
@@ -98,7 +99,7 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
         <div
           className="filter-favourites"
           onClick={() => setShowFavorites(!showFavorites)}>
-          <Icon icon={showFavorites ? 'heartFilled' : 'heart'} className="filter-favourites__icon" space="right"/>
+          <Icon icon={showFavorites ? 'heartFilled' : 'heart'} className="filter-favourites__icon" space="right" />
               Only Favorites
         </div>
       </div>
@@ -110,10 +111,10 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
               key={catId}
               id={catId}
               label={categoriesIdToLabelMap[catId]}
-              onClickHandler={toggleCategories}/>
+              onClickHandler={toggleCategories} />
           )}
           {activeLanguages.map(langId =>
-            <FilterTag key={langId} id={langId} label={langId} onClickHandler={toggleLanguages}/>
+            <FilterTag key={langId} id={langId} label={langId} onClickHandler={toggleLanguages} />
           )}
           <span
             className="active-filters__clear-all"
@@ -122,7 +123,7 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
               clearLanguages()
             }}
           >
-            Delete all filters <Icon icon="cancel" size="small" space="left"/>
+            Delete all filters <Icon icon="cancel" size="small" space="left" />
           </span>
         </Tag.Group>
       </div>}
