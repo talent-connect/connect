@@ -23,14 +23,13 @@ const SocialMediaIcons = () => (
   <ul className="media-icons__list">
     {socialMedia.map((item: any) => {
       return (
-        <li>
+        <li key={item.icon}>
           <a
             href={item.link}
-            key={item.icon}
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Icon icon={item.icon} size="medium" className="media-icons__icon" />
+            <Icon icon={item.icon} className="media-icons__icon" />
           </a>
         </li>
       )

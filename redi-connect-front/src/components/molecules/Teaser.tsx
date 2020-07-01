@@ -33,7 +33,7 @@ export default {
     <>
       <Isabelle className="illustration illustration--bothOut" />
       <Element renderAs="p" textAlignment="centered" textSize={ 4 } className="about-isabelle">
-        “Hi, I am <strong>Isabelle</strong>, the mentorship coordinator of ReDI Connect Munich.
+        “Hi, I am <strong>Isabelle</strong>, the mentorship coordinator of ReDI Connect Berlin.
         I take the time to meet each mentee in person before they join our program.”
       </Element>
       <Element renderAs="p" textAlignment="centered" textSize={ 5 }>

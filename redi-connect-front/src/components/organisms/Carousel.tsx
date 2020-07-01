@@ -55,8 +55,8 @@ const Carousel = ({ headline, title, border }: Props) => {
         <Slider {...settings}>
           {quotes.map((quote: any) => {
             return (
-              <div className="carousel">
-                <Columns key={quote.img} vCentered>
+              <div className="carousel" key={quote.img}>
+                <Columns vCentered>
                   <Columns.Column size={6}>
                     <Image src={quote.img} alt={quote.title} className={classnames('carousel__image', {
                       [`carousel__image--border-${border}`]: border

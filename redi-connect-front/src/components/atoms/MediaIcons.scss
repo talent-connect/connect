@@ -4,6 +4,19 @@
 .media-icons {
   &__list {
     display: flex;
-    justify-content: space-between;  
+
+    @include desktop() {
+      justify-content: space-between;
+    }
+
+    @include tablet() {
+      flex-wrap: wrap;
+    }
+  }
+
+  &__icon {
+    @include touch() {
+      margin-right: 1rem;
+    }
   }
 }
