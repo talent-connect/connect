@@ -5,6 +5,7 @@
   display: inline-flex;
   align-items: center;
   background: none;
+  font-weight: $weight-bold;
   text-transform: uppercase;
   text-decoration: none;
   font-size: $size-6;
@@ -97,8 +98,8 @@
 
   &--nav {
     border: none;
-    font-weight: $weight-normal;
     color: $black;
+    padding: 0 1.25rem;
 
     &:hover {
       text-decoration: none;

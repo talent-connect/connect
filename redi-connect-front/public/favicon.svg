@@ -4,11 +4,12 @@
     <title>Logo/Favicon</title>
     <desc>Created with Sketch.</desc>
     <g id="Logo/Favicon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Rectangle" fill="#FFFFFF" x="0" y="0" width="48" height="48" rx="4"></rect>
         <g id="Group" transform="translate(1.000000, 4.000000)">
             <path d="M39.7989899,-5.80868686e-13 L39.7989899,39.5979797 L20,19.7989899 L39.7989899,-5.80868686e-13 Z" id="Combined-Shape" fill="#2CB0C7" transform="translate(29.899495, 19.798990) scale(-1, 1) translate(-29.899495, -19.798990) "></path>
-            <path d="M45.125,1.72258006 L26.8485174,19.9999892 L45.125,38.2764719 L45.125,1.72258006 Z" id="Combined-Shape-Copy" stroke="#000000" stroke-width="1.2" transform="translate(36.000000, 20.000000) scale(-1, 1) translate(-36.000000, -20.000000) "></path>
+            <path d="M44.975,2.08472508 L27.0606467,19.9999866 L44.975,37.9143398 L44.975,2.08472508 Z" id="Combined-Shape-Copy" stroke="#000000" stroke-width="1.5" transform="translate(36.000000, 20.000000) scale(-1, 1) translate(-36.000000, -20.000000) "></path>
             <circle id="Oval" fill="#FD4D00" cx="9.5" cy="20.5" r="9.5"></circle>
-            <circle id="Oval-Copy" stroke="#000000" stroke-width="1.2" cx="15.5" cy="20.5" r="8.9"></circle>
+            <circle id="Oval-Copy" stroke="#000000" stroke-width="1.5" cx="15.5" cy="20.5" r="8.75"></circle>
         </g>
     </g>
 </svg>

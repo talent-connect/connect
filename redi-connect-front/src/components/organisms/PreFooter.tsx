@@ -19,13 +19,15 @@ const PreFooter = () => {
     <Section className="default-background">
       <Container>
         <Columns vCentered>
-          <Columns.Column size={4} className="is-four-fifths-mobile">
+          <Columns.Column size={4}>
             <Heading>
               {t('preFooter.headline')}
             </Heading>
             <Content
               renderAs="p"
-              className="is-size-4 is-size-5-mobile oneandhalf-bs"
+              textSize={4}
+              responsive={{ mobile: { textSize: { value: 5 } } }}
+              className="oneandhalf-bs"
             >
               {t('preFooter.content')}
             </Content>

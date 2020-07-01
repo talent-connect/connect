@@ -21,7 +21,7 @@ const RediFooter = () => {
       <Section>
         <Container>
           <Columns breakpoint="mobile">
-            <Columns.Column mobile={{ size: 'full' }}>
+            <Columns.Column mobile={{ size: 12 }}>
               <Element renderAs="a" href="https://www.redi-school.org" target="_blank" className="footer__logo oneandhalf-bs">
                 <RediSchool />
               </Element>
@@ -29,7 +29,7 @@ const RediFooter = () => {
                 <Deloitte />
               </Element>
             </Columns.Column>
-            <Columns.Column mobile={{ offset: 'zero', size: 'half' }} desktop={{ offset: 1 }} className="double-bs">
+            <Columns.Column mobile={{ offset: null, size: 6 }} desktop={{ offset: 1 }} className="double-bs">
               <Element
                 renderAs="h3"
                 textSize={6}
@@ -41,7 +41,7 @@ const RediFooter = () => {
               </Element>
               <Element renderAs="ul">
                 {supportLinks.map(link => (
-                  <Element renderAs="li">
+                  <Element renderAs="li" key={link.url}>
                     <Element
                       renderAs="a"
                       href={link.url}
@@ -54,7 +54,7 @@ const RediFooter = () => {
                 ))}
               </Element>
             </Columns.Column>
-            <Columns.Column mobile={{ size: 'half' }}>
+            <Columns.Column mobile={{ size: 6 }}>
               <Element
                 renderAs="h3"
                 textSize={6}
@@ -66,7 +66,7 @@ const RediFooter = () => {
               </Element>
               <Element renderAs="ul">
                 {legalLinks.map(link => (
-                  <Element renderAs="li" >
+                  <Element renderAs="li" key={link.url}>
                     <Element
                       renderAs="a"
                       href={link.url}

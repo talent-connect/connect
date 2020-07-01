@@ -17,10 +17,10 @@ const RediHero = () => {
       <Container>
         <Columns vCentered>
           <Columns.Column size={5}>
-            <Heading className="redi-hero__headline">
+            <Heading>
               {t('loggedOutArea.homePage.hero.about.headline')}
             </Heading>
-            <Deloitte className="oneandhalf-bs" />
+            <Deloitte className="oneandhalf-bs redi-hero__icon" />
             <Columns.Column responsive={{ tablet: { hide: { value: true } } }}>
               <SVGImage image="hero" className="redi-hero__image" />
             </Columns.Column>

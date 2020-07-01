@@ -4,9 +4,13 @@
 .footer {
   background: $white;
   border-top: 1px solid $grey-light;
-  
+
   &__logo {
     display: block;
+
+    @include mobile() {
+      margin-top: 1rem;
+    }
   }
 
   &__copyright {
