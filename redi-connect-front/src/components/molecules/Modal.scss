@@ -2,6 +2,11 @@
 
 .modal {
   // not the nicest overwrite but the less ugly one
+  &-open {
+    height: 100vh;
+    overflow-y: hidden;
+  }
+
   &-close {
     position: absolute;
     top: -2.5rem;
@@ -22,8 +27,18 @@
     border-bottom: 1px solid $grey-light;
   }
 
-  .modal-content {
+  &-content {
     overflow: visible;
+  }
+
+  &-container {
+    z-index: 100;
+    position: fixed;
+  }
+
+  &__box {
+    height: 100%;
+    overflow: auto;
   }
 
   &__buttons {

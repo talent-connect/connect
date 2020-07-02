@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useEffect } from 'react'
 import { Heading } from '../atoms'
 import { Box, Modal as BulmaModal } from 'react-bulma-components'
 import './Modal.scss'
@@ -13,7 +13,7 @@ interface Props {
 
 const Buttons: React.FunctionComponent = ({ children }) => (
   <div className="modal__buttons">
-    { children }
+    {children}
   </div>
 )
 
@@ -21,6 +21,10 @@ const Modal = ({ title, children, stateFn, show, confirm }: Props) => {
   const setShowModal = stateFn
     ? () => stateFn(false)
     : undefined
+
+  useEffect(() => {
+    document.body.classList.toggle('modal-open', show)
+  }, [show])
 
   return <BulmaModal
     show={show}
@@ -30,7 +34,7 @@ const Modal = ({ title, children, stateFn, show, confirm }: Props) => {
     closeOnBlur={!confirm}
   >
     <BulmaModal.Content>
-      <Box>
+      <Box className="modal__box">
         {!confirm && <button
           type="button"
           onClick={setShowModal}
