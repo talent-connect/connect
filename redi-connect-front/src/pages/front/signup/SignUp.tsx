@@ -119,6 +119,7 @@ export default function SignUp () {
     ])
     cleanProfile.userActivated = false
     cleanProfile.signupSource = 'public-sign-up'
+    cleanProfile.menteeCountCapacity = 1
     try {
       await signUp(values.contactEmail, values.password, cleanProfile)
       actions.setSubmitting(false)
