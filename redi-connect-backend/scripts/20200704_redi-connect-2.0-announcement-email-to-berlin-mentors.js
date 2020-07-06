@@ -97,15 +97,15 @@ redUserFind({ include: 'redProfile' })
     filter(({ redProfile }) => redProfile.rediLocation === 'berlin'),
     filter(({ redProfile }) => redProfile.userActivated),
 
-    
-    skip(26),
     /*
+    take(2),
     map((data, index) => {
       data.redProfile.contactEmail = index === 0 ? 'eric@binarylights.com' : 'isabelle@redi-school.org';
       return data;
-    }),
+    })
     */
 
+    /*
     concatMap(
       userData =>
         sendMentorEmail({
@@ -114,6 +114,7 @@ redUserFind({ include: 'redProfile' })
 
       (userData, sendResult) => ({ ...userData, sendResult })
     ),
+    */
 
     tap(userData => console.log(userData.redProfile.contactEmail)),
     count()

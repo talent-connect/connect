@@ -98,6 +98,7 @@ redUserFind({ include: 'redProfile' })
     })
     */
 
+    /*
     concatMap(
       userData =>
         sendMentorEmail({
@@ -106,6 +107,7 @@ redUserFind({ include: 'redProfile' })
 
       (userData, sendResult) => ({ ...userData, sendResult })
     ),
+    */
 
     tap(userData => console.log(userData.redProfile.contactEmail)),
     count()
