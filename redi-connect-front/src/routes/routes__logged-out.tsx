@@ -63,7 +63,7 @@ export const routes__loggedOut: RouteDefinition[] = [
     exact: true
   },
   {
-    path: '/front/signup-complete',
+    path: '/front/signup-complete/:userType',
     component: SignUpComplete,
     exact: true
   },
