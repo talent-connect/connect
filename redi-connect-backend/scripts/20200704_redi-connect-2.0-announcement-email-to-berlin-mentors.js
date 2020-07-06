@@ -10,6 +10,7 @@ const {
   delay,
   concatMap,
   take,
+  skip,
   map,
   switchMap,
   tap,
@@ -96,11 +97,14 @@ redUserFind({ include: 'redProfile' })
     filter(({ redProfile }) => redProfile.rediLocation === 'berlin'),
     filter(({ redProfile }) => redProfile.userActivated),
 
-    take(2),
+    
+    skip(26),
+    /*
     map((data, index) => {
       data.redProfile.contactEmail = index === 0 ? 'eric@binarylights.com' : 'isabelle@redi-school.org';
       return data;
     }),
+    */
 
     concatMap(
       userData =>
