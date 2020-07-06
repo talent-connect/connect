@@ -46,7 +46,7 @@ const ProfileTags = ({ items, shortList }: TagsProps) => {
       return (hasAdditionalTags && isLastVisibleTag)
         ? <div className="tags__last-row">
           {currentTag}
-          <ProfileTag key="restNr" className="tag--rest">{'+' + additionalTagsCount}</ProfileTag>
+          <ProfileTag key={`restNr-${i}`} className="tag--rest">{'+' + additionalTagsCount}</ProfileTag>
         </div>
         : currentTag
     })}

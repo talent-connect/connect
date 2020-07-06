@@ -45,8 +45,8 @@ const ReportProblem = ({ redProfileId, type }: ReportProblemProps) => {
     values: FormValues,
     actions: FormikHelpers<FormValues>
   ) => {
-    const { ifFromMentor_cancelMentorshipImmediately: isCancelImmediatly } = values
-    if (isCancelImmediatly) {
+    const { ifFromMentor_cancelMentorshipImmediately: isCancelImmediately } = values
+    if (isCancelImmediately) {
       const userIsCertain = window.confirm(
         'Are you sure you want to cancel this mentorship?'
       )
@@ -61,13 +61,13 @@ const ReportProblem = ({ redProfileId, type }: ReportProblemProps) => {
             ? 'mentor-report-about-mentee'
             : 'mentee-report-about-mentor',
         reporteeId: redProfileId,
-        ifFromMentor_cancelMentorshipImmediately: isMentor && isCancelImmediatly
+        ifFromMentor_cancelMentorshipImmediately: isMentor && isCancelImmediately
       }
       await reportProblem(report)
       setSubmitResult('success')
       setShowProblemDialog(false)
       actions.resetForm()
-      if (isCancelImmediatly) history.push("/app/mentorships/")
+      if (isCancelImmediately) history.push("/app/mentorships/")
     } catch (err) {
       setSubmitResult('error')
     }
