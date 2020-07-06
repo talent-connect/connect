@@ -10,4 +10,6 @@ export type RedMatch = {
   hasMenteeDismissedMentorshipApplicationAcceptedNotification: boolean
   mentor: RedProfile
   mentee: RedProfile
+  mentorId: string
+  menteeId: string
 };

@@ -1,21 +1,18 @@
 import React, { useState } from 'react'
+import { useHistory } from 'react-router'
 import { Button, FormTextArea, Checkbox } from '../atoms'
 import { Modal } from '../molecules'
 import { useFormik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import { RedProblemReportDto } from '../../types/RedProblemReportDto'
 import { FormSubmitResult } from '../../types/FormSubmitResult'
-import { profilesFetchOneStart } from '../../redux/profiles/actions'
-import { getRedProfile } from '../../services/auth/auth'
 import { reportProblem } from '../../services/api/api'
 import { UserType } from '../../types/UserType'
 import { Content } from 'react-bulma-components'
-import { connect } from 'react-redux'
 import './ReportProblem.scss'
 
 export interface ReportProblemProps {
   redProfileId: string
-  profilesFetchOneStart: Function
   type: UserType
 }
 
@@ -36,17 +33,20 @@ const validationSchema = Yup.object({
     .max(1000)
 })
 
-const ReportProblem = ({ redProfileId, type, profilesFetchOneStart }: ReportProblemProps) => {
+const ReportProblem = ({ redProfileId, type }: ReportProblemProps) => {
   const [showProblemDialog, setShowProblemDialog] = useState(false)
   const [submitResult, setSubmitResult] = useState<FormSubmitResult>(
     'notSubmitted'
   )
-  const { userType } = getRedProfile()
+  const history = useHistory()
+  const isMentor = type === 'mentor'
+
   const submitForm = async (
     values: FormValues,
     actions: FormikHelpers<FormValues>
   ) => {
-    if (values.ifFromMentor_cancelMentorshipImmediately) {
+    const { ifFromMentor_cancelMentorshipImmediately: isCancelImmediately } = values
+    if (isCancelImmediately) {
       const userIsCertain = window.confirm(
         'Are you sure you want to cancel this mentorship?'
       )
@@ -60,22 +60,16 @@ const ReportProblem = ({ redProfileId, type, profilesFetchOneStart }: ReportProb
           type === 'mentee'
             ? 'mentor-report-about-mentee'
             : 'mentee-report-about-mentor',
-        reporteeId: redProfileId
-      }
-      if (type === 'mentor') {
-        report.ifFromMentor_cancelMentorshipImmediately =
-          values.ifFromMentor_cancelMentorshipImmediately
+        reporteeId: redProfileId,
+        ifFromMentor_cancelMentorshipImmediately: isMentor && isCancelImmediately
       }
       await reportProblem(report)
       setSubmitResult('success')
       setShowProblemDialog(false)
-      // TODO: can this be decoupled? Here the component "knows" that it's inside a <Profile>
-      // and triggers a refresh of that <Profile>
-      profilesFetchOneStart(redProfileId)
+      actions.resetForm()
+      if (isCancelImmediately) history.push("/app/mentorships/")
     } catch (err) {
       setSubmitResult('error')
-    } finally {
-      actions.setSubmitting(false)
     }
   }
 
@@ -91,7 +85,7 @@ const ReportProblem = ({ redProfileId, type, profilesFetchOneStart }: ReportProb
     onSubmit: submitForm
   })
 
-  const { ifFromMentor_cancelMentorshipImmediately } = formik.values
+  const { ifFromMentor_cancelMentorshipImmediately: isCancelImmediatly } = formik.values
 
   return (
     <>
@@ -113,7 +107,7 @@ const ReportProblem = ({ redProfileId, type, profilesFetchOneStart }: ReportProb
             placeholder="I have concerns about…"
             {...formik}
           />
-          {userType === 'mentor' && (
+          {isMentor && (
             <Checkbox.Form
               name="ifFromMentor_cancelMentorshipImmediately"
               checked={formik.values.ifFromMentor_cancelMentorshipImmediately}
@@ -123,10 +117,10 @@ const ReportProblem = ({ redProfileId, type, profilesFetchOneStart }: ReportProb
             </Checkbox.Form>
           )}
 
-          {ifFromMentor_cancelMentorshipImmediately &&
+          {isCancelImmediatly &&
             <Content textColor="primary">Not ReDI? We regret you want to cancel this mentorship.
-              Someone from our Career Department will be in touch with
-              both you and your mentee
+            Someone from our Career Department will be in touch with
+            both you and your mentee
             </Content>
           }
         </form>
@@ -144,8 +138,4 @@ const ReportProblem = ({ redProfileId, type, profilesFetchOneStart }: ReportProb
   )
 }
 
-const mapDispatchToProps = (dispatch: any) => ({
-  profilesFetchOneStart: (profileId: string) => dispatch(profilesFetchOneStart(profileId))
-})
-
-export default connect(null, mapDispatchToProps)(ReportProblem)
+export default ReportProblem

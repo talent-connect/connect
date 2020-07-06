@@ -106,7 +106,7 @@ function Profile({ profile, currentUser, hasReachedMenteeLimit, profilesFetchOne
         {match && match.status === 'applied' &&
           <Columns.Column className="is-narrow">
             <ConfirmMentorship
-              matchId={match.id}
+              match={match}
               menteeName={profile && profile.firstName}
               hasReachedMenteeLimit={hasReachedMenteeLimit}
             />

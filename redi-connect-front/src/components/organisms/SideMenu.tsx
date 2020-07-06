@@ -41,21 +41,14 @@ const SideMenu = () => {
       </MenuItem>
 
       {isMenteeWithoutMentor &&
-        <MenuItem url="/app/find-a-mentor">
+        <MenuItem url="/app/find-a-mentor/">
           <Mentorship className="side-menu__icon" />
           Find a mentor
         </MenuItem>
       }
 
-      {isMenteeWithMentor &&
-        <MenuItem url={`/app/mentorships/${profile.ifUserIsMentee_activeMentor.id}`}>
-          <Mentorship className="side-menu__icon" />
-          My Mentorship
-        </MenuItem>
-      }
-
-      {isActivatedMentor &&
-        <MenuItem url="/app/mentorships">
+      {(isActivatedMentor || isMenteeWithMentor) &&
+        <MenuItem url="/app/mentorships/">
           <Mentorship className="side-menu__icon" />
           My Mentorship
         </MenuItem>

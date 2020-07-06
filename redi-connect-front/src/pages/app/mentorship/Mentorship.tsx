@@ -1,53 +1,48 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { useParams, useHistory } from 'react-router'
+import { useParams, useHistory, Redirect } from 'react-router'
 import { Heading, Button } from '../../../components/atoms'
 import { ProfileCard, MContacts, MSessions, ReportProblem } from '../../../components/organisms'
 import { Columns, Content } from 'react-bulma-components'
 import { RootState } from '../../../redux/types'
 import { RedProfile } from '../../../types/RedProfile'
-import { profilesFetchOneStart } from '../../../redux/profiles/actions'
 import { LoggedIn } from '../../../components/templates'
 import { useLoading } from '../../../hooks/WithLoading'
+import { getMatches } from '../../../redux/matches/selectors'
+import { RedMatch } from '../../../types/RedMatch'
+import { matchesFetchStart } from '../../../redux/matches/actions'
+
 
 interface RouteParams {
   profileId: string
 }
 interface MentorshipProps {
-  profile?: RedProfile
   currentUser?: RedProfile
-  profilesFetchOneStart: (profileId: string) => void
+  matches: RedMatch[]
 }
 
-const Mentorship = ({ profile, currentUser, profilesFetchOneStart }: MentorshipProps) => {
+const Mentorship = ({ currentUser, matches }: MentorshipProps) => {
   const { profileId } = useParams<RouteParams>()
   const history = useHistory()
-
-  const { Loading } = useLoading()
-
-  useEffect(() => {
-    profilesFetchOneStart(profileId)
-  }, [profileId])
-
-  if (!profile) return <Loading />
-
   const currentUserIsMentor = currentUser?.userType === 'mentor'
   const currentUserIsMentee = currentUser?.userType === 'mentee'
-
+  const currentMatch = matches.find(match => match.id === profileId)
+  const profile = currentMatch && currentMatch[currentUserIsMentor ? "mentee" : "mentor"]
   const pageHeading = currentUserIsMentor
     ? `Mentorship with ${profile?.firstName} ${profile?.lastName}`
     : 'My Mentorship'
 
-  const isMentorWithMultipleActiveMentees =
-  currentUserIsMentor &&
-  currentUser &&
-  currentUser.currentMenteeCount > 1
+  useEffect(() => {
+    if (!profile) matchesFetchStart()
+  }, [])
+
+  if (!profile) return <Redirect to={`/app/mentorships/`} />
 
   return (
     <LoggedIn>
-      { isMentorWithMultipleActiveMentees && (<Columns>
+      {(matches.length > 1) && (<Columns>
         <Columns.Column>
-          <Button onClick={() => history.goBack()} simple>
+          <Button onClick={() => history.push("/app/mentorships/")} simple>
             <Button.Icon icon="arrowLeft" space="right" />
               Back to mentee overview
           </Button>
@@ -87,11 +82,7 @@ const Mentorship = ({ profile, currentUser, profilesFetchOneStart }: MentorshipP
 
 const mapStateToProps = (state: RootState) => ({
   currentUser: state.user.profile,
-  profile: state.profiles.oneProfile
+  matches: getMatches(state.matches)
 })
 
-const mapDispatchToProps = (dispatch: any) => ({
-  profilesFetchOneStart: (profileId: string) => dispatch(profilesFetchOneStart(profileId))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Mentorship)
+export default connect(mapStateToProps, null)(Mentorship)
