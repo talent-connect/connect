@@ -56,11 +56,10 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
     setSubmitResult('submitting')
     try {
       await requestMentorship(values.applicationText, values.expectationText, mentor.id)
+      setShow(false)
       profilesFetchOneStart(mentor.id)
     } catch (error) {
       setSubmitResult('error')
-    } finally {
-      actions.setSubmitting(false)
     }
   }
 
@@ -121,7 +120,7 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
               checked={formik.values.dataSharingAccepted}
               {...formik}
             >
-                  I understand that my profile data will be shared with this mentor
+              I understand that my profile data will be shared with this mentor
             </Checkbox.Form>
 
             <Modal.Buttons>
