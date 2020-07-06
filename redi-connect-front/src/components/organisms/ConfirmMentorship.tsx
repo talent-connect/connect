@@ -1,14 +1,16 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
 import { Content } from 'react-bulma-components'
 import { FormTextArea, Button } from '../atoms'
 import { Modal } from '../molecules'
 import { matchesAcceptMentorshipStart } from '../../redux/matches/actions'
+import { RedMatch } from '../../types/RedMatch'
 
 interface ConfirmMentorshipProps {
-  matchId: string
+  match: RedMatch
   menteeName?: string
   hasReachedMenteeLimit: boolean
   matchesAcceptMentorshipStart: (redMatchId: string, mentorReplyMessageOnAccept: string) => void
@@ -31,8 +33,9 @@ const validationSchema = Yup.object({
 
 // TODO: This throws a TS error: { dispatch, matchId }: ConnectButtonProps
 // What to replace with instead of below hack?
-const ConfirmMentorship = ({ matchId, menteeName, hasReachedMenteeLimit, matchesAcceptMentorshipStart }: ConfirmMentorshipProps) => {
+const ConfirmMentorship = ({ match, menteeName, hasReachedMenteeLimit, matchesAcceptMentorshipStart }: ConfirmMentorshipProps) => {
   const [isModalActive, setModalActive] = useState(false)
+  const history = useHistory()
 
   //  Keeping this to make sure we address this as its not planned in the desing, yet
   //   <Tooltip> requires child <Button> to be wrapped in a div since it's disabled
@@ -51,8 +54,9 @@ const ConfirmMentorship = ({ matchId, menteeName, hasReachedMenteeLimit, matches
     values: ConfirmMentorshipFormValues
   ) => {
     try {
-      matchesAcceptMentorshipStart(matchId, values.mentorReplyMessageOnAccept)
+      matchesAcceptMentorshipStart(match.id, values.mentorReplyMessageOnAccept)
       setModalActive(false)
+      history.push(`/app/mentorships/${match.id}`)
     } catch (error) {
       console.log('error ', error)
     }
@@ -89,7 +93,7 @@ const ConfirmMentorship = ({ matchId, menteeName, hasReachedMenteeLimit, matches
           disabled={!isFormSubmittable}
           onClick={() => formik.handleSubmit()}
         >
-            Accept mentorship request
+          Accept mentorship request
         </Button>
       </Modal.Buttons>
     </Modal>
