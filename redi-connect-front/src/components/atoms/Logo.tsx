@@ -6,7 +6,7 @@ import { ReactComponent as RediLogoMobile } from '../../assets/images/logo-mobil
 
 const Logo = () => {
   return (
-    <NavLink to="/">
+    <NavLink to="/" className="navbar__logo">
       <Element responsive={{ mobile: { hide: { value: true } } }}>
         <RediLogo />
       </Element>

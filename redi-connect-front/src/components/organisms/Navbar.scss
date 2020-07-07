@@ -16,6 +16,10 @@
     }
   }
 
+  &__logo:hover {
+    text-decoration: none !important;
+  }
+
   &__buttons {
     display: flex;
     align-items: center;
