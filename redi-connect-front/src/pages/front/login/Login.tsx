@@ -57,7 +57,8 @@ export default function Login () {
         const redProfile = await fetchSaveRedProfile(accessToken)
         if (redProfile.rediLocation !== (process.env.REACT_APP_REDI_LOCATION as RediLocation)) {
           setIsWrongRediLocationError(true)
-          return purgeAllSessionData()
+          purgeAllSessionData()
+          return
         }
         actions.setSubmitting(false)
         history.push('/app/me')

@@ -265,17 +265,16 @@ const sendVerificationEmail = ({
   recipient,
   redUserId,
   firstName,
-  userType,
+  userType: signupType,
   verificationToken,
   rediLocation
 }) => {
-  const signupType = userType
-  userType = {
+  const userType = {
     'public-sign-up-mentor-pending-review': 'mentor',
     'public-sign-up-mentee-pending-review': 'mentee'
-  }[userType]
-  const verificationSuccessPageUrl = `${buildFrontendUrl(process.env.NODE_ENV, rediLocation)}/front/signup-complete`
-  const verificationUrl = `${buildBackendUrl(process.env.NODE_ENV)}/api/redUsers/confirm?uid=${redUserId}&token=${verificationToken}&redirect=${encodeURI(verificationSuccessPageUrl)}/${signupType}`
+  }[signupType]
+  const verificationSuccessPageUrl = `${buildFrontendUrl(process.env.NODE_ENV, rediLocation)}/front/signup-complete/${signupType}`
+  const verificationUrl = `${buildBackendUrl(process.env.NODE_ENV)}/api/redUsers/confirm?uid=${redUserId}&token=${verificationToken}&redirect=${encodeURI(verificationSuccessPageUrl)}`
   const sendMenteeRequestAppointmentEmailParsed = convertTemplateToHtml(rediLocation, 'validate-email-address')
   const html = sendMenteeRequestAppointmentEmailParsed
     .replace(/\${firstName}/g, firstName)
