@@ -42,7 +42,7 @@ if ((process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'berlin') {
     { id: 'findingInternship', label: 'Finding an internship', group: 'careerSupport' },
     { id: 'freelancing', label: 'Freelancing', group: 'other' },
     { id: 'salesforce', label: 'Salesforce', group: 'other' },
-    { id: 'dontKnowYet', label: "I don't know yet", group: 'other' }
+    { id: 'iDontKnowYet', label: "I don't know yet", group: 'other' }
   ]
 } else if ((process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'munich') {
   categories = [
@@ -66,7 +66,7 @@ if ((process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'berlin') {
     { id: 'munich_freelancing', label: 'Freelancing', group: 'other' },
     { id: 'munich_entrepreneurship', label: 'Entrepreneurship', group: 'other' },
     { id: 'munich_beAFriendToHelpInNewAndDifficultSituationsHereInGermany', label: 'Be a friend and help', group: 'other' },
-    { id: 'munich_dontKnowYet', label: "I don't know yet", group: 'other' }
+    { id: 'munich_iDontKnowYet', label: "I don't know yet", group: 'other' }
   ]
 } else {
   throw new Error('Invalid RediLocation')

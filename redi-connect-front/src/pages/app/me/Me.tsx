@@ -14,7 +14,8 @@ import {
   EditableOccupation,
   EditablePersonalDetail,
   EditableRediClass,
-  EditableSocialMedia
+  EditableSocialMedia,
+  EditableMenteeCount
 } from '../../../components/organisms'
 
 import { LoggedIn } from '../../../components/templates'
@@ -58,6 +59,16 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
       <Element className="block-separator">
         <EditableMentoringTopics />
       </Element>
+
+      {!userIsMentee &&
+      <Element className="block-separator">
+        <Columns>
+          <Columns.Column size={12}>
+            <EditableMenteeCount />
+          </Columns.Column>
+        </Columns>
+      </Element>
+      }
 
       <Element className="block-separator">
         <Columns>
