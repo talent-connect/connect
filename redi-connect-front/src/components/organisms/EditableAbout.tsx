@@ -1,5 +1,5 @@
 import React from 'react'
-import { FormTextArea, FormSelect } from '../atoms'
+import { FormTextArea } from '../atoms'
 import { Editable, ReadAbout } from '../molecules'
 import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
@@ -11,12 +11,6 @@ import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
 
-import {
-  menteeCountCapacityOptions
-} from '../../config/config'
-
-const formMenteeCountCapacity = menteeCountCapacityOptions.map(option => ({ value: option, label: option }))
-
 // do we really need all these type???
 export type UserType =
   | 'mentor'
@@ -26,7 +20,6 @@ export interface AboutFormValues {
   userType: UserType
   personalDescription: string
   expectations: string
-  menteeCountCapacity: number
 }
 
 const validationSchema = Yup.object({
@@ -34,14 +27,7 @@ const validationSchema = Yup.object({
     .required('Write at least 100 characters about yourself.')
     .min(100, 'Write at least 100 characters about yourself.')
     .max(600, 'The introduction text can be up to 600 characters long.')
-    .label('Personal description'),
-  menteeCountCapacity: Yup.number().when('userType', {
-    is: 'mentor',
-    then: Yup.number()
-      .required('Please specify the number of mentees you can take on')
-      .min(1)
-      .max(2)
-  })
+    .label('Personal description')
 })
 // props: FormikProps<AboutFormValues>
 const EditableAbout = ({ profile, profileSaveStart }: any) => {
@@ -49,8 +35,7 @@ const EditableAbout = ({ profile, profileSaveStart }: any) => {
     id,
     userType,
     personalDescription,
-    expectations,
-    menteeCountCapacity
+    expectations
   } = profile
 
   const submitForm = async (
@@ -63,8 +48,7 @@ const EditableAbout = ({ profile, profileSaveStart }: any) => {
   const initialValues: AboutFormValues = {
     userType,
     personalDescription,
-    expectations,
-    menteeCountCapacity
+    expectations
   }
 
   const formik = useFormik({
@@ -100,15 +84,6 @@ const EditableAbout = ({ profile, profileSaveStart }: any) => {
         placeholder="Expectations"
         {...formik}
       />
-      {userType === 'mentor' &&
-        <FormSelect
-          label="How many mentees would you be willing to mentor this semester?"
-          name="menteeCountCapacity"
-          placeholder="Mentee count"
-          items={formMenteeCountCapacity}
-          {...formik}
-        />
-      }
     </Editable>
   )
 }

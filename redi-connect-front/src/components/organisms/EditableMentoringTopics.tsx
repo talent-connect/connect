@@ -30,7 +30,6 @@ export interface MentoringFormValues {
 
 const validationSchema = Yup.object({
   categories: Yup.array()
-    .compact(v => v === 'dontKnowYet')
     .min(1)
     .when('isMentor', { is: false, then: Yup.array().max(3) })
 })

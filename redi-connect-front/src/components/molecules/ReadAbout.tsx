@@ -12,11 +12,10 @@ interface Props {
 const Me = ({ profile }: Props) => {
   const {
     personalDescription,
-    expectations,
-    menteeCountCapacity
+    expectations
   } = profile
 
-  if (!personalDescription && !expectations && !menteeCountCapacity) {
+  if (!personalDescription && !expectations) {
     return <Placeholder>Please tell us a bit about yourself</Placeholder>
   }
 
@@ -24,7 +23,6 @@ const Me = ({ profile }: Props) => {
     <Content>
       {personalDescription && <p>{personalDescription}</p>}
       {expectations && <p>{expectations}</p>}
-      {menteeCountCapacity && <p>{menteeCountCapacity}</p>}
     </Content>
   )
 }

@@ -14,7 +14,8 @@ import {
   EditableOccupation,
   EditablePersonalDetail,
   EditableRediClass,
-  EditableSocialMedia
+  EditableSocialMedia,
+  EditableMenteeCount
 } from '../../../components/organisms'
 
 import { LoggedIn } from '../../../components/templates'
@@ -29,6 +30,9 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
 
   const userIsMentee =
     profile.userType === 'mentee' || profile.userType === 'public-sign-up-mentee-pending-review'
+
+  const userIsMentor =
+    profile.userType === 'mentor' || profile.userType === 'public-sign-up-mentor-pending-review'
 
   return (
     <LoggedIn>
@@ -58,6 +62,16 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
       <Element className="block-separator">
         <EditableMentoringTopics />
       </Element>
+
+      {userIsMentor &&
+      <Element className="block-separator">
+        <Columns>
+          <Columns.Column size={12}>
+            <EditableMenteeCount />
+          </Columns.Column>
+        </Columns>
+      </Element>
+      }
 
       <Element className="block-separator">
         <Columns>
