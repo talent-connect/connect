@@ -15,7 +15,7 @@ import {
   menteeCountCapacityOptions
 } from '../../config/config'
 
-const menteeCountExplanationOptions = (amount: number) => {
+const menteeCountExplanation = (amount: number) => {
   switch (amount) {
     case 0:
       return '(Select this option if you need a break from mentoring)'
@@ -26,7 +26,7 @@ const menteeCountExplanationOptions = (amount: number) => {
   }
 }
 
-const formMenteeCountCapacity = menteeCountCapacityOptions.map(option => ({ value: option, label: `${option} ${menteeCountExplanation(option)}` }))
+const formMenteeCountCapacityOptions = menteeCountCapacityOptions.map(option => ({ value: option, label: `${option} ${menteeCountExplanation(option)}` }))
 
 export interface AboutFormValues {
   menteeCountCapacity: number
@@ -78,7 +78,7 @@ const EditableMenteeCount = ({ profile, profileSaveStart }: any) => {
         label="How many mentees would you be willing to mentor this semester?"
         name="menteeCountCapacity"
         placeholder="Mentee count"
-        items={formMenteeCountCapacity}
+        items={formMenteeCountCapacityOptions}
         {...formik}
       />
       {/* } */}
