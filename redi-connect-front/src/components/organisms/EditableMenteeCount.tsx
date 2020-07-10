@@ -15,7 +15,7 @@ import {
   menteeCountCapacityOptions
 } from '../../config/config'
 
-const menteeCountExplanation = (amount: number) => {
+const menteeCountExplanationOptions = (amount: number) => {
   switch (amount) {
     case 0:
       return '(Select this option if you need a break from mentoring)'
