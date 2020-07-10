@@ -15,7 +15,18 @@ import {
   menteeCountCapacityOptions
 } from '../../config/config'
 
-const formMenteeCountCapacity = menteeCountCapacityOptions.map(option => ({ value: option, label: option }))
+const menteeCountExplanation = (amount: number) => {
+  switch (amount) {
+    case 0:
+      return '(Select this option if you need a break from mentoring)'
+    case 1:
+      return 'mentee'
+    default:
+      return 'mentees'
+  }
+}
+
+const formMenteeCountCapacity = menteeCountCapacityOptions.map(option => ({ value: option, label: `${option} ${menteeCountExplanation(option)}` }))
 
 export interface AboutFormValues {
   menteeCountCapacity: number
@@ -26,7 +37,7 @@ const validationSchema = Yup.object({
     is: 'mentor',
     then: Yup.number()
       .required('Please specify the number of mentees you can take on')
-      .min(1)
+      .min(0)
       .max(2)
   })
 })
@@ -40,8 +51,8 @@ const EditableMenteeCount = ({ profile, profileSaveStart }: any) => {
   const submitForm = async (
     values: FormikValues
   ) => {
-    const profileAbout = values as Partial<RedProfile>
-    profileSaveStart({ ...profileAbout, id })
+    const profileMenteeCount = values as Partial<RedProfile>
+    profileSaveStart({ ...profileMenteeCount, id })
   }
 
   const initialValues: AboutFormValues = {

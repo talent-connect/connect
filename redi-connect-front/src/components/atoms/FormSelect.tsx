@@ -43,7 +43,6 @@ function FormSelect (props: any) {
   const customStyles = {
     option: (provided: any, state: any) => ({
       ...provided,
-      heihg: '40px',
       padding: '13px',
       color: state.isFocused ? 'black' : '',
       backgroundColor: state.isFocused ? '#dadada' : '',

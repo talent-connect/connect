@@ -31,6 +31,9 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
   const userIsMentee =
     profile.userType === 'mentee' || profile.userType === 'public-sign-up-mentee-pending-review'
 
+  const userIsMentor =
+    profile.userType === 'mentor' || profile.userType === 'public-sign-up-mentor-pending-review'
+
   return (
     <LoggedIn>
       {saveResult === 'error' && <>An error occurred, please try again.</>}
@@ -60,7 +63,7 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
         <EditableMentoringTopics />
       </Element>
 
-      {!userIsMentee &&
+      {userIsMentor &&
       <Element className="block-separator">
         <Columns>
           <Columns.Column size={12}>
