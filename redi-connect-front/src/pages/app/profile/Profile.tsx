@@ -32,7 +32,7 @@ interface ProfileProps {
   profilesFetchOneStart: Function
 }
 
-function Profile({ profile, currentUser, hasReachedMenteeLimit, profilesFetchOneStart }: ProfileProps) {
+function Profile ({ profile, currentUser, hasReachedMenteeLimit, profilesFetchOneStart }: ProfileProps) {
   const { profileId } = useParams<RouteParams>()
   const history = useHistory()
 
@@ -124,13 +124,13 @@ function Profile({ profile, currentUser, hasReachedMenteeLimit, profilesFetchOne
           </Columns.Column>
         </Columns>
 
-        {(profile.personalDescription || profile.expectations || profile.menteeCountCapacity) &&
+        {(profile.personalDescription || profile.expectations) &&
           <Element className="block-separator">
             <ReadAbout.Some profile={profile} />
           </Element>
         }
 
-        {profile.categories &&
+        {profile.categories?.length > 0 &&
           <Element className="block-separator">
             <ReadMentoringTopics.Some profile={profile} />
           </Element>
