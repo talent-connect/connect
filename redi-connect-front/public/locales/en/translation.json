@@ -56,6 +56,14 @@
           "content1": "Are you ready for the future of work?",
           "content2": "We connect thriving professionals from the digital industry with students and alumni of all of our programs across our four different locations."
         },
+        "navTiles": {
+          "title": "for mentees / mentors",
+          "headline": "Learn more on ...",
+          "description": "How to become a ",
+          "mentor": "mentor",
+          "mentee": "mentee",
+          "button": "Learn more"
+        },
         "mentor": {
           "headline": "How to become a mentor?",
           "content": "Putting two minds together is always more fun and interesting than coming up with something by yourself! That’s why we want to connect you as mentors with the students and alumni of our Digital Career Program. Share your experience, your network and your knowledge. In exchange, you will look at things from a different perspective or simply meet a great person!",

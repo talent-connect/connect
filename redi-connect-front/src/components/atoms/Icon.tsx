@@ -16,6 +16,8 @@ import { ReactComponent as Certificate } from '../../assets/images/certificate.s
 import { ReactComponent as Search } from '../../assets/images/search.svg'
 import { ReactComponent as Career } from '../../assets/images/career.svg'
 import { ReactComponent as Arrow } from '../../assets/images/arrow-step.svg'
+import { ReactComponent as ArrowRightMentor } from '../../assets/images/arrow-right-mentor.svg'
+import { ReactComponent as ArrowRightMentee } from '../../assets/images/arrow-right-mentee.svg'
 import { ReactComponent as Chat } from '../../assets/images/chat.svg'
 import { ReactComponent as Handshake } from '../../assets/images/handshake.svg'
 import { ReactComponent as Plus } from '../../assets/images/plus.svg'
@@ -25,12 +27,18 @@ import { ReactComponent as Instagram } from '../../assets/images/instagram.svg'
 import { ReactComponent as Meetup } from '../../assets/images/meetup.svg'
 import { ReactComponent as Fb } from '../../assets/images/fb.svg'
 import { ReactComponent as Loader } from '../../assets/images/loader.svg'
+import { ReactComponent as Mentee } from '../../assets/images/mentee.svg'
+import { ReactComponent as Mentor } from '../../assets/images/mentor.svg'
 
 import './Icon.scss'
 
 interface IconProps {
   icon:
     'arrowLeft' |
+    'arrowRightMentor' |
+    'arrowRightMentee' |
+    'mentor' |
+    'mentee' |
     'hamburger' |
     'account' |
     'check' |
@@ -63,6 +71,10 @@ interface IconProps {
 
 const Icons = {
   arrowLeft: ArrowLeft,
+  arrowRightMentor: ArrowRightMentor,
+  arrowRightMentee: ArrowRightMentee,
+  mentor: Mentor,
+  mentee: Mentee,
   account: Account,
   hamburger: Hamburger,
   check: Checkmark,

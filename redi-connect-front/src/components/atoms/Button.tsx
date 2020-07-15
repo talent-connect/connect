@@ -13,6 +13,7 @@ interface Props {
   onClick?: () => void
   simple?: boolean
   to?: string
+  color?: 'orange' | 'blue'
 }
 
 const Button = ({
@@ -23,7 +24,8 @@ const Button = ({
   onClick,
   separator,
   disabled,
-  to
+  to,
+  color
 }: Props) => {
   const baseClass = 'button'
 
@@ -35,7 +37,8 @@ const Button = ({
       className={classnames(baseClass, `${baseClass}--${simple ? 'simple' : 'default'}`, {
         [`${baseClass}--${size}`]: size,
         [`${baseClass}--fullWidth`]: fullWidth,
-        [`${baseClass}--separator`]: separator
+        [`${baseClass}--separator`]: separator,
+        [`${baseClass}--color ${baseClass}--${color}`]: color
       })}
     >
       {children}
