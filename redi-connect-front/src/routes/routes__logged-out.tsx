@@ -1,6 +1,7 @@
 import { RouteDefinition } from './index'
 import { lazy } from 'react'
 import Home from '../pages/front/landing/Home'
+import Faqs from '../pages/front/Faqs'
 import Mentor from '../pages/front/landing/Mentor'
 import Mentee from '../pages/front/landing/Mentee'
 import { RequestResetPasswordEmail } from '../pages/front/reset-password/RequestResetPasswordEmail'
@@ -32,6 +33,11 @@ const SignUpComplete = lazy(() =>
 )
 
 export const routes__loggedOut: RouteDefinition[] = [
+  {
+    path: '/faq',
+    component: Faqs,
+    exact: true
+  },
   {
     path: '/front/home',
     component: Home,
