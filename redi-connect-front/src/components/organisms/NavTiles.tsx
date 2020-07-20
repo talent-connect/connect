@@ -3,11 +3,11 @@ import { Section, Container, Heading } from 'react-bulma-components'
 import DecoratedHeadline from '../atoms/DecoratedHeadline'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
-import Button from '../atoms/Button'
-import Icon from '../atoms/Icon'
+import { Button, SVGImage } from '../atoms'
+import { SVGImages } from '../atoms/SVGImage'
 import './NavTiles.scss'
 
-const NavTiles = () => {
+const NavTile = ({ name }: { name: string }) => {
   const { t } = useTranslation()
   const history = useHistory()
 
@@ -16,33 +16,32 @@ const NavTiles = () => {
     history.push(`/front/landing/${type}`)
   }
 
-  const renderType = (name: string) => {
-    const imgName: any = `${name}`
-    const buttonColor: any = name === 'mentor' ? 'blue' : 'orange'
-    const arrow: any = `arrowRight${name.charAt(0).toUpperCase() + name.slice(1)}`
+  return (
+    <div className="tiles__type">
+      <SVGImage image={name as SVGImages} className="tiles__image" />
+      <Heading
+        size={2}
+        textWeight="light"
+        className="tiles__type__heading"
+        marginless
+        responsive={{ mobile: { textSize: { value: 4 } } }}
+      >
+        {t('loggedOutArea.homePage.hero.navTiles.description')} <strong>{t(`loggedOutArea.homePage.hero.navTiles.${name}`)}</strong>?
+    </Heading>
+      <Button
+        simple
+        className={`tiles__type__button tiles__type__button--${name}`}
+        onClick={() => navigateToTopOfLanding(name)}
+      >
+        {t('loggedOutArea.homePage.hero.navTiles.button')}
+        <Button.Icon icon="arrowRight" space="left" />
+      </Button>
+    </div>
+  )
+}
 
-    return (
-      <div className="tiles__type">
-        <Icon icon={imgName} className="tiles__image" />
-        <Heading
-          size={2}
-          marginless
-          responsive={{ mobile: { textSize: { value: 4 } } }}
-        >
-          {t('loggedOutArea.homePage.hero.navTiles.description')} {t(`loggedOutArea.homePage.hero.navTiles.${name}`)}?
-        </Heading>
-        <Button
-          simple
-          color={buttonColor}
-          onClick={() => navigateToTopOfLanding(name)}
-        >
-          {t('loggedOutArea.homePage.hero.navTiles.button')}
-          <Button.Icon icon={arrow} space="left" />
-        </Button>
-
-      </div>
-    )
-  }
+const NavTiles = () => {
+  const { t } = useTranslation()
 
   return (
     <Section>
@@ -52,8 +51,8 @@ const NavTiles = () => {
           headline={t('loggedOutArea.homePage.hero.navTiles.headline')}
         />
         <div className="tiles">
-          {renderType('mentee')}
-          {renderType('mentor')}
+          <NavTile name='mentee' />
+          <NavTile name='mentor' />
         </div>
       </Container>
     </Section>

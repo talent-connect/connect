@@ -1,6 +1,7 @@
 import React from 'react'
 import classnames from 'classnames'
 import { ReactComponent as ArrowLeft } from '../../assets/images/arrow-left.svg'
+import { ReactComponent as ArrowRight } from '../../assets/images/arrow-right.svg'
 import { ReactComponent as Hamburger } from '../../assets/images/hamburger.svg'
 import { ReactComponent as Account } from '../../assets/images/account.svg'
 import { ReactComponent as Checkmark } from '../../assets/images/checkmark.svg'
@@ -16,8 +17,6 @@ import { ReactComponent as Certificate } from '../../assets/images/certificate.s
 import { ReactComponent as Search } from '../../assets/images/search.svg'
 import { ReactComponent as Career } from '../../assets/images/career.svg'
 import { ReactComponent as Arrow } from '../../assets/images/arrow-step.svg'
-import { ReactComponent as ArrowRightMentor } from '../../assets/images/arrow-right-mentor.svg'
-import { ReactComponent as ArrowRightMentee } from '../../assets/images/arrow-right-mentee.svg'
 import { ReactComponent as Chat } from '../../assets/images/chat.svg'
 import { ReactComponent as Handshake } from '../../assets/images/handshake.svg'
 import { ReactComponent as Plus } from '../../assets/images/plus.svg'
@@ -27,42 +26,37 @@ import { ReactComponent as Instagram } from '../../assets/images/instagram.svg'
 import { ReactComponent as Meetup } from '../../assets/images/meetup.svg'
 import { ReactComponent as Fb } from '../../assets/images/fb.svg'
 import { ReactComponent as Loader } from '../../assets/images/loader.svg'
-import { ReactComponent as Mentee } from '../../assets/images/mentee.svg'
-import { ReactComponent as Mentor } from '../../assets/images/mentor.svg'
 
 import './Icon.scss'
 
 interface IconProps {
   icon:
-    'arrowLeft' |
-    'arrowRightMentor' |
-    'arrowRightMentee' |
-    'mentor' |
-    'mentee' |
-    'hamburger' |
-    'account' |
-    'check' |
-    'edit' |
-    'cancel' |
-    'chevron'|
-    'heart'|
-    'heartFilled'|
-    'mail' |
-    'clipboard' |
-    'certificate' |
-    'search' |
-    'arrow' |
-    'calendar' |
-    'career' |
-    'chat' |
-    'handshake'|
-    'plus' |
-    'twitter' |
-    'meetup' |
-    'linkedin' |
-    'instagram' |
-    'fb'|
-    'loader'
+  'arrowLeft' |
+  'arrowRight' |
+  'hamburger' |
+  'account' |
+  'check' |
+  'edit' |
+  'cancel' |
+  'chevron' |
+  'heart' |
+  'heartFilled' |
+  'mail' |
+  'clipboard' |
+  'certificate' |
+  'search' |
+  'arrow' |
+  'calendar' |
+  'career' |
+  'chat' |
+  'handshake' |
+  'plus' |
+  'twitter' |
+  'meetup' |
+  'linkedin' |
+  'instagram' |
+  'fb' |
+  'loader'
   size?: 'small' | 'medium' | 'large' | 'x-large'
   space?: 'left' | 'right'
   className?: string
@@ -71,10 +65,7 @@ interface IconProps {
 
 const Icons = {
   arrowLeft: ArrowLeft,
-  arrowRightMentor: ArrowRightMentor,
-  arrowRightMentee: ArrowRightMentee,
-  mentor: Mentor,
-  mentee: Mentee,
+  arrowRight: ArrowRight,
   account: Account,
   hamburger: Hamburger,
   check: Checkmark,

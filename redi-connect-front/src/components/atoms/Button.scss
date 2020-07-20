@@ -107,20 +107,6 @@
     }
   }
 
-  &--color {
-    justify-content: flex-start;
-    padding-left: 0;
-  }
-
-  &--orange {
-    color: $redi-orange-dark;
-  }
-
-  &--blue,
-  &--blue:hover {
-    color: $redi-blue-dark;
-  }
-
   &--active {
     color: $redi-orange-dark;
   }

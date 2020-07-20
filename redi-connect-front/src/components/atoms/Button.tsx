@@ -6,6 +6,7 @@ import './Button.scss'
 
 interface Props {
   children: any
+  className?: string
   size?: 'large' | 'medium' | 'small'
   fullWidth?: boolean
   disabled?: boolean
@@ -13,19 +14,18 @@ interface Props {
   onClick?: () => void
   simple?: boolean
   to?: string
-  color?: 'orange' | 'blue'
 }
 
 const Button = ({
   children,
+  className,
   size = 'small',
   simple = false,
   fullWidth,
   onClick,
   separator,
   disabled,
-  to,
-  color
+  to
 }: Props) => {
   const baseClass = 'button'
 
@@ -38,7 +38,7 @@ const Button = ({
         [`${baseClass}--${size}`]: size,
         [`${baseClass}--fullWidth`]: fullWidth,
         [`${baseClass}--separator`]: separator,
-        [`${baseClass}--color ${baseClass}--${color}`]: color
+        [`${className}`]: className
       })}
     >
       {children}

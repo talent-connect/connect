@@ -30,6 +30,35 @@
         margin-bottom: 1.5rem;
       }
     }
+
+    &__heading strong {
+      font-weight: $weight-normal;
+    }
+
+    &__button {
+      justify-content: flex-start;
+      padding-left: 0;
+  
+      &--mentor {
+        color: $redi-blue-dark;
+  
+        &:hover {
+          color: $redi-blue-dark;
+        }
+  
+        .icon path {
+          fill: $redi-blue-dark;
+        }
+      }
+  
+      &--mentee {
+        color: $redi-orange-dark;
+  
+        .icon path {
+          fill: $redi-orange-dark;
+        }
+      }
+    }
   }
 
   &__image {
@@ -42,4 +71,6 @@
       max-height: 7rem;
     }
   }
+
+
 }
