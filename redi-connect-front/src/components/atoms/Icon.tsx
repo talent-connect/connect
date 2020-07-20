@@ -1,6 +1,7 @@
 import React from 'react'
 import classnames from 'classnames'
 import { ReactComponent as ArrowLeft } from '../../assets/images/arrow-left.svg'
+import { ReactComponent as ArrowRight } from '../../assets/images/arrow-right.svg'
 import { ReactComponent as Hamburger } from '../../assets/images/hamburger.svg'
 import { ReactComponent as Account } from '../../assets/images/account.svg'
 import { ReactComponent as Checkmark } from '../../assets/images/checkmark.svg'
@@ -30,31 +31,32 @@ import './Icon.scss'
 
 interface IconProps {
   icon:
-    'arrowLeft' |
-    'hamburger' |
-    'account' |
-    'check' |
-    'edit' |
-    'cancel' |
-    'chevron'|
-    'heart'|
-    'heartFilled'|
-    'mail' |
-    'clipboard' |
-    'certificate' |
-    'search' |
-    'arrow' |
-    'calendar' |
-    'career' |
-    'chat' |
-    'handshake'|
-    'plus' |
-    'twitter' |
-    'meetup' |
-    'linkedin' |
-    'instagram' |
-    'fb'|
-    'loader'
+  'arrowLeft' |
+  'arrowRight' |
+  'hamburger' |
+  'account' |
+  'check' |
+  'edit' |
+  'cancel' |
+  'chevron' |
+  'heart' |
+  'heartFilled' |
+  'mail' |
+  'clipboard' |
+  'certificate' |
+  'search' |
+  'arrow' |
+  'calendar' |
+  'career' |
+  'chat' |
+  'handshake' |
+  'plus' |
+  'twitter' |
+  'meetup' |
+  'linkedin' |
+  'instagram' |
+  'fb' |
+  'loader'
   size?: 'small' | 'medium' | 'large' | 'x-large'
   space?: 'left' | 'right'
   className?: string
@@ -63,6 +65,7 @@ interface IconProps {
 
 const Icons = {
   arrowLeft: ArrowLeft,
+  arrowRight: ArrowRight,
   account: Account,
   hamburger: Hamburger,
   check: Checkmark,

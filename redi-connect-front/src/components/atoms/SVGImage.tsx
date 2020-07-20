@@ -1,16 +1,29 @@
 import React from 'react'
-import { ReactComponent as Mentee } from '../../assets/images/hero-mentee.svg'
-import { ReactComponent as Mentor } from '../../assets/images/hero-mentor.svg'
+import { ReactComponent as HeroMentee } from '../../assets/images/hero-mentee.svg'
+import { ReactComponent as HeroMentor } from '../../assets/images/hero-mentor.svg'
 import { ReactComponent as Hero } from '../../assets/images/hero.svg'
 import { ReactComponent as Hello } from '../../assets/images/hello.svg'
 import { ReactComponent as HelloMobile } from '../../assets/images/hello-mobile.svg'
+import { ReactComponent as Mentee } from '../../assets/images/mentee.svg'
+import { ReactComponent as Mentor } from '../../assets/images/mentor.svg'
 
+
+export type SVGImages =
+  'heroMentee' |
+  'heroMentor' |
+  'mentee' |
+  'mentor' |
+  'hero' |
+  'hello' |
+  'helloMobile';
 interface Props {
-  image: 'mentee' | 'mentor' | 'hero' | 'hello' | 'helloMobile'
+  image: SVGImages
   className?: string
 }
 
 const Images = {
+  heroMentee: HeroMentee,
+  heroMentor: HeroMentor,
   mentee: Mentee,
   mentor: Mentor,
   hero: Hero,
