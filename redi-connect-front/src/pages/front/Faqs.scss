@@ -1,18 +1,22 @@
 @import "../../styles/_variables.scss";
 
 .faq {
-  cursor: pointer;
   padding-top: 1rem;
   margin-bottom: .75rem;
   border-bottom: 1px solid $grey-light;
 
-  &:last-child {
-    margin-bottom: 2.5rem;
+  &-block__title {
+    font-weight: $weight-bold;
+    margin-bottom: 1rem;
+    cursor: pointer;
   }
 
   &__title {
-    font-weight: $weight-bold;
-    margin-bottom: 1rem;
+    cursor: pointer;
+  }
+
+  &:last-child {
+    margin-bottom: 2.5rem;
   }
 
   &__answer {
