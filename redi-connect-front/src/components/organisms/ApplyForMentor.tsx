@@ -82,60 +82,61 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
       stateFn={setShow}
       title={`Application to ${mentor.firstName} ${mentor.lastName}`}
     >
-      <form>
-        {submitResult === 'success' &&
-          <>Your application was successfully submitted.</>
-        }
-        {submitResult !== 'success' &&
-          <>
-            <Caption>Motivation </Caption>
-            <Content>
-              <p>Write an application to the {mentor.firstName} {mentor.lastName} in which you describe why you think that the two of you are a great fit.</p>
-            </Content>
-            <FormTextArea
-              name="applicationText"
-              className="oneandhalf-bs"
-              rows={4}
-              placeholder={`Dear ${mentor.firstName}...`}
-              {...formik}
-            />
+      <Modal.Body>
+        <form>
+          {submitResult === 'success' &&
+            <>Your application was successfully submitted.</>
+          }
+          {submitResult !== 'success' &&
+            <>
+              <Caption>Motivation </Caption>
+              <Content>
+                <p>Write an application to the {mentor.firstName} {mentor.lastName} in which you describe why you think that the two of you are a great fit.</p>
+              </Content>
+              <FormTextArea
+                name="applicationText"
+                className="oneandhalf-bs"
+                rows={4}
+                placeholder={`Dear ${mentor.firstName}...`}
+                {...formik}
+              />
 
-            <Caption>Expectation </Caption>
-            <Content>
-              <p>Please also write a few words about your expectations on the mentorship with this mentor.</p>
-            </Content>
-            <FormTextArea
-              name="expectationText"
-              rows={4}
-              placeholder="My expectations for this mentorship…"
-              {...formik}
-            />
+              <Caption>Expectation </Caption>
+              <Content>
+                <p>Please also write a few words about your expectations on the mentorship with this mentor.</p>
+              </Content>
+              <FormTextArea
+                name="expectationText"
+                rows={4}
+                placeholder="My expectations for this mentorship…"
+                {...formik}
+              />
 
-            <Form.Help color="danger" className={submitResult === 'error' ? 'help--show' : ''}>
-              {submitResult === 'error' && 'An error occurred, please try again.'}
-            </Form.Help>
+              <Form.Help color="danger" className={submitResult === 'error' ? 'help--show' : ''}>
+                {submitResult === 'error' && 'An error occurred, please try again.'}
+              </Form.Help>
 
-            <Checkbox.Form
-              name="dataSharingAccepted"
-              checked={formik.values.dataSharingAccepted}
-              {...formik}
-            >
-              I understand that my profile data will be shared with this mentor
+              <Checkbox.Form
+                name="dataSharingAccepted"
+                checked={formik.values.dataSharingAccepted}
+                {...formik}
+              >
+                I understand that my profile data will be shared with this mentor
             </Checkbox.Form>
+            </>
+          }
+        </form>
+      </Modal.Body>
 
-            <Modal.Buttons>
-              <Button
-                onClick={() => formik.handleSubmit()}
-                disabled={!(formik.dirty && formik.isValid)}
-              >Send application</Button>
+      <Modal.Foot>
+        <Button
+          onClick={() => formik.handleSubmit()}
+          disabled={!(formik.dirty && formik.isValid)}
+        >Send application</Button>
 
-              <Button onClick={handleCancel} simple>Cancel</Button>
-            </Modal.Buttons>
-          </>
-        }
-      </form>
+        <Button onClick={handleCancel} simple>Cancel</Button>
+      </Modal.Foot>
     </Modal>
-
   </>
 }
 

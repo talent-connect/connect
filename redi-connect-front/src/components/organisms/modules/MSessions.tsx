@@ -110,34 +110,36 @@ const MSessions = ({ sessions, menteeId, editable, mentoringSessionsCreateStart 
         stateFn={setShowAddSession}
         title="Log a new mentoring session"
       >
-        {/* <Content>Please write a few words about why you feel uncertain about your mentorship and which issues you are experiencing? </Content> */}
-        <form>
-          {submitResult === 'error' && <>An error occurred, please try again.</>}
+        <Modal.Body>
+          {/* <Content>Please write a few words about why you feel uncertain about your mentorship and which issues you are experiencing? </Content> */}
+          <form>
+            {submitResult === 'error' && <>An error occurred, please try again.</>}
 
-          <FormDatePicker
-            label="When did the mentoring session take place?"
-            name="date"
-            placeholder="Add the correct date"
-            {...formik}
-          />
+            <FormDatePicker
+              label="When did the mentoring session take place?"
+              name="date"
+              placeholder="Add the correct date"
+              {...formik}
+            />
 
-          <FormSelect
-            label="How long was the session?"
-            name="minuteDuration"
-            placeholder="Add the duration of the session"
-            items={formMentoringSessionDurationOptions}
-            {...formik}
-          />
-        </form>
+            <FormSelect
+              label="How long was the session?"
+              name="minuteDuration"
+              placeholder="Add the duration of the session"
+              items={formMentoringSessionDurationOptions}
+              {...formik}
+            />
+          </form>
+        </Modal.Body>
 
-        <Modal.Buttons>
+        <Modal.Foot>
           <Button
             onClick={() => formik.handleSubmit()}
             disabled={!(formik.dirty && formik.isValid)}
           >Add Session</Button>
 
           <Button onClick={handleCancel} simple>Cancel</Button>
-        </Modal.Buttons>
+        </Modal.Foot>
       </Modal>}
     </Module>
   )

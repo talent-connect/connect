@@ -98,41 +98,43 @@ const ReportProblem = ({ redProfileId, type }: ReportProblemProps) => {
         stateFn={setShowProblemDialog}
         title="What are your concerns?"
       >
-        <Content>Please write a few words about why you feel uncertain about your mentorship and which issues you are experiencing? </Content>
-        <form>
-          {submitResult === 'error' && <>An error occurred, please try again.</>}
-          <FormTextArea
-            name="problemDescription"
-            rows={4}
-            placeholder="I have concerns about…"
-            {...formik}
-          />
-          {isMentor && (
-            <Checkbox.Form
-              name="ifFromMentor_cancelMentorshipImmediately"
-              checked={formik.values.ifFromMentor_cancelMentorshipImmediately}
+        <Modal.Body>
+          <Content>Please write a few words about why you feel uncertain about your mentorship and which issues you are experiencing? </Content>
+          <form>
+            {submitResult === 'error' && <>An error occurred, please try again.</>}
+            <FormTextArea
+              name="problemDescription"
+              rows={4}
+              placeholder="I have concerns about…"
               {...formik}
-            >
-              Immediately cancel mentorship with this mentee
-            </Checkbox.Form>
-          )}
+            />
+            {isMentor && (
+              <Checkbox.Form
+                name="ifFromMentor_cancelMentorshipImmediately"
+                checked={formik.values.ifFromMentor_cancelMentorshipImmediately}
+                {...formik}
+              >
+                Immediately cancel mentorship with this mentee
+              </Checkbox.Form>
+            )}
 
-          {isCancelImmediatly &&
-            <Content textColor="primary">Not ReDI? We regret you want to cancel this mentorship.
-            Someone from our Career Department will be in touch with
-            both you and your mentee
+            {isCancelImmediatly &&
+              <Content textColor="primary">Not ReDI? We regret you want to cancel this mentorship.
+              Someone from our Career Department will be in touch with
+              both you and your mentee
             </Content>
-          }
-        </form>
+            }
+          </form>
+        </Modal.Body>
 
-        <Modal.Buttons>
+        <Modal.Foot>
           <Button
             onClick={() => formik.handleSubmit()}
             disabled={!(formik.dirty && formik.isValid)}
           >Submit</Button>
 
           <Button onClick={handleCancel} simple>Cancel</Button>
-        </Modal.Buttons>
+        </Modal.Foot>
       </Modal>
     </>
   )

@@ -77,25 +77,28 @@ const ConfirmMentorship = ({ match, menteeName, hasReachedMenteeLimit, matchesAc
       stateFn={setModalActive}
       title="Accept Application"
     >
-      <form>
-        <Content>
-          <p>Please write a few welcoming words to your future mentee and give some information on your first meeting. (write at least 250 characters)</p>
-        </Content>
-        <FormTextArea
-          name="mentorReplyMessageOnAccept"
-          rows={4}
-          placeholder={`Dear ${menteeName && menteeName}...`}
-          {...formik}
-        />
-      </form>
-      <Modal.Buttons>
+      <Modal.Body>
+        <form>
+          <Content>
+            <p>Please write a few welcoming words to your future mentee and give some information on your first meeting. (write at least 250 characters)</p>
+          </Content>
+          <FormTextArea
+            name="mentorReplyMessageOnAccept"
+            rows={4}
+            placeholder={`Dear ${menteeName && menteeName}...`}
+            {...formik}
+          />
+        </form>
+      </Modal.Body>
+
+      <Modal.Foot>
         <Button
           disabled={!isFormSubmittable}
           onClick={() => formik.handleSubmit()}
         >
           Accept mentorship request
         </Button>
-      </Modal.Buttons>
+      </Modal.Foot>
     </Modal>
   </>
 }

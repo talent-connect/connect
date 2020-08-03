@@ -9,39 +9,31 @@
 
   &-close {
     position: absolute;
-    top: -2.5rem;
-    right: 0;
+
+    &:hover {
+      background-color: $white !important;
+    }
 
     &::before {
       width: 80%;
+      height: 1px;
+      background-color: $black;
     }
     &::after {
       height: 80%;
+      width: 1px;
+      background-color: $black;
     }
   }
 
   &__heading {
-    font-size: 1.5rem !important;
-    margin: -0.5rem -2rem 0 -2rem;
-    padding: 0 2rem 1.5rem;
-    border-bottom: 1px solid $grey-light;
+    .title {
+      font-size: 1.5rem !important;
+      margin-right: 2rem;
+    }
   }
 
-  &-content {
-    overflow: visible;
-  }
-
-  &-container {
-    z-index: 100;
-    position: fixed;
-  }
-
-  &__box {
-    height: 100%;
-    overflow: auto;
-  }
-
-  &__buttons {
-    margin-top: 1.5rem;
+  .modal-card-foot {
+    display: block !important;
   }
 }
