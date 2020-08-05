@@ -102,6 +102,11 @@ $card-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.05),
 $card-shadow-hover: 0 6px 20px 3px rgba(111, 119, 121, 0.23);
 
 
-// modaal
+// modal
 $modal-content-spacing-mobile: 100px;
 $modal-content-spacing-tablet: 100px;
+$modal-card-spacing: 100px;
+$modal-card-head-background-color: $white;
+$modal-card-head-padding: 24px;
+$modal-card-body-padding: 24px;
+$modal-card-body-foot: 24px;

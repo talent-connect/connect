@@ -43,16 +43,15 @@ function FormSelect (props: any) {
   const customStyles = {
     option: (provided: any, state: any) => ({
       ...provided,
-      heihg: '40px',
       padding: '13px',
-      color: state.isSelected ? 'black' : '',
-      backgroundColor: state.isSelected ? '#dadada' : '',
-      '&:hover': {
+      color: state.isFocused ? 'black' : '',
+      backgroundColor: state.isFocused ? '#dadada' : '',
+      '&:active': {
         color: 'black',
         backgroundColor: '#dadada'
       }
     }),
-    clearIndicator: (provided: any, state: any) => ({
+    clearIndicator: (provided: any) => ({
       ...provided,
       svg: {
         margin: '0 0.1rem'

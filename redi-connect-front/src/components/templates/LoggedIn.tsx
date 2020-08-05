@@ -76,19 +76,21 @@ const LoggedIn = ({ loading, children, matches, matchesFetchStart, matchesMarkAs
                   confirm
                   title="You’ve got a mentor match!"
                 >
-                  <Content>
-                    Hey <strong>{match.mentee && match.mentee.firstName}</strong>, good news!
+                  <Modal.Body>
+                    <Content>
+                      Hey <strong>{match.mentee && match.mentee.firstName}</strong>, good news!
                     <strong>{match.mentor && ` ${match.mentor.firstName} ${match.mentor.lastName} `}</strong>
                       accepted your application. Here are already a few welcome words from your new mentor.
                   </Content>
-                  <Content italic>
-                    "{match.mentorReplyMessageOnAccept}"
+                    <Content italic>
+                      "{match.mentorReplyMessageOnAccept}"
                   </Content>
-                  <Modal.Buttons>
+                  </Modal.Body>
+                  <Modal.Foot>
                     <Button onClick={() => handleModalClose(match.id as string)}>
                       Go to Mentorship
                     </Button>
-                  </Modal.Buttons>
+                  </Modal.Foot>
                 </Modal>
               }
               {!loading && children}

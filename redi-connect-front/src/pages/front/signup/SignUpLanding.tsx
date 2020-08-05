@@ -3,31 +3,23 @@ import { useHistory } from 'react-router-dom'
 import { Content, Columns, Element } from 'react-bulma-components'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import Teaser from '../../../components/molecules/Teaser'
-import Button from '../../../components/atoms/Button'
-import Heading from '../../../components/atoms/Heading'
+import { Button, Heading, SVGImage } from '../../../components/atoms'
+import { SVGImages } from '../../../components/atoms/SVGImage'
 import classnames from 'classnames'
-import { ReactComponent as Mentee } from '../../../assets/images/mentee.svg'
-import { ReactComponent as Mentor } from '../../../assets/images/mentor.svg'
-
 import './SignUpLanding.scss'
 
-const Illustration: { [key: string]: React.FunctionComponent<React.SVGProps<SVGSVGElement>> } = {
-  mentee: Mentee,
-  mentor: Mentor
-}
 
 const SignUpLanding = () => {
   const [selectedType, setSelectedType] = useState('')
   const history = useHistory()
 
   const renderType = (name: string) => {
-    const type = name.toLowerCase()
-    const Image = Illustration[type]
+    const type = name.toLowerCase() as SVGImages
 
     return <div
       className={classnames('signup__type', { [`border-${type}`]: type === selectedType, 'no-shadow': type !== selectedType && selectedType !== '' })}
       onClick={() => setSelectedType(type)}>
-      <Image />
+      <SVGImage image={type} />
       <Element className="signup__type__name" renderAs="p">
         {name}
       </Element>

@@ -12,7 +12,7 @@ import {
 } from 'formik'
 import { history } from '../../../services/history/history'
 import { login, fetchSaveRedProfile } from '../../../services/api/api'
-import { saveAccessToken, getRedProfile } from '../../../services/auth/auth'
+import { saveAccessToken, getRedProfile, purgeAllSessionData } from '../../../services/auth/auth'
 import { Columns, Form, Content, Notification } from 'react-bulma-components'
 import { capitalize } from 'lodash'
 import Button from '../../../components/atoms/Button'
@@ -41,10 +41,6 @@ const validationSchema = Yup.object({
     .max(255)
 })
 
-function makeLocationString (location: string) {
-  return `${location.charAt(0).toUpperCase()}${location.substr(1)}`
-}
-
 export default function Login () {
   const [loginError, setLoginError] = useState<string>('')
   const [isWrongRediLocationError, setIsWrongRediLocationError] = useState<boolean>(false)
@@ -60,7 +56,9 @@ export default function Login () {
         saveAccessToken(accessToken)
         const redProfile = await fetchSaveRedProfile(accessToken)
         if (redProfile.rediLocation !== (process.env.REACT_APP_REDI_LOCATION as RediLocation)) {
-          return setIsWrongRediLocationError(true)
+          setIsWrongRediLocationError(true)
+          purgeAllSessionData()
+          return
         }
         actions.setSubmitting(false)
         history.push('/app/me')

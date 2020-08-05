@@ -329,7 +329,7 @@ export const menteeOccupationCategory_idToLabelMap = mapValues(
   'label'
 )
 
-export const menteeCountCapacityOptions: number[] = [1, 2]
+export const menteeCountCapacityOptions: number[] = [0, 1, 2]
 
 export const AWS_PROFILE_AVATARS_BUCKET_BASE_URL =
   'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/'
