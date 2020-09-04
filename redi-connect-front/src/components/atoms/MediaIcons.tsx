@@ -10,7 +10,7 @@ const socialMedia = [{
   link: 'https://twitter.com/redischool?lang=en'
 }, {
   icon: 'instagram',
-  link: 'https://www.instagram.com/redischool/'
+  link: 'https://www.instagram.com/redischoolberlin/'
 }, {
   icon: 'fb',
   link: 'https://www.facebook.com/redischool/'
