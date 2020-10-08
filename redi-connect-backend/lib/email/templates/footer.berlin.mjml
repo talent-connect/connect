@@ -4,40 +4,35 @@
     <mj-table padding="0">
       <tr>
         <td class="table-cell table-img" rowspan="4">
-          <img src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/isabelle.png" width="52px" />
+          <img
+            src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/miriam-small.jpg"
+            width="52px"
+          />
         </td>
-        <td class="table-cell table-headline td-mobile" colspan="2">
-          Isabelle Köhncke
-        </td>
+        <td class="table-cell table-headline td-mobile" colspan="2">Miriam Abu Hamdan</td>
       </tr>
       <tr>
-        <td class="table-cell td-mobile">
-          Manager Mentorship Program
-        </td>
+        <td class="table-cell td-mobile">Manager Mentorship Program</td>
         <td class="table-cell td-mobile hide-cell-mobile" style="mso-hide: all">
           ReDI School of Digital Integration
         </td>
       </tr>
       <tr>
-        <td class="table-cell td-mobile">
-          Career Department ReDI School
-        </td>
+        <td class="table-cell td-mobile">Career Department ReDI School</td>
         <td class="table-cell td-mobile hide-cell-mobile" style="mso-hide: all">
           Am Nordbahnhof 3, 10115 Berlin
         </td>
       </tr>
       <tr>
         <td class="table-cell td-mobile margin-link">
-          <a href="mailto:isabelle@redi-school.org" class="text-link">isabelle@redi-school.org</a>
+          <a href="mailto:miriam@redi-school.org" class="text-link">miriam@redi-school.org</a>
         </td>
-        <td class="table-cell td-mobile hide-cell-desktop">
-          ReDI School of Digital Integration
-        </td>
-        <td class="table-cell td-mobile hide-cell-desktop">
-          Am Nordbahnhof 3, 10115 Berlin
-        </td>
+        <td class="table-cell td-mobile hide-cell-desktop">ReDI School of Digital Integration</td>
+        <td class="table-cell td-mobile hide-cell-desktop">Am Nordbahnhof 3, 10115 Berlin</td>
         <td class="table-cell td-mobile">
-          <a href="https://www.redi-school.org" class="text-link" target="_blank">www.redi-school.org</a>
+          <a href="https://www.redi-school.org" class="text-link" target="_blank"
+            >www.redi-school.org</a
+          >
         </td>
       </tr>
     </mj-table>

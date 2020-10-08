@@ -5,15 +5,24 @@
       <mj-section />
       <mj-section css-class="section">
         <mj-column>
-          <mj-text mj-class="headline">Congratulations. Mentor ${mentorName} has accepted your application, ${menteeName}.</mj-text>
+          <mj-text mj-class="headline"
+            >Congratulations. Mentor ${mentorName} has accepted your application,
+            ${menteeName}.</mj-text
+          >
           <mj-divider mj-class="divider-top" css-class="divider" />
-          <mj-text mj-class="text">${menteeName}, here's a message to you from ${mentorName}:</mj-text>
+          <mj-text mj-class="text"
+            >${menteeName}, here's a message to you from ${mentorName}:</mj-text
+          >
           <mj-text mj-class="text text-padding italic">${mentorReplyMessageOnAccept}</mj-text>
           <mj-text mj-class="text">Are you ReDI?!</mj-text>
           <mj-text mj-class="text top-padding">Happy connectin’</mj-text>
-          <mj-text mj-class="text" padding="20px 0 30px 0">Please let us know at <a href="mailto:${rediEmailAdress}" class="text-link">${rediEmailAdress}</a> if you have any questions!</mj-text>
+          <mj-text mj-class="text" padding="20px 0 30px 0"
+            >Please let us know at
+            <a href="mailto:${rediEmailAdress}" class="text-link">${rediEmailAdress}</a> if you have
+            any questions!</mj-text
+          >
           <mj-text mj-class="text">Best,</mj-text>
-          <mj-text mj-class="text">Isabelle</mj-text>
+          <mj-text mj-class="text">Miriam</mj-text>
         </mj-column>
       </mj-section>
       <mj-include path="./footer.berlin.mjml" />

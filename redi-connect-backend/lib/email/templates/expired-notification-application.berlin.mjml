@@ -5,15 +5,24 @@
       <mj-section />
       <mj-section css-class="section">
         <mj-column>
-          <mj-text mj-class="headline">ReDI Connect: mentorship application from ${menteeName} expired</mj-text>
+          <mj-text mj-class="headline"
+            >ReDI Connect: mentorship application from ${menteeName} expired</mj-text
+          >
           <mj-divider mj-class="divider-top" css-class="divider" />
           <mj-text mj-class="text">Dear ${mentorName},</mj-text>
-          <mj-text mj-class="text text-padding">${menteeName} who applied to become your mentee also applied to another mentor. The other mentor just accepted the application a tiny bit faster.</mj-text>
-          <mj-text mj-class="text" padding="0 0 30px 0">The application to you from ${menteeName} has therefore expired, and you will not see it any longer in ReDI Connect. Other mentees can of course still apply
-            to you, and we're sure you'll receive another application soon to be a great mentor to one of our students! If you have any questions or would like any help, always feel free to reach out to us on
-            ${rediEmailAdress}.</mj-text>
+          <mj-text mj-class="text text-padding"
+            >${menteeName} who applied to become your mentee also applied to another mentor. The
+            other mentor just accepted the application a tiny bit faster.</mj-text
+          >
+          <mj-text mj-class="text" padding="0 0 30px 0"
+            >The application to you from ${menteeName} has therefore expired, and you will not see
+            it any longer in ReDI Connect. Other mentees can of course still apply to you, and we're
+            sure you'll receive another application soon to be a great mentor to one of our
+            students! If you have any questions or would like any help, always feel free to reach
+            out to us on ${rediEmailAdress}.</mj-text
+          >
           <mj-text mj-class="text">Best,</mj-text>
-          <mj-text mj-class="text">Isabelle</mj-text>
+          <mj-text mj-class="text">Miriam</mj-text>
         </mj-column>
       </mj-section>
       <mj-include path="./footer.berlin.mjml" />
