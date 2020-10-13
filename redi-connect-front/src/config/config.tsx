@@ -1,14 +1,14 @@
-import keyBy from 'lodash/keyBy'
-import mapValues from 'lodash/mapValues'
+import keyBy from 'lodash/keyBy';
+import mapValues from 'lodash/mapValues';
 
-import { Categories } from '../types/Categories'
-import { Language } from '../types/Language'
-import { Gender } from '../types/Gender'
-import { EducationLevel } from '../types/EducationLevel'
-import { Course } from '../types/Course'
-import { RediLocation } from '../types/RediLocation'
+import { Categories } from '../types/Categories';
+import { Language } from '../types/Language';
+import { Gender } from '../types/Gender';
+import { EducationLevel } from '../types/EducationLevel';
+import { Course } from '../types/Course';
+import { RediLocation } from '../types/RediLocation';
 
-export let categories: Categories
+export let categories: Categories;
 
 if ((process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'berlin') {
   categories = [
@@ -22,13 +22,13 @@ if ((process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'berlin') {
     {
       id: 'interviewsAndCommunication',
       label: 'Interviews & Communications',
-      group: 'careerSupport'
+      group: 'careerSupport',
     },
     { id: 'graphicsAndUxUi', label: 'Graphics & UX/UI', group: 'other' },
     {
       id: 'cvPersonalPresentation',
       label: 'CV & Personal presentation',
-      group: 'careerSupport'
+      group: 'careerSupport',
     },
     { id: 'mobileDevelopment', label: 'Mobile Development', group: 'coding' },
     { id: 'jobOrientation', label: 'Job Orientation', group: 'careerSupport' },
@@ -42,44 +42,90 @@ if ((process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'berlin') {
     { id: 'findingInternship', label: 'Finding an internship', group: 'careerSupport' },
     { id: 'freelancing', label: 'Freelancing', group: 'other' },
     { id: 'salesforce', label: 'Salesforce', group: 'other' },
-    { id: 'dontKnowYet', label: "I don't know yet", group: 'other' }
-  ]
+    { id: 'dontKnowYet', label: "I don't know yet", group: 'other' },
+  ];
 } else if ((process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'munich') {
   categories = [
-    { id: 'munich_frontEndDevelopmentHTMLCSS', label: 'Front-End Dev with HTML/CSS', group: 'coding' },
-    { id: 'munich_frontEndDevelopmentJavaScript', label: 'Front-End Dev with JavaScript', group: 'coding' },
-    { id: 'munich_softwareDevelopmentBasicJava', label: 'Software Dev basic (Java)', group: 'coding' },
-    { id: 'munich_softwareDevelopmentIntermediateJava', label: 'Software Dev intermediate (Java)', group: 'coding' },
+    {
+      id: 'munich_frontEndDevelopmentHTMLCSS',
+      label: 'Front-End Dev with HTML/CSS',
+      group: 'coding',
+    },
+    {
+      id: 'munich_frontEndDevelopmentJavaScript',
+      label: 'Front-End Dev with JavaScript',
+      group: 'coding',
+    },
+    {
+      id: 'munich_softwareDevelopmentBasicJava',
+      label: 'Software Dev basic (Java)',
+      group: 'coding',
+    },
+    {
+      id: 'munich_softwareDevelopmentIntermediateJava',
+      label: 'Software Dev intermediate (Java)',
+      group: 'coding',
+    },
     { id: 'munich_dataAnalyticsBasic', label: 'Basic Data Analytics', group: 'coding' },
-    { id: 'munich_dataAnalyticsIntermediate', label: 'Intermediate Data Analytics ', group: 'coding' },
+    {
+      id: 'munich_dataAnalyticsIntermediate',
+      label: 'Intermediate Data Analytics ',
+      group: 'coding',
+    },
     { id: 'munich_devOps', label: 'DevOps', group: 'coding' },
     { id: 'munich_itAndNetworking', label: 'Networking', group: 'coding' },
-    { id: 'munich_helpAndGuidanceOnHowToUseAComputer', label: 'Basic Computer Skills in English', group: 'coding' },
-    { id: 'munich_helpAndGuidanceOnHowToUseAComputer_de', label: 'Basic Computer Skills in German', group: 'coding' },
-    { id: 'munich_programmingSkillsAndHelpForLearning', label: 'Basic programming skills', group: 'coding' },
-    { id: 'munich_careerPlanningAndJobOrientation', label: 'Career planning & job orientation', group: 'careerSupport' },
-    { id: 'munich_helpForCvPreparationAndApplicationProcess', label: 'CV preparation & applications', group: 'careerSupport' },
-    { id: 'munich_helpForInterviewPreparation', label: 'Interview preparation', group: 'careerSupport' },
-    { id: 'munich_motivationAndEncouragement', label: 'Motivation & encouragement', group: 'other' },
+    {
+      id: 'munich_helpAndGuidanceOnHowToUseAComputer',
+      label: 'Basic Computer Skills in English',
+      group: 'coding',
+    },
+    {
+      id: 'munich_helpAndGuidanceOnHowToUseAComputer_de',
+      label: 'Basic Computer Skills in German',
+      group: 'coding',
+    },
+    {
+      id: 'munich_programmingSkillsAndHelpForLearning',
+      label: 'Basic programming skills',
+      group: 'coding',
+    },
+    {
+      id: 'munich_careerPlanningAndJobOrientation',
+      label: 'Career planning & job orientation',
+      group: 'careerSupport',
+    },
+    {
+      id: 'munich_helpForCvPreparationAndApplicationProcess',
+      label: 'CV preparation & applications',
+      group: 'careerSupport',
+    },
+    {
+      id: 'munich_helpForInterviewPreparation',
+      label: 'Interview preparation',
+      group: 'careerSupport',
+    },
+    {
+      id: 'munich_motivationAndEncouragement',
+      label: 'Motivation & encouragement',
+      group: 'other',
+    },
     { id: 'munich_helpToImproveEnglish', label: 'English language skills', group: 'other' },
     { id: 'munich_helpToImproveGerman', label: 'German language skills', group: 'other' },
     { id: 'munich_freelancing', label: 'Freelancing', group: 'other' },
     { id: 'munich_entrepreneurship', label: 'Entrepreneurship', group: 'other' },
-    { id: 'munich_beAFriendToHelpInNewAndDifficultSituationsHereInGermany', label: 'Be a friend and help', group: 'other' },
-    { id: 'munich_dontKnowYet', label: "I don't know yet", group: 'other' }
-  ]
+    {
+      id: 'munich_beAFriendToHelpInNewAndDifficultSituationsHereInGermany',
+      label: 'Be a friend and help',
+      group: 'other',
+    },
+    { id: 'munich_dontKnowYet', label: "I don't know yet", group: 'other' },
+  ];
 } else {
-  throw new Error('Invalid RediLocation')
+  throw new Error('Invalid RediLocation');
 }
 
-export const categoriesIdToLabelMap = mapValues(
-  keyBy(categories, 'id'),
-  'label'
-)
-export const categoriesIdToColourMap = mapValues(
-  keyBy(categories, 'id'),
-  'colour'
-)
+export const categoriesIdToLabelMap = mapValues(keyBy(categories, 'id'), 'label');
+export const categoriesIdToColourMap = mapValues(keyBy(categories, 'id'), 'colour');
 
 export const Languages: Language[] = [
   'Afrikaans',
@@ -224,16 +270,16 @@ export const Languages: Language[] = [
   'Yoruba',
   'Yucatec',
   'Zapotec',
-  'Zulu'
-]
+  'Zulu',
+];
 
 export const genders: Gender[] = [
   { id: 'male', label: 'Male' },
   { id: 'female', label: 'Female' },
-  { id: 'other', label: 'Other' }
-]
+  { id: 'other', label: 'Other' },
+];
 
-export const gendersIdToLabelMap = mapValues(keyBy(genders, 'id'), 'label')
+export const gendersIdToLabelMap = mapValues(keyBy(genders, 'id'), 'label');
 
 export const educationLevels: EducationLevel[] = [
   { id: 'middleSchool', label: 'Middle School' },
@@ -241,12 +287,12 @@ export const educationLevels: EducationLevel[] = [
   { id: 'apprenticeship', label: 'Apprenticeship' },
   { id: 'universityBachelor', label: 'University Degree (Bachelor)' },
   { id: 'universityMaster', label: 'University Degree (Master)' },
-  { id: 'universityPhd', label: 'University Degree (PhD)' }
-]
+  { id: 'universityPhd', label: 'University Degree (PhD)' },
+];
 
-export const educationLevelsIdToLabelMap = mapValues(keyBy(educationLevels, 'id'), 'label')
+export const educationLevelsIdToLabelMap = mapValues(keyBy(educationLevels, 'id'), 'label');
 
-let _courses: Course[]
+let _courses: Course[];
 if ((process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'berlin') {
   _courses = [
     { id: 'basicComputerTraining', label: 'Basic Computer Training' },
@@ -263,39 +309,38 @@ if ((process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'berlin') {
     { id: 'introJava', label: 'Intro to Java' },
     { id: 'uiUxWomen', label: 'UI/UX Women' },
     { id: 'introNetworking', label: 'Intro to Networking' },
-    { id: 'alumni', label: "I'm a ReDI School alumni (I took a course before)" }
-  ]
+    { id: 'alumni', label: "I'm a ReDI School alumni (I took a course before)" },
+  ];
 } else if ((process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'munich') {
   _courses = [
-    { id: 'munich_dcp_frontEndDevelopment1', label: 'Front-End Development 1' },
-    { id: 'munich_dcp_frontEndDevelopment2', label: 'Front-End Development 2' },
-    { id: 'munich_dcp_softwareDevelopment1', label: 'Software Development 1' },
-    { id: 'munich_dcp_softwareDevelopment2', label: 'Software Development 2' },
-    { id: 'munich_dcp_dataAnalytics1', label: 'Data Analytics 1' },
-    { id: 'munich_dcp_dataAnalytics2', label: 'Data Analytics 2' },
-    { id: 'munich_dcp_devOps', label: 'DevOps' },
-    { id: 'munich_dcp_networking', label: 'Networking' },
-    { id: 'munich_women_beginners', label: 'Women Program Beginners' },
-    { id: 'munich_women_programBasics1', label: 'Women Program Basics 1' },
-    { id: 'munich_women_programBasics2', label: 'Women Program Basics 2' },
-    { id: 'munich_women_basicsEnglish', label: 'Women Program Basics English' },
-    { id: 'munich_women_introToProgramming', label: 'Women Program Intro to programming' }
-  ]
+    {
+      id: 'munich_dcp_fall2020_introductionToComputerScience',
+      label: 'Introduction to computer science',
+    },
+    { id: 'munich_dcp_fall2020_frontEndDevelopment', label: 'Front-end development' },
+    { id: 'munich_dcp_fall2020_backendDevelopment', label: 'Back-end development' },
+    { id: 'munich_dcp_fall2020_dataScience', label: 'Data Science' },
+    { id: 'munich_dcp_fall2020_cloudComputing', label: 'Cloud computing' },
+    { id: 'munich_dcp_fall2020_networking', label: 'Networking' },
+    { id: 'munich_dcp_fall2020_networking', label: 'Women Program Basics English' },
+    { id: 'munich_dcp_fall2020_networking', label: 'Women Program Intro to programming' },
+    { id: 'munich_alumni', label: 'Alumni' },
+  ];
 } else {
-  throw new Error('Invalid RediLocation')
+  throw new Error('Invalid RediLocation');
 }
-export const courses = _courses
+export const courses = _courses;
 
-export const courseIdToLabelMap = mapValues(keyBy(courses, 'id'), 'label')
+export const courseIdToLabelMap = mapValues(keyBy(courses, 'id'), 'label');
 
 interface ReportProblemCategory {
-  id: string
-  label: string
+  id: string;
+  label: string;
 }
 
 export const reportProblemCategories: ReportProblemCategory[] = [
-  { id: 'wantToQuit', label: 'I want to quit' }
-]
+  { id: 'wantToQuit', label: 'I want to quit' },
+];
 
 export const mentoringSessionDurationOptions: number[] = [
   15,
@@ -309,34 +354,34 @@ export const mentoringSessionDurationOptions: number[] = [
   135,
   150,
   165,
-  180
-]
+  180,
+];
 
 interface MenteeOccupationCategory {
-  id: string
-  label: string
+  id: string;
+  label: string;
 }
 
 export const menteeOccupationCategories: MenteeOccupationCategory[] = [
   { id: 'job', label: 'Job (full-time/part-time)' },
   { id: 'student', label: 'Student (enrolled at university)' },
   { id: 'lookingForJob', label: 'Looking for a job' },
-  { id: 'other', label: 'Other' }
-]
+  { id: 'other', label: 'Other' },
+];
 
 export const menteeOccupationCategory_idToLabelMap = mapValues(
   keyBy(menteeOccupationCategories, 'id'),
   'label'
-)
+);
 
-export const menteeCountCapacityOptions: number[] = [0, 1, 2]
+export const menteeCountCapacityOptions: number[] = [0, 1, 2];
 
 export const AWS_PROFILE_AVATARS_BUCKET_BASE_URL =
-  'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/'
+  'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/';
 
 export const API_URL = process.env.REACT_APP_API_URL
   ? process.env.REACT_APP_API_URL
-  : 'http://127.0.0.1:3003/api'
+  : 'http://127.0.0.1:3003/api';
 export const S3_UPLOAD_SIGN_URL = process.env.REACT_APP_S3_UPLOAD_SIGN_URL
   ? process.env.REACT_APP_S3_UPLOAD_SIGN_URL
-  : 'http://127.0.0.1:3003/s3/sign'
+  : 'http://127.0.0.1:3003/s3/sign';
