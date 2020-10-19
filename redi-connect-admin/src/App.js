@@ -540,6 +540,7 @@ const RedProfileShow = (props) => (
             <Datagrid>
               <FullName sourcePrefix="mentee." />
               <TextField source="status" />
+              <ShowButton />
             </Datagrid>
           </ReferenceManyField>
           <ReferenceManyField
@@ -550,6 +551,7 @@ const RedProfileShow = (props) => (
             <Datagrid>
               <FullName sourcePrefix="mentor." />
               <TextField source="status" />
+              <ShowButton />
             </Datagrid>
           </ReferenceManyField>
           <h4>Mentor-specific fields:</h4>
