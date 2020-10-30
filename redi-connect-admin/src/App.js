@@ -455,6 +455,7 @@ const RedProfileList = (props) => {
         <TextField source="currentMenteeCount" label="Current mentee count" />
         <TextField source="menteeCountCapacity" label="Total mentee capacity" />
         <BooleanField source="userActivated" />
+        <RecordCreatedAt />
         <ShowButton />
         <EditButton />
       </Datagrid>
@@ -469,6 +470,9 @@ const RedProfileListExpandPane = (props) => {
           <CategoryList />
         </ArrayField>
         <MenteeEnrolledInCourseField />
+        <TextField source="contactEmail" />
+        <RecordCreatedAt />
+        <RecordUpdatedAt />
       </SimpleShowLayout>
     </Show>
   );
