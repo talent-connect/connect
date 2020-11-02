@@ -31,7 +31,7 @@
           <mj-text mj-class="text">Miriam</mj-text>
         </mj-column>
       </mj-section>
-      <mj-include path="./footer.berlin.mjml" />
+      <mj-include path="./footer.berlin.miriam.mjml" />
       <mj-section />
     </mj-wrapper>
   </mj-body>

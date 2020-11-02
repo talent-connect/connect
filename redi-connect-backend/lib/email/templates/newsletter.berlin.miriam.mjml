@@ -4,11 +4,9 @@
     <mj-wrapper background-color="#F0F0F0">
       <mj-section />
       <mj-section css-class="section">
-        <mj-column>
-          ${NEWSLETTER_BODY}
-        </mj-column>
+        <mj-column> ${NEWSLETTER_BODY} </mj-column>
       </mj-section>
-      <mj-include path="./footer.berlin.mjml" />
+      <mj-include path="./footer.berlin.miriam.mjml" />
       <mj-section />
     </mj-wrapper>
   </mj-body>
