@@ -1,19 +1,19 @@
-import React from 'react'
-import classnames from 'classnames'
-import { NavLink } from 'react-router-dom'
-import Icon from './Icon'
-import './Button.scss'
+import React from 'react';
+import classnames from 'classnames';
+import { NavLink } from 'react-router-dom';
+import Icon from './Icon';
+import './Button.scss';
 
 interface Props {
-  children: any
-  className?: string
-  size?: 'large' | 'medium' | 'small'
-  fullWidth?: boolean
-  disabled?: boolean
-  separator?: boolean
-  onClick?: () => void
-  simple?: boolean
-  to?: string
+  children: any;
+  className?: string;
+  size?: 'large' | 'medium' | 'small';
+  fullWidth?: boolean;
+  disabled?: boolean;
+  separator?: boolean;
+  onClick?: () => void;
+  simple?: boolean;
+  to?: string;
 }
 
 const Button = ({
@@ -25,40 +25,60 @@ const Button = ({
   onClick,
   separator,
   disabled,
-  to
+  to,
 }: Props) => {
-  const baseClass = 'button'
+  const baseClass = 'button';
 
-  const button = (
-    <button
-      onClick={onClick}
-      disabled={disabled}
-      type="button"
-      className={classnames(baseClass, `${baseClass}--${simple ? 'simple' : 'default'}`, {
-        [`${baseClass}--${size}`]: size,
-        [`${baseClass}--fullWidth`]: fullWidth,
-        [`${baseClass}--separator`]: separator,
-        [`${className}`]: className
-      })}
-    >
-      {children}
-    </button>
-  )
+  if (!to) {
+    return (
+      <button
+        onClick={onClick}
+        disabled={disabled}
+        type="button"
+        className={classnames(baseClass, `${baseClass}--${simple ? 'simple' : 'default'}`, {
+          [`${baseClass}--${size}`]: size,
+          [`${baseClass}--fullWidth`]: fullWidth,
+          [`${baseClass}--separator`]: separator,
+          [`${className}`]: className,
+        })}
+      >
+        {children}
+      </button>
+    );
+  }
 
-  const navLink = (
+  const isExternalLink = to.includes('http');
+
+  if (isExternalLink) {
+    return (
+      <button
+        onClick={() => (window.location.href = to)}
+        type="button"
+        className={classnames(baseClass, `${baseClass}--${simple ? 'simple' : 'default'}`, {
+          [`${baseClass}--${size}`]: size,
+          [`${baseClass}--fullWidth`]: fullWidth,
+          [`${baseClass}--separator`]: separator,
+          [`${className}`]: className,
+        })}
+      >
+        {children}
+      </button>
+    );
+  }
+
+  return (
     <NavLink
       to={to || '/'}
       activeClassName={`${baseClass}--active`}
       className={classnames(baseClass, `${baseClass}--nav`, {
-        [`${baseClass}--${size}`]: size
-      })}>
+        [`${baseClass}--${size}`]: size,
+      })}
+    >
       {children}
     </NavLink>
-  )
+  );
+};
 
-  return to ? navLink : button
-}
+Button.Icon = Icon;
 
-Button.Icon = Icon
-
-export default Button
+export default Button;

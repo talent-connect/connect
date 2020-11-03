@@ -9,7 +9,7 @@ const SignUpEmailVerification = () => (
   <AccountOperation>
     <Columns vCentered>
       <Columns.Column size={5} responsive={{ mobile: { hide: { value: true } } }}>
-        {envRediLocation() === 'berlin' && <Teaser.Miriam />}
+        {['berlin', 'nrw'].includes(envRediLocation()) && <Teaser.Miriam />}
         {envRediLocation() === 'munich' && <Teaser.Christa />}
       </Columns.Column>
 

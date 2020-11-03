@@ -1,27 +1,27 @@
-import React from 'react'
-import * as Yup from 'yup'
-import FormControl from '@material-ui/core/FormControl'
-import InputLabel from '@material-ui/core/InputLabel'
-import Select from '@material-ui/core/Select'
-import MenuItem from '@material-ui/core/MenuItem'
-import { CreateProfileFormValues, SignUpFormType } from '../factory'
-import { FormikProps } from 'formik'
+import React from 'react';
+import * as Yup from 'yup';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import { CreateProfileFormValues, SignUpFormType } from '../factory';
+import { FormikProps } from 'formik';
 import {
   categories as formCategories,
-  menteeCountCapacityOptions
-} from '../../../../config/config'
-import Grid from '@material-ui/core/Grid'
-import Checkbox from '@material-ui/core/Checkbox'
-import { withStyles } from '@material-ui/core'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
+  menteeCountCapacityOptions,
+} from '../../../../config/config';
+import Grid from '@material-ui/core/Grid';
+import Checkbox from '@material-ui/core/Checkbox';
+import { withStyles } from '@material-ui/core';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 export const validationSchema = Yup.object({
   categories: Yup.array().when('formType', {
     is: 'public-sign-up-mentee-pending-review',
     then: Yup.array()
-      .compact(v => v === 'dontKnowYet')
+      .compact((v) => v === 'dontKnowYet')
       .min(0)
-      .max(3)
+      .max(3),
   }),
   menteeCountCapacity: Yup.number()
     .required()
@@ -29,18 +29,18 @@ export const validationSchema = Yup.object({
     .max(4),
   agreesWithCodeOfConduct: Yup.boolean()
     .required()
-    .oneOf([true])
-})
+    .oneOf([true]),
+});
 
 const styles = (theme: any) => ({
   margin: {
-    margin: '24px 0'
-  }
-})
+    margin: '24px 0',
+  },
+});
 
 export const Comp = (
   props: FormikProps<CreateProfileFormValues> & { type: SignUpFormType } & {
-    classes: any
+    classes: any;
   }
 ) => {
   const {
@@ -52,41 +52,35 @@ export const Comp = (
     setFieldTouched,
     setFieldValue,
     classes,
-    type
-  } = props
+    type,
+  } = props;
 
   const change = (name: any, e: any) => {
-    e.persist()
-    handleChange(e)
-    setFieldTouched(name, true, false)
-  }
+    e.persist();
+    handleChange(e);
+    setFieldTouched(name, true, false);
+  };
 
   const categoriesChange = (name: any, e: any) => {
-    e.persist()
-    const value = e.target.value
-    let newCategories
+    e.persist();
+    const value = e.target.value;
+    let newCategories;
     if (e.target.checked) {
-      newCategories = categories.concat(value)
+      newCategories = categories.concat(value);
     } else {
-      newCategories = categories.filter(cat => cat !== value)
+      newCategories = categories.filter((cat) => cat !== value);
     }
-    setFieldValue('categories', newCategories)
-    setFieldTouched(name, true, false)
-  }
+    setFieldValue('categories', newCategories);
+    setFieldTouched(name, true, false);
+  };
 
   return (
     <>
       {type === 'public-sign-up-mentee-pending-review' && (
-        <h2>
-          Please select all the topics you would like help with from your mentor
-          (max 3).
-        </h2>
+        <h2>Please select all the topics you would like help with from your mentor (max 3).</h2>
       )}
       {type === 'public-sign-up-mentor-pending-review' && (
-        <h2>
-          How would you like to support your mentee? Please select the topics
-          that apply.
-        </h2>
+        <h2>How would you like to support your mentee? Please select the topics that apply.</h2>
       )}
       <Grid container>
         {formCategories.map(({ id, label }) => (
@@ -114,16 +108,14 @@ export const Comp = (
           </InputLabel>
           <Select
             value={menteeCountCapacity}
-            error={
-              touched.menteeCountCapacity && Boolean(errors.menteeCountCapacity)
-            }
+            error={touched.menteeCountCapacity && Boolean(errors.menteeCountCapacity)}
             onChange={change.bind(null, 'menteeCountCapacity')}
             inputProps={{
               name: 'menteeCountCapacity',
-              id: 'menteeCountCapacity'
+              id: 'menteeCountCapacity',
             }}
           >
-            {menteeCountCapacityOptions.map(menteeCountCapacity => (
+            {menteeCountCapacityOptions.map((menteeCountCapacity) => (
               <MenuItem key={menteeCountCapacity} value={menteeCountCapacity}>
                 {menteeCountCapacity}
               </MenuItem>
@@ -138,7 +130,7 @@ export const Comp = (
             <a
               target="_blank"
               rel="noopener noreferrer"
-              href="https://connect.redi-school.org/downloadeables/redi-connect-code-of-conduct.pdf"
+              href="https://connect.berlin.redi-school.org/downloadeables/redi-connect-code-of-conduct.pdf"
             >
               ReDI Connect Code of Conduct
             </a>
@@ -156,7 +148,7 @@ export const Comp = (
         }
       />
     </>
-  )
-}
+  );
+};
 
-export const Step5Categories = withStyles(styles)(Comp)
+export const Step5Categories = withStyles(styles)(Comp);

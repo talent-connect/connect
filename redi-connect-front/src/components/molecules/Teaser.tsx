@@ -1,6 +1,7 @@
 import React from 'react';
 import { ReactComponent as WelcomeIllustration } from '../../assets/images/welcome-user.svg';
 import { ReactComponent as MiriamSvg } from '../../assets/images/miriam.svg';
+import { ReactComponent as PaulinaSvg } from '../../assets/images/paulina.svg';
 import { ReactComponent as Christa } from '../../assets/images/christa.svg';
 import { ReactComponent as RedCircle } from '../../assets/images/red-circle.svg';
 import { Element } from 'react-bulma-components';
@@ -14,11 +15,16 @@ type RouteParams = {
 };
 
 const miriamStyles = {
-  padding: '0 100px',
+  padding: '0 200px',
 };
 const Miriam = (props: any) => (
   <div style={miriamStyles}>
     <MiriamSvg {...props} />
+  </div>
+);
+const Paulina = (props: any) => (
+  <div style={miriamStyles}>
+    <PaulinaSvg {...props} />
   </div>
 );
 
@@ -49,24 +55,43 @@ export default {
 
     return (
       <>
-        <Miriam className="illustration illustration--bothOut" />
-        <Element renderAs="p" textAlignment="centered" textSize={4} className="about-miriam">
-          “Hi, I am <strong>Miriam</strong>, the mentorship coordinator of ReDI Connect Berlin.
-          {userType === 'public-sign-up-mentor-pending-review' && (
-            <> I take the time to meet each mentor before they join our program."</>
-          )}
-          {userType === 'public-sign-up-mentee-pending-review' && (
-            <> I take the time to go through your application before you join our program."</>
-          )}
-        </Element>
-        <Element renderAs="p" textAlignment="centered" textSize={5}>
-          <strong>Miriam Abu Hamdan</strong>
-        </Element>
-        <Element renderAs="p" textAlignment="centered" textSize={6}>
-          Manager Mentorship Program <br />
-          Career Department ReDI School <br />
-          <a href="mailto:miriam@redi-school.org">miriam@redi-school.org</a>
-        </Element>
+        {userType === 'public-sign-up-mentor-pending-review' && (
+          <>
+            <Miriam className="illustration illustration--bothOut" />
+            <Element renderAs="p" textAlignment="centered" textSize={4} className="about-miriam">
+              “Hi, I am <strong>Miriam</strong>, the mentorship coordinator at the ReDI Career
+              Department. I take the time to meet each mentor before they join our program."
+            </Element>
+            <Element renderAs="p" textAlignment="centered" textSize={5}>
+              <strong>Miriam Abu Hamdan</strong>
+            </Element>
+            <Element renderAs="p" textAlignment="centered" textSize={6}>
+              Manager Mentorship Program
+              <br />
+              Career Department ReDI School <br />
+              <a href="mailto:miriam@redi-school.org">miriam@redi-school.org</a>
+            </Element>
+          </>
+        )}
+        {userType === 'public-sign-up-mentee-pending-review' && (
+          <>
+            <Paulina className="illustration illustration--bothOut" />
+            <Element renderAs="p" textAlignment="centered" textSize={4} className="about-miriam">
+              “Hi, I am <strong>Paulina</strong>, the coaching and job integration coordinator at
+              the ReDI Career Department. I take the time to go through your application before you
+              join our program."
+            </Element>
+            <Element renderAs="p" textAlignment="centered" textSize={5}>
+              <strong>Paulina Muñoz</strong>
+            </Element>
+            <Element renderAs="p" textAlignment="centered" textSize={6}>
+              Manager Mentorship Program
+              <br />
+              Career Department ReDI School <br />
+              <a href="mailto:paulina@redi-school.org">paulina@redi-school.org</a>
+            </Element>
+          </>
+        )}
         <RedCircle className="illustration illustration--toRight" />
       </>
     );

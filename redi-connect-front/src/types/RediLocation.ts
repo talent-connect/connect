@@ -1,1 +1,1 @@
-export type RediLocation = 'berlin' | 'munich'
+export type RediLocation = 'berlin' | 'munich' | 'nrw' | 'location-picker';

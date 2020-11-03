@@ -11,6 +11,7 @@ import {
   Filter,
   Datagrid,
   TabbedForm,
+  FunctionField,
   TabbedShowLayout,
   TextField,
   ReferenceInput,
@@ -69,6 +70,7 @@ import { API_URL } from './config';
 const rediLocations = [
   { id: 'berlin', label: 'Berlin' },
   { id: 'munich', label: 'Munich' },
+  { id: 'nrw', label: 'NRW' },
 ];
 
 const languages = [
@@ -231,6 +233,7 @@ const categoriesByLocation = {
       label: 'Interviews & Communications',
       group: 'careerSupport',
     },
+    { id: 'helpToImproveGerman', label: 'German language skills', group: 'other' },
     { id: 'graphicsAndUxUi', label: 'Graphics & UX/UI', group: 'other' },
     {
       id: 'cvPersonalPresentation',
@@ -326,6 +329,43 @@ const categoriesByLocation = {
     },
     { id: 'munich_dontKnowYet', label: "I don't know yet", group: 'other' },
   ],
+  nrw: [
+    { id: 'nrw_userInterfaceDesign', label: 'User Interface Design', group: 'other' },
+    { id: 'nrw_userExperienceDesign', label: 'User Experience Design', group: 'other' },
+    { id: 'nrw_python', label: 'Python', group: 'coding' },
+    { id: 'nrw_dataAnalytics', label: 'Data Analytics ', group: 'coding' },
+    { id: 'nrw_machineLearning', label: 'Machine Learning', group: 'coding' },
+    { id: 'nrw_HtmlCss', label: 'HTML & CSS', group: 'coding' },
+    {
+      id: 'nrw_webDevelopmentJavacsript',
+      label: 'Web Development with Javascript',
+      group: 'coding',
+    },
+    { id: 'nrw_webDevelopmentReact', label: 'Web Development with React', group: 'coding' },
+    { id: 'nrw_basicNetworking', label: 'Basic Networking', group: 'coding' },
+    { id: 'nrw_iot', label: 'IoT', group: 'coding' },
+    { id: 'nrw_cloud', label: 'Cloud', group: 'coding' },
+    { id: 'nrw_businessGerman', label: 'Business German', group: 'careerSupport' },
+    { id: 'nrw_jobOrientation', label: 'Job Orientation', group: 'careerSupport' },
+    {
+      id: 'nrw_cvPreparationAndLinkedInProfile',
+      label: 'CV Preparation & LinkedIn Profile',
+      group: 'careerSupport',
+    },
+    {
+      id: 'nrw_jobApplicationJobInterview',
+      label: 'Job Application & Job Interview',
+      group: 'careerSupport',
+    },
+    { id: 'nrw_howToFindAnInternship', label: 'How to find an Internship', group: 'careerSupport' },
+    {
+      id: 'nrw_howToBuildProfessionalNetwork',
+      label: 'How to Build a Professional Network',
+      group: 'careerSupport',
+    },
+    { id: 'nrw_entrepreneurship', label: 'Entrepreneurship', group: 'careerSupport' },
+    { id: 'nrw_freelancing', label: 'Freelancing', group: 'careerSupport' },
+  ],
 };
 const categoriesFlat = [
   ...categoriesByLocation.berlin.map((cat) =>
@@ -334,6 +374,7 @@ const categoriesFlat = [
   ...categoriesByLocation.munich.map((cat) =>
     Object.assign(cat, { label: `Munich: ${cat.label}` })
   ),
+  ...categoriesByLocation.nrw.map((cat) => Object.assign(cat, { label: `NRW: ${cat.label}` })),
 ];
 
 const coursesByLocation = {
@@ -368,10 +409,17 @@ const coursesByLocation = {
     { id: 'munich_dcp_fall2020_networking', label: 'Women Program Intro to programming' },
     { id: 'munich_alumni', label: 'Alumni' },
   ],
+  nrw: [
+    { id: 'nrw_webDesignFundamentals', label: 'Web Design Fundamentals' },
+    { id: 'nrw_htmlCsss', label: 'HTML & CSS' },
+    { id: 'nrw_introductionToPython', label: 'Introduction to Python' },
+    { id: 'nrw_networkingFundamentals', label: 'Networking Fundamentals' },
+  ],
 };
 const coursesFlat = [
   ...coursesByLocation.berlin.map((cat) => Object.assign(cat, { label: `Berlin: ${cat.label}` })),
   ...coursesByLocation.munich.map((cat) => Object.assign(cat, { label: `Munich: ${cat.label}` })),
+  ...coursesByLocation.nrw.map((cat) => Object.assign(cat, { label: `NRW: ${cat.label}` })),
 ];
 
 const mentoringSessionDurationOptions = [15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165, 180];
@@ -450,7 +498,7 @@ const RedProfileList = (props) => {
         <TextField source="rediLocation" label="City" />
         <TextField source="firstName" />
         <TextField source="lastName" />
-        <TextField source="userType" />
+        <FunctionField source="userType" label="User type" render={userTypeToEmoji} />;
         <TextField source="currentFreeMenteeSpots" label="Free spots" sortable={false} />
         <TextField source="currentMenteeCount" label="Current mentee count" />
         <TextField source="menteeCountCapacity" label="Total mentee capacity" />
@@ -508,6 +556,18 @@ const RedProfileListFilters = (props) => (
     />
   </Filter>
 );
+function userTypeToEmoji({ userType }) {
+  const emoji = {
+    mentor: '🎁 Mentor',
+    mentee: '💎 Mentee',
+    'public-sign-up-mentor-pending-review': '💣 Mentor (pending review)',
+    'public-sign-up-mentee-pending-review': '🧨 Mentee (pending review)',
+    'public-sign-up-mentor-rejected': '❌🎁 Mentor (rejected)',
+    'public-sign-up-mentee-rejected': '❌💎Mentee (rejected)',
+  }[userType];
+  return emoji ?? userType;
+}
+
 const RedProfileShow = (props) => (
   <Show {...props}>
     <SimpleShowLayout>
@@ -831,6 +891,9 @@ const RedMatchShow_RelatedMentoringSessions = ({ record: { mentorId, menteeId } 
     }).then(({ data }) => setMentoringSessions(data));
   }, []);
   const totalDuration = mentoringSessions.reduce((acc, curr) => acc + curr.minuteDuration, 0);
+  if (mentoringSessions && mentoringSessions.length === 0) {
+    return <h3>NO mentoring sessions registerd yet.</h3>;
+  }
   return (
     mentoringSessions &&
     mentoringSessions.length > 0 && (
@@ -1076,6 +1139,7 @@ const RedMentoringSessionListAside = () => {
           <MenuItem value={undefined}>All cities</MenuItem>
           <MenuItem value="berlin">Berlin</MenuItem>
           <MenuItem value="munich">Munich</MenuItem>
+          <MenuItem value="nrw">NRW</MenuItem>
         </Select>
       </FormControl>
       <div>

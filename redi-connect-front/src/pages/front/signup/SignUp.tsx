@@ -203,7 +203,7 @@ export default function SignUp () {
               <a
                 target="_blank"
                 rel="noopener noreferrer"
-                href="https://connect.redi-school.org/downloadeables/redi-connect-code-of-conduct.pdf"
+                href="https://connect.berlin.redi-school.org/downloadeables/redi-connect-code-of-conduct.pdf"
               >
                 Code of Conduct
               </a>{' '}

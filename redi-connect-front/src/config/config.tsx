@@ -8,6 +8,12 @@ import { EducationLevel } from '../types/EducationLevel';
 import { Course } from '../types/Course';
 import { RediLocation } from '../types/RediLocation';
 
+export const rediLocationNames: { [K in RediLocation]?: string } = {
+  berlin: 'Berlin',
+  munich: 'Munich',
+  nrw: 'NRW',
+};
+
 export let categories: Categories;
 
 if ((process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'berlin') {
@@ -24,6 +30,7 @@ if ((process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'berlin') {
       label: 'Interviews & Communications',
       group: 'careerSupport',
     },
+    { id: 'helpToImproveGerman', label: 'German language skills', group: 'other' },
     { id: 'graphicsAndUxUi', label: 'Graphics & UX/UI', group: 'other' },
     {
       id: 'cvPersonalPresentation',
@@ -120,6 +127,46 @@ if ((process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'berlin') {
     },
     { id: 'munich_dontKnowYet', label: "I don't know yet", group: 'other' },
   ];
+} else if ((process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'nrw') {
+  categories = [
+    { id: 'nrw_userInterfaceDesign', label: 'User Interface Design', group: 'other' },
+    { id: 'nrw_userExperienceDesign', label: 'User Experience Design', group: 'other' },
+    { id: 'nrw_python', label: 'Python', group: 'coding' },
+    { id: 'nrw_dataAnalytics', label: 'Data Analytics ', group: 'coding' },
+    { id: 'nrw_machineLearning', label: 'Machine Learning', group: 'coding' },
+    { id: 'nrw_HtmlCss', label: 'HTML & CSS', group: 'coding' },
+    {
+      id: 'nrw_webDevelopmentJavacsript',
+      label: 'Web Development with Javascript',
+      group: 'coding',
+    },
+    { id: 'nrw_webDevelopmentReact', label: 'Web Development with React', group: 'coding' },
+    { id: 'nrw_basicNetworking', label: 'Basic Networking', group: 'coding' },
+    { id: 'nrw_iot', label: 'IoT', group: 'coding' },
+    { id: 'nrw_cloud', label: 'Cloud', group: 'coding' },
+    { id: 'nrw_businessGerman', label: 'Business German', group: 'careerSupport' },
+    { id: 'nrw_jobOrientation', label: 'Job Orientation', group: 'careerSupport' },
+    {
+      id: 'nrw_cvPreparationAndLinkedInProfile',
+      label: 'CV Preparation & LinkedIn Profile',
+      group: 'careerSupport',
+    },
+    {
+      id: 'nrw_jobApplicationJobInterview',
+      label: 'Job Application & Job Interview',
+      group: 'careerSupport',
+    },
+    { id: 'nrw_howToFindAnInternship', label: 'How to find an Internship', group: 'careerSupport' },
+    {
+      id: 'nrw_howToBuildProfessionalNetwork',
+      label: 'How to Build a Professional Network',
+      group: 'careerSupport',
+    },
+    { id: 'nrw_entrepreneurship', label: 'Entrepreneurship', group: 'careerSupport' },
+    { id: 'nrw_freelancing', label: 'Freelancing', group: 'careerSupport' },
+  ];
+} else if ((process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'location-picker') {
+  categories = [];
 } else {
   throw new Error('Invalid RediLocation');
 }
@@ -326,6 +373,15 @@ if ((process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'berlin') {
     { id: 'munich_dcp_fall2020_networking', label: 'Women Program Intro to programming' },
     { id: 'munich_alumni', label: 'Alumni' },
   ];
+} else if ((process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'nrw') {
+  _courses = [
+    { id: 'nrw_webDesignFundamentals', label: 'Web Design Fundamentals' },
+    { id: 'nrw_htmlCsss', label: 'HTML & CSS' },
+    { id: 'nrw_introductionToPython', label: 'Introduction to Python' },
+    { id: 'nrw_networkingFundamentals', label: 'Networking Fundamentals' },
+  ];
+} else if ((process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'location-picker') {
+  _courses = [];
 } else {
   throw new Error('Invalid RediLocation');
 }

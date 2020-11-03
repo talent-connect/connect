@@ -1,40 +1,38 @@
-import React from 'react'
-import { Content } from 'react-bulma-components'
-import { RedProfile } from '../../types/RedProfile'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
-import { Caption, Placeholder } from '../atoms'
-import {
-  educationLevelsIdToLabelMap
-} from '../../config/config'
+import React from 'react';
+import { Content } from 'react-bulma-components';
+import { RedProfile } from '../../types/RedProfile';
+import { connect } from 'react-redux';
+import { RootState } from '../../redux/types';
+import { Caption, Placeholder } from '../atoms';
+import { educationLevelsIdToLabelMap } from '../../config/config';
 
 interface Props {
-  profile: RedProfile
-  shortInfo?: boolean
+  profile: RedProfile;
+  shortInfo?: boolean;
 }
 
 const ReadEducation = ({ profile, shortInfo }: Props) => {
-  const {
-    mentee_highestEducationLevel
-  } = profile
+  const { mentee_highestEducationLevel } = profile;
 
   if (!mentee_highestEducationLevel) {
-    return <Placeholder>Input your information about your Education here.</Placeholder>
+    return <Placeholder>Input your information about your Education here.</Placeholder>;
   }
 
-  return <>
-    {shortInfo && <Caption>Highese Education</Caption>}
-    <Content>
-      <p>{educationLevelsIdToLabelMap[mentee_highestEducationLevel]}</p>
-    </Content>
-  </>
-}
+  return (
+    <>
+      {shortInfo && <Caption>Highest Education</Caption>}
+      <Content>
+        <p>{educationLevelsIdToLabelMap[mentee_highestEducationLevel]}</p>
+      </Content>
+    </>
+  );
+};
 
 const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile as RedProfile
-})
+  profile: state.user.profile as RedProfile,
+});
 
 export default {
   Me: connect(mapStateToProps, {})(ReadEducation),
-  Some: ({ profile }: Props) => <ReadEducation profile={profile} shortInfo />
-}
+  Some: ({ profile }: Props) => <ReadEducation profile={profile} shortInfo />,
+};

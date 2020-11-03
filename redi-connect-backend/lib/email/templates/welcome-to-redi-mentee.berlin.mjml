@@ -43,10 +43,10 @@
             >If you have any questions or feedback at any point, feel free to reach out.</mj-text
           >
           <mj-text mj-class="text">Best,</mj-text>
-          <mj-text mj-class="text">Miriam</mj-text>
+          <mj-text mj-class="text">Paulina</mj-text>
         </mj-column>
       </mj-section>
-      <mj-include path="./footer.berlin.miriam.mjml" />
+      <mj-include path="./footer.berlin.paulina.mjml" />
       <mj-section />
     </mj-wrapper>
   </mj-body>
