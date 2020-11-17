@@ -692,11 +692,6 @@ const RedProfileEdit = (props) => (
   <Edit {...props} actions={<RedProfileEditActions />}>
     <TabbedForm>
       <FormTab label="Profile">
-        <SelectInput
-          source="rediLocation"
-          label="ReDI City"
-          choices={rediLocations.map(({ id, label }) => ({ id, name: label }))}
-        />
         <TextField source="userType" />
         <BooleanInput source="userActivated" />
         <TextInput
