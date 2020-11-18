@@ -11,7 +11,7 @@
     "date-fns": "^2.8.1",
     "lodash": "4.17.19",
     "moment": "^2.24.0",
-    "papaparse": "5.1.1",
+    "papaparse": "5.2.0",
     "react": "16.13.1",
     "react-admin": "2.9.9",
     "react-dom": "16.13.1",
