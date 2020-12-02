@@ -27,6 +27,7 @@ const { RedProfile, RedUser } = app.models;
     const userData = user.toJSON();
     const id = userData.id.toString();
     await RedUser.destroyById(id, (err) => console.log(err));
+    console.log(`Deleting orphaned RedUser #${id} with email ${userData.email}`);
   });
 
   await allProfiles.forEach(async (profile) => {
