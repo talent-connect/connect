@@ -1,4 +1,8 @@
 'use strict'
+const path = require('path')
+const res = require('dotenv').config({
+  path: path.resolve(process.cwd(), '.env.' + process.env.NODE_ENV)
+})
 
 var loopback = require('loopback')
 var boot = require('loopback-boot')

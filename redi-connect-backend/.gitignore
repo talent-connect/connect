@@ -26,3 +26,5 @@ send-single-reminder-email.sh
 send-reminder-emails.sh
 secound-round.sh
 
+.env.production
+.env.development
