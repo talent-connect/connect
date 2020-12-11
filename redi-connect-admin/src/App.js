@@ -500,9 +500,17 @@ const RedProfileList = (props) => {
         <TextField source="lastName" />
         <FunctionField source="userType" label="User type" render={userTypeToEmoji} />;
         <TextField source="currentFreeMenteeSpots" label="Free spots" sortable={false} />
-        <TextField source="currentMenteeCount" label="Current mentee count" />
-        <TextField source="menteeCountCapacity" label="Total mentee capacity" />
+        <TextField source="currentMenteeCount" label="Current mentee count" sortable={false} />
+        <TextField source="menteeCountCapacity" label="Total mentee capacity" sortable={false} />
+        <TextField source="totalRedMatchCount" label="RedMatch #" sortable={false} />
         <BooleanField source="userActivated" />
+        <DateField
+          showTime
+          source="lastLoginDateTime"
+          label="Last Login"
+          {...props}
+          sortable={false}
+        />
         <RecordCreatedAt />
         <ShowButton />
         <EditButton />
@@ -554,6 +562,10 @@ const RedProfileListFilters = (props) => (
       source="rediLocation"
       choices={rediLocations.map(({ id, label }) => ({ id, name: label }))}
     />
+    <SelectInput
+      source="mentee_currentlyEnrolledInCourse"
+      choices={coursesFlat.map(({ id, label }) => ({ id, name: label }))}
+    ></SelectInput>
   </Filter>
 );
 function userTypeToEmoji({ userType }) {
@@ -650,6 +662,13 @@ const RedProfileShow = (props) => (
           <h4>Record information</h4>
           <RecordCreatedAt />
           <RecordUpdatedAt />
+          <DateField
+            showTime
+            source="lastLoginDateTime"
+            label="Last Login"
+            {...props}
+            sortable={false}
+          />
           <h4>Typeform information (for mentors/mentees originally signed up via typeform)</h4>
           <TextField source="mentor_ifTypeForm_submittedAt" label="Typeform: submitted at" />
           <TextField source="mentee_ifTypeForm_additionalComments" />
