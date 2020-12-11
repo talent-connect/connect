@@ -3,7 +3,7 @@ const _ = require('lodash');
 
 const Rx = require('rxjs');
 const { of } = Rx;
-const { switchMap } = require('rxjs/operators');
+const { switchMap, map } = require('rxjs/operators');
 
 const app = require('../../server/server');
 const {
@@ -60,6 +60,58 @@ module.exports = function (RedProfile) {
     return next();
   });
 
+  RedProfile.observe('loaded', function loadRedMatchCount(ctx, next) {
+    if (ctx.isNewInstance) {
+      return next();
+      // TODO: the next two else-if blocks can definitely be DRY-ed. Merge them.
+    }
+
+    if (
+      ctx.options &&
+      ctx.options.currentUser &&
+      ctx.options.currentUser.email === 'cloud-accounts@redi-school.org'
+    ) {
+    } else {
+      return next();
+    }
+
+    const RedMatch = app.models.RedMatch;
+    const AccessToken = app.models.AccessToken;
+
+    const getLastLoginDateTime = () =>
+      ctx.options.currentUser
+        ? Rx.bindNodeCallback(AccessToken.find.bind(AccessToken))({
+            where: {
+              userId: ctx.data.redUserId,
+            },
+            order: ['created DESC'],
+            limit: 1,
+          }).pipe(
+            map((accessTokens) =>
+              accessTokens && accessTokens[0] ? accessTokens[0].created : null
+            )
+          )
+        : Rx.of([null]);
+
+    const countMatchesByType = (type) =>
+      Rx.bindNodeCallback(RedMatch.count.bind(RedMatch))({
+        mentorId: ctx.data.id,
+        status: type,
+      });
+    const countTotal = () => countMatchesByType(undefined);
+
+    Rx.zip(getLastLoginDateTime(), countTotal()).subscribe(
+      ([lastLoginDateTime, totalRedMatchCount]) => {
+        Object.assign(ctx.data, {
+          lastLoginDateTime,
+          totalRedMatchCount,
+        });
+        next();
+      },
+      (err) => next(err)
+    );
+  });
+
   RedProfile.observe('loaded', (ctx, next) => {
     if (ctx.isNewInstance) {
       return next();
@@ -91,6 +143,7 @@ module.exports = function (RedProfile) {
       // currentApplicantCount
       const RedMatch = app.models.RedMatch;
       const RedMentoringSession = app.models.RedMentoringSession;
+
       const countMatchesByType = (type) =>
         Rx.bindNodeCallback(RedMatch.count.bind(RedMatch))({
           mentorId: ctx.data.id,
@@ -98,6 +151,7 @@ module.exports = function (RedProfile) {
         });
       const countAcceptedMatches = () => countMatchesByType('accepted');
       const countAppliedMatches = () => countMatchesByType('applied');
+      const countTotal = () => countMatchesByType(undefined);
 
       const numberOfPendingApplicationWithCurrentUser = () =>
         ctx.options.currentUser
@@ -130,6 +184,7 @@ module.exports = function (RedProfile) {
       Rx.zip(
         countAcceptedMatches(),
         countAppliedMatches(),
+        countTotal(),
         numberOfPendingApplicationWithCurrentUser(),
         getRedMatchesToCurrentMentor(),
         getRedMentoringSessionsToCurrentMentor()
@@ -137,6 +192,7 @@ module.exports = function (RedProfile) {
         ([
           currentMenteeCount,
           currentApplicantCount,
+          totalRedMatchCount,
           numberOfPendingApplicationWithCurrentUser,
           redMatchesWithCurrentUser,
           redMentoringSessionsWithCurrentUser,
@@ -144,6 +200,7 @@ module.exports = function (RedProfile) {
           Object.assign(ctx.data, {
             currentMenteeCount,
             currentApplicantCount,
+            totalRedMatchCount,
             currentFreeMenteeSpots: ctx.data.menteeCountCapacity - currentMenteeCount,
             numberOfPendingApplicationWithCurrentUser,
             redMatchesWithCurrentUser,
