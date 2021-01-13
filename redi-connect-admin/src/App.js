@@ -414,6 +414,7 @@ const coursesByLocation = {
     { id: 'nrw_htmlCsss', label: 'HTML & CSS' },
     { id: 'nrw_introductionToPython', label: 'Introduction to Python' },
     { id: 'nrw_networkingFundamentals', label: 'Networking Fundamentals' },
+    { id: 'nrw_alumni', label: "I'm a ReDI School alumni (I took a course before)" },
   ],
 };
 const coursesFlat = [
