@@ -7,17 +7,22 @@
         <mj-column>
           <mj-text mj-class="headline">Verification has been successful!</mj-text>
           <mj-divider mj-class="divider-top" css-class="divider" />
-
           <mj-text mj-class="text">Hello ${firstName},</mj-text>
-          <mj-text mj-class="text text-padding">your email address was successfully verified.</mj-text>
-          <mj-text mj-class="text">Now, we would like to get to know you a little better. Christa will contact you for a meeting. If you have spoken to
-            Christa already your profile will be activated soon. In the meantime, please join our group for mentors on <a href="https://www.linkedin.com/groups/8733859/" target="_blank" class="text-link">LinkedIn</a> and our slack channel: redi_mentors2020.</mj-text>
-          <mj-text mj-class="text" padding="20px 0 30px 0">We will also be doing regular <a href="https://www.meetup.com/de-DE/ReDI-school/" target="_blank" class="text-link">Meetups</a>.</mj-text>
-          <mj-text mj-class="text">Best,</mj-text>
-          <mj-text mj-class="text">Your Career Team at ReDI School</mj-text>
+          <mj-text mj-class="text text-padding"
+            >Your email address was successfully verified.</mj-text
+          >
+          <mj-text mj-class="text">
+            Now, I would like to get to know you a little better. Please schedule a short 20-minute
+            conversation with me
+            <a href="https://calendly.com/redi-miriam/mentor-onboarding">here</a>. 
+          <mj-text mj-class="text" padding="20px 0 30px 0"
+            >I look forward to getting to know you!</mj-text
+          >
+          <mj-text mj-class="text" padding="20px 0 30px 0">Best,<br /></mj-text>
+          <mj-text mj-class="text">Miriam</mj-text>
         </mj-column>
       </mj-section>
-      <mj-include path="./footer.munich.mjml" />
+      <mj-include path="./footer.berlin.miriam.mjml" />
       <mj-section />
     </mj-wrapper>
   </mj-body>

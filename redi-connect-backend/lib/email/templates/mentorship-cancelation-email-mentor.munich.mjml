@@ -25,10 +25,10 @@
             >.</mj-text
           >
           <mj-text mj-class="text">Best,</mj-text>
-          <mj-text mj-class="text">Christa</mj-text>
+          <mj-text mj-class="text">Miriam</mj-text>
         </mj-column>
       </mj-section>
-      <mj-include path="./footer.munich.mjml" />
+      <mj-include path="./footer.berlin.miriam.mjml" />
       <mj-section />
     </mj-wrapper>
   </mj-body>

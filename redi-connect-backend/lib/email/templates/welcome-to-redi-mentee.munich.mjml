@@ -8,18 +8,45 @@
           <mj-text mj-class="headline">Welcome to ReDI Connect!</mj-text>
           <mj-divider mj-class="divider-top" css-class="divider" />
           <mj-text mj-class="text">Hello ${firstName},</mj-text>
-          <mj-text mj-class="text text-padding">we are very happy to welcome you as a <strong>${mentorOrMentee}</strong> to ReDI Connect. </mj-text>
-          <mj-text mj-class="text">What are the next steps? You can now create you personal profile. We will ask you to provide some additional information about yourself on the platform during your profile creation. So that you and your future ${mentorOrMenteeOpposite} are a great match!</mj-text>
+          <mj-text mj-class="text text-padding"
+            >we are very happy to welcome you as a <strong>${mentorOrMentee}</strong> to ReDI
+            Connect.
+          </mj-text>
+          <mj-text mj-class="text"
+            >What are the next steps? You can now create you personal profile. We will ask you to
+            provide some additional information about yourself on the platform during your profile
+            creation. So that you and your future ${mentorOrMenteeOpposite} are a great
+            match!</mj-text
+          >
           <mj-text mj-class="text">To create your ReDI Connect profile, sign-in here:</mj-text>
-          <mj-image src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/signin-web.png" align="left" padding="30px 0" target="_blank" width="158px" css-class="button-desktop" href="${homePageUrl}" />
-          <mj-image src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/signin-mobile.png" align="left" padding="30px 0" target="_blank" css-class="button-mobile" href="${homePageUrl}" />
-          <mj-text mj-class="text" padding="20px 0 0">We wish you a great experience with your mentorship! </mj-text>
-          <mj-text mj-class="text" padding="0 0 30px 0">If you have any questions or feedback at any point, feel free to reach out.</mj-text>
+          <mj-image
+            src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/signin-web.png"
+            align="left"
+            padding="30px 0"
+            target="_blank"
+            width="158px"
+            css-class="button-desktop"
+            href="${homePageUrl}"
+          />
+          <mj-image
+            src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/signin-mobile.png"
+            align="left"
+            padding="30px 0"
+            target="_blank"
+            css-class="button-mobile"
+            href="${homePageUrl}"
+          />
+          <mj-text mj-class="text" padding="20px 0 0"
+            >We wish you a great experience with your mentorship!
+          </mj-text>
+          <mj-text mj-class="text" padding="0 0 30px 0"
+            >If you have any questions or feedback at any point, feel free to reach out.</mj-text
+          >
           <mj-text mj-class="text">Best,</mj-text>
-          <mj-text mj-class="text">Christa</mj-text>
+          <mj-text mj-class="text">Paulina</mj-text>
         </mj-column>
       </mj-section>
-      <mj-include path="./footer.munich.mjml" />
+      <mj-include path="./footer.berlin.paulina.mjml" />
       <mj-section />
     </mj-wrapper>
   </mj-body>
