@@ -14,11 +14,12 @@
           <mj-text mj-class="text">
             Now, I would like to get to know you a little better. Please schedule a short 20-minute
             conversation with me
-            <a href="https://calendly.com/redi-miriam/mentor-onboarding">here</a>. 
+            <a href="https://calendly.com/redi-miriam/mentor-onboarding">here</a>.
+          </mj-text>
           <mj-text mj-class="text" padding="20px 0 30px 0"
             >I look forward to getting to know you!</mj-text
           >
-          <mj-text mj-class="text" padding="20px 0 30px 0">Best,<br /></mj-text>
+          <mj-text mj-class="text" padding="0 0 0 0">Best,<br /></mj-text>
           <mj-text mj-class="text">Miriam</mj-text>
         </mj-column>
       </mj-section>
