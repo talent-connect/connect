@@ -47,11 +47,6 @@
             latest events. Once you're in, I will also add you to our mentors channel. 
           </mj-text>
 
-          <mj-text mj-class="text" padding="20px 0 0"
-            >We will also be doing regular
-            <a href="https://www.meetup.com/de-DE/ReDI-school/">Meetups</a>.
-          </mj-text>
-
           <mj-text mj-class="text" padding="0 0 30px 0"
             >If you have any questions or feedback at any point, feel free to reach out.</mj-text
           >

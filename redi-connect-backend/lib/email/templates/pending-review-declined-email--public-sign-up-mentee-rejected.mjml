@@ -5,19 +5,19 @@
       <mj-section />
       <mj-section css-class="section">
         <mj-column>
-          <mj-text mj-class="headline">ReDI Connect: your user sign-up was declined</mj-text>
+          <mj-text mj-class="headline">ReDI Connect: your user registration was declined</mj-text>
           <mj-divider mj-class="divider-top" css-class="divider" />
           <mj-text mj-class="text">Dear ${firstName},</mj-text>
           <mj-text mj-class="text text-padding"
-            >unfortunately your profile has not been accepted yet because we would like to get to
-            know you a little better before.</mj-text
+            >unfortunately your profile has not been approved. 
+            Most likely this has been discussed with you in your conversation with one of our Career Support team members.</mj-text
           >
+          
           <mj-text mj-class="text" padding="0 0 30px 0"
-            >Please let us know at ${rediEmailAdress} how we can reach you best so that we can have
-            a little chat.</mj-text
+            >If you feel like this has been done without your knowledge, please reach out to us at ${rediEmailAdress} so we can get in touch with you.</mj-text
           >
           <mj-text mj-class="text"
-            >Your Career Support Team at ReDI Connect, ${rediLocation}</mj-text
+            >Your Career Support Team at ReDI School, ${rediLocation}</mj-text
           >
         </mj-column>
       </mj-section>
