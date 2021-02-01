@@ -13,7 +13,7 @@
           </mj-text>
           <mj-text mj-class="text"
             >Please verify your email address by using the following button. Then it’s time to get
-            to know each other a little bit before starting your mentorship with ReDI..</mj-text
+            to know each other a little bit before starting your mentorship with ReDI.</mj-text
           >
           <mj-image
             src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/verify.png"
