@@ -676,13 +676,6 @@ const RedProfileShow = (props) => (
           <TextField source="ifTypeForm_additionalComments" label="Typeform: additional comments" />
         </Tab>
         <Tab label="Internal comments">
-          <p>
-            <em>
-              The following fields are only visible to ReDI Connect administrators, i.e. mostly
-              Eric, Isabelle and Timothy who use the cloud-accounts@redi-school.org user. Distinct
-              admin users is planned.
-            </em>
-          </p>
           <TextField source="administratorInternalComment" style={{ whiteSpace: 'pre-wrap' }} />
         </Tab>
       </TabbedShowLayout>
@@ -754,13 +747,6 @@ const RedProfileEdit = (props) => (
         <NumberInput source="menteeCountCapacity" />
       </FormTab>
       <FormTab label="Internal comments">
-        <p>
-          <em>
-            The following fields are only visible to ReDI Connect administrators, i.e. mostly Eric,
-            Isabelle and Timothy who use the cloud-accounts@redi-school.org user. Distinct admin
-            users is planned.
-          </em>
-        </p>
         <LongTextInput source="administratorInternalComment" />
       </FormTab>
     </TabbedForm>
