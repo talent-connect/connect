@@ -47,7 +47,11 @@ const emailBodyMjml = newsletterTemplateMjml.replace(
 
 
 
-<mj-text mj-class="text" padding="0 0 20px 0">Dear :firstName:, dear mentors,</mj-text>
+<mj-text mj-class="text" padding="0 0 20px 0">Dear mentors and mentees,</mj-text>
+
+I'm Eric, the architect behind ReDI Connect.
+
+I'd like t
 
 <mj-text mj-class="text" padding="0 0 20px 0">“Help me find a job”, your mentee might say.</mj-text>
 
