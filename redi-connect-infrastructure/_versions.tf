@@ -8,15 +8,16 @@ terraform {
   }
 
   backend "azurerm" {
-    storage_account_name  = "terraformstate32053"
-    resource_group_name   = "terraform-state"
+    storage_account_name  = "terraformstate11378"
+    resource_group_name   = "rediconnect"
     container_name        = "terraform-state"
     key                   = "terraform.tfstate"
   }
-
 }
 
 # Configure the Microsoft Azure Provider
 provider "azurerm" {
   features {}
+  // todo when we will be having our REDI connect azure account the next line will have to be deleted
+  skip_provider_registration = true
 }

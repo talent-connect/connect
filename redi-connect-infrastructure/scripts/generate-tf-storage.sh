@@ -1,11 +1,8 @@
 #!/bin/bash
 
 STORAGE_ACCOUNT_NAME=terraformstate$RANDOM
-RESOURCE_GROUP_NAME=terraform-state
+RESOURCE_GROUP_NAME=rediconnect
 CONTAINER_NAME=terraform-state
-
-# Create resource group
-az group create --name $RESOURCE_GROUP_NAME --location "germanywestcentral"
 
 # Create storage account
 az storage account create --resource-group $RESOURCE_GROUP_NAME --name $STORAGE_ACCOUNT_NAME --sku Standard_LRS --encryption-services blob
