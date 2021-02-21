@@ -9,7 +9,7 @@ The first time one executes terraform on an azure subscription they would have t
 
 This is the list of prerequisites required for the `connect` ci/cd pipeline:
 
-1. Create the backend for azure.
+1. Before you run `terraform init` - Create the backend for azure.
 
     resource:  https://docs.microsoft.com/en-us/azure/developer/terraform/store-state-in-azure-storage
     
@@ -23,6 +23,17 @@ This is the list of prerequisites required for the `connect` ci/cd pipeline:
     access_key: ****
     
     ``` 
+    You will have to copy the `storage_account_name: terraformstateXXXX` and paste them in the `_versions.tf` file like so
+    ```
+     backend "azurerm" {
+       storage_account_name  = "terraformstateXXXX"
+        .
+        .
+        .
+     }
+    ```
+    
+    Then you can run `terraform init`
     
 2. Creating a Service Principal and a Client Secret
 
