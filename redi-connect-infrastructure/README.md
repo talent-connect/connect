@@ -55,6 +55,7 @@ This is the list of prerequisites required for the `connect` ci/cd pipeline:
 
 ### how to get your `AZURE_CREDENTIALS`
 
+after you created you principal as described above you can recover your credentials using the command bellow
 ```
 az ad sp create-for-rbac --name "your_principal_name" --sdk-auth --role contributor --scopes /subscriptions/your_subscription_id/resourceGroups/your_resource_group_name
 ```
