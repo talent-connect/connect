@@ -10,8 +10,8 @@ resource "random_string" "unique" {
 }
 
 locals {
-  env_prefix              = "${var.environment}-${var.company}-${random_string.unique.result}"
-  env_prefix_no_separator = "${var.environment}${var.company}${random_string.unique.result}"
+  env_prefix              = "${var.environment}-${var.organisation}-${random_string.unique.result}"
+  env_prefix_no_separator = "${var.environment}${var.organisation}${random_string.unique.result}"
 }
 
 
@@ -38,7 +38,7 @@ resource "azurerm_storage_account" "static_storage" {
   }
 
   tags = {
-    product = var.company
+    product = var.organisation
   }
 }
 

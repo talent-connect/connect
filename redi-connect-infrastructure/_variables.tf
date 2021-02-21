@@ -1,4 +1,4 @@
-variable "company" {
+variable "organisation" {
   type        = string
   description = "This variable defines the name of the company"
   default     = "redi"
