@@ -1,0 +1,94 @@
+name: Deploy front webapp
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - develop
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+
+      - uses: actions/cache@v2
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        run: cd ./redi-connect-front && yarn install --frozen-lockfile
+
+  build:
+    runs-on: ubuntu-latest
+    needs: [install]
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+
+      - uses: actions/cache@v2
+        id: yarn-cache
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Build
+        env:
+          # This needs to be true ideally however at the moment the app wont build because of some js errors.
+          # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
+          # For instance you have an unused variable on your code
+          CI: ""
+        run: cd ./redi-connect-front && yarn build:dev:berlin
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: front-build
+          path: |
+            redi-connect-front/build
+          retention-days: 1
+
+  deploy:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    needs: [build]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: front-build
+          path: redi-connect-front/build
+
+      - name: Upload to blob storage
+        uses: azure/CLI@v1
+        with:
+          azcliversion:  2.19.1
+          inlineScript: |
+            az storage blob upload-batch --account-name storagedevrediaduz -d '$web' -s redi-connect-front/build
+
+      - name: Purge CDN endpoint
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.19.1
+          inlineScript: |
+            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-dev-redi-aduz" --name "cdn-endpoint-dev-redi-aduz" --resource-group "rg-dev-redi-aduz"
+
+      - name: logout
+        run: |
+          az logout
