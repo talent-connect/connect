@@ -9,3 +9,19 @@ redi-connect-backend/scripts/assets
 
 yarn-error.log
 node_modules
+
+# Compiled files
+*.tfstate
+*.tfstate.backup
+
+.idea
+.terraform
+
+*.iml
+*.hcl
+
+/main/current-tf-plan.dot
+
+crash.log
+
+data
