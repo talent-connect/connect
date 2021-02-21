@@ -44,7 +44,7 @@ resource "azurerm_storage_account" "static_storage" {
 
 
 #---------------------------------------------------------
-# Add CDN profile and endpoint to static website
+# CDN profile and endpoint to static website
 #----------------------------------------------------------
 resource "azurerm_cdn_profile" "cdn-profile" {
   name                = "cdn-profile-${local.env_prefix}"

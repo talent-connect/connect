@@ -65,3 +65,16 @@ Resources:
 https://github.com/Azure/webapps-deploy
 https://docs.microsoft.com/en-us/azure/app-service/tutorial-custom-container?pivots=container-linux
 https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-azure-cli
+
+
+### `.tfvars`
+
+#### The file `development.auto.tfvars`
+In this file we are storing the variables we are using for development environment
+
+#### The file `production.tfvars`
+For production deployment of the redi-connect infrastructure you will need to pass the `-var-file=production.tfvars` in your terraform commands
+
+For example `terraform plan -var-file=production.tfvars` or `terraform apply -var-file=production.tfvars` 
+
+The difference between these two environments is that the production env will be using a more expensive `sku` and tier than the development one.
