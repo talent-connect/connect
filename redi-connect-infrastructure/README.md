@@ -78,3 +78,5 @@ For production deployment of the redi-connect infrastructure you will need to pa
 For example `terraform plan -var-file=production.tfvars` or `terraform apply -var-file=production.tfvars` 
 
 The difference between these two environments is that the production env will be using a more expensive `sku` and tier than the development one.
+
+NOTE: at the time I am writing this tough we dont have any production system yet.
