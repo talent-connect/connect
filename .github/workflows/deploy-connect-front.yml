@@ -4,10 +4,10 @@ on:
   push:
     branches:
       - develop
-  pull_request:
-    types: [opened, synchronize, reopened, closed]
-    branches:
-      - develop
+    paths:
+      - 'redi-connect-front/**'
+    paths-ignore:
+      - 'redi-connect-front/README.md'
 
 jobs:
   install:
@@ -51,7 +51,7 @@ jobs:
           # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
           # For instance you have an unused variable on your code
           CI: ""
-        run: cd ./redi-connect-front && yarn build:dev:berlin
+        run: cd ./redi-connect-front && yarn build:dev:berlin # when we move to the actual redi azure account this will be building the production website
 
       - uses: actions/upload-artifact@v2
         with:
