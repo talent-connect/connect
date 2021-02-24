@@ -1,4 +1,4 @@
-name: Build and deploy Docker app to Azure
+name: Deploy backend webapp
 
 on:
   pull_request:
