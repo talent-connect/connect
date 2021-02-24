@@ -70,7 +70,6 @@ resource "azurerm_cdn_endpoint" "cdn-endpoint" {
 }
 
 
-
 #---------------------------------------------------------
 # Azure container registry & Web app container
 #----------------------------------------------------------
