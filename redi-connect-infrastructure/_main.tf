@@ -66,7 +66,7 @@ resource "azurerm_cdn_endpoint" "cdn-endpoint" {
   name         = "cdn-endpoint-${local.env_prefix}"
   profile_name = azurerm_cdn_profile.cdn-profile.name
   //  resource_group_name           = azurerm_resource_group.webapp-rg.name
-  resource_group_name = local.resource-group-name
+  resource_group_name           = local.resource-group-name
   location                      = var.location_europe
   origin_host_header            = azurerm_storage_account.static_storage.primary_web_host
   querystring_caching_behaviour = "IgnoreQueryString"
@@ -74,5 +74,56 @@ resource "azurerm_cdn_endpoint" "cdn-endpoint" {
   origin {
     name      = "websiteorginaccount"
     host_name = azurerm_storage_account.static_storage.primary_web_host
+  }
+}
+
+
+
+#---------------------------------------------------------
+# Azure container registry & Web app container
+#----------------------------------------------------------
+resource "azurerm_container_registry" "acr" {
+  name                = "registry${local.env_prefix_no_separator}"
+  resource_group_name = local.resource-group-name
+  location            = var.location_europe
+  sku                 = var.tier
+  admin_enabled       = true
+}
+
+module "web_app_container" {
+  source              = "innovationnorway/web-app-container/azurerm"
+  name                = "app-${local.env_prefix}"
+  resource_group_name = local.resource-group-name
+  docker_registry_url = "https://${azurerm_container_registry.acr.name}.azurecr.io"
+
+  // todo have different slots
+  plan = {
+    name     = "plan-${local.env_prefix}"
+    sku_size = var.sku_size
+  }
+}
+
+resource "azurerm_cosmosdb_account" "db" {
+  name                = "cosmosdb-${local.env_prefix}"
+  location            = var.location_europe
+  resource_group_name = local.resource-group-name
+  offer_type          = "Standard"
+  kind                = "MongoDB"
+
+  enable_automatic_failover = true
+
+  capabilities {
+    name = "MongoDBv3.4"
+  }
+
+  consistency_policy {
+    consistency_level       = "BoundedStaleness"
+    max_interval_in_seconds = 10
+    max_staleness_prefix    = 200
+  }
+
+  geo_location {
+    location          = var.location_europe
+    failover_priority = 0
   }
 }
