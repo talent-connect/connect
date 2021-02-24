@@ -80,14 +80,14 @@ jobs:
         with:
           azcliversion:  2.19.1
           inlineScript: |
-            az storage blob upload-batch --account-name storagedevrediitnx -d '$web' -s redi-connect-front/build
+            az storage blob upload-batch --account-name "storagefrontstagingredi" -d '$web' -s redi-connect-front/build
 
       - name: Purge CDN endpoint
         uses: azure/CLI@v1
         with:
           azcliversion: 2.19.1
           inlineScript: |
-            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-dev-redi-itnx" --name "cdn-endpoint-dev-redi-itnx" --resource-group "rediconnect"
+            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-staging-redi" --name "cdn-endpoint-front-staging-redi" --resource-group "rediconnect"
 
       - name: logout
         run: |

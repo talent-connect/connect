@@ -1,7 +1,8 @@
-// todo when we will be having our REDI connect azure account this will have to return
-//output "resource_group_name" {
-//  value = azurerm_resource_group.webapp-rg.name
-//}
+output "resource_group_name" {
+  value = "rediconnect"
+  // todo when we will be having our REDI connect azure account this will have to return
+  //  value = azurerm_resource_group.webapp-rg.name
+}
 
 output "storage_account_id" {
   value       = azurerm_storage_account.static_storage.id
@@ -40,11 +41,18 @@ output "static_website_url" {
   description = "static web site URL from storage account"
 }
 
-
 output "azure_app_service_name" {
   value = module.web_app_container.name
 }
 
 output "azure_container_registry" {
-  value = "${azurerm_container_registry.acr.name}.azurecr.io"
+  value = azurerm_container_registry.acr.login_server
+}
+
+output "azure_container_username" {
+  value = azurerm_container_registry.acr.admin_username
+}
+
+output "azure_container_password" {
+  value = azurerm_container_registry.acr.admin_password
 }

@@ -1,3 +1,2 @@
-// todo this need to be renamed as staging
-environment = "dev"
+environment = "staging"
 sku_size    = "S1"
