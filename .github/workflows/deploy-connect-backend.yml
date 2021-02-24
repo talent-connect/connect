@@ -5,6 +5,8 @@ on:
     types: [opened, synchronize, reopened, closed]
     paths:
       - 'redi-connect-backend/**'
+    paths-ignore:
+      - 'redi-connect-backend/README.md'
 
 env:
   AZURE_APP_SERVICE_NAME: registry-dev-redi-itnx
