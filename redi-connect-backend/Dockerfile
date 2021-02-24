@@ -1,6 +1,14 @@
-FROM node:14 AS dev
-WORKDIR /src
+FROM node:14
+
+# Create app directory
+WORKDIR /usr/src/app
+
+# Install app dependencies
 COPY package.json ./
 RUN npm install
+
+# Bundle app source
 COPY . .
-CMD npm install && exec ./start-dev.sh
+EXPOSE 3003
+
+CMD [ "npm", "run", "start" ]
