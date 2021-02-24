@@ -1,2 +1,2 @@
-environment = "dev"
-sku_size    = "S2"
+environment = "staging"
+sku_size    = "S1"

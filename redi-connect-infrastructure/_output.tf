@@ -1,7 +1,8 @@
-// todo when we will be having our REDI connect azure account this will have to return
-//output "resource_group_name" {
-//  value = azurerm_resource_group.webapp-rg.name
-//}
+output "resource_group_name" {
+  value = "rediconnect"
+  // todo when we will be having our REDI connect azure account this will have to return
+  //  value = azurerm_resource_group.webapp-rg.name
+}
 
 output "storage_account_id" {
   value       = azurerm_storage_account.static_storage.id
