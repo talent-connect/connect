@@ -94,7 +94,7 @@ module "web_app_container" {
   source              = "innovationnorway/web-app-container/azurerm"
   name                = "app-${local.env_prefix}"
   resource_group_name = local.resource-group-name
-  docker_registry_url = "https://${azurerm_container_registry.acr.name}.azurecr.io"
+  docker_registry_url = "${azurerm_container_registry.acr.name}.azurecr.io"
 
   // todo have different slots
   plan = {
@@ -104,7 +104,7 @@ module "web_app_container" {
 }
 
 resource "azurerm_cosmosdb_account" "db" {
-  name                = "cosmosdb-${local.env_prefix}"
+  name                = "cosmos-${local.env_prefix}"
   location            = var.location_europe
   resource_group_name = local.resource-group-name
   offer_type          = "Standard"
