@@ -6,8 +6,6 @@ on:
       - develop
     paths:
       - 'redi-connect-front/**'
-    paths-ignore:
-      - 'redi-connect-front/README.md'
 
 jobs:
   install:
