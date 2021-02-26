@@ -25,8 +25,8 @@ jobs:
         run: cd ./redi-connect-front && yarn install --frozen-lockfile
 
   build-and-deploy-staging:
-    runs-on: ubuntu-latest
     needs: [install]
+    runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     environment:
       name: staging
