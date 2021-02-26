@@ -81,10 +81,13 @@ az acr credential show --resource-group AppSvc-DockerTutorial-rg --name <registr
 
 ## Caveats on terraform code
 
-### custom cdn endpoints are not supported
+- custom cdn endpoints are not supported
 
-https://github.com/terraform-providers/terraform-provider-azurerm/issues/398
-That means the user needs to add a custom cdn via the cli.
+    At the moment the module for terraform isnt supporting custom cdn domains as shown in the issue bellow.
+    
+    https://github.com/terraform-providers/terraform-provider-azurerm/issues/398
+    
+    A workaround in the meantime would be to add a custom cdn via the Azure cli.
 
 ----
 
