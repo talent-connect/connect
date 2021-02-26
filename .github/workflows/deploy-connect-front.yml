@@ -6,7 +6,6 @@ on:
       - develop
     paths:
       - 'redi-connect-front/**'
-
 jobs:
   install:
     runs-on: ubuntu-latest
@@ -27,10 +26,12 @@ jobs:
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: cd ./redi-connect-front && yarn install --frozen-lockfile
 
-  build:
+  deploy-staging:
     runs-on: ubuntu-latest
     needs: [install]
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    environment:
+      name: staging
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -43,50 +44,83 @@ jobs:
           path: '**/node_modules'
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Build
-        env:
-          # This needs to be true ideally however at the moment the app wont build because of some js errors.
-          # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
-          # For instance you have an unused variable on your code
-          CI: ""
-        run: cd ./redi-connect-front && yarn build:dev:berlin # when we move to the actual redi azure account this will be building the production website
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: front-build
-          path: |
-            redi-connect-front/build
-          retention-days: 1
-
-  deploy:
-    runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
-    needs: [build]
-    steps:
-      - uses: actions/checkout@v2
-      - uses: azure/login@v1
+      - name: Login in Azure
+        uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - uses: actions/download-artifact@v2
-        with:
-          name: front-build
-          path: redi-connect-front/build
+      - name: Build webapp
+        env:
+          # CI needs to be `true` ideally. However at the moment the app won't build because of some js errors.
 
-      - name: Upload to blob storage
+          # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
+          # For instance you have an unused variable on your code
+          CI: ""
+        run: cd ./redi-connect-front && REACT_APP_API_URL=${{ secrets.API_ENDPOINT }} yarn build:berlin # when we move to the actual redi azure account this will be building the production website
+
+      - name: Upload webapp artifacts to blob storage
         uses: azure/CLI@v1
         with:
           azcliversion:  2.19.1
           inlineScript: |
-            az storage blob upload-batch --account-name "storagefrontstagingredi" -d '$web' -s redi-connect-front/build
+            az storage blob upload-batch --account-name "storagefrontstagingredi" -d '$web' -s ./redi-connect-front/build
 
-      - name: Purge CDN endpoint
+      - name: Purge pre-loaded content for the CDN endpoint
         uses: azure/CLI@v1
         with:
           azcliversion: 2.19.1
           inlineScript: |
             az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-staging-redi" --name "cdn-endpoint-front-staging-redi" --resource-group "rediconnect"
 
-      - name: logout
+      - name: Logout from Azure
+        run: |
+          az logout
+
+  deploy-production:
+    needs: [install, deploy-staging]
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    environment:
+      name: production
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+
+      - uses: actions/cache@v2
+        id: yarn-cache
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Login in Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Build webapp
+        env:
+          # CI needs to be `true` ideally. However at the moment the app wont build because of some js errors.
+          # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
+          # For instance you have an unused variable on your code
+          CI: ""
+        run: cd ./redi-connect-front && REACT_APP_API_URL=${{ secrets.API_ENDPOINT }} yarn build:berlin # when we move to the actual redi azure account this will be building the production website
+
+      - name: Upload webapp artifacts to blob storage
+        uses: azure/CLI@v1
+        with:
+          azcliversion:  2.19.1
+          inlineScript: |
+            az storage blob upload-batch --account-name "storagefrontstagingredi" -d '$web' -s ./redi-connect-front/build
+
+      - name: Purge pre-loaded content for the CDN endpoint
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.19.1
+          inlineScript: |
+            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-staging-redi" --name "cdn-endpoint-front-staging-redi" --resource-group "rediconnect"
+
+      - name: Logout from Azure
         run: |
           az logout

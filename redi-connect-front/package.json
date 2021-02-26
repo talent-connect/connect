@@ -81,7 +81,7 @@
     "start:munich": "REACT_APP_REDI_LOCATION=munich react-scripts start",
     "start:nrw": "REACT_APP_REDI_LOCATION=nrw react-scripts start",
     "build": "react-scripts build",
-    "build:dev:berlin": "REACT_APP_REDI_LOCATION=berlin REACT_APP_API_URL=https://api.demo.connect.redi-school.org/api yarn build",
+    "build:berlin": "REACT_APP_REDI_LOCATION=berlin yarn build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "eslint": "npx eslint . --ext .js,.jsx,.ts,.tsx",
