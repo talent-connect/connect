@@ -1,7 +1,8 @@
 name: Deploy front webapp
 
 on:
-  push:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
     branches:
       - develop
     paths:
@@ -27,10 +28,12 @@ jobs:
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: cd ./redi-connect-front && yarn install --frozen-lockfile
 
-  build:
+  build-and-deploy-staging:
     runs-on: ubuntu-latest
     needs: [install]
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    environment:
+      name: staging
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -45,33 +48,16 @@ jobs:
 
       - name: Build
         env:
-          # This needs to be true ideally however at the moment the app wont build because of some js errors.
+          # CI needs to be `true` ideally. However at the moment the app wont build because of some js errors.
           # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
           # For instance you have an unused variable on your code
           CI: ""
-        run: cd ./redi-connect-front && yarn build:dev:berlin # when we move to the actual redi azure account this will be building the production website
+        run: cd ./redi-connect-front && REACT_APP_API_URL={{ secrets.API_ENDPOINT }} yarn build:staging:berlin # when we move to the actual redi azure account this will be building the production website
 
-      - uses: actions/upload-artifact@v2
-        with:
-          name: front-build
-          path: |
-            redi-connect-front/build
-          retention-days: 1
-
-  deploy:
-    runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
-    needs: [build]
-    steps:
       - uses: actions/checkout@v2
       - uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - uses: actions/download-artifact@v2
-        with:
-          name: front-build
-          path: redi-connect-front/build
 
       - name: Upload to blob storage
         uses: azure/CLI@v1
