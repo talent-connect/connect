@@ -1,0 +1,12 @@
+{
+  "db": {
+    "name": "db",
+    "connector": "memory"
+  },
+  "mongodb": {
+    "database": "mongodb",
+    "name": "mongodb",
+    "connector": "mongodb",
+    "url": "${MONGO_PRODUCTION_URL}"
+  }
+}
