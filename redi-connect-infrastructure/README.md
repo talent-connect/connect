@@ -79,6 +79,13 @@ Run the az acr show command to retrieve credentials for the registry:
 az acr credential show --resource-group AppSvc-DockerTutorial-rg --name <registry-name>
 ```
 
+## Caveats on terraform code
+
+### custom cdn endpoints are not supported
+
+https://github.com/terraform-providers/terraform-provider-azurerm/issues/398
+That means the user needs to add a custom cdn via the cli.
+
 ----
 
 Resources: 
