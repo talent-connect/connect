@@ -3,7 +3,6 @@ name: Deploy front webapp
 on:
   push:
     branches:
-      - "*"
 
 jobs:
   install:
