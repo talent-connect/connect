@@ -51,7 +51,8 @@ jobs:
 
       - name: Build webapp
         env:
-          # CI needs to be `true` ideally. However at the moment the app wont build because of some js errors.
+          # CI needs to be `true` ideally. However at the moment the app won't build because of some js errors.
+
           # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
           # For instance you have an unused variable on your code
           CI: ""
