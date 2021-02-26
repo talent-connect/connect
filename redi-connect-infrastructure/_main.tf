@@ -67,6 +67,21 @@ resource "azurerm_cdn_endpoint" "cdn-endpoint" {
     name      = "websiteorginaccount"
     host_name = azurerm_storage_account.static_storage.primary_web_host
   }
+
+  delivery_rule {
+    name  = "EnforceHTTPS"
+    order = "1"
+
+    request_scheme_condition {
+      operator     = "Equal"
+      match_values = ["HTTP"]
+    }
+
+    url_redirect_action {
+      redirect_type = "Found"
+      protocol      = "Https"
+    }
+  }
 }
 
 
