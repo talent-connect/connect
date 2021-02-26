@@ -40,3 +40,19 @@ output "static_website_url" {
   value       = azurerm_storage_account.static_storage.primary_web_host
   description = "static web site URL from storage account"
 }
+
+output "azure_app_service_name" {
+  value = module.web_app_container.name
+}
+
+output "azure_container_registry" {
+  value = azurerm_container_registry.acr.login_server
+}
+
+output "azure_container_username" {
+  value = azurerm_container_registry.acr.admin_username
+}
+
+output "azure_container_password" {
+  value = azurerm_container_registry.acr.admin_password
+}
