@@ -48,7 +48,7 @@ jobs:
           # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
           # For instance you have an unused variable on your code
           CI: ""
-        run: cd ./redi-connect-front && REACT_APP_API_URL={{ secrets.API_ENDPOINT }} yarn build:staging:berlin # when we move to the actual redi azure account this will be building the production website
+        run: cd ./redi-connect-front && REACT_APP_API_URL=${{ secrets.API_ENDPOINT }} yarn build:staging:berlin # when we move to the actual redi azure account this will be building the production website
 
       - uses: actions/checkout@v2
       - uses: azure/login@v1
