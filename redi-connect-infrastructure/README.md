@@ -71,6 +71,16 @@ after you created you principal as described above you can recover your credenti
 az ad sp create-for-rbac --name "your_principal_name" --sdk-auth --role contributor --scopes /subscriptions/your_subscription_id/resourceGroups/your_resource_group_name
 ```
 
+### how to get your `REGISTRY_USERNAME` & `REGISTRY_PASSWORD`
+
+Run the az acr show command to retrieve credentials for the registry:
+
+```
+az acr credential show --resource-group AppSvc-DockerTutorial-rg --name <registry-name>
+```
+
+----
+
 Resources: 
 
 https://github.com/Azure/webapps-deploy

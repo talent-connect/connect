@@ -1,17 +1,9 @@
 #---------------------------------------------------------
 # Local declarations
 #----------------------------------------------------------
-resource "random_string" "unique" {
-  length  = 4
-  upper   = false
-  number  = true
-  lower   = true
-  special = false
-}
-
 locals {
-  env_prefix              = "${var.environment}-${var.organisation}-${random_string.unique.result}"
-  env_prefix_no_separator = "${var.environment}${var.organisation}${random_string.unique.result}"
+  env_prefix              = "${var.environment}-${var.organisation}"
+  env_prefix_no_separator = "${var.environment}${var.organisation}"
   // todo these two need to be removed when we move to REDI connect azure account.
   resource-group-name     = "rediconnect"
   resource-group-location = "germanywestcentral"
@@ -30,7 +22,7 @@ locals {
 //}
 
 resource "azurerm_storage_account" "static_storage" {
-  name                = "storage${local.env_prefix_no_separator}"
+  name                = "storagefront${local.env_prefix_no_separator}"
   resource_group_name = local.resource-group-name
   location            = local.resource-group-location
   //  resource_group_name       = azurerm_resource_group.webapp-rg.name
@@ -55,7 +47,7 @@ resource "azurerm_storage_account" "static_storage" {
 # CDN profile and endpoint to static website
 #----------------------------------------------------------
 resource "azurerm_cdn_profile" "cdn-profile" {
-  name = "cdn-profile-${local.env_prefix}"
+  name = "cdn-profile-front-${local.env_prefix}"
   //  resource_group_name = azurerm_resource_group.webapp-rg.name
   resource_group_name = local.resource-group-name
   location            = var.location_europe
@@ -63,10 +55,10 @@ resource "azurerm_cdn_profile" "cdn-profile" {
 }
 
 resource "azurerm_cdn_endpoint" "cdn-endpoint" {
-  name         = "cdn-endpoint-${local.env_prefix}"
+  name         = "cdn-endpoint-front-${local.env_prefix}"
   profile_name = azurerm_cdn_profile.cdn-profile.name
   //  resource_group_name           = azurerm_resource_group.webapp-rg.name
-  resource_group_name = local.resource-group-name
+  resource_group_name           = local.resource-group-name
   location                      = var.location_europe
   origin_host_header            = azurerm_storage_account.static_storage.primary_web_host
   querystring_caching_behaviour = "IgnoreQueryString"
@@ -74,5 +66,62 @@ resource "azurerm_cdn_endpoint" "cdn-endpoint" {
   origin {
     name      = "websiteorginaccount"
     host_name = azurerm_storage_account.static_storage.primary_web_host
+  }
+}
+
+
+#---------------------------------------------------------
+# Azure container registry & Web app container
+#----------------------------------------------------------
+resource "azurerm_container_registry" "acr" {
+  name                = "registry${local.env_prefix_no_separator}"
+  resource_group_name = local.resource-group-name
+  location            = var.location_europe
+  sku                 = var.tier
+  admin_enabled       = true
+}
+
+resource "azurerm_cosmosdb_account" "db" {
+  name                = "cosmos-${local.env_prefix}"
+  location            = var.location_europe
+  resource_group_name = local.resource-group-name
+  offer_type          = "Standard"
+  kind                = "MongoDB"
+
+  enable_automatic_failover = true
+
+  capabilities {
+    name = "MongoDBv3.4"
+  }
+
+  consistency_policy {
+    consistency_level       = "BoundedStaleness"
+    max_interval_in_seconds = 10
+    max_staleness_prefix    = 200
+  }
+
+  geo_location {
+    location          = var.location_europe
+    failover_priority = 0
+  }
+}
+
+module "web_app_container" {
+  depends_on               = [azurerm_cosmosdb_account.db]
+  source                   = "innovationnorway/web-app-container/azurerm"
+  name                     = "app-${local.env_prefix}"
+  resource_group_name      = local.resource-group-name
+  docker_registry_url      = azurerm_container_registry.acr.login_server
+  docker_registry_username = azurerm_container_registry.acr.admin_username
+  docker_registry_password = azurerm_container_registry.acr.admin_password
+
+  app_settings = {
+    MONGO_PRODUCTION_URL = element(azurerm_cosmosdb_account.db.connection_strings, 0)
+  }
+
+  // todo have different slots
+  plan = {
+    name     = "plan-${local.env_prefix}"
+    sku_size = var.sku_size
   }
 }
