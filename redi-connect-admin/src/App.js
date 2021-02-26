@@ -19,6 +19,7 @@ import {
   DateField,
   TextInput,
   BooleanInput,
+  NullableBooleanInput,
   NumberField,
   FormTab,
   NumberInput,
@@ -567,6 +568,7 @@ const RedProfileListFilters = (props) => (
       source="mentee_currentlyEnrolledInCourse"
       choices={coursesFlat.map(({ id, label }) => ({ id, name: label }))}
     ></SelectInput>
+    <NullableBooleanInput label="User activated yes/no" source="userActivated" />
   </Filter>
 );
 function userTypeToEmoji({ userType }) {
