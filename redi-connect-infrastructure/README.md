@@ -42,7 +42,7 @@ This is the list of prerequisites required for the `connect` ci/cd pipeline:
        .
     }
    ```
-   You can now run `terraform init`
+   Now, run `terraform init`
    
 
 2. Creating a Service Principal and a Client Secret
