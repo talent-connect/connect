@@ -60,7 +60,7 @@ jobs:
         with:
           azcliversion:  2.19.1
           inlineScript: |
-            az storage blob upload-batch --account-name "storagefrontstagingredi" -d '$web' -s redi-connect-front/build
+            az storage blob upload-batch --account-name "storagefrontstagingredi" -d '$web' -s ./build
 
       - name: Purge CDN endpoint
         uses: azure/CLI@v1
@@ -109,7 +109,7 @@ jobs:
         with:
           azcliversion:  2.19.1
           inlineScript: |
-            az storage blob upload-batch --account-name "storagefrontstagingredi" -d '$web' -s build
+            az storage blob upload-batch --account-name "storagefrontstagingredi" -d '$web' -s ./build
 
       - name: Purge CDN endpoint
         uses: azure/CLI@v1
