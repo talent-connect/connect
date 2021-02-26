@@ -10,11 +10,11 @@ This is the list of prerequisites required for the `connect` ci/cd pipeline:
 
 1. Create the backend for Azure.
 
-   This is step is needed only the very first time _before_ you run `terraform init`. This is because when you are under a completely new Azure subscription you dont have a storagr container to store the Terraform state yet.
+   This is step is needed only the very first time _before_ you run `terraform init`. This is because when you are under a completely new Azure subscription you dont have a storage container to store the Terraform state yet.
    
    Resource: https://docs.microsoft.com/en-us/azure/developer/terraform/store-state-in-azure-storage
 
-   The very first time in order to run `terraform init` we need storage where we can store the state of Terraform. To do so you will simply need to execute the `generate-tf-storage.sh` script.
+   The very first time in order to run `terraform init` we need a [blob storage](https://azure.microsoft.com/en-gb/services/storage/blobs/) where we can store the state of Terraform. To do so you will simply need to execute the `generate-tf-storage.sh` script.
 
    From the directory `redi-connect-infrastructure` run
    ```
