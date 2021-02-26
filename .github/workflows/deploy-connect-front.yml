@@ -1,12 +1,9 @@
 name: Deploy front webapp
 
 on:
-  pull_request:
+  push:
     branches:
-      - cp/issues/240-front-envs
-    types: [opened, synchronize, reopened, closed]
-    paths:
-      - 'redi-connect-front/**'
+      - "*"
 
 jobs:
   install:
