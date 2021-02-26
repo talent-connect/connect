@@ -42,7 +42,8 @@ jobs:
           path: '**/node_modules'
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
 
-      - uses: azure/login@v1
+      - name: Login in Azure
+        uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
@@ -68,7 +69,7 @@ jobs:
           inlineScript: |
             az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-staging-redi" --name "cdn-endpoint-front-staging-redi" --resource-group "rediconnect"
 
-      - name: logout
+      - name: Logout from Azure
         run: |
           az logout
 
@@ -90,17 +91,18 @@ jobs:
           path: '**/node_modules'
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Build
+      - name: Login in Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Build webapp
         env:
           # CI needs to be `true` ideally. However at the moment the app wont build because of some js errors.
           # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
           # For instance you have an unused variable on your code
           CI: ""
         run: cd ./redi-connect-front && REACT_APP_API_URL=${{ secrets.API_ENDPOINT }} yarn build:berlin # when we move to the actual redi azure account this will be building the production website
-
-      - uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Upload to blob storage
         uses: azure/CLI@v1
@@ -116,6 +118,6 @@ jobs:
           inlineScript: |
             az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-staging-redi" --name "cdn-endpoint-front-staging-redi" --resource-group "rediconnect"
 
-      - name: logout
+      - name: Logout from Azure
         run: |
           az logout
