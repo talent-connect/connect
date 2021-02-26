@@ -22,11 +22,11 @@ locals {
 //}
 
 resource "azurerm_storage_account" "static_storage" {
-  name                = "storagefront${local.env_prefix_no_separator}"
-  resource_group_name = local.resource-group-name
-  location            = local.resource-group-location
   //  resource_group_name       = azurerm_resource_group.webapp-rg.name
   //  location                  = azurerm_resource_group.webapp-rg.location
+  name                      = "storagefront${local.env_prefix_no_separator}"
+  resource_group_name       = local.resource-group-name
+  location                  = local.resource-group-location
   account_kind              = "StorageV2"
   account_tier              = "Standard"
   account_replication_type  = "GRS"
@@ -47,25 +47,40 @@ resource "azurerm_storage_account" "static_storage" {
 # CDN profile and endpoint to static website
 #----------------------------------------------------------
 resource "azurerm_cdn_profile" "cdn-profile" {
-  name = "cdn-profile-front-${local.env_prefix}"
   //  resource_group_name = azurerm_resource_group.webapp-rg.name
+  name                = "cdn-profile-front-${local.env_prefix}"
   resource_group_name = local.resource-group-name
-  location            = var.location_europe
+  location            = var.location_europe # accepts only this location
   sku                 = "Standard_Microsoft"
 }
 
 resource "azurerm_cdn_endpoint" "cdn-endpoint" {
-  name         = "cdn-endpoint-front-${local.env_prefix}"
-  profile_name = azurerm_cdn_profile.cdn-profile.name
   //  resource_group_name           = azurerm_resource_group.webapp-rg.name
+  name                          = "cdn-endpoint-front-${local.env_prefix}"
+  profile_name                  = azurerm_cdn_profile.cdn-profile.name
   resource_group_name           = local.resource-group-name
-  location                      = var.location_europe
+  location                      = var.location_europe # accepts only this location
   origin_host_header            = azurerm_storage_account.static_storage.primary_web_host
   querystring_caching_behaviour = "IgnoreQueryString"
 
   origin {
     name      = "websiteorginaccount"
     host_name = azurerm_storage_account.static_storage.primary_web_host
+  }
+
+  delivery_rule {
+    name  = "EnforceHTTPS"
+    order = "1"
+
+    request_scheme_condition {
+      operator     = "Equal"
+      match_values = ["HTTP"]
+    }
+
+    url_redirect_action {
+      redirect_type = "Found"
+      protocol      = "Https"
+    }
   }
 }
 
@@ -76,20 +91,23 @@ resource "azurerm_cdn_endpoint" "cdn-endpoint" {
 resource "azurerm_container_registry" "acr" {
   name                = "registry${local.env_prefix_no_separator}"
   resource_group_name = local.resource-group-name
-  location            = var.location_europe
+  location            = var.location
   sku                 = var.tier
   admin_enabled       = true
 }
 
 resource "azurerm_cosmosdb_account" "db" {
   name                = "cosmos-${local.env_prefix}"
-  location            = var.location_europe
+  location            = var.location
   resource_group_name = local.resource-group-name
   offer_type          = "Standard"
   kind                = "MongoDB"
 
   enable_automatic_failover = true
 
+  capabilities {
+    name = "EnableMongo"
+  }
   capabilities {
     name = "MongoDBv3.4"
   }
@@ -101,7 +119,7 @@ resource "azurerm_cosmosdb_account" "db" {
   }
 
   geo_location {
-    location          = var.location_europe
+    location          = var.location
     failover_priority = 0
   }
 }
