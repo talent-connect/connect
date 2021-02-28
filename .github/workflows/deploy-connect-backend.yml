@@ -6,11 +6,13 @@ on:
       - develop
     paths:
       - 'redi-connect-backend/**'
+      - '.github/workflows/deploy-connect-backend.yml'
 
 env:
   AZURE_APP_SERVICE_NAME: app-staging-redi
   AZURE_CONTAINER_REGISTRY: registrystagingredi.azurecr.io
   AZURE_IMAGE_NAME_WITH_TAG: registrystagingredi.azurecr.io/rediconnect-backend:${{ github.sha }}
+  AZURE_IMAGE_NAME_WITH_LATEST_TAG: registrystagingredi.azurecr.io/rediconnect-backend:latest
 
 jobs:
   build-and-deploy:
@@ -30,14 +32,15 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - run: |
-          docker build redi-connect-backend -t ${{ env.AZURE_IMAGE_NAME_WITH_TAG }}
+          docker build redi-connect-backend -t ${{ env.AZURE_IMAGE_NAME_WITH_TAG }} -t ${{ env.AZURE_IMAGE_NAME_WITH_LATEST_TAG }}
           docker push ${{ env.AZURE_IMAGE_NAME_WITH_TAG }}
+          docker push ${{ env.AZURE_IMAGE_NAME_WITH_LATEST_TAG }}
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_APP_SERVICE_NAME }}
-          images: ${{ env.AZURE_IMAGE_NAME_WITH_TAG }}
+          images: ${{ env.AZURE_IMAGE_NAME_WITH_LATEST_TAG }}
 
       - name: Azure logout
         run: |

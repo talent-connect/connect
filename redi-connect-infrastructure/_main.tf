@@ -132,6 +132,8 @@ module "web_app_container" {
   docker_registry_url      = azurerm_container_registry.acr.login_server
   docker_registry_username = azurerm_container_registry.acr.admin_username
   docker_registry_password = azurerm_container_registry.acr.admin_password
+  https_only               = true
+  container_image          = "registrystagingredi.azurecr.io/rediconnect-backend:latest"
 
   app_settings = {
     MONGO_PRODUCTION_URL = element(azurerm_cosmosdb_account.db.connection_strings, 0)

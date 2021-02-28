@@ -8,10 +8,10 @@ terraform {
   }
 
   backend "azurerm" {
-    storage_account_name  = "terraformstate11378"
-    resource_group_name   = "rediconnect"
-    container_name        = "terraform-state"
-    key                   = "terraform.tfstate"
+    storage_account_name = "terraformstate11378"
+    resource_group_name  = "rediconnect"
+    container_name       = "terraform-state"
+    key                  = "terraform.tfstate"
   }
 }
 
