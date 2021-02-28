@@ -8,6 +8,8 @@ var loopback = require('loopback')
 var boot = require('loopback-boot')
 
 var http = require('http')
+var https = require('https')
+var sslConfig = require('./ssl-config')
 
 var app = (module.exports = loopback())
 /*
@@ -67,14 +69,20 @@ app.use(
 // Sub-apps like REST API are mounted via boot scripts.
 boot(app, __dirname)
 
-app.start = function (httpOnly) {
-  if (httpOnly === undefined) {
-    httpOnly = process.env.HTTP
-  }
-  const server = http.createServer(app)
+app.start = function () {
+  const server = (function buildHttpOrHttpsServer(){
+    if (process.env.USE_HTTPS) {
+      return https.createServer({
+        key: sslConfig.privateKey,
+        cert: sslConfig.certificate
+      }, app)
+    } else {
+      return http.crates.createServer(app)
+    }
+  })()
   server.listen(app.get('port'), function () {
     var baseUrl =
-      (httpOnly ? 'http://' : 'https://') +
+      (process.env.USE_HTTPS ? 'https://' : 'http://') +
       app.get('host') +
       ':' +
       app.get('port')
