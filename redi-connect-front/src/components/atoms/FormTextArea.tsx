@@ -1,6 +1,6 @@
 import React from 'react'
 import classnames from 'classnames'
-import { Form } from 'react-bulma-components'
+import { Form, Content, Columns } from 'react-bulma-components'
 
 interface Props {
   name: string
@@ -19,6 +19,7 @@ function FormTextArea (props: any) {
     className,
     label,
     placeholder,
+    maxChar,
     rows,
     values,
     handleChange,
@@ -50,9 +51,22 @@ function FormTextArea (props: any) {
         />
       </Form.Control>
 
-      <Form.Help color="danger" className={hasError ? 'help--show' : ''}>
-        {hasError && <>{errors[name]}</>}
-      </Form.Help>
+      <Columns>
+        <Columns.Column>
+          <Form.Help color="danger" className={hasError && (!values[name] || !maxChar || values[name].length <= maxChar) ? 'help--show' : ''}>
+            {hasError && <>{errors[name]}</>}
+          </Form.Help>
+        </Columns.Column>
+        <Columns.Column>
+          {maxChar && (!values[name] || values[name].length <= maxChar) && <Content textColor="grey-dark" style={ { textAlign: 'right' } }>
+            {maxChar - (values[name] ? values[name].length : 0)} characters left
+          </Content>}
+          {maxChar && values[name] && values[name].length > maxChar && <Content textColor="danger" style={ { textAlign: 'right' } }>
+            {values[name].length - maxChar} characters over
+          </Content>}
+        </Columns.Column>
+      </Columns>
+
     </Form.Field>
   )
 }
