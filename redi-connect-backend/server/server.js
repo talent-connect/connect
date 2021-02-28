@@ -70,9 +70,6 @@ app.use(
 boot(app, __dirname)
 
 app.start = function () {
-  if (httpOnly === undefined) {
-    httpOnly = 
-  }
   const server = (function buildHttpOrHttpsServer(){
     if (process.env.USE_HTTPS) {
       return https.createServer({
