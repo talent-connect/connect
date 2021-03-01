@@ -9,13 +9,48 @@ on:
       - '.github/workflows/deploy-connect-backend.yml'
 
 env:
-  AZURE_APP_SERVICE_NAME: app-staging-redi
-  AZURE_CONTAINER_REGISTRY: registrystagingredi.azurecr.io
-  AZURE_IMAGE_NAME_WITH_TAG: registrystagingredi.azurecr.io/rediconnect-backend:${{ github.sha }}
-  AZURE_IMAGE_NAME_WITH_LATEST_TAG: registrystagingredi.azurecr.io/rediconnect-backend:latest
+  AZURE_CONTAINER_REGISTRY: ${{ REGISTRY_NAME }}.azurecr.io
+  AZURE_IMAGE_NAME_WITH_TAG: ${{ REGISTRY_NAME }}.azurecr.io/rediconnect-backend:${{ github.sha }}
+  AZURE_IMAGE_NAME_WITH_LATEST_TAG: ${{ REGISTRY_NAME }}.azurecr.io/rediconnect-backend:latest
 
 jobs:
-  build-and-deploy:
+  deploy-staging:
+    environment:
+      name: staging
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Azure authentication
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Azure container registry authentication
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ env.AZURE_CONTAINER_REGISTRY }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+      - run: |
+          docker build redi-connect-backend -t ${{ env.AZURE_IMAGE_NAME_WITH_TAG }} -t ${{ env.AZURE_IMAGE_NAME_WITH_LATEST_TAG }}
+          docker push ${{ env.AZURE_IMAGE_NAME_WITH_TAG }}
+          docker push ${{ env.AZURE_IMAGE_NAME_WITH_LATEST_TAG }}
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ secrets.APP_SERVICE_NAME }}
+          images: ${{ env.AZURE_IMAGE_NAME_WITH_LATEST_TAG }}
+
+      - name: Azure logout
+        run: |
+          az logout
+
+  deploy-production:
+    needs: [deploy-staging]
+    environment:
+      name: production
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master

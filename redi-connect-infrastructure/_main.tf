@@ -136,7 +136,7 @@ module "web_app_container" {
   container_image          = "registrystagingredi.azurecr.io/rediconnect-backend:latest"
 
   app_settings = {
-    MONGO_PRODUCTION_URL = "mongodb://${azurerm_cosmosdb_account.db.name}:${urlencode(azurerm_cosmosdb_account.db.primary_master_key)}@${azurerm_cosmosdb_account.db.name}.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@${azurerm_cosmosdb_account.db.name}@"
+    MONGO_CONNECTION_URL = "mongodb://${azurerm_cosmosdb_account.db.name}:${urlencode(azurerm_cosmosdb_account.db.primary_master_key)}@${azurerm_cosmosdb_account.db.name}.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@${azurerm_cosmosdb_account.db.name}@"
   }
 
   // todo have different slots
