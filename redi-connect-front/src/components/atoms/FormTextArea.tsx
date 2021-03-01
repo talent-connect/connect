@@ -1,6 +1,7 @@
 import React from 'react'
 import classnames from 'classnames'
 import { Form, Content, Columns } from 'react-bulma-components'
+import './FormTextArea.scss'
 
 interface Props {
   name: string
@@ -58,10 +59,10 @@ function FormTextArea (props: any) {
           </Form.Help>
         </Columns.Column>
         <Columns.Column>
-          {maxChar && (!values[name] || values[name].length <= maxChar) && <Content textColor="grey-dark" style={ { textAlign: 'right' } }>
+          {maxChar && (!values[name] || values[name].length <= maxChar) && <Content textColor="grey-dark" className="redi-textarea-characters">
             {maxChar - (values[name] ? values[name].length : 0)} characters left
           </Content>}
-          {maxChar && values[name] && values[name].length > maxChar && <Content textColor="danger" style={ { textAlign: 'right' } }>
+          {maxChar && values[name] && values[name].length > maxChar && <Content textColor="danger" className="redi-textarea-characters">
             {values[name].length - maxChar} characters over
           </Content>}
         </Columns.Column>
