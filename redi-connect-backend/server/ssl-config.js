@@ -1,7 +1,7 @@
 var path = require('path')
 var fs = require('fs')
 
-if (!process.env.HTTP) {
+if (process.env.USE_HTTPS) {
   let environmentFolder
   switch (process.env.NODE_ENV) {
     case 'production':

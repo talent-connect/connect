@@ -4,9 +4,9 @@
     "connector": "memory"
   },
   "mongodb": {
+    "url": "${MONGO_PRODUCTION_URL}",
     "host": "",
     "port": 0,
-    "url": "",
     "database": "mongodb",
     "password": "",
     "name": "mongodb",

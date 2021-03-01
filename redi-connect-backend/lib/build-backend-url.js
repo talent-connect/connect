@@ -10,6 +10,8 @@ module.exports = {
       return 'https://api.staging.connect.redi-school.org'
     } else if (env === 'development') {
       return 'http://127.0.0.1:3003'
+    } else if (env === 'prod') {
+      return 'https://app-staging-redi.azurewebsites.net'
     } else {
       return 'http://127.0.0.1:3003'
     }
