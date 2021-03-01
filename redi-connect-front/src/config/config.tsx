@@ -342,36 +342,33 @@ export const educationLevelsIdToLabelMap = mapValues(keyBy(educationLevels, 'id'
 let _courses: Course[];
 if ((process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'berlin') {
   _courses = [
-    { id: 'basicComputerTraining', label: 'Basic Computer Training' },
     { id: 'introPython', label: 'Intro to Python' },
-    { id: 'javaScript', label: 'Javascript' },
+    { id: 'dataAnalytics', label: 'Data Analytics' },
+    { id: 'htmlCss', label: 'HTML & CSS' },
+    { id: 'javaScript', label: 'JavaScript' },
     { id: 'react', label: 'React' },
-    { id: 'intermediateJava', label: 'Intermediate Java' },
-    { id: 'iotInAction', label: 'IoT in Action!' },
-    { id: 'dataSciencePython', label: 'Data Science with Python' },
-    { id: 'htmlCss', label: 'HTML&CSS' },
-    { id: 'salesforceFundamentals', label: 'Salesforce Fundamentals' },
-    { id: 'blockchainBasics', label: 'Blockchain Basics' },
-    { id: 'introIosAppsSwift', label: 'Intro to iOS Apps with Swift' },
     { id: 'introJava', label: 'Intro to Java' },
-    { id: 'uiUxWomen', label: 'UI/UX Women' },
-    { id: 'introNetworking', label: 'Intro to Networking' },
-    { id: 'alumni', label: "I'm a ReDI School alumni (I took a course before)" },
+    { id: 'intermediateJava', label: 'Programming with Java' },
+    { id: 'introComputerScience', label: 'Intro to Computer Science' },
+    { id: 'salesforceFundamentals', label: 'Salesforce Fundamentals' },
+    { id: 'azureFundamentals', label: 'Azure Fundamentals' },
+    { id: 'webDesignFundamentals', label: 'Web Design Fundamentals' },
+    { id: 'uiUxDesign', label: 'UX/UI Design' },
+    { id: 'alumni', label: `I'm a ReDI School alumni (I took a course before)` },
   ];
 } else if ((process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'munich') {
   _courses = [
     {
-      id: 'munich_dcp_fall2020_introductionToComputerScience',
+      id: 'munich_dcp_spring2021_introductionToComputerScience',
       label: 'Introduction to computer science',
     },
-    { id: 'munich_dcp_fall2020_frontEndDevelopment', label: 'Front-end development' },
-    { id: 'munich_dcp_fall2020_backendDevelopment', label: 'Back-end development' },
-    { id: 'munich_dcp_fall2020_dataScience', label: 'Data Science' },
-    { id: 'munich_dcp_fall2020_cloudComputing', label: 'Cloud computing' },
-    { id: 'munich_dcp_fall2020_networking', label: 'Networking' },
-    { id: 'munich_dcp_fall2020_networking', label: 'Women Program Basics English' },
-    { id: 'munich_dcp_fall2020_networking', label: 'Women Program Intro to programming' },
-    { id: 'munich_alumni', label: 'Alumni' },
+    { id: 'munich_dcp_spring2021_pythonIntermediate', label: 'Python Intermediate' },
+    { id: 'munich_dcp_spring2021_frontEndDevelopment', label: 'Front-end development' },
+    { id: 'munich_dcp_spring2021_react', label: 'React' },
+    { id: 'munich_dcp_spring2021_backendDevelopment', label: 'Back-end development' },
+    { id: 'munich_dcp_spring2021_dataScience', label: 'Data Science' },
+    { id: 'munich_dcp_spring2021_cloudComputing', label: 'Cloud computing' },
+    { id: 'munich_alumni', label: `I'm a ReDI School alumni (I took a course before)` },
   ];
 } else if ((process.env.REACT_APP_REDI_LOCATION as RediLocation) === 'nrw') {
   _courses = [
