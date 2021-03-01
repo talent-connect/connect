@@ -34,6 +34,7 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     environment:
       name: staging
+      url: https://cdn-endpoint-front-staging-redi.azureedge.net
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -84,6 +85,7 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     environment:
       name: production
+      url: https://cdn-endpoint-front-prod-redi.azureedge.net
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
