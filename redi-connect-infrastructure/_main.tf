@@ -2,9 +2,10 @@
 # Local declarations
 #----------------------------------------------------------
 locals {
-  env_prefix              = "${var.environment}-${var.organisation}"
-  env_prefix_no_separator = "${var.environment}${var.organisation}"
-  // todo these two need to be removed when we move to REDI connect azure account.
+  env                     = terraform.workspace == "default" ? "staging" : terraform.workspace
+  env_prefix              = "${local.env}-${var.organisation}"
+  env_prefix_no_separator = "${local.env}${var.organisation}"
+  // todo these two need to be rcemoved when we move to REDI connect azure account.
   resource-group-name     = "rediconnect"
   resource-group-location = "germanywestcentral"
 }
