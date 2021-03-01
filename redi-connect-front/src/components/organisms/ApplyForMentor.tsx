@@ -98,6 +98,7 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
                 className="oneandhalf-bs"
                 rows={4}
                 placeholder={`Dear ${mentor.firstName}...`}
+                maxChar={600}
                 {...formik}
               />
 
@@ -109,6 +110,7 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
                 name="expectationText"
                 rows={4}
                 placeholder="My expectations for this mentorship…"
+                maxChar={600}
                 {...formik}
               />
 
@@ -122,7 +124,7 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
                 {...formik}
               >
                 I understand that my profile data will be shared with this mentor
-            </Checkbox.Form>
+              </Checkbox.Form>
             </>
           }
         </form>

@@ -67,7 +67,7 @@ const ReportProblem = ({ redProfileId, type }: ReportProblemProps) => {
       setSubmitResult('success')
       setShowProblemDialog(false)
       actions.resetForm()
-      if (isCancelImmediately) history.push("/app/mentorships/")
+      if (isCancelImmediately) history.push('/app/mentorships/')
     } catch (err) {
       setSubmitResult('error')
     }
@@ -106,6 +106,7 @@ const ReportProblem = ({ redProfileId, type }: ReportProblemProps) => {
               name="problemDescription"
               rows={4}
               placeholder="I have concerns about…"
+              maxChar={1000}
               {...formik}
             />
             {isMentor && (
@@ -122,7 +123,7 @@ const ReportProblem = ({ redProfileId, type }: ReportProblemProps) => {
               <Content textColor="primary">Not ReDI? We regret you want to cancel this mentorship.
               Someone from our Career Department will be in touch with
               both you and your mentee
-            </Content>
+              </Content>
             }
           </form>
         </Modal.Body>
