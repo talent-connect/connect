@@ -50,8 +50,8 @@ Contribution guide will be elaborated. For now, please:
 2. Open the monogdb data folder (e.g. `cd mongodb-data`) and start the mongodb daemon: `mongod --dbpath .`
 3. To seed the database with anonymous data, run `REDI_LOCATION=berlin ./seed-random-data.sh` in `redi-connect-backend` (note: the output of this script might make you think that it's failing, because it keeps showing `Unhandled promise rejection` warnings; it will display about 100 of these messages and it will succeed anyway, showing `done` at the very end)
 4. Run `yarn start:berlin` in `redi-connect-front`
-5. Run `./start-dev.sh` in `redi-connect-backend`
-6. Run `./yarn start` in `redi-connect-admin`
+5. Run `yarn start` in `redi-connect-backend`
+6. Run `yarn start` in `redi-connect-admin`
 
 ## Getting started (with Docker)
 

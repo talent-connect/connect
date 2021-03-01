@@ -17,7 +17,7 @@
 1. Nuke old database
 2. Start mongod in mongodb-data folder: `cd mongodb-data && mongod --dbpath .`
 3. Run `yarn start` in `redi-connect-frontend`
-4. Run `./start-dev.sh` in `redi-connect-backend`
+4. Run `yarn start` in `redi-connect-backend`
 
 ## Production deployment
 Production deployment is so far done manually by Eric.
