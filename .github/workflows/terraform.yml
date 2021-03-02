@@ -1,6 +1,11 @@
 name: Apply and Plan Terraform
 
-on: [push]
+on:
+  push:
+    branches:
+    paths:
+      - 'redi-connect-infrastructure/**'
+      - '.github/workflows/terraform.yml'
 
 env:
   ARM_CLIENT_ID: "ba7901d4-62a0-4bdb-b5fa-6556955262b8"
@@ -9,7 +14,7 @@ env:
   ARM_TENANT_ID: "72f988bf-86f1-41af-91ab-2d7cd011db47"
 
 jobs:
-  init-fmt-plan-apply:
+  init-fmt-plan:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -26,6 +31,39 @@ jobs:
       - name: Terraform Plan
         run: cd redi-connect-infrastructure &&  terraform plan
 
+  apply-on-staging:
+    if: contains(github.ref, 'heads/develop') # we want to apply the tf changes only on the `develop` branch
+    needs: [init-fmt-plan]
+    environment:
+      name: staging
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform Init
+        run: cd redi-connect-infrastructure && terraform init
+
       - name: Terraform Apply
-        if: contains(github.ref, 'heads/develop') # we want to apply the tf changes only on the `develop` branch
-        run: cd redi-connect-infrastructure && terraform apply -auto-approve
+        run: |
+          cd redi-connect-infrastructure
+          terraform workspace select default
+          terraform apply -auto-approve
+
+  apply-on-production:
+    if: contains(github.ref, 'heads/develop') # we want to apply the tf changes only on the `develop` branch
+    needs: [init-fmt-plan, apply-on-staging]
+    environment:
+      name: staging
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Terraform Apply on prod
+        run: |
+          cd redi-connect-infrastructure
+          terraform workspace select prod
+          terraform apply -auto-approve
+
