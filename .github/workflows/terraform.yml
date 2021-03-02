@@ -40,6 +40,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform Init
+        run: cd redi-connect-infrastructure && terraform init
+        
       - name: Terraform Apply
         run: |
           cd redi-connect-infrastructure
