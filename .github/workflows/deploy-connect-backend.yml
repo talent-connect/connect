@@ -3,6 +3,7 @@ name: Deploy backend webapp
 on:
   push:
     branches:
+      - develop
     paths:
       - 'redi-connect-backend/**'
       - '.github/workflows/deploy-connect-backend.yml'
