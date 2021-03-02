@@ -1,9 +1,12 @@
 name: Apply and Plan Terraform
 
-on: [push]
-  paths:
-    - 'redi-connect-infrastructure/**'
-    - '.github/workflows/terraform.yml'
+on:
+  push:
+    branches:
+      - '*'
+    paths:
+      - 'redi-connect-infrastructure/**'
+      - '.github/workflows/terraform.yml'
 
 env:
   ARM_CLIENT_ID: "ba7901d4-62a0-4bdb-b5fa-6556955262b8"
