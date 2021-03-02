@@ -32,10 +32,10 @@ jobs:
         run: cd redi-connect-infrastructure &&  terraform plan
 
   apply-on-staging:
-#    if: contains(github.ref, 'heads/develop') # we want to apply the tf changes only on the `develop` branch
+    if: contains(github.ref, 'heads/develop') # we want to apply the tf changes only on the `develop` branch
     needs: [init-fmt-plan]
-#    environment:
-#      name: staging
+    environment:
+      name: staging
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
