@@ -45,11 +45,11 @@ output "azure_container_registry" {
 }
 
 output "azure_container_username" {
-  value = azurerm_container_registry.acr.admin_username
-  sensitive   = true
+  value     = azurerm_container_registry.acr.admin_username
+  sensitive = true
 }
 
 output "azure_container_password" {
-  value = azurerm_container_registry.acr.admin_password
-  sensitive   = true
+  value     = azurerm_container_registry.acr.admin_password
+  sensitive = true
 }
