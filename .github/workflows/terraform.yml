@@ -3,7 +3,6 @@ name: Apply and Plan Terraform
 on:
   push:
     branches:
-      - '*'
     paths:
       - 'redi-connect-infrastructure/**'
       - '.github/workflows/terraform.yml'
