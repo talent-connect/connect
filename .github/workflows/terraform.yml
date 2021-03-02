@@ -47,8 +47,8 @@ jobs:
 
   apply-on-production:
     if: contains(github.ref, 'heads/develop') # we want to apply the tf changes only on the `develop` branch
-      environment:
-        name: staging
+    environment:
+      name: staging
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
