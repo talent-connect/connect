@@ -2,9 +2,10 @@
 # Local declarations
 #----------------------------------------------------------
 locals {
-  env_prefix              = "${var.environment}-${var.organisation}"
-  env_prefix_no_separator = "${var.environment}${var.organisation}"
-  // todo these two need to be removed when we move to REDI connect azure account.
+  env                     = terraform.workspace == "default" ? "staging" : terraform.workspace
+  env_prefix              = "${local.env}-${var.organisation}"
+  env_prefix_no_separator = "${local.env}${var.organisation}"
+  // todo these two need to be rcemoved when we move to REDI connect azure account.
   resource-group-name     = "rediconnect"
   resource-group-location = "germanywestcentral"
 }
@@ -136,7 +137,7 @@ module "web_app_container" {
   container_image          = "registrystagingredi.azurecr.io/rediconnect-backend:latest"
 
   app_settings = {
-    MONGO_PRODUCTION_URL = element(azurerm_cosmosdb_account.db.connection_strings, 0)
+    MONGO_CONNECTION_URL = "mongodb://${azurerm_cosmosdb_account.db.name}:${urlencode(azurerm_cosmosdb_account.db.primary_master_key)}@${azurerm_cosmosdb_account.db.name}.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@${azurerm_cosmosdb_account.db.name}@"
   }
 
   // todo have different slots

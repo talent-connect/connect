@@ -11,4 +11,4 @@ RUN npm install
 COPY . .
 EXPOSE 3003
 
-CMD [ "npm", "run", "start" ]
+CMD [ "npm", "run", "start:production" ]

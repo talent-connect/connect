@@ -6,8 +6,8 @@
     "node": ">=6"
   },
   "scripts": {
-    "start": "node .",
-    "start:dev": "NODE_ENV=development HTTP=1 node .",
+    "start": "NODE_ENV=development node .",
+    "start:production": "node .",
     "eslint": "npx eslint . --ext .js --fix",
     "eslint:autofix": "npx eslint . --ext .js --fix --fix"
   },

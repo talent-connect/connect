@@ -34,6 +34,7 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     environment:
       name: staging
+      url: https://cdn-endpoint-front-staging-redi.azureedge.net
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -84,6 +85,7 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     environment:
       name: production
+      url: https://cdn-endpoint-front-prod-redi.azureedge.net
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -114,14 +116,14 @@ jobs:
         with:
           azcliversion:  2.19.1
           inlineScript: |
-            az storage blob upload-batch --account-name "storagefrontstagingredi" -d '$web' -s ./redi-connect-front/build
+            az storage blob upload-batch --account-name "storagefrontprodredi" -d '$web' -s ./redi-connect-front/build
 
       - name: Purge pre-loaded content for the CDN endpoint
         uses: azure/CLI@v1
         with:
           azcliversion: 2.19.1
           inlineScript: |
-            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-staging-redi" --name "cdn-endpoint-front-staging-redi" --resource-group "rediconnect"
+            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-prod-redi" --name "cdn-endpoint-front-prod-redi" --resource-group "rediconnect"
 
       - name: Logout from Azure
         run: |
