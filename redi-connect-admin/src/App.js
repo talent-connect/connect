@@ -291,7 +291,7 @@ const categories = [
   { id: 'freelancing', label: 'Freelancing', group: 'careerSupport' },
 ];
 const categoriesFlat = categories.map((cat) =>
-  Object.assign(cat, { label: `${cat.label} (${cat.group})` })
+  { ...cat, label: `${cat.label} (${cat.group})` }
 );
 
 const coursesByLocation = {
