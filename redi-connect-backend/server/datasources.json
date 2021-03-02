@@ -4,7 +4,7 @@
     "connector": "memory"
   },
   "mongodb": {
-    "url": "${MONGO_PRODUCTION_URL}",
+    "url": "${MONGO_CONNECTION_URL}",
     "host": "",
     "port": 0,
     "database": "mongodb",
