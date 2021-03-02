@@ -677,7 +677,7 @@ const CategoriesInput = (props) => {
     <SelectArrayInput
       {...props}
       source="categories"
-      label={`Categories`}
+      label="Categories"
       choices={categories.map(({ id, label }) => ({ id, name: label }))}
     />
   );
