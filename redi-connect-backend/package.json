@@ -7,7 +7,7 @@
   },
   "scripts": {
     "start": "NODE_ENV=development node .",
-    "start:prod": "node .",
+    "start:production": "node .",
     "eslint": "npx eslint . --ext .js --fix",
     "eslint:autofix": "npx eslint . --ext .js --fix --fix"
   },
