@@ -8,17 +8,17 @@ on:
       - 'redi-connect-backend/**'
       - '.github/workflows/deploy-connect-backend.yml'
 
-env:
-  AZURE_CONTAINER_REGISTRY: ${{ secrets.REGISTRY_NAME }}.azurecr.io
-  AZURE_IMAGE_NAME_WITH_TAG: ${{ secrets.REGISTRY_NAME }}.azurecr.io/rediconnect-backend:${{ github.sha }}
-  AZURE_IMAGE_NAME_WITH_LATEST_TAG: ${{ secrets.REGISTRY_NAME }}.azurecr.io/rediconnect-backend:latest
-
 jobs:
   deploy-staging:
     environment:
       name: staging
-      url: https://${{ secrets.APP_SERVICE_NAME }}.azurewebsites.net
+      url: https://app-staging-redi.azurewebsites.net
     runs-on: ubuntu-latest
+    env:
+      AZURE_CONTAINER_REGISTRY: ${{ secrets.REGISTRY_NAME }}.azurecr.io
+      AZURE_IMAGE_NAME_WITH_TAG: ${{ secrets.REGISTRY_NAME }}.azurecr.io/rediconnect-backend:${{ github.sha }}
+      AZURE_IMAGE_NAME_WITH_LATEST_TAG: ${{ secrets.REGISTRY_NAME }}.azurecr.io/rediconnect-backend:latest
+
     steps:
       - uses: actions/checkout@master
 
@@ -41,7 +41,7 @@ jobs:
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ secrets.APP_SERVICE_NAME }}
+          app-name: app-staging-redi
           images: ${{ env.AZURE_IMAGE_NAME_WITH_LATEST_TAG }}
 
       - name: Azure logout
@@ -52,8 +52,13 @@ jobs:
     needs: [deploy-staging]
     environment:
       name: production
-      url: https://${{ secrets.APP_SERVICE_NAME }}.azurewebsites.net
+      url: https://app-prod-redi.azurewebsites.net
     runs-on: ubuntu-latest
+    env:
+      AZURE_CONTAINER_REGISTRY: ${{ secrets.REGISTRY_NAME }}.azurecr.io
+      AZURE_IMAGE_NAME_WITH_TAG: ${{ secrets.REGISTRY_NAME }}.azurecr.io/rediconnect-backend:${{ github.sha }}
+      AZURE_IMAGE_NAME_WITH_LATEST_TAG: ${{ secrets.REGISTRY_NAME }}.azurecr.io/rediconnect-backend:latest
+
     steps:
       - uses: actions/checkout@master
 
@@ -76,7 +81,7 @@ jobs:
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ env.AZURE_APP_SERVICE_NAME }}
+          app-name: app-prod-redi
           images: ${{ env.AZURE_IMAGE_NAME_WITH_LATEST_TAG }}
 
       - name: Azure logout
