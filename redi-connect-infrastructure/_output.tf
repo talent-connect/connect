@@ -4,11 +4,6 @@ output "resource_group_name" {
   //  value = azurerm_resource_group.webapp-rg.name
 }
 
-output "storage_account_id" {
-  value       = azurerm_storage_account.static_storage.id
-  description = "The ID of the storage account."
-}
-
 output "storage_account_name" {
   value       = azurerm_storage_account.static_storage.name
   description = "The name of the storage account."
@@ -51,8 +46,10 @@ output "azure_container_registry" {
 
 output "azure_container_username" {
   value = azurerm_container_registry.acr.admin_username
+  sensitive   = true
 }
 
 output "azure_container_password" {
   value = azurerm_container_registry.acr.admin_password
+  sensitive   = true
 }
