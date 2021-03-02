@@ -134,13 +134,13 @@ module "web_app_container" {
   docker_registry_username = azurerm_container_registry.acr.admin_username
   docker_registry_password = azurerm_container_registry.acr.admin_password
   https_only               = true
-  container_image          = "registrystagingredi.azurecr.io/rediconnect-backend:latest"
+  container_image          = "${azurerm_container_registry.acr.login_server}/rediconnect-backend:latest"
 
   app_settings = {
+    // we are having this connection url structured this way because it is necessary for the primary key to be encoded before passed in as an environment variable in the loppback dataresources.json folder.
     MONGO_CONNECTION_URL = "mongodb://${azurerm_cosmosdb_account.db.name}:${urlencode(azurerm_cosmosdb_account.db.primary_master_key)}@${azurerm_cosmosdb_account.db.name}.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@${azurerm_cosmosdb_account.db.name}@"
   }
 
-  // todo have different slots
   plan = {
     name     = "plan-${local.env_prefix}"
     sku_size = var.sku_size
