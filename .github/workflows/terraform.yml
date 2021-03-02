@@ -45,7 +45,7 @@ jobs:
 
       - name: Terraform Init
         run: cd redi-connect-infrastructure && terraform init
-        
+
       - name: Terraform Apply
         run: |
           cd redi-connect-infrastructure
@@ -54,7 +54,7 @@ jobs:
 
   apply-on-production:
     if: contains(github.ref, 'heads/develop') # we want to apply the tf changes only on the `develop` branch
-    needs: [init-fmt-plan]
+    needs: [init-fmt-plan, apply-on-staging]
     environment:
       name: staging
     runs-on: ubuntu-latest
