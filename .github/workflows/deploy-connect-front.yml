@@ -3,7 +3,7 @@ name: Deploy front webapp
 on:
   push:
     branches:
-      - develop
+      - master
     paths:
       - 'redi-connect-front/**'
       - '.github/workflows/deploy-connect-front.yml'
@@ -29,7 +29,7 @@ jobs:
         run: cd ./redi-connect-front && yarn install --frozen-lockfile
 
   deploy-staging:
-    if: contains(github.ref, 'heads/develop') # we want to apply the tf changes only on the `develop` branch
+    if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
     needs: [install]
     environment:
       name: staging
@@ -80,7 +80,7 @@ jobs:
           az logout
 
   deploy-production:
-    if: contains(github.ref, 'heads/develop') # we want to apply the tf changes only on the `develop` branch
+    if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
     needs: [install, deploy-staging]
     environment:
       name: production
