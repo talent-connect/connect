@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import './App.css';
-import { get, mapValues, keyBy } from 'lodash';
+import { get, mapValues, keyBy, groupBy } from 'lodash';
 import {
   Admin,
   Resource,
@@ -290,9 +290,20 @@ const categories = [
   { id: 'entrepreneurship', label: 'Entrepreneurship', group: 'careerSupport' },
   { id: 'freelancing', label: 'Freelancing', group: 'careerSupport' },
 ];
-const categoriesFlat = categories.map((cat) =>
-  { ...cat, label: `${cat.label} (${cat.group})` }
-);
+const categoriesFlat = categories.map((cat) => ({
+  ...cat,
+  labelClean: cat.label,
+  label: `${cat.label} (${cat.group})`,
+}));
+
+const categoryGroups = [
+  { id: 'softwareEngineering', label: '👩‍💻 Software Engineering' },
+  { id: 'design', label: '🎨 Design' },
+  { id: 'otherProfessions', label: '🏄‍♀️ Other professions' },
+  { id: 'careerSupport', label: '✋ Career Support' },
+  { id: 'language', label: '🗣️ Language' },
+  { id: 'other', label: '🤗 Other' },
+];
 
 const coursesByLocation = {
   berlin: [
@@ -340,6 +351,10 @@ const coursesFlat = [
 const mentoringSessionDurationOptions = [15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165, 180];
 
 const categoriesIdToLabelMap = mapValues(keyBy(categoriesFlat, 'id'), 'label');
+const categoryGroupsToLabelMap = mapValues(keyBy(categoryGroups, 'id'), 'label');
+const categoriesIdToLabelCleanMap = mapValues(keyBy(categoriesFlat, 'id'), 'labelClean');
+const categoriesIdToGroupMap = mapValues(keyBy(categoriesFlat, 'id'), 'group');
+
 const courseIdToLabelMap = mapValues(keyBy(coursesFlat, 'id'), 'label');
 const AWS_PROFILE_AVATARS_BUCKET_BASE_URL =
   'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/';
@@ -363,12 +378,22 @@ const LangaugeList = (props) => {
 };
 
 const CategoryList = (props) => {
+  const categoriesGrouped = groupBy(props.data, (catId) => categoriesIdToGroupMap[catId]);
+  console.log(categoriesIdToLabelMap);
   return (
-    <span>
-      {Object.values(props.data)
-        .map((catId) => categoriesIdToLabelMap[catId])
-        .join(', ')}
-    </span>
+    <>
+      {Object.keys(categoriesGrouped).map((groupId) => (
+        <>
+          <span>
+            <strong>{categoryGroupsToLabelMap[groupId]}:</strong>{' '}
+            {categoriesGrouped[groupId]
+              .map((catId) => categoriesIdToLabelCleanMap[catId])
+              .join(', ')}
+          </span>
+          <br />
+        </>
+      ))}
+    </>
   );
 };
 
