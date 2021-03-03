@@ -56,7 +56,7 @@ jobs:
     if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
     needs: [init-fmt-plan, apply-on-staging]
     environment:
-      name: staging
+      name: production
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
