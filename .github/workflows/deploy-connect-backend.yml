@@ -3,14 +3,14 @@ name: Deploy backend webapp
 on:
   push:
     branches:
-      - develop
+      - master
     paths:
       - 'redi-connect-backend/**'
       - '.github/workflows/deploy-connect-backend.yml'
 
 jobs:
   deploy-staging:
-    if: contains(github.ref, 'heads/develop') # we want to apply the tf changes only on the `develop` branch
+    if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
     environment:
       name: staging
       url: https://app-staging-redi.azurewebsites.net
@@ -50,7 +50,7 @@ jobs:
           az logout
 
   deploy-production:
-    if: contains(github.ref, 'heads/develop') # we want to apply the tf changes only on the `develop` branch
+    if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
     needs: [deploy-staging]
     environment:
       name: production
