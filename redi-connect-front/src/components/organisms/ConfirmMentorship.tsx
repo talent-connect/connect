@@ -86,6 +86,7 @@ const ConfirmMentorship = ({ match, menteeName, hasReachedMenteeLimit, matchesAc
             name="mentorReplyMessageOnAccept"
             rows={4}
             placeholder={`Dear ${menteeName && menteeName}...`}
+            minChar={250}
             maxChar={600}
             {...formik}
           />
