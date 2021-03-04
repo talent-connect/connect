@@ -72,6 +72,7 @@ const EditableAbout = ({ profile, profileSaveStart }: any) => {
         name="personalDescription"
         rows={4}
         placeholder="About you"
+        minChar={personalDescriptionRange.min}
         maxChar={personalDescriptionRange.max}
         {...formik}
       />

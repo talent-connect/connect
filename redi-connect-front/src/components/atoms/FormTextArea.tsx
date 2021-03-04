@@ -20,6 +20,7 @@ function FormTextArea (props: any) {
     className,
     label,
     placeholder,
+    minChar,
     maxChar,
     rows,
     values,
@@ -54,15 +55,18 @@ function FormTextArea (props: any) {
 
       <Columns>
         <Columns.Column>
-          <Form.Help color="danger" className={hasError && (!values[name] || !maxChar || values[name].length <= maxChar) ? 'help--show' : ''}>
+          <Form.Help color="danger" className={hasError && !maxChar && !minChar ? 'help--show' : ''}>
             {hasError && <>{errors[name]}</>}
           </Form.Help>
         </Columns.Column>
         <Columns.Column>
-          {maxChar && (!values[name] || values[name].length <= maxChar) && <Content textColor="grey-dark" className="redi-textarea-characters">
+          {minChar && (!values[name] || values[name].length < minChar) && <Content textColor="danger" className="help help--show redi-textarea-characters">
+            {minChar - (values[name] ? values[name].length : 0)} more characters needed
+          </Content>}
+          {maxChar && (!values[name] || values[name].length <= maxChar) && (!minChar || (minChar && values[name] && values[name].length >= minChar)) && <Content textColor="grey-dark" className="help help--show redi-textarea-characters">
             {maxChar - (values[name] ? values[name].length : 0)} characters left
           </Content>}
-          {maxChar && values[name] && values[name].length > maxChar && <Content textColor="danger" className="redi-textarea-characters">
+          {maxChar && values[name] && values[name].length > maxChar && <Content textColor="danger" className="help help--show redi-textarea-characters">
             {values[name].length - maxChar} characters over
           </Content>}
         </Columns.Column>
