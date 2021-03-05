@@ -61,13 +61,13 @@ function FormTextArea (props: any) {
         </Columns.Column>
         <Columns.Column>
           {minChar && (!values[name] || values[name].length < minChar) && <Content textColor="danger" className="help help--show redi-textarea-characters">
-            {minChar - (values[name] ? values[name].length : 0)} more characters needed
+            {minChar - (values[name] ? values[name].length : 0)} more {minChar - (values[name] ? values[name].length : 0) > 1 ? 'characters' : 'character'} needed
           </Content>}
           {maxChar && (!values[name] || values[name].length <= maxChar) && (!minChar || (minChar && values[name] && values[name].length >= minChar)) && <Content textColor="grey-dark" className="help help--show redi-textarea-characters">
-            {maxChar - (values[name] ? values[name].length : 0)} characters left
+            {maxChar - (values[name] ? values[name].length : 0)} {maxChar - (values[name] ? values[name].length : 0) !== 1 ? 'characters' : 'character'} left
           </Content>}
           {maxChar && values[name] && values[name].length > maxChar && <Content textColor="danger" className="help help--show redi-textarea-characters">
-            {values[name].length - maxChar} characters over
+            {values[name].length - maxChar} {values[name].length - maxChar > 1 ? 'characters' : 'character'} over
           </Content>}
         </Columns.Column>
       </Columns>
