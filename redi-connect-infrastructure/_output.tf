@@ -5,34 +5,79 @@ output "resource_group_name" {
 }
 
 output "storage_account_name" {
-  value       = azurerm_storage_account.static_storage.name
+  value       = module.static-website-berlin.storage_account_name
+  description = "The name of the storage account."
+}
+output "storage_account_name_munich" {
+  value       = module.static-website-munich.storage_account_name
+  description = "The name of the storage account."
+}
+output "storage_account_name_picker" {
+  value       = module.static-website-picker.storage_account_name
+  description = "The name of the storage account."
+}
+output "storage_account_name_nrw" {
+  value       = module.static-website-nrw.storage_account_name
   description = "The name of the storage account."
 }
 
-output "storage_primary_connection_string" {
-  value       = azurerm_storage_account.static_storage.primary_connection_string
-  sensitive   = true
-  description = "The primary connection string for the storage account."
+output "static_website_cdn_profile_name_berlin" {
+  value       = module.static-website-berlin.static_website_cdn_profile_name
+  description = "CDN profile name for the static website for berlin"
 }
 
-output "storage_primary_access_key" {
-  value       = azurerm_storage_account.static_storage.primary_access_key
-  sensitive   = true
-  description = "The primary access key for the storage account."
+output "static_website_cdn_profile_name_munich" {
+  value       = module.static-website-munich.static_website_cdn_profile_name
+  description = "CDN profile name for the static website for munich"
 }
 
-output "static_website_cdn_endpoint_hostname" {
-  value       = element(concat(azurerm_cdn_endpoint.cdn-endpoint.*.name, [""]), 0)
-  description = "CDN endpoint URL for Static website"
+output "static_website_cdn_profile_name_picker" {
+  value       = module.static-website-picker.static_website_cdn_profile_name
+  description = "CDN profile name for the static website for berlin"
 }
 
-output "static_website_cdn_profile_name" {
-  value       = element(concat(azurerm_cdn_profile.cdn-profile.*.name, [""]), 0)
-  description = "CDN profile name for the static website"
+output "static_website_cdn_profile_name_nrw" {
+  value       = module.static-website-nrw.static_website_cdn_profile_name
+  description = "CDN profile name for the static website for munich"
 }
 
-output "static_website_url" {
-  value       = azurerm_storage_account.static_storage.primary_web_host
+output "static_website_cdn_host_name_berlin" {
+  value       = module.static-website-berlin.static_website_cdn_endpoint_hostname
+  description = "CDN profile name for the static website for berlin"
+}
+
+output "static_website_cdn_host_name_munich" {
+  value       = module.static-website-munich.static_website_cdn_endpoint_hostname
+  description = "CDN profile name for the static website for munich"
+}
+
+output "static_website_cdn_host_name_picker" {
+  value       = module.static-website-picker.static_website_cdn_endpoint_hostname
+  description = "CDN profile name for the static website for berlin"
+}
+
+output "static_website_cdn_host_name_nrw" {
+  value       = module.static-website-nrw.static_website_cdn_endpoint_hostname
+  description = "CDN profile name for the static website for munich"
+}
+
+output "static_website_url_berlin" {
+  value       = module.static-website-berlin.static_website_url
+  description = "static web site URL from storage account"
+}
+
+output "static_website_url_munich" {
+  value       = module.static-website-munich.static_website_url
+  description = "static web site URL from storage account"
+}
+
+output "static_website_url_nrw" {
+  value       = module.static-website-nrw.static_website_url
+  description = "static web site URL from storage account"
+}
+
+output "static_website_url_picker" {
+  value       = module.static-website-picker.static_website_url
   description = "static web site URL from storage account"
 }
 
