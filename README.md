@@ -53,6 +53,14 @@ Contribution guide will be elaborated. For now, please:
 5. Run `yarn start` in `redi-connect-backend`
 6. Run `yarn start` in `redi-connect-admin`
 
+### Ubuntu/Fedora: Possible errors starting ReDI Connect
+
+When starting ReDI Connect on Ubuntu or Fedora you could encounter following error:
+>`Error: ENOSPC: System limit for number of file watchers reached, watch ...`
+
+The solution is to issue the following command:
+>`echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p`
+
 ## Getting started (with Docker)
 
 ### Installation

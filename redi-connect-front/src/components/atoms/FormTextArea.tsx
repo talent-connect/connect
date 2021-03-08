@@ -1,6 +1,7 @@
 import React from 'react'
 import classnames from 'classnames'
-import { Form } from 'react-bulma-components'
+import { Form, Content, Columns } from 'react-bulma-components'
+import './FormTextArea.scss'
 
 interface Props {
   name: string
@@ -19,6 +20,8 @@ function FormTextArea (props: any) {
     className,
     label,
     placeholder,
+    minChar,
+    maxChar,
     rows,
     values,
     handleChange,
@@ -50,9 +53,25 @@ function FormTextArea (props: any) {
         />
       </Form.Control>
 
-      <Form.Help color="danger" className={hasError ? 'help--show' : ''}>
-        {hasError && <>{errors[name]}</>}
-      </Form.Help>
+      <Columns>
+        <Columns.Column>
+          <Form.Help color="danger" className={hasError && !maxChar && !minChar ? 'help--show' : ''}>
+            {hasError && <>{errors[name]}</>}
+          </Form.Help>
+        </Columns.Column>
+        <Columns.Column>
+          {minChar && (!values[name] || values[name].length < minChar) && <Content textColor="danger" className="help help--show redi-textarea-characters">
+            {minChar - (values[name] ? values[name].length : 0)} more {minChar - (values[name] ? values[name].length : 0) > 1 ? 'characters' : 'character'} needed
+          </Content>}
+          {maxChar && (!values[name] || values[name].length <= maxChar) && (!minChar || (minChar && values[name] && values[name].length >= minChar)) && <Content textColor="grey-dark" className="help help--show redi-textarea-characters">
+            {maxChar - (values[name] ? values[name].length : 0)} {maxChar - (values[name] ? values[name].length : 0) !== 1 ? 'characters' : 'character'} left
+          </Content>}
+          {maxChar && values[name] && values[name].length > maxChar && <Content textColor="danger" className="help help--show redi-textarea-characters">
+            {values[name].length - maxChar} {values[name].length - maxChar > 1 ? 'characters' : 'character'} over
+          </Content>}
+        </Columns.Column>
+      </Columns>
+
     </Form.Field>
   )
 }
