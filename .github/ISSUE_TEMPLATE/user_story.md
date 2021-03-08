@@ -9,6 +9,7 @@ assignees: ''
 ## User story
 
 As a {persona name}, I want {some goal} so that {some reason}
+Use the present tense.
 
 ## Acceptance criteria (for QA)
 
@@ -16,7 +17,7 @@ As a {persona name}, I want {some goal} so that {some reason}
 
 If applicable, add UI/UX design assets and specs. Such as image files, hex codes, links to Zeplin previews.
 
-## Data structure and business rules
+## Data structures, business rules, and implementation hints
 
 ## Subtasks
 
