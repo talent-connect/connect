@@ -28,8 +28,16 @@ jobs:
       - name: Terraform Format
         run: cd redi-connect-infrastructure &&  terraform fmt -check
 
-      - name: Terraform Plan
-        run: cd redi-connect-infrastructure &&  terraform plan
+      - name: Terraform Plan on staging
+        run: |
+          cd redi-connect-infrastructure
+          terraform plan
+
+      - name: Terraform Plan on prod
+        run: |
+          cd redi-connect-infrastructure
+          terraform workspace select prod
+          terraform plan
 
   apply-on-staging:
     if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
