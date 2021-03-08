@@ -235,7 +235,7 @@ jobs:
 
   deploy-berlin-production:
     if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
-    needs: [install, deploy-berlin-staging]
+    needs: [deploy-berlin-staging]
     environment:
       name: production
       url: https://cdn-endpoint-front-berlin-prod-redi.azureedge.net
@@ -286,7 +286,7 @@ jobs:
 
   deploy-munich-production:
     if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
-    needs: [install, deploy-munich-staging]
+    needs: [deploy-munich-staging]
     environment:
       name: production
       url: https://cdn-endpoint-front-munich-prod-redi.azureedge.net
@@ -337,7 +337,7 @@ jobs:
 
   deploy-picker-production:
     if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
-    needs: [install, deploy-picker-staging]
+    needs: [deploy-picker-staging]
     environment:
       name: production
       url: https://cdn-endpoint-front-picker-prod-redi.azureedge.net
@@ -388,7 +388,7 @@ jobs:
 
   deploy-nrw-production:
     if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
-    needs: [install, deploy-nrw-staging]
+    needs: [deploy-nrw-staging]
     environment:
       name: production
       url: https://cdn-endpoint-front-nrw-prod-redi.azureedge.net
