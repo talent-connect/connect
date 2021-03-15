@@ -433,7 +433,12 @@ const AllModelsPagination = (props) => (
 
 const RedProfileList = (props) => {
   return (
-    <List {...props} filters={<RedProfileListFilters />} pagination={<AllModelsPagination />}>
+    <List
+      {...props}
+      filters={<RedProfileListFilters />}
+      pagination={<AllModelsPagination />}
+      aside={<RedBlablabla />}
+    >
       <Datagrid expand={<RedProfileListExpandPane />}>
         <TextField source="rediLocation" label="City" />
         <TextField source="firstName" />
@@ -457,6 +462,9 @@ const RedProfileList = (props) => {
       </Datagrid>
     </List>
   );
+};
+const RedBlablabla = () => {
+  return <div style={{ width: 200, margin: '1em' }}>here is the future overview</div>;
 };
 const RedProfileListExpandPane = (props) => {
   return (
