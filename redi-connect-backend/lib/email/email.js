@@ -31,14 +31,7 @@ const sendEmailFactory = (to, subject, body, rediLocation) => {
   if (process.env.DEV_MODE_EMAIL_RECIPIENT) {
     toSanitized = process.env.DEV_MODE_EMAIL_RECIPIENT;
   }
-  let sender;
-  if (rediLocation === 'berlin' || rediLocation === 'nrw') {
-    sender = 'career@redi-school.org';
-  } else if (rediLocation === 'munich') {
-    sender = 'munich-career@redi-school.org';
-  } else {
-    sender = 'career@redi-school.org';
-  }
+  let sender = 'career@redi-school.org';
   return sendEmail({
     Source: sender,
     Destination: {
@@ -64,14 +57,7 @@ const sendMjmlEmailFactory = ({ to, subject, html, rediLocation }) => {
   if (process.env.DEV_MODE_EMAIL_RECIPIENT) {
     toSanitized = process.env.DEV_MODE_EMAIL_RECIPIENT;
   }
-  let sender;
-  if (rediLocation === 'berlin' || rediLocation === 'nrw') {
-    sender = 'career@redi-school.org';
-  } else if (rediLocation === 'munich') {
-    sender = 'munich-career@redi-school.org';
-  } else {
-    sender = 'career@redi-school.org';
-  }
+  let sender = 'career@redi-school.org';
   return sendMjmlEmail({
     from: sender,
     to: toSanitized,
@@ -113,9 +99,7 @@ const sendResetPasswordEmail = ({ recipient, firstName, accessToken, rediLocatio
     process.env.NODE_ENV,
     rediLocation
   )}/front/reset-password/set-new-password/${accessToken}`;
-  const rediEmailAdress = `${
-    rediLocation.toLowerCase() === 'munich' ? 'munich-' : ''
-  }career@redi-school.org`;
+  const rediEmailAdress = 'career@redi-school.org';
   const html = sendResetPasswordEmailParsed.html
     .replace(/\${firstName}/g, firstName)
     .replace(/\${resetPasswordUrl}/g, resetPasswordUrl)
@@ -130,9 +114,7 @@ const sendResetPasswordEmail = ({ recipient, firstName, accessToken, rediLocatio
 };
 
 const sendPendingReviewDeclinedEmail = ({ recipient, firstName, rediLocation, userType }) => {
-  const rediEmailAdress = `${
-    rediLocation.toLowerCase() === 'munich' ? 'munich-' : ''
-  }career@redi-school.org`;
+  const rediEmailAdress = 'career@redi-school.org';
 
   const sendPendingReviewDeclinedEmailParsed = convertTemplateToHtml(
     null,
@@ -172,11 +154,9 @@ const sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccep
   menteeName,
   rediLocation,
 }) => {
-  const rediEmailAdress = `${
-    rediLocation.toLowerCase() === 'munich' ? 'munich-' : ''
-  }career@redi-school.org`;
+  const rediEmailAdress = 'career@redi-school.org';
   const sendMenteePendingReviewAcceptedEmailParsed = convertTemplateToHtml(
-    rediLocation,
+    null,
     'expired-notification-application'
   );
   const html = sendMenteePendingReviewAcceptedEmailParsed
@@ -194,7 +174,7 @@ const sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccep
 const sendMenteePendingReviewAcceptedEmail = ({ recipient, firstName, rediLocation }) => {
   const homePageUrl = `${buildFrontendUrl(process.env.NODE_ENV, rediLocation)}/front/login/`;
   const sendMenteePendingReviewAcceptedEmailParsed = convertTemplateToHtml(
-    rediLocation,
+    null,
     'welcome-to-redi-mentee'
   );
   const html = sendMenteePendingReviewAcceptedEmailParsed
@@ -231,7 +211,7 @@ const sendMentorPendingReviewAcceptedEmail = ({ recipient, firstName, rediLocati
 
 const sendMenteeRequestAppointmentEmail = ({ recipient, firstName, rediLocation }) => {
   const sendMenteeRequestAppointmentEmailParsed = convertTemplateToHtml(
-    rediLocation,
+    null,
     'validate-email-address-successful-mentee'
   );
   const html = sendMenteeRequestAppointmentEmailParsed.replace(/\${firstName}/g, firstName);
@@ -245,7 +225,7 @@ const sendMenteeRequestAppointmentEmail = ({ recipient, firstName, rediLocation 
 
 const sendMentorRequestAppointmentEmail = ({ recipient, firstName, rediLocation }) => {
   const sendMenteeRequestAppointmentEmailParsed = convertTemplateToHtml(
-    rediLocation,
+    null,
     'validate-email-address-successful-mentor'
   );
   const html = sendMenteeRequestAppointmentEmailParsed.replace(/\${firstName}/g, firstName);
@@ -279,7 +259,7 @@ const sendVerificationEmail = ({
     verificationSuccessPageUrl
   )}`;
   const sendMenteeRequestAppointmentEmailParsed = convertTemplateToHtml(
-    rediLocation,
+    null,
     `validate-email-address-${userType}`
   );
   const html = sendMenteeRequestAppointmentEmailParsed
@@ -297,7 +277,7 @@ const sendVerificationEmail = ({
 const sendMentoringSessionLoggedEmail = ({ recipient, mentorName, rediLocation }) => {
   const loginUrl = `${buildFrontendUrl(process.env.NODE_ENV, rediLocation)}/front/login`;
   const sendMentoringSessionLoggedEmailParsed = convertTemplateToHtml(
-    rediLocation,
+    null,
     'mentoring-session-logged-email'
   );
   const html = sendMentoringSessionLoggedEmailParsed
@@ -313,7 +293,7 @@ const sendMentoringSessionLoggedEmail = ({ recipient, mentorName, rediLocation }
 
 const sendMentorCancelledMentorshipNotificationEmail = ({ recipient, firstName, rediLocation }) => {
   const sendMentorCancelledMentorshipNotificationEmailParsed = convertTemplateToHtml(
-    rediLocation,
+    null,
     'mentorship-cancelation-email-mentee'
   );
   const html = sendMentorCancelledMentorshipNotificationEmailParsed.replace(
@@ -335,7 +315,7 @@ const sendToMentorConfirmationOfMentorshipCancelled = ({
   rediLocation,
 }) => {
   const sendMentorCancelledMentorshipNotificationEmailParsed = convertTemplateToHtml(
-    rediLocation,
+    null,
     'mentorship-cancelation-email-mentor'
   );
   const html = sendMentorCancelledMentorshipNotificationEmailParsed
@@ -357,7 +337,7 @@ const sendMentorshipRequestReceivedEmail = ({
 }) => {
   const loginUrl = `${buildFrontendUrl(process.env.NODE_ENV, rediLocation)}/front/login`;
   const sendMentorshipRequestReceivedEmailParsed = convertTemplateToHtml(
-    rediLocation,
+    null,
     'mentorship-request-email'
   );
   const html = sendMentorshipRequestReceivedEmailParsed
@@ -379,11 +359,9 @@ const sendMentorshipAcceptedEmail = ({
   mentorReplyMessageOnAccept,
   rediLocation,
 }) => {
-  const rediEmailAdress = `${
-    rediLocation.toLowerCase() === 'munich' ? 'munich-' : ''
-  }career@redi-school.org`;
+  const rediEmailAdress = 'career@redi-school.org';
   const sendMentorshipAcceptedEmailParsed = convertTemplateToHtml(
-    rediLocation,
+    null,
     'mentorship-acceptance-email'
   );
   const html = sendMentorshipAcceptedEmailParsed
