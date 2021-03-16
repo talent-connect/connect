@@ -44,7 +44,7 @@ module.exports = function (RedMentoringSession) {
     }
   )
 
-  RedMentoringSession.observe('before save', function updateTimestamp (
+  RedMentoringSession.observe('before save', async function updateTimestamp (
     ctx,
     next
   ) {
@@ -82,11 +82,17 @@ module.exports = function (RedMentoringSession) {
       ctx.data.updatedAt = new Date()
     }
 
+    const RedProfile = app.models.RedProfile;
+
     if (process.env.NODE_ENV !== 'seeding') {
       if (ctx.instance) {
-        ctx.instance.rediLocation = ctx.options.currentUser.redProfile.rediLocation
+        const mentee = await RedProfile.findById(ctx.instance.menteeId);
+        const menteeRediLocation = mentee.toJSON().rediLocation;
+        ctx.instance.rediLocation = menteeRediLocation
       } else {
-        ctx.data.rediLocation = ctx.options.currentUser.redProfile.rediLocation
+        const mentee = await RedProfile.findById(ctx.data.menteeId);
+        const menteeRediLocation = mentee.toJSON().rediLocation;
+        ctx.data.rediLocation = menteeRediLocation
       }
     }
 
