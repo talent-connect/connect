@@ -44,22 +44,6 @@ module.exports = function (RedProfile) {
     next();
   });
 
-  // On access, e.g. a GET request to load all RedProfiles to browse them, insert a
-  // WHERE filter based on the user's RedProfile.rediLocation. This ensures that
-  // Berlin users only see profiles of other Berlin users. The same thing applies to
-  // Munich users, and future users in other ReDI locations.
-  RedProfile.observe('access', function filterToOnlyLoadProfilesInCurrentUsersLocation(ctx, next) {
-    if (!ctx.options.currentUser || !ctx.options.currentUser.redProfile) return next();
-
-    if (ctx.options.currentUser.email !== 'cloud-accounts@redi-school.org') {
-      const currentUserRediLocation = ctx.options.currentUser.redProfile.rediLocation;
-      if (!ctx.query.where) ctx.query.where = {};
-      ctx.query.where = { and: [{ rediLocation: currentUserRediLocation }, ctx.query.where] };
-    }
-
-    return next();
-  });
-
   RedProfile.observe('loaded', function loadRedMatchCount(ctx, next) {
     if (ctx.isNewInstance) {
       return next();
