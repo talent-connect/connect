@@ -10,10 +10,10 @@
           >
           <mj-divider mj-class="divider-top" css-class="divider" />
           <mj-text mj-class="text">Dear ${mentorName},</mj-text>
-          <mj-text mj-class="text"
-            >you have received an application from mentee ${menteeFullName}. Please review it as
-            soon as you have time.</mj-text
-          >
+          <mj-text mj-class="text">
+            you have received an application from mentee ${menteeFullName} in {locatioNameFormatted}. 
+            Please review it as soon as you have time.
+          </mj-text>
           <mj-text mj-class="text top-padding"
             >It would be great if you, ${mentorName}, as the mentor, could send ${menteeFullName}
             suggestions for the time, date and place of your first session once you have accepted

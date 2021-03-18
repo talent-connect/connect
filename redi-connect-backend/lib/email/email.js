@@ -341,6 +341,7 @@ const sendMentorshipRequestReceivedEmail = ({
     'mentorship-request-email'
   );
   const html = sendMentorshipRequestReceivedEmailParsed
+    .replace(/\${locatioNameFormatted}/g, formatLocationName(rediLocation))
     .replace(/\${mentorName}/g, mentorName)
     .replace(/\${menteeFullName}/g, menteeFullName)
     .replace(/\${loginUrl}/g, loginUrl);
@@ -376,6 +377,14 @@ const sendMentorshipAcceptedEmail = ({
     rediLocation,
   });
 };
+
+const formatLocationName = (locationIdentifier) => {
+  return {
+    berlin: 'Berlin',
+    munich: 'Munich',
+    nrw: 'NRW',
+  }[locationIdentifier];
+}
 
 module.exports = {
   sendReportProblemEmail,
