@@ -162,7 +162,7 @@ const pickRandomUserType = () => {
 const users = fp.compose(
   fp.take(1000),
   fp.map(({ name, surname, gender }) => {
-    const rediLocation = Math.random() > 0.5 ? 'berlin' : 'munich';
+    const rediLocation = Math.random() > 0.5 ? 'berlin' : (Math.random() > 0.5 ? 'munich' : 'nrw');
     const email = randomString() + '@' + randomString() + '.com';
     const password = email;
     return {
