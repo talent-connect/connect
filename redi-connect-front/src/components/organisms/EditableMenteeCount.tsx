@@ -1,5 +1,5 @@
 import React from 'react'
-import { FormSelect } from '../atoms'
+import { Checkbox, FormSelect } from '../atoms'
 import { Editable, ReadMenteeCount } from '../molecules'
 import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
@@ -12,8 +12,9 @@ import * as Yup from 'yup'
 import { FormikValues, useFormik } from 'formik'
 
 import {
-  menteeCountCapacityOptions
+  menteeCountCapacityOptions, rediLocationNames
 } from '../../config/config'
+import { RediLocation } from '../../types/RediLocation'
 
 const menteeCountExplanation = (amount: number) => {
   switch (amount) {
@@ -30,6 +31,7 @@ const formMenteeCountCapacityOptions = menteeCountCapacityOptions.map(option => 
 
 export interface AboutFormValues {
   menteeCountCapacity: number
+  optOutOfMenteesFromOtherRediLocation: boolean
 }
 
 const validationSchema = Yup.object({
@@ -45,18 +47,22 @@ const validationSchema = Yup.object({
 const EditableMenteeCount = ({ profile, profileSaveStart }: any) => {
   const {
     id,
-    menteeCountCapacity
+    menteeCountCapacity,
+    optOutOfMenteesFromOtherRediLocation,
+    rediLocation,
   } = profile
 
   const submitForm = async (
     values: FormikValues
   ) => {
+    console.log(values)
     const profileMenteeCount = values as Partial<RedProfile>
     profileSaveStart({ ...profileMenteeCount, id })
   }
 
   const initialValues: AboutFormValues = {
-    menteeCountCapacity
+    menteeCountCapacity,
+    optOutOfMenteesFromOtherRediLocation,
   }
 
   const formik = useFormik({
@@ -68,7 +74,7 @@ const EditableMenteeCount = ({ profile, profileSaveStart }: any) => {
 
   return (
     <Editable
-      title="Mentee Count"
+      title="Mentee Count and Location"
       onSave={() => formik.handleSubmit()}
       onClose={() => formik.resetForm()}
       savePossible={(formik.dirty && formik.isValid)}
@@ -81,7 +87,11 @@ const EditableMenteeCount = ({ profile, profileSaveStart }: any) => {
         items={formMenteeCountCapacityOptions}
         {...formik}
       />
-      {/* } */}
+      <Checkbox.Form
+        name="optOutOfMenteesFromOtherRediLocation"
+        checked={formik.values.optOutOfMenteesFromOtherRediLocation}
+        {...formik}
+      >Only let mentees from my own city/location apply for mentorship (i.e. people in {rediLocationNames[rediLocation as RediLocation]})</Checkbox.Form>
     </Editable>
   )
 }
