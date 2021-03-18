@@ -685,6 +685,7 @@ const RedProfileEdit = (props) => (
         <CategoriesInput />
         <MenteeEnrolledInCourseInput />
         <NumberInput source="menteeCountCapacity" />
+        <BooleanInput source="optOutOfMenteesFromOtherRediLocation" />
       </FormTab>
       <FormTab label="Internal comments">
         <LongTextInput source="administratorInternalComment" />
