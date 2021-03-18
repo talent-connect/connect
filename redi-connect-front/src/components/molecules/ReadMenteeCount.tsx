@@ -19,7 +19,7 @@ const Me = ({ profile }: Props) => {
   return (
     <Content>
       {menteeCountCapacity && <p>{menteeCountCapacity}</p>}
-      {!optOutOfMenteesFromOtherRediLocation && <p>Let mentees my location ({rediLocationNames[rediLocation]}) AND other locations apply for mentorship</p>}
+      {!optOutOfMenteesFromOtherRediLocation && <p>Let mentees in my location ({rediLocationNames[rediLocation]}) AND other locations apply for mentorship</p>}
       {optOutOfMenteesFromOtherRediLocation && <p>Only let mentees from my own location ({rediLocationNames[rediLocation]}) apply for mentorship</p>}
     </Content>
   )

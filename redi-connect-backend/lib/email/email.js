@@ -341,7 +341,7 @@ const sendMentorshipRequestReceivedEmail = ({
     'mentorship-request-email'
   );
   const html = sendMentorshipRequestReceivedEmailParsed
-    .replace(/\${locatioNameFormatted}/g, formatLocationName(rediLocation))
+    .replace(/\${locationNameFormatted}/g, formatLocationName(rediLocation))
     .replace(/\${mentorName}/g, mentorName)
     .replace(/\${menteeFullName}/g, menteeFullName)
     .replace(/\${loginUrl}/g, loginUrl);
