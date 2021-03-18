@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { getHasReachedMenteeLimit } from '../../../redux/user/selectors';
 import { useParams, useHistory } from 'react-router';
 import { RootState } from '../../../redux/types';
-import { Columns, Element, Notification } from 'react-bulma-components';
+import { Columns, Element, Notification, Tag } from 'react-bulma-components';
 import { Button, Heading } from '../../../components/atoms';
 import {
   ReadAbout,
@@ -20,6 +20,7 @@ import { ApplyForMentor, Avatar, ConfirmMentorship } from '../../../components/o
 import { LoggedIn } from '../../../components/templates';
 import { RedProfile } from '../../../types/RedProfile';
 import { profilesFetchOneStart } from '../../../redux/profiles/actions';
+import { rediLocationNames } from '../../../config/config';
 
 interface RouteParams {
   profileId: string;
@@ -123,7 +124,7 @@ function Profile({
             </Columns.Column>
             <Columns.Column size={9}>
               <Heading>
-                {profile.firstName} {profile.lastName}
+                {profile.firstName} {profile.lastName} <Tag size="medium" rounded>(in {rediLocationNames[profile.rediLocation]})</Tag>
               </Heading>
             </Columns.Column>
           </Columns>
