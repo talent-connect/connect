@@ -49,12 +49,11 @@ export default function Login() {
         const accessToken = await login(formValues.username, formValues.password);
         saveAccessToken(accessToken);
         const redProfile = await fetchSaveRedProfile(accessToken);
-        // TOOD: reinstate!
-        // if (redProfile.rediLocation !== (process.env.REACT_APP_REDI_LOCATION as RediLocation)) {
-        //   setIsWrongRediLocationError(true);
-        //   purgeAllSessionData();
-        //   return;
-        // }
+        if (redProfile.rediLocation !== (process.env.REACT_APP_REDI_LOCATION as RediLocation)) {
+          setIsWrongRediLocationError(true);
+          purgeAllSessionData();
+          return;
+        }
         actions.setSubmitting(false);
         history.push('/app/me');
       } catch (err) {
