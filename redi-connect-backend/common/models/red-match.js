@@ -17,7 +17,7 @@ module.exports = function (RedMatch) {
    * @param {Function(Error, object)} callback
    */
 
-  RedMatch.observe('before save', function updateTimestamp (ctx, next) {
+  RedMatch.observe('before save', async function updateTimestamp (ctx, next) {
     if (process.env.NODE_ENV === 'seeding') return next()
     if (ctx.instance) {
       if (ctx.isNewInstance) {
@@ -43,13 +43,23 @@ module.exports = function (RedMatch) {
     // If so, we allow it to stay the way it is. This does open the door for users specifying this by themselves,
     // but given the usage of ReDI Connect, this is an "acceptable risk". However, whenever Loopback as the backend
     // is replaced, make sure to TODO: replace it.
+    const RedProfile = app.models.RedProfile;
+
     if (ctx.instance) {
       if (ctx.isNewInstance) ctx.instance.createdAt = new Date()
       ctx.instance.updatedAt = new Date()
-      if (!ctx.instance.rediLocation) ctx.instance.rediLocation = ctx.options.currentUser.redProfile.rediLocation
+      if (!ctx.instance.rediLocation) {
+        const mentee = await RedProfile.findById(ctx.instance.menteeId);
+        const menteeRediLocation = mentee.toJSON().rediLocation;
+        ctx.instance.rediLocation = menteeRediLocation
+      }
     } else {
       ctx.data.updatedAt = new Date()
-      if (!ctx.data.rediLocation) ctx.data.rediLocation = ctx.options.currentUser.redProfile.rediLocation
+      if (!ctx.data.rediLocation) {
+        const mentee = await RedProfile.findById(ctx.data.menteeId);
+        const menteeRediLocation = mentee.toJSON().rediLocation;
+        ctx.data.rediLocation = menteeRediLocation
+      } 
     }
 
     next()

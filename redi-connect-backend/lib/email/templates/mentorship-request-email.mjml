@@ -6,18 +6,23 @@
       <mj-section css-class="section">
         <mj-column>
           <mj-text mj-class="headline"
-            >You successfully logged your session with your mentee</mj-text
+            >You have received an application from ${menteeFullName}</mj-text
           >
           <mj-divider mj-class="divider-top" css-class="divider" />
           <mj-text mj-class="text">Dear ${mentorName},</mj-text>
-          <mj-text mj-class="text text-padding"
-            >thank you for logging the session. This is very helpful for us in order to track the
-             progress of your mentorship. Please keep logging your sessions!</mj-text
+          <mj-text mj-class="text">
+            you have received an application from mentee ${menteeFullName} in ${locationNameFormatted}. 
+            Please review it as soon as you have time.
+          </mj-text>
+          <mj-text mj-class="text top-padding"
+            >It would be great if you, ${mentorName}, as the mentor, could send ${menteeFullName}
+            suggestions for the time, date and place of your first session once you have accepted
+            his/her application.</mj-text
           >
           <mj-image
-            src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/log-next-session.png"
+            src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/review-application.png"
             align="left"
-            padding="0 0 30px"
+            padding="30px 0"
             target="_blank"
             width="250px"
             href="${loginUrl}"

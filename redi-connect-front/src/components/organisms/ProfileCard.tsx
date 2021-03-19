@@ -1,13 +1,13 @@
 import React from 'react'
 import classnames from 'classnames'
-import { Card, Element } from 'react-bulma-components'
+import { Card, Element, Tag } from 'react-bulma-components'
 import { Icon } from '../atoms'
 import { ReadMentoringTopics } from '../molecules'
 
 import { useHistory } from 'react-router-dom'
 import PipeList from '../../components/molecules/PipeList'
 import {
-  AWS_PROFILE_AVATARS_BUCKET_BASE_URL
+  AWS_PROFILE_AVATARS_BUCKET_BASE_URL, rediLocationNames
 } from '../../config/config'
 
 import placeholderImage from '../../assets/images/img-placeholder.png'
@@ -62,6 +62,7 @@ const ProfileCard = ({ profile, linkTo, toggleFavorite, isFavorite }: ProfileCar
             icon={isFavorite ? 'heartFilled' : 'heart'}
             className="profile-card__favorite__icon"/>
         </div>}
+        <Tag size="small" className="profile-card__location-tag" rounded>(in {rediLocationNames[profile.rediLocation]})</Tag>
         <Element renderAs="h3" textWeight="bold" textSize={4} className="profile-card__name">
           {firstName} {lastName}
         </Element>

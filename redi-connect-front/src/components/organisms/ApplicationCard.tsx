@@ -8,6 +8,7 @@ import { Avatar } from '../organisms';
 import { useHistory } from 'react-router-dom';
 
 import './ApplicationCard.scss';
+import { rediLocationNames } from '../../config/config';
 
 interface Props {
   application: RedMatch & { createdAt?: string };
@@ -33,7 +34,7 @@ const ApplicationCard = ({ application }: Props) => {
             <Avatar profile={applicationUser} />
             {applicationUser && (
               <span>
-                {applicationUser.firstName} {applicationUser.lastName}
+                {applicationUser.firstName} {applicationUser.lastName} (in {rediLocationNames[applicationUser.rediLocation]})
               </span>
             )}
           </Columns.Column>
