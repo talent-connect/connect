@@ -4,12 +4,12 @@ import { useFormik } from 'formik'
 import { Content } from 'react-bulma-components'
 import { FormTextArea, Button } from '../atoms'
 import { Modal } from '../molecules'
-import { matchesAcceptMentorshipStart } from '../../redux/matches/actions'
+import { matchesMarkAsComplete } from '../../redux/matches/actions'
 import { RedMatch } from '../../types/RedMatch'
 
 interface CompleteMentorshipProps {
   match: RedMatch
-  matchesAcceptMentorshipStart: (
+  matchesMarkAsComplete: (
     redMatchId: string,
     mentorReplyMessageOnComplete: string
   ) => void
@@ -25,16 +25,13 @@ const initialValues = {
 
 const CompleteMentorship = ({
   match,
-  matchesAcceptMentorshipStart
+  matchesMarkAsComplete
 }: CompleteMentorshipProps) => {
   const [isModalActive, setModalActive] = useState(false)
 
   const submitForm = async (values: CompleteMentorshipFormValues) => {
     try {
-      matchesAcceptMentorshipStart(
-        match.id,
-        values.mentorReplyMessageOnComplete
-      )
+      matchesMarkAsComplete(match.id, values.mentorReplyMessageOnComplete)
       setModalActive(false)
     } catch (error) {
       console.log('error ', error)
@@ -85,13 +82,11 @@ const CompleteMentorship = ({
 }
 
 const mapDispatchToProps = (dispatch: any) => ({
-  matchesAcceptMentorshipStart: (
+  matchesMarkAsComplete: (
     redMatchId: string,
     mentorReplyMessageOnComplete: string
   ) =>
-    dispatch(
-      matchesAcceptMentorshipStart(redMatchId, mentorReplyMessageOnComplete)
-    )
+    dispatch(matchesMarkAsComplete(redMatchId, mentorReplyMessageOnComplete))
 })
 
 export default connect(null, mapDispatchToProps)(CompleteMentorship)
