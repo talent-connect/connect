@@ -1,25 +1,27 @@
-import { ActionsObservable, ofType } from 'redux-observable'
-import { concat, from, of } from 'rxjs'
-import { map, switchMap } from 'rxjs/operators'
-import { API_URL } from '../../config/config'
-import { http } from '../../services/http/http'
-import { profilesFetchOneStart } from '../profiles/actions'
-import { profileFetchStart } from '../user/actions'
+import { ActionsObservable, ofType } from "redux-observable";
+import { concat, from, of } from "rxjs";
+import { map, switchMap } from "rxjs/operators";
+import { API_URL } from "../../config/config";
+import { http } from "../../services/http/http";
+import { profilesFetchOneStart } from "../profiles/actions";
+import { profileFetchStart } from "../user/actions";
 import {
   matchesAcceptMentorshipSuccess,
+  matchesMarkAsComplete,
   matchesFetchStart,
-  matchesFetchSuccess
-} from './actions'
+  matchesFetchSuccess,
+} from "./actions";
 import {
   MatchesAcceptMentorshipStartAction,
   MatchesMarkAsDismissedStartAction,
   MatchesActions,
-  MatchesActionType
-} from './types'
+  MatchesActionType,
+  MatchesMarkAsCompleteAction,
+} from "./types";
 
 const fetchFilter = {
-  include: ['mentee', 'mentor']
-}
+  include: ["mentee", "mentor"],
+};
 
 export const matchesFetchEpic = (action$: ActionsObservable<MatchesActions>) =>
   action$.pipe(
@@ -27,43 +29,48 @@ export const matchesFetchEpic = (action$: ActionsObservable<MatchesActions>) =>
     switchMap(() =>
       http(`${API_URL}/redMatches?filter=${JSON.stringify(fetchFilter)}`)
     ),
-    map(resp => resp.data),
+    map((resp) => resp.data),
     map(matchesFetchSuccess)
-  )
+  );
 
-export const matchesMarkAsDismissed = (action$: ActionsObservable<MatchesActions>) =>
+export const matchesMarkAsDismissed = (
+  action$: ActionsObservable<MatchesActions>
+) =>
   action$.pipe(
     ofType(MatchesActionType.MATCHES_MARK_AS_DISMISSED_START),
-    switchMap(action =>
+    switchMap((action) =>
       http(`${API_URL}/redMatches/markAsDismissed`, {
-        method: 'post',
+        method: "post",
         data: {
-          redMatchId: (action as MatchesMarkAsDismissedStartAction).payload.redMatchId
-        }
+          redMatchId: (action as MatchesMarkAsDismissedStartAction).payload
+            .redMatchId,
+        },
       })
     ),
-    map(resp => resp.data),
+    map((resp) => resp.data),
     map(matchesFetchStart)
-  )
+  );
 
 export const matchesAcceptMentorshipEpic = (action$: ActionsObservable<any>) =>
   action$.pipe(
     ofType(MatchesActionType.MATCHES_ACCEPT_MENTORSHIP_START),
-    switchMap(action => {
+    switchMap((action) => {
       const request = from(
         http(`${API_URL}/redMatches/acceptMentorship`, {
-          method: 'post',
+          method: "post",
           data: {
-            redMatchId: (action as MatchesAcceptMentorshipStartAction).payload.redMatchId,
-            mentorReplyMessageOnAccept: (action as MatchesAcceptMentorshipStartAction).payload.mentorReplyMessageOnAccept
-          }
+            redMatchId: (action as MatchesAcceptMentorshipStartAction).payload
+              .redMatchId,
+            mentorReplyMessageOnAccept: (action as MatchesAcceptMentorshipStartAction)
+              .payload.mentorReplyMessageOnAccept,
+          },
         })
       ).pipe(
-        map(resp => resp.data),
+        map((resp) => resp.data),
         map(matchesAcceptMentorshipSuccess)
-      )
+      );
 
-      return request
+      return request;
     }),
     switchMap((successAction: any) => {
       return concat(
@@ -78,15 +85,57 @@ export const matchesAcceptMentorshipEpic = (action$: ActionsObservable<any>) =>
         // trigger a re-fetch of the underlying date used by the page, i.e. rootState.profiles.oneProfile.
         // Ideally, that page should itself have some kind of logic: on(change of RedMatch status) { reFetch() }
         of(profilesFetchOneStart(successAction.payload.menteeId))
-      )
+      );
     })
 
     // TODO: fix this
     // catchError((err as Error) => matchesAcceptMentorshipError(err))
-  )
+  );
+
+export const matchesMarkAsCompleteEpic = (action$: ActionsObservable<any>) =>
+  action$.pipe(
+    ofType(MatchesActionType.MATCHES_MARK_AS_COMPLETED),
+    switchMap((action) => {
+      const request = from(
+        http(`${API_URL}/redMatches/markAsCompleted`, {
+          method: "post",
+          data: {
+            redMatchId: (action as MatchesMarkAsCompleteAction).payload
+              .redMatchId,
+            mentorReplyMessageOnComplete: (action as MatchesMarkAsCompleteAction)
+              .payload.mentorReplyMessageOnComplete,
+          },
+        })
+      ).pipe(
+        map((resp) => resp.data)
+        // map(matchesMarkAsComplete)
+      );
+
+      return request;
+    }),
+    switchMap((successAction: any) => {
+      return concat(
+        of(successAction),
+        of(matchesFetchStart()),
+        of(profileFetchStart()),
+        // This next one is a terrible idea. It is a hard-dependency coming from <Profile>. Use case:
+        // A mentor is looking at a mentee's profile page. The mentee in question has applied (via RedMatch)
+        // for mentorship. Mentor clicks the <ConnectButton>, setting off a chain of actions and epics
+        // in the matches module, where we are now. The profile page must now refresh, since the mentee's match
+        // has changed from .status = applied to .status = accepted. To force a refresh of that page, we must
+        // trigger a re-fetch of the underlying date used by the page, i.e. rootState.profiles.oneProfile.
+        // Ideally, that page should itself have some kind of logic: on(change of RedMatch status) { reFetch() }
+        of(profilesFetchOneStart(successAction.payload.menteeId))
+      );
+    })
+
+    // TODO: fix this
+    // catchError((err as Error) => matchesAcceptMentorshipError(err))
+  );
 
 export const matchesEpics = {
   matchesFetchEpic,
   matchesAcceptMentorshipEpic,
-  matchesMarkAsDismissed
-}
+  matchesMarkAsCompleteEpic,
+  matchesMarkAsDismissed,
+};
