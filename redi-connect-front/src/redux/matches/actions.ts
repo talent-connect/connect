@@ -6,7 +6,8 @@ import {
   MatchesAcceptMentorshipStartAction,
   MatchesAcceptMentorshipSuccessAction,
   MatchesAcceptMentorshipErrorAction,
-  MatchesMarkAsDismissedStartAction
+  MatchesMarkAsDismissedStartAction,
+  MatchesMarkAsCompleteAction
 } from './types'
 import { RedMatch } from '../../types/RedMatch'
 
@@ -34,6 +35,17 @@ export const matchesAcceptMentorshipStart = (
   payload: {
     redMatchId,
     mentorReplyMessageOnAccept
+  }
+})
+
+export const matchesMarkAsComplete = (
+  redMatchId: string,
+  mentorReplyMessageOnComplete: string
+): MatchesMarkAsCompleteAction => ({
+  type: MatchesActionType.MATCHES_MARK_AS_COMPLETED,
+  payload: {
+    redMatchId,
+    mentorReplyMessageOnComplete
   }
 })
 
