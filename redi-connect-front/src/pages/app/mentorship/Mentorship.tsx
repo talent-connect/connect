@@ -65,9 +65,9 @@ const Mentorship = ({ currentUser, matches }: MentorshipProps) => {
         </Columns.Column>
 
         <Columns.Column className="is-narrow">
-          {currentMatch && currentMatch.status === 'accepted' && (
-            <CompleteMentorship match={currentMatch} />
-          )}
+          {currentMatch &&
+            currentMatch.status === 'accepted' &&
+            currentUserIsMentor && <CompleteMentorship match={currentMatch} />}
         </Columns.Column>
       </Columns>
       {currentUserIsMentee && (
