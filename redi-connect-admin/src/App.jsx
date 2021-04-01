@@ -56,6 +56,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 import DateFnsUtils from '@date-io/date-fns';
 
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
@@ -433,7 +435,12 @@ const AllModelsPagination = (props) => (
 
 const RedProfileList = (props) => {
   return (
-    <List {...props} filters={<RedProfileListFilters />} pagination={<AllModelsPagination />}>
+    <List
+      {...props}
+      filters={<RedProfileListFilters />}
+      pagination={<AllModelsPagination />}
+      aside={<FreeMenteeSpotsPerLocationAside />}
+    >
       <Datagrid expand={<RedProfileListExpandPane />}>
         <TextField source="rediLocation" label="City" />
         <TextField source="firstName" />
@@ -458,6 +465,47 @@ const RedProfileList = (props) => {
     </List>
   );
 };
+
+const FreeMenteeSpotsPerLocationAside = () => {
+  const [mentorsList, setMentorsList] = React.useState([]);
+
+  useEffect(() => {
+    dataProvider('GET_LIST', 'redProfiles', {
+      pagination: { page: 1, perPage: 0 },
+      sort: {},
+      filter: { userType: 'mentor' },
+    }).then(({ data }) => setMentorsList(data));
+  }, []);
+
+  const getFreeSpotsCount = (location) =>
+    mentorsList
+      .filter((mentor) => mentor.rediLocation === location)
+      .reduce((acc, curr) => acc + curr.currentFreeMenteeSpots, 0);
+
+  const totalFreeMenteeSpotsBerlin = getFreeSpotsCount('berlin');
+  const totalFreeMenteeSpotsMunich = getFreeSpotsCount('munich');
+  const totalFreeMenteeSpotsNRW = getFreeSpotsCount('nrw');
+
+  return (
+    <div>
+      <Card style={{ width: 270, marginLeft: '1em' }}>
+        <CardContent style={{ paddingBottom: '16px' }}>
+          <Typography gutterBottom>Free Mentee Spots Per Location</Typography>
+          <Typography variant='body2' gutterBottom>
+            Berlin: {totalFreeMenteeSpotsBerlin} mentoring spots available
+          </Typography>
+          <Typography variant='body2' gutterBottom>
+            Munich: {totalFreeMenteeSpotsMunich} mentoring spots available
+          </Typography>
+          <Typography variant='body2'>
+            NRW: {totalFreeMenteeSpotsNRW} mentoring spots available
+          </Typography>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
 const RedProfileListExpandPane = (props) => {
   return (
     <Show {...props} title="">
