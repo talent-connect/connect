@@ -27,66 +27,75 @@ if (!process.env.REDI_LOCATION) {
   );
 }
 
-const berlinCategories = [
-  { id: 'blockchain', label: 'Blockchain' },
-  { id: 'basicComputer', label: 'Basic Computer' },
-  { id: 'react', label: 'React' },
-  { id: 'itAndNetworking', label: 'IT & Networking' },
-  { id: 'swift', label: 'Swift' },
-  { id: 'interviewsAndCommunication', label: 'Interviews & Communications' },
-  { id: 'graphicsAndUxUi', label: 'Graphics & UX/UI' },
-  { id: 'cvPersonalPresentation', label: 'CV & Personal presentation' },
-  { id: 'mobileDevelopment', label: 'Mobile Development' },
-  { id: 'jobOrientation', label: 'Job Orientation' },
-  { id: 'pythonDataScience', label: 'Python Data Science' },
-  { id: 'entrepreneurship', label: 'Entrepreneurship' },
-  { id: 'javaDevelopment', label: 'Java Development' },
-  { id: 'iot', label: 'IoT' },
-  { id: 'webDevelopment', label: 'Web Development' },
-  { id: 'freelancing', label: 'Freelancing' },
-];
-const munichCategories = [
+const categories = [
+  { id: 'basicProgrammingSkills', label: 'Basic programming skills', group: 'softwareEngineering' },
+  { id: 'htmlCss', label: 'HTML & CSS', group: 'softwareEngineering' },
+  { id: 'javascript', label: 'Javascript', group: 'softwareEngineering' },
+  { id: 'react', label: 'React', group: 'softwareEngineering' },
+  { id: 'java', label: 'Java', group: 'softwareEngineering' },
+  { id: 'python', label: 'Python', group: 'softwareEngineering' },
+  { id: 'dataAnalytics', label: 'Data Analytics', group: 'softwareEngineering' },
+  { id: 'machineLearning', label: 'Machine Learning', group: 'softwareEngineering' },
+  { id: 'mobileDevelopmentIos', label: 'iOS Mobile Development', group: 'softwareEngineering' },
   {
-    id: 'munich_programmingSkillsAndHelpForLearning',
-    colour: '#db8484',
-    label: '(Munich) Programming skills and help for learning',
+    id: 'mobileDevelopmentAndroid',
+    label: 'Android Mobile Development',
+    group: 'softwareEngineering',
+  },
+  { id: 'salesforce', label: 'Salesforce', group: 'softwareEngineering' },
+  { id: 'devOpsCloud', label: 'DevOps and Cloud (e.g. Azure, AWS)', group: 'softwareEngineering' },
+  { id: 'iot', label: 'IoT', group: 'softwareEngineering' },
+  { id: 'computerNetworking', label: 'Computer Networking', group: 'softwareEngineering' },
+  { id: 'blockchain', label: 'Blockchain', group: 'softwareEngineering' },
+  { id: 'productManagement', label: 'Product Management', group: 'otherProfessions' },
+  { id: 'projectManagement', label: 'Project Management', group: 'otherProfessions' },
+  { id: 'digitalMarketing', label: 'Digital Marketing', group: 'otherProfessions' },
+  { id: 'businessDevelopment', label: 'Business Development', group: 'otherProfessions' },
+  { id: 'sales', label: 'Sales', group: 'otherProfessions' },
+  { id: 'qualityAssurance', label: 'Quality Assurance', group: 'otherProfessions' },
+  { id: 'basicGerman', label: 'Basic German �~_~G��~_~G�', group: 'language' },
+  { id: 'businessGerman', label: 'Business German �~_~G��~_~G�', group: 'language' },
+  { id: 'english', label: 'English �~_~G��~_~G�', group: 'language' },
+  { id: 'graphicDesign', label: 'Graphic Design', group: 'design' },
+  { id: 'userInterfaceDesign', label: 'User Interface Design', group: 'design' },
+  { id: 'userExperienceDesign', label: 'User Experience Design', group: 'design' },
+  { id: 'motivationAndEncouragement', label: 'Motivation & encouragement', group: 'other' },
+  { id: 'friendAndHelp', label: 'Be a friend and help', group: 'other' },
+  { id: 'dontKnowYet', label: "I don't know yet", group: 'other' },
+  {
+    id: 'careerOrientationAndPlanning',
+    label: 'Career orientation & planning',
+    group: 'careerSupport',
   },
   {
-    id: 'munich_careerPlanningAndJobOrientation',
-    colour: '#db8484',
-    label: '(Munich) Career planning and job orientation',
+    id: 'internshipOrWorkingStudent',
+    label: 'Internship / working student position search',
+    group: 'careerSupport',
+  },
+  { id: 'jobSearch', label: 'Job search', group: 'careerSupport' },
+  {
+    id: 'jobApplicationsCvPreparationEnglish',
+    label: 'Job applications and CV preparation in English',
+    group: 'careerSupport',
   },
   {
-    id: 'munich_helpForCvPreparationAndApplicationProcess',
-    colour: '#db8484',
-    label: '(Munich) Help for CV preparation and application process',
+    id: 'jobApplicationsCvPreparationGerman',
+    label: 'Job applications and CV preparation in German',
+    group: 'careerSupport',
+  },
+  { id: 'interviewPreparation', label: 'Interview preparation', group: 'careerSupport' },
+  {
+    id: 'codingChallengePreparation',
+    label: 'Coding challenge preparation',
+    group: 'careerSupport',
   },
   {
-    id: 'munich_helpForInterviewPreparation',
-    colour: '#db8484',
-    label: '(Munich) Help for interview preparation',
+    id: 'buildingProfessionalNetwork',
+    label: 'Building a professional network',
+    group: 'careerSupport',
   },
-  {
-    id: 'munich_helpToImproveEnglish',
-    colour: '#db8484',
-    label: '(Munich) Help to improve English',
-  },
-  { id: 'munich_helpToImproveGerman', colour: '#db8484', label: '(Munich) Help to improve German' },
-  {
-    id: 'munich_helpAndGuidanceOnHowToUseAComputer',
-    colour: '#db8484',
-    label: '(Munich) Help and guidance on how to use a computer',
-  },
-  {
-    id: 'munich_motivationAndEncouragement',
-    colour: '#db8484',
-    label: '(Munich) Motivation and encouragement',
-  },
-  {
-    id: 'munich_beAFriendToHelpInNewAndDifficultSituationsHereInGermany',
-    colour: '#db8484',
-    label: '(Munich) Be a friend to help in new and difficult situations here in Germany',
-  },
+  { id: 'entrepreneurship', label: 'Entrepreneurship', group: 'careerSupport' },
+  { id: 'freelancing', label: 'Freelancing', group: 'careerSupport' },
 ];
 
 const Languages = ['German', 'Arabic', 'Farsi', 'Tigrinya'];
@@ -153,8 +162,7 @@ const pickRandomUserType = () => {
 const users = fp.compose(
   fp.take(1000),
   fp.map(({ name, surname, gender }) => {
-    const rediLocation = Math.random() > 0.5 ? 'berlin' : 'munich';
-    const cats = rediLocation === 'berlin' ? berlinCategories : munichCategories;
+    const rediLocation = Math.random() > 0.5 ? 'berlin' : (Math.random() > 0.5 ? 'munich' : 'nrw');
     const email = randomString() + '@' + randomString() + '.com';
     const password = email;
     return {
@@ -191,7 +199,7 @@ const users = fp.compose(
         slackUsername: randomString(),
         githubProfileUrl: randomString(),
         telephoneNumber: randomString(),
-        categories: cats.map((c) => c.id).filter(() => Math.random() < 0.5),
+        categories: categories.map((c) => c.id).filter(() => Math.random() < 0.5),
         menteeCountCapacity: Math.floor(Math.random() * 4),
         mentee_highestEducationLevel:
           educationLevels[Math.floor(Math.random() * educationLevels.length)].id,
@@ -244,9 +252,7 @@ const ericMenteeRedProfile = {
   slackUsername: '',
   githubProfileUrl: '',
   telephoneNumber: '',
-  categories: (process.env.REDI_LOCATION === 'munich' ? munichCategories : berlinCategories)
-    .map((c) => c.id)
-    .filter(() => Math.random() < 0.4),
+  categories: categories.map((c) => c.id).filter(() => Math.random() < 0.4),
   menteeCountCapacity: 1,
   mentee_highestEducationLevel: 'highSchool',
   mentee_currentlyEnrolledInCourse: 'salesforceFundamentals',
@@ -286,9 +292,7 @@ const ericMentorRedProfile = {
   slackUsername: '',
   githubProfileUrl: '',
   telephoneNumber: '',
-  categories: (process.env.REDI_LOCATION === 'munich' ? munichCategories : berlinCategories)
-    .map((c) => c.id)
-    .filter(() => Math.random() < 0.4),
+  categories: categories.map((c) => c.id).filter(() => Math.random() < 0.4),
   menteeCountCapacity: 2,
   username: 'info@binarylights.com',
 };
@@ -326,9 +330,7 @@ const isabelleMentorRedProfile = {
   slackUsername: '',
   githubProfileUrl: '',
   telephoneNumber: '',
-  categories: (process.env.REDI_LOCATION === 'munich' ? munichCategories : berlinCategories)
-    .map((c) => c.id)
-    .filter(() => Math.random() < 0.4),
+  categories: categories.map((c) => c.id).filter(() => Math.random() < 0.4),
   menteeCountCapacity: 2,
   username: 'isabelle@redi-school.org',
 };
@@ -366,9 +368,7 @@ const ericAdminRedProfile = {
   slackUsername: '',
   githubProfileUrl: '',
   telephoneNumber: '',
-  categories: (process.env.REDI_LOCATION === 'munich' ? munichCategories : berlinCategories)
-    .map((c) => c.id)
-    .filter(() => Math.random() < 0.4),
+  categories: categories.map((c) => c.id).filter(() => Math.random() < 0.4),
   menteeCountCapacity: 2,
   username: 'cloud-accounts@redi-school.org',
 };

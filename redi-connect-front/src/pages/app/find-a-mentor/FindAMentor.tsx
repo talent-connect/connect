@@ -46,7 +46,7 @@ interface FindAMentorProps {
 
 const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
   const { Loading, isLoading, setLoading } = useLoading();
-  const { id, categories, favouritedRedProfileIds } = profile;
+  const { id, categories, favouritedRedProfileIds, rediLocation } = profile;
   const [showFavorites, setShowFavorites] = useState<boolean>(false);
   const [mentors, setMentors] = useState<RedProfile[]>([]);
   const [activeCategories, { toggle: toggleCategories, clear: clearCategories }] = useList(
@@ -70,7 +70,11 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
   useEffect(() => {
     setLoading(true);
     getMentors({ categories: activeCategories, languages: activeLanguages }).then((mentors) => {
-      setMentors(mentors.filter((mentor) => mentor.currentFreeMenteeSpots > 0));
+      setMentors(
+        mentors
+          .filter((mentor) => mentor.currentFreeMenteeSpots > 0)
+          .filter(mentor => !mentor.optOutOfMenteesFromOtherRediLocation || mentor.rediLocation === rediLocation)
+      );
       setLoading(false);
     });
   }, [activeCategories, activeLanguages]);

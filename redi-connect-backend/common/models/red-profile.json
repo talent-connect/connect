@@ -93,6 +93,9 @@
     "menteeCountCapacity": {
       "type": "number"
     },
+    "optOutOfMenteesFromOtherRediLocation": {
+      "type": "boolean"
+    },
     "favouritedRedProfileIds": {
       "type": [
         "string"

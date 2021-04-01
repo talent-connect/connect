@@ -40,6 +40,7 @@ export type RedProfile = {
   telephoneNumber: string
   categories: Array<string>
   favouritedRedProfileIds: Array<string>
+  optOutOfMenteesFromOtherRediLocation: boolean
 
   createdAt: Date
   updatedAt: Date

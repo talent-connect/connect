@@ -1,6 +1,6 @@
 ---
 name: Task
-about: Write up some task that needs to get done. Use this for basically anything that doesn't fit into any of the other types. Note that User story subtasks are written in the body of the User story issue itself.
+about: Write up some task that needs to get done. Use this for basically anything that doesn't fit into any of the other types.
 title: 'A brief title'
 labels: 'Task'
 assignees: ''

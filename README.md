@@ -40,7 +40,7 @@ Contribution guide will be elaborated. For now, please:
    - mongod
    - node v14
 2. Optionally, to easily browse the MongoDB database, install _Studio 3T_
-3. Install dependencies: run `yarn` in `redi-connect-front` folder, `yarn` in `redi-connect-admin` folder, run `npm install` in `redi-connect-backend` folder
+3. Install dependencies: run `yarn` in `redi-connect-front` folder, `yarn` in `redi-connect-admin` folder, and `yarn` in `redi-connect-backend` folder
 4. Optionally, create a folder named `mongodb-data` for MongoDB's data files
 5. Create your `.env.development` in `redi-connect-backend`. You can base it off `.env.sample` in the same folder. Reach out to @ericbolikowski for a complete `.env.development`.
 
@@ -56,10 +56,12 @@ Contribution guide will be elaborated. For now, please:
 ### Ubuntu/Fedora: Possible errors starting ReDI Connect
 
 When starting ReDI Connect on Ubuntu or Fedora you could encounter following error:
->`Error: ENOSPC: System limit for number of file watchers reached, watch ...`
+
+> `Error: ENOSPC: System limit for number of file watchers reached, watch ...`
 
 The solution is to issue the following command:
->`echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p`
+
+> `echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p`
 
 ## Getting started (with Docker)
 
