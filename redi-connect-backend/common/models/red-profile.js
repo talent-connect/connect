@@ -82,7 +82,7 @@ module.exports = function (RedProfile) {
         mentorId: ctx.data.id,
         status: type,
       });
-    const countTotal = () => countMatchesByType(undefined);
+    const countTotal = () => countMatchesByType(null);
 
     Rx.zip(getLastLoginDateTime(), countTotal()).subscribe(
       ([lastLoginDateTime, totalRedMatchCount]) => {
