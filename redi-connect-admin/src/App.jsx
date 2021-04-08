@@ -480,6 +480,7 @@ const FreeMenteeSpotsPerLocationAside = () => {
   const getFreeSpotsCount = (location) =>
     mentorsList
       .filter((mentor) => mentor.rediLocation === location)
+      .filter((mentor) => mentor.userActivated)
       .reduce((acc, curr) => acc + curr.currentFreeMenteeSpots, 0);
 
   const totalFreeMenteeSpotsBerlin = getFreeSpotsCount('berlin');
