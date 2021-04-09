@@ -12,7 +12,7 @@ export type RedMatch = {
   applicationText: string
   expectationText: string
   mentorReplyMessageOnAccept: string
-  mentorReplyMessageOnComplete: string
+  mentorMessageOnComplete: string
   hasMenteeDismissedMentorshipApplicationAcceptedNotification: boolean
   mentor: RedProfile
   mentee: RedProfile

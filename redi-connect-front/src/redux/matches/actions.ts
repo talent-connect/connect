@@ -40,12 +40,12 @@ export const matchesAcceptMentorshipStart = (
 
 export const matchesMarkAsComplete = (
   redMatchId: string,
-  mentorReplyMessageOnComplete: string
+  mentorMessageOnComplete: string
 ): MatchesMarkAsCompleteAction => ({
   type: MatchesActionType.MATCHES_MARK_AS_COMPLETED,
   payload: {
     redMatchId,
-    mentorReplyMessageOnComplete
+    mentorMessageOnComplete
   }
 })
 

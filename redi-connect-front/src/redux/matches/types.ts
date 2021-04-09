@@ -53,7 +53,7 @@ export interface MatchesMarkAsCompleteAction extends Action {
   type: MatchesActionType.MATCHES_MARK_AS_COMPLETED
   payload: {
     redMatchId: string
-    mentorReplyMessageOnComplete: string
+    mentorMessageOnComplete: string
   }
 }
 
