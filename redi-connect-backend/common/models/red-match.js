@@ -170,7 +170,7 @@ module.exports = function (RedMatch) {
   }
 
   RedMatch.markAsCompleted = async (data, options, callback) => {
-    const { redMatchId, mentorReplyMessageOnComplete } = data
+    const { redMatchId, mentorMessageOnComplete } = data
 
     const RedProfile = app.models.RedProfile
 
@@ -184,7 +184,7 @@ module.exports = function (RedMatch) {
     redMatch = await redMatch.updateAttributes({
       status: 'completed',
       matchMadeActiveOn: new Date(),
-      mentorReplyMessageOnComplete,
+      mentorMessageOnComplete,
       rediLocation: options.currentUser.redProfile.rediLocation
     })
 

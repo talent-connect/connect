@@ -22,7 +22,7 @@
     "mentorReplyMessageOnAccept": {
       "type": "string"
     },
-    "mentorReplyMessageOnComplete": {
+    "mentorMessageOnComplete": {
       "type": "string"
     },
     "hasMenteeDismissedMentorshipApplicationAcceptedNotification": {
