@@ -99,12 +99,14 @@ export interface RedProfileFilters {
   userType: UserType;
   categories?: string[];
   languages?: string[];
+  nameQuery?: string;
 }
 
 export const getProfiles = ({
   userType,
   categories,
   languages,
+  nameQuery,
 }: RedProfileFilters): Promise<RedProfile[]> => {
   const filterLanguages = languages && languages.length !== 0 ? { inq: languages } : undefined;
   const filterCategories = categories && categories.length !== 0 ? { inq: categories } : undefined;
@@ -112,10 +114,22 @@ export const getProfiles = ({
   return http(
     `${API_URL}/redProfiles?filter=${JSON.stringify({
       where: {
-        userType,
-        languages: filterLanguages,
-        categories: filterCategories,
-        userActivated: true,
+        // loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName: {
+        //   like: 'Carlotta3',
+        //   options: 'i',
+        // },
+        and: [
+          ...String(nameQuery).split(' ').map(word => ({
+            loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName: {
+              like: word,
+              options: 'i',
+            },
+          })),
+          { userType },
+          { languages: filterLanguages },
+          { categories: filterCategories },
+          { userActivated: true },
+        ]
       },
       order: 'createdAt DESC',
       limit: 0,
@@ -123,8 +137,8 @@ export const getProfiles = ({
   ).then((resp) => resp.data);
 };
 
-export const getMentors = ({ categories, languages }: Partial<RedProfileFilters>) =>
-  getProfiles({ userType: 'mentor', categories, languages });
+export const getMentors = ({ categories, languages, nameQuery }: Partial<RedProfileFilters>) =>
+  getProfiles({ userType: 'mentor', categories, languages, nameQuery });
 
 export const getMentees = () => getProfiles({ userType: 'mentee' });
 
