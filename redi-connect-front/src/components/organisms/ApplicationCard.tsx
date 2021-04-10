@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import classnames from 'classnames';
 import { Columns, Heading, Content } from 'react-bulma-components';
+import moment from 'moment';
 import { getRedProfile } from '../../services/auth/auth';
 import { RedMatch } from '../../types/RedMatch';
 import { Icon } from '../atoms';
@@ -24,7 +25,6 @@ const ApplicationCard = ({ application }: Props) => {
   const [showDetails, setShowDetails] = useState(false);
   const applicationDate = new Date(application.createdAt || '');
   const applicationUser = profile.userType === 'mentee' ? application.mentor : application.mentee;
-  const padDate = (date: number) => `${date < 10 ? '0' : ''}${date}`;
 
   return (
     <>
@@ -54,10 +54,7 @@ const ApplicationCard = ({ application }: Props) => {
           </Columns.Column>
 
           <Columns.Column size={3} textAlignment="centered">
-            From{' '}
-            {`${padDate(applicationDate.getDay() + 1)}.${padDate(
-              applicationDate.getMonth() + 1
-            )}.${applicationDate.getFullYear()}`}
+            From {moment(applicationDate).format('DD.MM.YYYY')}
           </Columns.Column>
 
           <Columns.Column
