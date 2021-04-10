@@ -43,6 +43,11 @@ const CompleteMentorship = ({
     onSubmit: submitForm
   })
 
+  const handleCancel = () => {
+    setModalActive(false)
+    formik.resetForm()
+  }
+
   return (
     <>
       <Button onClick={() => setModalActive(true)}>Complete Mentorship</Button>
@@ -77,6 +82,9 @@ const CompleteMentorship = ({
         <Modal.Foot>
           <Button onClick={() => formik.handleSubmit()}>
             Complete mentorship
+          </Button>
+          <Button onClick={handleCancel} simple>
+            Cancel
           </Button>
         </Modal.Foot>
       </Modal>
