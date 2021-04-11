@@ -857,6 +857,11 @@ const RedMatchShow = (props) => (
         label="Mentor's reply message to mentee's application (on accepting the application)"
         helperText="This field contains the message a mentor sends to his mentee when accepting the mentee's application"
       />
+      <TextField
+        source='mentorMessageOnComplete'
+        label="Mentor's reply message to mentee's application (on completing of the mentorship)"
+        helperText="This field contains the message a mentor on completion the mentee's mentorship"
+      />
       <BooleanField
         source="hasMenteeDismissedMentorshipApplicationAcceptedNotification"
         valueLabelTrue="Mentee has seen the notification"
@@ -1011,6 +1016,11 @@ const RedMatchEdit = (props) => (
         source="mentorReplyMessageOnAccept"
         label="Mentor's reply message to mentee's application (on accepting the application)"
         helperText="This field contains the message a mentor sends to his mentee when accepting the mentee's application"
+      />
+      <LongTextInput
+        source='mentorMessageOnComplete'
+        label="Mentor's reply message to mentee's application (on completing of the mentorship)"
+        helperText="This field contains the message a mentor on completion the mentee's mentorship"
       />
       <TextInput
         source="matchMadeActiveOn"

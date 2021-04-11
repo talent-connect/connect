@@ -30,7 +30,13 @@ module.exports = function (RedMatch) {
     }
 
     // if current user is admin, don't run any of the logic below
-    if (ctx.options && ctx.options.currentUser && ctx.options.currentUser.email === 'cloud-accounts@redi-school.org') return next()
+    if (
+      ctx.options &&
+      ctx.options.currentUser &&
+      ctx.options.currentUser.email === 'cloud-accounts@redi-school.org'
+    ) {
+      return next()
+    }
 
     // Note: tricky handling of the .rediLocation property coming up. This fix was done on 17 May 2020.
     // Ideally, we should get .rediLocation from ctx.options.currentUser.redProfle. This was how it was coded,
@@ -43,23 +49,23 @@ module.exports = function (RedMatch) {
     // If so, we allow it to stay the way it is. This does open the door for users specifying this by themselves,
     // but given the usage of ReDI Connect, this is an "acceptable risk". However, whenever Loopback as the backend
     // is replaced, make sure to TODO: replace it.
-    const RedProfile = app.models.RedProfile;
+    const RedProfile = app.models.RedProfile
 
     if (ctx.instance) {
       if (ctx.isNewInstance) ctx.instance.createdAt = new Date()
       ctx.instance.updatedAt = new Date()
       if (!ctx.instance.rediLocation) {
-        const mentee = await RedProfile.findById(ctx.instance.menteeId);
-        const menteeRediLocation = mentee.toJSON().rediLocation;
+        const mentee = await RedProfile.findById(ctx.instance.menteeId)
+        const menteeRediLocation = mentee.toJSON().rediLocation
         ctx.instance.rediLocation = menteeRediLocation
       }
     } else {
       ctx.data.updatedAt = new Date()
       if (!ctx.data.rediLocation) {
-        const mentee = await RedProfile.findById(ctx.data.menteeId);
-        const menteeRediLocation = mentee.toJSON().rediLocation;
+        const mentee = await RedProfile.findById(ctx.data.menteeId)
+        const menteeRediLocation = mentee.toJSON().rediLocation
         ctx.data.rediLocation = menteeRediLocation
-      } 
+      }
     }
 
     next()
@@ -69,38 +75,38 @@ module.exports = function (RedMatch) {
   // to allow $mentor and $mentee to look up RedMatch. To make sure a mentee user can only
   // see RedMatch-es related to him/her, and the same for a mentor user, the below entity filter
   // is used.
-  RedMatch.observe('access', function onlyMatchesRelatedToCurrentUser (
-    ctx,
-    next
-  ) {
-    if (!ctx.options.currentUser) return next()
+  RedMatch.observe(
+    'access',
+    function onlyMatchesRelatedToCurrentUser (ctx, next) {
+      if (!ctx.options.currentUser) return next()
 
-    const currentUserProfileId = ctx.options.currentUser.redProfile.id
+      const currentUserProfileId = ctx.options.currentUser.redProfile.id
 
-    // TODO: this one is included (as of writing) only for convenience in admin panel.
-    // Considering putting in a if(adminUser) block
-    ctx.query.include = ['mentor', 'mentee']
+      // TODO: this one is included (as of writing) only for convenience in admin panel.
+      // Considering putting in a if(adminUser) block
+      ctx.query.include = ['mentor', 'mentee']
 
-    if (!ctx.query.where) ctx.query.where = {}
+      if (!ctx.query.where) ctx.query.where = {}
 
-    // TODO: Replace this with role-based 'admin' role check
-    if (ctx.options.currentUser.email !== 'cloud-accounts@redi-school.org') {
-      const currentUserMenteeOrMentor = {
-        or: [
-          { mentorId: currentUserProfileId },
-          { menteeId: currentUserProfileId }
-        ]
+      // TODO: Replace this with role-based 'admin' role check
+      if (ctx.options.currentUser.email !== 'cloud-accounts@redi-school.org') {
+        const currentUserMenteeOrMentor = {
+          or: [
+            { mentorId: currentUserProfileId },
+            { menteeId: currentUserProfileId }
+          ]
+        }
+        const existingWhere = ctx.query.where
+        if (Object.values(existingWhere).length > 0) {
+          ctx.query.where = { and: [currentUserMenteeOrMentor, existingWhere] }
+        } else {
+          ctx.query.where = currentUserMenteeOrMentor
+        }
       }
-      const existingWhere = ctx.query.where
-      if (Object.values(existingWhere).length > 0) {
-        ctx.query.where = { and: [currentUserMenteeOrMentor, existingWhere] }
-      } else {
-        ctx.query.where = currentUserMenteeOrMentor
-      }
+
+      next()
     }
-
-    next()
-  })
+  )
 
   RedMatch.acceptMentorship = async (data, options, callback) => {
     const { redMatchId, mentorReplyMessageOnAccept } = data
@@ -138,7 +144,7 @@ module.exports = function (RedMatch) {
     })
 
     await Promise.all(
-      menteePendingMatches.map(pendingMatch => {
+      menteePendingMatches.map((pendingMatch) => {
         return pendingMatch.updateAttributes({
           status: 'invalidated-as-other-mentor-accepted',
           rediLocation: options.currentUser.redProfile.rediLocation
@@ -147,16 +153,40 @@ module.exports = function (RedMatch) {
     )
 
     await Promise.all(
-      menteePendingMatches.map(pendingMatch => {
+      menteePendingMatches.map((pendingMatch) => {
         const pendingMatchData = pendingMatch.toJSON()
-        return sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted({
-          recipient: pendingMatchData.mentor.contactEmail,
-          mentorName: pendingMatchData.mentor.firstName,
-          menteeName: pendingMatchData.mentee.firstName,
-          rediLocation: options.currentUser.redProfile.rediLocation
-        }).toPromise()
+        return sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted(
+          {
+            recipient: pendingMatchData.mentor.contactEmail,
+            mentorName: pendingMatchData.mentor.firstName,
+            menteeName: pendingMatchData.mentee.firstName,
+            rediLocation: options.currentUser.redProfile.rediLocation
+          }
+        ).toPromise()
       })
     )
+
+    return redMatch.toJSON()
+  }
+
+  RedMatch.markAsCompleted = async (data, options, callback) => {
+    const { redMatchId, mentorMessageOnComplete } = data
+
+    const RedProfile = app.models.RedProfile
+
+    let redMatch = await RedMatch.findById(redMatchId)
+    const redMatchData = redMatch.toJSON()
+    const [mentor, mentee] = await Promise.all([
+      RedProfile.findById(redMatchData.mentorId),
+      RedProfile.findById(redMatchData.menteeId)
+    ])
+
+    redMatch = await redMatch.updateAttributes({
+      status: 'completed',
+      matchMadeActiveOn: new Date(),
+      mentorMessageOnComplete,
+      rediLocation: options.currentUser.redProfile.rediLocation
+    })
 
     return redMatch.toJSON()
   }
@@ -182,21 +212,19 @@ module.exports = function (RedMatch) {
     }
     redProfileFind({ where: { id: mentorId } })
       .pipe(
-        switchMap(mentorProfile =>
+        switchMap((mentorProfile) =>
           sendMentorshipRequestReceivedEmail({
             recipient: mentorProfile.contactEmail,
             mentorName: mentorProfile.firstName,
-            menteeFullName: `${options.currentUser.redProfile.firstName} ${
-              options.currentUser.redProfile.lastName
-            }`,
+            menteeFullName: `${options.currentUser.redProfile.firstName} ${options.currentUser.redProfile.lastName}`,
             rediLocation: options.currentUser.redProfile.rediLocation
           })
         )
       )
       .subscribe()
     redMatchCreate(redMatch).subscribe(
-      inst => callback(null, inst),
-      err => callback(err)
+      (inst) => callback(null, inst),
+      (err) => callback(err)
     )
   }
 
