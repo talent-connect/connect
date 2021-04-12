@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { Content, Columns, Tag } from 'react-bulma-components';
-import { Heading, Icon } from '../../../components/atoms';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Content, Columns, Tag, Form } from 'react-bulma-components';
+import { debounce } from 'lodash';
+import { FormInput, Heading, Icon } from '../../../components/atoms';
 import { FilterDropdown } from '../../../components/molecules';
 import { ProfileCard } from '../../../components/organisms';
 import { useLoading } from '../../../hooks/WithLoading';
@@ -44,9 +45,28 @@ interface FindAMentorProps {
   profileSaveStart: (profile: Partial<RedProfile>) => void;
 }
 
+const SearchField = ({valueChange}: { valueChange: (value: string) => void }) => {
+  const [value, setValue] = useState('');
+  const valueChangeDebounced = useCallback(debounce(valueChange, 400), []);
+  const handleChange = useCallback((e: any) => setValue(e.target.value), []);
+
+  useEffect(() => {
+    valueChangeDebounced(value)
+  }, [value])
+
+  return (
+    <Form.Input
+      placeholder="Search by name"
+      onChange={handleChange}
+      value={value}
+    />
+  )
+}
+
 const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
   const { Loading, isLoading, setLoading } = useLoading();
   const { id, categories, favouritedRedProfileIds, rediLocation } = profile;
+  const [ nameQuery, setNameQuery ] = useState('')
   const [showFavorites, setShowFavorites] = useState<boolean>(false);
   const [mentors, setMentors] = useState<RedProfile[]>([]);
   const [activeCategories, { toggle: toggleCategories, clear: clearCategories }] = useList(
@@ -69,7 +89,7 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
 
   useEffect(() => {
     setLoading(true);
-    getMentors({ categories: activeCategories, languages: activeLanguages }).then((mentors) => {
+    getMentors({ categories: activeCategories, languages: activeLanguages, nameQuery }).then((mentors) => {
       setMentors(
         mentors
           .filter((mentor) => mentor.currentFreeMenteeSpots > 0)
@@ -77,7 +97,7 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
       );
       setLoading(false);
     });
-  }, [activeCategories, activeLanguages]);
+  }, [activeCategories, activeLanguages, nameQuery]);
 
   useEffect(() => {
     setLoading(true);
@@ -93,6 +113,9 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
       <Heading subtitle size="small" className="oneandhalf-bs">
         Available mentors ({mentors.length})
       </Heading>
+      <div className="filters">
+        <SearchField valueChange={setNameQuery} />
+      </div>
       <div className="filters">
         <FilterDropdown
           items={filterCategories}
