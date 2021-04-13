@@ -52,7 +52,7 @@ const sendEmailFactory = (to, subject, body, rediLocation) => {
     },
   });
 };
-const sendMjmlEmailFactory = ({ to, subject, html, rediLocation }) => {
+const sendMjmlEmailFactory = ({ to, subject, html }) => {
   let toSanitized = isProductionOrDemonstration() ? to : 'eric@binarylights.com';
   if (process.env.DEV_MODE_EMAIL_RECIPIENT) {
     toSanitized = process.env.DEV_MODE_EMAIL_RECIPIENT;
@@ -109,7 +109,6 @@ const sendResetPasswordEmail = ({ recipient, firstName, accessToken, rediLocatio
     to: recipient,
     subject: 'Password Reset for ReDI Connect',
     html: html,
-    rediLocation,
   });
 };
 
@@ -129,7 +128,6 @@ const sendPendingReviewDeclinedEmail = ({ recipient, firstName, rediLocation, us
     to: recipient,
     subject: 'ReDI Connect: Your user registration was declined',
     html: html,
-    rediLocation,
   });
 };
 
@@ -167,7 +165,6 @@ const sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccep
     to: recipient,
     subject: `ReDI Connect: mentorship application from ${menteeName} expired`,
     html: html,
-    rediLocation,
   });
 };
 
@@ -186,7 +183,6 @@ const sendMenteePendingReviewAcceptedEmail = ({ recipient, firstName, rediLocati
     to: recipient,
     subject: 'Your ReDI Connect account is confirmed now!',
     html: html,
-    rediLocation,
   });
 };
 
@@ -205,7 +201,6 @@ const sendMentorPendingReviewAcceptedEmail = ({ recipient, firstName, rediLocati
     to: recipient,
     subject: 'Your ReDI Connect account is confirmed now!',
     html: html,
-    rediLocation,
   });
 };
 
@@ -219,7 +214,6 @@ const sendMenteeRequestAppointmentEmail = ({ recipient, firstName, rediLocation 
     to: recipient,
     subject: 'Your email has been verified for ReDI Connect',
     html: html,
-    rediLocation,
   });
 };
 
@@ -233,7 +227,6 @@ const sendMentorRequestAppointmentEmail = ({ recipient, firstName, rediLocation 
     to: recipient,
     subject: 'Your email has been verified for ReDI Connect',
     html: html,
-    rediLocation,
   });
 };
 
@@ -270,7 +263,6 @@ const sendVerificationEmail = ({
     to: recipient,
     subject: 'Verify your email address!',
     html: html,
-    rediLocation,
   });
 };
 
@@ -304,7 +296,6 @@ const sendMentorCancelledMentorshipNotificationEmail = ({ recipient, firstName, 
     to: recipient,
     subject: 'Your mentor has quit your connection',
     html: html,
-    rediLocation,
   });
 };
 
@@ -325,7 +316,6 @@ const sendToMentorConfirmationOfMentorshipCancelled = ({
     to: recipient,
     subject: `Your mentorship of ${menteeFullName} has ben cancelled`,
     html: html,
-    rediLocation,
   });
 };
 
@@ -333,15 +323,16 @@ const sendMentorshipRequestReceivedEmail = ({
   recipient,
   mentorName,
   menteeFullName,
-  rediLocation,
+  menteeRediLocation,
+  mentorRediLocation,
 }) => {
-  const loginUrl = `${buildFrontendUrl(process.env.NODE_ENV, rediLocation)}/front/login`;
+  const loginUrl = `${buildFrontendUrl('production', mentorRediLocation)}/front/login`;
   const sendMentorshipRequestReceivedEmailParsed = convertTemplateToHtml(
     null,
     'mentorship-request-email'
   );
   const html = sendMentorshipRequestReceivedEmailParsed
-    .replace(/\${locationNameFormatted}/g, formatLocationName(rediLocation))
+    .replace(/\${locationNameFormatted}/g, formatLocationName(menteeRediLocation))
     .replace(/\${mentorName}/g, mentorName)
     .replace(/\${menteeFullName}/g, menteeFullName)
     .replace(/\${loginUrl}/g, loginUrl);
@@ -349,7 +340,6 @@ const sendMentorshipRequestReceivedEmail = ({
     to: recipient,
     subject: `You have received an application from ${menteeFullName}`,
     html: html,
-    rediLocation,
   });
 };
 
@@ -374,7 +364,6 @@ const sendMentorshipAcceptedEmail = ({
     to: recipients,
     subject: `Congratulations. Mentor ${mentorName} has accepted your application, ${menteeName}!`,
     html: html,
-    rediLocation,
   });
 };
 
