@@ -156,7 +156,7 @@ const CategoryGroup = ({ id, label, selectedCategories, onChange, formik }: any)
               customOnChange={onChange}
               disabled={
                 !formik.values.isMentor &&
-                selectedCategories.length > 2 &&
+                selectedCategories.length > 3 &&
                 !selectedCategories.includes(groupItem.id)
               }
               {...formik}
