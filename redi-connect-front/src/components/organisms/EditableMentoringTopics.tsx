@@ -24,10 +24,12 @@ export interface MentoringFormValues {
   categories: string[];
 }
 
+const MAX_MENTORING_TOPICS_IF_USER_IS_MENTEE = 4;
+
 const validationSchema = Yup.object({
   categories: Yup.array()
     .min(1)
-    .when('isMentor', { is: false, then: Yup.array().max(4) }),
+    .when('isMentor', { is: false, then: Yup.array().max(MAX_MENTORING_TOPICS_IF_USER_IS_MENTEE) }),
 });
 
 const categoriesByGroup = groupBy(availableCategories, (category) => category.group);
@@ -139,6 +141,7 @@ const EditableMentoringTopics = ({ profile, profileSaveStart }: Props) => {
 const CategoryGroup = ({ id, label, selectedCategories, onChange, formik }: any) => {
   // The current REDI_LOCATION might not use the current CategoryGroup (e.g.
   // Munich doesnt, at the time or writing, use 'coding' or 'other'. If it's the case, return null
+
   if (!categoriesByGroup[id]) return null;
   return (
     <>
@@ -156,7 +159,7 @@ const CategoryGroup = ({ id, label, selectedCategories, onChange, formik }: any)
               customOnChange={onChange}
               disabled={
                 !formik.values.isMentor &&
-                selectedCategories.length > 3 &&
+                selectedCategories.length >= MAX_MENTORING_TOPICS_IF_USER_IS_MENTEE &&
                 !selectedCategories.includes(groupItem.id)
               }
               {...formik}
