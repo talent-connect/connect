@@ -1189,6 +1189,10 @@ const RedMentoringSessionShow = (props) => (
 const RedMentoringSessionCreate = (props) => (
   <Create {...props}>
     <SimpleForm>
+      <SelectInput
+        source="rediLocation"
+        choices={rediLocations.map(({ id, label }) => ({ id, name: label }))}
+      />
       <ReferenceInput
         label="Mentor"
         source="mentorId"
