@@ -1,0 +1,40 @@
+{
+  "implicitDependencies": {
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
+    ".eslintrc.json": "*"
+  },
+  "affected": {
+    "defaultBase": "master"
+  },
+  "npmScope": "talent-connect",
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@nrwl/nx-cloud",
+      "options": {
+        "cacheableOperations": [
+          "build",
+          "lint",
+          "test",
+          "e2e"
+        ],
+        "accessToken": "YTA4ZjEzZTctYTc5NS00OWIwLWFiOTQtOGM5YTJkNThjMDM1fHJlYWQtd3JpdGU=",
+        "canTrackAnalytics": false,
+        "showUsageWarnings": true
+      }
+    }
+  },
+  "projects": {
+    "redi-connect": {
+      "tags": []
+    },
+    "redi-connect-e2e": {
+      "tags": [],
+      "implicitDependencies": [
+        "redi-connect"
+      ]
+    }
+  }
+}
