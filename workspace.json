@@ -71,7 +71,9 @@
         "serve": {
           "executor": "@nrwl/web:dev-server",
           "options": {
-            "buildTarget": "redi-connect:build"
+            "buildTarget": "redi-connect:build",
+            "port": 3000,
+            "watch": false
           },
           "configurations": {
             "production": {
