@@ -4,7 +4,10 @@
   "license": "MIT",
   "scripts": {
     "nx": "nx",
-    "start": "nx serve",
+    "start": "yarn run start:berlin",
+    "start:berlin": "NX_REDI_CONNECT_REDI_LOCATION=berlin nx serve",
+    "start:munich": "NX_REDI_CONNECT_REDI_LOCATION=munich nx serve",
+    "start:nrw": "NX_REDI_CONNECT_REDI_LOCATION=nrw nx serve",
     "build": "nx build",
     "test": "nx test",
     "lint": "nx workspace-lint && nx lint",
