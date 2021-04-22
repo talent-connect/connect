@@ -35,11 +35,8 @@
             "main": "apps/redi-connect/src/main.tsx",
             "polyfills": "apps/redi-connect/src/polyfills.ts",
             "tsConfig": "apps/redi-connect/tsconfig.app.json",
-            "assets": [
-              "apps/redi-connect/src/favicon.ico",
-              "apps/redi-connect/src/assets"
-            ],
-            "styles": ["apps/redi-connect/src/styles.scss"],
+            "assets": ["apps/redi-connect/src/assets"],
+            "styles": [],
             "scripts": [],
             "webpackConfig": "@nrwl/react/plugins/webpack"
           },
