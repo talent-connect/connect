@@ -3,4 +3,4 @@ export type AccessToken = {
   ttl: number
   created: string
   userId: string
-};
+}

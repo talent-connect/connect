@@ -5,9 +5,7 @@ import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
 
-import {
-  profileSaveStart
-} from '../../redux/user/actions'
+import { profileSaveStart } from '../../redux/user/actions'
 import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
@@ -20,35 +18,17 @@ export interface ContactsFormValues {
 }
 
 const validationSchema = Yup.object({
-  firstName: Yup.string()
-    .required()
-    .max(255),
-  lastName: Yup.string()
-    .required()
-    .max(255),
-  contactEmail: Yup.string()
-    .email()
-    .required()
-    .max(255)
-    .label('Contact email'),
-  telephoneNumber: Yup.string()
-    .max(255)
-    .label('Telephone number')
+  firstName: Yup.string().required().max(255),
+  lastName: Yup.string().required().max(255),
+  contactEmail: Yup.string().email().required().max(255).label('Contact email'),
+  telephoneNumber: Yup.string().max(255).label('Telephone number'),
 })
 
 // props: FormikProps<AboutFormValues>
 const EditableContactDetails = ({ profile, profileSaveStart }: any) => {
-  const {
-    id,
-    firstName,
-    lastName,
-    contactEmail,
-    telephoneNumber
-  } = profile
+  const { id, firstName, lastName, contactEmail, telephoneNumber } = profile
 
-  const submitForm = async (
-    values: FormikValues
-  ) => {
+  const submitForm = async (values: FormikValues) => {
     const profileContacts = values as Partial<RedProfile>
     profileSaveStart({ ...profileContacts, id })
   }
@@ -57,14 +37,14 @@ const EditableContactDetails = ({ profile, profileSaveStart }: any) => {
     firstName,
     lastName,
     contactEmail,
-    telephoneNumber
+    telephoneNumber,
   }
 
   const formik = useFormik({
     initialValues,
     enableReinitialize: true,
     validationSchema,
-    onSubmit: submitForm
+    onSubmit: submitForm,
   })
 
   return (
@@ -72,7 +52,7 @@ const EditableContactDetails = ({ profile, profileSaveStart }: any) => {
       title="Contact Details"
       onSave={() => formik.handleSubmit()}
       onClose={() => formik.resetForm()}
-      savePossible={(formik.dirty && formik.isValid)}
+      savePossible={formik.dirty && formik.isValid}
       read={<ReadContactDetails.Me />}
     >
       <FormInput
@@ -105,11 +85,15 @@ const EditableContactDetails = ({ profile, profileSaveStart }: any) => {
 }
 
 const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile
+  profile: state.user.profile,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
-  profileSaveStart: (profile: Partial<RedProfile>) => dispatch(profileSaveStart(profile))
+  profileSaveStart: (profile: Partial<RedProfile>) =>
+    dispatch(profileSaveStart(profile)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditableContactDetails)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EditableContactDetails)

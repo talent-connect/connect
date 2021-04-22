@@ -7,24 +7,24 @@ import {
   MatchesAcceptMentorshipSuccessAction,
   MatchesAcceptMentorshipErrorAction,
   MatchesMarkAsDismissedStartAction,
-  MatchesMarkAsCompleteAction
+  MatchesMarkAsCompleteAction,
 } from './types'
 import { RedMatch } from '../../types/RedMatch'
 
 export const matchesFetchStart = (): MatchesFetchStartAction => ({
-  type: MatchesActionType.MATCHES_FETCH_START
+  type: MatchesActionType.MATCHES_FETCH_START,
 })
 
 export const matchesFetchSuccess = (
   matches: RedMatch[]
 ): MatchesFetchSuccessAction => ({
   type: MatchesActionType.MATCHES_FETCH_SUCCESS,
-  payload: matches
+  payload: matches,
 })
 
 export const matchesFetchError = (error: Error): MatchesFetchErrorAction => ({
   type: MatchesActionType.MATCHES_FETCH_ERROR,
-  payload: error
+  payload: error,
 })
 
 export const matchesAcceptMentorshipStart = (
@@ -34,8 +34,8 @@ export const matchesAcceptMentorshipStart = (
   type: MatchesActionType.MATCHES_ACCEPT_MENTORSHIP_START,
   payload: {
     redMatchId,
-    mentorReplyMessageOnAccept
-  }
+    mentorReplyMessageOnAccept,
+  },
 })
 
 export const matchesMarkAsComplete = (
@@ -45,8 +45,8 @@ export const matchesMarkAsComplete = (
   type: MatchesActionType.MATCHES_MARK_AS_COMPLETED,
   payload: {
     redMatchId,
-    mentorMessageOnComplete
-  }
+    mentorMessageOnComplete,
+  },
 })
 
 export const matchesMarkAsDismissed = (
@@ -54,20 +54,20 @@ export const matchesMarkAsDismissed = (
 ): MatchesMarkAsDismissedStartAction => ({
   type: MatchesActionType.MATCHES_MARK_AS_DISMISSED_START,
   payload: {
-    redMatchId
-  }
+    redMatchId,
+  },
 })
 
 export const matchesAcceptMentorshipSuccess = (
   matches: RedMatch[]
 ): MatchesAcceptMentorshipSuccessAction => ({
   type: MatchesActionType.MATCHES_ACCEPT_MENTORSHIP_SUCCESS,
-  payload: matches
+  payload: matches,
 })
 
 export const matchesAcceptMentorshipError = (
   error: Error
 ): MatchesAcceptMentorshipErrorAction => ({
   type: MatchesActionType.MATCHES_ACCEPT_MENTORSHIP_ERROR,
-  payload: error
+  payload: error,
 })

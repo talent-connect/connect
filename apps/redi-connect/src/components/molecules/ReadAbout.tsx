@@ -10,10 +10,7 @@ interface Props {
 }
 
 const Me = ({ profile }: Props) => {
-  const {
-    personalDescription,
-    expectations
-  } = profile
+  const { personalDescription, expectations } = profile
 
   if (!personalDescription && !expectations) {
     return <Placeholder>Please tell us a bit about yourself</Placeholder>
@@ -28,27 +25,26 @@ const Me = ({ profile }: Props) => {
 }
 
 const Some = ({ profile }: Props) => {
-  const {
-    firstName,
-    lastName,
-    personalDescription,
-    expectations
-  } = profile
+  const { firstName, lastName, personalDescription, expectations } = profile
 
-  return <>
-    <Caption>About {firstName} {lastName}</Caption>
-    <Content>
-      {personalDescription && <p>{personalDescription}</p>}
-      {expectations && <p>{expectations}</p>}
-    </Content>
-  </>
+  return (
+    <>
+      <Caption>
+        About {firstName} {lastName}
+      </Caption>
+      <Content>
+        {personalDescription && <p>{personalDescription}</p>}
+        {expectations && <p>{expectations}</p>}
+      </Content>
+    </>
+  )
 }
 
 const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile as RedProfile
+  profile: state.user.profile as RedProfile,
 })
 
 export default {
   Me: connect(mapStateToProps, {})(Me),
-  Some: ({ profile }: Props) => <Some profile={profile} />
+  Some: ({ profile }: Props) => <Some profile={profile} />,
 }

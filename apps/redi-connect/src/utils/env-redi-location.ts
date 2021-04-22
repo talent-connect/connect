@@ -4,8 +4,8 @@
 // "ReDI locations" may be included in the future as ReDI School opens up in
 // more places
 
-import { RediLocation } from '../types/RediLocation';
+import { RediLocation } from '../types/RediLocation'
 
 export function envRediLocation(): RediLocation {
-  return process.env.NX_REDI_CONNECT_REDI_LOCATION as RediLocation;
+  return process.env.NX_REDI_CONNECT_REDI_LOCATION as RediLocation
 }

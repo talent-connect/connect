@@ -14,7 +14,7 @@ export enum MentoringSessionsActionType {
   MENTORING_SESSIONS_CREATE_START = 'MENTORING_SESSIONS_CREATE_START',
   MENTORING_SESSIONS_CREATE_SUCCESS = 'MENTORING_SESSIONS_CREATE_SUCCESS',
   MENTORING_SESSIONS_CREATE_ERROR = 'MENTORING_SESSIONS_CREATE_ERROR',
-  MENTORING_SESSIONS_CLEAR_ASYNC_RESULT = 'MENTORING_SESSIONS_CLEAR_ASYNC_RESULT'
+  MENTORING_SESSIONS_CLEAR_ASYNC_RESULT = 'MENTORING_SESSIONS_CLEAR_ASYNC_RESULT',
 }
 export interface MentoringSessionsFetchStartAction extends Action {
   type: MentoringSessionsActionType.MENTORING_SESSIONS_FETCH_START
@@ -50,4 +50,4 @@ export type MentoringSessionsActions =
   | MentoringSessionsCreateStartAction
   | MentoringSessionsCreateSuccessAction
   | MentoringSessionsCreateErrorAction
-  | MentoringSessionsClearAsyncResultAction;
+  | MentoringSessionsClearAsyncResultAction

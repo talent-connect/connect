@@ -5,9 +5,7 @@ import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
 
-import {
-  profileSaveStart
-} from '../../redux/user/actions'
+import { profileSaveStart } from '../../redux/user/actions'
 import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
@@ -19,31 +17,16 @@ export interface SocialMediaFormValues {
 }
 
 const validationSchema = Yup.object({
-  linkedInProfileUrl: Yup.string()
-    .max(255)
-    .url()
-    .label('LinkedIn Profile'),
-  githubProfileUrl: Yup.string()
-    .max(255)
-    .url()
-    .label('Github Profile'),
-  slackUsername: Yup.string()
-    .max(255)
-    .label('Slack username')
+  linkedInProfileUrl: Yup.string().max(255).url().label('LinkedIn Profile'),
+  githubProfileUrl: Yup.string().max(255).url().label('Github Profile'),
+  slackUsername: Yup.string().max(255).label('Slack username'),
 })
 
 // props: FormikProps<AboutFormValues>
 const EditableSocialMedia = ({ profile, profileSaveStart }: any) => {
-  const {
-    id,
-    linkedInProfileUrl,
-    githubProfileUrl,
-    slackUsername
-  } = profile
+  const { id, linkedInProfileUrl, githubProfileUrl, slackUsername } = profile
 
-  const submitForm = async (
-    values: FormikValues
-  ) => {
+  const submitForm = async (values: FormikValues) => {
     const profileSocialMedia = values as Partial<RedProfile>
     profileSaveStart({ ...profileSocialMedia, id })
   }
@@ -51,14 +34,14 @@ const EditableSocialMedia = ({ profile, profileSaveStart }: any) => {
   const initialValues: SocialMediaFormValues = {
     linkedInProfileUrl,
     githubProfileUrl,
-    slackUsername
+    slackUsername,
   }
 
   const formik = useFormik({
     initialValues,
     enableReinitialize: true,
     validationSchema,
-    onSubmit: submitForm
+    onSubmit: submitForm,
   })
 
   return (
@@ -66,7 +49,7 @@ const EditableSocialMedia = ({ profile, profileSaveStart }: any) => {
       title="Social Media"
       onSave={() => formik.handleSubmit()}
       onClose={() => formik.resetForm()}
-      savePossible={(formik.dirty && formik.isValid)}
+      savePossible={formik.dirty && formik.isValid}
       read={<ReadSocialMedia.Me />}
     >
       <FormInput
@@ -92,11 +75,12 @@ const EditableSocialMedia = ({ profile, profileSaveStart }: any) => {
 }
 
 const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile
+  profile: state.user.profile,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
-  profileSaveStart: (profile: Partial<RedProfile>) => dispatch(profileSaveStart(profile))
+  profileSaveStart: (profile: Partial<RedProfile>) =>
+    dispatch(profileSaveStart(profile)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditableSocialMedia)

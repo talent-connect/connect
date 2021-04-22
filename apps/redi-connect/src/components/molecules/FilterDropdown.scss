@@ -1,5 +1,5 @@
-@import "~bulma/sass/utilities/_all";
-@import "../../styles/_variables.scss";
+@import '~bulma/sass/utilities/_all';
+@import '../../styles/_variables.scss';
 
 .filter-dropdown {
   display: flex;
@@ -18,11 +18,12 @@
     width: 100%;
     cursor: pointer;
 
-    &:hover, &--active {
+    &:hover,
+    &--active {
       border-color: $input-hover-border-color;
     }
 
-    .icon { 
+    .icon {
       transition: $transition;
     }
 
@@ -40,9 +41,10 @@
     background-color: white;
     padding: 1rem 0;
     border-radius: $radius;
-    box-shadow: 0 3px 15px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.2);
-    max-height: 210px; 
-    overflow: scroll;   
+    box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.12),
+      0 2px 4px -1px rgba(0, 0, 0, 0.2);
+    max-height: 210px;
+    overflow: scroll;
 
     &--show {
       display: block;

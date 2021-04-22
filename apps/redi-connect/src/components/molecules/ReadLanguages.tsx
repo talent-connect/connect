@@ -10,31 +10,30 @@ interface Props {
 }
 
 const Me = ({ profile }: Props) => {
-  const {
-    languages
-  } = profile
+  const { languages } = profile
 
-  if (!languages) return <Placeholder>Input languages you speak here.</Placeholder>
+  if (!languages)
+    return <Placeholder>Input languages you speak here.</Placeholder>
 
   return <PipeList items={languages} />
 }
 
 const Some = ({ profile }: Props) => {
-  const {
-    languages
-  } = profile
+  const { languages } = profile
 
-  return <>
-    <Caption>Languages</Caption>
-    {languages && <PipeList items={languages} />}
-  </>
+  return (
+    <>
+      <Caption>Languages</Caption>
+      {languages && <PipeList items={languages} />}
+    </>
+  )
 }
 
 const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile as RedProfile
+  profile: state.user.profile as RedProfile,
 })
 
 export default {
   Me: connect(mapStateToProps, {})(Me),
-  Some: ({ profile }: Props) => <Some profile={profile} />
+  Some: ({ profile }: Props) => <Some profile={profile} />,
 }

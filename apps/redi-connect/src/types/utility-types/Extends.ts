@@ -1,1 +1,1 @@
-export type Extends<T, U extends T> = U;
+export type Extends<T, U extends T> = U

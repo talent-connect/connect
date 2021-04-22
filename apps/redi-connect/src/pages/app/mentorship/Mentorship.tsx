@@ -7,7 +7,7 @@ import {
   MContacts,
   MSessions,
   ReportProblem,
-  CompleteMentorship
+  CompleteMentorship,
 } from '../../../components/organisms'
 import { Columns, Content } from 'react-bulma-components'
 import { RootState } from '../../../redux/types'
@@ -119,7 +119,7 @@ const Mentorship = ({ currentUser, matches }: MentorshipProps) => {
 
 const mapStateToProps = (state: RootState) => ({
   currentUser: state.user.profile,
-  matches: getMatches(state.matches)
+  matches: getMatches(state.matches),
 })
 
 export default connect(mapStateToProps, null)(Mentorship)

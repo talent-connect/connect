@@ -2,7 +2,7 @@ import { MatchesState, MatchesActions, MatchesActionType } from './types'
 
 const initialState: MatchesState = {
   matches: [],
-  loading: false
+  loading: false,
 }
 
 export const matchesReducer = (

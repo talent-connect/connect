@@ -13,13 +13,22 @@ import { mentoringSessionDurationOptions } from '../../../config/config'
 import { mentoringSessionsCreateStart } from '../../../redux/mentoringSessions/actions'
 import './MSessions.scss'
 
-const formMentoringSessionDurationOptions = mentoringSessionDurationOptions.map(sesstionDuration => ({ value: sesstionDuration, label: `${sesstionDuration} min` }))
+const formMentoringSessionDurationOptions = mentoringSessionDurationOptions.map(
+  (sesstionDuration) => ({
+    value: sesstionDuration,
+    label: `${sesstionDuration} min`,
+  })
+)
 
 interface AddSessionProps {
   onClickHandler: Function
 }
 const AddSession = ({ onClickHandler }: AddSessionProps) => (
-  <Icon icon="plus" className="m-sessions__add" onClick={() => onClickHandler(true)} />
+  <Icon
+    icon="plus"
+    className="m-sessions__add"
+    onClick={() => onClickHandler(true)}
+  />
 )
 
 interface FormValues {
@@ -28,16 +37,14 @@ interface FormValues {
 }
 
 const initialFormValues: FormValues = {
-  date: new Date()
+  date: new Date(),
 }
 
 const validationSchema = Yup.object({
-  date: Yup.date()
-    .required()
-    .label('Date'),
+  date: Yup.date().required().label('Date'),
   minuteDuration: Yup.number()
     .required('Please select the duration of the session.')
-    .oneOf(mentoringSessionDurationOptions, 'Please select a duration')
+    .oneOf(mentoringSessionDurationOptions, 'Please select a duration'),
 })
 
 interface MSessions {
@@ -47,9 +54,16 @@ interface MSessions {
   mentoringSessionsCreateStart: (mentoringSession: RedMentoringSession) => void
 }
 
-const MSessions = ({ sessions, menteeId, editable, mentoringSessionsCreateStart }: MSessions) => {
+const MSessions = ({
+  sessions,
+  menteeId,
+  editable,
+  mentoringSessionsCreateStart,
+}: MSessions) => {
   const [showAddSession, setShowAddSession] = useState(false)
-  const [submitResult, setSubmitResult] = useState<FormSubmitResult>('notSubmitted')
+  const [submitResult, setSubmitResult] = useState<FormSubmitResult>(
+    'notSubmitted'
+  )
 
   const submitForm = async (
     values: FormValues,
@@ -60,7 +74,7 @@ const MSessions = ({ sessions, menteeId, editable, mentoringSessionsCreateStart 
       const mentoringSession: RedMentoringSession = {
         date: values.date,
         minuteDuration: Number(values.minuteDuration),
-        menteeId: menteeId
+        menteeId: menteeId,
       }
       await mentoringSessionsCreateStart(mentoringSession)
       setSubmitResult('success')
@@ -81,7 +95,7 @@ const MSessions = ({ sessions, menteeId, editable, mentoringSessionsCreateStart 
     enableReinitialize: true,
     initialValues: initialFormValues,
     validationSchema,
-    onSubmit: submitForm
+    onSubmit: submitForm,
   })
 
   return (
@@ -90,63 +104,79 @@ const MSessions = ({ sessions, menteeId, editable, mentoringSessionsCreateStart 
       className="m-sessions"
       buttons={editable && <AddSession onClickHandler={setShowAddSession} />}
     >
-      {(sessions.length > 0)
-        ? <ul className="m-sessions__list">
-          {sessions.map(session =>
-            <li className="m-sessions__list__item" key={session.date.toString()}>
-              {moment(session.date).format('DD.MM.YYYY')} - <Element renderAs="span" textColor="grey">{session.minuteDuration} min</Element>
+      {sessions.length > 0 ? (
+        <ul className="m-sessions__list">
+          {sessions.map((session) => (
+            <li
+              className="m-sessions__list__item"
+              key={session.date.toString()}
+            >
+              {moment(session.date).format('DD.MM.YYYY')} -{' '}
+              <Element renderAs="span" textColor="grey">
+                {session.minuteDuration} min
+              </Element>
             </li>
-          )}
+          ))}
         </ul>
-        : <Content textColor="grey-dark" italic>
+      ) : (
+        <Content textColor="grey-dark" italic>
           {editable
             ? 'Log your first session with your mentee.'
             : 'Please remind your mentor to log your mentoring sessions.'}
         </Content>
-      }
+      )}
 
-      {editable && <Modal
-        show={showAddSession}
-        stateFn={setShowAddSession}
-        title="Log a new mentoring session"
-      >
-        <Modal.Body>
-          {/* <Content>Please write a few words about why you feel uncertain about your mentorship and which issues you are experiencing? </Content> */}
-          <form>
-            {submitResult === 'error' && <>An error occurred, please try again.</>}
+      {editable && (
+        <Modal
+          show={showAddSession}
+          stateFn={setShowAddSession}
+          title="Log a new mentoring session"
+        >
+          <Modal.Body>
+            {/* <Content>Please write a few words about why you feel uncertain about your mentorship and which issues you are experiencing? </Content> */}
+            <form>
+              {submitResult === 'error' && (
+                <>An error occurred, please try again.</>
+              )}
 
-            <FormDatePicker
-              label="When did the mentoring session take place?"
-              name="date"
-              placeholder="Add the correct date"
-              {...formik}
-            />
+              <FormDatePicker
+                label="When did the mentoring session take place?"
+                name="date"
+                placeholder="Add the correct date"
+                {...formik}
+              />
 
-            <FormSelect
-              label="How long was the session?"
-              name="minuteDuration"
-              placeholder="Add the duration of the session"
-              items={formMentoringSessionDurationOptions}
-              {...formik}
-            />
-          </form>
-        </Modal.Body>
+              <FormSelect
+                label="How long was the session?"
+                name="minuteDuration"
+                placeholder="Add the duration of the session"
+                items={formMentoringSessionDurationOptions}
+                {...formik}
+              />
+            </form>
+          </Modal.Body>
 
-        <Modal.Foot>
-          <Button
-            onClick={() => formik.handleSubmit()}
-            disabled={!(formik.dirty && formik.isValid)}
-          >Add Session</Button>
+          <Modal.Foot>
+            <Button
+              onClick={() => formik.handleSubmit()}
+              disabled={!(formik.dirty && formik.isValid)}
+            >
+              Add Session
+            </Button>
 
-          <Button onClick={handleCancel} simple>Cancel</Button>
-        </Modal.Foot>
-      </Modal>}
+            <Button onClick={handleCancel} simple>
+              Cancel
+            </Button>
+          </Modal.Foot>
+        </Modal>
+      )}
     </Module>
   )
 }
 
 const mapDispatchToProps = (dispatch: any) => ({
-  mentoringSessionsCreateStart: (session: RedMentoringSession) => dispatch(mentoringSessionsCreateStart(session))
+  mentoringSessionsCreateStart: (session: RedMentoringSession) =>
+    dispatch(mentoringSessionsCreateStart(session)),
 })
 
 export default connect(null, mapDispatchToProps)(MSessions)

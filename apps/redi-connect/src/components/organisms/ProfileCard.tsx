@@ -7,7 +7,8 @@ import { ReadMentoringTopics } from '../molecules'
 import { useHistory } from 'react-router-dom'
 import PipeList from '../../components/molecules/PipeList'
 import {
-  AWS_PROFILE_AVATARS_BUCKET_BASE_URL, rediLocationNames
+  AWS_PROFILE_AVATARS_BUCKET_BASE_URL,
+  rediLocationNames,
 } from '../../config/config'
 
 import placeholderImage from '../../assets/images/img-placeholder.png'
@@ -22,7 +23,12 @@ interface ProfileCardProps {
   toggleFavorite?: (id: string) => void
 }
 
-const ProfileCard = ({ profile, linkTo, toggleFavorite, isFavorite }: ProfileCardProps) => {
+const ProfileCard = ({
+  profile,
+  linkTo,
+  toggleFavorite,
+  isFavorite,
+}: ProfileCardProps) => {
   const history = useHistory()
 
   const {
@@ -30,7 +36,7 @@ const ProfileCard = ({ profile, linkTo, toggleFavorite, isFavorite }: ProfileCar
     lastName,
     languages,
     categories,
-    profileAvatarImageS3Key
+    profileAvatarImageS3Key,
   } = profile
 
   const handleFavorite = (e: React.MouseEvent) => {
@@ -55,19 +61,29 @@ const ProfileCard = ({ profile, linkTo, toggleFavorite, isFavorite }: ProfileCar
         alt={`${firstName} ${lastName}`}
       />
       <Card.Content>
-        {toggleFavorite && <div
-          className='profile-card__favorite'
-          onClick={handleFavorite}>
-          <Icon
-            icon={isFavorite ? 'heartFilled' : 'heart'}
-            className="profile-card__favorite__icon"/>
-        </div>}
-        <Tag size="small" className="profile-card__location-tag" rounded>(in {rediLocationNames[profile.rediLocation]})</Tag>
-        <Element renderAs="h3" textWeight="bold" textSize={4} className="profile-card__name">
+        {toggleFavorite && (
+          <div className="profile-card__favorite" onClick={handleFavorite}>
+            <Icon
+              icon={isFavorite ? 'heartFilled' : 'heart'}
+              className="profile-card__favorite__icon"
+            />
+          </div>
+        )}
+        <Tag size="small" className="profile-card__location-tag" rounded>
+          (in {rediLocationNames[profile.rediLocation]})
+        </Tag>
+        <Element
+          renderAs="h3"
+          textWeight="bold"
+          textSize={4}
+          className="profile-card__name"
+        >
           {firstName} {lastName}
         </Element>
         {languages && <PipeList items={languages} />}
-        {categories && <ReadMentoringTopics.Tags items={categories} shortList />}
+        {categories && (
+          <ReadMentoringTopics.Tags items={categories} shortList />
+        )}
       </Card.Content>
     </Card>
   )

@@ -1,8 +1,7 @@
-@import "~bulma/sass/utilities/_all";
-@import "../../styles/_variables.scss";
+@import '~bulma/sass/utilities/_all';
+@import '../../styles/_variables.scss';
 
 .redi-textarea {
-
   &-characters {
     text-align: right;
   }

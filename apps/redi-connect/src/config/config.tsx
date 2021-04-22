@@ -1,18 +1,18 @@
-import keyBy from 'lodash/keyBy';
-import mapValues from 'lodash/mapValues';
+import keyBy from 'lodash/keyBy'
+import mapValues from 'lodash/mapValues'
 
-import { Categories } from '../types/Categories';
-import { Language } from '../types/Language';
-import { Gender } from '../types/Gender';
-import { EducationLevel } from '../types/EducationLevel';
-import { Course } from '../types/Course';
-import { RediLocation } from '../types/RediLocation';
+import { Categories } from '../types/Categories'
+import { Language } from '../types/Language'
+import { Gender } from '../types/Gender'
+import { EducationLevel } from '../types/EducationLevel'
+import { Course } from '../types/Course'
+import { RediLocation } from '../types/RediLocation'
 
 export const rediLocationNames: { [K in RediLocation]?: string } = {
   berlin: 'Berlin',
   munich: 'Munich',
   nrw: 'NRW',
-};
+}
 
 export let categories: Categories = [
   {
@@ -143,16 +143,16 @@ export let categories: Categories = [
   },
   { id: 'entrepreneurship', label: 'Entrepreneurship', group: 'careerSupport' },
   { id: 'freelancing', label: 'Freelancing', group: 'careerSupport' },
-];
+]
 
 export const categoriesIdToLabelMap = mapValues(
   keyBy(categories, 'id'),
   'label'
-);
+)
 export const categoriesIdToColourMap = mapValues(
   keyBy(categories, 'id'),
   'colour'
-);
+)
 
 export const Languages: Language[] = [
   'Afrikaans',
@@ -298,15 +298,15 @@ export const Languages: Language[] = [
   'Yucatec',
   'Zapotec',
   'Zulu',
-];
+]
 
 export const genders: Gender[] = [
   { id: 'male', label: 'Male' },
   { id: 'female', label: 'Female' },
   { id: 'other', label: 'Other' },
-];
+]
 
-export const gendersIdToLabelMap = mapValues(keyBy(genders, 'id'), 'label');
+export const gendersIdToLabelMap = mapValues(keyBy(genders, 'id'), 'label')
 
 export const educationLevels: EducationLevel[] = [
   { id: 'middleSchool', label: 'Middle School' },
@@ -315,14 +315,14 @@ export const educationLevels: EducationLevel[] = [
   { id: 'universityBachelor', label: 'University Degree (Bachelor)' },
   { id: 'universityMaster', label: 'University Degree (Master)' },
   { id: 'universityPhd', label: 'University Degree (PhD)' },
-];
+]
 
 export const educationLevelsIdToLabelMap = mapValues(
   keyBy(educationLevels, 'id'),
   'label'
-);
+)
 
-let _courses: Course[];
+let _courses: Course[]
 if ((process.env.NX_REDI_CONNECT_REDI_LOCATION as RediLocation) === 'berlin') {
   _courses = [
     { id: 'introPython', label: 'Intro to Python' },
@@ -341,7 +341,7 @@ if ((process.env.NX_REDI_CONNECT_REDI_LOCATION as RediLocation) === 'berlin') {
       id: 'alumni',
       label: `I'm a ReDI School alumni (I took a course before)`,
     },
-  ];
+  ]
 } else if (
   (process.env.NX_REDI_CONNECT_REDI_LOCATION as RediLocation) === 'munich'
 ) {
@@ -369,7 +369,7 @@ if ((process.env.NX_REDI_CONNECT_REDI_LOCATION as RediLocation) === 'berlin') {
       id: 'munich_alumni',
       label: `I'm a ReDI School alumni (I took a course before)`,
     },
-  ];
+  ]
 } else if (
   (process.env.NX_REDI_CONNECT_REDI_LOCATION as RediLocation) === 'nrw'
 ) {
@@ -382,27 +382,27 @@ if ((process.env.NX_REDI_CONNECT_REDI_LOCATION as RediLocation) === 'berlin') {
       id: 'nrw_alumni',
       label: "I'm a ReDI School alumni (I took a course before)",
     },
-  ];
+  ]
 } else if (
   (process.env.NX_REDI_CONNECT_REDI_LOCATION as RediLocation) ===
   'location-picker'
 ) {
-  _courses = [];
+  _courses = []
 } else {
-  throw new Error('Invalid RediLocation');
+  throw new Error('Invalid RediLocation')
 }
-export const courses = _courses;
+export const courses = _courses
 
-export const courseIdToLabelMap = mapValues(keyBy(courses, 'id'), 'label');
+export const courseIdToLabelMap = mapValues(keyBy(courses, 'id'), 'label')
 
 interface ReportProblemCategory {
-  id: string;
-  label: string;
+  id: string
+  label: string
 }
 
 export const reportProblemCategories: ReportProblemCategory[] = [
   { id: 'wantToQuit', label: 'I want to quit' },
-];
+]
 
 export const mentoringSessionDurationOptions: number[] = [
   15,
@@ -417,11 +417,11 @@ export const mentoringSessionDurationOptions: number[] = [
   150,
   165,
   180,
-];
+]
 
 interface MenteeOccupationCategory {
-  id: string;
-  label: string;
+  id: string
+  label: string
 }
 
 export const menteeOccupationCategories: MenteeOccupationCategory[] = [
@@ -429,21 +429,21 @@ export const menteeOccupationCategories: MenteeOccupationCategory[] = [
   { id: 'student', label: 'Student (enrolled at university)' },
   { id: 'lookingForJob', label: 'Looking for a job' },
   { id: 'other', label: 'Other' },
-];
+]
 
 export const menteeOccupationCategory_idToLabelMap = mapValues(
   keyBy(menteeOccupationCategories, 'id'),
   'label'
-);
+)
 
-export const menteeCountCapacityOptions: number[] = [0, 1, 2];
+export const menteeCountCapacityOptions: number[] = [0, 1, 2]
 
 export const AWS_PROFILE_AVATARS_BUCKET_BASE_URL =
-  'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/';
+  'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/'
 
 export const API_URL = process.env.REACT_APP_API_URL
   ? process.env.REACT_APP_API_URL
-  : 'http://127.0.0.1:3003/api';
+  : 'http://127.0.0.1:3003/api'
 export const S3_UPLOAD_SIGN_URL = process.env.REACT_APP_S3_UPLOAD_SIGN_URL
   ? process.env.REACT_APP_S3_UPLOAD_SIGN_URL
-  : 'http://127.0.0.1:3003/s3/sign';
+  : 'http://127.0.0.1:3003/s3/sign'

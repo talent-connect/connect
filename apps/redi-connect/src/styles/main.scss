@@ -1,33 +1,33 @@
 // custom variable overwrites for bulma
-@import "_variables.scss";
+@import '_variables.scss';
 
-@import "_global.scss";
+@import '_global.scss';
 
 // bulma global dependencies
-@import "~bulma/sass/utilities/_all";
-@import "~bulma/sass/base/_all.sass";
+@import '~bulma/sass/utilities/_all';
+@import '~bulma/sass/base/_all.sass';
 
 // styles for the components used from bulma
-@import "~bulma/sass/grid/columns.sass";
-@import "~bulma/sass/form/_all.sass";
-@import "~bulma/sass/elements/title.sass";
-@import "~bulma/sass/elements/container.sass";
-@import "~bulma/sass/layout/section.sass";
-@import "~bulma/sass/elements/content.sass";
-@import "~bulma/sass/elements/tag.sass";
-@import "~bulma/sass/elements/box.sass";
-@import "~bulma/sass/components/modal.sass";
-@import "~bulma/sass/components/card.sass";
-@import "~bulma/sass/elements/image.sass";
-@import "~bulma/sass/elements/notification.sass";
-@import "~bulma-checkradio/src/sass/index.sass";
+@import '~bulma/sass/grid/columns.sass';
+@import '~bulma/sass/form/_all.sass';
+@import '~bulma/sass/elements/title.sass';
+@import '~bulma/sass/elements/container.sass';
+@import '~bulma/sass/layout/section.sass';
+@import '~bulma/sass/elements/content.sass';
+@import '~bulma/sass/elements/tag.sass';
+@import '~bulma/sass/elements/box.sass';
+@import '~bulma/sass/components/modal.sass';
+@import '~bulma/sass/components/card.sass';
+@import '~bulma/sass/elements/image.sass';
+@import '~bulma/sass/elements/notification.sass';
+@import '~bulma-checkradio/src/sass/index.sass';
 
 //custom modifiers
-@import "_fonts.scss";
-@import "_forms.scss";
+@import '_fonts.scss';
+@import '_forms.scss';
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
 
@@ -35,7 +35,7 @@ code {
   border: 2px solid $redi-orange-dark;
   border-right: 0;
   border-top: 0;
-  content: " ";
+  content: ' ';
   display: block;
   height: 0.625em;
   margin-top: -0.4375em;
@@ -102,7 +102,7 @@ a:hover {
 
 .title,
 .subtitle {
-  +.content {
+  + .content {
     margin-top: -0.5rem;
   }
 }

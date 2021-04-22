@@ -8,7 +8,7 @@ if (redProfileJsonStr && accessTokenJsonStr) {
     profile: JSON.parse(redProfileJsonStr),
     accessToken: JSON.parse(accessTokenJsonStr),
     loading: false,
-    saveResult: 'notSubmitted'
+    saveResult: 'notSubmitted',
   }
 }
 

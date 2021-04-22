@@ -26,8 +26,8 @@ http.interceptors.request.use(
 )
 
 http.interceptors.response.use(
-  resp => resp,
-  err => {
+  (resp) => resp,
+  (err) => {
     // Code in this function adapted from: https://github.com/axios/axios#handling-errors
     if (err.response) {
       err.userMessage = err.response.data.error.message

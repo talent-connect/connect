@@ -1,5 +1,5 @@
-@import "~bulma/sass/utilities/_all";
-@import "../../styles/_variables.scss";
+@import '~bulma/sass/utilities/_all';
+@import '../../styles/_variables.scss';
 
 .button {
   display: inline-flex;
@@ -18,17 +18,17 @@
   border: 2px solid $black;
   transform-style: preserve-3d;
 
-  +.button {
+  + .button {
     @include tablet() {
       margin-left: 1rem;
     }
   }
 
   @include mobile() {
-    width: calc(100% - .5rem);
+    width: calc(100% - 0.5rem);
     justify-content: center;
 
-    +.button {
+    + .button {
       margin-top: 1rem;
     }
   }
@@ -48,9 +48,8 @@
   }
 
   &--default {
-    margin-right: .5rem;
+    margin-right: 0.5rem;
     padding: 0 1.5rem;
-
 
     // margin-bottom: .5rem;
 
@@ -130,7 +129,7 @@
   }
 
   &--fullWidth {
-    width: calc(100% - .5rem);
+    width: calc(100% - 0.5rem);
     justify-content: center;
   }
 

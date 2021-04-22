@@ -1,1 +1,5 @@
-export type FormSubmitResult = 'notSubmitted' | 'submitting' | 'error' | 'success';
+export type FormSubmitResult =
+  | 'notSubmitted'
+  | 'submitting'
+  | 'error'
+  | 'success'

@@ -1,9 +1,9 @@
-import React, { Suspense } from 'react';
-import ReactDOM from 'react-dom';
-import './styles/main.scss';
-import App from './App';
+import React, { Suspense } from 'react'
+import ReactDOM from 'react-dom'
+import './styles/main.scss'
+import App from './App'
 // import i18n (needs to be bundled ;))
-import './services/i18n/i18n';
+import './services/i18n/i18n'
 // Needed for datepicker in <LogMentoringSessionDialog>
 
 // uncomment this to see wasted/unnecessary renders of your components
@@ -17,9 +17,9 @@ ReactDOM.render(
     <App />
   </React.StrictMode>,
   document.getElementById('root')
-);
+)
 
 console.log(
   'This ReDI Connect build is configured for location: ',
   process.env.NX_REDI_CONNECT_REDI_LOCATION
-);
+)

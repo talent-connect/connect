@@ -65,4 +65,4 @@ export type MatchesActions =
   | MatchesAcceptMentorshipSuccessAction
   | MatchesAcceptMentorshipErrorAction
   | MatchesMarkAsDismissedStartAction
-  | MatchesMarkAsCompleteAction;
+  | MatchesMarkAsCompleteAction

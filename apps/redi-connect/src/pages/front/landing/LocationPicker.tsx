@@ -1,20 +1,26 @@
-import React from 'react';
-import Landing from '../../../components/templates/Landing';
-import classnames from 'classnames';
+import React from 'react'
+import Landing from '../../../components/templates/Landing'
+import classnames from 'classnames'
 
-import { useTranslation } from 'react-i18next';
-import { Section, Container, Element, Columns, Content } from 'react-bulma-components';
-import { Heading, Button } from '../../../components/atoms';
-import { Footer, RediHero } from '../../../components/organisms';
-import { ReactComponent as RediLogo } from '../../../assets/images/logo.svg';
-import { ReactComponent as Deloitte } from '../../../assets/images/deloitte.svg';
-import SVGImage from '../../../components/atoms/SVGImage';
+import { useTranslation } from 'react-i18next'
+import {
+  Section,
+  Container,
+  Element,
+  Columns,
+  Content,
+} from 'react-bulma-components'
+import { Heading, Button } from '../../../components/atoms'
+import { Footer, RediHero } from '../../../components/organisms'
+import { ReactComponent as RediLogo } from '../../../assets/images/logo.svg'
+import { ReactComponent as Deloitte } from '../../../assets/images/deloitte.svg'
+import SVGImage from '../../../components/atoms/SVGImage'
 
-import '../../../components/organisms/Navbar.scss';
-import { rediLocationNames } from '../../../config/config';
+import '../../../components/organisms/Navbar.scss'
+import { rediLocationNames } from '../../../config/config'
 
 export default function LocationPicker() {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
   return (
     <>
       <Section className={classnames('navbar default-background')}>
@@ -26,9 +32,13 @@ export default function LocationPicker() {
         <Container>
           <Columns vCentered>
             <Columns.Column size={5}>
-              <Heading>{t('loggedOutArea.homePage.hero.about.headline')}</Heading>
+              <Heading>
+                {t('loggedOutArea.homePage.hero.about.headline')}
+              </Heading>
               <Deloitte className="oneandhalf-bs redi-hero__icon" />
-              <Columns.Column responsive={{ tablet: { hide: { value: true } } }}>
+              <Columns.Column
+                responsive={{ tablet: { hide: { value: true } } }}
+              >
                 <SVGImage image="hero" className="redi-hero__image" />
               </Columns.Column>
               <Element
@@ -45,10 +55,15 @@ export default function LocationPicker() {
                 <Heading size="medium">Pick your city:</Heading>
               </Content>
               {Object.entries(rediLocationNames).map(([key, value]) => (
-                <Button to={`https://connect.${key}.redi-school.org`}>{value}</Button>
+                <Button to={`https://connect.${key}.redi-school.org`}>
+                  {value}
+                </Button>
               ))}
             </Columns.Column>
-            <Columns.Column offset={1} responsive={{ mobile: { hide: { value: true } } }}>
+            <Columns.Column
+              offset={1}
+              responsive={{ mobile: { hide: { value: true } } }}
+            >
               <SVGImage image="hero" className="redi-hero__image" />
             </Columns.Column>
           </Columns>
@@ -58,7 +73,7 @@ export default function LocationPicker() {
         <Container></Container>
       </Section>
     </>
-  );
+  )
 }
 
 {

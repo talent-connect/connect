@@ -14,7 +14,7 @@ interface Props {
 
 // the any is not the best solution here, I would need to use the props needed for
 // the field and the formik values coming from the form context
-function FormTextArea (props: any) {
+function FormTextArea(props: any) {
   const {
     name,
     className,
@@ -29,16 +29,14 @@ function FormTextArea (props: any) {
     isSubmitting,
     touched,
     errors,
-    disabled
+    disabled,
   } = props
 
   const hasError = !!touched[name] && !!errors[name]
 
   return (
     <Form.Field className={classnames({ [`${className}`]: className })}>
-      {label && <Form.Label size="small">
-        {label}
-      </Form.Label>}
+      {label && <Form.Label size="small">{label}</Form.Label>}
       <Form.Control>
         <Form.Textarea
           id={name}
@@ -55,23 +53,53 @@ function FormTextArea (props: any) {
 
       <Columns>
         <Columns.Column>
-          <Form.Help color="danger" className={hasError && !maxChar && !minChar ? 'help--show' : ''}>
+          <Form.Help
+            color="danger"
+            className={hasError && !maxChar && !minChar ? 'help--show' : ''}
+          >
             {hasError && <>{errors[name]}</>}
           </Form.Help>
         </Columns.Column>
         <Columns.Column>
-          {minChar && (!values[name] || values[name].length < minChar) && <Content textColor="danger" className="help help--show redi-textarea-characters">
-            {minChar - (values[name] ? values[name].length : 0)} more {minChar - (values[name] ? values[name].length : 0) > 1 ? 'characters' : 'character'} needed
-          </Content>}
-          {maxChar && (!values[name] || values[name].length <= maxChar) && (!minChar || (minChar && values[name] && values[name].length >= minChar)) && <Content textColor="grey-dark" className="help help--show redi-textarea-characters">
-            {maxChar - (values[name] ? values[name].length : 0)} {maxChar - (values[name] ? values[name].length : 0) !== 1 ? 'characters' : 'character'} left
-          </Content>}
-          {maxChar && values[name] && values[name].length > maxChar && <Content textColor="danger" className="help help--show redi-textarea-characters">
-            {values[name].length - maxChar} {values[name].length - maxChar > 1 ? 'characters' : 'character'} over
-          </Content>}
+          {minChar && (!values[name] || values[name].length < minChar) && (
+            <Content
+              textColor="danger"
+              className="help help--show redi-textarea-characters"
+            >
+              {minChar - (values[name] ? values[name].length : 0)} more{' '}
+              {minChar - (values[name] ? values[name].length : 0) > 1
+                ? 'characters'
+                : 'character'}{' '}
+              needed
+            </Content>
+          )}
+          {maxChar &&
+            (!values[name] || values[name].length <= maxChar) &&
+            (!minChar ||
+              (minChar && values[name] && values[name].length >= minChar)) && (
+              <Content
+                textColor="grey-dark"
+                className="help help--show redi-textarea-characters"
+              >
+                {maxChar - (values[name] ? values[name].length : 0)}{' '}
+                {maxChar - (values[name] ? values[name].length : 0) !== 1
+                  ? 'characters'
+                  : 'character'}{' '}
+                left
+              </Content>
+            )}
+          {maxChar && values[name] && values[name].length > maxChar && (
+            <Content
+              textColor="danger"
+              className="help help--show redi-textarea-characters"
+            >
+              {values[name].length - maxChar}{' '}
+              {values[name].length - maxChar > 1 ? 'characters' : 'character'}{' '}
+              over
+            </Content>
+          )}
         </Columns.Column>
       </Columns>
-
     </Form.Field>
   )
 }

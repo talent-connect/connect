@@ -6,86 +6,91 @@ import Mentor from '../pages/front/landing/Mentor'
 import Mentee from '../pages/front/landing/Mentee'
 import { RequestResetPasswordEmail } from '../pages/front/reset-password/RequestResetPasswordEmail'
 import { SetNewPassword } from '../pages/front/reset-password/SetNewPassword'
-const Login = lazy(() =>
-  import(
-    /* webpackChunkName: "Login", webpackPreload: true */ '../pages/front/login/Login'
-  )
+const Login = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "Login", webpackPreload: true */ '../pages/front/login/Login'
+    )
 )
-const SignUpLanding = lazy(() =>
-  import(
-    /* webpackChunkName: "SignUpLanding", webpackPreload: true */ '../pages/front/signup/SignUpLanding'
-  )
+const SignUpLanding = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "SignUpLanding", webpackPreload: true */ '../pages/front/signup/SignUpLanding'
+    )
 )
-const SignUp = lazy(() =>
-  import(
-    /* webpackChunkName: "SignUp", webpackPreload: true */ '../pages/front/signup/SignUp'
-  )
+const SignUp = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "SignUp", webpackPreload: true */ '../pages/front/signup/SignUp'
+    )
 )
-const SignUpEmailVerification = lazy(() =>
-  import(
-    /* webpackChunkName: "SignUpEmailVerification", webpackPreload: true */ '../pages/front/signup/SignUpEmailVerification'
-  )
+const SignUpEmailVerification = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "SignUpEmailVerification", webpackPreload: true */ '../pages/front/signup/SignUpEmailVerification'
+    )
 )
-const SignUpComplete = lazy(() =>
-  import(
-    /* webpackChunkName: "SignUpComplete", webpackPreload: true */ '../pages/front/signup/SignUpComplete'
-  )
+const SignUpComplete = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "SignUpComplete", webpackPreload: true */ '../pages/front/signup/SignUpComplete'
+    )
 )
 
 export const routes__loggedOut: RouteDefinition[] = [
   {
     path: '/faq',
     component: Faqs,
-    exact: true
+    exact: true,
   },
   {
     path: '/front/home',
     component: Home,
-    exact: true
+    exact: true,
   },
   {
     path: '/front/landing/mentor',
     component: Mentor,
-    exact: true
+    exact: true,
   },
   {
     path: '/front/landing/mentee',
     component: Mentee,
-    exact: true
+    exact: true,
   },
   {
     path: '/front/login',
     component: Login,
-    exact: true
+    exact: true,
   },
   {
     path: '/front/signup-landing',
     component: SignUpLanding,
-    exact: true
+    exact: true,
   },
   {
     path: '/front/signup-email-verification/:userType',
     component: SignUpEmailVerification,
-    exact: true
+    exact: true,
   },
   {
     path: '/front/signup-complete/:userType',
     component: SignUpComplete,
-    exact: true
+    exact: true,
   },
   {
     path: '/front/signup/:type',
     component: SignUp,
-    exact: true
+    exact: true,
   },
   {
     path: '/front/reset-password/request-reset-password-email',
     component: RequestResetPasswordEmail,
-    exact: true
+    exact: true,
   },
   {
     path: '/front/reset-password/set-new-password/:accessToken',
     component: SetNewPassword,
-    exact: true
-  }
+    exact: true,
+  },
 ]

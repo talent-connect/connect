@@ -14,9 +14,9 @@ const LoggedOutNavItems = () => {
 
   return (
     <>
-      <Button to='/front/home'>{t('button.about')}</Button>
-      <Button to='/front/landing/mentee'>{t('button.mentees')}</Button>
-      <Button to='/front/landing/mentor'>{t('button.mentors')}</Button>
+      <Button to="/front/home">{t('button.about')}</Button>
+      <Button to="/front/landing/mentee">{t('button.mentees')}</Button>
+      <Button to="/front/landing/mentor">{t('button.mentors')}</Button>
     </>
   )
 }
@@ -25,42 +25,37 @@ const LoggedOutButtons = () => {
   const { t } = useTranslation()
   const history = useHistory()
 
-  return (<>
-    <Button
-      onClick={() => history.push('/front/login')}
-      simple
-    >
-      {t('button.login')}
-    </Button>
-    <Button
-      onClick={() => history.push('/front/signup-landing')}
-    >
-      {t('button.signUp')}
-    </Button>
-  </>)
+  return (
+    <>
+      <Button onClick={() => history.push('/front/login')} simple>
+        {t('button.login')}
+      </Button>
+      <Button onClick={() => history.push('/front/signup-landing')}>
+        {t('button.signUp')}
+      </Button>
+    </>
+  )
 }
 
 const LoggedInButtons = ({ mobile }: { mobile?: boolean }) => {
   const { t } = useTranslation()
   const history = useHistory()
 
-  return (<>
-    <Button
-      onClick={() => logout()}
-      simple
-    >
-      {t('button.logout')}
-    </Button>
+  return (
+    <>
+      <Button onClick={() => logout()} simple>
+        {t('button.logout')}
+      </Button>
 
-    <Button
-      onClick={() => history.push('/app/me')}
-      simple
-      separator={!mobile}
-    >
-      <Button.Icon icon="account" size="small" space="right"/>
-      {t('button.account')}
-    </Button>
-  </>
+      <Button
+        onClick={() => history.push('/app/me')}
+        simple
+        separator={!mobile}
+      >
+        <Button.Icon icon="account" size="small" space="right" />
+        {t('button.account')}
+      </Button>
+    </>
   )
 }
 
@@ -75,14 +70,14 @@ const Navbar = () => {
       >
         &times;
       </Element>
-      {isLoggedIn() && <LoggedInButtons mobile={true}/>}
-      {!isLoggedIn() &&
+      {isLoggedIn() && <LoggedInButtons mobile={true} />}
+      {!isLoggedIn() && (
         <>
           <LoggedOutNavItems />
-          <hr/>
-          <LoggedOutButtons/>
+          <hr />
+          <LoggedOutButtons />
         </>
-      }
+      )}
     </Container>
   )
 
@@ -102,17 +97,14 @@ const Navbar = () => {
             responsive={{ mobile: { hide: { value: true } } }}
             className="navbar__buttons"
           >
-            {isLoggedIn() && <LoggedInButtons/>}
+            {isLoggedIn() && <LoggedInButtons />}
             {!isLoggedIn() && <LoggedOutButtons />}
           </Element>
           <Element
             responsive={{ tablet: { hide: { value: true } } }}
             className="navbar__buttons"
           >
-            <Button
-              onClick={() => setMenuActive(!menuActive)}
-              simple
-            >
+            <Button onClick={() => setMenuActive(!menuActive)} simple>
               <Button.Icon icon="hamburger" />
             </Button>
           </Element>

@@ -7,15 +7,14 @@ import { ReactComponent as HelloMobile } from '../../assets/images/hello-mobile.
 import { ReactComponent as Mentee } from '../../assets/images/mentee.svg'
 import { ReactComponent as Mentor } from '../../assets/images/mentor.svg'
 
-
 export type SVGImages =
-  'heroMentee' |
-  'heroMentor' |
-  'mentee' |
-  'mentor' |
-  'hero' |
-  'hello' |
-  'helloMobile';
+  | 'heroMentee'
+  | 'heroMentor'
+  | 'mentee'
+  | 'mentor'
+  | 'hero'
+  | 'hello'
+  | 'helloMobile'
 interface Props {
   image: SVGImages
   className?: string
@@ -28,17 +27,13 @@ const Images = {
   mentor: Mentor,
   hero: Hero,
   hello: Hello,
-  helloMobile: HelloMobile
+  helloMobile: HelloMobile,
 }
 
 const SVGImage = ({ image, className }: Props) => {
   const Image = image ? Images[image] : undefined
 
-  return Image
-    ? <Image
-      className={className}
-    />
-    : null
+  return Image ? <Image className={className} /> : null
 }
 
 export default SVGImage

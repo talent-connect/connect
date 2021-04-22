@@ -1,4 +1,4 @@
-export type ErrorSimpleObject = { [key: string]: string };
+export type ErrorSimpleObject = { [key: string]: string }
 
 export const yupErrorToSimpleObject = (error: any): ErrorSimpleObject => {
   const targetErrorsObject: ErrorSimpleObject = {}

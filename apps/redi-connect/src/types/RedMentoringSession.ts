@@ -8,4 +8,4 @@ export type RedMentoringSession = {
   menteeId?: string
   date: Date
   minuteDuration: number
-};
+}

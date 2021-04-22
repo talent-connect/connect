@@ -1,5 +1,5 @@
-@import "~bulma/sass/utilities/_all";
-@import "../../styles/_variables.scss";
+@import '~bulma/sass/utilities/_all';
+@import '../../styles/_variables.scss';
 
 .icon {
   width: 1em;
@@ -22,11 +22,11 @@
   }
 
   &--space-left {
-    margin-left: .5em;
+    margin-left: 0.5em;
   }
 
   &--space-right {
-    margin-right: .5em;
+    margin-right: 0.5em;
   }
 
   &--active {

@@ -1,10 +1,10 @@
-@import "~bulma/sass/utilities/_all";
-@import "../../styles/_variables.scss";
+@import '~bulma/sass/utilities/_all';
+@import '../../styles/_variables.scss';
 
 .program {
   &__img {
     @include mobile() {
-      margin-bottom: .75rem;
+      margin-bottom: 0.75rem;
     }
   }
 
@@ -12,7 +12,7 @@
     margin: 1.5rem 1.25rem 1rem 1.25rem;
 
     @include mobile() {
-      margin: .25rem 4rem;
+      margin: 0.25rem 4rem;
     }
   }
 }

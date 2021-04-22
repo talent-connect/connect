@@ -6,7 +6,7 @@ const Landing: React.FunctionComponent = ({ children }) => (
   <>
     <Navbar />
     {children}
-    <Footer/>
+    <Footer />
   </>
 )
 

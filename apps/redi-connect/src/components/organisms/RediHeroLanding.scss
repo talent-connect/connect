@@ -1,12 +1,20 @@
-@import "~bulma/sass/utilities/_all";
-@import "../../styles/_variables.scss";
+@import '~bulma/sass/utilities/_all';
+@import '../../styles/_variables.scss';
 
 .hero-landing {
   &--mentee {
-    background-image: linear-gradient(to bottom, $redi-orange-light 80%, $white 80%);
+    background-image: linear-gradient(
+      to bottom,
+      $redi-orange-light 80%,
+      $white 80%
+    );
 
     @include mobile() {
-      background-image: linear-gradient(to bottom, $redi-orange-light 95%, $white 95%);
+      background-image: linear-gradient(
+        to bottom,
+        $redi-orange-light 95%,
+        $white 95%
+      );
     }
 
     g {
@@ -15,15 +23,23 @@
 
     .column,
     hr {
-      border-color: $redi-orange-dark
+      border-color: $redi-orange-dark;
     }
   }
 
   &--mentor {
-    background-image: linear-gradient(to bottom, $redi-blue-light 80%, $white 80%);
+    background-image: linear-gradient(
+      to bottom,
+      $redi-blue-light 80%,
+      $white 80%
+    );
 
     @include mobile() {
-      background-image: linear-gradient(to bottom, $redi-blue-light 95%, $white 95%);
+      background-image: linear-gradient(
+        to bottom,
+        $redi-blue-light 95%,
+        $white 95%
+      );
     }
 
     g {
@@ -32,7 +48,7 @@
 
     .column,
     hr {
-      border-color: $redi-blue-dark
+      border-color: $redi-blue-dark;
     }
   }
 
@@ -66,7 +82,7 @@
   &__columns {
     background: $white;
     padding: 2rem;
-    border-radius: .25rem;
+    border-radius: 0.25rem;
     margin: 4rem 0;
     box-shadow: $default-shadow;
 
@@ -75,7 +91,7 @@
     }
 
     .column {
-      &:not(:last-child)>hr {
+      &:not(:last-child) > hr {
         margin-right: -2rem;
       }
 

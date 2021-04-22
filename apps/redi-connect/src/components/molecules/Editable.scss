@@ -1,10 +1,10 @@
-@import "../../styles/_variables.scss";
+@import '../../styles/_variables.scss';
 
 .editable {
   &__header {
     display: flex;
     justify-content: space-between;
-  
+
     &__buttons {
       display: flex;
     }
@@ -22,7 +22,7 @@
   transition: $transition;
 
   &:not(.icon__button--disabled):hover {
-    background-color: $redi-orange-extra-light; 
+    background-color: $redi-orange-extra-light;
   }
 
   path {
@@ -30,6 +30,6 @@
   }
 
   &--disabled path {
-    fill: $grey-light; 
+    fill: $grey-light;
   }
 }

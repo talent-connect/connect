@@ -4,11 +4,7 @@ import { useParams } from 'react-router'
 
 import * as Yup from 'yup'
 
-import {
-  FormikValues,
-  FormikHelpers as FormikActions,
-  useFormik
-} from 'formik'
+import { FormikValues, FormikHelpers as FormikActions, useFormik } from 'formik'
 import omit from 'lodash/omit'
 import Heading from '../../../components/atoms/Heading'
 import FormInput from '../../../components/atoms/FormInput'
@@ -27,15 +23,14 @@ import { Extends } from '../../../types/utility-types/Extends'
 import { history } from '../../../services/history/history'
 
 import { courses } from '../../../config/config'
-const formCourses = courses.map(course => ({ value: course.id, label: course.label }))
+const formCourses = courses.map((course) => ({
+  value: course.id,
+  label: course.label,
+}))
 
 export const validationSchema = Yup.object({
-  firstName: Yup.string()
-    .required('Your first name is invalid')
-    .max(255),
-  lastName: Yup.string()
-    .required('Your last name is invalid')
-    .max(255),
+  firstName: Yup.string().required('Your first name is invalid').max(255),
+  lastName: Yup.string().required('Your last name is invalid').max(255),
   contactEmail: Yup.string()
     .email('Your email is invalid')
     .label('Email')
@@ -47,28 +42,25 @@ export const validationSchema = Yup.object({
   passwordConfirm: Yup.string()
     .required('Confirm your password')
     .oneOf([Yup.ref('password')], 'Passwords does not match'),
-  agreesWithCodeOfConduct: Yup.boolean()
-    .required()
-    .oneOf([true]),
-  gaveGdprConsent: Yup.boolean()
-    .required()
-    .oneOf([true]),
+  agreesWithCodeOfConduct: Yup.boolean().required().oneOf([true]),
+  gaveGdprConsent: Yup.boolean().required().oneOf([true]),
   mentee_currentlyEnrolledInCourse: Yup.string().when('userType', {
     is: 'public-sign-up-mentee-pending-review',
     then: Yup.string()
       .required()
-      .oneOf(courses.map(level => level.id))
-      .label('Currently enrolled in course')
-  })
+      .oneOf(courses.map((level) => level.id))
+      .label('Currently enrolled in course'),
+  }),
 })
 
 type SignUpPageType = {
-  type: | 'mentor' | 'mentee'
+  type: 'mentor' | 'mentee'
 }
 
 type SignUpUserType = Extends<
   RedProfile['userType'],
-  'public-sign-up-mentee-pending-review' | 'public-sign-up-mentor-pending-review'
+  | 'public-sign-up-mentee-pending-review'
+  | 'public-sign-up-mentor-pending-review'
 >
 
 export interface SignUpFormValues {
@@ -83,13 +75,14 @@ export interface SignUpFormValues {
   mentee_currentlyEnrolledInCourse: string
 }
 
-export default function SignUp () {
+export default function SignUp() {
   const { type } = useParams<SignUpPageType>()
 
   // we may consider removing the backend types from frontend
-  const userType: SignUpUserType = (type === 'mentee')
-    ? 'public-sign-up-mentee-pending-review'
-    : 'public-sign-up-mentor-pending-review'
+  const userType: SignUpUserType =
+    type === 'mentee'
+      ? 'public-sign-up-mentee-pending-review'
+      : 'public-sign-up-mentor-pending-review'
 
   const initialValues: SignUpFormValues = {
     userType,
@@ -100,7 +93,7 @@ export default function SignUp () {
     firstName: '',
     lastName: '',
     agreesWithCodeOfConduct: false,
-    mentee_currentlyEnrolledInCourse: ''
+    mentee_currentlyEnrolledInCourse: '',
   }
 
   const [submitError, setSubmitError] = useState(false)
@@ -115,7 +108,7 @@ export default function SignUp () {
       'password',
       'passwordConfirm',
       'agreesWithCodeOfConduct',
-      'gaveGdprConsent'
+      'gaveGdprConsent',
     ])
     cleanProfile.userActivated = false
     cleanProfile.signupSource = 'public-sign-up'
@@ -134,7 +127,7 @@ export default function SignUp () {
     enableReinitialize: true,
     initialValues: initialValues,
     validationSchema,
-    onSubmit: submitForm
+    onSubmit: submitForm,
   })
 
   return (
@@ -149,7 +142,7 @@ export default function SignUp () {
 
         <Columns.Column size={5} offset={1}>
           <Heading border="bottomLeft">Sign-up</Heading>
-          <form onSubmit={e => e.preventDefault()} className="form">
+          <form onSubmit={(e) => e.preventDefault()} className="form">
             <FormInput
               name="firstName"
               placeholder="Your first name"
@@ -199,7 +192,7 @@ export default function SignUp () {
               className="submit-spacer"
               {...formik}
             >
-              I agree to the {' '}
+              I agree to the{' '}
               <a
                 target="_blank"
                 rel="noopener noreferrer"
@@ -207,7 +200,7 @@ export default function SignUp () {
               >
                 Code of Conduct
               </a>{' '}
-                of ReDI School
+              of ReDI School
             </Checkbox.Form>
 
             <Checkbox.Form
@@ -224,14 +217,21 @@ export default function SignUp () {
                 Data Protection
               </a>
             </Checkbox.Form>
-            <Form.Help color="danger" className={submitError ? 'help--show' : ''}>{submitError && 'An error occurred, please try again.'}</Form.Help>
+            <Form.Help
+              color="danger"
+              className={submitError ? 'help--show' : ''}
+            >
+              {submitError && 'An error occurred, please try again.'}
+            </Form.Help>
             <Form.Field>
               <Form.Control>
                 <Button
                   fullWidth
                   onClick={() => formik.handleSubmit()}
                   disabled={!(formik.dirty && formik.isValid)}
-                >submit</Button>
+                >
+                  submit
+                </Button>
               </Form.Control>
             </Form.Field>
           </form>

@@ -31,32 +31,32 @@ import './Icon.scss'
 
 interface IconProps {
   icon:
-  'arrowLeft' |
-  'arrowRight' |
-  'hamburger' |
-  'account' |
-  'check' |
-  'edit' |
-  'cancel' |
-  'chevron' |
-  'heart' |
-  'heartFilled' |
-  'mail' |
-  'clipboard' |
-  'certificate' |
-  'search' |
-  'arrow' |
-  'calendar' |
-  'career' |
-  'chat' |
-  'handshake' |
-  'plus' |
-  'twitter' |
-  'meetup' |
-  'linkedin' |
-  'instagram' |
-  'fb' |
-  'loader'
+    | 'arrowLeft'
+    | 'arrowRight'
+    | 'hamburger'
+    | 'account'
+    | 'check'
+    | 'edit'
+    | 'cancel'
+    | 'chevron'
+    | 'heart'
+    | 'heartFilled'
+    | 'mail'
+    | 'clipboard'
+    | 'certificate'
+    | 'search'
+    | 'arrow'
+    | 'calendar'
+    | 'career'
+    | 'chat'
+    | 'handshake'
+    | 'plus'
+    | 'twitter'
+    | 'meetup'
+    | 'linkedin'
+    | 'instagram'
+    | 'fb'
+    | 'loader'
   size?: 'small' | 'medium' | 'large' | 'x-large'
   space?: 'left' | 'right'
   className?: string
@@ -89,7 +89,7 @@ const Icons = {
   twitter: Twitter,
   fb: Fb,
   linkedin: Linkedin,
-  loader: Loader
+  loader: Loader,
 }
 
 const Icon = ({ icon, space, size, className, onClick }: IconProps) => {
@@ -97,17 +97,17 @@ const Icon = ({ icon, space, size, className, onClick }: IconProps) => {
 
   const iconSize = size || 'medium'
 
-  return Icon
-    ? <Icon
+  return Icon ? (
+    <Icon
       className={classnames('icon', {
         [`icon--space-${space}`]: space,
         [`icon--${iconSize}`]: iconSize,
         'icon--active': onClick,
-        [`${className}`]: className
+        [`${className}`]: className,
       })}
       onClick={onClick}
     />
-    : null
+  ) : null
 }
 
 export default Icon

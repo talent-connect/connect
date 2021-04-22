@@ -20,12 +20,12 @@ interface CompleteMentorshipFormValues {
 }
 
 const initialValues = {
-  mentorMessageOnComplete: ''
+  mentorMessageOnComplete: '',
 }
 
 const CompleteMentorship = ({
   match,
-  matchesMarkAsComplete
+  matchesMarkAsComplete,
 }: CompleteMentorshipProps) => {
   const [isModalActive, setModalActive] = useState(false)
 
@@ -40,7 +40,7 @@ const CompleteMentorship = ({
 
   const formik = useFormik({
     initialValues,
-    onSubmit: submitForm
+    onSubmit: submitForm,
   })
 
   const handleCancel = () => {
@@ -96,7 +96,7 @@ const mapDispatchToProps = (dispatch: any) => ({
   matchesMarkAsComplete: (
     redMatchId: string,
     mentorMessageOnComplete: string
-  ) => dispatch(matchesMarkAsComplete(redMatchId, mentorMessageOnComplete))
+  ) => dispatch(matchesMarkAsComplete(redMatchId, mentorMessageOnComplete)),
 })
 
 export default connect(null, mapDispatchToProps)(CompleteMentorship)

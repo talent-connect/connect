@@ -5,7 +5,10 @@ import { Element } from 'react-bulma-components'
 import { FormikValues, useFormik } from 'formik'
 import * as Yup from 'yup'
 import { RedProfile } from '../../types/RedProfile'
-import { AWS_PROFILE_AVATARS_BUCKET_BASE_URL, S3_UPLOAD_SIGN_URL } from '../../config/config'
+import {
+  AWS_PROFILE_AVATARS_BUCKET_BASE_URL,
+  S3_UPLOAD_SIGN_URL,
+} from '../../config/config'
 import classnames from 'classnames'
 import placeholderImage from '../../assets/images/img-placeholder.png'
 
@@ -14,9 +17,7 @@ import { connect } from 'react-redux'
 
 import './Avatar.scss'
 
-import {
-  profileSaveStart
-} from '../../redux/user/actions'
+import { profileSaveStart } from '../../redux/user/actions'
 
 interface AvatarProps {
   profile: RedProfile
@@ -31,7 +32,7 @@ interface AvatarFormValues {
 }
 
 const validationSchema = Yup.object({
-  profileAvatarImageS3Key: Yup.string().max(255)
+  profileAvatarImageS3Key: Yup.string().max(255),
 })
 
 const Avatar = ({ profile }: AvatarProps) => {
@@ -41,10 +42,16 @@ const Avatar = ({ profile }: AvatarProps) => {
     : placeholderImage
 
   return (
-    <div className={classnames('avatar', {
-      'avatar--placeholder': !profileAvatarImageS3Key
-    })}>
-      <img src={imgSrc} alt={`${profile.firstName} ${profile.lastName}`} className="avatar__image" />
+    <div
+      className={classnames('avatar', {
+        'avatar--placeholder': !profileAvatarImageS3Key,
+      })}
+    >
+      <img
+        src={imgSrc}
+        alt={`${profile.firstName} ${profile.lastName}`}
+        className="avatar__image"
+      />
     </div>
   )
 }
@@ -53,21 +60,19 @@ const AvatarEditable = ({ profile, profileSaveStart }: AvatarEditable) => {
   const { profileAvatarImageS3Key } = profile
   const imgURL = AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
 
-  const submitForm = async (
-    values: FormikValues
-  ) => {
+  const submitForm = async (values: FormikValues) => {
     const profileMe = values as Partial<RedProfile>
     profileSaveStart({ ...profileMe, id: profile.id })
   }
 
   const initialValues: AvatarFormValues = {
-    profileAvatarImageS3Key: profileAvatarImageS3Key
+    profileAvatarImageS3Key: profileAvatarImageS3Key,
   }
 
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema,
-    onSubmit: submitForm
+    onSubmit: submitForm,
   })
 
   const onUploadSuccess = (result: any) => {
@@ -76,20 +81,43 @@ const AvatarEditable = ({ profile, profileSaveStart }: AvatarEditable) => {
   }
 
   return (
-    <div className={classnames('avatar avatar--editable', {
-      'avatar--placeholder': !profileAvatarImageS3Key
-    })}>
-      {profileAvatarImageS3Key && <>
-        <img src={imgURL} alt={`${profile.firstName} ${profile.lastName}`} className="avatar__image" />
-        <Element renderAs="span" className="avatar__button" textSize={7} textTransform="uppercase" >Edit Photo</Element>
-      </>}
+    <div
+      className={classnames('avatar avatar--editable', {
+        'avatar--placeholder': !profileAvatarImageS3Key,
+      })}
+    >
+      {profileAvatarImageS3Key && (
+        <>
+          <img
+            src={imgURL}
+            alt={`${profile.firstName} ${profile.lastName}`}
+            className="avatar__image"
+          />
+          <Element
+            renderAs="span"
+            className="avatar__button"
+            textSize={7}
+            textTransform="uppercase"
+          >
+            Edit Photo
+          </Element>
+        </>
+      )}
 
-      {!profileAvatarImageS3Key && <>
-        <div className="avatar__placeholder">
-          <UploadImage className="avatar__placeholder__image" />
-          <Element textSize={6} className="avatar__placeholder__text" responsive={{ mobile: { hide: { value: true } } }}>Add your picture</Element>
-        </div>
-      </>}
+      {!profileAvatarImageS3Key && (
+        <>
+          <div className="avatar__placeholder">
+            <UploadImage className="avatar__placeholder__image" />
+            <Element
+              textSize={6}
+              className="avatar__placeholder__text"
+              responsive={{ mobile: { hide: { value: true } } }}
+            >
+              Add your picture
+            </Element>
+          </div>
+        </>
+      )}
 
       <ReactS3Uploader
         name="avatar-upload"
@@ -108,11 +136,12 @@ const AvatarEditable = ({ profile, profileSaveStart }: AvatarEditable) => {
 }
 
 const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile as RedProfile
+  profile: state.user.profile as RedProfile,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
-  profileSaveStart: (profile: Partial<RedProfile>) => dispatch(profileSaveStart(profile))
+  profileSaveStart: (profile: Partial<RedProfile>) =>
+    dispatch(profileSaveStart(profile)),
 })
 
 Avatar.Some = (profile: RedProfile) => <Avatar profile={profile} />

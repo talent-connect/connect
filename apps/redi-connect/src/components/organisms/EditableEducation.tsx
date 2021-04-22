@@ -5,16 +5,17 @@ import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
 
-import {
-  profileSaveStart
-} from '../../redux/user/actions'
+import { profileSaveStart } from '../../redux/user/actions'
 import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
 
 import { educationLevels } from '../../config/config'
 
-const formEducationLevels = educationLevels.map(level => ({ value: level.id, label: level.label }))
+const formEducationLevels = educationLevels.map((level) => ({
+  value: level.id,
+  label: level.label,
+}))
 
 // do we really need all these type???
 export type UserType =
@@ -23,7 +24,7 @@ export type UserType =
   | 'public-sign-up-mentor-pending-review'
   | 'public-sign-up-mentee-pending-review'
   | 'public-sign-up-mentor-rejected'
-  | 'public-sign-up-mentee-rejected';
+  | 'public-sign-up-mentee-rejected'
 
 export interface EducationFormValues {
   mentee_highestEducationLevel: string
@@ -31,32 +32,27 @@ export interface EducationFormValues {
 
 const validationSchema = Yup.object({
   mentee_highestEducationLevel: Yup.string()
-    .oneOf(educationLevels.map(level => level.id))
-    .label('Highest Education Level')
+    .oneOf(educationLevels.map((level) => level.id))
+    .label('Highest Education Level'),
 })
 
 const EditableEducation = ({ profile, profileSaveStart }: any) => {
-  const {
-    id,
-    mentee_highestEducationLevel
-  } = profile
+  const { id, mentee_highestEducationLevel } = profile
 
-  const submitForm = async (
-    values: FormikValues
-  ) => {
+  const submitForm = async (values: FormikValues) => {
     const education = values as Partial<RedProfile>
     profileSaveStart({ ...education, id })
   }
 
   const initialValues: EducationFormValues = {
-    mentee_highestEducationLevel
+    mentee_highestEducationLevel,
   }
 
   const formik = useFormik({
     initialValues,
     enableReinitialize: true,
     validationSchema,
-    onSubmit: submitForm
+    onSubmit: submitForm,
   })
 
   return (
@@ -64,7 +60,7 @@ const EditableEducation = ({ profile, profileSaveStart }: any) => {
       title="Highest Education"
       onSave={() => formik.handleSubmit()}
       onClose={() => formik.resetForm()}
-      savePossible={(formik.dirty && formik.isValid)}
+      savePossible={formik.dirty && formik.isValid}
       read={<ReadEducation.Me />}
     >
       <FormSelect
@@ -79,11 +75,12 @@ const EditableEducation = ({ profile, profileSaveStart }: any) => {
 }
 
 const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile
+  profile: state.user.profile,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
-  profileSaveStart: (profile: Partial<RedProfile>) => dispatch(profileSaveStart(profile))
+  profileSaveStart: (profile: Partial<RedProfile>) =>
+    dispatch(profileSaveStart(profile)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditableEducation)

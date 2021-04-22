@@ -15,7 +15,7 @@ import {
   EditablePersonalDetail,
   EditableRediClass,
   EditableSocialMedia,
-  EditableMenteeCount
+  EditableMenteeCount,
 } from '../../../components/organisms'
 
 import { LoggedIn } from '../../../components/templates'
@@ -26,18 +26,20 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
     profileFetchStart()
   }, [profileFetchStart])
 
-  if (loading) return <Loader loading={true}/>
+  if (loading) return <Loader loading={true} />
 
   const userIsMentee =
-    profile.userType === 'mentee' || profile.userType === 'public-sign-up-mentee-pending-review'
+    profile.userType === 'mentee' ||
+    profile.userType === 'public-sign-up-mentee-pending-review'
 
   const userIsMentor =
-    profile.userType === 'mentor' || profile.userType === 'public-sign-up-mentor-pending-review'
+    profile.userType === 'mentor' ||
+    profile.userType === 'public-sign-up-mentor-pending-review'
 
   return (
     <LoggedIn>
       {saveResult === 'error' && <>An error occurred, please try again.</>}
-      {saveResult === 'submitting' && <Loader loading={true}/>}
+      {saveResult === 'submitting' && <Loader loading={true} />}
 
       <Columns vCentered breakpoint="mobile" className="oneandhalf-bs">
         <Columns.Column size={3}>
@@ -45,14 +47,25 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
         </Columns.Column>
         <Columns.Column size={8}>
           <Heading>Hi, {profile.firstName}</Heading>
-          <Content size="medium" renderAs="p" responsive={{ mobile: { hide: { value: true } } }}>
-            {`Please fill out your profile. Let potential ${userIsMentee ? 'mentors' : 'mentees'} know a little bit more about you, so you can find the perfect fit. If you have filled out your profile: Great! Make sure you keep it up to date.`}
+          <Content
+            size="medium"
+            renderAs="p"
+            responsive={{ mobile: { hide: { value: true } } }}
+          >
+            {`Please fill out your profile. Let potential ${
+              userIsMentee ? 'mentors' : 'mentees'
+            } know a little bit more about you, so you can find the perfect fit. If you have filled out your profile: Great! Make sure you keep it up to date.`}
           </Content>
         </Columns.Column>
       </Columns>
-      <Element className="block-separator" responsive={{ tablet: { hide: { value: true } } }}>
+      <Element
+        className="block-separator"
+        responsive={{ tablet: { hide: { value: true } } }}
+      >
         <Content size="medium" renderAs="p">
-          {`Please fill out your profile. Let potential ${userIsMentee ? 'mentors' : 'mentees'} know a little bit more about you, so you can find the perfect fit. If you have filled out your profile: Great! Make sure you keep it up to date.`}
+          {`Please fill out your profile. Let potential ${
+            userIsMentee ? 'mentors' : 'mentees'
+          } know a little bit more about you, so you can find the perfect fit. If you have filled out your profile: Great! Make sure you keep it up to date.`}
         </Content>
       </Element>
       <Element className="block-separator">
@@ -63,15 +76,15 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
         <EditableMentoringTopics />
       </Element>
 
-      {userIsMentor &&
-      <Element className="block-separator">
-        <Columns>
-          <Columns.Column size={12}>
-            <EditableMenteeCount />
-          </Columns.Column>
-        </Columns>
-      </Element>
-      }
+      {userIsMentor && (
+        <Element className="block-separator">
+          <Columns>
+            <Columns.Column size={12}>
+              <EditableMenteeCount />
+            </Columns.Column>
+          </Columns>
+        </Element>
+      )}
 
       <Element className="block-separator">
         <Columns>
@@ -99,7 +112,7 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
         </Columns>
       </Element>
 
-      {userIsMentee &&
+      {userIsMentee && (
         <Element className="block-separator">
           <Columns>
             <Columns.Column size={6}>
@@ -112,7 +125,7 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
             </Columns.Column>
           </Columns>
         </Element>
-      }
+      )}
 
       <Element className="block-separator">
         <Columns>
@@ -128,11 +141,11 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
 const mapStateToProps = (state: RootState) => ({
   saveResult: state.user.saveResult,
   loading: state.user.loading,
-  profile: state.user.profile
+  profile: state.user.profile,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
-  profileFetchStart: () => dispatch(profileFetchStart())
+  profileFetchStart: () => dispatch(profileFetchStart()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Me)

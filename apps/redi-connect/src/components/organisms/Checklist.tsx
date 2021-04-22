@@ -11,8 +11,13 @@ interface Props {
 const Checklist = ({ type }: Props) => {
   const { t } = useTranslation()
 
-  const checklist: Array<{ content: string, headline: string, image: any }> =
-    t(`loggedOutArea.homePage.checklist.${type}.items`, { returnObjects: true })
+  const checklist: Array<{
+    content: string
+    headline: string
+    image: any
+  }> = t(`loggedOutArea.homePage.checklist.${type}.items`, {
+    returnObjects: true,
+  })
 
   return (
     <Section className="default-background">
@@ -35,7 +40,7 @@ const Checklist = ({ type }: Props) => {
           ))}
         </Element>
       </Container>
-    </Section >
+    </Section>
   )
 }
 

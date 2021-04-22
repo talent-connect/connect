@@ -1,6 +1,6 @@
 import { MatchesState } from './types'
 
 export const getApplicants = (state: MatchesState) =>
-  state.matches.filter(match => match.status === 'applied')
+  state.matches.filter((match) => match.status === 'applied')
 export const getMatches = (state: MatchesState) =>
-  state.matches.filter(match => match.status === 'accepted')
+  state.matches.filter((match) => match.status === 'accepted')

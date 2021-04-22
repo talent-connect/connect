@@ -1,5 +1,5 @@
-@import "~bulma/sass/utilities/_all";
-@import "../../styles/_variables.scss";
+@import '~bulma/sass/utilities/_all';
+@import '../../styles/_variables.scss';
 
 .tiles {
   display: flex;
@@ -38,22 +38,22 @@
     &__button {
       justify-content: flex-start;
       padding-left: 0;
-  
+
       &--mentor {
         color: $redi-blue-dark;
-  
+
         &:hover {
           color: $redi-blue-dark;
         }
-  
+
         .icon path {
           fill: $redi-blue-dark;
         }
       }
-  
+
       &--mentee {
         color: $redi-orange-dark;
-  
+
         .icon path {
           fill: $redi-orange-dark;
         }
@@ -71,6 +71,4 @@
       max-height: 7rem;
     }
   }
-
-
 }

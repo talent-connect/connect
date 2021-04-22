@@ -5,18 +5,16 @@ import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
 
-import {
-  profileSaveStart
-} from '../../redux/user/actions'
+import { profileSaveStart } from '../../redux/user/actions'
 import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
 
-import {
-  menteeOccupationCategories
-} from '../../config/config'
+import { menteeOccupationCategories } from '../../config/config'
 
-const formMenteeOccupationCategories = menteeOccupationCategories.map(level => ({ value: level.id, label: level.label }))
+const formMenteeOccupationCategories = menteeOccupationCategories.map(
+  (level) => ({ value: level.id, label: level.label })
+)
 // do we really need all these type???
 export type UserType =
   | 'mentor'
@@ -24,7 +22,7 @@ export type UserType =
   | 'public-sign-up-mentor-pending-review'
   | 'public-sign-up-mentee-pending-review'
   | 'public-sign-up-mentor-rejected'
-  | 'public-sign-up-mentee-rejected';
+  | 'public-sign-up-mentee-rejected'
 
 export interface OccupationFormValues {
   userType: UserType
@@ -42,20 +40,15 @@ export interface OccupationFormValues {
 const validationSchema = Yup.object({
   mentor_occupation: Yup.string().when('userType', {
     is: 'mentor',
-    then: Yup.string()
-      .required()
-      .max(255)
-      .label('Occupation')
+    then: Yup.string().required().max(255).label('Occupation'),
   }),
-  mentor_workPlace: Yup.string()
-    .max(255)
-    .label('Work place'),
+  mentor_workPlace: Yup.string().max(255).label('Work place'),
   mentee_occupationCategoryId: Yup.string().when('userType', {
     is: 'mentee',
     then: Yup.string()
       .required()
-      .oneOf(menteeOccupationCategories.map(v => v.id))
-      .label('Current occupation')
+      .oneOf(menteeOccupationCategories.map((v) => v.id))
+      .label('Current occupation'),
   }),
   mentee_occupationJob_placeOfEmployment: Yup.string()
     .max(255)
@@ -74,7 +67,7 @@ const validationSchema = Yup.object({
     .label('What kind of job'),
   mentee_occupationOther_description: Yup.string()
     .max(255)
-    .label('What are you currently doing')
+    .label('What are you currently doing'),
 })
 
 const EditableOccupation = ({ profile, profileSaveStart }: any) => {
@@ -89,15 +82,15 @@ const EditableOccupation = ({ profile, profileSaveStart }: any) => {
     mentee_occupationStudent_studyPlace,
     mentee_occupationStudent_studyName,
     mentee_occupationLookingForJob_what,
-    mentee_occupationOther_description
+    mentee_occupationOther_description,
   } = profile
 
-  const isMentee = userType === 'mentee' || userType === 'public-sign-up-mentee-pending-review'
-  const isMentor = userType === 'mentor' || userType === 'public-sign-up-mentor-pending-review'
+  const isMentee =
+    userType === 'mentee' || userType === 'public-sign-up-mentee-pending-review'
+  const isMentor =
+    userType === 'mentor' || userType === 'public-sign-up-mentor-pending-review'
 
-  const submitForm = async (
-    values: FormikValues
-  ) => {
+  const submitForm = async (values: FormikValues) => {
     const education = values as Partial<RedProfile>
     profileSaveStart({ ...education, id })
   }
@@ -112,26 +105,24 @@ const EditableOccupation = ({ profile, profileSaveStart }: any) => {
     mentee_occupationStudent_studyPlace,
     mentee_occupationStudent_studyName,
     mentee_occupationLookingForJob_what,
-    mentee_occupationOther_description
+    mentee_occupationOther_description,
   }
 
   const formik = useFormik({
     initialValues,
     enableReinitialize: true,
     validationSchema,
-    onSubmit: submitForm
+    onSubmit: submitForm,
   })
 
-  const {
-    mentee_occupationCategoryId: occupation
-  } = formik.values
+  const { mentee_occupationCategoryId: occupation } = formik.values
 
   return (
     <Editable
       title="Occupation"
       onSave={() => formik.handleSubmit()}
       onClose={() => formik.resetForm()}
-      savePossible={(formik.dirty && formik.isValid)}
+      savePossible={formik.dirty && formik.isValid}
       read={<ReadOccupation.Me />}
     >
       {isMentor && (
@@ -192,22 +183,22 @@ const EditableOccupation = ({ profile, profileSaveStart }: any) => {
               />
             </>
           )}
-          {occupation === 'lookingForJob' &&
+          {occupation === 'lookingForJob' && (
             <FormInput
               name="mentee_occupationLookingForJob_what"
               label="What kind of job?"
               placeholder="Dreamjob..."
               {...formik}
             />
-          }
-          {occupation === 'other' &&
+          )}
+          {occupation === 'other' && (
             <FormInput
               name="mentee_occupationOther_description"
               label="What are you currently doing?"
               placeholder="Whats up?"
               {...formik}
             />
-          }
+          )}
         </>
       )}
     </Editable>
@@ -215,11 +206,12 @@ const EditableOccupation = ({ profile, profileSaveStart }: any) => {
 }
 
 const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile
+  profile: state.user.profile,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
-  profileSaveStart: (profile: Partial<RedProfile>) => dispatch(profileSaveStart(profile))
+  profileSaveStart: (profile: Partial<RedProfile>) =>
+    dispatch(profileSaveStart(profile)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditableOccupation)

@@ -1,18 +1,24 @@
-import React from 'react';
-import { Container, Section, Columns, Content, Element } from 'react-bulma-components';
-import Heading from '../atoms/Heading';
-import { useHistory } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import Button from '../atoms/Button';
-import { ReactComponent as Deloitte } from '../../assets/images/deloitte.svg';
-import SVGImage from '../atoms/SVGImage';
-import './RediHero.scss';
-import { rediLocationNames } from '../../config/config';
-import { envRediLocation } from '../../utils/env-redi-location';
+import React from 'react'
+import {
+  Container,
+  Section,
+  Columns,
+  Content,
+  Element,
+} from 'react-bulma-components'
+import Heading from '../atoms/Heading'
+import { useHistory } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import Button from '../atoms/Button'
+import { ReactComponent as Deloitte } from '../../assets/images/deloitte.svg'
+import SVGImage from '../atoms/SVGImage'
+import './RediHero.scss'
+import { rediLocationNames } from '../../config/config'
+import { envRediLocation } from '../../utils/env-redi-location'
 
 const RediHero = () => {
-  const history = useHistory();
-  const { t } = useTranslation();
+  const history = useHistory()
+  const { t } = useTranslation()
 
   return (
     <Section className="default-background">
@@ -38,17 +44,23 @@ const RediHero = () => {
               {t('loggedOutArea.homePage.hero.about.content2')}
             </Element>
             <Content>
-              <Button size="large" onClick={() => history.push('/front/signup-landing')}>
+              <Button
+                size="large"
+                onClick={() => history.push('/front/signup-landing')}
+              >
                 {t('button.signUpNow')}
               </Button>
             </Content>
           </Columns.Column>
-          <Columns.Column offset={1} responsive={{ mobile: { hide: { value: true } } }}>
+          <Columns.Column
+            offset={1}
+            responsive={{ mobile: { hide: { value: true } } }}
+          >
             <SVGImage image="hero" className="redi-hero__image" />
           </Columns.Column>
         </Columns>
       </Container>
     </Section>
-  );
-};
-export default RediHero;
+  )
+}
+export default RediHero

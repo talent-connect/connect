@@ -3,7 +3,7 @@ import { Checkbox, Icon } from '../atoms'
 import classnames from 'classnames'
 import './FilterDropdown.scss'
 
-type Item = { label: string, value: string }
+type Item = { label: string; value: string }
 
 interface Props {
   label: string
@@ -15,7 +15,13 @@ interface Props {
 
 const baseClass = 'filter-dropdown'
 
-const FilterDropdown = ({ label, className, selected, items, onChange }: Props) => {
+const FilterDropdown = ({
+  label,
+  className,
+  selected,
+  items,
+  onChange,
+}: Props) => {
   const filterDropdown = useRef<any>(null)
   const [showDropdown, setShowDropdown] = useState(false)
 
@@ -33,10 +39,13 @@ const FilterDropdown = ({ label, className, selected, items, onChange }: Props) 
   }, [handleClick])
 
   return (
-    <div className={classnames(baseClass, { [`${className}`]: className })} ref={filterDropdown}>
+    <div
+      className={classnames(baseClass, { [`${className}`]: className })}
+      ref={filterDropdown}
+    >
       <div
         className={classnames(`${baseClass}__label`, {
-          [`${baseClass}__label--active`]: showDropdown
+          [`${baseClass}__label--active`]: showDropdown,
         })}
         onClick={() => setShowDropdown(!showDropdown)}
       >
@@ -45,15 +54,17 @@ const FilterDropdown = ({ label, className, selected, items, onChange }: Props) 
           icon="chevron"
           size="small"
           className={classnames({
-            'icon--rotate': showDropdown
+            'icon--rotate': showDropdown,
           })}
         />
       </div>
 
-      <ul className={classnames(`${baseClass}__list`, {
-        [`${baseClass}__list--show`]: showDropdown
-      })}>
-        {items.map((item) =>
+      <ul
+        className={classnames(`${baseClass}__list`, {
+          [`${baseClass}__list--show`]: showDropdown,
+        })}
+      >
+        {items.map((item) => (
           <li key={item.value}>
             <Checkbox
               handleChange={() => onChange(item.value)}
@@ -61,7 +72,8 @@ const FilterDropdown = ({ label, className, selected, items, onChange }: Props) 
             >
               {item.label}
             </Checkbox>
-          </li>)}
+          </li>
+        ))}
       </ul>
     </div>
   )

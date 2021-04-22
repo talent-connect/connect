@@ -1,4 +1,3 @@
-
 import React from 'react'
 import Landing from '../../../components/templates/Landing'
 import RediHeroLanding from '../../../components/organisms/RediHeroLanding'
@@ -16,11 +15,7 @@ const Mentee = () => {
     <Landing>
       <RediHeroLanding type="mentee" />
       <Checklist type="mentee" />
-      <Carousel
-        border="orange"
-        headline={headline}
-        title={title}
-      />
+      <Carousel border="orange" headline={headline} title={title} />
       <PreFooter />
     </Landing>
   )

@@ -9,7 +9,11 @@ interface Props {
 const PipeList = ({ items }: Props) => {
   return (
     <Element renderAs="ul" className="pipe-list">
-      {items.map((item) => <Element renderAs="li" key={item}>{item}</Element>)}
+      {items.map((item) => (
+        <Element renderAs="li" key={item}>
+          {item}
+        </Element>
+      ))}
     </Element>
   )
 }

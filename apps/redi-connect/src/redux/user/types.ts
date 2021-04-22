@@ -16,7 +16,7 @@ export enum UserActionType {
   USER_PROFILE_FETCH_ERROR = 'USER_PROFILE_FETCH_ERROR',
   USER_PROFILE_SAVE_START = 'USER_PROFILE_SAVE_START',
   USER_PROFILE_SAVE_SUCCESS = 'USER_PROFILE_SAVE_SUCCESS',
-  USER_PROFILE_SAVE_ERROR = 'USER_PROFILE_SAVE_ERROR'
+  USER_PROFILE_SAVE_ERROR = 'USER_PROFILE_SAVE_ERROR',
 }
 export interface ProfileFetchStartAction extends Action {
   type: UserActionType.USER_PROFILE_FETCH_START
@@ -49,4 +49,4 @@ export type UserActions =
   | ProfileFetchErrorAction
   | ProfileSaveStartAction
   | ProfileSaveSuccessAction
-  | ProfileSaveErrorAction;
+  | ProfileSaveErrorAction

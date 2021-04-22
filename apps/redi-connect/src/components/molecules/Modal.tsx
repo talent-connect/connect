@@ -12,34 +12,36 @@ interface Props {
 }
 
 const Modal = ({ title, children, stateFn, show, confirm }: Props) => {
-  const setShowModal = stateFn
-    ? () => stateFn(false)
-    : undefined
+  const setShowModal = stateFn ? () => stateFn(false) : undefined
 
   useEffect(() => {
     document.body.classList.toggle('modal-open', show)
   }, [show])
 
-  return <BulmaModal
-    show={show}
-    onClose={setShowModal}
-    showClose={false}
-    closeOnEsc={!confirm}
-    closeOnBlur={!confirm}
-  >
-    <BulmaModal.Card>
-      <BulmaModal.Card.Head showClose={false} className="modal__heading">
-        {!confirm && <button
-          type="button"
-          onClick={setShowModal}
-          className="modal-close is-large"
-          aria-label="close"
-        />}
-        <Heading size="small" >{title}</Heading>
-      </BulmaModal.Card.Head>
-      {children}
-    </BulmaModal.Card>
-  </BulmaModal>
+  return (
+    <BulmaModal
+      show={show}
+      onClose={setShowModal}
+      showClose={false}
+      closeOnEsc={!confirm}
+      closeOnBlur={!confirm}
+    >
+      <BulmaModal.Card>
+        <BulmaModal.Card.Head showClose={false} className="modal__heading">
+          {!confirm && (
+            <button
+              type="button"
+              onClick={setShowModal}
+              className="modal-close is-large"
+              aria-label="close"
+            />
+          )}
+          <Heading size="small">{title}</Heading>
+        </BulmaModal.Card.Head>
+        {children}
+      </BulmaModal.Card>
+    </BulmaModal>
+  )
 }
 
 Modal.Body = BulmaModal.Card.Body

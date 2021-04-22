@@ -1,8 +1,7 @@
-@import "~bulma/sass/utilities/_all";
+@import '~bulma/sass/utilities/_all';
 @import '../../styles/_variables.scss';
 
 .title {
-
   // is a class used in bulma, the border modifier
   // is just a way of adding our own styles
   @include mobile() {
@@ -21,7 +20,6 @@
     border: 2px solid $redi-orange-dark;
     position: absolute;
     border-radius: 2px;
-
   }
 
   &--topCenter {

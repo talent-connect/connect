@@ -1,39 +1,51 @@
-import React from 'react';
-import AccountOperation from '../../../components/templates/AccountOperation';
-import { Columns, Form, Content } from 'react-bulma-components';
-import Teaser from '../../../components/molecules/Teaser';
-import Button from '../../../components/atoms/Button';
-import Heading from '../../../components/atoms/Heading';
-import { useHistory, useParams } from 'react-router';
-import { RediLocation } from '../../../types/RediLocation';
-import { envRediLocation } from '../../../utils/env-redi-location';
-import { UserType } from '../../../types/UserType';
+import React from 'react'
+import AccountOperation from '../../../components/templates/AccountOperation'
+import { Columns, Form, Content } from 'react-bulma-components'
+import Teaser from '../../../components/molecules/Teaser'
+import Button from '../../../components/atoms/Button'
+import Heading from '../../../components/atoms/Heading'
+import { useHistory, useParams } from 'react-router'
+import { RediLocation } from '../../../types/RediLocation'
+import { envRediLocation } from '../../../utils/env-redi-location'
+import { UserType } from '../../../types/UserType'
 
 type RouteParams = {
-  userType: UserType;
-};
+  userType: UserType
+}
 
 export default function SignUpComplete() {
-  const history = useHistory();
-  const { userType } = useParams<RouteParams>() as RouteParams;
+  const history = useHistory()
+  const { userType } = useParams<RouteParams>() as RouteParams
 
   return (
     <AccountOperation>
       <Columns vCentered>
-        <Columns.Column size={5} responsive={{ mobile: { hide: { value: true } } }}>
-          {userType === 'public-sign-up-mentor-pending-review' && <>Meet Miriam</>}
-          {userType === 'public-sign-up-mentee-pending-review' && <>Meet Paulina</>}
+        <Columns.Column
+          size={5}
+          responsive={{ mobile: { hide: { value: true } } }}
+        >
+          {userType === 'public-sign-up-mentor-pending-review' && (
+            <>Meet Miriam</>
+          )}
+          {userType === 'public-sign-up-mentee-pending-review' && (
+            <>Meet Paulina</>
+          )}
         </Columns.Column>
         <Columns.Column size={5} offset={2}>
           <Heading border="bottomLeft">
-            {userType === 'public-sign-up-mentor-pending-review' && <>Meet Miriam</>}
-            {userType === 'public-sign-up-mentee-pending-review' && <>Meet Paulina</>}
+            {userType === 'public-sign-up-mentor-pending-review' && (
+              <>Meet Miriam</>
+            )}
+            {userType === 'public-sign-up-mentee-pending-review' && (
+              <>Meet Paulina</>
+            )}
           </Heading>
           <Content size="large" renderAs="div">
             <p>Your email address was successfully verified!</p>
             {userType === 'public-sign-up-mentor-pending-review' && (
               <p>
-                Now, we would like to get to know you better. To activate your account, please
+                Now, we would like to get to know you better. To activate your
+                account, please
                 {` `}
                 <strong>
                   <a href="https://calendly.com/redi-miriam/mentor-onboarding">
@@ -46,7 +58,8 @@ export default function SignUpComplete() {
             {userType === 'public-sign-up-mentee-pending-review' && (
               <>
                 <p>
-                  Now, we would like to get to know you better. To activate your account, please{' '}
+                  Now, we would like to get to know you better. To activate your
+                  account, please{' '}
                   <strong>schedule a 15 minute meeting with Paulina. </strong>
                 </p>
                 <p>
@@ -60,7 +73,9 @@ export default function SignUpComplete() {
           </Content>
           <Form.Field className="submit-spacer">
             <Form.Control>
-              <Button onClick={() => history.push('/home')}>Return to ReDI Connect Website</Button>
+              <Button onClick={() => history.push('/home')}>
+                Return to ReDI Connect Website
+              </Button>
             </Form.Control>
           </Form.Field>
           <Content size="small" renderAs="p">
@@ -74,5 +89,5 @@ export default function SignUpComplete() {
         </Columns.Column>
       </Columns>
     </AccountOperation>
-  );
+  )
 }

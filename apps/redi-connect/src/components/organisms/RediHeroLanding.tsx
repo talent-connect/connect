@@ -1,6 +1,13 @@
 import React from 'react'
 import classnames from 'classnames'
-import { Section, Container, Element, Heading, Content, Columns } from 'react-bulma-components'
+import {
+  Section,
+  Container,
+  Element,
+  Heading,
+  Content,
+  Columns,
+} from 'react-bulma-components'
 import { useTranslation } from 'react-i18next'
 import Icon from '../atoms/Icon'
 import SVGImage from '../atoms/SVGImage'
@@ -12,36 +19,47 @@ interface Props {
 
 const RediHeroLanding = ({ type }: Props) => {
   const { t } = useTranslation()
-  const programSteps: Array<{ name: string, image: any }> =
-    t(`loggedOutArea.homePage.hero.${type}.steps`, { returnObjects: true })
+  const programSteps: Array<{
+    name: string
+    image: any
+  }> = t(`loggedOutArea.homePage.hero.${type}.steps`, { returnObjects: true })
 
   return (
     <>
-      <Section className={classnames('hero-landing', { [`hero-landing--${type}`]: type })}>
+      <Section
+        className={classnames('hero-landing', {
+          [`hero-landing--${type}`]: type,
+        })}
+      >
         <Container>
           <Heading
             size={1}
             responsive={{
               mobile: { textSize: { value: 2 } },
-              tablet: { textAlignment: { value: 'centered' } }
+              tablet: { textAlignment: { value: 'centered' } },
             }}
           >
             {t(`loggedOutArea.homePage.hero.${type}.headline`)}
           </Heading>
-          <Content responsive={{
-            mobile: { textAlignment: { value: 'centered' } },
-            'tablet-only': { hide: { value: true } }
-          }}>
-            <SVGImage image={type} className={classnames('hero-landing__illustration', {
-              [`hero-landing__illustration--${type}`]: type
-            })} />
+          <Content
+            responsive={{
+              mobile: { textAlignment: { value: 'centered' } },
+              'tablet-only': { hide: { value: true } },
+            }}
+          >
+            <SVGImage
+              image={type}
+              className={classnames('hero-landing__illustration', {
+                [`hero-landing__illustration--${type}`]: type,
+              })}
+            />
           </Content>
           <Element
             renderAs="p"
             textSize={4}
             responsive={{
               tablet: { textAlignment: { value: 'centered' } },
-              mobile: { textSize: { value: 5 } }
+              mobile: { textSize: { value: 5 } },
             }}
             className="hero-landing__text"
           >
@@ -49,7 +67,11 @@ const RediHeroLanding = ({ type }: Props) => {
           </Element>
           <Columns className="hero-landing__columns">
             <Columns.Column narrow>
-              <Icon icon='arrow' size="x-large" className="hero-landing__columns__arrow" />
+              <Icon
+                icon="arrow"
+                size="x-large"
+                className="hero-landing__columns__arrow"
+              />
               <Element
                 textSize={7}
                 renderAs="p"
@@ -59,7 +81,7 @@ const RediHeroLanding = ({ type }: Props) => {
                 {t(`loggedOutArea.homePage.hero.${type}.programName`)}
               </Element>
             </Columns.Column>
-            {programSteps.map((step, index) =>
+            {programSteps.map((step, index) => (
               <Columns.Column key={index}>
                 <Icon icon={step.image} size="x-large" />
                 <Element
@@ -67,15 +89,13 @@ const RediHeroLanding = ({ type }: Props) => {
                   responsive={{ mobile: { hide: { value: true } } }}
                   className="hero-landing__columns__separator"
                 />
-                <Element
-                  textSize={5}
-                  renderAs="p"
-                >
-                  <strong>{`0${index + 1}`}</strong><br />
+                <Element textSize={5} renderAs="p">
+                  <strong>{`0${index + 1}`}</strong>
+                  <br />
                   {step.name}
                 </Element>
               </Columns.Column>
-            )}
+            ))}
           </Columns>
         </Container>
       </Section>

@@ -15,25 +15,13 @@ interface Props {
 
 const PickerTrigger = ({ value, onClick }: any) => (
   <div className="datepicker-trigger" onClick={onClick}>
-    <Form.Input
-      id={value}
-      value={value}
-    />
-    <Icon
-      icon="calendar"
-      className="datepicker-trigger__icon"
-      size="medium" />
+    <Form.Input id={value} value={value} />
+    <Icon icon="calendar" className="datepicker-trigger__icon" size="medium" />
   </div>
 )
 
-function FormDatePicker (props: any) {
-  const {
-    name,
-    placeholder,
-    label,
-    values,
-    setFieldValue
-  } = props
+function FormDatePicker(props: any) {
+  const { name, placeholder, label, values, setFieldValue } = props
 
   const changeHandler = (date: any) => {
     setFieldValue(name, date)
@@ -41,9 +29,7 @@ function FormDatePicker (props: any) {
 
   return (
     <Form.Field>
-      {label && <Form.Label size="small">
-        {label}
-      </Form.Label>}
+      {label && <Form.Label size="small">{label}</Form.Label>}
       <Form.Control>
         <DatePicker
           selected={values[name]}

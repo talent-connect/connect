@@ -1,10 +1,5 @@
 import React from 'react'
-import {
-  Container,
-  Section,
-  Columns,
-  Content
-} from 'react-bulma-components'
+import { Container, Section, Columns, Content } from 'react-bulma-components'
 import Heading from '../atoms/Heading'
 import { useTranslation } from 'react-i18next'
 import Button from '../atoms/Button'
@@ -20,9 +15,7 @@ const PreFooter = () => {
       <Container>
         <Columns vCentered>
           <Columns.Column size={4}>
-            <Heading>
-              {t('preFooter.headline')}
-            </Heading>
+            <Heading>{t('preFooter.headline')}</Heading>
             <Content
               renderAs="p"
               textSize={4}
@@ -32,7 +25,12 @@ const PreFooter = () => {
               {t('preFooter.content')}
             </Content>
             <Content>
-              <Button size="large" onClick={() => (window.location.href = 'mailto:career@redi-school.org')}>
+              <Button
+                size="large"
+                onClick={() =>
+                  (window.location.href = 'mailto:career@redi-school.org')
+                }
+              >
                 {t('button.sayHello')}
               </Button>
             </Content>

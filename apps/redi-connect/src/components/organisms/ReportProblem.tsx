@@ -23,14 +23,14 @@ interface FormValues {
 
 const initialFormValues: FormValues = {
   problemDescription: '',
-  ifFromMentor_cancelMentorshipImmediately: false
+  ifFromMentor_cancelMentorshipImmediately: false,
 }
 
 const validationSchema = Yup.object({
   problemDescription: Yup.string()
     .required()
     .label('Problem description')
-    .max(1000)
+    .max(1000),
 })
 
 const ReportProblem = ({ redProfileId, type }: ReportProblemProps) => {
@@ -45,7 +45,9 @@ const ReportProblem = ({ redProfileId, type }: ReportProblemProps) => {
     values: FormValues,
     actions: FormikHelpers<FormValues>
   ) => {
-    const { ifFromMentor_cancelMentorshipImmediately: isCancelImmediately } = values
+    const {
+      ifFromMentor_cancelMentorshipImmediately: isCancelImmediately,
+    } = values
     if (isCancelImmediately) {
       const userIsCertain = window.confirm(
         'Are you sure you want to cancel this mentorship?'
@@ -61,7 +63,8 @@ const ReportProblem = ({ redProfileId, type }: ReportProblemProps) => {
             ? 'mentor-report-about-mentee'
             : 'mentee-report-about-mentor',
         reporteeId: redProfileId,
-        ifFromMentor_cancelMentorshipImmediately: isMentor && isCancelImmediately
+        ifFromMentor_cancelMentorshipImmediately:
+          isMentor && isCancelImmediately,
       }
       await reportProblem(report)
       setSubmitResult('success')
@@ -82,15 +85,18 @@ const ReportProblem = ({ redProfileId, type }: ReportProblemProps) => {
     enableReinitialize: true,
     initialValues: initialFormValues,
     validationSchema,
-    onSubmit: submitForm
+    onSubmit: submitForm,
   })
 
-  const { ifFromMentor_cancelMentorshipImmediately: isCancelImmediatly } = formik.values
+  const {
+    ifFromMentor_cancelMentorshipImmediately: isCancelImmediatly,
+  } = formik.values
 
   return (
     <>
       <Content className="problem">
-        If you feel uncertain about your mentorship, let us know  <a onClick={() => setShowProblemDialog(true)}>here</a>.
+        If you feel uncertain about your mentorship, let us know{' '}
+        <a onClick={() => setShowProblemDialog(true)}>here</a>.
       </Content>
 
       <Modal
@@ -99,9 +105,14 @@ const ReportProblem = ({ redProfileId, type }: ReportProblemProps) => {
         title="What are your concerns?"
       >
         <Modal.Body>
-          <Content>Please write a few words about why you feel uncertain about your mentorship and which issues you are experiencing? </Content>
+          <Content>
+            Please write a few words about why you feel uncertain about your
+            mentorship and which issues you are experiencing?{' '}
+          </Content>
           <form>
-            {submitResult === 'error' && <>An error occurred, please try again.</>}
+            {submitResult === 'error' && (
+              <>An error occurred, please try again.</>
+            )}
             <FormTextArea
               name="problemDescription"
               rows={4}
@@ -119,12 +130,13 @@ const ReportProblem = ({ redProfileId, type }: ReportProblemProps) => {
               </Checkbox.Form>
             )}
 
-            {isCancelImmediatly &&
-              <Content textColor="primary">Not ReDI? We regret you want to cancel this mentorship.
-              Someone from our Career Department will be in touch with
-              both you and your mentee
+            {isCancelImmediatly && (
+              <Content textColor="primary">
+                Not ReDI? We regret you want to cancel this mentorship. Someone
+                from our Career Department will be in touch with both you and
+                your mentee
               </Content>
-            }
+            )}
           </form>
         </Modal.Body>
 
@@ -132,9 +144,13 @@ const ReportProblem = ({ redProfileId, type }: ReportProblemProps) => {
           <Button
             onClick={() => formik.handleSubmit()}
             disabled={!(formik.dirty && formik.isValid)}
-          >Submit</Button>
+          >
+            Submit
+          </Button>
 
-          <Button onClick={handleCancel} simple>Cancel</Button>
+          <Button onClick={handleCancel} simple>
+            Cancel
+          </Button>
         </Modal.Foot>
       </Modal>
     </>

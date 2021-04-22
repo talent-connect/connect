@@ -1,16 +1,16 @@
-@import "~bulma/sass/utilities/_all";
-@import "../../styles/_variables.scss";
+@import '~bulma/sass/utilities/_all';
+@import '../../styles/_variables.scss';
 
 .redi-checkbox {
-  position: absolute; 
-  z-index: -1000; 
-  left: -1000px; 
-  overflow: hidden; 
-  clip: rect(0 0 0 0); 
-  height: 1px; 
-  width: 1px; 
-  margin: -1px; 
-  padding: 0; 
+  position: absolute;
+  z-index: -1000;
+  left: -1000px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  width: 1px;
+  margin: -1px;
+  padding: 0;
   border: 0;
 
   &-label {
@@ -49,7 +49,7 @@
       left: 0.5rem;
       border: solid $white;
       border-width: 0 2px 2px 0;
-      transform: rotate(40deg);      
+      transform: rotate(40deg);
     }
   }
 

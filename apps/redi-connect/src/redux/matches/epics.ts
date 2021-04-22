@@ -9,18 +9,18 @@ import {
   matchesAcceptMentorshipSuccess,
   matchesMarkAsComplete,
   matchesFetchStart,
-  matchesFetchSuccess
+  matchesFetchSuccess,
 } from './actions'
 import {
   MatchesAcceptMentorshipStartAction,
   MatchesMarkAsDismissedStartAction,
   MatchesActions,
   MatchesActionType,
-  MatchesMarkAsCompleteAction
+  MatchesMarkAsCompleteAction,
 } from './types'
 
 const fetchFilter = {
-  include: ['mentee', 'mentor']
+  include: ['mentee', 'mentor'],
 }
 
 export const matchesFetchEpic = (action$: ActionsObservable<MatchesActions>) =>
@@ -43,8 +43,8 @@ export const matchesMarkAsDismissed = (
         method: 'post',
         data: {
           redMatchId: (action as MatchesMarkAsDismissedStartAction).payload
-            .redMatchId
-        }
+            .redMatchId,
+        },
       })
     ),
     map((resp) => resp.data),
@@ -62,8 +62,8 @@ export const matchesAcceptMentorshipEpic = (action$: ActionsObservable<any>) =>
             redMatchId: (action as MatchesAcceptMentorshipStartAction).payload
               .redMatchId,
             mentorReplyMessageOnAccept: (action as MatchesAcceptMentorshipStartAction)
-              .payload.mentorReplyMessageOnAccept
-          }
+              .payload.mentorReplyMessageOnAccept,
+          },
         })
       ).pipe(
         map((resp) => resp.data),
@@ -103,8 +103,8 @@ export const matchesMarkAsCompleteEpic = (action$: ActionsObservable<any>) =>
             redMatchId: (action as MatchesMarkAsCompleteAction).payload
               .redMatchId,
             mentorMessageOnComplete: (action as MatchesMarkAsCompleteAction)
-              .payload.mentorMessageOnComplete
-          }
+              .payload.mentorMessageOnComplete,
+          },
         })
       ).pipe(
         map((resp) => resp.data),
@@ -137,5 +137,5 @@ export const matchesEpics = {
   matchesFetchEpic,
   matchesAcceptMentorshipEpic,
   matchesMarkAsCompleteEpic,
-  matchesMarkAsDismissed
+  matchesMarkAsDismissed,
 }

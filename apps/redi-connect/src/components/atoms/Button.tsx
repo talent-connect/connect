@@ -1,19 +1,19 @@
-import React from 'react';
-import classnames from 'classnames';
-import { NavLink } from 'react-router-dom';
-import Icon from './Icon';
-import './Button.scss';
+import React from 'react'
+import classnames from 'classnames'
+import { NavLink } from 'react-router-dom'
+import Icon from './Icon'
+import './Button.scss'
 
 interface Props {
-  children: any;
-  className?: string;
-  size?: 'large' | 'medium' | 'small';
-  fullWidth?: boolean;
-  disabled?: boolean;
-  separator?: boolean;
-  onClick?: () => void;
-  simple?: boolean;
-  to?: string;
+  children: any
+  className?: string
+  size?: 'large' | 'medium' | 'small'
+  fullWidth?: boolean
+  disabled?: boolean
+  separator?: boolean
+  onClick?: () => void
+  simple?: boolean
+  to?: string
 }
 
 const Button = ({
@@ -27,7 +27,7 @@ const Button = ({
   disabled,
   to,
 }: Props) => {
-  const baseClass = 'button';
+  const baseClass = 'button'
 
   if (!to) {
     return (
@@ -35,35 +35,43 @@ const Button = ({
         onClick={onClick}
         disabled={disabled}
         type="button"
-        className={classnames(baseClass, `${baseClass}--${simple ? 'simple' : 'default'}`, {
-          [`${baseClass}--${size}`]: size,
-          [`${baseClass}--fullWidth`]: fullWidth,
-          [`${baseClass}--separator`]: separator,
-          [`${className}`]: className,
-        })}
+        className={classnames(
+          baseClass,
+          `${baseClass}--${simple ? 'simple' : 'default'}`,
+          {
+            [`${baseClass}--${size}`]: size,
+            [`${baseClass}--fullWidth`]: fullWidth,
+            [`${baseClass}--separator`]: separator,
+            [`${className}`]: className,
+          }
+        )}
       >
         {children}
       </button>
-    );
+    )
   }
 
-  const isExternalLink = to.includes('http');
+  const isExternalLink = to.includes('http')
 
   if (isExternalLink) {
     return (
       <button
         onClick={() => (window.location.href = to)}
         type="button"
-        className={classnames(baseClass, `${baseClass}--${simple ? 'simple' : 'default'}`, {
-          [`${baseClass}--${size}`]: size,
-          [`${baseClass}--fullWidth`]: fullWidth,
-          [`${baseClass}--separator`]: separator,
-          [`${className}`]: className,
-        })}
+        className={classnames(
+          baseClass,
+          `${baseClass}--${simple ? 'simple' : 'default'}`,
+          {
+            [`${baseClass}--${size}`]: size,
+            [`${baseClass}--fullWidth`]: fullWidth,
+            [`${baseClass}--separator`]: separator,
+            [`${className}`]: className,
+          }
+        )}
       >
         {children}
       </button>
-    );
+    )
   }
 
   return (
@@ -76,9 +84,9 @@ const Button = ({
     >
       {children}
     </NavLink>
-  );
-};
+  )
+}
 
-Button.Icon = Icon;
+Button.Icon = Icon
 
-export default Button;
+export default Button

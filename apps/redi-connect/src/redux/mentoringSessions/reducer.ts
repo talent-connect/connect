@@ -1,12 +1,12 @@
 import {
   MentoringSessionsState,
   MentoringSessionsActions,
-  MentoringSessionsActionType
+  MentoringSessionsActionType,
 } from './types'
 
 const initialState: MentoringSessionsState = {
   matches: [],
-  asyncResult: 'notSubmitted'
+  asyncResult: 'notSubmitted',
 }
 
 export const mentoringSessionsReducer = (

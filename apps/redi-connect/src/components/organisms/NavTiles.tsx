@@ -26,8 +26,9 @@ const NavTile = ({ name }: { name: string }) => {
         marginless
         responsive={{ mobile: { textSize: { value: 4 } } }}
       >
-        {t('loggedOutArea.homePage.hero.navTiles.description')} <strong>{t(`loggedOutArea.homePage.hero.navTiles.${name}`)}</strong>?
-    </Heading>
+        {t('loggedOutArea.homePage.hero.navTiles.description')}{' '}
+        <strong>{t(`loggedOutArea.homePage.hero.navTiles.${name}`)}</strong>?
+      </Heading>
       <Button
         simple
         className={`tiles__type__button tiles__type__button--${name}`}
@@ -51,8 +52,8 @@ const NavTiles = () => {
           headline={t('loggedOutArea.homePage.hero.navTiles.headline')}
         />
         <div className="tiles">
-          <NavTile name='mentee' />
-          <NavTile name='mentor' />
+          <NavTile name="mentee" />
+          <NavTile name="mentor" />
         </div>
       </Container>
     </Section>

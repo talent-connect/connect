@@ -7,7 +7,7 @@ import RediProgram from '../../../components/organisms/RediProgram'
 import Carousel from '../../../components/organisms/Carousel'
 import PreFooter from '../../../components/organisms/PreFooter'
 
-export default function Home () {
+export default function Home() {
   const { t } = useTranslation()
   return (
     <Landing>

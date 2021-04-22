@@ -8,5 +8,5 @@ export const rootReducer = combineReducers({
   user: userReducer,
   matches: matchesReducer,
   mentoringSessions: mentoringSessionsReducer,
-  profiles: profilesReducer
+  profiles: profilesReducer,
 })

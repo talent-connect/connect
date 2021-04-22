@@ -6,14 +6,14 @@ import { http } from '../../services/http/http'
 import {
   mentoringSessionsCreateSuccess,
   mentoringSessionsFetchSuccess,
-  mentoringSessionsFetchStart
+  mentoringSessionsFetchStart,
 } from './actions'
 import { MentoringSessionsActions, MentoringSessionsActionType } from './types'
 import { profileFetchStart } from '../user/actions'
 import { profilesFetchOneStart } from '../profiles/actions'
 
 const fetchFilter = {
-  include: ['mentee', 'mentor']
+  include: ['mentee', 'mentor'],
 }
 
 export const mentoringSessionsFetchEpic = (
@@ -26,21 +26,21 @@ export const mentoringSessionsFetchEpic = (
         `${API_URL}/redMentoringSessions?filter=${JSON.stringify(fetchFilter)}`
       )
     ),
-    map(resp => resp.data),
+    map((resp) => resp.data),
     map(mentoringSessionsFetchSuccess)
   )
 
 export const mentoringSessionsCreateEpic = (action$: ActionsObservable<any>) =>
   action$.pipe(
     ofType(MentoringSessionsActionType.MENTORING_SESSIONS_CREATE_START),
-    switchMap(action => {
+    switchMap((action) => {
       const request = from(
         http(`${API_URL}/redMentoringSessions`, {
           method: 'post',
-          data: action.payload
+          data: action.payload,
         })
       ).pipe(
-        map(resp => resp.data),
+        map((resp) => resp.data),
         map(mentoringSessionsCreateSuccess)
       )
 
@@ -63,5 +63,5 @@ export const mentoringSessionsCreateEpic = (action$: ActionsObservable<any>) =>
 
 export const mentoringSessionsEpics = {
   mentoringSessionsFetchEpic,
-  mentoringSessionsCreateEpic
+  mentoringSessionsCreateEpic,
 }

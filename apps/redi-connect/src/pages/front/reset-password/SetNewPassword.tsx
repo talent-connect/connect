@@ -10,16 +10,9 @@ import { Link } from 'react-router-dom'
 
 import * as Yup from 'yup'
 
-import {
-  FormikHelpers as FormikActions,
-  FormikValues,
-  useFormik
-} from 'formik'
+import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
 import { history } from '../../../services/history/history'
-import {
-  setPassword,
-  fetchSaveRedProfile
-} from '../../../services/api/api'
+import { setPassword, fetchSaveRedProfile } from '../../../services/api/api'
 import { saveAccessToken } from '../../../services/auth/auth'
 import { RouteComponentProps } from 'react-router'
 import { showNotification } from '../../../components/AppNotification'
@@ -31,7 +24,7 @@ interface SetNewPasswordValues {
 
 const initialValues: SetNewPasswordValues = {
   password: '',
-  passwordConfirm: ''
+  passwordConfirm: '',
 }
 
 const validationSchema = Yup.object({
@@ -41,7 +34,7 @@ const validationSchema = Yup.object({
     .label('Password'),
   passwordConfirm: Yup.string()
     .required('Confirm your password')
-    .oneOf([Yup.ref('password')], 'Password does not match')
+    .oneOf([Yup.ref('password')], 'Password does not match'),
 })
 
 interface RouteParams {
@@ -86,9 +79,9 @@ export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
   ) => {
     try {
       await setPassword(values.password)
-      showNotification('Your new password is set and you\'re logged in :)', {
+      showNotification("Your new password is set and you're logged in :)", {
         variant: 'success',
-        autoHideDuration: 8000
+        autoHideDuration: 8000,
       })
       history.push('/app/me')
     } catch (err) {
@@ -100,7 +93,7 @@ export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema,
-    onSubmit: submitForm
+    onSubmit: submitForm,
   })
 
   return (
@@ -115,13 +108,12 @@ export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
         <Columns.Column size={5} offset={1}>
           <Heading border="bottomLeft">Enter your new password</Heading>
           <Content size="large" renderAs="p">
-            Please make sure that your new password has more than <strong>8 characters</strong>.
+            Please make sure that your new password has more than{' '}
+            <strong>8 characters</strong>.
           </Content>
 
-          {formError && (
-            { formError }
-          )}
-          <form onSubmit={e => e.preventDefault()}>
+          {formError && { formError }}
+          <form onSubmit={(e) => e.preventDefault()}>
             <FormInput
               name="password"
               type="password"
@@ -140,7 +132,7 @@ export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
               <div>
                 <p>{errorMsg}</p>
                 <p>
-            You can also go here{' '}
+                  You can also go here{' '}
                   <a href="/front/login">to log in if you have a user.</a>
                 </p>
               </div>
@@ -160,9 +152,7 @@ export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
               className="submit-link submit-link--post"
               textTransform="uppercase"
             >
-              <Link to="/front/login">
-                Back to log in
-              </Link>
+              <Link to="/front/login">Back to log in</Link>
             </Form.Field>
           </form>
         </Columns.Column>

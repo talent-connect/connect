@@ -1,5 +1,5 @@
-@import "~bulma/sass/utilities/_all";
-@import "../../../styles/_variables.scss";
+@import '~bulma/sass/utilities/_all';
+@import '../../../styles/_variables.scss';
 
 .filters {
   margin-bottom: 1.5rem;
@@ -26,8 +26,8 @@
   margin-bottom: 3rem;
 
   &__remove {
-      margin-left: 0.2em !important;
-      padding: 0.25em;
+    margin-left: 0.2em !important;
+    padding: 0.25em;
   }
 
   &__clear-all {
@@ -39,7 +39,7 @@
     .icon {
       padding: 0.1rem;
       path {
-        fill: black
+        fill: black;
       }
     }
   }
@@ -68,6 +68,6 @@
 
   &--active {
     background-color: $input-hover-border-color;
-    color: white
+    color: white;
   }
 }

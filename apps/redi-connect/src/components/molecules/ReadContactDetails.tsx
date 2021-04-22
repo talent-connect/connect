@@ -11,28 +11,31 @@ interface Props {
 }
 
 const ReadContactDetails = ({ profile, shortInfo }: Props) => {
-  const {
-    firstName,
-    lastName,
-    contactEmail,
-    telephoneNumber
-  } = profile
+  const { firstName, lastName, contactEmail, telephoneNumber } = profile
 
-  return <>
-    {shortInfo && <Caption>Contact Details</Caption>}
-    <Content>
-      {contactEmail && <p>{contactEmail}</p>}
-      {!shortInfo && (firstName || lastName) && <p>{firstName} {lastName}</p>}
-      {telephoneNumber && <p>{telephoneNumber}</p>}
-    </Content>
-  </>
+  return (
+    <>
+      {shortInfo && <Caption>Contact Details</Caption>}
+      <Content>
+        {contactEmail && <p>{contactEmail}</p>}
+        {!shortInfo && (firstName || lastName) && (
+          <p>
+            {firstName} {lastName}
+          </p>
+        )}
+        {telephoneNumber && <p>{telephoneNumber}</p>}
+      </Content>
+    </>
+  )
 }
 
 const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile as RedProfile
+  profile: state.user.profile as RedProfile,
 })
 
 export default {
   Me: connect(mapStateToProps, {})(ReadContactDetails),
-  Some: ({ profile }: Props) => <ReadContactDetails profile={profile} shortInfo/>
+  Some: ({ profile }: Props) => (
+    <ReadContactDetails profile={profile} shortInfo />
+  ),
 }

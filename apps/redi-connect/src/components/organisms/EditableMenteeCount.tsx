@@ -4,15 +4,14 @@ import { Editable, ReadMenteeCount } from '../molecules'
 import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
-import {
-  profileSaveStart
-} from '../../redux/user/actions'
+import { profileSaveStart } from '../../redux/user/actions'
 import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
 
 import {
-  menteeCountCapacityOptions, rediLocationNames
+  menteeCountCapacityOptions,
+  rediLocationNames,
 } from '../../config/config'
 import { RediLocation } from '../../types/RediLocation'
 
@@ -27,7 +26,12 @@ const menteeCountExplanation = (amount: number) => {
   }
 }
 
-const formMenteeCountCapacityOptions = menteeCountCapacityOptions.map(option => ({ value: option, label: `${option} ${menteeCountExplanation(option)}` }))
+const formMenteeCountCapacityOptions = menteeCountCapacityOptions.map(
+  (option) => ({
+    value: option,
+    label: `${option} ${menteeCountExplanation(option)}`,
+  })
+)
 
 export interface AboutFormValues {
   menteeCountCapacity: number
@@ -40,8 +44,8 @@ const validationSchema = Yup.object({
     then: Yup.number()
       .required('Please specify the number of mentees you can take on')
       .min(0)
-      .max(2)
-  })
+      .max(2),
+  }),
 })
 // props: FormikProps<AboutFormValues>
 const EditableMenteeCount = ({ profile, profileSaveStart }: any) => {
@@ -52,9 +56,7 @@ const EditableMenteeCount = ({ profile, profileSaveStart }: any) => {
     rediLocation,
   } = profile
 
-  const submitForm = async (
-    values: FormikValues
-  ) => {
+  const submitForm = async (values: FormikValues) => {
     console.log(values)
     const profileMenteeCount = values as Partial<RedProfile>
     profileSaveStart({ ...profileMenteeCount, id })
@@ -69,7 +71,7 @@ const EditableMenteeCount = ({ profile, profileSaveStart }: any) => {
     initialValues,
     enableReinitialize: true,
     validationSchema,
-    onSubmit: submitForm
+    onSubmit: submitForm,
   })
 
   return (
@@ -77,7 +79,7 @@ const EditableMenteeCount = ({ profile, profileSaveStart }: any) => {
       title="Mentee Count and Location"
       onSave={() => formik.handleSubmit()}
       onClose={() => formik.resetForm()}
-      savePossible={(formik.dirty && formik.isValid)}
+      savePossible={formik.dirty && formik.isValid}
       read={<ReadMenteeCount.Me />}
     >
       <FormSelect
@@ -91,17 +93,21 @@ const EditableMenteeCount = ({ profile, profileSaveStart }: any) => {
         name="optOutOfMenteesFromOtherRediLocation"
         checked={formik.values.optOutOfMenteesFromOtherRediLocation}
         {...formik}
-      >Only let mentees from my own city/location apply for mentorship (i.e. people in {rediLocationNames[rediLocation as RediLocation]})</Checkbox.Form>
+      >
+        Only let mentees from my own city/location apply for mentorship (i.e.
+        people in {rediLocationNames[rediLocation as RediLocation]})
+      </Checkbox.Form>
     </Editable>
   )
 }
 
 const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile
+  profile: state.user.profile,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
-  profileSaveStart: (profile: Partial<RedProfile>) => dispatch(profileSaveStart(profile))
+  profileSaveStart: (profile: Partial<RedProfile>) =>
+    dispatch(profileSaveStart(profile)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditableMenteeCount)

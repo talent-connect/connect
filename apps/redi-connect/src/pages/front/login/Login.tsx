@@ -1,83 +1,79 @@
-import React, { useState, useCallback } from 'react';
-import AccountOperation from '../../../components/templates/AccountOperation';
-import Teaser from '../../../components/molecules/Teaser';
-import FormInput from '../../../components/atoms/FormInput';
-import Heading from '../../../components/atoms/Heading';
-import * as Yup from 'yup';
-import { Link } from 'react-router-dom';
-import {
-  FormikHelpers as FormikActions,
-  FormikValues,
-  useFormik,
-} from 'formik';
-import { history } from '../../../services/history/history';
-import { login, fetchSaveRedProfile } from '../../../services/api/api';
+import React, { useState, useCallback } from 'react'
+import AccountOperation from '../../../components/templates/AccountOperation'
+import Teaser from '../../../components/molecules/Teaser'
+import FormInput from '../../../components/atoms/FormInput'
+import Heading from '../../../components/atoms/Heading'
+import * as Yup from 'yup'
+import { Link } from 'react-router-dom'
+import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
+import { history } from '../../../services/history/history'
+import { login, fetchSaveRedProfile } from '../../../services/api/api'
 import {
   saveAccessToken,
   getRedProfile,
   purgeAllSessionData,
-} from '../../../services/auth/auth';
-import { Columns, Form, Content, Notification } from 'react-bulma-components';
-import { capitalize } from 'lodash';
-import Button from '../../../components/atoms/Button';
-import { RediLocation } from '../../../types/RediLocation';
-import { buildFrontendUrl } from '../../../utils/build-frontend-url';
-import { rediLocationNames } from '../../../config/config';
+} from '../../../services/auth/auth'
+import { Columns, Form, Content, Notification } from 'react-bulma-components'
+import { capitalize } from 'lodash'
+import Button from '../../../components/atoms/Button'
+import { RediLocation } from '../../../types/RediLocation'
+import { buildFrontendUrl } from '../../../utils/build-frontend-url'
+import { rediLocationNames } from '../../../config/config'
 
 interface LoginFormValues {
-  username: string;
-  password: string;
+  username: string
+  password: string
 }
 
 const initialValues: LoginFormValues = {
   username: '',
   password: '',
-};
+}
 
 const validationSchema = Yup.object({
   username: Yup.string().email().required().label('Email').max(255),
   password: Yup.string().required().label('Password').max(255),
-});
+})
 
 export default function Login() {
-  const [loginError, setLoginError] = useState<string>('');
+  const [loginError, setLoginError] = useState<string>('')
   const [
     isWrongRediLocationError,
     setIsWrongRediLocationError,
-  ] = useState<boolean>(false);
+  ] = useState<boolean>(false)
 
   const submitForm = useCallback((values, actions) => {
-    (async (values: FormikValues, actions: FormikActions<LoginFormValues>) => {
-      const formValues = values as LoginFormValues;
+    ;(async (values: FormikValues, actions: FormikActions<LoginFormValues>) => {
+      const formValues = values as LoginFormValues
       try {
         const accessToken = await login(
           formValues.username,
           formValues.password
-        );
-        saveAccessToken(accessToken);
-        const redProfile = await fetchSaveRedProfile(accessToken);
+        )
+        saveAccessToken(accessToken)
+        const redProfile = await fetchSaveRedProfile(accessToken)
         if (
           redProfile.rediLocation !==
           (process.env.NX_REDI_CONNECT_REDI_LOCATION as RediLocation)
         ) {
-          setIsWrongRediLocationError(true);
-          purgeAllSessionData();
-          return;
+          setIsWrongRediLocationError(true)
+          purgeAllSessionData()
+          return
         }
-        actions.setSubmitting(false);
-        history.push('/app/me');
+        actions.setSubmitting(false)
+        history.push('/app/me')
       } catch (err) {
-        actions.setSubmitting(false);
-        setLoginError('You entered an incorrect email, password, or both.');
+        actions.setSubmitting(false)
+        setLoginError('You entered an incorrect email, password, or both.')
       }
-    })(values, actions);
-  }, []);
+    })(values, actions)
+  }, [])
 
   const formik = useFormik({
     initialValues,
     validationSchema,
     onSubmit: submitForm,
-  });
+  })
 
   return (
     <AccountOperation>
@@ -167,5 +163,5 @@ export default function Login() {
         </Columns.Column>
       </Columns>
     </AccountOperation>
-  );
+  )
 }

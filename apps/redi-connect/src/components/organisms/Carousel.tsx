@@ -1,5 +1,12 @@
 import React from 'react'
-import { Section, Container, Element, Columns, Content, Image } from 'react-bulma-components'
+import {
+  Section,
+  Container,
+  Element,
+  Columns,
+  Content,
+  Image,
+} from 'react-bulma-components'
 import DecoratedHeadline from '../atoms/DecoratedHeadline'
 import { useTranslation } from 'react-i18next'
 import classnames from 'classnames'
@@ -22,18 +29,18 @@ const Carousel = ({ headline, title, border }: Props) => {
     {
       title: t('loggedOutArea.homePage.carousel.quotes.quoteKhaled.title'),
       text: t('loggedOutArea.homePage.carousel.quotes.quoteKhaled.text'),
-      img: khaled
+      img: khaled,
     },
     {
       title: t('loggedOutArea.homePage.carousel.quotes.quoteDragos.title'),
       text: t('loggedOutArea.homePage.carousel.quotes.quoteDragos.text'),
-      img: dragos
+      img: dragos,
     },
     {
       title: t('loggedOutArea.homePage.carousel.quotes.quoteHalil.title'),
       text: t('loggedOutArea.homePage.carousel.quotes.quoteHalil.text'),
-      img: halil
-    }
+      img: halil,
+    },
   ]
 
   const settings = {
@@ -45,22 +52,26 @@ const Carousel = ({ headline, title, border }: Props) => {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    pauseOnHover: true
+    pauseOnHover: true,
   }
 
   return (
     <Section className="default-background">
       <Container>
-        <DecoratedHeadline title={title} headline={headline}/>
+        <DecoratedHeadline title={title} headline={headline} />
         <Slider {...settings}>
           {quotes.map((quote: any) => {
             return (
               <div className="carousel" key={quote.img}>
                 <Columns vCentered>
                   <Columns.Column size={6}>
-                    <Image src={quote.img} alt={quote.title} className={classnames('carousel__image', {
-                      [`carousel__image--border-${border}`]: border
-                    })} />
+                    <Image
+                      src={quote.img}
+                      alt={quote.title}
+                      className={classnames('carousel__image', {
+                        [`carousel__image--border-${border}`]: border,
+                      })}
+                    />
                   </Columns.Column>
                   <Columns.Column size={6}>
                     <Element

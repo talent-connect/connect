@@ -9,7 +9,7 @@ export interface ProfilesState {
 export enum ProfilesActionType {
   PROFILES_FETCH_ONE_START = 'PROFILES_FETCH_ONE_START',
   PROFILES_FETCH_ONE_SUCCESS = 'PROFILES_FETCH_ONE_SUCCESS',
-  PROFILES_FETCH_ONE_ERROR = 'PROFILES_FETCH_ONE_ERROR'
+  PROFILES_FETCH_ONE_ERROR = 'PROFILES_FETCH_ONE_ERROR',
 }
 export interface ProfilesFetchOneStartAction extends Action {
   type: ProfilesActionType.PROFILES_FETCH_ONE_START
@@ -27,4 +27,4 @@ export interface ProfilesFetchOneErrorAction extends Action {
 export type ProfilesActions =
   | ProfilesFetchOneStartAction
   | ProfilesFetchOneSuccessAction
-  | ProfilesFetchOneErrorAction;
+  | ProfilesFetchOneErrorAction

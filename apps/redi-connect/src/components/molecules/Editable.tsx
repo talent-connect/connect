@@ -14,7 +14,7 @@ interface Props {
   savePossible?: boolean
 }
 
-function Editable (props: Props) {
+function Editable(props: Props) {
   const {
     title,
     children,
@@ -22,7 +22,7 @@ function Editable (props: Props) {
     onSave,
     onClose,
     savePossible,
-    className
+    className,
   } = props
 
   const [isEditing, setIsEditing] = useState(false)
@@ -42,29 +42,34 @@ function Editable (props: Props) {
       <div className="editable__header">
         <Caption>{title}</Caption>
         <div className="editable__header__buttons">
-          { isEditing ? (<>
-            <div
-              onClick={savePossible ? handleSave : undefined}
-              className={classnames('icon__button',
-                { 'icon__button--disabled': !savePossible }
-              )}
-            >
-              <Icon icon="check" />
-            </div>
+          {isEditing ? (
+            <>
+              <div
+                onClick={savePossible ? handleSave : undefined}
+                className={classnames('icon__button', {
+                  'icon__button--disabled': !savePossible,
+                })}
+              >
+                <Icon icon="check" />
+              </div>
 
-            <div className='icon__button' onClick={handleClose}>
-              <Icon icon="cancel" />
-            </div>
-          </>) : (
-            <div className='icon__button' onClick={() => { setIsEditing(true) }}>
+              <div className="icon__button" onClick={handleClose}>
+                <Icon icon="cancel" />
+              </div>
+            </>
+          ) : (
+            <div
+              className="icon__button"
+              onClick={() => {
+                setIsEditing(true)
+              }}
+            >
               <Icon icon="edit" />
             </div>
           )}
         </div>
       </div>
-      <div className="editable__body">
-        { isEditing ? children : read }
-      </div>
+      <div className="editable__body">{isEditing ? children : read}</div>
     </div>
   )
 }

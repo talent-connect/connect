@@ -1,8 +1,8 @@
-import React from 'react';
-import { Element } from 'react-bulma-components';
-import { NavLink } from 'react-router-dom';
-import { ReactComponent as RediLogo } from '../../assets/images/logo.svg';
-import { ReactComponent as RediLogoMobile } from '../../assets/images/logo-mobile.svg';
+import React from 'react'
+import { Element } from 'react-bulma-components'
+import { NavLink } from 'react-router-dom'
+import { ReactComponent as RediLogo } from '../../assets/images/logo.svg'
+import { ReactComponent as RediLogoMobile } from '../../assets/images/logo-mobile.svg'
 
 const Logo = () => {
   return (
@@ -14,7 +14,7 @@ const Logo = () => {
         <RediLogoMobile />
       </Element>
     </NavLink>
-  );
-};
+  )
+}
 
-export default Logo;
+export default Logo

@@ -1,5 +1,5 @@
-@import "~bulma/sass/utilities/_all";
-@import "../../styles/_variables.scss";
+@import '~bulma/sass/utilities/_all';
+@import '../../styles/_variables.scss';
 
 .application-card {
   padding: $block-spacing;
@@ -11,7 +11,7 @@
   &:hover {
     box-shadow: $card-shadow-hover;
   }
-  
+
   &:not(:last-child) {
     margin-bottom: $block-spacing;
   }
@@ -36,7 +36,7 @@
 
   &__link {
     font-weight: $weight-bold;
-    color: $primary;    
+    color: $primary;
 
     &:hover {
       text-decoration: underline;
@@ -67,10 +67,9 @@
         transform: rotate(180deg);
       }
     }
-    
+
     @include tablet() {
       // float: right;
     }
   }
 }
-

@@ -8,6 +8,6 @@ export const useLoading = function () {
     Loading: () => <Loader loading={loading} />,
     isLoading: loading,
     setLoading,
-    loading
+    loading,
   }
 }

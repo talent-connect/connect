@@ -18,23 +18,23 @@ const profileFetchEpic = (action$: ActionsObservable<UserActions>) =>
         return of(err)
       }
     }),
-    map(profile => ({
+    map((profile) => ({
       type: UserActionType.USER_PROFILE_FETCH_SUCCESS,
-      payload: profile
+      payload: profile,
     }))
   )
 
 const profileSaveEpic = (action$: ActionsObservable<ProfileSaveStartAction>) =>
   action$.pipe(
     ofType(UserActionType.USER_PROFILE_SAVE_START),
-    switchMap(action => saveRedProfile(action.payload)),
-    map(profile => ({
+    switchMap((action) => saveRedProfile(action.payload)),
+    map((profile) => ({
       type: UserActionType.USER_PROFILE_SAVE_SUCCESS,
-      payload: profile
+      payload: profile,
     }))
   )
 
 export const userEpics = {
   profileFetchEpic,
-  profileSaveEpic
+  profileSaveEpic,
 }

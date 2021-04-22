@@ -8,7 +8,6 @@ import { SVGImages } from '../../../components/atoms/SVGImage'
 import classnames from 'classnames'
 import './SignUpLanding.scss'
 
-
 const SignUpLanding = () => {
   const [selectedType, setSelectedType] = useState('')
   const history = useHistory()
@@ -16,14 +15,20 @@ const SignUpLanding = () => {
   const renderType = (name: string) => {
     const type = name.toLowerCase() as SVGImages
 
-    return <div
-      className={classnames('signup__type', { [`border-${type}`]: type === selectedType, 'no-shadow': type !== selectedType && selectedType !== '' })}
-      onClick={() => setSelectedType(type)}>
-      <SVGImage image={type} />
-      <Element className="signup__type__name" renderAs="p">
-        {name}
-      </Element>
-    </div>
+    return (
+      <div
+        className={classnames('signup__type', {
+          [`border-${type}`]: type === selectedType,
+          'no-shadow': type !== selectedType && selectedType !== '',
+        })}
+        onClick={() => setSelectedType(type)}
+      >
+        <SVGImage image={type} />
+        <Element className="signup__type__name" renderAs="p">
+          {name}
+        </Element>
+      </div>
+    )
   }
 
   return (
@@ -39,7 +44,8 @@ const SignUpLanding = () => {
         <Columns.Column size={5} offset={1}>
           <Heading border="bottomLeft">Sign-up</Heading>
           <Content size="large" renderAs="p" className="oneandhalf-bs">
-            Do you want to become a <strong>mentor</strong> or a <strong>mentee</strong>?
+            Do you want to become a <strong>mentor</strong> or a{' '}
+            <strong>mentee</strong>?
           </Content>
           <div className="signup">
             {renderType('Mentee')}

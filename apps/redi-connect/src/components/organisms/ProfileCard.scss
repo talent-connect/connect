@@ -1,4 +1,4 @@
-@import "../../styles/_variables.scss";
+@import '../../styles/_variables.scss';
 
 .profile-card {
   border-radius: 4px;
@@ -7,14 +7,14 @@
 
   &--active {
     cursor: pointer;
-    
+
     &:hover {
       box-shadow: $card-shadow-hover;
     }
   }
 
   &__name {
-    overflow: hidden; 
+    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
@@ -55,9 +55,9 @@
 
   .tags {
     margin-top: 1rem;
-    
+
     .tag {
-      overflow: hidden; 
+      overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
 

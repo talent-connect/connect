@@ -10,11 +10,15 @@ const RediFooter = () => {
   const year = new Date().getFullYear()
   const { t } = useTranslation()
 
-  const supportLinks: Array<{ url: string, name: string }> =
-    t('footer.supportLinks', { returnObjects: true })
+  const supportLinks: Array<{
+    url: string
+    name: string
+  }> = t('footer.supportLinks', { returnObjects: true })
 
-  const legalLinks: Array<{ url: string, name: string }> =
-    t('footer.legalLinks', { returnObjects: true })
+  const legalLinks: Array<{
+    url: string
+    name: string
+  }> = t('footer.legalLinks', { returnObjects: true })
 
   return (
     <footer className="footer">
@@ -22,14 +26,28 @@ const RediFooter = () => {
         <Container>
           <Columns breakpoint="mobile">
             <Columns.Column mobile={{ size: 12 }}>
-              <Element renderAs="a" href="https://www.redi-school.org" target="_blank" className="footer__logo oneandhalf-bs">
+              <Element
+                renderAs="a"
+                href="https://www.redi-school.org"
+                target="_blank"
+                className="footer__logo oneandhalf-bs"
+              >
                 <RediSchool />
               </Element>
-              <Element renderAs="a" href="https://www2.deloitte.com/" target="_blank" className="footer__logo">
+              <Element
+                renderAs="a"
+                href="https://www2.deloitte.com/"
+                target="_blank"
+                className="footer__logo"
+              >
                 <Deloitte />
               </Element>
             </Columns.Column>
-            <Columns.Column mobile={{ offset: null, size: 6 }} desktop={{ offset: 1 }} className="double-bs">
+            <Columns.Column
+              mobile={{ offset: null, size: 6 }}
+              desktop={{ offset: 1 }}
+              className="double-bs"
+            >
               <Element
                 renderAs="h3"
                 textSize={6}
@@ -40,7 +58,7 @@ const RediFooter = () => {
                 {t('footer.support')}
               </Element>
               <Element renderAs="ul">
-                {supportLinks.map(link => (
+                {supportLinks.map((link) => (
                   <Element renderAs="li" key={link.url}>
                     <Element
                       renderAs="a"
@@ -65,7 +83,7 @@ const RediFooter = () => {
                 {t('footer.legal')}
               </Element>
               <Element renderAs="ul">
-                {legalLinks.map(link => (
+                {legalLinks.map((link) => (
                   <Element renderAs="li" key={link.url}>
                     <Element
                       renderAs="a"
@@ -79,7 +97,7 @@ const RediFooter = () => {
                 ))}
               </Element>
             </Columns.Column>
-            <Columns.Column tablet={{ size: 2 }} >
+            <Columns.Column tablet={{ size: 2 }}>
               <Element
                 renderAs="h3"
                 textSize={6}

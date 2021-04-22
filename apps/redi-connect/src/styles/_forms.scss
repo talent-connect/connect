@@ -1,7 +1,7 @@
-@import "./_variables";
+@import './_variables';
 .submit {
   &-link {
-   font-size: $size-7;
+    font-size: $size-7;
 
     &--pre {
       text-align: right;
@@ -20,7 +20,7 @@
   margin: 0px;
   overflow: hidden;
   transition: $transition;
-  
+
   &--show {
     margin-top: 0.25rem;
     height: 21px;
@@ -53,6 +53,3 @@
 .submit-spacer {
   margin-top: 3em;
 }
-
-
-  

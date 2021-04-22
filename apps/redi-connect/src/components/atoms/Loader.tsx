@@ -10,7 +10,7 @@ interface LoaderProps {
 const Loader = ({ loading }: LoaderProps) => {
   return (
     <div className={classnames('loader', { 'loader--active': loading })}>
-      <Icon icon="loader" className="loader__icon" size="x-large"/>
+      <Icon icon="loader" className="loader__icon" size="x-large" />
     </div>
   )
 }

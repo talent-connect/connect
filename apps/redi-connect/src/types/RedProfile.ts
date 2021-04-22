@@ -57,4 +57,4 @@ export type RedProfile = {
   redMentoringSessionsWithCurrentUser: Array<RedMentoringSession>
   ifUserIsMentee_hasActiveMentor: boolean
   ifUserIsMentee_activeMentor: RedProfile
-};
+}

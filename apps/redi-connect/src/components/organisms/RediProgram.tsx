@@ -1,5 +1,11 @@
 import React from 'react'
-import { Container, Section, Columns, Element, Heading } from 'react-bulma-components'
+import {
+  Container,
+  Section,
+  Columns,
+  Element,
+  Heading,
+} from 'react-bulma-components'
 import { useTranslation } from 'react-i18next'
 import DecoratedHeadline from '../atoms/DecoratedHeadline'
 import Icon from '../atoms/Icon'
@@ -9,8 +15,11 @@ import './RediProgram.scss'
 const RediProgram = () => {
   const { t } = useTranslation()
 
-  const programSteps: Array < { content: string, headline: string, image: any }> =
-    t('loggedOutArea.homePage.program.steps', { returnObjects: true })
+  const programSteps: Array<{
+    content: string
+    headline: string
+    image: any
+  }> = t('loggedOutArea.homePage.program.steps', { returnObjects: true })
 
   return (
     <Section className="default-background">
@@ -20,7 +29,7 @@ const RediProgram = () => {
           headline={t('loggedOutArea.homePage.program.headline')}
         />
         <Columns>
-          {programSteps.map((step: any) =>
+          {programSteps.map((step: any) => (
             <Columns.Column textAlignment="centered" key={step.content}>
               <Icon icon={step.image} size="x-large" className="program__img" />
               <Heading
@@ -39,7 +48,7 @@ const RediProgram = () => {
                 {step.content}
               </Element>
             </Columns.Column>
-          )}
+          ))}
         </Columns>
       </Container>
     </Section>

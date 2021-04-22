@@ -1,40 +1,45 @@
-import React, { useState } from 'react';
-import classnames from 'classnames';
-import { Columns, Heading, Content } from 'react-bulma-components';
-import moment from 'moment';
-import { getRedProfile } from '../../services/auth/auth';
-import { RedMatch } from '../../types/RedMatch';
-import { Icon } from '../atoms';
-import { Avatar } from '../organisms';
-import { useHistory } from 'react-router-dom';
+import React, { useState } from 'react'
+import classnames from 'classnames'
+import { Columns, Heading, Content } from 'react-bulma-components'
+import moment from 'moment'
+import { getRedProfile } from '../../services/auth/auth'
+import { RedMatch } from '../../types/RedMatch'
+import { Icon } from '../atoms'
+import { Avatar } from '../organisms'
+import { useHistory } from 'react-router-dom'
 
-import './ApplicationCard.scss';
-import { rediLocationNames } from '../../config/config';
+import './ApplicationCard.scss'
+import { rediLocationNames } from '../../config/config'
 
 interface Props {
-  application: RedMatch & { createdAt?: string };
+  application: RedMatch & { createdAt?: string }
 }
 
 const STATUS_LABELS: any = {
   applied: 'Pending',
-};
+}
 
 const ApplicationCard = ({ application }: Props) => {
-  const history = useHistory();
-  const profile = getRedProfile();
-  const [showDetails, setShowDetails] = useState(false);
-  const applicationDate = new Date(application.createdAt || '');
-  const applicationUser = profile.userType === 'mentee' ? application.mentor : application.mentee;
+  const history = useHistory()
+  const profile = getRedProfile()
+  const [showDetails, setShowDetails] = useState(false)
+  const applicationDate = new Date(application.createdAt || '')
+  const applicationUser =
+    profile.userType === 'mentee' ? application.mentor : application.mentee
 
   return (
     <>
-      <div className="application-card" onClick={() => setShowDetails(!showDetails)}>
+      <div
+        className="application-card"
+        onClick={() => setShowDetails(!showDetails)}
+      >
         <Columns vCentered>
           <Columns.Column size={4} className="application-card__avatar">
             <Avatar profile={applicationUser} />
             {applicationUser && (
               <span>
-                {applicationUser.firstName} {applicationUser.lastName} (in {rediLocationNames[applicationUser.rediLocation]})
+                {applicationUser.firstName} {applicationUser.lastName} (in{' '}
+                {rediLocationNames[applicationUser.rediLocation]})
               </span>
             )}
           </Columns.Column>
@@ -46,7 +51,11 @@ const ApplicationCard = ({ application }: Props) => {
             <span
               className="application-card__link"
               onClick={() =>
-                history.push(`/app/applications/profile/${applicationUser && applicationUser.id}`)
+                history.push(
+                  `/app/applications/profile/${
+                    applicationUser && applicationUser.id
+                  }`
+                )
               }
             >
               Visit Profile
@@ -65,7 +74,11 @@ const ApplicationCard = ({ application }: Props) => {
             {STATUS_LABELS[application.status]}
           </Columns.Column>
 
-          <Columns.Column size={1} className="application-card-dropdown" textAlignment="centered">
+          <Columns.Column
+            size={1}
+            className="application-card-dropdown"
+            textAlignment="centered"
+          >
             <Icon
               icon="chevron"
               size="small"
@@ -80,14 +93,28 @@ const ApplicationCard = ({ application }: Props) => {
           'application-card-details--show': showDetails,
         })}
       >
-        <Heading size={6} weight="normal" renderAs="h3" subtitle textTransform="uppercase">
+        <Heading
+          size={6}
+          weight="normal"
+          renderAs="h3"
+          subtitle
+          textTransform="uppercase"
+        >
           Motivation
         </Heading>
-        <Content className="oneandhalf-bs">{application.applicationText}</Content>
+        <Content className="oneandhalf-bs">
+          {application.applicationText}
+        </Content>
 
         {application.expectationText && (
           <>
-            <Heading size={6} weight="normal" renderAs="h3" subtitle textTransform="uppercase">
+            <Heading
+              size={6}
+              weight="normal"
+              renderAs="h3"
+              subtitle
+              textTransform="uppercase"
+            >
               Expectation
             </Heading>
             <Content>{application.expectationText}</Content>
@@ -95,7 +122,7 @@ const ApplicationCard = ({ application }: Props) => {
         )}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default ApplicationCard;
+export default ApplicationCard

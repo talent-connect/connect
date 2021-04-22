@@ -1,15 +1,15 @@
 .pipe-list {
-  overflow: hidden; 
+  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  
+
   li {
     display: inline-block;
   }
-  li+li {
+  li + li {
     &::before {
-    content: '|';
-    margin: 0 0.3rem;
+      content: '|';
+      margin: 0 0.3rem;
     }
   }
 }

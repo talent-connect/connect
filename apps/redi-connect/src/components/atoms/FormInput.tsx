@@ -9,7 +9,7 @@ interface Props {
   type?: 'email' | 'text' | 'password'
 }
 
-function FormInput (props: any) {
+function FormInput(props: any) {
   const {
     name,
     placeholder,
@@ -22,7 +22,7 @@ function FormInput (props: any) {
     handleBlur,
     touched,
     errors,
-    disabled
+    disabled,
   } = props
 
   const hasError = !!touched[name] && !!errors[name]
@@ -30,9 +30,7 @@ function FormInput (props: any) {
 
   return (
     <Form.Field>
-      {label && <Form.Label size="small">
-        {label}
-      </Form.Label>}
+      {label && <Form.Label size="small">{label}</Form.Label>}
       <Form.Control className={classnames({ 'field-clean': isValidField })}>
         <Form.Input
           id={name}
@@ -47,7 +45,10 @@ function FormInput (props: any) {
         />
       </Form.Control>
 
-      <Form.Help color="danger" className={classnames({ 'help--show': hasError })}>
+      <Form.Help
+        color="danger"
+        className={classnames({ 'help--show': hasError })}
+      >
         {hasError && <>{errors[name]}</>}
       </Form.Help>
     </Form.Field>

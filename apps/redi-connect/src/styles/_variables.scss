@@ -4,19 +4,19 @@ $white: #fff;
 $grey-dark: #5d5d5d;
 $grey: #a0a0a0;
 $grey-light: #dadada;
-$grey-extra-light: #F0F0F0;
+$grey-extra-light: #f0f0f0;
 
 $red: #ea3f25;
-$green: #1CC666;
+$green: #1cc666;
 // redi colors
-$redi-blue-dark: #2CB0C7;
-$redi-blue: #84C5D2;
-$redi-blue-light: #DAF0F4;
+$redi-blue-dark: #2cb0c7;
+$redi-blue: #84c5d2;
+$redi-blue-light: #daf0f4;
 
-$redi-orange-dark: #FD4D00;
-$redi-orange: #FF7D55;
-$redi-orange-light: #FFB298;
-$redi-orange-extra-light: #FFEAE2;
+$redi-orange-dark: #fd4d00;
+$redi-orange: #ff7d55;
+$redi-orange-light: #ffb298;
+$redi-orange-extra-light: #ffeae2;
 
 $primary: $redi-orange-dark;
 $warning: $redi-orange-dark;
@@ -25,14 +25,14 @@ $info: $redi-orange-extra-light;
 $body-color: $black;
 $body-background-color: $white;
 
-$shadow: #6F7980;
+$shadow: #6f7980;
 
 // fonts
 $family-primary: Avenir LT Std;
 $family-secondary: Jubilat;
 
 // shadows
-$default-shadow: 0 .375rem 1.5rem .1875rem rgba($shadow, 0.16);
+$default-shadow: 0 0.375rem 1.5rem 0.1875rem rgba($shadow, 0.16);
 
 // bulma size
 $size-1: 4rem; // 64px
@@ -98,9 +98,8 @@ $transition: ease-in-out all 0.2s;
 // card
 $card-content-padding: 1rem;
 $card-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.05),
-0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  0 2px 4px -1px rgba(0, 0, 0, 0.2);
 $card-shadow-hover: 0 6px 20px 3px rgba(111, 119, 121, 0.23);
-
 
 // modal
 $modal-content-spacing-mobile: 100px;

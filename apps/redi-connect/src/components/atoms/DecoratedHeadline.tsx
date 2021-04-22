@@ -20,11 +20,7 @@ const DecoratedHeadline = ({ title, headline }: Props) => {
       >
         {title}
       </Element>
-      <Heading
-        center
-        size="medium"
-        border="topCenter"
-      >
+      <Heading center size="medium" border="topCenter">
         {headline}
       </Heading>
     </div>

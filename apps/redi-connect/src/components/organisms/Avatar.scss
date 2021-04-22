@@ -1,5 +1,5 @@
-@import "~bulma/sass/utilities/_all";
-@import "../../styles/_variables.scss";
+@import '~bulma/sass/utilities/_all';
+@import '../../styles/_variables.scss';
 
 // getting complicated an hard to maintain, needs refactoring
 .avatar {
@@ -30,7 +30,7 @@
     &:before {
       width: calc(100% - 16px);
       height: calc(100% - 16px);
-      margin: 0.5rem;    
+      margin: 0.5rem;
     }
 
     .avatar__image {
@@ -75,7 +75,6 @@
     object-fit: cover;
     z-index: 1;
   }
-
 
   &__button {
     position: absolute;
