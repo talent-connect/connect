@@ -41,3 +41,7 @@ Thumbs.db
 
 # mongodb data
 /mongodb-data
+
+
+# environment variables
+.env
