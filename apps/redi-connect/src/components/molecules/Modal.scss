@@ -1,0 +1,39 @@
+@import "../../styles/_variables.scss";
+
+.modal {
+  // not the nicest overwrite but the less ugly one
+  &-open {
+    height: 100vh;
+    overflow-y: hidden;
+  }
+
+  &-close {
+    position: absolute;
+
+    &:hover {
+      background-color: $white !important;
+    }
+
+    &::before {
+      width: 80%;
+      height: 1px;
+      background-color: $black;
+    }
+    &::after {
+      height: 80%;
+      width: 1px;
+      background-color: $black;
+    }
+  }
+
+  &__heading {
+    .title {
+      font-size: 1.5rem !important;
+      margin-right: 2rem;
+    }
+  }
+
+  .modal-card-foot {
+    display: block !important;
+  }
+}

@@ -1,0 +1,76 @@
+@import "~bulma/sass/utilities/_all";
+@import "../../styles/_variables.scss";
+
+.application-card {
+  padding: $block-spacing;
+  border-radius: $radius;
+  transition: $transition;
+  box-shadow: $card-shadow;
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: $card-shadow-hover;
+  }
+  
+  &:not(:last-child) {
+    margin-bottom: $block-spacing;
+  }
+
+  // not happy with the solution, time for refactoring together with avatar
+  &__avatar {
+    display: flex;
+    align-items: center;
+
+    @include mobile() {
+      justify-content: center;
+    }
+
+    .avatar {
+      width: 2rem;
+      height: 2rem;
+      padding-top: 2rem;
+      margin: 0 0.5rem;
+      flex-shrink: 0;
+    }
+  }
+
+  &__link {
+    font-weight: $weight-bold;
+    color: $primary;    
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &-details {
+    transition: $transition;
+    padding: 0 1.5rem;
+    overflow: hidden;
+    max-height: 0;
+
+    &--show {
+      max-height: 1000px;
+      margin: 1.5rem 0;
+    }
+  }
+
+  &-dropdown {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .icon {
+      transition: $transition;
+
+      &--rotate {
+        transform: rotate(180deg);
+      }
+    }
+    
+    @include tablet() {
+      // float: right;
+    }
+  }
+}
+

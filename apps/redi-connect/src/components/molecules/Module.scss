@@ -1,0 +1,24 @@
+@import "../../styles/_variables.scss";
+
+.module {
+  box-shadow: $card-shadow;
+  padding: $card-content-padding;
+  border-radius: 4px;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid $grey-light;
+    margin-bottom: 1rem;
+
+    &__buttons {
+      display: flex;
+      margin-top: -1rem;
+    }
+  }
+
+  &:not(:last-child) {
+    margin-top: 1.5rem;
+  }
+}

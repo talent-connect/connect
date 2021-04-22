@@ -1,0 +1,35 @@
+@import "../../styles/_variables.scss";
+
+.editable {
+  &__header {
+    display: flex;
+    justify-content: space-between;
+  
+    &__buttons {
+      display: flex;
+    }
+  }
+}
+
+// this is not used ATM anywhere else but it may make sense to refactor this to a standalone component
+.icon__button {
+  cursor: pointer;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0.5rem;
+  margin: -0.5rem 0;
+  border-radius: 50%;
+  transition: $transition;
+
+  &:not(.icon__button--disabled):hover {
+    background-color: $redi-orange-extra-light; 
+  }
+
+  path {
+    transition: $transition;
+  }
+
+  &--disabled path {
+    fill: $grey-light; 
+  }
+}

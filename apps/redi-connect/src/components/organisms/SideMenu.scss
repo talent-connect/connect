@@ -1,0 +1,84 @@
+@import "~bulma/sass/utilities/_all";
+@import "../../styles/_variables.scss";
+
+.column--side-menu {
+  @include touch() {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    background-color: $white;
+    z-index: 10;
+    border-top: 1px solid $grey-extra-light;
+    box-shadow: 0 -1px 9px 0 rgba(179, 179, 179, 0.36);
+  }
+}
+
+.side-menu {
+  @include touch() {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  &__item {
+    @include desktop() {
+      &:not(:last-child) {
+        margin-bottom: 1rem;
+      }
+    }
+
+    &__link {
+      font-size: $size-6;
+      font-weight: $weight-normal;
+      color: $grey-dark;
+      display: block;
+
+      @include touch() {
+        display: inline-flex;
+        align-items: center;
+        flex-direction: column;
+        font-size: $size-6;
+      }
+
+      @include desktop() {
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        width: calc(100% + 10px);
+        padding: 0.8rem 0;
+        margin-right: -0.75rem;
+      }
+
+      &--active {
+        font-weight: $weight-bold;
+        color: $black;
+        border-right: 5px solid $redi-blue;
+
+        @include touch() {
+          font-weight: $weight-normal;
+          color: $red;
+          border-right: none;
+
+          &:hover {
+            color: $red;
+          }
+        }
+
+        & g {
+          fill: $red;
+        }
+      }
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+
+  &__icon {
+    display: none;
+
+    @include touch() {
+      display: inline;
+    }
+  }
+}

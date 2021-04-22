@@ -1,0 +1,40 @@
+@import "../../styles/_variables.scss";
+
+.faq {
+  padding-top: 1rem;
+  margin-bottom: .75rem;
+  border-bottom: 1px solid $grey-light;
+
+  &-block__title {
+    font-weight: $weight-bold;
+    margin-bottom: 1rem;
+    cursor: pointer;
+  }
+
+  &__title {
+    cursor: pointer;
+  }
+
+  &:last-child {
+    margin-bottom: 2.5rem;
+  }
+
+  &__answer {
+    transition: $transition;
+    overflow: hidden;
+    max-height: 0;
+
+    &--show {
+      max-height: 70rem;
+      margin: 1.5rem 0;
+    }
+  }
+
+  .icon {
+    transition: $transition;
+
+    &--rotate {
+      transform: rotate(180deg);
+    }
+  }
+}

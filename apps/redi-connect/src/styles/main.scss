@@ -1,0 +1,176 @@
+// custom variable overwrites for bulma
+@import "_variables.scss";
+
+@import "_global.scss";
+
+// bulma global dependencies
+@import "~bulma/sass/utilities/_all";
+@import "~bulma/sass/base/_all.sass";
+
+// styles for the components used from bulma
+@import "~bulma/sass/grid/columns.sass";
+@import "~bulma/sass/form/_all.sass";
+@import "~bulma/sass/elements/title.sass";
+@import "~bulma/sass/elements/container.sass";
+@import "~bulma/sass/layout/section.sass";
+@import "~bulma/sass/elements/content.sass";
+@import "~bulma/sass/elements/tag.sass";
+@import "~bulma/sass/elements/box.sass";
+@import "~bulma/sass/components/modal.sass";
+@import "~bulma/sass/components/card.sass";
+@import "~bulma/sass/elements/image.sass";
+@import "~bulma/sass/elements/notification.sass";
+@import "~bulma-checkradio/src/sass/index.sass";
+
+//custom modifiers
+@import "_fonts.scss";
+@import "_forms.scss";
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+%arrow {
+  border: 2px solid $redi-orange-dark;
+  border-right: 0;
+  border-top: 0;
+  content: " ";
+  display: block;
+  height: 0.625em;
+  margin-top: -0.4375em;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  transform: rotate(-45deg);
+  transform-origin: center;
+  width: 0.625em;
+}
+
+input,
+textarea,
+select {
+  &::placeholder {
+    font-style: italic;
+    color: $grey !important;
+  }
+}
+
+a {
+  font-weight: 800;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.field:not(:last-child) {
+  margin-bottom: 1em;
+}
+
+.is-uppercase {
+  letter-spacing: 2px;
+}
+
+.section {
+  @include tablet {
+    padding: $section-padding-medium;
+  }
+
+  &--separator {
+    border-top: 1px solid $grey-light;
+  }
+
+  &.section--bottom-large-spaceing {
+    padding-bottom: 4rem;
+
+    @include tablet {
+      padding-bottom: 10rem;
+
+      .container {
+        margin-bottom: -10rem;
+        padding-bottom: 10rem;
+      }
+    }
+  }
+}
+
+// fix word wrapping in the content... maybe a bulma bug?
+.content {
+  word-break: break-word;
+}
+
+.title,
+.subtitle {
+  +.content {
+    margin-top: -0.5rem;
+  }
+}
+
+// TODO: should be transfered to a layout template
+// will be done the next time this view is reused
+.section.color-half-desktop {
+  background-color: $white;
+
+  @include tablet() {
+    background: linear-gradient(90deg, $redi-blue-light 50%, $white 50%);
+  }
+}
+
+.section.color-half-tablet {
+  background-color: $white;
+
+  @include desktop() {
+    background: linear-gradient(90deg, $redi-blue-light 50%, $white 50%);
+  }
+}
+
+.column--main-content {
+  min-height: 40rem;
+  position: relative;
+}
+
+.color-side-menu {
+  margin: -0.75rem auto;
+  padding: 0.75rem 0;
+
+  @include desktop() {
+    margin: -3.25rem auto;
+    padding: 3.25rem 0;
+    background: linear-gradient(90deg, $redi-blue-light 15.8%, $white 15.8%);
+  }
+}
+
+.default-background {
+  background: white;
+  z-index: -2;
+}
+
+.tag.is-large {
+  height: 2.5rem;
+}
+
+.oneandhalf-bs {
+  margin-bottom: 1rem;
+
+  @include tablet() {
+    margin-bottom: 1.5rem !important;
+  }
+}
+
+.double-bs {
+  margin-bottom: 1rem;
+
+  @include tablet() {
+    margin-bottom: 2rem !important;
+  }
+}
+
+.account-not-active {
+  display: flex;
+  align-items: center;
+
+  &__icon {
+    flex-shrink: 0;
+  }
+}
