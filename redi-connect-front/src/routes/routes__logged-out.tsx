@@ -32,7 +32,18 @@ const SignUpComplete = lazy(() =>
   )
 )
 
+const ReactPdf = lazy(() =>
+  import(
+    /* webpackChunkName: "SignUpComplete", webpackPreload: true */ '../pages/front/react-pdf'
+  )
+)
+
 export const routes__loggedOut: RouteDefinition[] = [
+  {
+    path: '/react-pdf',
+    component: ReactPdf,
+    exact: true
+  },
   {
     path: '/faq',
     component: Faqs,
