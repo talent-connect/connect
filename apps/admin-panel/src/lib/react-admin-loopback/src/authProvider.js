@@ -13,10 +13,10 @@ export const authProvider = (loginApiUrl, noAccessPage = '/login') => {
       const request = new Request(loginApiUrl, {
         method: 'POST',
         body: JSON.stringify(params),
-        headers: new Headers({ 'Content-Type': 'application/json' })
+        headers: new Headers({ 'Content-Type': 'application/json' }),
       })
       return fetch(request)
-        .then(response => {
+        .then((response) => {
           if (response.status < 200 || response.status >= 300) {
             throw new Error(response.statusText)
           }

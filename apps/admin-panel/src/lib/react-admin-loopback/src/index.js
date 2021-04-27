@@ -10,7 +10,7 @@ import {
   UPDATE,
   UPDATE_MANY,
   DELETE,
-  DELETE_MANY
+  DELETE_MANY,
 } from 'react-admin'
 
 export * from './authProvider'
@@ -35,26 +35,30 @@ export default (apiUrl, httpClient = fetchJson) => {
         query.where = { ...params.filter }
         if (field) query.order = [field + ' ' + order]
         if (perPage >= 0) query.limit = perPage
-        if ((perPage > 0) && (page >= 0)) query.skip = (page - 1) * perPage
+        if (perPage > 0 && page >= 0) query.skip = (page - 1) * perPage
 
-        Object.keys(params).forEach(key => {
-          if (!specialParams.includes(key) && params[key] !== undefined) { query[key] = params[key] }
+        Object.keys(params).forEach((key) => {
+          if (!specialParams.includes(key) && params[key] !== undefined) {
+            query[key] = params[key]
+          }
         })
-        url = `${apiUrl}/${resource}?${stringify({ filter: JSON.stringify(query) })}`
+        url = `${apiUrl}/${resource}?${stringify({
+          filter: JSON.stringify(query),
+        })}`
         break
       }
       case GET_ONE:
         url = `${apiUrl}/${resource}/${params.id}`
         break
       case GET_MANY: {
-        const listId = params.ids.map(id => {
+        const listId = params.ids.map((id) => {
           return { id }
         })
 
         let query = ''
         if (listId.length > 0) {
           const filter = {
-            where: { or: listId }
+            where: { or: listId },
           }
           query = `?${stringify({ filter: JSON.stringify(filter) })}`
         }
@@ -69,13 +73,17 @@ export default (apiUrl, httpClient = fetchJson) => {
         query.where[params.target] = params.id
         if (field) query.order = [field + ' ' + order]
         if (perPage >= 0) query.limit = perPage
-        if ((perPage > 0) && (page >= 0)) query.skip = (page - 1) * perPage
+        if (perPage > 0 && page >= 0) query.skip = (page - 1) * perPage
 
-        Object.keys(params).forEach(key => {
-          if (!specialParams.includes(key) && params[key] !== undefined) { query[key] = params[key] }
+        Object.keys(params).forEach((key) => {
+          if (!specialParams.includes(key) && params[key] !== undefined) {
+            query[key] = params[key]
+          }
         })
 
-        url = `${apiUrl}/${resource}?${stringify({ filter: JSON.stringify(query) })}`
+        url = `${apiUrl}/${resource}?${stringify({
+          filter: JSON.stringify(query),
+        })}`
         break
       }
       case UPDATE:
@@ -117,13 +125,7 @@ export default (apiUrl, httpClient = fetchJson) => {
         }
         return {
           data: json,
-          total: parseInt(
-            headers
-              .get('content-range')
-              .split('/')
-              .pop(),
-            10
-          )
+          total: parseInt(headers.get('content-range').split('/').pop(), 10),
         }
       case CREATE:
         return { data: { ...params.data, id: json.id } }
@@ -144,36 +146,32 @@ export default (apiUrl, httpClient = fetchJson) => {
     // simple-rest doesn't handle filters on UPDATE route, so we fallback to calling UPDATE n times instead
     if (type === UPDATE_MANY) {
       return Promise.all(
-        params.ids.map(id =>
+        params.ids.map((id) =>
           httpClient(`${apiUrl}/${resource}/${id}`, {
             method: 'PUT',
-            body: JSON.stringify(params.data)
+            body: JSON.stringify(params.data),
           })
         )
-      ).then(responses => ({
-        data: responses.map(response => response.json)
+      ).then((responses) => ({
+        data: responses.map((response) => response.json),
       }))
     }
     // simple-rest doesn't handle filters on DELETE route, so we fallback to calling DELETE n times instead
     if (type === DELETE_MANY) {
       return Promise.all(
-        params.ids.map(id =>
+        params.ids.map((id) =>
           httpClient(`${apiUrl}/${resource}/${id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
           })
         )
-      ).then(responses => ({
-        data: responses.map(response => response.json)
+      ).then((responses) => ({
+        data: responses.map((response) => response.json),
       }))
     }
 
-    const { url, options } = convertDataRequestToHTTP(
-      type,
-      resource,
-      params
-    )
+    const { url, options } = convertDataRequestToHTTP(type, resource, params)
 
-    return httpClient(url, options).then(response =>
+    return httpClient(url, options).then((response) =>
       convertHTTPResponse(response, type, resource, params)
     )
   }
