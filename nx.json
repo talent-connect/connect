@@ -35,6 +35,10 @@
     "admin-panel-e2e": {
       "tags": [],
       "implicitDependencies": ["admin-panel"]
+    },
+    "api": {
+      "tags": [],
+      "implicitDependencies": []
     }
   }
 }
