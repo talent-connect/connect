@@ -1,11 +1,8 @@
-import { StrictMode } from 'react'
-import * as ReactDOM from 'react-dom'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './App'
+import { API_URL } from './config'
 
-import App from './app/app'
+ReactDOM.render(<App />, document.getElementById('root'))
 
-ReactDOM.render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-  document.getElementById('root')
-)
+console.log('API_URL', API_URL)

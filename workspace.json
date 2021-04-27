@@ -134,10 +134,7 @@
             "main": "apps/admin-panel/src/main.tsx",
             "polyfills": "apps/admin-panel/src/polyfills.ts",
             "tsConfig": "apps/admin-panel/tsconfig.app.json",
-            "assets": [
-              "apps/admin-panel/src/favicon.ico",
-              "apps/admin-panel/src/assets"
-            ],
+            "assets": ["apps/admin-panel/src/assets"],
             "styles": ["apps/admin-panel/src/styles.scss"],
             "scripts": [],
             "webpackConfig": "@nrwl/react/plugins/webpack"
@@ -170,7 +167,8 @@
         "serve": {
           "executor": "@nrwl/web:dev-server",
           "options": {
-            "buildTarget": "admin-panel:build"
+            "buildTarget": "admin-panel:build",
+            "port": 3001
           },
           "configurations": {
             "production": {
