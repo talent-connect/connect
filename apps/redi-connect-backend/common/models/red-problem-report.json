@@ -1,0 +1,55 @@
+{
+  "name": "RedProblemReport",
+  "plural": "redProblemReports",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "problemDescription": {
+      "type": "string",
+      "required": true
+    },
+    "reportType": {
+      "type": "string",
+      "required": true
+    },
+    "ifFromMentor_cancelMentorshipImmediately": {
+      "type": "boolean"
+    },
+    "createdAt": {
+      "type": "date"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "redProfile": {
+      "type": "belongsTo",
+      "model": "RedProfile",
+      "foreignKey": ""
+    }
+  },
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "create"
+    },
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW"
+    }
+  ],
+  "methods": {}
+}
