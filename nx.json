@@ -28,6 +28,13 @@
     "redi-connect-e2e": {
       "tags": [],
       "implicitDependencies": ["redi-connect"]
+    },
+    "admin-panel": {
+      "tags": []
+    },
+    "admin-panel-e2e": {
+      "tags": [],
+      "implicitDependencies": ["admin-panel"]
     }
   }
 }
