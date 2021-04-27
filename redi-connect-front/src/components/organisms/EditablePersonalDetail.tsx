@@ -1,5 +1,6 @@
 import React from 'react'
-import { FormInput, FormSelect } from '../atoms'
+import { subYears } from 'date-fns'
+import { FormSelect, FormDatePicker } from '../atoms'
 import { Editable, ReadPersonalDetail } from '../molecules'
 import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
@@ -20,24 +21,22 @@ const formGenders = genders.map(gender => ({ value: gender.id, label: gender.lab
 
 export interface PersonalDetailFormValues {
   gender: string
-  age?: number
+  birthDate?: Date
 }
 
 const validationSchema = Yup.object({
   gender: Yup.string()
     .oneOf(['male', 'female', 'other'])
     .label('Gender'),
-  age: Yup.number()
-    .min(16)
-    .max(99)
-    .label('Age')
+  birthDate: Yup.date()
+    .label('Date')
 })
 
 const EditablePersonalDetail = ({ profile, profileSaveStart }: any) => {
   const {
     id,
     gender,
-    age
+    birthDate
   } = profile
 
   const submitForm = async (
@@ -49,7 +48,7 @@ const EditablePersonalDetail = ({ profile, profileSaveStart }: any) => {
 
   const initialValues: PersonalDetailFormValues = {
     gender,
-    age
+    birthDate: new Date(birthDate)
   }
 
   const formik = useFormik({
@@ -75,10 +74,16 @@ const EditablePersonalDetail = ({ profile, profileSaveStart }: any) => {
         {...formik}
       />
 
-      <FormInput
-        name="age"
-        placeholder="Age"
-        label="Your age"
+      <FormDatePicker
+        label="Date of birth"
+        name="birthDate"
+        placeholder="Add your date of birth"
+        dateFormat="dd MMMM yyyy"
+        minDate={subYears(new Date(), 100)}
+        maxDate={subYears(new Date(), 18)}
+        showMonthDropdown
+        showYearDropdown
+        dropdownMode="select"
         {...formik}
       />
     </Editable>

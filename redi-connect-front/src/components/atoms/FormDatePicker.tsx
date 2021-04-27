@@ -32,10 +32,16 @@ function FormDatePicker (props: any) {
     placeholder,
     label,
     values,
+    dateFormat,
+    minDate,
+    maxDate,
+    showMonthDropdown,
+    showYearDropdown,
+    dropdownMode,
     setFieldValue
   } = props
 
-  const changeHandler = (date: any) => {
+  const changeHandler = (date: Date) => {
     setFieldValue(name, date)
   }
 
@@ -49,9 +55,14 @@ function FormDatePicker (props: any) {
           selected={values[name]}
           customInput={<PickerTrigger />}
           placeholderText={placeholder}
-          dateFormat="dd.MM.yyyy"
+          dateFormat={dateFormat || "dd.MM.yyyy"}
+          minDate={minDate}
+          maxDate={maxDate}
+          showMonthDropdown={showMonthDropdown}
+          showYearDropdown={showYearDropdown}
+          dropdownMode={dropdownMode}
           onChange={changeHandler}
-        />
+        /> 
       </Form.Control>
     </Form.Field>
   )

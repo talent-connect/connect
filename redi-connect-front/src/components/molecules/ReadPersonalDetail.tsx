@@ -1,4 +1,5 @@
 import React from 'react'
+import moment from 'moment'
 import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
@@ -16,13 +17,15 @@ interface Props {
 const ReadPersonalDetail = ({ profile, caption }: Props) => {
   const {
     gender,
-    age
+    birthDate
   } = profile
+
+  const age = moment().diff(birthDate, 'years');
 
   const detailsList = gender ? [gendersIdToLabelMap[gender]] : []
   if (age) detailsList.push(`${age} years old`)
 
-  if (!gender && !age) return <Placeholder>Input your gender and age.</Placeholder>
+  if (!gender && !age) return <Placeholder>Input your gender and date of birth.</Placeholder>
 
   return <>
     {caption && <Caption>Personal Details</Caption>}
