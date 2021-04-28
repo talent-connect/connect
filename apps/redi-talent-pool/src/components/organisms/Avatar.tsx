@@ -1,5 +1,4 @@
-import React from 'react'
-import { ReactComponent as UploadImage } from '../../assets/images/uploadImage.svg'
+import { ReactComponent as UploadImage } from '../../assets/uploadImage.svg'
 import ReactS3Uploader from 'react-s3-uploader'
 import { Element } from 'react-bulma-components'
 import { FormikValues, useFormik } from 'formik'
@@ -7,16 +6,12 @@ import * as Yup from 'yup'
 import {
   AWS_PROFILE_AVATARS_BUCKET_BASE_URL,
   S3_UPLOAD_SIGN_URL,
-} from '../../config/config'
+} from '@talent-connect/shared-config'
 import classnames from 'classnames'
-import placeholderImage from '../../assets/images/img-placeholder.png'
-
-import { RootState } from '../../redux/types'
-import { connect } from 'react-redux'
+import placeholderImage from '../../assets/img-placeholder.png'
 
 import './Avatar.scss'
 
-import { profileSaveStart } from '../../redux/user/actions'
 import { RedProfile } from '@talent-connect/shared-types'
 
 interface AvatarProps {
@@ -135,16 +130,7 @@ const AvatarEditable = ({ profile, profileSaveStart }: AvatarEditable) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile as RedProfile,
-})
-
-const mapDispatchToProps = (dispatch: any) => ({
-  profileSaveStart: (profile: Partial<RedProfile>) =>
-    dispatch(profileSaveStart(profile)),
-})
-
 Avatar.Some = (profile: RedProfile) => <Avatar profile={profile} />
-Avatar.Editable = connect(mapStateToProps, mapDispatchToProps)(AvatarEditable)
+Avatar.Editable = AvatarEditable
 
 export default Avatar

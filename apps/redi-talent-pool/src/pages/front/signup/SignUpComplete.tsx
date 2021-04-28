@@ -1,7 +1,5 @@
-import React from 'react'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import { Columns, Form, Content } from 'react-bulma-components'
-import Teaser from '../../../components/molecules/Teaser'
 import { useHistory, useParams } from 'react-router'
 import { RediLocation } from '@talent-connect/shared-types'
 import { envRediLocation } from '../../../utils/env-redi-location'
@@ -25,53 +23,10 @@ export default function SignUpComplete() {
         <Columns.Column
           size={5}
           responsive={{ mobile: { hide: { value: true } } }}
-        >
-          {userType === 'public-sign-up-mentor-pending-review' && (
-            <>Meet Miriam</>
-          )}
-          {userType === 'public-sign-up-mentee-pending-review' && (
-            <>Meet Paulina</>
-          )}
-        </Columns.Column>
+        ></Columns.Column>
         <Columns.Column size={5} offset={2}>
-          <Heading border="bottomLeft">
-            {userType === 'public-sign-up-mentor-pending-review' && (
-              <>Meet Miriam</>
-            )}
-            {userType === 'public-sign-up-mentee-pending-review' && (
-              <>Meet Paulina</>
-            )}
-          </Heading>
           <Content size="large" renderAs="div">
             <p>Your email address was successfully verified!</p>
-            {userType === 'public-sign-up-mentor-pending-review' && (
-              <p>
-                Now, we would like to get to know you better. To activate your
-                account, please
-                {` `}
-                <strong>
-                  <a href="https://calendly.com/redi-miriam/mentor-onboarding">
-                    schedule a 20 minute meeting with Miriam here
-                  </a>
-                </strong>
-                .
-              </p>
-            )}
-            {userType === 'public-sign-up-mentee-pending-review' && (
-              <>
-                <p>
-                  Now, we would like to get to know you better. To activate your
-                  account, please{' '}
-                  <strong>schedule a 15 minute meeting with Paulina. </strong>
-                </p>
-                <p>
-                  Please schedule a time for a meeting with me here:{' '}
-                  <a href="https://calendly.com/paulina-redi/getting-to-know-you">
-                    Getting-to-know-you
-                  </a>
-                </p>
-              </>
-            )}
           </Content>
           <Form.Field className="submit-spacer">
             <Form.Control>

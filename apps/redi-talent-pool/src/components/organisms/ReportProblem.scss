@@ -1,8 +1,0 @@
-@import '~bulma/sass/utilities/_all';
-@import '_variables.scss';
-
-.problem {
-  &:not(:first-child) {
-    margin-top: 1.5rem;
-  }
-}

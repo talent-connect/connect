@@ -14,15 +14,13 @@ import {
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
 
-import Teaser from '../../../components/molecules/Teaser'
-
 import { Columns, Form } from 'react-bulma-components'
 
 import { signUp } from '../../../services/api/api'
 import { Extends, RedProfile } from '@talent-connect/shared-types'
 import { history } from '../../../services/history/history'
 
-import { courses } from '../../../config/config'
+import { courses } from '@talent-connect/shared-config'
 const formCourses = courses.map((course) => ({
   value: course.id,
   label: course.label,
@@ -136,9 +134,7 @@ export default function SignUp() {
         <Columns.Column
           size={6}
           responsive={{ mobile: { hide: { value: true } } }}
-        >
-          <Teaser.SignIn />
-        </Columns.Column>
+        ></Columns.Column>
 
         <Columns.Column size={5} offset={1}>
           <Heading border="bottomLeft">Sign-up</Heading>

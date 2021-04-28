@@ -1,21 +1,19 @@
 import React, { useState, useCallback } from 'react'
 import AccountOperation from '../../../components/templates/AccountOperation'
-import Teaser from '../../../components/molecules/Teaser'
 import * as Yup from 'yup'
 import { Link } from 'react-router-dom'
 import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
 import { history } from '../../../services/history/history'
-import { login, fetchSaveRedProfile } from '../../../services/api/api'
+import { login } from '../../../services/api/api'
 import {
   saveAccessToken,
-  getRedProfile,
   purgeAllSessionData,
 } from '../../../services/auth/auth'
 import { Columns, Form, Content, Notification } from 'react-bulma-components'
 import { capitalize } from 'lodash'
 import { RediLocation } from '@talent-connect/shared-types'
 import { buildFrontendUrl } from '../../../utils/build-frontend-url'
-import { rediLocationNames } from '../../../config/config'
+import { rediLocationNames } from '@talent-connect/shared-config'
 import {
   Button,
   FormInput,
@@ -53,15 +51,6 @@ export default function Login() {
           formValues.password
         )
         saveAccessToken(accessToken)
-        const redProfile = await fetchSaveRedProfile(accessToken)
-        if (
-          redProfile.rediLocation !==
-          (process.env.NX_REDI_CONNECT_REDI_LOCATION as RediLocation)
-        ) {
-          setIsWrongRediLocationError(true)
-          purgeAllSessionData()
-          return
-        }
         actions.setSubmitting(false)
         history.push('/app/me')
       } catch (err) {
@@ -83,41 +72,13 @@ export default function Login() {
         <Columns.Column
           size={6}
           responsive={{ mobile: { hide: { value: true } } }}
-        >
-          <Teaser.SignUp />
-        </Columns.Column>
+        ></Columns.Column>
 
         <Columns.Column size={5} offset={1}>
           <Heading border="bottomLeft">Sign-in</Heading>
           <Content size="large" renderAs="p">
             Enter your email and password below.
           </Content>
-
-          {isWrongRediLocationError && (
-            <Notification color="info" className="is-light">
-              You've tried to log into ReDI Connect{' '}
-              <strong>
-                {
-                  rediLocationNames[
-                    process.env.NX_REDI_CONNECT_REDI_LOCATION as RediLocation
-                  ]
-                }
-              </strong>
-              , but your account is linked to ReDI Connect{' '}
-              <strong>{capitalize(getRedProfile().rediLocation)}</strong>. To
-              access ReDI Connect{' '}
-              <strong>{capitalize(getRedProfile().rediLocation)}</strong>, go{' '}
-              <a
-                href={buildFrontendUrl(
-                  process.env.NODE_ENV,
-                  getRedProfile().rediLocation
-                )}
-              >
-                here
-              </a>
-              .
-            </Notification>
-          )}
 
           <form onSubmit={(e) => e.preventDefault()}>
             <FormInput

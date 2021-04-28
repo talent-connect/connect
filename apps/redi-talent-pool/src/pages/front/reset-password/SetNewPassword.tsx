@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import AccountOperation from '../../../components/templates/AccountOperation'
-import Teaser from '../../../components/molecules/Teaser'
 import { Columns, Content, Form } from 'react-bulma-components'
 import { Link } from 'react-router-dom'
 
@@ -8,7 +7,7 @@ import * as Yup from 'yup'
 
 import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
 import { history } from '../../../services/history/history'
-import { setPassword, fetchSaveRedProfile } from '../../../services/api/api'
+import { setPassword } from '../../../services/api/api'
 import { saveAccessToken } from '../../../services/auth/auth'
 import { RouteComponentProps } from 'react-router'
 import { showNotification } from '../../../components/AppNotification'
@@ -60,16 +59,6 @@ export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
           'Sorry, there seems to have been an error. Please try to reset your password again, or contact career@redi-school.org for assistance.'
         )
       }
-      try {
-        await fetchSaveRedProfile(accessToken)
-        console.log('saveprofile')
-      } catch (err) {
-        console.log('saveprofile error')
-
-        return setErrorMsg(
-          'Sorry, the link you used seems to have expired. Please contact career@redi-school.org to receive a new one.'
-        )
-      }
     }
     load()
   }, [props.match.params.accessToken])
@@ -103,9 +92,7 @@ export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
         <Columns.Column
           size={6}
           responsive={{ mobile: { hide: { value: true } } }}
-        >
-          <Teaser.SignUp />
-        </Columns.Column>
+        ></Columns.Column>
         <Columns.Column size={5} offset={1}>
           <Heading border="bottomLeft">Enter your new password</Heading>
           <Content size="large" renderAs="p">

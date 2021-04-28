@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Content, Columns, Element } from 'react-bulma-components'
 import AccountOperation from '../../../components/templates/AccountOperation'
-import Teaser from '../../../components/molecules/Teaser'
 import {
   Button,
   Heading,
@@ -41,9 +40,7 @@ const SignUpLanding = () => {
         <Columns.Column
           size={6}
           responsive={{ mobile: { hide: { value: true } } }}
-        >
-          <Teaser.SignIn />
-        </Columns.Column>
+        ></Columns.Column>
 
         <Columns.Column size={5} offset={1}>
           <Heading border="bottomLeft">Sign-up</Heading>

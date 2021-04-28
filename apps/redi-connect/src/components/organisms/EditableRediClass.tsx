@@ -10,8 +10,8 @@ import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
 
-import { courses } from '@talent-connect/shared-config'
 import { ReadRediClass } from '../molecules'
+import { courses } from '../../config/config'
 
 const formCourses = courses.map((course) => ({
   value: course.id,

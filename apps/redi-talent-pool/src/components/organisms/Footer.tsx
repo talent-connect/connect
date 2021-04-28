@@ -1,8 +1,7 @@
 import React from 'react'
 import { Element, Columns, Container, Section } from 'react-bulma-components'
 import { useTranslation } from 'react-i18next'
-import { ReactComponent as RediSchool } from '../../assets/images/redi-school-logo.svg'
-import { ReactComponent as Deloitte } from '../../assets/images/deloitte.svg'
+import { ReactComponent as RediSchool } from '../../assets/redi-school-logo.svg'
 import './Footer.scss'
 import { SocialMediaIcons } from '@talent-connect/shared-atomic-design-components'
 
@@ -33,14 +32,6 @@ const RediFooter = () => {
                 className="footer__logo oneandhalf-bs"
               >
                 <RediSchool />
-              </Element>
-              <Element
-                renderAs="a"
-                href="https://www2.deloitte.com/"
-                target="_blank"
-                className="footer__logo"
-              >
-                <Deloitte />
               </Element>
             </Columns.Column>
             <Columns.Column

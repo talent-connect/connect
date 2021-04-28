@@ -1,10 +1,6 @@
 import React, { ReactNode } from 'react'
-import { getRedProfile } from '../../services/auth/auth'
 import './SideMenu.scss'
 import { NavLink } from 'react-router-dom'
-import { ReactComponent as Mentorship } from '../../assets/images/mentorship.svg'
-import { ReactComponent as Applications } from '../../assets/images/applications.svg'
-import { ReactComponent as Profile } from '../../assets/images/profile.svg'
 
 interface MenuItemProps {
   url: string
@@ -24,51 +20,13 @@ const MenuItem = ({ url, children }: MenuItemProps) => (
 )
 
 const SideMenu = () => {
-  const profile = getRedProfile()
-  const isActivatedMentor = profile.userType === 'mentor'
-  const isActivatedMentee = profile.userType === 'mentee'
-  const isMentee =
-    isActivatedMentee ||
-    profile.userType === 'public-sign-up-mentee-pending-review'
-  const isMenteeWithoutMentor =
-    isMentee && !profile.ifUserIsMentee_hasActiveMentor
-  const isMentorBookedOut =
-    isActivatedMentor &&
-    profile.currentMenteeCount === profile.menteeCountCapacity
-  const isMenteeWithMentor =
-    isActivatedMentee && profile.ifUserIsMentee_hasActiveMentor
-
-  const showApplications = isMentee
-    ? isMenteeWithoutMentor && isActivatedMentee
-    : !isMentorBookedOut
-
   return (
     <ul className="side-menu">
-      <MenuItem url="/app/me">
-        <Profile className="side-menu__icon" />
-        My Profile
-      </MenuItem>
+      <MenuItem url="/app/me">My Profile</MenuItem>
 
-      {isMenteeWithoutMentor && (
-        <MenuItem url="/app/find-a-mentor/">
-          <Mentorship className="side-menu__icon" />
-          Find a mentor
-        </MenuItem>
-      )}
+      <MenuItem url="/app/mentorships/">My Mentorship</MenuItem>
 
-      {(isActivatedMentor || isMenteeWithMentor) && (
-        <MenuItem url="/app/mentorships/">
-          <Mentorship className="side-menu__icon" />
-          My Mentorship
-        </MenuItem>
-      )}
-
-      {showApplications && (
-        <MenuItem url="/app/applications">
-          <Applications className="side-menu__icon" />
-          Applications
-        </MenuItem>
-      )}
+      <MenuItem url="/app/applications">Applications</MenuItem>
     </ul>
   )
 }

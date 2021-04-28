@@ -1,8 +1,10 @@
 import { RedUser } from '@talent-connect/shared-types'
 import { AccessToken } from '@talent-connect/shared-types'
-import { RedProfile } from '@talent-connect/shared-types'
 
 export const isLoggedIn = (): boolean => {
+  // TODO: remove this
+  return true
+
   const profile: any = window.localStorage.getItem('redProfile')
   const accessToken: any = window.localStorage.getItem('accessToken')
   try {
@@ -19,13 +21,6 @@ export const getRedUser = (): RedUser =>
 
 export const saveRedUser = (redUser: RedUser) => {
   window.localStorage.setItem('redUser', JSON.stringify(redUser))
-}
-
-export const getRedProfile = (): RedProfile =>
-  JSON.parse(window.localStorage.getItem('redProfile') as string)
-
-export const saveRedProfile = (redProfile: RedProfile) => {
-  window.localStorage.setItem('redProfile', JSON.stringify(redProfile))
 }
 
 export const getAccessToken = (): AccessToken =>
