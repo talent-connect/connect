@@ -3,7 +3,7 @@ import {
   Container,
   Section,
   Columns,
-  Content,
+  Level,
   Element,
 } from 'react-bulma-components'
 import { useHistory } from 'react-router-dom'
@@ -39,18 +39,22 @@ const RediHero = () => {
               responsive={{ mobile: { textSize: { value: 5 } } }}
               className="oneandhalf-bs"
             >
-              {t('loggedOutArea.homePage.hero.about.content1')}
+              <strong>{t('loggedOutArea.homePage.hero.about.content1')}</strong>
               <br />
               {t('loggedOutArea.homePage.hero.about.content2')}
             </Element>
-            <Content>
+            <Level>
               <Button
                 size="large"
                 onClick={() => history.push('/front/signup-landing')}
               >
                 {t('button.signUpNow')}
               </Button>
-            </Content>
+
+              <Button onClick={() => history.push('/front/login')} simple>
+                {t('button.login')}
+              </Button>
+            </Level>
           </Columns.Column>
           <Columns.Column
             offset={1}

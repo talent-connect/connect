@@ -6,7 +6,10 @@ import classnames from 'classnames'
 import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import './Navbar.scss'
-import { Button, Logo } from '@talent-connect/shared-atomic-design-components'
+import {
+  Button,
+  RediTalentPoolLogo,
+} from '@talent-connect/shared-atomic-design-components'
 
 const LoggedOutNavItems = () => {
   const { t } = useTranslation()
@@ -85,7 +88,7 @@ const Navbar = () => {
       {menuActive && mobileMenu}
       <Section className={classnames('navbar default-background')}>
         <Container className="navbar__wrapper">
-          <Logo />
+          <RediTalentPoolLogo />
           <Element
             responsive={{ mobile: { hide: { value: true } } }}
             className="navbar__buttons"
