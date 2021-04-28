@@ -240,6 +240,17 @@
           }
         }
       }
+    },
+    "shared-types": {
+      "root": "libs/shared-types",
+      "sourceRoot": "libs/shared-types/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": { "lintFilePatterns": ["libs/shared-types/**/*.ts"] }
+        }
+      }
     }
   }
 }

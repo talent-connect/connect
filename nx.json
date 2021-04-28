@@ -25,6 +25,7 @@
     "admin-panel": { "tags": [] },
     "admin-panel-e2e": { "tags": [], "implicitDependencies": ["admin-panel"] },
     "api": { "tags": [], "implicitDependencies": [] },
-    "shared-atomic-design-components": { "tags": [] }
+    "shared-atomic-design-components": { "tags": [] },
+    "shared-types": { "tags": [] }
   }
 }

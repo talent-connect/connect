@@ -17,7 +17,8 @@
     "paths": {
       "@talent-connect/shared-atomic-design-components": [
         "libs/shared-atomic-design-components/src/index.ts"
-      ]
+      ],
+      "@talent-connect/shared-types": ["libs/shared-types/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
