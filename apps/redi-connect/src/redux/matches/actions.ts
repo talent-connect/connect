@@ -9,7 +9,7 @@ import {
   MatchesMarkAsDismissedStartAction,
   MatchesMarkAsCompleteAction,
 } from './types'
-import { RedMatch } from '../../types/RedMatch'
+import { RedMatch } from '@talent-connect/shared-types'
 
 export const matchesFetchStart = (): MatchesFetchStartAction => ({
   type: MatchesActionType.MATCHES_FETCH_START,

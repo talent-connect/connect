@@ -4,7 +4,6 @@ import {
   FormSelect,
 } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
-import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
 
@@ -15,6 +14,7 @@ import { FormikValues, useFormik } from 'formik'
 
 import { menteeOccupationCategories } from '../../config/config'
 import { ReadOccupation } from '../molecules'
+import { RedProfile } from '@talent-connect/shared-types'
 
 const formMenteeOccupationCategories = menteeOccupationCategories.map(
   (level) => ({ value: level.id, label: level.label })

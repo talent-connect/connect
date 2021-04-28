@@ -8,10 +8,12 @@ import {
 import { Modal } from '@talent-connect/shared-atomic-design-components'
 import { useFormik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
-import { RedProblemReportDto } from '../../types/RedProblemReportDto'
-import { FormSubmitResult } from '../../types/FormSubmitResult'
 import { reportProblem } from '../../services/api/api'
-import { UserType } from '../../types/UserType'
+import {
+  FormSubmitResult,
+  RedProblemReportDto,
+  UserType,
+} from '@talent-connect/shared-types'
 import { Content } from 'react-bulma-components'
 import './ReportProblem.scss'
 

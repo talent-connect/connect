@@ -1,6 +1,6 @@
 /* Keep me in sync with redi-connect-backend/lib/build-frontend-url.js */
 
-import { RediLocation } from '../types/RediLocation'
+import { RediLocation } from '@talent-connect/shared-types'
 
 export function buildFrontendUrl(env: string, rediLocation: RediLocation) {
   if (env === 'production' && rediLocation === 'berlin') {

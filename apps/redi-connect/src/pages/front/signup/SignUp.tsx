@@ -19,8 +19,7 @@ import Teaser from '../../../components/molecules/Teaser'
 import { Columns, Form } from 'react-bulma-components'
 
 import { signUp } from '../../../services/api/api'
-import { RedProfile } from '../../../types/RedProfile'
-import { Extends } from '../../../types/utility-types/Extends'
+import { Extends, RedProfile } from '@talent-connect/shared-types'
 import { history } from '../../../services/history/history'
 
 import { courses } from '../../../config/config'

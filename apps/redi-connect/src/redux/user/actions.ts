@@ -1,4 +1,4 @@
-import { RedProfile } from '../../types/RedProfile'
+import { RedProfile } from '@talent-connect/shared-types'
 import {
   ProfileFetchStartAction,
   ProfileFetchSuccessAction,

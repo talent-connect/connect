@@ -1,5 +1,5 @@
 import React from 'react'
-import { RedProfile } from '../../types/RedProfile'
+import { RedProfile } from '@talent-connect/shared-types'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
 import {

@@ -1,4 +1,4 @@
-import { RedMentoringSession } from '../../types/RedMentoringSession'
+import { RedMentoringSession } from '@talent-connect/shared-types'
 import {
   MentoringSessionsActionType,
   MentoringSessionsClearAsyncResultAction,

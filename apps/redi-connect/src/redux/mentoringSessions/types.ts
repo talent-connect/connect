@@ -1,6 +1,8 @@
 import { Action } from 'redux'
-import { RedMentoringSession } from '../../types/RedMentoringSession'
-import { FormSubmitResult } from '../../types/FormSubmitResult'
+import {
+  FormSubmitResult,
+  RedMentoringSession,
+} from '@talent-connect/shared-types'
 
 export interface MentoringSessionsState {
   matches: RedMentoringSession[]

@@ -3,7 +3,7 @@ import groupBy from 'lodash/groupBy'
 import { Columns, Heading, Element, Content } from 'react-bulma-components'
 import { Checkbox } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
-import { RedProfile } from '../../types/RedProfile'
+import { RedProfile } from '@talent-connect/shared-types'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
 

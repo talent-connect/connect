@@ -1,9 +1,9 @@
 import axios from 'axios'
 import { API_URL } from '../../config/config'
-import { AccessToken } from '../../types/AccessToken'
-import { RedProfile } from '../../types/RedProfile'
-import { RedUser } from '../../types/RedUser'
-import { RedMatch } from '../../types/RedMatch'
+import { AccessToken } from '@talent-connect/shared-types'
+import { RedProfile } from '@talent-connect/shared-types'
+import { RedUser } from '@talent-connect/shared-types'
+import { RedMatch } from '@talent-connect/shared-types'
 import {
   purgeAllSessionData,
   saveRedProfile as localStorageSaveRedProfile,
@@ -13,9 +13,11 @@ import {
 } from '../auth/auth'
 import { history } from '../history/history'
 import { http } from '../http/http'
-import { UserType } from '../../types/UserType'
-import { RedProblemReportDto } from '../../types/RedProblemReportDto'
-import { RediLocation } from '../../types/RediLocation'
+import {
+  UserType,
+  RedProblemReportDto,
+  RediLocation,
+} from '@talent-connect/shared-types'
 
 export const signUp = async (
   email: string,

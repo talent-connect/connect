@@ -25,7 +25,7 @@ import {
   ConfirmMentorship,
 } from '../../../components/organisms'
 import { LoggedIn } from '../../../components/templates'
-import { RedProfile } from '../../../types/RedProfile'
+import { RedProfile } from '@talent-connect/shared-types'
 import { profilesFetchOneStart } from '../../../redux/profiles/actions'
 import { rediLocationNames } from '../../../config/config'
 

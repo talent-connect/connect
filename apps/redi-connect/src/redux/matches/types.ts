@@ -1,5 +1,5 @@
 import { Action } from 'redux'
-import { RedMatch } from '../../types/RedMatch'
+import { RedMatch } from '@talent-connect/shared-types'
 
 export interface MatchesState {
   matches: RedMatch[]

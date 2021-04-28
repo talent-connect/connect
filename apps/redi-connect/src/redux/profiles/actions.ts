@@ -4,7 +4,7 @@ import {
   ProfilesFetchOneSuccessAction,
   ProfilesFetchOneErrorAction,
 } from './types'
-import { RedProfile } from '../../types/RedProfile'
+import { RedProfile } from '@talent-connect/shared-types'
 
 // TODO: in this action, should the redProfileId be the payload, or should
 // it be wrapped in an object as such: { redProfileId: redProfileId } ??

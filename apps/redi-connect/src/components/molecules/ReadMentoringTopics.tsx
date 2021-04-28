@@ -1,6 +1,5 @@
 import React from 'react'
 import { Tag } from 'react-bulma-components'
-import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
 import {
@@ -8,6 +7,7 @@ import {
   Placeholder,
 } from '@talent-connect/shared-atomic-design-components'
 import { categoriesIdToLabelMap } from '../../config/config'
+import { RedProfile } from '@talent-connect/shared-types'
 
 interface ReadMentoringProps {
   profile: RedProfile

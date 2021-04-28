@@ -1,7 +1,6 @@
-import { RedProfile } from '../../types/RedProfile'
+import { FormSubmitResult, RedProfile } from '@talent-connect/shared-types'
 import { Action } from 'redux'
-import { AccessToken } from '../../types/AccessToken'
-import { FormSubmitResult } from '../../types/FormSubmitResult'
+import { AccessToken } from '@talent-connect/shared-types'
 
 export interface UserState {
   profile?: RedProfile

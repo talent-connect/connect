@@ -1,6 +1,6 @@
-import { RedUser } from '../../types/RedUser'
-import { AccessToken } from '../../types/AccessToken'
-import { RedProfile } from '../../types/RedProfile'
+import { RedUser } from '@talent-connect/shared-types'
+import { AccessToken } from '@talent-connect/shared-types'
+import { RedProfile } from '@talent-connect/shared-types'
 
 export const isLoggedIn = (): boolean => {
   const profile: any = window.localStorage.getItem('redProfile')

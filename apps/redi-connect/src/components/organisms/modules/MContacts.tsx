@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 import classnames from 'classnames'
-import { RedProfile } from '../../../types/RedProfile'
+import { RedProfile } from '@talent-connect/shared-types'
 import { Module } from '@talent-connect/shared-atomic-design-components'
 
 import './MContacts.scss'

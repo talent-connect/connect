@@ -6,7 +6,7 @@ import { ProfileCard } from '../../../components/organisms'
 import { RootState } from '../../../redux/types'
 import { getMatches } from '../../../redux/matches/selectors'
 import { connect } from 'react-redux'
-import { RedMatch } from '../../../types/RedMatch'
+import { RedMatch } from '@talent-connect/shared-types'
 import { Heading } from '@talent-connect/shared-atomic-design-components'
 
 interface Props {

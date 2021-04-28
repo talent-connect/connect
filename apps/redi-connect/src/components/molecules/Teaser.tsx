@@ -7,7 +7,7 @@ import { ReactComponent as RedCircle } from '../../assets/images/red-circle.svg'
 import { Element } from 'react-bulma-components'
 import { Link } from 'react-router-dom'
 import './Teaser.scss'
-import { UserType } from '../../types/UserType'
+import { UserType } from '@talent-connect/shared-types'
 import { useParams } from 'react-router'
 
 type RouteParams = {

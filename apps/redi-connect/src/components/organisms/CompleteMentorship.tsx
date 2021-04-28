@@ -8,7 +8,7 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import { Modal } from '@talent-connect/shared-atomic-design-components'
 import { matchesMarkAsComplete } from '../../redux/matches/actions'
-import { RedMatch } from '../../types/RedMatch'
+import { RedMatch } from '@talent-connect/shared-types'
 
 interface CompleteMentorshipProps {
   match: RedMatch

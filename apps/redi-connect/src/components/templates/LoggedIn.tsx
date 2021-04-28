@@ -23,7 +23,7 @@ import {
 } from '../../redux/matches/actions'
 
 import Footer from '../organisms/Footer'
-import { RedMatch } from '../../types/RedMatch'
+import { RedMatch } from '@talent-connect/shared-types'
 
 interface Props {
   loading: boolean

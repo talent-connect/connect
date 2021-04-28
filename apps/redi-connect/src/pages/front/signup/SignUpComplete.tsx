@@ -3,9 +3,9 @@ import AccountOperation from '../../../components/templates/AccountOperation'
 import { Columns, Form, Content } from 'react-bulma-components'
 import Teaser from '../../../components/molecules/Teaser'
 import { useHistory, useParams } from 'react-router'
-import { RediLocation } from '../../../types/RediLocation'
+import { RediLocation } from '@talent-connect/shared-types'
 import { envRediLocation } from '../../../utils/env-redi-location'
-import { UserType } from '../../../types/UserType'
+import { UserType } from '@talent-connect/shared-types'
 import {
   Heading,
   Button,

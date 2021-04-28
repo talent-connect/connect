@@ -13,7 +13,7 @@ import {
 } from '../../../services/auth/auth'
 import { Columns, Form, Content, Notification } from 'react-bulma-components'
 import { capitalize } from 'lodash'
-import { RediLocation } from '../../../types/RediLocation'
+import { RediLocation } from '@talent-connect/shared-types'
 import { buildFrontendUrl } from '../../../utils/build-frontend-url'
 import { rediLocationNames } from '../../../config/config'
 import {

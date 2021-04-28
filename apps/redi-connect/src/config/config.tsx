@@ -1,12 +1,14 @@
 import keyBy from 'lodash/keyBy'
 import mapValues from 'lodash/mapValues'
 
-import { Categories } from '../types/Categories'
-import { Language } from '../types/Language'
-import { Gender } from '../types/Gender'
-import { EducationLevel } from '../types/EducationLevel'
-import { Course } from '../types/Course'
-import { RediLocation } from '../types/RediLocation'
+import {
+  Categories,
+  Course,
+  EducationLevel,
+  Gender,
+  Language,
+  RediLocation,
+} from '@talent-connect/shared-types'
 
 export const rediLocationNames: { [K in RediLocation]?: string } = {
   berlin: 'Berlin',

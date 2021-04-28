@@ -6,7 +6,7 @@ import LoggedIn from '../../../components/templates/LoggedIn'
 import { RootState } from '../../../redux/types'
 import { getApplicants } from '../../../redux/matches/selectors'
 import { connect } from 'react-redux'
-import { RedMatch } from '../../../types/RedMatch'
+import { RedMatch } from '@talent-connect/shared-types'
 import { useHistory } from 'react-router-dom'
 import { getRedProfile } from '../../../services/auth/auth'
 

@@ -12,7 +12,7 @@ import {
 import placeholderImage from '../../assets/images/img-placeholder.png'
 import './ProfileCard.scss'
 
-import { RedProfile } from '../../types/RedProfile'
+import { RedProfile } from '@talent-connect/shared-types'
 import { ReadMentoringTopics } from '../molecules'
 
 interface ProfileCardProps {

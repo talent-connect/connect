@@ -11,8 +11,10 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import { Module, Modal } from '@talent-connect/shared-atomic-design-components'
 import { Content, Element } from 'react-bulma-components'
-import { RedMentoringSession } from '../../../types/RedMentoringSession'
-import { FormSubmitResult } from '../../../types/FormSubmitResult'
+import {
+  RedMentoringSession,
+  FormSubmitResult,
+} from '@talent-connect/shared-types'
 import { useFormik, FormikHelpers } from 'formik'
 import { mentoringSessionDurationOptions } from '../../../config/config'
 import { mentoringSessionsCreateStart } from '../../../redux/mentoringSessions/actions'

@@ -6,13 +6,12 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import { Modal } from '@talent-connect/shared-atomic-design-components'
 import { Content, Form } from 'react-bulma-components'
-import { RedProfile } from '../../types/RedProfile'
+import { FormSubmitResult, RedProfile } from '@talent-connect/shared-types'
 
 import { FormikHelpers as FormikActions, useFormik } from 'formik'
 import React, { useState } from 'react'
 import * as Yup from 'yup'
 import { requestMentorship } from '../../services/api/api'
-import { FormSubmitResult } from '../../types/FormSubmitResult'
 
 import { RootState } from '../../redux/types'
 import { connect } from 'react-redux'

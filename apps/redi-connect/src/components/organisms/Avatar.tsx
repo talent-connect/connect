@@ -4,7 +4,6 @@ import ReactS3Uploader from 'react-s3-uploader'
 import { Element } from 'react-bulma-components'
 import { FormikValues, useFormik } from 'formik'
 import * as Yup from 'yup'
-import { RedProfile } from '../../types/RedProfile'
 import {
   AWS_PROFILE_AVATARS_BUCKET_BASE_URL,
   S3_UPLOAD_SIGN_URL,
@@ -18,6 +17,7 @@ import { connect } from 'react-redux'
 import './Avatar.scss'
 
 import { profileSaveStart } from '../../redux/user/actions'
+import { RedProfile } from '@talent-connect/shared-types'
 
 interface AvatarProps {
   profile: RedProfile

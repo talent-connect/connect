@@ -1,5 +1,5 @@
 import { Action } from 'redux'
-import { RedProfile } from '../../types/RedProfile'
+import { RedProfile } from '@talent-connect/shared-types'
 
 export interface ProfilesState {
   oneProfile?: RedProfile
