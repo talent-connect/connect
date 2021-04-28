@@ -1,6 +1,6 @@
 import { ActionsObservable, ofType } from 'redux-observable'
 import { map, switchMap } from 'rxjs/operators'
-import { API_URL } from '../../config/config'
+import { API_URL } from '@talent-connect/shared-config'
 import { http } from '../../services/http/http'
 import { profilesFetchOneSuccess } from './actions'
 import { ProfilesActions, ProfilesActionType } from './types'

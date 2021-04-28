@@ -13,7 +13,7 @@ import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
 
-import { genders } from '../../config/config'
+import { genders } from '@talent-connect/shared-config'
 import { ReadPersonalDetail } from '../molecules'
 
 const formGenders = genders.map((gender) => ({

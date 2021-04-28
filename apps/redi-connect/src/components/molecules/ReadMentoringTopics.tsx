@@ -6,7 +6,7 @@ import {
   Caption,
   Placeholder,
 } from '@talent-connect/shared-atomic-design-components'
-import { categoriesIdToLabelMap } from '../../config/config'
+import { categoriesIdToLabelMap } from '@talent-connect/shared-config'
 import { RedProfile } from '@talent-connect/shared-types'
 
 interface ReadMentoringProps {

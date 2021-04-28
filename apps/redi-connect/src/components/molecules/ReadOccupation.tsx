@@ -7,7 +7,7 @@ import {
   Caption,
   Placeholder,
 } from '@talent-connect/shared-atomic-design-components'
-import { menteeOccupationCategories } from '../../config/config'
+import { menteeOccupationCategories } from '@talent-connect/shared-config'
 
 interface Props {
   profile: RedProfile

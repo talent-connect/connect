@@ -1,7 +1,7 @@
 import { ActionsObservable, ofType } from 'redux-observable'
 import { concat, from, of } from 'rxjs'
 import { map, switchMap } from 'rxjs/operators'
-import { API_URL } from '../../config/config'
+import { API_URL } from '@talent-connect/shared-config'
 import { http } from '../../services/http/http'
 import { profilesFetchOneStart } from '../profiles/actions'
 import { profileFetchStart } from '../user/actions'

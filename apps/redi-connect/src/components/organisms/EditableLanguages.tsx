@@ -10,7 +10,7 @@ import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
 
-import { Languages as availableLanguages } from '../../config/config'
+import { Languages as availableLanguages } from '@talent-connect/shared-config'
 import { ReadLanguages } from '../molecules'
 const formLanguages = availableLanguages.map((language) => ({
   value: language,

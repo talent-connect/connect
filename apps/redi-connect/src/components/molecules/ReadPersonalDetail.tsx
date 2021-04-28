@@ -7,7 +7,7 @@ import {
   Placeholder,
   PipeList,
 } from '@talent-connect/shared-atomic-design-components'
-import { gendersIdToLabelMap } from '../../config/config'
+import { gendersIdToLabelMap } from '@talent-connect/shared-config'
 
 interface Props {
   profile: RedProfile

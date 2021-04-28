@@ -20,7 +20,7 @@ import { ReactComponent as RediLogo } from '../../../assets/images/logo.svg'
 import { ReactComponent as Deloitte } from '../../../assets/images/deloitte.svg'
 
 import '../../../components/organisms/Navbar.scss'
-import { rediLocationNames } from '../../../config/config'
+import { rediLocationNames } from '@talent-connect/shared-config'
 
 export default function LocationPicker() {
   const { t } = useTranslation()

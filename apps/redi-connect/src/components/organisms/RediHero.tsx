@@ -10,7 +10,7 @@ import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { ReactComponent as Deloitte } from '../../assets/images/deloitte.svg'
 import './RediHero.scss'
-import { rediLocationNames } from '../../config/config'
+import { rediLocationNames } from '@talent-connect/shared-config'
 import { envRediLocation } from '../../utils/env-redi-location'
 import {
   Button,

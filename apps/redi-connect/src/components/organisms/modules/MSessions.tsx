@@ -16,7 +16,7 @@ import {
   FormSubmitResult,
 } from '@talent-connect/shared-types'
 import { useFormik, FormikHelpers } from 'formik'
-import { mentoringSessionDurationOptions } from '../../../config/config'
+import { mentoringSessionDurationOptions } from '@talent-connect/shared-config'
 import { mentoringSessionsCreateStart } from '../../../redux/mentoringSessions/actions'
 import './MSessions.scss'
 

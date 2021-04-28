@@ -15,7 +15,7 @@ import { FormikValues, useFormik } from 'formik'
 import {
   menteeCountCapacityOptions,
   rediLocationNames,
-} from '../../config/config'
+} from '@talent-connect/shared-config'
 import { RediLocation } from '@talent-connect/shared-types'
 import { ReadMenteeCount } from '../molecules'
 

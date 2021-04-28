@@ -7,7 +7,7 @@ import * as Yup from 'yup'
 import {
   AWS_PROFILE_AVATARS_BUCKET_BASE_URL,
   S3_UPLOAD_SIGN_URL,
-} from '../../config/config'
+} from '@talent-connect/shared-config'
 import classnames from 'classnames'
 import placeholderImage from '../../assets/images/img-placeholder.png'
 

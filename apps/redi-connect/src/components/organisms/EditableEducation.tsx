@@ -10,7 +10,7 @@ import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
 
-import { educationLevels } from '../../config/config'
+import { educationLevels } from '@talent-connect/shared-config'
 import { ReadEducation } from '../molecules'
 
 const formEducationLevels = educationLevels.map((level) => ({

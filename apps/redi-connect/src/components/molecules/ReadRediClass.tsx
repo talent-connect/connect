@@ -4,7 +4,7 @@ import { RedProfile } from '@talent-connect/shared-types'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
 import { Caption } from '@talent-connect/shared-atomic-design-components'
-import { courseIdToLabelMap } from '../../config/config'
+import { courseIdToLabelMap } from '@talent-connect/shared-config'
 
 interface Props {
   profile: RedProfile

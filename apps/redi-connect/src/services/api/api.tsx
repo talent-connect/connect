@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { API_URL } from '../../config/config'
+import { API_URL } from '@talent-connect/shared-config'
 import { AccessToken } from '@talent-connect/shared-types'
 import { RedProfile } from '@talent-connect/shared-types'
 import { RedUser } from '@talent-connect/shared-types'

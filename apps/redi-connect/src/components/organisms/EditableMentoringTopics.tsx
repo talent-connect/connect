@@ -11,7 +11,7 @@ import { profileSaveStart } from '../../redux/user/actions'
 import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
-import { categories as availableCategories } from '../../config/config'
+import { categories as availableCategories } from '@talent-connect/shared-config'
 import { ReadMentoringTopics } from '../molecules'
 
 export type UserType =

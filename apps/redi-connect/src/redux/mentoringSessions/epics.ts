@@ -1,7 +1,7 @@
 import { ActionsObservable, ofType } from 'redux-observable'
 import { map, switchMap } from 'rxjs/operators'
 import { from, concat, of } from 'rxjs'
-import { API_URL } from '../../config/config'
+import { API_URL } from '@talent-connect/shared-config'
 import { http } from '../../services/http/http'
 import {
   mentoringSessionsCreateSuccess,

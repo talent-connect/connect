@@ -17,7 +17,10 @@ import { connect } from 'react-redux'
 import { RootState } from '../../../redux/types'
 import { LoggedIn } from '../../../components/templates'
 
-import { categoriesIdToLabelMap, categories } from '../../../config/config'
+import {
+  categoriesIdToLabelMap,
+  categories,
+} from '@talent-connect/shared-config'
 import './FindAMentor.scss'
 
 const filterCategories = categories.map((category) => ({

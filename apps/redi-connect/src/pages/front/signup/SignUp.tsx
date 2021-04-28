@@ -22,7 +22,7 @@ import { signUp } from '../../../services/api/api'
 import { Extends, RedProfile } from '@talent-connect/shared-types'
 import { history } from '../../../services/history/history'
 
-import { courses } from '../../../config/config'
+import { courses } from '@talent-connect/shared-config'
 const formCourses = courses.map((course) => ({
   value: course.id,
   label: course.label,

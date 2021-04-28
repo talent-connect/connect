@@ -7,7 +7,7 @@ import {
   Caption,
   Placeholder,
 } from '@talent-connect/shared-atomic-design-components'
-import { educationLevelsIdToLabelMap } from '../../config/config'
+import { educationLevelsIdToLabelMap } from '@talent-connect/shared-config'
 
 interface Props {
   profile: RedProfile

@@ -12,7 +12,7 @@ import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
 
-import { menteeOccupationCategories } from '../../config/config'
+import { menteeOccupationCategories } from '@talent-connect/shared-config'
 import { ReadOccupation } from '../molecules'
 import { RedProfile } from '@talent-connect/shared-types'
 

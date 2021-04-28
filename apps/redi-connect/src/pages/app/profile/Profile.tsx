@@ -27,7 +27,7 @@ import {
 import { LoggedIn } from '../../../components/templates'
 import { RedProfile } from '@talent-connect/shared-types'
 import { profilesFetchOneStart } from '../../../redux/profiles/actions'
-import { rediLocationNames } from '../../../config/config'
+import { rediLocationNames } from '@talent-connect/shared-config'
 
 interface RouteParams {
   profileId: string

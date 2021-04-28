@@ -9,7 +9,7 @@ import { Avatar } from '../organisms'
 import { useHistory } from 'react-router-dom'
 
 import './ApplicationCard.scss'
-import { rediLocationNames } from '../../config/config'
+import { rediLocationNames } from '@talent-connect/shared-config'
 
 interface Props {
   application: RedMatch & { createdAt?: string }

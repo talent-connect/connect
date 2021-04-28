@@ -1,14 +1,9 @@
 {
   "implicitDependencies": {
-    "package.json": {
-      "dependencies": "*",
-      "devDependencies": "*"
-    },
+    "package.json": { "dependencies": "*", "devDependencies": "*" },
     ".eslintrc.json": "*"
   },
-  "affected": {
-    "defaultBase": "master"
-  },
+  "affected": { "defaultBase": "master" },
   "npmScope": "talent-connect",
   "tasksRunnerOptions": {
     "default": {
@@ -22,36 +17,21 @@
     }
   },
   "projects": {
-    "redi-connect": {
-      "tags": []
-    },
+    "redi-connect": { "tags": [] },
     "redi-connect-e2e": {
       "tags": [],
       "implicitDependencies": ["redi-connect"]
     },
-    "admin-panel": {
-      "tags": []
-    },
-    "admin-panel-e2e": {
-      "tags": [],
-      "implicitDependencies": ["admin-panel"]
-    },
-    "api": {
-      "tags": [],
-      "implicitDependencies": []
-    },
-    "shared-atomic-design-components": {
-      "tags": []
-    },
-    "shared-types": {
-      "tags": []
-    },
-    "redi-talent-pool": {
-      "tags": []
-    },
+    "admin-panel": { "tags": [] },
+    "admin-panel-e2e": { "tags": [], "implicitDependencies": ["admin-panel"] },
+    "api": { "tags": [], "implicitDependencies": [] },
+    "shared-atomic-design-components": { "tags": [] },
+    "shared-types": { "tags": [] },
+    "redi-talent-pool": { "tags": [] },
     "redi-talent-pool-e2e": {
       "tags": [],
       "implicitDependencies": ["redi-talent-pool"]
-    }
+    },
+    "shared-config": { "tags": [] }
   }
 }

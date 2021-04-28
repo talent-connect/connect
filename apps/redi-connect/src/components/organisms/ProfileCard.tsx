@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom'
 import {
   AWS_PROFILE_AVATARS_BUCKET_BASE_URL,
   rediLocationNames,
-} from '../../config/config'
+} from '@talent-connect/shared-config'
 
 import placeholderImage from '../../assets/images/img-placeholder.png'
 import './ProfileCard.scss'
