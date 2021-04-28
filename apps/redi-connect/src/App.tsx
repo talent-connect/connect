@@ -1,7 +1,6 @@
 import React, { useEffect, Suspense } from 'react'
 
 import { Provider as StoreProvider } from 'react-redux'
-import './App.scss'
 import { history, Router } from './services/history/history'
 import { Routes } from './components/Routes'
 import { store } from './redux/store'
