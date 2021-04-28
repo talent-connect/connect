@@ -1,7 +1,11 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router'
-import { Button, FormTextArea, Checkbox } from '../atoms'
-import { Modal } from '../molecules'
+import {
+  Button,
+  FormTextArea,
+  Checkbox,
+} from '@talent-connect/shared-atomic-design-components'
+import { Modal } from '@talent-connect/shared-atomic-design-components'
 import { useFormik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import { RedProblemReportDto } from '../../types/RedProblemReportDto'

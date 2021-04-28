@@ -1,6 +1,6 @@
 import React from 'react'
-import { FormSelect } from '../atoms'
-import { Editable, ReadEducation } from '../molecules'
+import { FormSelect } from '@talent-connect/shared-atomic-design-components'
+import { Editable } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
@@ -11,6 +11,7 @@ import * as Yup from 'yup'
 import { FormikValues, useFormik } from 'formik'
 
 import { educationLevels } from '../../config/config'
+import { ReadEducation } from '../molecules'
 
 const formEducationLevels = educationLevels.map((level) => ({
   value: level.id,

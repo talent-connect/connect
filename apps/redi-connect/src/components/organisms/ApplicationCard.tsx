@@ -4,7 +4,7 @@ import { Columns, Heading, Content } from 'react-bulma-components'
 import moment from 'moment'
 import { getRedProfile } from '../../services/auth/auth'
 import { RedMatch } from '../../types/RedMatch'
-import { Icon } from '../atoms'
+import { Icon } from '@talent-connect/shared-atomic-design-components'
 import { Avatar } from '../organisms'
 import { useHistory } from 'react-router-dom'
 

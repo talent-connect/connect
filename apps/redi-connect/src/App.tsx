@@ -7,7 +7,7 @@ import { Routes } from './components/Routes'
 import { store } from './redux/store'
 import { profileFetchStart } from './redux/user/actions'
 import AppNotification from './components/AppNotification'
-import { Loader } from './components/atoms'
+import { Loader } from '@talent-connect/shared-atomic-design-components'
 import { envRediLocation } from './utils/env-redi-location'
 import LocationPicker from './pages/front/landing/LocationPicker'
 

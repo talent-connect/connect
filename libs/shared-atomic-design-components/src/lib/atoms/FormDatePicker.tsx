@@ -1,7 +1,7 @@
 import React from 'react'
 import { Form } from 'react-bulma-components'
 import DatePicker from 'react-datepicker'
-import { Icon } from '../../components/atoms'
+import { Icon } from '../atoms'
 
 import 'react-datepicker/dist/react-datepicker.css'
 import './FormDatePicker.scss'

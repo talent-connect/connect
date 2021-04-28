@@ -1,7 +1,10 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { useParams, useHistory, Redirect } from 'react-router'
-import { Heading, Button } from '../../../components/atoms'
+import {
+  Heading,
+  Button,
+} from '@talent-connect/shared-atomic-design-components'
 import {
   ProfileCard,
   MContacts,

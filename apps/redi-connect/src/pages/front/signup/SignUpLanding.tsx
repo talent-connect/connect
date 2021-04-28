@@ -3,8 +3,12 @@ import { useHistory } from 'react-router-dom'
 import { Content, Columns, Element } from 'react-bulma-components'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import Teaser from '../../../components/molecules/Teaser'
-import { Button, Heading, SVGImage } from '../../../components/atoms'
-import { SVGImages } from '../../../components/atoms/SVGImage'
+import {
+  Button,
+  Heading,
+  SVGImage,
+} from '@talent-connect/shared-atomic-design-components'
+import { SVGImages } from '@talent-connect/shared-atomic-design-components'
 import classnames from 'classnames'
 import './SignUpLanding.scss'
 

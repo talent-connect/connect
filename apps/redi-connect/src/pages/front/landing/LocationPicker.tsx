@@ -10,11 +10,14 @@ import {
   Columns,
   Content,
 } from 'react-bulma-components'
-import { Heading, Button } from '../../../components/atoms'
+import {
+  Heading,
+  Button,
+  SVGImage,
+} from '@talent-connect/shared-atomic-design-components'
 import { Footer, RediHero } from '../../../components/organisms'
 import { ReactComponent as RediLogo } from '../../../assets/images/logo.svg'
 import { ReactComponent as Deloitte } from '../../../assets/images/deloitte.svg'
-import SVGImage from '../../../components/atoms/SVGImage'
 
 import '../../../components/organisms/Navbar.scss'
 import { rediLocationNames } from '../../../config/config'

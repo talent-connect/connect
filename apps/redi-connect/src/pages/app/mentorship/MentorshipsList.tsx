@@ -2,12 +2,12 @@ import React from 'react'
 import { Redirect } from 'react-router'
 import { Columns, Content } from 'react-bulma-components'
 import LoggedIn from '../../../components/templates/LoggedIn'
-import Heading from '../../../components/atoms/Heading'
 import { ProfileCard } from '../../../components/organisms'
 import { RootState } from '../../../redux/types'
 import { getMatches } from '../../../redux/matches/selectors'
 import { connect } from 'react-redux'
 import { RedMatch } from '../../../types/RedMatch'
+import { Heading } from '@talent-connect/shared-atomic-design-components'
 
 interface Props {
   matches: RedMatch[]

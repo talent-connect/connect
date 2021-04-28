@@ -4,7 +4,10 @@ import { getHasReachedMenteeLimit } from '../../../redux/user/selectors'
 import { useParams, useHistory } from 'react-router'
 import { RootState } from '../../../redux/types'
 import { Columns, Element, Notification, Tag } from 'react-bulma-components'
-import { Button, Heading } from '../../../components/atoms'
+import {
+  Button,
+  Heading,
+} from '@talent-connect/shared-atomic-design-components'
 import {
   ReadAbout,
   ReadMentoringTopics,

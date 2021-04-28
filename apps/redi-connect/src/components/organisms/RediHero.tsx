@@ -6,15 +6,17 @@ import {
   Content,
   Element,
 } from 'react-bulma-components'
-import Heading from '../atoms/Heading'
 import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import Button from '../atoms/Button'
 import { ReactComponent as Deloitte } from '../../assets/images/deloitte.svg'
-import SVGImage from '../atoms/SVGImage'
 import './RediHero.scss'
 import { rediLocationNames } from '../../config/config'
 import { envRediLocation } from '../../utils/env-redi-location'
+import {
+  Button,
+  Heading,
+  SVGImage,
+} from '@talent-connect/shared-atomic-design-components'
 
 const RediHero = () => {
   const history = useHistory()

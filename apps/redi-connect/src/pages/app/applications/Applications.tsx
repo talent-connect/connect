@@ -1,6 +1,6 @@
 import React from 'react'
 import { Content } from 'react-bulma-components'
-import { Heading } from '../../../components/atoms'
+import { Heading } from '@talent-connect/shared-atomic-design-components'
 import { ApplicationCard } from '../../../components/organisms'
 import LoggedIn from '../../../components/templates/LoggedIn'
 import { RootState } from '../../../redux/types'

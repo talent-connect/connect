@@ -1,13 +1,17 @@
 import React, { useState } from 'react'
 import { Columns, Content, Element, Form } from 'react-bulma-components'
-import { Heading, Button, FormInput } from '../../../components/atoms'
-import { Teaser } from '../../../components/molecules'
+import {
+  Heading,
+  Button,
+  FormInput,
+} from '@talent-connect/shared-atomic-design-components'
 import { AccountOperation } from '../../../components/templates'
 import { FormikValues, useFormik } from 'formik'
 
 import * as yup from 'yup'
 import { Link } from 'react-router-dom'
 import { requestResetPasswordEmail } from '../../../services/api/api'
+import Teaser from 'apps/redi-connect/src/components/molecules/Teaser'
 
 interface FormValues {
   email: string

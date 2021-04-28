@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Loader } from '../components/atoms'
+import { Loader } from '@talent-connect/shared-atomic-design-components'
 
 export const useLoading = function () {
   const [loading, setLoading] = useState(false)

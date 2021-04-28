@@ -4,8 +4,11 @@ import { useHistory } from 'react-router-dom'
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
 import { Content } from 'react-bulma-components'
-import { FormTextArea, Button } from '../atoms'
-import { Modal } from '../molecules'
+import {
+  FormTextArea,
+  Button,
+} from '@talent-connect/shared-atomic-design-components'
+import { Modal } from '@talent-connect/shared-atomic-design-components'
 import { matchesAcceptMentorshipStart } from '../../redux/matches/actions'
 import { RedMatch } from '../../types/RedMatch'
 

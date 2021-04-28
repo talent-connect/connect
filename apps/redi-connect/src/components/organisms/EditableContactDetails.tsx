@@ -1,6 +1,6 @@
 import React from 'react'
-import { FormInput } from '../atoms'
-import { Editable, ReadContactDetails } from '../molecules'
+import { FormInput } from '@talent-connect/shared-atomic-design-components'
+import { Editable } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
@@ -9,6 +9,7 @@ import { profileSaveStart } from '../../redux/user/actions'
 import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
+import { ReadContactDetails } from '../molecules'
 
 export interface ContactsFormValues {
   firstName: string

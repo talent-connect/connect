@@ -1,8 +1,6 @@
 import React, { useState, useCallback } from 'react'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import Teaser from '../../../components/molecules/Teaser'
-import FormInput from '../../../components/atoms/FormInput'
-import Heading from '../../../components/atoms/Heading'
 import * as Yup from 'yup'
 import { Link } from 'react-router-dom'
 import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
@@ -15,10 +13,14 @@ import {
 } from '../../../services/auth/auth'
 import { Columns, Form, Content, Notification } from 'react-bulma-components'
 import { capitalize } from 'lodash'
-import Button from '../../../components/atoms/Button'
 import { RediLocation } from '../../../types/RediLocation'
 import { buildFrontendUrl } from '../../../utils/build-frontend-url'
 import { rediLocationNames } from '../../../config/config'
+import {
+  Button,
+  FormInput,
+  Heading,
+} from '@talent-connect/shared-atomic-design-components'
 
 interface LoginFormValues {
   username: string

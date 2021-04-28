@@ -3,8 +3,13 @@ import { connect } from 'react-redux'
 import _uniqueId from 'lodash/uniqueId'
 import * as Yup from 'yup'
 import moment from 'moment'
-import { Button, Icon, FormSelect, FormDatePicker } from '../../atoms'
-import { Module, Modal } from '../../molecules'
+import {
+  Button,
+  Icon,
+  FormSelect,
+  FormDatePicker,
+} from '@talent-connect/shared-atomic-design-components'
+import { Module, Modal } from '@talent-connect/shared-atomic-design-components'
 import { Content, Element } from 'react-bulma-components'
 import { RedMentoringSession } from '../../../types/RedMentoringSession'
 import { FormSubmitResult } from '../../../types/FormSubmitResult'

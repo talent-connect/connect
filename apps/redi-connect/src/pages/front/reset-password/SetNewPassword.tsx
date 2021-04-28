@@ -2,10 +2,6 @@ import React, { useState, useEffect } from 'react'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import Teaser from '../../../components/molecules/Teaser'
 import { Columns, Content, Form } from 'react-bulma-components'
-import Button from '../../../components/atoms/Button'
-import Heading from '../../../components/atoms/Heading'
-
-import FormInput from '../../../components/atoms/FormInput'
 import { Link } from 'react-router-dom'
 
 import * as Yup from 'yup'
@@ -16,6 +12,11 @@ import { setPassword, fetchSaveRedProfile } from '../../../services/api/api'
 import { saveAccessToken } from '../../../services/auth/auth'
 import { RouteComponentProps } from 'react-router'
 import { showNotification } from '../../../components/AppNotification'
+import {
+  Button,
+  FormInput,
+  Heading,
+} from '@talent-connect/shared-atomic-design-components'
 
 interface SetNewPasswordValues {
   password: string

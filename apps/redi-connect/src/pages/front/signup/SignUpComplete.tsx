@@ -2,12 +2,14 @@ import React from 'react'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import { Columns, Form, Content } from 'react-bulma-components'
 import Teaser from '../../../components/molecules/Teaser'
-import Button from '../../../components/atoms/Button'
-import Heading from '../../../components/atoms/Heading'
 import { useHistory, useParams } from 'react-router'
 import { RediLocation } from '../../../types/RediLocation'
 import { envRediLocation } from '../../../utils/env-redi-location'
 import { UserType } from '../../../types/UserType'
+import {
+  Heading,
+  Button,
+} from '@talent-connect/shared-atomic-design-components'
 
 type RouteParams = {
   userType: UserType

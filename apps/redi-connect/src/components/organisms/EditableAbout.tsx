@@ -1,6 +1,6 @@
 import React from 'react'
-import { FormTextArea } from '../atoms'
-import { Editable, ReadAbout } from '../molecules'
+import { FormTextArea } from '@talent-connect/shared-atomic-design-components'
+import { Editable } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
@@ -8,6 +8,7 @@ import { profileSaveStart } from '../../redux/user/actions'
 import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
+import { ReadAbout } from '../molecules'
 
 // do we really need all these type???
 export type UserType = 'mentor' | 'mentee'

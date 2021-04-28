@@ -1,5 +1,10 @@
-import { Caption, FormTextArea, Checkbox, Button } from '../atoms'
-import { Modal } from '../molecules'
+import {
+  Caption,
+  FormTextArea,
+  Checkbox,
+  Button,
+} from '@talent-connect/shared-atomic-design-components'
+import { Modal } from '@talent-connect/shared-atomic-design-components'
 import { Content, Form } from 'react-bulma-components'
 import { RedProfile } from '../../types/RedProfile'
 

@@ -6,16 +6,17 @@ import * as Yup from 'yup'
 
 import { FormikValues, FormikHelpers as FormikActions, useFormik } from 'formik'
 import omit from 'lodash/omit'
-import Heading from '../../../components/atoms/Heading'
-import FormInput from '../../../components/atoms/FormInput'
-import { Checkbox } from '../../../components/atoms'
-import FormSelect from '../../../components/atoms/FormSelect'
+import {
+  Button,
+  Checkbox,
+  FormInput,
+  FormSelect,
+  Heading,
+} from '@talent-connect/shared-atomic-design-components'
 
 import Teaser from '../../../components/molecules/Teaser'
 
 import { Columns, Form } from 'react-bulma-components'
-
-import Button from '../../../components/atoms/Button'
 
 import { signUp } from '../../../services/api/api'
 import { RedProfile } from '../../../types/RedProfile'

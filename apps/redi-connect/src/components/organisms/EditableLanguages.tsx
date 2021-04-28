@@ -1,6 +1,6 @@
 import React from 'react'
-import { FormSelect } from '../atoms'
-import { Editable, ReadLanguages } from '../molecules'
+import { FormSelect } from '@talent-connect/shared-atomic-design-components'
+import { Editable } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
@@ -11,6 +11,7 @@ import * as Yup from 'yup'
 import { FormikValues, useFormik } from 'formik'
 
 import { Languages as availableLanguages } from '../../config/config'
+import { ReadLanguages } from '../molecules'
 const formLanguages = availableLanguages.map((language) => ({
   value: language,
   label: language,

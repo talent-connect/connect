@@ -3,7 +3,7 @@ import { Content } from 'react-bulma-components'
 import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
-import { Caption } from '../atoms'
+import { Caption } from '@talent-connect/shared-atomic-design-components'
 import { courseIdToLabelMap } from '../../config/config'
 
 interface Props {

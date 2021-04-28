@@ -3,7 +3,10 @@ import { connect } from 'react-redux'
 import { RootState } from '../../../redux/types'
 import { profileFetchStart } from '../../../redux/user/actions'
 import { Columns, Content, Element } from 'react-bulma-components'
-import { Heading, Loader } from '../../../components/atoms'
+import {
+  Heading,
+  Loader,
+} from '@talent-connect/shared-atomic-design-components'
 import {
   Avatar,
   EditableAbout,

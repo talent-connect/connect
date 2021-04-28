@@ -1,23 +1,12 @@
 {
   "version": 2,
-  "cli": {
-    "defaultCollection": "@nrwl/react"
-  },
+  "cli": { "defaultCollection": "@nrwl/react" },
   "defaultProject": "redi-connect",
   "generators": {
     "@nrwl/react": {
-      "application": {
-        "style": "scss",
-        "linter": "eslint",
-        "babel": true
-      },
-      "component": {
-        "style": "scss"
-      },
-      "library": {
-        "style": "scss",
-        "linter": "eslint"
-      }
+      "application": { "style": "scss", "linter": "eslint", "babel": true },
+      "component": { "style": "scss" },
+      "library": { "style": "scss", "linter": "eslint" }
     }
   },
   "projects": {
@@ -37,6 +26,12 @@
             "tsConfig": "apps/redi-connect/tsconfig.app.json",
             "assets": ["apps/redi-connect/src/assets"],
             "styles": [],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "libs/shared-atomic-design-components/src/lib/styles"
+              ]
+            },
+            "extractCss": true,
             "scripts": [],
             "webpackConfig": "@nrwl/react/plugins/webpack"
           },
@@ -73,9 +68,7 @@
             "watch": false
           },
           "configurations": {
-            "production": {
-              "buildTarget": "redi-connect:build:production"
-            }
+            "production": { "buildTarget": "redi-connect:build:production" }
           }
         },
         "lint": {
@@ -107,9 +100,7 @@
             "devServerTarget": "redi-connect:serve"
           },
           "configurations": {
-            "production": {
-              "devServerTarget": "redi-connect:serve:production"
-            }
+            "production": { "devServerTarget": "redi-connect:serve:production" }
           }
         },
         "lint": {
@@ -166,14 +157,9 @@
         },
         "serve": {
           "executor": "@nrwl/web:dev-server",
-          "options": {
-            "buildTarget": "admin-panel:build",
-            "port": 3001
-          },
+          "options": { "buildTarget": "admin-panel:build", "port": 3001 },
           "configurations": {
-            "production": {
-              "buildTarget": "admin-panel:build:production"
-            }
+            "production": { "buildTarget": "admin-panel:build:production" }
           }
         },
         "lint": {
@@ -205,9 +191,7 @@
             "devServerTarget": "admin-panel:serve"
           },
           "configurations": {
-            "production": {
-              "devServerTarget": "admin-panel:serve:production"
-            }
+            "production": { "devServerTarget": "admin-panel:serve:production" }
           }
         },
         "lint": {
@@ -227,13 +211,32 @@
           "executor": "@nrwl/workspace:run-commands",
           "options": {
             "commands": [
-              {
-                "command": "node apps/api/server/server.js"
-              },
-              {
-                "command": "mongod --dbpath ./mongodb-data"
-              }
+              { "command": "node apps/api/server/server.js" },
+              { "command": "mongod --dbpath ./mongodb-data" }
             ]
+          }
+        }
+      }
+    },
+    "shared-atomic-design-components": {
+      "root": "libs/shared-atomic-design-components",
+      "sourceRoot": "libs/shared-atomic-design-components/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/shared-atomic-design-components/**/*.{ts,tsx,js,jsx}"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared-atomic-design-components"],
+          "options": {
+            "jestConfig": "libs/shared-atomic-design-components/jest.config.js",
+            "passWithNoTests": true
           }
         }
       }

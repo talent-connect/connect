@@ -1,11 +1,9 @@
 import React from 'react'
 import classnames from 'classnames'
 import { Card, Element, Tag } from 'react-bulma-components'
-import { Icon } from '../atoms'
-import { ReadMentoringTopics } from '../molecules'
+import { Icon, PipeList } from '@talent-connect/shared-atomic-design-components'
 
 import { useHistory } from 'react-router-dom'
-import PipeList from '../../components/molecules/PipeList'
 import {
   AWS_PROFILE_AVATARS_BUCKET_BASE_URL,
   rediLocationNames,
@@ -15,6 +13,7 @@ import placeholderImage from '../../assets/images/img-placeholder.png'
 import './ProfileCard.scss'
 
 import { RedProfile } from '../../types/RedProfile'
+import { ReadMentoringTopics } from '../molecules'
 
 interface ProfileCardProps {
   profile: RedProfile

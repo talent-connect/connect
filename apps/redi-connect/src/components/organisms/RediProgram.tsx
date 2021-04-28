@@ -1,3 +1,7 @@
+import {
+  DecoratedHeadline,
+  Icon,
+} from '@talent-connect/shared-atomic-design-components'
 import React from 'react'
 import {
   Container,
@@ -7,8 +11,6 @@ import {
   Heading,
 } from 'react-bulma-components'
 import { useTranslation } from 'react-i18next'
-import DecoratedHeadline from '../atoms/DecoratedHeadline'
-import Icon from '../atoms/Icon'
 
 import './RediProgram.scss'
 

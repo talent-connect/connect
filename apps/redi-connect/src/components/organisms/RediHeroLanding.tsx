@@ -9,9 +9,8 @@ import {
   Columns,
 } from 'react-bulma-components'
 import { useTranslation } from 'react-i18next'
-import Icon from '../atoms/Icon'
-import SVGImage from '../atoms/SVGImage'
 import './RediHeroLanding.scss'
+import { Icon, SVGImage } from '@talent-connect/shared-atomic-design-components'
 
 interface Props {
   type: 'mentor' | 'mentee'

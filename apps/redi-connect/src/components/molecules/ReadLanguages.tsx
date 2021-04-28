@@ -2,8 +2,11 @@ import React from 'react'
 import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
-import PipeList from './PipeList'
-import { Caption, Placeholder } from '../atoms'
+import {
+  Caption,
+  Placeholder,
+  PipeList,
+} from '@talent-connect/shared-atomic-design-components'
 
 interface Props {
   profile: RedProfile

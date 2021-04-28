@@ -1,9 +1,11 @@
+import {
+  Button,
+  Heading,
+  SVGImage,
+} from '@talent-connect/shared-atomic-design-components'
 import React from 'react'
 import { Container, Section, Columns, Content } from 'react-bulma-components'
-import Heading from '../atoms/Heading'
 import { useTranslation } from 'react-i18next'
-import Button from '../atoms/Button'
-import SVGImage from '../atoms/SVGImage'
 
 import './PreFooter.scss'
 

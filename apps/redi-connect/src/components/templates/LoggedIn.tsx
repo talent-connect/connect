@@ -2,8 +2,12 @@ import React, { ReactNode, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
-import { Button, Icon, Loader } from '../atoms'
-import { Modal } from '../molecules'
+import {
+  Button,
+  Icon,
+  Loader,
+} from '@talent-connect/shared-atomic-design-components'
+import { Modal } from '@talent-connect/shared-atomic-design-components'
 import { Navbar, SideMenu } from '../organisms'
 import {
   Container,

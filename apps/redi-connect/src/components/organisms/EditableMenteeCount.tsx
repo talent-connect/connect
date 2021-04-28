@@ -1,6 +1,9 @@
 import React from 'react'
-import { Checkbox, FormSelect } from '../atoms'
-import { Editable, ReadMenteeCount } from '../molecules'
+import {
+  Checkbox,
+  FormSelect,
+} from '@talent-connect/shared-atomic-design-components'
+import { Editable } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile } from '../../types/RedProfile'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
@@ -14,6 +17,7 @@ import {
   rediLocationNames,
 } from '../../config/config'
 import { RediLocation } from '../../types/RediLocation'
+import { ReadMenteeCount } from '../molecules'
 
 const menteeCountExplanation = (amount: number) => {
   switch (amount) {

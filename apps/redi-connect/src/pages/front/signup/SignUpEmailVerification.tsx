@@ -2,7 +2,7 @@ import React from 'react'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import { Columns, Content } from 'react-bulma-components'
 import Teaser from '../../../components/molecules/Teaser'
-import Heading from '../../../components/atoms/Heading'
+import { Heading } from '@talent-connect/shared-atomic-design-components'
 import { envRediLocation } from '../../../utils/env-redi-location'
 
 const SignUpEmailVerification = () => (

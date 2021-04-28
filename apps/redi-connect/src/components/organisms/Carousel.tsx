@@ -7,7 +7,6 @@ import {
   Content,
   Image,
 } from 'react-bulma-components'
-import DecoratedHeadline from '../atoms/DecoratedHeadline'
 import { useTranslation } from 'react-i18next'
 import classnames from 'classnames'
 import Slider from 'react-slick'
@@ -15,6 +14,7 @@ import khaled from '../../assets/images/profile-khaled.jpg'
 import halil from '../../assets/images/profile-halil.jpg'
 import dragos from '../../assets/images/profile-dragos.jpg'
 import './Carousel.scss'
+import { DecoratedHeadline } from '@talent-connect/shared-atomic-design-components'
 
 interface Props {
   headline: string

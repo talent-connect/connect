@@ -9,9 +9,8 @@ import {
 } from 'react-bulma-components'
 import { useTranslation, Trans } from 'react-i18next'
 import classnames from 'classnames'
-import Icon from '../../components/atoms/Icon'
-import Heading from '../../components/atoms/Heading'
 import './Faqs.scss'
+import { Heading, Icon } from '@talent-connect/shared-atomic-design-components'
 
 interface Props {
   question: string

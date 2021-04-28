@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
-import Button from '../atoms/Button'
 import { isLoggedIn } from '../../services/auth/auth'
 import { logout } from '../../services/api/api'
 import { Section, Container, Element } from 'react-bulma-components'
-import Logo from '../atoms/Logo'
 import classnames from 'classnames'
 import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import './Navbar.scss'
+import { Button, Logo } from '@talent-connect/shared-atomic-design-components'
 
 const LoggedOutNavItems = () => {
   const { t } = useTranslation()

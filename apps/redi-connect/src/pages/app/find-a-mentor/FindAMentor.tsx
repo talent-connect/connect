@@ -1,8 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Content, Columns, Tag, Form } from 'react-bulma-components'
 import { debounce } from 'lodash'
-import { FormInput, Heading, Icon } from '../../../components/atoms'
-import { FilterDropdown } from '../../../components/molecules'
+import {
+  FormInput,
+  Heading,
+  Icon,
+} from '@talent-connect/shared-atomic-design-components'
+import { FilterDropdown } from '@talent-connect/shared-atomic-design-components'
 import { ProfileCard } from '../../../components/organisms'
 import { useLoading } from '../../../hooks/WithLoading'
 import { getMentors } from '../../../services/api/api'
