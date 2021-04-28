@@ -5,16 +5,21 @@ import { Routes } from './components/Routes'
 import AppNotification from './components/AppNotification'
 import { Loader } from '@talent-connect/shared-atomic-design-components'
 import { envRediLocation } from './utils/env-redi-location'
+import { QueryClient, QueryClientProvider } from 'react-query'
+
+const queryClient = new QueryClient()
 
 const App = () => {
   return (
     <>
-      <AppNotification />
-      <Router history={history}>
-        <Suspense fallback={<Loader loading={true} />}>
-          <Routes />
-        </Suspense>
-      </Router>
+      <QueryClientProvider client={queryClient}>
+        <AppNotification />
+        <Router history={history}>
+          <Suspense fallback={<Loader loading={true} />}>
+            <Routes />
+          </Suspense>
+        </Router>
+      </QueryClientProvider>
     </>
   )
 }
