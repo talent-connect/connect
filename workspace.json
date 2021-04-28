@@ -75,8 +75,7 @@
           "executor": "@nrwl/web:dev-server",
           "options": {
             "buildTarget": "redi-connect:build",
-            "port": 3000,
-            "watch": false
+            "port": 3000
           },
           "configurations": {
             "production": {
@@ -298,7 +297,13 @@
               "apps/redi-talent-pool/src/favicon.ico",
               "apps/redi-talent-pool/src/assets"
             ],
-            "styles": ["apps/redi-talent-pool/src/styles.scss"],
+            "styles": [],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "libs/shared-atomic-design-components/src/lib/styles"
+              ]
+            },
+            "extractCss": true,
             "scripts": [],
             "webpackConfig": "@nrwl/react/plugins/webpack"
           },
@@ -330,7 +335,8 @@
         "serve": {
           "executor": "@nrwl/web:dev-server",
           "options": {
-            "buildTarget": "redi-talent-pool:build"
+            "buildTarget": "redi-talent-pool:build",
+            "port": 2999
           },
           "configurations": {
             "production": {
