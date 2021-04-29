@@ -4,7 +4,6 @@ import { history, Router } from './services/history/history'
 import { Routes } from './components/Routes'
 import AppNotification from './components/AppNotification'
 import { Loader } from '@talent-connect/shared-atomic-design-components'
-import { envRediLocation } from './utils/env-redi-location'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
 const queryClient = new QueryClient()
