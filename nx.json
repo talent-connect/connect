@@ -32,6 +32,7 @@
       "tags": [],
       "implicitDependencies": ["redi-talent-pool"]
     },
-    "shared-config": { "tags": [] }
+    "shared-config": { "tags": [] },
+    "talent-pool-types": { "tags": [] }
   }
 }

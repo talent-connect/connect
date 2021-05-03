@@ -368,6 +368,25 @@
           }
         }
       }
+    },
+    "talent-pool-types": {
+      "root": "libs/talent-pool/types",
+      "sourceRoot": "libs/talent-pool/types/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": { "lintFilePatterns": ["libs/talent-pool/types/**/*.ts"] }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/talent-pool/types"],
+          "options": {
+            "jestConfig": "libs/talent-pool/types/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   }
 }

@@ -5,5 +5,6 @@ module.exports = {
     '<rootDir>/libs/shared-atomic-design-components',
     '<rootDir>/apps/redi-talent-pool',
     '<rootDir>/libs/shared-config',
+    '<rootDir>/libs/talent-pool/types',
   ],
 }

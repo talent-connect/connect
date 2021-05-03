@@ -19,7 +19,10 @@
         "libs/shared-atomic-design-components/src/index.ts"
       ],
       "@talent-connect/shared-types": ["libs/shared-types/src/index.ts"],
-      "@talent-connect/shared-config": ["libs/shared-config/src/index.ts"]
+      "@talent-connect/shared-config": ["libs/shared-config/src/index.ts"],
+      "@talent-connect/talent-pool/types": [
+        "libs/talent-pool/types/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]
