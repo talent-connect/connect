@@ -571,8 +571,11 @@ function userTypeToEmoji({ userType }) {
   return emoji ?? userType;
 }
 
-const calculateAge = ({ birthDate }) => {
+const calculateAge = (birthDate) => { 
   const age = moment().diff(birthDate, "years");
+  if (!birthDate) {
+    return "-";
+  }
   return age;
 };
 
@@ -588,7 +591,7 @@ const RedProfileShow = (props) => (
           <TextField source="firstName" />
           <TextField source="lastName" />
           <TextField source="gender" />
-          <FunctionField label="Age" render={calculateAge} />
+          <FunctionField label="Age" render={person => calculateAge(person.birthDate)} />
           <DateField
             source="birthDate"
             label="Date of birth"
@@ -1139,7 +1142,7 @@ const RedMentoringSessionListAside = () => {
 
   return (
     <div style={{ width: 200, margin: '1em' }}>
-      <Typography variant="title">Isabelle Calculator</Typography>
+      <Typography>Isabelle Calculator</Typography>
       <Typography variant="body1" />
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         {picker(fromDate, setFromDate, 'From date')}

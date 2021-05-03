@@ -6,14 +6,12 @@ import { Icon } from '../../components/atoms'
 import 'react-datepicker/dist/react-datepicker.css'
 import './FormDatePicker.scss'
 
-interface Props {
-  name: string
-  placeholder: string
-  label?: string
-  type?: 'email' | 'text' | 'password'
+interface IPickerTrigger {
+  value?: string
+  onClick?: () => void
 }
 
-const PickerTrigger = ({ value, onClick }: any) => (
+const PickerTrigger = ({ value, onClick }: IPickerTrigger) => (
   <div className="datepicker-trigger" onClick={onClick}>
     <Form.Input
       id={value}
@@ -22,11 +20,26 @@ const PickerTrigger = ({ value, onClick }: any) => (
     <Icon
       icon="calendar"
       className="datepicker-trigger__icon"
-      size="medium" />
+      size="medium"
+    />
   </div>
 )
 
-function FormDatePicker (props: any) {
+interface IFormDatePicker {
+  name: string
+  placeholder: string
+  label: string
+  values?: any
+  dateFormat?: string
+  minDate?: Date
+  maxDate?: Date
+  showMonthDropdown?: boolean
+  showYearDropdown?: boolean
+  dropdownMode?: "scroll" | "select"
+  setFieldValue: (name: string, date: Date) => void
+}
+
+const FormDatePicker = (props: IFormDatePicker) => {
   const {
     name,
     placeholder,
@@ -42,7 +55,7 @@ function FormDatePicker (props: any) {
   } = props
 
   const changeHandler = (date: Date) => {
-    setFieldValue(name, date)
+    setFieldValue(name, date);
   }
 
   return (
@@ -62,7 +75,7 @@ function FormDatePicker (props: any) {
           showYearDropdown={showYearDropdown}
           dropdownMode={dropdownMode}
           onChange={changeHandler}
-        /> 
+        />
       </Form.Control>
     </Form.Field>
   )
