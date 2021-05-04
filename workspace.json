@@ -274,7 +274,7 @@
             },
             "extractCss": true,
             "scripts": [],
-            "webpackConfig": "@nrwl/react/plugins/webpack"
+            "webpackConfig": "apps/redi-talent-pool/custom-webpack-config.js"
           },
           "configurations": {
             "production": {

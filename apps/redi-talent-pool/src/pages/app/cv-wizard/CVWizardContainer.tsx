@@ -1,4 +1,8 @@
-import { LoggedIn } from 'apps/redi-talent-pool/src/components/templates'
+import React from 'react'
+
+import { LoggedIn } from '../../../components/templates'
+import { CVPDFPreview } from '../../../components/molecules'
+
 import {
   Container,
   Section,
@@ -6,9 +10,8 @@ import {
   Content,
   Notification,
 } from 'react-bulma-components'
-import { PDFViewer, StyleSheet } from '@react-pdf/renderer'
 import './CVWizardContainer.scss'
-import CVPDFPreview from 'apps/redi-talent-pool/src/components/molecules/CvPdfPreview'
+import { PDFViewer, StyleSheet } from '@react-pdf/renderer'
 
 /* eslint-disable-next-line */
 export interface CVWizardContainerProps {}
@@ -34,7 +37,7 @@ export function CVWizardContainer(props: CVWizardContainerProps) {
       <Container className="cv-wizard-container">
         <Columns>
           <Columns.Column size={6} className="column--side-menu">
-            <PDFViewer style={styles.viewer}>
+            <PDFViewer>
               <CVPDFPreview cvData={UserData} />
             </PDFViewer>
           </Columns.Column>

@@ -18,29 +18,59 @@ interface CVPDFPreviewProps {
   cvData: UserCVData
 }
 
+// Create styles
 const styles = StyleSheet.create({
   page: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     backgroundColor: '#E4E4E4',
   },
-  section: {
-    margin: 10,
-    padding: 10,
-    flexGrow: 1,
+  header: {
+    color: '#fff',
+    height: '200px',
+    backgroundColor: '#09375A',
+    position: 'relative',
+  },
+  headerText1: {
+    top: '50px',
+    left: '270px',
+    position: 'absolute',
+    fontSize: '13px',
+    marginBottom: '10px',
+  },
+  headerText2: {
+    top: '70px',
+    left: '270px',
+    position: 'absolute',
+    fontSize: '40px',
+    textTransform: 'uppercase',
+  },
+  headerText3: {
+    top: '110px',
+    left: '270px',
+    position: 'absolute',
+    fontSize: '40px',
+    textTransform: 'uppercase',
+  },
+  headerImg: {
+    top: '50px',
+    left: '50px',
+    position: 'absolute',
+    width: '170px',
+    height: '250px',
   },
 })
 
-export const CVPDFPreview = ({
+const CVPDFPreview = ({
   cvData: { firstName, lastName, position, profileImage },
 }: CVPDFPreviewProps) => {
   return (
-    <Document>
+    <Document title={`${firstName}_${lastName}_CV.pdf`}>
       <Page size="A4" style={styles.page}>
-        <View style={styles.section}>
-          <Text>Section #1</Text>
-        </View>
-        <View style={styles.section}>
-          <Text>Section #2</Text>
+        <View style={styles.header}>
+          <Text style={styles.headerText1}>{position}</Text>
+          <Text style={styles.headerText2}>{firstName}</Text>
+          <Text style={styles.headerText3}>{lastName}</Text>
+          <Image style={styles.headerImg} src={profileImage} />
         </View>
       </Page>
     </Document>
