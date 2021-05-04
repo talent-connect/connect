@@ -6,12 +6,12 @@ import { Icon } from '../../components/atoms'
 import 'react-datepicker/dist/react-datepicker.css'
 import './FormDatePicker.scss'
 
-interface IPickerTrigger {
+interface PickerTriggerProps {
   value?: string
   onClick?: () => void
 }
 
-const PickerTrigger = ({ value, onClick }: IPickerTrigger) => (
+const PickerTrigger = ({ value, onClick }: PickerTriggerProps) => (
   <div className="datepicker-trigger" onClick={onClick}>
     <Form.Input
       id={value}
@@ -25,7 +25,7 @@ const PickerTrigger = ({ value, onClick }: IPickerTrigger) => (
   </div>
 )
 
-interface IFormDatePicker {
+interface FormDatePickerProps {
   name: string
   placeholder: string
   label: string
@@ -39,7 +39,7 @@ interface IFormDatePicker {
   setFieldValue: (name: string, date: Date) => void
 }
 
-const FormDatePicker = (props: IFormDatePicker) => {
+const FormDatePicker = (props: FormDatePickerProps) => {
   const {
     name,
     placeholder,
