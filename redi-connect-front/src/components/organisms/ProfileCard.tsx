@@ -30,6 +30,7 @@ const ProfileCard = ({ profile, linkTo, toggleFavorite, isFavorite }: ProfileCar
     lastName,
     languages,
     categories,
+    rediLocation,
     profileAvatarImageS3Key
   } = profile
 
@@ -62,9 +63,11 @@ const ProfileCard = ({ profile, linkTo, toggleFavorite, isFavorite }: ProfileCar
             icon={isFavorite ? 'heartFilled' : 'heart'}
             className="profile-card__favorite__icon"/>
         </div>}
-        <Tag size="small" className="profile-card__location-tag" rounded>(in {rediLocationNames[profile.rediLocation]})</Tag>
-        <Element renderAs="h3" textWeight="bold" textSize={4} className="profile-card__name">
+        <Element key="name" renderAs="h3" textWeight="bold" textSize={4} className="profile-card__name">
           {firstName} {lastName}
+        </Element>
+        <Element key="location" renderAs="span" className="content">
+          {rediLocationNames[rediLocation]}
         </Element>
         {languages && <PipeList items={languages} />}
         {categories && <ReadMentoringTopics.Tags items={categories} shortList />}
