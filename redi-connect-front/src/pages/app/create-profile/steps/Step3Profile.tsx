@@ -89,7 +89,7 @@ const Comp: any = (
       firstName,
       lastName,
       gender,
-      age,
+      birthDate,
       languages,
       otherLanguages,
       personalDescription,

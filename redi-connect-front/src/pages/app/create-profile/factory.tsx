@@ -73,7 +73,7 @@ export interface CreateProfileFormValues {
   firstName: string
   lastName: string
   gender: string
-  age?: number
+  birthDate?: Date
   languages: string[]
   otherLanguages: string
   personalDescription: string
@@ -109,7 +109,7 @@ const initialValues: CreateProfileFormValues = {
   firstName: '',
   lastName: '',
   gender: '',
-  age: undefined,
+  birthDate: undefined,
   languages: ['English'],
   otherLanguages: '',
   personalDescription: '',
