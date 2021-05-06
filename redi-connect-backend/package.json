@@ -12,24 +12,24 @@
     "eslint:autofix": "npx eslint . --ext .js --fix --fix"
   },
   "dependencies": {
-    "aws-sdk": "^2.894.0",
+    "aws-sdk": "^2.418.0",
     "body-parser": "^1.19.0",
     "compression": "^1.0.3",
     "cors": "^2.5.2",
     "dotenv": "^8.2.0",
-    "helmet": "^3.23.3",
-    "lodash": "^4.17.21",
-    "loopback": "^3.28.0",
+    "helmet": "^3.10.0",
+    "lodash": "^4.17.19",
+    "loopback": "^3.25.1",
     "loopback-boot": "^2.6.5",
     "loopback-component-explorer": "^6.2.0",
     "loopback-connector-mongodb": "^5.5.0",
     "loopback-content-range": "^1.1.0",
-    "mjml": "^4.9.1",
-    "nodemailer": "^6.5.0",
+    "mjml": "^4.6.3",
+    "nodemailer": "^6.4.8",
     "react-s3-uploader": "^4.8.0",
-    "rxjs": "^6.6.7",
+    "rxjs": "^6.4.0",
     "serve-favicon": "^2.0.1",
-    "strong-error-handler": "^3.5.0"
+    "strong-error-handler": "^3.0.0"
   },
   "repository": {
     "type": "",
