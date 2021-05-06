@@ -77,7 +77,7 @@ export const fetchSaveRedProfile = async (accessToken: AccessToken): Promise<Red
   try {
     const profile = profileResp.data as RedProfile;
     // mocking a backend response for the birthDate:
-    profile.birthDate = new Date(2001, 8, 28); // <-- to be deleted when backend/database part is implemented
+    // profile.birthDate = new Date(2001, 8, 28); // <-- to be deleted when backend/database part is implemented
     localStorageSaveRedProfile(profile);
     return profile;
   } catch (err) {

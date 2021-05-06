@@ -103,6 +103,9 @@
     },
     "createdAt": {
       "type": "date"
+    },
+    "birthDate": {
+      "type": "date"
     }
   },
   "validations": [],
