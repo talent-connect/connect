@@ -1,56 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 
+import { usePDF } from '@react-pdf/renderer'
+
+import CVPDF from './CVPDF'
 import {
-  Page,
-  Text,
-  View,
-  Document,
-  StyleSheet,
-  PDFViewer,
-  Image
-} from '@react-pdf/renderer'
-
-// Create styles
-const styles = StyleSheet.create({
-  page: {
-    flexDirection: 'column',
-    backgroundColor: '#E4E4E4'
-  },
-  header: {
-    color: '#fff',
-    height: '200px',
-    backgroundColor: '#09375A',
-    position: 'relative'
-  },
-  headerText1: {
-    top: '50px',
-    left: '270px',
-    position: 'absolute',
-    fontSize: '13px',
-    marginBottom: '10px'
-  },
-  headerText2: {
-    top: '70px',
-    left: '270px',
-    position: 'absolute',
-    fontSize: '40px',
-    textTransform: 'uppercase'
-  },
-  headerText3: {
-    top: '110px',
-    left: '270px',
-    position: 'absolute',
-    fontSize: '40px',
-    textTransform: 'uppercase'
-  },
-  headerImg: {
-    top: '50px',
-    left: '50px',
-    position: 'absolute',
-    width: '170px',
-    height: '250px'
-  }
-})
+  Document as ReactPDFDocument,
+  Page as ReactPDFPage,
+  pdfjs
+} from 'react-pdf'
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`
 
 export interface UserCVData {
   position: string
@@ -62,20 +20,42 @@ interface CVPDFPreviewProps {
   cvData: UserCVData
 }
 
-const CVPDFPreview = ({
-  cvData: { firstName, lastName, position, profileImage }
-}: CVPDFPreviewProps) => {
+const CVPDFPreview = ({ cvData }: CVPDFPreviewProps & { styles?: any }) => {
+  const [instance, updateInstance] = usePDF({
+    document: <CVPDF cvData={cvData} />
+  })
+
+  const documentOptions = {
+    cMapUrl: 'cmaps/',
+    cMapPacked: true
+  }
+
+  const url = instance.blob ? URL.createObjectURL(instance.blob) : null
+  const [numberOfPages, setNumberOfPages] = useState(0)
+
+  const onDocumentLoadSuccess = (numberOfPages: any) => {
+    const num = numberOfPages._pdfInfo.numPages
+    setNumberOfPages(num)
+  }
+
   return (
-    <Document title={`${firstName}_${lastName}_CV.pdf`}>
-      <Page size="A4" style={styles.page}>
-        <View style={styles.header}>
-          <Text style={styles.headerText1}>{position}</Text>
-          <Text style={styles.headerText2}>{firstName}</Text>
-          <Text style={styles.headerText3}>{lastName}</Text>
-          <Image style={styles.headerImg} src={profileImage} />
-        </View>
-      </Page>
-    </Document>
+    <div>
+      {url && (
+        <ReactPDFDocument
+          file={url}
+          onLoadSuccess={onDocumentLoadSuccess}
+          options={documentOptions}
+        >
+          {Array.from(new Array(numberOfPages), (el, index) => (
+            <ReactPDFPage
+              key={`page_${index + 1}`}
+              pageNumber={index + 1}
+              width={700}
+            />
+          ))}
+        </ReactPDFDocument>
+      )}
+    </div>
   )
 }
 

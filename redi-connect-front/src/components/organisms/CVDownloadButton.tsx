@@ -1,8 +1,8 @@
 import React from 'react'
 
 import { StyleSheet, PDFDownloadLink } from '@react-pdf/renderer'
-import CVPDFPreview, { UserCVData } from './CVPDFPreview'
 import { Button } from '../atoms'
+import CVPDF, { UserCVData } from './CVPDF'
 
 // Create styles
 const styles = StyleSheet.create({
@@ -17,7 +17,7 @@ const CVDownloadButton = ({ cvData }: CVDownloadButtonProps) => {
   return (
     <PDFDownloadLink
       style={styles.downloadBtn}
-      document={<CVPDFPreview cvData={cvData} />}
+      document={<CVPDF cvData={cvData} />}
       fileName={`${cvData.firstName}_${cvData.lastName}_CV.pdf`}
     >
       {({ blob, url, loading, error }) =>

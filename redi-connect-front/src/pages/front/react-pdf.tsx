@@ -3,8 +3,9 @@ import CVPDFPreview, {
   UserCVData
 } from '../../components/organisms/CVPDFPreview'
 import { Columns } from 'react-bulma-components'
-import { PDFViewer, StyleSheet } from '@react-pdf/renderer'
+import ReactPDF, { PDFViewer, StyleSheet } from '@react-pdf/renderer'
 import CVDownloadButton from '../../components/organisms/CVDownloadButton'
+import CVPDFSample from '../../components/organisms/CVPDFSample'
 
 const ReactPdf = () => {
   const UserData: UserCVData = {
@@ -24,10 +25,11 @@ const ReactPdf = () => {
 
   return (
     <Columns>
-      <Columns.Column>
-        <PDFViewer style={styles.viewer}>
-          <CVPDFPreview cvData={UserData} />
-        </PDFViewer>
+      <Columns.Column style={styles.viewer}>
+        {/* <PDFViewer  */}
+        <CVPDFPreview cvData={UserData} />
+        {/* <CVPDFSample /> */}
+        {/* </PDFViewer> */}
       </Columns.Column>
       <Columns.Column>
         <CVDownloadButton cvData={UserData} />
@@ -35,5 +37,4 @@ const ReactPdf = () => {
     </Columns>
   )
 }
-
 export default ReactPdf
