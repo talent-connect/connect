@@ -6,5 +6,6 @@ module.exports = {
     '<rootDir>/apps/redi-talent-pool',
     '<rootDir>/libs/shared-config',
     '<rootDir>/libs/talent-pool/types',
+    '<rootDir>/libs/talent-pool/config',
   ],
 }

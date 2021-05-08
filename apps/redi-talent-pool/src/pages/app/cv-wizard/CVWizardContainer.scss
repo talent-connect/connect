@@ -5,8 +5,15 @@
   // margin: -3.25rem auto;
   // padding: 3.25rem 0;
   background: linear-gradient(90deg, $redi-blue-light 50%, $white 50%);
+  position: relative;
+
+  &__column-cv-preview {
+    background-color: yellow;
+  }
 
   &__cv-preview {
+    width: 100%;
+    background-color: black;
   }
 
   &__form {

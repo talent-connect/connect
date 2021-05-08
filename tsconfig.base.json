@@ -22,6 +22,9 @@
       "@talent-connect/shared-config": ["libs/shared-config/src/index.ts"],
       "@talent-connect/talent-pool/types": [
         "libs/talent-pool/types/src/index.ts"
+      ],
+      "@talent-connect/talent-pool/config": [
+        "libs/talent-pool/config/src/index.ts"
       ]
     }
   },

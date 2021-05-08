@@ -3,7 +3,7 @@ import classnames from 'classnames'
 import { Heading as BulmaHeading } from 'react-bulma-components'
 import './Heading.scss'
 
-interface Props {
+export interface HeadingProps {
   children: any
   className?: string
   size?: 'large' | 'medium' | 'small'
@@ -36,7 +36,7 @@ const Heading = ({
   center,
   subtitle,
   className,
-}: Props) => {
+}: HeadingProps) => {
   const classNames = classnames({
     [`decoration decoration--${border}`]: border,
     'oneandhalf-bs': border === 'bottomLeft',
