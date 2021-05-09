@@ -2,32 +2,56 @@
 @import "../../../styles/_variables.scss";
 
 .filters {
-  margin-bottom: 1.5rem;
-
+  display: block;
+  width: 100%;
+  margin-bottom: 0.5rem; 
   @include tablet() {
     display: flex;
-    justify-content: space-between;
+    margin-bottom: 1.5rem;
   }
 
   &__dropdown {
-    flex-grow: 1;
-    flex-basis: 0;
     margin-bottom: 0.5rem;
-
     @include tablet() {
+      flex-grow: 1;
+      flex-basis: 0;
       margin: 0 1rem 0 0;
     }
   }
 }
 
+.filters-inner {
+  @include tablet() {
+    display: flex;
+    flex-grow: 1;
+  }
+}
+
+.location-filter-wrapper {
+  margin-bottom: 1.5rem;
+  @include tablet() {
+    margin-bottom: 0;
+  }
+}
+
+.location-filter-wrapper, .filters-wrapper {
+  width: 100%;
+  @include tablet() {
+    width: 42%;
+  }
+}
+
 .active-filters {
   display: flex;
-  align-items: center;
-  margin-bottom: 3rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+  @include tablet() {
+    align-items: center;
+  }
 
   &__remove {
-      margin-left: 0.2em !important;
-      padding: 0.25em;
+    margin-left: 0.2em !important;
+    padding: 0.25em;
   }
 
   &__clear-all {
@@ -35,12 +59,22 @@
     align-items: center;
     cursor: pointer;
     margin: 0 0 0.5rem 0.5rem;
+    @include tablet() {
+      margin: 0 0 0 0.75rem;
+    }
 
     .icon {
       padding: 0.1rem;
       path {
         fill: black
       }
+    }
+  }
+
+  .tag {
+    margin: 0 0.5rem 0.5rem 0;
+    @include tablet() {
+      margin: 1rem 0.5rem 1rem 0;
     }
   }
 }
