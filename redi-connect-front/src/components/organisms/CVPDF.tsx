@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
     marginLeft: "10px",
     fontSize: "12px",
     fontWeight: 300,
-    paddingTop: "15px",
+    paddingTop: "23px",
     lineHeight: "1.2",
     letterSpacing: "0.47px",
   },
