@@ -2,7 +2,7 @@
 
 .profile-card {
   border-radius: 4px;
-  height: 23rem;
+  height: 24.5rem;
   overflow: hidden;
 
   &--active {
@@ -71,7 +71,7 @@
 
     &__last-row {
       display: flex;
-      //width: 100%;
+      width: 100%;
     }
   }
 }

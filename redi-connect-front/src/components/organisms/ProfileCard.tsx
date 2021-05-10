@@ -61,7 +61,7 @@ const ProfileCard = ({ profile, linkTo, toggleFavorite, isFavorite }: ProfileCar
           onClick={handleFavorite}>
           <Icon
             icon={isFavorite ? 'heartFilled' : 'heart'}
-            className="profile-card__favorite__icon"/>
+            className="profile-card__favorite__icon" />
         </div>}
         <Element key="name" renderAs="h3" textWeight="bold" textSize={4} className="profile-card__name">
           {firstName} {lastName}
