@@ -5,12 +5,14 @@
     <mj-class name="body" background-color="#F0F0F0" margin="100px 0 100px" />
     <mj-class name="divider-bottom" width="100%" padding="0 0 24px" border-color="#DADADA" border-width="1px" />
     <mj-class name="text" font-size="16px" line-height="24px" color="#000" padding="0" />
+    <mj-class name="text-small" font-size="14px" line-height="24px" color="#000" padding="0" />
     <mj-class name="text-padding" padding="20px 0 30px 0" />
     <mj-class name="top-padding" padding="20px 0 0 0" />
     <mj-class name="column" padding="0 20px 0 0" />
     <mj-class name="italic" font-style="italic" />
     <mj-class name="text-footer" font-size="12px" color="#5D5D5D" padding="0" font-weight="300" />
     <mj-class name="headline" font-size="40px" line-height="48px" color="#000" font-weight="500" padding="0" />
+    <mj-class name="tagline" font-size="20px" line-height="48px" color="#000" font-weight="500" padding="0" />
     <mj-class name="headline-footer" font-size="14px" line-height="24px" color="#000" padding="0" />
     <mj-all font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Lato, Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'" />
   </mj-attributes>
