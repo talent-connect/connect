@@ -16,14 +16,14 @@ const ReactPdf = () => {
     email: "eric@binarylights.com",
     phoneNumber: "0176 4368 9941",
     address: "Bla bla bla my address in Berlin",
-    personalWebsite: "https://www.binarylights.com",
-    workingLanguage: ["Norwegian", "English"],
+    personalWebsite: "https://binarylights.com",
+    workingLanguage: ["Norwegian", "English", "Norwegian", "English"],
     yearsOfRelevantExperience: "10+",
     desiredEmploymentType: "Freelance",
     availability: "Immediately",
     aboutYourself:
-      "Hello, I like cats and I'm very enaged in ReDI School. Are you ReDI?",
-    topSkills: ["jest", "attentiveToDetail"],
+      "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat.",
+    topSkills: ["jest", "attentiveToDetail", "jest", "attentiveToDetail"],
     experience: [
       {
         title: "Founder",
@@ -70,14 +70,15 @@ const ReactPdf = () => {
         link: "https://project.de",
       },
     ],
-    linkedin: "https://linkedin.com",
-    github: "https://github.com",
+    linkedin: "https://linkedin.com/eric",
+    github: "https://github.com/eric",
   };
 
   const styles = StyleSheet.create({
     viewer: {
       width: "50vw",
       height: "100vh",
+      backgroundColor: "#E4E4E4",
     },
   });
 
@@ -89,7 +90,7 @@ const ReactPdf = () => {
         {/* <CVPDFSample /> */}
         {/* </PDFViewer> */}
       </Columns.Column>
-      <Columns.Column>
+      <Columns.Column style={{ backgroundColor: "#E4E4E4" }}>
         <CVDownloadButton cvData={UserData} />
       </Columns.Column>
     </Columns>
