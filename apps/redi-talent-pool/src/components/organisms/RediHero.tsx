@@ -46,14 +46,16 @@ const RediHero = () => {
             <Level>
               <Button
                 size="large"
-                onClick={() => history.push('/front/signup-landing')}
+                // onClick={() => history.push('/front/signup-landing')}
+                onClick={() => history.push('/app/cv-wizard')}
               >
-                {t('button.signUpNow')}
+                {/* {t('button.signUpNow')} */}
+                Build my CV!
               </Button>
 
-              <Button onClick={() => history.push('/front/login')} simple>
+              {/* <Button onClick={() => history.push('/front/login')} simple>
                 {t('button.login')}
-              </Button>
+              </Button> */}
             </Level>
           </Columns.Column>
           <Columns.Column

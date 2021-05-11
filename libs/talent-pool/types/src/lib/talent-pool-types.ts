@@ -1,24 +1,24 @@
 import { Language } from '@talent-connect/shared-types'
 
 export type TpProfile = {
-  desiredPositions: DesiredPositions[]
   id: string
-  firstName: string
-  lastName: string
-  email: string
-  phoneNumber: string
-  address: string
-  personalWebsite: string
-  workingLanguage: Language[]
-  yearsOfRelevantExperience: string
-  desiredEmploymentType: string
-  availability: string
-  aboutYourself: string
-  topSkills: TopSkill[]
-  experience: ExperienceRecord[]
-  education: EducationRecord[]
+  desiredPositions?: DesiredPositions[]
+  firstName?: string
+  lastName?: string
+  email?: string
+  phoneNumber?: string
+  address?: string
+  personalWebsite?: string
+  workingLanguages?: Language[]
+  yearsOfRelevantExperience?: string
+  desiredEmploymentType?: string
+  availability?: string
+  aboutYourself?: string
+  topSkills?: TopSkill[]
+  experience?: ExperienceRecord[]
+  education?: EducationRecord[]
 
-  createdAt: Date
+  createdAt?: Date
 }
 
 type ExperienceRecord = {
@@ -47,7 +47,7 @@ const exampleProfile: TpProfile = {
   phoneNumber: '0176 4368 9941',
   address: 'Bla bla bla my address in Berlin',
   personalWebsite: 'https://www.binarylights.com',
-  workingLanguage: ['Norwegian', 'English'],
+  workingLanguages: ['Norwegian', 'English'],
   yearsOfRelevantExperience: '10+',
   desiredEmploymentType: 'Freelance',
   availability: 'Immediately',
@@ -74,6 +74,13 @@ const exampleProfile: TpProfile = {
   ],
   createdAt: new Date(),
 }
+
+export interface DropdownOption {
+  id: string
+  label: string
+}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface DropdownOptions extends Array<DropdownOption> {}
 
 export type DesiredPositions =
   | 'frontendEngineer'

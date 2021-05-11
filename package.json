@@ -32,7 +32,21 @@
     "update": "nx migrate latest",
     "workspace-generator": "nx workspace-generator",
     "dep-graph": "nx dep-graph",
-    "help": "nx help"
+    "help": "nx help",
+    "invalidate-cache:redi-talent-pool:prod:cv-builder": "aws cloudfront create-invalidation --distribution-id E3GCC7P7DKC5JO --paths '/*' --profile redi-connect-deployment",
+    "invalidate-cache:redi-connect:prod:location-picker": "aws cloudfront create-invalidation --distribution-id E2CG65E1QXRHR9 --paths '/*' --profile redi-connect-deployment",
+    "invalidate-cache:redi-connect:prod:berlin": "aws cloudfront create-invalidation --distribution-id E3JKNUQZAFGDTR --paths '/*' --profile redi-connect-deployment",
+    "invalidate-cache:redi-connect:prod:munich": "aws cloudfront create-invalidation --distribution-id E3A5VPYZUTHTQI --paths '/*' --profile redi-connect-deployment",
+    "invalidate-cache:redi-connect:prod:nrw": "aws cloudfront create-invalidation --distribution-id E1KYQ4CHETX086 --paths '/*' --profile redi-connect-deployment",
+    "invalidate-cache:redi-connect:demonstration": "aws cloudfront create-invalidation --distribution-id E1OBHC0Q0A7Y55 --paths '/*' --profile redi-connect-deployment",
+    "deploy-staging:redi-connect": "REACT_APP_REDI_LOCATION=berlin env-cmd -f .env.staging yarn build && aws s3 rm s3://app.staging.connect.redi-school.org/ --recursive --profile redi-connect-deployment --region eu-west-1 && aws s3 sync build/ s3://app.staging.connect.redi-school.org --delete --acl public-read --profile redi-connect-deployment --region eu-west-1 && yarn invalidate-cache:staging",
+    "deploy-production:redi-talent-pool:cv-builder": "nx run redi-talent-pool:build && aws s3 rm s3://cv-builder.redi-school.org/ --recursive --profile redi-connect-deployment --region eu-west-1 && aws s3 sync dist/apps/redi-talent-pool/ s3://cv-builder.redi-school.org --delete --acl public-read --profile redi-connect-deployment --region eu-west-1 && yarn invalidate-cache:redi-talent-pool:prod:cv-builder",
+    "deploy-production:redi-connect": "yarn deploy-production:berlin && yarn deploy-production:munich && yarn deploy-production:nrw && yarn deploy-production:location-picker",
+    "deploy-production:redi-connect:location-picker": "REACT_APP_REDI_LOCATION=location-picker env-cmd -f .env.production yarn build && aws s3 rm s3://connect.redi-school.org/ --recursive --profile redi-connect-deployment --region eu-west-1 && aws s3 sync build/ s3://connect.redi-school.org --delete --acl public-read --profile redi-connect-deployment --region eu-west-1 && yarn invalidate-cache:prod:location-picker",
+    "deploy-production:redi-connect:berlin": "REACT_APP_REDI_LOCATION=berlin env-cmd -f .env.production yarn build && aws s3 rm s3://connect.berlin.redi-school.org/ --recursive --profile redi-connect-deployment --region eu-west-1 && aws s3 sync build/ s3://connect.berlin.redi-school.org --delete --acl public-read --profile redi-connect-deployment --region eu-west-1 && yarn invalidate-cache:prod:berlin",
+    "deploy-production:redi-connect:munich": "REACT_APP_REDI_LOCATION=munich env-cmd -f .env.production yarn build && aws s3 rm s3://connect.munich.redi-school.org/ --recursive --profile redi-connect-deployment --region eu-west-1 && aws s3 sync build/ s3://connect.munich.redi-school.org --delete --acl public-read --profile redi-connect-deployment --region eu-west-1 && yarn invalidate-cache:prod:munich",
+    "deploy-production:redi-connect:nrw": "REACT_APP_REDI_LOCATION=nrw env-cmd -f .env.production yarn build && aws s3 rm s3://connect.nrw.redi-school.org/ --recursive --profile redi-connect-deployment --region eu-west-1 && aws s3 sync build/ s3://connect.nrw.redi-school.org --delete --acl public-read --profile redi-connect-deployment --region eu-west-1 && yarn invalidate-cache:prod:nrw",
+    "deploy-demonstration:redi-connect": "REACT_APP_REDI_LOCATION=berlin env-cmd -f .env.demonstration yarn build && aws s3 rm s3://app.demo.connect.redi-school.org/ --recursive --profile redi-connect-deployment --region eu-west-1 && aws s3 sync build/ s3://app.demo.connect.redi-school.org --delete --acl public-read --profile redi-connect-deployment --region eu-west-1 && yarn invalidate-cache:demonstration"
   },
   "private": true,
   "dependencies": {
@@ -42,6 +56,7 @@
     "@material-ui/icons": "4.4.3",
     "@material-ui/pickers": "3.2.6",
     "@react-pdf/renderer": "^2.0.8",
+    "@xstate/react": "^1.3.3",
     "aws-sdk": "^2.418.0",
     "axios": "^0.19.0",
     "beautiful-react-hooks": "^0.32.1",
@@ -94,6 +109,7 @@
     "slick-carousel": "^1.8.1",
     "strong-error-handler": "^3.0.0",
     "tslib": "^2.0.0",
+    "xstate": "^4.19.1",
     "yup": "^0.27.0"
   },
   "devDependencies": {

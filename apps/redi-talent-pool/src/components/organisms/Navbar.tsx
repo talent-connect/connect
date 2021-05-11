@@ -99,8 +99,8 @@ const Navbar = () => {
             responsive={{ mobile: { hide: { value: true } } }}
             className="navbar__buttons"
           >
-            {isLoggedIn() && <LoggedInButtons />}
-            {!isLoggedIn() && <LoggedOutButtons />}
+            {/* {isLoggedIn() && <LoggedInButtons />}
+            {!isLoggedIn() && <LoggedOutButtons />} */}
           </Element>
           <Element
             responsive={{ tablet: { hide: { value: true } } }}
