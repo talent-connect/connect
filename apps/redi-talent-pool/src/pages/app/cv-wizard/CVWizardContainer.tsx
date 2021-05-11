@@ -145,16 +145,7 @@ const userCVData: CVFormData = {
   availability: '',
   aboutYourself: '',
   topSkills: [],
-  experience: [
-    {
-      uuid: uuidv4(),
-      title: '',
-      description: '',
-      company: '',
-      startDate: null,
-      endDate: null,
-    },
-  ],
+  experience: [],
   education: [],
   projects: [],
   linkedInUrl: '',
@@ -166,7 +157,7 @@ const userCVData: CVFormData = {
 
 const formPageNavigationMachine = createMachine({
   id: 'cvWizardFormPageNavigation',
-  initial: 'projectsAwards',
+  initial: 'overview',
   states: {
     overview: {
       on: { NEXT_PAGE: 'contact' },

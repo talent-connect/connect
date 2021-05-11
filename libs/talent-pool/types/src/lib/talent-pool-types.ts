@@ -39,17 +39,17 @@ interface ExperienceRecord {
 
   startDate?: Date
   endDate?: Date
-  current: boolean
-  description: string
+  current?: boolean
+  description?: string
 }
 
 interface EducationRecord {
-  type: string
-  institutionName: string
-  startDate: Date
-  endDate: Date
-  currnet: boolean
-  description: string
+  type?: string
+  institutionName?: string
+  startDate?: Date
+  endDate?: Date
+  current?: boolean
+  description?: string
 }
 
 interface ProjectRecord {
