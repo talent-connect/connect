@@ -5,6 +5,7 @@ const _ = require('lodash');
 const fp = require('lodash/fp');
 const Rx = require('rxjs');
 const { concatMap, switchMap, switchMapTo, tap, toArray } = require('rxjs/operators');
+const moment = require('moment');
 
 const { RedUser, RedProfile, RedMatch, RedMentoringSession } = app.models;
 

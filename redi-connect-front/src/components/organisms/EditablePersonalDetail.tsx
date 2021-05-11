@@ -1,9 +1,9 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { subYears } from 'date-fns'
 import { FormSelect, FormDatePicker } from '../atoms'
 import { Editable, ReadPersonalDetail } from '../molecules'
 import { RedProfile } from '../../types/RedProfile'
-import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
 
 import {
@@ -18,6 +18,7 @@ import {
 } from '../../config/config'
 
 const formGenders = genders.map(gender => ({ value: gender.id, label: gender.label }))
+// const DEFAULT_BIRTHDATE = subYears(new Date(), 18)
 
 export interface PersonalDetailFormValues {
   gender: string
@@ -48,7 +49,8 @@ const EditablePersonalDetail = ({ profile, profileSaveStart }: any) => {
 
   const initialValues: PersonalDetailFormValues = {
     gender,
-    birthDate: new Date(birthDate)
+    birthDate: new Date(birthDate || null)
+    // birthDate: new Date(birthDate || DEFAULT_BIRTHDATE)
   }
 
   const formik = useFormik({
@@ -81,6 +83,7 @@ const EditablePersonalDetail = ({ profile, profileSaveStart }: any) => {
         dateFormat="dd MMMM yyyy"
         minDate={subYears(new Date(), 100)}
         maxDate={subYears(new Date(), 18)}
+        // openToDate={subYears(new Date(), 18)}
         showMonthDropdown
         showYearDropdown
         dropdownMode="select"

@@ -26,7 +26,7 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
     profileFetchStart()
   }, [profileFetchStart])
 
-  if (loading) return <Loader loading={true}/>
+  if (loading) return <Loader loading={true} />
 
   const userIsMentee =
     profile.userType === 'mentee' || profile.userType === 'public-sign-up-mentee-pending-review'
@@ -37,7 +37,7 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
   return (
     <LoggedIn>
       {saveResult === 'error' && <>An error occurred, please try again.</>}
-      {saveResult === 'submitting' && <Loader loading={true}/>}
+      {saveResult === 'submitting' && <Loader loading={true} />}
 
       <Columns vCentered breakpoint="mobile" className="oneandhalf-bs">
         <Columns.Column size={3}>
@@ -64,13 +64,13 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
       </Element>
 
       {userIsMentor &&
-      <Element className="block-separator">
-        <Columns>
-          <Columns.Column size={12}>
-            <EditableMenteeCount />
-          </Columns.Column>
-        </Columns>
-      </Element>
+        <Element className="block-separator">
+          <Columns>
+            <Columns.Column size={12}>
+              <EditableMenteeCount />
+            </Columns.Column>
+          </Columns>
+        </Element>
       }
 
       <Element className="block-separator">
