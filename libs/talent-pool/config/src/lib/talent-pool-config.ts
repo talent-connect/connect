@@ -3,8 +3,22 @@ import { DropdownOptions } from '@talent-connect/talent-pool/types'
 export const desiredPositions: DropdownOptions = [
   { id: 'frontendDeveloper', label: 'Frontend Developer' },
   { id: 'backendDeveloper', label: 'Backend Developer' },
+  { id: 'fullstackDeveloper', label: 'Fullstack Developer' },
   { id: 'nodejsDeveloper', label: 'Node.js Developer' },
   { id: 'React Developer', label: 'React Developer' },
+  { id: 'dataAnalyst', label: 'Data Analyst' },
+  { id: 'dataScientist', label: 'Data Scientist' },
+  { id: 'pythonDeveloper', label: 'Python Developer' },
+  { id: 'devops', label: 'DevOps Specialist' },
+  { id: 'java', label: 'Java Developer' },
+  { id: 'salesforceAdministrator', label: 'Salesforce Administrator' },
+  { id: 'azureSpecialist', label: 'Azure Specialist' },
+  { id: 'uiUxDesigner', label: 'UI/UX Designer' },
+  { id: 'userResearcher', label: 'User Researcher' },
+  { id: 'agileScrumCoach', label: 'Agile/SCRUM Coach' },
+  { id: 'uiDesigner', label: 'UI Designer' },
+  { id: 'uxDesigner', label: 'UX Designer' },
+  { id: 'productDesigner', label: 'Product Designer' },
 ]
 
 export const yearsOfRelevantExperienceOptions: DropdownOptions = [
