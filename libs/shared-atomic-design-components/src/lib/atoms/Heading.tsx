@@ -6,7 +6,7 @@ import './Heading.scss'
 export interface HeadingProps {
   children: any
   className?: string
-  size?: 'large' | 'medium' | 'small'
+  size?: 'large' | 'medium' | 'small' | 'smaller'
   tag?: string
   border?: 'topCenter' | 'bottomLeft'
   center?: boolean
@@ -25,6 +25,10 @@ const sizes = {
   small: {
     desktop: 3,
     mobile: 4,
+  },
+  smaller: {
+    desktop: 4,
+    mobile: 5,
   },
 }
 

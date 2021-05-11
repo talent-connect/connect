@@ -2,6 +2,7 @@ import React from 'react'
 import classnames from 'classnames'
 import { Form, Content, Columns } from 'react-bulma-components'
 import './FormTextArea.scss'
+import { get } from 'lodash'
 
 interface Props {
   name: string
@@ -44,7 +45,7 @@ function FormTextArea(props: any) {
           color={hasError ? 'danger' : null}
           rows={rows}
           placeholder={placeholder}
-          value={values[name]}
+          value={get(values, name)}
           onChange={handleChange}
           onBlur={handleBlur}
           disabled={isSubmitting || disabled}

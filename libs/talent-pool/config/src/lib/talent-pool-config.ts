@@ -35,6 +35,7 @@ export const desiredEmploymentTypeOptions = [
   { id: 'partTime', label: 'Part-time employment' },
   { id: 'fullTime', label: 'Full-time employment' },
   { id: 'werkStudent', label: 'Werkstudent' },
+  { id: 'Internship', label: 'Internship' },
 ]
 
 export const availabilityOptions = [

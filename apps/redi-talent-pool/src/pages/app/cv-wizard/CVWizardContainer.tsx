@@ -6,14 +6,30 @@ import React, {
   useState,
 } from 'react'
 import { useWindowResize } from 'beautiful-react-hooks'
+import { useDebounce } from 'react-use'
 import { useMachine } from '@xstate/react'
 import { createMachine } from 'xstate'
+import { v4 as uuidv4 } from 'uuid'
+
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
+
+import Accordion from '@material-ui/core/Accordion'
+import AccordionSummary from '@material-ui/core/AccordionSummary'
+import AccordionDetails from '@material-ui/core/AccordionDetails'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import AddIcon from '@material-ui/icons/Add'
+
+import { stringify, parse } from 'telejson'
 
 import { LoggedIn } from '../../../components/templates'
-import { CVPDFPreview } from '../../../components/molecules'
+import {
+  CVPDFPreviewMemoized,
+  CVPDFPreview,
+} from '../../../components/molecules/CvPdfPreview'
 
 import {
   Container,
+  Content,
   Element,
   Columns,
   Form,
@@ -24,13 +40,15 @@ import './CVWizardContainer.scss'
 import { PDFViewer, StyleSheet } from '@react-pdf/renderer'
 import {
   Button,
+  Checkbox,
+  FormDatePicker,
   FormInput,
   FormSelect,
   FormTextArea,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
 import { Languages as availableLanguages } from '@talent-connect/shared-config'
-import { TpProfile } from '@talent-connect/talent-pool/types'
+import { CVFormData, TpProfile } from '@talent-connect/talent-pool/types'
 import {
   desiredPositions,
   yearsOfRelevantExperienceOptions,
@@ -40,81 +58,115 @@ import {
 
 import { useFormik } from 'formik'
 import { keyBy, mapValues } from 'lodash'
-import CVDownloadButton from 'apps/redi-talent-pool/src/components/molecules/CVDownloadButton'
+import CVDownloadButton from '../../../components/molecules/CVDownloadButton'
+import { IconButton, RootRef } from '@material-ui/core'
 
 /* eslint-disable-next-line */
 export interface CVWizardContainerProps {}
 
-const userCVData = {
-  desiredPositions: ['Frontend Engineer'],
-  firstName: 'Eric',
-  lastName: 'Bolikowski',
+// const userCVData: CVFormData = {
+//   desiredPositions: ['Frontend Engineer'],
+//   firstName: 'Eric',
+//   lastName: 'Bolikowski',
+//   profileImage:
+//     'https://images.unsplash.com/photo-1532074205216-d0e1f4b87368?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MjJ8fHByb2ZpbGV8ZW58MHx8MHw%3D&ixlib=rb-1.2.1&w=1000&q=80',
+//   email: 'eric@binarylights.com',
+//   phoneNumber: '0176 4368 9941',
+//   address: 'Bla bla bla my address in Berlin',
+//   personalWebsite: 'https://binarylights.com',
+//   workingLanguages: ['Norwegian', 'English', 'Norwegian', 'English'],
+//   yearsOfRelevantExperience: '10+',
+//   desiredEmploymentType: 'Freelance',
+//   availability: 'Immediately',
+//   aboutYourself:
+//     'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat.',
+//   topSkills: ['jest', 'attentiveToDetail', 'jest', 'attentiveToDetail'],
+//   experience: [
+//     {
+//       title: 'Founder',
+//       company: 'Binary Lights',
+//       startDate: new Date(),
+//       endDate: new Date(),
+//       description:
+//         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+//     },
+//     {
+//       title: 'Founder',
+//       company: 'Binary Lights',
+//       startDate: new Date(),
+//       endDate: new Date(),
+//       description:
+//         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+//     },
+//   ],
+//   education: [
+//     {
+//       type: 'High School',
+//       institutionName: 'St. Olav VGS',
+//       startDate: new Date(),
+//       endDate: new Date(),
+//       description:
+//         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+//     },
+//     {
+//       type: 'High School',
+//       institutionName: 'St. Olav VGS',
+//       startDate: new Date(),
+//       endDate: new Date(),
+//       description:
+//         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+//     },
+//   ],
+//   projects: [
+//     {
+//       name: 'Project Name',
+//       description:
+//         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's.",
+//       link: 'https://project.de',
+//     },
+//   ],
+//   linkedInUrl: 'https://linkedin.com/eric',
+//   githubUrl: 'https://github.com/eric',
+// }
+
+const userCVData: CVFormData = {
+  desiredPositions: [],
+  firstName: '',
+  lastName: '',
   profileImage:
     'https://images.unsplash.com/photo-1532074205216-d0e1f4b87368?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MjJ8fHByb2ZpbGV8ZW58MHx8MHw%3D&ixlib=rb-1.2.1&w=1000&q=80',
-  email: 'eric@binarylights.com',
-  phoneNumber: '0176 4368 9941',
-  address: 'Bla bla bla my address in Berlin',
-  personalWebsite: 'https://binarylights.com',
-  workingLanguage: ['Norwegian', 'English', 'Norwegian', 'English'],
-  yearsOfRelevantExperience: '10+',
-  desiredEmploymentType: 'Freelance',
-  availability: 'Immediately',
-  aboutYourself:
-    'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat.',
-  topSkills: ['jest', 'attentiveToDetail', 'jest', 'attentiveToDetail'],
+  email: '',
+  phoneNumber: '',
+  address: '',
+  personalWebsite: '',
+  workingLanguages: [],
+  yearsOfRelevantExperience: '',
+  desiredEmploymentType: '',
+  availability: '',
+  aboutYourself: '',
+  topSkills: [],
   experience: [
     {
-      title: 'Founder',
-      company: 'Binary Lights',
-      startDate: new Date(),
-      endDate: new Date(),
-      rolesResponsibilities: 'blabla',
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
-    },
-    {
-      title: 'Founder',
-      company: 'Binary Lights',
-      startDate: new Date(),
-      endDate: new Date(),
-      rolesResponsibilities: 'blabla',
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+      uuid: uuidv4(),
+      title: '',
+      description: '',
+      company: '',
+      startDate: null,
+      endDate: null,
     },
   ],
-  education: [
-    {
-      type: 'High School',
-      institutionName: 'St. Olav VGS',
-      startDate: new Date(),
-      endDate: new Date(),
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
-    },
-    {
-      type: 'High School',
-      institutionName: 'St. Olav VGS',
-      startDate: new Date(),
-      endDate: new Date(),
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
-    },
-  ],
-  projects: [
-    {
-      name: 'Project Name',
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's.",
-      link: 'https://project.de',
-    },
-  ],
-  linkedin: 'https://linkedin.com/eric',
-  github: 'https://github.com/eric',
+  education: [],
+  projects: [],
+  linkedInUrl: '',
+  githubUrl: '',
+  twitterUrl: '',
+  behanceUrl: '',
+  dribbbleUrl: '',
 }
 
 const formPageNavigationMachine = createMachine({
   id: 'cvWizardFormPageNavigation',
-  initial: 'overview',
+  initial: 'projectsAwards',
   states: {
     overview: {
       on: { NEXT_PAGE: 'contact' },
@@ -153,26 +205,32 @@ const formPageNavigationMachine = createMachine({
   },
 })
 
-export function CVWizardContainer(props: CVWizardContainerProps) {
-  const initialValues: Partial<TpProfile> = {
-    desiredPositions: [],
-    firstName: '',
-    lastName: '',
-    email: '',
-    phoneNumber: '',
-    address: '',
-    personalWebsite: '',
-    workingLanguages: [],
-    yearsOfRelevantExperience: '',
-    desiredEmploymentType: '',
-  }
+const buildCvPreviewData = (formValues: any) => ({
+  ...userCVData,
+  ...formValues,
+  desiredPositions: formValues.desiredPositions.map(
+    (position) => desiredPositionsIdToLabelMap[position]
+  ),
+})
 
+let initialValues: CVFormData = userCVData
+try {
+  const stringifiedCV = localStorage.getItem('cvFormValues')
+  if (stringifiedCV) {
+    initialValues = parse(stringifiedCV)
+  }
+} catch (err) {
+  localStorage.removeItem('cvFormValues')
+}
+
+export function CVWizardContainer(props: CVWizardContainerProps) {
   const formik = useFormik({
     initialValues,
     enableReinitialize: true,
     // validationSchema,
     onSubmit: (e) => console.log(e),
   })
+  console.log(formik.values)
 
   const [cvPreviewElementWidth, setCvPreviewElementWidth] = useState<number>(0)
   const cvContainerRef = useRef<HTMLDivElement>(null)
@@ -182,32 +240,31 @@ export function CVWizardContainer(props: CVWizardContainerProps) {
     setCvPreviewElementWidth(elementWidth)
   }, [])
 
-  const [counter, setCounter] = useState(0)
-  useEffect(() => {
-    // setInterval(() => setCounter((counter) => counter + 1), 1000)
-  }, [])
+  const [cvPreviewData, setCvPreviewData] = useState<CVFormData>(initialValues)
 
-  const newUserData = {
-    ...userCVData,
-    ...formik.values,
-    desiredPositions: formik.values.desiredPositions.map(
-      (position) => desiredPositionsIdToLabelMap[position]
-    ),
-  }
+  useDebounce(
+    () => {
+      setCvPreviewData(buildCvPreviewData(formik.values))
+    },
+    600,
+    [formik.values]
+  )
 
   useWindowResize(() => {
     const elementWidth = cvContainerRef.current.clientWidth
     setCvPreviewElementWidth(elementWidth)
   })
 
-  console.log(cvPreviewElementWidth)
-
   const pdfWidthToHeightRatio = 1.414 // A4 page ratio
   const cvContainerHeight = cvPreviewElementWidth * pdfWidthToHeightRatio
 
-  const [currentFormPage, sendFormPageMessage] = useMachine(
+  const [currentFormPage, _sendFormPageMessage] = useMachine(
     formPageNavigationMachine
   )
+  const sendFormPageMessage = (message: string) => {
+    localStorage.setItem('cvFormValues', stringify(formik.values))
+    _sendFormPageMessage(message)
+  }
 
   const Pages = {
     overview: EditableOverview,
@@ -233,12 +290,12 @@ export function CVWizardContainer(props: CVWizardContainerProps) {
               ref={cvContainerRefCallback}
               style={{ overflow: 'hidden', height: `${cvContainerHeight}px` }}
             >
-              <CVPDFPreview
-                cvData={newUserData}
+              <CVPDFPreviewMemoized
+                cvData={cvPreviewData}
                 pdfWidthPx={cvPreviewElementWidth}
               />
             </div>
-            <CVDownloadButton cvData={newUserData} />
+            <CVDownloadButton cvData={cvPreviewData} />
           </Columns.Column>
           <Columns.Column size={6} className="column--main-content">
             <Element renderAs="h4" textTransform="uppercase" textSize={6}>
@@ -470,20 +527,413 @@ function EditableSummary({ formik }) {
 EditableSummary.title = 'About You'
 EditableSummary.headline = 'Summary'
 
+const getItemStyle = (isDragging, draggableStyle) => ({
+  // styles we need to apply on draggables
+  ...draggableStyle,
+
+  ...(isDragging && {
+    background: 'rgb(235,235,235)',
+  }),
+})
+
 function EditableExperience({ formik }) {
-  return null
+  const addExperience = useCallback(() => {
+    formik.setFieldValue('experience', [
+      ...formik.values.experience,
+      {
+        uuid: uuidv4(),
+        title: '',
+        description: '',
+        company: '',
+        startDate: null,
+        endDate: null,
+        current: false,
+      },
+    ])
+  }, [formik])
+  const removeExperience = useCallback(
+    (experienceIndex) => {
+      formik.setFieldValue(
+        'experience',
+        formik.values.experience.filter((_, index) => experienceIndex !== index)
+      )
+    },
+    [formik]
+  )
+  const onDragEnd = useCallback(
+    (result) => {
+      console.log(result)
+      const startIndex = result.source.index
+      const endIndex = result.destination.index
+
+      const newExperience = Array.from(formik.values.experience)
+
+      const [removed] = newExperience.splice(startIndex, 1)
+      newExperience.splice(endIndex, 0, removed)
+
+      formik.setFieldValue('experience', newExperience)
+    },
+    [formik]
+  )
+
+  return (
+    <>
+      <Element renderAs="p" textSize={4} className="oneandhalf-bs">
+        Add your most recent relevant experience, you can add more later - let’s
+        just get started with what you’re currently up to.
+      </Element>
+      <Heading size="small">
+        Work Experience{' '}
+        <IconButton onClick={addExperience}>
+          <AddIcon />
+        </IconButton>
+      </Heading>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="droppable">
+          {(provided, snapshot) => (
+            <RootRef rootRef={provided.innerRef}>
+              {formik.values.experience.map((experience, index) => (
+                <Draggable
+                  key={experience.uuid}
+                  draggableId={experience.uuid}
+                  index={index}
+                >
+                  {(provided, snapshot) => (
+                    <Accordion
+                      TransitionProps={{ ref: provided.innerRef }}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                    >
+                      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                        {!experience.title && <span>Position {index + 1}</span>}
+                        {experience.title && <span>{experience.title}</span>}
+                      </AccordionSummary>
+                      <AccordionDetails style={{ width: '100%' }}>
+                        <Container>
+                          <FormInput
+                            name={`experience[${index}].title`}
+                            placeholder="Frontend Developer, Backend Developer..."
+                            label="Title of your position"
+                            {...formik}
+                          />
+                          <FormInput
+                            name={`experience[${index}].company`}
+                            placeholder="Name of the company or place"
+                            label="Company"
+                            {...formik}
+                          />
+                          <FormTextArea
+                            label="Roles & Responsibilities"
+                            name={`experience[${index}].description`}
+                            rows={5}
+                            placeholder="Tell us a little bit about your day to day — what you worked on, projects you’re proud of, or what you learned…"
+                            {...formik}
+                          />
+                          <Checkbox
+                            name={`experience[${index}].current`}
+                            checked={formik.values.experience[index].current}
+                            {...formik}
+                          >
+                            I currently work here
+                          </Checkbox>
+                          <FormDatePicker
+                            label="Started"
+                            name={`experience[${index}].startDate`}
+                            placeholder="When did you start working?"
+                            dateFormat="dd MMMM yyyy"
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            {...formik}
+                          />
+                          <FormDatePicker
+                            label="Ended"
+                            name={`experience[${index}].endDate`}
+                            placeholder="When did you end working?"
+                            dateFormat="dd MMMM yyyy"
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            {...formik}
+                          />
+                          <Content>
+                            <a onClick={() => removeExperience(index)}>
+                              Delete position
+                            </a>
+                          </Content>
+                        </Container>
+                      </AccordionDetails>
+                    </Accordion>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </RootRef>
+          )}
+        </Droppable>
+      </DragDropContext>
+    </>
+  )
 }
 EditableExperience.title = 'Work History'
 EditableExperience.headline = 'Professional Experience'
 
 function EditableEducation({ formik }) {
-  return null
+  const addEducationItem = useCallback(() => {
+    formik.setFieldValue('education', [
+      ...formik.values.education,
+      {
+        uuid: uuidv4(),
+        title: '',
+        description: '',
+        institutionName: '',
+        startDate: null,
+        endDate: null,
+        current: false,
+      },
+    ])
+  }, [formik])
+  const removeEducationItem = useCallback(
+    (projectIndex) => {
+      formik.setFieldValue(
+        'education',
+        formik.values.education.filter((_, index) => projectIndex !== index)
+      )
+    },
+    [formik]
+  )
+  const onDragEnd = useCallback(
+    (result) => {
+      console.log(result)
+      const startIndex = result.source.index
+      const endIndex = result.destination.index
+
+      const newProject = Array.from(formik.values.education)
+
+      const [removed] = newProject.splice(startIndex, 1)
+      newProject.splice(endIndex, 0, removed)
+
+      formik.setFieldValue('education', newProject)
+    },
+    [formik]
+  )
+
+  return (
+    <>
+      <Element renderAs="p" textSize={4} className="oneandhalf-bs">
+        Add your most relevant and recent education first, then if you feel like
+        some of your previous training is relevant and you have space — include
+        it as well!
+      </Element>
+      <Heading size="small">
+        Education history
+        <IconButton onClick={addEducationItem}>
+          <AddIcon />
+        </IconButton>
+      </Heading>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="droppable">
+          {(provided, snapshot) => (
+            <RootRef rootRef={provided.innerRef}>
+              {formik.values.education.map((educationItem, index) => (
+                <Draggable
+                  key={educationItem.uuid}
+                  draggableId={educationItem.uuid}
+                  index={index}
+                >
+                  {(provided, snapshot) => (
+                    <Accordion
+                      TransitionProps={{ ref: provided.innerRef }}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                    >
+                      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                        {!educationItem.title && (
+                          <span>Education history #{index + 1}</span>
+                        )}
+                        {educationItem.title && (
+                          <span>{educationItem.title}</span>
+                        )}
+                      </AccordionSummary>
+                      <AccordionDetails style={{ width: '100%' }}>
+                        <Container>
+                          <FormInput
+                            name={`education[${index}].title`}
+                            placeholder="Bachelor/Master of XYZ"
+                            label="Title of your study"
+                            {...formik}
+                          />
+                          <FormInput
+                            name={`education[${index}].institutionName`}
+                            placeholder="University ABC"
+                            label="Name of the institution where you are studying"
+                            {...formik}
+                          />
+                          <FormTextArea
+                            label="Description"
+                            name={`education[${index}].description`}
+                            rows={5}
+                            placeholder="Give a brief and relevant summary of what you are studying"
+                            {...formik}
+                          />
+                          <Checkbox
+                            name={`education[${index}].current`}
+                            checked={formik.values.education[index].current}
+                            {...formik}
+                          >
+                            I currently study here
+                          </Checkbox>
+                          <FormDatePicker
+                            label="Started"
+                            name={`education[${index}].startDate`}
+                            placeholder="When did you start studying?"
+                            dateFormat="dd MMMM yyyy"
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            {...formik}
+                          />
+                          <FormDatePicker
+                            label="Ended"
+                            name={`education[${index}].endDate`}
+                            placeholder="When did you finish studying?"
+                            dateFormat="dd MMMM yyyy"
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            {...formik}
+                          />
+                          <Content>
+                            <a onClick={() => removeEducationItem(index)}>
+                              Delete item
+                            </a>
+                          </Content>
+                        </Container>
+                      </AccordionDetails>
+                    </Accordion>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </RootRef>
+          )}
+        </Droppable>
+      </DragDropContext>
+    </>
+  )
 }
 EditableEducation.title = 'Studies, Certifications, Courses'
 EditableEducation.headline = 'Education'
 
 function EditableProjectsAwards({ formik }) {
-  return null
+  const addProject = useCallback(() => {
+    formik.setFieldValue('projects', [
+      ...formik.values.projects,
+      {
+        uuid: uuidv4(),
+        title: '',
+        description: '',
+        link: '',
+      },
+    ])
+  }, [formik])
+  const removeProject = useCallback(
+    (projectIndex) => {
+      formik.setFieldValue(
+        'projects',
+        formik.values.projects.filter((_, index) => projectIndex !== index)
+      )
+    },
+    [formik]
+  )
+  const onDragEnd = useCallback(
+    (result) => {
+      console.log(result)
+      const startIndex = result.source.index
+      const endIndex = result.destination.index
+
+      const newProject = Array.from(formik.values.projects)
+
+      const [removed] = newProject.splice(startIndex, 1)
+      newProject.splice(endIndex, 0, removed)
+
+      formik.setFieldValue('projects', newProject)
+    },
+    [formik]
+  )
+
+  return (
+    <>
+      <Element renderAs="p" textSize={4} className="oneandhalf-bs">
+        Feel free to show off — if you have any awards, or projects that you’re
+        working on that you feel showcase your skills it’s important to include
+        them in your CV!
+      </Element>
+      <Heading size="small">
+        Projects
+        <IconButton onClick={addProject}>
+          <AddIcon />
+        </IconButton>
+      </Heading>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="droppable">
+          {(provided, snapshot) => (
+            <RootRef rootRef={provided.innerRef}>
+              {formik.values.projects.map((project, index) => (
+                <Draggable
+                  key={project.uuid}
+                  draggableId={project.uuid}
+                  index={index}
+                >
+                  {(provided, snapshot) => (
+                    <Accordion
+                      TransitionProps={{ ref: provided.innerRef }}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                    >
+                      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                        {!project.title && <span>Project {index + 1}</span>}
+                        {project.title && <span>{project.title}</span>}
+                      </AccordionSummary>
+                      <AccordionDetails style={{ width: '100%' }}>
+                        <Container>
+                          <FormInput
+                            name={`projects[${index}].title`}
+                            placeholder="React front-end application"
+                            label="Title of your project"
+                            {...formik}
+                          />
+                          <FormInput
+                            name={`projects[${index}].link`}
+                            placeholder="https://myproject.com"
+                            label="Project link"
+                            {...formik}
+                          />
+                          <FormTextArea
+                            label="Project description"
+                            name={`projects[${index}].description`}
+                            rows={5}
+                            placeholder="Give a brief summary of your project"
+                            {...formik}
+                          />
+                          <Content>
+                            <a onClick={() => removeProject(index)}>
+                              Delete project
+                            </a>
+                          </Content>
+                        </Container>
+                      </AccordionDetails>
+                    </Accordion>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </RootRef>
+          )}
+        </Droppable>
+      </DragDropContext>
+    </>
+  )
 }
 EditableProjectsAwards.title = 'Showcase'
 EditableProjectsAwards.headline = 'Projects & Awards'

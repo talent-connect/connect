@@ -5,6 +5,7 @@ import { Icon } from '../atoms'
 
 import 'react-datepicker/dist/react-datepicker.css'
 import './FormDatePicker.scss'
+import { get } from 'lodash'
 
 interface Props {
   name: string
@@ -32,7 +33,7 @@ function FormDatePicker(props: any) {
       {label && <Form.Label size="small">{label}</Form.Label>}
       <Form.Control>
         <DatePicker
-          selected={values[name]}
+          selected={get(values, name)}
           customInput={<PickerTrigger />}
           placeholderText={placeholder}
           dateFormat="dd.MM.yyyy"

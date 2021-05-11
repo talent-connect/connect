@@ -9,50 +9,49 @@ import {
   Font,
   usePDF,
 } from '@react-pdf/renderer'
-
+import moment from 'moment'
 import {
   Document as ReactPDFDocument,
   Page as ReactPDFPage,
+  pdfjs,
 } from 'react-pdf/dist/esm/entry.webpack'
 
-// import AvenirBlackFont from '../../assets/fonts/Avenir-Black.woff'
-// import AvenirHeavyFont from '../../assets/fonts/Avenir-Heavy.woff'
-// import AvenirMediumFont from '../../assets/fonts/Avenir-Medium.woff'
-// import AvenirMediumObliqueFont from '../../assets/fonts/Avenir-MediumOblique.woff'
-// import AvenirLTStdBookFont from '../../assets/fonts/AvenirLTStd-Book.woff'
-
 import { useEffect, useState } from 'react'
+import React from 'react'
+import { isEqual } from 'lodash'
 
-// Font.register({
-//   family: 'Avenir LT Std',
-//   fonts: [
-//     {
-//       src: AvenirBlackFont,
-//       fontWeight: 900,
-//       fontSize: 'normal',
-//     },
-//     {
-//       src: AvenirHeavyFont,
-//       fontWeight: 800,
-//       fontSize: 'normal',
-//     },
-//     {
-//       src: AvenirMediumFont,
-//       fontWeight: 500,
-//       fontSize: 'normal',
-//     },
-//     {
-//       src: AvenirMediumObliqueFont,
-//       fontWeight: 500,
-//       fontSize: 'oblique',
-//     },
-//     {
-//       src: AvenirLTStdBookFont,
-//       fontWeight: 300,
-//       fontSize: 'normal',
-//     },
-//   ],
-// })
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`
+
+Font.register({
+  family: 'Avenir LT Std',
+  fonts: [
+    {
+      src: '/assets/fonts/Avenir-Black.woff',
+      fontWeight: 900,
+      fontSize: 'normal',
+    },
+    {
+      src: '/assets/fonts/Avenir-Heavy.woff',
+      fontWeight: 800,
+      fontSize: 'normal',
+    },
+    {
+      src: '/assets/fonts/Avenir-Medium.woff',
+      fontWeight: 500,
+      fontSize: 'normal',
+    },
+    {
+      src: '/assets/fonts/Avenir-MediumOblique.woff',
+      fontWeight: 500,
+      fontSize: 'oblique',
+    },
+    {
+      src: '/assets/fonts/AvenirLTStd-Book.woff',
+      fontWeight: 300,
+      fontSize: 'normal',
+    },
+  ],
+})
 
 export interface UserCVData {
   position: string
@@ -67,7 +66,7 @@ interface CVPDFPreviewProps {
 // Create styles
 const styles = StyleSheet.create({
   page: {
-    // fontFamily: 'Roboto', // 'Avenir LT Std',
+    fontFamily: 'Avenir LT Std',
     flexDirection: 'column',
     border: 'solid 1px yellow',
     height: '100%',
@@ -229,15 +228,21 @@ export const CVPDF = ({
     profileImage,
     aboutYourself,
     topSkills,
-    workingLanguage,
+    workingLanguages,
     projects,
     experience,
     education,
     phoneNumber,
+    email,
     address,
+
     personalWebsite,
-    linkedin,
-    github,
+    githubUrl,
+    linkedInUrl,
+    twitterUrl,
+    behanceUrl,
+    stackOverflowUrl,
+    dribbbleUrl,
   },
 }: any) => {
   return (
@@ -268,7 +273,7 @@ export const CVPDF = ({
             <View style={styles.contentViewLeft}>
               <Text style={styles.contentHeading}>Languages</Text>
               <View style={styles.ContentList}>
-                {workingLanguage.map((language, index) => (
+                {workingLanguages.map((language, index) => (
                   <Text
                     key={`language_${index}`}
                     style={styles.ContentListItem}
@@ -282,7 +287,7 @@ export const CVPDF = ({
               <Text style={styles.contentHeading}>{`Projects&Awards`}</Text>
               {projects.map((project, index) => (
                 <View key={`project_${index}`} style={styles.projectView}>
-                  <Text style={styles.contentSubHeading}>{project.name}</Text>
+                  <Text style={styles.contentSubHeading}>{project.title}</Text>
                   <Link src={project.link} style={styles.contentLink}>
                     {project.link.split('//')[1]}
                   </Link>
@@ -296,19 +301,27 @@ export const CVPDF = ({
               <Text style={styles.contentHeading}>Contact</Text>
               <View style={styles.contactDivider}>
                 <View style={styles.contactDividerLeft}>
-                  <Text style={styles.ContactListItem}>{phoneNumber}</Text>
-                  <Text style={styles.ContactListItem}>{address}</Text>
+                  <Text style={styles.ContactListItem}>
+                    {concatenateToMultiline([phoneNumber, email, address])}
+                  </Text>
                 </View>
                 <View style={styles.contactDividerRight}>
-                  <Link src={personalWebsite} style={styles.socialLink}>
-                    {personalWebsite.split('//')[1]}
-                  </Link>
-                  <Link src={linkedin} style={styles.socialLink}>
-                    {linkedin.split('//')[1]}
-                  </Link>
-                  <Link src={github} style={styles.socialLink}>
-                    {github.split('//')[1]}
-                  </Link>
+                  {[
+                    personalWebsite,
+                    linkedInUrl,
+                    githubUrl,
+                    twitterUrl,
+                    behanceUrl,
+                    stackOverflowUrl,
+                    dribbbleUrl,
+                  ].map((url, index) => {
+                    if (!url) return null
+                    return (
+                      <Link key={index} src={url} style={styles.socialLink}>
+                        {url.split('//')[1]}
+                      </Link>
+                    )
+                  })}
                 </View>
               </View>
             </View>
@@ -326,7 +339,11 @@ export const CVPDF = ({
                       </Text>
                     </View>
                     <Text style={[styles.contentSubHeading]}>
-                      {`${experience.startDate.getMonth()}/${experience.startDate.getFullYear()} - ${experience.endDate.getMonth()}/${experience.endDate.getFullYear()}`}
+                      {experience.startDate &&
+                        moment(experience.startDate).format('MMM YYYY - ')}
+                      {experience.endDate &&
+                        !experience.current &&
+                        moment(experience.endDate).format('MMM YYYY')}
                     </Text>
                   </View>
                   <Text style={styles.contentPara}>
@@ -342,14 +359,18 @@ export const CVPDF = ({
                   <View style={styles.experienceView}>
                     <View style={styles.experienceView1}>
                       <Text style={styles.contentSubHeading}>
-                        {education.type}
+                        {education.title}
                       </Text>
                       <Text style={styles.experienceView2}>
                         {education.institutionName}
                       </Text>
                     </View>
                     <Text style={[styles.contentSubHeading]}>
-                      {`${education.startDate.getMonth()}/${education.startDate.getFullYear()} - ${education.endDate.getMonth()}/${education.endDate.getFullYear()}`}
+                      {education.startDate &&
+                        moment(education.startDate).format('MMM YYYY - ')}
+                      {education.endDate &&
+                        !education.current &&
+                        moment(education.endDate).format('MMM YYYY')}
                     </Text>
                   </View>
                   <Text style={styles.contentPara}>
@@ -365,7 +386,13 @@ export const CVPDF = ({
   )
 }
 
-const CVPDFPreview = (
+const concatenateToMultiline = (items: string[]): string => {
+  return items
+    .reduce((acc, curr) => (curr ? `${acc}\n${curr}` : acc), '')
+    .trim()
+}
+
+export const CVPDFPreview = (
   { cvData, pdfWidthPx }: any //: CVPDFPreviewProps & {
 ) =>
   //pdfWidthPx: number
@@ -377,7 +404,6 @@ const CVPDFPreview = (
     useEffect(() => updateInstance(), [cvData, updateInstance])
 
     const url = instance.blob ? URL.createObjectURL(instance.blob) : null
-    console.log(url)
 
     return (
       <div>
@@ -389,5 +415,10 @@ const CVPDFPreview = (
       </div>
     )
   }
+
+export const CVPDFPreviewMemoized = React.memo(
+  CVPDFPreview,
+  (prevProps, nextProps) => isEqual(prevProps, nextProps)
+)
 
 export default CVPDFPreview

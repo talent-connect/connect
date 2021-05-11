@@ -1,6 +1,7 @@
 import React from 'react'
 import classnames from 'classnames'
 import { Form } from 'react-bulma-components'
+import { get } from 'lodash'
 
 interface Props {
   name: string
@@ -38,7 +39,8 @@ function FormInput(props: any) {
           type={type || 'text'}
           color={hasError ? 'danger' : null}
           placeholder={placeholder}
-          value={values[name]}
+          // use lodash's so we can access stuff like experience[0].title
+          value={get(values, name)}
           onChange={handleChange}
           onBlur={handleBlur}
           disabled={isSubmitting || disabled}
