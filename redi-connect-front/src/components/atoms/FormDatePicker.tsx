@@ -33,7 +33,7 @@ interface FormDatePickerProps {
   dateFormat?: string
   minDate?: Date
   maxDate?: Date
-  // openToDate?: Date
+  openToDate?: Date
   showMonthDropdown?: boolean
   showYearDropdown?: boolean
   dropdownMode?: "scroll" | "select"
@@ -49,7 +49,7 @@ const FormDatePicker = (props: FormDatePickerProps) => {
     dateFormat,
     minDate,
     maxDate,
-    // openToDate,
+    openToDate,
     showMonthDropdown,
     showYearDropdown,
     dropdownMode,
@@ -59,6 +59,8 @@ const FormDatePicker = (props: FormDatePickerProps) => {
   const changeHandler = (date: Date) => {
     setFieldValue(name, date);
   }
+
+  console.log('breakpoint')
 
   return (
     <Form.Field>
@@ -73,7 +75,7 @@ const FormDatePicker = (props: FormDatePickerProps) => {
           dateFormat={dateFormat || "dd.MM.yyyy"}
           minDate={minDate}
           maxDate={maxDate}
-          // openToDate={openToDate}
+          openToDate={openToDate}
           showMonthDropdown={showMonthDropdown}
           showYearDropdown={showYearDropdown}
           dropdownMode={dropdownMode}

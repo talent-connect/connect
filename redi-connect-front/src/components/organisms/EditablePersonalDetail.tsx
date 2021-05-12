@@ -16,13 +16,13 @@ import { FormikValues, useFormik } from 'formik'
 import {
   genders
 } from '../../config/config'
+import { SignalCellularNullRounded } from '@material-ui/icons'
 
 const formGenders = genders.map(gender => ({ value: gender.id, label: gender.label }))
-// const DEFAULT_BIRTHDATE = subYears(new Date(), 18)
 
 export interface PersonalDetailFormValues {
   gender: string
-  birthDate?: Date
+  birthDate: Date | null
 }
 
 const validationSchema = Yup.object({
@@ -30,6 +30,7 @@ const validationSchema = Yup.object({
     .oneOf(['male', 'female', 'other'])
     .label('Gender'),
   birthDate: Yup.date()
+    .nullable(true)
     .label('Date')
 })
 
@@ -49,8 +50,7 @@ const EditablePersonalDetail = ({ profile, profileSaveStart }: any) => {
 
   const initialValues: PersonalDetailFormValues = {
     gender,
-    birthDate: new Date(birthDate || null)
-    // birthDate: new Date(birthDate || DEFAULT_BIRTHDATE)
+    birthDate: birthDate ? new Date(birthDate) : null
   }
 
   const formik = useFormik({
@@ -83,7 +83,7 @@ const EditablePersonalDetail = ({ profile, profileSaveStart }: any) => {
         dateFormat="dd MMMM yyyy"
         minDate={subYears(new Date(), 100)}
         maxDate={subYears(new Date(), 18)}
-        // openToDate={subYears(new Date(), 18)}
+        openToDate={subYears(new Date(), 18)}
         showMonthDropdown
         showYearDropdown
         dropdownMode="select"
