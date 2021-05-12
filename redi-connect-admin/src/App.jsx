@@ -448,6 +448,7 @@ const RedProfileList = (props) => {
         <FunctionField source="userType" label="User type" render={userTypeToEmoji} />;
         <TextField source="currentFreeMenteeSpots" label="Free spots" sortable={false} />
         <TextField source="currentMenteeCount" label="Current mentee count" sortable={false} />
+        <TextField source="activeMentorMatchesCount" label="Current mentor count" sortable={false} />
         <TextField source="menteeCountCapacity" label="Total mentee capacity" sortable={false} />
         <TextField source="totalRedMatchCount" label="RedMatch #" sortable={false} />
         <BooleanField source="userActivated" />

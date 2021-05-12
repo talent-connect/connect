@@ -200,6 +200,11 @@ module.exports = function (RedProfile) {
       const RedMatch = app.models.RedMatch;
       const RedMentoringSession = app.models.RedMentoringSession;
 
+      const countActiveMentorMatches = (type) =>
+        Rx.bindNodeCallback(RedMatch.count.bind(RedMatch))({
+          menteeId: ctx.data.id,
+          status: 'accepted',
+        });
       const getAllRedMatches = () =>
         Rx.bindNodeCallback(RedMatch.find.bind(RedMatch))({
           where: {
@@ -228,16 +233,18 @@ module.exports = function (RedProfile) {
           : Rx.of([null]);
 
       Rx.zip(
+        countActiveMentorMatches(),
         getRedMatchesToCurrentMentor(),
         getRedMentoringSessionsToCurrentMentor(),
         getAllRedMatches()
       ).subscribe(
-        ([redMatchesWithCurrentUser, redMentoringSessionsWithCurrentUser, allRedMatches]) => {
+        ([activeMentorMatches, redMatchesWithCurrentUser, redMentoringSessionsWithCurrentUser, allRedMatches]) => {
           const currentActiveMentors = allRedMatches.filter((match) => match.status === 'accepted');
           const currentActiveMentor =
             currentActiveMentors.length > 0 ? currentActiveMentors[0] : undefined;
           const hasActiveMentor = !!currentActiveMentor;
           Object.assign(ctx.data, {
+            activeMentorMatchesCount,
             redMatchesWithCurrentUser,
             redMentoringSessionsWithCurrentUser,
             ifUserIsMentee_hasActiveMentor: hasActiveMentor,
