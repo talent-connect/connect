@@ -238,7 +238,7 @@ module.exports = function (RedProfile) {
         getRedMentoringSessionsToCurrentMentor(),
         getAllRedMatches()
       ).subscribe(
-        ([activeMentorMatches, redMatchesWithCurrentUser, redMentoringSessionsWithCurrentUser, allRedMatches]) => {
+        ([activeMentorMatchesCount, redMatchesWithCurrentUser, redMentoringSessionsWithCurrentUser, allRedMatches]) => {
           const currentActiveMentors = allRedMatches.filter((match) => match.status === 'accepted');
           const currentActiveMentor =
             currentActiveMentors.length > 0 ? currentActiveMentors[0] : undefined;
