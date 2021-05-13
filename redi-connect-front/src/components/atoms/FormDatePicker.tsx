@@ -60,8 +60,6 @@ const FormDatePicker = (props: FormDatePickerProps) => {
     setFieldValue(name, date);
   }
 
-  console.log('breakpoint')
-
   return (
     <Form.Field>
       {label && <Form.Label size="small">

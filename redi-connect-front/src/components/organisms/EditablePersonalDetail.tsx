@@ -16,7 +16,6 @@ import { FormikValues, useFormik } from 'formik'
 import {
   genders
 } from '../../config/config'
-import { SignalCellularNullRounded } from '@material-ui/icons'
 
 const formGenders = genders.map(gender => ({ value: gender.id, label: gender.label }))
 
