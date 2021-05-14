@@ -82,7 +82,6 @@ const EditablePersonalDetail = ({ profile, profileSaveStart }: any) => {
         dateFormat="dd MMMM yyyy"
         minDate={subYears(new Date(), 100)}
         maxDate={subYears(new Date(), 18)}
-        openToDate={subYears(new Date(), 18)}
         showMonthDropdown
         showYearDropdown
         dropdownMode="select"
