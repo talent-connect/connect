@@ -19,6 +19,7 @@ export const desiredPositions: DropdownOptions = [
   { id: 'uiDesigner', label: 'UI Designer' },
   { id: 'uxDesigner', label: 'UX Designer' },
   { id: 'productDesigner', label: 'Product Designer' },
+  { id: 'qaEngineer', label: 'QA Engineer' },
 ]
 
 export const yearsOfRelevantExperienceOptions: DropdownOptions = [
