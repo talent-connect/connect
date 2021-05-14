@@ -43,8 +43,8 @@
               href="https://join.slack.com/t/redi-school/shared_invite/zt-7isxm99f-WrdyQiIlEzUl~iKLdWNJ_g"
               >ReDI slack space</a
             >. Please feel free to join any of the open channels. We especially recommend the
-            #volunteer_training_hub and #events_and_workshops, so you're always up to date with the
-            latest events. Once you're in, I will also add you to our mentors channel. 
+            #events_and_workshops channel, so you're always up to date with the
+            latest events. Once you're in, I will also add you to our mentors and volunteer training hub channel. 
           </mj-text>
 
           <mj-text mj-class="text" padding="0 0 30px 0"
@@ -64,3 +64,4 @@
     </mj-wrapper>
   </mj-body>
 </mjml>
+
