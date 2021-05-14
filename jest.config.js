@@ -7,5 +7,6 @@ module.exports = {
     '<rootDir>/libs/shared-config',
     '<rootDir>/libs/talent-pool/types',
     '<rootDir>/libs/talent-pool/config',
+    '<rootDir>/libs/shared-utils',
   ],
 }

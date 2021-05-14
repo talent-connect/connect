@@ -25,7 +25,8 @@
       ],
       "@talent-connect/talent-pool/config": [
         "libs/talent-pool/config/src/index.ts"
-      ]
+      ],
+      "@talent-connect/shared-utils": ["libs/shared-utils/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

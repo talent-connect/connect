@@ -34,6 +34,7 @@
     },
     "shared-config": { "tags": [] },
     "talent-pool-types": { "tags": [] },
-    "talent-pool-config": { "tags": [] }
+    "talent-pool-config": { "tags": [] },
+    "shared-utils": { "tags": [] }
   }
 }
