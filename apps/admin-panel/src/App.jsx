@@ -573,6 +573,11 @@ const RedProfileList = (props) => {
           sortable={false}
         />
         <TextField
+          source="activeMentorMatchesCount"
+          label="Current mentor count"
+          sortable={false}
+        />
+        <TextField
           source="menteeCountCapacity"
           label="Total mentee capacity"
           sortable={false}
