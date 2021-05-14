@@ -1,3 +1,12 @@
+## About the Nx monorepo
+
+Main benefits:
+
+- code sharing between apps (admin, backend, redi connect, redi talent pool) - great for components, types, utilities, and much more
+- one linter to rule them all - no more crazy pull requests with style changes
+- one command to start it all - no more four terminal windows to start all the apps
+- overall easier to extend & scale - there’s future work in the pipeline for which Nx is a great match (NestJS, Storybook, hint hint)
+
 # TalentConnect
 
 This project was generated using [Nx](https://nx.dev).
