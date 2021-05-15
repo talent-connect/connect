@@ -161,37 +161,24 @@ const formPageNavigationMachine = createMachine({
   states: {
     overview: {
       on: { NEXT_PAGE: 'contact' },
-      meta: { title: 'Interests & About', headline: 'Overview' },
     },
     contact: {
       on: { PREV_PAGE: 'overview', NEXT_PAGE: 'importantDetails' },
-      meta: { title: '', headline: '' },
     },
     importantDetails: {
       on: { PREV_PAGE: 'contact', NEXT_PAGE: 'summary' },
-      meta: {
-        title: '',
-        headline: '',
-      },
     },
     summary: {
       on: { PREV_PAGE: 'importantDetails', NEXT_PAGE: 'experience' },
-      meta: { title: '', headline: '' },
     },
     experience: {
       on: { PREV_PAGE: 'summary', NEXT_PAGE: 'education' },
-      meta: { title: '', headline: '' },
     },
     education: {
       on: { PREV_PAGE: 'experience', NEXT_PAGE: 'projectsAwards' },
-      meta: {
-        title: '',
-        headline: '',
-      },
     },
     projectsAwards: {
       on: { PREV_PAGE: 'education' },
-      meta: { title: '', headline: '' },
     },
   },
 })
