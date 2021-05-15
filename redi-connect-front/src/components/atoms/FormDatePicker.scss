@@ -1,4 +1,5 @@
 @import "../../styles/_variables.scss";
+@import 'node_modules/react-datepicker/src/stylesheets/datepicker.scss';
 
 .datepicker-trigger {
   position: relative;
@@ -17,4 +18,18 @@
 
 .react-datepicker-wrapper {
   display: block;
+}
+
+.react-datepicker__close-icon {
+  position: absolute;
+  top: 0;
+  right: 40px;
+}
+
+.react-datepicker__close-icon::after {
+  background-color: $redi-orange-extra-light;
+  color: $redi-orange-dark;
+  height: 26px;
+  width: 26px;
+  font-size: 18px;
 }

@@ -85,6 +85,7 @@ const EditablePersonalDetail = ({ profile, profileSaveStart }: any) => {
         showMonthDropdown
         showYearDropdown
         dropdownMode="select"
+        isClearable
         {...formik}
       />
     </Editable>

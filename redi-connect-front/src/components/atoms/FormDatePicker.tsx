@@ -36,6 +36,7 @@ interface FormDatePickerProps {
   showMonthDropdown?: boolean
   showYearDropdown?: boolean
   dropdownMode?: "scroll" | "select"
+  isClearable?: boolean
   setFieldValue: (name: string, date: Date) => void
 }
 
@@ -51,6 +52,7 @@ const FormDatePicker = (props: FormDatePickerProps) => {
     showMonthDropdown,
     showYearDropdown,
     dropdownMode,
+    isClearable,
     setFieldValue
   } = props
 
@@ -74,6 +76,7 @@ const FormDatePicker = (props: FormDatePickerProps) => {
           showMonthDropdown={showMonthDropdown}
           showYearDropdown={showYearDropdown}
           dropdownMode={dropdownMode}
+          isClearable={isClearable}
           onChange={changeHandler}
         />
       </Form.Control>
