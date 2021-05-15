@@ -1,3 +1,49 @@
+# Connect
+
+You'll find two sister products in this repository:
+
+- ReDI Connect, a tool to connect mentees to mentors, deployed to https://connect.redi-school.org
+- ReDI Talent Pool, a tool to connect jobseekers to companies and get jobs, deployed to https://cv-builder.redi-school.org
+
+Both are created, run and managed by ReDI School of Digital Integration. We're a non-profit school in Germany (in Berlin, Munich and NRW) with a community of hundreds of professionals from the digital industry volunteering to teach and mentor students. Our students are tech-interested locals and newcomers to Germany.
+
+## TL;DR for developers
+
+Make sure mongodb is installed your computer => run `yarn` in project root to install dependencies => run `yarn seed` to drop & re-seed database => run `yarn start:all` to boot all apps. It'll take a while and lots of warnings will show until everything's booted.
+
+Open these in your browser:
+
+- ReDI Talent Pool: http://localhost:2999
+- ReDI Connect: http://localhost:3000
+- Admin panel: http://localhost:3001
+- ReDI Connect Location Picker: http://localhost:3002
+- API/backend: http://localhost:3003, Swagger: http://localhost:3003/explorer
+
+We use [Nx Dev Tools](https://nx.dev/) to manage this monorepo. Find all the apps/products under `apps/` and all libraries they consume under `libs/`.
+
+Use trunk-based branching - create feature/bugfix/docs/refactor/blabla branches directly off `master` and file PRs to merge back into `master`. Name branches `<type>/short-hyphenated-title`, where `type` is `feat`, `fix`, `docs`, `style`, `refactor`, `test` or `chore`.
+
+All features will run correctly locally with two exceptions:
+
+1. AWS SES (Simple Email Service) used for transactional emails (sign-up confirmation, verification, event notifications etc)
+2. AWS S3 to store avatar images uploaded by users.
+
+You need an AWS access/secret key for the above - write to @ericbolikowski to get these, then put them into your environment file (`apps/api/.env`).
+
+## TL;DR for designers
+
+See the [Onboarding Checklist](https://github.com/talent-connect/connect/wiki#onboarding-checklist) and [Workflow for design tasks](https://github.com/talent-connect/connect/wiki#onboarding-checklist) in our Wiki.
+
+## Getting started in depth
+
+## Guide to the repo and working on it
+
+## Editor setup
+
+## Good to know
+
+## Manual testing
+
 ## About the Nx monorepo
 
 Main benefits:
@@ -7,7 +53,9 @@ Main benefits:
 - one command to start it all - no more four terminal windows to start all the apps
 - overall easier to extend & scale - there’s future work in the pipeline for which Nx is a great match (NestJS, Storybook, hint hint)
 
-# TalentConnect
+# Nx out-of-the-box docs
+
+All the below is written by Nx.
 
 This project was generated using [Nx](https://nx.dev).
 
