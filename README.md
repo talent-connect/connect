@@ -7,11 +7,18 @@ You'll find two sister products in this repository:
 
 Both are created, run and managed by ReDI School of Digital Integration. We're a non-profit school in Germany (in Berlin, Munich and NRW) with a community of hundreds of professionals from the digital industry volunteering to teach and mentor students. Our students are tech-interested locals and newcomers to Germany.
 
-## TL;DR for developers
+## Getting started for developers
 
-Make sure mongodb is installed your computer => run `yarn` in project root to install dependencies => run `yarn seed` to drop & re-seed database => run `yarn start:all` to boot all apps. It'll take a while and lots of warnings will show until everything's booted.
+1. Make sure mongodb is installed your computer
+2. If you're re-seeding, drop the database files: `rm -rf mongodb-data/*`
+3. Run `yarn` in project root to install dependencies
+4. Run `yarn start:all` to boot all apps, _or_ a subset of apps using the `start:x` commands in package.json.
 
-Open these in your browser:
+   It'll take a while and lots of warnings will show until everything's booted.
+
+5. If you're re-seeding, run `yarn seed` to seed database
+
+You can open these in your browser:
 
 - ReDI Talent Pool: http://localhost:2999
 - ReDI Connect: http://localhost:3000
@@ -19,9 +26,7 @@ Open these in your browser:
 - ReDI Connect Location Picker: http://localhost:3002
 - API/backend: http://localhost:3003, Swagger: http://localhost:3003/explorer
 
-We use [Nx Dev Tools](https://nx.dev/) to manage this monorepo. Find all the apps/products under `apps/` and all libraries they consume under `libs/`.
-
-Use trunk-based branching - create feature/bugfix/docs/refactor/blabla branches directly off `master` and file PRs to merge back into `master`. Name branches `<type>/short-hyphenated-title`, where `type` is `feat`, `fix`, `docs`, `style`, `refactor`, `test` or `chore`.
+Set environment variable `DEV_MODE_EMAIL_RECIPIENT=your-own-email-address@gmail.com` and it'll override the default recipient and send to that instead.
 
 All features will run correctly locally with two exceptions:
 
@@ -30,7 +35,11 @@ All features will run correctly locally with two exceptions:
 
 You need an AWS access/secret key for the above - write to @ericbolikowski to get these, then put them into your environment file (`apps/api/.env`).
 
-## TL;DR for designers
+We use [Nx Dev Tools](https://nx.dev/) to manage this monorepo. Find all the apps/products under `apps/` and all libraries they consume under `libs/`.
+
+Use trunk-based branching - create feature/bugfix/docs/refactor/blabla branches directly off `master` and file PRs to merge back into `master`. Name branches `<type>/short-hyphenated-title`, where `type` is `feat`, `fix`, `docs`, `style`, `refactor`, `test` or `chore`.
+
+## Getting started for designers
 
 See the [Onboarding Checklist](https://github.com/talent-connect/connect/wiki#onboarding-checklist) and [Workflow for design tasks](https://github.com/talent-connect/connect/wiki#onboarding-checklist) in our Wiki.
 
