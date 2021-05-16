@@ -1,0 +1,16 @@
+@import '~bulma/sass/utilities/_all';
+@import '_variables.scss';
+
+.pre-footer {
+  &__image {
+    position: absolute;
+    bottom: -2.25rem;
+    right: 0;
+
+    @include mobile() {
+      position: relative;
+      bottom: -3.4rem;
+      margin: 0 1rem 0;
+    }
+  }
+}

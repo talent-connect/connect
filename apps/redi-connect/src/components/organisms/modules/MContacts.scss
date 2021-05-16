@@ -1,0 +1,14 @@
+@import '~bulma/sass/utilities/_all';
+@import '_variables.scss';
+
+.m-contacts {
+  &__row {
+    display: flex;
+    margin-bottom: 0.5rem;
+
+    &__label {
+      color: $grey;
+      width: 6rem;
+    }
+  }
+}

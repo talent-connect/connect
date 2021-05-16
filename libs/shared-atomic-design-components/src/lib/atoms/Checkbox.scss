@@ -1,0 +1,75 @@
+@import '~bulma/sass/utilities/_all';
+@import '../styles/_variables.scss';
+
+.redi-checkbox {
+  position: absolute;
+  z-index: -1000;
+  left: -1000px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  width: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+
+  &-label {
+    padding: 0.126rem 0 0.126rem 2rem;
+    display: inline-block;
+    position: relative;
+    opacity: 1;
+    transition: $transition;
+    cursor: pointer;
+
+    &:before {
+      content: '';
+      position: absolute;
+      transition: $transition;
+      width: 1.5rem;
+      height: 1.5rem;
+      left: 0;
+      top: 0;
+      border: 1px solid $input-border-color;
+      box-shadow: $input-shadow;
+      border-radius: $radius;
+    }
+
+    &:hover:before {
+      border-color: $input-hover-border-color;
+    }
+
+    &:after {
+      content: '';
+      position: absolute;
+      transition: ease-out opacity 0.1s;
+      opacity: 0;
+      width: 0.5rem;
+      height: 1rem;
+      top: 0.125rem;
+      left: 0.5rem;
+      border: solid $white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(40deg);
+    }
+  }
+
+  &:checked + label {
+    &:before {
+      background-color: $primary;
+      border-color: $primary;
+      box-shadow: none;
+    }
+    &:after {
+      opacity: 1;
+    }
+  }
+
+  &:disabled + label {
+    opacity: 0.4;
+    cursor: no-drop;
+
+    &:hover:before {
+      border-color: $input-border-color;
+    }
+  }
+}

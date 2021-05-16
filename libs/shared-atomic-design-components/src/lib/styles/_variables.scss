@@ -1,0 +1,111 @@
+// bulma colors
+$black: #000;
+$white: #fff;
+$grey-dark: #5d5d5d;
+$grey: #a0a0a0;
+$grey-light: #dadada;
+$grey-extra-light: #f0f0f0;
+
+$red: #ea3f25;
+$green: #1cc666;
+// redi colors
+$redi-blue-dark: #2cb0c7;
+$redi-blue: #84c5d2;
+$redi-blue-light: #daf0f4;
+
+$redi-orange-dark: #fd4d00;
+$redi-orange: #ff7d55;
+$redi-orange-light: #ffb298;
+$redi-orange-extra-light: #ffeae2;
+
+$primary: $redi-orange-dark;
+$warning: $redi-orange-dark;
+$info: $redi-orange-extra-light;
+
+$body-color: $black;
+$body-background-color: $white;
+
+$shadow: #6f7980;
+
+// fonts
+$family-primary: Avenir LT Std;
+$family-secondary: Jubilat;
+
+// shadows
+$default-shadow: 0 0.375rem 1.5rem 0.1875rem rgba($shadow, 0.16);
+
+// bulma size
+$size-1: 4rem; // 64px
+$size-2: 2.5rem; // 40px
+$size-3: 2rem; // 32px
+$size-4: 1.25rem; // 20px
+$size-5: 1rem; // 16px
+$size-6: 0.875rem; // 14px
+$size-7: 0.75rem; // 11px
+
+$size-normal: $size-5;
+$size-small: $size-6;
+
+$weight-light: 400;
+$weight-normal: 500;
+$weight-bold: 800;
+$weight-heavy: 900; // not sure if this is really needed, check and remove
+
+$strong-weight: $weight-bold;
+
+// Grid
+$desktop: 1192px; // 1128px + 2x32px (2xgutter)
+$widescreen-enabled: false;
+$fullhd-enabled: false;
+$column-gap: 0.75em;
+$block-spacing: 1rem;
+$section-padding: 1rem 1.25rem 3rem;
+$section-padding-medium: 3.25rem 1.25rem;
+$box-padding: 2rem;
+
+// Forms
+// $radius: 2px;
+$control-height: 3em;
+$input-shadow: inset 0 2px 6px rgba(178, 180, 181, 0.3);
+$input-border-color: $grey;
+$input-hover-border-color: $redi-orange;
+$input-focus-box-shadow-size: 0;
+$input-focus: $grey-light;
+$input-focus-color: $grey;
+$label-color: $grey-dark;
+$label-weight: $weight-normal;
+$help-size: 0.875rem;
+$checkbox-border: 1px $grey solid;
+$button-disabled-opacity: 1;
+$button-disabled-background-color: $grey-light;
+$control-radius: 0;
+
+// texts
+$title-family: $family-secondary;
+$title-weight: $weight-normal;
+$title-line-height: 1;
+$title-color: $black;
+$subtitle-color: $black;
+$subtitle-line-height: 1;
+$link: $redi-orange-dark;
+$radius-small: 0;
+
+$tag-color: $redi-orange;
+$tag-background-color: $redi-orange-extra-light;
+
+$transition: ease-in-out all 0.2s;
+
+// card
+$card-content-padding: 1rem;
+$card-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.05),
+  0 2px 4px -1px rgba(0, 0, 0, 0.2);
+$card-shadow-hover: 0 6px 20px 3px rgba(111, 119, 121, 0.23);
+
+// modal
+$modal-content-spacing-mobile: 100px;
+$modal-content-spacing-tablet: 100px;
+$modal-card-spacing: 100px;
+$modal-card-head-background-color: $white;
+$modal-card-head-padding: 24px;
+$modal-card-body-padding: 24px;
+$modal-card-body-foot: 24px;

@@ -1,7 +1,8 @@
 {
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "eslint.workingDirectories": [
-    { "directory": "redi-connect-front", "changeProcessCWD": true },
-    { "directory": "redi-connect-admin", "changeProcessCWD": true },
-    { "directory": "redi-connect-backend", "changeProcessCWD": true },
+    "./apps/redi-connect",
+    "./lib/shared-atomic-design-components",
+    "./libs/shared-types"
   ]
 }

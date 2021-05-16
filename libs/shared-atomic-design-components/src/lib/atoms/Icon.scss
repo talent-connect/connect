@@ -1,0 +1,35 @@
+@import '~bulma/sass/utilities/_all';
+@import '../styles/_variables.scss';
+
+.icon {
+  width: 1em;
+  height: 1em;
+
+  &--small {
+    font-size: 1rem;
+  }
+
+  &--medium {
+    font-size: 1.5rem;
+  }
+
+  &--large {
+    font-size: 2rem;
+  }
+
+  &--x-large {
+    font-size: 4rem;
+  }
+
+  &--space-left {
+    margin-left: 0.5em;
+  }
+
+  &--space-right {
+    margin-right: 0.5em;
+  }
+
+  &--active {
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "implicitDependencies": {
+    "package.json": { "dependencies": "*", "devDependencies": "*" },
+    ".eslintrc.json": "*"
+  },
+  "affected": { "defaultBase": "master" },
+  "npmScope": "talent-connect",
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@nrwl/nx-cloud",
+      "options": {
+        "cacheableOperations": ["build", "lint", "test", "e2e"],
+        "accessToken": "YTA4ZjEzZTctYTc5NS00OWIwLWFiOTQtOGM5YTJkNThjMDM1fHJlYWQtd3JpdGU=",
+        "canTrackAnalytics": false,
+        "showUsageWarnings": true
+      }
+    }
+  },
+  "projects": {
+    "redi-connect": { "tags": [] },
+    "redi-connect-e2e": {
+      "tags": [],
+      "implicitDependencies": ["redi-connect"]
+    },
+    "admin-panel": { "tags": [] },
+    "admin-panel-e2e": { "tags": [], "implicitDependencies": ["admin-panel"] },
+    "api": { "tags": [], "implicitDependencies": [] },
+    "shared-atomic-design-components": { "tags": [] },
+    "shared-types": { "tags": [] },
+    "redi-talent-pool": { "tags": [] },
+    "redi-talent-pool-e2e": {
+      "tags": [],
+      "implicitDependencies": ["redi-talent-pool"]
+    },
+    "shared-config": { "tags": [] },
+    "talent-pool-types": { "tags": [] },
+    "talent-pool-config": { "tags": [] },
+    "shared-utils": { "tags": [] }
+  }
+}

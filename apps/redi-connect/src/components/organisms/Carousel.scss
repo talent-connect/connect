@@ -1,0 +1,44 @@
+@import '~bulma/sass/utilities/_all';
+@import '_variables.scss';
+@import '~slick-carousel/slick/slick';
+@import '~slick-carousel/slick/slick-theme';
+
+.slick-dots li {
+  width: 0.75rem;
+  height: 0.75rem;
+  background: $grey-light;
+  border-radius: 50%;
+
+  & button:before {
+    content: '';
+  }
+
+  &.slick-active {
+    background: $red;
+  }
+}
+
+.carousel {
+  &:focus {
+    outline: none;
+  }
+
+  &__image {
+    border: 10px solid;
+    width: 100%;
+    height: auto;
+
+    @include mobile() {
+      border: 6px solid;
+      border-right: none;
+    }
+
+    &--border-orange {
+      border-image: linear-gradient(to right, $redi-orange 30%, white 30%) 10%;
+    }
+
+    &--border-blue {
+      border-image: linear-gradient(to right, $redi-blue 30%, white 30%) 10%;
+    }
+  }
+}

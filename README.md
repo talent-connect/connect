@@ -1,107 +1,147 @@
-# ReDI Connect
+# Connect
 
-ReDI Connect is a tool to connect mentors and mentees. It is built for ReDI School and its community of teachers, students and volunteers.
+You'll find two sister products in this repository:
 
-## Features
+- ReDI Connect, a tool to connect mentees to mentors, deployed to https://connect.redi-school.org
+- ReDI Talent Pool, a tool to connect jobseekers to companies and get jobs, deployed to https://cv-builder.redi-school.org
 
-- sign-up for mentors/mentees
-- profiles that contain misc. personalia, and checkboxes for what areas of support mentors can offer and mentees are looking for
-- form for mentees to submit an application to mentors for mentorship
-- mentorship session logging
-- problem reporting
-- administration panel
+Both are created, run and managed by ReDI School of Digital Integration. We're a non-profit school in Germany (in Berlin, Munich and NRW) with a community of hundreds of professionals from the digital industry volunteering to teach and mentor students. Our students are tech-interested locals and newcomers to Germany.
 
-## Milestones
+## TL;DR for developers
 
-- improve overall design, UX and code quality (current state is result of rushed work and has technical debt)
-- consider supplementing the front-end web application by a native/hybrid/cross-platform Android / iOS mobile application
+Make sure mongodb is installed your computer => run `yarn` in project root to install dependencies => run `yarn seed` to drop & re-seed database => run `yarn start:all` to boot all apps. It'll take a while and lots of warnings will show until everything's booted.
 
-## Components
+Open these in your browser:
 
-- database: MongoDB
-- redi-connect-backend: Loopback/Express.js-based REST server
-- redi-connect-front: frontend coded in React
-- redi-connect-admin: simple administration panel (based on react-admin)
+- ReDI Talent Pool: http://localhost:2999
+- ReDI Connect: http://localhost:3000
+- Admin panel: http://localhost:3001
+- ReDI Connect Location Picker: http://localhost:3002
+- API/backend: http://localhost:3003, Swagger: http://localhost:3003/explorer
 
-All can be run locally in development mode using below instructions. The production version is hosted on AWS - consult @ericbolikowski for details.
+We use [Nx Dev Tools](https://nx.dev/) to manage this monorepo. Find all the apps/products under `apps/` and all libraries they consume under `libs/`.
 
-## Contribution guide
+Use trunk-based branching - create feature/bugfix/docs/refactor/blabla branches directly off `master` and file PRs to merge back into `master`. Name branches `<type>/short-hyphenated-title`, where `type` is `feat`, `fix`, `docs`, `style`, `refactor`, `test` or `chore`.
 
-Contribution guide will be elaborated. For now, please:
+All features will run correctly locally with two exceptions:
 
-- Please follow the [gitflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) model for branching (minus release branches). TL;DR: create `feat/xxx` branches off `develop` and file a PR once the feature is ready. Merge of `develop` into `master` done by maintainers only, once `develop` is release-ready. Use `hotfix` branches off `master`.
-- Please follow [conventional commits](https://www.conventionalcommits.org/en/v1.0.0-beta.4) when writing your commit messages. This is required for merge commits to `develop` and `master`, and encouraged for all other commits. TL;DR: use this syntax for commit summary: `<type<[(<scope<)]: <description>`, where `type = fix|feat|chore|docs|style|refactor|perf|test|`, `scope=backend|front|admin` (sub-scope optional).
+1. AWS SES (Simple Email Service) used for transactional emails (sign-up confirmation, verification, event notifications etc)
+2. AWS S3 to store avatar images uploaded by users.
 
-## Getting started (without Docker)
+You need an AWS access/secret key for the above - write to @ericbolikowski to get these, then put them into your environment file (`apps/api/.env`).
 
-### Installation
+## TL;DR for designers
 
-1. Ensure following is installed and active:
-   - mongod
-   - node v14
-2. Optionally, to easily browse the MongoDB database, install _Studio 3T_
-3. Install dependencies: run `yarn` in `redi-connect-front` folder, `yarn` in `redi-connect-admin` folder, and `yarn` in `redi-connect-backend` folder
-4. Optionally, create a folder named `mongodb-data` for MongoDB's data files
-5. Create your `.env.development` in `redi-connect-backend`. You can base it off `.env.sample` in the same folder. Reach out to @ericbolikowski for a complete `.env.development`.
+See the [Onboarding Checklist](https://github.com/talent-connect/connect/wiki#onboarding-checklist) and [Workflow for design tasks](https://github.com/talent-connect/connect/wiki#onboarding-checklist) in our Wiki.
 
-### Run
+## Getting started in depth
 
-1. For a clean development session, clear the old database (via Studio 3T, any other GUI, or simply deleting and re-creating the MongoDB data folder)
-2. Open the monogdb data folder (e.g. `cd mongodb-data`) and start the mongodb daemon: `mongod --dbpath .`
-3. To seed the database with anonymous data, run `REDI_LOCATION=berlin ./seed-random-data.sh` in `redi-connect-backend` (note: the output of this script might make you think that it's failing, because it keeps showing `Unhandled promise rejection` warnings; it will display about 100 of these messages and it will succeed anyway, showing `done` at the very end)
-4. Run `yarn start:berlin` in `redi-connect-front`
-5. Run `yarn start` in `redi-connect-backend`
-6. Run `yarn start` in `redi-connect-admin`
+## Guide to the repo and working on it
 
-### Ubuntu/Fedora: Possible errors starting ReDI Connect
+## Editor setup
 
-When starting ReDI Connect on Ubuntu or Fedora you could encounter following error:
+## Good to know
 
-> `Error: ENOSPC: System limit for number of file watchers reached, watch ...`
+## Manual testing
 
-The solution is to issue the following command:
+## About the Nx monorepo
 
-> `echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p`
+Main benefits:
 
-## Getting started (with Docker)
+- code sharing between apps (admin, backend, redi connect, redi talent pool) - great for components, types, utilities, and much more
+- one linter to rule them all - no more crazy pull requests with style changes
+- one command to start it all - no more four terminal windows to start all the apps
+- overall easier to extend & scale - there’s future work in the pipeline for which Nx is a great match (NestJS, Storybook, hint hint)
 
-### Installation
+# Nx out-of-the-box docs
 
-You don't need to have Node or Mongo installed locally.
-You need Docker and Docker Compose.
+All the below is written by Nx.
 
-Create your `.env.development` in `redi-connect-backend`. You can base it off `.env.sample` in the same folder. Reach out to @ericbolikowski for a complete `.env.development`.
+This project was generated using [Nx](https://nx.dev).
 
-### Run
+<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>
 
-1. `docker-compose build` will build all the required images.
-2. `docker-compose up -d` will run all the containers.
-3. `docker-compose ps` will show the state of all the container (hopefully `Up`).
-4. `docker-compose stop` will stop all the containers.
+🔎 **Powerful, Extensible Dev Tools**
 
-### Connect
+## Adding capabilities to your workspace
 
-The services are exposed as such:
+Nx supports many plugins which add capabilities for developing different types of applications and different tools.
 
-- `front` on http://localhost:3001
-- `admin` on http://localhost:3002
-- `backend` on http://localhost:3003
+These capabilities include generating applications, libraries, etc as well as the devtools to test, and build projects as well.
 
-### Good to know
+Below are our core plugins:
 
-- The `front` app is set up to use `berlin` as the REDI location. This can be changed by editing the Docker Compose file (look for `REDI_LOCATION`).
-- The MongoDB files will be stored in `mongodb-data`.
-- The source files will be _mounted_ in the containers, so that if you edit the local files, the change will be reflected immediately in the containers, and the content will be updated accordingly (as if you were working locally).
-- The seed data will automatically be loaded by the service named `seed`. This service will create the file `mongodb-data/seed-has-been-loaded` to avoid reloading the data each time you run `docker-compose up`. You can force reloading the seed data by removing that file and running `docker-compose up seed`.
-- The Dockerfiles for `admin`, `backend`, and `front` install the dependencies (with `yarn` or `npm install`) in `CMD` as well because we are bind-mounting the local `node_modules` directory, which might contain outdated or invalid versions of the dependencies.
+- [React](https://reactjs.org)
+  - `npm install --save-dev @nrwl/react`
+- Web (no framework frontends)
+  - `npm install --save-dev @nrwl/web`
+- [Angular](https://angular.io)
+  - `npm install --save-dev @nrwl/angular`
+- [Nest](https://nestjs.com)
+  - `npm install --save-dev @nrwl/nest`
+- [Express](https://expressjs.com)
+  - `npm install --save-dev @nrwl/express`
+- [Node](https://nodejs.org)
+  - `npm install --save-dev @nrwl/node`
 
-## Testing
+There are also many [community plugins](https://nx.dev/nx-community) you could add.
 
-The seed data contains an admin account with `cloud-accounts@redi-school.org` as the login and password.
+## Generate an application
 
-You can find more test users in `seed-database.js`.
+Run `nx g @nrwl/react:app my-app` to generate an application.
 
-If you want to test email receipt (for example by applying from the mentee user to the mentor user), you have at least two options:
+> You can use any of the plugins above to generate applications as well.
 
-- Re-seed the database, but change the email addresses in the seed files first.
-- When running the backend, set environment variable `DEV_MODE_EMAIL_RECIPIENT=your-own-email-address@gmail.com` and it'll override the default recipient and send to that instead.
+When using Nx, you can create multiple applications and libraries in the same workspace.
+
+## Generate a library
+
+Run `nx g @nrwl/react:lib my-lib` to generate a library.
+
+> You can also use any of the plugins above to generate libraries as well.
+
+Libraries are shareable across libraries and applications. They can be imported from `@talent-connect/mylib`.
+
+## Development server
+
+Run `nx serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
+
+## Code scaffolding
+
+Run `nx g @nrwl/react:component my-component --project=my-app` to generate a new component.
+
+## Build
+
+Run `nx build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+
+## Running unit tests
+
+Run `nx test my-app` to execute the unit tests via [Jest](https://jestjs.io).
+
+Run `nx affected:test` to execute the unit tests affected by a change.
+
+## Running end-to-end tests
+
+Run `ng e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
+
+Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
+
+## Understand your workspace
+
+Run `nx dep-graph` to see a diagram of the dependencies of your projects.
+
+## Further help
+
+Visit the [Nx Documentation](https://nx.dev) to learn more.
+
+## ☁ Nx Cloud
+
+### Computation Memoization in the Cloud
+
+<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-cloud-card.png"></p>
+
+Nx Cloud pairs with Nx in order to enable you to build and test code more rapidly, by up to 10 times. Even teams that are new to Nx can connect to Nx Cloud and start saving time instantly.
+
+Teams using Nx gain the advantage of building full-stack applications with their preferred framework alongside Nx’s advanced code generation and project dependency graph, plus a unified experience for both frontend and backend developers.
+
+Visit [Nx Cloud](https://nx.app/) to learn more.
