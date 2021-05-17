@@ -1,5 +1,5 @@
 @import "../../styles/_variables.scss";
-@import 'node_modules/react-datepicker/src/stylesheets/datepicker.scss';
+@import "node_modules/react-datepicker/src/stylesheets/datepicker.scss";
 
 .datepicker-trigger {
   position: relative;
@@ -9,6 +9,7 @@
     top: 50%;
     transform: translateY(-50%);
     right: 0.5rem;
+    cursor: pointer;
 
     path {
       fill: $redi-orange-dark;
