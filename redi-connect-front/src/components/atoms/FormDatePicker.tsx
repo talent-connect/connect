@@ -11,11 +11,12 @@ interface PickerTriggerProps {
   onClick?: () => void
 }
 
-const PickerTrigger = ({ value, onClick }: PickerTriggerProps) => (
+const PickerTrigger = (placeholder: string) => ({ value, onClick }: PickerTriggerProps) => (
   <div className="datepicker-trigger" onClick={onClick}>
     <Form.Input
       id={value}
       value={value}
+      placeholder={placeholder}
     />
     <Icon
       icon="calendar"
@@ -60,6 +61,8 @@ const FormDatePicker = (props: FormDatePickerProps) => {
     setFieldValue(name, date);
   }
 
+  const PickerTriggerWithPlaceholder = PickerTrigger(placeholder);
+
   return (
     <Form.Field>
       {label && <Form.Label size="small">
@@ -68,8 +71,7 @@ const FormDatePicker = (props: FormDatePickerProps) => {
       <Form.Control>
         <DatePicker
           selected={values[name]}
-          customInput={<PickerTrigger />}
-          placeholderText={placeholder}
+          customInput={<PickerTriggerWithPlaceholder />}
           dateFormat={dateFormat || "dd.MM.yyyy"}
           minDate={minDate}
           maxDate={maxDate}
