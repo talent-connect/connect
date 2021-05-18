@@ -22,12 +22,6 @@ const fetchJson = async (url, options = {}) => {
   let json
   try {
     json = JSON.parse(body);
-    // mocking a backend response for the birthDate:
-    // -->
-    // if (!(json instanceof Array)) {
-    //   json.birthDate = new Date(2001, 8, 28);
-    // }
-    // <-- to be deleted when backend/database part is implemented
   } catch (e) {
     // not json, no big deal
   }
