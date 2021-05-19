@@ -30,6 +30,7 @@ const formMentoringSessionDurationOptions = mentoringSessionDurationOptions.map(
 interface AddSessionProps {
   onClickHandler: Function
 }
+
 const AddSession = ({ onClickHandler }: AddSessionProps) => (
   <Icon
     icon="plus"
@@ -86,6 +87,7 @@ const MSessions = ({
       await mentoringSessionsCreateStart(mentoringSession)
       setSubmitResult('success')
       setShowAddSession(false)
+      window.location.reload()
     } catch (err) {
       setSubmitResult('error')
     } finally {
