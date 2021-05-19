@@ -28,3 +28,4 @@ secound-round.sh
 
 .env.production
 .env.development
+.env
