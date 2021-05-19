@@ -97,7 +97,7 @@ const RediFooter = () => {
                 ))}
               </Element>
             </Columns.Column>
-            <Columns.Column tablet={{ size: 2 }}>
+            <Columns.Column desktop={{ size: 3 }} tablet={{ size: 6 }}>
               <Element
                 renderAs="h3"
                 textSize={6}
@@ -108,6 +108,8 @@ const RediFooter = () => {
                 {t('footer.socialMediaHeadline')}
               </Element>
               <SocialMediaIcons />
+              <SocialMediaIcons name="MUC" />
+              <SocialMediaIcons name="NRW" />
             </Columns.Column>
           </Columns>
           <Element size={6} className="footer__copyright" renderAs="p">
