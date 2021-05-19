@@ -1,8 +1,5 @@
 import React from 'react'
 import Button from '@material-ui/core/Button'
-import { connect } from 'react-redux'
-import { push } from 'react-router-redux'
-import { showNotification } from 'react-admin'
 
 import { API_URL } from '../../config'
 import doApiRequest from '../../lib/react-admin-loopback/src/fetch'
@@ -12,44 +9,38 @@ import doApiRequest from '../../lib/react-admin-loopback/src/fetch'
  * @param {string} buttonType
  */
 export const buildApproveOrRejectButton = (operationType) => {
-  const ConfiguredButton = connect(null, { showNotification, push })(
-    ({ data, showNotification, push }) => {
-      // On click, make a request to either approve or reject
-      const onClick = React.useCallback(() => {
-        const sendRequest = async () => {
-          const finalConfirmationPrompt = `Are you certain you want to ${operationTypeToLabelMap[operationType]} this user?`
-          const shouldContinue = await showConfirmPrompt(
-            finalConfirmationPrompt
-          )
-          if (!shouldContinue) return
-          const requestUrl = operationUrl(operationType)
-          const requestPayload = {
-            body: JSON.stringify({
-              redProfileId: data.id,
-            }),
-            method: 'post',
-          }
-          try {
-            const responseRaw = await doApiRequest(requestUrl, requestPayload)
-            const response = responseRaw.json
-            showNotification(
-              `User ${operationTypeToLabelMap[operationType]} completed`
-            )
-            window.location.reload()
-          } catch (err) {
-            showNotification(`Error occured: ${err}`)
-          }
+  const ConfiguredButton = ({ data }) => {
+    // On click, make a request to either approve or reject
+    const onClick = React.useCallback(() => {
+      const sendRequest = async () => {
+        const finalConfirmationPrompt = `Are you certain you want to ${operationTypeToLabelMap[operationType]} this user?`
+        const shouldContinue = await showConfirmPrompt(finalConfirmationPrompt)
+        if (!shouldContinue) return
+        const requestUrl = operationUrl(operationType)
+        const requestPayload = {
+          body: JSON.stringify({
+            redProfileId: data.id,
+          }),
+          method: 'post',
         }
-        sendRequest()
-      }, [data])
+        try {
+          const responseRaw = await doApiRequest(requestUrl, requestPayload)
+          const response = responseRaw.json
+          alert(`User ${operationTypeToLabelMap[operationType]} completed`)
+          window.location.reload()
+        } catch (err) {
+          alert(`Error occured: ${err}`)
+        }
+      }
+      sendRequest()
+    }, [data])
 
-      return (
-        <Button onClick={onClick}>
-          {operationTypeToLabelMap[operationType]}
-        </Button>
-      )
-    }
-  )
+    return (
+      <Button onClick={onClick}>
+        {operationTypeToLabelMap[operationType]}
+      </Button>
+    )
+  }
 
   return ConfiguredButton
 }
