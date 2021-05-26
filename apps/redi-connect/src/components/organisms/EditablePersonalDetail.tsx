@@ -1,5 +1,8 @@
 import React from 'react'
+import { subYears } from 'date-fns'
+
 import {
+  FormDatePicker,
   FormInput,
   FormSelect,
 } from '@talent-connect/shared-atomic-design-components'
@@ -23,16 +26,16 @@ const formGenders = genders.map((gender) => ({
 
 export interface PersonalDetailFormValues {
   gender: string
-  age?: number
+  birthDate: Date | null
 }
 
 const validationSchema = Yup.object({
   gender: Yup.string().oneOf(['male', 'female', 'other']).label('Gender'),
-  age: Yup.number().min(16).max(99).label('Age'),
+  birthDate: Yup.date().nullable(true).label('Date'),
 })
 
 const EditablePersonalDetail = ({ profile, profileSaveStart }: any) => {
-  const { id, gender, age } = profile
+  const { id, gender, birthDate } = profile
 
   const submitForm = async (values: FormikValues) => {
     const personalDetail = values as Partial<RedProfile>
@@ -41,7 +44,7 @@ const EditablePersonalDetail = ({ profile, profileSaveStart }: any) => {
 
   const initialValues: PersonalDetailFormValues = {
     gender,
-    age,
+    birthDate: birthDate ? new Date(birthDate) : null,
   }
 
   const formik = useFormik({
@@ -67,7 +70,19 @@ const EditablePersonalDetail = ({ profile, profileSaveStart }: any) => {
         {...formik}
       />
 
-      <FormInput name="age" placeholder="Age" label="Your age" {...formik} />
+      <FormDatePicker
+        label="Date of birth"
+        name="birthDate"
+        placeholder="Add your date of birth"
+        dateFormat="dd MMMM yyyy"
+        minDate={subYears(new Date(), 100)}
+        maxDate={subYears(new Date(), 18)}
+        showMonthDropdown
+        showYearDropdown
+        dropdownMode="select"
+        isClearable
+        {...formik}
+      />
     </Editable>
   )
 }

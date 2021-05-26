@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { get, mapValues, keyBy, groupBy } from 'lodash'
+import moment from 'moment'
 import {
   Admin,
   Resource,
@@ -75,6 +76,8 @@ import {
   categoriesIdToLabelMap,
 } from '@talent-connect/shared-config'
 
+import { calculateAge } from '@talent-connect/shared-utils'
+
 import loopbackClient, { authProvider } from './lib/react-admin-loopback/src'
 import { ApproveButton } from './components/ApproveButton'
 import { DeclineButton } from './components/DeclineButton'
@@ -145,11 +148,10 @@ const CategoryList = (props) => {
     props.data,
     (catId) => categoriesIdToGroupMap[catId]
   )
-  console.log(categoriesIdToLabelMap)
   return (
     <>
-      {Object.keys(categoriesGrouped).map((groupId) => (
-        <>
+      {Object.keys(categoriesGrouped).map((groupId, index) => (
+        <React.Fragment key={index}>
           <span>
             <strong>{categoryGroupsToLabelMap[groupId]}:</strong>{' '}
             {categoriesGrouped[groupId]
@@ -157,7 +159,7 @@ const CategoryList = (props) => {
               .join(', ')}
           </span>
           <br />
-        </>
+        </React.Fragment>
       ))}
     </>
   )
@@ -381,7 +383,15 @@ const RedProfileShow = (props) => (
           <TextField source="firstName" />
           <TextField source="lastName" />
           <TextField source="gender" />
-          <NumberField source="age" />
+          <FunctionField
+            label="Age"
+            render={(person) => calculateAge(person.birthDate)}
+          />
+          <DateField
+            source="birthDate"
+            label="Date of birth"
+            options={{ year: 'numeric', month: 'long', day: '2-digit' }}
+          />
           <ArrayField source="languages">
             <LanguageList />
           </ArrayField>
@@ -528,7 +538,7 @@ const RedProfileEdit = (props) => (
         <TextInput source="firstName" />
         <TextInput source="lastName" />
         <SelectInput source="gender" choices={genders} />
-        <NumberField source="age" />
+        <DateInput source="birthDate" label="Date of birth" />
         <SelectArrayInput source="languages" choices={languages} />
         <TextInput source="otherLanguages" />
         <TextInput source="personalDescription" multiline />
@@ -971,7 +981,7 @@ const RedMentoringSessionListAside = () => {
 
   return (
     <div style={{ width: 200, margin: '1em' }}>
-      <Typography variant="title">Isabelle Calculator</Typography>
+      <Typography>Isabelle Calculator</Typography>
       <Typography variant="body1" />
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         {picker(fromDate, setFromDate, 'From date')}
