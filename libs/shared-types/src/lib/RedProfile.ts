@@ -30,6 +30,7 @@ export type RedProfile = {
   lastName: string
   gender: string
   age: number
+  birthDate: Date
   languages: Array<string>
   otherLanguages: string
   personalDescription: string

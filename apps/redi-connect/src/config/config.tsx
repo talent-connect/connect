@@ -1,8 +1,13 @@
 import {
   courses as allCourses,
-  rediLocationNames,
+  rediLocationNames as configRediLocationNames,
 } from '@talent-connect/shared-config'
 import { RediLocation } from '@talent-connect/shared-types'
+
+const rediLocationNames = {
+  ...configRediLocationNames,
+  'location-picker': 'Location Picker',
+}
 
 const rediLocation = process.env.NX_REDI_CONNECT_REDI_LOCATION as RediLocation
 const validRediLocations = Object.keys(rediLocationNames)

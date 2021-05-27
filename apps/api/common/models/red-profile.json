@@ -62,10 +62,11 @@
     "gender": {
       "type": "string"
     },
+    "birthDate": {
+      "type": "date"
+    },
     "languages": {
-      "type": [
-        "string"
-      ]
+      "type": ["string"]
     },
     "otherLanguages": {
       "type": "string"
@@ -86,9 +87,7 @@
       "type": "string"
     },
     "categories": {
-      "type": [
-        "string"
-      ]
+      "type": ["string"]
     },
     "menteeCountCapacity": {
       "type": "number"
@@ -97,9 +96,7 @@
       "type": "boolean"
     },
     "favouritedRedProfileIds": {
-      "type": [
-        "string"
-      ]
+      "type": ["string"]
     },
     "createdAt": {
       "type": "date"
