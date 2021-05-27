@@ -37,7 +37,7 @@
     "workspace-generator": "nx workspace-generator",
     "dep-graph": "nx dep-graph",
     "help": "nx help",
-    "deploy-everything:redi-connect": "yarn run deploy-production:redi-connect && yarn run deploy-staging:redi-connect",
+    "deploy-everything:redi-connect": "yarn run deploy-production:redi-connect && yarn run deploy-demonstration:redi-connect",
     "deploy-everything:admin-panel": "yarn run deploy-production:admin-panel && yarn run deploy-demonstration:admin-panel",
     "deploy-production:admin-panel": "env-cmd -f .env.production nx run admin-panel:build && aws s3 rm s3://connect-admin.redi-school.org/ --recursive --profile redi-connect-deployment --region eu-west-1 && aws s3 sync dist/apps/admin-panel/ s3://connect-admin.redi-school.org --delete --acl public-read --profile redi-connect-deployment --region eu-west-1 && yarn invalidate-cache:admin-panel:prod",
     "deploy-demonstration:admin-panel": "env-cmd -f .env.demonstration nx run admin-panel:build && aws s3 rm s3://admin.demo.connect.redi-school.org/ --recursive --profile redi-connect-deployment --region eu-west-1 && aws s3 sync dist/apps/admin-panel/ s3://admin.demo.connect.redi-school.org --delete --acl public-read --profile redi-connect-deployment --region eu-west-1 && yarn invalidate-cache:admin-panel:demonstration",
