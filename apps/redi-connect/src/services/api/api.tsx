@@ -115,6 +115,7 @@ export interface RedProfileFilters {
   userType: UserType
   categories?: string[]
   languages?: string[]
+  locations?: string[]
   nameQuery?: string
 }
 
@@ -122,12 +123,15 @@ export const getProfiles = ({
   userType,
   categories,
   languages,
+  locations,
   nameQuery,
 }: RedProfileFilters): Promise<RedProfile[]> => {
   const filterLanguages =
     languages && languages.length !== 0 ? { inq: languages } : undefined
   const filterCategories =
     categories && categories.length !== 0 ? { inq: categories } : undefined
+  const filterLocations =
+    locations && locations.length !== 0 ? { inq: locations } : undefined
 
   return http(
     `${API_URL}/redProfiles?filter=${JSON.stringify({
@@ -148,6 +152,7 @@ export const getProfiles = ({
           { userType },
           { languages: filterLanguages },
           { categories: filterCategories },
+          { rediLocation: filterLocations },
           { userActivated: true },
         ],
       },
@@ -160,9 +165,16 @@ export const getProfiles = ({
 export const getMentors = ({
   categories,
   languages,
+  locations,
   nameQuery,
 }: Partial<RedProfileFilters>) =>
-  getProfiles({ userType: 'mentor', categories, languages, nameQuery })
+  getProfiles({
+    userType: 'mentor',
+    categories,
+    languages,
+    locations,
+    nameQuery,
+  })
 
 export const getMentees = () => getProfiles({ userType: 'mentee' })
 
