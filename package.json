@@ -37,7 +37,10 @@
     "workspace-generator": "nx workspace-generator",
     "dep-graph": "nx dep-graph",
     "help": "nx help",
-    "deploy-staging:redi-connect": "NX_REDI_CONNECT_REDI_LOCATION=berlin nx run redi-connect:build && aws s3 rm s3://app.staging.connect.redi-school.org/ --recursive --profile redi-connect-deployment --region eu-west-1 && aws s3 sync dist/apps/redi-connect/ s3://app.staging.connect.redi-school.org --delete --acl public-read --profile redi-connect-deployment --region eu-west-1 && yarn invalidate-cache:staging",
+    "deploy-everything:redi-connect": "yarn run deploy-production:redi-connect && yarn run deploy-staging:redi-connect",
+    "deploy-everything:admin-panel": "yarn run deploy-production:admin-panel && yarn run deploy-demonstration:admin-panel",
+    "deploy-production:admin-panel": "env-cmd -f .env.production nx run admin-panel:build && aws s3 rm s3://connect-admin.redi-school.org/ --recursive --profile redi-connect-deployment --region eu-west-1 && aws s3 sync dist/apps/admin-panel/ s3://connect-admin.redi-school.org --delete --acl public-read --profile redi-connect-deployment --region eu-west-1 && yarn invalidate-cache:admin-panel:prod",
+    "deploy-demonstration:admin-panel": "env-cmd -f .env.demonstration nx run admin-panel:build && aws s3 rm s3://admin.demo.connect.redi-school.org/ --recursive --profile redi-connect-deployment --region eu-west-1 && aws s3 sync dist/apps/admin-panel/ s3://admin.demo.connect.redi-school.org --delete --acl public-read --profile redi-connect-deployment --region eu-west-1 && yarn invalidate-cache:admin-panel:demonstration",
     "deploy-production:redi-talent-pool:cv-builder": "nx run redi-talent-pool:build && aws s3 rm s3://cv-builder.redi-school.org/ --recursive --profile redi-connect-deployment --region eu-west-1 && aws s3 sync dist/apps/redi-talent-pool/ s3://cv-builder.redi-school.org --delete --acl public-read --profile redi-connect-deployment --region eu-west-1 && yarn invalidate-cache:redi-talent-pool:prod:cv-builder",
     "deploy-production:redi-connect": "yarn deploy-production:redi-connect:berlin && yarn deploy-production:redi-connect:munich && yarn deploy-production:redi-connect:nrw && yarn deploy-production:redi-connect:location-picker",
     "deploy-production:redi-connect:location-picker": "NX_REDI_CONNECT_REDI_LOCATION=location-picker env-cmd -f .env.production nx run redi-connect:build && aws s3 rm s3://connect.redi-school.org/ --recursive --profile redi-connect-deployment --region eu-west-1 && aws s3 sync dist/apps/redi-connect/ s3://connect.redi-school.org --delete --acl public-read --profile redi-connect-deployment --region eu-west-1 && yarn invalidate-cache:redi-connect:prod:location-picker",
@@ -49,8 +52,10 @@
     "invalidate-cache:redi-connect:prod:location-picker": "aws cloudfront create-invalidation --distribution-id E2CG65E1QXRHR9 --paths '/*' --profile redi-connect-deployment",
     "invalidate-cache:redi-connect:prod:berlin": "aws cloudfront create-invalidation --distribution-id E3JKNUQZAFGDTR --paths '/*' --profile redi-connect-deployment",
     "invalidate-cache:redi-connect:prod:munich": "aws cloudfront create-invalidation --distribution-id E3A5VPYZUTHTQI --paths '/*' --profile redi-connect-deployment",
-    "invalidate-cache:redi-connect:prod:nrw": "aws cloudfront create-invalidation --distribution-id E1KYQ4CHETX086 --paths '/*' --profile redi-connect-deployment",
-    "invalidate-cache:redi-connect:demonstration": "aws cloudfront create-invalidation --distribution-id E1OBHC0Q0A7Y55 --paths '/*' --profile redi-connect-deployment"
+    "invalidate-cache:redi-connect:prod:nrw": "aws cloudfront create-invalidation --distribution-id ELS7VZ1E3A1BI --paths '/*' --profile redi-connect-deployment",
+    "invalidate-cache:redi-connect:demonstration": "aws cloudfront create-invalidation --distribution-id E1OBHC0Q0A7Y55 --paths '/*' --profile redi-connect-deployment",
+    "invalidate-cache:admin-panel:prod": "aws cloudfront create-invalidation --distribution-id ELS7VZ1E3A1BI --paths '/*' --profile redi-connect-deployment",
+    "invalidate-cache:admin-panel:demonstration": "aws cloudfront create-invalidation --distribution-id E1R3A1AAHP3X8O --paths '/*' --profile redi-connect-deployment"
   },
   "private": true,
   "dependencies": {
