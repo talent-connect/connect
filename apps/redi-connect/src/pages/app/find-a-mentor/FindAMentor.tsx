@@ -6,7 +6,7 @@ import { FilterDropdown } from '@talent-connect/shared-atomic-design-components'
 import { ProfileCard } from '../../../components/organisms'
 import { useLoading } from '../../../hooks/WithLoading'
 import { getMentors } from '../../../services/api/api'
-import { RedProfile } from '@talent-connect/shared-types'
+import { RediLocation, RedProfile } from '@talent-connect/shared-types'
 import { useList } from '../../../hooks/useList'
 import { profileSaveStart } from '../../../redux/user/actions'
 import { connect } from 'react-redux'
@@ -16,6 +16,7 @@ import { LoggedIn } from '../../../components/templates'
 import {
   categoriesIdToLabelMap,
   categories,
+  rediLocationNames,
 } from '@talent-connect/shared-config'
 import './FindAMentor.scss'
 import { toggleValueInArray } from './utils'
@@ -112,6 +113,10 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
   const [favorites, { toggle: toggleFavorites }] = useList<any>( 
     favouritedRedProfileIds
   )
+  const [
+    activeLocations,
+    { toggle: toggleLocations, clear: clearLocations },
+  ] = useList<any>([])
 
   const filterLanguages = Array.from(
     new Set(
@@ -125,12 +130,20 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
     label: language,
   }))
 
+  const filterRediLocations = Object.keys(rediLocationNames).map(
+    (location) => ({
+      value: location,
+      label: rediLocationNames[location as RediLocation] as string,
+    })
+  )
+
   useEffect(() => {
     setLoading(true)
     getMentors({
       categories: topics,
       languages,
       nameQuery: name || '',
+      locations: activeLocations
     }).then((mentors) => {
       setMentors(
         mentors
@@ -143,8 +156,7 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
       )
       setLoading(false)
     })
-  }, [topics, languages, name])
-
+  }, [topics, languages, activeLocations, name])
 
   useEffect(() => {
     setLoading(true)
@@ -164,64 +176,84 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
         <SearchField defaultValue={name} valueChange={setName} />
       </div>
       <div className="filters">
-        <FilterDropdown
-          items={filterCategories}
-          className="filters__dropdown"
-          label="Topics"
-          selected={topics}
-          onChange={toggleTopics}
-        />
-        <FilterDropdown
-          items={filterLanguages}
-          className="filters__dropdown"
-          label="Languages"
-          selected={languages}
-          onChange={toggleLanguages}
-        />
-        <div
-          className="filter-favourites"
-          onClick={() => setShowFavorites(!showFavorites)}
-        >
-          <Icon
-            icon={showFavorites ? 'heartFilled' : 'heart'}
-            className="filter-favourites__icon"
-            space="right"
+        <div className="filters-wrapper">
+          <FilterDropdown
+            items={filterCategories}
+            className="filters__dropdown"
+            label="Topics"
+            selected={topics}
+            onChange={toggleTopics}
           />
-          Only Favorites
+        </div>
+        <div className="filters-inner">
+          <FilterDropdown
+            items={filterLanguages}
+            className="filters__dropdown"
+            label="Languages"
+            selected={languages}
+            onChange={toggleLanguages}
+          />
+          <div
+            className="filter-favourites"
+            onClick={() => setShowFavorites(!showFavorites)}
+          >
+            <Icon
+              icon={showFavorites ? 'heartFilled' : 'heart'}
+              className="filter-favourites__icon"
+              space="right"
+            />
+            Only Favorites
+          </div>
         </div>
       </div>
-
-      {(topics.length !== 0 || languages.length !== 0) && (
-        <div className="active-filters">
-          <Tag.Group>
-            {topics.map((catId) => (
-              <FilterTag
-                key={catId}
-                id={catId}
-                label={categoriesIdToLabelMap[catId]}
-                onClickHandler={toggleTopics}
-              />
-            ))}
-            {languages.map((langId) => (
-              <FilterTag
-                key={langId}
-                id={langId}
-                label={langId}
-                onClickHandler={toggleLanguages}
-              />
-            ))}
-            <span
-              className="active-filters__clear-all"
-              onClick={() => {
-                clearFilters()
-              }}
-            >
-              Delete all filters{' '}
-              <Icon icon="cancel" size="small" space="left" />
-            </span>
-          </Tag.Group>
+      <div className="active-filters">
+        <div className="location-filter-wrapper">
+          <FilterDropdown
+            items={filterRediLocations}
+            className="filters__dropdown"
+            label="Location"
+            selected={activeLocations}
+            onChange={toggleLocations}
+          />
         </div>
-      )}
+
+        {(topics.length !== 0 || languages.length !== 0 || activeLocations.length !== 0) && 
+          topics.map((catId) => (
+            <FilterTag
+              key={catId}
+              id={catId}
+              label={categoriesIdToLabelMap[catId]}
+              onClickHandler={toggleTopics}
+            />
+        ))}
+        {languages.map((langId) => (
+          <FilterTag
+            key={langId}
+            id={langId}
+            label={langId}
+            onClickHandler={toggleLanguages}
+          />
+        ))}
+        {activeLocations.map(
+          (locId?: RediLocation) =>
+            locId && (
+              <FilterTag
+                key={locId}
+                id={locId}
+                label={rediLocationNames[locId as RediLocation] as string}
+                onClickHandler={toggleLocations}
+              />
+        ))}
+        <span
+          className="active-filters__clear-all"
+          onClick={() => {
+            clearFilters()
+            clearLocations()
+          }}
+        >
+          Delete all filters <Icon icon="cancel" size="small" space="left" />
+        </span>
+      </div>
 
       <Columns>
         {mentors.map((mentor: RedProfile) => {

@@ -35,6 +35,7 @@ const ProfileCard = ({
     lastName,
     languages,
     categories,
+    rediLocation,
     profileAvatarImageS3Key,
   } = profile
 
@@ -68,16 +69,17 @@ const ProfileCard = ({
             />
           </div>
         )}
-        <Tag size="small" className="profile-card__location-tag" rounded>
-          (in {rediLocationNames[profile.rediLocation]})
-        </Tag>
         <Element
+          key="name"
           renderAs="h3"
           textWeight="bold"
           textSize={4}
           className="profile-card__name"
         >
           {firstName} {lastName}
+        </Element>
+        <Element key="location" renderAs="span" className="content">
+          {rediLocationNames[rediLocation]}
         </Element>
         {languages && <PipeList items={languages} />}
         {categories && (

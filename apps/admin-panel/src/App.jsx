@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { get, mapValues, keyBy, groupBy } from 'lodash'
+import moment from 'moment'
 import {
   Admin,
   Resource,
@@ -64,6 +65,19 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers'
 
+import {
+  rediLocationNames,
+  Languages as configLanguages,
+  categoryGroups,
+  categories,
+  courses,
+  genders as configGenders,
+  mentoringSessionDurationOptions,
+  categoriesIdToLabelMap,
+} from '@talent-connect/shared-config'
+
+import { calculateAge } from '@talent-connect/shared-utils'
+
 import loopbackClient, { authProvider } from './lib/react-admin-loopback/src'
 import { ApproveButton } from './components/ApproveButton'
 import { DeclineButton } from './components/DeclineButton'
@@ -72,358 +86,18 @@ import { API_URL } from './config'
 
 /** REFERENCE DATA */
 
-const rediLocations = [
-  { id: 'berlin', label: 'Berlin' },
-  { id: 'munich', label: 'Munich' },
-  { id: 'nrw', label: 'NRW' },
-]
+const rediLocations = Object.entries(rediLocationNames).map(([id, label]) => ({
+  id,
+  label,
+}))
 
-const languages = [
-  'Afrikaans',
-  'Albanian',
-  'Amharic',
-  'Arabic',
-  'Aramaic',
-  'Armenian',
-  'Assamese',
-  'Aymara',
-  'Azerbaijani',
-  'Balochi',
-  'Bamanankan',
-  'Bashkort (Bashkir)',
-  'Basque',
-  'Belarusan',
-  'Bengali',
-  'Bhojpuri',
-  'Bislama',
-  'Bosnian',
-  'Brahui',
-  'Bulgarian',
-  'Burmese',
-  'Cantonese',
-  'Catalan',
-  'Cebuano',
-  'Chechen',
-  'Cherokee',
-  'Croatian',
-  'Czech',
-  'Dakota',
-  'Danish',
-  'Dari',
-  'Dholuo',
-  'Dutch',
-  'English',
-  'Esperanto',
-  'Estonian',
-  'Éwé',
-  'Finnish',
-  'French',
-  'Georgian',
-  'German',
-  'Gikuyu',
-  'Greek',
-  'Guarani',
-  'Gujarati',
-  'Haitian Creole',
-  'Hausa',
-  'Hawaiian',
-  'Hawaiian Creole',
-  'Hebrew',
-  'Hiligaynon',
-  'Hindi',
-  'Hungarian',
-  'Icelandic',
-  'Igbo',
-  'Ilocano',
-  'Indonesian (Bahasa Indonesia)',
-  'Inuit/Inupiaq',
-  'Irish Gaelic',
-  'Italian',
-  'Japanese',
-  'Jarai',
-  'Javanese',
-  'K’iche’',
-  'Kabyle',
-  'Kannada',
-  'Kashmiri',
-  'Kazakh',
-  'Khmer',
-  'Khoekhoe',
-  'Korean',
-  'Kurdish',
-  'Kyrgyz',
-  'Lao',
-  'Latin',
-  'Latvian',
-  'Lingala',
-  'Lithuanian',
-  'Macedonian',
-  'Maithili',
-  'Malagasy',
-  'Malay (Bahasa Melayu)',
-  'Malayalam',
-  'Mandarin (Chinese)',
-  'Marathi',
-  'Mende',
-  'Mongolian',
-  'Nahuatl',
-  'Navajo',
-  'Nepali',
-  'Norwegian',
-  'Ojibwa',
-  'Oriya',
-  'Oromo',
-  'Pashto',
-  'Persian',
-  'Polish',
-  'Portuguese',
-  'Punjabi',
-  'Quechua',
-  'Romani',
-  'Romanian',
-  'Russian',
-  'Rwanda',
-  'Samoan',
-  'Sanskrit',
-  'Serbian',
-  'Shona',
-  'Sindhi',
-  'Sinhala',
-  'Slovak',
-  'Slovene',
-  'Somali',
-  'Spanish',
-  'Swahili',
-  'Swedish',
-  'Tachelhit',
-  'Tagalog',
-  'Tajiki',
-  'Tamil',
-  'Tatar',
-  'Telugu',
-  'Thai',
-  'Tibetic languages',
-  'Tigrigna',
-  'Tok Pisin',
-  'Turkish',
-  'Turkmen',
-  'Ukrainian',
-  'Urdu',
-  'Uyghur',
-  'Uzbek',
-  'Vietnamese',
-  'Warlpiri',
-  'Welsh',
-  'Wolof',
-  'Xhosa',
-  'Yakut',
-  'Yiddish',
-  'Yoruba',
-  'Yucatec',
-  'Zapotec',
-  'Zulu',
-]
-
-const categories = [
-  {
-    id: 'basicProgrammingSkills',
-    label: 'Basic programming skills',
-    group: 'softwareEngineering',
-  },
-  { id: 'htmlCss', label: 'HTML & CSS', group: 'softwareEngineering' },
-  { id: 'javascript', label: 'Javascript', group: 'softwareEngineering' },
-  { id: 'react', label: 'React', group: 'softwareEngineering' },
-  { id: 'java', label: 'Java', group: 'softwareEngineering' },
-  { id: 'python', label: 'Python', group: 'softwareEngineering' },
-  {
-    id: 'dataAnalytics',
-    label: 'Data Analytics',
-    group: 'softwareEngineering',
-  },
-  {
-    id: 'machineLearning',
-    label: 'Machine Learning',
-    group: 'softwareEngineering',
-  },
-  {
-    id: 'mobileDevelopmentIos',
-    label: 'iOS Mobile Development',
-    group: 'softwareEngineering',
-  },
-  {
-    id: 'mobileDevelopmentAndroid',
-    label: 'Android Mobile Development',
-    group: 'softwareEngineering',
-  },
-  { id: 'salesforce', label: 'Salesforce', group: 'softwareEngineering' },
-  {
-    id: 'devOpsCloud',
-    label: 'DevOps and Cloud (e.g. Azure, AWS)',
-    group: 'softwareEngineering',
-  },
-  { id: 'iot', label: 'IoT', group: 'softwareEngineering' },
-  {
-    id: 'computerNetworking',
-    label: 'Computer Networking',
-    group: 'softwareEngineering',
-  },
-  { id: 'blockchain', label: 'Blockchain', group: 'softwareEngineering' },
-  {
-    id: 'productManagement',
-    label: 'Product Management',
-    group: 'otherProfessions',
-  },
-  {
-    id: 'projectManagement',
-    label: 'Project Management',
-    group: 'otherProfessions',
-  },
-  {
-    id: 'digitalMarketing',
-    label: 'Digital Marketing',
-    group: 'otherProfessions',
-  },
-  {
-    id: 'businessDevelopment',
-    label: 'Business Development',
-    group: 'otherProfessions',
-  },
-  { id: 'sales', label: 'Sales', group: 'otherProfessions' },
-  {
-    id: 'qualityAssurance',
-    label: 'Quality Assurance',
-    group: 'otherProfessions',
-  },
-  { id: 'basicGerman', label: 'Basic German 🇩🇪', group: 'language' },
-  { id: 'businessGerman', label: 'Business German 🇩🇪', group: 'language' },
-  { id: 'english', label: 'English 🇬🇧', group: 'language' },
-  { id: 'graphicDesign', label: 'Graphic Design', group: 'design' },
-  {
-    id: 'userInterfaceDesign',
-    label: 'User Interface Design',
-    group: 'design',
-  },
-  {
-    id: 'userExperienceDesign',
-    label: 'User Experience Design',
-    group: 'design',
-  },
-  {
-    id: 'motivationAndEncouragement',
-    label: 'Motivation & encouragement',
-    group: 'other',
-  },
-  { id: 'friendAndHelp', label: 'Be a friend and help', group: 'other' },
-  { id: 'dontKnowYet', label: "I don't know yet", group: 'other' },
-  {
-    id: 'careerOrientationAndPlanning',
-    label: 'Career orientation & planning',
-    group: 'careerSupport',
-  },
-  {
-    id: 'internshipOrWorkingStudent',
-    label: 'Internship / working student position search',
-    group: 'careerSupport',
-  },
-  { id: 'jobSearch', label: 'Job search', group: 'careerSupport' },
-  {
-    id: 'jobApplicationsCvPreparationEnglish',
-    label: 'Job applications and CV preparation in English',
-    group: 'careerSupport',
-  },
-  {
-    id: 'jobApplicationsCvPreparationGerman',
-    label: 'Job applications and CV preparation in German',
-    group: 'careerSupport',
-  },
-  {
-    id: 'interviewPreparation',
-    label: 'Interview preparation',
-    group: 'careerSupport',
-  },
-  {
-    id: 'codingChallengePreparation',
-    label: 'Coding challenge preparation',
-    group: 'careerSupport',
-  },
-  {
-    id: 'buildingProfessionalNetwork',
-    label: 'Building a professional network',
-    group: 'careerSupport',
-  },
-  { id: 'entrepreneurship', label: 'Entrepreneurship', group: 'careerSupport' },
-  { id: 'freelancing', label: 'Freelancing', group: 'careerSupport' },
-]
 const categoriesFlat = categories.map((cat) => ({
   ...cat,
   labelClean: cat.label,
   label: `${cat.label} (${cat.group})`,
 }))
 
-const categoryGroups = [
-  { id: 'softwareEngineering', label: '👩‍💻 Software Engineering' },
-  { id: 'design', label: '🎨 Design' },
-  { id: 'otherProfessions', label: '🏄‍♀️ Other professions' },
-  { id: 'careerSupport', label: '✋ Career Support' },
-  { id: 'language', label: '🗣️ Language' },
-  { id: 'other', label: '🤗 Other' },
-]
-
-const coursesByLocation = {
-  berlin: [
-    { id: 'introPython', label: 'Intro to Python' },
-    { id: 'dataAnalytics', label: 'Data Analytics' },
-    { id: 'htmlCss', label: 'HTML & CSS' },
-    { id: 'javaScript', label: 'JavaScript' },
-    { id: 'react', label: 'React' },
-    { id: 'introJava', label: 'Intro to Java' },
-    { id: 'intermediateJava', label: 'Programming with Java' },
-    { id: 'introComputerScience', label: 'Intro to Computer Science' },
-    { id: 'salesforceFundamentals', label: 'Salesforce Fundamentals' },
-    { id: 'azureFundamentals', label: 'Azure Fundamentals' },
-    { id: 'webDesignFundamentals', label: 'Web Design Fundamentals' },
-    { id: 'uiUxDesign', label: 'UX/UI Design' },
-    {
-      id: 'alumni',
-      label: `I'm a ReDI School alumni (I took a course before)`,
-    },
-  ],
-  munich: [
-    {
-      id: 'munich_dcp_spring2021_introductionToComputerScience',
-      label: 'Introduction to computer science',
-    },
-    {
-      id: 'munich_dcp_spring2021_pythonIntermediate',
-      label: 'Python Intermediate',
-    },
-    {
-      id: 'munich_dcp_spring2021_frontEndDevelopment',
-      label: 'Front-end development',
-    },
-    { id: 'munich_dcp_spring2021_react', label: 'React' },
-    {
-      id: 'munich_dcp_spring2021_backendDevelopment',
-      label: 'Back-end development',
-    },
-    { id: 'munich_dcp_spring2021_dataScience', label: 'Data Science' },
-    { id: 'munich_dcp_spring2021_cloudComputing', label: 'Cloud computing' },
-    {
-      id: 'munich_alumni',
-      label: `I'm a ReDI School alumni (I took a course before)`,
-    },
-  ],
-  nrw: [
-    { id: 'nrw_webDesignFundamentals', label: 'Web Design Fundamentals' },
-    { id: 'nrw_htmlCsss', label: 'HTML & CSS' },
-    { id: 'nrw_introductionToPython', label: 'Introduction to Python' },
-    { id: 'nrw_networkingFundamentals', label: 'Networking Fundamentals' },
-    {
-      id: 'nrw_alumni',
-      label: "I'm a ReDI School alumni (I took a course before)",
-    },
-  ],
-}
+const coursesByLocation = groupBy(courses, 'location')
 const coursesFlat = [
   ...coursesByLocation.berlin.map((cat) =>
     Object.assign(cat, { label: `Berlin: ${cat.label}` })
@@ -436,28 +110,16 @@ const coursesFlat = [
   ),
 ]
 
-const mentoringSessionDurationOptions = [
-  15,
-  30,
-  45,
-  60,
-  75,
-  90,
-  105,
-  120,
-  135,
-  150,
-  165,
-  180,
-]
-
-const categoriesIdToLabelMap = mapValues(keyBy(categoriesFlat, 'id'), 'label')
 const categoryGroupsToLabelMap = mapValues(keyBy(categoryGroups, 'id'), 'label')
 const categoriesIdToLabelCleanMap = mapValues(
   keyBy(categoriesFlat, 'id'),
   'labelClean'
 )
 const categoriesIdToGroupMap = mapValues(keyBy(categoriesFlat, 'id'), 'group')
+
+const genders = [...configGenders, { id: '', name: 'Prefers not to answer' }]
+
+const languages = configLanguages.map((lang) => ({ id: lang, name: lang }))
 
 const courseIdToLabelMap = mapValues(keyBy(coursesFlat, 'id'), 'label')
 const AWS_PROFILE_AVATARS_BUCKET_BASE_URL =
@@ -477,7 +139,7 @@ RecordUpdatedAt.defaultProps = {
   label: 'Record updated at',
 }
 
-const LangaugeList = (props) => {
+const LanguageList = (props) => {
   return <span>{Object.values(props.data).join(', ')}</span>
 }
 
@@ -486,11 +148,10 @@ const CategoryList = (props) => {
     props.data,
     (catId) => categoriesIdToGroupMap[catId]
   )
-  console.log(categoriesIdToLabelMap)
   return (
     <>
-      {Object.keys(categoriesGrouped).map((groupId) => (
-        <>
+      {Object.keys(categoriesGrouped).map((groupId, index) => (
+        <React.Fragment key={index}>
           <span>
             <strong>{categoryGroupsToLabelMap[groupId]}:</strong>{' '}
             {categoriesGrouped[groupId]
@@ -498,7 +159,7 @@ const CategoryList = (props) => {
               .join(', ')}
           </span>
           <br />
-        </>
+        </React.Fragment>
       ))}
     </>
   )
@@ -722,9 +383,17 @@ const RedProfileShow = (props) => (
           <TextField source="firstName" />
           <TextField source="lastName" />
           <TextField source="gender" />
-          <NumberField source="age" />
+          <FunctionField
+            label="Age"
+            render={(person) => calculateAge(person.birthDate)}
+          />
+          <DateField
+            source="birthDate"
+            label="Date of birth"
+            options={{ year: 'numeric', month: 'long', day: '2-digit' }}
+          />
           <ArrayField source="languages">
-            <LangaugeList />
+            <LanguageList />
           </ArrayField>
           <TextField source="otherLanguages" />
           <TextField source="personalDescription" />
@@ -868,26 +537,9 @@ const RedProfileEdit = (props) => (
         />
         <TextInput source="firstName" />
         <TextInput source="lastName" />
-        <SelectInput
-          source="gender"
-          choices={[
-            { id: 'male', name: 'Male' },
-            { id: 'female', name: 'Female' },
-            { id: 'other', name: 'Other' },
-            { id: '', name: 'Prefers not to answer' },
-          ]}
-        />
-        <NumberField source="age" />
-        <SelectArrayInput
-          source="languages"
-          choices={[
-            { id: 'English', name: 'English' },
-            { id: 'German', name: 'German' },
-            { id: 'Arabic', name: 'Arabic' },
-            { id: 'Farsi', name: 'Farsi' },
-            { id: 'Tigrinya', name: 'Tigrinya' },
-          ]}
-        />
+        <SelectInput source="gender" choices={genders} />
+        <DateInput source="birthDate" label="Date of birth" />
+        <SelectArrayInput source="languages" choices={languages} />
         <TextInput source="otherLanguages" />
         <TextInput source="personalDescription" multiline />
         <TextInput source="expectations" multiline />
@@ -922,13 +574,11 @@ const CategoriesInput = (props) => {
 
 const MenteeEnrolledInCourseField = (props) => {
   return (
-    <>
-      <Labeled label="Currently enrolled in course">
-        <span>
-          {courseIdToLabelMap[props.record.mentee_currentlyEnrolledInCourse]}
-        </span>
-      </Labeled>
-    </>
+    <Labeled label="Currently enrolled in course">
+      <span>
+        {courseIdToLabelMap[props.record.mentee_currentlyEnrolledInCourse]}
+      </span>
+    </Labeled>
   )
 }
 const MenteeEnrolledInCourseInput = (props) => {
@@ -1331,7 +981,7 @@ const RedMentoringSessionListAside = () => {
 
   return (
     <div style={{ width: 200, margin: '1em' }}>
-      <Typography variant="title">Isabelle Calculator</Typography>
+      <Typography>Isabelle Calculator</Typography>
       <Typography variant="body1" />
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         {picker(fromDate, setFromDate, 'From date')}

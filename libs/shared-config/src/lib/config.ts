@@ -1,8 +1,8 @@
-import keyBy from 'lodash/keyBy'
-import mapValues from 'lodash/mapValues'
+import { keyBy, mapValues } from 'lodash'
 
 import {
   Categories,
+  CategoryGroups,
   Course,
   EducationLevel,
   Gender,
@@ -16,7 +16,15 @@ export const rediLocationNames: { [K in RediLocation]?: string } = {
   nrw: 'NRW',
 }
 
-export let categories: Categories = [
+export const categoryGroups: CategoryGroups = [
+  { id: 'softwareEngineering', label: '👩‍💻 Software Engineering' },
+  { id: 'design', label: '🎨 Design' },
+  { id: 'otherProfessions', label: '🏄‍♀️ Other professions' },
+  { id: 'careerSupport', label: '✋ Career Support' },
+  { id: 'language', label: '🗣️ Language' },
+  { id: 'other', label: '🤗 Other' },
+]
+export const categories: Categories = [
   {
     id: 'basicProgrammingSkills',
     label: 'Basic programming skills',
