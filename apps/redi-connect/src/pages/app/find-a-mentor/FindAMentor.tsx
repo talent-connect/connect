@@ -1,11 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Content, Columns, Tag, Form } from 'react-bulma-components'
 import { debounce } from 'lodash'
-import {
-  FormInput,
-  Heading,
-  Icon,
-} from '@talent-connect/shared-atomic-design-components'
+import { Heading, Icon } from '@talent-connect/shared-atomic-design-components'
 import { FilterDropdown } from '@talent-connect/shared-atomic-design-components'
 import { ProfileCard } from '../../../components/organisms'
 import { useLoading } from '../../../hooks/WithLoading'
@@ -22,8 +18,8 @@ import {
   categories,
 } from '@talent-connect/shared-config'
 import './FindAMentor.scss'
-import { setUrlParam, getCurrentUrlParams, getUrlParamValue, clearQuery, toggleValueInArray } from './utils'
-import { useQueryParam, StringParam, useQueryParams, ArrayParam, withDefault } from 'use-query-params'
+import { toggleValueInArray } from './utils'
+import { StringParam, useQueryParams, ArrayParam, withDefault } from 'use-query-params'
 
 const filterCategories = categories.map((category) => ({
   value: category.id,
@@ -55,15 +51,14 @@ interface FindAMentorProps {
 }
 
 const SearchField = ({
-  valueChange
-  // defaultValue
+  valueChange,
+  defaultValue
 }: {
   valueChange: (value: string) => void
-  // defaultValue: string
+  defaultValue: string
 }) => {
-  // const [value, setValue] = useState(defaultValue)
-  const [value, setValue] = useState('')
-  const valueChangeDebounced = useCallback(debounce(valueChange, 400), [])
+  const [value, setValue] = useState(defaultValue)
+  const valueChangeDebounced = useCallback(debounce(valueChange, 1000), [])
   const handleChange = useCallback((e: any) => setValue(e.target.value), [])
 
   useEffect(() => {
@@ -82,53 +77,41 @@ const SearchField = ({
 const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
   const { Loading, isLoading, setLoading } = useLoading()
   const { id, categories: categoriesFromProfile, favouritedRedProfileIds, rediLocation } = profile
-  // const [nameQuery, setNameQuery] = useQueryParam('name', StringParam)
   const [showFavorites, setShowFavorites] = useState<boolean>(false)
   const [mentors, setMentors] = useState<RedProfile[]>([])
   const [query, setQuery] = useQueryParams({
-    name: StringParam,
+    name: withDefault(StringParam, ''),
     topics: withDefault(ArrayParam, []),
+    languages: withDefault(ArrayParam, [])
   })
-  const { name: nameQuery, topics } = query;
+  const { topics, name, languages } = query;
   
-  // useEffect(()=> {
-  //   setQuery({...query, topics: categoriesFromProfile})
-  // }, [])
-
-  console.log("topics", topics);
-  
-  
-  // const [whatever, setWhatever] = useState(0)
-
-  // const currentUrlParams = getCurrentUrlParams()
-  // const hasCategoriesInUrl = currentUrlParams.has("topics")
-  // const categoriesStringFromUrl = getUrlParamValue("topics")
-  // const categoriesFromUrl = hasCategoriesInUrl ? categoriesStringFromUrl.split(",") : []
-  // console.log("categoriesFromUrl", categoriesFromUrl)
+  useEffect(() => {
+    const queryExists = topics.length > 0 || languages.length > 0 || Boolean(name)
+    setQuery(queryExists ? query : {...query, topics: categoriesFromProfile})
+  }, [])
 
   const toggleTopics = (item) => { 
-    // const newTopics = toggleValueInArray(categoriesFromUrl, item)
     const newTopics = toggleValueInArray(topics, item)
-    setQuery({...query, topics: newTopics})
-    // setUrlParam("topics", newTopics)
-    // setTimeout(() => {
-    //  setWhatever(whatever => whatever + 1)
-    // }, 1)
+    setQuery((latestQuery) => ({...latestQuery, topics: newTopics}))
   }
 
-  const clearTopics = () => {
-    // clearQuery()
-    setQuery({...query, topics: []})
+  const toggleLanguages = (item) => { 
+    const newLanguages = toggleValueInArray(languages, item)
+    setQuery((latestQuery) => ({...latestQuery, languages: newLanguages}))
+  }
+
+  const setName = (value) => { 
+    setQuery((latestQuery) => ({...latestQuery, name: value || undefined}))
+  }
+
+  const clearFilters = () => {
+    setQuery((latestQuery) => ({...latestQuery, topics: [], languages: []}))
   }
 
   const [favorites, { toggle: toggleFavorites }] = useList<any>( 
     favouritedRedProfileIds
   )
-
-  const [
-    activeLanguages,
-    { toggle: toggleLanguages, clear: clearLanguages },
-  ] = useList<any>([])
 
   const filterLanguages = Array.from(
     new Set(
@@ -143,13 +126,11 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
   }))
 
   useEffect(() => {
-  console.log("topics", topics);
     setLoading(true)
     getMentors({
-      // categories: categoriesFromUrl,
       categories: topics,
-      languages: activeLanguages,
-      nameQuery,
+      languages,
+      nameQuery: name || '',
     }).then((mentors) => {
       setMentors(
         mentors
@@ -162,8 +143,7 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
       )
       setLoading(false)
     })
-  // }, [categoriesStringFromUrl, activeLanguages, nameQuery])
-  }, [topics, activeLanguages, nameQuery])
+  }, [topics, languages, name])
 
 
   useEffect(() => {
@@ -181,15 +161,13 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
         Available mentors ({mentors.length})
       </Heading>
       <div className="filters">
-        {/* <SearchField defaultValue={nameQuery} valueChange={setNameQuery} /> */}
-        {/* <SearchField valueChange={setNameQuery} /> */}
+        <SearchField defaultValue={name} valueChange={setName} />
       </div>
       <div className="filters">
         <FilterDropdown
           items={filterCategories}
           className="filters__dropdown"
           label="Topics"
-          // selected={categoriesFromUrl}
           selected={topics}
           onChange={toggleTopics}
         />
@@ -197,7 +175,7 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
           items={filterLanguages}
           className="filters__dropdown"
           label="Languages"
-          selected={activeLanguages}
+          selected={languages}
           onChange={toggleLanguages}
         />
         <div
@@ -213,11 +191,9 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
         </div>
       </div>
 
-      {/* {(categoriesFromUrl.length !== 0 || activeLanguages.length !== 0) && ( */}
-      {(topics.length !== 0 || activeLanguages.length !== 0) && (
+      {(topics.length !== 0 || languages.length !== 0) && (
         <div className="active-filters">
           <Tag.Group>
-            {/* {categoriesFromUrl.map((catId) => ( */}
             {topics.map((catId) => (
               <FilterTag
                 key={catId}
@@ -226,7 +202,7 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
                 onClickHandler={toggleTopics}
               />
             ))}
-            {activeLanguages.map((langId) => (
+            {languages.map((langId) => (
               <FilterTag
                 key={langId}
                 id={langId}
@@ -237,7 +213,7 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
             <span
               className="active-filters__clear-all"
               onClick={() => {
-                clearTopics()
+                clearFilters()
               }}
             >
               Delete all filters{' '}
