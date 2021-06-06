@@ -217,42 +217,44 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
           />
         </div>
 
-        {(topics.length !== 0 || languages.length !== 0 || activeLocations.length !== 0) && 
-          topics.map((catId) => (
-            <FilterTag
-              key={catId}
-              id={catId}
-              label={categoriesIdToLabelMap[catId]}
-              onClickHandler={toggleTopics}
-            />
-        ))}
-        {languages.map((langId) => (
-          <FilterTag
-            key={langId}
-            id={langId}
-            label={langId}
-            onClickHandler={toggleLanguages}
-          />
-        ))}
-        {activeLocations.map(
-          (locId?: RediLocation) =>
-            locId && (
+        {(topics.length !== 0 || languages.length !== 0 || activeLocations.length !== 0) && (
+          <>
+            {topics.map((catId) => (
+              <FilterTag
+                key={catId}
+                id={catId}
+                label={categoriesIdToLabelMap[catId]}
+                onClickHandler={toggleTopics}
+              />
+            ))}
+            {languages.map((langId) => (
+              <FilterTag
+                key={langId}
+                id={langId}
+                label={langId}
+                onClickHandler={toggleLanguages}
+              />
+            ))}
+            {activeLocations.map((locId?: RediLocation) => locId && (
               <FilterTag
                 key={locId}
                 id={locId}
                 label={rediLocationNames[locId as RediLocation] as string}
                 onClickHandler={toggleLocations}
-              />
-        ))}
-        <span
-          className="active-filters__clear-all"
-          onClick={() => {
-            clearFilters()
-            clearLocations()
-          }}
-        >
-          Delete all filters <Icon icon="cancel" size="small" space="left" />
-        </span>
+                />
+            ))}
+            <span
+              className="active-filters__clear-all"
+              onClick={() => {
+                clearFilters()
+                clearLocations()
+              }}
+            >
+              Delete all filters 
+              <Icon icon="cancel" size="small" space="left" />
+            </span>
+          </>
+        )} 
       </div>
 
       <Columns>
