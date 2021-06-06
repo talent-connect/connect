@@ -89,23 +89,13 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
   const { topics, name, languages, locations } = query;
   
   useEffect(() => {
-    const queryExists = topics.length > 0 || languages.length > 0 || locations.length > 0 || Boolean(name)
-    setQuery(queryExists ? query : {...query, topics: categoriesFromProfile})
+    const hasQuery = topics.length > 0 || languages.length > 0 || locations.length > 0 || Boolean(name)
+    setQuery(hasQuery ? query : {...query, topics: categoriesFromProfile})
   }, [])
 
-  const toggleTopics = (item) => { 
-    const newTopics = toggleValueInArray(topics, item)
-    setQuery((latestQuery) => ({...latestQuery, topics: newTopics}))
-  }
-
-  const toggleLanguages = (item) => { 
-    const newLanguages = toggleValueInArray(languages, item)
-    setQuery((latestQuery) => ({...latestQuery, languages: newLanguages}))
-  }
-
-  const toggleLocations = (item) => {
-    const newLocations = toggleValueInArray(locations, item)
-    setQuery((latestQuery) => ({...latestQuery, locations: newLocations}))
+  const toggleFilters = (filtersArr, filterName, item) => {
+    const newFilters = toggleValueInArray(filtersArr, item)
+    setQuery((latestQuery) => ({...latestQuery, [filterName]: newFilters}))
   }
 
   const setName = (value) => { 
@@ -184,7 +174,7 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
             className="filters__dropdown"
             label="Topics"
             selected={topics}
-            onChange={toggleTopics}
+            onChange={(item) => toggleFilters(topics, 'topics', item)}
           />
         </div>
         <div className="filters-inner">
@@ -193,7 +183,7 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
             className="filters__dropdown"
             label="Languages"
             selected={languages}
-            onChange={toggleLanguages}
+            onChange={(item) => toggleFilters(languages, 'languages', item)}
           />
           <div
             className="filter-favourites"
@@ -215,7 +205,7 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
             className="filters__dropdown"
             label="Location"
             selected={locations}
-            onChange={toggleLocations}
+            onChange={(item) => toggleFilters(locations, 'locations', item)}
           />
         </div>
 
@@ -226,7 +216,7 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
                 key={catId}
                 id={catId}
                 label={categoriesIdToLabelMap[catId]}
-                onClickHandler={toggleTopics}
+                onClickHandler={(item) => toggleFilters(topics, 'topics', item)}
               />
             ))}
             {languages.map((langId) => (
@@ -234,7 +224,7 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
                 key={langId}
                 id={langId}
                 label={langId}
-                onClickHandler={toggleLanguages}
+                onClickHandler={(item) => toggleFilters(languages, 'languages', item)}
               />
             ))}
             {locations.map((locId?: RediLocation) => locId && (
@@ -242,8 +232,8 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
                 key={locId}
                 id={locId}
                 label={rediLocationNames[locId as RediLocation] as string}
-                onClickHandler={toggleLocations}
-                />
+                onClickHandler={(item) => toggleFilters(locations, 'locations', item)}
+              />
             ))}
             <span
               className="active-filters__clear-all"
