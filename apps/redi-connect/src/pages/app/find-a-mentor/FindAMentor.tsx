@@ -83,12 +83,13 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
   const [query, setQuery] = useQueryParams({
     name: withDefault(StringParam, ''),
     topics: withDefault(ArrayParam, []),
-    languages: withDefault(ArrayParam, [])
+    languages: withDefault(ArrayParam, []),
+    locations: withDefault(ArrayParam, []),
   })
-  const { topics, name, languages } = query;
+  const { topics, name, languages, locations } = query;
   
   useEffect(() => {
-    const queryExists = topics.length > 0 || languages.length > 0 || Boolean(name)
+    const queryExists = topics.length > 0 || languages.length > 0 || locations.length > 0 || Boolean(name)
     setQuery(queryExists ? query : {...query, topics: categoriesFromProfile})
   }, [])
 
@@ -102,21 +103,22 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
     setQuery((latestQuery) => ({...latestQuery, languages: newLanguages}))
   }
 
+  const toggleLocations = (item) => {
+    const newLocations = toggleValueInArray(locations, item)
+    setQuery((latestQuery) => ({...latestQuery, locations: newLocations}))
+  }
+
   const setName = (value) => { 
     setQuery((latestQuery) => ({...latestQuery, name: value || undefined}))
   }
 
   const clearFilters = () => {
-    setQuery((latestQuery) => ({...latestQuery, topics: [], languages: []}))
+    setQuery((latestQuery) => ({...latestQuery, topics: [], languages: [], locations: []}))
   }
 
   const [favorites, { toggle: toggleFavorites }] = useList<any>( 
     favouritedRedProfileIds
   )
-  const [
-    activeLocations,
-    { toggle: toggleLocations, clear: clearLocations },
-  ] = useList<any>([])
 
   const filterLanguages = Array.from(
     new Set(
@@ -143,7 +145,7 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
       categories: topics,
       languages,
       nameQuery: name || '',
-      locations: activeLocations
+      locations
     }).then((mentors) => {
       setMentors(
         mentors
@@ -156,7 +158,7 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
       )
       setLoading(false)
     })
-  }, [topics, languages, activeLocations, name])
+  }, [topics, languages, locations, name])
 
   useEffect(() => {
     setLoading(true)
@@ -212,12 +214,12 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
             items={filterRediLocations}
             className="filters__dropdown"
             label="Location"
-            selected={activeLocations}
+            selected={locations}
             onChange={toggleLocations}
           />
         </div>
 
-        {(topics.length !== 0 || languages.length !== 0 || activeLocations.length !== 0) && (
+        {(topics.length !== 0 || languages.length !== 0 || locations.length !== 0) && (
           <>
             {topics.map((catId) => (
               <FilterTag
@@ -235,7 +237,7 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
                 onClickHandler={toggleLanguages}
               />
             ))}
-            {activeLocations.map((locId?: RediLocation) => locId && (
+            {locations.map((locId?: RediLocation) => locId && (
               <FilterTag
                 key={locId}
                 id={locId}
@@ -245,10 +247,7 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
             ))}
             <span
               className="active-filters__clear-all"
-              onClick={() => {
-                clearFilters()
-                clearLocations()
-              }}
+              onClick={clearFilters}
             >
               Delete all filters 
               <Icon icon="cancel" size="small" space="left" />
