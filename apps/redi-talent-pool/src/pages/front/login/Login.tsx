@@ -19,6 +19,7 @@ import {
   FormInput,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
+import TpTeaser from '../../../components/molecules/TpTeaser'
 
 interface LoginFormValues {
   username: string
@@ -72,7 +73,9 @@ export default function Login() {
         <Columns.Column
           size={6}
           responsive={{ mobile: { hide: { value: true } } }}
-        ></Columns.Column>
+        >
+          <TpTeaser.SignIn />
+        </Columns.Column>
 
         <Columns.Column size={5} offset={1}>
           <Heading border="bottomLeft">Sign-in</Heading>

@@ -11,7 +11,7 @@ import { FormikValues, useFormik } from 'formik'
 import * as yup from 'yup'
 import { Link } from 'react-router-dom'
 import { requestResetPasswordEmail } from '../../../services/api/api'
-import Teaser from 'apps/redi-connect/src/components/molecules/Teaser'
+import TpTeaser from '../../../components/molecules/TpTeaser'
 
 interface FormValues {
   email: string
@@ -67,7 +67,7 @@ export const RequestResetPasswordEmail: React.FC = () => {
           size={6}
           responsive={{ mobile: { hide: { value: true } } }}
         >
-          <Teaser.SignUp />
+          <TpTeaser.SignUp />
         </Columns.Column>
         <Columns.Column size={5} offset={1}>
           <Heading border="bottomLeft">{heading}</Heading>

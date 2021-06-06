@@ -20,18 +20,33 @@ import { signUp } from '../../../services/api/api'
 import { Extends, RedProfile } from '@talent-connect/shared-types'
 import { history } from '../../../services/history/history'
 
-import { courses } from '@talent-connect/shared-config'
-import TpTeaser from 'apps/redi-talent-pool/src/components/molecules/TpTeaser'
-const formCourses = courses.map((course) => ({
-  value: course.id,
-  label: course.label,
-}))
+import { courses, rediLocationNames } from '@talent-connect/shared-config'
+import TpTeaser from '../../../components/molecules/TpTeaser'
+
+// TODO: replace with proper dropdown
+const coursesWithAlumniDeduped = courses.filter((c) => {
+  if (!c.id.includes('alumni')) return true
+  if (c.location !== 'berlin') return false
+  else return true
+})
+
+const formCourses = coursesWithAlumniDeduped.map((course) => {
+  const label =
+    course.id === 'alumni'
+      ? course.label
+      : `(ReDI ${rediLocationNames[course.location]}) ${course.label}`
+  return {
+    value: course.id,
+    label: label,
+  }
+})
 
 export const validationSchema = Yup.object({
   firstName: Yup.string().required('Your first name is invalid').max(255),
   lastName: Yup.string().required('Your last name is invalid').max(255),
   contactEmail: Yup.string()
     .email('Your email is invalid')
+    .required('You need to give an email address')
     .label('Email')
     .max(255),
   password: Yup.string()
@@ -53,46 +68,33 @@ export const validationSchema = Yup.object({
 })
 
 type SignUpPageType = {
-  type: 'mentor' | 'mentee'
+  type: 'jobseeker' | 'company'
 }
 
-type SignUpUserType = Extends<
-  RedProfile['userType'],
-  | 'public-sign-up-mentee-pending-review'
-  | 'public-sign-up-mentor-pending-review'
->
-
 export interface SignUpFormValues {
-  userType: SignUpUserType
-  gaveGdprConsent: boolean
+  // TODO: Make this into an enum/type in shared confif/types
+  state: string
   contactEmail: string
   password: string
   passwordConfirm: string
   firstName: string
   lastName: string
   agreesWithCodeOfConduct: boolean
-  mentee_currentlyEnrolledInCourse: string
+  jobseeker_currentlyEnrolledInCourse: string
 }
 
 export default function SignUp() {
   const { type } = useParams<SignUpPageType>()
 
-  // we may consider removing the backend types from frontend
-  const userType: SignUpUserType =
-    type === 'mentee'
-      ? 'public-sign-up-mentee-pending-review'
-      : 'public-sign-up-mentor-pending-review'
-
   const initialValues: SignUpFormValues = {
-    userType,
-    gaveGdprConsent: false,
+    state: 'drafting-profile',
     contactEmail: '',
     password: '',
     passwordConfirm: '',
     firstName: '',
     lastName: '',
     agreesWithCodeOfConduct: false,
-    mentee_currentlyEnrolledInCourse: '',
+    jobseeker_currentlyEnrolledInCourse: '',
   }
 
   const [submitError, setSubmitError] = useState(false)
@@ -136,7 +138,7 @@ export default function SignUp() {
           size={6}
           responsive={{ mobile: { hide: { value: true } } }}
         >
-          <TpTeaser.SignUp></TpTeaser.SignUp>
+          <TpTeaser.SignUp />
         </Columns.Column>
 
         <Columns.Column size={5} offset={1}>
@@ -175,10 +177,10 @@ export default function SignUp() {
               {...formik}
             />
 
-            {type === 'mentee' && (
+            {type === 'jobseeker' && (
               <FormSelect
                 label="Current ReDI Course"
-                name="mentee_currentlyEnrolledInCourse"
+                name="jobseeker_currentlyEnrolledInCourse"
                 placeholder="Choose your ReDI Course"
                 items={formCourses}
                 {...formik}
