@@ -31,7 +31,7 @@ const RediHero = () => {
               {rediLocationNames[envRediLocation()]}
             </Heading>
             <Columns.Column responsive={{ tablet: { hide: { value: true } } }}>
-              <SVGImage image="hero" className="redi-hero__image" />
+              <SVGImage image="hello" className="redi-hero__image" />
             </Columns.Column>
             <Element
               renderAs="p"
@@ -39,18 +39,22 @@ const RediHero = () => {
               responsive={{ mobile: { textSize: { value: 5 } } }}
               className="oneandhalf-bs"
             >
-              <strong>{t('loggedOutArea.homePage.hero.about.content1')}</strong>
-              <br />
+              {t('loggedOutArea.homePage.hero.about.content1')}
+            </Element>
+            <Element
+              renderAs="p"
+              textSize={4}
+              responsive={{ mobile: { textSize: { value: 5 } } }}
+              className="oneandhalf-bs"
+            >
               {t('loggedOutArea.homePage.hero.about.content2')}
             </Element>
             <Level>
               <Button
                 size="large"
-                // onClick={() => history.push('/front/signup-landing')}
-                onClick={() => history.push('/app/cv-wizard')}
+                onClick={() => history.push('/front/signup/jobseeker')}
               >
-                {/* {t('button.signUpNow')} */}
-                Build my CV!
+                {t('button.signUpNow')}
               </Button>
 
               {/* <Button onClick={() => history.push('/front/login')} simple>
@@ -62,7 +66,7 @@ const RediHero = () => {
             offset={1}
             responsive={{ mobile: { hide: { value: true } } }}
           >
-            <SVGImage image="hero" className="redi-hero__image" />
+            <SVGImage image="hello" className="redi-hero__image" />
           </Columns.Column>
         </Columns>
       </Container>

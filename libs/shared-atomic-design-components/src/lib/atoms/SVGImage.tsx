@@ -1,6 +1,7 @@
 import React from 'react'
 import { ReactComponent as HeroMentee } from '../../assets/images/hero-mentee.svg'
 import { ReactComponent as HeroMentor } from '../../assets/images/hero-mentor.svg'
+import { ReactComponent as HeroMentorAndMentee } from '../../assets/images/hero-mentor-and-mentee.svg'
 import { ReactComponent as Hero } from '../../assets/images/hero.svg'
 import { ReactComponent as Hello } from '../../assets/images/hello.svg'
 import { ReactComponent as HelloMobile } from '../../assets/images/hello-mobile.svg'
@@ -10,6 +11,7 @@ import { ReactComponent as Mentor } from '../../assets/images/mentor.svg'
 export type SVGImages =
   | 'heroMentee'
   | 'heroMentor'
+  | 'heroMentorAndMentee'
   | 'mentee'
   | 'mentor'
   | 'hero'
@@ -23,6 +25,7 @@ interface Props {
 const Images = {
   heroMentee: HeroMentee,
   heroMentor: HeroMentor,
+  heroMentorAndMentee: HeroMentorAndMentee,
   mentee: Mentee,
   mentor: Mentor,
   hero: Hero,

@@ -11,18 +11,6 @@ import {
   RediTalentPoolLogo,
 } from '@talent-connect/shared-atomic-design-components'
 
-const LoggedOutNavItems = () => {
-  const { t } = useTranslation()
-
-  return (
-    <>
-      <Button to="/front/home">{t('button.about')}</Button>
-      <Button to="/front/landing/mentee">{t('button.mentees')}</Button>
-      <Button to="/front/landing/mentor">{t('button.mentors')}</Button>
-    </>
-  )
-}
-
 const LoggedOutButtons = () => {
   const { t } = useTranslation()
   const history = useHistory()
@@ -32,7 +20,7 @@ const LoggedOutButtons = () => {
       <Button onClick={() => history.push('/front/login')} simple>
         {t('button.login')}
       </Button>
-      <Button onClick={() => history.push('/front/signup-landing')}>
+      <Button onClick={() => history.push('/front/signup/jobseeker')}>
         {t('button.signUp')}
       </Button>
     </>
@@ -73,13 +61,7 @@ const Navbar = () => {
         &times;
       </Element>
       {isLoggedIn() && <LoggedInButtons mobile={true} />}
-      {!isLoggedIn() && (
-        <>
-          <LoggedOutNavItems />
-          <hr />
-          <LoggedOutButtons />
-        </>
-      )}
+      {!isLoggedIn() && <LoggedOutButtons />}
     </Container>
   )
 
@@ -93,14 +75,8 @@ const Navbar = () => {
             responsive={{ mobile: { hide: { value: true } } }}
             className="navbar__buttons"
           >
-            {!isLoggedIn() && <LoggedOutNavItems />}
-          </Element>
-          <Element
-            responsive={{ mobile: { hide: { value: true } } }}
-            className="navbar__buttons"
-          >
-            {/* {isLoggedIn() && <LoggedInButtons />}
-            {!isLoggedIn() && <LoggedOutButtons />} */}
+            {isLoggedIn() && <LoggedInButtons />}
+            {!isLoggedIn() && <LoggedOutButtons />}
           </Element>
           <Element
             responsive={{ tablet: { hide: { value: true } } }}

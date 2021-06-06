@@ -9,12 +9,6 @@ const Login = lazy(
       /* webpackChunkName: "Login", webpackPreload: true */ '../pages/front/login/Login'
     )
 )
-const SignUpLanding = lazy(
-  () =>
-    import(
-      /* webpackChunkName: "SignUpLanding", webpackPreload: true */ '../pages/front/signup/SignUpLanding'
-    )
-)
 const SignUp = lazy(
   () =>
     import(
@@ -43,11 +37,6 @@ export const routes__loggedOut: RouteDefinition[] = [
   {
     path: '/front/login',
     component: Login,
-    exact: true,
-  },
-  {
-    path: '/front/signup-landing',
-    component: SignUpLanding,
     exact: true,
   },
   {

@@ -17,10 +17,6 @@
     "socialMediaHeadline": "Follow Us",
     "supportLinks": [
       {
-        "url": "/faq",
-        "name": "FAQ"
-      },
-      {
         "url": "mailto:career@redi-school.org",
         "name": "Contact-us"
       },
@@ -196,9 +192,9 @@
     "homePage": {
       "hero": {
         "about": {
-          "headline": "Welcome to ReDI CV Builder",
-          "content1": "Are you ready to build your new CV with ReDI?",
-          "content2": "Whether you are fresh in the job market or a career changer this tool can help you generate your new CV according to industry standarts with tips and examples in each step. You will be able to dowload the PDF file of your CV after few steps."
+          "headline": "Welcome to the ReDI Talent Pool",
+          "content1": "Where talented REDI job seekers connect with our great community of company partners.",
+          "content2": "Get started with your job search right away with our custom CV builder."
         },
         "navTiles": {
           "title": "for mentees / mentors",

@@ -2,15 +2,10 @@ import { RedUser } from '@talent-connect/shared-types'
 import { AccessToken } from '@talent-connect/shared-types'
 
 export const isLoggedIn = (): boolean => {
-  // TODO: remove this
-  return true
-
   const profile: any = window.localStorage.getItem('redProfile')
-  const accessToken: any = window.localStorage.getItem('accessToken')
   try {
     const r1: any = JSON.parse(profile)
-    const r2: any = JSON.parse(accessToken)
-    return r1 && r2
+    return Boolean(r1)
   } catch (err) {
     return false
   }
