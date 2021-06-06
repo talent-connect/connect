@@ -1,0 +1,48 @@
+@import '~bulma/sass/utilities/_all';
+@import '_variables.scss';
+
+.footer {
+  background: $white;
+  border-top: 1px solid $grey-light;
+
+  &__logo {
+    display: block;
+
+    @include mobile() {
+      margin-top: 1rem;
+    }
+  }
+
+  &__copyright {
+    padding-top: 1.5rem;
+    border-top: 1px solid $grey-light;
+  }
+
+  &__link {
+    display: block;
+    color: $black;
+    line-height: 2rem;
+    font-weight: $weight-normal;
+    font-size: $size-6;
+    text-transform: uppercase;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  &__headline {
+    position: relative;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+
+    &:before {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 1.5rem;
+      border-bottom: 2px solid $redi-orange-dark;
+    }
+  }
+}
