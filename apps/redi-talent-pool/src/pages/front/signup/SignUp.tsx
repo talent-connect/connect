@@ -21,6 +21,7 @@ import { Extends, RedProfile } from '@talent-connect/shared-types'
 import { history } from '../../../services/history/history'
 
 import { courses } from '@talent-connect/shared-config'
+import TpTeaser from 'apps/redi-talent-pool/src/components/molecules/TpTeaser'
 const formCourses = courses.map((course) => ({
   value: course.id,
   label: course.label,
@@ -134,7 +135,9 @@ export default function SignUp() {
         <Columns.Column
           size={6}
           responsive={{ mobile: { hide: { value: true } } }}
-        ></Columns.Column>
+        >
+          <TpTeaser.SignUp></TpTeaser.SignUp>
+        </Columns.Column>
 
         <Columns.Column size={5} offset={1}>
           <Heading border="bottomLeft">Sign-up</Heading>
