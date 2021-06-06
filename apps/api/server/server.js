@@ -1,7 +1,7 @@
 'use strict'
 const path = require('path')
 const res = require('dotenv').config({
-  path: path.resolve(process.cwd(), '.env.' + process.env.NODE_ENV)
+  path: path.resolve(process.cwd(), '.env.' + process.env.NODE_ENV),
 })
 
 var loopback = require('loopback')
@@ -17,6 +17,7 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 */
 require('../lib/email/email')
+require('../lib/email/tp-email')
 
 app.start = function () {
   // start the web server
@@ -40,7 +41,9 @@ app
   .remotes()
   .phases.addBefore('invoke', 'options-from-request')
   .use(function (ctx, next) {
-    if (!ctx.args || !ctx.args.options || !ctx.args.options.accessToken) { return next() }
+    if (!ctx.args || !ctx.args.options || !ctx.args.options.accessToken) {
+      return next()
+    }
     const RedUser = app.models.RedUser
     RedUser.findById(
       ctx.args.options.accessToken.userId,
@@ -61,7 +64,7 @@ app.use(
     signatureVersion: 'v4', // optional (use for some amazon regions: frankfurt and others)
     headers: { 'Access-Control-Allow-Origin': '*' }, // optional
     ACL: 'public-read', // this is default
-    uniquePrefix: true // (4.0.2 and above) default is true, setting the attribute to false preserves the original filename in S3
+    uniquePrefix: true, // (4.0.2 and above) default is true, setting the attribute to false preserves the original filename in S3
   })
 )
 
@@ -70,12 +73,15 @@ app.use(
 boot(app, __dirname)
 
 app.start = function () {
-  const server = (function buildHttpOrHttpsServer(){
+  const server = (function buildHttpOrHttpsServer() {
     if (process.env.USE_HTTPS) {
-      return https.createServer({
-        key: sslConfig.privateKey,
-        cert: sslConfig.certificate
-      }, app)
+      return https.createServer(
+        {
+          key: sslConfig.privateKey,
+          cert: sslConfig.certificate,
+        },
+        app
+      )
     } else {
       return http.createServer(app)
     }

@@ -20,6 +20,14 @@
       "options": {
         "nestRemoting": true
       }
+    },
+    "tpJobseekerProfile": {
+      "type": "hasOne",
+      "model": "TpJobseekerProfile",
+      "foreignKey": "",
+      "options": {
+        "nestRemoting": true
+      }
     }
   },
   "acls": [

@@ -55,5 +55,9 @@
   "RedSentEmailLog": {
     "dataSource": "mongodb",
     "public": true
+  },
+  "TpJobseekerProfile": {
+    "dataSource": "mongodb",
+    "public": true
   }
 }
