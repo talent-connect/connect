@@ -11,17 +11,17 @@ export const isLoggedIn = (): boolean => {
   }
 }
 
-export const getRedUser = (): RedUser =>
+export const getRedUserFromLocalStorage = (): RedUser =>
   JSON.parse(window.localStorage.getItem('redUser') as string)
 
-export const saveRedUser = (redUser: RedUser) => {
+export const saveRedUserToLocalStorage = (redUser: RedUser) => {
   window.localStorage.setItem('redUser', JSON.stringify(redUser))
 }
 
-export const getAccessToken = (): AccessToken =>
+export const getAccessTokenFromLocalStorage = (): AccessToken =>
   JSON.parse(window.localStorage.getItem('accessToken') as string)
 
-export const saveAccessToken = (accessToken: AccessToken) => {
+export const saveAccessTokenToLocalStorage = (accessToken: AccessToken) => {
   window.localStorage.setItem('accessToken', JSON.stringify(accessToken))
 }
 

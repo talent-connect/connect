@@ -14,24 +14,24 @@ export const isLoggedIn = (): boolean => {
   }
 }
 
-export const getRedUser = (): RedUser =>
+export const getRedUserFromLocalStorage = (): RedUser =>
   JSON.parse(window.localStorage.getItem('redUser') as string)
 
-export const saveRedUser = (redUser: RedUser) => {
+export const saveRedUserToLocalStorage = (redUser: RedUser) => {
   window.localStorage.setItem('redUser', JSON.stringify(redUser))
 }
 
-export const getRedProfile = (): RedProfile =>
+export const getRedProfileFromLocalStorage = (): RedProfile =>
   JSON.parse(window.localStorage.getItem('redProfile') as string)
 
-export const saveRedProfile = (redProfile: RedProfile) => {
+export const saveRedProfileToLocalStorage = (redProfile: RedProfile) => {
   window.localStorage.setItem('redProfile', JSON.stringify(redProfile))
 }
 
-export const getAccessToken = (): AccessToken =>
+export const getAccessTokenFromLocalStorage = (): AccessToken =>
   JSON.parse(window.localStorage.getItem('accessToken') as string)
 
-export const saveAccessToken = (accessToken: AccessToken) => {
+export const saveAccessTokenToLocalStorage = (accessToken: AccessToken) => {
   window.localStorage.setItem('accessToken', JSON.stringify(accessToken))
 }
 

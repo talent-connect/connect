@@ -37,6 +37,7 @@ module.exports = function (TpJobseekerProfile) {
       if (ctx.instance) {
         if (ctx.isNewInstance) {
           ctx.instance.createdAt = currentDate
+          ctx.instance.gaveGdprConsentAt = currentDate
         }
         ctx.instance.updatedAt = new Date()
       } else {

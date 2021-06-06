@@ -8,7 +8,7 @@ import * as Yup from 'yup'
 import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
 import { history } from '../../../services/history/history'
 import { setPassword } from '../../../services/api/api'
-import { saveAccessToken } from '../../../services/auth/auth'
+import { saveAccessTokenToLocalStorage } from '../../../services/auth/auth'
 import { RouteComponentProps } from 'react-router'
 import { showNotification } from '../../../components/AppNotification'
 import {
@@ -51,7 +51,7 @@ export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
       let accessToken
       try {
         accessToken = JSON.parse(accessTokenStr)
-        saveAccessToken(accessToken)
+        saveAccessTokenToLocalStorage(accessToken)
         console.log('savetoken')
       } catch (err) {
         console.log('savetoken errp')

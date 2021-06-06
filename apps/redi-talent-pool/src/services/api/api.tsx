@@ -4,7 +4,12 @@ import { AccessToken } from '@talent-connect/shared-types'
 import { RedProfile } from '@talent-connect/shared-types'
 import { RedUser } from '@talent-connect/shared-types'
 import { RedMatch } from '@talent-connect/shared-types'
-import { purgeAllSessionData, saveRedUser, getAccessToken } from '../auth/auth'
+import {
+  purgeAllSessionData,
+  saveRedUserToLocalStorage,
+  getAccessTokenFromLocalStorage,
+  saveAccessTokenToLocalStorage,
+} from '../auth/auth'
 import { history } from '../history/history'
 import { http } from '../http/http'
 import { UserType } from '@talent-connect/shared-types'
@@ -19,8 +24,9 @@ export const signUp = async (
     data: { email, password },
   })
   const user = userResponse.data as RedUser
-  saveRedUser(user)
+  saveRedUserToLocalStorage(user)
   const accessToken = await login(email, password)
+  saveAccessTokenToLocalStorage(accessToken)
 }
 
 export const login = async (
@@ -48,7 +54,7 @@ export const requestResetPasswordEmail = async (email: string) => {
 }
 
 export const setPassword = async (password: string) => {
-  const userId = getAccessToken().userId
+  const userId = getAccessTokenFromLocalStorage().userId
   await http(`${API_URL}/redUsers/${userId}`, {
     method: 'patch',
     data: { password },

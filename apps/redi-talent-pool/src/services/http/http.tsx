@@ -4,7 +4,11 @@ import has from 'lodash/has'
 import includes from 'lodash/includes'
 
 import { history } from '../history/history'
-import { getAccessToken, isLoggedIn, purgeAllSessionData } from '../auth/auth'
+import {
+  getAccessTokenFromLocalStorage,
+  isLoggedIn,
+  purgeAllSessionData,
+} from '../auth/auth'
 
 export const nonLoggedInHttp = axios.create()
 
@@ -15,7 +19,7 @@ http.interceptors.request.use(
     const isAuthorizationHeaderSet = has(config, 'headers.Authorization')
     const _isLoggedIn = isLoggedIn()
     if (_isLoggedIn && !isAuthorizationHeaderSet) {
-      const accessToken = getAccessToken()
+      const accessToken = getAccessTokenFromLocalStorage()
       config.headers.Authorization = `${accessToken.id}`
     }
     return config

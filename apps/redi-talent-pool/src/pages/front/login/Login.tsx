@@ -6,7 +6,7 @@ import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
 import { history } from '../../../services/history/history'
 import { login } from '../../../services/api/api'
 import {
-  saveAccessToken,
+  saveAccessTokenToLocalStorage,
   purgeAllSessionData,
 } from '../../../services/auth/auth'
 import { Columns, Form, Content, Notification } from 'react-bulma-components'
@@ -51,7 +51,7 @@ export default function Login() {
           formValues.username,
           formValues.password
         )
-        saveAccessToken(accessToken)
+        saveAccessTokenToLocalStorage(accessToken)
         actions.setSubmitting(false)
         history.push('/app/me')
       } catch (err) {

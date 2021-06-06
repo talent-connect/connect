@@ -7,8 +7,8 @@ import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
 import { history } from '../../../services/history/history'
 import { login, fetchSaveRedProfile } from '../../../services/api/api'
 import {
-  saveAccessToken,
-  getRedProfile,
+  saveAccessTokenToLocalStorage,
+  getRedProfileFromLocalStorage,
   purgeAllSessionData,
 } from '../../../services/auth/auth'
 import { Columns, Form, Content, Notification } from 'react-bulma-components'
@@ -52,7 +52,7 @@ export default function Login() {
           formValues.username,
           formValues.password
         )
-        saveAccessToken(accessToken)
+        saveAccessTokenToLocalStorage(accessToken)
         const redProfile = await fetchSaveRedProfile(accessToken)
         if (
           redProfile.rediLocation !==
@@ -104,13 +104,18 @@ export default function Login() {
                 }
               </strong>
               , but your account is linked to ReDI Connect{' '}
-              <strong>{capitalize(getRedProfile().rediLocation)}</strong>. To
-              access ReDI Connect{' '}
-              <strong>{capitalize(getRedProfile().rediLocation)}</strong>, go{' '}
+              <strong>
+                {capitalize(getRedProfileFromLocalStorage().rediLocation)}
+              </strong>
+              . To access ReDI Connect{' '}
+              <strong>
+                {capitalize(getRedProfileFromLocalStorage().rediLocation)}
+              </strong>
+              , go{' '}
               <a
                 href={buildFrontendUrl(
                   process.env.NODE_ENV,
-                  getRedProfile().rediLocation
+                  getRedProfileFromLocalStorage().rediLocation
                 )}
               >
                 here
