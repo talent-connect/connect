@@ -38,10 +38,6 @@ const validationSchema = Yup.object({
 
 export default function Login() {
   const [loginError, setLoginError] = useState<string>('')
-  const [
-    isWrongRediLocationError,
-    setIsWrongRediLocationError,
-  ] = useState<boolean>(false)
 
   const submitForm = useCallback((values, actions) => {
     ;(async (values: FormikValues, actions: FormikActions<LoginFormValues>) => {

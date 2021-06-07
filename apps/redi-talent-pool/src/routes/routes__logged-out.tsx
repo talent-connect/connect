@@ -40,7 +40,7 @@ export const routes__loggedOut: RouteDefinition[] = [
     exact: true,
   },
   {
-    path: '/front/signup-email-verification/:userType',
+    path: '/front/signup-email-verification',
     component: SignUpEmailVerification,
     exact: true,
   },

@@ -39,7 +39,10 @@
       "property": [
         "__create__redProfile",
         "__update__redProfile",
-        "__get__redProfile"
+        "__get__redProfile",
+        "__create__tpJobseekerProfile",
+        "__update__tpJobseekerProfile",
+        "__get__tpJobseekerProfile"
       ]
     },
     {

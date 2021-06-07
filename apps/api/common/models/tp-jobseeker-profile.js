@@ -194,7 +194,7 @@ module.exports = function (TpJobseekerProfile) {
 
     const tpJobseekerProfileInst = context.instance
     const redUserInst = await tpJobseekerProfileInst.redUser.get()
-    const tpJobseekerProfile = tpJobseekerdProfileInst.toJSON()
+    const tpJobseekerProfile = tpJobseekerProfileInst.toJSON()
     const redUser = redUserInst.toJSON()
 
     redUserInst.updateAttribute('rediLocation', tpJobseekerProfile.rediLocation)

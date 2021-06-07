@@ -1,9 +1,7 @@
 import axios from 'axios'
 import { API_URL } from '@talent-connect/shared-config'
 import { AccessToken } from '@talent-connect/shared-types'
-import { RedProfile } from '@talent-connect/shared-types'
-import { RedUser } from '@talent-connect/shared-types'
-import { RedMatch } from '@talent-connect/shared-types'
+import { RedUser, TpJobseekerProfile } from '@talent-connect/shared-types'
 import {
   purgeAllSessionData,
   saveRedUserToLocalStorage,
@@ -17,8 +15,9 @@ import { UserType } from '@talent-connect/shared-types'
 export const signUp = async (
   email: string,
   password: string,
-  redProfile: Partial<RedProfile>
+  tpJobseekerProfile: Partial<TpJobseekerProfile>
 ) => {
+  console.log('sign up')
   const userResponse = await http(`${API_URL}/redUsers`, {
     method: 'post',
     data: { email, password },
@@ -27,6 +26,16 @@ export const signUp = async (
   saveRedUserToLocalStorage(user)
   const accessToken = await login(email, password)
   saveAccessTokenToLocalStorage(accessToken)
+  const createProfileResponse = await http(
+    `${API_URL}/redUsers/${user.id}/tpJobseekerProfile`,
+    {
+      method: 'post',
+      data: tpJobseekerProfile,
+      headers: {
+        Authorization: accessToken.id,
+      },
+    }
+  )
 }
 
 export const login = async (
@@ -36,6 +45,9 @@ export const login = async (
   const loginResp = await http(`${API_URL}/redUsers/login`, {
     method: 'post',
     data: { email, password },
+    headers: {
+      RedProduct: 'TP',
+    },
   })
   const accessToken = loginResp.data as AccessToken
   return accessToken

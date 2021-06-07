@@ -1,6 +1,6 @@
 import { TpJobseekerProfileState } from './TpJobseekerProfileState'
 
-export type RedProfile = {
+export type TpJobseekerProfile = {
   id: string
   firstName: string
   lastName: string

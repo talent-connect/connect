@@ -17,16 +17,21 @@ const TopIllustration: React.FunctionComponent = ({ children }) => {
 
 // TODO: rename this component to Teaser, TpTeaser was an attempt at a fix, when it was another issue that was the issue
 export default {
+  IllustrationOnly: () => (
+    <WelcomeIllustration className="tp-illustration tp-illustration--rightOut" />
+  ),
   SignUp: () => (
     <>
       <WelcomeIllustration className="tp-illustration tp-illustration--rightOut" />
       <Content>
-        <Element renderAs="p" textSize={8}>
+        {/* TODO: restore these?figma
+         */}
+        {/* <Element renderAs="p" textSize={4}>
           Welcome to ReDI Talent Pool!
         </Element>
-        <Element renderAs="p" textSize={8}>
+        <Element renderAs="p" textSize={4}>
           You're one step closer to finding your next great opportunity.
-        </Element>
+        </Element> */}
         <Element renderAs="p" textTransform="uppercase" textSize={6}>
           Already have an account? <Link to="/front/login">sign-in here</Link>
         </Element>

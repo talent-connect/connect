@@ -56,6 +56,9 @@ export const login = async (
   const loginResp = await http(`${API_URL}/redUsers/login`, {
     method: 'post',
     data: { email, password },
+    headers: {
+      RedProduct: 'CON',
+    },
   })
   const accessToken = loginResp.data as AccessToken
   return accessToken

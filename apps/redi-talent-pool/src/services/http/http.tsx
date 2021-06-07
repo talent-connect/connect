@@ -47,9 +47,9 @@ http.interceptors.response.use(
       history.push(
         `/front/login?goto=${encodeURIComponent(history.location.pathname)}`
       )
-    } else {
-      history.push('/error/4xx')
     }
+
+    return Promise.reject(err)
   }
 )
 

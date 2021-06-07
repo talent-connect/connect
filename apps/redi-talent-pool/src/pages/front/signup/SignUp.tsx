@@ -1,11 +1,3 @@
-import React, { useState } from 'react'
-import AccountOperation from '../../../components/templates/AccountOperation'
-import { useParams } from 'react-router'
-
-import * as Yup from 'yup'
-
-import { FormikValues, FormikHelpers as FormikActions, useFormik } from 'formik'
-import omit from 'lodash/omit'
 import {
   Button,
   Checkbox,
@@ -13,15 +5,19 @@ import {
   FormSelect,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
-
-import { Columns, Form } from 'react-bulma-components'
-
-import { signUp } from '../../../services/api/api'
-import { Extends, RedProfile } from '@talent-connect/shared-types'
-import { history } from '../../../services/history/history'
-
 import { courses, rediLocationNames } from '@talent-connect/shared-config'
+import { RedProfile } from '@talent-connect/shared-types'
+import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
+import omit from 'lodash/omit'
+import React, { useState } from 'react'
+import { Columns, Form, Notification } from 'react-bulma-components'
+import { useParams } from 'react-router'
+import { Link } from 'react-router-dom'
+import * as Yup from 'yup'
 import TpTeaser from '../../../components/molecules/TpTeaser'
+import AccountOperation from '../../../components/templates/AccountOperation'
+import { signUp } from '../../../services/api/api'
+import { history } from '../../../services/history/history'
 
 // TODO: replace with proper dropdown
 const coursesWithAlumniDeduped = courses.filter((c) => {
@@ -58,8 +54,8 @@ export const validationSchema = Yup.object({
     .oneOf([Yup.ref('password')], 'Passwords does not match'),
   agreesWithCodeOfConduct: Yup.boolean().required().oneOf([true]),
   gaveGdprConsent: Yup.boolean().required().oneOf([true]),
-  mentee_currentlyEnrolledInCourse: Yup.string().when('userType', {
-    is: 'public-sign-up-mentee-pending-review',
+  currentlyEnrolledInCourse: Yup.string().when('state', {
+    is: 'drafting-profile',
     then: Yup.string()
       .required()
       .oneOf(courses.map((level) => level.id))
@@ -97,12 +93,12 @@ export default function SignUp() {
     jobseeker_currentlyEnrolledInCourse: '',
   }
 
-  const [submitError, setSubmitError] = useState(false)
+  const [submitError, setSubmitError] = useState(null)
   const submitForm = async (
     values: FormikValues,
     actions: FormikActions<SignUpFormValues>
   ) => {
-    setSubmitError(false)
+    setSubmitError(null)
     const profile = values as Partial<RedProfile>
     // TODO: this needs to be done in a smarter way, like iterating over the RedProfile definition or something
     const cleanProfile: Partial<RedProfile> = omit(profile, [
@@ -111,16 +107,20 @@ export default function SignUp() {
       'agreesWithCodeOfConduct',
       'gaveGdprConsent',
     ])
-    cleanProfile.userActivated = false
-    cleanProfile.signupSource = 'public-sign-up'
-    cleanProfile.menteeCountCapacity = 1
     try {
       await signUp(values.contactEmail, values.password, cleanProfile)
       actions.setSubmitting(false)
-      history.push(`/front/signup-email-verification/${cleanProfile.userType}`)
+      history.push(`/front/signup-email-verification`)
     } catch (error) {
       actions.setSubmitting(false)
-      setSubmitError(Boolean(error))
+      if (
+        error?.response?.data?.error?.details?.codes?.email.includes(
+          'uniqueness'
+        )
+      ) {
+        return setSubmitError('user-already-exists')
+      }
+      return setSubmitError('generic')
     }
   }
 
@@ -143,6 +143,12 @@ export default function SignUp() {
 
         <Columns.Column size={5} offset={1}>
           <Heading border="bottomLeft">Sign-up</Heading>
+          {submitError === 'user-already-exists' && (
+            <Notification color="info" className="is-light">
+              You already have an account. Please{' '}
+              <Link to="/front/login">log in</Link>.
+            </Notification>
+          )}
           <form onSubmit={(e) => e.preventDefault()} className="form">
             <FormInput
               name="firstName"
@@ -180,7 +186,7 @@ export default function SignUp() {
             {type === 'jobseeker' && (
               <FormSelect
                 label="Current ReDI Course"
-                name="jobseeker_currentlyEnrolledInCourse"
+                name="currentlyEnrolledInCourse"
                 placeholder="Choose your ReDI Course"
                 items={formCourses}
                 {...formik}
@@ -222,7 +228,8 @@ export default function SignUp() {
               color="danger"
               className={submitError ? 'help--show' : ''}
             >
-              {submitError && 'An error occurred, please try again.'}
+              {submitError === 'generic' &&
+                'An error occurred, please try again.'}
             </Form.Help>
             <Form.Field>
               <Form.Control>
