@@ -1,0 +1,46 @@
+@import '_variables.scss';
+@import '../../../styles/global.scss';
+
+$tp-light-blue: #58adc4;
+$tp-blue: #eff6f8;
+
+.onboarding-steps {
+  display: flex;
+  flex-direction: column;
+
+  padding: 0;
+
+  border: 1px solid #d8d8d8;
+
+  &--header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 90px;
+  }
+
+  &--item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+
+    padding: 18px 26px;
+    margin: 0;
+
+    div {
+      flex-grow: 1;
+    }
+
+    svg.checklist-image {
+      margin-right: 20px;
+    }
+  }
+  &--item.current-step {
+    background-color: $tp-blue;
+  }
+  &--item.completed-step {
+    color: $tp-light-blue;
+  }
+}

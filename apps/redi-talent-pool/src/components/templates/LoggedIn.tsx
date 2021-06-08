@@ -15,17 +15,36 @@ import {
 } from 'react-bulma-components'
 
 import Footer from '../organisms/Footer'
+import { useIsBusy } from '../../hooks/useIsBusy'
+import SideMenu from '../organisms/SideMenu'
 interface Props {
   children?: ReactNode
 }
 
 const LoggedIn = ({ children }: Props) => {
-  const isFetching = useIsFetching()
+  const isBusy = useIsBusy()
 
   return (
     <>
       <Navbar />
-      <Section>{children}</Section>
+      {/* <Section className="section--bottom-large-spaceing color-half-tablet section--separator"> */}
+      <Section className="section--bottom-large-spaceing section--separator">
+        <Container>
+          {/* <Container className="color-side-menu"> */}
+          <Columns>
+            {/* <Columns.Column desktop={{ size: 2 }} className="column--side-menu">
+              <SideMenu />
+            </Columns.Column> */}
+            <Columns.Column
+              desktop={{ size: 12 }}
+              className="column--main-content"
+            >
+              <Loader loading={isBusy} />
+              {children}
+            </Columns.Column>
+          </Columns>
+        </Container>
+      </Section>
       <Footer />
     </>
   )

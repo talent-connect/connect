@@ -1,0 +1,39 @@
+import React, { ReactNode } from 'react'
+import './SideMenu.scss'
+import { NavLink } from 'react-router-dom'
+import { ReactComponent as Mentorship } from '../../assets/images/mentorship.svg'
+import { ReactComponent as Applications } from '../../assets/images/applications.svg'
+import { ReactComponent as Profile } from '../../assets/images/profile.svg'
+
+interface MenuItemProps {
+  url: string
+  children: ReactNode
+}
+
+const MenuItem = ({ url, children }: MenuItemProps) => (
+  <li className="side-menu__item">
+    <NavLink
+      to={url}
+      className="side-menu__item__link"
+      activeClassName="side-menu__item__link--active"
+    >
+      {children}
+    </NavLink>
+  </li>
+)
+
+const SideMenu = () => {
+  return (
+    <ul className="side-menu">
+      <MenuItem url="/app/me">
+        <Profile className="side-menu__icon" />
+      </MenuItem>
+
+      <MenuItem url="/app/jobs">
+        <Applications className="side-menu__icon" />
+      </MenuItem>
+    </ul>
+  )
+}
+
+export default SideMenu

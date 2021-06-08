@@ -2,9 +2,9 @@ import { RedUser } from '@talent-connect/shared-types'
 import { AccessToken } from '@talent-connect/shared-types'
 
 export const isLoggedIn = (): boolean => {
-  const profile: any = window.localStorage.getItem('redProfile')
+  const accessToken: any = window.localStorage.getItem('accessToken')
   try {
-    const r1: any = JSON.parse(profile)
+    const r1: any = JSON.parse(accessToken)
     return Boolean(r1)
   } catch (err) {
     return false
