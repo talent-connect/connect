@@ -7,7 +7,6 @@ import { ProfileCard } from '../../../components/organisms'
 import { useLoading } from '../../../hooks/WithLoading'
 import { getMentors } from '../../../services/api/api'
 import { RediLocation, RedProfile } from '@talent-connect/shared-types'
-import { useList } from '../../../hooks/useList'
 import { profileSaveStart } from '../../../redux/user/actions'
 import { connect } from 'react-redux'
 import { RootState } from '../../../redux/types'
@@ -20,7 +19,7 @@ import {
 } from '@talent-connect/shared-config'
 import './FindAMentor.scss'
 import { toggleValueInArray } from './utils'
-import { StringParam, useQueryParams, ArrayParam, withDefault } from 'use-query-params'
+import { StringParam, useQueryParams, ArrayParam, BooleanParam, withDefault } from 'use-query-params'
 
 const filterCategories = categories.map((category) => ({
   value: category.id,
@@ -81,15 +80,16 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
   const [showFavorites, setShowFavorites] = useState<boolean>(false)
   const [mentors, setMentors] = useState<RedProfile[]>([])
   const [query, setQuery] = useQueryParams({
-    name: withDefault(StringParam, ''),
+    name: withDefault(StringParam, undefined),
     topics: withDefault(ArrayParam, []),
     languages: withDefault(ArrayParam, []),
     locations: withDefault(ArrayParam, []),
+    onlyFavorites: withDefault(BooleanParam, undefined)
   })
-  const { topics, name, languages, locations } = query;
+  const { topics, name, languages, locations, onlyFavorites } = query;
   
   useEffect(() => {
-    const hasQuery = topics.length > 0 || languages.length > 0 || locations.length > 0 || Boolean(name)
+    const hasQuery = topics.length > 0 || languages.length > 0 || locations.length > 0 || Boolean(name) || onlyFavorites
     setQuery(hasQuery ? query : {...query, topics: categoriesFromProfile})
   }, [])
 
@@ -102,13 +102,21 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
     setQuery((latestQuery) => ({...latestQuery, name: value || undefined}))
   }
 
+  const toggleFavorites = (favoritesArr, value) => {
+    const newFavorites = toggleValueInArray(favoritesArr, value)
+    setLoading(true)
+    profileSaveStart({ favouritedRedProfileIds: newFavorites, id })
+    setLoading(false)
+  }
+
+  const setFavorites = () => {
+    setShowFavorites(!showFavorites)
+    setQuery((latestQuery) => ({...latestQuery, onlyFavorites: showFavorites ? undefined : true }))
+  }
+
   const clearFilters = () => {
     setQuery((latestQuery) => ({...latestQuery, topics: [], languages: [], locations: []}))
   }
-
-  const [favorites, { toggle: toggleFavorites }] = useList<any>( 
-    favouritedRedProfileIds
-  )
 
   const filterLanguages = Array.from(
     new Set(
@@ -150,12 +158,6 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
     })
   }, [topics, languages, locations, name])
 
-  useEffect(() => {
-    setLoading(true)
-    profileSaveStart({ favouritedRedProfileIds: favorites, id })
-    setLoading(false)
-  }, [favorites])
-
   if (profile.userActivated !== true) return <LoggedIn />
 
   return (
@@ -187,7 +189,8 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
           />
           <div
             className="filter-favourites"
-            onClick={() => setShowFavorites(!showFavorites)}
+            // onClick={() => setShowFavorites(!showFavorites)}
+            onClick={setFavorites}
           >
             <Icon
               icon={showFavorites ? 'heartFilled' : 'heart'}
@@ -248,7 +251,7 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
 
       <Columns>
         {mentors.map((mentor: RedProfile) => {
-          const isFavorite = favorites.includes(mentor.id)
+          const isFavorite = favouritedRedProfileIds.includes(mentor.id)
 
           if (!isFavorite && showFavorites) return
 
@@ -257,7 +260,7 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
               <ProfileCard
                 profile={mentor}
                 linkTo={`/app/find-a-mentor/profile/${mentor.id}`}
-                toggleFavorite={toggleFavorites}
+                toggleFavorite={(item) => toggleFavorites(favouritedRedProfileIds, item)}
                 isFavorite={isFavorite}
               />
             </Columns.Column>
