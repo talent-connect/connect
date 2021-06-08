@@ -189,7 +189,6 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
           />
           <div
             className="filter-favourites"
-            // onClick={() => setShowFavorites(!showFavorites)}
             onClick={setFavorites}
           >
             <Icon
