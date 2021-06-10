@@ -15,10 +15,24 @@ import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpjobseekerprofileQuery } from '../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../molecules/Editable'
+import { EmptySectionPlaceholder } from '../molecules/EmptySectionPlaceholder'
 
 export function EditableLinks() {
   const { data: profile } = useTpjobseekerprofileQuery()
   const [isEditing, setIsEditing] = useState(false)
+
+  const links = [
+    profile?.personalWebsite,
+    profile?.githubUrl,
+    profile?.linkedInUrl,
+    profile?.twitterUrl,
+    profile?.behanceUrl,
+    profile?.stackOverflowUrl,
+    profile?.stackOverflowUrl,
+    profile?.dribbbleUrl,
+  ]
+
+  const isEmpty = !links.every((p) => p)
 
   return (
     <Editable
@@ -26,24 +40,23 @@ export function EditableLinks() {
       setIsEditing={setIsEditing}
       title="Links"
       readComponent={
-        <Content>
-          {[
-            profile?.personalWebsite,
-            profile?.githubUrl,
-            profile?.linkedInUrl,
-            profile?.twitterUrl,
-            profile?.behanceUrl,
-            profile?.stackOverflowUrl,
-            profile?.stackOverflowUrl,
-            profile?.dribbbleUrl,
-          ].map((url, idx) => (
-            <p key={idx}>
-              <a href={url} target="_blank">
-                {url}
-              </a>
-            </p>
-          ))}
-        </Content>
+        isEmpty ? (
+          <EmptySectionPlaceholder
+            height="slim"
+            text="Add your links"
+            onClick={() => setIsEditing(true)}
+          />
+        ) : (
+          <Content>
+            {links.map((url, idx) => (
+              <p key={idx}>
+                <a href={url} target="_blank">
+                  {url}
+                </a>
+              </p>
+            ))}
+          </Content>
+        )
       }
       modalTitle="Your online presence"
       modalHeadline="Links"

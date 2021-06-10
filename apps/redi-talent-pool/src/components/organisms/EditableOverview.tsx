@@ -50,7 +50,6 @@ export function EditableOverview() {
       modalTitle="Interests & About"
       modalHeadline="Overview"
       modalBody={<Form setIsEditing={setIsEditing} />}
-      modalStyles={{ minHeight: '40rem' }}
     />
   )
 }

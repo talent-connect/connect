@@ -1,21 +1,21 @@
-import React from 'react'
+import { Button } from '@talent-connect/shared-atomic-design-components'
 import classnames from 'classnames'
-import { Block, Columns, Box, Element } from 'react-bulma-components'
-import { ReactComponent as ChecklistImage } from './checklist-item.svg'
-import { ReactComponent as ChecklistActiveImage } from './checklist-item-active.svg'
-import { ReactComponent as CheckmarkImage } from './checkmark.svg'
-import { ReactComponent as CheckmarkBorderOnlyImage } from './checkmark-border-only.svg'
-
-import { LoggedIn } from '../../../components/templates'
-
-import './Me.scss'
-import { EditableOverview } from '../../../components/organisms/EditableOverview'
-import { useQuery } from 'react-query'
-import { useTpjobseekerprofileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
-import { EditableSummary } from '../../../components/organisms/EditableSummary'
-import { EditableLinks } from '../../../components/organisms/EditableLinks'
-import { EditableLanguages } from '../../../components/organisms/EditableLanguages'
+import React from 'react'
+import { Columns, Element } from 'react-bulma-components'
+import { EditableEducation } from '../../../components/organisms/EditableEducation'
 import { EditableImportantDetails } from '../../../components/organisms/EditableImportantDetails'
+import { EditableLanguages } from '../../../components/organisms/EditableLanguages'
+import { EditableLinks } from '../../../components/organisms/EditableLinks'
+import { EditableOverview } from '../../../components/organisms/EditableOverview'
+import { EditableProfessionalExperience } from '../../../components/organisms/EditableProfessionalExperience'
+import { EditableSummary } from '../../../components/organisms/EditableSummary'
+import { LoggedIn } from '../../../components/templates'
+import { useTpjobseekerprofileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { ReactComponent as ChecklistActiveImage } from './checklist-item-active.svg'
+import { ReactComponent as ChecklistImage } from './checklist-item.svg'
+import { ReactComponent as CheckmarkBorderOnlyImage } from './checkmark-border-only.svg'
+import { ReactComponent as CheckmarkImage } from './checkmark.svg'
+import './Me.scss'
 
 const steps = [
   { number: 1, label: 'Complete your profile' },
@@ -31,12 +31,17 @@ function Me() {
 
   return (
     <LoggedIn>
-      <Columns breakpoint="mobile">
+      <Columns breakpoint="mobile" className="is-6 is-variable">
         <Columns.Column size="three-fifths">
           <EditableOverview />
           <EditableSummary />
+          <EditableProfessionalExperience />
+          <EditableEducation />
         </Columns.Column>
         <Columns.Column size="two-fifths">
+          <div style={{ textAlign: 'right', marginBottom: '1.5rem' }}>
+            <Button disabled>Send profile to review</Button>
+          </div>
           <OnboardingSteps />
           <EditableImportantDetails />
           <EditableLanguages />
@@ -75,7 +80,7 @@ function OnboardingSteps() {
           ) : (
             <ChecklistImage className="checklist-image" />
           )}
-          <Element textSize="5">Complete your profile</Element>
+          <Element textSize="5">{step.label}</Element>
           {step.number < currentStep ? (
             <CheckmarkImage className="checkmark-image" />
           ) : (

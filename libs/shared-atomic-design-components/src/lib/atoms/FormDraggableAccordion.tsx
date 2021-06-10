@@ -9,11 +9,17 @@ import { ReactComponent as AccordionHandleIcon } from '../../assets/images/accor
 interface Props {
   title: string
   children: React.ReactNode
+  initialOpen?: boolean
   onRemove?: () => void
 }
 
-function FormDraggableAccordion({ title, children, onRemove = null }: Props) {
-  const [showAnswer, setShowAnswer] = useState(false)
+function FormDraggableAccordion({
+  title,
+  children,
+  onRemove = null,
+  initialOpen = false,
+}: Props) {
+  const [showAnswer, setShowAnswer] = useState(initialOpen)
   return (
     <div className="form-draggable-accordion">
       <Columns

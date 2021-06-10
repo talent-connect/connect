@@ -6,14 +6,19 @@ import {
   FormTextArea,
 } from '@talent-connect/shared-atomic-design-components'
 import { TpJobseekerProfile } from '@talent-connect/shared-types'
-import { desiredPositions, topSkills } from '@talent-connect/talent-pool/config'
+import {
+  desiredPositions,
+  topSkills,
+  topSkillsIdToLabelMap,
+} from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
 import React, { useState } from 'react'
-import { Content, Element } from 'react-bulma-components'
+import { Content, Element, Tag } from 'react-bulma-components'
 import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpjobseekerprofileQuery } from '../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../molecules/Editable'
+import { EmptySectionPlaceholder } from '../molecules/EmptySectionPlaceholder'
 
 export function EditableSummary() {
   const { data: profile } = useTpjobseekerprofileQuery()
@@ -28,8 +33,30 @@ export function EditableSummary() {
         <>
           <Caption>About</Caption>
           <Content>
-            {profile?.aboutYourself && <p>{profile.aboutYourself}</p>}
+            {profile?.aboutYourself ? (
+              <p>{profile.aboutYourself}</p>
+            ) : (
+              <EmptySectionPlaceholder
+                height="tall"
+                text="Tell us about yourself"
+                onClick={() => setIsEditing(true)}
+              />
+            )}
           </Content>
+          <Caption>Top skills</Caption>
+          {profile?.topSkills?.length > 0 ? (
+            <Tag.Group>
+              {profile?.topSkills?.map((skill) => (
+                <Tag key={skill}>{topSkillsIdToLabelMap[skill]}</Tag>
+              ))}
+            </Tag.Group>
+          ) : (
+            <EmptySectionPlaceholder
+              height="slim"
+              text="Add your top skills"
+              onClick={() => setIsEditing(true)}
+            />
+          )}
         </>
       }
       modalTitle="About you"

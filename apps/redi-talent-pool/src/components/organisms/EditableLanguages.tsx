@@ -26,6 +26,7 @@ import { useTpjobseekerprofileQuery } from '../../react-query/use-tpjobseekerpro
 import { Editable } from '../molecules/Editable'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { Languages } from '@talent-connect/shared-config'
+import { EmptySectionPlaceholder } from '../molecules/EmptySectionPlaceholder'
 
 function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
   const result = Array.from(list)
@@ -39,22 +40,32 @@ export function EditableLanguages() {
   const { data: profile } = useTpjobseekerprofileQuery()
   const [isEditing, setIsEditing] = useState(false)
 
+  const isEmpty = !(profile?.workingLanguages?.length > 0)
+
   return (
     <Editable
       isEditing={isEditing}
       setIsEditing={setIsEditing}
       title="Languages"
       readComponent={
-        <Content>
-          {profile?.workingLanguages?.map(
-            ({ language, proficiencyLevelId }, idx) => (
-              <p key={idx}>
-                {language} -{' '}
-                {languageProficiencyLevelsIdToLabelMap[proficiencyLevelId]}
-              </p>
-            )
-          )}
-        </Content>
+        isEmpty ? (
+          <EmptySectionPlaceholder
+            height="slim"
+            text="Add your languages"
+            onClick={() => setIsEditing(true)}
+          />
+        ) : (
+          <Content>
+            {profile?.workingLanguages?.map(
+              ({ language, proficiencyLevelId }, idx) => (
+                <p key={idx}>
+                  {language} -{' '}
+                  {languageProficiencyLevelsIdToLabelMap[proficiencyLevelId]}
+                </p>
+              )
+            )}
+          </Content>
+        )
       }
       modalTitle="Relevant languages you can speak"
       modalHeadline="Languages"
@@ -243,7 +254,6 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
       >
         Save
       </Button>
-      <div style={{ marginBottom: '300px' }} />
     </>
   )
 }

@@ -58,10 +58,11 @@ export function EditableImportantDetails() {
           <EmptySectionPlaceholder
             height="tall"
             text="Add your contact details, type of employment and availability"
+            onClick={() => setIsEditing(true)}
           />
         ) : (
           <Columns>
-            <Columns.Column size={{ size: 6 }}>
+            <Columns.Column size={6}>
               <Caption>Availability</Caption>
               <Content>
                 {profile?.availability && profile.availability !== 'date' && (
@@ -79,20 +80,20 @@ export function EditableImportantDetails() {
                     </p>
                   )}
               </Content>
-              <Caption>Type of work</Caption>
-              <PipeList
-                items={
-                  profile &&
-                  profile.desiredEmploymentType &&
-                  profile.desiredEmploymentType.length > 0
-                    ? profile.desiredEmploymentType.map(
-                        (x) => desiredEmploymentTypeOptionsIdToLabelMap[x]
-                      )
-                    : null
-                }
-              />
+              {profile &&
+              profile.desiredEmploymentType &&
+              profile.desiredEmploymentType.length > 0 ? (
+                <>
+                  <Caption>Type of work</Caption>
+                  <PipeList
+                    items={profile.desiredEmploymentType.map(
+                      (x) => desiredEmploymentTypeOptionsIdToLabelMap[x]
+                    )}
+                  />
+                </>
+              ) : null}
             </Columns.Column>
-            <Columns.Column size={{ size: 6 }}>
+            <Columns.Column size={6}>
               <Caption>Contact</Caption>
               <Content>
                 {[
@@ -199,7 +200,6 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
       >
         Save
       </Button>
-      <div style={{ height: '15rem' }} />
     </>
   )
 }

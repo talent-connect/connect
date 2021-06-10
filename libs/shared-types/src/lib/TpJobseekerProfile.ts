@@ -44,23 +44,32 @@ interface LanguageRecord {
   proficiencyLevelId: string
 }
 
-interface ExperienceRecord {
+export interface ExperienceRecord {
+  uuid: string
   title?: string
   company?: string
-
-  startDate?: Date
-  endDate?: Date
-  current?: boolean
   description?: string
+
+  startDateMonth?: number
+  startDateYear?: number
+  endDateMonth?: number
+  endDateYear?: number
+  current?: boolean
 }
 
-interface EducationRecord {
+export interface EducationRecord {
+  uuid: string
   type?: string
+  title?: string
   institutionName?: string
-  startDate?: Date
-  endDate?: Date
-  current?: boolean
   description?: string
+  certificationType?: string
+
+  startDateMonth?: number
+  startDateYear?: number
+  endDateMonth?: number
+  endDateYear?: number
+  current?: boolean
 }
 
 interface ProjectRecord {

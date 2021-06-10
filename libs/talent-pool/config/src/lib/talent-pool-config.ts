@@ -593,3 +593,38 @@ export const availabilityOptionsIdToLabelMap = mapValues(
   keyBy(availabilityOptions, 'id'),
   'label'
 )
+
+export const certificationTypes: DropdownOptions = [
+  { id: 'confirmationOfAttendance', label: 'Confirmation of attendance' },
+  { id: 'professionalCertification', label: 'Professional certification' },
+  { id: 'rediSchoolCourse', label: 'ReDI School Course' },
+  { id: 'universityDegreeDiploma', label: 'University degree / diploma' },
+  { id: 'other', label: 'Other' },
+]
+
+export const certificationTypesIdToLabelMap = mapValues(
+  keyBy(certificationTypes, 'id'),
+  'label'
+)
+
+export const formMonths = {
+  0: 'January',
+  1: 'February',
+  2: 'March',
+  3: 'April',
+  4: 'May',
+  5: 'June',
+  6: 'July',
+  7: 'August',
+  8: 'September',
+  9: 'October',
+  10: 'November',
+  11: 'December',
+}
+
+export const formMonthsOptions = Object.entries(formMonths).map(
+  ([value, label]) => ({
+    value,
+    label,
+  })
+)

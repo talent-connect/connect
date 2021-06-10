@@ -2,6 +2,7 @@ import React from 'react'
 import Select, { components } from 'react-select'
 import { Form } from 'react-bulma-components'
 import { Icon } from '../atoms'
+import { get } from 'lodash'
 
 const DropdownIndicator = (props: any) => (
   <components.DropdownIndicator {...props}>
@@ -96,6 +97,7 @@ function FormSelect(props: any) {
         padding: '0 2px',
       },
     }),
+    menuPortal: (base) => ({ ...base, zIndex: 9999 }),
   }
 
   const handleOnChangeDefault = (option: any = []) => {
@@ -120,12 +122,12 @@ function FormSelect(props: any) {
   const handleOnChange = customOnChange || handleOnChangeDefault
 
   const selectedValues = multiselect
-    ? values[name]
+    ? get(values, name)
         .map((selValue: any) =>
           items.filter((availItem: any) => availItem.value === selValue)
         )
         .flat()
-    : items.find((item: any) => item.value === values[name])
+    : items.find((item: any) => item.value === get(values, name))
 
   return (
     <Form.Field>
@@ -141,6 +143,8 @@ function FormSelect(props: any) {
           isDisabled={isSubmitting || disabled}
           isMulti={multiselect}
           styles={customStyles}
+          menuPortalTarget={document.body}
+          menuPosition="fixed"
         />
       </Form.Control>
       <Form.Help color="danger" className={hasError ? 'help--show' : ''}>
