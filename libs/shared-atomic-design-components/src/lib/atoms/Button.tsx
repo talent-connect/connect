@@ -14,6 +14,7 @@ interface Props {
   onClick?: () => void
   simple?: boolean
   to?: string
+  style?: React.CSSProperties
 }
 
 const Button = ({
@@ -26,6 +27,7 @@ const Button = ({
   separator,
   disabled,
   to,
+  style = {},
 }: Props) => {
   const baseClass = 'button'
 
@@ -68,6 +70,7 @@ const Button = ({
             [`${className}`]: className,
           }
         )}
+        style={style}
       >
         {children}
       </button>
@@ -81,6 +84,7 @@ const Button = ({
       className={classnames(baseClass, `${baseClass}--nav`, {
         [`${baseClass}--${size}`]: size,
       })}
+      style={style}
     >
       {children}
     </NavLink>

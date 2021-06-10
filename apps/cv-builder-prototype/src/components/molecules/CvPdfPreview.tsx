@@ -1,24 +1,22 @@
 import {
-  Page,
-  Text,
-  View,
   Document,
-  StyleSheet,
+  Font,
   Image,
   Link,
-  Font,
+  Page,
+  StyleSheet,
+  Text,
   usePDF,
+  View,
 } from '@react-pdf/renderer'
+import { isEqual } from 'lodash'
 import moment from 'moment'
+import React, { useEffect } from 'react'
 import {
   Document as ReactPDFDocument,
   Page as ReactPDFPage,
   pdfjs,
 } from 'react-pdf/dist/esm/entry.webpack'
-
-import { useEffect, useState } from 'react'
-import React from 'react'
-import { isEqual } from 'lodash'
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`
 

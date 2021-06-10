@@ -9,8 +9,13 @@ import { ReactComponent as CheckmarkBorderOnlyImage } from './checkmark-border-o
 import { LoggedIn } from '../../../components/templates'
 
 import './Me.scss'
-import { Heading } from '../../../../../../libs/shared-atomic-design-components/src'
 import { EditableOverview } from '../../../components/organisms/EditableOverview'
+import { useQuery } from 'react-query'
+import { useTpjobseekerprofileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { EditableSummary } from '../../../components/organisms/EditableSummary'
+import { EditableLinks } from '../../../components/organisms/EditableLinks'
+import { EditableLanguages } from '../../../components/organisms/EditableLanguages'
+import { EditableImportantDetails } from '../../../components/organisms/EditableImportantDetails'
 
 const steps = [
   { number: 1, label: 'Complete your profile' },
@@ -20,6 +25,8 @@ const steps = [
 ]
 
 function Me() {
+  const { data: profile } = useTpjobseekerprofileQuery()
+
   const currentStep = 3
 
   return (
@@ -27,44 +34,56 @@ function Me() {
       <Columns breakpoint="mobile">
         <Columns.Column size="three-fifths">
           <EditableOverview />
+          <EditableSummary />
         </Columns.Column>
         <Columns.Column size="two-fifths">
-          <div className="onboarding-steps">
-            <div className="onboarding-steps--header">
-              <Element
-                renderAs="h4"
-                textAlignment="centered"
-                textTransform="uppercase"
-                textSize={6}
-                responsive={{ mobile: { textSize: { value: 7 } } }}
-              >
-                Complete the steps below!
-              </Element>
-            </div>
-            {steps.map((step) => (
-              <div
-                className={classnames('onboarding-steps--item', {
-                  'current-step': step.number === currentStep,
-                  'completed-step': step.number < currentStep,
-                })}
-              >
-                {step.number < currentStep ? (
-                  <ChecklistActiveImage className="checklist-image" />
-                ) : (
-                  <ChecklistImage className="checklist-image" />
-                )}
-                <Element textSize="5">Complete your profile</Element>
-                {step.number < currentStep ? (
-                  <CheckmarkImage className="checkmark-image" />
-                ) : (
-                  <CheckmarkBorderOnlyImage className="checkmark-image" />
-                )}
-              </div>
-            ))}
-          </div>
+          <OnboardingSteps />
+          <EditableImportantDetails />
+          <EditableLanguages />
+          <EditableLinks />
         </Columns.Column>
       </Columns>
     </LoggedIn>
+  )
+}
+
+function OnboardingSteps() {
+  const currentStep = 1
+
+  return (
+    <div className="onboarding-steps">
+      <div className="onboarding-steps--header">
+        <Element
+          renderAs="h4"
+          textAlignment="centered"
+          textTransform="uppercase"
+          textSize={6}
+          responsive={{ mobile: { textSize: { value: 7 } } }}
+        >
+          Complete the steps below!
+        </Element>
+      </div>
+      {steps.map((step) => (
+        <div
+          className={classnames('onboarding-steps--item', {
+            'current-step': step.number === currentStep,
+            'completed-step': step.number < currentStep,
+          })}
+        >
+          {step.number < currentStep ? (
+            <ChecklistActiveImage className="checklist-image" />
+          ) : (
+            <ChecklistImage className="checklist-image" />
+          )}
+          <Element textSize="5">Complete your profile</Element>
+          {step.number < currentStep ? (
+            <CheckmarkImage className="checkmark-image" />
+          ) : (
+            <CheckmarkBorderOnlyImage className="checkmark-image" />
+          )}
+        </div>
+      ))}
+    </div>
   )
 }
 

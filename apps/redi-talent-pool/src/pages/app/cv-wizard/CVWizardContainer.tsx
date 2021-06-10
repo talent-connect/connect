@@ -1,43 +1,9 @@
-import React, {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react'
-import { useWindowResize } from 'beautiful-react-hooks'
-import { useDebounce } from 'react-use'
-import { useMachine } from '@xstate/react'
-import { createMachine } from 'xstate'
-import { v4 as uuidv4 } from 'uuid'
-
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
-
+import { IconButton, RootRef } from '@material-ui/core'
 import Accordion from '@material-ui/core/Accordion'
-import AccordionSummary from '@material-ui/core/AccordionSummary'
 import AccordionDetails from '@material-ui/core/AccordionDetails'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import AccordionSummary from '@material-ui/core/AccordionSummary'
 import AddIcon from '@material-ui/icons/Add'
-
-import { stringify, parse } from 'telejson'
-
-import { LoggedIn } from '../../../components/templates'
-import {
-  CVPDFPreviewMemoized,
-  CVPDFPreview,
-} from '../../../components/molecules/CvPdfPreview'
-
-import {
-  Container,
-  Content,
-  Element,
-  Columns,
-  Form,
-  Icon,
-  Level,
-} from 'react-bulma-components'
-import './CVWizardContainer.scss'
-import { PDFViewer, StyleSheet } from '@react-pdf/renderer'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import {
   Button,
   Checkbox,
@@ -48,18 +14,28 @@ import {
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
 import { Languages as availableLanguages } from '@talent-connect/shared-config'
-import { CVFormData, TpProfile } from '@talent-connect/talent-pool/types'
 import {
+  availabilityOptions,
+  desiredEmploymentTypeOptions,
   desiredPositions,
   yearsOfRelevantExperienceOptions,
-  desiredEmploymentTypeOptions,
-  availabilityOptions,
 } from '@talent-connect/talent-pool/config'
-
+import { CVFormData } from '@talent-connect/talent-pool/types'
+import { useMachine } from '@xstate/react'
+import { useWindowResize } from 'beautiful-react-hooks'
 import { useFormik } from 'formik'
 import { keyBy, mapValues } from 'lodash'
+import React, { useCallback, useRef, useState } from 'react'
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
+import { Columns, Container, Content, Element } from 'react-bulma-components'
+import { useDebounce } from 'react-use'
+import { parse, stringify } from 'telejson'
+import { v4 as uuidv4 } from 'uuid'
+import { createMachine } from 'xstate'
 import CVDownloadButton from '../../../components/molecules/CVDownloadButton'
-import { IconButton, RootRef } from '@material-ui/core'
+import { CVPDFPreviewMemoized } from '../../../components/molecules/CvPdfPreview'
+import { LoggedIn } from '../../../components/templates'
+import './CVWizardContainer.scss'
 
 /* eslint-disable-next-line */
 export interface CVWizardContainerProps {}

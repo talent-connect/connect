@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { API_URL } from '@talent-connect/shared-config'
 import { AccessToken } from '@talent-connect/shared-types'
 import { RedUser, TpJobseekerProfile } from '@talent-connect/shared-types'
@@ -7,6 +7,7 @@ import {
   saveRedUserToLocalStorage,
   getAccessTokenFromLocalStorage,
   saveAccessTokenToLocalStorage,
+  getRedUserFromLocalStorage,
 } from '../auth/auth'
 import { history } from '../history/history'
 import { http } from '../http/http'
@@ -71,4 +72,23 @@ export const setPassword = async (password: string) => {
     method: 'patch',
     data: { password },
   })
+}
+
+export async function fetchCurrentUserTpJobseekerProfile(): Promise<
+  Partial<TpJobseekerProfile>
+> {
+  const userId = getAccessTokenFromLocalStorage().userId
+  const resp = await http(`${API_URL}/redUsers/${userId}/tpJobseekerProfile`)
+  return resp.data
+}
+
+export async function updateCurrentUserTpJobseekerProfile(
+  profile: Partial<TpJobseekerProfile>
+): Promise<Partial<TpJobseekerProfile>> {
+  const userId = getAccessTokenFromLocalStorage().userId
+  const resp = await http(`${API_URL}/redUsers/${userId}/tpJobseekerProfile`, {
+    method: 'put',
+    data: profile,
+  })
+  return resp.data
 }
