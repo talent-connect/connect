@@ -19,6 +19,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 require('../lib/email/email')
 require('../lib/email/tp-email')
 
+console.log(process.env)
+console.log(process.env)
+console.log(process.env)
+console.log(process.env)
+
 app.start = function () {
   // start the web server
   return app.listen(function () {

@@ -12,14 +12,14 @@ import placeholderImage from '../../assets/img-placeholder.png'
 
 import './Avatar.scss'
 
-import { RedProfile } from '@talent-connect/shared-types'
+import { TpJobseekerProfile } from '@talent-connect/shared-types'
 
 interface AvatarProps {
-  profile: RedProfile
+  profile: Partial<TpJobseekerProfile>
 }
 interface AvatarEditable {
-  profile: RedProfile
-  profileSaveStart: Function
+  profile: Partial<TpJobseekerProfile>
+  profileSaveStart: (profile: Partial<TpJobseekerProfile>) => void
 }
 
 interface AvatarFormValues {
@@ -56,7 +56,7 @@ const AvatarEditable = ({ profile, profileSaveStart }: AvatarEditable) => {
   const imgURL = AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
 
   const submitForm = async (values: FormikValues) => {
-    const profileMe = values as Partial<RedProfile>
+    const profileMe = values as Partial<TpJobseekerProfile>
     profileSaveStart({ ...profileMe, id: profile.id })
   }
 
@@ -130,7 +130,7 @@ const AvatarEditable = ({ profile, profileSaveStart }: AvatarEditable) => {
   )
 }
 
-Avatar.Some = (profile: RedProfile) => <Avatar profile={profile} />
+Avatar.Some = (profile: TpJobseekerProfile) => <Avatar profile={profile} />
 Avatar.Editable = AvatarEditable
 
 export default Avatar

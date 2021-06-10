@@ -10,7 +10,7 @@ import './Editable.scss'
 interface Props {
   isEditing: boolean
   setIsEditing: (boolean) => void
-  title: string
+  title?: string
   readComponent: React.ReactNode
   modalTitle: string
   modalHeadline: string
@@ -30,20 +30,30 @@ export function Editable({
 }: Props) {
   return (
     <div className="profile-section">
-      <div className="profile-section--title is-flex is-flex-direction-row">
-        <Element
-          renderAs="h4"
-          textSize={4}
-          responsive={{ mobile: { textSize: { value: 7 } } }}
-          className="is-flex-grow-1"
-          style={{ flexGrow: 1 }}
-        >
-          {title}
-        </Element>
-        <div className="icon__button" onClick={() => setIsEditing(true)}>
-          <Icon icon="edit" />
+      {title ? (
+        <div className="profile-section--title is-flex is-flex-direction-row">
+          <Element
+            renderAs="h4"
+            textSize={4}
+            responsive={{ mobile: { textSize: { value: 7 } } }}
+            className="is-flex-grow-1"
+            style={{ flexGrow: 1 }}
+          >
+            {title}
+          </Element>
+          <div className="icon__button" onClick={() => setIsEditing(true)}>
+            <Icon icon="edit" />
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="is-flex is-flex-direction-row">
+          <span style={{ flexGrow: 1 }}>&nbsp;</span>
+          <div className="icon__button" onClick={() => setIsEditing(true)}>
+            <Icon icon="edit" />
+          </div>
+        </div>
+      )}
+
       <div className="profile-section--body">{readComponent}</div>
       <Modal
         title=""

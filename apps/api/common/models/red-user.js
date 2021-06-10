@@ -105,6 +105,7 @@ module.exports = function (RedUser) {
     const redUser = redUserInst.toJSON()
 
     if (redUser.tpJobseekerProfile) return next()
+    if (!redUser.redProfile) return next()
 
     const redProfile = redUser.redProfile
 

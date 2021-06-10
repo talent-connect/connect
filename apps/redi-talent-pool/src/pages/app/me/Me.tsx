@@ -1,11 +1,16 @@
-import { Button } from '@talent-connect/shared-atomic-design-components'
+import {
+  Button,
+  Heading,
+} from '@talent-connect/shared-atomic-design-components'
 import classnames from 'classnames'
 import React from 'react'
 import { Columns, Element } from 'react-bulma-components'
+import Avatar from '../../../components/organisms/Avatar'
 import { EditableEducation } from '../../../components/organisms/EditableEducation'
 import { EditableImportantDetails } from '../../../components/organisms/EditableImportantDetails'
 import { EditableLanguages } from '../../../components/organisms/EditableLanguages'
 import { EditableLinks } from '../../../components/organisms/EditableLinks'
+import { EditableNamePhotoLocation } from '../../../components/organisms/EditableNamePhotoLocation'
 import { EditableOverview } from '../../../components/organisms/EditableOverview'
 import { EditableProfessionalExperience } from '../../../components/organisms/EditableProfessionalExperience'
 import { EditableSummary } from '../../../components/organisms/EditableSummary'
@@ -33,6 +38,7 @@ function Me() {
     <LoggedIn>
       <Columns breakpoint="mobile" className="is-6 is-variable">
         <Columns.Column size="three-fifths">
+          <EditableNamePhotoLocation />
           <EditableOverview />
           <EditableSummary />
           <EditableProfessionalExperience />

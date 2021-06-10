@@ -27,6 +27,7 @@ import { ReactComponent as Instagram } from '../../assets/images/instagram.svg'
 import { ReactComponent as Meetup } from '../../assets/images/meetup.svg'
 import { ReactComponent as Fb } from '../../assets/images/fb.svg'
 import { ReactComponent as Loader } from '../../assets/images/loader.svg'
+import { ReactComponent as MapPin } from '../../assets/images/map-pin.svg'
 
 import './Icon.scss'
 
@@ -59,6 +60,7 @@ interface IconProps {
     | 'instagram'
     | 'fb'
     | 'loader'
+    | 'mapPin'
   size?: 'small' | 'medium' | 'large' | 'x-large'
   space?: 'left' | 'right'
   className?: string
@@ -94,6 +96,7 @@ const Icons = {
   fb: Fb,
   linkedin: Linkedin,
   loader: Loader,
+  mapPin: MapPin,
 }
 
 const Icon = ({
