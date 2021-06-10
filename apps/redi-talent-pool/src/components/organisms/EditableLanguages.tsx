@@ -88,20 +88,7 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
   const { data: profile } = useTpjobseekerprofileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
   const initialValues: FormSchema = {
-    workingLanguages: profile.workingLanguages ?? [
-      {
-        language: 'Norwegian',
-        proficiencyLevelId: 'nativeOrBilingualProficiency',
-      },
-      {
-        language: 'English',
-        proficiencyLevelId: 'nativeOrBilingualProficiency',
-      },
-      {
-        language: 'Spanish',
-        proficiencyLevelId: 'limitedWorkingProficiency',
-      },
-    ],
+    workingLanguages: profile.workingLanguages ?? [],
     selectedLanguage: '',
     selectedProficiencyLevel: '',
   }
