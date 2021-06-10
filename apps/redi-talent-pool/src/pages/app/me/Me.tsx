@@ -36,19 +36,27 @@ function Me() {
 
   return (
     <LoggedIn>
-      <Columns breakpoint="mobile" className="is-6 is-variable">
-        <Columns.Column size="three-fifths">
+      <Columns className="is-6 is-variable">
+        <Columns.Column size={{ tablet: 'three-fifths', mobile: 12 }}>
+          <div className="is-hidden-tablet">
+            <div style={{ textAlign: 'right', marginBottom: '1.5rem' }}>
+              <Button disabled>Send profile to review</Button>
+            </div>
+            <OnboardingSteps />
+          </div>
           <EditableNamePhotoLocation />
           <EditableOverview />
           <EditableSummary />
           <EditableProfessionalExperience />
           <EditableEducation />
         </Columns.Column>
-        <Columns.Column size="two-fifths">
-          <div style={{ textAlign: 'right', marginBottom: '1.5rem' }}>
-            <Button disabled>Send profile to review</Button>
+        <Columns.Column size={{ tablet: 'two-fifths', mobile: 12 }}>
+          <div className="is-hidden-mobile">
+            <div style={{ textAlign: 'right', marginBottom: '1.5rem' }}>
+              <Button disabled>Send profile to review</Button>
+            </div>
+            <OnboardingSteps />
           </div>
-          <OnboardingSteps />
           <EditableImportantDetails />
           <EditableLanguages />
           <EditableLinks />
