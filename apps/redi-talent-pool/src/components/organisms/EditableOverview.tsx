@@ -41,7 +41,7 @@ export function EditableOverview() {
         <>
           <Caption>Desired positions</Caption>
           <Tag.Group>
-            {profile?.desiredPositions.map((pos) => (
+            {profile?.desiredPositions?.map((pos) => (
               <Tag key={pos}>{desiredPositionsIdToLabelMap[pos]}</Tag>
             ))}
           </Tag.Group>

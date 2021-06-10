@@ -157,7 +157,7 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
     [formik]
   )
 
-  const workingLanguageIds = formik.values.workingLanguages.map(
+  const workingLanguageIds = formik?.values?.workingLanguages?.map(
     ({ language }) => language
   )
 
