@@ -1120,6 +1120,128 @@ const RedMentoringSessionEdit = (props) => (
   </Edit>
 )
 
+const TpJobseekerProfileList = (props) => {
+  return (
+    <List
+      {...props}
+      filters={<TpJobseekerProfileListFilters />}
+      pagination={<AllModelsPagination />}
+    >
+      <Datagrid expand={<TpJobseekerProfileListExpandPane />}>
+        <TextField source="firstName" />
+        <TextField source="lastName" />
+        <FunctionField
+          source="state"
+          label="User state"
+          render={tpProfileStateToEmoji}
+        />
+        <RecordCreatedAt />
+        <ShowButton />
+        <EditButton />
+      </Datagrid>
+    </List>
+  )
+}
+
+const TpJobseekerProfileListExpandPane = (props) => {
+  return (
+    <Show {...props} title="">
+      <SimpleShowLayout>
+        <TextField source="contactEmail" />
+        <RecordCreatedAt />
+        <RecordUpdatedAt />
+      </SimpleShowLayout>
+    </Show>
+  )
+}
+
+const TpJobseekerProfileListFilters = (props) => (
+  <Filter {...props}>
+    <TextInput label="Search by name" source="q" />
+    <SelectInput
+      source="categories"
+      choices={categoriesFlat.map(({ id, label }) => ({ id, name: label }))}
+    />
+    <SelectInput
+      source="state"
+      choices={[
+        { id: 'drafting-profile', name: 'Drafing profile' },
+        { id: 'submitted-for-review', name: 'Submitted for review' },
+        {
+          id: 'profile-approved',
+          name: 'Profile approved',
+        },
+      ]}
+    />
+  </Filter>
+)
+function tpProfileStateToEmoji({ state }) {
+  const emoji = {
+    'drafting-profile': 'Drafing profile',
+    'submitted-for-reviw': 'Submitted for review',
+    'profile-approved': 'Profile approved',
+  }[state]
+  return emoji ?? userType
+}
+
+const TpJobseekerProfileShow = (props) => (
+  <Show {...props}>
+    <SimpleShowLayout>
+      <TabbedShowLayout>
+        <Tab label="Profile">
+          <TextField source="state" />
+          <Avatar />
+          <TextField source="firstName" />
+          <TextField source="lastName" />
+          <ArrayField source="workingLanguages">
+            <LanguageList />
+          </ArrayField>
+
+          <TextField source="currentlyEnrolledInCourse" />
+          {/* <ArrayField source="desiredPositions" /> */}
+          <TextField source="profileImage" />
+          <TextField source="phoneNumber" />
+          <TextField source="location" />
+          <TextField source="personalWebsite" />
+          <TextField source="githubUrl" />
+          <TextField source="linkedInUrl" />
+          <TextField source="twitterUrl" />
+          <TextField source="behanceUrl" />
+          <TextField source="stackOverflowUrl" />
+          <TextField source="dribbbleUrl" />
+          {/* <ArrayField source="workingLanguages" /> */}
+          <TextField source="yearsOfRelevantExperience" />
+          {/* <ArrayField source="desiredEmploymentType" /> */}
+          <TextField source="availability" />
+          <DateField source="ifAvailabilityIsDate_date" />
+          <TextField source="aboutYourself" />
+          {/* <ArrayField source="topSkills" /> */}
+          {/* <ArrayField source="experience" /> */}
+          {/* <ArrayField source="education" /> */}
+          {/* <ArrayField source="projects" /> */}
+          <TextField source="hrSummit2021JobFairCompanyJobPreferences" />
+          <h4>Record information</h4>
+          <RecordCreatedAt />
+          <RecordUpdatedAt />
+          <DateField
+            showTime
+            source="lastLoginDateTime"
+            label="Last Login"
+            {...props}
+            sortable={false}
+          />
+        </Tab>
+        <Tab label="Internal comments">
+          <TextField
+            source="administratorInternalComment"
+            style={{ whiteSpace: 'pre-wrap' }}
+          />
+        </Tab>
+      </TabbedShowLayout>
+    </SimpleShowLayout>
+  </Show>
+)
+
 const buildDataProvider = (normalDataProvider) => (verb, resource, params) => {
   if (verb === 'GET_LIST' && resource === 'redProfiles') {
     if (params.filter) {
@@ -1170,6 +1292,11 @@ function App() {
           list={RedMentoringSessionList}
           create={RedMentoringSessionCreate}
           edit={RedMentoringSessionEdit}
+        />
+        <Resource
+          name="tpJobseekerProfiles"
+          show={TpJobseekerProfileShow}
+          list={TpJobseekerProfileList}
         />
       </Admin>
     </div>

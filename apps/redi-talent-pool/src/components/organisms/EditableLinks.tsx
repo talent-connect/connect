@@ -32,7 +32,7 @@ export function EditableLinks() {
     profile?.dribbbleUrl,
   ]
 
-  const isEmpty = !links.every((p) => p)
+  const isEmpty = !links.some((p) => p)
 
   return (
     <Editable

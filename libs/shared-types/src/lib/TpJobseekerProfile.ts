@@ -39,11 +39,14 @@ export type TpJobseekerProfile = {
   createdAt: Date
   updatedAt: Date
   gaveGdprConsentAt: Date
+
+  hrSummit2021JobFairCompanyJobPreferences?: string
 }
 
-interface LanguageRecord {
-  language: Language
-  proficiencyLevelId: string
+export interface LanguageRecord {
+  uuid: string
+  language?: Language
+  proficiencyLevelId?: string
 }
 
 export interface ExperienceRecord {

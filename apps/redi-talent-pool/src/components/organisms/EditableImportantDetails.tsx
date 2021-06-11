@@ -4,6 +4,7 @@ import {
   FormDatePicker,
   FormInput,
   FormSelect,
+  FormTextArea,
   PipeList,
 } from '@talent-connect/shared-atomic-design-components'
 import { TpJobseekerProfile } from '@talent-connect/shared-types'
@@ -126,6 +127,8 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
     ifAvailabilityIsDate_date: profile?.ifAvailabilityIsDate_date
       ? new Date(profile.ifAvailabilityIsDate_date)
       : null,
+    hrSummit2021JobFairCompanyJobPreferences:
+      profile?.hrSummit2021JobFairCompanyJobPreferences ?? '',
   }
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
     formik.setSubmitting(true)
@@ -194,6 +197,16 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
           {...formik}
         />
       ) : null}
+      <FormTextArea
+        label="Company/job position preferences job fair 2021 (please give us your 1st,
+      2nd & 3rd priority"
+        name="hrSummit2021JobFairCompanyJobPreferences"
+        rows={4}
+        placeholder="If you could pick, which companies or jobs would you be most interested in learning more about during the Job Fair?"
+        help
+        {...formik}
+      />
+
       <Button
         disabled={!formik.isValid || mutation.isLoading}
         onClick={formik.submitForm}

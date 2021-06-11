@@ -1,7 +1,7 @@
 'use strict'
 const path = require('path')
 const res = require('dotenv').config({
-  path: path.resolve(process.cwd(), '.env.' + process.env.NODE_ENV),
+  path: path.resolve(__dirname, '..', '.env.' + process.env.NODE_ENV),
 })
 
 var loopback = require('loopback')
@@ -12,17 +12,6 @@ var https = require('https')
 var sslConfig = require('./ssl-config')
 
 var app = (module.exports = loopback())
-/*
-var bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({ extended: true }));
-*/
-require('../lib/email/email')
-require('../lib/email/tp-email')
-
-console.log(process.env)
-console.log(process.env)
-console.log(process.env)
-console.log(process.env)
 
 app.start = function () {
   // start the web server

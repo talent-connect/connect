@@ -263,6 +263,7 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
                   )}
                 </Draggable>
               ))}
+              {provided.placeholder}
             </div>
           )}
         </Droppable>

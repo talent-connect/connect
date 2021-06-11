@@ -47,6 +47,7 @@ const Button = ({
             [`${className}`]: className,
           }
         )}
+        style={style}
       >
         {children}
       </button>

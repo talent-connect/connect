@@ -14,11 +14,8 @@
             >your email address was successfully verified.</mj-text
           >
           <mj-text mj-class="text"
-            >Now, we would like to get to know you a little better. Please
-            schedule a time for a meeting with me here:
-            <a href="https://calendly.com/paulina-redi/getting-to-know-you"
-              >Getting-to-know-you</a
-            >
+            >Now, it's time to log into Talent Pool and work on your profile.
+            Once it's complete, you will be able to send it to me for review.
           </mj-text>
           <mj-text mj-class="text" padding="20px 0 30px 0"
             >I am excited to get to know you soon!</mj-text

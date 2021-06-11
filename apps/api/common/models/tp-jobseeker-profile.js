@@ -6,12 +6,7 @@ const { of } = Rx
 const { switchMap, map } = require('rxjs/operators')
 
 const app = require('../../server/server')
-const {
-  sendMentorPendingReviewAcceptedEmail,
-  sendMenteePendingReviewAcceptedEmail,
-  sendPendingReviewDeclinedEmail,
-  sendVerificationEmail,
-} = require('../../lib/email/email')
+const { sendTpJobseekerVerificationEmail } = require('../../lib/email/tp-email')
 
 const addFullNamePropertyForAdminSearch = (ctx) => {
   let thingToUpdate

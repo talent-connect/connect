@@ -22,12 +22,34 @@ import { ReactComponent as CheckmarkBorderOnlyImage } from './checkmark-border-o
 import { ReactComponent as CheckmarkImage } from './checkmark.svg'
 import './Me.scss'
 
+import { Tooltip } from '@material-ui/core'
+
 const steps = [
   { number: 1, label: 'Complete your profile' },
   { number: 2, label: 'Send profile to ReDI' },
   { number: 3, label: 'Profile approval' },
   { number: 4, label: 'Interview match' },
 ]
+
+function SendProfileForReviewButton() {
+  const { data: profile } = useTpjobseekerprofileQuery()
+
+  const disabled = true
+
+  if (disabled) {
+    return (
+      <Tooltip title="You need to complete your profile before you can send it for review">
+        <span>
+          <Button disabled style={{ pointerEvents: 'none' }}>
+            Send profile to review
+          </Button>
+        </span>
+      </Tooltip>
+    )
+  } else {
+    return <Button>Send profile to review</Button>
+  }
+}
 
 function Me() {
   const { data: profile } = useTpjobseekerprofileQuery()
@@ -37,10 +59,10 @@ function Me() {
   return (
     <LoggedIn>
       <Columns className="is-6 is-variable">
-        <Columns.Column size={{ tablet: 'three-fifths', mobile: 12 }}>
+        <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'three-fifths' }}>
           <div className="is-hidden-tablet">
             <div style={{ textAlign: 'right', marginBottom: '1.5rem' }}>
-              <Button disabled>Send profile to review</Button>
+              <SendProfileForReviewButton />
             </div>
             <OnboardingSteps />
           </div>
@@ -50,10 +72,10 @@ function Me() {
           <EditableProfessionalExperience />
           <EditableEducation />
         </Columns.Column>
-        <Columns.Column size={{ tablet: 'two-fifths', mobile: 12 }}>
+        <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'two-fifths' }}>
           <div className="is-hidden-mobile">
             <div style={{ textAlign: 'right', marginBottom: '1.5rem' }}>
-              <Button disabled>Send profile to review</Button>
+              <SendProfileForReviewButton />
             </div>
             <OnboardingSteps />
           </div>

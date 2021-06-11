@@ -1,31 +1,27 @@
 import {
   Button,
-  Caption,
-  FaqItem,
   FormDraggableAccordion,
-  FormInput,
   FormSelect,
-  FormTextArea,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
-import { TpJobseekerProfile } from '@talent-connect/shared-types'
+import { Languages } from '@talent-connect/shared-config'
 import {
-  desiredPositions,
+  LanguageRecord,
+  TpJobseekerProfile,
+} from '@talent-connect/shared-types'
+import {
   languageProficiencyLevels,
   languageProficiencyLevelsIdToLabelMap,
-  topSkills,
 } from '@talent-connect/talent-pool/config'
-import { CVFormData } from '@talent-connect/talent-pool/types'
 import { useFormik } from 'formik'
-import { values } from 'lodash'
 import React, { useCallback, useState } from 'react'
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Content, Element } from 'react-bulma-components'
+import { v4 as uuidv4 } from 'uuid'
 import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpjobseekerprofileQuery } from '../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../molecules/Editable'
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
-import { Languages } from '@talent-connect/shared-config'
 import { EmptySectionPlaceholder } from '../molecules/EmptySectionPlaceholder'
 
 function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
@@ -75,22 +71,18 @@ export function EditableLanguages() {
   )
 }
 
+// TODO: put this one in config file
+const MAX_LANGUAGES = 6
+
 const validationSchema = Yup.object({
   workingLanguages: Yup.array().min(1).max(6),
 })
 
-interface FormSchema extends Partial<TpJobseekerProfile> {
-  selectedLanguage: string
-  selectedProficiencyLevel: string
-}
-
 function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
   const { data: profile } = useTpjobseekerprofileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
-  const initialValues: FormSchema = {
+  const initialValues: Partial<TpJobseekerProfile> = {
     workingLanguages: profile.workingLanguages ?? [],
-    selectedLanguage: '',
-    selectedProficiencyLevel: '',
   }
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
     formik.setSubmitting(true)
@@ -126,20 +118,11 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
   )
 
   const onAddLanguage = useCallback(() => {
-    const language = (formik.values as FormSchema).selectedLanguage
-    const proficiencyLevel = (formik.values as FormSchema)
-      .selectedProficiencyLevel
-
-    if (!language || !proficiencyLevel) return
-    if (
-      formik.values.workingLanguages.map((l) => l.language).includes(language)
-    )
-      return
-    if (formik.values.workingLanguages.length >= 6) return
-
+    if (formik.values.workingLanguages.length >= MAX_LANGUAGES)
+      return alert('You can have maximum six languages in your profile')
     formik.setFieldValue('workingLanguages', [
       ...formik.values.workingLanguages,
-      { language: language, proficiencyLevelId: proficiencyLevel },
+      buildBlankLanguageRecord(),
     ])
   }, [formik])
 
@@ -153,10 +136,6 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
       )
     },
     [formik]
-  )
-
-  const workingLanguageIds = formik?.values?.workingLanguages?.map(
-    ({ language }) => language
   )
 
   return (
@@ -176,8 +155,8 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
             <div {...provided.droppableProps} ref={provided.innerRef}>
               {formik?.values?.workingLanguages?.map((item, index) => (
                 <Draggable
-                  key={item.language}
-                  draggableId={item.language}
+                  key={item.uuid}
+                  draggableId={item.uuid}
                   index={index}
                 >
                   {(provided, snapshot) => (
@@ -187,15 +166,31 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
                       {...provided.dragHandleProps}
                     >
                       <FormDraggableAccordion
-                        title={item.language}
+                        title={
+                          item.language
+                            ? item.language
+                            : 'Click me to add details'
+                        }
                         onRemove={() => onRemove(item.language)}
                       >
-                        form goes here
+                        <FormSelect
+                          name={`workingLanguages[${index}].language`}
+                          label="Language*"
+                          items={formLanguages}
+                          {...formik}
+                        />
+                        <FormSelect
+                          name={`workingLanguages[${index}].proficiencyLevelId`}
+                          label="Level of proficiency*"
+                          items={formLanguageProficiencyLevels}
+                          {...formik}
+                        />
                       </FormDraggableAccordion>
                     </div>
                   )}
                 </Draggable>
               ))}
+              {provided.placeholder}
             </div>
           )}
         </Droppable>
@@ -203,21 +198,6 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
 
       <div style={{ height: '30px' }} />
 
-      <FormSelect
-        name="selectedLanguage"
-        label="Language*"
-        items={formLanguages.filter(
-          ({ value }) => !workingLanguageIds.includes(value)
-        )}
-        value={(formik.values as FormSchema).selectedLanguage}
-        {...formik}
-      />
-      <FormSelect
-        name="selectedProficiencyLevel"
-        label="Level of proficiency*"
-        items={formLanguageProficiencyLevels}
-        {...formik}
-      />
       <div
         style={{
           display: 'flex',
@@ -256,3 +236,11 @@ const formLanguageProficiencyLevels = languageProficiencyLevels.map(
     label,
   })
 )
+
+function buildBlankLanguageRecord(): LanguageRecord {
+  return {
+    uuid: uuidv4(),
+    language: '',
+    proficiencyLevelId: '',
+  }
+}

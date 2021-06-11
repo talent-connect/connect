@@ -7,6 +7,10 @@ const {
   sendMentorRequestAppointmentEmail,
 } = require('../../lib/email/email')
 
+const {
+  sendTpJobseekerEmailVerificationSuccessfulEmail,
+} = require('../../lib/email/tp-email')
+
 module.exports = function (RedUser) {
   RedUser.observe('before save', function updateTimestamp(ctx, next) {
     if (ctx.instance) {
@@ -20,31 +24,43 @@ module.exports = function (RedUser) {
 
   RedUser.afterRemote('confirm', async function (ctx, inst, next) {
     const redUserInst = await RedUser.findById(ctx.args.uid, {
-      include: 'redProfile',
+      include: ['redProfile', 'tpJobseekerProfile'],
     })
     const redUser = redUserInst.toJSON()
 
-    const userType = redUser.redProfile.userType
+    const userSignedUpWithCon = !!redUser.redProfile
+    const userSignedUpWithTp = !!redUser.tpJobseekerProfile
 
-    switch (userType) {
-      case 'public-sign-up-mentee-pending-review':
-        await sendMenteeRequestAppointmentEmail({
-          recipient: redUser.email,
-          firstName: redUser.redProfile.firstName,
-          rediLocation: redUser.redProfile.rediLocation,
-        }).toPromise()
-        return
+    if (userSignedUpWithCon) {
+      const userType = redUser.redProfile.userType
 
-      case 'public-sign-up-mentor-pending-review':
-        await sendMentorRequestAppointmentEmail({
-          recipient: redUser.email,
-          firstName: redUser.redProfile.firstName,
-          rediLocation: redUser.redProfile.rediLocation,
-        }).toPromise()
-        return
+      switch (userType) {
+        case 'public-sign-up-mentee-pending-review':
+          await sendMenteeRequestAppointmentEmail({
+            recipient: redUser.email,
+            firstName: redUser.redProfile.firstName,
+            rediLocation: redUser.redProfile.rediLocation,
+          }).toPromise()
+          return
 
-      default:
-        throw new Error('Invalid user type')
+        case 'public-sign-up-mentor-pending-review':
+          await sendMentorRequestAppointmentEmail({
+            recipient: redUser.email,
+            firstName: redUser.redProfile.firstName,
+            rediLocation: redUser.redProfile.rediLocation,
+          }).toPromise()
+          return
+
+        default:
+          throw new Error('Invalid user type')
+      }
+    }
+
+    if (userSignedUpWithTp) {
+      await sendTpJobseekerEmailVerificationSuccessfulEmail({
+        recipient: redUser.email,
+        firstName: redUser.tpJobseekerProfile.firstName,
+      }).toPromise()
     }
   })
 

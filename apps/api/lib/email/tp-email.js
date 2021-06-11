@@ -70,11 +70,11 @@ const sendMjmlEmailFactory = ({ to, subject, html }) => {
 }
 
 const sendResetPasswordEmailTemplate = fs.readFileSync(
-  path.resolve(__dirname, 'templates', 'reset-password.mjml'),
+  path.resolve(__dirname, 'tp-templates', 'reset-password.mjml'),
   'utf-8'
 )
 const sendResetPasswordEmailParsed = mjml2html(sendResetPasswordEmailTemplate, {
-  filePath: path.resolve(__dirname, 'templates'),
+  filePath: path.resolve(__dirname, 'tp-templates'),
 })
 
 const sendResetPasswordEmail = ({
@@ -104,7 +104,7 @@ const convertTemplateToHtml = (rediLocation, templateString) => {
   const convertTemplate = fs.readFileSync(
     path.resolve(
       __dirname,
-      'templates',
+      'tp-templates',
       `${templateString}${
         rediLocation ? `.${rediLocation.toLowerCase()}` : ''
       }.mjml`
@@ -128,7 +128,7 @@ const sendTpJobseekerVerificationEmail = ({
   const verificationSuccessPageUrl = `${buildTpFrontendUrl(
     process.env.NODE_ENV,
     rediLocation
-  )}/front/signup-complete/${signupType}`
+  )}/front/signup-complete/jobseeker`
   const verificationUrl = `${buildBackendUrl(
     process.env.NODE_ENV
   )}/api/redUsers/confirm?uid=${redUserId}&token=${verificationToken}&redirect=${encodeURI(
@@ -151,7 +151,6 @@ const sendTpJobseekerVerificationEmail = ({
 const sendTpJobseekerEmailVerificationSuccessfulEmail = ({
   recipient,
   firstName,
-  rediLocation,
 }) => {
   const sendTpJobseekerEmailVerificationSuccessfulEmailParsed = convertTemplateToHtml(
     null,
