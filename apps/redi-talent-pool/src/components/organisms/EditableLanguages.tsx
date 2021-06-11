@@ -98,7 +98,6 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
   const formik = useFormik({
     initialValues,
     validationSchema,
-    enableReinitialize: true,
     onSubmit,
     validateOnMount: true,
   })
