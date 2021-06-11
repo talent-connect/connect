@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 import { Heading } from '../atoms'
 import { Box, Modal as BulmaModal } from 'react-bulma-components'
 import './Modal.scss'
@@ -15,13 +15,26 @@ interface Props {
 const Modal = ({ title, children, stateFn, show, confirm, styles }: Props) => {
   const setShowModal = stateFn ? () => stateFn(false) : undefined
 
+  const [internalShow, setInternalShow] = useState(false)
+
   useEffect(() => {
-    document.body.classList.toggle('modal-open', show)
+    if (show) {
+      document.body.style.top = `-${window.scrollY}px`
+      document.body.style.position = 'fixed'
+    } else {
+      const scrollY = document.body.style.top
+      document.body.style.position = ''
+      document.body.style.top = ''
+      window.scrollTo(0, parseInt(scrollY || '0') * -1)
+    }
+    setInternalShow(show)
+
+    // document.body.classList.toggle('modal-open', show)
   }, [show])
 
   return (
     <BulmaModal
-      show={show}
+      show={internalShow}
       onClose={setShowModal}
       showClose={false}
       closeOnEsc={!confirm}
@@ -36,7 +49,6 @@ const Modal = ({ title, children, stateFn, show, confirm, styles }: Props) => {
         ) : (
           !confirm && <CloseButton onClick={setShowModal} />
         )}
-
         {children}
       </BulmaModal.Card>
     </BulmaModal>
