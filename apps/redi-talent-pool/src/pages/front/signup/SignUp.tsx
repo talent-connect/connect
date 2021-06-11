@@ -20,11 +20,16 @@ import { signUp } from '../../../services/api/api'
 import { history } from '../../../services/history/history'
 
 // TODO: replace with proper dropdown
-const coursesWithAlumniDeduped = courses.filter((c) => {
-  if (!c.id.includes('alumni')) return true
-  if (c.location !== 'berlin') return false
-  else return true
-})
+const coursesWithAlumniDeduped = [
+  ...courses.filter((c) => {
+    return !c.id.includes('alumni')
+  }),
+  {
+    id: 'alumni',
+    label: `I'm a ReDI School alumni (I took a course before)`,
+    location: 'berlin',
+  },
+]
 
 const formCourses = coursesWithAlumniDeduped.map((course) => {
   const label =
