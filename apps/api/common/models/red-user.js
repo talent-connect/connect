@@ -2,13 +2,13 @@
 
 const {
   sendResetPasswordEmail,
-  sendVerificationEmail,
   sendMenteeRequestAppointmentEmail,
   sendMentorRequestAppointmentEmail,
 } = require('../../lib/email/email')
 
 const {
   sendTpJobseekerEmailVerificationSuccessfulEmail,
+  sendTpResetPasswordEmail,
 } = require('../../lib/email/tp-email')
 
 module.exports = function (RedUser) {
@@ -65,11 +65,12 @@ module.exports = function (RedUser) {
   })
 
   RedUser.requestResetPasswordEmail = function (body, cb) {
-    console.log('i am actually working...')
     const email = body.email
+    const redproduct = body.redproduct
     RedUser.resetPassword(
       {
-        email: email,
+        email,
+        redproduct,
       },
       function (err) {
         if (err) return cb(err)
@@ -86,14 +87,23 @@ module.exports = function (RedUser) {
   RedUser.on('resetPasswordRequest', function (info) {
     const accessToken = encodeURIComponent(JSON.stringify(info.accessToken))
     const email = info.user.email
+    const redproduct = info.options.redproduct
     info.user.redProfile(function getRedProfile(err, redProfileInst) {
       const { rediLocation, firstName } = redProfileInst.toJSON()
-      sendResetPasswordEmail({
-        recipient: email,
-        firstName,
-        accessToken,
-        rediLocation,
-      }).subscribe()
+      if (redproduct === 'CON') {
+        sendResetPasswordEmail({
+          recipient: email,
+          firstName,
+          accessToken,
+          rediLocation,
+        }).subscribe()
+      } else if (redproduct === 'TP') {
+        sendTpResetPasswordEmail({
+          recipient: email,
+          firstName,
+          accessToken,
+        }).subscribe()
+      }
     })
   })
 

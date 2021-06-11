@@ -69,15 +69,18 @@ const sendMjmlEmailFactory = ({ to, subject, html }) => {
   })
 }
 
-const sendResetPasswordEmailTemplate = fs.readFileSync(
+const sendTpResetPasswordEmailTemplate = fs.readFileSync(
   path.resolve(__dirname, 'tp-templates', 'reset-password.mjml'),
   'utf-8'
 )
-const sendResetPasswordEmailParsed = mjml2html(sendResetPasswordEmailTemplate, {
-  filePath: path.resolve(__dirname, 'tp-templates'),
-})
+const sendTpResetPasswordEmailParsed = mjml2html(
+  sendTpResetPasswordEmailTemplate,
+  {
+    filePath: path.resolve(__dirname, 'tp-templates'),
+  }
+)
 
-const sendResetPasswordEmail = ({
+const sendTpResetPasswordEmail = ({
   recipient,
   firstName,
   accessToken,
@@ -88,14 +91,14 @@ const sendResetPasswordEmail = ({
     rediLocation
   )}/front/reset-password/set-new-password/${accessToken}`
   const rediEmailAdress = 'career@redi-school.org'
-  const html = sendResetPasswordEmailParsed.html
+  const html = sendTpResetPasswordEmailParsed.html
     .replace(/\${firstName}/g, firstName)
     .replace(/\${resetPasswordUrl}/g, resetPasswordUrl)
     .replace(/\${rediEmailAdress}/g, rediEmailAdress)
     .replace(/\${emailAdress}/g, recipient)
   return sendMjmlEmailFactory({
     to: recipient,
-    subject: 'Password Reset for ReDI Connect',
+    subject: 'Password Reset for ReDI Talent Pool',
     html: html,
   })
 }
@@ -168,7 +171,7 @@ const sendTpJobseekerEmailVerificationSuccessfulEmail = ({
 }
 
 module.exports = {
-  sendResetPasswordEmail,
+  sendTpResetPasswordEmail,
   sendTpJobseekerVerificationEmail,
   sendTpJobseekerEmailVerificationSuccessfulEmail,
 }

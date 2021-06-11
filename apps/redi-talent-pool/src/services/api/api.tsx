@@ -62,7 +62,7 @@ export const logout = () => {
 export const requestResetPasswordEmail = async (email: string) => {
   await axios(`${API_URL}/redUsers/requestResetPasswordEmail`, {
     method: 'post',
-    data: { email },
+    data: { email, redproduct: 'TP' },
   })
 }
 
