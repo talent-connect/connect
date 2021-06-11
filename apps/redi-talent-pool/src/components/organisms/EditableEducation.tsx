@@ -140,6 +140,7 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
       ...formik.values.education,
       buildBlankEducationRecord(),
     ])
+
     closeAllAccordionsSignalSubject.current.next()
   }, [formik])
 

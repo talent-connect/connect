@@ -14,7 +14,8 @@ import {
   languageProficiencyLevelsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
-import React, { useCallback, useState } from 'react'
+import { Subject } from 'rxjs'
+import React, { useCallback, useState, useRef } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Content, Element } from 'react-bulma-components'
 import { v4 as uuidv4 } from 'uuid'
@@ -81,6 +82,9 @@ const validationSchema = Yup.object({
 function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
   const { data: profile } = useTpjobseekerprofileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
+
+  const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
+
   const initialValues: Partial<TpJobseekerProfile> = {
     workingLanguages: profile.workingLanguages ?? [buildBlankLanguageRecord()],
   }
@@ -124,6 +128,8 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
       ...formik.values.workingLanguages,
       buildBlankLanguageRecord(),
     ])
+
+    closeAllAccordionsSignalSubject.current.next()
   }, [formik])
 
   const onRemove = useCallback(
@@ -172,6 +178,9 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
                             : 'Click me to add details'
                         }
                         onRemove={() => onRemove(item.language)}
+                        closeAccordionSignalSubject={
+                          closeAllAccordionsSignalSubject.current
+                        }
                       >
                         <FormSelect
                           name={`workingLanguages[${index}].language`}
