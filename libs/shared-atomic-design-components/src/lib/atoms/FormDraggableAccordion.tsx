@@ -1,8 +1,9 @@
 import classnames from 'clsx'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Columns, Element } from 'react-bulma-components'
 import { Icon } from '../atoms'
 import './FormDraggableAccordion.scss'
+import { Subject } from 'rxjs'
 
 import { ReactComponent as AccordionHandleIcon } from '../../assets/images/accordion-handle.svg'
 
@@ -11,6 +12,7 @@ interface Props {
   children: React.ReactNode
   initialOpen?: boolean
   onRemove?: () => void
+  closeAccordionSignalSubject?: Subject<void>
 }
 
 function FormDraggableAccordion({
@@ -18,8 +20,18 @@ function FormDraggableAccordion({
   children,
   onRemove = null,
   initialOpen = false,
+  closeAccordionSignalSubject = null,
 }: Props) {
   const [showAnswer, setShowAnswer] = useState(initialOpen)
+
+  useEffect(() => {
+    const sub = closeAccordionSignalSubject?.subscribe(() =>
+      setShowAnswer(false)
+    )
+
+    return () => sub?.unsubscribe()
+  })
+
   return (
     <div className="form-draggable-accordion">
       <Columns

@@ -16,10 +16,11 @@ import {
 import { formMonthsOptions } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
 import moment from 'moment'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Columns, Content, Element } from 'react-bulma-components'
 import ReactMarkdown from 'react-markdown'
+import { Subject } from 'rxjs'
 import { v4 as uuidv4 } from 'uuid'
 import { useTpjobseekerprofileUpdateMutation } from '../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpjobseekerprofileQuery } from '../../react-query/use-tpjobseekerprofile-query'
@@ -54,7 +55,7 @@ export function EditableProfessionalExperience() {
           />
         ) : (
           profile?.experience?.map((item) => (
-            <div style={{ marginBottom: '2.2rem' }}>
+            <div style={{ marginBottom: '2.8rem' }}>
               <div
                 style={{
                   display: 'flex',
@@ -64,27 +65,26 @@ export function EditableProfessionalExperience() {
               >
                 <Caption>{item?.title}</Caption>
                 <span style={{ color: '#979797' }}>
-                  {moment()
-                    .month(item.startDateMonth)
-                    .year(item.startDateYear)
-                    .format('MMMM YYYY')}{' '}
-                  -{' '}
+                  {formatDate(item.startDateMonth, item.startDateYear)} -{' '}
                   {item.current
                     ? 'Present'
-                    : moment()
-                        .month(item.endDateMonth)
-                        .year(item.endDateYear)
-                        .format('MMMM YYYY')}
+                    : formatDate(item.endDateMonth, item.endDateYear)}
                 </span>
               </div>
-              <Content>
+              <Content style={{ marginTop: '-0.5rem' }}>
                 {item.company ? (
                   <p style={{ color: '#979797' }}>{item.company}</p>
                 ) : null}
                 {item.description ? (
-                  <p>
-                    <ReactMarkdown>{item.description}</ReactMarkdown>
-                  </p>
+                  <ReactMarkdown
+                    components={{
+                      p: ({ children }) => (
+                        <p style={{ marginBottom: '0' }}>{children}</p>
+                      ),
+                    }}
+                  >
+                    {item.description.replace(/\n/g, `\n\n`)}
+                  </ReactMarkdown>
                 ) : null}
               </Content>
             </div>
@@ -99,9 +99,18 @@ export function EditableProfessionalExperience() {
   )
 }
 
+function formatDate(month?: number, year?: number): string {
+  if (year && !month) return String(year)
+  if (year && month) return moment().month(month).year(year).format('MMMM YYYY')
+  if (!year && month) return moment().month(month).format('MMMM')
+  return ''
+}
+
 function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
   const { data: profile } = useTpjobseekerprofileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
+
+  const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
 
   const initialValues: Partial<TpJobseekerProfile> = {
     experience: profile?.experience ?? [buildBlankExperienceRecord()],
@@ -128,6 +137,7 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
       ...formik.values.experience,
       buildBlankExperienceRecord(),
     ])
+    closeAllAccordionsSignalSubject.current.next()
   }, [formik])
 
   const onDragEnd = useCallback(
@@ -186,6 +196,9 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
                           item.title ? item.title : 'Click me to add details'
                         }
                         onRemove={() => onRemove(item.uuid)}
+                        closeAccordionSignalSubject={
+                          closeAllAccordionsSignalSubject.current
+                        }
                       >
                         <FormInput
                           name={`experience[${index}].title`}

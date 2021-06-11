@@ -32,7 +32,7 @@ export function EditableNamePhotoLocation() {
       setIsEditing={setIsEditing}
       readComponent={
         <Columns vCentered breakpoint="mobile" className="oneandhalf-bs">
-          <Columns.Column size={3}>
+          <Columns.Column size={5}>
             {profile ? (
               <Avatar.Editable
                 profile={profile}
@@ -40,8 +40,8 @@ export function EditableNamePhotoLocation() {
               />
             ) : null}
           </Columns.Column>
-          <Columns.Column size={8}>
-            <Heading>
+          <Columns.Column size={7}>
+            <Heading size="medium">
               {profile?.firstName} {profile?.lastName}
             </Heading>
             <div
