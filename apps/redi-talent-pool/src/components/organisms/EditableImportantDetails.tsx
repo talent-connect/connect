@@ -198,7 +198,7 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
       ) : null}
       <FormTextArea
         label="Company/job position preferences job fair 2021 (please give us your 1st,
-      2nd & 3rd priority"
+      2nd & 3rd priority)"
         name="hrSummit2021JobFairCompanyJobPreferences"
         rows={4}
         placeholder="If you could pick, which companies or jobs would you be most interested in learning more about during the Job Fair?"
