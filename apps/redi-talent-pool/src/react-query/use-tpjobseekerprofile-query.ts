@@ -4,6 +4,9 @@ import { fetchCurrentUserTpJobseekerProfile } from '../services/api/api'
 export function useTpjobseekerprofileQuery() {
   return useQuery(
     'currentUserTpJobseekerProfile',
-    fetchCurrentUserTpJobseekerProfile
+    fetchCurrentUserTpJobseekerProfile,
+    {
+      staleTime: 5 * 60 * 1000,
+    }
   )
 }
