@@ -82,7 +82,7 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
   const { data: profile } = useTpjobseekerprofileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
   const initialValues: Partial<TpJobseekerProfile> = {
-    workingLanguages: profile.workingLanguages ?? [],
+    workingLanguages: profile.workingLanguages ?? [buildBlankLanguageRecord()],
   }
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
     formik.setSubmitting(true)

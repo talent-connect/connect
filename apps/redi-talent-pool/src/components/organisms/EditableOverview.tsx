@@ -15,6 +15,7 @@ import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpjobseekerprofileQuery } from '../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../molecules/Editable'
+import { EmptySectionPlaceholder } from '../molecules/EmptySectionPlaceholder'
 
 const formDesiredPositions = desiredPositions.map(({ id, label }) => ({
   value: id,
@@ -32,20 +33,30 @@ export function EditableOverview() {
   const { data: profile } = useTpjobseekerprofileQuery()
   const [isEditing, setIsEditing] = useState(false)
 
+  const isEmpty = !(profile?.desiredPositions?.length > 0)
+
   return (
     <Editable
       isEditing={isEditing}
       setIsEditing={setIsEditing}
       title="Overview"
       readComponent={
-        <>
-          <Caption>Desired positions</Caption>
-          <Tag.Group>
-            {profile?.desiredPositions?.map((pos) => (
-              <Tag key={pos}>{desiredPositionsIdToLabelMap[pos]}</Tag>
-            ))}
-          </Tag.Group>
-        </>
+        isEmpty ? (
+          <EmptySectionPlaceholder
+            height="slim"
+            text="Add your preferred positions"
+            onClick={() => setIsEditing(true)}
+          />
+        ) : (
+          <>
+            <Caption>Desired positions</Caption>
+            <Tag.Group>
+              {profile?.desiredPositions?.map((pos) => (
+                <Tag key={pos}>{desiredPositionsIdToLabelMap[pos]}</Tag>
+              ))}
+            </Tag.Group>
+          </>
+        )
       }
       modalTitle="Interests & About"
       modalHeadline="Overview"

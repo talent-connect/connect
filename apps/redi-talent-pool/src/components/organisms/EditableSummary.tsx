@@ -28,7 +28,7 @@ export function EditableSummary() {
     <Editable
       isEditing={isEditing}
       setIsEditing={setIsEditing}
-      title="Overview"
+      title="Summary"
       readComponent={
         <>
           <Caption>About</Caption>
@@ -77,7 +77,7 @@ const maxChars = 600
 
 const validationSchema = Yup.object({
   topSkills: Yup.array()
-    .min(1, 'Pick at least one top technical skills')
+    .min(1, 'Pick at least one top technical skill')
     .max(5, "Your profile can't contain too many skills - five at most"),
   aboutYourself: Yup.string()
     .min(minChars, 'Write at least 100 characters about yourself.')
