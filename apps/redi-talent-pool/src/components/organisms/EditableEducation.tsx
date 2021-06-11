@@ -125,6 +125,7 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
   const formik = useFormik({
     initialValues,
     onSubmit,
+    validateOnMount: true,
   })
 
   const onClickAddEducation = useCallback(() => {

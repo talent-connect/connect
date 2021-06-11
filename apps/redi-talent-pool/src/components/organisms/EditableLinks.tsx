@@ -1,13 +1,8 @@
 import {
   Button,
-  Caption,
-  FaqItem,
   FormInput,
-  FormSelect,
-  FormTextArea,
 } from '@talent-connect/shared-atomic-design-components'
 import { TpJobseekerProfile } from '@talent-connect/shared-types'
-import { desiredPositions, topSkills } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
 import React, { useState } from 'react'
 import { Content, Element } from 'react-bulma-components'
@@ -104,6 +99,7 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
     validationSchema,
     enableReinitialize: true,
     onSubmit,
+    validateOnMount: true,
   })
   return (
     <>

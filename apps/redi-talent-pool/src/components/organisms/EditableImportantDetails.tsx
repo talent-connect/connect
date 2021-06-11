@@ -14,13 +14,11 @@ import {
   desiredEmploymentTypeOptions,
   desiredEmploymentTypeOptionsIdToLabelMap,
   desiredPositions,
-  desiredPositionsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
-import { isDate } from 'lodash'
 import moment from 'moment'
 import React, { useState } from 'react'
-import { Element, Tag, Columns, Content } from 'react-bulma-components'
+import { Columns, Content, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpjobseekerprofileQuery } from '../../react-query/use-tpjobseekerprofile-query'
@@ -31,13 +29,6 @@ const formDesiredPositions = desiredPositions.map(({ id, label }) => ({
   value: id,
   label,
 }))
-
-const validationSchema = Yup.object({
-  desiredPositions: Yup.array().max(
-    3,
-    'You can select up to three desired positions'
-  ),
-})
 
 export function EditableImportantDetails() {
   const { data: profile } = useTpjobseekerprofileQuery()
@@ -116,6 +107,13 @@ export function EditableImportantDetails() {
   )
 }
 
+const validationSchema = Yup.object({
+  desiredPositions: Yup.array().max(
+    3,
+    'You can select up to three desired positions'
+  ),
+})
+
 function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
   const { data: profile } = useTpjobseekerprofileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
@@ -146,6 +144,7 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
     validationSchema,
     enableReinitialize: true,
     onSubmit,
+    validateOnMount: true,
   })
 
   return (

@@ -1,39 +1,23 @@
 import {
   Button,
-  Caption,
-  FormDatePicker,
   FormInput,
-  FormSelect,
   Heading,
   Icon,
-  PipeList,
 } from '@talent-connect/shared-atomic-design-components'
 import { TpJobseekerProfile } from '@talent-connect/shared-types'
 import {
   availabilityOptions,
-  availabilityOptionsIdToLabelMap,
   desiredEmploymentTypeOptions,
-  desiredEmploymentTypeOptionsIdToLabelMap,
-  desiredPositions,
-  desiredPositionsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
-import { isDate } from 'lodash'
-import moment from 'moment'
 import React, { useState } from 'react'
-import { Element, Tag, Columns, Content } from 'react-bulma-components'
+import { Columns, Content, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpjobseekerprofileQuery } from '../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../molecules/Editable'
 import { EmptySectionPlaceholder } from '../molecules/EmptySectionPlaceholder'
 import Avatar from './Avatar'
-
-const validationSchema = Yup.object({
-  firstName: Yup.string().required('Your first name is required'),
-  lastName: Yup.string().required('Your last name is required'),
-  location: Yup.string().required('Your location is required'),
-})
 
 export function EditableNamePhotoLocation() {
   const { data: profile } = useTpjobseekerprofileQuery()
@@ -91,6 +75,12 @@ export function EditableNamePhotoLocation() {
   )
 }
 
+const validationSchema = Yup.object({
+  firstName: Yup.string().required('Your first name is required'),
+  lastName: Yup.string().required('Your last name is required'),
+  location: Yup.string().required('Your location is required'),
+})
+
 function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
   const { data: profile } = useTpjobseekerprofileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
@@ -115,6 +105,7 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
     validationSchema,
     enableReinitialize: true,
     onSubmit,
+    validateOnMount: true,
   })
 
   return (

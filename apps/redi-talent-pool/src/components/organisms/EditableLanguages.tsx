@@ -100,6 +100,7 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
     validationSchema,
     enableReinitialize: true,
     onSubmit,
+    validateOnMount: true,
   })
 
   const onDragEnd = useCallback(

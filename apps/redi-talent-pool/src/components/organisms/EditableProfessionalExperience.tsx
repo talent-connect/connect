@@ -13,6 +13,7 @@ import {
   ExperienceRecord,
   TpJobseekerProfile,
 } from '@talent-connect/shared-types'
+import { formMonthsOptions } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
 import moment from 'moment'
 import React, { useCallback, useState } from 'react'
@@ -20,7 +21,6 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Columns, Content, Element } from 'react-bulma-components'
 import ReactMarkdown from 'react-markdown'
 import { v4 as uuidv4 } from 'uuid'
-import { formMonthsOptions } from '@talent-connect/talent-pool/config'
 import { useTpjobseekerprofileUpdateMutation } from '../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpjobseekerprofileQuery } from '../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../molecules/Editable'

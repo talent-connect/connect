@@ -7,7 +7,6 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import { TpJobseekerProfile } from '@talent-connect/shared-types'
 import {
-  desiredPositions,
   topSkills,
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
@@ -80,6 +79,7 @@ const validationSchema = Yup.object({
     .min(1, 'Pick at least one top technical skill')
     .max(5, "Your profile can't contain too many skills - five at most"),
   aboutYourself: Yup.string()
+    .required()
     .min(minChars, 'Write at least 100 characters about yourself.')
     .max(maxChars, 'The text about yourself can be up to 600 characters long.'),
 })
@@ -107,7 +107,9 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
     validationSchema,
     enableReinitialize: true,
     onSubmit,
+    validateOnMount: true,
   })
+
   return (
     <>
       <Element

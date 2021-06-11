@@ -22,13 +22,6 @@ const formDesiredPositions = desiredPositions.map(({ id, label }) => ({
   label,
 }))
 
-const validationSchema = Yup.object({
-  desiredPositions: Yup.array().max(
-    3,
-    'You can select up to three desired positions'
-  ),
-})
-
 export function EditableOverview() {
   const { data: profile } = useTpjobseekerprofileQuery()
   const [isEditing, setIsEditing] = useState(false)
@@ -65,6 +58,12 @@ export function EditableOverview() {
   )
 }
 
+const validationSchema = Yup.object({
+  desiredPositions: Yup.array()
+    .min(1, 'At least one desired position is required')
+    .max(3, 'You can select up to three desired positions'),
+})
+
 function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
   const { data: profile } = useTpjobseekerprofileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
@@ -87,6 +86,7 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
     validationSchema,
     enableReinitialize: true,
     onSubmit,
+    validateOnMount: true,
   })
   return (
     <>
@@ -99,7 +99,7 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
         Let's hear a little bit about what kind of jobs you're interested in.
       </Element>
       <FormSelect
-        label="Desired position"
+        label="Desired position* (pick 1-3)"
         name="desiredPositions"
         items={formDesiredPositions}
         {...formik}
