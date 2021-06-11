@@ -28,8 +28,6 @@ const Modal = ({ title, children, stateFn, show, confirm, styles }: Props) => {
       window.scrollTo(0, parseInt(scrollY || '0') * -1)
     }
     setInternalShow(show)
-
-    // document.body.classList.toggle('modal-open', show)
   }, [show])
 
   return (
