@@ -7,7 +7,7 @@ import {
   FormTextArea,
   PipeList,
 } from '@talent-connect/shared-atomic-design-components'
-import { TpJobseekerProfile } from '@talent-connect/shared-types'
+import { TpCompanyProfile } from '@talent-connect/shared-types'
 import {
   availabilityOptions,
   availabilityOptionsIdToLabelMap,
@@ -20,18 +20,18 @@ import moment from 'moment'
 import React, { useState } from 'react'
 import { Columns, Content, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
-import { useTpjobseekerprofileUpdateMutation } from '../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../react-query/use-tpjobseekerprofile-query'
-import { Editable } from '../molecules/Editable'
-import { EmptySectionPlaceholder } from '../molecules/EmptySectionPlaceholder'
+import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
+import { useTpCompanyProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { Editable } from '../../molecules/Editable'
+import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
 const formDesiredPositions = desiredPositions.map(({ id, label }) => ({
   value: id,
   label,
 }))
 
-export function EditableImportantDetails() {
-  const { data: profile } = useTpJobseekerProfileQuery()
+export function EditableContact() {
+  const { data: profile } = useTpCompanyProfileQuery()
   const [isEditing, setIsEditing] = useState(false)
 
   const isEmpty = EditableImportantDetails.isSectionEmpty(profile)
@@ -104,13 +104,13 @@ export function EditableImportantDetails() {
 }
 
 EditableImportantDetails.isSectionFilled = (
-  profile: Partial<TpJobseekerProfile>
+  profile: Partial<TpCompanyProfile>
 ) =>
   profile?.availability ||
   profile?.desiredEmploymentType?.length > 0 ||
   profile?.phoneNumber
 EditableImportantDetails.isSectionEmpty = (
-  profile: Partial<TpJobseekerProfile>
+  profile: Partial<TpCompanyProfile>
 ) => !EditableImportantDetails.isSectionFilled(profile)
 
 const validationSchema = Yup.object({
@@ -121,9 +121,9 @@ const validationSchema = Yup.object({
 })
 
 function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
-  const { data: profile } = useTpJobseekerProfileQuery()
+  const { data: profile } = useTpCompanyProfileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
-  const initialValues: Partial<TpJobseekerProfile> = {
+  const initialValues: Partial<TpCompanyProfile> = {
     availability: profile?.availability ?? '',
     desiredEmploymentType: profile?.desiredEmploymentType ?? [],
     contactEmail: profile?.contactEmail ?? '',
@@ -134,7 +134,7 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
     hrSummit2021JobFairCompanyJobPreferences:
       profile?.hrSummit2021JobFairCompanyJobPreferences ?? '',
   }
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
+  const onSubmit = (values: Partial<TpCompanyProfile>) => {
     formik.setSubmitting(true)
     mutation.mutate(values, {
       onSettled: () => {

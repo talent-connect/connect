@@ -20,10 +20,10 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Content, Element } from 'react-bulma-components'
 import { v4 as uuidv4 } from 'uuid'
 import * as Yup from 'yup'
-import { useTpjobseekerprofileUpdateMutation } from '../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../react-query/use-tpjobseekerprofile-query'
-import { Editable } from '../molecules/Editable'
-import { EmptySectionPlaceholder } from '../molecules/EmptySectionPlaceholder'
+import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
+import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
+import { Editable } from '../../molecules/Editable'
 
 function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
   const result = Array.from(list)

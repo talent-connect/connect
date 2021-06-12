@@ -42,34 +42,44 @@ const formCourses = coursesWithAlumniDeduped.map((course) => {
   }
 })
 
-export const validationSchema = Yup.object({
-  firstName: Yup.string().required('Your first name is invalid').max(255),
-  lastName: Yup.string().required('Your last name is invalid').max(255),
-  contactEmail: Yup.string()
-    .email('Your email is invalid')
-    .required('You need to give an email address')
-    .label('Email')
-    .max(255),
-  password: Yup.string()
-    .min(8, 'The password has to consist of at least eight characters')
-    .required('You need to set a password')
-    .label('Password'),
-  passwordConfirm: Yup.string()
-    .required('Confirm your password')
-    .oneOf([Yup.ref('password')], 'Passwords does not match'),
-  agreesWithCodeOfConduct: Yup.boolean().when('state', {
-    is: 'drafting-profile',
-    then: Yup.boolean().required().oneOf([true]),
-  }),
-  gaveGdprConsent: Yup.boolean().required().oneOf([true]),
-  currentlyEnrolledInCourse: Yup.string().when('state', {
-    is: 'drafting-profile',
-    then: Yup.string()
-      .required()
-      .oneOf(courses.map((level) => level.id))
-      .label('Currently enrolled in course'),
-  }),
-})
+function buildValidationSchema(signupType: SignUpPageType['type']) {
+  const baseSchema = {
+    firstName: Yup.string().required('Your first name is invalid').max(255),
+    lastName: Yup.string().required('Your last name is invalid').max(255),
+    contactEmail: Yup.string()
+      .email('Your email is invalid')
+      .required('You need to give an email address')
+      .label('Email')
+      .max(255),
+    password: Yup.string()
+      .min(8, 'The password has to consist of at least eight characters')
+      .required('You need to set a password')
+      .label('Password'),
+    passwordConfirm: Yup.string()
+      .required('Confirm your password')
+      .oneOf([Yup.ref('password')], 'Passwords does not match'),
+    gaveGdprConsent: Yup.boolean().required().oneOf([true]),
+  }
+
+  if (signupType === 'jobseeker') {
+    return Yup.object({
+      ...baseSchema,
+      currentlyEnrolledInCourse: Yup.string()
+        .required()
+        .oneOf(courses.map((level) => level.id))
+        .label('Currently enrolled in course'),
+      agreesWithCodeOfConduct: Yup.boolean().required().oneOf([true]),
+    })
+  }
+  if (signupType === 'company') {
+    return Yup.object({
+      ...baseSchema,
+      companyName: Yup.string()
+        .required('Your company name is required')
+        .max(255),
+    })
+  }
+}
 
 type SignUpPageType = {
   type: 'jobseeker' | 'company'
@@ -81,6 +91,7 @@ export interface SignUpFormValues {
   contactEmail: string
   password: string
   passwordConfirm: string
+  companyName?: string
   firstName: string
   lastName: string
   agreesWithCodeOfConduct?: boolean
@@ -101,6 +112,9 @@ export default function SignUp() {
     initialValues.state = 'drafting-profile'
     initialValues.jobseeker_currentlyEnrolledInCourse = ''
     initialValues.agreesWithCodeOfConduct = false
+  }
+  if (type === 'company') {
+    initialValues.companyName = ''
   }
 
   const [submitError, setSubmitError] = useState(null)
@@ -146,7 +160,7 @@ export default function SignUp() {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: initialValues,
-    validationSchema,
+    validationSchema: buildValidationSchema(type as SignUpPageType['type']),
     onSubmit: submitForm,
   })
 
@@ -169,6 +183,12 @@ export default function SignUp() {
             </Notification>
           )}
           <form onSubmit={(e) => e.preventDefault()} className="form">
+            <FormInput
+              name="companyName"
+              placeholder="Your company name"
+              {...formik}
+            />
+
             <FormInput
               name="firstName"
               placeholder="Your first name"

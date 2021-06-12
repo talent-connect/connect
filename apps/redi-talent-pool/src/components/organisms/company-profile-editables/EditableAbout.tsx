@@ -5,7 +5,7 @@ import {
   FormSelect,
   FormTextArea,
 } from '@talent-connect/shared-atomic-design-components'
-import { TpJobseekerProfile } from '@talent-connect/shared-types'
+import { TpCompanyProfile } from '@talent-connect/shared-types'
 import {
   topSkills,
   topSkillsIdToLabelMap,
@@ -14,62 +14,49 @@ import { useFormik } from 'formik'
 import React, { useState } from 'react'
 import { Content, Element, Tag } from 'react-bulma-components'
 import * as Yup from 'yup'
-import { useTpjobseekerprofileUpdateMutation } from '../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../react-query/use-tpjobseekerprofile-query'
-import { Editable } from '../molecules/Editable'
-import { EmptySectionPlaceholder } from '../molecules/EmptySectionPlaceholder'
+import { useTpcompanyUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
+import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
+import { Editable } from '../../molecules/Editable'
+import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
-export function EditableSummary() {
-  const { data: profile } = useTpJobseekerProfileQuery()
+export function EditableAbout() {
+  const { data: profile } = useTpCompanyProfileQuery()
   const [isEditing, setIsEditing] = useState(false)
+
+  const isEmpty = EditableAbout.isSectionEmpty(profile)
 
   return (
     <Editable
       isEditing={isEditing}
       setIsEditing={setIsEditing}
-      title="Summary"
+      title="About"
       readComponent={
         <>
           <Caption>About</Caption>
           <Content>
-            {profile?.aboutYourself ? (
-              <p>{profile.aboutYourself}</p>
+            {!isEmpty ? (
+              <p>{profile?.about}</p>
             ) : (
               <EmptySectionPlaceholder
                 height="tall"
-                text="Tell us about yourself"
+                text="Tell us about the company"
                 onClick={() => setIsEditing(true)}
               />
             )}
           </Content>
-          <Caption>Top skills</Caption>
-          {profile?.topSkills?.length > 0 ? (
-            <Tag.Group>
-              {profile?.topSkills?.map((skill) => (
-                <Tag key={skill}>{topSkillsIdToLabelMap[skill]}</Tag>
-              ))}
-            </Tag.Group>
-          ) : (
-            <EmptySectionPlaceholder
-              height="slim"
-              text="Add your top skills"
-              onClick={() => setIsEditing(true)}
-            />
-          )}
         </>
       }
-      modalTitle="About you"
+      modalTitle="About"
       modalHeadline="Summary"
       modalBody={<Form setIsEditing={setIsEditing} />}
-      modalStyles={{ minHeight: 700 }}
     />
   )
 }
 
-EditableSummary.isSectionFilled = (profile: Partial<TpJobseekerProfile>) =>
-  !!profile?.aboutYourself && profile?.topSkills?.length > 0
-EditableSummary.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
-  !EditableSummary.isSectionFilled(profile)
+EditableAbout.isSectionFilled = (profile: Partial<TpCompanyProfile>) =>
+  !!profile?.about
+EditableAbout.isSectionEmpty = (profile: Partial<TpCompanyProfile>) =>
+  !EditableAbout.isSectionFilled(profile)
 
 const formTopSkills = topSkills.map(({ id, label }) => ({
   value: id,
@@ -90,13 +77,13 @@ const validationSchema = Yup.object({
 })
 
 function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
-  const { data: profile } = useTpJobseekerProfileQuery()
-  const mutation = useTpjobseekerprofileUpdateMutation()
-  const initialValues: Partial<TpJobseekerProfile> = {
+  const { data: profile } = useTpCompanyProfileQuery()
+  const mutation = useTpcompanyUpdateMutation()
+  const initialValues: Partial<TpCompanyProfile> = {
     aboutYourself: profile?.aboutYourself ? profile.aboutYourself : '',
     topSkills: profile?.topSkills ?? [],
   }
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
+  const onSubmit = (values: Partial<TpCompanyProfile>) => {
     formik.setSubmitting(true)
     mutation.mutate(values, {
       onSettled: () => {

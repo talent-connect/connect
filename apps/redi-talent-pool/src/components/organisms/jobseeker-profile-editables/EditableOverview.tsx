@@ -12,11 +12,10 @@ import { useFormik } from 'formik'
 import React, { useState } from 'react'
 import { Element, Tag } from 'react-bulma-components'
 import * as Yup from 'yup'
-import { useTpjobseekerprofileUpdateMutation } from '../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../react-query/use-tpjobseekerprofile-query'
-import { Editable } from '../molecules/Editable'
-import { EmptySectionPlaceholder } from '../molecules/EmptySectionPlaceholder'
-
+import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
+import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { Editable } from '../../molecules/Editable'
+import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 const formDesiredPositions = desiredPositions.map(({ id, label }) => ({
   value: id,
   label,

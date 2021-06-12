@@ -7,10 +7,10 @@ import { useFormik } from 'formik'
 import React, { useState } from 'react'
 import { Content, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
-import { useTpjobseekerprofileUpdateMutation } from '../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../react-query/use-tpjobseekerprofile-query'
-import { Editable } from '../molecules/Editable'
-import { EmptySectionPlaceholder } from '../molecules/EmptySectionPlaceholder'
+import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
+import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { Editable } from '../../molecules/Editable'
+import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
 export function EditableLinks() {
   const { data: profile } = useTpJobseekerProfileQuery()
@@ -34,13 +34,15 @@ export function EditableLinks() {
           />
         ) : (
           <Content>
-            {links.map((url, idx) => (
-              <p key={idx}>
-                <a href={url} target="_blank">
-                  {url}
-                </a>
-              </p>
-            ))}
+            {links
+              .filter((l) => l)
+              .map((url, idx) => (
+                <p key={idx}>
+                  <a href={url} target="_blank">
+                    {url}
+                  </a>
+                </p>
+              ))}
           </Content>
         )
       }

@@ -10,10 +10,14 @@ import {
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
 import {
+  EducationRecord,
   ExperienceRecord,
   TpJobseekerProfile,
 } from '@talent-connect/shared-types'
-import { formMonthsOptions } from '@talent-connect/talent-pool/config'
+import {
+  certificationTypes,
+  formMonthsOptions,
+} from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
 import moment from 'moment'
 import React, { useCallback, useRef, useState } from 'react'
@@ -22,10 +26,10 @@ import { Columns, Content, Element } from 'react-bulma-components'
 import ReactMarkdown from 'react-markdown'
 import { Subject } from 'rxjs'
 import { v4 as uuidv4 } from 'uuid'
-import { useTpjobseekerprofileUpdateMutation } from '../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../react-query/use-tpjobseekerprofile-query'
-import { Editable } from '../molecules/Editable'
-import { EmptySectionPlaceholder } from '../molecules/EmptySectionPlaceholder'
+import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
+import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { Editable } from '../../molecules/Editable'
+import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
 function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
   const result = Array.from(list)
@@ -35,26 +39,26 @@ function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
   return result
 }
 
-export function EditableProfessionalExperience() {
+export function EditableEducation() {
   const { data: profile } = useTpJobseekerProfileQuery()
   const [isEditing, setIsEditing] = useState(false)
 
-  const isEmpty = EditableProfessionalExperience.isSectionEmpty(profile)
+  const isEmpty = EditableEducation.isSectionEmpty(profile)
 
   return (
     <Editable
       isEditing={isEditing}
       setIsEditing={setIsEditing}
-      title="Professional experience"
+      title="Education"
       readComponent={
         isEmpty ? (
           <EmptySectionPlaceholder
             height="tall"
-            text="Add your experience"
+            text="Add your education"
             onClick={() => setIsEditing(true)}
           />
         ) : (
-          profile?.experience?.map((item) => (
+          profile?.education?.map((item) => (
             <div style={{ marginBottom: '2.8rem' }}>
               <div
                 style={{
@@ -72,39 +76,35 @@ export function EditableProfessionalExperience() {
                 </span>
               </div>
               <Content style={{ marginTop: '-0.5rem' }}>
-                {item.company ? (
-                  <p style={{ color: '#979797' }}>{item.company}</p>
+                {item.institutionName ? (
+                  <p style={{ color: '#979797' }}>{item.institutionName}</p>
                 ) : null}
-                {item.description ? (
-                  <ReactMarkdown
-                    components={{
-                      p: ({ children }) => (
-                        <p style={{ marginBottom: '0' }}>{children}</p>
-                      ),
-                    }}
-                  >
-                    {item.description.replace(/\n/g, `\n\n`)}
-                  </ReactMarkdown>
-                ) : null}
+                <ReactMarkdown
+                  components={{
+                    p: ({ children }) => (
+                      <p style={{ marginBottom: '0' }}>{children}</p>
+                    ),
+                  }}
+                >
+                  {item.description.replace(/\n/g, `\n\n`)}
+                </ReactMarkdown>
               </Content>
             </div>
           ))
         )
       }
-      modalTitle="Work history"
-      modalHeadline="Professional experience"
+      modalTitle="Study, certifications, courses"
+      modalHeadline="Education"
       modalBody={<Form setIsEditing={setIsEditing} />}
       modalStyles={{ minHeight: 700 }}
     />
   )
 }
 
-EditableProfessionalExperience.isSectionFilled = (
-  profile: Partial<TpJobseekerProfile>
-) => profile?.experience?.length > 0
-EditableProfessionalExperience.isSectionEmpty = (
-  profile: Partial<TpJobseekerProfile>
-) => !EditableProfessionalExperience.isSectionFilled(profile)
+EditableEducation.isSectionFilled = (profile: Partial<TpJobseekerProfile>) =>
+  profile?.education?.length > 0
+EditableEducation.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
+  !EditableEducation.isSectionFilled(profile)
 
 function formatDate(month?: number, year?: number): string {
   if (year && !month) return String(year)
@@ -120,7 +120,7 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
 
   const initialValues: Partial<TpJobseekerProfile> = {
-    experience: profile?.experience ?? [buildBlankExperienceRecord()],
+    education: profile?.education ?? [buildBlankEducationRecord()],
   }
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
     formik.setSubmitting(true)
@@ -139,11 +139,12 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
     onSubmit,
   })
 
-  const onClickAddExperience = useCallback(() => {
-    formik.setFieldValue('experience', [
-      ...formik.values.experience,
-      buildBlankExperienceRecord(),
+  const onClickAddEducation = useCallback(() => {
+    formik.setFieldValue('education', [
+      ...formik.values.education,
+      buildBlankEducationRecord(),
     ])
+
     closeAllAccordionsSignalSubject.current.next()
   }, [formik])
 
@@ -151,13 +152,13 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
     (result: any) => {
       if (!result.destination) return
 
-      const reorderedExperience = reorder(
-        formik.values.experience,
+      const reorderedEducation = reorder(
+        formik.values.education,
         result.source.index,
         result.destination.index
       )
 
-      formik.setFieldValue('experience', reorderedExperience)
+      formik.setFieldValue('education', reorderedEducation)
     },
     [formik]
   )
@@ -165,8 +166,8 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
   const onRemove = useCallback(
     (uuid: string) => {
       formik.setFieldValue(
-        'experience',
-        formik.values?.experience?.filter((item) => item.uuid !== uuid)
+        'education',
+        formik.values?.education?.filter((item) => item.uuid !== uuid)
       )
     },
     [formik]
@@ -180,13 +181,13 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
         responsive={{ mobile: { textSize: { value: 5 } } }}
         className="oneandhalf-bs"
       >
-        Add your relevant experience.
+        Add your relevant education.
       </Element>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="id">
           {(provided, snapshot) => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
-              {formik?.values?.experience.map((item, index) => (
+              {formik?.values?.education.map((item, index) => (
                 <Draggable
                   key={item.uuid}
                   draggableId={item.uuid}
@@ -208,32 +209,34 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
                         }
                       >
                         <FormInput
-                          name={`experience[${index}].title`}
-                          placeholder="Junior Frontend Developer"
-                          label="Title of your position"
+                          name={`education[${index}].title`}
+                          placeholder="Bachelor of Computer Science"
+                          label="Title of your course/study/certification"
+                          {...formik}
+                        />
+                        <FormSelect
+                          name={`education[${index}].certificationType`}
+                          label="The type of certification"
+                          items={formCertificationTypes}
                           {...formik}
                         />
                         <FormInput
-                          name={`experience[${index}].company`}
-                          placeholder="Microsoft"
-                          label="Company"
+                          name={`education[${index}].institutionName`}
+                          placeholder="ReDI School of Digital Integration"
+                          label="The institution or school"
                           {...formik}
                         />
                         <FormTextArea
-                          label="Roles & Responsibilities"
-                          name={`experience[${index}].description`}
+                          label="Description (optional)"
+                          name={`education[${index}].description`}
                           rows={7}
-                          placeholder={rolesAndResponsibilitiesPlaceholderText}
+                          placeholder="Tell us a little bit about your course, what you learned and what you excelled at."
                           {...formik}
-                        />
-                        <FaqItem
-                          question={rolesAndResponsibilitiesQuestion}
-                          answer={rolesAndResponsibilitiesAnswer}
                         />
 
                         <Checkbox.Form
-                          name={`experience[${index}].current`}
-                          checked={formik.values.experience[index].current}
+                          name={`education[${index}].current`}
+                          checked={formik.values.education[index].current}
                           {...formik}
                         >
                           I currently work here
@@ -242,7 +245,7 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
                         <Columns>
                           <Columns.Column size={6}>
                             <FormSelect
-                              name={`experience[${index}].startDateMonth`}
+                              name={`education[${index}].startDateMonth`}
                               label="Started in month"
                               items={formMonthsOptions}
                               {...formik}
@@ -250,7 +253,7 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
                           </Columns.Column>
                           <Columns.Column size={6}>
                             <FormInput
-                              name={`experience[${index}].startDateYear`}
+                              name={`education[${index}].startDateYear`}
                               label="Started in year"
                               type="number"
                               {...formik}
@@ -258,11 +261,11 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
                           </Columns.Column>
                         </Columns>
 
-                        {!formik.values.experience[index].current ? (
+                        {!formik.values.education[index].current ? (
                           <Columns>
                             <Columns.Column size={6}>
                               <FormSelect
-                                name={`experience[${index}].endDateMonth`}
+                                name={`education[${index}].endDateMonth`}
                                 label="Ended in month"
                                 items={formMonthsOptions}
                                 {...formik}
@@ -270,7 +273,7 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
                             </Columns.Column>
                             <Columns.Column size={6}>
                               <FormInput
-                                name={`experience[${index}].endDateYear`}
+                                name={`education[${index}].endDateYear`}
                                 label="Ended in year"
                                 type="number"
                                 {...formik}
@@ -299,7 +302,7 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
           cursor: 'pointer',
           marginBottom: '30px',
         }}
-        onClick={() => onClickAddExperience()}
+        onClick={() => onClickAddEducation()}
       >
         <Icon
           icon="tpPlus"
@@ -318,12 +321,18 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
   )
 }
 
-function buildBlankExperienceRecord(): ExperienceRecord {
+const formCertificationTypes = certificationTypes.map(({ id, label }) => ({
+  value: id,
+  label,
+}))
+
+function buildBlankEducationRecord(): EducationRecord {
   return {
     uuid: uuidv4(),
     title: '',
-    company: '',
+    institutionName: '',
     description: '',
+    certificationType: '',
     startDateMonth: undefined,
     startDateYear: undefined,
     endDateMonth: undefined,
@@ -331,15 +340,3 @@ function buildBlankExperienceRecord(): ExperienceRecord {
     current: false,
   }
 }
-
-const rolesAndResponsibilitiesPlaceholderText = `Example:
-
-• Supported the Visual Studio Team by creating wireframes using storyboarding and customer mapping.
-• Validated design decisions by conducting remote usability, resulted in an increase of conversion rate by 10%.`
-
-const rolesAndResponsibilitiesQuestion =
-  'Our tips for writing Roles and Responsibilities'
-const rolesAndResponsibilitiesAnswer = `• Write a list of 2-3 bullet points.<br />
-• Begin sentences with acton verbs, such as designed, created, provided, resolved, etc.<br />
-• Focus on skills and accomplishments.<br />
-• Quantify as much information as you can. (Example: Resolved cusumer complaints. --> Resolved customer complaints, ansering approximately 200 calls per week.`
