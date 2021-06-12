@@ -21,7 +21,7 @@ import React, { useState } from 'react'
 import { Columns, Content, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpjobseekerprofileQuery } from '../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobseekerProfileQuery } from '../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../molecules/Editable'
 import { EmptySectionPlaceholder } from '../molecules/EmptySectionPlaceholder'
 
@@ -31,14 +31,10 @@ const formDesiredPositions = desiredPositions.map(({ id, label }) => ({
 }))
 
 export function EditableImportantDetails() {
-  const { data: profile } = useTpjobseekerprofileQuery()
+  const { data: profile } = useTpJobseekerProfileQuery()
   const [isEditing, setIsEditing] = useState(false)
 
-  const isEmpty = !(
-    profile?.availability ||
-    profile?.desiredEmploymentType?.length > 0 ||
-    profile?.phoneNumber
-  )
+  const isEmpty = EditableImportantDetails.isSectionEmpty(profile)
 
   return (
     <Editable
@@ -107,6 +103,16 @@ export function EditableImportantDetails() {
   )
 }
 
+EditableImportantDetails.isSectionFilled = (
+  profile: Partial<TpJobseekerProfile>
+) =>
+  profile?.availability ||
+  profile?.desiredEmploymentType?.length > 0 ||
+  profile?.phoneNumber
+EditableImportantDetails.isSectionEmpty = (
+  profile: Partial<TpJobseekerProfile>
+) => !EditableImportantDetails.isSectionFilled(profile)
+
 const validationSchema = Yup.object({
   desiredPositions: Yup.array().max(
     3,
@@ -115,7 +121,7 @@ const validationSchema = Yup.object({
 })
 
 function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
-  const { data: profile } = useTpjobseekerprofileQuery()
+  const { data: profile } = useTpJobseekerProfileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
   const initialValues: Partial<TpJobseekerProfile> = {
     availability: profile?.availability ?? '',

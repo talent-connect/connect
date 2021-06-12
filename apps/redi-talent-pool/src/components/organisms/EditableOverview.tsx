@@ -13,7 +13,7 @@ import React, { useState } from 'react'
 import { Element, Tag } from 'react-bulma-components'
 import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpjobseekerprofileQuery } from '../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobseekerProfileQuery } from '../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../molecules/Editable'
 import { EmptySectionPlaceholder } from '../molecules/EmptySectionPlaceholder'
 
@@ -23,10 +23,10 @@ const formDesiredPositions = desiredPositions.map(({ id, label }) => ({
 }))
 
 export function EditableOverview() {
-  const { data: profile } = useTpjobseekerprofileQuery()
+  const { data: profile } = useTpJobseekerProfileQuery()
   const [isEditing, setIsEditing] = useState(false)
 
-  const isEmpty = !(profile?.desiredPositions?.length > 0)
+  const isEmpty = EditableOverview.isSectionEmpty(profile)
 
   return (
     <Editable
@@ -58,6 +58,11 @@ export function EditableOverview() {
   )
 }
 
+EditableOverview.isSectionFilled = (profile: Partial<TpJobseekerProfile>) =>
+  profile?.desiredPositions?.length > 0
+EditableOverview.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
+  !EditableOverview.isSectionFilled(profile)
+
 const validationSchema = Yup.object({
   desiredPositions: Yup.array()
     .min(1, 'At least one desired position is required')
@@ -65,7 +70,7 @@ const validationSchema = Yup.object({
 })
 
 function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
-  const { data: profile } = useTpjobseekerprofileQuery()
+  const { data: profile } = useTpJobseekerProfileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
   const initialValues: Partial<TpJobseekerProfile> = {
     desiredPositions: profile?.desiredPositions ?? [],

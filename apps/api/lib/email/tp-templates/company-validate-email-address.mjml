@@ -1,0 +1,42 @@
+<mjml>
+  <mj-include path="../templates/head.mjml" />
+  <mj-body mj-class="body">
+    <mj-wrapper background-color="#F0F0F0">
+      <mj-section />
+      <mj-section css-class="section">
+        <mj-column>
+          <mj-text mj-class="headline">Verify your email address!</mj-text>
+          <mj-divider mj-class="divider-top" css-class="divider" />
+          <mj-text mj-class="text">Hello ${firstName},</mj-text>
+          <mj-text mj-class="text text-padding"
+            >thank you for signing up to Talent Pool.
+          </mj-text>
+          <mj-text mj-class="text"
+            >Please verify your email address by using the following
+            button.</mj-text
+          >
+          <mj-text mj-class="text">
+            Then it’s time to complete your company's profile and post the jobs
+            you'd like to advertise on Talent Pool, the first step to using
+            Talent Pool to get ReDI talent into your jobs.</mj-text
+          >
+          <mj-image
+            src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/verify.png"
+            align="left"
+            padding="30px 0"
+            target="_blank"
+            width="353px"
+            href="${verificationUrl}"
+          />
+          <mj-text mj-class="text" padding="20px 0 30px 0"
+            >I am excited to see you on Talent Pool soon!</mj-text
+          >
+          <mj-text mj-class="text">Best,</mj-text>
+          <mj-text mj-class="text">Birgit</mj-text>
+        </mj-column>
+      </mj-section>
+      <mj-include path="../templates/footer.birgit.mjml" />
+      <mj-section />
+    </mj-wrapper>
+  </mj-body>
+</mjml>

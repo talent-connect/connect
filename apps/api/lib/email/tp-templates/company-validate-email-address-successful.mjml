@@ -1,0 +1,31 @@
+<mjml>
+  <mj-include path="../templates/head.mjml" />
+  <mj-body mj-class="body">
+    <mj-wrapper background-color="#F0F0F0">
+      <mj-section />
+      <mj-section css-class="section">
+        <mj-column>
+          <mj-text mj-class="headline"
+            >Verification has been successful!</mj-text
+          >
+          <mj-divider mj-class="divider-top" css-class="divider" />
+          <mj-text mj-class="text">Hello ${firstName},</mj-text>
+          <mj-text mj-class="text text-padding"
+            >your email address was successfully verified.</mj-text
+          >
+          <mj-text mj-class="text"
+            >Now, it's time to log into Talent Pool and complete your company
+            profile and post jobs.
+          </mj-text>
+          <mj-text mj-class="text" padding="20px 0 30px 0"
+            >Let me know if you have any questions whatsoever.</mj-text
+          >
+          <mj-text mj-class="text">Best,</mj-text>
+          <mj-text mj-class="text">Birgit</mj-text>
+        </mj-column>
+      </mj-section>
+      <mj-include path="../templates/footer.birgit.mjml" />
+      <mj-section />
+    </mj-wrapper>
+  </mj-body>
+</mjml>

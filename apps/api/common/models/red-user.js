@@ -8,6 +8,7 @@ const {
 
 const {
   sendTpJobseekerEmailVerificationSuccessfulEmail,
+  sendTpCompanyEmailVerificationSuccessfulEmail,
   sendTpResetPasswordEmail,
 } = require('../../lib/email/tp-email')
 
@@ -24,12 +25,13 @@ module.exports = function (RedUser) {
 
   RedUser.afterRemote('confirm', async function (ctx, inst, next) {
     const redUserInst = await RedUser.findById(ctx.args.uid, {
-      include: ['redProfile', 'tpJobseekerProfile'],
+      include: ['redProfile', 'tpJobseekerProfile', 'tpCompanyProfile'],
     })
     const redUser = redUserInst.toJSON()
 
     const userSignedUpWithCon = !!redUser.redProfile
-    const userSignedUpWithTp = !!redUser.tpJobseekerProfile
+    const userSignedUpWithTpAndIsJobseeker = !!redUser.tpJobseekerProfile
+    const userSignedUpWithTpAndIsCompany = !!redUser.tpCompanyProfile
 
     if (userSignedUpWithCon) {
       const userType = redUser.redProfile.userType
@@ -56,8 +58,15 @@ module.exports = function (RedUser) {
       }
     }
 
-    if (userSignedUpWithTp) {
+    if (userSignedUpWithTpAndIsJobseeker) {
       await sendTpJobseekerEmailVerificationSuccessfulEmail({
+        recipient: redUser.email,
+        firstName: redUser.tpJobseekerProfile.firstName,
+      }).toPromise()
+    }
+
+    if (userSignedUpWithTpAndIsCompany) {
+      await sendTpCompanyEmailVerificationSuccessfulEmail({
         recipient: redUser.email,
         firstName: redUser.tpJobseekerProfile.firstName,
       }).toPromise()
@@ -84,27 +93,48 @@ module.exports = function (RedUser) {
     returns: { arg: 'resp', type: 'object', root: true },
   })
 
-  RedUser.on('resetPasswordRequest', function (info) {
+  RedUser.on('resetPasswordRequest', async function (info) {
     const accessToken = encodeURIComponent(JSON.stringify(info.accessToken))
     const email = info.user.email
     const redproduct = info.options.redproduct
-    info.user.redProfile(function getRedProfile(err, redProfileInst) {
-      const { rediLocation, firstName } = redProfileInst.toJSON()
-      if (redproduct === 'CON') {
-        sendResetPasswordEmail({
-          recipient: email,
-          firstName,
-          accessToken,
-          rediLocation,
-        }).subscribe()
-      } else if (redproduct === 'TP') {
-        sendTpResetPasswordEmail({
-          recipient: email,
-          firstName,
-          accessToken,
-        }).subscribe()
-      }
+
+    const redUserInst = await RedUser.findById(info.user.id, {
+      include: ['redProfile', 'tpJobseekerProfile', 'tpCompanyProfile'],
     })
+    const redUser = redUserInst.toJSON()
+
+    const userSignedUpWithCon = !!redUser.redProfile
+    const userSignedUpWithTpAndIsJobseeker = !!redUser.tpJobseekerProfile
+    const userSignedUpWithTpAndIsCompany = !!redUser.tpCompanyProfile
+
+    let firstName
+    let rediLocation
+
+    if (userSignedUpWithCon) {
+      firstName = redUser.redProfile.firstName
+      rediLocation = redUser.redProfile.rediLocation
+    }
+    if (userSignedUpWithTpAndIsJobseeker) {
+      firstName = redUser.tpJobseekerProfile.firstName
+    }
+    if (userSignedUpWithTpAndIsCompany) {
+      firstName = redUser.tpCompanyProfile.firstName
+    }
+
+    if (redproduct === 'CON') {
+      sendResetPasswordEmail({
+        recipient: email,
+        firstName,
+        accessToken,
+        rediLocation,
+      }).subscribe()
+    } else if (redproduct === 'TP') {
+      sendTpResetPasswordEmail({
+        recipient: email,
+        firstName,
+        accessToken,
+      }).subscribe()
+    }
   })
 
   /******************

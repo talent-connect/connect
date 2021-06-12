@@ -14,17 +14,17 @@ import React, { useState } from 'react'
 import { Columns, Content, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpjobseekerprofileQuery } from '../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobseekerProfileQuery } from '../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../molecules/Editable'
 import { EmptySectionPlaceholder } from '../molecules/EmptySectionPlaceholder'
 import Avatar from './Avatar'
 
 export function EditableNamePhotoLocation() {
-  const { data: profile } = useTpjobseekerprofileQuery()
+  const { data: profile } = useTpJobseekerProfileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
   const [isEditing, setIsEditing] = useState(false)
 
-  const isLocationEmpty = !profile?.location
+  const isLocationEmpty = EditableNamePhotoLocation.isSectionEmpty(profile)
 
   return (
     <Editable
@@ -75,6 +75,13 @@ export function EditableNamePhotoLocation() {
   )
 }
 
+EditableNamePhotoLocation.isSectionFilled = (
+  profile: Partial<TpJobseekerProfile>
+) => profile?.location
+EditableNamePhotoLocation.isSectionEmpty = (
+  profile: Partial<TpJobseekerProfile>
+) => !EditableNamePhotoLocation.isSectionFilled(profile)
+
 const validationSchema = Yup.object({
   firstName: Yup.string().required('Your first name is required'),
   lastName: Yup.string().required('Your last name is required'),
@@ -82,7 +89,7 @@ const validationSchema = Yup.object({
 })
 
 function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
-  const { data: profile } = useTpjobseekerprofileQuery()
+  const { data: profile } = useTpJobseekerProfileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
   const initialValues: Partial<TpJobseekerProfile> = {
     firstName: profile?.firstName ?? '',

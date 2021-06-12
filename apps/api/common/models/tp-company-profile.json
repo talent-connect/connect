@@ -1,6 +1,6 @@
 {
-  "name": "TpJobseekerProfile",
-  "plural": "tpJobseekerProfiles",
+  "name": "TpCompanyProfile",
+  "plural": "tpCompanyProfiles",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
@@ -70,68 +70,5 @@
       "permission": "ALLOW"
     }
   ],
-  "methods": {
-    "pendingReviewDoAccept": {
-      "accepts": [
-        {
-          "arg": "data",
-          "type": "object",
-          "http": {
-            "source": "body"
-          }
-        },
-        {
-          "arg": "options",
-          "type": "object",
-          "http": "optionsFromRequest"
-        }
-      ],
-      "returns": [
-        {
-          "arg": "tpJobseekerProfile",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/pendingReviewDoAccept",
-          "verb": "post"
-        }
-      ]
-    },
-    "pendingReviewDoDecline": {
-      "accepts": [
-        {
-          "arg": "data",
-          "type": "object",
-          "http": {
-            "source": "body"
-          }
-        },
-        {
-          "arg": "options",
-          "type": "object",
-          "http": "optionsFromRequest"
-        }
-      ],
-      "returns": [
-        {
-          "arg": "tpJobseekerProfile",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/pendingReviewDoDecline",
-          "verb": "post"
-        }
-      ]
-    }
-  }
+  "methods": {}
 }

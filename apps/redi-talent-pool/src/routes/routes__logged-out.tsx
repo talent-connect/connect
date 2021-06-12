@@ -15,6 +15,12 @@ const SignUp = lazy(
       /* webpackChunkName: "SignUp", webpackPreload: true */ '../pages/front/signup/SignUp'
     )
 )
+const SignUpLanding = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "SignUpLanding", webpackPreload: true */ '../pages/front/signup/SignUpLanding'
+    )
+)
 const SignUpEmailVerification = lazy(
   () =>
     import(
@@ -47,6 +53,11 @@ export const routes__loggedOut: RouteDefinition[] = [
   {
     path: '/front/signup-complete/:userType',
     component: SignUpComplete,
+    exact: true,
+  },
+  {
+    path: '/front/signup-landing',
+    component: SignUpLanding,
     exact: true,
   },
   {

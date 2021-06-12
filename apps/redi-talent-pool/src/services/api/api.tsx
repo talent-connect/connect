@@ -1,7 +1,11 @@
 import axios, { AxiosResponse } from 'axios'
 import { API_URL } from '@talent-connect/shared-config'
 import { AccessToken } from '@talent-connect/shared-types'
-import { RedUser, TpJobseekerProfile } from '@talent-connect/shared-types'
+import {
+  RedUser,
+  TpJobseekerProfile,
+  TpCompanyProfile,
+} from '@talent-connect/shared-types'
 import {
   purgeAllSessionData,
   saveRedUserToLocalStorage,
@@ -13,7 +17,7 @@ import { history } from '../history/history'
 import { http } from '../http/http'
 import { UserType } from '@talent-connect/shared-types'
 
-export const signUp = async (
+export const signUpJobseeker = async (
   email: string,
   password: string,
   tpJobseekerProfile: Partial<TpJobseekerProfile>
@@ -32,6 +36,32 @@ export const signUp = async (
     {
       method: 'post',
       data: tpJobseekerProfile,
+      headers: {
+        Authorization: accessToken.id,
+      },
+    }
+  )
+}
+
+export const signUpCompany = async (
+  email: string,
+  password: string,
+  tpCompanyProfile: Partial<TpCompanyProfile>
+) => {
+  console.log('sign up')
+  const userResponse = await http(`${API_URL}/redUsers`, {
+    method: 'post',
+    data: { email, password },
+  })
+  const user = userResponse.data as RedUser
+  saveRedUserToLocalStorage(user)
+  const accessToken = await login(email, password)
+  saveAccessTokenToLocalStorage(accessToken)
+  const createProfileResponse = await http(
+    `${API_URL}/redUsers/${user.id}/tpCompanyProfile`,
+    {
+      method: 'post',
+      data: tpCompanyProfile,
       headers: {
         Authorization: accessToken.id,
       },
@@ -87,6 +117,25 @@ export async function updateCurrentUserTpJobseekerProfile(
 ): Promise<Partial<TpJobseekerProfile>> {
   const userId = getAccessTokenFromLocalStorage().userId
   const resp = await http(`${API_URL}/redUsers/${userId}/tpJobseekerProfile`, {
+    method: 'put',
+    data: profile,
+  })
+  return resp.data
+}
+
+export async function fetchCurrentUserTpCompanyProfile(): Promise<
+  Partial<TpCompanyProfile>
+> {
+  const userId = getAccessTokenFromLocalStorage().userId
+  const resp = await http(`${API_URL}/redUsers/${userId}/tpCompanyProfile`)
+  return resp.data
+}
+
+export async function updateCurrentUserTpCompanyProfile(
+  profile: Partial<TpCompanyProfile>
+): Promise<Partial<TpCompanyProfile>> {
+  const userId = getAccessTokenFromLocalStorage().userId
+  const resp = await http(`${API_URL}/redUsers/${userId}/tpCompanyProfile`, {
     method: 'put',
     data: profile,
   })

@@ -8,26 +8,17 @@ import React, { useState } from 'react'
 import { Content, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpjobseekerprofileQuery } from '../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobseekerProfileQuery } from '../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../molecules/Editable'
 import { EmptySectionPlaceholder } from '../molecules/EmptySectionPlaceholder'
 
 export function EditableLinks() {
-  const { data: profile } = useTpjobseekerprofileQuery()
+  const { data: profile } = useTpJobseekerProfileQuery()
   const [isEditing, setIsEditing] = useState(false)
 
-  const links = [
-    profile?.personalWebsite,
-    profile?.githubUrl,
-    profile?.linkedInUrl,
-    profile?.twitterUrl,
-    profile?.behanceUrl,
-    profile?.stackOverflowUrl,
-    profile?.stackOverflowUrl,
-    profile?.dribbbleUrl,
-  ]
+  const links = buildAllLinksArray(profile)
 
-  const isEmpty = !links.some((p) => p)
+  const isEmpty = EditableLinks.isSectionEmpty(profile)
 
   return (
     <Editable
@@ -61,6 +52,24 @@ export function EditableLinks() {
   )
 }
 
+function buildAllLinksArray(profile: Partial<TpJobseekerProfile>): string[] {
+  return [
+    profile?.personalWebsite,
+    profile?.githubUrl,
+    profile?.linkedInUrl,
+    profile?.twitterUrl,
+    profile?.behanceUrl,
+    profile?.stackOverflowUrl,
+    profile?.stackOverflowUrl,
+    profile?.dribbbleUrl,
+  ]
+}
+
+EditableLinks.isSectionFilled = (profile: Partial<TpJobseekerProfile>) =>
+  buildAllLinksArray(profile).some((p) => p)
+EditableLinks.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
+  !EditableLinks.isSectionFilled(profile)
+
 const validationSchema = Yup.object({
   personalWebsite: Yup.string().url().label('Personal website URL'),
   githubUrl: Yup.string().url().label('Github profile URL'),
@@ -72,7 +81,7 @@ const validationSchema = Yup.object({
 })
 
 function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
-  const { data: profile } = useTpjobseekerprofileQuery()
+  const { data: profile } = useTpJobseekerProfileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
   const initialValues: Partial<TpJobseekerProfile> = {
     personalWebsite: profile.personalWebsite ?? '',

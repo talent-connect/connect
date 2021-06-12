@@ -23,7 +23,7 @@ import ReactMarkdown from 'react-markdown'
 import { Subject } from 'rxjs'
 import { v4 as uuidv4 } from 'uuid'
 import { useTpjobseekerprofileUpdateMutation } from '../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpjobseekerprofileQuery } from '../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobseekerProfileQuery } from '../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../molecules/Editable'
 import { EmptySectionPlaceholder } from '../molecules/EmptySectionPlaceholder'
 
@@ -36,10 +36,10 @@ function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
 }
 
 export function EditableProfessionalExperience() {
-  const { data: profile } = useTpjobseekerprofileQuery()
+  const { data: profile } = useTpJobseekerProfileQuery()
   const [isEditing, setIsEditing] = useState(false)
 
-  const isEmpty = !(profile?.experience?.length > 0)
+  const isEmpty = EditableProfessionalExperience.isSectionEmpty(profile)
 
   return (
     <Editable
@@ -99,6 +99,13 @@ export function EditableProfessionalExperience() {
   )
 }
 
+EditableProfessionalExperience.isSectionFilled = (
+  profile: Partial<TpJobseekerProfile>
+) => profile?.experience?.length > 0
+EditableProfessionalExperience.isSectionEmpty = (
+  profile: Partial<TpJobseekerProfile>
+) => !EditableProfessionalExperience.isSectionFilled(profile)
+
 function formatDate(month?: number, year?: number): string {
   if (year && !month) return String(year)
   if (year && month) return moment().month(month).year(year).format('MMMM YYYY')
@@ -107,7 +114,7 @@ function formatDate(month?: number, year?: number): string {
 }
 
 function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
-  const { data: profile } = useTpjobseekerprofileQuery()
+  const { data: profile } = useTpJobseekerProfileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())

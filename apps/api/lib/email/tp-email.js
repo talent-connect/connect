@@ -139,7 +139,7 @@ const sendTpJobseekerVerificationEmail = ({
   )}`
   const sendTpJobseekerVerificationEmailParsed = convertTemplateToHtml(
     null,
-    `validate-email-address`
+    `jobseeker-validate-email-address`
   )
   const html = sendTpJobseekerVerificationEmailParsed
     .replace(/\${firstName}/g, firstName)
@@ -157,9 +157,59 @@ const sendTpJobseekerEmailVerificationSuccessfulEmail = ({
 }) => {
   const sendTpJobseekerEmailVerificationSuccessfulEmailParsed = convertTemplateToHtml(
     null,
-    'validate-email-address-successful'
+    'jobseeker-validate-email-address-successful'
   )
   const html = sendTpJobseekerEmailVerificationSuccessfulEmailParsed.replace(
+    /\${firstName}/g,
+    firstName
+  )
+  return sendMjmlEmailFactory({
+    to: recipient,
+    subject: 'Your email has been verified for Talent Pool',
+    html: html,
+  })
+}
+
+const sendTpCompanyVerificationEmail = ({
+  recipient,
+  redUserId,
+  firstName,
+  userType: signupType,
+  verificationToken,
+  rediLocation,
+}) => {
+  const verificationSuccessPageUrl = `${buildTpFrontendUrl(
+    process.env.NODE_ENV,
+    rediLocation
+  )}/front/signup-complete/company`
+  const verificationUrl = `${buildBackendUrl(
+    process.env.NODE_ENV
+  )}/api/redUsers/confirm?uid=${redUserId}&token=${verificationToken}&redirect=${encodeURI(
+    verificationSuccessPageUrl
+  )}`
+  const sendTpCompanyVerificationEmailParsed = convertTemplateToHtml(
+    null,
+    `company-validate-email-address`
+  )
+  const html = sendTpCompanyVerificationEmailParsed
+    .replace(/\${firstName}/g, firstName)
+    .replace(/\${verificationUrl}/g, verificationUrl)
+  return sendMjmlEmailFactory({
+    to: recipient,
+    subject: 'Verify your email address!',
+    html: html,
+  })
+}
+
+const sendTpCompanyEmailVerificationSuccessfulEmail = ({
+  recipient,
+  firstName,
+}) => {
+  const sendTpCompanyEmailVerificationSuccessfulEmailParsed = convertTemplateToHtml(
+    null,
+    'company-validate-email-address-successful'
+  )
+  const html = sendTpCompanyEmailVerificationSuccessfulEmailParsed.replace(
     /\${firstName}/g,
     firstName
   )
@@ -174,4 +224,6 @@ module.exports = {
   sendTpResetPasswordEmail,
   sendTpJobseekerVerificationEmail,
   sendTpJobseekerEmailVerificationSuccessfulEmail,
+  sendTpCompanyVerificationEmail,
+  sendTpCompanyEmailVerificationSuccessfulEmail,
 }

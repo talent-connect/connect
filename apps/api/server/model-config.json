@@ -59,5 +59,9 @@
   "TpJobseekerProfile": {
     "dataSource": "mongodb",
     "public": true
+  },
+  "TpCompanyProfile": {
+    "dataSource": "mongodb",
+    "public": true
   }
 }

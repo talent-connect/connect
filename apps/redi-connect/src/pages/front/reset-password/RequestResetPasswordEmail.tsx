@@ -11,7 +11,7 @@ import { FormikValues, useFormik } from 'formik'
 import * as yup from 'yup'
 import { Link } from 'react-router-dom'
 import { requestResetPasswordEmail } from '../../../services/api/api'
-import Teaser from 'apps/redi-connect/src/components/molecules/Teaser'
+import { Teaser } from '../../../components/molecules'
 
 interface FormValues {
   email: string
@@ -37,7 +37,7 @@ export const RequestResetPasswordEmail: React.FC = () => {
       // Cast to string is safe as this only called if validated
       await requestResetPasswordEmail(values.email as string)
       setResetPasswordSuccess(
-        'If you have an account,we have sent you the  password reset link to your email address.'
+        'If you have an account,we have sent you the password reset link to your email address.'
       )
     } catch (err) {
       setResetPasswordError(

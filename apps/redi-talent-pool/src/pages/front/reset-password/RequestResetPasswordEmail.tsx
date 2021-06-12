@@ -37,7 +37,7 @@ export const RequestResetPasswordEmail: React.FC = () => {
       // Cast to string is safe as this only called if validated
       await requestResetPasswordEmail(values.email as string)
       setResetPasswordSuccess(
-        'If you have an account,we have sent you the  password reset link to your email address.'
+        'If you have an account,we have sent you the password reset link to your email address.'
       )
     } catch (err) {
       setResetPasswordError(

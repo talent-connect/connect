@@ -20,7 +20,7 @@ const LoggedOutButtons = () => {
       <Button onClick={() => history.push('/front/login')} simple>
         {t('button.login')}
       </Button>
-      <Button onClick={() => history.push('/front/signup/jobseeker')}>
+      <Button onClick={() => history.push('/front/signup-landing')}>
         {t('button.signUp')}
       </Button>
     </>

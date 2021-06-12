@@ -11,7 +11,7 @@ export type TpJobseekerProfile = {
   profileAvatarImageS3Key: string
 
   desiredPositions?: string[]
-  profileImage?: string
+  profileImage?: string // TODO: delete me. I'm only used in the CV bukder prototype
   phoneNumber?: string
   location?: string
 

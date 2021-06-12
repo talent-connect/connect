@@ -21,7 +21,7 @@ import { Content, Element } from 'react-bulma-components'
 import { v4 as uuidv4 } from 'uuid'
 import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpjobseekerprofileQuery } from '../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobseekerProfileQuery } from '../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../molecules/Editable'
 import { EmptySectionPlaceholder } from '../molecules/EmptySectionPlaceholder'
 
@@ -34,10 +34,10 @@ function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
 }
 
 export function EditableLanguages() {
-  const { data: profile } = useTpjobseekerprofileQuery()
+  const { data: profile } = useTpJobseekerProfileQuery()
   const [isEditing, setIsEditing] = useState(false)
 
-  const isEmpty = !(profile?.workingLanguages?.length > 0)
+  const isEmpty = EditableLanguages.isSectionEmpty(profile)
 
   return (
     <Editable
@@ -72,6 +72,11 @@ export function EditableLanguages() {
   )
 }
 
+EditableLanguages.isSectionFilled = (profile: Partial<TpJobseekerProfile>) =>
+  profile?.workingLanguages?.length > 0
+EditableLanguages.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
+  !EditableLanguages.isSectionFilled(profile)
+
 // TODO: put this one in config file
 const MAX_LANGUAGES = 6
 
@@ -80,7 +85,7 @@ const validationSchema = Yup.object({
 })
 
 function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
-  const { data: profile } = useTpjobseekerprofileQuery()
+  const { data: profile } = useTpJobseekerProfileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())

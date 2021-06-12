@@ -16,7 +16,7 @@ import { Link } from 'react-router-dom'
 import * as Yup from 'yup'
 import TpTeaser from '../../../components/molecules/TpTeaser'
 import AccountOperation from '../../../components/templates/AccountOperation'
-import { signUp } from '../../../services/api/api'
+import { signUpCompany, signUpJobseeker } from '../../../services/api/api'
 import { history } from '../../../services/history/history'
 
 // TODO: replace with proper dropdown
@@ -57,7 +57,10 @@ export const validationSchema = Yup.object({
   passwordConfirm: Yup.string()
     .required('Confirm your password')
     .oneOf([Yup.ref('password')], 'Passwords does not match'),
-  agreesWithCodeOfConduct: Yup.boolean().required().oneOf([true]),
+  agreesWithCodeOfConduct: Yup.boolean().when('state', {
+    is: 'drafting-profile',
+    then: Yup.boolean().required().oneOf([true]),
+  }),
   gaveGdprConsent: Yup.boolean().required().oneOf([true]),
   currentlyEnrolledInCourse: Yup.string().when('state', {
     is: 'drafting-profile',
@@ -74,28 +77,30 @@ type SignUpPageType = {
 
 export interface SignUpFormValues {
   // TODO: Make this into an enum/type in shared confif/types
-  state: string
+  state?: string
   contactEmail: string
   password: string
   passwordConfirm: string
   firstName: string
   lastName: string
-  agreesWithCodeOfConduct: boolean
-  jobseeker_currentlyEnrolledInCourse: string
+  agreesWithCodeOfConduct?: boolean
+  jobseeker_currentlyEnrolledInCourse?: string
 }
 
 export default function SignUp() {
   const { type } = useParams<SignUpPageType>()
 
   const initialValues: SignUpFormValues = {
-    state: 'drafting-profile',
     contactEmail: '',
     password: '',
     passwordConfirm: '',
     firstName: '',
     lastName: '',
-    agreesWithCodeOfConduct: false,
-    jobseeker_currentlyEnrolledInCourse: '',
+  }
+  if (type === 'jobseeker') {
+    initialValues.state = 'drafting-profile'
+    initialValues.jobseeker_currentlyEnrolledInCourse = ''
+    initialValues.agreesWithCodeOfConduct = false
   }
 
   const [submitError, setSubmitError] = useState(null)
@@ -113,7 +118,16 @@ export default function SignUp() {
       'gaveGdprConsent',
     ])
     try {
-      await signUp(values.contactEmail, values.password, cleanProfile)
+      if (type === 'jobseeker') {
+        await signUpJobseeker(
+          values.contactEmail,
+          values.password,
+          cleanProfile
+        )
+      }
+      if (type === 'company') {
+        await signUpCompany(values.contactEmail, values.password, cleanProfile)
+      }
       actions.setSubmitting(false)
       history.push(`/front/signup-email-verification`)
     } catch (error) {
@@ -198,22 +212,24 @@ export default function SignUp() {
               />
             )}
 
-            <Checkbox.Form
-              name="agreesWithCodeOfConduct"
-              checked={formik.values.agreesWithCodeOfConduct}
-              className="submit-spacer"
-              {...formik}
-            >
-              I agree to the{' '}
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href="/assets/downloadeables/redi-connect-code-of-conduct.pdf"
+            {type === 'jobseeker' ? (
+              <Checkbox.Form
+                name="agreesWithCodeOfConduct"
+                checked={formik.values.agreesWithCodeOfConduct}
+                className="submit-spacer"
+                {...formik}
               >
-                Code of Conduct
-              </a>{' '}
-              of ReDI School
-            </Checkbox.Form>
+                I agree to the{' '}
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="/assets/downloadeables/redi-connect-code-of-conduct.pdf"
+                >
+                  Code of Conduct
+                </a>{' '}
+                of ReDI School
+              </Checkbox.Form>
+            ) : null}
 
             <Checkbox.Form
               name="gaveGdprConsent"

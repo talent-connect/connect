@@ -15,12 +15,12 @@ import React, { useState } from 'react'
 import { Content, Element, Tag } from 'react-bulma-components'
 import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpjobseekerprofileQuery } from '../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobseekerProfileQuery } from '../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../molecules/Editable'
 import { EmptySectionPlaceholder } from '../molecules/EmptySectionPlaceholder'
 
 export function EditableSummary() {
-  const { data: profile } = useTpjobseekerprofileQuery()
+  const { data: profile } = useTpJobseekerProfileQuery()
   const [isEditing, setIsEditing] = useState(false)
 
   return (
@@ -66,6 +66,11 @@ export function EditableSummary() {
   )
 }
 
+EditableSummary.isSectionFilled = (profile: Partial<TpJobseekerProfile>) =>
+  !!profile?.aboutYourself && profile?.topSkills?.length > 0
+EditableSummary.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
+  !EditableSummary.isSectionFilled(profile)
+
 const formTopSkills = topSkills.map(({ id, label }) => ({
   value: id,
   label,
@@ -85,7 +90,7 @@ const validationSchema = Yup.object({
 })
 
 function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
-  const { data: profile } = useTpjobseekerprofileQuery()
+  const { data: profile } = useTpJobseekerProfileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
   const initialValues: Partial<TpJobseekerProfile> = {
     aboutYourself: profile?.aboutYourself ? profile.aboutYourself : '',
