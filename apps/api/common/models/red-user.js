@@ -68,7 +68,7 @@ module.exports = function (RedUser) {
     if (userSignedUpWithTpAndIsCompany) {
       await sendTpCompanyEmailVerificationSuccessfulEmail({
         recipient: redUser.email,
-        firstName: redUser.tpJobseekerProfile.firstName,
+        firstName: redUser.tpCompanyProfile.firstName,
       }).toPromise()
     }
   })
