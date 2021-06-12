@@ -62,7 +62,7 @@ import CVDownloadButton from '../../../components/molecules/CVDownloadButton'
 import { IconButton, RootRef } from '@material-ui/core'
 
 /* eslint-disable-next-line */
-export interface CVWizardContainerProps {}
+export interface CVWizardContainerProps { }
 
 // const userCVData: CVFormData = {
 //   desiredPositions: ['Frontend Engineer'],
@@ -270,6 +270,7 @@ export function CVWizardContainer(props: CVWizardContainerProps) {
             >
               <CVPDFPreviewMemoized
                 cvData={cvPreviewData}
+                pdfHeightPx={cvContainerHeight}
                 pdfWidthPx={cvPreviewElementWidth}
               />
             </div>
@@ -286,7 +287,7 @@ export function CVWizardContainer(props: CVWizardContainerProps) {
             {currentFormPage.nextEvents.includes('PREV_PAGE') && (
               <Button
                 onClick={() => sendFormPageMessage('PREV_PAGE')}
-                // disabled={!(formik.dirty && formik.isValid)}
+              // disabled={!(formik.dirty && formik.isValid)}
               >
                 Previous
               </Button>
@@ -294,7 +295,7 @@ export function CVWizardContainer(props: CVWizardContainerProps) {
             {currentFormPage.nextEvents.includes('NEXT_PAGE') && (
               <Button
                 onClick={() => sendFormPageMessage('NEXT_PAGE')}
-                // disabled={!(formik.dirty && formik.isValid)}
+              // disabled={!(formik.dirty && formik.isValid)}
               >
                 Next
               </Button>

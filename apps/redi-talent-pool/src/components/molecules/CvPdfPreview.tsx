@@ -218,6 +218,11 @@ const styles = StyleSheet.create({
     lineHeight: '1',
     letterSpacing: '0.41px',
   },
+  hiddenText: {
+    height: 0,
+    fontSize: 0,
+    color: '#ffffff'
+  }
 })
 
 export const CVPDF = ({
@@ -256,6 +261,7 @@ export const CVPDF = ({
         </View>
         <View style={styles.content}>
           <View style={styles.contentLeft}>
+            <Text style={styles.hiddenText}>startOfContentLeft</Text>
             <View style={styles.contentViewLeft}>
               <Text style={styles.contentHeading}>About</Text>
               <Text style={styles.contentPara}>{aboutYourself}</Text>
@@ -295,6 +301,7 @@ export const CVPDF = ({
                 </View>
               ))}
             </View>
+            <Text style={styles.hiddenText}>endOfContentLeft</Text>
           </View>
           <View style={styles.contentRight}>
             <View style={styles.contactView}>
@@ -392,29 +399,48 @@ const concatenateToMultiline = (items: string[]): string => {
     .trim()
 }
 
+const getNodeTopPosition = (xPath: string) => {
+  const node: any = document.evaluate(xPath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue
+
+  return Number(node?.style?.top?.replace('px', '')) || 0;
+}
+
 export const CVPDFPreview = (
-  { cvData, pdfWidthPx }: any //: CVPDFPreviewProps & {
+  { cvData, pdfHeightPx, pdfWidthPx }: any //: CVPDFPreviewProps & {
 ) =>
-  //pdfWidthPx: number
-  {
-    const [instance, updateInstance] = usePDF({
-      document: <CVPDF cvData={cvData} />,
-    })
+//pdfWidthPx: number
+{
+  const [instance, updateInstance] = usePDF({
+    document: <CVPDF cvData={cvData} />,
+  })
 
-    useEffect(() => updateInstance(), [cvData, updateInstance])
+  useEffect(() => updateInstance(), [cvData, updateInstance])
 
-    const url = instance.blob ? URL.createObjectURL(instance.blob) : null
+  const url = instance.blob ? URL.createObjectURL(instance.blob) : null
 
-    return (
-      <div>
-        {url && (
-          <ReactPDFDocument file={url}>
-            <ReactPDFPage pageNumber={1} width={pdfWidthPx} />
-          </ReactPDFDocument>
-        )}
-      </div>
-    )
-  }
+  const onPDFPageRenderSuccess = () => {
+    const startNodeTopPosition = getNodeTopPosition("//span[text()='startOfContentLeft']");
+    const endNodeTopPosition = getNodeTopPosition("//span[text()='endOfContentLeft']");
+
+    const contentLeftCurrentHeight = endNodeTopPosition - startNodeTopPosition;
+    const contentLeftMaxHeight = pdfHeightPx - startNodeTopPosition;
+    const contentLeftRemainingHeight = pdfHeightPx - endNodeTopPosition;
+
+    console.debug({ contentLeftCurrentHeight, contentLeftMaxHeight, contentLeftRemainingHeight });
+
+  };
+
+  return (
+    <div>
+      {url && (
+        <ReactPDFDocument file={url}>
+          <ReactPDFPage pageNumber={1} width={pdfWidthPx} onRenderSuccess={onPDFPageRenderSuccess} />
+        </ReactPDFDocument>
+      )
+      }
+    </div >
+  )
+}
 
 export const CVPDFPreviewMemoized = React.memo(
   CVPDFPreview,
