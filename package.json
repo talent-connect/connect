@@ -148,7 +148,7 @@
     "@nrwl/tao": "12.0.8",
     "@nrwl/web": "12.0.8",
     "@nrwl/workspace": "^12.0.8",
-    "@testing-library/react": "11.2.6",
+    "@testing-library/react": "^11.2.7",
     "@types/axios": "^0.14.0",
     "@types/classnames": "^2.2.9",
     "@types/jest": "26.0.8",

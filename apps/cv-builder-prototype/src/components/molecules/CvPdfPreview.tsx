@@ -11,12 +11,13 @@ import {
 } from '@react-pdf/renderer'
 import { isEqual } from 'lodash'
 import moment from 'moment'
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect, useLayoutEffect } from 'react'
 import {
   Document as ReactPDFDocument,
   Page as ReactPDFPage,
   pdfjs,
 } from 'react-pdf/dist/esm/entry.webpack'
+import { screen } from '@testing-library/react'
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`
 
@@ -134,6 +135,13 @@ const styles = StyleSheet.create({
     lineHeight: '1.1',
     letterSpacing: '0.63px',
     textTransform: 'uppercase',
+  },
+  contentDummyHeading: {
+    fontSize: '16px',
+    fontWeight: 900,
+    lineHeight: '1.1',
+    letterSpacing: '0.63px',
+    color: 'white',
   },
   contentSubHeading: {
     fontSize: '12px',
@@ -292,6 +300,7 @@ export const CVPDF = ({
                   <Text style={styles.contentPara}>{project.description}</Text>
                 </View>
               ))}
+              <Text style={styles.contentDummyHeading}>{`!@#$%^!@#$%`}</Text>
             </View>
           </View>
           <View style={styles.contentRight}>
@@ -391,7 +400,7 @@ const concatenateToMultiline = (items: string[]): string => {
 }
 
 export const CVPDFPreview = (
-  { cvData, pdfWidthPx }: any //: CVPDFPreviewProps & {
+  { cvData, pdfWidthPx, setLeftColumnContentsHeight }: any //: CVPDFPreviewProps & {
 ) =>
   //pdfWidthPx: number
   {
@@ -403,11 +412,33 @@ export const CVPDFPreview = (
 
     const url = instance.blob ? URL.createObjectURL(instance.blob) : null
 
+    const onRenderSuccess = useCallback(() => {
+      console.log('WOHOO!')
+      const aboutElementMatches = screen.queryAllByText('ABOUT')
+      if (!aboutElementMatches || aboutElementMatches.length == 0) return
+      const aboutElement = aboutElementMatches[0]
+
+      const dummyElementMatches = screen.queryAllByText('!@#$%^!@#$%')
+      if (!dummyElementMatches || dummyElementMatches.length == 0) return
+      const dummyElement = dummyElementMatches[0]
+
+      const height =
+        parseInt(dummyElement.style.top, 10) -
+        parseInt(aboutElement.style.top, 10)
+
+      setLeftColumnContentsHeight(height)
+      console.log(height)
+    }, [setLeftColumnContentsHeight])
+
     return (
       <div>
         {url && (
           <ReactPDFDocument file={url}>
-            <ReactPDFPage pageNumber={1} width={pdfWidthPx} />
+            <ReactPDFPage
+              pageNumber={1}
+              width={pdfWidthPx}
+              onRenderSuccess={() => onRenderSuccess()}
+            />
           </ReactPDFDocument>
         )}
       </div>
