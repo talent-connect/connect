@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from 'react-query'
 import { updateCurrentUserTpCompanyProfile } from '../services/api/api'
 
-export function useTpcompanyUpdateMutation() {
+export function useTpCompanyProfileUpdateMutation() {
   const queryClient = useQueryClient()
 
   return useMutation(

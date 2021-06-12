@@ -20,119 +20,84 @@ import moment from 'moment'
 import React, { useState } from 'react'
 import { Columns, Content, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
-import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpCompanyProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
+import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
-
-const formDesiredPositions = desiredPositions.map(({ id, label }) => ({
-  value: id,
-  label,
-}))
 
 export function EditableContact() {
   const { data: profile } = useTpCompanyProfileQuery()
   const [isEditing, setIsEditing] = useState(false)
 
-  const isEmpty = EditableImportantDetails.isSectionEmpty(profile)
+  const isEmpty = EditableContact.isSectionEmpty(profile)
 
   return (
     <Editable
       isEditing={isEditing}
       setIsEditing={setIsEditing}
-      title="Important details"
+      title="Contact"
       readComponent={
         isEmpty ? (
           <EmptySectionPlaceholder
             height="tall"
-            text="Add your contact details, type of employment and availability"
+            text="Add your contact details"
             onClick={() => setIsEditing(true)}
           />
         ) : (
           <Columns>
-            <Columns.Column size={6}>
-              <Caption>Availability</Caption>
-              <Content>
-                {profile?.availability && profile.availability !== 'date' && (
+            {profile?.firstName || profile?.lastName ? (
+              <Columns.Column size={6}>
+                <Caption>Name</Caption>
+                <Content>
                   <p>
-                    {availabilityOptionsIdToLabelMap[profile?.availability]}
+                    {profile?.firstName} {profile?.lastName}
                   </p>
-                )}
-                {profile?.availability &&
-                  profile.availability === 'date' &&
-                  profile.ifAvailabilityIsDate_date && (
-                    <p>
-                      {moment(profile.ifAvailabilityIsDate_date).format(
-                        'DD.MM.YYYY'
-                      )}
-                    </p>
-                  )}
-              </Content>
-              {profile &&
-              profile.desiredEmploymentType &&
-              profile.desiredEmploymentType.length > 0 ? (
-                <>
-                  <Caption>Type of work</Caption>
-                  <PipeList
-                    items={profile.desiredEmploymentType.map(
-                      (x) => desiredEmploymentTypeOptionsIdToLabelMap[x]
-                    )}
-                  />
-                </>
-              ) : null}
-            </Columns.Column>
-            <Columns.Column size={6}>
-              <Caption>Contact</Caption>
-              <Content>
-                {[
-                  profile?.phoneNumber,
-                  profile?.contactEmail,
-                ].map((contactItem) =>
-                  contactItem ? <p>{contactItem}</p> : null
-                )}
-              </Content>
-            </Columns.Column>
+                </Content>
+              </Columns.Column>
+            ) : null}
+            {profile.phoneNumber ? (
+              <Columns.Column size={6}>
+                <Caption>Phone</Caption>
+                <Content>
+                  <p>{profile?.phoneNumber}</p>
+                </Content>
+              </Columns.Column>
+            ) : null}
+            {profile.contactEmail ? (
+              <Columns.Column size={6}>
+                <Caption>Email</Caption>
+                <Content>
+                  <p>{profile?.contactEmail}</p>
+                </Content>
+              </Columns.Column>
+            ) : null}
           </Columns>
         )
       }
-      modalTitle="Help employers get in touch"
-      modalHeadline="Important Details"
+      modalTitle="Help applicants get in touch"
+      modalHeadline="Contact"
       modalBody={<Form setIsEditing={setIsEditing} />}
       modalStyles={{ minHeight: '40rem' }}
     />
   )
 }
 
-EditableImportantDetails.isSectionFilled = (
-  profile: Partial<TpCompanyProfile>
-) =>
-  profile?.availability ||
-  profile?.desiredEmploymentType?.length > 0 ||
+EditableContact.isSectionFilled = (profile: Partial<TpCompanyProfile>) =>
+  profile?.firstName ||
+  profile?.lastName ||
+  profile?.contactEmail ||
   profile?.phoneNumber
-EditableImportantDetails.isSectionEmpty = (
-  profile: Partial<TpCompanyProfile>
-) => !EditableImportantDetails.isSectionFilled(profile)
-
-const validationSchema = Yup.object({
-  desiredPositions: Yup.array().max(
-    3,
-    'You can select up to three desired positions'
-  ),
-})
+EditableContact.isSectionEmpty = (profile: Partial<TpCompanyProfile>) =>
+  !EditableContact.isSectionFilled(profile)
 
 function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
   const { data: profile } = useTpCompanyProfileQuery()
-  const mutation = useTpjobseekerprofileUpdateMutation()
+  const mutation = useTpCompanyProfileUpdateMutation()
   const initialValues: Partial<TpCompanyProfile> = {
-    availability: profile?.availability ?? '',
-    desiredEmploymentType: profile?.desiredEmploymentType ?? [],
+    firstName: profile?.firstName ?? '',
+    lastName: profile?.lastName ?? '',
     contactEmail: profile?.contactEmail ?? '',
     phoneNumber: profile?.phoneNumber ?? '',
-    ifAvailabilityIsDate_date: profile?.ifAvailabilityIsDate_date
-      ? new Date(profile.ifAvailabilityIsDate_date)
-      : null,
-    hrSummit2021JobFairCompanyJobPreferences:
-      profile?.hrSummit2021JobFairCompanyJobPreferences ?? '',
   }
   const onSubmit = (values: Partial<TpCompanyProfile>) => {
     formik.setSubmitting(true)
@@ -147,10 +112,8 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
   }
   const formik = useFormik({
     initialValues,
-    validationSchema,
     enableReinitialize: true,
     onSubmit,
-    validateOnMount: true,
   })
 
   return (
@@ -161,54 +124,30 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
         responsive={{ mobile: { textSize: { value: 5 } } }}
         className="oneandhalf-bs"
       >
-        This is where employers can get the basics that they need to get in
-        touch and see your work.
+        Let ReDI Jobseekers know how to get in touch.
       </Element>
       <FormInput
         name="contactEmail"
-        placeholder="awesome@gmail.com"
-        label="Email*"
+        placeholder="Erika"
+        label="First name"
+        {...formik}
+      />
+      <FormInput
+        name="lastName"
+        placeholder="Mustermann"
+        label="Last name"
+        {...formik}
+      />
+      <FormInput
+        name="contactEmail"
+        placeholder="your.name@company.com"
+        label="Email"
         {...formik}
       />
       <FormInput
         name="phoneNumber"
         placeholder="0176 01234567"
         label="Phone Number"
-        {...formik}
-      />
-      <FormSelect
-        label="What kind of employment are you looking for?*"
-        name="desiredEmploymentType"
-        items={formDesiredEmploymentType}
-        {...formik}
-        multiselect
-      />
-      <FormSelect
-        label="When are you available to start?*"
-        name="availability"
-        items={formAvailabilityOptions}
-        {...formik}
-      />
-      {formik.values.availability === 'date' ? (
-        <FormDatePicker
-          placeholder="Select your date"
-          name="ifAvailabilityIsDate_date"
-          dateFormat="dd MMMM yyyy"
-          minDate={new Date()}
-          showMonthDropdown
-          showYearDropdown
-          dropdownMode="select"
-          isClearable
-          {...formik}
-        />
-      ) : null}
-      <FormTextArea
-        label="Company/job position preferences job fair 2021 (please give us your 1st,
-      2nd & 3rd priority)"
-        name="hrSummit2021JobFairCompanyJobPreferences"
-        rows={4}
-        placeholder="If you could pick, which companies or jobs would you be most interested in learning more about during the Job Fair?"
-        help
         {...formik}
       />
 
@@ -221,12 +160,3 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
     </>
   )
 }
-
-const formDesiredEmploymentType = desiredEmploymentTypeOptions.map(
-  ({ id, label }) => ({ value: id, label })
-)
-
-const formAvailabilityOptions = availabilityOptions.map(({ id, label }) => ({
-  value: id,
-  label,
-}))

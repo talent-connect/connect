@@ -55,12 +55,7 @@ export function Editable({
       )}
 
       <div className="profile-section--body">{readComponent}</div>
-      <Modal
-        title=""
-        show={isEditing}
-        stateFn={setIsEditing}
-        styles={modalStyles}
-      >
+      <Modal title="" show={isEditing} stateFn={setIsEditing}>
         <Modal.Body>
           <Element renderAs="h4" textTransform="uppercase" textSize={6}>
             {modalTitle}

@@ -20,7 +20,7 @@ import moment from 'moment'
 import React, { useState } from 'react'
 import { Columns, Content, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
-import { useTpcompanyUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
+import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
@@ -89,7 +89,7 @@ EditableDetails.isSectionEmpty = (profile: Partial<TpCompanyProfile>) =>
 
 function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
   const { data: profile } = useTpCompanyProfileQuery()
-  const mutation = useTpcompanyUpdateMutation()
+  const mutation = useTpCompanyProfileUpdateMutation()
 
   const initialValues: Partial<TpCompanyProfile> = {
     industry: profile?.industry ?? '',

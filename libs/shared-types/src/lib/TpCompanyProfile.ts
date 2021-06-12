@@ -14,7 +14,7 @@ export type TpCompanyProfile = {
   website?: string
   linkedInUrl?: string
 
-  phone?: string
+  phoneNumber?: string
 
   about?: string
 

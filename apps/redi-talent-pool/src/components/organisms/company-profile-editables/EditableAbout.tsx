@@ -14,7 +14,7 @@ import { useFormik } from 'formik'
 import React, { useState } from 'react'
 import { Content, Element, Tag } from 'react-bulma-components'
 import * as Yup from 'yup'
-import { useTpcompanyUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
+import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
@@ -78,10 +78,9 @@ const validationSchema = Yup.object({
 
 function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
   const { data: profile } = useTpCompanyProfileQuery()
-  const mutation = useTpcompanyUpdateMutation()
+  const mutation = useTpCompanyProfileUpdateMutation()
   const initialValues: Partial<TpCompanyProfile> = {
-    aboutYourself: profile?.aboutYourself ? profile.aboutYourself : '',
-    topSkills: profile?.topSkills ?? [],
+    about: profile?.about ?? '',
   }
   const onSubmit = (values: Partial<TpCompanyProfile>) => {
     formik.setSubmitting(true)

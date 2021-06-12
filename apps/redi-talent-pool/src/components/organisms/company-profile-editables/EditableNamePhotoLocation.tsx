@@ -10,7 +10,7 @@ import { useFormik } from 'formik'
 import React, { useState } from 'react'
 import { Columns, Content, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
-import { useTpcompanyUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
+import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { Editable } from '../../molecules/Editable'
@@ -19,7 +19,7 @@ import Avatar from '../Avatar'
 
 export function EditableNamePhotoLocation() {
   const { data: profile } = useTpCompanyProfileQuery()
-  const mutation = useTpcompanyUpdateMutation()
+  const mutation = useTpCompanyProfileUpdateMutation()
   const [isEditing, setIsEditing] = useState(false)
 
   const isLocationEmpty = EditableNamePhotoLocation.isSectionEmpty(profile)
@@ -93,7 +93,7 @@ const validationSchema = Yup.object({
 
 function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
   const { data: profile } = useTpCompanyProfileQuery()
-  const mutation = useTpcompanyUpdateMutation()
+  const mutation = useTpCompanyProfileUpdateMutation()
   const initialValues: Partial<TpCompanyProfile> = {
     companyName: profile?.companyName ?? '',
     location: profile?.location ?? '',
