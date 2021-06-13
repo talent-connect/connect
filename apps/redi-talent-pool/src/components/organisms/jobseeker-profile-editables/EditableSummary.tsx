@@ -137,7 +137,7 @@ function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
         label="About you (100-600 characters)"
         name="aboutYourself"
         rows={7}
-        placeholder="Example: UX Designer with an academic background in Psychology. Experienced in negotiating with different kinds of clients and and resonlving customer complaints with a high level of empathy. Committed to understanding the human mind and designing impactful products by leveraging a strong sense of analythical and critical thinking."
+        placeholder="Example: UX Designer with an academic background in Psychology. Experienced in negotiating with different kinds of clients and and resolving customer complaints with a high level of empathy. Committed to understanding the human mind and designing impactful products by leveraging a strong sense of analythical and critical thinking."
         minChar={100}
         maxChar={600}
         {...formik}
@@ -160,8 +160,8 @@ function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
 const summaryTips = `Write not more than 3-4 sentences.
 <br /><br />
 Make sure you talk about:<br />
-1. Who are you? - Include your professional title and past relevant experiences or education with key funcitons.
+1. Who are you? - Include your professional title and past relevant experiences or education with key functions.
 <br /><br />
-2. What do you have to offer?- Emphasize your strenghts and skills that matter in your desired job, mention notable achievements, projects.
+2. What do you have to offer? - Emphasize your strengths and skills that matter in your desired job, mention notable achievements, projects.
 <br /><br />
-3. What is your goal?- Emplain how you want to add value and how your approach problems that your are passionate to solve.`
+3. What is your goal? - Explain how you want to add value and how you approach problems you are passionate about solving.`
