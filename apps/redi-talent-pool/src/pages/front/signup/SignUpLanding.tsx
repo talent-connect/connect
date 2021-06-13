@@ -1,16 +1,16 @@
-import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
-import { Content, Columns, Element } from 'react-bulma-components'
-import AccountOperation from '../../../components/templates/AccountOperation'
 import {
   Button,
   Heading,
   SVGImage,
+  SVGImages,
 } from '@talent-connect/shared-atomic-design-components'
-import { SVGImages } from '@talent-connect/shared-atomic-design-components'
 import classnames from 'classnames'
-import './SignUpLanding.scss'
+import React, { useState } from 'react'
+import { Columns, Content, Element } from 'react-bulma-components'
+import { useHistory } from 'react-router-dom'
 import TpTeaser from '../../../components/molecules/TpTeaser'
+import AccountOperation from '../../../components/templates/AccountOperation'
+import './SignUpLanding.scss'
 
 const SignUpLanding = () => {
   const [selectedType, setSelectedType] = useState('')

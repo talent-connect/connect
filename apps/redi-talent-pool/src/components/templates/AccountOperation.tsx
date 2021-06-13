@@ -1,8 +1,7 @@
-import React from 'react'
-import Footer from '../organisms/Footer'
 import { RediTalentPoolLogo } from '@talent-connect/shared-atomic-design-components'
-
+import React from 'react'
 import { Container, Section } from 'react-bulma-components'
+import Footer from '../organisms/Footer'
 
 const AccountOperation: React.FunctionComponent = ({ children }) => (
   <>

@@ -1,5 +1,3 @@
-import { Tooltip } from '@material-ui/core'
-import { Button } from '@talent-connect/shared-atomic-design-components'
 import React from 'react'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
 import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'

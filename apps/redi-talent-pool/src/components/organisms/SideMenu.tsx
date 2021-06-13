@@ -1,9 +1,8 @@
 import React, { ReactNode } from 'react'
-import './SideMenu.scss'
 import { NavLink } from 'react-router-dom'
-import { ReactComponent as Mentorship } from '../../assets/images/mentorship.svg'
 import { ReactComponent as Applications } from '../../assets/images/applications.svg'
 import { ReactComponent as Profile } from '../../assets/images/profile.svg'
+import './SideMenu.scss'
 
 interface MenuItemProps {
   url: string

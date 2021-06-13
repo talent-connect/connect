@@ -1,22 +1,20 @@
-import axios, { AxiosResponse } from 'axios'
 import { API_URL } from '@talent-connect/shared-config'
-import { AccessToken } from '@talent-connect/shared-types'
 import {
+  AccessToken,
   RedUser,
-  TpJobseekerProfile,
   TpCompanyProfile,
+  TpJobseekerProfile,
 } from '@talent-connect/shared-types'
+import axios from 'axios'
+import { QueryClient } from 'react-query'
 import {
-  purgeAllSessionData,
-  saveRedUserToLocalStorage,
   getAccessTokenFromLocalStorage,
+  purgeAllSessionData,
   saveAccessTokenToLocalStorage,
-  getRedUserFromLocalStorage,
+  saveRedUserToLocalStorage,
 } from '../auth/auth'
 import { history } from '../history/history'
 import { http } from '../http/http'
-import { UserType } from '@talent-connect/shared-types'
-import { QueryClient } from 'react-query'
 
 export const queryClient = new QueryClient()
 

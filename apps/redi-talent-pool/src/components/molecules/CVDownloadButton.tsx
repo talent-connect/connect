@@ -1,8 +1,7 @@
-import React from 'react'
-
-import { StyleSheet, PDFDownloadLink } from '@react-pdf/renderer'
+import { PDFDownloadLink, StyleSheet } from '@react-pdf/renderer'
 import { Button } from '@talent-connect/shared-atomic-design-components'
-import { CVPDF, UserCVData } from './CvPdfPreview'
+import React from 'react'
+import { CVPDF } from './CvPdfPreview'
 
 // Create styles
 const styles = StyleSheet.create({

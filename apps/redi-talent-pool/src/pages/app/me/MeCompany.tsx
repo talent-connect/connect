@@ -1,7 +1,5 @@
-import { Button, Tooltip } from '@material-ui/core'
-import classnames from 'clsx'
 import React from 'react'
-import { Columns, Element } from 'react-bulma-components'
+import { Columns } from 'react-bulma-components'
 import { EditableAbout } from '../../../components/organisms/company-profile-editables/EditableAbout'
 import { EditableContact } from '../../../components/organisms/company-profile-editables/EditableContact'
 import { EditableDetails } from '../../../components/organisms/company-profile-editables/EditableDetails'
