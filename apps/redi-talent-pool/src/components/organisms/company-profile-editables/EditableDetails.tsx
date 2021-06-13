@@ -62,10 +62,12 @@ export function EditableDetails() {
                   <Content>
                     {[profile?.website, profile?.linkedInUrl]
                       .filter((l) => l)
-                      .map((link) => (
-                        <a href={link} target="_blank">
-                          {link}
-                        </a>
+                      .map((link, idx) => (
+                        <p key={idx}>
+                          <a href={link} target="_blank" rel="noreferrer">
+                            {link.replace(/http(s)?:\/\//g, '')}
+                          </a>
+                        </p>
                       ))}
                   </Content>
                 </>
@@ -76,7 +78,7 @@ export function EditableDetails() {
       }
       modalTitle="Help employers get in touch"
       modalHeadline="Important Details"
-      modalBody={<Form setIsEditing={setIsEditing} />}
+      modalBody={<ModalForm setIsEditing={setIsEditing} />}
       modalStyles={{ minHeight: '40rem' }}
     />
   )
@@ -87,7 +89,7 @@ EditableDetails.isSectionFilled = (profile: Partial<TpCompanyProfile>) =>
 EditableDetails.isSectionEmpty = (profile: Partial<TpCompanyProfile>) =>
   !EditableDetails.isSectionFilled(profile)
 
-function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
+function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
   const { data: profile } = useTpCompanyProfileQuery()
   const mutation = useTpCompanyProfileUpdateMutation()
 

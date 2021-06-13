@@ -60,7 +60,7 @@ export function EditableSummary() {
       }
       modalTitle="About you"
       modalHeadline="Summary"
-      modalBody={<Form setIsEditing={setIsEditing} />}
+      modalBody={<ModalForm setIsEditing={setIsEditing} />}
       modalStyles={{ minHeight: 700 }}
     />
   )
@@ -89,7 +89,7 @@ const validationSchema = Yup.object({
     .max(maxChars, 'The text about yourself can be up to 600 characters long.'),
 })
 
-function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
+function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
   const { data: profile } = useTpJobseekerProfileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
   const initialValues: Partial<TpJobseekerProfile> = {

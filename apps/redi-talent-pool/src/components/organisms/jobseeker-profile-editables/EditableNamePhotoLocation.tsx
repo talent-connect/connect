@@ -70,7 +70,7 @@ export function EditableNamePhotoLocation() {
       }
       modalTitle="Basic information"
       modalHeadline="Name and location"
-      modalBody={<Form setIsEditing={setIsEditing} />}
+      modalBody={<ModalForm setIsEditing={setIsEditing} />}
     />
   )
 }
@@ -88,7 +88,7 @@ const validationSchema = Yup.object({
   location: Yup.string().required('Your location is required'),
 })
 
-function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
+function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
   const { data: profile } = useTpJobseekerProfileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
   const initialValues: Partial<TpJobseekerProfile> = {

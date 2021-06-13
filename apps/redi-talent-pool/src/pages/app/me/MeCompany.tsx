@@ -2,6 +2,8 @@ import { Button, Tooltip } from '@material-ui/core'
 import classnames from 'clsx'
 import React from 'react'
 import { Columns, Element } from 'react-bulma-components'
+import { EditableAbout } from '../../../components/organisms/company-profile-editables/EditableAbout'
+import { EditableContact } from '../../../components/organisms/company-profile-editables/EditableContact'
 import { EditableDetails } from '../../../components/organisms/company-profile-editables/EditableDetails'
 import { EditableNamePhotoLocation } from '../../../components/organisms/company-profile-editables/EditableNamePhotoLocation'
 import { LoggedIn } from '../../../components/templates'
@@ -17,11 +19,11 @@ export function MeCompany() {
       <Columns className="is-6 is-variable">
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'three-fifths' }}>
           <EditableNamePhotoLocation />
-          {/* <EditableAbout /> */}
+          <EditableAbout />
         </Columns.Column>
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'two-fifths' }}>
           <EditableDetails />
-          {/* <EditableContact /> */}
+          <EditableContact />
         </Columns.Column>
       </Columns>
       {/* <EditableJobPostings /> */}

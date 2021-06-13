@@ -52,7 +52,7 @@ export function EditableOverview() {
       }
       modalTitle="Interests & About"
       modalHeadline="Overview"
-      modalBody={<Form setIsEditing={setIsEditing} />}
+      modalBody={<ModalForm setIsEditing={setIsEditing} />}
     />
   )
 }
@@ -68,7 +68,7 @@ const validationSchema = Yup.object({
     .max(3, 'You can select up to three desired positions'),
 })
 
-function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
+function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
   const { data: profile } = useTpJobseekerProfileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
   const initialValues: Partial<TpJobseekerProfile> = {

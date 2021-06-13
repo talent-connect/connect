@@ -14,6 +14,8 @@ import {
   desiredEmploymentTypeOptions,
   desiredEmploymentTypeOptionsIdToLabelMap,
   desiredPositions,
+  immigrationStatusOptions,
+  immigrationStatusOptionsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
 import moment from 'moment'
@@ -24,11 +26,6 @@ import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tp
 import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
-
-const formDesiredPositions = desiredPositions.map(({ id, label }) => ({
-  value: id,
-  label,
-}))
 
 export function EditableImportantDetails() {
   const { data: profile } = useTpJobseekerProfileQuery()
@@ -50,27 +47,10 @@ export function EditableImportantDetails() {
           />
         ) : (
           <Columns>
-            <Columns.Column size={6}>
-              <Caption>Availability</Caption>
-              <Content>
-                {profile?.availability && profile.availability !== 'date' && (
-                  <p>
-                    {availabilityOptionsIdToLabelMap[profile?.availability]}
-                  </p>
-                )}
-                {profile?.availability &&
-                  profile.availability === 'date' &&
-                  profile.ifAvailabilityIsDate_date && (
-                    <p>
-                      {moment(profile.ifAvailabilityIsDate_date).format(
-                        'DD.MM.YYYY'
-                      )}
-                    </p>
-                  )}
-              </Content>
-              {profile &&
-              profile.desiredEmploymentType &&
-              profile.desiredEmploymentType.length > 0 ? (
+            {profile &&
+            profile.desiredEmploymentType &&
+            profile.desiredEmploymentType.length > 0 ? (
+              <Columns.Column size={12}>
                 <>
                   <Caption>Type of work</Caption>
                   <PipeList
@@ -79,25 +59,65 @@ export function EditableImportantDetails() {
                     )}
                   />
                 </>
-              ) : null}
-            </Columns.Column>
-            <Columns.Column size={6}>
-              <Caption>Contact</Caption>
-              <Content>
-                {[
-                  profile?.phoneNumber,
-                  profile?.contactEmail,
-                ].map((contactItem) =>
-                  contactItem ? <p>{contactItem}</p> : null
-                )}
-              </Content>
-            </Columns.Column>
+              </Columns.Column>
+            ) : null}
+
+            {profile?.availability ? (
+              <Columns.Column size={6}>
+                <Caption>Availability</Caption>
+                <Content>
+                  {profile?.availability && profile.availability !== 'date' && (
+                    <p>
+                      {availabilityOptionsIdToLabelMap[profile?.availability]}
+                    </p>
+                  )}
+                  {profile?.availability &&
+                    profile.availability === 'date' &&
+                    profile.ifAvailabilityIsDate_date && (
+                      <p>
+                        {moment(profile.ifAvailabilityIsDate_date).format(
+                          'DD.MM.YYYY'
+                        )}
+                      </p>
+                    )}
+                </Content>
+              </Columns.Column>
+            ) : null}
+
+            {profile?.phoneNumber || profile?.contactEmail ? (
+              <Columns.Column size={6}>
+                <Caption>Contact</Caption>
+                <Content>
+                  {[
+                    profile?.phoneNumber,
+                    profile?.contactEmail,
+                  ].map((contactItem) =>
+                    contactItem ? <p>{contactItem}</p> : null
+                  )}
+                </Content>
+              </Columns.Column>
+            ) : null}
+
+            {profile?.immigrationStatus ? (
+              <Columns.Column size={12}>
+                <Caption>Immigration status</Caption>
+                <Content>
+                  <p>
+                    {
+                      immigrationStatusOptionsIdToLabelMap[
+                        profile?.immigrationStatus
+                      ]
+                    }
+                  </p>
+                </Content>
+              </Columns.Column>
+            ) : null}
           </Columns>
         )
       }
       modalTitle="Help employers get in touch"
       modalHeadline="Important Details"
-      modalBody={<Form setIsEditing={setIsEditing} />}
+      modalBody={<ModalForm setIsEditing={setIsEditing} />}
       modalStyles={{ minHeight: '40rem' }}
     />
   )
@@ -120,7 +140,7 @@ const validationSchema = Yup.object({
   ),
 })
 
-function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
+function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
   const { data: profile } = useTpJobseekerProfileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
   const initialValues: Partial<TpJobseekerProfile> = {
@@ -131,6 +151,7 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
     ifAvailabilityIsDate_date: profile?.ifAvailabilityIsDate_date
       ? new Date(profile.ifAvailabilityIsDate_date)
       : null,
+    immigrationStatus: profile?.immigrationStatus ?? '',
     hrSummit2021JobFairCompanyJobPreferences:
       profile?.hrSummit2021JobFairCompanyJobPreferences ?? '',
   }
@@ -202,6 +223,12 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
           {...formik}
         />
       ) : null}
+      <FormSelect
+        label="What is your immigration status?"
+        name="immigrationStatus"
+        items={formImmigrationStatusOptions}
+        {...formik}
+      />
       <FormTextArea
         label="Company/job position preferences job fair 2021 (please give us your 1st,
       2nd & 3rd priority)"
@@ -222,11 +249,18 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
   )
 }
 
-const formDesiredEmploymentType = desiredEmploymentTypeOptions.map(
-  ({ id, label }) => ({ value: id, label })
-)
-
 const formAvailabilityOptions = availabilityOptions.map(({ id, label }) => ({
   value: id,
   label,
 }))
+
+const formDesiredEmploymentType = desiredEmploymentTypeOptions.map(
+  ({ id, label }) => ({ value: id, label })
+)
+
+const formImmigrationStatusOptions = immigrationStatusOptions.map(
+  ({ id, label }) => ({
+    value: id,
+    label,
+  })
+)

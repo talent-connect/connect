@@ -607,6 +607,30 @@ export const certificationTypesIdToLabelMap = mapValues(
   'label'
 )
 
+export const immigrationStatusOptions: DropdownOptions = [
+  {
+    label:
+      'EU-Citizenship or unlimited residence permission (Niederlassungserlaubnis)',
+    id: 'euCitizenshipOrUnlimitedResidencePermissionNiederlassungserlaubnis',
+  },
+  { label: 'EU Blue card (Blaue Karte)', id: 'euBlueCardBlaueKarte' },
+  {
+    label: 'Temporary residence permission (Aufenthaltstitel) ',
+    id: 'temporaryResidencePermissionAufenthaltstitel',
+  },
+  {
+    label: 'Visa (Nationalvisum or Jobseeker visum)',
+    id: 'visaNationalvisumOrJobseekerVisum',
+  },
+  { label: 'Student visa ', id: 'studentVisa' },
+  { label: 'Schengen visa', id: 'schengenVisa' },
+]
+
+export const immigrationStatusOptionsIdToLabelMap = mapValues(
+  keyBy(immigrationStatusOptions, 'id'),
+  'label'
+)
+
 export const formMonths = {
   0: 'January',
   1: 'February',

@@ -28,6 +28,7 @@ export type TpJobseekerProfile = {
   desiredEmploymentType?: string[]
   availability?: string
   ifAvailabilityIsDate_date?: Date
+  immigrationStatus?: string
   aboutYourself?: string
   topSkills?: string[]
   experience?: ExperienceRecord[]

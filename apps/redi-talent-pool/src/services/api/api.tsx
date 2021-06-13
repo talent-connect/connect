@@ -16,6 +16,9 @@ import {
 import { history } from '../history/history'
 import { http } from '../http/http'
 import { UserType } from '@talent-connect/shared-types'
+import { QueryClient } from 'react-query'
+
+export const queryClient = new QueryClient()
 
 export const signUpJobseeker = async (
   email: string,

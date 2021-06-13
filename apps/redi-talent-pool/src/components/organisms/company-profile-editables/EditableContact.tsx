@@ -76,7 +76,7 @@ export function EditableContact() {
       }
       modalTitle="Help applicants get in touch"
       modalHeadline="Contact"
-      modalBody={<Form setIsEditing={setIsEditing} />}
+      modalBody={<ModalForm setIsEditing={setIsEditing} />}
       modalStyles={{ minHeight: '40rem' }}
     />
   )
@@ -90,7 +90,7 @@ EditableContact.isSectionFilled = (profile: Partial<TpCompanyProfile>) =>
 EditableContact.isSectionEmpty = (profile: Partial<TpCompanyProfile>) =>
   !EditableContact.isSectionFilled(profile)
 
-function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
+function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
   const { data: profile } = useTpCompanyProfileQuery()
   const mutation = useTpCompanyProfileUpdateMutation()
   const initialValues: Partial<TpCompanyProfile> = {

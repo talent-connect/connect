@@ -1,5 +1,6 @@
 import { RedUser } from '@talent-connect/shared-types'
 import { AccessToken } from '@talent-connect/shared-types'
+import { queryClient } from '../api/api'
 
 export const isLoggedIn = (): boolean => {
   const accessToken: any = window.localStorage.getItem('accessToken')
@@ -26,5 +27,6 @@ export const saveAccessTokenToLocalStorage = (accessToken: AccessToken) => {
 }
 
 export const purgeAllSessionData = () => {
+  queryClient.clear()
   window.localStorage.clear()
 }

@@ -95,7 +95,7 @@ export function EditableEducation() {
       }
       modalTitle="Study, certifications, courses"
       modalHeadline="Education"
-      modalBody={<Form setIsEditing={setIsEditing} />}
+      modalBody={<ModalForm setIsEditing={setIsEditing} />}
       modalStyles={{ minHeight: 700 }}
     />
   )
@@ -113,7 +113,7 @@ function formatDate(month?: number, year?: number): string {
   return ''
 }
 
-function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
+function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
   const { data: profile } = useTpJobseekerProfileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
 

@@ -16,6 +16,7 @@ function FormInput(props: any) {
     placeholder,
     type,
     label,
+    startAddon = null,
     dirty,
     values,
     handleChange,
@@ -32,6 +33,7 @@ function FormInput(props: any) {
   return (
     <Form.Field>
       {label && <Form.Label size="small">{label}</Form.Label>}
+      {startAddon}
       <Form.Control className={classnames({ 'field-clean': isValidField })}>
         <Form.Input
           id={name}

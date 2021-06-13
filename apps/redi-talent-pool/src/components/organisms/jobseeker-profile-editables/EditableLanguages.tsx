@@ -66,7 +66,7 @@ export function EditableLanguages() {
       }
       modalTitle="Relevant languages you can speak"
       modalHeadline="Languages"
-      modalBody={<Form setIsEditing={setIsEditing} />}
+      modalBody={<ModalForm setIsEditing={setIsEditing} />}
       modalStyles={{ minHeight: 700 }}
     />
   )
@@ -84,7 +84,7 @@ const validationSchema = Yup.object({
   workingLanguages: Yup.array().min(1).max(6),
 })
 
-function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
+function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
   const { data: profile } = useTpJobseekerProfileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
 

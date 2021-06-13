@@ -5,7 +5,12 @@ import {
 import { TpJobseekerProfile } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
 import React, { useState } from 'react'
-import { Content, Element } from 'react-bulma-components'
+import {
+  Content,
+  Element,
+  Form,
+  Button as BulmaButton,
+} from 'react-bulma-components'
 import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
@@ -38,8 +43,8 @@ export function EditableLinks() {
               .filter((l) => l)
               .map((url, idx) => (
                 <p key={idx}>
-                  <a href={url} target="_blank">
-                    {url}
+                  <a href={url} target="_blank" rel="noreferrer">
+                    {url.replace(/http(s)?:\/\//g, '')}
                   </a>
                 </p>
               ))}
@@ -48,7 +53,7 @@ export function EditableLinks() {
       }
       modalTitle="Your online presence"
       modalHeadline="Links"
-      modalBody={<Form setIsEditing={setIsEditing} />}
+      modalBody={<ModalForm setIsEditing={setIsEditing} />}
       modalStyles={{ minHeight: 700 }}
     />
   )
@@ -82,7 +87,7 @@ const validationSchema = Yup.object({
   dribbbleUrl: Yup.string().url().label('Dribbble profile URL'),
 })
 
-function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
+function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
   const { data: profile } = useTpJobseekerProfileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
   const initialValues: Partial<TpJobseekerProfile> = {
@@ -122,10 +127,10 @@ function Form({ setIsEditing }: { setIsEditing: (boolean) => void }) {
       >
         Include links to where you have online profiles.
       </Element>
+
       <FormInput
         name="personalWebsite"
         placeholder="https://www.mysite.com"
-        label="Your website"
         {...formik}
       />
       <FormInput
