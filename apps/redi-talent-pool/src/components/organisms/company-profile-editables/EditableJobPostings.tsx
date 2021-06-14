@@ -10,10 +10,15 @@ import {
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
 import {
-  ExperienceRecord,
+  TpCompanyProfile,
+  TpJobListingRecord,
   TpJobseekerProfile,
 } from '@talent-connect/shared-types'
-import { formMonthsOptions } from '@talent-connect/talent-pool/config'
+import {
+  employmentTypes,
+  formMonthsOptions,
+  topSkills,
+} from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
 import moment from 'moment'
 import React, { useCallback, useRef, useState } from 'react'
@@ -22,6 +27,8 @@ import { Columns, Content, Element } from 'react-bulma-components'
 import ReactMarkdown from 'react-markdown'
 import { Subject } from 'rxjs'
 import { v4 as uuidv4 } from 'uuid'
+import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
+import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
@@ -35,26 +42,26 @@ function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
   return result
 }
 
-export function EditableProfessionalExperience() {
-  const { data: profile } = useTpJobseekerProfileQuery()
+export function EditableJobPostings() {
+  const { data: profile } = useTpCompanyProfileQuery()
   const [isEditing, setIsEditing] = useState(false)
 
-  const isEmpty = EditableProfessionalExperience.isSectionEmpty(profile)
+  const isEmpty = EditableJobPostings.isSectionEmpty(profile)
 
   return (
     <Editable
       isEditing={isEditing}
       setIsEditing={setIsEditing}
-      title="Professional experience"
+      title="Job postings"
       readComponent={
         isEmpty ? (
           <EmptySectionPlaceholder
             height="tall"
-            text="Add your experience"
+            text="Add your job listings"
             onClick={() => setIsEditing(true)}
           />
         ) : (
-          profile?.experience?.map((item) => (
+          profile?.jobListings?.map((item) => (
             <div style={{ marginBottom: '2.8rem' }}>
               <div
                 style={{
@@ -64,18 +71,10 @@ export function EditableProfessionalExperience() {
                 }}
               >
                 <Caption>{item?.title}</Caption>
-                <span style={{ color: '#979797' }}>
-                  {formatDate(item.startDateMonth, item.startDateYear)} -{' '}
-                  {item.current
-                    ? 'Present'
-                    : formatDate(item.endDateMonth, item.endDateYear)}
-                </span>
+                <span style={{ color: '#979797' }}>{item?.location}</span>
               </div>
               <Content style={{ marginTop: '-0.5rem' }}>
-                {item.company ? (
-                  <p style={{ color: '#979797' }}>{item.company}</p>
-                ) : null}
-                {item.description ? (
+                {item.summary ? (
                   <ReactMarkdown
                     components={{
                       p: ({ children }) => (
@@ -83,7 +82,7 @@ export function EditableProfessionalExperience() {
                       ),
                     }}
                   >
-                    {item.description.replace(/\n/g, `\n\n`)}
+                    {item.summary.replace(/\n/g, `\n\n`)}
                   </ReactMarkdown>
                 ) : null}
               </Content>
@@ -91,36 +90,26 @@ export function EditableProfessionalExperience() {
           ))
         )
       }
-      modalTitle="Work history"
-      modalHeadline="Professional experience"
+      modalTitle="Publish job postings on Talent Pool"
+      modalHeadline="Job Postings"
       modalBody={<ModalForm setIsEditing={setIsEditing} />}
-      modalStyles={{ minHeight: 700 }}
     />
   )
 }
 
-EditableProfessionalExperience.isSectionFilled = (
-  profile: Partial<TpJobseekerProfile>
-) => profile?.experience?.length > 0
-EditableProfessionalExperience.isSectionEmpty = (
-  profile: Partial<TpJobseekerProfile>
-) => !EditableProfessionalExperience.isSectionFilled(profile)
-
-function formatDate(month?: number, year?: number): string {
-  if (year && !month) return String(year)
-  if (year && month) return moment().month(month).year(year).format('MMMM YYYY')
-  if (!year && month) return moment().month(month).format('MMMM')
-  return ''
-}
+EditableJobPostings.isSectionFilled = (profile: Partial<TpCompanyProfile>) =>
+  profile?.jobListings?.length > 0
+EditableJobPostings.isSectionEmpty = (profile: Partial<TpCompanyProfile>) =>
+  !EditableJobPostings.isSectionFilled(profile)
 
 function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
-  const { data: profile } = useTpJobseekerProfileQuery()
-  const mutation = useTpjobseekerprofileUpdateMutation()
+  const { data: profile } = useTpCompanyProfileQuery()
+  const mutation = useTpCompanyProfileUpdateMutation()
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
 
-  const initialValues: Partial<TpJobseekerProfile> = {
-    experience: profile?.experience ?? [buildBlankExperienceRecord()],
+  const initialValues: Partial<TpCompanyProfile> = {
+    jobListings: profile?.jobListings ?? [buildBlankJobListingRecord()],
   }
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
     formik.setSubmitting(true)
@@ -139,10 +128,10 @@ function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
     onSubmit,
   })
 
-  const onClickAddExperience = useCallback(() => {
-    formik.setFieldValue('experience', [
-      ...formik.values.experience,
-      buildBlankExperienceRecord(),
+  const onClickAddJobListing = useCallback(() => {
+    formik.setFieldValue('jobListings', [
+      ...formik.values.jobListings,
+      buildBlankJobListingRecord(),
     ])
     closeAllAccordionsSignalSubject.current.next()
   }, [formik])
@@ -151,13 +140,13 @@ function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
     (result: any) => {
       if (!result.destination) return
 
-      const reorderedExperience = reorder(
-        formik.values.experience,
+      const reorderedJobListings = reorder(
+        formik.values.jobListings,
         result.source.index,
         result.destination.index
       )
 
-      formik.setFieldValue('experience', reorderedExperience)
+      formik.setFieldValue('jobListings', reorderedJobListings)
     },
     [formik]
   )
@@ -165,8 +154,8 @@ function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
   const onRemove = useCallback(
     (uuid: string) => {
       formik.setFieldValue(
-        'experience',
-        formik.values?.experience?.filter((item) => item.uuid !== uuid)
+        'jobListings',
+        formik.values?.jobListings?.filter((item) => item.uuid !== uuid)
       )
     },
     [formik]
@@ -180,13 +169,13 @@ function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
         responsive={{ mobile: { textSize: { value: 5 } } }}
         className="oneandhalf-bs"
       >
-        Add your relevant experience.
+        Add the job postings you want to publish to jobseekers at ReDI School.
       </Element>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="id">
           {(provided, snapshot) => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
-              {formik?.values?.experience.map((item, index) => (
+              {formik?.values?.jobListings.map((item, index) => (
                 <Draggable
                   key={item.uuid}
                   draggableId={item.uuid}
@@ -208,76 +197,60 @@ function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
                         }
                       >
                         <FormInput
-                          name={`experience[${index}].title`}
+                          name={`jobListings[${index}].title`}
                           placeholder="Junior Frontend Developer"
-                          label="Title of your position"
+                          label="Job Title"
                           {...formik}
                         />
                         <FormInput
-                          name={`experience[${index}].company`}
-                          placeholder="Microsoft"
-                          label="Company"
+                          name={`jobListings[${index}].location`}
+                          placeholder="Where is the position based"
+                          label="Location"
                           {...formik}
                         />
                         <FormTextArea
-                          label="Roles & Responsibilities"
-                          name={`experience[${index}].description`}
+                          label="Job Summary"
+                          name={`jobListings[${index}].summary`}
                           rows={7}
-                          placeholder={rolesAndResponsibilitiesPlaceholderText}
+                          placeholder="Tell us a bit about the position, expectations & ideal candidate."
                           {...formik}
                         />
-                        <FaqItem
-                          question={rolesAndResponsibilitiesQuestion}
-                          answer={rolesAndResponsibilitiesAnswer}
-                        />
-
-                        <Checkbox.Form
-                          name={`experience[${index}].current`}
-                          checked={formik.values.experience[index].current}
-                          {...formik}
+                        <Element
+                          renderAs="p"
+                          textSize={6}
+                          responsive={{ mobile: { textSize: { value: 5 } } }}
+                          className="oneandhalf-bs"
                         >
-                          I currently work here
-                        </Checkbox.Form>
-
-                        <Columns>
-                          <Columns.Column size={6}>
-                            <FormSelect
-                              name={`experience[${index}].startDateMonth`}
-                              label="Started in month"
-                              items={formMonthsOptions}
-                              {...formik}
-                            />
-                          </Columns.Column>
-                          <Columns.Column size={6}>
-                            <FormInput
-                              name={`experience[${index}].startDateYear`}
-                              label="Started in year"
-                              type="number"
-                              {...formik}
-                            />
-                          </Columns.Column>
-                        </Columns>
-
-                        {!formik.values.experience[index].current ? (
-                          <Columns>
-                            <Columns.Column size={6}>
-                              <FormSelect
-                                name={`experience[${index}].endDateMonth`}
-                                label="Ended in month"
-                                items={formMonthsOptions}
-                                {...formik}
-                              />
-                            </Columns.Column>
-                            <Columns.Column size={6}>
-                              <FormInput
-                                name={`experience[${index}].endDateYear`}
-                                label="Ended in year"
-                                type="number"
-                                {...formik}
-                              />
-                            </Columns.Column>
-                          </Columns>
-                        ) : null}
+                          We use skillset to help with the matching process of
+                          our candidates. Please select the top 6 skills you
+                          think are necessary for succeeding in this job and we
+                          will use those to suggest potential matches.
+                        </Element>
+                        <FormSelect
+                          label="Ideal technical skills"
+                          name={`jobListings[${index}].idealTechnicalSkills`}
+                          items={formTopSkills}
+                          {...formik}
+                          multiselect
+                        />
+                        <FormSelect
+                          label="Employment type"
+                          name={`jobListings[${index}].employmentType`}
+                          items={formEmploymentType}
+                          {...formik}
+                        />
+                        <FormInput
+                          name={`jobListings[${index}].languageRequirements`}
+                          placeholder="German C1, English B2, French B1..."
+                          label="Language requirements"
+                          {...formik}
+                        />
+                        <FormInput
+                          label="Salary range"
+                          placeholder="€40K - €52K"
+                          name={`jobListings[${index}].salaryRange`}
+                          {...formik}
+                        />
                       </FormDraggableAccordion>
                     </div>
                   )}
@@ -299,7 +272,7 @@ function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
           cursor: 'pointer',
           marginBottom: '30px',
         }}
-        onClick={() => onClickAddExperience()}
+        onClick={() => onClickAddJobListing()}
       >
         <Icon
           icon="tpPlus"
@@ -318,28 +291,26 @@ function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
   )
 }
 
-function buildBlankExperienceRecord(): ExperienceRecord {
+function buildBlankJobListingRecord(): TpJobListingRecord {
   return {
     uuid: uuidv4(),
     title: '',
-    company: '',
-    description: '',
-    startDateMonth: undefined,
-    startDateYear: undefined,
-    endDateMonth: undefined,
-    endDateYear: undefined,
-    current: false,
+    location: '',
+    summary: '',
+    idealTechnicalSkills: [],
+    employmentType: '',
+    languageRequirements: '',
+    desiredExperience: '',
+    salaryRange: '',
   }
 }
 
-const rolesAndResponsibilitiesPlaceholderText = `Example:
+const formTopSkills = topSkills.map(({ id, label }) => ({
+  value: id,
+  label,
+}))
 
-• Supported the Visual Studio Team by creating wireframes using storyboarding and customer mapping.
-• Validated design decisions by conducting remote usability, resulted in an increase of conversion rate by 10%.`
-
-const rolesAndResponsibilitiesQuestion =
-  'Our tips for writing Roles and Responsibilities'
-const rolesAndResponsibilitiesAnswer = `• Write a list of 2-3 bullet points.<br />
-• Begin sentences with acton verbs, such as designed, created, provided, resolved, etc.<br />
-• Focus on skills and accomplishments.<br />
-• Quantify as much information as you can. (Example: Resolved cusumer complaints. --> Resolved customer complaints, ansering approximately 200 calls per week.`
+const formEmploymentType = employmentTypes.map(({ id, label }) => ({
+  value: id,
+  label,
+}))

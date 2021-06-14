@@ -4,6 +4,7 @@ import { EditableAbout } from '../../../components/organisms/company-profile-edi
 import { EditableContact } from '../../../components/organisms/company-profile-editables/EditableContact'
 import { EditableDetails } from '../../../components/organisms/company-profile-editables/EditableDetails'
 import { EditableNamePhotoLocation } from '../../../components/organisms/company-profile-editables/EditableNamePhotoLocation'
+import { EditableJobPostings } from '../../../components/organisms/company-profile-editables/EditableJobPostings'
 import { LoggedIn } from '../../../components/templates'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
 
@@ -24,7 +25,7 @@ export function MeCompany() {
           <EditableContact />
         </Columns.Column>
       </Columns>
-      {/* <EditableJobPostings /> */}
+      <EditableJobPostings />
     </LoggedIn>
   )
 }

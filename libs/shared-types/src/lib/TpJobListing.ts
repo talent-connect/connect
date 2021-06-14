@@ -1,4 +1,4 @@
-export type TpJobListing = {
+type _TpJobListing = {
   id: string
   title: string
   location: string

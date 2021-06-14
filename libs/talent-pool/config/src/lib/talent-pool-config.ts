@@ -652,3 +652,19 @@ export const formMonthsOptions = Object.entries(formMonths).map(
     label,
   })
 )
+
+export const employmentTypes: DropdownOptions = [
+  { id: 'partTimeEmployment', label: 'Part-time employment' },
+  { id: 'fullTimeEmployment', label: 'Full-time employment' },
+  { id: 'werkstudium', label: 'Werkstudium' },
+  { id: 'internship', label: 'Internship' },
+  { id: 'apprenticeship', label: 'Apprenticeship' },
+  { id: 'selfEmployed', label: 'Self-employed' },
+  { id: 'freelance', label: 'Freelance' },
+  { id: 'contract', label: 'Contract' },
+]
+
+export const employmentTypesIdToLabelMap = mapValues(
+  keyBy(employmentTypes, 'id'),
+  'label'
+)
