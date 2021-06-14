@@ -6,6 +6,7 @@ const Rx = require('rxjs')
 const path = require('path')
 const mjml2html = require('mjml')
 const { bindNodeCallback, from } = Rx
+const aws = require('aws-sdk')
 
 const {
   delay,
@@ -22,14 +23,16 @@ const {
 
 const { RedUser } = app.models
 
+const config = {
+  accessKeyId: process.env.EMAILER_AWS_ACCESS_KEY,
+  secretAccessKey: process.env.EMAILER_AWS_SECRET_KEY,
+  region: process.env.EMAILER_AWS_REGION,
+}
+
+const ses = new aws.SES(config)
+
 const transporter = nodemailer.createTransport({
-  host: 'smtp.googlemail.com', // Gmail Host
-  port: 465, // Port
-  secure: true, // this is true as port is 465
-  auth: {
-    user: 'career@redi-school.org', // Gmail username
-    pass: process.env.GMAIL_PASSWORD_CAREER_AT_REDI_SCHOOL_DOT_ORG, // Gmail password
-  },
+  SES: ses,
 })
 
 const newsletterTemplateMjml = fs.readFileSync(
@@ -39,7 +42,7 @@ const newsletterTemplateMjml = fs.readFileSync(
     'lib',
     'email',
     'templates',
-    'newsletter.berlin.footerless.mjml'
+    'newsletter.berlin.miriam.mjml'
   ),
   'utf-8'
 )
@@ -47,57 +50,50 @@ const emailBodyMjml = newsletterTemplateMjml.replace(
   '${NEWSLETTER_BODY}',
   `
 
-<mj-text mj-class="headline">ReDI HR Summit & Job Fair on 8 July 2021</mj-text>
-<mj-text mj-class="tagline">Call for registrations and job openings</mj-text>
+<mj-text mj-class="headline">Get ReDI for the 8 July 2021 Job Fair!</mj-text>
+<mj-text mj-class="tagline">Post your jobs on th ReDI Talent Pool and get interviewees</mj-text>
 
 <mj-divider mj-class="divider-top" css-class="divider" />
 
-<mj-text mj-class="text" padding="0 0 20px 0">Dear wonderful mentors,</mj-text>
- 
-<mj-text mj-class="text" padding="0 0 20px 0">We would like you to let you know about our next <strong>ReDI HR SUMMIT & JOB FAIR</strong> coming up on the <strong>8th July 2021</strong>.</mj-text>
- 
-<mj-text mj-class="text" padding="0 0 20px 0">Following the success of previous editions, we are super excited to organize this virtual event again this year. More than 100 talented ReDI students and alumni are currently seeking internship and employment opportunities.  </mj-text>
 
-<mj-text mj-class="text" padding="0 0 20px 0">💡In light of that, ReDI HR SUMMIT & JOB FAIR is established as an annual career and networking event, offering an effective platform for employers, experienced professionals (like you 😉), and students to engage, network and forge potential relationships.</mj-text>
- 
-<mj-text mj-class="text" padding="0 0 20px 0">Our HR Summit & Job Fair has two main goals:</mj-text>
- 
-<mj-text mj-class="text" padding="0 0 20px 0">1️⃣ Establish and maintain collaboration between companies, mentors, and students through ReDI School to allow even more fruitful exchange 🤝</mj-text>
-<mj-text mj-class="text" padding="0 0 20px 0">2️⃣ Create new opportunities for students and alumni </mj-text>
+<mj-text mj-class="text" padding="0 0 20px 0">Dear :firstName:,</mj-text>
 
-<mj-text mj-class="text" padding="0 0 20px 0">There will be a panel discussion in the morning that everyone from the ReDI community can participate in. In the afternoon selected companies will be meeting selected students to talk about their job openings. You can <a href="https://www.redi-school.org/hrsummit">find more details about the event here</a>. </mj-text>
+<mj-text mj-class="text" padding="0 0 20px 0">Thank you for registering your company for the ReDI HR SUMMIT's Job Fair. </mj-text>
 
-<mj-text mj-class="text" padding="0 0 20px 0">So if you would like to join the panel talk in the morning from 10:30 am - 12:00 pm, please register <a href="https://redischool.typeform.com/to/FAeGAuCT">here</a>. To make preparations easier for us, please register as soon as possible. The deadline for registration is May 31st.  </mj-text>
+<mj-text mj-class="text" padding="0 0 20px 0">We are currently preparing the next steps and would like to invite you to sign up to the <strong>new ReDI Talent Pool</strong> platform so that we can:</mj-text>
 
-<mj-text mj-class="text" padding="0 0 20px 0">If your company has any job openings, be it in the form of an internship or junior positions, please contact Birgit (<a href="mailto:birgit@redi-school.org">birgit@redi-school.org</a>), so we can invite your company to be present at the job fair in the afternoon. Feel free to forward this email to your HR Department or tell them to get in touch with Birgit.</mj-text>
+- schedule the interviews (while the job fair) between relevant jobseekers and your recruiters attending the HR Summit's Job Fair
+- on and after the job fair, to stay in contact with our talents and promote your internship/job posts to our entire community of jobseekers, to getting you more relevant applicants
 
-<mj-text mj-class="text" padding="0 0 20px 0">If you would like to see who found a job through one of the last job fairs, <a href="https://medium.com/redi-school-of-digital-integration/3-its-a-match-vincent-cgi-96a07bc2b089">read Vincent’s story on our blog</a href-"https://medium.com/redi-school-of-digital-integration/3-its-a-match-vincent-cgi-96a07bc2b089">.</mj-text>
- 
-<mj-text mj-class="text" padding="0 0 20px 0">We truly appreciate your support in helping us invite suitable companies to the job fair that are interested in hiring our students and alumni. </mj-text>
+<mj-text mj-class="text" padding="0 0 0 0"><strong>To proceed, please:</strong></mj-text>
 
-<mj-text mj-class="text" padding="0 0 20px 0">If you have any questions, please feel free to reach out. We love to hear from you!</mj-text>
+<mj-text mj-class="text" padding="0 0 20px 0">
+<ul>
+<li>Go to <a href="https://talent-pool.redi-school.org" target="_blank">talent-pool.redi-school.org</a></li>
+<li>Sign up</li>
+<li>Create your profile</li>
+<li>Add your internship/job postings</li>
+</ul>
+</mj-text>
 
-<mj-text mj-class="text" padding="0 0 40px 0">Your Career Support Team at ReDI School</mj-text>
+<mj-text mj-class="text" padding="0 0 0 0"><strong><u>Further information about the Event:</u></strong></mj-text>
 
+<mj-text mj-class="text" padding="0 0 20px 0">
+<ul>
+<li><strong>The platform:</strong> We will be hosting the job fair in the afternoon as well as the morning conference panel in <strong>Microsoft Teams</strong>.</li>
+<li><strong>Participants form your company:</strong> If you are joining with more or other colleagues then named in the registration, please send their name and <strong>e-mail to <a href="mailto:yara@redi-school.org">yara@redi-school.org</a> by June 30th</strong> at the latext. Only with this information we can give them access to the job fair.</li>
+<li><strong>The 1:1 interviews:</strong> For the 1:1 Short Interviews between your recruiters and the ReDI talents we will schedule virtual appointments (10 minutes) and create individual invite links (you will receive a separate email about this)</li>
+<li><strong>Virtual "Booths" & Networking:</strong> In addition to MS Teams we will be using a platform called <a href="https://help.wonder.me/en/articles/4947041-faqs" target="_blank">wonder.me</a>, so that you can network in between the interview sessions and meet fellow recruiters, colleagues or members of the ReDI community, almost like in "real" life.</li>
+<li><strong>Onboarding-Session for Companies:</strong> Please <strong>save the date</strong> for the onboarding session with MS Teams on <strong>July 5th at 11 am</strong>. Here we will explain everything in detail.</li>
+<li><strong>Welcome-Package:</strong> We would also like to send you a <strong>little welcome-package</strong> before the job fair and will be using the addresses we found in your email signatures. <strong>In case you would like to use a different address,</strong> please drop us an <strong>email to <a href="mailto:yara@redi-school.org">yara@redi-school.org</a></strong></li>
+</ul>
+</mj-text>
 
-<mj-text mj-class="text-small" padding="0 0 20px 0"><em>If you want to see and read more about what is happening at ReDI School, please follow us on our social media channels:</em></mj-text>
+<mj-text mj-class="text" padding="0 0 20px 0"><strong>Further Questions?</strong> More information about the HR SUMMIT (Conference & Job Fair) can be found on the <a href="https://www.redi-school.org/hrsummit" target="_blank">Website</a> and the <a href="https://a11e0a06-2fa2-417a-9a9f-6ccbf93cb336.filesusr.com/ugd/206b5b_1a3eb65fa236499fa87295507aafefc9.pdf" target="_blank">FAQs</a> or reach out to <a href="mailto:isabelle@redi-school.org">isabelle@redi-school.org</a> or <a href="mailto:birgit@redi-school.org">birgit@redi-school.org</a>.</mj-text>
 
+<mj-text mj-class="text" padding="0 0 20px 0">We're happy to offer support as needed.</mj-text>
 
-<mj-social>
-  <mj-social-element name="instagram-noshare" href="https://www.instagram.com/redischoolberlin">ReDI School Berlin on Instagram</mj-social-element>
-</mj-social>
-<mj-social>
-  <mj-social-element name="instagram-noshare" href="https://www.instagram.com/redimunich">ReDI School Munich on Instagram</mj-social-element>
-</mj-social>
-<mj-social>
-  <mj-social-element name="twitter-noshare" href="https://twitter.com/ReDISchool">ReDI School on Twitter</mj-social-element>  
-</mj-social>
-
-<mj-text mj-class="text-small" padding="0 0 20px 0"><em>Or join our LinkedIn community group: </em></mj-text>
-
-<mj-social>
-  <mj-social-element name="linkedin-noshare" href="https://www.linkedin.com/groups/8776751/">LinkedIn</mj-social-element>
-</mj-social>
+<mj-text mj-class="text" padding="0 0 20px 0">Your ReDI Career Team</mj-text>
 
 `
 )
@@ -111,12 +107,13 @@ const sendMjmlEmail = Rx.bindNodeCallback(
 )
 
 /* eslint-disable-next-line */
-const sendMentorEmail = ({ recipient, firstName }) => {
+const sendEmail = ({ recipient, firstName }) => {
   const mailOptions = {
-    from: 'career@redi-school.org',
-    replyTo: 'career@redi-school.org',
+    from: 'birgit@redi-school.org',
+    replyTo: 'birgit@redi-school.org',
     to: recipient,
-    subject: 'ReDI HR Summit & Job Fair on 8 July 2021',
+    subject:
+      'Get ReDI for the 8 July 2021 Job Fair! Post your jobs and get interviewees',
     html: emailBodyParsed.html.replace(':firstName:', firstName),
   }
 
@@ -143,26 +140,28 @@ redUserFind({ include: 'redProfile' })
     // filter(({ redProfile }) => redProfile.rediLocation === 'berlin'),
     filter(({ redProfile }) => redProfile.userActivated),
 
-    // map((data, index) => {
-    //   switch (index) {
-    //     case 0:
-    //       data.redProfile.contactEmail = 'eric@redi-school.org';
-    //       break;
+    take(1),
 
-    //     case 1:
-    //       data.redProfile.contactEmail = 'miriam@redi-school.org';
-    //       break;
+    map((data, index) => {
+      switch (index) {
+        case 0:
+          data.redProfile.contactEmail = 'birgit@redi-school.org'
+          break
 
-    //     case 2:
-    //       data.redProfile.contactEmail = 'paulina@redi-school.org';
-    //       break;
-    //   }
-    //   return data;
-    // }),
+        case 1:
+          data.redProfile.contactEmail = 'miriam@redi-school.org'
+          break
+
+        case 2:
+          data.redProfile.contactEmail = 'paulina@redi-school.org'
+          break
+      }
+      return data
+    }),
 
     concatMap(
       (userData) =>
-        sendMentorEmail({
+        sendEmail({
           recipient: userData.redProfile.contactEmail,
           firstName: userData.redProfile.firstName,
         }).pipe(delay(5000)),

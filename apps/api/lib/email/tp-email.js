@@ -205,17 +205,14 @@ const sendTpCompanyEmailVerificationSuccessfulEmail = ({
   recipient,
   firstName,
 }) => {
-  const tpLandingPageUrl = buildTpFrontendUrl(
-    process.env.NODE_ENV,
-  )}
+  const tpLandingPageUrl = buildTpFrontendUrl(process.env.NODE_ENV)
   const sendTpCompanyEmailVerificationSuccessfulEmailParsed = convertTemplateToHtml(
     null,
     'company-validate-email-address-successful'
   )
-  const html = sendTpCompanyEmailVerificationSuccessfulEmailParsed.replace(
-    /\${firstName}/g,
-    firstName
-  ).replace(/\${tpLandingPageUrl}/g, tpLandingPageUrl)
+  const html = sendTpCompanyEmailVerificationSuccessfulEmailParsed
+    .replace(/\${firstName}/g, firstName)
+    .replace(/\${tpLandingPageUrl}/g, tpLandingPageUrl)
   return sendMjmlEmailFactory({
     to: recipient,
     subject: 'Your email has been verified for Talent Pool',
