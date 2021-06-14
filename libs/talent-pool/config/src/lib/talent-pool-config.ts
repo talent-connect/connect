@@ -92,7 +92,7 @@ export const desiredPositions: DropdownOptions = [
   },
   {
     id: 'usabilityengineer',
-    label: 'Usability engineer',
+    label: 'Usability Engineer',
   },
   {
     id: 'userResearcher',
@@ -124,15 +124,15 @@ export const topSkills = [
   },
   {
     id: 'agileMethodology',
-    label: 'Agile methodology',
+    label: 'Agile Methodology',
   },
   {
     id: 'applicationOperation',
-    label: 'Application operation ',
+    label: 'Application Operation',
   },
   {
     id: 'artificialIntellegence',
-    label: 'Artificial Intellegence ',
+    label: 'Artificial Intelligence',
   },
   {
     id: 'aspNet',
@@ -172,19 +172,19 @@ export const topSkills = [
   },
   {
     id: 'camunda',
-    label: 'Camunda ',
+    label: 'Camunda',
   },
   {
     id: 'cloudApplications',
-    label: 'Cloud applications',
+    label: 'Cloud Applications',
   },
   {
     id: 'cloudComputing',
-    label: 'Cloud computing ',
+    label: 'Cloud Computing',
   },
   {
     id: 'conceptDevelopment',
-    label: 'Concept development ',
+    label: 'Concept Development',
   },
   {
     id: 'crm',
@@ -196,19 +196,19 @@ export const topSkills = [
   },
   {
     id: 'customerService',
-    label: 'Customer service',
+    label: 'Customer Service',
   },
   {
     id: 'customerSupport',
-    label: 'Customer support',
+    label: 'Customer Support',
   },
   {
     id: 'dataAnalysis',
-    label: 'Data analysis ',
+    label: 'Data Analysis',
   },
   {
     id: 'databaseDesign',
-    label: 'Database design ',
+    label: 'Database Design',
   },
   {
     id: 'designThinking',
@@ -220,7 +220,7 @@ export const topSkills = [
   },
   {
     id: 'domainDrivenDesign',
-    label: 'Domain Driven Design ',
+    label: 'Domain Driven Design',
   },
   {
     id: 'domainModelling',
@@ -236,11 +236,11 @@ export const topSkills = [
   },
   {
     id: 'googleCloudPlatform',
-    label: 'Google cloud Platform ',
+    label: 'Google Cloud Platform',
   },
   {
     id: 'graphicDesign',
-    label: 'Graphic design',
+    label: 'Graphic Design',
   },
   {
     id: 'hpAlm',
@@ -256,15 +256,15 @@ export const topSkills = [
   },
   {
     id: 'illustrator',
-    label: 'Illustrator ',
+    label: 'Illustrator',
   },
   {
     id: 'informationArchitecture',
-    label: 'Information architecture',
+    label: 'Information Architecture',
   },
   {
     id: 'interactionDesign',
-    label: 'Interaction design ',
+    label: 'Interaction Design',
   },
   {
     id: 'invision',
@@ -272,7 +272,7 @@ export const topSkills = [
   },
   {
     id: 'itServiceManagement',
-    label: 'IT Service management',
+    label: 'IT Service Management',
   },
   {
     id: 'itil',
@@ -292,11 +292,11 @@ export const topSkills = [
   },
   {
     id: 'kanban',
-    label: 'Kanban ',
+    label: 'Kanban',
   },
   {
     id: 'leanPrinciples',
-    label: 'Lean principles',
+    label: 'Lean Principles',
   },
   {
     id: 'linux',
@@ -312,15 +312,15 @@ export const topSkills = [
   },
   {
     id: 'microsoftOffice',
-    label: 'Microsoft Office ',
+    label: 'Microsoft Office',
   },
   {
     id: 'networkAdministration',
-    label: 'Network Administration ',
+    label: 'Network Administration',
   },
   {
     id: 'networkDesign',
-    label: 'Network Design ',
+    label: 'Network Design',
   },
   {
     id: 'networkSecurity',
@@ -332,11 +332,11 @@ export const topSkills = [
   },
   {
     id: 'operationsManagement',
-    label: 'Operations management',
+    label: 'Operations Management',
   },
   {
     id: 'oracleDatabase',
-    label: 'Oracle database ',
+    label: 'Oracle Database',
   },
   {
     id: 'php',
@@ -344,35 +344,35 @@ export const topSkills = [
   },
   {
     id: 'problemSolving',
-    label: 'Problem solving',
+    label: 'Problem Solving',
   },
   {
     id: 'processModelling',
-    label: 'Process modelling ',
+    label: 'Process Modelling',
   },
   {
     id: 'processOptimization',
-    label: 'Process optimization',
+    label: 'Process Optimization',
   },
   {
     id: 'productDevelopment',
-    label: 'Product development',
+    label: 'Product Development',
   },
   {
     id: 'productManagement',
-    label: 'Product management',
+    label: 'Product Management',
   },
   {
     id: 'programManagement',
-    label: 'Program management',
+    label: 'Program Management',
   },
   {
     id: 'projectManagement',
-    label: 'Project management',
+    label: 'Project Management',
   },
   {
     id: 'prototyping',
-    label: 'Prototyping ',
+    label: 'Prototyping',
   },
   {
     id: 'python',
@@ -380,23 +380,23 @@ export const topSkills = [
   },
   {
     id: 'qualitativeResearch',
-    label: 'Qualitative research',
+    label: 'Qualitative Research',
   },
   {
     id: 'qualityAssurance',
-    label: 'Quality assurance',
+    label: 'Quality Assurance',
   },
   {
     id: 'qualityManagement',
-    label: 'Quality management',
+    label: 'Quality Management',
   },
   {
     id: 'quantitativeResearch',
-    label: 'Quantitative research',
+    label: 'Quantitative Research',
   },
   {
     id: 'rProgrammingLanguage',
-    label: 'R (Programming language)',
+    label: 'R (Programming Language)',
   },
   {
     id: 'reactJs',
@@ -404,11 +404,11 @@ export const topSkills = [
   },
   {
     id: 'requirementsAnalysis',
-    label: 'Requirements analysis ',
+    label: 'Requirements Analysis',
   },
   {
     id: 'responsiveWebDesign',
-    label: 'Responsive Web design',
+    label: 'Responsive Web Design',
   },
   {
     id: 'salesforce',
@@ -432,11 +432,11 @@ export const topSkills = [
   },
   {
     id: 'softwareArchitecture',
-    label: 'Software architecture',
+    label: 'Software Architecture',
   },
   {
     id: 'softwareDevelopmentLifecycle',
-    label: 'Software development lifecycle',
+    label: 'Software Development Lifecycle',
   },
   {
     id: 'sql',
@@ -444,11 +444,11 @@ export const topSkills = [
   },
   {
     id: 'teamLeadership',
-    label: 'Team leadership',
+    label: 'Team Leadership',
   },
   {
     id: 'technicalSupport',
-    label: 'Technical support',
+    label: 'Technical Support',
   },
   {
     id: 'testing',
@@ -460,7 +460,7 @@ export const topSkills = [
   },
   {
     id: 'typography',
-    label: 'Typography ',
+    label: 'Typography',
   },
   {
     id: 'uml',
@@ -468,7 +468,7 @@ export const topSkills = [
   },
   {
     id: 'usabilityTesting',
-    label: 'Usability testing',
+    label: 'Usability Testing',
   },
   {
     id: 'userExperience',
@@ -476,11 +476,11 @@ export const topSkills = [
   },
   {
     id: 'userStoryMapping',
-    label: 'User story mapping',
+    label: 'User Story Mapping',
   },
   {
     id: 'userCenteredDesign',
-    label: 'User-centered design ',
+    label: 'User-Centered Design',
   },
   {
     id: 'visualBasic',
@@ -516,7 +516,7 @@ export const topSkills = [
   },
   {
     id: 'xRay',
-    label: 'X-ray',
+    label: 'X-Ray',
   },
   {
     id: 'xml',
