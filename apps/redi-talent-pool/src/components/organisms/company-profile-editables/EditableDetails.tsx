@@ -76,7 +76,7 @@ export function EditableDetails() {
           </Columns>
         )
       }
-      modalTitle="Help employers get in touch"
+      modalTitle="Help jobseekers get in touch"
       modalHeadline="Important Details"
       modalBody={<ModalForm setIsEditing={setIsEditing} />}
       modalStyles={{ minHeight: '40rem' }}

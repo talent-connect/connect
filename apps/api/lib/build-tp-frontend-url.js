@@ -2,11 +2,7 @@
 
 module.exports = {
   buildTpFrontendUrl: function (env, rediLocation) {
-    if (env === 'production' && rediLocation === 'berlin') {
-      return 'https://talent-pool.redi-school.org'
-    } else if (env === 'production' && rediLocation === 'munich') {
-      return 'https://talent-pool.redi-school.org'
-    } else if (env === 'production' && rediLocation === 'nrw') {
+    if (env === 'production') {
       return 'https://talent-pool.redi-school.org'
     } else if (env === 'demonstration') {
       return 'https://app.demo.talent-pool.redi-school.org'

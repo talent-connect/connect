@@ -14,8 +14,9 @@
             >your email address was successfully verified.</mj-text
           >
           <mj-text mj-class="text"
-            >Now, it's time to log into Talent Pool and complete your company
-            profile and post jobs.
+            >Now, it's time to log into the
+            <a href="{tpLandingPageUrl}" target="_blank">ReDI Talent Pool</a>
+            and complete your company profile and start posting jobs.
           </mj-text>
           <mj-text mj-class="text" padding="20px 0 30px 0"
             >Let me know if you have any questions whatsoever.</mj-text

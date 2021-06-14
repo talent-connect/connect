@@ -9,16 +9,16 @@
           <mj-divider mj-class="divider-top" css-class="divider" />
           <mj-text mj-class="text">Hello ${firstName},</mj-text>
           <mj-text mj-class="text text-padding"
-            >thank you for signing up to Talent Pool.
+            >thank you for signing up to the Talent Pool of ReDI School.
           </mj-text>
           <mj-text mj-class="text text-padding"
             >Please verify your email address by using the following
             button.</mj-text
           >
           <mj-text mj-class="text">
-            Then it’s time to complete your company's profile and post the jobs
-            you'd like to advertise on Talent Pool - the first step to getting
-            ReDI talent into your jobs!</mj-text
+            Then it’s time to complete your company profile and post the jobs
+            you'd like to advertise on the Talent Pool - the first step to
+            getting ReDI talents into your jobs!</mj-text
           >
           <mj-image
             src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/verify.png"
