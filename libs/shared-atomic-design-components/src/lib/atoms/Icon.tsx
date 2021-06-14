@@ -29,7 +29,7 @@ import { ReactComponent as Loader } from '../../assets/images/loader.svg'
 
 import './Icon.scss'
 
-interface IconProps {
+export interface IconProps {
   icon:
     | 'arrowLeft'
     | 'arrowRight'

@@ -1,25 +1,25 @@
 import React from 'react'
-import Icon from '../atoms/Icon'
+import Icon, { IconProps } from '../atoms/Icon'
 import './MediaIcons.scss'
 
-const socialMedia = [
+const socialMedia: Array<SocialMediaIcon> = [
   {
     icon: 'fb',
     link: 'https://www.facebook.com/redischool/',
     MUC: 'https://www.facebook.com/redimunich/',
-    NRW: 'https://www.facebook.com/redischoolnrw/'
+    NRW: 'https://www.facebook.com/redischoolnrw/',
   },
   {
     icon: 'meetup',
     link: 'https://www.meetup.com/en-AU/ReDI-school/',
     MUC: 'https://www.meetup.com/Tech-Talks-Hosted-by-ReDI-School-Munich/',
-    NRW: 'https://www.meetup.com/ReDI-School-NRW/'
+    NRW: 'https://www.meetup.com/ReDI-School-NRW/',
   },
   {
     icon: 'instagram',
     link: 'https://www.instagram.com/redischoolberlin/',
     MUC: 'https://www.instagram.com/redimunich/',
-    NRW: ''
+    NRW: '',
   },
   {
     icon: 'linkedin',
@@ -28,28 +28,39 @@ const socialMedia = [
   {
     icon: 'twitter',
     link: 'https://twitter.com/redischool?lang=en',
-  }
+  },
 ]
 
 interface Props {
   name?: string
 }
 
-const SocialMediaIcons = ({name}: Props) => {
-  console.log(`name`, name)
-  const icons = name ? socialMedia.slice(0, 3) : socialMedia;
+interface SocialMediaIcon {
+  icon: IconProps['icon']
+  link: string
+  MUC?: string
+  NRW?: string
+}
+
+const SocialMediaIcons = ({ name }: Props) => {
+  const icons = name ? socialMedia.slice(0, 3) : socialMedia
   return (
     <ul className="media-icons__list">
-      {icons.map((item: any) => {
+      {icons.map((item: SocialMediaIcon) => {
         if (item.icon !== 'instagram' || name !== 'NRW') {
           return (
             <li key={item.icon}>
-              <a href={name ? item[name] : item.link} target="_blank" rel="noopener noreferrer">
+              <a
+                href={name ? item[name] : item.link}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Icon icon={item.icon} className="media-icons__icon" />
               </a>
             </li>
           )
         }
+        return <template />
       })}
       {name && <li className="media-icons__name">{name}</li>}
     </ul>
