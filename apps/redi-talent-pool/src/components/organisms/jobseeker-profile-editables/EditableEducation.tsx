@@ -239,7 +239,7 @@ function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
                           checked={formik.values.education[index].current}
                           {...formik}
                         >
-                          I currently work here
+                          I currently study here
                         </Checkbox.Form>
 
                         <Columns>
