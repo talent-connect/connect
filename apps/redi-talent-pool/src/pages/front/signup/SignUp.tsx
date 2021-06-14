@@ -183,11 +183,13 @@ export default function SignUp() {
             </Notification>
           )}
           <form onSubmit={(e) => e.preventDefault()} className="form">
-            <FormInput
-              name="companyName"
-              placeholder="Your company name"
-              {...formik}
-            />
+            {type === 'company' ? (
+              <FormInput
+                name="companyName"
+                placeholder="Your company name"
+                {...formik}
+              />
+            ) : null}
 
             <FormInput
               name="firstName"
