@@ -12,6 +12,7 @@ const {
   toArray,
   delay,
 } = require('rxjs/operators')
+const moment = require('moment')
 
 const {
   RedUser,
@@ -253,7 +254,10 @@ const users = fp.compose(
         gender,
         firstName: name,
         lastName: surname,
-        age: _.random(18, 100, false),
+        birthDate: moment(
+          '01.01.' + (new Date().getFullYear() - _.random(18, 100, false)),
+          'DD.MM.YYYY'
+        ),
         mentor_occupation: randomString(),
         mentor_workPlace: randomString(),
         mentee_occupationCategoryId:
@@ -340,7 +344,10 @@ const ericMenteeRedProfile = {
     'c1774822-9495-4bd6-866a-bf4d28aaddc8_ScreenShot2019-03-12at22.22.20.png',
   firstName: 'Eric',
   lastName: 'Bolikowski',
-  age: _.random(18, 100, false),
+  birthDate: moment(
+    '01.01.' + (new Date().getFullYear() - _.random(18, 100, false)),
+    'DD.MM.YYYY'
+  ),
   gender: 'male',
   languages: ['German', 'Farsi'],
   otherLanguages: '',
@@ -380,7 +387,10 @@ const ericMentorRedProfile = {
     'c1774822-9495-4bd6-866a-bf4d28aaddc8_ScreenShot2019-03-12at22.22.20.png',
   firstName: 'Info',
   lastName: 'Binary Lights',
-  age: _.random(18, 100, false),
+  birthDate: moment(
+    '01.01.' + (new Date().getFullYear() - _.random(18, 100, false)),
+    'DD.MM.YYYY'
+  ),
   gender: 'male',
   languages: ['German', 'Farsi'],
   otherLanguages: '',
@@ -418,7 +428,10 @@ const ericAdminRedProfile = {
     'c1774822-9495-4bd6-866a-bf4d28aaddc8_ScreenShot2019-03-12at22.22.20.png',
   firstName: 'Admin',
   lastName: 'Admin',
-  age: _.random(18, 100, false),
+  birthDate: moment(
+    '01.01.' + (new Date().getFullYear() - _.random(18, 100, false)),
+    'DD.MM.YYYY'
+  ),
   gender: 'male',
   languages: ['German', 'Farsi'],
   otherLanguages: '',
