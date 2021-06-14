@@ -46,24 +46,31 @@ export function EditableImportantDetails() {
             onClick={() => setIsEditing(true)}
           />
         ) : (
-          <Columns>
+          <div
+            style={{
+              display: 'grid',
+              width: '100%',
+              gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+              gridColumnGap: '16px',
+              gridRowGap: '16px',
+            }}
+          >
             {profile &&
             profile.desiredEmploymentType &&
             profile.desiredEmploymentType.length > 0 ? (
-              <Columns.Column size={12}>
-                <>
-                  <Caption>Type of work</Caption>
-                  <PipeList
-                    items={profile.desiredEmploymentType.map(
-                      (x) => desiredEmploymentTypeOptionsIdToLabelMap[x]
-                    )}
-                  />
-                </>
-              </Columns.Column>
+              <div>
+                <Caption>Type of work</Caption>
+                <PipeList
+                  items={profile.desiredEmploymentType.map(
+                    (x) => desiredEmploymentTypeOptionsIdToLabelMap[x]
+                  )}
+                  overflowAllowed
+                />
+              </div>
             ) : null}
 
             {profile?.availability ? (
-              <Columns.Column size={6}>
+              <div>
                 <Caption>Availability</Caption>
                 <Content>
                   {profile?.availability && profile.availability !== 'date' && (
@@ -81,11 +88,11 @@ export function EditableImportantDetails() {
                       </p>
                     )}
                 </Content>
-              </Columns.Column>
+              </div>
             ) : null}
 
             {profile?.phoneNumber || profile?.contactEmail ? (
-              <Columns.Column size={6}>
+              <div>
                 <Caption>Contact</Caption>
                 <Content>
                   {[
@@ -95,11 +102,11 @@ export function EditableImportantDetails() {
                     contactItem ? <p>{contactItem}</p> : null
                   )}
                 </Content>
-              </Columns.Column>
+              </div>
             ) : null}
 
             {profile?.immigrationStatus ? (
-              <Columns.Column size={12}>
+              <div>
                 <Caption>Immigration status</Caption>
                 <Content>
                   <p>
@@ -110,9 +117,9 @@ export function EditableImportantDetails() {
                     }
                   </p>
                 </Content>
-              </Columns.Column>
+              </div>
             ) : null}
-          </Columns>
+          </div>
         )
       }
       modalTitle="Help employers get in touch"
