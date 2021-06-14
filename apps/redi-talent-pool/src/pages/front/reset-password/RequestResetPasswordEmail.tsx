@@ -1,17 +1,16 @@
-import React, { useState } from 'react'
-import { Columns, Content, Element, Form } from 'react-bulma-components'
 import {
-  Heading,
   Button,
   FormInput,
+  Heading,
 } from '@talent-connect/shared-atomic-design-components'
-import { AccountOperation } from '../../../components/templates'
 import { FormikValues, useFormik } from 'formik'
-
-import * as yup from 'yup'
+import React, { useState } from 'react'
+import { Columns, Content, Element, Form } from 'react-bulma-components'
 import { Link } from 'react-router-dom'
-import { requestResetPasswordEmail } from '../../../services/api/api'
+import * as yup from 'yup'
 import TpTeaser from '../../../components/molecules/TpTeaser'
+import { AccountOperation } from '../../../components/templates'
+import { requestResetPasswordEmail } from '../../../services/api/api'
 
 interface FormValues {
   email: string

@@ -1,18 +1,16 @@
-import { ReactComponent as UploadImage } from '../../assets/uploadImage.svg'
-import ReactS3Uploader from 'react-s3-uploader'
-import { Element } from 'react-bulma-components'
-import { FormikValues, useFormik } from 'formik'
-import * as Yup from 'yup'
 import {
   AWS_PROFILE_AVATARS_BUCKET_BASE_URL,
   S3_UPLOAD_SIGN_URL,
 } from '@talent-connect/shared-config'
-import classnames from 'classnames'
-import placeholderImage from '../../assets/img-placeholder.png'
-
-import './Avatar.scss'
-
 import { TpJobseekerProfile } from '@talent-connect/shared-types'
+import classnames from 'classnames'
+import { FormikValues, useFormik } from 'formik'
+import { Element } from 'react-bulma-components'
+import ReactS3Uploader from 'react-s3-uploader'
+import * as Yup from 'yup'
+import placeholderImage from '../../assets/img-placeholder.png'
+import { ReactComponent as UploadImage } from '../../assets/uploadImage.svg'
+import './Avatar.scss'
 
 interface AvatarProps {
   profile: Partial<TpJobseekerProfile>

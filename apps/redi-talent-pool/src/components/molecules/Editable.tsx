@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
 import {
   Heading,
   Icon,
   Modal,
 } from '@talent-connect/shared-atomic-design-components'
+import React from 'react'
 import { Element } from 'react-bulma-components'
 import './Editable.scss'
 

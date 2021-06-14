@@ -1,18 +1,8 @@
+import { AWS_PROFILE_AVATARS_BUCKET_BASE_URL } from '@talent-connect/shared-config'
+import { RedProfile } from '@talent-connect/shared-types'
 import React from 'react'
-import classnames from 'classnames'
-import { Card, Element, Tag } from 'react-bulma-components'
-import { Icon, PipeList } from '@talent-connect/shared-atomic-design-components'
-
-import { useHistory } from 'react-router-dom'
-import {
-  AWS_PROFILE_AVATARS_BUCKET_BASE_URL,
-  rediLocationNames,
-} from '@talent-connect/shared-config'
-
 import placeholderImage from '../../assets/images/img-placeholder.png'
 import './JobPostingCard.scss'
-
-import { RedProfile } from '@talent-connect/shared-types'
 
 interface JobPostingCardProps {
   profile: RedProfile

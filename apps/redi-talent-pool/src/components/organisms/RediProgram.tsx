@@ -4,14 +4,13 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import React from 'react'
 import {
-  Container,
-  Section,
   Columns,
+  Container,
   Element,
   Heading,
+  Section,
 } from 'react-bulma-components'
 import { useTranslation } from 'react-i18next'
-
 import './RediProgram.scss'
 
 const RediProgram = () => {

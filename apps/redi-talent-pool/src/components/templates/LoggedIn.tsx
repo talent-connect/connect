@@ -1,22 +1,10 @@
-import React, { ReactNode, useEffect } from 'react'
-import { useIsFetching } from 'react-query'
-import {
-  Button,
-  Icon,
-  Loader,
-} from '@talent-connect/shared-atomic-design-components'
-import { Navbar } from '../organisms'
-import {
-  Container,
-  Section,
-  Columns,
-  Content,
-  Notification,
-} from 'react-bulma-components'
-
-import Footer from '../organisms/Footer'
+import { Loader } from '@talent-connect/shared-atomic-design-components'
+import React, { ReactNode } from 'react'
+import { Columns, Container, Section } from 'react-bulma-components'
 import { useIsBusy } from '../../hooks/useIsBusy'
-import SideMenu from '../organisms/SideMenu'
+import { Navbar } from '../organisms'
+import Footer from '../organisms/Footer'
+
 interface Props {
   children?: ReactNode
 }

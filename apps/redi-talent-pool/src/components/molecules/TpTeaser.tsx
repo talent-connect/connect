@@ -1,7 +1,7 @@
 import React from 'react'
-import { ReactComponent as WelcomeIllustration } from '../../assets/images/hero-mentor-and-mentee.svg'
 import { Content, Element } from 'react-bulma-components'
 import { Link } from 'react-router-dom'
+import { ReactComponent as WelcomeIllustration } from '../../assets/images/hero-mentor-and-mentee.svg'
 import './TpTeaser.scss'
 
 const TopIllustration: React.FunctionComponent = ({ children }) => {

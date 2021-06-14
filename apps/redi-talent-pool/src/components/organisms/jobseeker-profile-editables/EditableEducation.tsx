@@ -239,7 +239,7 @@ function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
                           checked={formik.values.education[index].current}
                           {...formik}
                         >
-                          I currently work here
+                          I currently study here
                         </Checkbox.Form>
 
                         <Columns>
@@ -308,7 +308,7 @@ function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
           icon="tpPlus"
           style={{ width: '36px', height: '36px', marginRight: '20px' }}
         />
-        Add another education
+        Add education
       </div>
 
       <Button

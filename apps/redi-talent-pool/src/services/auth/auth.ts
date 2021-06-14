@@ -1,5 +1,4 @@
-import { RedUser } from '@talent-connect/shared-types'
-import { AccessToken } from '@talent-connect/shared-types'
+import { AccessToken, RedUser } from '@talent-connect/shared-types'
 import { queryClient } from '../api/api'
 
 export const isLoggedIn = (): boolean => {

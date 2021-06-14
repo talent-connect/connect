@@ -1,13 +1,8 @@
-import AccountOperation from '../../../components/templates/AccountOperation'
-import { Columns, Form, Content } from 'react-bulma-components'
-import { useHistory, useParams } from 'react-router'
-import { RediLocation } from '@talent-connect/shared-types'
-import { envRediLocation } from '../../../utils/env-redi-location'
+import { Button } from '@talent-connect/shared-atomic-design-components'
 import { UserType } from '@talent-connect/shared-types'
-import {
-  Heading,
-  Button,
-} from '@talent-connect/shared-atomic-design-components'
+import { Columns, Content, Form } from 'react-bulma-components'
+import { useHistory, useParams } from 'react-router'
+import AccountOperation from '../../../components/templates/AccountOperation'
 
 type RouteParams = {
   userType: UserType

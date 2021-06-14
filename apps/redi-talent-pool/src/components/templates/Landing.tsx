@@ -1,6 +1,6 @@
 import React from 'react'
-import Navbar from '../organisms/Navbar'
 import Footer from '../organisms/Footer'
+import Navbar from '../organisms/Navbar'
 
 const Landing: React.FunctionComponent = ({ children }) => (
   <>

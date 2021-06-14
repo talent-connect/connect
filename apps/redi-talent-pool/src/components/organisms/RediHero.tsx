@@ -1,21 +1,21 @@
-import React from 'react'
-import {
-  Container,
-  Section,
-  Columns,
-  Level,
-  Element,
-} from 'react-bulma-components'
-import { useHistory } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import './RediHero.scss'
-import { rediLocationNames } from '@talent-connect/shared-config'
-import { envRediLocation } from '../../utils/env-redi-location'
 import {
   Button,
   Heading,
   SVGImage,
 } from '@talent-connect/shared-atomic-design-components'
+import { rediLocationNames } from '@talent-connect/shared-config'
+import React from 'react'
+import {
+  Columns,
+  Container,
+  Element,
+  Level,
+  Section,
+} from 'react-bulma-components'
+import { useTranslation } from 'react-i18next'
+import { useHistory } from 'react-router-dom'
+import { envRediLocation } from '../../utils/env-redi-location'
+import './RediHero.scss'
 
 const RediHero = () => {
   const history = useHistory()
