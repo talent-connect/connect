@@ -17,7 +17,7 @@ import {
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
 import moment from 'moment'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Columns, Content, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
 import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
@@ -28,12 +28,14 @@ import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder
 export function EditableDetails() {
   const { data: profile } = useTpCompanyProfileQuery()
   const [isEditing, setIsEditing] = useState(false)
+  const [isFormDirty, setIsFormDirty] = useState(false)
 
   const isEmpty = EditableDetails.isSectionEmpty(profile)
 
   return (
     <Editable
       isEditing={isEditing}
+      isFormDirty={isFormDirty}
       setIsEditing={setIsEditing}
       title="Details"
       readComponent={
@@ -78,7 +80,12 @@ export function EditableDetails() {
       }
       modalTitle="Help jobseekers get in touch"
       modalHeadline="Important Details"
-      modalBody={<ModalForm setIsEditing={setIsEditing} />}
+      modalBody={
+        <ModalForm
+          setIsEditing={setIsEditing}
+          setIsFormDirty={setIsFormDirty}
+        />
+      }
       modalStyles={{ minHeight: '40rem' }}
     />
   )
@@ -89,7 +96,13 @@ EditableDetails.isSectionFilled = (profile: Partial<TpCompanyProfile>) =>
 EditableDetails.isSectionEmpty = (profile: Partial<TpCompanyProfile>) =>
   !EditableDetails.isSectionFilled(profile)
 
-function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
+function ModalForm({
+  setIsEditing,
+  setIsFormDirty,
+}: {
+  setIsEditing: (boolean) => void
+  setIsFormDirty: (boolean) => void
+}) {
   const { data: profile } = useTpCompanyProfileQuery()
   const mutation = useTpCompanyProfileUpdateMutation()
 
@@ -114,6 +127,7 @@ function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
     enableReinitialize: true,
     onSubmit,
   })
+  useEffect(() => setIsFormDirty(formik.dirty), [formik.dirty, setIsFormDirty])
 
   return (
     <>
@@ -150,6 +164,13 @@ function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
         onClick={formik.submitForm}
       >
         Save
+      </Button>
+      <Button
+        simple
+        disabled={mutation.isLoading}
+        onClick={() => setIsEditing(false)}
+      >
+        Cancel
       </Button>
     </>
   )

@@ -1,8 +1,6 @@
 import {
   Button,
   Caption,
-  Checkbox,
-  FaqItem,
   FormDraggableAccordion,
   FormInput,
   FormSelect,
@@ -15,22 +13,20 @@ import {
   TpJobseekerProfile,
 } from '@talent-connect/shared-types'
 import {
+  desiredPositions,
   employmentTypes,
-  formMonthsOptions,
   topSkills,
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
-import moment from 'moment'
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
-import { Columns, Content, Element } from 'react-bulma-components'
+import { Content, Element } from 'react-bulma-components'
 import ReactMarkdown from 'react-markdown'
 import { Subject } from 'rxjs'
 import { v4 as uuidv4 } from 'uuid'
+import * as Yup from 'yup'
 import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
-import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
@@ -45,12 +41,14 @@ function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
 export function EditableJobPostings() {
   const { data: profile } = useTpCompanyProfileQuery()
   const [isEditing, setIsEditing] = useState(false)
+  const [isFormDirty, setIsFormDirty] = useState(false)
 
   const isEmpty = EditableJobPostings.isSectionEmpty(profile)
 
   return (
     <Editable
       isEditing={isEditing}
+      isFormDirty={isFormDirty}
       setIsEditing={setIsEditing}
       title="Job postings"
       readComponent={
@@ -92,7 +90,12 @@ export function EditableJobPostings() {
       }
       modalTitle="Publish job postings on Talent Pool"
       modalHeadline="Job Postings"
-      modalBody={<ModalForm setIsEditing={setIsEditing} />}
+      modalBody={
+        <ModalForm
+          setIsEditing={setIsEditing}
+          setIsFormDirty={setIsFormDirty}
+        />
+      }
     />
   )
 }
@@ -102,7 +105,25 @@ EditableJobPostings.isSectionFilled = (profile: Partial<TpCompanyProfile>) =>
 EditableJobPostings.isSectionEmpty = (profile: Partial<TpCompanyProfile>) =>
   !EditableJobPostings.isSectionFilled(profile)
 
-function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
+const validationSchema = Yup.object({
+  jobListings: Yup.array().of(
+    Yup.object().shape({
+      title: Yup.string().required('Please provide a job title'),
+      idealTechnicalSkills: Yup.array().max(
+        6,
+        'Please select up to six skills'
+      ),
+    })
+  ),
+})
+
+function ModalForm({
+  setIsEditing,
+  setIsFormDirty,
+}: {
+  setIsEditing: (boolean) => void
+  setIsFormDirty: (boolean) => void
+}) {
   const { data: profile } = useTpCompanyProfileQuery()
   const mutation = useTpCompanyProfileUpdateMutation()
 
@@ -126,7 +147,9 @@ function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
   const formik = useFormik({
     initialValues,
     onSubmit,
+    validationSchema,
   })
+  useEffect(() => setIsFormDirty(formik.dirty), [formik.dirty, setIsFormDirty])
 
   const onClickAddJobListing = useCallback(() => {
     formik.setFieldValue('jobListings', [
@@ -199,7 +222,7 @@ function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
                         <FormInput
                           name={`jobListings[${index}].title`}
                           placeholder="Junior Frontend Developer"
-                          label="Job Title"
+                          label="Job Title*"
                           {...formik}
                         />
                         <FormInput
@@ -221,11 +244,20 @@ function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
                           responsive={{ mobile: { textSize: { value: 5 } } }}
                           className="oneandhalf-bs"
                         >
-                          We use skillset to help with the matching process of
-                          our candidates. Please select the top 6 skills you
-                          think are necessary for succeeding in this job and we
-                          will use those to suggest potential matches.
+                          We use a standardised list of skills and positions to
+                          help with the matching process of our candidates.
+                          Please select the top 6 skills you think are necessary
+                          for succeeding in this job, and up to 3 position
+                          titles that match this job. We will use those to
+                          suggest potential matches.
                         </Element>
+                        <FormSelect
+                          label="Related positions"
+                          name={`jobListings[${index}].relatesToPositions`}
+                          items={formRelatedPositions}
+                          {...formik}
+                          multiselect
+                        />
                         <FormSelect
                           label="Ideal technical skills"
                           name={`jobListings[${index}].idealTechnicalSkills`}
@@ -287,6 +319,13 @@ function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
       >
         Save
       </Button>
+      <Button
+        simple
+        disabled={mutation.isLoading}
+        onClick={() => setIsEditing(false)}
+      >
+        Cancel
+      </Button>
     </>
   )
 }
@@ -297,6 +336,7 @@ function buildBlankJobListingRecord(): TpJobListingRecord {
     title: '',
     location: '',
     summary: '',
+    relatesToPositions: [],
     idealTechnicalSkills: [],
     employmentType: '',
     languageRequirements: '',
@@ -311,6 +351,11 @@ const formTopSkills = topSkills.map(({ id, label }) => ({
 }))
 
 const formEmploymentType = employmentTypes.map(({ id, label }) => ({
+  value: id,
+  label,
+}))
+
+const formRelatedPositions = desiredPositions.map(({ id, label }) => ({
   value: id,
   label,
 }))

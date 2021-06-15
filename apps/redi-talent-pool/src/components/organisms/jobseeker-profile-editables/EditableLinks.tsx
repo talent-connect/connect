@@ -4,7 +4,7 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import { TpJobseekerProfile } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Content,
   Element,
@@ -20,6 +20,7 @@ import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder
 export function EditableLinks() {
   const { data: profile } = useTpJobseekerProfileQuery()
   const [isEditing, setIsEditing] = useState(false)
+  const [isFormDirty, setIsFormDirty] = useState(false)
 
   const links = buildAllLinksArray(profile)
 
@@ -28,6 +29,7 @@ export function EditableLinks() {
   return (
     <Editable
       isEditing={isEditing}
+      isFormDirty={isFormDirty}
       setIsEditing={setIsEditing}
       title="Links"
       readComponent={
@@ -53,7 +55,12 @@ export function EditableLinks() {
       }
       modalTitle="Your online presence"
       modalHeadline="Links"
-      modalBody={<ModalForm setIsEditing={setIsEditing} />}
+      modalBody={
+        <ModalForm
+          setIsEditing={setIsEditing}
+          setIsFormDirty={setIsFormDirty}
+        />
+      }
       modalStyles={{ minHeight: 700 }}
     />
   )
@@ -87,7 +94,13 @@ const validationSchema = Yup.object({
   dribbbleUrl: Yup.string().url().label('Dribbble profile URL'),
 })
 
-function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
+function ModalForm({
+  setIsEditing,
+  setIsFormDirty,
+}: {
+  setIsEditing: (boolean) => void
+  setIsFormDirty: (boolean) => void
+}) {
   const { data: profile } = useTpJobseekerProfileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
   const initialValues: Partial<TpJobseekerProfile> = {
@@ -117,6 +130,7 @@ function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
     onSubmit,
     validateOnMount: true,
   })
+  useEffect(() => setIsFormDirty(formik.dirty), [formik.dirty, setIsFormDirty])
   return (
     <>
       <Element
@@ -131,6 +145,7 @@ function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
       <FormInput
         name="personalWebsite"
         placeholder="https://www.mysite.com"
+        label="Personal Website"
         {...formik}
       />
       <FormInput
@@ -175,6 +190,13 @@ function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
         onClick={formik.submitForm}
       >
         Save
+      </Button>
+      <Button
+        simple
+        disabled={mutation.isLoading}
+        onClick={() => setIsEditing(false)}
+      >
+        Cancel
       </Button>
     </>
   )

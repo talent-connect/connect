@@ -11,7 +11,7 @@ import {
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Content, Element, Tag } from 'react-bulma-components'
 import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
@@ -22,10 +22,12 @@ import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder
 export function EditableSummary() {
   const { data: profile } = useTpJobseekerProfileQuery()
   const [isEditing, setIsEditing] = useState(false)
+  const [isFormDirty, setIsFormDirty] = useState(false)
 
   return (
     <Editable
       isEditing={isEditing}
+      isFormDirty={isFormDirty}
       setIsEditing={setIsEditing}
       title="Summary"
       readComponent={
@@ -60,7 +62,12 @@ export function EditableSummary() {
       }
       modalTitle="About you"
       modalHeadline="Summary"
-      modalBody={<ModalForm setIsEditing={setIsEditing} />}
+      modalBody={
+        <ModalForm
+          setIsEditing={setIsEditing}
+          setIsFormDirty={setIsFormDirty}
+        />
+      }
       modalStyles={{ minHeight: 700 }}
     />
   )
@@ -89,7 +96,13 @@ const validationSchema = Yup.object({
     .max(maxChars, 'The text about yourself can be up to 600 characters long.'),
 })
 
-function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
+function ModalForm({
+  setIsEditing,
+  setIsFormDirty,
+}: {
+  setIsEditing: (boolean) => void
+  setIsFormDirty: (boolean) => void
+}) {
   const { data: profile } = useTpJobseekerProfileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
   const initialValues: Partial<TpJobseekerProfile> = {
@@ -114,6 +127,7 @@ function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
     onSubmit,
     validateOnMount: true,
   })
+  useEffect(() => setIsFormDirty(formik.dirty), [formik.dirty, setIsFormDirty])
 
   return (
     <>
@@ -152,6 +166,13 @@ function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
         onClick={formik.submitForm}
       >
         Save
+      </Button>
+      <Button
+        simple
+        disabled={mutation.isLoading}
+        onClick={() => setIsEditing(false)}
+      >
+        Cancel
       </Button>
     </>
   )

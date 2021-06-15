@@ -10,6 +10,7 @@ import './Editable.scss'
 interface Props {
   isEditing: boolean
   setIsEditing: (boolean) => void
+  isFormDirty?: boolean
   title?: string
   readComponent: React.ReactNode
   modalTitle: string
@@ -21,6 +22,7 @@ interface Props {
 export function Editable({
   isEditing,
   setIsEditing,
+  isFormDirty,
   title,
   readComponent,
   modalTitle,
@@ -55,7 +57,12 @@ export function Editable({
       )}
 
       <div className="profile-section--body">{readComponent}</div>
-      <Modal title="" show={isEditing} stateFn={setIsEditing}>
+      <Modal
+        title=""
+        show={isEditing}
+        stateFn={setIsEditing}
+        confirm={isFormDirty}
+      >
         <Modal.Body>
           <Element renderAs="h4" textTransform="uppercase" textSize={6}>
             {modalTitle}

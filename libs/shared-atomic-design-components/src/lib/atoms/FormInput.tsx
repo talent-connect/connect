@@ -27,8 +27,8 @@ function FormInput(props: any) {
     disabled,
   } = props
 
-  const hasError = !!touched[name] && !!errors[name]
-  const isValidField = dirty && !!touched[name] && !errors[name]
+  const hasError = !!get(touched, name) && !!get(errors, name)
+  const isValidField = dirty && !!get(touched, name) && !get(errors, name)
 
   return (
     <Form.Field>
@@ -53,7 +53,7 @@ function FormInput(props: any) {
         color="danger"
         className={classnames({ 'help--show': hasError })}
       >
-        {hasError && <>{errors[name]}</>}
+        {hasError && <>{get(errors, name)}</>}
       </Form.Help>
     </Form.Field>
   )

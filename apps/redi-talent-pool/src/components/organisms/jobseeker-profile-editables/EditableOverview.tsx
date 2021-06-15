@@ -3,33 +3,32 @@ import {
   Caption,
   FormSelect,
 } from '@talent-connect/shared-atomic-design-components'
+import { courses, rediLocationNames } from '@talent-connect/shared-config'
 import { TpJobseekerProfile } from '@talent-connect/shared-types'
 import {
   desiredPositions,
   desiredPositionsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Element, Tag } from 'react-bulma-components'
 import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
-const formDesiredPositions = desiredPositions.map(({ id, label }) => ({
-  value: id,
-  label,
-}))
 
 export function EditableOverview() {
   const { data: profile } = useTpJobseekerProfileQuery()
   const [isEditing, setIsEditing] = useState(false)
+  const [isFormDirty, setIsFormDirty] = useState(false)
 
   const isEmpty = EditableOverview.isSectionEmpty(profile)
 
   return (
     <Editable
       isEditing={isEditing}
+      isFormDirty={isFormDirty}
       setIsEditing={setIsEditing}
       title="Overview"
       readComponent={
@@ -52,7 +51,12 @@ export function EditableOverview() {
       }
       modalTitle="Interests & About"
       modalHeadline="Overview"
-      modalBody={<ModalForm setIsEditing={setIsEditing} />}
+      modalBody={
+        <ModalForm
+          setIsEditing={setIsEditing}
+          setIsFormDirty={setIsFormDirty}
+        />
+      }
     />
   )
 }
@@ -68,12 +72,20 @@ const validationSchema = Yup.object({
     .max(3, 'You can select up to three desired positions'),
 })
 
-function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
+function ModalForm({
+  setIsEditing,
+  setIsFormDirty,
+}: {
+  setIsEditing: (boolean) => void
+  setIsFormDirty: (boolean) => void
+}) {
   const { data: profile } = useTpJobseekerProfileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
   const initialValues: Partial<TpJobseekerProfile> = {
     desiredPositions: profile?.desiredPositions ?? [],
+    currentlyEnrolledInCourse: profile?.currentlyEnrolledInCourse ?? '',
   }
+
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
     formik.setSubmitting(true)
     mutation.mutate(values, {
@@ -92,6 +104,7 @@ function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
     onSubmit,
     validateOnMount: true,
   })
+  useEffect(() => setIsFormDirty(formik.dirty), [formik.dirty, setIsFormDirty])
   return (
     <>
       <Element
@@ -109,12 +122,53 @@ function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
         {...formik}
         multiselect
       />
+      <FormSelect
+        label="Current ReDI course"
+        name="currentlyEnrolledInCourse"
+        items={formCourses}
+        {...formik}
+      />
       <Button
         disabled={!formik.isValid || mutation.isLoading}
         onClick={formik.submitForm}
       >
         Save
       </Button>
+      <Button
+        simple
+        disabled={mutation.isLoading}
+        onClick={() => setIsEditing(false)}
+      >
+        Cancel
+      </Button>
     </>
   )
 }
+
+const formDesiredPositions = desiredPositions.map(({ id, label }) => ({
+  value: id,
+  label,
+}))
+
+// TODO: merge this logic with the stuff in SignUp.tsx
+const coursesWithAlumniDeduped = [
+  ...courses.filter((c) => {
+    return !c.id.includes('alumni')
+  }),
+  {
+    id: 'alumni',
+    label: `I'm a ReDI School alumni (I took a course before)`,
+    location: 'berlin',
+  },
+]
+
+const formCourses = coursesWithAlumniDeduped.map((course) => {
+  const label =
+    course.id === 'alumni'
+      ? course.label
+      : `(ReDI ${rediLocationNames[course.location]}) ${course.label}`
+  return {
+    value: course.id,
+    label: label,
+  }
+})

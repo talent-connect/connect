@@ -118,7 +118,7 @@ function FormSelect(props: any) {
     handleBlur(e)
   }
 
-  const hasError = !!touched[name] && !!errors[name]
+  const hasError = !!get(touched, name) && !!get(errors, name)
   const handleOnChange = customOnChange || handleOnChangeDefault
 
   const selectedValues = multiselect
@@ -128,6 +128,8 @@ function FormSelect(props: any) {
         )
         .flat()
     : items.find((item: any) => item.value === get(values, name))
+
+  console.log(errors)
 
   return (
     <Form.Field>
@@ -148,7 +150,7 @@ function FormSelect(props: any) {
         />
       </Form.Control>
       <Form.Help color="danger" className={hasError ? 'help--show' : ''}>
-        {hasError && <>{errors[name]}</>}
+        {hasError && <>{get(errors, name)}</>}
       </Form.Help>
     </Form.Field>
   )

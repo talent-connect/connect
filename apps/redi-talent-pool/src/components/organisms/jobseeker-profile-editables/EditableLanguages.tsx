@@ -15,7 +15,7 @@ import {
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
 import { Subject } from 'rxjs'
-import React, { useCallback, useState, useRef } from 'react'
+import React, { useCallback, useState, useRef, useEffect } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Content, Element } from 'react-bulma-components'
 import { v4 as uuidv4 } from 'uuid'
@@ -36,12 +36,14 @@ function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
 export function EditableLanguages() {
   const { data: profile } = useTpJobseekerProfileQuery()
   const [isEditing, setIsEditing] = useState(false)
+  const [isFormDirty, setIsFormDirty] = useState(false)
 
   const isEmpty = EditableLanguages.isSectionEmpty(profile)
 
   return (
     <Editable
       isEditing={isEditing}
+      isFormDirty={isFormDirty}
       setIsEditing={setIsEditing}
       title="Languages"
       readComponent={
@@ -66,7 +68,12 @@ export function EditableLanguages() {
       }
       modalTitle="Relevant languages you can speak"
       modalHeadline="Languages"
-      modalBody={<ModalForm setIsEditing={setIsEditing} />}
+      modalBody={
+        <ModalForm
+          setIsEditing={setIsEditing}
+          setIsFormDirty={setIsFormDirty}
+        />
+      }
       modalStyles={{ minHeight: 700 }}
     />
   )
@@ -84,7 +91,13 @@ const validationSchema = Yup.object({
   workingLanguages: Yup.array().min(1).max(6),
 })
 
-function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
+function ModalForm({
+  setIsEditing,
+  setIsFormDirty,
+}: {
+  setIsEditing: (boolean) => void
+  setIsFormDirty: (boolean) => void
+}) {
   const { data: profile } = useTpJobseekerProfileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
 
@@ -108,6 +121,7 @@ function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
     initialValues,
     onSubmit,
   })
+  useEffect(() => setIsFormDirty(formik.dirty), [formik.dirty, setIsFormDirty])
 
   const onDragEnd = useCallback(
     (result: any) => {
@@ -232,6 +246,13 @@ function ModalForm({ setIsEditing }: { setIsEditing: (boolean) => void }) {
         onClick={formik.submitForm}
       >
         Save
+      </Button>
+      <Button
+        simple
+        disabled={mutation.isLoading}
+        onClick={() => setIsEditing(false)}
+      >
+        Cancel
       </Button>
     </>
   )

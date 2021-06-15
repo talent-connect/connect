@@ -30,6 +30,7 @@ export type TpJobListingRecord = {
   location?: string
   summary?: string
   idealTechnicalSkills?: string[]
+  relatesToPositions?: string[]
   employmentType?: string
   languageRequirements?: string
   desiredExperience?: string

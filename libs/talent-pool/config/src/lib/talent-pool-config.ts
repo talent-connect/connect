@@ -18,6 +18,8 @@ export const desiredPositions: DropdownOptions = [
     id: 'businessAnalyst',
     label: 'Business Analyst',
   },
+  { id: 'cloudEngineer', label: 'Cloud Engineer' },
+  { id: 'cloudSpecialist', label: 'Cloud Specialist' },
   {
     id: 'dataAnalyst',
     label: 'Data Analyst',
@@ -38,10 +40,14 @@ export const desiredPositions: DropdownOptions = [
     id: 'fullstackDeveloper',
     label: 'Fullstack Developer',
   },
+  { id: 'itAdministrator', label: 'IT Administrator' },
+  { id: 'itSpecialist', label: 'IT Specialist' },
+  { id: 'itSupportTechnician', label: 'IT Support Technician' },
   {
     id: 'javaDeveloper',
     label: 'Java Developer',
   },
+  { id: 'linuxSystemAdministrator', label: 'Linux System Administrator' },
   {
     id: 'nodeJsDeveloper',
     label: 'Node.js Developer',
