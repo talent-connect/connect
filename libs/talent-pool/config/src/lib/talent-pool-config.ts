@@ -1,26 +1,555 @@
 import { DropdownOptions } from '@talent-connect/talent-pool/types'
+import { keyBy, mapValues } from 'lodash'
 
 export const desiredPositions: DropdownOptions = [
-  { id: 'frontendDeveloper', label: 'Frontend Developer' },
-  { id: 'backendDeveloper', label: 'Backend Developer' },
-  { id: 'fullstackDeveloper', label: 'Fullstack Developer' },
-  { id: 'nodejsDeveloper', label: 'Node.js Developer' },
-  { id: 'React Developer', label: 'React Developer' },
-  { id: 'dataAnalyst', label: 'Data Analyst' },
-  { id: 'dataScientist', label: 'Data Scientist' },
-  { id: 'pythonDeveloper', label: 'Python Developer' },
-  { id: 'devops', label: 'DevOps Specialist' },
-  { id: 'java', label: 'Java Developer' },
-  { id: 'salesforceAdministrator', label: 'Salesforce Administrator' },
-  { id: 'azureSpecialist', label: 'Azure Specialist' },
-  { id: 'uiUxDesigner', label: 'UI/UX Designer' },
-  { id: 'userResearcher', label: 'User Researcher' },
-  { id: 'agileScrumCoach', label: 'Agile/SCRUM Coach' },
-  { id: 'uiDesigner', label: 'UI Designer' },
-  { id: 'uxDesigner', label: 'UX Designer' },
-  { id: 'productDesigner', label: 'Product Designer' },
-  { id: 'qaEngineer', label: 'QA Engineer' },
+  {
+    id: 'agileScrumCoach',
+    label: 'Agile/SCRUM Coach',
+  },
+  {
+    id: 'azureSpecialist',
+    label: 'Azure Specialist',
+  },
+  {
+    id: 'backendDeveloper',
+    label: 'Backend Developer',
+  },
+  {
+    id: 'businessAnalyst',
+    label: 'Business Analyst',
+  },
+  { id: 'cloudEngineer', label: 'Cloud Engineer' },
+  { id: 'cloudSpecialist', label: 'Cloud Specialist' },
+  {
+    id: 'dataAnalyst',
+    label: 'Data Analyst',
+  },
+  {
+    id: 'dataScientist',
+    label: 'Data Scientist',
+  },
+  {
+    id: 'devOpsSpecialist',
+    label: 'DevOps Specialist',
+  },
+  {
+    id: 'frontendDeveloper',
+    label: 'Frontend Developer',
+  },
+  {
+    id: 'fullstackDeveloper',
+    label: 'Fullstack Developer',
+  },
+  { id: 'itAdministrator', label: 'IT Administrator' },
+  { id: 'itSpecialist', label: 'IT Specialist' },
+  { id: 'itSupportTechnician', label: 'IT Support Technician' },
+  {
+    id: 'javaDeveloper',
+    label: 'Java Developer',
+  },
+  { id: 'linuxSystemAdministrator', label: 'Linux System Administrator' },
+  {
+    id: 'nodeJsDeveloper',
+    label: 'Node.js Developer',
+  },
+  {
+    id: 'productDesigner',
+    label: 'Product Designer',
+  },
+  {
+    id: 'pythonDeveloper',
+    label: 'Python Developer',
+  },
+  {
+    id: 'qaEngineer',
+    label: 'QA Engineer',
+  },
+  {
+    id: 'reactDeveloper',
+    label: 'React Developer',
+  },
+  {
+    id: 'requirementsEngineer',
+    label: 'Requirements Engineer',
+  },
+  {
+    id: 'salesforceAdministrator',
+    label: 'Salesforce Administrator',
+  },
+  {
+    id: 'systemEngineer',
+    label: 'System Engineer',
+  },
+  {
+    id: 'technicalArchitect',
+    label: 'Technical Architect',
+  },
+  {
+    id: 'uiDesigner',
+    label: 'UI Designer',
+  },
+  {
+    id: 'uiDeveloper',
+    label: 'UI Developer',
+  },
+  {
+    id: 'uiUxDesigner',
+    label: 'UI/UX Designer',
+  },
+  {
+    id: 'usabilityengineer',
+    label: 'Usability Engineer',
+  },
+  {
+    id: 'userResearcher',
+    label: 'User Researcher',
+  },
+  {
+    id: 'uxDesigner',
+    label: 'UX Designer',
+  },
 ]
+
+export const desiredPositionsIdToLabelMap = mapValues(
+  keyBy(desiredPositions, 'id'),
+  'label'
+)
+
+export const topSkills = [
+  {
+    id: 'netFramework',
+    label: '.NET Framework',
+  },
+  {
+    id: 'adobeCreativeSuite',
+    label: 'Adobe Creative Suite',
+  },
+  {
+    id: 'adobePhotoshop',
+    label: 'Adobe Photoshop',
+  },
+  {
+    id: 'agileMethodology',
+    label: 'Agile Methodology',
+  },
+  {
+    id: 'applicationOperation',
+    label: 'Application Operation',
+  },
+  {
+    id: 'artificialIntellegence',
+    label: 'Artificial Intelligence',
+  },
+  {
+    id: 'aspNet',
+    label: 'ASP.NET',
+  },
+  {
+    id: 'atlassianConfluence',
+    label: 'Atlassian Confluence',
+  },
+  {
+    id: 'atlassianJira',
+    label: 'Atlassian Jira',
+  },
+  {
+    id: 'atlassianSuite',
+    label: 'Atlassian Suite',
+  },
+  {
+    id: 'aws',
+    label: 'AWS',
+  },
+  {
+    id: 'balsamiqMockup',
+    label: 'Balsamiq Mockup',
+  },
+  {
+    id: 'bpmn',
+    label: 'BPMN',
+  },
+  {
+    id: 'c',
+    label: 'C#',
+  },
+  {
+    id: 'c',
+    label: 'C++',
+  },
+  {
+    id: 'camunda',
+    label: 'Camunda',
+  },
+  {
+    id: 'cloudApplications',
+    label: 'Cloud Applications',
+  },
+  {
+    id: 'cloudComputing',
+    label: 'Cloud Computing',
+  },
+  {
+    id: 'conceptDevelopment',
+    label: 'Concept Development',
+  },
+  {
+    id: 'crm',
+    label: 'CRM',
+  },
+  {
+    id: 'css',
+    label: 'CSS',
+  },
+  {
+    id: 'customerService',
+    label: 'Customer Service',
+  },
+  {
+    id: 'customerSupport',
+    label: 'Customer Support',
+  },
+  {
+    id: 'dataAnalysis',
+    label: 'Data Analysis',
+  },
+  {
+    id: 'databaseDesign',
+    label: 'Database Design',
+  },
+  {
+    id: 'designThinking',
+    label: 'Design Thinking',
+  },
+  {
+    id: 'devOps',
+    label: 'DevOps',
+  },
+  {
+    id: 'domainDrivenDesign',
+    label: 'Domain Driven Design',
+  },
+  {
+    id: 'domainModelling',
+    label: 'Domain Modelling',
+  },
+  {
+    id: 'figma',
+    label: 'Figma',
+  },
+  {
+    id: 'git',
+    label: 'Git',
+  },
+  {
+    id: 'googleCloudPlatform',
+    label: 'Google Cloud Platform',
+  },
+  {
+    id: 'graphicDesign',
+    label: 'Graphic Design',
+  },
+  {
+    id: 'hpAlm',
+    label: 'HP ALM',
+  },
+  {
+    id: 'hpQualityCenter',
+    label: 'HP Quality Center',
+  },
+  {
+    id: 'html',
+    label: 'HTML',
+  },
+  {
+    id: 'illustrator',
+    label: 'Illustrator',
+  },
+  {
+    id: 'informationArchitecture',
+    label: 'Information Architecture',
+  },
+  {
+    id: 'interactionDesign',
+    label: 'Interaction Design',
+  },
+  {
+    id: 'invision',
+    label: 'Invision',
+  },
+  {
+    id: 'itServiceManagement',
+    label: 'IT Service Management',
+  },
+  {
+    id: 'itil',
+    label: 'ITIL',
+  },
+  {
+    id: 'java',
+    label: 'Java',
+  },
+  {
+    id: 'javaScript',
+    label: 'JavaScript',
+  },
+  {
+    id: 'kafka',
+    label: 'Kafka',
+  },
+  {
+    id: 'kanban',
+    label: 'Kanban',
+  },
+  {
+    id: 'leanPrinciples',
+    label: 'Lean Principles',
+  },
+  {
+    id: 'linux',
+    label: 'Linux',
+  },
+  {
+    id: 'macOsServer',
+    label: 'MacOS Server',
+  },
+  {
+    id: 'microsoftAzure',
+    label: 'Microsoft Azure',
+  },
+  {
+    id: 'microsoftOffice',
+    label: 'Microsoft Office',
+  },
+  {
+    id: 'networkAdministration',
+    label: 'Network Administration',
+  },
+  {
+    id: 'networkDesign',
+    label: 'Network Design',
+  },
+  {
+    id: 'networkSecurity',
+    label: 'Network Security',
+  },
+  {
+    id: 'nodeJs',
+    label: 'Node.js',
+  },
+  {
+    id: 'operationsManagement',
+    label: 'Operations Management',
+  },
+  {
+    id: 'oracleDatabase',
+    label: 'Oracle Database',
+  },
+  {
+    id: 'php',
+    label: 'PHP',
+  },
+  {
+    id: 'problemSolving',
+    label: 'Problem Solving',
+  },
+  {
+    id: 'processModelling',
+    label: 'Process Modelling',
+  },
+  {
+    id: 'processOptimization',
+    label: 'Process Optimization',
+  },
+  {
+    id: 'productDevelopment',
+    label: 'Product Development',
+  },
+  {
+    id: 'productManagement',
+    label: 'Product Management',
+  },
+  {
+    id: 'programManagement',
+    label: 'Program Management',
+  },
+  {
+    id: 'projectManagement',
+    label: 'Project Management',
+  },
+  {
+    id: 'prototyping',
+    label: 'Prototyping',
+  },
+  {
+    id: 'python',
+    label: 'Python',
+  },
+  {
+    id: 'qualitativeResearch',
+    label: 'Qualitative Research',
+  },
+  {
+    id: 'qualityAssurance',
+    label: 'Quality Assurance',
+  },
+  {
+    id: 'qualityManagement',
+    label: 'Quality Management',
+  },
+  {
+    id: 'quantitativeResearch',
+    label: 'Quantitative Research',
+  },
+  {
+    id: 'rProgrammingLanguage',
+    label: 'R (Programming Language)',
+  },
+  {
+    id: 'reactJs',
+    label: 'React.js',
+  },
+  {
+    id: 'requirementsAnalysis',
+    label: 'Requirements Analysis',
+  },
+  {
+    id: 'responsiveWebDesign',
+    label: 'Responsive Web Design',
+  },
+  {
+    id: 'salesforce',
+    label: 'Salesforce',
+  },
+  {
+    id: 'sapProducts',
+    label: 'SAP Products',
+  },
+  {
+    id: 'scrum',
+    label: 'Scrum',
+  },
+  {
+    id: 'sketch',
+    label: 'Sketch',
+  },
+  {
+    id: 'sketching',
+    label: 'Sketching',
+  },
+  {
+    id: 'softwareArchitecture',
+    label: 'Software Architecture',
+  },
+  {
+    id: 'softwareDevelopmentLifecycle',
+    label: 'Software Development Lifecycle',
+  },
+  {
+    id: 'sql',
+    label: 'SQL',
+  },
+  {
+    id: 'teamLeadership',
+    label: 'Team Leadership',
+  },
+  {
+    id: 'technicalSupport',
+    label: 'Technical Support',
+  },
+  {
+    id: 'testing',
+    label: 'Testing',
+  },
+  {
+    id: 'troubleshooting',
+    label: 'Troubleshooting',
+  },
+  {
+    id: 'typography',
+    label: 'Typography',
+  },
+  {
+    id: 'uml',
+    label: 'UML',
+  },
+  {
+    id: 'usabilityTesting',
+    label: 'Usability Testing',
+  },
+  {
+    id: 'userExperience',
+    label: 'User Experience',
+  },
+  {
+    id: 'userStoryMapping',
+    label: 'User Story Mapping',
+  },
+  {
+    id: 'userCenteredDesign',
+    label: 'User-Centered Design',
+  },
+  {
+    id: 'visualBasic',
+    label: 'Visual Basic',
+  },
+  {
+    id: 'vmWare',
+    label: 'VMWare',
+  },
+  {
+    id: 'webApplications',
+    label: 'Web Applications',
+  },
+  {
+    id: 'webDesign',
+    label: 'Web Design',
+  },
+  {
+    id: 'webDevelopment',
+    label: 'Web Development',
+  },
+  {
+    id: 'webServices',
+    label: 'Web Services',
+  },
+  {
+    id: 'windowsServer',
+    label: 'Windows Server',
+  },
+  {
+    id: 'wireframes',
+    label: 'Wireframes',
+  },
+  {
+    id: 'xRay',
+    label: 'X-Ray',
+  },
+  {
+    id: 'xml',
+    label: 'XML',
+  },
+  {
+    id: 'zephyr',
+    label: 'Zephyr',
+  },
+]
+
+export const topSkillsIdToLabelMap = mapValues(keyBy(topSkills, 'id'), 'label')
+
+export const languageProficiencyLevels: DropdownOptions = [
+  { id: 'elementaryProficiency', label: 'Elementary proficiency' },
+  { id: 'limitedWorkingProficiency', label: 'Limited working proficiency' },
+  { id: 'fullWorkingProficiency', label: 'Full working proficiency' },
+  {
+    id: 'nativeOrBilingualProficiency',
+    label: 'Native or bilingual proficiency',
+  },
+]
+
+export const languageProficiencyLevelsIdToLabelMap = mapValues(
+  keyBy(languageProficiencyLevels, 'id'),
+  'label'
+)
 
 export const yearsOfRelevantExperienceOptions: DropdownOptions = [
   { id: 'none', label: 'None' },
@@ -49,14 +578,99 @@ export const yearsOfRelevantExperienceOptions: DropdownOptions = [
 export const desiredEmploymentTypeOptions = [
   { id: 'partTime', label: 'Part-time employment' },
   { id: 'fullTime', label: 'Full-time employment' },
-  { id: 'werkStudent', label: 'Werkstudent' },
+  { id: 'werkstudium', label: 'Werkstudium' },
   { id: 'Internship', label: 'Internship' },
 ]
+
+export const desiredEmploymentTypeOptionsIdToLabelMap = mapValues(
+  keyBy(desiredEmploymentTypeOptions, 'id'),
+  'label'
+)
 
 export const availabilityOptions = [
   { id: 'immediately', label: 'Immediately' },
   { id: 'oneMonthNotice', label: 'One month notice' },
   { id: 'twoMonthNotice', label: 'Two months notice' },
   { id: 'threeMonthNotice', label: 'Three months notice' },
+  { id: 'date', label: 'Date' },
+]
+
+export const availabilityOptionsIdToLabelMap = mapValues(
+  keyBy(availabilityOptions, 'id'),
+  'label'
+)
+
+export const certificationTypes: DropdownOptions = [
+  { id: 'confirmationOfAttendance', label: 'Confirmation of attendance' },
+  { id: 'professionalCertification', label: 'Professional certification' },
+  { id: 'rediSchoolCourse', label: 'ReDI School Course' },
+  { id: 'universityDegreeDiploma', label: 'University degree / diploma' },
   { id: 'other', label: 'Other' },
 ]
+
+export const certificationTypesIdToLabelMap = mapValues(
+  keyBy(certificationTypes, 'id'),
+  'label'
+)
+
+export const immigrationStatusOptions: DropdownOptions = [
+  {
+    label:
+      'EU-Citizenship or unlimited residence permission (Niederlassungserlaubnis)',
+    id: 'euCitizenshipOrUnlimitedResidencePermissionNiederlassungserlaubnis',
+  },
+  { label: 'EU Blue card (Blaue Karte)', id: 'euBlueCardBlaueKarte' },
+  {
+    label: 'Temporary residence permission (Aufenthaltstitel) ',
+    id: 'temporaryResidencePermissionAufenthaltstitel',
+  },
+  {
+    label: 'Visa (Nationalvisum or Jobseeker visum)',
+    id: 'visaNationalvisumOrJobseekerVisum',
+  },
+  { label: 'Student visa ', id: 'studentVisa' },
+  { label: 'Schengen visa', id: 'schengenVisa' },
+]
+
+export const immigrationStatusOptionsIdToLabelMap = mapValues(
+  keyBy(immigrationStatusOptions, 'id'),
+  'label'
+)
+
+export const formMonths = {
+  0: 'January',
+  1: 'February',
+  2: 'March',
+  3: 'April',
+  4: 'May',
+  5: 'June',
+  6: 'July',
+  7: 'August',
+  8: 'September',
+  9: 'October',
+  10: 'November',
+  11: 'December',
+}
+
+export const formMonthsOptions = Object.entries(formMonths).map(
+  ([value, label]) => ({
+    value,
+    label,
+  })
+)
+
+export const employmentTypes: DropdownOptions = [
+  { id: 'partTimeEmployment', label: 'Part-time employment' },
+  { id: 'fullTimeEmployment', label: 'Full-time employment' },
+  { id: 'werkstudium', label: 'Werkstudium' },
+  { id: 'internship', label: 'Internship' },
+  { id: 'apprenticeship', label: 'Apprenticeship' },
+  { id: 'selfEmployed', label: 'Self-employed' },
+  { id: 'freelance', label: 'Freelance' },
+  { id: 'contract', label: 'Contract' },
+]
+
+export const employmentTypesIdToLabelMap = mapValues(
+  keyBy(employmentTypes, 'id'),
+  'label'
+)

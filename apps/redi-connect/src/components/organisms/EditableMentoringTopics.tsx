@@ -158,39 +158,37 @@ const CategoryGroup = ({
 
   if (!categoriesByGroup[id]) return null
   return (
-    <>
-      <Columns.Column size={4}>
-        <Heading
-          size={6}
-          weight="normal"
-          renderAs="h3"
-          subtitle
-          textTransform="uppercase"
-        >
-          {label}
-        </Heading>
-        <Element className="mentoring__group">
-          {categoriesByGroup[id].map((groupItem) => (
-            <Checkbox.Form
-              name={`categories-${groupItem.id}`}
-              key={groupItem.id}
-              value={groupItem.id}
-              checked={selectedCategories.includes(groupItem.id)}
-              customOnChange={onChange}
-              disabled={
-                !formik.values.isMentor &&
-                selectedCategories.length >=
-                  MAX_MENTORING_TOPICS_IF_USER_IS_MENTEE &&
-                !selectedCategories.includes(groupItem.id)
-              }
-              {...formik}
-            >
-              {groupItem.label}
-            </Checkbox.Form>
-          ))}
-        </Element>
-      </Columns.Column>
-    </>
+    <Columns.Column size={4}>
+      <Heading
+        size={6}
+        weight="normal"
+        renderAs="h3"
+        subtitle
+        textTransform="uppercase"
+      >
+        {label}
+      </Heading>
+      <Element className="mentoring__group">
+        {categoriesByGroup[id].map((groupItem) => (
+          <Checkbox.Form
+            name={`categories-${groupItem.id}`}
+            key={groupItem.id}
+            value={groupItem.id}
+            checked={selectedCategories.includes(groupItem.id)}
+            customOnChange={onChange}
+            disabled={
+              !formik.values.isMentor &&
+              selectedCategories.length >=
+                MAX_MENTORING_TOPICS_IF_USER_IS_MENTEE &&
+              !selectedCategories.includes(groupItem.id)
+            }
+            {...formik}
+          >
+            {groupItem.label}
+          </Checkbox.Form>
+        ))}
+      </Element>
+    </Columns.Column>
   )
 }
 

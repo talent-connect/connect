@@ -5,6 +5,7 @@
   position: absolute;
   display: flex;
   justify-content: center;
+  visibility: hidden;
   top: 0;
   left: 0;
   width: 100%;
@@ -15,6 +16,7 @@
   transition: $transition;
 
   &--active {
+    visibility: visible;
     z-index: 1000;
     background: hsla(0, 0%, 100%, 0.9);
   }

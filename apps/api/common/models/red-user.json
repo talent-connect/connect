@@ -20,6 +20,22 @@
       "options": {
         "nestRemoting": true
       }
+    },
+    "tpJobseekerProfile": {
+      "type": "hasOne",
+      "model": "TpJobseekerProfile",
+      "foreignKey": "",
+      "options": {
+        "nestRemoting": true
+      }
+    },
+    "tpCompanyProfile": {
+      "type": "hasOne",
+      "model": "TpCompanyProfile",
+      "foreignKey": "",
+      "options": {
+        "nestRemoting": true
+      }
     }
   },
   "acls": [
@@ -31,7 +47,13 @@
       "property": [
         "__create__redProfile",
         "__update__redProfile",
-        "__get__redProfile"
+        "__get__redProfile",
+        "__create__tpJobseekerProfile",
+        "__update__tpJobseekerProfile",
+        "__get__tpJobseekerProfile",
+        "__create__tpCompanyProfile",
+        "__update__tpCompanyProfile",
+        "__get__tpCompanyProfile"
       ]
     },
     {

@@ -1,21 +1,19 @@
-import React, { useState, useEffect } from 'react'
-import AccountOperation from '../../../components/templates/AccountOperation'
-import { Columns, Content, Form } from 'react-bulma-components'
-import { Link } from 'react-router-dom'
-
-import * as Yup from 'yup'
-
-import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
-import { history } from '../../../services/history/history'
-import { setPassword } from '../../../services/api/api'
-import { saveAccessToken } from '../../../services/auth/auth'
-import { RouteComponentProps } from 'react-router'
-import { showNotification } from '../../../components/AppNotification'
 import {
   Button,
   FormInput,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
+import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
+import React, { useEffect, useState } from 'react'
+import { Columns, Content, Form } from 'react-bulma-components'
+import { RouteComponentProps } from 'react-router'
+import { Link } from 'react-router-dom'
+import * as Yup from 'yup'
+import { showNotification } from '../../../components/AppNotification'
+import AccountOperation from '../../../components/templates/AccountOperation'
+import { setPassword } from '../../../services/api/api'
+import { saveAccessTokenToLocalStorage } from '../../../services/auth/auth'
+import { history } from '../../../services/history/history'
 
 interface SetNewPasswordValues {
   password: string
@@ -51,7 +49,7 @@ export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
       let accessToken
       try {
         accessToken = JSON.parse(accessTokenStr)
-        saveAccessToken(accessToken)
+        saveAccessTokenToLocalStorage(accessToken)
         console.log('savetoken')
       } catch (err) {
         console.log('savetoken errp')

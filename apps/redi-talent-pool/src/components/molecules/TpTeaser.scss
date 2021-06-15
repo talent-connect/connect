@@ -1,0 +1,18 @@
+.tp-illustration {
+  width: 100%;
+
+  &--rightOut {
+    width: calc(100% + 2em);
+    margin: 0 -2em 3.625em 0em;
+  }
+
+  &--bothOut {
+    width: calc(100% + 9em);
+    margin: 0 -6em 3.625em -3em;
+  }
+
+  &--toRight {
+    margin: 1rem 3rem 0 0;
+    float: right;
+  }
+}

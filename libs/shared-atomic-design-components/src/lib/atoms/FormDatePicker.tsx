@@ -25,7 +25,7 @@ const PickerTrigger = (placeholder: string) => ({
 interface FormDatePickerProps {
   name: string
   placeholder: string
-  label: string
+  label?: string
   values?: any
   dateFormat?: string
   minDate?: Date

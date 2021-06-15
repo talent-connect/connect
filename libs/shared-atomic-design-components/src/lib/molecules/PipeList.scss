@@ -1,7 +1,9 @@
 .pipe-list {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  &--overflow-ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 
   li {
     display: inline-block;

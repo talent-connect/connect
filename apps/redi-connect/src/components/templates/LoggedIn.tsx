@@ -16,7 +16,7 @@ import {
   Content,
   Notification,
 } from 'react-bulma-components'
-import { getRedProfile } from '../../services/auth/auth'
+import { getRedProfileFromLocalStorage } from '../../services/auth/auth'
 import {
   matchesFetchStart,
   matchesMarkAsDismissed,
@@ -52,7 +52,7 @@ const LoggedIn = ({
   matchesFetchStart,
   matchesMarkAsDismissed,
 }: Props) => {
-  const profile = getRedProfile()
+  const profile = getRedProfileFromLocalStorage()
   const history = useHistory()
   const match = matches && matches.find((match) => match.status === 'accepted')
 
