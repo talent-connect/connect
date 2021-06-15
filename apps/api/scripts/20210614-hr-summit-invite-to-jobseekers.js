@@ -141,12 +141,12 @@ redUserFind({ include: 'redProfile' })
     // filter(({ redProfile }) => redProfile.rediLocation === 'berlin'),
     filter(({ redProfile }) => redProfile.userActivated),
 
-    take(2),
+    take(1),
 
     map((data, index) => {
       switch (index) {
         case 0:
-          data.redProfile.contactEmail = 'zoe@redi-school.org'
+          data.redProfile.contactEmail = 'eric@redi-school.org'
           break
 
         case 1:

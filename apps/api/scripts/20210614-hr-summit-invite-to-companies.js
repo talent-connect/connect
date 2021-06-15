@@ -42,7 +42,7 @@ const newsletterTemplateMjml = fs.readFileSync(
     'lib',
     'email',
     'templates',
-    'newsletter.berlin.miriam.mjml'
+    'newsletter.munich.mjml'
   ),
   'utf-8'
 )
@@ -50,8 +50,8 @@ const emailBodyMjml = newsletterTemplateMjml.replace(
   '${NEWSLETTER_BODY}',
   `
 
-<mj-text mj-class="headline">Get ReDI for the 8 July 2021 Job Fair!</mj-text>
-<mj-text mj-class="tagline">Post your jobs on th ReDI Talent Pool and get interviewees</mj-text>
+<mj-text mj-class="headline">JOB FAIR: Get ReDI for 8 July!</mj-text>
+<mj-text mj-class="tagline">Post your jobs on the ReDI Talent Pool to get interviews scheduled</mj-text>
 
 <mj-divider mj-class="divider-top" css-class="divider" />
 
@@ -60,20 +60,29 @@ const emailBodyMjml = newsletterTemplateMjml.replace(
 
 <mj-text mj-class="text" padding="0 0 20px 0">Thank you for registering your company for the ReDI HR SUMMIT's Job Fair. </mj-text>
 
-<mj-text mj-class="text" padding="0 0 20px 0">We are currently preparing the next steps and would like to invite you to sign up to the <strong>new ReDI Talent Pool</strong> platform so that we can:</mj-text>
+<mj-text mj-class="text" padding="0 0 20px 0">We are currently preparing the next steps and would like to invite you <strong>to sign up until June 22</strong> at the latest to the <strong>new ReDI Talent Pool</strong> platform so that we can:</mj-text>
 
 - schedule the interviews (while the job fair) between relevant jobseekers and your recruiters attending the HR Summit's Job Fair
 - on and after the job fair, to stay in contact with our talents and promote your internship/job posts to our entire community of jobseekers, to getting you more relevant applicants
 
 <mj-text mj-class="text" padding="0 0 0 0"><strong>To proceed, please:</strong></mj-text>
 
-<mj-text mj-class="text" padding="0 0 20px 0">
+<mj-text mj-class="text" padding="0 0 0 0">
 <ul>
 <li>Go to <a href="https://talent-pool.redi-school.org" target="_blank">talent-pool.redi-school.org</a></li>
 <li>Sign up</li>
 <li>Create your profile</li>
-<li>Add your internship/job postings</li>
+<li>Add your internship/job postings (the more information we have about your open jobs, the better we can match the students that fit to your requirements for the 1:1 meetings with you)</li>
 </ul>
+</mj-text>
+
+<mj-text mj-class="text" padding="0 0 0 0"><strong>Your Video-Pitch:</strong> Please send us a VERY short (20 sec / horizontal format) video to <a href="mailto:yara@redi-school.org">yara@redi-school.org</a> by June 30th. In the video:</mj-text>
+<mj-text mj-class="text" padding="0 0 20px 0">
+<ol>
+<li>Tell us your name</li>
+<li>What your company does</li>
+<li>What you are looking forward to on the day of the job fair</li>
+</ol>
 </mj-text>
 
 <mj-text mj-class="text" padding="0 0 0 0"><strong><u>Further information about the Event:</u></strong></mj-text>
@@ -81,8 +90,8 @@ const emailBodyMjml = newsletterTemplateMjml.replace(
 <mj-text mj-class="text" padding="0 0 20px 0">
 <ul>
 <li><strong>The platform:</strong> We will be hosting the job fair in the afternoon as well as the morning conference panel in <strong>Microsoft Teams</strong>.</li>
-<li><strong>Participants form your company:</strong> If you are joining with more or other colleagues then named in the registration, please send their name and <strong>e-mail to <a href="mailto:yara@redi-school.org">yara@redi-school.org</a> by June 30th</strong> at the latext. Only with this information we can give them access to the job fair.</li>
-<li><strong>The 1:1 interviews:</strong> For the 1:1 Short Interviews between your recruiters and the ReDI talents we will schedule virtual appointments (10 minutes) and create individual invite links (you will receive a separate email about this)</li>
+<li><strong>Participants from your company:</strong> If you are joining with more or other colleagues then named in the registration, please send <strong>their name</strong> and <strong>e-mail to <a href="mailto:yara@redi-school.org">yara@redi-school.org</a> before June 30th</strong> at the latest. Only with this information we can provide access to the job fair.</li>
+<li><strong>The 1:1 interviews:</strong> For the 1:1 short interviews between your recruiters and the ReDI talents we will schedule virtual appointments (10 minutes) and create individual invite links (you will receive a separate email about this)</li>
 <li><strong>Virtual "Booths" & Networking:</strong> In addition to MS Teams we will be using a platform called <a href="https://help.wonder.me/en/articles/4947041-faqs" target="_blank">wonder.me</a>, so that you can network in between the interview sessions and meet fellow recruiters, colleagues or members of the ReDI community, almost like in "real" life.</li>
 <li><strong>Onboarding-Session for Companies:</strong> Please <strong>save the date</strong> for the onboarding session with MS Teams on <strong>July 5th at 11 am</strong>. Here we will explain everything in detail.</li>
 <li><strong>Welcome-Package:</strong> We would also like to send you a <strong>little welcome-package</strong> before the job fair and will be using the addresses we found in your email signatures. <strong>In case you would like to use a different address,</strong> please drop us an <strong>email to <a href="mailto:yara@redi-school.org">yara@redi-school.org</a></strong></li>
@@ -140,7 +149,7 @@ redUserFind({ include: 'redProfile' })
     // filter(({ redProfile }) => redProfile.rediLocation === 'berlin'),
     filter(({ redProfile }) => redProfile.userActivated),
 
-    take(1),
+    take(2),
 
     map((data, index) => {
       switch (index) {
@@ -149,12 +158,15 @@ redUserFind({ include: 'redProfile' })
           break
 
         case 1:
-          data.redProfile.contactEmail = 'miriam@redi-school.org'
+          data.redProfile.contactEmail = 'zoe@redi-school.org'
           break
 
         case 2:
           data.redProfile.contactEmail = 'paulina@redi-school.org'
           break
+
+        case 3:
+          data.redProfile.contactEmail = 'isabelle@redi-school.org'
       }
       return data
     }),

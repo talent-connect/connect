@@ -121,6 +121,15 @@ export function EditableImportantDetails() {
                 </Content>
               </div>
             ) : null}
+
+            {profile?.postalMailingAddress ? (
+              <div>
+                <Caption>Postal mailing address</Caption>
+                <Content>
+                  <p>{profile?.postalMailingAddress}</p>
+                </Content>
+              </div>
+            ) : null}
           </div>
         )
       }
@@ -142,7 +151,9 @@ EditableImportantDetails.isSectionFilled = (
 ) =>
   profile?.availability ||
   profile?.desiredEmploymentType?.length > 0 ||
-  profile?.phoneNumber
+  profile?.phoneNumber ||
+  profile?.immigrationStatus ||
+  profile?.postalMailingAddress
 EditableImportantDetails.isSectionEmpty = (
   profile: Partial<TpJobseekerProfile>
 ) => !EditableImportantDetails.isSectionFilled(profile)
@@ -168,12 +179,11 @@ function ModalForm({
     desiredEmploymentType: profile?.desiredEmploymentType ?? [],
     contactEmail: profile?.contactEmail ?? '',
     phoneNumber: profile?.phoneNumber ?? '',
+    postalMailingAddress: profile?.postalMailingAddress ?? '',
     ifAvailabilityIsDate_date: profile?.ifAvailabilityIsDate_date
       ? new Date(profile.ifAvailabilityIsDate_date)
       : null,
     immigrationStatus: profile?.immigrationStatus ?? '',
-    hrSummit2021JobFairCompanyJobPreferences:
-      profile?.hrSummit2021JobFairCompanyJobPreferences ?? '',
   }
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
     formik.setSubmitting(true)
@@ -218,6 +228,13 @@ function ModalForm({
         label="Phone Number"
         {...formik}
       />
+      <FormTextArea
+        label="Postal mailing address"
+        name="postalMailingAddress"
+        rows={4}
+        placeholder={`Max Mustermann,\nBerlinstraße 123,\n12345 Berlin,\nGermany`}
+        {...formik}
+      />
       <FormSelect
         label="What kind of employment are you looking for?*"
         name="desiredEmploymentType"
@@ -248,15 +265,6 @@ function ModalForm({
         label="What is your immigration status?"
         name="immigrationStatus"
         items={formImmigrationStatusOptions}
-        {...formik}
-      />
-      <FormTextArea
-        label="Company/job position preferences job fair 2021 (please give us your 1st,
-      2nd & 3rd priority)"
-        name="hrSummit2021JobFairCompanyJobPreferences"
-        rows={4}
-        placeholder="If you could pick, which companies or jobs would you be most interested in learning more about during the Job Fair?"
-        help
         {...formik}
       />
 
