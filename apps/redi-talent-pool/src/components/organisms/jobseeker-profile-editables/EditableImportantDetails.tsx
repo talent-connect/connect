@@ -53,8 +53,8 @@ export function EditableImportantDetails() {
               display: 'grid',
               width: '100%',
               gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
-              gridColumnGap: '16px',
-              gridRowGap: '16px',
+              gridColumnGap: '32px',
+              gridRowGap: '32px',
             }}
           >
             {profile &&
