@@ -15,6 +15,7 @@ export type SVGImages =
   | 'hero'
   | 'hello'
   | 'helloMobile'
+
 interface Props {
   image: SVGImages
   className?: string
