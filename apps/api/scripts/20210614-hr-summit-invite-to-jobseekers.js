@@ -119,54 +119,39 @@ const sendEmail = ({ recipient, firstName }) => {
 
 const redUserFind = (q) => bindNodeCallback(RedUser.find.bind(RedUser))(q)
 
-redUserFind({ include: 'redProfile' })
+const emails = `<blanked for privacy>`.split(`\n`)
+
+from(emails)
   .pipe(
-    delay(1000),
-    switchMap((users) => from(users)),
-    map((data) => {
-      const pojo = JSON.parse(JSON.stringify(data))
-      return {
-        redUser: pojo,
-        redProfile: pojo.redProfile,
-        redUserInst: data,
-        redProfileInst: data.redProfile,
-      }
-    }),
-    filter(({ redProfile }) => !!redProfile),
-    filter(({ redProfile }) => redProfile.userType === 'mentor'),
-    // filter(({ redProfile }) => redProfile.rediLocation === 'berlin'),
-    filter(({ redProfile }) => redProfile.userActivated),
+    // take(1),
 
-    take(3),
+    // map((data, index) => {
+    //   switch (index) {
+    //     case 0:
+    //       return 'eric@binarylights.com'
+    //       break
 
-    map((data, index) => {
-      switch (index) {
-        case 0:
-          data.redProfile.contactEmail = 'zoe@redi-school.org'
-          break
+    //     case 1:
+    //       return 'isabelle@redi-school.org'
+    //       break
 
-        case 1:
-          data.redProfile.contactEmail = 'isabelle@redi-school.org'
-          break
-
-        case 2:
-          data.redProfile.contactEmail = 'paulina@redi-school.org'
-          break
-      }
-      return data
-    }),
+    //     case 2:
+    //       return 'paulina@redi-school.org'
+    //       break
+    //   }
+    //   return data
+    // }),
 
     concatMap(
       (userData) =>
         sendEmail({
-          recipient: userData.redProfile.contactEmail,
-          firstName: userData.redProfile.firstName,
-        }).pipe(delay(5000)),
+          recipient: userData,
+        }).pipe(delay(500)),
 
-      (userData, sendResult) => ({ ...userData, sendResult })
+      (userData, sendResult) => userData
     ),
 
-    tap((userData) => console.log(`${userData.redProfile.contactEmail}`)),
+    tap((userData) => console.log(`${userData}`)),
     count()
   )
   .subscribe(
