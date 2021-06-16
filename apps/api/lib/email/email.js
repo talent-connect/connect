@@ -371,7 +371,6 @@ const sendToMentorConfirmationOfMentorshipCancelled = ({
     html: html,
   })
 }
-<<<<<<< HEAD
 
 const sendMentorshipCompletionEmailToMentor = ({
   recipient,
@@ -410,8 +409,6 @@ const sendMentorshipCompletionEmailToMentee = ({
     html: html,
   })
 }
-=======
->>>>>>> eaacab994fac5c73e51a4e4a60a580f458c2b570
 
 const sendMentorshipRequestReceivedEmail = ({
   recipient,
