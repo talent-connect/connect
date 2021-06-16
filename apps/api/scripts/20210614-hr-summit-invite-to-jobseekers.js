@@ -79,7 +79,14 @@ const emailBodyMjml = newsletterTemplateMjml.replace(
 
 <mj-text mj-class="text" padding="0 0 20px 0">4. Once your profile is approved, we will be in touch with next steps.</mj-text>
 
-<mj-text mj-class="text" padding="0 0 20px 0">5. We have invited you to two information sessions taking place on <strong>June 16th & 17th (via MS Teams links in the invitation)</strong>.</mj-text>
+<mj-text mj-class="text" padding="0 0 0 0">5. We have invited you to two information sessions taking place on <strong>June 16th & 17th</strong>. The sessions happen in Microsoft Teams. You’ll find the links to join the sessions in your calendar invitation, as well as here:</mj-text>
+<mj-text mj-class="text" padding="0 0 0 0">
+<ul>
+<li><a href="https://teams.microsoft.com/l/meetup-join/19%3ameeting_NGIyNzY4YTktODA0Yy00ODRjLTg1MTE[…]2c%22Oid%22%3a%2292ed15ee-3242-4ade-adc2-60676c34a7ed%22%7d" target="_blank">Information Session on June 16th, 17:30 - 18:30</a></li>
+<li><a href="https://teams.microsoft.com/l/meetup-join/19%3ameeting_Mzc5OWFmZjgtYzhmZC00OGY1LWI0NWE[…]2c%22Oid%22%3a%2292ed15ee-3242-4ade-adc2-60676c34a7ed%22%7d" target="_blank">Information Session on June 17th, 17:30 - 18:30</a></li>
+</ul>
+</mj-text>
+
 <mj-text mj-class="text" padding="0 0 20px 0"><strong>You only need to attend one of these dates.</strong></mj-text>
 <mj-text mj-class="text" padding="0 0 20px 0">If you have any questions, please ping @Paulina or @Zoë on Slack.</mj-text>
 <mj-text mj-class="text" padding="0 0 20px 0">We look forward to seeing you at the Information Sessions!</mj-text>
