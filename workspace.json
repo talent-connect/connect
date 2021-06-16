@@ -1,12 +1,23 @@
 {
   "version": 2,
-  "cli": { "defaultCollection": "@nrwl/react" },
+  "cli": {
+    "defaultCollection": "@nrwl/react"
+  },
   "defaultProject": "redi-connect",
   "generators": {
     "@nrwl/react": {
-      "application": { "style": "scss", "linter": "eslint", "babel": true },
-      "component": { "style": "scss" },
-      "library": { "style": "scss", "linter": "eslint" }
+      "application": {
+        "style": "scss",
+        "linter": "eslint",
+        "babel": true
+      },
+      "component": {
+        "style": "scss"
+      },
+      "library": {
+        "style": "scss",
+        "linter": "eslint"
+      }
     }
   },
   "projects": {
@@ -62,9 +73,14 @@
         },
         "serve": {
           "executor": "@nrwl/web:dev-server",
-          "options": { "buildTarget": "redi-connect:build", "port": 3000 },
+          "options": {
+            "buildTarget": "redi-connect:build",
+            "port": 3000
+          },
           "configurations": {
-            "production": { "buildTarget": "redi-connect:build:production" }
+            "production": {
+              "buildTarget": "redi-connect:build:production"
+            }
           }
         },
         "lint": {
@@ -96,7 +112,9 @@
             "devServerTarget": "redi-connect:serve"
           },
           "configurations": {
-            "production": { "devServerTarget": "redi-connect:serve:production" }
+            "production": {
+              "devServerTarget": "redi-connect:serve:production"
+            }
           }
         },
         "lint": {
@@ -153,9 +171,14 @@
         },
         "serve": {
           "executor": "@nrwl/web:dev-server",
-          "options": { "buildTarget": "admin-panel:build", "port": 3001 },
+          "options": {
+            "buildTarget": "admin-panel:build",
+            "port": 3001
+          },
           "configurations": {
-            "production": { "buildTarget": "admin-panel:build:production" }
+            "production": {
+              "buildTarget": "admin-panel:build:production"
+            }
           }
         },
         "lint": {
@@ -187,7 +210,9 @@
             "devServerTarget": "admin-panel:serve"
           },
           "configurations": {
-            "production": { "devServerTarget": "admin-panel:serve:production" }
+            "production": {
+              "devServerTarget": "admin-panel:serve:production"
+            }
           }
         },
         "lint": {
@@ -207,8 +232,12 @@
           "executor": "@nrwl/workspace:run-commands",
           "options": {
             "commands": [
-              { "command": "node apps/api/server/server.js" },
-              { "command": "mongod --dbpath ./mongodb-data" }
+              {
+                "command": "node apps/api/server/server.js"
+              },
+              {
+                "command": "mongod --dbpath ./mongodb-data"
+              }
             ]
           }
         }
@@ -244,7 +273,9 @@
       "targets": {
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "options": { "lintFilePatterns": ["libs/shared-types/**/*.ts"] }
+          "options": {
+            "lintFilePatterns": ["libs/shared-types/**/*.ts"]
+          }
         }
       }
     },
@@ -303,9 +334,14 @@
         },
         "serve": {
           "executor": "@nrwl/web:dev-server",
-          "options": { "buildTarget": "redi-talent-pool:build", "port": 2999 },
+          "options": {
+            "buildTarget": "redi-talent-pool:build",
+            "port": 2999
+          },
           "configurations": {
-            "production": { "buildTarget": "redi-talent-pool:build:production" }
+            "production": {
+              "buildTarget": "redi-talent-pool:build:production"
+            }
           }
         },
         "lint": {
@@ -357,7 +393,9 @@
       "targets": {
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "options": { "lintFilePatterns": ["libs/shared-config/**/*.ts"] }
+          "options": {
+            "lintFilePatterns": ["libs/shared-config/**/*.ts"]
+          }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
@@ -376,7 +414,9 @@
       "targets": {
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "options": { "lintFilePatterns": ["libs/talent-pool/types/**/*.ts"] }
+          "options": {
+            "lintFilePatterns": ["libs/talent-pool/types/**/*.ts"]
+          }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
@@ -395,7 +435,9 @@
       "targets": {
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "options": { "lintFilePatterns": ["libs/talent-pool/config/**/*.ts"] }
+          "options": {
+            "lintFilePatterns": ["libs/talent-pool/config/**/*.ts"]
+          }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
@@ -414,13 +456,98 @@
       "targets": {
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "options": { "lintFilePatterns": ["libs/shared-utils/**/*.ts"] }
+          "options": {
+            "lintFilePatterns": ["libs/shared-utils/**/*.ts"]
+          }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/shared-utils"],
           "options": {
             "jestConfig": "libs/shared-utils/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "cv-builder-prototype": {
+      "root": "apps/cv-builder-prototype",
+      "sourceRoot": "apps/cv-builder-prototype/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/web:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/cv-builder-prototype",
+            "index": "apps/cv-builder-prototype/src/index.html",
+            "main": "apps/cv-builder-prototype/src/main.tsx",
+            "polyfills": "apps/cv-builder-prototype/src/polyfills.ts",
+            "tsConfig": "apps/cv-builder-prototype/tsconfig.app.json",
+            "assets": [
+              "apps/cv-builder-prototype/src/favicon.ico",
+              "apps/cv-builder-prototype/src/assets"
+            ],
+            "styles": [],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "libs/shared-atomic-design-components/src/lib/styles"
+              ]
+            },
+            "extractCss": true,
+            "scripts": [],
+            "webpackConfig": "apps/cv-builder-prototype/custom-webpack-config.js"
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/cv-builder-prototype/src/environments/environment.ts",
+                  "with": "apps/cv-builder-prototype/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/web:dev-server",
+          "options": {
+            "buildTarget": "cv-builder-prototype:build",
+            "port": 4200
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "cv-builder-prototype:build:production"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/cv-builder-prototype/**/*.{ts,tsx,js,jsx}"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/cv-builder-prototype"],
+          "options": {
+            "jestConfig": "apps/cv-builder-prototype/jest.config.js",
             "passWithNoTests": true
           }
         }

@@ -20,12 +20,14 @@ import { ReactComponent as Arrow } from '../../assets/images/arrow-step.svg'
 import { ReactComponent as Chat } from '../../assets/images/chat.svg'
 import { ReactComponent as Handshake } from '../../assets/images/handshake.svg'
 import { ReactComponent as Plus } from '../../assets/images/plus.svg'
+import { ReactComponent as TpPlus } from '../../assets/images/tp-plus.svg'
 import { ReactComponent as Linkedin } from '../../assets/images/linkedin.svg'
 import { ReactComponent as Twitter } from '../../assets/images/twitter.svg'
 import { ReactComponent as Instagram } from '../../assets/images/instagram.svg'
 import { ReactComponent as Meetup } from '../../assets/images/meetup.svg'
 import { ReactComponent as Fb } from '../../assets/images/fb.svg'
 import { ReactComponent as Loader } from '../../assets/images/loader.svg'
+import { ReactComponent as MapPin } from '../../assets/images/map-pin.svg'
 
 import './Icon.scss'
 
@@ -51,15 +53,18 @@ export interface IconProps {
     | 'chat'
     | 'handshake'
     | 'plus'
+    | 'tpPlus'
     | 'twitter'
     | 'meetup'
     | 'linkedin'
     | 'instagram'
     | 'fb'
     | 'loader'
+    | 'mapPin'
   size?: 'small' | 'medium' | 'large' | 'x-large'
   space?: 'left' | 'right'
   className?: string
+  style?: React.CSSProperties
   onClick?: () => void
 }
 
@@ -84,15 +89,24 @@ const Icons = {
   chat: Chat,
   mail: Mail,
   plus: Plus,
+  tpPlus: TpPlus,
   instagram: Instagram,
   meetup: Meetup,
   twitter: Twitter,
   fb: Fb,
   linkedin: Linkedin,
   loader: Loader,
+  mapPin: MapPin,
 }
 
-const Icon = ({ icon, space, size, className, onClick }: IconProps) => {
+const Icon = ({
+  icon,
+  space,
+  size,
+  className,
+  onClick,
+  style = {},
+}: IconProps) => {
   const Icon = icon ? Icons[icon] : undefined
 
   const iconSize = size || 'medium'
@@ -106,6 +120,7 @@ const Icon = ({ icon, space, size, className, onClick }: IconProps) => {
         [`${className}`]: className,
       })}
       onClick={onClick}
+      style={style}
     />
   ) : null
 }

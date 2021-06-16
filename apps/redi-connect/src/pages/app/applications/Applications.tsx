@@ -8,7 +8,7 @@ import { getApplicants } from '../../../redux/matches/selectors'
 import { connect } from 'react-redux'
 import { RedMatch } from '@talent-connect/shared-types'
 import { useHistory } from 'react-router-dom'
-import { getRedProfile } from '../../../services/auth/auth'
+import { getRedProfileFromLocalStorage } from '../../../services/auth/auth'
 
 interface Props {
   applicants: RedMatch[]
@@ -16,7 +16,7 @@ interface Props {
 
 function Applications({ applicants }: Props) {
   const history = useHistory()
-  const profile = getRedProfile()
+  const profile = getRedProfileFromLocalStorage()
 
   return (
     <LoggedIn>

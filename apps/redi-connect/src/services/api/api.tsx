@@ -6,10 +6,11 @@ import { RedUser } from '@talent-connect/shared-types'
 import { RedMatch } from '@talent-connect/shared-types'
 import {
   purgeAllSessionData,
-  saveRedProfile as localStorageSaveRedProfile,
-  saveRedUser,
-  getRedProfile,
-  getAccessToken,
+  saveRedProfileToLocalStorage as localStorageSaveRedProfile,
+  saveRedUserToLocalStorage,
+  getRedProfileFromLocalStorage,
+  getAccessTokenFromLocalStorage,
+  saveAccessTokenToLocalStorage,
 } from '../auth/auth'
 import { history } from '../history/history'
 import { http } from '../http/http'
@@ -31,8 +32,9 @@ export const signUp = async (
     data: { email, password, rediLocation },
   })
   const user = userResponse.data as RedUser
-  saveRedUser(user)
+  saveRedUserToLocalStorage(user)
   const accessToken = await login(email, password)
+  saveAccessTokenToLocalStorage(accessToken)
   const profileResponse = await http(
     `${API_URL}/redUsers/${user.id}/redProfile`,
     {
@@ -54,6 +56,9 @@ export const login = async (
   const loginResp = await http(`${API_URL}/redUsers/login`, {
     method: 'post',
     data: { email, password },
+    headers: {
+      RedProduct: 'CON',
+    },
   })
   const accessToken = loginResp.data as AccessToken
   return accessToken
@@ -67,12 +72,12 @@ export const logout = () => {
 export const requestResetPasswordEmail = async (email: string) => {
   await axios(`${API_URL}/redUsers/requestResetPasswordEmail`, {
     method: 'post',
-    data: { email },
+    data: { email, redproduct: 'CON' },
   })
 }
 
 export const setPassword = async (password: string) => {
-  const userId = getAccessToken().userId
+  const userId = getAccessTokenFromLocalStorage().userId
   await http(`${API_URL}/redUsers/${userId}`, {
     method: 'patch',
     data: { password },
@@ -186,7 +191,10 @@ export const fetchApplicants = async (): Promise<RedProfile[]> =>
   http(
     `${API_URL}/redMatches?filter=` +
       JSON.stringify({
-        where: { mentorId: getRedProfile().id, status: 'applied' },
+        where: {
+          mentorId: getRedProfileFromLocalStorage().id,
+          status: 'applied',
+        },
       })
   ).then((resp) => resp.data)
 

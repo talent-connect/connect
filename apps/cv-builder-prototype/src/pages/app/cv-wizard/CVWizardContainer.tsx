@@ -220,6 +220,8 @@ export function CVWizardContainer(props: CVWizardContainerProps) {
 
   const [cvPreviewData, setCvPreviewData] = useState<CVFormData>(initialValues)
 
+  const [leftColumnContentsHeight, setLeftColumnContentsHeight] = useState(null)
+
   useDebounce(
     () => {
       setCvPreviewData(buildCvPreviewData(formik.values))
@@ -235,6 +237,16 @@ export function CVWizardContainer(props: CVWizardContainerProps) {
 
   const pdfWidthToHeightRatio = 1.414 // A4 page ratio
   const cvContainerHeight = cvPreviewElementWidth * pdfWidthToHeightRatio
+
+  const leftColumnHeight = cvContainerHeight * 0.575
+
+  const leftColumnVerticalFillDegree =
+    leftColumnContentsHeight / leftColumnHeight
+  console.log(leftColumnVerticalFillDegree)
+  console.log(leftColumnVerticalFillDegree)
+  console.log(leftColumnVerticalFillDegree)
+  console.log(leftColumnVerticalFillDegree)
+  console.log(leftColumnVerticalFillDegree)
 
   const [currentFormPage, _sendFormPageMessage] = useMachine(
     formPageNavigationMachine
@@ -271,6 +283,7 @@ export function CVWizardContainer(props: CVWizardContainerProps) {
               <CVPDFPreviewMemoized
                 cvData={cvPreviewData}
                 pdfWidthPx={cvPreviewElementWidth}
+                setLeftColumnContentsHeight={setLeftColumnContentsHeight}
               />
             </div>
             <CVDownloadButton cvData={cvPreviewData} />

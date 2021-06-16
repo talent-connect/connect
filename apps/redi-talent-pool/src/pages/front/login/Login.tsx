@@ -1,24 +1,18 @@
-import React, { useState, useCallback } from 'react'
-import AccountOperation from '../../../components/templates/AccountOperation'
-import * as Yup from 'yup'
-import { Link } from 'react-router-dom'
-import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
-import { history } from '../../../services/history/history'
-import { login } from '../../../services/api/api'
-import {
-  saveAccessToken,
-  purgeAllSessionData,
-} from '../../../services/auth/auth'
-import { Columns, Form, Content, Notification } from 'react-bulma-components'
-import { capitalize } from 'lodash'
-import { RediLocation } from '@talent-connect/shared-types'
-import { buildFrontendUrl } from '../../../utils/build-frontend-url'
-import { rediLocationNames } from '@talent-connect/shared-config'
 import {
   Button,
   FormInput,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
+import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
+import React, { useCallback, useState } from 'react'
+import { Columns, Content, Form } from 'react-bulma-components'
+import { Link } from 'react-router-dom'
+import * as Yup from 'yup'
+import TpTeaser from '../../../components/molecules/TpTeaser'
+import AccountOperation from '../../../components/templates/AccountOperation'
+import { login } from '../../../services/api/api'
+import { saveAccessTokenToLocalStorage } from '../../../services/auth/auth'
+import { history } from '../../../services/history/history'
 
 interface LoginFormValues {
   username: string
@@ -37,10 +31,6 @@ const validationSchema = Yup.object({
 
 export default function Login() {
   const [loginError, setLoginError] = useState<string>('')
-  const [
-    isWrongRediLocationError,
-    setIsWrongRediLocationError,
-  ] = useState<boolean>(false)
 
   const submitForm = useCallback((values, actions) => {
     ;(async (values: FormikValues, actions: FormikActions<LoginFormValues>) => {
@@ -50,7 +40,7 @@ export default function Login() {
           formValues.username,
           formValues.password
         )
-        saveAccessToken(accessToken)
+        saveAccessTokenToLocalStorage(accessToken)
         actions.setSubmitting(false)
         history.push('/app/me')
       } catch (err) {
@@ -72,7 +62,9 @@ export default function Login() {
         <Columns.Column
           size={6}
           responsive={{ mobile: { hide: { value: true } } }}
-        ></Columns.Column>
+        >
+          <TpTeaser.SignIn />
+        </Columns.Column>
 
         <Columns.Column size={5} offset={1}>
           <Heading border="bottomLeft">Sign-in</Heading>

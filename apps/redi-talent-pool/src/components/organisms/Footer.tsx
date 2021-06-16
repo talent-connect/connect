@@ -1,9 +1,9 @@
+import { SocialMediaIcons } from '@talent-connect/shared-atomic-design-components'
 import React from 'react'
-import { Element, Columns, Container, Section } from 'react-bulma-components'
+import { Columns, Container, Element, Section } from 'react-bulma-components'
 import { useTranslation } from 'react-i18next'
 import { ReactComponent as RediSchool } from '../../assets/redi-school-logo.svg'
 import './Footer.scss'
-import { SocialMediaIcons } from '@talent-connect/shared-atomic-design-components'
 
 const RediFooter = () => {
   const year = new Date().getFullYear()

@@ -3,7 +3,10 @@ import { map, switchMap, filter } from 'rxjs/operators'
 import { ofType, ActionsObservable } from 'redux-observable'
 import { UserActions, UserActionType, ProfileSaveStartAction } from './types'
 import { fetchSaveRedProfile, saveRedProfile } from '../../services/api/api'
-import { getAccessToken, isLoggedIn } from '../../services/auth/auth'
+import {
+  getAccessTokenFromLocalStorage,
+  isLoggedIn,
+} from '../../services/auth/auth'
 
 const profileFetchEpic = (action$: ActionsObservable<UserActions>) =>
   action$.pipe(
@@ -12,7 +15,7 @@ const profileFetchEpic = (action$: ActionsObservable<UserActions>) =>
     filter(() => isLoggedIn()),
     switchMap(async () => {
       try {
-        const res = await fetchSaveRedProfile(getAccessToken())
+        const res = await fetchSaveRedProfile(getAccessTokenFromLocalStorage())
         return res
       } catch (err) {
         return of(err)

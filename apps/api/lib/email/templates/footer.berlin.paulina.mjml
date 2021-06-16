@@ -9,10 +9,14 @@
             width="52px"
           />
         </td>
-        <td class="table-cell table-headline td-mobile" colspan="2">Paulina Muñoz</td>
+        <td class="table-cell table-headline td-mobile" colspan="2">
+          Paulina Muñoz
+        </td>
       </tr>
       <tr>
-        <td class="table-cell td-mobile">Manager Coaching and Job Integration</td>
+        <td class="table-cell td-mobile">
+          Manager Coaching and Job Integration
+        </td>
         <td class="table-cell td-mobile hide-cell-mobile" style="mso-hide: all">
           ReDI School of Digital Integration
         </td>
@@ -25,12 +29,21 @@
       </tr>
       <tr>
         <td class="table-cell td-mobile margin-link">
-          <a href="mailto:miriam@redi-school.org" class="text-link">paulina@redi-school.org</a>
+          <a href="mailto:paulina@redi-school.org" class="text-link"
+            >paulina@redi-school.org</a
+          >
         </td>
-        <td class="table-cell td-mobile hide-cell-desktop">ReDI School of Digital Integration</td>
-        <td class="table-cell td-mobile hide-cell-desktop">Am Nordbahnhof 3, 10115 Berlin</td>
+        <td class="table-cell td-mobile hide-cell-desktop">
+          ReDI School of Digital Integration
+        </td>
+        <td class="table-cell td-mobile hide-cell-desktop">
+          Am Nordbahnhof 3, 10115 Berlin
+        </td>
         <td class="table-cell td-mobile">
-          <a href="https://www.redi-school.org" class="text-link" target="_blank"
+          <a
+            href="https://www.redi-school.org"
+            class="text-link"
+            target="_blank"
             >www.redi-school.org</a
           >
         </td>

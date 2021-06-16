@@ -1,27 +1,15 @@
-import React, { useState } from 'react'
-import { isLoggedIn } from '../../services/auth/auth'
-import { logout } from '../../services/api/api'
-import { Section, Container, Element } from 'react-bulma-components'
-import classnames from 'classnames'
-import { useHistory } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import './Navbar.scss'
 import {
   Button,
   RediTalentPoolLogo,
 } from '@talent-connect/shared-atomic-design-components'
-
-const LoggedOutNavItems = () => {
-  const { t } = useTranslation()
-
-  return (
-    <>
-      <Button to="/front/home">{t('button.about')}</Button>
-      <Button to="/front/landing/mentee">{t('button.mentees')}</Button>
-      <Button to="/front/landing/mentor">{t('button.mentors')}</Button>
-    </>
-  )
-}
+import classnames from 'classnames'
+import React, { useState } from 'react'
+import { Container, Element, Section } from 'react-bulma-components'
+import { useTranslation } from 'react-i18next'
+import { useHistory } from 'react-router-dom'
+import { logout } from '../../services/api/api'
+import { isLoggedIn } from '../../services/auth/auth'
+import './Navbar.scss'
 
 const LoggedOutButtons = () => {
   const { t } = useTranslation()
@@ -73,13 +61,7 @@ const Navbar = () => {
         &times;
       </Element>
       {isLoggedIn() && <LoggedInButtons mobile={true} />}
-      {!isLoggedIn() && (
-        <>
-          <LoggedOutNavItems />
-          <hr />
-          <LoggedOutButtons />
-        </>
-      )}
+      {!isLoggedIn() && <LoggedOutButtons />}
     </Container>
   )
 
@@ -93,14 +75,8 @@ const Navbar = () => {
             responsive={{ mobile: { hide: { value: true } } }}
             className="navbar__buttons"
           >
-            {!isLoggedIn() && <LoggedOutNavItems />}
-          </Element>
-          <Element
-            responsive={{ mobile: { hide: { value: true } } }}
-            className="navbar__buttons"
-          >
-            {/* {isLoggedIn() && <LoggedInButtons />}
-            {!isLoggedIn() && <LoggedOutButtons />} */}
+            {isLoggedIn() && <LoggedInButtons />}
+            {!isLoggedIn() && <LoggedOutButtons />}
           </Element>
           <Element
             responsive={{ tablet: { hide: { value: true } } }}

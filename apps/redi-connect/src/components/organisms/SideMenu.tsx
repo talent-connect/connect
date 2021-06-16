@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { getRedProfile } from '../../services/auth/auth'
+import { getRedProfileFromLocalStorage } from '../../services/auth/auth'
 import './SideMenu.scss'
 import { NavLink } from 'react-router-dom'
 import { ReactComponent as Mentorship } from '../../assets/images/mentorship.svg'
@@ -24,11 +24,17 @@ const MenuItem = ({ url, children }: MenuItemProps) => (
 )
 
 const SideMenu = () => {
+<<<<<<< HEAD
   const profile = getRedProfile()
   const isActivatedMentor =
     profile.userType === 'mentor' && profile.userActivated
   const isActivatedMentee =
     profile.userType === 'mentee' && profile.userActivated
+=======
+  const profile = getRedProfileFromLocalStorage()
+  const isActivatedMentor = profile.userType === 'mentor'
+  const isActivatedMentee = profile.userType === 'mentee'
+>>>>>>> eaacab994fac5c73e51a4e4a60a580f458c2b570
   const isMentee =
     isActivatedMentee ||
     profile.userType === 'public-sign-up-mentee-pending-review'

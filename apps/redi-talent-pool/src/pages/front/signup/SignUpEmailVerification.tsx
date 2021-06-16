@@ -1,8 +1,8 @@
-import React from 'react'
-import AccountOperation from '../../../components/templates/AccountOperation'
-import { Columns, Content } from 'react-bulma-components'
 import { Heading } from '@talent-connect/shared-atomic-design-components'
-import { envRediLocation } from '../../../utils/env-redi-location'
+import React from 'react'
+import { Columns, Content } from 'react-bulma-components'
+import TpTeaser from '../../../components/molecules/TpTeaser'
+import AccountOperation from '../../../components/templates/AccountOperation'
 
 const SignUpEmailVerification = () => (
   <AccountOperation>
@@ -10,10 +10,12 @@ const SignUpEmailVerification = () => (
       <Columns.Column
         size={5}
         responsive={{ mobile: { hide: { value: true } } }}
-      ></Columns.Column>
+      >
+        <TpTeaser.IllustrationOnly />
+      </Columns.Column>
 
       <Columns.Column size={5} offset={2}>
-        <Heading border="bottomLeft">Welcome to ReDI Connect</Heading>
+        <Heading border="bottomLeft">Welcome to ReDI Talent Pool</Heading>
         <Content size="large" renderAs="div">
           <p>Thank you for signing up!</p>
           <p>

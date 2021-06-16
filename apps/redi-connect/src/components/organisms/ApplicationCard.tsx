@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import classnames from 'classnames'
 import { Columns, Heading, Content } from 'react-bulma-components'
 import moment from 'moment'
-import { getRedProfile } from '../../services/auth/auth'
+import { getRedProfileFromLocalStorage } from '../../services/auth/auth'
 import { RedMatch } from '@talent-connect/shared-types'
 import { Icon } from '@talent-connect/shared-atomic-design-components'
 import { Avatar } from '../organisms'
@@ -21,7 +21,7 @@ const STATUS_LABELS: any = {
 
 const ApplicationCard = ({ application }: Props) => {
   const history = useHistory()
-  const profile = getRedProfile()
+  const profile = getRedProfileFromLocalStorage()
   const [showDetails, setShowDetails] = useState(false)
   const applicationDate = new Date(application.createdAt || '')
   const applicationUser =
