@@ -21,7 +21,7 @@ import {
   matchesFetchStart,
   matchesMarkAsDismissed,
 } from '../../redux/matches/actions'
-
+import { useTranslation } from 'react-i18next'
 import Footer from '../organisms/Footer'
 import { RedMatch } from '@talent-connect/shared-types'
 
@@ -33,7 +33,7 @@ interface Props {
   matchesMarkAsDismissed: (redMatchId: string) => void
 }
 
-const AccountNotReDI: React.FC = ({ children }) => (
+const RediNotification: React.FC = ({ children }) => (
   <Notification className="account-not-active double-bs">
     <Icon
       className="account-not-active__icon"
@@ -41,7 +41,7 @@ const AccountNotReDI: React.FC = ({ children }) => (
       size="large"
       space="right"
     />
-    <Content size="small">{children}</Content>
+    <Content dangerouslySetInnerHTML={{ __html: children }} />
   </Notification>
 )
 
@@ -55,6 +55,8 @@ const LoggedIn = ({
   const profile = getRedProfile()
   const history = useHistory()
   const match = matches && matches.find((match) => match.status === 'accepted')
+
+  const { t } = useTranslation()
 
   const isNewMatch =
     profile.userType === 'mentee' &&
@@ -85,19 +87,32 @@ const LoggedIn = ({
             >
               <Loader loading={loading} />
               {profile.userType === 'public-sign-up-mentee-pending-review' && (
-                <AccountNotReDI>
-                  <strong>Thanks for signing up!</strong> We are reviewing your
-                  profile and will send you an email once we're done. You'll be
-                  able to find a mentor once your account is active.
-                </AccountNotReDI>
+                <RediNotification>
+                  {t('loggedInArea.profile.notification.pendingMentee')}
+                </RediNotification>
               )}
               {profile.userType === 'public-sign-up-mentor-pending-review' && (
-                <AccountNotReDI>
-                  <strong>Thanks for signing up!</strong> We are reviewing your
-                  profile and will send you an email once we're done. Students
-                  will be able to apply to become your mentee once your account
-                  is active.
-                </AccountNotReDI>
+                <RediNotification>
+                  {t('loggedInArea.profile.notification.pendingMentor')}
+                </RediNotification>
+              )}
+              {profile.userType === 'mentee' && !profile.userActivated && (
+                <RediNotification>
+                  {t('loggedInArea.profile.notification.deactivatedMentee', {
+                    name: profile.firstName,
+                    email:
+                      '<a href="mailto:paulina@redi-school.org">paulina@red-school.org</a>',
+                  })}
+                </RediNotification>
+              )}
+              {profile.userType === 'mentor' && !profile.userActivated && (
+                <RediNotification>
+                  {t('loggedInArea.profile.notification.deactivatedMentor', {
+                    name: profile.firstName,
+                    email:
+                      '<a href="mailto:miriam@redi-school.org">miriam@red-school.org</a>',
+                  })}
+                </RediNotification>
               )}
               {match && isNewMatch && (
                 <Modal
