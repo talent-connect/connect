@@ -7,7 +7,9 @@ const app = require('../../server/server')
 const {
   sendMentorshipRequestReceivedEmail,
   sendMentorshipAcceptedEmail,
-  sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted
+  sendMentorshipCompletionEmailToMentor,
+  sendMentorshipCompletionEmailToMentee,
+  sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted,
 } = require('../../lib/email/email')
 
 module.exports = function (RedMatch) {
@@ -17,7 +19,7 @@ module.exports = function (RedMatch) {
    * @param {Function(Error, object)} callback
    */
 
-  RedMatch.observe('before save', async function updateTimestamp (ctx, next) {
+  RedMatch.observe('before save', async function updateTimestamp(ctx, next) {
     if (process.env.NODE_ENV === 'seeding') return next()
     if (ctx.instance) {
       if (ctx.isNewInstance) {
@@ -77,7 +79,7 @@ module.exports = function (RedMatch) {
   // is used.
   RedMatch.observe(
     'access',
-    function onlyMatchesRelatedToCurrentUser (ctx, next) {
+    function onlyMatchesRelatedToCurrentUser(ctx, next) {
       if (!ctx.options.currentUser) return next()
 
       const currentUserProfileId = ctx.options.currentUser.redProfile.id
@@ -93,8 +95,8 @@ module.exports = function (RedMatch) {
         const currentUserMenteeOrMentor = {
           or: [
             { mentorId: currentUserProfileId },
-            { menteeId: currentUserProfileId }
-          ]
+            { menteeId: currentUserProfileId },
+          ],
         }
         const existingWhere = ctx.query.where
         if (Object.values(existingWhere).length > 0) {
@@ -117,14 +119,14 @@ module.exports = function (RedMatch) {
     const redMatchData = redMatch.toJSON()
     const [mentor, mentee] = await Promise.all([
       RedProfile.findById(redMatchData.mentorId),
-      RedProfile.findById(redMatchData.menteeId)
+      RedProfile.findById(redMatchData.menteeId),
     ])
 
     redMatch = await redMatch.updateAttributes({
       status: 'accepted',
       matchMadeActiveOn: new Date(),
       mentorReplyMessageOnAccept,
-      rediLocation: options.currentUser.redProfile.rediLocation
+      rediLocation: options.currentUser.redProfile.rediLocation,
     })
 
     await sendMentorshipAcceptedEmail({
@@ -132,22 +134,22 @@ module.exports = function (RedMatch) {
       mentorName: mentor.firstName,
       menteeName: mentee.firstName,
       mentorReplyMessageOnAccept: mentorReplyMessageOnAccept,
-      rediLocation: options.currentUser.redProfile.rediLocation
+      rediLocation: options.currentUser.redProfile.rediLocation,
     }).toPromise()
 
     const menteePendingMatches = await RedMatch.find({
       where: {
         menteeId: redMatchData.menteeId,
-        status: 'applied'
+        status: 'applied',
       },
-      include: ['mentee', 'mentor']
+      include: ['mentee', 'mentor'],
     })
 
     await Promise.all(
       menteePendingMatches.map((pendingMatch) => {
         return pendingMatch.updateAttributes({
           status: 'invalidated-as-other-mentor-accepted',
-          rediLocation: options.currentUser.redProfile.rediLocation
+          rediLocation: options.currentUser.redProfile.rediLocation,
         })
       })
     )
@@ -160,7 +162,7 @@ module.exports = function (RedMatch) {
             recipient: pendingMatchData.mentor.contactEmail,
             mentorName: pendingMatchData.mentor.firstName,
             menteeName: pendingMatchData.mentee.firstName,
-            rediLocation: options.currentUser.redProfile.rediLocation
+            rediLocation: options.currentUser.redProfile.rediLocation,
           }
         ).toPromise()
       })
@@ -178,15 +180,27 @@ module.exports = function (RedMatch) {
     const redMatchData = redMatch.toJSON()
     const [mentor, mentee] = await Promise.all([
       RedProfile.findById(redMatchData.mentorId),
-      RedProfile.findById(redMatchData.menteeId)
+      RedProfile.findById(redMatchData.menteeId),
     ])
 
     redMatch = await redMatch.updateAttributes({
       status: 'completed',
       matchMadeActiveOn: new Date(),
       mentorMessageOnComplete,
-      rediLocation: options.currentUser.redProfile.rediLocation
+      rediLocation: options.currentUser.redProfile.rediLocation,
     })
+
+    await sendMentorshipCompletionEmailToMentor({
+      recipient: mentor.contactEmail,
+      mentorFirstName: mentor.firstName,
+      menteeFirstName: mentee.firstName,
+    }).toPromise()
+
+    await sendMentorshipCompletionEmailToMentee({
+      recipient: mentee.contactEmail,
+      mentorFirstName: mentor.firstName,
+      menteeFirstName: mentee.firstName,
+    }).toPromise()
 
     return redMatch.toJSON()
   }
@@ -208,7 +222,7 @@ module.exports = function (RedMatch) {
       expectationText,
       mentorId,
       menteeId: options.currentUser.redProfile.id,
-      rediLocation: options.currentUser.redProfile.rediLocation
+      rediLocation: options.currentUser.redProfile.rediLocation,
     }
     redProfileFind({ where: { id: mentorId } })
       .pipe(
@@ -238,7 +252,7 @@ module.exports = function (RedMatch) {
 
       redMatch = await redMatch.updateAttributes({
         hasMenteeDismissedMentorshipApplicationAcceptedNotification: true,
-        rediLocation: options.currentUser.redProfile.rediLocation
+        rediLocation: options.currentUser.redProfile.rediLocation,
       })
 
       return redMatch.toJSON()
