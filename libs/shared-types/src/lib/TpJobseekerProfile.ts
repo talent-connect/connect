@@ -8,6 +8,8 @@ export type TpJobseekerProfile = {
   contactEmail: string
   currentlyEnrolledInCourse: string
 
+  genderPronouns?: string
+
   profileAvatarImageS3Key: string
 
   desiredPositions?: string[]

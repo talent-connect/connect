@@ -44,7 +44,8 @@ export function EditableNamePhotoLocation() {
           </Columns.Column>
           <Columns.Column size={7}>
             <Heading size="medium">
-              {profile?.firstName} {profile?.lastName}
+              {profile?.firstName} {profile?.lastName}{' '}
+              {profile?.genderPronouns ? `(${profile.genderPronouns})` : ''}
             </Heading>
             <div
               style={{
@@ -107,6 +108,7 @@ function ModalForm({
   const initialValues: Partial<TpJobseekerProfile> = {
     firstName: profile?.firstName ?? '',
     lastName: profile?.lastName ?? '',
+    genderPronouns: profile?.genderPronouns ?? '',
     location: profile?.location ?? '',
   }
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
@@ -149,6 +151,12 @@ function ModalForm({
         name="lastName"
         placeholder="Smith"
         label="Last name*"
+        {...formik}
+      />
+      <FormInput
+        name="genderPronouns"
+        placeholder="She/Her/Hers, He/Him/His, They/Them/Theirs, etc."
+        label="Gender pronouns"
         {...formik}
       />
       <FormInput
