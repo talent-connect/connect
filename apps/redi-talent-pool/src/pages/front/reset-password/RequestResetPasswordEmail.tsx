@@ -1,17 +1,16 @@
-import React, { useState } from 'react'
-import { Columns, Content, Element, Form } from 'react-bulma-components'
 import {
-  Heading,
   Button,
   FormInput,
+  Heading,
 } from '@talent-connect/shared-atomic-design-components'
-import { AccountOperation } from '../../../components/templates'
 import { FormikValues, useFormik } from 'formik'
-
-import * as yup from 'yup'
+import React, { useState } from 'react'
+import { Columns, Content, Element, Form } from 'react-bulma-components'
 import { Link } from 'react-router-dom'
+import * as yup from 'yup'
+import TpTeaser from '../../../components/molecules/TpTeaser'
+import { AccountOperation } from '../../../components/templates'
 import { requestResetPasswordEmail } from '../../../services/api/api'
-import Teaser from 'apps/redi-connect/src/components/molecules/Teaser'
 
 interface FormValues {
   email: string
@@ -37,7 +36,7 @@ export const RequestResetPasswordEmail: React.FC = () => {
       // Cast to string is safe as this only called if validated
       await requestResetPasswordEmail(values.email as string)
       setResetPasswordSuccess(
-        'If you have an account,we have sent you the  password reset link to your email address.'
+        'If you have an account,we have sent you the password reset link to your email address.'
       )
     } catch (err) {
       setResetPasswordError(
@@ -67,7 +66,7 @@ export const RequestResetPasswordEmail: React.FC = () => {
           size={6}
           responsive={{ mobile: { hide: { value: true } } }}
         >
-          <Teaser.SignUp />
+          <TpTeaser.SignUp />
         </Columns.Column>
         <Columns.Column size={5} offset={1}>
           <Heading border="bottomLeft">{heading}</Heading>

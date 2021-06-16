@@ -4,5 +4,6 @@
     "./apps/redi-connect",
     "./lib/shared-atomic-design-components",
     "./libs/shared-types"
-  ]
+  ],
+  "typescript.preferences.importModuleSpecifier": "project-relative"
 }

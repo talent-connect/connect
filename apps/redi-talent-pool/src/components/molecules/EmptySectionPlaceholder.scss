@@ -1,0 +1,25 @@
+.empty-section-placeholder {
+  border: 1px dashed #58adc4;
+  color: #58adc4;
+  text-align: center;
+  width: 100%;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  margin-bottom: 1rem;
+
+  &--extra-slim {
+    height: 2.5rem;
+  }
+
+  &--slim {
+    height: 5rem;
+  }
+
+  &--tall {
+    height: 8.5rem;
+  }
+}

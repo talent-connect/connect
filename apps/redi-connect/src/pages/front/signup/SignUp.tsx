@@ -21,7 +21,7 @@ import { Columns, Form } from 'react-bulma-components'
 import { signUp } from '../../../services/api/api'
 import { Extends, RedProfile } from '@talent-connect/shared-types'
 import { history } from '../../../services/history/history'
-import { courses } from 'apps/redi-connect/src/config/config'
+import { courses } from '../../../config/config'
 
 const formCourses = courses.map((course) => ({
   value: course.id,
@@ -33,6 +33,7 @@ export const validationSchema = Yup.object({
   lastName: Yup.string().required('Your last name is invalid').max(255),
   contactEmail: Yup.string()
     .email('Your email is invalid')
+    .required('You need to give an email address')
     .label('Email')
     .max(255),
   password: Yup.string()
@@ -196,7 +197,7 @@ export default function SignUp() {
               <a
                 target="_blank"
                 rel="noopener noreferrer"
-                href="https://connect.berlin.redi-school.org/downloadeables/redi-connect-code-of-conduct.pdf"
+                href="/assets/downloadeables/redi-connect-code-of-conduct.pdf"
               >
                 Code of Conduct
               </a>{' '}

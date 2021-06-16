@@ -1,14 +1,15 @@
-import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
-import { Content, Columns, Element } from 'react-bulma-components'
-import AccountOperation from '../../../components/templates/AccountOperation'
 import {
   Button,
   Heading,
   SVGImage,
+  SVGImages,
 } from '@talent-connect/shared-atomic-design-components'
-import { SVGImages } from '@talent-connect/shared-atomic-design-components'
 import classnames from 'classnames'
+import React, { useState } from 'react'
+import { Columns, Content, Element } from 'react-bulma-components'
+import { useHistory } from 'react-router-dom'
+import TpTeaser from '../../../components/molecules/TpTeaser'
+import AccountOperation from '../../../components/templates/AccountOperation'
 import './SignUpLanding.scss'
 
 const SignUpLanding = () => {
@@ -40,17 +41,18 @@ const SignUpLanding = () => {
         <Columns.Column
           size={6}
           responsive={{ mobile: { hide: { value: true } } }}
-        ></Columns.Column>
+        >
+          <TpTeaser.SignUp />
+        </Columns.Column>
 
         <Columns.Column size={5} offset={1}>
           <Heading border="bottomLeft">Sign-up</Heading>
           <Content size="large" renderAs="p" className="oneandhalf-bs">
-            Do you want to become a <strong>mentor</strong> or a{' '}
-            <strong>mentee</strong>?
+            Are you a <strong>jobseeker</strong> or a <strong>company</strong>?
           </Content>
           <div className="signup">
-            {renderType('Mentee')}
-            {renderType('Mentor')}
+            {renderType('Jobseeker')}
+            {renderType('Company')}
           </div>
           <Button
             fullWidth

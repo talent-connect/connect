@@ -12,6 +12,8 @@ export type SVGImages =
   | 'heroMentor'
   | 'mentee'
   | 'mentor'
+  | 'jobseeker'
+  | 'company'
   | 'hero'
   | 'hello'
   | 'helloMobile'
@@ -25,6 +27,8 @@ const Images = {
   heroMentor: HeroMentor,
   mentee: Mentee,
   mentor: Mentor,
+  jobseeker: Mentee,
+  company: Mentor,
   hero: Hero,
   hello: Hello,
   helloMobile: HelloMobile,

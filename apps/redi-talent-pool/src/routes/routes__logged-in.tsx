@@ -1,17 +1,17 @@
 import { lazy } from 'react'
 import { RouteDefinition } from './index'
 
-const CVWizardContainer = lazy(
+const Me = lazy(
   () =>
     import(
-      /* webpackChunkName: "CVWizardContainer", webpackPreload: true  */ '../pages/app/cv-wizard/CVWizardContainer'
+      /* webpackChunkName: "Me", webpackPreload: true  */ '../pages/app/me/Me'
     )
 )
 
 const routes: RouteDefinition[] = [
   {
-    path: '/app/cv-wizard',
-    component: CVWizardContainer,
+    path: '/app/me',
+    component: Me,
     exact: true,
   },
 ]

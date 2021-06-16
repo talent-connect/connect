@@ -33,7 +33,7 @@ function FormTextArea(props: any) {
     disabled,
   } = props
 
-  const hasError = !!touched[name] && !!errors[name]
+  const hasError = !!get(touched, name) && !!get(errors, name)
 
   return (
     <Form.Field className={classnames({ [`${className}`]: className })}>
@@ -58,7 +58,7 @@ function FormTextArea(props: any) {
             color="danger"
             className={hasError && !maxChar && !minChar ? 'help--show' : ''}
           >
-            {hasError && <>{errors[name]}</>}
+            {hasError && <>{get(errors, name)}</>}
           </Form.Help>
         </Columns.Column>
         <Columns.Column>

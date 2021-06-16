@@ -1,0 +1,63 @@
+@import '~bulma/sass/utilities/_all';
+@import '_variables.scss';
+
+.navbar {
+  padding: 1rem 1.25rem;
+
+  &__wrapper {
+    display: flex;
+    justify-content: space-between;
+    min-height: 3rem;
+    width: 100%;
+    align-items: center;
+
+    @include tablet() {
+      font-size: $size-4;
+    }
+  }
+
+  // since the default a:hover behaviour is defined as underline (main.scss) we had
+  // to define this class for the logo and the !important explictly for safari browser
+  &__logo:hover {
+    text-decoration: none !important;
+  }
+
+  &__buttons {
+    display: flex;
+    align-items: center;
+
+    .button--simple:last-child {
+      padding-right: 0;
+    }
+  }
+
+  &__mobile {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    padding: 8rem 1.25rem;
+    background-color: $white;
+    background-image: url('../../assets/images/bubbles.svg');
+    background-repeat: no-repeat;
+    background-size: 80%;
+    background-position: 50% 50%;
+
+    & hr {
+      border: 1px solid $grey;
+    }
+  }
+
+  &__close {
+    position: absolute;
+    cursor: pointer;
+    top: 1.75rem;
+    right: 1.75rem;
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+    color: $redi-orange-dark;
+  }
+}

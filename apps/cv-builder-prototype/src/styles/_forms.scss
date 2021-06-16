@@ -1,0 +1,55 @@
+@import './_variables';
+.submit {
+  &-link {
+    font-size: $size-7;
+
+    &--pre {
+      text-align: right;
+    }
+
+    &--post {
+      text-align: center;
+      margin-top: 2rem;
+    }
+  }
+}
+
+// test solution for the slide in errors
+.help {
+  height: 0px;
+  margin: 0px;
+  overflow: hidden;
+  transition: $transition;
+
+  &--show {
+    margin-top: 0.25rem;
+    height: 21px;
+  }
+}
+
+.control {
+  &:after {
+    content: '';
+    transition: ease-out opacity 0.1s;
+    opacity: 0;
+  }
+
+  &.field-clean {
+    &:after {
+      position: absolute;
+      opacity: 1;
+      width: 0.5rem;
+      height: 1rem;
+      top: 50%;
+      margin-top: -0.6rem;
+      right: 1rem;
+      border: solid $green;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+  }
+}
+
+.submit-spacer {
+  margin-top: 3em;
+}

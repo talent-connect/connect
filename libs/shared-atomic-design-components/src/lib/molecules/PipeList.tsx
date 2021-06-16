@@ -4,11 +4,17 @@ import './PipeList.scss'
 
 interface Props {
   items: string[]
+  overflowAllowed?: true
 }
 
-const PipeList = ({ items }: Props) => {
+const PipeList = ({ items, overflowAllowed }: Props) => {
   return (
-    <Element renderAs="ul" className="pipe-list">
+    <Element
+      renderAs="ul"
+      className={`pipe-list ${
+        !overflowAllowed ? 'pipe-list--overflow-ellipsis' : ''
+      }`}
+    >
       {items.map((item) => (
         <Element renderAs="li" key={item}>
           {item}

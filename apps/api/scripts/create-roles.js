@@ -6,8 +6,8 @@ const { Role } = app.models
 
 const roleCreate = bindNodeCallback(Role.create.bind(Role))
 
-const roles = ['admin', 'mentee', 'mentor']
+const roles = ['admin', 'mentee', 'mentor', 'jobseeker', 'company']
 
 from(roles)
-  .pipe(concatMap(role => roleCreate({ name: role })))
+  .pipe(concatMap((role) => roleCreate({ name: role })))
   .subscribe(console.log, null, () => process.exit())

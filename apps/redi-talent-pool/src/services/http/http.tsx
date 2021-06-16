@@ -1,10 +1,13 @@
-import React from 'react'
 import axios from 'axios'
 import has from 'lodash/has'
 import includes from 'lodash/includes'
-
+import React from 'react'
+import {
+  getAccessTokenFromLocalStorage,
+  isLoggedIn,
+  purgeAllSessionData,
+} from '../auth/auth'
 import { history } from '../history/history'
-import { getAccessToken, isLoggedIn, purgeAllSessionData } from '../auth/auth'
 
 export const nonLoggedInHttp = axios.create()
 
@@ -15,7 +18,7 @@ http.interceptors.request.use(
     const isAuthorizationHeaderSet = has(config, 'headers.Authorization')
     const _isLoggedIn = isLoggedIn()
     if (_isLoggedIn && !isAuthorizationHeaderSet) {
-      const accessToken = getAccessToken()
+      const accessToken = getAccessTokenFromLocalStorage()
       config.headers.Authorization = `${accessToken.id}`
     }
     return config
@@ -43,9 +46,9 @@ http.interceptors.response.use(
       history.push(
         `/front/login?goto=${encodeURIComponent(history.location.pathname)}`
       )
-    } else {
-      history.push('/error/4xx')
     }
+
+    return Promise.reject(err)
   }
 )
 
