@@ -183,15 +183,9 @@
     "homePage": {
       "hero": {
         "about": {
-<<<<<<< HEAD
-          "headline": "Welcome to ReDI Connect",
-          "content1": "Are you ready for the future of work?",
-          "content2": "We connect thriving professionals from the digital industry with students and alumni of all of our programs across our four different locations."
-=======
           "headline": "Welcome to the ReDI Talent Pool",
           "content1": "Where talented ReDI job seekers connect with our great community of company partners.",
           "content2": "Are you ReDI to join our Talent Pool?"
->>>>>>> eaacab994fac5c73e51a4e4a60a580f458c2b570
         },
         "navTiles": {
           "title": "for mentees / mentors",
