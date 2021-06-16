@@ -46,7 +46,7 @@ const RediHeroLanding = ({ type }: Props) => {
           }}
         >
           <SVGImage
-            image={type}
+            image={`hero${type.charAt(0).toUpperCase() + type.slice(1)}`}
             className={classnames('hero-landing__illustration', {
               [`hero-landing__illustration--${type}`]: type,
             })}
