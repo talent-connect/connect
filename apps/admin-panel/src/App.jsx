@@ -3,6 +3,7 @@ import { get, mapValues, keyBy, groupBy } from 'lodash'
 import moment from 'moment'
 import {
   Admin,
+  ChipField,
   Resource,
   List,
   Tab,
@@ -15,6 +16,7 @@ import {
   TabbedShowLayout,
   TextField,
   ReferenceInput,
+  SingleFieldList,
   AutocompleteInput,
   DateField,
   TextInput,
@@ -1130,14 +1132,10 @@ const TpJobseekerProfileList = (props) => {
       <Datagrid expand={<TpJobseekerProfileListExpandPane />}>
         <TextField source="firstName" />
         <TextField source="lastName" />
-        <FunctionField
-          source="state"
-          label="User state"
-          render={tpProfileStateToEmoji}
-        />
+        <TextField source="state" />
         <RecordCreatedAt />
         <ShowButton />
-        <EditButton />
+        {/* <EditButton /> */}
       </Datagrid>
     </List>
   )
@@ -1158,10 +1156,6 @@ const TpJobseekerProfileListExpandPane = (props) => {
 const TpJobseekerProfileListFilters = (props) => (
   <Filter {...props}>
     <TextInput label="Search by name" source="q" />
-    <SelectInput
-      source="categories"
-      choices={categoriesFlat.map(({ id, label }) => ({ id, name: label }))}
-    />
     <SelectInput
       source="state"
       choices={[
@@ -1184,6 +1178,10 @@ function tpProfileStateToEmoji({ state }) {
   return emoji ?? userType
 }
 
+function Data(data) {
+  return data
+}
+
 const TpJobseekerProfileShow = (props) => (
   <Show {...props}>
     <SimpleShowLayout>
@@ -1193,12 +1191,14 @@ const TpJobseekerProfileShow = (props) => (
           <Avatar />
           <TextField source="firstName" />
           <TextField source="lastName" />
-          <ArrayField source="workingLanguages">
-            <LanguageList />
-          </ArrayField>
+          <TextField source="contactEmail" />
+          <TextField source="postalMailingAddress" />
 
           <TextField source="currentlyEnrolledInCourse" />
-          {/* <ArrayField source="desiredPositions" /> */}
+          <FunctionField
+            label="desiredPositions"
+            render={(record) => record.desiredPositions.join(', ')}
+          />
           <TextField source="profileImage" />
           <TextField source="phoneNumber" />
           <TextField source="location" />
@@ -1209,15 +1209,44 @@ const TpJobseekerProfileShow = (props) => (
           <TextField source="behanceUrl" />
           <TextField source="stackOverflowUrl" />
           <TextField source="dribbbleUrl" />
-          {/* <ArrayField source="workingLanguages" /> */}
+          <ArrayField source="workingLanguages" fieldKey="uuid">
+            <Datagrid>
+              <TextField source="language" />
+              <TextField source="proficiencyLevelId" />
+            </Datagrid>
+          </ArrayField>
           <TextField source="yearsOfRelevantExperience" />
           {/* <ArrayField source="desiredEmploymentType" /> */}
           <TextField source="availability" />
           <DateField source="ifAvailabilityIsDate_date" />
           <TextField source="aboutYourself" />
-          {/* <ArrayField source="topSkills" /> */}
-          {/* <ArrayField source="experience" /> */}
-          {/* <ArrayField source="education" /> */}
+          <FunctionField
+            label="Top Skills"
+            render={(record) => record.topSkills.join(', ')}
+          />
+          <ArrayField source="experience" fieldKey="uuid">
+            <Datagrid>
+              <TextField source="title" />
+              <TextField source="company" />
+              <NumberField source="startDateMonth" />
+              <NumberField source="startDateYear" />
+              <NumberField source="endDateMonth" />
+              <NumberField source="endDateYear" />
+              <BooleanField source="current" />
+            </Datagrid>
+          </ArrayField>
+          <ArrayField source="education" fieldKey="uuid">
+            <Datagrid>
+              <TextField source="title" />
+              <TextField source="institutionName" />
+              <TextField source="certificationType" />
+              <NumberField source="startDateMonth" />
+              <NumberField source="startDateYear" />
+              <NumberField source="endDateMonth" />
+              <NumberField source="endDateYear" />
+              <BooleanField source="current" />
+            </Datagrid>
+          </ArrayField>
           {/* <ArrayField source="projects" /> */}
           <TextField source="hrSummit2021JobFairCompanyJobPreferences" />
           <h4>Record information</h4>
@@ -1230,6 +1259,71 @@ const TpJobseekerProfileShow = (props) => (
             {...props}
             sortable={false}
           />
+        </Tab>
+        <Tab label="Internal comments">
+          <TextField
+            source="administratorInternalComment"
+            style={{ whiteSpace: 'pre-wrap' }}
+          />
+        </Tab>
+      </TabbedShowLayout>
+    </SimpleShowLayout>
+  </Show>
+)
+
+const TpCompanyProfileList = (props) => {
+  return (
+    <List {...props} pagination={<AllModelsPagination />}>
+      <Datagrid>
+        <TextField source="companyName" />
+        <TextField source="firstName" />
+        <TextField source="lastName" />
+        <RecordCreatedAt />
+        <ShowButton />
+        {/* <EditButton /> */}
+      </Datagrid>
+    </List>
+  )
+}
+
+const TpCompanyProfileShow = (props) => (
+  <Show {...props}>
+    <SimpleShowLayout>
+      <TabbedShowLayout>
+        <Tab label="Profile">
+          <Avatar />
+          <TextField source="companyName" />
+          <TextField source="firstName" />
+          <TextField source="lastName" />
+          <TextField source="contactEmail" />
+          <TextField source="location" />
+          <TextField source="tagline" />
+          <TextField source="industry" />
+          <TextField source="website" />
+          <TextField source="linkedInUrl" />
+          <TextField source="phoneNumber" />
+          <TextField source="about" />
+
+          <ArrayField source="jobListings" fieldKey="uuid">
+            <Datagrid>
+              <TextField source="title" />
+              <TextField source="location" />
+              <TextField source="summary" />
+              <TextField source="proficiencyLevelId" />
+              <FunctionField
+                label="idealTechnicalSkills"
+                render={(record) => record.idealTechnicalSkills.join(', ')}
+              />
+              <FunctionField
+                label="relatesToPositions"
+                render={(record) => record.relatesToPositions.join(', ')}
+              />
+              <TextField source="employmentType" />
+              <TextField source="languageRequirements" />
+              <TextField source="desiredExperience" />
+              <TextField source="salaryRange" />
+            </Datagrid>
+          </ArrayField>
         </Tab>
         <Tab label="Internal comments">
           <TextField
@@ -1297,6 +1391,11 @@ function App() {
           name="tpJobseekerProfiles"
           show={TpJobseekerProfileShow}
           list={TpJobseekerProfileList}
+        />
+        <Resource
+          name="tpCompanyProfiles"
+          show={TpCompanyProfileShow}
+          list={TpCompanyProfileList}
         />
       </Admin>
     </div>
