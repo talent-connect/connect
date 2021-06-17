@@ -4,9 +4,6 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  @include tablet() {
-    margin-left: 0.5rem;
-  }
 }
 
 .icon-align {
