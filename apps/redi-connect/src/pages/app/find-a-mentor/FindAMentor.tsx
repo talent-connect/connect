@@ -19,7 +19,13 @@ import {
 } from '@talent-connect/shared-config'
 import './FindAMentor.scss'
 import { toggleValueInArray } from './utils'
-import { StringParam, useQueryParams, ArrayParam, BooleanParam, withDefault } from 'use-query-params'
+import {
+  StringParam,
+  useQueryParams,
+  ArrayParam,
+  BooleanParam,
+  withDefault,
+} from 'use-query-params'
 
 const filterCategories = categories.map((category) => ({
   value: category.id,
@@ -52,7 +58,7 @@ interface FindAMentorProps {
 
 const SearchField = ({
   valueChange,
-  defaultValue
+  defaultValue,
 }: {
   valueChange: (value: string) => void
   defaultValue: string
@@ -76,7 +82,12 @@ const SearchField = ({
 
 const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
   const { Loading, isLoading, setLoading } = useLoading()
-  const { id, categories: categoriesFromProfile, favouritedRedProfileIds, rediLocation } = profile
+  const {
+    id,
+    categories: categoriesFromProfile,
+    favouritedRedProfileIds,
+    rediLocation,
+  } = profile
   const [showFavorites, setShowFavorites] = useState<boolean>(false)
   const [mentors, setMentors] = useState<RedProfile[]>([])
   const [query, setQuery] = useQueryParams({
@@ -84,22 +95,27 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
     topics: withDefault(ArrayParam, []),
     languages: withDefault(ArrayParam, []),
     locations: withDefault(ArrayParam, []),
-    onlyFavorites: withDefault(BooleanParam, undefined)
+    onlyFavorites: withDefault(BooleanParam, undefined),
   })
-  const { topics, name, languages, locations, onlyFavorites } = query;
-  
+  const { topics, name, languages, locations, onlyFavorites } = query
+
   useEffect(() => {
-    const hasQuery = topics.length > 0 || languages.length > 0 || locations.length > 0 || Boolean(name) || onlyFavorites
-    setQuery(hasQuery ? query : {...query, topics: categoriesFromProfile})
+    const hasQuery =
+      topics.length > 0 ||
+      languages.length > 0 ||
+      locations.length > 0 ||
+      Boolean(name) ||
+      onlyFavorites
+    setQuery(hasQuery ? query : { ...query, topics: categoriesFromProfile })
   }, [])
 
   const toggleFilters = (filtersArr, filterName, item) => {
     const newFilters = toggleValueInArray(filtersArr, item)
-    setQuery((latestQuery) => ({...latestQuery, [filterName]: newFilters}))
+    setQuery((latestQuery) => ({ ...latestQuery, [filterName]: newFilters }))
   }
 
-  const setName = (value) => { 
-    setQuery((latestQuery) => ({...latestQuery, name: value || undefined}))
+  const setName = (value) => {
+    setQuery((latestQuery) => ({ ...latestQuery, name: value || undefined }))
   }
 
   const toggleFavorites = (favoritesArr, value) => {
@@ -111,11 +127,19 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
 
   const setFavorites = () => {
     setShowFavorites(!showFavorites)
-    setQuery((latestQuery) => ({...latestQuery, onlyFavorites: showFavorites ? undefined : true }))
+    setQuery((latestQuery) => ({
+      ...latestQuery,
+      onlyFavorites: showFavorites ? undefined : true,
+    }))
   }
 
   const clearFilters = () => {
-    setQuery((latestQuery) => ({...latestQuery, topics: [], languages: [], locations: []}))
+    setQuery((latestQuery) => ({
+      ...latestQuery,
+      topics: [],
+      languages: [],
+      locations: [],
+    }))
   }
 
   const filterLanguages = Array.from(
@@ -143,7 +167,7 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
       categories: topics,
       languages,
       nameQuery: name || '',
-      locations
+      locations,
     }).then((mentors) => {
       setMentors(
         mentors
@@ -187,10 +211,7 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
             selected={languages}
             onChange={(item) => toggleFilters(languages, 'languages', item)}
           />
-          <div
-            className="filter-favourites"
-            onClick={setFavorites}
-          >
+          <div className="filter-favourites" onClick={setFavorites}>
             <Icon
               icon={showFavorites ? 'heartFilled' : 'heart'}
               className="filter-favourites__icon"
@@ -211,9 +232,11 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
           />
         </div>
 
-        {(topics.length !== 0 || languages.length !== 0 || locations.length !== 0) && (
+        {(topics.length !== 0 ||
+          languages.length !== 0 ||
+          locations.length !== 0) && (
           <>
-            {topics.map((catId) => (
+            {(topics as string[]).map((catId) => (
               <FilterTag
                 key={catId}
                 id={catId}
@@ -221,31 +244,35 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
                 onClickHandler={(item) => toggleFilters(topics, 'topics', item)}
               />
             ))}
-            {languages.map((langId) => (
+            {(languages as string[]).map((langId) => (
               <FilterTag
                 key={langId}
                 id={langId}
                 label={langId}
-                onClickHandler={(item) => toggleFilters(languages, 'languages', item)}
+                onClickHandler={(item) =>
+                  toggleFilters(languages, 'languages', item)
+                }
               />
             ))}
-            {locations.map((locId?: RediLocation) => locId && (
-              <FilterTag
-                key={locId}
-                id={locId}
-                label={rediLocationNames[locId as RediLocation] as string}
-                onClickHandler={(item) => toggleFilters(locations, 'locations', item)}
-              />
-            ))}
-            <span
-              className="active-filters__clear-all"
-              onClick={clearFilters}
-            >
-              Delete all filters 
+            {(locations as RediLocation[]).map(
+              (locId) =>
+                locId && (
+                  <FilterTag
+                    key={locId}
+                    id={locId}
+                    label={rediLocationNames[locId as RediLocation] as string}
+                    onClickHandler={(item) =>
+                      toggleFilters(locations, 'locations', item)
+                    }
+                  />
+                )
+            )}
+            <span className="active-filters__clear-all" onClick={clearFilters}>
+              Delete all filters
               <Icon icon="cancel" size="small" space="left" />
             </span>
           </>
-        )} 
+        )}
       </div>
 
       <Columns>
@@ -259,7 +286,9 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
               <ProfileCard
                 profile={mentor}
                 linkTo={`/app/find-a-mentor/profile/${mentor.id}`}
-                toggleFavorite={(item) => toggleFavorites(favouritedRedProfileIds, item)}
+                toggleFavorite={(item) =>
+                  toggleFavorites(favouritedRedProfileIds, item)
+                }
                 isFavorite={isFavorite}
               />
             </Columns.Column>
