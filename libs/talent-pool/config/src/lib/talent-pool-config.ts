@@ -90,10 +90,6 @@ export const desiredPositions: DropdownOptions = [
     label: 'Technical Architect',
   },
   {
-    id: 'teamAssistant',
-    label: 'Team Assistant',
-  },
-  {
     id: 'uiDesigner',
     label: 'UI Designer',
   },
