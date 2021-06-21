@@ -46,14 +46,14 @@
           >
           <mj-text mj-class="text" padding="0 0 20px 0"
             >Then, use the <strong>Job Preferences</strong> box to note down
-            your <strong>top three preferences</strong>. We’ll need you to enter
+            your <strong>top four preferences</strong>. We’ll need you to enter
             the Company name, the Job title, and the Job ID (when
             available).</mj-text
           >
 
           <mj-text mj-class="text" padding="0 0 20px 0"
-            >After you’ve submitted your top three preferences, we’ll do our
-            best to match you with Companies for interviews.</mj-text
+            >After you’ve submitted your top four preferences, we’ll do our best
+            to match you with Companies for interviews.</mj-text
           >
           <mj-text mj-class="text" padding="0 0 20px 0"
             ><strong

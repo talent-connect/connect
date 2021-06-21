@@ -47,8 +47,11 @@
             </ul>
           </mj-text>
           <mj-text mj-class="text" padding="0 0 20px 0"
-            >As soon as you are done checking it out, please let us know and we
-            will review it again!
+            >As soon as you are done updating your profile, please
+            <strong
+              >send your profile to us for review <em>over again</em></strong
+            >
+            by using the button in your profile.
           </mj-text>
           <mj-text mj-class="text">Best,</mj-text>
           <mj-text mj-class="text">Paulina</mj-text>

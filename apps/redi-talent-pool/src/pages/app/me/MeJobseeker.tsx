@@ -208,7 +208,6 @@ function isProfileComplete(profile: Partial<TpJobseekerProfile>): boolean {
     EditableSummary.isSectionFilled,
     EditableImportantDetails.isSectionFilled,
     EditableLanguages.isSectionFilled,
-    EditableLinks.isSectionFilled,
   ]
     .map((checkerFn) => checkerFn(profile))
     .every((p) => p)

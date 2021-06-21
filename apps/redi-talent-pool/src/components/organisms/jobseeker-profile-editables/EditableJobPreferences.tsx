@@ -176,7 +176,7 @@ function ModalForm({
       >
         <p>
           Open this list of all open job postings and companies, then share your
-          3 top preferences with us. This information will be used to match you
+          4 top preferences with us. This information will be used to match you
           for interviews.{' '}
           <strong>It will only be visible to you and the ReDI team.</strong>
         </p>
@@ -265,6 +265,11 @@ function ModalForm({
 }
 
 function buildBlankHrSummit2021JobFairCompanyJobPreferences(): HrSummit2021JobFairCompanyJobPreferenceRecord[] {
-  // Return exactly three elements since the job preferences consists of three priorities, relfected by the order of this array
-  return [{ uuid: uuidv4() }, { uuid: uuidv4() }, { uuid: uuidv4() }]
+  // Return exactly three elements since the job preferences consists of four priorities, relfected by the order of this array
+  return [
+    { uuid: uuidv4() },
+    { uuid: uuidv4() },
+    { uuid: uuidv4() },
+    { uuid: uuidv4() },
+  ]
 }

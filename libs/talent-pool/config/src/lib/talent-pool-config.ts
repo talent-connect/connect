@@ -48,6 +48,7 @@ export const desiredPositions: DropdownOptions = [
     label: 'Java Developer',
   },
   { id: 'linuxSystemAdministrator', label: 'Linux System Administrator' },
+  { id: 'marketingAssistant', label: 'Marketing Assistant' },
   {
     id: 'nodeJsDeveloper',
     label: 'Node.js Developer',
@@ -55,6 +56,10 @@ export const desiredPositions: DropdownOptions = [
   {
     id: 'productDesigner',
     label: 'Product Designer',
+  },
+  {
+    id: 'projectAssistant',
+    label: 'Project Assistant',
   },
   {
     id: 'pythonDeveloper',
@@ -83,6 +88,10 @@ export const desiredPositions: DropdownOptions = [
   {
     id: 'technicalArchitect',
     label: 'Technical Architect',
+  },
+  {
+    id: 'teamAssistant',
+    label: 'Team Assistant',
   },
   {
     id: 'uiDesigner',
