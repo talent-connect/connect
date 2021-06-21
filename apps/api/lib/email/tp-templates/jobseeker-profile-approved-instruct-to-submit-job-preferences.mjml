@@ -1,0 +1,74 @@
+<mjml>
+  <mj-include path="../templates/head.mjml" />
+  <mj-body mj-class="body">
+    <mj-wrapper background-color="#F0F0F0">
+      <mj-section />
+      <mj-section css-class="section">
+        <mj-column>
+          <mj-text mj-class="headline"
+            >Talent Pool: your profile is approved! ReDI for the next
+            step?</mj-text
+          >
+          <mj-divider mj-class="divider-top" css-class="divider" />
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >Dear ${firstName},</mj-text
+          >
+
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >Congratulations - your profile has been approved!</mj-text
+          >
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >We’re almost ReDI to start matching you with companies for
+            interviews.</mj-text
+          >
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >We just need one more thing from you:</mj-text
+          >
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >Please log back into Talent Pool:</mj-text
+          >
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            ><a href="https://talent-pool.redi-school.org"
+              >https://talent-pool.redi-school.org</a
+            ></mj-text
+          >
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >There you will now be able to access the list of companies
+            attending the ReDI Job Fair.</mj-text
+          >
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >It is important that you open
+            <strong><em>every link</em></strong> for
+            <strong><em>every company</em></strong
+            >, and browse their open job positions checking the ones where you
+            could be the right candidate and
+            <strong>fit your skillset</strong>.</mj-text
+          >
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >Then, use the <strong>Job Preferences</strong> box to note down
+            your <strong>top three preferences</strong>. We’ll need you to enter
+            the Company name, the Job title, and the Job ID (when
+            available).</mj-text
+          >
+
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >After you’ve submitted your top three preferences, we’ll do our
+            best to match you with Companies for interviews.</mj-text
+          >
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            ><strong
+              >Due to a high interest in some positions/companies, we cannot
+              guarantee that we will match you with your first preference but we
+              will do our best.</strong
+            ></mj-text
+          >
+
+          <mj-text mj-class="text">Best,</mj-text>
+          <mj-text mj-class="text">Paulina</mj-text>
+        </mj-column>
+      </mj-section>
+      <mj-include path="../templates/footer.berlin.paulina.mjml" />
+      <mj-section />
+    </mj-wrapper>
+  </mj-body>
+</mjml>

@@ -30,7 +30,7 @@ function FormDraggableAccordion({
     )
 
     return () => sub?.unsubscribe()
-  })
+  }, [closeAccordionSignalSubject])
 
   return (
     <div className="form-draggable-accordion">
@@ -52,7 +52,9 @@ function FormDraggableAccordion({
           />
         </Columns.Column>
         <Columns.Column narrow>
-          <Icon icon="cancel" size="small" onClick={onRemove} />
+          {onRemove ? (
+            <Icon icon="cancel" size="small" onClick={onRemove} />
+          ) : null}
         </Columns.Column>
       </Columns>
       <Element

@@ -83,6 +83,8 @@ import { calculateAge } from '@talent-connect/shared-utils'
 import loopbackClient, { authProvider } from './lib/react-admin-loopback/src'
 import { ApproveButton } from './components/ApproveButton'
 import { DeclineButton } from './components/DeclineButton'
+import { TpJobseekerProfileApproveButton } from './components/TpJobseekerProfileApproveButton'
+import { TpJobseekerProfileDeclineButton } from './components/TpJobseekerProfileDeclineButton'
 
 import { API_URL } from './config'
 
@@ -142,7 +144,7 @@ RecordUpdatedAt.defaultProps = {
 }
 
 const LanguageList = (props) => {
-  return <span>{Object.values(props.data).join(', ')}</span>
+  return <span>{props.data ? Object.values(props.data).join(', ') : null}</span>
 }
 
 const CategoryList = (props) => {
@@ -1197,7 +1199,7 @@ const TpJobseekerProfileShow = (props) => (
           <TextField source="currentlyEnrolledInCourse" />
           <FunctionField
             label="desiredPositions"
-            render={(record) => record.desiredPositions.join(', ')}
+            render={(record) => record?.desiredPositions?.join(', ')}
           />
           <TextField source="profileImage" />
           <TextField source="phoneNumber" />
@@ -1222,7 +1224,7 @@ const TpJobseekerProfileShow = (props) => (
           <TextField source="aboutYourself" />
           <FunctionField
             label="Top Skills"
-            render={(record) => record.topSkills.join(', ')}
+            render={(record) => record?.topSkills?.join(', ')}
           />
           <ArrayField source="experience" fieldKey="uuid">
             <Datagrid>
@@ -1248,7 +1250,16 @@ const TpJobseekerProfileShow = (props) => (
             </Datagrid>
           </ArrayField>
           {/* <ArrayField source="projects" /> */}
-          <TextField source="hrSummit2021JobFairCompanyJobPreferences" />
+          <ArrayField
+            source="hrSummit2021JobFairCompanyJobPreferences"
+            fieldKey="uuid"
+          >
+            <Datagrid>
+              <TextField source="jobPosition" />
+              <TextField source="jobId" />
+              <TextField source="companyName" />
+            </Datagrid>
+          </ArrayField>
           <h4>Record information</h4>
           <RecordCreatedAt />
           <RecordUpdatedAt />
@@ -1270,6 +1281,117 @@ const TpJobseekerProfileShow = (props) => (
     </SimpleShowLayout>
   </Show>
 )
+
+const TpJobseekerProfileEdit = (props) => (
+  // <Edit {...props} actions={<TpJobseekerProfileEditActions />}>
+  <Edit {...props} actions={<TpJobseekerProfileEditActions />}>
+    <TabbedForm>
+      <Tab label="Profile">
+        <TextField source="state" />
+        {/* <Avatar /> */}
+        <TextInput source="firstName" />
+        <TextInput source="lastName" />
+        <TextInput source="contactEmail" />
+        <TextInput source="postalMailingAddress" />
+
+        <TextField source="currentlyEnrolledInCourse" />
+        <FunctionField
+          label="desiredPositions"
+          render={(record) => record?.desiredPositions?.join(', ')}
+        />
+        <TextField source="profileImage" />
+        <TextInput source="phoneNumber" />
+        <TextInput source="location" />
+        <TextInput source="personalWebsite" />
+        <TextInput source="githubUrl" />
+        <TextInput source="linkedInUrl" />
+        <TextInput source="twitterUrl" />
+        <TextInput source="behanceUrl" />
+        <TextInput source="stackOverflowUrl" />
+        <TextInput source="dribbbleUrl" />
+        <ArrayField source="workingLanguages" fieldKey="uuid">
+          <Datagrid>
+            <TextField source="language" />
+            <TextField source="proficiencyLevelId" />
+          </Datagrid>
+        </ArrayField>
+        <TextInput source="yearsOfRelevantExperience" />
+        <FunctionField
+          label="desiredEmploymentType"
+          render={(record) => record?.desiredEmploymentType?.join(', ')}
+        />
+        <TextField source="availability" />
+        <DateField source="ifAvailabilityIsDate_date" />
+        <TextInput multiline source="aboutYourself" />
+        <FunctionField
+          label="Top Skills"
+          render={(record) => record?.topSkills?.join(', ')}
+        />
+        <ArrayField source="experience" fieldKey="uuid">
+          <Datagrid>
+            <TextField source="title" />
+            <TextField source="company" />
+            <NumberField source="startDateMonth" />
+            <NumberField source="startDateYear" />
+            <NumberField source="endDateMonth" />
+            <NumberField source="endDateYear" />
+            <BooleanField source="current" />
+          </Datagrid>
+        </ArrayField>
+        <ArrayField source="education" fieldKey="uuid">
+          <Datagrid>
+            <TextField source="title" />
+            <TextField source="institutionName" />
+            <TextField source="certificationType" />
+            <NumberField source="startDateMonth" />
+            <NumberField source="startDateYear" />
+            <NumberField source="endDateMonth" />
+            <NumberField source="endDateYear" />
+            <BooleanField source="current" />
+          </Datagrid>
+        </ArrayField>
+        {/* <ArrayField source="projects" /> */}
+        <ArrayField
+          source="hrSummit2021JobFairCompanyJobPreferences"
+          fieldKey="uuid"
+        >
+          <Datagrid>
+            <TextField source="jobPosition" />
+            <TextField source="jobId" />
+            <TextField source="companyName" />
+          </Datagrid>
+        </ArrayField>
+        <h4>Record information</h4>
+        <RecordCreatedAt />
+        <RecordUpdatedAt />
+        <DateField
+          showTime
+          source="lastLoginDateTime"
+          label="Last Login"
+          {...props}
+          sortable={false}
+        />
+      </Tab>
+      <Tab label="Internal comments">
+        <TextField
+          source="administratorInternalComment"
+          style={{ whiteSpace: 'pre-wrap' }}
+        />
+      </Tab>
+    </TabbedForm>
+  </Edit>
+)
+
+const TpJobseekerProfileEditActions = (props) => {
+  if (props?.data?.state !== 'submitted-for-review') return null
+
+  return (
+    <CardActions>
+      User is pending. Please <TpJobseekerProfileApproveButton {...props} /> or
+      <TpJobseekerProfileDeclineButton {...props} />
+    </CardActions>
+  )
+}
 
 const TpCompanyProfileList = (props) => {
   return (
@@ -1391,6 +1513,7 @@ function App() {
           name="tpJobseekerProfiles"
           show={TpJobseekerProfileShow}
           list={TpJobseekerProfileList}
+          edit={TpJobseekerProfileEdit}
         />
         <Resource
           name="tpCompanyProfiles"

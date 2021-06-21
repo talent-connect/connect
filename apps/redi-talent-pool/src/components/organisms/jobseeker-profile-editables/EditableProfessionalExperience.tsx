@@ -66,6 +66,7 @@ export function EditableProfessionalExperience() {
                 }}
               >
                 <Caption>{item?.title}</Caption>
+                {/* TODO: put this color (and all places it is used) into gloal css */}
                 <span style={{ color: '#979797' }}>
                   {formatDate(item.startDateMonth, item.startDateYear)} -{' '}
                   {item.current
