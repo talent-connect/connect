@@ -46,12 +46,11 @@ export function MeJobseeker() {
           <Content size="small">
             <strong>Great, your profile is approved!</strong> Before we can
             match you for interviews with companies, we want to learn about your
-            preferences. Therefore, find the{' '}
+            preferences. Therefore, find the job posting list in the{' '}
             <a onClick={() => openJobPreferencesModalSignalRef.current.next()}>
-              job posting list in the job preferences sections and fill out your
-              preferred companies/jobs
+              job preferences section{' '}
             </a>
-            .{' '}
+            and fill out your preferred companies/jobs.
           </Content>
         </Notification>
       ) : null}
