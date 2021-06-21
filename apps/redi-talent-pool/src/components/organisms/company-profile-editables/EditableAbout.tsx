@@ -11,7 +11,7 @@ import {
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Content, Element, Tag } from 'react-bulma-components'
 import ReactMarkdown from 'react-markdown'
 import * as Yup from 'yup'
@@ -83,9 +83,13 @@ function ModalForm({
 }) {
   const { data: profile } = useTpCompanyProfileQuery()
   const mutation = useTpCompanyProfileUpdateMutation()
-  const initialValues: Partial<TpCompanyProfile> = {
-    about: profile?.about ?? '',
-  }
+  const initialValues: Partial<TpCompanyProfile> = useMemo(
+    () => ({
+      about: profile?.about ?? '',
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  )
   const onSubmit = (values: Partial<TpCompanyProfile>) => {
     formik.setSubmitting(true)
     mutation.mutate(values, {

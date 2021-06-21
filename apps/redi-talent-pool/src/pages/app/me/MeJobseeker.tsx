@@ -35,27 +35,26 @@ export function MeJobseeker() {
 
   return (
     <LoggedIn>
-      <Notification className="account-not-active double-bs">
-        <Icon
-          className="account-not-active__icon"
-          icon="search"
-          size="large"
-          space="right"
-        />
-        <Content size="small">
-          <strong>Great, your profile is approved!</strong> Before we can match
-          you for interviews with companies, we want to learn about your
-          preferences. Therefore, find the{' '}
-          <a
-            onClick={() => openJobPreferencesModalSignalRef.current.next()}
-            href
-          >
-            job posting list in the job preferences sections and fill out your
-            preferred companies/jobs
-          </a>
-          .{' '}
-        </Content>
-      </Notification>
+      {profile?.state === 'profile-approved-awaiting-job-preferences' ? (
+        <Notification className="account-not-active double-bs">
+          <Icon
+            className="account-not-active__icon"
+            icon="search"
+            size="large"
+            space="right"
+          />
+          <Content size="small">
+            <strong>Great, your profile is approved!</strong> Before we can
+            match you for interviews with companies, we want to learn about your
+            preferences. Therefore, find the{' '}
+            <a onClick={() => openJobPreferencesModalSignalRef.current.next()}>
+              job posting list in the job preferences sections and fill out your
+              preferred companies/jobs
+            </a>
+            .{' '}
+          </Content>
+        </Notification>
+      ) : null}
       <Columns className="is-6 is-variable">
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'three-fifths' }}>
           <div className="is-hidden-tablet">

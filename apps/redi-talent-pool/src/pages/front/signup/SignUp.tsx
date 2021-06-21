@@ -9,7 +9,7 @@ import { courses, rediLocationNames } from '@talent-connect/shared-config'
 import { RedProfile } from '@talent-connect/shared-types'
 import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
 import omit from 'lodash/omit'
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Columns, Form, Notification } from 'react-bulma-components'
 import { useParams } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -101,13 +101,16 @@ export interface SignUpFormValues {
 export default function SignUp() {
   const { type } = useParams<SignUpPageType>()
 
-  const initialValues: SignUpFormValues = {
-    contactEmail: '',
-    password: '',
-    passwordConfirm: '',
-    firstName: '',
-    lastName: '',
-  }
+  const initialValues: SignUpFormValues = useMemo(
+    () => ({
+      contactEmail: '',
+      password: '',
+      passwordConfirm: '',
+      firstName: '',
+      lastName: '',
+    }),
+    []
+  )
   if (type === 'jobseeker') {
     initialValues.state = 'drafting-profile'
     initialValues.jobseeker_currentlyEnrolledInCourse = ''

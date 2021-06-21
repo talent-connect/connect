@@ -9,7 +9,7 @@ import {
   TpJobseekerProfile,
 } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Content, Element } from 'react-bulma-components'
 import { Subject } from 'rxjs'
@@ -119,11 +119,16 @@ function ModalForm({
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
 
-  const initialValues: Partial<TpJobseekerProfile> = {
-    hrSummit2021JobFairCompanyJobPreferences:
-      profile.hrSummit2021JobFairCompanyJobPreferences ??
-      buildBlankHrSummit2021JobFairCompanyJobPreferences(),
-  }
+  const initialValues: Partial<TpJobseekerProfile> = useMemo(
+    () => ({
+      hrSummit2021JobFairCompanyJobPreferences:
+        profile?.hrSummit2021JobFairCompanyJobPreferences ??
+        buildBlankHrSummit2021JobFairCompanyJobPreferences(),
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  )
+
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
     formik.setSubmitting(true)
     mutation.mutate(values, {

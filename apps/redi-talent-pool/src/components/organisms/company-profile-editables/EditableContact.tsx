@@ -17,7 +17,7 @@ import {
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
 import moment from 'moment'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Columns, Content, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
 import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
@@ -106,12 +106,16 @@ function ModalForm({
 }) {
   const { data: profile } = useTpCompanyProfileQuery()
   const mutation = useTpCompanyProfileUpdateMutation()
-  const initialValues: Partial<TpCompanyProfile> = {
-    firstName: profile?.firstName ?? '',
-    lastName: profile?.lastName ?? '',
-    contactEmail: profile?.contactEmail ?? '',
-    phoneNumber: profile?.phoneNumber ?? '',
-  }
+  const initialValues: Partial<TpCompanyProfile> = useMemo(
+    () => ({
+      firstName: profile?.firstName ?? '',
+      lastName: profile?.lastName ?? '',
+      contactEmail: profile?.contactEmail ?? '',
+      phoneNumber: profile?.phoneNumber ?? '',
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  )
   const onSubmit = (values: Partial<TpCompanyProfile>) => {
     formik.setSubmitting(true)
     mutation.mutate(values, {

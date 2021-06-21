@@ -10,7 +10,7 @@ import {
   desiredEmploymentTypeOptions,
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Columns, Content, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
@@ -105,12 +105,16 @@ function ModalForm({
 }) {
   const { data: profile } = useTpJobseekerProfileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
-  const initialValues: Partial<TpJobseekerProfile> = {
-    firstName: profile?.firstName ?? '',
-    lastName: profile?.lastName ?? '',
-    genderPronouns: profile?.genderPronouns ?? '',
-    location: profile?.location ?? '',
-  }
+  const initialValues: Partial<TpJobseekerProfile> = useMemo(
+    () => ({
+      firstName: profile?.firstName ?? '',
+      lastName: profile?.lastName ?? '',
+      genderPronouns: profile?.genderPronouns ?? '',
+      location: profile?.location ?? '',
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  )
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
     formik.setSubmitting(true)
     mutation.mutate(values, {

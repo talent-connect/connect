@@ -18,7 +18,7 @@ import {
   topSkills,
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Content, Element } from 'react-bulma-components'
 import ReactMarkdown from 'react-markdown'
@@ -129,9 +129,13 @@ function ModalForm({
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
 
-  const initialValues: Partial<TpCompanyProfile> = {
-    jobListings: profile?.jobListings ?? [buildBlankJobListingRecord()],
-  }
+  const initialValues: Partial<TpCompanyProfile> = useMemo(
+    () => ({
+      jobListings: profile?.jobListings ?? [buildBlankJobListingRecord()],
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  )
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
     formik.setSubmitting(true)
     mutation.mutate(values, {

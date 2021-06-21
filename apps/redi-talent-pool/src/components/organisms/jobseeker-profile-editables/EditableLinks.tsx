@@ -4,7 +4,7 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import { TpJobseekerProfile } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {
   Content,
   Element,
@@ -103,15 +103,19 @@ function ModalForm({
 }) {
   const { data: profile } = useTpJobseekerProfileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
-  const initialValues: Partial<TpJobseekerProfile> = {
-    personalWebsite: profile.personalWebsite ?? '',
-    githubUrl: profile.githubUrl ?? '',
-    linkedInUrl: profile.linkedInUrl ?? '',
-    twitterUrl: profile.twitterUrl ?? '',
-    behanceUrl: profile.behanceUrl ?? '',
-    stackOverflowUrl: profile.stackOverflowUrl ?? '',
-    dribbbleUrl: profile.dribbbleUrl ?? '',
-  }
+  const initialValues: Partial<TpJobseekerProfile> = useMemo(
+    () => ({
+      personalWebsite: profile.personalWebsite ?? '',
+      githubUrl: profile.githubUrl ?? '',
+      linkedInUrl: profile.linkedInUrl ?? '',
+      twitterUrl: profile.twitterUrl ?? '',
+      behanceUrl: profile.behanceUrl ?? '',
+      stackOverflowUrl: profile.stackOverflowUrl ?? '',
+      dribbbleUrl: profile.dribbbleUrl ?? '',
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  )
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
     formik.setSubmitting(true)
     mutation.mutate(values, {
