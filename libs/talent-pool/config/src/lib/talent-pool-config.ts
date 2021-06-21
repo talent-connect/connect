@@ -3,6 +3,10 @@ import { keyBy, mapValues } from 'lodash'
 
 export const desiredPositions: DropdownOptions = [
   {
+    id: 'administrativeAssistant',
+    label: 'Administrative Assistant',
+  },
+  {
     id: 'agileScrumCoach',
     label: 'Agile/SCRUM Coach',
   },
@@ -48,6 +52,7 @@ export const desiredPositions: DropdownOptions = [
     label: 'Java Developer',
   },
   { id: 'linuxSystemAdministrator', label: 'Linux System Administrator' },
+  { id: 'marketingAssistant', label: 'Marketing Assistant' },
   {
     id: 'nodeJsDeveloper',
     label: 'Node.js Developer',
@@ -55,6 +60,18 @@ export const desiredPositions: DropdownOptions = [
   {
     id: 'productDesigner',
     label: 'Product Designer',
+  },
+  {
+    id: 'productManager',
+    label: 'Product Manager',
+  },
+  {
+    id: 'projectAssistant',
+    label: 'Project Assistant',
+  },
+  {
+    id: 'projectManager',
+    label: 'Project Manager',
   },
   {
     id: 'pythonDeveloper',
@@ -578,7 +595,7 @@ export const yearsOfRelevantExperienceOptions: DropdownOptions = [
 export const desiredEmploymentTypeOptions = [
   { id: 'partTime', label: 'Part-time employment' },
   { id: 'fullTime', label: 'Full-time employment' },
-  { id: 'werkstudium', label: 'Werkstudium' },
+  { id: 'werkstudium', label: 'Werkstudent*in (working student position)' },
   { id: 'Internship', label: 'Internship' },
 ]
 
@@ -662,7 +679,7 @@ export const formMonthsOptions = Object.entries(formMonths).map(
 export const employmentTypes: DropdownOptions = [
   { id: 'partTimeEmployment', label: 'Part-time employment' },
   { id: 'fullTimeEmployment', label: 'Full-time employment' },
-  { id: 'werkstudium', label: 'Werkstudium' },
+  { id: 'werkstudium', label: 'Werkstudent*in (working student position)' },
   { id: 'internship', label: 'Internship' },
   { id: 'apprenticeship', label: 'Apprenticeship' },
   { id: 'selfEmployed', label: 'Self-employed' },

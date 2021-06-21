@@ -87,6 +87,7 @@ import { TpJobseekerProfileApproveButton } from './components/TpJobseekerProfile
 import { TpJobseekerProfileDeclineButton } from './components/TpJobseekerProfileDeclineButton'
 
 import { API_URL } from './config'
+import { TpJobseekerProfileState } from '@talent-connect/shared-types'
 
 /** REFERENCE DATA */
 
@@ -1126,20 +1127,52 @@ const RedMentoringSessionEdit = (props) => (
 
 const TpJobseekerProfileList = (props) => {
   return (
-    <List
-      {...props}
-      filters={<TpJobseekerProfileListFilters />}
-      pagination={<AllModelsPagination />}
-    >
-      <Datagrid expand={<TpJobseekerProfileListExpandPane />}>
-        <TextField source="firstName" />
-        <TextField source="lastName" />
-        <TextField source="state" />
-        <RecordCreatedAt />
-        <ShowButton />
-        {/* <EditButton /> */}
-      </Datagrid>
-    </List>
+    <>
+      <List
+        {...props}
+        filters={<TpJobseekerProfileListFilters />}
+        pagination={<AllModelsPagination />}
+      >
+        <Datagrid expand={<TpJobseekerProfileListExpandPane />}>
+          <TextField source="firstName" />
+          <TextField source="lastName" />
+          <TextField source="state" />
+          <RecordCreatedAt />
+          <ShowButton />
+          {/* <EditButton /> */}
+        </Datagrid>
+      </List>
+      <p>
+        A quick note regard <strong>state</strong>:
+      </p>
+      <ol>
+        <li style={{ marginBottom: '12px' }}>
+          <strong>drafting-profile</strong>: the very first state. The jobseeker
+          has just signed up and his drafting their profile.
+        </li>
+        <li style={{ marginBottom: '12px' }}>
+          <strong>submitted-for-review</strong>: the jobseeker has provided at
+          least as much information as Talent Pool requires. Their profile has
+          been submitted to ReDI for review. Click Show &gt; Edit to find two
+          buttons to Approve/Decline their profile.
+        </li>
+        <li style={{ marginBottom: '12px' }}>
+          <strong>profile-approved-awaiting-job-preferences</strong>: the
+          jobseeker's profile was approved, and we're now waiting for them to
+          provide their job preferences/priorities
+        </li>
+        <li style={{ marginBottom: '12px' }}>
+          <strong>
+            job-preferences-shared-with-redi-awaiting-interview-match
+          </strong>
+          : the jobseeker has provided their job preferences, and are now
+          waiting to be matched against companies/jobs for interview(s)
+        </li>
+        <li style={{ marginBottom: '12px' }}>
+          <strong>matched-for-interview</strong>: matched for interview
+        </li>
+      </ol>
+    </>
   )
 }
 
@@ -1160,14 +1193,10 @@ const TpJobseekerProfileListFilters = (props) => (
     <TextInput label="Search by name" source="q" />
     <SelectInput
       source="state"
-      choices={[
-        { id: 'drafting-profile', name: 'Drafing profile' },
-        { id: 'submitted-for-review', name: 'Submitted for review' },
-        {
-          id: 'profile-approved',
-          name: 'Profile approved',
-        },
-      ]}
+      choices={Object.values(TpJobseekerProfileState).map((val) => ({
+        id: val,
+        name: val,
+      }))}
     />
   </Filter>
 )
@@ -1211,12 +1240,12 @@ const TpJobseekerProfileShow = (props) => (
           <TextField source="behanceUrl" />
           <TextField source="stackOverflowUrl" />
           <TextField source="dribbbleUrl" />
-          <ArrayField source="workingLanguages" fieldKey="uuid">
+          {/* <ArrayField source="workingLanguages" fieldKey="uuid">
             <Datagrid>
               <TextField source="language" />
               <TextField source="proficiencyLevelId" />
             </Datagrid>
-          </ArrayField>
+          </ArrayField> */}
           <TextField source="yearsOfRelevantExperience" />
           {/* <ArrayField source="desiredEmploymentType" /> */}
           <TextField source="availability" />
@@ -1226,7 +1255,7 @@ const TpJobseekerProfileShow = (props) => (
             label="Top Skills"
             render={(record) => record?.topSkills?.join(', ')}
           />
-          <ArrayField source="experience" fieldKey="uuid">
+          {/* <ArrayField source="experience" fieldKey="uuid">
             <Datagrid>
               <TextField source="title" />
               <TextField source="company" />
@@ -1236,8 +1265,8 @@ const TpJobseekerProfileShow = (props) => (
               <NumberField source="endDateYear" />
               <BooleanField source="current" />
             </Datagrid>
-          </ArrayField>
-          <ArrayField source="education" fieldKey="uuid">
+          </ArrayField> */}
+          {/* <ArrayField source="education" fieldKey="uuid">
             <Datagrid>
               <TextField source="title" />
               <TextField source="institutionName" />
@@ -1248,7 +1277,7 @@ const TpJobseekerProfileShow = (props) => (
               <NumberField source="endDateYear" />
               <BooleanField source="current" />
             </Datagrid>
-          </ArrayField>
+          </ArrayField> */}
           {/* <ArrayField source="projects" /> */}
           <ArrayField
             source="hrSummit2021JobFairCompanyJobPreferences"
@@ -1286,7 +1315,7 @@ const TpJobseekerProfileEdit = (props) => (
   // <Edit {...props} actions={<TpJobseekerProfileEditActions />}>
   <Edit {...props} actions={<TpJobseekerProfileEditActions />}>
     <TabbedForm>
-      <Tab label="Profile">
+      <FormTab label="Profile">
         <TextField source="state" />
         {/* <Avatar /> */}
         <TextInput source="firstName" />
@@ -1371,13 +1400,13 @@ const TpJobseekerProfileEdit = (props) => (
           {...props}
           sortable={false}
         />
-      </Tab>
-      <Tab label="Internal comments">
+      </FormTab>
+      <FormTab label="Internal comments">
         <TextField
           source="administratorInternalComment"
           style={{ whiteSpace: 'pre-wrap' }}
         />
-      </Tab>
+      </FormTab>
     </TabbedForm>
   </Edit>
 )
@@ -1460,6 +1489,24 @@ const TpCompanyProfileShow = (props) => (
 
 const buildDataProvider = (normalDataProvider) => (verb, resource, params) => {
   if (verb === 'GET_LIST' && resource === 'redProfiles') {
+    if (params.filter) {
+      const filter = params.filter
+      const q = filter.q
+      delete filter.q
+      const newFilter = { and: [filter] }
+      if (q) {
+        const andConditions = q.split(' ').map((word) => ({
+          loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName: {
+            like: word,
+            options: 'i',
+          },
+        }))
+        newFilter.and = [...newFilter.and, ...andConditions]
+      }
+      params.filter = newFilter
+    }
+  }
+  if (verb === 'GET_LIST' && resource === 'tpJobseekerProfiles') {
     if (params.filter) {
       const filter = params.filter
       const q = filter.q
