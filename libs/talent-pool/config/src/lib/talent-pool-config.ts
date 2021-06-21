@@ -3,6 +3,10 @@ import { keyBy, mapValues } from 'lodash'
 
 export const desiredPositions: DropdownOptions = [
   {
+    id: 'administrativeAssistant',
+    label: 'Administrative Assistant',
+  },
+  {
     id: 'agileScrumCoach',
     label: 'Agile/SCRUM Coach',
   },
@@ -58,8 +62,16 @@ export const desiredPositions: DropdownOptions = [
     label: 'Product Designer',
   },
   {
+    id: 'productManager',
+    label: 'Product Manager',
+  },
+  {
     id: 'projectAssistant',
     label: 'Project Assistant',
+  },
+  {
+    id: 'projectManager',
+    label: 'Project Manager',
   },
   {
     id: 'pythonDeveloper',
