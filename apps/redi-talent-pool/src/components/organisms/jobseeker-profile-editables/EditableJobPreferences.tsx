@@ -89,7 +89,7 @@ export function EditableJobPreferences({ triggerModalSignal }: Props) {
 EditableJobPreferences.isSectionFilled = (
   profile: Partial<TpJobseekerProfile>
 ) =>
-  profile?.hrSummit2021JobFairCompanyJobPreferences?.length === 3 &&
+  profile?.hrSummit2021JobFairCompanyJobPreferences?.length === 4 &&
   validationSchema.isValidSync(profile)
 EditableJobPreferences.isSectionEmpty = (
   profile: Partial<TpJobseekerProfile>

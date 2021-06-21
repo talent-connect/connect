@@ -1315,7 +1315,7 @@ const TpJobseekerProfileEdit = (props) => (
   // <Edit {...props} actions={<TpJobseekerProfileEditActions />}>
   <Edit {...props} actions={<TpJobseekerProfileEditActions />}>
     <TabbedForm>
-      <Tab label="Profile">
+      <FormTab label="Profile">
         <TextField source="state" />
         {/* <Avatar /> */}
         <TextInput source="firstName" />
@@ -1400,13 +1400,13 @@ const TpJobseekerProfileEdit = (props) => (
           {...props}
           sortable={false}
         />
-      </Tab>
-      <Tab label="Internal comments">
+      </FormTab>
+      <FormTab label="Internal comments">
         <TextField
           source="administratorInternalComment"
           style={{ whiteSpace: 'pre-wrap' }}
         />
-      </Tab>
+      </FormTab>
     </TabbedForm>
   </Edit>
 )
