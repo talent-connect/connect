@@ -1477,6 +1477,24 @@ const buildDataProvider = (normalDataProvider) => (verb, resource, params) => {
       params.filter = newFilter
     }
   }
+  if (verb === 'GET_LIST' && resource === 'tpJobseekerProfiles') {
+    if (params.filter) {
+      const filter = params.filter
+      const q = filter.q
+      delete filter.q
+      const newFilter = { and: [filter] }
+      if (q) {
+        const andConditions = q.split(' ').map((word) => ({
+          loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName: {
+            like: word,
+            options: 'i',
+          },
+        }))
+        newFilter.and = [...newFilter.and, ...andConditions]
+      }
+      params.filter = newFilter
+    }
+  }
   return normalDataProvider(verb, resource, params)
 }
 
