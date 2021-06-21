@@ -108,8 +108,6 @@ const RediFooter = () => {
                 {t('footer.socialMediaHeadline')}
               </Element>
               <SocialMediaIcons />
-              <SocialMediaIcons name="MUC" />
-              <SocialMediaIcons name="NRW" />
             </Columns.Column>
           </Columns>
           <Element size={6} className="footer__copyright" renderAs="p">
