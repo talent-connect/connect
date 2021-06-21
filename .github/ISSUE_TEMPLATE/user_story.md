@@ -1,6 +1,6 @@
 ---
-name: User story
-about: Tell a user story and how to implement it in subtasks
+name: User story [for developer]
+about: Tell a user story to let the developer(s) know how to implement it
 title: '[Name of epic:] A brief title'
 labels: 'User story'
 assignees: ''

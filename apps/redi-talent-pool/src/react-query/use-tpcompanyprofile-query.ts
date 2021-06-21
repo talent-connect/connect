@@ -14,6 +14,7 @@ export function useTpCompanyProfileQuery(props?: Props) {
     {
       staleTime: 5 * 60 * 1000,
       retry,
+      refetchOnWindowFocus: false,
     }
   )
 }

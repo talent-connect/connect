@@ -170,6 +170,38 @@ const sendTpJobseekerEmailVerificationSuccessfulEmail = ({
   })
 }
 
+const sendTpJobseekerjobseekerProfileApprovedInstructToSubmitJobPreferencesEmail = ({
+  recipient,
+  firstName,
+}) => {
+  const emailParsed = convertTemplateToHtml(
+    null,
+    'jobseeker-profile-approved-instruct-to-submit-job-preferences'
+  )
+  const html = emailParsed.replace(/\${firstName}/g, firstName)
+  return sendMjmlEmailFactory({
+    to: recipient,
+    subject: 'Talent Pool: your profile is approved! ReDI for the next step?',
+    html: html,
+  })
+}
+
+const sendTpJobseekerjobseekerProfileNotApprovedYet = ({
+  recipient,
+  firstName,
+}) => {
+  const emailParsed = convertTemplateToHtml(
+    null,
+    'jobseeker-profile-not-approved-yet'
+  )
+  const html = emailParsed.replace(/\${firstName}/g, firstName)
+  return sendMjmlEmailFactory({
+    to: recipient,
+    subject: 'The approval of your profile is pending',
+    html: html,
+  })
+}
+
 const sendTpCompanyVerificationEmail = ({
   recipient,
   redUserId,
@@ -224,6 +256,8 @@ module.exports = {
   sendTpResetPasswordEmail,
   sendTpJobseekerVerificationEmail,
   sendTpJobseekerEmailVerificationSuccessfulEmail,
+  sendTpJobseekerjobseekerProfileApprovedInstructToSubmitJobPreferencesEmail,
+  sendTpJobseekerjobseekerProfileNotApprovedYet,
   sendTpCompanyVerificationEmail,
   sendTpCompanyEmailVerificationSuccessfulEmail,
 }

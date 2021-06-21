@@ -16,7 +16,7 @@ import {
 import { formMonthsOptions } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
 import moment from 'moment'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Columns, Content, Element } from 'react-bulma-components'
 import ReactMarkdown from 'react-markdown'
@@ -66,6 +66,7 @@ export function EditableProfessionalExperience() {
                 }}
               >
                 <Caption>{item?.title}</Caption>
+                {/* TODO: put this color (and all places it is used) into gloal css */}
                 <span style={{ color: '#979797' }}>
                   {formatDate(item.startDateMonth, item.startDateYear)} -{' '}
                   {item.current
@@ -132,9 +133,13 @@ function ModalForm({
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
 
-  const initialValues: Partial<TpJobseekerProfile> = {
-    experience: profile?.experience ?? [buildBlankExperienceRecord()],
-  }
+  const initialValues: Partial<TpJobseekerProfile> = useMemo(
+    () => ({
+      experience: profile?.experience ?? [buildBlankExperienceRecord()],
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  )
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
     formik.setSubmitting(true)
     mutation.mutate(values, {

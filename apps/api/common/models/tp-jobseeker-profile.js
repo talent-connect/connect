@@ -6,7 +6,11 @@ const { of } = Rx
 const { switchMap, map } = require('rxjs/operators')
 
 const app = require('../../server/server')
-const { sendTpJobseekerVerificationEmail } = require('../../lib/email/tp-email')
+const {
+  sendTpJobseekerVerificationEmail,
+  sendTpJobseekerjobseekerProfileApprovedInstructToSubmitJobPreferencesEmail,
+  sendTpJobseekerjobseekerProfileNotApprovedYet,
+} = require('../../lib/email/tp-email')
 
 const addFullNamePropertyForAdminSearch = (ctx) => {
   let thingToUpdate
@@ -131,6 +135,7 @@ module.exports = function (TpJobseekerProfile) {
       throw new Error('Invalid acceptDecline parameter')
     }
     const { tpJobseekerProfileId } = data
+    console.log(data)
     const jobseekerRole = await app.models.Role.findOne({
       where: { name: 'jobseeker' },
     })
@@ -154,8 +159,8 @@ module.exports = function (TpJobseekerProfile) {
           tpJobseekerProfileInst,
           'updateAttributes'
         )(
-          currentUserTypeToPostReviewUpdates[acceptDecline][
-            tpJobseekerProfileInst.toJSON().userType
+          currentUserStateToPostReviewUpdates[acceptDecline][
+            tpJobseekerProfileInst.toJSON().state
           ]
         )
     )
@@ -168,12 +173,28 @@ module.exports = function (TpJobseekerProfile) {
       return of(tpJobseekerProfileInst)
     })
 
+    const sendEmailUserReviewedAcceptedOrDenied = switchMap(
+      (tpJobseekerProfileInst) => {
+        const { contactEmail, firstName } = tpJobseekerProfileInst.toJSON()
+        const stateToEmailFuncMap = {
+          ACCEPT: sendTpJobseekerjobseekerProfileApprovedInstructToSubmitJobPreferencesEmail,
+          DECLINE: sendTpJobseekerjobseekerProfileNotApprovedYet,
+        }
+        const emailFunc = stateToEmailFuncMap[acceptDecline]
+        return emailFunc({
+          recipient: contactEmail,
+          firstName,
+        })
+      }
+    )
+
     Rx.of({ tpJobseekerProfileId })
       .pipe(
         findTpJobseekerProfile,
         validateCurrentState,
         setNewTpJobseekerProfileProperties,
-        createRoleMapping
+        createRoleMapping,
+        sendEmailUserReviewedAcceptedOrDenied
       )
       .subscribe(
         (tpJobseekerProfileInst) => {
@@ -228,10 +249,10 @@ const loopbackModelMethodToObservable = (loopbackModel, modelMethod) => (
     methodParameter
   )
 
-const currentUserTypeToPostReviewUpdates = {
+const currentUserStateToPostReviewUpdates = {
   ACCEPT: {
     'submitted-for-review': {
-      state: 'profile-approved',
+      state: 'profile-approved-awaiting-job-preferences',
     },
   },
   DECLINE: {
@@ -240,3 +261,26 @@ const currentUserTypeToPostReviewUpdates = {
     },
   },
 }
+
+const sendEmailUserReviewedAcceptedOrDenied = switchMap(
+  (tpJobseekerProfileInst) => {
+    const userType = tpJobseekerProfileInst.toJSON().userType
+    const userTypeToEmailMap = {
+      mentor: sendMentorPendingReviewAcceptedEmail,
+      mentee: sendMenteePendingReviewAcceptedEmail,
+      'public-sign-up-mentor-rejected': sendPendingReviewDeclinedEmail,
+      'public-sign-up-mentee-rejected': sendPendingReviewDeclinedEmail,
+    }
+    if (!_.has(userTypeToEmailMap, userType)) {
+      throw new Error('User does not have valid user type')
+    }
+    const emailFunc = userTypeToEmailMap[userType]
+    const { contactEmail, firstName, rediLocation } = redProfileInst.toJSON()
+    return emailFunc({
+      recipient: contactEmail,
+      firstName,
+      rediLocation,
+      userType,
+    })
+  }
+)

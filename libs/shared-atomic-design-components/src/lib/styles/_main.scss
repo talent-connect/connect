@@ -64,6 +64,10 @@ a:hover {
   text-decoration: underline;
 }
 
+.color-secondary {
+  color: $redi-blue-dark;
+}
+
 .field:not(:last-child) {
   margin-bottom: 1em;
 }

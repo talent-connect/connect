@@ -44,13 +44,20 @@ export type TpJobseekerProfile = {
   updatedAt: Date
   gaveGdprConsentAt: Date
 
-  hrSummit2021JobFairCompanyJobPreferences?: string
+  hrSummit2021JobFairCompanyJobPreferences?: HrSummit2021JobFairCompanyJobPreferenceRecord[]
 }
 
 export interface LanguageRecord {
   uuid: string
   language?: Language
   proficiencyLevelId?: string
+}
+
+export interface HrSummit2021JobFairCompanyJobPreferenceRecord {
+  uuid: string
+  jobPosition?: string
+  jobId?: string
+  companyName?: string
 }
 
 export interface ExperienceRecord {

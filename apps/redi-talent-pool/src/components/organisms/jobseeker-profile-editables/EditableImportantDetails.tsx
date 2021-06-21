@@ -19,7 +19,7 @@ import {
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
 import moment from 'moment'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Columns, Content, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
@@ -174,17 +174,21 @@ function ModalForm({
 }) {
   const { data: profile } = useTpJobseekerProfileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
-  const initialValues: Partial<TpJobseekerProfile> = {
-    availability: profile?.availability ?? '',
-    desiredEmploymentType: profile?.desiredEmploymentType ?? [],
-    contactEmail: profile?.contactEmail ?? '',
-    phoneNumber: profile?.phoneNumber ?? '',
-    postalMailingAddress: profile?.postalMailingAddress ?? '',
-    ifAvailabilityIsDate_date: profile?.ifAvailabilityIsDate_date
-      ? new Date(profile.ifAvailabilityIsDate_date)
-      : null,
-    immigrationStatus: profile?.immigrationStatus ?? '',
-  }
+  const initialValues: Partial<TpJobseekerProfile> = useMemo(
+    () => ({
+      availability: profile?.availability ?? '',
+      desiredEmploymentType: profile?.desiredEmploymentType ?? [],
+      contactEmail: profile?.contactEmail ?? '',
+      phoneNumber: profile?.phoneNumber ?? '',
+      postalMailingAddress: profile?.postalMailingAddress ?? '',
+      ifAvailabilityIsDate_date: profile?.ifAvailabilityIsDate_date
+        ? new Date(profile.ifAvailabilityIsDate_date)
+        : null,
+      immigrationStatus: profile?.immigrationStatus ?? '',
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  )
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
     formik.setSubmitting(true)
     mutation.mutate(values, {
