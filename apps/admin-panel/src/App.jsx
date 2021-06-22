@@ -682,7 +682,7 @@ const RedMatchShow = (props) => (
       />
       <TextField
         source="mentorMessageOnComplete"
-        label="Mentor's reply message to mentee's application (on completing of the mentorship)"
+        label="Mentor's reply to our 'Is there anything you would like us to know about the mentorship match?' question on marking the mentorship as complete"
         helperText="This field contains the message a mentor on completion the mentee's mentorship"
       />
       <BooleanField
@@ -855,7 +855,7 @@ const RedMatchEdit = (props) => (
       />
       <LongTextInput
         source="mentorMessageOnComplete"
-        label="Mentor's reply message to mentee's application (on completing of the mentorship)"
+        label="Mentor's reply to our 'Is there anything you would like us to know about the mentorship match?' question on marking the mentorship as complete"
         helperText="This field contains the message a mentor on completion the mentee's mentorship"
       />
       <TextInput
