@@ -1393,9 +1393,24 @@ const TpJobseekerProfileEdit = (props) => (
           <Datagrid>
             <TextField source="title" />
             <TextField source="company" />
-            <NumberField source="startDateMonth" />
+            <TextField source="description" label="Roles & responsibilities" />
+            <FunctionField
+              label="Start date month"
+              render={(record) =>
+                record?.startDateMonth
+                  ? parseInt(record.startDateMonth) + 1
+                  : null
+              }
+            />
             <NumberField source="startDateYear" />
-            <NumberField source="endDateMonth" />
+            <FunctionField
+              label="End date month"
+              render={(record) =>
+                record?.startDateMonth
+                  ? parseInt(record.endDateMonth) + 1
+                  : null
+              }
+            />
             <NumberField source="endDateYear" />
             <BooleanField source="current" />
           </Datagrid>
@@ -1405,9 +1420,24 @@ const TpJobseekerProfileEdit = (props) => (
             <TextField source="title" />
             <TextField source="institutionName" />
             <TextField source="certificationType" />
-            <NumberField source="startDateMonth" />
+            <TextField source="description" label="Description" />
+            <FunctionField
+              label="Start date month"
+              render={(record) =>
+                record?.startDateMonth
+                  ? parseInt(record.startDateMonth) + 1
+                  : null
+              }
+            />
             <NumberField source="startDateYear" />
-            <NumberField source="endDateMonth" />
+            <FunctionField
+              label="End date month"
+              render={(record) =>
+                record?.startDateMonth
+                  ? parseInt(record.endDateMonth) + 1
+                  : null
+              }
+            />
             <NumberField source="endDateYear" />
             <BooleanField source="current" />
           </Datagrid>
