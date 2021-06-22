@@ -1402,10 +1402,7 @@ const TpJobseekerProfileEdit = (props) => (
         />
       </FormTab>
       <FormTab label="Internal comments">
-        <TextField
-          source="administratorInternalComment"
-          style={{ whiteSpace: 'pre-wrap' }}
-        />
+        <LongTextInput source="administratorInternalComment" />
       </FormTab>
     </TabbedForm>
   </Edit>
@@ -1487,6 +1484,51 @@ const TpCompanyProfileShow = (props) => (
   </Show>
 )
 
+const TpCompanyProfileEdit = (props) => (
+  <Edit {...props}>
+    <TabbedForm>
+      <FormTab label="Profile">
+        <Avatar />
+        <TextInput source="companyName" />
+        <TextInput source="firstName" />
+        <TextInput source="lastName" />
+        <TextInput source="contactEmail" />
+        <TextInput source="location" />
+        <TextInput source="tagline" />
+        <TextInput source="industry" />
+        <TextInput source="website" />
+        <TextInput source="linkedInUrl" />
+        <TextInput source="phoneNumber" />
+        <TextInput source="about" />
+
+        <ArrayField source="jobListings" fieldKey="uuid">
+          <Datagrid>
+            <TextField source="title" />
+            <TextField source="location" />
+            <TextField source="summary" />
+            <TextField source="proficiencyLevelId" />
+            <FunctionField
+              label="idealTechnicalSkills"
+              render={(record) => record.idealTechnicalSkills.join(', ')}
+            />
+            <FunctionField
+              label="relatesToPositions"
+              render={(record) => record.relatesToPositions.join(', ')}
+            />
+            <TextField source="employmentType" />
+            <TextField source="languageRequirements" />
+            <TextField source="desiredExperience" />
+            <TextField source="salaryRange" />
+          </Datagrid>
+        </ArrayField>
+      </FormTab>
+      <FormTab label="Internal comments">
+        <LongTextInput source="administratorInternalComment" />
+      </FormTab>
+    </TabbedForm>
+  </Edit>
+)
+
 const buildDataProvider = (normalDataProvider) => (verb, resource, params) => {
   if (verb === 'GET_LIST' && resource === 'redProfiles') {
     if (params.filter) {
@@ -1566,6 +1608,7 @@ function App() {
           name="tpCompanyProfiles"
           show={TpCompanyProfileShow}
           list={TpCompanyProfileList}
+          edit={TpCompanyProfileEdit}
         />
       </Admin>
     </div>
