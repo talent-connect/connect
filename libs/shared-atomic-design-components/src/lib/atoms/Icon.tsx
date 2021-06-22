@@ -31,7 +31,7 @@ import { ReactComponent as MapPin } from '../../assets/images/map-pin.svg'
 
 import './Icon.scss'
 
-interface IconProps {
+export interface IconProps {
   icon:
     | 'arrowLeft'
     | 'arrowRight'

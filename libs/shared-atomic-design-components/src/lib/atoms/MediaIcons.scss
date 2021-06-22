@@ -4,13 +4,21 @@
 .media-icons {
   &__list {
     display: flex;
+    gap: 32px;
 
-    @include desktop() {
-      justify-content: space-between;
+    @include mobile() {
+      gap: 16px;
     }
 
     @include tablet() {
+      justify-content: flex-start;
       flex-wrap: wrap;
+    }
+  }
+
+  &__name {
+    @include desktop() {
+      margin-left: auto;
     }
   }
 

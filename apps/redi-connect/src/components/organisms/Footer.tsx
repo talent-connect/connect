@@ -97,7 +97,7 @@ const RediFooter = () => {
                 ))}
               </Element>
             </Columns.Column>
-            <Columns.Column tablet={{ size: 2 }}>
+            <Columns.Column desktop={{ size: 3 }} tablet={{ size: 6 }}>
               <Element
                 renderAs="h3"
                 textSize={6}

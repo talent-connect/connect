@@ -26,7 +26,7 @@ You can open these in your browser:
 - ReDI Connect Location Picker: http://localhost:3002
 - API/backend: http://localhost:3003, Swagger: http://localhost:3003/explorer
 
-Set environment variable `DEV_MODE_EMAIL_RECIPIENT=your-own-email-address@gmail.com` and it'll override the default recipient and send to that instead.
+Set environment variable `DEV_MODE_EMAIL_RECIPIENT=your-own-email-address@gmail.com` and it'll override the default recipient and send to that instead (e.g. `DEV_MODE_EMAIL_RECIPIENT=your-own-email-address@gmail.com yarn start:all`).
 
 All features will run correctly locally with two exceptions:
 

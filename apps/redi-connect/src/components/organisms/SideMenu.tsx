@@ -25,8 +25,10 @@ const MenuItem = ({ url, children }: MenuItemProps) => (
 
 const SideMenu = () => {
   const profile = getRedProfileFromLocalStorage()
-  const isActivatedMentor = profile.userType === 'mentor'
-  const isActivatedMentee = profile.userType === 'mentee'
+  const isActivatedMentor =
+    profile.userType === 'mentor' && profile.userActivated
+  const isActivatedMentee =
+    profile.userType === 'mentee' && profile.userActivated
   const isMentee =
     isActivatedMentee ||
     profile.userType === 'public-sign-up-mentee-pending-review'

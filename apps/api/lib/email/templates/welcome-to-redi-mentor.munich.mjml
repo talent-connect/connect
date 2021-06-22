@@ -35,7 +35,6 @@
             css-class="button-mobile"
             href="${homePageUrl}"
           />
-
           <mj-text mj-class="text" padding="20px 0 0"
             >In the meantime, please join our group for mentors on
             <a href="https://www.linkedin.com/groups/8733859/">LinkedIn</a> and our

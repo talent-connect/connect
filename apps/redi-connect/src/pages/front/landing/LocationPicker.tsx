@@ -15,7 +15,6 @@ import {
   Button,
   SVGImage,
 } from '@talent-connect/shared-atomic-design-components'
-import { Footer, RediHero } from '../../../components/organisms'
 import { ReactComponent as RediLogo } from '../../../assets/images/logo.svg'
 import { ReactComponent as Deloitte } from '../../../assets/images/deloitte.svg'
 
@@ -77,18 +76,4 @@ export default function LocationPicker() {
       </Section>
     </>
   )
-}
-
-{
-  /* <Landing>
-<Hero />
-<NavTiles />
-<RediProgram />
-<Carousel
-  border="orange"
-  headline={t('loggedOutArea.homePage.carousel.headlineAbout')}
-  title={t('loggedOutArea.homePage.carousel.titleAbout')}
-/>
-<PreFooter />
-</Landing> */
 }

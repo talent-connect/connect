@@ -5,17 +5,35 @@
       <mj-section />
       <mj-section css-class="section">
         <mj-column>
-          <mj-text mj-class="headline">Verification has been successful!</mj-text>
+          <mj-text mj-class="headline"
+            >Verification has been successful!</mj-text
+          >
           <mj-divider mj-class="divider-top" css-class="divider" />
           <mj-text mj-class="text">Hello ${firstName},</mj-text>
           <mj-text mj-class="text text-padding"
             >your email address was successfully verified.</mj-text
           >
           <mj-text mj-class="text"
-            >Now, we would like to get to know you a little better. Please schedule a time for a
-            meeting with me here:
-            <a href="https://calendly.com/paulina-redi/getting-to-know-you">Getting-to-know-you</a>
+            >Now, we would like to get to know you a little better. Please
+            schedule a time for a meeting with me here.
           </mj-text>
+          <mj-image
+            src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/schedule-meeting-large.png"
+            align="left"
+            padding="30px 0"
+            target="_blank"
+            width="358px"
+            css-class="button-desktop"
+            href="https://calendly.com/paulina-redi/getting-to-know-you"
+          />
+          <mj-image
+            src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/schedule-meeting-small.png"
+            align="left"
+            padding="30px 0"
+            target="_blank"
+            css-class="button-mobile"
+            href="https://calendly.com/paulina-redi/getting-to-know-you"
+          />
           <mj-text mj-class="text" padding="20px 0 30px 0"
             >I am excited to get to know you soon!</mj-text
           >
