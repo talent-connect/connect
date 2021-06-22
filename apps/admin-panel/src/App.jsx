@@ -1240,12 +1240,12 @@ const TpJobseekerProfileShow = (props) => (
           <TextField source="behanceUrl" />
           <TextField source="stackOverflowUrl" />
           <TextField source="dribbbleUrl" />
-          {/* <ArrayField source="workingLanguages" fieldKey="uuid">
+          <ArrayField source="workingLanguages" fieldKey="uuid">
             <Datagrid>
               <TextField source="language" />
               <TextField source="proficiencyLevelId" />
             </Datagrid>
-          </ArrayField> */}
+          </ArrayField>
           <TextField source="yearsOfRelevantExperience" />
           {/* <ArrayField source="desiredEmploymentType" /> */}
           <TextField source="availability" />
@@ -1255,29 +1255,62 @@ const TpJobseekerProfileShow = (props) => (
             label="Top Skills"
             render={(record) => record?.topSkills?.join(', ')}
           />
-          {/* <ArrayField source="experience" fieldKey="uuid">
+          <ArrayField source="experience" fieldKey="uuid">
             <Datagrid>
               <TextField source="title" />
               <TextField source="company" />
-              <NumberField source="startDateMonth" />
+              <TextField
+                source="description"
+                label="Roles & responsibilities"
+              />
+              <FunctionField
+                label="Start date month"
+                render={(record) =>
+                  record?.startDateMonth
+                    ? parseInt(record.startDateMonth) + 1
+                    : null
+                }
+              />
               <NumberField source="startDateYear" />
-              <NumberField source="endDateMonth" />
+              <FunctionField
+                label="End date month"
+                render={(record) =>
+                  record?.startDateMonth
+                    ? parseInt(record.endDateMonth) + 1
+                    : null
+                }
+              />
               <NumberField source="endDateYear" />
               <BooleanField source="current" />
             </Datagrid>
-          </ArrayField> */}
-          {/* <ArrayField source="education" fieldKey="uuid">
+          </ArrayField>
+          <ArrayField source="education" fieldKey="uuid">
             <Datagrid>
               <TextField source="title" />
               <TextField source="institutionName" />
               <TextField source="certificationType" />
-              <NumberField source="startDateMonth" />
+              <TextField source="description" label="Description" />
+              <FunctionField
+                label="Start date month"
+                render={(record) =>
+                  record?.startDateMonth
+                    ? parseInt(record.startDateMonth) + 1
+                    : null
+                }
+              />
               <NumberField source="startDateYear" />
-              <NumberField source="endDateMonth" />
+              <FunctionField
+                label="End date month"
+                render={(record) =>
+                  record?.startDateMonth
+                    ? parseInt(record.endDateMonth) + 1
+                    : null
+                }
+              />
               <NumberField source="endDateYear" />
               <BooleanField source="current" />
             </Datagrid>
-          </ArrayField> */}
+          </ArrayField>
           {/* <ArrayField source="projects" /> */}
           <ArrayField
             source="hrSummit2021JobFairCompanyJobPreferences"
