@@ -1,9 +1,12 @@
 ---
 name: Build UI/UX
-about: Plan some UI/UX that needs to get built. The output of this task will likely make it into a User story later on, as UI/UX design assets that one our developers will use to implement the story
-title: '[Name of epic:] A brief title'
-labels: 'Build UI/UX'
+about: Plan some UI/UX that needs to get built. The output of this task will likely
+  make it into a User story later on, as UI/UX design assets that one our developers
+  will use to implement the story
+title: "[Name of epic:] A brief title"
+labels: Build UI/UX
 assignees: ''
+
 ---
 
 ## User story

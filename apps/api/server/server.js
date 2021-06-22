@@ -30,6 +30,43 @@ app.get('/yalla', async (req, res) => {
   res.send('hello')
 })
 
+app.get(
+  '/secret-endpoint-that-will-be-contacted-by-autocode-to-trigger-emails-to-all-mentees-who-have-not-yet-applied',
+  async (req, res) => {
+    // 1. Get all mentees (load RedProfiles where .userActivated = true, userType = 'mentee', createdAt is exactly one week ago)
+    // .createdAt > (today's date - 7 days = 15.06.2021 00:00)
+    //  && .createdAt < (today's date - 6 days = 16.06.2021 00:00)
+    // include mentors
+    /**
+     * 
+     * redProfiles = [
+     *  profile1,
+     *  profile2
+     *  profile3,
+     *  {
+     *    <will contain all the properies of a RedProfile>,
+     *    mentors: []
+     *  }
+     * 
+     * ]
+     * 
+     * redProfiles.filter(profile => profile.redMatches.length === 0)
+     * 
+     * /
+
+    // 15.06.2021 06:00
+    // 15.06.2021 12:00
+    // 15.06.2021 18:00
+
+    // 15.06.2021 11:13
+
+    // .createdAt > (today's date - 7 days = 15.06.2021 00:00)
+    //  && .createdAt < (today's date - 6 days = 16.06.2021 00:00)
+*/
+    res.send('hello')
+  }
+)
+
 // Inject current user into context
 app
   .remotes()
