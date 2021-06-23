@@ -62,6 +62,9 @@
         "__create__tpJobseekerCv",
         "__update__tpJobseekerCv",
         "__get__tpJobseekerCv",
+        "__findById__tpJobseekerCv",
+        "__updateById__tpJobseekerCv",
+        "__delete__tpJobseekerCv",
         "__create__tpCompanyProfile",
         "__update__tpCompanyProfile",
         "__get__tpCompanyProfile"
