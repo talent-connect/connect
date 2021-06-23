@@ -19,6 +19,10 @@ export const desiredPositions: DropdownOptions = [
     label: 'Backend Developer',
   },
   {
+    id: 'blockchainDeveloper',
+    label: 'Blockchain Developer',
+  },
+  {
     id: 'businessAnalyst',
     label: 'Business Analyst',
   },
@@ -37,6 +41,10 @@ export const desiredPositions: DropdownOptions = [
     label: 'DevOps Specialist',
   },
   {
+    id: 'digitalMarketer',
+    label: 'Digital Marketer',
+  },
+  {
     id: 'frontendDeveloper',
     label: 'Frontend Developer',
   },
@@ -53,9 +61,15 @@ export const desiredPositions: DropdownOptions = [
   },
   { id: 'linuxSystemAdministrator', label: 'Linux System Administrator' },
   { id: 'marketingAssistant', label: 'Marketing Assistant' },
+  { id: 'mobileDeveloperAndroid', label: 'Mobile Developer (Android)' },
+  { id: 'mobileDeveloperIos', label: 'Mobile Developer (iOS)' },
   {
     id: 'nodeJsDeveloper',
     label: 'Node.js Developer',
+  },
+  {
+    id: 'operationsManager',
+    label: 'Operations Manager',
   },
   {
     id: 'productDesigner',
@@ -92,6 +106,18 @@ export const desiredPositions: DropdownOptions = [
   {
     id: 'salesforceAdministrator',
     label: 'Salesforce Administrator',
+  },
+  {
+    id: 'salesManager',
+    label: 'Sales Manager',
+  },
+  {
+    id: 'securityAdministrator',
+    label: 'Security Administrator',
+  },
+  {
+    id: 'SEO Manager',
+    label: 'SEO Manager',
   },
   {
     id: 'systemEngineer',
@@ -597,6 +623,8 @@ export const desiredEmploymentTypeOptions = [
   { id: 'fullTime', label: 'Full-time employment' },
   { id: 'werkstudium', label: 'Werkstudent*in (working student position)' },
   { id: 'Internship', label: 'Internship' },
+  { id: 'apprenticeshipAusbildung', label: 'Apprenticeship (Ausbildung)' },
+  { id: 'traineeship', label: 'Traineeship' },
 ]
 
 export const desiredEmploymentTypeOptionsIdToLabelMap = mapValues(
@@ -681,10 +709,11 @@ export const employmentTypes: DropdownOptions = [
   { id: 'fullTimeEmployment', label: 'Full-time employment' },
   { id: 'werkstudium', label: 'Werkstudent*in (working student position)' },
   { id: 'internship', label: 'Internship' },
-  { id: 'apprenticeship', label: 'Apprenticeship' },
+  { id: 'apprenticeship', label: 'Apprenticeship (Ausbildung)' },
   { id: 'selfEmployed', label: 'Self-employed' },
   { id: 'freelance', label: 'Freelance' },
   { id: 'contract', label: 'Contract' },
+  { id: 'traineeship', label: 'Traineeship' },
 ]
 
 export const employmentTypesIdToLabelMap = mapValues(
