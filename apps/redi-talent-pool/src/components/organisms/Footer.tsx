@@ -40,11 +40,12 @@ const RediFooter = () => {
                 href="https://www.microsoft.de"
                 target="_blank"
                 className="footer__logo oneandhalf-bs"
+                style={{ marginTop: 0 }}
               >
                 <img
                   src={MicrosoftLogo}
                   alt="In collaboration with Microsoft"
-                  style={{ maxWidth: '8rem' }}
+                  style={{ maxWidth: '6rem' }}
                 />
               </Element>
             </Columns.Column>
