@@ -1130,6 +1130,7 @@ const TpJobseekerProfileList = (props) => {
     <>
       <List
         {...props}
+        exporter={tpJobseekerProfileListExporter}
         filters={<TpJobseekerProfileListFilters />}
         pagination={<AllModelsPagination />}
       >
@@ -1200,17 +1201,64 @@ const TpJobseekerProfileListFilters = (props) => (
     />
   </Filter>
 )
-function tpProfileStateToEmoji({ state }) {
-  const emoji = {
-    'drafting-profile': 'Drafing profile',
-    'submitted-for-reviw': 'Submitted for review',
-    'profile-approved': 'Profile approved',
-  }[state]
-  return emoji ?? userType
-}
 
-function Data(data) {
-  return data
+function tpJobseekerProfileListExporter(profiles, fetchRelatedRecords) {
+  // const mentors = await fetchRelatedRecords(
+  //   mentoringSessions,
+  //   'mentorId',
+  //   'redProfiles'
+  // )
+  // const mentees = await fetchRelatedRecords(
+  //   mentoringSessions,
+  //   'menteeId',
+  //   'redProfiles'
+  // )
+  // const data = mentoringSessions.map((x) => {
+  //   const mentor = mentors[x.mentorId]
+  //   const mentee = mentees[x.menteeId]
+  //   if (mentor) {
+  //     x.mentorName = `${mentor.firstName} ${mentor.lastName}`
+  //   }
+  //   if (mentee) {
+  //     x.menteeName = `${mentee.firstName} ${mentee.lastName}`
+  //   }
+  //   return x
+  // })
+  console.log(profiles)
+
+  const data = profiles.map((profile) => {
+    let { hrSummit2021JobFairCompanyJobPreferences } = profile
+    hrSummit2021JobFairCompanyJobPreferences = hrSummit2021JobFairCompanyJobPreferences?.map(
+      ({ jobPosition, jobId, companyName }) => {
+        return `${jobPosition}${jobId ? ` (${jobId})` : ''} --- ${companyName}`
+      }
+    )
+    delete profile.hrSummit2021JobFairCompanyJobPreferences
+
+    return {
+      ...profile,
+      jobPreference1: hrSummit2021JobFairCompanyJobPreferences?.[0],
+      jobPreference2: hrSummit2021JobFairCompanyJobPreferences?.[1],
+      jobPreference3: hrSummit2021JobFairCompanyJobPreferences?.[2],
+      jobPreference4: hrSummit2021JobFairCompanyJobPreferences?.[3],
+    }
+  })
+
+  const csv = convertToCSV(
+    data
+    // {
+    //   fields: [
+    //     'id',
+    //     'firstName',
+    //     'lastName',
+    //     'contactEmail',
+    //     'hrSummit2021JobFairCompanyJobPreferences',
+    //     'createdAt',
+    //     'updatedAt',
+    //   ],
+    //   }
+  )
+  downloadCSV(csv, 'yalla')
 }
 
 const TpJobseekerProfileShow = (props) => (
