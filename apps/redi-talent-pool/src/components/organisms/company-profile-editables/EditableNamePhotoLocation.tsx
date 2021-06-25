@@ -145,9 +145,9 @@ function ModalForm({
         className="oneandhalf-bs"
       >
         Applying for jobs can be a challenging process –– our platform is
-        focused on bring companies and talent together. Telling candidates a bit
-        about yourself puts a friendly face on the other side of the table and
-        encourages candidates to put their best foot forward.
+        focused on bringing companies and talent together. Telling candidates a
+        bit about yourself puts a friendly face on the other side of the table
+        and encourages candidates to put their best foot forward.
       </Element>
       <FormInput
         name="companyName"
