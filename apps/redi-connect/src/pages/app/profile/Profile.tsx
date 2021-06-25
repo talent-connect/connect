@@ -88,7 +88,9 @@ function Profile({
     profile &&
     profile.userType === 'mentee' &&
     profile.redMatchesWithCurrentUser &&
-    profile.redMatchesWithCurrentUser[0]
+    profile.redMatchesWithCurrentUser[
+      profile.redMatchesWithCurrentUser.length - 1
+    ]
 
   return (
     <LoggedIn>
