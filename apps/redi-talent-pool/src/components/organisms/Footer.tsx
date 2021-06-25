@@ -37,7 +37,7 @@ const RediFooter = () => {
               <Element renderAs="small">In collaboration with</Element>
               <Element
                 renderAs="a"
-                href="https://www.microsoft.de"
+                href="https://www.microsoft.com/de-de/berlin/corporate-digital-responsibility.aspx?id=tab01"
                 target="_blank"
                 className="footer__logo oneandhalf-bs"
                 style={{ marginTop: 0 }}
