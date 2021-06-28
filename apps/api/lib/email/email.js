@@ -332,6 +332,25 @@ const sendMentoringSessionLoggedEmail = ({
   })
 }
 
+const sendMenteeReminderToApplyToMentorEmail = ({
+  recipient,
+  menteeFirstName,
+}) => {
+  const sendMenteeReminderToApplyToMentorEmailParsed = convertTemplateToHtml(
+    null,
+    'apply-to-mentor-reminder-for-mentee'
+  )
+  const html = sendMenteeReminderToApplyToMentorEmailParsed.replace(
+    /\${menteeFirstName}/g,
+    menteeFirstName
+  )
+  return sendMjmlEmailFactory({
+    to: recipient,
+    subject: 'Have you checked out or amazing mentors yet?',
+    html: html,
+  })
+}
+
 const sendMentorCancelledMentorshipNotificationEmail = ({
   recipient,
   firstName,
@@ -479,6 +498,7 @@ module.exports = {
   sendMentorCancelledMentorshipNotificationEmail,
   sendMentorshipRequestReceivedEmail,
   sendMentorshipAcceptedEmail,
+  sendMenteeReminderToApplyToMentorEmail,
   sendMentoringSessionLoggedEmail,
   sendToMentorConfirmationOfMentorshipCancelled,
   sendMentorPendingReviewAcceptedEmail,

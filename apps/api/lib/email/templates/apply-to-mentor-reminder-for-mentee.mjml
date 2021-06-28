@@ -8,7 +8,7 @@
           <mj-text mj-class="headline">Mentorship application reminder</mj-text>
           <mj-divider mj-class="divider-top" css-class="divider" />
           <mj-text mj-class="text">Dear ${menteeFirstName},</mj-text>
-          <mj-text mj-class="text"
+          <mj-text mj-class="text" padding="20px 0 0"
             >You are receiving this email because you had your onboarding
             session one week ago, but you have not yet applied to any
             mentor.</mj-text

@@ -11,6 +11,12 @@ var http = require('http')
 var https = require('https')
 var sslConfig = require('./ssl-config')
 
+const Rx = require('rxjs')
+const { bindNodeCallback, from } = Rx
+const { delay, switchMap, tap, map, filter, count } = require('rxjs/operators')
+
+const { sendMenteeReminderToApplyToMentorEmail } = require('../lib/email/email')
+
 var app = (module.exports = loopback())
 
 app.start = function () {
@@ -26,44 +32,51 @@ app.start = function () {
   })
 }
 
-app.get('/yalla', async (req, res) => {
-  res.send('hello')
-})
-
 app.get(
   '/secret-endpoint-that-will-be-contacted-by-autocode-to-trigger-emails-to-all-mentees-who-have-not-yet-applied',
   async (req, res) => {
-    // 1. Get all mentees (load RedProfiles where .userActivated = true, userType = 'mentee', createdAt is exactly one week ago)
-    // .createdAt > (today's date - 7 days = 15.06.2021 00:00)
-    //  && .createdAt < (today's date - 6 days = 16.06.2021 00:00)
-    // include mentors
-    /**
-     * 
-     * redProfiles = [
-     *  profile1,
-     *  profile2
-     *  profile3,
-     *  {
-     *    <will contain all the properies of a RedProfile>,
-     *    mentors: []
-     *  }
-     * 
-     * ]
-     * 
-     * redProfiles.filter(profile => profile.redMatches.length === 0)
-     * 
-     * /
+    const referenceDate = new Date()
+    referenceDate.setHours(2, 0, 0, 0)
+    const minDate = referenceDate.setDate(referenceDate.getDate() - 7)
+    const maxDate = referenceDate.setDate(referenceDate.getDate() + 1)
 
-    // 15.06.2021 06:00
-    // 15.06.2021 12:00
-    // 15.06.2021 18:00
+    const { RedProfile } = app.models
 
-    // 15.06.2021 11:13
+    RedProfile.find(
+      {
+        include: 'mentors',
+        where: {
+          userType: 'mentee',
+          userActivated: true,
+        },
+      },
+      (err, res) => {
+        try {
+          res.map((user) => {
+            const getMentors = user.mentors()
+            const createdAtGreaterThanMinDate =
+              Date.parse(user.createdAt) > minDate
+            const createdAtLessThanMaxDate =
+              Date.parse(user.createdAt) < maxDate
 
-    // .createdAt > (today's date - 7 days = 15.06.2021 00:00)
-    //  && .createdAt < (today's date - 6 days = 16.06.2021 00:00)
-*/
-    res.send('hello')
+            if (
+              getMentors.length === 0 &&
+              user.firstName === 'marcuszierke@gmail.com'
+              createdAtGreaterThanMinDate &&
+              createdAtLessThanMaxDate
+            ) {
+              sendMenteeReminderToApplyToMentorEmail({
+                recipient: user.contactEmail,
+                menteeFirstName: user.firstName,
+              })
+            }
+          })
+        } catch (err) {
+          console.log(`an error occurred: `, err)
+        }
+      }
+    )
+    res.send('done')
   }
 )
 
