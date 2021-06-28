@@ -7,9 +7,9 @@ import { ReactComponent as HelloMobile } from '../../assets/images/hello-mobile.
 import { ReactComponent as Mentee } from '../../assets/images/mentee.svg'
 import { ReactComponent as Mentor } from '../../assets/images/mentor.svg'
 
+export type SVGTypes = 'heroMentee' | 'heroMentor'
+
 export type SVGImages =
-  | 'heroMentee'
-  | 'heroMentor'
   | 'mentee'
   | 'mentor'
   | 'jobseeker'
@@ -19,7 +19,7 @@ export type SVGImages =
   | 'helloMobile'
 
 interface Props {
-  image: SVGImages
+  image: SVGImages | SVGTypes
   className?: string
 }
 

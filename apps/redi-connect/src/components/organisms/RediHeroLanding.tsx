@@ -10,10 +10,24 @@ import {
 } from 'react-bulma-components'
 import { useTranslation } from 'react-i18next'
 import './RediHeroLanding.scss'
-import { Icon, SVGImage } from '@talent-connect/shared-atomic-design-components'
+import {
+  Icon,
+  SVGImage,
+  SVGTypes,
+} from '@talent-connect/shared-atomic-design-components'
 
 interface Props {
   type: 'mentor' | 'mentee'
+}
+
+interface imageType {
+  mentor: SVGTypes
+  mentee: SVGTypes
+}
+
+const typeToSvgImageMap: imageType = {
+  mentor: 'heroMentor',
+  mentee: 'heroMentee',
 }
 
 const RediHeroLanding = ({ type }: Props) => {
@@ -46,7 +60,7 @@ const RediHeroLanding = ({ type }: Props) => {
           }}
         >
           <SVGImage
-            image={`hero${type.charAt(0).toUpperCase() + type.slice(1)}`}
+            image={typeToSvgImageMap[type]}
             className={classnames('hero-landing__illustration', {
               [`hero-landing__illustration--${type}`]: type,
             })}
