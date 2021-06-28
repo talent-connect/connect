@@ -1130,6 +1130,7 @@ const TpJobseekerProfileList = (props) => {
     <>
       <List
         {...props}
+        exporter={tpJobseekerProfileListExporter}
         filters={<TpJobseekerProfileListFilters />}
         pagination={<AllModelsPagination />}
       >
@@ -1200,17 +1201,64 @@ const TpJobseekerProfileListFilters = (props) => (
     />
   </Filter>
 )
-function tpProfileStateToEmoji({ state }) {
-  const emoji = {
-    'drafting-profile': 'Drafing profile',
-    'submitted-for-reviw': 'Submitted for review',
-    'profile-approved': 'Profile approved',
-  }[state]
-  return emoji ?? userType
-}
 
-function Data(data) {
-  return data
+function tpJobseekerProfileListExporter(profiles, fetchRelatedRecords) {
+  // const mentors = await fetchRelatedRecords(
+  //   mentoringSessions,
+  //   'mentorId',
+  //   'redProfiles'
+  // )
+  // const mentees = await fetchRelatedRecords(
+  //   mentoringSessions,
+  //   'menteeId',
+  //   'redProfiles'
+  // )
+  // const data = mentoringSessions.map((x) => {
+  //   const mentor = mentors[x.mentorId]
+  //   const mentee = mentees[x.menteeId]
+  //   if (mentor) {
+  //     x.mentorName = `${mentor.firstName} ${mentor.lastName}`
+  //   }
+  //   if (mentee) {
+  //     x.menteeName = `${mentee.firstName} ${mentee.lastName}`
+  //   }
+  //   return x
+  // })
+  console.log(profiles)
+
+  const data = profiles.map((profile) => {
+    let { hrSummit2021JobFairCompanyJobPreferences } = profile
+    hrSummit2021JobFairCompanyJobPreferences = hrSummit2021JobFairCompanyJobPreferences?.map(
+      ({ jobPosition, jobId, companyName }) => {
+        return `${jobPosition}${jobId ? ` (${jobId})` : ''} --- ${companyName}`
+      }
+    )
+    delete profile.hrSummit2021JobFairCompanyJobPreferences
+
+    return {
+      ...profile,
+      jobPreference1: hrSummit2021JobFairCompanyJobPreferences?.[0],
+      jobPreference2: hrSummit2021JobFairCompanyJobPreferences?.[1],
+      jobPreference3: hrSummit2021JobFairCompanyJobPreferences?.[2],
+      jobPreference4: hrSummit2021JobFairCompanyJobPreferences?.[3],
+    }
+  })
+
+  const csv = convertToCSV(
+    data
+    // {
+    //   fields: [
+    //     'id',
+    //     'firstName',
+    //     'lastName',
+    //     'contactEmail',
+    //     'hrSummit2021JobFairCompanyJobPreferences',
+    //     'createdAt',
+    //     'updatedAt',
+    //   ],
+    //   }
+  )
+  downloadCSV(csv, 'yalla')
 }
 
 const TpJobseekerProfileShow = (props) => (
@@ -1240,12 +1288,12 @@ const TpJobseekerProfileShow = (props) => (
           <TextField source="behanceUrl" />
           <TextField source="stackOverflowUrl" />
           <TextField source="dribbbleUrl" />
-          {/* <ArrayField source="workingLanguages" fieldKey="uuid">
+          <ArrayField source="workingLanguages" fieldKey="uuid">
             <Datagrid>
               <TextField source="language" />
               <TextField source="proficiencyLevelId" />
             </Datagrid>
-          </ArrayField> */}
+          </ArrayField>
           <TextField source="yearsOfRelevantExperience" />
           {/* <ArrayField source="desiredEmploymentType" /> */}
           <TextField source="availability" />
@@ -1255,29 +1303,62 @@ const TpJobseekerProfileShow = (props) => (
             label="Top Skills"
             render={(record) => record?.topSkills?.join(', ')}
           />
-          {/* <ArrayField source="experience" fieldKey="uuid">
+          <ArrayField source="experience" fieldKey="uuid">
             <Datagrid>
               <TextField source="title" />
               <TextField source="company" />
-              <NumberField source="startDateMonth" />
+              <TextField
+                source="description"
+                label="Roles & responsibilities"
+              />
+              <FunctionField
+                label="Start date month"
+                render={(record) =>
+                  record?.startDateMonth
+                    ? parseInt(record.startDateMonth) + 1
+                    : null
+                }
+              />
               <NumberField source="startDateYear" />
-              <NumberField source="endDateMonth" />
+              <FunctionField
+                label="End date month"
+                render={(record) =>
+                  record?.startDateMonth
+                    ? parseInt(record.endDateMonth) + 1
+                    : null
+                }
+              />
               <NumberField source="endDateYear" />
               <BooleanField source="current" />
             </Datagrid>
-          </ArrayField> */}
-          {/* <ArrayField source="education" fieldKey="uuid">
+          </ArrayField>
+          <ArrayField source="education" fieldKey="uuid">
             <Datagrid>
               <TextField source="title" />
               <TextField source="institutionName" />
               <TextField source="certificationType" />
-              <NumberField source="startDateMonth" />
+              <TextField source="description" label="Description" />
+              <FunctionField
+                label="Start date month"
+                render={(record) =>
+                  record?.startDateMonth
+                    ? parseInt(record.startDateMonth) + 1
+                    : null
+                }
+              />
               <NumberField source="startDateYear" />
-              <NumberField source="endDateMonth" />
+              <FunctionField
+                label="End date month"
+                render={(record) =>
+                  record?.startDateMonth
+                    ? parseInt(record.endDateMonth) + 1
+                    : null
+                }
+              />
               <NumberField source="endDateYear" />
               <BooleanField source="current" />
             </Datagrid>
-          </ArrayField> */}
+          </ArrayField>
           {/* <ArrayField source="projects" /> */}
           <ArrayField
             source="hrSummit2021JobFairCompanyJobPreferences"
@@ -1360,9 +1441,24 @@ const TpJobseekerProfileEdit = (props) => (
           <Datagrid>
             <TextField source="title" />
             <TextField source="company" />
-            <NumberField source="startDateMonth" />
+            <TextField source="description" label="Roles & responsibilities" />
+            <FunctionField
+              label="Start date month"
+              render={(record) =>
+                record?.startDateMonth
+                  ? parseInt(record.startDateMonth) + 1
+                  : null
+              }
+            />
             <NumberField source="startDateYear" />
-            <NumberField source="endDateMonth" />
+            <FunctionField
+              label="End date month"
+              render={(record) =>
+                record?.startDateMonth
+                  ? parseInt(record.endDateMonth) + 1
+                  : null
+              }
+            />
             <NumberField source="endDateYear" />
             <BooleanField source="current" />
           </Datagrid>
@@ -1372,9 +1468,24 @@ const TpJobseekerProfileEdit = (props) => (
             <TextField source="title" />
             <TextField source="institutionName" />
             <TextField source="certificationType" />
-            <NumberField source="startDateMonth" />
+            <TextField source="description" label="Description" />
+            <FunctionField
+              label="Start date month"
+              render={(record) =>
+                record?.startDateMonth
+                  ? parseInt(record.startDateMonth) + 1
+                  : null
+              }
+            />
             <NumberField source="startDateYear" />
-            <NumberField source="endDateMonth" />
+            <FunctionField
+              label="End date month"
+              render={(record) =>
+                record?.startDateMonth
+                  ? parseInt(record.endDateMonth) + 1
+                  : null
+              }
+            />
             <NumberField source="endDateYear" />
             <BooleanField source="current" />
           </Datagrid>
@@ -1402,10 +1513,7 @@ const TpJobseekerProfileEdit = (props) => (
         />
       </FormTab>
       <FormTab label="Internal comments">
-        <TextField
-          source="administratorInternalComment"
-          style={{ whiteSpace: 'pre-wrap' }}
-        />
+        <LongTextInput source="administratorInternalComment" />
       </FormTab>
     </TabbedForm>
   </Edit>
@@ -1487,6 +1595,51 @@ const TpCompanyProfileShow = (props) => (
   </Show>
 )
 
+const TpCompanyProfileEdit = (props) => (
+  <Edit {...props}>
+    <TabbedForm>
+      <FormTab label="Profile">
+        <Avatar />
+        <TextInput source="companyName" />
+        <TextInput source="firstName" />
+        <TextInput source="lastName" />
+        <TextInput source="contactEmail" />
+        <TextInput source="location" />
+        <TextInput source="tagline" />
+        <TextInput source="industry" />
+        <TextInput source="website" />
+        <TextInput source="linkedInUrl" />
+        <TextInput source="phoneNumber" />
+        <TextInput source="about" />
+
+        <ArrayField source="jobListings" fieldKey="uuid">
+          <Datagrid>
+            <TextField source="title" />
+            <TextField source="location" />
+            <TextField source="summary" />
+            <TextField source="proficiencyLevelId" />
+            <FunctionField
+              label="idealTechnicalSkills"
+              render={(record) => record.idealTechnicalSkills.join(', ')}
+            />
+            <FunctionField
+              label="relatesToPositions"
+              render={(record) => record.relatesToPositions.join(', ')}
+            />
+            <TextField source="employmentType" />
+            <TextField source="languageRequirements" />
+            <TextField source="desiredExperience" />
+            <TextField source="salaryRange" />
+          </Datagrid>
+        </ArrayField>
+      </FormTab>
+      <FormTab label="Internal comments">
+        <LongTextInput source="administratorInternalComment" />
+      </FormTab>
+    </TabbedForm>
+  </Edit>
+)
+
 const buildDataProvider = (normalDataProvider) => (verb, resource, params) => {
   if (verb === 'GET_LIST' && resource === 'redProfiles') {
     if (params.filter) {
@@ -1566,6 +1719,7 @@ function App() {
           name="tpCompanyProfiles"
           show={TpCompanyProfileShow}
           list={TpCompanyProfileList}
+          edit={TpCompanyProfileEdit}
         />
       </Admin>
     </div>

@@ -145,7 +145,7 @@ function ModalForm({
         Let ReDI Jobseekers know how to get in touch.
       </Element>
       <FormInput
-        name="contactEmail"
+        name="firstName"
         placeholder="Erika"
         label="First name"
         {...formik}
