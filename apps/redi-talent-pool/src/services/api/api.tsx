@@ -3,6 +3,7 @@ import {
   AccessToken,
   RedUser,
   TpCompanyProfile,
+  TpJobListing,
   TpJobseekerProfile,
 } from '@talent-connect/shared-types'
 import axios from 'axios'
@@ -140,5 +141,55 @@ export async function updateCurrentUserTpCompanyProfile(
     method: 'put',
     data: profile,
   })
+  return resp.data
+}
+
+export async function fetchAllTpJobListings(): Promise<Array<TpJobListing>> {
+  const userId = getAccessTokenFromLocalStorage().userId
+  const resp = await http(`${API_URL}/redUsers/${userId}/tpJobListings`)
+  return resp.data
+}
+
+export async function fetchOneTpJobListing(id: string): Promise<TpJobListing> {
+  const userId = getAccessTokenFromLocalStorage().userId
+  const resp = await http(`${API_URL}/redUsers/${userId}/tpJobListings/${id}`)
+  return resp.data
+}
+
+export async function createCurrentUserTpJobListing(
+  jobListing: Partial<TpJobListing>
+): Promise<Partial<TpJobListing>> {
+  const userId = getAccessTokenFromLocalStorage().userId
+  const resp = await http(`${API_URL}/redUsers/${userId}/tpJobListings`, {
+    method: 'post',
+    data: jobListing,
+  })
+  return resp.data
+}
+
+export async function updateCurrentUserTpJobListing(
+  jobListing: Partial<TpJobListing>
+): Promise<Partial<TpJobListing>> {
+  const userId = getAccessTokenFromLocalStorage().userId
+  const resp = await http(
+    `${API_URL}/redUsers/${userId}/tpJobListings/${jobListing.id}`,
+    {
+      method: 'put',
+      data: jobListing,
+    }
+  )
+  return resp.data
+}
+
+export async function deleteCurrentUserTpJobListing(
+  jobListingId: string
+): Promise<Partial<TpJobListing>> {
+  const userId = getAccessTokenFromLocalStorage().userId
+  const resp = await http(
+    `${API_URL}/redUsers/${userId}/tpJobListings/${jobListingId}`,
+    {
+      method: 'delete',
+    }
+  )
   return resp.data
 }

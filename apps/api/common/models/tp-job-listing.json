@@ -1,18 +1,12 @@
 {
-  "name": "TpCompanyProfile",
-  "plural": "tpCompanyProfiles",
+  "name": "TpJobListing",
+  "plural": "tpJobListings",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
   "properties": {
-    "firstName": {
-      "type": "string"
-    },
-    "lastName": {
-      "type": "string"
-    },
     "createdAt": {
       "type": "date"
     }
@@ -27,9 +21,13 @@
         "nestRemoting": true
       }
     },
-    "tpJobListings": {
-      "type": "hasMany",
-      "model": "TpJobListing"
+    "tpCompanyProfile": {
+      "type": "belongsTo",
+      "model": "TpCompanyProfile",
+      "foreignKey": "",
+      "options": {
+        "nestRemoting": true
+      }
     }
   },
   "acls": [

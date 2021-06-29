@@ -1,35 +1,41 @@
 {
-  "name": "TpCompanyProfile",
-  "plural": "tpCompanyProfiles",
+  "name": "TpJobfair2021InterviewMatch",
+  "plural": "tpJobfair2021InterviewMatches",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
   "properties": {
-    "firstName": {
-      "type": "string"
-    },
-    "lastName": {
-      "type": "string"
-    },
     "createdAt": {
       "type": "date"
     }
   },
   "validations": [],
   "relations": {
-    "redUser": {
+    "interviewee": {
       "type": "belongsTo",
-      "model": "RedUser",
+      "model": "TpJobseekerProfile",
       "foreignKey": "",
       "options": {
         "nestRemoting": true
       }
     },
-    "tpJobListings": {
-      "type": "hasMany",
-      "model": "TpJobListing"
+    "jobListing": {
+      "type": "belongsTo",
+      "model": "TpJobListing",
+      "foreignKey": "",
+      "options": {
+        "nestRemoting": true
+      }
+    },
+    "company": {
+      "type": "belongsTo",
+      "model": "TpCompanyProfile",
+      "foreignKey": "",
+      "options": {
+        "nestRemoting": true
+      }
     }
   },
   "acls": [
@@ -45,27 +51,6 @@
       "principalId": "$authenticated",
       "permission": "ALLOW",
       "property": "find"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "$authenticated",
-      "permission": "ALLOW",
-      "property": "findOne"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "$authenticated",
-      "permission": "ALLOW",
-      "property": "findById"
-    },
-    {
-      "accessType": "WRITE",
-      "principalType": "ROLE",
-      "principalId": "$owner",
-      "permission": "ALLOW",
-      "property": "*"
     },
     {
       "accessType": "*",
