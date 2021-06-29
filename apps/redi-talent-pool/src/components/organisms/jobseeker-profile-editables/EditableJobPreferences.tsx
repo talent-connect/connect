@@ -54,9 +54,10 @@ export function EditableJobPreferences({ triggerModalSignal }: Props) {
         isEmpty ? (
           <EmptySectionPlaceholder
             height="slim"
-            text="Add your job preferences"
             onClick={() => setIsEditing(true)}
-          />
+          >
+            Add your job preferences
+          </EmptySectionPlaceholder>
         ) : (
           <Content>
             {profile?.hrSummit2021JobFairCompanyJobPreferences?.map(

@@ -36,9 +36,10 @@ export function EditableLinks() {
         isEmpty ? (
           <EmptySectionPlaceholder
             height="slim"
-            text="Add your links"
             onClick={() => setIsEditing(true)}
-          />
+          >
+            Add your links
+          </EmptySectionPlaceholder>
         ) : (
           <Content>
             {links

@@ -50,9 +50,10 @@ export function EditableLanguages() {
         isEmpty ? (
           <EmptySectionPlaceholder
             height="slim"
-            text="Add your languages"
             onClick={() => setIsEditing(true)}
-          />
+          >
+            Add your languages
+          </EmptySectionPlaceholder>
         ) : (
           <Content>
             {profile?.workingLanguages?.map(

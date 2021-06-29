@@ -56,9 +56,10 @@ export function EditableEducation() {
         isEmpty ? (
           <EmptySectionPlaceholder
             height="tall"
-            text="Add your education"
             onClick={() => setIsEditing(true)}
-          />
+          >
+            Add your education
+          </EmptySectionPlaceholder>
         ) : (
           profile?.education?.map((item) => (
             <div style={{ marginBottom: '2.8rem' }}>

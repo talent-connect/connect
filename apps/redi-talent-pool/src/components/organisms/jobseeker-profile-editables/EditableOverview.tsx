@@ -35,9 +35,10 @@ export function EditableOverview() {
         isEmpty ? (
           <EmptySectionPlaceholder
             height="slim"
-            text="Add your preferred positions"
             onClick={() => setIsEditing(true)}
-          />
+          >
+            Add your preferred positions
+          </EmptySectionPlaceholder>
         ) : (
           <>
             <Caption>Desired positions</Caption>

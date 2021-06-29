@@ -39,9 +39,10 @@ export function EditableSummary() {
             ) : (
               <EmptySectionPlaceholder
                 height="tall"
-                text="Tell us about yourself"
                 onClick={() => setIsEditing(true)}
-              />
+              >
+                Tell us about yourself
+              </EmptySectionPlaceholder>
             )}
           </Content>
           <Caption>Top skills</Caption>
@@ -54,9 +55,10 @@ export function EditableSummary() {
           ) : (
             <EmptySectionPlaceholder
               height="slim"
-              text="Add your top skills"
               onClick={() => setIsEditing(true)}
-            />
+            >
+              Add your top skills
+            </EmptySectionPlaceholder>
           )}
         </>
       }

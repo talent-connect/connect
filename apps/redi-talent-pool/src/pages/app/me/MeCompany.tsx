@@ -11,8 +11,6 @@ import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprof
 export function MeCompany() {
   const { data: profile } = useTpCompanyProfileQuery()
 
-  console.log(profile)
-
   return (
     <LoggedIn>
       <Columns className="is-6 is-variable">

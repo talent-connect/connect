@@ -29,6 +29,8 @@ import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpco
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
+import { ReactComponent as JobPlaceholderCard } from './job-placeholder-card.svg'
+import JobPlaceholderCardUrl from './job-placeholder-card.svg'
 
 function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
   const result = Array.from(list)
@@ -52,62 +54,66 @@ export function EditableJobPostings() {
       setIsEditing={setIsEditing}
       title="Job postings"
       readComponent={
-        <div
-          style={{
-            width: '100%',
-            padding: '4rem 1rem',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <Content>
-            <p>The Job postings feature is currently undergoing maintenance.</p>
-            <p>
-              They will be available for editing again on Wednesday 30 June.
-            </p>
-            <p>
-              Thank you for your patience and apologies for any inconvenience.
-            </p>
-          </Content>
-        </div>
-        // isEmpty ? (
-        //   <EmptySectionPlaceholder
-        //     height="tall"
-        //     text="Add your job listings"
-        //     onClick={() => setIsEditing(true)}
-        //   />
-        // ) : (
-        //   profile?.jobListings?.map((item) => (
-        //     <div style={{ marginBottom: '2.8rem' }}>
-        //       <div
-        //         style={{
-        //           display: 'flex',
-        //           flexDirection: 'row',
-        //           justifyContent: 'space-between',
-        //         }}
-        //       >
-        //         <Caption>{item?.title}</Caption>
-        //         <span style={{ color: '#979797' }}>{item?.location}</span>
-        //       </div>
-        //       <Content style={{ marginTop: '-0.5rem' }}>
-        //         {item.summary ? (
-        //           <ReactMarkdown
-        //             components={{
-        //               p: ({ children }) => (
-        //                 <p style={{ marginBottom: '0' }}>{children}</p>
-        //               ),
-        //             }}
-        //           >
-        //             {item.summary.replace(/\n/g, `\n\n`)}
-        //           </ReactMarkdown>
-        //         ) : null}
-        //       </Content>
-        //     </div>
-        //   ))
-        // )
+        isEmpty ? (
+          <EmptySectionPlaceholder
+            height="none"
+            onClick={() => setIsEditing(true)}
+            style={{ padding: '0.7rem 1.2rem 1.7rem 1.2rem' }}
+          >
+            <div
+              style={{
+                backgroundImage: `url(${JobPlaceholderCardUrl})`,
+                backgroundRepeat: 'x-repeat',
+                backgroundSize: 'contain',
+                height: '13rem',
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <div
+                style={{
+                  backgroundColor: 'white',
+                  border: '1px solid #58ADC4',
+                  color: '#58ADC4',
+                  padding: '0.5rem 5rem',
+                }}
+              >
+                Add your job postings
+              </div>
+            </div>
+          </EmptySectionPlaceholder>
+        ) : (
+          profile?.jobListings?.map((item) => (
+            <div style={{ marginBottom: '2.8rem' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <Caption>{item?.title}</Caption>
+                <span style={{ color: '#979797' }}>{item?.location}</span>
+              </div>
+              <Content style={{ marginTop: '-0.5rem' }}>
+                {item.summary ? (
+                  <ReactMarkdown
+                    components={{
+                      p: ({ children }) => (
+                        <p style={{ marginBottom: '0' }}>{children}</p>
+                      ),
+                    }}
+                  >
+                    {item.summary.replace(/\n/g, `\n\n`)}
+                  </ReactMarkdown>
+                ) : null}
+              </Content>
+            </div>
+          ))
+        )
       }
-      disableEditing
       modalTitle="Publish job postings on Talent Pool"
       modalHeadline="Job Postings"
       modalBody={

@@ -58,10 +58,11 @@ export function EditableNamePhotoLocation() {
               {isLocationEmpty ? (
                 <EmptySectionPlaceholder
                   height="extra-slim"
-                  text="Add your location"
                   onClick={() => setIsEditing(true)}
                   style={{ width: '18rem', margin: '0 0 0 1rem' }}
-                />
+                >
+                  Add your location
+                </EmptySectionPlaceholder>
               ) : (
                 <Content>
                   <strong>{profile?.location}</strong>

@@ -44,9 +44,10 @@ export function EditableImportantDetails() {
         isEmpty ? (
           <EmptySectionPlaceholder
             height="tall"
-            text="Add your contact details, type of employment and availability"
             onClick={() => setIsEditing(true)}
-          />
+          >
+            Add your contact details, type of employment and availability
+          </EmptySectionPlaceholder>
         ) : (
           <div
             style={{

@@ -50,9 +50,10 @@ export function EditableAbout() {
             ) : (
               <EmptySectionPlaceholder
                 height="tall"
-                text="Tell us about the company"
                 onClick={() => setIsEditing(true)}
-              />
+              >
+                Tell us about the company
+              </EmptySectionPlaceholder>
             )}
           </Content>
         </>

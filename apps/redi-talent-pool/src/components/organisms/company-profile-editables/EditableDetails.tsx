@@ -42,9 +42,10 @@ export function EditableDetails() {
         isEmpty ? (
           <EmptySectionPlaceholder
             height="tall"
-            text="Add your website and industry details"
             onClick={() => setIsEditing(true)}
-          />
+          >
+            Add your website and industry details
+          </EmptySectionPlaceholder>
         ) : (
           <Columns>
             <Columns.Column size={6}>

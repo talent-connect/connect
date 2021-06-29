@@ -52,9 +52,10 @@ export function EditableProfessionalExperience() {
         isEmpty ? (
           <EmptySectionPlaceholder
             height="tall"
-            text="Add your experience"
             onClick={() => setIsEditing(true)}
-          />
+          >
+            Add your experience
+          </EmptySectionPlaceholder>
         ) : (
           profile?.experience?.map((item) => (
             <div style={{ marginBottom: '2.8rem' }}>

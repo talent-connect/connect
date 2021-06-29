@@ -42,9 +42,10 @@ export function EditableContact() {
         isEmpty ? (
           <EmptySectionPlaceholder
             height="tall"
-            text="Add your contact details"
             onClick={() => setIsEditing(true)}
-          />
+          >
+            Add your contact details
+          </EmptySectionPlaceholder>
         ) : (
           <Columns>
             {profile?.firstName || profile?.lastName ? (
