@@ -52,42 +52,63 @@ export function EditableJobPostings() {
       setIsEditing={setIsEditing}
       title="Job postings"
       readComponent={
-        isEmpty ? (
-          <EmptySectionPlaceholder
-            height="tall"
-            text="Add your job listings"
-            onClick={() => setIsEditing(true)}
-          />
-        ) : (
-          profile?.jobListings?.map((item) => (
-            <div style={{ marginBottom: '2.8rem' }}>
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                }}
-              >
-                <Caption>{item?.title}</Caption>
-                <span style={{ color: '#979797' }}>{item?.location}</span>
-              </div>
-              <Content style={{ marginTop: '-0.5rem' }}>
-                {item.summary ? (
-                  <ReactMarkdown
-                    components={{
-                      p: ({ children }) => (
-                        <p style={{ marginBottom: '0' }}>{children}</p>
-                      ),
-                    }}
-                  >
-                    {item.summary.replace(/\n/g, `\n\n`)}
-                  </ReactMarkdown>
-                ) : null}
-              </Content>
-            </div>
-          ))
-        )
+        <div
+          style={{
+            width: '100%',
+            padding: '0 4rem',
+            display: 'flex',
+            padding: '1rem',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Content>
+            <p>The Job postings feature is currently undergoing maintenance.</p>
+            <p>
+              They will be available for editing again on Wednesday 30 June.
+            </p>
+            <p>
+              Thank you for your patience and apologies for any inconvenience.
+            </p>
+          </Content>
+        </div>
+        // isEmpty ? (
+        //   <EmptySectionPlaceholder
+        //     height="tall"
+        //     text="Add your job listings"
+        //     onClick={() => setIsEditing(true)}
+        //   />
+        // ) : (
+        //   profile?.jobListings?.map((item) => (
+        //     <div style={{ marginBottom: '2.8rem' }}>
+        //       <div
+        //         style={{
+        //           display: 'flex',
+        //           flexDirection: 'row',
+        //           justifyContent: 'space-between',
+        //         }}
+        //       >
+        //         <Caption>{item?.title}</Caption>
+        //         <span style={{ color: '#979797' }}>{item?.location}</span>
+        //       </div>
+        //       <Content style={{ marginTop: '-0.5rem' }}>
+        //         {item.summary ? (
+        //           <ReactMarkdown
+        //             components={{
+        //               p: ({ children }) => (
+        //                 <p style={{ marginBottom: '0' }}>{children}</p>
+        //               ),
+        //             }}
+        //           >
+        //             {item.summary.replace(/\n/g, `\n\n`)}
+        //           </ReactMarkdown>
+        //         ) : null}
+        //       </Content>
+        //     </div>
+        //   ))
+        // )
       }
+      disableEditing
       modalTitle="Publish job postings on Talent Pool"
       modalHeadline="Job Postings"
       modalBody={

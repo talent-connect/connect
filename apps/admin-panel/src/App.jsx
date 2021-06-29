@@ -1564,9 +1564,36 @@ const TpCompanyProfileShow = (props) => (
           <TextField source="phoneNumber" />
           <TextField source="about" />
 
-          <ArrayField source="jobListings" fieldKey="uuid">
+          <ReferenceManyField
+            label="Job Listings"
+            reference="tpJobListings"
+            target="tpCompanyProfileId"
+          >
+            <Datagrid>
+              <TextField source="title" />
+              <TextField source="location" />
+              <TextField source="summary" />
+              <TextField source="proficiencyLevelId" />
+              <FunctionField
+                label="idealTechnicalSkills"
+                render={(record) => record?.idealTechnicalSkills?.join(', ')}
+              />
+              <FunctionField
+                label="relatesToPositions"
+                render={(record) => record?.relatesToPositions?.join(', ')}
+              />
+              <TextField source="employmentType" />
+              <TextField source="languageRequirements" />
+              <TextField source="desiredExperience" />
+              <TextField source="salaryRange" />
+              <ShowButton />
+              <EditButton />
+            </Datagrid>
+          </ReferenceManyField>
+
+          {/* <ArrayField source="jobListings" fieldKey="uuid">
             <Datagrid></Datagrid>
-          </ArrayField>
+          </ArrayField> */}
         </Tab>
         <Tab label="Internal comments">
           <TextField
@@ -1687,7 +1714,7 @@ const TpJobListingEdit = (props) => (
       </ReferenceField>
       <TextInput source="title" />
       <TextInput source="location" />
-      <TextInput source="summary" />
+      <TextInput source="summary" multiline />
       <TextInput source="proficiencyLevelId" />
       <FunctionField
         label="idealTechnicalSkills"
