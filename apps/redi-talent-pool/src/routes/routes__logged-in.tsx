@@ -19,7 +19,7 @@ const routes: RouteDefinition[] = [
     exact: true,
   },
   {
-    path: '/app/cv',
+    path: '/app/cv-builder',
     component: CvList,
     exact: true,
   }
