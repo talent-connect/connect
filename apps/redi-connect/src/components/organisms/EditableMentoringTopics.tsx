@@ -11,7 +11,10 @@ import { profileSaveStart } from '../../redux/user/actions'
 import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
-import { categories as availableCategories } from '@talent-connect/shared-config'
+import {
+  categories as availableCategories,
+  categoryGroups,
+} from '@talent-connect/shared-config'
 import { ReadMentoringTopics } from '../molecules'
 
 export type UserType =
@@ -99,48 +102,16 @@ const EditableMentoringTopics = ({ profile, profileSaveStart }: Props) => {
           : 'You can select between 1 and up to 4 topics.'}
       </Content>
       <Columns>
-        <CategoryGroup
-          id="softwareEngineering"
-          label="👩‍💻 Software Engineering"
-          selectedCategories={selectedCategories}
-          onChange={categoriesChange}
-          formik={formik}
-        />
-        <CategoryGroup
-          id="design"
-          label="🎨 Design"
-          selectedCategories={selectedCategories}
-          onChange={categoriesChange}
-          formik={formik}
-        />
-        <CategoryGroup
-          id="otherProfessions"
-          label="🏄‍♀️ Other professions"
-          selectedCategories={selectedCategories}
-          onChange={categoriesChange}
-          formik={formik}
-        />
-        <CategoryGroup
-          id="careerSupport"
-          label="✋ Career Support"
-          selectedCategories={selectedCategories}
-          onChange={categoriesChange}
-          formik={formik}
-        />
-        <CategoryGroup
-          id="language"
-          label="🤗 Other"
-          selectedCategories={selectedCategories}
-          onChange={categoriesChange}
-          formik={formik}
-        />
-        <CategoryGroup
-          id="other"
-          label="Other topics"
-          selectedCategories={selectedCategories}
-          onChange={categoriesChange}
-          formik={formik}
-        />
+        {categoryGroups.map((group) => (
+          <CategoryGroup
+            key={group.id}
+            id={group.id}
+            label={group.label}
+            selectedCategories={selectedCategories}
+            onChange={categoriesChange}
+            formik={formik}
+          />
+        ))}
       </Columns>
     </Editable>
   )

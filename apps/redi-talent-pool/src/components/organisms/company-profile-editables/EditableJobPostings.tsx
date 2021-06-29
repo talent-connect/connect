@@ -55,9 +55,8 @@ export function EditableJobPostings() {
         <div
           style={{
             width: '100%',
-            padding: '0 4rem',
+            padding: '4rem 1rem',
             display: 'flex',
-            padding: '1rem',
             justifyContent: 'center',
             alignItems: 'center',
           }}

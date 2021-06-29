@@ -19,9 +19,9 @@ export const rediLocationNames: { [K in RediLocation]?: string } = {
 export const categoryGroups: CategoryGroups = [
   { id: 'softwareEngineering', label: '👩‍💻 Software Engineering' },
   { id: 'design', label: '🎨 Design' },
-  { id: 'otherProfessions', label: '🏄‍♀️ Other professions' },
+  { id: 'otherProfessions', label: '🏄‍♀️ Other Professions' },
   { id: 'careerSupport', label: '✋ Career Support' },
-  { id: 'language', label: '🗣️ Language' },
+  { id: 'language', label: '🗣️ Language Support' },
   { id: 'other', label: '🤗 Other' },
 ]
 export const categories: Categories = [
