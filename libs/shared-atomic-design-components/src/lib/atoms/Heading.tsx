@@ -4,7 +4,7 @@ import { Heading as BulmaHeading } from 'react-bulma-components'
 import './Heading.scss'
 
 export interface HeadingProps {
-  children: any
+  children: React.ReactNode
   className?: string
   size?: 'large' | 'medium' | 'small' | 'smaller'
   tag?: string
