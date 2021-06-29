@@ -3,6 +3,7 @@ import {
   AccessToken,
   RedUser,
   TpCompanyProfile,
+  TpJobseekerCv,
   TpJobseekerProfile,
 } from '@talent-connect/shared-types'
 import axios from 'axios'
@@ -122,6 +123,32 @@ export async function updateCurrentUserTpJobseekerProfile(
     data: profile,
   })
   return resp.data
+}
+
+export async function fetchAllCurrentUserTpJobseekerCv(): Promise<Array<Partial<TpJobseekerCv>>> {
+  const userId = getAccessTokenFromLocalStorage().userId
+  const resp = await http(`${API_URL}/redUsers/${userId}/tpJobseekerCv`)
+  return resp.data
+}
+
+export async function fetchCurrentUserTpJobseekerCvById(id: string): Promise<Partial<TpJobseekerCv>> {
+  const userId = getAccessTokenFromLocalStorage().userId
+  const resp = await http(`${API_URL}/tpJobseekerCv/${id}`)
+  return resp.data
+}
+
+export async function createCurrentUserTpJobseekerCv(data: Partial<TpJobseekerCv>): Promise<Partial<TpJobseekerCv>> {
+  const userId = getAccessTokenFromLocalStorage().userId
+  const resp = await http(`${API_URL}/redUsers/${userId}/tpJobseekerCv`, { method: 'post', data })
+  return resp.data
+}
+
+export function updateCurrentUserTpJobseekerCv(id: string) {
+  return async function (data: Partial<TpJobseekerCv>): Promise<Partial<TpJobseekerCv>> {
+    const userId = getAccessTokenFromLocalStorage().userId
+    const resp = await http(`${API_URL}/redUsers/${userId}/tpJobseekerCv/${id}`, { method: 'put', data })
+    return resp.data
+  }
 }
 
 export async function fetchCurrentUserTpCompanyProfile(): Promise<
