@@ -23,6 +23,14 @@
     },
     "jobListing": {
       "type": "belongsTo",
+      "model": "TpJobListing",
+      "foreignKey": "",
+      "options": {
+        "nestRemoting": true
+      }
+    },
+    "company": {
+      "type": "belongsTo",
       "model": "TpCompanyProfile",
       "foreignKey": "",
       "options": {

@@ -47,7 +47,7 @@ module.exports = function (TpJobfair2021InterviewMatch) {
 
       // TODO: this one is included (as of writing) only for convenience in admin panel.
       // Considering putting in a if(adminUser) block
-      ctx.query.include = ['interviewee', 'interviewingCompany']
+      ctx.query.include = ['interviewee', 'company', 'jobListing']
 
       if (!ctx.query.where) ctx.query.where = {}
 
