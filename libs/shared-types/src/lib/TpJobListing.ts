@@ -1,3 +1,5 @@
+import { TpCompanyProfile } from './TpCompanyProfile'
+
 export type TpJobListing = {
   id: string
   title?: string
@@ -9,6 +11,9 @@ export type TpJobListing = {
   languageRequirements?: string
   desiredExperience?: string
   salaryRange?: string
+
+  tpCompanyProfileId?: string
+  tpCompanyProfile?: TpCompanyProfile
 
   createdAt: Date
   updatedAt: Date

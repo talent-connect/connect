@@ -1,5 +1,6 @@
 export { default as Button } from './Button'
 export { default as Caption } from './Caption'
+export { default as CardTags } from './CardTags'
 export { default as Checkbox } from './Checkbox'
 export { default as DecoratedHeadline } from './DecoratedHeadline'
 export { default as FormDraggableAccordion } from './FormDraggableAccordion'

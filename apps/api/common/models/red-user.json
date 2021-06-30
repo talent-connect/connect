@@ -61,7 +61,12 @@
         "__get__tpJobseekerProfile",
         "__create__tpCompanyProfile",
         "__update__tpCompanyProfile",
-        "__get__tpCompanyProfile"
+        "__get__tpCompanyProfile",
+        "__create__tpJobListings",
+        "__destroyById__tpJobListings",
+        "__findById__tpJobListings",
+        "__get__tpJobListings",
+        "__updateById__tpJobListings"
       ]
     },
     {
