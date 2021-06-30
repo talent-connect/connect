@@ -8,12 +8,21 @@ const Me = lazy(
     )
 )
 
+const CvList = lazy(
+  () => import(/* webpackChunkName: "CvList", webpackPreload: true  */ '../pages/app/cv/CvList')
+)
+
 const routes: RouteDefinition[] = [
   {
     path: '/app/me',
     component: Me,
     exact: true,
   },
+  {
+    path: '/app/cv-builder',
+    component: CvList,
+    exact: true,
+  }
 ]
 
 const routesRequiringLoggedIn = routes.map((route) =>
