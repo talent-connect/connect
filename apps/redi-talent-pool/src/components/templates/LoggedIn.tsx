@@ -2,6 +2,7 @@ import { Loader } from '@talent-connect/shared-atomic-design-components'
 import React, { ReactNode } from 'react'
 import { Columns, Container, Section } from 'react-bulma-components'
 import { useIsBusy } from '../../hooks/useIsBusy'
+import { TpMainNavItem } from '../molecules/TpMainNavItem'
 import { Navbar } from '../organisms'
 import Footer from '../organisms/Footer'
 
@@ -15,23 +16,29 @@ const LoggedIn = ({ children }: Props) => {
   return (
     <>
       <Navbar />
-      {/* <Section className="section--bottom-large-spaceing color-half-tablet section--separator"> */}
-      <Section className="section--bottom-large-spaceing section--separator">
-        <Container>
-          {/* <Container className="color-side-menu"> */}
-          <Columns>
-            {/* <Columns.Column desktop={{ size: 2 }} className="column--side-menu">
-              <SideMenu />
-            </Columns.Column> */}
-            <Columns.Column
-              desktop={{ size: 12 }}
-              className="column--main-content"
-            >
-              <Loader loading={isBusy} />
-              {children}
-            </Columns.Column>
-          </Columns>
-        </Container>
+      <Section>
+        <div>
+          <Container>
+            <div style={{ display: 'flex' }}>
+              <div style={{ backgroundColor: '#EFF6F8', minWidth: '84px' }}>
+                <TpMainNavItem page="profile-page" isActive />
+                <TpMainNavItem page="browse-page" />
+                <TpMainNavItem page="cv-builder-page" />
+              </div>
+              <div>
+                <Columns>
+                  <Columns.Column
+                    desktop={{ size: 12 }}
+                    className="column--main-content"
+                  >
+                    <Loader loading={isBusy} />
+                    {children}
+                  </Columns.Column>
+                </Columns>
+              </div>
+            </div>
+          </Container>
+        </div>
       </Section>
       <Footer />
     </>

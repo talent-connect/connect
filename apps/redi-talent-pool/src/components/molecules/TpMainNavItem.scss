@@ -1,0 +1,57 @@
+.tp-main-nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 65px;
+
+  &__active-bar {
+    height: 100%;
+    width: 5px;
+    background-color: #2cb0c7;
+  }
+
+  &__icon {
+    width: 40px;
+    height: 40px;
+    background-position: center center;
+  }
+
+  &__profile-page {
+    background-image: url('../../assets/images/navigation-icons/profile-page__idle.svg');
+  }
+  &__profile-page:hover {
+    background-image: url('../../assets/images/navigation-icons/profile-page__hover.svg');
+  }
+  &__profile-page:active {
+    background-image: url('../../assets/images/navigation-icons/profile-page__mousedown.svg');
+  }
+  &__profile-page.disabled {
+    background-image: url('../../assets/images/navigation-icons/profile-page__disabled.svg');
+  }
+
+  &__browse-page {
+    background-image: url('../../assets/images/navigation-icons/browse-page__idle.svg');
+  }
+  &__browse-page:hover {
+    background-image: url('../../assets/images/navigation-icons/browse-page__hover.svg');
+  }
+  &__browse-page:active {
+    background-image: url('../../assets/images/navigation-icons/browse-page__mousedown.svg');
+  }
+  &__browse-page.disabled {
+    background-image: url('../../assets/images/navigation-icons/browse-page__disabled.svg');
+  }
+
+  &__cv-builder-page {
+    background-image: url('../../assets/images/navigation-icons/cv-builder-page__idle.svg');
+  }
+  &__cv-builder-page:hover {
+    background-image: url('../../assets/images/navigation-icons/cv-builder-page__hover.svg');
+  }
+  &__cv-builder-page:active {
+    background-image: url('../../assets/images/navigation-icons/cv-builder-page__mousedown.svg');
+  }
+  &__cv-builder-page.disabled {
+    background-image: url('../../assets/images/navigation-icons/cv-builder-page__disabled.svg');
+  }
+}
