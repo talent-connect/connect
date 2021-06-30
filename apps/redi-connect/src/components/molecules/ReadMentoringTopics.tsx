@@ -18,7 +18,7 @@ interface ReadMentoringProps {
 
 export const ProfileTags = ({ items, shortList }: CardTagsProps) => (
   <CardTags
-    item={items}
+    items={items}
     shortList={shortList}
     formatter={(item: string) => categoriesIdToLabelMap[item]}
   />
