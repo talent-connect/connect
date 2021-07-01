@@ -17,36 +17,34 @@ const LoggedIn = ({ children }: Props) => {
   return (
     <>
       <Navbar leftPaddingOn />
-      <div>
-        <Container>
-          <div style={{ display: 'flex' }}>
-            <div style={{ backgroundColor: '#EFF6F8', minWidth: '84px' }}>
-              <TpMainNavItem page="profile-page" href="/app/me" isActive />
-              <TpMainNavItem
-                page="browse-page"
-                href="https://www.google.com"
-                isDisabled
-              />
-              <TpMainNavItem
-                page="cv-builder-page"
-                href="https://www.google.com"
-                isDisabled
-              />
-            </div>
-            <div className="main--wrapper">
-              <Columns>
-                <Columns.Column
-                  desktop={{ size: 12 }}
-                  className="column--main-content"
-                >
-                  <Loader loading={isBusy} />
-                  {children}
-                </Columns.Column>
-              </Columns>
-            </div>
+      <Container>
+        <div style={{ display: 'flex' }}>
+          <div style={{ backgroundColor: '#EFF6F8', minWidth: '84px' }}>
+            <TpMainNavItem page="profile-page" to="/app/me" isActive />
+            <TpMainNavItem
+              page="browse-page"
+              to="https://www.google.com"
+              isDisabled
+            />
+            <TpMainNavItem
+              page="cv-builder-page"
+              to="https://www.google.com"
+              isDisabled
+            />
           </div>
-        </Container>
-      </div>
+          <div className="main--wrapper">
+            <Columns>
+              <Columns.Column
+                desktop={{ size: 12 }}
+                className="column--main-content"
+              >
+                <Loader loading={isBusy} />
+                {children}
+              </Columns.Column>
+            </Columns>
+          </div>
+        </div>
+      </Container>
       <Footer />
     </>
   )

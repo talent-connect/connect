@@ -1,15 +1,36 @@
-import './TpMainNavItem.scss'
 import classnames from 'clsx'
+import React from 'react'
 import { useCallback } from 'react'
+import { Link } from 'react-router-dom'
+import './TpMainNavItem.scss'
 
 interface Props {
   page: 'profile-page' | 'browse-page' | 'cv-builder-page'
-  href: string
+  to: string
   isActive?: boolean
   isDisabled?: boolean
 }
 
-export function TpMainNavItem({ page, href, isActive, isDisabled }: Props) {
+interface FancyLinkProps {
+  onClick: (event: React.MouseEvent) => void
+  isDisabled?: boolean
+  children?: React.ReactNode
+}
+
+const FancyLink = React.forwardRef<HTMLAnchorElement>(
+  (props: FancyLinkProps, ref) => (
+    <a
+      ref={ref}
+      {...props}
+      className="tp-main-nav-item"
+      style={{ cursor: props.isDisabled ? 'not-allowed' : 'pointer' }}
+    >
+      {props.children}
+    </a>
+  )
+)
+
+export function TpMainNavItem({ page, to, isActive, isDisabled }: Props) {
   const onClick = useCallback(
     (event: React.MouseEvent) => {
       if (isDisabled) {
@@ -20,9 +41,9 @@ export function TpMainNavItem({ page, href, isActive, isDisabled }: Props) {
   )
 
   return (
-    <a
-      className="tp-main-nav-item"
-      href={href}
+    <Link
+      to={to}
+      component={FancyLink}
       onClick={onClick}
       style={{ cursor: isDisabled ? 'not-allowed' : 'pointer' }}
     >
@@ -37,6 +58,6 @@ export function TpMainNavItem({ page, href, isActive, isDisabled }: Props) {
       <div
         className={classnames({ 'tp-main-nav-item__active-bar': isActive })}
       ></div>
-    </a>
+    </Link>
   )
 }
