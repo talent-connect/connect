@@ -1204,29 +1204,6 @@ const TpJobseekerProfileListFilters = (props) => (
 )
 
 function tpJobseekerProfileListExporter(profiles, fetchRelatedRecords) {
-  // const mentors = await fetchRelatedRecords(
-  //   mentoringSessions,
-  //   'mentorId',
-  //   'redProfiles'
-  // )
-  // const mentees = await fetchRelatedRecords(
-  //   mentoringSessions,
-  //   'menteeId',
-  //   'redProfiles'
-  // )
-  // const data = mentoringSessions.map((x) => {
-  //   const mentor = mentors[x.mentorId]
-  //   const mentee = mentees[x.menteeId]
-  //   if (mentor) {
-  //     x.mentorName = `${mentor.firstName} ${mentor.lastName}`
-  //   }
-  //   if (mentee) {
-  //     x.menteeName = `${mentee.firstName} ${mentee.lastName}`
-  //   }
-  //   return x
-  // })
-  console.log(profiles)
-
   const data = profiles.map((profile) => {
     let { hrSummit2021JobFairCompanyJobPreferences } = profile
     hrSummit2021JobFairCompanyJobPreferences = hrSummit2021JobFairCompanyJobPreferences?.map(
@@ -1677,7 +1654,11 @@ const TpCompanyProfileEdit = (props) => (
 
 const TpJobListingList = (props) => {
   return (
-    <List {...props} pagination={<AllModelsPagination />}>
+    <List
+      {...props}
+      pagination={<AllModelsPagination />}
+      exporter={tpJobListingListExporter}
+    >
       <Datagrid>
         <TextField source="title" />
         <TextField source="location" />
@@ -1694,6 +1675,46 @@ const TpJobListingList = (props) => {
       </Datagrid>
     </List>
   )
+}
+
+function tpJobListingListExporter(jobListings, fetchRelatedRecords) {
+  const data = jobListings.map((job) => {
+    const {
+      title,
+      location,
+      tpCompanyProfile: { companyName },
+      employmentType,
+      languageRequirements,
+      desiredExperience,
+      salaryRange,
+    } = job
+
+    return {
+      title,
+      location,
+      companyName,
+      employmentType,
+      languageRequirements,
+      desiredExperience,
+      salaryRange,
+    }
+  })
+
+  const csv = convertToCSV(
+    data
+    // {
+    //   fields: [
+    //     'id',
+    //     'firstName',
+    //     'lastName',
+    //     'contactEmail',
+    //     'hrSummit2021JobFairCompanyJobPreferences',
+    //     'createdAt',
+    //     'updatedAt',
+    //   ],
+    //   }
+  )
+  downloadCSV(csv, 'Are you ReDI? Yalla habibi')
 }
 
 const TpJobListingShow = (props) => (
