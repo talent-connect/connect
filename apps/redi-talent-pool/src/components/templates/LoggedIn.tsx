@@ -16,7 +16,7 @@ const LoggedIn = ({ children }: Props) => {
 
   return (
     <>
-      <Navbar />
+      <Navbar leftPaddingOn />
       <div>
         <Container>
           <div style={{ display: 'flex' }}>

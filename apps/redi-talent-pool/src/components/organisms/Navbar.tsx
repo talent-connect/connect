@@ -49,7 +49,7 @@ const LoggedInButtons = ({ mobile }: { mobile?: boolean }) => {
   )
 }
 
-const Navbar = () => {
+const Navbar = ({ leftPaddingOn = false }) => {
   const [menuActive, setMenuActive] = useState(false)
 
   const mobileMenu = (
@@ -69,7 +69,9 @@ const Navbar = () => {
     <>
       {menuActive && mobileMenu}
 
-      <Container className="navbar__wrapper-wrapper">
+      <Container
+        className={classnames({ 'navbar__wrapper-wrapper': leftPaddingOn })}
+      >
         <Container className="navbar__wrapper">
           <RediTalentPoolLogo />
           <Element
