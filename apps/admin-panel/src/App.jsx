@@ -1236,8 +1236,32 @@ function tpJobseekerProfileListExporter(profiles, fetchRelatedRecords) {
     )
     delete profile.hrSummit2021JobFairCompanyJobPreferences
 
+    const {
+      firstName,
+      lastName,
+      contactEmail,
+      createdAt,
+      state,
+      jobseeker_currentlyEnrolledInCourse,
+      currentlyEnrolledInCourse,
+      loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName,
+      updatedAt,
+      lastLoginDateTime,
+      postalMailingAddress,
+    } = profile
+
     return {
-      ...profile,
+      firstName,
+      lastName,
+      contactEmail,
+      createdAt,
+      state,
+      jobseeker_currentlyEnrolledInCourse,
+      currentlyEnrolledInCourse,
+      loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName,
+      updatedAt,
+      lastLoginDateTime,
+      postalMailingAddress,
       jobPreference1: hrSummit2021JobFairCompanyJobPreferences?.[0],
       jobPreference2: hrSummit2021JobFairCompanyJobPreferences?.[1],
       jobPreference3: hrSummit2021JobFairCompanyJobPreferences?.[2],
