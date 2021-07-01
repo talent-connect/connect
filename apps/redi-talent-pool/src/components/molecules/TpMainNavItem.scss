@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 65px;
+  height: 80px;
 
   &__active-bar {
     height: 100%;
@@ -53,5 +53,9 @@
   }
   &__cv-builder-page.disabled {
     background-image: url('../../assets/images/navigation-icons/cv-builder-page__disabled.svg');
+  }
+
+  .disabled {
+    cursor: not-allowed;
   }
 }

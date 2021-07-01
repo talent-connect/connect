@@ -1821,9 +1821,12 @@ const TpJobFair2021InterviewMatchCreate = (props) => (
         perPage={0}
       >
         <AutocompleteInput
-          optionText={(op) =>
-            `${op.tpCompanyProfile.companyName} --- ${op.title}`
-          }
+          optionText={(op) => {
+            if (!op.tpCompanyProfile || !op.tpCompanyProfile.companyName) {
+              console.log(op)
+            }
+            return `${op.tpCompanyProfile.companyName} --- ${op.title}`
+          }}
         />
       </ReferenceInput>
     </SimpleForm>

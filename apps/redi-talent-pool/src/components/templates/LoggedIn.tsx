@@ -5,6 +5,7 @@ import { useIsBusy } from '../../hooks/useIsBusy'
 import { TpMainNavItem } from '../molecules/TpMainNavItem'
 import { Navbar } from '../organisms'
 import Footer from '../organisms/Footer'
+import './LoggedIn.scss'
 
 interface Props {
   children?: ReactNode
@@ -16,30 +17,36 @@ const LoggedIn = ({ children }: Props) => {
   return (
     <>
       <Navbar />
-      <Section>
-        <div>
-          <Container>
-            <div style={{ display: 'flex' }}>
-              <div style={{ backgroundColor: '#EFF6F8', minWidth: '84px' }}>
-                <TpMainNavItem page="profile-page" isActive />
-                <TpMainNavItem page="browse-page" />
-                <TpMainNavItem page="cv-builder-page" />
-              </div>
-              <div>
-                <Columns>
-                  <Columns.Column
-                    desktop={{ size: 12 }}
-                    className="column--main-content"
-                  >
-                    <Loader loading={isBusy} />
-                    {children}
-                  </Columns.Column>
-                </Columns>
-              </div>
+      <div>
+        <Container>
+          <div style={{ display: 'flex' }}>
+            <div style={{ backgroundColor: '#EFF6F8', minWidth: '84px' }}>
+              <TpMainNavItem page="profile-page" href="/app/me" isActive />
+              <TpMainNavItem
+                page="browse-page"
+                href="https://www.google.com"
+                isDisabled
+              />
+              <TpMainNavItem
+                page="cv-builder-page"
+                href="https://www.google.com"
+                isDisabled
+              />
             </div>
-          </Container>
-        </div>
-      </Section>
+            <div className="main--wrapper">
+              <Columns>
+                <Columns.Column
+                  desktop={{ size: 12 }}
+                  className="column--main-content"
+                >
+                  <Loader loading={isBusy} />
+                  {children}
+                </Columns.Column>
+              </Columns>
+            </div>
+          </div>
+        </Container>
+      </div>
       <Footer />
     </>
   )

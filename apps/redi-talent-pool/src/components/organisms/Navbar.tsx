@@ -68,7 +68,8 @@ const Navbar = () => {
   return (
     <>
       {menuActive && mobileMenu}
-      <Section className={classnames('navbar default-background')}>
+
+      <Container className="navbar__wrapper-wrapper">
         <Container className="navbar__wrapper">
           <RediTalentPoolLogo />
           <Element
@@ -87,7 +88,7 @@ const Navbar = () => {
             </Button>
           </Element>
         </Container>
-      </Section>
+      </Container>
     </>
   )
 }

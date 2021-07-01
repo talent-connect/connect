@@ -10,7 +10,9 @@ import { history, Router } from './services/history/history'
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {process.env.NODE_ENV === 'development' ? (
+        <ReactQueryDevtools initialIsOpen={false} />
+      ) : null}
       <AppNotification />
       <Router history={history}>
         <Suspense fallback={<Loader loading={true} />}>
