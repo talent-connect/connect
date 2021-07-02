@@ -1885,6 +1885,7 @@ const TpJobFair2021InterviewMatchEdit = (props) => (
         source="intervieweeId"
         reference="tpJobseekerProfiles"
         perPage={0}
+        sort={{ field: 'firstName', order: 'ASC' }}
       >
         <AutocompleteInput
           optionText={(op) => `${op.firstName} ${op.lastName}`}
@@ -1895,6 +1896,7 @@ const TpJobFair2021InterviewMatchEdit = (props) => (
         source="companyId"
         reference="tpCompanyProfiles"
         perPage={0}
+        sort={{ field: 'firstName', order: 'ASC' }}
       >
         <AutocompleteInput optionText={(op) => `${op.companyName}`} />
       </ReferenceInput>
