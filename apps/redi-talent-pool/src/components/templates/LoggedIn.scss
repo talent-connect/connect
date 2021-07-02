@@ -2,7 +2,20 @@
 
 .tp-side-menu {
   background-color: #eff6f8;
+
   min-width: 84px;
+
+  @include touch() {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-around;
+    z-index: 10;
+  }
+  @include desktop() {
+  }
   // margin-right: 2rem;
 }
 

@@ -19,20 +19,22 @@ const LoggedIn = ({ children }: Props) => {
       <Navbar />
       <Container className="main-container">
         <div style={{ display: 'flex' }}>
-          <div className="tp-side-menu is-hidden-touch">
+          <div className="tp-side-menu">
             <TpMainNavItem
               page="profile-page"
-              tooltip="My profile"
+              pageName="My profile"
               to="/app/me"
               isActive
             />
             <TpMainNavItem
               page="browse-page"
+              pageName="Browse"
               to="https://www.google.com"
               isDisabled
             />
             <TpMainNavItem
               page="cv-builder-page"
+              pageName="CV Builder"
               to="https://www.google.com"
               isDisabled
             />

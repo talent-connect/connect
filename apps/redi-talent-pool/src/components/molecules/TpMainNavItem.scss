@@ -1,3 +1,5 @@
+@import '~bulma/sass/utilities/_all';
+
 .tp-main-nav-item {
   display: flex;
   align-items: center;
@@ -8,6 +10,9 @@
     height: 100%;
     width: 5px;
     background-color: #2cb0c7;
+    @include touch() {
+      display: none;
+    }
   }
 
   &__icon {

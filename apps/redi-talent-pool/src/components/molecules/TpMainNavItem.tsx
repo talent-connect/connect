@@ -10,7 +10,7 @@ interface Props {
   to: string
   isActive?: boolean
   isDisabled?: boolean
-  tooltip?: string
+  pageName: string
 }
 
 interface FancyLinkProps {
@@ -41,7 +41,7 @@ export function TpMainNavItem({
   to,
   isActive,
   isDisabled,
-  tooltip,
+  pageName,
 }: Props) {
   const onClick = useCallback(
     (event: React.MouseEvent) => {
@@ -56,7 +56,7 @@ export function TpMainNavItem({
     <Link
       to={to}
       component={(props) => (
-        <FancyLink isDisabled={isDisabled} tooltip={tooltip} {...props} />
+        <FancyLink isDisabled={isDisabled} pageName={pageName} {...props} />
       )}
       onClick={onClick}
     >
@@ -64,7 +64,7 @@ export function TpMainNavItem({
       <TpMainNavItemIcon
         page={page}
         isDisabled={isDisabled}
-        tooltip={tooltip}
+        pageName={pageName}
       />
       <div
         className={classnames({ 'tp-main-nav-item__active-bar': isActive })}
@@ -76,22 +76,45 @@ export function TpMainNavItem({
 function TpMainNavItemIcon({
   page,
   isDisabled,
-  tooltip,
+  pageName,
 }: {
   page: string
   isDisabled?: boolean
-  tooltip?: string
+  pageName?: string
 }) {
-  let iconElement = (
-    <div
-      className={classnames(
-        'tp-main-nav-item__icon',
-        `tp-main-nav-item__${page}`,
-        { disabled: isDisabled }
-      )}
-    ></div>
+  return (
+    <>
+      <div className="is-hidden-desktop">
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <div
+            className={classnames(
+              'tp-main-nav-item__icon',
+              `tp-main-nav-item__${page}`,
+              { disabled: isDisabled }
+            )}
+          ></div>
+          <span style={{ fontSize: '0.875rem', color: '#5d5d5d' }}>
+            {pageName}
+          </span>
+        </div>
+      </div>
+      <div className="is-hidden-touch">
+        <Tooltip title={pageName}>
+          <div
+            className={classnames(
+              'tp-main-nav-item__icon',
+              `tp-main-nav-item__${page}`,
+              { disabled: isDisabled }
+            )}
+          ></div>
+        </Tooltip>
+      </div>
+    </>
   )
-  if (tooltip) iconElement = wrapInTooltip(iconElement, tooltip)
-
-  return iconElement
 }
