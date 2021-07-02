@@ -1779,7 +1779,11 @@ const TpJobListingEdit = (props) => (
 
 const TpJobFair2021InterviewMatchList = (props) => {
   return (
-    <List {...props} pagination={<AllModelsPagination />}>
+    <List
+      {...props}
+      pagination={<AllModelsPagination />}
+      exporter={tpJobFair2021InterviewMatchListExporter}
+    >
       <Datagrid>
         <ReferenceField
           label="Interviewee"
@@ -1808,6 +1812,54 @@ const TpJobFair2021InterviewMatchList = (props) => {
       </Datagrid>
     </List>
   )
+}
+
+function tpJobFair2021InterviewMatchListExporter(matches, fetchRelatedRecords) {
+  const data = matches.map((match) => {
+    const {
+      company: {
+        companyName,
+        location: companyLocation,
+        firstName: companyPersonFirstName,
+        lastName: companyPersonLastName,
+        contactEmail: companyPersonContactEmail,
+      } = {},
+      interviewee: {
+        currentlyEnrolledInCourse: intervieweeCurrentRediCourse,
+        firstName: intervieweeFirstName,
+        lastName: intervieweeLastName,
+        contactEmail: intervieweeContactEmail,
+      } = {},
+    } = match
+
+    return {
+      companyName,
+      companyLocation,
+      companyPersonFirstName,
+      companyPersonLastName,
+      companyPersonContactEmail,
+      intervieweeFirstName,
+      intervieweeLastName,
+      intervieweeContactEmail,
+      intervieweeCurrentRediCourse,
+    }
+  })
+
+  const csv = convertToCSV(
+    data
+    // {
+    //   fields: [
+    //     'id',
+    //     'firstName',
+    //     'lastName',
+    //     'contactEmail',
+    //     'hrSummit2021JobFairCompanyJobPreferences',
+    //     'createdAt',
+    //     'updatedAt',
+    //   ],
+    //   }
+  )
+  downloadCSV(csv, 'Company-interviewee matches')
 }
 
 const TpJobFair2021InterviewMatchShow = (props) => (
