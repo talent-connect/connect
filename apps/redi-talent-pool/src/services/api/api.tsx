@@ -125,28 +125,55 @@ export async function updateCurrentUserTpJobseekerProfile(
   return resp.data
 }
 
-export async function fetchAllCurrentUserTpJobseekerCv(): Promise<Array<Partial<TpJobseekerCv>>> {
+export async function fetchAllCurrentUserTpJobseekerCv(): Promise<
+  Array<Partial<TpJobseekerCv>>
+> {
   const userId = getAccessTokenFromLocalStorage().userId
   const resp = await http(`${API_URL}/redUsers/${userId}/tpJobseekerCv`)
   return resp.data
 }
 
-export async function fetchCurrentUserTpJobseekerCvById(id: string): Promise<Partial<TpJobseekerCv>> {
+export async function fetchCurrentUserTpJobseekerCvById(
+  id: string
+): Promise<Partial<TpJobseekerCv>> {
   const userId = getAccessTokenFromLocalStorage().userId
   const resp = await http(`${API_URL}/tpJobseekerCv/${id}`)
   return resp.data
 }
 
-export async function createCurrentUserTpJobseekerCv(data: Partial<TpJobseekerCv>): Promise<Partial<TpJobseekerCv>> {
-  const userId = getAccessTokenFromLocalStorage().userId
-  const resp = await http(`${API_URL}/redUsers/${userId}/tpJobseekerCv`, { method: 'post', data })
-  return resp.data
+export function createCurrentUserTpJobseekerCv() {
+  return async function (
+    data: Partial<TpJobseekerCv>
+  ): Promise<Partial<TpJobseekerCv>> {
+    const userId = getAccessTokenFromLocalStorage().userId
+    const resp = await http(`${API_URL}/redUsers/${userId}/tpJobseekerCv`, {
+      method: 'post',
+      data,
+    })
+    return resp.data
+  }
 }
 
 export function updateCurrentUserTpJobseekerCv(id: string) {
-  return async function (data: Partial<TpJobseekerCv>): Promise<Partial<TpJobseekerCv>> {
+  return async function (
+    data: Partial<TpJobseekerCv>
+  ): Promise<Partial<TpJobseekerCv>> {
     const userId = getAccessTokenFromLocalStorage().userId
-    const resp = await http(`${API_URL}/redUsers/${userId}/tpJobseekerCv/${id}`, { method: 'put', data })
+    const resp = await http(
+      `${API_URL}/redUsers/${userId}/tpJobseekerCv/${id}`,
+      { method: 'put', data }
+    )
+    return resp.data
+  }
+}
+
+export function deleteCurrentUserTpJobseekerCv(id: string) {
+  return async function () {
+    const userId = getAccessTokenFromLocalStorage().userId
+    const resp = await http(
+      `${API_URL}/redUsers/${userId}/tpJobseekerCv/${id}`,
+      { method: 'delete' }
+    )
     return resp.data
   }
 }
