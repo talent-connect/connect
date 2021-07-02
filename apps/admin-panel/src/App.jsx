@@ -1204,29 +1204,6 @@ const TpJobseekerProfileListFilters = (props) => (
 )
 
 function tpJobseekerProfileListExporter(profiles, fetchRelatedRecords) {
-  // const mentors = await fetchRelatedRecords(
-  //   mentoringSessions,
-  //   'mentorId',
-  //   'redProfiles'
-  // )
-  // const mentees = await fetchRelatedRecords(
-  //   mentoringSessions,
-  //   'menteeId',
-  //   'redProfiles'
-  // )
-  // const data = mentoringSessions.map((x) => {
-  //   const mentor = mentors[x.mentorId]
-  //   const mentee = mentees[x.menteeId]
-  //   if (mentor) {
-  //     x.mentorName = `${mentor.firstName} ${mentor.lastName}`
-  //   }
-  //   if (mentee) {
-  //     x.menteeName = `${mentee.firstName} ${mentee.lastName}`
-  //   }
-  //   return x
-  // })
-  console.log(profiles)
-
   const data = profiles.map((profile) => {
     let { hrSummit2021JobFairCompanyJobPreferences } = profile
     hrSummit2021JobFairCompanyJobPreferences = hrSummit2021JobFairCompanyJobPreferences?.map(
@@ -1236,8 +1213,32 @@ function tpJobseekerProfileListExporter(profiles, fetchRelatedRecords) {
     )
     delete profile.hrSummit2021JobFairCompanyJobPreferences
 
+    const {
+      firstName,
+      lastName,
+      contactEmail,
+      createdAt,
+      state,
+      jobseeker_currentlyEnrolledInCourse,
+      currentlyEnrolledInCourse,
+      loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName,
+      updatedAt,
+      lastLoginDateTime,
+      postalMailingAddress,
+    } = profile
+
     return {
-      ...profile,
+      firstName,
+      lastName,
+      contactEmail,
+      createdAt,
+      state,
+      jobseeker_currentlyEnrolledInCourse,
+      currentlyEnrolledInCourse,
+      loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName,
+      updatedAt,
+      lastLoginDateTime,
+      postalMailingAddress,
       jobPreference1: hrSummit2021JobFairCompanyJobPreferences?.[0],
       jobPreference2: hrSummit2021JobFairCompanyJobPreferences?.[1],
       jobPreference3: hrSummit2021JobFairCompanyJobPreferences?.[2],
@@ -1653,7 +1654,11 @@ const TpCompanyProfileEdit = (props) => (
 
 const TpJobListingList = (props) => {
   return (
-    <List {...props} pagination={<AllModelsPagination />}>
+    <List
+      {...props}
+      pagination={<AllModelsPagination />}
+      exporter={tpJobListingListExporter}
+    >
       <Datagrid>
         <TextField source="title" />
         <TextField source="location" />
@@ -1670,6 +1675,46 @@ const TpJobListingList = (props) => {
       </Datagrid>
     </List>
   )
+}
+
+function tpJobListingListExporter(jobListings, fetchRelatedRecords) {
+  const data = jobListings.map((job) => {
+    const {
+      title,
+      location,
+      tpCompanyProfile: { companyName },
+      employmentType,
+      languageRequirements,
+      desiredExperience,
+      salaryRange,
+    } = job
+
+    return {
+      title,
+      location,
+      companyName,
+      employmentType,
+      languageRequirements,
+      desiredExperience,
+      salaryRange,
+    }
+  })
+
+  const csv = convertToCSV(
+    data
+    // {
+    //   fields: [
+    //     'id',
+    //     'firstName',
+    //     'lastName',
+    //     'contactEmail',
+    //     'hrSummit2021JobFairCompanyJobPreferences',
+    //     'createdAt',
+    //     'updatedAt',
+    //   ],
+    //   }
+  )
+  downloadCSV(csv, 'Are you ReDI? Yalla habibi')
 }
 
 const TpJobListingShow = (props) => (
@@ -1734,7 +1779,11 @@ const TpJobListingEdit = (props) => (
 
 const TpJobFair2021InterviewMatchList = (props) => {
   return (
-    <List {...props} pagination={<AllModelsPagination />}>
+    <List
+      {...props}
+      pagination={<AllModelsPagination />}
+      exporter={tpJobFair2021InterviewMatchListExporter}
+    >
       <Datagrid>
         <ReferenceField
           label="Interviewee"
@@ -1763,6 +1812,54 @@ const TpJobFair2021InterviewMatchList = (props) => {
       </Datagrid>
     </List>
   )
+}
+
+function tpJobFair2021InterviewMatchListExporter(matches, fetchRelatedRecords) {
+  const data = matches.map((match) => {
+    const {
+      company: {
+        companyName,
+        location: companyLocation,
+        firstName: companyPersonFirstName,
+        lastName: companyPersonLastName,
+        contactEmail: companyPersonContactEmail,
+      } = {},
+      interviewee: {
+        currentlyEnrolledInCourse: intervieweeCurrentRediCourse,
+        firstName: intervieweeFirstName,
+        lastName: intervieweeLastName,
+        contactEmail: intervieweeContactEmail,
+      } = {},
+    } = match
+
+    return {
+      companyName,
+      companyLocation,
+      companyPersonFirstName,
+      companyPersonLastName,
+      companyPersonContactEmail,
+      intervieweeFirstName,
+      intervieweeLastName,
+      intervieweeContactEmail,
+      intervieweeCurrentRediCourse,
+    }
+  })
+
+  const csv = convertToCSV(
+    data
+    // {
+    //   fields: [
+    //     'id',
+    //     'firstName',
+    //     'lastName',
+    //     'contactEmail',
+    //     'hrSummit2021JobFairCompanyJobPreferences',
+    //     'createdAt',
+    //     'updatedAt',
+    //   ],
+    //   }
+  )
+  downloadCSV(csv, 'Company-interviewee matches')
 }
 
 const TpJobFair2021InterviewMatchShow = (props) => (
@@ -1801,6 +1898,7 @@ const TpJobFair2021InterviewMatchCreate = (props) => (
         source="intervieweeId"
         reference="tpJobseekerProfiles"
         perPage={0}
+        sort={{ field: 'firstName', order: 'ASC' }}
       >
         <AutocompleteInput
           optionText={(op) => `${op.firstName} ${op.lastName}`}
@@ -1811,6 +1909,7 @@ const TpJobFair2021InterviewMatchCreate = (props) => (
         source="companyId"
         reference="tpCompanyProfiles"
         perPage={0}
+        sort={{ field: 'companyName', order: 'ASC' }}
       >
         <AutocompleteInput optionText={(op) => `${op.companyName}`} />
       </ReferenceInput>
@@ -1841,6 +1940,7 @@ const TpJobFair2021InterviewMatchEdit = (props) => (
         source="intervieweeId"
         reference="tpJobseekerProfiles"
         perPage={0}
+        sort={{ field: 'firstName', order: 'ASC' }}
       >
         <AutocompleteInput
           optionText={(op) => `${op.firstName} ${op.lastName}`}
@@ -1851,6 +1951,7 @@ const TpJobFair2021InterviewMatchEdit = (props) => (
         source="companyId"
         reference="tpCompanyProfiles"
         perPage={0}
+        sort={{ field: 'firstName', order: 'ASC' }}
       >
         <AutocompleteInput optionText={(op) => `${op.companyName}`} />
       </ReferenceInput>
