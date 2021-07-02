@@ -10,7 +10,7 @@ const Me = lazy(
 const Browse = lazy(
   () =>
     import(
-      /* webpackChunkName: "Browse", webpackPreload: true  */ '../pages/app/Browse/Browse'
+      /* webpackChunkName: "Browse", webpackPreload: true  */ '../pages/app/browse/Browse'
     )
 )
 

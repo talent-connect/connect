@@ -13,6 +13,7 @@ function Browse() {
   if (jobseekerProfile) return <BrowseJobseeker />
   if (companyProfile) return <BrowseCompany />
 
+  console.log('t')
   return null
 }
 
