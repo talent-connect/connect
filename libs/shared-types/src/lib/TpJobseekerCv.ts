@@ -5,6 +5,8 @@ import { ProjectRecord } from './tp-jobseeker-profile-cv-shared-interfaces/Proje
 
 export type TpJobseekerCv = {
   id: string
+  cvName: string
+
   firstName: string
   lastName: string
   contactEmail: string

@@ -10,7 +10,7 @@ interface Props {
   type?: 'email' | 'text' | 'password'
 }
 
-function FormInput(props: any) {
+const FormInput = (props: any) => {
   const {
     name,
     placeholder,
@@ -25,6 +25,7 @@ function FormInput(props: any) {
     touched,
     errors,
     disabled,
+    domRef,
   } = props
 
   const hasError = !!get(touched, name) && !!get(errors, name)
@@ -46,6 +47,7 @@ function FormInput(props: any) {
           onChange={handleChange}
           onBlur={handleBlur}
           disabled={isSubmitting || disabled}
+          domRef={domRef}
         />
       </Form.Control>
 

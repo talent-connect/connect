@@ -8,8 +8,8 @@ const Me = lazy(
     )
 )
 
-const CvList = lazy(
-  () => import(/* webpackChunkName: "CvList", webpackPreload: true  */ '../pages/app/cv/CvList')
+const CvListPage = lazy(
+  () => import(/* webpackChunkName: "CvList", webpackPreload: true  */ '../pages/app/cv/CvListPage')
 )
 
 const routes: RouteDefinition[] = [
@@ -20,7 +20,7 @@ const routes: RouteDefinition[] = [
   },
   {
     path: '/app/cv-builder',
-    component: CvList,
+    component: CvListPage,
     exact: true,
   }
 ]
