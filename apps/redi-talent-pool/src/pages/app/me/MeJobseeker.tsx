@@ -151,7 +151,6 @@ export function OnboardingSteps() {
   const { data: profile } = useTpJobseekerProfileQuery()
 
   const currentStep = determineCurrentStep(profile)
-  console.log(currentStep)
 
   return (
     <div className="onboarding-steps">

@@ -1,3 +1,4 @@
+import { Tooltip } from '@material-ui/core'
 import classnames from 'clsx'
 import React from 'react'
 import { useCallback } from 'react'
@@ -9,6 +10,7 @@ interface Props {
   to: string
   isActive?: boolean
   isDisabled?: boolean
+  tooltip?: string
 }
 
 interface FancyLinkProps {
@@ -30,7 +32,17 @@ const FancyLink = React.forwardRef<HTMLAnchorElement>(
   )
 )
 
-export function TpMainNavItem({ page, to, isActive, isDisabled }: Props) {
+function wrapInTooltip(component: React.ReactElement, tooltip: string) {
+  return <Tooltip title={tooltip}>{component}</Tooltip>
+}
+
+export function TpMainNavItem({
+  page,
+  to,
+  isActive,
+  isDisabled,
+  tooltip,
+}: Props) {
   const onClick = useCallback(
     (event: React.MouseEvent) => {
       if (isDisabled) {
@@ -43,21 +55,43 @@ export function TpMainNavItem({ page, to, isActive, isDisabled }: Props) {
   return (
     <Link
       to={to}
-      component={FancyLink}
+      component={(props) => (
+        <FancyLink isDisabled={isDisabled} tooltip={tooltip} {...props} />
+      )}
       onClick={onClick}
-      style={{ cursor: isDisabled ? 'not-allowed' : 'pointer' }}
     >
       <div></div>
-      <div
-        className={classnames(
-          'tp-main-nav-item__icon',
-          `tp-main-nav-item__${page}`,
-          { disabled: isDisabled }
-        )}
-      ></div>
+      <TpMainNavItemIcon
+        page={page}
+        isDisabled={isDisabled}
+        tooltip={tooltip}
+      />
       <div
         className={classnames({ 'tp-main-nav-item__active-bar': isActive })}
       ></div>
     </Link>
   )
+}
+
+function TpMainNavItemIcon({
+  page,
+  isDisabled,
+  tooltip,
+}: {
+  page: string
+  isDisabled?: boolean
+  tooltip?: string
+}) {
+  let iconElement = (
+    <div
+      className={classnames(
+        'tp-main-nav-item__icon',
+        `tp-main-nav-item__${page}`,
+        { disabled: isDisabled }
+      )}
+    ></div>
+  )
+  if (tooltip) iconElement = wrapInTooltip(iconElement, tooltip)
+
+  return iconElement
 }

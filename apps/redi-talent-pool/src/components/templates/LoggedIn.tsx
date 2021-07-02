@@ -16,11 +16,16 @@ const LoggedIn = ({ children }: Props) => {
 
   return (
     <>
-      <Navbar leftPaddingOn />
-      <Container>
+      <Navbar />
+      <Container className="main-container">
         <div style={{ display: 'flex' }}>
-          <div style={{ backgroundColor: '#EFF6F8', minWidth: '84px' }}>
-            <TpMainNavItem page="profile-page" to="/app/me" isActive />
+          <div className="tp-side-menu is-hidden-touch">
+            <TpMainNavItem
+              page="profile-page"
+              tooltip="My profile"
+              to="/app/me"
+              isActive
+            />
             <TpMainNavItem
               page="browse-page"
               to="https://www.google.com"
@@ -32,17 +37,17 @@ const LoggedIn = ({ children }: Props) => {
               isDisabled
             />
           </div>
-          <div className="main--wrapper">
-            <Columns>
-              <Columns.Column
-                desktop={{ size: 12 }}
-                className="column--main-content"
-              >
-                <Loader loading={isBusy} />
-                {children}
-              </Columns.Column>
-            </Columns>
-          </div>
+          <div className="main-container--horizontal-spacer"></div>
+          <Columns style={{ width: '100%' }}>
+            <Columns.Column
+              desktop={{ size: 12 }}
+              className="column--main-content"
+            >
+              <Loader loading={isBusy} />
+              {children}
+            </Columns.Column>
+          </Columns>
+          <div className="main-container--horizontal-spacer is-hidden-desktop"></div>
         </div>
       </Container>
       <Footer />
