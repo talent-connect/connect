@@ -57,20 +57,29 @@ function CvListPage() {
    */
   return (
     <LoggedIn>
-      <Columns className="is-12 is-variable">
-        <Columns.Column size={4}>
-          <Heading size="smaller">CV BUILDER</Heading>
-          <Heading size="medium" border="bottomLeft">
-            Welcome to the CV Builder tool!
-          </Heading>
+      <Columns>
+        <Columns.Column size={12} paddingless>
+          <Columns.Column size={3} paddingless>
+            <Heading size="smaller">CV BUILDER</Heading>
+            <Heading size="medium" border="bottomLeft">
+              Welcome to the CV Builder tool!
+            </Heading>
+          </Columns.Column>
         </Columns.Column>
-        <Columns.Column size={6} style={{ marginBottom: 60 }}>
-          <Content>
-            We build that tool to help you create, fast and easy, a perfect CV
-            to download and apply for your desired position.
-          </Content>
+        <Columns.Column desktop={{ size: 12 }} mobile={{ size: 6 }} paddingless>
+          <Columns.Column size={6} paddingless style={{ marginBottom: 60 }}>
+            <Content>
+              We build that tool to help you create, fast and easy, a perfect CV
+              to download and apply for your desired position.
+            </Content>
+          </Columns.Column>
         </Columns.Column>
-        <Columns.Column size={4} style={{ marginBottom: 100 }}>
+        <Columns.Column
+          desktop={{ size: 3 }}
+          mobile={{ size: 6 }}
+          paddingless
+          style={{ marginBottom: 100 }}
+        >
           <Button fullWidth onClick={() => toggleCvNameModal(true)}>
             Create a CV
           </Button>
