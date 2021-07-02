@@ -40,7 +40,7 @@ const LoggedIn = ({ children }: Props) => {
             />
           </div>
           <div className="main-container--horizontal-spacer"></div>
-          <Columns style={{ width: '100%' }}>
+          <Columns style={{ width: '100%', marginTop: '1rem' }}>
             <Columns.Column
               desktop={{ size: 12 }}
               className="column--main-content"
