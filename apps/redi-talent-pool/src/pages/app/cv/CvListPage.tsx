@@ -15,59 +15,69 @@ import { LoggedIn } from '../../../components/templates'
 import { EmptySectionPlaceholder } from '../../../components/molecules/EmptySectionPlaceholder'
 import CvListItem from './CvListItem'
 
-const autofocusOnCvNameInput = (): void => {
-  // Setting timeout to make sure the modal and input is rendered in the DOM
-  setTimeout(() => {
-    document.getElementById('newCvNameInput').focus()
-  }, 100)
-}
-
-const CvListPage: React.FC = () => {
+function CvListPage() {
   const [showCvNameModal, setShowCvNameModal] = React.useState(false)
   const [newCvName, setNewCvName] = React.useState('')
 
   const { data: cvList } = useTpJobseekerCvQuery()
   const createMutation = useTpjobseekerCvCreateMutation()
 
-  const handleShowCvNameModal = () => {
-    setShowCvNameModal(true)
-    autofocusOnCvNameInput()
+  const setFocusOnRef = (ref: HTMLInputElement) => ref?.focus()
+
+  const toggleCvNameModal = (isOpen) => {
+    setShowCvNameModal(isOpen)
+
+    if (!isOpen) {
+      setNewCvName('')
+    }
   }
 
   const handleCvNameChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setNewCvName(e.target.value)
 
   const handleCreateNewCv = (): void => {
-    createMutation.mutate({ cvName: newCvName })
+    createMutation
+      .mutateAsync({ cvName: newCvName })
+      .then(() => toggleCvNameModal(false))
   }
 
-  const handleEditCv = () => {}
+  // TODO
+  const handleEditCv = (): void => {
+    return
+  }
 
-  const handleExportCv = () => {}
+  // TODO
+  const handleExportCv = (): void => {
+    return
+  }
 
+  /**
+   * TODO: Fix hard-coded margins/paddings below, in favor of the spacing
+   * clean-up task which is planned for after Talent Pool project is done
+   */
   return (
     <LoggedIn>
       <Columns className="is-6 is-variable">
-        <Columns.Column>
-          <div style={{ marginBottom: 72 }}>
+        <Columns.Column size={12} paddingless>
+          <Columns.Column size={4}>
             <Heading size="smaller">CV BUILDER</Heading>
-            <div style={{ width: 300 }}>
-              <Heading size="medium" border="bottomLeft">
-                Welcome to the CV Builder tool!
-              </Heading>
-            </div>
-            <div style={{ width: 700 }}>
-              <Content>
-                We build that tool to help you create, fast and easy, a perfect
-                CV to download and apply for your desired position.
-              </Content>
-            </div>
-          </div>
-          <div style={{ width: 300, marginBottom: 120 }}>
-            <Button fullWidth onClick={handleShowCvNameModal}>
+            <Heading size="medium" border="bottomLeft">
+              Welcome to the CV Builder tool!
+            </Heading>
+          </Columns.Column>
+          <Columns.Column size={6} style={{ marginBottom: 60 }}>
+            <Content>
+              We build that tool to help you create, fast and easy, a perfect CV
+              to download and apply for your desired position.
+            </Content>
+          </Columns.Column>
+          <Columns.Column size={4} style={{ marginBottom: 100 }}>
+            <Button fullWidth onClick={() => toggleCvNameModal(true)}>
               Create a CV
             </Button>
-          </div>
+          </Columns.Column>
+        </Columns.Column>
+        <Columns.Column>
           <div
             style={{
               paddingBottom: 10,
@@ -92,29 +102,31 @@ const CvListPage: React.FC = () => {
                 height="extra-slim"
                 style={{ width: 300, margin: 'auto' }}
                 text="Create a CV"
-                onClick={handleShowCvNameModal}
+                onClick={() => toggleCvNameModal(true)}
               />
             </Section>
           ) : (
             <EmptySectionPlaceholder
               height="tall"
               text="Create a CV"
-              onClick={handleShowCvNameModal}
+              onClick={() => toggleCvNameModal(true)}
             />
           )}
         </Columns.Column>
       </Columns>
       <Modal
         show={showCvNameModal}
-        stateFn={setShowCvNameModal}
+        stateFn={toggleCvNameModal}
         title="Create a CV"
       >
         <Modal.Body>
           <FormInput
             name="newCvNameInput"
             label="Name of the CV"
+            placeholder="CV for Microsoft Frontend Developer Internship"
             values={{ newCvNameInput: newCvName }}
             handleChange={handleCvNameChange}
+            domRef={setFocusOnRef}
           />
         </Modal.Body>
         <Modal.Foot>

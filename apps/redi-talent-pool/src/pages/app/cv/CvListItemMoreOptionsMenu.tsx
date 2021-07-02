@@ -1,3 +1,9 @@
+/**
+ * TODO: This component is only used in CvListPage, thus it makes sense to
+ * have it located here. However, upon further discussion, this co-locating
+ * must be standardized within the project.
+ */
+
 import React from 'react'
 
 import { Content } from 'react-bulma-components'
@@ -10,7 +16,9 @@ interface CvListItemMoreOptionsMenuProps {
   handleDuplicateClick(): void
 }
 
-const CvListItemMoreOptionsMenu = (props: CvListItemMoreOptionsMenuProps) => {
+export function CvListItemMoreOptionsMenu(
+  props: CvListItemMoreOptionsMenuProps
+) {
   const [anchorEl, setAnchorEl] = React.useState(null)
 
   const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -78,5 +86,3 @@ const CvListItemMoreOptionsMenu = (props: CvListItemMoreOptionsMenuProps) => {
     </div>
   )
 }
-
-export default CvListItemMoreOptionsMenu
