@@ -7,11 +7,22 @@ const Me = lazy(
       /* webpackChunkName: "Me", webpackPreload: true  */ '../pages/app/me/Me'
     )
 )
+const Browse = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "Browse", webpackPreload: true  */ '../pages/app/Browse/Browse'
+    )
+)
 
 const routes: RouteDefinition[] = [
   {
     path: '/app/me',
     component: Me,
+    exact: true,
+  },
+  {
+    path: '/app/browse',
+    component: Browse,
     exact: true,
   },
 ]

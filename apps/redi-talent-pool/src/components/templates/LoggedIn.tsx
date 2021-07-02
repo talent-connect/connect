@@ -1,6 +1,7 @@
 import { Loader } from '@talent-connect/shared-atomic-design-components'
 import React, { ReactNode } from 'react'
 import { Columns, Container, Section } from 'react-bulma-components'
+import { useLocation } from 'react-router'
 import { useIsBusy } from '../../hooks/useIsBusy'
 import { useTpCompanyProfileQuery } from '../../react-query/use-tpcompanyprofile-query'
 import { useTpJobseekerProfileQuery } from '../../react-query/use-tpjobseekerprofile-query'
@@ -15,6 +16,7 @@ interface Props {
 
 const LoggedIn = ({ children }: Props) => {
   const isBusy = useIsBusy()
+  const location = useLocation()
   const { data: jobseekerProfile } = useTpJobseekerProfileQuery({
     retry: false,
   })
@@ -30,13 +32,13 @@ const LoggedIn = ({ children }: Props) => {
               page="profile-page"
               pageName="My profile"
               to="/app/me"
-              isActive
+              isActive={location.pathname === '/app/me'}
             />
             <TpMainNavItem
               page="browse-page"
               pageName="Browse"
               to="/app/browse"
-              isDisabled
+              isActive={location.pathname === '/app/browse'}
             />
             {jobseekerProfile ? (
               <TpMainNavItem
