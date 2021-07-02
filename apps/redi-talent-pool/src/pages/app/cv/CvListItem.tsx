@@ -19,13 +19,6 @@ import CvListItemMoreOptionsMenu from './CvListItemMoreOptionsMenu'
 
 const CREATED_AT_DATE_FORMAT = 'dd.MM.yyyy'
 
-const autofocusOnCvNameInput = (): void => {
-  // Setting timeout to make sure the modal and input is rendered in the DOM
-  setTimeout(() => {
-    document.getElementById('newCvNameInput').focus()
-  }, 100)
-}
-
 interface CvListItemProps {
   id: string
   name: string
@@ -62,9 +55,10 @@ const CvListItem = (props: CvListItemProps) => {
   const updateMutation = useTpjobseekerCvUpdateMutation(props.id)
   const deleteMutation = useTpjobseekerCvDeleteMutation(props.id)
 
+  const setFocusOnRef = (ref: HTMLInputElement) => ref.focus()
+
   const handleShowCvNameModal = () => {
     setShowCvNameModal(true)
-    autofocusOnCvNameInput()
   }
 
   const handleDelete = (): void => {
@@ -118,6 +112,7 @@ const CvListItem = (props: CvListItemProps) => {
             label="Name of the CV"
             values={{ newCvNameInput: newCvName }}
             handleChange={(e) => setNewCvName(e.target.value)}
+            domRef={setFocusOnRef}
           />
         </Modal.Body>
         <Modal.Foot>
