@@ -9,11 +9,11 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import { Section, Columns, Content } from 'react-bulma-components'
 
-import { useTpjobseekerCvCreateMutation } from '../../../react-query/use-tpjobseekercv-mutation'
-import { useTpJobseekerCvQuery } from '../../../react-query/use-tpjobseekercv-query'
+import { useTpjobseekerCvCreateMutation } from '../../../../react-query/use-tpjobseekercv-mutation'
+import { useTpJobseekerCvQuery } from '../../../../react-query/use-tpjobseekercv-query'
 
-import { LoggedIn } from '../../../components/templates'
-import { EmptySectionPlaceholder } from '../../../components/molecules/EmptySectionPlaceholder'
+import { LoggedIn } from '../../../../components/templates'
+import { EmptySectionPlaceholder } from '../../../../components/molecules/EmptySectionPlaceholder'
 import CvListItem from './CvListItem'
 
 function CvListPage() {

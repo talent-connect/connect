@@ -11,14 +11,14 @@ const Me = lazy(
 const CvListPage = lazy(
   () =>
     import(
-      /* webpackChunkName: "CvList", webpackPreload: true  */ '../pages/app/cv/CvListPage'
+      /* webpackChunkName: "CvList", webpackPreload: true  */ '../pages/app/cv-builder/cv-list/CvListPage'
     )
 )
 
 const CvDetailPage = lazy(
   () =>
     import(
-      /* webpackChunkName: "CvDetail", webpackPreload: true  */ '../pages/app/cv/CvDetailPage'
+      /* webpackChunkName: "CvDetail", webpackPreload: true  */ '../pages/app/cv-builder/cv-detail/CvDetailPage'
     )
 )
 

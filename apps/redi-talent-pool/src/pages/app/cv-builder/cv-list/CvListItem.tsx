@@ -20,7 +20,7 @@ import {
   useTpjobseekerCvCreateMutation,
   useTpjobseekerCvDeleteMutation,
   useTpjobseekerCvUpdateMutation,
-} from '../../../react-query/use-tpjobseekercv-mutation'
+} from '../../../../react-query/use-tpjobseekercv-mutation'
 
 import { CvListItemMoreOptionsMenu } from './CvListItemMoreOptionsMenu'
 
