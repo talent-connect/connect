@@ -8,7 +8,7 @@ export function JobListing() {
 
   console.log(jobListing)
 
-  return <LoggedIn>yo bitch</LoggedIn>
+  return <LoggedIn>job listing comes here</LoggedIn>
 }
 
 export default JobListing

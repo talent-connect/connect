@@ -10,7 +10,7 @@ export function JobseekerProfile() {
 
   console.log(jobseekerProfile)
 
-  return <LoggedIn>yo bitch</LoggedIn>
+  return <LoggedIn>jobseeker profile comes here</LoggedIn>
 }
 
 export default JobseekerProfile
