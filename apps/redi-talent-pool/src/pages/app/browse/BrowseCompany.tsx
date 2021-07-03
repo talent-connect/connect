@@ -31,7 +31,8 @@ export function BrowseCompany() {
         responsive={{ mobile: { textSize: { value: 5 } } }}
         className="oneandhalf-bs"
       >
-        Your job postings have been matched with {jobseekerProfiles?.length}
+        Your job postings have been matched with {jobseekerProfiles?.length}{' '}
+        jobseekers
       </Element>
       <Element
         renderAs="p"
