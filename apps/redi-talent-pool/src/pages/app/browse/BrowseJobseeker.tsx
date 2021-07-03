@@ -1,11 +1,15 @@
 import React from 'react'
+import { Columns, Element } from 'react-bulma-components'
+import { useHistory } from 'react-router-dom'
+import { JobListingCard } from '../../../components/organisms/JobListingCard'
 import { LoggedIn } from '../../../components/templates'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
-import { Element } from 'react-bulma-components'
-import { Heading } from '@talent-connect/shared-atomic-design-components'
+import { useTpJobFair2021InterviewMatch_tpJobListingsQuery } from '../../../react-query/use-tpjobfair2021interviewmatch-tpjoblistings-query'
 
 export function BrowseJobseeker() {
-  const { data: profile } = useTpJobseekerProfileQuery()
+  const history = useHistory()
+  const {
+    data: jobListings,
+  } = useTpJobFair2021InterviewMatch_tpJobListingsQuery()
 
   return (
     <LoggedIn>
@@ -24,7 +28,8 @@ export function BrowseJobseeker() {
         responsive={{ mobile: { textSize: { value: 5 } } }}
         className="oneandhalf-bs"
       >
-        Your profile has been matched with xxx open job positions.
+        Your profile has been matched with {jobListings?.length} open job
+        positions.
       </Element>
       <Element
         renderAs="p"
@@ -35,6 +40,17 @@ export function BrowseJobseeker() {
         Now you can view the job posting and the company profile to get ready
         for your interview.
       </Element>
+      <Columns>
+        {jobListings?.map((jobListing) => (
+          <Columns.Column mobile={{ size: 12 }} tablet={{ size: 6 }}>
+            <JobListingCard
+              key={jobListing.id}
+              jobListing={jobListing}
+              onClick={() => history.push(`/app/job-listing/${jobListing.id}`)}
+            />
+          </Columns.Column>
+        ))}
+      </Columns>
     </LoggedIn>
   )
 }

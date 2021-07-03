@@ -1,6 +1,6 @@
 @import '_variables.scss';
 
-.job-posting-card {
+.jobseeker-profile-card {
   border-radius: 4px;
   height: 24.5rem;
   overflow: hidden;
@@ -29,7 +29,7 @@
     img {
       height: 9.5rem;
       overflow: hidden;
-      object-fit: contain;
+      object-fit: cover;
     }
   }
 

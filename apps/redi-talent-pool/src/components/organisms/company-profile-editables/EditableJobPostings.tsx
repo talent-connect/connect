@@ -36,7 +36,7 @@ import { ReactComponent as JobPlaceholderCard } from './job-placeholder-card.svg
 import JobPlaceholderCardUrl from './job-placeholder-card.svg'
 import { useTpJobListingAllQuery } from '../../../react-query/use-tpjoblisting-all-query'
 import { JobListingCard } from '../JobListingCard'
-import { useTpJobListingOneQuery } from '../../../react-query/use-tpjoblisting-one-query'
+import { useTpJobListingOneOfCurrentUserQuery } from '../../../react-query/use-tpjoblisting-one-query'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpJobListingUpdateMutation } from '../../../react-query/use-tpjoblisting-update-mutation'
 import { useTpJobListingDeleteMutation } from '../../../react-query/use-tpjoblisting-delete-mutation'
@@ -151,7 +151,7 @@ function ModalForm({
   setIsEditing,
   tpJobListingId,
 }: ModalFormProps) {
-  const { data } = useTpJobListingOneQuery(tpJobListingId)
+  const { data } = useTpJobListingOneOfCurrentUserQuery(tpJobListingId)
   const { data: currentUserTpCompanyProfile } = useTpCompanyProfileQuery()
   const jobListing = tpJobListingId
     ? data

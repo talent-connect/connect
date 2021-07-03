@@ -155,9 +155,16 @@ export async function fetchAllTpJobListings(): Promise<Array<TpJobListing>> {
   return resp.data.filter((listing) => !listing.dummy)
 }
 
-export async function fetchOneTpJobListing(id: string): Promise<TpJobListing> {
+export async function fetchOneTpJobListingOfCurrentUser(
+  id: string
+): Promise<TpJobListing> {
   const userId = getAccessTokenFromLocalStorage().userId
   const resp = await http(`${API_URL}/redUsers/${userId}/tpJobListings/${id}`)
+  return resp.data
+}
+
+export async function fetchOneTpJobListing(id: string): Promise<TpJobListing> {
+  const resp = await http(`${API_URL}/tpJobListings/${id}`)
   return resp.data
 }
 
@@ -196,5 +203,36 @@ export async function deleteCurrentUserTpJobListing(
       method: 'delete',
     }
   )
+  return resp.data
+}
+
+export async function fetchAllTpJobFair2021InterviewMatches_tpJobListings(): Promise<
+  Array<TpJobListing>
+> {
+  const resp = await http(`${API_URL}/tpJobfair2021InterviewMatches`)
+  const interviewMatches = resp.data
+  const jobListings: Array<TpJobListing> = interviewMatches.map(
+    (match) => match.jobListing
+  )
+
+  return jobListings
+}
+
+export async function fetchAllTpJobFair2021InterviewMatches_tpJobseekerProfiles(): Promise<
+  Array<TpJobseekerProfile>
+> {
+  const resp = await http(`${API_URL}/tpJobfair2021InterviewMatches`)
+  const interviewMatches = resp.data
+  const jobseekerProfiles: Array<TpJobseekerProfile> = interviewMatches.map(
+    (match) => match.interviewee
+  )
+
+  return jobseekerProfiles
+}
+
+export async function fetchTpJobseekerProfileById(
+  id: string
+): Promise<Partial<TpJobseekerProfile>> {
+  const resp = await http(`${API_URL}/tpJobseekerProfiles/${id}`)
   return resp.data
 }
