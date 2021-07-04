@@ -137,7 +137,7 @@ export async function fetchCurrentUserTpJobseekerCvById(
   id: string
 ): Promise<Partial<TpJobseekerCv>> {
   const userId = getAccessTokenFromLocalStorage().userId
-  const resp = await http(`${API_URL}/tpJobseekerCv/${id}`)
+  const resp = await http(`${API_URL}/redUsers/${userId}/tpJobseekerCv/${id}`)
   return resp.data
 }
 

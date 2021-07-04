@@ -1,5 +1,5 @@
 import React from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import { Columns, Content, Box, Section } from 'react-bulma-components'
 
 import {
@@ -11,6 +11,9 @@ import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined'
 
 import { LoggedIn } from '../../../../components/templates'
 import { CVPDFPreviewMemoized } from '../../../../components/molecules'
+import { useTpJobseekerCvByIdQuery } from '../../../../react-query/use-tpjobseekercv-query'
+
+import './CvDetailPage.scss'
 
 const userCVData: CVFormData = {
   desiredPositions: ['Desired Position', 'Desired Position'],
@@ -106,8 +109,15 @@ function InlinePencilIcon() {
   )
 }
 
+interface ParamTypes {
+  id: string
+}
+
 function CvDetailPage() {
   const history = useHistory()
+  const { id: cvId } = useParams<ParamTypes>()
+
+  const { data: cvData } = useTpJobseekerCvByIdQuery(cvId)
 
   const handleCloseClick = () => history.push('/app/cv-builder')
 
@@ -116,6 +126,11 @@ function CvDetailPage() {
       <Columns>
         <Columns.Column size={5} style={{ borderRight: '2px solid #F7F7F7' }}>
           <Columns.Column size={8} paddingless>
+            <Section paddingless style={{ marginBottom: 100 }}>
+              <Heading size="smaller" className="cv-name-heading">
+                {cvData?.cvName?.toUpperCase()}
+              </Heading>
+            </Section>
             <Heading size="smaller">UPDATE YOUR CV</Heading>
             <Heading size="medium" border="bottomLeft">
               Select a section to edit your CV
@@ -141,9 +156,11 @@ function CvDetailPage() {
           </Columns.Column>
         </Columns.Column>
         <Columns.Column size={7}>
-          <Box paddingless style={{ width: 595 }}>
-            <CVPDFPreviewMemoized cvData={userCVData} />
-          </Box>
+          {cvData && (
+            <Box paddingless style={{ width: 595 }}>
+              <CVPDFPreviewMemoized cvData={cvData} />
+            </Box>
+          )}
         </Columns.Column>
       </Columns>
       <Section style={{ display: 'flex', justifyContent: 'flex-end' }}>
