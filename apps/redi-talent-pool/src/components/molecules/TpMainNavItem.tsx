@@ -32,10 +32,6 @@ const FancyLink = React.forwardRef<HTMLAnchorElement>(
   )
 )
 
-function wrapInTooltip(component: React.ReactElement, tooltip: string) {
-  return <Tooltip title={tooltip}>{component}</Tooltip>
-}
-
 export function TpMainNavItem({
   page,
   to,
@@ -83,38 +79,21 @@ function TpMainNavItemIcon({
   pageName?: string
 }) {
   return (
-    <>
-      <div className="is-hidden-desktop">
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <div
-            className={classnames(
-              'tp-main-nav-item__icon',
-              `tp-main-nav-item__${page}`,
-              { disabled: isDisabled }
-            )}
-          ></div>
-          <span style={{ fontSize: '0.875rem', color: '#5d5d5d' }}>
-            {pageName}
-          </span>
-        </div>
-      </div>
-      <div className="is-hidden-touch">
-        <Tooltip title={pageName}>
-          <div
-            className={classnames(
-              'tp-main-nav-item__icon',
-              `tp-main-nav-item__${page}`,
-              { disabled: isDisabled }
-            )}
-          ></div>
-        </Tooltip>
-      </div>
-    </>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
+    >
+      <div
+        className={classnames(
+          'tp-main-nav-item__icon',
+          `tp-main-nav-item__${page}`,
+          { disabled: isDisabled }
+        )}
+      ></div>
+      <span style={{ fontSize: '0.875rem', color: '#5d5d5d' }}>{pageName}</span>
+    </div>
   )
 }
