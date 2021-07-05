@@ -6,10 +6,10 @@ import {
   Caption,
   CardTags,
   Placeholder,
+  CardTagsProps,
 } from '@talent-connect/shared-atomic-design-components'
 import { categoriesIdToLabelMap } from '@talent-connect/shared-config'
 import { RedProfile } from '@talent-connect/shared-types'
-import { CardTagsProps } from 'libs/shared-atomic-design-components/src/lib/atoms/CardTags'
 
 interface ReadMentoringProps {
   profile: RedProfile

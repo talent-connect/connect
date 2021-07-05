@@ -15,12 +15,12 @@ export function MeCompany() {
     <LoggedIn>
       <Columns className="is-6 is-variable">
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'three-fifths' }}>
-          <EditableNamePhotoLocation />
-          <EditableAbout />
+          <EditableNamePhotoLocation profile={profile} />
+          <EditableAbout profile={profile} />
         </Columns.Column>
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'two-fifths' }}>
-          <EditableDetails />
-          <EditableContact />
+          <EditableDetails profile={profile} />
+          <EditableContact profile={profile} />
         </Columns.Column>
       </Columns>
       <EditableJobPostings />

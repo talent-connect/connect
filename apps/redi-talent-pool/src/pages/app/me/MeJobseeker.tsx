@@ -62,11 +62,11 @@ export function MeJobseeker() {
             </div>
             <OnboardingSteps />
           </div>
-          <EditableNamePhotoLocation />
-          <EditableOverview />
-          <EditableSummary />
-          <EditableProfessionalExperience />
-          <EditableEducation />
+          <EditableNamePhotoLocation profile={profile} />
+          <EditableOverview profile={profile} />
+          <EditableSummary profile={profile} />
+          <EditableProfessionalExperience profile={profile} />
+          <EditableEducation profile={profile} />
         </Columns.Column>
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'two-fifths' }}>
           <div className="is-hidden-mobile">
@@ -75,11 +75,12 @@ export function MeJobseeker() {
             </div>
             <OnboardingSteps />
           </div>
-          <EditableImportantDetails />
-          <EditableLanguages />
-          <EditableLinks />
+          <EditableImportantDetails profile={profile} />
+          <EditableLanguages profile={profile} />
+          <EditableLinks profile={profile} />
           {currentStep[0] >= 4 ? (
             <EditableJobPreferences
+              profile={profile}
               triggerModalSignal={openJobPreferencesModalSignalRef.current}
             />
           ) : null}
@@ -151,7 +152,6 @@ export function OnboardingSteps() {
   const { data: profile } = useTpJobseekerProfileQuery()
 
   const currentStep = determineCurrentStep(profile)
-  console.log(currentStep)
 
   return (
     <div className="onboarding-steps">

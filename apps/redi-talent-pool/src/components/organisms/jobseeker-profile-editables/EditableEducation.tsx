@@ -39,15 +39,22 @@ function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
   return result
 }
 
-export function EditableEducation() {
-  const { data: profile } = useTpJobseekerProfileQuery()
+interface Props {
+  profile: Partial<TpJobseekerProfile>
+  disableEditing?: boolean
+}
+
+export function EditableEducation({ profile, disableEditing }: Props) {
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
   const isEmpty = EditableEducation.isSectionEmpty(profile)
 
+  if (disableEditing && isEmpty) return null
+
   return (
     <Editable
+      disableEditing={disableEditing}
       isEditing={isEditing}
       isFormDirty={isFormDirty}
       setIsEditing={setIsEditing}

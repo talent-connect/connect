@@ -49,7 +49,7 @@ const LoggedInButtons = ({ mobile }: { mobile?: boolean }) => {
   )
 }
 
-const Navbar = () => {
+const Navbar = ({ leftPaddingOn = false }) => {
   const [menuActive, setMenuActive] = useState(false)
 
   const mobileMenu = (
@@ -68,9 +68,16 @@ const Navbar = () => {
   return (
     <>
       {menuActive && mobileMenu}
-      <Section className={classnames('navbar default-background')}>
-        <Container className="navbar__wrapper">
+
+      {/* <Container
+        className={classnames({ 'navbar__wrapper-wrapper': leftPaddingOn })}
+      > */}
+      <Container className="navbar__wrapper">
+        <div style={{ display: 'flex' }}>
+          <div className="is-hidden-desktop" style={{ width: '24px' }}></div>
           <RediTalentPoolLogo />
+        </div>
+        <div style={{ display: 'flex' }}>
           <Element
             responsive={{ mobile: { hide: { value: true } } }}
             className="navbar__buttons"
@@ -86,8 +93,10 @@ const Navbar = () => {
               <Button.Icon icon="hamburger" />
             </Button>
           </Element>
-        </Container>
-      </Section>
+          <div className="is-hidden-desktop" style={{ width: '24px' }}></div>
+        </div>
+      </Container>
+      {/* </Container> */}
     </>
   )
 }

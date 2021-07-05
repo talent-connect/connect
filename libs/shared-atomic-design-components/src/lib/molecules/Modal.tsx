@@ -17,8 +17,6 @@ const Modal = ({ title, children, stateFn, show, confirm, styles }: Props) => {
 
   const [internalShow, setInternalShow] = useState(false)
 
-  console.log(show)
-
   useEffect(() => {
     console.log(show)
     if (show) {

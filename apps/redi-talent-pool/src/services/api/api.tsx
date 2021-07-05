@@ -147,12 +147,24 @@ export async function updateCurrentUserTpCompanyProfile(
 export async function fetchAllTpJobListings(): Promise<Array<TpJobListing>> {
   const userId = getAccessTokenFromLocalStorage().userId
   const resp = await http(`${API_URL}/redUsers/${userId}/tpJobListings`)
+
+  // TODO: remove the `.filter()`. It
+  // was inserted temporarily for the "dummy" job listings we created for HR Summit
+  // 2021. Once the event is over, they can be removed from database completely.
+  // Reason for filter here is so companies don't see these dummy job listings.
+  return resp.data.filter((listing) => !listing.dummy)
+}
+
+export async function fetchOneTpJobListingOfCurrentUser(
+  id: string
+): Promise<TpJobListing> {
+  const userId = getAccessTokenFromLocalStorage().userId
+  const resp = await http(`${API_URL}/redUsers/${userId}/tpJobListings/${id}`)
   return resp.data
 }
 
 export async function fetchOneTpJobListing(id: string): Promise<TpJobListing> {
-  const userId = getAccessTokenFromLocalStorage().userId
-  const resp = await http(`${API_URL}/redUsers/${userId}/tpJobListings/${id}`)
+  const resp = await http(`${API_URL}/tpJobListings/${id}`)
   return resp.data
 }
 
@@ -191,5 +203,36 @@ export async function deleteCurrentUserTpJobListing(
       method: 'delete',
     }
   )
+  return resp.data
+}
+
+export async function fetchAllTpJobFair2021InterviewMatches_tpJobListings(): Promise<
+  Array<TpJobListing>
+> {
+  const resp = await http(`${API_URL}/tpJobfair2021InterviewMatches`)
+  const interviewMatches = resp.data
+  const jobListings: Array<TpJobListing> = interviewMatches.map(
+    (match) => match.jobListing
+  )
+
+  return jobListings
+}
+
+export async function fetchAllTpJobFair2021InterviewMatches_tpJobseekerProfiles(): Promise<
+  Array<TpJobseekerProfile>
+> {
+  const resp = await http(`${API_URL}/tpJobfair2021InterviewMatches`)
+  const interviewMatches = resp.data
+  const jobseekerProfiles: Array<TpJobseekerProfile> = interviewMatches.map(
+    (match) => match.interviewee
+  )
+
+  return jobseekerProfiles
+}
+
+export async function fetchTpJobseekerProfileById(
+  id: string
+): Promise<Partial<TpJobseekerProfile>> {
+  const resp = await http(`${API_URL}/tpJobseekerProfiles/${id}`)
   return resp.data
 }
