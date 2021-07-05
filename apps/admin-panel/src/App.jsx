@@ -1372,6 +1372,19 @@ const TpJobseekerProfileShow = (props) => (
               <TextField source="companyName" />
             </Datagrid>
           </ArrayField>
+
+          <ReferenceManyField
+            label="HR Summit 2021 Interview Matches"
+            reference="tpJobfair2021InterviewMatches"
+            target="intervieweeId"
+          >
+            <Datagrid>
+              <TextField label="Company name" source="company.companyName" />
+              <ShowButton />
+              <EditButton />
+            </Datagrid>
+          </ReferenceManyField>
+
           <h4>Record information</h4>
           <RecordCreatedAt />
           <RecordUpdatedAt />
@@ -1587,6 +1600,18 @@ const TpCompanyProfileShow = (props) => (
               <TextField source="languageRequirements" />
               <TextField source="desiredExperience" />
               <TextField source="salaryRange" />
+              <ShowButton />
+              <EditButton />
+            </Datagrid>
+          </ReferenceManyField>
+
+          <ReferenceManyField
+            label="HR Summit 2021 Interview Matches"
+            reference="tpJobfair2021InterviewMatches"
+            target="companyId"
+          >
+            <Datagrid>
+              <FullName sourcePrefix="interviewee." />
               <ShowButton />
               <EditButton />
             </Datagrid>
