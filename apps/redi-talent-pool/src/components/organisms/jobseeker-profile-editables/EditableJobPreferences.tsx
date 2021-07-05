@@ -29,11 +29,11 @@ function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
 }
 
 interface Props {
+  profile: Partial<TpJobseekerProfile>
   triggerModalSignal?: Subject<void>
 }
 
-export function EditableJobPreferences({ triggerModalSignal }: Props) {
-  const { data: profile } = useTpJobseekerProfileQuery()
+export function EditableJobPreferences({ profile, triggerModalSignal }: Props) {
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 

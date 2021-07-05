@@ -27,15 +27,22 @@ import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseeker
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
-export function EditableImportantDetails() {
-  const { data: profile } = useTpJobseekerProfileQuery()
+interface Props {
+  profile: Partial<TpJobseekerProfile>
+  disableEditing?: boolean
+}
+
+export function EditableImportantDetails({ profile, disableEditing }: Props) {
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
   const isEmpty = EditableImportantDetails.isSectionEmpty(profile)
 
+  if (disableEditing && isEmpty) return null
+
   return (
     <Editable
+      disableEditing={disableEditing}
       isEditing={isEditing}
       isFormDirty={isFormDirty}
       setIsEditing={setIsEditing}

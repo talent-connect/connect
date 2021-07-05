@@ -54,13 +54,17 @@ export function Editable({
       ) : (
         <div className="is-flex is-flex-direction-row">
           <span style={{ flexGrow: 1 }}>&nbsp;</span>
-          <div
-            className="icon__button"
-            onClick={() => setIsEditing(true)}
-            style={{ position: 'relative', top: '50px' }}
-          >
-            <Icon icon="edit" />
-          </div>
+          {!disableEditing ? (
+            <div
+              className="icon__button"
+              onClick={() => setIsEditing(true)}
+              style={{ position: 'relative', top: '50px' }}
+            >
+              <Icon icon="edit" />
+            </div>
+          ) : (
+            <div></div>
+          )}
         </div>
       )}
 

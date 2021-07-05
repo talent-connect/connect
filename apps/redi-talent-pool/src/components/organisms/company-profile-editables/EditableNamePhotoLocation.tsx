@@ -12,13 +12,16 @@ import { Columns, Content, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
 import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
-import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import Avatar from '../Avatar'
 
-export function EditableNamePhotoLocation() {
-  const { data: profile } = useTpCompanyProfileQuery()
+interface Props {
+  profile: Partial<TpCompanyProfile>
+  disableEditing?: boolean
+}
+
+export function EditableNamePhotoLocation({ profile, disableEditing }: Props) {
   const mutation = useTpCompanyProfileUpdateMutation()
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
@@ -27,6 +30,7 @@ export function EditableNamePhotoLocation() {
 
   return (
     <Editable
+      disableEditing={disableEditing}
       isEditing={isEditing}
       isFormDirty={isFormDirty}
       setIsEditing={setIsEditing}
