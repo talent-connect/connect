@@ -40,8 +40,8 @@ export function BrowseCompany() {
         responsive={{ mobile: { textSize: { value: 6 } } }}
         className="oneandhalf-bs"
       >
-        Now you can view the job posting and the company profile to get ready
-        for your interview.
+        Now you can view the jobseeker profiles and get ready for your
+        interview.
       </Element>
       <Columns>
         {jobseekerProfiles?.map((profile) => (
