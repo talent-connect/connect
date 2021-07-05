@@ -1516,6 +1516,19 @@ const TpJobseekerProfileEdit = (props) => (
             <TextField source="companyName" />
           </Datagrid>
         </ArrayField>
+
+        <ReferenceManyField
+          label="HR Summit 2021 Interview Matches"
+          reference="tpJobfair2021InterviewMatches"
+          target="intervieweeId"
+        >
+          <Datagrid>
+            <TextField label="Company name" source="company.companyName" />
+            <ShowButton />
+            <EditButton />
+          </Datagrid>
+        </ReferenceManyField>
+
         <h4>Record information</h4>
         <RecordCreatedAt />
         <RecordUpdatedAt />
@@ -1649,7 +1662,11 @@ const TpCompanyProfileEdit = (props) => (
         <TextInput source="phoneNumber" />
         <TextInput source="about" />
 
-        <ArrayField source="jobListings" fieldKey="uuid">
+        <ReferenceManyField
+          label="Job Listings"
+          reference="tpJobListings"
+          target="tpCompanyProfileId"
+        >
           <Datagrid>
             <TextField source="title" />
             <TextField source="location" />
@@ -1657,18 +1674,31 @@ const TpCompanyProfileEdit = (props) => (
             <TextField source="proficiencyLevelId" />
             <FunctionField
               label="idealTechnicalSkills"
-              render={(record) => record.idealTechnicalSkills.join(', ')}
+              render={(record) => record?.idealTechnicalSkills?.join(', ')}
             />
             <FunctionField
               label="relatesToPositions"
-              render={(record) => record.relatesToPositions.join(', ')}
+              render={(record) => record?.relatesToPositions?.join(', ')}
             />
             <TextField source="employmentType" />
             <TextField source="languageRequirements" />
             <TextField source="desiredExperience" />
             <TextField source="salaryRange" />
+            <ShowButton />
+            <EditButton />
           </Datagrid>
-        </ArrayField>
+        </ReferenceManyField>
+        <ReferenceManyField
+          label="HR Summit 2021 Interview Matches"
+          reference="tpJobfair2021InterviewMatches"
+          target="companyId"
+        >
+          <Datagrid>
+            <FullName sourcePrefix="interviewee." />
+            <ShowButton />
+            <EditButton />
+          </Datagrid>
+        </ReferenceManyField>
       </FormTab>
       <FormTab label="Internal comments">
         <LongTextInput source="administratorInternalComment" />
