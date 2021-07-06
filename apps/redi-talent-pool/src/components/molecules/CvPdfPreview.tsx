@@ -26,27 +26,27 @@ Font.register({
     {
       src: '/assets/fonts/Avenir-Black.woff',
       fontWeight: 900,
-      fontSize: 'normal',
+      fontStyle: 'normal',
     },
     {
       src: '/assets/fonts/Avenir-Heavy.woff',
       fontWeight: 800,
-      fontSize: 'normal',
+      fontStyle: 'normal',
     },
     {
       src: '/assets/fonts/Avenir-Medium.woff',
       fontWeight: 500,
-      fontSize: 'normal',
+      fontStyle: 'normal',
     },
     {
       src: '/assets/fonts/Avenir-MediumOblique.woff',
       fontWeight: 500,
-      fontSize: 'oblique',
+      fontStyle: 'oblique',
     },
     {
       src: '/assets/fonts/AvenirLTStd-Book.woff',
       fontWeight: 300,
-      fontSize: 'normal',
+      fontStyle: 'normal',
     },
   ],
 })
@@ -108,7 +108,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   contentLeft: {
-    backgroundColor: 'rgba(222, 239, 243, 0.5)',
     flexDirection: 'column',
     width: '32%',
     marginTop: '30px',
@@ -119,7 +118,6 @@ const styles = StyleSheet.create({
     width: '3%',
   },
   contentRight: {
-    backgroundColor: 'rgba(222, 239, 243, 0.5)',
     flexDirection: 'column',
     width: '65%',
     borderRadius: '8px',
@@ -132,7 +130,7 @@ const styles = StyleSheet.create({
   },
   contentViewRight: {
     // margin: '15px 36px 0 -2px',
-    padding: '5px 0',
+    padding: '8px 0',
     borderTop: '1px solid #707070',
   },
   contentHeading: {
@@ -196,12 +194,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   experienceView2: {
-    marginLeft: '10px',
     fontSize: '8px',
     fontWeight: 300,
-    paddingTop: '16px',
     lineHeight: '1',
     letterSpacing: '0.47px',
+  },
+  experienceView2SameLine: {
+    marginLeft: '10px',
+    paddingTop: '15.5px',
+  },
+  experienceView2NewLine: {
+    paddingTop: '5px',
   },
   // contactView: {
   //   margin: '0 36px 0 -2px',
@@ -235,6 +238,14 @@ const styles = StyleSheet.create({
     color: '#ffffff',
   },
 })
+
+function isVeryLongExperienceLine(experience) {
+  return experience.title.length + experience.company.length > 43
+}
+
+function isVeryLongEducationLine(education) {
+  return education.type.length + education.institutionName.length > 43
+}
 
 export const CVPDF = ({
   cvData: {
@@ -352,11 +363,24 @@ export const CVPDF = ({
               {experience.map((experience, index) => (
                 <View key={`experience_${index}`} style={{ width: '100%' }}>
                   <View style={styles.experienceView}>
-                    <View style={styles.experienceView1}>
+                    <View
+                      style={
+                        isVeryLongExperienceLine(experience)
+                          ? undefined
+                          : styles.experienceView1
+                      }
+                    >
                       <Text style={styles.contentSubHeading}>
                         {experience.title}
                       </Text>
-                      <Text style={styles.experienceView2}>
+                      <Text
+                        style={[
+                          styles.experienceView2,
+                          isVeryLongExperienceLine(experience)
+                            ? styles.experienceView2NewLine
+                            : styles.experienceView2SameLine,
+                        ]}
+                      >
                         {experience.company}
                       </Text>
                     </View>
@@ -379,11 +403,24 @@ export const CVPDF = ({
               {education.map((education, index) => (
                 <View key={`experience_${index}`} style={{ width: '100%' }}>
                   <View style={styles.experienceView}>
-                    <View style={styles.experienceView1}>
-                      <Text style={styles.contentSubHeading}>
+                    <View
+                      style={
+                        isVeryLongEducationLine(education)
+                          ? undefined
+                          : styles.experienceView1
+                      }
+                    >
+                      <Text style={[styles.contentSubHeading]}>
                         {education.type}
                       </Text>
-                      <Text style={styles.experienceView2}>
+                      <Text
+                        style={[
+                          styles.experienceView2,
+                          isVeryLongEducationLine(education)
+                            ? styles.experienceView2NewLine
+                            : styles.experienceView2SameLine,
+                        ]}
+                      >
                         {education.institutionName}
                       </Text>
                     </View>
@@ -414,14 +451,24 @@ const concatenateToMultiline = (items: string[]): string => {
     .trim()
 }
 
-const getNodeTopPosition = (xPath: string) => {
-  const node: any = document.evaluate(
+const getNode = (xPath: string) => {
+  return document.evaluate(
     xPath,
     document,
     null,
     XPathResult.FIRST_ORDERED_NODE_TYPE,
     null
-  ).singleNodeValue
+  ).singleNodeValue as HTMLElement
+}
+
+const getNodeTopPosition = (xPath: string) => {
+  const node = document.evaluate(
+    xPath,
+    document,
+    null,
+    XPathResult.FIRST_ORDERED_NODE_TYPE,
+    null
+  ).singleNodeValue as HTMLElement
 
   return Number(node?.style?.top?.replace('px', '')) || 0
 }
@@ -439,6 +486,7 @@ export const CVPDFPreview = (
 
     const url = instance.blob ? URL.createObjectURL(instance.blob) : null
 
+    // TODO: might be useful later when we introduce editing through PDF Preview
     const onPDFPageRenderSuccess = () => {
       const startNodeTopPosition = getNodeTopPosition(
         "//span[text()='startOfContentLeft']"
@@ -456,6 +504,25 @@ export const CVPDFPreview = (
         contentLeftMaxHeight,
         contentLeftRemainingHeight,
       })
+
+      const contentHeadings = [
+        'ABOUT',
+        'SKILLS',
+        'LANGUAGES',
+        'DISPLAY CASE',
+        'CONTACT',
+        'ROXK EhPEXIENCE',
+        'EDUCATION',
+      ]
+
+      contentHeadings.forEach((contentHeading) => {
+        const headingNode = getNode(`//span[text()='${contentHeading}']`)
+
+        if (headingNode) {
+          headingNode.className = 'clickable-content-heading'
+          headingNode.onclick = () => alert(`Hello ${headingNode}`)
+        }
+      })
     }
 
     return (
@@ -465,7 +532,7 @@ export const CVPDFPreview = (
             <ReactPDFPage
               pageNumber={1}
               width={pdfWidthPx}
-              onRenderSuccess={onPDFPageRenderSuccess}
+              onRenderError={console.error}
             />
           </ReactPDFDocument>
         )}
