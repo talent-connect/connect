@@ -78,8 +78,6 @@ const CvListItem = (props: CvListItemProps) => {
 
   const { data: cvData, error, isLoading } = useTpJobseekerCvByIdQuery(props.id)
 
-  console.debug({ cvData, error, isLoading })
-
   const createMutation = useTpjobseekerCvCreateMutation()
   const updateMutation = useTpjobseekerCvUpdateMutation(props.id)
   const deleteMutation = useTpjobseekerCvDeleteMutation(props.id)
@@ -107,7 +105,13 @@ const CvListItem = (props: CvListItemProps) => {
   }
 
   const handleDuplicate = (): void => {
-    createMutation.mutate({ cvName: `${props.name} - Duplicate` })
+    createMutation.mutate({
+      ...cvData,
+      id: undefined,
+      createdAt: undefined,
+      updatedAt: undefined,
+      cvName: `${props.name} - Duplicate`,
+    })
   }
 
   return (

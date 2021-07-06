@@ -476,69 +476,63 @@ const getNodeTopPosition = (xPath: string) => {
 export const CVPDFPreview = (
   { cvData, pdfHeightPx, pdfWidthPx }: any //: CVPDFPreviewProps & {
 ) =>
-  //pdfWidthPx: number
-  {
-    const [instance, updateInstance] = usePDF({
-      document: <CVPDF cvData={cvData} />,
-    })
+//pdfWidthPx: number
+{
+  const [instance, updateInstance] = usePDF({
+    document: <CVPDF cvData={cvData} />,
+  })
 
-    useEffect(() => updateInstance(), [cvData, updateInstance])
+  useEffect(() => updateInstance(), [cvData, updateInstance])
 
-    const url = instance.blob ? URL.createObjectURL(instance.blob) : null
+  const url = instance.blob ? URL.createObjectURL(instance.blob) : null
 
-    // TODO: might be useful later when we introduce editing through PDF Preview
-    const onPDFPageRenderSuccess = () => {
-      const startNodeTopPosition = getNodeTopPosition(
-        "//span[text()='startOfContentLeft']"
-      )
-      const endNodeTopPosition = getNodeTopPosition(
-        "//span[text()='endOfContentLeft']"
-      )
-
-      const contentLeftCurrentHeight = endNodeTopPosition - startNodeTopPosition
-      const contentLeftMaxHeight = pdfHeightPx - startNodeTopPosition
-      const contentLeftRemainingHeight = pdfHeightPx - endNodeTopPosition
-
-      console.debug({
-        contentLeftCurrentHeight,
-        contentLeftMaxHeight,
-        contentLeftRemainingHeight,
-      })
-
-      const contentHeadings = [
-        'ABOUT',
-        'SKILLS',
-        'LANGUAGES',
-        'DISPLAY CASE',
-        'CONTACT',
-        'ROXK EhPEXIENCE',
-        'EDUCATION',
-      ]
-
-      contentHeadings.forEach((contentHeading) => {
-        const headingNode = getNode(`//span[text()='${contentHeading}']`)
-
-        if (headingNode) {
-          headingNode.className = 'clickable-content-heading'
-          headingNode.onclick = () => alert(`Hello ${headingNode}`)
-        }
-      })
-    }
-
-    return (
-      <div>
-        {url && (
-          <ReactPDFDocument file={url}>
-            <ReactPDFPage
-              pageNumber={1}
-              width={pdfWidthPx}
-              onRenderError={console.error}
-            />
-          </ReactPDFDocument>
-        )}
-      </div>
+  // TODO: might be useful later when we introduce editing through PDF Preview
+  const onPDFPageRenderSuccess = () => {
+    const startNodeTopPosition = getNodeTopPosition(
+      "//span[text()='startOfContentLeft']"
     )
+    const endNodeTopPosition = getNodeTopPosition(
+      "//span[text()='endOfContentLeft']"
+    )
+
+    const contentLeftCurrentHeight = endNodeTopPosition - startNodeTopPosition
+    const contentLeftMaxHeight = pdfHeightPx - startNodeTopPosition
+    const contentLeftRemainingHeight = pdfHeightPx - endNodeTopPosition
+
+    const contentHeadings = [
+      'ABOUT',
+      'SKILLS',
+      'LANGUAGES',
+      'DISPLAY CASE',
+      'CONTACT',
+      'ROXK EhPEXIENCE',
+      'EDUCATION',
+    ]
+
+    contentHeadings.forEach((contentHeading) => {
+      const headingNode = getNode(`//span[text()='${contentHeading}']`)
+
+      if (headingNode) {
+        headingNode.className = 'clickable-content-heading'
+        headingNode.onclick = () => alert(`Hello ${headingNode}`)
+      }
+    })
   }
+
+  return (
+    <div>
+      {url && (
+        <ReactPDFDocument file={url}>
+          <ReactPDFPage
+            pageNumber={1}
+            width={pdfWidthPx}
+            onRenderError={console.error}
+          />
+        </ReactPDFDocument>
+      )}
+    </div>
+  )
+}
 
 export const CVPDFPreviewMemoized = React.memo(
   CVPDFPreview,
