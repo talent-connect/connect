@@ -7,6 +7,7 @@
 import React from 'react'
 import { format as formatDate } from 'date-fns'
 import { useHistory } from 'react-router-dom'
+import { PDFDownloadLink } from '@react-pdf/renderer'
 
 import {
   Modal,
@@ -16,6 +17,7 @@ import {
 import { Box, Content } from 'react-bulma-components'
 import { Chip } from '@material-ui/core'
 
+import { useTpJobseekerCvByIdQuery } from '../../../../react-query/use-tpjobseekercv-query'
 import {
   useTpjobseekerCvCreateMutation,
   useTpjobseekerCvDeleteMutation,
@@ -23,6 +25,7 @@ import {
 } from '../../../../react-query/use-tpjobseekercv-mutation'
 
 import { CvListItemMoreOptionsMenu } from './CvListItemMoreOptionsMenu'
+import { CVPDF } from '../../../../components/molecules/CvPdfPreview'
 
 const CREATED_AT_DATE_FORMAT = 'dd.MM.yyyy'
 
@@ -55,6 +58,7 @@ export function CvListItemBox({ children }: CvListItemBoxProps) {
 interface CvListItemChipProps {
   label: string
   onClick(): void
+  disabled?: boolean
 }
 
 function CvListItemChip(props: CvListItemChipProps) {
@@ -71,6 +75,10 @@ const CvListItem = (props: CvListItemProps) => {
   const [newCvName, setNewCvName] = React.useState(props.name || '')
 
   const history = useHistory()
+
+  const { data: cvData, error, isLoading } = useTpJobseekerCvByIdQuery(props.id)
+
+  console.debug({ cvData, error, isLoading })
 
   const createMutation = useTpjobseekerCvCreateMutation()
   const updateMutation = useTpjobseekerCvUpdateMutation(props.id)
@@ -118,7 +126,20 @@ const CvListItem = (props: CvListItemProps) => {
         </Content>
         <Content style={{ display: 'flex', alignItems: 'center' }}>
           <CvListItemChip label="Edit" onClick={handleEditClick} />
-          <CvListItemChip label="Export" onClick={props.handleExport} />
+          {cvData && (
+            <PDFDownloadLink
+              document={<CVPDF cvData={cvData} />}
+              fileName={`${cvData?.firstName}_${cvData?.lastName}_CV.pdf`}
+            >
+              {({ blob, url, loading, error }) =>
+                loading ? (
+                  <CvListItemChip label="Export" disabled />
+                ) : (
+                  <CvListItemChip label="Export" onClick={props.handleExport} />
+                )
+              }
+            </PDFDownloadLink>
+          )}
           <CvListItemMoreOptionsMenu
             handleDeleteClick={handleDelete}
             handleRenameClick={handleShowCvNameModal}
