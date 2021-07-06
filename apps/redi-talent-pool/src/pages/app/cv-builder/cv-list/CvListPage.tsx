@@ -1,4 +1,5 @@
 import React from 'react'
+import { useHistory } from 'react-router-dom'
 
 import {
   Heading,
@@ -8,16 +9,18 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import { Section, Columns, Content } from 'react-bulma-components'
 
-import { useTpjobseekerCvCreateMutation } from '../../../react-query/use-tpjobseekercv-mutation'
-import { useTpJobseekerCvQuery } from '../../../react-query/use-tpjobseekercv-query'
+import { useTpjobseekerCvCreateMutation } from '../../../../react-query/use-tpjobseekercv-mutation'
+import { useTpJobseekerCvQuery } from '../../../../react-query/use-tpjobseekercv-query'
 
-import { LoggedIn } from '../../../components/templates'
-import { EmptySectionPlaceholder } from '../../../components/molecules/EmptySectionPlaceholder'
+import { LoggedIn } from '../../../../components/templates'
+import { EmptySectionPlaceholder } from '../../../../components/molecules/EmptySectionPlaceholder'
 import CvListItem from './CvListItem'
 
 function CvListPage() {
   const [showCvNameModal, setShowCvNameModal] = React.useState(false)
   const [newCvName, setNewCvName] = React.useState('')
+
+  const history = useHistory()
 
   const { data: cvList } = useTpJobseekerCvQuery()
   const createMutation = useTpjobseekerCvCreateMutation()
@@ -36,14 +39,10 @@ function CvListPage() {
     setNewCvName(e.target.value)
 
   const handleCreateNewCv = (): void => {
-    createMutation
-      .mutateAsync({ cvName: newCvName })
-      .then(() => toggleCvNameModal(false))
-  }
-
-  // TODO
-  const handleEditCv = (): void => {
-    return
+    createMutation.mutateAsync({ cvName: newCvName }).then((data) => {
+      toggleCvNameModal(false)
+      if (data?.id) history.push(`/app/cv-builder/${data.id}`)
+    })
   }
 
   // TODO
@@ -102,7 +101,6 @@ function CvListPage() {
                 id={cv.id}
                 name={cv.cvName}
                 createdAt={cv.createdAt}
-                handleEdit={handleEditCv}
                 handleExport={handleExportCv}
               />
             ))}

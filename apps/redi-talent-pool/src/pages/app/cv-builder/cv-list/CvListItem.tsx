@@ -6,6 +6,7 @@
 
 import React from 'react'
 import { format as formatDate } from 'date-fns'
+import { useHistory } from 'react-router-dom'
 
 import {
   Modal,
@@ -19,7 +20,7 @@ import {
   useTpjobseekerCvCreateMutation,
   useTpjobseekerCvDeleteMutation,
   useTpjobseekerCvUpdateMutation,
-} from '../../../react-query/use-tpjobseekercv-mutation'
+} from '../../../../react-query/use-tpjobseekercv-mutation'
 
 import { CvListItemMoreOptionsMenu } from './CvListItemMoreOptionsMenu'
 
@@ -29,7 +30,6 @@ interface CvListItemProps {
   id: string
   name: string
   createdAt: Date
-  handleEdit?(): void
   handleExport?(): void
 }
 
@@ -70,6 +70,8 @@ const CvListItem = (props: CvListItemProps) => {
   const [showCvNameModal, setShowCvNameModal] = React.useState(false)
   const [newCvName, setNewCvName] = React.useState(props.name || '')
 
+  const history = useHistory()
+
   const createMutation = useTpjobseekerCvCreateMutation()
   const updateMutation = useTpjobseekerCvUpdateMutation(props.id)
   const deleteMutation = useTpjobseekerCvDeleteMutation(props.id)
@@ -78,6 +80,10 @@ const CvListItem = (props: CvListItemProps) => {
 
   const handleShowCvNameModal = () => {
     setShowCvNameModal(true)
+  }
+
+  const handleEditClick = (): void => {
+    history.push(`/app/cv-builder/${props.id}`)
   }
 
   const handleDelete = (): void => {
@@ -111,7 +117,7 @@ const CvListItem = (props: CvListItemProps) => {
           </Content>
         </Content>
         <Content style={{ display: 'flex', alignItems: 'center' }}>
-          <CvListItemChip label="Edit" onClick={props.handleEdit} />
+          <CvListItemChip label="Edit" onClick={handleEditClick} />
           <CvListItemChip label="Export" onClick={props.handleExport} />
           <CvListItemMoreOptionsMenu
             handleDeleteClick={handleDelete}

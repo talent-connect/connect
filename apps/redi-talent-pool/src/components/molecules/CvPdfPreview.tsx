@@ -66,18 +66,16 @@ const styles = StyleSheet.create({
   page: {
     fontFamily: 'Avenir LT Std',
     flexDirection: 'column',
-    border: 'solid 1px yellow',
     height: '100%',
+    padding: '0 48px',
   },
   header: {
-    color: '#fff',
     height: '200px',
-    backgroundColor: '#09375A',
     position: 'relative',
   },
   headerText1: {
     top: '50px',
-    left: '237px',
+    left: '37%',
     position: 'absolute',
     fontSize: '14px',
     marginBottom: '25px',
@@ -85,7 +83,7 @@ const styles = StyleSheet.create({
   },
   headerText2: {
     top: '70px',
-    left: '235px',
+    left: '37%',
     position: 'absolute',
     fontSize: '40px',
     fontWeight: 900,
@@ -93,83 +91,94 @@ const styles = StyleSheet.create({
   },
   headerText3: {
     top: '110px',
-    left: '235px',
+    left: '37%',
     position: 'absolute',
     fontSize: '40px',
     fontWeight: 900,
     textTransform: 'uppercase',
   },
   headerImg: {
-    top: '45px',
-    left: '34.5px',
+    top: '40px',
     position: 'absolute',
-    width: '170px',
-    height: '250px',
+    width: '156px',
+    height: '156px',
+    borderRadius: '50%',
   },
   content: {
     flexDirection: 'row',
   },
   contentLeft: {
+    backgroundColor: 'rgba(222, 239, 243, 0.5)',
     flexDirection: 'column',
-    width: '40%',
-    marginTop: '115px',
+    width: '32%',
+    marginTop: '30px',
+    borderRadius: '8px',
+    padding: '8px',
+  },
+  whitespaceBetweenLeftAndRight: {
+    width: '3%',
   },
   contentRight: {
+    backgroundColor: 'rgba(222, 239, 243, 0.5)',
     flexDirection: 'column',
-    width: '60%',
+    width: '65%',
+    borderRadius: '8px',
+    padding: '8px',
   },
   contentViewLeft: {
-    margin: '10px 29px 0 36px',
-    padding: '5px 0',
+    // margin: '10px 29px 0 36px',
+    padding: '8px 0',
     borderTop: '1px solid #707070',
   },
   contentViewRight: {
-    margin: '15px 36px 0 -2px',
+    // margin: '15px 36px 0 -2px',
     padding: '5px 0',
     borderTop: '1px solid #707070',
   },
   contentHeading: {
-    fontSize: '16px',
-    fontWeight: 900,
-    lineHeight: '1.1',
+    fontSize: '12px',
+    fontWeight: 800,
+    lineHeight: '1.25',
     letterSpacing: '0.63px',
     textTransform: 'uppercase',
   },
   contentSubHeading: {
-    fontSize: '12px',
-    fontWeight: 900,
+    fontSize: '8px',
+    fontWeight: 800,
     paddingTop: '12px',
-    lineHeight: '0.8',
+    lineHeight: '1',
     letterSpacing: '0.47px',
+    transform: 'uppercase',
   },
   ContentList: {
-    fontSize: '10px',
+    fontSize: '8px',
     paddingTop: '5px',
-    lineHeight: '1px',
+    paddingBottom: '12px',
+    lineHeight: '1.25',
   },
   ContentListItem: {
-    fontSize: '10px',
+    fontSize: '8px',
     paddingVertical: '5px',
     lineHeight: '0.54',
     letterSpacing: '0.41px',
   },
   contentPara: {
-    fontSize: '10px',
+    fontSize: '8px',
     paddingTop: '10px',
-    lineHeight: '1.31',
+    paddingBottom: '12px',
+    lineHeight: '1.25',
     letterSpacing: '0.41px',
   },
   contentLink: {
-    fontSize: '10px',
-    paddingVertical: '8px',
-    lineHeight: '0.54',
+    fontSize: '8px',
+    paddingTop: '8px',
+    lineHeight: '1',
     cursor: 'pointer',
     letterSpacing: '0.41px',
   },
   socialLink: {
-    fontSize: '10px',
-    paddingVertical: '2px',
-    lineHeight: '1',
+    fontSize: '8px',
+    lineHeight: '1.25',
     cursor: 'pointer',
     letterSpacing: '0.41px',
   },
@@ -188,16 +197,16 @@ const styles = StyleSheet.create({
   },
   experienceView2: {
     marginLeft: '10px',
-    fontSize: '12px',
+    fontSize: '8px',
     fontWeight: 300,
-    paddingTop: '23px',
-    lineHeight: '1.2',
+    paddingTop: '16px',
+    lineHeight: '1',
     letterSpacing: '0.47px',
   },
-  contactView: {
-    margin: '0 36px 0 -2px',
-    padding: '10px 0 0',
-  },
+  // contactView: {
+  //   margin: '0 36px 0 -2px',
+  //   padding: '10px 0 0',
+  // },
   contactDivider: {
     width: '100%',
     flexDirection: 'row',
@@ -210,17 +219,21 @@ const styles = StyleSheet.create({
   contactDividerRight: {
     width: '50%',
   },
+  ContactPhoneNumber: {
+    fontSize: '8px',
+    lineHeight: '2',
+    letterSpacing: '0.41px',
+  },
   ContactListItem: {
-    fontSize: '10px',
-    paddingVertical: '2px',
-    lineHeight: '1',
+    fontSize: '8px',
+    lineHeight: '1.25',
     letterSpacing: '0.41px',
   },
   hiddenText: {
     height: 0,
     fontSize: 0,
-    color: '#ffffff'
-  }
+    color: '#ffffff',
+  },
 })
 
 export const CVPDF = ({
@@ -288,7 +301,7 @@ export const CVPDF = ({
               </View>
             </View>
             <View style={styles.contentViewLeft}>
-              <Text style={styles.contentHeading}>{`Projects&Awards`}</Text>
+              <Text style={styles.contentHeading}>{`Display Case`}</Text>
               {projects.map((project, index) => (
                 <View key={`project_${index}`} style={styles.projectView}>
                   <Text style={styles.contentSubHeading}>{project.title}</Text>
@@ -301,13 +314,17 @@ export const CVPDF = ({
             </View>
             <Text style={styles.hiddenText}>endOfContentLeft</Text>
           </View>
+          <View style={styles.whitespaceBetweenLeftAndRight} />
           <View style={styles.contentRight}>
-            <View style={styles.contactView}>
+            <View style={styles.contentViewRight}>
               <Text style={styles.contentHeading}>Contact</Text>
               <View style={styles.contactDivider}>
                 <View style={styles.contactDividerLeft}>
+                  <Text style={styles.ContactPhoneNumber}>
+                    {concatenateToMultiline([phoneNumber])}
+                  </Text>
                   <Text style={styles.ContactListItem}>
-                    {concatenateToMultiline([phoneNumber, email, address])}
+                    {concatenateToMultiline([email, address])}
                   </Text>
                 </View>
                 <View style={styles.contactDividerRight}>
@@ -364,7 +381,7 @@ export const CVPDF = ({
                   <View style={styles.experienceView}>
                     <View style={styles.experienceView1}>
                       <Text style={styles.contentSubHeading}>
-                        {education.title}
+                        {education.type}
                       </Text>
                       <Text style={styles.experienceView2}>
                         {education.institutionName}
@@ -398,47 +415,63 @@ const concatenateToMultiline = (items: string[]): string => {
 }
 
 const getNodeTopPosition = (xPath: string) => {
-  const node: any = document.evaluate(xPath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue
+  const node: any = document.evaluate(
+    xPath,
+    document,
+    null,
+    XPathResult.FIRST_ORDERED_NODE_TYPE,
+    null
+  ).singleNodeValue
 
-  return Number(node?.style?.top?.replace('px', '')) || 0;
+  return Number(node?.style?.top?.replace('px', '')) || 0
 }
 
 export const CVPDFPreview = (
   { cvData, pdfHeightPx, pdfWidthPx }: any //: CVPDFPreviewProps & {
 ) =>
-//pdfWidthPx: number
-{
-  const [instance, updateInstance] = usePDF({
-    document: <CVPDF cvData={cvData} />,
-  })
+  //pdfWidthPx: number
+  {
+    const [instance, updateInstance] = usePDF({
+      document: <CVPDF cvData={cvData} />,
+    })
 
-  useEffect(() => updateInstance(), [cvData, updateInstance])
+    useEffect(() => updateInstance(), [cvData, updateInstance])
 
-  const url = instance.blob ? URL.createObjectURL(instance.blob) : null
+    const url = instance.blob ? URL.createObjectURL(instance.blob) : null
 
-  const onPDFPageRenderSuccess = () => {
-    const startNodeTopPosition = getNodeTopPosition("//span[text()='startOfContentLeft']");
-    const endNodeTopPosition = getNodeTopPosition("//span[text()='endOfContentLeft']");
-
-    const contentLeftCurrentHeight = endNodeTopPosition - startNodeTopPosition;
-    const contentLeftMaxHeight = pdfHeightPx - startNodeTopPosition;
-    const contentLeftRemainingHeight = pdfHeightPx - endNodeTopPosition;
-
-    console.debug({ contentLeftCurrentHeight, contentLeftMaxHeight, contentLeftRemainingHeight });
-
-  };
-
-  return (
-    <div>
-      {url && (
-        <ReactPDFDocument file={url}>
-          <ReactPDFPage pageNumber={1} width={pdfWidthPx} onRenderSuccess={onPDFPageRenderSuccess} />
-        </ReactPDFDocument>
+    const onPDFPageRenderSuccess = () => {
+      const startNodeTopPosition = getNodeTopPosition(
+        "//span[text()='startOfContentLeft']"
       )
-      }
-    </div >
-  )
-}
+      const endNodeTopPosition = getNodeTopPosition(
+        "//span[text()='endOfContentLeft']"
+      )
+
+      const contentLeftCurrentHeight = endNodeTopPosition - startNodeTopPosition
+      const contentLeftMaxHeight = pdfHeightPx - startNodeTopPosition
+      const contentLeftRemainingHeight = pdfHeightPx - endNodeTopPosition
+
+      console.debug({
+        contentLeftCurrentHeight,
+        contentLeftMaxHeight,
+        contentLeftRemainingHeight,
+      })
+    }
+
+    return (
+      <div>
+        {url && (
+          <ReactPDFDocument file={url}>
+            <ReactPDFPage
+              pageNumber={1}
+              width={pdfWidthPx}
+              onRenderSuccess={onPDFPageRenderSuccess}
+            />
+          </ReactPDFDocument>
+        )}
+      </div>
+    )
+  }
 
 export const CVPDFPreviewMemoized = React.memo(
   CVPDFPreview,
