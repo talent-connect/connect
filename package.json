@@ -77,6 +77,7 @@
     "beautiful-react-hooks": "^0.32.1",
     "body-parser": "^1.19.0",
     "bulma-checkradio": "^1.1.1",
+    "canvas-confetti": "^1.4.0",
     "clsx": "^1.0.4",
     "compression": "^1.0.3",
     "core-js": "^3.6.5",
