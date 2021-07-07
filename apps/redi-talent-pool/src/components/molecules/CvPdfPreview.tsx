@@ -258,8 +258,8 @@ export const CVPDF = ({
     experience,
     education,
     phoneNumber,
-    email,
-    address,
+    contactEmail,
+    postalMailingAddress,
 
     personalWebsite,
     githubUrl,
@@ -269,7 +269,9 @@ export const CVPDF = ({
     stackOverflowUrl,
     dribbbleUrl,
   },
-}: any) => {
+}: {
+  cvData: Partial<TpJobseekerCv>
+}) => {
   return (
     <Document title={`${firstName}_${lastName}_CV.pdf`}>
       <Page size="A4" style={styles.page}>
@@ -355,7 +357,10 @@ export const CVPDF = ({
                     {concatenateToMultiline([phoneNumber])}
                   </Text>
                   <Text style={styles.ContactListItem}>
-                    {concatenateToMultiline([email, address])}
+                    {concatenateToMultiline([
+                      contactEmail,
+                      postalMailingAddress,
+                    ])}
                   </Text>
                 </View>
                 <View style={styles.contactDividerRight}>
@@ -405,11 +410,17 @@ export const CVPDF = ({
                       </Text>
                     </View>
                     <Text style={[styles.contentSubHeading]}>
-                      {experience.startDate &&
-                        moment(experience.startDate).format('MMM YYYY - ')}
-                      {experience.endDate &&
-                        !experience.current &&
-                        moment(experience.endDate).format('MMM YYYY')}
+                      {formatDate(
+                        experience.startDateMonth,
+                        experience.startDateYear
+                      )}{' '}
+                      -{' '}
+                      {experience.current
+                        ? 'Present'
+                        : formatDate(
+                            experience.endDateMonth,
+                            experience.endDateYear
+                          )}
                     </Text>
                   </View>
                   <Text style={styles.contentPara}>
@@ -431,7 +442,7 @@ export const CVPDF = ({
                       }
                     >
                       <Text style={[styles.contentSubHeading]}>
-                        {education.type}
+                        {education.title}
                       </Text>
                       <Text
                         style={[
@@ -445,11 +456,17 @@ export const CVPDF = ({
                       </Text>
                     </View>
                     <Text style={[styles.contentSubHeading]}>
-                      {education.startDate &&
-                        moment(education.startDate).format('MMM YYYY - ')}
-                      {education.endDate &&
-                        !education.current &&
-                        moment(education.endDate).format('MMM YYYY')}
+                      {formatDate(
+                        education.startDateMonth,
+                        education.startDateYear
+                      )}{' '}
+                      -{' '}
+                      {education.current
+                        ? 'Present'
+                        : formatDate(
+                            education.endDateMonth,
+                            education.endDateYear
+                          )}
                     </Text>
                   </View>
                   <Text style={styles.contentPara}>
@@ -463,6 +480,13 @@ export const CVPDF = ({
       </Page>
     </Document>
   )
+}
+
+function formatDate(month?: number, year?: number): string {
+  if (year && !month) return String(year)
+  if (year && month) return moment().month(month).year(year).format('MMMM YYYY')
+  if (!year && month) return moment().month(month).format('MMMM')
+  return ''
 }
 
 const concatenateToMultiline = (items: string[]): string => {
