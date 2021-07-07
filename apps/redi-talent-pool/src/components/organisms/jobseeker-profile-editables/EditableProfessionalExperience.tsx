@@ -187,6 +187,7 @@ export function JobseekerFormSectionProfessionalExperience({
   const formik = useFormik({
     initialValues,
     onSubmit,
+    enableReinitialize: true,
   })
   useEffect(() => setIsFormDirty?.(formik.dirty), [
     formik.dirty,

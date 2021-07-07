@@ -142,8 +142,7 @@ export function JobseekerFormSectionLanguages({
         buildBlankLanguageRecord(),
       ],
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [profile?.workingLanguages]
   )
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
     formik.setSubmitting(true)
@@ -159,6 +158,7 @@ export function JobseekerFormSectionLanguages({
   const formik = useFormik({
     initialValues,
     onSubmit,
+    enableReinitialize: true,
   })
   useEffect(() => setIsFormDirty?.(formik.dirty), [
     formik.dirty,

@@ -15,6 +15,8 @@ import { useTpJobseekerCvQuery } from '../../../../react-query/use-tpjobseekercv
 import { LoggedIn } from '../../../../components/templates'
 import { EmptySectionPlaceholder } from '../../../../components/molecules/EmptySectionPlaceholder'
 import CvListItem from './CvListItem'
+import { useTpJobseekerProfileQuery } from '../../../../react-query/use-tpjobseekerprofile-query'
+import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
 
 function CvListPage() {
   const [showCvNameModal, setShowCvNameModal] = React.useState(false)
@@ -22,6 +24,7 @@ function CvListPage() {
 
   const history = useHistory()
 
+  const { data: profile } = useTpJobseekerProfileQuery()
   const { data: cvList } = useTpJobseekerCvQuery()
   const createMutation = useTpjobseekerCvCreateMutation()
 
@@ -39,10 +42,12 @@ function CvListPage() {
     setNewCvName(e.target.value)
 
   const handleCreateNewCv = (): void => {
-    createMutation.mutateAsync({ cvName: newCvName }).then((data) => {
-      toggleCvNameModal(false)
-      if (data?.id) history.push(`/app/cv-builder/${data.id}`)
-    })
+    createMutation
+      .mutateAsync({ ...convertProfileToCv(profile), cvName: newCvName })
+      .then((data) => {
+        toggleCvNameModal(false)
+        if (data?.id) history.push(`/app/cv-builder/${data.id}`)
+      })
   }
 
   /**
@@ -141,3 +146,29 @@ function CvListPage() {
 }
 
 export default CvListPage
+
+function convertProfileToCv(
+  profile: Partial<TpJobseekerProfile>
+): Partial<TpJobseekerCv> {
+  return {
+    firstName: profile.firstName,
+    lastName: profile.lastName,
+    contactEmail: profile.contactEmail,
+    desiredPositions: profile.desiredPositions,
+    phoneNumber: profile.phoneNumber,
+    postalMailingAddress: profile.postalMailingAddress,
+    personalWebsite: profile.personalWebsite,
+    githubUrl: profile.githubUrl,
+    linkedInUrl: profile.linkedInUrl,
+    twitterUrl: profile.twitterUrl,
+    behanceUrl: profile.behanceUrl,
+    stackOverflowUrl: profile.stackOverflowUrl,
+    dribbbleUrl: profile.dribbbleUrl,
+    workingLanguages: profile.workingLanguages,
+    aboutYourself: profile.aboutYourself,
+    topSkills: profile.topSkills,
+    experience: profile.experience,
+    education: profile.education,
+    projects: profile.projects,
+  }
+}

@@ -170,8 +170,7 @@ export function JobseekerFormSectionEducation({
     () => ({
       education: profile?.education ?? [buildBlankEducationRecord()],
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [profile?.education]
   )
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
     formik.setSubmitting(true)
@@ -188,6 +187,7 @@ export function JobseekerFormSectionEducation({
   const formik = useFormik({
     initialValues,
     onSubmit,
+    enableReinitialize: true,
   })
   useEffect(() => setIsFormDirty?.(formik.dirty), [
     formik.dirty,

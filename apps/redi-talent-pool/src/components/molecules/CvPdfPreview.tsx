@@ -9,6 +9,11 @@ import {
   usePDF,
   View,
 } from '@react-pdf/renderer'
+import { TpJobseekerCv } from '@talent-connect/shared-types'
+import {
+  desiredPositionsIdToLabelMap,
+  languageProficiencyLevelsIdToLabelMap,
+} from '@talent-connect/talent-pool/config'
 import { isEqual } from 'lodash'
 import moment from 'moment'
 import React, { useEffect } from 'react'
@@ -50,16 +55,6 @@ Font.register({
     },
   ],
 })
-
-export interface UserCVData {
-  position: string
-  firstName: string
-  lastName: string
-  profileImage: string
-}
-interface CVPDFPreviewProps {
-  cvData: UserCVData
-}
 
 // Create styles
 const styles = StyleSheet.create({
@@ -103,6 +98,7 @@ const styles = StyleSheet.create({
     width: '156px',
     height: '156px',
     borderRadius: '50%',
+    objectFit: 'cover',
   },
   content: {
     flexDirection: 'row',
@@ -240,11 +236,13 @@ const styles = StyleSheet.create({
 })
 
 function isVeryLongExperienceLine(experience) {
-  return experience.title.length + experience.company.length > 43
+  return experience?.title?.length || 0 + experience?.company?.length || 0 > 43
 }
 
 function isVeryLongEducationLine(education) {
-  return education.type.length + education.institutionName.length > 43
+  return (
+    education?.type?.length || 0 + education?.institutionName?.length || 0 > 43
+  )
 }
 
 export const CVPDF = ({
@@ -276,7 +274,14 @@ export const CVPDF = ({
     <Document title={`${firstName}_${lastName}_CV.pdf`}>
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
-          <Text style={styles.headerText1}>{desiredPositions?.join(', ')}</Text>
+          <Text style={styles.headerText1}>
+            {desiredPositions
+              ?.map(
+                (desiredPosition) =>
+                  desiredPositionsIdToLabelMap[desiredPosition]
+              )
+              .join(', ')}
+          </Text>
           <Text style={styles.headerText2}>{firstName}</Text>
           <Text style={styles.headerText3}>{lastName}</Text>
           <Image
@@ -284,6 +289,8 @@ export const CVPDF = ({
             src={{
               uri: profileAvatarImageS3Key,
               headers: { Pragma: 'no-cache', 'Cache-Control': 'no-cache' },
+              method: 'GET',
+              body: null,
             }}
           />
         </View>
@@ -297,27 +304,34 @@ export const CVPDF = ({
             <View style={styles.contentViewLeft}>
               <Text style={styles.contentHeading}>Skills</Text>
               <View style={styles.ContentList}>
-                {topSkills?.map((skill, index) => (
+                {/* {topSkills?.map((skill, index) => (
                   <Text key={`skill_${index}`} style={styles.ContentListItem}>
                     {skill}
                   </Text>
-                ))}
+                ))} */}
               </View>
             </View>
             <View style={styles.contentViewLeft}>
               <Text style={styles.contentHeading}>Languages</Text>
               <View style={styles.ContentList}>
-                {workingLanguages?.map((language, index) => (
-                  <Text
-                    key={`language_${index}`}
-                    style={styles.ContentListItem}
-                  >
-                    {language}
-                  </Text>
-                ))}
+                {workingLanguages?.map(
+                  ({ language, proficiencyLevelId }, index) => (
+                    <Text
+                      key={`language_${index}`}
+                      style={styles.ContentListItem}
+                    >
+                      {language} -{' '}
+                      {
+                        languageProficiencyLevelsIdToLabelMap[
+                          proficiencyLevelId
+                        ]
+                      }
+                    </Text>
+                  )
+                )}
               </View>
             </View>
-            <View style={styles.contentViewLeft}>
+            {/* <View style={styles.contentViewLeft}>
               <Text style={styles.contentHeading}>{`Display Case`}</Text>
               {projects?.map((project, index) => (
                 <View key={`project_${index}`} style={styles.projectView}>
@@ -328,7 +342,7 @@ export const CVPDF = ({
                   <Text style={styles.contentPara}>{project.description}</Text>
                 </View>
               ))}
-            </View>
+            </View> */}
             <Text style={styles.hiddenText}>endOfContentLeft</Text>
           </View>
           <View style={styles.whitespaceBetweenLeftAndRight} />
@@ -479,13 +493,19 @@ const getNodeTopPosition = (xPath: string) => {
   return Number(node?.style?.top?.replace('px', '')) || 0
 }
 
-export const CVPDFPreview = (
-  { cvData, pdfHeightPx, pdfWidthPx }: any //: CVPDFPreviewProps & {
-) =>
+interface CVPDFPreviewProps {
+  cvData: Partial<TpJobseekerCv>
+  pdfHeightPx: number
+  pdfWidthPx: number
+}
+
+export const CVPDFPreview = ({
+  cvData,
+  pdfHeightPx,
+  pdfWidthPx,
+}: CVPDFPreviewProps) =>
   //pdfWidthPx: number
   {
-    console.log(cvData)
-
     const [instance, updateInstance] = usePDF({
       document: <CVPDF cvData={cvData} />,
     })
