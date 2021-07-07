@@ -276,7 +276,7 @@ export const CVPDF = ({
     <Document title={`${firstName}_${lastName}_CV.pdf`}>
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
-          <Text style={styles.headerText1}>{desiredPositions.join(', ')}</Text>
+          <Text style={styles.headerText1}>{desiredPositions?.join(', ')}</Text>
           <Text style={styles.headerText2}>{firstName}</Text>
           <Text style={styles.headerText3}>{lastName}</Text>
           <Image style={styles.headerImg} src={profileImage} />
@@ -291,7 +291,7 @@ export const CVPDF = ({
             <View style={styles.contentViewLeft}>
               <Text style={styles.contentHeading}>Skills</Text>
               <View style={styles.ContentList}>
-                {topSkills.map((skill, index) => (
+                {topSkills?.map((skill, index) => (
                   <Text key={`skill_${index}`} style={styles.ContentListItem}>
                     {skill}
                   </Text>
@@ -301,7 +301,7 @@ export const CVPDF = ({
             <View style={styles.contentViewLeft}>
               <Text style={styles.contentHeading}>Languages</Text>
               <View style={styles.ContentList}>
-                {workingLanguages.map((language, index) => (
+                {workingLanguages?.map((language, index) => (
                   <Text
                     key={`language_${index}`}
                     style={styles.ContentListItem}
@@ -313,7 +313,7 @@ export const CVPDF = ({
             </View>
             <View style={styles.contentViewLeft}>
               <Text style={styles.contentHeading}>{`Display Case`}</Text>
-              {projects.map((project, index) => (
+              {projects?.map((project, index) => (
                 <View key={`project_${index}`} style={styles.projectView}>
                   <Text style={styles.contentSubHeading}>{project.title}</Text>
                   <Link src={project.link} style={styles.contentLink}>
@@ -360,7 +360,7 @@ export const CVPDF = ({
             </View>
             <View style={styles.contentViewRight}>
               <Text style={styles.contentHeading}>Work Experience</Text>
-              {experience.map((experience, index) => (
+              {experience?.map((experience, index) => (
                 <View key={`experience_${index}`} style={{ width: '100%' }}>
                   <View style={styles.experienceView}>
                     <View
@@ -400,7 +400,7 @@ export const CVPDF = ({
             </View>
             <View style={styles.contentViewRight}>
               <Text style={styles.contentHeading}>Education</Text>
-              {education.map((education, index) => (
+              {education?.map((education, index) => (
                 <View key={`experience_${index}`} style={{ width: '100%' }}>
                   <View style={styles.experienceView}>
                     <View

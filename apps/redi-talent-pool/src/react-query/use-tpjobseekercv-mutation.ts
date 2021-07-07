@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from 'react-query'
 import {
   createCurrentUserTpJobseekerCv,
-  updateCurrentUserTpJobseekerCv,
   deleteCurrentUserTpJobseekerCv,
+  updateCurrentUserTpJobseekerCv,
 } from '../services/api/api'
 
 export function useTpjobseekerCvCreateMutation() {

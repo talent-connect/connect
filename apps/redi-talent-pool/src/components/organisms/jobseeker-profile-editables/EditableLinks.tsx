@@ -2,7 +2,7 @@ import {
   Button,
   FormInput,
 } from '@talent-connect/shared-atomic-design-components'
-import { TpJobseekerProfile } from '@talent-connect/shared-types'
+import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
 import React, { useEffect, useMemo, useState } from 'react'
 import {
@@ -11,6 +11,7 @@ import {
   Form,
   Button as BulmaButton,
 } from 'react-bulma-components'
+import { UseMutationResult, UseQueryResult } from 'react-query'
 import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
@@ -18,7 +19,9 @@ import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
 export function EditableLinks() {
-  const { data: profile } = useTpJobseekerProfileQuery()
+  const queryHookResult = useTpJobseekerProfileQuery()
+  const mutationHookResult = useTpjobseekerprofileUpdateMutation()
+  const { data: profile } = queryHookResult
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
@@ -56,9 +59,11 @@ export function EditableLinks() {
       modalTitle="Your online presence"
       modalHeadline="Links"
       modalBody={
-        <ModalForm
+        <JobseekerFormSectionLinks
           setIsEditing={setIsEditing}
           setIsFormDirty={setIsFormDirty}
+          queryHookResult={queryHookResult}
+          mutationHookResult={mutationHookResult}
         />
       }
       modalStyles={{ minHeight: 700 }}
@@ -73,7 +78,6 @@ function buildAllLinksArray(profile: Partial<TpJobseekerProfile>): string[] {
     profile?.linkedInUrl,
     profile?.twitterUrl,
     profile?.behanceUrl,
-    profile?.stackOverflowUrl,
     profile?.stackOverflowUrl,
     profile?.dribbbleUrl,
   ]
@@ -94,27 +98,49 @@ const validationSchema = Yup.object({
   dribbbleUrl: Yup.string().url().label('Dribbble profile URL'),
 })
 
-function ModalForm({
+interface JobseekerFormSectionLinksProps {
+  setIsEditing: (boolean) => void
+  setIsFormDirty?: (boolean) => void
+  queryHookResult: UseQueryResult<
+    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    unknown
+  >
+  mutationHookResult: UseMutationResult<
+    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    unknown,
+    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    unknown
+  >
+}
+
+export function JobseekerFormSectionLinks({
   setIsEditing,
   setIsFormDirty,
-}: {
-  setIsEditing: (boolean) => void
-  setIsFormDirty: (boolean) => void
-}) {
-  const { data: profile } = useTpJobseekerProfileQuery()
-  const mutation = useTpjobseekerprofileUpdateMutation()
+  queryHookResult,
+  mutationHookResult,
+}: JobseekerFormSectionLinksProps) {
+  const { data: profile } = queryHookResult
+  const mutation = mutationHookResult
+
   const initialValues: Partial<TpJobseekerProfile> = useMemo(
     () => ({
-      personalWebsite: profile.personalWebsite ?? '',
-      githubUrl: profile.githubUrl ?? '',
-      linkedInUrl: profile.linkedInUrl ?? '',
-      twitterUrl: profile.twitterUrl ?? '',
-      behanceUrl: profile.behanceUrl ?? '',
-      stackOverflowUrl: profile.stackOverflowUrl ?? '',
-      dribbbleUrl: profile.dribbbleUrl ?? '',
+      personalWebsite: profile?.personalWebsite ?? '',
+      githubUrl: profile?.githubUrl ?? '',
+      linkedInUrl: profile?.linkedInUrl ?? '',
+      twitterUrl: profile?.twitterUrl ?? '',
+      behanceUrl: profile?.behanceUrl ?? '',
+      stackOverflowUrl: profile?.stackOverflowUrl ?? '',
+      dribbbleUrl: profile?.dribbbleUrl ?? '',
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [
+      profile?.behanceUrl,
+      profile?.dribbbleUrl,
+      profile?.githubUrl,
+      profile?.linkedInUrl,
+      profile?.personalWebsite,
+      profile?.stackOverflowUrl,
+      profile?.twitterUrl,
+    ]
   )
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
     formik.setSubmitting(true)
@@ -134,7 +160,10 @@ function ModalForm({
     onSubmit,
     validateOnMount: true,
   })
-  useEffect(() => setIsFormDirty(formik.dirty), [formik.dirty, setIsFormDirty])
+  useEffect(() => setIsFormDirty?.(formik.dirty), [
+    formik.dirty,
+    setIsFormDirty,
+  ])
   return (
     <>
       <Element
