@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     paddingTop: '12px',
     lineHeight: '1',
     letterSpacing: '0.47px',
-    transform: 'uppercase',
+    textTransform: 'uppercase',
   },
   ContentList: {
     fontSize: '8px',
