@@ -329,7 +329,7 @@ export const CVPDF = ({
               <Text style={styles.contentHeading}>About</Text>
               <Text style={styles.contentPara}>{aboutYourself}</Text>
             </View>
-            {/* <View style={styles.contentViewLeft}>
+            <View style={styles.contentViewLeft}>
               <Text style={styles.contentHeading}>Skills</Text>
               <View style={styles.ContentList}>
                 {topSkills?.map((skill, index) => (
@@ -338,7 +338,7 @@ export const CVPDF = ({
                   </Text>
                 ))}
               </View>
-            </View> */}
+            </View>
             <View style={styles.contentViewLeft}>
               <Text style={styles.contentHeading}>Languages</Text>
               <View style={styles.ContentList}>
