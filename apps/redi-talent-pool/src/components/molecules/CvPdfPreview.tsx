@@ -411,95 +411,107 @@ export const CVPDF = ({
             </View>
             <View style={styles.contentViewRight}>
               <Text style={styles.contentHeading}>Work Experience</Text>
-              {experience?.map((experience, index) => (
-                <View key={`experience_${index}`} style={{ width: '100%' }}>
-                  <View style={styles.experienceView}>
-                    <View
-                      style={
-                        isVeryLongExperienceLine(experience)
-                          ? undefined
-                          : styles.experienceView1
-                      }
-                    >
-                      <Text style={styles.contentSubHeading}>
-                        {experience.title}
-                      </Text>
-                      <Text
-                        style={[
-                          styles.experienceView2,
+              {experience
+                ?.filter((item) => {
+                  const { uuid, ...all } = item
+                  const vals = Object.values(all)
+                  return vals.some((val) => val)
+                })
+                .map((experience, index) => (
+                  <View key={`experience_${index}`} style={{ width: '100%' }}>
+                    <View style={styles.experienceView}>
+                      <View
+                        style={
                           isVeryLongExperienceLine(experience)
-                            ? styles.experienceView2NewLine
-                            : styles.experienceView2SameLine,
-                        ]}
+                            ? undefined
+                            : styles.experienceView1
+                        }
                       >
-                        {experience.company}
+                        <Text style={styles.contentSubHeading}>
+                          {experience.title}
+                        </Text>
+                        <Text
+                          style={[
+                            styles.experienceView2,
+                            isVeryLongExperienceLine(experience)
+                              ? styles.experienceView2NewLine
+                              : styles.experienceView2SameLine,
+                          ]}
+                        >
+                          {experience.company}
+                        </Text>
+                      </View>
+                      <Text style={styles.contentSubHeading}>
+                        {formatDate(
+                          Number(experience.startDateMonth),
+                          experience.startDateYear
+                        )}{' '}
+                        -{' '}
+                        {experience.current
+                          ? 'Present'
+                          : formatDate(
+                              Number(experience.endDateMonth),
+                              experience.endDateYear
+                            )}
                       </Text>
                     </View>
-                    <Text style={styles.contentSubHeading}>
-                      {formatDate(
-                        Number(experience.startDateMonth),
-                        experience.startDateYear
-                      )}{' '}
-                      -{' '}
-                      {experience.current
-                        ? 'Present'
-                        : formatDate(
-                            Number(experience.endDateMonth),
-                            experience.endDateYear
-                          )}
+                    <Text style={styles.contentPara}>
+                      {experience.description}
                     </Text>
                   </View>
-                  <Text style={styles.contentPara}>
-                    {experience.description}
-                  </Text>
-                </View>
-              ))}
+                ))}
             </View>
             <View style={styles.contentViewRight}>
               <Text style={styles.contentHeading}>Education</Text>
-              {education?.map((education, index) => (
-                <View key={`experience_${index}`} style={{ width: '100%' }}>
-                  <View style={styles.experienceView}>
-                    <View
-                      style={
-                        isVeryLongEducationLine(education)
-                          ? undefined
-                          : styles.experienceView1
-                      }
-                    >
-                      <Text style={[styles.contentSubHeading]}>
-                        {education.title}
-                      </Text>
-                      <Text
-                        style={[
-                          styles.experienceView2,
+              {education
+                ?.filter((item) => {
+                  const { uuid, ...all } = item
+                  const vals = Object.values(all)
+                  return vals.some((val) => val)
+                })
+                .map((education, index) => (
+                  <View key={`experience_${index}`} style={{ width: '100%' }}>
+                    <View style={styles.experienceView}>
+                      <View
+                        style={
                           isVeryLongEducationLine(education)
-                            ? styles.experienceView2NewLine
-                            : styles.experienceView2SameLine,
-                        ]}
+                            ? undefined
+                            : styles.experienceView1
+                        }
                       >
-                        {education.institutionName}
+                        <Text style={[styles.contentSubHeading]}>
+                          {education.title}
+                        </Text>
+                        <Text
+                          style={[
+                            styles.experienceView2,
+                            isVeryLongEducationLine(education)
+                              ? styles.experienceView2NewLine
+                              : styles.experienceView2SameLine,
+                          ]}
+                        >
+                          {education.institutionName}
+                        </Text>
+                      </View>
+                      <Text style={[styles.contentSubHeading]}>
+                        {formatDate(
+                          education.startDateMonth,
+                          education.startDateYear
+                        )}{' '}
+                        -{' '}
+                        {education.current
+                          ? 'Present'
+                          : formatDate(
+                              education.endDateMonth,
+                              education.endDateYear
+                            )}
                       </Text>
                     </View>
-                    <Text style={[styles.contentSubHeading]}>
-                      {formatDate(
-                        education.startDateMonth,
-                        education.startDateYear
-                      )}{' '}
-                      -{' '}
-                      {education.current
-                        ? 'Present'
-                        : formatDate(
-                            education.endDateMonth,
-                            education.endDateYear
-                          )}
+                    <Text style={styles.contentPara}>
+                      {education.description}
                     </Text>
                   </View>
-                  <Text style={styles.contentPara}>
-                    {education.description}
-                  </Text>
-                </View>
-              ))}
+                ))}
             </View>
           </View>
         </View>
