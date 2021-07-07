@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useRef } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import { Columns, Content, Box, Section } from 'react-bulma-components'
 
@@ -14,6 +14,15 @@ import { CVPDFPreviewMemoized } from '../../../../components/molecules'
 import { useTpJobseekerCvByIdQuery } from '../../../../react-query/use-tpjobseekercv-query'
 
 import './CvDetailPage.scss'
+import { AccordionFormCvSummary } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvSummary'
+import { Subject } from 'rxjs'
+import { AccordionFormCvProfessionalExperience } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvProfessionalExperience'
+import { AccordionFormCvEducation } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvEducation'
+import { AccordionFormCvLanguages } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvLanguages'
+import { AccordionFormCvDisplayCase } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvDisplayCase'
+import { AccordionFormCvImportantDetails } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvImportantDetails'
+import { AccordionFormCvDesiredPositions } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvDesiredPositions'
+import { AccordionFormCvName } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvName'
 
 function InlineButton() {
   return (
@@ -48,6 +57,12 @@ function CvDetailPage() {
 
   const handleCloseClick = () => history.push('/app/cv-builder')
 
+  const onClose = useCallback(
+    () => closeAllAccordionsSignalSubjectRef.current?.next(),
+    []
+  )
+  const closeAllAccordionsSignalSubjectRef = useRef(new Subject<void>())
+
   return (
     <LoggedIn>
       <Columns>
@@ -71,15 +86,63 @@ function CvDetailPage() {
               reduced to 1 page to make an excellent first impression and get
               invited to an interview.
             </Content>
-            <Content>
-              There are two way to edit your CV. You can selecte a section by
-              clicking the icon <InlinePencilIcon />
-              <b>or</b> you click the <InlineButton /> button to get walked
-              through the different sections.
-            </Content>
-            <Content style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <Button>Start</Button>
-            </Content>
+            <AccordionFormCvName
+              tpJobseekerCvId={cvId}
+              onClose={onClose}
+              closeAccordionSignalSubject={
+                closeAllAccordionsSignalSubjectRef.current
+              }
+            />
+            <AccordionFormCvDesiredPositions
+              tpJobseekerCvId={cvId}
+              onClose={onClose}
+              closeAccordionSignalSubject={
+                closeAllAccordionsSignalSubjectRef.current
+              }
+            />
+            <AccordionFormCvSummary
+              tpJobseekerCvId={cvId}
+              onClose={onClose}
+              closeAccordionSignalSubject={
+                closeAllAccordionsSignalSubjectRef.current
+              }
+            />
+
+            <AccordionFormCvLanguages
+              tpJobseekerCvId={cvId}
+              onClose={onClose}
+              closeAccordionSignalSubject={
+                closeAllAccordionsSignalSubjectRef.current
+              }
+            />
+            <AccordionFormCvDisplayCase
+              tpJobseekerCvId={cvId}
+              onClose={onClose}
+              closeAccordionSignalSubject={
+                closeAllAccordionsSignalSubjectRef.current
+              }
+            />
+            <AccordionFormCvImportantDetails
+              tpJobseekerCvId={cvId}
+              onClose={onClose}
+              closeAccordionSignalSubject={
+                closeAllAccordionsSignalSubjectRef.current
+              }
+            />
+            <AccordionFormCvProfessionalExperience
+              tpJobseekerCvId={cvId}
+              onClose={onClose}
+              closeAccordionSignalSubject={
+                closeAllAccordionsSignalSubjectRef.current
+              }
+            />
+            <AccordionFormCvEducation
+              tpJobseekerCvId={cvId}
+              onClose={onClose}
+              closeAccordionSignalSubject={
+                closeAllAccordionsSignalSubjectRef.current
+              }
+            />
           </Columns.Column>
         </Columns.Column>
         <Columns.Column size={7}>

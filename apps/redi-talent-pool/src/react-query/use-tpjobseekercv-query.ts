@@ -1,3 +1,4 @@
+import { curry } from 'lodash'
 import { useQuery } from 'react-query'
 import {
   fetchAllCurrentUserTpJobseekerCv,

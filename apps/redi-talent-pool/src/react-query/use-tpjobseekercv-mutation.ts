@@ -1,3 +1,4 @@
+import { curry } from 'lodash'
 import { useMutation, useQueryClient } from 'react-query'
 import {
   createCurrentUserTpJobseekerCv,

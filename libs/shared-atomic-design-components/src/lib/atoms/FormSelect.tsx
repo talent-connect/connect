@@ -129,8 +129,6 @@ function FormSelect(props: any) {
         .flat()
     : items.find((item: any) => item.value === get(values, name))
 
-  console.log(errors)
-
   return (
     <Form.Field>
       {label && <Form.Label size="small">{label}</Form.Label>}
