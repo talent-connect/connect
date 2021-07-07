@@ -7,7 +7,7 @@ import {
   FormTextArea,
   PipeList,
 } from '@talent-connect/shared-atomic-design-components'
-import { TpJobseekerProfile } from '@talent-connect/shared-types'
+import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
 import {
   availabilityOptions,
   availabilityOptionsIdToLabelMap,
@@ -21,6 +21,7 @@ import { useFormik } from 'formik'
 import moment from 'moment'
 import React, { useEffect, useMemo, useState } from 'react'
 import { Columns, Content, Element } from 'react-bulma-components'
+import { UseMutationResult, UseQueryResult } from 'react-query'
 import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
@@ -28,7 +29,9 @@ import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
 export function EditableImportantDetails() {
-  const { data: profile } = useTpJobseekerProfileQuery()
+  const queryHookResult = useTpJobseekerProfileQuery()
+  const mutationHookResult = useTpjobseekerprofileUpdateMutation()
+  const { data: profile } = queryHookResult
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
@@ -136,9 +139,11 @@ export function EditableImportantDetails() {
       modalTitle="Help employers get in touch"
       modalHeadline="Important Details"
       modalBody={
-        <ModalForm
+        <JobseekerFormSectionImportantDetails
           setIsEditing={setIsEditing}
           setIsFormDirty={setIsFormDirty}
+          queryHookResult={queryHookResult}
+          mutationHookResult={mutationHookResult}
         />
       }
       modalStyles={{ minHeight: '40rem' }}
@@ -165,15 +170,38 @@ const validationSchema = Yup.object({
   ),
 })
 
-function ModalForm({
+interface JobseekerFormSectionImportantDetailsProps {
+  setIsEditing: (boolean) => void
+  setIsFormDirty?: (boolean) => void
+  queryHookResult: UseQueryResult<
+    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    unknown
+  >
+  mutationHookResult: UseMutationResult<
+    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    unknown,
+    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    unknown
+  >
+  // TODO: this is a slippery slope. When this form section is used in the
+  // Profiile Builder, we need all the below fields. In the CV Builder we
+  // only need these "contact details" fields. Instead of "customizing"
+  // from component, we should probably build a new component
+  // EditableContactDetails or something. Over the longer run, we might
+  // want to create one component per field and compose forms together
+  // elegantly.
+  hideNonContactDetailsFields?: boolean
+}
+
+export function JobseekerFormSectionImportantDetails({
   setIsEditing,
   setIsFormDirty,
-}: {
-  setIsEditing: (boolean) => void
-  setIsFormDirty: (boolean) => void
-}) {
-  const { data: profile } = useTpJobseekerProfileQuery()
-  const mutation = useTpjobseekerprofileUpdateMutation()
+  queryHookResult,
+  mutationHookResult,
+  hideNonContactDetailsFields,
+}: JobseekerFormSectionImportantDetailsProps) {
+  const { data: profile } = queryHookResult
+  const mutation = mutationHookResult
   const initialValues: Partial<TpJobseekerProfile> = useMemo(
     () => ({
       availability: profile?.availability ?? '',
@@ -186,8 +214,15 @@ function ModalForm({
         : null,
       immigrationStatus: profile?.immigrationStatus ?? '',
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [
+      profile?.availability,
+      profile?.contactEmail,
+      profile?.desiredEmploymentType,
+      profile?.ifAvailabilityIsDate_date,
+      profile?.immigrationStatus,
+      profile?.phoneNumber,
+      profile?.postalMailingAddress,
+    ]
   )
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
     formik.setSubmitting(true)
@@ -207,7 +242,10 @@ function ModalForm({
     onSubmit,
     validateOnMount: true,
   })
-  useEffect(() => setIsFormDirty(formik.dirty), [formik.dirty, setIsFormDirty])
+  useEffect(() => setIsFormDirty?.(formik.dirty), [
+    formik.dirty,
+    setIsFormDirty,
+  ])
 
   return (
     <>
@@ -239,38 +277,42 @@ function ModalForm({
         placeholder={`Max Mustermann,\nBerlinstraße 123,\n12345 Berlin,\nGermany`}
         {...formik}
       />
-      <FormSelect
-        label="What kind of employment are you looking for?*"
-        name="desiredEmploymentType"
-        items={formDesiredEmploymentType}
-        {...formik}
-        multiselect
-      />
-      <FormSelect
-        label="When are you available to start?*"
-        name="availability"
-        items={formAvailabilityOptions}
-        {...formik}
-      />
-      {formik.values.availability === 'date' ? (
-        <FormDatePicker
-          placeholder="Select your date"
-          name="ifAvailabilityIsDate_date"
-          dateFormat="dd MMMM yyyy"
-          minDate={new Date()}
-          showMonthDropdown
-          showYearDropdown
-          dropdownMode="select"
-          isClearable
-          {...formik}
-        />
-      ) : null}
-      <FormSelect
-        label="What is your immigration status?"
-        name="immigrationStatus"
-        items={formImmigrationStatusOptions}
-        {...formik}
-      />
+      {hideNonContactDetailsFields ? null : (
+        <>
+          <FormSelect
+            label="What kind of employment are you looking for?*"
+            name="desiredEmploymentType"
+            items={formDesiredEmploymentType}
+            {...formik}
+            multiselect
+          />
+          <FormSelect
+            label="When are you available to start?*"
+            name="availability"
+            items={formAvailabilityOptions}
+            {...formik}
+          />
+          {formik.values.availability === 'date' ? (
+            <FormDatePicker
+              placeholder="Select your date"
+              name="ifAvailabilityIsDate_date"
+              dateFormat="dd MMMM yyyy"
+              minDate={new Date()}
+              showMonthDropdown
+              showYearDropdown
+              dropdownMode="select"
+              isClearable
+              {...formik}
+            />
+          ) : null}
+          <FormSelect
+            label="What is your immigration status?"
+            name="immigrationStatus"
+            items={formImmigrationStatusOptions}
+            {...formik}
+          />
+        </>
+      )}
 
       <Button
         disabled={!formik.isValid || mutation.isLoading}
