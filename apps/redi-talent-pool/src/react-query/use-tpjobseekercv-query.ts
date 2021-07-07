@@ -26,7 +26,7 @@ export function useTpJobseekerCvByIdQuery(id: string, props?: Props) {
   const retry = props?.retry ?? true
 
   return useQuery(
-    'allCurrentUserTpJobseekerCvById',
+    ['currentUserTpJobseekerCv', id],
     () => fetchCurrentUserTpJobseekerCvById(id),
     {
       staleTime: 5 * 60 * 1000,

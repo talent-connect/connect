@@ -45,11 +45,6 @@ function CvListPage() {
     })
   }
 
-  // TODO
-  const handleExportCv = (): void => {
-    return
-  }
-
   /**
    * TODO: Fix hard-coded margins/paddings below, in favor of the spacing
    * clean-up task which is planned for after Talent Pool project is done
@@ -101,7 +96,6 @@ function CvListPage() {
                 id={cv.id}
                 name={cv.cvName}
                 createdAt={cv.createdAt}
-                handleExport={handleExportCv}
               />
             ))}
             <EmptySectionPlaceholder

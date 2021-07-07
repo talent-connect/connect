@@ -6,7 +6,6 @@ import {
   Heading,
   Button,
 } from '@talent-connect/shared-atomic-design-components'
-import { CVFormData } from '@talent-connect/talent-pool/types'
 import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined'
 
 import { LoggedIn } from '../../../../components/templates'
@@ -56,6 +55,20 @@ function CvDetailPage() {
   const { data: cvData } = useTpJobseekerCvByIdQuery(cvId)
 
   const handleCloseClick = () => history.push('/app/cv-builder')
+
+  const [
+    cvPreviewElementWidth,
+    setCvPreviewElementWidth,
+  ] = React.useState<number>(0)
+  const cvContainerRef = React.useRef<HTMLDivElement>(null)
+  const cvContainerRefCallback = React.useCallback((containerNode) => {
+    cvContainerRef.current = containerNode
+    const elementWidth = containerNode?.clientWidth
+    setCvPreviewElementWidth(elementWidth)
+  }, [])
+
+  const pdfWidthToHeightRatio = 1.414 // A4 page ratio
+  const cvContainerHeight = cvPreviewElementWidth * pdfWidthToHeightRatio
 
   const onClose = useCallback(
     () => closeAllAccordionsSignalSubjectRef.current?.next(),
@@ -147,8 +160,16 @@ function CvDetailPage() {
         </Columns.Column>
         <Columns.Column size={7}>
           {cvData && (
-            <Box paddingless style={{ width: 595 }}>
-              <CVPDFPreviewMemoized cvData={cvData} />
+            <Box
+              domRef={cvContainerRefCallback}
+              paddingless
+              style={{ overflow: 'hidden', height: `${cvContainerHeight}px` }}
+            >
+              <CVPDFPreviewMemoized
+                cvData={cvData}
+                pdfHeightPx={cvContainerHeight}
+                pdfWidthPx={cvPreviewElementWidth}
+              />
             </Box>
           )}
         </Columns.Column>
