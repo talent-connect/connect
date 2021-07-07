@@ -143,13 +143,13 @@ function CvDetailPage() {
                 closeAllAccordionsSignalSubjectRef.current
               }
             />
-            <AccordionFormCvDisplayCase
+            {/* <AccordionFormCvDisplayCase
               tpJobseekerCvId={cvId}
               onClose={onClose}
               closeAccordionSignalSubject={
                 closeAllAccordionsSignalSubjectRef.current
               }
-            />
+            /> */}
             <AccordionFormCvImportantDetails
               tpJobseekerCvId={cvId}
               onClose={onClose}
@@ -178,7 +178,7 @@ function CvDetailPage() {
             <Box
               domRef={cvContainerRefCallback}
               paddingless
-              style={{ overflow: 'hidden', height: `${cvContainerHeight}px` }}
+              style={{ overflow: 'hidden' }}
             >
               <CVPDFPreviewMemoized
                 cvData={cvData}

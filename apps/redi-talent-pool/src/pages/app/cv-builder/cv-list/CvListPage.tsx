@@ -6,8 +6,9 @@ import {
   Button,
   Modal,
   FormInput,
+  Icon,
 } from '@talent-connect/shared-atomic-design-components'
-import { Section, Columns, Content } from 'react-bulma-components'
+import { Section, Columns, Content, Box } from 'react-bulma-components'
 
 import { useTpjobseekerCvCreateMutation } from '../../../../react-query/use-tpjobseekercv-mutation'
 import { useTpJobseekerCvQuery } from '../../../../react-query/use-tpjobseekercv-query'
@@ -17,6 +18,8 @@ import { EmptySectionPlaceholder } from '../../../../components/molecules/EmptyS
 import CvListItem from './CvListItem'
 import { useTpJobseekerProfileQuery } from '../../../../react-query/use-tpjobseekerprofile-query'
 import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
+
+import './CvListPage.scss'
 
 function CvListPage() {
   const [showCvNameModal, setShowCvNameModal] = React.useState(false)
@@ -58,9 +61,11 @@ function CvListPage() {
     <LoggedIn>
       <Columns>
         <Columns.Column size={12} paddingless>
-          <Columns.Column size={3} paddingless>
-            <Heading size="smaller">CV BUILDER</Heading>
-            <Heading size="medium" border="bottomLeft">
+          <Columns.Column size={4} paddingless>
+            <Heading size="smaller" className="heading">
+              CV BUILDER
+            </Heading>
+            <Heading size="medium" border="bottomLeft" className="heading">
               Welcome to the CV Builder tool!
             </Heading>
           </Columns.Column>
@@ -98,25 +103,50 @@ function CvListPage() {
           <div>
             {cvList.map((cv) => (
               <CvListItem
+                key={cv.id}
                 id={cv.id}
                 name={cv.cvName}
                 createdAt={cv.createdAt}
               />
             ))}
-            <EmptySectionPlaceholder
-              height="extra-slim"
-              style={{ width: 300, margin: 'auto' }}
+            <Box
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                padding: '10px 70px',
+                maxWidth: 300,
+                margin: 'auto',
+                border: 'none',
+                cursor: 'pointer',
+              }}
+              renderAs="button"
               onClick={() => toggleCvNameModal(true)}
             >
+              <Icon
+                icon="tpPlus"
+                style={{ width: '36px', height: '36px', marginRight: '20px' }}
+              />
               Create a CV
-            </EmptySectionPlaceholder>
+            </Box>
           </div>
         ) : (
           <EmptySectionPlaceholder
             height="tall"
             onClick={() => toggleCvNameModal(true)}
           >
-            Create a CV
+            <Box
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                padding: '10px 70px',
+              }}
+            >
+              <Icon
+                icon="tpPlus"
+                style={{ width: '36px', height: '36px', marginRight: '20px' }}
+              />
+              Create a CV
+            </Box>
           </EmptySectionPlaceholder>
         )}
       </Section>

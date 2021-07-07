@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
     fontSize: '14px',
     marginBottom: '25px',
     letterSpacing: '0.63px',
+    width: '65%',
   },
   headerText2: {
     top: '70px',
@@ -84,6 +85,9 @@ const styles = StyleSheet.create({
     fontWeight: 900,
     textTransform: 'uppercase',
   },
+  headerText2ExtraTop: {
+    top: '85px',
+  },
   headerText3: {
     top: '110px',
     left: '37%',
@@ -91,6 +95,9 @@ const styles = StyleSheet.create({
     fontSize: '40px',
     fontWeight: 900,
     textTransform: 'uppercase',
+  },
+  headerText3ExtraTop: {
+    top: '125px',
   },
   headerImg: {
     top: '40px',
@@ -116,6 +123,7 @@ const styles = StyleSheet.create({
   contentRight: {
     flexDirection: 'column',
     width: '65%',
+    marginTop: '-10px',
     borderRadius: '8px',
     padding: '8px',
   },
@@ -153,7 +161,7 @@ const styles = StyleSheet.create({
   ContentListItem: {
     fontSize: '8px',
     paddingVertical: '5px',
-    lineHeight: '0.54',
+    lineHeight: '1',
     letterSpacing: '0.41px',
   },
   contentPara: {
@@ -276,7 +284,7 @@ export const CVPDF = ({
     <Document title={`${firstName}_${lastName}_CV.pdf`}>
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
-          <Text style={styles.headerText1}>
+          <Text style={[styles.headerText1]}>
             {desiredPositions
               ?.map(
                 (desiredPosition) =>
@@ -284,8 +292,26 @@ export const CVPDF = ({
               )
               .join(', ')}
           </Text>
-          <Text style={styles.headerText2}>{firstName}</Text>
-          <Text style={styles.headerText3}>{lastName}</Text>
+          <Text
+            style={[
+              styles.headerText2,
+              desiredPositions.length > 2
+                ? styles.headerText2ExtraTop
+                : undefined,
+            ]}
+          >
+            {firstName}
+          </Text>
+          <Text
+            style={[
+              styles.headerText3,
+              desiredPositions.length > 2
+                ? styles.headerText3ExtraTop
+                : undefined,
+            ]}
+          >
+            {lastName}
+          </Text>
           <Image
             style={styles.headerImg}
             src={{
@@ -303,16 +329,16 @@ export const CVPDF = ({
               <Text style={styles.contentHeading}>About</Text>
               <Text style={styles.contentPara}>{aboutYourself}</Text>
             </View>
-            <View style={styles.contentViewLeft}>
+            {/* <View style={styles.contentViewLeft}>
               <Text style={styles.contentHeading}>Skills</Text>
               <View style={styles.ContentList}>
-                {/* {topSkills?.map((skill, index) => (
+                {topSkills?.map((skill, index) => (
                   <Text key={`skill_${index}`} style={styles.ContentListItem}>
                     {skill}
                   </Text>
-                ))} */}
+                ))}
               </View>
-            </View>
+            </View> */}
             <View style={styles.contentViewLeft}>
               <Text style={styles.contentHeading}>Languages</Text>
               <View style={styles.ContentList}>
@@ -409,16 +435,16 @@ export const CVPDF = ({
                         {experience.company}
                       </Text>
                     </View>
-                    <Text style={[styles.contentSubHeading]}>
+                    <Text style={styles.contentSubHeading}>
                       {formatDate(
-                        experience.startDateMonth,
+                        Number(experience.startDateMonth),
                         experience.startDateYear
                       )}{' '}
                       -{' '}
                       {experience.current
                         ? 'Present'
                         : formatDate(
-                            experience.endDateMonth,
+                            Number(experience.endDateMonth),
                             experience.endDateYear
                           )}
                     </Text>
@@ -574,10 +600,14 @@ export const CVPDFPreview = ({
     return (
       <div>
         {url && (
-          <ReactPDFDocument file={url}>
+          <ReactPDFDocument
+            file={url}
+            onLoadSuccess={() => console.debug('ReactPDFDocument rendered')}
+          >
             <ReactPDFPage
               pageNumber={1}
               width={pdfWidthPx}
+              onRenderSuccess={() => console.debug('ReactPDFPage rendered')}
               onRenderError={console.error}
             />
           </ReactPDFDocument>
