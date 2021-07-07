@@ -19,8 +19,12 @@ import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import Avatar from '../Avatar'
 
-export function EditableNamePhotoLocation() {
-  const { data: profile } = useTpJobseekerProfileQuery()
+interface Props {
+  profile: Partial<TpJobseekerProfile>
+  disableEditing?: boolean
+}
+
+export function EditableNamePhotoLocation({ profile, disableEditing }: Props) {
   const mutation = useTpjobseekerprofileUpdateMutation()
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
@@ -29,18 +33,20 @@ export function EditableNamePhotoLocation() {
 
   return (
     <Editable
+      disableEditing={disableEditing}
       isEditing={isEditing}
       isFormDirty={isFormDirty}
       setIsEditing={setIsEditing}
       readComponent={
         <Columns vCentered breakpoint="mobile" className="oneandhalf-bs">
           <Columns.Column size={5}>
-            {profile ? (
+            {profile && !disableEditing ? (
               <Avatar.Editable
                 profile={profile}
                 profileSaveStart={mutation.mutate}
               />
             ) : null}
+            {profile && disableEditing ? <Avatar profile={profile} /> : null}
           </Columns.Column>
           <Columns.Column size={7}>
             <Heading size="medium">
@@ -56,12 +62,15 @@ export function EditableNamePhotoLocation() {
             >
               <Icon icon="mapPin" />{' '}
               {isLocationEmpty ? (
-                <EmptySectionPlaceholder
-                  height="extra-slim"
-                  text="Add your location"
-                  onClick={() => setIsEditing(true)}
-                  style={{ width: '18rem', margin: '0 0 0 1rem' }}
-                />
+                disableEditing ? null : (
+                  <EmptySectionPlaceholder
+                    height="extra-slim"
+                    onClick={() => setIsEditing(true)}
+                    style={{ width: '18rem', margin: '0 0 0 1rem' }}
+                  >
+                    Add your location
+                  </EmptySectionPlaceholder>
+                )
               ) : (
                 <Content>
                   <strong>{profile?.location}</strong>

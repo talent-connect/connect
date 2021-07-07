@@ -10,6 +10,7 @@ import './Editable.scss'
 interface Props {
   isEditing: boolean
   setIsEditing: (boolean) => void
+  disableEditing?: boolean
   isFormDirty?: boolean
   title?: string
   readComponent: React.ReactNode
@@ -22,6 +23,7 @@ interface Props {
 export function Editable({
   isEditing,
   setIsEditing,
+  disableEditing,
   isFormDirty,
   title,
   readComponent,
@@ -43,16 +45,26 @@ export function Editable({
           >
             {title}
           </Element>
-          <div className="icon__button" onClick={() => setIsEditing(true)}>
-            <Icon icon="edit" />
-          </div>
+          {!disableEditing ? (
+            <div className="icon__button" onClick={() => setIsEditing(true)}>
+              <Icon icon="edit" />
+            </div>
+          ) : null}
         </div>
       ) : (
         <div className="is-flex is-flex-direction-row">
           <span style={{ flexGrow: 1 }}>&nbsp;</span>
-          <div className="icon__button" onClick={() => setIsEditing(true)}>
-            <Icon icon="edit" />
-          </div>
+          {!disableEditing ? (
+            <div
+              className="icon__button"
+              onClick={() => setIsEditing(true)}
+              style={{ position: 'relative', top: '50px' }}
+            >
+              <Icon icon="edit" />
+            </div>
+          ) : (
+            <div></div>
+          )}
         </div>
       )}
 

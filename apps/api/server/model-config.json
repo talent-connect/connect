@@ -67,5 +67,13 @@
   "TpCompanyProfile": {
     "dataSource": "mongodb",
     "public": true
+  },
+  "TpJobListing": {
+    "dataSource": "mongodb",
+    "public": true
+  },
+  "TpJobfair2021InterviewMatch": {
+    "dataSource": "mongodb",
+    "public": true
   }
 }

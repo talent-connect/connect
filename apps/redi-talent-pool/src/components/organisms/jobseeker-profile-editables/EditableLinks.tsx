@@ -18,8 +18,17 @@ import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseeker
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
-export function EditableLinks() {
+interface Props {
+  profile?: Partial<TpJobseekerProfile>
+  disableEditing?: boolean
+}
+
+export function EditableLinks({
+  profile: overridingProfile,
+  disableEditing,
+}: Props) {
   const queryHookResult = useTpJobseekerProfileQuery()
+  if (overridingProfile) queryHookResult.data = overridingProfile
   const mutationHookResult = useTpjobseekerprofileUpdateMutation()
   const { data: profile } = queryHookResult
   const [isEditing, setIsEditing] = useState(false)
@@ -29,8 +38,11 @@ export function EditableLinks() {
 
   const isEmpty = EditableLinks.isSectionEmpty(profile)
 
+  if (disableEditing && isEmpty) return null
+
   return (
     <Editable
+      disableEditing={disableEditing}
       isEditing={isEditing}
       isFormDirty={isFormDirty}
       setIsEditing={setIsEditing}
@@ -39,9 +51,10 @@ export function EditableLinks() {
         isEmpty ? (
           <EmptySectionPlaceholder
             height="slim"
-            text="Add your links"
             onClick={() => setIsEditing(true)}
-          />
+          >
+            Add your links
+          </EmptySectionPlaceholder>
         ) : (
           <Content>
             {links

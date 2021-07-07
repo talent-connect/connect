@@ -41,8 +41,17 @@ function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
   return result
 }
 
-export function EditableEducation() {
+interface Props {
+  profile?: Partial<TpJobseekerProfile>
+  disableEditing?: boolean
+}
+
+export function EditableEducation({
+  profile: overridingProfile,
+  disableEditing,
+}: Props) {
   const queryHookResult = useTpJobseekerProfileQuery()
+  if (overridingProfile) queryHookResult.data = overridingProfile
   const mutationHookResult = useTpjobseekerprofileUpdateMutation()
   const { data: profile } = queryHookResult
   const [isEditing, setIsEditing] = useState(false)
@@ -50,8 +59,11 @@ export function EditableEducation() {
 
   const isEmpty = EditableEducation.isSectionEmpty(profile)
 
+  if (disableEditing && isEmpty) return null
+
   return (
     <Editable
+      disableEditing={disableEditing}
       isEditing={isEditing}
       isFormDirty={isFormDirty}
       setIsEditing={setIsEditing}
@@ -62,7 +74,9 @@ export function EditableEducation() {
             height="tall"
             text="Add your education"
             onClick={() => setIsEditing(true)}
-          />
+          >
+            Add your education
+          </EmptySectionPlaceholder>
         ) : (
           profile?.education?.map((item) => (
             <div style={{ marginBottom: '2.8rem' }}>

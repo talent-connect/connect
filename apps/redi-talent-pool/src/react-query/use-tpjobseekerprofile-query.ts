@@ -1,10 +1,15 @@
 import { useQuery } from 'react-query'
-import { fetchCurrentUserTpJobseekerProfile } from '../services/api/api'
+import {
+  fetchCurrentUserTpJobseekerProfile,
+  fetchTpJobseekerProfileById,
+} from '../services/api/api'
 
 interface Props {
   retry: boolean
 }
 
+// TODO: refactor name to make clear this is a hook for fetching
+// CURRENT USER's profile
 export function useTpJobseekerProfileQuery(props?: Props) {
   const retry = props?.retry ?? true
 
@@ -16,5 +21,11 @@ export function useTpJobseekerProfileQuery(props?: Props) {
       retry,
       refetchOnWindowFocus: false,
     }
+  )
+}
+
+export function useTpJobseekerProfileByIdQuery(id: string) {
+  return useQuery(['oneTpJobseekerProfile', id], () =>
+    fetchTpJobseekerProfileById(id)
   )
 }

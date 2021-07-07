@@ -5,7 +5,8 @@ import {
 } from '../services/api/api'
 
 interface Props {
-  retry: boolean
+  retry?: boolean
+  enabled?: boolean
 }
 
 export function useTpJobseekerCvQuery(props?: Props) {
@@ -24,6 +25,7 @@ export function useTpJobseekerCvQuery(props?: Props) {
 
 export function useTpJobseekerCvByIdQuery(id: string, props?: Props) {
   const retry = props?.retry ?? true
+  const enabled = props?.enabled ?? true
 
   return useQuery(
     ['currentUserTpJobseekerCv', id],
@@ -31,6 +33,7 @@ export function useTpJobseekerCvByIdQuery(id: string, props?: Props) {
     {
       staleTime: 5 * 60 * 1000,
       retry,
+      enabled,
       refetchOnWindowFocus: false,
     }
   )

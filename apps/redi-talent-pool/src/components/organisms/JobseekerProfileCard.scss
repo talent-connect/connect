@@ -1,6 +1,6 @@
 @import '_variables.scss';
 
-.job-posting-card {
+.jobseeker-profile-card {
   border-radius: 4px;
   height: 24.5rem;
   overflow: hidden;
@@ -13,10 +13,16 @@
     }
   }
 
-  &__name {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  &__job-title {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 24px;
+    letter-spacing: 1.25px;
+  }
+
+  &__company-name {
+    margin-top: 5px;
+    color: $grey;
   }
 
   &__image {
@@ -43,35 +49,6 @@
       &:hover {
         transform: scale(1.2);
       }
-    }
-  }
-
-  &__location-tag {
-    padding: 0.5rem;
-    position: absolute;
-    top: 8.3rem;
-    left: 0.75rem;
-  }
-
-  .tags {
-    margin-top: 1rem;
-
-    .tag {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-
-      display: inline-block;
-      line-height: 2rem;
-
-      &--rest {
-        flex-shrink: 0;
-      }
-    }
-
-    &__last-row {
-      display: flex;
-      width: 100%;
     }
   }
 }

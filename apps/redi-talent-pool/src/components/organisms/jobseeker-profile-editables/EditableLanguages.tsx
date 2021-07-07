@@ -35,8 +35,17 @@ function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
   return result
 }
 
-export function EditableLanguages() {
+interface Props {
+  profile?: Partial<TpJobseekerProfile>
+  disableEditing?: boolean
+}
+
+export function EditableLanguages({
+  profile: overridingProfile,
+  disableEditing,
+}: Props) {
   const queryHookResult = useTpJobseekerProfileQuery()
+  if (overridingProfile) queryHookResult.data = overridingProfile
   const mutationHookResult = useTpjobseekerprofileUpdateMutation()
   const { data: profile } = queryHookResult
   const [isEditing, setIsEditing] = useState(false)
@@ -44,8 +53,11 @@ export function EditableLanguages() {
 
   const isEmpty = EditableLanguages.isSectionEmpty(profile)
 
+  if (disableEditing && isEmpty) return null
+
   return (
     <Editable
+      disableEditing={disableEditing}
       isEditing={isEditing}
       isFormDirty={isFormDirty}
       setIsEditing={setIsEditing}
@@ -54,9 +66,10 @@ export function EditableLanguages() {
         isEmpty ? (
           <EmptySectionPlaceholder
             height="slim"
-            text="Add your languages"
             onClick={() => setIsEditing(true)}
-          />
+          >
+            Add your languages
+          </EmptySectionPlaceholder>
         ) : (
           <Content>
             {profile?.workingLanguages?.map(

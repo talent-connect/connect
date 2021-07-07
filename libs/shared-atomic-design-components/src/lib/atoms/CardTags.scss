@@ -1,0 +1,21 @@
+.tags {
+  margin-top: 1rem;
+
+  .tag {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    display: inline-block;
+    line-height: 2rem;
+
+    &--rest {
+      flex-shrink: 0;
+    }
+  }
+
+  &__last-row {
+    display: flex;
+    width: 100%;
+  }
+}

@@ -28,8 +28,17 @@ import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseeker
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
-export function EditableImportantDetails() {
+interface Props {
+  profile?: Partial<TpJobseekerProfile>
+  disableEditing?: boolean
+}
+
+export function EditableImportantDetails({
+  profile: overridingProfile,
+  disableEditing,
+}: Props) {
   const queryHookResult = useTpJobseekerProfileQuery()
+  if (overridingProfile) queryHookResult.data = overridingProfile
   const mutationHookResult = useTpjobseekerprofileUpdateMutation()
   const { data: profile } = queryHookResult
   const [isEditing, setIsEditing] = useState(false)
@@ -37,8 +46,11 @@ export function EditableImportantDetails() {
 
   const isEmpty = EditableImportantDetails.isSectionEmpty(profile)
 
+  if (disableEditing && isEmpty) return null
+
   return (
     <Editable
+      disableEditing={disableEditing}
       isEditing={isEditing}
       isFormDirty={isFormDirty}
       setIsEditing={setIsEditing}
@@ -47,9 +59,10 @@ export function EditableImportantDetails() {
         isEmpty ? (
           <EmptySectionPlaceholder
             height="tall"
-            text="Add your contact details, type of employment and availability"
             onClick={() => setIsEditing(true)}
-          />
+          >
+            Add your contact details, type of employment and availability
+          </EmptySectionPlaceholder>
         ) : (
           <div
             style={{

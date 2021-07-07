@@ -3,6 +3,7 @@ import React from 'react'
 import { Columns, Container, Element, Section } from 'react-bulma-components'
 import { useTranslation } from 'react-i18next'
 import { ReactComponent as RediSchool } from '../../assets/redi-school-logo.svg'
+import MicrosoftLogo from '../../assets/images/microsoft-logo.png'
 import './Footer.scss'
 
 const RediFooter = () => {
@@ -32,6 +33,20 @@ const RediFooter = () => {
                 className="footer__logo oneandhalf-bs"
               >
                 <RediSchool />
+              </Element>
+              <Element renderAs="small">In collaboration with</Element>
+              <Element
+                renderAs="a"
+                href="https://www.microsoft.com/de-de/berlin/corporate-digital-responsibility.aspx?id=tab01"
+                target="_blank"
+                className="footer__logo oneandhalf-bs"
+                style={{ marginTop: 0 }}
+              >
+                <img
+                  src={MicrosoftLogo}
+                  alt="In collaboration with Microsoft"
+                  style={{ maxWidth: '6rem' }}
+                />
               </Element>
             </Columns.Column>
             <Columns.Column

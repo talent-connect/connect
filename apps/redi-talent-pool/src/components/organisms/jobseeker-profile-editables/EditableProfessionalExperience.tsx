@@ -37,8 +37,17 @@ function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
   return result
 }
 
-export function EditableProfessionalExperience() {
+interface Props {
+  profile?: Partial<TpJobseekerProfile>
+  disableEditing?: boolean
+}
+
+export function EditableProfessionalExperience({
+  profile: overridingProfile,
+  disableEditing,
+}: Props) {
   const queryHookResult = useTpJobseekerProfileQuery()
+  if (overridingProfile) queryHookResult.data = overridingProfile
   const mutationHookResult = useTpjobseekerprofileUpdateMutation()
   const { data: profile } = queryHookResult
   const [isEditing, setIsEditing] = useState(false)
@@ -46,8 +55,11 @@ export function EditableProfessionalExperience() {
 
   const isEmpty = EditableProfessionalExperience.isSectionEmpty(profile)
 
+  if (disableEditing && isEmpty) return null
+
   return (
     <Editable
+      disableEditing={disableEditing}
       isEditing={isEditing}
       isFormDirty={isFormDirty}
       setIsEditing={setIsEditing}
@@ -56,9 +68,10 @@ export function EditableProfessionalExperience() {
         isEmpty ? (
           <EmptySectionPlaceholder
             height="tall"
-            text="Add your experience"
             onClick={() => setIsEditing(true)}
-          />
+          >
+            Add your experience
+          </EmptySectionPlaceholder>
         ) : (
           profile?.experience?.map((item) => (
             <div style={{ marginBottom: '2.8rem' }}>

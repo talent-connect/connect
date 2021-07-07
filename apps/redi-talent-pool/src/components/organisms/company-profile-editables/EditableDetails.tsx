@@ -1,32 +1,23 @@
 import {
   Button,
   Caption,
-  FormDatePicker,
   FormInput,
-  FormSelect,
-  FormTextArea,
-  PipeList,
 } from '@talent-connect/shared-atomic-design-components'
 import { TpCompanyProfile } from '@talent-connect/shared-types'
-import {
-  availabilityOptions,
-  availabilityOptionsIdToLabelMap,
-  desiredEmploymentTypeOptions,
-  desiredEmploymentTypeOptionsIdToLabelMap,
-  desiredPositions,
-} from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
-import moment from 'moment'
 import React, { useEffect, useMemo, useState } from 'react'
 import { Columns, Content, Element } from 'react-bulma-components'
-import * as Yup from 'yup'
 import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
-export function EditableDetails() {
-  const { data: profile } = useTpCompanyProfileQuery()
+interface Props {
+  profile: Partial<TpCompanyProfile>
+  disableEditing?: boolean
+}
+
+export function EditableDetails({ profile, disableEditing }: Props) {
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
@@ -34,6 +25,7 @@ export function EditableDetails() {
 
   return (
     <Editable
+      disableEditing={disableEditing}
       isEditing={isEditing}
       isFormDirty={isFormDirty}
       setIsEditing={setIsEditing}
@@ -42,24 +34,32 @@ export function EditableDetails() {
         isEmpty ? (
           <EmptySectionPlaceholder
             height="tall"
-            text="Add your website and industry details"
             onClick={() => setIsEditing(true)}
-          />
+          >
+            Add your website and industry details
+          </EmptySectionPlaceholder>
         ) : (
-          <Columns>
-            <Columns.Column size={6}>
+          <div className="profile-section--body">
+            <div
+              style={{
+                display: 'grid',
+                width: '100%',
+                gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+                gridColumnGap: '32px',
+                gridRowGap: '32px',
+              }}
+            >
               {profile?.industry ? (
-                <>
+                <div>
                   <Caption>Industry</Caption>
                   <Content>
                     <p>{profile.industry}</p>
                   </Content>
-                </>
+                </div>
               ) : null}
-            </Columns.Column>
-            <Columns.Column size={6}>
+
               {profile?.website || profile?.linkedInUrl ? (
-                <>
+                <div>
                   <Caption>Links</Caption>
                   <Content>
                     {[profile?.website, profile?.linkedInUrl]
@@ -72,10 +72,10 @@ export function EditableDetails() {
                         </p>
                       ))}
                   </Content>
-                </>
+                </div>
               ) : null}
-            </Columns.Column>
-          </Columns>
+            </div>
+          </div>
         )
       }
       modalTitle="Help jobseekers get in touch"

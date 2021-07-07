@@ -4,6 +4,7 @@ import {
   RedUser,
   TpCompanyProfile,
   TpJobseekerCv,
+  TpJobListing, 
   TpJobseekerProfile,
 } from '@talent-connect/shared-types'
 import axios from 'axios'
@@ -194,5 +195,98 @@ export async function updateCurrentUserTpCompanyProfile(
     method: 'put',
     data: profile,
   })
+  return resp.data
+}
+
+export async function fetchAllTpJobListings(): Promise<Array<TpJobListing>> {
+  const userId = getAccessTokenFromLocalStorage().userId
+  const resp = await http(`${API_URL}/redUsers/${userId}/tpJobListings`)
+
+  // TODO: remove the `.filter()`. It
+  // was inserted temporarily for the "dummy" job listings we created for HR Summit
+  // 2021. Once the event is over, they can be removed from database completely.
+  // Reason for filter here is so companies don't see these dummy job listings.
+  return resp.data.filter((listing) => !listing.dummy)
+}
+
+export async function fetchOneTpJobListingOfCurrentUser(
+  id: string
+): Promise<TpJobListing> {
+  const userId = getAccessTokenFromLocalStorage().userId
+  const resp = await http(`${API_URL}/redUsers/${userId}/tpJobListings/${id}`)
+  return resp.data
+}
+
+export async function fetchOneTpJobListing(id: string): Promise<TpJobListing> {
+  const resp = await http(`${API_URL}/tpJobListings/${id}`)
+  return resp.data
+}
+
+export async function createCurrentUserTpJobListing(
+  jobListing: Partial<TpJobListing>
+): Promise<Partial<TpJobListing>> {
+  const userId = getAccessTokenFromLocalStorage().userId
+  const resp = await http(`${API_URL}/redUsers/${userId}/tpJobListings`, {
+    method: 'post',
+    data: jobListing,
+  })
+  return resp.data
+}
+
+export async function updateCurrentUserTpJobListing(
+  jobListing: Partial<TpJobListing>
+): Promise<Partial<TpJobListing>> {
+  const userId = getAccessTokenFromLocalStorage().userId
+  const resp = await http(
+    `${API_URL}/redUsers/${userId}/tpJobListings/${jobListing.id}`,
+    {
+      method: 'put',
+      data: jobListing,
+    }
+  )
+  return resp.data
+}
+
+export async function deleteCurrentUserTpJobListing(
+  jobListingId: string
+): Promise<Partial<TpJobListing>> {
+  const userId = getAccessTokenFromLocalStorage().userId
+  const resp = await http(
+    `${API_URL}/redUsers/${userId}/tpJobListings/${jobListingId}`,
+    {
+      method: 'delete',
+    }
+  )
+  return resp.data
+}
+
+export async function fetchAllTpJobFair2021InterviewMatches_tpJobListings(): Promise<
+  Array<TpJobListing>
+> {
+  const resp = await http(`${API_URL}/tpJobfair2021InterviewMatches`)
+  const interviewMatches = resp.data
+  const jobListings: Array<TpJobListing> = interviewMatches.map(
+    (match) => match.jobListing
+  )
+
+  return jobListings
+}
+
+export async function fetchAllTpJobFair2021InterviewMatches_tpJobseekerProfiles(): Promise<
+  Array<TpJobseekerProfile>
+> {
+  const resp = await http(`${API_URL}/tpJobfair2021InterviewMatches`)
+  const interviewMatches = resp.data
+  const jobseekerProfiles: Array<TpJobseekerProfile> = interviewMatches.map(
+    (match) => match.interviewee
+  )
+
+  return jobseekerProfiles
+}
+
+export async function fetchTpJobseekerProfileById(
+  id: string
+): Promise<Partial<TpJobseekerProfile>> {
+  const resp = await http(`${API_URL}/tpJobseekerProfiles/${id}`)
   return resp.data
 }

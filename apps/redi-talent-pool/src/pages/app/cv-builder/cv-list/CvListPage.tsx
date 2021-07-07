@@ -101,16 +101,18 @@ function CvListPage() {
             <EmptySectionPlaceholder
               height="extra-slim"
               style={{ width: 300, margin: 'auto' }}
-              text="Create a CV"
               onClick={() => toggleCvNameModal(true)}
-            />
+            >
+              Create a CV
+            </EmptySectionPlaceholder>
           </div>
         ) : (
           <EmptySectionPlaceholder
             height="tall"
-            text="Create a CV"
             onClick={() => toggleCvNameModal(true)}
-          />
+          >
+            Create a CV
+          </EmptySectionPlaceholder>
         )}
       </Section>
       <Modal

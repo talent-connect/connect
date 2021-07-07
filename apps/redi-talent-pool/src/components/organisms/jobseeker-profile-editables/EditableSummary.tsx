@@ -21,15 +21,27 @@ import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseeker
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
-export function EditableSummary() {
+interface Props {
+  profile?: Partial<TpJobseekerProfile>
+  disableEditing?: boolean
+}
+
+export function EditableSummary({
+  profile: overridingProfile,
+  disableEditing,
+}: Props) {
   const queryHookResult = useTpJobseekerProfileQuery()
+  if (overridingProfile) queryHookResult.data = overridingProfile
   const mutationHookResult = useTpjobseekerprofileUpdateMutation()
   const { data: profile } = queryHookResult
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
+  if (disableEditing && EditableSummary.isSectionEmpty(profile)) return null
+
   return (
     <Editable
+      disableEditing={disableEditing}
       isEditing={isEditing}
       isFormDirty={isFormDirty}
       setIsEditing={setIsEditing}
@@ -43,9 +55,10 @@ export function EditableSummary() {
             ) : (
               <EmptySectionPlaceholder
                 height="tall"
-                text="Tell us about yourself"
                 onClick={() => setIsEditing(true)}
-              />
+              >
+                Tell us about yourself
+              </EmptySectionPlaceholder>
             )}
           </Content>
           <Caption>Top skills</Caption>
@@ -58,9 +71,10 @@ export function EditableSummary() {
           ) : (
             <EmptySectionPlaceholder
               height="slim"
-              text="Add your top skills"
               onClick={() => setIsEditing(true)}
-            />
+            >
+              Add your top skills
+            </EmptySectionPlaceholder>
           )}
         </>
       }
@@ -177,7 +191,7 @@ export function JobseekerFormSectionSummary({
         label="About you (100-600 characters)"
         name="aboutYourself"
         rows={7}
-        placeholder="Example: UX Designer with an academic background in Psychology. Experienced in negotiating with different kinds of clients and and resolving customer complaints with a high level of empathy. Committed to understanding the human mind and designing impactful products by leveraging a strong sense of analythical and critical thinking."
+        placeholder="Example: UX Designer with an academic background in Psychology. Experienced in negotiating with different kinds of clients and resolving customer complaints with a high level of empathy. Committed to understanding the human mind and designing impactful products by leveraging a strong sense of analytical and critical thinking."
         minChar={100}
         maxChar={600}
         {...formik}

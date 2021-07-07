@@ -19,8 +19,17 @@ import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseeker
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
-export function EditableOverview() {
+interface Props {
+  profile?: Partial<TpJobseekerProfile>
+  disableEditing?: boolean
+}
+
+export function EditableOverview({
+  profile: overridingProfile,
+  disableEditing,
+}: Props) {
   const queryHookResult = useTpJobseekerProfileQuery()
+  if (overridingProfile) queryHookResult.data = overridingProfile
   const mutationHookResult = useTpjobseekerprofileUpdateMutation()
   const { data: profile } = queryHookResult
   const [isEditing, setIsEditing] = useState(false)
@@ -28,8 +37,11 @@ export function EditableOverview() {
 
   const isEmpty = EditableOverview.isSectionEmpty(profile)
 
+  if (disableEditing && isEmpty) return null
+
   return (
     <Editable
+      disableEditing={Boolean(disableEditing)}
       isEditing={isEditing}
       isFormDirty={isFormDirty}
       setIsEditing={setIsEditing}
@@ -38,9 +50,10 @@ export function EditableOverview() {
         isEmpty ? (
           <EmptySectionPlaceholder
             height="slim"
-            text="Add your preferred positions"
             onClick={() => setIsEditing(true)}
-          />
+          >
+            Add your preferred positions
+          </EmptySectionPlaceholder>
         ) : (
           <>
             <Caption>Desired positions</Caption>

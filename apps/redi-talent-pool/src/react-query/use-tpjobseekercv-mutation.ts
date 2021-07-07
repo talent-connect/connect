@@ -29,6 +29,7 @@ export function useTpjobseekerCvUpdateMutation(id: string) {
     {
       onSuccess: (data) => {
         queryClient.invalidateQueries('allCurrentUserTpJobseekerCv')
+        queryClient.invalidateQueries(['currentUserTpJobseekerCv', id])
         queryClient.setQueryData('currentUserTpJobseekerCvUpdate', data)
       },
     }

@@ -1,27 +1,27 @@
-import React, { useCallback, useRef } from 'react'
-import { useHistory, useParams } from 'react-router-dom'
-import { Columns, Content, Box, Section } from 'react-bulma-components'
-
-import {
-  Heading,
-  Button,
-} from '@talent-connect/shared-atomic-design-components'
 import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined'
-
-import { LoggedIn } from '../../../../components/templates'
-import { CVPDFPreviewMemoized } from '../../../../components/molecules'
-import { useTpJobseekerCvByIdQuery } from '../../../../react-query/use-tpjobseekercv-query'
-
-import './CvDetailPage.scss'
-import { AccordionFormCvSummary } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvSummary'
+import {
+  Button,
+  Heading,
+} from '@talent-connect/shared-atomic-design-components'
+import { AWS_PROFILE_AVATARS_BUCKET_BASE_URL } from '@talent-connect/shared-config'
+import React, { useCallback, useRef } from 'react'
+import { Box, Columns, Content, Section } from 'react-bulma-components'
+import { useHistory, useParams } from 'react-router-dom'
 import { Subject } from 'rxjs'
-import { AccordionFormCvProfessionalExperience } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvProfessionalExperience'
-import { AccordionFormCvEducation } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvEducation'
-import { AccordionFormCvLanguages } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvLanguages'
-import { AccordionFormCvDisplayCase } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvDisplayCase'
-import { AccordionFormCvImportantDetails } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvImportantDetails'
+import { CVPDFPreviewMemoized } from '../../../../components/molecules'
 import { AccordionFormCvDesiredPositions } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvDesiredPositions'
+import { AccordionFormCvDisplayCase } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvDisplayCase'
+import { AccordionFormCvEducation } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvEducation'
+import { AccordionFormCvImportantDetails } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvImportantDetails'
+import { AccordionFormCvLanguages } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvLanguages'
 import { AccordionFormCvName } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvName'
+import { AccordionFormCvProfessionalExperience } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvProfessionalExperience'
+import { AccordionFormCvSummary } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvSummary'
+import { LoggedIn } from '../../../../components/templates'
+import { useTpJobseekerCvByIdQuery } from '../../../../react-query/use-tpjobseekercv-query'
+import { useTpJobseekerProfileQuery } from '../../../../react-query/use-tpjobseekerprofile-query'
+import './CvDetailPage.scss'
+import placeholderImage from '../../../../assets/img-placeholder.png'
 
 function InlineButton() {
   return (
@@ -52,7 +52,22 @@ function CvDetailPage() {
   const history = useHistory()
   const { id: cvId } = useParams<ParamTypes>()
 
-  const { data: cvData } = useTpJobseekerCvByIdQuery(cvId)
+  const {
+    data: profile,
+    isSuccess: profileLoadSuccess,
+  } = useTpJobseekerProfileQuery()
+  const { data: cvData, isSuccess: cvLoadSuccess } = useTpJobseekerCvByIdQuery(
+    cvId,
+    {
+      enabled: profileLoadSuccess,
+    }
+  )
+  if (profileLoadSuccess && cvLoadSuccess) {
+    cvData.profileAvatarImageS3Key = profile.profileAvatarImageS3Key
+      ? AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profile.profileAvatarImageS3Key
+      : placeholderImage
+    console.log(cvData.profileAvatarImageS3Key)
+  }
 
   const handleCloseClick = () => history.push('/app/cv-builder')
 
@@ -77,7 +92,7 @@ function CvDetailPage() {
   const closeAllAccordionsSignalSubjectRef = useRef(new Subject<void>())
 
   return (
-    <LoggedIn>
+    <LoggedIn hideNavigation>
       <Columns>
         <Columns.Column size={5} style={{ borderRight: '2px solid #F7F7F7' }}>
           <Columns.Column size={8} paddingless>

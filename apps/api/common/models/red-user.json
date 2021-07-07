@@ -44,6 +44,14 @@
       "options": {
         "nestRemoting": true
       }
+    },
+    "tpJobListings": {
+      "type": "hasMany",
+      "model": "TpJobListing",
+      "foreignKey": "",
+      "options": {
+        "nestRemoting": true
+      }
     }
   },
   "acls": [
@@ -68,7 +76,12 @@
         "__delete__tpJobseekerCv",
         "__create__tpCompanyProfile",
         "__update__tpCompanyProfile",
-        "__get__tpCompanyProfile"
+        "__get__tpCompanyProfile",
+        "__create__tpJobListings",
+        "__destroyById__tpJobListings",
+        "__findById__tpJobListings",
+        "__get__tpJobListings",
+        "__updateById__tpJobListings"
       ]
     },
     {

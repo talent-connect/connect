@@ -123,7 +123,7 @@ function FormSelect(props: any) {
 
   const selectedValues = multiselect
     ? get(values, name)
-        .map((selValue: any) =>
+        ?.map((selValue: any) =>
           items.filter((availItem: any) => availItem.value === selValue)
         )
         .flat()
