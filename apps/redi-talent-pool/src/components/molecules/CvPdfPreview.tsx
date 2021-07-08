@@ -13,6 +13,7 @@ import { TpJobseekerCv } from '@talent-connect/shared-types'
 import {
   desiredPositionsIdToLabelMap,
   languageProficiencyLevelsIdToLabelMap,
+  topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 import { isEqual } from 'lodash'
 import moment from 'moment'
@@ -75,6 +76,7 @@ const styles = StyleSheet.create({
     fontSize: '14px',
     marginBottom: '25px',
     letterSpacing: '0.63px',
+    width: '65%',
   },
   headerText2: {
     top: '70px',
@@ -84,6 +86,9 @@ const styles = StyleSheet.create({
     fontWeight: 900,
     textTransform: 'uppercase',
   },
+  headerText2ExtraTop: {
+    top: '85px',
+  },
   headerText3: {
     top: '110px',
     left: '37%',
@@ -91,6 +96,9 @@ const styles = StyleSheet.create({
     fontSize: '40px',
     fontWeight: 900,
     textTransform: 'uppercase',
+  },
+  headerText3ExtraTop: {
+    top: '125px',
   },
   headerImg: {
     top: '40px',
@@ -116,6 +124,7 @@ const styles = StyleSheet.create({
   contentRight: {
     flexDirection: 'column',
     width: '65%',
+    marginTop: '-10px',
     borderRadius: '8px',
     padding: '8px',
   },
@@ -142,7 +151,7 @@ const styles = StyleSheet.create({
     paddingTop: '12px',
     lineHeight: '1',
     letterSpacing: '0.47px',
-    transform: 'uppercase',
+    textTransform: 'uppercase',
   },
   ContentList: {
     fontSize: '8px',
@@ -153,7 +162,7 @@ const styles = StyleSheet.create({
   ContentListItem: {
     fontSize: '8px',
     paddingVertical: '5px',
-    lineHeight: '0.54',
+    lineHeight: '1',
     letterSpacing: '0.41px',
   },
   contentPara: {
@@ -276,7 +285,7 @@ export const CVPDF = ({
     <Document title={`${firstName}_${lastName}_CV.pdf`}>
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
-          <Text style={styles.headerText1}>
+          <Text style={[styles.headerText1]}>
             {desiredPositions
               ?.map(
                 (desiredPosition) =>
@@ -284,14 +293,34 @@ export const CVPDF = ({
               )
               .join(', ')}
           </Text>
-          <Text style={styles.headerText2}>{firstName}</Text>
-          <Text style={styles.headerText3}>{lastName}</Text>
+          <Text
+            style={[
+              styles.headerText2,
+              desiredPositions.length > 2
+                ? styles.headerText2ExtraTop
+                : undefined,
+            ]}
+          >
+            {firstName}
+          </Text>
+          <Text
+            style={[
+              styles.headerText3,
+              desiredPositions.length > 2
+                ? styles.headerText3ExtraTop
+                : undefined,
+            ]}
+          >
+            {lastName}
+          </Text>
           <Image
             style={styles.headerImg}
             src={{
               uri: profileAvatarImageS3Key,
-              headers: { Pragma: 'no-cache', 'Cache-Control': 'no-cache' },
               method: 'GET',
+              headers: {
+                Redi: '',
+              },
               body: null,
             }}
           />
@@ -306,11 +335,11 @@ export const CVPDF = ({
             <View style={styles.contentViewLeft}>
               <Text style={styles.contentHeading}>Skills</Text>
               <View style={styles.ContentList}>
-                {/* {topSkills?.map((skill, index) => (
-                  <Text key={`skill_${index}`} style={styles.ContentListItem}>
-                    {skill}
+                {topSkills?.map((skill, index) => (
+                  <Text key={skill} style={styles.ContentListItem}>
+                    {topSkillsIdToLabelMap[skill]}
                   </Text>
-                ))} */}
+                ))}
               </View>
             </View>
             <View style={styles.contentViewLeft}>
@@ -385,95 +414,107 @@ export const CVPDF = ({
             </View>
             <View style={styles.contentViewRight}>
               <Text style={styles.contentHeading}>Work Experience</Text>
-              {experience?.map((experience, index) => (
-                <View key={`experience_${index}`} style={{ width: '100%' }}>
-                  <View style={styles.experienceView}>
-                    <View
-                      style={
-                        isVeryLongExperienceLine(experience)
-                          ? undefined
-                          : styles.experienceView1
-                      }
-                    >
-                      <Text style={styles.contentSubHeading}>
-                        {experience.title}
-                      </Text>
-                      <Text
-                        style={[
-                          styles.experienceView2,
+              {experience
+                ?.filter((item) => {
+                  const { uuid, ...all } = item
+                  const vals = Object.values(all)
+                  return vals.some((val) => val)
+                })
+                .map((experience, index) => (
+                  <View key={`experience_${index}`} style={{ width: '100%' }}>
+                    <View style={styles.experienceView}>
+                      <View
+                        style={
                           isVeryLongExperienceLine(experience)
-                            ? styles.experienceView2NewLine
-                            : styles.experienceView2SameLine,
-                        ]}
+                            ? undefined
+                            : styles.experienceView1
+                        }
                       >
-                        {experience.company}
+                        <Text style={styles.contentSubHeading}>
+                          {experience.title}
+                        </Text>
+                        <Text
+                          style={[
+                            styles.experienceView2,
+                            isVeryLongExperienceLine(experience)
+                              ? styles.experienceView2NewLine
+                              : styles.experienceView2SameLine,
+                          ]}
+                        >
+                          {experience.company}
+                        </Text>
+                      </View>
+                      <Text style={styles.contentSubHeading}>
+                        {formatDate(
+                          Number(experience.startDateMonth),
+                          experience.startDateYear
+                        )}{' '}
+                        -{' '}
+                        {experience.current
+                          ? 'Present'
+                          : formatDate(
+                              Number(experience.endDateMonth),
+                              experience.endDateYear
+                            )}
                       </Text>
                     </View>
-                    <Text style={[styles.contentSubHeading]}>
-                      {formatDate(
-                        experience.startDateMonth,
-                        experience.startDateYear
-                      )}{' '}
-                      -{' '}
-                      {experience.current
-                        ? 'Present'
-                        : formatDate(
-                            experience.endDateMonth,
-                            experience.endDateYear
-                          )}
+                    <Text style={styles.contentPara}>
+                      {experience.description}
                     </Text>
                   </View>
-                  <Text style={styles.contentPara}>
-                    {experience.description}
-                  </Text>
-                </View>
-              ))}
+                ))}
             </View>
             <View style={styles.contentViewRight}>
               <Text style={styles.contentHeading}>Education</Text>
-              {education?.map((education, index) => (
-                <View key={`experience_${index}`} style={{ width: '100%' }}>
-                  <View style={styles.experienceView}>
-                    <View
-                      style={
-                        isVeryLongEducationLine(education)
-                          ? undefined
-                          : styles.experienceView1
-                      }
-                    >
-                      <Text style={[styles.contentSubHeading]}>
-                        {education.title}
-                      </Text>
-                      <Text
-                        style={[
-                          styles.experienceView2,
+              {education
+                ?.filter((item) => {
+                  const { uuid, ...all } = item
+                  const vals = Object.values(all)
+                  return vals.some((val) => val)
+                })
+                .map((education, index) => (
+                  <View key={`experience_${index}`} style={{ width: '100%' }}>
+                    <View style={styles.experienceView}>
+                      <View
+                        style={
                           isVeryLongEducationLine(education)
-                            ? styles.experienceView2NewLine
-                            : styles.experienceView2SameLine,
-                        ]}
+                            ? undefined
+                            : styles.experienceView1
+                        }
                       >
-                        {education.institutionName}
+                        <Text style={[styles.contentSubHeading]}>
+                          {education.title}
+                        </Text>
+                        <Text
+                          style={[
+                            styles.experienceView2,
+                            isVeryLongEducationLine(education)
+                              ? styles.experienceView2NewLine
+                              : styles.experienceView2SameLine,
+                          ]}
+                        >
+                          {education.institutionName}
+                        </Text>
+                      </View>
+                      <Text style={[styles.contentSubHeading]}>
+                        {formatDate(
+                          education.startDateMonth,
+                          education.startDateYear
+                        )}{' '}
+                        -{' '}
+                        {education.current
+                          ? 'Present'
+                          : formatDate(
+                              education.endDateMonth,
+                              education.endDateYear
+                            )}
                       </Text>
                     </View>
-                    <Text style={[styles.contentSubHeading]}>
-                      {formatDate(
-                        education.startDateMonth,
-                        education.startDateYear
-                      )}{' '}
-                      -{' '}
-                      {education.current
-                        ? 'Present'
-                        : formatDate(
-                            education.endDateMonth,
-                            education.endDateYear
-                          )}
+                    <Text style={styles.contentPara}>
+                      {education.description}
                     </Text>
                   </View>
-                  <Text style={styles.contentPara}>
-                    {education.description}
-                  </Text>
-                </View>
-              ))}
+                ))}
             </View>
           </View>
         </View>

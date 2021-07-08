@@ -66,7 +66,6 @@ function CvDetailPage() {
     cvData.profileAvatarImageS3Key = profile.profileAvatarImageS3Key
       ? AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profile.profileAvatarImageS3Key
       : placeholderImage
-    console.log(cvData.profileAvatarImageS3Key)
   }
 
   const handleCloseClick = () => history.push('/app/cv-builder')
@@ -143,13 +142,13 @@ function CvDetailPage() {
                 closeAllAccordionsSignalSubjectRef.current
               }
             />
-            <AccordionFormCvDisplayCase
+            {/* <AccordionFormCvDisplayCase
               tpJobseekerCvId={cvId}
               onClose={onClose}
               closeAccordionSignalSubject={
                 closeAllAccordionsSignalSubjectRef.current
               }
-            />
+            /> */}
             <AccordionFormCvImportantDetails
               tpJobseekerCvId={cvId}
               onClose={onClose}
@@ -178,7 +177,7 @@ function CvDetailPage() {
             <Box
               domRef={cvContainerRefCallback}
               paddingless
-              style={{ overflow: 'hidden', height: `${cvContainerHeight}px` }}
+              style={{ overflow: 'hidden' }}
             >
               <CVPDFPreviewMemoized
                 cvData={cvData}
