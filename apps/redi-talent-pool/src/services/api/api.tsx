@@ -148,7 +148,16 @@ export async function fetchAllTpJobseekerProfiles({
       order: 'createdAt DESC',
       limit: 0,
     })}`
-  ).then((resp) => resp.data)
+  ).then((resp) =>
+    resp.data.filter(
+      (p) =>
+        p.isProfileVisibleToCompanies &&
+        [
+          'profile-approved-awaiting-job-preferences',
+          'job-preferences-shared-with-redi-awaiting-interview-match',
+        ].includes(p.state)
+    )
+  )
 }
 
 export async function fetchCurrentUserTpJobseekerProfile(): Promise<

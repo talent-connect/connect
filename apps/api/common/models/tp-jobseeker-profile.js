@@ -242,36 +242,36 @@ module.exports = function (TpJobseekerProfile) {
   })
 
   // ensure only administrator can see TpJobseekerCv when isProfileVisibleToCompanies is false
-  TpJobseekerProfile.observe(
-    'access',
-    function onlyMatchesRelatedToCurrentUser(ctx, next) {
-      if (!ctx.query.where) ctx.query.where = {}
+  //   TpJobseekerProfile.observe(
+  //     'access',
+  //     function onlyMatchesRelatedToCurrentUser(ctx, next) {
+  //       if (!ctx.query.where) ctx.query.where = {}
 
-      // TODO: Replace this with role-based 'admin' role check
-      if (
-        !ctx.options.currentUser ||
-        ctx.options.currentUser.email !== 'cloud-accounts@redi-school.org'
-      ) {
-        const condition = {
-          isProfileVisibleToCompanies: true,
-          state: {
-            inq: [
-              'profile-approved-awaiting-job-preferences',
-              'job-preferences-shared-with-redi-awaiting-interview-match',
-            ],
-          },
-        }
-        const existingWhere = ctx.query.where
-        if (Object.values(existingWhere).length > 0) {
-          ctx.query.where = { and: [condition, existingWhere] }
-        } else {
-          ctx.query.where = condition
-        }
-      }
+  //       // TODO: Replace this with role-based 'admin' role check
+  //       if (
+  //         !ctx.options.currentUser ||
+  //         ctx.options.currentUser.email !== 'cloud-accounts@redi-school.org'
+  //       ) {
+  //         const condition = {
+  //           isProfileVisibleToCompanies: true,
+  //           state: {
+  //             inq: [
+  //               'profile-approved-awaiting-job-preferences',
+  //               'job-preferences-shared-with-redi-awaiting-interview-match',
+  //             ],
+  //           },
+  //         }
+  //         const existingWhere = ctx.query.where
+  //         if (Object.values(existingWhere).length > 0) {
+  //           ctx.query.where = { and: [condition, existingWhere] }
+  //         } else {
+  //           ctx.query.where = condition
+  //         }
+  //       }
 
-      next()
-    }
-  )
+  //       next()
+  //     }
+  //   )
 }
 
 const loopbackModelMethodToObservable = (loopbackModel, modelMethod) => (
