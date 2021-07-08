@@ -13,6 +13,7 @@ import { TpJobseekerCv } from '@talent-connect/shared-types'
 import {
   desiredPositionsIdToLabelMap,
   languageProficiencyLevelsIdToLabelMap,
+  topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 import { isEqual } from 'lodash'
 import moment from 'moment'
@@ -317,7 +318,9 @@ export const CVPDF = ({
             src={{
               uri: profileAvatarImageS3Key,
               method: 'GET',
-              headers: {},
+              headers: {
+                Redi: '',
+              },
               body: null,
             }}
           />
@@ -333,8 +336,8 @@ export const CVPDF = ({
               <Text style={styles.contentHeading}>Skills</Text>
               <View style={styles.ContentList}>
                 {topSkills?.map((skill, index) => (
-                  <Text key={`skill_${index}`} style={styles.ContentListItem}>
-                    {skill}
+                  <Text key={skill} style={styles.ContentListItem}>
+                    {topSkillsIdToLabelMap[skill]}
                   </Text>
                 ))}
               </View>
