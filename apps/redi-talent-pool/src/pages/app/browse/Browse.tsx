@@ -3,6 +3,7 @@ import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprof
 import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { BrowseCompany } from './BrowseCompany'
 import { BrowseJobseeker } from './BrowseJobseeker'
+import './Browse.scss'
 
 function Browse() {
   const { data: jobseekerProfile } = useTpJobseekerProfileQuery({

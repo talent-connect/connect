@@ -50,7 +50,9 @@ export function EditableEducation({
   profile: overridingProfile,
   disableEditing,
 }: Props) {
-  const queryHookResult = useTpJobseekerProfileQuery()
+  const queryHookResult = useTpJobseekerProfileQuery({
+    enabled: !disableEditing,
+  })
   if (overridingProfile) queryHookResult.data = overridingProfile
   const mutationHookResult = useTpjobseekerprofileUpdateMutation()
   const { data: profile } = queryHookResult
