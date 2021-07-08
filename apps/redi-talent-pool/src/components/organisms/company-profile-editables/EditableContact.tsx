@@ -23,6 +23,8 @@ export function EditableContact({ profile, disableEditing }: Props) {
 
   const isEmpty = EditableContact.isSectionEmpty(profile)
 
+  if (disableEditing && isEmpty) return null
+
   return (
     <Editable
       disableEditing={disableEditing}

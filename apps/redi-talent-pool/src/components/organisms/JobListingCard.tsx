@@ -9,7 +9,7 @@ import { Card, Element } from 'react-bulma-components'
 import './JobListingCard.scss'
 
 interface JobListingCardProps {
-  jobListing: TpJobListing
+  jobListing: Partial<TpJobListing>
   onClick?: () => void
   isFavorite?: boolean
   toggleFavorite?: (id: string) => void

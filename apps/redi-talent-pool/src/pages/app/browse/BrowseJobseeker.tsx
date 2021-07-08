@@ -3,8 +3,6 @@ import {
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
 import {
-  desiredEmploymentTypeOptions,
-  desiredEmploymentTypeOptionsIdToLabelMap,
   employmentTypes,
   employmentTypesIdToLabelMap,
   topSkills,
