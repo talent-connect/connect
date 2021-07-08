@@ -191,7 +191,6 @@ const styles = StyleSheet.create({
   experienceView: {
     width: '100%',
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
   },
   experienceView1: {
@@ -241,6 +240,9 @@ const styles = StyleSheet.create({
     height: 0,
     fontSize: 0,
     color: '#ffffff',
+  },
+  experienceTitle: {
+    width: '65%',
   },
 })
 
@@ -430,7 +432,12 @@ export const CVPDF = ({
                             : styles.experienceView1
                         }
                       >
-                        <Text style={styles.contentSubHeading}>
+                        <Text
+                          style={[
+                            styles.contentSubHeading,
+                            styles.experienceTitle,
+                          ]}
+                        >
                           {experience.title}
                         </Text>
                         <Text
@@ -482,7 +489,12 @@ export const CVPDF = ({
                             : styles.experienceView1
                         }
                       >
-                        <Text style={[styles.contentSubHeading]}>
+                        <Text
+                          style={[
+                            styles.contentSubHeading,
+                            styles.experienceTitle,
+                          ]}
+                        >
                           {education.title}
                         </Text>
                         <Text
