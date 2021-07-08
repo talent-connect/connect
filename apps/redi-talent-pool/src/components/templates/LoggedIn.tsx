@@ -37,12 +37,17 @@ const LoggedIn = ({ children, hideNavigation }: Props) => {
                   to="/app/me"
                   isActive={location.pathname === '/app/me'}
                 />
-                <TpMainNavItem
-                  page="browse-page"
-                  pageName="Browse"
-                  to="/app/browse"
-                  isActive={location.pathname === '/app/browse'}
-                />
+                {jobseekerProfile?.state ===
+                  'profile-approved-awaiting-job-preferences' ||
+                jobseekerProfile?.state ===
+                  'job-preferences-shared-with-redi-awaiting-interview-match' ? (
+                  <TpMainNavItem
+                    page="browse-page"
+                    pageName="Browse"
+                    to="/app/browse"
+                    isActive={location.pathname === '/app/browse'}
+                  />
+                ) : null}
                 {jobseekerProfile ? (
                   <TpMainNavItem
                     page="cv-builder-page"

@@ -15,8 +15,11 @@ import { ArrayParam, useQueryParams, withDefault } from 'use-query-params'
 import { JobListingCard } from '../../../components/organisms/JobListingCard'
 import { LoggedIn } from '../../../components/templates'
 import { useBrowseTpJobListingsQuery } from '../../../react-query/use-tpjoblisting-all-query'
+import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 
 export function BrowseJobseeker() {
+  const { data: currentJobseekerProfile } = useTpJobseekerProfileQuery()
+
   const [query, setQuery] = useQueryParams({
     idealTechnicalSkills: withDefault(ArrayParam, []),
     employmentType: withDefault(ArrayParam, []),
@@ -41,6 +44,14 @@ export function BrowseJobseeker() {
       employmentType: [],
     }))
   }
+
+  if (
+    ![
+      'profile-approved-awaiting-job-preferences',
+      'job-preferences-shared-with-redi-awaiting-interview-match',
+    ].includes(currentJobseekerProfile?.state)
+  )
+    return null
 
   return (
     <LoggedIn>
