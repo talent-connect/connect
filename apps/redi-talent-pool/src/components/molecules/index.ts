@@ -1,1 +1,1 @@
-export { default as CVPDFPreview, CVPDFPreviewMemoized } from './CVPdfPreview'
+export { default as CVPDFPreview, CVPDFPreviewMemoized } from './CvPdfPreview'
