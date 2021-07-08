@@ -1,18 +1,59 @@
+import {
+  FilterDropdown,
+  Icon,
+  SearchField,
+} from '@talent-connect/shared-atomic-design-components'
+import {
+  desiredPositions,
+  desiredPositionsIdToLabelMap,
+  topSkills,
+  topSkillsIdToLabelMap,
+} from '@talent-connect/talent-pool/config'
 import React from 'react'
-import { LoggedIn } from '../../../components/templates'
-import { Columns, Element } from 'react-bulma-components'
-import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
-import { useTpJobFair2021InterviewMatch_tpJobseekerProfilesQuery } from '../../../react-query/use-tpjobfair2021interviewmatch-tpjobseekerprofiles-query'
-import { JobseekerProfileCard } from '../../../components/organisms/JobSeekerProfileCard'
+import { Columns, Element, Tag } from 'react-bulma-components'
 import { useHistory } from 'react-router'
+import {
+  ArrayParam,
+  BooleanParam,
+  StringParam,
+  useQueryParams,
+  withDefault,
+} from 'use-query-params'
+import { JobseekerProfileCard } from '../../../components/organisms/JobSeekerProfileCard'
+import { LoggedIn } from '../../../components/templates'
+import { useBrowseTpJobseekerProfilesQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 
 export function BrowseCompany() {
-  const history = useHistory()
-  const {
-    data: jobseekerProfiles,
-  } = useTpJobFair2021InterviewMatch_tpJobseekerProfilesQuery()
+  const [query, setQuery] = useQueryParams({
+    name: withDefault(StringParam, ''),
+    skills: withDefault(ArrayParam, []),
+    desiredPositions: withDefault(ArrayParam, []),
+  })
+  const { name, skills, desiredPositions } = query
 
-  console.log(jobseekerProfiles)
+  const history = useHistory()
+  const { data: jobseekerProfiles } = useBrowseTpJobseekerProfilesQuery({
+    name,
+    skills,
+    desiredPositions,
+  })
+
+  const toggleFilters = (filtersArr, filterName, item) => {
+    const newFilters = toggleValueInArray(filtersArr, item)
+    setQuery((latestQuery) => ({ ...latestQuery, [filterName]: newFilters }))
+  }
+
+  const setName = (value) => {
+    setQuery((latestQuery) => ({ ...latestQuery, name: value || undefined }))
+  }
+
+  const clearFilters = () => {
+    setQuery((latestQuery) => ({
+      ...latestQuery,
+      skills: [],
+      desiredPositions: [],
+    }))
+  }
 
   return (
     <LoggedIn>
@@ -23,7 +64,7 @@ export function BrowseCompany() {
         className="is-flex-grow-1"
         style={{ flexGrow: 1 }}
       >
-        Our top candidates for you
+        Browse our Talent Pool
       </Element>
       <Element
         renderAs="p"
@@ -31,21 +72,72 @@ export function BrowseCompany() {
         responsive={{ mobile: { textSize: { value: 5 } } }}
         className="oneandhalf-bs"
       >
-        Your job postings have been matched with {jobseekerProfiles?.length}{' '}
-        jobseekers
+        Browse our Jobseeker profiles and find the talent you're looking for.
       </Element>
-      <Element
-        renderAs="p"
-        textSize={5}
-        responsive={{ mobile: { textSize: { value: 6 } } }}
-        className="oneandhalf-bs"
-      >
-        Now you can view the jobseeker profiles and get ready for your
-        interview.
-      </Element>
+      <div className="filters">
+        <SearchField
+          defaultValue={name}
+          valueChange={setName}
+          placeholder="Search by name"
+        />
+      </div>
+      <div className="filters">
+        <div className="filters-wrapper">
+          <FilterDropdown
+            items={skillsOptions}
+            className="filters__dropdown"
+            label="Skills"
+            selected={skills}
+            onChange={(item) => toggleFilters(skills, 'skills', item)}
+          />
+        </div>
+        <div className="filters-inner">
+          <FilterDropdown
+            items={desiredPositionsOptions}
+            className="filters__dropdown"
+            label="Desired position"
+            selected={desiredPositions}
+            onChange={(item) =>
+              toggleFilters(desiredPositions, 'desiredPositions', item)
+            }
+          />
+        </div>
+      </div>
+      <div className="active-filters">
+        {(skills.length !== 0 || desiredPositions.length !== 0) && (
+          <>
+            {(skills as string[]).map((catId) => (
+              <FilterTag
+                key={catId}
+                id={catId}
+                label={topSkillsIdToLabelMap[catId]}
+                onClickHandler={(item) => toggleFilters(skills, 'skills', item)}
+              />
+            ))}
+            {(desiredPositions as string[]).map((id) => (
+              <FilterTag
+                key={id}
+                id={id}
+                label={desiredPositionsIdToLabelMap[id]}
+                onClickHandler={(item) =>
+                  toggleFilters(desiredPositions, 'desiredPositions', item)
+                }
+              />
+            ))}
+            <span className="active-filters__clear-all" onClick={clearFilters}>
+              Delete all filters
+              <Icon icon="cancel" size="small" space="left" />
+            </span>
+          </>
+        )}
+      </div>
       <Columns>
         {jobseekerProfiles?.map((profile) => (
-          <Columns.Column mobile={{ size: 12 }} tablet={{ size: 6 }}>
+          <Columns.Column
+            mobile={{ size: 12 }}
+            tablet={{ size: 6 }}
+            desktop={{ size: 4 }}
+          >
             <JobseekerProfileCard
               key={profile.id}
               jobseekerProfile={profile}
@@ -58,4 +150,34 @@ export function BrowseCompany() {
       </Columns>
     </LoggedIn>
   )
+}
+
+const skillsOptions = topSkills.map(({ id, label }) => ({ value: id, label }))
+const desiredPositionsOptions = desiredPositions.map(({ id, label }) => ({
+  value: id,
+  label,
+}))
+
+interface FilterTagProps {
+  id: string
+  label: string
+  onClickHandler: (item: string) => void
+}
+
+const FilterTag = ({ id, label, onClickHandler }: FilterTagProps) => (
+  <Tag size="medium" rounded textWeight="bold">
+    {label}
+    <Icon
+      icon="cancel"
+      onClick={() => {
+        onClickHandler(id)
+      }}
+      className="active-filters__remove"
+    />
+  </Tag>
+)
+
+export function toggleValueInArray<T>(array: Array<T>, value: T) {
+  if (array.includes(value)) return array.filter((val) => val !== value)
+  else return [...array, value]
 }

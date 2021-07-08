@@ -4,7 +4,7 @@ import {
   RedUser,
   TpCompanyProfile,
   TpJobseekerCv,
-  TpJobListing, 
+  TpJobListing,
   TpJobseekerProfile,
 } from '@talent-connect/shared-types'
 import axios from 'axios'
@@ -107,6 +107,59 @@ export const setPassword = async (password: string) => {
   })
 }
 
+export interface TpJobseekerProfileFilters {
+  name: string
+  skills: string[]
+  desiredPositions: string[]
+}
+
+export async function fetchAllTpJobseekerProfiles({
+  name,
+  skills: topSkills,
+  desiredPositions,
+}: TpJobseekerProfileFilters): Promise<Array<Partial<TpJobseekerProfile>>> {
+  const filterTopSkills =
+    topSkills && topSkills.length !== 0 ? { inq: topSkills } : undefined
+  const filterDesiredPositions =
+    desiredPositions && desiredPositions.length !== 0
+      ? { inq: desiredPositions }
+      : undefined
+
+  return http(
+    `${API_URL}/tpJobseekerProfiles?filter=${JSON.stringify({
+      where: {
+        // loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName: {
+        //   like: 'Carlotta3',
+        //   options: 'i',
+        // },
+        and: [
+          ...String(name)
+            .split(' ')
+            .map((word) => ({
+              loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName: {
+                like: word,
+                options: 'i',
+              },
+            })),
+          { topSkills: filterTopSkills },
+          { desiredPositions: filterDesiredPositions },
+        ],
+      },
+      order: 'createdAt DESC',
+      limit: 0,
+    })}`
+  ).then((resp) =>
+    resp.data.filter(
+      (p) =>
+        p.isProfileVisibleToCompanies &&
+        [
+          'profile-approved-awaiting-job-preferences',
+          'job-preferences-shared-with-redi-awaiting-interview-match',
+        ].includes(p.state)
+    )
+  )
+}
+
 export async function fetchCurrentUserTpJobseekerProfile(): Promise<
   Partial<TpJobseekerProfile>
 > {
@@ -196,6 +249,44 @@ export async function updateCurrentUserTpCompanyProfile(
     data: profile,
   })
   return resp.data
+}
+
+export interface TpJobListingFilters {
+  idealTechnicalSkills: string[]
+  employmentType: string[]
+}
+
+export async function fetchAllTpJobListingsUsingFilters({
+  idealTechnicalSkills,
+  employmentType,
+}: TpJobListingFilters): Promise<Array<Partial<TpJobseekerProfile>>> {
+  const filterIdealTechnicalSkills =
+    idealTechnicalSkills && idealTechnicalSkills.length !== 0
+      ? { inq: idealTechnicalSkills }
+      : undefined
+  const filterDesiredEmploymentTypeOptions =
+    employmentType && employmentType.length !== 0
+      ? { inq: employmentType }
+      : undefined
+
+  return http(
+    `${API_URL}/tpJobListings?filter=${JSON.stringify({
+      where: {
+        // loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName: {
+        //   like: 'Carlotta3',
+        //   options: 'i',
+        // },
+        and: [
+          {
+            idealTechnicalSkills: filterIdealTechnicalSkills,
+            employmentType: filterDesiredEmploymentTypeOptions,
+          },
+        ],
+      },
+      order: 'createdAt DESC',
+      limit: 0,
+    })}`
+  ).then((resp) => resp.data.filter((listing) => !listing.dummy))
 }
 
 export async function fetchAllTpJobListings(): Promise<Array<TpJobListing>> {

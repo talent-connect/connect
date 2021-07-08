@@ -6,7 +6,7 @@ import {
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
 import { courses, rediLocationNames } from '@talent-connect/shared-config'
-import { RedProfile } from '@talent-connect/shared-types'
+import { RedProfile, TpJobseekerProfile } from '@talent-connect/shared-types'
 import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
 import omit from 'lodash/omit'
 import React, { useMemo, useState } from 'react'
@@ -126,9 +126,10 @@ export default function SignUp() {
     actions: FormikActions<SignUpFormValues>
   ) => {
     setSubmitError(null)
-    const profile = values as Partial<RedProfile>
-    // TODO: this needs to be done in a smarter way, like iterating over the RedProfile definition or something
-    const cleanProfile: Partial<RedProfile> = omit(profile, [
+    const profile = values as Partial<TpJobseekerProfile>
+    profile.isProfileVisibleToCompanies = true
+    // TODO: this needs to be done in a smarter way, like iterating over the TpJobseekerProfile definition or something
+    const cleanProfile: Partial<TpJobseekerProfile> = omit(profile, [
       'password',
       'passwordConfirm',
       'agreesWithCodeOfConduct',
