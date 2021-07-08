@@ -316,8 +316,8 @@ export const CVPDF = ({
             style={styles.headerImg}
             src={{
               uri: profileAvatarImageS3Key,
-              headers: { Pragma: 'no-cache', 'Cache-Control': 'no-cache' },
               method: 'GET',
+              headers: {},
               body: null,
             }}
           />
@@ -612,14 +612,10 @@ export const CVPDFPreview = ({
     return (
       <div>
         {url && (
-          <ReactPDFDocument
-            file={url}
-            onLoadSuccess={() => console.debug('ReactPDFDocument rendered')}
-          >
+          <ReactPDFDocument file={url}>
             <ReactPDFPage
               pageNumber={1}
               width={pdfWidthPx}
-              onRenderSuccess={() => console.debug('ReactPDFPage rendered')}
               onRenderError={console.error}
             />
           </ReactPDFDocument>

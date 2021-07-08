@@ -66,7 +66,6 @@ function CvDetailPage() {
     cvData.profileAvatarImageS3Key = profile.profileAvatarImageS3Key
       ? AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profile.profileAvatarImageS3Key
       : placeholderImage
-    console.log(cvData.profileAvatarImageS3Key)
   }
 
   const handleCloseClick = () => history.push('/app/cv-builder')

@@ -16,6 +16,8 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import { Box, Content } from 'react-bulma-components'
 import { Chip } from '@material-ui/core'
+import { AWS_PROFILE_AVATARS_BUCKET_BASE_URL } from '@talent-connect/shared-config'
+import placeholderImage from '../../../../assets/img-placeholder.png'
 
 import { useTpJobseekerCvByIdQuery } from '../../../../react-query/use-tpjobseekercv-query'
 import {
@@ -26,6 +28,7 @@ import {
 
 import { CvListItemMoreOptionsMenu } from './CvListItemMoreOptionsMenu'
 import { CVPDF } from '../../../../components/molecules/CvPdfPreview'
+import { useTpJobseekerProfileQuery } from '../../../../react-query/use-tpjobseekerprofile-query'
 
 const CREATED_AT_DATE_FORMAT = 'dd.MM.yyyy'
 
@@ -73,16 +76,34 @@ function CvListItemChip(props: CvListItemChipProps) {
 const CvListItem = (props: CvListItemProps) => {
   const [showCvNameModal, setShowCvNameModal] = React.useState(false)
   const [newCvName, setNewCvName] = React.useState(props.name || '')
+  const [profileImageLoaded, setProfileImageLoaded] = React.useState(false)
 
   const history = useHistory()
 
-  const { data: cvData, error, isLoading } = useTpJobseekerCvByIdQuery(props.id)
+  const { data: cvData, isSuccess: cvLoadSuccess } = useTpJobseekerCvByIdQuery(
+    props.id
+  )
+  const {
+    data: profileData,
+    isSuccess: profileLoadSuccess,
+  } = useTpJobseekerProfileQuery()
 
   const createMutation = useTpjobseekerCvCreateMutation()
   const updateMutation = useTpjobseekerCvUpdateMutation(props.id)
   const deleteMutation = useTpjobseekerCvDeleteMutation(props.id)
 
   const setFocusOnRef = (ref: HTMLInputElement) => ref?.focus()
+
+  React.useEffect(() => {
+    if (profileLoadSuccess && cvLoadSuccess) {
+      cvData.profileAvatarImageS3Key = profileData.profileAvatarImageS3Key
+        ? AWS_PROFILE_AVATARS_BUCKET_BASE_URL +
+          profileData.profileAvatarImageS3Key
+        : placeholderImage
+
+      setProfileImageLoaded(true)
+    }
+  }, [profileLoadSuccess, cvLoadSuccess, cvData, profileData])
 
   const handleShowCvNameModal = () => {
     setShowCvNameModal(true)
@@ -136,7 +157,7 @@ const CvListItem = (props: CvListItemProps) => {
               fileName={`${cvData?.firstName}_${cvData?.lastName}_CV.pdf`}
             >
               {({ blob, url, loading, error }) =>
-                loading ? (
+                loading || !profileImageLoaded ? (
                   <CvListItemChip label="Export" disabled />
                 ) : (
                   <CvListItemChip
