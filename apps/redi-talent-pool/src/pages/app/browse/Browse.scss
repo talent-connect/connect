@@ -1,0 +1,110 @@
+// Copied directly from 'FindAMentor.scss'
+
+@import '~bulma/sass/utilities/_all';
+@import '_variables.scss';
+
+.filters {
+  display: block;
+  width: 100%;
+  margin-bottom: 0.5rem;
+  @include tablet() {
+    display: flex;
+    margin-bottom: 1.5rem;
+  }
+
+  &__dropdown {
+    margin-bottom: 0.5rem;
+    @include tablet() {
+      flex-grow: 1;
+      flex-basis: 0;
+      margin: 0 1rem 0 0;
+    }
+  }
+}
+
+.filters-inner {
+  @include tablet() {
+    display: flex;
+    flex-grow: 1;
+  }
+}
+
+.location-filter-wrapper {
+  margin-bottom: 1.5rem;
+  @include tablet() {
+    margin-bottom: 0;
+  }
+}
+
+.location-filter-wrapper,
+.filters-wrapper {
+  width: 100%;
+  @include tablet() {
+    width: 42%;
+  }
+}
+
+.active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+  @include tablet() {
+    align-items: center;
+  }
+
+  &__remove {
+    margin-left: 0.2em !important;
+    padding: 0.25em;
+  }
+
+  &__clear-all {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin: 0 0 0.5rem 0.5rem;
+    @include tablet() {
+      margin: 0 0 0 0.75rem;
+    }
+
+    .icon {
+      padding: 0.1rem;
+      path {
+        fill: black;
+      }
+    }
+  }
+
+  .tag {
+    margin: 0 0.5rem 0.5rem 0;
+    @include tablet() {
+      margin: 1rem 0.5rem 1rem 0;
+    }
+  }
+}
+
+.filter-favourites {
+  display: flex;
+  height: $control-height;
+  border: 1px solid $input-border-color;
+  box-shadow: $input-shadow;
+  border-radius: $radius;
+  align-items: center;
+  padding: 0 1rem;
+  cursor: pointer;
+
+  &:hover {
+    border-color: $input-hover-border-color;
+  }
+
+  &__icon {
+    font-size: 1.2rem;
+    path {
+      fill: $redi-orange-dark;
+    }
+  }
+
+  &--active {
+    background-color: $input-hover-border-color;
+    color: white;
+  }
+}

@@ -7,6 +7,7 @@ import {
 import { Languages } from '@talent-connect/shared-config'
 import {
   LanguageRecord,
+  TpJobseekerCv,
   TpJobseekerProfile,
 } from '@talent-connect/shared-types'
 import {
@@ -24,6 +25,7 @@ import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseeker
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { Editable } from '../../molecules/Editable'
+import { UseMutationResult, UseQueryResult } from 'react-query'
 
 function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
   const result = Array.from(list)
@@ -34,11 +36,20 @@ function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
 }
 
 interface Props {
-  profile: Partial<TpJobseekerProfile>
+  profile?: Partial<TpJobseekerProfile>
   disableEditing?: boolean
 }
 
-export function EditableLanguages({ profile, disableEditing }: Props) {
+export function EditableLanguages({
+  profile: overridingProfile,
+  disableEditing,
+}: Props) {
+  const queryHookResult = useTpJobseekerProfileQuery({
+    enabled: !disableEditing,
+  })
+  if (overridingProfile) queryHookResult.data = overridingProfile
+  const mutationHookResult = useTpjobseekerprofileUpdateMutation()
+  const { data: profile } = queryHookResult
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
@@ -77,9 +88,11 @@ export function EditableLanguages({ profile, disableEditing }: Props) {
       modalTitle="Relevant languages you can speak"
       modalHeadline="Languages"
       modalBody={
-        <ModalForm
+        <JobseekerFormSectionLanguages
           setIsEditing={setIsEditing}
           setIsFormDirty={setIsFormDirty}
+          queryHookResult={queryHookResult}
+          mutationHookResult={mutationHookResult}
         />
       }
       modalStyles={{ minHeight: 700 }}
@@ -99,15 +112,29 @@ const validationSchema = Yup.object({
   workingLanguages: Yup.array().min(1).max(6),
 })
 
-function ModalForm({
+interface JobseekerFormSectionLanguagesProps {
+  setIsEditing: (boolean) => void
+  setIsFormDirty?: (boolean) => void
+  queryHookResult: UseQueryResult<
+    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    unknown
+  >
+  mutationHookResult: UseMutationResult<
+    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    unknown,
+    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    unknown
+  >
+}
+
+export function JobseekerFormSectionLanguages({
   setIsEditing,
   setIsFormDirty,
-}: {
-  setIsEditing: (boolean) => void
-  setIsFormDirty: (boolean) => void
-}) {
-  const { data: profile } = useTpJobseekerProfileQuery()
-  const mutation = useTpjobseekerprofileUpdateMutation()
+  queryHookResult,
+  mutationHookResult,
+}: JobseekerFormSectionLanguagesProps) {
+  const { data: profile } = queryHookResult
+  const mutation = mutationHookResult
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
 
@@ -117,8 +144,7 @@ function ModalForm({
         buildBlankLanguageRecord(),
       ],
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [profile?.workingLanguages]
   )
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
     formik.setSubmitting(true)
@@ -134,8 +160,12 @@ function ModalForm({
   const formik = useFormik({
     initialValues,
     onSubmit,
+    enableReinitialize: true,
   })
-  useEffect(() => setIsFormDirty(formik.dirty), [formik.dirty, setIsFormDirty])
+  useEffect(() => setIsFormDirty?.(formik.dirty), [
+    formik.dirty,
+    setIsFormDirty,
+  ])
 
   const onDragEnd = useCallback(
     (result: any) => {

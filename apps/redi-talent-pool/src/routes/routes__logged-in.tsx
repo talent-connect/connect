@@ -13,6 +13,19 @@ const Browse = lazy(
       /* webpackChunkName: "Browse", webpackPreload: true  */ '../pages/app/browse/Browse'
     )
 )
+const CvListPage = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "CvList", webpackPreload: true  */ '../pages/app/cv-builder/cv-list/CvListPage'
+    )
+)
+
+const CvDetailPage = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "CvDetail", webpackPreload: true  */ '../pages/app/cv-builder/cv-detail/CvDetailPage'
+    )
+)
 const JobListing = lazy(
   () =>
     import(
@@ -36,6 +49,15 @@ const routes: RouteDefinition[] = [
     path: '/app/browse',
     component: Browse,
     exact: true,
+  },
+  {
+    path: '/app/cv-builder',
+    component: CvListPage,
+    exact: true,
+  },
+  {
+    path: '/app/cv-builder/:id',
+    component: CvDetailPage,
   },
   {
     path: '/app/job-listing/:tpJobListingId',

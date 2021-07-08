@@ -29,6 +29,14 @@
         "nestRemoting": true
       }
     },
+    "tpJobseekerCv": {
+      "type": "hasMany",
+      "model": "TpJobseekerCv",
+      "foreignKey": "",
+      "options": {
+        "nestRemoting": true
+      }
+    },
     "tpCompanyProfile": {
       "type": "hasOne",
       "model": "TpCompanyProfile",
@@ -59,6 +67,13 @@
         "__create__tpJobseekerProfile",
         "__update__tpJobseekerProfile",
         "__get__tpJobseekerProfile",
+        "__create__tpJobseekerCv",
+        "__update__tpJobseekerCv",
+        "__get__tpJobseekerCv",
+        "__findById__tpJobseekerCv",
+        "__updateById__tpJobseekerCv",
+        "__destroyById__tpJobseekerCv",
+        "__delete__tpJobseekerCv",
         "__create__tpCompanyProfile",
         "__update__tpCompanyProfile",
         "__get__tpCompanyProfile",

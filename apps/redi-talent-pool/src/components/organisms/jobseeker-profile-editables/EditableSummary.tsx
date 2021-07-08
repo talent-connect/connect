@@ -5,7 +5,7 @@ import {
   FormSelect,
   FormTextArea,
 } from '@talent-connect/shared-atomic-design-components'
-import { TpJobseekerProfile } from '@talent-connect/shared-types'
+import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
 import {
   topSkills,
   topSkillsIdToLabelMap,
@@ -13,18 +13,29 @@ import {
 import { useFormik } from 'formik'
 import React, { useEffect, useMemo, useState } from 'react'
 import { Content, Element, Tag } from 'react-bulma-components'
+import { UseMutationResult, UseQueryResult } from 'react-query'
 import * as Yup from 'yup'
+import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
 interface Props {
-  profile: Partial<TpJobseekerProfile>
+  profile?: Partial<TpJobseekerProfile>
   disableEditing?: boolean
 }
 
-export function EditableSummary({ profile, disableEditing }: Props) {
+export function EditableSummary({
+  profile: overridingProfile,
+  disableEditing,
+}: Props) {
+  const queryHookResult = useTpJobseekerProfileQuery({
+    enabled: !disableEditing,
+  })
+  if (overridingProfile) queryHookResult.data = overridingProfile
+  const mutationHookResult = useTpjobseekerprofileUpdateMutation()
+  const { data: profile } = queryHookResult
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
@@ -72,9 +83,11 @@ export function EditableSummary({ profile, disableEditing }: Props) {
       modalTitle="About you"
       modalHeadline="Summary"
       modalBody={
-        <ModalForm
+        <JobseekerFormSectionSummary
           setIsEditing={setIsEditing}
           setIsFormDirty={setIsFormDirty}
+          queryHookResult={queryHookResult}
+          mutationHookResult={mutationHookResult}
         />
       }
       modalStyles={{ minHeight: 700 }}
@@ -105,22 +118,35 @@ const validationSchema = Yup.object({
     .max(maxChars, 'The text about yourself can be up to 600 characters long.'),
 })
 
-function ModalForm({
+interface JobseekerFormSectionSummaryProps {
+  setIsEditing: (boolean) => void
+  setIsFormDirty?: (boolean) => void
+  queryHookResult: UseQueryResult<
+    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    unknown
+  >
+  mutationHookResult: UseMutationResult<
+    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    unknown,
+    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    unknown
+  >
+}
+
+export function JobseekerFormSectionSummary({
   setIsEditing,
   setIsFormDirty,
-}: {
-  setIsEditing: (boolean) => void
-  setIsFormDirty: (boolean) => void
-}) {
-  const { data: profile } = useTpJobseekerProfileQuery()
-  const mutation = useTpjobseekerprofileUpdateMutation()
+  queryHookResult,
+  mutationHookResult,
+}: JobseekerFormSectionSummaryProps) {
+  const { data: profile } = queryHookResult
+  const mutation = mutationHookResult
   const initialValues: Partial<TpJobseekerProfile> = useMemo(
     () => ({
       aboutYourself: profile?.aboutYourself ? profile.aboutYourself : '',
       topSkills: profile?.topSkills ?? [],
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [profile?.aboutYourself, profile?.topSkills]
   )
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
     formik.setSubmitting(true)
@@ -140,7 +166,10 @@ function ModalForm({
     onSubmit,
     validateOnMount: true,
   })
-  useEffect(() => setIsFormDirty(formik.dirty), [formik.dirty, setIsFormDirty])
+  useEffect(() => setIsFormDirty?.(formik.dirty), [
+    formik.dirty,
+    setIsFormDirty,
+  ])
 
   return (
     <>

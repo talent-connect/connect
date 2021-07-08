@@ -5,6 +5,8 @@ import { ProjectRecord } from './tp-jobseeker-profile-cv-shared-interfaces/Proje
 
 export type TpJobseekerCv = {
   id: string
+  cvName: string
+
   firstName: string
   lastName: string
   contactEmail: string
@@ -41,4 +43,9 @@ export type TpJobseekerCv = {
 
   createdAt: Date
   updatedAt: Date
+
+  // TODO: this was added here to make <JobseekerFormSectionOverview>
+  // work in both CV Builder and Profile builder. Refactor that component
+  // (probably needs to be split up) so that we can remove this property
+  currentlyEnrolledInCourse?: string
 }

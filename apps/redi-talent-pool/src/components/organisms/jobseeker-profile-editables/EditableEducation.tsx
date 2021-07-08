@@ -12,6 +12,7 @@ import {
 import {
   EducationRecord,
   ExperienceRecord,
+  TpJobseekerCv,
   TpJobseekerProfile,
 } from '@talent-connect/shared-types'
 import {
@@ -24,6 +25,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Columns, Content, Element } from 'react-bulma-components'
 import ReactMarkdown from 'react-markdown'
+import { UseMutationResult, UseQueryResult } from 'react-query'
 import { Subject } from 'rxjs'
 import { v4 as uuidv4 } from 'uuid'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
@@ -40,11 +42,20 @@ function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
 }
 
 interface Props {
-  profile: Partial<TpJobseekerProfile>
+  profile?: Partial<TpJobseekerProfile>
   disableEditing?: boolean
 }
 
-export function EditableEducation({ profile, disableEditing }: Props) {
+export function EditableEducation({
+  profile: overridingProfile,
+  disableEditing,
+}: Props) {
+  const queryHookResult = useTpJobseekerProfileQuery({
+    enabled: !disableEditing,
+  })
+  if (overridingProfile) queryHookResult.data = overridingProfile
+  const mutationHookResult = useTpjobseekerprofileUpdateMutation()
+  const { data: profile } = queryHookResult
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
@@ -106,9 +117,11 @@ export function EditableEducation({ profile, disableEditing }: Props) {
       modalTitle="Study, certifications, courses"
       modalHeadline="Education"
       modalBody={
-        <ModalForm
+        <JobseekerFormSectionEducation
           setIsEditing={setIsEditing}
           setIsFormDirty={setIsFormDirty}
+          queryHookResult={queryHookResult}
+          mutationHookResult={mutationHookResult}
         />
       }
       modalStyles={{ minHeight: 700 }}
@@ -128,15 +141,29 @@ function formatDate(month?: number, year?: number): string {
   return ''
 }
 
-function ModalForm({
+interface JobseekerFormSectionEducationeProps {
+  setIsEditing: (boolean) => void
+  setIsFormDirty?: (boolean) => void
+  queryHookResult: UseQueryResult<
+    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    unknown
+  >
+  mutationHookResult: UseMutationResult<
+    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    unknown,
+    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    unknown
+  >
+}
+
+export function JobseekerFormSectionEducation({
   setIsEditing,
   setIsFormDirty,
-}: {
-  setIsEditing: (boolean) => void
-  setIsFormDirty: (boolean) => void
-}) {
-  const { data: profile } = useTpJobseekerProfileQuery()
-  const mutation = useTpjobseekerprofileUpdateMutation()
+  queryHookResult,
+  mutationHookResult,
+}: JobseekerFormSectionEducationeProps) {
+  const { data: profile } = queryHookResult
+  const mutation = mutationHookResult
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
 
@@ -144,8 +171,7 @@ function ModalForm({
     () => ({
       education: profile?.education ?? [buildBlankEducationRecord()],
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [profile?.education]
   )
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
     formik.setSubmitting(true)
@@ -162,8 +188,12 @@ function ModalForm({
   const formik = useFormik({
     initialValues,
     onSubmit,
+    enableReinitialize: true,
   })
-  useEffect(() => setIsFormDirty(formik.dirty), [formik.dirty, setIsFormDirty])
+  useEffect(() => setIsFormDirty?.(formik.dirty), [
+    formik.dirty,
+    setIsFormDirty,
+  ])
 
   const onClickAddEducation = useCallback(() => {
     formik.setFieldValue('education', [

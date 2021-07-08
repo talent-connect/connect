@@ -11,10 +11,11 @@ import Footer from '../organisms/Footer'
 import './LoggedIn.scss'
 
 interface Props {
+  hideNavigation?: boolean
   children?: ReactNode
 }
 
-const LoggedIn = ({ children }: Props) => {
+const LoggedIn = ({ children, hideNavigation }: Props) => {
   const isBusy = useIsBusy()
   const location = useLocation()
   const { data: jobseekerProfile } = useTpJobseekerProfileQuery({
@@ -27,30 +28,34 @@ const LoggedIn = ({ children }: Props) => {
       <Navbar />
       <Container className="main-container">
         <div style={{ display: 'flex' }}>
-          <div className="tp-side-menu">
-            <TpMainNavItem
-              page="profile-page"
-              pageName="My profile"
-              to="/app/me"
-              isActive={location.pathname === '/app/me'}
-            />
-            <TpMainNavItem
-              page="browse-page"
-              pageName="Browse"
-              to="/app/browse"
-              isActive={location.pathname === '/app/browse'}
-            />
-            {jobseekerProfile ? (
-              <TpMainNavItem
-                page="cv-builder-page"
-                pageName="CV Builder"
-                to="/app/cv-builder"
-                isDisabled
-              />
-            ) : null}
-          </div>
-          <div className="main-container--horizontal-spacer"></div>
-          <Columns style={{ width: '100%', marginTop: '1rem' }}>
+          {hideNavigation ? null : (
+            <>
+              <div className="tp-side-menu">
+                <TpMainNavItem
+                  page="profile-page"
+                  pageName="My profile"
+                  to="/app/me"
+                  isActive={location.pathname === '/app/me'}
+                />
+                <TpMainNavItem
+                  page="browse-page"
+                  pageName="Browse"
+                  to="/app/browse"
+                  isActive={location.pathname === '/app/browse'}
+                />
+                {jobseekerProfile ? (
+                  <TpMainNavItem
+                    page="cv-builder-page"
+                    pageName="CV Builder"
+                    to="/app/cv-builder"
+                    isActive={location.pathname.includes('/app/cv-builder')}
+                  />
+                ) : null}
+              </div>
+              <div className="main-container--horizontal-spacer"></div>
+            </>
+          )}
+          <Columns style={{ width: '100%', marginTop: '2rem' }}>
             <Columns.Column
               desktop={{ size: 12 }}
               className="column--main-content"
@@ -59,7 +64,9 @@ const LoggedIn = ({ children }: Props) => {
               {children}
             </Columns.Column>
           </Columns>
-          <div className="main-container--horizontal-spacer is-hidden-desktop"></div>
+          {hideNavigation ? null : (
+            <div className="main-container--horizontal-spacer is-hidden-desktop"></div>
+          )}
         </div>
       </Container>
       <Footer />

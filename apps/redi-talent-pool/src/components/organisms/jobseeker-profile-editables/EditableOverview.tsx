@@ -4,7 +4,7 @@ import {
   FormSelect,
 } from '@talent-connect/shared-atomic-design-components'
 import { courses, rediLocationNames } from '@talent-connect/shared-config'
-import { TpJobseekerProfile } from '@talent-connect/shared-types'
+import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
 import {
   desiredPositions,
   desiredPositionsIdToLabelMap,
@@ -12,6 +12,7 @@ import {
 import { useFormik } from 'formik'
 import React, { useEffect, useMemo, useState } from 'react'
 import { Element, Tag } from 'react-bulma-components'
+import { UseMutationResult, UseQueryResult } from 'react-query'
 import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
@@ -19,11 +20,20 @@ import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
 interface Props {
-  profile: Partial<TpJobseekerProfile>
+  profile?: Partial<TpJobseekerProfile>
   disableEditing?: boolean
 }
 
-export function EditableOverview({ profile, disableEditing }: Props) {
+export function EditableOverview({
+  profile: overridingProfile,
+  disableEditing,
+}: Props) {
+  const queryHookResult = useTpJobseekerProfileQuery({
+    enabled: !disableEditing,
+  })
+  if (overridingProfile) queryHookResult.data = overridingProfile
+  const mutationHookResult = useTpjobseekerprofileUpdateMutation()
+  const { data: profile } = queryHookResult
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
@@ -33,7 +43,7 @@ export function EditableOverview({ profile, disableEditing }: Props) {
 
   return (
     <Editable
-      disableEditing={disableEditing}
+      disableEditing={Boolean(disableEditing)}
       isEditing={isEditing}
       isFormDirty={isFormDirty}
       setIsEditing={setIsEditing}
@@ -60,9 +70,11 @@ export function EditableOverview({ profile, disableEditing }: Props) {
       modalTitle="Interests & About"
       modalHeadline="Overview"
       modalBody={
-        <ModalForm
+        <JobseekerFormSectionOverview
           setIsEditing={setIsEditing}
           setIsFormDirty={setIsFormDirty}
+          queryHookResult={queryHookResult}
+          mutationHookResult={mutationHookResult}
         />
       }
     />
@@ -80,22 +92,37 @@ const validationSchema = Yup.object({
     .max(3, 'You can select up to three desired positions'),
 })
 
-function ModalForm({
+interface JobseekerFormSectionOverviewProps {
+  setIsEditing: (boolean) => void
+  setIsFormDirty?: (boolean) => void
+  queryHookResult: UseQueryResult<
+    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    unknown
+  >
+  mutationHookResult: UseMutationResult<
+    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    unknown,
+    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    unknown
+  >
+  hideCurrentRediCourseField?: boolean
+}
+
+export function JobseekerFormSectionOverview({
   setIsEditing,
   setIsFormDirty,
-}: {
-  setIsEditing: (boolean) => void
-  setIsFormDirty: (boolean) => void
-}) {
-  const { data: profile } = useTpJobseekerProfileQuery()
-  const mutation = useTpjobseekerprofileUpdateMutation()
+  queryHookResult,
+  mutationHookResult,
+  hideCurrentRediCourseField,
+}: JobseekerFormSectionOverviewProps) {
+  const { data: profile } = queryHookResult
+  const mutation = mutationHookResult
   const initialValues: Partial<TpJobseekerProfile> = useMemo(
     () => ({
       desiredPositions: profile?.desiredPositions ?? [],
       currentlyEnrolledInCourse: profile?.currentlyEnrolledInCourse ?? '',
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [profile?.currentlyEnrolledInCourse, profile?.desiredPositions]
   )
 
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
@@ -116,7 +143,10 @@ function ModalForm({
     onSubmit,
     validateOnMount: true,
   })
-  useEffect(() => setIsFormDirty(formik.dirty), [formik.dirty, setIsFormDirty])
+  useEffect(() => setIsFormDirty?.(formik.dirty), [
+    formik.dirty,
+    setIsFormDirty,
+  ])
   return (
     <>
       <Element
@@ -134,12 +164,14 @@ function ModalForm({
         {...formik}
         multiselect
       />
-      <FormSelect
-        label="Current ReDI course"
-        name="currentlyEnrolledInCourse"
-        items={formCourses}
-        {...formik}
-      />
+      {hideCurrentRediCourseField ? null : (
+        <FormSelect
+          label="Current ReDI course"
+          name="currentlyEnrolledInCourse"
+          items={formCourses}
+          {...formik}
+        />
+      )}
       <Button
         disabled={!formik.isValid || mutation.isLoading}
         onClick={formik.submitForm}

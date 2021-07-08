@@ -1,7 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Content, Columns, Tag, Form } from 'react-bulma-components'
 import { debounce } from 'lodash'
-import { Heading, Icon } from '@talent-connect/shared-atomic-design-components'
+import {
+  Heading,
+  Icon,
+  SearchField,
+} from '@talent-connect/shared-atomic-design-components'
 import { FilterDropdown } from '@talent-connect/shared-atomic-design-components'
 import { ProfileCard } from '../../../components/organisms'
 import { useLoading } from '../../../hooks/WithLoading'
@@ -54,30 +58,6 @@ const FilterTag = ({ id, label, onClickHandler }: FilterTagProps) => (
 interface FindAMentorProps {
   profile: RedProfile
   profileSaveStart: (profile: Partial<RedProfile>) => void
-}
-
-const SearchField = ({
-  valueChange,
-  defaultValue,
-}: {
-  valueChange: (value: string) => void
-  defaultValue: string
-}) => {
-  const [value, setValue] = useState(defaultValue)
-  const valueChangeDebounced = useCallback(debounce(valueChange, 1000), [])
-  const handleChange = useCallback((e: any) => setValue(e.target.value), [])
-
-  useEffect(() => {
-    valueChangeDebounced(value)
-  }, [value])
-
-  return (
-    <Form.Input
-      placeholder="Search by name"
-      onChange={handleChange}
-      value={value}
-    />
-  )
 }
 
 const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
@@ -191,7 +171,11 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
         Available mentors ({mentors.length})
       </Heading>
       <div className="filters">
-        <SearchField defaultValue={name} valueChange={setName} />
+        <SearchField
+          defaultValue={name}
+          valueChange={setName}
+          placeholder="Search by name"
+        />
       </div>
       <div className="filters">
         <div className="filters-wrapper">

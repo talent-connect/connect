@@ -12,7 +12,7 @@ import './JobseekerProfileCard.scss'
 import placeholderImage from '../../assets/img-placeholder.png'
 
 interface JobseekerProfileCardProps {
-  jobseekerProfile: TpJobseekerProfile
+  jobseekerProfile: Partial<TpJobseekerProfile>
   onClick?: () => void
   isFavorite?: boolean
   toggleFavorite?: (id: string) => void
