@@ -298,7 +298,7 @@ export const CVPDF = ({
           <Text
             style={[
               styles.headerText2,
-              desiredPositions.length > 2
+              desiredPositions?.length > 2
                 ? styles.headerText2ExtraTop
                 : undefined,
             ]}
@@ -308,7 +308,7 @@ export const CVPDF = ({
           <Text
             style={[
               styles.headerText3,
-              desiredPositions.length > 2
+              desiredPositions?.length > 2
                 ? styles.headerText3ExtraTop
                 : undefined,
             ]}
