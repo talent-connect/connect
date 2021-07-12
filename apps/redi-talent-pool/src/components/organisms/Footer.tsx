@@ -34,7 +34,7 @@ const RediFooter = () => {
               >
                 <RediSchool />
               </Element>
-              <Element renderAs="small">In collaboration with</Element>
+              <Element renderAs="small">Supported by</Element>
               <Element
                 renderAs="a"
                 href="https://www.microsoft.com/de-de/berlin/corporate-digital-responsibility.aspx?id=tab01"
@@ -44,7 +44,7 @@ const RediFooter = () => {
               >
                 <img
                   src={MicrosoftLogo}
-                  alt="In collaboration with Microsoft"
+                  alt="Supported by Microsoft"
                   style={{ maxWidth: '6rem' }}
                 />
               </Element>
