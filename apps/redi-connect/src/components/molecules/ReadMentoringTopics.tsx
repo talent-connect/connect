@@ -28,7 +28,7 @@ const ReadMentoringTopics = ({ profile, caption }: ReadMentoringProps) => {
   const { categories } = profile
 
   if (!categories?.length && !caption)
-    return <Placeholder>Please pick up to three mentoring topics.</Placeholder>
+    return <Placeholder>Please pick up to four mentoring topics.</Placeholder>
 
   return (
     <>
