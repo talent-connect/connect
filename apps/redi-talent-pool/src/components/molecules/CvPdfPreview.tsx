@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
     color: '#ffffff',
   },
   experienceTitle: {
-    width: '65%',
+    width: '50%',
   },
 })
 
@@ -453,14 +453,14 @@ export const CVPDF = ({
                       </View>
                       <Text style={styles.contentSubHeading}>
                         {formatDate(
-                          Number(experience.startDateMonth),
+                          experience.startDateMonth,
                           experience.startDateYear
                         )}{' '}
                         -{' '}
                         {experience.current
                           ? 'Present'
                           : formatDate(
-                              Number(experience.endDateMonth),
+                              experience.endDateMonth,
                               experience.endDateYear
                             )}
                       </Text>
