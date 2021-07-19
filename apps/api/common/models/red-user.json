@@ -29,9 +29,25 @@
         "nestRemoting": true
       }
     },
+    "tpJobseekerCv": {
+      "type": "hasMany",
+      "model": "TpJobseekerCv",
+      "foreignKey": "",
+      "options": {
+        "nestRemoting": true
+      }
+    },
     "tpCompanyProfile": {
       "type": "hasOne",
       "model": "TpCompanyProfile",
+      "foreignKey": "",
+      "options": {
+        "nestRemoting": true
+      }
+    },
+    "tpJobListings": {
+      "type": "hasMany",
+      "model": "TpJobListing",
       "foreignKey": "",
       "options": {
         "nestRemoting": true
@@ -51,9 +67,21 @@
         "__create__tpJobseekerProfile",
         "__update__tpJobseekerProfile",
         "__get__tpJobseekerProfile",
+        "__create__tpJobseekerCv",
+        "__update__tpJobseekerCv",
+        "__get__tpJobseekerCv",
+        "__findById__tpJobseekerCv",
+        "__updateById__tpJobseekerCv",
+        "__destroyById__tpJobseekerCv",
+        "__delete__tpJobseekerCv",
         "__create__tpCompanyProfile",
         "__update__tpCompanyProfile",
-        "__get__tpCompanyProfile"
+        "__get__tpCompanyProfile",
+        "__create__tpJobListings",
+        "__destroyById__tpJobListings",
+        "__findById__tpJobListings",
+        "__get__tpJobListings",
+        "__updateById__tpJobListings"
       ]
     },
     {

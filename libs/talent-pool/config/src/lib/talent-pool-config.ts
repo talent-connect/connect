@@ -216,7 +216,7 @@ export const topSkills = [
     label: 'C#',
   },
   {
-    id: 'c',
+    id: 'cPlusPlus',
     label: 'C++',
   },
   {

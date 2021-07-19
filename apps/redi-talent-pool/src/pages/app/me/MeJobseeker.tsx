@@ -17,6 +17,7 @@ import { EditableNamePhotoLocation } from '../../../components/organisms/jobseek
 import { EditableOverview } from '../../../components/organisms/jobseeker-profile-editables/EditableOverview'
 import { EditableProfessionalExperience } from '../../../components/organisms/jobseeker-profile-editables/EditableProfessionalExperience'
 import { EditableSummary } from '../../../components/organisms/jobseeker-profile-editables/EditableSummary'
+import { EditableVisibility } from '../../../components/organisms/jobseeker-profile-editables/EditableVisibility'
 import { LoggedIn } from '../../../components/templates'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
@@ -35,7 +36,10 @@ export function MeJobseeker() {
 
   return (
     <LoggedIn>
-      {profile?.state === 'profile-approved-awaiting-job-preferences' ? (
+      {profile?.state === 'profile-approved-awaiting-job-preferences' ||
+      profile?.state ===
+        'job-preferences-shared-with-redi-awaiting-interview-match' ||
+      profile?.state === 'matched-for-interview' ? (
         <Notification className="account-not-active double-bs">
           <Icon
             className="account-not-active__icon"
@@ -44,13 +48,8 @@ export function MeJobseeker() {
             space="right"
           />
           <Content size="small">
-            <strong>Great, your profile is approved!</strong> Before we can
-            match you for interviews with companies, we want to learn about your
-            preferences. Therefore, find the job posting list in the{' '}
-            <a onClick={() => openJobPreferencesModalSignalRef.current.next()}>
-              job preferences section{' '}
-            </a>
-            and fill out your preferred companies/jobs.
+            <strong>Great, your profile is approved!</strong> You can now{' '}
+            <a href="/app/browse">browse open job postings</a>!
           </Content>
         </Notification>
       ) : null}
@@ -62,11 +61,11 @@ export function MeJobseeker() {
             </div>
             <OnboardingSteps />
           </div>
-          <EditableNamePhotoLocation />
-          <EditableOverview />
-          <EditableSummary />
-          <EditableProfessionalExperience />
-          <EditableEducation />
+          <EditableNamePhotoLocation profile={profile} />
+          <EditableOverview profile={profile} />
+          <EditableSummary profile={profile} />
+          <EditableProfessionalExperience profile={profile} />
+          <EditableEducation profile={profile} />
         </Columns.Column>
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'two-fifths' }}>
           <div className="is-hidden-mobile">
@@ -75,14 +74,16 @@ export function MeJobseeker() {
             </div>
             <OnboardingSteps />
           </div>
-          <EditableImportantDetails />
-          <EditableLanguages />
-          <EditableLinks />
-          {currentStep[0] >= 4 ? (
+          {/* <EditableVisibility /> */}
+          <EditableImportantDetails profile={profile} />
+          <EditableLanguages profile={profile} />
+          <EditableLinks profile={profile} />
+          {/* {currentStep[0] >= 4 ? (
             <EditableJobPreferences
+              profile={profile}
               triggerModalSignal={openJobPreferencesModalSignalRef.current}
             />
-          ) : null}
+          ) : null} */}
         </Columns.Column>
       </Columns>
     </LoggedIn>
@@ -104,13 +105,13 @@ const CallToActionButton = ({
       ].includes(profile.state as any) ? (
         <SendProfileForReviewButton />
       ) : null}
-      {profile &&
+      {/* {profile &&
       profile.state &&
       [
         TpJobseekerProfileState['profile-approved-awaiting-job-preferences'],
       ].includes(profile.state as any) ? (
         <SendJobPreferencesForReviewButton />
-      ) : null}
+      ) : null} */}
     </>
   )
 }
@@ -119,9 +120,9 @@ const steps = [
   { number: 1, label: 'Complete your profile' },
   { number: 2, label: 'Send profile to ReDI' },
   { number: 3, label: 'Profile approval' },
-  { number: 4, label: 'Input your job preferences' },
-  { number: 5, label: 'Share your preferences with ReDI' },
-  { number: 6, label: 'Interview match' },
+  // { number: 4, label: 'Input your job preferences' },
+  // { number: 5, label: 'Share your preferences with ReDI' },
+  // { number: 6, label: 'Interview match' },
 ]
 
 function determineCurrentStep(
@@ -134,16 +135,25 @@ function determineCurrentStep(
     return [3, 'pending']
   }
   if (profile.state === 'profile-approved-awaiting-job-preferences') {
-    return areJobPreferencesInputted(profile) ? [5, 'todo'] : [4, 'todo']
+    return [3, 'complete']
   }
+  // if (
+  //   profile.state ===
+  //   'job-preferences-shared-with-redi-awaiting-interview-match'
+  // ) {
+  //   return [6, 'pending']
+  // }
+  // if (profile.state === 'matched-for-interview') {
+  //   return [6, 'complete']
+  // }
   if (
     profile.state ===
     'job-preferences-shared-with-redi-awaiting-interview-match'
   ) {
-    return [6, 'pending']
+    return [3, 'complete']
   }
   if (profile.state === 'matched-for-interview') {
-    return [6, 'complete']
+    return [3, 'complete']
   }
 }
 
@@ -151,7 +161,6 @@ export function OnboardingSteps() {
   const { data: profile } = useTpJobseekerProfileQuery()
 
   const currentStep = determineCurrentStep(profile)
-  console.log(currentStep)
 
   return (
     <div className="onboarding-steps">

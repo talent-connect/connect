@@ -45,33 +45,4 @@
       }
     }
   }
-
-  &__location-tag {
-    padding: 0.5rem;
-    position: absolute;
-    top: 8.3rem;
-    left: 0.75rem;
-  }
-
-  .tags {
-    margin-top: 1rem;
-
-    .tag {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-
-      display: inline-block;
-      line-height: 2rem;
-
-      &--rest {
-        flex-shrink: 0;
-      }
-    }
-
-    &__last-row {
-      display: flex;
-      width: 100%;
-    }
-  }
 }

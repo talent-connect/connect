@@ -1,39 +1,33 @@
 import {
   Button,
   Caption,
-  FormDatePicker,
   FormInput,
-  FormSelect,
-  FormTextArea,
-  PipeList,
 } from '@talent-connect/shared-atomic-design-components'
 import { TpCompanyProfile } from '@talent-connect/shared-types'
-import {
-  availabilityOptions,
-  availabilityOptionsIdToLabelMap,
-  desiredEmploymentTypeOptions,
-  desiredEmploymentTypeOptionsIdToLabelMap,
-  desiredPositions,
-} from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
-import moment from 'moment'
 import React, { useEffect, useMemo, useState } from 'react'
 import { Columns, Content, Element } from 'react-bulma-components'
-import * as Yup from 'yup'
 import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
-export function EditableContact() {
-  const { data: profile } = useTpCompanyProfileQuery()
+interface Props {
+  profile: Partial<TpCompanyProfile>
+  disableEditing?: boolean
+}
+
+export function EditableContact({ profile, disableEditing }: Props) {
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
   const isEmpty = EditableContact.isSectionEmpty(profile)
 
+  if (disableEditing && isEmpty) return null
+
   return (
     <Editable
+      disableEditing={disableEditing}
       isEditing={isEditing}
       isFormDirty={isFormDirty}
       setIsEditing={setIsEditing}
@@ -42,38 +36,47 @@ export function EditableContact() {
         isEmpty ? (
           <EmptySectionPlaceholder
             height="tall"
-            text="Add your contact details"
             onClick={() => setIsEditing(true)}
-          />
+          >
+            Add your contact details
+          </EmptySectionPlaceholder>
         ) : (
-          <Columns>
+          <div
+            style={{
+              display: 'grid',
+              width: '100%',
+              gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+              gridColumnGap: '32px',
+              gridRowGap: '32px',
+            }}
+          >
             {profile?.firstName || profile?.lastName ? (
-              <Columns.Column size={6}>
+              <div>
                 <Caption>Name</Caption>
                 <Content>
                   <p>
                     {profile?.firstName} {profile?.lastName}
                   </p>
                 </Content>
-              </Columns.Column>
+              </div>
             ) : null}
             {profile.phoneNumber ? (
-              <Columns.Column size={6}>
+              <div>
                 <Caption>Phone</Caption>
                 <Content>
                   <p>{profile?.phoneNumber}</p>
                 </Content>
-              </Columns.Column>
+              </div>
             ) : null}
             {profile.contactEmail ? (
-              <Columns.Column size={6}>
+              <div>
                 <Caption>Email</Caption>
                 <Content>
                   <p>{profile?.contactEmail}</p>
                 </Content>
-              </Columns.Column>
+              </div>
             ) : null}
-          </Columns>
+          </div>
         )
       }
       modalTitle="Help applicants get in touch"

@@ -60,7 +60,19 @@
     "dataSource": "mongodb",
     "public": true
   },
+  "TpJobseekerCv": {
+    "dataSource": "mongodb",
+    "public": true
+  },
   "TpCompanyProfile": {
+    "dataSource": "mongodb",
+    "public": true
+  },
+  "TpJobListing": {
+    "dataSource": "mongodb",
+    "public": true
+  },
+  "TpJobfair2021InterviewMatch": {
     "dataSource": "mongodb",
     "public": true
   }

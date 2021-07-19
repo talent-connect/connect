@@ -3,10 +3,11 @@ import { connect } from 'react-redux'
 import { getHasReachedMenteeLimit } from '../../../redux/user/selectors'
 import { useParams, useHistory } from 'react-router'
 import { RootState } from '../../../redux/types'
-import { Columns, Element, Notification, Tag } from 'react-bulma-components'
+import { Columns, Element, Notification, Content } from 'react-bulma-components'
 import {
   Button,
   Heading,
+  Icon,
 } from '@talent-connect/shared-atomic-design-components'
 import {
   ReadAbout,
@@ -28,6 +29,7 @@ import { LoggedIn } from '../../../components/templates'
 import { RedProfile } from '@talent-connect/shared-types'
 import { profilesFetchOneStart } from '../../../redux/profiles/actions'
 import { rediLocationNames } from '@talent-connect/shared-config'
+import './Profile.scss'
 
 interface RouteParams {
   profileId: string
@@ -137,11 +139,14 @@ function Profile({
             </Columns.Column>
             <Columns.Column size={9}>
               <Heading>
-                {profile.firstName} {profile.lastName}{' '}
-                <Tag size="medium" rounded>
-                  (in {rediLocationNames[profile.rediLocation]})
-                </Tag>
+                {profile.firstName} {profile.lastName}
               </Heading>
+              <Element className="location-tag">
+                <Icon icon="mapPin" className="icon-align" />
+                <Content size="medium" renderAs="p">
+                  {rediLocationNames[profile.rediLocation]}
+                </Content>
+              </Element>
             </Columns.Column>
           </Columns>
 

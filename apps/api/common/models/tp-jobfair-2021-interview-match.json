@@ -1,0 +1,63 @@
+{
+  "name": "TpJobfair2021InterviewMatch",
+  "plural": "tpJobfair2021InterviewMatches",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "createdAt": {
+      "type": "date"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "interviewee": {
+      "type": "belongsTo",
+      "model": "TpJobseekerProfile",
+      "foreignKey": "",
+      "options": {
+        "nestRemoting": true
+      }
+    },
+    "jobListing": {
+      "type": "belongsTo",
+      "model": "TpJobListing",
+      "foreignKey": "",
+      "options": {
+        "nestRemoting": true
+      }
+    },
+    "company": {
+      "type": "belongsTo",
+      "model": "TpCompanyProfile",
+      "foreignKey": "",
+      "options": {
+        "nestRemoting": true
+      }
+    }
+  },
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "find"
+    },
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW"
+    }
+  ],
+  "methods": {}
+}

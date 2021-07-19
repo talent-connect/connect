@@ -42,6 +42,7 @@ import {
   ReferenceField,
   Labeled,
   ReferenceManyField,
+  required,
 } from 'react-admin'
 import classNames from 'classnames'
 import { unparse as convertToCSV } from 'papaparse/papaparse.min'
@@ -1203,29 +1204,6 @@ const TpJobseekerProfileListFilters = (props) => (
 )
 
 function tpJobseekerProfileListExporter(profiles, fetchRelatedRecords) {
-  // const mentors = await fetchRelatedRecords(
-  //   mentoringSessions,
-  //   'mentorId',
-  //   'redProfiles'
-  // )
-  // const mentees = await fetchRelatedRecords(
-  //   mentoringSessions,
-  //   'menteeId',
-  //   'redProfiles'
-  // )
-  // const data = mentoringSessions.map((x) => {
-  //   const mentor = mentors[x.mentorId]
-  //   const mentee = mentees[x.menteeId]
-  //   if (mentor) {
-  //     x.mentorName = `${mentor.firstName} ${mentor.lastName}`
-  //   }
-  //   if (mentee) {
-  //     x.menteeName = `${mentee.firstName} ${mentee.lastName}`
-  //   }
-  //   return x
-  // })
-  console.log(profiles)
-
   const data = profiles.map((profile) => {
     let { hrSummit2021JobFairCompanyJobPreferences } = profile
     hrSummit2021JobFairCompanyJobPreferences = hrSummit2021JobFairCompanyJobPreferences?.map(
@@ -1235,8 +1213,32 @@ function tpJobseekerProfileListExporter(profiles, fetchRelatedRecords) {
     )
     delete profile.hrSummit2021JobFairCompanyJobPreferences
 
+    const {
+      firstName,
+      lastName,
+      contactEmail,
+      createdAt,
+      state,
+      jobseeker_currentlyEnrolledInCourse,
+      currentlyEnrolledInCourse,
+      loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName,
+      updatedAt,
+      lastLoginDateTime,
+      postalMailingAddress,
+    } = profile
+
     return {
-      ...profile,
+      firstName,
+      lastName,
+      contactEmail,
+      createdAt,
+      state,
+      jobseeker_currentlyEnrolledInCourse,
+      currentlyEnrolledInCourse,
+      loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName,
+      updatedAt,
+      lastLoginDateTime,
+      postalMailingAddress,
       jobPreference1: hrSummit2021JobFairCompanyJobPreferences?.[0],
       jobPreference2: hrSummit2021JobFairCompanyJobPreferences?.[1],
       jobPreference3: hrSummit2021JobFairCompanyJobPreferences?.[2],
@@ -1267,6 +1269,7 @@ const TpJobseekerProfileShow = (props) => (
       <TabbedShowLayout>
         <Tab label="Profile">
           <TextField source="state" />
+          <BooleanField source="isProfileVisibleToCompanies" />
           <Avatar />
           <TextField source="firstName" />
           <TextField source="lastName" />
@@ -1370,6 +1373,19 @@ const TpJobseekerProfileShow = (props) => (
               <TextField source="companyName" />
             </Datagrid>
           </ArrayField>
+
+          <ReferenceManyField
+            label="HR Summit 2021 Interview Matches"
+            reference="tpJobfair2021InterviewMatches"
+            target="intervieweeId"
+          >
+            <Datagrid>
+              <TextField label="Company name" source="company.companyName" />
+              <ShowButton />
+              <EditButton />
+            </Datagrid>
+          </ReferenceManyField>
+
           <h4>Record information</h4>
           <RecordCreatedAt />
           <RecordUpdatedAt />
@@ -1398,6 +1414,7 @@ const TpJobseekerProfileEdit = (props) => (
     <TabbedForm>
       <FormTab label="Profile">
         <TextField source="state" />
+        <BooleanInput source="isProfileVisibleToCompanies" />
         {/* <Avatar /> */}
         <TextInput source="firstName" />
         <TextInput source="lastName" />
@@ -1501,6 +1518,19 @@ const TpJobseekerProfileEdit = (props) => (
             <TextField source="companyName" />
           </Datagrid>
         </ArrayField>
+
+        <ReferenceManyField
+          label="HR Summit 2021 Interview Matches"
+          reference="tpJobfair2021InterviewMatches"
+          target="intervieweeId"
+        >
+          <Datagrid>
+            <TextField label="Company name" source="company.companyName" />
+            <ShowButton />
+            <EditButton />
+          </Datagrid>
+        </ReferenceManyField>
+
         <h4>Record information</h4>
         <RecordCreatedAt />
         <RecordUpdatedAt />
@@ -1539,7 +1569,7 @@ const TpCompanyProfileList = (props) => {
         <TextField source="lastName" />
         <RecordCreatedAt />
         <ShowButton />
-        {/* <EditButton /> */}
+        <EditButton />
       </Datagrid>
     </List>
   )
@@ -1563,7 +1593,11 @@ const TpCompanyProfileShow = (props) => (
           <TextField source="phoneNumber" />
           <TextField source="about" />
 
-          <ArrayField source="jobListings" fieldKey="uuid">
+          <ReferenceManyField
+            label="Job Listings"
+            reference="tpJobListings"
+            target="tpCompanyProfileId"
+          >
             <Datagrid>
               <TextField source="title" />
               <TextField source="location" />
@@ -1571,18 +1605,36 @@ const TpCompanyProfileShow = (props) => (
               <TextField source="proficiencyLevelId" />
               <FunctionField
                 label="idealTechnicalSkills"
-                render={(record) => record.idealTechnicalSkills.join(', ')}
+                render={(record) => record?.idealTechnicalSkills?.join(', ')}
               />
               <FunctionField
                 label="relatesToPositions"
-                render={(record) => record.relatesToPositions.join(', ')}
+                render={(record) => record?.relatesToPositions?.join(', ')}
               />
               <TextField source="employmentType" />
               <TextField source="languageRequirements" />
               <TextField source="desiredExperience" />
               <TextField source="salaryRange" />
+              <ShowButton />
+              <EditButton />
             </Datagrid>
-          </ArrayField>
+          </ReferenceManyField>
+
+          <ReferenceManyField
+            label="HR Summit 2021 Interview Matches"
+            reference="tpJobfair2021InterviewMatches"
+            target="companyId"
+          >
+            <Datagrid>
+              <FullName sourcePrefix="interviewee." />
+              <ShowButton />
+              <EditButton />
+            </Datagrid>
+          </ReferenceManyField>
+
+          {/* <ArrayField source="jobListings" fieldKey="uuid">
+            <Datagrid></Datagrid>
+          </ArrayField> */}
         </Tab>
         <Tab label="Internal comments">
           <TextField
@@ -1612,7 +1664,11 @@ const TpCompanyProfileEdit = (props) => (
         <TextInput source="phoneNumber" />
         <TextInput source="about" />
 
-        <ArrayField source="jobListings" fieldKey="uuid">
+        <ReferenceManyField
+          label="Job Listings"
+          reference="tpJobListings"
+          target="tpCompanyProfileId"
+        >
           <Datagrid>
             <TextField source="title" />
             <TextField source="location" />
@@ -1620,23 +1676,355 @@ const TpCompanyProfileEdit = (props) => (
             <TextField source="proficiencyLevelId" />
             <FunctionField
               label="idealTechnicalSkills"
-              render={(record) => record.idealTechnicalSkills.join(', ')}
+              render={(record) => record?.idealTechnicalSkills?.join(', ')}
             />
             <FunctionField
               label="relatesToPositions"
-              render={(record) => record.relatesToPositions.join(', ')}
+              render={(record) => record?.relatesToPositions?.join(', ')}
             />
             <TextField source="employmentType" />
             <TextField source="languageRequirements" />
             <TextField source="desiredExperience" />
             <TextField source="salaryRange" />
+            <ShowButton />
+            <EditButton />
           </Datagrid>
-        </ArrayField>
+        </ReferenceManyField>
+        <ReferenceManyField
+          label="HR Summit 2021 Interview Matches"
+          reference="tpJobfair2021InterviewMatches"
+          target="companyId"
+        >
+          <Datagrid>
+            <FullName sourcePrefix="interviewee." />
+            <ShowButton />
+            <EditButton />
+          </Datagrid>
+        </ReferenceManyField>
       </FormTab>
       <FormTab label="Internal comments">
         <LongTextInput source="administratorInternalComment" />
       </FormTab>
     </TabbedForm>
+  </Edit>
+)
+
+const TpJobListingList = (props) => {
+  return (
+    <List
+      {...props}
+      pagination={<AllModelsPagination />}
+      exporter={tpJobListingListExporter}
+    >
+      <Datagrid>
+        <TextField source="title" />
+        <TextField source="location" />
+        <ReferenceField
+          label="Company"
+          source="tpCompanyProfileId"
+          reference="tpCompanyProfiles"
+        >
+          <TextField source="companyName" />
+        </ReferenceField>
+        <RecordCreatedAt />
+        <ShowButton />
+        <EditButton />
+      </Datagrid>
+    </List>
+  )
+}
+
+function tpJobListingListExporter(jobListings, fetchRelatedRecords) {
+  const data = jobListings.map((job) => {
+    const {
+      title,
+      location,
+      tpCompanyProfile: { companyName },
+      employmentType,
+      languageRequirements,
+      desiredExperience,
+      salaryRange,
+    } = job
+
+    return {
+      title,
+      location,
+      companyName,
+      employmentType,
+      languageRequirements,
+      desiredExperience,
+      salaryRange,
+    }
+  })
+
+  const csv = convertToCSV(
+    data
+    // {
+    //   fields: [
+    //     'id',
+    //     'firstName',
+    //     'lastName',
+    //     'contactEmail',
+    //     'hrSummit2021JobFairCompanyJobPreferences',
+    //     'createdAt',
+    //     'updatedAt',
+    //   ],
+    //   }
+  )
+  downloadCSV(csv, 'Are you ReDI? Yalla habibi')
+}
+
+const TpJobListingShow = (props) => (
+  <Show {...props}>
+    <SimpleShowLayout>
+      <ReferenceField
+        label="Company"
+        source="tpCompanyProfileId"
+        reference="tpCompanyProfiles"
+      >
+        <TextField source="companyName" />
+      </ReferenceField>
+      <TextField source="title" />
+      <TextField source="location" />
+      <TextField source="summary" />
+      <TextField source="proficiencyLevelId" />
+      <FunctionField
+        label="idealTechnicalSkills"
+        render={(record) => record?.idealTechnicalSkills?.join(', ')}
+      />
+      <FunctionField
+        label="relatesToPositions"
+        render={(record) => record?.relatesToPositions?.join(', ')}
+      />
+      <TextField source="employmentType" />
+      <TextField source="languageRequirements" />
+      <TextField source="desiredExperience" />
+      <TextField source="salaryRange" />
+    </SimpleShowLayout>
+  </Show>
+)
+
+const TpJobListingEdit = (props) => (
+  <Edit {...props}>
+    <SimpleForm>
+      <ReferenceField
+        label="Company"
+        source="tpCompanyProfileId"
+        reference="tpCompanyProfiles"
+      >
+        <TextField source="companyName" />
+      </ReferenceField>
+      <TextInput source="title" />
+      <TextInput source="location" />
+      <TextInput source="summary" multiline />
+      <TextInput source="proficiencyLevelId" />
+      <FunctionField
+        label="idealTechnicalSkills"
+        render={(record) => record?.idealTechnicalSkills?.join(', ')}
+      />
+      <FunctionField
+        label="relatesToPositions"
+        render={(record) => record?.relatesToPositions?.join(', ')}
+      />
+      <TextInput source="employmentType" />
+      <TextInput source="languageRequirements" />
+      <TextInput source="desiredExperience" />
+      <TextInput source="salaryRange" />
+    </SimpleForm>
+  </Edit>
+)
+
+const TpJobFair2021InterviewMatchList = (props) => {
+  return (
+    <List
+      {...props}
+      pagination={<AllModelsPagination />}
+      exporter={tpJobFair2021InterviewMatchListExporter}
+    >
+      <Datagrid>
+        <ReferenceField
+          label="Interviewee"
+          source="intervieweeId"
+          reference="tpJobseekerProfiles"
+        >
+          <FullName sourcePrefix="" />
+        </ReferenceField>
+        <ReferenceField
+          label="Company"
+          source="companyId"
+          reference="tpCompanyProfiles"
+        >
+          <TextField source="companyName" />
+        </ReferenceField>
+        <ReferenceField
+          label="Job Listing"
+          source="jobListingId"
+          reference="tpJobListings"
+        >
+          <TextField source="title" />
+        </ReferenceField>
+        <RecordCreatedAt />
+        <ShowButton />
+        <EditButton />
+      </Datagrid>
+    </List>
+  )
+}
+
+function tpJobFair2021InterviewMatchListExporter(matches, fetchRelatedRecords) {
+  const data = matches.map((match) => {
+    const {
+      company: {
+        companyName,
+        location: companyLocation,
+        firstName: companyPersonFirstName,
+        lastName: companyPersonLastName,
+        contactEmail: companyPersonContactEmail,
+      } = {},
+      interviewee: {
+        currentlyEnrolledInCourse: intervieweeCurrentRediCourse,
+        firstName: intervieweeFirstName,
+        lastName: intervieweeLastName,
+        contactEmail: intervieweeContactEmail,
+      } = {},
+    } = match
+
+    return {
+      companyName,
+      companyLocation,
+      companyPersonFirstName,
+      companyPersonLastName,
+      companyPersonContactEmail,
+      intervieweeFirstName,
+      intervieweeLastName,
+      intervieweeContactEmail,
+      intervieweeCurrentRediCourse,
+    }
+  })
+
+  const csv = convertToCSV(
+    data
+    // {
+    //   fields: [
+    //     'id',
+    //     'firstName',
+    //     'lastName',
+    //     'contactEmail',
+    //     'hrSummit2021JobFairCompanyJobPreferences',
+    //     'createdAt',
+    //     'updatedAt',
+    //   ],
+    //   }
+  )
+  downloadCSV(csv, 'Company-interviewee matches')
+}
+
+const TpJobFair2021InterviewMatchShow = (props) => (
+  <Show {...props}>
+    <SimpleShowLayout>
+      <ReferenceField
+        label="Interviewee"
+        source="intervieweeId"
+        reference="tpJobseekerProfiles"
+      >
+        <FullName sourcePrefix="" />
+      </ReferenceField>
+      <ReferenceField
+        label="Company"
+        source="companyId"
+        reference="tpCompanyProfiles"
+      >
+        <TextField source="companyName" />
+      </ReferenceField>
+      <ReferenceField
+        label="Job Listing"
+        source="jobListingId"
+        reference="tpJobListings"
+      >
+        <TextField source="title" />
+      </ReferenceField>
+    </SimpleShowLayout>
+  </Show>
+)
+
+const TpJobFair2021InterviewMatchCreate = (props) => (
+  <Create {...props}>
+    <SimpleForm>
+      <ReferenceInput
+        label="Interviewee"
+        source="intervieweeId"
+        reference="tpJobseekerProfiles"
+        perPage={0}
+        sort={{ field: 'firstName', order: 'ASC' }}
+      >
+        <AutocompleteInput
+          optionText={(op) => `${op.firstName} ${op.lastName}`}
+        />
+      </ReferenceInput>
+      <ReferenceInput
+        label="Company"
+        source="companyId"
+        reference="tpCompanyProfiles"
+        perPage={0}
+        sort={{ field: 'companyName', order: 'ASC' }}
+      >
+        <AutocompleteInput optionText={(op) => `${op.companyName}`} />
+      </ReferenceInput>
+      <ReferenceInput
+        label="Job Listing"
+        source="jobListingId"
+        reference="tpJobListings"
+        perPage={0}
+      >
+        <AutocompleteInput
+          optionText={(op) => {
+            if (!op.tpCompanyProfile || !op.tpCompanyProfile.companyName) {
+              console.log(op)
+            }
+            return `${op.tpCompanyProfile.companyName} --- ${op.title}`
+          }}
+        />
+      </ReferenceInput>
+    </SimpleForm>
+  </Create>
+)
+
+const TpJobFair2021InterviewMatchEdit = (props) => (
+  <Edit {...props}>
+    <SimpleForm>
+      <ReferenceInput
+        label="Interviewee"
+        source="intervieweeId"
+        reference="tpJobseekerProfiles"
+        perPage={0}
+        sort={{ field: 'firstName', order: 'ASC' }}
+      >
+        <AutocompleteInput
+          optionText={(op) => `${op.firstName} ${op.lastName}`}
+        />
+      </ReferenceInput>
+      <ReferenceInput
+        label="Company"
+        source="companyId"
+        reference="tpCompanyProfiles"
+        perPage={0}
+        sort={{ field: 'firstName', order: 'ASC' }}
+      >
+        <AutocompleteInput optionText={(op) => `${op.companyName}`} />
+      </ReferenceInput>
+      <ReferenceInput
+        label="Job Listing"
+        source="jobListingId"
+        reference="tpJobListings"
+        perPage={0}
+      >
+        <AutocompleteInput
+          optionText={(op) =>
+            `${op.tpCompanyProfile.companyName} --- ${op.title}`
+          }
+        />
+      </ReferenceInput>
+    </SimpleForm>
   </Edit>
 )
 
@@ -1720,6 +2108,19 @@ function App() {
           show={TpCompanyProfileShow}
           list={TpCompanyProfileList}
           edit={TpCompanyProfileEdit}
+        />
+        <Resource
+          name="tpJobListings"
+          show={TpJobListingShow}
+          list={TpJobListingList}
+          edit={TpJobListingEdit}
+        />
+        <Resource
+          name="tpJobfair2021InterviewMatches"
+          create={TpJobFair2021InterviewMatchCreate}
+          show={TpJobFair2021InterviewMatchShow}
+          list={TpJobFair2021InterviewMatchList}
+          edit={TpJobFair2021InterviewMatchEdit}
         />
       </Admin>
     </div>

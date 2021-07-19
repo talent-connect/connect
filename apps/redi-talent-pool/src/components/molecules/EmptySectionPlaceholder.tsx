@@ -1,25 +1,28 @@
 import './EmptySectionPlaceholder.scss'
+import classnames from 'clsx'
 
 interface Props {
-  height: 'extra-slim' | 'slim' | 'tall'
-  text: string
+  height: 'extra-slim' | 'slim' | 'tall' | 'none'
   onClick: () => void
   style?: React.CSSProperties
+  children: React.ReactNode
 }
 
 export function EmptySectionPlaceholder({
   height,
-  text,
   onClick,
   style = {},
+  children,
 }: Props) {
   return (
     <div
-      className={`empty-section-placeholder empty-section-placeholder--${height}`}
+      className={classnames('empty-section-placeholder', {
+        [`empty-section-placeholder--${height}`]: height !== 'none',
+      })}
       onClick={onClick}
       style={style}
     >
-      {text}
+      {children}
     </div>
   )
 }

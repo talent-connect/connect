@@ -1,28 +1,67 @@
 import { Loader } from '@talent-connect/shared-atomic-design-components'
 import React, { ReactNode } from 'react'
 import { Columns, Container, Section } from 'react-bulma-components'
+import { useLocation } from 'react-router'
 import { useIsBusy } from '../../hooks/useIsBusy'
+import { useTpCompanyProfileQuery } from '../../react-query/use-tpcompanyprofile-query'
+import { useTpJobseekerProfileQuery } from '../../react-query/use-tpjobseekerprofile-query'
+import { TpMainNavItem } from '../molecules/TpMainNavItem'
 import { Navbar } from '../organisms'
 import Footer from '../organisms/Footer'
+import './LoggedIn.scss'
 
 interface Props {
+  hideNavigation?: boolean
   children?: ReactNode
 }
 
-const LoggedIn = ({ children }: Props) => {
+const LoggedIn = ({ children, hideNavigation }: Props) => {
   const isBusy = useIsBusy()
+  const location = useLocation()
+  const { data: jobseekerProfile } = useTpJobseekerProfileQuery({
+    retry: false,
+  })
+  const { data: companyProfile } = useTpCompanyProfileQuery({ retry: false })
 
   return (
     <>
       <Navbar />
-      {/* <Section className="section--bottom-large-spaceing color-half-tablet section--separator"> */}
-      <Section className="section--bottom-large-spaceing section--separator">
-        <Container>
-          {/* <Container className="color-side-menu"> */}
-          <Columns>
-            {/* <Columns.Column desktop={{ size: 2 }} className="column--side-menu">
-              <SideMenu />
-            </Columns.Column> */}
+      <Container className="main-container">
+        <div style={{ display: 'flex' }}>
+          {hideNavigation ? null : (
+            <>
+              <div className="tp-side-menu">
+                <TpMainNavItem
+                  page="profile-page"
+                  pageName="My profile"
+                  to="/app/me"
+                  isActive={location.pathname === '/app/me'}
+                />
+                {companyProfile ||
+                jobseekerProfile?.state ===
+                  'profile-approved-awaiting-job-preferences' ||
+                jobseekerProfile?.state ===
+                  'job-preferences-shared-with-redi-awaiting-interview-match' ? (
+                  <TpMainNavItem
+                    page="browse-page"
+                    pageName="Browse"
+                    to="/app/browse"
+                    isActive={location.pathname === '/app/browse'}
+                  />
+                ) : null}
+                {jobseekerProfile ? (
+                  <TpMainNavItem
+                    page="cv-builder-page"
+                    pageName="CV Builder"
+                    to="/app/cv-builder"
+                    isActive={location.pathname.includes('/app/cv-builder')}
+                  />
+                ) : null}
+              </div>
+              <div className="main-container--horizontal-spacer"></div>
+            </>
+          )}
+          <Columns style={{ width: '100%', marginTop: '2rem' }}>
             <Columns.Column
               desktop={{ size: 12 }}
               className="column--main-content"
@@ -31,8 +70,11 @@ const LoggedIn = ({ children }: Props) => {
               {children}
             </Columns.Column>
           </Columns>
-        </Container>
-      </Section>
+          {hideNavigation ? null : (
+            <div className="main-container--horizontal-spacer is-hidden-desktop"></div>
+          )}
+        </div>
+      </Container>
       <Footer />
     </>
   )
