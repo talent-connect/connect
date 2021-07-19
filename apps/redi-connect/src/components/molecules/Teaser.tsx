@@ -97,7 +97,7 @@ export default {
               <strong>Paulina Muñoz</strong>
             </Element>
             <Element renderAs="p" textAlignment="centered" textSize={6}>
-              Manager Mentorship Program
+              Manager Coaching and Job Integration
               <br />
               Career Department ReDI School <br />
               <a href="mailto:paulina@redi-school.org">

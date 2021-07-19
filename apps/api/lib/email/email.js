@@ -372,6 +372,44 @@ const sendToMentorConfirmationOfMentorshipCancelled = ({
   })
 }
 
+const sendMentorshipCompletionEmailToMentor = ({
+  recipient,
+  mentorFirstName,
+  menteeFirstName,
+}) => {
+  const sendMentorshipCompletionEmailToMentorParsed = convertTemplateToHtml(
+    null,
+    'complete-mentorship-for-mentor'
+  )
+  const html = sendMentorshipCompletionEmailToMentorParsed
+    .replace(/\${mentorFirstName}/g, mentorFirstName)
+    .replace(/\${menteeFirstName}/g, menteeFirstName)
+  return sendMjmlEmailFactory({
+    to: recipient,
+    subject: `Mentorship with ${menteeFirstName} completed`,
+    html: html,
+  })
+}
+
+const sendMentorshipCompletionEmailToMentee = ({
+  recipient,
+  mentorFirstName,
+  menteeFirstName,
+}) => {
+  const sendMentorshipCompletionEmailToMenteeParsed = convertTemplateToHtml(
+    null,
+    'complete-mentorship-for-mentee'
+  )
+  const html = sendMentorshipCompletionEmailToMenteeParsed
+    .replace(/\${mentorFirstName}/g, mentorFirstName)
+    .replace(/\${menteeFirstName}/g, menteeFirstName)
+  return sendMjmlEmailFactory({
+    to: recipient,
+    subject: `Mentorship with ${mentorFirstName} completed`,
+    html: html,
+  })
+}
+
 const sendMentorshipRequestReceivedEmail = ({
   recipient,
   mentorName,
@@ -436,6 +474,8 @@ const formatLocationName = (locationIdentifier) => {
 
 module.exports = {
   sendReportProblemEmail,
+  sendMentorshipCompletionEmailToMentee,
+  sendMentorshipCompletionEmailToMentor,
   sendMentorCancelledMentorshipNotificationEmail,
   sendMentorshipRequestReceivedEmail,
   sendMentorshipAcceptedEmail,

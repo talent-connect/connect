@@ -7,7 +7,7 @@ import {
   Element,
   Heading as BulmaHeading,
 } from 'react-bulma-components'
-import { useTranslation, Trans } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import classnames from 'classnames'
 import './Faqs.scss'
 import {
