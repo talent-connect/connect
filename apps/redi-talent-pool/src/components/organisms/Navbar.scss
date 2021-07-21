@@ -48,7 +48,8 @@
     z-index: 10;
     padding: 8rem 1.25rem;
     background-color: $white;
-    background-image: url('../../assets/images/bubbles.svg');
+    // TODO: can we use relative import here instead?
+    background-image: url('libs/shared-atomic-design-components/src/assets/images/bubbles.svg');
     background-repeat: no-repeat;
     background-size: 80%;
     background-position: 50% 50%;
