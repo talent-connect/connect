@@ -2117,11 +2117,6 @@
     strip-json-comments "^3.1.1"
     tar "5.0.5"
 
-"@nrwl/nx@^7.8.7":
-  version "7.8.7"
-  resolved "https://registry.yarnpkg.com/@nrwl/nx/-/nx-7.8.7.tgz#a85dc5ab30d33ac6cc2234bbc51e229ad85b9b9b"
-  integrity sha512-a/pOozIT86IIWue6MSwN2EKO4grJ8My7QMl+g535/vrDg75riyBTkWF+nX6VM/JjGz40Y5nFZaX94924cZWt5g==
-
 "@nrwl/react@12.5.8":
   version "12.5.8"
   resolved "https://registry.yarnpkg.com/@nrwl/react/-/react-12.5.8.tgz#77d527394171a8f82a9857b792ce78e5a5264b5a"

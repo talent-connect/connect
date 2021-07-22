@@ -145,7 +145,6 @@
     "@nrwl/eslint-plugin-nx": "12.5.8",
     "@nrwl/jest": "12.5.8",
     "@nrwl/linter": "12.5.8",
-    "@nrwl/nx": "^7.8.7",
     "@nrwl/nx-cloud": "12.2.7",
     "@nrwl/react": "12.5.8",
     "@nrwl/tao": "12.5.8",
