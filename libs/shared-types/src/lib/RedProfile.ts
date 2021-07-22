@@ -12,10 +12,10 @@ export type RedProfile = {
   mentor_occupation: string
   mentor_workPlace: string
   expectations: string // Field was used in Mentor typeform, as of today 14.05.2019 not asked in sign-up flow
-  mentor_ifTypeForm_submittedAt: Date
-  mentee_ifTypeForm_preferredMentorSex: 'male' | 'female' | 'none'
-  ifTypeForm_additionalComments: string
-  mentee_currentCategory: 'student' | 'rediAlumnus'
+  mentor_ifTypeForm_submittedAt: Date // TODO: delete
+  mentee_ifTypeForm_preferredMentorSex: 'male' | 'female' | 'none' // TODO: delete
+  ifTypeForm_additionalComments: string // TODO: delete
+  mentee_currentCategory: 'student' | 'rediAlumnus' // TODO: not used
   mentee_occupationCategoryId: string // TODO: do TS magic to make this a union type
   mentee_occupationJob_placeOfEmployment: string
   mentee_occupationJob_position: string
@@ -32,7 +32,7 @@ export type RedProfile = {
   age: number
   birthDate: Date
   languages: Array<string>
-  otherLanguages: string
+  otherLanguages: string // TODO: remove
   personalDescription: string
   contactEmail: string
   linkedInProfileUrl: string
