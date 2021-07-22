@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom'
 import Icon from './Icon'
 import './Button.scss'
 
-interface Props {
+export interface ButtonProps {
   children: any
   className?: string
   size?: 'large' | 'medium' | 'small'
@@ -28,7 +28,7 @@ const Button = ({
   disabled,
   to,
   style = {},
-}: Props) => {
+}: ButtonProps) => {
   const baseClass = 'button'
 
   if (!to) {
