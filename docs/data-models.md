@@ -293,52 +293,50 @@ erDiagram
 
 | GenericPosition |
 |------------------------ |
-| id:administrativeAssistant, label: Administrative Assistant,
-| id: agileScrumCoach, label: Agile/SCRUM Coach,
-| id: azureSpecialist, label: Azure Specialist,
-| id: backendDeveloper, label: Backend Developer,
-| id: blockchainDeveloper, label: Blockchain Developer,
-| id: businessAnalyst, label: Business Analyst,
-| id: cloudEngineer, label: Cloud Enginee'
-| id: cloudSpecialist, label: Cloud Specialis'
-| id: dataAnalyst, label: Data Analyst,
-| id: dataScientist, label: Data Scientist,
-| id: devOpsSpecialist, label: DevOps Specialist,
-| id: digitalMarketer, label: Digital Marketer,
-| id: frontendDeveloper, label: Frontend Developer,
-| id: fullstackDeveloper, label: Fullstack Developer,
-| id: itAdministrator, label: IT Administrato'
-| id: itSpecialist, label: IT Specialis'
-| id: itSupportTechnician, label: IT Support Technicia'
-| id: javaDeveloper, label: Java Developer,
-| id: linuxSystemAdministrator, label: Linux System Administrato'
-| id: marketingAssistant, label: Marketing Assistan'
-| id: mobileDeveloperAndroid, label: Mobile Developer (Android'
-| id: mobileDeveloperIos, label: Mobile Developer (iOS'
-| id: nodeJsDeveloper, label: Node.js Developer,
-| id: operationsManager, label: Operations Manager,
-| id: productDesigner, label: Product Designer,
-| id: productManager, label: Product Manager,
-| id: projectAssistant, label: Project Assistant,
-| id: projectManager, label: Project Manager,
-| id: pythonDeveloper, label: Python Developer,
-| id: qaEngineer, label: QA Engineer,
-| id: reactDeveloper, label: React Developer,
-| id: requirementsEngineer, label: Requirements Engineer,
-| id: salesforceAdministrator, label: Salesforce Administrator,
-| id: salesManager, label: Sales Manager,
-| id: securityAdministrator, label: Security Administrator,
-| id: SEOManager', label: SEO Manager,
-| id: systemEngineer, label: System Engineer,
-| id: technicalArchitect, label: Technical Architect,
-| id: uiDesigner, label: UI Designer,
-| id: uiDeveloper, label: UI Developer,
-| id: uiUxDesigner, label: UI/UX Designer,
-| id: usabilityengineer, label: Usability Engineer,
-| id: userResearcher, label: User Researcher,
-		id: 'uxDesigner',
-		label: 'UX Designer',
-	},
+| id:administrativeAssistant, label: Administrative Assistant
+| id: agileScrumCoach, label: Agile/SCRUM Coach
+| id: azureSpecialist, label: Azure Specialist
+| id: backendDeveloper, label: Backend Developer
+| id: blockchainDeveloper, label: Blockchain Developer
+| id: businessAnalyst, label: Business Analyst
+| id: cloudEngineer, label: Cloud Enginee
+| id: cloudSpecialist, label: Cloud Specialist
+| id: dataAnalyst, label: Data Analyst
+| id: dataScientist, label: Data Scientist
+| id: devOpsSpecialist, label: DevOps Specialist
+| id: digitalMarketer, label: Digital Marketer
+| id: frontendDeveloper, label: Frontend Developer
+| id: fullstackDeveloper, label: Fullstack Developer
+| id: itAdministrator, label: IT Administrator
+| id: itSpecialist, label: IT Specialist
+| id: itSupportTechnician, label: IT Support Technician
+| id: javaDeveloper, label: Java Developer
+| id: linuxSystemAdministrator, label: Linux System Administrator
+| id: marketingAssistant, label: Marketing Assistant
+| id: mobileDeveloperAndroid, label: Mobile Developer (Android)
+| id: mobileDeveloperIos, label: Mobile Developer (iOS)
+| id: nodeJsDeveloper, label: Node.js Developer
+| id: operationsManager, label: Operations Manager
+| id: productDesigner, label: Product Designer
+| id: productManager, label: Product Manager
+| id: projectAssistant, label: Project Assistant
+| id: projectManager, label: Project Manager
+| id: pythonDeveloper, label: Python Developer
+| id: qaEngineer, label: QA Engineer
+| id: reactDeveloper, label: React Developer
+| id: requirementsEngineer, label: Requirements Engineer
+| id: salesforceAdministrator, label: Salesforce Administrator
+| id: salesManager, label: Sales Manager
+| id: securityAdministrator, label: Security Administrator
+| id: SEOManager', label: SEO Manager
+| id: systemEngineer, label: System Engineer
+| id: technicalArchitect, label: Technical Architect
+| id: uiDesigner, label: UI Designer
+| id: uiDeveloper, label: UI Developer
+| id: uiUxDesigner, label: UI/UX Designer
+| id: usabilityengineer, label: Usability Engineer
+| id: userResearcher, label: User Researcher
+| id: uxDesigner, label: UX Designer
 
 | ImmigrationStatus |
 | --------------------------- |
