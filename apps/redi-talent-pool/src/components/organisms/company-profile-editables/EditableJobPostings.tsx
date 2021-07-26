@@ -1,7 +1,5 @@
 import {
   Button,
-  Caption,
-  FormDraggableAccordion,
   FormInput,
   FormSelect,
   FormTextArea,
@@ -9,46 +7,31 @@ import {
   Icon,
   Modal,
 } from '@talent-connect/shared-atomic-design-components'
-import {
-  TpCompanyProfile,
-  TpJobListing,
-  TpJobListingRecord,
-  TpJobseekerProfile,
-} from '@talent-connect/shared-types'
+import { TpJobListing, TpJobseekerProfile } from '@talent-connect/shared-types'
 import {
   desiredPositions,
   employmentTypes,
   topSkills,
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
+import React, { useCallback, useState } from 'react'
 import { Columns, Element } from 'react-bulma-components'
-import ReactMarkdown from 'react-markdown'
-import { Subject } from 'rxjs'
-import { v4 as uuidv4 } from 'uuid'
 import * as Yup from 'yup'
-import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
-import { Editable } from '../../molecules/Editable'
-import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
-import { ReactComponent as JobPlaceholderCard } from './job-placeholder-card.svg'
-import JobPlaceholderCardUrl from './job-placeholder-card.svg'
 import { useTpJobListingAllQuery } from '../../../react-query/use-tpjoblisting-all-query'
-import { JobListingCard } from '../JobListingCard'
-import { useTpJobListingOneOfCurrentUserQuery } from '../../../react-query/use-tpjoblisting-one-query'
-import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobListingUpdateMutation } from '../../../react-query/use-tpjoblisting-update-mutation'
-import { useTpJobListingDeleteMutation } from '../../../react-query/use-tpjoblisting-delete-mutation'
 import { useTpJobListingCreateMutation } from '../../../react-query/use-tpjoblisting-create-mutation'
+import { useTpJobListingDeleteMutation } from '../../../react-query/use-tpjoblisting-delete-mutation'
+import { useTpJobListingOneOfCurrentUserQuery } from '../../../react-query/use-tpjoblisting-one-query'
+import { useTpJobListingUpdateMutation } from '../../../react-query/use-tpjoblisting-update-mutation'
+import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
+import { JobListingCard } from '../JobListingCard'
+import JobPlaceholderCardUrl from './job-placeholder-card.svg'
 
 export function EditableJobPostings() {
   const { data: jobListings } = useTpJobListingAllQuery()
   const [isEditing, setIsEditing] = useState(false)
-  const [
-    idOfTpJobListingBeingEdited,
-    setIdOfTpJobListingBeingEdited,
-  ] = useState<string | null>(null) // null = "new"
+  const [idOfTpJobListingBeingEdited, setIdOfTpJobListingBeingEdited] =
+    useState<string | null>(null) // null = "new"
 
   const hasJobListings = jobListings?.length > 0
   const isEmpty = !hasJobListings
