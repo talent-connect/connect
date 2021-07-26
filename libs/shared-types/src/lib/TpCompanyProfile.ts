@@ -20,19 +20,4 @@ export type TpCompanyProfile = {
 
   createdAt: Date
   updatedAt: Date
-
-  jobListings?: TpJobListingRecord[]
-}
-
-export type TpJobListingRecord = {
-  uuid: string
-  title?: string
-  location?: string
-  summary?: string
-  idealTechnicalSkills?: string[]
-  relatesToPositions?: string[]
-  employmentType?: string
-  languageRequirements?: string
-  desiredExperience?: string
-  salaryRange?: string
 }
