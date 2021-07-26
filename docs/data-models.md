@@ -2,6 +2,19 @@
 
 > **TL;DR: this is an ER diagram of all CON/TP data models with companion notes. Use it to understand the "status quo" and to plan for how we'll migrate them into Salesforce.**
 
+ReDI Connect and ReDI Talent Pool are two sister platforms hosted in the same codebase. Their purposes:
+- ReDI Connect (CON): matchmaking between mentors and mentees for mentorship
+- ReDI Talent Pool (TP): matchmaking between jobseekers and companies for jobs
+
+CON and TP each have their own front-end. They communicate with a back-end that stores all data in a MongoDB database. 
+
+The "CON/TP Salesforce integration project" consists of in a nutshell:
+- understand the existing data models
+- examine how we can host the same data in the ReDI Salesforce
+- examine other functions that Salesforce can provide besides data persistence
+- examine how the existing admin panel functionality and epxerience can be replicated into Salesforce
+- establish a migration plan for how to migrate data into Salesforce
+
 To view the below bumbo-jumbo visually as a ER (Entity-Relationship) diagram, please [install this browser extension](https://chrome.google.com/webstore/detail/markdown-diagrams/pmoglnmodacnbbofbgcagndelmgaclel/related).
 
 ```mermaid
@@ -279,183 +292,53 @@ erDiagram
 | id: traineeship, label: Traineeship
 
 | GenericPosition |
-| --------------------------- |
-  {
-		id: 'administrativeAssistant',
-		label: 'Administrative Assistant',
-	},
-	{
-		id: 'agileScrumCoach',
-		label: 'Agile/SCRUM Coach',
-	},
-	{
-		id: 'azureSpecialist',
-		label: 'Azure Specialist',
-	},
-	{
-		id: 'backendDeveloper',
-		label: 'Backend Developer',
-	},
-	{
-		id: 'blockchainDeveloper',
-		label: 'Blockchain Developer',
-	},
-	{
-		id: 'businessAnalyst',
-		label: 'Business Analyst',
-	},
-	{
-		id: 'cloudEngineer',
-		label: 'Cloud Engineer'
-	},
-	{
-		id: 'cloudSpecialist',
-		label: 'Cloud Specialist'
-	},
-	{
-		id: 'dataAnalyst',
-		label: 'Data Analyst',
-	},
-	{
-		id: 'dataScientist',
-		label: 'Data Scientist',
-	},
-	{
-		id: 'devOpsSpecialist',
-		label: 'DevOps Specialist',
-	},
-	{
-		id: 'digitalMarketer',
-		label: 'Digital Marketer',
-	},
-	{
-		id: 'frontendDeveloper',
-		label: 'Frontend Developer',
-	},
-	{
-		id: 'fullstackDeveloper',
-		label: 'Fullstack Developer',
-	},
-	{
-		id: 'itAdministrator',
-		label: 'IT Administrator'
-	},
-	{
-		id: 'itSpecialist',
-		label: 'IT Specialist'
-	},
-	{
-		id: 'itSupportTechnician',
-		label: 'IT Support Technician'
-	},
-	{
-		id: 'javaDeveloper',
-		label: 'Java Developer',
-	},
-	{
-		id: 'linuxSystemAdministrator',
-		label: 'Linux System Administrator'
-	},
-	{
-		id: 'marketingAssistant',
-		label: 'Marketing Assistant'
-	},
-	{
-		id: 'mobileDeveloperAndroid',
-		label: 'Mobile Developer (Android)'
-	},
-	{
-		id: 'mobileDeveloperIos',
-		label: 'Mobile Developer (iOS)'
-	},
-	{
-		id: 'nodeJsDeveloper',
-		label: 'Node.js Developer',
-	},
-	{
-		id: 'operationsManager',
-		label: 'Operations Manager',
-	},
-	{
-		id: 'productDesigner',
-		label: 'Product Designer',
-	},
-	{
-		id: 'productManager',
-		label: 'Product Manager',
-	},
-	{
-		id: 'projectAssistant',
-		label: 'Project Assistant',
-	},
-	{
-		id: 'projectManager',
-		label: 'Project Manager',
-	},
-	{
-		id: 'pythonDeveloper',
-		label: 'Python Developer',
-	},
-	{
-		id: 'qaEngineer',
-		label: 'QA Engineer',
-	},
-	{
-		id: 'reactDeveloper',
-		label: 'React Developer',
-	},
-	{
-		id: 'requirementsEngineer',
-		label: 'Requirements Engineer',
-	},
-	{
-		id: 'salesforceAdministrator',
-		label: 'Salesforce Administrator',
-	},
-	{
-		id: 'salesManager',
-		label: 'Sales Manager',
-	},
-	{
-		id: 'securityAdministrator',
-		label: 'Security Administrator',
-	},
-	{
-		id: 'SEO Manager',
-		label: 'SEO Manager',
-	},
-	{
-		id: 'systemEngineer',
-		label: 'System Engineer',
-	},
-	{
-		id: 'technicalArchitect',
-		label: 'Technical Architect',
-	},
-	{
-		id: 'uiDesigner',
-		label: 'UI Designer',
-	},
-	{
-		id: 'uiDeveloper',
-		label: 'UI Developer',
-	},
-	{
-		id: 'uiUxDesigner',
-		label: 'UI/UX Designer',
-	},
-	{
-		id: 'usabilityengineer',
-		label: 'Usability Engineer',
-	},
-	{
-		id: 'userResearcher',
-		label: 'User Researcher',
-	},
-	{
+|------------------------ |
+| id:administrativeAssistant, label: Administrative Assistant,
+| id: agileScrumCoach, label: Agile/SCRUM Coach,
+| id: azureSpecialist, label: Azure Specialist,
+| id: backendDeveloper, label: Backend Developer,
+| id: blockchainDeveloper, label: Blockchain Developer,
+| id: businessAnalyst, label: Business Analyst,
+| id: cloudEngineer, label: Cloud Enginee'
+| id: cloudSpecialist, label: Cloud Specialis'
+| id: dataAnalyst, label: Data Analyst,
+| id: dataScientist, label: Data Scientist,
+| id: devOpsSpecialist, label: DevOps Specialist,
+| id: digitalMarketer, label: Digital Marketer,
+| id: frontendDeveloper, label: Frontend Developer,
+| id: fullstackDeveloper, label: Fullstack Developer,
+| id: itAdministrator, label: IT Administrato'
+| id: itSpecialist, label: IT Specialis'
+| id: itSupportTechnician, label: IT Support Technicia'
+| id: javaDeveloper, label: Java Developer,
+| id: linuxSystemAdministrator, label: Linux System Administrato'
+| id: marketingAssistant, label: Marketing Assistan'
+| id: mobileDeveloperAndroid, label: Mobile Developer (Android'
+| id: mobileDeveloperIos, label: Mobile Developer (iOS'
+| id: nodeJsDeveloper, label: Node.js Developer,
+| id: operationsManager, label: Operations Manager,
+| id: productDesigner, label: Product Designer,
+| id: productManager, label: Product Manager,
+| id: projectAssistant, label: Project Assistant,
+| id: projectManager, label: Project Manager,
+| id: pythonDeveloper, label: Python Developer,
+| id: qaEngineer, label: QA Engineer,
+| id: reactDeveloper, label: React Developer,
+| id: requirementsEngineer, label: Requirements Engineer,
+| id: salesforceAdministrator, label: Salesforce Administrator,
+| id: salesManager, label: Sales Manager,
+| id: securityAdministrator, label: Security Administrator,
+| id: SEOManager', label: SEO Manager,
+| id: systemEngineer, label: System Engineer,
+| id: technicalArchitect, label: Technical Architect,
+| id: uiDesigner, label: UI Designer,
+| id: uiDeveloper, label: UI Developer,
+| id: uiUxDesigner, label: UI/UX Designer,
+| id: usabilityengineer, label: Usability Engineer,
+| id: userResearcher, label: User Researcher,
 		id: 'uxDesigner',
 		label: 'UX Designer',
-	}
+	},
 
 | ImmigrationStatus |
 | --------------------------- |
@@ -557,4 +440,9 @@ erDiagram
 
 ## Ideas
 
-Move some ConProfile fields into some kind of "User settings" object?
+- Move some ConProfile fields into some kind of "User settings" object?
+
+## Can the following functionality be ported to Salesforce?
+
+- PDF generation?
+- Transactional email sending 
