@@ -436,18 +436,7 @@ export const reportProblemCategories: ReportProblemCategory[] = [
 ]
 
 export const mentoringSessionDurationOptions: number[] = [
-  15,
-  30,
-  45,
-  60,
-  75,
-  90,
-  105,
-  120,
-  135,
-  150,
-  165,
-  180,
+  15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165, 180,
 ]
 
 interface MenteeOccupationCategory {
@@ -468,6 +457,25 @@ export const menteeOccupationCategory_idToLabelMap = mapValues(
 )
 
 export const menteeCountCapacityOptions: number[] = [0, 1, 2]
+
+export const mentorDeclinesMentorshipReasonForDecliningOptions = [
+  {
+    id: 'notEnoughTimeNowToBeMentor',
+    label: "I don't have enough time right now to be a mentor",
+  },
+  { id: 'notRightExpertise', label: "I don't have the right expertise" },
+  {
+    id: 'anotherMentorMoreSuitable',
+    label: 'I think another mentor would be more suitable',
+  },
+  { id: 'other', label: 'Other' },
+]
+
+export const mentorDeclinesMentorshipReasonForDecliningOptionsIdToLabelMap =
+  mapValues(
+    keyBy(mentorDeclinesMentorshipReasonForDecliningOptions, 'id'),
+    'label'
+  )
 
 export const AWS_PROFILE_AVATARS_BUCKET_BASE_URL =
   'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/'

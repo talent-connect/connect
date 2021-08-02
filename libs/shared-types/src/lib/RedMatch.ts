@@ -5,6 +5,7 @@ export type RedMatch = {
   status:
     | 'applied'
     | 'invalidated-as-other-mentor-accepted'
+    | 'declined-by-mentor'
     | 'accepted'
     | 'completed'
     | 'cancelled'
@@ -14,6 +15,8 @@ export type RedMatch = {
   mentorReplyMessageOnAccept: string
   mentorMessageOnComplete: string
   hasMenteeDismissedMentorshipApplicationAcceptedNotification: boolean
+  ifDeclinedByMentor_chosenReasonForDecline: string
+  ifDeclinedByMentor_ifReasonIsOther_freeText: string
   mentor: RedProfile
   mentee: RedProfile
   mentorId: string
