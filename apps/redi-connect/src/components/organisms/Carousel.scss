@@ -1,7 +1,11 @@
 @import '~bulma/sass/utilities/_all';
 @import '_variables.scss';
-@import '~slick-carousel/slick/slick';
-@import '~slick-carousel/slick/slick-theme';
+
+// TODO: had to disable these imports + entire carousel on 21 July 2021. We upgraded
+// to latest Nx version and relative imports done INSIDE of slick-carousel broke.
+
+// @import '~slick-carousel/slick/slick';
+// @import '~slick-carousel/slick/slick-theme';
 
 .slick-dots li {
   width: 0.75rem;
