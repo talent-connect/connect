@@ -178,6 +178,7 @@ erDiagram
       string id
       string title
       string location
+      string whereToApplyForJob
       string summary
       JobseekerSkill_ArrayOfIds idealTechnicalSkills
       GenericPosition_ArrayOfIds relatesToPositions
