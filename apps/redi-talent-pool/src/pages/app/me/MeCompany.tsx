@@ -1,5 +1,7 @@
-import React from 'react'
-import { Columns } from 'react-bulma-components'
+import React, { useCallback, useState } from 'react'
+import { Tooltip } from '@material-ui/core'
+import { Button, Icon } from '@talent-connect/shared-atomic-design-components'
+import { Columns, Notification, Content } from 'react-bulma-components'
 import { EditableAbout } from '../../../components/organisms/company-profile-editables/EditableAbout'
 import { EditableContact } from '../../../components/organisms/company-profile-editables/EditableContact'
 import { EditableDetails } from '../../../components/organisms/company-profile-editables/EditableDetails'
@@ -7,23 +9,104 @@ import { EditableNamePhotoLocation } from '../../../components/organisms/company
 import { EditableJobPostings } from '../../../components/organisms/company-profile-editables/EditableJobPostings'
 import { LoggedIn } from '../../../components/templates'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
+import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
+import { TpCompanyProfile, TpCompanyProfileState } from '@talent-connect/shared-types'
+import { OnboardingSteps } from './TpCompanyProfileOnboardingSteps';
+
+function isProfileComplete(profile: Partial<TpCompanyProfile>): boolean {
+  const requiredSectionsComplete = [
+    EditableNamePhotoLocation.isSectionFilled,
+    EditableContact.isSectionFilled,
+    EditableDetails.isWebsiteSectionFilled
+  ]
+    .map((checkerFn) => checkerFn(profile))
+    .every((p) => p)
+
+  return requiredSectionsComplete
+}
+
+function SendProfileForReviewButton() {
+  const { data: profile } = useTpCompanyProfileQuery()
+  const mutation = useTpCompanyProfileUpdateMutation()
+
+  const enabled =
+    profile?.state === 'drafting-profile'
+  // && isProfileComplete(profile)
+
+  const onClick = useCallback(() => {
+    if (!window.confirm('Would you like to submit your profile for review?'))
+      return
+
+    mutation.mutate({ ...profile, state: 'submitted-for-review' })
+  }, [mutation, profile])
+
+  if (enabled) {
+    return <Button onClick={onClick}>Send profile to review</Button>
+  } else {
+    return (
+      <Tooltip title="You need to complete your profile before you can send it for review">
+        <span>
+          <Button disabled style={{ pointerEvents: 'none' }}>
+            Send profile to review
+          </Button>
+        </span>
+      </Tooltip>
+    )
+  }
+}
+
+const CallToActionButton = ({
+  profile,
+}: {
+  profile: Partial<TpCompanyProfile>
+}) =>
+  profile &&
+    profile.state &&
+    [
+      TpCompanyProfileState['drafting-profile'],
+      TpCompanyProfileState['submitted-for-review'],
+    ].includes(profile.state as any) ? (
+    <SendProfileForReviewButton />
+  ) : null
 
 export function MeCompany() {
   const { data: profile } = useTpCompanyProfileQuery()
+  const [isJobPostingFormOpen, setIsJobPostingFormOpen] = useState(false)
 
   return (
     <LoggedIn>
+      {profile?.state === 'profile-approved' ? (
+        <Notification className="account-not-active double-bs">
+          <Icon
+            className="account-not-active__icon"
+            icon="search"
+            size="large"
+            space="right"
+          />
+          <Content size="small">
+            <strong>Great, your profile is approved!</strong> You can now{' '}
+            <span onClick={() => setIsJobPostingFormOpen(true)} style={{ textDecoration: 'underline', fontWeight: 800, cursor: 'pointer' }}>create a job posting</span> or{' '}
+            <a href="/app/browse">browse our talent pool</a>!
+          </Content>
+        </Notification>
+      ) : null}
       <Columns className="is-6 is-variable">
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'three-fifths' }}>
           <EditableNamePhotoLocation profile={profile} />
           <EditableAbout profile={profile} />
         </Columns.Column>
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'two-fifths' }}>
+          <div className="is-hidden-mobile">
+            <div style={{ textAlign: 'right', marginBottom: '1.5rem' }}>
+              <CallToActionButton profile={profile} />
+            </div>
+            <OnboardingSteps profile={profile} isProfileComplete={isProfileComplete(profile)} />
+          </div>
           <EditableDetails profile={profile} />
           <EditableContact profile={profile} />
         </Columns.Column>
       </Columns>
-      <EditableJobPostings />
+      <EditableJobPostings isJobPostingFormOpen={isJobPostingFormOpen} setIsJobPostingFormOpen={setIsJobPostingFormOpen} />
     </LoggedIn>
   )
 }

@@ -174,11 +174,9 @@ module.exports = function (TpCompanyProfile) {
       loopbackModelMethodToObservable(
         tpCompanyProfileInst,
         'updateAttributes'
-      )(
-        currentUserStateToPostReviewUpdates[acceptDecline][
-          tpCompanyProfileInst.toJSON().state
-        ]
-      )
+      )({
+        state: 'profile-approved',
+      })
     )
     const createRoleMapping = switchMap((tpCompanyProfileInst) => {
       const { redUserId } = tpCompanyProfileInst.toJSON()
@@ -214,3 +212,9 @@ module.exports = function (TpCompanyProfile) {
       )
   }
 }
+
+const loopbackModelMethodToObservable =
+  (loopbackModel, modelMethod) => (methodParameter) =>
+    Rx.bindNodeCallback(loopbackModel[modelMethod].bind(loopbackModel))(
+      methodParameter
+    )

@@ -86,6 +86,7 @@ import { ApproveButton } from './components/ApproveButton'
 import { DeclineButton } from './components/DeclineButton'
 import { TpJobseekerProfileApproveButton } from './components/TpJobseekerProfileApproveButton'
 import { TpJobseekerProfileDeclineButton } from './components/TpJobseekerProfileDeclineButton'
+import { TpCompanyProfileApproveButton } from './components/TpCompanyProfileApproveButton'
 
 import { API_URL } from './config'
 import { TpJobseekerProfileState } from '@talent-connect/shared-types'
@@ -1563,6 +1564,17 @@ const TpJobseekerProfileEditActions = (props) => {
   )
 }
 
+const TpCompanyProfileEditActions = (props) => {
+  if (props?.data?.state !== 'submitted-for-review') return null
+
+  return (
+    <CardActions>
+      Company profile is pending. Please{' '}
+      <TpCompanyProfileApproveButton {...props} />
+    </CardActions>
+  )
+}
+
 const TpCompanyProfileList = (props) => {
   return (
     <>
@@ -1672,7 +1684,7 @@ const TpCompanyProfileShow = (props) => (
 )
 
 const TpCompanyProfileEdit = (props) => (
-  <Edit {...props}>
+  <Edit {...props} actions={<TpCompanyProfileEditActions />}>
     <TabbedForm>
       <FormTab label="Profile">
         <Avatar />

@@ -93,6 +93,8 @@ export function EditableDetails({ profile, disableEditing }: Props) {
   )
 }
 
+EditableDetails.isWebsiteSectionFilled = (profile: Partial<TpCompanyProfile>) =>
+  profile?.website
 EditableDetails.isSectionFilled = (profile: Partial<TpCompanyProfile>) =>
   profile?.industry || profile?.website || profile?.linkedInUrl
 EditableDetails.isSectionEmpty = (profile: Partial<TpCompanyProfile>) =>

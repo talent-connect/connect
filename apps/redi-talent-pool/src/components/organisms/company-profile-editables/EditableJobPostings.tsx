@@ -27,7 +27,7 @@ import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder
 import { JobListingCard } from '../JobListingCard'
 import JobPlaceholderCardUrl from './job-placeholder-card.svg'
 
-export function EditableJobPostings() {
+export function EditableJobPostings({ isJobPostingFormOpen, setIsJobPostingFormOpen }) {
   const { data: jobListings } = useTpJobListingAllQuery()
   const [isEditing, setIsEditing] = useState(false)
   const [idOfTpJobListingBeingEdited, setIdOfTpJobListingBeingEdited] =
@@ -44,6 +44,18 @@ export function EditableJobPostings() {
     setIdOfTpJobListingBeingEdited(id)
     setIsEditing(true)
   }, [])
+
+  useEffect(() => {
+    if (isJobPostingFormOpen) {
+      setIsEditing(true)
+    }
+  }, [isJobPostingFormOpen])
+
+  useEffect(() => {
+    if (!isEditing) {
+      setIsJobPostingFormOpen(false)
+    }
+  }, [isEditing, setIsJobPostingFormOpen])
 
   return (
     <>
