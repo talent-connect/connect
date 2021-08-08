@@ -1206,11 +1206,14 @@ const TpJobseekerProfileListFilters = (props) => (
 function tpJobseekerProfileListExporter(profiles, fetchRelatedRecords) {
   const data = profiles.map((profile) => {
     let { hrSummit2021JobFairCompanyJobPreferences } = profile
-    hrSummit2021JobFairCompanyJobPreferences = hrSummit2021JobFairCompanyJobPreferences?.map(
-      ({ jobPosition, jobId, companyName }) => {
-        return `${jobPosition}${jobId ? ` (${jobId})` : ''} --- ${companyName}`
-      }
-    )
+    hrSummit2021JobFairCompanyJobPreferences =
+      hrSummit2021JobFairCompanyJobPreferences?.map(
+        ({ jobPosition, jobId, companyName }) => {
+          return `${jobPosition}${
+            jobId ? ` (${jobId})` : ''
+          } --- ${companyName}`
+        }
+      )
     delete profile.hrSummit2021JobFairCompanyJobPreferences
 
     const {
@@ -1562,16 +1565,37 @@ const TpJobseekerProfileEditActions = (props) => {
 
 const TpCompanyProfileList = (props) => {
   return (
-    <List {...props} pagination={<AllModelsPagination />}>
-      <Datagrid>
-        <TextField source="companyName" />
-        <TextField source="firstName" />
-        <TextField source="lastName" />
-        <RecordCreatedAt />
-        <ShowButton />
-        <EditButton />
-      </Datagrid>
-    </List>
+    <>
+      <List {...props} pagination={<AllModelsPagination />}>
+        <Datagrid>
+          <TextField source="companyName" />
+          <TextField source="firstName" />
+          <TextField source="lastName" />
+          <TextField source="state" />
+          <RecordCreatedAt />
+          <ShowButton />
+          <EditButton />
+        </Datagrid>
+      </List>
+      <p>
+        A quick note regard <strong>state</strong>:
+      </p>
+      <ol>
+        <li style={{ marginBottom: '12px' }}>
+          <strong>drafting-profile</strong>: the very first state. The company
+          has just signed up and his drafting their profile.
+        </li>
+        <li style={{ marginBottom: '12px' }}>
+          <strong>submitted-for-review</strong>: the company has provided at
+          least as much information as Talent Pool requires. Their profile has
+          been submitted to ReDI for review. Click Show &gt; Edit to find two
+          buttons to Approve/Decline their profile.
+        </li>
+        <li style={{ marginBottom: '12px' }}>
+          <strong>profile-approved</strong>: the company's profile is approved
+        </li>
+      </ol>
+    </>
   )
 }
 

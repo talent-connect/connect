@@ -19,7 +19,8 @@ const addFullNamePropertyForAdminSearch = (ctx) => {
 
   if (firstName || lastName) {
     const merged = `${firstName ? firstName + ' ' : ''}${lastName || ''}`
-    thingToUpdate.loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName = merged
+    thingToUpdate.loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName =
+      merged
   }
 }
 
@@ -142,4 +143,74 @@ module.exports = function (TpCompanyProfile) {
       next()
     })
   })
+
+  TpCompanyProfile.pendingReviewDoAccept = async function (
+    data,
+    options,
+    callback
+  ) {
+    const { tpCompanyProfileId } = data
+
+    const companyRole = await app.models.Role.findOne({
+      where: { name: 'company' },
+    })
+
+    const findTpCompanyProfile = switchMap(({ tpCompanyProfileId }) =>
+      loopbackModelMethodToObservable(
+        TpCompanyProfile,
+        'findById'
+      )(tpCompanyProfileId)
+    )
+
+    const validateCurrentState = switchMap((tpCompanyProfileInst) => {
+      const state = tpCompanyProfileInst.toJSON().state
+      if (state === 'submitted-for-review') {
+        return of(tpCompanyProfileInst)
+      } else {
+        throw new Error('Invalid current state (is not "submitted-for-review")')
+      }
+    })
+    const setNewTpCompanyProfileProperties = switchMap((tpCompanyProfileInst) =>
+      loopbackModelMethodToObservable(
+        tpCompanyProfileInst,
+        'updateAttributes'
+      )(
+        currentUserStateToPostReviewUpdates[acceptDecline][
+          tpCompanyProfileInst.toJSON().state
+        ]
+      )
+    )
+    const createRoleMapping = switchMap((tpCompanyProfileInst) => {
+      const { redUserId } = tpCompanyProfileInst.toJSON()
+      companyRole.principals.create({
+        principalType: app.models.RoleMapping.USER,
+        principalId: redUserId,
+      })
+      return of(tpCompanyProfileInst)
+    })
+
+    const sendEmailUserReviewedAccepted = switchMap((tpCompanyProfileInst) => {
+      const { contactEmail, firstName } = tpCompanyProfileInst.toJSON()
+
+      sendTpCompanyProfileApproved({
+        recipient: contactEmail,
+        firstName,
+      })
+    })
+
+    Rx.of({ tpCompanyProfileId })
+      .pipe(
+        findTpCompanyProfile,
+        validateCurrentState,
+        setNewTpCompanyProfileProperties,
+        createRoleMapping
+        // sendEmailUserReviewedAccepted
+      )
+      .subscribe(
+        (tpCompanyProfileInst) => {
+          callback(null, tpCompanyProfileInst)
+        },
+        (err) => console.log(err)
+      )
+  }
 }
