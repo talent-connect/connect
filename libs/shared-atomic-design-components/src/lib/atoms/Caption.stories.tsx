@@ -1,16 +1,16 @@
 import { Meta } from '@storybook/react/types-6-0'
-
 import { storybookTemplate } from '../helpers/StorybookTemplate'
 
-import Caption from './Caption'
+import CaptionComponent from './Caption'
+import 'bulma/css/bulma.min.css'
 
 export default {
-  title: 'atoms',
-  component: Caption,
+  title: 'atoms/Caption',
+  component: CaptionComponent,
 } as Meta
 
-const template = storybookTemplate(Caption)
+const template = storybookTemplate(CaptionComponent)
 
-export const CaptionHeading = template({
+export const Caption = template({
   children: 'Hello from Talent Pool',
 })

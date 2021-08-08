@@ -2,14 +2,14 @@ import { Meta } from '@storybook/react/types-6-0'
 
 import { storybookTemplate } from '../helpers/StorybookTemplate'
 
-import Button from './Button'
+import ButtonComponent from './Button'
 
 export default {
   title: 'atoms/Button',
-  component: Button,
+  component: ButtonComponent,
 } as Meta
 
-const template = storybookTemplate(Button)
+const template = storybookTemplate(ButtonComponent)
 
 export const Primary = template({
   children: 'Click Me!',
