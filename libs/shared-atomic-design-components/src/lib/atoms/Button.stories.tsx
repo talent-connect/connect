@@ -5,7 +5,7 @@ import { storybookTemplate } from '../helpers/StorybookTemplate'
 import Button from './Button'
 
 export default {
-  title: 'Button',
+  title: 'atoms/Button',
   component: Button,
 } as Meta
 
@@ -13,4 +13,9 @@ const template = storybookTemplate(Button)
 
 export const Primary = template({
   children: 'Click Me!',
+  fullWidth: false,
+  size: 'medium',
+  disabled: false,
+  separator: false,
+  simple: false,
 })
