@@ -208,6 +208,43 @@ erDiagram
 
 ```
 
+## ConProfile user states and emails
+
+```mermaid
+stateDiagram
+  mentorSignedUp : Mentor signed up
+  note right of mentorSignedUp
+    Email verification email sent to mentor
+  end note
+
+  mentorEmailVerified : Mentor email verified
+
+  [*] --> mentorSignedUp : Mentor signs up
+  mentorSignedUp --> mentorEmailVerified: Mentor clicks validation link
+```
+
+Yazan
+
+state if_state <<choice>> state
+
+  mentorPending : Mentor signed up pending review
+  menteePending : Mentee signed up pending review
+  mentor : Approved mentor
+  mentee : Approved mentee
+
+  [*] --> Still
+  Still --> [*]
+
+  if_state 
+
+  if_state --> mentor : Mentor approved by Miriam
+  if_state --> mentee : Mentor approved by Paulina
+
+  Still --> Moving
+  Moving --> Still
+  Moving --> Crash
+  Crash --> [*]
+
 ## Static data lists
 (...used in dropdowns, checkboxes, blabla)
 
