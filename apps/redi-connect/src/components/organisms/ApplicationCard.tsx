@@ -10,6 +10,7 @@ import { useHistory } from 'react-router-dom'
 
 import './ApplicationCard.scss'
 import { rediLocationNames } from '@talent-connect/shared-config'
+import DeclineMentorshipButton from './DeclineMentorshipButton'
 
 interface Props {
   application: RedMatch & { createdAt?: string }
@@ -120,6 +121,7 @@ const ApplicationCard = ({ application }: Props) => {
             <Content>{application.expectationText}</Content>
           </>
         )}
+        <DeclineMentorshipButton match={application} />
       </div>
     </>
   )

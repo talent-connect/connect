@@ -17,6 +17,7 @@ export type RedMatch = {
   hasMenteeDismissedMentorshipApplicationAcceptedNotification: boolean
   ifDeclinedByMentor_chosenReasonForDecline: string
   ifDeclinedByMentor_ifReasonIsOther_freeText: string
+  ifDeclinedByMentor_optionalMessageToMentee: string
   mentor: RedProfile
   mentee: RedProfile
   mentorId: string

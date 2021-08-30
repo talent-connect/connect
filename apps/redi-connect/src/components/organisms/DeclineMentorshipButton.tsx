@@ -7,12 +7,15 @@ import { Content } from 'react-bulma-components'
 import {
   FormTextArea,
   Button,
+  FormSelect,
+  FormInput,
 } from '@talent-connect/shared-atomic-design-components'
 import { Modal } from '@talent-connect/shared-atomic-design-components'
 import { matchesAcceptMentorshipStart } from '../../redux/matches/actions'
 import { RedMatch } from '@talent-connect/shared-types'
+import { mentorDeclinesMentorshipReasonForDecliningOptions } from '@talent-connect/shared-config'
 
-interface ConfirmMentorshipProps {
+interface DeclineMentorshipButtonProps {
   match: RedMatch
   menteeName?: string
   hasReachedMenteeLimit: boolean
@@ -22,12 +25,16 @@ interface ConfirmMentorshipProps {
   ) => void
 }
 
-interface ConfirmMentorshipFormValues {
-  mentorReplyMessageOnAccept: string
+interface DeclineMentorshipFormValues {
+  ifDeclinedByMentor_chosenReasonForDecline: string
+  ifDeclinedByMentor_ifReasonIsOther_freeText: string
+  ifDeclinedByMentor_optionalMessageToMentee: string
 }
 
-const initialValues = {
-  mentorReplyMessageOnAccept: '',
+const initialValues: DeclineMentorshipFormValues = {
+  ifDeclinedByMentor_chosenReasonForDecline: '',
+  ifDeclinedByMentor_ifReasonIsOther_freeText: '',
+  ifDeclinedByMentor_optionalMessageToMentee: '',
 }
 
 const validationSchema = Yup.object({
@@ -36,12 +43,10 @@ const validationSchema = Yup.object({
 
 // TODO: This throws a TS error: { dispatch, matchId }: ConnectButtonProps
 // What to replace with instead of below hack?
-const ConfirmMentorship = ({
+const DeclineMentorshipButton = ({
   match,
-  menteeName,
-  hasReachedMenteeLimit,
   matchesAcceptMentorshipStart,
-}: ConfirmMentorshipProps) => {
+}: DeclineMentorshipButtonProps) => {
   const [isModalActive, setModalActive] = useState(false)
   const history = useHistory()
 
@@ -58,7 +63,7 @@ const ConfirmMentorship = ({
   //     <>{children}</>
   //   )
 
-  const submitForm = async (values: ConfirmMentorshipFormValues) => {
+  const submitForm = async (values: DeclineMentorshipFormValues) => {
     try {
       matchesAcceptMentorshipStart(match.id, values.mentorReplyMessageOnAccept)
       setModalActive(false)
@@ -82,7 +87,7 @@ const ConfirmMentorship = ({
         onClick={() => setModalActive(true)}
         disabled={hasReachedMenteeLimit}
       >
-        Accept
+        Decline
       </Button>
       <Modal
         show={isModalActive}
@@ -93,17 +98,29 @@ const ConfirmMentorship = ({
           <form>
             <Content>
               <p>
-                Please write a few welcoming words to your future mentee and
-                give some information on your first meeting. (write at least 250
-                characters)
+                Please let the mentee know why you cannot accept their
+                mentorship application at this time:
               </p>
             </Content>
+            <FormSelect
+              name="ifDeclinedByMentor_chosenReasonForDecline"
+              label=""
+              items={formDeclineOptions}
+              {...formik}
+            />
+            {formik.values.ifDeclinedByMentor_chosenReasonForDecline ===
+            'other' ? (
+              <FormInput
+                name="ifDeclinedByMentor_ifReasonIsOther_freeText"
+                label="You chose other. Please specify:"
+                {...formik}
+              />
+            ) : null}
             <FormTextArea
-              name="mentorReplyMessageOnAccept"
+              name="ifDeclinedByMentor_optionalMessageToMentee"
               rows={4}
-              placeholder={`Dear ${menteeName && menteeName}...`}
-              minChar={250}
-              maxChar={600}
+              label="Would you like to send the mentee a short message with your cancellation?"
+              placeholder={`Hi there, thanks for sending me a mentorship application. Unfortunately I am declining since ...`}
               {...formik}
             />
           </form>
@@ -114,7 +131,7 @@ const ConfirmMentorship = ({
             disabled={!isFormSubmittable}
             onClick={() => formik.handleSubmit()}
           >
-            Accept mentorship request
+            Decline mentorship
           </Button>
         </Modal.Foot>
       </Modal>
@@ -122,6 +139,13 @@ const ConfirmMentorship = ({
   )
 }
 
+const formDeclineOptions =
+  mentorDeclinesMentorshipReasonForDecliningOptions.map((item) => ({
+    value: item.id,
+    label: item.label,
+  }))
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const mapDispatchToProps = (dispatch: any) => ({
   matchesAcceptMentorshipStart: (
     redMatchId: string,
@@ -132,4 +156,4 @@ const mapDispatchToProps = (dispatch: any) => ({
     ),
 })
 
-export default connect(null, mapDispatchToProps)(ConfirmMentorship)
+export default connect(null, mapDispatchToProps)(DeclineMentorshipButton)
