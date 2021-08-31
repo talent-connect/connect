@@ -144,72 +144,76 @@ module.exports = function (TpCompanyProfile) {
     })
   })
 
-  TpCompanyProfile.pendingReviewDoAccept = async function (
-    data,
-    options,
-    callback
-  ) {
+  TpCompanyProfile.pendingReviewDoAccept = function (data, options, callback) {
     const { tpCompanyProfileId } = data
 
-    const companyRole = await app.models.Role.findOne({
-      where: { name: 'company' },
-    })
+    app.models.Role.findOne(
+      {
+        where: { name: 'company' },
+      },
+      (err, companyRole) => {
+        const findTpCompanyProfile = switchMap(({ tpCompanyProfileId }) =>
+          loopbackModelMethodToObservable(
+            TpCompanyProfile,
+            'findById'
+          )(tpCompanyProfileId)
+        )
 
-    const findTpCompanyProfile = switchMap(({ tpCompanyProfileId }) =>
-      loopbackModelMethodToObservable(
-        TpCompanyProfile,
-        'findById'
-      )(tpCompanyProfileId)
-    )
+        const validateCurrentState = switchMap((tpCompanyProfileInst) => {
+          const state = tpCompanyProfileInst.toJSON().state
+          if (state === 'submitted-for-review') {
+            return of(tpCompanyProfileInst)
+          } else {
+            throw new Error(
+              'Invalid current state (is not "submitted-for-review")'
+            )
+          }
+        })
+        const setNewTpCompanyProfileProperties = switchMap(
+          (tpCompanyProfileInst) =>
+            loopbackModelMethodToObservable(
+              tpCompanyProfileInst,
+              'updateAttributes'
+            )({
+              state: 'profile-approved',
+            })
+        )
+        const createRoleMapping = switchMap((tpCompanyProfileInst) => {
+          const { redUserId } = tpCompanyProfileInst.toJSON()
+          companyRole.principals.create({
+            principalType: app.models.RoleMapping.USER,
+            principalId: redUserId,
+          })
+          return of(tpCompanyProfileInst)
+        })
 
-    const validateCurrentState = switchMap((tpCompanyProfileInst) => {
-      const state = tpCompanyProfileInst.toJSON().state
-      if (state === 'submitted-for-review') {
-        return of(tpCompanyProfileInst)
-      } else {
-        throw new Error('Invalid current state (is not "submitted-for-review")')
+        const sendEmailUserReviewedAccepted = switchMap(
+          (tpCompanyProfileInst) => {
+            const { contactEmail, firstName } = tpCompanyProfileInst.toJSON()
+
+            sendTpCompanyProfileApproved({
+              recipient: contactEmail,
+              firstName,
+            })
+          }
+        )
+
+        Rx.of({ tpCompanyProfileId })
+          .pipe(
+            findTpCompanyProfile,
+            validateCurrentState,
+            setNewTpCompanyProfileProperties,
+            createRoleMapping
+            // sendEmailUserReviewedAccepted
+          )
+          .subscribe(
+            (tpCompanyProfileInst) => {
+              callback(null, tpCompanyProfileInst)
+            },
+            (err) => console.log(err)
+          )
       }
-    })
-    const setNewTpCompanyProfileProperties = switchMap((tpCompanyProfileInst) =>
-      loopbackModelMethodToObservable(
-        tpCompanyProfileInst,
-        'updateAttributes'
-      )({
-        state: 'profile-approved',
-      })
     )
-    const createRoleMapping = switchMap((tpCompanyProfileInst) => {
-      const { redUserId } = tpCompanyProfileInst.toJSON()
-      companyRole.principals.create({
-        principalType: app.models.RoleMapping.USER,
-        principalId: redUserId,
-      })
-      return of(tpCompanyProfileInst)
-    })
-
-    const sendEmailUserReviewedAccepted = switchMap((tpCompanyProfileInst) => {
-      const { contactEmail, firstName } = tpCompanyProfileInst.toJSON()
-
-      sendTpCompanyProfileApproved({
-        recipient: contactEmail,
-        firstName,
-      })
-    })
-
-    Rx.of({ tpCompanyProfileId })
-      .pipe(
-        findTpCompanyProfile,
-        validateCurrentState,
-        setNewTpCompanyProfileProperties,
-        createRoleMapping
-        // sendEmailUserReviewedAccepted
-      )
-      .subscribe(
-        (tpCompanyProfileInst) => {
-          callback(null, tpCompanyProfileInst)
-        },
-        (err) => console.log(err)
-      )
   }
 }
 
