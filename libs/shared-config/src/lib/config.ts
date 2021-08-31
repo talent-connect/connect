@@ -350,14 +350,19 @@ export const courses: (Course & { location: RediLocation })[] = [
     location: 'berlin',
   },
   {
+    id: 'intermediatePython',
+    label: 'Intermediate Python',
+    location: 'berlin',
+  },
+  {
     id: 'salesforceFundamentals',
     label: 'Salesforce Fundamentals',
     location: 'berlin',
   },
-  { id: 'azureFundamentals', label: 'Azure Fundamentals', location: 'berlin' },
+  { id: 'iot', label: 'IoT', location: 'berlin' },
   {
-    id: 'webDesignFundamentals',
-    label: 'Web Design Fundamentals',
+    id: 'webDesign',
+    label: 'Web Design',
     location: 'berlin',
   },
   { id: 'uiUxDesign', label: 'UX/UI Design', location: 'berlin' },
@@ -366,35 +371,35 @@ export const courses: (Course & { location: RediLocation })[] = [
     label: `I'm a ReDI School alumni (I took a course before)`,
     location: 'berlin',
   },
+
   {
-    id: 'munich_dcp_spring2021_introductionToComputerScience',
-    label: 'Introduction to computer science',
+    id: 'munich_introComputerScience',
+    label: `Introduction to Computer Science`,
     location: 'munich',
   },
   {
-    id: 'munich_dcp_spring2021_pythonIntermediate',
-    label: 'Python Intermediate',
+    id: 'munich_pythonIntermediate',
+    label: `Python Intermediate`,
     location: 'munich',
   },
   {
-    id: 'munich_dcp_spring2021_frontEndDevelopment',
-    label: 'Front-end development',
-    location: 'munich',
-  },
-  { id: 'munich_dcp_spring2021_react', label: 'React', location: 'munich' },
-  {
-    id: 'munich_dcp_spring2021_backendDevelopment',
-    label: 'Back-end development',
+    id: 'munich_dataScience',
+    label: `Data Science`,
     location: 'munich',
   },
   {
-    id: 'munich_dcp_spring2021_dataScience',
-    label: 'Data Science',
+    id: 'munich_frontendDevelopment',
+    label: `Frontend Development`,
     location: 'munich',
   },
   {
-    id: 'munich_dcp_spring2021_cloudComputing',
-    label: 'Cloud computing',
+    id: 'munich_cloudComputing',
+    label: `Cloud Computing`,
+    location: 'munich',
+  },
+  {
+    id: 'munich_uxUiDesign',
+    label: `UX/UI Design`,
     location: 'munich',
   },
   {
@@ -402,52 +407,52 @@ export const courses: (Course & { location: RediLocation })[] = [
     label: `I'm a ReDI School alumni (I took a course before)`,
     location: 'munich',
   },
+
+  {
+    id: 'nrw_pythonIntroduction',
+    label: 'Introduction to Python',
+    location: 'nrw',
+  },
+  {
+    id: 'nrw_dataAnalytics',
+    label: 'Data Analytics',
+    location: 'nrw',
+  },
+  {
+    id: 'nrw_htmlCss',
+    label: 'HTML & CSS',
+    location: 'nrw',
+  },
+  {
+    id: 'nrw_javascript',
+    label: 'JavaScript',
+    location: 'nrw',
+  },
+  {
+    id: 'nrw_infrastructureBasics',
+    label: 'Infrastructure Basics',
+    location: 'nrw',
+  },
+  {
+    id: 'nrw_cloudComputing',
+    label: 'Cloud computing',
+    location: 'nrw',
+  },
   {
     id: 'nrw_webDesignFundamentals',
     label: 'Web Design Fundamentals',
     location: 'nrw',
   },
-  { id: 'nrw_htmlCsss', label: 'HTML & CSS', location: 'nrw' },
   {
-    id: 'nrw_introductionToPython',
-    label: 'Introduction to Python',
-    location: 'nrw',
-  },
-  {
-    id: 'nrw_networkingFundamentals',
-    label: 'Networking Fundamentals',
+    id: 'nrw_uxDesign',
+    label: 'UX Design',
     location: 'nrw',
   },
   {
     id: 'nrw_alumni',
-    label: "I'm a ReDI School alumni (I took a course before)",
+    label: `I'm a ReDI School alumni (I took a course before)`,
     location: 'nrw',
   },
-]
-
-export const courseIdToLabelMap = mapValues(keyBy(courses, 'id'), 'label')
-interface ReportProblemCategory {
-  id: string
-  label: string
-}
-
-export const reportProblemCategories: ReportProblemCategory[] = [
-  { id: 'wantToQuit', label: 'I want to quit' },
-]
-
-export const mentoringSessionDurationOptions: number[] = [
-  15,
-  30,
-  45,
-  60,
-  75,
-  90,
-  105,
-  120,
-  135,
-  150,
-  165,
-  180,
 ]
 
 interface MenteeOccupationCategory {
