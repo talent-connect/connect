@@ -460,6 +460,20 @@ export const courses: (Course & { location: RediLocation })[] = [
   },
 ]
 
+export const courseIdToLabelMap = mapValues(keyBy(courses, 'id'), 'label')
+interface ReportProblemCategory {
+  id: string
+  label: string
+}
+
+export const reportProblemCategories: ReportProblemCategory[] = [
+  { id: 'wantToQuit', label: 'I want to quit' },
+]
+
+export const mentoringSessionDurationOptions: number[] = [
+  15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165, 180,
+]
+
 interface MenteeOccupationCategory {
   id: string
   label: string
