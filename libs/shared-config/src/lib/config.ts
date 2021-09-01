@@ -359,6 +359,11 @@ export const courses: (Course & { location: RediLocation })[] = [
     label: 'Salesforce Fundamentals',
     location: 'berlin',
   },
+  {
+    id: 'cloudComputing',
+    label: 'Cloud computing',
+    location: 'berlin',
+  },
   { id: 'iot', label: 'IoT', location: 'berlin' },
   {
     id: 'webDesign',
