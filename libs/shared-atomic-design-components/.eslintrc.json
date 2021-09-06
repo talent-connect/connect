@@ -4,9 +4,6 @@
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
-      "parserOptions": {
-        "project": ["libs/shared-atomic-design-components/tsconfig.*?.json"]
-      },
       "rules": {}
     },
     {

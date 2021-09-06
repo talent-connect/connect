@@ -29,11 +29,11 @@ function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
 }
 
 interface Props {
+  profile: Partial<TpJobseekerProfile>
   triggerModalSignal?: Subject<void>
 }
 
-export function EditableJobPreferences({ triggerModalSignal }: Props) {
-  const { data: profile } = useTpJobseekerProfileQuery()
+export function EditableJobPreferences({ profile, triggerModalSignal }: Props) {
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
@@ -54,9 +54,10 @@ export function EditableJobPreferences({ triggerModalSignal }: Props) {
         isEmpty ? (
           <EmptySectionPlaceholder
             height="slim"
-            text="Add your job preferences"
             onClick={() => setIsEditing(true)}
-          />
+          >
+            Add your job preferences
+          </EmptySectionPlaceholder>
         ) : (
           <Content>
             {profile?.hrSummit2021JobFairCompanyJobPreferences?.map(
@@ -146,7 +147,10 @@ function ModalForm({
     onSubmit,
     validateOnMount: true,
   })
-  useEffect(() => setIsFormDirty(formik.dirty), [formik.dirty, setIsFormDirty])
+  useEffect(() => setIsFormDirty?.(formik.dirty), [
+    formik.dirty,
+    setIsFormDirty,
+  ])
 
   const onDragEnd = useCallback(
     (result: any) => {

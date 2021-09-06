@@ -2,16 +2,15 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { Content, Columns, Tag, Form } from 'react-bulma-components'
 import { debounce } from 'lodash'
 import {
-  FormInput,
   Heading,
   Icon,
+  SearchField,
 } from '@talent-connect/shared-atomic-design-components'
 import { FilterDropdown } from '@talent-connect/shared-atomic-design-components'
 import { ProfileCard } from '../../../components/organisms'
 import { useLoading } from '../../../hooks/WithLoading'
 import { getMentors } from '../../../services/api/api'
 import { RediLocation, RedProfile } from '@talent-connect/shared-types'
-import { useList } from '../../../hooks/useList'
 import { profileSaveStart } from '../../../redux/user/actions'
 import { connect } from 'react-redux'
 import { RootState } from '../../../redux/types'
@@ -23,6 +22,14 @@ import {
   rediLocationNames,
 } from '@talent-connect/shared-config'
 import './FindAMentor.scss'
+import { toggleValueInArray } from './utils'
+import {
+  StringParam,
+  useQueryParams,
+  ArrayParam,
+  BooleanParam,
+  withDefault,
+} from 'use-query-params'
 
 const filterCategories = categories.map((category) => ({
   value: category.id,
@@ -53,49 +60,67 @@ interface FindAMentorProps {
   profileSaveStart: (profile: Partial<RedProfile>) => void
 }
 
-const SearchField = ({
-  valueChange,
-}: {
-  valueChange: (value: string) => void
-}) => {
-  const [value, setValue] = useState('')
-  const valueChangeDebounced = useCallback(debounce(valueChange, 400), [])
-  const handleChange = useCallback((e: any) => setValue(e.target.value), [])
-
-  useEffect(() => {
-    valueChangeDebounced(value)
-  }, [value])
-
-  return (
-    <Form.Input
-      placeholder="Search by name"
-      onChange={handleChange}
-      value={value}
-    />
-  )
-}
-
 const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
   const { Loading, isLoading, setLoading } = useLoading()
-  const { id, categories, favouritedRedProfileIds, rediLocation } = profile
-  const [nameQuery, setNameQuery] = useState('')
+  const {
+    id,
+    categories: categoriesFromProfile,
+    favouritedRedProfileIds,
+    rediLocation,
+  } = profile
   const [showFavorites, setShowFavorites] = useState<boolean>(false)
   const [mentors, setMentors] = useState<RedProfile[]>([])
-  const [
-    activeCategories,
-    { toggle: toggleCategories, clear: clearCategories },
-  ] = useList(categories)
-  const [favorites, { toggle: toggleFavorites }] = useList<any>(
-    favouritedRedProfileIds
-  )
-  const [
-    activeLanguages,
-    { toggle: toggleLanguages, clear: clearLanguages },
-  ] = useList<any>([])
-  const [
-    activeLocations,
-    { toggle: toggleLocations, clear: clearLocations },
-  ] = useList<any>([])
+  const [query, setQuery] = useQueryParams({
+    name: withDefault(StringParam, undefined),
+    topics: withDefault(ArrayParam, []),
+    languages: withDefault(ArrayParam, []),
+    locations: withDefault(ArrayParam, []),
+    onlyFavorites: withDefault(BooleanParam, undefined),
+  })
+  const { topics, name, languages, locations, onlyFavorites } = query
+
+  useEffect(() => {
+    const hasQuery =
+      topics.length > 0 ||
+      languages.length > 0 ||
+      locations.length > 0 ||
+      Boolean(name) ||
+      onlyFavorites
+    setQuery(hasQuery ? query : { ...query, topics: categoriesFromProfile })
+  }, [])
+
+  const toggleFilters = (filtersArr, filterName, item) => {
+    const newFilters = toggleValueInArray(filtersArr, item)
+    setQuery((latestQuery) => ({ ...latestQuery, [filterName]: newFilters }))
+  }
+
+  const setName = (value) => {
+    setQuery((latestQuery) => ({ ...latestQuery, name: value || undefined }))
+  }
+
+  const toggleFavorites = (favoritesArr, value) => {
+    const newFavorites = toggleValueInArray(favoritesArr, value)
+    setLoading(true)
+    profileSaveStart({ favouritedRedProfileIds: newFavorites, id })
+    setLoading(false)
+  }
+
+  const setFavorites = () => {
+    setShowFavorites(!showFavorites)
+    setQuery((latestQuery) => ({
+      ...latestQuery,
+      onlyFavorites: showFavorites ? undefined : true,
+    }))
+  }
+
+  const clearFilters = () => {
+    setQuery((latestQuery) => ({
+      ...latestQuery,
+      topics: [],
+      languages: [],
+      locations: [],
+    }))
+  }
 
   const filterLanguages = Array.from(
     new Set(
@@ -119,10 +144,10 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
   useEffect(() => {
     setLoading(true)
     getMentors({
-      categories: activeCategories,
-      languages: activeLanguages,
-      locations: activeLocations,
-      nameQuery,
+      categories: topics,
+      languages,
+      nameQuery: name || '',
+      locations,
     }).then((mentors) => {
       setMentors(
         mentors
@@ -135,13 +160,7 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
       )
       setLoading(false)
     })
-  }, [activeCategories, activeLanguages, activeLocations, nameQuery])
-
-  useEffect(() => {
-    setLoading(true)
-    profileSaveStart({ favouritedRedProfileIds: favorites, id })
-    setLoading(false)
-  }, [favorites])
+  }, [topics, languages, locations, name])
 
   if (profile.userActivated !== true) return <LoggedIn />
 
@@ -152,7 +171,11 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
         Available mentors ({mentors.length})
       </Heading>
       <div className="filters">
-        <SearchField valueChange={setNameQuery} />
+        <SearchField
+          defaultValue={name}
+          valueChange={setName}
+          placeholder="Search by name"
+        />
       </div>
       <div className="filters">
         <div className="filters-wrapper">
@@ -160,8 +183,8 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
             items={filterCategories}
             className="filters__dropdown"
             label="Topics"
-            selected={activeCategories}
-            onChange={toggleCategories}
+            selected={topics}
+            onChange={(item) => toggleFilters(topics, 'topics', item)}
           />
         </div>
         <div className="filters-inner">
@@ -169,13 +192,10 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
             items={filterLanguages}
             className="filters__dropdown"
             label="Languages"
-            selected={activeLanguages}
-            onChange={toggleLanguages}
+            selected={languages}
+            onChange={(item) => toggleFilters(languages, 'languages', item)}
           />
-          <div
-            className="filter-favourites"
-            onClick={() => setShowFavorites(!showFavorites)}
-          >
+          <div className="filter-favourites" onClick={setFavorites}>
             <Icon
               icon={showFavorites ? 'heartFilled' : 'heart'}
               className="filter-favourites__icon"
@@ -191,56 +211,57 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
             items={filterRediLocations}
             className="filters__dropdown"
             label="Location"
-            selected={activeLocations}
-            onChange={toggleLocations}
+            selected={locations}
+            onChange={(item) => toggleFilters(locations, 'locations', item)}
           />
         </div>
 
-        {(activeCategories.length !== 0 ||
-          activeLanguages.length !== 0 ||
-          activeLocations.length !== 0) &&
-          activeCategories.map((catId) => (
-            <FilterTag
-              key={catId}
-              id={catId}
-              label={categoriesIdToLabelMap[catId]}
-              onClickHandler={toggleCategories}
-            />
-          ))}
-        {activeLanguages.map((langId) => (
-          <FilterTag
-            key={langId}
-            id={langId}
-            label={langId}
-            onClickHandler={toggleLanguages}
-          />
-        ))}
-        {activeLocations.map(
-          (locId?: RediLocation) =>
-            locId && (
+        {(topics.length !== 0 ||
+          languages.length !== 0 ||
+          locations.length !== 0) && (
+          <>
+            {(topics as string[]).map((catId) => (
               <FilterTag
-                key={locId}
-                id={locId}
-                label={rediLocationNames[locId as RediLocation] as string}
-                onClickHandler={toggleLocations}
+                key={catId}
+                id={catId}
+                label={categoriesIdToLabelMap[catId]}
+                onClickHandler={(item) => toggleFilters(topics, 'topics', item)}
               />
-            )
+            ))}
+            {(languages as string[]).map((langId) => (
+              <FilterTag
+                key={langId}
+                id={langId}
+                label={langId}
+                onClickHandler={(item) =>
+                  toggleFilters(languages, 'languages', item)
+                }
+              />
+            ))}
+            {(locations as RediLocation[]).map(
+              (locId) =>
+                locId && (
+                  <FilterTag
+                    key={locId}
+                    id={locId}
+                    label={rediLocationNames[locId as RediLocation] as string}
+                    onClickHandler={(item) =>
+                      toggleFilters(locations, 'locations', item)
+                    }
+                  />
+                )
+            )}
+            <span className="active-filters__clear-all" onClick={clearFilters}>
+              Delete all filters
+              <Icon icon="cancel" size="small" space="left" />
+            </span>
+          </>
         )}
-        <span
-          className="active-filters__clear-all"
-          onClick={() => {
-            clearCategories()
-            clearLanguages()
-            clearLocations()
-          }}
-        >
-          Delete all filters <Icon icon="cancel" size="small" space="left" />
-        </span>
       </div>
 
       <Columns>
         {mentors.map((mentor: RedProfile) => {
-          const isFavorite = favorites.includes(mentor.id)
+          const isFavorite = favouritedRedProfileIds.includes(mentor.id)
 
           if (!isFavorite && showFavorites) return
 
@@ -249,7 +270,9 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
               <ProfileCard
                 profile={mentor}
                 linkTo={`/app/find-a-mentor/profile/${mentor.id}`}
-                toggleFavorite={toggleFavorites}
+                toggleFavorite={(item) =>
+                  toggleFavorites(favouritedRedProfileIds, item)
+                }
                 isFavorite={isFavorite}
               />
             </Columns.Column>

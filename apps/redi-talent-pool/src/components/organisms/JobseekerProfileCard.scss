@@ -1,0 +1,54 @@
+@import '_variables.scss';
+
+.jobseeker-profile-card {
+  border-radius: 4px;
+  height: 24.5rem;
+  overflow: hidden;
+
+  &--active {
+    cursor: pointer;
+
+    &:hover {
+      box-shadow: $card-shadow-hover;
+    }
+  }
+
+  &__job-title {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 24px;
+    letter-spacing: 1.25px;
+  }
+
+  &__company-name {
+    margin-top: 5px;
+    color: $grey;
+  }
+
+  &__image {
+    img {
+      height: 9.5rem;
+      overflow: hidden;
+      object-fit: cover;
+    }
+  }
+
+  &__favorite {
+    padding: 0.5rem;
+    position: absolute;
+    top: 0.3rem;
+    right: 0.4rem;
+
+    &__icon {
+      transition: $transition;
+
+      path {
+        fill: white;
+      }
+
+      &:hover {
+        transform: scale(1.2);
+      }
+    }
+  }
+}

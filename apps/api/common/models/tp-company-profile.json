@@ -26,6 +26,10 @@
       "options": {
         "nestRemoting": true
       }
+    },
+    "tpJobListings": {
+      "type": "hasMany",
+      "model": "TpJobListing"
     }
   },
   "acls": [

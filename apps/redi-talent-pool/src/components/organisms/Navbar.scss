@@ -4,12 +4,19 @@
 .navbar {
   padding: 1rem 1.25rem;
 
+  &__wrapper-wrapper {
+    padding-left: 84px; // fixed width of <SideMenu>, so offset by that amount
+  }
+
   &__wrapper {
     display: flex;
     justify-content: space-between;
-    min-height: 3rem;
+    align-items: center;
+    min-height: 74px;
     width: 100%;
     align-items: center;
+
+    border-bottom: 1px solid #dadada;
 
     @include tablet() {
       font-size: $size-4;
@@ -41,7 +48,8 @@
     z-index: 10;
     padding: 8rem 1.25rem;
     background-color: $white;
-    background-image: url('../../assets/images/bubbles.svg');
+    // TODO: can we use relative import here instead?
+    background-image: url('libs/shared-atomic-design-components/src/assets/images/bubbles.svg');
     background-repeat: no-repeat;
     background-size: 80%;
     background-position: 50% 50%;

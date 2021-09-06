@@ -21,110 +21,6 @@
     }
   },
   "projects": {
-    "redi-connect": {
-      "root": "apps/redi-connect",
-      "sourceRoot": "apps/redi-connect/src",
-      "projectType": "application",
-      "targets": {
-        "build": {
-          "executor": "@nrwl/web:build",
-          "outputs": ["{options.outputPath}"],
-          "options": {
-            "outputPath": "dist/apps/redi-connect",
-            "index": "apps/redi-connect/src/index.html",
-            "main": "apps/redi-connect/src/main.tsx",
-            "polyfills": "apps/redi-connect/src/polyfills.ts",
-            "tsConfig": "apps/redi-connect/tsconfig.app.json",
-            "assets": ["apps/redi-connect/src/assets"],
-            "styles": [],
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "libs/shared-atomic-design-components/src/lib/styles"
-              ]
-            },
-            "extractCss": true,
-            "scripts": [],
-            "webpackConfig": "@nrwl/react/plugins/webpack"
-          },
-          "configurations": {
-            "production": {
-              "fileReplacements": [
-                {
-                  "replace": "apps/redi-connect/src/environments/environment.ts",
-                  "with": "apps/redi-connect/src/environments/environment.prod.ts"
-                }
-              ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "extractCss": true,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
-                }
-              ]
-            }
-          }
-        },
-        "serve": {
-          "executor": "@nrwl/web:dev-server",
-          "options": {
-            "buildTarget": "redi-connect:build",
-            "port": 3000
-          },
-          "configurations": {
-            "production": {
-              "buildTarget": "redi-connect:build:production"
-            }
-          }
-        },
-        "lint": {
-          "executor": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["apps/redi-connect/**/*.{ts,tsx,js,jsx}"]
-          }
-        },
-        "test": {
-          "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/redi-connect"],
-          "options": {
-            "jestConfig": "apps/redi-connect/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
-    "redi-connect-e2e": {
-      "root": "apps/redi-connect-e2e",
-      "sourceRoot": "apps/redi-connect-e2e/src",
-      "projectType": "application",
-      "targets": {
-        "e2e": {
-          "executor": "@nrwl/cypress:cypress",
-          "options": {
-            "cypressConfig": "apps/redi-connect-e2e/cypress.json",
-            "tsConfig": "apps/redi-connect-e2e/tsconfig.e2e.json",
-            "devServerTarget": "redi-connect:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "redi-connect:serve:production"
-            }
-          }
-        },
-        "lint": {
-          "executor": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["apps/redi-connect-e2e/**/*.{js,ts}"]
-          }
-        }
-      }
-    },
     "admin-panel": {
       "root": "apps/admin-panel",
       "sourceRoot": "apps/admin-panel/src",
@@ -243,38 +139,107 @@
         }
       }
     },
-    "shared-atomic-design-components": {
-      "root": "libs/shared-atomic-design-components",
-      "sourceRoot": "libs/shared-atomic-design-components/src",
-      "projectType": "library",
+    "redi-connect": {
+      "root": "apps/redi-connect",
+      "sourceRoot": "apps/redi-connect/src",
+      "projectType": "application",
       "targets": {
+        "build": {
+          "executor": "@nrwl/web:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/redi-connect",
+            "index": "apps/redi-connect/src/index.html",
+            "main": "apps/redi-connect/src/main.tsx",
+            "polyfills": "apps/redi-connect/src/polyfills.ts",
+            "tsConfig": "apps/redi-connect/tsconfig.app.json",
+            "assets": ["apps/redi-connect/src/assets"],
+            "styles": [],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "libs/shared-atomic-design-components/src/lib/styles",
+                "libs/shared-atomic-design-components/src/assets/fonts"
+              ]
+            },
+            "extractCss": true,
+            "scripts": [],
+            "webpackConfig": "@nrwl/react/plugins/webpack"
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/redi-connect/src/environments/environment.ts",
+                  "with": "apps/redi-connect/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/web:dev-server",
+          "options": {
+            "buildTarget": "redi-connect:build",
+            "port": 3000
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "redi-connect:build:production"
+            }
+          }
+        },
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "libs/shared-atomic-design-components/**/*.{ts,tsx,js,jsx}"
-            ]
+            "lintFilePatterns": ["apps/redi-connect/**/*.{ts,tsx,js,jsx}"]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/shared-atomic-design-components"],
+          "outputs": ["coverage/apps/redi-connect"],
           "options": {
-            "jestConfig": "libs/shared-atomic-design-components/jest.config.js",
+            "jestConfig": "apps/redi-connect/jest.config.js",
             "passWithNoTests": true
           }
         }
       }
     },
-    "shared-types": {
-      "root": "libs/shared-types",
-      "sourceRoot": "libs/shared-types/src",
-      "projectType": "library",
+    "redi-connect-e2e": {
+      "root": "apps/redi-connect-e2e",
+      "sourceRoot": "apps/redi-connect-e2e/src",
+      "projectType": "application",
       "targets": {
+        "e2e": {
+          "executor": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/redi-connect-e2e/cypress.json",
+            "tsConfig": "apps/redi-connect-e2e/tsconfig.e2e.json",
+            "devServerTarget": "redi-connect:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "redi-connect:serve:production"
+            }
+          }
+        },
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/shared-types/**/*.ts"]
+            "lintFilePatterns": ["apps/redi-connect-e2e/**/*.{js,ts}"]
           }
         }
       }
@@ -386,6 +351,60 @@
         }
       }
     },
+    "shared-atomic-design-components": {
+      "root": "libs/shared-atomic-design-components",
+      "sourceRoot": "libs/shared-atomic-design-components/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/shared-atomic-design-components/**/*.{ts,tsx,js,jsx}"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared-atomic-design-components"],
+          "options": {
+            "jestConfig": "libs/shared-atomic-design-components/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "storybook": {
+          "executor": "@nrwl/storybook:storybook",
+          "options": {
+            "uiFramework": "@storybook/react",
+            "port": 4400,
+            "config": {
+              "configFolder": "libs/shared-atomic-design-components/.storybook"
+            }
+          },
+          "configurations": {
+            "ci": {
+              "quiet": true
+            }
+          }
+        },
+        "build-storybook": {
+          "executor": "@nrwl/storybook:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "uiFramework": "@storybook/react",
+            "outputPath": "dist/storybook/shared-atomic-design-components",
+            "config": {
+              "configFolder": "libs/shared-atomic-design-components/.storybook"
+            }
+          },
+          "configurations": {
+            "ci": {
+              "quiet": true
+            }
+          }
+        }
+      }
+    },
     "shared-config": {
       "root": "libs/shared-config",
       "sourceRoot": "libs/shared-config/src",
@@ -407,22 +426,35 @@
         }
       }
     },
-    "talent-pool-types": {
-      "root": "libs/talent-pool/types",
-      "sourceRoot": "libs/talent-pool/types/src",
+    "shared-types": {
+      "root": "libs/shared-types",
+      "sourceRoot": "libs/shared-types/src",
       "projectType": "library",
       "targets": {
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/talent-pool/types/**/*.ts"]
+            "lintFilePatterns": ["libs/shared-types/**/*.ts"]
+          }
+        }
+      }
+    },
+    "shared-utils": {
+      "root": "libs/shared-utils",
+      "sourceRoot": "libs/shared-utils/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/shared-utils/**/*.ts"]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/talent-pool/types"],
+          "outputs": ["coverage/libs/shared-utils"],
           "options": {
-            "jestConfig": "libs/talent-pool/types/jest.config.js",
+            "jestConfig": "libs/shared-utils/jest.config.js",
             "passWithNoTests": true
           }
         }
@@ -449,105 +481,22 @@
         }
       }
     },
-    "shared-utils": {
-      "root": "libs/shared-utils",
-      "sourceRoot": "libs/shared-utils/src",
+    "talent-pool-types": {
+      "root": "libs/talent-pool/types",
+      "sourceRoot": "libs/talent-pool/types/src",
       "projectType": "library",
       "targets": {
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/shared-utils/**/*.ts"]
+            "lintFilePatterns": ["libs/talent-pool/types/**/*.ts"]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/shared-utils"],
+          "outputs": ["coverage/libs/talent-pool/types"],
           "options": {
-            "jestConfig": "libs/shared-utils/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
-    "cv-builder-prototype": {
-      "root": "apps/cv-builder-prototype",
-      "sourceRoot": "apps/cv-builder-prototype/src",
-      "projectType": "application",
-      "targets": {
-        "build": {
-          "executor": "@nrwl/web:build",
-          "outputs": ["{options.outputPath}"],
-          "options": {
-            "outputPath": "dist/apps/cv-builder-prototype",
-            "index": "apps/cv-builder-prototype/src/index.html",
-            "main": "apps/cv-builder-prototype/src/main.tsx",
-            "polyfills": "apps/cv-builder-prototype/src/polyfills.ts",
-            "tsConfig": "apps/cv-builder-prototype/tsconfig.app.json",
-            "assets": [
-              "apps/cv-builder-prototype/src/favicon.ico",
-              "apps/cv-builder-prototype/src/assets"
-            ],
-            "styles": [],
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "libs/shared-atomic-design-components/src/lib/styles"
-              ]
-            },
-            "extractCss": true,
-            "scripts": [],
-            "webpackConfig": "apps/cv-builder-prototype/custom-webpack-config.js"
-          },
-          "configurations": {
-            "production": {
-              "fileReplacements": [
-                {
-                  "replace": "apps/cv-builder-prototype/src/environments/environment.ts",
-                  "with": "apps/cv-builder-prototype/src/environments/environment.prod.ts"
-                }
-              ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "extractCss": true,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
-                }
-              ]
-            }
-          }
-        },
-        "serve": {
-          "executor": "@nrwl/web:dev-server",
-          "options": {
-            "buildTarget": "cv-builder-prototype:build",
-            "port": 4200
-          },
-          "configurations": {
-            "production": {
-              "buildTarget": "cv-builder-prototype:build:production"
-            }
-          }
-        },
-        "lint": {
-          "executor": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "apps/cv-builder-prototype/**/*.{ts,tsx,js,jsx}"
-            ]
-          }
-        },
-        "test": {
-          "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/cv-builder-prototype"],
-          "options": {
-            "jestConfig": "apps/cv-builder-prototype/jest.config.js",
+            "jestConfig": "libs/talent-pool/types/jest.config.js",
             "passWithNoTests": true
           }
         }

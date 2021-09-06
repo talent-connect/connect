@@ -22,13 +22,6 @@
     }
   },
   "projects": {
-    "redi-connect": {
-      "tags": []
-    },
-    "redi-connect-e2e": {
-      "tags": [],
-      "implicitDependencies": ["redi-connect"]
-    },
     "admin-panel": {
       "tags": []
     },
@@ -40,11 +33,12 @@
       "tags": [],
       "implicitDependencies": []
     },
-    "shared-atomic-design-components": {
+    "redi-connect": {
       "tags": []
     },
-    "shared-types": {
-      "tags": []
+    "redi-connect-e2e": {
+      "tags": [],
+      "implicitDependencies": ["redi-connect"]
     },
     "redi-talent-pool": {
       "tags": []
@@ -53,20 +47,31 @@
       "tags": [],
       "implicitDependencies": ["redi-talent-pool"]
     },
+    "shared-atomic-design-components": {
+      "tags": []
+    },
     "shared-config": {
       "tags": []
     },
-    "talent-pool-types": {
-      "tags": []
-    },
-    "talent-pool-config": {
+    "shared-types": {
       "tags": []
     },
     "shared-utils": {
       "tags": []
     },
-    "cv-builder-prototype": {
+    "talent-pool-config": {
+      "tags": []
+    },
+    "talent-pool-types": {
       "tags": []
     }
+  },
+  "targetDependencies": {
+    "build": [
+      {
+        "target": "build",
+        "projects": "dependencies"
+      }
+    ]
   }
 }

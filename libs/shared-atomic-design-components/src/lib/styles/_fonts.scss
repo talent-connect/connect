@@ -1,8 +1,12 @@
+// TODO: can we replace the absolute imports here with relative ones?
+
 @font-face {
   font-family: 'Jubilat';
   src: local('Jubilat Medium'), local('JubilatMedium'),
-    url('../assets/fonts/JubilatMedium.woff2') format('woff2'),
-    url('../assets/fonts/JubilatMedium.woff') format('woff');
+    url('libs/shared-atomic-design-components/src/assets/fonts/JubilatMedium.woff2')
+      format('woff2'),
+    url('libs/shared-atomic-design-components/src/assets/fonts/JubilatMedium.woff')
+      format('woff');
   font-weight: 500;
   font-style: normal;
 }
@@ -10,8 +14,10 @@
 @font-face {
   font-family: 'Jubilat';
   src: local('Jubilat Regular'), local('Jubilat-Regular'),
-    url('../assets/fonts/Jubilat-Regular.woff2') format('woff2'),
-    url('../assets/fonts/Jubilat-Regular.woff') format('woff');
+    url('libs/shared-atomic-design-components/src/assets/fonts/Jubilat-Regular.woff2')
+      format('woff2'),
+    url('libs/shared-atomic-design-components/src/assets/fonts/Jubilat-Regular.woff')
+      format('woff');
   font-weight: 400;
   font-style: normal;
 }
@@ -19,8 +25,10 @@
 @font-face {
   font-family: 'Avenir LT Std';
   src: local('Avenir Black'), local('Avenir-Black'),
-    url('../assets/fonts/Avenir-Black.woff2') format('woff2'),
-    url('../assets/fonts/Avenir-Black.woff') format('woff');
+    url('libs/shared-atomic-design-components/src/assets/fonts/Avenir-Black.woff2')
+      format('woff2'),
+    url('libs/shared-atomic-design-components/src/assets/fonts/Avenir-Black.woff')
+      format('woff');
   font-weight: 900;
   font-style: normal;
 }
@@ -28,8 +36,10 @@
 @font-face {
   font-family: 'Avenir LT Std';
   src: local('Avenir Heavy'), local('Avenir-Heavy'),
-    url('../assets/fonts/Avenir-Heavy.woff2') format('woff2'),
-    url('../assets/fonts/Avenir-Heavy.woff') format('woff');
+    url('libs/shared-atomic-design-components/src/assets/fonts/Avenir-Heavy.woff2')
+      format('woff2'),
+    url('libs/shared-atomic-design-components/src/assets/fonts/Avenir-Heavy.woff')
+      format('woff');
   font-weight: 800;
   font-style: normal;
 }
@@ -37,8 +47,10 @@
 @font-face {
   font-family: 'Avenir LT Std';
   src: local('Avenir Medium'), local('Avenir-Medium'),
-    url('../assets/fonts/Avenir-Medium.woff2') format('woff2'),
-    url('../assets/fonts/Avenir-Medium.woff') format('woff');
+    url('libs/shared-atomic-design-components/src/assets/fonts/Avenir-Medium.woff2')
+      format('woff2'),
+    url('libs/shared-atomic-design-components/src/assets/fonts/Avenir-Medium.woff')
+      format('woff');
   font-weight: 500;
   font-style: normal;
 }
@@ -46,8 +58,10 @@
 @font-face {
   font-family: 'Avenir LT Std';
   src: local('Avenir Medium Oblique'), local('Avenir-MediumOblique'),
-    url('../assets/fonts/Avenir-MediumOblique.woff2') format('woff2'),
-    url('../assets/fonts/Avenir-MediumOblique.woff') format('woff');
+    url('libs/shared-atomic-design-components/src/assets/fonts/Avenir-MediumOblique.woff2')
+      format('woff2'),
+    url('libs/shared-atomic-design-components/src/assets/fonts/Avenir-MediumOblique.woff')
+      format('woff');
   font-weight: 500;
   font-style: oblique;
 }
@@ -55,8 +69,10 @@
 @font-face {
   font-family: 'Avenir LT Std';
   src: local('Avenir LT Std 45 Book'), local('AvenirLTStd-Book'),
-    url('../assets/fonts/AvenirLTStd-Book.woff2') format('woff2'),
-    url('../assets/fonts/AvenirLTStd-Book.woff') format('woff');
+    url('libs/shared-atomic-design-components/src/assets/fonts/AvenirLTStd-Book.woff')
+      format('woff2'),
+    url('libs/shared-atomic-design-components/src/assets/fonts/AvenirLTStd-Book.woff')
+      format('woff');
   font-weight: 300;
   font-style: normal;
 }

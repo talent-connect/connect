@@ -14,11 +14,14 @@ export default function Home() {
       <Hero />
       <NavTiles />
       <RediProgram />
-      <Carousel
+      {/* // TODO: had to disable the entire carousel on 21 July 2021.
+      We upgraded // to latest Nx version and relative imports done INSIDE of
+      slick-carousel broke. */}
+      {/* <Carousel
         border="orange"
         headline={t('loggedOutArea.homePage.carousel.headlineAbout')}
         title={t('loggedOutArea.homePage.carousel.titleAbout')}
-      />
+      /> */}
       <PreFooter />
     </Landing>
   )

@@ -91,7 +91,7 @@ app
     const RedUser = app.models.RedUser
     RedUser.findById(
       ctx.args.options.accessToken.userId,
-      { include: 'redProfile' },
+      { include: ['redProfile', 'tpJobseekerProfile', 'tpCompanyProfile'] },
       function (err, user) {
         if (err) return next(err)
         ctx.args.options.currentUser = user.toJSON()

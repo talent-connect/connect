@@ -9,6 +9,8 @@ import AppNotification from './components/AppNotification'
 import { Loader } from '@talent-connect/shared-atomic-design-components'
 import { envRediLocation } from './utils/env-redi-location'
 import LocationPicker from './pages/front/landing/LocationPicker'
+import { Route } from 'react-router-dom'
+import { QueryParamProvider } from 'use-query-params'
 
 const App = () => {
   switch (envRediLocation()) {
@@ -35,7 +37,9 @@ const NormalRediConnect = () => {
       <StoreProvider store={store}>
         <Router history={history}>
           <Suspense fallback={<Loader loading={true} />}>
-            <Routes />
+            <QueryParamProvider ReactRouterRoute={Route}>
+              <Routes />
+            </QueryParamProvider>
           </Suspense>
         </Router>
       </StoreProvider>

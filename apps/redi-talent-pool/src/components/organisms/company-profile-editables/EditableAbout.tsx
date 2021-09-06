@@ -1,27 +1,23 @@
 import {
   Button,
   Caption,
-  FaqItem,
-  FormSelect,
   FormTextArea,
 } from '@talent-connect/shared-atomic-design-components'
 import { TpCompanyProfile } from '@talent-connect/shared-types'
-import {
-  topSkills,
-  topSkillsIdToLabelMap,
-} from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
 import React, { useEffect, useMemo, useState } from 'react'
-import { Content, Element, Tag } from 'react-bulma-components'
+import { Content, Element } from 'react-bulma-components'
 import ReactMarkdown from 'react-markdown'
-import * as Yup from 'yup'
 import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
-export function EditableAbout() {
-  const { data: profile } = useTpCompanyProfileQuery()
+interface Props {
+  profile: Partial<TpCompanyProfile>
+  disableEditing?: boolean
+}
+export function EditableAbout({ profile, disableEditing }: Props) {
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
@@ -29,6 +25,7 @@ export function EditableAbout() {
 
   return (
     <Editable
+      disableEditing={disableEditing}
       isEditing={isEditing}
       isFormDirty={isFormDirty}
       setIsEditing={setIsEditing}
@@ -50,9 +47,10 @@ export function EditableAbout() {
             ) : (
               <EmptySectionPlaceholder
                 height="tall"
-                text="Tell us about the company"
                 onClick={() => setIsEditing(true)}
-              />
+              >
+                Tell us about the company
+              </EmptySectionPlaceholder>
             )}
           </Content>
         </>
