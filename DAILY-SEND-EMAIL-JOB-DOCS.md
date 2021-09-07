@@ -9,3 +9,4 @@ This table documents the various notification emails sent to ReDI Connect users 
 | no-mentoring-session-logged-yet-second           | Mentor & mentee | Mentor has _not_ logged a mentorship session with a mentee within 30 days of accepting the mentee's application |
 | mature-mentorship-request-feedback-offer-support | Mentor & mentee | Six weeks (6 \* 7 = 42 days) elapsed in an active mentorship                                                    |
 | pending-mentorship-application-reminder          | Mentor          | A mentorship application has been pending for 6 days                                                            |
+| mentor-not-completed-profile-after-activation    | Mentor          | Mentor has not filled out fields A, B, C, D, E etc. yet within X days of activation                             |
