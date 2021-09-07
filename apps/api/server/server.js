@@ -16,6 +16,9 @@ const { bindNodeCallback, from } = Rx
 const { delay, switchMap, tap, map, filter, count } = require('rxjs/operators')
 
 const { sendMenteeReminderToApplyToMentorEmail } = require('../lib/email/email')
+const { default: clsx } = require('clsx')
+
+const sendAllJobs = require('../daily-send-email-job/index.js')
 
 var app = (module.exports = loopback())
 
@@ -33,52 +36,64 @@ app.start = function () {
 }
 
 app.get(
-  '/secret-endpoint-that-will-be-contacted-by-autocode-to-trigger-emails-to-all-mentees-who-have-not-yet-applied',
-  async (req, res) => {
-    const referenceDate = new Date()
-    referenceDate.setHours(2, 0, 0, 0)
-    const minDate = referenceDate.setDate(referenceDate.getDate() - 7)
-    const maxDate = referenceDate.setDate(referenceDate.getDate() + 1)
+  '/secret-endpoint-that-will-be-contacted-by-autocode-to-trigger-automated-emails',
+  (req, res) => {
+    const secretToken = process.env.DAILY_SEND_EMAIL_JOB_SECRET_TOKEN
+    const authToken = req.query['auth-token']
+    console.log(authToken)
 
-    const { RedProfile } = app.models
-
-    RedProfile.find(
-      {
-        include: 'mentors',
-        where: {
-          userType: 'mentee',
-          userActivated: true,
-        },
-      },
-      (err, res) => {
-        try {
-          res.map((user) => {
-            const getMentors = user.mentors()
-            const createdAtGreaterThanMinDate =
-              Date.parse(user.createdAt) > minDate
-            const createdAtLessThanMaxDate =
-              Date.parse(user.createdAt) < maxDate
-
-            if (
-              getMentors.length === 0 &&
-              user.firstName === 'marcuszierke@gmail.com'
-              createdAtGreaterThanMinDate &&
-              createdAtLessThanMaxDate
-            ) {
-              sendMenteeReminderToApplyToMentorEmail({
-                recipient: user.contactEmail,
-                menteeFirstName: user.firstName,
-              })
-            }
-          })
-        } catch (err) {
-          console.log(`an error occurred: `, err)
-        }
-      }
-    )
-    res.send('done')
+    if (authToken === secretToken) {
+      sendAllJobs()
+      return res.send({ result: 'ok' })
+    }
+    return res.send({ result: 'sick job, bro' })
   }
 )
+
+// function sendAutomatedEmails() {
+//   const referenceDate = new Date()
+//     referenceDate.setHours(2, 0, 0, 0)
+//     const minDate = referenceDate.setDate(referenceDate.getDate() - 7)
+//     const maxDate = referenceDate.setDate(referenceDate.getDate() + 1)
+
+//     const { RedProfile } = app.models
+
+//     RedProfile.find(
+//       {
+//         include: 'mentors',
+//         where: {
+//           userType: 'mentee',
+//           userActivated: true,
+//         },
+//       },
+//       (err, res) => {
+//         try {
+//           res.map((user) => {
+//             const getMentors = user.mentors()
+//             const createdAtGreaterThanMinDate =
+//               Date.parse(user.createdAt) > minDate
+//             const createdAtLessThanMaxDate =
+//               Date.parse(user.createdAt) < maxDate
+
+//             if (
+//               getMentors.length === 0 &&
+//               user.firstName === 'marcuszierke@gmail.com'
+//               createdAtGreaterThanMinDate &&
+//               createdAtLessThanMaxDate
+//             ) {
+//               sendMenteeReminderToApplyToMentorEmail({
+//                 recipient: user.contactEmail,
+//                 menteeFirstName: user.firstName,
+//               })
+//             }
+//           })
+//         } catch (err) {
+//           console.log(`an error occurred: `, err)
+//         }
+//       }
+//     )
+//     res.send('done')
+// }
 
 // Inject current user into context
 app

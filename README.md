@@ -43,6 +43,10 @@ Use trunk-based branching - create feature/bugfix/docs/refactor/blabla branches 
 
 See the [Onboarding Checklist](https://github.com/talent-connect/connect/wiki#onboarding-checklist) and [Workflow for design tasks](https://github.com/talent-connect/connect/wiki#onboarding-checklist) in our Wiki.
 
+## ReDI Connect feature documentation
+
+- [Daily job to send notification emails to users](./DAILY-SEND-EMAIL-JOB-DOCS.md)
+
 ## Getting started in depth
 
 ## Guide to the repo and working on it
