@@ -1,23 +1,21 @@
-import { Story, Meta } from '@storybook/react';
+import { Meta } from '@storybook/react/types-6-0'
 
-import Button, { ButtonProps } from './Button';
+import { storybookTemplate } from '../helpers/StorybookTemplate'
 
+import ButtonComponent from './Button'
 
 export default {
+  title: 'atoms/Button',
+  component: ButtonComponent,
+} as Meta
 
-  component: Button,
+const template = storybookTemplate(ButtonComponent)
 
-  title: 'Button',
-
-} as Meta;
-
-
-const Template: Story<ButtonProps> = (args) => <Button {...args} />;
-
-
-export const Primary = Template.bind({});
-
-Primary.args = {
-  children: "Click Me!",
-  style: { marginRight: 5 },
-};
+export const Primary = template({
+  children: 'Click Me!',
+  fullWidth: false,
+  size: 'medium',
+  disabled: false,
+  separator: false,
+  simple: false,
+})
