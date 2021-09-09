@@ -18,9 +18,9 @@ const { delay, switchMap, tap, map, filter, count } = require('rxjs/operators')
 const { sendMenteeReminderToApplyToMentorEmail } = require('../lib/email/email')
 const { default: clsx } = require('clsx')
 
-const sendAllJobs = require('../daily-send-email-job/index.js')
-
 var app = (module.exports = loopback())
+
+const sendAllJobs = require('../daily-send-email-job/index.js')
 
 app.start = function () {
   // start the web server
