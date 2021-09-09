@@ -29,7 +29,7 @@ const Button = ({
   to,
   style = {},
 }: ButtonProps) => {
-  const baseClass = 'button'
+  const baseClass = 'button-atom'
 
   if (!to) {
     return (
