@@ -64,6 +64,9 @@
     },
     "talent-pool-types": {
       "tags": []
+    },
+    "typescript-utilities": {
+      "tags": []
     }
   },
   "targetDependencies": {

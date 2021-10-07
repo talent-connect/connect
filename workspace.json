@@ -501,6 +501,27 @@
           }
         }
       }
+    },
+    "typescript-utilities": {
+      "root": "libs/typescript-utilities",
+      "sourceRoot": "libs/typescript-utilities/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/typescript-utilities/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/typescript-utilities"],
+          "options": {
+            "jestConfig": "libs/typescript-utilities/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   }
 }

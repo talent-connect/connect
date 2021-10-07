@@ -1,30 +1,21 @@
-import { keyBy, mapValues } from 'lodash'
+import { RediLocation } from '@talent-connect/shared-types'
 
-import {
-  Categories,
-  CategoryGroups,
-  Course,
-  EducationLevel,
-  Gender,
-  Language,
-  RediLocation,
-} from '@talent-connect/shared-types'
-
-export const rediLocationNames: { [K in RediLocation]?: string } = {
+export const REDI_LOCATION_NAMES: { [K in RediLocation]?: string } = {
   berlin: 'Berlin',
   munich: 'Munich',
   nrw: 'NRW',
 }
 
-export const categoryGroups: CategoryGroups = [
-  { id: 'softwareEngineering', label: '👩‍💻 Software Engineering' },
-  { id: 'design', label: '🎨 Design' },
-  { id: 'otherProfessions', label: '🏄‍♀️ Other Professions' },
-  { id: 'careerSupport', label: '✋ Career Support' },
-  { id: 'language', label: '🗣️ Language Support' },
-  { id: 'other', label: '🤗 Other' },
-]
-export const categories: Categories = [
+export const CATEGORY_GROUPS = {
+  softwareEngineering: '👩‍💻 Software Engineering',
+  design: '🎨 Design',
+  otherProfessions: '🏄‍♀️ Other Professions',
+  careerSupport: '✋ Career Support',
+  language: '🗣️ Language Support',
+  other: '🤗 Other',
+} as const
+
+export const CATEGORIES = [
   {
     id: 'basicProgrammingSkills',
     label: 'Basic programming skills',
@@ -153,18 +144,15 @@ export const categories: Categories = [
   },
   { id: 'entrepreneurship', label: 'Entrepreneurship', group: 'careerSupport' },
   { id: 'freelancing', label: 'Freelancing', group: 'careerSupport' },
-]
+] as const
+export type CategoryKey = typeof CATEGORIES[number]['id']
+export type CategoryLabel = typeof CATEGORIES[number]['label']
 
-export const categoriesIdToLabelMap = mapValues(
-  keyBy(categories, 'id'),
-  'label'
-)
-export const categoriesIdToColourMap = mapValues(
-  keyBy(categories, 'id'),
-  'colour'
-)
+export const CATEGORIES_MAP = Object.fromEntries(
+  CATEGORIES.map((cat) => [cat.id, cat.label])
+) as Record<CategoryKey, CategoryLabel>
 
-export const Languages: Language[] = [
+export const LANGUAGES = [
   'Afrikaans',
   'Albanian',
   'Amharic',
@@ -308,31 +296,27 @@ export const Languages: Language[] = [
   'Yucatec',
   'Zapotec',
   'Zulu',
-]
+] as const
+export type Language = typeof LANGUAGES[number]
 
-export const genders: Gender[] = [
-  { id: 'male', label: 'Male' },
-  { id: 'female', label: 'Female' },
-  { id: 'other', label: 'Other' },
-]
+export const GENDERS = {
+  male: 'Male',
+  female: 'Female',
+  other: 'Other',
+} as const
+export type GenderKey = keyof typeof GENDERS
 
-export const gendersIdToLabelMap = mapValues(keyBy(genders, 'id'), 'label')
+export const EDUCATION_LEVELS = {
+  middleSchool: 'Middle School',
+  highSchool: 'High School',
+  apprenticeship: 'Apprenticeship',
+  universityBachelor: 'University Degree (Bachelor)',
+  universityMaster: 'University Degree (Master)',
+  universityPhd: 'University Degree (PhD)',
+} as const
+export type EducationLevelKey = keyof typeof EDUCATION_LEVELS
 
-export const educationLevels: EducationLevel[] = [
-  { id: 'middleSchool', label: 'Middle School' },
-  { id: 'highSchool', label: 'High School' },
-  { id: 'apprenticeship', label: 'Apprenticeship' },
-  { id: 'universityBachelor', label: 'University Degree (Bachelor)' },
-  { id: 'universityMaster', label: 'University Degree (Master)' },
-  { id: 'universityPhd', label: 'University Degree (PhD)' },
-]
-
-export const educationLevelsIdToLabelMap = mapValues(
-  keyBy(educationLevels, 'id'),
-  'label'
-)
-
-export const courses: (Course & { location: RediLocation })[] = [
+export const COURSES = [
   { id: 'introPython', label: 'Intro to Python', location: 'berlin' },
   { id: 'dataAnalytics', label: 'Data Analytics', location: 'berlin' },
   { id: 'htmlCss', label: 'HTML & CSS', location: 'berlin' },
@@ -458,40 +442,31 @@ export const courses: (Course & { location: RediLocation })[] = [
     label: `I'm a ReDI School alumni (I took a course before)`,
     location: 'nrw',
   },
-]
+] as const
+export type CourseKey = typeof COURSES[number]['id']
 
-export const courseIdToLabelMap = mapValues(keyBy(courses, 'id'), 'label')
-interface ReportProblemCategory {
-  id: string
-  label: string
-}
-
-export const reportProblemCategories: ReportProblemCategory[] = [
+export const REPORT_PROBLEM_CATEGORIES = [
   { id: 'wantToQuit', label: 'I want to quit' },
-]
+] as const
 
-export const mentoringSessionDurationOptions: number[] = [
+export const MENTORING_SESSION_DURATION_OPTIONS = [
   15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165, 180,
-]
+] as const
+export type MentoringSessionDurationOption =
+  typeof MENTORING_SESSION_DURATION_OPTIONS[number]
 
-interface MenteeOccupationCategory {
-  id: string
-  label: string
-}
+export const MENTEE_OCCUPATION_CATEGORY = {
+  job: 'Job (full-time/part-time)',
+  student: 'Student (enrolled at university)',
+  lookingForJob: 'Looking for a job',
+  other: 'Other',
+} as const
+export type MenteeOccupationCategoryKey =
+  keyof typeof MENTEE_OCCUPATION_CATEGORY
 
-export const menteeOccupationCategories: MenteeOccupationCategory[] = [
-  { id: 'job', label: 'Job (full-time/part-time)' },
-  { id: 'student', label: 'Student (enrolled at university)' },
-  { id: 'lookingForJob', label: 'Looking for a job' },
-  { id: 'other', label: 'Other' },
-]
-
-export const menteeOccupationCategory_idToLabelMap = mapValues(
-  keyBy(menteeOccupationCategories, 'id'),
-  'label'
-)
-
-export const menteeCountCapacityOptions: number[] = [0, 1, 2]
+export const MENTEE_COUNT_CAPACITY_OPTIONS = [0, 1, 2] as const
+export type MenteeCountCapacityOption =
+  typeof MENTEE_COUNT_CAPACITY_OPTIONS[number]
 
 export const AWS_PROFILE_AVATARS_BUCKET_BASE_URL =
   'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/'

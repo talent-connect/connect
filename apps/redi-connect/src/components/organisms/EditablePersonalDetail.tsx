@@ -16,21 +16,22 @@ import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
 
-import { genders } from '@talent-connect/shared-config'
+import { GENDERS } from '@talent-connect/shared-config'
 import { ReadPersonalDetail } from '../molecules'
 
-const formGenders = genders.map((gender) => ({
-  value: gender.id,
-  label: gender.label,
-}))
+import { objectEntries, objectKeys } from '@talent-connect/typescript-utilities'
 
+const formGenders = objectEntries(GENDERS).map(([value, label]) => ({
+  value,
+  label,
+}))
 export interface PersonalDetailFormValues {
   gender: string
   birthDate: Date | null
 }
 
 const validationSchema = Yup.object({
-  gender: Yup.string().oneOf(['male', 'female', 'other']).label('Gender'),
+  gender: Yup.string().oneOf(objectKeys(GENDERS)).label('Gender'),
   birthDate: Yup.date().nullable(true).label('Date'),
 })
 

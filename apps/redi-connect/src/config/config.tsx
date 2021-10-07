@@ -1,6 +1,6 @@
 import {
-  courses as allCourses,
-  rediLocationNames as configRediLocationNames,
+  COURSES as allCourses,
+  REDI_LOCATION_NAMES as configRediLocationNames,
 } from '@talent-connect/shared-config'
 import { RediLocation } from '@talent-connect/shared-types'
 

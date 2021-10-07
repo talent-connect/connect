@@ -3,7 +3,7 @@ import {
   Caption,
   FormSelect,
 } from '@talent-connect/shared-atomic-design-components'
-import { courses, rediLocationNames } from '@talent-connect/shared-config'
+import { COURSES, rediLocationNames } from '@talent-connect/shared-config'
 import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
 import {
   desiredPositions,
@@ -143,10 +143,10 @@ export function JobseekerFormSectionOverview({
     onSubmit,
     validateOnMount: true,
   })
-  useEffect(() => setIsFormDirty?.(formik.dirty), [
-    formik.dirty,
-    setIsFormDirty,
-  ])
+  useEffect(
+    () => setIsFormDirty?.(formik.dirty),
+    [formik.dirty, setIsFormDirty]
+  )
   return (
     <>
       <Element
@@ -196,7 +196,7 @@ const formDesiredPositions = desiredPositions.map(({ id, label }) => ({
 
 // TODO: merge this logic with the stuff in SignUp.tsx
 const coursesWithAlumniDeduped = [
-  ...courses.filter((c) => {
+  ...COURSES.filter((c) => {
     return !c.id.includes('alumni')
   }),
   {

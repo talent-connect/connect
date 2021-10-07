@@ -5,7 +5,7 @@ import {
   FormSelect,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
-import { courses, rediLocationNames } from '@talent-connect/shared-config'
+import { COURSES, rediLocationNames } from '@talent-connect/shared-config'
 import { RedProfile, TpJobseekerProfile } from '@talent-connect/shared-types'
 import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
 import omit from 'lodash/omit'
@@ -21,7 +21,7 @@ import { history } from '../../../services/history/history'
 
 // TODO: replace with proper dropdown
 const coursesWithAlumniDeduped = [
-  ...courses.filter((c) => {
+  ...COURSES.filter((c) => {
     return !c.id.includes('alumni')
   }),
   {
@@ -66,7 +66,7 @@ function buildValidationSchema(signupType: SignUpPageType['type']) {
       ...baseSchema,
       currentlyEnrolledInCourse: Yup.string()
         .required()
-        .oneOf(courses.map((level) => level.id))
+        .oneOf(COURSES.map((level) => level.id))
         .label('Currently enrolled in course'),
       agreesWithCodeOfConduct: Yup.boolean().required().oneOf([true]),
     })

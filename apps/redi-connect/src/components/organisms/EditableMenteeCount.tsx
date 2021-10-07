@@ -13,8 +13,8 @@ import * as Yup from 'yup'
 import { FormikValues, useFormik } from 'formik'
 
 import {
-  menteeCountCapacityOptions,
-  rediLocationNames,
+  MENTEE_COUNT_CAPACITY_OPTIONS,
+  REDI_LOCATION_NAMES,
 } from '@talent-connect/shared-config'
 import { RediLocation } from '@talent-connect/shared-types'
 import { ReadMenteeCount } from '../molecules'
@@ -30,7 +30,7 @@ const menteeCountExplanation = (amount: number) => {
   }
 }
 
-const formMenteeCountCapacityOptions = menteeCountCapacityOptions.map(
+const formMenteeCountCapacityOptions = MENTEE_COUNT_CAPACITY_OPTIONS.map(
   (option) => ({
     value: option,
     label: `${option} ${menteeCountExplanation(option)}`,
@@ -99,7 +99,7 @@ const EditableMenteeCount = ({ profile, profileSaveStart }: any) => {
         {...formik}
       >
         Only let mentees from my own city/location apply for mentorship (i.e.
-        people in {rediLocationNames[rediLocation as RediLocation]})
+        people in {REDI_LOCATION_NAMES[rediLocation as RediLocation]})
       </Checkbox.Form>
     </Editable>
   )

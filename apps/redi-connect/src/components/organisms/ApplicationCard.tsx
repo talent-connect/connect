@@ -9,7 +9,7 @@ import { Avatar } from '../organisms'
 import { useHistory } from 'react-router-dom'
 
 import './ApplicationCard.scss'
-import { rediLocationNames } from '@talent-connect/shared-config'
+import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 
 interface Props {
   application: RedMatch & { createdAt?: string }
@@ -39,7 +39,7 @@ const ApplicationCard = ({ application }: Props) => {
             {applicationUser && (
               <span>
                 {applicationUser.firstName} {applicationUser.lastName} (in{' '}
-                {rediLocationNames[applicationUser.rediLocation]})
+                {REDI_LOCATION_NAMES[applicationUser.rediLocation]})
               </span>
             )}
           </Columns.Column>

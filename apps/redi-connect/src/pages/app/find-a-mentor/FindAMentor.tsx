@@ -16,11 +16,7 @@ import { connect } from 'react-redux'
 import { RootState } from '../../../redux/types'
 import { LoggedIn } from '../../../components/templates'
 
-import {
-  categoriesIdToLabelMap,
-  categories,
-  rediLocationNames,
-} from '@talent-connect/shared-config'
+import { CATEGORIES, REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import './FindAMentor.scss'
 import { toggleValueInArray } from './utils'
 import {
@@ -31,7 +27,7 @@ import {
   withDefault,
 } from 'use-query-params'
 
-const filterCategories = categories.map((category) => ({
+const filterCategories = CATEGORIES.map((category) => ({
   value: category.id,
   label: category.label,
 }))
@@ -134,10 +130,10 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
     label: language,
   }))
 
-  const filterRediLocations = Object.keys(rediLocationNames).map(
+  const filterRediLocations = Object.keys(REDI_LOCATION_NAMES).map(
     (location) => ({
       value: location,
-      label: rediLocationNames[location as RediLocation] as string,
+      label: REDI_LOCATION_NAMES[location as RediLocation] as string,
     })
   )
 
@@ -224,7 +220,7 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
               <FilterTag
                 key={catId}
                 id={catId}
-                label={categoriesIdToLabelMap[catId]}
+                label={CATEGORIES[catId]}
                 onClickHandler={(item) => toggleFilters(topics, 'topics', item)}
               />
             ))}
@@ -244,7 +240,7 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
                   <FilterTag
                     key={locId}
                     id={locId}
-                    label={rediLocationNames[locId as RediLocation] as string}
+                    label={REDI_LOCATION_NAMES[locId as RediLocation] as string}
                     onClickHandler={(item) =>
                       toggleFilters(locations, 'locations', item)
                     }

@@ -16,16 +16,18 @@ import {
   FormSubmitResult,
 } from '@talent-connect/shared-types'
 import { useFormik, FormikHelpers } from 'formik'
-import { mentoringSessionDurationOptions } from '@talent-connect/shared-config'
+import {
+  MentoringSessionDurationOption,
+  MENTORING_SESSION_DURATION_OPTIONS,
+} from '@talent-connect/shared-config'
 import { mentoringSessionsCreateStart } from '../../../redux/mentoringSessions/actions'
 import './MSessions.scss'
 
-const formMentoringSessionDurationOptions = mentoringSessionDurationOptions.map(
-  (sesstionDuration) => ({
+const formMentoringSessionDurationOptions =
+  MENTORING_SESSION_DURATION_OPTIONS.map((sesstionDuration) => ({
     value: sesstionDuration,
     label: `${sesstionDuration} min`,
-  })
-)
+  }))
 
 interface AddSessionProps {
   onClickHandler: Function
@@ -41,7 +43,7 @@ const AddSession = ({ onClickHandler }: AddSessionProps) => (
 
 interface FormValues {
   date: Date
-  minuteDuration?: number
+  minuteDuration?: MentoringSessionDurationOption
 }
 
 const initialFormValues: FormValues = {
@@ -52,7 +54,7 @@ const validationSchema = Yup.object({
   date: Yup.date().required().label('Date'),
   minuteDuration: Yup.number()
     .required('Please select the duration of the session.')
-    .oneOf(mentoringSessionDurationOptions, 'Please select a duration'),
+    .oneOf([...MENTORING_SESSION_DURATION_OPTIONS], 'Please select a duration'),
 })
 
 interface MSessions {
@@ -69,9 +71,8 @@ const MSessions = ({
   mentoringSessionsCreateStart,
 }: MSessions) => {
   const [showAddSession, setShowAddSession] = useState(false)
-  const [submitResult, setSubmitResult] = useState<FormSubmitResult>(
-    'notSubmitted'
-  )
+  const [submitResult, setSubmitResult] =
+    useState<FormSubmitResult>('notSubmitted')
 
   const submitForm = async (
     values: FormValues,
@@ -81,7 +82,9 @@ const MSessions = ({
     try {
       const mentoringSession: RedMentoringSession = {
         date: values.date,
-        minuteDuration: Number(values.minuteDuration),
+        minuteDuration: Number(
+          values.minuteDuration
+        ) as MentoringSessionDurationOption,
         menteeId: menteeId,
       }
       await mentoringSessionsCreateStart(mentoringSession)
