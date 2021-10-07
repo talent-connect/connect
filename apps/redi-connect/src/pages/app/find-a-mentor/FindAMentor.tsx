@@ -26,6 +26,7 @@ import {
   BooleanParam,
   withDefault,
 } from 'use-query-params'
+import { objectKeys } from '@talent-connect/typescript-utilities'
 
 const filterCategories = CATEGORIES.map((category) => ({
   value: category.id,
@@ -130,7 +131,7 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
     label: language,
   }))
 
-  const filterRediLocations = Object.keys(REDI_LOCATION_NAMES).map(
+  const filterRediLocations = objectKeys(REDI_LOCATION_NAMES).map(
     (location) => ({
       value: location,
       label: REDI_LOCATION_NAMES[location as RediLocation] as string,

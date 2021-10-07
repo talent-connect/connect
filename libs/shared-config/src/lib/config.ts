@@ -1,10 +1,10 @@
 import { RediLocation } from '@talent-connect/shared-types'
 
-export const REDI_LOCATION_NAMES: { [K in RediLocation]?: string } = {
+export const REDI_LOCATION_NAMES = {
   berlin: 'Berlin',
   munich: 'Munich',
   nrw: 'NRW',
-}
+} as const
 
 export const CATEGORY_GROUPS = {
   softwareEngineering: '👩‍💻 Software Engineering',

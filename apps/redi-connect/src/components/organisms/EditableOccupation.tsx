@@ -15,6 +15,7 @@ import { FormikValues, useFormik } from 'formik'
 import { MENTEE_OCCUPATION_CATEGORY } from '@talent-connect/shared-config'
 import { ReadOccupation } from '../molecules'
 import { RedProfile } from '@talent-connect/shared-types'
+import { objectKeys } from '@talent-connect/typescript-utilities'
 
 const formMenteeOccupationCategories = Object.entries(
   MENTEE_OCCUPATION_CATEGORY
@@ -52,7 +53,7 @@ const validationSchema = Yup.object({
     is: 'mentee',
     then: Yup.string()
       .required()
-      .oneOf(Object.keys(MENTEE_OCCUPATION_CATEGORY))
+      .oneOf(objectKeys(MENTEE_OCCUPATION_CATEGORY))
       .label('Current occupation'),
   }),
   mentee_occupationJob_placeOfEmployment: Yup.string()
