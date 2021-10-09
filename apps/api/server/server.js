@@ -44,9 +44,9 @@ app.get(
 
     if (authToken === secretToken) {
       sendAllJobs()
-      return res.send({ result: 'ok' })
+      return res.send({ result: 'email-jobs-queued' })
     }
-    return res.send({ result: 'sick job, bro' })
+    return res.send({ result: 'nope, wrong pass bro' })
   }
 )
 
