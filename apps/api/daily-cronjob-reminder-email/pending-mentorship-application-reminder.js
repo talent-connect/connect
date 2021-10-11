@@ -29,8 +29,7 @@ module.exports = {
       switchMap((redMatches) => from(redMatches)),
       map((redMatch) => redMatch.toJSON()),
       filterForExistingMentorOrMentee(),
-      // filterOnlyXDayOldMatches(6),
-      take(5),
+      filterOnlyXDayOldMatches(6),
       doSendPendingMentorshipApplicationReminderEmailToMentor(),
       tap((redMatch) => console.log(`pendingMentorshipApplicationReminder:`))
     )

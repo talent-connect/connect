@@ -30,8 +30,7 @@ module.exports = {
       switchMap((redMatches) => from(redMatches)),
       map((redMatch) => redMatch.toJSON()),
       filterForExistingMentorOrMentee(),
-      //filterOnlyXDayOldMatches(10),
-      take(10),
+      filterOnlyXDayOldMatches(10),
       fetchAssignRelatedMentoringSessions(),
       filter((match) => match.mentoringSessions.length === 0),
       doSendNoMentoringSessionLoggedYetEmailToMentee(),
@@ -51,7 +50,7 @@ module.exports = {
       map((redMatch) => redMatch.toJSON()),
       filterForExistingMentorOrMentee(),
       // filterOnlyXDayOldMatches(30),
-
+      take(5),
       fetchAssignRelatedMentoringSessions(),
       filter((match) => match.mentoringSessions.length === 0),
       doSendNoMentoringSessionLoggedYetSecondReminderEmailToMentee(),

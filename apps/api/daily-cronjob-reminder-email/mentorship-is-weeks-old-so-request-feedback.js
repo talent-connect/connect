@@ -28,8 +28,7 @@ module.exports = {
       switchMap((redMatches) => from(redMatches)),
       map((redMatch) => redMatch.toJSON()),
       filterForExistingMentorOrMentee(),
-      // filterOnlyXDayOldMatches(6 * 7),
-      take(10),
+      filterOnlyXDayOldMatches(6 * 7),
       doSendMentorshipIsWeeksOldSoRequestFeedbackEmailToMentor(),
       doSendMentorshipIsWeeksOldSoRequestFeedbackEmailToMentee(),
       tap((redMatch) => console.log(`mentorshipIsWeeksOldSoRequestFeedback:`))

@@ -2,7 +2,7 @@ const { DateTime } = require('luxon')
 const app = require('../server/server.js')
 const Rx = require('rxjs')
 
-const { bindNodeCallback, from } = Rx
+const { bindNodeCallback, from, concat } = Rx
 const {
   map,
   mapTo,
@@ -32,28 +32,16 @@ const {
 module.exports = async function sendAllReminderEmails() {
   // menteeNotSentApplicationAfterActivation()
 
-  noMentoringSessionLoggedYet()
-    .pipe(
-      tap(null, null, () => console.log('1 done')),
-      exhaustMap(() => noMentoringSessionLoggedYetSecondReminder()),
-      tap(null, null, () => console.log('2 done')),
-      exhaustMap(() => mentorshipIsWeeksOldSoRequestFeedback()),
-      tap(null, null, () => console.log('3 done')),
-      exhaustMap(() => pendingMentorshipApplicationReminder()),
-      tap(null, null, () => console.log('4 done'))
-    )
-    .subscribe(
-      (p) => console.log('next'),
-      null,
-      () => console.log('complete')
-    )
-  // .pipe(
-  //   switchMapTo(noMentoringSessionLoggedYetSecondReminder()),
-  //   switchMapTo(mentorshipIsWeeksOldSoRequestFeedback()),
-  //   switchMapTo(pendingMentorshipApplicationReminder())
-  // )
-  // .subscribe()
-}
+  concat(
+    noMentoringSessionLoggedYet(),
+    noMentoringSessionLoggedYetSecondReminder(),
+    mentorshipIsWeeksOldSoRequestFeedback(),
+    pendingMentorshipApplicationReminder()
+  ).subscribe(
+    () => console.log('next'),
+    null,
+    () => console.log('done')
+  )
 
 // What triggers me?
 // Mentee user has _not_ sent a mentorship application to a mentor within 7 days after activation
