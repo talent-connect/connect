@@ -18,7 +18,7 @@ const convertTemplateToHtml = (templateIdentifier) => {
   const convertTemplate = fs.readFileSync(
     path.resolve(
       __dirname,
-      'daily-send-email-job-templates',
+      'daily-cronjob-reminder-email-templates',
       `${templateIdentifier}.mjml`
     ),
     'utf-8'
@@ -210,9 +210,99 @@ function sendNoMentoringSessionLoggedYetSecondReminderEmailToMentee({
   })
 }
 
+function sendMentorshipIsWeeksOldSoRequestFeedbackEmailToMentor({
+  recipient,
+  menteeFirstName,
+  mentorFirstName,
+  matchMadeActiveOn,
+}) {
+  const parsedEmail = convertTemplateToHtml(
+    'mentorship-is-weeks-old-so-request-feedback_mentor'
+  )
+  const html = parsedEmail
+    .replace(/\${menteeFirstName}/g, menteeFirstName)
+    .replace(/\${mentorFirstName}/g, mentorFirstName)
+    .replace(
+      /\${matchMadeActiveOn}/g,
+      matchMadeActiveOn
+        .setZone('Europe/Berlin')
+        .setLocale('en-GB')
+        .toLocaleString(DateTime.DATE_FULL)
+    )
+  return sendMjmlEmailFactory({
+    to: recipient,
+    subject:
+      'Checking in: We’d love to hear about your mentorship, ' +
+      mentorFirstName,
+
+    html: html,
+  })
+}
+
+function sendMentorshipIsWeeksOldSoRequestFeedbackEmailToMentee({
+  recipient,
+  menteeFirstName,
+  mentorFirstName,
+  matchMadeActiveOn,
+}) {
+  const parsedEmail = convertTemplateToHtml(
+    'mentorship-is-weeks-old-so-request-feedback_mentee'
+  )
+  const html = parsedEmail
+    .replace(/\${menteeFirstName}/g, menteeFirstName)
+    .replace(/\${mentorFirstName}/g, mentorFirstName)
+    .replace(
+      /\${matchMadeActiveOn}/g,
+      matchMadeActiveOn
+        .setZone('Europe/Berlin')
+        .setLocale('en-GB')
+        .toLocaleString(DateTime.DATE_FULL)
+    )
+  return sendMjmlEmailFactory({
+    to: recipient,
+    subject:
+      'Checking in: We’d love to hear about your mentorship, ' +
+      menteeFirstName,
+    html: html,
+  })
+}
+
+function sendPendingMentorshipApplicationReminderEmailToMentor({
+  recipient,
+  menteeFirstName,
+  menteeLastName,
+  mentorFirstName,
+  matchRequestedOn,
+}) {
+  const parsedEmail = convertTemplateToHtml(
+    'pending-mentorship-application-reminder_mentor'
+  )
+  const html = parsedEmail
+    .replace(/\${menteeFirstName}/g, menteeFirstName)
+    .replace(/\${menteeLastName}/g, menteeLastName)
+    .replace(/\${mentorFirstName}/g, mentorFirstName)
+    .replace(
+      /\${matchRequestedOn}/g,
+      matchRequestedOn
+        .setZone('Europe/Berlin')
+        .setLocale('en-GB')
+        .toLocaleString(DateTime.DATE_FULL)
+    )
+  return sendMjmlEmailFactory({
+    to: recipient,
+    subject:
+      `Hey ${mentorFirstName}, ${menteeFirstName} ${menteeLastName} has ` +
+      `applied to you on ReDI Connect!`,
+    html: html,
+  })
+}
+
 module.exports = {
   sendNoMentoringSessionLoggedYetEmailToMentor,
   sendNoMentoringSessionLoggedYetEmailToMentee,
   sendNoMentoringSessionLoggedYetSecondReminderEmailToMentor,
   sendNoMentoringSessionLoggedYetSecondReminderEmailToMentee,
+  sendMentorshipIsWeeksOldSoRequestFeedbackEmailToMentor,
+  sendMentorshipIsWeeksOldSoRequestFeedbackEmailToMentee,
+  sendPendingMentorshipApplicationReminderEmailToMentor,
 }

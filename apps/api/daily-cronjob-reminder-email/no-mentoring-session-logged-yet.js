@@ -9,6 +9,7 @@ const {
   switchMap,
   mergeMap,
   filter,
+  take,
   tap,
 } = require('rxjs/operators')
 
@@ -17,40 +18,47 @@ const {
   sendNoMentoringSessionLoggedYetEmailToMentor,
   sendNoMentoringSessionLoggedYetSecondReminderEmailToMentee,
   sendNoMentoringSessionLoggedYetSecondReminderEmailToMentor,
-} = require('../lib/email/daily-send-email-job')
+} = require('../lib/email/daily-cronjob-reminder-email')
 
 module.exports = {
   // No sessions logged within 10 days
   noMentoringSessionLoggedYet: function () {
     return redMatchFind({
-      status: 'accepted',
+      where: { status: 'accepted' },
       include: ['mentor', 'mentee'],
     }).pipe(
       switchMap((redMatches) => from(redMatches)),
       map((redMatch) => redMatch.toJSON()),
       filterForExistingMentorOrMentee(),
-      filterOnlyXDayOldMatches(10),
+      //filterOnlyXDayOldMatches(10),
+      take(10),
       fetchAssignRelatedMentoringSessions(),
       filter((match) => match.mentoringSessions.length === 0),
       doSendNoMentoringSessionLoggedYetEmailToMentee(),
-      doSendNoMentoringSessionLoggedYetEmailToMentor()
+      doSendNoMentoringSessionLoggedYetEmailToMentor(),
+      tap((redMatch) =>
+        console.log(`noMentoringSessionLoggedYet: sent reminder`)
+      )
     )
   },
   // No sessions logged within 30 days
   noMentoringSessionLoggedYetSecondReminder: function () {
     return redMatchFind({
-      status: 'accepted',
+      where: { status: 'accepted' },
       include: ['mentor', 'mentee'],
     }).pipe(
       switchMap((redMatches) => from(redMatches)),
       map((redMatch) => redMatch.toJSON()),
       filterForExistingMentorOrMentee(),
-      filterOnlyXDayOldMatches(30),
+      // filterOnlyXDayOldMatches(30),
+
       fetchAssignRelatedMentoringSessions(),
       filter((match) => match.mentoringSessions.length === 0),
       doSendNoMentoringSessionLoggedYetSecondReminderEmailToMentee(),
       doSendNoMentoringSessionLoggedYetSecondReminderEmailToMentor(),
-      tap(console.log)
+      tap((redMatch) =>
+        console.log(`noMentoringSessionLoggedYetSecondReminder: sent reminder`)
+      )
     )
   },
 }

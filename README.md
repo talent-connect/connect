@@ -43,10 +43,6 @@ Use trunk-based branching - create feature/bugfix/docs/refactor/blabla branches 
 
 See the [Onboarding Checklist](https://github.com/talent-connect/connect/wiki#onboarding-checklist) and [Workflow for design tasks](https://github.com/talent-connect/connect/wiki#onboarding-checklist) in our Wiki.
 
-## ReDI Connect feature documentation
-
-- [Daily job to send notification emails to users](./DAILY-SEND-EMAIL-JOB-DOCS.md)
-
 ## Getting started in depth
 
 ## Guide to the repo and working on it
@@ -54,6 +50,8 @@ See the [Onboarding Checklist](https://github.com/talent-connect/connect/wiki#on
 ## Editor setup
 
 ## Good to know
+
+We send out automated reminder emails to ReDI Connect mentor and mentee users, for things like "you've both been in an active mentorship for 10 days, no mentoring sessions have been logged yet, please start logging them". See [Daily job to send notification emails to users](./DAILY-SEND-EMAIL-JOB-DOCS.md) for a full list of automated reminder emails.
 
 ## Manual testing
 

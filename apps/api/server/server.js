@@ -20,7 +20,7 @@ const { default: clsx } = require('clsx')
 
 var app = (module.exports = loopback())
 
-const sendAllJobs = require('../daily-send-email-job/index.js')
+const sendAllReminderEmails = require('../daily-cronjob-reminder-email/index.js')
 
 app.start = function () {
   // start the web server
@@ -36,14 +36,15 @@ app.start = function () {
 }
 
 app.get(
-  '/secret-endpoint-that-will-be-contacted-by-autocode-to-trigger-automated-emails',
+  '/secret-endpoint-that-will-be-contacted-by-autocode-to-trigger-automated-reminder-emails',
   (req, res) => {
-    const secretToken = process.env.DAILY_SEND_EMAIL_JOB_SECRET_TOKEN
+    const secretToken =
+      process.env.DAILY_CRONJOB_SEND_REMINDER_EMAIL_SECRET_TOKEN
     const authToken = req.query['auth-token']
     console.log(authToken)
 
     if (authToken === secretToken) {
-      sendAllJobs()
+      sendAllReminderEmails()
       return res.send({ result: 'email-jobs-queued' })
     }
     return res.send({ result: 'nope, wrong pass bro' })

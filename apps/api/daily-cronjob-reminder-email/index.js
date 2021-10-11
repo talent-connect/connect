@@ -7,6 +7,8 @@ const {
   map,
   mapTo,
   switchMap,
+  exhaustMap,
+  switchMapTo,
   mergeMap,
   tap,
   filter,
@@ -17,13 +19,40 @@ const {
   noMentoringSessionLoggedYetSecondReminder,
 } = require('./no-mentoring-session-logged-yet')
 
+const {
+  mentorshipIsWeeksOldSoRequestFeedback,
+} = require('./mentorship-is-weeks-old-so-request-feedback')
+
+const {
+  pendingMentorshipApplicationReminder,
+} = require('./pending-mentorship-application-reminder.js')
+
 // I'll be triggered once a day by Autocode contacting
 // my endpoint.
-module.exports = async function sendAllJobs() {
+module.exports = async function sendAllReminderEmails() {
   // menteeNotSentApplicationAfterActivation()
 
-  // noMentoringSessionLoggedYet().subscribe()
-  noMentoringSessionLoggedYetSecondReminder().subscribe()
+  noMentoringSessionLoggedYet()
+    .pipe(
+      tap(null, null, () => console.log('1 done')),
+      exhaustMap(() => noMentoringSessionLoggedYetSecondReminder()),
+      tap(null, null, () => console.log('2 done')),
+      exhaustMap(() => mentorshipIsWeeksOldSoRequestFeedback()),
+      tap(null, null, () => console.log('3 done')),
+      exhaustMap(() => pendingMentorshipApplicationReminder()),
+      tap(null, null, () => console.log('4 done'))
+    )
+    .subscribe(
+      (p) => console.log('next'),
+      null,
+      () => console.log('complete')
+    )
+  // .pipe(
+  //   switchMapTo(noMentoringSessionLoggedYetSecondReminder()),
+  //   switchMapTo(mentorshipIsWeeksOldSoRequestFeedback()),
+  //   switchMapTo(pendingMentorshipApplicationReminder())
+  // )
+  // .subscribe()
 }
 
 // What triggers me?
