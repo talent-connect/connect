@@ -10,14 +10,18 @@ import { EditableJobPostings } from '../../../components/organisms/company-profi
 import { LoggedIn } from '../../../components/templates'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
 import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
-import { TpCompanyProfile, TpCompanyProfileState } from '@talent-connect/shared-types'
-import { OnboardingSteps } from './TpCompanyProfileOnboardingSteps';
+import { useTpJobListingAllQuery } from '../../../react-query/use-tpjoblisting-all-query'
+import {
+  TpCompanyProfile,
+  TpCompanyProfileState,
+} from '@talent-connect/shared-types'
+import { OnboardingSteps } from './TpCompanyProfileOnboardingSteps'
 
 function isProfileComplete(profile: Partial<TpCompanyProfile>): boolean {
   const requiredSectionsComplete = [
     EditableNamePhotoLocation.isSectionFilled,
     EditableContact.isSectionFilled,
-    EditableDetails.isWebsiteSectionFilled
+    EditableDetails.isWebsiteSectionFilled,
   ]
     .map((checkerFn) => checkerFn(profile))
     .every((p) => p)
@@ -27,11 +31,13 @@ function isProfileComplete(profile: Partial<TpCompanyProfile>): boolean {
 
 function SendProfileForReviewButton() {
   const { data: profile } = useTpCompanyProfileQuery()
+  const { data: jobListings } = useTpJobListingAllQuery()
   const mutation = useTpCompanyProfileUpdateMutation()
 
   const enabled =
-    profile?.state === 'drafting-profile'
-  // && isProfileComplete(profile)
+    profile?.state === 'drafting-profile' &&
+    isProfileComplete(profile) &&
+    jobListings?.length > 0
 
   const onClick = useCallback(() => {
     if (!window.confirm('Would you like to submit your profile for review?'))
@@ -61,16 +67,18 @@ const CallToActionButton = ({
   profile: Partial<TpCompanyProfile>
 }) =>
   profile &&
-    profile.state &&
-    [
-      TpCompanyProfileState['drafting-profile'],
-      TpCompanyProfileState['submitted-for-review'],
-    ].includes(profile.state as any) ? (
+  profile.state &&
+  [
+    TpCompanyProfileState['drafting-profile'],
+    TpCompanyProfileState['submitted-for-review'],
+  ].includes(profile.state as any) ? (
     <SendProfileForReviewButton />
   ) : null
 
 export function MeCompany() {
   const { data: profile } = useTpCompanyProfileQuery()
+  const { data: jobListings } = useTpJobListingAllQuery()
+
   const [isJobPostingFormOpen, setIsJobPostingFormOpen] = useState(false)
 
   return (
@@ -85,8 +93,17 @@ export function MeCompany() {
           />
           <Content size="small">
             <strong>Great, your profile is approved!</strong> You can now{' '}
-            <span onClick={() => setIsJobPostingFormOpen(true)} style={{ textDecoration: 'underline', fontWeight: 800, cursor: 'pointer' }}>create a job posting</span> or{' '}
-            <a href="/app/browse">browse our talent pool</a>!
+            <span
+              onClick={() => setIsJobPostingFormOpen(true)}
+              style={{
+                textDecoration: 'underline',
+                fontWeight: 800,
+                cursor: 'pointer',
+              }}
+            >
+              create a job posting
+            </span>{' '}
+            or <a href="/app/browse">browse our talent pool</a>!
           </Content>
         </Notification>
       ) : null}
@@ -100,13 +117,20 @@ export function MeCompany() {
             <div style={{ textAlign: 'right', marginBottom: '1.5rem' }}>
               <CallToActionButton profile={profile} />
             </div>
-            <OnboardingSteps profile={profile} isProfileComplete={isProfileComplete(profile)} />
+            <OnboardingSteps
+              profile={profile}
+              isProfileComplete={isProfileComplete(profile)}
+              hasJobListing={jobListings?.length > 0}
+            />
           </div>
           <EditableDetails profile={profile} />
           <EditableContact profile={profile} />
         </Columns.Column>
       </Columns>
-      <EditableJobPostings isJobPostingFormOpen={isJobPostingFormOpen} setIsJobPostingFormOpen={setIsJobPostingFormOpen} />
+      <EditableJobPostings
+        isJobPostingFormOpen={isJobPostingFormOpen}
+        setIsJobPostingFormOpen={setIsJobPostingFormOpen}
+      />
     </LoggedIn>
   )
 }

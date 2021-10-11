@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import classnames from 'clsx'
 import { Element } from 'react-bulma-components'
 
@@ -8,31 +8,39 @@ import { ReactComponent as CheckmarkBorderOnlyImage } from './checkmark-border-o
 import { ReactComponent as CheckmarkImage } from './checkmark.svg'
 import { ReactComponent as StepPendingImage } from './pending.svg'
 
-import { TpCompanyProfile } from '@talent-connect/shared-types';
+import { TpCompanyProfile } from '@talent-connect/shared-types'
 
 const steps = [
   { number: 1, label: 'Complete your profile' },
-  { number: 2, label: 'Send profile to ReDI' },
-  { number: 3, label: 'Profile approval' },
+  { number: 2, label: 'Post a job' },
+  { number: 3, label: 'Send profile to ReDI' },
+  { number: 4, label: 'Profile approval' },
 ]
 
 function determineCurrentStep(
   profile: Partial<TpCompanyProfile>,
-  isProfileComplete: boolean
+  isProfileComplete: boolean,
+  hasJobListing: boolean
 ): [currentStep: number, stepStatus: 'todo' | 'pending' | 'complete'] {
   if (profile.state === 'drafting-profile') {
-    return isProfileComplete ? [2, 'todo'] : [1, 'todo']
+    if (!isProfileComplete) return [1, 'todo']
+    if (!hasJobListing) return [2, 'todo']
+    return [3, 'todo']
   }
   if (profile.state === 'submitted-for-review') {
-    return [3, 'pending']
+    return [4, 'pending']
   }
   if (profile.state === 'profile-approved') {
-    return [3, 'complete']
+    return [4, 'complete']
   }
 }
 
-export function OnboardingSteps({ profile, isProfileComplete }) {
-  const currentStep = determineCurrentStep(profile, isProfileComplete)
+export function OnboardingSteps({ profile, isProfileComplete, hasJobListing }) {
+  const currentStep = determineCurrentStep(
+    profile,
+    isProfileComplete,
+    hasJobListing
+  )
 
   return (
     <div className="onboarding-steps">
