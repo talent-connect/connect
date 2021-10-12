@@ -54,7 +54,7 @@ export default function LocationPicker() {
                 {t('loggedOutArea.homePage.hero.about.content2')}
               </Element>
               <Content>
-                <Heading size="medium">Pick your city:</Heading>
+                <Heading size="medium">Pick your location:</Heading>
               </Content>
               {Object.entries(rediLocationNames).map(([key, value]) => (
                 <Button to={`https://connect.${key}.redi-school.org`}>

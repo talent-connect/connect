@@ -16,7 +16,7 @@ const DecoratedHeadline = ({ title, headline }: Props) => {
         textAlignment="centered"
         textTransform="uppercase"
         textSize={6}
-        responsive={{ mobile: { textSize: { value: 7 } } }}
+        responsive={{ mobile: { textSize: { value: 6 } } }}
       >
         {title}
       </Element>
