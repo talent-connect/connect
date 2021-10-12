@@ -23,7 +23,8 @@ const addFullNamePropertyForAdminSearch = (ctx) => {
 
   if (firstName || lastName) {
     const merged = `${firstName ? firstName + ' ' : ''}${lastName || ''}`
-    thingToUpdate.loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName = merged
+    thingToUpdate.loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName =
+      merged
   }
 }
 
@@ -126,83 +127,82 @@ module.exports = function (TpJobseekerProfile) {
     pendingReviewAcceptOrDecline('DECLINE')(data, options, callback)
   }
 
-  const pendingReviewAcceptOrDecline = (acceptDecline) => async (
-    data,
-    options,
-    callback
-  ) => {
-    if (!_.includes(['ACCEPT', 'DECLINE'], acceptDecline)) {
-      throw new Error('Invalid acceptDecline parameter')
-    }
-    const { tpJobseekerProfileId } = data
-    console.log(data)
-    const jobseekerRole = await app.models.Role.findOne({
-      where: { name: 'jobseeker' },
-    })
-    const findTpJobseekerProfile = switchMap(({ tpJobseekerProfileId }) =>
-      loopbackModelMethodToObservable(
-        TpJobseekerProfile,
-        'findById'
-      )(tpJobseekerProfileId)
-    )
-    const validateCurrentState = switchMap((tpJobseekerProfileInst) => {
-      const state = tpJobseekerProfileInst.toJSON().state
-      if (state === 'submitted-for-review') {
-        return of(tpJobseekerProfileInst)
-      } else {
-        throw new Error('Invalid current state (is not "submitted-for-review")')
+  const pendingReviewAcceptOrDecline =
+    (acceptDecline) => async (data, options, callback) => {
+      if (!_.includes(['ACCEPT', 'DECLINE'], acceptDecline)) {
+        throw new Error('Invalid acceptDecline parameter')
       }
-    })
-    const setNewTpJobseekerProfileProperties = switchMap(
-      (tpJobseekerProfileInst) =>
-        loopbackModelMethodToObservable(
-          tpJobseekerProfileInst,
-          'updateAttributes'
-        )(
-          currentUserStateToPostReviewUpdates[acceptDecline][
-            tpJobseekerProfileInst.toJSON().state
-          ]
-        )
-    )
-    const createRoleMapping = switchMap((tpJobseekerProfileInst) => {
-      const { redUserId } = tpJobseekerProfileInst.toJSON()
-      jobseekerRole.principals.create({
-        principalType: app.models.RoleMapping.USER,
-        principalId: redUserId,
+      const { tpJobseekerProfileId } = data
+      const jobseekerRole = await app.models.Role.findOne({
+        where: { name: 'jobseeker' },
       })
-      return of(tpJobseekerProfileInst)
-    })
-
-    const sendEmailUserReviewedAcceptedOrDenied = switchMap(
-      (tpJobseekerProfileInst) => {
-        const { contactEmail, firstName } = tpJobseekerProfileInst.toJSON()
-        const stateToEmailFuncMap = {
-          ACCEPT: sendTpJobseekerjobseekerProfileApprovedInstructToSubmitJobPreferencesEmail,
-          DECLINE: sendTpJobseekerjobseekerProfileNotApprovedYet,
+      const findTpJobseekerProfile = switchMap(({ tpJobseekerProfileId }) =>
+        loopbackModelMethodToObservable(
+          TpJobseekerProfile,
+          'findById'
+        )(tpJobseekerProfileId)
+      )
+      const validateCurrentState = switchMap((tpJobseekerProfileInst) => {
+        const state = tpJobseekerProfileInst.toJSON().state
+        if (state === 'submitted-for-review') {
+          return of(tpJobseekerProfileInst)
+        } else {
+          throw new Error(
+            'Invalid current state (is not "submitted-for-review")'
+          )
         }
-        const emailFunc = stateToEmailFuncMap[acceptDecline]
-        return emailFunc({
-          recipient: contactEmail,
-          firstName,
+      })
+      const setNewTpJobseekerProfileProperties = switchMap(
+        (tpJobseekerProfileInst) =>
+          loopbackModelMethodToObservable(
+            tpJobseekerProfileInst,
+            'updateAttributes'
+          )(
+            currentUserStateToPostReviewUpdates[acceptDecline][
+              tpJobseekerProfileInst.toJSON().state
+            ]
+          )
+      )
+      const createRoleMapping = switchMap((tpJobseekerProfileInst) => {
+        const { redUserId } = tpJobseekerProfileInst.toJSON()
+        jobseekerRole.principals.create({
+          principalType: app.models.RoleMapping.USER,
+          principalId: redUserId,
         })
-      }
-    )
+        return of(tpJobseekerProfileInst)
+      })
 
-    Rx.of({ tpJobseekerProfileId })
-      .pipe(
-        findTpJobseekerProfile,
-        validateCurrentState,
-        setNewTpJobseekerProfileProperties,
-        createRoleMapping,
-        sendEmailUserReviewedAcceptedOrDenied
-      )
-      .subscribe(
+      const sendEmailUserReviewedAcceptedOrDenied = switchMap(
         (tpJobseekerProfileInst) => {
-          callback(null, tpJobseekerProfileInst)
-        },
-        (err) => console.log(err)
+          const { contactEmail, firstName } = tpJobseekerProfileInst.toJSON()
+          const stateToEmailFuncMap = {
+            ACCEPT:
+              sendTpJobseekerjobseekerProfileApprovedInstructToSubmitJobPreferencesEmail,
+            DECLINE: sendTpJobseekerjobseekerProfileNotApprovedYet,
+          }
+          const emailFunc = stateToEmailFuncMap[acceptDecline]
+          return emailFunc({
+            recipient: contactEmail,
+            firstName,
+          })
+        }
       )
-  }
+
+      Rx.of({ tpJobseekerProfileId })
+        .pipe(
+          findTpJobseekerProfile,
+          validateCurrentState,
+          setNewTpJobseekerProfileProperties,
+          createRoleMapping,
+          sendEmailUserReviewedAcceptedOrDenied
+        )
+        .subscribe(
+          (tpJobseekerProfileInst) => {
+            callback(null, tpJobseekerProfileInst)
+          },
+          (err) => console.log(err)
+        )
+    }
 
   TpJobseekerProfile.observe('after save', async function (context, next) {
     // Onky continue if this is a brand new user
@@ -274,12 +274,11 @@ module.exports = function (TpJobseekerProfile) {
   //   )
 }
 
-const loopbackModelMethodToObservable = (loopbackModel, modelMethod) => (
-  methodParameter
-) =>
-  Rx.bindNodeCallback(loopbackModel[modelMethod].bind(loopbackModel))(
-    methodParameter
-  )
+const loopbackModelMethodToObservable =
+  (loopbackModel, modelMethod) => (methodParameter) =>
+    Rx.bindNodeCallback(loopbackModel[modelMethod].bind(loopbackModel))(
+      methodParameter
+    )
 
 const currentUserStateToPostReviewUpdates = {
   ACCEPT: {

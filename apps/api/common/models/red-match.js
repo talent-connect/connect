@@ -249,7 +249,6 @@ module.exports = function (RedMatch) {
     const { redMatchId } = data
 
     try {
-      console.log(redMatchId)
       let redMatch = await RedMatch.findById(redMatchId)
 
       redMatch = await redMatch.updateAttributes({

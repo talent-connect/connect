@@ -44,7 +44,6 @@ app.get(
     const secretToken =
       process.env.DAILY_CRONJOB_SEND_REMINDER_EMAIL_SECRET_TOKEN
     const authToken = req.query['auth-token']
-    console.log(authToken)
 
     if (authToken === secretToken) {
       sendAllReminderEmails()
