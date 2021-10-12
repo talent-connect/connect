@@ -1,6 +1,7 @@
 const { DateTime } = require('luxon')
 const app = require('../server/server.js')
 const Rx = require('rxjs')
+const { reminderEmailLogger } = require('../lib/logger.js')
 
 const { bindNodeCallback, from } = Rx
 const {
@@ -31,7 +32,11 @@ module.exports = {
       filterForExistingMentorOrMentee(),
       filterOnlyXDayOldMatches(6),
       doSendPendingMentorshipApplicationReminderEmailToMentor(),
-      tap((redMatch) => console.log(`pendingMentorshipApplicationReminder:`))
+      tap((redMatch) =>
+        reminderEmailLogger.info(
+          `pendingMentorshipApplicationReminder: sent email to mentor ${redMatch.mentor.contactEmail} for match #${redMatch.id}`
+        )
+      )
     )
   },
 }

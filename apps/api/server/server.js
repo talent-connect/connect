@@ -4,6 +4,9 @@ const res = require('dotenv').config({
   path: path.resolve(__dirname, '..', '.env.' + process.env.NODE_ENV),
 })
 
+// required to set up logger
+require('../lib/logger')
+
 var loopback = require('loopback')
 var boot = require('loopback-boot')
 

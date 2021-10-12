@@ -1,6 +1,7 @@
 const { DateTime } = require('luxon')
 const app = require('../server/server.js')
 const Rx = require('rxjs')
+const { reminderEmailLogger } = require('../lib/logger.js')
 
 const { bindNodeCallback, from } = Rx
 const {
@@ -36,7 +37,9 @@ module.exports = {
       doSendNoMentoringSessionLoggedYetEmailToMentee(),
       doSendNoMentoringSessionLoggedYetEmailToMentor(),
       tap((redMatch) =>
-        console.log(`noMentoringSessionLoggedYet: sent reminder`)
+        reminderEmailLogger.info(
+          `noMentoringSessionLoggedYet: sent email to mentor ${redMatch.mentor.contactEmail} and mentee ${redMatch.mentee.contactEmail} for match #${redMatch.id}`
+        )
       )
     )
   },
@@ -49,14 +52,15 @@ module.exports = {
       switchMap((redMatches) => from(redMatches)),
       map((redMatch) => redMatch.toJSON()),
       filterForExistingMentorOrMentee(),
-      // filterOnlyXDayOldMatches(30),
-      take(5),
+      filterOnlyXDayOldMatches(30),
       fetchAssignRelatedMentoringSessions(),
       filter((match) => match.mentoringSessions.length === 0),
       doSendNoMentoringSessionLoggedYetSecondReminderEmailToMentee(),
       doSendNoMentoringSessionLoggedYetSecondReminderEmailToMentor(),
       tap((redMatch) =>
-        console.log(`noMentoringSessionLoggedYetSecondReminder: sent reminder`)
+        reminderEmailLogger.info(
+          `noMentoringSessionLoggedYetSecondReminder: sent email to mentor ${redMatch.mentor.contactEmail} and mentee ${redMatch.mentee.contactEmail} for match #${redMatch.id}`
+        )
       )
     )
   },

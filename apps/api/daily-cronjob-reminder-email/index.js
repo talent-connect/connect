@@ -1,6 +1,7 @@
 const { DateTime } = require('luxon')
 const app = require('../server/server.js')
 const Rx = require('rxjs')
+const { reminderEmailLogger } = require('../lib/logger.js')
 
 const { bindNodeCallback, from, concat } = Rx
 const {
@@ -32,16 +33,16 @@ const {
 module.exports = async function sendAllReminderEmails() {
   // menteeNotSentApplicationAfterActivation()
 
+  reminderEmailLogger.info('sendAllReminderEmails called')
   concat(
     noMentoringSessionLoggedYet(),
     noMentoringSessionLoggedYetSecondReminder(),
     mentorshipIsWeeksOldSoRequestFeedback(),
     pendingMentorshipApplicationReminder()
-  ).subscribe(
-    () => console.log('next'),
-    null,
-    () => console.log('done')
+  ).subscribe(null, null, () =>
+    reminderEmailLogger.info('sendAllReminderEmails done')
   )
+}
 
 // What triggers me?
 // Mentee user has _not_ sent a mentorship application to a mentor within 7 days after activation
