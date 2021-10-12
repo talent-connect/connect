@@ -23,8 +23,8 @@
             you two have started your mentorship already.</mj-text
           >
           <mj-text mj-class="text" padding="0 0 20px 0"
-            >If you have already met, please remind your mentor to log the
-            mentoring sessions that you’ve already had. If you have not yet met
+            >If you have already met, please remind your mentor to log these
+            mentoring sessions. If you have not yet met
             for the first time, please remember to log the sessions once you
             start meeting.</mj-text
           >
@@ -33,9 +33,9 @@
             mentoring journey and please reach out if you have any
             questions.</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0">All the best</mj-text>
+          <mj-text mj-class="text" padding="0 0 20px 0">All the best,</mj-text>
           <mj-text mj-class="text" padding="0 0 20px 0"
-            >Your Mentorship Team</mj-text
+            >Your ReDI Career Support Team</mj-text
           >
         </mj-column>
       </mj-section>
