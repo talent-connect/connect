@@ -20,7 +20,7 @@
             pending.
           </mj-text>
           <mj-text mj-class="text" padding="0 0 20px 0"
-            >That’s why we wanted to follow up whether you have received the
+            >That’s why we wanted to follow up whether you have received this
             application? Sometimes the email notification about an application
             can go to your spam folder.</mj-text
           >
@@ -32,9 +32,9 @@
           <mj-text mj-class="text" padding="0 0 20px 0"
             >Please reach out if we can support you with anything!</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0">All the best</mj-text>
+          <mj-text mj-class="text" padding="0 0 20px 0">All the best,</mj-text>
           <mj-text mj-class="text" padding="0 0 20px 0"
-            >Your Mentorship Team</mj-text
+            >Your ReDI Career Support Team</mj-text
           >
 
           >
