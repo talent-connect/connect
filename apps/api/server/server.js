@@ -54,51 +54,6 @@ app.get(
   }
 )
 
-// function sendAutomatedEmails() {
-//   const referenceDate = new Date()
-//     referenceDate.setHours(2, 0, 0, 0)
-//     const minDate = referenceDate.setDate(referenceDate.getDate() - 7)
-//     const maxDate = referenceDate.setDate(referenceDate.getDate() + 1)
-
-//     const { RedProfile } = app.models
-
-//     RedProfile.find(
-//       {
-//         include: 'mentors',
-//         where: {
-//           userType: 'mentee',
-//           userActivated: true,
-//         },
-//       },
-//       (err, res) => {
-//         try {
-//           res.map((user) => {
-//             const getMentors = user.mentors()
-//             const createdAtGreaterThanMinDate =
-//               Date.parse(user.createdAt) > minDate
-//             const createdAtLessThanMaxDate =
-//               Date.parse(user.createdAt) < maxDate
-
-//             if (
-//               getMentors.length === 0 &&
-//               user.firstName === 'marcuszierke@gmail.com'
-//               createdAtGreaterThanMinDate &&
-//               createdAtLessThanMaxDate
-//             ) {
-//               sendMenteeReminderToApplyToMentorEmail({
-//                 recipient: user.contactEmail,
-//                 menteeFirstName: user.firstName,
-//               })
-//             }
-//           })
-//         } catch (err) {
-//           console.log(`an error occurred: `, err)
-//         }
-//       }
-//     )
-//     res.send('done')
-// }
-
 // Inject current user into context
 app
   .remotes()
