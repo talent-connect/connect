@@ -32,16 +32,16 @@
             ></mj-text
           >
           <mj-text mj-class="text" padding="0 0 20px 0"
-            >If you haven’t started the mentorship yet, may I ask what is the
+            >If you haven’t started the mentorship yet, may we ask what is the
             reason for this? We are always here to support you in any way we
             can.</mj-text
           >
           <mj-text mj-class="text" padding="0 0 20px 0"
             >Please let us know!</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0">All the best</mj-text>
+          <mj-text mj-class="text" padding="0 0 20px 0">All the best,</mj-text>
           <mj-text mj-class="text" padding="0 0 20px 0"
-            >Your Mentorship Team</mj-text
+            >Your ReDI Career Support Team</mj-text
           >
         </mj-column>
       </mj-section>
