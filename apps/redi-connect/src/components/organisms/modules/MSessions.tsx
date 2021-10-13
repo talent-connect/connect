@@ -69,9 +69,8 @@ const MSessions = ({
   mentoringSessionsCreateStart,
 }: MSessions) => {
   const [showAddSession, setShowAddSession] = useState(false)
-  const [submitResult, setSubmitResult] = useState<FormSubmitResult>(
-    'notSubmitted'
-  )
+  const [submitResult, setSubmitResult] =
+    useState<FormSubmitResult>('notSubmitted')
 
   const submitForm = async (
     values: FormValues,
@@ -87,7 +86,7 @@ const MSessions = ({
       await mentoringSessionsCreateStart(mentoringSession)
       setSubmitResult('success')
       setShowAddSession(false)
-      window.location.reload()
+      setTimeout(() => window.location.reload(), 2000)
     } catch (err) {
       setSubmitResult('error')
     } finally {
