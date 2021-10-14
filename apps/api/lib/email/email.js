@@ -160,27 +160,23 @@ const convertTemplateToHtml = (rediLocation, templateString) => {
   return parsedTemplate.html
 }
 
-const sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted = ({
-  recipient,
-  mentorName,
-  menteeName,
-  rediLocation,
-}) => {
-  const rediEmailAdress = 'career@redi-school.org'
-  const sendMenteePendingReviewAcceptedEmailParsed = convertTemplateToHtml(
-    null,
-    'expired-notification-application'
-  )
-  const html = sendMenteePendingReviewAcceptedEmailParsed
-    .replace(/\${mentorName}/g, mentorName)
-    .replace(/\${menteeName}/g, menteeName)
-    .replace(/\${rediEmailAdress}/g, rediEmailAdress)
-  return sendMjmlEmailFactory({
-    to: recipient,
-    subject: `ReDI Connect: mentorship application from ${menteeName} expired`,
-    html: html,
-  })
-}
+const sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted =
+  ({ recipient, mentorName, menteeName, rediLocation }) => {
+    const rediEmailAdress = 'career@redi-school.org'
+    const sendMenteePendingReviewAcceptedEmailParsed = convertTemplateToHtml(
+      null,
+      'expired-notification-application'
+    )
+    const html = sendMenteePendingReviewAcceptedEmailParsed
+      .replace(/\${mentorName}/g, mentorName)
+      .replace(/\${menteeName}/g, menteeName)
+      .replace(/\${rediEmailAdress}/g, rediEmailAdress)
+    return sendMjmlEmailFactory({
+      to: recipient,
+      subject: `ReDI Connect: mentorship application from ${menteeName} expired`,
+      html: html,
+    })
+  }
 
 const sendMenteePendingReviewAcceptedEmail = ({
   recipient,
@@ -332,15 +328,32 @@ const sendMentoringSessionLoggedEmail = ({
   })
 }
 
+const sendMenteeReminderToApplyToMentorEmail = ({
+  recipient,
+  menteeFirstName,
+}) => {
+  const sendMenteeReminderToApplyToMentorEmailParsed = convertTemplateToHtml(
+    null,
+    'apply-to-mentor-reminder-for-mentee'
+  )
+  const html = sendMenteeReminderToApplyToMentorEmailParsed.replace(
+    /\${menteeFirstName}/g,
+    menteeFirstName
+  )
+  return sendMjmlEmailFactory({
+    to: recipient,
+    subject: 'Have you checked out or amazing mentors yet?',
+    html: html,
+  })
+}
+
 const sendMentorCancelledMentorshipNotificationEmail = ({
   recipient,
   firstName,
   rediLocation,
 }) => {
-  const sendMentorCancelledMentorshipNotificationEmailParsed = convertTemplateToHtml(
-    null,
-    'mentorship-cancelation-email-mentee'
-  )
+  const sendMentorCancelledMentorshipNotificationEmailParsed =
+    convertTemplateToHtml(null, 'mentorship-cancelation-email-mentee')
   const html = sendMentorCancelledMentorshipNotificationEmailParsed.replace(
     /\${firstName}/g,
     firstName
@@ -358,10 +371,8 @@ const sendToMentorConfirmationOfMentorshipCancelled = ({
   menteeFullName,
   rediLocation,
 }) => {
-  const sendMentorCancelledMentorshipNotificationEmailParsed = convertTemplateToHtml(
-    null,
-    'mentorship-cancelation-email-mentor'
-  )
+  const sendMentorCancelledMentorshipNotificationEmailParsed =
+    convertTemplateToHtml(null, 'mentorship-cancelation-email-mentor')
   const html = sendMentorCancelledMentorshipNotificationEmailParsed
     .replace(/\${mentorFirstName}/g, mentorFirstName)
     .replace(/\${menteeFullName}/g, menteeFullName)
@@ -479,6 +490,7 @@ module.exports = {
   sendMentorCancelledMentorshipNotificationEmail,
   sendMentorshipRequestReceivedEmail,
   sendMentorshipAcceptedEmail,
+  sendMenteeReminderToApplyToMentorEmail,
   sendMentoringSessionLoggedEmail,
   sendToMentorConfirmationOfMentorshipCancelled,
   sendMentorPendingReviewAcceptedEmail,
@@ -490,4 +502,5 @@ module.exports = {
   sendResetPasswordEmail,
   sendVerificationEmail,
   sendEmailFactory,
+  sendMjmlEmailFactory,
 }
