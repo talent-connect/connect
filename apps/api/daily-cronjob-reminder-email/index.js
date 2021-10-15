@@ -3,7 +3,7 @@ const app = require('../server/server.js')
 const Rx = require('rxjs')
 const { reminderEmailLogger } = require('../lib/logger.js')
 
-const { bindNodeCallback, from, concat } = Rx
+const { bindNodeCallback, from, concat, EMPTY } = Rx
 const {
   map,
   mapTo,
@@ -37,9 +37,16 @@ module.exports = async function sendAllReminderEmails(isDryRun) {
   if (isDryRun) {
     reminderEmailLogger.info('[DRY RUN]')
   }
+
+  // TODO: remove me
+  const shouldSecondReminderBeSent =
+    DateTime.now() >= DateTime.fromISO('2021-11-04')
+
   concat(
     noMentoringSessionLoggedYet(isDryRun)(),
-    noMentoringSessionLoggedYetSecondReminder(isDryRun)(),
+    shouldSecondReminderBeSent
+      ? noMentoringSessionLoggedYetSecondReminder(isDryRun)()
+      : EMPTY,
     mentorshipIsWeeksOldSoRequestFeedback(isDryRun)(),
     pendingMentorshipApplicationReminder(isDryRun)()
   ).subscribe(null, null, () =>
