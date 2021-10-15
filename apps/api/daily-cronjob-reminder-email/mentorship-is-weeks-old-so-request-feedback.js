@@ -21,7 +21,7 @@ const {
 
 module.exports = {
   // Find mentorships that are 6 weeks old (6*7 = 42 days)
-  mentorshipIsWeeksOldSoRequestFeedback: function () {
+  mentorshipIsWeeksOldSoRequestFeedback: (isDryRun) => () => {
     return redMatchFind({
       where: { status: 'accepted' },
       include: ['mentor', 'mentee'],
@@ -30,8 +30,12 @@ module.exports = {
       map((redMatch) => redMatch.toJSON()),
       filterForExistingMentorOrMentee(),
       filterOnlyXDayOldMatches(6 * 7),
-      doSendMentorshipIsWeeksOldSoRequestFeedbackEmailToMentor(),
-      doSendMentorshipIsWeeksOldSoRequestFeedbackEmailToMentee(),
+      isDryRun === false
+        ? doSendMentorshipIsWeeksOldSoRequestFeedbackEmailToMentor()
+        : tap(),
+      isDryRun === false
+        ? doSendMentorshipIsWeeksOldSoRequestFeedbackEmailToMentee()
+        : tap(),
       tap((redMatch) =>
         reminderEmailLogger.info(
           `mentorshipIsWeeksOldSoRequestFeedback: sent email to mentor ${redMatch.mentor.contactEmail} and mentee ${redMatch.mentee.contactEmail} for match #${redMatch.id}`

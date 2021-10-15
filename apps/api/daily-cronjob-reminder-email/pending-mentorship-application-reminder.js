@@ -20,7 +20,7 @@ const {
 
 module.exports = {
   // Find mentorships that are 6 days old and pending
-  pendingMentorshipApplicationReminder: function () {
+  pendingMentorshipApplicationReminder: (isDryRun) => () => {
     return redMatchFind({
       where: {
         status: 'applied',
@@ -31,7 +31,9 @@ module.exports = {
       map((redMatch) => redMatch.toJSON()),
       filterForExistingMentorOrMentee(),
       filterOnlyXDayOldMatches(6),
-      doSendPendingMentorshipApplicationReminderEmailToMentor(),
+      isDryRun === false
+        ? doSendPendingMentorshipApplicationReminderEmailToMentor()
+        : tap(),
       tap((redMatch) =>
         reminderEmailLogger.info(
           `pendingMentorshipApplicationReminder: sent email to mentor ${redMatch.mentor.contactEmail} for match #${redMatch.id}`
