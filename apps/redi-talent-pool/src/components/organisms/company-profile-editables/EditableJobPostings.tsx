@@ -14,7 +14,7 @@ import {
   topSkills,
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import { Columns, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
@@ -27,7 +27,10 @@ import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder
 import { JobListingCard } from '../JobListingCard'
 import JobPlaceholderCardUrl from './job-placeholder-card.svg'
 
-export function EditableJobPostings({ isJobPostingFormOpen, setIsJobPostingFormOpen }) {
+export function EditableJobPostings({
+  isJobPostingFormOpen,
+  setIsJobPostingFormOpen,
+}) {
   const { data: jobListings } = useTpJobListingAllQuery()
   const [isEditing, setIsEditing] = useState(false)
   const [idOfTpJobListingBeingEdited, setIdOfTpJobListingBeingEdited] =

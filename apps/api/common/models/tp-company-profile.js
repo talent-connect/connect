@@ -194,9 +194,7 @@ module.exports = function (TpCompanyProfile) {
           (tpCompanyProfileInst) => {
             const { contactEmail, firstName } = tpCompanyProfileInst.toJSON()
 
-            console.debug({ contactEmail, firstName })
-
-            sendTpCompanyProfileApprovedEmail({
+            return sendTpCompanyProfileApprovedEmail({
               recipient: contactEmail,
               firstName,
             })
