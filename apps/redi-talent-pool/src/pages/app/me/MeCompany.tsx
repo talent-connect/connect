@@ -20,6 +20,7 @@ import { OnboardingSteps } from './TpCompanyProfileOnboardingSteps'
 function isProfileComplete(profile: Partial<TpCompanyProfile>): boolean {
   const requiredSectionsComplete = [
     EditableNamePhotoLocation.isSectionFilled,
+    EditableNamePhotoLocation.isPhotoSelected,
     EditableContact.isSectionFilled,
     EditableDetails.isWebsiteSectionFilled,
   ]
@@ -39,6 +40,10 @@ function SendProfileForReviewButton() {
     isProfileComplete(profile) &&
     jobListings?.length > 0
 
+  const tooltipText = isProfileComplete(profile)
+    ? 'You need to post a job listing before you can send it for review'
+    : 'You need to complete your profile before you can send it for review'
+
   const onClick = useCallback(() => {
     if (!window.confirm('Would you like to submit your profile for review?'))
       return
@@ -50,7 +55,7 @@ function SendProfileForReviewButton() {
     return <Button onClick={onClick}>Send profile to review</Button>
   } else {
     return (
-      <Tooltip title="You need to complete your profile before you can send it for review">
+      <Tooltip title={tooltipText}>
         <span>
           <Button disabled style={{ pointerEvents: 'none' }}>
             Send profile to review
