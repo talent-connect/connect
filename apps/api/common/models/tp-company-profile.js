@@ -6,7 +6,10 @@ const { of } = Rx
 const { switchMap, map } = require('rxjs/operators')
 
 const app = require('../../server/server')
-const { sendTpCompanyVerificationEmail } = require('../../lib/email/tp-email')
+const {
+  sendTpCompanyVerificationEmail,
+  sendTpCompanyProfileApprovedEmail,
+} = require('../../lib/email/tp-email')
 
 const addFullNamePropertyForAdminSearch = (ctx) => {
   let thingToUpdate
@@ -191,7 +194,9 @@ module.exports = function (TpCompanyProfile) {
           (tpCompanyProfileInst) => {
             const { contactEmail, firstName } = tpCompanyProfileInst.toJSON()
 
-            sendTpCompanyProfileApproved({
+            console.debug({ contactEmail, firstName })
+
+            sendTpCompanyProfileApprovedEmail({
               recipient: contactEmail,
               firstName,
             })
@@ -203,8 +208,8 @@ module.exports = function (TpCompanyProfile) {
             findTpCompanyProfile,
             validateCurrentState,
             setNewTpCompanyProfileProperties,
-            createRoleMapping
-            // sendEmailUserReviewedAccepted
+            createRoleMapping,
+            sendEmailUserReviewedAccepted
           )
           .subscribe(
             (tpCompanyProfileInst) => {
