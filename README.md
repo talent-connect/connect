@@ -51,6 +51,8 @@ See the [Onboarding Checklist](https://github.com/talent-connect/connect/wiki#on
 
 ## Good to know
 
+We send out automated reminder emails to ReDI Connect mentor and mentee users, for things like "you've both been in an active mentorship for 10 days, no mentoring sessions have been logged yet, please start logging them". See [Daily job to send notification emails to users](./DAILY-SEND-EMAIL-JOB-DOCS.md) for a full list of automated reminder emails.
+
 ## Manual testing
 
 ## About the Nx monorepo

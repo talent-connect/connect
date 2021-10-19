@@ -4,6 +4,9 @@ const res = require('dotenv').config({
   path: path.resolve(__dirname, '..', '.env.' + process.env.NODE_ENV),
 })
 
+// required to set up logger
+require('../lib/logger')
+
 var loopback = require('loopback')
 var boot = require('loopback-boot')
 
@@ -11,7 +14,16 @@ var http = require('http')
 var https = require('https')
 var sslConfig = require('./ssl-config')
 
+const Rx = require('rxjs')
+const { bindNodeCallback, from } = Rx
+const { delay, switchMap, tap, map, filter, count } = require('rxjs/operators')
+
+const { sendMenteeReminderToApplyToMentorEmail } = require('../lib/email/email')
+const { default: clsx } = require('clsx')
+
 var app = (module.exports = loopback())
+
+const sendAllReminderEmails = require('../daily-cronjob-reminder-email/index.js')
 
 app.start = function () {
   // start the web server
@@ -26,9 +38,21 @@ app.start = function () {
   })
 }
 
-app.get('/yalla', async (req, res) => {
-  res.send('hello')
-})
+app.get(
+  '/secret-endpoint-that-will-be-contacted-by-autocode-to-trigger-automated-reminder-emails',
+  (req, res) => {
+    const secretToken =
+      process.env.DAILY_CRONJOB_SEND_REMINDER_EMAIL_SECRET_TOKEN
+    const authToken = req.query['auth-token']
+    const isDryRun = !!req.query['dry-run']
+
+    if (authToken === secretToken) {
+      sendAllReminderEmails(isDryRun)
+      return res.send({ result: 'email-jobs-queued' })
+    }
+    return res.send({ result: 'nope, wrong pass bro' })
+  }
+)
 
 // Inject current user into context
 app

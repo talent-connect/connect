@@ -76,7 +76,7 @@
     "@react-pdf/renderer": "2.0.15",
     "@xstate/react": "^1.3.3",
     "aws-sdk": "^2.418.0",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "beautiful-react-hooks": "^0.32.1",
     "body-parser": "^1.19.0",
     "bulma-checkradio": "^1.1.1",
@@ -101,6 +101,7 @@
     "loopback-component-explorer": "^6.2.0",
     "loopback-connector-mongodb": "^5.5.0",
     "loopback-content-range": "^1.1.0",
+    "luxon": "^2.0.2",
     "mjml": "^4.6.3",
     "moment": "^2.24.0",
     "nodemailer": "^6.4.8",
@@ -135,6 +136,8 @@
     "tslib": "^2.0.0",
     "use-query-params": "^1.2.2",
     "uuid": "^8.3.2",
+    "winston": "^3.3.3",
+    "winston-daily-rotate-file": "^4.5.5",
     "xstate": "^4.19.1",
     "yup": "^0.27.0"
   },
@@ -195,5 +198,9 @@
     "typescript": "~4.1.4",
     "url-loader": "4.1.1",
     "utility-types": "^3.10.0"
+  },
+  "volta": {
+    "node": "14.17.6",
+    "yarn": "1.22.11"
   }
 }

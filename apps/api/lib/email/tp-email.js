@@ -7,67 +7,10 @@ const nodemailer = require('nodemailer')
 const fs = require('fs')
 const path = require('path')
 
-const config = {
-  accessKeyId: process.env.EMAILER_AWS_ACCESS_KEY,
-  secretAccessKey: process.env.EMAILER_AWS_SECRET_KEY,
-  region: process.env.EMAILER_AWS_REGION,
-}
 const { buildTpFrontendUrl } = require('../build-tp-frontend-url')
 const { buildBackendUrl } = require('../build-backend-url')
 
-const ses = new aws.SES(config)
-
-const transporter = nodemailer.createTransport({
-  SES: ses,
-})
-
-const isProductionOrDemonstration = () =>
-  ['production', 'demonstration', 'staging'].includes(process.env.NODE_ENV)
-
-const sendEmail = Rx.bindNodeCallback(ses.sendEmail.bind(ses))
-const sendMjmlEmail = Rx.bindNodeCallback(
-  transporter.sendMail.bind(transporter)
-)
-const sendEmailFactory = (to, subject, body, rediLocation) => {
-  let toSanitized = isProductionOrDemonstration() ? to : 'eric@binarylights.com'
-  if (process.env.DEV_MODE_EMAIL_RECIPIENT) {
-    toSanitized = process.env.DEV_MODE_EMAIL_RECIPIENT
-  }
-  let sender = 'career@redi-school.org'
-  return sendEmail({
-    Source: sender,
-    Destination: {
-      ToAddresses: [toSanitized],
-      BccAddresses: ['eric@binarylights.com'],
-    },
-    Message: {
-      Body: {
-        Text: {
-          Charset: 'UTF-8',
-          Data: body,
-        },
-      },
-      Subject: {
-        Charset: 'UTF-8',
-        Data: subject,
-      },
-    },
-  })
-}
-const sendMjmlEmailFactory = ({ to, subject, html }) => {
-  let toSanitized = isProductionOrDemonstration() ? to : 'eric@binarylights.com'
-  if (process.env.DEV_MODE_EMAIL_RECIPIENT) {
-    toSanitized = process.env.DEV_MODE_EMAIL_RECIPIENT
-  }
-  let sender = 'career@redi-school.org'
-  return sendMjmlEmail({
-    from: sender,
-    to: toSanitized,
-    bcc: 'eric@binarylights.com',
-    subject: subject,
-    html: html,
-  })
-}
+const { sendMjmlEmailFactory } = require('./email')
 
 const sendTpResetPasswordEmailTemplate = fs.readFileSync(
   path.resolve(__dirname, 'tp-templates', 'reset-password.mjml'),
@@ -155,10 +98,8 @@ const sendTpJobseekerEmailVerificationSuccessfulEmail = ({
   recipient,
   firstName,
 }) => {
-  const sendTpJobseekerEmailVerificationSuccessfulEmailParsed = convertTemplateToHtml(
-    null,
-    'jobseeker-validate-email-address-successful'
-  )
+  const sendTpJobseekerEmailVerificationSuccessfulEmailParsed =
+    convertTemplateToHtml(null, 'jobseeker-validate-email-address-successful')
   const html = sendTpJobseekerEmailVerificationSuccessfulEmailParsed.replace(
     /\${firstName}/g,
     firstName
@@ -170,21 +111,19 @@ const sendTpJobseekerEmailVerificationSuccessfulEmail = ({
   })
 }
 
-const sendTpJobseekerjobseekerProfileApprovedInstructToSubmitJobPreferencesEmail = ({
-  recipient,
-  firstName,
-}) => {
-  const emailParsed = convertTemplateToHtml(
-    null,
-    'jobseeker-profile-approved-instruct-to-submit-job-preferences'
-  )
-  const html = emailParsed.replace(/\${firstName}/g, firstName)
-  return sendMjmlEmailFactory({
-    to: recipient,
-    subject: 'Talent Pool: your profile is approved! ReDI for the next step?',
-    html: html,
-  })
-}
+const sendTpJobseekerjobseekerProfileApprovedInstructToSubmitJobPreferencesEmail =
+  ({ recipient, firstName }) => {
+    const emailParsed = convertTemplateToHtml(
+      null,
+      'jobseeker-profile-approved-instruct-to-submit-job-preferences'
+    )
+    const html = emailParsed.replace(/\${firstName}/g, firstName)
+    return sendMjmlEmailFactory({
+      to: recipient,
+      subject: 'Talent Pool: your profile is approved! ReDI for the next step?',
+      html: html,
+    })
+  }
 
 const sendTpJobseekerjobseekerProfileNotApprovedYet = ({
   recipient,
@@ -238,10 +177,8 @@ const sendTpCompanyEmailVerificationSuccessfulEmail = ({
   firstName,
 }) => {
   const tpLandingPageUrl = buildTpFrontendUrl(process.env.NODE_ENV)
-  const sendTpCompanyEmailVerificationSuccessfulEmailParsed = convertTemplateToHtml(
-    null,
-    'company-validate-email-address-successful'
-  )
+  const sendTpCompanyEmailVerificationSuccessfulEmailParsed =
+    convertTemplateToHtml(null, 'company-validate-email-address-successful')
   const html = sendTpCompanyEmailVerificationSuccessfulEmailParsed
     .replace(/\${firstName}/g, firstName)
     .replace(/\${tpLandingPageUrl}/g, tpLandingPageUrl)
