@@ -62,7 +62,6 @@ const DeclineMentorshipButton = ({
         ...values,
       })
       setModalActive(false)
-      // history.push(`/app/mentorships/${match.id}`)
     } catch (error) {
       console.log('error ', error)
     }
