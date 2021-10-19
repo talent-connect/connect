@@ -38,7 +38,7 @@ const sendEmailFactory = (to, subject, body, rediLocation) => {
     Source: sender,
     Destination: {
       ToAddresses: [toSanitized],
-      BccAddresses: ['eric@binarylights.com'],
+      BccAddresses: ['eric@binarylights.com', 'career@redi-school.org'],
     },
     Message: {
       Body: {
@@ -63,7 +63,7 @@ const sendMjmlEmailFactory = ({ to, subject, html }) => {
   return sendMjmlEmail({
     from: sender,
     to: toSanitized,
-    bcc: 'eric@binarylights.com',
+    bcc: ['eric@binarylights.com', 'career@redi-school.org'],
     subject: subject,
     html: html,
   })
