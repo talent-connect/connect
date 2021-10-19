@@ -54,7 +54,6 @@ const DeclineMentorshipButton = ({
   matchesDeclineMentorshipStart,
 }: DeclineMentorshipButtonProps) => {
   const [isModalActive, setModalActive] = useState(false)
-  const history = useHistory()
 
   const submitForm = async (values: DeclineMentorshipFormValues) => {
     try {
