@@ -11,18 +11,22 @@ import {
   FormInput,
 } from '@talent-connect/shared-atomic-design-components'
 import { Modal } from '@talent-connect/shared-atomic-design-components'
-import { matchesAcceptMentorshipStart } from '../../redux/matches/actions'
+import {
+  matchesAcceptMentorshipStart,
+  matchesDeclineMentorshipStart,
+} from '../../redux/matches/actions'
 import { RedMatch } from '@talent-connect/shared-types'
 import { mentorDeclinesMentorshipReasonForDecliningOptions } from '@talent-connect/shared-config'
 
 interface DeclineMentorshipButtonProps {
   match: RedMatch
   menteeName?: string
-  hasReachedMenteeLimit: boolean
-  matchesAcceptMentorshipStart: (
-    redMatchId: string,
-    mentorReplyMessageOnAccept: string
-  ) => void
+  matchesDeclineMentorshipStart: (options: {
+    redMatchId: string
+    ifDeclinedByMentor_chosenReasonForDecline: string
+    ifDeclinedByMentor_ifReasonIsOther_freeText: string
+    ifDeclinedByMentor_optionalMessageToMentee: string
+  }) => void
 }
 
 interface DeclineMentorshipFormValues {
@@ -38,36 +42,28 @@ const initialValues: DeclineMentorshipFormValues = {
 }
 
 const validationSchema = Yup.object({
-  mentorReasonForDecline: Yup.string().required('Please pick an option'),
+  ifDeclinedByMentor_chosenReasonForDecline: Yup.string().required(
+    'Please pick an option'
+  ),
 })
 
 // TODO: This throws a TS error: { dispatch, matchId }: ConnectButtonProps
 // What to replace with instead of below hack?
 const DeclineMentorshipButton = ({
   match,
-  matchesAcceptMentorshipStart,
+  matchesDeclineMentorshipStart,
 }: DeclineMentorshipButtonProps) => {
   const [isModalActive, setModalActive] = useState(false)
   const history = useHistory()
 
-  //  Keeping this to make sure we address this as its not planned in the desing, yet
-  //   <Tooltip> requires child <Button> to be wrapped in a div since it's disabled
-  //   props.hasReachedMenteeLimit ? (
-  //     <Tooltip
-  //       placement="top"
-  //       title="You're reached the number of mentees you've specified as able to take on"
-  //     >
-  //       <div onClick={e => e.stopPropagation()}>{children}</div>
-  //     </Tooltip>
-  //   ) : (
-  //     <>{children}</>
-  //   )
-
   const submitForm = async (values: DeclineMentorshipFormValues) => {
     try {
-      matchesAcceptMentorshipStart(match.id, values.mentorReplyMessageOnAccept)
+      matchesDeclineMentorshipStart({
+        redMatchId: match.id,
+        ...values,
+      })
       setModalActive(false)
-      history.push(`/app/mentorships/${match.id}`)
+      // history.push(`/app/mentorships/${match.id}`)
     } catch (error) {
       console.log('error ', error)
     }
@@ -83,12 +79,7 @@ const DeclineMentorshipButton = ({
 
   return (
     <>
-      <Button
-        onClick={() => setModalActive(true)}
-        disabled={hasReachedMenteeLimit}
-      >
-        Decline
-      </Button>
+      <Button onClick={() => setModalActive(true)}>Decline</Button>
       <Modal
         show={isModalActive}
         stateFn={setModalActive}
@@ -147,13 +138,12 @@ const formDeclineOptions =
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const mapDispatchToProps = (dispatch: any) => ({
-  matchesAcceptMentorshipStart: (
-    redMatchId: string,
-    mentorReplyMessageOnAccept: string
-  ) =>
-    dispatch(
-      matchesAcceptMentorshipStart(redMatchId, mentorReplyMessageOnAccept)
-    ),
+  matchesDeclineMentorshipStart: (options: {
+    redMatchId: string
+    ifDeclinedByMentor_chosenReasonForDecline: string
+    ifDeclinedByMentor_ifReasonIsOther_freeText: string
+    ifDeclinedByMentor_optionalMessageToMentee: string
+  }) => dispatch(matchesDeclineMentorshipStart(options)),
 })
 
 export default connect(null, mapDispatchToProps)(DeclineMentorshipButton)

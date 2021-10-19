@@ -18,6 +18,7 @@ export type RedMatch = {
   ifDeclinedByMentor_chosenReasonForDecline: string
   ifDeclinedByMentor_ifReasonIsOther_freeText: string
   ifDeclinedByMentor_optionalMessageToMentee: string
+  ifDeclinedByMentor_dateTime: string
   mentor: RedProfile
   mentee: RedProfile
   mentorId: string

@@ -493,6 +493,8 @@ export const menteeOccupationCategory_idToLabelMap = mapValues(
 
 export const menteeCountCapacityOptions: number[] = [0, 1, 2]
 
+// TODO: a duplicate lives in apps/api/lib/email/email.js, keep this
+// in sync with it!
 export const mentorDeclinesMentorshipReasonForDecliningOptions = [
   {
     id: 'notEnoughTimeNowToBeMentor',

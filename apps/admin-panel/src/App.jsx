@@ -697,6 +697,25 @@ const RedMatchShow = (props) => (
       />
       <RecordCreatedAt />
       <RecordUpdatedAt />
+      <h3>Information about a mentor declining the mentorship</h3>
+      <TextField
+        source="ifDeclinedByMentor_chosenReasonForDecline"
+        label="Reason chosen for decline"
+      />
+      <TextField
+        source="ifDeclinedByMentor_optionalMessageToMentee"
+        label="If reason was other, free text field"
+      />
+      <TextField
+        source="ifDeclinedByMentor_optionalMessageToMentee"
+        label="Optional message by mentor to mentee written on moment of decline"
+        helperText="This field shows the date and time of when a mentor declined this mentorship application from the mentee"
+      />
+      <DateField
+        source="ifDeclinedByMentor_dateTime"
+        label="When did the mentor decline?"
+      />
+
       <RedMatchShow_RelatedMentoringSessions />
     </SimpleShowLayout>
   </Show>
@@ -815,6 +834,11 @@ const RedMatchEdit = (props) => (
           { id: 'accepted', name: 'Accepted' },
           { id: 'completed', name: 'Completed' },
           { id: 'cancelled', name: 'Cancelled' },
+          {
+            id: 'invalidated-as-other-mentor-accepted',
+            name: 'Invalidated as other mentor accepted',
+          },
+          { id: 'declined-by-mentor', name: 'Declined by mentor' },
         ]}
       />
       <ReferenceInput
@@ -862,6 +886,25 @@ const RedMatchEdit = (props) => (
       <TextInput
         source="matchMadeActiveOn"
         label="If match is/was active, when was it made active?"
+      />
+      <h3>Information about a mentor declining the mentorship</h3>
+      <TextInput
+        source="ifDeclinedByMentor_chosenReasonForDecline"
+        label="Reason chosen for decline"
+      />
+      <TextInput
+        source="ifDeclinedByMentor_optionalMessageToMentee"
+        label="If reason was other, free text field"
+      />
+      <TextInput
+        source="ifDeclinedByMentor_optionalMessageToMentee"
+        label="Optional message by mentor to mentee written on moment of decline"
+        helperText="This field shows the date and time of when a mentor declined this mentorship application from the mentee"
+      />
+      <TextInput
+        source="ifDeclinedByMentor_dateTime"
+        label="If watch was declined by mentor, when?"
+        helperText="This field shows the date and time of when a mentor declined this mentorship application from the mentee"
       />
     </SimpleForm>
   </Edit>
@@ -1206,11 +1249,14 @@ const TpJobseekerProfileListFilters = (props) => (
 function tpJobseekerProfileListExporter(profiles, fetchRelatedRecords) {
   const data = profiles.map((profile) => {
     let { hrSummit2021JobFairCompanyJobPreferences } = profile
-    hrSummit2021JobFairCompanyJobPreferences = hrSummit2021JobFairCompanyJobPreferences?.map(
-      ({ jobPosition, jobId, companyName }) => {
-        return `${jobPosition}${jobId ? ` (${jobId})` : ''} --- ${companyName}`
-      }
-    )
+    hrSummit2021JobFairCompanyJobPreferences =
+      hrSummit2021JobFairCompanyJobPreferences?.map(
+        ({ jobPosition, jobId, companyName }) => {
+          return `${jobPosition}${
+            jobId ? ` (${jobId})` : ''
+          } --- ${companyName}`
+        }
+      )
     delete profile.hrSummit2021JobFairCompanyJobPreferences
 
     const {

@@ -9,6 +9,8 @@ import {
   MatchesMarkAsDismissedStartAction,
   MatchesMarkAsCompleteAction,
   MatchesDeclineMentorshipStartAction,
+  MatchesDeclineMentorshipSuccessAction,
+  MatchesDeclineMentorshipErrorAction,
 } from './types'
 import { RedMatch } from '@talent-connect/shared-types'
 
@@ -82,5 +84,19 @@ export const matchesAcceptMentorshipError = (
   error: Error
 ): MatchesAcceptMentorshipErrorAction => ({
   type: MatchesActionType.MATCHES_ACCEPT_MENTORSHIP_ERROR,
+  payload: error,
+})
+
+export const matchesDeclineMentorshipSuccess = (
+  matches: RedMatch[]
+): MatchesDeclineMentorshipSuccessAction => ({
+  type: MatchesActionType.MATCHES_DECLINE_MENTORSHIP_SUCCESS,
+  payload: matches,
+})
+
+export const matchesDeclineMentorshipError = (
+  error: Error
+): MatchesDeclineMentorshipErrorAction => ({
+  type: MatchesActionType.MATCHES_DECLINE_MENTORSHIP_ERROR,
   payload: error,
 })
