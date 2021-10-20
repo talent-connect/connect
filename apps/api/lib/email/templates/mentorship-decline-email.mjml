@@ -9,10 +9,12 @@
           <mj-divider mj-class="divider-top" css-class="divider" />
 
           <mj-text mj-class="text" padding="0 0 20px 0"
-            >Dear ${menteeName}, 
-            
-            Unfortunately ${mentorName} cannot accept your
-            mentorship application at this time.</mj-text
+            >Dear ${menteeName},</mj-text
+          >
+
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >Unfortunately ${mentorName} cannot accept your mentorship
+            application at this time.</mj-text
           >
           <mj-text mj-class="text" padding="0 0 20px 0"
             >They provided the following reason and message for you:</mj-text
@@ -28,9 +30,12 @@
           <mj-text mj-class="text" padding="0 0 20px 0"
             >Even if this match did not work out, we still have many amazing
             mentors waiting for your application. So please have a look and
-            apply to another mentor who might be an even better match for you.
-            
-            If you need any support in the process, please reach out to us at
+            apply to another mentor who might be an even better match for
+            you.</mj-text
+          >
+
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >If you need any support in the process, please reach out to us at
             <a href="mailto:career@redi-school.org">career@redi-school.org</a
             >.</mj-text
           >
