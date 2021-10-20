@@ -20,6 +20,8 @@ export type TpCompanyProfile = {
 
   about?: string
 
+  state: TpCompanyProfileState
+
   createdAt: Date
   updatedAt: Date
 }
