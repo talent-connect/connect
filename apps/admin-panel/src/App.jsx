@@ -77,6 +77,7 @@ import {
   genders as configGenders,
   mentoringSessionDurationOptions,
   categoriesIdToLabelMap,
+  formRedMatchStatuses,
 } from '@talent-connect/shared-config'
 
 import { calculateAge } from '@talent-connect/shared-utils'
@@ -636,19 +637,7 @@ const RedMatchList = (props) => (
 )
 const RedMatchListFilters = (props) => (
   <Filter {...props}>
-    <SelectInput
-      source="status"
-      choices={[
-        { id: 'accepted', name: 'Accepted' },
-        { id: 'completed', name: 'Completed' },
-        { id: 'cancelled', name: 'Cancelled' },
-        { id: 'applied', name: 'Applied' },
-        {
-          id: 'invalidated-as-other-mentor-accepted',
-          name: 'Invalidated due to other mentor accepting',
-        },
-      ]}
-    />
+    <SelectInput source="status" choices={formRedMatchStatuses} />
     <SelectInput
       source="rediLocation"
       choices={rediLocations.map(({ id, label }) => ({ id, name: label }))}
@@ -703,7 +692,7 @@ const RedMatchShow = (props) => (
         label="Reason chosen for decline"
       />
       <TextField
-        source="ifDeclinedByMentor_optionalMessageToMentee"
+        source="ifDeclinedByMentor_ifReasonIsOther_freeText"
         label="If reason was other, free text field"
       />
       <TextField
@@ -827,20 +816,7 @@ const RedMatchCreate = (props) => (
 const RedMatchEdit = (props) => (
   <Edit {...props}>
     <SimpleForm>
-      <SelectInput
-        source="status"
-        choices={[
-          { id: 'applied', name: 'Applied' },
-          { id: 'accepted', name: 'Accepted' },
-          { id: 'completed', name: 'Completed' },
-          { id: 'cancelled', name: 'Cancelled' },
-          {
-            id: 'invalidated-as-other-mentor-accepted',
-            name: 'Invalidated as other mentor accepted',
-          },
-          { id: 'declined-by-mentor', name: 'Declined by mentor' },
-        ]}
-      />
+      <SelectInput source="status" choices={formRedMatchStatuses} />
       <ReferenceInput
         label="Mentor"
         source="mentorId"
@@ -893,7 +869,7 @@ const RedMatchEdit = (props) => (
         label="Reason chosen for decline"
       />
       <TextInput
-        source="ifDeclinedByMentor_optionalMessageToMentee"
+        source="ifDeclinedByMentor_ifReasonIsOther_freeText"
         label="If reason was other, free text field"
       />
       <TextInput

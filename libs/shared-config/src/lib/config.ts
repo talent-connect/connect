@@ -514,6 +514,20 @@ export const mentorDeclinesMentorshipReasonForDecliningOptionsIdToLabelMap =
     'label'
   )
 
+export const redMatchStatuses = {
+  accepted: 'Accepted',
+  completed: 'Completed',
+  cancelled: 'Cancelled',
+  applied: 'Applied',
+  'declined-by-mentor': 'Declined by mentor',
+  'invalidated-as-other-mentor-accepted':
+    'Invalidated due to other mentor accepting',
+} as const
+
+export const formRedMatchStatuses = Object.entries(redMatchStatuses).map(
+  ([key, value]) => ({ id: key, name: value })
+)
+
 export const AWS_PROFILE_AVATARS_BUCKET_BASE_URL =
   'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/'
 

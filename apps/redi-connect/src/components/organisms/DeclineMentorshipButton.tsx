@@ -77,11 +77,13 @@ const DeclineMentorshipButton = ({
 
   return (
     <>
-      <Button onClick={() => setModalActive(true)}>Decline</Button>
+      <Button onClick={() => setModalActive(true)} simple>
+        Decline
+      </Button>
       <Modal
         show={isModalActive}
         stateFn={setModalActive}
-        title="Accept Application"
+        title="Decline Application"
       >
         <Modal.Body>
           <form>
