@@ -94,6 +94,9 @@ export function EditableNamePhotoLocation({ profile, disableEditing }: Props) {
 EditableNamePhotoLocation.isSectionFilled = (
   profile: Partial<TpCompanyProfile>
 ) => profile?.location
+EditableNamePhotoLocation.isPhotoSelected = (
+  profile: Partial<TpCompanyProfile>
+) => profile?.profileAvatarImageS3Key
 EditableNamePhotoLocation.isSectionEmpty = (
   profile: Partial<TpCompanyProfile>
 ) => !EditableNamePhotoLocation.isSectionFilled(profile)

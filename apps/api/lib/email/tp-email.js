@@ -189,6 +189,22 @@ const sendTpCompanyEmailVerificationSuccessfulEmail = ({
   })
 }
 
+const sendTpCompanyProfileApprovedEmail = ({ recipient, firstName }) => {
+  const sendTpCompanyProfileApprovedEmailParsed = convertTemplateToHtml(
+    null,
+    'company-profile-approved'
+  )
+  const html = sendTpCompanyProfileApprovedEmailParsed.replace(
+    /\${firstName}/g,
+    firstName
+  )
+  return sendMjmlEmailFactory({
+    to: recipient,
+    subject: 'Your company profile has been approved for Talent Pool',
+    html: html,
+  })
+}
+
 module.exports = {
   sendTpResetPasswordEmail,
   sendTpJobseekerVerificationEmail,
@@ -197,4 +213,5 @@ module.exports = {
   sendTpJobseekerjobseekerProfileNotApprovedYet,
   sendTpCompanyVerificationEmail,
   sendTpCompanyEmailVerificationSuccessfulEmail,
+  sendTpCompanyProfileApprovedEmail,
 }

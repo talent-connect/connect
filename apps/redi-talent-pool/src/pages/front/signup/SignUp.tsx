@@ -6,7 +6,7 @@ import {
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
 import { courses, rediLocationNames } from '@talent-connect/shared-config'
-import { RedProfile, TpJobseekerProfile } from '@talent-connect/shared-types'
+import { RedProfile, TpJobseekerProfile, TpCompanyProfile } from '@talent-connect/shared-types'
 import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
 import omit from 'lodash/omit'
 import React, { useMemo, useState } from 'react'
@@ -118,6 +118,7 @@ export default function SignUp() {
   }
   if (type === 'company') {
     initialValues.companyName = ''
+    initialValues.state = 'drafting-profile'
   }
 
   const [submitError, setSubmitError] = useState(null)
@@ -126,17 +127,22 @@ export default function SignUp() {
     actions: FormikActions<SignUpFormValues>
   ) => {
     setSubmitError(null)
-    const profile = values as Partial<TpJobseekerProfile>
-    profile.isProfileVisibleToCompanies = true
-    // TODO: this needs to be done in a smarter way, like iterating over the TpJobseekerProfile definition or something
-    const cleanProfile: Partial<TpJobseekerProfile> = omit(profile, [
-      'password',
-      'passwordConfirm',
-      'agreesWithCodeOfConduct',
-      'gaveGdprConsent',
-    ])
+
+    let profile;
+
     try {
       if (type === 'jobseeker') {
+        const profile = values as Partial<TpJobseekerProfile>
+        profile.isProfileVisibleToCompanies = true
+
+        // TODO: this needs to be done in a smarter way, like iterating over the TpJobseekerProfile definition or something
+        const cleanProfile: Partial<TpJobseekerProfile> | Partial<TpCompanyProfile> = omit(profile, [
+          'password',
+          'passwordConfirm',
+          'agreesWithCodeOfConduct',
+          'gaveGdprConsent',
+        ])
+
         await signUpJobseeker(
           values.contactEmail,
           values.password,
@@ -144,6 +150,16 @@ export default function SignUp() {
         )
       }
       if (type === 'company') {
+        const profile = values as Partial<TpCompanyProfile>
+
+        // TODO: this needs to be done in a smarter way, like iterating over the TpJobseekerProfile definition or something
+        const cleanProfile: Partial<TpJobseekerProfile> | Partial<TpCompanyProfile> = omit(profile, [
+          'password',
+          'passwordConfirm',
+          'agreesWithCodeOfConduct',
+          'gaveGdprConsent',
+        ])
+
         await signUpCompany(values.contactEmail, values.password, cleanProfile)
       }
       actions.setSubmitting(false)

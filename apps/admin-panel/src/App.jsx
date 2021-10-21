@@ -86,6 +86,7 @@ import { ApproveButton } from './components/ApproveButton'
 import { DeclineButton } from './components/DeclineButton'
 import { TpJobseekerProfileApproveButton } from './components/TpJobseekerProfileApproveButton'
 import { TpJobseekerProfileDeclineButton } from './components/TpJobseekerProfileDeclineButton'
+import { TpCompanyProfileApproveButton } from './components/TpCompanyProfileApproveButton'
 
 import { API_URL } from './config'
 import { TpJobseekerProfileState } from '@talent-connect/shared-types'
@@ -1206,11 +1207,14 @@ const TpJobseekerProfileListFilters = (props) => (
 function tpJobseekerProfileListExporter(profiles, fetchRelatedRecords) {
   const data = profiles.map((profile) => {
     let { hrSummit2021JobFairCompanyJobPreferences } = profile
-    hrSummit2021JobFairCompanyJobPreferences = hrSummit2021JobFairCompanyJobPreferences?.map(
-      ({ jobPosition, jobId, companyName }) => {
-        return `${jobPosition}${jobId ? ` (${jobId})` : ''} --- ${companyName}`
-      }
-    )
+    hrSummit2021JobFairCompanyJobPreferences =
+      hrSummit2021JobFairCompanyJobPreferences?.map(
+        ({ jobPosition, jobId, companyName }) => {
+          return `${jobPosition}${
+            jobId ? ` (${jobId})` : ''
+          } --- ${companyName}`
+        }
+      )
     delete profile.hrSummit2021JobFairCompanyJobPreferences
 
     const {
@@ -1560,18 +1564,50 @@ const TpJobseekerProfileEditActions = (props) => {
   )
 }
 
+const TpCompanyProfileEditActions = (props) => {
+  if (props?.data?.state !== 'submitted-for-review') return null
+
+  return (
+    <CardActions>
+      Company profile is pending. Please{' '}
+      <TpCompanyProfileApproveButton {...props} />
+    </CardActions>
+  )
+}
+
 const TpCompanyProfileList = (props) => {
   return (
-    <List {...props} pagination={<AllModelsPagination />}>
-      <Datagrid>
-        <TextField source="companyName" />
-        <TextField source="firstName" />
-        <TextField source="lastName" />
-        <RecordCreatedAt />
-        <ShowButton />
-        <EditButton />
-      </Datagrid>
-    </List>
+    <>
+      <List {...props} pagination={<AllModelsPagination />}>
+        <Datagrid>
+          <TextField source="companyName" />
+          <TextField source="firstName" />
+          <TextField source="lastName" />
+          <TextField source="state" />
+          <RecordCreatedAt />
+          <ShowButton />
+          <EditButton />
+        </Datagrid>
+      </List>
+      <p>
+        A quick note regard <strong>state</strong>:
+      </p>
+      <ol>
+        <li style={{ marginBottom: '12px' }}>
+          <strong>drafting-profile</strong>: the very first state. The company
+          has just signed up and his drafting their profile.
+        </li>
+        <li style={{ marginBottom: '12px' }}>
+          <strong>submitted-for-review</strong>: the company has provided at
+          least as much information as Talent Pool requires. Their profile has
+          been submitted to ReDI for review. Click Show &gt; Edit to find two
+          buttons to Approve/Decline their profile.
+        </li>
+        <li style={{ marginBottom: '12px' }}>
+          <strong>profile-approved</strong>: the company's profile is approved
+        </li>
+      </ol>
+    </>
   )
 }
 
@@ -1648,7 +1684,7 @@ const TpCompanyProfileShow = (props) => (
 )
 
 const TpCompanyProfileEdit = (props) => (
-  <Edit {...props}>
+  <Edit {...props} actions={<TpCompanyProfileEditActions />}>
     <TabbedForm>
       <FormTab label="Profile">
         <Avatar />

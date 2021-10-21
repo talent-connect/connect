@@ -74,5 +74,37 @@
       "permission": "ALLOW"
     }
   ],
-  "methods": {}
+  "methods": {
+    "pendingReviewDoAccept": {
+      "accepts": [
+        {
+          "arg": "data",
+          "type": "object",
+          "http": {
+            "source": "body"
+          }
+        },
+        {
+          "arg": "options",
+          "type": "object",
+          "http": "optionsFromRequest"
+        }
+      ],
+      "returns": [
+        {
+          "arg": "tpCompanyProfile",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
+      "description": "Approves TpCompanyProfile",
+      "http": [
+        {
+          "path": "/pendingReviewDoAccept",
+          "verb": "post"
+        }
+      ]
+    }
+  }
 }

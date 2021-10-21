@@ -1,3 +1,5 @@
+import { TpCompanyProfileState } from './TpCompanyProfileState'
+
 export type TpCompanyProfile = {
   id: string
   firstName: string
@@ -17,6 +19,8 @@ export type TpCompanyProfile = {
   phoneNumber?: string
 
   about?: string
+
+  state: TpCompanyProfileState
 
   createdAt: Date
   updatedAt: Date
