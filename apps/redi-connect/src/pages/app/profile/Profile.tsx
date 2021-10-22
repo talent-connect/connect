@@ -30,6 +30,7 @@ import { RedProfile } from '@talent-connect/shared-types'
 import { profilesFetchOneStart } from '../../../redux/profiles/actions'
 import { rediLocationNames } from '@talent-connect/shared-config'
 import './Profile.scss'
+import DeclineMentorshipButton from '../../../components/organisms/DeclineMentorshipButton'
 
 interface RouteParams {
   profileId: string
@@ -127,6 +128,7 @@ function Profile({
               menteeName={profile && profile.firstName}
               hasReachedMenteeLimit={hasReachedMenteeLimit}
             />
+            <DeclineMentorshipButton match={match} />
           </Columns.Column>
         )}
       </Columns>

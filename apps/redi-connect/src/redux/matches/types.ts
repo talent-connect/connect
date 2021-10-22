@@ -13,6 +13,9 @@ export enum MatchesActionType {
   MATCHES_ACCEPT_MENTORSHIP_START = 'MATCHES_ACCEPT_MENTORSHIP_START',
   MATCHES_ACCEPT_MENTORSHIP_SUCCESS = 'MATCHES_ACCEPT_MENTORSHIP_SUCCESS',
   MATCHES_ACCEPT_MENTORSHIP_ERROR = 'MATCHES_ACCEPT_MENTORSHIP_ERROR',
+  MATCHES_DECLINE_MENTORSHIP_START = 'MATCHES_DECLINE_MENTORSHIP_START',
+  MATCHES_DECLINE_MENTORSHIP_SUCCESS = 'MATCHES_DECLINE_MENTORSHIP_SUCCESS',
+  MATCHES_DECLINE_MENTORSHIP_ERROR = 'MATCHES_DECLINE_MENTORSHIP_ERROR',
   MATCHES_MARK_AS_DISMISSED_START = 'MATCHES_MARK_AS_DISMISSED_START',
   MATCHES_MARK_AS_COMPLETED = 'MATCHES_MARK_AS_COMPLETED',
 }
@@ -40,6 +43,26 @@ export interface MatchesAcceptMentorshipSuccessAction extends Action {
 }
 export interface MatchesAcceptMentorshipErrorAction extends Action {
   type: MatchesActionType.MATCHES_ACCEPT_MENTORSHIP_ERROR
+  payload: Error
+}
+
+export interface MatchesDeclineMentorshipStartAction extends Action {
+  type: MatchesActionType.MATCHES_DECLINE_MENTORSHIP_START
+  payload: {
+    redMatchId: string
+  } & Pick<
+    RedMatch,
+    | 'ifDeclinedByMentor_chosenReasonForDecline'
+    | 'ifDeclinedByMentor_ifReasonIsOther_freeText'
+    | 'ifDeclinedByMentor_optionalMessageToMentee'
+  >
+}
+export interface MatchesDeclineMentorshipSuccessAction extends Action {
+  type: MatchesActionType.MATCHES_DECLINE_MENTORSHIP_SUCCESS
+  payload: RedMatch[]
+}
+export interface MatchesDeclineMentorshipErrorAction extends Action {
+  type: MatchesActionType.MATCHES_DECLINE_MENTORSHIP_ERROR
   payload: Error
 }
 

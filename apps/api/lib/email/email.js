@@ -452,7 +452,7 @@ const sendMentorshipRequestReceivedEmail = ({
 }
 
 const sendMentorshipAcceptedEmail = ({
-  recipients,
+  recipient,
   mentorName,
   menteeName,
   mentorReplyMessageOnAccept,
@@ -469,8 +469,57 @@ const sendMentorshipAcceptedEmail = ({
     .replace(/\${rediEmailAdress}/g, rediEmailAdress)
     .replace(/\${mentorReplyMessageOnAccept}/g, mentorReplyMessageOnAccept)
   return sendMjmlEmailFactory({
-    to: recipients,
+    to: recipient,
     subject: `Congratulations. Mentor ${mentorName} has accepted your application, ${menteeName}!`,
+    html: html,
+  })
+}
+
+// TODO: I'm a duplicate of libs/shared-config/src/lib/config.ts, keep me in sync
+const mentorDeclinesMentorshipReasonForDecliningOptions = [
+  {
+    id: 'notEnoughTimeNowToBeMentor',
+    label: "I don't have enough time right now to be a mentor",
+  },
+  { id: 'notRightExpertise', label: "I don't have the right expertise" },
+  {
+    id: 'anotherMentorMoreSuitable',
+    label: 'I think another mentor would be more suitable',
+  },
+  { id: 'other', label: 'Other' },
+]
+
+const sendMentorshipDeclinedEmail = ({
+  recipient,
+  mentorName,
+  menteeName,
+  ifDeclinedByMentor_chosenReasonForDecline,
+  ifDeclinedByMentor_ifReasonIsOther_freeText,
+  ifDeclinedByMentor_optionalMessageToMentee,
+}) => {
+  let reasonForDecline = mentorDeclinesMentorshipReasonForDecliningOptions.find(
+    (option) => option.id === ifDeclinedByMentor_chosenReasonForDecline
+  ).label
+  if (ifDeclinedByMentor_chosenReasonForDecline === 'other') {
+    ifDeclinedByMentor_chosenReasonForDecline =
+      ifDeclinedByMentor_ifReasonIsOther_freeText
+  }
+
+  const parsed = convertTemplateToHtml(null, 'mentorship-decline-email')
+  const html = parsed
+    .replace(/\${mentorName}/g, mentorName)
+    .replace(/\${menteeName}/g, menteeName)
+    .replace(/\${reasonForDecline}/g, reasonForDecline)
+    .replace(
+      /\${optionalMessageToMentee}/g,
+      ifDeclinedByMentor_optionalMessageToMentee
+    )
+  return sendMjmlEmailFactory({
+    to: recipient,
+    subject: `This time it wasn't a match`.replace(
+      /\${mentorName}/g,
+      mentorName
+    ),
     html: html,
   })
 }
@@ -490,6 +539,7 @@ module.exports = {
   sendMentorCancelledMentorshipNotificationEmail,
   sendMentorshipRequestReceivedEmail,
   sendMentorshipAcceptedEmail,
+  sendMentorshipDeclinedEmail,
   sendMenteeReminderToApplyToMentorEmail,
   sendMentoringSessionLoggedEmail,
   sendToMentorConfirmationOfMentorshipCancelled,

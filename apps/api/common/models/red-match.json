@@ -81,6 +81,13 @@
     {
       "accessType": "EXECUTE",
       "principalType": "ROLE",
+      "principalId": "mentor",
+      "permission": "ALLOW",
+      "property": "declineMentorship"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
       "principalId": "mentee",
       "permission": "ALLOW",
       "property": "requestMentorship"
@@ -165,6 +172,37 @@
       "http": [
         {
           "path": "/acceptMentorship",
+          "verb": "post"
+        }
+      ]
+    },
+    "declineMentorship": {
+      "accepts": [
+        {
+          "arg": "data",
+          "type": "object",
+          "http": {
+            "source": "body"
+          }
+        },
+        {
+          "arg": "options",
+          "type": "object",
+          "http": "optionsFromRequest"
+        }
+      ],
+      "returns": [
+        {
+          "arg": "redMatch",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
+      "description": "",
+      "http": [
+        {
+          "path": "/declineMentorship",
           "verb": "post"
         }
       ]
