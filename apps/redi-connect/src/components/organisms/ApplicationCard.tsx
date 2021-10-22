@@ -1,6 +1,6 @@
 import { Icon } from '@talent-connect/shared-atomic-design-components'
 import { rediLocationNames } from '@talent-connect/shared-config'
-import { RedMatch } from '@talent-connect/shared-types'
+import { RedMatch, RedProfile } from '@talent-connect/shared-types'
 import classnames from 'classnames'
 import moment from 'moment'
 import React, { useState } from 'react'
@@ -17,19 +17,25 @@ import DeclineMentorshipButton from './DeclineMentorshipButton'
 interface Props {
   application: RedMatch & { createdAt?: string }
   hasReachedMenteeLimit: boolean
+  currentUser?: RedProfile
 }
 
 const STATUS_LABELS: any = {
   applied: 'Pending',
 }
 
-const ApplicationCard = ({ application, hasReachedMenteeLimit }: Props) => {
+const ApplicationCard = ({
+  application,
+  hasReachedMenteeLimit,
+  currentUser,
+}: Props) => {
   const history = useHistory()
   const profile = getRedProfileFromLocalStorage()
   const [showDetails, setShowDetails] = useState(false)
   const applicationDate = new Date(application.createdAt || '')
   const applicationUser =
     profile.userType === 'mentee' ? application.mentor : application.mentee
+  const currentUserIsMentor = currentUser?.userType === 'mentor'
 
   return (
     <>
@@ -124,18 +130,23 @@ const ApplicationCard = ({ application, hasReachedMenteeLimit }: Props) => {
             <Content>{application.expectationText}</Content>
           </>
         )}
-        <ConfirmMentorship
-          match={application}
-          menteeName={profile && profile.firstName}
-          hasReachedMenteeLimit={hasReachedMenteeLimit}
-        />
-        <DeclineMentorshipButton match={application} />
+        {currentUserIsMentor ? (
+          <>
+            <ConfirmMentorship
+              match={application}
+              menteeName={profile && profile.firstName}
+              hasReachedMenteeLimit={hasReachedMenteeLimit}
+            />
+            <DeclineMentorshipButton match={application} />
+          </>
+        ) : null}
       </div>
     </>
   )
 }
 
 const mapStateToProps = (state: RootState) => ({
+  currentUser: state.user.profile,
   hasReachedMenteeLimit: getHasReachedMenteeLimit(state.user),
 })
 
