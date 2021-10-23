@@ -40,7 +40,7 @@ module.exports = async function sendAllReminderEmails(isDryRun) {
 
   // TODO: remove me
   const shouldSecondReminderBeSent =
-    DateTime.now() >= DateTime.fromISO('2021-11-04')
+    DateTime.now() >= DateTime.fromISO('2021-11-11')
 
   concat(
     noMentoringSessionLoggedYet(isDryRun)(),
