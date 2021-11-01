@@ -157,7 +157,7 @@ function ModalForm({
       <FormInput
         name="website"
         placeholder="https://www.company.de"
-        label="Website"
+        label="Website *"
         {...formik}
       />
       <FormInput

@@ -135,7 +135,21 @@ export function EditableJobPostings({
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required('Please provide a job title'),
-  idealTechnicalSkills: Yup.array().max(6, 'Please select up to six skills'),
+  location: Yup.string().required('Please provide a location'),
+  summary: Yup.string()
+    .required('Please enter a short description of the job')
+    .min(200, 'Job summary should be at least 200 characters'),
+  relatesToPositions: Yup.array().min(
+    1,
+    'Please select at least one related position'
+  ),
+  idealTechnicalSkills: Yup.array()
+    .min(1, 'Please select at least one relevant technical skill')
+    .max(6, 'Please select up to six skills'),
+  employmentType: Yup.mixed().required('Please select an employment type'),
+  languageRequirements: Yup.string().required(
+    'Please specify the language requirement(s)'
+  ),
 })
 
 interface ModalFormProps {
@@ -236,11 +250,11 @@ function ModalForm({
         <FormInput
           name={`location`}
           placeholder="Where is the position based"
-          label="Location"
+          label="Location*"
           {...formik}
         />
         <FormTextArea
-          label="Job Summary"
+          label="Job Summary*"
           name={`summary`}
           rows={7}
           placeholder="Tell us a bit about the position, expectations & ideal candidate."
@@ -259,21 +273,21 @@ function ModalForm({
           matches.
         </Element>
         <FormSelect
-          label="Related positions"
+          label="Related positions*"
           name={`relatesToPositions`}
           items={formRelatedPositions}
           {...formik}
           multiselect
         />
         <FormSelect
-          label="Ideal technical skills"
+          label="Ideal technical skills*"
           name={`idealTechnicalSkills`}
           items={formTopSkills}
           {...formik}
           multiselect
         />
         <FormSelect
-          label="Employment type"
+          label="Employment type*"
           name={`employmentType`}
           items={formEmploymentType}
           {...formik}
@@ -281,7 +295,7 @@ function ModalForm({
         <FormInput
           name={`languageRequirements`}
           placeholder="German C1, English B2, French B1..."
-          label="Language requirements"
+          label="Language requirements*"
           {...formik}
         />
         <FormInput
