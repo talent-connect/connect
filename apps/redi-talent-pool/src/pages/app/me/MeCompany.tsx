@@ -40,9 +40,15 @@ function SendProfileForReviewButton() {
     isProfileComplete(profile) &&
     jobListings?.length > 0
 
-  const tooltipText = isProfileComplete(profile)
-    ? 'You need to post a job listing before you can send it for review'
-    : 'You need to complete your profile before you can send it for review'
+  const getTooltipText = () => {
+    if (profile.state !== 'submitted-for-review') {
+      return isProfileComplete(profile)
+        ? 'You need to post a job listing before you can send it for review'
+        : 'You need to complete your profile before you can send it for review'
+    }
+
+    return 'Your profile is currently being reviewed'
+  }
 
   const onClick = useCallback(() => {
     if (!window.confirm('Would you like to submit your profile for review?'))
@@ -55,7 +61,7 @@ function SendProfileForReviewButton() {
     return <Button onClick={onClick}>Send profile to review</Button>
   } else {
     return (
-      <Tooltip title={tooltipText}>
+      <Tooltip title={getTooltipText()}>
         <span>
           <Button disabled style={{ pointerEvents: 'none' }}>
             Send profile to review
@@ -86,9 +92,11 @@ export function MeCompany() {
 
   const [isJobPostingFormOpen, setIsJobPostingFormOpen] = useState(false)
 
+  const isProfileApproved = profile?.state === 'profile-approved'
+
   return (
     <LoggedIn>
-      {profile?.state === 'profile-approved' ? (
+      {isProfileApproved ? (
         <Notification className="account-not-active double-bs">
           <Icon
             className="account-not-active__icon"
@@ -106,7 +114,7 @@ export function MeCompany() {
                 cursor: 'pointer',
               }}
             >
-              create a job posting
+              create additional job postings
             </span>{' '}
             or <a href="/app/browse">browse our talent pool</a>!
           </Content>
@@ -122,11 +130,13 @@ export function MeCompany() {
             <div style={{ textAlign: 'right', marginBottom: '1.5rem' }}>
               <CallToActionButton profile={profile} />
             </div>
-            <OnboardingSteps
-              profile={profile}
-              isProfileComplete={isProfileComplete(profile)}
-              hasJobListing={jobListings?.length > 0}
-            />
+            {!isProfileApproved && (
+              <OnboardingSteps
+                profile={profile}
+                isProfileComplete={isProfileComplete(profile)}
+                hasJobListing={jobListings?.length > 0}
+              />
+            )}
           </div>
           <EditableDetails profile={profile} />
           <EditableContact profile={profile} />
