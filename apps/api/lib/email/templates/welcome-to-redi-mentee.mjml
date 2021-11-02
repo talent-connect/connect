@@ -20,7 +20,7 @@
             match!</mj-text
           >
           <mj-text mj-class="text"
-            >To create your ReDI Connect profile, sign-in here:</mj-text
+            >To create your ReDI Connect profile, login here:</mj-text
           >
           <mj-image
             src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/signin-web.png"

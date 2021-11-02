@@ -48,7 +48,7 @@ export default {
   ),
   SignIn: () => (
     <TopIllustration>
-      Already have an account? <Link to="/front/login">sign-in here</Link>
+      Already have an account? <Link to="/front/login">login here</Link>
     </TopIllustration>
   ),
   Miriam: () => {
