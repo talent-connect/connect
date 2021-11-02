@@ -49,7 +49,7 @@ const sendEmailFactory = (to, subject, body, rediLocation) => {
       },
       Subject: {
         Charset: 'UTF-8',
-        Data: subject,
+        Data: buildSubjectLine(subject, process.env.NODE_ENV),
       },
     },
   })
@@ -64,9 +64,22 @@ const sendMjmlEmailFactory = ({ to, subject, html }) => {
     from: sender,
     to: toSanitized,
     bcc: ['eric@binarylights.com', 'career@redi-school.org'],
-    subject: subject,
+    subject: buildSubjectLine(subject, process.env.NODE_ENV),
     html: html,
   })
+}
+
+function buildSubjectLine(subject, env) {
+  switch (env) {
+    case 'production':
+      return subject
+
+    case 'demonstration':
+      return `[DEMO ENVIRONMENT] ${subject}`
+
+    default:
+      return `[DEV ENVIRONMENT] ${subject}`
+  }
 }
 
 const sendReportProblemEmailTemplate = fs.readFileSync(
