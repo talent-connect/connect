@@ -24,7 +24,7 @@
             target="_blank"
             width="358px"
             css-class="button-desktop"
-            href="https://calendly.com/redi-miriam/mentor-onboarding"
+            href="https://calendly.com/redi-miriam/redi-mentor-group-onboarding"
           />
           <mj-image
             src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/schedule-meeting-small.png"
@@ -32,7 +32,7 @@
             padding="30px 0"
             target="_blank"
             css-class="button-mobile"
-            href="https://calendly.com/paulina-redi/getting-to-know-you"
+            href="https://calendly.com/redi-miriam/redi-mentor-group-onboarding"
           />
           <mj-text mj-class="text" padding="20px 0 30px 0"
             >I look forward to getting to know you!</mj-text

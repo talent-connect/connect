@@ -47,7 +47,7 @@ export default function SignUpComplete() {
                 account, please
                 {` `}
                 <strong>
-                  <a href="https://calendly.com/redi-miriam/mentor-onboarding">
+                  <a href="https://calendly.com/redi-miriam/redi-mentor-group-onboarding">
                     schedule a 20 minute meeting with Miriam here
                   </a>
                 </strong>
@@ -63,7 +63,7 @@ export default function SignUpComplete() {
                 </p>
                 <p>
                   Please schedule a time for a meeting with me here:{' '}
-                  <a href="https://calendly.com/paulina-redi/getting-to-know-you">
+                  <a href="https://calendly.com/d/ch4-6xt-2j3/mentee-onboarding-to-redi-connect">
                     Getting-to-know-you
                   </a>
                 </p>

@@ -32,12 +32,9 @@
           <mj-text mj-class="text" padding="0 0 20px 0"
             >Please reach out if we can support you with anything!</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0">All the best,</mj-text>
-          <mj-text mj-class="text" padding="0 0 20px 0"
-            >Your ReDI Career Support Team</mj-text
-          >
 
-          >
+          <mj-text mj-class="text">All the best,</mj-text>
+          <mj-text mj-class="text">Your ReDI Career Support Team</mj-text>
         </mj-column>
       </mj-section>
       <mj-include path="./footer.career.support.team.mjml" />
