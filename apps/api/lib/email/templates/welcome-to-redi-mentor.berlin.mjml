@@ -9,15 +9,17 @@
           <mj-divider mj-class="divider-top" css-class="divider" />
           <mj-text mj-class="text">Hello ${firstName},</mj-text>
           <mj-text mj-class="text text-padding"
-            >We are very happy to welcome you as a <strong>${mentorOrMentee}</strong> to ReDI
-            Connect.
+            >We are very happy to welcome you as a
+            <strong>${mentorOrMentee}</strong> to ReDI Connect.
           </mj-text>
           <mj-text mj-class="text"
-            >What are the next steps? Please complete your personal profile, if you haven’t done so
-            already. This way we hope that you and your future mentee will be a great
-            match!</mj-text
+            >What are the next steps? Please complete your personal profile, if
+            you haven’t done so already. This way we hope that you and your
+            future mentee will be a great match!</mj-text
           >
-          <mj-text mj-class="text">To complete your ReDI Connect profile, sign-in here:</mj-text>
+          <mj-text mj-class="text"
+            >To complete your ReDI Connect profile, login here:</mj-text
+          >
           <mj-image
             src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/signin-web.png"
             align="left"
@@ -38,17 +40,20 @@
 
           <mj-text mj-class="text" padding="20px 0 0"
             >In the meantime, please join our group for mentors on
-            <a href="https://www.linkedin.com/groups/8733859/">LinkedIn</a> and our
+            <a href="https://www.linkedin.com/groups/8733859/">LinkedIn</a> and
+            our
             <a
               href="https://join.slack.com/t/redi-school/shared_invite/zt-7isxm99f-WrdyQiIlEzUl~iKLdWNJ_g"
               >ReDI slack space</a
-            >. Please feel free to join any of the open channels. We especially recommend the
-            #events_and_workshops channel, so you're always up to date with the
-            latest events. Once you're in, I will also add you to our mentors and volunteer training hub channel. 
+            >. Please feel free to join any of the open channels. We especially
+            recommend the #events_and_workshops channel, so you're always up to
+            date with the latest events. Once you're in, I will also add you to
+            our mentors and volunteer training hub channel. 
           </mj-text>
 
           <mj-text mj-class="text" padding="0 0 30px 0"
-            >If you have any questions or feedback at any point, feel free to reach out.</mj-text
+            >If you have any questions or feedback at any point, feel free to
+            reach out.</mj-text
           >
 
           <mj-text mj-class="text" padding="0 0 30px 0"
@@ -64,4 +69,3 @@
     </mj-wrapper>
   </mj-body>
 </mjml>
-
