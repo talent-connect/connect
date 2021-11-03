@@ -14,11 +14,14 @@
             >Your email address was successfully verified.</mj-text
           >
           <mj-text mj-class="text"
-            >Now, it's time to log into the
-            <a href="{tpLandingPageUrl}" target="_blank">ReDI Talent Pool</a>
-            and complete your company profile. Once it's complete, please send
-            it to me for review. Once approved, you can start posting jobs and
-            look for ReDI talent.
+            >Now, it's time to log into
+            <a href="{tpLandingPageUrl}" target="_blank">Talent Pool</a>
+            and complete your company profile and add your job listings. You
+            will be able to add your vacant tech-related job listings – whether
+            they are apprenticeships, internships or regular positions.
+          </mj-text>
+          <mj-text mj-class="text text-padding">
+            Once it's complete, please send it to me for review.
           </mj-text>
           <mj-text mj-class="text" padding="20px 0 30px 0"
             >We are excited to have you on board!</mj-text
