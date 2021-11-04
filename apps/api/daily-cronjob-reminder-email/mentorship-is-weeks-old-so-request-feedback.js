@@ -67,7 +67,7 @@ function doSendMentorshipIsWeeksOldSoRequestFeedbackEmailToMentor(
   return mergeMap(
     (redMatch) =>
       sendMentorshipIsWeeksOldSoRequestFeedbackEmailToMentor({
-        recipient: redMatch.mentee.contactEmail,
+        recipient: redMatch.mentor.contactEmail,
         mentorFirstName: redMatch.mentor.firstName,
         menteeFirstName: redMatch.mentee.firstName,
         matchMadeActiveOn: DateTime.fromISO(redMatch.matchMadeActiveOn),
@@ -81,7 +81,7 @@ function doSendMentorshipIsWeeksOldSoRequestFeedbackEmailToMentee(
   return mergeMap(
     (redMatch) =>
       sendMentorshipIsWeeksOldSoRequestFeedbackEmailToMentee({
-        recipient: redMatch.mentor.contactEmail,
+        recipient: redMatch.mentee.contactEmail,
         mentorFirstName: redMatch.mentor.firstName,
         menteeFirstName: redMatch.mentee.firstName,
         matchMadeActiveOn: DateTime.fromISO(redMatch.matchMadeActiveOn),
