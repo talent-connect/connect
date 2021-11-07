@@ -6,7 +6,7 @@ locals {
   env_prefix              = "${local.env}-${var.organisation}"
   env_prefix_no_separator = "${local.env}${var.organisation}"
   // todo these two need to be rcemoved when we move to REDI connect azure account.
-  resource-group-name     = "rediconnect"
+  resource-group-name     = "red-platform"
   resource-group-location = "germanywestcentral"
 }
 
@@ -113,7 +113,7 @@ module "web_app_container" {
   docker_registry_username = azurerm_container_registry.acr.admin_username
   docker_registry_password = azurerm_container_registry.acr.admin_password
   https_only               = true
-  container_image          = "${azurerm_container_registry.acr.login_server}/rediconnect-backend:latest"
+  container_image          = "${azurerm_container_registry.acr.login_server}/red-platform-backend:latest"
 
   app_settings = {
     // we are having this connection url structured this way because it is necessary for the primary key to be encoded before passed in as an environment variable in the loppback dataresources.json folder.

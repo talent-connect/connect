@@ -17,8 +17,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       AZURE_CONTAINER_REGISTRY: ${{ secrets.REGISTRY_NAME }}.azurecr.io
-      AZURE_IMAGE_NAME_WITH_TAG: ${{ secrets.REGISTRY_NAME }}.azurecr.io/rediconnect-backend:${{ github.sha }}
-      AZURE_IMAGE_NAME_WITH_LATEST_TAG: ${{ secrets.REGISTRY_NAME }}.azurecr.io/rediconnect-backend:latest
+      AZURE_IMAGE_NAME_WITH_TAG: ${{ secrets.REGISTRY_NAME }}.azurecr.io/red-platform-backend:${{ github.sha }}
+      AZURE_IMAGE_NAME_WITH_LATEST_TAG: ${{ secrets.REGISTRY_NAME }}.azurecr.io/red-platform-backend:latest
 
     steps:
       - uses: actions/checkout@master
@@ -58,8 +58,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       AZURE_CONTAINER_REGISTRY: ${{ secrets.REGISTRY_NAME }}.azurecr.io
-      AZURE_IMAGE_NAME_WITH_TAG: ${{ secrets.REGISTRY_NAME }}.azurecr.io/rediconnect-backend:${{ github.sha }}
-      AZURE_IMAGE_NAME_WITH_LATEST_TAG: ${{ secrets.REGISTRY_NAME }}.azurecr.io/rediconnect-backend:latest
+      AZURE_IMAGE_NAME_WITH_TAG: ${{ secrets.REGISTRY_NAME }}.azurecr.io/red-platform-backend:${{ github.sha }}
+      AZURE_IMAGE_NAME_WITH_LATEST_TAG: ${{ secrets.REGISTRY_NAME }}.azurecr.io/red-platform-backend:latest
 
     steps:
       - uses: actions/checkout@master

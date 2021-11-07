@@ -1,5 +1,5 @@
 output "resource_group_name" {
-  value = "rediconnect"
+  value = "red-platform"
   // todo when we will be having our REDI connect azure account this will have to return
   //  value = azurerm_resource_group.webapp-rg.name
 }
