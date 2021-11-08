@@ -152,19 +152,71 @@ module.exports = function (RedUser) {
    */
   RedUser.afterRemote('login', async function (ctx, loginOutput, next) {
     const redProduct = ctx.req.headers.redproduct // either CON or TP
-    if (redProduct !== 'TP') return next()
+    switch (redProduct) {
+      case 'CON':
+        return loginHook_caseLoginIntoConnect(ctx, next)
+      case 'TP':
+        return loginHook_caseLoginIntoTalentPool(ctx, next)
+      default:
+        return next()
+    }
+  })
 
+  function loginHook_caseLoginIntoConnect(context, next) {
+    const redUser = loginHook_getRedUser(context)
+
+    const userAlreadyHasConProfile = Boolean(redUser.redProfile)
+    const userDoesNotHaveTpJobseekerProfile = Boolean(
+      redUser.tpJobseekerProfile
+    )
+
+    if (userAlreadyHasConProfile || userDoesNotHaveTpJobseekerProfile)
+      return next()
+
+    const conProfile = tpJobseekerProfileToConRedProfile(
+      redUser.tpJobseekerProfile
+    )
+
+    await redUserInst.redProduct.create(conProfile)
+
+    return next()
+  }
+
+  function loginHook_caseLoginIntoTalentPool(context, next) {
+    const redUser = loginHook_getRedUser(context)
+
+    const userAlreadyHasTalentPoolJobseekerProfile = Boolean(
+      redUser.tpJobseekerProfile
+    )
+    const userDoesNotHaveConnectProfile = !redUser.redProfile
+
+    if (
+      userAlreadyHasTalentPoolJobseekerProfile ||
+      userDoesNotHaveConnectProfile
+    ) {
+      return next()
+    }
+
+    const tpJobseekerProfile = conRedProfileToTpJobseekerProfile(
+      redUser.redProfile
+    )
+
+    await redUserInst.tpJobseekerProfile.create(tpJobseekerProfile)
+
+    return next()
+  }
+
+  function loginHook_getRedUser(context) {
     const redUserId = ctx.result.toJSON().userId.toString()
     const redUserInst = await RedUser.findById(redUserId, {
       include: ['redProfile', 'tpJobseekerProfile'],
     })
     const redUser = redUserInst.toJSON()
 
-    if (redUser.tpJobseekerProfile) return next()
-    if (!redUser.redProfile) return next()
+    return redUser
+  }
 
-    const redProfile = redUser.redProfile
-
+  function conRedProfileToTpJobseekerProfile(profile) {
     const tpJobseekerProfile = {
       firstName: redProfile.firstName,
       lastName: redProfile.lastName,
@@ -174,8 +226,20 @@ module.exports = function (RedUser) {
       gaveGdprConsentAt: redProfile.gaveGdprConsentAt,
     }
 
-    const res = await redUserInst.tpJobseekerProfile.create(tpJobseekerProfile)
+    return tpJobseekerProfile
+  }
 
-    return next()
-  })
+  function tpJobseekerProfileToConRedProfile(tpJobseekerProfile) {
+    const conRedProfile = {
+      firstName: tpJobseekerProfile.firstName,
+      lastName: tpJobseekerProfile.lastName,
+      contactEmail: tpJobseekerProfile.contactEmail,
+      currentlyEnrolledInCourse: tpJobseekerProfile.currentlyEnrolledInCourse,
+      userType: 'public-sign-up-mentee-pending-review',
+      gaveGdprConsentAt: tpJobseekerProfile.gaveGdprConsentAt,
+      signupSource: 'public-sign-up',
+    }
+
+    return tpJobseekerProfile
+  }
 }
