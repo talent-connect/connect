@@ -65,7 +65,7 @@ function doSendPendingMentorshipApplicationReminderEmailToMentor(
   return mergeMap(
     (redMatch) =>
       sendPendingMentorshipApplicationReminderEmailToMentor({
-        recipient: redMatch.mentee.contactEmail,
+        recipient: redMatch.mentor.contactEmail,
         mentorFirstName: redMatch.mentor.firstName,
         menteeFirstName: redMatch.mentee.firstName,
         menteeLastName: redMatch.mentee.lastName,
