@@ -43,6 +43,7 @@ import {
   Labeled,
   ReferenceManyField,
   required,
+  SearchInput,
 } from 'react-admin'
 import classNames from 'classnames'
 import { unparse as convertToCSV } from 'papaparse/papaparse.min'
@@ -90,7 +91,10 @@ import { TpJobseekerProfileDeclineButton } from './components/TpJobseekerProfile
 import { TpCompanyProfileApproveButton } from './components/TpCompanyProfileApproveButton'
 
 import { API_URL } from './config'
-import { TpJobseekerProfileState } from '@talent-connect/shared-types'
+import {
+  TpJobseekerProfileState,
+  TpCompanyProfileState,
+} from '@talent-connect/shared-types'
 
 /** REFERENCE DATA */
 
@@ -1597,7 +1601,11 @@ const TpCompanyProfileEditActions = (props) => {
 const TpCompanyProfileList = (props) => {
   return (
     <>
-      <List {...props} pagination={<AllModelsPagination />}>
+      <List
+        {...props}
+        pagination={<AllModelsPagination />}
+        filters={<TpCompanyProfileListFilters />}
+      >
         <Datagrid>
           <TextField source="companyName" />
           <TextField source="firstName" />
@@ -1629,6 +1637,19 @@ const TpCompanyProfileList = (props) => {
     </>
   )
 }
+
+const TpCompanyProfileListFilters = (props) => (
+  <Filter {...props}>
+    <SearchInput label="Search by company name" source="q" />
+    <SelectInput
+      source="state"
+      choices={Object.values(TpCompanyProfileState).map((val) => ({
+        id: val,
+        name: val,
+      }))}
+    />
+  </Filter>
+)
 
 const TpCompanyProfileShow = (props) => (
   <Show {...props}>
@@ -2111,6 +2132,24 @@ const buildDataProvider = (normalDataProvider) => (verb, resource, params) => {
       if (q) {
         const andConditions = q.split(' ').map((word) => ({
           loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName: {
+            like: word,
+            options: 'i',
+          },
+        }))
+        newFilter.and = [...newFilter.and, ...andConditions]
+      }
+      params.filter = newFilter
+    }
+  }
+  if (verb === 'GET_LIST' && resource === 'tpCompanyProfiles') {
+    if (params.filter) {
+      const filter = params.filter
+      const q = filter.q
+      delete filter.q
+      const newFilter = { and: [filter] }
+      if (q) {
+        const andConditions = q.split(' ').map((word) => ({
+          companyName: {
             like: word,
             options: 'i',
           },
