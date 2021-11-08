@@ -238,6 +238,9 @@ module.exports = function (RedUser) {
       userType: 'public-sign-up-mentee-pending-review',
       gaveGdprConsentAt: tpJobseekerProfile.gaveGdprConsentAt,
       signupSource: 'public-sign-up',
+      rediLocation: 'berlin',
+      administratorInternalComment:
+        'SYSTEM NOTE: This user first signed up in Talent Pool. They then logged into Connect. Their ReDI Location has been set to BERLIN. Make sure to figure out if they should be changed to Munich or NRW. If so, request Eric or Anil to do the change',
     }
 
     return tpJobseekerProfile
