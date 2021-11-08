@@ -15,7 +15,7 @@ import {
   Button,
 } from '@talent-connect/shared-atomic-design-components'
 import { Box, Content } from 'react-bulma-components'
-import { Chip } from '@material-ui/core'
+import { Chip } from '@mui/material'
 import { AWS_PROFILE_AVATARS_BUCKET_BASE_URL } from '@talent-connect/shared-config'
 import placeholderImage from '../../../../assets/img-placeholder.png'
 

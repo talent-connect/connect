@@ -1,4 +1,4 @@
-import { Tooltip } from '@material-ui/core'
+import { Tooltip } from '@mui/material'
 import { Button, Icon } from '@talent-connect/shared-atomic-design-components'
 import {
   TpJobseekerProfile,

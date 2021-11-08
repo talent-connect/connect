@@ -64,7 +64,7 @@ export function EditableAbout({ profile, disableEditing }: Props) {
         />
       }
     />
-  )
+  );
 }
 
 EditableAbout.isSectionFilled = (profile: Partial<TpCompanyProfile>) =>

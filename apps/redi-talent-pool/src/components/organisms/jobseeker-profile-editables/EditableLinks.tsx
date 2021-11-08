@@ -83,7 +83,7 @@ export function EditableLinks({
       }
       modalStyles={{ minHeight: 700 }}
     />
-  )
+  );
 }
 
 function buildAllLinksArray(profile: Partial<TpJobseekerProfile>): string[] {

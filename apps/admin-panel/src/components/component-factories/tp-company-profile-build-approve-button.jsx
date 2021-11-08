@@ -1,5 +1,5 @@
 import React from 'react'
-import Button from '@material-ui/core/Button'
+import Button from '@mui/material/Button'
 
 import { API_URL } from '../../config'
 import doApiRequest from '../../lib/react-admin-loopback/src/fetch'

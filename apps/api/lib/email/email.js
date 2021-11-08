@@ -534,7 +534,7 @@ const sendMentorshipDeclinedEmail = ({
       mentorName
     ),
     html: html,
-  })
+  });
 }
 
 const formatLocationName = (locationIdentifier) => {

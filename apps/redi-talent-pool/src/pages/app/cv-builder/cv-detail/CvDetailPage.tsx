@@ -1,4 +1,4 @@
-import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined'
+import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined'
 import {
   Button,
   Heading,

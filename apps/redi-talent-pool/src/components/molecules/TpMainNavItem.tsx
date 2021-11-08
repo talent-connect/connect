@@ -1,4 +1,4 @@
-import { Tooltip } from '@material-ui/core'
+import { Tooltip } from '@mui/material'
 import classnames from 'clsx'
 import React from 'react'
 import { useCallback } from 'react'

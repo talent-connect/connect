@@ -50,20 +50,6 @@ const sendMenteeNotSentApplicationAfterActivationEmail = ({
   })
 }
 
-function sendNoMentoringSessionLoggedYetEmailToMentor({}) {
-  const parsedEmail = convertTemplateToHtml(
-    'no-mentoring-session-logged-yet_mentor'
-  )
-  const html = sendTpJobseekerVerificationEmailParsed
-    .replace(/\${firstName}/g, firstName)
-    .replace(/\${verificationUrl}/g, verificationUrl)
-  return sendMjmlEmailFactory({
-    to: recipient,
-    subject: 'Verify your email address!',
-    html: html,
-  })
-}
-
 function sendNoMentoringSessionLoggedYetEmailToMentor({
   recipient,
   menteeFirstName,
@@ -97,7 +83,7 @@ function sendNoMentoringSessionLoggedYetEmailToMentor({
       menteeFirstName
     ),
     html: html,
-  })
+  });
 }
 
 function sendNoMentoringSessionLoggedYetEmailToMentee({
@@ -170,7 +156,7 @@ function sendNoMentoringSessionLoggedYetSecondReminderEmailToMentor({
         menteeFirstName
       ),
     html: html,
-  })
+  });
 }
 
 function sendNoMentoringSessionLoggedYetSecondReminderEmailToMentee({
@@ -207,7 +193,7 @@ function sendNoMentoringSessionLoggedYetSecondReminderEmailToMentee({
         mentorFirstName
       ),
     html: html,
-  })
+  });
 }
 
 function sendMentorshipIsWeeksOldSoRequestFeedbackEmailToMentor({

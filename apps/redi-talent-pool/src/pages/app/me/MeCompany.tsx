@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { Tooltip } from '@material-ui/core'
+import { Tooltip } from '@mui/material'
 import { Button, Icon } from '@talent-connect/shared-atomic-design-components'
 import { Columns, Notification, Content } from 'react-bulma-components'
 import { EditableAbout } from '../../../components/organisms/company-profile-editables/EditableAbout'

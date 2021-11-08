@@ -125,7 +125,7 @@ export function EditableProfessionalExperience({
       }
       modalStyles={{ minHeight: 700 }}
     />
-  )
+  );
 }
 
 EditableProfessionalExperience.isSectionFilled = (

@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import {
-  Snackbar,
-  Slide,
-  SnackbarContent,
-  makeStyles,
-  Theme,
-  IconButton,
-} from '@material-ui/core'
-import CheckCircleIcon from '@material-ui/icons/CheckCircle'
-import ErrorIcon from '@material-ui/icons/Error'
-import InfoIcon from '@material-ui/icons/Info'
-import WarningIcon from '@material-ui/icons/Warning'
-import CloseIcon from '@material-ui/icons/Close'
-import { amber, green } from '@material-ui/core/colors'
+import { Snackbar, Slide, SnackbarContent, Theme, IconButton } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import ErrorIcon from '@mui/icons-material/Error'
+import InfoIcon from '@mui/icons-material/Info'
+import WarningIcon from '@mui/icons-material/Warning'
+import CloseIcon from '@mui/icons-material/Close'
+import { amber, green } from '@mui/material/colors'
 import { Subject } from 'rxjs'
 import { Optional } from 'utility-types'
 import clsx from 'clsx'
@@ -130,13 +124,13 @@ export function AppNotification() {
             aria-label="close"
             color="inherit"
             onClick={hide}
-          >
+            size="large">
             <CloseIcon className={styleClasses.icon} />
           </IconButton>,
         ]}
       />
     </Snackbar>
-  )
+  );
 }
 
 export default AppNotification

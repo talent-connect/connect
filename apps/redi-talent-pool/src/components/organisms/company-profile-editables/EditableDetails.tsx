@@ -90,7 +90,7 @@ export function EditableDetails({ profile, disableEditing }: Props) {
       }
       modalStyles={{ minHeight: '40rem' }}
     />
-  )
+  );
 }
 
 EditableDetails.isWebsiteSectionFilled = (profile: Partial<TpCompanyProfile>) =>

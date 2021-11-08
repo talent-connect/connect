@@ -7,8 +7,8 @@
 import React from 'react'
 
 import { Content } from 'react-bulma-components'
-import { Button, Popover } from '@material-ui/core'
-import { MoreHoriz as MoreHorizIcon } from '@material-ui/icons'
+import { Button, Popover } from '@mui/material'
+import { MoreHoriz as MoreHorizIcon } from '@mui/icons-material'
 
 interface CvListItemMoreOptionsMenuProps {
   handleRenameClick(): void

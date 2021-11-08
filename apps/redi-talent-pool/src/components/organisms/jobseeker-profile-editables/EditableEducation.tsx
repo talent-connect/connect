@@ -126,7 +126,7 @@ export function EditableEducation({
       }
       modalStyles={{ minHeight: 700 }}
     />
-  )
+  );
 }
 
 EditableEducation.isSectionFilled = (profile: Partial<TpJobseekerProfile>) =>
