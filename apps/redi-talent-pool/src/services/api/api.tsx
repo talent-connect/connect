@@ -25,7 +25,7 @@ export const signUpJobseeker = async (
   password: string,
   tpJobseekerProfile: Partial<TpJobseekerProfile>
 ) => {
-  console.log('sign up')
+  email = email.toLowerCase()
   const userResponse = await http(`${API_URL}/redUsers`, {
     method: 'post',
     data: { email, password },
@@ -51,7 +51,7 @@ export const signUpCompany = async (
   password: string,
   tpCompanyProfile: Partial<TpCompanyProfile>
 ) => {
-  console.log('sign up')
+  email = email.toLowerCase()
   const userResponse = await http(`${API_URL}/redUsers`, {
     method: 'post',
     data: { email, password },
@@ -76,6 +76,7 @@ export const login = async (
   email: string,
   password: string
 ): Promise<AccessToken> => {
+  email = email.toLowerCase()
   const loginResp = await http(`${API_URL}/redUsers/login`, {
     method: 'post',
     data: { email, password },
