@@ -477,18 +477,6 @@ export const MENTOR_DECLINES_MENTORSHIP_REASON_FOR_DECLINING = {
   anotherMentorMoreSuitable: 'I think another mentor would be more suitable',
   other: 'Other',
 }
-export const mentorDeclinesMentorshipReasonForDecliningOptions = [
-  {
-    id: 'notEnoughTimeNowToBeMentor',
-    label: "I don't have enough time right now to be a mentor",
-  },
-  { id: 'notRightExpertise', label: "I don't have the right expertise" },
-  {
-    id: 'anotherMentorMoreSuitable',
-    label: 'I think another mentor would be more suitable',
-  },
-  { id: 'other', label: 'Other' },
-]
 
 export const RED_MATCH_STATUSES = {
   accepted: 'Accepted',
@@ -499,41 +487,6 @@ export const RED_MATCH_STATUSES = {
   'invalidated-as-other-mentor-accepted':
     'Invalidated due to other mentor accepting',
 } as const
-
-// TODO: a duplicate lives in apps/api/lib/email/email.js, keep this
-// in sync with it!
-export const mentorDeclinesMentorshipReasonForDecliningOptions = [
-  {
-    id: 'notEnoughTimeNowToBeMentor',
-    label: "I don't have enough time right now to be a mentor",
-  },
-  { id: 'notRightExpertise', label: "I don't have the right expertise" },
-  {
-    id: 'anotherMentorMoreSuitable',
-    label: 'I think another mentor would be more suitable',
-  },
-  { id: 'other', label: 'Other' },
-]
-
-export const mentorDeclinesMentorshipReasonForDecliningOptionsIdToLabelMap =
-  mapValues(
-    keyBy(mentorDeclinesMentorshipReasonForDecliningOptions, 'id'),
-    'label'
-  )
-
-export const redMatchStatuses = {
-  accepted: 'Accepted',
-  completed: 'Completed',
-  cancelled: 'Cancelled',
-  applied: 'Applied',
-  'declined-by-mentor': 'Declined by mentor',
-  'invalidated-as-other-mentor-accepted':
-    'Invalidated due to other mentor accepting',
-} as const
-
-export const formRedMatchStatuses = Object.entries(redMatchStatuses).map(
-  ([key, value]) => ({ id: key, name: value })
-)
 
 export const AWS_PROFILE_AVATARS_BUCKET_BASE_URL =
   'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/'
