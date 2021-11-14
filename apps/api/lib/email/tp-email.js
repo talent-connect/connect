@@ -207,7 +207,7 @@ const sendTpCompanyProfileApprovedEmail = ({ recipient, firstName }) => {
 
 const sendTpCompanyProfileSubmittedForReviewEmail = ({ companyName }) => {
   const sendTpCompanyProfileSubmittedForReviewEmailParsed =
-    convertTemplateToHtml(null, 'new-company-in-talent-pool')
+    convertTemplateToHtml(null, 'company-profile-submitted-for-review')
 
   const html = sendTpCompanyProfileSubmittedForReviewEmailParsed.replace(
     /\${companyName}/g,
