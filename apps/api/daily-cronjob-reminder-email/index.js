@@ -38,15 +38,9 @@ module.exports = async function sendAllReminderEmails(isDryRun) {
     reminderEmailLogger.info('[DRY RUN]')
   }
 
-  // TODO: remove me
-  const shouldSecondReminderBeSent =
-    DateTime.now() >= DateTime.fromISO('2021-11-11')
-
   concat(
     noMentoringSessionLoggedYet(isDryRun)(),
-    shouldSecondReminderBeSent
-      ? noMentoringSessionLoggedYetSecondReminder(isDryRun)()
-      : EMPTY,
+    noMentoringSessionLoggedYetSecondReminder(isDryRun)(),
     mentorshipIsWeeksOldSoRequestFeedback(isDryRun)(),
     pendingMentorshipApplicationReminder(isDryRun)()
   ).subscribe(null, null, () =>
