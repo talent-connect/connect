@@ -1,5 +1,4 @@
 import { Icon } from '@talent-connect/shared-atomic-design-components'
-import { rediLocationNames } from '@talent-connect/shared-config'
 import { RedMatch, RedProfile } from '@talent-connect/shared-types'
 import classnames from 'classnames'
 import moment from 'moment'

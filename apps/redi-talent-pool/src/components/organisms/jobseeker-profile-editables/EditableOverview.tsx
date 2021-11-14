@@ -3,7 +3,7 @@ import {
   Caption,
   FormSelect,
 } from '@talent-connect/shared-atomic-design-components'
-import { COURSES, rediLocationNames } from '@talent-connect/shared-config'
+import { COURSES, REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
 import {
   desiredPositions,
@@ -210,7 +210,7 @@ const formCourses = coursesWithAlumniDeduped.map((course) => {
   const label =
     course.id === 'alumni'
       ? course.label
-      : `(ReDI ${rediLocationNames[course.location]}) ${course.label}`
+      : `(ReDI ${REDI_LOCATION_NAMES[course.location]}) ${course.label}`
   return {
     value: course.id,
     label: label,
