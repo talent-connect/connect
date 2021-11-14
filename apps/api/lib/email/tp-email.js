@@ -205,6 +205,22 @@ const sendTpCompanyProfileApprovedEmail = ({ recipient, firstName }) => {
   })
 }
 
+const sendTpCompanyProfileSubmittedForReviewEmail = ({ companyName }) => {
+  const sendTpCompanyProfileSubmittedForReviewEmailParsed =
+    convertTemplateToHtml(null, 'company-profile-submitted-for-review')
+
+  const html = sendTpCompanyProfileSubmittedForReviewEmailParsed.replace(
+    /\${companyName}/g,
+    companyName
+  )
+
+  return sendMjmlEmailFactory({
+    to: 'birgit@redi-school.org',
+    subject: 'New company in Talent Pool',
+    html,
+  })
+}
+
 module.exports = {
   sendTpResetPasswordEmail,
   sendTpJobseekerVerificationEmail,
@@ -214,4 +230,5 @@ module.exports = {
   sendTpCompanyVerificationEmail,
   sendTpCompanyEmailVerificationSuccessfulEmail,
   sendTpCompanyProfileApprovedEmail,
+  sendTpCompanyProfileSubmittedForReviewEmail,
 }
