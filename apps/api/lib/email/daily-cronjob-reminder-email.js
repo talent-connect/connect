@@ -29,20 +29,6 @@ const convertTemplateToHtml = (templateIdentifier) => {
   return parsedTemplate.html
 }
 
-function sendNoMentoringSessionLoggedYetEmailToMentor({}) {
-  const parsedEmail = convertTemplateToHtml(
-    'no-mentoring-session-logged-yet_mentor'
-  )
-  const html = sendTpJobseekerVerificationEmailParsed
-    .replace(/\${firstName}/g, firstName)
-    .replace(/\${verificationUrl}/g, verificationUrl)
-  return sendMjmlEmailFactory({
-    to: recipient,
-    subject: 'Verify your email address!',
-    html: html,
-  })
-}
-
 function sendNoMentoringSessionLoggedYetEmailToMentor({
   recipient,
   menteeFirstName,
@@ -107,9 +93,9 @@ function sendNoMentoringSessionLoggedYetEmailToMentee({
     )
   return sendMjmlEmailFactory({
     to: recipient,
-    subject: 'How’s the mentorship with ${menteeFirstName} going?'.replace(
-      '${menteeFirstName}',
-      menteeFirstName
+    subject: 'How’s the mentorship with ${mentorFirstName} going?'.replace(
+      '${mentorFirstName}',
+      mentorFirstName
     ),
     html: html,
   })
