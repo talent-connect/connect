@@ -138,17 +138,14 @@ module.exports = function (RedUser) {
   })
 
   /******************
-   * Special post-login hook built for Talent Pool built on 6 June 2021.
-   *
-   * We'll have many users signing up for TP who've been using CON for a while. We can
-   * determine what products a RedUser has signed up to by checking for existence of:
-   * - RedProfile (means they've signed up for CON)
-   * - TpJobseekerProfile (means they've signed up for TP jobseeker)
-   *
-   * This hook is designed to work like this:
-   * - Identify whether the logging-in RedUser is a CON user but not a TP user. Otherwise, proceed
-   * - Load their RedProfile
-   * - Create a TpJobseekerProfile by copying some info over
+   * Special post-login hook:
+   * When a user logs into one of our products (CON and TP), it's possible they don't
+   * have a product profile. For example, a user can have signed up in TP initially
+   * and created a TP profile (TpJobseekerProfile). Then, they log into CON but don't
+   * have a CON profile (RedProfile) yet. Or vice versa (CON-only user logging into
+   * TP).
+   * This hook detects when one of these two cases occur, and creates the appropriate
+   * product profile.
    */
   RedUser.afterRemote('login', async function (ctx, loginOutput, next) {
     const redProduct = ctx.req.headers.redproduct // either CON or TP
