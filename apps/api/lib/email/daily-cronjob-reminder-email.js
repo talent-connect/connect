@@ -107,9 +107,9 @@ function sendNoMentoringSessionLoggedYetEmailToMentee({
     )
   return sendMjmlEmailFactory({
     to: recipient,
-    subject: 'How’s the mentorship with ${menteeFirstName} going?'.replace(
-      '${menteeFirstName}',
-      menteeFirstName
+    subject: 'How’s the mentorship with ${mentorFirstName} going?'.replace(
+      '${mentorFirstName}',
+      mentorFirstName
     ),
     html: html,
   })
