@@ -3,9 +3,12 @@
 const Rx = require('rxjs')
 const { switchMap } = require('rxjs/operators')
 
+const { DateTime } = require('luxon')
+
 const app = require('../../server/server')
 const {
   sendMentorshipRequestReceivedEmail,
+  sendMentorshipDeclinedEmail,
   sendMentorshipAcceptedEmail,
   sendMentorshipCompletionEmailToMentor,
   sendMentorshipCompletionEmailToMentee,
@@ -124,7 +127,7 @@ module.exports = function (RedMatch) {
 
     redMatch = await redMatch.updateAttributes({
       status: 'accepted',
-      matchMadeActiveOn: new Date(),
+      matchMadeActiveOn: DateTime.utc().toString(),
       mentorReplyMessageOnAccept,
       rediLocation: options.currentUser.redProfile.rediLocation,
     })
@@ -171,6 +174,44 @@ module.exports = function (RedMatch) {
     return redMatch.toJSON()
   }
 
+  RedMatch.declineMentorship = async (data, options, callback) => {
+    const {
+      redMatchId,
+      ifDeclinedByMentor_chosenReasonForDecline,
+      ifDeclinedByMentor_ifReasonIsOther_freeText,
+      ifDeclinedByMentor_optionalMessageToMentee,
+    } = data
+
+    const RedProfile = app.models.RedProfile
+
+    let redMatch = await RedMatch.findById(redMatchId)
+    const redMatchData = redMatch.toJSON()
+    const [mentor, mentee] = await Promise.all([
+      RedProfile.findById(redMatchData.mentorId),
+      RedProfile.findById(redMatchData.menteeId),
+    ])
+
+    redMatch = await redMatch.updateAttributes({
+      status: 'declined-by-mentor',
+      ifDeclinedByMentor_chosenReasonForDecline,
+      ifDeclinedByMentor_ifReasonIsOther_freeText,
+      ifDeclinedByMentor_optionalMessageToMentee,
+      ifDeclinedByMentor_dateTime: DateTime.utc().toString(),
+      rediLocation: options.currentUser.redProfile.rediLocation,
+    })
+
+    await sendMentorshipDeclinedEmail({
+      recipient: mentee.contactEmail,
+      mentorName: mentor.firstName,
+      menteeName: mentee.firstName,
+      ifDeclinedByMentor_chosenReasonForDecline,
+      ifDeclinedByMentor_ifReasonIsOther_freeText,
+      ifDeclinedByMentor_optionalMessageToMentee,
+    }).toPromise()
+
+    return redMatch.toJSON()
+  }
+
   RedMatch.markAsCompleted = async (data, options, callback) => {
     const { redMatchId, mentorMessageOnComplete } = data
 
@@ -185,7 +226,7 @@ module.exports = function (RedMatch) {
 
     redMatch = await redMatch.updateAttributes({
       status: 'completed',
-      matchMadeActiveOn: new Date(),
+      matchCompletedOn: DateTime.utc().toString(),
       mentorMessageOnComplete,
       rediLocation: options.currentUser.redProfile.rediLocation,
     })
@@ -247,7 +288,6 @@ module.exports = function (RedMatch) {
     const { redMatchId } = data
 
     try {
-      console.log(redMatchId)
       let redMatch = await RedMatch.findById(redMatchId)
 
       redMatch = await redMatch.updateAttributes({

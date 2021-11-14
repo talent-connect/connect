@@ -86,7 +86,7 @@ export default function Login() {
         </Columns.Column>
 
         <Columns.Column size={5} offset={1}>
-          <Heading border="bottomLeft">Sign-in</Heading>
+          <Heading border="bottomLeft">Login</Heading>
           <Content size="large" renderAs="p">
             Enter your email and password below.
           </Content>

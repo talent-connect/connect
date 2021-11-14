@@ -43,14 +43,13 @@ export default function SignUpComplete() {
             <p>Your email address was successfully verified!</p>
             {userType === 'public-sign-up-mentor-pending-review' && (
               <p>
-                Now, we would like to get to know you better. To activate your
-                account, please
-                {` `}
-                <strong>
-                  <a href="https://calendly.com/redi-miriam/mentor-onboarding">
-                    schedule a 20 minute meeting with Miriam here
-                  </a>
-                </strong>
+                Now, we would like to get to know you better. We regularly
+                organize mentor onboardings in small groups.{' '}
+                <a href="https://calendly.com/redi-miriam/redi-mentor-group-onboarding">
+                  <strong>
+                    Please book yourself in for one of the open 30-minute slots.
+                  </strong>
+                </a>
                 .
               </p>
             )}
@@ -59,11 +58,11 @@ export default function SignUpComplete() {
                 <p>
                   Now, we would like to get to know you better. To activate your
                   account, please{' '}
-                  <strong>schedule a 15 minute meeting with Paulina. </strong>
+                  <strong>schedule a 15 minute meeting us. </strong>
                 </p>
                 <p>
-                  Please schedule a time for a meeting with me here:{' '}
-                  <a href="https://calendly.com/paulina-redi/getting-to-know-you">
+                  Please schedule a time for a meeting with us here:{' '}
+                  <a href="https://calendly.com/d/ch4-6xt-2j3/mentee-onboarding-to-redi-connect">
                     Getting-to-know-you
                   </a>
                 </p>

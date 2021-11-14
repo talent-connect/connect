@@ -1,0 +1,46 @@
+<mjml>
+  <mj-include path="../templates/head.mjml" />
+  <mj-body mj-class="body">
+    <mj-wrapper background-color="#F0F0F0">
+      <mj-section />
+      <mj-section css-class="section">
+        <mj-column>
+          <mj-text mj-class="headline"
+            >Talent Pool: Your profile is approved! ReDI for the next
+            step?</mj-text
+          >
+          <mj-divider mj-class="divider-top" css-class="divider" />
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >Dear ${firstName},</mj-text
+          >
+
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >Congratulations - your company profile has been approved!</mj-text
+          >
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >Now you are able to browse through our ReDI jobseekers to look for
+            people who could match the criteria of your job opening. Please feel
+            free to contact them through the email address they provided. You
+            can always add new job listings to your company profile when
+            relevant.</mj-text
+          >
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >If you have any questions in the process, please don’t hesitate to
+            reach out.</mj-text
+          >
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >And we always love to know success stories, so please let us know
+            when you hire one of our ReDI talents!</mj-text
+          >
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >Happy talent scouting!</mj-text
+          >
+          <mj-text mj-class="text">Best,</mj-text>
+          <mj-text mj-class="text">Birgit</mj-text>
+        </mj-column>
+      </mj-section>
+      <mj-include path="../templates/footer.birgit.mjml" />
+      <mj-section />
+    </mj-wrapper>
+  </mj-body>
+</mjml>

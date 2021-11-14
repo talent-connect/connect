@@ -9,11 +9,13 @@
           <mj-divider mj-class="divider-top" css-class="divider" />
           <mj-text mj-class="text">Hello ${firstName},</mj-text>
           <mj-text mj-class="text text-padding"
-            >Thank you for signing up as a <strong>${mentorOrMentee}</strong> to ReDI Connect.
+            >Thank you for signing up as a <strong>${mentorOrMentee}</strong> to
+            ReDI Connect.
           </mj-text>
           <mj-text mj-class="text"
-            >Please verify your email address by using the following button. Then it’s time to get
-            to know each other a little bit before starting your mentorship with ReDI.</mj-text
+            >Please verify your email address by using the following button.
+            Then it’s time to get to know each other a little bit before
+            starting your mentorship with ReDI.</mj-text
           >
           <mj-image
             src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/verify.png"
@@ -27,7 +29,9 @@
             >We are excited to get to know you soon!</mj-text
           >
           <mj-text mj-class="text">Best,</mj-text>
-          <mj-text mj-class="text">Your Career Support Team at ReDI School</mj-text>
+          <mj-text mj-class="text"
+            >Your Career Support Team at ReDI School</mj-text
+          >
         </mj-column>
       </mj-section>
       <mj-include path="./footer.berlin.miriam.mjml" />

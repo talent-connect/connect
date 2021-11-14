@@ -38,7 +38,7 @@ const sendEmailFactory = (to, subject, body, rediLocation) => {
     Source: sender,
     Destination: {
       ToAddresses: [toSanitized],
-      BccAddresses: ['eric@binarylights.com'],
+      BccAddresses: ['eric@binarylights.com', 'career@redi-school.org'],
     },
     Message: {
       Body: {
@@ -49,7 +49,7 @@ const sendEmailFactory = (to, subject, body, rediLocation) => {
       },
       Subject: {
         Charset: 'UTF-8',
-        Data: subject,
+        Data: buildSubjectLine(subject, process.env.NODE_ENV),
       },
     },
   })
@@ -63,10 +63,23 @@ const sendMjmlEmailFactory = ({ to, subject, html }) => {
   return sendMjmlEmail({
     from: sender,
     to: toSanitized,
-    bcc: 'eric@binarylights.com',
-    subject: subject,
+    bcc: ['eric@binarylights.com', 'career@redi-school.org'],
+    subject: buildSubjectLine(subject, process.env.NODE_ENV),
     html: html,
   })
+}
+
+function buildSubjectLine(subject, env) {
+  switch (env) {
+    case 'production':
+      return subject
+
+    case 'demonstration':
+      return `[DEMO ENVIRONMENT] ${subject}`
+
+    default:
+      return `[DEV ENVIRONMENT] ${subject}`
+  }
 }
 
 const sendReportProblemEmailTemplate = fs.readFileSync(
@@ -160,27 +173,23 @@ const convertTemplateToHtml = (rediLocation, templateString) => {
   return parsedTemplate.html
 }
 
-const sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted = ({
-  recipient,
-  mentorName,
-  menteeName,
-  rediLocation,
-}) => {
-  const rediEmailAdress = 'career@redi-school.org'
-  const sendMenteePendingReviewAcceptedEmailParsed = convertTemplateToHtml(
-    null,
-    'expired-notification-application'
-  )
-  const html = sendMenteePendingReviewAcceptedEmailParsed
-    .replace(/\${mentorName}/g, mentorName)
-    .replace(/\${menteeName}/g, menteeName)
-    .replace(/\${rediEmailAdress}/g, rediEmailAdress)
-  return sendMjmlEmailFactory({
-    to: recipient,
-    subject: `ReDI Connect: mentorship application from ${menteeName} expired`,
-    html: html,
-  })
-}
+const sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted =
+  ({ recipient, mentorName, menteeName, rediLocation }) => {
+    const rediEmailAdress = 'career@redi-school.org'
+    const sendMenteePendingReviewAcceptedEmailParsed = convertTemplateToHtml(
+      null,
+      'expired-notification-application'
+    )
+    const html = sendMenteePendingReviewAcceptedEmailParsed
+      .replace(/\${mentorName}/g, mentorName)
+      .replace(/\${menteeName}/g, menteeName)
+      .replace(/\${rediEmailAdress}/g, rediEmailAdress)
+    return sendMjmlEmailFactory({
+      to: recipient,
+      subject: `ReDI Connect: mentorship application from ${menteeName} expired`,
+      html: html,
+    })
+  }
 
 const sendMenteePendingReviewAcceptedEmail = ({
   recipient,
@@ -332,15 +341,32 @@ const sendMentoringSessionLoggedEmail = ({
   })
 }
 
+const sendMenteeReminderToApplyToMentorEmail = ({
+  recipient,
+  menteeFirstName,
+}) => {
+  const sendMenteeReminderToApplyToMentorEmailParsed = convertTemplateToHtml(
+    null,
+    'apply-to-mentor-reminder-for-mentee'
+  )
+  const html = sendMenteeReminderToApplyToMentorEmailParsed.replace(
+    /\${menteeFirstName}/g,
+    menteeFirstName
+  )
+  return sendMjmlEmailFactory({
+    to: recipient,
+    subject: 'Have you checked out or amazing mentors yet?',
+    html: html,
+  })
+}
+
 const sendMentorCancelledMentorshipNotificationEmail = ({
   recipient,
   firstName,
   rediLocation,
 }) => {
-  const sendMentorCancelledMentorshipNotificationEmailParsed = convertTemplateToHtml(
-    null,
-    'mentorship-cancelation-email-mentee'
-  )
+  const sendMentorCancelledMentorshipNotificationEmailParsed =
+    convertTemplateToHtml(null, 'mentorship-cancelation-email-mentee')
   const html = sendMentorCancelledMentorshipNotificationEmailParsed.replace(
     /\${firstName}/g,
     firstName
@@ -358,10 +384,8 @@ const sendToMentorConfirmationOfMentorshipCancelled = ({
   menteeFullName,
   rediLocation,
 }) => {
-  const sendMentorCancelledMentorshipNotificationEmailParsed = convertTemplateToHtml(
-    null,
-    'mentorship-cancelation-email-mentor'
-  )
+  const sendMentorCancelledMentorshipNotificationEmailParsed =
+    convertTemplateToHtml(null, 'mentorship-cancelation-email-mentor')
   const html = sendMentorCancelledMentorshipNotificationEmailParsed
     .replace(/\${mentorFirstName}/g, mentorFirstName)
     .replace(/\${menteeFullName}/g, menteeFullName)
@@ -441,7 +465,7 @@ const sendMentorshipRequestReceivedEmail = ({
 }
 
 const sendMentorshipAcceptedEmail = ({
-  recipients,
+  recipient,
   mentorName,
   menteeName,
   mentorReplyMessageOnAccept,
@@ -458,8 +482,57 @@ const sendMentorshipAcceptedEmail = ({
     .replace(/\${rediEmailAdress}/g, rediEmailAdress)
     .replace(/\${mentorReplyMessageOnAccept}/g, mentorReplyMessageOnAccept)
   return sendMjmlEmailFactory({
-    to: recipients,
+    to: recipient,
     subject: `Congratulations. Mentor ${mentorName} has accepted your application, ${menteeName}!`,
+    html: html,
+  })
+}
+
+// TODO: I'm a duplicate of libs/shared-config/src/lib/config.ts, keep me in sync
+const mentorDeclinesMentorshipReasonForDecliningOptions = [
+  {
+    id: 'notEnoughTimeNowToBeMentor',
+    label: "I don't have enough time right now to be a mentor",
+  },
+  { id: 'notRightExpertise', label: "I don't have the right expertise" },
+  {
+    id: 'anotherMentorMoreSuitable',
+    label: 'I think another mentor would be more suitable',
+  },
+  { id: 'other', label: 'Other' },
+]
+
+const sendMentorshipDeclinedEmail = ({
+  recipient,
+  mentorName,
+  menteeName,
+  ifDeclinedByMentor_chosenReasonForDecline,
+  ifDeclinedByMentor_ifReasonIsOther_freeText,
+  ifDeclinedByMentor_optionalMessageToMentee,
+}) => {
+  let reasonForDecline = mentorDeclinesMentorshipReasonForDecliningOptions.find(
+    (option) => option.id === ifDeclinedByMentor_chosenReasonForDecline
+  ).label
+  if (ifDeclinedByMentor_chosenReasonForDecline === 'other') {
+    ifDeclinedByMentor_chosenReasonForDecline =
+      ifDeclinedByMentor_ifReasonIsOther_freeText
+  }
+
+  const parsed = convertTemplateToHtml(null, 'mentorship-decline-email')
+  const html = parsed
+    .replace(/\${mentorName}/g, mentorName)
+    .replace(/\${menteeName}/g, menteeName)
+    .replace(/\${reasonForDecline}/g, reasonForDecline)
+    .replace(
+      /\${optionalMessageToMentee}/g,
+      ifDeclinedByMentor_optionalMessageToMentee
+    )
+  return sendMjmlEmailFactory({
+    to: recipient,
+    subject: `This time it wasn't a match`.replace(
+      /\${mentorName}/g,
+      mentorName
+    ),
     html: html,
   })
 }
@@ -479,6 +552,8 @@ module.exports = {
   sendMentorCancelledMentorshipNotificationEmail,
   sendMentorshipRequestReceivedEmail,
   sendMentorshipAcceptedEmail,
+  sendMentorshipDeclinedEmail,
+  sendMenteeReminderToApplyToMentorEmail,
   sendMentoringSessionLoggedEmail,
   sendToMentorConfirmationOfMentorshipCancelled,
   sendMentorPendingReviewAcceptedEmail,
@@ -490,4 +565,5 @@ module.exports = {
   sendResetPasswordEmail,
   sendVerificationEmail,
   sendEmailFactory,
+  sendMjmlEmailFactory,
 }

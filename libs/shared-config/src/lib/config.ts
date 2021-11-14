@@ -468,6 +468,38 @@ export const MENTEE_COUNT_CAPACITY_OPTIONS = [0, 1, 2] as const
 export type MenteeCountCapacityOption =
   typeof MENTEE_COUNT_CAPACITY_OPTIONS[number]
 
+// TODO: a duplicate lives in apps/api/lib/email/email.js, keep this
+// in sync with it!
+export const MENTOR_DECLINES_MENTORSHIP_REASON_FOR_DECLINING = {
+  notEnoughTimeNowToBeMentor:
+    "I don't have enough time right now to be a mentor",
+  notRightExpertise: "I don't have the right expertise",
+  anotherMentorMoreSuitable: 'I think another mentor would be more suitable',
+  other: 'Other',
+}
+export const mentorDeclinesMentorshipReasonForDecliningOptions = [
+  {
+    id: 'notEnoughTimeNowToBeMentor',
+    label: "I don't have enough time right now to be a mentor",
+  },
+  { id: 'notRightExpertise', label: "I don't have the right expertise" },
+  {
+    id: 'anotherMentorMoreSuitable',
+    label: 'I think another mentor would be more suitable',
+  },
+  { id: 'other', label: 'Other' },
+]
+
+export const RED_MATCH_STATUSES = {
+  accepted: 'Accepted',
+  completed: 'Completed',
+  cancelled: 'Cancelled',
+  applied: 'Applied',
+  'declined-by-mentor': 'Declined by mentor',
+  'invalidated-as-other-mentor-accepted':
+    'Invalidated due to other mentor accepting',
+} as const
+
 export const AWS_PROFILE_AVATARS_BUCKET_BASE_URL =
   'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/'
 

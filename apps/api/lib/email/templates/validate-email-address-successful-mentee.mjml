@@ -24,7 +24,7 @@
             target="_blank"
             width="358px"
             css-class="button-desktop"
-            href="https://calendly.com/paulina-redi/getting-to-know-you"
+            href="https://calendly.com/d/ch4-6xt-2j3/mentee-onboarding-to-redi-connect"
           />
           <mj-image
             src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/schedule-meeting-small.png"
@@ -32,16 +32,16 @@
             padding="30px 0"
             target="_blank"
             css-class="button-mobile"
-            href="https://calendly.com/paulina-redi/getting-to-know-you"
+            href="https://calendly.com/d/ch4-6xt-2j3/mentee-onboarding-to-redi-connect"
           />
           <mj-text mj-class="text" padding="20px 0 30px 0"
             >I am excited to get to know you soon!</mj-text
           >
-          <mj-text mj-class="text">Best,</mj-text>
-          <mj-text mj-class="text">Paulina</mj-text>
+          <mj-text mj-class="text">All the best,</mj-text>
+          <mj-text mj-class="text">Your ReDI Career Support Team</mj-text>
         </mj-column>
       </mj-section>
-      <mj-include path="./footer.berlin.paulina.mjml" />
+      <mj-include path="./footer.career.support.team.mjml" />
       <mj-section />
     </mj-wrapper>
   </mj-body>

@@ -90,7 +90,7 @@ const MSessions = ({
       await mentoringSessionsCreateStart(mentoringSession)
       setSubmitResult('success')
       setShowAddSession(false)
-      window.location.reload()
+      setTimeout(() => window.location.reload(), 2000)
     } catch (err) {
       setSubmitResult('error')
     } finally {
