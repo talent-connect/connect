@@ -25,6 +25,7 @@ export const signUp = async (
   password: string,
   redProfile: Partial<RedProfile>
 ) => {
+  email = email.toLowerCase()
   const rediLocation = process.env.NX_REDI_CONNECT_REDI_LOCATION as RediLocation
   redProfile.rediLocation = rediLocation
   const userResponse = await http(`${API_URL}/redUsers`, {
@@ -53,6 +54,7 @@ export const login = async (
   email: string,
   password: string
 ): Promise<AccessToken> => {
+  email = email.toLowerCase()
   const loginResp = await http(`${API_URL}/redUsers/login`, {
     method: 'post',
     data: { email, password },
@@ -70,6 +72,7 @@ export const logout = () => {
 }
 
 export const requestResetPasswordEmail = async (email: string) => {
+  email = email.toLowerCase()
   await axios(`${API_URL}/redUsers/requestResetPasswordEmail`, {
     method: 'post',
     data: { email, redproduct: 'CON' },
