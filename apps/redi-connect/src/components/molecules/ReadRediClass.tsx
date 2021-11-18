@@ -4,7 +4,7 @@ import { RedProfile } from '@talent-connect/shared-types'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
 import { Caption } from '@talent-connect/shared-atomic-design-components'
-import { courseIdToLabelMap } from '@talent-connect/shared-config'
+import { COURSES } from '@talent-connect/shared-config'
 
 interface Props {
   profile: RedProfile
@@ -19,7 +19,7 @@ const ReadRediClass = ({ profile, shortInfo }: Props) => {
       {shortInfo && <Caption>Redi Class</Caption>}
       <Content>
         {mentee_currentlyEnrolledInCourse && (
-          <p>{courseIdToLabelMap[mentee_currentlyEnrolledInCourse]}</p>
+          <p>{COURSES[mentee_currentlyEnrolledInCourse]}</p>
         )}
       </Content>
     </>

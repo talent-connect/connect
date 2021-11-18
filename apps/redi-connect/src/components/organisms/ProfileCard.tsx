@@ -6,7 +6,7 @@ import { Icon, PipeList } from '@talent-connect/shared-atomic-design-components'
 import { useHistory } from 'react-router-dom'
 import {
   AWS_PROFILE_AVATARS_BUCKET_BASE_URL,
-  rediLocationNames,
+  REDI_LOCATION_NAMES,
 } from '@talent-connect/shared-config'
 
 import placeholderImage from '../../assets/images/img-placeholder.png'
@@ -79,7 +79,7 @@ const ProfileCard = ({
           {firstName} {lastName}
         </Element>
         <Element key="location" renderAs="span" className="content">
-          {rediLocationNames[rediLocation]}
+          {REDI_LOCATION_NAMES[rediLocation]}
         </Element>
         {languages && <PipeList items={languages} />}
         {categories && (

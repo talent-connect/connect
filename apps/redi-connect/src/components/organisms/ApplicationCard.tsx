@@ -1,5 +1,4 @@
 import { Icon } from '@talent-connect/shared-atomic-design-components'
-import { rediLocationNames } from '@talent-connect/shared-config'
 import { RedMatch, RedProfile } from '@talent-connect/shared-types'
 import classnames from 'classnames'
 import moment from 'moment'
@@ -13,6 +12,7 @@ import { getRedProfileFromLocalStorage } from '../../services/auth/auth'
 import { Avatar, ConfirmMentorship } from '../organisms'
 import './ApplicationCard.scss'
 import DeclineMentorshipButton from './DeclineMentorshipButton'
+import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 
 interface Props {
   application: RedMatch & { createdAt?: string }
@@ -49,7 +49,7 @@ const ApplicationCard = ({
             {applicationUser && (
               <span>
                 {applicationUser.firstName} {applicationUser.lastName} (in{' '}
-                {rediLocationNames[applicationUser.rediLocation]})
+                {REDI_LOCATION_NAMES[applicationUser.rediLocation]})
               </span>
             )}
           </Columns.Column>

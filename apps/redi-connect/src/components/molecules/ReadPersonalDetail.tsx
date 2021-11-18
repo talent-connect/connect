@@ -8,7 +8,7 @@ import {
   Placeholder,
   PipeList,
 } from '@talent-connect/shared-atomic-design-components'
-import { gendersIdToLabelMap } from '@talent-connect/shared-config'
+import { GENDERS } from '@talent-connect/shared-config'
 
 interface Props {
   profile: RedProfile
@@ -20,7 +20,7 @@ const ReadPersonalDetail = ({ profile, caption }: Props) => {
 
   const age = moment().diff(birthDate, 'years')
 
-  const detailsList = gender ? [gendersIdToLabelMap[gender]] : []
+  const detailsList: string[] = gender ? [GENDERS[gender]] : []
   if (age) detailsList.push(`${age} years old`)
 
   if (!gender && !age)

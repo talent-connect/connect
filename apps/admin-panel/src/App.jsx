@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react'
 import { get, mapValues, keyBy, groupBy } from 'lodash'
-import moment from 'moment'
 import {
   Admin,
-  ChipField,
   Resource,
   List,
   Tab,
@@ -16,7 +14,6 @@ import {
   TabbedShowLayout,
   TextField,
   ReferenceInput,
-  SingleFieldList,
   AutocompleteInput,
   DateField,
   TextInput,
@@ -70,15 +67,14 @@ import {
 } from '@material-ui/pickers'
 
 import {
-  rediLocationNames,
-  Languages as configLanguages,
-  categoryGroups,
-  categories,
-  courses,
-  genders as configGenders,
-  mentoringSessionDurationOptions,
-  categoriesIdToLabelMap,
-  formRedMatchStatuses,
+  REDI_LOCATION_NAMES,
+  LANGUAGES,
+  CATEGORY_GROUPS,
+  CATEGORIES,
+  COURSES,
+  GENDERS,
+  MENTORING_SESSION_DURATION_OPTIONS,
+  RED_MATCH_STATUSES,
 } from '@talent-connect/shared-config'
 
 import { calculateAge } from '@talent-connect/shared-utils'
@@ -96,20 +92,22 @@ import {
   TpCompanyProfileState,
 } from '@talent-connect/shared-types'
 
+import { objectEntries } from '@talent-connect/typescript-utilities'
+
 /** REFERENCE DATA */
 
-const rediLocations = Object.entries(rediLocationNames).map(([id, label]) => ({
+const rediLocations = objectEntries(REDI_LOCATION_NAMES).map(([id, label]) => ({
   id,
   label,
 }))
 
-const categoriesFlat = categories.map((cat) => ({
+const categoriesFlat = CATEGORIES.map((cat) => ({
   ...cat,
   labelClean: cat.label,
   label: `${cat.label} (${cat.group})`,
 }))
 
-const coursesByLocation = groupBy(courses, 'location')
+const coursesByLocation = groupBy(COURSES, 'location')
 const coursesFlat = [
   ...coursesByLocation.berlin.map((cat) =>
     Object.assign(cat, { label: `Berlin: ${cat.label}` })
@@ -122,20 +120,26 @@ const coursesFlat = [
   ),
 ]
 
-const categoryGroupsToLabelMap = mapValues(keyBy(categoryGroups, 'id'), 'label')
 const categoriesIdToLabelCleanMap = mapValues(
   keyBy(categoriesFlat, 'id'),
   'labelClean'
 )
 const categoriesIdToGroupMap = mapValues(keyBy(categoriesFlat, 'id'), 'group')
 
-const genders = [...configGenders, { id: '', name: 'Prefers not to answer' }]
+const genders = [
+  ...Object.entries(GENDERS).map((key, value) => ({ id: key, name: value })),
+  { id: '', name: 'Prefers not to answer' },
+]
 
-const languages = configLanguages.map((lang) => ({ id: lang, name: lang }))
+const languages = LANGUAGES.map((lang) => ({ id: lang, name: lang }))
 
 const courseIdToLabelMap = mapValues(keyBy(coursesFlat, 'id'), 'label')
 const AWS_PROFILE_AVATARS_BUCKET_BASE_URL =
   'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/'
+
+export const formRedMatchStatuses = Object.entries(RED_MATCH_STATUSES).map(
+  ([key, value]) => ({ id: key, name: value })
+)
 
 /** START OF SHARED STUFF */
 
@@ -165,7 +169,7 @@ const CategoryList = (props) => {
       {Object.keys(categoriesGrouped).map((groupId, index) => (
         <React.Fragment key={index}>
           <span>
-            <strong>{categoryGroupsToLabelMap[groupId]}:</strong>{' '}
+            <strong>{CATEGORY_GROUPS[groupId]}:</strong>{' '}
             {categoriesGrouped[groupId]
               .map((catId) => categoriesIdToLabelCleanMap[catId])
               .join(', ')}
@@ -966,7 +970,7 @@ const RedMentoringSessionListAside = () => {
   const [loadState, setLoadState] = React.useState('pending')
   const [result, setResult] = React.useState(null)
   const [step, setStep] = React.useState(0)
-  const increaseStep = React.useCallback(() => setStep((step) => step + 1))
+  const increaseStep = () => setStep((step) => step + 1)
 
   const picker = (getter, setter, label) => (
     <KeyboardDatePicker
@@ -1105,7 +1109,7 @@ const RedMentoringSessionCreate = (props) => (
       <DateInput label="Date of mentoring session" source="date" />
       <SelectInput
         source="minuteDuration"
-        choices={mentoringSessionDurationOptions.map((duration) => ({
+        choices={MENTORING_SESSION_DURATION_OPTIONS.map((duration) => ({
           id: duration,
           name: duration,
         }))}
@@ -1141,7 +1145,7 @@ const RedMentoringSessionEdit = (props) => (
       <DateInput label="Date of mentoring session" source="date" />
       <SelectInput
         source="minuteDuration"
-        choices={mentoringSessionDurationOptions.map((duration) => ({
+        choices={MENTORING_SESSION_DURATION_OPTIONS.map((duration) => ({
           id: duration,
           name: duration,
         }))}

@@ -15,7 +15,7 @@ import { Columns, Form, Content, Notification } from 'react-bulma-components'
 import { capitalize } from 'lodash'
 import { RediLocation } from '@talent-connect/shared-types'
 import { buildFrontendUrl } from '../../../utils/build-frontend-url'
-import { rediLocationNames } from '@talent-connect/shared-config'
+import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import {
   Button,
   FormInput,
@@ -96,7 +96,7 @@ export default function Login() {
               You've tried to log into ReDI Connect{' '}
               <strong>
                 {
-                  rediLocationNames[
+                  REDI_LOCATION_NAMES[
                     process.env.NX_REDI_CONNECT_REDI_LOCATION as RediLocation
                   ]
                 }

@@ -5,8 +5,12 @@ import {
   FormSelect,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
-import { courses, rediLocationNames } from '@talent-connect/shared-config'
-import { RedProfile, TpJobseekerProfile, TpCompanyProfile } from '@talent-connect/shared-types'
+import { COURSES, REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
+import {
+  RedProfile,
+  TpJobseekerProfile,
+  TpCompanyProfile,
+} from '@talent-connect/shared-types'
 import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
 import omit from 'lodash/omit'
 import React, { useMemo, useState } from 'react'
@@ -21,7 +25,7 @@ import { history } from '../../../services/history/history'
 
 // TODO: replace with proper dropdown
 const coursesWithAlumniDeduped = [
-  ...courses.filter((c) => {
+  ...COURSES.filter((c) => {
     return !c.id.includes('alumni')
   }),
   {
@@ -35,7 +39,7 @@ const formCourses = coursesWithAlumniDeduped.map((course) => {
   const label =
     course.id === 'alumni'
       ? course.label
-      : `(ReDI ${rediLocationNames[course.location]}) ${course.label}`
+      : `(ReDI ${REDI_LOCATION_NAMES[course.location]}) ${course.label}`
   return {
     value: course.id,
     label: label,
@@ -66,7 +70,7 @@ function buildValidationSchema(signupType: SignUpPageType['type']) {
       ...baseSchema,
       currentlyEnrolledInCourse: Yup.string()
         .required()
-        .oneOf(courses.map((level) => level.id))
+        .oneOf(COURSES.map((level) => level.id))
         .label('Currently enrolled in course'),
       agreesWithCodeOfConduct: Yup.boolean().required().oneOf([true]),
     })
@@ -128,7 +132,7 @@ export default function SignUp() {
   ) => {
     setSubmitError(null)
 
-    let profile;
+    let profile
 
     try {
       if (type === 'jobseeker') {
@@ -136,7 +140,9 @@ export default function SignUp() {
         profile.isProfileVisibleToCompanies = true
 
         // TODO: this needs to be done in a smarter way, like iterating over the TpJobseekerProfile definition or something
-        const cleanProfile: Partial<TpJobseekerProfile> | Partial<TpCompanyProfile> = omit(profile, [
+        const cleanProfile:
+          | Partial<TpJobseekerProfile>
+          | Partial<TpCompanyProfile> = omit(profile, [
           'password',
           'passwordConfirm',
           'agreesWithCodeOfConduct',
@@ -153,7 +159,9 @@ export default function SignUp() {
         const profile = values as Partial<TpCompanyProfile>
 
         // TODO: this needs to be done in a smarter way, like iterating over the TpJobseekerProfile definition or something
-        const cleanProfile: Partial<TpJobseekerProfile> | Partial<TpCompanyProfile> = omit(profile, [
+        const cleanProfile:
+          | Partial<TpJobseekerProfile>
+          | Partial<TpCompanyProfile> = omit(profile, [
           'password',
           'passwordConfirm',
           'agreesWithCodeOfConduct',

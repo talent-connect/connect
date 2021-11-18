@@ -43,7 +43,7 @@ const Mentorship = ({ currentUser, matches }: MentorshipProps) => {
 
   useEffect(() => {
     if (!profile) matchesFetchStart()
-  }, [])
+  }, [profile])
 
   if (!profile) return <Redirect to={'/app/mentorships/'} />
 

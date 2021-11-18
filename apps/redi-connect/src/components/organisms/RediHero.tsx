@@ -10,7 +10,7 @@ import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { ReactComponent as Deloitte } from '../../assets/images/deloitte.svg'
 import './RediHero.scss'
-import { rediLocationNames } from '@talent-connect/shared-config'
+import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import { envRediLocation } from '../../utils/env-redi-location'
 import {
   Button,
@@ -29,7 +29,7 @@ const RediHero = () => {
           <Columns.Column size={5}>
             <Heading>
               {t('loggedOutArea.homePage.hero.about.headline')}{' '}
-              {rediLocationNames[envRediLocation()]}
+              {REDI_LOCATION_NAMES[envRediLocation()]}
             </Heading>
             <Deloitte className="oneandhalf-bs redi-hero__icon" />
             <Columns.Column responsive={{ tablet: { hide: { value: true } } }}>
