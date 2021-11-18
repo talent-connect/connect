@@ -81,9 +81,9 @@ output "static_website_url_picker" {
   description = "static web site URL from storage account"
 }
 
-output "azure_app_service_name" {
-  value = module.web_app_container.name
-}
+# output "azure_app_service_name" {
+#   value = module.web_app_container.name
+# }
 
 output "azure_container_registry" {
   value = azurerm_container_registry.acr.login_server
