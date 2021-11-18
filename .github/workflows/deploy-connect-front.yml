@@ -35,7 +35,7 @@ jobs:
     needs: [install]
     environment:
       name: staging
-      url: https://cdn-endpoint-front-berlin-staging-redi.azureedge.net
+      url: https://cdn-endpoint-front-berlin-staging-red.azureedge.net
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -75,7 +75,7 @@ jobs:
         with:
           azcliversion: 2.19.1
           inlineScript: |
-            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-berlin-staging-redi" --name "cdn-endpoint-front-berlin-staging-redi" --resource-group "red-platform"
+            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-berlin-staging-red" --name "cdn-endpoint-front-berlin-staging-red" --resource-group "red-platform"
 
       - name: Logout from Azure
         run: |
