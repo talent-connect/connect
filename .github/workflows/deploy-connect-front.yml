@@ -31,7 +31,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
   deploy-berlin-staging:
-    if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
+    # if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
     needs: [install]
     environment:
       name: staging
