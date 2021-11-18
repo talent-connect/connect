@@ -64,7 +64,8 @@
     "invalidate-cache:redi-connect:prod:nrw": "aws cloudfront create-invalidation --distribution-id E3AU6SIHBM9JHD --paths '/*' --profile redi-connect-deployment",
     "invalidate-cache:redi-connect:demonstration": "aws cloudfront create-invalidation --distribution-id E33LAGO1KPBTUA --paths '/*' --profile redi-connect-deployment",
     "invalidate-cache:admin-panel:prod": "aws cloudfront create-invalidation --distribution-id ELS7VZ1E3A1BI --paths '/*' --profile redi-connect-deployment",
-    "invalidate-cache:admin-panel:demonstration": "aws cloudfront create-invalidation --distribution-id E1R3A1AAHP3X8O --paths '/*' --profile redi-connect-deployment"
+    "invalidate-cache:admin-panel:demonstration": "aws cloudfront create-invalidation --distribution-id E1R3A1AAHP3X8O --paths '/*' --profile redi-connect-deployment",
+    "build:redi-connect:berlin": "NX_REDI_CONNECT_REDI_LOCATION=berlin env-cmd -f .env.production nx run redi-connect:build"
   },
   "private": true,
   "dependencies": {
