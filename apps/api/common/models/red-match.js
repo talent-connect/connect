@@ -133,7 +133,7 @@ module.exports = function (RedMatch) {
     })
 
     await sendMentorshipAcceptedEmail({
-      recipients: [mentee.contactEmail, mentor.contactEmail],
+      recipient: [mentee.contactEmail, mentor.contactEmail],
       mentorName: mentor.firstName,
       menteeName: mentee.firstName,
       mentorReplyMessageOnAccept: mentorReplyMessageOnAccept,
