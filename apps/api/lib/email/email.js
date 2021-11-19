@@ -29,7 +29,7 @@ const sendMjmlEmail = Rx.bindNodeCallback(
   transporter.sendMail.bind(transporter)
 )
 const sendEmailFactory = (to, subject, body, rediLocation) => {
-  let toSanitized = isProductionOrDemonstration() ? to : 'eric@binarylights.com'
+  let toSanitized = isProductionOrDemonstration() ? to : ''
   if (process.env.DEV_MODE_EMAIL_RECIPIENT) {
     toSanitized = process.env.DEV_MODE_EMAIL_RECIPIENT
   }
@@ -38,7 +38,7 @@ const sendEmailFactory = (to, subject, body, rediLocation) => {
     Source: sender,
     Destination: {
       ToAddresses: [toSanitized],
-      BccAddresses: ['eric@binarylights.com', 'career@redi-school.org'],
+      BccAddresses: ['career@redi-school.org'],
     },
     Message: {
       Body: {
@@ -55,7 +55,7 @@ const sendEmailFactory = (to, subject, body, rediLocation) => {
   })
 }
 const sendMjmlEmailFactory = ({ to, subject, html }) => {
-  let toSanitized = isProductionOrDemonstration() ? to : 'eric@binarylights.com'
+  let toSanitized = isProductionOrDemonstration() ? to : ''
   if (process.env.DEV_MODE_EMAIL_RECIPIENT) {
     toSanitized = process.env.DEV_MODE_EMAIL_RECIPIENT
   }
@@ -63,7 +63,7 @@ const sendMjmlEmailFactory = ({ to, subject, html }) => {
   return sendMjmlEmail({
     from: sender,
     to: toSanitized,
-    bcc: ['eric@binarylights.com', 'career@redi-school.org'],
+    bcc: ['career@redi-school.org'],
     subject: buildSubjectLine(subject, process.env.NODE_ENV),
     html: html,
   })
