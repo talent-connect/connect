@@ -1,5 +1,6 @@
 import React from 'react'
 import AccountOperation from '../../../components/templates/AccountOperation'
+import { ReactComponent as WelcomeIllustration } from '../../../assets/images/welcome-user.svg'
 import { Columns, Form, Content } from 'react-bulma-components'
 import { useHistory, useParams } from 'react-router'
 import { UserType } from '@talent-connect/shared-types'
@@ -23,22 +24,10 @@ export default function SignUpComplete() {
           size={5}
           responsive={{ mobile: { hide: { value: true } } }}
         >
-          {userType === 'public-sign-up-mentor-pending-review' && (
-            <>Meet Miriam</>
-          )}
-          {userType === 'public-sign-up-mentee-pending-review' && (
-            <>Meet Paulina</>
-          )}
+          <WelcomeIllustration className="illustration illustration--rightOut" />
         </Columns.Column>
         <Columns.Column size={5} offset={2}>
-          <Heading border="bottomLeft">
-            {userType === 'public-sign-up-mentor-pending-review' && (
-              <>Meet Miriam</>
-            )}
-            {userType === 'public-sign-up-mentee-pending-review' && (
-              <>Meet Paulina</>
-            )}
-          </Heading>
+          <Heading border="bottomLeft">Meet the team</Heading>
           <Content size="large" renderAs="div">
             <p>Your email address was successfully verified!</p>
             {userType === 'public-sign-up-mentor-pending-review' && (
@@ -50,23 +39,16 @@ export default function SignUpComplete() {
                     Please book yourself in for one of the open 30-minute slots.
                   </strong>
                 </a>
-                .
               </p>
             )}
             {userType === 'public-sign-up-mentee-pending-review' && (
-              <>
-                <p>
-                  Now, we would like to get to know you better. To activate your
-                  account, please{' '}
-                  <strong>schedule a 15 minute meeting us. </strong>
-                </p>
-                <p>
-                  Please schedule a time for a meeting with us here:{' '}
-                  <a href="https://calendly.com/d/ch4-6xt-2j3/mentee-onboarding-to-redi-connect">
-                    Getting-to-know-you
-                  </a>
-                </p>
-              </>
+              <p>
+                Now, we would like to get to know you better. To activate your
+                account,{' '}
+                <a href="https://calendly.com/d/ch4-6xt-2j3/mentee-onboarding-to-redi-connect">
+                  <strong>please schedule a 15-minute meeting with us. </strong>
+                </a>
+              </p>
             )}
           </Content>
           <Form.Field className="submit-spacer">
