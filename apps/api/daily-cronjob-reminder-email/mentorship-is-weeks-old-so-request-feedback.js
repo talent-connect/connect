@@ -50,7 +50,7 @@ const redMatchFind = (q) =>
   bindNodeCallback(app.models.RedMatch.find.bind(app.models.RedMatch))(q)
 
 function filterForActiveMentors() {
-  return filter((match) => redMatch.mentor && redMatch.mentor.userActivated)
+  return filter((redMatch) => redMatch.mentor && redMatch.mentor.userActivated)
 }
 
 function filterOnlyXDayOldMatches(days) {

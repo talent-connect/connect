@@ -84,7 +84,7 @@ const redMentoringSessionFind = (q) =>
   )(q)
 
 function filterForActiveMentors() {
-  return filter((match) => redMatch.mentor && redMatch.mentor.userActivated)
+  return filter((redMatch) => redMatch.mentor && redMatch.mentor.userActivated)
 }
 
 function filterOnlyXDayOldMatches(days) {
