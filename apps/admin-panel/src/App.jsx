@@ -1672,6 +1672,14 @@ const TpCompanyProfileShow = (props) => (
           <TextField source="linkedInUrl" />
           <TextField source="phoneNumber" />
           <TextField source="about" />
+          <TextField
+            label="How They Heard about ReDI Talent Pool"
+            source="howDidHearAboutRedi"
+          />
+          <TextField
+            label="How They Heard about ReDI Talent Pool (If selected Other)"
+            source="howDidHearAboutRediOtherText"
+          />
 
           <ReferenceManyField
             label="Job Listings"
@@ -1743,6 +1751,14 @@ const TpCompanyProfileEdit = (props) => (
         <TextInput source="linkedInUrl" />
         <TextInput source="phoneNumber" />
         <TextInput source="about" />
+        <TextInput
+          label="How They Heard about ReDI Talent Pool"
+          source="howDidHearAboutRedi"
+        />
+        <TextInput
+          label="How They Heard about ReDI Talent Pool (If selected Other)"
+          source="howDidHearAboutRediOtherText"
+        />
 
         <ReferenceManyField
           label="Job Listings"
