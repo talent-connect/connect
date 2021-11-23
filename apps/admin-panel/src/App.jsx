@@ -1592,10 +1592,10 @@ const TpJobseekerProfileEditActions = (props) => {
 }
 
 const TpCompanyProfileEditActions = (props) => {
-  if (props?.data?.state !== 'submitted-for-review') return null
+  if (props?.data?.state === 'profile-approved') return null
 
   return (
-    <CardActions>
+    <CardActions style={{ display: 'flex', alignItems: 'center' }}>
       Company profile is pending. Please{' '}
       <TpCompanyProfileApproveButton {...props} />
     </CardActions>
