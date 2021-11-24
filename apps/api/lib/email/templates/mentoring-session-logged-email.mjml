@@ -10,11 +10,20 @@
             ${menteeFirstName}!</mj-text
           >
           <mj-divider mj-class="divider-top" css-class="divider" />
-          <mj-text mj-class="text">Dear ${mentorName},</mj-text>
-          <mj-text mj-class="text text-padding"
-            >thank you for logging the session. This is very helpful for us in
-            order to track the progress of your mentorship. Please keep logging
-            your sessions!</mj-text
+
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >Hi ${mentorName},</mj-text
+          >
+          <mj-text mj-class="text" padding="0 0 0 0"
+            >Thank you for logging the session(s) you had with
+            ${menteeFirstName}!</mj-text
+          >
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >This is super helpful because it’s currently the only way for us to
+            track the progress of your mentorship.
+          </mj-text>
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >Please keep logging your sessions!</mj-text
           >
           <mj-image
             src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/log-next-session.png"

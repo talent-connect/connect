@@ -9,14 +9,22 @@
             >Verification has been successful!</mj-text
           >
           <mj-divider mj-class="divider-top" css-class="divider" />
-          <mj-text mj-class="text">Hello ${firstName},</mj-text>
-          <mj-text mj-class="text text-padding"
-            >your email address was successfully verified.</mj-text
+
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >Hi ${firstName},</mj-text
           >
-          <mj-text mj-class="text"
-            >Now, we would like to get to know you a little better. Please
-            schedule a time for a meeting with me here.
-          </mj-text>
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >Your email address was successfully verified!</mj-text
+          >
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >Your last step before you can finally start your search for a
+            mentor is a quick onboarding to the platform with one of our team
+            members. It’s a call of about 30 minutes.</mj-text
+          >
+          <mj-text mj-class="text" padding="0 0 0 0"
+            >Please schedule a time for an onboarding session with us by
+            clicking the button below.</mj-text
+          >
           <mj-image
             src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/schedule-meeting-large.png"
             align="left"
@@ -34,8 +42,8 @@
             css-class="button-mobile"
             href="https://calendly.com/d/ch4-6xt-2j3/mentee-onboarding-to-redi-connect"
           />
-          <mj-text mj-class="text" padding="20px 0 30px 0"
-            >I am excited to get to know you soon!</mj-text
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >We’re excited to get to know you soon!</mj-text
           >
 
           <mj-text mj-class="text">All the best,</mj-text>

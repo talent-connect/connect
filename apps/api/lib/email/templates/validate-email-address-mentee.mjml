@@ -7,15 +7,20 @@
         <mj-column>
           <mj-text mj-class="headline">Verify your email address!</mj-text>
           <mj-divider mj-class="divider-top" css-class="divider" />
-          <mj-text mj-class="text">Hello ${firstName},</mj-text>
-          <mj-text mj-class="text text-padding"
-            >thank you for signing up as a <strong>${mentorOrMentee}</strong> to
-            ReDI Connect.
+
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >Hi ${firstName},</mj-text
+          >
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >Thank you for signing up as a <strong>mentee</strong> on ReDI
+            Connect!</mj-text
+          >
+          <mj-text mj-class="text" padding="0 0 0 0"
+            >Please verify your email address by clicking on the button below.
           </mj-text>
-          <mj-text mj-class="text"
-            >Please verify your email address by using the following button.
-            Then it’s time to meet me in person to start your mentorship at ReDI
-            soon.</mj-text
+          <mj-text mj-class="text" padding="0 0 0 0"
+            >After successfully verifying, we’ll send you an email with the next
+            steps!</mj-text
           >
           <mj-image
             src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/verify.png"
@@ -25,8 +30,9 @@
             width="353px"
             href="${verificationUrl}"
           />
-          <mj-text mj-class="text" padding="20px 0 30px 0"
-            >I am excited to get to know you soon!</mj-text
+
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >We are excited to get to know you soon!</mj-text
           >
 
           <mj-text mj-class="text">All the best,</mj-text>

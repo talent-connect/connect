@@ -10,20 +10,29 @@
             application, ${menteeName}!</mj-text
           >
           <mj-divider mj-class="divider-top" css-class="divider" />
+
           <mj-text mj-class="text"
-            >${menteeName}, here's a message to you from ${mentorName}:</mj-text
+            >Hi ${menteeName}, here's a message to you from your new mentor,
+            ${mentorName}:</mj-text
           >
           <mj-text mj-class="text text-padding italic"
             >${mentorReplyMessageOnAccept}</mj-text
           >
-          <mj-text mj-class="text">Are you ReDI?!</mj-text>
-          <mj-text mj-class="text top-padding">Happy connectin’</mj-text>
-          <mj-text mj-class="text" padding="20px 0 30px 0"
-            >Please let us know at
-            <a href="mailto:${rediEmailAdress}" class="text-link"
-              >${rediEmailAdress}</a
-            >
-            if you have any questions!</mj-text
+
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >Please make sure to respond to their message to you as soon as
+            possible so that the two of you can get started on your mentorship
+            journey!</mj-text
+          >
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >If you have any questions, you can always email us (<a
+              href="mailto:career@redi-school.org"
+              >career@redi-school.org</a
+            >) or message us on slack.</mj-text
+          >
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >We wish you a successful and fun mentorship with
+            ${mentorName}!</mj-text
           >
 
           <mj-text mj-class="text">All the best,</mj-text>
