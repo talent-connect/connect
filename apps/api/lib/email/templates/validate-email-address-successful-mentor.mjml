@@ -14,8 +14,9 @@
             >Your email address was successfully verified.</mj-text
           >
           <mj-text mj-class="text">
-            Now, I would like to get to know you a little better. We regularly organize mentor onboardings in small groups. 
-            Please book yourself in for one of the open 30-minute slots.
+            Now, I would like to get to know you a little better. We regularly
+            organize mentor onboardings in small groups. Please book yourself in
+            for one of the open 30-minute slots.
           </mj-text>
           <mj-image
             src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/schedule-meeting-large.png"
@@ -37,11 +38,12 @@
           <mj-text mj-class="text" padding="20px 0 30px 0"
             >I look forward to getting to know you!</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 0 0">Best,<br /></mj-text>
-          <mj-text mj-class="text">Miriam</mj-text>
+
+          <mj-text mj-class="text">All the best,</mj-text>
+          <mj-text mj-class="text">Your ReDI Career Support Team</mj-text>
         </mj-column>
       </mj-section>
-      <mj-include path="./footer.berlin.miriam.mjml" />
+      <mj-include path="./footer.career.support.team.mjml" />
       <mj-section />
     </mj-wrapper>
   </mj-body>

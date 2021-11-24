@@ -11,8 +11,9 @@
           <mj-divider mj-class="divider-top" css-class="divider" />
           <mj-text mj-class="text">Dear ${mentorName},</mj-text>
           <mj-text mj-class="text text-padding"
-            >thank you for logging the session. This is very helpful for us in order to track the
-             progress of your mentorship. Please keep logging your sessions!</mj-text
+            >thank you for logging the session. This is very helpful for us in
+            order to track the progress of your mentorship. Please keep logging
+            your sessions!</mj-text
           >
           <mj-image
             src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/log-next-session.png"
@@ -22,11 +23,12 @@
             width="250px"
             href="${loginUrl}"
           />
-          <mj-text mj-class="text">Best,</mj-text>
-          <mj-text mj-class="text">Miriam</mj-text>
+
+          <mj-text mj-class="text">All the best,</mj-text>
+          <mj-text mj-class="text">Your ReDI Career Support Team</mj-text>
         </mj-column>
       </mj-section>
-      <mj-include path="./footer.berlin.miriam.mjml" />
+      <mj-include path="./footer.career.support.team.mjml" />
       <mj-section />
     </mj-wrapper>
   </mj-body>

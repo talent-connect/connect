@@ -37,6 +37,7 @@
           <mj-text mj-class="text" padding="20px 0 30px 0"
             >I am excited to get to know you soon!</mj-text
           >
+
           <mj-text mj-class="text">All the best,</mj-text>
           <mj-text mj-class="text">Your ReDI Career Support Team</mj-text>
         </mj-column>
