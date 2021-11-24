@@ -6,8 +6,8 @@
       <mj-section css-class="section">
         <mj-column>
           <mj-text mj-class="headline"
-            >Congratulations. Mentor ${mentorName} has accepted your
-            application, ${menteeName}.</mj-text
+            >Congratulations! Mentor ${mentorName} has accepted your
+            application, ${menteeName}!</mj-text
           >
           <mj-divider mj-class="divider-top" css-class="divider" />
           <mj-text mj-class="text"

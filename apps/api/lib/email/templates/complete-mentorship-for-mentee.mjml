@@ -5,7 +5,9 @@
       <mj-section />
       <mj-section css-class="section">
         <mj-column>
-          <mj-text mj-class="headline">All good things come to an end</mj-text>
+          <mj-text mj-class="headline"
+            >All good things come to an end...</mj-text
+          >
           <mj-divider mj-class="divider-top" css-class="divider" />
           <mj-text mj-class="text">Dear ${menteeFirstName},</mj-text>
           <mj-text mj-class="text text-padding"

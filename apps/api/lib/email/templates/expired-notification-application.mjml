@@ -6,8 +6,7 @@
       <mj-section css-class="section">
         <mj-column>
           <mj-text mj-class="headline"
-            >ReDI Connect: mentorship application from ${menteeName}
-            expired</mj-text
+            >${menteeName}’s mentee application to you has expired!</mj-text
           >
           <mj-divider mj-class="divider-top" css-class="divider" />
           <mj-text mj-class="text">Dear ${mentorName},</mj-text>

@@ -6,7 +6,7 @@
       <mj-section css-class="section">
         <mj-column>
           <mj-text mj-class="headline"
-            >You have received an application from ${menteeFullName}</mj-text
+            >You have received an application from ${menteeFullName}!</mj-text
           >
           <mj-divider mj-class="divider-top" css-class="divider" />
           <mj-text mj-class="text">Dear ${mentorName},</mj-text>

@@ -6,7 +6,8 @@
       <mj-section css-class="section">
         <mj-column>
           <mj-text mj-class="headline"
-            >You successfully logged your session with your mentee</mj-text
+            >Thank you for logging your session(s) with
+            ${menteeFirstName}!</mj-text
           >
           <mj-divider mj-class="divider-top" css-class="divider" />
           <mj-text mj-class="text">Dear ${mentorName},</mj-text>
