@@ -22,6 +22,12 @@ interface Props {
 
 const STATUS_LABELS: any = {
   applied: 'Pending',
+  accepted: 'Accepted',
+  completed: 'Completed',
+  cancelled: 'Cancelled',
+  'declined-by-mentor': 'Declined',
+  'invalidated-as-other-mentor-accepted':
+    'Invalidated as other mentor accepted',
 }
 
 const ApplicationCard = ({
@@ -130,7 +136,7 @@ const ApplicationCard = ({
             <Content>{application.expectationText}</Content>
           </>
         )}
-        {currentUserIsMentor ? (
+        {currentUserIsMentor && application.status === 'applied' ? (
           <>
             <ConfirmMentorship
               match={application}

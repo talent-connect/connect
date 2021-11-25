@@ -40,9 +40,7 @@ const SideMenu = () => {
   const isMenteeWithMentor =
     isActivatedMentee && profile.ifUserIsMentee_hasActiveMentor
 
-  const showApplications = isMentee
-    ? isMenteeWithoutMentor && isActivatedMentee
-    : !isMentorBookedOut
+  const showApplications = isMentee ? isActivatedMentee : !isMentorBookedOut
 
   return (
     <ul className="side-menu">
