@@ -50,15 +50,28 @@
           />
           <mj-text mj-class="text" padding="0 0 20px 0"
             >While you’re waiting for an application from a mentee, please join
-            our group for mentors on LinkedIn and our ReDI Slack space.
+            our group for mentors on 
+            <a href="https://www.linkedin.com/groups/8733859/">LinkedIn</a> and 
+            our
+            <a
+             href="https://join.slack.com/t/redi-school/shared_invite/zt-yx95a42f-jserxMHtnXxdKtmQzdTAAg"  
+             >ReDI slack space</a.
           </mj-text>
           <mj-text mj-class="text" padding="0 0 20px 0"
             >We will add you to the private mentors Slack channel where we post
             updates and mentor event invites and you can connect with other ReDI
             mentors. Please feel free to also join any of the open channels,
             such as #events_and_workshops for updates on general ReDI
-            events.</mj-text
-          >
+            events.</mj-text>
+              <mj-text mj-class="text" padding="20px 0 0"
+            >In addition, we also recommend joining the <a
+              href="https://join.slack.com/t/redimunich/shared_invite/zt-6nkpjwpc-_eqGMQFETvhbP2OiLan5pQ"
+              >Munich slack space</a
+            >, where Yoana (Head of Community Development for Munich), will add
+            you to the Munich volunteers channel.
+          </mj-text>
+
+          <mj-text mj-class="text" padding="0 0 30px 0"
           <mj-text mj-class="text" padding="0 0 20px 0"
             >If you have any questions or feedback at any point, feel free to
             reach out.</mj-text
