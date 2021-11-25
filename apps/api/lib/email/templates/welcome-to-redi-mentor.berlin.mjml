@@ -50,7 +50,12 @@
           />
           <mj-text mj-class="text" padding="0 0 20px 0"
             >While you’re waiting for an application from a mentee, please join
-            our group for mentors on LinkedIn and our ReDI Slack space.
+            our group for mentors on 
+            <a href="https://www.linkedin.com/groups/8733859/">LinkedIn</a> and 
+            our
+            <a
+             href="https://join.slack.com/t/redi-school/shared_invite/zt-yx95a42f-jserxMHtnXxdKtmQzdTAAg"  
+             >ReDI slack space</a.
           </mj-text>
           <mj-text mj-class="text" padding="0 0 20px 0"
             >We will add you to the private mentors Slack channel where we post
