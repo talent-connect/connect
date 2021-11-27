@@ -443,16 +443,6 @@ export const COURSES = [
 ] as const
 export type CourseKey = typeof COURSES[number]['id']
 
-export const HOW_DID_HEAR_ABOUT_REDI_OPTIONS = [
-  'ReDI Team Member',
-  'ReDI Website',
-  'A Colleague',
-  'I am a volunteer at ReDI School',
-  'Internet Search',
-  'LinkedIn',
-  'Other',
-] as const
-
 export const REPORT_PROBLEM_CATEGORIES = [
   { id: 'wantToQuit', label: 'I want to quit' },
 ] as const

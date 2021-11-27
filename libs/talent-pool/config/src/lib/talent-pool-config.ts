@@ -720,3 +720,13 @@ export const employmentTypesIdToLabelMap = mapValues(
   keyBy(employmentTypes, 'id'),
   'label'
 )
+
+export const howDidHearAboutRediOptions = {
+  'redi-team-member': 'ReDI Team Member',
+  'redi-website': 'ReDI Website',
+  collegue: 'A Colleague',
+  'already-volunteer-at-redi': 'I am a volunteer at ReDI School',
+  'internet-search': 'Internet Search',
+  linkedin: 'LinkedIn',
+  other: 'Other',
+} as const

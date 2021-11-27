@@ -39,7 +39,6 @@ import {
   ReferenceField,
   Labeled,
   ReferenceManyField,
-  required,
   SearchInput,
 } from 'react-admin'
 import classNames from 'classnames'
@@ -78,6 +77,8 @@ import {
 } from '@talent-connect/shared-config'
 
 import { calculateAge } from '@talent-connect/shared-utils'
+
+import { howDidHearAboutRediOptions } from '@talent-connect/talent-pool/config'
 
 import loopbackClient, { authProvider } from './lib/react-admin-loopback/src'
 import { ApproveButton } from './components/ApproveButton'
@@ -1655,6 +1656,58 @@ const TpCompanyProfileListFilters = (props) => (
   </Filter>
 )
 
+const ConditionalTpCompanyProfileHowDidHearAboutRediKeyFieldShow = (props) => {
+  return props.record?.howDidHearAboutRediKey ? (
+    <Labeled label="How They Heard about ReDI Talent Pool">
+      <FunctionField
+        render={(record) =>
+          howDidHearAboutRediOptions[record.howDidHearAboutRediKey]
+        }
+        {...props}
+      />
+    </Labeled>
+  ) : null
+}
+
+const ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldShow = (
+  props
+) => {
+  return props.record?.howDidHearAboutRediKey === 'other' &&
+    props.record?.howDidHearAboutRediOtherText ? (
+    <Labeled label="How They Heard about ReDI Talent Pool (If selected Other)">
+      <TextField source="howDidHearAboutRediOtherText" {...props} />
+    </Labeled>
+  ) : null
+}
+
+const ConditionalTpCompanyProfileHowDidHearAboutRediKeyFieldEdit = (props) => {
+  return props.record?.howDidHearAboutRediKey ? (
+    <Labeled label="How They Heard about ReDI Talent Pool">
+      <SelectInput
+        source="howDidHearAboutRediKey"
+        choices={Object.keys(howDidHearAboutRediOptions).map((key) => ({
+          id: key,
+          name: howDidHearAboutRediOptions[key],
+        }))}
+        {...props}
+      />
+    </Labeled>
+  ) : null
+}
+
+const ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldEdit = (
+  props
+) => {
+  return props.record?.howDidHearAboutRediKey === 'other' &&
+    props.record?.howDidHearAboutRediOtherText ? (
+    <TextInput
+      label="How They Heard about ReDI Talent Pool (If selected Other)"
+      source="howDidHearAboutRediOtherText"
+      {...props}
+    />
+  ) : null
+}
+
 const TpCompanyProfileShow = (props) => (
   <Show {...props}>
     <SimpleShowLayout>
@@ -1672,15 +1725,8 @@ const TpCompanyProfileShow = (props) => (
           <TextField source="linkedInUrl" />
           <TextField source="phoneNumber" />
           <TextField source="about" />
-          <TextField
-            label="How They Heard about ReDI Talent Pool"
-            source="howDidHearAboutRedi"
-          />
-          <TextField
-            label="How They Heard about ReDI Talent Pool (If selected Other)"
-            source="howDidHearAboutRediOtherText"
-          />
-
+          <ConditionalTpCompanyProfileHowDidHearAboutRediKeyFieldShow />
+          <ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldShow />
           <ReferenceManyField
             label="Job Listings"
             reference="tpJobListings"
@@ -1751,14 +1797,8 @@ const TpCompanyProfileEdit = (props) => (
         <TextInput source="linkedInUrl" />
         <TextInput source="phoneNumber" />
         <TextInput source="about" />
-        <TextInput
-          label="How They Heard about ReDI Talent Pool"
-          source="howDidHearAboutRedi"
-        />
-        <TextInput
-          label="How They Heard about ReDI Talent Pool (If selected Other)"
-          source="howDidHearAboutRediOtherText"
-        />
+        <ConditionalTpCompanyProfileHowDidHearAboutRediKeyFieldEdit />
+        <ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldEdit />
 
         <ReferenceManyField
           label="Job Listings"

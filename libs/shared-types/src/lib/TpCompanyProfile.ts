@@ -22,7 +22,7 @@ export type TpCompanyProfile = {
 
   state: TpCompanyProfileState
 
-  howDidHearAboutRedi?: string
+  howDidHearAboutRediKey?: string
   howDidHearAboutRediOtherText?: string
 
   createdAt: Date

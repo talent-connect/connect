@@ -13,15 +13,14 @@ import {
   FormSelect,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
-import {
-  COURSES,
-  REDI_LOCATION_NAMES,
-  HOW_DID_HEAR_ABOUT_REDI_OPTIONS,
-} from '@talent-connect/shared-config'
+import { COURSES, REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import {
   TpJobseekerProfile,
   TpCompanyProfile,
 } from '@talent-connect/shared-types'
+
+import { howDidHearAboutRediOptions } from '@talent-connect/talent-pool/config'
+
 import TpTeaser from '../../../components/molecules/TpTeaser'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import { signUpCompany, signUpJobseeker } from '../../../services/api/api'
@@ -50,12 +49,12 @@ const formCourses = coursesWithAlumniDeduped.map((course) => {
   }
 })
 
-const howDidHearAboutRediOptions = HOW_DID_HEAR_ABOUT_REDI_OPTIONS.map(
-  (option) => ({
-    value: option,
-    label: option,
-  })
-)
+const howDidHearAboutRediOptionsMap = Object.keys(
+  howDidHearAboutRediOptions
+).map((key) => ({
+  value: key,
+  label: howDidHearAboutRediOptions[key],
+}))
 
 function buildValidationSchema(signupType: SignUpPageType['type']) {
   const baseSchema = {
@@ -93,11 +92,14 @@ function buildValidationSchema(signupType: SignUpPageType['type']) {
       companyName: Yup.string()
         .required('Your company name is required')
         .max(255),
-      howDidHearAboutRedi: Yup.string().required('This field is required'),
-      howDidHearAboutRediOtherText: Yup.string().when('howDidHearAboutRedi', {
-        is: (howDidHearAboutRedi) => howDidHearAboutRedi === 'Other',
-        then: Yup.string().required('This field is required'),
-      }),
+      howDidHearAboutRediKey: Yup.string().required('This field is required'),
+      howDidHearAboutRediOtherText: Yup.string().when(
+        'howDidHearAboutRediKey',
+        {
+          is: (howDidHearAboutRediKey) => howDidHearAboutRediKey === 'other',
+          then: Yup.string().required('This field is required'),
+        }
+      ),
     })
   }
 }
@@ -301,12 +303,12 @@ export default function SignUp() {
             {type === 'company' ? (
               <>
                 <FormSelect
-                  name="howDidHearAboutRedi"
+                  name="howDidHearAboutRediKey"
                   placeholder="How did you first hear about ReDI Talent Pool?"
-                  items={howDidHearAboutRediOptions}
+                  items={howDidHearAboutRediOptionsMap}
                   {...formik}
                 />
-                {formik.values.howDidHearAboutRedi === 'Other' ? (
+                {formik.values.howDidHearAboutRediKey === 'other' ? (
                   <FormInput
                     name="howDidHearAboutRediOtherText"
                     placeholder="Please tell us how you heard about ReDI Talent Pool"
