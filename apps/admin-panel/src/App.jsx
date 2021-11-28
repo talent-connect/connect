@@ -1656,19 +1656,6 @@ const TpCompanyProfileListFilters = (props) => (
   </Filter>
 )
 
-const ConditionalTpCompanyProfileHowDidHearAboutRediKeyFieldShow = (props) => {
-  return props.record?.howDidHearAboutRediKey ? (
-    <Labeled label="How They Heard about ReDI Talent Pool">
-      <FunctionField
-        render={(record) =>
-          howDidHearAboutRediOptions[record.howDidHearAboutRediKey]
-        }
-        {...props}
-      />
-    </Labeled>
-  ) : null
-}
-
 const ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldShow = (
   props
 ) => {
@@ -1676,21 +1663,6 @@ const ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldShow = (
     props.record?.howDidHearAboutRediOtherText ? (
     <Labeled label="How They Heard about ReDI Talent Pool (If selected Other)">
       <TextField source="howDidHearAboutRediOtherText" {...props} />
-    </Labeled>
-  ) : null
-}
-
-const ConditionalTpCompanyProfileHowDidHearAboutRediKeyFieldEdit = (props) => {
-  return props.record?.howDidHearAboutRediKey ? (
-    <Labeled label="How They Heard about ReDI Talent Pool">
-      <SelectInput
-        source="howDidHearAboutRediKey"
-        choices={Object.keys(howDidHearAboutRediOptions).map((key) => ({
-          id: key,
-          name: howDidHearAboutRediOptions[key],
-        }))}
-        {...props}
-      />
     </Labeled>
   ) : null
 }
@@ -1725,7 +1697,12 @@ const TpCompanyProfileShow = (props) => (
           <TextField source="linkedInUrl" />
           <TextField source="phoneNumber" />
           <TextField source="about" />
-          <ConditionalTpCompanyProfileHowDidHearAboutRediKeyFieldShow />
+          <FunctionField
+            label="How They Heard about ReDI Talent Pool"
+            render={(record) =>
+              howDidHearAboutRediOptions[record.howDidHearAboutRediKey]
+            }
+          />
           <ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldShow />
           <ReferenceManyField
             label="Job Listings"
@@ -1797,7 +1774,14 @@ const TpCompanyProfileEdit = (props) => (
         <TextInput source="linkedInUrl" />
         <TextInput source="phoneNumber" />
         <TextInput source="about" />
-        <ConditionalTpCompanyProfileHowDidHearAboutRediKeyFieldEdit />
+        <SelectInput
+          label="How They Heard about ReDI Talent Pool"
+          source="howDidHearAboutRediKey"
+          choices={Object.keys(howDidHearAboutRediOptions).map((key) => ({
+            id: key,
+            name: howDidHearAboutRediOptions[key],
+          }))}
+        />
         <ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldEdit />
 
         <ReferenceManyField
