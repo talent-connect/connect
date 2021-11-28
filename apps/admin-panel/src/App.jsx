@@ -1596,7 +1596,7 @@ const TpCompanyProfileEditActions = (props) => {
 
   return (
     <CardActions style={{ display: 'flex', alignItems: 'center' }}>
-      Company profile is pending. Please{' '}
+      Company profile needs to be approved before becoming active. Please{' '}
       <TpCompanyProfileApproveButton {...props} />
     </CardActions>
   )
