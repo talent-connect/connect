@@ -49,12 +49,9 @@ const formCourses = coursesWithAlumniDeduped.map((course) => {
   }
 })
 
-const howDidHearAboutRediOptionsMap = Object.keys(
+const howDidHearAboutRediOptionsEntries = Object.entries(
   howDidHearAboutRediOptions
-).map((key) => ({
-  value: key,
-  label: howDidHearAboutRediOptions[key],
-}))
+).map(([value, label]) => ({ value, label }))
 
 function buildValidationSchema(signupType: SignUpPageType['type']) {
   const baseSchema = {
@@ -305,7 +302,7 @@ export default function SignUp() {
                 <FormSelect
                   name="howDidHearAboutRediKey"
                   placeholder="How did you first hear about ReDI Talent Pool?"
-                  items={howDidHearAboutRediOptionsMap}
+                  items={howDidHearAboutRediOptionsEntries}
                   {...formik}
                 />
                 {formik.values.howDidHearAboutRediKey === 'other' ? (

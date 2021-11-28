@@ -1777,10 +1777,9 @@ const TpCompanyProfileEdit = (props) => (
         <SelectInput
           label="How They Heard about ReDI Talent Pool"
           source="howDidHearAboutRediKey"
-          choices={Object.keys(howDidHearAboutRediOptions).map((key) => ({
-            id: key,
-            name: howDidHearAboutRediOptions[key],
-          }))}
+          choices={Object.entries(howDidHearAboutRediOptions).map(
+            ([id, name]) => ({ id, name })
+          )}
         />
         <ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldEdit />
 
