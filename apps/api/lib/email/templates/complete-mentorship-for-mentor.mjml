@@ -5,39 +5,42 @@
       <mj-section />
       <mj-section css-class="section">
         <mj-column>
-          <mj-text mj-class="headline">All good things come to an end</mj-text>
-          <mj-divider mj-class="divider-top" css-class="divider" />
-          <mj-text mj-class="text">Dear ${mentorFirstName},</mj-text>
-          <mj-text mj-class="text text-padding"
-            >Congrats on completing your mentorship match with
-            ${menteeFirstName}! We hope it was a great experience for both of
-            you.</mj-text
+          <mj-text mj-class="headline"
+            >All good things come to an end...</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 30px 0"
-            >Please let us know how your mentorship went. We love to hear from
+          <mj-divider mj-class="divider-top" css-class="divider" />
+
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >Hi ${mentorFirstName},</mj-text
+          >
+          <mj-text mj-class="text" padding="0 0 0 0"
+            >Congrats on completing your mentorship journey with
+            ${menteeFirstName}!
+          </mj-text>
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >We hope it was a great experience for both of you and that you
+            reached all the goals that you may have set.</mj-text
+          >
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >Please let us know how your mentorship went. We’d love to hear from
             you and learn from your feedback to help forge better matches and
             make it a good experience for everyone. We would be very grateful if
-            you can complete this
-            <a
-              href="https://redischool.typeform.com/to/WV8oCyjR"
-              class="text-link"
-              >feedback survey</a
-            >. It should not take more than 5-10 minutes of your time.</mj-text
-          >
-          <mj-text mj-class="text" padding="0 0 30px 0"
-            >Thanks for being an active member of the ReDI community!</mj-text
-          >
-          <mj-text mj-class="text"
-            >Thanks again for your time and commitment to the ReDI community!
+            you completed this feedback survey. It only takes about 5-10 minutes
+            of your time.
           </mj-text>
-          <mj-text mj-class="text" padding="0 0 30px 0"
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >${mentorFirstName}, thank you for your time and commitment to the
+            ReDI community!</mj-text
+          >
+          <mj-text mj-class="text" padding="0 0 20px 0"
             >We see you and appreciate you very much!</mj-text
           >
-          <mj-text mj-class="text">Best,</mj-text>
-          <mj-text mj-class="text">Miriam</mj-text>
+
+          <mj-text mj-class="text">All the best,</mj-text>
+          <mj-text mj-class="text">Your ReDI Career Support Team</mj-text>
         </mj-column>
       </mj-section>
-      <mj-include path="./footer.berlin.miriam.mjml" />
+      <mj-include path="./footer.career.support.team.mjml" />
       <mj-section />
     </mj-wrapper>
   </mj-body>
