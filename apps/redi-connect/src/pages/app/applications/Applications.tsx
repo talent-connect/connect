@@ -35,8 +35,9 @@ function Applications({ applicants }: Props) {
           )}
           {profile.userType === 'mentor' && (
             <>
-              You have not received mentee applications yet. Make sure your
-              profile is up to date and complete.
+              You currently have no mentee applications. To increase your
+              chances of receiving an application, make sure that your profile
+              is up-to-date, informative and friendly.
             </>
           )}
         </Content>

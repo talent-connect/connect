@@ -1,7 +1,7 @@
 @import '~bulma/sass/utilities/_all';
 @import '../styles/_variables.scss';
 
-.button {
+.button-atom {
   display: inline-flex;
   align-items: center;
   background: none;
@@ -18,7 +18,7 @@
   border: 2px solid $black;
   transform-style: preserve-3d;
 
-  + .button {
+  + .button-atom {
     @include tablet() {
       margin-left: 1rem;
     }
@@ -28,7 +28,7 @@
     width: calc(100% - 0.5rem);
     justify-content: center;
 
-    + .button {
+    + .button-atom {
       margin-top: 1rem;
     }
   }

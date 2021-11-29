@@ -7,7 +7,7 @@ import {
   Caption,
   Placeholder,
 } from '@talent-connect/shared-atomic-design-components'
-import { educationLevelsIdToLabelMap } from '@talent-connect/shared-config'
+import { EDUCATION_LEVELS } from '@talent-connect/shared-config'
 
 interface Props {
   profile: RedProfile
@@ -29,7 +29,7 @@ const ReadEducation = ({ profile, shortInfo }: Props) => {
     <>
       {shortInfo && <Caption>Highest Education</Caption>}
       <Content>
-        <p>{educationLevelsIdToLabelMap[mentee_highestEducationLevel]}</p>
+        <p>{EDUCATION_LEVELS[mentee_highestEducationLevel]}</p>
       </Content>
     </>
   )

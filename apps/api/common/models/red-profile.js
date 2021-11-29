@@ -4,6 +4,7 @@ const _ = require('lodash')
 const Rx = require('rxjs')
 const { of } = Rx
 const { switchMap, map } = require('rxjs/operators')
+const { DateTime } = require('luxon')
 
 const app = require('../../server/server')
 const {
@@ -24,7 +25,8 @@ const addFullNamePropertyForAdminSearch = (ctx) => {
 
   if (firstName || lastName) {
     const merged = `${firstName ? firstName + ' ' : ''}${lastName || ''}`
-    thingToUpdate.loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName = merged
+    thingToUpdate.loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName =
+      merged
   }
 }
 
@@ -116,7 +118,8 @@ module.exports = function (RedProfile) {
 
     // If favouritedRedProfileIds[] isn't set, set it. But delete it if the accessing user doesn't own it.
     ctx.data.favouritedRedProfileIds = ctx.data.favouritedRedProfileIds || []
-    const currentUserRedProfileId = ctx?.options?.currentUser?.redProfile?.id.toString()
+    const currentUserRedProfileId =
+      ctx?.options?.currentUser?.redProfile?.id.toString()
     const isRedProfileOwnedByCurrentUser =
       currentUserRedProfileId &&
       currentUserRedProfileId === ctx.data.id.toString()
@@ -285,70 +288,69 @@ module.exports = function (RedProfile) {
     pendingReviewAcceptOrDecline('DECLINE')(data, options, callback)
   }
 
-  const pendingReviewAcceptOrDecline = (acceptDecline) => async (
-    data,
-    options,
-    callback
-  ) => {
-    if (!_.includes(['ACCEPT', 'DECLINE'], acceptDecline)) {
-      throw new Error('Invalid acceptDecline parameter')
-    }
-    const { redProfileId } = data
-    const mentorRole = await app.models.Role.findOne({
-      where: { name: 'mentor' },
-    })
-    const menteeRole = await app.models.Role.findOne({
-      where: { name: 'mentee' },
-    })
-    const findRedProfile = switchMap(({ redProfileId }) =>
-      loopbackModelMethodToObservable(RedProfile, 'findById')(redProfileId)
-    )
-    const validateCurrentUserType = switchMap((redProfileInst) => {
-      const userType = redProfileInst.toJSON().userType
-      if (_.includes(pendingReviewTypes, userType)) {
-        return of(redProfileInst)
-      } else {
-        throw new Error('Invalid current userType (user is not pending review)')
+  const pendingReviewAcceptOrDecline =
+    (acceptDecline) => async (data, options, callback) => {
+      if (!_.includes(['ACCEPT', 'DECLINE'], acceptDecline)) {
+        throw new Error('Invalid acceptDecline parameter')
       }
-    })
-    const setNewRedProfileProperties = switchMap((redProfileInst) =>
-      loopbackModelMethodToObservable(
-        redProfileInst,
-        'updateAttributes'
-      )(
-        currentUserTypeToPostReviewUpdates[acceptDecline][
-          redProfileInst.toJSON().userType
-        ]
-      )
-    )
-    const createRoleMapping = switchMap((redProfileInst) => {
-      const { userType, redUserId } = redProfileInst.toJSON()
-      if (!_.includes(['mentee', 'mentor'], userType)) {
-        return of(redProfileInst)
-      }
-      const role = userType === 'mentor' ? mentorRole : menteeRole
-      role.principals.create({
-        principalType: app.models.RoleMapping.USER,
-        principalId: redUserId,
+      const { redProfileId } = data
+      const mentorRole = await app.models.Role.findOne({
+        where: { name: 'mentor' },
       })
-      return of(redProfileInst)
-    })
+      const menteeRole = await app.models.Role.findOne({
+        where: { name: 'mentee' },
+      })
+      const findRedProfile = switchMap(({ redProfileId }) =>
+        loopbackModelMethodToObservable(RedProfile, 'findById')(redProfileId)
+      )
+      const validateCurrentUserType = switchMap((redProfileInst) => {
+        const userType = redProfileInst.toJSON().userType
+        if (_.includes(pendingReviewTypes, userType)) {
+          return of(redProfileInst)
+        } else {
+          throw new Error(
+            'Invalid current userType (user is not pending review)'
+          )
+        }
+      })
+      const setNewRedProfileProperties = switchMap((redProfileInst) =>
+        loopbackModelMethodToObservable(
+          redProfileInst,
+          'updateAttributes'
+        )(
+          currentUserTypeToPostReviewUpdates[acceptDecline][
+            redProfileInst.toJSON().userType
+          ]()
+        )
+      )
+      const createRoleMapping = switchMap((redProfileInst) => {
+        const { userType, redUserId } = redProfileInst.toJSON()
+        if (!_.includes(['mentee', 'mentor'], userType)) {
+          return of(redProfileInst)
+        }
+        const role = userType === 'mentor' ? mentorRole : menteeRole
+        role.principals.create({
+          principalType: app.models.RoleMapping.USER,
+          principalId: redUserId,
+        })
+        return of(redProfileInst)
+      })
 
-    Rx.of({ redProfileId })
-      .pipe(
-        findRedProfile,
-        validateCurrentUserType,
-        setNewRedProfileProperties,
-        createRoleMapping,
-        sendEmailUserReviewedAcceptedOrDenied
-      )
-      .subscribe(
-        (redMatchInst) => {
-          callback(null, redMatchInst)
-        },
-        (err) => console.log(err)
-      )
-  }
+      Rx.of({ redProfileId })
+        .pipe(
+          findRedProfile,
+          validateCurrentUserType,
+          setNewRedProfileProperties,
+          createRoleMapping,
+          sendEmailUserReviewedAcceptedOrDenied
+        )
+        .subscribe(
+          (redMatchInst) => {
+            callback(null, redMatchInst)
+          },
+          (err) => console.log(err)
+        )
+    }
 
   RedProfile.observe('after save', async function (context, next) {
     // Onky continue if this is a brand new user
@@ -422,32 +424,33 @@ const pendingReviewTypes = [
 ]
 const currentUserTypeToPostReviewUpdates = {
   ACCEPT: {
-    'public-sign-up-mentor-pending-review': {
+    'public-sign-up-mentor-pending-review': () => ({
       userType: 'mentor',
       userActivated: true,
+      userActivatedAt: DateTime.utc().toString(),
       emailVerified: true,
-    },
-    'public-sign-up-mentee-pending-review': {
+    }),
+    'public-sign-up-mentee-pending-review': () => ({
       userType: 'mentee',
       userActivated: true,
+      userActivatedAt: DateTime.utc().toString(),
       emailVerified: true,
-    },
+    }),
   },
   DECLINE: {
-    'public-sign-up-mentor-pending-review': {
+    'public-sign-up-mentor-pending-review': () => ({
       userType: 'public-sign-up-mentor-rejected',
       userActivated: false,
-    },
-    'public-sign-up-mentee-pending-review': {
+    }),
+    'public-sign-up-mentee-pending-review': () => ({
       userType: 'public-sign-up-mentee-rejected',
       userActivated: false,
-    },
+    }),
   },
 }
 
-const loopbackModelMethodToObservable = (loopbackModel, modelMethod) => (
-  methodParameter
-) =>
-  Rx.bindNodeCallback(loopbackModel[modelMethod].bind(loopbackModel))(
-    methodParameter
-  )
+const loopbackModelMethodToObservable =
+  (loopbackModel, modelMethod) => (methodParameter) =>
+    Rx.bindNodeCallback(loopbackModel[modelMethod].bind(loopbackModel))(
+      methodParameter
+    )

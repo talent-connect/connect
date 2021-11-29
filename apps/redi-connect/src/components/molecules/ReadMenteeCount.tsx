@@ -3,7 +3,7 @@ import { Content } from 'react-bulma-components'
 import { RedProfile } from '@talent-connect/shared-types'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
-import { rediLocationNames } from '@talent-connect/shared-config'
+import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 
 interface Props {
   profile: RedProfile
@@ -21,14 +21,14 @@ const Me = ({ profile }: Props) => {
       {menteeCountCapacity && <p>{menteeCountCapacity}</p>}
       {!optOutOfMenteesFromOtherRediLocation && (
         <p>
-          Let mentees in my location ({rediLocationNames[rediLocation]}) AND
+          Let mentees in my location ({REDI_LOCATION_NAMES[rediLocation]}) AND
           other locations apply for mentorship
         </p>
       )}
       {optOutOfMenteesFromOtherRediLocation && (
         <p>
           Only let mentees from my own location (
-          {rediLocationNames[rediLocation]}) apply for mentorship
+          {REDI_LOCATION_NAMES[rediLocation]}) apply for mentorship
         </p>
       )}
     </Content>

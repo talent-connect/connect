@@ -18,7 +18,6 @@ const Modal = ({ title, children, stateFn, show, confirm, styles }: Props) => {
   const [internalShow, setInternalShow] = useState(false)
 
   useEffect(() => {
-    console.log(show)
     if (show) {
       document.body.style.top = `-${window.scrollY}px`
       document.body.style.position = 'fixed'

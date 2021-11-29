@@ -1,3 +1,5 @@
+import { TpCompanyProfileState } from './TpCompanyProfileState'
+
 export type TpCompanyProfile = {
   id: string
   firstName: string
@@ -18,21 +20,11 @@ export type TpCompanyProfile = {
 
   about?: string
 
+  state: TpCompanyProfileState
+
+  howDidHearAboutRediKey?: string
+  howDidHearAboutRediOtherText?: string
+
   createdAt: Date
   updatedAt: Date
-
-  jobListings?: TpJobListingRecord[]
-}
-
-export type TpJobListingRecord = {
-  uuid: string
-  title?: string
-  location?: string
-  summary?: string
-  idealTechnicalSkills?: string[]
-  relatesToPositions?: string[]
-  employmentType?: string
-  languageRequirements?: string
-  desiredExperience?: string
-  salaryRange?: string
 }

@@ -1,7 +1,5 @@
 import {
   Button,
-  Caption,
-  FormDraggableAccordion,
   FormInput,
   FormSelect,
   FormTextArea,
@@ -9,46 +7,34 @@ import {
   Icon,
   Modal,
 } from '@talent-connect/shared-atomic-design-components'
-import {
-  TpCompanyProfile,
-  TpJobListing,
-  TpJobListingRecord,
-  TpJobseekerProfile,
-} from '@talent-connect/shared-types'
+import { TpJobListing, TpJobseekerProfile } from '@talent-connect/shared-types'
 import {
   desiredPositions,
   employmentTypes,
   topSkills,
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
+import React, { useCallback, useState, useEffect } from 'react'
 import { Columns, Element } from 'react-bulma-components'
-import ReactMarkdown from 'react-markdown'
-import { Subject } from 'rxjs'
-import { v4 as uuidv4 } from 'uuid'
 import * as Yup from 'yup'
-import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
-import { Editable } from '../../molecules/Editable'
-import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
-import { ReactComponent as JobPlaceholderCard } from './job-placeholder-card.svg'
-import JobPlaceholderCardUrl from './job-placeholder-card.svg'
 import { useTpJobListingAllQuery } from '../../../react-query/use-tpjoblisting-all-query'
-import { JobListingCard } from '../JobListingCard'
-import { useTpJobListingOneOfCurrentUserQuery } from '../../../react-query/use-tpjoblisting-one-query'
-import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobListingUpdateMutation } from '../../../react-query/use-tpjoblisting-update-mutation'
-import { useTpJobListingDeleteMutation } from '../../../react-query/use-tpjoblisting-delete-mutation'
 import { useTpJobListingCreateMutation } from '../../../react-query/use-tpjoblisting-create-mutation'
+import { useTpJobListingDeleteMutation } from '../../../react-query/use-tpjoblisting-delete-mutation'
+import { useTpJobListingOneOfCurrentUserQuery } from '../../../react-query/use-tpjoblisting-one-query'
+import { useTpJobListingUpdateMutation } from '../../../react-query/use-tpjoblisting-update-mutation'
+import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
+import { JobListingCard } from '../JobListingCard'
+import JobPlaceholderCardUrl from './job-placeholder-card.svg'
 
-export function EditableJobPostings() {
+export function EditableJobPostings({
+  isJobPostingFormOpen,
+  setIsJobPostingFormOpen,
+}) {
   const { data: jobListings } = useTpJobListingAllQuery()
   const [isEditing, setIsEditing] = useState(false)
-  const [
-    idOfTpJobListingBeingEdited,
-    setIdOfTpJobListingBeingEdited,
-  ] = useState<string | null>(null) // null = "new"
+  const [idOfTpJobListingBeingEdited, setIdOfTpJobListingBeingEdited] =
+    useState<string | null>(null) // null = "new"
 
   const hasJobListings = jobListings?.length > 0
   const isEmpty = !hasJobListings
@@ -61,6 +47,18 @@ export function EditableJobPostings() {
     setIdOfTpJobListingBeingEdited(id)
     setIsEditing(true)
   }, [])
+
+  useEffect(() => {
+    if (isJobPostingFormOpen) {
+      setIsEditing(true)
+    }
+  }, [isJobPostingFormOpen])
+
+  useEffect(() => {
+    if (!isEditing) {
+      setIsJobPostingFormOpen(false)
+    }
+  }, [isEditing, setIsJobPostingFormOpen])
 
   return (
     <>
@@ -137,7 +135,21 @@ export function EditableJobPostings() {
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required('Please provide a job title'),
-  idealTechnicalSkills: Yup.array().max(6, 'Please select up to six skills'),
+  location: Yup.string().required('Please provide a location'),
+  summary: Yup.string()
+    .required('Please enter a short description of the job')
+    .min(200, 'Job summary should be at least 200 characters'),
+  relatesToPositions: Yup.array().min(
+    1,
+    'Please select at least one related position'
+  ),
+  idealTechnicalSkills: Yup.array()
+    .min(1, 'Please select at least one relevant technical skill')
+    .max(6, 'Please select up to six skills'),
+  employmentType: Yup.mixed().required('Please select an employment type'),
+  languageRequirements: Yup.string().required(
+    'Please specify the language requirement(s)'
+  ),
 })
 
 interface ModalFormProps {
@@ -238,11 +250,11 @@ function ModalForm({
         <FormInput
           name={`location`}
           placeholder="Where is the position based"
-          label="Location"
+          label="Location*"
           {...formik}
         />
         <FormTextArea
-          label="Job Summary"
+          label="Job Summary*"
           name={`summary`}
           rows={7}
           placeholder="Tell us a bit about the position, expectations & ideal candidate."
@@ -261,21 +273,21 @@ function ModalForm({
           matches.
         </Element>
         <FormSelect
-          label="Related positions"
+          label="Related positions*"
           name={`relatesToPositions`}
           items={formRelatedPositions}
           {...formik}
           multiselect
         />
         <FormSelect
-          label="Ideal technical skills"
+          label="Ideal technical skills*"
           name={`idealTechnicalSkills`}
           items={formTopSkills}
           {...formik}
           multiselect
         />
         <FormSelect
-          label="Employment type"
+          label="Employment type*"
           name={`employmentType`}
           items={formEmploymentType}
           {...formik}
@@ -283,7 +295,7 @@ function ModalForm({
         <FormInput
           name={`languageRequirements`}
           placeholder="German C1, English B2, French B1..."
-          label="Language requirements"
+          label="Language requirements*"
           {...formik}
         />
         <FormInput

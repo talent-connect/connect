@@ -37,7 +37,7 @@ const LoggedIn = ({ children, hideNavigation }: Props) => {
                   to="/app/me"
                   isActive={location.pathname === '/app/me'}
                 />
-                {companyProfile ||
+                {companyProfile?.state === 'profile-approved' ||
                 jobseekerProfile?.state ===
                   'profile-approved-awaiting-job-preferences' ||
                 jobseekerProfile?.state ===

@@ -7,16 +7,17 @@ import {
   Caption,
   Placeholder,
 } from '@talent-connect/shared-atomic-design-components'
-import { menteeOccupationCategories } from '@talent-connect/shared-config'
+import { MENTEE_OCCUPATION_CATEGORY } from '@talent-connect/shared-config'
+import { objectEntries } from '@talent-connect/typescript-utilities'
 
 interface Props {
   profile: RedProfile
   shortInfo?: boolean
 }
 
-const formMenteeOccupationCategories = menteeOccupationCategories.map(
-  (level) => ({ value: level.id, label: level.label })
-)
+const formMenteeOccupationCategories = objectEntries(
+  MENTEE_OCCUPATION_CATEGORY
+).map(([value, label]) => ({ value, label }))
 
 const ReadOccupation = ({ profile, shortInfo }: Props) => {
   const {

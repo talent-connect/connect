@@ -93,6 +93,8 @@ export function EditableDetails({ profile, disableEditing }: Props) {
   )
 }
 
+EditableDetails.isWebsiteSectionFilled = (profile: Partial<TpCompanyProfile>) =>
+  profile?.website
 EditableDetails.isSectionFilled = (profile: Partial<TpCompanyProfile>) =>
   profile?.industry || profile?.website || profile?.linkedInUrl
 EditableDetails.isSectionEmpty = (profile: Partial<TpCompanyProfile>) =>
@@ -155,7 +157,7 @@ function ModalForm({
       <FormInput
         name="website"
         placeholder="https://www.company.de"
-        label="Website"
+        label="Website *"
         {...formik}
       />
       <FormInput

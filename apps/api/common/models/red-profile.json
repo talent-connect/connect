@@ -112,6 +112,14 @@
         "nestRemoting": true
       }
     },
+    "matchesForMentee": {
+      "type": "hasMany",
+      "model": "RedMatch",
+      "foreignKey": "menteeId",
+      "options": {
+        "nestRemoting": true
+      }
+    },
     "mentees": {
       "type": "hasMany",
       "model": "RedProfile",

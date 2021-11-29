@@ -7,18 +7,31 @@
         <mj-column>
           <mj-text mj-class="headline">Welcome to ReDI Connect!</mj-text>
           <mj-divider mj-class="divider-top" css-class="divider" />
-          <mj-text mj-class="text">Hello ${firstName},</mj-text>
-          <mj-text mj-class="text text-padding"
-            >we are very happy to welcome you as a <strong>${mentorOrMentee}</strong> to ReDI
-            Connect.
-          </mj-text>
-          <mj-text mj-class="text"
-            >What are the next steps? You can now create you personal profile. We will ask you to
-            provide some additional information about yourself on the platform during your profile
-            creation. So that you and your future ${mentorOrMenteeOpposite} are a great
-            match!</mj-text
+
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >Hi ${firstName},</mj-text
           >
-          <mj-text mj-class="text">To create your ReDI Connect profile, sign-in here:</mj-text>
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >We are happy to now officially welcome you as a mentee to ReDI
+            Connect!</mj-text
+          >
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >Thank you again for having made the time today to meet for your
+            onboarding session during which we activated your profile.</mj-text
+          >
+          <mj-text mj-class="text" padding="0 0 0 0"
+            >What are your next steps?</mj-text
+          >
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >If you haven't filled in your profile with the relevant information
+            about yourself yet, please do so now. This way your potential future
+            mentor can directly see who you are and what you’re looking for.
+            Once you have completed your profile, you’re all set to start your
+            mentor search!</mj-text
+          >
+          <mj-text mj-class="text" padding="0 0 0 0"
+            >To log in to your profile, you can click here:</mj-text
+          >
           <mj-image
             src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/signin-web.png"
             align="left"
@@ -36,17 +49,19 @@
             css-class="button-mobile"
             href="${homePageUrl}"
           />
-          <mj-text mj-class="text" padding="20px 0 0"
-            >We wish you a great experience with your mentorship!
-          </mj-text>
-          <mj-text mj-class="text" padding="0 0 30px 0"
-            >If you have any questions or feedback at any point, feel free to reach out.</mj-text
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >We wish you a wonderful mentorship experience!</mj-text
           >
-          <mj-text mj-class="text">Best,</mj-text>
-          <mj-text mj-class="text">Paulina</mj-text>
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >If you have any questions or feedback at any point, please reach
+            out!</mj-text
+          >
+
+          <mj-text mj-class="text">All the best,</mj-text>
+          <mj-text mj-class="text">Your ReDI Career Support Team</mj-text>
         </mj-column>
       </mj-section>
-      <mj-include path="./footer.berlin.paulina.mjml" />
+      <mj-include path="./footer.career.support.team.mjml" />
       <mj-section />
     </mj-wrapper>
   </mj-body>

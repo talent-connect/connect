@@ -10,13 +10,16 @@ import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
 
-import { educationLevels } from '@talent-connect/shared-config'
+import { EDUCATION_LEVELS } from '@talent-connect/shared-config'
 import { ReadEducation } from '../molecules'
+import { objectEntries, objectKeys } from '@talent-connect/typescript-utilities'
 
-const formEducationLevels = educationLevels.map((level) => ({
-  value: level.id,
-  label: level.label,
-}))
+const formEducationLevels = objectEntries(EDUCATION_LEVELS).map(
+  ([value, label]) => ({
+    value,
+    label,
+  })
+)
 
 // do we really need all these type???
 export type UserType =
@@ -33,7 +36,7 @@ export interface EducationFormValues {
 
 const validationSchema = Yup.object({
   mentee_highestEducationLevel: Yup.string()
-    .oneOf(educationLevels.map((level) => level.id))
+    .oneOf(objectKeys(EDUCATION_LEVELS))
     .label('Highest Education Level'),
 })
 

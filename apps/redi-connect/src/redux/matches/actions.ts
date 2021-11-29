@@ -8,6 +8,9 @@ import {
   MatchesAcceptMentorshipErrorAction,
   MatchesMarkAsDismissedStartAction,
   MatchesMarkAsCompleteAction,
+  MatchesDeclineMentorshipStartAction,
+  MatchesDeclineMentorshipSuccessAction,
+  MatchesDeclineMentorshipErrorAction,
 } from './types'
 import { RedMatch } from '@talent-connect/shared-types'
 
@@ -36,6 +39,18 @@ export const matchesAcceptMentorshipStart = (
     redMatchId,
     mentorReplyMessageOnAccept,
   },
+})
+
+export const matchesDeclineMentorshipStart = (
+  options: { redMatchId: string } & Pick<
+    RedMatch,
+    | 'ifDeclinedByMentor_chosenReasonForDecline'
+    | 'ifDeclinedByMentor_ifReasonIsOther_freeText'
+    | 'ifDeclinedByMentor_optionalMessageToMentee'
+  >
+): MatchesDeclineMentorshipStartAction => ({
+  type: MatchesActionType.MATCHES_DECLINE_MENTORSHIP_START,
+  payload: options,
 })
 
 export const matchesMarkAsComplete = (
@@ -69,5 +84,19 @@ export const matchesAcceptMentorshipError = (
   error: Error
 ): MatchesAcceptMentorshipErrorAction => ({
   type: MatchesActionType.MATCHES_ACCEPT_MENTORSHIP_ERROR,
+  payload: error,
+})
+
+export const matchesDeclineMentorshipSuccess = (
+  matches: RedMatch[]
+): MatchesDeclineMentorshipSuccessAction => ({
+  type: MatchesActionType.MATCHES_DECLINE_MENTORSHIP_SUCCESS,
+  payload: matches,
+})
+
+export const matchesDeclineMentorshipError = (
+  error: Error
+): MatchesDeclineMentorshipErrorAction => ({
+  type: MatchesActionType.MATCHES_DECLINE_MENTORSHIP_ERROR,
   payload: error,
 })

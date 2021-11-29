@@ -4,7 +4,7 @@ import {
   FormSelect,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
-import { Languages } from '@talent-connect/shared-config'
+import { LANGUAGES } from '@talent-connect/shared-config'
 import {
   LanguageRecord,
   TpJobseekerCv,
@@ -162,10 +162,10 @@ export function JobseekerFormSectionLanguages({
     onSubmit,
     enableReinitialize: true,
   })
-  useEffect(() => setIsFormDirty?.(formik.dirty), [
-    formik.dirty,
-    setIsFormDirty,
-  ])
+  useEffect(
+    () => setIsFormDirty?.(formik.dirty),
+    [formik.dirty, setIsFormDirty]
+  )
 
   const onDragEnd = useCallback(
     (result: any) => {
@@ -302,9 +302,9 @@ export function JobseekerFormSectionLanguages({
   )
 }
 
-const formLanguages = Languages.map((language) => ({
-  value: language,
-  label: language,
+const formLanguages = Object.entries(LANGUAGES).map(([value, label]) => ({
+  value,
+  label,
 }))
 
 const formLanguageProficiencyLevels = languageProficiencyLevels.map(

@@ -8,5 +8,6 @@ module.exports = {
     '<rootDir>/libs/talent-pool/types',
     '<rootDir>/libs/talent-pool/config',
     '<rootDir>/libs/shared-utils',
+    '<rootDir>/libs/typescript-utilities',
   ],
 }

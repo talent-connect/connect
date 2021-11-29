@@ -19,7 +19,8 @@ import { ReactComponent as RediLogo } from '../../../assets/images/logo.svg'
 import { ReactComponent as Deloitte } from '../../../assets/images/deloitte.svg'
 
 import '../../../components/organisms/Navbar.scss'
-import { rediLocationNames } from '@talent-connect/shared-config'
+import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
+import { objectEntries } from '@talent-connect/typescript-utilities'
 
 export default function LocationPicker() {
   const { t } = useTranslation()
@@ -54,9 +55,9 @@ export default function LocationPicker() {
                 {t('loggedOutArea.homePage.hero.about.content2')}
               </Element>
               <Content>
-                <Heading size="medium">Pick your city:</Heading>
+                <Heading size="medium">Pick your location:</Heading>
               </Content>
-              {Object.entries(rediLocationNames).map(([key, value]) => (
+              {objectEntries(REDI_LOCATION_NAMES).map(([key, value]) => (
                 <Button to={`https://connect.${key}.redi-school.org`}>
                   {value}
                 </Button>
