@@ -178,16 +178,6 @@ module.exports = function (TpCompanyProfile) {
           )(tpCompanyProfileId)
         )
 
-        const validateCurrentState = switchMap((tpCompanyProfileInst) => {
-          const state = tpCompanyProfileInst.toJSON().state
-          if (state === 'submitted-for-review') {
-            return of(tpCompanyProfileInst)
-          } else {
-            throw new Error(
-              'Invalid current state (is not "submitted-for-review")'
-            )
-          }
-        })
         const setNewTpCompanyProfileProperties = switchMap(
           (tpCompanyProfileInst) =>
             loopbackModelMethodToObservable(
@@ -220,7 +210,6 @@ module.exports = function (TpCompanyProfile) {
         Rx.of({ tpCompanyProfileId })
           .pipe(
             findTpCompanyProfile,
-            validateCurrentState,
             setNewTpCompanyProfileProperties,
             createRoleMapping,
             sendEmailUserReviewedAccepted
