@@ -34,13 +34,8 @@ const SideMenu = () => {
     profile.userType === 'public-sign-up-mentee-pending-review'
   const isMenteeWithoutMentor =
     isMentee && !profile.ifUserIsMentee_hasActiveMentor
-  const isMentorBookedOut =
-    isActivatedMentor &&
-    profile.currentMenteeCount === profile.menteeCountCapacity
   const isMenteeWithMentor =
     isActivatedMentee && profile.ifUserIsMentee_hasActiveMentor
-
-  const showApplications = isMentee ? isActivatedMentee : !isMentorBookedOut
 
   return (
     <ul className="side-menu">
@@ -63,12 +58,10 @@ const SideMenu = () => {
         </MenuItem>
       )}
 
-      {showApplications && (
-        <MenuItem url="/app/applications">
-          <Applications className="side-menu__icon" />
-          Applications
-        </MenuItem>
-      )}
+      <MenuItem url="/app/applications">
+        <Applications className="side-menu__icon" />
+        Applications
+      </MenuItem>
     </ul>
   )
 }

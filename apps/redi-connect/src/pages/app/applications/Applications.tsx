@@ -18,7 +18,7 @@ function Applications({ applicants }: Props) {
   const history = useHistory()
   const profile = getRedProfileFromLocalStorage()
 
-  console.log('applicants', applicants)
+  if (profile.userActivated !== true) return <LoggedIn />
 
   return (
     <LoggedIn>
