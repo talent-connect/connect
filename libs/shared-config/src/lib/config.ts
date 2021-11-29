@@ -1,5 +1,3 @@
-import { RediLocation } from '@talent-connect/shared-types'
-
 export const REDI_LOCATION_NAMES = {
   berlin: 'Berlin',
   munich: 'Munich',

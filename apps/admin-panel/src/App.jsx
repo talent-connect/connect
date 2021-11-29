@@ -39,7 +39,6 @@ import {
   ReferenceField,
   Labeled,
   ReferenceManyField,
-  required,
   SearchInput,
 } from 'react-admin'
 import classNames from 'classnames'
@@ -78,6 +77,8 @@ import {
 } from '@talent-connect/shared-config'
 
 import { calculateAge } from '@talent-connect/shared-utils'
+
+import { howDidHearAboutRediOptions } from '@talent-connect/talent-pool/config'
 
 import loopbackClient, { authProvider } from './lib/react-admin-loopback/src'
 import { ApproveButton } from './components/ApproveButton'
@@ -1655,6 +1656,30 @@ const TpCompanyProfileListFilters = (props) => (
   </Filter>
 )
 
+const ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldShow = (
+  props
+) => {
+  return props.record?.howDidHearAboutRediKey === 'other' &&
+    props.record?.howDidHearAboutRediOtherText ? (
+    <Labeled label="How They Heard about ReDI Talent Pool (If selected Other)">
+      <TextField source="howDidHearAboutRediOtherText" {...props} />
+    </Labeled>
+  ) : null
+}
+
+const ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldEdit = (
+  props
+) => {
+  return props.record?.howDidHearAboutRediKey === 'other' &&
+    props.record?.howDidHearAboutRediOtherText ? (
+    <TextInput
+      label="How They Heard about ReDI Talent Pool (If selected Other)"
+      source="howDidHearAboutRediOtherText"
+      {...props}
+    />
+  ) : null
+}
+
 const TpCompanyProfileShow = (props) => (
   <Show {...props}>
     <SimpleShowLayout>
@@ -1672,7 +1697,13 @@ const TpCompanyProfileShow = (props) => (
           <TextField source="linkedInUrl" />
           <TextField source="phoneNumber" />
           <TextField source="about" />
-
+          <FunctionField
+            label="How They Heard about ReDI Talent Pool"
+            render={(record) =>
+              howDidHearAboutRediOptions[record.howDidHearAboutRediKey]
+            }
+          />
+          <ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldShow />
           <ReferenceManyField
             label="Job Listings"
             reference="tpJobListings"
@@ -1743,6 +1774,14 @@ const TpCompanyProfileEdit = (props) => (
         <TextInput source="linkedInUrl" />
         <TextInput source="phoneNumber" />
         <TextInput source="about" />
+        <SelectInput
+          label="How They Heard about ReDI Talent Pool"
+          source="howDidHearAboutRediKey"
+          choices={Object.entries(howDidHearAboutRediOptions).map(
+            ([id, name]) => ({ id, name })
+          )}
+        />
+        <ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldEdit />
 
         <ReferenceManyField
           label="Job Listings"
