@@ -17,7 +17,7 @@ import {
 import { formMonthsOptions } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
 import moment from 'moment'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Columns, Content, Element } from 'react-bulma-components'
 import ReactMarkdown from 'react-markdown'
@@ -26,6 +26,7 @@ import { Subject } from 'rxjs'
 import { v4 as uuidv4 } from 'uuid'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { locationDetails } from '../../../utils/location-details'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
@@ -94,9 +95,9 @@ export function EditableProfessionalExperience({
                 </span>
               </div>
               <Content style={{ marginTop: '-0.5rem' }}>
-                {item.company ? (
-                  <p style={{ color: '#979797' }}>{item.company}</p>
-                ) : null}
+                <p style={{ color: '#979797' }}>
+                  {locationDetails(item?.company, item?.city, item?.country)}
+                </p>
                 {item.description ? (
                   <ReactMarkdown
                     components={{
@@ -191,10 +192,10 @@ export function JobseekerFormSectionProfessionalExperience({
     onSubmit,
     enableReinitialize: true,
   })
-  useEffect(() => setIsFormDirty?.(formik.dirty), [
-    formik.dirty,
-    setIsFormDirty,
-  ])
+  useEffect(
+    () => setIsFormDirty?.(formik.dirty),
+    [formik.dirty, setIsFormDirty]
+  )
 
   const onClickAddExperience = useCallback(() => {
     formik.setFieldValue('experience', [
@@ -274,6 +275,18 @@ export function JobseekerFormSectionProfessionalExperience({
                           name={`experience[${index}].company`}
                           placeholder="Microsoft"
                           label="Company"
+                          {...formik}
+                        />
+                        <FormInput
+                          name={`experience[${index}].city`}
+                          placeholder="Berlin"
+                          label="City"
+                          {...formik}
+                        />
+                        <FormInput
+                          name={`experience[${index}].country`}
+                          placeholder="Germany"
+                          label="Country"
                           {...formik}
                         />
                         <FormTextArea
@@ -387,6 +400,8 @@ function buildBlankExperienceRecord(): ExperienceRecord {
     uuid: uuidv4(),
     title: '',
     company: '',
+    city: '',
+    country: '',
     description: '',
     startDateMonth: undefined,
     startDateYear: undefined,

@@ -30,6 +30,7 @@ import { Subject } from 'rxjs'
 import { v4 as uuidv4 } from 'uuid'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { locationDetails } from '../../../utils/location-details'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
@@ -97,9 +98,13 @@ export function EditableEducation({
                 </span>
               </div>
               <Content style={{ marginTop: '-0.5rem' }}>
-                {item.institutionName ? (
-                  <p style={{ color: '#979797' }}>{item.institutionName}</p>
-                ) : null}
+                <p style={{ color: '#979797' }}>
+                  {locationDetails(
+                    item?.institutionName,
+                    item?.institutionCity,
+                    item?.institutionCountry
+                  )}
+                </p>
                 <ReactMarkdown
                   components={{
                     p: ({ children }) => (
@@ -190,10 +195,10 @@ export function JobseekerFormSectionEducation({
     onSubmit,
     enableReinitialize: true,
   })
-  useEffect(() => setIsFormDirty?.(formik.dirty), [
-    formik.dirty,
-    setIsFormDirty,
-  ])
+  useEffect(
+    () => setIsFormDirty?.(formik.dirty),
+    [formik.dirty, setIsFormDirty]
+  )
 
   const onClickAddEducation = useCallback(() => {
     formik.setFieldValue('education', [
@@ -280,6 +285,18 @@ export function JobseekerFormSectionEducation({
                           name={`education[${index}].institutionName`}
                           placeholder="ReDI School of Digital Integration"
                           label="The institution or school"
+                          {...formik}
+                        />
+                        <FormInput
+                          name={`education[${index}].institutionCity`}
+                          placeholder="Munich"
+                          label="The city of institution or school"
+                          {...formik}
+                        />
+                        <FormInput
+                          name={`education[${index}].institutionCountry`}
+                          placeholder="Germany"
+                          label="The country of institution or school"
                           {...formik}
                         />
                         <FormTextArea
@@ -395,6 +412,8 @@ function buildBlankEducationRecord(): EducationRecord {
     title: '',
     institutionName: '',
     description: '',
+    institutionCity: '',
+    institutionCountry: '',
     certificationType: '',
     startDateMonth: undefined,
     startDateYear: undefined,
