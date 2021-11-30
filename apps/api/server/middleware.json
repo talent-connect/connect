@@ -35,16 +35,18 @@
   "parse": {},
   "routes": {
     "loopback#rest": {
-      "paths": [
-        "${restApiRoot}"
-      ]
+      "paths": ["${restApiRoot}"]
     }
   },
   "files": {},
   "final": {
-    "loopback#urlNotFound": {}
+    "./middleware/sentry-error-handler": {}
   },
   "final:after": {
-    "strong-error-handler": {}
+    "raven#errorHandler": {},
+    "strong-error-handler": {
+      "debug": false,
+      "log": false
+    }
   }
 }

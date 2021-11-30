@@ -14,13 +14,6 @@ var http = require('http')
 var https = require('https')
 var sslConfig = require('./ssl-config')
 
-const Rx = require('rxjs')
-const { bindNodeCallback, from } = Rx
-const { delay, switchMap, tap, map, filter, count } = require('rxjs/operators')
-
-const { sendMenteeReminderToApplyToMentorEmail } = require('../lib/email/email')
-const { default: clsx } = require('clsx')
-
 var app = (module.exports = loopback())
 
 const sendAllReminderEmails = require('../daily-cronjob-reminder-email/index.js')
@@ -37,6 +30,10 @@ app.start = function () {
     }
   })
 }
+
+app.get('/debug-sentry', function mainHandler(req, res) {
+  throw new Error('My first Sentry error!')
+})
 
 app.get(
   '/secret-endpoint-that-will-be-contacted-by-autocode-to-trigger-automated-reminder-emails',
