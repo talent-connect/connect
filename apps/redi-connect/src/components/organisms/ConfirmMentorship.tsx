@@ -46,12 +46,12 @@ const validationSchema = Yup.object({
 // What to replace with instead of below hack?
 const ConfirmMentorship = ({
   match,
-  menteeName,
   hasReachedMenteeLimit,
   matchesAcceptMentorshipStart,
 }: ConfirmMentorshipProps) => {
   const [isModalActive, setModalActive] = useState(false)
   const history = useHistory()
+  const { mentee } = match
 
   //  Keeping this to make sure we address this as its not planned in the desing, yet
   //   <Tooltip> requires child <Button> to be wrapped in a div since it's disabled
@@ -109,7 +109,7 @@ const ConfirmMentorship = ({
             <FormTextArea
               name="mentorReplyMessageOnAccept"
               rows={4}
-              placeholder={`Dear ${menteeName && menteeName}...`}
+              placeholder={`Dear ${mentee.firstName}...`}
               minChar={250}
               maxChar={600}
               {...formik}

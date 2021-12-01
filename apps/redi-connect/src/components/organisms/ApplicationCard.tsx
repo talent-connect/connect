@@ -140,7 +140,6 @@ const ApplicationCard = ({
           <>
             <ConfirmMentorship
               match={application}
-              menteeName={profile && profile.firstName}
               hasReachedMenteeLimit={hasReachedMenteeLimit}
             />
             <DeclineMentorshipButton match={application} />
