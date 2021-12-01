@@ -723,10 +723,11 @@ export const employmentTypesIdToLabelMap = mapValues(
 
 export const howDidHearAboutRediOptions = {
   'redi-team-member': 'ReDI Team Member',
+  'redi-student-alumni': 'Redi Student/Alumni',
   'redi-website': 'ReDI Website',
   collegue: 'A Colleague',
   'already-volunteer-at-redi': 'I am a volunteer at ReDI School',
   'internet-search': 'Internet Search',
-  linkedin: 'LinkedIn',
+  'social-media': 'Social Media',
   other: 'Other',
 } as const
