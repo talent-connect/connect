@@ -9,6 +9,7 @@ import {
   FormTextArea,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
+import * as Yup from 'yup'
 import {
   EducationRecord,
   ExperienceRecord,
@@ -30,7 +31,7 @@ import { Subject } from 'rxjs'
 import { v4 as uuidv4 } from 'uuid'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
-import { locationDetails } from '../../../utils/location-details'
+import { getInstitutionAndLocationString } from './helpers/get-institution-and-location'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
@@ -99,7 +100,7 @@ export function EditableEducation({
               </div>
               <Content style={{ marginTop: '-0.5rem' }}>
                 <p style={{ color: '#979797' }}>
-                  {locationDetails(
+                  {getInstitutionAndLocationString(
                     item?.institutionName,
                     item?.institutionCity,
                     item?.institutionCountry
@@ -190,9 +191,29 @@ export function JobseekerFormSectionEducation({
     })
   }
 
+  const validationSchema = Yup.object().shape({
+    education: Yup.array().of(Yup.object().shape({
+      institutionName: Yup.string().required('Nme of Institution is required!'),
+      certificationType: Yup.string(),
+      institutionCity: Yup.string(),
+      institutionCountry: Yup.string(),
+      title: Yup.string().required('Title is required!'),
+      description: Yup.string(),
+      startDateMonth: Yup.number(),
+      endDateMonth: Yup.number(),
+      startDateYear: Yup.number().required('Start date year is required!'),
+      current: Yup.boolean(),
+      endDateYear: Yup.number().when('current', {
+        is: false,
+        then: Yup.number().required('Provide an end date year or check the box!')
+      }),
+    }))
+  });
+
   const formik = useFormik({
     initialValues,
     onSubmit,
+    validationSchema,
     enableReinitialize: true,
   })
   useEffect(

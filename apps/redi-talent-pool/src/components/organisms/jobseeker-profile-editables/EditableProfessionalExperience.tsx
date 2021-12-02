@@ -14,6 +14,7 @@ import {
   TpJobseekerCv,
   TpJobseekerProfile,
 } from '@talent-connect/shared-types'
+import * as Yup from 'yup'
 import { formMonthsOptions } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
 import moment from 'moment'
@@ -26,7 +27,7 @@ import { Subject } from 'rxjs'
 import { v4 as uuidv4 } from 'uuid'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
-import { locationDetails } from '../../../utils/location-details'
+import { getInstitutionAndLocationString } from './helpers/get-institution-and-location'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
@@ -96,7 +97,7 @@ export function EditableProfessionalExperience({
               </div>
               <Content style={{ marginTop: '-0.5rem' }}>
                 <p style={{ color: '#979797' }}>
-                  {locationDetails(item?.company, item?.city, item?.country)}
+                  {getInstitutionAndLocationString(item?.company, item?.city, item?.country)}
                 </p>
                 {item.description ? (
                   <ReactMarkdown
@@ -187,9 +188,28 @@ export function JobseekerFormSectionProfessionalExperience({
     })
   }
 
+  const validationSchema = Yup.object().shape({
+    experience: Yup.array().of(Yup.object().shape({
+      company: Yup.string().required('Company name is required!'),
+      city: Yup.string(),
+      country: Yup.string(),
+      title: Yup.string().required('Please provide a job title!'),
+      description: Yup.string(),
+      startDateMonth: Yup.number(),
+      endDateMonth: Yup.number(),
+      startDateYear: Yup.number().required('Start date year is required!'),
+      current: Yup.boolean(),
+      endDateYear: Yup.number().when('current', {
+        is: false,
+        then: Yup.number().required('Provide an end date year or check the box!')
+      }),
+    }))
+  });
+
   const formik = useFormik({
     initialValues,
     onSubmit,
+    validationSchema,
     enableReinitialize: true,
   })
   useEffect(
