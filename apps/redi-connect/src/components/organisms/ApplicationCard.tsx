@@ -23,11 +23,10 @@ interface Props {
 const STATUS_LABELS: any = {
   applied: 'Pending',
   accepted: 'Accepted',
-  completed: 'Completed',
+  completed: 'Accepted',
   cancelled: 'Cancelled',
   'declined-by-mentor': 'Declined',
-  'invalidated-as-other-mentor-accepted':
-    'Invalidated as other mentor accepted',
+  'invalidated-as-other-mentor-accepted': 'Cancelled',
 }
 
 const ApplicationCard = ({
@@ -50,13 +49,22 @@ const ApplicationCard = ({
         onClick={() => setShowDetails(!showDetails)}
       >
         <Columns vCentered>
-          <Columns.Column size={4} className="application-card__avatar">
+          <Columns.Column size={1} className="application-card__avatar">
             <Avatar profile={applicationUser} />
+          </Columns.Column>
+
+          <Columns.Column
+            size={3}
+            textAlignment="left"
+            responsive={{ mobile: { textAlignment: { value: 'centered' } } }}
+          >
             {applicationUser && (
-              <span>
-                {applicationUser.firstName} {applicationUser.lastName} (in{' '}
-                {REDI_LOCATION_NAMES[applicationUser.rediLocation]})
-              </span>
+              <>
+                <p>
+                  {applicationUser.firstName} {applicationUser.lastName}
+                </p>
+                <p>{REDI_LOCATION_NAMES[applicationUser.rediLocation]}</p>
+              </>
             )}
           </Columns.Column>
 

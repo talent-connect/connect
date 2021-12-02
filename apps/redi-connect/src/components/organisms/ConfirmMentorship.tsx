@@ -51,7 +51,7 @@ const ConfirmMentorship = ({
 }: ConfirmMentorshipProps) => {
   const [isModalActive, setModalActive] = useState(false)
   const history = useHistory()
-  const { mentee } = match
+  const { mentee = { firstName: null } } = match
 
   //  Keeping this to make sure we address this as its not planned in the desing, yet
   //   <Tooltip> requires child <Button> to be wrapped in a div since it's disabled
