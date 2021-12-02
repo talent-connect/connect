@@ -25,8 +25,12 @@
             >Please let us know how your mentorship went. We’d love to hear from
             you and learn from your feedback to help forge better matches and
             make it a good experience for everyone. We would be very grateful if
-            you completed this feedback survey. It only takes about 5-10 minutes
-            of your time.
+            you completed this 
+            <a
+              href="https://redischool.typeform.com/to/WV8oCyjR"
+              class="text-link"
+              >feedback survey</a
+            >. It only takes about 5-10 minutes of your time.
           </mj-text>
           <mj-text mj-class="text" padding="0 0 20px 0"
             >${mentorFirstName}, thank you for your time and commitment to the
