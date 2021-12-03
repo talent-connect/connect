@@ -36,7 +36,7 @@ const ReadOccupation = ({ profile, shortInfo }: Props) => {
   if (!mentor_occupation && !mentee_occupationCategoryId) {
     return (
       <Placeholder>
-        Input your information about your Education and Occupation here.
+        Input your information about your Occupation here.
       </Placeholder>
     )
   }
