@@ -1,4 +1,4 @@
-import { Meta } from '@storybook/react/types-6-0'
+import { ComponentMeta } from '@storybook/react';
 import { storybookTemplate } from '../helpers/StorybookTemplate'
 
 import CheckboxComponent from './Checkbox'
@@ -6,7 +6,15 @@ import CheckboxComponent from './Checkbox'
 export default {
   title: 'atoms/Checkbox',
   component: CheckboxComponent,
-} as Meta
+  argTypes: {
+    handleChange: {
+      control: { type: 'object' }
+    },
+    handleBlur: {
+      control: { type: 'object' }
+    }
+  }
+} as ComponentMeta<typeof CheckboxComponent>
 
 const template = storybookTemplate(CheckboxComponent)
 
