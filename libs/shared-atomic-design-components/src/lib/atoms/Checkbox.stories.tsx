@@ -13,6 +13,4 @@ const template = storybookTemplate(CheckboxComponent)
 export const Checkbox = template({
   name: 'Checkbox',
   value: 'ABC',
-  disabled: false,
-  checked: false
 })

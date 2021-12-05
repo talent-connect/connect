@@ -5,7 +5,7 @@ export const storybookTemplate =
   <TPropsType,>(
     Component: (props: TPropsType) => StoryFnReactReturnType | null
   ) =>
-  (props: TPropsType): Story<TPropsType> => {
+  (props: Partial<TPropsType>): Story<TPropsType> => {
     const template: Story<TPropsType> = (args) => {
       return <Component {...args} />
     }
