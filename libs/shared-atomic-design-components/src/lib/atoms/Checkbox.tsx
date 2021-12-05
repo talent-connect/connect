@@ -5,16 +5,18 @@ import './Checkbox.scss'
 
 interface Props {
   name: string
-  value: string
+  value?: string
   checked: boolean
-  children: React.ReactNode
-  disabled: boolean
+  children?: React.ReactNode
+  disabled?: boolean
+  handleChange?: (...args: any[]) => void
+  handleBlur?: (...args: any[]) => void
+  isSubmitting?: boolean
   className?: string
   customOnChange?: Function
 }
 
-// introduce proper types at some point
-function Checkbox(props: any) {
+function Checkbox(props: Props) {
   const {
     name,
     value,

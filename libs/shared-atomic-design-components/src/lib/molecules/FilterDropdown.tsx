@@ -67,6 +67,7 @@ const FilterDropdown = ({
         {items.map((item) => (
           <li key={item.value}>
             <Checkbox
+              name={`${item.value}-checkbox`}
               handleChange={() => onChange(item.value)}
               checked={selected.includes(item.value)}
             >
