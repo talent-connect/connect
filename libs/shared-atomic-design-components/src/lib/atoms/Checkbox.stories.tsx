@@ -2,7 +2,6 @@ import { Meta } from '@storybook/react/types-6-0'
 import { storybookTemplate } from '../helpers/StorybookTemplate'
 
 import CheckboxComponent from './Checkbox'
-import 'bulma/css/bulma.min.css'
 
 export default {
   title: 'atoms/Checkbox',
@@ -15,4 +14,5 @@ export const Checkbox = template({
   name: 'Checkbox',
   value: 'ABC',
   disabled: false,
+  checked: false
 })
