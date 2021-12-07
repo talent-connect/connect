@@ -303,7 +303,7 @@ export function JobseekerFormSectionLanguages({
 }
 
 const formLanguages = Object.entries(LANGUAGES).map(([value, label]) => ({
-  value,
+  value: label,
   label,
 }))
 
