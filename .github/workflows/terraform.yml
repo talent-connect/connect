@@ -8,10 +8,10 @@ on:
       - '.github/workflows/terraform.yml'
 
 env:
-  ARM_CLIENT_ID: "ba7901d4-62a0-4bdb-b5fa-6556955262b8"
+  ARM_CLIENT_ID: 'ba7901d4-62a0-4bdb-b5fa-6556955262b8'
   ARM_CLIENT_SECRET: ${{ secrets.TF_ARM_CLIENT_SECRET }}
-  ARM_SUBSCRIPTION_ID: "f0434938-b24d-412e-b4eb-55cdd7f97018"
-  ARM_TENANT_ID: "72f988bf-86f1-41af-91ab-2d7cd011db47"
+  ARM_SUBSCRIPTION_ID: 'f0434938-b24d-412e-b4eb-55cdd7f97018'
+  ARM_TENANT_ID: '72f988bf-86f1-41af-91ab-2d7cd011db47'
 
 jobs:
   init-fmt-plan:
@@ -80,4 +80,3 @@ jobs:
           cd redi-connect-infrastructure
           terraform workspace select prod
           terraform apply -auto-approve
-
