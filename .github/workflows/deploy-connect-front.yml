@@ -66,14 +66,12 @@ jobs:
       - name: Upload webapp artifacts to blob storage
         uses: azure/CLI@v1
         with:
-          azcliversion: 2.19.1
           inlineScript: |
             az storage blob upload-batch --account-name "frontberlinstagingred" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
 
       - name: Purge pre-loaded content for the CDN endpoint
         uses: azure/CLI@v1
         with:
-          azcliversion: 2.19.1
           inlineScript: |
             az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-berlin-staging-red" --name "cdn-endpoint-front-berlin-staging-red" --resource-group "red-platform"
 
