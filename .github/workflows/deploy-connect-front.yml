@@ -68,7 +68,7 @@ jobs:
         with:
           azcliversion: 2.19.1
           inlineScript: |
-            az storage blob upload-batch --account-name "frontberlinstagingred" -d '$web' -s ./dist/apps/redi-connect
+            az storage blob upload-batch --account-name "frontberlinstagingred" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
 
       - name: Purge pre-loaded content for the CDN endpoint
         uses: azure/CLI@v1
