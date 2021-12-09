@@ -225,3 +225,52 @@ jobs:
       - name: Logout from Azure
         run: |
           az logout
+
+  deploy-tp-staging:
+    # if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
+    needs: [install]
+    environment:
+      name: staging
+      url: https://cdn-endpoint-front-tp-staging-red.azureedge.net
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+
+      - uses: actions/cache@v2
+        id: yarn-cache
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Login in Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Build webapp
+        env:
+          # CI needs to be `true` ideally. However at the moment the app won't build because of some js errors.
+
+          # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
+          # For instance you have an unused variable on your code
+          CI: ''
+        run: yarn build:redi-talent-pool
+
+      - name: Upload webapp artifacts to blob storage
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az storage blob upload-batch --account-name "fronttpstagingred" --auth-mode key -d '$web' -s ./dist/apps/redi-talent-pool
+
+      - name: Purge pre-loaded content for the CDN endpoint
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-tp-staging-red" --name "cdn-endpoint-front-tp-staging-red" --resource-group "red-platform"
+
+      - name: Logout from Azure
+        run: |
+          az logout

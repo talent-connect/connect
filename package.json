@@ -68,7 +68,8 @@
     "build:redi-connect:berlin": "NX_REDI_CONNECT_REDI_LOCATION=berlin env-cmd -f .env.production nx run redi-connect:build",
     "build:redi-connect:munich": "NX_REDI_CONNECT_REDI_LOCATION=munich env-cmd -f .env.production nx run redi-connect:build",
     "build:redi-connect:nrw": "NX_REDI_CONNECT_REDI_LOCATION=nrw env-cmd -f .env.production nx run redi-connect:build",
-    "build:redi-connect:location-picker": "NX_REDI_CONNECT_REDI_LOCATION=location-picker env-cmd -f .env.production nx run redi-connect:build"
+    "build:redi-connect:location-picker": "NX_REDI_CONNECT_REDI_LOCATION=location-picker env-cmd -f .env.production nx run redi-connect:build",
+    "build:redi-talent-pool": "env-cmd -f .env.production nx run redi-talent-pool:build"
   },
   "private": true,
   "dependencies": {
