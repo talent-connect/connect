@@ -53,7 +53,7 @@ export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
       try {
         accessToken = JSON.parse(accessTokenStr)
         saveAccessTokenToLocalStorage(accessToken)
-        console.log('savetoken ')
+        console.log('savetoken')
       } catch (err) {
         console.log('savetoken errp')
         return setErrorMsg(
