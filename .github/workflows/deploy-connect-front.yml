@@ -1,4 +1,4 @@
-name: Deploy front webapp
+name: Deploy front webapps
 
 on:
   push:
