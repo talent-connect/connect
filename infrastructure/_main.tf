@@ -65,6 +65,17 @@ module "static-website-nrw" {
   env_prefix_no_separator = local.env_prefix_no_separator
 }
 
+module "static-website-tp" {
+  source                  = "./modules/static-website"
+  name                    = "front-tp"
+  organisation            = var.organisation
+  location_europe         = var.location_europe
+  resource-group-name     = local.resource-group-name
+  resource-group-location = local.resource-group-location
+  env_prefix              = local.env_prefix
+  env_prefix_no_separator = local.env_prefix_no_separator
+}
+
 #---------------------------------------------------------
 # Azure container registry & Web app container
 #----------------------------------------------------------

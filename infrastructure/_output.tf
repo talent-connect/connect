@@ -20,64 +20,71 @@ output "storage_account_name_nrw" {
   value       = module.static-website-nrw.storage_account_name
   description = "The name of the storage account."
 }
+output "storage_account_name_tp" {
+  value       = module.static-website-tp.storage_account_name
+  description = "The name of the storage account."
+}
 
 output "static_website_cdn_profile_name_berlin" {
   value       = module.static-website-berlin.static_website_cdn_profile_name
   description = "CDN profile name for the static website for berlin"
 }
-
 output "static_website_cdn_profile_name_munich" {
   value       = module.static-website-munich.static_website_cdn_profile_name
   description = "CDN profile name for the static website for munich"
 }
-
 output "static_website_cdn_profile_name_picker" {
   value       = module.static-website-picker.static_website_cdn_profile_name
-  description = "CDN profile name for the static website for berlin"
+  description = "CDN profile name for the static website for location picker"
 }
-
 output "static_website_cdn_profile_name_nrw" {
   value       = module.static-website-nrw.static_website_cdn_profile_name
   description = "CDN profile name for the static website for munich"
+}
+output "static_website_cdn_profile_name_tp" {
+  value       = module.static-website-tp.static_website_cdn_profile_name
+  description = "CDN profile name for the static website for TP"
 }
 
 output "static_website_cdn_host_name_berlin" {
   value       = module.static-website-berlin.static_website_cdn_endpoint_hostname
   description = "CDN profile name for the static website for berlin"
 }
-
 output "static_website_cdn_host_name_munich" {
   value       = module.static-website-munich.static_website_cdn_endpoint_hostname
   description = "CDN profile name for the static website for munich"
 }
-
 output "static_website_cdn_host_name_picker" {
   value       = module.static-website-picker.static_website_cdn_endpoint_hostname
-  description = "CDN profile name for the static website for berlin"
+  description = "CDN profile name for the static website for location picker"
 }
-
 output "static_website_cdn_host_name_nrw" {
   value       = module.static-website-nrw.static_website_cdn_endpoint_hostname
   description = "CDN profile name for the static website for munich"
+}
+output "static_website_cdn_host_name_tp" {
+  value       = module.static-website-tp.static_website_cdn_endpoint_hostname
+  description = "CDN profile name for the static website TP"
 }
 
 output "static_website_url_berlin" {
   value       = module.static-website-berlin.static_website_url
   description = "static web site URL from storage account"
 }
-
 output "static_website_url_munich" {
   value       = module.static-website-munich.static_website_url
   description = "static web site URL from storage account"
 }
-
 output "static_website_url_nrw" {
   value       = module.static-website-nrw.static_website_url
   description = "static web site URL from storage account"
 }
-
 output "static_website_url_picker" {
   value       = module.static-website-picker.static_website_url
+  description = "static web site URL from storage account"
+}
+output "static_website_url_tp" {
+  value       = module.static-website-tp.static_website_url
   description = "static web site URL from storage account"
 }
 
