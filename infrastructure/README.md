@@ -11,12 +11,13 @@ This is the list of prerequisites required for the `connect` ci/cd pipeline:
 1. Create the backend for Azure.
 
    This is step is needed only the very first time _before_ you run `terraform init`. This is because when you are under a completely new Azure subscription you dont have a storage container to store the Terraform state yet.
-   
+
    Resource: https://docs.microsoft.com/en-us/azure/developer/terraform/store-state-in-azure-storage
 
    The very first time in order to run `terraform init` we need a [blob storage](https://azure.microsoft.com/en-gb/services/storage/blobs/) where we can store the state of Terraform. To do so you will simply need to execute the `generate-tf-storage.sh` script.
 
    From the directory `redi-connect-infrastructure` run
+
    ```
    ./scripts/generate-tf-storage.sh
    ```
@@ -42,8 +43,8 @@ This is the list of prerequisites required for the `connect` ci/cd pipeline:
        .
     }
    ```
+
    Now, run `terraform init`
-   
 
 2. Creating a Service Principal and a Client Secret
 
@@ -85,11 +86,13 @@ This is the list of prerequisites required for the `connect` ci/cd pipeline:
 
 ### how to get your `AZURE_CREDENTIALS`
 
-after you created you principal as described above you can recover your credentials using the command bellow
+Once you've done the above you need to create a new service principal that Github Actions will use to access Azure, our subscription, and specifically only our resource group. Run the following command that does just that ...
 
 ```
-az ad sp create-for-rbac --name "your_principal_name" --sdk-auth --role contributor --scopes /subscriptions/your_subscription_id/resourceGroups/your_resource_group_name
+az ad sp create-for-rbac --appId "your_principal_name" --sdk-auth --role contributor --scopes /subscriptions/your_subscription_id/resourceGroups/your_resource_group_name
 ```
+
+... and now paste that into Github Repository > Settings > Secrets > AZURE_CREDENTIALS variable
 
 ### how to get your `REGISTRY_USERNAME` & `REGISTRY_PASSWORD`
 
@@ -103,15 +106,15 @@ az acr credential show --resource-group AppSvc-DockerTutorial-rg --name <registr
 
 - custom cdn endpoints are not supported
 
-    At the moment the module for terraform isnt supporting custom cdn domains as shown in the issue bellow.
-    
-    https://github.com/terraform-providers/terraform-provider-azurerm/issues/398
-    
-    A workaround in the meantime would be to add a custom cdn via the Azure cli.
+  At the moment the module for terraform isnt supporting custom cdn domains as shown in the issue bellow.
 
-----
+  https://github.com/terraform-providers/terraform-provider-azurerm/issues/398
 
-Resources: 
+  A workaround in the meantime would be to add a custom cdn via the Azure cli.
+
+---
+
+Resources:
 
 Run the az acr show command to retrieve credentials for the registry:
 
@@ -119,8 +122,7 @@ Run the az acr show command to retrieve credentials for the registry:
 az acr credential show --resource-group AppSvc-DockerTutorial-rg --name <registry-name>
 ```
 
-----
-
+---
 
 Resources:
 
