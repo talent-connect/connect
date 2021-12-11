@@ -301,10 +301,10 @@ stateDiagram-v2
 - `MentoringSession` > minuteDuration valid values: 15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165, 180
 
 ## Static lists
+Note: the values of these static data lists might have changed. When we migrate them to Salesforce, use the actual source code where those values are defined as the source of truth, not this document.
 
 | ConMenteeOccupationCategory |
 | --------------------------- |
-
 | id: job, label: Job (full-time/part-time)
 | id: student, label: Student (enrolled at university)
 | id: lookingForJob, label: Looking for a job
@@ -312,7 +312,6 @@ stateDiagram-v2
 
 | ConUserType |
 | ----------- |
-
 | mentor
 | mentee
 | public-sign-up-mentor-pending-review
@@ -322,7 +321,6 @@ stateDiagram-v2
 
 | EducationCertificationType |
 | -------------------------- |
-
 | id: confirmationOfAttendance, label: Confirmation of attendance
 | id: professionalCertification, label: Professional certification
 | id: rediSchoolCourse, label: ReDI School Course
@@ -331,7 +329,6 @@ stateDiagram-v2
 
 | EducationLevel |
 | -------------- |
-
 | id: middleSchool, label: Middle School
 | id: highSchool, label: High School
 | id: apprenticeship, label: Apprenticeship
@@ -341,14 +338,12 @@ stateDiagram-v2
 
 | Gender |
 | ------ |
-
 | id: male, label: Male
 | id: female, label: Female
 | id: other, label: Other
 
 | GenericEmploymentType |
 | --------------------- |
-
 | id: partTimeEmployment, label: Part-time employment
 | id: fullTimeEmployment, label: Full-time employment
 | id: werkstudium, label: Werkstudent\*in (working student position)
@@ -361,7 +356,6 @@ stateDiagram-v2
 
 | GenericPosition |
 | --------------- |
-
 | id:administrativeAssistant, label: Administrative Assistant
 | id: agileScrumCoach, label: Agile/SCRUM Coach
 | id: azureSpecialist, label: Azure Specialist
@@ -409,7 +403,6 @@ stateDiagram-v2
 
 | ImmigrationStatus |
 | ----------------- |
-
 | label: EU-Citizenship or unlimited residence permission (Niederlassungserlaubnis), id: euCitizenshipOrUnlimitedResidencePermissionNiederlassungserlaubnis
 | label: EU Blue card (Blaue Karte), id: euBlueCardBlaueKarte
 | label: Temporary residence permission (Aufenthaltstitel), id: temporaryResidencePermissionAufenthaltstitel
@@ -419,7 +412,6 @@ stateDiagram-v2
 
 | Language |
 | -------- |
-
 | Afrikaans
 | Albanian
 | Amharic
@@ -430,7 +422,6 @@ stateDiagram-v2
 
 | MentoringTopic |
 | -------------- |
-
 | id: basicProgrammingSkills, group: softwareEngineering, label: Basic Programming Skills
 | id: htmlCss, group: softwareEngineering, label: HTML & CSS
 | ... (around 40 values)
@@ -439,7 +430,6 @@ stateDiagram-v2
 
 | MentoringTopicGroup |
 | ------------------- |
-
 | id: softwareEngineering, label: 👩‍💻 Software Engineering
 | id: design, label: 👩‍💻 Software Engineering
 | id: language, label: 🏄‍♀️ Other Professions
@@ -449,7 +439,6 @@ stateDiagram-v2
 
 | RediCourse |
 | ---------- |
-
 | id: introPython, label: Intro to Python, location: berlin,
 | id: dataAnalytics, label: Data Analytics, location: berlin,
 | id: htmlCss, label: HTML & CSS, location: berlin,
@@ -479,14 +468,12 @@ stateDiagram-v2
 
 | RediLocation |
 | ------------ |
-
 | berlin
 | munich
 | nrw
 
 | RedMatchStatus |
 | -------------- |
-
 | applied
 | invalidated-as-other-mentor-accepted
 | accepted
@@ -495,7 +482,6 @@ stateDiagram-v2
 
 | TpJobseekerProfileAvailability |
 | ------------------------------ |
-
 | id: immediately, label: Immediately
 | id: oneMonthNotice, label: One month notice
 | id: twoMonthNotice, label: Two months notice
