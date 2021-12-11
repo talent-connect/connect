@@ -3,12 +3,14 @@
 > **TL;DR: this is an ER diagram of all CON/TP data models with companion notes. Use it to understand the "status quo" and to plan for how we'll migrate them into Salesforce.**
 
 ReDI Connect and ReDI Talent Pool are two sister platforms hosted in the same codebase. Their purposes:
+
 - ReDI Connect (CON): matchmaking between mentors and mentees for mentorship
 - ReDI Talent Pool (TP): matchmaking between jobseekers and companies for jobs
 
-CON and TP each have their own front-end. They communicate with a back-end that stores all data in a MongoDB database. 
+CON and TP each have their own front-end. They communicate with a back-end that stores all data in a MongoDB database.
 
 The "CON/TP Salesforce integration project" consists of in a nutshell:
+
 - understand the existing data models
 - examine how we can host the same data in the ReDI Salesforce
 - examine other functions that Salesforce can provide besides data persistence
@@ -65,6 +67,7 @@ erDiagram
       boolean optOutOfMenteesFromOtherRediLocation
 
       boolean userActivated
+      date userActivatedAt
 
       date gaveGdprConsentAt
 
@@ -86,6 +89,10 @@ erDiagram
       string mentorReplyMessageOnAccept
       string mentorMessageOnComplete
       boolean hasMenteeDismissedMentorshipApplicationAcceptedNotification
+      string ifDeclinedByMentor_chosenReasonForDecline
+      string ifDeclinedByMentor_ifReasonIsOther_freeText
+      string ifDeclinedByMentor_optionalMessageToMentee
+      string ifDeclinedByMentor_dateTime
     }
 
 
@@ -126,28 +133,28 @@ erDiagram
     }
 
     TpJobseekerProfileExperienceRecord {
-      string uuid 
-      string title 
-      string company 
-      string description 
-      number startDateMonth 
-      number startDateYear 
-      number endDateMonth 
-      number endDateYear 
-      boolean current 
+      string uuid
+      string title
+      string company
+      string description
+      number startDateMonth
+      number startDateYear
+      number endDateMonth
+      number endDateYear
+      boolean current
     }
     TpJobseekerProfileEducationRecord {
-      string uuid 
-      string type 
-      string title 
-      string institutionName 
-      string description 
-      EducationCertificationType certificationType 
-      number startDateMonth 
-      number startDateYear 
-      number endDateMonth 
-      number endDateYear 
-      boolean current 
+      string uuid
+      string type
+      string title
+      string institutionName
+      string description
+      EducationCertificationType certificationType
+      number startDateMonth
+      number startDateYear
+      number endDateMonth
+      number endDateYear
+      boolean current
     }
 
 
@@ -158,6 +165,7 @@ erDiagram
 
     TpCompanyProfile {
       string id
+      string state
       string firstName
       string lastName
       string contactEmail
@@ -170,6 +178,8 @@ erDiagram
       string linkedInUrl
       string phoneNumber
       string about
+      string howDidHearAboutRediKey
+      string howDidHearAboutRediOtherText
       date createdAt
       date updatedAt
     }
@@ -208,44 +218,60 @@ erDiagram
 
 ```
 
-## ConProfile user states and emails
+## (Future) Salesforce Objects and states
+
+### Mentor / mentee
+
+> Note: the Mentor object and Mentee objects have the same states.
 
 ```mermaid
-stateDiagram
-  mentorSignedUp : Mentor signed up
-  note right of mentorSignedUp
-    Email verification email sent to mentor
+stateDiagram-v2
+  signedUpPendingReview
+  reviewedAndRejected
+  active
+  disabled
+
+  [*] --> signedUpPendingReview : Mentor/mentee signs up
+  signedUpPendingReview --> active : Admin approves mentor/mentee
+  signedUpPendingReview --> reviewedAndRejected : Admin declines/rejects mentor/mentee
+  active --> disabled : Admin disables mentor/mentee
+  disabled --> active : Admin (re)activates mentor/mentee
+
+  note right of disabled
+    A mentor/mentee can become disabled for
+    a number of reasons.
   end note
-
-  mentorEmailVerified : Mentor email verified
-
-  [*] --> mentorSignedUp : Mentor signs up
-  mentorSignedUp --> mentorEmailVerified: Mentor clicks validation link
 ```
 
-Yazan
+### Jobseeker Profile
 
-state if_state <<choice>> state
+```mermaid
+stateDiagram-v2
+  draftingProfile
+  submittedForReview
+  profileApproved
 
-  mentorPending : Mentor signed up pending review
-  menteePending : Mentee signed up pending review
-  mentor : Approved mentor
-  mentee : Approved mentee
+  [*] --> draftingProfile : Jobseeker signs up
+  draftingProfile --> submittedForReview: Jobseeker submits their profile for review
+  submittedForReview --> profileApproved : Admin approves the profile
+```
 
-  [*] --> Still
-  Still --> [*]
+### Company Profile
 
-  if_state 
+```mermaid
+stateDiagram-v2
+  draftingProfile
+  submittedForReview
+  profileApproved
 
-  if_state --> mentor : Mentor approved by Miriam
-  if_state --> mentee : Mentor approved by Paulina
-
-  Still --> Moving
-  Moving --> Still
-  Moving --> Crash
-  Crash --> [*]
+  [*] --> draftingProfile : Company creates a profile
+  draftingProfile --> submittedForReview: Company submits their profile for review
+  submittedForReview --> profileApproved : Admin approves the profile
+  draftingProfile --> profileApproved : Admin approves profile directly, e.g. after helping the company directly
+```
 
 ## Static data lists
+
 (...used in dropdowns, checkboxes, blabla)
 
 - ConMenteeOccupationCategory
@@ -276,17 +302,17 @@ state if_state <<choice>> state
 
 ## Static lists
 
-
-
 | ConMenteeOccupationCategory |
 | --------------------------- |
+
 | id: job, label: Job (full-time/part-time)
 | id: student, label: Student (enrolled at university)
 | id: lookingForJob, label: Looking for a job
 | id: other, label: Other
 
 | ConUserType |
-| --------------------------- |
+| ----------- |
+
 | mentor
 | mentee
 | public-sign-up-mentor-pending-review
@@ -295,7 +321,8 @@ state if_state <<choice>> state
 | public-sign-up-mentee-rejected
 
 | EducationCertificationType |
-| --------------------------- |
+| -------------------------- |
+
 | id: confirmationOfAttendance, label: Confirmation of attendance
 | id: professionalCertification, label: Professional certification
 | id: rediSchoolCourse, label: ReDI School Course
@@ -303,7 +330,8 @@ state if_state <<choice>> state
 | id: other, label: Other
 
 | EducationLevel |
-| --------------------------- |
+| -------------- |
+
 | id: middleSchool, label: Middle School
 | id: highSchool, label: High School
 | id: apprenticeship, label: Apprenticeship
@@ -312,16 +340,18 @@ state if_state <<choice>> state
 | id: universityPhd, label: University Degree (PhD)
 
 | Gender |
-| -------------- |
+| ------ |
+
 | id: male, label: Male
 | id: female, label: Female
 | id: other, label: Other
 
 | GenericEmploymentType |
-| --------------------------- |
+| --------------------- |
+
 | id: partTimeEmployment, label: Part-time employment
 | id: fullTimeEmployment, label: Full-time employment
-| id: werkstudium, label: Werkstudent*in (working student position)
+| id: werkstudium, label: Werkstudent\*in (working student position)
 | id: internship, label: Internship
 | id: apprenticeship, label: Apprenticeship (Ausbildung)
 | id: selfEmployed, label: Self-employed
@@ -330,7 +360,8 @@ state if_state <<choice>> state
 | id: traineeship, label: Traineeship
 
 | GenericPosition |
-|------------------------ |
+| --------------- |
+
 | id:administrativeAssistant, label: Administrative Assistant
 | id: agileScrumCoach, label: Agile/SCRUM Coach
 | id: azureSpecialist, label: Azure Specialist
@@ -377,7 +408,8 @@ state if_state <<choice>> state
 | id: uxDesigner, label: UX Designer
 
 | ImmigrationStatus |
-| --------------------------- |
+| ----------------- |
+
 | label: EU-Citizenship or unlimited residence permission (Niederlassungserlaubnis), id: euCitizenshipOrUnlimitedResidencePermissionNiederlassungserlaubnis
 | label: EU Blue card (Blaue Karte), id: euBlueCardBlaueKarte
 | label: Temporary residence permission (Aufenthaltstitel), id: temporaryResidencePermissionAufenthaltstitel
@@ -387,6 +419,7 @@ state if_state <<choice>> state
 
 | Language |
 | -------- |
+
 | Afrikaans
 | Albanian
 | Amharic
@@ -397,6 +430,7 @@ state if_state <<choice>> state
 
 | MentoringTopic |
 | -------------- |
+
 | id: basicProgrammingSkills, group: softwareEngineering, label: Basic Programming Skills
 | id: htmlCss, group: softwareEngineering, label: HTML & CSS
 | ... (around 40 values)
@@ -405,6 +439,7 @@ state if_state <<choice>> state
 
 | MentoringTopicGroup |
 | ------------------- |
+
 | id: softwareEngineering, label: 👩‍💻 Software Engineering
 | id: design, label: 👩‍💻 Software Engineering
 | id: language, label: 🏄‍♀️ Other Professions
@@ -413,7 +448,8 @@ state if_state <<choice>> state
 | id: other, label: 🤗 Other
 
 | RediCourse |
-| --------------------------- |
+| ---------- |
+
 | id: introPython, label: Intro to Python, location: berlin,
 | id: dataAnalytics, label: Data Analytics, location: berlin,
 | id: htmlCss, label: HTML & CSS, location: berlin,
@@ -443,12 +479,14 @@ state if_state <<choice>> state
 
 | RediLocation |
 | ------------ |
+
 | berlin
 | munich
 | nrw
 
 | RedMatchStatus |
 | -------------- |
+
 | applied
 | invalidated-as-other-mentor-accepted
 | accepted
@@ -456,18 +494,16 @@ state if_state <<choice>> state
 | cancelled
 
 | TpJobseekerProfileAvailability |
-| --------------------------- |
+| ------------------------------ |
+
 | id: immediately, label: Immediately
 | id: oneMonthNotice, label: One month notice
 | id: twoMonthNotice, label: Two months notice
 | id: threeMonthNotice, label: Three months notice
 | id: date, label: Date
 
-
-
-
-
 ## Questions
+
 ## Milestones
 
 - few
@@ -481,4 +517,4 @@ state if_state <<choice>> state
 ## Can the following functionality be ported to Salesforce?
 
 - PDF generation?
-- Transactional email sending 
+- Transactional email sending
