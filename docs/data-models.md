@@ -218,7 +218,7 @@ erDiagram
 
 ```
 
-## (Future) Salesforce Objects and states
+## (Future) Salesforce objects and their states
 
 ### Mentor / mentee
 
