@@ -41,6 +41,7 @@ export function EditableNamePhotoLocation({ profile, disableEditing }: Props) {
               <Avatar.Editable
                 profile={profile}
                 profileSaveStart={mutation.mutate}
+                callToActionText="Please add your company logo"
               />
             ) : null}
           </Columns.Column>
