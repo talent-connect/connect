@@ -23,7 +23,7 @@ interface AvatarEditable {
   profileSaveStart: (
     profile: Partial<TpJobseekerProfile> | Partial<TpCompanyProfile>
   ) => void
-  callToActionText: string
+  callToActionText?: string
 }
 
 interface AvatarFormValues {
