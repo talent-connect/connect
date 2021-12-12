@@ -36,10 +36,7 @@ export function MeJobseeker() {
 
   return (
     <LoggedIn>
-      {profile?.state === 'profile-approved-awaiting-job-preferences' ||
-      profile?.state ===
-        'job-preferences-shared-with-redi-awaiting-interview-match' ||
-      profile?.state === 'matched-for-interview' ? (
+      {profile?.state === 'profile-approved' ? (
         <Notification className="account-not-active double-bs">
           <Icon
             className="account-not-active__icon"
@@ -134,7 +131,7 @@ function determineCurrentStep(
   if (profile.state === 'submitted-for-review') {
     return [3, 'pending']
   }
-  if (profile.state === 'profile-approved-awaiting-job-preferences') {
+  if (profile.state === 'profile-approved') {
     return [3, 'complete']
   }
   // if (
@@ -267,7 +264,7 @@ function SendJobPreferencesForReviewButton() {
   const mutation = useTpjobseekerprofileUpdateMutation()
 
   const enabled =
-    profile?.state === 'profile-approved-awaiting-job-preferences' &&
+    profile?.state === 'profile-approved' &&
     EditableJobPreferences.isSectionFilled(profile)
 
   const onClick = useCallback(() => {
@@ -275,7 +272,6 @@ function SendJobPreferencesForReviewButton() {
 
     mutation.mutate({
       ...profile,
-      state: 'job-preferences-shared-with-redi-awaiting-interview-match',
     })
   }, [mutation, profile])
 

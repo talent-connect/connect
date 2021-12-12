@@ -151,12 +151,7 @@ export async function fetchAllTpJobseekerProfiles({
     })}`
   ).then((resp) =>
     resp.data.filter(
-      (p) =>
-        p.isProfileVisibleToCompanies &&
-        [
-          'profile-approved-awaiting-job-preferences',
-          'job-preferences-shared-with-redi-awaiting-interview-match',
-        ].includes(p.state)
+      (p) => p.isProfileVisibleToCompanies && p.state === 'profile-approved'
     )
   )
 }
