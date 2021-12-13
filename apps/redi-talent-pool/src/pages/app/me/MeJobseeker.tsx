@@ -1,5 +1,9 @@
 import { Tooltip } from '@material-ui/core'
-import { Button, Icon } from '@talent-connect/shared-atomic-design-components'
+import {
+  Button,
+  Checkbox,
+  Icon,
+} from '@talent-connect/shared-atomic-design-components'
 import {
   TpJobseekerProfile,
   TpJobseekerProfileState,
@@ -30,9 +34,17 @@ import { ReactComponent as StepPendingImage } from './pending.svg'
 
 export function MeJobseeker() {
   const { data: profile } = useTpJobseekerProfileQuery()
+  const mutation = useTpjobseekerprofileUpdateMutation()
+
   const currentStep = determineCurrentStep(profile)
 
   const openJobPreferencesModalSignalRef = useRef(new Subject<void>())
+
+  const onHideFromCompaniesCheckboxChange = () =>
+    mutation.mutate({
+      ...profile,
+      isProfileVisibleToCompanies: !profile.isProfileVisibleToCompanies,
+    })
 
   return (
     <LoggedIn>
@@ -78,6 +90,12 @@ export function MeJobseeker() {
           <EditableImportantDetails profile={profile} />
           <EditableLanguages profile={profile} />
           <EditableLinks profile={profile} />
+          <Checkbox
+            checked={!profile.isProfileVisibleToCompanies}
+            customOnChange={onHideFromCompaniesCheckboxChange}
+          >
+            Hide my profile from companies
+          </Checkbox>
           {/* {currentStep[0] >= 4 ? (
             <EditableJobPreferences
               profile={profile}

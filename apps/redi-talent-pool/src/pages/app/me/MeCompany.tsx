@@ -1,6 +1,10 @@
 import React, { useCallback, useState } from 'react'
 import { Tooltip } from '@material-ui/core'
-import { Button, Icon } from '@talent-connect/shared-atomic-design-components'
+import {
+  Button,
+  Checkbox,
+  Icon,
+} from '@talent-connect/shared-atomic-design-components'
 import { Columns, Notification, Content } from 'react-bulma-components'
 import { EditableAbout } from '../../../components/organisms/company-profile-editables/EditableAbout'
 import { EditableContact } from '../../../components/organisms/company-profile-editables/EditableContact'
@@ -89,10 +93,17 @@ const CallToActionButton = ({
 export function MeCompany() {
   const { data: profile } = useTpCompanyProfileQuery()
   const { data: jobListings } = useTpJobListingAllQuery()
+  const mutation = useTpCompanyProfileUpdateMutation()
 
   const [isJobPostingFormOpen, setIsJobPostingFormOpen] = useState(false)
 
   const isProfileApproved = profile?.state === 'profile-approved'
+
+  const onHideFromJobseekersCheckboxChange = () =>
+    mutation.mutate({
+      ...profile,
+      isProfileVisibleToJobseekers: !profile.isProfileVisibleToJobseekers,
+    })
 
   return (
     <LoggedIn>
@@ -140,6 +151,12 @@ export function MeCompany() {
           </div>
           <EditableDetails profile={profile} />
           <EditableContact profile={profile} />
+          <Checkbox
+            checked={!profile.isProfileVisibleToJobseekers}
+            customOnChange={onHideFromJobseekersCheckboxChange}
+          >
+            Hide job listings from jobseekers
+          </Checkbox>
         </Columns.Column>
       </Columns>
       <EditableJobPostings
