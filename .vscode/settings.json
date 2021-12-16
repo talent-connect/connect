@@ -5,5 +5,8 @@
     "./lib/shared-atomic-design-components",
     "./libs/shared-types"
   ],
-  "typescript.preferences.importModuleSpecifier": "project-relative"
+  "typescript.preferences.importModuleSpecifier": "project-relative",
+  "cSpell.words": [
+    "redi"
+  ]
 }

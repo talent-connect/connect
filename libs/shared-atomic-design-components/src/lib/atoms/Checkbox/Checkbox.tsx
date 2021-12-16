@@ -1,44 +1,20 @@
-import React, { FocusEventHandler, MouseEventHandler } from 'react'
+import { CheckboxProps } from './Checkbox.props';
 import _uniqueId from 'lodash/uniqueId'
 import { Form } from 'react-bulma-components'
 import './Checkbox.scss'
 
-interface Props {
-  /** */
-  name: string
-  /** */
-  value?: string
-  /** */
-  checked: boolean
-  /** */
-  children?: React.ReactNode
-  /** */
-  disabled?: boolean
-  /** */
-  handleChange?: MouseEventHandler<HTMLInputElement>
-  /** */
-  handleBlur?: FocusEventHandler<HTMLInputElement>
-  /** */
-  isSubmitting?: boolean
-  /** */
-  customOnChange?: MouseEventHandler<HTMLInputElement>
-}
+function Checkbox({
+  name,
+  value,
+  checked,
+  disabled,
+  handleChange,
+  handleBlur,
+  isSubmitting,
+  children,
+  customOnChange,
+}: CheckboxProps) {
 
-/** ## Checkbox */
-function Checkbox(props: Props) {
-  const {
-    name,
-    value,
-    checked,
-    disabled,
-    handleChange,
-    handleBlur,
-    isSubmitting,
-    children,
-    customOnChange,
-  } = props
-
-  const handleOnChange: MouseEventHandler<HTMLInputElement> = customOnChange ?? handleChange
   const uid = _uniqueId('cx_')
 
   return (
@@ -50,14 +26,14 @@ function Checkbox(props: Props) {
         value={value}
         name={name}
         checked={checked}
-        onClick={handleOnChange}
+        onChange={customOnChange ?? handleChange}
         onBlur={handleBlur}
         disabled={isSubmitting || disabled}
       />
       <label
         // textSize={5}
         htmlFor={uid}
-        className="redi-checkbox-label"
+        className="redi-checkbox__label"
       >
         {children}
       </label>
