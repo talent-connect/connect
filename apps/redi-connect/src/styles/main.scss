@@ -1,4 +1,5 @@
 // custom variable overwrites for bulma
+@use '_colors' as colors;
 @import '_variables.scss';
 
 @import '_global.scss';
@@ -32,7 +33,7 @@ code {
 }
 
 %arrow {
-  border: 2px solid $redi-orange-dark;
+  border: 2px solid colors.$redi-orange-dark;
   border-right: 0;
   border-top: 0;
   content: ' ';
@@ -52,7 +53,7 @@ textarea,
 select {
   &::placeholder {
     font-style: italic;
-    color: $grey !important;
+    color: colors.$grey !important;
   }
 }
 
@@ -78,7 +79,7 @@ a:hover {
   }
 
   &--separator {
-    border-top: 1px solid $grey-light;
+    border-top: 1px solid colors.$grey-light;
   }
 
   &.section--bottom-large-spaceing {
@@ -110,18 +111,18 @@ a:hover {
 // TODO: should be transfered to a layout template
 // will be done the next time this view is reused
 .section.color-half-desktop {
-  background-color: $white;
+  background-color: colors.$white;
 
   @include tablet() {
-    background: linear-gradient(90deg, $redi-blue-light 50%, $white 50%);
+    background: linear-gradient(90deg, colors.$redi-blue-light 50%, colors.$white 50%);
   }
 }
 
 .section.color-half-tablet {
-  background-color: $white;
+  background-color: colors.$white;
 
   @include desktop() {
-    background: linear-gradient(90deg, $redi-blue-light 50%, $white 50%);
+    background: linear-gradient(90deg, colors.$redi-blue-light 50%, colors.$white 50%);
   }
 }
 
@@ -137,7 +138,7 @@ a:hover {
   @include desktop() {
     margin: -3.25rem auto;
     padding: 3.25rem 0;
-    background: linear-gradient(90deg, $redi-blue-light 15.8%, $white 15.8%);
+    background: linear-gradient(90deg, colors.$redi-blue-light 15.8%, colors.$white 15.8%);
   }
 }
 

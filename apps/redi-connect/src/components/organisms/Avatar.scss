@@ -1,3 +1,4 @@
+@use '_colors' as colors;
 @import '~bulma/sass/utilities/_all';
 @import '_variables.scss';
 
@@ -23,7 +24,7 @@
   }
 
   &--editable {
-    border: 4px solid $redi-orange-dark;
+    border: 4px solid colors.$redi-orange-dark;
     box-shadow: 2px 0 15px 0 rgba(255, 92, 31, 0.34);
     padding-top: calc(100% - 8px);
 
@@ -62,7 +63,7 @@
 
   &--placeholder:before {
     border: 1px solid #a0a0a0;
-    background-color: $grey-extra-light;
+    background-color: colors.$grey-extra-light;
   }
 
   &__image {
@@ -86,8 +87,8 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    border: 1px solid $grey-light;
-    color: $grey-light;
+    border: 1px solid colors.$grey-light;
+    color: colors.$grey-light;
     border-radius: $radius;
   }
 

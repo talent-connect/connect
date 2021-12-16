@@ -1,3 +1,4 @@
+@use '../styles/colors' as colors;
 @import '../styles/_variables.scss';
 
 .editable {
@@ -22,7 +23,7 @@
   transition: $transition;
 
   &:not(.icon__button--disabled):hover {
-    background-color: $redi-orange-extra-light;
+    background-color: colors.$redi-orange-extra-light;
   }
 
   path {
@@ -30,6 +31,6 @@
   }
 
   &--disabled path {
-    fill: $grey-light;
+    fill: colors.$grey-light;
   }
 }

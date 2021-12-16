@@ -1,3 +1,4 @@
+@use '../styles/colors' as colors;
 @import '~bulma/sass/utilities/_all';
 @import '../styles/_variables.scss';
 
@@ -17,7 +18,7 @@
   &::after,
   &::before {
     width: 3.25rem;
-    border: 2px solid $redi-orange-dark;
+    border: 2px solid colors.$redi-orange-dark;
     position: absolute;
     border-radius: 2px;
   }

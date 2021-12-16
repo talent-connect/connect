@@ -1,3 +1,4 @@
+@use '../styles/colors' as colors;
 @import '../styles/_variables.scss';
 @import 'node_modules/react-datepicker/src/stylesheets/datepicker.scss';
 
@@ -11,7 +12,7 @@
     right: 0.5rem;
 
     path {
-      fill: $redi-orange-dark;
+      fill: colors.$redi-orange-dark;
     }
   }
 }
@@ -27,8 +28,8 @@
 }
 
 .react-datepicker__close-icon::after {
-  background-color: $redi-orange-extra-light;
-  color: $redi-orange-dark;
+  background-color: colors.$redi-orange-extra-light;
+  color: colors.$redi-orange-dark;
   height: 26px;
   width: 26px;
   font-size: 18px;

@@ -1,4 +1,6 @@
+@use '_colors' as colors;
 @import './_variables';
+
 .submit {
   &-link {
     font-size: $size-7;
@@ -43,7 +45,7 @@
       top: 50%;
       margin-top: -0.6rem;
       right: 1rem;
-      border: solid $green;
+      border: solid colors.$green;
       border-width: 0 2px 2px 0;
       transform: rotate(45deg);
     }

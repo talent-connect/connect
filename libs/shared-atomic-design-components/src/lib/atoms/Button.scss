@@ -1,3 +1,4 @@
+@use '../styles/colors' as colors;
 @import '~bulma/sass/utilities/_all';
 @import '../styles/_variables.scss';
 
@@ -15,7 +16,7 @@
   position: relative;
   cursor: pointer;
   transition: $transition;
-  border: 2px solid $black;
+  border: 2px solid colors.$black;
   transform-style: preserve-3d;
 
   + .button-atom {
@@ -43,7 +44,7 @@
 
       height: 2rem;
       width: 1px;
-      border-left: 1px solid $grey !important;
+      border-left: 1px solid colors.$grey !important;
     }
   }
 
@@ -61,11 +62,11 @@
       left: 0.375rem;
       width: calc(100% + 4px);
       height: calc(100% + 4px);
-      background-color: $redi-orange-light;
+      background-color: colors.$redi-orange-light;
     }
 
     &:hover::after {
-      background-color: $redi-orange;
+      background-color: colors.$redi-orange;
     }
 
     &:active {
@@ -81,7 +82,7 @@
       color: $grey-dark;
 
       &:after {
-        background-color: $grey-light;
+        background-color: colors.$grey-light;
       }
     }
   }
@@ -91,7 +92,7 @@
     padding: 0 1rem;
 
     &:hover {
-      color: $redi-orange-dark;
+      color: colors.$redi-orange-dark;
     }
   }
 
@@ -102,12 +103,12 @@
 
     &:hover {
       text-decoration: none;
-      color: $redi-orange-dark;
+      color: colors.$redi-orange-dark;
     }
   }
 
   &--active {
-    color: $redi-orange-dark;
+    color: colors.$redi-orange-dark;
   }
 
   &--small {
@@ -135,12 +136,12 @@
 
   .icon {
     path {
-      fill: $black;
+      fill: colors.$black;
       transition: $transition;
     }
   }
 
   &:hover path {
-    fill: $redi-orange-dark;
+    fill: colors.$redi-orange-dark;
   }
 }

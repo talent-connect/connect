@@ -1,3 +1,4 @@
+@use '../styles/colors' as colors;
 @import '../styles/_variables.scss';
 
 .modal {
@@ -11,18 +12,18 @@
     position: absolute;
 
     &:hover {
-      background-color: $white !important;
+      background-color: colors.$white !important;
     }
 
     &::before {
       width: 80%;
       height: 1px;
-      background-color: $black;
+      background-color: colors.$black;
     }
     &::after {
       height: 80%;
       width: 1px;
-      background-color: $black;
+      background-color: colors.$black;
     }
   }
 

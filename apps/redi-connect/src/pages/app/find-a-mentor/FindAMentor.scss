@@ -1,3 +1,4 @@
+@use '_colors' as colors;
 @import '~bulma/sass/utilities/_all';
 @import '_variables.scss';
 
@@ -97,7 +98,7 @@
   &__icon {
     font-size: 1.2rem;
     path {
-      fill: $redi-orange-dark;
+      fill: colors.$redi-orange-dark;
     }
   }
 

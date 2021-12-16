@@ -1,3 +1,4 @@
+@use '../styles/colors' as colors;
 @import '../styles/_variables.scss';
 
 .module {
@@ -9,7 +10,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid $grey-light;
+    border-bottom: 1px solid colors.$grey-light;
     margin-bottom: 1rem;
 
     &__buttons {

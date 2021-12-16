@@ -1,9 +1,10 @@
+@use '../styles/colors' as colors;
 @import '../styles/_variables.scss';
 
 .form-draggable-accordion {
   padding-top: 1rem;
   // margin-bottom: 0.75rem;
-  border-bottom: 1px solid $grey-light;
+  border-bottom: 1px solid colors.$grey-light;
 
   &-block__title {
     font-weight: $weight-bold;

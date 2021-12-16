@@ -1,4 +1,4 @@
-import {Checkbox} from '.';
+import { Checkbox } from '.';
 
 describe(Checkbox.name, () => {
   it('passes', () => {
