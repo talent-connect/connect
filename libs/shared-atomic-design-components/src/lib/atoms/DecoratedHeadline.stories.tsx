@@ -5,7 +5,7 @@ import DecoratedHeadlineComponent from './DecoratedHeadline'
 import 'bulma/css/bulma.min.css'
 
 export default {
-  title: 'atoms/Decoratedheadline',
+  title: 'Atoms/Decoratedheadline',
   component: DecoratedHeadlineComponent,
 } as Meta
 

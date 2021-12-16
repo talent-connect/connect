@@ -7,7 +7,7 @@ import 'bulma/css/bulma.min.css'
 import 'react-datepicker/dist/react-datepicker.css'
 
 export default {
-  title: 'atoms/Formdatepicker',
+  title: 'Atoms/Formdatepicker',
   component: FormDatePickerComponent,
 } as Meta
 

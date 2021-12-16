@@ -5,7 +5,7 @@ import PlaceholderComponent from './Placeholder'
 import 'bulma/css/bulma.min.css'
 
 export default {
-  title: 'atoms/Placeholder',
+  title: 'Atoms/Placeholder',
   component: PlaceholderComponent,
 } as Meta
 

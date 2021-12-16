@@ -5,7 +5,7 @@ import CaptionComponent from './Caption'
 import 'bulma/css/bulma.min.css'
 
 export default {
-  title: 'atoms/Caption',
+  title: 'Atoms/Caption',
   component: CaptionComponent,
 } as Meta
 

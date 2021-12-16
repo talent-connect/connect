@@ -5,7 +5,7 @@ import FormTextAreaComponent from './FormTextArea'
 import 'bulma/css/bulma.min.css'
 
 export default {
-  title: 'atoms/Formtextarea',
+  title: 'Atoms/Formtextarea',
   component: FormTextAreaComponent,
 } as Meta
 

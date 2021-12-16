@@ -5,7 +5,7 @@ import HeadingComponent from './Heading'
 import 'bulma/css/bulma.min.css'
 
 export default {
-  title: 'atoms/Heading',
+  title: 'Atoms/Heading',
   component: HeadingComponent,
 } as Meta
 

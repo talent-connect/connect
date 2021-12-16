@@ -5,7 +5,7 @@ import SearchFieldComponent from './SearchField'
 import 'bulma/css/bulma.min.css'
 
 export default {
-  title: 'atoms/Searchfield',
+  title: 'Atoms/Searchfield',
   component: SearchFieldComponent,
 } as Meta
 

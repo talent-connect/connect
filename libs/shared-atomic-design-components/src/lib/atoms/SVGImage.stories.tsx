@@ -4,7 +4,7 @@ import { storybookTemplate } from '../helpers/StorybookTemplate'
 import SVGImageComponent, { SVGImages } from './SVGImage'
 
 export default {
-  title: 'atoms/image',
+  title: 'Atoms/image',
   component: SVGImageComponent,
 } as Meta
 

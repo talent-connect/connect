@@ -6,7 +6,7 @@ import FormSelectComponent from './FormSelect'
 import 'bulma/css/bulma.min.css'
 
 export default {
-  title: 'atoms/Formselect',
+  title: 'Atoms/Formselect',
   component: FormSelectComponent,
 } as Meta
 

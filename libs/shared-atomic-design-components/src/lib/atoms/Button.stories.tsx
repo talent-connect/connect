@@ -5,7 +5,7 @@ import { storybookTemplate } from '../helpers/StorybookTemplate'
 import ButtonComponent from './Button'
 
 export default {
-  title: 'atoms/Button',
+  title: 'Atoms/Button',
   component: ButtonComponent,
 } as Meta
 

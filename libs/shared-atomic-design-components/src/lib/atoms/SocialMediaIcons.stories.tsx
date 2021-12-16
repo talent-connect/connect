@@ -4,7 +4,7 @@ import { storybookTemplate } from '../helpers/StorybookTemplate'
 import SocialMediaIconsComponent from './SocialMediaIcons'
 
 export default {
-  title: 'atoms/Socialmediaicons',
+  title: 'Atoms/Socialmediaicons',
   component: SocialMediaIconsComponent,
 } as Meta
 

@@ -12,7 +12,7 @@ enum inputType {
 }
 
 export default {
-  title: 'atoms/Forminput',
+  title: 'Atoms/Forminput',
   component: FormInputComponent,
 } as Meta
 

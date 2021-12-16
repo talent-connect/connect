@@ -5,7 +5,7 @@ import CardTagsComponent from './CardTags'
 import 'bulma/css/bulma.min.css'
 
 export default {
-  title: 'atoms/Cardtag',
+  title: 'Atoms/Cardtag',
   component: CardTagsComponent,
 } as Meta
 

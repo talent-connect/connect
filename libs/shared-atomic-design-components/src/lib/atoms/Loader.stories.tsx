@@ -4,7 +4,7 @@ import { storybookTemplate } from '../helpers/StorybookTemplate'
 import LoaderComponent from './Loader'
 
 export default {
-  title: 'atoms/Loader',
+  title: 'Atoms/Loader',
   component: LoaderComponent,
 } as Meta
 
