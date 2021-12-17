@@ -7,7 +7,7 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import { TpCompanyProfile } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
-import React, { useEffect, useMemo, useState } from 'react'
+import { FunctionComponent, useEffect, useMemo, useState } from 'react'
 import { Columns, Content, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
 import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
@@ -21,7 +21,7 @@ interface Props {
   disableEditing?: boolean
 }
 
-export function EditableNamePhotoLocation({ profile, disableEditing }: Props) {
+export const EditableNamePhotoLocation: FunctionComponent<Props> = ({ profile, disableEditing }) => {
   const mutation = useTpCompanyProfileUpdateMutation()
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)

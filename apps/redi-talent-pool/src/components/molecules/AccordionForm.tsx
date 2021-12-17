@@ -1,10 +1,9 @@
 import {
-  Button,
   Caption,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
 import classnames from 'clsx'
-import React, { useEffect, useState } from 'react'
+import { FunctionComponent, useEffect, useState } from 'react'
 import { Columns, Element } from 'react-bulma-components'
 import { Subject } from 'rxjs'
 import './AccordionForm.scss'
@@ -13,14 +12,13 @@ interface Props {
   title: string
   isSaveDisabled?: boolean
   closeAccordionSignalSubject?: Subject<void>
-  children: React.ReactNode
 }
 
-export function AccordionForm({
+export const AccordionForm: FunctionComponent<Props> = ({
   title,
   closeAccordionSignalSubject,
   children,
-}) {
+}) => {
   const [isOpen, setIsOpen] = useState(false)
 
   useEffect(() => {

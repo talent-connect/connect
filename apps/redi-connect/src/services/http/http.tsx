@@ -1,4 +1,4 @@
-import React from 'react'
+import { createContext } from 'react'
 import axios from 'axios'
 import has from 'lodash/has'
 import includes from 'lodash/includes'
@@ -53,7 +53,7 @@ http.interceptors.response.use(
   }
 )
 
-export const HttpContext = React.createContext(http)
+export const HttpContext = createContext(http)
 
 /*
 export function with$Http(Component) {

@@ -2,10 +2,9 @@ import {
   Button,
   Heading,
   SVGImage,
-  SVGImages,
 } from '@talent-connect/shared-atomic-design-components'
 import classnames from 'classnames'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Columns, Content, Element } from 'react-bulma-components'
 import { useHistory } from 'react-router-dom'
 import TpTeaser from '../../../components/molecules/TpTeaser'
@@ -16,8 +15,8 @@ const SignUpLanding = () => {
   const [selectedType, setSelectedType] = useState('')
   const history = useHistory()
 
-  const renderType = (name: string) => {
-    const type = name.toLowerCase() as SVGImages
+  const renderType = (name: 'Jobseeker' | 'Company') => {
+    const type = name.toLowerCase() as Lowercase<typeof name>
 
     return (
       <div

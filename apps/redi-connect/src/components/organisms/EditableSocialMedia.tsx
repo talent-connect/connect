@@ -1,4 +1,4 @@
-import React from 'react'
+import { FunctionComponent } from 'react'
 import { FormInput } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile } from '@talent-connect/shared-types'
@@ -23,14 +23,15 @@ const validationSchema = Yup.object({
   slackUsername: Yup.string().max(255).label('Slack username'),
 })
 
-// props: FormikProps<AboutFormValues>
-const EditableSocialMedia = ({ profile, profileSaveStart }: any) => {
-  const { id, linkedInProfileUrl, githubProfileUrl, slackUsername } = profile
+interface Props {
+  profile: RedProfile
+  profileSaveStart: Function
+}
 
-  const submitForm = async (values: FormikValues) => {
-    const profileSocialMedia = values as Partial<RedProfile>
-    profileSaveStart({ ...profileSocialMedia, id })
-  }
+const EditableSocialMedia: FunctionComponent<Props> = ({
+  profile: { id, linkedInProfileUrl, githubProfileUrl, slackUsername },
+  profileSaveStart
+}) => {
 
   const initialValues: SocialMediaFormValues = {
     linkedInProfileUrl,
@@ -42,7 +43,10 @@ const EditableSocialMedia = ({ profile, profileSaveStart }: any) => {
     initialValues,
     enableReinitialize: true,
     validationSchema,
-    onSubmit: submitForm,
+    onSubmit: async (values: FormikValues) => {
+      const profileSocialMedia = values as Partial<RedProfile>
+      profileSaveStart({ ...profileSocialMedia, id })
+    },
   })
 
   return (

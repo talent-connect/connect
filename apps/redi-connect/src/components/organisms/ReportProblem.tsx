@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { FunctionComponent, useState } from 'react'
 import { useHistory } from 'react-router'
 import {
   Button,
@@ -39,7 +39,7 @@ const validationSchema = Yup.object({
     .max(1000),
 })
 
-const ReportProblem = ({ redProfileId, type }: ReportProblemProps) => {
+const ReportProblem: FunctionComponent<ReportProblemProps> = ({ redProfileId, type }) => {
   const [showProblemDialog, setShowProblemDialog] = useState(false)
   const [submitResult, setSubmitResult] = useState<FormSubmitResult>(
     'notSubmitted'

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { FunctionComponent, useState } from 'react'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import { useParams } from 'react-router'
 
@@ -76,7 +76,7 @@ export interface SignUpFormValues {
   mentee_currentlyEnrolledInCourse: string
 }
 
-export default function SignUp() {
+const SignUp: FunctionComponent = () => {
   const { type } = useParams<SignUpPageType>()
 
   // we may consider removing the backend types from frontend
@@ -241,3 +241,5 @@ export default function SignUp() {
     </AccountOperation>
   )
 }
+
+export default SignUp

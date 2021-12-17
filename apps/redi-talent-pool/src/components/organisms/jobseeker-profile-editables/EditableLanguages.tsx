@@ -16,7 +16,7 @@ import {
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
 import { Subject } from 'rxjs'
-import React, { useCallback, useState, useRef, useEffect, useMemo } from 'react'
+import { FunctionComponent, useCallback, useState, useRef, useEffect, useMemo } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Content, Element } from 'react-bulma-components'
 import { v4 as uuidv4 } from 'uuid'
@@ -40,10 +40,10 @@ interface Props {
   disableEditing?: boolean
 }
 
-export function EditableLanguages({
+export const EditableLanguages: FunctionComponent<Props> = ({
   profile: overridingProfile,
   disableEditing,
-}: Props) {
+}) => {
   const queryHookResult = useTpJobseekerProfileQuery({
     enabled: !disableEditing,
   })

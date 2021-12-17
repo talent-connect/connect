@@ -1,4 +1,4 @@
-import React from 'react'
+import { FunctionComponent } from 'react'
 import { Content } from 'react-bulma-components'
 import { RedProfile } from '@talent-connect/shared-types'
 import { connect } from 'react-redux'
@@ -11,9 +11,10 @@ interface Props {
   shortInfo?: boolean
 }
 
-const ReadRediClass = ({ profile, shortInfo }: Props) => {
-  const { mentee_currentlyEnrolledInCourse } = profile
-
+const ReadRediClass: FunctionComponent<Props> = ({
+  profile: { mentee_currentlyEnrolledInCourse },
+  shortInfo
+}) => {
   const COURSES_MAP = Object.fromEntries(
     COURSES.map((course) => [course.id, course.label])
   )

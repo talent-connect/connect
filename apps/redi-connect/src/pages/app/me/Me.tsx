@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { FunctionComponent, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { RootState } from '../../../redux/types'
 import { profileFetchStart } from '../../../redux/user/actions'
@@ -22,9 +22,22 @@ import {
 } from '../../../components/organisms'
 
 import { LoggedIn } from '../../../components/templates'
+import { RedProfile } from '@talent-connect/shared-types';
 // CHECK OUT THE LOADER
 
-const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
+interface Props {
+  loading: boolean;
+  saveResult: 'error' | 'submitting',
+  profileFetchStart: Function,
+  profile: RedProfile
+}
+
+const Me: FunctionComponent<Props> = ({
+  loading,
+  saveResult,
+  profileFetchStart,
+  profile: { userType, firstName }
+}) => {
   useEffect(() => {
     profileFetchStart()
   }, [profileFetchStart])
@@ -32,12 +45,10 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
   if (loading) return <Loader loading={true} />
 
   const userIsMentee =
-    profile.userType === 'mentee' ||
-    profile.userType === 'public-sign-up-mentee-pending-review'
+    userType === 'mentee' || userType === 'public-sign-up-mentee-pending-review'
 
   const userIsMentor =
-    profile.userType === 'mentor' ||
-    profile.userType === 'public-sign-up-mentor-pending-review'
+    userType === 'mentor' || userType === 'public-sign-up-mentor-pending-review'
 
   return (
     <LoggedIn>
@@ -49,7 +60,7 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
           <Avatar.Editable />
         </Columns.Column>
         <Columns.Column size={8}>
-          <Heading>Hi, {profile.firstName}</Heading>
+          <Heading>Hi, {firstName}</Heading>
           <Content
             size="medium"
             renderAs="p"

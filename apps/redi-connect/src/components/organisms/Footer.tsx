@@ -1,4 +1,4 @@
-import React from 'react'
+import { FunctionComponent } from 'react'
 import { Element, Columns, Container, Section } from 'react-bulma-components'
 import { useTranslation } from 'react-i18next'
 import { ReactComponent as RediSchool } from '../../assets/images/redi-school-logo.svg'
@@ -6,7 +6,7 @@ import { ReactComponent as Deloitte } from '../../assets/images/deloitte.svg'
 import './Footer.scss'
 import { SocialMediaIcons } from '@talent-connect/shared-atomic-design-components'
 
-const RediFooter = () => {
+const RediFooter: FunctionComponent = () => {
   const year = new Date().getFullYear()
   const { t } = useTranslation()
 

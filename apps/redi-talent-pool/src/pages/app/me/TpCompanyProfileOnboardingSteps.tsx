@@ -1,4 +1,4 @@
-import React from 'react'
+import { FunctionComponent } from 'react'
 import classnames from 'clsx'
 import { Element } from 'react-bulma-components'
 

@@ -13,14 +13,13 @@ import {
   availabilityOptionsIdToLabelMap,
   desiredEmploymentTypeOptions,
   desiredEmploymentTypeOptionsIdToLabelMap,
-  desiredPositions,
   immigrationStatusOptions,
   immigrationStatusOptionsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
 import moment from 'moment'
-import React, { useEffect, useMemo, useState } from 'react'
-import { Columns, Content, Element } from 'react-bulma-components'
+import { FunctionComponent, useEffect, useMemo, useState } from 'react'
+import { Content, Element } from 'react-bulma-components'
 import { UseMutationResult, UseQueryResult } from 'react-query'
 import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
@@ -33,10 +32,10 @@ interface Props {
   disableEditing?: boolean
 }
 
-export function EditableImportantDetails({
+export const EditableImportantDetails: FunctionComponent<Props> = ({
   profile: overridingProfile,
   disableEditing,
-}: Props) {
+}) => {
   const queryHookResult = useTpJobseekerProfileQuery({
     enabled: !disableEditing,
   })

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { FunctionComponent, useState } from 'react'
 import { isLoggedIn } from '../../services/auth/auth'
 import { logout } from '../../services/api/api'
 import { Section, Container, Element } from 'react-bulma-components'
@@ -11,7 +11,7 @@ import {
   RediConnectLogo,
 } from '@talent-connect/shared-atomic-design-components'
 
-const LoggedOutNavItems = () => {
+const LoggedOutNavItems: FunctionComponent = () => {
   const { t } = useTranslation()
 
   return (
@@ -23,7 +23,7 @@ const LoggedOutNavItems = () => {
   )
 }
 
-const LoggedOutButtons = () => {
+const LoggedOutButtons: FunctionComponent = () => {
   const { t } = useTranslation()
   const history = useHistory()
 
@@ -39,7 +39,7 @@ const LoggedOutButtons = () => {
   )
 }
 
-const LoggedInButtons = ({ mobile }: { mobile?: boolean }) => {
+const LoggedInButtons: FunctionComponent<{ mobile?: boolean }> = ({ mobile }) => {
   const { t } = useTranslation()
   const history = useHistory()
 
@@ -61,7 +61,7 @@ const LoggedInButtons = ({ mobile }: { mobile?: boolean }) => {
   )
 }
 
-const Navbar = () => {
+const Navbar: FunctionComponent = () => {
   const [menuActive, setMenuActive] = useState(false)
 
   const mobileMenu = (

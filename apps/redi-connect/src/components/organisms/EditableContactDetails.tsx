@@ -1,4 +1,4 @@
-import React from 'react'
+import { FunctionComponent } from 'react'
 import { FormInput } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile } from '@talent-connect/shared-types'
@@ -25,9 +25,15 @@ const validationSchema = Yup.object({
   telephoneNumber: Yup.string().max(255).label('Telephone number'),
 })
 
-// props: FormikProps<AboutFormValues>
-const EditableContactDetails = ({ profile, profileSaveStart }: any) => {
-  const { id, firstName, lastName, contactEmail, telephoneNumber } = profile
+interface Props {
+  profile: RedProfile
+  profileSaveStart: Function
+}
+
+const EditableContactDetails: FunctionComponent<Props> = ({
+  profile: { id, firstName, lastName, contactEmail, telephoneNumber },
+  profileSaveStart
+}) => {
 
   const submitForm = async (values: FormikValues) => {
     const profileContacts = values as Partial<RedProfile>

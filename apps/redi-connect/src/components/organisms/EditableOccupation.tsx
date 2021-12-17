@@ -1,4 +1,4 @@
-import React from 'react'
+import { FunctionComponent } from 'react'
 import {
   FormInput,
   FormSelect,
@@ -76,8 +76,13 @@ const validationSchema = Yup.object({
     .label('What are you currently doing'),
 })
 
-const EditableOccupation = ({ profile, profileSaveStart }: any) => {
-  const {
+interface Props {
+  profile: RedProfile
+  profileSaveStart: Function
+}
+
+const EditableOccupation: FunctionComponent<Props> = ({
+  profile: {
     id,
     userType,
     mentor_occupation,
@@ -89,7 +94,9 @@ const EditableOccupation = ({ profile, profileSaveStart }: any) => {
     mentee_occupationStudent_studyName,
     mentee_occupationLookingForJob_what,
     mentee_occupationOther_description,
-  } = profile
+  },
+  profileSaveStart
+}) => {
 
   const isMentee =
     userType === 'mentee' || userType === 'public-sign-up-mentee-pending-review'

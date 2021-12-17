@@ -27,6 +27,8 @@ export type SVGImages = keyof typeof images
 export type SVGTypes = keyof typeof svgImages
 
 export interface SVGImageProps {
+  /** ... */
   image: SVGImages | SVGTypes
+  /** ... */
   className?: string
 }

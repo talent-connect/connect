@@ -4,7 +4,7 @@ import {
   SVGImage,
 } from '@talent-connect/shared-atomic-design-components'
 import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
-import React from 'react'
+import { FunctionComponent } from 'react'
 import {
   Columns,
   Container,
@@ -17,7 +17,7 @@ import { useHistory } from 'react-router-dom'
 import { envRediLocation } from '../../utils/env-redi-location'
 import './RediHero.scss'
 
-const RediHero = () => {
+const RediHero: FunctionComponent = () => {
   const history = useHistory()
   const { t } = useTranslation()
 

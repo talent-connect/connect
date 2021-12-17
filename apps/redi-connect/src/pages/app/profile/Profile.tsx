@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { FunctionComponent, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { getHasReachedMenteeLimit } from '../../../redux/user/selectors'
 import { useParams, useHistory } from 'react-router'
@@ -43,12 +43,12 @@ interface ProfileProps {
   profilesFetchOneStart: Function
 }
 
-function Profile({
+const Profile: FunctionComponent<ProfileProps> = ({
   profile,
   currentUser,
   hasReachedMenteeLimit,
   profilesFetchOneStart,
-}: ProfileProps) {
+}) => {
   const { profileId } = useParams<RouteParams>()
   const history = useHistory()
 

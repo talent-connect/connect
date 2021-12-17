@@ -5,7 +5,7 @@ import {
   TpJobseekerProfileState,
 } from '@talent-connect/shared-types'
 import classnames from 'clsx'
-import React, { useCallback, useRef } from 'react'
+import { FunctionComponent, useCallback, useRef } from 'react'
 import { Columns, Element, Notification, Content } from 'react-bulma-components'
 import { Subject } from 'rxjs'
 import { EditableEducation } from '../../../components/organisms/jobseeker-profile-editables/EditableEducation'
@@ -28,7 +28,7 @@ import { ReactComponent as CheckmarkImage } from './checkmark.svg'
 import './MeJobseeker.scss'
 import { ReactComponent as StepPendingImage } from './pending.svg'
 
-export function MeJobseeker() {
+export const MeJobseeker: FunctionComponent = () => {
   const { data: profile } = useTpJobseekerProfileQuery()
   const currentStep = determineCurrentStep(profile)
 
@@ -90,10 +90,8 @@ export function MeJobseeker() {
   )
 }
 
-const CallToActionButton = ({
+const CallToActionButton: FunctionComponent<{ profile: Partial<TpJobseekerProfile> }> = ({
   profile,
-}: {
-  profile: Partial<TpJobseekerProfile>
 }) => {
   return (
     <>
@@ -157,7 +155,7 @@ function determineCurrentStep(
   }
 }
 
-export function OnboardingSteps() {
+export const OnboardingSteps: FunctionComponent = () => {
   const { data: profile } = useTpJobseekerProfileQuery()
 
   const currentStep = determineCurrentStep(profile)

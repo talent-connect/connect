@@ -1,9 +1,9 @@
-import React from 'react'
+import { FunctionComponent } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import { allRoutes } from '../routes/index'
 import { PrivateRoute } from './PrivateRoute'
 
-export const Routes = () => (
+export const Routes: FunctionComponent = () => (
   <div className="routes">
     <Switch>
       {allRoutes.map(({ requiresLoggedIn, exact, path, component }, i) =>

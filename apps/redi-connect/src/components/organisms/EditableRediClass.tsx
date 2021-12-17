@@ -1,4 +1,4 @@
-import React from 'react'
+import { FunctionComponent } from 'react'
 import { FormSelect } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile } from '@talent-connect/shared-types'
@@ -29,10 +29,16 @@ const validationSchema = Yup.object({
     .label('Currently enrolled in course'),
 })
 
-// props: FormikProps<AboutFormValues>
-const EditableRediClass = ({ profile, profileSaveStart }: any) => {
-  const { id, mentee_currentlyEnrolledInCourse } = profile
+interface Props {
+  profile: RedProfile
+  profileSaveStart: Function
+}
 
+const EditableRediClass: FunctionComponent<Props> = ({
+  profile: { id, mentee_currentlyEnrolledInCourse },
+  profileSaveStart
+}) => {
+  
   const submitForm = async (values: FormikValues) => {
     const rediClass = values as Partial<RedProfile>
     profileSaveStart({ ...rediClass, id })

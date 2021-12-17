@@ -1,17 +1,17 @@
 import { Meta } from '@storybook/react/types-6-0'
 import { storybookTemplate } from '../../helpers/StorybookTemplate'
 
-import HeadingComponent from './Heading'
+import { Heading } from '.'
 import 'bulma/css/bulma.min.css'
 
 export default {
   title: 'Atoms/Heading',
-  component: HeadingComponent,
+  component: Heading,
 } as Meta
 
-const template = storybookTemplate(HeadingComponent)
+const template = storybookTemplate(Heading)
 
-export const Heading = template({
+export const Default = template({
   children: 'Heading',
   size: 'large',
   tag: 'h1',

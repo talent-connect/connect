@@ -13,7 +13,7 @@ import ErrorIcon from '@material-ui/icons/Error'
 import InfoIcon from '@material-ui/icons/Info'
 import WarningIcon from '@material-ui/icons/Warning'
 import clsx from 'clsx'
-import React, { useEffect, useState } from 'react'
+import { FunctionComponent, useEffect, useState } from 'react'
 import { Subject } from 'rxjs'
 import { Optional } from 'utility-types'
 
@@ -79,7 +79,7 @@ export const showNotification = (
 
 export const hideNotification = () => subjectHideNotification.next()
 
-export function AppNotification() {
+export const AppNotification: FunctionComponent = () => {
   const [state, setState] = useState<AppNotificationState>(null)
 
   const show = (options: SubjectShowNotification) => {

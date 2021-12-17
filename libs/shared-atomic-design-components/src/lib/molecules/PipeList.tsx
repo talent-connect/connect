@@ -1,4 +1,4 @@
-import React from 'react'
+import { FunctionComponent } from 'react'
 import { Element } from 'react-bulma-components'
 import './PipeList.scss'
 
@@ -7,7 +7,7 @@ interface Props {
   overflowAllowed?: true
 }
 
-const PipeList = ({ items, overflowAllowed }: Props) => {
+const PipeList: FunctionComponent<Props> = ({ items, overflowAllowed }) => {
   return (
     <Element
       renderAs="ul"

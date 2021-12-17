@@ -7,10 +7,10 @@ import { HeadingProps, sizes } from './Heading.props';
 const Heading: FunctionComponent<HeadingProps> = ({
   children,
   border,
-  tag,
   center,
   subtitle,
   className,
+  tag = 'h1',
   size = 'large',
 }) => {
   const classNames = classnames({
@@ -27,7 +27,7 @@ const Heading: FunctionComponent<HeadingProps> = ({
       }}
       weight="normal"
       textAlignment={center ? 'centered' : null}
-      renderAs={tag || 'h1'}
+      renderAs={tag}
       className={classNames}
       subtitle={subtitle}
     >

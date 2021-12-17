@@ -4,11 +4,10 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
-import React, { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, FunctionComponent } from 'react'
 import {
   Content,
   Element,
-  Form,
   Button as BulmaButton,
 } from 'react-bulma-components'
 import { UseMutationResult, UseQueryResult } from 'react-query'
@@ -23,10 +22,10 @@ interface Props {
   disableEditing?: boolean
 }
 
-export function EditableLinks({
+export const EditableLinks: FunctionComponent<Props> = ({
   profile: overridingProfile,
   disableEditing,
-}: Props) {
+}) => {
   const queryHookResult = useTpJobseekerProfileQuery({
     enabled: !disableEditing,
   })

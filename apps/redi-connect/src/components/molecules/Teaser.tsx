@@ -1,4 +1,4 @@
-import React from 'react'
+import { FunctionComponent } from 'react'
 import { ReactComponent as WelcomeIllustration } from '../../assets/images/welcome-user.svg'
 import { ReactComponent as MiriamSvg } from '../../assets/images/miriam.svg'
 import { ReactComponent as PaulinaSvg } from '../../assets/images/paulina.svg'
@@ -17,18 +17,20 @@ type RouteParams = {
 const miriamStyles = {
   padding: '0 200px',
 }
+
 const Miriam = (props: any) => (
   <div style={miriamStyles}>
     <MiriamSvg {...props} />
   </div>
 )
+
 const Paulina = (props: any) => (
   <div style={miriamStyles}>
     <PaulinaSvg {...props} />
   </div>
 )
 
-const TopIllustration: React.FunctionComponent = ({ children }) => {
+const TopIllustration: FunctionComponent = ({ children }) => {
   return (
     <>
       <WelcomeIllustration className="illustration illustration--rightOut" />

@@ -1,4 +1,4 @@
-import React from 'react'
+import { FunctionComponent } from 'react'
 import { Content } from 'react-bulma-components'
 import { RedProfile } from '@talent-connect/shared-types'
 import { connect } from 'react-redux'
@@ -13,8 +13,10 @@ interface Props {
   shortInfo?: boolean
 }
 
-const ReadSocialMedia = ({ profile, shortInfo }: Props) => {
-  const { linkedInProfileUrl, githubProfileUrl, slackUsername } = profile
+const ReadSocialMedia: FunctionComponent<Props> = ({
+  profile: { linkedInProfileUrl, githubProfileUrl, slackUsername },
+  shortInfo
+}) => {
 
   if (
     !shortInfo &&

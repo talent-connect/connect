@@ -5,8 +5,8 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import { TpCompanyProfile } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
-import React, { useEffect, useMemo, useState } from 'react'
-import { Columns, Content, Element } from 'react-bulma-components'
+import { FunctionComponent, useEffect, useMemo, useState } from 'react'
+import { Content, Element } from 'react-bulma-components'
 import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
 import { Editable } from '../../molecules/Editable'
@@ -17,7 +17,7 @@ interface Props {
   disableEditing?: boolean
 }
 
-export function EditableDetails({ profile, disableEditing }: Props) {
+export const EditableDetails: FunctionComponent<Props> = ({ profile, disableEditing }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 

@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import { Content, Columns, Tag, Form } from 'react-bulma-components'
-import { debounce } from 'lodash'
+import { FunctionComponent, useEffect, useState } from 'react'
+import { Content, Columns, Tag } from 'react-bulma-components'
 import {
   Heading,
   Icon,
@@ -39,7 +38,7 @@ interface FilterTagProps {
   onClickHandler: (item: string) => void
 }
 
-const FilterTag = ({ id, label, onClickHandler }: FilterTagProps) => (
+const FilterTag: FunctionComponent<FilterTagProps> = ({ id, label, onClickHandler }) => (
   <Tag size="medium" rounded textWeight="bold">
     {label}
     <Icon
@@ -57,7 +56,7 @@ interface FindAMentorProps {
   profileSaveStart: (profile: Partial<RedProfile>) => void
 }
 
-const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
+const FindAMentor: FunctionComponent<FindAMentorProps> = ({ profile, profileSaveStart }) => {
   const { Loading, isLoading, setLoading } = useLoading()
   const {
     id,

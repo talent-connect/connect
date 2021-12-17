@@ -1,4 +1,4 @@
-import React from 'react'
+import { FunctionComponent } from 'react'
 import {
   Checkbox,
   FormSelect,
@@ -51,14 +51,16 @@ const validationSchema = Yup.object({
       .max(2),
   }),
 })
-// props: FormikProps<AboutFormValues>
-const EditableMenteeCount = ({ profile, profileSaveStart }: any) => {
-  const {
-    id,
-    menteeCountCapacity,
-    optOutOfMenteesFromOtherRediLocation,
-    rediLocation,
-  } = profile
+
+interface Props {
+  profile: RedProfile
+  profileSaveStart: Function
+}
+
+const EditableMenteeCount: FunctionComponent<Props> = ({
+  profile: { id, menteeCountCapacity, optOutOfMenteesFromOtherRediLocation, rediLocation },
+  profileSaveStart
+}) => {
 
   const submitForm = async (values: FormikValues) => {
     console.log(values)

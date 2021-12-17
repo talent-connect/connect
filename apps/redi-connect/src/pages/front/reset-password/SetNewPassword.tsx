@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { FunctionComponent, useState, useEffect } from 'react'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import Teaser from '../../../components/molecules/Teaser'
 import { Columns, Content, Form } from 'react-bulma-components'
@@ -42,7 +42,7 @@ interface RouteParams {
   accessToken: string
 }
 
-export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
+export const SetNewPassword: FunctionComponent<RouteComponentProps<RouteParams>> = (props) => {
   const [formError, setFormError] = useState<string>('')
   const [errorMsg, setErrorMsg] = useState<string>('')
 

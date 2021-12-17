@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { FunctionComponent, useState } from 'react'
 import { connect } from 'react-redux'
 import { useFormik } from 'formik'
 import { Content } from 'react-bulma-components'
@@ -26,10 +26,10 @@ const initialValues = {
   mentorMessageOnComplete: '',
 }
 
-const CompleteMentorship = ({
+const CompleteMentorship: FunctionComponent<CompleteMentorshipProps> = ({
   match,
   matchesMarkAsComplete,
-}: CompleteMentorshipProps) => {
+}) => {
   const [isModalActive, setModalActive] = useState(false)
 
   const submitForm = async (values: CompleteMentorshipFormValues) => {

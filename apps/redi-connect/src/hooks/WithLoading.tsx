@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Loader } from '@talent-connect/shared-atomic-design-components'
 
 export const useLoading = function () {

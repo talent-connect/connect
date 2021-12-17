@@ -1,5 +1,4 @@
-import React from 'react'
-import { Tag } from 'react-bulma-components'
+import { FunctionComponent } from 'react'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
 import {
@@ -16,7 +15,7 @@ interface ReadMentoringProps {
   caption?: boolean
 }
 
-export const ProfileTags = ({ items, shortList }: CardTagsProps) => (
+export const ProfileTags: FunctionComponent<CardTagsProps> = ({ items, shortList }) => (
   <CardTags
     items={items}
     shortList={shortList}

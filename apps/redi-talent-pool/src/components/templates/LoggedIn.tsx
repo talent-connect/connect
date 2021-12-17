@@ -1,6 +1,6 @@
 import { Loader } from '@talent-connect/shared-atomic-design-components'
-import React, { ReactNode } from 'react'
-import { Columns, Container, Section } from 'react-bulma-components'
+import { FunctionComponent } from 'react'
+import { Columns, Container } from 'react-bulma-components'
 import { useLocation } from 'react-router'
 import { useIsBusy } from '../../hooks/useIsBusy'
 import { useTpCompanyProfileQuery } from '../../react-query/use-tpcompanyprofile-query'
@@ -12,10 +12,9 @@ import './LoggedIn.scss'
 
 interface Props {
   hideNavigation?: boolean
-  children?: ReactNode
 }
 
-const LoggedIn = ({ children, hideNavigation }: Props) => {
+const LoggedIn: FunctionComponent<Props> = ({ children, hideNavigation }) => {
   const isBusy = useIsBusy()
   const location = useLocation()
   const { data: jobseekerProfile } = useTpJobseekerProfileQuery({

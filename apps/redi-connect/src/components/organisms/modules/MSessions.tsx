@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { FunctionComponent, useState } from 'react'
 import { connect } from 'react-redux'
 import _uniqueId from 'lodash/uniqueId'
 import * as Yup from 'yup'
@@ -64,12 +64,12 @@ interface MSessions {
   mentoringSessionsCreateStart: (mentoringSession: RedMentoringSession) => void
 }
 
-const MSessions = ({
+const MSessions: FunctionComponent<MSessions> = ({
   sessions,
   menteeId,
   editable,
   mentoringSessionsCreateStart,
-}: MSessions) => {
+}) => {
   const [showAddSession, setShowAddSession] = useState(false)
   const [submitResult, setSubmitResult] =
     useState<FormSubmitResult>('notSubmitted')
@@ -85,7 +85,7 @@ const MSessions = ({
         minuteDuration: Number(
           values.minuteDuration
         ) as MentoringSessionDurationOption,
-        menteeId: menteeId,
+        menteeId,
       }
       await mentoringSessionsCreateStart(mentoringSession)
       setSubmitResult('success')

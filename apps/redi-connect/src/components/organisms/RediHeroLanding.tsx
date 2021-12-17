@@ -1,4 +1,4 @@
-import React from 'react'
+import { FunctionComponent } from 'react'
 import classnames from 'classnames'
 import {
   Section,
@@ -30,7 +30,7 @@ const typeToSvgImageMap: imageType = {
   mentee: 'heroMentee',
 }
 
-const RediHeroLanding = ({ type }: Props) => {
+const RediHeroLanding: FunctionComponent<Props> = ({ type }) => {
   const { t } = useTranslation()
   const programSteps: Array<{
     name: string

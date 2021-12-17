@@ -1,4 +1,4 @@
-import React from 'react'
+import { FunctionComponent, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import {
@@ -21,9 +21,9 @@ import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
 
 import './CvListPage.scss'
 
-function CvListPage() {
-  const [showCvNameModal, setShowCvNameModal] = React.useState(false)
-  const [newCvName, setNewCvName] = React.useState('')
+const CvListPage: FunctionComponent = () => {
+  const [showCvNameModal, setShowCvNameModal] = useState(false)
+  const [newCvName, setNewCvName] = useState('')
 
   const history = useHistory()
 
@@ -35,10 +35,7 @@ function CvListPage() {
 
   const toggleCvNameModal = (isOpen) => {
     setShowCvNameModal(isOpen)
-
-    if (!isOpen) {
-      setNewCvName('')
-    }
+    if (!isOpen) setNewCvName('')
   }
 
   const handleCvNameChange = (e: React.ChangeEvent<HTMLInputElement>) =>

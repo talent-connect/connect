@@ -1,9 +1,8 @@
-import React from 'react'
+import { FunctionComponent } from 'react'
 import { subYears } from 'date-fns'
 
 import {
   FormDatePicker,
-  FormInput,
   FormSelect,
 } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
@@ -35,8 +34,15 @@ const validationSchema = Yup.object({
   birthDate: Yup.date().nullable(true).label('Date'),
 })
 
-const EditablePersonalDetail = ({ profile, profileSaveStart }: any) => {
-  const { id, gender, birthDate } = profile
+interface Props {
+  profile: RedProfile
+  profileSaveStart: Function
+}
+
+const EditablePersonalDetail: FunctionComponent<Props> = ({
+  profile: { id, gender, birthDate },
+  profileSaveStart
+}) => {
 
   const submitForm = async (values: FormikValues) => {
     const personalDetail = values as Partial<RedProfile>

@@ -1,9 +1,10 @@
+import { CSSProperties, MouseEventHandler } from 'react';
 
 import { ReactComponent as ArrowLeft } from '../../../assets/images/arrow-left.svg'
 import { ReactComponent as ArrowRight } from '../../../assets/images/arrow-right.svg'
 import { ReactComponent as Hamburger } from '../../../assets/images/hamburger.svg'
 import { ReactComponent as Account } from '../../../assets/images/account.svg'
-import { ReactComponent as Checkmark } from '../../../assets/images/checkmark.svg'
+import { ReactComponent as CheckMark } from '../../../assets/images/checkmark.svg'
 import { ReactComponent as Edit } from '../../../assets/images/edit.svg'
 import { ReactComponent as Cancel } from '../../../assets/images/cancel.svg'
 import { ReactComponent as Chevron } from '../../../assets/images/chevron.svg'
@@ -33,7 +34,7 @@ export const Icons = {
   arrowRight: ArrowRight,
   account: Account,
   hamburger: Hamburger,
-  check: Checkmark,
+  check: CheckMark,
   edit: Edit,
   cancel: Cancel,
   chevron: Chevron,
@@ -60,10 +61,16 @@ export const Icons = {
 }
 
 export interface IconProps {
+  /** ... */
   icon: keyof typeof Icons
+  /** ... */
   size?: 'small' | 'medium' | 'large' | 'x-large'
+  /** ... */
   space?: 'left' | 'right'
+  /** ... */
   className?: string
-  style?: React.CSSProperties
-  onClick?: () => void
+  /** ... */
+  style?: CSSProperties
+  /** ... */
+  onClick?: MouseEventHandler<HTMLButtonElement>
 }

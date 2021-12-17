@@ -1,4 +1,4 @@
-import React from 'react'
+import { FunctionComponent } from 'react'
 import {
   Container,
   Section,
@@ -18,7 +18,7 @@ import {
   SVGImage,
 } from '@talent-connect/shared-atomic-design-components'
 
-const RediHero = () => {
+const RediHero: FunctionComponent = () => {
   const history = useHistory()
   const { t } = useTranslation()
 

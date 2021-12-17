@@ -1,16 +1,16 @@
 import { Meta } from '@storybook/react/types-6-0'
 import { storybookTemplate } from '../../helpers/StorybookTemplate'
 
-import PlaceholderComponent from './Placeholder'
+import { Placeholder } from '.'
 import 'bulma/css/bulma.min.css'
 
 export default {
   title: 'Atoms/Placeholder',
-  component: PlaceholderComponent,
+  component: Placeholder,
 } as Meta
 
-const template = storybookTemplate(PlaceholderComponent)
+const template = storybookTemplate(Placeholder)
 
-export const Placeholder = template({
+export const Default = template({
   children: 'Placeholder',
 })

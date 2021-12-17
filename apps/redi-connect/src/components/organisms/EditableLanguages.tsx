@@ -1,4 +1,4 @@
-import React from 'react'
+import { FunctionComponent } from 'react'
 import { FormSelect } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile } from '@talent-connect/shared-types'
@@ -26,18 +26,22 @@ const validationSchema = Yup.object({
   languages: Yup.array().min(1).of(Yup.string().max(255)).label('Languages'),
 })
 
-// props: FormikProps<AboutFormValues>
-const EditableLanguages = ({ profile, profileSaveStart }: any) => {
-  const { id, languages } = profile
+interface Props {
+  profile: RedProfile
+  profileSaveStart: Function
+}
+
+const EditableLanguages: FunctionComponent<Props> = ({
+  profile: { id, languages },
+  profileSaveStart
+}) => {
 
   const submitForm = async (values: FormikValues) => {
     const languagesContacts = values as Partial<RedProfile>
     profileSaveStart({ ...languagesContacts, id })
   }
 
-  const initialValues: LanguagesFormValues = {
-    languages: languages || [],
-  }
+  const initialValues: LanguagesFormValues = { languages }
 
   const formik = useFormik({
     initialValues,
@@ -58,7 +62,7 @@ const EditableLanguages = ({ profile, profileSaveStart }: any) => {
         label="Which of these languages do you speak?*"
         name="languages"
         items={formLanguages}
-        multiselect
+        multiSelect
         {...formik}
       />
     </Editable>

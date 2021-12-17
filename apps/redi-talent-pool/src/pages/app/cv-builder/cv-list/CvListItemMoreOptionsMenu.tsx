@@ -4,22 +4,20 @@
  * must be standardized within the project.
  */
 
-import React from 'react'
+import { FunctionComponent, useState } from 'react'
 
 import { Content } from 'react-bulma-components'
 import { Button, Popover } from '@material-ui/core'
 import { MoreHoriz as MoreHorizIcon } from '@material-ui/icons'
 
 interface CvListItemMoreOptionsMenuProps {
-  handleRenameClick(): void
-  handleDeleteClick(): void
-  handleDuplicateClick(): void
+  handleRenameClick: () => void;
+  handleDeleteClick: () => void;
+  handleDuplicateClick: () => void;
 }
 
-export function CvListItemMoreOptionsMenu(
-  props: CvListItemMoreOptionsMenuProps
-) {
-  const [anchorEl, setAnchorEl] = React.useState(null)
+export const CvListItemMoreOptionsMenu: FunctionComponent<CvListItemMoreOptionsMenuProps> = (props) => {
+  const [anchorEl, setAnchorEl] = useState(null)
 
   const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)

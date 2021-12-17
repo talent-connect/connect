@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback, FunctionComponent } from 'react'
 import { Checkbox, Icon } from '../atoms'
 import classnames from 'classnames'
 import './FilterDropdown.scss'
@@ -15,13 +15,13 @@ interface Props {
 
 const baseClass = 'filter-dropdown'
 
-const FilterDropdown = ({
+const FilterDropdown: FunctionComponent<Props> = ({
   label,
   className,
   selected,
   items,
   onChange,
-}: Props) => {
+}) => {
   const filterDropdown = useRef<any>(null)
   const [showDropdown, setShowDropdown] = useState(false)
 

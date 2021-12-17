@@ -11,7 +11,7 @@ import {
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
-import React, { useEffect, useMemo, useState } from 'react'
+import { FunctionComponent, useEffect, useMemo, useState } from 'react'
 import { Content, Element, Tag } from 'react-bulma-components'
 import { UseMutationResult, UseQueryResult } from 'react-query'
 import * as Yup from 'yup'
@@ -26,10 +26,10 @@ interface Props {
   disableEditing?: boolean
 }
 
-export function EditableSummary({
+export const EditableSummary: FunctionComponent<Props> = ({
   profile: overridingProfile,
   disableEditing,
-}: Props) {
+}) => {
   const queryHookResult = useTpJobseekerProfileQuery({
     enabled: !disableEditing,
   })

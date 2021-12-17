@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect } from 'react'
+import { useEffect, FunctionComponent } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
@@ -25,33 +25,32 @@ import { useTranslation } from 'react-i18next'
 import Footer from '../organisms/Footer'
 import { RedMatch } from '@talent-connect/shared-types'
 
-interface Props {
-  loading: boolean
-  children?: ReactNode
-  matches: RedMatch[]
-  matchesFetchStart: () => void
-  matchesMarkAsDismissed: (redMatchId: string) => void
-}
 
-const RediNotification: React.FC = ({ children }) => (
+const RediNotification: FunctionComponent = ({ children }) => (
   <Notification className="account-not-active double-bs">
     <Icon
       className="account-not-active__icon"
       icon="mail"
       size="large"
       space="right"
-    />
+      />
     <Content dangerouslySetInnerHTML={{ __html: children }} />
   </Notification>
 )
 
-const LoggedIn = ({
+interface Props {
+  loading: boolean
+  matches: RedMatch[]
+  matchesFetchStart: () => void
+  matchesMarkAsDismissed: (redMatchId: string) => void
+}
+
+const LoggedIn: FunctionComponent<Props> = ({
   loading,
-  children,
   matches,
   matchesFetchStart,
   matchesMarkAsDismissed,
-}: Props) => {
+}) => {
   const profile = getRedProfileFromLocalStorage()
   const history = useHistory()
   const match = matches && matches.find((match) => match.status === 'accepted')

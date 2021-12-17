@@ -1,38 +1,36 @@
 import { Meta } from '@storybook/react/types-6-0'
 import { storybookTemplate } from '../../helpers/StorybookTemplate'
 
-import FormInputComponent from './FormInput'
+import { FormInput } from '.'
 import 'bulma/css/bulma.min.css'
-
-enum inputType {
-  EMAIL = 'email',
-  PASSWORD = 'password',
-  TEXT = 'text',
-}
 
 export default {
   title: 'Atoms/FormInput',
-  component: FormInputComponent,
+  component: FormInput,
 } as Meta
 
-const template = storybookTemplate(FormInputComponent)
+const template = storybookTemplate(FormInput)
 
-export const FormInput = template({
+export const Email = template({
   name: 'email',
-  className: '',
   label: 'Enter Email',
-  type: inputType.EMAIL,
+  type: 'email',
   placeholder: 'Enter Email',
   values: {
     email: 'talentpool@redi.org',
-  },
-  handleChange: () => { return },
-  handleBlur: () => { return },
-  disabled: false,
-  // setFieldValue: (name: string, value: string) => { // TODO: remove?
-  //   return
-  // },
-  // setFieldTouched: (name: string, value: string) => { // TODO: remove?
-  //   return
-  // },
+  }
+})
+
+export const Text = template({
+  name: 'email',
+  label: 'Enter Email',
+  type: 'text',
+  placeholder: 'Enter text'
+});
+
+export const Password = template({
+  name: 'email',
+  label: 'Enter Password',
+  type: 'password',
+  placeholder: 'Enter password',
 })

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import { FunctionComponent, useCallback, useState } from 'react'
 import { Tooltip } from '@material-ui/core'
 import { Button, Icon } from '@talent-connect/shared-atomic-design-components'
 import { Columns, Notification, Content } from 'react-bulma-components'
@@ -30,7 +30,7 @@ function isProfileComplete(profile: Partial<TpCompanyProfile>): boolean {
   return requiredSectionsComplete
 }
 
-function SendProfileForReviewButton() {
+const SendProfileForReviewButton: FunctionComponent = () => {
   const { data: profile } = useTpCompanyProfileQuery()
   const { data: jobListings } = useTpJobListingAllQuery()
   const mutation = useTpCompanyProfileUpdateMutation()
@@ -72,21 +72,17 @@ function SendProfileForReviewButton() {
   }
 }
 
-const CallToActionButton = ({
-  profile,
-}: {
-  profile: Partial<TpCompanyProfile>
-}) =>
-  profile &&
-  profile.state &&
+const CallToActionButton: FunctionComponent<{ profile: Partial<TpCompanyProfile>; }> = ({ profile }) => {
+  return profile.state &&
   [
     TpCompanyProfileState['drafting-profile'],
     TpCompanyProfileState['submitted-for-review'],
   ].includes(profile.state as any) ? (
     <SendProfileForReviewButton />
   ) : null
+}
 
-export function MeCompany() {
+export const MeCompany: FunctionComponent = () => {
   const { data: profile } = useTpCompanyProfileQuery()
   const { data: jobListings } = useTpJobListingAllQuery()
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import { FunctionComponent } from 'react'
 import moment from 'moment'
 import { RedProfile } from '@talent-connect/shared-types'
 import { connect } from 'react-redux'
@@ -15,9 +15,11 @@ interface Props {
   caption?: boolean
 }
 
-const ReadPersonalDetail = ({ profile, caption }: Props) => {
-  const { gender, birthDate } = profile
-
+const ReadPersonalDetail: FunctionComponent<Props> = ({
+  profile: { gender, birthDate },
+  caption
+}) => {
+  
   const age = moment().diff(birthDate, 'years')
 
   const detailsList: string[] = gender ? [GENDERS[gender]] : []

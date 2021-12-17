@@ -12,8 +12,7 @@ const Checkbox: FunctionComponent<CheckboxProps> & { Form: FunctionComponent<Che
   handleChange,
   handleBlur,
   isSubmitting,
-  children,
-  customOnChange,
+  children
 }) => {
 
   const uid = _uniqueId('cx_')
@@ -27,7 +26,7 @@ const Checkbox: FunctionComponent<CheckboxProps> & { Form: FunctionComponent<Che
         value={value}
         name={name}
         checked={checked}
-        onChange={customOnChange ?? handleChange}
+        onChange={handleChange}
         onBlur={handleBlur}
         disabled={isSubmitting || disabled}
       />

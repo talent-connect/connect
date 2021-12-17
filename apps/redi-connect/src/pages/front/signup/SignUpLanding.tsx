@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { FunctionComponent, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Content, Columns, Element } from 'react-bulma-components'
 import AccountOperation from '../../../components/templates/AccountOperation'
@@ -12,7 +12,7 @@ import { SVGImages } from '@talent-connect/shared-atomic-design-components'
 import classnames from 'classnames'
 import './SignUpLanding.scss'
 
-const SignUpLanding = () => {
+const SignUpLanding: FunctionComponent = () => {
   const [selectedType, setSelectedType] = useState('')
   const history = useHistory()
 

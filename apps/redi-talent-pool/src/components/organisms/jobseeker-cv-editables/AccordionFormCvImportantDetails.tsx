@@ -1,4 +1,4 @@
-import React from 'react'
+import { FunctionComponent } from 'react'
 import { Subject } from 'rxjs'
 import { useTpjobseekerCvUpdateMutation } from '../../../react-query/use-tpjobseekercv-mutation'
 import { useTpJobseekerCvByIdQuery } from '../../../react-query/use-tpjobseekercv-query'
@@ -11,11 +11,11 @@ interface Props {
   closeAccordionSignalSubject?: Subject<void>
 }
 
-export function AccordionFormCvImportantDetails({
+export const AccordionFormCvImportantDetails: FunctionComponent<Props> = ({
   tpJobseekerCvId,
   closeAccordionSignalSubject,
   onClose: parentOnCloseCallback,
-}: Props) {
+}) => {
   const onClose = () => {
     parentOnCloseCallback()
   }
@@ -30,7 +30,7 @@ export function AccordionFormCvImportantDetails({
     >
       <JobseekerFormSectionImportantDetails
         hideNonContactDetailsFields
-        setIsEditing={(isEditing) => {
+        setIsEditing={() => {
           onClose()
         }}
         queryHookResult={queryHookResult}

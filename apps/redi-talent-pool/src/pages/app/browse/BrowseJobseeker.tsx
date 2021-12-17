@@ -8,7 +8,7 @@ import {
   topSkills,
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
-import React from 'react'
+import { FunctionComponent } from 'react'
 import { Columns, Element, Tag } from 'react-bulma-components'
 import { useHistory } from 'react-router-dom'
 import { ArrayParam, useQueryParams, withDefault } from 'use-query-params'
@@ -17,7 +17,7 @@ import { LoggedIn } from '../../../components/templates'
 import { useBrowseTpJobListingsQuery } from '../../../react-query/use-tpjoblisting-all-query'
 import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 
-export function BrowseJobseeker() {
+export const BrowseJobseeker: FunctionComponent = () => {
   const { data: currentJobseekerProfile } = useTpJobseekerProfileQuery()
 
   const [query, setQuery] = useQueryParams({

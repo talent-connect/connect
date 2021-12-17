@@ -6,5 +6,4 @@
 
 import { tpCompanyProfileBuildApproveButton } from './component-factories/tp-company-profile-build-approve-button'
 
-export const TpCompanyProfileApproveButton =
-  tpCompanyProfileBuildApproveButton()
+export const TpCompanyProfileApproveButton = tpCompanyProfileBuildApproveButton()

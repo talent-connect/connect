@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import { FunctionComponent } from 'react'
 import classnames from 'classnames'
 import { RedProfile } from '@talent-connect/shared-types'
 import { Module } from '@talent-connect/shared-atomic-design-components'
@@ -7,9 +7,9 @@ import './MContacts.scss'
 
 interface ContactRow {
   label: string
-  children: ReactNode
 }
-const ContactRow = ({ label, children }: ContactRow) =>
+
+const ContactRow: FunctionComponent<ContactRow> = ({ label, children }) =>
   children ? (
     <div className="m-contacts__row">
       <div className="m-contacts__row__label">{label}</div>

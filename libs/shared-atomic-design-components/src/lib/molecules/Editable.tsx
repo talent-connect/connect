@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { FunctionComponent, useState, ReactNode } from 'react'
 import { Caption, Icon } from '../atoms'
 import classnames from 'classnames'
 import './Editable.scss'
@@ -7,23 +7,21 @@ interface Props {
   title: string
   onSave: () => void
   onClose: () => void
-  read: React.ReactNode
-  children: React.ReactNode
+  read: ReactNode
   className?: string
   placeholder?: string
   savePossible?: boolean
 }
 
-function Editable(props: Props) {
-  const {
-    title,
-    children,
-    read,
-    onSave,
-    onClose,
-    savePossible,
-    className,
-  } = props
+const Editable: FunctionComponent<Props> = ({
+  title,
+  children,
+  read,
+  onSave,
+  onClose,
+  savePossible,
+  className,
+}) => {
 
   const [isEditing, setIsEditing] = useState(false)
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { FunctionComponent, useState } from 'react'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import * as Yup from 'yup'
@@ -49,16 +49,16 @@ const validationSchema = Yup.object({
 
 // TODO: This throws a TS error: { dispatch, matchId }: ConnectButtonProps
 // What to replace with instead of below hack?
-const DeclineMentorshipButton = ({
-  match,
+const DeclineMentorshipButton: FunctionComponent<DeclineMentorshipButtonProps> = ({
+  match: { id: redMatchId },
   matchesDeclineMentorshipStart,
-}: DeclineMentorshipButtonProps) => {
+}) => {
   const [isModalActive, setModalActive] = useState(false)
 
   const submitForm = async (values: DeclineMentorshipFormValues) => {
     try {
       matchesDeclineMentorshipStart({
-        redMatchId: match.id,
+        redMatchId,
         ...values,
       })
       setModalActive(false)

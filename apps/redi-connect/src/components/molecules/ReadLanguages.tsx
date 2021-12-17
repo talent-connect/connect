@@ -1,4 +1,4 @@
-import React from 'react'
+import { FunctionComponent } from 'react'
 import { RedProfile } from '@talent-connect/shared-types'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
@@ -12,18 +12,14 @@ interface Props {
   profile: RedProfile
 }
 
-const Me = ({ profile }: Props) => {
-  const { languages } = profile
-
+const Me: FunctionComponent<Props> = ({ profile: { languages } }) => {
   if (!languages)
     return <Placeholder>Input languages you speak here.</Placeholder>
 
   return <PipeList items={languages} />
 }
 
-const Some = ({ profile }: Props) => {
-  const { languages } = profile
-
+const Some: FunctionComponent<Props> = ({ profile: { languages } }) => {
   return (
     <>
       <Caption>Languages</Caption>

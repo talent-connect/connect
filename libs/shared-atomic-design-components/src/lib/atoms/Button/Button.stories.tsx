@@ -11,7 +11,7 @@ export default {
 
 const template = storybookTemplate(Button)
 
-export const Primary = template({
+export const Default = template({
   children: 'Click Me!',
   fullWidth: false,
   size: 'medium',

@@ -1,18 +1,7 @@
 import { FunctionComponent } from 'react';
 import { Tag } from 'react-bulma-components'
+import { CardTagProps, CardTagsProps } from './CardTags.props';
 import './CardTags.scss'
-
-export interface CardTagsProps {
-  items: string[]
-  shortList?: boolean
-  formatter?: (item: string) => string
-}
-
-interface CardTagProps {
-  children: string
-  className?: string
-  key: string
-}
 
 const CardTag: FunctionComponent<CardTagProps> = ({ children, className }) => (
   <Tag className={className} size="medium" textWeight="bold" rounded>

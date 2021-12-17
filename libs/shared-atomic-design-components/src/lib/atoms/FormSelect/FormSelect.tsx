@@ -28,7 +28,6 @@ const FormSelect: FunctionComponent<FormSelectProps> = ({
   items,
   placeholder,
   label,
-  customOnChange,
   values,
   setFieldTouched,
   handleBlur,
@@ -135,7 +134,7 @@ const FormSelect: FunctionComponent<FormSelectProps> = ({
           value={selectedValues}
           components={{ DropdownIndicator, ClearIndicator, MultiValueRemove }}
           options={items}
-          onChange={customOnChange || handleOnChangeDefault}
+          onChange={handleOnChangeDefault}
           placeholder={placeholder}
           onBlur={handleOnBlur}
           isDisabled={isSubmitting || disabled}

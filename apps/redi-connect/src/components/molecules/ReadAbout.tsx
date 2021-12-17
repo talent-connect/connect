@@ -1,4 +1,4 @@
-import React from 'react'
+import { FunctionComponent } from 'react'
 import { Content } from 'react-bulma-components'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
@@ -12,9 +12,9 @@ interface Props {
   profile: RedProfile
 }
 
-const Me = ({ profile }: Props) => {
-  const { personalDescription, expectations } = profile
-
+const Me: FunctionComponent<Props> = ({
+  profile: { personalDescription, expectations }
+}) => {
   if (!personalDescription && !expectations) {
     return <Placeholder>Please tell us a bit about yourself</Placeholder>
   }
@@ -27,9 +27,9 @@ const Me = ({ profile }: Props) => {
   )
 }
 
-const Some = ({ profile }: Props) => {
-  const { firstName, lastName, personalDescription, expectations } = profile
-
+const Some: FunctionComponent<Props> = ({
+  profile: { firstName, lastName, personalDescription, expectations }
+}) => {
   return (
     <>
       <Caption>

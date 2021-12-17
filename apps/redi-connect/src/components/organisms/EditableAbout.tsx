@@ -1,4 +1,4 @@
-import React from 'react'
+import { FunctionComponent } from 'react'
 import { FormTextArea } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile, UserType } from '@talent-connect/shared-types'
@@ -8,7 +8,7 @@ import { profileSaveStart } from '../../redux/user/actions'
 
 import * as Yup from 'yup'
 
-import { FormikValues, useFormik } from 'formik'
+import { FormikProps, FormikValues, useFormik } from 'formik'
 import { ReadAbout } from '../molecules'
 
 import { assertUnreachable } from '@talent-connect/shared-utils'
@@ -33,9 +33,16 @@ const validationSchema = Yup.object({
     )
     .label('Personal description'),
 })
-// props: FormikProps<AboutFormValues>
-const EditableAbout = ({ profile, profileSaveStart }: any) => {
-  const { id, userType, personalDescription, expectations } = profile
+
+interface Props {
+  profile: RedProfile
+  profileSaveStart: Function
+}
+
+const EditableAbout: FunctionComponent<Props> = ({
+  profile: { id, userType, personalDescription, expectations },
+  profileSaveStart
+}) => {
 
   const submitForm = async (values: FormikValues) => {
     const profileAbout = values as Partial<RedProfile>

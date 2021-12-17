@@ -9,7 +9,7 @@ import {
   TpJobseekerProfile,
 } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { FunctionComponent, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Content, Element } from 'react-bulma-components'
 import { Subject } from 'rxjs'
@@ -33,7 +33,7 @@ interface Props {
   triggerModalSignal?: Subject<void>
 }
 
-export function EditableJobPreferences({ profile, triggerModalSignal }: Props) {
+export const EditableJobPreferences: FunctionComponent<Props> = ({ profile, triggerModalSignal }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
@@ -108,13 +108,15 @@ const validationSchema = Yup.object({
   ),
 })
 
-function ModalForm({
-  setIsEditing,
-  setIsFormDirty,
-}: {
+interface ModalFormProps {
   setIsEditing: (boolean) => void
   setIsFormDirty: (boolean) => void
-}) {
+}
+
+const ModalForm: FunctionComponent<ModalFormProps> = ({
+  setIsEditing,
+  setIsFormDirty,
+}) => {
   const { data: profile } = useTpJobseekerProfileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
 

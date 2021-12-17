@@ -1,6 +1,6 @@
 import { PDFDownloadLink, StyleSheet } from '@react-pdf/renderer'
 import { Button } from '@talent-connect/shared-atomic-design-components'
-import React from 'react'
+import { FunctionComponent } from 'react'
 import { CVPDF } from './CvPdfPreview'
 
 // Create styles
@@ -13,7 +13,7 @@ interface CVDownloadButtonProps {
   cvData: any
 }
 
-const CVDownloadButton = ({ cvData }: CVDownloadButtonProps) => {
+const CVDownloadButton: FunctionComponent<CVDownloadButtonProps> = ({ cvData }) => {
   return (
     <PDFDownloadLink
       style={styles.downloadBtn}

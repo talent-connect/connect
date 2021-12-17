@@ -21,7 +21,7 @@ import {
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
 import moment from 'moment'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { FunctionComponent, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Columns, Content, Element } from 'react-bulma-components'
 import ReactMarkdown from 'react-markdown'
@@ -37,7 +37,6 @@ function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
   const result = Array.from(list)
   const [removed] = result.splice(startIndex, 1)
   result.splice(endIndex, 0, removed)
-
   return result
 }
 
@@ -46,10 +45,10 @@ interface Props {
   disableEditing?: boolean
 }
 
-export function EditableEducation({
+export const EditableEducation: FunctionComponent<Props> = ({
   profile: overridingProfile,
   disableEditing,
-}: Props) {
+}) => {
   const queryHookResult = useTpJobseekerProfileQuery({
     enabled: !disableEditing,
   })

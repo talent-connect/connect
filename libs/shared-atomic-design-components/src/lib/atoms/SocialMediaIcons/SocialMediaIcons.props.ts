@@ -1,9 +1,13 @@
 import { IconProps } from '../Icon/Icon.props';
 
-export interface SocialMediaIcon {
+interface SocialMediaIcon {
+  /** ... */
   icon: IconProps['icon']
+  /** ... */
   berlin: string
+  /** ... */
   munich: string
+  /** ... */
   nrw: string
 }
 

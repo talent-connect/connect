@@ -17,7 +17,7 @@ import {
 import { formMonthsOptions } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
 import moment from 'moment'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { FunctionComponent, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Columns, Content, Element } from 'react-bulma-components'
 import ReactMarkdown from 'react-markdown'
@@ -42,10 +42,10 @@ interface Props {
   disableEditing?: boolean
 }
 
-export function EditableProfessionalExperience({
+export const  EditableProfessionalExperience: FunctionComponent<Props> = ({
   profile: overridingProfile,
   disableEditing,
-}: Props) {
+}) => {
   const queryHookResult = useTpJobseekerProfileQuery({
     enabled: !disableEditing,
   })
@@ -135,10 +135,12 @@ EditableProfessionalExperience.isSectionEmpty = (
   profile: Partial<TpJobseekerProfile>
 ) => !EditableProfessionalExperience.isSectionFilled(profile)
 
-function formatDate(month?: number, year?: number): string {
-  if (year && !month) return String(year)
-  if (year && month) return moment().month(month).year(year).format('MMMM YYYY')
-  if (!year && month) return moment().month(month).format('MMMM')
+function formatDate (month?: number, year?: number): string {
+  if (year) {
+    return month ? moment().month(month).year(year).format('MMMM YYYY') : String(year)
+  } else {
+    if (month) return moment().month(month).format('MMMM')
+  }
   return ''
 }
 

@@ -1,6 +1,6 @@
-import React from 'react'
+import { FunctionComponent } from 'react'
 import classnames from 'classnames'
-import { Card, Element, Tag } from 'react-bulma-components'
+import { Card, Element } from 'react-bulma-components'
 import { Icon, PipeList } from '@talent-connect/shared-atomic-design-components'
 
 import { useHistory } from 'react-router-dom'
@@ -22,26 +22,25 @@ interface ProfileCardProps {
   toggleFavorite?: (id: string) => void
 }
 
-const ProfileCard = ({
-  profile,
-  linkTo,
-  toggleFavorite,
-  isFavorite,
-}: ProfileCardProps) => {
-  const history = useHistory()
-
-  const {
+const ProfileCard: FunctionComponent<ProfileCardProps> = ({
+  profile: {
+    id,
     firstName,
     lastName,
     languages,
     categories,
     rediLocation,
     profileAvatarImageS3Key,
-  } = profile
+  },
+  linkTo,
+  toggleFavorite,
+  isFavorite,
+}) => {
+  const history = useHistory()
 
   const handleFavorite = (e: React.MouseEvent) => {
     e.stopPropagation()
-    toggleFavorite && toggleFavorite(profile.id)
+    toggleFavorite && toggleFavorite(id)
   }
 
   const handleLinkTo = () => linkTo && history.push(linkTo)

@@ -7,6 +7,9 @@
   ],
   "typescript.preferences.importModuleSpecifier": "project-relative",
   "cSpell.words": [
+    "Formik",
+    "mentee",
+    "mentees",
     "redi"
   ]
 }

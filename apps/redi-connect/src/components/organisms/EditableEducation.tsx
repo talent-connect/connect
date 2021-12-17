@@ -1,4 +1,4 @@
-import React from 'react'
+import { FunctionComponent } from 'react'
 import { FormSelect } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile } from '@talent-connect/shared-types'
@@ -40,9 +40,15 @@ const validationSchema = Yup.object({
     .label('Highest Education Level'),
 })
 
-const EditableEducation = ({ profile, profileSaveStart }: any) => {
-  const { id, mentee_highestEducationLevel } = profile
+interface Props {
+  profile: RedProfile
+  profileSaveStart: Function
+}
 
+const EditableEducation: FunctionComponent<Props> = ({
+  profile: { id, mentee_highestEducationLevel },
+  profileSaveStart
+}) => {
   const submitForm = async (values: FormikValues) => {
     const education = values as Partial<RedProfile>
     profileSaveStart({ ...education, id })

@@ -5,8 +5,8 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import { TpCompanyProfile } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
-import React, { useEffect, useMemo, useState } from 'react'
-import { Columns, Content, Element } from 'react-bulma-components'
+import { FunctionComponent, useEffect, useMemo, useState } from 'react'
+import { Content, Element } from 'react-bulma-components'
 import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
 import { Editable } from '../../molecules/Editable'
@@ -17,7 +17,12 @@ interface Props {
   disableEditing?: boolean
 }
 
-export function EditableContact({ profile, disableEditing }: Props) {
+export const EditableContact: FunctionComponent<Props> = ({
+  profile,
+  disableEditing
+}) => {
+  const { firstName, lastName, phoneNumber, contactEmail } = profile
+
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
@@ -50,29 +55,29 @@ export function EditableContact({ profile, disableEditing }: Props) {
               gridRowGap: '32px',
             }}
           >
-            {profile?.firstName || profile?.lastName ? (
+            {firstName || lastName ? (
               <div>
                 <Caption>Name</Caption>
                 <Content>
                   <p>
-                    {profile?.firstName} {profile?.lastName}
+                    {firstName} {lastName}
                   </p>
                 </Content>
               </div>
             ) : null}
-            {profile.phoneNumber ? (
+            {phoneNumber ? (
               <div>
                 <Caption>Phone</Caption>
                 <Content>
-                  <p>{profile?.phoneNumber}</p>
+                  <p>{phoneNumber}</p>
                 </Content>
               </div>
             ) : null}
-            {profile.contactEmail ? (
+            {contactEmail ? (
               <div>
                 <Caption>Email</Caption>
                 <Content>
-                  <p>{profile?.contactEmail}</p>
+                  <p>{contactEmail}</p>
                 </Content>
               </div>
             ) : null}

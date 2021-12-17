@@ -1,5 +1,8 @@
 export interface SearchFieldProps {
-  valueChange: (value: string) => void
+  /** ... */
   defaultValue: string
+  /** ... */
+  valueChange: (value: string) => void
+  /** ... */
   placeholder?: string
 }

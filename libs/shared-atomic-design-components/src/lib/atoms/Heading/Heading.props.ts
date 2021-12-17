@@ -1,5 +1,3 @@
-import { ReactNode } from 'react';
-
 export const sizes = {
   large: {
     desktop: 1,
@@ -20,11 +18,16 @@ export const sizes = {
 }
 
 export interface HeadingProps {
-  children: ReactNode;
+  /** */
   className?: string;
+  /** */
   size?: keyof typeof sizes;
+  /** */
   tag?: string;
+  /** */
   border?: 'topCenter' | 'bottomLeft';
+  /** */
   center?: boolean;
+  /** */
   subtitle?: boolean;
 }

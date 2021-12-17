@@ -14,7 +14,7 @@ import {
   topSkills,
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
-import React, { useCallback, useState, useEffect } from 'react'
+import { useCallback, useState, useEffect, FunctionComponent } from 'react'
 import { Columns, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
@@ -27,10 +27,15 @@ import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder
 import { JobListingCard } from '../JobListingCard'
 import JobPlaceholderCardUrl from './job-placeholder-card.svg'
 
-export function EditableJobPostings({
+interface Props {
+  isJobPostingFormOpen: boolean
+  setIsJobPostingFormOpen: (value: boolean) => void
+}
+
+export const EditableJobPostings: FunctionComponent<Props> = ({
   isJobPostingFormOpen,
   setIsJobPostingFormOpen,
-}) {
+}) => {
   const { data: jobListings } = useTpJobListingAllQuery()
   const [isEditing, setIsEditing] = useState(false)
   const [idOfTpJobListingBeingEdited, setIdOfTpJobListingBeingEdited] =
@@ -49,15 +54,11 @@ export function EditableJobPostings({
   }, [])
 
   useEffect(() => {
-    if (isJobPostingFormOpen) {
-      setIsEditing(true)
-    }
+    if (isJobPostingFormOpen) setIsEditing(true)
   }, [isJobPostingFormOpen])
 
   useEffect(() => {
-    if (!isEditing) {
-      setIsJobPostingFormOpen(false)
-    }
+    if (!isEditing) setIsJobPostingFormOpen(false)
   }, [isEditing, setIsJobPostingFormOpen])
 
   return (

@@ -3,7 +3,7 @@ import {
   Icon,
   Modal,
 } from '@talent-connect/shared-atomic-design-components'
-import React from 'react'
+import { FunctionComponent } from 'react'
 import { Element } from 'react-bulma-components'
 import './Editable.scss'
 
@@ -20,7 +20,7 @@ interface Props {
   modalStyles?: React.CSSProperties
 }
 
-export function Editable({
+export const Editable: FunctionComponent<Props> = ({
   isEditing,
   setIsEditing,
   disableEditing,
@@ -31,7 +31,7 @@ export function Editable({
   modalHeadline,
   modalBody,
   modalStyles,
-}: Props) {
+}) => {
   return (
     <div className="profile-section">
       {title ? (

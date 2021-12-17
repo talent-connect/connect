@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import { FunctionComponent, useState, useCallback } from 'react'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import Teaser from '../../../components/molecules/Teaser'
 import * as Yup from 'yup'
@@ -37,7 +37,7 @@ const validationSchema = Yup.object({
   password: Yup.string().required().label('Password').max(255),
 })
 
-export default function Login() {
+const Login: FunctionComponent = () => {
   const [loginError, setLoginError] = useState<string>('')
   const [isWrongRediLocationError, setIsWrongRediLocationError] =
     useState<boolean>(false)
@@ -170,3 +170,5 @@ export default function Login() {
     </AccountOperation>
   )
 }
+
+export default Login

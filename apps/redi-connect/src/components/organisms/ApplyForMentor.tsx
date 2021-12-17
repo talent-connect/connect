@@ -9,7 +9,7 @@ import { Content, Form } from 'react-bulma-components'
 import { FormSubmitResult, RedProfile } from '@talent-connect/shared-types'
 
 import { FormikHelpers as FormikActions, useFormik } from 'formik'
-import React, { useState } from 'react'
+import { FunctionComponent, useState } from 'react'
 import * as Yup from 'yup'
 import { requestMentorship } from '../../services/api/api'
 
@@ -31,13 +31,8 @@ const initialValues = {
 
 const validationSchema = Yup.object({
   applicationText: Yup.string()
-    .required(
-      'Write at least 250 characters to introduce yourself to your mentee.'
-    )
-    .min(
-      250,
-      'Write at least 250 characters to introduce yourself to your mentee.'
-    )
+    .required('Write at least 250 characters to introduce yourself to your mentee.')
+    .min(250, 'Write at least 250 characters to introduce yourself to your mentee.')
     .max(600, 'The introduction text can be up to 600 characters long.'),
   expectationText: Yup.string()
     .required('Write at least 250 characters about your expectations.')
@@ -53,11 +48,10 @@ interface Props {
   profilesFetchOneStart: Function
 }
 
-const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
-  const [submitResult, setSubmitResult] = useState<FormSubmitResult>(
-    'notSubmitted'
-  )
+const ApplyForMentor: FunctionComponent<Props> = ({ mentor, profilesFetchOneStart }) => {
+  const [submitResult, setSubmitResult] = useState<FormSubmitResult>('notSubmitted')
   const [show, setShow] = useState(false)
+  
   const submitForm = async (
     values: ConnectionRequestFormValues,
     actions: FormikActions<ConnectionRequestFormValues>

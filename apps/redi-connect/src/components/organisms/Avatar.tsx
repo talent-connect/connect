@@ -1,4 +1,4 @@
-import React from 'react'
+import { FunctionComponent } from 'react'
 import { ReactComponent as UploadImage } from '../../assets/images/uploadImage.svg'
 import ReactS3Uploader from 'react-s3-uploader'
 import { Element } from 'react-bulma-components'
@@ -35,8 +35,9 @@ const validationSchema = Yup.object({
   profileAvatarImageS3Key: Yup.string().max(255),
 })
 
-const Avatar = ({ profile }: AvatarProps) => {
-  const { profileAvatarImageS3Key } = profile
+const Avatar: FunctionComponent<AvatarProps> = ({
+  profile: { profileAvatarImageS3Key, firstName, lastName }
+}) => {
   const imgSrc = profileAvatarImageS3Key
     ? AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
     : placeholderImage
@@ -49,28 +50,28 @@ const Avatar = ({ profile }: AvatarProps) => {
     >
       <img
         src={imgSrc}
-        alt={`${profile.firstName} ${profile.lastName}`}
+        alt={`${firstName} ${lastName}`}
         className="avatar__image"
       />
     </div>
   )
 }
 
-const AvatarEditable = ({ profile, profileSaveStart }: AvatarEditable) => {
-  const { profileAvatarImageS3Key } = profile
+const AvatarEditable: FunctionComponent<AvatarEditable> = ({
+  profile: { profileAvatarImageS3Key, id, firstName, lastName },
+  profileSaveStart
+}) => {
   const imgURL = AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
 
   const submitForm = async (values: FormikValues) => {
     const profileMe = values as Partial<RedProfile>
-    profileSaveStart({ ...profileMe, id: profile.id })
+    profileSaveStart({ ...profileMe, id })
   }
 
-  const initialValues: AvatarFormValues = {
-    profileAvatarImageS3Key: profileAvatarImageS3Key,
-  }
+  const initialValues: AvatarFormValues = { profileAvatarImageS3Key }
 
   const formik = useFormik({
-    initialValues: initialValues,
+    initialValues,
     validationSchema,
     onSubmit: submitForm,
   })
@@ -90,7 +91,7 @@ const AvatarEditable = ({ profile, profileSaveStart }: AvatarEditable) => {
         <>
           <img
             src={imgURL}
-            alt={`${profile.firstName} ${profile.lastName}`}
+            alt={`${firstName} ${lastName}`}
             className="avatar__image"
           />
           <Element

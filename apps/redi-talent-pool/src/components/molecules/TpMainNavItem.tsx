@@ -1,12 +1,11 @@
-import { Tooltip } from '@material-ui/core'
 import classnames from 'clsx'
-import React from 'react'
+import React, { FunctionComponent } from 'react'
 import { useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import './TpMainNavItem.scss'
 
 interface Props {
-  page: 'profile-page' | 'browse-page' | 'cv-builder-page'
+  page: `${'profile' | 'browse' | 'cv-builder'}-page`
   to: string
   isActive?: boolean
   isDisabled?: boolean
@@ -32,13 +31,13 @@ const FancyLink = React.forwardRef<HTMLAnchorElement>(
   )
 )
 
-export function TpMainNavItem({
+export const TpMainNavItem: FunctionComponent<Props> = ({
   page,
   to,
   isActive,
   isDisabled,
   pageName,
-}: Props) {
+}) => {
   const onClick = useCallback(
     (event: React.MouseEvent) => {
       if (isDisabled) {
@@ -69,15 +68,17 @@ export function TpMainNavItem({
   )
 }
 
-function TpMainNavItemIcon({
-  page,
-  isDisabled,
-  pageName,
-}: {
+interface TpMainNavItemIconProps {
   page: string
   isDisabled?: boolean
   pageName?: string
-}) {
+}
+
+const TpMainNavItemIcon: FunctionComponent<TpMainNavItemIconProps> = ({
+  page,
+  isDisabled,
+  pageName,
+}) => {
   return (
     <div
       style={{

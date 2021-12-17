@@ -4,7 +4,7 @@ import {
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
 import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
-import React, { useCallback, useState } from 'react'
+import { FunctionComponent, useCallback, useState } from 'react'
 import { Columns, Content, Form } from 'react-bulma-components'
 import { Link } from 'react-router-dom'
 import * as Yup from 'yup'
@@ -29,7 +29,7 @@ const validationSchema = Yup.object({
   password: Yup.string().required().label('Password').max(255),
 })
 
-export default function Login() {
+const Login: FunctionComponent = () => {
   const [loginError, setLoginError] = useState<string>('')
 
   const submitForm = useCallback((values, actions) => {
@@ -120,3 +120,5 @@ export default function Login() {
     </AccountOperation>
   )
 }
+
+export default Login

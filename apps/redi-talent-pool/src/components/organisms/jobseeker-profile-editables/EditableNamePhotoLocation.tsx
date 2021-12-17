@@ -10,7 +10,7 @@ import {
   desiredEmploymentTypeOptions,
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
-import React, { useEffect, useMemo, useState } from 'react'
+import { FunctionComponent, useEffect, useMemo, useState } from 'react'
 import { Columns, Content, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
@@ -24,7 +24,7 @@ interface Props {
   disableEditing?: boolean
 }
 
-export function EditableNamePhotoLocation({ profile, disableEditing }: Props) {
+export const EditableNamePhotoLocation: FunctionComponent<Props> = ({ profile, disableEditing }) => {
   const mutation = useTpjobseekerprofileUpdateMutation()
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)

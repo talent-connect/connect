@@ -1,10 +1,10 @@
 import { Heading } from '@talent-connect/shared-atomic-design-components'
-import React from 'react'
+import { FunctionComponent } from 'react'
 import { Columns, Content } from 'react-bulma-components'
 import TpTeaser from '../../../components/molecules/TpTeaser'
 import AccountOperation from '../../../components/templates/AccountOperation'
 
-const SignUpEmailVerification = () => (
+const SignUpEmailVerification: FunctionComponent = () => (
   <AccountOperation>
     <Columns vCentered>
       <Columns.Column

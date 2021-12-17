@@ -9,12 +9,11 @@ import {
   topSkills,
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
-import React from 'react'
+import { FunctionComponent } from 'react'
 import { Columns, Element, Tag } from 'react-bulma-components'
 import { useHistory } from 'react-router'
 import {
   ArrayParam,
-  BooleanParam,
   StringParam,
   useQueryParams,
   withDefault,
@@ -23,7 +22,7 @@ import { JobseekerProfileCard } from '../../../components/organisms/JobSeekerPro
 import { LoggedIn } from '../../../components/templates'
 import { useBrowseTpJobseekerProfilesQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 
-export function BrowseCompany() {
+export const BrowseCompany: FunctionComponent = () => {
   const [query, setQuery] = useQueryParams({
     name: withDefault(StringParam, ''),
     skills: withDefault(ArrayParam, []),

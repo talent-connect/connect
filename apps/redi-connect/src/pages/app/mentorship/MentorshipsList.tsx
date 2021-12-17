@@ -1,4 +1,4 @@
-import React from 'react'
+import { FunctionComponent } from 'react'
 import { Redirect } from 'react-router'
 import { Columns, Content } from 'react-bulma-components'
 import LoggedIn from '../../../components/templates/LoggedIn'
@@ -13,7 +13,7 @@ interface Props {
   matches: RedMatch[]
 }
 
-function MentorshipList({ matches }: Props) {
+const  MentorshipList: FunctionComponent<Props> = ({ matches }) => {
   if (matches.length === 1)
     return <Redirect to={`/app/mentorships/${matches[0].id}`} />
 
@@ -45,11 +45,11 @@ function MentorshipList({ matches }: Props) {
         {subHeading}
       </Content>
       <Columns>
-        {matches.map((match: RedMatch) => (
-          <Columns.Column size={4} key={match.id}>
+        {matches.map(({ id, mentee }) => (
+          <Columns.Column size={4} key={id}>
             <ProfileCard
-              linkTo={`/app/mentorships/${match.id}`}
-              profile={match.mentee}
+              linkTo={`/app/mentorships/${id}`}
+              profile={mentee}
             />
           </Columns.Column>
         ))}

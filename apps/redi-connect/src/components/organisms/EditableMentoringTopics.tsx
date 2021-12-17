@@ -1,4 +1,4 @@
-import React from 'react'
+import { FunctionComponent } from 'react'
 import groupBy from 'lodash/groupBy'
 import { Columns, Heading, Element, Content } from 'react-bulma-components'
 import { Checkbox } from '@talent-connect/shared-atomic-design-components'
@@ -42,12 +42,14 @@ const categoriesByGroup = groupBy(CATEGORIES, (category) => category.group)
 const formCategoryGroups = objectEntries(CATEGORY_GROUPS)
 
 interface Props {
-  profile: RedProfile | undefined
+  profile: RedProfile
   profileSaveStart: Function
 }
 
-const EditableMentoringTopics = ({ profile, profileSaveStart }: Props) => {
-  const { id, userType, categories } = profile as RedProfile
+const EditableMentoringTopics: FunctionComponent<Props> = ({
+  profile: { id, userType, categories },
+  profileSaveStart
+}) => {
 
   const submitForm = async (values: FormikValues) => {
     const profileMentoring = values as Partial<RedProfile>
@@ -114,13 +116,13 @@ const EditableMentoringTopics = ({ profile, profileSaveStart }: Props) => {
   )
 }
 
-const CategoryGroup = ({
+const CategoryGroup: FunctionComponent = ({
   id,
   label,
   selectedCategories,
   onChange,
   formik,
-}: any) => {
+}: any) => { // TODO: types
   // The current REDI_LOCATION might not use the current CategoryGroup (e.g.
   // Munich doesnt, at the time or writing, use 'coding' or 'other'. If it's the case, return null
 
@@ -143,7 +145,7 @@ const CategoryGroup = ({
             key={groupItem.id}
             value={groupItem.id}
             checked={selectedCategories.includes(groupItem.id)}
-            customOnChange={onChange}
+            handleChange={onChange}
             disabled={
               !formik.values.isMentor &&
               selectedCategories.length >=

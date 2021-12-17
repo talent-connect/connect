@@ -1,4 +1,4 @@
-import React from 'react'
+import { FunctionComponent } from 'react'
 import { Content } from 'react-bulma-components'
 import { RedProfile } from '@talent-connect/shared-types'
 import { connect } from 'react-redux'
@@ -14,9 +14,10 @@ interface Props {
   shortInfo?: boolean
 }
 
-const ReadEducation = ({ profile, shortInfo }: Props) => {
-  const { mentee_highestEducationLevel } = profile
-
+const ReadEducation: FunctionComponent<Props> = ({
+  profile: { mentee_highestEducationLevel },
+  shortInfo
+}) => {
   if (!mentee_highestEducationLevel) {
     return (
       <Placeholder>

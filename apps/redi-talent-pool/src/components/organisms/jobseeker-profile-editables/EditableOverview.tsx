@@ -10,7 +10,7 @@ import {
   desiredPositionsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
-import React, { useEffect, useMemo, useState } from 'react'
+import { FunctionComponent, useEffect, useMemo, useState } from 'react'
 import { Element, Tag } from 'react-bulma-components'
 import { UseMutationResult, UseQueryResult } from 'react-query'
 import * as Yup from 'yup'
@@ -24,10 +24,10 @@ interface Props {
   disableEditing?: boolean
 }
 
-export function EditableOverview({
+export const EditableOverview: FunctionComponent<Props> = ({
   profile: overridingProfile,
   disableEditing,
-}: Props) {
+}) => {
   const queryHookResult = useTpJobseekerProfileQuery({
     enabled: !disableEditing,
   })
@@ -162,7 +162,7 @@ export function JobseekerFormSectionOverview({
         name="desiredPositions"
         items={formDesiredPositions}
         {...formik}
-        multiselect
+        multiSelect
       />
       {hideCurrentRediCourseField ? null : (
         <FormSelect

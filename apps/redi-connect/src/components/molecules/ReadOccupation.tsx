@@ -1,4 +1,4 @@
-import React from 'react'
+import { FunctionComponent } from 'react'
 import { Content } from 'react-bulma-components'
 import { RedProfile } from '@talent-connect/shared-types'
 import { connect } from 'react-redux'
@@ -19,8 +19,8 @@ const formMenteeOccupationCategories = objectEntries(
   MENTEE_OCCUPATION_CATEGORY
 ).map(([value, label]) => ({ value, label }))
 
-const ReadOccupation = ({ profile, shortInfo }: Props) => {
-  const {
+const ReadOccupation: FunctionComponent<Props> = ({
+  profile: {
     userType,
     mentor_occupation,
     mentor_workPlace,
@@ -31,7 +31,9 @@ const ReadOccupation = ({ profile, shortInfo }: Props) => {
     mentee_occupationStudent_studyName,
     mentee_occupationLookingForJob_what,
     mentee_occupationOther_description,
-  } = profile
+  },
+  shortInfo
+}) => {
 
   if (!mentor_occupation && !mentee_occupationCategoryId) {
     return (
