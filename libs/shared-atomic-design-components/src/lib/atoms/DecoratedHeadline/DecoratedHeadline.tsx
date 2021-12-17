@@ -1,13 +1,10 @@
+import { FunctionComponent } from 'react';
 import { Element } from 'react-bulma-components'
 import { Heading } from '../Heading'
+import { DecoratedHeadlineProps } from './DecoratedHeadline.props';
 import './DecoratedHeadline.scss'
 
-interface Props {
-  title: string
-  headline: string
-}
-
-const DecoratedHeadline = ({ title, headline }: Props) => {
+const DecoratedHeadline: FunctionComponent<DecoratedHeadlineProps>  = ({ title, headline }) => {
   return (
     <div className="decorated-headline">
       <Element

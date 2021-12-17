@@ -1,15 +1,12 @@
+import { FunctionComponent, useCallback, useEffect, useState } from 'react'
 import { Form } from 'react-bulma-components'
 import { debounce } from 'lodash'
-import { useCallback, useEffect, useState } from 'react'
+import { SearchFieldProps } from './SearchField.props';
 
-export const SearchField = ({
+export const SearchField: FunctionComponent<SearchFieldProps> = ({
   valueChange,
   defaultValue,
   placeholder,
-}: {
-  valueChange: (value: string) => void
-  defaultValue: string
-  placeholder?: string
 }) => {
   const [value, setValue] = useState(defaultValue)
   const valueChangeDebounced = useCallback(debounce(valueChange, 1000), [

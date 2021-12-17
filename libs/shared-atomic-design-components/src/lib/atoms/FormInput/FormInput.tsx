@@ -1,31 +1,26 @@
+import { FunctionComponent } from 'react';
 import classnames from 'classnames'
 import { Form } from 'react-bulma-components'
 import { get } from 'lodash'
+import { FormInputProps } from './FormInput.props';
 
-interface Props {
-  name: string
-  placeholder: string
-  label?: string
-  type?: 'email' | 'text' | 'password'
-}
 
-const FormInput = (props: any) => {
-  const {
-    name,
-    placeholder,
-    type,
-    label,
-    startAddon = null,
-    dirty,
-    values,
-    handleChange,
-    isSubmitting,
-    handleBlur,
-    touched,
-    errors,
-    disabled,
-    domRef,
-  } = props
+const FormInput: FunctionComponent<FormInputProps> = ({
+  name,
+  placeholder,
+  type = 'text',
+  label,
+  dirty,
+  values,
+  handleChange,
+  isSubmitting,
+  handleBlur,
+  touched,
+  errors,
+  disabled,
+  domRef,
+  startAddon = null,
+}) => {
 
   const hasError = !!get(touched, name) && !!get(errors, name)
   const isValidField = dirty && !!get(touched, name) && !get(errors, name)
@@ -38,7 +33,7 @@ const FormInput = (props: any) => {
         <Form.Input
           id={name}
           name={name}
-          type={type || 'text'}
+          type={type}
           color={hasError ? 'danger' : null}
           placeholder={placeholder}
           // use lodash's so we can access stuff like experience[0].title

@@ -17,21 +17,11 @@ export const FormSelect = template({
   className: '',
   label: 'Select School',
   placeholder: 'Select School',
-  items: EDUCATION_LEVELS,
-  values: {
-    language: '',
-  },
-  handleChange: () => {
-    return
-  },
-  handleBlur: () => {
-    return
-  },
+  items: Object.keys(EDUCATION_LEVELS),
+  values: ['language'],
+  handleChange: () => { return },
+  handleBlur: () => { return },
   disabled: false,
-  setFieldValue: (name: string, value: string) => {
-    return
-  },
-  setFieldTouched: (name: string, value: string) => {
-    return
-  },
+  setFieldValue: () => { return },
+  setFieldTouched: () => { return },
 })

@@ -1,9 +1,11 @@
+import { FunctionComponent } from 'react';
 import { Form } from 'react-bulma-components'
 import DatePicker from 'react-datepicker'
 import { Icon } from '../Icon'
 
 import 'react-datepicker/dist/react-datepicker.css'
 import './FormDatePicker.scss'
+import { FormDatePickerProps } from './FormDatePicker.props';
 
 interface PickerTriggerProps {
   value?: string
@@ -20,36 +22,20 @@ const PickerTrigger = (placeholder: string) => ({
   </div>
 )
 
-interface FormDatePickerProps {
-  name: string
-  placeholder: string
-  label?: string
-  values?: any
-  dateFormat?: string
-  minDate?: Date
-  maxDate?: Date
-  showMonthDropdown?: boolean
-  showYearDropdown?: boolean
-  dropdownMode?: 'scroll' | 'select'
-  isClearable?: boolean
-  setFieldValue: (name: string, date: Date) => void
-}
-
-const FormDatePicker = (props: FormDatePickerProps) => {
-  const {
-    name,
-    placeholder,
-    label,
-    values,
-    dateFormat,
-    minDate,
-    maxDate,
-    showMonthDropdown,
-    showYearDropdown,
-    dropdownMode,
-    isClearable,
-    setFieldValue,
-  } = props
+const FormDatePicker: FunctionComponent<FormDatePickerProps> = ({
+  name,
+  placeholder,
+  label,
+  values,
+  dateFormat,
+  minDate,
+  maxDate,
+  showMonthDropdown,
+  showYearDropdown,
+  dropdownMode,
+  isClearable,
+  setFieldValue,
+}) => {
 
   const changeHandler = (date: Date) => {
     setFieldValue(name, date)

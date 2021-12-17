@@ -1,34 +1,25 @@
 import classnames from 'clsx'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState, FunctionComponent } from 'react'
 import { Columns, Element } from 'react-bulma-components'
 import { Icon } from '../Icon'
+import { FormDraggableAccordionProps } from './FormDraggableAccordion.props';
 import './FormDraggableAccordion.scss'
-import { Subject } from 'rxjs'
 
 import { ReactComponent as AccordionHandleIcon } from '../../../assets/images/accordion-handle.svg'
 
-interface Props {
-  title: string
-  children: React.ReactNode
-  initialOpen?: boolean
-  onRemove?: () => void
-  closeAccordionSignalSubject?: Subject<void>
-}
-
-function FormDraggableAccordion({
+const FormDraggableAccordion: FunctionComponent<FormDraggableAccordionProps> = ({
   title,
   children,
   onRemove = null,
   initialOpen = false,
   closeAccordionSignalSubject = null,
-}: Props) {
+}) => {
   const [showAnswer, setShowAnswer] = useState(initialOpen)
 
   useEffect(() => {
     const sub = closeAccordionSignalSubject?.subscribe(() =>
       setShowAnswer(false)
     )
-
     return () => sub?.unsubscribe()
   }, [closeAccordionSignalSubject])
 

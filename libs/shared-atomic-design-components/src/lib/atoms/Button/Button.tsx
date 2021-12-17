@@ -1,34 +1,22 @@
-import React from 'react'
+import { FunctionComponent } from 'react'
 import classnames from 'classnames'
 import { NavLink } from 'react-router-dom'
 import { Icon } from '../Icon'
+import { ButtonProps } from './Button.props';
 import './Button.scss'
 
-export interface ButtonProps {
-  children: any
-  className?: string
-  size?: 'large' | 'medium' | 'small'
-  fullWidth?: boolean
-  disabled?: boolean
-  separator?: boolean
-  onClick?: () => void
-  simple?: boolean
-  to?: string
-  style?: React.CSSProperties
-}
-
-const Button = ({
+const Button: FunctionComponent<ButtonProps> & { Icon: typeof Icon } = ({
   children,
   className,
-  size = 'small',
-  simple = false,
   fullWidth,
   onClick,
   separator,
   disabled,
   to,
+  size = 'small',
+  simple = false,
   style = {},
-}: ButtonProps) => {
+}) => {
   const baseClass = 'button-atom'
 
   if (!to) {

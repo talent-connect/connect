@@ -2,35 +2,28 @@ import classnames from 'classnames'
 import { Form, Content, Columns } from 'react-bulma-components'
 import './FormTextArea.scss'
 import { get } from 'lodash'
+import { FunctionComponent } from 'react';
+import { FormTextAreaProps } from './FormTextArea.props';
 
-interface Props {
-  name: string
-  className: string
-  label: string
-  placeholder: string
-  disabled?: boolean
-  rows?: number
-}
 
 // the any is not the best solution here, I would need to use the props needed for
 // the field and the formik values coming from the form context
-function FormTextArea(props: any) {
-  const {
-    name,
-    className,
-    label,
-    placeholder,
-    minChar,
-    maxChar,
-    rows,
-    values,
-    handleChange,
-    handleBlur,
-    isSubmitting,
-    touched,
-    errors,
-    disabled,
-  } = props
+const  FormTextArea: FunctionComponent<FormTextAreaProps> = ({
+  name,
+  className,
+  label,
+  placeholder,
+  rows,
+  minChar,
+  maxChar,
+  values,
+  handleChange,
+  handleBlur,
+  isSubmitting,
+  touched,
+  errors,
+  disabled,
+}) => {
 
   const hasError = !!get(touched, name) && !!get(errors, name)
 

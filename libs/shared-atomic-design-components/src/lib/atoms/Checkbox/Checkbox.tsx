@@ -1,9 +1,10 @@
+import { FunctionComponent } from 'react';
 import { CheckboxProps } from './Checkbox.props';
 import _uniqueId from 'lodash/uniqueId'
 import { Form } from 'react-bulma-components'
 import './Checkbox.scss'
 
-function Checkbox({
+const Checkbox: FunctionComponent<CheckboxProps> & { Form: FunctionComponent<CheckboxProps & { className: string;}> } = ({
   name,
   value,
   checked,
@@ -13,7 +14,7 @@ function Checkbox({
   isSubmitting,
   children,
   customOnChange,
-}: CheckboxProps) {
+}) => {
 
   const uid = _uniqueId('cx_')
 
@@ -41,7 +42,7 @@ function Checkbox({
   )
 }
 
-Checkbox.Form = (props: any) => (
+Checkbox.Form = (props) => (
   <Form.Field className={props.className}>
     <Form.Control>
       <Checkbox {...props} />

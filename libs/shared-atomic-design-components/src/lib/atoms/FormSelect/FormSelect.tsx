@@ -2,6 +2,8 @@ import Select, { components } from 'react-select'
 import { Form } from 'react-bulma-components'
 import { Icon } from '../Icon'
 import { get } from 'lodash'
+import { FunctionComponent } from 'react';
+import { FormSelectProps } from './FormSelect.props';
 
 const DropdownIndicator = (props: any) => (
   <components.DropdownIndicator {...props}>
@@ -21,24 +23,22 @@ const MultiValueRemove = (props: any) => (
   </components.MultiValueRemove>
 )
 
-// TODO add typed safe props
-function FormSelect(props: any) {
-  const {
-    name,
-    items,
-    placeholder,
-    label,
-    customOnChange,
-    values,
-    setFieldTouched,
-    handleBlur,
-    multiselect,
-    isSubmitting,
-    setFieldValue,
-    touched,
-    errors,
-    disabled,
-  } = props
+const FormSelect: FunctionComponent<FormSelectProps> = ({
+  name,
+  items,
+  placeholder,
+  label,
+  customOnChange,
+  values,
+  setFieldTouched,
+  handleBlur,
+  multiSelect,
+  isSubmitting,
+  setFieldValue,
+  touched,
+  errors,
+  disabled,
+}) => {
 
   const customStyles = {
     option: (provided: any, state: any) => ({
@@ -102,7 +102,7 @@ function FormSelect(props: any) {
   const handleOnChangeDefault = (option: any = []) => {
     setFieldValue(
       name,
-      multiselect
+      multiSelect
         ? option
           ? option.map((item: any) => item.value)
           : []
@@ -118,15 +118,14 @@ function FormSelect(props: any) {
   }
 
   const hasError = !!get(touched, name) && !!get(errors, name)
-  const handleOnChange = customOnChange || handleOnChangeDefault
 
-  const selectedValues = multiselect
+  const selectedValues = multiSelect
     ? get(values, name)
-        ?.map((selValue: any) =>
-          items.filter((availItem: any) => availItem.value === selValue)
+        ?.map((selValue) =>
+          items.filter((availItem) => availItem.value === selValue)
         )
         .flat()
-    : items.find((item: any) => item.value === get(values, name))
+    : items.find((item) => item.value === get(values, name))
 
   return (
     <Form.Field>
@@ -136,11 +135,11 @@ function FormSelect(props: any) {
           value={selectedValues}
           components={{ DropdownIndicator, ClearIndicator, MultiValueRemove }}
           options={items}
-          onChange={handleOnChange}
+          onChange={customOnChange || handleOnChangeDefault}
           placeholder={placeholder}
           onBlur={handleOnBlur}
           isDisabled={isSubmitting || disabled}
-          isMulti={multiselect}
+          isMulti={multiSelect}
           styles={customStyles}
           menuPortalTarget={document.body}
           menuPosition="fixed"

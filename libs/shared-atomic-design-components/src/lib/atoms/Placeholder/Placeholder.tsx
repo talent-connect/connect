@@ -1,7 +1,8 @@
-import React from 'react'
+import { FunctionComponent } from 'react'
 import { Content } from 'react-bulma-components'
+import { PlaceholderProps } from './Placeholder.props';
 
-const Placeholder: React.FunctionComponent = ({ children }) => (
+const Placeholder: FunctionComponent<PlaceholderProps> = ({ children }) => (
   <Content textColor="grey-dark" italic>
     {children}
   </Content>

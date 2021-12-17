@@ -1,17 +1,17 @@
 import { Meta } from '@storybook/react/types-6-0'
 import { storybookTemplate } from '../../helpers/StorybookTemplate'
 
-import FormTextAreaComponent from './FormTextArea'
+import { FormTextArea } from '.'
 import 'bulma/css/bulma.min.css'
 
 export default {
   title: 'Atoms/FormTextArea',
-  component: FormTextAreaComponent,
+  component: FormTextArea,
 } as Meta
 
-const template = storybookTemplate(FormTextAreaComponent)
+const template = storybookTemplate(FormTextArea)
 
-export const Formtextarea = template({
+export const Default = template({
   name: 'about',
   className: '',
   label: 'Enter something about you',
@@ -22,11 +22,7 @@ export const Formtextarea = template({
   values: {
     about: '',
   },
-  handleChange: () => {
-    return
-  },
-  handleBlur: () => {
-    return
-  },
+  handleChange: () => { return },
+  handleBlur: () => { return },
   disabled: false,
 })

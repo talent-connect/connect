@@ -26,17 +26,13 @@ export const FormInput = template({
   values: {
     email: 'talentpool@redi.org',
   },
-  handleChange: () => {
-    return
-  },
-  handleBlur: () => {
-    return
-  },
+  handleChange: () => { return },
+  handleBlur: () => { return },
   disabled: false,
-  setFieldValue: (name: string, value: string) => {
-    return
-  },
-  setFieldTouched: (name: string, value: string) => {
-    return
-  },
+  // setFieldValue: (name: string, value: string) => { // TODO: remove?
+  //   return
+  // },
+  // setFieldTouched: (name: string, value: string) => { // TODO: remove?
+  //   return
+  // },
 })

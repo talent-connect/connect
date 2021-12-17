@@ -1,8 +1,8 @@
-import React from 'react'
+import { FunctionComponent } from 'react'
 import { Heading as BulmaHeading } from 'react-bulma-components'
 import './Caption.scss'
 
-const Caption: React.FunctionComponent = ({ children }) => (
+const Caption: FunctionComponent = ({ children }) => (
   <BulmaHeading
     size={5}
     weight="normal"
