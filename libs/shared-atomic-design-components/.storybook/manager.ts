@@ -7,8 +7,8 @@ import ReDITheme from './theme';
 addons.setConfig({
   isFullscreen: false,
   showNav: true,
-  showPanel: 'right',
-  panelPosition: 'bottom',
+  showPanel: true,
+  panelPosition: 'right',
   enableShortcuts: true,
   isToolshown: true,
   theme: ReDITheme,

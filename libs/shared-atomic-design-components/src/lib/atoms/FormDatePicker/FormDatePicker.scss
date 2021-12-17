@@ -1,0 +1,36 @@
+@use '../../styles/colors' as colors;
+@import '../../styles/_variables.scss';
+@import 'node_modules/react-datepicker/src/stylesheets/datepicker.scss';
+
+.datepicker-trigger {
+  position: relative;
+
+  &__icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0.5rem;
+
+    path {
+      fill: colors.$redi-orange-dark;
+    }
+  }
+}
+
+.react-datepicker-wrapper {
+  display: block;
+}
+
+.react-datepicker__close-icon {
+  position: absolute;
+  top: 0;
+  right: 40px;
+}
+
+.react-datepicker__close-icon::after {
+  background-color: colors.$redi-orange-extra-light;
+  color: colors.$redi-orange-dark;
+  height: 26px;
+  width: 26px;
+  font-size: 18px;
+}
