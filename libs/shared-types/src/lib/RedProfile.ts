@@ -11,8 +11,10 @@ import {
   Language,
   MenteeOccupationCategoryKey,
 } from '@talent-connect/shared-config'
+import { Timestamp } from './Timestamp';
 
-export type RedProfile = {
+export type RedProfile =
+  Timestamp & {
   id: string
   userType: UserType
   rediLocation: RediLocation
@@ -51,8 +53,6 @@ export type RedProfile = {
   favouritedRedProfileIds: Array<string>
   optOutOfMenteesFromOtherRediLocation: boolean
 
-  createdAt: Date
-  updatedAt: Date
   userActivated?: boolean
   userActivatedAt?: Date
   gaveGdprConsentAt: Date

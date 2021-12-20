@@ -18,3 +18,7 @@ export * from './Placeholder'
 export * from './SearchField'
 export * from './SVGImage'
 export * from './SVGImage'
+
+export * from './RediConnectLogo'
+export * from './RediTalentPoolLogo'
+

@@ -1,5 +1,5 @@
 import { FunctionComponent, ReactNode, useEffect, useState } from 'react'
-import { Heading } from '../atoms'
+import { Heading } from '../../atoms'
 import { Modal as BulmaModal } from 'react-bulma-components'
 import './Modal.scss'
 
@@ -12,7 +12,6 @@ interface Props {
   styles?: React.CSSProperties
 }
 
-// TODO proper sub-component typing
 const Modal: FunctionComponent<Props> & Record<'Body'|'Foot',any> = ({ title, children, stateFn, show, confirm, styles }) => {
   const setShowModal = stateFn ? () => stateFn(false) : undefined
 

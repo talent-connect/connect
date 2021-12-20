@@ -1,11 +1,7 @@
+import { CategoryGroupId } from './CategoryGroupId';
+
 export type Category = {
   id: string
   label: string
-  group:
-    | 'softwareEngineering'
-    | 'design'
-    | 'otherProfessions'
-    | 'careerSupport'
-    | 'language'
-    | 'other'
+  group: CategoryGroupId
 }

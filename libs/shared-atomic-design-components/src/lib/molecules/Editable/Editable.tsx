@@ -1,5 +1,5 @@
 import { FunctionComponent, useState, ReactNode } from 'react'
-import { Caption, Icon } from '../atoms'
+import { Caption, Icon } from '../../atoms'
 import classnames from 'classnames'
 import './Editable.scss'
 

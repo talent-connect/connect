@@ -1,5 +1,5 @@
 import { FunctionComponent, ReactNode } from 'react'
-import { Caption } from '../atoms'
+import { Caption } from '../../atoms'
 import classnames from 'classnames'
 import './Module.scss'
 
@@ -10,7 +10,7 @@ interface Props {
   className?: string
 }
 
-const  Module: FunctionComponent<Props> = ({ title, children, buttons, className }) => {
+const Module: FunctionComponent<Props> = ({ title, children, buttons, className }) => {
   return (
     <div className={classnames('module', { [`${className}`]: className })}>
       <div className="module__header">

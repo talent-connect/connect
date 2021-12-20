@@ -1,4 +1,6 @@
-export const CATEGORY_GROUPS = {
+import { CategoryGroupId, Category } from '@talent-connect/shared-types';
+
+export const CATEGORY_GROUPS: Record<CategoryGroupId, string> = {
   softwareEngineering: '👩‍💻 Software Engineering',
   design: '🎨 Design',
   otherProfessions: '🏄‍♀️ Other Professions',
@@ -7,54 +9,49 @@ export const CATEGORY_GROUPS = {
   other: '🤗 Other',
 } as const
 
-type CategoryKey =
-  'basicProgrammingSkills' |
-  'htmlCss' |
-  'javascript' |
-  'react' |
-  'java' |
-  'python' |
-  'dataAnalytics' |
-  'machineLearning' |
-  'mobileDevelopmentIos' |
-  'mobileDevelopmentAndroid' |
-  'salesforce' |
-  'devOpsCloud' |
-  'iot' |
-  'computerNetworking' |
-  'blockchain' |
-  'productManagement' |
-  'projectManagement' |
-  'digitalMarketing' |
-  'businessDevelopment' |
-  'sales' |
-  'qualityAssurance' |
-  'basicGerman' |
-  'businessGerman' |
-  'english' |
-  'graphicDesign' |
-  'userInterfaceDesign' |
-  'userExperienceDesign' |
-  'motivationAndEncouragement' |
-  'friendAndHelp' |
-  'dontKnowYet' |
-  'careerOrientationAndPlanning' |
-  'internshipOrWorkingStudent' |
-  'jobSearch' |
-  'jobApplicationsCvPreparationEnglish' |
-  'jobApplicationsCvPreparationGerman' |
-  'interviewPreparation' |
-  'codingChallengePreparation' |
-  'buildingProfessionalNetwork' |
-  'entrepreneurship' |
-  'freelancing';
+export type CategoryKey =
+  | 'basicProgrammingSkills' 
+  | 'htmlCss' 
+  | 'javascript' 
+  | 'react' 
+  | 'java' 
+  | 'python' 
+  | 'dataAnalytics' 
+  | 'machineLearning' 
+  | 'mobileDevelopmentIos' 
+  | 'mobileDevelopmentAndroid' 
+  | 'salesforce' 
+  | 'devOpsCloud' 
+  | 'iot' 
+  | 'computerNetworking' 
+  | 'blockchain' 
+  | 'productManagement' 
+  | 'projectManagement' 
+  | 'digitalMarketing' 
+  | 'businessDevelopment' 
+  | 'sales' 
+  | 'qualityAssurance' 
+  | 'basicGerman' 
+  | 'businessGerman' 
+  | 'english' 
+  | 'graphicDesign' 
+  | 'userInterfaceDesign' 
+  | 'userExperienceDesign' 
+  | 'motivationAndEncouragement' 
+  | 'friendAndHelp' 
+  | 'dontKnowYet' 
+  | 'careerOrientationAndPlanning' 
+  | 'internshipOrWorkingStudent' 
+  | 'jobSearch' 
+  | 'jobApplicationsCvPreparationEnglish' 
+  | 'jobApplicationsCvPreparationGerman' 
+  | 'interviewPreparation' 
+  | 'codingChallengePreparation' 
+  | 'buildingProfessionalNetwork' 
+  | 'entrepreneurship' 
+  | 'freelancing'
 
-interface Category {
-  readonly label: string;
-  readonly group: keyof typeof CATEGORY_GROUPS
-}
-
-const Categories: Record<CategoryKey, Category> = {
+const Categories: Record<CategoryKey, Omit<Category, 'id'>> = {
   basicProgrammingSkills: {
     label: 'Basic programming skills',
     group: 'softwareEngineering',

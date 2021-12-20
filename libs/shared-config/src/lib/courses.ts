@@ -1,47 +1,47 @@
-import { ReDILocationKey } from './config';
+import { ReDILocationKey } from './locations';
 
 type CommonCourses =
   'cloudComputing' | 
   'alumni';
 
 type BerlinCourses =
-  CommonCourses |
-  'introPython' |
-  'dataAnalytics' |
-  'htmlCss' |
-  'javaScript' |
-  'react' |
-  'introJava' |
-  'intermediateJava' |
-  'introComputerScience' |
-  'intermediatePython' |
-  'salesforceFundamentals' |
-  'iot' |
-  'webDesign' |
-  'uiUxDesign';
+  | CommonCourses 
+  | 'introPython' 
+  | 'dataAnalytics' 
+  | 'htmlCss' 
+  | 'javaScript' 
+  | 'react' 
+  | 'introJava' 
+  | 'intermediateJava' 
+  | 'introComputerScience' 
+  | 'intermediatePython' 
+  | 'salesforceFundamentals' 
+  | 'iot' 
+  | 'webDesign' 
+  | 'uxUiDesign'
 
 type MunichCourses =
-  CommonCourses |
-  'introComputerScience' |
-  'pythonIntermediate' |
-  'dataScience' |
-  'frontendDevelopment' |
-  'uxUiDesign';
+  | CommonCourses 
+  | 'introComputerScience' 
+  | 'pythonIntermediate' 
+  | 'dataScience' 
+  | 'frontendDevelopment' 
+  | 'uxUiDesign'
 
 type NRWCourses =
-  CommonCourses |
-  'pythonIntroduction' |
-  'dataAnalytics' |
-  'htmlCss' |
-  'javascript' |
-  'infrastructureBasics' |
-  'webDesignFundamentals' |
-  'uxDesign';
+  | CommonCourses 
+  | 'pythonIntroduction' 
+  | 'dataAnalytics' 
+  | 'htmlCss' 
+  | 'javascript' 
+  | 'infrastructureBasics' 
+  | 'webDesignFundamentals' 
+  | 'uxDesign'
 
 export type CourseKey =
   BerlinCourses |
-  `munich_${MunichCourses}` |
-  `nrw_${NRWCourses}`;
+  `${Extract<ReDILocationKey, 'munich'>}_${MunichCourses}` |
+  `${Extract<ReDILocationKey, 'nrw'>}_${NRWCourses}`;
 
 interface Course {
   readonly label: string;
@@ -101,7 +101,7 @@ const Courses: Record<CourseKey, Course> = {
     label: 'Web Design',
     location: 'berlin',
   },
-  uiUxDesign: {
+  uxUiDesign: {
     label: 'UX/UI Design',
     location: 'berlin'
   },

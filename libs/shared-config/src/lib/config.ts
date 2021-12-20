@@ -1,31 +1,3 @@
-export const REDI_LOCATION_NAMES = {
-  berlin: 'Berlin',
-  munich: 'Munich',
-  nrw: 'NRW',
-} as const
-
-export type ReDILocationKey = keyof typeof REDI_LOCATION_NAMES
-
-export const GENDERS = {
-  male: 'Male',
-  female: 'Female',
-  other: 'Other',
-} as const
-
-export type GenderKey = keyof typeof GENDERS
-
-export const EDUCATION_LEVELS = {
-  middleSchool: 'Middle School',
-  highSchool: 'High School',
-  apprenticeship: 'Apprenticeship',
-  universityBachelor: 'University Degree (Bachelor)',
-  universityMaster: 'University Degree (Master)',
-  universityPhd: 'University Degree (PhD)',
-} as const
-
-export type EducationLevelKey = keyof typeof EDUCATION_LEVELS
-
-
 export const REPORT_PROBLEM_CATEGORIES = [
   { id: 'wantToQuit', label: 'I want to quit' },
 ] as const

@@ -1,9 +1,11 @@
+import { Timestamp } from './Timestamp';
 import { EducationRecord } from './tp-jobseeker-profile-cv-shared-interfaces/EducationRecord'
 import { ExperienceRecord } from './tp-jobseeker-profile-cv-shared-interfaces/ExperienceRecord'
 import { LanguageRecord } from './tp-jobseeker-profile-cv-shared-interfaces/LanguageRecord'
 import { ProjectRecord } from './tp-jobseeker-profile-cv-shared-interfaces/ProjectRecord'
 
-export type TpJobseekerCv = {
+export type TpJobseekerCv =
+  Timestamp & {
   id: string
   cvName: string
 
@@ -40,9 +42,6 @@ export type TpJobseekerCv = {
   experience?: ExperienceRecord[]
   education?: EducationRecord[]
   projects?: ProjectRecord[]
-
-  createdAt: Date
-  updatedAt: Date
 
   // TODO: this was added here to make <JobseekerFormSectionOverview>
   // work in both CV Builder and Profile builder. Refactor that component

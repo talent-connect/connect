@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback, FunctionComponent } from 'react'
-import { Checkbox, Icon } from '../atoms'
+import { Checkbox, Icon } from '../../atoms'
 import classnames from 'classnames'
 import './FilterDropdown.scss'
 

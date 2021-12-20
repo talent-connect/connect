@@ -1,6 +1,8 @@
+import { Timestamp } from './Timestamp';
 import { TpCompanyProfile } from './TpCompanyProfile'
 
-export type TpJobListing = {
+export type TpJobListing =
+  Timestamp & {
   id: string
   title?: string
   location?: string
@@ -14,7 +16,4 @@ export type TpJobListing = {
 
   tpCompanyProfileId?: string
   tpCompanyProfile?: TpCompanyProfile
-
-  createdAt: Date
-  updatedAt: Date
 }

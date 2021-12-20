@@ -1,7 +1,7 @@
 import classnames from 'clsx'
 import { FunctionComponent, useState } from 'react'
 import { Columns, Element } from 'react-bulma-components'
-import { Icon } from '../atoms'
+import { Icon } from '../../atoms'
 import './FaqItem.scss'
 
 interface Props {
