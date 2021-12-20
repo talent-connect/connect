@@ -1,11 +1,12 @@
 import './EmptySectionPlaceholder.scss'
 import classnames from 'clsx'
+import { CSSProperties, ReactNode } from 'react';
 
 interface Props {
   height: 'extra-slim' | 'slim' | 'tall' | 'none'
   onClick: () => void
-  style?: React.CSSProperties
-  children: React.ReactNode
+  style?: CSSProperties
+  children: ReactNode
 }
 
 export function EmptySectionPlaceholder({

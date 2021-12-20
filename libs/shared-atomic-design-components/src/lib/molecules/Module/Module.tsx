@@ -1,16 +1,15 @@
-import { FunctionComponent, ReactNode } from 'react'
+import { FunctionComponent } from 'react'
 import { Caption } from '../../atoms'
 import classnames from 'classnames'
 import './Module.scss'
+import { ModuleProps } from './Module.props';
 
-interface Props {
-  title: string
-  children: ReactNode
-  buttons?: ReactNode
-  className?: string
-}
-
-const Module: FunctionComponent<Props> = ({ title, children, buttons, className }) => {
+const Module: FunctionComponent<ModuleProps> = ({
+  title,
+  children,
+  buttons,
+  className
+}) => {
   return (
     <div className={classnames('module', { [`${className}`]: className })}>
       <div className="module__header">

@@ -3,7 +3,7 @@ import {
   Icon,
   Modal,
 } from '@talent-connect/shared-atomic-design-components'
-import { FunctionComponent } from 'react'
+import { CSSProperties, FunctionComponent, ReactNode } from 'react'
 import { Element } from 'react-bulma-components'
 import './Editable.scss'
 
@@ -13,11 +13,11 @@ interface Props {
   disableEditing?: boolean
   isFormDirty?: boolean
   title?: string
-  readComponent: React.ReactNode
+  readComponent: ReactNode
   modalTitle: string
   modalHeadline: string
-  modalBody: React.ReactNode
-  modalStyles?: React.CSSProperties
+  modalBody: ReactNode
+  modalStyles?: CSSProperties
 }
 
 export const Editable: FunctionComponent<Props> = ({

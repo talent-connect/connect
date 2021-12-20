@@ -1,19 +1,10 @@
-import { FunctionComponent, useState, ReactNode } from 'react'
+import { FunctionComponent, useState } from 'react'
 import { Caption, Icon } from '../../atoms'
 import classnames from 'classnames'
 import './Editable.scss'
+import { EditableProps } from './Editable.props';
 
-interface Props {
-  title: string
-  onSave: () => void
-  onClose: () => void
-  read: ReactNode
-  className?: string
-  placeholder?: string
-  savePossible?: boolean
-}
-
-const Editable: FunctionComponent<Props> = ({
+const Editable: FunctionComponent<EditableProps> = ({
   title,
   children,
   read,

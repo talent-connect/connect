@@ -1,5 +1,6 @@
 import { Story } from '@storybook/react'
 import { StoryFnReactReturnType } from '@storybook/react/dist/ts3.9/client/preview/types'
+import { ReactNode } from 'react';
 
 /** Creates a Storybook's stories factory for a component*/
 export function storybookTemplate<TPropsType> (
@@ -10,7 +11,7 @@ export function storybookTemplate<TPropsType> (
     /** Properties of the React component */
     props: Partial<TPropsType>,
     /** React Nodes to be injected in the component's slot */
-    Children?: React.ReactNode): Story<TPropsType> 
+    Children?: ReactNode): Story<TPropsType> 
     {
     const template: Story<TPropsType> = (args) => {
       if (Children) return <Component {...args}>{ Children }</Component>

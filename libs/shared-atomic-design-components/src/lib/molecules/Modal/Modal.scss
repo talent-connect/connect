@@ -1,5 +1,5 @@
-@use '../styles/colors' as colors;
-@import '../styles/_variables.scss';
+@use '../../styles/colors' as colors;
+@import '../../styles/_variables.scss';
 
 .modal {
   // not the nicest overwrite but the less ugly one

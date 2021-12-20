@@ -2,14 +2,10 @@ import classnames from 'clsx'
 import { FunctionComponent, useState } from 'react'
 import { Columns, Element } from 'react-bulma-components'
 import { Icon } from '../../atoms'
+import { FaqItemProps } from './FaqItem.props';
 import './FaqItem.scss'
 
-interface Props {
-  question: string
-  answer: string
-}
-
-const FaqItem: FunctionComponent<Props> = ({ question, answer }: Props) => {
+const FaqItem: FunctionComponent<FaqItemProps> = ({ question, answer }) => {
   const [showAnswer, setShowAnswer] = useState(false)
   return (
     <div className="faq">

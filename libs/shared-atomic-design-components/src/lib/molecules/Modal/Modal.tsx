@@ -1,18 +1,18 @@
-import { FunctionComponent, ReactNode, useEffect, useState } from 'react'
+import { FunctionComponent, useEffect, useState } from 'react'
 import { Heading } from '../../atoms'
 import { Modal as BulmaModal } from 'react-bulma-components'
 import './Modal.scss'
+import { ModalProps } from './Modal.props';
 
-interface Props {
-  title?: string
-  show: boolean
-  confirm?: boolean
-  children: ReactNode
-  stateFn?: (state: boolean) => void
-  styles?: React.CSSProperties
-}
 
-const Modal: FunctionComponent<Props> & Record<'Body'|'Foot',any> = ({ title, children, stateFn, show, confirm, styles }) => {
+const Modal: FunctionComponent<ModalProps> & Record<'Body' | 'Foot', FunctionComponent> = ({
+  title,
+  children,
+  stateFn,
+  show,
+  confirm,
+  styles
+}) => {
   const setShowModal = stateFn ? () => stateFn(false) : undefined
 
   const [internalShow, setInternalShow] = useState(false)

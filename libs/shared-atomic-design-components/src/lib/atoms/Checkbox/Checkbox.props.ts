@@ -1,7 +1,6 @@
 import { FormElementProps } from '../../typescript/propsInterfaces';
 
-export type CheckboxProps =
-  FormElementProps<HTMLInputElement> & {
-  /** */
+export interface CheckboxProps extends FormElementProps<HTMLInputElement> {
+  /** ... */
   checked: boolean
 }

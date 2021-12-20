@@ -2,20 +2,11 @@ import { useState, useEffect, useRef, useCallback, FunctionComponent } from 'rea
 import { Checkbox, Icon } from '../../atoms'
 import classnames from 'classnames'
 import './FilterDropdown.scss'
-
-type Item = { label: string; value: string }
-
-interface Props {
-  label: string
-  className: string
-  selected: string[]
-  items: Item[]
-  onChange: (item: string) => void
-}
+import { FilterDropdownProps } from './FilterDropdown.props';
 
 const baseClass = 'filter-dropdown'
 
-const FilterDropdown: FunctionComponent<Props> = ({
+const FilterDropdown: FunctionComponent<FilterDropdownProps> = ({
   label,
   className,
   selected,
