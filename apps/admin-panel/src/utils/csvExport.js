@@ -7,10 +7,11 @@ export const redMatchesCsvExporter = async (redMatches) => {
     applicationText: redMatch.applicationText,
     expectationText: redMatch.expectationText,
     rediLocation: redMatch.rediLocation,
-    mentorName: `${redMatch.mentor.firstName} ${redMatch.mentor.lastName}`,
-    mentorContactEmail: redMatch.mentor.contactEmail,
-    menteeName: `${redMatch.mentee.firstName} ${redMatch.mentee.lastName}`,
-    menteeContactEmail: redMatch.mentee.contactEmail,
+    mentorName: `${redMatch.mentor?.firstName} ${redMatch.mentor?.lastName}`,
+    mentorContactEmail: redMatch.mentor?.contactEmail,
+    menteeName: `${redMatch.mentee?.firstName} ${redMatch.mentee?.lastName}`,
+    menteeContactEmail: redMatch.mentee?.contactEmail,
+    matchCompletedOn: redMatch.matchCompletedOn,
   }))
 
   const csv = convertToCSV({
