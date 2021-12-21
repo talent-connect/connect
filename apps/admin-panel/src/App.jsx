@@ -95,6 +95,8 @@ import {
 
 import { objectEntries } from '@talent-connect/typescript-utilities'
 
+import { redMatchesCsvExporter } from './utils/csvExport'
+
 /** REFERENCE DATA */
 
 const rediLocations = objectEntries(REDI_LOCATION_NAMES).map(([id, label]) => ({
@@ -629,6 +631,7 @@ const RedMatchList = (props) => (
     sort={{ field: 'createdAt', order: 'DESC' }}
     pagination={<AllModelsPagination />}
     filters={<RedMatchListFilters />}
+    exporter={redMatchesCsvExporter}
   >
     <Datagrid>
       <TextField source="rediLocation" label="City" />
