@@ -51,7 +51,7 @@ const SocialMediaIcons = () => (
     {icons.map((item: SocialMediaIcon) => (
       <li key={item.icon}>
         <a
-          href={item[envRediLocation()]}
+          href={item[envRediLocation()] || item['berlin']}
           target="_blank"
           rel="noopener noreferrer"
         >
