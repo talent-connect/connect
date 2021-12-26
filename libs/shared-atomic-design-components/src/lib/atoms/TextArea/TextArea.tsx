@@ -1,13 +1,13 @@
 import classnames from 'classnames'
 import { Form, Content, Columns } from 'react-bulma-components'
-import './FormTextArea.scss'
+import './TextArea.scss'
 import { get } from 'lodash'
 import { FC } from 'react';
-import { FormTextAreaProps } from './FormTextArea.props';
+import { TextAreaProps } from './TextArea.props';
 
 // the any is not the best solution here, I would need to use the props needed for
 // the field and the formik values coming from the form context
-const FormTextArea: FC<FormTextAreaProps> = ({
+const TextArea: FC<TextAreaProps> = ({
   name,
   className,
   label,
@@ -96,4 +96,4 @@ const FormTextArea: FC<FormTextAreaProps> = ({
   )
 }
 
-export default FormTextArea
+export default TextArea

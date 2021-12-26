@@ -3,7 +3,7 @@ import groupBy from 'lodash/groupBy'
 import { Columns, Heading, Element, Content } from 'react-bulma-components'
 import { Checkbox } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
-import { RedProfile } from '@talent-connect/shared-types'
+import { CategoryGroupId, RedProfile } from '@talent-connect/shared-types'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
 
@@ -11,7 +11,7 @@ import { profileSaveStart } from '../../redux/user/actions'
 import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
-import { CATEGORIES, CATEGORY_GROUPS } from '@talent-connect/shared-config'
+import { CATEGORIES, CategoryKey, CATEGORY_GROUPS } from '@talent-connect/shared-config'
 import { ReadMentoringTopics } from '../molecules'
 import { objectEntries } from '@talent-connect/typescript-utilities'
 
@@ -51,7 +51,7 @@ const EditableMentoringTopics: FC<Props> = ({
   profileSaveStart
 }) => {
 
-  const submitForm = async (values: FormikValues) => {
+  const onSubmit = async (values: FormikValues) => {
     const profileMentoring = values as Partial<RedProfile>
     profileSaveStart({ ...profileMentoring, id })
   }
@@ -68,7 +68,7 @@ const EditableMentoringTopics: FC<Props> = ({
     initialValues,
     enableReinitialize: true,
     validationSchema,
-    onSubmit: submitForm,
+    onSubmit,
   })
 
   const { categories: selectedCategories } = formik.values
@@ -76,12 +76,9 @@ const EditableMentoringTopics: FC<Props> = ({
   const categoriesChange = (e: any) => {
     e.persist()
     const value = e.target.value
-    let newCategories
-    if (e.target.checked) {
-      newCategories = selectedCategories.concat(value)
-    } else {
-      newCategories = selectedCategories.filter((cat: any) => cat !== value)
-    }
+    const newCategories = e.target.checked
+      ? selectedCategories.concat(value)
+      : selectedCategories.filter((cat: any) => cat !== value)
     formik.setFieldValue('categories', newCategories)
     formik.setFieldTouched('categories', true, false)
   }
@@ -116,13 +113,21 @@ const EditableMentoringTopics: FC<Props> = ({
   )
 }
 
-const CategoryGroup: FC = ({
+interface CategoryGroupProps {
+  id: CategoryGroupId,
+  label: string,
+  selectedCategories: CategoryKey[],
+  onChange: Function,
+  formik: any // TODO
+}
+
+const CategoryGroup: FC<CategoryGroupProps> = ({
   id,
   label,
   selectedCategories,
   onChange,
   formik,
-}: any) => { // TODO: types
+}) => { // TODO: types
   // The current REDI_LOCATION might not use the current CategoryGroup (e.g.
   // Munich doesnt, at the time or writing, use 'coding' or 'other'. If it's the case, return null
 

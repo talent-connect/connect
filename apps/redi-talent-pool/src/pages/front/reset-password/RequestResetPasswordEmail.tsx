@@ -1,6 +1,6 @@
 import {
   Button,
-  FormInput,
+  TextInput,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
 import { FormikValues, useFormik } from 'formik'
@@ -76,7 +76,7 @@ export const RequestResetPasswordEmail: FC = () => {
 
           {!resetPasswordSuccess && (
             <form onSubmit={(e) => e.preventDefault()}>
-              <FormInput
+              <TextInput
                 name="email"
                 type="email"
                 placeholder="Email"

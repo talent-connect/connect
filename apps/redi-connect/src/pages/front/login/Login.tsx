@@ -18,7 +18,7 @@ import { buildFrontendUrl } from '../../../utils/build-frontend-url'
 import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import {
   Button,
-  FormInput,
+  TextInput,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
 
@@ -123,14 +123,14 @@ const Login: FC = () => {
           )}
 
           <form onSubmit={(e) => e.preventDefault()}>
-            <FormInput
+            <TextInput
               name="username"
               type="email"
               placeholder="Email"
               {...formik}
             />
 
-            <FormInput
+            <TextInput
               name="password"
               type="password"
               placeholder="Password"

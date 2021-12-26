@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { FormInput } from '@talent-connect/shared-atomic-design-components'
+import { TextInput } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile } from '@talent-connect/shared-types'
 import { connect } from 'react-redux'
@@ -62,26 +62,26 @@ const EditableContactDetails: FC<Props> = ({
       savePossible={formik.dirty && formik.isValid}
       read={<ReadContactDetails.Me />}
     >
-      <FormInput
+      <TextInput
         name="firstName"
         placeholder="First name"
         label="First name"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="lastName"
         placeholder="Last name"
         label="Last name"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="contactEmail"
         type="email"
         placeholder="Email"
         label="E-mail address"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="telephoneNumber"
         placeholder="Telephone number"
         label="Telephone number"

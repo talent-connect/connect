@@ -3,7 +3,7 @@ import { Columns, Content, Element, Form } from 'react-bulma-components'
 import {
   Heading,
   Button,
-  FormInput,
+  TextInput,
 } from '@talent-connect/shared-atomic-design-components'
 import { AccountOperation } from '../../../components/templates'
 import { FormikValues, useFormik } from 'formik'
@@ -77,7 +77,7 @@ export const RequestResetPasswordEmail: FC = () => {
 
           {!resetPasswordSuccess && (
             <form onSubmit={(e) => e.preventDefault()}>
-              <FormInput
+              <TextInput
                 name="email"
                 type="email"
                 placeholder="Email"

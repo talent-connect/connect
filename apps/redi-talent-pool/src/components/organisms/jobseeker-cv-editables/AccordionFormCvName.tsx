@@ -1,6 +1,6 @@
 import {
   Button,
-  FormInput,
+  TextInput,
 } from '@talent-connect/shared-atomic-design-components'
 import { TpJobseekerCv } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
@@ -67,8 +67,7 @@ const Form: FC<FormProps> = ({
   queryHookResult: { data: profile },
   mutationHookResult,
 }) => {
-  const initialValues: Partial<TpJobseekerCv> = useMemo(
-    () => ({
+  const initialValues: Partial<TpJobseekerCv> = useMemo(() => ({
       firstName: profile?.firstName ?? '',
       lastName: profile?.lastName ?? '',
     }),
@@ -104,13 +103,13 @@ const Form: FC<FormProps> = ({
       >
         Add your name to your CV.
       </Element>
-      <FormInput
+      <TextInput
         name="firstName"
         placeholder="James"
         label="First name*"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="lastName"
         placeholder="Smith"
         label="Last name*"

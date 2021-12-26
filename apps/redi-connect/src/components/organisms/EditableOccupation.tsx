@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import {
-  FormInput,
+  TextInput,
   FormSelect,
 } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
@@ -140,13 +140,13 @@ const EditableOccupation: FC<Props> = ({
     >
       {isMentor && (
         <>
-          <FormInput
+          <TextInput
             name="mentor_occupation"
             label="What is your job title?"
             placeholder="Your job"
             {...formik}
           />
-          <FormInput
+          <TextInput
             name="mentor_workPlace"
             label="Which company are you working for?"
             placeholder="Company"
@@ -166,13 +166,13 @@ const EditableOccupation: FC<Props> = ({
           />
           {occupation === 'job' && (
             <>
-              <FormInput
+              <TextInput
                 name="mentee_occupationJob_placeOfEmployment"
                 label="Where are you employed?"
                 placeholder="Company"
                 {...formik}
               />
-              <FormInput
+              <TextInput
                 name="mentee_occupationJob_position"
                 label="What is your position?"
                 placeholder="Job position"
@@ -182,13 +182,13 @@ const EditableOccupation: FC<Props> = ({
           )}
           {occupation === 'student' && (
             <>
-              <FormInput
+              <TextInput
                 name="mentee_occupationStudent_studyPlace"
                 label="At what university do you study?"
                 placeholder="University"
                 {...formik}
               />
-              <FormInput
+              <TextInput
                 name="mentee_occupationStudent_studyName"
                 label="What do you study?"
                 placeholder="Study"
@@ -197,7 +197,7 @@ const EditableOccupation: FC<Props> = ({
             </>
           )}
           {occupation === 'lookingForJob' && (
-            <FormInput
+            <TextInput
               name="mentee_occupationLookingForJob_what"
               label="What kind of job?"
               placeholder="Dreamjob..."
@@ -205,7 +205,7 @@ const EditableOccupation: FC<Props> = ({
             />
           )}
           {occupation === 'other' && (
-            <FormInput
+            <TextInput
               name="mentee_occupationOther_description"
               label="What are you currently doing?"
               placeholder="Whats up?"
@@ -220,7 +220,7 @@ const EditableOccupation: FC<Props> = ({
 
 const mapStateToProps = ({ user: { profile }}: RootState) => ({ profile })
 
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: Function) => ({
   profileSaveStart: (profile: Partial<RedProfile>) =>
     dispatch(profileSaveStart(profile)),
 })

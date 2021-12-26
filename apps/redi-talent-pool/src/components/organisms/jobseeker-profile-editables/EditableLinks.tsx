@@ -1,6 +1,6 @@
 import {
   Button,
-  FormInput,
+  TextInput,
 } from '@talent-connect/shared-atomic-design-components'
 import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
@@ -188,43 +188,43 @@ export const JobseekerFormSectionLinks: FC<JobseekerFormSectionLinksProps> = ({
         Include links to where you have online profiles.
       </Element>
 
-      <FormInput
+      <TextInput
         name="personalWebsite"
         placeholder="https://www.mysite.com"
         label="Personal Website"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="githubUrl"
         placeholder="https://github.com/myusername"
         label="Github URL"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="linkedInUrl"
         placeholder="https://linkedin.com/in/firstname-lastname"
         label="LinkedIn Profile URL"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="twitterUrl"
         placeholder="https://twitter.com/mytwitterpage"
         label="Your twitter page URL"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="behanceUrl"
         placeholder="https://behance.net/mybehancepage"
         label="Your Behance page URL"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="stackOverflowUrl"
         placeholder="https://stackoverflow.com/users/mypage"
         label="Your Stackoverflow profile"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="dribbbleUrl"
         placeholder="https://dribbble.com/mypage"
         label="Your Dribbble Page"

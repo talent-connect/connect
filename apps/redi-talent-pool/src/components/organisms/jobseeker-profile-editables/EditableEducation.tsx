@@ -6,7 +6,7 @@ import {
   FormDraggableAccordion,
   TextInput,
   FormSelect,
-  FormTextArea,
+  TextArea,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
 import {
@@ -164,8 +164,7 @@ export const JobseekerFormSectionEducation: FC<JobseekerFormSectionEducationProp
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
 
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(
-    () => ({
+  const initialValues: Partial<TpJobseekerProfile> = useMemo(() => ({
       education: profile?.education ?? [buildBlankEducationRecord()],
     }),
     [profile?.education]
@@ -198,14 +197,13 @@ export const JobseekerFormSectionEducation: FC<JobseekerFormSectionEducationProp
     closeAllAccordionsSignalSubject.current.next()
   }, [formik])
 
-  const onDragEnd = useCallback(
-    (result: any) => {
-      if (!result.destination) return
+  const onDragEnd = useCallback(({ destination, source }: any) => {
+      if (!destination) return
 
       const reorderedEducation = reorder(
         formik.values.education,
-        result.source.index,
-        result.destination.index
+        source.index,
+        destination.index
       )
 
       formik.setFieldValue('education', reorderedEducation)
@@ -276,7 +274,7 @@ export const JobseekerFormSectionEducation: FC<JobseekerFormSectionEducationProp
                           label="The institution or school"
                           {...formik}
                         />
-                        <FormTextArea
+                        <TextArea
                           label="Description (optional)"
                           name={`education[${index}].description`}
                           rows={7}

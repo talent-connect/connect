@@ -1,8 +1,8 @@
 import {
   Button,
-  FormInput,
+  TextInput,
   FormSelect,
-  FormTextArea,
+  TextArea,
   Heading,
   Icon,
   Modal,
@@ -223,19 +223,19 @@ function ModalForm({
         >
           Add the job postings you want to publish to jobseekers at ReDI School.
         </Element>
-        <FormInput
+        <TextInput
           name={`title`}
           placeholder="Junior Frontend Developer"
           label="Job Title*"
           {...formik}
         />
-        <FormInput
+        <TextInput
           name={`location`}
           placeholder="Where is the position based"
           label="Location*"
           {...formik}
         />
-        <FormTextArea
+        <TextArea
           label="Job Summary*"
           name={`summary`}
           rows={7}
@@ -274,13 +274,13 @@ function ModalForm({
           items={formEmploymentType}
           {...formik}
         />
-        <FormInput
+        <TextInput
           name={`languageRequirements`}
           placeholder="German C1, English B2, French B1..."
           label="Language requirements*"
           {...formik}
         />
-        <FormInput
+        <TextInput
           label="Salary range"
           placeholder="€40K - €52K"
           name={`salaryRange`}

@@ -9,7 +9,7 @@ import omit from 'lodash/omit'
 import {
   Button,
   Checkbox,
-  FormInput,
+  TextInput,
   FormSelect,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
@@ -144,33 +144,33 @@ const SignUp: FC = () => {
         <Columns.Column size={5} offset={1}>
           <Heading border="bottomLeft">Sign-up</Heading>
           <form onSubmit={(e) => e.preventDefault()} className="form">
-            <FormInput
+            <TextInput
               name="firstName"
               placeholder="Your first name"
               {...formik}
             />
 
-            <FormInput
+            <TextInput
               name="lastName"
               placeholder="Your last name"
               {...formik}
             />
 
-            <FormInput
+            <TextInput
               name="contactEmail"
               type="email"
               placeholder="Your Email"
               {...formik}
             />
 
-            <FormInput
+            <TextInput
               name="password"
               type="password"
               placeholder="Your password"
               {...formik}
             />
 
-            <FormInput
+            <TextInput
               name="passwordConfirm"
               type="password"
               placeholder="Repeat your password"

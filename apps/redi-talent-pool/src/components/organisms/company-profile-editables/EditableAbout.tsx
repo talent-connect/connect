@@ -1,7 +1,7 @@
 import {
   Button,
   Caption,
-  FormTextArea,
+  TextArea,
 } from '@talent-connect/shared-atomic-design-components'
 import { TpCompanyProfile } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
@@ -17,7 +17,7 @@ interface Props {
   profile: Partial<TpCompanyProfile>
   disableEditing?: boolean
 }
-export const EditableAbout: FC<Props> = ({ profile: { about }, disableEditing }) => {
+export const EditableAbout: FC<Props> = ({ profile, disableEditing }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
@@ -42,7 +42,7 @@ export const EditableAbout: FC<Props> = ({ profile: { about }, disableEditing })
                   ),
                 }}
               >
-                {about?.replace(/\n/g, `\n\n`)}
+                {profile.about?.replace(/\n/g, `\n\n`)}
               </ReactMarkdown>
             ) : (
               <EmptySectionPlaceholder
@@ -81,8 +81,7 @@ function ModalForm({
 }) {
   const { data: profile } = useTpCompanyProfileQuery()
   const mutation = useTpCompanyProfileUpdateMutation()
-  const initialValues: Partial<TpCompanyProfile> = useMemo(
-    () => ({
+  const initialValues: Partial<TpCompanyProfile> = useMemo(() => ({
       about: profile?.about ?? '',
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -117,7 +116,7 @@ function ModalForm({
         stand out, what are you passionate about and what are your future
         aspirations.
       </Element>
-      <FormTextArea
+      <TextArea
         label="About you"
         name="about"
         rows={7}

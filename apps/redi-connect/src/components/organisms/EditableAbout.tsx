@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { FormTextArea } from '@talent-connect/shared-atomic-design-components'
+import { TextArea } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile, UserType } from '@talent-connect/shared-types'
 import { connect } from 'react-redux'
@@ -70,7 +70,7 @@ const EditableAbout: FC<Props> = ({
       savePossible={formik.dirty && formik.isValid}
       read={<ReadAbout.Me />}
     >
-      <FormTextArea
+      <TextArea
         label="Tell us a few words about yourself (this will be displayed on your profile)* (100-600 characters)"
         name="personalDescription"
         rows={4}
@@ -79,7 +79,7 @@ const EditableAbout: FC<Props> = ({
         maxChar={personalDescriptionRange.max}
         {...formik}
       />
-      <FormTextArea
+      <TextArea
         label={expectationsFieldLabel(userType)}
         name="expectations"
         rows={4}
@@ -102,8 +102,6 @@ const expectationsFieldLabel = (userType: UserType): string => {
     case 'public-sign-up-mentor-rejected':
       return 'Feel free to share how you can best support your mentees and any expectations you may have towards them'
   }
-
-  return assertUnreachable(userType)
 }
 
 const expectationsFieldPlaceholder = (userType: UserType): string => {
@@ -118,13 +116,11 @@ const expectationsFieldPlaceholder = (userType: UserType): string => {
     case 'public-sign-up-mentor-rejected':
       return 'Providing career or technical support, expecting commitment, etc.'
   }
-
-  return assertUnreachable(userType)
 }
 
 const mapStateToProps = ({ user: { profile }}: RootState) => ({ profile })
 
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: Function) => ({
   profileSaveStart: (profile: Partial<RedProfile>) =>
     dispatch(profileSaveStart(profile)),
 })

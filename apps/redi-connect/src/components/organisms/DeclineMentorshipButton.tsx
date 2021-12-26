@@ -4,10 +4,10 @@ import * as Yup from 'yup'
 import { useFormik } from 'formik'
 import { Content } from 'react-bulma-components'
 import {
-  FormTextArea,
+  TextArea,
   Button,
   FormSelect,
-  FormInput,
+  TextInput,
 } from '@talent-connect/shared-atomic-design-components'
 import { Modal } from '@talent-connect/shared-atomic-design-components'
 import { matchesDeclineMentorshipStart } from '../../redux/matches/actions'
@@ -97,13 +97,13 @@ const DeclineMentorshipButton: FC<DeclineMentorshipButtonProps> = ({
             />
             {formik.values.ifDeclinedByMentor_chosenReasonForDecline ===
             'other' ? (
-              <FormInput
+              <TextInput
                 name="ifDeclinedByMentor_ifReasonIsOther_freeText"
                 label="You chose other. Please specify:"
                 {...formik}
               />
             ) : null}
-            <FormTextArea
+            <TextArea
               name="ifDeclinedByMentor_optionalMessageToMentee"
               rows={4}
               label="Would you like to send the mentee a short message with your cancellation?"
@@ -131,7 +131,7 @@ const formDeclineOptions = Object.entries(
 ).map(([value, label]) => ({ value, label }))
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: Function) => ({
   matchesDeclineMentorshipStart: (options: {
     redMatchId: string
     ifDeclinedByMentor_chosenReasonForDecline: string

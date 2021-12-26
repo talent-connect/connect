@@ -2,9 +2,9 @@ import {
   Button,
   Caption,
   FormDatePicker,
-  FormInput,
+  TextInput,
   FormSelect,
-  FormTextArea,
+  TextArea,
   PipeList,
 } from '@talent-connect/shared-atomic-design-components'
 import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
@@ -216,8 +216,7 @@ export const JobseekerFormSectionImportantDetails: FC<JobseekerFormSectionImport
 }) => {
   const { data: profile } = queryHookResult
   const mutation = mutationHookResult
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(
-    () => ({
+  const initialValues: Partial<TpJobseekerProfile> = useMemo(() => ({
       availability: profile?.availability ?? '',
       desiredEmploymentType: profile?.desiredEmploymentType ?? [],
       contactEmail: profile?.contactEmail ?? '',
@@ -268,19 +267,19 @@ export const JobseekerFormSectionImportantDetails: FC<JobseekerFormSectionImport
         This is where employers can get the basics that they need to get in
         touch and see your work.
       </Element>
-      <FormInput
+      <TextInput
         name="contactEmail"
         placeholder="awesome@gmail.com"
         label="Email*"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="phoneNumber"
         placeholder="0176 01234567"
         label="Phone Number"
         {...formik}
       />
-      <FormTextArea
+      <TextArea
         label="Postal mailing address"
         name="postalMailingAddress"
         rows={4}

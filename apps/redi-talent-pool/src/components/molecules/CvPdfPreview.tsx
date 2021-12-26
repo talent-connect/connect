@@ -17,7 +17,7 @@ import {
 } from '@talent-connect/talent-pool/config'
 import { isEqual } from 'lodash'
 import moment from 'moment'
-import React, { FC, useEffect } from 'react'
+import React, { FC, memo, useEffect } from 'react'
 import {
   Document as ReactPDFDocument,
   Page as ReactPDFPage,
@@ -635,7 +635,7 @@ export const CVPDFPreview: FC<CVPDFPreviewProps> = ({
     )
   }
 
-export const CVPDFPreviewMemoized = React.memo(
+export const CVPDFPreviewMemoized = memo(
   CVPDFPreview,
   (prevProps, nextProps) => isEqual(prevProps, nextProps)
 )

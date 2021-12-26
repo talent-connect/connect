@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react'
+import React, { FC, useCallback, useEffect, useState } from 'react'
 import { get, mapValues, keyBy, groupBy } from 'lodash'
 import {
   Admin,
@@ -156,13 +156,13 @@ RecordUpdatedAt.defaultProps = {
   label: 'Record updated at',
 }
 
-const LanguageList: FC<{ data?: Record<string, string> }> = (props) => {
-  return <span>{props.data ? Object.values(props.data).join(', ') : null}</span>
+const LanguageList: FC<{ data?: Record<string, string> }> = ({ data }) => {
+  return <span>{data ? Object.values(data).join(', ') : null}</span>
 }
 
-const CategoryList: FC<{ data: any }> = (props) => {
+const CategoryList: FC<{ data: any }> = ({ data }) => {
   const categoriesGrouped = groupBy(
-    props.data,
+    data,
     (catId) => categoriesIdToGroupMap[catId]
   )
   return (
@@ -282,7 +282,7 @@ const RedProfileList: FC = (props) => {
 }
 
 const FreeMenteeSpotsPerLocationAside: FC = () => {
-  const [mentorsList, setMentorsList] = React.useState([])
+  const [mentorsList, setMentorsList] = useState([])
 
   useEffect(() => {
     dataProvider('GET_LIST', 'redProfiles', {
@@ -369,7 +369,7 @@ const RedProfileListFilters: FC = (props) => (
     <SelectInput
       source="mentee_currentlyEnrolledInCourse"
       choices={coursesFlat.map(({ id, label }) => ({ id, name: label }))}
-    ></SelectInput>
+    />
     <NullableBooleanInput
       label="User activated yes/no"
       source="userActivated"
@@ -523,15 +523,13 @@ const RedProfileShow: FC = (props) => (
 )
 
 const RedProfileEditActions: FC = (props) => {
-  const userType = props && props.data && props.data.userType
+  const userType = props?.data?.userType
   if (
     ![
       'public-sign-up-mentor-pending-review',
       'public-sign-up-mentee-pending-review',
     ].includes(userType)
-  ) {
-    return null
-  }
+  ) return null
   return (
     <CardActions>
       User is pending. Please
@@ -610,7 +608,12 @@ const MenteeEnrolledInCourseInput: FC = (props) => {
   )
 }
 
-const FullName: FC = ({ record, sourcePrefix }) => {
+interface FullNameProps {
+  sourcePrefix?: string
+  record: any // TODO
+}
+
+const FullName: FC<FullNameProps> = ({ record, sourcePrefix = '' }) => {
   return (
     <span>
       {get(record, `${sourcePrefix}firstName`)}{' '}
@@ -618,6 +621,7 @@ const FullName: FC = ({ record, sourcePrefix }) => {
     </span>
   )
 }
+
 FullName.defaultProps = {
   sourcePrefix: '',
   label: 'Full name',
@@ -668,7 +672,7 @@ const RedMatchShow: FC = (props) => (
       <TextField
         source="applicationText"
         label="Application text"
-        helperText="Field contains the aplication text that a mentee as an application to a mentor when asking for mentorship."
+        helperText="Field contains the application text that a mentee as an application to a mentor when asking for mentorship."
       />
       <TextField
         source="expectationText"
@@ -719,10 +723,10 @@ const RedMatchShow: FC = (props) => (
     </SimpleShowLayout>
   </Show>
 )
-const RedMatchShow_RelatedMentoringSessions: FC = ({
+const RedMatchShow_RelatedMentoringSessions: FC<{ record: any }> = ({ // TODO:  type
   record: { mentorId, menteeId },
 }) => {
-  const [mentoringSessions, setMentoringSessions] = React.useState([])
+  const [mentoringSessions, setMentoringSessions] = useState([])
   useEffect(() => {
     dataProvider('GET_LIST', 'redMentoringSessions', {
       pagination: { page: 1, perPage: 0 },
@@ -967,12 +971,12 @@ const RedMentoringSessionListFilters: FC = (props) => (
   </Filter>
 )
 const RedMentoringSessionListAside: FC = () => {
-  const [fromDate, setFromDate] = React.useState(null)
-  const [toDate, setToDate] = React.useState(null)
-  const [rediLocation, setRediLocation] = React.useState(undefined)
-  const [loadState, setLoadState] = React.useState('pending')
-  const [result, setResult] = React.useState(null)
-  const [step, setStep] = React.useState(0)
+  const [fromDate, setFromDate] = useState(null)
+  const [toDate, setToDate] = useState(null)
+  const [rediLocation, setRediLocation] = useState(undefined)
+  const [loadState, setLoadState] = useState('pending')
+  const [result, setResult] = useState(null)
+  const [step, setStep] = useState(0)
   const increaseStep = () => setStep((step) => step + 1)
 
   const picker = (getter, setter, label) => (
@@ -993,27 +997,24 @@ const RedMentoringSessionListAside: FC = () => {
   )
 
   const valid = fromDate && toDate && toDate > fromDate
-  const doLoad = React.useCallback(() =>
-    (async () => {
-      console.log('hello')
-      if (valid) {
-        setLoadState('loading')
-        setStep(0)
-        const sessions = await dataProvider(
-          'GET_LIST',
-          'redMentoringSessions',
-          {
-            pagination: { page: 1, perPage: 0 },
-            sort: {},
-            filter: { date: { gte: fromDate, lte: toDate }, rediLocation },
-          }
-        )
-        setLoadState('success')
-        setResult(
-          sessions.data.reduce((acc, curr) => acc + curr.minuteDuration, 0)
-        )
-      }
-    })()
+  const doLoad = useCallback(() => (async () => {  
+      if (!valid) return
+    
+      setLoadState('loading')
+      setStep(0)
+      const { data } = await dataProvider(
+        'GET_LIST',
+        'redMentoringSessions',
+        {
+          pagination: { page: 1, perPage: 0 },
+          sort: {},
+          filter: { date: { gte: fromDate, lte: toDate }, rediLocation },
+        }
+      )
+      setLoadState('success')
+      setResult(data.reduce((acc, curr) => acc + curr.minuteDuration, 0))
+    })(),
+    []
   )
 
   return (

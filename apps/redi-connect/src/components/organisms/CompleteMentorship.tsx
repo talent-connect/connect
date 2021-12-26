@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { useFormik } from 'formik'
 import { Content } from 'react-bulma-components'
 import {
-  FormTextArea,
+  TextArea,
   Button,
 } from '@talent-connect/shared-atomic-design-components'
 import { Modal } from '@talent-connect/shared-atomic-design-components'
@@ -71,7 +71,7 @@ const CompleteMentorship: FC<CompleteMentorshipProps> = ({
                 the platform.
               </p>
             </Content>
-            <FormTextArea
+            <TextArea
               name="mentorMessageOnComplete"
               rows={4}
               placeholder={

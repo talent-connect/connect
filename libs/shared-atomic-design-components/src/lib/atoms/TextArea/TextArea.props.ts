@@ -1,10 +1,10 @@
 import { ChangeEventHandler, FocusEventHandler } from 'react';
 
-export interface FormTextAreaProps {
+export interface TextAreaProps {
   /** */
   name: string
   /** */
-  className: string
+  className?: string
   /** */
   label: string
   /** */

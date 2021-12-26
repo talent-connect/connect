@@ -3,7 +3,7 @@ import {
   Caption,
   FaqItem,
   FormSelect,
-  FormTextArea,
+  TextArea,
 } from '@talent-connect/shared-atomic-design-components'
 import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
 import {
@@ -185,7 +185,7 @@ export const JobseekerFormSectionSummary: FC<JobseekerFormSectionSummaryProps> =
         {...formik}
         multiSelect
       />
-      <FormTextArea
+      <TextArea
         label="About you (100-600 characters)"
         name="aboutYourself"
         rows={7}

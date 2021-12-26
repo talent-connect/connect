@@ -4,14 +4,14 @@
  * must be standardized within the project.
  */
 
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { format as formatDate } from 'date-fns'
 import { useHistory } from 'react-router-dom'
 import { PDFDownloadLink } from '@react-pdf/renderer'
 
 import {
   Modal,
-  FormInput,
+  TextInput,
   Button,
 } from '@talent-connect/shared-atomic-design-components'
 import { Box, Content } from 'react-bulma-components'
@@ -70,9 +70,9 @@ interface CvListItemProps {
 }
 
 const CvListItem: FC<CvListItemProps> = ({ id, name, createdAt }) => {
-  const [showCvNameModal, setShowCvNameModal] = React.useState(false)
-  const [newCvName, setNewCvName] = React.useState(name || '')
-  const [profileImageLoaded, setProfileImageLoaded] = React.useState(false)
+  const [showCvNameModal, setShowCvNameModal] = useState(false)
+  const [newCvName, setNewCvName] = useState(name || '')
+  const [profileImageLoaded, setProfileImageLoaded] = useState(false)
 
   const history = useHistory()
 
@@ -88,7 +88,7 @@ const CvListItem: FC<CvListItemProps> = ({ id, name, createdAt }) => {
 
   const setFocusOnRef = (ref: HTMLInputElement) => ref?.focus()
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (profileLoadSuccess && cvLoadSuccess) {
       cvData.profileAvatarImageS3Key = profileData.profileAvatarImageS3Key
         ? AWS_PROFILE_AVATARS_BUCKET_BASE_URL +
@@ -175,7 +175,7 @@ const CvListItem: FC<CvListItemProps> = ({ id, name, createdAt }) => {
         title="Rename CV"
       >
         <Modal.Body>
-          <FormInput
+          <TextInput
             name="newCvNameInput"
             label="Name of the CV"
             placeholder="CV for Microsoft Frontend Developer Internship"

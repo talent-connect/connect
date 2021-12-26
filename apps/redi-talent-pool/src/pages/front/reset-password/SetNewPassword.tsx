@@ -1,6 +1,6 @@
 import {
   Button,
-  FormInput,
+  TextInput,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
 import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
@@ -100,14 +100,14 @@ export const SetNewPassword: FC<RouteComponentProps<RouteParams>> = (props) => {
 
           {formError && { formError }}
           <form onSubmit={(e) => e.preventDefault()}>
-            <FormInput
+            <TextInput
               name="password"
               type="password"
               placeholder="Password"
               {...formik}
             />
 
-            <FormInput
+            <TextInput
               name="passwordConfirm"
               type="password"
               placeholder="Repeat rassword"

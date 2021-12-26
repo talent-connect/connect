@@ -51,33 +51,30 @@ const SendProfileForReviewButton: FC = () => {
   }
 
   const onClick = useCallback(() => {
-    if (!window.confirm('Would you like to submit your profile for review?'))
-      return
+    if (!confirm('Would you like to submit your profile for review?')) return
 
     mutation.mutate({ ...profile, state: 'submitted-for-review' })
   }, [mutation, profile])
 
-  if (enabled) {
-    return <Button onClick={onClick}>Send profile to review</Button>
-  } else {
-    return (
-      <Tooltip title={getTooltipText()}>
-        <span>
-          <Button disabled style={{ pointerEvents: 'none' }}>
-            Send profile to review
-          </Button>
-        </span>
-      </Tooltip>
-    )
-  }
+  if (enabled) return <Button onClick={onClick}>Send profile to review</Button>
+
+  return (
+    <Tooltip title={getTooltipText()}>
+      <span>
+        <Button style={{ pointerEvents: 'none' }} disabled>
+          Send profile to review
+        </Button>
+      </span>
+    </Tooltip>
+  )
 }
 
-const CallToActionButton: FC<{ profile: Partial<TpCompanyProfile>; }> = ({ profile }) => {
-  return profile.state &&
+const CallToActionButton: FC<{ profile: Partial<TpCompanyProfile>; }> = ({ profile: { state } }) => {
+  return state &&
   [
     TpCompanyProfileState['drafting-profile'],
     TpCompanyProfileState['submitted-for-review'],
-  ].includes(profile.state as any) ? (
+  ].includes(state) ? (
     <SendProfileForReviewButton />
   ) : null
 }

@@ -138,11 +138,8 @@ export const JobseekerFormSectionLanguages: FC<JobseekerFormSectionLanguagesProp
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
 
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(
-    () => ({
-      workingLanguages: profile?.workingLanguages ?? [
-        buildBlankLanguageRecord(),
-      ],
+  const initialValues: Partial<TpJobseekerProfile> = useMemo(() => ({
+      workingLanguages: profile?.workingLanguages ?? [buildBlankLanguageRecord()],
     }),
     [profile?.workingLanguages]
   )
@@ -166,14 +163,13 @@ export const JobseekerFormSectionLanguages: FC<JobseekerFormSectionLanguagesProp
     [formik.dirty, setIsFormDirty]
   )
 
-  const onDragEnd = useCallback(
-    (result: any) => {
-      if (!result.destination) return
+  const onDragEnd = useCallback(({ destination, source }: any) => {
+      if (!destination) return
 
       const reorderedWorkingLanguages = reorder(
         formik.values.workingLanguages,
-        result.source.index,
-        result.destination.index
+        source.index,
+        destination.index
       )
 
       formik.setFieldValue('workingLanguages', reorderedWorkingLanguages)
@@ -196,9 +192,7 @@ export const JobseekerFormSectionLanguages: FC<JobseekerFormSectionLanguagesProp
     (language: string) => {
       formik.setFieldValue(
         'workingLanguages',
-        formik.values?.workingLanguages?.filter(
-          (lang) => lang.language !== language
-        )
+        formik.values?.workingLanguages?.filter((lang) => lang.language !== language)
       )
     },
     [formik]
@@ -301,17 +295,11 @@ export const JobseekerFormSectionLanguages: FC<JobseekerFormSectionLanguagesProp
   )
 }
 
-const formLanguages = Object.entries(LANGUAGES).map(([value, label]) => ({
-  value,
-  label,
-}))
+const formLanguages = Object.entries(LANGUAGES)
+  .map(([value, label]) => ({ value, label }))
 
-const formLanguageProficiencyLevels = languageProficiencyLevels.map(
-  ({ id, label }) => ({
-    value: id,
-    label,
-  })
-)
+const formLanguageProficiencyLevels = languageProficiencyLevels
+  .map(({ id: value, label }) => ({ value, label }))
 
 function buildBlankLanguageRecord(): LanguageRecord {
   return {

@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { FormInput } from '@talent-connect/shared-atomic-design-components'
+import { TextInput } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile } from '@talent-connect/shared-types'
 import { connect } from 'react-redux'
@@ -57,19 +57,19 @@ const EditableSocialMedia: FC<Props> = ({
       savePossible={formik.dirty && formik.isValid}
       read={<ReadSocialMedia.Me />}
     >
-      <FormInput
+      <TextInput
         name="linkedInProfileUrl"
         placeholder="LinkedIn Profile"
         label="LinkedIn Profile"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="githubProfileUrl"
         placeholder="Github Profile"
         label="Github Profile"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="slackUsername"
         placeholder="Username in ReDI Slack"
         label="Username in ReDI Slack"
@@ -81,7 +81,7 @@ const EditableSocialMedia: FC<Props> = ({
 
 const mapStateToProps = ({ user: { profile }}: RootState) => ({ profile })
 
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: Function) => ({
   profileSaveStart: (profile: Partial<RedProfile>) =>
     dispatch(profileSaveStart(profile)),
 })

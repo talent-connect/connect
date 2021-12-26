@@ -1,6 +1,6 @@
 import {
   Caption,
-  FormTextArea,
+  TextArea,
   Checkbox,
   Button,
 } from '@talent-connect/shared-atomic-design-components'
@@ -108,7 +108,7 @@ const ApplyForMentor: FC<Props> = ({
                     the two of you are a great fit.
                   </p>
                 </Content>
-                <FormTextArea
+                <TextArea
                   name="applicationText"
                   className="oneandhalf-bs"
                   rows={4}
@@ -125,7 +125,7 @@ const ApplyForMentor: FC<Props> = ({
                     mentorship with this mentor.
                   </p>
                 </Content>
-                <FormTextArea
+                <TextArea
                   name="expectationText"
                   rows={4}
                   placeholder="My expectations for this mentorship…"
@@ -176,7 +176,7 @@ const mapStateToProps = (state: RootState) => ({
   mentor: state.profiles.oneProfile as RedProfile,
 })
 
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: Function) => ({
   profilesFetchOneStart: (profileId: string) =>
     dispatch(profilesFetchOneStart(profileId)),
 })

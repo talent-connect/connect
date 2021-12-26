@@ -4,9 +4,9 @@ import {
   Checkbox,
   FaqItem,
   FormDraggableAccordion,
-  FormInput,
+  TextInput,
   FormSelect,
-  FormTextArea,
+  TextArea,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
 import {
@@ -198,14 +198,13 @@ export const JobseekerFormSectionProfessionalExperience: FC<JobseekerFormSection
     closeAllAccordionsSignalSubject.current.next()
   }, [formik])
 
-  const onDragEnd = useCallback(
-    (result: any) => {
-      if (!result.destination) return
+  const onDragEnd = useCallback(({ destination, source }: any) => {
+      if (!destination) return
 
       const reorderedExperience = reorder(
         formik.values.experience,
-        result.source.index,
-        result.destination.index
+        source.index,
+        destination.index
       )
 
       formik.setFieldValue('experience', reorderedExperience)
@@ -258,19 +257,19 @@ export const JobseekerFormSectionProfessionalExperience: FC<JobseekerFormSection
                           closeAllAccordionsSignalSubject.current
                         }
                       >
-                        <FormInput
+                        <TextInput
                           name={`experience[${index}].title`}
                           placeholder="Junior Frontend Developer"
                           label="Title of your position"
                           {...formik}
                         />
-                        <FormInput
+                        <TextInput
                           name={`experience[${index}].company`}
                           placeholder="Microsoft"
                           label="Company"
                           {...formik}
                         />
-                        <FormTextArea
+                        <TextArea
                           label="Roles & Responsibilities"
                           name={`experience[${index}].description`}
                           rows={7}
@@ -300,7 +299,7 @@ export const JobseekerFormSectionProfessionalExperience: FC<JobseekerFormSection
                             />
                           </Columns.Column>
                           <Columns.Column size={6}>
-                            <FormInput
+                            <TextInput
                               name={`experience[${index}].startDateYear`}
                               label="Started in year"
                               type="number"
@@ -320,7 +319,7 @@ export const JobseekerFormSectionProfessionalExperience: FC<JobseekerFormSection
                               />
                             </Columns.Column>
                             <Columns.Column size={6}>
-                              <FormInput
+                              <TextInput
                                 name={`experience[${index}].endDateYear`}
                                 label="Ended in year"
                                 type="number"

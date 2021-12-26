@@ -1,11 +1,11 @@
-import { FC, useState } from 'react'
+import { FC, useState, ChangeEvent } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import {
   Heading,
   Button,
   Modal,
-  FormInput,
+  TextInput,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
 import { Section, Columns, Content, Box } from 'react-bulma-components'
@@ -38,7 +38,7 @@ const CvListPage: FC = () => {
     if (!isOpen) setNewCvName('')
   }
 
-  const handleCvNameChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+  const handleCvNameChange = (e: ChangeEvent<HTMLInputElement>) =>
     setNewCvName(e.target.value)
 
   const handleCreateNewCv = (): void => {
@@ -153,7 +153,7 @@ const CvListPage: FC = () => {
         title="Create a CV"
       >
         <Modal.Body>
-          <FormInput
+          <TextInput
             name="newCvNameInput"
             label="Name of the CV"
             placeholder="CV for Microsoft Frontend Developer Internship"

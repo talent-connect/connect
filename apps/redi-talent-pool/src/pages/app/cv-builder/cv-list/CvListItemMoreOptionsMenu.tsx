@@ -4,7 +4,7 @@
  * must be standardized within the project.
  */
 
-import { FC, useState } from 'react'
+import { FC, useState, MouseEvent } from 'react'
 
 import { Content } from 'react-bulma-components'
 import { Button, Popover } from '@material-ui/core'
@@ -19,7 +19,7 @@ interface CvListItemMoreOptionsMenuProps {
 export const CvListItemMoreOptionsMenu: FC<CvListItemMoreOptionsMenuProps> = (props) => {
   const [anchorEl, setAnchorEl] = useState(null)
 
-  const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleButtonClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
   }
 

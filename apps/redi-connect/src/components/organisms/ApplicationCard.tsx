@@ -38,8 +38,7 @@ const ApplicationCard: FC<Props> = ({
   const profile = getRedProfileFromLocalStorage()
   const [showDetails, setShowDetails] = useState(false)
   const applicationDate = new Date(application.createdAt || '')
-  const applicationUser =
-    profile.userType === 'mentee' ? application.mentor : application.mentee
+  const applicationUser = profile.userType === 'mentee' ? application.mentor : application.mentee
   const currentUserIsMentor = currentUser?.userType === 'mentor'
 
   return (
@@ -158,9 +157,9 @@ const ApplicationCard: FC<Props> = ({
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  currentUser: state.user.profile,
-  hasReachedMenteeLimit: getHasReachedMenteeLimit(state.user),
+const mapStateToProps = ({ user }: RootState) => ({
+  currentUser: user.profile,
+  hasReachedMenteeLimit: getHasReachedMenteeLimit(user),
 })
 
 export default connect(mapStateToProps)(ApplicationCard)

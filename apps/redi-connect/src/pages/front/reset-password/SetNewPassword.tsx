@@ -14,7 +14,7 @@ import { RouteComponentProps } from 'react-router'
 import { showNotification } from '../../../components/AppNotification'
 import {
   Button,
-  FormInput,
+  TextInput,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
 
@@ -115,14 +115,14 @@ export const SetNewPassword: FC<RouteComponentProps<RouteParams>> = (props) => {
 
           {formError && { formError }}
           <form onSubmit={(e) => e.preventDefault()}>
-            <FormInput
+            <TextInput
               name="password"
               type="password"
               placeholder="Password"
               {...formik}
             />
 
-            <FormInput
+            <TextInput
               name="passwordConfirm"
               type="password"
               placeholder="Repeat password"

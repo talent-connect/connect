@@ -2,7 +2,7 @@ import { FC, useState } from 'react'
 import { useHistory } from 'react-router'
 import {
   Button,
-  FormTextArea,
+  TextArea,
   Checkbox,
 } from '@talent-connect/shared-atomic-design-components'
 import { Modal } from '@talent-connect/shared-atomic-design-components'
@@ -116,7 +116,7 @@ const ReportProblem: FC<ReportProblemProps> = ({ redProfileId, type }) => {
             {submitResult === 'error' && (
               <>An error occurred, please try again.</>
             )}
-            <FormTextArea
+            <TextArea
               name="problemDescription"
               rows={4}
               placeholder="I have concerns about…"

@@ -2,7 +2,7 @@ import {
   Button,
   Caption,
   FormDraggableAccordion,
-  FormInput,
+  TextInput,
 } from '@talent-connect/shared-atomic-design-components'
 import {
   HrSummit2021JobFairCompanyJobPreferenceRecord,
@@ -149,14 +149,13 @@ const ModalForm: FC<ModalFormProps> = ({
     setIsFormDirty,
   ])
 
-  const onDragEnd = useCallback(
-    (result: any) => {
-      if (!result.destination) return
+  const onDragEnd = useCallback(({ destination, source }: any) => {
+      if (!destination) return
 
       const reorderedHrSummit2021JobFairCompanyJobPreferences = reorder(
         formik.values.hrSummit2021JobFairCompanyJobPreferences,
-        result.source.index,
-        result.destination.index
+        source.index,
+        destination.index
       )
 
       formik.setFieldValue(
@@ -216,19 +215,19 @@ const ModalForm: FC<ModalFormProps> = ({
                             closeAllAccordionsSignalSubject.current
                           }
                         >
-                          <FormInput
+                          <TextInput
                             name={`hrSummit2021JobFairCompanyJobPreferences[${index}].jobPosition`}
                             label="Job Position*"
                             placeholder="The title of the job you found"
                             {...formik}
                           />
-                          <FormInput
+                          <TextInput
                             name={`hrSummit2021JobFairCompanyJobPreferences[${index}].jobId`}
                             label="Job ID"
                             placeholder="Did you see an ID for the job?"
                             {...formik}
                           />
-                          <FormInput
+                          <TextInput
                             name={`hrSummit2021JobFairCompanyJobPreferences[${index}].companyName`}
                             label="Company Name*"
                             placeholder="What's the name of the company?"

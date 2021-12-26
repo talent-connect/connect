@@ -1,5 +1,5 @@
 import classnames from 'clsx'
-import React, { FC } from 'react'
+import React, { FC, ReactNode, MouseEvent } from 'react'
 import { useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import './TpMainNavItem.scss'
@@ -13,13 +13,12 @@ interface Props {
 }
 
 interface FancyLinkProps {
-  onClick: (event: React.MouseEvent) => void
+  onClick: (event: MouseEvent) => void
   isDisabled?: boolean
-  children?: React.ReactNode
+  children?: ReactNode
 }
 
-const FancyLink = React.forwardRef<HTMLAnchorElement>(
-  (props: FancyLinkProps, ref) => (
+const FancyLink = React.forwardRef<HTMLAnchorElement>((props: FancyLinkProps, ref) => (
     <a
       ref={ref}
       {...props}
@@ -39,9 +38,7 @@ export const TpMainNavItem: FC<Props> = ({
   pageName,
 }) => {
   const onClick = useCallback(
-    (event: React.MouseEvent) => {
-      if (isDisabled) event.preventDefault()
-    },
+    (event: MouseEvent) => { if (isDisabled) event.preventDefault() },
     [isDisabled]
   )
 

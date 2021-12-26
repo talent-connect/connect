@@ -1,6 +1,6 @@
 import {
   Button,
-  FormInput,
+  TextInput,
   Heading,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
@@ -116,8 +116,7 @@ const ModalForm: FC<ModalFormProps> = ({
 }) => {
   const { data: profile } = useTpJobseekerProfileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(
-    () => ({
+  const initialValues: Partial<TpJobseekerProfile> = useMemo(() => ({
       firstName: profile?.firstName ?? '',
       lastName: profile?.lastName ?? '',
       genderPronouns: profile?.genderPronouns ?? '',
@@ -155,25 +154,25 @@ const ModalForm: FC<ModalFormProps> = ({
       >
         Add your name and location to the profile.
       </Element>
-      <FormInput
+      <TextInput
         name="firstName"
         placeholder="James"
         label="First name*"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="lastName"
         placeholder="Smith"
         label="Last name*"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="genderPronouns"
         placeholder="She/Her/Hers, He/Him/His, They/Them/Theirs, etc."
         label="Gender pronouns"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="location"
         placeholder="Berlin, Germany"
         label="Your place of residence (city, country)*"

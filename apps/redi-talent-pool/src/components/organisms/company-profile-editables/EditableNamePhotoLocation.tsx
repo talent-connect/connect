@@ -1,7 +1,7 @@
 import {
   Button,
-  FormInput,
-  FormTextArea,
+  TextInput,
+  TextArea,
   Heading,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
@@ -152,19 +152,19 @@ function ModalForm({
         bit about yourself puts a friendly face on the other side of the table
         and encourages candidates to put their best foot forward.
       </Element>
-      <FormInput
+      <TextInput
         name="companyName"
         placeholder="ACME Inc."
         label="Company name*"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="location"
         placeholder="Relevant city/cities, regions, country..."
         label="Location(s)*"
         {...formik}
       />
-      <FormTextArea
+      <TextArea
         name="tagline"
         rows={2}
         placeholder="Let candidates know a bit why you love what you do."

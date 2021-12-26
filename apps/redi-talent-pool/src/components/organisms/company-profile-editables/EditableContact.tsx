@@ -1,7 +1,7 @@
 import {
   Button,
   Caption,
-  FormInput,
+  TextInput,
 } from '@talent-connect/shared-atomic-design-components'
 import { TpCompanyProfile } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
@@ -114,8 +114,7 @@ function ModalForm({
 }) {
   const { data: profile } = useTpCompanyProfileQuery()
   const mutation = useTpCompanyProfileUpdateMutation()
-  const initialValues: Partial<TpCompanyProfile> = useMemo(
-    () => ({
+  const initialValues: Partial<TpCompanyProfile> = useMemo(() => ({
       firstName: profile?.firstName ?? '',
       lastName: profile?.lastName ?? '',
       contactEmail: profile?.contactEmail ?? '',
@@ -148,25 +147,25 @@ function ModalForm({
       >
         Let ReDI Jobseekers know how to get in touch.
       </Element>
-      <FormInput
+      <TextInput
         name="firstName"
         placeholder="Erika"
         label="First name"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="lastName"
         placeholder="Mustermann"
         label="Last name"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="contactEmail"
         placeholder="your.name@company.com"
         label="Email"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="phoneNumber"
         placeholder="0176 01234567"
         label="Phone Number"

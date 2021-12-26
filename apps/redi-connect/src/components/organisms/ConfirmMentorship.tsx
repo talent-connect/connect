@@ -5,7 +5,7 @@ import * as Yup from 'yup'
 import { useFormik } from 'formik'
 import { Content } from 'react-bulma-components'
 import {
-  FormTextArea,
+  TextArea,
   Button,
 } from '@talent-connect/shared-atomic-design-components'
 import { Modal } from '@talent-connect/shared-atomic-design-components'
@@ -106,7 +106,7 @@ const ConfirmMentorship = ({
                 characters)
               </p>
             </Content>
-            <FormTextArea
+            <TextArea
               name="mentorReplyMessageOnAccept"
               rows={4}
               placeholder={`Dear ${mentee.firstName}...`}

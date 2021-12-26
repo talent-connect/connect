@@ -9,7 +9,7 @@ import { Columns, Form, Notification } from 'react-bulma-components'
 import {
   Button,
   Checkbox,
-  FormInput,
+  TextInput,
   FormSelect,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
@@ -121,8 +121,7 @@ export interface SignUpFormValues {
 export default function SignUp() {
   const { type } = useParams<SignUpPageType>()
 
-  const initialValues: SignUpFormValues = useMemo(
-    () => ({
+  const initialValues: SignUpFormValues = useMemo(() => ({
       contactEmail: '',
       password: '',
       passwordConfirm: '',
@@ -228,40 +227,40 @@ export default function SignUp() {
           )}
           <form onSubmit={(e) => e.preventDefault()} className="form">
             {type === 'company' ? (
-              <FormInput
+              <TextInput
                 name="companyName"
                 placeholder="Your company name"
                 {...formik}
               />
             ) : null}
 
-            <FormInput
+            <TextInput
               name="firstName"
               placeholder="Your first name"
               {...formik}
             />
 
-            <FormInput
+            <TextInput
               name="lastName"
               placeholder="Your last name"
               {...formik}
             />
 
-            <FormInput
+            <TextInput
               name="contactEmail"
               type="email"
               placeholder="Your Email"
               {...formik}
             />
 
-            <FormInput
+            <TextInput
               name="password"
               type="password"
               placeholder="Your password"
               {...formik}
             />
 
-            <FormInput
+            <TextInput
               name="passwordConfirm"
               type="password"
               placeholder="Repeat your password"
@@ -306,7 +305,7 @@ export default function SignUp() {
                   {...formik}
                 />
                 {formik.values.howDidHearAboutRediKey === 'other' ? (
-                  <FormInput
+                  <TextInput
                     name="howDidHearAboutRediOtherText"
                     placeholder="Please tell us how you heard about ReDI Talent Pool"
                     {...formik}

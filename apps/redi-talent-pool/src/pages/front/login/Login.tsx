@@ -1,6 +1,6 @@
 import {
   Button,
-  FormInput,
+  TextInput,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
 import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
@@ -73,14 +73,14 @@ const Login: FC = () => {
           </Content>
 
           <form onSubmit={(e) => e.preventDefault()}>
-            <FormInput
+            <TextInput
               name="username"
               type="email"
               placeholder="Email"
               {...formik}
             />
 
-            <FormInput
+            <TextInput
               name="password"
               type="password"
               placeholder="Password"

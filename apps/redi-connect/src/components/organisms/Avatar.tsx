@@ -141,7 +141,7 @@ const mapStateToProps = (state: RootState) => ({
   profile: state.user.profile as RedProfile,
 })
 
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: Function) => ({
   profileSaveStart: (profile: Partial<RedProfile>) =>
     dispatch(profileSaveStart(profile)),
 })

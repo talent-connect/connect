@@ -1,7 +1,7 @@
 import {
   Button,
   Caption,
-  FormInput,
+  TextInput,
 } from '@talent-connect/shared-atomic-design-components'
 import { TpCompanyProfile } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
@@ -93,10 +93,10 @@ export const EditableDetails: FC<Props> = ({ profile, disableEditing }) => {
   )
 }
 
-EditableDetails.isWebsiteSectionFilled = (profile: Partial<TpCompanyProfile>) =>
-  profile?.website
-EditableDetails.isSectionFilled = (profile: Partial<TpCompanyProfile>) =>
-  profile?.industry || profile?.website || profile?.linkedInUrl
+EditableDetails.isWebsiteSectionFilled = ({ website }: Partial<TpCompanyProfile>) =>
+  website
+EditableDetails.isSectionFilled = ({ website, industry, linkedInUrl }: Partial<TpCompanyProfile>) =>
+  industry || website || linkedInUrl
 EditableDetails.isSectionEmpty = (profile: Partial<TpCompanyProfile>) =>
   !EditableDetails.isSectionFilled(profile)
 
@@ -110,8 +110,7 @@ function ModalForm({
   const { data: profile } = useTpCompanyProfileQuery()
   const mutation = useTpCompanyProfileUpdateMutation()
 
-  const initialValues: Partial<TpCompanyProfile> = useMemo(
-    () => ({
+  const initialValues: Partial<TpCompanyProfile> = useMemo(() => ({
       industry: profile?.industry ?? '',
       website: profile?.website ?? '',
       linkedInUrl: profile?.linkedInUrl ?? '',
@@ -144,19 +143,19 @@ function ModalForm({
         This is where employers can get the basics that they need to get in
         touch and see your work.
       </Element>
-      <FormInput
+      <TextInput
         name="industry"
         placeholder="Company Software"
         label="Industry"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="website"
         placeholder="https://www.company.de"
         label="Website *"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="linkedInUrl"
         placeholder="https://www.linkedin.com/company-page"
         label="LinkedIn Page"
