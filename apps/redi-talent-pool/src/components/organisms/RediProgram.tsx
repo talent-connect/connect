@@ -16,11 +16,8 @@ import './RediProgram.scss'
 const RediProgram: FunctionComponent = () => {
   const { t } = useTranslation()
 
-  const programSteps: Array<{
-    content: string
-    headline: string
-    image: any
-  }> = t('loggedOutArea.homePage.program.steps', { returnObjects: true })
+  const programSteps: { content: string; headline: string; image: any; }[] =
+    t('loggedOutArea.homePage.program.steps', { returnObjects: true })
 
   return (
     <Section className="default-background">

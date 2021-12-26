@@ -94,9 +94,7 @@ const EditablePersonalDetail: FunctionComponent<Props> = ({
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile,
-})
+const mapStateToProps = ({ user: { profile }}: RootState) => ({ profile })
 
 const mapDispatchToProps = (dispatch: any) => ({
   profileSaveStart: (profile: Partial<RedProfile>) =>

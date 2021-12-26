@@ -60,7 +60,7 @@ export const EditableJobPreferences: FunctionComponent<Props> = ({ profile, trig
           </EmptySectionPlaceholder>
         ) : (
           <Content>
-            {profile?.hrSummit2021JobFairCompanyJobPreferences?.map(
+            {profile.hrSummit2021JobFairCompanyJobPreferences?.map(
               ({ uuid, jobPosition, jobId, companyName }, index) => (
                 <div key={uuid} style={{ marginBottom: '2rem' }}>
                   <Caption>Priority {index + 1}</Caption>
@@ -87,14 +87,12 @@ export const EditableJobPreferences: FunctionComponent<Props> = ({ profile, trig
   )
 }
 
-EditableJobPreferences.isSectionFilled = (
-  profile: Partial<TpJobseekerProfile>
-) =>
-  profile?.hrSummit2021JobFairCompanyJobPreferences?.length === 4 &&
-  validationSchema.isValidSync(profile)
-EditableJobPreferences.isSectionEmpty = (
-  profile: Partial<TpJobseekerProfile>
-) => !EditableJobPreferences.isSectionFilled(profile)
+EditableJobPreferences.isSectionFilled = (profile: Partial<TpJobseekerProfile>) =>
+  profile.hrSummit2021JobFairCompanyJobPreferences?.length === 4 &&
+  validationSchema.isValidSync(profile);
+
+EditableJobPreferences.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
+  !EditableJobPreferences.isSectionFilled(profile);
 
 // TODO: put this one in config file
 const MAX_LANGUAGES = 6
@@ -122,8 +120,7 @@ const ModalForm: FunctionComponent<ModalFormProps> = ({
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
 
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(
-    () => ({
+  const initialValues: Partial<TpJobseekerProfile> = useMemo(() => ({
       hrSummit2021JobFairCompanyJobPreferences:
         profile?.hrSummit2021JobFairCompanyJobPreferences ??
         buildBlankHrSummit2021JobFairCompanyJobPreferences(),
@@ -135,20 +132,18 @@ const ModalForm: FunctionComponent<ModalFormProps> = ({
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
     formik.setSubmitting(true)
     mutation.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
-      },
+      onSettled: () => { formik.setSubmitting(false) },
+      onSuccess: () => { setIsEditing(false) },
     })
   }
+  
   const formik = useFormik({
     initialValues,
     validationSchema,
     onSubmit,
     validateOnMount: true,
   })
+
   useEffect(() => setIsFormDirty?.(formik.dirty), [
     formik.dirty,
     setIsFormDirty,

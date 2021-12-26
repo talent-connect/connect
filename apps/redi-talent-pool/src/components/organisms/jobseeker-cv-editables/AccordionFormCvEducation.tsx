@@ -16,9 +16,6 @@ export const AccordionFormCvEducation: FunctionComponent<Props> = ({
   closeAccordionSignalSubject,
   onClose: parentOnCloseCallback,
 }) =>  {
-  const onClose = () => {
-    parentOnCloseCallback()
-  }
 
   const queryHookResult = useTpJobseekerCvByIdQuery(tpJobseekerCvId)
   const mutationHookResult = useTpjobseekerCvUpdateMutation(tpJobseekerCvId)
@@ -30,7 +27,7 @@ export const AccordionFormCvEducation: FunctionComponent<Props> = ({
     >
       <JobseekerFormSectionEducation
         setIsEditing={(isEditing) => {
-          onClose()
+          parentOnCloseCallback()
         }}
         queryHookResult={queryHookResult}
         mutationHookResult={mutationHookResult}

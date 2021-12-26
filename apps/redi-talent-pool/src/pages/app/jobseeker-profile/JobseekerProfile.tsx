@@ -12,10 +12,8 @@ import { EditableEducation } from '../../../components/organisms/jobseeker-profi
 import { EditableNamePhotoLocation } from '../../../components/organisms/jobseeker-profile-editables/EditableNamePhotoLocation'
 
 export function JobseekerProfile() {
-  const { tpJobseekerProfileId }: { tpJobseekerProfileId: string } = useParams()
-  const { data: jobseekerProfile } = useTpJobseekerProfileByIdQuery(
-    tpJobseekerProfileId
-  )
+  const { tpJobseekerProfileId } = useParams<{ tpJobseekerProfileId: string }>()
+  const { data: jobseekerProfile } = useTpJobseekerProfileByIdQuery(tpJobseekerProfileId)
 
   console.log(jobseekerProfile)
 

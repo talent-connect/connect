@@ -11,14 +11,11 @@ interface Props {
   closeAccordionSignalSubject?: Subject<void>
 }
 
-export const  AccordionFormCvDesiredPositions: FunctionComponent<Props> = ({
+export const AccordionFormCvDesiredPositions: FunctionComponent<Props> = ({
   tpJobseekerCvId,
   closeAccordionSignalSubject,
   onClose: parentOnCloseCallback,
 }) => {
-  const onClose = () => {
-    parentOnCloseCallback()
-  }
 
   const queryHookResult = useTpJobseekerCvByIdQuery(tpJobseekerCvId)
   const mutationHookResult = useTpjobseekerCvUpdateMutation(tpJobseekerCvId)
@@ -31,7 +28,7 @@ export const  AccordionFormCvDesiredPositions: FunctionComponent<Props> = ({
       <JobseekerFormSectionOverview
         hideCurrentRediCourseField
         setIsEditing={(isEditing) => {
-          onClose()
+          parentOnCloseCallback()
         }}
         queryHookResult={queryHookResult}
         mutationHookResult={mutationHookResult}

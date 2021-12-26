@@ -26,9 +26,9 @@ export const JobseekerProfileCard: FunctionComponent<JobseekerProfileCardProps> 
 }) => {
   // const history = useHistory()
 
-  const fullName = `${jobseekerProfile?.firstName} ${jobseekerProfile?.lastName}`
+  const fullName = `${jobseekerProfile.firstName} ${jobseekerProfile.lastName}`
   const desiredPositions =
-    jobseekerProfile?.desiredPositions
+    jobseekerProfile.desiredPositions
       ?.map((position) => desiredPositionsIdToLabelMap[position])
       .join(', ') ?? ''
   const topSkills = jobseekerProfile?.topSkills
@@ -38,7 +38,7 @@ export const JobseekerProfileCard: FunctionComponent<JobseekerProfileCardProps> 
   //   toggleFavorite && toggleFavorite(profile.id)
   // }
 
-  const imgSrc = jobseekerProfile?.profileAvatarImageS3Key
+  const imgSrc = jobseekerProfile.profileAvatarImageS3Key
     ? AWS_PROFILE_AVATARS_BUCKET_BASE_URL +
       jobseekerProfile?.profileAvatarImageS3Key
     : placeholderImage
@@ -80,7 +80,7 @@ export const JobseekerProfileCard: FunctionComponent<JobseekerProfileCardProps> 
         >
           {desiredPositions}
         </Element>
-        {topSkills?.length > 0 ? (
+        {topSkills?.length ? (
           <CardTags
             items={topSkills}
             shortList

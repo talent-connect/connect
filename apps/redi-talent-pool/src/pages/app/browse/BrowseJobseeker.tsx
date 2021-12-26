@@ -20,11 +20,10 @@ import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseeker
 export const BrowseJobseeker: FunctionComponent = () => {
   const { data: currentJobseekerProfile } = useTpJobseekerProfileQuery()
 
-  const [query, setQuery] = useQueryParams({
+  const [{ idealTechnicalSkills, employmentType }, setQuery] = useQueryParams({
     idealTechnicalSkills: withDefault(ArrayParam, []),
     employmentType: withDefault(ArrayParam, []),
   })
-  const { idealTechnicalSkills, employmentType } = query
 
   const history = useHistory()
   const { data: jobListings } = useBrowseTpJobListingsQuery({
@@ -45,8 +44,7 @@ export const BrowseJobseeker: FunctionComponent = () => {
     }))
   }
 
-  if (
-    ![
+  if (![
       'profile-approved-awaiting-job-preferences',
       'job-preferences-shared-with-redi-awaiting-interview-match',
     ].includes(currentJobseekerProfile?.state)

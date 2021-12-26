@@ -49,10 +49,11 @@ export const EditableLanguages: FunctionComponent<Props> = ({
   })
   if (overridingProfile) queryHookResult.data = overridingProfile
   const mutationHookResult = useTpjobseekerprofileUpdateMutation()
-  const { data: profile } = queryHookResult
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
+  const { data: profile } = queryHookResult
+  
   const isEmpty = EditableLanguages.isSectionEmpty(profile)
 
   if (disableEditing && isEmpty) return null
@@ -101,7 +102,7 @@ export const EditableLanguages: FunctionComponent<Props> = ({
 }
 
 EditableLanguages.isSectionFilled = (profile: Partial<TpJobseekerProfile>) =>
-  profile?.workingLanguages?.length > 0
+  profile?.workingLanguages?.length
 EditableLanguages.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
   !EditableLanguages.isSectionFilled(profile)
 
@@ -127,13 +128,12 @@ interface JobseekerFormSectionLanguagesProps {
   >
 }
 
-export function JobseekerFormSectionLanguages({
+export const JobseekerFormSectionLanguages: FunctionComponent<JobseekerFormSectionLanguagesProps> = ({
   setIsEditing,
   setIsFormDirty,
-  queryHookResult,
+  queryHookResult: { data: profile },
   mutationHookResult,
-}: JobseekerFormSectionLanguagesProps) {
-  const { data: profile } = queryHookResult
+}) => {
   const mutation = mutationHookResult
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())

@@ -116,7 +116,7 @@ const MSessions: FunctionComponent<MSessions> = ({
       className="m-sessions"
       buttons={editable && <AddSession onClickHandler={setShowAddSession} />}
     >
-      {sessions.length > 0 ? (
+      {sessions.length ? (
         <ul className="m-sessions__list">
           {sessions.map((session) => (
             <li

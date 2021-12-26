@@ -36,13 +36,9 @@ const ReadPersonalDetail: FunctionComponent<Props> = ({
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile as RedProfile,
-})
+const mapStateToProps = ({ user: { profile }}: RootState) => ({ profile })
 
 export default {
   Me: connect(mapStateToProps, {})(ReadPersonalDetail),
-  Some: ({ profile }: Props) => (
-    <ReadPersonalDetail profile={profile} caption />
-  ),
+  Some: ({ profile }: Props) => <ReadPersonalDetail profile={profile} caption />,
 }

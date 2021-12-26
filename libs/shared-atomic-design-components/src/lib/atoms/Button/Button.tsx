@@ -5,6 +5,8 @@ import { Icon } from '../Icon'
 import { ButtonProps } from './Button.props';
 import './Button.scss'
 
+const baseClass = 'button-atom'
+
 const Button: FunctionComponent<ButtonProps> & { Icon: typeof Icon } = ({
   children,
   className,
@@ -17,54 +19,41 @@ const Button: FunctionComponent<ButtonProps> & { Icon: typeof Icon } = ({
   simple = false,
   style = {},
 }) => {
-  const baseClass = 'button-atom'
 
-  if (!to) {
-    return (
-      <button
-        onClick={onClick}
-        disabled={disabled}
-        type="button"
-        className={classnames(
-          baseClass,
-          `${baseClass}--${simple ? 'simple' : 'default'}`,
-          {
-            [`${baseClass}--${size}`]: size,
-            [`${baseClass}--fullWidth`]: fullWidth,
-            [`${baseClass}--separator`]: separator,
-            [`${className}`]: className,
-          }
-        )}
-        style={style}
-      >
-        {children}
-      </button>
-    )
-  }
+  const classNames = classnames(
+    baseClass,
+    `${baseClass}--${simple ? 'simple' : 'default'}`,
+    {
+      [`${baseClass}--${size}`]: size,
+      [`${baseClass}--fullWidth`]: fullWidth,
+      [`${baseClass}--separator`]: separator,
+      [`${className}`]: className,
+    })
+
+  if (!to) return (
+    <button
+      type="button"
+      className={classNames}
+      style={style}
+      disabled={disabled}
+      onClick={onClick}
+    >
+      {children}
+    </button>
+  )
 
   const isExternalLink = to.includes('http')
 
-  if (isExternalLink) {
-    return (
-      <button
-        onClick={() => (window.location.href = to)}
-        type="button"
-        className={classnames(
-          baseClass,
-          `${baseClass}--${simple ? 'simple' : 'default'}`,
-          {
-            [`${baseClass}--${size}`]: size,
-            [`${baseClass}--fullWidth`]: fullWidth,
-            [`${baseClass}--separator`]: separator,
-            [`${className}`]: className,
-          }
-        )}
-        style={style}
-      >
-        {children}
-      </button>
-    )
-  }
+  if (isExternalLink) return (
+    <button
+      type="button"
+      className={classNames}
+      style={style}
+      onClick={() => (window.location.href = to)}
+    >
+      {children}
+    </button>
+  )
 
   return (
     <NavLink

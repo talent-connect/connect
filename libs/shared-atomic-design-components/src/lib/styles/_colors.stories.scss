@@ -1,0 +1,61 @@
+
+@use '_colors' as colors;
+
+$colors-groups: (
+  orange: (
+    dark: colors.$redi-orange-dark,
+    regular: colors.$redi-orange,
+    light: colors.$redi-orange-light,
+    extra-light: colors.$redi-orange-extra-light,
+  ),
+  blue: (
+    dark: colors.$redi-blue-dark,
+    regular: colors.$redi-blue,
+    light: colors.$redi-blue-light,
+  )
+);
+
+$grey-scale: (
+  white: colors.$white,
+  dark: colors.$grey-dark,
+  regular: colors.$grey,
+  light: colors.$grey-light,
+  extra-light: colors.$grey-extra-light,
+  black: colors.$black,
+);
+
+.color {
+  display: grid;
+  gap: 5px;
+
+  &__group {
+    display: grid;
+    grid-auto-flow: column;
+    align-items: center;
+    grid-template-columns: 100px;
+    grid-auto-columns: max-content;
+    gap: 5px;
+  }
+  &__sample {
+    $sample-size: 60px;
+
+    width: $sample-size;
+    height: $sample-size;
+    background-color: #0000;
+    border: 0.5px solid black;
+
+    @each $color, $shades in $colors-groups {
+      @each $shade, $color-value in $shades {
+        &.#{"" + $color}-#{$shade} {
+          background-color: #{$color-value};
+        }
+      }
+    }
+
+    @each $shade, $color-value in $grey-scale {
+      &.grey-#{"" + $shade} {
+        background-color: #{$color-value};
+      }
+    }
+  }
+}

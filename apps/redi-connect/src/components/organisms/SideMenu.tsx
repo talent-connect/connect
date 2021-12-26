@@ -23,18 +23,18 @@ const MenuItem: FunctionComponent<MenuItemProps> = ({ url, children }) => (
 )
 
 const SideMenu: FunctionComponent = () => {
-  const profile = getRedProfileFromLocalStorage()
+  const { userType, userActivated, ifUserIsMentee_hasActiveMentor  } = getRedProfileFromLocalStorage()
   const isActivatedMentor =
-    profile.userType === 'mentor' && profile.userActivated
+    userType === 'mentor' && userActivated
   const isActivatedMentee =
-    profile.userType === 'mentee' && profile.userActivated
+    userType === 'mentee' && userActivated
   const isMentee =
     isActivatedMentee ||
-    profile.userType === 'public-sign-up-mentee-pending-review'
+    userType === 'public-sign-up-mentee-pending-review'
   const isMenteeWithoutMentor =
-    isMentee && !profile.ifUserIsMentee_hasActiveMentor
+    isMentee && !ifUserIsMentee_hasActiveMentor
   const isMenteeWithMentor =
-    isActivatedMentee && profile.ifUserIsMentee_hasActiveMentor
+    isActivatedMentee && ifUserIsMentee_hasActiveMentor
 
   return (
     <ul className="side-menu">

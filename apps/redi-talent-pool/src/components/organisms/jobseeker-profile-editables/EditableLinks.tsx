@@ -159,12 +159,8 @@ export function JobseekerFormSectionLinks({
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
     formik.setSubmitting(true)
     mutation.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
-      },
+      onSettled: () => { formik.setSubmitting(false) },
+      onSuccess: () => { setIsEditing(false) },
     })
   }
   const formik = useFormik({

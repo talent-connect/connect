@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react'
+import { FunctionComponent, MouseEvent } from 'react'
 import classnames from 'classnames'
 import { Card, Element } from 'react-bulma-components'
 import { Icon, PipeList } from '@talent-connect/shared-atomic-design-components'
@@ -38,7 +38,7 @@ const ProfileCard: FunctionComponent<ProfileCardProps> = ({
 }) => {
   const history = useHistory()
 
-  const handleFavorite = (e: React.MouseEvent) => {
+  const handleFavorite = (e: MouseEvent) => {
     e.stopPropagation()
     toggleFavorite && toggleFavorite(id)
   }

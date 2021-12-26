@@ -1,5 +1,5 @@
-import { stringify } from 'query-string'
-import fetchJson from './fetch'
+import { stringify } from 'query-string';
+import fetchJson from './fetch';
 
 import {
   GET_LIST,
@@ -11,10 +11,10 @@ import {
   UPDATE_MANY,
   DELETE,
   DELETE_MANY,
-} from 'react-admin'
+} from 'react-admin';
 
-export * from './authProvider'
-export { default as storage } from './storage'
+export * from './authProvider';
+export { default as storage } from './storage';
 
 export default (apiUrl, httpClient = fetchJson) => {
   /**
@@ -24,88 +24,88 @@ export default (apiUrl, httpClient = fetchJson) => {
    * @returns {Object} { url, options } The HTTP request parameters
    */
   const convertDataRequestToHTTP = (type, resource, params) => {
-    let url = ''
-    const options = {}
-    const specialParams = ['pagination', 'sort', 'filter']
+    let url = '';
+    const options = {};
+    const specialParams = ['pagination', 'sort', 'filter'];
     switch (type) {
       case GET_LIST: {
-        console.log(params)
-        const { page, perPage } = params.pagination
-        const { field, order } = params.sort
-        const query = {}
-        query.where = { ...params.filter }
-        if (field) query.order = [field + ' ' + order]
-        if (perPage >= 0) query.limit = perPage
-        if (perPage > 0 && page >= 0) query.skip = (page - 1) * perPage
+        console.log(params);
+        const { page, perPage } = params.pagination;
+        const { field, order } = params.sort;
+        const query = {};
+        query.where = { ...params.filter };
+        if (field) query.order = [field + ' ' + order];
+        if (perPage >= 0) query.limit = perPage;
+        if (perPage > 0 && page >= 0) query.skip = (page - 1) * perPage;
 
         Object.keys(params).forEach((key) => {
           if (!specialParams.includes(key) && params[key] !== undefined) {
-            query[key] = params[key]
+            query[key] = params[key];
           }
-        })
+        });
         url = `${apiUrl}/${resource}?${stringify({
           filter: JSON.stringify(query),
-        })}`
-        break
+        })}`;
+        break;
       }
       case GET_ONE:
-        url = `${apiUrl}/${resource}/${params.id}`
-        break
+        url = `${apiUrl}/${resource}/${params.id}`;
+        break;
       case GET_MANY: {
         const listId = params.ids.map((id) => {
-          return { id }
-        })
+          return { id };
+        });
 
-        let query = ''
-        if (listId.length > 0) {
+        let query = '';
+        if (listId.length) {
           const filter = {
             where: { or: listId },
-          }
-          query = `?${stringify({ filter: JSON.stringify(filter) })}`
+          };
+          query = `?${stringify({ filter: JSON.stringify(filter) })}`;
         }
-        url = `${apiUrl}/${resource}${query}`
-        break
+        url = `${apiUrl}/${resource}${query}`;
+        break;
       }
       case GET_MANY_REFERENCE: {
-        const { page, perPage } = params.pagination
-        const { field, order } = params.sort
-        const query = {}
-        query.where = { ...params.filter }
-        query.where[params.target] = params.id
-        if (field) query.order = [field + ' ' + order]
-        if (perPage >= 0) query.limit = perPage
-        if (perPage > 0 && page >= 0) query.skip = (page - 1) * perPage
+        const { page, perPage } = params.pagination;
+        const { field, order } = params.sort;
+        const query = {};
+        query.where = { ...params.filter };
+        query.where[params.target] = params.id;
+        if (field) query.order = [field + ' ' + order];
+        if (perPage >= 0) query.limit = perPage;
+        if (perPage > 0 && page >= 0) query.skip = (page - 1) * perPage;
 
         Object.keys(params).forEach((key) => {
           if (!specialParams.includes(key) && params[key] !== undefined) {
-            query[key] = params[key]
+            query[key] = params[key];
           }
-        })
+        });
 
         url = `${apiUrl}/${resource}?${stringify({
           filter: JSON.stringify(query),
-        })}`
-        break
+        })}`;
+        break;
       }
       case UPDATE:
-        url = `${apiUrl}/${resource}/${params.id}`
-        options.method = 'PATCH'
-        options.body = JSON.stringify(params.data)
-        break
+        url = `${apiUrl}/${resource}/${params.id}`;
+        options.method = 'PATCH';
+        options.body = JSON.stringify(params.data);
+        break;
       case CREATE:
-        url = `${apiUrl}/${resource}`
-        options.method = 'POST'
-        options.body = JSON.stringify(params.data)
-        break
+        url = `${apiUrl}/${resource}`;
+        options.method = 'POST';
+        options.body = JSON.stringify(params.data);
+        break;
       case DELETE:
-        url = `${apiUrl}/${resource}/${params.id}`
-        options.method = 'DELETE'
-        break
+        url = `${apiUrl}/${resource}/${params.id}`;
+        options.method = 'DELETE';
+        break;
       default:
-        throw new Error(`Unsupported fetch action type ${type}`)
+        throw new Error(`Unsupported fetch action type ${type}`);
     }
-    return { url, options }
-  }
+    return { url, options };
+  };
 
   /**
    * @param {Object} response HTTP response from fetch()
@@ -115,27 +115,27 @@ export default (apiUrl, httpClient = fetchJson) => {
    * @returns {Object} Data response
    */
   const convertHTTPResponse = (response, type, resource, params) => {
-    const { headers, json } = response
+    const { headers, json } = response;
     switch (type) {
       case GET_LIST:
       case GET_MANY_REFERENCE:
         if (!headers.has('content-range')) {
           throw new Error(
             'The Content-Range header is missing in the HTTP Response. The simple REST data provider expects responses for lists of resources to contain this header with the total number of results to build the pagination. If you are using CORS, did you declare Content-Range in the Access-Control-Expose-Headers header?'
-          )
+          );
         }
         return {
           data: json,
           total: parseInt(headers.get('content-range').split('/').pop(), 10),
-        }
+        };
       case CREATE:
-        return { data: { ...params.data, id: json.id } }
+        return { data: { ...params.data, id: json.id } };
       case DELETE:
-        return { data: { ...json, id: params.id } }
+        return { data: { ...json, id: params.id } };
       default:
-        return { data: json }
+        return { data: json };
     }
-  }
+  };
 
   /**
    * @param {string} type Request type, e.g GET_LIST
@@ -155,7 +155,7 @@ export default (apiUrl, httpClient = fetchJson) => {
         )
       ).then((responses) => ({
         data: responses.map((response) => response.json),
-      }))
+      }));
     }
     // simple-rest doesn't handle filters on DELETE route, so we fallback to calling DELETE n times instead
     if (type === DELETE_MANY) {
@@ -167,13 +167,13 @@ export default (apiUrl, httpClient = fetchJson) => {
         )
       ).then((responses) => ({
         data: responses.map((response) => response.json),
-      }))
+      }));
     }
 
-    const { url, options } = convertDataRequestToHTTP(type, resource, params)
+    const { url, options } = convertDataRequestToHTTP(type, resource, params);
 
     return httpClient(url, options).then((response) =>
       convertHTTPResponse(response, type, resource, params)
-    )
-  }
-}
+    );
+  };
+};

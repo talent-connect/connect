@@ -50,6 +50,7 @@ const LoggedIn: FunctionComponent<Props> = ({
   matches,
   matchesFetchStart,
   matchesMarkAsDismissed,
+  children
 }) => {
   const profile = getRedProfileFromLocalStorage()
   const history = useHistory()

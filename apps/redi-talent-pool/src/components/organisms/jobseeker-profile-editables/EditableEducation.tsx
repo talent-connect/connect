@@ -54,9 +54,10 @@ export const EditableEducation: FunctionComponent<Props> = ({
   })
   if (overridingProfile) queryHookResult.data = overridingProfile
   const mutationHookResult = useTpjobseekerprofileUpdateMutation()
-  const { data: profile } = queryHookResult
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
+
+  const { data: profile } = queryHookResult
 
   const isEmpty = EditableEducation.isSectionEmpty(profile)
 
@@ -129,7 +130,7 @@ export const EditableEducation: FunctionComponent<Props> = ({
 }
 
 EditableEducation.isSectionFilled = (profile: Partial<TpJobseekerProfile>) =>
-  profile?.education?.length > 0
+  profile?.education?.length
 EditableEducation.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
   !EditableEducation.isSectionFilled(profile)
 
@@ -140,7 +141,7 @@ function formatDate(month?: number, year?: number): string {
   return ''
 }
 
-interface JobseekerFormSectionEducationeProps {
+interface JobseekerFormSectionEducationProps {
   setIsEditing: (boolean) => void
   setIsFormDirty?: (boolean) => void
   queryHookResult: UseQueryResult<
@@ -158,11 +159,9 @@ interface JobseekerFormSectionEducationeProps {
 export function JobseekerFormSectionEducation({
   setIsEditing,
   setIsFormDirty,
-  queryHookResult,
+  queryHookResult: { data: profile },
   mutationHookResult,
-}: JobseekerFormSectionEducationeProps) {
-  const { data: profile } = queryHookResult
-  const mutation = mutationHookResult
+}: JobseekerFormSectionEducationProps) {
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
 
@@ -174,13 +173,9 @@ export function JobseekerFormSectionEducation({
   )
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
     formik.setSubmitting(true)
-    mutation.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
-      },
+    mutationHookResult.mutate(values, {
+      onSettled: () =>  formik.setSubmitting(false),
+      onSuccess: () => setIsEditing(false),
     })
   }
 
@@ -189,6 +184,7 @@ export function JobseekerFormSectionEducation({
     onSubmit,
     enableReinitialize: true,
   })
+
   useEffect(() => setIsFormDirty?.(formik.dirty), [
     formik.dirty,
     setIsFormDirty,
@@ -367,14 +363,14 @@ export function JobseekerFormSectionEducation({
       </div>
 
       <Button
-        disabled={!formik.isValid || mutation.isLoading}
+        disabled={!formik.isValid || mutationHookResult.isLoading}
         onClick={formik.handleSubmit}
       >
         Save
       </Button>
       <Button
         simple
-        disabled={mutation.isLoading}
+        disabled={mutationHookResult.isLoading}
         onClick={() => setIsEditing(false)}
       >
         Cancel
@@ -383,10 +379,7 @@ export function JobseekerFormSectionEducation({
   )
 }
 
-const formCertificationTypes = certificationTypes.map(({ id, label }) => ({
-  value: id,
-  label,
-}))
+const formCertificationTypes = certificationTypes.map(({ id: value, label }) => ({ value, label }))
 
 function buildBlankEducationRecord(): EducationRecord {
   return {

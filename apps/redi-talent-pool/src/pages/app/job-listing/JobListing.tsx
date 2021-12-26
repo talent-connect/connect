@@ -101,7 +101,7 @@ export const JobListing: FunctionComponent = () => {
             </div>
 
             <div className="profile-section--body">
-              {jobListing?.idealTechnicalSkills?.length > 0 ? (
+              {jobListing?.idealTechnicalSkills?.length ? (
                 <Tag.Group>
                   {jobListing.idealTechnicalSkills.map((skill) => (
                     <Tag key={skill}>{topSkillsIdToLabelMap[skill]}</Tag>

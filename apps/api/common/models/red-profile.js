@@ -1,54 +1,54 @@
-'use strict'
-const _ = require('lodash')
+'use strict';
+const _ = require('lodash');
 
-const Rx = require('rxjs')
-const { of } = Rx
-const { switchMap, map } = require('rxjs/operators')
-const { DateTime } = require('luxon')
+const Rx = require('rxjs');
+const { of } = Rx;
+const { switchMap, map } = require('rxjs/operators');
+const { DateTime } = require('luxon');
 
-const app = require('../../server/server')
+const app = require('../../server/server');
 const {
   sendMentorPendingReviewAcceptedEmail,
   sendMenteePendingReviewAcceptedEmail,
   sendPendingReviewDeclinedEmail,
   sendVerificationEmail,
-} = require('../../lib/email/email')
+} = require('../../lib/email/email');
 
 const addFullNamePropertyForAdminSearch = (ctx) => {
-  let thingToUpdate
-  if (ctx.instance) thingToUpdate = ctx.instance
-  else if (ctx.data) thingToUpdate = ctx.data
-  else return
+  let thingToUpdate;
+  if (ctx.instance) thingToUpdate = ctx.instance;
+  else if (ctx.data) thingToUpdate = ctx.data;
+  else return;
 
-  const firstName = thingToUpdate.firstName
-  const lastName = thingToUpdate.lastName
+  const firstName = thingToUpdate.firstName;
+  const lastName = thingToUpdate.lastName;
 
   if (firstName || lastName) {
-    const merged = `${firstName ? firstName + ' ' : ''}${lastName || ''}`
+    const merged = `${firstName ? firstName + ' ' : ''}${lastName || ''}`;
     thingToUpdate.loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName =
-      merged
+      merged;
   }
-}
+};
 
 module.exports = function (RedProfile) {
-  RedProfile.observe('before save', function updateTimestamp(ctx, next) {
-    addFullNamePropertyForAdminSearch(ctx)
-    const currentDate = new Date()
+  RedProfile.observe('before save', function updateTimestamp (ctx, next) {
+    addFullNamePropertyForAdminSearch(ctx);
+    const currentDate = new Date();
     if (ctx.instance) {
       if (ctx.isNewInstance) {
-        ctx.instance.createdAt = currentDate
-        ctx.instance.gaveGdprConsentAt = currentDate
+        ctx.instance.createdAt = currentDate;
+        ctx.instance.gaveGdprConsentAt = currentDate;
       }
-      ctx.instance.updatedAt = new Date()
+      ctx.instance.updatedAt = new Date();
     } else {
-      ctx.data.updatedAt = new Date()
+      ctx.data.updatedAt = new Date();
     }
-    next()
-  })
+    next();
+  });
 
-  RedProfile.observe('loaded', function loadRedMatchCount(ctx, next) {
+  RedProfile.observe('loaded', function loadRedMatchCount (ctx, next) {
     if (ctx.isNewInstance) {
-      return next()
+      return next();
       // TODO: the next two else-if blocks can definitely be DRY-ed. Merge them.
     }
 
@@ -58,53 +58,53 @@ module.exports = function (RedProfile) {
       ctx.options.currentUser.email === 'cloud-accounts@redi-school.org'
     ) {
     } else {
-      return next()
+      return next();
     }
 
-    const RedMatch = app.models.RedMatch
-    const AccessToken = app.models.AccessToken
+    const RedMatch = app.models.RedMatch;
+    const AccessToken = app.models.AccessToken;
 
     const getLastLoginDateTime = () =>
       ctx.options.currentUser
         ? Rx.bindNodeCallback(AccessToken.find.bind(AccessToken))({
-            where: {
-              userId: ctx.data.redUserId,
-            },
-            order: ['created DESC'],
-            limit: 1,
-          }).pipe(
-            map((accessTokens) =>
-              accessTokens && accessTokens[0] ? accessTokens[0].created : null
-            )
+          where: {
+            userId: ctx.data.redUserId,
+          },
+          order: ['created DESC'],
+          limit: 1,
+        }).pipe(
+          map((accessTokens) =>
+            accessTokens && accessTokens[0] ? accessTokens[0].created : null
           )
-        : Rx.of([null])
+        )
+        : Rx.of([null]);
 
     const countMatchesByType = (type) =>
       Rx.bindNodeCallback(RedMatch.count.bind(RedMatch))({
         mentorId: ctx.data.id,
         status: type,
-      })
-    const countTotal = () => countMatchesByType(null)
+      });
+    const countTotal = () => countMatchesByType(null);
 
     Rx.zip(getLastLoginDateTime(), countTotal()).subscribe(
       ([lastLoginDateTime, totalRedMatchCount]) => {
         Object.assign(ctx.data, {
           lastLoginDateTime,
           totalRedMatchCount,
-        })
-        next()
+        });
+        next();
       },
       (err) => next(err)
-    )
-  })
+    );
+  });
 
   RedProfile.observe('loaded', (ctx, next) => {
     if (ctx.isNewInstance) {
-      return next()
+      return next();
       // TODO: the next two else-if blocks can definitely be DRY-ed. Merge them.
     }
 
-    if (!ctx.data.categories) ctx.data.categories = []
+    if (!ctx.data.categories) ctx.data.categories = [];
 
     // Strip away RedProfile.administratorInternalComment if user is NOT cloud-accounts@redi-school.org
     if (
@@ -113,63 +113,63 @@ module.exports = function (RedProfile) {
       ctx.options.currentUser.email === 'cloud-accounts@redi-school.org'
     ) {
     } else {
-      delete ctx.data.administratorInternalComment
+      delete ctx.data.administratorInternalComment;
     }
 
     // If favouritedRedProfileIds[] isn't set, set it. But delete it if the accessing user doesn't own it.
-    ctx.data.favouritedRedProfileIds = ctx.data.favouritedRedProfileIds || []
+    ctx.data.favouritedRedProfileIds = ctx.data.favouritedRedProfileIds || [];
     const currentUserRedProfileId =
-      ctx?.options?.currentUser?.redProfile?.id.toString()
+      ctx?.options?.currentUser?.redProfile?.id.toString();
     const isRedProfileOwnedByCurrentUser =
       currentUserRedProfileId &&
-      currentUserRedProfileId === ctx.data.id.toString()
-    if (!isRedProfileOwnedByCurrentUser) delete ctx.data.favouritedRedProfileIds
+      currentUserRedProfileId === ctx.data.id.toString();
+    if (!isRedProfileOwnedByCurrentUser) delete ctx.data.favouritedRedProfileIds;
 
     if (ctx.data && ctx.data.userType === 'mentor') {
       // In case RedProfile belongs to a mentor, add "computed properties"
       // currentMenteeCount, currentFreeMenteeSpots, and numberOfPendingApplicationWithCurrentUser,
       // currentApplicantCount
-      const RedMatch = app.models.RedMatch
-      const RedMentoringSession = app.models.RedMentoringSession
+      const RedMatch = app.models.RedMatch;
+      const RedMentoringSession = app.models.RedMentoringSession;
 
       const countMatchesByType = (type) =>
         Rx.bindNodeCallback(RedMatch.count.bind(RedMatch))({
           mentorId: ctx.data.id,
           status: type,
-        })
-      const countAcceptedMatches = () => countMatchesByType('accepted')
-      const countAppliedMatches = () => countMatchesByType('applied')
-      const countTotal = () => countMatchesByType(undefined)
+        });
+      const countAcceptedMatches = () => countMatchesByType('accepted');
+      const countAppliedMatches = () => countMatchesByType('applied');
+      const countTotal = () => countMatchesByType(undefined);
 
       const numberOfPendingApplicationWithCurrentUser = () =>
         ctx.options.currentUser
           ? Rx.bindNodeCallback(RedMatch.count.bind(RedMatch))({
-              mentorId: ctx.data.id,
-              menteeId: ctx.options.currentUser.redProfile.id,
-              status: 'applied',
-            })
-          : Rx.of([null])
+            mentorId: ctx.data.id,
+            menteeId: ctx.options.currentUser.redProfile.id,
+            status: 'applied',
+          })
+          : Rx.of([null]);
 
       const getRedMatchesToCurrentMentor = () =>
         ctx.options.currentUser
           ? Rx.bindNodeCallback(RedMatch.find.bind(RedMatch))({
-              where: {
-                menteeId: ctx.options.currentUser.redProfile.id,
-                mentorId: ctx.data.id,
-              },
-            })
-          : Rx.of([null])
+            where: {
+              menteeId: ctx.options.currentUser.redProfile.id,
+              mentorId: ctx.data.id,
+            },
+          })
+          : Rx.of([null]);
       const getRedMentoringSessionsToCurrentMentor = () =>
         ctx.options.currentUser
           ? Rx.bindNodeCallback(
-              RedMentoringSession.find.bind(RedMentoringSession)
-            )({
-              where: {
-                menteeId: ctx.options.currentUser.redProfile.id,
-                mentorId: ctx.data.id,
-              },
-            })
-          : Rx.of([null])
+            RedMentoringSession.find.bind(RedMentoringSession)
+          )({
+            where: {
+              menteeId: ctx.options.currentUser.redProfile.id,
+              mentorId: ctx.data.id,
+            },
+          })
+          : Rx.of([null]);
 
       Rx.zip(
         countAcceptedMatches(),
@@ -196,50 +196,50 @@ module.exports = function (RedProfile) {
             numberOfPendingApplicationWithCurrentUser,
             redMatchesWithCurrentUser,
             redMentoringSessionsWithCurrentUser,
-          })
-          next()
+          });
+          next();
         },
         (err) => next(err)
-      )
+      );
     } else if (ctx.data && ctx.data.userType === 'mentee') {
       // In case RedProfile belongs to a mentee, add "computed properties"
       // numberOfPendingApplicationWithCurrentUser,
-      const RedMatch = app.models.RedMatch
-      const RedMentoringSession = app.models.RedMentoringSession
+      const RedMatch = app.models.RedMatch;
+      const RedMentoringSession = app.models.RedMentoringSession;
 
       const countActiveMentorMatches = (type) =>
         Rx.bindNodeCallback(RedMatch.count.bind(RedMatch))({
           menteeId: ctx.data.id,
           status: 'accepted',
-        })
+        });
       const getAllRedMatches = () =>
         Rx.bindNodeCallback(RedMatch.find.bind(RedMatch))({
           where: {
             menteeId: ctx.data.id,
           },
           include: 'mentor',
-        })
+        });
 
       const getRedMatchesToCurrentMentor = () =>
         ctx.options.currentUser
           ? Rx.bindNodeCallback(RedMatch.find.bind(RedMatch))({
-              where: {
-                menteeId: ctx.data.id,
-                mentorId: ctx.options.currentUser.redProfile.id,
-              },
-            })
-          : Rx.of([null])
+            where: {
+              menteeId: ctx.data.id,
+              mentorId: ctx.options.currentUser.redProfile.id,
+            },
+          })
+          : Rx.of([null]);
       const getRedMentoringSessionsToCurrentMentor = () =>
         ctx.options.currentUser
           ? Rx.bindNodeCallback(
-              RedMentoringSession.find.bind(RedMentoringSession)
-            )({
-              where: {
-                menteeId: ctx.data.id,
-                mentorId: ctx.options.currentUser.redProfile.id,
-              },
-            })
-          : Rx.of([null])
+            RedMentoringSession.find.bind(RedMentoringSession)
+          )({
+            where: {
+              menteeId: ctx.data.id,
+              mentorId: ctx.options.currentUser.redProfile.id,
+            },
+          })
+          : Rx.of([null]);
 
       Rx.zip(
         countActiveMentorMatches(),
@@ -255,12 +255,12 @@ module.exports = function (RedProfile) {
         ]) => {
           const currentActiveMentors = allRedMatches.filter(
             (match) => match.status === 'accepted'
-          )
+          );
           const currentActiveMentor =
-            currentActiveMentors.length > 0
+            currentActiveMentors.length
               ? currentActiveMentors[0]
-              : undefined
-          const hasActiveMentor = !!currentActiveMentor
+              : undefined;
+          const hasActiveMentor = !!currentActiveMentor;
           Object.assign(ctx.data, {
             activeMentorMatchesCount,
             redMatchesWithCurrentUser,
@@ -270,49 +270,49 @@ module.exports = function (RedProfile) {
               currentActiveMentor &&
               currentActiveMentor.toJSON &&
               currentActiveMentor.toJSON().mentor,
-          })
-          next()
+          });
+          next();
         },
         (err) => next(err)
-      )
+      );
     } else {
-      next()
+      next();
     }
-  })
+  });
 
   RedProfile.pendingReviewDoAccept = function (data, options, callback) {
-    pendingReviewAcceptOrDecline('ACCEPT')(data, options, callback)
-  }
+    pendingReviewAcceptOrDecline('ACCEPT')(data, options, callback);
+  };
 
   RedProfile.pendingReviewDoDecline = function (data, options, callback) {
-    pendingReviewAcceptOrDecline('DECLINE')(data, options, callback)
-  }
+    pendingReviewAcceptOrDecline('DECLINE')(data, options, callback);
+  };
 
   const pendingReviewAcceptOrDecline =
     (acceptDecline) => async (data, options, callback) => {
       if (!_.includes(['ACCEPT', 'DECLINE'], acceptDecline)) {
-        throw new Error('Invalid acceptDecline parameter')
+        throw new Error('Invalid acceptDecline parameter');
       }
-      const { redProfileId } = data
+      const { redProfileId } = data;
       const mentorRole = await app.models.Role.findOne({
         where: { name: 'mentor' },
-      })
+      });
       const menteeRole = await app.models.Role.findOne({
         where: { name: 'mentee' },
-      })
+      });
       const findRedProfile = switchMap(({ redProfileId }) =>
         loopbackModelMethodToObservable(RedProfile, 'findById')(redProfileId)
-      )
+      );
       const validateCurrentUserType = switchMap((redProfileInst) => {
-        const userType = redProfileInst.toJSON().userType
+        const userType = redProfileInst.toJSON().userType;
         if (_.includes(pendingReviewTypes, userType)) {
-          return of(redProfileInst)
+          return of(redProfileInst);
         } else {
           throw new Error(
             'Invalid current userType (user is not pending review)'
-          )
+          );
         }
-      })
+      });
       const setNewRedProfileProperties = switchMap((redProfileInst) =>
         loopbackModelMethodToObservable(
           redProfileInst,
@@ -322,19 +322,19 @@ module.exports = function (RedProfile) {
             redProfileInst.toJSON().userType
           ]()
         )
-      )
+      );
       const createRoleMapping = switchMap((redProfileInst) => {
-        const { userType, redUserId } = redProfileInst.toJSON()
+        const { userType, redUserId } = redProfileInst.toJSON();
         if (!_.includes(['mentee', 'mentor'], userType)) {
-          return of(redProfileInst)
+          return of(redProfileInst);
         }
-        const role = userType === 'mentor' ? mentorRole : menteeRole
+        const role = userType === 'mentor' ? mentorRole : menteeRole;
         role.principals.create({
           principalType: app.models.RoleMapping.USER,
           principalId: redUserId,
-        })
-        return of(redProfileInst)
-      })
+        });
+        return of(redProfileInst);
+      });
 
       Rx.of({ redProfileId })
         .pipe(
@@ -346,24 +346,24 @@ module.exports = function (RedProfile) {
         )
         .subscribe(
           (redMatchInst) => {
-            callback(null, redMatchInst)
+            callback(null, redMatchInst);
           },
           (err) => console.log(err)
-        )
-    }
+        );
+    };
 
   RedProfile.observe('after save', async function (context, next) {
     // Onky continue if this is a brand new user
-    if (process.env.NODE_ENV === 'seeding') return next()
+    if (process.env.NODE_ENV === 'seeding') return next();
 
-    const redProfileInst = context.instance
-    const redUserInst = await redProfileInst.redUser.get()
-    const redProfile = redProfileInst.toJSON()
-    const redUser = redUserInst.toJSON()
+    const redProfileInst = context.instance;
+    const redUserInst = await redProfileInst.redUser.get();
+    const redProfile = redProfileInst.toJSON();
+    const redUser = redUserInst.toJSON();
 
-    redUserInst.updateAttribute('rediLocation', redProfile.rediLocation)
+    redUserInst.updateAttribute('rediLocation', redProfile.rediLocation);
 
-    if (!context.isNewInstance) return next()
+    if (!context.isNewInstance) return next();
 
     var verifyOptions = {
       type: 'email',
@@ -376,20 +376,20 @@ module.exports = function (RedProfile) {
             userType: redProfile.userType,
             verificationToken: verifyOptions.verificationToken,
             rediLocation: redProfile.rediLocation,
-          }).subscribe()
+          }).subscribe();
         },
       },
       to: redUser.email,
       from: 'dummy@dummy.com',
-    }
+    };
 
     redUserInst.verify(verifyOptions, function (err, response) {
-      console.log(err)
-      console.log(response)
-      next()
-    })
-  })
-}
+      console.log(err);
+      console.log(response);
+      next();
+    });
+  });
+};
 
 /**
  * Send email to user whose pending status has just been accepted/rejected.
@@ -398,30 +398,30 @@ module.exports = function (RedProfile) {
  */
 
 const sendEmailUserReviewedAcceptedOrDenied = switchMap((redProfileInst) => {
-  const userType = redProfileInst.toJSON().userType
+  const userType = redProfileInst.toJSON().userType;
   const userTypeToEmailMap = {
     mentor: sendMentorPendingReviewAcceptedEmail,
     mentee: sendMenteePendingReviewAcceptedEmail,
     'public-sign-up-mentor-rejected': sendPendingReviewDeclinedEmail,
     'public-sign-up-mentee-rejected': sendPendingReviewDeclinedEmail,
-  }
+  };
   if (!_.has(userTypeToEmailMap, userType)) {
-    throw new Error('User does not have valid user type')
+    throw new Error('User does not have valid user type');
   }
-  const emailFunc = userTypeToEmailMap[userType]
-  const { contactEmail, firstName, rediLocation } = redProfileInst.toJSON()
+  const emailFunc = userTypeToEmailMap[userType];
+  const { contactEmail, firstName, rediLocation } = redProfileInst.toJSON();
   return emailFunc({
     recipient: contactEmail,
     firstName,
     rediLocation,
     userType,
-  })
-})
+  });
+});
 
 const pendingReviewTypes = [
   'public-sign-up-mentor-pending-review',
   'public-sign-up-mentee-pending-review',
-]
+];
 const currentUserTypeToPostReviewUpdates = {
   ACCEPT: {
     'public-sign-up-mentor-pending-review': () => ({
@@ -447,10 +447,10 @@ const currentUserTypeToPostReviewUpdates = {
       userActivated: false,
     }),
   },
-}
+};
 
 const loopbackModelMethodToObservable =
   (loopbackModel, modelMethod) => (methodParameter) =>
     Rx.bindNodeCallback(loopbackModel[modelMethod].bind(loopbackModel))(
       methodParameter
-    )
+    );

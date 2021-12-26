@@ -61,7 +61,7 @@ export const SetNewPassword: FunctionComponent<RouteComponentProps<RouteParams>>
     load()
   }, [props.match.params.accessToken])
 
-  const submitForm = async (
+  const onSubmit = async (
     values: FormikValues,
     actions: FormikActions<SetNewPasswordValues>
   ) => {
@@ -79,9 +79,9 @@ export const SetNewPassword: FunctionComponent<RouteComponentProps<RouteParams>>
   }
 
   const formik = useFormik({
-    initialValues: initialValues,
+    initialValues,
     validationSchema,
-    onSubmit: submitForm,
+    onSubmit,
   })
 
   return (

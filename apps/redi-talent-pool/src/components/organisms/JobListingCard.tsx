@@ -23,12 +23,12 @@ export const JobListingCard: FunctionComponent<JobListingCardProps> = ({
 }) => {
   // const history = useHistory()
 
-  const jobTitle = jobListing?.title
-  const idealTechnicalSkills = jobListing?.idealTechnicalSkills
+  const jobTitle = jobListing.title
+  const idealTechnicalSkills = jobListing.idealTechnicalSkills
 
-  const companyName = jobListing?.tpCompanyProfile?.companyName
+  const companyName = jobListing.tpCompanyProfile?.companyName
   const companyAvatarImage =
-    jobListing?.tpCompanyProfile?.profileAvatarImageS3Key
+    jobListing.tpCompanyProfile?.profileAvatarImageS3Key
 
   // const handleFavorite = (e: React.MouseEvent) => {
   //   e.stopPropagation()
@@ -76,7 +76,7 @@ export const JobListingCard: FunctionComponent<JobListingCardProps> = ({
         >
           {companyName}
         </Element>
-        {idealTechnicalSkills?.length > 0 ? (
+        {idealTechnicalSkills?.length ? (
           <CardTags
             items={idealTechnicalSkills}
             shortList

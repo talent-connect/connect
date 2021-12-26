@@ -48,33 +48,36 @@ interface Props {
   profilesFetchOneStart: Function
 }
 
-const ApplyForMentor: FunctionComponent<Props> = ({ mentor, profilesFetchOneStart }) => {
+const ApplyForMentor: FunctionComponent<Props> = ({
+  mentor: { id, lastName, firstName },
+  profilesFetchOneStart
+}) => {
   const [submitResult, setSubmitResult] = useState<FormSubmitResult>('notSubmitted')
   const [show, setShow] = useState(false)
   
-  const submitForm = async (
-    values: ConnectionRequestFormValues,
+  const onSubmit = async (
+    { applicationText, expectationText }: ConnectionRequestFormValues,
     actions: FormikActions<ConnectionRequestFormValues>
   ) => {
     setSubmitResult('submitting')
     try {
       await requestMentorship(
-        values.applicationText,
-        values.expectationText,
-        mentor.id
+        applicationText,
+        expectationText,
+        id
       )
       setShow(false)
-      profilesFetchOneStart(mentor.id)
+      profilesFetchOneStart(id)
     } catch (error) {
       setSubmitResult('error')
     }
   }
 
   const formik = useFormik({
-    enableReinitialize: true,
-    initialValues: initialValues,
+    initialValues,
     validationSchema,
-    onSubmit: submitForm,
+    onSubmit,
+    enableReinitialize: true,
   })
 
   const handleCancel = () => {
@@ -88,7 +91,7 @@ const ApplyForMentor: FunctionComponent<Props> = ({ mentor, profilesFetchOneStar
       <Modal
         show={show}
         stateFn={setShow}
-        title={`Application to ${mentor.firstName} ${mentor.lastName}`}
+        title={`Application to ${firstName} ${lastName}`}
       >
         <Modal.Body>
           <form>
@@ -100,8 +103,8 @@ const ApplyForMentor: FunctionComponent<Props> = ({ mentor, profilesFetchOneStar
                 <Caption>Motivation </Caption>
                 <Content>
                   <p>
-                    Write an application to the {mentor.firstName}{' '}
-                    {mentor.lastName} in which you describe why you think that
+                    Write an application to the {firstName}{' '}
+                    {lastName} in which you describe why you think that
                     the two of you are a great fit.
                   </p>
                 </Content>
@@ -109,7 +112,7 @@ const ApplyForMentor: FunctionComponent<Props> = ({ mentor, profilesFetchOneStar
                   name="applicationText"
                   className="oneandhalf-bs"
                   rows={4}
-                  placeholder={`Dear ${mentor.firstName}...`}
+                  placeholder={`Dear ${firstName}...`}
                   minChar={250}
                   maxChar={600}
                   {...formik}

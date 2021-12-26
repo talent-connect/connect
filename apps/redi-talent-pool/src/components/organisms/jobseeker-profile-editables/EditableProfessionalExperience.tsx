@@ -128,12 +128,10 @@ export const  EditableProfessionalExperience: FunctionComponent<Props> = ({
   )
 }
 
-EditableProfessionalExperience.isSectionFilled = (
-  profile: Partial<TpJobseekerProfile>
-) => profile?.experience?.length > 0
-EditableProfessionalExperience.isSectionEmpty = (
-  profile: Partial<TpJobseekerProfile>
-) => !EditableProfessionalExperience.isSectionFilled(profile)
+EditableProfessionalExperience.isSectionFilled = (profile: Partial<TpJobseekerProfile>) =>
+  profile?.experience?.length;
+EditableProfessionalExperience.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
+  !EditableProfessionalExperience.isSectionFilled(profile);
 
 function formatDate (month?: number, year?: number): string {
   if (year) {
@@ -159,32 +157,25 @@ interface JobseekerFormSectionProfessionalExperienceProps {
   >
 }
 
-export function JobseekerFormSectionProfessionalExperience({
+export const JobseekerFormSectionProfessionalExperience: FunctionComponent<JobseekerFormSectionProfessionalExperienceProps> = ({
   setIsEditing,
   setIsFormDirty,
-  queryHookResult,
+  queryHookResult: { data: profile },
   mutationHookResult,
-}: JobseekerFormSectionProfessionalExperienceProps) {
-  const { data: profile } = queryHookResult
-  const mutation = mutationHookResult
+}) => {
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
 
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(
-    () => ({
+  const initialValues: Partial<TpJobseekerProfile> = useMemo(() => ({
       experience: profile?.experience ?? [buildBlankExperienceRecord()],
     }),
     [profile?.experience]
   )
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
     formik.setSubmitting(true)
-    mutation.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
-      },
+    mutationHookResult.mutate(values, {
+      onSettled: () => formik.setSubmitting(false),
+      onSuccess: () => setIsEditing(false),
     })
   }
 
@@ -193,6 +184,7 @@ export function JobseekerFormSectionProfessionalExperience({
     onSubmit,
     enableReinitialize: true,
   })
+
   useEffect(() => setIsFormDirty?.(formik.dirty), [
     formik.dirty,
     setIsFormDirty,
@@ -368,14 +360,14 @@ export function JobseekerFormSectionProfessionalExperience({
       </div>
 
       <Button
-        disabled={!formik.isValid || mutation.isLoading}
+        disabled={!formik.isValid || mutationHookResult.isLoading}
         onClick={formik.handleSubmit}
       >
         Save
       </Button>
       <Button
         simple
-        disabled={mutation.isLoading}
+        disabled={mutationHookResult.isLoading}
         onClick={() => setIsEditing(false)}
       >
         Cancel

@@ -41,9 +41,7 @@ const validationSchema = Yup.object({
 
 const ReportProblem: FunctionComponent<ReportProblemProps> = ({ redProfileId, type }) => {
   const [showProblemDialog, setShowProblemDialog] = useState(false)
-  const [submitResult, setSubmitResult] = useState<FormSubmitResult>(
-    'notSubmitted'
-  )
+  const [submitResult, setSubmitResult] = useState<FormSubmitResult>('notSubmitted')
   const history = useHistory()
   const isMentor = type === 'mentor'
 
@@ -51,16 +49,17 @@ const ReportProblem: FunctionComponent<ReportProblemProps> = ({ redProfileId, ty
     values: FormValues,
     actions: FormikHelpers<FormValues>
   ) => {
-    const {
-      ifFromMentor_cancelMentorshipImmediately: isCancelImmediately,
-    } = values
+    const { ifFromMentor_cancelMentorshipImmediately: isCancelImmediately } = values
+
     if (isCancelImmediately) {
       const userIsCertain = window.confirm(
         'Are you sure you want to cancel this mentorship?'
       )
       if (!userIsCertain) return actions.setSubmitting(false)
     }
+
     setSubmitResult('submitting')
+
     try {
       const report: RedProblemReportDto = {
         problemDescription: values.problemDescription,
@@ -94,9 +93,7 @@ const ReportProblem: FunctionComponent<ReportProblemProps> = ({ redProfileId, ty
     onSubmit: submitForm,
   })
 
-  const {
-    ifFromMentor_cancelMentorshipImmediately: isCancelImmediatly,
-  } = formik.values
+  const { ifFromMentor_cancelMentorshipImmediately: isCancelImmediately } = formik.values
 
   return (
     <>
@@ -136,7 +133,7 @@ const ReportProblem: FunctionComponent<ReportProblemProps> = ({ redProfileId, ty
               </Checkbox.Form>
             )}
 
-            {isCancelImmediatly && (
+            {isCancelImmediately && (
               <Content textColor="primary">
                 Not ReDI? We regret you want to cancel this mentorship. Someone
                 from our Career Department will be in touch with both you and

@@ -36,7 +36,7 @@ const EditableLanguages: FunctionComponent<Props> = ({
   profileSaveStart
 }) => {
 
-  const submitForm = async (values: FormikValues) => {
+  const onSubmit = async (values: FormikValues) => {
     const languagesContacts = values as Partial<RedProfile>
     profileSaveStart({ ...languagesContacts, id })
   }
@@ -47,7 +47,7 @@ const EditableLanguages: FunctionComponent<Props> = ({
     initialValues,
     enableReinitialize: true,
     validationSchema,
-    onSubmit: submitForm,
+    onSubmit,
   })
 
   return (
@@ -69,9 +69,7 @@ const EditableLanguages: FunctionComponent<Props> = ({
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile,
-})
+const mapStateToProps = ({ user: { profile }}: RootState) => ({ profile })
 
 const mapDispatchToProps = (dispatch: any) => ({
   profileSaveStart: (profile: Partial<RedProfile>) =>

@@ -38,7 +38,7 @@ const SendProfileForReviewButton: FunctionComponent = () => {
   const enabled =
     profile?.state === 'drafting-profile' &&
     isProfileComplete(profile) &&
-    jobListings?.length > 0
+    jobListings?.length
 
   const getTooltipText = () => {
     if (profile.state !== 'submitted-for-review') {
@@ -130,7 +130,7 @@ export const MeCompany: FunctionComponent = () => {
               <OnboardingSteps
                 profile={profile}
                 isProfileComplete={isProfileComplete(profile)}
-                hasJobListing={jobListings?.length > 0}
+                hasJobListing={jobListings?.length}
               />
             )}
           </div>

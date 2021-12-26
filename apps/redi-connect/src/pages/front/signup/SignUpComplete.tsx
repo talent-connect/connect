@@ -15,7 +15,7 @@ type RouteParams = {
 
 const SignUpComplete: FunctionComponent = () => {
   const history = useHistory()
-  const { userType } = useParams<RouteParams>() as RouteParams
+  const { userType } = useParams<RouteParams>()
 
   return (
     <AccountOperation>

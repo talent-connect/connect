@@ -21,15 +21,6 @@ const formEducationLevels = objectEntries(EDUCATION_LEVELS).map(
   })
 )
 
-// do we really need all these type???
-export type UserType =
-  | 'mentor'
-  | 'mentee'
-  | 'public-sign-up-mentor-pending-review'
-  | 'public-sign-up-mentee-pending-review'
-  | 'public-sign-up-mentor-rejected'
-  | 'public-sign-up-mentee-rejected'
-
 export interface EducationFormValues {
   mentee_highestEducationLevel: string
 }

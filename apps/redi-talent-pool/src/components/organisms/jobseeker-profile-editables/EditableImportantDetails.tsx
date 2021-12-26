@@ -76,7 +76,7 @@ export const EditableImportantDetails: FunctionComponent<Props> = ({
           >
             {profile &&
             profile.desiredEmploymentType &&
-            profile.desiredEmploymentType.length > 0 ? (
+            profile.desiredEmploymentType.length ? (
               <div>
                 <Caption>Type of work</Caption>
                 <PipeList
@@ -169,7 +169,7 @@ EditableImportantDetails.isSectionFilled = (
   profile: Partial<TpJobseekerProfile>
 ) =>
   profile?.availability ||
-  profile?.desiredEmploymentType?.length > 0 ||
+  profile?.desiredEmploymentType?.length ||
   profile?.phoneNumber ||
   profile?.immigrationStatus ||
   profile?.postalMailingAddress

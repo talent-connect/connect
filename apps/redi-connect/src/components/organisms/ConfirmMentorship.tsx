@@ -66,7 +66,7 @@ const ConfirmMentorship = ({
   //     <>{children}</>
   //   )
 
-  const submitForm = async (values: ConfirmMentorshipFormValues) => {
+  const onSubmit = async (values: ConfirmMentorshipFormValues) => {
     try {
       matchesAcceptMentorshipStart(match.id, values.mentorReplyMessageOnAccept)
       setModalActive(false)
@@ -79,7 +79,7 @@ const ConfirmMentorship = ({
   const formik = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: submitForm,
+    onSubmit,
   })
 
   const isFormSubmittable = formik.dirty && formik.isValid

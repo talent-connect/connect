@@ -8,7 +8,7 @@ export interface FormSelectProps {
   /** */
   placeholder: string;
   /** */
-  className: string;
+  className?: string;
   /** */
   label: string;
   /** */
@@ -20,7 +20,7 @@ export interface FormSelectProps {
   /** */
   handleBlur: FocusEventHandler<HTMLInputElement>;
   /** */
-  multiSelect: boolean;
+  multiSelect?: boolean;
   /** */
   setFieldTouched: (name: string, value: boolean, x: boolean) => void; // TODO: signature
   /** */
@@ -30,5 +30,5 @@ export interface FormSelectProps {
   /** */
   errors: unknown;
   /** */
-  disabled: boolean;
+  disabled?: boolean;
 }

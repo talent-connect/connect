@@ -82,7 +82,7 @@ export const EditableOverview: FunctionComponent<Props> = ({
 }
 
 EditableOverview.isSectionFilled = (profile: Partial<TpJobseekerProfile>) =>
-  profile?.desiredPositions?.length > 0
+  profile?.desiredPositions?.length
 EditableOverview.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
   !EditableOverview.isSectionFilled(profile)
 
@@ -111,14 +111,11 @@ interface JobseekerFormSectionOverviewProps {
 export function JobseekerFormSectionOverview({
   setIsEditing,
   setIsFormDirty,
-  queryHookResult,
+  queryHookResult: { data: profile },
   mutationHookResult,
   hideCurrentRediCourseField,
 }: JobseekerFormSectionOverviewProps) {
-  const { data: profile } = queryHookResult
-  const mutation = mutationHookResult
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(
-    () => ({
+  const initialValues: Partial<TpJobseekerProfile> = useMemo(() => ({
       desiredPositions: profile?.desiredPositions ?? [],
       currentlyEnrolledInCourse: profile?.currentlyEnrolledInCourse ?? '',
     }),
@@ -127,7 +124,7 @@ export function JobseekerFormSectionOverview({
 
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
     formik.setSubmitting(true)
-    mutation.mutate(values, {
+    mutationHookResult.mutate(values, {
       onSettled: () => {
         formik.setSubmitting(false)
       },
@@ -173,14 +170,14 @@ export function JobseekerFormSectionOverview({
         />
       )}
       <Button
-        disabled={!formik.isValid || mutation.isLoading}
+        disabled={!formik.isValid || mutationHookResult.isLoading}
         onClick={formik.submitForm}
       >
         Save
       </Button>
       <Button
         simple
-        disabled={mutation.isLoading}
+        disabled={mutationHookResult.isLoading}
         onClick={() => setIsEditing(false)}
       >
         Cancel

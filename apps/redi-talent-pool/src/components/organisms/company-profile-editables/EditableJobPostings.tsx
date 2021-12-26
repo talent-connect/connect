@@ -41,7 +41,7 @@ export const EditableJobPostings: FunctionComponent<Props> = ({
   const [idOfTpJobListingBeingEdited, setIdOfTpJobListingBeingEdited] =
     useState<string | null>(null) // null = "new"
 
-  const hasJobListings = jobListings?.length > 0
+  const hasJobListings = jobListings?.length
   const isEmpty = !hasJobListings
 
   const startAdding = useCallback(() => {

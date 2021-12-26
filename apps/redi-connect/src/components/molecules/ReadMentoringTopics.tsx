@@ -23,8 +23,10 @@ export const ProfileTags: FunctionComponent<CardTagsProps> = ({ items, shortList
   />
 )
 
-const ReadMentoringTopics = ({ profile, caption }: ReadMentoringProps) => {
-  const { categories } = profile
+const ReadMentoringTopics: FunctionComponent<ReadMentoringProps> = ({
+  profile: { categories },
+  caption
+}) => {
 
   if (!categories?.length && !caption)
     return <Placeholder>Please pick up to four mentoring topics.</Placeholder>
@@ -37,9 +39,7 @@ const ReadMentoringTopics = ({ profile, caption }: ReadMentoringProps) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile as RedProfile,
-})
+const mapStateToProps = ({ user: { profile } }: RootState) => ({ profile })
 
 export default {
   Me: connect(mapStateToProps, {})(ReadMentoringTopics),
@@ -47,6 +47,6 @@ export default {
     <ReadMentoringTopics profile={profile} caption />
   ),
   Tags: ({ items, shortList }: CardTagsProps) => (
-    <ProfileTags items={items} shortList />
+    <ProfileTags items={items} shortList={shortList} />
   ),
 }

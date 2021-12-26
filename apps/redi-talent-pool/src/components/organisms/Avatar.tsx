@@ -5,8 +5,9 @@ import {
 import { TpJobseekerProfile, TpCompanyProfile } from '@talent-connect/shared-types'
 import classnames from 'classnames'
 import { FormikValues, useFormik } from 'formik'
+import { FunctionComponent, ReactNode } from 'react';
 import { Element } from 'react-bulma-components'
-import ReactS3Uploader from 'react-s3-uploader'
+import ReactS3Uploader, { S3Response } from 'react-s3-uploader'
 import * as Yup from 'yup'
 import placeholderImage from '../../assets/img-placeholder.png'
 import { ReactComponent as UploadImage } from '../../assets/uploadImage.svg'
@@ -28,8 +29,9 @@ const validationSchema = Yup.object({
   profileAvatarImageS3Key: Yup.string().max(255),
 })
 
-const Avatar = ({ profile }: AvatarProps) => {
-  const { profileAvatarImageS3Key } = profile
+const Avatar: FunctionComponent<AvatarProps> & { Editable: typeof AvatarEditable, Some: ReactNode }= ({
+  profile: { profileAvatarImageS3Key, firstName, lastName }
+}) => {
   const imgSrc = profileAvatarImageS3Key
     ? AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
     : placeholderImage
@@ -42,20 +44,22 @@ const Avatar = ({ profile }: AvatarProps) => {
     >
       <img
         src={imgSrc}
-        alt={`${profile.firstName} ${profile.lastName}`}
+        alt={`${firstName} ${lastName}`}
         className="avatar__image"
       />
     </div>
   )
 }
 
-const AvatarEditable = ({ profile, profileSaveStart }: AvatarEditable) => {
-  const { profileAvatarImageS3Key } = profile
+const AvatarEditable: FunctionComponent<AvatarEditable> = ({
+  profile: { profileAvatarImageS3Key, id, firstName, lastName },
+  profileSaveStart
+}) => {
   const imgURL = AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
 
   const submitForm = async (values: FormikValues) => {
     const profileMe = values as Partial<TpJobseekerProfile>
-    profileSaveStart({ ...profileMe, id: profile.id })
+    profileSaveStart({ ...profileMe, id })
   }
 
   const initialValues: AvatarFormValues = {
@@ -68,8 +72,8 @@ const AvatarEditable = ({ profile, profileSaveStart }: AvatarEditable) => {
     onSubmit: submitForm,
   })
 
-  const onUploadSuccess = (result: any) => {
-    formik.setFieldValue('profileAvatarImageS3Key', result.fileKey)
+  const onUploadSuccess = ({ fileKey }: S3Response) => {
+    formik.setFieldValue('profileAvatarImageS3Key', fileKey)
     formik.handleSubmit()
   }
 
@@ -83,7 +87,7 @@ const AvatarEditable = ({ profile, profileSaveStart }: AvatarEditable) => {
         <>
           <img
             src={imgURL}
-            alt={`${profile.firstName} ${profile.lastName}`}
+            alt={`${firstName} ${lastName}`}
             className="avatar__image"
           />
           <Element

@@ -4,7 +4,7 @@ import {
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
 import { AWS_PROFILE_AVATARS_BUCKET_BASE_URL } from '@talent-connect/shared-config'
-import React, { FunctionComponent, useCallback, useRef } from 'react'
+import { FunctionComponent, useCallback, useRef, useState } from 'react'
 import { Box, Columns, Content, Section } from 'react-bulma-components'
 import { useHistory, useParams } from 'react-router-dom'
 import { Subject } from 'rxjs'
@@ -52,10 +52,7 @@ const CvDetailPage: FunctionComponent = () => {
   const history = useHistory()
   const { id: cvId } = useParams<ParamTypes>()
 
-  const {
-    data: profile,
-    isSuccess: profileLoadSuccess,
-  } = useTpJobseekerProfileQuery()
+  const { data: profile, isSuccess: profileLoadSuccess } = useTpJobseekerProfileQuery()
   const { data: cvData, isSuccess: cvLoadSuccess } = useTpJobseekerCvByIdQuery(
     cvId,
     {
@@ -70,12 +67,9 @@ const CvDetailPage: FunctionComponent = () => {
 
   const handleCloseClick = () => history.push('/app/cv-builder')
 
-  const [
-    cvPreviewElementWidth,
-    setCvPreviewElementWidth,
-  ] = React.useState<number>(0)
-  const cvContainerRef = React.useRef<HTMLDivElement>(null)
-  const cvContainerRefCallback = React.useCallback((containerNode) => {
+  const [ cvPreviewElementWidth, setCvPreviewElementWidth] = useState<number>(0)
+  const cvContainerRef = useRef<HTMLDivElement>(null)
+  const cvContainerRefCallback = useCallback((containerNode) => {
     cvContainerRef.current = containerNode
     const elementWidth = containerNode?.clientWidth
     setCvPreviewElementWidth(elementWidth)

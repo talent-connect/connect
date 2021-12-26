@@ -96,7 +96,7 @@ const CvListPage: FunctionComponent = () => {
         <Heading size="small">Your CVs</Heading>
       </Section>
       <Section paddingless>
-        {cvList?.length > 0 ? (
+        {cvList?.length ? (
           <div>
             {cvList.map((cv) => (
               <CvListItem

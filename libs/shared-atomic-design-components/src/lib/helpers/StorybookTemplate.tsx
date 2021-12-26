@@ -14,8 +14,9 @@ export function storybookTemplate<TPropsType> (
     Children?: ReactNode): Story<TPropsType> 
     {
     const template: Story<TPropsType> = (args) => {
-      if (Children) return <Component {...args}>{ Children }</Component>
-      return <Component {...args} />
+      return Children
+        ? <Component {...args}>{Children}</Component>
+        : <Component {...args} />
     } 
     const story = template.bind({})
     story.args = props

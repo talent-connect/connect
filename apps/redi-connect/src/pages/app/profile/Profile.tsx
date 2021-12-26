@@ -158,7 +158,7 @@ const Profile: FunctionComponent<ProfileProps> = ({
             </Element>
           )}
 
-          {profile.categories?.length > 0 && (
+          {profile.categories?.length && (
             <Element className="block-separator">
               <ReadMentoringTopics.Some profile={profile} />
             </Element>

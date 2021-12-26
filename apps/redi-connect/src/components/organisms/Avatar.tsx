@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react'
+import { FunctionComponent, ReactNode } from 'react'
 import { ReactComponent as UploadImage } from '../../assets/images/uploadImage.svg'
 import ReactS3Uploader from 'react-s3-uploader'
 import { Element } from 'react-bulma-components'
@@ -22,20 +22,12 @@ import { RedProfile } from '@talent-connect/shared-types'
 interface AvatarProps {
   profile: RedProfile
 }
-interface AvatarEditable {
-  profile: RedProfile
-  profileSaveStart: Function
-}
-
-interface AvatarFormValues {
-  profileAvatarImageS3Key: string
-}
 
 const validationSchema = Yup.object({
   profileAvatarImageS3Key: Yup.string().max(255),
 })
 
-const Avatar: FunctionComponent<AvatarProps> = ({
+const Avatar: FunctionComponent<AvatarProps> & { Some: (profile: RedProfile) => ReactNode, Editable: typeof AvatarEditable }= ({
   profile: { profileAvatarImageS3Key, firstName, lastName }
 }) => {
   const imgSrc = profileAvatarImageS3Key
@@ -55,6 +47,15 @@ const Avatar: FunctionComponent<AvatarProps> = ({
       />
     </div>
   )
+}
+
+interface AvatarFormValues {
+  profileAvatarImageS3Key: string
+}
+
+interface AvatarEditable {
+  profile: RedProfile
+  profileSaveStart: Function
 }
 
 const AvatarEditable: FunctionComponent<AvatarEditable> = ({

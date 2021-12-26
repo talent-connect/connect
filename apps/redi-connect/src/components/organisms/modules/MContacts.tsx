@@ -19,18 +19,15 @@ const ContactRow: FunctionComponent<ContactRow> = ({ label, children }) =>
     <></>
   )
 
-interface MContact {
+interface MContactProps {
   profile: RedProfile
   className?: string
 }
 
-const MContacts = ({ profile, className }: MContact) => {
-  const {
-    contactEmail,
-    telephoneNumber,
-    linkedInProfileUrl,
-    slackUsername,
-  } = profile
+const MContacts: FunctionComponent<MContactProps> = ({
+  profile: { contactEmail, telephoneNumber, linkedInProfileUrl, slackUsername },
+  className
+}) => {
 
   return (
     <Module

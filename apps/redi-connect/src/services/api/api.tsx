@@ -87,10 +87,7 @@ export const setPassword = async (password: string) => {
   })
 }
 
-export const fetchSaveRedProfile = async (
-  accessToken: AccessToken
-): Promise<RedProfile> => {
-  const { userId, id: token } = accessToken
+export const fetchSaveRedProfile = async ({ userId, id: token }: AccessToken): Promise<RedProfile> => {
   const profileResp = await http(`${API_URL}/redUsers/${userId}/redProfile`, {
     headers: {
       Authorization: token,
@@ -135,11 +132,11 @@ export const getProfiles = ({
   nameQuery,
 }: RedProfileFilters): Promise<RedProfile[]> => {
   const filterLanguages =
-    languages && languages.length !== 0 ? { inq: languages } : undefined
+    languages && languages.length ? { inq: languages } : undefined
   const filterCategories =
-    categories && categories.length !== 0 ? { inq: categories } : undefined
+    categories && categories.length ? { inq: categories } : undefined
   const filterLocations =
-    locations && locations.length !== 0 ? { inq: locations } : undefined
+    locations && locations.length ? { inq: locations } : undefined
 
   return http(
     `${API_URL}/redProfiles?filter=${JSON.stringify({

@@ -32,10 +32,8 @@ const typeToSvgImageMap: imageType = {
 
 const RediHeroLanding: FunctionComponent<Props> = ({ type }) => {
   const { t } = useTranslation()
-  const programSteps: Array<{
-    name: string
-    image: any
-  }> = t(`loggedOutArea.homePage.hero.${type}.steps`, { returnObjects: true })
+  const programSteps: { name: string; image: any; }[] =
+    t(`loggedOutArea.homePage.hero.${type}.steps`, { returnObjects: true })
 
   return (
     <Section

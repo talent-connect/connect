@@ -9,12 +9,9 @@ interface Props {
   profile: RedProfile
 }
 
-const Me: FunctionComponent<Props> = ({ profile }) => {
-  const {
-    menteeCountCapacity,
-    optOutOfMenteesFromOtherRediLocation,
-    rediLocation,
-  } = profile
+const Me: FunctionComponent<Props> = ({
+  profile: { menteeCountCapacity, optOutOfMenteesFromOtherRediLocation, rediLocation }
+}) => {
 
   return (
     <Content>
@@ -35,9 +32,7 @@ const Me: FunctionComponent<Props> = ({ profile }) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile as RedProfile,
-})
+const mapStateToProps = ({ user: { profile }}: RootState) => ({ profile })
 
 export default {
   Me: connect(mapStateToProps, {})(Me),

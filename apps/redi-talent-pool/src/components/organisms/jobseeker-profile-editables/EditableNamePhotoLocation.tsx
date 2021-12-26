@@ -105,13 +105,15 @@ const validationSchema = Yup.object({
   location: Yup.string().required('Your location is required'),
 })
 
-function ModalForm({
-  setIsEditing,
-  setIsFormDirty,
-}: {
+interface ModalFormProps {
   setIsEditing: (boolean) => void
   setIsFormDirty: (boolean) => void
-}) {
+}
+
+const ModalForm: FunctionComponent<ModalFormProps> = ({
+  setIsEditing,
+  setIsFormDirty,
+}) => {
   const { data: profile } = useTpJobseekerProfileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
   const initialValues: Partial<TpJobseekerProfile> = useMemo(

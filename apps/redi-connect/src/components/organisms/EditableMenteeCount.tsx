@@ -21,12 +21,9 @@ import { ReadMenteeCount } from '../molecules'
 
 const menteeCountExplanation = (amount: number) => {
   switch (amount) {
-    case 0:
-      return '(Select this option if you need a break from mentoring)'
-    case 1:
-      return 'mentee'
-    default:
-      return 'mentees'
+    case 0: return '(Select this option if you need a break from mentoring)'
+    case 1: return 'mentee'
+    default: return 'mentees'
   }
 }
 
@@ -63,7 +60,6 @@ const EditableMenteeCount: FunctionComponent<Props> = ({
 }) => {
 
   const submitForm = async (values: FormikValues) => {
-    console.log(values)
     const profileMenteeCount = values as Partial<RedProfile>
     profileSaveStart({ ...profileMenteeCount, id })
   }
@@ -107,9 +103,7 @@ const EditableMenteeCount: FunctionComponent<Props> = ({
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile,
-})
+const mapStateToProps = ({ user: { profile }}: RootState) => ({ profile })
 
 const mapDispatchToProps = (dispatch: any) => ({
   profileSaveStart: (profile: Partial<RedProfile>) =>

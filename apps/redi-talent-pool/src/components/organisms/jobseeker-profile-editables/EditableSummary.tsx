@@ -64,7 +64,7 @@ export const EditableSummary: FunctionComponent<Props> = ({
             )}
           </Content>
           <Caption>Top skills</Caption>
-          {profile?.topSkills?.length > 0 ? (
+          {profile?.topSkills?.length ? (
             <Tag.Group>
               {profile?.topSkills?.map((skill) => (
                 <Tag key={skill}>{topSkillsIdToLabelMap[skill]}</Tag>
@@ -96,7 +96,7 @@ export const EditableSummary: FunctionComponent<Props> = ({
 }
 
 EditableSummary.isSectionFilled = (profile: Partial<TpJobseekerProfile>) =>
-  !!profile?.aboutYourself && profile?.topSkills?.length > 0
+  !!profile?.aboutYourself && profile?.topSkills?.length
 EditableSummary.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
   !EditableSummary.isSectionFilled(profile)
 
@@ -133,17 +133,17 @@ interface JobseekerFormSectionSummaryProps {
   >
 }
 
-export function JobseekerFormSectionSummary({
+export const JobseekerFormSectionSummary: FunctionComponent<JobseekerFormSectionSummaryProps> = ({
   setIsEditing,
   setIsFormDirty,
   queryHookResult,
   mutationHookResult,
-}: JobseekerFormSectionSummaryProps) {
+}) => {
+
   const { data: profile } = queryHookResult
   const mutation = mutationHookResult
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(
-    () => ({
-      aboutYourself: profile?.aboutYourself ? profile.aboutYourself : '',
+  const initialValues: Partial<TpJobseekerProfile> = useMemo(() => ({
+      aboutYourself: profile?.aboutYourself || '',
       topSkills: profile?.topSkills ?? [],
     }),
     [profile?.aboutYourself, profile?.topSkills]
@@ -151,12 +151,8 @@ export function JobseekerFormSectionSummary({
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
     formik.setSubmitting(true)
     mutation.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
-      },
+      onSettled: () => { formik.setSubmitting(false) },
+      onSuccess: () => { setIsEditing(false) },
     })
   }
   const formik = useFormik({
@@ -187,7 +183,7 @@ export function JobseekerFormSectionSummary({
         name="topSkills"
         items={formTopSkills}
         {...formik}
-        multiselect
+        multiSelect
       />
       <FormTextArea
         label="About you (100-600 characters)"

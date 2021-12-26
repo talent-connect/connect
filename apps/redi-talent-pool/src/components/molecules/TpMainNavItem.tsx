@@ -40,9 +40,7 @@ export const TpMainNavItem: FunctionComponent<Props> = ({
 }) => {
   const onClick = useCallback(
     (event: React.MouseEvent) => {
-      if (isDisabled) {
-        event.preventDefault()
-      }
+      if (isDisabled) event.preventDefault()
     },
     [isDisabled]
   )

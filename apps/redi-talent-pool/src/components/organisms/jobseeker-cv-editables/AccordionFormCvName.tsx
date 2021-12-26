@@ -24,9 +24,6 @@ export const AccordionFormCvName: FunctionComponent<Props> = ({
   closeAccordionSignalSubject,
   onClose: parentOnCloseCallback,
 }) => {
-  const onClose = () => {
-    parentOnCloseCallback()
-  }
 
   const queryHookResult = useTpJobseekerCvByIdQuery(tpJobseekerCvId)
   const mutationHookResult = useTpjobseekerCvUpdateMutation(tpJobseekerCvId)
@@ -38,7 +35,7 @@ export const AccordionFormCvName: FunctionComponent<Props> = ({
     >
       <Form
         setIsEditing={(isEditing) => {
-          onClose()
+          parentOnCloseCallback()
         }}
         queryHookResult={queryHookResult}
         mutationHookResult={mutationHookResult}
@@ -67,12 +64,9 @@ interface FormProps {
 const Form: FunctionComponent<FormProps> = ({
   setIsEditing,
   setIsFormDirty,
-  queryHookResult,
+  queryHookResult: { data: profile },
   mutationHookResult,
 }) => {
-  const { data: profile } = queryHookResult
-  const mutation = mutationHookResult
-
   const initialValues: Partial<TpJobseekerCv> = useMemo(
     () => ({
       firstName: profile?.firstName ?? '',
@@ -82,13 +76,9 @@ const Form: FunctionComponent<FormProps> = ({
   )
   const onSubmit = (values: Partial<TpJobseekerCv>) => {
     formik.setSubmitting(true)
-    mutation.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
-      },
+    mutationHookResult.mutate(values, {
+      onSettled: () => formik.setSubmitting(false),
+      onSuccess: () => setIsEditing(false),
     })
   }
   const formik = useFormik({
@@ -98,6 +88,7 @@ const Form: FunctionComponent<FormProps> = ({
     onSubmit,
     validateOnMount: true,
   })
+
   useEffect(() => setIsFormDirty?.(formik.dirty), [
     formik.dirty,
     setIsFormDirty,
@@ -126,14 +117,14 @@ const Form: FunctionComponent<FormProps> = ({
         {...formik}
       />
       <Button
-        disabled={!formik.isValid || mutation.isLoading}
+        disabled={!formik.isValid || mutationHookResult.isLoading}
         onClick={formik.submitForm}
       >
         Save
       </Button>
       <Button
         simple
-        disabled={mutation.isLoading}
+        disabled={mutationHookResult.isLoading}
         onClick={() => setIsEditing(false)}
       >
         Cancel

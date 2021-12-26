@@ -17,7 +17,7 @@ interface Props {
   profile: Partial<TpCompanyProfile>
   disableEditing?: boolean
 }
-export const EditableAbout: FunctionComponent<Props> = ({ profile, disableEditing }) => {
+export const EditableAbout: FunctionComponent<Props> = ({ profile: { about }, disableEditing }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
@@ -42,7 +42,7 @@ export const EditableAbout: FunctionComponent<Props> = ({ profile, disableEditin
                   ),
                 }}
               >
-                {profile?.about?.replace(/\n/g, `\n\n`)}
+                {about?.replace(/\n/g, `\n\n`)}
               </ReactMarkdown>
             ) : (
               <EmptySectionPlaceholder
@@ -118,7 +118,12 @@ function ModalForm({
         stand out, what are you passionate about and what are your future
         aspirations.
       </Element>
-      <FormTextArea label="About you" name="about" rows={7} {...formik} />
+      <FormTextArea
+        label="About you"
+        name="about"
+        rows={7}
+        {...formik}
+      />
 
       <Button
         disabled={!formik.isValid || mutation.isLoading}

@@ -1,6 +1,5 @@
 import { FunctionComponent, useState } from 'react'
 import { connect } from 'react-redux'
-import { useHistory } from 'react-router-dom'
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
 import { Content } from 'react-bulma-components'
@@ -11,10 +10,7 @@ import {
   FormInput,
 } from '@talent-connect/shared-atomic-design-components'
 import { Modal } from '@talent-connect/shared-atomic-design-components'
-import {
-  matchesAcceptMentorshipStart,
-  matchesDeclineMentorshipStart,
-} from '../../redux/matches/actions'
+import { matchesDeclineMentorshipStart } from '../../redux/matches/actions'
 import { RedMatch } from '@talent-connect/shared-types'
 import { MENTOR_DECLINES_MENTORSHIP_REASON_FOR_DECLINING } from '@talent-connect/shared-config'
 
@@ -55,7 +51,7 @@ const DeclineMentorshipButton: FunctionComponent<DeclineMentorshipButtonProps> =
 }) => {
   const [isModalActive, setModalActive] = useState(false)
 
-  const submitForm = async (values: DeclineMentorshipFormValues) => {
+  const onSubmit = async (values: DeclineMentorshipFormValues) => {
     try {
       matchesDeclineMentorshipStart({
         redMatchId,
@@ -70,7 +66,7 @@ const DeclineMentorshipButton: FunctionComponent<DeclineMentorshipButtonProps> =
   const formik = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: submitForm,
+    onSubmit,
   })
 
   const isFormSubmittable = formik.dirty && formik.isValid

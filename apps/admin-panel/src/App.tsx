@@ -739,7 +739,7 @@ const RedMatchShow_RelatedMentoringSessions: FunctionComponent = ({
   }
   return (
     mentoringSessions &&
-    mentoringSessions.length > 0 && (
+    mentoringSessions.length && (
       <>
         <h3>Mentoring sessions registered</h3>
         <div style={{ maxWidth: '600px', margin: '0 auto' }}>
@@ -1238,11 +1238,8 @@ function tpJobseekerProfileListExporter(profiles, fetchRelatedRecords) {
   const data = profiles.map((profile) => {
     let { hrSummit2021JobFairCompanyJobPreferences } = profile
     hrSummit2021JobFairCompanyJobPreferences =
-      hrSummit2021JobFairCompanyJobPreferences?.map(
-        ({ jobPosition, jobId, companyName }) => {
-          return `${jobPosition}${
-            jobId ? ` (${jobId})` : ''
-          } --- ${companyName}`
+      hrSummit2021JobFairCompanyJobPreferences?.map(({ jobPosition, jobId, companyName }) => {
+          return `${jobPosition}${jobId ? ` (${jobId})` : ''} --- ${companyName}`
         }
       )
     delete profile.hrSummit2021JobFairCompanyJobPreferences

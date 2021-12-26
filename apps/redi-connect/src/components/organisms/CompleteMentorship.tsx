@@ -27,14 +27,14 @@ const initialValues = {
 }
 
 const CompleteMentorship: FunctionComponent<CompleteMentorshipProps> = ({
-  match,
+  match: { id },
   matchesMarkAsComplete,
 }) => {
   const [isModalActive, setModalActive] = useState(false)
 
-  const submitForm = async (values: CompleteMentorshipFormValues) => {
+  const onSubmit = async ({ mentorMessageOnComplete }: CompleteMentorshipFormValues) => {
     try {
-      matchesMarkAsComplete(match.id, values.mentorMessageOnComplete)
+      matchesMarkAsComplete(id, mentorMessageOnComplete)
       setModalActive(false)
     } catch (error) {
       console.log('error ', error)
@@ -43,7 +43,7 @@ const CompleteMentorship: FunctionComponent<CompleteMentorshipProps> = ({
 
   const formik = useFormik({
     initialValues,
-    onSubmit: submitForm,
+    onSubmit,
   })
 
   const handleCancel = () => {

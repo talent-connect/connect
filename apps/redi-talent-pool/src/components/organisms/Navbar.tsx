@@ -48,8 +48,10 @@ const LoggedInButtons: FunctionComponent<{ mobile?: boolean }> = ({ mobile }) =>
   )
 }
 
-const Navbar: FunctionComponent<{ leftPaddingOn: boolean }> = ({ leftPaddingOn = false }) => {
+const Navbar: FunctionComponent = () => {
   const [menuActive, setMenuActive] = useState(false)
+
+  const loggedIn = isLoggedIn()
 
   const mobileMenu = (
     <Container className="navbar__mobile">
@@ -59,8 +61,8 @@ const Navbar: FunctionComponent<{ leftPaddingOn: boolean }> = ({ leftPaddingOn =
       >
         &times;
       </Element>
-      {isLoggedIn() && <LoggedInButtons mobile={true} />}
-      {!isLoggedIn() && <LoggedOutButtons />}
+      {loggedIn && <LoggedInButtons mobile={true} />}
+      {!loggedIn && <LoggedOutButtons />}
     </Container>
   )
 
@@ -81,8 +83,8 @@ const Navbar: FunctionComponent<{ leftPaddingOn: boolean }> = ({ leftPaddingOn =
             responsive={{ mobile: { hide: { value: true } } }}
             className="navbar__buttons"
           >
-            {isLoggedIn() && <LoggedInButtons />}
-            {!isLoggedIn() && <LoggedOutButtons />}
+            {loggedIn && <LoggedInButtons />}
+            {!loggedIn && <LoggedOutButtons />}
           </Element>
           <Element
             responsive={{ tablet: { hide: { value: true } } }}

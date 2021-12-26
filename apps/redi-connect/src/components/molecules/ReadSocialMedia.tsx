@@ -59,9 +59,7 @@ const ReadSocialMedia: FunctionComponent<Props> = ({
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile as RedProfile,
-})
+const mapStateToProps = ({ user: { profile }}: RootState) => ({ profile })
 
 export default {
   Me: connect(mapStateToProps, {})(ReadSocialMedia),

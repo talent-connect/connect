@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FunctionComponent } from 'react'
 import { Subject } from 'rxjs'
 import { useTpjobseekerCvUpdateMutation } from '../../../react-query/use-tpjobseekercv-mutation'
 import { useTpJobseekerCvByIdQuery } from '../../../react-query/use-tpjobseekercv-query'
@@ -11,14 +11,11 @@ interface Props {
   closeAccordionSignalSubject?: Subject<void>
 }
 
-export function AccordionFormCvLanguages({
+export const  AccordionFormCvLanguages: FunctionComponent<Props> = ({
   tpJobseekerCvId,
   closeAccordionSignalSubject,
   onClose: parentOnCloseCallback,
-}: Props) {
-  const onClose = () => {
-    parentOnCloseCallback()
-  }
+}) => {
 
   const queryHookResult = useTpJobseekerCvByIdQuery(tpJobseekerCvId)
   const mutationHookResult = useTpjobseekerCvUpdateMutation(tpJobseekerCvId)
@@ -30,7 +27,7 @@ export function AccordionFormCvLanguages({
     >
       <JobseekerFormSectionLanguages
         setIsEditing={(isEditing) => {
-          onClose()
+          parentOnCloseCallback()
         }}
         queryHookResult={queryHookResult}
         mutationHookResult={mutationHookResult}

@@ -14,7 +14,7 @@ export interface FormInputProps {
   /** */
   values: Record<string, string>;
   /** */
-  className: string;
+  className?: string;
   /** */
   handleChange?: ChangeEventHandler<HTMLInputElement>
   /** */
@@ -26,9 +26,9 @@ export interface FormInputProps {
   /** */
   errors: boolean;
   /** */
-  disabled: boolean;
+  disabled?: boolean;
   /** */
-  domRef: (ref: HTMLInputElement) => void;
+  domRef?: (ref: HTMLInputElement) => void;
   /** */
-  startAddon: null;
+  startAddon?: null;
 }

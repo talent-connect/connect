@@ -77,9 +77,9 @@ const FindAMentor: FunctionComponent<FindAMentorProps> = ({ profile, profileSave
 
   useEffect(() => {
     const hasQuery =
-      topics.length > 0 ||
-      languages.length > 0 ||
-      locations.length > 0 ||
+      topics.length ||
+      languages.length ||
+      locations.length ||
       Boolean(name) ||
       onlyFavorites
     setQuery(hasQuery ? query : { ...query, topics: categoriesFromProfile })
