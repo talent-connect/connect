@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import Landing from '../../components/templates/Landing'
 import {
   Section,
@@ -13,7 +13,7 @@ import {
   FaqItem,
 } from '@talent-connect/shared-atomic-design-components'
 
-const Faqs: FunctionComponent = () => {
+const Faqs: FC = () => {
   const { t } = useTranslation()
 
   const topics: Array<{ title: string; qAndAs: Array<any> }> = t('faq.topics', {

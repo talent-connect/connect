@@ -1,4 +1,4 @@
-import { FunctionComponent, useState } from 'react'
+import { FC, useState } from 'react'
 import { connect } from 'react-redux'
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
@@ -45,7 +45,7 @@ const validationSchema = Yup.object({
 
 // TODO: This throws a TS error: { dispatch, matchId }: ConnectButtonProps
 // What to replace with instead of below hack?
-const DeclineMentorshipButton: FunctionComponent<DeclineMentorshipButtonProps> = ({
+const DeclineMentorshipButton: FC<DeclineMentorshipButtonProps> = ({
   match: { id: redMatchId },
   matchesDeclineMentorshipStart,
 }) => {

@@ -11,19 +11,18 @@ interface Props {
   enabled?: boolean
 }
 
+const MS_IN_5_MIN = 5 * 60 * 1000
+
 // TODO: refactor name to make clear this is a hook for fetching
 // CURRENT USER's profile
 export function useTpJobseekerProfileQuery(props?: Props) {
-  const retry = props?.retry ?? true
-  const enabled = props?.enabled ?? true
-
   return useQuery(
     'currentUserTpJobseekerProfile',
     fetchCurrentUserTpJobseekerProfile,
     {
-      staleTime: 5 * 60 * 1000,
-      enabled,
-      retry,
+      staleTime: MS_IN_5_MIN,
+      enabled: props?.enabled ?? true,
+      retry: props?.retry ?? true,
       refetchOnWindowFocus: false,
     }
   )

@@ -1,4 +1,4 @@
-import { FunctionComponent, useState } from 'react'
+import { FC, useState } from 'react'
 import { connect } from 'react-redux'
 import _uniqueId from 'lodash/uniqueId'
 import * as Yup from 'yup'
@@ -64,7 +64,7 @@ interface MSessions {
   mentoringSessionsCreateStart: (mentoringSession: RedMentoringSession) => void
 }
 
-const MSessions: FunctionComponent<MSessions> = ({
+const MSessions: FC<MSessions> = ({
   sessions,
   menteeId,
   editable,

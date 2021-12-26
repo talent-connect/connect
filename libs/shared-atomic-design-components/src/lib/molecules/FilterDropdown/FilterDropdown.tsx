@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback, FunctionComponent } from 'react'
+import { useState, useEffect, useRef, useCallback, FC } from 'react'
 import { Checkbox, Icon } from '../../atoms'
 import classnames from 'classnames'
 import './FilterDropdown.scss'
@@ -6,7 +6,7 @@ import { FilterDropdownProps } from './FilterDropdown.props';
 
 const baseClass = 'filter-dropdown'
 
-const FilterDropdown: FunctionComponent<FilterDropdownProps> = ({
+const FilterDropdown: FC<FilterDropdownProps> = ({
   label,
   className,
   selected,

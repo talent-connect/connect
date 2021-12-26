@@ -1,14 +1,13 @@
-import { FunctionComponent } from 'react';
+import { FC } from 'react';
 import classnames from 'classnames'
 import { Form } from 'react-bulma-components'
 import { get } from 'lodash'
-import { FormInputProps } from './FormInput.props';
+import { TextInputProps } from './TextInput.props';
 
 
-const FormInput: FunctionComponent<FormInputProps> = ({
+const TextInput: FC<TextInputProps> = ({
   name,
   placeholder,
-  type = 'text',
   label,
   dirty,
   values,
@@ -19,6 +18,7 @@ const FormInput: FunctionComponent<FormInputProps> = ({
   errors,
   disabled,
   domRef,
+  type = 'text',
   startAddon = null,
 }) => {
 
@@ -55,4 +55,4 @@ const FormInput: FunctionComponent<FormInputProps> = ({
   )
 }
 
-export default FormInput
+export default TextInput

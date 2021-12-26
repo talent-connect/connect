@@ -5,7 +5,7 @@ import {
 import { TpJobseekerProfile, TpCompanyProfile } from '@talent-connect/shared-types'
 import classnames from 'classnames'
 import { FormikValues, useFormik } from 'formik'
-import { FunctionComponent, ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 import { Element } from 'react-bulma-components'
 import ReactS3Uploader, { S3Response } from 'react-s3-uploader'
 import * as Yup from 'yup'
@@ -29,7 +29,7 @@ const validationSchema = Yup.object({
   profileAvatarImageS3Key: Yup.string().max(255),
 })
 
-const Avatar: FunctionComponent<AvatarProps> & { Editable: typeof AvatarEditable, Some: ReactNode }= ({
+const Avatar: FC<AvatarProps> & { Editable: typeof AvatarEditable, Some: ReactNode }= ({
   profile: { profileAvatarImageS3Key, firstName, lastName }
 }) => {
   const imgSrc = profileAvatarImageS3Key
@@ -51,7 +51,7 @@ const Avatar: FunctionComponent<AvatarProps> & { Editable: typeof AvatarEditable
   )
 }
 
-const AvatarEditable: FunctionComponent<AvatarEditable> = ({
+const AvatarEditable: FC<AvatarEditable> = ({
   profile: { profileAvatarImageS3Key, id, firstName, lastName },
   profileSaveStart
 }) => {

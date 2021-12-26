@@ -2,7 +2,7 @@ import { Icon } from '@talent-connect/shared-atomic-design-components'
 import { RedMatch, RedProfile } from '@talent-connect/shared-types'
 import classnames from 'classnames'
 import moment from 'moment'
-import { FunctionComponent, useState } from 'react'
+import { FC, useState } from 'react'
 import { Columns, Content, Heading } from 'react-bulma-components'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -29,7 +29,7 @@ const STATUS_LABELS: any = {
   'invalidated-as-other-mentor-accepted': 'Cancelled',
 }
 
-const ApplicationCard: FunctionComponent<Props> = ({
+const ApplicationCard: FC<Props> = ({
   application,
   hasReachedMenteeLimit,
   currentUser,

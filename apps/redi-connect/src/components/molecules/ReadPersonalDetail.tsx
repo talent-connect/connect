@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import moment from 'moment'
 import { RedProfile } from '@talent-connect/shared-types'
 import { connect } from 'react-redux'
@@ -15,7 +15,7 @@ interface Props {
   caption?: boolean
 }
 
-const ReadPersonalDetail: FunctionComponent<Props> = ({
+const ReadPersonalDetail: FC<Props> = ({
   profile: { gender, birthDate },
   caption
 }) => {

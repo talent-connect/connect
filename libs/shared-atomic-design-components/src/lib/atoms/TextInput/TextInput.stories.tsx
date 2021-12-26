@@ -1,21 +1,21 @@
 import { Meta } from '@storybook/react/types-6-0'
 import { storybookTemplate } from '../../helpers/StorybookTemplate'
 
-import { FormInput } from '.'
+import { TextInput } from '.'
 import 'bulma/css/bulma.min.css'
 
 export default {
-  title: 'Atoms/FormInput',
-  component: FormInput,
+  title: 'Atoms/TextInput',
+  component: TextInput,
 } as Meta
 
-const template = storybookTemplate(FormInput)
+const template = storybookTemplate(TextInput)
 
 export const Email = template({
   name: 'email',
-  label: 'Enter Email',
+  label: 'Enter email',
   type: 'email',
-  placeholder: 'Enter Email',
+  placeholder: 'Enter here the email',
   values: {
     email: 'talentpool@redi.org',
   }
@@ -23,14 +23,14 @@ export const Email = template({
 
 export const Text = template({
   name: 'email',
-  label: 'Enter Email',
+  label: 'Enter text',
   type: 'text',
-  placeholder: 'Enter text'
+  placeholder: 'Enter here the text'
 });
 
 export const Password = template({
   name: 'email',
-  label: 'Enter Password',
+  label: 'Enter password',
   type: 'password',
-  placeholder: 'Enter password',
+  placeholder: 'Enter here the password',
 })

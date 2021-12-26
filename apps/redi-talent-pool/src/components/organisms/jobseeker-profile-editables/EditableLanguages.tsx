@@ -16,7 +16,7 @@ import {
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
 import { Subject } from 'rxjs'
-import { FunctionComponent, useCallback, useState, useRef, useEffect, useMemo } from 'react'
+import { FC, useCallback, useState, useRef, useEffect, useMemo } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Content, Element } from 'react-bulma-components'
 import { v4 as uuidv4 } from 'uuid'
@@ -40,7 +40,7 @@ interface Props {
   disableEditing?: boolean
 }
 
-export const EditableLanguages: FunctionComponent<Props> = ({
+export const EditableLanguages: FC<Props> = ({
   profile: overridingProfile,
   disableEditing,
 }) => {
@@ -128,7 +128,7 @@ interface JobseekerFormSectionLanguagesProps {
   >
 }
 
-export const JobseekerFormSectionLanguages: FunctionComponent<JobseekerFormSectionLanguagesProps> = ({
+export const JobseekerFormSectionLanguages: FC<JobseekerFormSectionLanguagesProps> = ({
   setIsEditing,
   setIsFormDirty,
   queryHookResult: { data: profile },
@@ -146,22 +146,21 @@ export const JobseekerFormSectionLanguages: FunctionComponent<JobseekerFormSecti
     }),
     [profile?.workingLanguages]
   )
+
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
     formik.setSubmitting(true)
     mutation.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
-      },
+      onSettled: () => formik.setSubmitting(false),
+      onSuccess: () => setIsEditing(false),
     })
   }
+
   const formik = useFormik({
     initialValues,
     onSubmit,
     enableReinitialize: true,
   })
+
   useEffect(
     () => setIsFormDirty?.(formik.dirty),
     [formik.dirty, setIsFormDirty]

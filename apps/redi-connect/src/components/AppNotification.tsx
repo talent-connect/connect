@@ -1,4 +1,4 @@
-import { useState, useEffect, FunctionComponent } from 'react'
+import { useState, useEffect, FC } from 'react'
 import {
   Snackbar,
   Slide,
@@ -79,7 +79,7 @@ export const showNotification = (
 
 export const hideNotification = () => subjectHideNotification.next()
 
-export const AppNotification: FunctionComponent = () => {
+export const AppNotification: FC = () => {
   const [state, setState] = useState<AppNotificationState>(null)
 
   const show = (options: SubjectShowNotification) => {

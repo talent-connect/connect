@@ -1,9 +1,9 @@
-import { FunctionComponent, useCallback, useEffect, useState } from 'react'
+import { FC, useCallback, useEffect, useState } from 'react'
 import { Form } from 'react-bulma-components'
 import { debounce } from 'lodash'
 import { SearchFieldProps } from './SearchField.props';
 
-export const SearchField: FunctionComponent<SearchFieldProps> = ({
+export const SearchField: FC<SearchFieldProps> = ({
   valueChange,
   defaultValue,
   placeholder,

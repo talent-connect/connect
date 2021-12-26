@@ -10,7 +10,7 @@ import {
   desiredEmploymentTypeOptions,
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
-import { FunctionComponent, useEffect, useMemo, useState } from 'react'
+import { FC, useEffect, useMemo, useState } from 'react'
 import { Columns, Content, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
@@ -24,7 +24,7 @@ interface Props {
   disableEditing?: boolean
 }
 
-export const EditableNamePhotoLocation: FunctionComponent<Props> = ({ profile, disableEditing }) => {
+export const EditableNamePhotoLocation: FC<Props> = ({ profile, disableEditing }) => {
   const mutation = useTpjobseekerprofileUpdateMutation()
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
@@ -110,7 +110,7 @@ interface ModalFormProps {
   setIsFormDirty: (boolean) => void
 }
 
-const ModalForm: FunctionComponent<ModalFormProps> = ({
+const ModalForm: FC<ModalFormProps> = ({
   setIsEditing,
   setIsFormDirty,
 }) => {
@@ -129,12 +129,8 @@ const ModalForm: FunctionComponent<ModalFormProps> = ({
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
     formik.setSubmitting(true)
     mutation.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
-      },
+      onSettled: () => formik.setSubmitting(false),
+      onSuccess: () => setIsEditing(false),
     })
   }
   const formik = useFormik({

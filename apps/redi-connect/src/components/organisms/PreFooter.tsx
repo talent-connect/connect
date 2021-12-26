@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import {
   Button,
   Heading,
@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next'
 
 import './PreFooter.scss'
 
-const PreFooter: FunctionComponent = () => {
+const PreFooter: FC = () => {
   const { t } = useTranslation()
 
   return (

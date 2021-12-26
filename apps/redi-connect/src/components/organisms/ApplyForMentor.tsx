@@ -9,7 +9,7 @@ import { Content, Form } from 'react-bulma-components'
 import { FormSubmitResult, RedProfile } from '@talent-connect/shared-types'
 
 import { FormikHelpers as FormikActions, useFormik } from 'formik'
-import { FunctionComponent, useState } from 'react'
+import { FC, useState } from 'react'
 import * as Yup from 'yup'
 import { requestMentorship } from '../../services/api/api'
 
@@ -48,7 +48,7 @@ interface Props {
   profilesFetchOneStart: Function
 }
 
-const ApplyForMentor: FunctionComponent<Props> = ({
+const ApplyForMentor: FC<Props> = ({
   mentor: { id, lastName, firstName },
   profilesFetchOneStart
 }) => {

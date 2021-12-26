@@ -1,9 +1,9 @@
 import { RediTalentPoolLogo } from '@talent-connect/shared-atomic-design-components'
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import { Container, Section } from 'react-bulma-components'
 import Footer from '../organisms/Footer'
 
-const AccountOperation: FunctionComponent = ({ children }) => (
+const AccountOperation: FC = ({ children }) => (
   <>
     <Section className="navbar color-half-desktop">
       <Container className="navbar__wrapper">

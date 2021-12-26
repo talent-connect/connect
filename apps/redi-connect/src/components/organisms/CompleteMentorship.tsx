@@ -1,4 +1,4 @@
-import { FunctionComponent, useState } from 'react'
+import { FC, useState } from 'react'
 import { connect } from 'react-redux'
 import { useFormik } from 'formik'
 import { Content } from 'react-bulma-components'
@@ -26,7 +26,7 @@ const initialValues = {
   mentorMessageOnComplete: '',
 }
 
-const CompleteMentorship: FunctionComponent<CompleteMentorshipProps> = ({
+const CompleteMentorship: FC<CompleteMentorshipProps> = ({
   match: { id },
   matchesMarkAsComplete,
 }) => {

@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import { FC } from 'react';
 import { Form } from 'react-bulma-components'
 import DatePicker from 'react-datepicker'
 import { Icon } from '../Icon'
@@ -22,7 +22,7 @@ const PickerTrigger = (placeholder: string) => ({
   </div>
 )
 
-const FormDatePicker: FunctionComponent<FormDatePickerProps> = ({
+const FormDatePicker: FC<FormDatePickerProps> = ({
   name,
   placeholder,
   label,

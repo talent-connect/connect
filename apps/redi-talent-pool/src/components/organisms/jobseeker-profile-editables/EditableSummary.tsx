@@ -11,7 +11,7 @@ import {
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
-import { FunctionComponent, useEffect, useMemo, useState } from 'react'
+import { FC, useEffect, useMemo, useState } from 'react'
 import { Content, Element, Tag } from 'react-bulma-components'
 import { UseMutationResult, UseQueryResult } from 'react-query'
 import * as Yup from 'yup'
@@ -26,7 +26,7 @@ interface Props {
   disableEditing?: boolean
 }
 
-export const EditableSummary: FunctionComponent<Props> = ({
+export const EditableSummary: FC<Props> = ({
   profile: overridingProfile,
   disableEditing,
 }) => {
@@ -133,7 +133,7 @@ interface JobseekerFormSectionSummaryProps {
   >
 }
 
-export const JobseekerFormSectionSummary: FunctionComponent<JobseekerFormSectionSummaryProps> = ({
+export const JobseekerFormSectionSummary: FC<JobseekerFormSectionSummaryProps> = ({
   setIsEditing,
   setIsFormDirty,
   queryHookResult,
@@ -151,8 +151,8 @@ export const JobseekerFormSectionSummary: FunctionComponent<JobseekerFormSection
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
     formik.setSubmitting(true)
     mutation.mutate(values, {
-      onSettled: () => { formik.setSubmitting(false) },
-      onSuccess: () => { setIsEditing(false) },
+      onSettled: () => formik.setSubmitting(false),
+      onSuccess: () => setIsEditing(false),
     })
   }
   const formik = useFormik({

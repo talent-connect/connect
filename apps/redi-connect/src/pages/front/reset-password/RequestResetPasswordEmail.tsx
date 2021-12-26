@@ -1,4 +1,4 @@
-import { FunctionComponent, useState } from 'react'
+import { FC, useState } from 'react'
 import { Columns, Content, Element, Form } from 'react-bulma-components'
 import {
   Heading,
@@ -28,7 +28,7 @@ const validationSchema = yup.object().shape({
     .required('Please provide an email address.'),
 })
 
-export const RequestResetPasswordEmail: FunctionComponent = () => {
+export const RequestResetPasswordEmail: FC = () => {
   const [resetPasswordSuccess, setResetPasswordSuccess] = useState<string>('')
   const [resetPasswordError, setResetPasswordError] = useState<string>('')
 

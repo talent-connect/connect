@@ -1,4 +1,4 @@
-import { FunctionComponent, useEffect } from 'react'
+import { FC, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { useParams, useHistory, Redirect } from 'react-router'
 import {
@@ -29,7 +29,7 @@ interface MentorshipProps {
   matches: RedMatch[]
 }
 
-const Mentorship: FunctionComponent<MentorshipProps> = ({ currentUser, matches }) => {
+const Mentorship: FC<MentorshipProps> = ({ currentUser, matches }) => {
   const { profileId } = useParams<RouteParams>()
   const history = useHistory()
   const currentUserIsMentor = currentUser?.userType === 'mentor'

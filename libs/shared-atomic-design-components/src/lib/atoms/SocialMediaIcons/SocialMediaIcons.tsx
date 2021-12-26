@@ -1,11 +1,11 @@
-import { FunctionComponent } from 'react';
+import { FC } from 'react';
 import Icon from '../Icon/Icon'
 import './SocialMediaIcons.scss'
 import { icons } from './SocialMediaIcons.props';
 
 import { envRediLocation } from '../../../../../../apps/redi-connect/src/utils/env-redi-location'
 
-const SocialMediaIcons: FunctionComponent = () => (
+const SocialMediaIcons: FC = () => (
   <ul className="media-icons__list">
     {icons.map((item) => (
       <li key={item.icon}>

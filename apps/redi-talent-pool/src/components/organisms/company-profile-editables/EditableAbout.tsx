@@ -5,7 +5,7 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import { TpCompanyProfile } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
-import { FunctionComponent, useEffect, useMemo, useState } from 'react'
+import { FC, useEffect, useMemo, useState } from 'react'
 import { Content, Element } from 'react-bulma-components'
 import ReactMarkdown from 'react-markdown'
 import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
@@ -17,7 +17,7 @@ interface Props {
   profile: Partial<TpCompanyProfile>
   disableEditing?: boolean
 }
-export const EditableAbout: FunctionComponent<Props> = ({ profile: { about }, disableEditing }) => {
+export const EditableAbout: FC<Props> = ({ profile: { about }, disableEditing }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
@@ -88,22 +88,21 @@ function ModalForm({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )
+
   const onSubmit = (values: Partial<TpCompanyProfile>) => {
     formik.setSubmitting(true)
     mutation.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
-      },
+      onSettled: () => formik.setSubmitting(false),
+      onSuccess: () => setIsEditing(false),
     })
   }
+
   const formik = useFormik({
     initialValues,
     enableReinitialize: true,
     onSubmit,
   })
+
   useEffect(() => setIsFormDirty(formik.dirty), [formik.dirty, setIsFormDirty])
 
   return (

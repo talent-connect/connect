@@ -4,14 +4,13 @@ import {
   Checkbox,
   FaqItem,
   FormDraggableAccordion,
-  FormInput,
+  TextInput,
   FormSelect,
   FormTextArea,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
 import {
   EducationRecord,
-  ExperienceRecord,
   TpJobseekerCv,
   TpJobseekerProfile,
 } from '@talent-connect/shared-types'
@@ -21,7 +20,7 @@ import {
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
 import moment from 'moment'
-import { FunctionComponent, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Columns, Content, Element } from 'react-bulma-components'
 import ReactMarkdown from 'react-markdown'
@@ -45,7 +44,7 @@ interface Props {
   disableEditing?: boolean
 }
 
-export const EditableEducation: FunctionComponent<Props> = ({
+export const EditableEducation: FC<Props> = ({
   profile: overridingProfile,
   disableEditing,
 }) => {
@@ -156,12 +155,12 @@ interface JobseekerFormSectionEducationProps {
   >
 }
 
-export function JobseekerFormSectionEducation({
+export const JobseekerFormSectionEducation: FC<JobseekerFormSectionEducationProps> = ({
   setIsEditing,
   setIsFormDirty,
   queryHookResult: { data: profile },
   mutationHookResult,
-}: JobseekerFormSectionEducationProps) {
+}) => {
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
 
@@ -259,7 +258,7 @@ export function JobseekerFormSectionEducation({
                           closeAllAccordionsSignalSubject.current
                         }
                       >
-                        <FormInput
+                        <TextInput
                           name={`education[${index}].title`}
                           placeholder="Bachelor of Computer Science"
                           label="Title of your course/study/certification"
@@ -271,7 +270,7 @@ export function JobseekerFormSectionEducation({
                           items={formCertificationTypes}
                           {...formik}
                         />
-                        <FormInput
+                        <TextInput
                           name={`education[${index}].institutionName`}
                           placeholder="ReDI School of Digital Integration"
                           label="The institution or school"
@@ -303,7 +302,7 @@ export function JobseekerFormSectionEducation({
                             />
                           </Columns.Column>
                           <Columns.Column size={6}>
-                            <FormInput
+                            <TextInput
                               name={`education[${index}].startDateYear`}
                               label="Started in year"
                               type="number"
@@ -323,7 +322,7 @@ export function JobseekerFormSectionEducation({
                               />
                             </Columns.Column>
                             <Columns.Column size={6}>
-                              <FormInput
+                              <TextInput
                                 name={`education[${index}].endDateYear`}
                                 label="Ended in year"
                                 type="number"

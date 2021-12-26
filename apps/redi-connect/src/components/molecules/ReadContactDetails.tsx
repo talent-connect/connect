@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import { Content } from 'react-bulma-components'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
@@ -10,7 +10,7 @@ interface Props {
   shortInfo?: boolean
 }
 
-const ReadContactDetails: FunctionComponent<Props> = ({
+const ReadContactDetails: FC<Props> = ({
   profile: { firstName, lastName, contactEmail, telephoneNumber },
   shortInfo
 }) => {

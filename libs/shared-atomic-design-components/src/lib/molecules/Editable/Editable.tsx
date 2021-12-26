@@ -1,10 +1,10 @@
-import { FunctionComponent, useState } from 'react'
+import { FC, useState } from 'react'
 import { Caption, Icon } from '../../atoms'
 import classnames from 'classnames'
 import './Editable.scss'
 import { EditableProps } from './Editable.props';
 
-const Editable: FunctionComponent<EditableProps> = ({
+const Editable: FC<EditableProps> = ({
   title,
   children,
   read,

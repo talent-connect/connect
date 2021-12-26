@@ -1,10 +1,10 @@
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import { Caption } from '../../atoms'
 import classnames from 'classnames'
 import './Module.scss'
 import { ModuleProps } from './Module.props';
 
-const Module: FunctionComponent<ModuleProps> = ({
+const Module: FC<ModuleProps> = ({
   title,
   children,
   buttons,

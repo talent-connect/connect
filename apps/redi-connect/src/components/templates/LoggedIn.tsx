@@ -1,4 +1,4 @@
-import { useEffect, FunctionComponent } from 'react'
+import { useEffect, FC } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
@@ -26,7 +26,7 @@ import Footer from '../organisms/Footer'
 import { RedMatch } from '@talent-connect/shared-types'
 
 
-const RediNotification: FunctionComponent = ({ children }) => (
+const RediNotification: FC = ({ children }) => (
   <Notification className="account-not-active double-bs">
     <Icon
       className="account-not-active__icon"
@@ -45,7 +45,7 @@ interface Props {
   matchesMarkAsDismissed: (redMatchId: string) => void
 }
 
-const LoggedIn: FunctionComponent<Props> = ({
+const LoggedIn: FC<Props> = ({
   loading,
   matches,
   matchesFetchStart,

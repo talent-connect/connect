@@ -1,9 +1,6 @@
-import moment from 'moment'
+import * as moment from 'moment'
 
-export function calculateAge(birthDate) {
-  const age = moment().diff(birthDate, 'years')
-  if (!birthDate) {
-    return '-'
-  }
-  return age
+export function calculateAge (birthDate?: Date) {
+  if (!birthDate) return '-'
+  return moment().diff(birthDate, 'years')
 }

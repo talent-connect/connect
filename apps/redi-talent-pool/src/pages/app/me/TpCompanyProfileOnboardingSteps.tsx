@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import classnames from 'clsx'
 import { Element } from 'react-bulma-components'
 
@@ -10,32 +10,34 @@ import { ReactComponent as StepPendingImage } from './pending.svg'
 
 import { TpCompanyProfile } from '@talent-connect/shared-types'
 
-const steps = [
+const steps: { number: number; label: string; }[] = [
   { number: 1, label: 'Complete your profile' },
   { number: 2, label: 'Post a job' },
   { number: 3, label: 'Send profile to ReDI' },
   { number: 4, label: 'Profile approval' },
 ]
-
-function determineCurrentStep(
+interface Props {
   profile: Partial<TpCompanyProfile>,
   isProfileComplete: boolean,
   hasJobListing: boolean
+}
+
+function determineCurrentStep(
+  { state }: Partial<TpCompanyProfile>,
+  isProfileComplete: boolean,
+  hasJobListing: boolean
 ): [currentStep: number, stepStatus: 'todo' | 'pending' | 'complete'] {
-  if (profile.state === 'drafting-profile') {
-    if (!isProfileComplete) return [1, 'todo']
-    if (!hasJobListing) return [2, 'todo']
-    return [3, 'todo']
-  }
-  if (profile.state === 'submitted-for-review') {
-    return [4, 'pending']
-  }
-  if (profile.state === 'profile-approved') {
-    return [4, 'complete']
+  switch (state) {
+    case 'drafting-profile':
+      if (!isProfileComplete) return [1, 'todo']
+      if (!hasJobListing) return [2, 'todo']
+      return [3, 'todo']
+    case 'submitted-for-review': return [4, 'pending']
+    case 'profile-approved': return [4, 'complete']
   }
 }
 
-export function OnboardingSteps({ profile, isProfileComplete, hasJobListing }) {
+export const OnboardingSteps: FC<Props> = ({ profile, isProfileComplete, hasJobListing }) => {
   const currentStep = determineCurrentStep(
     profile,
     isProfileComplete,

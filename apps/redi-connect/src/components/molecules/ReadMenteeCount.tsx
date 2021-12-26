@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import { Content } from 'react-bulma-components'
 import { RedProfile } from '@talent-connect/shared-types'
 import { connect } from 'react-redux'
@@ -9,7 +9,7 @@ interface Props {
   profile: RedProfile
 }
 
-const Me: FunctionComponent<Props> = ({
+const Me: FC<Props> = ({
   profile: { menteeCountCapacity, optOutOfMenteesFromOtherRediLocation, rediLocation }
 }) => {
 

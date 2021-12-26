@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import {
   Checkbox,
   FormSelect,
@@ -54,7 +54,7 @@ interface Props {
   profileSaveStart: Function
 }
 
-const EditableMenteeCount: FunctionComponent<Props> = ({
+const EditableMenteeCount: FC<Props> = ({
   profile: { id, menteeCountCapacity, optOutOfMenteesFromOtherRediLocation, rediLocation },
   profileSaveStart
 }) => {

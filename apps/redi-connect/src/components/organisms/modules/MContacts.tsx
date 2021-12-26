@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import classnames from 'classnames'
 import { RedProfile } from '@talent-connect/shared-types'
 import { Module } from '@talent-connect/shared-atomic-design-components'
@@ -9,7 +9,7 @@ interface ContactRow {
   label: string
 }
 
-const ContactRow: FunctionComponent<ContactRow> = ({ label, children }) =>
+const ContactRow: FC<ContactRow> = ({ label, children }) =>
   children ? (
     <div className="m-contacts__row">
       <div className="m-contacts__row__label">{label}</div>
@@ -24,7 +24,7 @@ interface MContactProps {
   className?: string
 }
 
-const MContacts: FunctionComponent<MContactProps> = ({
+const MContacts: FC<MContactProps> = ({
   profile: { contactEmail, telephoneNumber, linkedInProfileUrl, slackUsername },
   className
 }) => {

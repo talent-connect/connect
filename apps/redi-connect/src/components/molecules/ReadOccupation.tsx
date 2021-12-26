@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import { Content } from 'react-bulma-components'
 import { RedProfile } from '@talent-connect/shared-types'
 import { connect } from 'react-redux'
@@ -19,7 +19,7 @@ const formMenteeOccupationCategories = objectEntries(
   MENTEE_OCCUPATION_CATEGORY
 ).map(([value, label]) => ({ value, label }))
 
-const ReadOccupation: FunctionComponent<Props> = ({
+const ReadOccupation: FC<Props> = ({
   profile: {
     userType,
     mentor_occupation,

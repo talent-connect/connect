@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import groupBy from 'lodash/groupBy'
 import { Columns, Heading, Element, Content } from 'react-bulma-components'
 import { Checkbox } from '@talent-connect/shared-atomic-design-components'
@@ -46,7 +46,7 @@ interface Props {
   profileSaveStart: Function
 }
 
-const EditableMentoringTopics: FunctionComponent<Props> = ({
+const EditableMentoringTopics: FC<Props> = ({
   profile: { id, userType, categories },
   profileSaveStart
 }) => {
@@ -116,7 +116,7 @@ const EditableMentoringTopics: FunctionComponent<Props> = ({
   )
 }
 
-const CategoryGroup: FunctionComponent = ({
+const CategoryGroup: FC = ({
   id,
   label,
   selectedCategories,

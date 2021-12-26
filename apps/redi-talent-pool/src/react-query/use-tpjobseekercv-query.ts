@@ -10,30 +10,25 @@ interface Props {
 }
 
 export function useTpJobseekerCvQuery(props?: Props) {
-  const retry = props?.retry ?? true
-
   return useQuery(
     'allCurrentUserTpJobseekerCv',
     fetchAllCurrentUserTpJobseekerCv,
     {
       staleTime: 5 * 60 * 1000,
-      retry,
+      retry: props?.retry ?? true,
       refetchOnWindowFocus: false,
     }
   )
 }
 
 export function useTpJobseekerCvByIdQuery(id: string, props?: Props) {
-  const retry = props?.retry ?? true
-  const enabled = props?.enabled ?? true
-
   return useQuery(
     ['currentUserTpJobseekerCv', id],
     () => fetchCurrentUserTpJobseekerCvById(id),
     {
       staleTime: 5 * 60 * 1000,
-      retry,
-      enabled,
+      retry: props?.retry ?? true,
+      enabled: props?.enabled ?? true,
       refetchOnWindowFocus: false,
     }
   )

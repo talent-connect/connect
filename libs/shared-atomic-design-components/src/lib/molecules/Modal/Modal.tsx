@@ -1,11 +1,11 @@
-import { FunctionComponent, useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { Heading } from '../../atoms'
 import { Modal as BulmaModal } from 'react-bulma-components'
 import './Modal.scss'
 import { ModalProps } from './Modal.props';
 
 
-const Modal: FunctionComponent<ModalProps> & Record<'Body' | 'Foot', FunctionComponent> = ({
+const Modal: FC<ModalProps> & Record<'Body' | 'Foot', FC> = ({
   title,
   children,
   stateFn,

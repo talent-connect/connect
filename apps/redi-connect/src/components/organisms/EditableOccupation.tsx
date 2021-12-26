@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import {
   FormInput,
   FormSelect,
@@ -81,7 +81,7 @@ interface Props {
   profileSaveStart: Function
 }
 
-const EditableOccupation: FunctionComponent<Props> = ({
+const EditableOccupation: FC<Props> = ({
   profile: {
     id,
     userType,

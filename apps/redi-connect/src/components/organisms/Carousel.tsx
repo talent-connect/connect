@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import {
   Section,
   Container,
@@ -22,7 +22,7 @@ interface Props {
   border: 'blue' | 'orange'
 }
 
-const Carousel: FunctionComponent<Props> = ({ headline, title, border }) => {
+const Carousel: FC<Props> = ({ headline, title, border }) => {
   const { t } = useTranslation()
 
   const quotes = [

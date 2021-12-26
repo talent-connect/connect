@@ -1,4 +1,4 @@
-import { FunctionComponent, MouseEvent } from 'react'
+import { FC, MouseEvent } from 'react'
 import classnames from 'classnames'
 import { Card, Element } from 'react-bulma-components'
 import { Icon, PipeList } from '@talent-connect/shared-atomic-design-components'
@@ -22,7 +22,7 @@ interface ProfileCardProps {
   toggleFavorite?: (id: string) => void
 }
 
-const ProfileCard: FunctionComponent<ProfileCardProps> = ({
+const ProfileCard: FC<ProfileCardProps> = ({
   profile: {
     id,
     firstName,

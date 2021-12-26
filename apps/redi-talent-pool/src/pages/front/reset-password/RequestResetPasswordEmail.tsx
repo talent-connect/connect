@@ -4,7 +4,7 @@ import {
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
 import { FormikValues, useFormik } from 'formik'
-import { FunctionComponent, useState } from 'react'
+import { FC, useState } from 'react'
 import { Columns, Content, Element, Form } from 'react-bulma-components'
 import { Link } from 'react-router-dom'
 import * as yup from 'yup'
@@ -27,7 +27,7 @@ const validationSchema = yup.object().shape({
     .required('Please provide an email address.'),
 })
 
-export const RequestResetPasswordEmail: FunctionComponent = () => {
+export const RequestResetPasswordEmail: FC = () => {
   const [resetPasswordSuccess, setResetPasswordSuccess] = useState<string>('')
   const [resetPasswordError, setResetPasswordError] = useState<string>('')
 

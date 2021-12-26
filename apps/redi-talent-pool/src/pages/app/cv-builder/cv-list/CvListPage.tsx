@@ -1,4 +1,4 @@
-import { FunctionComponent, useState } from 'react'
+import { FC, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import {
@@ -21,7 +21,7 @@ import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
 
 import './CvListPage.scss'
 
-const CvListPage: FunctionComponent = () => {
+const CvListPage: FC = () => {
   const [showCvNameModal, setShowCvNameModal] = useState(false)
   const [newCvName, setNewCvName] = useState('')
 

@@ -4,13 +4,13 @@ import {
   SVGImage,
   SVGImages,
 } from '@talent-connect/shared-atomic-design-components'
-import { FunctionComponent} from 'react'
+import { FC} from 'react'
 import { Container, Heading, Section } from 'react-bulma-components'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 import './NavTiles.scss'
 
-const NavTile: FunctionComponent<{ name: string }> = ({ name }) => {
+const NavTile: FC<{ name: string }> = ({ name }) => {
   const { t } = useTranslation()
   const history = useHistory()
 

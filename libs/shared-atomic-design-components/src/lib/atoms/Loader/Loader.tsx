@@ -1,10 +1,10 @@
-import { FunctionComponent } from 'react';
+import { FC } from 'react';
 import classnames from 'classnames'
 import { Icon } from '../Icon'
 import './Loader.scss'
 import { LoaderProps } from './Loader.props';
 
-const Loader: FunctionComponent<LoaderProps> = ({
+const Loader: FC<LoaderProps> = ({
   loading
 }) => {
   return (

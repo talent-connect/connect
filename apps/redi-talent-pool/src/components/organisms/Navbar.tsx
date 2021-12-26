@@ -2,7 +2,7 @@ import {
   Button,
   RediTalentPoolLogo,
 } from '@talent-connect/shared-atomic-design-components'
-import { FunctionComponent, useState } from 'react'
+import { FC, useState } from 'react'
 import { Container, Element } from 'react-bulma-components'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
@@ -26,7 +26,7 @@ const LoggedOutButtons = () => {
   )
 }
 
-const LoggedInButtons: FunctionComponent<{ mobile?: boolean }> = ({ mobile }) => {
+const LoggedInButtons: FC<{ mobile?: boolean }> = ({ mobile }) => {
   const { t } = useTranslation()
   const history = useHistory()
 
@@ -48,7 +48,7 @@ const LoggedInButtons: FunctionComponent<{ mobile?: boolean }> = ({ mobile }) =>
   )
 }
 
-const Navbar: FunctionComponent = () => {
+const Navbar: FC = () => {
   const [menuActive, setMenuActive] = useState(false)
 
   const loggedIn = isLoggedIn()

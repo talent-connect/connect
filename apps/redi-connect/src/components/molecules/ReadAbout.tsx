@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import { Content } from 'react-bulma-components'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
@@ -12,7 +12,7 @@ interface Props {
   profile: RedProfile
 }
 
-const Me: FunctionComponent<Props> = ({
+const Me: FC<Props> = ({
   profile: { personalDescription, expectations }
 }) => {
   if (!personalDescription && !expectations) {
@@ -27,7 +27,7 @@ const Me: FunctionComponent<Props> = ({
   )
 }
 
-const Some: FunctionComponent<Props> = ({
+const Some: FC<Props> = ({
   profile: { firstName, lastName, personalDescription, expectations }
 }) => {
   return (

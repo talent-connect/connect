@@ -1,4 +1,4 @@
-import { FunctionComponent, useEffect } from 'react'
+import { FC, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { RootState } from '../../../redux/types'
 import { profileFetchStart } from '../../../redux/user/actions'
@@ -32,7 +32,7 @@ interface Props {
   profile: RedProfile
 }
 
-const Me: FunctionComponent<Props> = ({
+const Me: FC<Props> = ({
   loading,
   saveResult,
   profileFetchStart,

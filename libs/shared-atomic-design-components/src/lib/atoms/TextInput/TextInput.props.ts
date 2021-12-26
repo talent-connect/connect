@@ -1,6 +1,6 @@
 import { ChangeEventHandler, FocusEventHandler } from 'react';
 
-export interface FormInputProps {
+export interface TextInputProps {
   /** */
   name: string;
   /** */

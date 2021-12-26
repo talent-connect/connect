@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import { FormSelect } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile } from '@talent-connect/shared-types'
@@ -31,7 +31,7 @@ interface Props {
   profileSaveStart: Function
 }
 
-const EditableLanguages: FunctionComponent<Props> = ({
+const EditableLanguages: FC<Props> = ({
   profile: { id, languages },
   profileSaveStart
 }) => {

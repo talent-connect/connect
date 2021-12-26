@@ -1,4 +1,4 @@
-import { FunctionComponent, useEffect, Suspense } from 'react'
+import { FC, useEffect, Suspense } from 'react'
 
 import { Provider as StoreProvider } from 'react-redux'
 import { history, Router } from './services/history/history'
@@ -12,7 +12,7 @@ import LocationPicker from './pages/front/landing/LocationPicker'
 import { Route } from 'react-router-dom'
 import { QueryParamProvider } from 'use-query-params'
 
-const App: FunctionComponent = () => {
+const App: FC = () => {
   switch (envRediLocation()) {
     case 'location-picker':
       return (
@@ -26,7 +26,7 @@ const App: FunctionComponent = () => {
   }
 }
 
-const NormalRediConnect: FunctionComponent = () => {
+const NormalRediConnect: FC = () => {
   useEffect(() => {
     store.dispatch(profileFetchStart())
   }, [])

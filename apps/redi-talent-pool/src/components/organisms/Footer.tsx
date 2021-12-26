@@ -1,12 +1,12 @@
 import { SocialMediaIcons } from '@talent-connect/shared-atomic-design-components'
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import { Columns, Container, Element, Section } from 'react-bulma-components'
 import { useTranslation } from 'react-i18next'
 import { ReactComponent as RediSchool } from '../../assets/redi-school-logo.svg'
 import MicrosoftLogo from '../../assets/images/microsoft-logo.png'
 import './Footer.scss'
 
-const RediFooter: FunctionComponent = () => {
+const RediFooter: FC = () => {
   const year = new Date().getFullYear()
   const { t } = useTranslation()
 

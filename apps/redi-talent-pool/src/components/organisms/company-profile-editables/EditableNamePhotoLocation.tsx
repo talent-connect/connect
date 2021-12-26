@@ -7,7 +7,7 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import { TpCompanyProfile } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
-import { FunctionComponent, useEffect, useMemo, useState } from 'react'
+import { FC, useEffect, useMemo, useState } from 'react'
 import { Columns, Content, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
 import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
@@ -21,7 +21,7 @@ interface Props {
   disableEditing?: boolean
 }
 
-export const EditableNamePhotoLocation: FunctionComponent<Props> = ({ profile, disableEditing }) => {
+export const EditableNamePhotoLocation: FC<Props> = ({ profile, disableEditing }) => {
   const mutation = useTpCompanyProfileUpdateMutation()
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
@@ -115,8 +115,7 @@ function ModalForm({
 }) {
   const { data: profile } = useTpCompanyProfileQuery()
   const mutation = useTpCompanyProfileUpdateMutation()
-  const initialValues: Partial<TpCompanyProfile> = useMemo(
-    () => ({
+  const initialValues: Partial<TpCompanyProfile> = useMemo(() => ({
       companyName: profile?.companyName ?? '',
       location: profile?.location ?? '',
       tagline: profile?.tagline ?? '',
@@ -127,12 +126,8 @@ function ModalForm({
   const onSubmit = (values: Partial<TpCompanyProfile>) => {
     formik.setSubmitting(true)
     mutation.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
-      },
+      onSettled: () => formik.setSubmitting(false),
+      onSuccess: () => setIsEditing(false),
     })
   }
   const formik = useFormik({

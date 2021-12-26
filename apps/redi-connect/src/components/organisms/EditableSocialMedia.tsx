@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import { FormInput } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile } from '@talent-connect/shared-types'
@@ -28,7 +28,7 @@ interface Props {
   profileSaveStart: Function
 }
 
-const EditableSocialMedia: FunctionComponent<Props> = ({
+const EditableSocialMedia: FC<Props> = ({
   profile: { id, linkedInProfileUrl, githubProfileUrl, slackUsername },
   profileSaveStart
 }) => {

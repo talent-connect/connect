@@ -6,7 +6,7 @@ export interface FormSelectProps {
   /** */
   items: { value: string; }[];
   /** */
-  placeholder: string;
+  placeholder?: string;
   /** */
   className?: string;
   /** */

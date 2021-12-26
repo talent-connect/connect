@@ -8,7 +8,7 @@ import {
   topSkills,
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import { Columns, Element, Tag } from 'react-bulma-components'
 import { useHistory } from 'react-router-dom'
 import { ArrayParam, useQueryParams, withDefault } from 'use-query-params'
@@ -17,7 +17,7 @@ import { LoggedIn } from '../../../components/templates'
 import { useBrowseTpJobListingsQuery } from '../../../react-query/use-tpjoblisting-all-query'
 import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 
-export const BrowseJobseeker: FunctionComponent = () => {
+export const BrowseJobseeker: FC = () => {
   const { data: currentJobseekerProfile } = useTpJobseekerProfileQuery()
 
   const [{ idealTechnicalSkills, employmentType }, setQuery] = useQueryParams({
@@ -170,5 +170,5 @@ const FilterTag = ({ id, label, onClickHandler }: FilterTagProps) => (
 
 export function toggleValueInArray<T>(array: Array<T>, value: T) {
   if (array.includes(value)) return array.filter((val) => val !== value)
-  else return [...array, value]
+  return [...array, value]
 }

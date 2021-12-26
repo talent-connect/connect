@@ -2,7 +2,7 @@ import {
   DecoratedHeadline,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import {
   Container,
   Section,
@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next'
 
 import './RediProgram.scss'
 
-const RediProgram: FunctionComponent = () => {
+const RediProgram: FC = () => {
   const { t } = useTranslation()
 
   const programSteps: Array<{

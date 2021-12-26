@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import classnames from 'classnames'
 import { NavLink } from 'react-router-dom'
 import { Icon } from '../Icon'
@@ -7,7 +7,7 @@ import './Button.scss'
 
 const baseClass = 'button-atom'
 
-const Button: FunctionComponent<ButtonProps> & { Icon: typeof Icon } = ({
+const Button: FC<ButtonProps> & { Icon: typeof Icon } = ({
   children,
   className,
   fullWidth,

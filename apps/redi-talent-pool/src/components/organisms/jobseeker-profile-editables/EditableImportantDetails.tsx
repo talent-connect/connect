@@ -18,7 +18,7 @@ import {
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
 import moment from 'moment'
-import { FunctionComponent, useEffect, useMemo, useState } from 'react'
+import { FC, useEffect, useMemo, useState } from 'react'
 import { Content, Element } from 'react-bulma-components'
 import { UseMutationResult, UseQueryResult } from 'react-query'
 import * as Yup from 'yup'
@@ -32,7 +32,7 @@ interface Props {
   disableEditing?: boolean
 }
 
-export const EditableImportantDetails: FunctionComponent<Props> = ({
+export const EditableImportantDetails: FC<Props> = ({
   profile: overridingProfile,
   disableEditing,
 }) => {
@@ -207,13 +207,13 @@ interface JobseekerFormSectionImportantDetailsProps {
   hideNonContactDetailsFields?: boolean
 }
 
-export function JobseekerFormSectionImportantDetails({
+export const JobseekerFormSectionImportantDetails: FC<JobseekerFormSectionImportantDetailsProps> = ({
   setIsEditing,
   setIsFormDirty,
   queryHookResult,
   mutationHookResult,
   hideNonContactDetailsFields,
-}: JobseekerFormSectionImportantDetailsProps) {
+}) => {
   const { data: profile } = queryHookResult
   const mutation = mutationHookResult
   const initialValues: Partial<TpJobseekerProfile> = useMemo(
@@ -241,12 +241,8 @@ export function JobseekerFormSectionImportantDetails({
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
     formik.setSubmitting(true)
     mutation.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
-      },
+      onSettled: () => formik.setSubmitting(false),
+      onSuccess: () => setIsEditing(false),
     })
   }
   const formik = useFormik({

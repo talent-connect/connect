@@ -10,8 +10,9 @@ import { EditableSummary } from '../../../components/organisms/jobseeker-profile
 import { EditableProfessionalExperience } from '../../../components/organisms/jobseeker-profile-editables/EditableProfessionalExperience'
 import { EditableEducation } from '../../../components/organisms/jobseeker-profile-editables/EditableEducation'
 import { EditableNamePhotoLocation } from '../../../components/organisms/jobseeker-profile-editables/EditableNamePhotoLocation'
+import { FC } from 'react';
 
-export function JobseekerProfile() {
+export const JobseekerProfile: FC = () => {
   const { tpJobseekerProfileId } = useParams<{ tpJobseekerProfileId: string }>()
   const { data: jobseekerProfile } = useTpJobseekerProfileByIdQuery(tpJobseekerProfileId)
 

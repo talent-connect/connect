@@ -2,7 +2,7 @@ import Select, { components } from 'react-select'
 import { Form } from 'react-bulma-components'
 import { Icon } from '../Icon'
 import { get } from 'lodash'
-import { FunctionComponent } from 'react';
+import { FC } from 'react';
 import { FormSelectProps } from './FormSelect.props';
 
 const DropdownIndicator = (props: any) => (
@@ -23,7 +23,7 @@ const MultiValueRemove = (props: any) => (
   </components.MultiValueRemove>
 )
 
-const FormSelect: FunctionComponent<FormSelectProps> = ({
+const FormSelect: FC<FormSelectProps> = ({
   name,
   items,
   placeholder,

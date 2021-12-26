@@ -1,4 +1,4 @@
-import { FunctionComponent, useState, useCallback } from 'react'
+import { FC, useState, useCallback } from 'react'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import Teaser from '../../../components/molecules/Teaser'
 import * as Yup from 'yup'
@@ -37,7 +37,7 @@ const validationSchema = Yup.object({
   password: Yup.string().required().label('Password').max(255),
 })
 
-const Login: FunctionComponent = () => {
+const Login: FC = () => {
   const [loginError, setLoginError] = useState<string>('')
   const [isWrongRediLocationError, setIsWrongRediLocationError] =
     useState<boolean>(false)

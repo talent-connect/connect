@@ -1,5 +1,5 @@
 import classnames from 'clsx'
-import React, { FunctionComponent } from 'react'
+import React, { FC } from 'react'
 import { useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import './TpMainNavItem.scss'
@@ -31,7 +31,7 @@ const FancyLink = React.forwardRef<HTMLAnchorElement>(
   )
 )
 
-export const TpMainNavItem: FunctionComponent<Props> = ({
+export const TpMainNavItem: FC<Props> = ({
   page,
   to,
   isActive,
@@ -72,7 +72,7 @@ interface TpMainNavItemIconProps {
   pageName?: string
 }
 
-const TpMainNavItemIcon: FunctionComponent<TpMainNavItemIconProps> = ({
+const TpMainNavItemIcon: FC<TpMainNavItemIconProps> = ({
   page,
   isDisabled,
   pageName,

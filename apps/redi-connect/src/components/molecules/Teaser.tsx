@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import { ReactComponent as WelcomeIllustration } from '../../assets/images/welcome-user.svg'
 import { ReactComponent as MiriamSvg } from '../../assets/images/miriam.svg'
 import { ReactComponent as PaulinaSvg } from '../../assets/images/paulina.svg'
@@ -30,7 +30,7 @@ const Paulina = (props: any) => (
   </div>
 )
 
-const TopIllustration: FunctionComponent = ({ children }) => {
+const TopIllustration: FC = ({ children }) => {
   return (
     <>
       <WelcomeIllustration className="illustration illustration--rightOut" />

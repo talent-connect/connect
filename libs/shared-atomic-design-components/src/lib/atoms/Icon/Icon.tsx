@@ -1,10 +1,10 @@
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import classnames from 'classnames'
 
 import './Icon.scss'
 import { IconProps, Icons } from './Icon.props';
 
-const Icon: FunctionComponent<IconProps> = ({
+const Icon: FC<IconProps> = ({
   icon,
   space,
   size,

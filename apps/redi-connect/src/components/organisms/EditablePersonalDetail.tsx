@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import { subYears } from 'date-fns'
 
 import {
@@ -39,7 +39,7 @@ interface Props {
   profileSaveStart: Function
 }
 
-const EditablePersonalDetail: FunctionComponent<Props> = ({
+const EditablePersonalDetail: FC<Props> = ({
   profile: { id, gender, birthDate },
   profileSaveStart
 }) => {

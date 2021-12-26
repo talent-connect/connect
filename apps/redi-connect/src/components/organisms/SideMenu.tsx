@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import { getRedProfileFromLocalStorage } from '../../services/auth/auth'
 import './SideMenu.scss'
 import { NavLink } from 'react-router-dom'
@@ -10,7 +10,7 @@ interface MenuItemProps {
   url: string
 }
 
-const MenuItem: FunctionComponent<MenuItemProps> = ({ url, children }) => (
+const MenuItem: FC<MenuItemProps> = ({ url, children }) => (
   <li className="side-menu__item">
     <NavLink
       to={url}
@@ -22,7 +22,7 @@ const MenuItem: FunctionComponent<MenuItemProps> = ({ url, children }) => (
   </li>
 )
 
-const SideMenu: FunctionComponent = () => {
+const SideMenu: FC = () => {
   const { userType, userActivated, ifUserIsMentee_hasActiveMentor  } = getRedProfileFromLocalStorage()
   const isActivatedMentor =
     userType === 'mentor' && userActivated

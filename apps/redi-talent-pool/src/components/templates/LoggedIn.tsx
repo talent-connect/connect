@@ -1,5 +1,5 @@
 import { Loader } from '@talent-connect/shared-atomic-design-components'
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import { Columns, Container } from 'react-bulma-components'
 import { useLocation } from 'react-router'
 import { useIsBusy } from '../../hooks/useIsBusy'
@@ -14,7 +14,7 @@ interface Props {
   hideNavigation?: boolean
 }
 
-const LoggedIn: FunctionComponent<Props> = ({ children, hideNavigation }) => {
+const LoggedIn: FC<Props> = ({ children, hideNavigation }) => {
   const isBusy = useIsBusy()
   const location = useLocation()
   const { data: jobseekerProfile } = useTpJobseekerProfileQuery({

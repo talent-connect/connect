@@ -9,7 +9,7 @@ import {
   topSkills,
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import { Columns, Element, Tag } from 'react-bulma-components'
 import { useHistory } from 'react-router'
 import {
@@ -22,7 +22,7 @@ import { JobseekerProfileCard } from '../../../components/organisms/JobSeekerPro
 import { LoggedIn } from '../../../components/templates'
 import { useBrowseTpJobseekerProfilesQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 
-export const BrowseCompany: FunctionComponent = () => {
+export const BrowseCompany: FC = () => {
   const [query, setQuery] = useQueryParams({
     name: withDefault(StringParam, ''),
     skills: withDefault(ArrayParam, []),
@@ -178,5 +178,5 @@ const FilterTag = ({ id, label, onClickHandler }: FilterTagProps) => (
 
 export function toggleValueInArray<T>(array: Array<T>, value: T) {
   if (array.includes(value)) return array.filter((val) => val !== value)
-  else return [...array, value]
+  return [...array, value]
 }

@@ -3,7 +3,7 @@ import {
   Icon,
   Modal,
 } from '@talent-connect/shared-atomic-design-components'
-import { CSSProperties, FunctionComponent, ReactNode } from 'react'
+import { CSSProperties, FC, ReactNode } from 'react'
 import { Element } from 'react-bulma-components'
 import './Editable.scss'
 
@@ -20,7 +20,7 @@ interface Props {
   modalStyles?: CSSProperties
 }
 
-export const Editable: FunctionComponent<Props> = ({
+export const Editable: FC<Props> = ({
   isEditing,
   setIsEditing,
   disableEditing,

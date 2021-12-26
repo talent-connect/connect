@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import { Content } from 'react-bulma-components'
 import { Heading } from '@talent-connect/shared-atomic-design-components'
 import { ApplicationCard } from '../../../components/organisms'
@@ -14,7 +14,7 @@ interface Props {
   applicants: RedMatch[]
 }
 
-const  Applications: FunctionComponent<Props> = ({ applicants }) => {
+const  Applications: FC<Props> = ({ applicants }) => {
   const history = useHistory()
   const profile = getRedProfileFromLocalStorage()
 

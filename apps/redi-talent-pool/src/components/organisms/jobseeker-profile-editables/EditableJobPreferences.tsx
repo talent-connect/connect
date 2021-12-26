@@ -9,7 +9,7 @@ import {
   TpJobseekerProfile,
 } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
-import { FunctionComponent, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Content, Element } from 'react-bulma-components'
 import { Subject } from 'rxjs'
@@ -33,7 +33,7 @@ interface Props {
   triggerModalSignal?: Subject<void>
 }
 
-export const EditableJobPreferences: FunctionComponent<Props> = ({ profile, triggerModalSignal }) => {
+export const EditableJobPreferences: FC<Props> = ({ profile, triggerModalSignal }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
@@ -111,7 +111,7 @@ interface ModalFormProps {
   setIsFormDirty: (boolean) => void
 }
 
-const ModalForm: FunctionComponent<ModalFormProps> = ({
+const ModalForm: FC<ModalFormProps> = ({
   setIsEditing,
   setIsFormDirty,
 }) => {
@@ -132,8 +132,8 @@ const ModalForm: FunctionComponent<ModalFormProps> = ({
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
     formik.setSubmitting(true)
     mutation.mutate(values, {
-      onSettled: () => { formik.setSubmitting(false) },
-      onSuccess: () => { setIsEditing(false) },
+      onSettled: () => formik.setSubmitting(false),
+      onSuccess: () => setIsEditing(false),
     })
   }
   

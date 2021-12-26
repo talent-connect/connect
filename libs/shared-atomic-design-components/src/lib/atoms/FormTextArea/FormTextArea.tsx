@@ -2,12 +2,12 @@ import classnames from 'classnames'
 import { Form, Content, Columns } from 'react-bulma-components'
 import './FormTextArea.scss'
 import { get } from 'lodash'
-import { FunctionComponent } from 'react';
+import { FC } from 'react';
 import { FormTextAreaProps } from './FormTextArea.props';
 
 // the any is not the best solution here, I would need to use the props needed for
 // the field and the formik values coming from the form context
-const FormTextArea: FunctionComponent<FormTextAreaProps> = ({
+const FormTextArea: FC<FormTextAreaProps> = ({
   name,
   className,
   label,

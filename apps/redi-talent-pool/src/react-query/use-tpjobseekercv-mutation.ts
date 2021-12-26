@@ -43,9 +43,7 @@ export function useTpjobseekerCvDeleteMutation(id: string) {
     'currentUserTpJobseekerCvDelete',
     deleteCurrentUserTpJobseekerCv(id),
     {
-      onSuccess: () => {
-        queryClient.invalidateQueries('allCurrentUserTpJobseekerCv')
-      },
+      onSuccess: () => queryClient.invalidateQueries('allCurrentUserTpJobseekerCv'),
     }
   )
 }

@@ -1,10 +1,10 @@
-import { FunctionComponent } from 'react';
+import { FC } from 'react';
 import { CheckboxProps } from './Checkbox.props';
 import _uniqueId from 'lodash/uniqueId'
 import { Form } from 'react-bulma-components'
 import './Checkbox.scss'
 
-const Checkbox: FunctionComponent<CheckboxProps> & { Form: FunctionComponent<CheckboxProps & { className: string;}> } = ({
+const Checkbox: FC<CheckboxProps> & { Form: FC<CheckboxProps & { className: string;}> } = ({
   name,
   value,
   checked,

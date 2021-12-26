@@ -1,7 +1,7 @@
-import { FunctionComponent } from 'react';
+import { FC } from 'react';
 import { images, SVGImageProps, svgImages } from './SVGImage.props';
 
-const SVGImage: FunctionComponent<SVGImageProps> = ({ image, className }) => {
+const SVGImage: FC<SVGImageProps> = ({ image, className }) => {
   const Image = images[image] || svgImages[image]
   return <Image className={className} /> 
 }

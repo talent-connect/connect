@@ -14,7 +14,7 @@ import {
   topSkills,
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
-import { useCallback, useState, useEffect, FunctionComponent } from 'react'
+import { useCallback, useState, useEffect, FC } from 'react'
 import { Columns, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
@@ -32,7 +32,7 @@ interface Props {
   setIsJobPostingFormOpen: (value: boolean) => void
 }
 
-export const EditableJobPostings: FunctionComponent<Props> = ({
+export const EditableJobPostings: FC<Props> = ({
   isJobPostingFormOpen,
   setIsJobPostingFormOpen,
 }) => {
@@ -175,29 +175,12 @@ function ModalForm({
   const deleteMutation = useTpJobListingDeleteMutation()
 
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
-    if (tpJobListingId === null) {
-      // create new
-      formik.setSubmitting(true)
-      createMutation.mutate(values, {
-        onSettled: () => {
-          formik.setSubmitting(false)
-        },
-        onSuccess: () => {
-          setIsEditing(false)
-        },
-      })
-    } else {
-      // update existing
-      formik.setSubmitting(true)
-      updateMutation.mutate(values, {
-        onSettled: () => {
-          formik.setSubmitting(false)
-        },
-        onSuccess: () => {
-          setIsEditing(false)
-        },
-      })
-    }
+    formik.setSubmitting(true);
+    const mutation = tpJobListingId === null ? createMutation : updateMutation;
+    mutation.mutate(values, {
+      onSettled: () => formik.setSubmitting(false),
+      onSuccess: () => setIsEditing(false),
+    })
   }
 
   const formik = useFormik({
@@ -212,9 +195,7 @@ function ModalForm({
       window.confirm('Are you certain you wish to delete this job posting?')
     ) {
       deleteMutation.mutate(tpJobListingId, {
-        onSuccess: () => {
-          setIsEditing(false)
-        },
+        onSuccess: () => setIsEditing(false),
       })
       setIsEditing(false)
     }
@@ -278,14 +259,14 @@ function ModalForm({
           name={`relatesToPositions`}
           items={formRelatedPositions}
           {...formik}
-          multiselect
+          multiSelect
         />
         <FormSelect
           label="Ideal technical skills*"
           name={`idealTechnicalSkills`}
           items={formTopSkills}
           {...formik}
-          multiselect
+          multiSelect
         />
         <FormSelect
           label="Employment type*"

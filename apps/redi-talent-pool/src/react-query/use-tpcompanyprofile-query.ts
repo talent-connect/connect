@@ -5,6 +5,8 @@ interface Props {
   retry: boolean
 }
 
+const MS_IN_5_MIN = 5 * 60 * 1000
+
 export function useTpCompanyProfileQuery(props?: Props) {
   const retry = props?.retry ?? true
 
@@ -12,7 +14,7 @@ export function useTpCompanyProfileQuery(props?: Props) {
     'currentUserTpCompanyProfile',
     fetchCurrentUserTpCompanyProfile,
     {
-      staleTime: 5 * 60 * 1000,
+      staleTime: MS_IN_5_MIN,
       retry,
       refetchOnWindowFocus: false,
     }

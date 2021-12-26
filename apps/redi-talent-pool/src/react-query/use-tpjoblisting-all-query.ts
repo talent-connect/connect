@@ -5,9 +5,11 @@ import {
   TpJobListingFilters,
 } from '../services/api/api'
 
+const MS_IN_5_MIN = 5 * 60 * 1000
+
 export function useTpJobListingAllQuery() {
   return useQuery('allTpJobListings', fetchAllTpJobListings, {
-    staleTime: 5 * 60 * 1000,
+    staleTime: MS_IN_5_MIN,
     refetchOnWindowFocus: false,
   })
 }

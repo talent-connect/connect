@@ -4,12 +4,14 @@ import {
   fetchOneTpJobListingOfCurrentUser,
 } from '../services/api/api'
 
+const MS_IN_5_MIN = 5 * 60 * 1000
+
 export function useTpJobListingOneOfCurrentUserQuery(id: string) {
   return useQuery(
     ['oneTpJobListingOfCurrentUser', id],
     () => fetchOneTpJobListingOfCurrentUser(id),
     {
-      staleTime: 5 * 60 * 1000,
+      staleTime: MS_IN_5_MIN,
       refetchOnWindowFocus: false,
       enabled: !!id,
     }
@@ -18,7 +20,7 @@ export function useTpJobListingOneOfCurrentUserQuery(id: string) {
 
 export function useTpJobListingOneQuery(id: string) {
   return useQuery(['oneTpJobListing', id], () => fetchOneTpJobListing(id), {
-    staleTime: 5 * 60 * 1000,
+    staleTime: MS_IN_5_MIN,
     refetchOnWindowFocus: false,
     enabled: !!id,
   })

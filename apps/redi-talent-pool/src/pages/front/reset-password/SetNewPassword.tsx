@@ -4,7 +4,7 @@ import {
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
 import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
-import { FunctionComponent, useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { Columns, Content, Form } from 'react-bulma-components'
 import { RouteComponentProps } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -39,7 +39,7 @@ interface RouteParams {
   accessToken: string
 }
 
-export const SetNewPassword: FunctionComponent<RouteComponentProps<RouteParams>> = (props) => {
+export const SetNewPassword: FC<RouteComponentProps<RouteParams>> = (props) => {
   const [formError, setFormError] = useState<string>('')
   const [errorMsg, setErrorMsg] = useState<string>('')
 

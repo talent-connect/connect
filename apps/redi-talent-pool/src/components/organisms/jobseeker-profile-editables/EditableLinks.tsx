@@ -4,7 +4,7 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
-import { useEffect, useMemo, useState, FunctionComponent } from 'react'
+import { useEffect, useMemo, useState, FC } from 'react'
 import {
   Content,
   Element,
@@ -22,7 +22,7 @@ interface Props {
   disableEditing?: boolean
 }
 
-export const EditableLinks: FunctionComponent<Props> = ({
+export const EditableLinks: FC<Props> = ({
   profile: overridingProfile,
   disableEditing,
 }) => {
@@ -127,17 +127,16 @@ interface JobseekerFormSectionLinksProps {
   >
 }
 
-export function JobseekerFormSectionLinks({
+export const JobseekerFormSectionLinks: FC<JobseekerFormSectionLinksProps> = ({
   setIsEditing,
   setIsFormDirty,
   queryHookResult,
   mutationHookResult,
-}: JobseekerFormSectionLinksProps) {
+}) => {
   const { data: profile } = queryHookResult
   const mutation = mutationHookResult
 
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(
-    () => ({
+  const initialValues: Partial<TpJobseekerProfile> = useMemo(() => ({
       personalWebsite: profile?.personalWebsite ?? '',
       githubUrl: profile?.githubUrl ?? '',
       linkedInUrl: profile?.linkedInUrl ?? '',
@@ -156,13 +155,15 @@ export function JobseekerFormSectionLinks({
       profile?.twitterUrl,
     ]
   )
+
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
     formik.setSubmitting(true)
     mutation.mutate(values, {
-      onSettled: () => { formik.setSubmitting(false) },
-      onSuccess: () => { setIsEditing(false) },
+      onSettled: () => formik.setSubmitting(false),
+      onSuccess: () => setIsEditing(false),
     })
   }
+
   const formik = useFormik({
     initialValues,
     validationSchema,
@@ -170,10 +171,12 @@ export function JobseekerFormSectionLinks({
     onSubmit,
     validateOnMount: true,
   })
+
   useEffect(() => setIsFormDirty?.(formik.dirty), [
     formik.dirty,
     setIsFormDirty,
   ])
+
   return (
     <>
       <Element
@@ -245,11 +248,11 @@ export function JobseekerFormSectionLinks({
   )
 }
 
-const summaryTips = `Write not more than 3-4 sentences.
-<br /><br />
-Make sure you talk about:<br />
-1. Who are you? - Include your professional title and past relevant experiences or education with key funcitons.
-<br /><br />
-2. What do you have to offer?- Emphasize your strenghts and skills that matter in your desired job, mention notable achievements, projects.
-<br /><br />
-3. What is your goal?- Emplain how you want to add value and how your approach problems that your are passionate to solve.`
+// const summaryTips = `Write not more than 3-4 sentences. // TODO: remove?
+// <br /><br />
+// Make sure you talk about:<br />
+// 1. Who are you? - Include your professional title and past relevant experiences or education with key functions.
+// <br /><br />
+// 2. What do you have to offer?- Emphasize your strengths and skills that matter in your desired job, mention notable achievements, projects.
+// <br /><br />
+// 3. What is your goal?- Explain how you want to add value and how your approach problems that your are passionate to solve.`

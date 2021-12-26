@@ -4,7 +4,7 @@
  * must be standardized within the project.
  */
 
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import { format as formatDate } from 'date-fns'
 import { useHistory } from 'react-router-dom'
 import { PDFDownloadLink } from '@react-pdf/renderer'
@@ -33,7 +33,7 @@ import { useTpJobseekerProfileQuery } from '../../../../react-query/use-tpjobsee
 const CREATED_AT_DATE_FORMAT = 'dd.MM.yyyy'
 
 
-export const CvListItemBox: FunctionComponent = ({ children }) =>  {
+export const CvListItemBox: FC = ({ children }) =>  {
   return (
     <Box
     style={{
@@ -55,7 +55,7 @@ interface CvListItemChipProps {
   className?: string
 }
 
-const CvListItemChip: FunctionComponent<CvListItemChipProps> = (props) => {
+const CvListItemChip: FC<CvListItemChipProps> = (props) => {
   return (
     <Chip
       style={{ width: 128, height: 40, marginRight: 32, fontSize: 16 }}
@@ -69,7 +69,7 @@ interface CvListItemProps {
   createdAt: Date
 }
 
-const CvListItem: FunctionComponent<CvListItemProps> = ({ id, name, createdAt }) => {
+const CvListItem: FC<CvListItemProps> = ({ id, name, createdAt }) => {
   const [showCvNameModal, setShowCvNameModal] = React.useState(false)
   const [newCvName, setNewCvName] = React.useState(name || '')
   const [profileImageLoaded, setProfileImageLoaded] = React.useState(false)

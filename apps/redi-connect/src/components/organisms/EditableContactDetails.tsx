@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import { FormInput } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile } from '@talent-connect/shared-types'
@@ -30,7 +30,7 @@ interface Props {
   profileSaveStart: Function
 }
 
-const EditableContactDetails: FunctionComponent<Props> = ({
+const EditableContactDetails: FC<Props> = ({
   profile: { id, firstName, lastName, contactEmail, telephoneNumber },
   profileSaveStart
 }) => {

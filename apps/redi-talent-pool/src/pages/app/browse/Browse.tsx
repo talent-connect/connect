@@ -1,11 +1,11 @@
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
 import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { BrowseCompany } from './BrowseCompany'
 import { BrowseJobseeker } from './BrowseJobseeker'
 import './Browse.scss'
 
-const Browse: FunctionComponent = () => {
+const Browse: FC = () => {
   const { data: jobseekerProfile } = useTpJobseekerProfileQuery({
     retry: false,
   })

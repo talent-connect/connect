@@ -4,7 +4,7 @@ import {
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
 import { AWS_PROFILE_AVATARS_BUCKET_BASE_URL } from '@talent-connect/shared-config'
-import { FunctionComponent, useCallback, useRef, useState } from 'react'
+import { FC, useCallback, useRef, useState } from 'react'
 import { Box, Columns, Content, Section } from 'react-bulma-components'
 import { useHistory, useParams } from 'react-router-dom'
 import { Subject } from 'rxjs'
@@ -23,7 +23,7 @@ import { useTpJobseekerProfileQuery } from '../../../../react-query/use-tpjobsee
 import './CvDetailPage.scss'
 import placeholderImage from '../../../../assets/img-placeholder.png'
 
-const InlineButton: FunctionComponent = () => {
+const InlineButton: FC = () => {
   return (
     <Button
       style={{
@@ -38,7 +38,7 @@ const InlineButton: FunctionComponent = () => {
   )
 }
 
-const InlinePencilIcon: FunctionComponent = () => {
+const InlinePencilIcon: FC = () => {
   return (
     <CreateOutlinedIcon style={{ color: '#EA5B25', margin: '0 12px -5px' }} />
   )
@@ -48,7 +48,7 @@ interface ParamTypes {
   id: string
 }
 
-const CvDetailPage: FunctionComponent = () => {
+const CvDetailPage: FC = () => {
   const history = useHistory()
   const { id: cvId } = useParams<ParamTypes>()
 

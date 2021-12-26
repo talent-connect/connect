@@ -10,7 +10,7 @@ import {
   desiredPositionsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
-import { FunctionComponent, useEffect, useMemo, useState } from 'react'
+import { FC, useEffect, useMemo, useState } from 'react'
 import { Element, Tag } from 'react-bulma-components'
 import { UseMutationResult, UseQueryResult } from 'react-query'
 import * as Yup from 'yup'
@@ -24,7 +24,7 @@ interface Props {
   disableEditing?: boolean
 }
 
-export const EditableOverview: FunctionComponent<Props> = ({
+export const EditableOverview: FC<Props> = ({
   profile: overridingProfile,
   disableEditing,
 }) => {
@@ -108,13 +108,13 @@ interface JobseekerFormSectionOverviewProps {
   hideCurrentRediCourseField?: boolean
 }
 
-export function JobseekerFormSectionOverview({
+export const JobseekerFormSectionOverview: FC<JobseekerFormSectionOverviewProps> = ({
   setIsEditing,
   setIsFormDirty,
   queryHookResult: { data: profile },
   mutationHookResult,
   hideCurrentRediCourseField,
-}: JobseekerFormSectionOverviewProps) {
+}) => {
   const initialValues: Partial<TpJobseekerProfile> = useMemo(() => ({
       desiredPositions: profile?.desiredPositions ?? [],
       currentlyEnrolledInCourse: profile?.currentlyEnrolledInCourse ?? '',
@@ -125,14 +125,11 @@ export function JobseekerFormSectionOverview({
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
     formik.setSubmitting(true)
     mutationHookResult.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
-      },
+      onSettled: () => formik.setSubmitting(false),
+      onSuccess: () => setIsEditing(false),
     })
   }
+
   const formik = useFormik({
     initialValues,
     validationSchema,
@@ -140,10 +137,12 @@ export function JobseekerFormSectionOverview({
     onSubmit,
     validateOnMount: true,
   })
+
   useEffect(
     () => setIsFormDirty?.(formik.dirty),
     [formik.dirty, setIsFormDirty]
   )
+
   return (
     <>
       <Element

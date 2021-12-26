@@ -1,4 +1,4 @@
-import { FunctionComponent, useEffect } from 'react'
+import { FC, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { getHasReachedMenteeLimit } from '../../../redux/user/selectors'
 import { useParams, useHistory } from 'react-router'
@@ -43,7 +43,7 @@ interface ProfileProps {
   profilesFetchOneStart: Function
 }
 
-const Profile: FunctionComponent<ProfileProps> = ({
+const Profile: FC<ProfileProps> = ({
   profile,
   currentUser,
   hasReachedMenteeLimit,

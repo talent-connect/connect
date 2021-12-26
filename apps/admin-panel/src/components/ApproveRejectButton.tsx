@@ -1,6 +1,6 @@
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import Button from '@material-ui/core/Button'
 
-export const ApproveRejectButton: FunctionComponent = () => {
+export const ApproveRejectButton: FC = () => {
   return <Button>Hello</Button>
 }

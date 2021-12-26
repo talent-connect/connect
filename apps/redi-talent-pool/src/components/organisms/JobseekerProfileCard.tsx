@@ -6,7 +6,7 @@ import {
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 import classnames from 'clsx'
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import { Card, Element } from 'react-bulma-components'
 import './JobseekerProfileCard.scss'
 import placeholderImage from '../../assets/img-placeholder.png'
@@ -18,7 +18,7 @@ interface JobseekerProfileCardProps {
   toggleFavorite?: (id: string) => void
 }
 
-export const JobseekerProfileCard: FunctionComponent<JobseekerProfileCardProps> = ({
+export const JobseekerProfileCard: FC<JobseekerProfileCardProps> = ({
   jobseekerProfile,
   onClick,
   toggleFavorite,

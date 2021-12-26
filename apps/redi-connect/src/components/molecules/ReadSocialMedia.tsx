@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import { Content } from 'react-bulma-components'
 import { RedProfile } from '@talent-connect/shared-types'
 import { connect } from 'react-redux'
@@ -13,7 +13,7 @@ interface Props {
   shortInfo?: boolean
 }
 
-const ReadSocialMedia: FunctionComponent<Props> = ({
+const ReadSocialMedia: FC<Props> = ({
   profile: { linkedInProfileUrl, githubProfileUrl, slackUsername },
   shortInfo
 }) => {

@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import { Redirect } from 'react-router'
 import { Columns, Content } from 'react-bulma-components'
 import LoggedIn from '../../../components/templates/LoggedIn'
@@ -13,7 +13,7 @@ interface Props {
   matches: RedMatch[]
 }
 
-const  MentorshipList: FunctionComponent<Props> = ({ matches }) => {
+const  MentorshipList: FC<Props> = ({ matches }) => {
   if (matches.length === 1)
     return <Redirect to={`/app/mentorships/${matches[0].id}`} />
 

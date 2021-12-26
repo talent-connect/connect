@@ -17,7 +17,7 @@ import {
 import { formMonthsOptions } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
 import moment from 'moment'
-import { FunctionComponent, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Columns, Content, Element } from 'react-bulma-components'
 import ReactMarkdown from 'react-markdown'
@@ -42,7 +42,7 @@ interface Props {
   disableEditing?: boolean
 }
 
-export const  EditableProfessionalExperience: FunctionComponent<Props> = ({
+export const  EditableProfessionalExperience: FC<Props> = ({
   profile: overridingProfile,
   disableEditing,
 }) => {
@@ -157,7 +157,7 @@ interface JobseekerFormSectionProfessionalExperienceProps {
   >
 }
 
-export const JobseekerFormSectionProfessionalExperience: FunctionComponent<JobseekerFormSectionProfessionalExperienceProps> = ({
+export const JobseekerFormSectionProfessionalExperience: FC<JobseekerFormSectionProfessionalExperienceProps> = ({
   setIsEditing,
   setIsFormDirty,
   queryHookResult: { data: profile },

@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import classnames from 'classnames'
 import {
   Section,
@@ -30,7 +30,7 @@ const typeToSvgImageMap: imageType = {
   mentee: 'heroMentee',
 }
 
-const RediHeroLanding: FunctionComponent<Props> = ({ type }) => {
+const RediHeroLanding: FC<Props> = ({ type }) => {
   const { t } = useTranslation()
   const programSteps: { name: string; image: any; }[] =
     t(`loggedOutArea.homePage.hero.${type}.steps`, { returnObjects: true })

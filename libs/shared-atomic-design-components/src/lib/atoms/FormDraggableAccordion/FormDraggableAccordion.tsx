@@ -1,5 +1,5 @@
 import classnames from 'clsx'
-import { useEffect, useState, FunctionComponent } from 'react'
+import { useEffect, useState, FC } from 'react'
 import { Columns, Element } from 'react-bulma-components'
 import { Icon } from '../Icon'
 import { FormDraggableAccordionProps } from './FormDraggableAccordion.props';
@@ -7,7 +7,7 @@ import './FormDraggableAccordion.scss'
 
 import { ReactComponent as AccordionHandleIcon } from '../../../assets/images/accordion-handle.svg'
 
-const FormDraggableAccordion: FunctionComponent<FormDraggableAccordionProps> = ({
+const FormDraggableAccordion: FC<FormDraggableAccordionProps> = ({
   title,
   children,
   onRemove = null,

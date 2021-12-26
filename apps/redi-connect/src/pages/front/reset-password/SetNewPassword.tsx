@@ -1,4 +1,4 @@
-import { FunctionComponent, useState, useEffect } from 'react'
+import { FC, useState, useEffect } from 'react'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import Teaser from '../../../components/molecules/Teaser'
 import { Columns, Content, Form } from 'react-bulma-components'
@@ -42,7 +42,7 @@ interface RouteParams {
   accessToken: string
 }
 
-export const SetNewPassword: FunctionComponent<RouteComponentProps<RouteParams>> = (props) => {
+export const SetNewPassword: FC<RouteComponentProps<RouteParams>> = (props) => {
   const [formError, setFormError] = useState<string>('')
   const [errorMsg, setErrorMsg] = useState<string>('')
 
@@ -125,7 +125,7 @@ export const SetNewPassword: FunctionComponent<RouteComponentProps<RouteParams>>
             <FormInput
               name="passwordConfirm"
               type="password"
-              placeholder="Repeat rassword"
+              placeholder="Repeat password"
               {...formik}
             />
 

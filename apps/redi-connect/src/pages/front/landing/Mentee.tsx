@@ -1,5 +1,5 @@
 import { Button } from '@talent-connect/shared-atomic-design-components'
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 import Checklist from '../../../components/organisms/Checklist'
@@ -9,7 +9,7 @@ import Landing from '../../../components/templates/Landing'
 import { isLoggedIn } from '../../../services/auth/auth'
 import { Section, Container, Element } from 'react-bulma-components'
 
-const Mentee: FunctionComponent = () => {
+const Mentee: FC = () => {
   const { t } = useTranslation()
   const title = t('loggedOutArea.homePage.carousel.titleMentorOrMentee')
   const headline = t('loggedOutArea.homePage.carousel.headlineMentorOrMentee')

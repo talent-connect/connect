@@ -1,10 +1,10 @@
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import classnames from 'classnames'
 import { Heading as BulmaHeading } from 'react-bulma-components'
 import './Heading.scss'
 import { HeadingProps, sizes } from './Heading.props';
 
-const Heading: FunctionComponent<HeadingProps> = ({
+const Heading: FC<HeadingProps> = ({
   children,
   border,
   center,

@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import { Section, Container, Element } from 'react-bulma-components'
 import { useTranslation } from 'react-i18next'
 import { DecoratedHeadline } from '@talent-connect/shared-atomic-design-components'
@@ -7,7 +7,7 @@ interface Props {
   type: 'mentor' | 'mentee'
 }
 
-const Checklist: FunctionComponent<Props> = ({ type }) => {
+const Checklist: FC<Props> = ({ type }) => {
   const { t } = useTranslation()
 
   const checklist: Array<{

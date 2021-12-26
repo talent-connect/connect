@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect } from 'react'
+import React, { FC, useEffect } from 'react'
 import { get, mapValues, keyBy, groupBy } from 'lodash'
 import {
   Admin,
@@ -144,23 +144,23 @@ export const formRedMatchStatuses = Object.entries(RED_MATCH_STATUSES).map(
 
 /** START OF SHARED STUFF */
 
-const RecordCreatedAt: FunctionComponent = (props) => <DateField source="createdAt" {...props} />
+const RecordCreatedAt: FC = (props) => <DateField source="createdAt" {...props} />
 RecordCreatedAt.defaultProps = {
   addLabel: true,
   label: 'Record created at',
 }
 
-const RecordUpdatedAt: FunctionComponent = (props) => <DateField source="updatedAt" {...props} />
+const RecordUpdatedAt: FC = (props) => <DateField source="updatedAt" {...props} />
 RecordUpdatedAt.defaultProps = {
   addLabel: true,
   label: 'Record updated at',
 }
 
-const LanguageList: FunctionComponent<{ data?: Record<string, string> }> = (props) => {
+const LanguageList: FC<{ data?: Record<string, string> }> = (props) => {
   return <span>{props.data ? Object.values(props.data).join(', ') : null}</span>
 }
 
-const CategoryList: FunctionComponent<{ data: any }> = (props) => {
+const CategoryList: FC<{ data: any }> = (props) => {
   const categoriesGrouped = groupBy(
     props.data,
     (catId) => categoriesIdToGroupMap[catId]
@@ -215,14 +215,14 @@ const Avatar = withStyles(styles)(({ record, className, classes, style }) => (
 ))
 
 /** END OF SHARED STUFF */
-const AllModelsPagination: FunctionComponent = (props) => (
+const AllModelsPagination: FC = (props) => (
   <Pagination
     rowsPerPageOptions={[10, 25, 50, 100, 250, 500, 1000]}
     {...props}
   />
 )
 
-const RedProfileList: FunctionComponent = (props) => {
+const RedProfileList: FC = (props) => {
   return (
     <List
       {...props}
@@ -281,7 +281,7 @@ const RedProfileList: FunctionComponent = (props) => {
   )
 }
 
-const FreeMenteeSpotsPerLocationAside: FunctionComponent = () => {
+const FreeMenteeSpotsPerLocationAside: FC = () => {
   const [mentorsList, setMentorsList] = React.useState([])
 
   useEffect(() => {
@@ -322,7 +322,7 @@ const FreeMenteeSpotsPerLocationAside: FunctionComponent = () => {
   )
 }
 
-const RedProfileListExpandPane: FunctionComponent = (props) => {
+const RedProfileListExpandPane: FC = (props) => {
   return (
     <Show {...props} title="">
       <SimpleShowLayout>
@@ -338,7 +338,7 @@ const RedProfileListExpandPane: FunctionComponent = (props) => {
   )
 }
 
-const RedProfileListFilters: FunctionComponent = (props) => (
+const RedProfileListFilters: FC = (props) => (
   <Filter {...props}>
     <TextInput label="Search by name" source="q" />
     <SelectInput
@@ -388,7 +388,7 @@ function userTypeToEmoji({ userType }) {
   return emoji ?? userType
 }
 
-const RedProfileShow: FunctionComponent = (props) => (
+const RedProfileShow: FC = (props) => (
   <Show {...props}>
     <SimpleShowLayout>
       <TabbedShowLayout>
@@ -522,7 +522,7 @@ const RedProfileShow: FunctionComponent = (props) => (
   </Show>
 )
 
-const RedProfileEditActions: FunctionComponent = (props) => {
+const RedProfileEditActions: FC = (props) => {
   const userType = props && props.data && props.data.userType
   if (
     ![
@@ -541,7 +541,7 @@ const RedProfileEditActions: FunctionComponent = (props) => {
   )
 }
 
-const RedProfileEdit: FunctionComponent = (props) => (
+const RedProfileEdit: FC = (props) => (
   <Edit {...props} actions={<RedProfileEditActions />}>
     <TabbedForm>
       <FormTab label="Profile">
@@ -577,7 +577,7 @@ const RedProfileEdit: FunctionComponent = (props) => (
   </Edit>
 )
 
-const CategoriesInput: FunctionComponent = (props) => {
+const CategoriesInput: FC = (props) => {
   const categories = categoriesFlat
   return (
     <SelectArrayInput
@@ -589,7 +589,7 @@ const CategoriesInput: FunctionComponent = (props) => {
   )
 }
 
-const MenteeEnrolledInCourseField: FunctionComponent = (props) => {
+const MenteeEnrolledInCourseField: FC = (props) => {
   return (
     <Labeled label="Currently enrolled in course">
       <span>
@@ -598,7 +598,7 @@ const MenteeEnrolledInCourseField: FunctionComponent = (props) => {
     </Labeled>
   )
 }
-const MenteeEnrolledInCourseInput: FunctionComponent = (props) => {
+const MenteeEnrolledInCourseInput: FC = (props) => {
   const courses = coursesByLocation[props.record.rediLocation]
   return (
     <SelectInput
@@ -610,7 +610,7 @@ const MenteeEnrolledInCourseInput: FunctionComponent = (props) => {
   )
 }
 
-const FullName: FunctionComponent = ({ record, sourcePrefix }) => {
+const FullName: FC = ({ record, sourcePrefix }) => {
   return (
     <span>
       {get(record, `${sourcePrefix}firstName`)}{' '}
@@ -623,7 +623,7 @@ FullName.defaultProps = {
   label: 'Full name',
 }
 
-const RedMatchList: FunctionComponent = (props) => (
+const RedMatchList: FC = (props) => (
   <List
     {...props}
     sort={{ field: 'createdAt', order: 'DESC' }}
@@ -645,7 +645,7 @@ const RedMatchList: FunctionComponent = (props) => (
     </Datagrid>
   </List>
 )
-const RedMatchListFilters: FunctionComponent = (props) => (
+const RedMatchListFilters: FC = (props) => (
   <Filter {...props}>
     <SelectInput source="status" choices={formRedMatchStatuses} />
     <SelectInput
@@ -654,7 +654,7 @@ const RedMatchListFilters: FunctionComponent = (props) => (
     />
   </Filter>
 )
-const RedMatchShow: FunctionComponent = (props) => (
+const RedMatchShow: FC = (props) => (
   <Show {...props}>
     <SimpleShowLayout>
       <TextField source="status" />
@@ -719,7 +719,7 @@ const RedMatchShow: FunctionComponent = (props) => (
     </SimpleShowLayout>
   </Show>
 )
-const RedMatchShow_RelatedMentoringSessions: FunctionComponent = ({
+const RedMatchShow_RelatedMentoringSessions: FC = ({
   record: { mentorId, menteeId },
 }) => {
   const [mentoringSessions, setMentoringSessions] = React.useState([])
@@ -778,7 +778,7 @@ const RedMatchShow_RelatedMentoringSessions: FunctionComponent = ({
   )
 }
 
-const RedMatchCreate: FunctionComponent = (props) => (
+const RedMatchCreate: FC = (props) => (
   <Create {...props}>
     <SimpleForm>
       <SelectInput
@@ -825,7 +825,7 @@ const RedMatchCreate: FunctionComponent = (props) => (
   </Create>
 )
 
-const RedMatchEdit: FunctionComponent = (props) => (
+const RedMatchEdit: FC = (props) => (
   <Edit {...props}>
     <SimpleForm>
       <SelectInput source="status" choices={formRedMatchStatuses} />
@@ -935,7 +935,7 @@ const exporter = async (mentoringSessions, fetchRelatedRecords) => {
   downloadCSV(csv, 'yalla')
 }
 
-const RedMentoringSessionList: FunctionComponent = (props) => (
+const RedMentoringSessionList: FC = (props) => (
   <List
     {...props}
     exporter={exporter}
@@ -958,7 +958,7 @@ const RedMentoringSessionList: FunctionComponent = (props) => (
     </Datagrid>
   </List>
 )
-const RedMentoringSessionListFilters: FunctionComponent = (props) => (
+const RedMentoringSessionListFilters: FC = (props) => (
   <Filter {...props}>
     <SelectInput
       source="rediLocation"
@@ -966,7 +966,7 @@ const RedMentoringSessionListFilters: FunctionComponent = (props) => (
     />
   </Filter>
 )
-const RedMentoringSessionListAside: FunctionComponent = () => {
+const RedMentoringSessionListAside: FC = () => {
   const [fromDate, setFromDate] = React.useState(null)
   const [toDate, setToDate] = React.useState(null)
   const [rediLocation, setRediLocation] = React.useState(undefined)
@@ -1062,7 +1062,7 @@ const RedMentoringSessionListAside: FunctionComponent = () => {
     </div>
   )
 }
-const RedMentoringSessionShow: FunctionComponent = (props) => (
+const RedMentoringSessionShow: FC = (props) => (
   <Show {...props}>
     <SimpleShowLayout>
       <TextField source="status" />
@@ -1080,7 +1080,7 @@ const RedMentoringSessionShow: FunctionComponent = (props) => (
   </Show>
 )
 
-const RedMentoringSessionCreate: FunctionComponent = (props) => (
+const RedMentoringSessionCreate: FC = (props) => (
   <Create {...props}>
     <SimpleForm>
       <SelectInput
@@ -1120,7 +1120,7 @@ const RedMentoringSessionCreate: FunctionComponent = (props) => (
     </SimpleForm>
   </Create>
 )
-const RedMentoringSessionEdit: FunctionComponent = (props) => (
+const RedMentoringSessionEdit: FC = (props) => (
   <Edit {...props}>
     <SimpleForm>
       <ReferenceInput
@@ -1157,7 +1157,7 @@ const RedMentoringSessionEdit: FunctionComponent = (props) => (
   </Edit>
 )
 
-const TpJobseekerProfileList: FunctionComponent = (props) => {
+const TpJobseekerProfileList: FC = (props) => {
   return (
     <>
       <List
@@ -1209,7 +1209,7 @@ const TpJobseekerProfileList: FunctionComponent = (props) => {
   )
 }
 
-const TpJobseekerProfileListExpandPane: FunctionComponent = (props) => {
+const TpJobseekerProfileListExpandPane: FC = (props) => {
   return (
     <Show {...props} title="">
       <SimpleShowLayout>
@@ -1221,7 +1221,7 @@ const TpJobseekerProfileListExpandPane: FunctionComponent = (props) => {
   )
 }
 
-const TpJobseekerProfileListFilters: FunctionComponent = (props) => (
+const TpJobseekerProfileListFilters: FC = (props) => (
   <Filter {...props}>
     <TextInput label="Search by name" source="q" />
     <SelectInput
@@ -1294,7 +1294,7 @@ function tpJobseekerProfileListExporter(profiles, fetchRelatedRecords) {
   downloadCSV(csv, 'yalla')
 }
 
-const TpJobseekerProfileShow: FunctionComponent = (props) => (
+const TpJobseekerProfileShow: FC = (props) => (
   <Show {...props}>
     <SimpleShowLayout>
       <TabbedShowLayout>
@@ -1439,7 +1439,7 @@ const TpJobseekerProfileShow: FunctionComponent = (props) => (
   </Show>
 )
 
-const TpJobseekerProfileEdit: FunctionComponent = (props) => (
+const TpJobseekerProfileEdit: FC = (props) => (
   // <Edit {...props} actions={<TpJobseekerProfileEditActions />}>
   <Edit {...props} actions={<TpJobseekerProfileEditActions />}>
     <TabbedForm>
@@ -1580,7 +1580,7 @@ const TpJobseekerProfileEdit: FunctionComponent = (props) => (
   </Edit>
 )
 
-const TpJobseekerProfileEditActions: FunctionComponent = (props) => {
+const TpJobseekerProfileEditActions: FC = (props) => {
   if (props?.data?.state !== 'submitted-for-review') return null
 
   return (
@@ -1591,7 +1591,7 @@ const TpJobseekerProfileEditActions: FunctionComponent = (props) => {
   )
 }
 
-const TpCompanyProfileEditActions: FunctionComponent = (props) => {
+const TpCompanyProfileEditActions: FC = (props) => {
   if (props?.data?.state === 'profile-approved') return null
 
   return (
@@ -1602,7 +1602,7 @@ const TpCompanyProfileEditActions: FunctionComponent = (props) => {
   )
 }
 
-const TpCompanyProfileList: FunctionComponent = (props) => {
+const TpCompanyProfileList: FC = (props) => {
   return (
     <>
       <List
@@ -1642,7 +1642,7 @@ const TpCompanyProfileList: FunctionComponent = (props) => {
   )
 }
 
-const TpCompanyProfileListFilters: FunctionComponent = (props) => (
+const TpCompanyProfileListFilters: FC = (props) => (
   <Filter {...props}>
     <SearchInput label="Search by company name" source="q" />
     <SelectInput
@@ -1655,7 +1655,7 @@ const TpCompanyProfileListFilters: FunctionComponent = (props) => (
   </Filter>
 )
 
-const ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldShow: FunctionComponent = (
+const ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldShow: FC = (
   props
 ) => {
   return props.record?.howDidHearAboutRediKey === 'other' &&
@@ -1666,7 +1666,7 @@ const ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldShow: Function
   ) : null
 }
 
-const ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldEdit: FunctionComponent = (
+const ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldEdit: FC = (
   props
 ) => {
   return props.record?.howDidHearAboutRediKey === 'other' &&
@@ -1679,7 +1679,7 @@ const ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldEdit: Function
   ) : null
 }
 
-const TpCompanyProfileShow: FunctionComponent = (props) => (
+const TpCompanyProfileShow: FC = (props) => (
   <Show {...props}>
     <SimpleShowLayout>
       <TabbedShowLayout>
@@ -1757,7 +1757,7 @@ const TpCompanyProfileShow: FunctionComponent = (props) => (
   </Show>
 )
 
-const TpCompanyProfileEdit: FunctionComponent = (props) => (
+const TpCompanyProfileEdit: FC = (props) => (
   <Edit {...props} actions={<TpCompanyProfileEditActions />}>
     <TabbedForm>
       <FormTab label="Profile">
@@ -1827,7 +1827,7 @@ const TpCompanyProfileEdit: FunctionComponent = (props) => (
   </Edit>
 )
 
-const TpJobListingList: FunctionComponent = (props) => {
+const TpJobListingList: FC = (props) => {
   return (
     <List
       {...props}
@@ -1892,7 +1892,7 @@ function tpJobListingListExporter(jobListings, fetchRelatedRecords) {
   downloadCSV(csv, 'Are you ReDI? Yalla habibi')
 }
 
-const TpJobListingShow: FunctionComponent = (props) => (
+const TpJobListingShow: FC = (props) => (
   <Show {...props}>
     <SimpleShowLayout>
       <ReferenceField
@@ -1922,7 +1922,7 @@ const TpJobListingShow: FunctionComponent = (props) => (
   </Show>
 )
 
-const TpJobListingEdit: FunctionComponent = (props) => (
+const TpJobListingEdit: FC = (props) => (
   <Edit {...props}>
     <SimpleForm>
       <ReferenceField
@@ -1952,7 +1952,7 @@ const TpJobListingEdit: FunctionComponent = (props) => (
   </Edit>
 )
 
-const TpJobFair2021InterviewMatchList: FunctionComponent = (props) => {
+const TpJobFair2021InterviewMatchList: FC = (props) => {
   return (
     <List
       {...props}
@@ -2037,7 +2037,7 @@ function tpJobFair2021InterviewMatchListExporter(matches, fetchRelatedRecords) {
   downloadCSV(csv, 'Company-interviewee matches')
 }
 
-const TpJobFair2021InterviewMatchShow: FunctionComponent = (props) => (
+const TpJobFair2021InterviewMatchShow: FC = (props) => (
   <Show {...props}>
     <SimpleShowLayout>
       <ReferenceField
@@ -2065,7 +2065,7 @@ const TpJobFair2021InterviewMatchShow: FunctionComponent = (props) => (
   </Show>
 )
 
-const TpJobFair2021InterviewMatchCreate: FunctionComponent = (props) => (
+const TpJobFair2021InterviewMatchCreate: FC = (props) => (
   <Create {...props}>
     <SimpleForm>
       <ReferenceInput
@@ -2107,7 +2107,7 @@ const TpJobFair2021InterviewMatchCreate: FunctionComponent = (props) => (
   </Create>
 )
 
-const TpJobFair2021InterviewMatchEdit: FunctionComponent = (props) => (
+const TpJobFair2021InterviewMatchEdit: FC = (props) => (
   <Edit {...props}>
     <SimpleForm>
       <ReferenceInput

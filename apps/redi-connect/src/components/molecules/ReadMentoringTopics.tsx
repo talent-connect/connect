@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
 import {
@@ -15,7 +15,7 @@ interface ReadMentoringProps {
   caption?: boolean
 }
 
-export const ProfileTags: FunctionComponent<CardTagsProps> = ({ items, shortList }) => (
+export const ProfileTags: FC<CardTagsProps> = ({ items, shortList }) => (
   <CardTags
     items={items}
     shortList={shortList}
@@ -23,7 +23,7 @@ export const ProfileTags: FunctionComponent<CardTagsProps> = ({ items, shortList
   />
 )
 
-const ReadMentoringTopics: FunctionComponent<ReadMentoringProps> = ({
+const ReadMentoringTopics: FC<ReadMentoringProps> = ({
   profile: { categories },
   caption
 }) => {
