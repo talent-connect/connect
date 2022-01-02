@@ -192,23 +192,34 @@ export function JobseekerFormSectionEducation({
   }
 
   const validationSchema = Yup.object().shape({
-    education: Yup.array().of(Yup.object().shape({
-      institutionName: Yup.string().required('Nme of Institution is required!'),
-      certificationType: Yup.string(),
-      institutionCity: Yup.string(),
-      institutionCountry: Yup.string(),
-      title: Yup.string().required('Title is required!'),
-      description: Yup.string(),
-      startDateMonth: Yup.number(),
-      endDateMonth: Yup.number(),
-      startDateYear: Yup.number().required('Start date year is required!'),
-      current: Yup.boolean(),
-      endDateYear: Yup.number().when('current', {
-        is: false,
-        then: Yup.number().required('Provide an end date year or check the box!')
-      }),
-    }))
-  });
+    education: Yup.array().of(
+      Yup.object().shape({
+        institutionName: Yup.string().required(
+          'Nme of Institution is required!'
+        ),
+        certificationType: Yup.string().required(
+          'Please choose a certification type'
+        ),
+        institutionCity: Yup.string(),
+        institutionCountry: Yup.string(),
+        title: Yup.string().required('Title is required'),
+        description: Yup.string().min(10, 'Description is too short'),
+        startDateMonth: Yup.number().required('Start date month is required'),
+        startDateYear: Yup.number().required('Start date year is required'),
+        current: Yup.boolean(),
+        endDateYear: Yup.number().when('current', {
+          is: false,
+          then: Yup.number().required(
+            'Provide an end date year or check the box'
+          ),
+        }),
+        endDateMonth: Yup.number().when('current', {
+          is: false,
+          then: Yup.number().required('End date month is required'),
+        }),
+      })
+    ),
+  })
 
   const formik = useFormik({
     initialValues,

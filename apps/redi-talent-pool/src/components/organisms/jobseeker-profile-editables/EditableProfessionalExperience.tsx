@@ -97,7 +97,11 @@ export function EditableProfessionalExperience({
               </div>
               <Content style={{ marginTop: '-0.5rem' }}>
                 <p style={{ color: '#979797' }}>
-                  {getInstitutionAndLocationString(item?.company, item?.city, item?.country)}
+                  {getInstitutionAndLocationString(
+                    item?.company,
+                    item?.city,
+                    item?.country
+                  )}
                 </p>
                 {item.description ? (
                   <ReactMarkdown
@@ -189,22 +193,26 @@ export function JobseekerFormSectionProfessionalExperience({
   }
 
   const validationSchema = Yup.object().shape({
-    experience: Yup.array().of(Yup.object().shape({
-      company: Yup.string().required('Company name is required!'),
-      city: Yup.string(),
-      country: Yup.string(),
-      title: Yup.string().required('Please provide a job title!'),
-      description: Yup.string(),
-      startDateMonth: Yup.number(),
-      endDateMonth: Yup.number(),
-      startDateYear: Yup.number().required('Start date year is required!'),
-      current: Yup.boolean(),
-      endDateYear: Yup.number().when('current', {
-        is: false,
-        then: Yup.number().required('Provide an end date year or check the box!')
-      }),
-    }))
-  });
+    experience: Yup.array().of(
+      Yup.object().shape({
+        company: Yup.string().required('Company name is required!'),
+        city: Yup.string(),
+        country: Yup.string(),
+        title: Yup.string().required('Please provide a job title!'),
+        description: Yup.string(), // min 10 chars, "Please provide at least one sentence about the experience!""
+        startDateMonth: Yup.number(), // add
+        endDateMonth: Yup.number(), // add
+        startDateYear: Yup.number().required('Start date year is required!'),
+        current: Yup.boolean(),
+        endDateYear: Yup.number().when('current', {
+          is: false,
+          then: Yup.number().required(
+            'Provide an end date year or check the box!'
+          ),
+        }),
+      })
+    ),
+  })
 
   const formik = useFormik({
     initialValues,
