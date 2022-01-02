@@ -199,9 +199,15 @@ export function JobseekerFormSectionProfessionalExperience({
         city: Yup.string(),
         country: Yup.string(),
         title: Yup.string().required('Please provide a job title!'),
-        description: Yup.string(), // min 10 chars, "Please provide at least one sentence about the experience!""
-        startDateMonth: Yup.number(), // add
-        endDateMonth: Yup.number(), // add
+        description: Yup.string().min(
+          10,
+          'Please provide at least one sentence about the experience'
+        ),
+        startDateMonth: Yup.number().required('Start date month is required'),
+        endDateMonth: Yup.number().when('current', {
+          is: false,
+          then: Yup.number().required('End date month is required'),
+        }),
         startDateYear: Yup.number().required('Start date year is required!'),
         current: Yup.boolean(),
         endDateYear: Yup.number().when('current', {
