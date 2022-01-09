@@ -27,7 +27,7 @@ import { Subject } from 'rxjs'
 import { v4 as uuidv4 } from 'uuid'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
-import { getInstitutionAndLocationString } from './helpers/get-institution-and-location'
+import { Location } from '../../molecules/Location'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
@@ -96,13 +96,11 @@ export function EditableProfessionalExperience({
                 </span>
               </div>
               <Content style={{ marginTop: '-0.5rem' }}>
-                <p style={{ color: '#979797' }}>
-                  {getInstitutionAndLocationString(
-                    item?.company,
-                    item?.city,
-                    item?.country
-                  )}
-                </p>
+                <Location
+                  institution={item?.company}
+                  city={item?.city}
+                  country={item?.country}
+                />
                 {item.description ? (
                   <ReactMarkdown
                     components={{

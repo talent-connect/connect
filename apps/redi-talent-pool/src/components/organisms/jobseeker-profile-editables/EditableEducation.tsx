@@ -31,8 +31,8 @@ import { Subject } from 'rxjs'
 import { v4 as uuidv4 } from 'uuid'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
-import { getInstitutionAndLocationString } from './helpers/get-institution-and-location'
 import { Editable } from '../../molecules/Editable'
+import { Location } from '../../molecules/Location'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
 function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
@@ -99,13 +99,11 @@ export function EditableEducation({
                 </span>
               </div>
               <Content style={{ marginTop: '-0.5rem' }}>
-                <p style={{ color: '#979797' }}>
-                  {getInstitutionAndLocationString(
-                    item?.institutionName,
-                    item?.institutionCity,
-                    item?.institutionCountry
-                  )}
-                </p>
+                <Location
+                  institution={item?.institutionName}
+                  city={item?.institutionCity}
+                  country={item?.institutionCountry}
+                />
                 <ReactMarkdown
                   components={{
                     p: ({ children }) => (
