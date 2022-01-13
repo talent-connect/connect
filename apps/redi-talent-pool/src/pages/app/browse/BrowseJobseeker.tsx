@@ -45,13 +45,7 @@ export function BrowseJobseeker() {
     }))
   }
 
-  if (
-    ![
-      'profile-approved-awaiting-job-preferences',
-      'job-preferences-shared-with-redi-awaiting-interview-match',
-    ].includes(currentJobseekerProfile?.state)
-  )
-    return null
+  if (currentJobseekerProfile?.state !== 'profile-approved') return null
 
   return (
     <LoggedIn>

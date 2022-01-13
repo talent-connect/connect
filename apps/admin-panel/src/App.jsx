@@ -1191,19 +1191,7 @@ const TpJobseekerProfileList = (props) => {
           buttons to Approve/Decline their profile.
         </li>
         <li style={{ marginBottom: '12px' }}>
-          <strong>profile-approved-awaiting-job-preferences</strong>: the
-          jobseeker's profile was approved, and we're now waiting for them to
-          provide their job preferences/priorities
-        </li>
-        <li style={{ marginBottom: '12px' }}>
-          <strong>
-            job-preferences-shared-with-redi-awaiting-interview-match
-          </strong>
-          : the jobseeker has provided their job preferences, and are now
-          waiting to be matched against companies/jobs for interview(s)
-        </li>
-        <li style={{ marginBottom: '12px' }}>
-          <strong>matched-for-interview</strong>: matched for interview
+          <strong>profile-approved</strong>: the jobseeker's profile is approved
         </li>
       </ol>
     </>
