@@ -1,5 +1,9 @@
 import { Tooltip } from '@material-ui/core'
-import { Button, Icon } from '@talent-connect/shared-atomic-design-components'
+import {
+  Button,
+  Icon,
+  Checkbox,
+} from '@talent-connect/shared-atomic-design-components'
 import {
   TpJobseekerProfile,
   TpJobseekerProfileState,
@@ -30,9 +34,18 @@ import { ReactComponent as StepPendingImage } from './pending.svg'
 
 export function MeJobseeker() {
   const { data: profile } = useTpJobseekerProfileQuery()
+  const mutation = useTpjobseekerprofileUpdateMutation()
+
   const currentStep = determineCurrentStep(profile)
 
   const openJobPreferencesModalSignalRef = useRef(new Subject<void>())
+
+  // This function is added for Job Fair 2022 only. Please remove after 11.02.2022
+  const handleJobFairToggleChange = () =>
+    mutation.mutate({
+      ...profile,
+      isJobFair2022Participant: !profile.isJobFair2022Participant,
+    })
 
   return (
     <LoggedIn>
@@ -69,6 +82,14 @@ export function MeJobseeker() {
             <div style={{ textAlign: 'right', marginBottom: '1.5rem' }}>
               <CallToActionButton profile={profile} />
             </div>
+            {/* This Checkbox is added only for JobFair 2022. Please remove after 11.02.2022 */}
+            <Checkbox.Form
+              name="isJobFair2022Participant"
+              checked={profile.isJobFair2022Participant}
+              handleChange={handleJobFairToggleChange}
+            >
+              I participate ReDI Job Fair 2022
+            </Checkbox.Form>
             <OnboardingSteps />
           </div>
           {/* <EditableVisibility /> */}
