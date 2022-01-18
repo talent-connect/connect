@@ -250,7 +250,8 @@ function ModalForm({
           handleChange={formik.handleChange}
           {...formik}
         >
-          Advertised at ReDI Job Fair 2022
+          We will recruit for this job listing at the ReDI Job Fair on 11
+          February 2022
         </Checkbox.Form>
 
         <FormInput
