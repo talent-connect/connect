@@ -19,7 +19,7 @@ import {
   useQueryParams,
   withDefault,
 } from 'use-query-params'
-import { JobseekerProfileCard } from '../../../components/organisms/JobSeekerProfileCard'
+import { JobseekerProfileCard } from '../../../components/organisms/JobseekerProfileCard'
 import { LoggedIn } from '../../../components/templates'
 import { useBrowseTpJobseekerProfilesQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 
