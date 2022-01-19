@@ -72,6 +72,13 @@ export function MeJobseeker() {
             <OnboardingSteps />
           </div>
           <EditableNamePhotoLocation profile={profile} />
+          <Checkbox.Form
+            name="isJobFair2022Participant"
+            checked={profile.isJobFair2022Participant}
+            handleChange={handleJobFairToggleChange}
+          >
+            I will participate in the ReDI Job Fair on 11 February 2022
+          </Checkbox.Form>
           <EditableOverview profile={profile} />
           <EditableSummary profile={profile} />
           <EditableProfessionalExperience profile={profile} />
@@ -83,13 +90,6 @@ export function MeJobseeker() {
               <CallToActionButton profile={profile} />
             </div>
             {/* This Checkbox is added only for JobFair 2022. Please remove after 11.02.2022 */}
-            <Checkbox.Form
-              name="isJobFair2022Participant"
-              checked={profile.isJobFair2022Participant}
-              handleChange={handleJobFairToggleChange}
-            >
-              I participate ReDI Job Fair 2022
-            </Checkbox.Form>
             <OnboardingSteps />
           </div>
           {/* <EditableVisibility /> */}
