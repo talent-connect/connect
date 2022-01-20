@@ -107,10 +107,10 @@ export function BrowseJobseeker() {
           />
         </div>
       </div>
-      <div>
+      <div className="filters">
         <Checkbox
-          name="isJobFair2022Participant"
-          checked={isJobFair2022JobListing}
+          name="isJobFair2022JobListing"
+          checked={isJobFair2022JobListing || false}
           handleChange={toggleJobFair2022Filter}
         >
           Filter by ReDI Job Fair 2022

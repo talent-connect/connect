@@ -72,6 +72,7 @@ export function MeJobseeker() {
             <OnboardingSteps />
           </div>
           <EditableNamePhotoLocation profile={profile} />
+          {/* This Checkbox is added only for JobFair 2022. Please remove after 11.02.2022 */}
           <Checkbox.Form
             name="isJobFair2022Participant"
             checked={profile.isJobFair2022Participant}
@@ -89,7 +90,6 @@ export function MeJobseeker() {
             <div style={{ textAlign: 'right', marginBottom: '1.5rem' }}>
               <CallToActionButton profile={profile} />
             </div>
-            {/* This Checkbox is added only for JobFair 2022. Please remove after 11.02.2022 */}
             <OnboardingSteps />
           </div>
           {/* <EditableVisibility /> */}
