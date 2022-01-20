@@ -256,20 +256,27 @@ export async function updateCurrentUserTpCompanyProfile(
 export interface TpJobListingFilters {
   idealTechnicalSkills: string[]
   employmentType: string[]
+  isJobFair2022JobListing: boolean
 }
 
 export async function fetchAllTpJobListingsUsingFilters({
   idealTechnicalSkills,
   employmentType,
+  isJobFair2022JobListing,
 }: TpJobListingFilters): Promise<Array<Partial<TpJobseekerProfile>>> {
   const filterIdealTechnicalSkills =
     idealTechnicalSkills && idealTechnicalSkills.length !== 0
       ? { inq: idealTechnicalSkills }
       : undefined
+
   const filterDesiredEmploymentTypeOptions =
     employmentType && employmentType.length !== 0
       ? { inq: employmentType }
       : undefined
+
+  const filterJobFair2022JobListings = isJobFair2022JobListing
+    ? { isJobFair2022JobListing: true }
+    : undefined
 
   return http(
     `${API_URL}/tpJobListings?filter=${JSON.stringify({
@@ -282,6 +289,7 @@ export async function fetchAllTpJobListingsUsingFilters({
           {
             idealTechnicalSkills: filterIdealTechnicalSkills,
             employmentType: filterDesiredEmploymentTypeOptions,
+            ...filterJobFair2022JobListings,
           },
         ],
       },

@@ -1,6 +1,7 @@
 import {
   FilterDropdown,
   Icon,
+  Checkbox,
 } from '@talent-connect/shared-atomic-design-components'
 import {
   employmentTypes,
@@ -8,10 +9,14 @@ import {
   topSkills,
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
-import React from 'react'
 import { Columns, Element, Tag } from 'react-bulma-components'
 import { useHistory } from 'react-router-dom'
-import { ArrayParam, useQueryParams, withDefault } from 'use-query-params'
+import {
+  ArrayParam,
+  BooleanParam,
+  useQueryParams,
+  withDefault,
+} from 'use-query-params'
 import { JobListingCard } from '../../../components/organisms/JobListingCard'
 import { LoggedIn } from '../../../components/templates'
 import { useBrowseTpJobListingsQuery } from '../../../react-query/use-tpjoblisting-all-query'
@@ -23,13 +28,16 @@ export function BrowseJobseeker() {
   const [query, setQuery] = useQueryParams({
     idealTechnicalSkills: withDefault(ArrayParam, []),
     employmentType: withDefault(ArrayParam, []),
+    isJobFair2022JobListing: withDefault(BooleanParam, undefined),
   })
-  const { idealTechnicalSkills, employmentType } = query
+  const { idealTechnicalSkills, employmentType, isJobFair2022JobListing } =
+    query
 
   const history = useHistory()
   const { data: jobListings } = useBrowseTpJobListingsQuery({
     idealTechnicalSkills,
     employmentType,
+    isJobFair2022JobListing,
   })
 
   const toggleFilters = (filtersArr, filterName, item) => {
@@ -37,11 +45,19 @@ export function BrowseJobseeker() {
     setQuery((latestQuery) => ({ ...latestQuery, [filterName]: newFilters }))
   }
 
+  const toggleJobFair2022Filter = () =>
+    setQuery((latestQuery) => ({
+      ...latestQuery,
+      isJobFair2022JobListing:
+        isJobFair2022JobListing === undefined ? true : undefined,
+    }))
+
   const clearFilters = () => {
     setQuery((latestQuery) => ({
       ...latestQuery,
       idealTechnicalSkills: [],
       employmentType: [],
+      isJobFair2022JobListing: undefined,
     }))
   }
 
@@ -91,8 +107,19 @@ export function BrowseJobseeker() {
           />
         </div>
       </div>
+      <div className="filters">
+        <Checkbox
+          name="isJobFair2022JobListing"
+          checked={isJobFair2022JobListing || false}
+          handleChange={toggleJobFair2022Filter}
+        >
+          Filter by ReDI Job Fair 2022
+        </Checkbox>
+      </div>
       <div className="active-filters">
-        {(idealTechnicalSkills.length !== 0 || employmentType.length !== 0) && (
+        {(idealTechnicalSkills.length !== 0 ||
+          employmentType.length !== 0 ||
+          isJobFair2022JobListing) && (
           <>
             {(idealTechnicalSkills as string[]).map((catId) => (
               <FilterTag
@@ -118,6 +145,13 @@ export function BrowseJobseeker() {
                 }
               />
             ))}
+            {isJobFair2022JobListing && (
+              <FilterTag
+                id="redi-job-fair-2022-filter"
+                label="ReDI Job Fair 2022"
+                onClickHandler={toggleJobFair2022Filter}
+              />
+            )}
             <span className="active-filters__clear-all" onClick={clearFilters}>
               Delete all filters
               <Icon icon="cancel" size="small" space="left" />
