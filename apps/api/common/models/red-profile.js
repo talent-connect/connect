@@ -12,6 +12,7 @@ const {
   sendMenteePendingReviewAcceptedEmail,
   sendPendingReviewDeclinedEmail,
   sendVerificationEmail,
+  sendEmailToUserWithTpJobseekerProfileSigningUpToCon,
 } = require('../../lib/email/email')
 
 const addFullNamePropertyForAdminSearch = (ctx) => {
@@ -364,6 +365,20 @@ module.exports = function (RedProfile) {
     redUserInst.updateAttribute('rediLocation', redProfile.rediLocation)
 
     if (!context.isNewInstance) return next()
+
+    // Special case: a new RedProfile is created (by code in red-user.js) if a user already exists
+    // (RedUser) but they have an existing Tp Jobsekeer user (TpJobseekerProfile). If so, we don't
+    // proceed with the below verification email, but shoot off a special email to the user.
+    if (
+      redProfile.signupSource ===
+      'existing-user-with-tp-profile-logging-into-con'
+    ) {
+      sendEmailToUserWithTpJobseekerProfileSigningUpToCon({
+        recipient: redUser.email,
+        firstName: redProfile.firstName,
+      }).subscribe()
+      return next()
+    }
 
     var verifyOptions = {
       type: 'email',

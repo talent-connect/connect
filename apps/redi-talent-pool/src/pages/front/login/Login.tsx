@@ -71,6 +71,10 @@ export default function Login() {
           <Content size="large" renderAs="p">
             Enter your email and password below.
           </Content>
+          <Content size="small" renderAs="p">
+            Got a ReDI Talent Pool user account? You can use the same username
+            and password here.
+          </Content>
 
           <form onSubmit={(e) => e.preventDefault()}>
             <FormInput

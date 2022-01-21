@@ -281,6 +281,23 @@ const sendMentorRequestAppointmentEmail = ({
   })
 }
 
+const sendEmailToUserWithTpJobseekerProfileSigningUpToCon = ({
+  recipient,
+  firstName,
+}) => {
+  console.log(recipient, firstName)
+  const emailParsed = convertTemplateToHtml(
+    null,
+    `schedule-onboarding-call-for-tp-jobseeker-signed-up-as-mentee`
+  )
+  const html = emailParsed.replace(/\${firstName}/g, firstName)
+  return sendMjmlEmailFactory({
+    to: recipient,
+    subject: 'Welcome to ReDI Connect!',
+    html: html,
+  })
+}
+
 const sendVerificationEmail = ({
   recipient,
   redUserId,
@@ -569,6 +586,7 @@ module.exports = {
   sendMenteeRequestAppointmentEmail,
   sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted,
   sendResetPasswordEmail,
+  sendEmailToUserWithTpJobseekerProfileSigningUpToCon,
   sendVerificationEmail,
   sendEmailFactory,
   sendMjmlEmailFactory,
