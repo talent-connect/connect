@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react'
 import { get, mapValues, keyBy, groupBy } from 'lodash'
-import moment from 'moment'
 import {
   Admin,
-  ChipField,
   Resource,
   List,
   Tab,
@@ -16,7 +14,6 @@ import {
   TabbedShowLayout,
   TextField,
   ReferenceInput,
-  SingleFieldList,
   AutocompleteInput,
   DateField,
   TextInput,
@@ -42,7 +39,7 @@ import {
   ReferenceField,
   Labeled,
   ReferenceManyField,
-  required,
+  SearchInput,
 } from 'react-admin'
 import classNames from 'classnames'
 import { unparse as convertToCSV } from 'papaparse/papaparse.min'
@@ -69,18 +66,19 @@ import {
 } from '@material-ui/pickers'
 
 import {
-  rediLocationNames,
-  Languages as configLanguages,
-  categoryGroups,
-  categories,
-  courses,
-  genders as configGenders,
-  mentoringSessionDurationOptions,
-  categoriesIdToLabelMap,
-  formRedMatchStatuses,
+  REDI_LOCATION_NAMES,
+  LANGUAGES,
+  CATEGORY_GROUPS,
+  CATEGORIES,
+  COURSES,
+  GENDERS,
+  MENTORING_SESSION_DURATION_OPTIONS,
+  RED_MATCH_STATUSES,
 } from '@talent-connect/shared-config'
 
 import { calculateAge } from '@talent-connect/shared-utils'
+
+import { howDidHearAboutRediOptions } from '@talent-connect/talent-pool/config'
 
 import loopbackClient, { authProvider } from './lib/react-admin-loopback/src'
 import { ApproveButton } from './components/ApproveButton'
@@ -90,22 +88,29 @@ import { TpJobseekerProfileDeclineButton } from './components/TpJobseekerProfile
 import { TpCompanyProfileApproveButton } from './components/TpCompanyProfileApproveButton'
 
 import { API_URL } from './config'
-import { TpJobseekerProfileState } from '@talent-connect/shared-types'
+import {
+  TpJobseekerProfileState,
+  TpCompanyProfileState,
+} from '@talent-connect/shared-types'
+
+import { objectEntries } from '@talent-connect/typescript-utilities'
+
+import { redMatchesCsvExporter } from './utils/csvExport'
 
 /** REFERENCE DATA */
 
-const rediLocations = Object.entries(rediLocationNames).map(([id, label]) => ({
+const rediLocations = objectEntries(REDI_LOCATION_NAMES).map(([id, label]) => ({
   id,
   label,
 }))
 
-const categoriesFlat = categories.map((cat) => ({
+const categoriesFlat = CATEGORIES.map((cat) => ({
   ...cat,
   labelClean: cat.label,
   label: `${cat.label} (${cat.group})`,
 }))
 
-const coursesByLocation = groupBy(courses, 'location')
+const coursesByLocation = groupBy(COURSES, 'location')
 const coursesFlat = [
   ...coursesByLocation.berlin.map((cat) =>
     Object.assign(cat, { label: `Berlin: ${cat.label}` })
@@ -118,20 +123,26 @@ const coursesFlat = [
   ),
 ]
 
-const categoryGroupsToLabelMap = mapValues(keyBy(categoryGroups, 'id'), 'label')
 const categoriesIdToLabelCleanMap = mapValues(
   keyBy(categoriesFlat, 'id'),
   'labelClean'
 )
 const categoriesIdToGroupMap = mapValues(keyBy(categoriesFlat, 'id'), 'group')
 
-const genders = [...configGenders, { id: '', name: 'Prefers not to answer' }]
+const genders = [
+  ...Object.entries(GENDERS).map((key, value) => ({ id: key, name: value })),
+  { id: '', name: 'Prefers not to answer' },
+]
 
-const languages = configLanguages.map((lang) => ({ id: lang, name: lang }))
+const languages = LANGUAGES.map((lang) => ({ id: lang, name: lang }))
 
 const courseIdToLabelMap = mapValues(keyBy(coursesFlat, 'id'), 'label')
 const AWS_PROFILE_AVATARS_BUCKET_BASE_URL =
   'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/'
+
+export const formRedMatchStatuses = Object.entries(RED_MATCH_STATUSES).map(
+  ([key, value]) => ({ id: key, name: value })
+)
 
 /** START OF SHARED STUFF */
 
@@ -161,7 +172,7 @@ const CategoryList = (props) => {
       {Object.keys(categoriesGrouped).map((groupId, index) => (
         <React.Fragment key={index}>
           <span>
-            <strong>{categoryGroupsToLabelMap[groupId]}:</strong>{' '}
+            <strong>{CATEGORY_GROUPS[groupId]}:</strong>{' '}
             {categoriesGrouped[groupId]
               .map((catId) => categoriesIdToLabelCleanMap[catId])
               .join(', ')}
@@ -620,6 +631,7 @@ const RedMatchList = (props) => (
     sort={{ field: 'createdAt', order: 'DESC' }}
     pagination={<AllModelsPagination />}
     filters={<RedMatchListFilters />}
+    exporter={redMatchesCsvExporter}
   >
     <Datagrid>
       <TextField source="rediLocation" label="City" />
@@ -962,7 +974,7 @@ const RedMentoringSessionListAside = () => {
   const [loadState, setLoadState] = React.useState('pending')
   const [result, setResult] = React.useState(null)
   const [step, setStep] = React.useState(0)
-  const increaseStep = React.useCallback(() => setStep((step) => step + 1))
+  const increaseStep = () => setStep((step) => step + 1)
 
   const picker = (getter, setter, label) => (
     <KeyboardDatePicker
@@ -1101,7 +1113,7 @@ const RedMentoringSessionCreate = (props) => (
       <DateInput label="Date of mentoring session" source="date" />
       <SelectInput
         source="minuteDuration"
-        choices={mentoringSessionDurationOptions.map((duration) => ({
+        choices={MENTORING_SESSION_DURATION_OPTIONS.map((duration) => ({
           id: duration,
           name: duration,
         }))}
@@ -1137,7 +1149,7 @@ const RedMentoringSessionEdit = (props) => (
       <DateInput label="Date of mentoring session" source="date" />
       <SelectInput
         source="minuteDuration"
-        choices={mentoringSessionDurationOptions.map((duration) => ({
+        choices={MENTORING_SESSION_DURATION_OPTIONS.map((duration) => ({
           id: duration,
           name: duration,
         }))}
@@ -1179,19 +1191,7 @@ const TpJobseekerProfileList = (props) => {
           buttons to Approve/Decline their profile.
         </li>
         <li style={{ marginBottom: '12px' }}>
-          <strong>profile-approved-awaiting-job-preferences</strong>: the
-          jobseeker's profile was approved, and we're now waiting for them to
-          provide their job preferences/priorities
-        </li>
-        <li style={{ marginBottom: '12px' }}>
-          <strong>
-            job-preferences-shared-with-redi-awaiting-interview-match
-          </strong>
-          : the jobseeker has provided their job preferences, and are now
-          waiting to be matched against companies/jobs for interview(s)
-        </li>
-        <li style={{ marginBottom: '12px' }}>
-          <strong>matched-for-interview</strong>: matched for interview
+          <strong>profile-approved</strong>: the jobseeker's profile is approved
         </li>
       </ol>
     </>
@@ -1333,6 +1333,8 @@ const TpJobseekerProfileShow = (props) => (
             <Datagrid>
               <TextField source="title" />
               <TextField source="company" />
+              <TextField source="city" />
+              <TextField source="country" />
               <TextField
                 source="description"
                 label="Roles & responsibilities"
@@ -1362,6 +1364,8 @@ const TpJobseekerProfileShow = (props) => (
             <Datagrid>
               <TextField source="title" />
               <TextField source="institutionName" />
+              <TextField source="institutionCity" />
+              <TextField source="institutionCountry" />
               <TextField source="certificationType" />
               <TextField source="description" label="Description" />
               <FunctionField
@@ -1584,11 +1588,11 @@ const TpJobseekerProfileEditActions = (props) => {
 }
 
 const TpCompanyProfileEditActions = (props) => {
-  if (props?.data?.state !== 'submitted-for-review') return null
+  if (props?.data?.state === 'profile-approved') return null
 
   return (
-    <CardActions>
-      Company profile is pending. Please{' '}
+    <CardActions style={{ display: 'flex', alignItems: 'center' }}>
+      Company profile needs to be approved before becoming active. Please{' '}
       <TpCompanyProfileApproveButton {...props} />
     </CardActions>
   )
@@ -1597,7 +1601,11 @@ const TpCompanyProfileEditActions = (props) => {
 const TpCompanyProfileList = (props) => {
   return (
     <>
-      <List {...props} pagination={<AllModelsPagination />}>
+      <List
+        {...props}
+        pagination={<AllModelsPagination />}
+        filters={<TpCompanyProfileListFilters />}
+      >
         <Datagrid>
           <TextField source="companyName" />
           <TextField source="firstName" />
@@ -1630,6 +1638,43 @@ const TpCompanyProfileList = (props) => {
   )
 }
 
+const TpCompanyProfileListFilters = (props) => (
+  <Filter {...props}>
+    <SearchInput label="Search by company name" source="q" />
+    <SelectInput
+      source="state"
+      choices={Object.values(TpCompanyProfileState).map((val) => ({
+        id: val,
+        name: val,
+      }))}
+    />
+  </Filter>
+)
+
+const ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldShow = (
+  props
+) => {
+  return props.record?.howDidHearAboutRediKey === 'other' &&
+    props.record?.howDidHearAboutRediOtherText ? (
+    <Labeled label="How They Heard about ReDI Talent Pool (If selected Other)">
+      <TextField source="howDidHearAboutRediOtherText" {...props} />
+    </Labeled>
+  ) : null
+}
+
+const ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldEdit = (
+  props
+) => {
+  return props.record?.howDidHearAboutRediKey === 'other' &&
+    props.record?.howDidHearAboutRediOtherText ? (
+    <TextInput
+      label="How They Heard about ReDI Talent Pool (If selected Other)"
+      source="howDidHearAboutRediOtherText"
+      {...props}
+    />
+  ) : null
+}
+
 const TpCompanyProfileShow = (props) => (
   <Show {...props}>
     <SimpleShowLayout>
@@ -1647,7 +1692,13 @@ const TpCompanyProfileShow = (props) => (
           <TextField source="linkedInUrl" />
           <TextField source="phoneNumber" />
           <TextField source="about" />
-
+          <FunctionField
+            label="How They Heard about ReDI Talent Pool"
+            render={(record) =>
+              howDidHearAboutRediOptions[record.howDidHearAboutRediKey]
+            }
+          />
+          <ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldShow />
           <ReferenceManyField
             label="Job Listings"
             reference="tpJobListings"
@@ -1718,6 +1769,14 @@ const TpCompanyProfileEdit = (props) => (
         <TextInput source="linkedInUrl" />
         <TextInput source="phoneNumber" />
         <TextInput source="about" />
+        <SelectInput
+          label="How They Heard about ReDI Talent Pool"
+          source="howDidHearAboutRediKey"
+          choices={Object.entries(howDidHearAboutRediOptions).map(
+            ([id, name]) => ({ id, name })
+          )}
+        />
+        <ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldEdit />
 
         <ReferenceManyField
           label="Job Listings"
@@ -2111,6 +2170,24 @@ const buildDataProvider = (normalDataProvider) => (verb, resource, params) => {
       if (q) {
         const andConditions = q.split(' ').map((word) => ({
           loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName: {
+            like: word,
+            options: 'i',
+          },
+        }))
+        newFilter.and = [...newFilter.and, ...andConditions]
+      }
+      params.filter = newFilter
+    }
+  }
+  if (verb === 'GET_LIST' && resource === 'tpCompanyProfiles') {
+    if (params.filter) {
+      const filter = params.filter
+      const q = filter.q
+      delete filter.q
+      const newFilter = { and: [filter] }
+      if (q) {
+        const andConditions = q.split(' ').map((word) => ({
+          companyName: {
             like: word,
             options: 'i',
           },

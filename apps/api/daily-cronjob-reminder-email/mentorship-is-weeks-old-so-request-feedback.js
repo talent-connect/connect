@@ -28,6 +28,7 @@ module.exports = {
     }).pipe(
       switchMap((redMatches) => from(redMatches)),
       map((redMatch) => redMatch.toJSON()),
+      filterForActiveMentors(),
       filterForExistingMentorOrMentee(),
       filterOnlyXDayOldMatches(6 * 7),
       isDryRun === false
@@ -47,6 +48,10 @@ module.exports = {
 
 const redMatchFind = (q) =>
   bindNodeCallback(app.models.RedMatch.find.bind(app.models.RedMatch))(q)
+
+function filterForActiveMentors() {
+  return filter((redMatch) => redMatch.mentor && redMatch.mentor.userActivated)
+}
 
 function filterOnlyXDayOldMatches(days) {
   return filter((match) => {

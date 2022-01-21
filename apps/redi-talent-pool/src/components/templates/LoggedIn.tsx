@@ -38,10 +38,7 @@ const LoggedIn = ({ children, hideNavigation }: Props) => {
                   isActive={location.pathname === '/app/me'}
                 />
                 {companyProfile?.state === 'profile-approved' ||
-                jobseekerProfile?.state ===
-                  'profile-approved-awaiting-job-preferences' ||
-                jobseekerProfile?.state ===
-                  'job-preferences-shared-with-redi-awaiting-interview-match' ? (
+                jobseekerProfile?.state === 'profile-approved' ? (
                   <TpMainNavItem
                     page="browse-page"
                     pageName="Browse"

@@ -20,8 +20,9 @@ function MentorshipList({ matches }: Props) {
   const subHeading =
     matches.length === 0 ? (
       <>
-        Currently you have no mentees. We will send you email when students
-        apply for the mentorship.
+        You currently have no active mentorship. Once a mentee applies to you,
+        we will inform you via email and you will see their application in the
+        ‘Applications’ section.
       </>
     ) : (
       <>

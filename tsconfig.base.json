@@ -26,6 +26,9 @@
       ],
       "@talent-connect/talent-pool/types": [
         "libs/talent-pool/types/src/index.ts"
+      ],
+      "@talent-connect/typescript-utilities": [
+        "libs/typescript-utilities/src/index.ts"
       ]
     }
   },

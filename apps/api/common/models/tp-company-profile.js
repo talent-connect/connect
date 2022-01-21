@@ -9,6 +9,7 @@ const app = require('../../server/server')
 const {
   sendTpCompanyVerificationEmail,
   sendTpCompanyProfileApprovedEmail,
+  sendTpCompanyProfileSubmittedForReviewEmail,
 } = require('../../lib/email/tp-email')
 
 const addFullNamePropertyForAdminSearch = (ctx) => {
@@ -42,6 +43,20 @@ module.exports = function (TpCompanyProfile) {
     }
     next()
   })
+
+  TpCompanyProfile.observe(
+    'before save',
+    function sendSubmittedForReviewEmail(ctx, next) {
+      if (ctx.currentInstance?.state === 'drafting-profile') {
+        if (ctx.data?.state === 'submitted-for-review') {
+          sendTpCompanyProfileSubmittedForReviewEmail({
+            companyName: ctx.currentInstance.companyName,
+          }).subscribe()
+        }
+      }
+      next()
+    }
+  )
 
   TpCompanyProfile.observe('loaded', function getLastLoginDateTime(ctx, next) {
     if (ctx.isNewInstance) {
@@ -118,6 +133,7 @@ module.exports = function (TpCompanyProfile) {
     const companyRole = await app.models.Role.findOne({
       where: { name: 'company' },
     })
+
     await companyRole.principals.create({
       principalType: app.models.RoleMapping.USER,
       principalId: redUser.id,
@@ -162,16 +178,6 @@ module.exports = function (TpCompanyProfile) {
           )(tpCompanyProfileId)
         )
 
-        const validateCurrentState = switchMap((tpCompanyProfileInst) => {
-          const state = tpCompanyProfileInst.toJSON().state
-          if (state === 'submitted-for-review') {
-            return of(tpCompanyProfileInst)
-          } else {
-            throw new Error(
-              'Invalid current state (is not "submitted-for-review")'
-            )
-          }
-        })
         const setNewTpCompanyProfileProperties = switchMap(
           (tpCompanyProfileInst) =>
             loopbackModelMethodToObservable(
@@ -204,7 +210,6 @@ module.exports = function (TpCompanyProfile) {
         Rx.of({ tpCompanyProfileId })
           .pipe(
             findTpCompanyProfile,
-            validateCurrentState,
             setNewTpCompanyProfileProperties,
             createRoleMapping,
             sendEmailUserReviewedAccepted

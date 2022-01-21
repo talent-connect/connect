@@ -25,7 +25,7 @@ export const signUpJobseeker = async (
   password: string,
   tpJobseekerProfile: Partial<TpJobseekerProfile>
 ) => {
-  console.log('sign up')
+  email = email.toLowerCase()
   const userResponse = await http(`${API_URL}/redUsers`, {
     method: 'post',
     data: { email, password },
@@ -51,7 +51,7 @@ export const signUpCompany = async (
   password: string,
   tpCompanyProfile: Partial<TpCompanyProfile>
 ) => {
-  console.log('sign up')
+  email = email.toLowerCase()
   const userResponse = await http(`${API_URL}/redUsers`, {
     method: 'post',
     data: { email, password },
@@ -76,6 +76,7 @@ export const login = async (
   email: string,
   password: string
 ): Promise<AccessToken> => {
+  email = email.toLowerCase()
   const loginResp = await http(`${API_URL}/redUsers/login`, {
     method: 'post',
     data: { email, password },
@@ -111,12 +112,14 @@ export interface TpJobseekerProfileFilters {
   name: string
   skills: string[]
   desiredPositions: string[]
+  isJobFair2022Participant: boolean
 }
 
 export async function fetchAllTpJobseekerProfiles({
   name,
   skills: topSkills,
   desiredPositions,
+  isJobFair2022Participant,
 }: TpJobseekerProfileFilters): Promise<Array<Partial<TpJobseekerProfile>>> {
   const filterTopSkills =
     topSkills && topSkills.length !== 0 ? { inq: topSkills } : undefined
@@ -124,6 +127,9 @@ export async function fetchAllTpJobseekerProfiles({
     desiredPositions && desiredPositions.length !== 0
       ? { inq: desiredPositions }
       : undefined
+  const filterJobFair2022Participant = isJobFair2022Participant
+    ? { isJobFair2022Participant: true }
+    : undefined
 
   return http(
     `${API_URL}/tpJobseekerProfiles?filter=${JSON.stringify({
@@ -143,6 +149,7 @@ export async function fetchAllTpJobseekerProfiles({
             })),
           { topSkills: filterTopSkills },
           { desiredPositions: filterDesiredPositions },
+          { ...filterJobFair2022Participant },
         ],
       },
       order: 'createdAt DESC',
@@ -150,12 +157,7 @@ export async function fetchAllTpJobseekerProfiles({
     })}`
   ).then((resp) =>
     resp.data.filter(
-      (p) =>
-        p.isProfileVisibleToCompanies &&
-        [
-          'profile-approved-awaiting-job-preferences',
-          'job-preferences-shared-with-redi-awaiting-interview-match',
-        ].includes(p.state)
+      (p) => p.isProfileVisibleToCompanies && p.state === 'profile-approved'
     )
   )
 }
@@ -254,20 +256,27 @@ export async function updateCurrentUserTpCompanyProfile(
 export interface TpJobListingFilters {
   idealTechnicalSkills: string[]
   employmentType: string[]
+  isJobFair2022JobListing: boolean
 }
 
 export async function fetchAllTpJobListingsUsingFilters({
   idealTechnicalSkills,
   employmentType,
+  isJobFair2022JobListing,
 }: TpJobListingFilters): Promise<Array<Partial<TpJobseekerProfile>>> {
   const filterIdealTechnicalSkills =
     idealTechnicalSkills && idealTechnicalSkills.length !== 0
       ? { inq: idealTechnicalSkills }
       : undefined
+
   const filterDesiredEmploymentTypeOptions =
     employmentType && employmentType.length !== 0
       ? { inq: employmentType }
       : undefined
+
+  const filterJobFair2022JobListings = isJobFair2022JobListing
+    ? { isJobFair2022JobListing: true }
+    : undefined
 
   return http(
     `${API_URL}/tpJobListings?filter=${JSON.stringify({
@@ -280,6 +289,7 @@ export async function fetchAllTpJobListingsUsingFilters({
           {
             idealTechnicalSkills: filterIdealTechnicalSkills,
             employmentType: filterDesiredEmploymentTypeOptions,
+            ...filterJobFair2022JobListings,
           },
         ],
       },

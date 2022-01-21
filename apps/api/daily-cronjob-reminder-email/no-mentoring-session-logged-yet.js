@@ -30,6 +30,7 @@ module.exports = {
     }).pipe(
       switchMap((redMatches) => from(redMatches)),
       map((redMatch) => redMatch.toJSON()),
+      filterForActiveMentors(),
       filterForExistingMentorOrMentee(),
       filterOnlyXDayOldMatches(10),
       fetchAssignRelatedMentoringSessions(),
@@ -55,6 +56,7 @@ module.exports = {
     }).pipe(
       switchMap((redMatches) => from(redMatches)),
       map((redMatch) => redMatch.toJSON()),
+      filterForActiveMentors(),
       filterForExistingMentorOrMentee(),
       filterOnlyXDayOldMatches(30),
       fetchAssignRelatedMentoringSessions(),
@@ -80,6 +82,10 @@ const redMentoringSessionFind = (q) =>
   bindNodeCallback(
     app.models.RedMentoringSession.find.bind(app.models.RedMentoringSession)
   )(q)
+
+function filterForActiveMentors() {
+  return filter((redMatch) => redMatch.mentor && redMatch.mentor.userActivated)
+}
 
 function filterOnlyXDayOldMatches(days) {
   return filter((match) => {

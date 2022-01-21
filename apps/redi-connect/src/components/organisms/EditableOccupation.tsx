@@ -12,13 +12,15 @@ import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
 
-import { menteeOccupationCategories } from '@talent-connect/shared-config'
+import { MENTEE_OCCUPATION_CATEGORY } from '@talent-connect/shared-config'
 import { ReadOccupation } from '../molecules'
 import { RedProfile } from '@talent-connect/shared-types'
+import { objectKeys } from '@talent-connect/typescript-utilities'
 
-const formMenteeOccupationCategories = menteeOccupationCategories.map(
-  (level) => ({ value: level.id, label: level.label })
-)
+const formMenteeOccupationCategories = Object.entries(
+  MENTEE_OCCUPATION_CATEGORY
+).map(([value, label]) => ({ value, label }))
+
 // do we really need all these type???
 export type UserType =
   | 'mentor'
@@ -51,7 +53,7 @@ const validationSchema = Yup.object({
     is: 'mentee',
     then: Yup.string()
       .required()
-      .oneOf(menteeOccupationCategories.map((v) => v.id))
+      .oneOf(objectKeys(MENTEE_OCCUPATION_CATEGORY))
       .label('Current occupation'),
   }),
   mentee_occupationJob_placeOfEmployment: Yup.string()

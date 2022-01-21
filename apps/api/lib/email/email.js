@@ -29,7 +29,7 @@ const sendMjmlEmail = Rx.bindNodeCallback(
   transporter.sendMail.bind(transporter)
 )
 const sendEmailFactory = (to, subject, body, rediLocation) => {
-  let toSanitized = isProductionOrDemonstration() ? to : 'eric@binarylights.com'
+  let toSanitized = isProductionOrDemonstration() ? to : ''
   if (process.env.DEV_MODE_EMAIL_RECIPIENT) {
     toSanitized = process.env.DEV_MODE_EMAIL_RECIPIENT
   }
@@ -38,7 +38,7 @@ const sendEmailFactory = (to, subject, body, rediLocation) => {
     Source: sender,
     Destination: {
       ToAddresses: [toSanitized],
-      BccAddresses: ['eric@binarylights.com', 'career@redi-school.org'],
+      BccAddresses: ['career@redi-school.org'],
     },
     Message: {
       Body: {
@@ -55,7 +55,7 @@ const sendEmailFactory = (to, subject, body, rediLocation) => {
   })
 }
 const sendMjmlEmailFactory = ({ to, subject, html }) => {
-  let toSanitized = isProductionOrDemonstration() ? to : 'eric@binarylights.com'
+  let toSanitized = isProductionOrDemonstration() ? to : ''
   if (process.env.DEV_MODE_EMAIL_RECIPIENT) {
     toSanitized = process.env.DEV_MODE_EMAIL_RECIPIENT
   }
@@ -63,7 +63,7 @@ const sendMjmlEmailFactory = ({ to, subject, html }) => {
   return sendMjmlEmail({
     from: sender,
     to: toSanitized,
-    bcc: ['eric@binarylights.com', 'career@redi-school.org'],
+    bcc: ['career@redi-school.org'],
     subject: buildSubjectLine(subject, process.env.NODE_ENV),
     html: html,
   })
@@ -186,7 +186,7 @@ const sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccep
       .replace(/\${rediEmailAdress}/g, rediEmailAdress)
     return sendMjmlEmailFactory({
       to: recipient,
-      subject: `ReDI Connect: mentorship application from ${menteeName} expired`,
+      subject: `${menteeName}’s mentee application to you has expired!`,
       html: html,
     })
   }
@@ -211,7 +211,7 @@ const sendMenteePendingReviewAcceptedEmail = ({
     .replace(/\${homePageUrl}/g, homePageUrl)
   return sendMjmlEmailFactory({
     to: recipient,
-    subject: 'Your ReDI Connect account is confirmed now!',
+    subject: 'Your ReDI Connect profile is now activated!',
     html: html,
   })
 }
@@ -236,7 +236,7 @@ const sendMentorPendingReviewAcceptedEmail = ({
     .replace(/\${homePageUrl}/g, homePageUrl)
   return sendMjmlEmailFactory({
     to: recipient,
-    subject: 'Your ReDI Connect account is confirmed now!',
+    subject: 'Your ReDI Connect profile is now activated!',
     html: html,
   })
 }
@@ -320,6 +320,7 @@ const sendVerificationEmail = ({
 const sendMentoringSessionLoggedEmail = ({
   recipient,
   mentorName,
+  menteeFirstName,
   rediLocation,
 }) => {
   const loginUrl = `${buildFrontendUrl(
@@ -332,10 +333,15 @@ const sendMentoringSessionLoggedEmail = ({
   )
   const html = sendMentoringSessionLoggedEmailParsed
     .replace(/\${mentorName}/g, mentorName)
+    .replace(/\${menteeFirstName}/g, menteeFirstName)
     .replace(/\${loginUrl}/g, loginUrl)
   return sendMjmlEmailFactory({
     to: recipient,
-    subject: 'You successfully logged your session with your mentee',
+    subject:
+      'Thank you for logging your session(s) with ${menteeFirstName}!'.replace(
+        /\${menteeFirstName}/g,
+        menteeFirstName
+      ),
     html: html,
     rediLocation,
   })
@@ -410,7 +416,7 @@ const sendMentorshipCompletionEmailToMentor = ({
     .replace(/\${menteeFirstName}/g, menteeFirstName)
   return sendMjmlEmailFactory({
     to: recipient,
-    subject: `Mentorship with ${menteeFirstName} completed`,
+    subject: `Your mentorship with ${menteeFirstName} is completed!`,
     html: html,
   })
 }
@@ -429,7 +435,7 @@ const sendMentorshipCompletionEmailToMentee = ({
     .replace(/\${menteeFirstName}/g, menteeFirstName)
   return sendMjmlEmailFactory({
     to: recipient,
-    subject: `Mentorship with ${mentorFirstName} completed`,
+    subject: `Your mentorship with ${mentorFirstName} is completed!`,
     html: html,
   })
 }
@@ -459,7 +465,7 @@ const sendMentorshipRequestReceivedEmail = ({
     .replace(/\${loginUrl}/g, loginUrl)
   return sendMjmlEmailFactory({
     to: recipient,
-    subject: `You have received an application from ${menteeFullName}`,
+    subject: `You have received an application from ${menteeFullName}!`,
     html: html,
   })
 }
@@ -483,7 +489,7 @@ const sendMentorshipAcceptedEmail = ({
     .replace(/\${mentorReplyMessageOnAccept}/g, mentorReplyMessageOnAccept)
   return sendMjmlEmailFactory({
     to: recipient,
-    subject: `Congratulations. Mentor ${mentorName} has accepted your application, ${menteeName}!`,
+    subject: `Congratulations! Mentor ${mentorName} has accepted your application, ${menteeName}!`,
     html: html,
   })
 }

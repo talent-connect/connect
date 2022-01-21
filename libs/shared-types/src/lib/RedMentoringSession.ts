@@ -1,3 +1,4 @@
+import { MentoringSessionDurationOption } from '@talent-connect/shared-config'
 import { RedProfile } from './RedProfile'
 
 export type RedMentoringSession = {
@@ -7,5 +8,5 @@ export type RedMentoringSession = {
   mentorId?: string
   menteeId?: string
   date: Date
-  minuteDuration: number
+  minuteDuration: MentoringSessionDurationOption
 }

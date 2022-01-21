@@ -1,5 +1,4 @@
 import { Icon } from '@talent-connect/shared-atomic-design-components'
-import { rediLocationNames } from '@talent-connect/shared-config'
 import { RedMatch, RedProfile } from '@talent-connect/shared-types'
 import classnames from 'classnames'
 import moment from 'moment'
@@ -13,6 +12,7 @@ import { getRedProfileFromLocalStorage } from '../../services/auth/auth'
 import { Avatar, ConfirmMentorship } from '../organisms'
 import './ApplicationCard.scss'
 import DeclineMentorshipButton from './DeclineMentorshipButton'
+import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 
 interface Props {
   application: RedMatch & { createdAt?: string }
@@ -22,6 +22,11 @@ interface Props {
 
 const STATUS_LABELS: any = {
   applied: 'Pending',
+  accepted: 'Accepted',
+  completed: 'Accepted',
+  cancelled: 'Cancelled',
+  'declined-by-mentor': 'Declined',
+  'invalidated-as-other-mentor-accepted': 'Cancelled',
 }
 
 const ApplicationCard = ({
@@ -44,13 +49,22 @@ const ApplicationCard = ({
         onClick={() => setShowDetails(!showDetails)}
       >
         <Columns vCentered>
-          <Columns.Column size={4} className="application-card__avatar">
+          <Columns.Column size={1} className="application-card__avatar">
             <Avatar profile={applicationUser} />
+          </Columns.Column>
+
+          <Columns.Column
+            size={3}
+            textAlignment="left"
+            responsive={{ mobile: { textAlignment: { value: 'centered' } } }}
+          >
             {applicationUser && (
-              <span>
-                {applicationUser.firstName} {applicationUser.lastName} (in{' '}
-                {rediLocationNames[applicationUser.rediLocation]})
-              </span>
+              <>
+                <p>
+                  {applicationUser.firstName} {applicationUser.lastName}
+                </p>
+                <p>{REDI_LOCATION_NAMES[applicationUser.rediLocation]}</p>
+              </>
             )}
           </Columns.Column>
 
@@ -130,11 +144,10 @@ const ApplicationCard = ({
             <Content>{application.expectationText}</Content>
           </>
         )}
-        {currentUserIsMentor ? (
+        {currentUserIsMentor && application.status === 'applied' ? (
           <>
             <ConfirmMentorship
               match={application}
-              menteeName={profile && profile.firstName}
               hasReachedMenteeLimit={hasReachedMenteeLimit}
             />
             <DeclineMentorshipButton match={application} />

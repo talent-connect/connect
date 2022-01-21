@@ -133,7 +133,7 @@ module.exports = function (RedMatch) {
     })
 
     await sendMentorshipAcceptedEmail({
-      recipients: [mentee.contactEmail, mentor.contactEmail],
+      recipient: [mentee.contactEmail, mentor.contactEmail],
       mentorName: mentor.firstName,
       menteeName: mentee.firstName,
       mentorReplyMessageOnAccept: mentorReplyMessageOnAccept,
@@ -164,7 +164,10 @@ module.exports = function (RedMatch) {
           {
             recipient: pendingMatchData.mentor.contactEmail,
             mentorName: pendingMatchData.mentor.firstName,
-            menteeName: pendingMatchData.mentee.firstName,
+            menteeName:
+              pendingMatchData.mentee.firstName +
+              ' ' +
+              pendingMatchData.mentee.lastName,
             rediLocation: options.currentUser.redProfile.rediLocation,
           }
         ).toPromise()

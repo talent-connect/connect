@@ -16,7 +16,7 @@ import {
   matchesDeclineMentorshipStart,
 } from '../../redux/matches/actions'
 import { RedMatch } from '@talent-connect/shared-types'
-import { mentorDeclinesMentorshipReasonForDecliningOptions } from '@talent-connect/shared-config'
+import { MENTOR_DECLINES_MENTORSHIP_REASON_FOR_DECLINING } from '@talent-connect/shared-config'
 
 interface DeclineMentorshipButtonProps {
   match: RedMatch
@@ -130,11 +130,9 @@ const DeclineMentorshipButton = ({
   )
 }
 
-const formDeclineOptions =
-  mentorDeclinesMentorshipReasonForDecliningOptions.map((item) => ({
-    value: item.id,
-    label: item.label,
-  }))
+const formDeclineOptions = Object.entries(
+  MENTOR_DECLINES_MENTORSHIP_REASON_FOR_DECLINING
+).map(([value, label]) => ({ value, label }))
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const mapDispatchToProps = (dispatch: any) => ({

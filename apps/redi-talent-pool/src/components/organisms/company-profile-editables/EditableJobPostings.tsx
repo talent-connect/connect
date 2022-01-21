@@ -6,6 +6,7 @@ import {
   Heading,
   Icon,
   Modal,
+  Checkbox,
 } from '@talent-connect/shared-atomic-design-components'
 import { TpJobListing, TpJobseekerProfile } from '@talent-connect/shared-types'
 import {
@@ -26,6 +27,7 @@ import { useTpJobListingUpdateMutation } from '../../../react-query/use-tpjoblis
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import { JobListingCard } from '../JobListingCard'
 import JobPlaceholderCardUrl from './job-placeholder-card.svg'
+import { get } from 'lodash'
 
 export function EditableJobPostings({
   isJobPostingFormOpen,
@@ -241,6 +243,17 @@ function ModalForm({
         >
           Add the job postings you want to publish to jobseekers at ReDI School.
         </Element>
+        {/* This Checkbox is added only for JobFair 2022. Please remove after 11.02.2022 */}
+        <Checkbox.Form
+          name="isJobFair2022JobListing"
+          checked={get(formik.values, 'isJobFair2022JobListing', false)}
+          handleChange={formik.handleChange}
+          {...formik}
+        >
+          We will recruit for this job listing at the ReDI Job Fair on 11
+          February 2022
+        </Checkbox.Form>
+
         <FormInput
           name={`title`}
           placeholder="Junior Frontend Developer"

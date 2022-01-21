@@ -13,7 +13,7 @@ module.exports = function (RedMentoringSession) {
   // is used.
   RedMentoringSession.observe(
     'access',
-    function onlyMatchesRelatedToCurrentUser (ctx, next) {
+    function onlyMatchesRelatedToCurrentUser(ctx, next) {
       if (!ctx.options.currentUser) return next()
 
       const currentUserProfileId = ctx.options.currentUser.redProfile.id
@@ -29,8 +29,8 @@ module.exports = function (RedMentoringSession) {
         const currentUserMenteeOrMentor = {
           or: [
             { mentorId: currentUserProfileId },
-            { menteeId: currentUserProfileId }
-          ]
+            { menteeId: currentUserProfileId },
+          ],
         }
         const existingWhere = ctx.query.where
         if (Object.values(existingWhere).length > 0) {
@@ -44,58 +44,60 @@ module.exports = function (RedMentoringSession) {
     }
   )
 
-  RedMentoringSession.observe('before save', async function updateTimestamp (
-    ctx,
-    next
-  ) {
-    if (ctx.options.currentUser.email !== 'cloud-accounts@redi-school.org') {
-      if (ctx.instance) {
-        if (ctx.isNewInstance) {
-          ctx.instance.mentorId = ctx.options.currentUser.redProfile.id
-          const findOneRedProfile = Rx.bindNodeCallback(
-            app.models.RedProfile.findOne.bind(app.models.RedProfile)
-          )
-          Rx.zip(
-            findOneRedProfile({ where: { id: ctx.instance.mentorId } }),
-            findOneRedProfile({ where: { id: ctx.instance.menteeId } })
-          )
-            .pipe(
-              switchMap(([mentor, mentee]) =>
-                sendMentoringSessionLoggedEmail({
-                  recipient: mentor.contactEmail,
-                  mentorName: mentor.firstName,
-                  rediLocation: ctx.options.currentUser.redProfile.rediLocation
-                })
-              )
+  RedMentoringSession.observe(
+    'before save',
+    async function updateTimestamp(ctx, next) {
+      if (ctx.options.currentUser.email !== 'cloud-accounts@redi-school.org') {
+        if (ctx.instance) {
+          if (ctx.isNewInstance) {
+            ctx.instance.mentorId = ctx.options.currentUser.redProfile.id
+            const findOneRedProfile = Rx.bindNodeCallback(
+              app.models.RedProfile.findOne.bind(app.models.RedProfile)
             )
-            .subscribe()
+            Rx.zip(
+              findOneRedProfile({ where: { id: ctx.instance.mentorId } }),
+              findOneRedProfile({ where: { id: ctx.instance.menteeId } })
+            )
+              .pipe(
+                switchMap(([mentor, mentee]) =>
+                  sendMentoringSessionLoggedEmail({
+                    recipient: mentor.contactEmail,
+                    mentorName: mentor.firstName,
+                    menteeFirstName: mentee.firstName,
+                    rediLocation:
+                      ctx.options.currentUser.redProfile.rediLocation,
+                  })
+                )
+              )
+              .subscribe()
+          }
         }
       }
-    }
 
-    if (ctx.instance) {
-      if (ctx.isNewInstance) {
-        ctx.instance.createdAt = new Date()
-      }
-      ctx.instance.updatedAt = new Date()
-    } else {
-      ctx.data.updatedAt = new Date()
-    }
-
-    const RedProfile = app.models.RedProfile;
-
-    if (process.env.NODE_ENV !== 'seeding') {
       if (ctx.instance) {
-        const mentee = await RedProfile.findById(ctx.instance.menteeId);
-        const menteeRediLocation = mentee.toJSON().rediLocation;
-        ctx.instance.rediLocation = menteeRediLocation
+        if (ctx.isNewInstance) {
+          ctx.instance.createdAt = new Date()
+        }
+        ctx.instance.updatedAt = new Date()
       } else {
-        const mentee = await RedProfile.findById(ctx.data.menteeId);
-        const menteeRediLocation = mentee.toJSON().rediLocation;
-        ctx.data.rediLocation = menteeRediLocation
+        ctx.data.updatedAt = new Date()
       }
-    }
 
-    next()
-  })
+      const RedProfile = app.models.RedProfile
+
+      if (process.env.NODE_ENV !== 'seeding') {
+        if (ctx.instance) {
+          const mentee = await RedProfile.findById(ctx.instance.menteeId)
+          const menteeRediLocation = mentee.toJSON().rediLocation
+          ctx.instance.rediLocation = menteeRediLocation
+        } else {
+          const mentee = await RedProfile.findById(ctx.data.menteeId)
+          const menteeRediLocation = mentee.toJSON().rediLocation
+          ctx.data.rediLocation = menteeRediLocation
+        }
+      }
+
+      next()
+    }
+  )
 }

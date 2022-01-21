@@ -1,7 +1,5 @@
-import { Language } from '../Language'
-
 export interface LanguageRecord {
   uuid: string
-  language?: Language
+  language?: string
   proficiencyLevelId?: string
 }
