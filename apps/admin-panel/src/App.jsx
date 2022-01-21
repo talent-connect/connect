@@ -1333,6 +1333,8 @@ const TpJobseekerProfileShow = (props) => (
             <Datagrid>
               <TextField source="title" />
               <TextField source="company" />
+              <TextField source="city" />
+              <TextField source="country" />
               <TextField
                 source="description"
                 label="Roles & responsibilities"
@@ -1362,6 +1364,8 @@ const TpJobseekerProfileShow = (props) => (
             <Datagrid>
               <TextField source="title" />
               <TextField source="institutionName" />
+              <TextField source="institutionCity" />
+              <TextField source="institutionCountry" />
               <TextField source="certificationType" />
               <TextField source="description" label="Description" />
               <FunctionField
