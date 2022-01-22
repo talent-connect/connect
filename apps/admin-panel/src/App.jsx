@@ -1293,6 +1293,10 @@ const TpJobseekerProfileShow = (props) => (
         <Tab label="Profile">
           <TextField source="state" />
           <BooleanField source="isProfileVisibleToCompanies" />
+          <BooleanField
+            initialValue={false}
+            source="isJobFair2022Participant"
+          />
           <Avatar />
           <TextField source="firstName" />
           <TextField source="lastName" />
@@ -1442,6 +1446,7 @@ const TpJobseekerProfileEdit = (props) => (
       <FormTab label="Profile">
         <TextField source="state" />
         <BooleanInput source="isProfileVisibleToCompanies" />
+        <BooleanInput initialValue={false} source="isJobFair2022Participant" />
         {/* <Avatar /> */}
         <TextInput source="firstName" />
         <TextInput source="lastName" />
@@ -1900,6 +1905,7 @@ const TpJobListingShow = (props) => (
       </ReferenceField>
       <TextField source="title" />
       <TextField source="location" />
+      <BooleanField initialValue={false} source="isJobFair2022JobListing" />
       <TextField source="summary" />
       <TextField source="proficiencyLevelId" />
       <FunctionField
@@ -1930,6 +1936,7 @@ const TpJobListingEdit = (props) => (
       </ReferenceField>
       <TextInput source="title" />
       <TextInput source="location" />
+      <BooleanInput initialValue={false} source="isJobFair2022JobListing" />
       <TextInput source="summary" multiline />
       <TextInput source="proficiencyLevelId" />
       <FunctionField
