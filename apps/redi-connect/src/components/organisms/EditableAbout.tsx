@@ -3,13 +3,13 @@ import { TextArea } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile, UserType } from '@talent-connect/shared-types'
 import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
 import { profileSaveStart } from '../../redux/user/actions'
 
 import * as Yup from 'yup'
 
 import { useFormik } from 'formik'
 import { ReadAbout } from '../molecules'
+import { mapStateToProps } from '../../helpers';
 
 export interface AboutFormValues {
   userType: UserType
@@ -110,8 +110,6 @@ const expectationsFieldPlaceholder = (userType: UserType): string => {
       return 'Providing career or technical support, expecting commitment, etc.'
   }
 }
-
-const mapStateToProps = ({ user: { profile }}: RootState) => ({ profile })
 
 const mapDispatchToProps = (dispatch: Function) => ({
   profileSaveStart: (profile: Partial<RedProfile>) =>

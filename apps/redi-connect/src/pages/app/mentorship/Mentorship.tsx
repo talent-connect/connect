@@ -16,7 +16,6 @@ import { Columns, Content } from 'react-bulma-components'
 import { RootState } from '../../../redux/types'
 import { RedProfile } from '@talent-connect/shared-types'
 import { LoggedIn } from '../../../components/templates'
-import { useLoading } from '../../../hooks/WithLoading'
 import { getMatches } from '../../../redux/matches/selectors'
 import { RedMatch } from '@talent-connect/shared-types'
 import { matchesFetchStart } from '../../../redux/matches/actions'
@@ -120,9 +119,9 @@ const Mentorship: FC<MentorshipProps> = ({ currentUser, matches }) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  currentUser: state.user.profile,
-  matches: getMatches(state.matches),
+const mapStateToProps = ({ user, matches }: RootState) => ({
+  currentUser: user.profile,
+  matches: getMatches(matches),
 })
 
 export default connect(mapStateToProps, null)(Mentorship)

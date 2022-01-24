@@ -57,33 +57,33 @@ export const OnboardingSteps: FC<Props> = ({ profile, isProfileComplete, hasJobL
           Complete the steps below!
         </Element>
       </div>
-      {steps.map((step, index) => (
+      {steps.map(({ number, label }, index) => (
         <div
           key={index}
           className={classnames('onboarding-steps--item', {
-            'current-step': step.number === currentStep[0],
-            'completed-step': step.number < currentStep[0],
+            'current-step': number === currentStep[0],
+            'completed-step': number < currentStep[0],
           })}
         >
-          {step.number < currentStep[0] ? (
+          {number < currentStep[0] ? (
             <ChecklistActiveImage className="checklist-image" />
           ) : (
             <ChecklistImage className="checklist-image" />
           )}
-          <Element textSize="5">{step.label}</Element>
-          {currentStep[0] > step.number ? (
+          <Element textSize="5">{label}</Element>
+          {currentStep[0] > number ? (
             <CheckmarkImage className="checkmark-image" />
           ) : null}
-          {currentStep[0] < step.number ? (
+          {currentStep[0] < number ? (
             <CheckmarkBorderOnlyImage className="checkmark-image" />
           ) : null}
-          {currentStep[0] === step.number && currentStep[1] === 'todo' ? (
+          {currentStep[0] === number && currentStep[1] === 'todo' ? (
             <CheckmarkBorderOnlyImage className="checkmark-image" />
           ) : null}
-          {currentStep[0] === step.number && currentStep[1] === 'pending' ? (
+          {currentStep[0] === number && currentStep[1] === 'pending' ? (
             <StepPendingImage className="checkmark-image" />
           ) : null}
-          {currentStep[0] === step.number && currentStep[1] === 'complete' ? (
+          {currentStep[0] === number && currentStep[1] === 'complete' ? (
             <CheckmarkImage className="checkmark-image" />
           ) : null}
         </div>

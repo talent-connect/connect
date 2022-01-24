@@ -13,6 +13,7 @@ import { useFormik } from 'formik'
 import { LANGUAGES } from '@talent-connect/shared-config'
 import { ReadLanguages } from '../molecules'
 import { mapOptionsArray } from '@talent-connect/typescript-utilities'
+import { mapStateToProps } from '../../helpers';
 
 const formLanguages = mapOptionsArray(LANGUAGES)
 
@@ -64,8 +65,6 @@ const EditableLanguages: FC<Props> = ({
     </Editable>
   )
 }
-
-const mapStateToProps = ({ user: { profile }}: RootState) => ({ profile })
 
 const mapDispatchToProps = (dispatch: Function) => ({
   profileSaveStart: (profile: Partial<RedProfile>) =>

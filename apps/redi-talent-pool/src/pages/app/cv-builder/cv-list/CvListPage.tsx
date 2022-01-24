@@ -98,12 +98,12 @@ const CvListPage: FC = () => {
       <Section paddingless>
         {cvList?.length ? (
           <div>
-            {cvList.map((cv) => (
+            {cvList.map(({ id, cvName, createdAt }) => (
               <CvListItem
-                key={cv.id}
-                id={cv.id}
-                name={cv.cvName}
-                createdAt={cv.createdAt}
+                key={id}
+                id={id}
+                name={cvName}
+                createdAt={createdAt}
               />
             ))}
             <Box

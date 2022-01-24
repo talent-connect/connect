@@ -1,11 +1,11 @@
 import { ChangeEventHandler, FC } from 'react'
+import { connect } from 'react-redux'
 import groupBy from 'lodash/groupBy'
 import { Columns, Heading, Element, Content } from 'react-bulma-components'
+
 import { Checkbox } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
 import { CategoryGroupId, RedProfile } from '@talent-connect/shared-types'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
 
 import { profileSaveStart } from '../../redux/user/actions'
 import * as Yup from 'yup'
@@ -14,6 +14,7 @@ import { FormikConfig, useFormik } from 'formik'
 import { CATEGORIES, CategoryKey, CATEGORY_GROUPS } from '@talent-connect/shared-config'
 import { ReadMentoringTopics } from '../molecules'
 import { objectEntries } from '@talent-connect/typescript-utilities'
+import { mapStateToProps } from '../../helpers';
 
 export type UserType =
   | 'mentor'
@@ -140,30 +141,28 @@ const CategoryGroup: FC<CategoryGroupProps> = ({
         {label}
       </Heading>
       <Element className="mentoring__group">
-        {categoriesByGroup[id].map((groupItem) => (
+        {categoriesByGroup[id].map(({ id, label }) => (
           <Checkbox.Form
-            name={`categories-${groupItem.id}`}
-            key={groupItem.id}
-            value={groupItem.id}
-            checked={selectedCategories.includes(groupItem.id)}
+            name={`categories-${id}`}
+            key={id}
+            value={id}
+            checked={selectedCategories.includes(id)}
             handleChange={onChange}
             disabled={
               !formik.values.isMentor &&
               selectedCategories.length >=
                 MAX_MENTORING_TOPICS_IF_USER_IS_MENTEE &&
-              !selectedCategories.includes(groupItem.id)
+              !selectedCategories.includes(id)
             }
             {...formik}
           >
-            {groupItem.label}
+            {label}
           </Checkbox.Form>
         ))}
       </Element>
     </Columns.Column>
   )
 }
-
-const mapStateToProps = ({ user: { profile }}: RootState) => ({ profile })
 
 const mapDispatchToProps = (dispatch: Function) => ({
   profileSaveStart: (profile: Partial<RedProfile>) =>

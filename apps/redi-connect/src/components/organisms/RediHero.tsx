@@ -1,4 +1,7 @@
 import { FC } from 'react'
+import { useHistory } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+
 import {
   Container,
   Section,
@@ -6,8 +9,6 @@ import {
   Content,
   Element,
 } from 'react-bulma-components'
-import { useHistory } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
 import { ReactComponent as Deloitte } from '../../assets/images/deloitte.svg'
 import './RediHero.scss'
 import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'

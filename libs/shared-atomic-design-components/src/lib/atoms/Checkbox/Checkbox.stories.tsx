@@ -26,4 +26,4 @@ export const Default = template({
 export const Labeled = template({
   name: 'Checkbox',
   value: 'ABC',
-}, <span>Label</span>)
+}, <span>Label</span>);

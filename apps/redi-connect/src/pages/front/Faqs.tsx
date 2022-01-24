@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import { useTranslation } from 'react-i18next'
 import Landing from '../../components/templates/Landing'
 import {
   Section,
@@ -6,19 +7,18 @@ import {
   Columns,
   Heading as BulmaHeading,
 } from 'react-bulma-components'
-import { useTranslation } from 'react-i18next'
 import './Faqs.scss'
 import {
   Heading,
   FaqItem,
 } from '@talent-connect/shared-atomic-design-components'
 
+type QandA = { question: string; answer: string; };
+
 const Faqs: FC = () => {
   const { t } = useTranslation()
 
-  const topics: Array<{ title: string; qAndAs: Array<any> }> = t('faq.topics', {
-    returnObjects: true,
-  })
+  const topics: { title: string; qAndAs: QandA[] }[] = t('faq.topics', { returnObjects: true })
 
   return (
     <Landing>
@@ -29,17 +29,13 @@ const Faqs: FC = () => {
               <Heading size="medium" border="bottomLeft" className="double-bs">
                 {t('faq.headline')}
               </Heading>
-              {topics.map((topic) => (
+              {topics.map(({ title, qAndAs }) => (
                 <div className="faq-block">
                   <BulmaHeading size={4} className="faq-block__title" subtitle>
-                    {topic.title}
+                    {title}
                   </BulmaHeading>
-                  {topic.qAndAs.map((item, index) => (
-                    <FaqItem
-                      key={index}
-                      question={item.question}
-                      answer={item.answer}
-                    />
+                  {qAndAs.map((QAndA, i) => (
+                    <FaqItem {...QAndA} key={i} />
                   ))}
                 </div>
               ))}

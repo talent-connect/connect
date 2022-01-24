@@ -1,9 +1,10 @@
 import { FC } from 'react'
 import { Content } from 'react-bulma-components'
 import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
+
 import { Caption } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile } from '@talent-connect/shared-types'
+import { mapStateToProps } from '../../helpers';
 
 interface Props {
   profile: RedProfile
@@ -30,11 +31,9 @@ const ReadContactDetails: FC<Props> = ({
   )
 }
 
-const mapStateToProps = ({ user: { profile }}: RootState) => ({ profile })
-
 export default {
+  /** */
   Me: connect(mapStateToProps, {})(ReadContactDetails),
-  Some: ({ profile }: Props) => (
-    <ReadContactDetails profile={profile} shortInfo />
-  ),
+  /** */
+  Some: (props: Props) => <ReadContactDetails {...props} />,
 }

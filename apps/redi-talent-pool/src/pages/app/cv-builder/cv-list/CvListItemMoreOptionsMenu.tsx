@@ -50,7 +50,7 @@ export const CvListItemMoreOptionsMenu: FC<CvListItemMoreOptionsMenuProps> = (pr
       <Popover
         id="simple-menu"
         anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
+        open={!!anchorEl}
         onClose={handleClosePopover}
         anchorOrigin={{
           vertical: 'bottom',

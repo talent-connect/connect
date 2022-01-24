@@ -1,17 +1,15 @@
 import { FC, MouseEvent } from 'react'
+import { useHistory } from 'react-router-dom'
 import classnames from 'classnames'
+
 import { Card, Element } from 'react-bulma-components'
 import { Icon, PipeList } from '@talent-connect/shared-atomic-design-components'
-
-import { useHistory } from 'react-router-dom'
 import {
   AWS_PROFILE_AVATARS_BUCKET_BASE_URL,
   REDI_LOCATION_NAMES,
 } from '@talent-connect/shared-config'
-
 import placeholderImage from '../../assets/images/img-placeholder.png'
 import './ProfileCard.scss'
-
 import { RedProfile } from '@talent-connect/shared-types'
 import { ReadMentoringTopics } from '../molecules'
 

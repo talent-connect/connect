@@ -11,7 +11,7 @@ export const profilesFetchOneEpic = (
   action$.pipe(
     ofType(ProfilesActionType.PROFILES_FETCH_ONE_START),
     switchMap(({ payload }) => http(`${API_URL}/redProfiles/${payload}`)),
-    map((resp) => resp.data),
+    map(({ data }) => data),
     map(profilesFetchOneSuccess)
   )
 

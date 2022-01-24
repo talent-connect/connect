@@ -63,11 +63,7 @@ const operationTypeToLabelMap = {
 }
 
 const operationTypeValidOrThrow = (operationType) => {
-  if (
-    !Object.keys(operationTypeToRedProfileCollectionMethodMap).includes(
-      operationType
-    )
-  ) {
+  if (!Object.keys(operationTypeToRedProfileCollectionMethodMap).includes(operationType)) {
     throw new Error('Invalid operationType given')
   }
   return true

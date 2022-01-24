@@ -69,8 +69,7 @@ export const EditableLanguages: FC<Props> = ({
           </EmptySectionPlaceholder>
         ) : (
           <Content>
-            {profile?.workingLanguages?.map(
-              ({ language, proficiencyLevelId }, idx) => (
+            {profile?.workingLanguages?.map(({ language, proficiencyLevelId }, idx) => (
                 <p key={idx}>
                   {language} -{' '}
                   {languageProficiencyLevelsIdToLabelMap[proficiencyLevelId]}

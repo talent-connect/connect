@@ -16,6 +16,7 @@ import { MENTEE_OCCUPATION_CATEGORY } from '@talent-connect/shared-config'
 import { ReadOccupation } from '../molecules'
 import { RedProfile } from '@talent-connect/shared-types'
 import { mapOptionsObject, objectKeys } from '@talent-connect/typescript-utilities'
+import { mapStateToProps } from '../../helpers';
 
 const formMenteeOccupationCategories = mapOptionsObject( MENTEE_OCCUPATION_CATEGORY)
 
@@ -215,8 +216,6 @@ const EditableOccupation: FC<Props> = ({
     </Editable>
   )
 }
-
-const mapStateToProps = ({ user: { profile }}: RootState) => ({ profile })
 
 const mapDispatchToProps = (dispatch: Function) => ({
   profileSaveStart: (profile: Partial<RedProfile>) =>

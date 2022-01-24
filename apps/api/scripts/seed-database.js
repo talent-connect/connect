@@ -1,9 +1,9 @@
-'use strict'
+'use strict';
 
-const app = require('../server/server.js')
-const _ = require('lodash')
-const fp = require('lodash/fp')
-const Rx = require('rxjs')
+const app = require('../server/server.js');
+const _ = require('lodash');
+const fp = require('lodash/fp');
+const Rx = require('rxjs');
 const {
   concatMap,
   switchMap,
@@ -11,8 +11,8 @@ const {
   tap,
   toArray,
   delay,
-} = require('rxjs/operators')
-const moment = require('moment')
+} = require('rxjs/operators');
+const moment = require('moment');
 
 const {
   RedUser,
@@ -22,10 +22,10 @@ const {
   AccessToken,
   Role,
   RoleMapping,
-} = app.models
+} = app.models;
 
-const personsRaw = require('./random-names.json')
-const persons = []
+const personsRaw = require('./random-names.json');
+const persons = [];
 personsRaw.forEach((person) => {
   for (let i = 1; i <= 5; i++) {
     persons.push({
@@ -33,9 +33,9 @@ personsRaw.forEach((person) => {
       surname: `${person.surname}${i}`,
       gender: person.gender,
       region: person.region,
-    })
+    });
   }
-})
+});
 
 const categories = [
   {
@@ -170,17 +170,17 @@ const categories = [
   },
   { id: 'entrepreneurship', label: 'Entrepreneurship', group: 'careerSupport' },
   { id: 'freelancing', label: 'Freelancing', group: 'careerSupport' },
-]
+];
 
-const Languages = ['German', 'Arabic', 'Farsi', 'Tigrinya']
+const Languages = ['German', 'Arabic', 'Farsi', 'Tigrinya'];
 
 const genders = [
   { id: 'male', label: 'Male' },
   { id: 'female', label: 'Female' },
   { id: 'other', label: 'Other' },
-]
+];
 
-const menteeCountCapacityOptions = [1, 2, 3, 4]
+const menteeCountCapacityOptions = [1, 2, 3, 4];
 
 const educationLevels = [
   { id: 'middleSchool', label: 'Middle School' },
@@ -189,7 +189,7 @@ const educationLevels = [
   { id: 'universityBachelor', label: 'University Degree (Bachelor)' },
   { id: 'universityMaster', label: 'University Degree (Master)' },
   { id: 'universityPhd', label: 'University Degree (PhD)' },
-]
+];
 
 const courses = [
   { id: 'basicComputerTraining', label: 'Basic Computer Training' },
@@ -204,25 +204,23 @@ const courses = [
   { id: 'blockchainBasics', label: 'Blockchain Basics' },
   { id: 'introIosAppsSwift', label: 'Intro to iOS Apps with Swift' },
   { id: 'introJava', label: 'Intro to Java' },
-]
+];
 
 const menteeOccupationCategories = [
   { id: 'job', label: 'Job (full-time/part-time)' },
   { id: 'student', label: 'Student (enrolled at university)' },
   { id: 'lookingForJob', label: 'Looking for a job' },
   { id: 'other', label: 'Other' },
-]
-const menteeOccupationCategoriesIds = menteeOccupationCategories.map(
-  (v) => v.id
-)
+];
+const menteeOccupationCategoriesIds = menteeOccupationCategories.map(({ id }) => id);
 
 const randomString = (charset = 'abcdefghijklmnopqrstuvwxyz', length = 10) => {
-  let str = ''
+  let str = '';
   for (let i = 0; i < length; i++) {
-    str += charset[Math.floor(Math.random() * (charset.length - 1))]
+    str += charset[Math.floor(Math.random() * (charset.length - 1))];
   }
-  return str
-}
+  return str;
+};
 
 const pickRandomUserType = () => {
   const possibleUserTypes = [
@@ -230,18 +228,18 @@ const pickRandomUserType = () => {
     'mentee',
     'public-sign-up-mentor-pending-review',
     'public-sign-up-mentee-pending-review',
-  ]
-  const randomIndex = Math.floor(Math.random() * possibleUserTypes.length)
-  return possibleUserTypes[randomIndex]
-}
+  ];
+  const randomIndex = Math.floor(Math.random() * possibleUserTypes.length);
+  return possibleUserTypes[randomIndex];
+};
 
 const users = fp.compose(
   fp.take(1000),
   fp.map(({ name, surname, gender }) => {
     const rediLocation =
-      Math.random() > 0.5 ? 'berlin' : Math.random() > 0.5 ? 'munich' : 'nrw'
-    const email = randomString() + '@' + randomString() + '.com'
-    const password = email
+      Math.random() > 0.5 ? 'berlin' : Math.random() > 0.5 ? 'munich' : 'nrw';
+    const email = randomString() + '@' + randomString() + '.com';
+    const password = email;
     return {
       redUser: {
         email,
@@ -262,7 +260,7 @@ const users = fp.compose(
         mentor_workPlace: randomString(),
         mentee_occupationCategoryId:
           menteeOccupationCategoriesIds[
-            Math.floor(Math.random() * menteeOccupationCategoriesIds.length)
+          Math.floor(Math.random() * menteeOccupationCategoriesIds.length)
           ],
         mentee_occupationJob_placeOfEmployment: randomString(),
         mentee_occupationJob_position: randomString(),
@@ -291,42 +289,42 @@ const users = fp.compose(
         mentee_currentlyEnrolledInCourse:
           courses[Math.floor(Math.random() * courses.length)].id,
       },
-    }
+    };
   })
-)(persons)
+)(persons);
 
 const accessTokenDestroyAll = Rx.bindNodeCallback(
   AccessToken.destroyAll.bind(AccessToken)
-)
-const roleDestroyAll = Rx.bindNodeCallback(Role.destroyAll.bind(Role))
+);
+const roleDestroyAll = Rx.bindNodeCallback(Role.destroyAll.bind(Role));
 const roleMappingDestroyAll = Rx.bindNodeCallback(
   RoleMapping.destroyAll.bind(RoleMapping)
-)
+);
 
-const redUserDestroyAll = Rx.bindNodeCallback(RedUser.destroyAll.bind(RedUser))
+const redUserDestroyAll = Rx.bindNodeCallback(RedUser.destroyAll.bind(RedUser));
 const redProfileDestroyAll = Rx.bindNodeCallback(
   RedProfile.destroyAll.bind(RedProfile)
-)
+);
 const redMatchDestroyAll = Rx.bindNodeCallback(
   RedMatch.destroyAll.bind(RedMatch)
-)
+);
 const redMentoringSessionDestroyAll = Rx.bindNodeCallback(
   RedMentoringSession.destroyAll.bind(RedMentoringSession)
-)
+);
 
 const redMatchCreate = (redMatch) =>
-  Rx.bindNodeCallback(RedMatch.create.bind(RedMatch))(redMatch)
+  Rx.bindNodeCallback(RedMatch.create.bind(RedMatch))(redMatch);
 const redUserCreate = (redUser) =>
-  Rx.bindNodeCallback(RedUser.create.bind(RedUser))(redUser)
+  Rx.bindNodeCallback(RedUser.create.bind(RedUser))(redUser);
 const redProfileCreateOnRedUser = (redUserInst) => (redProfile) =>
   Rx.bindNodeCallback(redUserInst.redProfile.create.bind(redUserInst))(
     redProfile
-  )
+  );
 
 const ericMenteeRedUser = {
   password: 'career+testmentee@redi-school.org',
   email: 'career+testmentee@redi-school.org',
-}
+};
 const ericMenteeRedProfile = {
   rediLocation: 'berlin',
   userActivated: true,
@@ -362,12 +360,12 @@ const ericMenteeRedProfile = {
   mentee_highestEducationLevel: 'highSchool',
   mentee_currentlyEnrolledInCourse: 'salesforceFundamentals',
   username: 'career+testmentee@redi-school.org',
-}
+};
 
 const ericMentorRedUser = {
   password: 'career+testmentor@redi-school.org',
   email: 'career+testmentor@redi-school.org',
-}
+};
 const ericMentorRedProfile = {
   rediLocation: 'berlin',
   userActivated: true,
@@ -403,12 +401,12 @@ const ericMentorRedProfile = {
   categories: categories.map((c) => c.id).filter(() => Math.random() < 0.4),
   menteeCountCapacity: 2,
   username: 'career+testmentor@redi-school.org',
-}
+};
 
 const ericAdminUser = {
   email: 'cloud-accounts@redi-school.org',
   password: 'cloud-accounts@redi-school.org',
-}
+};
 const ericAdminRedProfile = {
   rediLocation: 'berlin',
   userActivated: true,
@@ -444,7 +442,7 @@ const ericAdminRedProfile = {
   categories: categories.map((c) => c.id).filter(() => Math.random() < 0.4),
   menteeCountCapacity: 2,
   username: 'cloud-accounts@redi-school.org',
-}
+};
 
 Rx.of({})
   .pipe(
@@ -485,32 +483,32 @@ Rx.of({})
     switchMap((data) => {
       const mentors = data.filter(
         (userData) => userData.redProfile.userType === 'mentor'
-      )
+      );
       const mentees = data.filter(
         (userData) => userData.redProfile.userType === 'mentee'
-      )
+      );
 
-      let matchesFlat = []
-      const locations = ['berlin', 'munich']
+      let matchesFlat = [];
+      const locations = ['berlin', 'munich'];
       for (let i = 0; i < locations.length; i++) {
-        const location = locations[i]
+        const location = locations[i];
         const mentorsInLocation = mentors.filter(
           (data) => data.redProfile.rediLocation === location
-        )
+        );
         const menteesInLocation = mentees.filter(
           (data) => data.redProfile.rediLocation === location
-        )
-        console.log('******************************')
-        console.log('location', location)
-        console.log(mentorsInLocation.length)
-        console.log(menteesInLocation.length)
-        console.log('******************************')
+        );
+        console.log('******************************');
+        console.log('location', location);
+        console.log(mentorsInLocation.length);
+        console.log(menteesInLocation.length);
+        console.log('******************************');
         const matches = mentorsInLocation.map((mentor) => {
           return _.sampleSize(
             menteesInLocation,
             Math.floor(Math.random() * 10)
           ).map((mentee) => {
-            console.log(location)
+            console.log(location);
             return {
               rediLocation: '' + location + '',
               applicationText: randomString(),
@@ -520,12 +518,12 @@ Rx.of({})
               ],
               mentorId: mentor.redProfileInst.id,
               menteeId: mentee.redProfileInst.id,
-            }
-          })
-        })
-        matchesFlat = [...matchesFlat, ..._.flatten(matches)]
+            };
+          });
+        });
+        matchesFlat = [...matchesFlat, ..._.flatten(matches)];
       }
-      return Rx.from(matchesFlat)
+      return Rx.from(matchesFlat);
     }),
     concatMap(redMatchCreate)
   )
@@ -533,10 +531,10 @@ Rx.of({})
     () => console.log('next'),
     console.log,
     () => {
-      console.log('done')
-      process.exit()
+      console.log('done');
+      process.exit();
     }
-  )
+  );
 
-app.models.RedUser.destroyAll()
-app.models.RedProfile.destroyAll()
+app.models.RedUser.destroyAll();
+app.models.RedProfile.destroyAll();

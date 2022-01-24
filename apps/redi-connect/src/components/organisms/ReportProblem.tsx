@@ -1,13 +1,14 @@
 import { FC, useState } from 'react'
 import { useHistory } from 'react-router'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
+
 import {
   Button,
   TextArea,
   Checkbox,
 } from '@talent-connect/shared-atomic-design-components'
 import { Modal } from '@talent-connect/shared-atomic-design-components'
-import { useFormik } from 'formik'
-import * as Yup from 'yup'
 import { reportProblem } from '../../services/api/api'
 import { FormSubmitResult, UserType } from '@talent-connect/shared-types'
 import { Content } from 'react-bulma-components'

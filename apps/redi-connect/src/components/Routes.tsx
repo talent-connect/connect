@@ -10,12 +10,12 @@ export const Routes: FC = () => (
       {allRoutes.map(({ requiresLoggedIn, exact, path, component }, i) =>
         requiresLoggedIn ? (
           <PrivateRoute
-            {...{component, exact, path }}
+            {...{ component, exact, path }}
             key={i}
           />
         ) : (
           <Route
-            {...{component, exact, path }}
+            {...{ component, exact, path }}
             key={i} 
           />
         )

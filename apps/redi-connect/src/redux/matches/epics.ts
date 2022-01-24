@@ -29,7 +29,7 @@ export const matchesFetchEpic = (action$: ActionsObservable<MatchesActions>) =>
     switchMap(() =>
       http(`${API_URL}/redMatches?filter=${JSON.stringify(fetchFilter)}`)
     ),
-    map((resp) => resp.data),
+    map(({ data }) => data),
     map(matchesFetchSuccess)
   )
 
@@ -46,7 +46,7 @@ export const matchesMarkAsDismissed = (
         },
       })
     ),
-    map((resp) => resp.data),
+    map(({ data }) => data),
     map(matchesFetchStart)
   )
 
@@ -63,7 +63,7 @@ export const matchesAcceptMentorshipEpic = (action$: ActionsObservable<any>) =>
           },
         })
       ).pipe(
-        map((resp) => resp.data),
+        map(({ data }) => data),
         map(matchesAcceptMentorshipSuccess)
       )
 
@@ -105,7 +105,7 @@ export const matchesDeclineMentorshipEpic = (action$: ActionsObservable<any>) =>
           },
         })
       ).pipe(
-        map((resp) => resp.data),
+        map(({ data }) => data),
         map(matchesAcceptMentorshipSuccess)
       )
 
@@ -144,7 +144,7 @@ export const matchesMarkAsCompleteEpic = (action$: ActionsObservable<any>) =>
           },
         })
       ).pipe(
-        map((resp) => resp.data),
+        map(({ data }) => data),
         map(matchesAcceptMentorshipSuccess)
       )
 

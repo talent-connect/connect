@@ -1,9 +1,10 @@
 import { FC } from 'react'
 import { Content } from 'react-bulma-components'
-import { RedProfile } from '@talent-connect/shared-types'
 import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
+
+import { RedProfile } from '@talent-connect/shared-types'
 import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
+import { mapStateToProps } from '../../helpers';
 
 interface Props {
   profile: RedProfile
@@ -32,8 +33,7 @@ const Me: FC<Props> = ({
   )
 }
 
-const mapStateToProps = ({ user: { profile }}: RootState) => ({ profile })
-
 export default {
+  /** */
   Me: connect(mapStateToProps, {})(Me),
 }

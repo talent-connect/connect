@@ -1,5 +1,8 @@
 import { FC } from 'react'
 import { subYears } from 'date-fns'
+import { connect } from 'react-redux'
+import * as Yup from 'yup'
+import { useFormik } from 'formik'
 
 import {
   FormDatePicker,
@@ -7,18 +10,15 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile } from '@talent-connect/shared-types'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
 
 import { profileSaveStart } from '../../redux/user/actions'
-import * as Yup from 'yup'
 
-import { useFormik } from 'formik'
 
 import { GENDERS } from '@talent-connect/shared-config'
 import { ReadPersonalDetail } from '../molecules'
 
 import { mapOptionsObject, objectKeys } from '@talent-connect/typescript-utilities'
+import { mapStateToProps } from '../../helpers';
 
 const formGenders = mapOptionsObject(GENDERS)
 
@@ -91,10 +91,9 @@ const EditablePersonalDetail: FC<Props> = ({
   )
 }
 
-const mapStateToProps = ({ user: { profile }}: RootState) => ({ profile })
-
 const mapDispatchToProps = (dispatch: Function) => ({
-  profileSaveStart: (profile: Partial<RedProfile>) => dispatch(profileSaveStart(profile))
+  profileSaveStart: (profile: Partial<RedProfile>) =>
+    dispatch(profileSaveStart(profile))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditablePersonalDetail)

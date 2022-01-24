@@ -173,33 +173,33 @@ export const OnboardingSteps: FC = () => {
           Complete the steps below!
         </Element>
       </div>
-      {steps.map((step, index) => (
+      {steps.map(({ number, label  }, index) => (
         <div
           key={index}
           className={classnames('onboarding-steps--item', {
-            'current-step': step.number === currentStep,
-            'completed-step': step.number < currentStep,
+            'current-step': number === currentStep,
+            'completed-step': number < currentStep,
           })}
         >
-          {step.number < currentStep ? (
+          {number < currentStep ? (
             <ChecklistActiveImage className="checklist-image" />
           ) : (
             <ChecklistImage className="checklist-image" />
           )}
-          <Element textSize="5">{step.label}</Element>
-          {currentStep > step.number ? (
+          <Element textSize="5">{label}</Element>
+          {currentStep > number ? (
             <CheckmarkImage className="checkmark-image" />
           ) : null}
-          {currentStep < step.number ? ( 
+          {currentStep < number ? ( 
             <CheckmarkBorderOnlyImage className="checkmark-image" />
           ) : null}
-          {currentStep === step.number && stepStatus === 'todo' ? ( // TODO: apply switch?
+          {currentStep === number && stepStatus === 'todo' ? ( // TODO: apply switch?
             <CheckmarkBorderOnlyImage className="checkmark-image" />
           ) : null}
-          {currentStep === step.number && stepStatus === 'pending' ? (
+          {currentStep === number && stepStatus === 'pending' ? (
             <StepPendingImage className="checkmark-image" />
           ) : null}
-          {currentStep === step.number && stepStatus === 'complete' ? (
+          {currentStep === number && stepStatus === 'complete' ? (
             <CheckmarkImage className="checkmark-image" />
           ) : null}
         </div>

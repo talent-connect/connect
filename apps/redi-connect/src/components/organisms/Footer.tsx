@@ -1,6 +1,7 @@
 import { FC } from 'react'
-import { Element, Columns, Container, Section } from 'react-bulma-components'
 import { useTranslation } from 'react-i18next'
+
+import { Element, Columns, Container, Section } from 'react-bulma-components'
 import { ReactComponent as RediSchool } from '../../assets/images/redi-school-logo.svg'
 import { ReactComponent as Deloitte } from '../../assets/images/deloitte.svg'
 import './Footer.scss'
@@ -57,15 +58,15 @@ const RediFooter: FC = () => {
                 {t('footer.support')}
               </Element>
               <Element renderAs="ul">
-                {supportLinks.map((link) => (
-                  <Element renderAs="li" key={link.url}>
+                {supportLinks.map(({ url, name }) => (
+                  <Element renderAs="li" key={url}>
                     <Element
                       renderAs="a"
-                      href={link.url}
+                      href={url}
                       target="_blank"
                       className="footer__link"
                     >
-                      {link.name}
+                      {name}
                     </Element>
                   </Element>
                 ))}
@@ -82,15 +83,15 @@ const RediFooter: FC = () => {
                 {t('footer.legal')}
               </Element>
               <Element renderAs="ul">
-                {legalLinks.map((link) => (
-                  <Element renderAs="li" key={link.url}>
+                {legalLinks.map(({ url, name }) => (
+                  <Element renderAs="li" key={url}>
                     <Element
                       renderAs="a"
-                      href={link.url}
+                      href={url}
                       target="_blank"
                       className="footer__link"
                     >
-                      {link.name}
+                      {name}
                     </Element>
                   </Element>
                 ))}

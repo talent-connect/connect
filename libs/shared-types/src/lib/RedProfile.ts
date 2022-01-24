@@ -41,7 +41,7 @@ export type RedProfile =
   gender: GenderKey
   age: number
   birthDate: Date
-  languages: Array<Language>
+  languages: Language[]
   otherLanguages: string
   personalDescription: string
   contactEmail: string
@@ -49,8 +49,8 @@ export type RedProfile =
   githubProfileUrl: string
   slackUsername: string
   telephoneNumber: string
-  categories: Array<CategoryKey>
-  favouritedRedProfileIds: Array<string>
+  categories: CategoryKey[]
+  favouritedRedProfileIds: string[]
   optOutOfMenteesFromOtherRediLocation: boolean
 
   userActivated?: boolean
@@ -63,8 +63,8 @@ export type RedProfile =
   currentMenteeCount: number
   currentFreeMenteeSpots: number
   numberOfPendingApplicationWithCurrentUser: number
-  redMatchesWithCurrentUser: Array<RedMatch>
-  redMentoringSessionsWithCurrentUser: Array<RedMentoringSession>
+  redMatchesWithCurrentUser: RedMatch[]
+  redMentoringSessionsWithCurrentUser: RedMentoringSession[]
   ifUserIsMentee_hasActiveMentor: boolean
   ifUserIsMentee_activeMentor: RedProfile
 }

@@ -118,7 +118,7 @@ export async function fetchAllTpJobseekerProfiles({
   name,
   skills: topSkills,
   desiredPositions,
-}: TpJobseekerProfileFilters): Promise<Array<Partial<TpJobseekerProfile>>> {
+}: TpJobseekerProfileFilters): Promise<Partial<TpJobseekerProfile>[]> {
   const filterTopSkills =
     topSkills && topSkills.length !== 0 ? { inq: topSkills } : undefined
   const filterDesiredPositions =
@@ -180,9 +180,7 @@ export async function updateCurrentUserTpJobseekerProfile(
   return resp.data
 }
 
-export async function fetchAllCurrentUserTpJobseekerCv(): Promise<
-  Array<Partial<TpJobseekerCv>>
-> {
+export async function fetchAllCurrentUserTpJobseekerCv(): Promise<Partial<TpJobseekerCv>>[]> {
   const userId = getAccessTokenFromLocalStorage().userId
   const resp = await http(`${API_URL}/redUsers/${userId}/tpJobseekerCv`)
   return resp.data
@@ -260,7 +258,7 @@ export interface TpJobListingFilters {
 export async function fetchAllTpJobListingsUsingFilters({
   idealTechnicalSkills,
   employmentType,
-}: TpJobListingFilters): Promise<Array<Partial<TpJobseekerProfile>>> {
+}: TpJobListingFilters): Promise<Partial<TpJobseekerProfile>[]> {
   const filterIdealTechnicalSkills =
     idealTechnicalSkills && idealTechnicalSkills.length !== 0
       ? { inq: idealTechnicalSkills }
@@ -290,7 +288,7 @@ export async function fetchAllTpJobListingsUsingFilters({
   ).then((resp) => resp.data.filter((listing) => !listing.dummy))
 }
 
-export async function fetchAllTpJobListings(): Promise<Array<TpJobListing>> {
+export async function fetchAllTpJobListings(): Promise<TpJobListing[]> {
   const userId = getAccessTokenFromLocalStorage().userId
   const resp = await http(`${API_URL}/redUsers/${userId}/tpJobListings`)
 
@@ -352,33 +350,18 @@ export async function deleteCurrentUserTpJobListing(
   return resp.data
 }
 
-export async function fetchAllTpJobFair2021InterviewMatches_tpJobListings(): Promise<
-  Array<TpJobListing>
-> {
-  const resp = await http(`${API_URL}/tpJobfair2021InterviewMatches`)
-  const interviewMatches = resp.data
-  const jobListings: Array<TpJobListing> = interviewMatches.map(
-    (match) => match.jobListing
-  )
-
+export async function fetchAllTpJobFair2021InterviewMatches_tpJobListings(): Promise<TpJobListing[]> {
+  const { data: interviewMatches } = await http(`${API_URL}/tpJobfair2021InterviewMatches`)
+  const jobListings: TpJobListing[] = interviewMatches.map((match) => match.jobListing)
   return jobListings
 }
 
-export async function fetchAllTpJobFair2021InterviewMatches_tpJobseekerProfiles(): Promise<
-  Array<TpJobseekerProfile>
-> {
-  const resp = await http(`${API_URL}/tpJobfair2021InterviewMatches`)
-  const interviewMatches = resp.data
-  const jobseekerProfiles: Array<TpJobseekerProfile> = interviewMatches.map(
-    (match) => match.interviewee
-  )
-
+export async function fetchAllTpJobFair2021InterviewMatches_tpJobseekerProfiles(): Promise<TpJobseekerProfile[]> {
+  const { data: interviewMatches } = await http(`${API_URL}/tpJobfair2021InterviewMatches`)
+  const jobseekerProfiles: TpJobseekerProfile[] = interviewMatches.map((match) => match.interviewee)
   return jobseekerProfiles
 }
 
-export async function fetchTpJobseekerProfileById(
-  id: string
-): Promise<Partial<TpJobseekerProfile>> {
-  const resp = await http(`${API_URL}/tpJobseekerProfiles/${id}`)
-  return resp.data
+export async function fetchTpJobseekerProfileById(id: string): Promise<Partial<TpJobseekerProfile>> {
+  return (await http(`${API_URL}/tpJobseekerProfiles/${id}`)).data
 }

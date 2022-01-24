@@ -43,7 +43,7 @@ export const EditableOverview: FC<Props> = ({
 
   return (
     <Editable
-      disableEditing={Boolean(disableEditing)}
+      disableEditing={disableEditing}
       isEditing={isEditing}
       isFormDirty={isFormDirty}
       setIsEditing={setIsEditing}

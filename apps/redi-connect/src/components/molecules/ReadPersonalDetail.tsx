@@ -1,7 +1,8 @@
 import { FC } from 'react'
 import moment from 'moment'
-import { RedProfile } from '@talent-connect/shared-types'
 import { connect } from 'react-redux'
+
+import { RedProfile } from '@talent-connect/shared-types'
 import { RootState } from '../../redux/types'
 import {
   Caption,
@@ -9,6 +10,7 @@ import {
   PipeList,
 } from '@talent-connect/shared-atomic-design-components'
 import { GENDERS } from '@talent-connect/shared-config'
+import { mapStateToProps } from '../../helpers';
 
 interface Props {
   profile: RedProfile
@@ -17,7 +19,7 @@ interface Props {
 
 const ReadPersonalDetail: FC<Props> = ({
   profile: { gender, birthDate },
-  caption
+  caption = false
 }) => {
   
   const age = moment().diff(birthDate, 'years')
@@ -36,9 +38,9 @@ const ReadPersonalDetail: FC<Props> = ({
   )
 }
 
-const mapStateToProps = ({ user: { profile }}: RootState) => ({ profile })
-
 export default {
+  /** */
   Me: connect(mapStateToProps, {})(ReadPersonalDetail),
+  /** */
   Some: ({ profile }: Props) => <ReadPersonalDetail profile={profile} caption />,
 }

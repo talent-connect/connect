@@ -24,9 +24,9 @@ import { mentoringSessionsCreateStart } from '../../../redux/mentoringSessions/a
 import './MSessions.scss'
 
 const formMentoringSessionDurationOptions = MENTORING_SESSION_DURATION_OPTIONS
-  .map((sesstionDuration) => ({
-    value: sesstionDuration,
-    label: `${sesstionDuration} min`,
+  .map((sessionDuration) => ({
+    value: sessionDuration,
+    label: `${sessionDuration} min`,
   }))
 
 interface AddSessionProps {
@@ -110,14 +110,14 @@ const MSessions: FC<MSessions> = ({
     >
       {sessions.length ? (
         <ul className="m-sessions__list">
-          {sessions.map((session) => (
+          {sessions.map(({ date, minuteDuration }) => (
             <li
               className="m-sessions__list__item"
-              key={session.date.toString()}
+              key={date.toString()}
             >
-              {moment(session.date).format('DD.MM.YYYY')} -{' '}
+              {moment(date).format('DD.MM.YYYY')} -{' '}
               <Element renderAs="span" textColor="grey">
-                {session.minuteDuration} min
+                {minuteDuration} min
               </Element>
             </li>
           ))}

@@ -1,13 +1,14 @@
 import { FC } from 'react'
 import { Content } from 'react-bulma-components'
-import { RedProfile } from '@talent-connect/shared-types'
 import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
+
+import { RedProfile } from '@talent-connect/shared-types'
 import {
   Caption,
   Placeholder,
 } from '@talent-connect/shared-atomic-design-components'
 import { EDUCATION_LEVELS } from '@talent-connect/shared-config'
+import { mapStateToProps } from '../../helpers';
 
 interface Props {
   profile: RedProfile
@@ -36,9 +37,7 @@ const ReadEducation: FC<Props> = ({
   )
 }
 
-const mapStateToProps = ({ user: { profile }}: RootState) => ({ profile })
-
 export default {
   Me: connect(mapStateToProps, {})(ReadEducation),
-  Some: ({ profile }: Props) => <ReadEducation profile={profile} shortInfo />,
+  Some: (props: Props) => <ReadEducation {...props} />,
 }

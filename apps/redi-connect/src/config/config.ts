@@ -15,4 +15,4 @@ const validRediLocations = Object.keys(rediLocationNames)
 if (!validRediLocations.includes(rediLocation))
   throw new Error('Invalid RediLocation')
 
-export const courses = allCourses.filter((c) => c.location === rediLocation)
+export const courses = allCourses.filter(({ location }) => location === rediLocation)

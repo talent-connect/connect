@@ -1,18 +1,17 @@
 import { FC } from 'react'
+import { connect } from 'react-redux'
+import * as Yup from 'yup'
+import { useFormik } from 'formik'
+
 import { FormSelect } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile } from '@talent-connect/shared-types'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
 
 import { profileSaveStart } from '../../redux/user/actions'
-import * as Yup from 'yup'
-
-import { useFormik } from 'formik'
-
 import { ReadRediClass } from '../molecules'
 import { courses } from '../../config/config'
 import { mapOptions } from '@talent-connect/typescript-utilities';
+import { mapStateToProps } from '../../helpers';
 
 const formCourses = mapOptions(courses)
 
@@ -23,7 +22,7 @@ export interface RediClassFormValues {
 const validationSchema = Yup.object({
   mentee_currentlyEnrolledInCourse: Yup.string()
     .required()
-    .oneOf(courses.map((level) => level.id))
+    .oneOf(courses.map(({ id }) => id))
     .label('Currently enrolled in course'),
 })
 
@@ -65,8 +64,6 @@ const EditableRediClass: FC<Props> = ({
     </Editable>
   )
 }
-
-const mapStateToProps = ({ user: { profile }}: RootState) => ({ profile })
 
 const mapDispatchToProps = (dispatch: Function) => ({
   profileSaveStart: (profile: Partial<RedProfile>) =>

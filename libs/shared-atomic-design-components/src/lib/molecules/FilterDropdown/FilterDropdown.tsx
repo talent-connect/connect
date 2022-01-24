@@ -55,14 +55,14 @@ const FilterDropdown: FC<FilterDropdownProps> = ({
           [`${baseClass}__list--show`]: showDropdown,
         })}
       >
-        {items.map((item) => (
-          <li key={item.value}>
+        {items.map(({ value, label }) => (
+          <li key={value}>
             <Checkbox
-              name={`${item.value}-checkbox`}
-              handleChange={() => onChange(item.value)}
-              checked={selected.includes(item.value)}
+              name={`${value}-checkbox`}
+              handleChange={() => onChange(value)}
+              checked={selected.includes(value)}
             >
-              {item.label}
+              {label}
             </Checkbox>
           </li>
         ))}

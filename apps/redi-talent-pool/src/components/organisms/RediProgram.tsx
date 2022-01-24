@@ -27,23 +27,23 @@ const RediProgram: FC = () => {
           headline={t('loggedOutArea.homePage.program.headline')}
         />
         <Columns>
-          {programSteps.map((step) => (
-            <Columns.Column textAlignment="centered" key={step.content}>
-              <Icon icon={step.image} size="x-large" className="program__img" />
+          {programSteps.map(({ image, content, headline }) => (
+            <Columns.Column textAlignment="centered" key={content}>
+              <Icon icon={image} size="x-large" className="program__img" />
               <Heading
                 size={4}
                 renderAs="h3"
                 marginless
                 responsive={{ tablet: { hide: { value: true } } }}
               >
-                {step.headline}
+                {headline}
               </Heading>
               <Element
                 textSize={4}
                 className="program__text"
                 responsive={{ mobile: { textSize: { value: 5 } } }}
               >
-                {step.content}
+                {content}
               </Element>
             </Columns.Column>
           ))}

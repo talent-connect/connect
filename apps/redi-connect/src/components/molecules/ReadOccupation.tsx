@@ -2,13 +2,13 @@ import { FC } from 'react'
 import { Content } from 'react-bulma-components'
 import { RedProfile } from '@talent-connect/shared-types'
 import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
 import {
   Caption,
   Placeholder,
 } from '@talent-connect/shared-atomic-design-components'
 import { MENTEE_OCCUPATION_CATEGORY } from '@talent-connect/shared-config'
 import { mapOptionsObject } from '@talent-connect/typescript-utilities'
+import { mapStateToProps } from '../../helpers';
 
 interface Props {
   profile: RedProfile
@@ -30,7 +30,7 @@ const ReadOccupation: FC<Props> = ({
     mentee_occupationLookingForJob_what,
     mentee_occupationOther_description,
   },
-  shortInfo
+  shortInfo = false
 }) => {
 
   if (!mentor_occupation && !mentee_occupationCategoryId) {
@@ -60,8 +60,8 @@ const ReadOccupation: FC<Props> = ({
           <>
             <p>
               {formMenteeOccupationCategories
-                .filter((level) => level.value === mentee_occupationCategoryId)
-                .map((level) => level.label)}
+                .filter(({ value }) => value === mentee_occupationCategoryId)
+                .map(({ label }) => label)}
             </p>
 
             {mentee_occupationCategoryId === 'job' && (
@@ -95,11 +95,9 @@ const ReadOccupation: FC<Props> = ({
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile as RedProfile,
-})
-
 export default {
+  /** */
   Me: connect(mapStateToProps, {})(ReadOccupation),
-  Some: ({ profile }: Props) => <ReadOccupation profile={profile} shortInfo />,
+  /** */
+  Some: (props: Props) => <ReadOccupation {...props} />,
 }

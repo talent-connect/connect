@@ -68,7 +68,7 @@ function buildValidationSchema(signupType: SignUpPageType['type']) {
       ...baseSchema,
       currentlyEnrolledInCourse: Yup.string()
         .required()
-        .oneOf(COURSES.map((level) => level.id))
+        .oneOf(COURSES.map(({ id }) => id))
         .label('Currently enrolled in course'),
       agreesWithCodeOfConduct: Yup.boolean().required().oneOf([true]),
     })

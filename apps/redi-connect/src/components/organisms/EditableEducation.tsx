@@ -13,6 +13,7 @@ import { useFormik } from 'formik'
 import { EDUCATION_LEVELS } from '@talent-connect/shared-config'
 import { ReadEducation } from '../molecules'
 import { mapOptionsObject, objectKeys } from '@talent-connect/typescript-utilities'
+import { mapStateToProps } from '../../helpers';
 
 const formEducationLevels = mapOptionsObject(EDUCATION_LEVELS)
 
@@ -28,7 +29,7 @@ const validationSchema = Yup.object({
 
 interface Props {
   profile: RedProfile
-  profileSaveStart: (arg: EducationFormValues & {id: string }) => void
+  profileSaveStart: (arg: EducationFormValues & { id: string }) => void
 }
 
 const EditableEducation: FC<Props> = ({
@@ -65,8 +66,6 @@ const EditableEducation: FC<Props> = ({
     </Editable>
   )
 }
-
-const mapStateToProps = ({ user: { profile } }: RootState) => ({ profile })
 
 const mapDispatchToProps = (dispatch: Function) => ({
   profileSaveStart: (profile: Partial<RedProfile>) =>

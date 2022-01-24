@@ -1,12 +1,13 @@
 import { FC } from 'react'
-import { RedProfile } from '@talent-connect/shared-types'
 import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
+
+import { RedProfile } from '@talent-connect/shared-types'
 import {
   Caption,
   Placeholder,
   PipeList,
 } from '@talent-connect/shared-atomic-design-components'
+import { mapStateToProps } from '../../helpers';
 
 interface Props {
   profile: RedProfile
@@ -28,9 +29,9 @@ const Some: FC<Props> = ({ profile: { languages } }) => {
   )
 }
 
-const mapStateToProps = ({ user: { profile }}: RootState) => ({ profile })
-
 export default {
+  /** */
   Me: connect(mapStateToProps, {})(Me),
-  Some: ({ profile }: Props) => <Some profile={profile} />,
+  /** */
+  Some: (props: Props) => <Some {...props} />,
 }

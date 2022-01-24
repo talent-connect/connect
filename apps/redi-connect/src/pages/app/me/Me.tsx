@@ -1,5 +1,6 @@
 import { FC, useEffect } from 'react'
 import { connect } from 'react-redux'
+
 import { RootState } from '../../../redux/types'
 import { profileFetchStart } from '../../../redux/user/actions'
 import { Columns, Content, Element } from 'react-bulma-components'
@@ -152,11 +153,8 @@ const Me: FC<Props> = ({
   )
 }
 
-const mapStateToProps = ({ user }: RootState) => ({
-  saveResult: user.saveResult,
-  loading: user.loading,
-  profile: user.profile,
-})
+const mapStateToProps = ({ user: { saveResult, loading, profile } }: RootState) =>
+  ({ saveResult, loading, profile })
 
 const mapDispatchToProps = (dispatch: Function) => ({
   profileFetchStart: () => dispatch(profileFetchStart()),

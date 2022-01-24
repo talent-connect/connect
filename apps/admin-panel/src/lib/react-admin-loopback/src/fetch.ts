@@ -26,6 +26,7 @@ const fetchJson = async (url, options = {}) => {
   const headers = o.headers
   const body = o.body
   let json
+  
   try {
     json = JSON.parse(body)
   } catch (e) {

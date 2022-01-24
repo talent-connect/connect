@@ -1,15 +1,14 @@
 import { FC } from 'react'
+import { connect } from 'react-redux'
+import * as Yup from 'yup'
+import { useFormik } from 'formik'
+
 import { TextInput } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile } from '@talent-connect/shared-types'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
-
 import { profileSaveStart } from '../../redux/user/actions'
-import * as Yup from 'yup'
-
-import { useFormik } from 'formik'
 import { ReadSocialMedia } from '../molecules'
+import { mapStateToProps } from '../../helpers';
 
 export interface SocialMediaFormValues {
   linkedInProfileUrl: string
@@ -83,8 +82,6 @@ const EditableSocialMedia: FC<Props> = ({
     </Editable>
   )
 }
-
-const mapStateToProps = ({ user: { profile }}: RootState) => ({ profile })
 
 const mapDispatchToProps = (dispatch: Function) => ({
   profileSaveStart: (profile: Partial<RedProfile>) =>

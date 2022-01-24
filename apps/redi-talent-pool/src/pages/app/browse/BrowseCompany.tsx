@@ -26,8 +26,8 @@ import { useBrowseTpJobseekerProfilesQuery } from '../../../react-query/use-tpjo
 export const BrowseCompany: FC = () => {
   const [query, setQuery] = useQueryParams({
     name: withDefault(StringParam, ''),
-    skills: withDefault(ArrayParam, []),
-    desiredPositions: withDefault(ArrayParam, []),
+    skills: withDefault(ArrayParam, [] as string[]),
+    desiredPositions: withDefault(ArrayParam, [] as string[]),
   })
   const { name, skills, desiredPositions } = query
 
@@ -106,7 +106,7 @@ export const BrowseCompany: FC = () => {
       <div className="active-filters">
         {(skills.length !== 0 || desiredPositions.length !== 0) && (
           <>
-            {(skills as string[]).map((catId) => (
+            {skills.map((catId) => (
               <FilterTag
                 key={catId}
                 id={catId}
@@ -114,7 +114,7 @@ export const BrowseCompany: FC = () => {
                 onClickHandler={(item) => toggleFilters(skills, 'skills', item)}
               />
             ))}
-            {(desiredPositions as string[]).map((id) => (
+            {desiredPositions.map((id) => (
               <FilterTag
                 key={id}
                 id={id}

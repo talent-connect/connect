@@ -23,7 +23,7 @@ const  Applications: FC<Props> = ({ applicants }) => {
   return (
     <LoggedIn>
       <Heading subtitle size="small" className="double-bs">
-        Applications {Boolean(applicants.length) && `(${applicants.length})`}
+        Applications {applicants.length && `(${applicants.length})`}
       </Heading>
       {applicants.length === 0 ? (
         <Content italic>
@@ -58,8 +58,6 @@ const  Applications: FC<Props> = ({ applicants }) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  applicants: getApplicants(state.matches),
-})
+const mapStateToProps = ({ matches }: RootState) => ({ applicants: getApplicants(matches) })
 
 export default connect(mapStateToProps, null)(Applications)

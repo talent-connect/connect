@@ -93,14 +93,11 @@ import {
   TpCompanyProfileState,
 } from '@talent-connect/shared-types'
 
-import { objectEntries, objectValues } from '@talent-connect/typescript-utilities'
+import { objectEntries, objectValues, mapOptionsObject } from '@talent-connect/typescript-utilities'
 
 /** REFERENCE DATA */
 
-const rediLocations = objectEntries(REDI_LOCATION_NAMES).map(([id, label]) => ({
-  id,
-  label,
-}))
+const rediLocations = mapOptionsObject(REDI_LOCATION_NAMES)
 
 const categoriesFlat = CATEGORIES.map((cat) => ({
   ...cat,
@@ -121,14 +118,14 @@ const coursesFlat = [
   ),
 ]
 
-const categoriesIdToLabelCleanMap = mapValues(
-  keyBy(categoriesFlat, 'id'),
-  'labelClean'
-)
-const categoriesIdToGroupMap = mapValues(keyBy(categoriesFlat, 'id'), 'group')
+const categoriesIdToLabelCleanMap =
+  mapValues(keyBy(categoriesFlat, 'id'), 'labelClean')
+
+const categoriesIdToGroupMap =
+  mapValues(keyBy(categoriesFlat, 'id'), 'group')
 
 const genders = [
-  ...objectEntries(GENDERS).map((key, value) => ({ id: key, name: value })),
+  ...objectEntries(GENDERS).map((id, name) => ({ id, name })),
   { id: '', name: 'Prefers not to answer' },
 ]
 
@@ -144,16 +141,21 @@ export const formRedMatchStatuses = objectEntries(RED_MATCH_STATUSES).map(
 
 /** START OF SHARED STUFF */
 
-const RecordCreatedAt: FC = (props) => <DateField source="createdAt" {...props} />
-RecordCreatedAt.defaultProps = {
-  addLabel: true,
-  label: 'Record created at',
+interface RecordProps {
+  addLabel?: boolean;
+  label?: string
 }
 
-const RecordUpdatedAt: FC = (props) => <DateField source="updatedAt" {...props} />
-RecordUpdatedAt.defaultProps = {
-  addLabel: true,
-  label: 'Record updated at',
+const RecordCreatedAt: FC<RecordProps> = ({ addLabel = true, label = 'Record created at' }) => {
+  return (
+    <DateField source="createdAt" {...{ addLabel, label }} />
+  );
+}
+
+const RecordUpdatedAt: FC<RecordProps> = ({ addLabel = true, label = 'Record updated at' }) => {
+  return (
+    <DateField source="updatedAt" {...{ addLabel, label }} />
+  )
 }
 
 const LanguageList: FC<{ data?: Record<string, string> }> = ({ data }) => {
@@ -292,11 +294,12 @@ const FreeMenteeSpotsPerLocationAside: FC = () => {
     }).then(({ data }) => setMentorsList(data))
   }, [])
 
-  const getFreeSpotsCount = (location) =>
-    mentorsList
-      .filter((mentor) => mentor.rediLocation === location)
-      .filter((mentor) => mentor.userActivated)
+  function getFreeSpotsCount (location) {
+    return mentorsList
+      .filter(({ rediLocation }) => rediLocation === location)
+      .filter(({ userActivated }) => userActivated)
       .reduce((acc, curr) => acc + curr.currentFreeMenteeSpots, 0)
+  }
 
   const totalFreeMenteeSpotsBerlin = getFreeSpotsCount('berlin')
   const totalFreeMenteeSpotsMunich = getFreeSpotsCount('munich')
@@ -593,7 +596,7 @@ const CategoriesInput: FC = (props) => {
   )
 }
 
-const MenteeEnrolledInCourseField: FC = (props) => {
+const MenteeEnrolledInCourseField: FC<{ record: any }> = (props) => {
   return (
     <Labeled label="Currently enrolled in course">
       <span>
@@ -603,7 +606,7 @@ const MenteeEnrolledInCourseField: FC = (props) => {
   )
 }
 
-const MenteeEnrolledInCourseInput: FC = (props) => {
+const MenteeEnrolledInCourseInput: FC<{ record: any }> = (props) => {
   const courses = coursesByLocation[props.record.rediLocation]
   return (
     <SelectInput
@@ -927,16 +930,12 @@ const exporter = async (mentoringSessions, fetchRelatedRecords) => {
     'menteeId',
     'redProfiles'
   )
-  const data = mentoringSessions.map((x) => {
-    const mentor = mentors[x.mentorId]
-    const mentee = mentees[x.menteeId]
-    if (mentor) {
-      x.mentorName = `${mentor.firstName} ${mentor.lastName}`
-    }
-    if (mentee) {
-      x.menteeName = `${mentee.firstName} ${mentee.lastName}`
-    }
-    return x
+  const data = mentoringSessions.map((session) => {
+    const mentor = mentors[session.mentorId]
+    const mentee = mentees[session.menteeId]
+    if (mentor) session.mentorName = `${mentor.firstName} ${mentor.lastName}`
+    if (mentee) session.menteeName = `${mentee.firstName} ${mentee.lastName}`
+    return session
   })
   const csv = convertToCSV({
     data,
@@ -985,7 +984,7 @@ const RedMentoringSessionListFilters: FC = (props) => (
   <Filter {...props}>
     <SelectInput
       source="rediLocation"
-      choices={rediLocations.map(({ id, label }) => ({ id, name: label }))}
+      choices={rediLocations.map(({ value, label }) => ({ id: value, name: label }))}
     />
   </Filter>
 )
@@ -1066,7 +1065,7 @@ const RedMentoringSessionListAside: FC = () => {
           <Button onClick={increaseStep}>
             Are you{' '}
             {new Array(step)
-              .fill()
+              .fill(null)
               .map(() => 'really')
               .join(' ')}{' '}
             ReDI?
@@ -1111,7 +1110,7 @@ const RedMentoringSessionCreate: FC = (props) => (
     <SimpleForm>
       <SelectInput
         source="rediLocation"
-        choices={rediLocations.map(({ id, label }) => ({ id, name: label }))}
+        choices={rediLocations.map(({ value, label }) => ({ id: value, name: label }))}
       />
       <ReferenceInput
         label="Mentor"
@@ -1792,9 +1791,7 @@ const TpCompanyProfileEdit: FC = (props) => (
         <SelectInput
           label="How They Heard about ReDI Talent Pool"
           source="howDidHearAboutRediKey"
-          choices={objectEntries(howDidHearAboutRediOptions).map(
-            ([id, name]) => ({ id, name })
-          )}
+          choices={objectEntries(howDidHearAboutRediOptions).map(([id, name]) => ({ id, name }))}
         />
         <ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldEdit />
 
@@ -1869,17 +1866,15 @@ const TpJobListingList: FC = (props) => {
 }
 
 function tpJobListingListExporter(jobListings, fetchRelatedRecords) {
-  const data = jobListings.map((job) => {
-    const {
-      title,
-      location,
-      tpCompanyProfile: { companyName },
-      employmentType,
-      languageRequirements,
-      desiredExperience,
-      salaryRange,
-    } = job
-
+  const data = jobListings.map(({
+    title,
+    location,
+    tpCompanyProfile: { companyName },
+    employmentType,
+    languageRequirements,
+    desiredExperience,
+    salaryRange,
+  }) => {
     return {
       title,
       location,
@@ -2006,22 +2001,21 @@ const TpJobFair2021InterviewMatchList: FC = (props) => {
 }
 
 function tpJobFair2021InterviewMatchListExporter(matches, fetchRelatedRecords) {
-  const data = matches.map((match) => {
+  const data = matches.map(({ company = {}, interviewee = {} }) => {
     const {
-      company: {
-        companyName,
-        location: companyLocation,
-        firstName: companyPersonFirstName,
-        lastName: companyPersonLastName,
-        contactEmail: companyPersonContactEmail,
-      } = {},
-      interviewee: {
-        currentlyEnrolledInCourse: intervieweeCurrentRediCourse,
-        firstName: intervieweeFirstName,
-        lastName: intervieweeLastName,
-        contactEmail: intervieweeContactEmail,
-      } = {},
-    } = match
+      companyName,
+      location: companyLocation,
+      firstName: companyPersonFirstName,
+      lastName: companyPersonLastName,
+      contactEmail: companyPersonContactEmail,
+    } = company
+    
+    const {
+      currentlyEnrolledInCourse: intervieweeCurrentRediCourse,
+      firstName: intervieweeFirstName,
+      lastName: intervieweeLastName,
+      contactEmail: intervieweeContactEmail,
+    } = interviewee
 
     return {
       companyName,
@@ -2163,49 +2157,23 @@ const TpJobFair2021InterviewMatchEdit: FC = (props) => (
 )
 
 const buildDataProvider = (normalDataProvider) => (verb, resource, params) => {
-  if (verb === 'GET_LIST' && resource === 'redProfiles') {
-    if (params.filter) {
-      const filter = params.filter
-      const q = filter.q
-      delete filter.q
-      const newFilter = { and: [filter] }
-      if (q) {
-        const andConditions = q.split(' ').map((word) => ({
-          loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName: {
-            like: word,
-            options: 'i',
-          },
-        }))
-        newFilter.and = [...newFilter.and, ...andConditions]
+  if (verb === 'GET_LIST' && params.filter) {
+    const filter = params.filter;
+    const q = filter.q;
+    delete filter.q;
+    const newFilter = { and: [filter] };
+
+    if (q) {
+      if (resource === 'tpJobseekerProfiles' || resource === 'redProfiles') {
+          const andConditions = q.split(' ').map((word) => ({
+            loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName: {
+              like: word,
+              options: 'i',
+            },
+          }))
+          newFilter.and = [...newFilter.and, ...andConditions]
       }
-      params.filter = newFilter
-    }
-  }
-  if (verb === 'GET_LIST' && resource === 'tpJobseekerProfiles') {
-    if (params.filter) {
-      const filter = params.filter
-      const q = filter.q
-      delete filter.q
-      const newFilter = { and: [filter] }
-      if (q) {
-        const andConditions = q.split(' ').map((word) => ({
-          loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName: {
-            like: word,
-            options: 'i',
-          },
-        }))
-        newFilter.and = [...newFilter.and, ...andConditions]
-      }
-      params.filter = newFilter
-    }
-  }
-  if (verb === 'GET_LIST' && resource === 'tpCompanyProfiles') {
-    if (params.filter) {
-      const filter = params.filter
-      const q = filter.q
-      delete filter.q
-      const newFilter = { and: [filter] }
-      if (q) {
+      if (resource === 'tpCompanyProfiles') {
         const andConditions = q.split(' ').map((word) => ({
           companyName: {
             like: word,
@@ -2214,8 +2182,8 @@ const buildDataProvider = (normalDataProvider) => (verb, resource, params) => {
         }))
         newFilter.and = [...newFilter.and, ...andConditions]
       }
-      params.filter = newFilter
     }
+    params.filter = newFilter
   }
   return normalDataProvider(verb, resource, params)
 }

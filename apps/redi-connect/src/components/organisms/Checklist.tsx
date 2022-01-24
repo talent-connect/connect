@@ -1,6 +1,7 @@
 import { FC } from 'react'
-import { Section, Container, Element } from 'react-bulma-components'
 import { useTranslation } from 'react-i18next'
+
+import { Section, Container, Element } from 'react-bulma-components'
 import { DecoratedHeadline } from '@talent-connect/shared-atomic-design-components'
 import './Checklist.scss'
 interface Props {

@@ -1,10 +1,11 @@
 import { FC, useState } from 'react'
-import { isLoggedIn } from '../../services/auth/auth'
-import { logout } from '../../services/api/api'
-import { Section, Container, Element } from 'react-bulma-components'
 import classnames from 'classnames'
 import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+
+import { isLoggedIn } from '../../services/auth/auth'
+import { logout } from '../../services/api/api'
+import { Section, Container, Element } from 'react-bulma-components'
 import './Navbar.scss'
 import {
   Button,

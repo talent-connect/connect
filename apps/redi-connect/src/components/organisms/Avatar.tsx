@@ -18,6 +18,7 @@ import './Avatar.scss'
 
 import { profileSaveStart } from '../../redux/user/actions'
 import { RedProfile } from '@talent-connect/shared-types'
+import { mapStateToProps } from '../../helpers';
 
 interface AvatarProps {
   profile: RedProfile
@@ -133,8 +134,6 @@ const AvatarEditable: FC<AvatarEditable> = ({
     </div>
   )
 }
-
-const mapStateToProps = ({ user: { profile } }: RootState) => ({ profile })
 
 const mapDispatchToProps = (dispatch: Function) => ({
   profileSaveStart: (profile: Partial<RedProfile>) =>

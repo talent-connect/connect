@@ -1,12 +1,13 @@
 import { FC } from 'react'
+import { connect } from 'react-redux'
+
 import { Content } from 'react-bulma-components'
 import { RedProfile } from '@talent-connect/shared-types'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
 import {
   Caption,
   Placeholder,
 } from '@talent-connect/shared-atomic-design-components'
+import { mapStateToProps } from '../../helpers';
 
 interface Props {
   profile: RedProfile
@@ -15,7 +16,7 @@ interface Props {
 
 const ReadSocialMedia: FC<Props> = ({
   profile: { linkedInProfileUrl, githubProfileUrl, slackUsername },
-  shortInfo
+  shortInfo = false
 }) => {
 
   if (
@@ -59,9 +60,9 @@ const ReadSocialMedia: FC<Props> = ({
   )
 }
 
-const mapStateToProps = ({ user: { profile }}: RootState) => ({ profile })
-
 export default {
+  /** */
   Me: connect(mapStateToProps, {})(ReadSocialMedia),
-  Some: ({ profile }: Props) => <ReadSocialMedia profile={profile} shortInfo />,
+  /** */
+  Some: (props: Props) => <ReadSocialMedia {...props} />,
 }

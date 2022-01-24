@@ -81,9 +81,7 @@ export const EditableImportantDetails: FC<Props> = ({
               <div>
                 <Caption>Type of work</Caption>
                 <PipeList
-                  items={profile.desiredEmploymentType.map(
-                    (x) => desiredEmploymentTypeOptionsIdToLabelMap[x]
-                  )}
+                  items={profile.desiredEmploymentType.map((x) => desiredEmploymentTypeOptionsIdToLabelMap[x])}
                   overflowAllowed
                 />
               </div>
@@ -118,9 +116,8 @@ export const EditableImportantDetails: FC<Props> = ({
                   {[
                     profile?.phoneNumber,
                     profile?.contactEmail,
-                  ].map((contactItem) =>
-                    contactItem ? <p>{contactItem}</p> : null
-                  )}
+                  ]
+                  .map((contactItem) => contactItem ? <p>{contactItem}</p> : null)}
                 </Content>
               </div>
             ) : null}
@@ -130,11 +127,7 @@ export const EditableImportantDetails: FC<Props> = ({
                 <Caption>Immigration status</Caption>
                 <Content>
                   <p>
-                    {
-                      immigrationStatusOptionsIdToLabelMap[
-                        profile?.immigrationStatus
-                      ]
-                    }
+                    {immigrationStatusOptionsIdToLabelMap[profile?.immigrationStatus]}
                   </p>
                 </Content>
               </div>

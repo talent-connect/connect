@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import { useTranslation } from 'react-i18next'
 import classnames from 'classnames'
 import {
   Section,
@@ -8,7 +9,6 @@ import {
   Content,
   Columns,
 } from 'react-bulma-components'
-import { useTranslation } from 'react-i18next'
 import './RediHeroLanding.scss'
 import {
   Icon,
@@ -91,9 +91,9 @@ const RediHeroLanding: FC<Props> = ({ type }) => {
               {t(`loggedOutArea.homePage.hero.${type}.programName`)}
             </Element>
           </Columns.Column>
-          {programSteps.map((step, index) => (
+          {programSteps.map(({ image, name }, index) => (
             <Columns.Column key={index}>
-              <Icon icon={step.image} size="x-large" />
+              <Icon icon={image} size="x-large" />
               <Element
                 renderAs="hr"
                 responsive={{ mobile: { hide: { value: true } } }}
@@ -102,7 +102,7 @@ const RediHeroLanding: FC<Props> = ({ type }) => {
               <Element textSize={5} renderAs="p">
                 <strong>{`0${index + 1}`}</strong>
                 <br />
-                {step.name}
+                {name}
               </Element>
             </Columns.Column>
           ))}

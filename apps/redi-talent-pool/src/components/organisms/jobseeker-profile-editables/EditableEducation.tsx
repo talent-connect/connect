@@ -217,10 +217,10 @@ export const JobseekerFormSectionEducation: FC<JobseekerFormSectionEducationProp
         <Droppable droppableId="id">
           {(provided, snapshot) => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
-              {formik?.values?.education.map((item, index) => (
+              {formik?.values?.education.map(({ uuid, title }, index) => (
                 <Draggable
-                  key={item.uuid}
-                  draggableId={item.uuid}
+                  key={uuid}
+                  draggableId={uuid}
                   index={index}
                 >
                   {(provided, snapshot) => (
@@ -230,10 +230,8 @@ export const JobseekerFormSectionEducation: FC<JobseekerFormSectionEducationProp
                       {...provided.dragHandleProps}
                     >
                       <FormDraggableAccordion
-                        title={
-                          item.title ? item.title : 'Click me to add details'
-                        }
-                        onRemove={() => onRemove(item.uuid)}
+                        title={title || 'Click me to add details'}
+                        onRemove={() => onRemove(uuid)}
                         closeAccordionSignalSubject={
                           closeAllAccordionsSignalSubject.current
                         }

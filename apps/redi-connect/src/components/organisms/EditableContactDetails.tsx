@@ -10,6 +10,7 @@ import * as Yup from 'yup'
 
 import { useFormik } from 'formik'
 import { ReadContactDetails } from '../molecules'
+import { mapStateToProps } from '../../helpers';
 
 export interface ContactsFormValues {
   firstName: string
@@ -96,9 +97,6 @@ const EditableContactDetails: FC<Props> = ({
     </Editable>
   )
 }
-
-// TODO repeated
-const mapStateToProps = ({ user: { profile } }: RootState) => ({ profile })
 
 // TODO repeated
 const mapDispatchToProps = (dispatch: Function) => ({

@@ -52,9 +52,7 @@ export default (apiUrl, httpClient = fetchJson) => {
         url = `${apiUrl}/${resource}/${params.id}`;
         break;
       case GET_MANY: {
-        const listId = params.ids.map((id) => {
-          return { id };
-        });
+        const listId = params.ids.map((id) => id);
 
         let query = '';
         if (listId.length) {

@@ -11,7 +11,7 @@ interface SocialMediaIcon {
   nrw: string
 }
 
-export const icons: Array<SocialMediaIcon> = [
+export const icons: SocialMediaIcon[] = [
   {
     icon: 'fb',
     berlin: 'https://www.facebook.com/redischool/',

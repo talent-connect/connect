@@ -58,8 +58,8 @@ const  MentorshipList: FC<Props> = ({ matches }) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  matches: getMatches(state.matches),
+const mapStateToProps = ({ matches }: RootState) => ({
+  matches: getMatches(matches),
 })
 
 export default connect(mapStateToProps, null)(MentorshipList)

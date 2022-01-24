@@ -345,8 +345,7 @@ export const CVPDF: FC<{ cvData: Partial<TpJobseekerCv> }> = ({
             <View style={styles.contentViewLeft}>
               <Text style={styles.contentHeading}>Languages</Text>
               <View style={styles.ContentList}>
-                {workingLanguages?.map(
-                  ({ language, proficiencyLevelId }, index) => (
+                {workingLanguages?.map(({ language, proficiencyLevelId }, index) => (
                     <Text
                       key={`language_${index}`}
                       style={styles.ContentListItem}

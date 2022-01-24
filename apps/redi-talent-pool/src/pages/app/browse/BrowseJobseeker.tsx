@@ -1,3 +1,6 @@
+import { FC } from 'react'
+import { useHistory } from 'react-router-dom'
+
 import {
   FilterDropdown,
   Icon,
@@ -9,9 +12,7 @@ import {
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 import { mapOptions } from '@talent-connect/typescript-utilities';
-import { FC } from 'react'
 import { Columns, Element, Tag } from 'react-bulma-components'
-import { useHistory } from 'react-router-dom'
 import { ArrayParam, useQueryParams, withDefault } from 'use-query-params'
 import { JobListingCard } from '../../../components/organisms/JobListingCard'
 import { LoggedIn } from '../../../components/templates'
@@ -22,8 +23,8 @@ export const BrowseJobseeker: FC = () => {
   const { data: currentJobseekerProfile } = useTpJobseekerProfileQuery()
 
   const [{ idealTechnicalSkills, employmentType }, setQuery] = useQueryParams({
-    idealTechnicalSkills: withDefault(ArrayParam, []),
-    employmentType: withDefault(ArrayParam, []),
+    idealTechnicalSkills: withDefault(ArrayParam, [] as string[]),
+    employmentType: withDefault(ArrayParam, [] as string[]),
   })
 
   const history = useHistory()
@@ -99,7 +100,7 @@ export const BrowseJobseeker: FC = () => {
       <div className="active-filters">
         {(idealTechnicalSkills.length !== 0 || employmentType.length !== 0) && (
           <>
-            {(idealTechnicalSkills as string[]).map((catId) => (
+            {idealTechnicalSkills.map((catId) => (
               <FilterTag
                 key={catId}
                 id={catId}
@@ -113,7 +114,7 @@ export const BrowseJobseeker: FC = () => {
                 }
               />
             ))}
-            {(employmentType as string[]).map((catId) => (
+            {employmentType.map((catId) => (
               <FilterTag
                 key={catId}
                 id={catId}

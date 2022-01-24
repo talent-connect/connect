@@ -1,7 +1,8 @@
 import { FC } from 'react'
-import { Section, Container, Heading } from 'react-bulma-components'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
+
+import { Section, Container, Heading } from 'react-bulma-components'
 import {
   Button,
   DecoratedHeadline,

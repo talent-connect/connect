@@ -235,10 +235,10 @@ const Profile: FC<ProfileProps> = ({
     </LoggedIn>
   )
 }
-const mapStateToProps = (state: RootState) => ({
-  profile: state.profiles.oneProfile,
-  currentUser: state.user.profile,
-  hasReachedMenteeLimit: getHasReachedMenteeLimit(state.user),
+const mapStateToProps = ({ profiles, user }: RootState) => ({
+  profile: profiles.oneProfile,
+  currentUser: user.profile,
+  hasReachedMenteeLimit: getHasReachedMenteeLimit(user),
 })
 
 const mapDispatchToProps = (dispatch: Function) => ({
