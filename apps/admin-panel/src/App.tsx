@@ -201,7 +201,7 @@ const Avatar = withStyles(styles)(({ record, className, classes, style }) => (
         color="primary"
       />
     )}
-    {record && record.profileAvatarImageS3Key && (
+    {record?.profileAvatarImageS3Key && (
       <div
         id="yalla"
         style={{
@@ -755,12 +755,12 @@ const RedMatchShow_RelatedMentoringSessions: FC<{ record: any }> = ({ // TODO:  
     (acc, curr) => acc + curr.minuteDuration,
     0
   )
-  if (mentoringSessions && mentoringSessions.length === 0) {
+  if (!mentoringSessions?.length) {
     return <h3>NO mentoring sessions registerd yet.</h3>
   }
+
   return (
-    mentoringSessions &&
-    mentoringSessions.length && (
+    mentoringSessions?.length && (
       <>
         <h3>Mentoring sessions registered</h3>
         <div style={{ maxWidth: '600px', margin: '0 auto' }}>

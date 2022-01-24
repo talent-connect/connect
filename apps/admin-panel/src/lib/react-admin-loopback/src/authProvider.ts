@@ -5,7 +5,7 @@ import storage from './storage'
 
 export const authProvider = (loginApiUrl, noAccessPage = '/login') => {
   return (type, params) => {
-    if (params && !params.email && params.username) {
+    if (params?.username && !params.email) {
       params.email = params.username
       delete params.username
     }
@@ -40,7 +40,7 @@ export const authProvider = (loginApiUrl, noAccessPage = '/login') => {
     }
     if (type === AUTH_CHECK) {
       const token = storage.load('lbtoken')
-      if (token && token.id) {
+      if (token?.id) {
         return Promise.resolve()
       } else {
         storage.remove('lbtoken')

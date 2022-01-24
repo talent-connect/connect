@@ -75,9 +75,7 @@ export const EditableImportantDetails: FC<Props> = ({
               gridRowGap: '32px',
             }}
           >
-            {profile &&
-            profile.desiredEmploymentType &&
-            profile.desiredEmploymentType.length ? (
+            {profile?.desiredEmploymentType?.length ? (
               <div>
                 <Caption>Type of work</Caption>
                 <PipeList

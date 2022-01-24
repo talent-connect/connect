@@ -18,7 +18,7 @@ const  MentorshipList: FC<Props> = ({ matches }) => {
     return <Redirect to={`/app/mentorships/${matches[0].id}`} />
 
   const subHeading =
-    matches.length === 0 ? (
+    !matches.length ? (
       <>
         You currently have no active mentorship. Once a mentee applies to you,
         we will inform you via email and you will see their application in the
@@ -36,7 +36,7 @@ const  MentorshipList: FC<Props> = ({ matches }) => {
         My mentees
       </Heading>
       <Content
-        italic={matches.length === 0}
+        italic={!matches.length}
         size="medium"
         className="double-bs"
         renderAs="p"

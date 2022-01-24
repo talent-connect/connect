@@ -6,11 +6,11 @@ const fetchJson = async (url, options = {}) => {
     options.headers || new Headers({ Accept: 'application/json' })
   if (
     !requestHeaders.has('Content-Type') &&
-    !(options && options.body && options.body instanceof FormData)
+    !(options?.body && options.body instanceof FormData)
   ) {
     requestHeaders.set('Content-Type', 'application/json')
   }
-  if (options.user && options.user.authenticated && options.user.token) {
+  if (options.user?.authenticated && options.user.token) {
     requestHeaders.set('Authorization', options.user.token)
   }
   const response = await fetch(url, { ...options, headers: requestHeaders })
@@ -35,7 +35,7 @@ const fetchJson = async (url, options = {}) => {
   if (status < 200 || status >= 300) {
     return Promise.reject(
       new HttpError(
-        (json && json.error && json.error.message) || statusText,
+        json?.error?.message || statusText,
         status,
         json
       )

@@ -56,18 +56,15 @@ const Profile: FC<ProfileProps> = ({
     profilesFetchOneStart(profileId)
   }, [profilesFetchOneStart, profileId])
 
-  const currentUserIsMentor = currentUser && currentUser.userType === 'mentor'
+  const currentUserIsMentor = currentUser?.userType === 'mentor'
 
-  const currentUserIsMentee = currentUser && currentUser.userType === 'mentee'
+  const currentUserIsMentee = currentUser?.userType === 'mentee'
 
   const isAcceptedMatch =
-    profile &&
-    profile.redMatchesWithCurrentUser &&
-    profile.redMatchesWithCurrentUser[0] &&
-    profile.redMatchesWithCurrentUser[0].status === 'accepted'
+    profile?.redMatchesWithCurrentUser?.[0].status === 'accepted'
 
   const hasOpenApplication =
-    profile && profile.numberOfPendingApplicationWithCurrentUser > 0
+    profile?.numberOfPendingApplicationWithCurrentUser > 0
 
   const userCanApplyForMentorship =
     !isAcceptedMatch &&
@@ -121,11 +118,11 @@ const Profile: FC<ProfileProps> = ({
           </Columns.Column>
         )}
 
-        {match && match.status === 'applied' && (
+        {match?.status === 'applied' && (
           <Columns.Column className="is-narrow">
             <ConfirmMentorship
               match={match}
-              menteeName={profile && profile.firstName}
+              menteeName={profile?.firstName}
               hasReachedMenteeLimit={hasReachedMenteeLimit}
             />
             <DeclineMentorshipButton match={match} />

@@ -68,11 +68,11 @@ const FindAMentor: FC<FindAMentorProps> = ({
   const [showFavorites, setShowFavorites] = useState<boolean>(false)
   const [mentors, setMentors] = useState<RedProfile[]>([])
   const [query, setQuery] = useQueryParams({
-    name: withDefault(StringParam, undefined),
-    topics: withDefault(ArrayParam, []),
-    languages: withDefault(ArrayParam, []),
-    locations: withDefault(ArrayParam, []),
-    onlyFavorites: withDefault(BooleanParam, undefined),
+    name: withDefault(StringParam, null),
+    topics: withDefault(ArrayParam, [] as string[]),
+    languages: withDefault(ArrayParam, [] as string[]),
+    locations: withDefault(ArrayParam, [] as RediLocation[]),
+    onlyFavorites: withDefault(BooleanParam, null),
   })
   const { topics, name, languages, locations, onlyFavorites } = query
 
@@ -92,7 +92,7 @@ const FindAMentor: FC<FindAMentorProps> = ({
   }
 
   const setName = (value) => {
-    setQuery((latestQuery) => ({ ...latestQuery, name: value || undefined }))
+    setQuery((latestQuery) => ({ ...latestQuery, name: value || null }))
   }
 
   const toggleFavorites = (favoritesArr, value) => {
@@ -106,7 +106,7 @@ const FindAMentor: FC<FindAMentorProps> = ({
     setShowFavorites(!showFavorites)
     setQuery((latestQuery) => ({
       ...latestQuery,
-      onlyFavorites: showFavorites ? undefined : true,
+      onlyFavorites: showFavorites ? null : true,
     }))
   }
 
@@ -126,10 +126,7 @@ const FindAMentor: FC<FindAMentorProps> = ({
         .flat()
         .sort()
     )
-  ).map((language) => ({
-    value: language,
-    label: language,
-  }))
+  ).map((lang) => ({ value: lang, label: lang }))
 
   const filterRediLocations = objectKeys(REDI_LOCATION_NAMES)
     .map((location) => ({
@@ -149,17 +146,16 @@ const FindAMentor: FC<FindAMentorProps> = ({
       setMentors(
         mentors
           .filter((mentor) => mentor.currentFreeMenteeSpots > 0)
-          .filter(
-            (mentor) =>
-              !mentor.optOutOfMenteesFromOtherRediLocation ||
-              mentor.rediLocation === rediLocation
+          .filter((mentor) =>
+            !mentor.optOutOfMenteesFromOtherRediLocation ||
+            mentor.rediLocation === rediLocation
           )
       )
       setLoading(false)
     })
   }, [topics, languages, locations, name])
 
-  if (userActivated !== true) return <LoggedIn />
+  if (!userActivated) return <LoggedIn />
 
   return (
     <LoggedIn>
@@ -213,11 +209,9 @@ const FindAMentor: FC<FindAMentorProps> = ({
           />
         </div>
 
-        {(topics.length !== 0 ||
-          languages.length !== 0 ||
-          locations.length !== 0) && (
+        {(topics.length || languages.length || locations.length) && (
           <>
-            {(topics as string[]).map((catId) => (
+            {topics.map((catId) => (
               <FilterTag
                 key={catId}
                 id={catId}
@@ -225,7 +219,7 @@ const FindAMentor: FC<FindAMentorProps> = ({
                 onClickHandler={(item) => toggleFilters(topics, 'topics', item)}
               />
             ))}
-            {(languages as string[]).map((langId) => (
+            {languages.map((langId) => (
               <FilterTag
                 key={langId}
                 id={langId}
@@ -235,12 +229,12 @@ const FindAMentor: FC<FindAMentorProps> = ({
                 }
               />
             ))}
-            {(locations as RediLocation[]).map((locId) =>
+            {locations.map((locId) =>
                 locId && (
                   <FilterTag
                     key={locId}
                     id={locId}
-                    label={REDI_LOCATION_NAMES[locId as RediLocation] as string}
+                    label={REDI_LOCATION_NAMES[locId]}
                     onClickHandler={(item) =>
                       toggleFilters(locations, 'locations', item)
                     }
@@ -276,7 +270,7 @@ const FindAMentor: FC<FindAMentorProps> = ({
         })}
       </Columns>
 
-      {mentors.length === 0 && !isLoading && (
+      {!mentors.length && !isLoading && (
         <Content>
           <>
             Unfortunately <strong>could not find any mentors</strong> matching

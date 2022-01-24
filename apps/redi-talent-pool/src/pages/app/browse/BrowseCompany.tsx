@@ -104,7 +104,7 @@ export const BrowseCompany: FC = () => {
         </div>
       </div>
       <div className="active-filters">
-        {(skills.length !== 0 || desiredPositions.length !== 0) && (
+        {(skills.length || desiredPositions.length) && (
           <>
             {skills.map((catId) => (
               <FilterTag

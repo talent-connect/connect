@@ -1,14 +1,12 @@
 import { FC } from 'react'
+import * as Yup from 'yup'
+import { connect } from 'react-redux'
+import { useFormik } from 'formik'
+
 import { TextInput } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile } from '@talent-connect/shared-types'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
-
 import { profileSaveStart } from '../../redux/user/actions'
-import * as Yup from 'yup'
-
-import { useFormik } from 'formik'
 import { ReadContactDetails } from '../molecules'
 import { mapStateToProps } from '../../helpers';
 
@@ -26,8 +24,7 @@ const validationSchema = Yup.object({
   lastName: Yup.string()
     .required()
     .max(255),
-  contactEmail: Yup
-    .string()
+  contactEmail: Yup.string()
     .email()
     .required()
     .max(255)

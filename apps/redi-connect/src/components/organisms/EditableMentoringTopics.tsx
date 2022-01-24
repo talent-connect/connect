@@ -150,8 +150,7 @@ const CategoryGroup: FC<CategoryGroupProps> = ({
             handleChange={onChange}
             disabled={
               !formik.values.isMentor &&
-              selectedCategories.length >=
-                MAX_MENTORING_TOPICS_IF_USER_IS_MENTEE &&
+              selectedCategories.length >= MAX_MENTORING_TOPICS_IF_USER_IS_MENTEE &&
               !selectedCategories.includes(id)
             }
             {...formik}

@@ -95,8 +95,7 @@ const CallToActionButton: FC<{ profile: Partial<TpJobseekerProfile> }> = ({
 }) => {
   return (
     <>
-      {profile &&
-      profile.state &&
+      {profile?.state &&
       [
         TpJobseekerProfileState['drafting-profile'],
         TpJobseekerProfileState['submitted-for-review'],

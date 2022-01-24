@@ -98,7 +98,7 @@ export const BrowseJobseeker: FC = () => {
         </div>
       </div>
       <div className="active-filters">
-        {(idealTechnicalSkills.length !== 0 || employmentType.length !== 0) && (
+        {(idealTechnicalSkills.length || employmentType.length) && (
           <>
             {idealTechnicalSkills.map((catId) => (
               <FilterTag

@@ -38,7 +38,7 @@ function determineCurrentStep(
 }
 
 export const OnboardingSteps: FC<Props> = ({ profile, isProfileComplete, hasJobListing }) => {
-  const currentStep = determineCurrentStep(
+  const [currentStep, stepStatus] = determineCurrentStep(
     profile,
     isProfileComplete,
     hasJobListing
@@ -61,29 +61,29 @@ export const OnboardingSteps: FC<Props> = ({ profile, isProfileComplete, hasJobL
         <div
           key={index}
           className={classnames('onboarding-steps--item', {
-            'current-step': number === currentStep[0],
-            'completed-step': number < currentStep[0],
+            'current-step': number === currentStep,
+            'completed-step': number < currentStep,
           })}
         >
-          {number < currentStep[0] ? (
+          {number < currentStep ? (
             <ChecklistActiveImage className="checklist-image" />
           ) : (
             <ChecklistImage className="checklist-image" />
           )}
           <Element textSize="5">{label}</Element>
-          {currentStep[0] > number ? (
+          {currentStep > number ? (
             <CheckmarkImage className="checkmark-image" />
           ) : null}
-          {currentStep[0] < number ? (
+          {currentStep < number ? (
             <CheckmarkBorderOnlyImage className="checkmark-image" />
           ) : null}
-          {currentStep[0] === number && currentStep[1] === 'todo' ? (
+          {currentStep === number && stepStatus === 'todo' ? (
             <CheckmarkBorderOnlyImage className="checkmark-image" />
           ) : null}
-          {currentStep[0] === number && currentStep[1] === 'pending' ? (
+          {currentStep === number && stepStatus === 'pending' ? (
             <StepPendingImage className="checkmark-image" />
           ) : null}
-          {currentStep[0] === number && currentStep[1] === 'complete' ? (
+          {currentStep === number && stepStatus === 'complete' ? (
             <CheckmarkImage className="checkmark-image" />
           ) : null}
         </div>

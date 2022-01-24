@@ -22,7 +22,7 @@ const SignUpLanding = () => {
       <div
         className={classnames('signup__type', {
           [`border-${type}`]: type === selectedType,
-          'no-shadow': type !== selectedType && selectedType !== '',
+          'no-shadow': selectedType && type !== selectedType,
         })}
         onClick={() => setSelectedType(type)}
       >

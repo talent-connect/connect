@@ -33,9 +33,9 @@ const Mentorship: FC<MentorshipProps> = ({ currentUser, matches }) => {
   const history = useHistory()
   const currentUserIsMentor = currentUser?.userType === 'mentor'
   const currentUserIsMentee = currentUser?.userType === 'mentee'
-  const currentMatch = matches.find((match) => match.id === profileId)
+  const currentMatch = matches.find(({ id }) => id === profileId)
   const profile =
-    currentMatch && currentMatch[currentUserIsMentor ? 'mentee' : 'mentor']
+    currentMatch?.[currentUserIsMentor ? 'mentee' : 'mentor']
   const pageHeading = currentUserIsMentor
     ? `Mentorship with ${profile?.firstName} ${profile?.lastName}`
     : 'My Mentorship'
@@ -67,8 +67,7 @@ const Mentorship: FC<MentorshipProps> = ({ currentUser, matches }) => {
         </Columns.Column>
 
         <Columns.Column className="is-narrow">
-          {currentMatch &&
-            currentMatch.status === 'accepted' &&
+          {currentMatch?.status === 'accepted' &&
             currentUserIsMentor && <CompleteMentorship match={currentMatch} />}
         </Columns.Column>
       </Columns>

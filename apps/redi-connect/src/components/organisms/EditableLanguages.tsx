@@ -1,14 +1,13 @@
 import { FC } from 'react'
+import { connect } from 'react-redux'
+import * as Yup from 'yup'
+import { useFormik } from 'formik'
+
 import { FormSelect } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile } from '@talent-connect/shared-types'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
 
 import { profileSaveStart } from '../../redux/user/actions'
-import * as Yup from 'yup'
-
-import { useFormik } from 'formik'
 
 import { LANGUAGES } from '@talent-connect/shared-config'
 import { ReadLanguages } from '../molecules'

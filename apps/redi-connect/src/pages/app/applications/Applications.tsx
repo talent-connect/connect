@@ -18,14 +18,14 @@ const  Applications: FC<Props> = ({ applicants }) => {
   const history = useHistory()
   const profile = getRedProfileFromLocalStorage()
 
-  if (profile.userActivated !== true) return <LoggedIn />
+  if (!profile.userActivated) return <LoggedIn />
 
   return (
     <LoggedIn>
       <Heading subtitle size="small" className="double-bs">
         Applications {applicants.length && `(${applicants.length})`}
       </Heading>
-      {applicants.length === 0 ? (
+      {!applicants.length ? (
         <Content italic>
           {profile.userType === 'mentee' && (
             <>

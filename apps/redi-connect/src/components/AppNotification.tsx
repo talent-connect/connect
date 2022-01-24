@@ -121,7 +121,7 @@ export const AppNotification: FC = () => {
                 className={clsx(styleClasses.icon, styleClasses.iconVariant)}
               />
             )}
-            {state && state.message}
+            {state?.message}
           </span>
         }
         action={[

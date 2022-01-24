@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { Tag } from 'react-bulma-components'
+
 import { CardTagProps, CardTagsProps } from './CardTags.props';
 import './CardTags.scss'
 

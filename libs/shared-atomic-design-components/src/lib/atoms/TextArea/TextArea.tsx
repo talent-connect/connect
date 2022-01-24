@@ -58,8 +58,8 @@ const TextArea: FC<TextAreaProps> = ({
               textColor="danger"
               className="help help--show redi-textarea-characters"
             >
-              {minChar - (values[name] ? values[name].length : 0)} more{' '}
-              {minChar - (values[name] ? values[name].length : 0) > 1
+              {minChar - (values[name]?.length || 0)} more{' '}
+              {minChar - (values[name]?.length || 0) > 1
                 ? 'characters'
                 : 'character'}{' '}
               needed
@@ -67,20 +67,19 @@ const TextArea: FC<TextAreaProps> = ({
           )}
           {maxChar &&
             (!values[name] || values[name].length <= maxChar) &&
-            (!minChar ||
-              (minChar && values[name] && values[name].length >= minChar)) && (
+            (!minChar || (minChar && values[name]?.length >= minChar)) && (
               <Content
                 textColor="grey-dark"
                 className="help help--show redi-textarea-characters"
               >
-                {maxChar - (values[name] ? values[name].length : 0)}{' '}
-                {maxChar - (values[name] ? values[name].length : 0) !== 1
+                {maxChar - (values[name]?.length || 0)}{' '}
+                {maxChar - (values[name]?.length || 0) !== 1
                   ? 'characters'
                   : 'character'}{' '}
                 left
               </Content>
             )}
-          {maxChar && values[name] && values[name].length > maxChar && (
+          {maxChar && values[name]?.length > maxChar && (
             <Content
               textColor="danger"
               className="help help--show redi-textarea-characters"
