@@ -1,4 +1,4 @@
-import React from 'react'
+import { useCallback } from 'react'
 import Button from '@material-ui/core/Button'
 
 import { API_URL } from '../../config'
@@ -11,7 +11,7 @@ import doApiRequest from '../../lib/react-admin-loopback/src/fetch'
 export const buildApproveOrRejectButton = (operationType) => {
   const ConfiguredButton = ({ data }) => {
     // On click, make a request to either approve or reject
-    const onClick = React.useCallback(() => {
+    const onClick = useCallback(() => {
       const sendRequest = async () => {
         const finalConfirmationPrompt = `Are you certain you want to ${operationTypeToLabelMap[operationType]} this user?`
         const shouldContinue = await showConfirmPrompt(finalConfirmationPrompt)

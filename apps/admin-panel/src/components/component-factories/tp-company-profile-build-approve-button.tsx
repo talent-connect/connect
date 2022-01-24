@@ -1,4 +1,4 @@
-import React from 'react'
+import { useCallback } from 'react'
 import Button from '@material-ui/core/Button'
 
 import { API_URL } from '../../config'
@@ -11,7 +11,7 @@ import doApiRequest from '../../lib/react-admin-loopback/src/fetch'
 export const tpCompanyProfileBuildApproveButton = () => {
   const ConfiguredButton = ({ data }) => {
     // On click, make a request to approve
-    const onClick = React.useCallback(() => {
+    const onClick = useCallback(() => {
       const sendRequest = async () => {
         const finalConfirmationPrompt = `Are you certain you want to aporove this user?`
         const shouldContinue = await showConfirmPrompt(finalConfirmationPrompt)
@@ -20,9 +20,7 @@ export const tpCompanyProfileBuildApproveButton = () => {
 
         const requestUrl = `${API_URL}/tpCompanyProfiles/pendingReviewDoAccept`
         const requestPayload = {
-          body: JSON.stringify({
-            tpCompanyProfileId: data.id,
-          }),
+          body: JSON.stringify({ tpCompanyProfileId: data.id }),
           method: 'post',
         }
 

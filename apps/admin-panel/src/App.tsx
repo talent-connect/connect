@@ -93,7 +93,7 @@ import {
   TpCompanyProfileState,
 } from '@talent-connect/shared-types'
 
-import { objectEntries, objectValues, objectValues } from '@talent-connect/typescript-utilities'
+import { objectEntries, objectValues } from '@talent-connect/typescript-utilities'
 
 /** REFERENCE DATA */
 
@@ -327,7 +327,7 @@ const RedProfileListExpandPane: FC = (props) => {
     <Show {...props} title="">
       <SimpleShowLayout>
         <ArrayField source="categories">
-          <CategoryList />
+          <CategoryList data={{}}/>
         </ArrayField>
         <MenteeEnrolledInCourseField />
         <TextField source="contactEmail" />
@@ -422,7 +422,7 @@ const RedProfileShow: FC = (props) => (
           <TextField source="telephoneNumber" />
 
           <ArrayField source="categories">
-            <CategoryList />
+            <CategoryList data={{}}/>
           </ArrayField>
           <ReferenceManyField
             label="Mentees (applied/accepted/completed/cancelled)"
@@ -430,7 +430,10 @@ const RedProfileShow: FC = (props) => (
             target="mentorId"
           >
             <Datagrid>
-              <FullName sourcePrefix="mentee." />
+              <FullName
+                sourcePrefix="mentee."
+                record={{}}
+              />
               <TextField source="status" />
               <ShowButton />
             </Datagrid>
@@ -441,7 +444,10 @@ const RedProfileShow: FC = (props) => (
             target="menteeId"
           >
             <Datagrid>
-              <FullName sourcePrefix="mentor." />
+              <FullName
+                sourcePrefix="mentor."
+                record={{}}
+              />
               <TextField source="status" />
               <ShowButton />
             </Datagrid>
@@ -523,7 +529,7 @@ const RedProfileShow: FC = (props) => (
 )
 
 const RedProfileEditActions: FC = (props) => {
-  const userType = props?.data?.userType
+  const userType = props.data?.userType
   if (
     ![
       'public-sign-up-mentor-pending-review',
@@ -596,6 +602,7 @@ const MenteeEnrolledInCourseField: FC = (props) => {
     </Labeled>
   )
 }
+
 const MenteeEnrolledInCourseInput: FC = (props) => {
   const courses = coursesByLocation[props.record.rediLocation]
   return (
@@ -609,22 +616,17 @@ const MenteeEnrolledInCourseInput: FC = (props) => {
 }
 
 interface FullNameProps {
-  sourcePrefix?: string
-  record: any // TODO
+  sourcePrefix: 'mentee' | 'mentor' | '';
+  record: Record<string, string> // TODO
 }
 
-const FullName: FC<FullNameProps> = ({ record, sourcePrefix = '' }) => {
+const FullName: FC<FullNameProps> = ({ record, sourcePrefix: source = '' }) => {
   return (
     <span>
-      {get(record, `${sourcePrefix}firstName`)}{' '}
-      {get(record, `${sourcePrefix}lastName`)}
+      {get(record, `${source}firstName`)}{' '}
+      {get(record, `${source}lastName`)}
     </span>
   )
-}
-
-FullName.defaultProps = {
-  sourcePrefix: '',
-  label: 'Full name',
 }
 
 const RedMatchList: FC = (props) => (
@@ -638,10 +640,16 @@ const RedMatchList: FC = (props) => (
       <TextField source="rediLocation" label="City" />
       <DateField source="createdAt" label="Record created at" />
       <ReferenceField label="Mentee" source="menteeId" reference="redProfiles">
-        <FullName source="mentee" />
+        <FullName
+          sourcePrefix="mentee"
+          record={{}}
+        />
       </ReferenceField>
       <ReferenceField label="Mentor" source="mentorId" reference="redProfiles">
-        <FullName source="mentor" />
+        <FullName
+          sourcePrefix="mentor"
+          record={{}}
+        />
       </ReferenceField>
       <TextField source="status" />
       <ShowButton />
@@ -663,10 +671,16 @@ const RedMatchShow: FC = (props) => (
     <SimpleShowLayout>
       <TextField source="status" />
       <ReferenceField label="Mentee" source="menteeId" reference="redProfiles">
-        <FullName source="mentee" />
+        <FullName
+          sourcePrefix="mentee"
+          record={{}}
+        />
       </ReferenceField>
       <ReferenceField label="Mentor" source="mentorId" reference="redProfiles">
-        <FullName source="mentor" />
+        <FullName
+          sourcePrefix="mentor"
+          record={{}}
+        />
       </ReferenceField>
 
       <TextField
@@ -719,7 +733,7 @@ const RedMatchShow: FC = (props) => (
         label="When did the mentor decline?"
       />
 
-      <RedMatchShow_RelatedMentoringSessions />
+      <RedMatchShow_RelatedMentoringSessions record={{}} />
     </SimpleShowLayout>
   </Show>
 )
@@ -950,10 +964,15 @@ const RedMentoringSessionList: FC = (props) => (
     <Datagrid>
       <TextField source="rediLocation" label="City" />
       <ReferenceField label="Mentee" source="menteeId" reference="redProfiles">
-        <FullName source="mentee" />
+        <FullName
+          sourcePrefix="mentee"
+          record={{}} />
       </ReferenceField>
       <ReferenceField label="Mentor" source="mentorId" reference="redProfiles">
-        <FullName source="mentor" />
+        <FullName
+          sourcePrefix="mentor"
+          record={{}}
+        />
       </ReferenceField>
       <DateField source="date" />
       <NumberField source="minuteDuration" />
@@ -1068,10 +1087,16 @@ const RedMentoringSessionShow: FC = (props) => (
     <SimpleShowLayout>
       <TextField source="status" />
       <ReferenceField label="Mentee" source="menteeId" reference="redProfiles">
-        <FullName source="mentee" />
+        <FullName
+          sourcePrefix="mentee"
+          record={{}}
+        />
       </ReferenceField>
       <ReferenceField label="Mentor" source="mentorId" reference="redProfiles">
-        <FullName source="mentor" />
+        <FullName
+          sourcePrefix="mentor"
+          record={{}}
+        />
       </ReferenceField>
       <TextField label="Date of mentoring session" source="date" />
       <TextField source="minuteDuration" />
@@ -1578,8 +1603,8 @@ const TpJobseekerProfileEdit: FC = (props) => (
   </Edit>
 )
 
-const TpJobseekerProfileEditActions: FC = (props) => {
-  if (props?.data?.state !== 'submitted-for-review') return null
+const TpJobseekerProfileEditActions: FC<{ data?: { state: string }}> = (props) => {
+  if (props.data?.state !== 'submitted-for-review') return null
 
   return (
     <CardActions>
@@ -1589,8 +1614,8 @@ const TpJobseekerProfileEditActions: FC = (props) => {
   )
 }
 
-const TpCompanyProfileEditActions: FC = (props) => {
-  if (props?.data?.state === 'profile-approved') return null
+const TpCompanyProfileEditActions: FC<{ data?: { state: string }}> = (props) => {
+  if (props.data?.state === 'profile-approved') return null
 
   return (
     <CardActions style={{ display: 'flex', alignItems: 'center' }}>
@@ -1650,9 +1675,7 @@ const TpCompanyProfileListFilters: FC = (props) => (
   </Filter>
 )
 
-const ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldShow: FC = ( // TODO: type props
-  props
-) => {
+const ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldShow: FC<{ record?: any }> = (props) => { // TODO: type props
   return props.record?.howDidHearAboutRediKey === 'other' &&
     props.record?.howDidHearAboutRediOtherText ? (
     <Labeled label="How They Heard about ReDI Talent Pool (If selected Other)">
@@ -1661,9 +1684,7 @@ const ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldShow: FC = ( /
   ) : null
 }
 
-const ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldEdit: FC = (
-  props
-) => {
+const ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldEdit: FC<{ record?: any }> = (props) => {
   return props.record?.howDidHearAboutRediKey === 'other' &&
     props.record?.howDidHearAboutRediOtherText ? (
     <TextInput
