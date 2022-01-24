@@ -182,7 +182,7 @@ module.exports = function (RedUser) {
 
   async function loginHook_caseLoginIntoTalentPool(context, next) {
     const redUserInst = loginHook_getRedUser(context)
-    const redUser = redUser.toJSON()
+    const redUser = redUserInst.toJSON()
 
     const userAlreadyHasTalentPoolJobseekerProfile = Boolean(
       redUser.tpJobseekerProfile
