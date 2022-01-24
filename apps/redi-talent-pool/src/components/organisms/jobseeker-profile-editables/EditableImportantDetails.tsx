@@ -16,6 +16,7 @@ import {
   immigrationStatusOptions,
   immigrationStatusOptionsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
+import { mapOptions } from '@talent-connect/typescript-utilities';
 import { useFormik } from 'formik'
 import moment from 'moment'
 import { FC, useEffect, useMemo, useState } from 'react'
@@ -185,8 +186,8 @@ const validationSchema = Yup.object({
 })
 
 interface JobseekerFormSectionImportantDetailsProps {
-  setIsEditing: (boolean) => void
-  setIsFormDirty?: (boolean) => void
+  setIsEditing: (boolean: boolean) => void
+  setIsFormDirty?: (boolean: boolean) => void
   queryHookResult: UseQueryResult<
     Partial<TpJobseekerProfile | TpJobseekerCv>,
     unknown
@@ -237,20 +238,21 @@ export const JobseekerFormSectionImportantDetails: FC<JobseekerFormSectionImport
       profile?.postalMailingAddress,
     ]
   )
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
-    formik.setSubmitting(true)
-    mutation.mutate(values, {
-      onSettled: () => formik.setSubmitting(false),
-      onSuccess: () => setIsEditing(false),
-    })
-  }
-  const formik = useFormik({
+
+  const formik = useFormik<Partial<TpJobseekerProfile>>({
     initialValues,
     validationSchema,
     enableReinitialize: true,
-    onSubmit,
     validateOnMount: true,
+    onSubmit: (values) => {
+      formik.setSubmitting(true)
+      mutation.mutate(values, {
+        onSettled: () => formik.setSubmitting(false),
+        onSuccess: () => setIsEditing(false),
+      })
+    },
   })
+
   useEffect(() => setIsFormDirty?.(formik.dirty), [
     formik.dirty,
     setIsFormDirty,
@@ -340,18 +342,8 @@ export const JobseekerFormSectionImportantDetails: FC<JobseekerFormSectionImport
   )
 }
 
-const formAvailabilityOptions = availabilityOptions.map(({ id, label }) => ({
-  value: id,
-  label,
-}))
+const formAvailabilityOptions = mapOptions(availabilityOptions)
 
-const formDesiredEmploymentType = desiredEmploymentTypeOptions.map(
-  ({ id, label }) => ({ value: id, label })
-)
+const formDesiredEmploymentType = mapOptions(desiredEmploymentTypeOptions)
 
-const formImmigrationStatusOptions = immigrationStatusOptions.map(
-  ({ id, label }) => ({
-    value: id,
-    label,
-  })
-)
+const formImmigrationStatusOptions = mapOptions(immigrationStatusOptions)

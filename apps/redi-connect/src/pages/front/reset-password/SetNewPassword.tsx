@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 
 import * as Yup from 'yup'
 
-import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
+import { useFormik } from 'formik'
 import { history } from '../../../services/history/history'
 import { setPassword, fetchSaveRedProfile } from '../../../services/api/api'
 import { saveAccessTokenToLocalStorage } from '../../../services/auth/auth'
@@ -21,11 +21,6 @@ import {
 interface SetNewPasswordValues {
   password: string
   passwordConfirm: string
-}
-
-const initialValues: SetNewPasswordValues = {
-  password: '',
-  passwordConfirm: '',
 }
 
 const validationSchema = Yup.object({
@@ -74,27 +69,25 @@ export const SetNewPassword: FC<RouteComponentProps<RouteParams>> = (props) => {
     load()
   }, [props.match.params.accessToken])
 
-  const submitForm = async (
-    values: FormikValues,
-    actions: FormikActions<SetNewPasswordValues>
-  ) => {
-    try {
-      await setPassword(values.password)
-      showNotification("Your new password is set and you're logged in :)", {
-        variant: 'success',
-        autoHideDuration: 8000,
-      })
-      history.push('/app/me')
-    } catch (err) {
-      setFormError('Invalid username or password')
-    }
-    actions.setSubmitting(false)
-  }
-
-  const formik = useFormik({
-    initialValues: initialValues,
+  const formik = useFormik<SetNewPasswordValues>({
+    initialValues: {
+      password: '',
+      passwordConfirm: '',
+    },
     validationSchema,
-    onSubmit: submitForm,
+    onSubmit: async ({ password }, actions) => {
+      try {
+        await setPassword(password)
+        showNotification("Your new password is set and you're logged in :)", {
+          variant: 'success',
+          autoHideDuration: 8000,
+        })
+        history.push('/app/me')
+      } catch (err) {
+        setFormError('Invalid username or password')
+      }
+      actions.setSubmitting(false)
+    },
   })
 
   return (

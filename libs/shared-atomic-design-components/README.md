@@ -2,11 +2,12 @@
 
 This library was generated with [Nx](https://nx.dev).
 
-## The elements/components folders
+## The atoms/molecules folders
 
-Each described element or component of the design system must present the following files:
+Each described "atom" or "molecule" of the design system must present the following files:
 
 - **`Component.tsx`:** the implementation of the React component.
+- **`Component.scss`:** the styles the React component.
 - **`Component.props.ts`:** the definition of the props or necessary interfaces of the React component documenting the fields with JSDocs.
 - **`Component.spec.ts`:** the unit testing of the component.
 - **`Component.stories.tsx`:** the Storybook documentation of the component.

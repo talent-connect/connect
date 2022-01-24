@@ -28,15 +28,14 @@ export const signUp = async (
   email = email.toLowerCase()
   const rediLocation = process.env.NX_REDI_CONNECT_REDI_LOCATION as RediLocation
   redProfile.rediLocation = rediLocation
-  const userResponse = await http(`${API_URL}/redUsers`, {
+  const { data: user } = await http(`${API_URL}/redUsers`, {
     method: 'post',
     data: { email, password, rediLocation },
   })
-  const user = userResponse.data as RedUser
-  saveRedUserToLocalStorage(user)
+  saveRedUserToLocalStorage(user as RedUser)
   const accessToken = await login(email, password)
   saveAccessTokenToLocalStorage(accessToken)
-  const profileResponse = await http(
+  const { data: profile } = await http(
     `${API_URL}/redUsers/${user.id}/redProfile`,
     {
       method: 'post',
@@ -46,24 +45,19 @@ export const signUp = async (
       },
     }
   )
-  const profile = profileResponse.data as RedProfile
-  localStorageSaveRedProfile(profile)
+  localStorageSaveRedProfile(profile as RedProfile)
 }
 
 export const login = async (
   email: string,
   password: string
 ): Promise<AccessToken> => {
-  email = email.toLowerCase()
-  const loginResp = await http(`${API_URL}/redUsers/login`, {
+  const { data } = await http(`${API_URL}/redUsers/login`, {
     method: 'post',
-    data: { email, password },
-    headers: {
-      RedProduct: 'CON',
-    },
+    data: { email: email.toLowerCase(), password },
+    headers: { RedProduct: 'CON' },
   })
-  const accessToken = loginResp.data as AccessToken
-  return accessToken
+  return data
 }
 
 export const logout = () => {
@@ -71,11 +65,10 @@ export const logout = () => {
   history.push('/front/home')
 }
 
-export const requestResetPasswordEmail = async (email: string) => {
-  email = email.toLowerCase()
-  await axios(`${API_URL}/redUsers/requestResetPasswordEmail`, {
+export async function requestResetPasswordEmail (email: string): Promise<any> {
+  return axios(`${API_URL}/redUsers/requestResetPasswordEmail`, {
     method: 'post',
-    data: { email, redproduct: 'CON' },
+    data: { email: email.toLowerCase(), redproduct: 'CON' },
   })
 }
 
@@ -89,9 +82,7 @@ export const setPassword = async (password: string) => {
 
 export const fetchSaveRedProfile = async ({ userId, id: token }: AccessToken): Promise<RedProfile> => {
   const profileResp = await http(`${API_URL}/redUsers/${userId}/redProfile`, {
-    headers: {
-      Authorization: token,
-    },
+    headers: { Authorization: token, },
   })
   try {
     const profile = profileResp.data as RedProfile
@@ -106,8 +97,7 @@ export const fetchSaveRedProfile = async ({ userId, id: token }: AccessToken): P
 export const saveRedProfile = async (
   redProfile: Partial<RedProfile>
 ): Promise<RedProfile> => {
-  const id = redProfile.id
-  const saveProfileResp = await http(`${API_URL}/redProfiles/${id}`, {
+  const saveProfileResp = await http(`${API_URL}/redProfiles/${redProfile.id}`, {
     data: redProfile,
     method: 'patch',
   })
@@ -132,11 +122,11 @@ export const getProfiles = ({
   nameQuery,
 }: RedProfileFilters): Promise<RedProfile[]> => {
   const filterLanguages =
-    languages && languages.length ? { inq: languages } : undefined
+    languages?.length ? { inq: languages } : undefined
   const filterCategories =
-    categories && categories.length ? { inq: categories } : undefined
+    categories?.length ? { inq: categories } : undefined
   const filterLocations =
-    locations && locations.length ? { inq: locations } : undefined
+    locations?.length ? { inq: locations } : undefined
 
   return http(
     `${API_URL}/redProfiles?filter=${JSON.stringify({
@@ -187,31 +177,34 @@ export const getProfile = (profileId: string): Promise<RedProfile> =>
   http(`${API_URL}/redProfiles/${profileId}`).then((resp) => resp.data)
 
 // TODO: status: 'applied' here should be matched against RedMatch['status']
-export const fetchApplicants = async (): Promise<RedProfile[]> =>
-  http(
+export async function fetchApplicants (): Promise<RedProfile[]> {
+  const { data } = await http(
     `${API_URL}/redMatches?filter=` +
       JSON.stringify({
         where: {
           mentorId: getRedProfileFromLocalStorage().id,
           status: 'applied',
         },
-      })
-  ).then((resp) => resp.data)
+      }))
+  return data
+}
 
-export const requestMentorship = (
+export async function requestMentorship (
   applicationText: string,
   expectationText: string,
   mentorId: string
-): Promise<RedMatch> =>
-  http(`${API_URL}/redMatches/requestMentorship`, {
+): Promise<RedMatch> {
+  const { data } = await http(`${API_URL}/redMatches/requestMentorship`, {
     method: 'post',
     data: { applicationText, expectationText, mentorId },
-  }).then((resp) => resp.data)
+  })
+  return data
+}
 
-export const reportProblem = async (
-  problemReport: RedProblemReportDto
-): Promise<any> =>
-  http(`${API_URL}/redProblemReports`, {
+export async function reportProblem (problemReport: RedProblemReportDto): Promise<any> {
+  const { data } = await http(`${API_URL}/redProblemReports`, {
     method: 'post',
     data: problemReport,
-  }).then((resp) => resp.data)
+  })
+  return data
+}

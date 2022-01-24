@@ -4,7 +4,7 @@ import {
 } from '@talent-connect/shared-config'
 import { TpJobseekerProfile, TpCompanyProfile } from '@talent-connect/shared-types'
 import classnames from 'classnames'
-import { FormikValues, useFormik } from 'formik'
+import { useFormik } from 'formik'
 import { FC, ReactNode } from 'react';
 import { Element } from 'react-bulma-components'
 import ReactS3Uploader, { S3Response } from 'react-s3-uploader'
@@ -18,7 +18,7 @@ interface AvatarProps {
 }
 interface AvatarEditable {
   profile: Partial<TpJobseekerProfile> | Partial<TpCompanyProfile>
-  profileSaveStart: (profile: Partial<TpJobseekerProfile> | Partial<TpCompanyProfile>) => void
+  profileSaveStart: (profile: AvatarFormValues & { id: string }) => void
 }
 
 interface AvatarFormValues {
@@ -26,7 +26,8 @@ interface AvatarFormValues {
 }
 
 const validationSchema = Yup.object({
-  profileAvatarImageS3Key: Yup.string().max(255),
+  profileAvatarImageS3Key: Yup.string()
+    .max(255),
 })
 
 const Avatar: FC<AvatarProps> & { Editable: typeof AvatarEditable, Some: ReactNode }= ({
@@ -57,19 +58,14 @@ const AvatarEditable: FC<AvatarEditable> = ({
 }) => {
   const imgURL = AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
 
-  const submitForm = async (values: FormikValues) => {
-    const profileMe = values as Partial<TpJobseekerProfile>
-    profileSaveStart({ ...profileMe, id })
-  }
-
-  const initialValues: AvatarFormValues = {
-    profileAvatarImageS3Key: profileAvatarImageS3Key,
-  }
-
-  const formik = useFormik({
-    initialValues: initialValues,
+  const formik = useFormik<AvatarFormValues>({
+    initialValues: {
+      profileAvatarImageS3Key: profileAvatarImageS3Key,
+    },
     validationSchema,
-    onSubmit: submitForm,
+    onSubmit: (profileMe) => {
+      profileSaveStart({ ...profileMe, id })
+    },
   })
 
   const onUploadSuccess = ({ fileKey }: S3Response) => {

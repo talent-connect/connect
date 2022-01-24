@@ -15,7 +15,7 @@ import {
   RedMentoringSession,
   FormSubmitResult,
 } from '@talent-connect/shared-types'
-import { useFormik, FormikHelpers } from 'formik'
+import { useFormik } from 'formik'
 import {
   MentoringSessionDurationOption,
   MENTORING_SESSION_DURATION_OPTIONS,
@@ -23,8 +23,8 @@ import {
 import { mentoringSessionsCreateStart } from '../../../redux/mentoringSessions/actions'
 import './MSessions.scss'
 
-const formMentoringSessionDurationOptions =
-  MENTORING_SESSION_DURATION_OPTIONS.map((sesstionDuration) => ({
+const formMentoringSessionDurationOptions = MENTORING_SESSION_DURATION_OPTIONS
+  .map((sesstionDuration) => ({
     value: sesstionDuration,
     label: `${sesstionDuration} min`,
   }))
@@ -46,12 +46,10 @@ interface FormValues {
   minuteDuration?: MentoringSessionDurationOption
 }
 
-const initialFormValues: FormValues = {
-  date: new Date(),
-}
-
 const validationSchema = Yup.object({
-  date: Yup.date().required().label('Date'),
+  date: Yup.date()
+    .required()
+    .label('Date'),
   minuteDuration: Yup.number()
     .required('Please select the duration of the session.')
     .oneOf([...MENTORING_SESSION_DURATION_OPTIONS], 'Please select a duration'),
@@ -74,40 +72,34 @@ const MSessions: FC<MSessions> = ({
   const [submitResult, setSubmitResult] =
     useState<FormSubmitResult>('notSubmitted')
 
-  const submitForm = async (
-    values: FormValues,
-    actions: FormikHelpers<FormValues>
-  ) => {
-    setSubmitResult('submitting')
-    try {
-      const mentoringSession: RedMentoringSession = {
-        date: values.date,
-        minuteDuration: Number(
-          values.minuteDuration
-        ) as MentoringSessionDurationOption,
-        menteeId,
-      }
-      await mentoringSessionsCreateStart(mentoringSession)
-      setSubmitResult('success')
-      setShowAddSession(false)
-      setTimeout(() => window.location.reload(), 2000)
-    } catch (err) {
-      setSubmitResult('error')
-    } finally {
-      actions.setSubmitting(false)
-    }
-  }
-
   const handleCancel = () => {
     setShowAddSession(false)
     formik.resetForm()
   }
 
-  const formik = useFormik({
+  const formik = useFormik<FormValues>({
+    initialValues: {
+      date: new Date(),
+    },
     enableReinitialize: true,
-    initialValues: initialFormValues,
     validationSchema,
-    onSubmit: submitForm,
+    onSubmit: async ({ date, minuteDuration }, actions) => {
+      setSubmitResult('submitting')
+      try {
+        await mentoringSessionsCreateStart({
+          date,
+          minuteDuration,
+          menteeId,
+        })
+        setSubmitResult('success')
+        setShowAddSession(false)
+        setTimeout(() => window.location.reload(), 2000)
+      } catch (err) {
+        setSubmitResult('error')
+      } finally {
+        actions.setSubmitting(false)
+      }
+    },
   })
 
   return (

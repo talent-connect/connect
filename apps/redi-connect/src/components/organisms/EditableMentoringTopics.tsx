@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { ChangeEventHandler, FC } from 'react'
 import groupBy from 'lodash/groupBy'
 import { Columns, Heading, Element, Content } from 'react-bulma-components'
 import { Checkbox } from '@talent-connect/shared-atomic-design-components'
@@ -10,7 +10,7 @@ import { RootState } from '../../redux/types'
 import { profileSaveStart } from '../../redux/user/actions'
 import * as Yup from 'yup'
 
-import { FormikValues, useFormik } from 'formik'
+import { useFormik } from 'formik'
 import { CATEGORIES, CategoryKey, CATEGORY_GROUPS } from '@talent-connect/shared-config'
 import { ReadMentoringTopics } from '../molecules'
 import { objectEntries } from '@talent-connect/typescript-utilities'
@@ -33,7 +33,8 @@ const validationSchema = Yup.object({
     .min(1)
     .when('isMentor', {
       is: false,
-      then: Yup.array().max(MAX_MENTORING_TOPICS_IF_USER_IS_MENTEE),
+      then: Yup.array()
+        .max(MAX_MENTORING_TOPICS_IF_USER_IS_MENTEE),
     }),
 })
 
@@ -43,7 +44,7 @@ const formCategoryGroups = objectEntries(CATEGORY_GROUPS)
 
 interface Props {
   profile: RedProfile
-  profileSaveStart: Function
+  profileSaveStart: (arg: MentoringFormValues & { id: string }) => void
 }
 
 const EditableMentoringTopics: FC<Props> = ({
@@ -51,24 +52,19 @@ const EditableMentoringTopics: FC<Props> = ({
   profileSaveStart
 }) => {
 
-  const onSubmit = async (values: FormikValues) => {
-    const profileMentoring = values as Partial<RedProfile>
-    profileSaveStart({ ...profileMentoring, id })
-  }
-
   const isMentor =
     userType === 'mentor' || userType === 'public-sign-up-mentor-pending-review'
 
-  const initialValues: MentoringFormValues = {
-    isMentor,
-    categories: categories || [],
-  }
-
-  const formik = useFormik({
-    initialValues,
+  const formik = useFormik<MentoringFormValues>({
+    initialValues: {
+      isMentor,
+      categories: categories || [],
+    },
     enableReinitialize: true,
     validationSchema,
-    onSubmit,
+    onSubmit: (profileMentoring) => {
+      profileSaveStart({ ...profileMentoring, id })
+    },
   })
 
   const { categories: selectedCategories } = formik.values
@@ -78,7 +74,7 @@ const EditableMentoringTopics: FC<Props> = ({
     const value = e.target.value
     const newCategories = e.target.checked
       ? selectedCategories.concat(value)
-      : selectedCategories.filter((cat: any) => cat !== value)
+      : selectedCategories.filter((cat) => cat !== value)
     formik.setFieldValue('categories', newCategories)
     formik.setFieldTouched('categories', true, false)
   }
@@ -117,7 +113,7 @@ interface CategoryGroupProps {
   id: CategoryGroupId,
   label: string,
   selectedCategories: CategoryKey[],
-  onChange: Function,
+  onChange: ChangeEventHandler,
   formik: any // TODO
 }
 

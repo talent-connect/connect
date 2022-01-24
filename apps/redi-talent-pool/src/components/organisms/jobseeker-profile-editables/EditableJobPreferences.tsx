@@ -8,6 +8,7 @@ import {
   HrSummit2021JobFairCompanyJobPreferenceRecord,
   TpJobseekerProfile,
 } from '@talent-connect/shared-types'
+import { reorder } from '@talent-connect/shared-utils';
 import { useFormik } from 'formik'
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
@@ -19,14 +20,6 @@ import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tp
 import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
-
-function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
-  const result = Array.from(list)
-  const [removed] = result.splice(startIndex, 1)
-  result.splice(endIndex, 0, removed)
-
-  return result
-}
 
 interface Props {
   profile: Partial<TpJobseekerProfile>
@@ -107,8 +100,8 @@ const validationSchema = Yup.object({
 })
 
 interface ModalFormProps {
-  setIsEditing: (boolean) => void
-  setIsFormDirty: (boolean) => void
+  setIsEditing: (boolean: boolean) => void
+  setIsFormDirty: (boolean: boolean) => void
 }
 
 const ModalForm: FC<ModalFormProps> = ({
@@ -128,20 +121,18 @@ const ModalForm: FC<ModalFormProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )
-
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
-    formik.setSubmitting(true)
-    mutation.mutate(values, {
-      onSettled: () => formik.setSubmitting(false),
-      onSuccess: () => setIsEditing(false),
-    })
-  }
   
-  const formik = useFormik({
+  const formik = useFormik<Partial<TpJobseekerProfile>>({
     initialValues,
     validationSchema,
-    onSubmit,
     validateOnMount: true,
+    onSubmit: (values) => {
+      formik.setSubmitting(true)
+      mutation.mutate(values, {
+        onSettled: () => formik.setSubmitting(false),
+        onSuccess: () => setIsEditing(false),
+      })
+    },
   })
 
   useEffect(() => setIsFormDirty?.(formik.dirty), [

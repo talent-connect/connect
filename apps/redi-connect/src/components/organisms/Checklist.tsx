@@ -10,13 +10,11 @@ interface Props {
 const Checklist: FC<Props> = ({ type }) => {
   const { t } = useTranslation()
 
-  const checklist: Array<{
+  const checklist: {
     content: string
     headline: string
     image: any
-  }> = t(`loggedOutArea.homePage.checklist.${type}.items`, {
-    returnObjects: true,
-  })
+  }[] = t(`loggedOutArea.homePage.checklist.${type}.items`, { returnObjects: true })
 
   return (
     <Section className="default-background">

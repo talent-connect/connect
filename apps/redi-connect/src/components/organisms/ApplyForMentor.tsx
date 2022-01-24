@@ -8,7 +8,7 @@ import { Modal } from '@talent-connect/shared-atomic-design-components'
 import { Content, Form } from 'react-bulma-components'
 import { FormSubmitResult, RedProfile } from '@talent-connect/shared-types'
 
-import { FormikHelpers as FormikActions, useFormik } from 'formik'
+import { useFormik } from 'formik'
 import { FC, useState } from 'react'
 import * as Yup from 'yup'
 import { requestMentorship } from '../../services/api/api'
@@ -21,12 +21,6 @@ interface ConnectionRequestFormValues {
   applicationText: string
   expectationText: string
   dataSharingAccepted: boolean
-}
-
-const initialValues = {
-  applicationText: '',
-  expectationText: '',
-  dataSharingAccepted: false,
 }
 
 const validationSchema = Yup.object({
@@ -45,7 +39,7 @@ const validationSchema = Yup.object({
 
 interface Props {
   mentor: RedProfile
-  profilesFetchOneStart: Function
+  profilesFetchOneStart: (is: string) => void
 }
 
 const ApplyForMentor: FC<Props> = ({
@@ -55,29 +49,24 @@ const ApplyForMentor: FC<Props> = ({
   const [submitResult, setSubmitResult] = useState<FormSubmitResult>('notSubmitted')
   const [show, setShow] = useState(false)
   
-  const onSubmit = async (
-    { applicationText, expectationText }: ConnectionRequestFormValues,
-    actions: FormikActions<ConnectionRequestFormValues>
-  ) => {
-    setSubmitResult('submitting')
-    try {
-      await requestMentorship(
-        applicationText,
-        expectationText,
-        id
-      )
-      setShow(false)
-      profilesFetchOneStart(id)
-    } catch (error) {
-      setSubmitResult('error')
-    }
-  }
-
-  const formik = useFormik({
-    initialValues,
+  const formik = useFormik<ConnectionRequestFormValues>({
+    initialValues: {
+      applicationText: '',
+      expectationText: '',
+      dataSharingAccepted: false,
+    },
     validationSchema,
-    onSubmit,
     enableReinitialize: true,
+    onSubmit: async ({ applicationText, expectationText }) => {
+      setSubmitResult('submitting')
+      try {
+        await requestMentorship(applicationText, expectationText, id)
+        setShow(false)
+        profilesFetchOneStart(id)
+      } catch (error) {
+        setSubmitResult('error')
+      }
+    },
   })
 
   const handleCancel = () => {
@@ -172,9 +161,7 @@ const ApplyForMentor: FC<Props> = ({
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  mentor: state.profiles.oneProfile as RedProfile,
-})
+const mapStateToProps = ({ profiles }: RootState) => ({ mentor: profiles.oneProfile })
 
 const mapDispatchToProps = (dispatch: Function) => ({
   profilesFetchOneStart: (profileId: string) =>

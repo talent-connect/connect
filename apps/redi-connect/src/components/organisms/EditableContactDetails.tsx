@@ -8,7 +8,7 @@ import { RootState } from '../../redux/types'
 import { profileSaveStart } from '../../redux/user/actions'
 import * as Yup from 'yup'
 
-import { FormikValues, useFormik } from 'formik'
+import { useFormik } from 'formik'
 import { ReadContactDetails } from '../molecules'
 
 export interface ContactsFormValues {
@@ -19,15 +19,26 @@ export interface ContactsFormValues {
 }
 
 const validationSchema = Yup.object({
-  firstName: Yup.string().required().max(255),
-  lastName: Yup.string().required().max(255),
-  contactEmail: Yup.string().email().required().max(255).label('Contact email'),
-  telephoneNumber: Yup.string().max(255).label('Telephone number'),
+  firstName: Yup.string()
+    .required()
+    .max(255),
+  lastName: Yup.string()
+    .required()
+    .max(255),
+  contactEmail: Yup
+    .string()
+    .email()
+    .required()
+    .max(255)
+    .label('Contact email'),
+  telephoneNumber: Yup.string()
+    .max(255)
+    .label('Telephone number'),
 })
 
 interface Props {
   profile: RedProfile
-  profileSaveStart: Function
+  profileSaveStart: (arg: ContactsFormValues & { id: string }) => void
 }
 
 const EditableContactDetails: FC<Props> = ({
@@ -35,23 +46,18 @@ const EditableContactDetails: FC<Props> = ({
   profileSaveStart
 }) => {
 
-  const submitForm = async (values: FormikValues) => {
-    const profileContacts = values as Partial<RedProfile>
-    profileSaveStart({ ...profileContacts, id })
-  }
-
-  const initialValues: ContactsFormValues = {
-    firstName,
-    lastName,
-    contactEmail,
-    telephoneNumber,
-  }
-
-  const formik = useFormik({
-    initialValues,
+  const formik = useFormik<ContactsFormValues>({
+    initialValues: {
+      firstName,
+      lastName,
+      contactEmail,
+      telephoneNumber,
+    },
     enableReinitialize: true,
     validationSchema,
-    onSubmit: submitForm,
+    onSubmit: (profileContacts) => {
+      profileSaveStart({ ...profileContacts, id })
+    },
   })
 
   return (
@@ -91,10 +97,10 @@ const EditableContactDetails: FC<Props> = ({
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile,
-})
+// TODO repeated
+const mapStateToProps = ({ user: { profile } }: RootState) => ({ profile })
 
+// TODO repeated
 const mapDispatchToProps = (dispatch: any) => ({
   profileSaveStart: (profile: Partial<RedProfile>) =>
     dispatch(profileSaveStart(profile)),

@@ -14,6 +14,7 @@ import {
   TpJobseekerCv,
   TpJobseekerProfile,
 } from '@talent-connect/shared-types'
+import { formatDate, reorder } from '@talent-connect/shared-utils';
 import { formMonthsOptions } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
 import moment from 'moment'
@@ -29,14 +30,6 @@ import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseeker
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
-function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
-  const result = Array.from(list)
-  const [removed] = result.splice(startIndex, 1)
-  result.splice(endIndex, 0, removed)
-
-  return result
-}
-
 interface Props {
   profile?: Partial<TpJobseekerProfile>
   disableEditing?: boolean
@@ -46,9 +39,7 @@ export const  EditableProfessionalExperience: FC<Props> = ({
   profile: overridingProfile,
   disableEditing,
 }) => {
-  const queryHookResult = useTpJobseekerProfileQuery({
-    enabled: !disableEditing,
-  })
+  const queryHookResult = useTpJobseekerProfileQuery({ enabled: !disableEditing })
   if (overridingProfile) queryHookResult.data = overridingProfile
   const mutationHookResult = useTpjobseekerprofileUpdateMutation()
   const { data: profile } = queryHookResult
@@ -133,18 +124,9 @@ EditableProfessionalExperience.isSectionFilled = (profile: Partial<TpJobseekerPr
 EditableProfessionalExperience.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
   !EditableProfessionalExperience.isSectionFilled(profile);
 
-function formatDate (month?: number, year?: number): string {
-  if (year) {
-    return month ? moment().month(month).year(year).format('MMMM YYYY') : String(year)
-  } else {
-    if (month) return moment().month(month).format('MMMM')
-  }
-  return ''
-}
-
 interface JobseekerFormSectionProfessionalExperienceProps {
-  setIsEditing: (boolean) => void
-  setIsFormDirty?: (boolean) => void
+  setIsEditing: (boolean: boolean) => void
+  setIsFormDirty?: (boolean: boolean) => void
   queryHookResult: UseQueryResult<
     Partial<TpJobseekerProfile | TpJobseekerCv>,
     unknown
@@ -171,18 +153,17 @@ export const JobseekerFormSectionProfessionalExperience: FC<JobseekerFormSection
     }),
     [profile?.experience]
   )
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
-    formik.setSubmitting(true)
-    mutationHookResult.mutate(values, {
-      onSettled: () => formik.setSubmitting(false),
-      onSuccess: () => setIsEditing(false),
-    })
-  }
 
-  const formik = useFormik({
+  const formik = useFormik<Partial<TpJobseekerProfile>>({
     initialValues,
-    onSubmit,
     enableReinitialize: true,
+    onSubmit: (values) => {
+      formik.setSubmitting(true)
+      mutationHookResult.mutate(values, {
+        onSettled: () => formik.setSubmitting(false),
+        onSuccess: () => setIsEditing(false),
+      })
+    },
   })
 
   useEffect(() => setIsFormDirty?.(formik.dirty), [
@@ -381,10 +362,6 @@ function buildBlankExperienceRecord(): ExperienceRecord {
     title: '',
     company: '',
     description: '',
-    startDateMonth: undefined,
-    startDateYear: undefined,
-    endDateMonth: undefined,
-    endDateYear: undefined,
     current: false,
   }
 }

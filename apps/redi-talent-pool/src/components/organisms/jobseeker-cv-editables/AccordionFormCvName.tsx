@@ -50,8 +50,8 @@ const validationSchema = Yup.object({
 })
 
 interface FormProps {
-  setIsEditing: (boolean) => void
-  setIsFormDirty?: (boolean) => void
+  setIsEditing: (boolean: boolean) => void
+  setIsFormDirty?: (boolean: boolean) => void
   queryHookResult: UseQueryResult<Partial<TpJobseekerCv>, unknown>
   mutationHookResult: UseMutationResult<
     Partial<TpJobseekerCv>,
@@ -67,25 +67,25 @@ const Form: FC<FormProps> = ({
   queryHookResult: { data: profile },
   mutationHookResult,
 }) => {
-  const initialValues: Partial<TpJobseekerCv> = useMemo(() => ({
+  const initialValues = useMemo(() => ({
       firstName: profile?.firstName ?? '',
       lastName: profile?.lastName ?? '',
     }),
     [profile?.firstName, profile?.lastName]
   )
-  const onSubmit = (values: Partial<TpJobseekerCv>) => {
-    formik.setSubmitting(true)
-    mutationHookResult.mutate(values, {
-      onSettled: () => formik.setSubmitting(false),
-      onSuccess: () => setIsEditing(false),
-    })
-  }
-  const formik = useFormik({
+
+  const formik = useFormik<Partial<TpJobseekerCv>>({
     initialValues,
     validationSchema,
     enableReinitialize: true,
-    onSubmit,
     validateOnMount: true,
+    onSubmit: (values) => {
+      formik.setSubmitting(true)
+      mutationHookResult.mutate(values, {
+        onSettled: () => formik.setSubmitting(false),
+        onSuccess: () => setIsEditing(false),
+      })
+    },
   })
 
   useEffect(() => setIsFormDirty?.(formik.dirty), [

@@ -1,4 +1,5 @@
 import { CategoryGroupId, Category } from '@talent-connect/shared-types';
+import { objectEntries } from '@talent-connect/typescript-utilities';
 
 export const CATEGORY_GROUPS: Record<CategoryGroupId, string> = {
   softwareEngineering: '👩‍💻 Software Engineering',
@@ -18,8 +19,7 @@ export type CategoryKey =
   | 'python' 
   | 'dataAnalytics' 
   | 'machineLearning' 
-  | 'mobileDevelopmentIos' 
-  | 'mobileDevelopmentAndroid' 
+  | `mobileDevelopment${'Ios' | 'Android'}`
   | 'salesforce' 
   | 'devOpsCloud' 
   | 'iot' 
@@ -31,20 +31,17 @@ export type CategoryKey =
   | 'businessDevelopment' 
   | 'sales' 
   | 'qualityAssurance' 
-  | 'basicGerman' 
-  | 'businessGerman' 
+  | `${'basic' | 'business'}German` 
   | 'english' 
   | 'graphicDesign' 
-  | 'userInterfaceDesign' 
-  | 'userExperienceDesign' 
+  | `user${'Interface' | 'Experience'}Design`
   | 'motivationAndEncouragement' 
   | 'friendAndHelp' 
   | 'dontKnowYet' 
   | 'careerOrientationAndPlanning' 
   | 'internshipOrWorkingStudent' 
   | 'jobSearch' 
-  | 'jobApplicationsCvPreparationEnglish' 
-  | 'jobApplicationsCvPreparationGerman' 
+  | `jobApplicationsCvPreparation${'English' | 'German'}` 
   | 'interviewPreparation' 
   | 'codingChallengePreparation' 
   | 'buildingProfessionalNetwork' 
@@ -214,10 +211,10 @@ const Categories: Record<CategoryKey, Omit<Category, 'id'>> = {
   }
 } as const
 
-export const CATEGORIES = Object.entries(Categories)
-  .map(([key, value]) => ({ id: key as keyof typeof Categories, ...value }))
+export const CATEGORIES = objectEntries(Categories)
+  .map(([id, value]) => ({ id, ...value }))
 
-export const CATEGORIES_MAP = Object.entries(Categories)
+export const CATEGORIES_MAP = objectEntries(Categories)
   .reduce((t, [key, value]) =>
     ({ ...t, [key]: value.label }),
     {} as { [K in keyof typeof Categories]: typeof Categories[K]['label'] })

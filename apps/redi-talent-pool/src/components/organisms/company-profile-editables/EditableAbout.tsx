@@ -76,30 +76,28 @@ function ModalForm({
   setIsEditing,
   setIsFormDirty,
 }: {
-  setIsEditing: (boolean) => void
-  setIsFormDirty: (boolean) => void
+  setIsEditing: (boolean: boolean) => void
+  setIsFormDirty: (boolean: boolean) => void
 }) {
   const { data: profile } = useTpCompanyProfileQuery()
   const mutation = useTpCompanyProfileUpdateMutation()
-  const initialValues: Partial<TpCompanyProfile> = useMemo(() => ({
+  const initialValues = useMemo(() => ({
       about: profile?.about ?? '',
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )
 
-  const onSubmit = (values: Partial<TpCompanyProfile>) => {
-    formik.setSubmitting(true)
-    mutation.mutate(values, {
-      onSettled: () => formik.setSubmitting(false),
-      onSuccess: () => setIsEditing(false),
-    })
-  }
-
-  const formik = useFormik({
+  const formik = useFormik<{ about: string }>({
     initialValues,
     enableReinitialize: true,
-    onSubmit,
+    onSubmit: (values) => {
+      formik.setSubmitting(true)
+      mutation.mutate(values, {
+        onSettled: () => formik.setSubmitting(false),
+        onSuccess: () => setIsEditing(false),
+      })
+    },
   })
 
   useEffect(() => setIsFormDirty(formik.dirty), [formik.dirty, setIsFormDirty])

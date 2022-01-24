@@ -40,7 +40,7 @@ interface ProfileProps {
   profile: RedProfile | undefined
   currentUser: RedProfile | undefined
   hasReachedMenteeLimit: boolean
-  profilesFetchOneStart: Function
+  profilesFetchOneStart: (profileId: string) => void
 }
 
 const Profile: FC<ProfileProps> = ({
@@ -73,7 +73,7 @@ const Profile: FC<ProfileProps> = ({
     !isAcceptedMatch &&
     currentUserIsMentee &&
     profile &&
-    profile.numberOfPendingApplicationWithCurrentUser === 0
+    !profile.numberOfPendingApplicationWithCurrentUser
 
   const contactInfoAvailable =
     profile &&
@@ -91,7 +91,7 @@ const Profile: FC<ProfileProps> = ({
     profile &&
     profile.userType === 'mentee' &&
     profile.redMatchesWithCurrentUser &&
-    profile.redMatchesWithCurrentUser[
+    profile.redMatchesWithCurrentUser [
       profile.redMatchesWithCurrentUser.length - 1
     ]
 
@@ -241,7 +241,7 @@ const mapStateToProps = (state: RootState) => ({
   hasReachedMenteeLimit: getHasReachedMenteeLimit(state.user),
 })
 
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: Function) => ({
   profilesFetchOneStart: (profileId: string) =>
     dispatch(profilesFetchOneStart(profileId)),
 })

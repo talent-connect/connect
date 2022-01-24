@@ -6,14 +6,10 @@ import {
   Checkbox,
 } from '@talent-connect/shared-atomic-design-components'
 import { Modal } from '@talent-connect/shared-atomic-design-components'
-import { useFormik, FormikHelpers } from 'formik'
+import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { reportProblem } from '../../services/api/api'
-import {
-  FormSubmitResult,
-  RedProblemReportDto,
-  UserType,
-} from '@talent-connect/shared-types'
+import { FormSubmitResult, UserType } from '@talent-connect/shared-types'
 import { Content } from 'react-bulma-components'
 import './ReportProblem.scss'
 
@@ -27,11 +23,6 @@ interface FormValues {
   ifFromMentor_cancelMentorshipImmediately: boolean
 }
 
-const initialFormValues: FormValues = {
-  problemDescription: '',
-  ifFromMentor_cancelMentorshipImmediately: false,
-}
-
 const validationSchema = Yup.object({
   problemDescription: Yup.string()
     .required()
@@ -39,58 +30,47 @@ const validationSchema = Yup.object({
     .max(1000),
 })
 
-const ReportProblem: FC<ReportProblemProps> = ({ redProfileId, type }) => {
+const ReportProblem: FC<ReportProblemProps> = ({ redProfileId: reporteeId, type }) => {
   const [showProblemDialog, setShowProblemDialog] = useState(false)
   const [submitResult, setSubmitResult] = useState<FormSubmitResult>('notSubmitted')
   const history = useHistory()
   const isMentor = type === 'mentor'
-
-  const submitForm = async (
-    values: FormValues,
-    actions: FormikHelpers<FormValues>
-  ) => {
-    const { ifFromMentor_cancelMentorshipImmediately: isCancelImmediately } = values
-
-    if (isCancelImmediately) {
-      const userIsCertain = window.confirm(
-        'Are you sure you want to cancel this mentorship?'
-      )
-      if (!userIsCertain) return actions.setSubmitting(false)
-    }
-
-    setSubmitResult('submitting')
-
-    try {
-      const report: RedProblemReportDto = {
-        problemDescription: values.problemDescription,
-        reportType:
-          type === 'mentee'
-            ? 'mentor-report-about-mentee'
-            : 'mentee-report-about-mentor',
-        reporteeId: redProfileId,
-        ifFromMentor_cancelMentorshipImmediately:
-          isMentor && isCancelImmediately,
-      }
-      await reportProblem(report)
-      setSubmitResult('success')
-      setShowProblemDialog(false)
-      actions.resetForm()
-      if (isCancelImmediately) history.push('/app/mentorships/')
-    } catch (err) {
-      setSubmitResult('error')
-    }
-  }
+  const reportType = isMentor ? 'mentee-report-about-mentor' : 'mentor-report-about-mentee'
 
   const handleCancel = () => {
     setShowProblemDialog(false)
     formik.resetForm()
   }
 
-  const formik = useFormik({
+  const formik = useFormik<FormValues>({
+    initialValues: {
+      problemDescription: '',
+      ifFromMentor_cancelMentorshipImmediately: false,
+    },
     enableReinitialize: true,
-    initialValues: initialFormValues,
     validationSchema,
-    onSubmit: submitForm,
+    onSubmit: async ({ ifFromMentor_cancelMentorshipImmediately: isCancelImmediately, problemDescription }, actions) => {
+      if (isCancelImmediately) {
+        const userIsCertain = window.confirm('Are you sure you want to cancel this mentorship?')
+        if (!userIsCertain) return actions.setSubmitting(false)
+      }
+      setSubmitResult('submitting')
+  
+      try {
+        await reportProblem({
+          problemDescription,
+          reportType,
+          reporteeId,
+          ifFromMentor_cancelMentorshipImmediately: isMentor && isCancelImmediately,
+        })
+        setSubmitResult('success')
+        setShowProblemDialog(false)
+        actions.resetForm()
+        if (isCancelImmediately) history.push('/app/mentorships/')
+      } catch (err) {
+        setSubmitResult('error')
+      }
+    },
   })
 
   const { ifFromMentor_cancelMentorshipImmediately: isCancelImmediately } = formik.values

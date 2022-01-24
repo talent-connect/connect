@@ -18,20 +18,20 @@ const CardTags: FC<CardTagsProps> = ({ items, shortList, formatter }) => {
     <Tag.Group>
       {tagList.map((tagId, i) => {
         const currentTag = (
-          <CardTag key={tagId}>{formatter ? formatter(tagId) : tagId}</CardTag>
+          <CardTag key={tagId}>{formatter?.(tagId) || tagId}</CardTag>
         )
         const isLastVisibleTag = i === 2
 
-        return hasAdditionalTags && isLastVisibleTag ? (
-          <div className="tags__last-row" key={tagId}>
-            {currentTag}
-            <CardTag key={`restNr-${i}`} className="tag--rest">
-              {'+' + additionalTagsCount}
-            </CardTag>
-          </div>
-        ) : (
-          currentTag
-        )
+        return hasAdditionalTags && isLastVisibleTag
+          ? (
+            <div className="tags__last-row" key={tagId}>
+              {currentTag}
+              <CardTag key={`restNr-${i}`} className="tag--rest">
+                {'+' + additionalTagsCount}
+              </CardTag>
+            </div>
+          )
+          : currentTag
       })}
     </Tag.Group>
   )

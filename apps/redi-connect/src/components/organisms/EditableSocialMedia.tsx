@@ -8,7 +8,7 @@ import { RootState } from '../../redux/types'
 import { profileSaveStart } from '../../redux/user/actions'
 import * as Yup from 'yup'
 
-import { FormikValues, useFormik } from 'formik'
+import { useFormik } from 'formik'
 import { ReadSocialMedia } from '../molecules'
 
 export interface SocialMediaFormValues {
@@ -18,14 +18,22 @@ export interface SocialMediaFormValues {
 }
 
 const validationSchema = Yup.object({
-  linkedInProfileUrl: Yup.string().max(255).url().label('LinkedIn Profile'),
-  githubProfileUrl: Yup.string().max(255).url().label('Github Profile'),
-  slackUsername: Yup.string().max(255).label('Slack username'),
+  linkedInProfileUrl: Yup.string()
+    .max(255)
+    .url()
+    .label('LinkedIn Profile'),
+  githubProfileUrl: Yup.string()
+    .max(255)
+    .url()
+    .label('Github Profile'),
+  slackUsername: Yup.string()
+    .max(255)
+    .label('Slack username'),
 })
 
 interface Props {
   profile: RedProfile
-  profileSaveStart: Function
+  profileSaveStart: (arg: SocialMediaFormValues & { id: string }) => void
 }
 
 const EditableSocialMedia: FC<Props> = ({
@@ -33,18 +41,15 @@ const EditableSocialMedia: FC<Props> = ({
   profileSaveStart
 }) => {
 
-  const initialValues: SocialMediaFormValues = {
-    linkedInProfileUrl,
-    githubProfileUrl,
-    slackUsername,
-  }
-
-  const formik = useFormik({
-    initialValues,
+  const formik = useFormik<SocialMediaFormValues>({
+    initialValues: {
+      linkedInProfileUrl,
+      githubProfileUrl,
+      slackUsername,
+    },
     enableReinitialize: true,
     validationSchema,
-    onSubmit: async (values: FormikValues) => {
-      const profileSocialMedia = values as Partial<RedProfile>
+    onSubmit: (profileSocialMedia: SocialMediaFormValues) => {
       profileSaveStart({ ...profileSocialMedia, id })
     },
   })

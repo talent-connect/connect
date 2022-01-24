@@ -10,12 +10,12 @@ import {
   topSkills,
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
+import { mapOptions } from '@talent-connect/typescript-utilities';
 import { useFormik } from 'formik'
 import { FC, useEffect, useMemo, useState } from 'react'
 import { Content, Element, Tag } from 'react-bulma-components'
 import { UseMutationResult, UseQueryResult } from 'react-query'
 import * as Yup from 'yup'
-import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
@@ -100,10 +100,7 @@ EditableSummary.isSectionFilled = (profile: Partial<TpJobseekerProfile>) =>
 EditableSummary.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
   !EditableSummary.isSectionFilled(profile)
 
-const formTopSkills = topSkills.map(({ id, label }) => ({
-  value: id,
-  label,
-}))
+const formTopSkills = mapOptions(topSkills)
 
 const minChars = 100
 const maxChars = 600
@@ -119,8 +116,8 @@ const validationSchema = Yup.object({
 })
 
 interface JobseekerFormSectionSummaryProps {
-  setIsEditing: (boolean) => void
-  setIsFormDirty?: (boolean) => void
+  setIsEditing: (boolean: boolean) => void
+  setIsFormDirty?: (boolean: boolean) => void
   queryHookResult: UseQueryResult<
     Partial<TpJobseekerProfile | TpJobseekerCv>,
     unknown
@@ -142,26 +139,28 @@ export const JobseekerFormSectionSummary: FC<JobseekerFormSectionSummaryProps> =
 
   const { data: profile } = queryHookResult
   const mutation = mutationHookResult
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(() => ({
+
+  const initialValues = useMemo(() => ({
       aboutYourself: profile?.aboutYourself || '',
-      topSkills: profile?.topSkills ?? [],
+      topSkills: profile?.topSkills || [],
     }),
     [profile?.aboutYourself, profile?.topSkills]
   )
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
-    formik.setSubmitting(true)
-    mutation.mutate(values, {
-      onSettled: () => formik.setSubmitting(false),
-      onSuccess: () => setIsEditing(false),
-    })
-  }
-  const formik = useFormik({
+
+  const formik = useFormik<Partial<TpJobseekerProfile>>({
     initialValues,
     validationSchema,
     enableReinitialize: true,
-    onSubmit,
     validateOnMount: true,
+    onSubmit: (values) => {
+      formik.setSubmitting(true)
+      mutation.mutate(values, {
+        onSettled: () => formik.setSubmitting(false),
+        onSuccess: () => setIsEditing(false),
+      })
+    },
   })
+
   useEffect(() => setIsFormDirty?.(formik.dirty), [
     formik.dirty,
     setIsFormDirty,

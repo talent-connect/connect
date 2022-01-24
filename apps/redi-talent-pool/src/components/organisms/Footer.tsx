@@ -6,19 +6,18 @@ import { ReactComponent as RediSchool } from '../../assets/redi-school-logo.svg'
 import MicrosoftLogo from '../../assets/images/microsoft-logo.png'
 import './Footer.scss'
 
+type Link = {
+  url: string;
+  name: string;
+}
+
 const RediFooter: FC = () => {
   const year = new Date().getFullYear()
   const { t } = useTranslation()
 
-  const supportLinks: Array<{
-    url: string
-    name: string
-  }> = t('footer.supportLinks', { returnObjects: true })
+  const supportLinks: Link[] = t('footer.supportLinks', { returnObjects: true })
 
-  const legalLinks: Array<{
-    url: string
-    name: string
-  }> = t('footer.legalLinks', { returnObjects: true })
+  const legalLinks: Link[] = t('footer.legalLinks', { returnObjects: true })
 
   return (
     <footer className="footer">

@@ -98,13 +98,11 @@ const FormSelect: FC<FormSelectProps> = ({
     menuPortal: (base) => ({ ...base, zIndex: 9999 }),
   }
 
-  const handleOnChangeDefault = (option: any = []) => {
+  const handleOnChangeDefault = (option: any = []) => { // TODO: type
     setFieldValue(
       name,
       multiSelect
-        ? option
-          ? option.map((item: any) => item.value)
-          : []
+        ? (option?.map((item: any) => item.value) || [])
         : option.value,
       true
     )

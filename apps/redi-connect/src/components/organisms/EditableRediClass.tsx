@@ -8,15 +8,13 @@ import { RootState } from '../../redux/types'
 import { profileSaveStart } from '../../redux/user/actions'
 import * as Yup from 'yup'
 
-import { FormikValues, useFormik } from 'formik'
+import { useFormik } from 'formik'
 
 import { ReadRediClass } from '../molecules'
 import { courses } from '../../config/config'
+import { mapOptions } from '@talent-connect/typescript-utilities';
 
-const formCourses = courses.map((course) => ({
-  value: course.id,
-  label: course.label,
-}))
+const formCourses = mapOptions(courses)
 
 export interface RediClassFormValues {
   mentee_currentlyEnrolledInCourse: string
@@ -31,7 +29,7 @@ const validationSchema = Yup.object({
 
 interface Props {
   profile: RedProfile
-  profileSaveStart: Function
+  profileSaveStart: (arg: RediClassFormValues & { id: string }) => void
 }
 
 const EditableRediClass: FC<Props> = ({
@@ -39,20 +37,15 @@ const EditableRediClass: FC<Props> = ({
   profileSaveStart
 }) => {
   
-  const submitForm = async (values: FormikValues) => {
-    const rediClass = values as Partial<RedProfile>
-    profileSaveStart({ ...rediClass, id })
-  }
-
-  const initialValues: RediClassFormValues = {
-    mentee_currentlyEnrolledInCourse,
-  }
-
-  const formik = useFormik({
-    initialValues,
+  const formik = useFormik<RediClassFormValues>({
+    initialValues: {
+      mentee_currentlyEnrolledInCourse,
+    },
     enableReinitialize: true,
     validationSchema,
-    onSubmit: submitForm,
+    onSubmit: (rediClass: RediClassFormValues) => {
+      profileSaveStart({ ...rediClass, id })
+    },
   })
 
   return (

@@ -13,6 +13,7 @@ import {
   employmentTypes,
   topSkills,
 } from '@talent-connect/talent-pool/config'
+import { mapOptions } from '@talent-connect/typescript-utilities';
 import { useFormik } from 'formik'
 import { useCallback, useState, useEffect, FC } from 'react'
 import { Columns, Element } from 'react-bulma-components'
@@ -135,35 +136,35 @@ export const EditableJobPostings: FC<Props> = ({
 }
 
 const validationSchema = Yup.object().shape({
-  title: Yup.string().required('Please provide a job title'),
-  location: Yup.string().required('Please provide a location'),
+  title: Yup.string()
+    .required('Please provide a job title'),
+  location: Yup.string()
+    .required('Please provide a location'),
   summary: Yup.string()
     .required('Please enter a short description of the job')
     .min(200, 'Job summary should be at least 200 characters'),
-  relatesToPositions: Yup.array().min(
-    1,
-    'Please select at least one related position'
-  ),
+  relatesToPositions: Yup.array()
+    .min(1, 'Please select at least one related position'),
   idealTechnicalSkills: Yup.array()
     .min(1, 'Please select at least one relevant technical skill')
     .max(6, 'Please select up to six skills'),
-  employmentType: Yup.mixed().required('Please select an employment type'),
-  languageRequirements: Yup.string().required(
-    'Please specify the language requirement(s)'
-  ),
+  employmentType: Yup.mixed()
+    .required('Please select an employment type'),
+  languageRequirements: Yup.string()
+    .required('Please specify the language requirement(s)'),
 })
 
 interface ModalFormProps {
   tpJobListingId: string
   isEditing: boolean
-  setIsEditing: (boolean) => void
+  setIsEditing: (boolean: boolean) => void
 }
 
-function ModalForm({
+const ModalForm: FC<ModalFormProps> = ({
   isEditing,
   setIsEditing,
-  tpJobListingId,
-}: ModalFormProps) {
+  tpJobListingId
+}) => {
   const { data } = useTpJobListingOneOfCurrentUserQuery(tpJobListingId)
   const { data: currentUserTpCompanyProfile } = useTpCompanyProfileQuery()
   const jobListing = tpJobListingId
@@ -174,20 +175,18 @@ function ModalForm({
   const updateMutation = useTpJobListingUpdateMutation(tpJobListingId)
   const deleteMutation = useTpJobListingDeleteMutation()
 
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
-    formik.setSubmitting(true);
-    const mutation = tpJobListingId === null ? createMutation : updateMutation;
-    mutation.mutate(values, {
-      onSettled: () => formik.setSubmitting(false),
-      onSuccess: () => setIsEditing(false),
-    })
-  }
-
-  const formik = useFormik({
+  const formik = useFormik<Partial<TpJobListing>>({
     initialValues: jobListing,
-    onSubmit,
     validationSchema,
     enableReinitialize: true,
+    onSubmit: (values) => {
+      formik.setSubmitting(true);
+      const mutation = tpJobListingId === null ? createMutation : updateMutation;
+      mutation.mutate(values, {
+        onSettled: () => formik.setSubmitting(false),
+        onSuccess: () => setIsEditing(false),
+      })
+    },
   })
 
   const handleDelete = useCallback(() => {
@@ -320,9 +319,7 @@ function ModalForm({
   )
 }
 
-function buildBlankJobListing(
-  tpCompanyProfileId: string
-): Partial<TpJobListing> {
+function buildBlankJobListing(tpCompanyProfileId: string): Partial<TpJobListing> {
   return {
     title: '',
     location: '',
@@ -337,17 +334,8 @@ function buildBlankJobListing(
   }
 }
 
-const formTopSkills = topSkills.map(({ id, label }) => ({
-  value: id,
-  label,
-}))
+const formTopSkills = mapOptions(topSkills)
 
-const formEmploymentType = employmentTypes.map(({ id, label }) => ({
-  value: id,
-  label,
-}))
+const formEmploymentType = mapOptions(employmentTypes)
 
-const formRelatedPositions = desiredPositions.map(({ id, label }) => ({
-  value: id,
-  label,
-}))
+const formRelatedPositions = mapOptions(desiredPositions)

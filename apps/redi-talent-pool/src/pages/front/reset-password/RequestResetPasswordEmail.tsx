@@ -3,7 +3,7 @@ import {
   TextInput,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
-import { FormikValues, useFormik } from 'formik'
+import { useFormik } from 'formik'
 import { FC, useState } from 'react'
 import { Columns, Content, Element, Form } from 'react-bulma-components'
 import { Link } from 'react-router-dom'
@@ -14,10 +14,6 @@ import { requestResetPasswordEmail } from '../../../services/api/api'
 
 interface FormValues {
   email: string
-}
-
-const initialValues: FormValues = {
-  email: '',
 }
 
 const validationSchema = yup.object().shape({
@@ -31,24 +27,20 @@ export const RequestResetPasswordEmail: FC = () => {
   const [resetPasswordSuccess, setResetPasswordSuccess] = useState<string>('')
   const [resetPasswordError, setResetPasswordError] = useState<string>('')
 
-  const onSubmit = async (values: FormikValues) => {
-    try {
-      // Cast to string is safe as this only called if validated
-      await requestResetPasswordEmail(values.email as string)
-      setResetPasswordSuccess(
-        'If you have an account,we have sent you the password reset link to your email address.'
-      )
-    } catch (err) {
-      setResetPasswordError(
-        'Oh no, something went wrong :( Did you type your email address correctly?'
-      )
-    }
-  }
-
-  const formik = useFormik({
-    initialValues: initialValues,
+  const formik = useFormik<FormValues>({
+    initialValues: {
+      email: '',
+    },
     validationSchema,
-    onSubmit: onSubmit,
+    onSubmit: async (values) => {
+      try {
+        // Cast to string is safe as this only called if validated
+        await requestResetPasswordEmail(values.email as string)
+        setResetPasswordSuccess('If you have an account,we have sent you the password reset link to your email address.')
+      } catch (err) {
+        setResetPasswordError('Oh no, something went wrong :( Did you type your email address correctly?')
+      }
+    },
   })
 
   const heading = resetPasswordSuccess
@@ -102,9 +94,7 @@ export const RequestResetPasswordEmail: FC = () => {
             </form>
           )}
           <Element
-            className={`submit-link ${
-              !resetPasswordSuccess && 'submit-link--post'
-            }`}
+            className={`submit-link ${!resetPasswordSuccess && 'submit-link--post'}`}
             textTransform="uppercase"
           >
             <Link to="/front/login">Back to log in</Link>

@@ -9,6 +9,7 @@ const {
   sendMentorshipAcceptedEmail,
   sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted,
 } = require('../../lib/email/email');
+const { objectValues } = require('../../../../libs/typescript-utilities/src');
 
 module.exports = function (TpJobfair2021InterviewMatch) {
   /**
@@ -56,9 +57,8 @@ module.exports = function (TpJobfair2021InterviewMatch) {
 
       // TODO: Replace this with role-based 'admin' role check
       if (ctx.options.currentUser.email !== 'cloud-accounts@redi-school.org') {
-        const currentUserJobseekerOrCompany = {
-          or: [],
-        };
+        const currentUserJobseekerOrCompany = { or: [] };
+
         if (currentUserTpJobseekerProfile) {
           currentUserJobseekerOrCompany.or.push({
             intervieweeId: currentUserTpJobseekerProfile.id,
@@ -71,13 +71,9 @@ module.exports = function (TpJobfair2021InterviewMatch) {
         }
 
         const existingWhere = ctx.query.where;
-        if (Object.values(existingWhere).length) {
-          ctx.query.where = {
-            and: [currentUserJobseekerOrCompany, existingWhere],
-          };
-        } else {
-          ctx.query.where = currentUserJobseekerOrCompany;
-        }
+        ctx.query.where = objectValues(existingWhere).length
+          ? { and: [currentUserJobseekerOrCompany, existingWhere] }
+          : currentUserJobseekerOrCompany;
       }
 
       next();

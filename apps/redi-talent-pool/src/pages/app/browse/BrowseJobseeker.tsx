@@ -8,6 +8,7 @@ import {
   topSkills,
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
+import { mapOptions } from '@talent-connect/typescript-utilities';
 import { FC } from 'react'
 import { Columns, Element, Tag } from 'react-bulma-components'
 import { useHistory } from 'react-router-dom'
@@ -144,11 +145,8 @@ export const BrowseJobseeker: FC = () => {
   )
 }
 
-const skillsOptions = topSkills.map(({ id, label }) => ({ value: id, label }))
-const employmentTypeOptions = employmentTypes.map(({ id, label }) => ({
-  value: id,
-  label,
-}))
+const skillsOptions = mapOptions(topSkills)
+const employmentTypeOptions = mapOptions(employmentTypes)
 interface FilterTagProps {
   id: string
   label: string
@@ -168,7 +166,8 @@ const FilterTag = ({ id, label, onClickHandler }: FilterTagProps) => (
   </Tag>
 )
 
-export function toggleValueInArray<T>(array: Array<T>, value: T) {
-  if (array.includes(value)) return array.filter((val) => val !== value)
-  return [...array, value]
+export function toggleValueInArray<T>(array: T[], value: T) {
+  return array.includes(value)
+    ? array.filter((val) => val !== value)
+    : [...array, value]
 }

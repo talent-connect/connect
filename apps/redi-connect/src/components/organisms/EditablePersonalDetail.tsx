@@ -13,30 +13,32 @@ import { RootState } from '../../redux/types'
 import { profileSaveStart } from '../../redux/user/actions'
 import * as Yup from 'yup'
 
-import { FormikValues, useFormik } from 'formik'
+import { useFormik } from 'formik'
 
 import { GENDERS } from '@talent-connect/shared-config'
 import { ReadPersonalDetail } from '../molecules'
 
-import { objectEntries, objectKeys } from '@talent-connect/typescript-utilities'
+import { mapOptionsObject, objectKeys } from '@talent-connect/typescript-utilities'
 
-const formGenders = objectEntries(GENDERS).map(([value, label]) => ({
-  value,
-  label,
-}))
+const formGenders = mapOptionsObject(GENDERS)
+
 export interface PersonalDetailFormValues {
   gender: string
   birthDate: Date | null
 }
 
 const validationSchema = Yup.object({
-  gender: Yup.string().oneOf(objectKeys(GENDERS)).label('Gender'),
-  birthDate: Yup.date().nullable(true).label('Date'),
+  gender: Yup.string()
+    .oneOf(objectKeys(GENDERS))
+    .label('Gender'),
+  birthDate: Yup.date()
+    .nullable(true)
+    .label('Date'),
 })
 
 interface Props {
   profile: RedProfile
-  profileSaveStart: Function
+  profileSaveStart: (arg: PersonalDetailFormValues & { id: string}) => void
 }
 
 const EditablePersonalDetail: FC<Props> = ({
@@ -44,21 +46,16 @@ const EditablePersonalDetail: FC<Props> = ({
   profileSaveStart
 }) => {
 
-  const submitForm = async (values: FormikValues) => {
-    const personalDetail = values as Partial<RedProfile>
-    profileSaveStart({ ...personalDetail, id })
-  }
-
-  const initialValues: PersonalDetailFormValues = {
-    gender,
-    birthDate: birthDate ? new Date(birthDate) : null,
-  }
-
-  const formik = useFormik({
-    initialValues,
+  const formik = useFormik<PersonalDetailFormValues>({
+    initialValues: {
+      gender,
+      birthDate: birthDate ? new Date(birthDate) : null,
+    },
     enableReinitialize: true,
     validationSchema,
-    onSubmit: submitForm,
+    onSubmit: (personalDetail) => {
+      profileSaveStart({ ...personalDetail, id })
+    },
   })
 
   return (
@@ -97,8 +94,7 @@ const EditablePersonalDetail: FC<Props> = ({
 const mapStateToProps = ({ user: { profile }}: RootState) => ({ profile })
 
 const mapDispatchToProps = (dispatch: any) => ({
-  profileSaveStart: (profile: Partial<RedProfile>) =>
-    dispatch(profileSaveStart(profile)),
+  profileSaveStart: (profile: Partial<RedProfile>) => dispatch(profileSaveStart(profile))
 })
 
 export default connect(

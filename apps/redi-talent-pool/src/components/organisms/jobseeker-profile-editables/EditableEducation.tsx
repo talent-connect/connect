@@ -2,7 +2,6 @@ import {
   Button,
   Caption,
   Checkbox,
-  FaqItem,
   FormDraggableAccordion,
   TextInput,
   FormSelect,
@@ -14,12 +13,13 @@ import {
   TpJobseekerCv,
   TpJobseekerProfile,
 } from '@talent-connect/shared-types'
+import { formatDate, reorder } from '@talent-connect/shared-utils';
 import {
   certificationTypes,
   formMonthsOptions,
 } from '@talent-connect/talent-pool/config'
+import { mapOptions } from '@talent-connect/typescript-utilities';
 import { useFormik } from 'formik'
-import moment from 'moment'
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Columns, Content, Element } from 'react-bulma-components'
@@ -31,13 +31,6 @@ import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tp
 import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
-
-function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
-  const result = Array.from(list)
-  const [removed] = result.splice(startIndex, 1)
-  result.splice(endIndex, 0, removed)
-  return result
-}
 
 interface Props {
   profile?: Partial<TpJobseekerProfile>
@@ -117,10 +110,7 @@ export const EditableEducation: FC<Props> = ({
       modalHeadline="Education"
       modalBody={
         <JobseekerFormSectionEducation
-          setIsEditing={setIsEditing}
-          setIsFormDirty={setIsFormDirty}
-          queryHookResult={queryHookResult}
-          mutationHookResult={mutationHookResult}
+          {...{ setIsEditing, setIsFormDirty, queryHookResult, mutationHookResult }}
         />
       }
       modalStyles={{ minHeight: 700 }}
@@ -133,16 +123,9 @@ EditableEducation.isSectionFilled = (profile: Partial<TpJobseekerProfile>) =>
 EditableEducation.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
   !EditableEducation.isSectionFilled(profile)
 
-function formatDate(month?: number, year?: number): string {
-  if (year && !month) return String(year)
-  if (year && month) return moment().month(month).year(year).format('MMMM YYYY')
-  if (!year && month) return moment().month(month).format('MMMM')
-  return ''
-}
-
 interface JobseekerFormSectionEducationProps {
-  setIsEditing: (boolean) => void
-  setIsFormDirty?: (boolean) => void
+  setIsEditing: (boolean: boolean) => void
+  setIsFormDirty?: (boolean: boolean) => void
   queryHookResult: UseQueryResult<
     Partial<TpJobseekerProfile | TpJobseekerCv>,
     unknown
@@ -169,18 +152,17 @@ export const JobseekerFormSectionEducation: FC<JobseekerFormSectionEducationProp
     }),
     [profile?.education]
   )
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
-    formik.setSubmitting(true)
-    mutationHookResult.mutate(values, {
-      onSettled: () =>  formik.setSubmitting(false),
-      onSuccess: () => setIsEditing(false),
-    })
-  }
 
-  const formik = useFormik({
+  const formik = useFormik<Partial<TpJobseekerProfile>>({
     initialValues,
-    onSubmit,
     enableReinitialize: true,
+    onSubmit: (values) => {
+      formik.setSubmitting(true)
+      mutationHookResult.mutate(values, {
+        onSettled: () =>  formik.setSubmitting(false),
+        onSuccess: () => setIsEditing(false),
+      })
+    },
   })
 
   useEffect(() => setIsFormDirty?.(formik.dirty), [
@@ -376,7 +358,7 @@ export const JobseekerFormSectionEducation: FC<JobseekerFormSectionEducationProp
   )
 }
 
-const formCertificationTypes = certificationTypes.map(({ id: value, label }) => ({ value, label }))
+const formCertificationTypes = mapOptions(certificationTypes)
 
 function buildBlankEducationRecord(): EducationRecord {
   return {
@@ -385,10 +367,6 @@ function buildBlankEducationRecord(): EducationRecord {
     institutionName: '',
     description: '',
     certificationType: '',
-    startDateMonth: undefined,
-    startDateYear: undefined,
-    endDateMonth: undefined,
-    endDateYear: undefined,
     current: false,
   }
 }

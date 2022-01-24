@@ -26,19 +26,10 @@ interface ConfirmMentorshipFormValues {
   mentorReplyMessageOnAccept: string
 }
 
-const initialValues = {
-  mentorReplyMessageOnAccept: '',
-}
-
 const validationSchema = Yup.object({
   mentorReplyMessageOnAccept: Yup.string()
-    .required(
-      'Write at least 250 characters to introduce yourself to your mentee.'
-    )
-    .min(
-      250,
-      'Write at least 250 characters to introduce yourself to your mentee.'
-    )
+    .required('Write at least 250 characters to introduce yourself to your mentee.')
+    .min(250, 'Write at least 250 characters to introduce yourself to your mentee.')
     .max(600, 'The introduction text can be up to 600 characters long.'),
 })
 
@@ -66,20 +57,20 @@ const ConfirmMentorship = ({
   //     <>{children}</>
   //   )
 
-  const onSubmit = async (values: ConfirmMentorshipFormValues) => {
-    try {
-      matchesAcceptMentorshipStart(match.id, values.mentorReplyMessageOnAccept)
-      setModalActive(false)
-      history.push(`/app/mentorships/${match.id}`)
-    } catch (error) {
-      console.log('error ', error)
-    }
-  }
-
-  const formik = useFormik({
-    initialValues,
+  const formik = useFormik<ConfirmMentorshipFormValues>({
+    initialValues: {
+      mentorReplyMessageOnAccept: '',
+    },
     validationSchema,
-    onSubmit,
+    onSubmit: async ({ mentorReplyMessageOnAccept }) => {
+      try {
+        matchesAcceptMentorshipStart(match.id, mentorReplyMessageOnAccept)
+        setModalActive(false)
+        history.push(`/app/mentorships/${match.id}`)
+      } catch (error) {
+        console.log('error ', error)
+      }
+    },
   })
 
   const isFormSubmittable = formik.dirty && formik.isValid
@@ -130,14 +121,9 @@ const ConfirmMentorship = ({
   )
 }
 
-const mapDispatchToProps = (dispatch: any) => ({
-  matchesAcceptMentorshipStart: (
-    redMatchId: string,
-    mentorReplyMessageOnAccept: string
-  ) =>
-    dispatch(
-      matchesAcceptMentorshipStart(redMatchId, mentorReplyMessageOnAccept)
-    ),
+const mapDispatchToProps = (dispatch: Function) => ({
+  matchesAcceptMentorshipStart: (redMatchId: string, mentorReplyMessageOnAccept: string) =>
+    dispatch(matchesAcceptMentorshipStart(redMatchId, mentorReplyMessageOnAccept)),
 })
 
 export default connect(null, mapDispatchToProps)(ConfirmMentorship)

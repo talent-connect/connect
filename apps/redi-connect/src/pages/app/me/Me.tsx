@@ -28,7 +28,7 @@ import { RedProfile } from '@talent-connect/shared-types';
 interface Props {
   loading: boolean;
   saveResult: 'error' | 'submitting',
-  profileFetchStart: Function,
+  profileFetchStart: () => void,
   profile: RedProfile
 }
 

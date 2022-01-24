@@ -8,27 +8,28 @@ import { RootState } from '../../redux/types'
 import { profileSaveStart } from '../../redux/user/actions'
 import * as Yup from 'yup'
 
-import { FormikValues, useFormik } from 'formik'
+import { useFormik } from 'formik'
 
 import { LANGUAGES } from '@talent-connect/shared-config'
 import { ReadLanguages } from '../molecules'
+import { mapOptionsArray } from '@talent-connect/typescript-utilities'
 
-const formLanguages = LANGUAGES.map((language) => ({
-  value: language,
-  label: language,
-}))
+const formLanguages = mapOptionsArray(LANGUAGES)
 
 export interface LanguagesFormValues {
   languages: string[]
 }
 
 const validationSchema = Yup.object({
-  languages: Yup.array().min(1).of(Yup.string().max(255)).label('Languages'),
+  languages: Yup.array()
+    .min(1)
+    .of(Yup.string().max(255))
+    .label('Languages'),
 })
 
 interface Props {
   profile: RedProfile
-  profileSaveStart: Function
+  profileSaveStart: (arg: LanguagesFormValues & { id: string }) => void
 }
 
 const EditableLanguages: FC<Props> = ({
@@ -36,18 +37,13 @@ const EditableLanguages: FC<Props> = ({
   profileSaveStart
 }) => {
 
-  const onSubmit = async (values: FormikValues) => {
-    const languagesContacts = values as Partial<RedProfile>
-    profileSaveStart({ ...languagesContacts, id })
-  }
-
-  const initialValues: LanguagesFormValues = { languages }
-
-  const formik = useFormik({
-    initialValues,
+  const formik = useFormik<LanguagesFormValues>({
+    initialValues: { languages },
     enableReinitialize: true,
     validationSchema,
-    onSubmit,
+    onSubmit: (languagesContacts) => {
+      profileSaveStart({ ...languagesContacts, id })
+    },
   })
 
   return (

@@ -8,18 +8,13 @@ import { RootState } from '../../redux/types'
 import { profileSaveStart } from '../../redux/user/actions'
 import * as Yup from 'yup'
 
-import { FormikValues, useFormik } from 'formik'
+import { useFormik } from 'formik'
 
 import { EDUCATION_LEVELS } from '@talent-connect/shared-config'
 import { ReadEducation } from '../molecules'
-import { objectEntries, objectKeys } from '@talent-connect/typescript-utilities'
+import { mapOptionsObject, objectKeys } from '@talent-connect/typescript-utilities'
 
-const formEducationLevels = objectEntries(EDUCATION_LEVELS).map(
-  ([value, label]) => ({
-    value,
-    label,
-  })
-)
+const formEducationLevels = mapOptionsObject(EDUCATION_LEVELS)
 
 export interface EducationFormValues {
   mentee_highestEducationLevel: string
@@ -33,27 +28,23 @@ const validationSchema = Yup.object({
 
 interface Props {
   profile: RedProfile
-  profileSaveStart: Function
+  profileSaveStart: (arg: EducationFormValues & {id: string }) => void
 }
 
 const EditableEducation: FC<Props> = ({
   profile: { id, mentee_highestEducationLevel },
   profileSaveStart
 }) => {
-  const submitForm = async (values: FormikValues) => {
-    const education = values as Partial<RedProfile>
-    profileSaveStart({ ...education, id })
-  }
 
-  const initialValues: EducationFormValues = {
-    mentee_highestEducationLevel,
-  }
-
-  const formik = useFormik({
-    initialValues,
+  const formik = useFormik<EducationFormValues>({
+    initialValues: {
+      mentee_highestEducationLevel,
+    },
     enableReinitialize: true,
     validationSchema,
-    onSubmit: submitForm,
+    onSubmit: (education) => {
+      profileSaveStart({ ...education, id })
+    },
   })
 
   return (
@@ -75,9 +66,7 @@ const EditableEducation: FC<Props> = ({
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile,
-})
+const mapStateToProps = ({ user: { profile } }: RootState) => ({ profile })
 
 const mapDispatchToProps = (dispatch: any) => ({
   profileSaveStart: (profile: Partial<RedProfile>) =>

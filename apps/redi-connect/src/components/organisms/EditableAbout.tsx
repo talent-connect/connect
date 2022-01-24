@@ -8,10 +8,8 @@ import { profileSaveStart } from '../../redux/user/actions'
 
 import * as Yup from 'yup'
 
-import { FormikProps, FormikValues, useFormik } from 'formik'
+import { useFormik } from 'formik'
 import { ReadAbout } from '../molecules'
-
-import { assertUnreachable } from '@talent-connect/shared-utils'
 
 export interface AboutFormValues {
   userType: UserType
@@ -36,7 +34,7 @@ const validationSchema = Yup.object({
 
 interface Props {
   profile: RedProfile
-  profileSaveStart: Function
+  profileSaveStart: (arg: AboutFormValues & { id: string }) => void
 }
 
 const EditableAbout: FC<Props> = ({
@@ -44,22 +42,17 @@ const EditableAbout: FC<Props> = ({
   profileSaveStart
 }) => {
 
-  const submitForm = async (values: FormikValues) => {
-    const profileAbout = values as Partial<RedProfile>
-    profileSaveStart({ ...profileAbout, id })
-  }
-
-  const initialValues: AboutFormValues = {
-    userType,
-    personalDescription,
-    expectations,
-  }
-
-  const formik = useFormik({
-    initialValues,
+  const formik = useFormik<AboutFormValues>({
+    initialValues: {
+      userType,
+      personalDescription,
+      expectations,
+    },
     enableReinitialize: true,
     validationSchema,
-    onSubmit: submitForm,
+    onSubmit: (profileAbout) => {
+      profileSaveStart({ ...profileAbout, id })
+    },
   })
 
   return (

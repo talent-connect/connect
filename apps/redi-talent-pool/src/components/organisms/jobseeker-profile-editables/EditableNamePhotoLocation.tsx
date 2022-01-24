@@ -9,6 +9,7 @@ import {
   availabilityOptions,
   desiredEmploymentTypeOptions,
 } from '@talent-connect/talent-pool/config'
+import { mapOptions } from '@talent-connect/typescript-utilities';
 import { useFormik } from 'formik'
 import { FC, useEffect, useMemo, useState } from 'react'
 import { Columns, Content, Element } from 'react-bulma-components'
@@ -92,22 +93,24 @@ export const EditableNamePhotoLocation: FC<Props> = ({ profile, disableEditing }
   )
 }
 
-EditableNamePhotoLocation.isSectionFilled = (
-  profile: Partial<TpJobseekerProfile>
-) => profile?.location
-EditableNamePhotoLocation.isSectionEmpty = (
-  profile: Partial<TpJobseekerProfile>
-) => !EditableNamePhotoLocation.isSectionFilled(profile)
+EditableNamePhotoLocation.isSectionFilled = (profile: Partial<TpJobseekerProfile>) =>
+  profile?.location
+
+EditableNamePhotoLocation.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
+  !EditableNamePhotoLocation.isSectionFilled(profile)
 
 const validationSchema = Yup.object({
-  firstName: Yup.string().required('Your first name is required'),
-  lastName: Yup.string().required('Your last name is required'),
-  location: Yup.string().required('Your location is required'),
+  firstName: Yup.string()
+    .required('Your first name is required'),
+  lastName: Yup.string()
+    .required('Your last name is required'),
+  location: Yup.string()
+    .required('Your location is required'),
 })
 
 interface ModalFormProps {
-  setIsEditing: (boolean) => void
-  setIsFormDirty: (boolean) => void
+  setIsEditing: (boolean: boolean) => void
+  setIsFormDirty: (boolean: boolean) => void
 }
 
 const ModalForm: FC<ModalFormProps> = ({
@@ -116,7 +119,7 @@ const ModalForm: FC<ModalFormProps> = ({
 }) => {
   const { data: profile } = useTpJobseekerProfileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(() => ({
+  const initialValues = useMemo(() => ({
       firstName: profile?.firstName ?? '',
       lastName: profile?.lastName ?? '',
       genderPronouns: profile?.genderPronouns ?? '',
@@ -125,20 +128,21 @@ const ModalForm: FC<ModalFormProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
-    formik.setSubmitting(true)
-    mutation.mutate(values, {
-      onSettled: () => formik.setSubmitting(false),
-      onSuccess: () => setIsEditing(false),
-    })
-  }
-  const formik = useFormik({
+
+  const formik = useFormik<Partial<TpJobseekerProfile>>({
     initialValues,
     validationSchema,
     enableReinitialize: true,
-    onSubmit,
     validateOnMount: true,
+    onSubmit: (values) => {
+      formik.setSubmitting(true)
+      mutation.mutate(values, {
+        onSettled: () => formik.setSubmitting(false),
+        onSuccess: () => setIsEditing(false),
+      })
+    },
   })
+
   useEffect(() => setIsFormDirty?.(formik.dirty), [
     formik.dirty,
     setIsFormDirty,
@@ -195,11 +199,6 @@ const ModalForm: FC<ModalFormProps> = ({
   )
 }
 
-const formDesiredEmploymentType = desiredEmploymentTypeOptions.map(
-  ({ id, label }) => ({ value: id, label })
-)
+const formDesiredEmploymentType = mapOptions(desiredEmploymentTypeOptions)
 
-const formAvailabilityOptions = availabilityOptions.map(({ id, label }) => ({
-  value: id,
-  label,
-}))
+const formAvailabilityOptions = mapOptions(availabilityOptions)

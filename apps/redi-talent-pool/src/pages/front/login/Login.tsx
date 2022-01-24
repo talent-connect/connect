@@ -3,7 +3,7 @@ import {
   TextInput,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
-import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
+import { useFormik } from 'formik'
 import { FC, useCallback, useState } from 'react'
 import { Columns, Content, Form } from 'react-bulma-components'
 import { Link } from 'react-router-dom'
@@ -19,41 +19,40 @@ interface LoginFormValues {
   password: string
 }
 
-const initialValues: LoginFormValues = {
-  username: '',
-  password: '',
-}
-
 const validationSchema = Yup.object({
-  username: Yup.string().email().required().label('Email').max(255),
-  password: Yup.string().required().label('Password').max(255),
+  username: Yup.string()
+    .email()
+    .required()
+    .label('Email')
+    .max(255),
+  password: Yup.string()
+    .required()
+    .label('Password')
+    .max(255),
 })
 
 const Login: FC = () => {
   const [loginError, setLoginError] = useState<string>('')
 
-  const submitForm = useCallback((values, actions) => {
-    ;(async (values: FormikValues, actions: FormikActions<LoginFormValues>) => {
-      const formValues = values as LoginFormValues
-      try {
-        const accessToken = await login(
-          formValues.username,
-          formValues.password
-        )
-        saveAccessTokenToLocalStorage(accessToken)
-        actions.setSubmitting(false)
-        history.push('/app/me')
-      } catch (err) {
-        actions.setSubmitting(false)
-        setLoginError('You entered an incorrect email, password, or both.')
-      }
-    })(values, actions)
-  }, [])
-
-  const formik = useFormik({
-    initialValues,
+  const formik = useFormik<LoginFormValues>({
+    initialValues: {
+      username: '',
+      password: '',
+    },
     validationSchema,
-    onSubmit: submitForm,
+    onSubmit: useCallback(({ username, password }, actions) => {
+      (async () => {
+        try {
+          const accessToken = await login(username, password)
+          saveAccessTokenToLocalStorage(accessToken)
+          actions.setSubmitting(false)
+          history.push('/app/me')
+        } catch (err) {
+          actions.setSubmitting(false)
+          setLoginError('You entered an incorrect email, password, or both.')
+        }
+      })()
+    }, []),
   })
 
   return (

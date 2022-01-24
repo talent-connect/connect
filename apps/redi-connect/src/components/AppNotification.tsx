@@ -99,7 +99,7 @@ export const AppNotification: FC = () => {
 
   const styleClasses = useNotificationStyles()
 
-  const Icon = state ? variantIcon[state.variant] : null
+  const Icon = variantIcon[state?.variant] || null
 
   return (
     <Snackbar

@@ -12,18 +12,11 @@ import { RedMatch } from '@talent-connect/shared-types'
 
 interface CompleteMentorshipProps {
   match: RedMatch
-  matchesMarkAsComplete: (
-    redMatchId: string,
-    mentorMessageOnComplete: string
-  ) => void
+  matchesMarkAsComplete: (redMatchId: string, mentorMessageOnComplete: string) => void
 }
 
 interface CompleteMentorshipFormValues {
   mentorMessageOnComplete: string
-}
-
-const initialValues = {
-  mentorMessageOnComplete: '',
 }
 
 const CompleteMentorship: FC<CompleteMentorshipProps> = ({
@@ -32,18 +25,19 @@ const CompleteMentorship: FC<CompleteMentorshipProps> = ({
 }) => {
   const [isModalActive, setModalActive] = useState(false)
 
-  const onSubmit = async ({ mentorMessageOnComplete }: CompleteMentorshipFormValues) => {
-    try {
-      matchesMarkAsComplete(id, mentorMessageOnComplete)
-      setModalActive(false)
-    } catch (error) {
-      console.log('error ', error)
-    }
-  }
 
-  const formik = useFormik({
-    initialValues,
-    onSubmit,
+  const formik = useFormik<CompleteMentorshipFormValues>({
+    initialValues: {
+      mentorMessageOnComplete: '',
+    },
+    onSubmit: ({ mentorMessageOnComplete }) => {
+      try {
+        matchesMarkAsComplete(id, mentorMessageOnComplete)
+        setModalActive(false)
+      } catch (error) {
+        console.log('error ', error)
+      }
+    },
   })
 
   const handleCancel = () => {
@@ -95,11 +89,9 @@ const CompleteMentorship: FC<CompleteMentorshipProps> = ({
   )
 }
 
-const mapDispatchToProps = (dispatch: any) => ({
-  matchesMarkAsComplete: (
-    redMatchId: string,
-    mentorMessageOnComplete: string
-  ) => dispatch(matchesMarkAsComplete(redMatchId, mentorMessageOnComplete)),
+const mapDispatchToProps = (dispatch: Function) => ({
+  matchesMarkAsComplete: (redMatchId: string, mentorMessageOnComplete: string) =>
+    dispatch(matchesMarkAsComplete(redMatchId, mentorMessageOnComplete)),
 })
 
 export default connect(null, mapDispatchToProps)(CompleteMentorship)

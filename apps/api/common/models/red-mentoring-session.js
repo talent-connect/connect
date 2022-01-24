@@ -5,6 +5,7 @@ const { switchMap } = require('rxjs/operators');
 
 const app = require('../../server/server');
 const { sendMentoringSessionLoggedEmail } = require('../../lib/email/email');
+const { objectValues } = require('../../../../libs/typescript-utilities/src');
 
 module.exports = function (RedMentoringSession) {
   // IMPORTANT ACL-related method: this combines with the ACL $authenticated-can-execute-find,
@@ -33,11 +34,9 @@ module.exports = function (RedMentoringSession) {
           ],
         };
         const existingWhere = ctx.query.where;
-        if (Object.values(existingWhere).length) {
-          ctx.query.where = { and: [currentUserMenteeOrMentor, existingWhere] };
-        } else {
-          ctx.query.where = currentUserMenteeOrMentor;
-        }
+        ctx.query.where = objectValues(existingWhere).length
+          ? { and: [currentUserMenteeOrMentor, existingWhere] }
+          : currentUserMenteeOrMentor;
       }
 
       next();

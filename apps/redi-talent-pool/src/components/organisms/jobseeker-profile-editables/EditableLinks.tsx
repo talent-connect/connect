@@ -5,11 +5,7 @@ import {
 import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
 import { useEffect, useMemo, useState, FC } from 'react'
-import {
-  Content,
-  Element,
-  Button as BulmaButton,
-} from 'react-bulma-components'
+import { Content, Element } from 'react-bulma-components'
 import { UseMutationResult, UseQueryResult } from 'react-query'
 import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
@@ -113,8 +109,8 @@ const validationSchema = Yup.object({
 })
 
 interface JobseekerFormSectionLinksProps {
-  setIsEditing: (boolean) => void
-  setIsFormDirty?: (boolean) => void
+  setIsEditing: (boolean: boolean) => void
+  setIsFormDirty?: (boolean: boolean) => void
   queryHookResult: UseQueryResult<
     Partial<TpJobseekerProfile | TpJobseekerCv>,
     unknown
@@ -136,7 +132,7 @@ export const JobseekerFormSectionLinks: FC<JobseekerFormSectionLinksProps> = ({
   const { data: profile } = queryHookResult
   const mutation = mutationHookResult
 
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(() => ({
+  const initialValues = useMemo(() => ({
       personalWebsite: profile?.personalWebsite ?? '',
       githubUrl: profile?.githubUrl ?? '',
       linkedInUrl: profile?.linkedInUrl ?? '',
@@ -156,20 +152,18 @@ export const JobseekerFormSectionLinks: FC<JobseekerFormSectionLinksProps> = ({
     ]
   )
 
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
-    formik.setSubmitting(true)
-    mutation.mutate(values, {
-      onSettled: () => formik.setSubmitting(false),
-      onSuccess: () => setIsEditing(false),
-    })
-  }
-
-  const formik = useFormik({
+  const formik = useFormik<Partial<TpJobseekerProfile>>({
     initialValues,
     validationSchema,
     enableReinitialize: true,
-    onSubmit,
     validateOnMount: true,
+    onSubmit: (values) => {
+      formik.setSubmitting(true)
+      mutation.mutate(values, {
+        onSettled: () => formik.setSubmitting(false),
+        onSuccess: () => setIsEditing(false),
+      })
+    },
   })
 
   useEffect(() => setIsFormDirty?.(formik.dirty), [

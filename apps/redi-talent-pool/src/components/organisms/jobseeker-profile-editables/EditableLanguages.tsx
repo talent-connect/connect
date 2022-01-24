@@ -26,14 +26,8 @@ import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { Editable } from '../../molecules/Editable'
 import { UseMutationResult, UseQueryResult } from 'react-query'
-
-function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
-  const result = Array.from(list)
-  const [removed] = result.splice(startIndex, 1)
-  result.splice(endIndex, 0, removed)
-
-  return result
-}
+import { mapOptions, mapOptionsObject } from '@talent-connect/typescript-utilities'
+import { reorder } from '@talent-connect/shared-utils';
 
 interface Props {
   profile?: Partial<TpJobseekerProfile>
@@ -109,13 +103,15 @@ EditableLanguages.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
 // TODO: put this one in config file
 const MAX_LANGUAGES = 6
 
-const validationSchema = Yup.object({
-  workingLanguages: Yup.array().min(1).max(6),
+const validationSchema = Yup.object({ // TODO use?
+  workingLanguages: Yup.array()
+    .min(1)
+    .max(6),
 })
 
 interface JobseekerFormSectionLanguagesProps {
-  setIsEditing: (boolean) => void
-  setIsFormDirty?: (boolean) => void
+  setIsEditing: (boolean: boolean) => void
+  setIsFormDirty?: (boolean: boolean) => void
   queryHookResult: UseQueryResult<
     Partial<TpJobseekerProfile | TpJobseekerCv>,
     unknown
@@ -144,18 +140,16 @@ export const JobseekerFormSectionLanguages: FC<JobseekerFormSectionLanguagesProp
     [profile?.workingLanguages]
   )
 
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
-    formik.setSubmitting(true)
-    mutation.mutate(values, {
-      onSettled: () => formik.setSubmitting(false),
-      onSuccess: () => setIsEditing(false),
-    })
-  }
-
-  const formik = useFormik({
+  const formik = useFormik<Partial<TpJobseekerProfile>>({
     initialValues,
-    onSubmit,
     enableReinitialize: true,
+    onSubmit: (values) => {
+      formik.setSubmitting(true)
+      mutation.mutate(values, {
+        onSettled: () => formik.setSubmitting(false),
+        onSuccess: () => setIsEditing(false),
+      })
+    },
   })
 
   useEffect(
@@ -295,11 +289,9 @@ export const JobseekerFormSectionLanguages: FC<JobseekerFormSectionLanguagesProp
   )
 }
 
-const formLanguages = Object.entries(LANGUAGES)
-  .map(([value, label]) => ({ value, label }))
+const formLanguages = mapOptionsObject(LANGUAGES)
 
-const formLanguageProficiencyLevels = languageProficiencyLevels
-  .map(({ id: value, label }) => ({ value, label }))
+const formLanguageProficiencyLevels = mapOptions(languageProficiencyLevels)
 
 function buildBlankLanguageRecord(): LanguageRecord {
   return {

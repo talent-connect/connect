@@ -15,8 +15,7 @@ const profileFetchEpic = (action$: ActionsObservable<UserActions>) =>
     filter(() => isLoggedIn()),
     switchMap(async () => {
       try {
-        const res = await fetchSaveRedProfile(getAccessTokenFromLocalStorage())
-        return res
+        return fetchSaveRedProfile(getAccessTokenFromLocalStorage())
       } catch (err) {
         return of(err)
       }

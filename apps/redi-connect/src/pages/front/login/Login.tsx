@@ -3,7 +3,7 @@ import AccountOperation from '../../../components/templates/AccountOperation'
 import Teaser from '../../../components/molecules/Teaser'
 import * as Yup from 'yup'
 import { Link } from 'react-router-dom'
-import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
+import { useFormik } from 'formik'
 import { history } from '../../../services/history/history'
 import { login, fetchSaveRedProfile } from '../../../services/api/api'
 import {
@@ -27,14 +27,16 @@ interface LoginFormValues {
   password: string
 }
 
-const initialValues: LoginFormValues = {
-  username: '',
-  password: '',
-}
-
 const validationSchema = Yup.object({
-  username: Yup.string().email().required().label('Email').max(255),
-  password: Yup.string().required().label('Password').max(255),
+  username: Yup.string()
+    .email()
+    .required()
+    .label('Email')
+    .max(255),
+  password: Yup.string()
+    .required()
+    .label('Password')
+    .max(255),
 })
 
 const Login: FC = () => {
@@ -42,37 +44,31 @@ const Login: FC = () => {
   const [isWrongRediLocationError, setIsWrongRediLocationError] =
     useState<boolean>(false)
 
-  const submitForm = useCallback((values, actions) => {
-    ;(async (values: FormikValues, actions: FormikActions<LoginFormValues>) => {
-      const formValues = values as LoginFormValues
-      try {
-        const accessToken = await login(
-          formValues.username,
-          formValues.password
-        )
-        saveAccessTokenToLocalStorage(accessToken)
-        const redProfile = await fetchSaveRedProfile(accessToken)
-        if (
-          redProfile.rediLocation !==
-          (process.env.NX_REDI_CONNECT_REDI_LOCATION as RediLocation)
-        ) {
-          setIsWrongRediLocationError(true)
-          purgeAllSessionData()
-          return
-        }
-        actions.setSubmitting(false)
-        history.push('/app/me')
-      } catch (err) {
-        actions.setSubmitting(false)
-        setLoginError('You entered an incorrect email, password, or both.')
-      }
-    })(values, actions)
-  }, [])
-
-  const formik = useFormik({
-    initialValues,
+  const formik = useFormik<LoginFormValues>({
+    initialValues: {
+      username: '',
+      password: '',
+    },
     validationSchema,
-    onSubmit: submitForm,
+    onSubmit: useCallback(({ username, password }, actions) => {
+      (async () => {
+        try {
+          const accessToken = await login(username, password)
+          saveAccessTokenToLocalStorage(accessToken)
+          const { rediLocation } = await fetchSaveRedProfile(accessToken)
+          if (rediLocation !== (process.env.NX_REDI_CONNECT_REDI_LOCATION as RediLocation)) {
+            setIsWrongRediLocationError(true)
+            purgeAllSessionData()
+            return
+          }
+          actions.setSubmitting(false)
+          history.push('/app/me')
+        } catch (err) {
+          actions.setSubmitting(false)
+          setLoginError('You entered an incorrect email, password, or both.')
+        }
+      })()
+    }, []),
   })
 
   return (
@@ -96,9 +92,7 @@ const Login: FC = () => {
               You've tried to log into ReDI Connect{' '}
               <strong>
                 {
-                  REDI_LOCATION_NAMES[
-                    process.env.NX_REDI_CONNECT_REDI_LOCATION as RediLocation
-                  ]
+                  REDI_LOCATION_NAMES[process.env.NX_REDI_CONNECT_REDI_LOCATION as RediLocation]
                 }
               </strong>
               , but your account is linked to ReDI Connect{' '}

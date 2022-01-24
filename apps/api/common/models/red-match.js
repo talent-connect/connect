@@ -14,6 +14,7 @@ const {
   sendMentorshipCompletionEmailToMentee,
   sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted,
 } = require('../../lib/email/email');
+const { objectValues } = require('../../../../libs/typescript-utilities/src/lib/object-tools');
 
 module.exports = function (RedMatch) {
   /**
@@ -102,11 +103,9 @@ module.exports = function (RedMatch) {
           ],
         };
         const existingWhere = ctx.query.where;
-        if (Object.values(existingWhere).length) {
-          ctx.query.where = { and: [currentUserMenteeOrMentor, existingWhere] };
-        } else {
-          ctx.query.where = currentUserMenteeOrMentor;
-        }
+        ctx.query.where = objectValues(existingWhere).length
+          ? { and: [currentUserMenteeOrMentor, existingWhere] }
+          : currentUserMenteeOrMentor;
       }
 
       next();
@@ -117,6 +116,7 @@ module.exports = function (RedMatch) {
     const { redMatchId, mentorReplyMessageOnAccept } = data;
 
     const RedProfile = app.models.RedProfile;
+    const rediLocation = options.currentUser.redProfile.rediLocation;
 
     let redMatch = await RedMatch.findById(redMatchId);
     const redMatchData = redMatch.toJSON();
@@ -129,7 +129,7 @@ module.exports = function (RedMatch) {
       status: 'accepted',
       matchMadeActiveOn: DateTime.utc().toString(),
       mentorReplyMessageOnAccept,
-      rediLocation: options.currentUser.redProfile.rediLocation,
+      rediLocation
     });
 
     await sendMentorshipAcceptedEmail({
@@ -137,7 +137,7 @@ module.exports = function (RedMatch) {
       mentorName: mentor.firstName,
       menteeName: mentee.firstName,
       mentorReplyMessageOnAccept: mentorReplyMessageOnAccept,
-      rediLocation: options.currentUser.redProfile.rediLocation,
+      rediLocation
     }).toPromise();
 
     const menteePendingMatches = await RedMatch.find({
@@ -152,23 +152,20 @@ module.exports = function (RedMatch) {
       menteePendingMatches.map((pendingMatch) => {
         return pendingMatch.updateAttributes({
           status: 'invalidated-as-other-mentor-accepted',
-          rediLocation: options.currentUser.redProfile.rediLocation,
+          rediLocation
         });
       })
     );
 
     await Promise.all(
       menteePendingMatches.map((pendingMatch) => {
-        const pendingMatchData = pendingMatch.toJSON();
+        const { mentor, mentee } = pendingMatch.toJSON();
         return sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted(
           {
-            recipient: pendingMatchData.mentor.contactEmail,
-            mentorName: pendingMatchData.mentor.firstName,
-            menteeName:
-              pendingMatchData.mentee.firstName +
-              ' ' +
-              pendingMatchData.mentee.lastName,
-            rediLocation: options.currentUser.redProfile.rediLocation,
+            recipient: mentor.contactEmail,
+            mentorName: mentor.firstName,
+            menteeName: `${mentee.firstName} ${mentee.lastName}`,
+            rediLocation
           }
         ).toPromise();
       })

@@ -13,34 +13,24 @@ import { Modal } from '@talent-connect/shared-atomic-design-components'
 import { matchesDeclineMentorshipStart } from '../../redux/matches/actions'
 import { RedMatch } from '@talent-connect/shared-types'
 import { MENTOR_DECLINES_MENTORSHIP_REASON_FOR_DECLINING } from '@talent-connect/shared-config'
+import { mapOptionsObject, objectEntries } from '@talent-connect/typescript-utilities';
 
-interface DeclineMentorshipButtonProps {
-  match: RedMatch
-  menteeName?: string
-  matchesDeclineMentorshipStart: (options: {
-    redMatchId: string
-    ifDeclinedByMentor_chosenReasonForDecline: string
-    ifDeclinedByMentor_ifReasonIsOther_freeText: string
-    ifDeclinedByMentor_optionalMessageToMentee: string
-  }) => void
-}
-
-interface DeclineMentorshipFormValues {
+type DeclineMentorshipFormValues = {
   ifDeclinedByMentor_chosenReasonForDecline: string
   ifDeclinedByMentor_ifReasonIsOther_freeText: string
   ifDeclinedByMentor_optionalMessageToMentee: string
 }
 
-const initialValues: DeclineMentorshipFormValues = {
-  ifDeclinedByMentor_chosenReasonForDecline: '',
-  ifDeclinedByMentor_ifReasonIsOther_freeText: '',
-  ifDeclinedByMentor_optionalMessageToMentee: '',
+interface DeclineMentorshipButtonProps {
+  match: RedMatch
+  menteeName?: string
+  matchesDeclineMentorshipStart: (options: DeclineMentorshipFormValues & { redMatchId: string }) => void
 }
 
+
 const validationSchema = Yup.object({
-  ifDeclinedByMentor_chosenReasonForDecline: Yup.string().required(
-    'Please pick an option'
-  ),
+  ifDeclinedByMentor_chosenReasonForDecline: Yup.string()
+    .required('Please pick an option'),
 })
 
 // TODO: This throws a TS error: { dispatch, matchId }: ConnectButtonProps
@@ -51,22 +41,21 @@ const DeclineMentorshipButton: FC<DeclineMentorshipButtonProps> = ({
 }) => {
   const [isModalActive, setModalActive] = useState(false)
 
-  const onSubmit = async (values: DeclineMentorshipFormValues) => {
-    try {
-      matchesDeclineMentorshipStart({
-        redMatchId,
-        ...values,
-      })
-      setModalActive(false)
-    } catch (error) {
-      console.log('error ', error)
-    }
-  }
-
-  const formik = useFormik({
-    initialValues,
+  const formik = useFormik<DeclineMentorshipFormValues>({
+    initialValues: {
+      ifDeclinedByMentor_chosenReasonForDecline: '',
+      ifDeclinedByMentor_ifReasonIsOther_freeText: '',
+      ifDeclinedByMentor_optionalMessageToMentee: '',
+    },
     validationSchema,
-    onSubmit,
+    onSubmit: (values) => {
+      try {
+        matchesDeclineMentorshipStart({ redMatchId, ...values })
+        setModalActive(false)
+      } catch (error) {
+        console.log('error ', error)
+      }
+    },
   })
 
   const isFormSubmittable = formik.dirty && formik.isValid
@@ -126,18 +115,12 @@ const DeclineMentorshipButton: FC<DeclineMentorshipButtonProps> = ({
   )
 }
 
-const formDeclineOptions = Object.entries(
-  MENTOR_DECLINES_MENTORSHIP_REASON_FOR_DECLINING
-).map(([value, label]) => ({ value, label }))
+const formDeclineOptions = mapOptionsObject(MENTOR_DECLINES_MENTORSHIP_REASON_FOR_DECLINING)
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const mapDispatchToProps = (dispatch: Function) => ({
-  matchesDeclineMentorshipStart: (options: {
-    redMatchId: string
-    ifDeclinedByMentor_chosenReasonForDecline: string
-    ifDeclinedByMentor_ifReasonIsOther_freeText: string
-    ifDeclinedByMentor_optionalMessageToMentee: string
-  }) => dispatch(matchesDeclineMentorshipStart(options)),
+  matchesDeclineMentorshipStart: (options: DeclineMentorshipFormValues & { redMatchId: string; }) =>
+    dispatch(matchesDeclineMentorshipStart(options)),
 })
 
 export default connect(null, mapDispatchToProps)(DeclineMentorshipButton)

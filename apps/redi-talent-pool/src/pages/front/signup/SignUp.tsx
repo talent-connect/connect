@@ -3,7 +3,7 @@ import { useParams } from 'react-router'
 import { Link } from 'react-router-dom'
 import omit from 'lodash/omit'
 import * as Yup from 'yup'
-import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
+import { useFormik } from 'formik'
 import { Columns, Form, Notification } from 'react-bulma-components'
 
 import {
@@ -14,10 +14,6 @@ import {
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
 import { COURSES, REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
-import {
-  TpJobseekerProfile,
-  TpCompanyProfile,
-} from '@talent-connect/shared-types'
 
 import { howDidHearAboutRediOptions } from '@talent-connect/talent-pool/config'
 
@@ -25,12 +21,11 @@ import TpTeaser from '../../../components/molecules/TpTeaser'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import { signUpCompany, signUpJobseeker } from '../../../services/api/api'
 import { history } from '../../../services/history/history'
+import { mapOptionsObject } from '@talent-connect/typescript-utilities';
 
 // TODO: replace with proper dropdown
 const coursesWithAlumniDeduped = [
-  ...COURSES.filter((c) => {
-    return !c.id.includes('alumni')
-  }),
+  ...COURSES.filter((c) => !c.id.includes('alumni')),
   {
     id: 'alumni',
     label: `I'm a ReDI School alumni (I took a course before)`,
@@ -38,20 +33,14 @@ const coursesWithAlumniDeduped = [
   },
 ]
 
-const formCourses = coursesWithAlumniDeduped.map((course) => {
-  const label =
-    course.id === 'alumni'
-      ? course.label
-      : `(ReDI ${REDI_LOCATION_NAMES[course.location]}) ${course.label}`
-  return {
-    value: course.id,
-    label: label,
-  }
-})
+const formCourses = coursesWithAlumniDeduped.map(({ id, label, location }) => ({
+    value: id,
+    label: id === 'alumni'
+      ? label
+      : `(ReDI ${REDI_LOCATION_NAMES[location]}) ${label}`,
+  }))
 
-const howDidHearAboutRediOptionsEntries = Object.entries(
-  howDidHearAboutRediOptions
-).map(([value, label]) => ({ value, label }))
+const howDidHearAboutRediOptionsEntries = mapOptionsObject(howDidHearAboutRediOptions)
 
 function buildValidationSchema(signupType: SignUpPageType['type']) {
   const baseSchema = {
@@ -69,7 +58,9 @@ function buildValidationSchema(signupType: SignUpPageType['type']) {
     passwordConfirm: Yup.string()
       .required('Confirm your password')
       .oneOf([Yup.ref('password')], 'Passwords does not match'),
-    gaveGdprConsent: Yup.boolean().required().oneOf([true]),
+    gaveGdprConsent: Yup.boolean()
+      .required()
+      .oneOf([true]),
   }
 
   if (signupType === 'jobseeker') {
@@ -136,75 +127,58 @@ export default function SignUp() {
     initialValues.agreesWithCodeOfConduct = false
   }
   if (type === 'company') {
-    initialValues.companyName = ''
     initialValues.state = 'drafting-profile'
+    initialValues.companyName = ''
   }
 
   const [submitError, setSubmitError] = useState(null)
-  const submitForm = async (
-    values: FormikValues,
-    actions: FormikActions<SignUpFormValues>
-  ) => {
-    setSubmitError(null)
 
-    let profile
-
-    try {
-      if (type === 'jobseeker') {
-        const profile = values as Partial<TpJobseekerProfile>
-        profile.isProfileVisibleToCompanies = true
-
-        // TODO: this needs to be done in a smarter way, like iterating over the TpJobseekerProfile definition or something
-        const cleanProfile:
-          | Partial<TpJobseekerProfile>
-          | Partial<TpCompanyProfile> = omit(profile, [
-          'password',
-          'passwordConfirm',
-          'agreesWithCodeOfConduct',
-          'gaveGdprConsent',
-        ])
-
-        await signUpJobseeker(
-          values.contactEmail,
-          values.password,
-          cleanProfile
-        )
-      }
-      if (type === 'company') {
-        const profile = values as Partial<TpCompanyProfile>
-
-        // TODO: this needs to be done in a smarter way, like iterating over the TpJobseekerProfile definition or something
-        const cleanProfile:
-          | Partial<TpJobseekerProfile>
-          | Partial<TpCompanyProfile> = omit(profile, [
-          'password',
-          'passwordConfirm',
-          'agreesWithCodeOfConduct',
-          'gaveGdprConsent',
-        ])
-
-        await signUpCompany(values.contactEmail, values.password, cleanProfile)
-      }
-      actions.setSubmitting(false)
-      history.push(`/front/signup-email-verification`)
-    } catch (error) {
-      actions.setSubmitting(false)
-      if (
-        error?.response?.data?.error?.details?.codes?.email.includes(
-          'uniqueness'
-        )
-      ) {
-        return setSubmitError('user-already-exists')
-      }
-      return setSubmitError('generic')
-    }
-  }
-
-  const formik = useFormik({
+  const formik = useFormik<SignUpFormValues>({
+    initialValues,
     enableReinitialize: true,
-    initialValues: initialValues,
     validationSchema: buildValidationSchema(type as SignUpPageType['type']),
-    onSubmit: submitForm,
+    onSubmit: async (profile, actions) => {
+      setSubmitError(null)
+  
+      try {
+        if (type === 'jobseeker') {
+          profile.isProfileVisibleToCompanies = true
+  
+          // TODO: this needs to be done in a smarter way, like iterating over the TpJobseekerProfile definition or something
+          const cleanProfile = omit(profile, [
+            'password',
+            'passwordConfirm',
+            'agreesWithCodeOfConduct',
+            'gaveGdprConsent',
+          ])
+  
+          await signUpJobseeker(
+            profile.contactEmail,
+            profile.password,
+            cleanProfile
+          )
+        }
+        if (type === 'company') {
+  
+          // TODO: this needs to be done in a smarter way, like iterating over the TpJobseekerProfile definition or something
+          const cleanProfile = omit(profile, [
+            'password',
+            'passwordConfirm',
+            'agreesWithCodeOfConduct',
+            'gaveGdprConsent',
+          ])
+  
+          await signUpCompany(profile.contactEmail, profile.password, cleanProfile)
+        }
+        actions.setSubmitting(false)
+        history.push(`/front/signup-email-verification`)
+      } catch (error) {
+        actions.setSubmitting(false)
+        return error?.response?.data?.error?.details?.codes?.email.includes('uniqueness')
+          ? setSubmitError('user-already-exists')
+          : setSubmitError('generic')
+      }
+    },
   })
 
   return (
@@ -233,33 +207,28 @@ export default function SignUp() {
                 {...formik}
               />
             ) : null}
-
             <TextInput
               name="firstName"
               placeholder="Your first name"
               {...formik}
             />
-
             <TextInput
               name="lastName"
               placeholder="Your last name"
               {...formik}
             />
-
             <TextInput
               name="contactEmail"
               type="email"
               placeholder="Your Email"
               {...formik}
             />
-
             <TextInput
               name="password"
               type="password"
               placeholder="Your password"
               {...formik}
             />
-
             <TextInput
               name="passwordConfirm"
               type="password"

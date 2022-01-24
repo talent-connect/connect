@@ -74,11 +74,7 @@ const ApplicationCard: FC<Props> = ({
             <span
               className="application-card__link"
               onClick={() =>
-                history.push(
-                  `/app/applications/profile/${
-                    applicationUser && applicationUser.id
-                  }`
-                )
+                history.push(`/app/applications/profile/${applicationUser?.id}`)
               }
             >
               Visit Profile

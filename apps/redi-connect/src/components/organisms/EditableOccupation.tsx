@@ -10,16 +10,14 @@ import { RootState } from '../../redux/types'
 import { profileSaveStart } from '../../redux/user/actions'
 import * as Yup from 'yup'
 
-import { FormikValues, useFormik } from 'formik'
+import { useFormik } from 'formik'
 
 import { MENTEE_OCCUPATION_CATEGORY } from '@talent-connect/shared-config'
 import { ReadOccupation } from '../molecules'
 import { RedProfile } from '@talent-connect/shared-types'
-import { objectKeys } from '@talent-connect/typescript-utilities'
+import { mapOptionsObject, objectKeys } from '@talent-connect/typescript-utilities'
 
-const formMenteeOccupationCategories = Object.entries(
-  MENTEE_OCCUPATION_CATEGORY
-).map(([value, label]) => ({ value, label }))
+const formMenteeOccupationCategories = mapOptionsObject( MENTEE_OCCUPATION_CATEGORY)
 
 // do we really need all these type???
 export type UserType =
@@ -46,9 +44,14 @@ export interface OccupationFormValues {
 const validationSchema = Yup.object({
   mentor_occupation: Yup.string().when('userType', {
     is: 'mentor',
-    then: Yup.string().required().max(255).label('Occupation'),
+    then: Yup.string()
+      .required()
+      .max(255)
+      .label('Occupation'),
   }),
-  mentor_workPlace: Yup.string().max(255).label('Work place'),
+  mentor_workPlace: Yup.string()
+    .max(255)
+    .label('Work place'),
   mentee_occupationCategoryId: Yup.string().when('userType', {
     is: 'mentee',
     then: Yup.string()
@@ -78,7 +81,7 @@ const validationSchema = Yup.object({
 
 interface Props {
   profile: RedProfile
-  profileSaveStart: Function
+  profileSaveStart: (arg: OccupationFormValues & { id: string }) => void
 }
 
 const EditableOccupation: FC<Props> = ({
@@ -103,29 +106,24 @@ const EditableOccupation: FC<Props> = ({
   const isMentor =
     userType === 'mentor' || userType === 'public-sign-up-mentor-pending-review'
 
-  const submitForm = async (values: FormikValues) => {
-    const education = values as Partial<RedProfile>
-    profileSaveStart({ ...education, id })
-  }
-
-  const initialValues: OccupationFormValues = {
-    userType,
-    mentor_occupation,
-    mentor_workPlace,
-    mentee_occupationCategoryId,
-    mentee_occupationJob_placeOfEmployment,
-    mentee_occupationJob_position,
-    mentee_occupationStudent_studyPlace,
-    mentee_occupationStudent_studyName,
-    mentee_occupationLookingForJob_what,
-    mentee_occupationOther_description,
-  }
-
-  const formik = useFormik({
-    initialValues,
+  const formik = useFormik<OccupationFormValues>({
+    initialValues: {
+      userType,
+      mentor_occupation,
+      mentor_workPlace,
+      mentee_occupationCategoryId,
+      mentee_occupationJob_placeOfEmployment,
+      mentee_occupationJob_position,
+      mentee_occupationStudent_studyPlace,
+      mentee_occupationStudent_studyName,
+      mentee_occupationLookingForJob_what,
+      mentee_occupationOther_description,
+    },
     enableReinitialize: true,
     validationSchema,
-    onSubmit: submitForm,
+    onSubmit: (education) => {
+      profileSaveStart({ ...education, id })
+    },
   })
 
   const { mentee_occupationCategoryId: occupation } = formik.values

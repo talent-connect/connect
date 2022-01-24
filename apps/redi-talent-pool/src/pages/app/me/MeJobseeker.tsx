@@ -158,7 +158,7 @@ function determineCurrentStep(
 export const OnboardingSteps: FC = () => {
   const { data: profile } = useTpJobseekerProfileQuery()
 
-  const currentStep = determineCurrentStep(profile)
+  const [currentStep, stepStatus] = determineCurrentStep(profile)
 
   return (
     <div className="onboarding-steps">
@@ -177,29 +177,29 @@ export const OnboardingSteps: FC = () => {
         <div
           key={index}
           className={classnames('onboarding-steps--item', {
-            'current-step': step.number === currentStep[0],
-            'completed-step': step.number < currentStep[0],
+            'current-step': step.number === currentStep,
+            'completed-step': step.number < currentStep,
           })}
         >
-          {step.number < currentStep[0] ? (
+          {step.number < currentStep ? (
             <ChecklistActiveImage className="checklist-image" />
           ) : (
             <ChecklistImage className="checklist-image" />
           )}
           <Element textSize="5">{step.label}</Element>
-          {currentStep[0] > step.number ? (
+          {currentStep > step.number ? (
             <CheckmarkImage className="checkmark-image" />
           ) : null}
-          {currentStep[0] < step.number ? (
+          {currentStep < step.number ? ( 
             <CheckmarkBorderOnlyImage className="checkmark-image" />
           ) : null}
-          {currentStep[0] === step.number && currentStep[1] === 'todo' ? (
+          {currentStep === step.number && stepStatus === 'todo' ? ( // TODO: apply switch?
             <CheckmarkBorderOnlyImage className="checkmark-image" />
           ) : null}
-          {currentStep[0] === step.number && currentStep[1] === 'pending' ? (
+          {currentStep === step.number && stepStatus === 'pending' ? (
             <StepPendingImage className="checkmark-image" />
           ) : null}
-          {currentStep[0] === step.number && currentStep[1] === 'complete' ? (
+          {currentStep === step.number && stepStatus === 'complete' ? (
             <CheckmarkImage className="checkmark-image" />
           ) : null}
         </div>

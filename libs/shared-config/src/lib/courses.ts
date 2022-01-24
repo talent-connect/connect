@@ -1,3 +1,4 @@
+import { objectEntries } from '@talent-connect/typescript-utilities';
 import { ReDILocationKey } from './locations';
 
 type CommonCourses =
@@ -175,5 +176,5 @@ const Courses: Record<CourseKey, Course> = {
   }
 }
 
-export const COURSES = Object.entries(Courses)
-  .map(([key, value]) => ({ id: key as CourseKey, ...value }))
+export const COURSES = objectEntries(Courses)
+  .map(([id, value]) => ({ id, ...value }))

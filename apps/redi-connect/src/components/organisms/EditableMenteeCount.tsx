@@ -10,7 +10,7 @@ import { RootState } from '../../redux/types'
 import { profileSaveStart } from '../../redux/user/actions'
 import * as Yup from 'yup'
 
-import { FormikValues, useFormik } from 'formik'
+import { useFormik } from 'formik'
 
 import {
   MENTEE_COUNT_CAPACITY_OPTIONS,
@@ -27,12 +27,11 @@ const menteeCountExplanation = (amount: number) => {
   }
 }
 
-const formMenteeCountCapacityOptions = MENTEE_COUNT_CAPACITY_OPTIONS.map(
-  (option) => ({
+const formMenteeCountCapacityOptions = MENTEE_COUNT_CAPACITY_OPTIONS
+  .map((option) => ({
     value: option,
     label: `${option} ${menteeCountExplanation(option)}`,
-  })
-)
+  }))
 
 export interface AboutFormValues {
   menteeCountCapacity: number
@@ -51,7 +50,7 @@ const validationSchema = Yup.object({
 
 interface Props {
   profile: RedProfile
-  profileSaveStart: Function
+  profileSaveStart: (arg: AboutFormValues & { id: string; }) => void
 }
 
 const EditableMenteeCount: FC<Props> = ({
@@ -59,21 +58,16 @@ const EditableMenteeCount: FC<Props> = ({
   profileSaveStart
 }) => {
 
-  const submitForm = async (values: FormikValues) => {
-    const profileMenteeCount = values as Partial<RedProfile>
-    profileSaveStart({ ...profileMenteeCount, id })
-  }
-
-  const initialValues: AboutFormValues = {
-    menteeCountCapacity,
-    optOutOfMenteesFromOtherRediLocation,
-  }
-
-  const formik = useFormik({
-    initialValues,
+  const formik = useFormik<AboutFormValues>({
+    initialValues: {
+      menteeCountCapacity,
+      optOutOfMenteesFromOtherRediLocation,
+    },
     enableReinitialize: true,
     validationSchema,
-    onSubmit: submitForm,
+    onSubmit: (profileMenteeCount) => {
+      profileSaveStart({ ...profileMenteeCount, id })
+    },
   })
 
   return (

@@ -93,8 +93,8 @@ const validationSchema = Yup.object({
 })
 
 interface JobseekerFormSectionOverviewProps {
-  setIsEditing: (boolean) => void
-  setIsFormDirty?: (boolean) => void
+  setIsEditing: (boolean: boolean) => void
+  setIsFormDirty?: (boolean: boolean) => void
   queryHookResult: UseQueryResult<
     Partial<TpJobseekerProfile | TpJobseekerCv>,
     unknown
@@ -115,27 +115,25 @@ export const JobseekerFormSectionOverview: FC<JobseekerFormSectionOverviewProps>
   mutationHookResult,
   hideCurrentRediCourseField,
 }) => {
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(() => ({
+  const initialValues = useMemo(() => ({
       desiredPositions: profile?.desiredPositions ?? [],
       currentlyEnrolledInCourse: profile?.currentlyEnrolledInCourse ?? '',
     }),
     [profile?.currentlyEnrolledInCourse, profile?.desiredPositions]
   )
 
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
-    formik.setSubmitting(true)
-    mutationHookResult.mutate(values, {
-      onSettled: () => formik.setSubmitting(false),
-      onSuccess: () => setIsEditing(false),
-    })
-  }
-
-  const formik = useFormik({
+  const formik = useFormik<Partial<TpJobseekerProfile>>({
     initialValues,
     validationSchema,
     enableReinitialize: true,
-    onSubmit,
     validateOnMount: true,
+    onSubmit: (values) => {
+      formik.setSubmitting(true)
+      mutationHookResult.mutate(values, {
+        onSettled: () => formik.setSubmitting(false),
+        onSuccess: () => setIsEditing(false),
+      })
+    },
   })
 
   useEffect(
@@ -185,16 +183,11 @@ export const JobseekerFormSectionOverview: FC<JobseekerFormSectionOverviewProps>
   )
 }
 
-const formDesiredPositions = desiredPositions.map(({ id, label }) => ({
-  value: id,
-  label,
-}))
+const formDesiredPositions = mapOptions(desiredPositions)
 
 // TODO: merge this logic with the stuff in SignUp.tsx
 const coursesWithAlumniDeduped = [
-  ...COURSES.filter((c) => {
-    return !c.id.includes('alumni')
-  }),
+  ...COURSES.filter((c) =>  !c.id.includes('alumni')),
   {
     id: 'alumni',
     label: `I'm a ReDI School alumni (I took a course before)`,
@@ -202,13 +195,9 @@ const coursesWithAlumniDeduped = [
   },
 ]
 
-const formCourses = coursesWithAlumniDeduped.map((course) => {
-  const label =
-    course.id === 'alumni'
-      ? course.label
-      : `(ReDI ${REDI_LOCATION_NAMES[course.location]}) ${course.label}`
-  return {
-    value: course.id,
-    label: label,
-  }
-})
+const formCourses = coursesWithAlumniDeduped.map(({ id, label, location }) => ({
+    value: id,
+    label: id === 'alumni'
+      ? label
+      : `(ReDI ${REDI_LOCATION_NAMES[location]}) ${label}`,
+  }))

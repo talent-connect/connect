@@ -2,7 +2,7 @@ import { FC, ReactNode } from 'react'
 import { ReactComponent as UploadImage } from '../../assets/images/uploadImage.svg'
 import ReactS3Uploader from 'react-s3-uploader'
 import { Element } from 'react-bulma-components'
-import { FormikValues, useFormik } from 'formik'
+import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import {
   AWS_PROFILE_AVATARS_BUCKET_BASE_URL,
@@ -55,7 +55,7 @@ interface AvatarFormValues {
 
 interface AvatarEditable {
   profile: RedProfile
-  profileSaveStart: Function
+  profileSaveStart: (arg: AvatarFormValues & { id: string; }) => void
 }
 
 const AvatarEditable: FC<AvatarEditable> = ({
@@ -64,17 +64,14 @@ const AvatarEditable: FC<AvatarEditable> = ({
 }) => {
   const imgURL = AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
 
-  const submitForm = async (values: FormikValues) => {
-    const profileMe = values as Partial<RedProfile>
-    profileSaveStart({ ...profileMe, id })
-  }
-
-  const initialValues: AvatarFormValues = { profileAvatarImageS3Key }
-
-  const formik = useFormik({
-    initialValues,
+  const formik = useFormik<AvatarFormValues>({
+    initialValues: {
+      profileAvatarImageS3Key
+    },
     validationSchema,
-    onSubmit: submitForm,
+    onSubmit: (profileMe) => {
+      profileSaveStart({ ...profileMe, id })
+    },
   })
 
   const onUploadSuccess = (result: any) => {

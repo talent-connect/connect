@@ -93,7 +93,7 @@ import {
   TpCompanyProfileState,
 } from '@talent-connect/shared-types'
 
-import { objectEntries } from '@talent-connect/typescript-utilities'
+import { objectEntries, objectValues, objectValues } from '@talent-connect/typescript-utilities'
 
 /** REFERENCE DATA */
 
@@ -128,7 +128,7 @@ const categoriesIdToLabelCleanMap = mapValues(
 const categoriesIdToGroupMap = mapValues(keyBy(categoriesFlat, 'id'), 'group')
 
 const genders = [
-  ...Object.entries(GENDERS).map((key, value) => ({ id: key, name: value })),
+  ...objectEntries(GENDERS).map((key, value) => ({ id: key, name: value })),
   { id: '', name: 'Prefers not to answer' },
 ]
 
@@ -138,7 +138,7 @@ const courseIdToLabelMap = mapValues(keyBy(coursesFlat, 'id'), 'label')
 const AWS_PROFILE_AVATARS_BUCKET_BASE_URL =
   'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/'
 
-export const formRedMatchStatuses = Object.entries(RED_MATCH_STATUSES).map(
+export const formRedMatchStatuses = objectEntries(RED_MATCH_STATUSES).map(
   ([key, value]) => ({ id: key, name: value })
 )
 
@@ -1227,10 +1227,7 @@ const TpJobseekerProfileListFilters: FC = (props) => (
     <TextInput label="Search by name" source="q" />
     <SelectInput
       source="state"
-      choices={Object.values(TpJobseekerProfileState).map((val) => ({
-        id: val,
-        name: val,
-      }))}
+      choices={objectValues(TpJobseekerProfileState).map((val) => ({ id: val, name: val }))}
     />
   </Filter>
 )
@@ -1648,15 +1645,12 @@ const TpCompanyProfileListFilters: FC = (props) => (
     <SearchInput label="Search by company name" source="q" />
     <SelectInput
       source="state"
-      choices={Object.values(TpCompanyProfileState).map((val) => ({
-        id: val,
-        name: val,
-      }))}
+      choices={objectValues(TpCompanyProfileState).map((val) => ({ id: val, name: val }))}
     />
   </Filter>
 )
 
-const ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldShow: FC = (
+const ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldShow: FC = ( // TODO: type props
   props
 ) => {
   return props.record?.howDidHearAboutRediKey === 'other' &&
@@ -1777,7 +1771,7 @@ const TpCompanyProfileEdit: FC = (props) => (
         <SelectInput
           label="How They Heard about ReDI Talent Pool"
           source="howDidHearAboutRediKey"
-          choices={Object.entries(howDidHearAboutRediOptions).map(
+          choices={objectEntries(howDidHearAboutRediOptions).map(
             ([id, name]) => ({ id, name })
           )}
         />

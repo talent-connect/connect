@@ -9,7 +9,7 @@ import './Editable.scss'
 
 interface Props {
   isEditing: boolean
-  setIsEditing: (boolean) => void
+  setIsEditing: (boolean: boolean) => void
   disableEditing?: boolean
   isFormDirty?: boolean
   title?: string

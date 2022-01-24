@@ -4,7 +4,7 @@ import { useParams } from 'react-router'
 
 import * as Yup from 'yup'
 
-import { FormikValues, FormikHelpers as FormikActions, useFormik } from 'formik'
+import { useFormik } from 'formik'
 import omit from 'lodash/omit'
 import {
   Button,
@@ -85,50 +85,43 @@ const SignUp: FC = () => {
       ? 'public-sign-up-mentee-pending-review'
       : 'public-sign-up-mentor-pending-review'
 
-  const initialValues: SignUpFormValues = {
-    userType,
-    gaveGdprConsent: false,
-    contactEmail: '',
-    password: '',
-    passwordConfirm: '',
-    firstName: '',
-    lastName: '',
-    agreesWithCodeOfConduct: false,
-    mentee_currentlyEnrolledInCourse: '',
-  }
-
   const [submitError, setSubmitError] = useState(false)
-  const submitForm = async (
-    values: FormikValues,
-    actions: FormikActions<SignUpFormValues>
-  ) => {
-    setSubmitError(false)
-    const profile = values as Partial<RedProfile>
-    // TODO: this needs to be done in a smarter way, like iterating over the RedProfile definition or something
-    const cleanProfile: Partial<RedProfile> = omit(profile, [
-      'password',
-      'passwordConfirm',
-      'agreesWithCodeOfConduct',
-      'gaveGdprConsent',
-    ])
-    cleanProfile.userActivated = false
-    cleanProfile.signupSource = 'public-sign-up'
-    cleanProfile.menteeCountCapacity = 1
-    try {
-      await signUp(values.contactEmail, values.password, cleanProfile)
-      actions.setSubmitting(false)
-      history.push(`/front/signup-email-verification/${cleanProfile.userType}`)
-    } catch (error) {
-      actions.setSubmitting(false)
-      setSubmitError(Boolean(error))
-    }
-  }
 
-  const formik = useFormik({
+  const formik = useFormik<SignUpFormValues>({
+    initialValues: {
+      userType,
+      gaveGdprConsent: false,
+      contactEmail: '',
+      password: '',
+      passwordConfirm: '',
+      firstName: '',
+      lastName: '',
+      agreesWithCodeOfConduct: false,
+      mentee_currentlyEnrolledInCourse: '',
+    },
     enableReinitialize: true,
-    initialValues: initialValues,
     validationSchema,
-    onSubmit: submitForm,
+    onSubmit: async (profile, actions) => {
+      setSubmitError(false)
+      // TODO: this needs to be done in a smarter way, like iterating over the RedProfile definition or something
+      const cleanProfile: Partial<RedProfile> = omit(profile, [
+        'password',
+        'passwordConfirm',
+        'agreesWithCodeOfConduct',
+        'gaveGdprConsent',
+      ])
+      cleanProfile.userActivated = false
+      cleanProfile.signupSource = 'public-sign-up'
+      cleanProfile.menteeCountCapacity = 1
+      try {
+        await signUp(profile.contactEmail, profile.password, cleanProfile)
+        actions.setSubmitting(false)
+        history.push(`/front/signup-email-verification/${cleanProfile.userType}`)
+      } catch (error) {
+        actions.setSubmitting(false)
+        setSubmitError(!!error)
+      }
+    },
   })
 
   return (

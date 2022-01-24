@@ -10,13 +10,14 @@ export const Routes: FC = () => (
       {allRoutes.map(({ requiresLoggedIn, exact, path, component }, i) =>
         requiresLoggedIn ? (
           <PrivateRoute
-            exact={exact}
-            path={path}
-            component={component}
+            {...{component, exact, path }}
             key={i}
           />
         ) : (
-          <Route exact={exact} path={path} component={component} key={i} />
+          <Route
+            {...{component, exact, path }}
+            key={i} 
+          />
         )
       )}
       <Redirect to="/front/home" />

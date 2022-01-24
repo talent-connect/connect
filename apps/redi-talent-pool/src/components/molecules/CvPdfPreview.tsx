@@ -10,11 +10,13 @@ import {
   View,
 } from '@react-pdf/renderer'
 import { TpJobseekerCv } from '@talent-connect/shared-types'
+import { formatDate } from '@talent-connect/shared-utils';
 import {
   desiredPositionsIdToLabelMap,
   languageProficiencyLevelsIdToLabelMap,
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
+import { objectValues, objectValues } from '@talent-connect/typescript-utilities';
 import { isEqual } from 'lodash'
 import moment from 'moment'
 import React, { FC, memo, useEffect } from 'react'
@@ -413,11 +415,7 @@ export const CVPDF: FC<{ cvData: Partial<TpJobseekerCv> }> = ({
             <View style={styles.contentViewRight}>
               <Text style={styles.contentHeading}>Work Experience</Text>
               {experience
-                ?.filter((item) => {
-                  const { uuid, ...all } = item
-                  const vals = Object.values(all)
-                  return vals.some((val) => val)
-                })
+                ?.filter(({ uuid, ...all }) => objectValues(all).some((val) => val))
                 .map((experience, index) => (
                   <View key={`experience_${index}`} style={{ width: '100%' }}>
                     <View style={styles.experienceView}>
@@ -470,11 +468,7 @@ export const CVPDF: FC<{ cvData: Partial<TpJobseekerCv> }> = ({
             <View style={styles.contentViewRight}>
               <Text style={styles.contentHeading}>Education</Text>
               {education
-                ?.filter((item) => {
-                  const { uuid, ...all } = item
-                  const vals = Object.values(all)
-                  return vals.some((val) => val)
-                })
+                ?.filter(({ uuid, ...all }) => objectValues(all).some((val) => val))
                 .map((education, index) => (
                   <View key={`experience_${index}`} style={{ width: '100%' }}>
                     <View style={styles.experienceView}>
@@ -529,13 +523,6 @@ export const CVPDF: FC<{ cvData: Partial<TpJobseekerCv> }> = ({
       </Page>
     </Document>
   )
-}
-
-function formatDate(month?: number, year?: number): string {
-  if (year && !month) return String(year)
-  if (year && month) return moment().month(month).year(year).format('MMMM YYYY')
-  if (!year && month) return moment().month(month).format('MMMM')
-  return ''
 }
 
 const concatenateToMultiline = (items: string[]): string => {

@@ -102,20 +102,22 @@ EditableNamePhotoLocation.isSectionEmpty = (
 ) => !EditableNamePhotoLocation.isSectionFilled(profile)
 
 const validationSchema = Yup.object({
-  companyName: Yup.string().required('Your company name is required'),
-  location: Yup.string().required('Your location is required'),
+  companyName: Yup.string()
+    .required('Your company name is required'),
+  location: Yup.string()
+    .required('Your location is required'),
 })
 
 function ModalForm({
   setIsEditing,
   setIsFormDirty,
 }: {
-  setIsEditing: (boolean) => void
-  setIsFormDirty: (boolean) => void
+  setIsEditing: (boolean: boolean) => void
+  setIsFormDirty: (boolean: boolean) => void
 }) {
   const { data: profile } = useTpCompanyProfileQuery()
   const mutation = useTpCompanyProfileUpdateMutation()
-  const initialValues: Partial<TpCompanyProfile> = useMemo(() => ({
+  const initialValues = useMemo(() => ({
       companyName: profile?.companyName ?? '',
       location: profile?.location ?? '',
       tagline: profile?.tagline ?? '',
@@ -123,20 +125,21 @@ function ModalForm({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )
-  const onSubmit = (values: Partial<TpCompanyProfile>) => {
-    formik.setSubmitting(true)
-    mutation.mutate(values, {
-      onSettled: () => formik.setSubmitting(false),
-      onSuccess: () => setIsEditing(false),
-    })
-  }
+
   const formik = useFormik({
     initialValues,
     validationSchema,
     enableReinitialize: true,
-    onSubmit,
     validateOnMount: true,
+    onSubmit: (values) => {
+      formik.setSubmitting(true)
+      mutation.mutate(values, {
+        onSettled: () => formik.setSubmitting(false),
+        onSuccess: () => setIsEditing(false),
+      })
+    },
   })
+
   useEffect(() => setIsFormDirty(formik.dirty), [formik.dirty, setIsFormDirty])
 
   return (

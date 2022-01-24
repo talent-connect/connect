@@ -3,7 +3,7 @@ import {
   TextInput,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
-import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
+import {useFormik } from 'formik'
 import { FC, useEffect, useState } from 'react'
 import { Columns, Content, Form } from 'react-bulma-components'
 import { RouteComponentProps } from 'react-router'
@@ -18,11 +18,6 @@ import { history } from '../../../services/history/history'
 interface SetNewPasswordValues {
   password: string
   passwordConfirm: string
-}
-
-const initialValues: SetNewPasswordValues = {
-  password: '',
-  passwordConfirm: '',
 }
 
 const validationSchema = Yup.object({
@@ -61,27 +56,25 @@ export const SetNewPassword: FC<RouteComponentProps<RouteParams>> = (props) => {
     load()
   }, [props.match.params.accessToken])
 
-  const onSubmit = async (
-    values: FormikValues,
-    actions: FormikActions<SetNewPasswordValues>
-  ) => {
-    try {
-      await setPassword(values.password)
-      showNotification("Your new password is set and you're logged in :)", {
-        variant: 'success',
-        autoHideDuration: 8000,
-      })
-      history.push('/app/me')
-    } catch (err) {
-      setFormError('Invalid username or password')
-    }
-    actions.setSubmitting(false)
-  }
-
-  const formik = useFormik({
-    initialValues,
+  const formik = useFormik<SetNewPasswordValues>({
+    initialValues: {
+      password: '',
+      passwordConfirm: '',
+    },
     validationSchema,
-    onSubmit,
+    onSubmit: async ({ password }, actions) => {
+      try {
+        await setPassword(password)
+        showNotification("Your new password is set and you're logged in :)", {
+          variant: 'success',
+          autoHideDuration: 8000,
+        })
+        history.push('/app/me')
+      } catch (err) {
+        setFormError('Invalid username or password')
+      }
+      actions.setSubmitting(false)
+    },
   })
 
   return (
