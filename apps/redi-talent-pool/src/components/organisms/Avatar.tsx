@@ -117,8 +117,8 @@ const AvatarEditable: FC<AvatarEditable> = ({
         signingUrl={S3_UPLOAD_SIGN_URL}
         accept="image/*"
         uploadRequestHeaders={{ 'x-amz-acl': 'public-read' }}
-        onSignedUrl={(c: any) => console.log(c)}
-        onError={(c: any) => console.log(c)}
+        onSignedUrl={(c) => console.log(c)}
+        onError={(c) => console.log(c)}
         onFinish={onUploadSuccess}
         contentDisposition="auto"
       />

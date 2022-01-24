@@ -3,38 +3,39 @@ import { AccessToken } from '@talent-connect/shared-types'
 import { RedProfile } from '@talent-connect/shared-types'
 
 export const isLoggedIn = (): boolean => {
-  const profile: any = window.localStorage.getItem('redProfile')
-  const accessToken: any = window.localStorage.getItem('accessToken')
+  const profile = window.localStorage.getItem('redProfile')
+  const accessToken = window.localStorage.getItem('accessToken')
   try {
-    const r1: any = JSON.parse(profile)
-    const r2: any = JSON.parse(accessToken)
-    return r1 && r2
+    return !!JSON.parse(profile) && !!JSON.parse(accessToken)
   } catch (err) {
     return false
   }
 }
 
-export const getRedUserFromLocalStorage = (): RedUser =>
-  JSON.parse(window.localStorage.getItem('redUser') as string)
-
-export const saveRedUserToLocalStorage = (redUser: RedUser) => {
-  window.localStorage.setItem('redUser', JSON.stringify(redUser))
+export function getRedUserFromLocalStorage (): RedUser {
+  return JSON.parse(window.localStorage.getItem('redUser'))
 }
 
-export const getRedProfileFromLocalStorage = (): RedProfile =>
-  JSON.parse(window.localStorage.getItem('redProfile') as string)
+export function saveRedUserToLocalStorage (redUser: RedUser): void {
+  return window.localStorage.setItem('redUser', JSON.stringify(redUser))
+}
 
-export const saveRedProfileToLocalStorage = (redProfile: RedProfile) => {
+export function getRedProfileFromLocalStorage (): RedProfile {
+  return JSON.parse(window.localStorage.getItem('redProfile'))
+}
+
+export function saveRedProfileToLocalStorage (redProfile: RedProfile): void {
   window.localStorage.setItem('redProfile', JSON.stringify(redProfile))
 }
 
-export const getAccessTokenFromLocalStorage = (): AccessToken =>
-  JSON.parse(window.localStorage.getItem('accessToken') as string)
+export function getAccessTokenFromLocalStorage (): AccessToken {
+  return JSON.parse(window.localStorage.getItem('accessToken'))
+}
 
-export const saveAccessTokenToLocalStorage = (accessToken: AccessToken) => {
+export function saveAccessTokenToLocalStorage (accessToken: AccessToken) {
   window.localStorage.setItem('accessToken', JSON.stringify(accessToken))
 }
 
-export const purgeAllSessionData = () => {
+export function purgeAllSessionData (): void {
   window.localStorage.clear()
 }

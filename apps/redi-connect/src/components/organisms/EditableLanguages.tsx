@@ -67,7 +67,7 @@ const EditableLanguages: FC<Props> = ({
 
 const mapStateToProps = ({ user: { profile }}: RootState) => ({ profile })
 
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: Function) => ({
   profileSaveStart: (profile: Partial<RedProfile>) =>
     dispatch(profileSaveStart(profile)),
 })

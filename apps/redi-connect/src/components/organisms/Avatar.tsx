@@ -125,8 +125,8 @@ const AvatarEditable: FC<AvatarEditable> = ({
         signingUrl={S3_UPLOAD_SIGN_URL}
         accept="image/*"
         uploadRequestHeaders={{ 'x-amz-acl': 'public-read' }}
-        onSignedUrl={(c: any) => console.log(c)}
-        onError={(c: any) => console.log(c)}
+        onSignedUrl={(c) => console.log(c)}
+        onError={(c) => console.log(c)}
         onFinish={onUploadSuccess}
         contentDisposition="auto"
       />
@@ -134,9 +134,7 @@ const AvatarEditable: FC<AvatarEditable> = ({
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile as RedProfile,
-})
+const mapStateToProps = ({ user: { profile } }: RootState) => ({ profile })
 
 const mapDispatchToProps = (dispatch: Function) => ({
   profileSaveStart: (profile: Partial<RedProfile>) =>

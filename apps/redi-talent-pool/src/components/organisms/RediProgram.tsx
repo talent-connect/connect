@@ -27,7 +27,7 @@ const RediProgram: FC = () => {
           headline={t('loggedOutArea.homePage.program.headline')}
         />
         <Columns>
-          {programSteps.map((step: any) => (
+          {programSteps.map((step) => (
             <Columns.Column textAlignment="centered" key={step.content}>
               <Icon icon={step.image} size="x-large" className="program__img" />
               <Heading

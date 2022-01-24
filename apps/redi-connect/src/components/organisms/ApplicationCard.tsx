@@ -20,7 +20,7 @@ interface Props {
   currentUser?: RedProfile
 }
 
-const STATUS_LABELS: any = {
+const STATUS_LABELS = {
   applied: 'Pending',
   accepted: 'Accepted',
   completed: 'Accepted',

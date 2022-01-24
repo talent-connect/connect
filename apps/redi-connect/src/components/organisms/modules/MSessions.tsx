@@ -178,7 +178,7 @@ const MSessions: FC<MSessions> = ({
   )
 }
 
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: Function) => ({
   mentoringSessionsCreateStart: (session: RedMentoringSession) =>
     dispatch(mentoringSessionsCreateStart(session)),
 })

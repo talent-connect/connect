@@ -155,16 +155,15 @@ const LoggedIn: FC<Props> = ({
   )
 }
 
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: Function) => ({
   matchesFetchStart: () => dispatch(matchesFetchStart()),
   matchesMarkAsDismissed: (redMatchId: string) =>
     dispatch(matchesMarkAsDismissed(redMatchId)),
 })
 
-const mapStateToProps = (state: RootState) => ({
-  matches: state.matches.matches,
-  loading:
-    state.user.loading || state.profiles.loading || state.matches.loading,
+const mapStateToProps = ({ matches, user, profiles }: RootState) => ({
+  matches: matches.matches,
+  loading: user.loading || profiles.loading || matches.loading,
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoggedIn)

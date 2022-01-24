@@ -10,7 +10,7 @@ import { RootState } from '../../redux/types'
 import { profileSaveStart } from '../../redux/user/actions'
 import * as Yup from 'yup'
 
-import { useFormik } from 'formik'
+import { FormikConfig, useFormik } from 'formik'
 import { CATEGORIES, CategoryKey, CATEGORY_GROUPS } from '@talent-connect/shared-config'
 import { ReadMentoringTopics } from '../molecules'
 import { objectEntries } from '@talent-connect/typescript-utilities'
@@ -114,7 +114,7 @@ interface CategoryGroupProps {
   label: string,
   selectedCategories: CategoryKey[],
   onChange: ChangeEventHandler,
-  formik: any // TODO
+  formik: FormikConfig<MentoringFormValues> // TODO
 }
 
 const CategoryGroup: FC<CategoryGroupProps> = ({
@@ -165,12 +165,9 @@ const CategoryGroup: FC<CategoryGroupProps> = ({
 
 const mapStateToProps = ({ user: { profile }}: RootState) => ({ profile })
 
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: Function) => ({
   profileSaveStart: (profile: Partial<RedProfile>) =>
     dispatch(profileSaveStart(profile)),
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EditableMentoringTopics)
+export default connect(mapStateToProps, mapDispatchToProps)(EditableMentoringTopics)

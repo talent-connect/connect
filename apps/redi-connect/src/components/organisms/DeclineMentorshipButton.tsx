@@ -13,13 +13,13 @@ import { Modal } from '@talent-connect/shared-atomic-design-components'
 import { matchesDeclineMentorshipStart } from '../../redux/matches/actions'
 import { RedMatch } from '@talent-connect/shared-types'
 import { MENTOR_DECLINES_MENTORSHIP_REASON_FOR_DECLINING } from '@talent-connect/shared-config'
-import { mapOptionsObject, objectEntries } from '@talent-connect/typescript-utilities';
+import { mapOptionsObject } from '@talent-connect/typescript-utilities';
 
-type DeclineMentorshipFormValues = {
-  ifDeclinedByMentor_chosenReasonForDecline: string
-  ifDeclinedByMentor_ifReasonIsOther_freeText: string
-  ifDeclinedByMentor_optionalMessageToMentee: string
-}
+type DeclineMentorshipFormValues = Record<`ifDeclinedByMentor_${
+  | 'chosenReasonForDecline'
+  | 'ifReasonIsOther_freeText'
+  | 'optionalMessageToMentee'
+}`, string>
 
 interface DeclineMentorshipButtonProps {
   match: RedMatch

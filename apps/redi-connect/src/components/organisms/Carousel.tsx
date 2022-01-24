@@ -60,7 +60,7 @@ const Carousel: FC<Props> = ({ headline, title, border }) => {
       <Container>
         <DecoratedHeadline title={title} headline={headline} />
         <Slider {...settings}>
-          {quotes.map((quote: any) => {
+          {quotes.map((quote) => {
             return (
               <div className="carousel" key={quote.img}>
                 <Columns vCentered>

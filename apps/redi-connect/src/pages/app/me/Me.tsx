@@ -152,13 +152,13 @@ const Me: FC<Props> = ({
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  saveResult: state.user.saveResult,
-  loading: state.user.loading,
-  profile: state.user.profile,
+const mapStateToProps = ({ user }: RootState) => ({
+  saveResult: user.saveResult,
+  loading: user.loading,
+  profile: user.profile,
 })
 
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: Function) => ({
   profileFetchStart: () => dispatch(profileFetchStart()),
 })
 
