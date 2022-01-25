@@ -1220,6 +1220,7 @@ const TpJobseekerProfileListFilters = (props) => (
         name: val,
       }))}
     />
+    <BooleanInput source="isJobFair2022Participant" />
   </Filter>
 )
 
@@ -1828,11 +1829,18 @@ const TpCompanyProfileEdit = (props) => (
   </Edit>
 )
 
+const TpJobListingListFilters = (props) => (
+  <Filter {...props}>
+    <BooleanInput source="isJobFair2022JobListing" />
+  </Filter>
+)
+
 const TpJobListingList = (props) => {
   return (
     <List
       {...props}
       pagination={<AllModelsPagination />}
+      filters={<TpJobListingListFilters />}
       exporter={tpJobListingListExporter}
     >
       <Datagrid>
