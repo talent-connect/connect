@@ -1,3 +1,11 @@
+import React, { useMemo, useState } from 'react'
+import { useParams } from 'react-router'
+import { Link } from 'react-router-dom'
+import omit from 'lodash/omit'
+import * as Yup from 'yup'
+import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
+import { Columns, Form, Notification } from 'react-bulma-components'
+
 import {
   Button,
   Checkbox,
@@ -7,17 +15,12 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import { COURSES, REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import {
-  RedProfile,
   TpJobseekerProfile,
   TpCompanyProfile,
 } from '@talent-connect/shared-types'
-import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
-import omit from 'lodash/omit'
-import React, { useMemo, useState } from 'react'
-import { Columns, Form, Notification } from 'react-bulma-components'
-import { useParams } from 'react-router'
-import { Link } from 'react-router-dom'
-import * as Yup from 'yup'
+
+import { howDidHearAboutRediOptions } from '@talent-connect/talent-pool/config'
+
 import TpTeaser from '../../../components/molecules/TpTeaser'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import { signUpCompany, signUpJobseeker } from '../../../services/api/api'
@@ -45,6 +48,10 @@ const formCourses = coursesWithAlumniDeduped.map((course) => {
     label: label,
   }
 })
+
+const howDidHearAboutRediOptionsEntries = Object.entries(
+  howDidHearAboutRediOptions
+).map(([value, label]) => ({ value, label }))
 
 function buildValidationSchema(signupType: SignUpPageType['type']) {
   const baseSchema = {
@@ -75,12 +82,21 @@ function buildValidationSchema(signupType: SignUpPageType['type']) {
       agreesWithCodeOfConduct: Yup.boolean().required().oneOf([true]),
     })
   }
+
   if (signupType === 'company') {
     return Yup.object({
       ...baseSchema,
       companyName: Yup.string()
         .required('Your company name is required')
         .max(255),
+      howDidHearAboutRediKey: Yup.string().required('This field is required'),
+      howDidHearAboutRediOtherText: Yup.string().when(
+        'howDidHearAboutRediKey',
+        {
+          is: (howDidHearAboutRediKey) => howDidHearAboutRediKey === 'other',
+          then: Yup.string().required('This field is required'),
+        }
+      ),
     })
   }
 }
@@ -280,6 +296,24 @@ export default function SignUp() {
                 </a>{' '}
                 of ReDI School
               </Checkbox.Form>
+            ) : null}
+
+            {type === 'company' ? (
+              <>
+                <FormSelect
+                  name="howDidHearAboutRediKey"
+                  placeholder="How did you first hear about ReDI Talent Pool?"
+                  items={howDidHearAboutRediOptionsEntries}
+                  {...formik}
+                />
+                {formik.values.howDidHearAboutRediKey === 'other' ? (
+                  <FormInput
+                    name="howDidHearAboutRediOtherText"
+                    placeholder="Please tell us how you heard about ReDI Talent Pool"
+                    {...formik}
+                  />
+                ) : null}
+              </>
             ) : null}
 
             <Checkbox.Form

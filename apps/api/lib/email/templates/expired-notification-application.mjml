@@ -14,7 +14,7 @@
             >Hi ${mentorName},</mj-text
           >
           <mj-text mj-class="text" padding="0 0 0 0"
-            >${menteeName), who applied to become your mentee has also applied
+            >${menteeName}, who applied to become your mentee has also applied
             to another mentor. This other mentor has just accepted their
             application.</mj-text
           >

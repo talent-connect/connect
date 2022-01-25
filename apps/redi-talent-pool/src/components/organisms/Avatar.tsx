@@ -2,7 +2,10 @@ import {
   AWS_PROFILE_AVATARS_BUCKET_BASE_URL,
   S3_UPLOAD_SIGN_URL,
 } from '@talent-connect/shared-config'
-import { TpJobseekerProfile, TpCompanyProfile } from '@talent-connect/shared-types'
+import {
+  TpJobseekerProfile,
+  TpCompanyProfile,
+} from '@talent-connect/shared-types'
 import classnames from 'classnames'
 import { FormikValues, useFormik } from 'formik'
 import { Element } from 'react-bulma-components'
@@ -17,7 +20,10 @@ interface AvatarProps {
 }
 interface AvatarEditable {
   profile: Partial<TpJobseekerProfile> | Partial<TpCompanyProfile>
-  profileSaveStart: (profile: Partial<TpJobseekerProfile> | Partial<TpCompanyProfile>) => void
+  profileSaveStart: (
+    profile: Partial<TpJobseekerProfile> | Partial<TpCompanyProfile>
+  ) => void
+  callToActionText?: string
 }
 
 interface AvatarFormValues {
@@ -49,7 +55,11 @@ const Avatar = ({ profile }: AvatarProps) => {
   )
 }
 
-const AvatarEditable = ({ profile, profileSaveStart }: AvatarEditable) => {
+const AvatarEditable = ({
+  profile,
+  profileSaveStart,
+  callToActionText = 'Add your picture',
+}: AvatarEditable) => {
   const { profileAvatarImageS3Key } = profile
   const imgURL = AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
 
@@ -105,7 +115,7 @@ const AvatarEditable = ({ profile, profileSaveStart }: AvatarEditable) => {
             className="avatar__placeholder__text"
             responsive={{ mobile: { hide: { value: true } } }}
           >
-            Add your picture
+            {callToActionText}
           </Element>
         </div>
       )}

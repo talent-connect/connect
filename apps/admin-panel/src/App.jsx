@@ -39,7 +39,6 @@ import {
   ReferenceField,
   Labeled,
   ReferenceManyField,
-  required,
   SearchInput,
 } from 'react-admin'
 import classNames from 'classnames'
@@ -79,6 +78,8 @@ import {
 
 import { calculateAge } from '@talent-connect/shared-utils'
 
+import { howDidHearAboutRediOptions } from '@talent-connect/talent-pool/config'
+
 import loopbackClient, { authProvider } from './lib/react-admin-loopback/src'
 import { ApproveButton } from './components/ApproveButton'
 import { DeclineButton } from './components/DeclineButton'
@@ -93,6 +94,8 @@ import {
 } from '@talent-connect/shared-types'
 
 import { objectEntries } from '@talent-connect/typescript-utilities'
+
+import { redMatchesCsvExporter } from './utils/csvExport'
 
 /** REFERENCE DATA */
 
@@ -228,6 +231,7 @@ const RedProfileList = (props) => {
       filters={<RedProfileListFilters />}
       pagination={<AllModelsPagination />}
       aside={<FreeMenteeSpotsPerLocationAside />}
+      exporter={redProfileListExporter}
     >
       <Datagrid expand={<RedProfileListExpandPane />}>
         <TextField source="rediLocation" label="City" />
@@ -278,6 +282,37 @@ const RedProfileList = (props) => {
       </Datagrid>
     </List>
   )
+}
+
+function redProfileListExporter(profiles) {
+  const properties = [
+    'id',
+    'userType',
+    'firstName',
+    'lastName',
+    'contactEmail',
+    'gender',
+    'userActivated',
+    'rediLocation',
+    'mentee_currentlyEnrolledInCourse',
+    'categories',
+    'menteeCountCapacity',
+    'signupSource',
+    'totalRedMatchCount',
+    'redUserId',
+    'loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName',
+    'lastLoginDateTime',
+    'updatedAt',
+    'createdAt',
+    'gaveGdprConsentAt',
+  ]
+
+  const data = profiles.map((profile) => {
+    return Object.fromEntries(properties.map((prop) => [prop, profile[prop]]))
+  })
+
+  const csv = convertToCSV(data)
+  downloadCSV(csv, 'yalla')
 }
 
 const FreeMenteeSpotsPerLocationAside = () => {
@@ -628,6 +663,7 @@ const RedMatchList = (props) => (
     sort={{ field: 'createdAt', order: 'DESC' }}
     pagination={<AllModelsPagination />}
     filters={<RedMatchListFilters />}
+    exporter={redMatchesCsvExporter}
   >
     <Datagrid>
       <TextField source="rediLocation" label="City" />
@@ -1187,19 +1223,7 @@ const TpJobseekerProfileList = (props) => {
           buttons to Approve/Decline their profile.
         </li>
         <li style={{ marginBottom: '12px' }}>
-          <strong>profile-approved-awaiting-job-preferences</strong>: the
-          jobseeker's profile was approved, and we're now waiting for them to
-          provide their job preferences/priorities
-        </li>
-        <li style={{ marginBottom: '12px' }}>
-          <strong>
-            job-preferences-shared-with-redi-awaiting-interview-match
-          </strong>
-          : the jobseeker has provided their job preferences, and are now
-          waiting to be matched against companies/jobs for interview(s)
-        </li>
-        <li style={{ marginBottom: '12px' }}>
-          <strong>matched-for-interview</strong>: matched for interview
+          <strong>profile-approved</strong>: the jobseeker's profile is approved
         </li>
       </ol>
     </>
@@ -1228,6 +1252,7 @@ const TpJobseekerProfileListFilters = (props) => (
         name: val,
       }))}
     />
+    <NullableBooleanInput source="isJobFair2022Participant" />
   </Filter>
 )
 
@@ -1301,6 +1326,10 @@ const TpJobseekerProfileShow = (props) => (
         <Tab label="Profile">
           <TextField source="state" />
           <BooleanField source="isProfileVisibleToCompanies" />
+          <BooleanField
+            initialValue={false}
+            source="isJobFair2022Participant"
+          />
           <Avatar />
           <TextField source="firstName" />
           <TextField source="lastName" />
@@ -1341,6 +1370,8 @@ const TpJobseekerProfileShow = (props) => (
             <Datagrid>
               <TextField source="title" />
               <TextField source="company" />
+              <TextField source="city" />
+              <TextField source="country" />
               <TextField
                 source="description"
                 label="Roles & responsibilities"
@@ -1370,6 +1401,8 @@ const TpJobseekerProfileShow = (props) => (
             <Datagrid>
               <TextField source="title" />
               <TextField source="institutionName" />
+              <TextField source="institutionCity" />
+              <TextField source="institutionCountry" />
               <TextField source="certificationType" />
               <TextField source="description" label="Description" />
               <FunctionField
@@ -1446,6 +1479,7 @@ const TpJobseekerProfileEdit = (props) => (
       <FormTab label="Profile">
         <TextField source="state" />
         <BooleanInput source="isProfileVisibleToCompanies" />
+        <BooleanInput initialValue={false} source="isJobFair2022Participant" />
         {/* <Avatar /> */}
         <TextInput source="firstName" />
         <TextInput source="lastName" />
@@ -1592,11 +1626,11 @@ const TpJobseekerProfileEditActions = (props) => {
 }
 
 const TpCompanyProfileEditActions = (props) => {
-  if (props?.data?.state !== 'submitted-for-review') return null
+  if (props?.data?.state === 'profile-approved') return null
 
   return (
-    <CardActions>
-      Company profile is pending. Please{' '}
+    <CardActions style={{ display: 'flex', alignItems: 'center' }}>
+      Company profile needs to be approved before becoming active. Please{' '}
       <TpCompanyProfileApproveButton {...props} />
     </CardActions>
   )
@@ -1655,6 +1689,30 @@ const TpCompanyProfileListFilters = (props) => (
   </Filter>
 )
 
+const ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldShow = (
+  props
+) => {
+  return props.record?.howDidHearAboutRediKey === 'other' &&
+    props.record?.howDidHearAboutRediOtherText ? (
+    <Labeled label="How They Heard about ReDI Talent Pool (If selected Other)">
+      <TextField source="howDidHearAboutRediOtherText" {...props} />
+    </Labeled>
+  ) : null
+}
+
+const ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldEdit = (
+  props
+) => {
+  return props.record?.howDidHearAboutRediKey === 'other' &&
+    props.record?.howDidHearAboutRediOtherText ? (
+    <TextInput
+      label="How They Heard about ReDI Talent Pool (If selected Other)"
+      source="howDidHearAboutRediOtherText"
+      {...props}
+    />
+  ) : null
+}
+
 const TpCompanyProfileShow = (props) => (
   <Show {...props}>
     <SimpleShowLayout>
@@ -1673,7 +1731,13 @@ const TpCompanyProfileShow = (props) => (
           <TextField source="linkedInUrl" />
           <TextField source="phoneNumber" />
           <TextField source="about" />
-
+          <FunctionField
+            label="How They Heard about ReDI Talent Pool"
+            render={(record) =>
+              howDidHearAboutRediOptions[record.howDidHearAboutRediKey]
+            }
+          />
+          <ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldShow />
           <ReferenceManyField
             label="Job Listings"
             reference="tpJobListings"
@@ -1745,6 +1809,14 @@ const TpCompanyProfileEdit = (props) => (
         <TextInput source="linkedInUrl" />
         <TextInput source="phoneNumber" />
         <TextInput source="about" />
+        <SelectInput
+          label="How They Heard about ReDI Talent Pool"
+          source="howDidHearAboutRediKey"
+          choices={Object.entries(howDidHearAboutRediOptions).map(
+            ([id, name]) => ({ id, name })
+          )}
+        />
+        <ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldEdit />
 
         <ReferenceManyField
           label="Job Listings"
@@ -1791,11 +1863,18 @@ const TpCompanyProfileEdit = (props) => (
   </Edit>
 )
 
+const TpJobListingListFilters = (props) => (
+  <Filter {...props}>
+    <NullableBooleanInput source="isJobFair2022JobListing" />
+  </Filter>
+)
+
 const TpJobListingList = (props) => {
   return (
     <List
       {...props}
       pagination={<AllModelsPagination />}
+      filters={<TpJobListingListFilters />}
       exporter={tpJobListingListExporter}
     >
       <Datagrid>
@@ -1868,6 +1947,7 @@ const TpJobListingShow = (props) => (
       </ReferenceField>
       <TextField source="title" />
       <TextField source="location" />
+      <BooleanField initialValue={false} source="isJobFair2022JobListing" />
       <TextField source="summary" />
       <TextField source="proficiencyLevelId" />
       <FunctionField
@@ -1898,6 +1978,7 @@ const TpJobListingEdit = (props) => (
       </ReferenceField>
       <TextInput source="title" />
       <TextInput source="location" />
+      <BooleanInput initialValue={false} source="isJobFair2022JobListing" />
       <TextInput source="summary" multiline />
       <TextInput source="proficiencyLevelId" />
       <FunctionField

@@ -45,13 +45,17 @@ export function MeJobseeker() {
       ...profile,
       isProfileVisibleToCompanies: !profile.isProfileVisibleToCompanies,
     })
+  
+  // This function is added for Job Fair 2022 only. Please remove after 11.02.2022
+  const handleJobFairToggleChange = () =>
+    mutation.mutate({
+      ...profile,
+      isJobFair2022Participant: !profile.isJobFair2022Participant,
+    })
 
   return (
     <LoggedIn>
-      {profile?.state === 'profile-approved-awaiting-job-preferences' ||
-      profile?.state ===
-        'job-preferences-shared-with-redi-awaiting-interview-match' ||
-      profile?.state === 'matched-for-interview' ? (
+      {profile?.state === 'profile-approved' ? (
         <Notification className="account-not-active double-bs">
           <Icon
             className="account-not-active__icon"
@@ -74,6 +78,14 @@ export function MeJobseeker() {
             <OnboardingSteps />
           </div>
           <EditableNamePhotoLocation profile={profile} />
+          {/* This Checkbox is added only for JobFair 2022. Please remove after 11.02.2022 */}
+          <Checkbox.Form
+            name="isJobFair2022Participant"
+            checked={profile.isJobFair2022Participant}
+            handleChange={handleJobFairToggleChange}
+          >
+            I will participate in the ReDI Job Fair on 11 February 2022
+          </Checkbox.Form>
           <EditableOverview profile={profile} />
           <EditableSummary profile={profile} />
           <EditableProfessionalExperience profile={profile} />
@@ -152,7 +164,7 @@ function determineCurrentStep(
   if (profile.state === 'submitted-for-review') {
     return [3, 'pending']
   }
-  if (profile.state === 'profile-approved-awaiting-job-preferences') {
+  if (profile.state === 'profile-approved') {
     return [3, 'complete']
   }
   // if (
@@ -285,7 +297,7 @@ function SendJobPreferencesForReviewButton() {
   const mutation = useTpjobseekerprofileUpdateMutation()
 
   const enabled =
-    profile?.state === 'profile-approved-awaiting-job-preferences' &&
+    profile?.state === 'profile-approved' &&
     EditableJobPreferences.isSectionFilled(profile)
 
   const onClick = useCallback(() => {
@@ -293,7 +305,6 @@ function SendJobPreferencesForReviewButton() {
 
     mutation.mutate({
       ...profile,
-      state: 'job-preferences-shared-with-redi-awaiting-interview-match',
     })
   }, [mutation, profile])
 

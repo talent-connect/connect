@@ -23,4 +23,5 @@ export type RedMatch = {
   mentee: RedProfile
   mentorId: string
   menteeId: string
+  createdAt: string
 }

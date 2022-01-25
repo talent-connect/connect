@@ -9,6 +9,7 @@ import {
   FormTextArea,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
+import * as Yup from 'yup'
 import {
   EducationRecord,
   ExperienceRecord,
@@ -31,6 +32,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
+import { Location } from '../../molecules/Location'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
 function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
@@ -97,9 +99,11 @@ export function EditableEducation({
                 </span>
               </div>
               <Content style={{ marginTop: '-0.5rem' }}>
-                {item.institutionName ? (
-                  <p style={{ color: '#979797' }}>{item.institutionName}</p>
-                ) : null}
+                <Location
+                  institution={item?.institutionName}
+                  city={item?.institutionCity}
+                  country={item?.institutionCountry}
+                />
                 <ReactMarkdown
                   components={{
                     p: ({ children }) => (
@@ -185,15 +189,46 @@ export function JobseekerFormSectionEducation({
     })
   }
 
+  const validationSchema = Yup.object().shape({
+    education: Yup.array().of(
+      Yup.object().shape({
+        institutionName: Yup.string().required(
+          'Nme of Institution is required!'
+        ),
+        certificationType: Yup.string().required(
+          'Please choose a certification type'
+        ),
+        institutionCity: Yup.string(),
+        institutionCountry: Yup.string(),
+        title: Yup.string().required('Title is required'),
+        description: Yup.string().min(10, 'Description is too short'),
+        startDateMonth: Yup.number().required('Start date month is required'),
+        startDateYear: Yup.number().required('Start date year is required'),
+        current: Yup.boolean(),
+        endDateYear: Yup.number().when('current', {
+          is: false,
+          then: Yup.number().required(
+            'Provide an end date year or check the box'
+          ),
+        }),
+        endDateMonth: Yup.number().when('current', {
+          is: false,
+          then: Yup.number().required('End date month is required'),
+        }),
+      })
+    ),
+  })
+
   const formik = useFormik({
     initialValues,
     onSubmit,
+    validationSchema,
     enableReinitialize: true,
   })
-  useEffect(() => setIsFormDirty?.(formik.dirty), [
-    formik.dirty,
-    setIsFormDirty,
-  ])
+  useEffect(
+    () => setIsFormDirty?.(formik.dirty),
+    [formik.dirty, setIsFormDirty]
+  )
 
   const onClickAddEducation = useCallback(() => {
     formik.setFieldValue('education', [
@@ -280,6 +315,18 @@ export function JobseekerFormSectionEducation({
                           name={`education[${index}].institutionName`}
                           placeholder="ReDI School of Digital Integration"
                           label="The institution or school"
+                          {...formik}
+                        />
+                        <FormInput
+                          name={`education[${index}].institutionCity`}
+                          placeholder="Munich"
+                          label="The city of institution or school"
+                          {...formik}
+                        />
+                        <FormInput
+                          name={`education[${index}].institutionCountry`}
+                          placeholder="Germany"
+                          label="The country of institution or school"
                           {...formik}
                         />
                         <FormTextArea
@@ -395,6 +442,8 @@ function buildBlankEducationRecord(): EducationRecord {
     title: '',
     institutionName: '',
     description: '',
+    institutionCity: '',
+    institutionCountry: '',
     certificationType: '',
     startDateMonth: undefined,
     startDateYear: undefined,

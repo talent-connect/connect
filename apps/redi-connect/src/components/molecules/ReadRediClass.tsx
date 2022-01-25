@@ -14,12 +14,16 @@ interface Props {
 const ReadRediClass = ({ profile, shortInfo }: Props) => {
   const { mentee_currentlyEnrolledInCourse } = profile
 
+  const COURSES_MAP = Object.fromEntries(
+    COURSES.map((course) => [course.id, course.label])
+  )
+
   return (
     <>
       {shortInfo && <Caption>Redi Class</Caption>}
       <Content>
         {mentee_currentlyEnrolledInCourse && (
-          <p>{COURSES[mentee_currentlyEnrolledInCourse]}</p>
+          <p>{COURSES_MAP[mentee_currentlyEnrolledInCourse]}</p>
         )}
       </Content>
     </>
