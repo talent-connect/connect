@@ -1220,7 +1220,7 @@ const TpJobseekerProfileListFilters = (props) => (
         name: val,
       }))}
     />
-    <BooleanInput source="isJobFair2022Participant" />
+    <NullableBooleanInput source="isJobFair2022Participant" />
   </Filter>
 )
 
@@ -1831,7 +1831,7 @@ const TpCompanyProfileEdit = (props) => (
 
 const TpJobListingListFilters = (props) => (
   <Filter {...props}>
-    <BooleanInput source="isJobFair2022JobListing" />
+    <NullableBooleanInput source="isJobFair2022JobListing" />
   </Filter>
 )
 
