@@ -231,6 +231,7 @@ const RedProfileList = (props) => {
       filters={<RedProfileListFilters />}
       pagination={<AllModelsPagination />}
       aside={<FreeMenteeSpotsPerLocationAside />}
+      exporter={redProfileListExporter}
     >
       <Datagrid expand={<RedProfileListExpandPane />}>
         <TextField source="rediLocation" label="City" />
@@ -281,6 +282,37 @@ const RedProfileList = (props) => {
       </Datagrid>
     </List>
   )
+}
+
+function redProfileListExporter(profiles) {
+  const properties = [
+    'id',
+    'userType',
+    'firstName',
+    'lastName',
+    'contactEmail',
+    'gender',
+    'userActivated',
+    'rediLocation',
+    'mentee_currentlyEnrolledInCourse',
+    'categories',
+    'menteeCountCapacity',
+    'signupSource',
+    'totalRedMatchCount',
+    'redUserId',
+    'loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName',
+    'lastLoginDateTime',
+    'updatedAt',
+    'createdAt',
+    'gaveGdprConsentAt',
+  ]
+
+  const data = profiles.map((profile) => {
+    return Object.fromEntries(properties.map((prop) => [prop, profile[prop]]))
+  })
+
+  const csv = convertToCSV(data)
+  downloadCSV(csv, 'yalla')
 }
 
 const FreeMenteeSpotsPerLocationAside = () => {
