@@ -1281,6 +1281,7 @@ function tpJobseekerProfileListExporter(profiles, fetchRelatedRecords) {
       updatedAt,
       lastLoginDateTime,
       postalMailingAddress,
+      genderPronouns,
     } = profile
 
     return {
@@ -1295,6 +1296,7 @@ function tpJobseekerProfileListExporter(profiles, fetchRelatedRecords) {
       updatedAt,
       lastLoginDateTime,
       postalMailingAddress,
+      genderPronouns,
       jobPreference1: hrSummit2021JobFairCompanyJobPreferences?.[0],
       jobPreference2: hrSummit2021JobFairCompanyJobPreferences?.[1],
       jobPreference3: hrSummit2021JobFairCompanyJobPreferences?.[2],
