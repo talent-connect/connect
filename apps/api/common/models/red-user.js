@@ -138,33 +138,83 @@ module.exports = function (RedUser) {
   })
 
   /******************
-   * Special post-login hook built for Talent Pool built on 6 June 2021.
-   *
-   * We'll have many users signing up for TP who've been using CON for a while. We can
-   * determine what products a RedUser has signed up to by checking for existence of:
-   * - RedProfile (means they've signed up for CON)
-   * - TpJobseekerProfile (means they've signed up for TP jobseeker)
-   *
-   * This hook is designed to work like this:
-   * - Identify whether the logging-in RedUser is a CON user but not a TP user. Otherwise, proceed
-   * - Load their RedProfile
-   * - Create a TpJobseekerProfile by copying some info over
+   * Special post-login hook:
+   * When a user logs into one of our products (CON and TP), it's possible they don't
+   * have a product profile. For example, a user can have signed up in TP initially
+   * and created a TP profile (TpJobseekerProfile). Then, they log into CON but don't
+   * have a CON profile (RedProfile) yet. Or vice versa (CON-only user logging into
+   * TP).
+   * This hook detects when one of these two cases occur, and creates the appropriate
+   * product profile.
    */
   RedUser.afterRemote('login', async function (ctx, loginOutput, next) {
     const redProduct = ctx.req.headers.redproduct // either CON or TP
-    if (redProduct !== 'TP') return next()
+    switch (redProduct) {
+      case 'CON':
+        return loginHook_caseLoginIntoConnect(ctx, next)
+      case 'TP':
+        return loginHook_caseLoginIntoTalentPool(ctx, next)
+      default:
+        return next()
+    }
+  })
 
-    const redUserId = ctx.result.toJSON().userId.toString()
+  async function loginHook_caseLoginIntoConnect(context, next) {
+    const redUserInst = await loginHook_getRedUser(context)
+    const redUser = redUserInst.toJSON()
+
+    const userAlreadyHasConProfile = Boolean(redUser.redProfile)
+    const userDoesNotHaveTpJobseekerProfile = !Boolean(
+      redUser.tpJobseekerProfile
+    )
+
+    if (userAlreadyHasConProfile || userDoesNotHaveTpJobseekerProfile)
+      return next()
+
+    const conProfile = tpJobseekerProfileToConRedProfile(
+      redUser.tpJobseekerProfile
+    )
+
+    await redUserInst.redProfile.create(conProfile)
+
+    return next()
+  }
+
+  async function loginHook_caseLoginIntoTalentPool(context, next) {
+    const redUserInst = await loginHook_getRedUser(context)
+    const redUser = redUserInst.toJSON()
+
+    const userAlreadyHasTalentPoolJobseekerProfile = Boolean(
+      redUser.tpJobseekerProfile
+    )
+    const userDoesNotHaveConnectProfile = !redUser.redProfile
+
+    if (
+      userAlreadyHasTalentPoolJobseekerProfile ||
+      userDoesNotHaveConnectProfile
+    ) {
+      return next()
+    }
+
+    const tpJobseekerProfile = conRedProfileToTpJobseekerProfile(
+      redUser.redProfile
+    )
+
+    await redUserInst.tpJobseekerProfile.create(tpJobseekerProfile)
+
+    return next()
+  }
+
+  async function loginHook_getRedUser(context) {
+    const redUserId = context.result.toJSON().userId.toString()
     const redUserInst = await RedUser.findById(redUserId, {
       include: ['redProfile', 'tpJobseekerProfile'],
     })
-    const redUser = redUserInst.toJSON()
 
-    if (redUser.tpJobseekerProfile) return next()
-    if (!redUser.redProfile) return next()
+    return redUserInst
+  }
 
-    const redProfile = redUser.redProfile
-
+  function conRedProfileToTpJobseekerProfile(profile) {
     const tpJobseekerProfile = {
       firstName: redProfile.firstName,
       lastName: redProfile.lastName,
@@ -174,8 +224,23 @@ module.exports = function (RedUser) {
       gaveGdprConsentAt: redProfile.gaveGdprConsentAt,
     }
 
-    const res = await redUserInst.tpJobseekerProfile.create(tpJobseekerProfile)
+    return tpJobseekerProfile
+  }
 
-    return next()
-  })
+  function tpJobseekerProfileToConRedProfile(tpJobseekerProfile) {
+    const conRedProfile = {
+      firstName: tpJobseekerProfile.firstName,
+      lastName: tpJobseekerProfile.lastName,
+      contactEmail: tpJobseekerProfile.contactEmail,
+      currentlyEnrolledInCourse: tpJobseekerProfile.currentlyEnrolledInCourse,
+      userType: 'public-sign-up-mentee-pending-review',
+      gaveGdprConsentAt: tpJobseekerProfile.gaveGdprConsentAt,
+      signupSource: 'existing-user-with-tp-profile-logging-into-con',
+      rediLocation: 'berlin',
+      administratorInternalComment:
+        'SYSTEM NOTE: This user first signed up in Talent Pool. They then logged into Connect. Their ReDI Location has been set to BERLIN. Make sure to figure out if they should be changed to Munich or NRW. If so, request Eric or Anil to do the change',
+    }
+
+    return conRedProfile
+  }
 }
