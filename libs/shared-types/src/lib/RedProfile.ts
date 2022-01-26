@@ -14,7 +14,8 @@ import {
 import { Timestamp } from './Timestamp';
 
 export type RedProfile =
-  Timestamp & {
+  & Timestamp
+  & {
   id: string
   userType: UserType
   rediLocation: RediLocation
@@ -23,7 +24,7 @@ export type RedProfile =
   mentor_workPlace: string
   expectations: string // Field was used in Mentor typeform, as of today 14.05.2019 not asked in sign-up flow
   mentor_ifTypeForm_submittedAt: Date
-  mentee_ifTypeForm_preferredMentorSex: 'male' | 'female' | 'none'
+  mentee_ifTypeForm_preferredMentorSex: 'male' | 'female' | 'none' // TODO: use GenderKey?
   ifTypeForm_additionalComments: string
   mentee_currentCategory: 'student' | 'rediAlumnus'
   mentee_occupationCategoryId: MenteeOccupationCategoryKey // TODO: do TS magic to make this a union type

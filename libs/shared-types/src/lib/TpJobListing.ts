@@ -2,7 +2,8 @@ import { Timestamp } from './Timestamp';
 import { TpCompanyProfile } from './TpCompanyProfile'
 
 export type TpJobListing =
-  Timestamp & {
+  & Timestamp
+  & {
   id: string
   title?: string
   location?: string

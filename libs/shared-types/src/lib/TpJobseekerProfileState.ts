@@ -1,3 +1,5 @@
+import { Values } from '@talent-connect/typescript-utilities';
+
 export const TpJobSeekerProfileState = {
   'drafting-profile': 'drafting-profile',
   'submitted-for-review': 'submitted-for-review',
@@ -7,4 +9,5 @@ export const TpJobSeekerProfileState = {
     'job-preferences-shared-with-redi-awaiting-interview-match',
   'matched-for-interview': 'matched-for-interview',
 } as const
-export type TpJobSeekerProfileState = typeof TpJobSeekerProfileState[keyof typeof TpJobSeekerProfileState]
+
+export type TpJobSeekerProfileState = Values<typeof TpJobSeekerProfileState>

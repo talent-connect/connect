@@ -7,14 +7,15 @@ import { ProjectRecord } from './tp-jobseeker-profile-cv-shared-interfaces/Proje
 import { TpJobSeekerProfileState } from './TpJobSeekerProfileState'
 
 export type TpJobSeekerProfile =
-  Timestamp & {
+  & Timestamp
+  & {
   id: string
   firstName: string
   lastName: string
   contactEmail: string
   currentlyEnrolledInCourse: string
 
-  genderPronouns?: string
+  genderPronouns?: string // TODO use GenderKey?
 
   profileAvatarImageS3Key: string
 

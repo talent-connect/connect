@@ -29,6 +29,8 @@ import { UseMutationResult, UseQueryResult } from 'react-query'
 import { mapOptions, mapOptionsObject } from '@talent-connect/typescript-utilities'
 import { reorder } from '@talent-connect/shared-utils';
 
+// TODO: Repeated component?
+
 interface Props {
   profile?: Partial<TpJobSeekerProfile>
   disableEditing?: boolean

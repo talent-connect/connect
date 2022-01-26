@@ -10,7 +10,7 @@ import { CategoryGroupId, RedProfile } from '@talent-connect/shared-types'
 import { profileSaveStart } from '../../redux/user/actions'
 import * as Yup from 'yup'
 
-import { FormikConfig, useFormik } from 'formik'
+import { useFormik } from 'formik'
 import { CATEGORIES, CategoryKey, CATEGORY_GROUPS } from '@talent-connect/shared-config'
 import { ReadMentoringTopics } from '../molecules'
 import { objectEntries } from '@talent-connect/typescript-utilities'
@@ -24,7 +24,7 @@ export type UserType =
 
 export interface MentoringFormValues {
   isMentor: boolean
-  categories: string[]
+  categories: CategoryKey[]
 }
 
 const MAX_MENTORING_TOPICS_IF_USER_IS_MENTEE = 4
@@ -115,7 +115,7 @@ interface CategoryGroupProps {
   label: string,
   selectedCategories: CategoryKey[],
   onChange: ChangeEventHandler,
-  formik: FormikConfig<MentoringFormValues> // TODO
+  formik: any // TODO: remove this or workaround
 }
 
 const CategoryGroup: FC<CategoryGroupProps> = ({

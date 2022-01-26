@@ -44,7 +44,7 @@ const ConfirmMentorship = ({
   const history = useHistory()
   const { mentee = { firstName: null } } = match
 
-  //  Keeping this to make sure we address this as its not planned in the desing, yet
+  //  Keeping this to make sure we address this as its not planned in the design, yet
   //   <Tooltip> requires child <Button> to be wrapped in a div since it's disabled
   //   props.hasReachedMenteeLimit ? (
   //     <Tooltip

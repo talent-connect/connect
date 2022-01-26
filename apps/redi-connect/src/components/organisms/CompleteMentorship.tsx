@@ -68,9 +68,7 @@ const CompleteMentorship: FC<CompleteMentorshipProps> = ({
             <TextArea
               name="mentorMessageOnComplete"
               rows={4}
-              placeholder={
-                'Is there anything you would like us to know about the mentorship match?'
-              }
+              placeholder={'Is there anything you would like us to know about the mentorship match?'}
               {...formik}
             />
           </form>

@@ -19,7 +19,7 @@ import Teaser from '../../../components/molecules/Teaser'
 import { Columns, Form } from 'react-bulma-components'
 
 import { signUp } from '../../../services/api/api'
-import { Extends, RedProfile } from '@talent-connect/shared-types'
+import { Extends, RedProfile, UserRole } from '@talent-connect/shared-types'
 import { history } from '../../../services/history/history'
 import { courses } from '../../../config/config'
 
@@ -55,10 +55,10 @@ export const validationSchema = Yup.object({
 })
 
 type SignUpPageType = {
-  type: 'mentor' | 'mentee'
+  type: UserRole
 }
 
-type SignUpUserType = Extends<
+type SignUpUserType = Extends< // TODO necessary?
   RedProfile['userType'],
   | 'public-sign-up-mentee-pending-review'
   | 'public-sign-up-mentor-pending-review'

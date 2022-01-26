@@ -1,7 +1,5 @@
 export * from './AccessToken'
 export * from './Category'
-export * from './CategoryGroupId'
-export * from './CategoryGroup'
 export * from './EducationLevel'
 export * from './FormSubmitResult'
 export * from './RediLocation'

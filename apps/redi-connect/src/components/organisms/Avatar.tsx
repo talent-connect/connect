@@ -11,7 +11,6 @@ import {
 import classnames from 'classnames'
 import placeholderImage from '../../assets/images/img-placeholder.png'
 
-import { RootState } from '../../redux/types'
 import { connect } from 'react-redux'
 
 import './Avatar.scss'
@@ -19,6 +18,8 @@ import './Avatar.scss'
 import { profileSaveStart } from '../../redux/user/actions'
 import { RedProfile } from '@talent-connect/shared-types'
 import { mapStateToProps } from '../../helpers';
+
+// TODO: this looks like a repeated component. Move to shared components?
 
 interface AvatarProps {
   profile: RedProfile

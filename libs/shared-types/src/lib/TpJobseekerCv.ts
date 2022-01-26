@@ -5,7 +5,8 @@ import { LanguageRecord } from './tp-jobseeker-profile-cv-shared-interfaces/Lang
 import { ProjectRecord } from './tp-jobseeker-profile-cv-shared-interfaces/ProjectRecord'
 
 export type TpJobSeekerCv =
-  Timestamp & {
+  & Timestamp
+  & {
   id: string
   cvName: string
 
@@ -13,7 +14,7 @@ export type TpJobSeekerCv =
   lastName: string
   contactEmail: string
 
-  genderPronouns?: string
+  genderPronouns?: string // TODO use GenderKey?
 
   profileAvatarImageS3Key: string
 

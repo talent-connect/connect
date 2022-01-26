@@ -2,7 +2,8 @@ import { Timestamp } from './Timestamp';
 import { TpCompanyProfileState } from './TpCompanyProfileState'
 
 export type TpCompanyProfile =
-  Timestamp & {
+  & Timestamp
+  & {
   id: string
   firstName: string
   lastName: string

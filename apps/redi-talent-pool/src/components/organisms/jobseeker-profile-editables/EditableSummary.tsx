@@ -102,8 +102,7 @@ EditableSummary.isSectionEmpty = (profile: Partial<TpJobSeekerProfile>) =>
 
 const formTopSkills = mapOptions(topSkills)
 
-const minChars = 100
-const maxChars = 600
+const [MIN_CHARS, MAX_CHARS] = [100, 600]
 
 const validationSchema = Yup.object({
   topSkills: Yup.array()
@@ -111,8 +110,8 @@ const validationSchema = Yup.object({
     .max(5, "Your profile can't contain too many skills - five at most"),
   aboutYourself: Yup.string()
     .required()
-    .min(minChars, 'Write at least 100 characters about yourself.')
-    .max(maxChars, 'The text about yourself can be up to 600 characters long.'),
+    .min(MIN_CHARS, 'Write at least 100 characters about yourself.')
+    .max(MAX_CHARS, 'The text about yourself can be up to 600 characters long.'),
 })
 
 interface JobSeekerFormSectionSummaryProps {

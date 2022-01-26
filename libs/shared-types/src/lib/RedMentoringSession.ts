@@ -1,12 +1,11 @@
 import { MentoringSessionDurationOption } from '@talent-connect/shared-config'
-import { RedProfile } from './RedProfile'
+import { MentorMenteeIds, MentorMenteeRefs } from './UserType';
 
-export type RedMentoringSession = {
+export type RedMentoringSession = 
+  & Partial<MentorMenteeRefs>
+  & Partial<MentorMenteeIds>
+  & {
   id?: string
-  mentor?: RedProfile
-  mentee?: RedProfile
-  mentorId?: string
-  menteeId?: string
   date: Date
   minuteDuration: MentoringSessionDurationOption
 }
