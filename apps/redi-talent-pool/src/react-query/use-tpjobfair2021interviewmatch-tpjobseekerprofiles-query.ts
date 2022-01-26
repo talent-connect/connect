@@ -1,12 +1,12 @@
 import { useQuery } from 'react-query'
-import { fetchAllTpJobFair2021InterviewMatches_tpJobseekerProfiles } from '../services/api/api'
+import { fetchAllTpJobFair2021InterviewMatches_tpJobSeekerProfiles } from '../services/api/api'
 
 const MS_IN_5_MIN = 5 * 60 * 1000
 
-export function useTpJobFair2021InterviewMatch_tpJobseekerProfilesQuery() {
+export function useTpJobFair2021InterviewMatch_tpJobSeekerProfilesQuery() {
   return useQuery(
-    'allTpJobFair2021InterviewMatchTpJobseekerProfiles',
-    fetchAllTpJobFair2021InterviewMatches_tpJobseekerProfiles,
+    'allTpJobFair2021InterviewMatchTpJobSeekerProfiles',
+    fetchAllTpJobFair2021InterviewMatches_tpJobSeekerProfiles,
     {
       staleTime: MS_IN_5_MIN,
       refetchOnWindowFocus: false,

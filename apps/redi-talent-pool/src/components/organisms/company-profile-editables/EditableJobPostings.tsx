@@ -7,7 +7,7 @@ import {
   Icon,
   Modal,
 } from '@talent-connect/shared-atomic-design-components'
-import { TpJobListing, TpJobseekerProfile } from '@talent-connect/shared-types'
+import { TpJobListing, TpJobSeekerProfile } from '@talent-connect/shared-types'
 import {
   desiredPositions,
   employmentTypes,

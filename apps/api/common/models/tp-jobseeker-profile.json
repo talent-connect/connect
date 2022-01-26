@@ -1,6 +1,6 @@
 {
-  "name": "TpJobseekerProfile",
-  "plural": "tpJobseekerProfiles",
+  "name": "TpJobSeekerProfile",
+  "plural": "tpJobSeekerProfiles",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
@@ -88,7 +88,7 @@
       ],
       "returns": [
         {
-          "arg": "tpJobseekerProfile",
+          "arg": "tpJobSeekerProfile",
           "type": "object",
           "root": true,
           "description": ""
@@ -119,7 +119,7 @@
       ],
       "returns": [
         {
-          "arg": "tpJobseekerProfile",
+          "arg": "tpJobSeekerProfile",
           "type": "object",
           "root": true,
           "description": ""

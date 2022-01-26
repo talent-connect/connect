@@ -9,7 +9,7 @@ import {
   usePDF,
   View,
 } from '@react-pdf/renderer'
-import { TpJobseekerCv } from '@talent-connect/shared-types'
+import { TpJobSeekerCv } from '@talent-connect/shared-types'
 import { formatDate } from '@talent-connect/shared-utils';
 import {
   desiredPositionsIdToLabelMap,
@@ -258,7 +258,7 @@ function isVeryLongEducationLine(education) {
   )
 }
 
-export const CVPDF: FC<{ cvData: Partial<TpJobseekerCv> }> = ({
+export const CVPDF: FC<{ cvData: Partial<TpJobSeekerCv> }> = ({
   cvData: {
     firstName,
     lastName,
@@ -553,7 +553,7 @@ const getNodeTopPosition = (xPath: string) => {
 }
 
 interface CVPDFPreviewProps {
-  cvData: Partial<TpJobseekerCv>
+  cvData: Partial<TpJobSeekerCv>
   pdfHeightPx: number
   pdfWidthPx: number
 }

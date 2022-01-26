@@ -2,19 +2,19 @@ import {
   Button,
   TextInput,
 } from '@talent-connect/shared-atomic-design-components'
-import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
+import { TpJobSeekerCv, TpJobSeekerProfile } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
 import { useEffect, useMemo, useState, FC } from 'react'
 import { Content, Element } from 'react-bulma-components'
 import { UseMutationResult, UseQueryResult } from 'react-query'
 import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
 interface Props {
-  profile?: Partial<TpJobseekerProfile>
+  profile?: Partial<TpJobSeekerProfile>
   disableEditing?: boolean
 }
 
@@ -22,7 +22,7 @@ export const EditableLinks: FC<Props> = ({
   profile: overridingProfile,
   disableEditing,
 }) => {
-  const queryHookResult = useTpJobseekerProfileQuery({
+  const queryHookResult = useTpJobSeekerProfileQuery({
     enabled: !disableEditing,
   })
   if (overridingProfile) queryHookResult.data = overridingProfile
@@ -69,7 +69,7 @@ export const EditableLinks: FC<Props> = ({
       modalTitle="Your online presence"
       modalHeadline="Links"
       modalBody={
-        <JobseekerFormSectionLinks
+        <JobSeekerFormSectionLinks
           setIsEditing={setIsEditing}
           setIsFormDirty={setIsFormDirty}
           queryHookResult={queryHookResult}
@@ -81,7 +81,7 @@ export const EditableLinks: FC<Props> = ({
   )
 }
 
-function buildAllLinksArray(profile: Partial<TpJobseekerProfile>): string[] {
+function buildAllLinksArray(profile: Partial<TpJobSeekerProfile>): string[] {
   return [
     profile?.personalWebsite,
     profile?.githubUrl,
@@ -93,9 +93,9 @@ function buildAllLinksArray(profile: Partial<TpJobseekerProfile>): string[] {
   ]
 }
 
-EditableLinks.isSectionFilled = (profile: Partial<TpJobseekerProfile>) =>
+EditableLinks.isSectionFilled = (profile: Partial<TpJobSeekerProfile>) =>
   buildAllLinksArray(profile).some((p) => p)
-EditableLinks.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
+EditableLinks.isSectionEmpty = (profile: Partial<TpJobSeekerProfile>) =>
   !EditableLinks.isSectionFilled(profile)
 
 const validationSchema = Yup.object({
@@ -108,22 +108,22 @@ const validationSchema = Yup.object({
   dribbbleUrl: Yup.string().url().label('Dribbble profile URL'),
 })
 
-interface JobseekerFormSectionLinksProps {
+interface JobSeekerFormSectionLinksProps {
   setIsEditing: (boolean: boolean) => void
   setIsFormDirty?: (boolean: boolean) => void
   queryHookResult: UseQueryResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobSeekerProfile | TpJobSeekerCv>,
     unknown
   >
   mutationHookResult: UseMutationResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobSeekerProfile | TpJobSeekerCv>,
     unknown,
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobSeekerProfile | TpJobSeekerCv>,
     unknown
   >
 }
 
-export const JobseekerFormSectionLinks: FC<JobseekerFormSectionLinksProps> = ({
+export const JobSeekerFormSectionLinks: FC<JobSeekerFormSectionLinksProps> = ({
   setIsEditing,
   setIsFormDirty,
   queryHookResult,
@@ -152,7 +152,7 @@ export const JobseekerFormSectionLinks: FC<JobseekerFormSectionLinksProps> = ({
     ]
   )
 
-  const formik = useFormik<Partial<TpJobseekerProfile>>({
+  const formik = useFormik<Partial<TpJobSeekerProfile>>({
     initialValues,
     validationSchema,
     enableReinitialize: true,

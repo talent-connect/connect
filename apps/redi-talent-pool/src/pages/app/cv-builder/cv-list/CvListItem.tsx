@@ -19,7 +19,7 @@ import { Chip } from '@material-ui/core'
 import { AWS_PROFILE_AVATARS_BUCKET_BASE_URL } from '@talent-connect/shared-config'
 import placeholderImage from '../../../../assets/img-placeholder.png'
 
-import { useTpJobseekerCvByIdQuery } from '../../../../react-query/use-tpjobseekercv-query'
+import { useTpJobSeekerCvByIdQuery } from '../../../../react-query/use-tpjobseekercv-query'
 import {
   useTpjobseekerCvCreateMutation,
   useTpjobseekerCvDeleteMutation,
@@ -28,7 +28,7 @@ import {
 
 import { CvListItemMoreOptionsMenu } from './CvListItemMoreOptionsMenu'
 import { CVPDF } from '../../../../components/molecules/CvPdfPreview'
-import { useTpJobseekerProfileQuery } from '../../../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobSeekerProfileQuery } from '../../../../react-query/use-tpjobseekerprofile-query'
 
 const CREATED_AT_DATE_FORMAT = 'dd.MM.yyyy'
 
@@ -76,11 +76,11 @@ const CvListItem: FC<CvListItemProps> = ({ id, name, createdAt }) => {
 
   const history = useHistory()
 
-  const { data: cvData, isSuccess: cvLoadSuccess } = useTpJobseekerCvByIdQuery(id)
+  const { data: cvData, isSuccess: cvLoadSuccess } = useTpJobSeekerCvByIdQuery(id)
   const {
     data: profileData,
     isSuccess: profileLoadSuccess,
-  } = useTpJobseekerProfileQuery()
+  } = useTpJobSeekerProfileQuery()
 
   const createMutation = useTpjobseekerCvCreateMutation()
   const updateMutation = useTpjobseekerCvUpdateMutation(id)

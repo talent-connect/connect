@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom'
 import { Columns } from 'react-bulma-components'
 import { LoggedIn } from '../../../components/templates'
-import { useTpJobseekerProfileByIdQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobSeekerProfileByIdQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { EditableLanguages } from '../../../components/organisms/jobseeker-profile-editables/EditableLanguages'
 import { EditableImportantDetails } from '../../../components/organisms/jobseeker-profile-editables/EditableImportantDetails'
 import { EditableLinks } from '../../../components/organisms/jobseeker-profile-editables/EditableLinks'
@@ -12,9 +12,9 @@ import { EditableEducation } from '../../../components/organisms/jobseeker-profi
 import { EditableNamePhotoLocation } from '../../../components/organisms/jobseeker-profile-editables/EditableNamePhotoLocation'
 import { FC } from 'react';
 
-export const JobseekerProfile: FC = () => {
-  const { tpJobseekerProfileId } = useParams<{ tpJobseekerProfileId: string }>()
-  const { data: jobseekerProfile } = useTpJobseekerProfileByIdQuery(tpJobseekerProfileId)
+export const JobSeekerProfile: FC = () => {
+  const { tpJobSeekerProfileId } = useParams<{ tpJobSeekerProfileId: string }>()
+  const { data: jobseekerProfile } = useTpJobSeekerProfileByIdQuery(tpJobSeekerProfileId)
 
   console.log(jobseekerProfile)
 
@@ -44,4 +44,4 @@ export const JobseekerProfile: FC = () => {
   )
 }
 
-export default JobseekerProfile
+export default JobSeekerProfile

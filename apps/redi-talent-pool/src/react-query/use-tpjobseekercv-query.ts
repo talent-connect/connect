@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query'
 import {
-  fetchAllCurrentUserTpJobseekerCv,
-  fetchCurrentUserTpJobseekerCvById,
+  fetchAllCurrentUserTpJobSeekerCv,
+  fetchCurrentUserTpJobSeekerCvById,
 } from '../services/api/api'
 
 interface Props {
@@ -9,10 +9,10 @@ interface Props {
   enabled?: boolean
 }
 
-export function useTpJobseekerCvQuery(props?: Props) {
+export function useTpJobSeekerCvQuery(props?: Props) {
   return useQuery(
-    'allCurrentUserTpJobseekerCv',
-    fetchAllCurrentUserTpJobseekerCv,
+    'allCurrentUserTpJobSeekerCv',
+    fetchAllCurrentUserTpJobSeekerCv,
     {
       staleTime: 5 * 60 * 1000,
       retry: props?.retry ?? true,
@@ -21,10 +21,10 @@ export function useTpJobseekerCvQuery(props?: Props) {
   )
 }
 
-export function useTpJobseekerCvByIdQuery(id: string, props?: Props) {
+export function useTpJobSeekerCvByIdQuery(id: string, props?: Props) {
   return useQuery(
-    ['currentUserTpJobseekerCv', id],
-    () => fetchCurrentUserTpJobseekerCvById(id),
+    ['currentUserTpJobSeekerCv', id],
+    () => fetchCurrentUserTpJobSeekerCvById(id),
     {
       staleTime: 5 * 60 * 1000,
       retry: props?.retry ?? true,

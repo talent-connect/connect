@@ -144,7 +144,7 @@ function ModalForm({
         responsive={{ mobile: { textSize: { value: 5 } } }}
         className="oneandhalf-bs"
       >
-        Let ReDI Jobseekers know how to get in touch.
+        Let ReDI JobSeekers know how to get in touch.
       </Element>
       <TextInput
         name="firstName"

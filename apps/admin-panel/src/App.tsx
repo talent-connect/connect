@@ -83,13 +83,13 @@ import { howDidHearAboutRediOptions } from '@talent-connect/talent-pool/config'
 import loopbackClient, { authProvider } from './lib/react-admin-loopback/src'
 import { ApproveButton } from './components/ApproveButton'
 import { DeclineButton } from './components/DeclineButton'
-import { TpJobseekerProfileApproveButton } from './components/TpJobseekerProfileApproveButton'
-import { TpJobseekerProfileDeclineButton } from './components/TpJobseekerProfileDeclineButton'
+import { TpJobSeekerProfileApproveButton } from './components/TpJobSeekerProfileApproveButton'
+import { TpJobSeekerProfileDeclineButton } from './components/TpJobSeekerProfileDeclineButton'
 import { TpCompanyProfileApproveButton } from './components/TpCompanyProfileApproveButton'
 
 import { API_URL } from './config'
 import {
-  TpJobseekerProfileState,
+  TpJobSeekerProfileState,
   TpCompanyProfileState,
 } from '@talent-connect/shared-types'
 
@@ -1182,16 +1182,16 @@ const RedMentoringSessionEdit: FC = (props) => (
   </Edit>
 )
 
-const TpJobseekerProfileList: FC = (props) => {
+const TpJobSeekerProfileList: FC = (props) => {
   return (
     <>
       <List
         {...props}
-        exporter={tpJobseekerProfileListExporter}
-        filters={<TpJobseekerProfileListFilters />}
+        exporter={tpJobSeekerProfileListExporter}
+        filters={<TpJobSeekerProfileListFilters />}
         pagination={<AllModelsPagination />}
       >
-        <Datagrid expand={<TpJobseekerProfileListExpandPane />}>
+        <Datagrid expand={<TpJobSeekerProfileListExpandPane />}>
           <TextField source="firstName" />
           <TextField source="lastName" />
           <TextField source="state" />
@@ -1234,7 +1234,7 @@ const TpJobseekerProfileList: FC = (props) => {
   )
 }
 
-const TpJobseekerProfileListExpandPane: FC = (props) => {
+const TpJobSeekerProfileListExpandPane: FC = (props) => {
   return (
     <Show {...props} title="">
       <SimpleShowLayout>
@@ -1246,17 +1246,17 @@ const TpJobseekerProfileListExpandPane: FC = (props) => {
   )
 }
 
-const TpJobseekerProfileListFilters: FC = (props) => (
+const TpJobSeekerProfileListFilters: FC = (props) => (
   <Filter {...props}>
     <TextInput label="Search by name" source="q" />
     <SelectInput
       source="state"
-      choices={objectValues(TpJobseekerProfileState).map((val) => ({ id: val, name: val }))}
+      choices={objectValues(TpJobSeekerProfileState).map((val) => ({ id: val, name: val }))}
     />
   </Filter>
 )
 
-function tpJobseekerProfileListExporter(profiles, fetchRelatedRecords) {
+function tpJobSeekerProfileListExporter(profiles, fetchRelatedRecords) {
   const data = profiles.map((profile) => {
     let { hrSummit2021JobFairCompanyJobPreferences } = profile
     hrSummit2021JobFairCompanyJobPreferences =
@@ -1316,7 +1316,7 @@ function tpJobseekerProfileListExporter(profiles, fetchRelatedRecords) {
   downloadCSV(csv, 'yalla')
 }
 
-const TpJobseekerProfileShow: FC = (props) => (
+const TpJobSeekerProfileShow: FC = (props) => (
   <Show {...props}>
     <SimpleShowLayout>
       <TabbedShowLayout>
@@ -1461,9 +1461,9 @@ const TpJobseekerProfileShow: FC = (props) => (
   </Show>
 )
 
-const TpJobseekerProfileEdit: FC = (props) => (
-  // <Edit {...props} actions={<TpJobseekerProfileEditActions />}>
-  <Edit {...props} actions={<TpJobseekerProfileEditActions />}>
+const TpJobSeekerProfileEdit: FC = (props) => (
+  // <Edit {...props} actions={<TpJobSeekerProfileEditActions />}>
+  <Edit {...props} actions={<TpJobSeekerProfileEditActions />}>
     <TabbedForm>
       <FormTab label="Profile">
         <TextField source="state" />
@@ -1602,13 +1602,13 @@ const TpJobseekerProfileEdit: FC = (props) => (
   </Edit>
 )
 
-const TpJobseekerProfileEditActions: FC<{ data?: { state: string }}> = (props) => {
+const TpJobSeekerProfileEditActions: FC<{ data?: { state: string }}> = (props) => {
   if (props.data?.state !== 'submitted-for-review') return null
 
   return (
     <CardActions>
-      User is pending. Please <TpJobseekerProfileApproveButton {...props} /> or
-      <TpJobseekerProfileDeclineButton {...props} />
+      User is pending. Please <TpJobSeekerProfileApproveButton {...props} /> or
+      <TpJobSeekerProfileDeclineButton {...props} />
     </CardActions>
   )
 }
@@ -1974,7 +1974,7 @@ const TpJobFair2021InterviewMatchList: FC = (props) => {
         <ReferenceField
           label="Interviewee"
           source="intervieweeId"
-          reference="tpJobseekerProfiles"
+          reference="tpJobSeekerProfiles"
         >
           <FullName sourcePrefix="" />
         </ReferenceField>
@@ -2053,7 +2053,7 @@ const TpJobFair2021InterviewMatchShow: FC = (props) => (
       <ReferenceField
         label="Interviewee"
         source="intervieweeId"
-        reference="tpJobseekerProfiles"
+        reference="tpJobSeekerProfiles"
       >
         <FullName sourcePrefix="" />
       </ReferenceField>
@@ -2081,7 +2081,7 @@ const TpJobFair2021InterviewMatchCreate: FC = (props) => (
       <ReferenceInput
         label="Interviewee"
         source="intervieweeId"
-        reference="tpJobseekerProfiles"
+        reference="tpJobSeekerProfiles"
         perPage={0}
         sort={{ field: 'firstName', order: 'ASC' }}
       >
@@ -2123,7 +2123,7 @@ const TpJobFair2021InterviewMatchEdit: FC = (props) => (
       <ReferenceInput
         label="Interviewee"
         source="intervieweeId"
-        reference="tpJobseekerProfiles"
+        reference="tpJobSeekerProfiles"
         perPage={0}
         sort={{ field: 'firstName', order: 'ASC' }}
       >
@@ -2164,7 +2164,7 @@ const buildDataProvider = (normalDataProvider) => (verb, resource, params) => {
     const newFilter = { and: [filter] };
 
     if (q) {
-      if (resource === 'tpJobseekerProfiles' || resource === 'redProfiles') {
+      if (resource === 'tpJobSeekerProfiles' || resource === 'redProfiles') {
           const andConditions = q.split(' ').map((word) => ({
             loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName: {
               like: word,
@@ -2218,10 +2218,10 @@ function App() {
           edit={RedMentoringSessionEdit}
         />
         <Resource
-          name="tpJobseekerProfiles"
-          show={TpJobseekerProfileShow}
-          list={TpJobseekerProfileList}
-          edit={TpJobseekerProfileEdit}
+          name="tpJobSeekerProfiles"
+          show={TpJobSeekerProfileShow}
+          list={TpJobSeekerProfileList}
+          edit={TpJobSeekerProfileEdit}
         />
         <Resource
           name="tpCompanyProfiles"

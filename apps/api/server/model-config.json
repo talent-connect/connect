@@ -56,11 +56,11 @@
     "dataSource": "mongodb",
     "public": true
   },
-  "TpJobseekerProfile": {
+  "TpJobSeekerProfile": {
     "dataSource": "mongodb",
     "public": true
   },
-  "TpJobseekerCv": {
+  "TpJobSeekerCv": {
     "dataSource": "mongodb",
     "public": true
   },

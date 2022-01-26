@@ -19,9 +19,9 @@ import {
   useQueryParams,
   withDefault,
 } from 'use-query-params'
-import { JobseekerProfileCard } from '../../../components/organisms/JobSeekerProfileCard'
+import { JobSeekerProfileCard } from '../../../components/organisms/JobSeekerProfileCard'
 import { LoggedIn } from '../../../components/templates'
-import { useBrowseTpJobseekerProfilesQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useBrowseTpJobSeekerProfilesQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 
 export const BrowseCompany: FC = () => {
   const [query, setQuery] = useQueryParams({
@@ -32,7 +32,7 @@ export const BrowseCompany: FC = () => {
   const { name, skills, desiredPositions } = query
 
   const history = useHistory()
-  const { data: jobseekerProfiles } = useBrowseTpJobseekerProfilesQuery({
+  const { data: jobseekerProfiles } = useBrowseTpJobSeekerProfilesQuery({
     name,
     skills,
     desiredPositions,
@@ -72,7 +72,7 @@ export const BrowseCompany: FC = () => {
         responsive={{ mobile: { textSize: { value: 5 } } }}
         className="oneandhalf-bs"
       >
-        Browse our Jobseeker profiles and find the talent you're looking for.
+        Browse our JobSeeker profiles and find the talent you're looking for.
       </Element>
       <div className="filters">
         <SearchField
@@ -138,7 +138,7 @@ export const BrowseCompany: FC = () => {
             tablet={{ size: 6 }}
             desktop={{ size: 4 }}
           >
-            <JobseekerProfileCard
+            <JobSeekerProfileCard
               key={profile.id}
               jobseekerProfile={profile}
               onClick={() =>

@@ -18,8 +18,8 @@ import { AccordionFormCvName } from '../../../../components/organisms/jobseeker-
 import { AccordionFormCvProfessionalExperience } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvProfessionalExperience'
 import { AccordionFormCvSummary } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvSummary'
 import { LoggedIn } from '../../../../components/templates'
-import { useTpJobseekerCvByIdQuery } from '../../../../react-query/use-tpjobseekercv-query'
-import { useTpJobseekerProfileQuery } from '../../../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobSeekerCvByIdQuery } from '../../../../react-query/use-tpjobseekercv-query'
+import { useTpJobSeekerProfileQuery } from '../../../../react-query/use-tpjobseekerprofile-query'
 import './CvDetailPage.scss'
 import placeholderImage from '../../../../assets/img-placeholder.png'
 
@@ -52,8 +52,8 @@ const CvDetailPage: FC = () => {
   const history = useHistory()
   const { id: cvId } = useParams<ParamTypes>()
 
-  const { data: profile, isSuccess: profileLoadSuccess } = useTpJobseekerProfileQuery()
-  const { data: cvData, isSuccess: cvLoadSuccess } = useTpJobseekerCvByIdQuery(
+  const { data: profile, isSuccess: profileLoadSuccess } = useTpJobSeekerProfileQuery()
+  const { data: cvData, isSuccess: cvLoadSuccess } = useTpJobSeekerCvByIdQuery(
     cvId,
     {
       enabled: profileLoadSuccess,
@@ -108,21 +108,21 @@ const CvDetailPage: FC = () => {
               invited to an interview.
             </Content>
             <AccordionFormCvName
-              tpJobseekerCvId={cvId}
+              tpJobSeekerCvId={cvId}
               onClose={onClose}
               closeAccordionSignalSubject={
                 closeAllAccordionsSignalSubjectRef.current
               }
             />
             <AccordionFormCvDesiredPositions
-              tpJobseekerCvId={cvId}
+              tpJobSeekerCvId={cvId}
               onClose={onClose}
               closeAccordionSignalSubject={
                 closeAllAccordionsSignalSubjectRef.current
               }
             />
             <AccordionFormCvSummary
-              tpJobseekerCvId={cvId}
+              tpJobSeekerCvId={cvId}
               onClose={onClose}
               closeAccordionSignalSubject={
                 closeAllAccordionsSignalSubjectRef.current
@@ -130,35 +130,35 @@ const CvDetailPage: FC = () => {
             />
 
             <AccordionFormCvLanguages
-              tpJobseekerCvId={cvId}
+              tpJobSeekerCvId={cvId}
               onClose={onClose}
               closeAccordionSignalSubject={
                 closeAllAccordionsSignalSubjectRef.current
               }
             />
             {/* <AccordionFormCvDisplayCase
-              tpJobseekerCvId={cvId}
+              tpJobSeekerCvId={cvId}
               onClose={onClose}
               closeAccordionSignalSubject={
                 closeAllAccordionsSignalSubjectRef.current
               }
             /> */}
             <AccordionFormCvImportantDetails
-              tpJobseekerCvId={cvId}
+              tpJobSeekerCvId={cvId}
               onClose={onClose}
               closeAccordionSignalSubject={
                 closeAllAccordionsSignalSubjectRef.current
               }
             />
             <AccordionFormCvProfessionalExperience
-              tpJobseekerCvId={cvId}
+              tpJobSeekerCvId={cvId}
               onClose={onClose}
               closeAccordionSignalSubject={
                 closeAllAccordionsSignalSubjectRef.current
               }
             />
             <AccordionFormCvEducation
-              tpJobseekerCvId={cvId}
+              tpJobSeekerCvId={cvId}
               onClose={onClose}
               closeAccordionSignalSubject={
                 closeAllAccordionsSignalSubjectRef.current

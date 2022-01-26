@@ -6,7 +6,7 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import {
   HrSummit2021JobFairCompanyJobPreferenceRecord,
-  TpJobseekerProfile,
+  TpJobSeekerProfile,
 } from '@talent-connect/shared-types'
 import { reorder } from '@talent-connect/shared-utils';
 import { useFormik } from 'formik'
@@ -17,12 +17,12 @@ import { Subject } from 'rxjs'
 import { v4 as uuidv4 } from 'uuid'
 import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
 interface Props {
-  profile: Partial<TpJobseekerProfile>
+  profile: Partial<TpJobSeekerProfile>
   triggerModalSignal?: Subject<void>
 }
 
@@ -80,11 +80,11 @@ export const EditableJobPreferences: FC<Props> = ({ profile, triggerModalSignal 
   )
 }
 
-EditableJobPreferences.isSectionFilled = (profile: Partial<TpJobseekerProfile>) =>
+EditableJobPreferences.isSectionFilled = (profile: Partial<TpJobSeekerProfile>) =>
   profile.hrSummit2021JobFairCompanyJobPreferences?.length === 4 &&
   validationSchema.isValidSync(profile);
 
-EditableJobPreferences.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
+EditableJobPreferences.isSectionEmpty = (profile: Partial<TpJobSeekerProfile>) =>
   !EditableJobPreferences.isSectionFilled(profile);
 
 // TODO: put this one in config file
@@ -108,12 +108,12 @@ const ModalForm: FC<ModalFormProps> = ({
   setIsEditing,
   setIsFormDirty,
 }) => {
-  const { data: profile } = useTpJobseekerProfileQuery()
+  const { data: profile } = useTpJobSeekerProfileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
 
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(() => ({
+  const initialValues: Partial<TpJobSeekerProfile> = useMemo(() => ({
       hrSummit2021JobFairCompanyJobPreferences:
         profile?.hrSummit2021JobFairCompanyJobPreferences ??
         buildBlankHrSummit2021JobFairCompanyJobPreferences(),
@@ -122,7 +122,7 @@ const ModalForm: FC<ModalFormProps> = ({
     []
   )
   
-  const formik = useFormik<Partial<TpJobseekerProfile>>({
+  const formik = useFormik<Partial<TpJobSeekerProfile>>({
     initialValues,
     validationSchema,
     validateOnMount: true,

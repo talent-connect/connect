@@ -2,7 +2,7 @@ import {
   Button,
   TextInput,
 } from '@talent-connect/shared-atomic-design-components'
-import { TpJobseekerCv } from '@talent-connect/shared-types'
+import { TpJobSeekerCv } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
 import { FC, useEffect, useMemo } from 'react'
 import { Element } from 'react-bulma-components'
@@ -10,23 +10,23 @@ import { UseMutationResult, UseQueryResult } from 'react-query'
 import { Subject } from 'rxjs'
 import * as Yup from 'yup'
 import { useTpjobseekerCvUpdateMutation } from '../../../react-query/use-tpjobseekercv-mutation'
-import { useTpJobseekerCvByIdQuery } from '../../../react-query/use-tpjobseekercv-query'
+import { useTpJobSeekerCvByIdQuery } from '../../../react-query/use-tpjobseekercv-query'
 import { AccordionForm } from '../../molecules/AccordionForm'
 
 interface Props {
-  tpJobseekerCvId: string
+  tpJobSeekerCvId: string
   onClose: () => void
   closeAccordionSignalSubject?: Subject<void>
 }
 
 export const AccordionFormCvName: FC<Props> = ({
-  tpJobseekerCvId,
+  tpJobSeekerCvId,
   closeAccordionSignalSubject,
   onClose: parentOnCloseCallback,
 }) => {
 
-  const queryHookResult = useTpJobseekerCvByIdQuery(tpJobseekerCvId)
-  const mutationHookResult = useTpjobseekerCvUpdateMutation(tpJobseekerCvId)
+  const queryHookResult = useTpJobSeekerCvByIdQuery(tpJobSeekerCvId)
+  const mutationHookResult = useTpjobseekerCvUpdateMutation(tpJobSeekerCvId)
 
   return (
     <AccordionForm
@@ -52,11 +52,11 @@ const validationSchema = Yup.object({
 interface FormProps {
   setIsEditing: (boolean: boolean) => void
   setIsFormDirty?: (boolean: boolean) => void
-  queryHookResult: UseQueryResult<Partial<TpJobseekerCv>, unknown>
+  queryHookResult: UseQueryResult<Partial<TpJobSeekerCv>, unknown>
   mutationHookResult: UseMutationResult<
-    Partial<TpJobseekerCv>,
+    Partial<TpJobSeekerCv>,
     unknown,
-    Partial<TpJobseekerCv>,
+    Partial<TpJobSeekerCv>,
     unknown
   >
 }
@@ -74,7 +74,7 @@ const Form: FC<FormProps> = ({
     [profile?.firstName, profile?.lastName]
   )
 
-  const formik = useFormik<Partial<TpJobseekerCv>>({
+  const formik = useFormik<Partial<TpJobSeekerCv>>({
     initialValues,
     validationSchema,
     enableReinitialize: true,

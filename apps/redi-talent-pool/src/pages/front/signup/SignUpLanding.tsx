@@ -15,7 +15,7 @@ const SignUpLanding = () => {
   const [selectedType, setSelectedType] = useState('')
   const history = useHistory()
 
-  const renderType = (name: 'Jobseeker' | 'Company') => {
+  const renderType = (name: 'JobSeeker' | 'Company') => {
     const type = name.toLowerCase() as Lowercase<typeof name>
 
     return (
@@ -50,7 +50,7 @@ const SignUpLanding = () => {
             Are you a <strong>jobseeker</strong> or a <strong>company</strong>?
           </Content>
           <div className="signup">
-            {renderType('Jobseeker')}
+            {renderType('JobSeeker')}
             {renderType('Company')}
           </div>
           <Button

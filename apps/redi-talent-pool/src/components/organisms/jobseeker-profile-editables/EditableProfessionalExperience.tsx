@@ -11,8 +11,8 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import {
   ExperienceRecord,
-  TpJobseekerCv,
-  TpJobseekerProfile,
+  TpJobSeekerCv,
+  TpJobSeekerProfile,
 } from '@talent-connect/shared-types'
 import { formatDate, reorder } from '@talent-connect/shared-utils';
 import { formMonthsOptions } from '@talent-connect/talent-pool/config'
@@ -26,12 +26,12 @@ import { UseMutationResult, UseQueryResult } from 'react-query'
 import { Subject } from 'rxjs'
 import { v4 as uuidv4 } from 'uuid'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
 interface Props {
-  profile?: Partial<TpJobseekerProfile>
+  profile?: Partial<TpJobSeekerProfile>
   disableEditing?: boolean
 }
 
@@ -39,7 +39,7 @@ export const  EditableProfessionalExperience: FC<Props> = ({
   profile: overridingProfile,
   disableEditing,
 }) => {
-  const queryHookResult = useTpJobseekerProfileQuery({ enabled: !disableEditing })
+  const queryHookResult = useTpJobSeekerProfileQuery({ enabled: !disableEditing })
   if (overridingProfile) queryHookResult.data = overridingProfile
   const mutationHookResult = useTpjobseekerprofileUpdateMutation()
   const { data: profile } = queryHookResult
@@ -107,7 +107,7 @@ export const  EditableProfessionalExperience: FC<Props> = ({
       modalTitle="Work history"
       modalHeadline="Professional experience"
       modalBody={
-        <JobseekerFormSectionProfessionalExperience
+        <JobSeekerFormSectionProfessionalExperience
           setIsEditing={setIsEditing}
           setIsFormDirty={setIsFormDirty}
           queryHookResult={queryHookResult}
@@ -119,27 +119,27 @@ export const  EditableProfessionalExperience: FC<Props> = ({
   )
 }
 
-EditableProfessionalExperience.isSectionFilled = (profile: Partial<TpJobseekerProfile>) =>
+EditableProfessionalExperience.isSectionFilled = (profile: Partial<TpJobSeekerProfile>) =>
   profile?.experience?.length;
-EditableProfessionalExperience.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
+EditableProfessionalExperience.isSectionEmpty = (profile: Partial<TpJobSeekerProfile>) =>
   !EditableProfessionalExperience.isSectionFilled(profile);
 
-interface JobseekerFormSectionProfessionalExperienceProps {
+interface JobSeekerFormSectionProfessionalExperienceProps {
   setIsEditing: (boolean: boolean) => void
   setIsFormDirty?: (boolean: boolean) => void
   queryHookResult: UseQueryResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobSeekerProfile | TpJobSeekerCv>,
     unknown
   >
   mutationHookResult: UseMutationResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobSeekerProfile | TpJobSeekerCv>,
     unknown,
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobSeekerProfile | TpJobSeekerCv>,
     unknown
   >
 }
 
-export const JobseekerFormSectionProfessionalExperience: FC<JobseekerFormSectionProfessionalExperienceProps> = ({
+export const JobSeekerFormSectionProfessionalExperience: FC<JobSeekerFormSectionProfessionalExperienceProps> = ({
   setIsEditing,
   setIsFormDirty,
   queryHookResult: { data: profile },
@@ -148,13 +148,13 @@ export const JobseekerFormSectionProfessionalExperience: FC<JobseekerFormSection
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
 
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(() => ({
+  const initialValues: Partial<TpJobSeekerProfile> = useMemo(() => ({
       experience: profile?.experience ?? [buildBlankExperienceRecord()],
     }),
     [profile?.experience]
   )
 
-  const formik = useFormik<Partial<TpJobseekerProfile>>({
+  const formik = useFormik<Partial<TpJobSeekerProfile>>({
     initialValues,
     enableReinitialize: true,
     onSubmit: (values) => {

@@ -1,6 +1,6 @@
 import { CardTags } from '@talent-connect/shared-atomic-design-components'
 import { AWS_PROFILE_AVATARS_BUCKET_BASE_URL } from '@talent-connect/shared-config'
-import { TpJobseekerProfile } from '@talent-connect/shared-types'
+import { TpJobSeekerProfile } from '@talent-connect/shared-types'
 import {
   desiredPositionsIdToLabelMap,
   topSkillsIdToLabelMap,
@@ -8,17 +8,17 @@ import {
 import classnames from 'clsx'
 import { FC } from 'react'
 import { Card, Element } from 'react-bulma-components'
-import './JobseekerProfileCard.scss'
+import './JobSeekerProfileCard.scss'
 import placeholderImage from '../../assets/img-placeholder.png'
 
-interface JobseekerProfileCardProps {
-  jobseekerProfile: Partial<TpJobseekerProfile>
+interface JobSeekerProfileCardProps {
+  jobseekerProfile: Partial<TpJobSeekerProfile>
   onClick?: () => void
   isFavorite?: boolean
   toggleFavorite?: (id: string) => void
 }
 
-export const JobseekerProfileCard: FC<JobseekerProfileCardProps> = ({
+export const JobSeekerProfileCard: FC<JobSeekerProfileCardProps> = ({
   jobseekerProfile,
   onClick,
   toggleFavorite,

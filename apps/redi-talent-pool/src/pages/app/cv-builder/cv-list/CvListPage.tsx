@@ -11,13 +11,13 @@ import {
 import { Section, Columns, Content, Box } from 'react-bulma-components'
 
 import { useTpjobseekerCvCreateMutation } from '../../../../react-query/use-tpjobseekercv-mutation'
-import { useTpJobseekerCvQuery } from '../../../../react-query/use-tpjobseekercv-query'
+import { useTpJobSeekerCvQuery } from '../../../../react-query/use-tpjobseekercv-query'
 
 import { LoggedIn } from '../../../../components/templates'
 import { EmptySectionPlaceholder } from '../../../../components/molecules/EmptySectionPlaceholder'
 import CvListItem from './CvListItem'
-import { useTpJobseekerProfileQuery } from '../../../../react-query/use-tpjobseekerprofile-query'
-import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
+import { useTpJobSeekerProfileQuery } from '../../../../react-query/use-tpjobseekerprofile-query'
+import { TpJobSeekerCv, TpJobSeekerProfile } from '@talent-connect/shared-types'
 
 import './CvListPage.scss'
 
@@ -27,8 +27,8 @@ const CvListPage: FC = () => {
 
   const history = useHistory()
 
-  const { data: profile } = useTpJobseekerProfileQuery()
-  const { data: cvList } = useTpJobseekerCvQuery()
+  const { data: profile } = useTpJobSeekerProfileQuery()
+  const { data: cvList } = useTpJobSeekerCvQuery()
   const createMutation = useTpjobseekerCvCreateMutation()
 
   const setFocusOnRef = (ref: HTMLInputElement) => ref?.focus()
@@ -175,8 +175,8 @@ const CvListPage: FC = () => {
 export default CvListPage
 
 function convertProfileToCv(
-  profile: Partial<TpJobseekerProfile>
-): Partial<TpJobseekerCv> {
+  profile: Partial<TpJobSeekerProfile>
+): Partial<TpJobSeekerCv> {
   return {
     firstName: profile.firstName,
     lastName: profile.lastName,

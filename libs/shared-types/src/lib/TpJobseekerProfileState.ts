@@ -1,4 +1,4 @@
-export const TpJobseekerProfileState = {
+export const TpJobSeekerProfileState = {
   'drafting-profile': 'drafting-profile',
   'submitted-for-review': 'submitted-for-review',
   'profile-approved-awaiting-job-preferences':
@@ -7,4 +7,4 @@ export const TpJobseekerProfileState = {
     'job-preferences-shared-with-redi-awaiting-interview-match',
   'matched-for-interview': 'matched-for-interview',
 } as const
-export type TpJobseekerProfileState = typeof TpJobseekerProfileState[keyof typeof TpJobseekerProfileState]
+export type TpJobSeekerProfileState = typeof TpJobSeekerProfileState[keyof typeof TpJobSeekerProfileState]

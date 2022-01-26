@@ -1,8 +1,8 @@
 import { Tooltip } from '@material-ui/core'
 import { Button, Icon } from '@talent-connect/shared-atomic-design-components'
 import {
-  TpJobseekerProfile,
-  TpJobseekerProfileState,
+  TpJobSeekerProfile,
+  TpJobSeekerProfileState,
 } from '@talent-connect/shared-types'
 import classnames from 'clsx'
 import { FC, useCallback, useRef } from 'react'
@@ -20,16 +20,16 @@ import { EditableSummary } from '../../../components/organisms/jobseeker-profile
 import { EditableVisibility } from '../../../components/organisms/jobseeker-profile-editables/EditableVisibility'
 import { LoggedIn } from '../../../components/templates'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { ReactComponent as ChecklistActiveImage } from './checklist-item-active.svg'
 import { ReactComponent as ChecklistImage } from './checklist-item.svg'
 import { ReactComponent as CheckmarkBorderOnlyImage } from './checkmark-border-only.svg'
 import { ReactComponent as CheckmarkImage } from './checkmark.svg'
-import './MeJobseeker.scss'
+import './MeJobSeeker.scss'
 import { ReactComponent as StepPendingImage } from './pending.svg'
 
-export const MeJobseeker: FC = () => {
-  const { data: profile } = useTpJobseekerProfileQuery()
+export const MeJobSeeker: FC = () => {
+  const { data: profile } = useTpJobSeekerProfileQuery()
   const currentStep = determineCurrentStep(profile)
 
   const openJobPreferencesModalSignalRef = useRef(new Subject<void>())
@@ -90,22 +90,22 @@ export const MeJobseeker: FC = () => {
   )
 }
 
-const CallToActionButton: FC<{ profile: Partial<TpJobseekerProfile> }> = ({
+const CallToActionButton: FC<{ profile: Partial<TpJobSeekerProfile> }> = ({
   profile,
 }) => {
   return (
     <>
       {profile?.state &&
       [
-        TpJobseekerProfileState['drafting-profile'],
-        TpJobseekerProfileState['submitted-for-review'],
+        TpJobSeekerProfileState['drafting-profile'],
+        TpJobSeekerProfileState['submitted-for-review'],
       ].includes(profile.state as any) ? (
         <SendProfileForReviewButton />
       ) : null}
       {/* {profile &&
       profile.state &&
       [
-        TpJobseekerProfileState['profile-approved-awaiting-job-preferences'],
+        TpJobSeekerProfileState['profile-approved-awaiting-job-preferences'],
       ].includes(profile.state as any) ? (
         <SendJobPreferencesForReviewButton />
       ) : null} */}
@@ -123,7 +123,7 @@ const steps = [
 ]
 
 function determineCurrentStep(
-  profile: Partial<TpJobseekerProfile>
+  profile: Partial<TpJobSeekerProfile>
 ): [currentStep: number, stepStatus: 'todo' | 'pending' | 'complete'] {
   if (profile.state === 'drafting-profile') {
     return isProfileComplete(profile) ? [2, 'todo'] : [1, 'todo']
@@ -155,7 +155,7 @@ function determineCurrentStep(
 }
 
 export const OnboardingSteps: FC = () => {
-  const { data: profile } = useTpJobseekerProfileQuery()
+  const { data: profile } = useTpJobSeekerProfileQuery()
 
   const [currentStep, stepStatus] = determineCurrentStep(profile)
 
@@ -207,7 +207,7 @@ export const OnboardingSteps: FC = () => {
   )
 }
 
-function isProfileComplete(profile: Partial<TpJobseekerProfile>): boolean {
+function isProfileComplete(profile: Partial<TpJobSeekerProfile>): boolean {
   const mostSectionsComplete = [
     EditableNamePhotoLocation.isSectionFilled,
     EditableOverview.isSectionFilled,
@@ -225,13 +225,13 @@ function isProfileComplete(profile: Partial<TpJobseekerProfile>): boolean {
 }
 
 function areJobPreferencesInputted(
-  profile: Partial<TpJobseekerProfile>
+  profile: Partial<TpJobSeekerProfile>
 ): boolean {
   return EditableJobPreferences.isSectionFilled(profile)
 }
 
 function SendProfileForReviewButton() {
-  const { data: profile } = useTpJobseekerProfileQuery()
+  const { data: profile } = useTpJobSeekerProfileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
 
   const enabled =
@@ -260,7 +260,7 @@ function SendProfileForReviewButton() {
 }
 
 function SendJobPreferencesForReviewButton() {
-  const { data: profile } = useTpJobseekerProfileQuery()
+  const { data: profile } = useTpJobSeekerProfileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
 
   const enabled =

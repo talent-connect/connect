@@ -7,8 +7,8 @@ import {
 import { LANGUAGES } from '@talent-connect/shared-config'
 import {
   LanguageRecord,
-  TpJobseekerCv,
-  TpJobseekerProfile,
+  TpJobSeekerCv,
+  TpJobSeekerProfile,
 } from '@talent-connect/shared-types'
 import {
   languageProficiencyLevels,
@@ -21,7 +21,7 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Content, Element } from 'react-bulma-components'
 import { v4 as uuidv4 } from 'uuid'
 import * as Yup from 'yup'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { Editable } from '../../molecules/Editable'
@@ -30,7 +30,7 @@ import { mapOptions, mapOptionsObject } from '@talent-connect/typescript-utiliti
 import { reorder } from '@talent-connect/shared-utils';
 
 interface Props {
-  profile?: Partial<TpJobseekerProfile>
+  profile?: Partial<TpJobSeekerProfile>
   disableEditing?: boolean
 }
 
@@ -38,7 +38,7 @@ export const EditableLanguages: FC<Props> = ({
   profile: overridingProfile,
   disableEditing,
 }) => {
-  const queryHookResult = useTpJobseekerProfileQuery({
+  const queryHookResult = useTpJobSeekerProfileQuery({
     enabled: !disableEditing,
   })
   if (overridingProfile) queryHookResult.data = overridingProfile
@@ -82,7 +82,7 @@ export const EditableLanguages: FC<Props> = ({
       modalTitle="Relevant languages you can speak"
       modalHeadline="Languages"
       modalBody={
-        <JobseekerFormSectionLanguages
+        <JobSeekerFormSectionLanguages
           setIsEditing={setIsEditing}
           setIsFormDirty={setIsFormDirty}
           queryHookResult={queryHookResult}
@@ -94,9 +94,9 @@ export const EditableLanguages: FC<Props> = ({
   )
 }
 
-EditableLanguages.isSectionFilled = (profile: Partial<TpJobseekerProfile>) =>
+EditableLanguages.isSectionFilled = (profile: Partial<TpJobSeekerProfile>) =>
   profile?.workingLanguages?.length
-EditableLanguages.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
+EditableLanguages.isSectionEmpty = (profile: Partial<TpJobSeekerProfile>) =>
   !EditableLanguages.isSectionFilled(profile)
 
 // TODO: put this one in config file
@@ -108,22 +108,22 @@ const validationSchema = Yup.object({ // TODO use?
     .max(6),
 })
 
-interface JobseekerFormSectionLanguagesProps {
+interface JobSeekerFormSectionLanguagesProps {
   setIsEditing: (boolean: boolean) => void
   setIsFormDirty?: (boolean: boolean) => void
   queryHookResult: UseQueryResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobSeekerProfile | TpJobSeekerCv>,
     unknown
   >
   mutationHookResult: UseMutationResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobSeekerProfile | TpJobSeekerCv>,
     unknown,
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobSeekerProfile | TpJobSeekerCv>,
     unknown
   >
 }
 
-export const JobseekerFormSectionLanguages: FC<JobseekerFormSectionLanguagesProps> = ({
+export const JobSeekerFormSectionLanguages: FC<JobSeekerFormSectionLanguagesProps> = ({
   setIsEditing,
   setIsFormDirty,
   queryHookResult: { data: profile },
@@ -133,13 +133,13 @@ export const JobseekerFormSectionLanguages: FC<JobseekerFormSectionLanguagesProp
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
 
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(() => ({
+  const initialValues: Partial<TpJobSeekerProfile> = useMemo(() => ({
       workingLanguages: profile?.workingLanguages ?? [buildBlankLanguageRecord()],
     }),
     [profile?.workingLanguages]
   )
 
-  const formik = useFormik<Partial<TpJobseekerProfile>>({
+  const formik = useFormik<Partial<TpJobSeekerProfile>>({
     initialValues,
     enableReinitialize: true,
     onSubmit: (values) => {

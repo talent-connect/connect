@@ -1,15 +1,15 @@
 import { useMutation, useQueryClient } from 'react-query'
-import { updateCurrentUserTpJobseekerProfile } from '../services/api/api'
+import { updateCurrentUserTpJobSeekerProfile } from '../services/api/api'
 
 export function useTpjobseekerprofileUpdateMutation() {
   const queryClient = useQueryClient()
 
   return useMutation(
-    'currentUserTpJobseekerProfileUpdate',
-    updateCurrentUserTpJobseekerProfile,
+    'currentUserTpJobSeekerProfileUpdate',
+    updateCurrentUserTpJobSeekerProfile,
     {
       onSuccess: (data) => {
-        queryClient.setQueryData('currentUserTpJobseekerProfile', data)
+        queryClient.setQueryData('currentUserTpJobSeekerProfile', data)
       },
     }
   )

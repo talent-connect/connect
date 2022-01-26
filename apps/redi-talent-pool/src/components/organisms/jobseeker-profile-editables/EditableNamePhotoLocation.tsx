@@ -4,7 +4,7 @@ import {
   Heading,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
-import { TpJobseekerProfile } from '@talent-connect/shared-types'
+import { TpJobSeekerProfile } from '@talent-connect/shared-types'
 import {
   availabilityOptions,
   desiredEmploymentTypeOptions,
@@ -15,13 +15,13 @@ import { FC, useEffect, useMemo, useState } from 'react'
 import { Columns, Content, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import Avatar from '../Avatar'
 
 interface Props {
-  profile: Partial<TpJobseekerProfile>
+  profile: Partial<TpJobSeekerProfile>
   disableEditing?: boolean
 }
 
@@ -93,10 +93,10 @@ export const EditableNamePhotoLocation: FC<Props> = ({ profile, disableEditing }
   )
 }
 
-EditableNamePhotoLocation.isSectionFilled = (profile: Partial<TpJobseekerProfile>) =>
+EditableNamePhotoLocation.isSectionFilled = (profile: Partial<TpJobSeekerProfile>) =>
   profile?.location
 
-EditableNamePhotoLocation.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
+EditableNamePhotoLocation.isSectionEmpty = (profile: Partial<TpJobSeekerProfile>) =>
   !EditableNamePhotoLocation.isSectionFilled(profile)
 
 const validationSchema = Yup.object({
@@ -117,7 +117,7 @@ const ModalForm: FC<ModalFormProps> = ({
   setIsEditing,
   setIsFormDirty,
 }) => {
-  const { data: profile } = useTpJobseekerProfileQuery()
+  const { data: profile } = useTpJobSeekerProfileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
   const initialValues = useMemo(() => ({
       firstName: profile?.firstName ?? '',
@@ -129,7 +129,7 @@ const ModalForm: FC<ModalFormProps> = ({
     []
   )
 
-  const formik = useFormik<Partial<TpJobseekerProfile>>({
+  const formik = useFormik<Partial<TpJobSeekerProfile>>({
     initialValues,
     validationSchema,
     enableReinitialize: true,

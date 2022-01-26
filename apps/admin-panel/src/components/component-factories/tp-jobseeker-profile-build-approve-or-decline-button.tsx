@@ -8,7 +8,7 @@ import doApiRequest from '../../lib/react-admin-loopback/src/fetch'
  * Builds a button either approving or rejecting a RedProfile with review status
  * @param {string} buttonType
  */
-export const tpJobseekerProfileBuildApproveOrRejectButton = (operationType) => {
+export const tpJobSeekerProfileBuildApproveOrRejectButton = (operationType) => {
   const ConfiguredButton = ({ data }) => {
     // On click, make a request to either approve or reject
     const onClick = useCallback(() => {
@@ -19,7 +19,7 @@ export const tpJobseekerProfileBuildApproveOrRejectButton = (operationType) => {
         const requestUrl = operationUrl(operationType)
         const requestPayload = {
           body: JSON.stringify({
-            tpJobseekerProfileId: data.id,
+            tpJobSeekerProfileId: data.id,
           }),
           method: 'post',
         }
@@ -50,7 +50,7 @@ const showConfirmPrompt = (promptText) =>
 
 const operationUrl = (operationType) =>
   operationTypeValidOrThrow(operationType) &&
-  `${API_URL}/tpJobseekerProfiles/${operationTypeToRedProfileCollectionMethodMap[operationType]}`
+  `${API_URL}/tpJobSeekerProfiles/${operationTypeToRedProfileCollectionMethodMap[operationType]}`
 
 const operationTypeToRedProfileCollectionMethodMap = {
   APPROVE: 'pendingReviewDoAccept',

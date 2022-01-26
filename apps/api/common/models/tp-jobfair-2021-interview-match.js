@@ -44,8 +44,8 @@ module.exports = function (TpJobfair2021InterviewMatch) {
     function onlyMatchesRelatedToCurrentUser (ctx, next) {
       if (!ctx.options.currentUser) return next();
 
-      const currentUserTpJobseekerProfile =
-        ctx.options.currentUser.tpJobseekerProfile;
+      const currentUserTpJobSeekerProfile =
+        ctx.options.currentUser.tpJobSeekerProfile;
       const currentUserTpCompanyProfile =
         ctx.options.currentUser.tpCompanyProfile;
 
@@ -57,23 +57,23 @@ module.exports = function (TpJobfair2021InterviewMatch) {
 
       // TODO: Replace this with role-based 'admin' role check
       if (ctx.options.currentUser.email !== 'cloud-accounts@redi-school.org') {
-        const currentUserJobseekerOrCompany = { or: [] };
+        const currentUserJobSeekerOrCompany = { or: [] };
 
-        if (currentUserTpJobseekerProfile) {
-          currentUserJobseekerOrCompany.or.push({
-            intervieweeId: currentUserTpJobseekerProfile.id,
+        if (currentUserTpJobSeekerProfile) {
+          currentUserJobSeekerOrCompany.or.push({
+            intervieweeId: currentUserTpJobSeekerProfile.id,
           });
         }
         if (currentUserTpCompanyProfile) {
-          currentUserJobseekerOrCompany.or.push({
+          currentUserJobSeekerOrCompany.or.push({
             companyId: currentUserTpCompanyProfile.id,
           });
         }
 
         const existingWhere = ctx.query.where;
         ctx.query.where = objectValues(existingWhere).length
-          ? { and: [currentUserJobseekerOrCompany, existingWhere] }
-          : currentUserJobseekerOrCompany;
+          ? { and: [currentUserJobSeekerOrCompany, existingWhere] }
+          : currentUserJobSeekerOrCompany;
       }
 
       next();

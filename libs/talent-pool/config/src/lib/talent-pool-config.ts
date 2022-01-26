@@ -664,8 +664,8 @@ export const immigrationStatusOptions: DropdownOptions = [
     id: 'temporaryResidencePermissionAufenthaltstitel',
   },
   {
-    label: 'Visa (Nationalvisum or Jobseeker visum)',
-    id: 'visaNationalvisumOrJobseekerVisum',
+    label: 'Visa (Nationalvisum or JobSeeker visum)',
+    id: 'visaNationalvisumOrJobSeekerVisum',
   },
   { label: 'Student visa ', id: 'studentVisa' },
   { label: 'Schengen visa', id: 'schengenVisa' },

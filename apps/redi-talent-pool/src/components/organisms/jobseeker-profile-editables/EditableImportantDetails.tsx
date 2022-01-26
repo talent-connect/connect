@@ -7,7 +7,7 @@ import {
   TextArea,
   PipeList,
 } from '@talent-connect/shared-atomic-design-components'
-import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
+import { TpJobSeekerCv, TpJobSeekerProfile } from '@talent-connect/shared-types'
 import {
   availabilityOptions,
   availabilityOptionsIdToLabelMap,
@@ -24,12 +24,12 @@ import { Content, Element } from 'react-bulma-components'
 import { UseMutationResult, UseQueryResult } from 'react-query'
 import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
 interface Props {
-  profile?: Partial<TpJobseekerProfile>
+  profile?: Partial<TpJobSeekerProfile>
   disableEditing?: boolean
 }
 
@@ -37,7 +37,7 @@ export const EditableImportantDetails: FC<Props> = ({
   profile: overridingProfile,
   disableEditing,
 }) => {
-  const queryHookResult = useTpJobseekerProfileQuery({
+  const queryHookResult = useTpJobSeekerProfileQuery({
     enabled: !disableEditing,
   })
   if (overridingProfile) queryHookResult.data = overridingProfile
@@ -145,7 +145,7 @@ export const EditableImportantDetails: FC<Props> = ({
       modalTitle="Help employers get in touch"
       modalHeadline="Important Details"
       modalBody={
-        <JobseekerFormSectionImportantDetails
+        <JobSeekerFormSectionImportantDetails
           setIsEditing={setIsEditing}
           setIsFormDirty={setIsFormDirty}
           queryHookResult={queryHookResult}
@@ -158,7 +158,7 @@ export const EditableImportantDetails: FC<Props> = ({
 }
 
 EditableImportantDetails.isSectionFilled = (
-  profile: Partial<TpJobseekerProfile>
+  profile: Partial<TpJobSeekerProfile>
 ) =>
   profile?.availability ||
   profile?.desiredEmploymentType?.length ||
@@ -166,7 +166,7 @@ EditableImportantDetails.isSectionFilled = (
   profile?.immigrationStatus ||
   profile?.postalMailingAddress
 EditableImportantDetails.isSectionEmpty = (
-  profile: Partial<TpJobseekerProfile>
+  profile: Partial<TpJobSeekerProfile>
 ) => !EditableImportantDetails.isSectionFilled(profile)
 
 const validationSchema = Yup.object({
@@ -176,17 +176,17 @@ const validationSchema = Yup.object({
   ),
 })
 
-interface JobseekerFormSectionImportantDetailsProps {
+interface JobSeekerFormSectionImportantDetailsProps {
   setIsEditing: (boolean: boolean) => void
   setIsFormDirty?: (boolean: boolean) => void
   queryHookResult: UseQueryResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobSeekerProfile | TpJobSeekerCv>,
     unknown
   >
   mutationHookResult: UseMutationResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobSeekerProfile | TpJobSeekerCv>,
     unknown,
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobSeekerProfile | TpJobSeekerCv>,
     unknown
   >
   // TODO: this is a slippery slope. When this form section is used in the
@@ -199,7 +199,7 @@ interface JobseekerFormSectionImportantDetailsProps {
   hideNonContactDetailsFields?: boolean
 }
 
-export const JobseekerFormSectionImportantDetails: FC<JobseekerFormSectionImportantDetailsProps> = ({
+export const JobSeekerFormSectionImportantDetails: FC<JobSeekerFormSectionImportantDetailsProps> = ({
   setIsEditing,
   setIsFormDirty,
   queryHookResult,
@@ -208,7 +208,7 @@ export const JobseekerFormSectionImportantDetails: FC<JobseekerFormSectionImport
 }) => {
   const { data: profile } = queryHookResult
   const mutation = mutationHookResult
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(() => ({
+  const initialValues: Partial<TpJobSeekerProfile> = useMemo(() => ({
       availability: profile?.availability ?? '',
       desiredEmploymentType: profile?.desiredEmploymentType ?? [],
       contactEmail: profile?.contactEmail ?? '',
@@ -230,7 +230,7 @@ export const JobseekerFormSectionImportantDetails: FC<JobseekerFormSectionImport
     ]
   )
 
-  const formik = useFormik<Partial<TpJobseekerProfile>>({
+  const formik = useFormik<Partial<TpJobSeekerProfile>>({
     initialValues,
     validationSchema,
     enableReinitialize: true,

@@ -1,6 +1,6 @@
 {
-  "name": "TpJobseekerCv",
-  "plural": "tpJobseekerCvs",
+  "name": "TpJobSeekerCv",
+  "plural": "tpJobSeekerCvs",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {

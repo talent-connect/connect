@@ -10,8 +10,8 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import {
   EducationRecord,
-  TpJobseekerCv,
-  TpJobseekerProfile,
+  TpJobSeekerCv,
+  TpJobSeekerProfile,
 } from '@talent-connect/shared-types'
 import { formatDate, reorder } from '@talent-connect/shared-utils';
 import {
@@ -28,12 +28,12 @@ import { UseMutationResult, UseQueryResult } from 'react-query'
 import { Subject } from 'rxjs'
 import { v4 as uuidv4 } from 'uuid'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
 interface Props {
-  profile?: Partial<TpJobseekerProfile>
+  profile?: Partial<TpJobSeekerProfile>
   disableEditing?: boolean
 }
 
@@ -41,7 +41,7 @@ export const EditableEducation: FC<Props> = ({
   profile: overridingProfile,
   disableEditing,
 }) => {
-  const queryHookResult = useTpJobseekerProfileQuery({
+  const queryHookResult = useTpJobSeekerProfileQuery({
     enabled: !disableEditing,
   })
   if (overridingProfile) queryHookResult.data = overridingProfile
@@ -109,7 +109,7 @@ export const EditableEducation: FC<Props> = ({
       modalTitle="Study, certifications, courses"
       modalHeadline="Education"
       modalBody={
-        <JobseekerFormSectionEducation
+        <JobSeekerFormSectionEducation
           {...{ setIsEditing, setIsFormDirty, queryHookResult, mutationHookResult }}
         />
       }
@@ -118,27 +118,27 @@ export const EditableEducation: FC<Props> = ({
   )
 }
 
-EditableEducation.isSectionFilled = (profile: Partial<TpJobseekerProfile>) =>
+EditableEducation.isSectionFilled = (profile: Partial<TpJobSeekerProfile>) =>
   profile?.education?.length
-EditableEducation.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
+EditableEducation.isSectionEmpty = (profile: Partial<TpJobSeekerProfile>) =>
   !EditableEducation.isSectionFilled(profile)
 
-interface JobseekerFormSectionEducationProps {
+interface JobSeekerFormSectionEducationProps {
   setIsEditing: (boolean: boolean) => void
   setIsFormDirty?: (boolean: boolean) => void
   queryHookResult: UseQueryResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobSeekerProfile | TpJobSeekerCv>,
     unknown
   >
   mutationHookResult: UseMutationResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobSeekerProfile | TpJobSeekerCv>,
     unknown,
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobSeekerProfile | TpJobSeekerCv>,
     unknown
   >
 }
 
-export const JobseekerFormSectionEducation: FC<JobseekerFormSectionEducationProps> = ({
+export const JobSeekerFormSectionEducation: FC<JobSeekerFormSectionEducationProps> = ({
   setIsEditing,
   setIsFormDirty,
   queryHookResult: { data: profile },
@@ -147,13 +147,13 @@ export const JobseekerFormSectionEducation: FC<JobseekerFormSectionEducationProp
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
 
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(() => ({
+  const initialValues: Partial<TpJobSeekerProfile> = useMemo(() => ({
       education: profile?.education ?? [buildBlankEducationRecord()],
     }),
     [profile?.education]
   )
 
-  const formik = useFormik<Partial<TpJobseekerProfile>>({
+  const formik = useFormik<Partial<TpJobSeekerProfile>>({
     initialValues,
     enableReinitialize: true,
     onSubmit: (values) => {

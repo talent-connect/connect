@@ -1,71 +1,57 @@
+import { FC, ReactNode } from 'react';
+import ReactS3Uploader, { S3Response } from 'react-s3-uploader'
+import classnames from 'classnames'
+
 import {
   AWS_PROFILE_AVATARS_BUCKET_BASE_URL,
   S3_UPLOAD_SIGN_URL,
 } from '@talent-connect/shared-config'
-import { TpJobseekerProfile, TpCompanyProfile } from '@talent-connect/shared-types'
-import classnames from 'classnames'
-import { useFormik } from 'formik'
-import { FC, ReactNode } from 'react';
+import { TpJobSeekerProfile, TpCompanyProfile } from '@talent-connect/shared-types'
 import { Element } from 'react-bulma-components'
-import ReactS3Uploader, { S3Response } from 'react-s3-uploader'
-import * as Yup from 'yup'
 import placeholderImage from '../../assets/img-placeholder.png'
 import { ReactComponent as UploadImage } from '../../assets/uploadImage.svg'
 import './Avatar.scss'
+import { AvatarFormValues, componentForm } from './Avatar.form'
 
 interface AvatarProps {
-  profile: Partial<TpJobseekerProfile> | Partial<TpCompanyProfile>
+  profile: Partial<TpJobSeekerProfile> | Partial<TpCompanyProfile>
 }
-interface AvatarEditable {
-  profile: Partial<TpJobseekerProfile> | Partial<TpCompanyProfile>
-  profileSaveStart: (profile: AvatarFormValues & { id: string }) => void
+interface AvatarEditableProps extends AvatarProps {
+  profileSaveStart: AvatarFormValues['profileSaveStart']
 }
-
-interface AvatarFormValues {
-  profileAvatarImageS3Key: string
-}
-
-const validationSchema = Yup.object({
-  profileAvatarImageS3Key: Yup.string()
-    .max(255),
-})
 
 const Avatar: FC<AvatarProps> & { Editable: typeof AvatarEditable, Some: ReactNode }= ({
   profile: { profileAvatarImageS3Key, firstName, lastName }
 }) => {
   const imgSrc = profileAvatarImageS3Key
-    ? AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
-    : placeholderImage
-
+  ? AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
+  : placeholderImage
+  
   return (
     <div
-      className={classnames('avatar', {
-        'avatar--placeholder': !profileAvatarImageS3Key,
-      })}
+    className={classnames('avatar', {
+      'avatar--placeholder': !profileAvatarImageS3Key,
+    })}
     >
       <img
         src={imgSrc}
         alt={`${firstName} ${lastName}`}
         className="avatar__image"
-      />
+        />
     </div>
   )
 }
 
-const AvatarEditable: FC<AvatarEditable> = ({
+const AvatarEditable: FC<AvatarEditableProps> = ({
   profile: { profileAvatarImageS3Key, id, firstName, lastName },
   profileSaveStart
 }) => {
   const imgURL = AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
 
-  const formik = useFormik<AvatarFormValues>({
-    initialValues: {
-      profileAvatarImageS3Key: profileAvatarImageS3Key,
-    },
-    validationSchema,
-    onSubmit: (profileMe) => {
-      profileSaveStart({ ...profileMe, id })
-    },
+  const formik = componentForm({
+    id,
+    profileAvatarImageS3Key,
+    profileSaveStart
   })
 
   const onUploadSuccess = ({ fileKey }: S3Response) => {
@@ -126,7 +112,7 @@ const AvatarEditable: FC<AvatarEditable> = ({
   )
 }
 
-Avatar.Some = (profile: TpJobseekerProfile) => <Avatar profile={profile} />
+Avatar.Some = (profile: TpJobSeekerProfile) => <Avatar profile={profile} />
 Avatar.Editable = AvatarEditable
 
 export default Avatar

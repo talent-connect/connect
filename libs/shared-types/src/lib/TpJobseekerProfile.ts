@@ -4,9 +4,9 @@ import { ExperienceRecord } from './tp-jobseeker-profile-cv-shared-interfaces/Ex
 import { HrSummit2021JobFairCompanyJobPreferenceRecord } from './tp-jobseeker-profile-cv-shared-interfaces/HrSummit2021JobFairCompanyJobPreferenceRecord'
 import { LanguageRecord } from './tp-jobseeker-profile-cv-shared-interfaces/LanguageRecord'
 import { ProjectRecord } from './tp-jobseeker-profile-cv-shared-interfaces/ProjectRecord'
-import { TpJobseekerProfileState } from './TpJobseekerProfileState'
+import { TpJobSeekerProfileState } from './TpJobSeekerProfileState'
 
-export type TpJobseekerProfile =
+export type TpJobSeekerProfile =
   Timestamp & {
   id: string
   firstName: string
@@ -44,7 +44,7 @@ export type TpJobseekerProfile =
   education?: EducationRecord[]
   projects?: ProjectRecord[]
 
-  state: TpJobseekerProfileState
+  state: TpJobSeekerProfileState
 
   gaveGdprConsentAt: Date
 

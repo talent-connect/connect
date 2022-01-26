@@ -19,7 +19,7 @@ import { howDidHearAboutRediOptions } from '@talent-connect/talent-pool/config'
 
 import TpTeaser from '../../../components/molecules/TpTeaser'
 import AccountOperation from '../../../components/templates/AccountOperation'
-import { signUpCompany, signUpJobseeker } from '../../../services/api/api'
+import { signUpCompany, signUpJobSeeker } from '../../../services/api/api'
 import { history } from '../../../services/history/history'
 import { mapOptionsObject } from '@talent-connect/typescript-utilities';
 
@@ -144,7 +144,7 @@ export default function SignUp() {
         if (type === 'jobseeker') {
           profile.isProfileVisibleToCompanies = true
   
-          // TODO: this needs to be done in a smarter way, like iterating over the TpJobseekerProfile definition or something
+          // TODO: this needs to be done in a smarter way, like iterating over the TpJobSeekerProfile definition or something
           const cleanProfile = omit(profile, [
             'password',
             'passwordConfirm',
@@ -152,7 +152,7 @@ export default function SignUp() {
             'gaveGdprConsent',
           ])
   
-          await signUpJobseeker(
+          await signUpJobSeeker(
             profile.contactEmail,
             profile.password,
             cleanProfile
@@ -160,7 +160,7 @@ export default function SignUp() {
         }
         if (type === 'company') {
   
-          // TODO: this needs to be done in a smarter way, like iterating over the TpJobseekerProfile definition or something
+          // TODO: this needs to be done in a smarter way, like iterating over the TpJobSeekerProfile definition or something
           const cleanProfile = omit(profile, [
             'password',
             'passwordConfirm',

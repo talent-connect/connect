@@ -5,7 +5,7 @@ import {
   FormSelect,
   TextArea,
 } from '@talent-connect/shared-atomic-design-components'
-import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
+import { TpJobSeekerCv, TpJobSeekerProfile } from '@talent-connect/shared-types'
 import {
   topSkills,
   topSkillsIdToLabelMap,
@@ -17,12 +17,12 @@ import { Content, Element, Tag } from 'react-bulma-components'
 import { UseMutationResult, UseQueryResult } from 'react-query'
 import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
 interface Props {
-  profile?: Partial<TpJobseekerProfile>
+  profile?: Partial<TpJobSeekerProfile>
   disableEditing?: boolean
 }
 
@@ -30,7 +30,7 @@ export const EditableSummary: FC<Props> = ({
   profile: overridingProfile,
   disableEditing,
 }) => {
-  const queryHookResult = useTpJobseekerProfileQuery({
+  const queryHookResult = useTpJobSeekerProfileQuery({
     enabled: !disableEditing,
   })
   if (overridingProfile) queryHookResult.data = overridingProfile
@@ -83,7 +83,7 @@ export const EditableSummary: FC<Props> = ({
       modalTitle="About you"
       modalHeadline="Summary"
       modalBody={
-        <JobseekerFormSectionSummary
+        <JobSeekerFormSectionSummary
           setIsEditing={setIsEditing}
           setIsFormDirty={setIsFormDirty}
           queryHookResult={queryHookResult}
@@ -95,9 +95,9 @@ export const EditableSummary: FC<Props> = ({
   )
 }
 
-EditableSummary.isSectionFilled = (profile: Partial<TpJobseekerProfile>) =>
+EditableSummary.isSectionFilled = (profile: Partial<TpJobSeekerProfile>) =>
   !!profile?.aboutYourself && profile?.topSkills?.length
-EditableSummary.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
+EditableSummary.isSectionEmpty = (profile: Partial<TpJobSeekerProfile>) =>
   !EditableSummary.isSectionFilled(profile)
 
 const formTopSkills = mapOptions(topSkills)
@@ -115,22 +115,22 @@ const validationSchema = Yup.object({
     .max(maxChars, 'The text about yourself can be up to 600 characters long.'),
 })
 
-interface JobseekerFormSectionSummaryProps {
+interface JobSeekerFormSectionSummaryProps {
   setIsEditing: (boolean: boolean) => void
   setIsFormDirty?: (boolean: boolean) => void
   queryHookResult: UseQueryResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobSeekerProfile | TpJobSeekerCv>,
     unknown
   >
   mutationHookResult: UseMutationResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobSeekerProfile | TpJobSeekerCv>,
     unknown,
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobSeekerProfile | TpJobSeekerCv>,
     unknown
   >
 }
 
-export const JobseekerFormSectionSummary: FC<JobseekerFormSectionSummaryProps> = ({
+export const JobSeekerFormSectionSummary: FC<JobSeekerFormSectionSummaryProps> = ({
   setIsEditing,
   setIsFormDirty,
   queryHookResult,
@@ -147,7 +147,7 @@ export const JobseekerFormSectionSummary: FC<JobseekerFormSectionSummaryProps> =
     [profile?.aboutYourself, profile?.topSkills]
   )
 
-  const formik = useFormik<Partial<TpJobseekerProfile>>({
+  const formik = useFormik<Partial<TpJobSeekerProfile>>({
     initialValues,
     validationSchema,
     enableReinitialize: true,
