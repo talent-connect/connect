@@ -2,7 +2,7 @@ const app = require('../server/server')
 
 const { RedUser } = app.models
 
-const emailOfUserToUpdate = 'flochuks@gmail.com'
+const emailOfUserToUpdate = ''
 
 async function updatePassword() {
   const redUserInst = await RedUser.findOne({
