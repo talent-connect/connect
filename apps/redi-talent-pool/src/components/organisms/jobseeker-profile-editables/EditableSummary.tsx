@@ -151,10 +151,10 @@ export const JobSeekerFormSectionSummary: FC<JobSeekerFormSectionSummaryProps> =
     validationSchema,
     enableReinitialize: true,
     validateOnMount: true,
-    onSubmit: (values) => {
-      formik.setSubmitting(true)
+    onSubmit: (values, { setSubmitting }) => {
+      setSubmitting(true)
       mutation.mutate(values, {
-        onSettled: () => formik.setSubmitting(false),
+        onSettled: () => setSubmitting(false),
         onSuccess: () => setIsEditing(false),
       })
     },

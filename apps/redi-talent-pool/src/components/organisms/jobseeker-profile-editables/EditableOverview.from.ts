@@ -7,6 +7,10 @@ export const componentForm = createComponentForm()
   .initialValues(() => ({
 
   }))
+  .formikConfig({
+    enableReinitialize: true,
+    validateOnMount: true,
+  })
   .onSubmit(() => {
 
   })

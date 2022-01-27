@@ -12,7 +12,7 @@ const RedProfile = app.models.RedProfile;
         throw new Error(`Couldn't find mapping for topic ${topicId}`);
       }
       const newTopicId = newTopic.mapTo;
-      if (newTopicId === null) return topicList;
+      if (!newTopicId) return topicList;
       if (typeof newTopicId === 'string') return [...topicList, newTopicId];
       return [...topicList, ...newTopicId];
     }, []);

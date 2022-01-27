@@ -179,11 +179,11 @@ const ModalForm: FC<ModalFormProps> = ({
     initialValues: jobListing,
     validationSchema,
     enableReinitialize: true,
-    onSubmit: (values) => {
-      formik.setSubmitting(true);
-      const mutation = tpJobListingId === null ? createMutation : updateMutation;
+    onSubmit: (values, { setSubmitting }) => {
+      setSubmitting(true);
+      const mutation = !tpJobListingId ? createMutation : updateMutation;
       mutation.mutate(values, {
-        onSettled: () => formik.setSubmitting(false),
+        onSettled: () => setSubmitting(false),
         onSuccess: () => setIsEditing(false),
       })
     },

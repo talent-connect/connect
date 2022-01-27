@@ -144,10 +144,10 @@ export const JobSeekerFormSectionLanguages: FC<JobSeekerFormSectionLanguagesProp
   const formik = useFormik<Partial<TpJobSeekerProfile>>({
     initialValues,
     enableReinitialize: true,
-    onSubmit: (values) => {
-      formik.setSubmitting(true)
+    onSubmit: (values, { setSubmitting }) => {
+      setSubmitting(true)
       mutation.mutate(values, {
-        onSettled: () => formik.setSubmitting(false),
+        onSettled: () => setSubmitting(false),
         onSuccess: () => setIsEditing(false),
       })
     },
