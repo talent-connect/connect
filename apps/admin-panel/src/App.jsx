@@ -334,6 +334,7 @@ function redProfileListExporter(profiles) {
     'createdAt',
     'updatedAt',
     'gaveGdprConsentAt',
+    'administratorInternalComment',
   ]
 
   const data = profiles.map((profile) => {
