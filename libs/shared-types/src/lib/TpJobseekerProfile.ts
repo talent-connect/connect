@@ -50,6 +50,7 @@ export type TpJobSeekerProfile =
   gaveGdprConsentAt: Date
 
   hrSummit2021JobFairCompanyJobPreferences?: HrSummit2021JobFairCompanyJobPreferenceRecord[]
+  isJobFair2022Participant?: boolean
 
   isProfileVisibleToCompanies: boolean
 }

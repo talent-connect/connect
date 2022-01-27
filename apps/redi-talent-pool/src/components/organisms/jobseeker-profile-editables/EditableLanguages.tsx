@@ -104,10 +104,17 @@ EditableLanguages.isSectionEmpty = (profile: Partial<TpJobSeekerProfile>) =>
 // TODO: put this one in config file
 const MAX_LANGUAGES = 6
 
-const validationSchema = Yup.object({ // TODO use?
+const validationSchema = Yup.object({
   workingLanguages: Yup.array()
     .min(1)
-    .max(6),
+    .max(6)
+    .of(Yup.object().shape({
+      language: Yup.string()
+        .required("Please select a language from the menu!"),
+      proficiencyLevelId: Yup.string()
+        .required("Please choose your level of proficiency!")
+    })
+  ),
 })
 
 interface JobSeekerFormSectionLanguagesProps {
@@ -143,6 +150,7 @@ export const JobSeekerFormSectionLanguages: FC<JobSeekerFormSectionLanguagesProp
 
   const formik = useFormik<Partial<TpJobSeekerProfile>>({
     initialValues,
+    validationSchema,
     enableReinitialize: true,
     onSubmit: (values, { setSubmitting }) => {
       setSubmitting(true)

@@ -283,7 +283,7 @@ const loopbackModelMethodToObservable =
 const currentUserStateToPostReviewUpdates = {
   ACCEPT: {
     'submitted-for-review': {
-      state: 'profile-approved-awaiting-job-preferences',
+      state: 'profile-approved',
     },
   },
   DECLINE: {

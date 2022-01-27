@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom'
 import {
   FilterDropdown,
   Icon,
+  Checkbox,
 } from '@talent-connect/shared-atomic-design-components'
 import {
   employmentTypes,
@@ -11,47 +12,60 @@ import {
   topSkills,
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
-import { mapOptions } from '@talent-connect/typescript-utilities';
 import { Columns, Element, Tag } from 'react-bulma-components'
-import { ArrayParam, useQueryParams, withDefault } from 'use-query-params'
+import {
+  ArrayParam,
+  BooleanParam,
+  useQueryParams,
+  withDefault,
+} from 'use-query-params'
 import { JobListingCard } from '../../../components/organisms/JobListingCard'
 import { LoggedIn } from '../../../components/templates'
 import { useBrowseTpJobListingsQuery } from '../../../react-query/use-tpjoblisting-all-query'
 import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { mapOptions } from '@talent-connect/typescript-utilities';
 
 export const BrowseJobSeeker: FC = () => {
-  const { data: currentJobSeekerProfile } = useTpJobSeekerProfileQuery()
-
-  const [{ idealTechnicalSkills, employmentType }, setQuery] = useQueryParams({
-    idealTechnicalSkills: withDefault(ArrayParam, [] as string[]),
-    employmentType: withDefault(ArrayParam, [] as string[]),
+  
+  const [query, setQuery] = useQueryParams({
+    idealTechnicalSkills: withDefault(ArrayParam, []),
+    employmentType: withDefault(ArrayParam, []),
+    isJobFair2022JobListing: withDefault(BooleanParam, undefined),
   })
-
+  
+  const { idealTechnicalSkills, employmentType, isJobFair2022JobListing } = query
+  
   const history = useHistory()
   const { data: jobListings } = useBrowseTpJobListingsQuery({
     idealTechnicalSkills,
     employmentType,
+    isJobFair2022JobListing,
   })
-
+  
   const toggleFilters = (filtersArr, filterName, item) => {
     const newFilters = toggleValueInArray(filtersArr, item)
     setQuery((latestQuery) => ({ ...latestQuery, [filterName]: newFilters }))
   }
-
+  
+  const toggleJobFair2022Filter = () =>
+  setQuery((latestQuery) => ({
+    ...latestQuery,
+    isJobFair2022JobListing:
+    isJobFair2022JobListing === undefined ? true : undefined,
+  }))
+  
   const clearFilters = () => {
     setQuery((latestQuery) => ({
       ...latestQuery,
       idealTechnicalSkills: [],
       employmentType: [],
+      isJobFair2022JobListing: undefined,
     }))
   }
 
-  if (![
-      'profile-approved-awaiting-job-preferences',
-      'job-preferences-shared-with-redi-awaiting-interview-match',
-    ].includes(currentJobSeekerProfile?.state)
-  )
-    return null
+  const { data: currentJobSeekerProfile } = useTpJobSeekerProfileQuery()
+
+  if (currentJobSeekerProfile?.state !== 'profile-approved') return null
 
   return (
     <LoggedIn>
@@ -97,8 +111,17 @@ export const BrowseJobSeeker: FC = () => {
           />
         </div>
       </div>
+      <div className="filters">
+        <Checkbox
+          name="isJobFair2022JobListing"
+          checked={isJobFair2022JobListing || false}
+          handleChange={toggleJobFair2022Filter}
+        >
+          Filter by ReDI Job Fair 2022
+        </Checkbox>
+      </div>
       <div className="active-filters">
-        {(idealTechnicalSkills.length || employmentType.length) && (
+        {(idealTechnicalSkills.length || employmentType.length || isJobFair2022JobListing) && (
           <>
             {idealTechnicalSkills.map((catId) => (
               <FilterTag
@@ -124,6 +147,13 @@ export const BrowseJobSeeker: FC = () => {
                 }
               />
             ))}
+            {isJobFair2022JobListing && (
+              <FilterTag
+                id="redi-job-fair-2022-filter"
+                label="ReDI Job Fair 2022"
+                onClickHandler={toggleJobFair2022Filter}
+              />
+            )}
             <span className="active-filters__clear-all" onClick={clearFilters}>
               Delete all filters
               <Icon icon="cancel" size="small" space="left" />

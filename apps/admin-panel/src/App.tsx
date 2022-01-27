@@ -95,6 +95,8 @@ import {
 
 import { objectEntries, objectValues, mapOptionsObject } from '@talent-connect/typescript-utilities'
 
+import { redMatchesCsvExporter } from './utils/csvExport'
+
 /** REFERENCE DATA */
 
 const rediLocations = mapOptionsObject(REDI_LOCATION_NAMES)
@@ -231,6 +233,7 @@ const RedProfileList: FC = (props) => {
       filters={<RedProfileListFilters />}
       pagination={<AllModelsPagination />}
       aside={<FreeMenteeSpotsPerLocationAside />}
+      exporter={redProfileListExporter}
     >
       <Datagrid expand={<RedProfileListExpandPane />}>
         <TextField source="rediLocation" label="City" />
@@ -281,6 +284,67 @@ const RedProfileList: FC = (props) => {
       </Datagrid>
     </List>
   )
+}
+
+function redProfileListExporter(profiles) {
+  const properties = [
+    'id',
+    'userType',
+    'rediLocation',
+    'firstName',
+    'lastName',
+    'gender',
+    'age',
+    'birthDate',
+    'userActivated',
+    'userActivatedAt',
+    'mentor_occupation',
+    'mentor_workPlace',
+    'expectations',
+    'mentor_ifTypeForm_submittedAt',
+    'mentee_ifTypeForm_preferredMentorSex',
+    'mentee_currentCategory',
+    'mentee_occupationCategoryId',
+    'mentee_occupationJob_placeOfEmployment',
+    'mentee_occupationJob_position',
+    'mentee_occupationStudent_studyPlace',
+    'mentee_occupationStudent_studyName',
+    'mentee_occupationLookingForJob_what',
+    'mentee_occupationOther_description',
+    'mentee_highestEducationLevel',
+    'mentee_currentlyEnrolledInCourse',
+    'profileAvatarImageS3Key',
+    'languages',
+    'otherLanguages',
+    'personalDescription',
+    'contactEmail',
+    'linkedInProfileUrl',
+    'githubProfileUrl',
+    'slackUsername',
+    'telephoneNumber',
+    'categories',
+    'favouritedRedProfileIds',
+    'optOutOfMenteesFromOtherRediLocation',
+    'signupSource',
+    'currentApplicantCount',
+    'menteeCountCapacity',
+    'currentMenteeCount',
+    'currentFreeMenteeSpots',
+    'ifUserIsMentee_hasActiveMentor',
+    'ifUserIsMentee_activeMentor',
+    'ifTypeForm_additionalComments',
+    'createdAt',
+    'updatedAt',
+    'gaveGdprConsentAt',
+    'administratorInternalComment',
+  ]
+
+  const data = profiles.map((profile) => {
+    return Object.fromEntries(properties.map((prop) => [prop, profile[prop]]))
+  })
+
+  const csv = convertToCSV(data)
+  downloadCSV(csv, 'yalla')
 }
 
 const FreeMenteeSpotsPerLocationAside: FC = () => {
@@ -638,6 +702,7 @@ const RedMatchList: FC = (props) => (
     sort={{ field: 'createdAt', order: 'DESC' }}
     pagination={<AllModelsPagination />}
     filters={<RedMatchListFilters />}
+    exporter={redMatchesCsvExporter}
   >
     <Datagrid>
       <TextField source="rediLocation" label="City" />
@@ -1215,19 +1280,7 @@ const TpJobSeekerProfileList: FC = (props) => {
           buttons to Approve/Decline their profile.
         </li>
         <li style={{ marginBottom: '12px' }}>
-          <strong>profile-approved-awaiting-job-preferences</strong>: the
-          jobseeker's profile was approved, and we're now waiting for them to
-          provide their job preferences/priorities
-        </li>
-        <li style={{ marginBottom: '12px' }}>
-          <strong>
-            job-preferences-shared-with-redi-awaiting-interview-match
-          </strong>
-          : the jobseeker has provided their job preferences, and are now
-          waiting to be matched against companies/jobs for interview(s)
-        </li>
-        <li style={{ marginBottom: '12px' }}>
-          <strong>matched-for-interview</strong>: matched for interview
+          <strong>profile-approved</strong>: the jobseeker's profile is approved
         </li>
       </ol>
     </>
@@ -1253,6 +1306,7 @@ const TpJobSeekerProfileListFilters: FC = (props) => (
       source="state"
       choices={objectValues(TpJobSeekerProfileState).map((val) => ({ id: val, name: val }))}
     />
+    <NullableBooleanInput source="isJobFair2022Participant" />
   </Filter>
 )
 
@@ -1278,6 +1332,7 @@ function tpJobSeekerProfileListExporter(profiles, fetchRelatedRecords) {
       updatedAt,
       lastLoginDateTime,
       postalMailingAddress,
+      genderPronouns,
     } = profile
 
     return {
@@ -1292,6 +1347,7 @@ function tpJobSeekerProfileListExporter(profiles, fetchRelatedRecords) {
       updatedAt,
       lastLoginDateTime,
       postalMailingAddress,
+      genderPronouns,
       jobPreference1: hrSummit2021JobFairCompanyJobPreferences?.[0],
       jobPreference2: hrSummit2021JobFairCompanyJobPreferences?.[1],
       jobPreference3: hrSummit2021JobFairCompanyJobPreferences?.[2],
@@ -1323,6 +1379,10 @@ const TpJobSeekerProfileShow: FC = (props) => (
         <Tab label="Profile">
           <TextField source="state" />
           <BooleanField source="isProfileVisibleToCompanies" />
+          <BooleanField
+            initialValue={false}
+            source="isJobFair2022Participant"
+          />
           <Avatar />
           <TextField source="firstName" />
           <TextField source="lastName" />
@@ -1363,6 +1423,8 @@ const TpJobSeekerProfileShow: FC = (props) => (
             <Datagrid>
               <TextField source="title" />
               <TextField source="company" />
+              <TextField source="city" />
+              <TextField source="country" />
               <TextField
                 source="description"
                 label="Roles & responsibilities"
@@ -1392,6 +1454,8 @@ const TpJobSeekerProfileShow: FC = (props) => (
             <Datagrid>
               <TextField source="title" />
               <TextField source="institutionName" />
+              <TextField source="institutionCity" />
+              <TextField source="institutionCountry" />
               <TextField source="certificationType" />
               <TextField source="description" label="Description" />
               <FunctionField
@@ -1468,6 +1532,7 @@ const TpJobSeekerProfileEdit: FC = (props) => (
       <FormTab label="Profile">
         <TextField source="state" />
         <BooleanInput source="isProfileVisibleToCompanies" />
+        <BooleanInput initialValue={false} source="isJobFair2022Participant" />
         {/* <Avatar /> */}
         <TextInput source="firstName" />
         <TextInput source="lastName" />
@@ -1840,11 +1905,18 @@ const TpCompanyProfileEdit: FC = (props) => (
   </Edit>
 )
 
+const TpJobListingListFilters = (props) => (
+  <Filter {...props}>
+    <NullableBooleanInput source="isJobFair2022JobListing" />
+  </Filter>
+)
+
 const TpJobListingList: FC = (props) => {
   return (
     <List
       {...props}
       pagination={<AllModelsPagination />}
+      filters={<TpJobListingListFilters />}
       exporter={tpJobListingListExporter}
     >
       <Datagrid>
@@ -1915,6 +1987,7 @@ const TpJobListingShow: FC = (props) => (
       </ReferenceField>
       <TextField source="title" />
       <TextField source="location" />
+      <BooleanField initialValue={false} source="isJobFair2022JobListing" />
       <TextField source="summary" />
       <TextField source="proficiencyLevelId" />
       <FunctionField
@@ -1945,6 +2018,7 @@ const TpJobListingEdit: FC = (props) => (
       </ReferenceField>
       <TextInput source="title" />
       <TextInput source="location" />
+      <BooleanInput initialValue={false} source="isJobFair2022JobListing" />
       <TextInput source="summary" multiline />
       <TextInput source="proficiencyLevelId" />
       <FunctionField

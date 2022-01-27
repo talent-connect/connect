@@ -112,17 +112,22 @@ export interface TpJobSeekerProfileFilters {
   name: string
   skills: string[]
   desiredPositions: string[]
+  isJobFair2022Participant: boolean
 }
 
 export async function fetchAllTpJobSeekerProfiles({
   name,
   skills: topSkills,
   desiredPositions,
-}: TpJobSeekerProfileFilters): Promise<Partial<TpJobSeekerProfile>[]> {
+  isJobFair2022Participant,
+}: TpJobSeekerProfileFilters): Promise<Array<Partial<TpJobSeekerProfile>>> {
   const filterTopSkills =
     topSkills?.length ? { inq: topSkills } : null
   const filterDesiredPositions =
     desiredPositions?.length ? { inq: desiredPositions } : null
+  const filterJobFair2022Participant = isJobFair2022Participant
+    ? { isJobFair2022Participant: true }
+    : undefined
 
   return http(
     `${API_URL}/tpJobSeekerProfiles?filter=${JSON.stringify({
@@ -142,19 +147,14 @@ export async function fetchAllTpJobSeekerProfiles({
             })),
           { topSkills: filterTopSkills },
           { desiredPositions: filterDesiredPositions },
+          { ...filterJobFair2022Participant },
         ],
       },
       order: 'createdAt DESC',
       limit: 0,
     })}`
   ).then(({ data }) =>
-    data.filter((p) =>
-        p.isProfileVisibleToCompanies &&
-        [
-          'profile-approved-awaiting-job-preferences',
-          'job-preferences-shared-with-redi-awaiting-interview-match',
-        ].includes(p.state)
-    )
+    data.filter((p) => p.isProfileVisibleToCompanies && p.state === 'profile-approved')
   )
 }
 
@@ -248,16 +248,25 @@ export async function updateCurrentUserTpCompanyProfile(
 export interface TpJobListingFilters {
   idealTechnicalSkills: string[]
   employmentType: string[]
+  isJobFair2022JobListing: boolean
 }
 
 export async function fetchAllTpJobListingsUsingFilters({
   idealTechnicalSkills,
   employmentType,
-}: TpJobListingFilters): Promise<Partial<TpJobSeekerProfile>[]> {
+  isJobFair2022JobListing,
+}: TpJobListingFilters): Promise<Array<Partial<TpJobSeekerProfile>>> {
   const filterIdealTechnicalSkills =
-    idealTechnicalSkills?.length ? { inq: idealTechnicalSkills } : null
+    idealTechnicalSkills && idealTechnicalSkills.length !== 0
+      ? { inq: idealTechnicalSkills }
+      : undefined
+
   const filterDesiredEmploymentTypeOptions =
     employmentType?.length ? { inq: employmentType } : null
+
+  const filterJobFair2022JobListings = isJobFair2022JobListing
+    ? { isJobFair2022JobListing: true }
+    : undefined
 
   return http(
     `${API_URL}/tpJobListings?filter=${JSON.stringify({
@@ -270,6 +279,7 @@ export async function fetchAllTpJobListingsUsingFilters({
           {
             idealTechnicalSkills: filterIdealTechnicalSkills,
             employmentType: filterDesiredEmploymentTypeOptions,
+            ...filterJobFair2022JobListings,
           },
         ],
       },

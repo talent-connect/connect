@@ -14,6 +14,7 @@ export type TpJobListing =
   languageRequirements?: string
   desiredExperience?: string
   salaryRange?: string
+  isJobFair2022JobListing?: boolean
 
   tpCompanyProfileId?: string
   tpCompanyProfile?: TpCompanyProfile

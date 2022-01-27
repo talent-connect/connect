@@ -1,6 +1,7 @@
 import { FC, useState } from 'react'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import { useParams } from 'react-router'
+import { Link } from 'react-router-dom'
 
 import * as Yup from 'yup'
 
@@ -16,7 +17,7 @@ import {
 
 import Teaser from '../../../components/molecules/Teaser'
 
-import { Columns, Form } from 'react-bulma-components'
+import { Columns, Content, Form } from 'react-bulma-components'
 
 import { signUp } from '../../../services/api/api'
 import { Extends, RedProfile, UserRole } from '@talent-connect/shared-types'
@@ -136,6 +137,13 @@ const SignUp: FC = () => {
 
         <Columns.Column size={5} offset={1}>
           <Heading border="bottomLeft">Sign-up</Heading>
+          {type === 'mentee' && (
+            <Content size="small" renderAs="p">
+              Got a ReDI Talent Pool user account? You can log in with the same
+              username and password <Link to="/front/login">here</Link>.
+            </Content>
+          )}
+
           <form onSubmit={(e) => e.preventDefault()} className="form">
             <TextInput
               name="firstName"

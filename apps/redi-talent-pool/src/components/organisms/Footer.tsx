@@ -4,6 +4,7 @@ import { Columns, Container, Element, Section } from 'react-bulma-components'
 import { useTranslation } from 'react-i18next'
 import { ReactComponent as RediSchool } from '../../assets/redi-school-logo.svg'
 import MicrosoftLogo from '../../assets/images/microsoft-logo.png'
+import DeloitteLogo from '../../assets/images/deloitte-logo.png'
 import './Footer.scss'
 
 type Link = {
@@ -33,20 +34,40 @@ const RediFooter: FC = () => {
               >
                 <RediSchool />
               </Element>
-              <Element renderAs="small">Supported by</Element>
-              <Element
-                renderAs="a"
-                href="https://www.microsoft.com/de-de/berlin/corporate-digital-responsibility.aspx?id=tab01"
-                target="_blank"
-                className="footer__logo oneandhalf-bs"
-                style={{ marginTop: 0 }}
-              >
-                <img
-                  src={MicrosoftLogo}
-                  alt="Supported by Microsoft"
-                  style={{ maxWidth: '6rem' }}
-                />
-              </Element>
+              <Columns breakpoint="mobile">
+                <Columns.Column>
+                  <Element renderAs="small">Supported by</Element>
+                  <Element
+                    renderAs="a"
+                    href="https://www.microsoft.com/de-de/berlin/corporate-digital-responsibility.aspx?id=tab01"
+                    target="_blank"
+                    className="footer__logo oneandhalf-bs"
+                    style={{ marginTop: 0 }}
+                  >
+                    <img
+                      src={MicrosoftLogo}
+                      alt="Supported by Microsoft"
+                      style={{ maxWidth: '6rem' }}
+                    />
+                  </Element>
+                </Columns.Column>
+                <Columns.Column>
+                  <Element renderAs="small">Supported by</Element>
+                  <Element
+                    renderAs="a"
+                    href=""
+                    target="_blank"
+                    className="footer__logo oneandhalf-bs"
+                    style={{ marginTop: 0 }}
+                  >
+                    <img
+                      src={DeloitteLogo}
+                      alt="Supported by Deloitte"
+                      style={{ maxWidth: '6rem' }}
+                    />
+                  </Element>
+                </Columns.Column>
+              </Columns>
             </Columns.Column>
             <Columns.Column
               mobile={{ offset: null, size: 6 }}

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import omit from 'lodash/omit'
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
-import { Columns, Form, Notification } from 'react-bulma-components'
+import { Columns, Content, Form, Notification } from 'react-bulma-components'
 
 import {
   Button,
@@ -193,6 +193,10 @@ export default function SignUp() {
 
         <Columns.Column size={5} offset={1}>
           <Heading border="bottomLeft">Sign-up</Heading>
+          <Content size="small" renderAs="p">
+            Got a ReDI Connect user account? You can log in with the same
+            username and password <Link to="/front/login">here</Link>.
+          </Content>
           {submitError === 'user-already-exists' && (
             <Notification color="info" className="is-light">
               You already have an account. Please{' '}

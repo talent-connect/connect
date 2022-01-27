@@ -15,7 +15,9 @@
           >
           <mj-text mj-class="text"
             >Now, it's time to log into
-            <a href="{tpLandingPageUrl}" target="_blank">Talent Pool</a>
+            <a href="https://talent-pool.redi-school.org/front/login" 
+               class="text-link"
+               >Talent Pool</a>
             and complete your company profile and add your job listings. You
             will be able to add your vacant tech-related job listings – whether
             they are apprenticeships, internships or regular positions.
