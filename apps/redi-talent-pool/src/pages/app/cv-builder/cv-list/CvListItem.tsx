@@ -21,9 +21,9 @@ import placeholderImage from '../../../../assets/img-placeholder.png'
 
 import { useTpJobSeekerCvByIdQuery } from '../../../../react-query/use-tpjobseekercv-query'
 import {
-  useTpjobseekerCvCreateMutation,
-  useTpjobseekerCvDeleteMutation,
-  useTpjobseekerCvUpdateMutation,
+  useTpJobSeekerCvCreateMutation,
+  useTpJobSeekerCvDeleteMutation,
+  useTpJobSeekerCvUpdateMutation,
 } from '../../../../react-query/use-tpjobseekercv-mutation'
 
 import { CvListItemMoreOptionsMenu } from './CvListItemMoreOptionsMenu'
@@ -82,9 +82,9 @@ const CvListItem: FC<CvListItemProps> = ({ id, name, createdAt }) => {
     isSuccess: profileLoadSuccess,
   } = useTpJobSeekerProfileQuery()
 
-  const createMutation = useTpjobseekerCvCreateMutation()
-  const updateMutation = useTpjobseekerCvUpdateMutation(id)
-  const deleteMutation = useTpjobseekerCvDeleteMutation(id)
+  const createMutation = useTpJobSeekerCvCreateMutation()
+  const updateMutation = useTpJobSeekerCvUpdateMutation(id)
+  const deleteMutation = useTpJobSeekerCvDeleteMutation(id)
 
   const setFocusOnRef = (ref: HTMLInputElement) => ref?.focus()
 

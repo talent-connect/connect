@@ -5,7 +5,7 @@ import {
   updateCurrentUserTpJobSeekerCv,
 } from '../services/api/api'
 
-export function useTpjobseekerCvCreateMutation() {
+export function useTpJobSeekerCvCreateMutation() {
   const queryClient = useQueryClient()
 
   return useMutation(
@@ -20,7 +20,7 @@ export function useTpjobseekerCvCreateMutation() {
   )
 }
 
-export function useTpjobseekerCvUpdateMutation(id: string) {
+export function useTpJobSeekerCvUpdateMutation(id: string) {
   const queryClient = useQueryClient()
 
   return useMutation(
@@ -36,7 +36,7 @@ export function useTpjobseekerCvUpdateMutation(id: string) {
   )
 }
 
-export function useTpjobseekerCvDeleteMutation(id: string) {
+export function useTpJobSeekerCvDeleteMutation(id: string) {
   const queryClient = useQueryClient()
 
   return useMutation(

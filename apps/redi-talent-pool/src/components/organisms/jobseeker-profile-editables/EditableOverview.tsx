@@ -15,10 +15,11 @@ import { FC, useEffect, useMemo, useState } from 'react'
 import { Element, Tag } from 'react-bulma-components'
 import { UseMutationResult, UseQueryResult } from 'react-query'
 import * as Yup from 'yup'
-import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
+import { useTpJobSeekerProfileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
+import { componentForm } from './EditableOverview.from';
 
 interface Props {
   profile?: Partial<TpJobSeekerProfile>
@@ -38,7 +39,7 @@ export const EditableOverview: FC<Props> & EditableOverviewHelpers = ({
     enabled: !disableEditing,
   })
   if (overridingProfile) queryHookResult.data = overridingProfile
-  const mutationHookResult = useTpjobseekerprofileUpdateMutation()
+  const mutationHookResult = useTpJobSeekerProfileUpdateMutation()
   const { data: profile } = queryHookResult
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
@@ -118,26 +119,18 @@ export const JobSeekerFormSectionOverview: FC<JobSeekerFormSectionOverviewProps>
   mutationHookResult,
   hideCurrentRediCourseField,
 }) => {
-  const initialValues = useMemo(() => ({
-      desiredPositions: profile?.desiredPositions ?? [],
-      currentlyEnrolledInCourse: profile?.currentlyEnrolledInCourse ?? '',
-    }),
-    [profile?.currentlyEnrolledInCourse, profile?.desiredPositions]
-  )
+  // const initialValues = useMemo(() => ({
+  //     desiredPositions: profile?.desiredPositions ?? [],
+  //     currentlyEnrolledInCourse: profile?.currentlyEnrolledInCourse ?? '',
+  //   }),
+  //   [profile?.currentlyEnrolledInCourse, profile?.desiredPositions]
+  // )
 
-  const formik = useFormik<Partial<TpJobSeekerProfile>>({
-    initialValues,
-    validationSchema,
-    enableReinitialize: true,
-    validateOnMount: true,
-    onSubmit: (values, { setSubmitting }) => {
-      setSubmitting(true)
-      mutationHookResult.mutate(values, {
-        onSettled: () => setSubmitting(false),
-        onSuccess: () => setIsEditing(false),
-      })
-    },
-  })
+  const formik = componentForm({
+    mutationHookResult,
+    profile,
+    setIsEditing
+  }) 
 
   useEffect(
     () => setIsFormDirty?.(formik.dirty),

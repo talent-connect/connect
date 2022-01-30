@@ -23,7 +23,7 @@ import { v4 as uuidv4 } from 'uuid'
 import * as Yup from 'yup'
 import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
-import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
+import { useTpJobSeekerProfileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { Editable } from '../../molecules/Editable'
 import { UseMutationResult, UseQueryResult } from 'react-query'
 import { mapOptions, mapOptionsObject } from '@talent-connect/typescript-utilities'
@@ -49,7 +49,7 @@ export const EditableLanguages: FC<Props> & EditableLanguagesHelpers = ({
     enabled: !disableEditing,
   })
   if (overridingProfile) queryHookResult.data = overridingProfile
-  const mutationHookResult = useTpjobseekerprofileUpdateMutation()
+  const mutationHookResult = useTpJobSeekerProfileUpdateMutation()
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 

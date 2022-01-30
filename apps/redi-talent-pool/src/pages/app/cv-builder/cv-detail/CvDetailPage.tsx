@@ -10,7 +10,7 @@ import { useHistory, useParams } from 'react-router-dom'
 import { Subject } from 'rxjs'
 import { CVPDFPreviewMemoized } from '../../../../components/molecules'
 import { AccordionFormCvDesiredPositions } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvDesiredPositions'
-import { AccordionFormCvDisplayCase } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvDisplayCase'
+// import { AccordionFormCvDisplayCase } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvDisplayCase'
 import { AccordionFormCvEducation } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvEducation'
 import { AccordionFormCvImportantDetails } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvImportantDetails'
 import { AccordionFormCvLanguages } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvLanguages'
@@ -23,26 +23,26 @@ import { useTpJobSeekerProfileQuery } from '../../../../react-query/use-tpjobsee
 import './CvDetailPage.scss'
 import placeholderImage from '../../../../assets/img-placeholder.png'
 
-const InlineButton: FC = () => {
-  return (
-    <Button
-      style={{
-        transform: 'scale(0.5)',
-        marginLeft: -24,
-        marginRight: -16,
-        pointerEvents: 'none',
-      }}
-    >
-      Start
-    </Button>
-  )
-}
+// const InlineButton: FC = () => {
+//   return (
+//     <Button
+//       style={{
+//         transform: 'scale(0.5)',
+//         marginLeft: -24,
+//         marginRight: -16,
+//         pointerEvents: 'none',
+//       }}
+//     >
+//       Start
+//     </Button>
+//   )
+// }
 
-const InlinePencilIcon: FC = () => {
-  return (
-    <CreateOutlinedIcon style={{ color: '#EA5B25', margin: '0 12px -5px' }} />
-  )
-}
+// const InlinePencilIcon: FC = () => {
+//   return (
+//     <CreateOutlinedIcon style={{ color: '#EA5B25', margin: '0 12px -5px' }} />
+//   )
+// }
 
 interface ParamTypes {
   id: string

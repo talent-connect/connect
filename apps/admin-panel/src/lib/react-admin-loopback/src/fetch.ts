@@ -1,7 +1,16 @@
 import { HttpError } from 'react-admin'
 import storage from './storage'
 
-const fetchJson = async (url, options = {}) => {
+interface FetchOptions {
+  user?: {
+    authenticated: boolean,
+    token: string,
+  }
+  headers?: Headers
+  body?: BodyInit
+}
+
+const fetchJson = async (url: RequestInfo, options: FetchOptions = {}) => {
   const requestHeaders =
     options.headers || new Headers({ Accept: 'application/json' })
   if (
@@ -42,14 +51,14 @@ const fetchJson = async (url, options = {}) => {
     )
   }
   return Promise.resolve({
-    status: status,
-    headers: headers,
-    body: body,
-    json: json,
+    status,
+    headers,
+    body,
+    json,
   })
 }
 
-export default (url, options = {}) => {
+export default function (url: RequestInfo, options: FetchOptions = {}) {
   options.user = {
     authenticated: true,
     token: storage.load('lbtoken').id,

@@ -70,11 +70,8 @@ const SendProfileForReviewButton: FC = () => {
 }
 
 const CallToActionButton: FC<{ profile: Partial<TpCompanyProfile>; }> = ({ profile: { state } }) => {
-  return state &&
-  [
-    TpCompanyProfileState['drafting-profile'],
-    TpCompanyProfileState['submitted-for-review'],
-  ].includes(state) && (<SendProfileForReviewButton />)
+  const showSendProfileForReviewButton = state && (state === TpCompanyProfileState['drafting-profile'] || state === TpCompanyProfileState['submitted-for-review'])
+  return showSendProfileForReviewButton && (<SendProfileForReviewButton />)
 }
 
 export const MeCompany: FC = () => {

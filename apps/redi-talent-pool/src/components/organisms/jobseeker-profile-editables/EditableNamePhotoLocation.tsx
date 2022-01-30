@@ -14,7 +14,7 @@ import { useFormik } from 'formik'
 import { FC, useEffect, useMemo, useState } from 'react'
 import { Columns, Content, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
-import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
+import { useTpJobSeekerProfileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
@@ -31,7 +31,7 @@ interface EditableNamePhotoLocationHelpers {
 }
 
 export const EditableNamePhotoLocation: FC<Props> & EditableNamePhotoLocationHelpers = ({ profile, disableEditing }) => {
-  const mutation = useTpjobseekerprofileUpdateMutation()
+  const mutation = useTpJobSeekerProfileUpdateMutation()
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
@@ -121,7 +121,7 @@ const ModalForm: FC<ModalFormProps> = ({
   setIsFormDirty,
 }) => {
   const { data: profile } = useTpJobSeekerProfileQuery()
-  const mutation = useTpjobseekerprofileUpdateMutation()
+  const mutation = useTpJobSeekerProfileUpdateMutation()
   const initialValues = useMemo(() => ({
       firstName: profile?.firstName ?? '',
       lastName: profile?.lastName ?? '',

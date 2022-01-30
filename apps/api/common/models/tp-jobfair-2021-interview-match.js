@@ -9,7 +9,6 @@ const {
   sendMentorshipAcceptedEmail,
   sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted,
 } = require('../../lib/email/email');
-const { objectValues } = require('../../../../libs/typescript-utilities/src');
 
 module.exports = function (TpJobfair2021InterviewMatch) {
   /**
@@ -71,7 +70,7 @@ module.exports = function (TpJobfair2021InterviewMatch) {
         }
 
         const existingWhere = ctx.query.where;
-        ctx.query.where = objectValues(existingWhere).length
+        ctx.query.where = Object.values(existingWhere).length
           ? { and: [currentUserJobSeekerOrCompany, existingWhere] }
           : currentUserJobSeekerOrCompany;
       }

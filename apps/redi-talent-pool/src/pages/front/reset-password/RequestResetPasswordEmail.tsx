@@ -1,45 +1,22 @@
+import { FC, useState } from 'react'
+import { Link } from 'react-router-dom'
 import {
   Button,
   TextInput,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
-import { useFormik } from 'formik'
-import { FC, useState } from 'react'
 import { Columns, Content, Element, Form } from 'react-bulma-components'
-import { Link } from 'react-router-dom'
-import * as yup from 'yup'
 import TpTeaser from '../../../components/molecules/TpTeaser'
 import { AccountOperation } from '../../../components/templates'
-import { requestResetPasswordEmail } from '../../../services/api/api'
-
-interface FormValues {
-  email: string
-}
-
-const validationSchema = yup.object().shape({
-  email: yup.string()
-    .email('That doesn’t look quite right... please provide a valid email.')
-    .required('Please provide an email address.'),
-})
+import { componentForm } from './RequestResetPasswordEmail.form';
 
 export const RequestResetPasswordEmail: FC = () => {
   const [resetPasswordSuccess, setResetPasswordSuccess] = useState<string>('')
   const [resetPasswordError, setResetPasswordError] = useState<string>('')
 
-  const formik = useFormik<FormValues>({
-    initialValues: {
-      email: '',
-    },
-    validationSchema,
-    onSubmit: async (values) => {
-      try {
-        // Cast to string is safe as this only called if validated
-        await requestResetPasswordEmail(values.email as string)
-        setResetPasswordSuccess('If you have an account,we have sent you the password reset link to your email address.')
-      } catch (err) {
-        setResetPasswordError('Oh no, something went wrong :( Did you type your email address correctly?')
-      }
-    },
+  const formik = componentForm({
+    setResetPasswordError,
+    setResetPasswordSuccess
   })
 
   const heading = resetPasswordSuccess

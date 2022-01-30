@@ -6,12 +6,12 @@ import { BrowseJobSeeker } from './BrowseJobSeeker'
 import './Browse.scss'
 
 const Browse: FC = () => {
-  const { data: jobseekerProfile } = useTpJobSeekerProfileQuery({
+  const { data: jobSeekerProfile } = useTpJobSeekerProfileQuery({
     retry: false,
   })
   const { data: companyProfile } = useTpCompanyProfileQuery({ retry: false })
 
-  if (jobseekerProfile) return <BrowseJobSeeker />
+  if (jobSeekerProfile) return <BrowseJobSeeker />
   if (companyProfile) return <BrowseCompany />
 
   return null

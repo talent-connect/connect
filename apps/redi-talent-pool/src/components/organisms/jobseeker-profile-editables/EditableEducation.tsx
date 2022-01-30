@@ -29,7 +29,7 @@ import ReactMarkdown from 'react-markdown'
 import { UseMutationResult, UseQueryResult } from 'react-query'
 import { Subject } from 'rxjs'
 import { v4 as uuidv4 } from 'uuid'
-import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
+import { useTpJobSeekerProfileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { Location } from '../../molecules/Location'
@@ -53,7 +53,7 @@ export const EditableEducation: FC<Props> & EditableNamePhotoLocationHelpers = (
     enabled: !disableEditing,
   })
   if (overridingProfile) queryHookResult.data = overridingProfile
-  const mutationHookResult = useTpjobseekerprofileUpdateMutation()
+  const mutationHookResult = useTpJobSeekerProfileUpdateMutation()
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 

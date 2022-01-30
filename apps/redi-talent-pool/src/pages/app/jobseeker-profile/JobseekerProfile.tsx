@@ -14,30 +14,30 @@ import { FC } from 'react';
 
 export const JobSeekerProfile: FC = () => {
   const { tpJobSeekerProfileId } = useParams<{ tpJobSeekerProfileId: string }>()
-  const { data: jobseekerProfile } = useTpJobSeekerProfileByIdQuery(tpJobSeekerProfileId)
+  const { data: jobSeekerProfile } = useTpJobSeekerProfileByIdQuery(tpJobSeekerProfileId)
 
-  console.log(jobseekerProfile)
+  console.log(jobSeekerProfile)
 
   return (
     <LoggedIn>
       <Columns className="is-6 is-variable">
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'three-fifths' }}>
           <EditableNamePhotoLocation
-            profile={jobseekerProfile}
+            profile={jobSeekerProfile}
             disableEditing
           />
-          <EditableOverview profile={jobseekerProfile} disableEditing />
-          <EditableSummary profile={jobseekerProfile} disableEditing />
+          <EditableOverview profile={jobSeekerProfile} disableEditing />
+          <EditableSummary profile={jobSeekerProfile} disableEditing />
           <EditableProfessionalExperience
-            profile={jobseekerProfile}
+            profile={jobSeekerProfile}
             disableEditing
           />
-          <EditableEducation profile={jobseekerProfile} disableEditing />
+          <EditableEducation profile={jobSeekerProfile} disableEditing />
         </Columns.Column>
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'two-fifths' }}>
-          <EditableImportantDetails profile={jobseekerProfile} disableEditing />
-          <EditableLanguages profile={jobseekerProfile} disableEditing />
-          <EditableLinks profile={jobseekerProfile} disableEditing />
+          <EditableImportantDetails profile={jobSeekerProfile} disableEditing />
+          <EditableLanguages profile={jobSeekerProfile} disableEditing />
+          <EditableLinks profile={jobSeekerProfile} disableEditing />
         </Columns.Column>
       </Columns>
     </LoggedIn>

@@ -17,14 +17,27 @@ import { objectKeys } from '@talent-connect/typescript-utilities';
 export * from './authProvider';
 export { default as storage } from './storage';
 
-export default (apiUrl, httpClient = fetchJson) => {
+interface RequestParams {
+  pagination: Record<'page' | 'perPage', number>;
+  sort: {
+    field: unknown;
+    order: unknown;
+  }
+  ids: string[];
+  target: string;
+  id: string;
+  data: unknown;
+  filter: unknown;
+} 
+
+export default function (apiUrl: string, httpClient = fetchJson) {
   /**
    * @param {String} type One of the constants appearing at the top if this file, e.g. 'UPDATE'
    * @param {String} resource Name of the resource to fetch, e.g. 'posts'
    * @param {Object} params The data request params, depending on the type
    * @returns {Object} { url, options } The HTTP request parameters
    */
-  const convertDataRequestToHTTP = (type: string, resource: string, params: object) => {
+  const convertDataRequestToHTTP = (type: string, resource: string, params: RequestParams) => {
     let url = '';
     const options = {};
     const specialParams = ['pagination', 'sort', 'filter'];

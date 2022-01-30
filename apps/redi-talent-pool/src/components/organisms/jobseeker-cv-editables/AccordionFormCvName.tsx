@@ -9,7 +9,7 @@ import { Element } from 'react-bulma-components'
 import { UseMutationResult, UseQueryResult } from 'react-query'
 import { Subject } from 'rxjs'
 import * as Yup from 'yup'
-import { useTpjobseekerCvUpdateMutation } from '../../../react-query/use-tpjobseekercv-mutation'
+import { useTpJobSeekerCvUpdateMutation } from '../../../react-query/use-tpjobseekercv-mutation'
 import { useTpJobSeekerCvByIdQuery } from '../../../react-query/use-tpjobseekercv-query'
 import { AccordionForm } from '../../molecules/AccordionForm'
 
@@ -26,7 +26,7 @@ export const AccordionFormCvName: FC<Props> = ({
 }) => {
 
   const queryHookResult = useTpJobSeekerCvByIdQuery(tpJobSeekerCvId)
-  const mutationHookResult = useTpjobseekerCvUpdateMutation(tpJobSeekerCvId)
+  const mutationHookResult = useTpJobSeekerCvUpdateMutation(tpJobSeekerCvId)
 
   return (
     <AccordionForm

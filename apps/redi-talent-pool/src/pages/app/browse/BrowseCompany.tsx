@@ -35,7 +35,7 @@ export const BrowseCompany: FC = () => {
   const { name, skills, desiredPositions, isJobFair2022Participant } = query
 
   const history = useHistory()
-  const { data: jobseekerProfiles } = useBrowseTpJobSeekerProfilesQuery({
+  const { data: jobSeekerProfiles } = useBrowseTpJobSeekerProfilesQuery({
     name,
     skills,
     desiredPositions,
@@ -161,7 +161,7 @@ export const BrowseCompany: FC = () => {
         )}
       </div>
       <Columns>
-        {jobseekerProfiles?.map((profile) => (
+        {jobSeekerProfiles?.map((profile) => (
           <Columns.Column
             mobile={{ size: 12 }}
             tablet={{ size: 6 }}

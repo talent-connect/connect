@@ -48,11 +48,11 @@ export const BrowseJobSeeker: FC = () => {
   }
   
   const toggleJobFair2022Filter = () =>
-  setQuery((latestQuery) => ({
-    ...latestQuery,
-    isJobFair2022JobListing:
-    !isJobFair2022JobListing ? true : null,
-  }))
+    setQuery((latestQuery) => ({
+      ...latestQuery,
+      isJobFair2022JobListing:
+      !isJobFair2022JobListing ? true : null,
+    }))
   
   const clearFilters = () => {
     setQuery((latestQuery) => ({

@@ -5,12 +5,12 @@ import { MeCompany } from './MeCompany'
 import { MeJobSeeker } from './MeJobSeeker'
 
 const Me: FC = () => {
-  const { data: jobseekerProfile } = useTpJobSeekerProfileQuery({
+  const { data: jobSeekerProfile } = useTpJobSeekerProfileQuery({
     retry: false,
   })
   const { data: companyProfile } = useTpCompanyProfileQuery({ retry: false })
 
-  if (jobseekerProfile) return <MeJobSeeker />
+  if (jobSeekerProfile) return <MeJobSeeker />
   if (companyProfile) return <MeCompany />
 
   return null

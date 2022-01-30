@@ -12,7 +12,7 @@ export interface FormSelectProps<T extends string, M extends boolean> {
   /** */
   className?: string;
   /** */
-  label: string;
+  label?: string;
   /** */
   multiSelect?: M;
   /** */

@@ -1,16 +1,17 @@
+import { FC } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useHistory } from 'react-router-dom'
+import { Container, Heading, Section } from 'react-bulma-components'
+
 import {
   Button,
   DecoratedHeadline,
   SVGImage,
-  SVGImages,
 } from '@talent-connect/shared-atomic-design-components'
-import { FC} from 'react'
-import { Container, Heading, Section } from 'react-bulma-components'
-import { useTranslation } from 'react-i18next'
-import { useHistory } from 'react-router-dom'
+import { SVGImages } from 'libs/shared-atomic-design-components/src/lib/atoms/SVGImage/SVGImage.props';
 import './NavTiles.scss'
 
-const NavTile: FC<{ name: string }> = ({ name }) => {
+const NavTile: FC<{ name: SVGImages }> = ({ name }) => {
   const { t } = useTranslation()
   const history = useHistory()
 
@@ -21,7 +22,7 @@ const NavTile: FC<{ name: string }> = ({ name }) => {
 
   return (
     <div className="tiles__type">
-      <SVGImage image={name as SVGImages} className="tiles__image" />
+      <SVGImage image={name} className="tiles__image" />
       <Heading
         size={2}
         textWeight="light"

@@ -29,7 +29,7 @@ export const tpJobSeekerProfileBuildApproveOrRejectButton = (operationType) => {
           alert(`User ${operationTypeToLabelMap[operationType]} completed`)
           window.location.reload()
         } catch (err) {
-          alert(`Error occured: ${err}`)
+          alert(`Error occurred: ${err}`)
         }
       }
       sendRequest()

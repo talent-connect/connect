@@ -1,6 +1,14 @@
 import { createComponentForm } from '@talent-connect/shared-utils';
+import { Dispatch, SetStateAction } from 'react';
+import { login } from '../../../services/api/api'
+import { saveAccessTokenToLocalStorage } from '../../../services/auth/auth'
+import { history } from '../../../services/history/history'
 
-export const componentForm = createComponentForm()
+interface ComponentFormProps {
+  setLoginError: Dispatch<SetStateAction<string>>
+}
+
+export const componentForm = createComponentForm<ComponentFormProps>()
   .validation((yup) => ({
     username: yup.string()
       .email()
@@ -16,6 +24,14 @@ export const componentForm = createComponentForm()
     username: '',
     password: '',
   }))
-  .onSubmit(() => {
-
+  .onSubmit(async ({ username, password }, { setSubmitting }, { setLoginError }) => {
+    try {
+      const accessToken = await login(username, password)
+      saveAccessTokenToLocalStorage(accessToken)
+      setSubmitting(false)
+      history.push('/app/me')
+    } catch (err) {
+      setSubmitting(false)
+      setLoginError('You entered an incorrect email, password, or both.')
+    }
   })

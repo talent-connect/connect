@@ -44,9 +44,6 @@ export const EditableJobPostings: FC<Props> = ({
   const [idOfTpJobListingBeingEdited, setIdOfTpJobListingBeingEdited] =
     useState<string | null>(null) // null = "new"
 
-  const hasJobListings = jobListings?.length
-  const isEmpty = !hasJobListings
-
   const startAdding = useCallback(() => {
     setIdOfTpJobListingBeingEdited(null) // means "new"
     setIsEditing(true)
@@ -83,7 +80,7 @@ export const EditableJobPostings: FC<Props> = ({
         </div>
 
         <div className="profile-section--body">
-          {isEmpty ? (
+          {!(jobListings?.length) ? (
             <EmptySectionPlaceholder
               height="none"
               onClick={() => setIsEditing(true)}

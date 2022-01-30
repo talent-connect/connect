@@ -24,12 +24,11 @@ export const buildApproveOrRejectButton = (operationType) => {
           method: 'post',
         }
         try {
-          const responseRaw = await doApiRequest(requestUrl, requestPayload)
-          const response = responseRaw.json
+          const { json: response } = await doApiRequest(requestUrl, requestPayload)
           alert(`User ${operationTypeToLabelMap[operationType]} completed`)
           window.location.reload()
         } catch (err) {
-          alert(`Error occured: ${err}`)
+          alert(`Error occurred: ${err}`)
         }
       }
       sendRequest()

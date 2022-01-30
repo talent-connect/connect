@@ -16,7 +16,7 @@ import { Content, Element } from 'react-bulma-components'
 import { Subject } from 'rxjs'
 import { v4 as uuidv4 } from 'uuid'
 import * as Yup from 'yup'
-import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
+import { useTpJobSeekerProfileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
@@ -116,7 +116,7 @@ const ModalForm: FC<ModalFormProps> = ({
   setIsFormDirty,
 }) => {
   const { data: profile } = useTpJobSeekerProfileQuery()
-  const mutation = useTpjobseekerprofileUpdateMutation()
+  const mutation = useTpJobSeekerProfileUpdateMutation()
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
 

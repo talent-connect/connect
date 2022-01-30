@@ -1,5 +1,6 @@
 export default {
-  save: function (key, value, expirationSec) {
+  /** */
+  save: function (key: string, value, expirationSec: number) {
     if (!Storage) return false
     var expirationMS = expirationSec * 1000
     var record = {
@@ -10,7 +11,8 @@ export default {
 
     return value
   },
-  load: function (key) {
+  /** */
+  load: function (key: string) {
     if (!Storage) return false
     try {
       var record = JSON.parse(localStorage.getItem(key))
@@ -20,11 +22,13 @@ export default {
       return false
     }
   },
-  remove: function (key) {
+  /** */
+  remove: function (key: string) {
     if (!Storage) return false
     localStorage.removeItem(key)
   },
-  update: function (key, value) {
+  /** */
+  update: function (key: string, value) {
     if (!Storage) return false
     try {
       var record = JSON.parse(localStorage.getItem(key))

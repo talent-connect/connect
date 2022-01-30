@@ -1,3 +1,5 @@
+import { FC, useEffect, useState } from 'react'
+import { UseMutationResult, UseQueryResult } from 'react-query'
 import {
   Button,
   Caption,
@@ -11,12 +13,8 @@ import {
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 import { mapOptions } from '@talent-connect/typescript-utilities';
-import { useFormik } from 'formik'
-import { FC, useEffect, useMemo, useState } from 'react'
 import { Content, Element, Tag } from 'react-bulma-components'
-import { UseMutationResult, UseQueryResult } from 'react-query'
-import * as Yup from 'yup'
-import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
+import { useTpJobSeekerProfileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
@@ -40,7 +38,7 @@ export const EditableSummary: FC<Props> & EditableSummaryHelpers = ({
     enabled: !disableEditing,
   })
   if (overridingProfile) queryHookResult.data = overridingProfile
-  const mutationHookResult = useTpjobseekerprofileUpdateMutation()
+  const mutationHookResult = useTpJobSeekerProfileUpdateMutation()
   const { data: profile } = queryHookResult
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
@@ -169,8 +167,8 @@ export const JobSeekerFormSectionSummary: FC<JobSeekerFormSectionSummaryProps> =
       <TextArea
         name="aboutYourself"
         label="About you (100-600 characters)"
-        rows={7}
         placeholder="Example: UX Designer with an academic background in Psychology. Experienced in negotiating with different kinds of clients and resolving customer complaints with a high level of empathy. Committed to understanding the human mind and designing impactful products by leveraging a strong sense of analytical and critical thinking."
+        rows={7}
         minChar={100}
         maxChar={600}
         {...formik}

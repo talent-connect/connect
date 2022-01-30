@@ -1,58 +1,21 @@
+import { FC, useState } from 'react'
+import { Link } from 'react-router-dom'
 import {
   Button,
   TextInput,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
-import { useFormik } from 'formik'
-import { FC, useCallback, useState } from 'react'
 import { Columns, Content, Form } from 'react-bulma-components'
-import { Link } from 'react-router-dom'
-import * as Yup from 'yup'
 import TpTeaser from '../../../components/molecules/TpTeaser'
 import AccountOperation from '../../../components/templates/AccountOperation'
-import { login } from '../../../services/api/api'
-import { saveAccessTokenToLocalStorage } from '../../../services/auth/auth'
-import { history } from '../../../services/history/history'
+import { componentForm } from './Login.form';
 
-interface LoginFormValues {
-  username: string
-  password: string
-}
-
-const validationSchema = Yup.object({
-  username: Yup.string()
-    .email()
-    .required()
-    .label('Email')
-    .max(255),
-  password: Yup.string()
-    .required()
-    .label('Password')
-    .max(255),
-})
 
 const Login: FC = () => {
   const [loginError, setLoginError] = useState<string>('')
 
-  const formik = useFormik<LoginFormValues>({
-    initialValues: {
-      username: '',
-      password: '',
-    },
-    validationSchema,
-    onSubmit: useCallback(({ username, password }, actions) => {
-      (async () => {
-        try {
-          const accessToken = await login(username, password)
-          saveAccessTokenToLocalStorage(accessToken)
-          actions.setSubmitting(false)
-          history.push('/app/me')
-        } catch (err) {
-          actions.setSubmitting(false)
-          setLoginError('You entered an incorrect email, password, or both.')
-        }
-      })()
-    }, []),
+  const formik = componentForm({
+    setLoginError
   })
 
   return (

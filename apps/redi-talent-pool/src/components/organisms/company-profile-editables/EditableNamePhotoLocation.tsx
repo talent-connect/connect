@@ -6,15 +6,14 @@ import {
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
 import { TpCompanyProfile } from '@talent-connect/shared-types'
-import { useFormik } from 'formik'
-import { FC, useEffect, useMemo, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { Columns, Content, Element } from 'react-bulma-components'
-import * as Yup from 'yup'
 import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import Avatar from '../Avatar'
+import { componentForm } from './EditableNamePhotoLocation.form';
 
 interface Props {
   profile: Partial<TpCompanyProfile>
@@ -106,12 +105,6 @@ EditableNamePhotoLocation.isSectionEmpty = (profile: Partial<TpCompanyProfile>) 
 
 // #################################################################################
 
-const validationSchema = Yup.object({
-  companyName: Yup.string()
-    .required('Your company name is required'),
-  location: Yup.string()
-    .required('Your location is required'),
-})
 
 interface ModalFormProps {
   setIsEditing: (boolean: boolean) => void;
@@ -124,27 +117,10 @@ const ModalForm: FC<ModalFormProps> =({
 }) => {
   const { data: profile } = useTpCompanyProfileQuery()
   const mutation = useTpCompanyProfileUpdateMutation()
-  const initialValues = useMemo(() => ({
-      companyName: profile?.companyName || '',
-      location: profile?.location || '',
-      tagline: profile?.tagline || '',
-    }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  )
 
-  const formik = useFormik({
-    initialValues,
-    validationSchema,
-    enableReinitialize: true,
-    validateOnMount: true,
-    onSubmit: (values, { setSubmitting }) => {
-      setSubmitting(true)
-      mutation.mutate(values, {
-        onSettled: () => setSubmitting(false),
-        onSuccess: () => setIsEditing(false),
-      })
-    },
+  const formik = componentForm({
+    profile,
+    setIsEditing,
   })
 
   useEffect(() => setIsFormDirty(formik.dirty), [formik.dirty, setIsFormDirty])

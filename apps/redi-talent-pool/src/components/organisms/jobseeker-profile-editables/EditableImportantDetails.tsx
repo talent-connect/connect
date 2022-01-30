@@ -21,7 +21,7 @@ import moment from 'moment'
 import { FC, useEffect, useState } from 'react'
 import { Content, Element } from 'react-bulma-components'
 import { UseMutationResult, UseQueryResult } from 'react-query'
-import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
+import { useTpJobSeekerProfileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
@@ -45,7 +45,7 @@ export const EditableImportantDetails: FC<Props> & EditableImportantDetailsHelpe
     enabled: !disableEditing,
   })
   if (overridingProfile) queryHookResult.data = overridingProfile
-  const mutationHookResult = useTpjobseekerprofileUpdateMutation()
+  const mutationHookResult = useTpJobSeekerProfileUpdateMutation()
   const { data: profile } = queryHookResult
 
   const [isEditing, setIsEditing] = useState(false)

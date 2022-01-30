@@ -10,7 +10,7 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import { Section, Columns, Content, Box } from 'react-bulma-components'
 
-import { useTpjobseekerCvCreateMutation } from '../../../../react-query/use-tpjobseekercv-mutation'
+import { useTpJobSeekerCvCreateMutation } from '../../../../react-query/use-tpjobseekercv-mutation'
 import { useTpJobSeekerCvQuery } from '../../../../react-query/use-tpjobseekercv-query'
 
 import { LoggedIn } from '../../../../components/templates'
@@ -29,7 +29,7 @@ const CvListPage: FC = () => {
 
   const { data: profile } = useTpJobSeekerProfileQuery()
   const { data: cvList } = useTpJobSeekerCvQuery()
-  const createMutation = useTpjobseekerCvCreateMutation()
+  const createMutation = useTpJobSeekerCvCreateMutation()
 
   const setFocusOnRef = (ref: HTMLInputElement) => ref?.focus()
 

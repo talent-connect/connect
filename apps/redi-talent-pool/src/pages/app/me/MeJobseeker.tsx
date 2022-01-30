@@ -22,7 +22,7 @@ import { EditableOverview } from '../../../components/organisms/jobseeker-profil
 import { EditableProfessionalExperience } from '../../../components/organisms/jobseeker-profile-editables/EditableProfessionalExperience'
 import { EditableSummary } from '../../../components/organisms/jobseeker-profile-editables/EditableSummary'
 import { LoggedIn } from '../../../components/templates'
-import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
+import { useTpJobSeekerProfileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { ReactComponent as ChecklistActiveImage } from './checklist-item-active.svg'
 import { ReactComponent as ChecklistImage } from './checklist-item.svg'
@@ -33,7 +33,7 @@ import { ReactComponent as StepPendingImage } from './pending.svg'
 
 export const MeJobSeeker: FC = () => {
   const { data: profile } = useTpJobSeekerProfileQuery()
-  const mutation = useTpjobseekerprofileUpdateMutation()
+  const mutation = useTpJobSeekerProfileUpdateMutation()
 
   // const currentStep = determineCurrentStep(profile)
 
@@ -230,7 +230,7 @@ function isProfileComplete(profile: Partial<TpJobSeekerProfile>): boolean {
 
 function SendProfileForReviewButton() {
   const { data: profile } = useTpJobSeekerProfileQuery()
-  const mutation = useTpjobseekerprofileUpdateMutation()
+  const mutation = useTpJobSeekerProfileUpdateMutation()
 
   const enabled =
     profile?.state === 'drafting-profile' && isProfileComplete(profile)

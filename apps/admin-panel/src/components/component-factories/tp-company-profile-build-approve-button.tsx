@@ -13,7 +13,7 @@ export const tpCompanyProfileBuildApproveButton = () => {
     // On click, make a request to approve
     const onClick = useCallback(() => {
       const sendRequest = async () => {
-        const finalConfirmationPrompt = `Are you certain you want to aporove this user?`
+        const finalConfirmationPrompt = `Are you certain you want to approve this user?`
         const shouldContinue = await showConfirmPrompt(finalConfirmationPrompt)
 
         if (!shouldContinue) return
@@ -31,7 +31,7 @@ export const tpCompanyProfileBuildApproveButton = () => {
 
           window.location.reload()
         } catch (err) {
-          alert(`Error occured: ${err}`)
+          alert(`Error occurred: ${err}`)
         }
       }
 

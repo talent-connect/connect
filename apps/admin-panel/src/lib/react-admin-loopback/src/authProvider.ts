@@ -3,7 +3,7 @@ import storage from './storage'
 
 /* eslint-disable prefer-promise-reject-errors */
 
-export const authProvider = (loginApiUrl, noAccessPage = '/login') => {
+export const authProvider = (loginApiUrl: RequestInfo, noAccessPage: string = '/login') => {
   return (type, params) => {
     if (params?.username && !params.email) {
       params.email = params.username

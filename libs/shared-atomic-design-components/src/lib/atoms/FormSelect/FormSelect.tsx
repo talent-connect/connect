@@ -40,7 +40,7 @@ const FormSelect = function <T extends string, M extends boolean>({
 }: FormSelectProps<T, M>) {
 
   const customStyles = {
-    option: (provided: any, state: any) => ({
+    option: (provided: Record<string, string>, state: { isFocused: boolean; }) => ({
       ...provided,
       padding: '13px',
       color: state.isFocused ? 'black' : '',
@@ -50,13 +50,13 @@ const FormSelect = function <T extends string, M extends boolean>({
         backgroundColor: '#dadada',
       },
     }),
-    clearIndicator: (provided: any) => ({
+    clearIndicator: (provided: Record<string, string>) => ({
       ...provided,
       svg: {
         margin: '0 0.1rem',
       },
     }),
-    dropdownIndicator: (provided: any, state: any) => ({
+    dropdownIndicator: (provided: Record<string, string>, state: { isFocused: boolean; menuIsOpen: boolean; }) => ({
       ...provided,
       color: state.isFocused ? '#ea5b29' : '#a0a0a0',
       transform: state.menuIsOpen ? 'rotate(180deg)' : 'none',
@@ -64,7 +64,7 @@ const FormSelect = function <T extends string, M extends boolean>({
         margin: '0 0.1rem',
       },
     }),
-    control: (provided: any, state: any) => ({
+    control: (provided: Record<string, string>, state: any) => ({
       ...provided,
       borderColor: state.isFocused ? '#ea5b29' : '#a0a0a0',
       minHeight: '48px',
@@ -73,23 +73,23 @@ const FormSelect = function <T extends string, M extends boolean>({
         borderColor: state.isFocused ? '#ea5b29' : '#f6b9a2',
       },
     }),
-    multiValue: (provided: any) => ({
+    multiValue: (provided: Record<string, string>) => ({
       ...provided,
       color: '#FFB298',
       borderRadius: '4px',
       backgroundColor: '#FFEAE2',
     }),
-    multiValueLabel: (provided: any) => ({
+    multiValueLabel: (provided: Record<string, string>) => ({
       ...provided,
       fontSize: 'inherit',
       color: '#FF7D55',
     }),
-    placeholder: (provided: any) => ({
+    placeholder: (provided: Record<string, string>) => ({
       ...provided,
       fontStyle: 'italic',
       color: '#a0a0a0',
     }),
-    multiValueRemove: (provided: any) => ({
+    multiValueRemove: (provided: Record<string, string>) => ({
       ...provided,
       svg: {
         padding: '0 2px',
@@ -117,7 +117,7 @@ const FormSelect = function <T extends string, M extends boolean>({
   const hasError = !!get(touched, name) && !!get(errors, name)
 
   const selectedValues = multiSelect
-    ? get(values, name)
+    ? (get(values, name) as string[]) // TODO: review
         ?.map((selValue) => items.filter(({ value }) => value === selValue))
         .flat()
     : items.find(({ value }) => value === get(values, name))
