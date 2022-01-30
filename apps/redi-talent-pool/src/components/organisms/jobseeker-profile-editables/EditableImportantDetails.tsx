@@ -94,16 +94,10 @@ export const EditableImportantDetails: FC<Props> & EditableImportantDetailsHelpe
                 <Caption>Availability</Caption>
                 <Content>
                   {profile?.availability && profile.availability !== 'date' && (
-                    <p>
-                      {availabilityOptionsIdToLabelMap[profile.availability]}
-                    </p>
+                    <p>{availabilityOptionsIdToLabelMap[profile.availability]}</p>
                   )}
                   { profile?.ifAvailabilityIsDate_date && profile.availability === 'date' && (
-                      <p>
-                        {moment(profile.ifAvailabilityIsDate_date).format(
-                          'DD.MM.YYYY'
-                        )}
-                      </p>
+                      <p>{moment(profile.ifAvailabilityIsDate_date).format('DD.MM.YYYY')}</p>
                     )}
                 </Content>
               </div>
@@ -113,11 +107,8 @@ export const EditableImportantDetails: FC<Props> & EditableImportantDetailsHelpe
               <div>
                 <Caption>Contact</Caption>
                 <Content>
-                  {[
-                    profile?.phoneNumber,
-                    profile?.contactEmail,
-                  ]
-                  .map((contactItem) => contactItem ? <p>{contactItem}</p> : null)}
+                  {[profile?.phoneNumber, profile?.contactEmail]
+                     .map((contactItem) => contactItem ? <p>{contactItem}</p> : null)}
                 </Content>
               </div>
             )}
@@ -126,9 +117,7 @@ export const EditableImportantDetails: FC<Props> & EditableImportantDetailsHelpe
               <div>
                 <Caption>Immigration status</Caption>
                 <Content>
-                  <p>
-                    {immigrationStatusOptionsIdToLabelMap[profile.immigrationStatus]}
-                  </p>
+                  <p>{immigrationStatusOptionsIdToLabelMap[profile.immigrationStatus]}</p>
                 </Content>
               </div>
             )}

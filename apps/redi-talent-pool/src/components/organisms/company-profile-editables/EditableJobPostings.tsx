@@ -257,7 +257,7 @@ const ModalForm: FC<ModalFormProps> = ({
           responsive={{ mobile: { textSize: { value: 5 } } }}
           className="oneandhalf-bs"
         >
-          We use a standardised list of skills and positions to help with the
+          We use a standardized list of skills and positions to help with the
           matching process of our candidates. Please select the top 6 skills you
           think are necessary for succeeding in this job, and up to 3 position
           titles that match this job. We will use those to suggest potential

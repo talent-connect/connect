@@ -4,22 +4,18 @@ import {
   FormDraggableAccordion,
   TextInput,
 } from '@talent-connect/shared-atomic-design-components'
-import {
-  HrSummit2021JobFairCompanyJobPreferenceRecord,
-  TpJobSeekerProfile,
-} from '@talent-connect/shared-types'
+import { TpJobSeekerProfile } from '@talent-connect/shared-types'
 import { reorder } from '@talent-connect/shared-utils';
-import { useFormik } from 'formik'
-import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { FC, useCallback, useEffect, useRef, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Content, Element } from 'react-bulma-components'
 import { Subject } from 'rxjs'
-import { v4 as uuidv4 } from 'uuid'
 import * as Yup from 'yup'
 import { useTpJobSeekerProfileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
+import { componentForm } from './EditableJobPreferences.form';
 
 interface Props {
   profile: Partial<TpJobSeekerProfile>
@@ -44,10 +40,10 @@ export const EditableJobPreferences: FC<Props> & EditableJobPreferencesHelpers =
 
   return (
     <Editable
-      isEditing={isEditing}
-      isFormDirty={isFormDirty}
-      setIsEditing={setIsEditing}
       title="Job Preferences"
+      modalTitle="Help us to match you"
+      modalHeadline="Job Preferences"
+      {...{ isEditing, isFormDirty, setIsEditing }}
       readComponent={
         isEmpty ? (
           <EmptySectionPlaceholder
@@ -72,14 +68,7 @@ export const EditableJobPreferences: FC<Props> & EditableJobPreferencesHelpers =
           </Content>
         )
       }
-      modalTitle="Help us to match you"
-      modalHeadline="Job Preferences"
-      modalBody={
-        <ModalForm
-          setIsEditing={setIsEditing}
-          setIsFormDirty={setIsFormDirty}
-        />
-      }
+      modalBody={<ModalForm {...{ setIsEditing, setIsFormDirty }}/>}
       modalStyles={{ minHeight: 700 }}
     />
   )
@@ -93,9 +82,6 @@ EditableJobPreferences.isSectionEmpty = (profile: Partial<TpJobSeekerProfile>) =
   !EditableJobPreferences.isSectionFilled(profile);
 
 // #################################################################################
-
-// TODO: put this one in config file
-const MAX_LANGUAGES = 6
 
 const validationSchema = Yup.object({
   hrSummit2021JobFairCompanyJobPreferences: Yup.array().of(
@@ -119,27 +105,10 @@ const ModalForm: FC<ModalFormProps> = ({
   const mutation = useTpJobSeekerProfileUpdateMutation()
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
-
-  const initialValues: Partial<TpJobSeekerProfile> = useMemo(() => ({
-      hrSummit2021JobFairCompanyJobPreferences:
-        profile?.hrSummit2021JobFairCompanyJobPreferences ??
-        buildBlankHrSummit2021JobFairCompanyJobPreferences(),
-    }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  )
   
-  const formik = useFormik<Partial<TpJobSeekerProfile>>({
-    initialValues,
-    validationSchema,
-    validateOnMount: true,
-    onSubmit: (values, { setSubmitting }) => {
-      setSubmitting(true)
-      mutation.mutate(values, {
-        onSettled: () => setSubmitting(false),
-        onSuccess: () => setIsEditing(false),
-      })
-    },
+  const formik = componentForm({
+    profile,
+    setIsEditing,
   })
 
   useEffect(() => setIsFormDirty?.(formik.dirty), [
@@ -262,12 +231,3 @@ const ModalForm: FC<ModalFormProps> = ({
   )
 }
 
-function buildBlankHrSummit2021JobFairCompanyJobPreferences(): HrSummit2021JobFairCompanyJobPreferenceRecord[] {
-  // Return exactly three elements since the job preferences consists of four priorities, relfected by the order of this array
-  return [
-    { uuid: uuidv4() },
-    { uuid: uuidv4() },
-    { uuid: uuidv4() },
-    { uuid: uuidv4() },
-  ]
-}

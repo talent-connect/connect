@@ -1,4 +1,4 @@
 export interface FaqItemProps {
   question: string
-  answer: string
+  answer: string | JSX.Element
 }

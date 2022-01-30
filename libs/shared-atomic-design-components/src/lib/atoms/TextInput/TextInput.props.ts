@@ -4,7 +4,7 @@ export interface TextInputProps<T extends string> {
   /** */
   name: T;
   /** */
-  placeholder: string;
+  placeholder?: string;
   /** */
   label?: string;
   /** */

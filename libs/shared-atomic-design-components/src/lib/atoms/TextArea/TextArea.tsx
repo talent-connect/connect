@@ -2,11 +2,8 @@ import classnames from 'classnames'
 import { Form, Content, Columns } from 'react-bulma-components'
 import './TextArea.scss'
 import { get } from 'lodash'
-import { FC } from 'react';
 import { TextAreaProps } from './TextArea.props';
 
-// the any is not the best solution here, I would need to use the props needed for
-// the field and the formik values coming from the form context
 const TextArea = function <T extends string>({
   name,
   className,

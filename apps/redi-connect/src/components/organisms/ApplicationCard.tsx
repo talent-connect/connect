@@ -59,9 +59,7 @@ const ApplicationCard: FC<Props> = ({
           >
             {applicationUser && (
               <>
-                <p>
-                  {applicationUser.firstName} {applicationUser.lastName}
-                </p>
+                <p>{applicationUser.firstName} {applicationUser.lastName}</p>
                 <p>{REDI_LOCATION_NAMES[applicationUser.rediLocation]}</p>
               </>
             )}

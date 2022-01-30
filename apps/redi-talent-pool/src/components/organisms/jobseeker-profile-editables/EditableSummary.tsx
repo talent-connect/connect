@@ -195,11 +195,14 @@ export const JobSeekerFormSectionSummary: FC<JobSeekerFormSectionSummaryProps> =
   )
 }
 
-const summaryTips = `Write not more than 3-4 sentences.
-<br /><br />
-Make sure you talk about:<br />
-1. Who are you? - Include your professional title and past relevant experiences or education with key functions.
-<br /><br />
-2. What do you have to offer? - Emphasize your strengths and skills that matter in your desired job, mention notable achievements, projects.
-<br /><br />
-3. What is your goal? - Explain how you want to add value and how you approach problems you are passionate about solving.`
+const summaryTips = (
+  <>
+    Write not more than 3-4 sentences.
+    <br /><br />
+    Make sure you talk about:<br />
+    1. Who are you? - Include your professional title and past relevant experiences or education with key functions.
+    <br /><br />
+    2. What do you have to offer? - Emphasize your strengths and skills that matter in your desired job, mention notable achievements, projects.
+    <br /><br />
+    3. What is your goal? - Explain how you want to add value and how you approach problems you are passionate about solving.
+  </>)

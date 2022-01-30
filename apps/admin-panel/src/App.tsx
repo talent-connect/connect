@@ -1265,9 +1265,7 @@ const TpJobSeekerProfileList: FC = (props) => {
           {/* <EditButton /> */}
         </Datagrid>
       </List>
-      <p>
-        A quick note regard <strong>state</strong>:
-      </p>
+      <p>A quick note regard <strong>state</strong>:</p>
       <ol>
         <li style={{ marginBottom: '12px' }}>
           <strong>drafting-profile</strong>: the very first state. The jobseeker

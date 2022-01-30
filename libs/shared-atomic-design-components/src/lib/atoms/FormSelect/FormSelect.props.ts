@@ -28,9 +28,9 @@ export interface FormSelectProps<T extends string, M extends boolean> {
   /** */
   setFieldValue: (name: string, value: boolean, x: boolean) => void ;  // TODO: signature
   /** */
-  touched: Record<T, unknown>; // TODO: fix;
+  touched?: Record<T, unknown>; // TODO: fix;
   /** */
-  errors: Record<T, unknown>; // TODO: fix;
+  errors?: Record<T, unknown>; // TODO: fix;
   /** */
   disabled?: boolean;
 }

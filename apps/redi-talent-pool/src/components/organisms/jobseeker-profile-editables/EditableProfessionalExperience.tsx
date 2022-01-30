@@ -374,7 +374,12 @@ const rolesAndResponsibilitiesPlaceholderText = `Example:
 
 const rolesAndResponsibilitiesQuestion =
   'Our tips for writing Roles and Responsibilities'
-const rolesAndResponsibilitiesAnswer = `• Write a list of 2-3 bullet points.<br />
-• Begin sentences with action verbs, such as designed, created, provided, resolved, etc.<br />
-• Focus on skills and accomplishments.<br />
-• Quantify as much information as you can. (Example: Resolved customer complaints. --> Resolved customer complaints, answering approximately 200 calls per week.`
+
+const rolesAndResponsibilitiesAnswer = (
+  <>
+    • Write a list of 2 - 3 bullet points.< br />
+    • Begin sentences with action verbs, such as designed, created, provided, resolved, etc.<br />
+    • Focus on skills and accomplishments.<br />
+    • Quantify as much information as you can. (Example: Resolved customer complaints. --&gt; Resolved customer complaints, answering approximately 200 calls per week.
+  </>
+)

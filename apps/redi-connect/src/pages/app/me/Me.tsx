@@ -59,7 +59,7 @@ const Me: FC<Props> = ({
 
       <Columns vCentered breakpoint="mobile" className="oneandhalf-bs">
         <Columns.Column size={3}>
-          <Avatar.Editable {...{ profile }}/>
+          <Avatar.Editable {...{ profile, profileSaveStart }}/>
         </Columns.Column>
         <Columns.Column size={8}>
           <Heading>Hi, {firstName}</Heading>

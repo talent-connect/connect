@@ -1,7 +1,5 @@
 import { FC } from 'react'
-import * as Yup from 'yup'
 import { connect } from 'react-redux'
-import { useFormik } from 'formik'
 
 import { TextInput } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
@@ -9,53 +7,21 @@ import { RedProfile } from '@talent-connect/shared-types'
 import { profileSaveStart } from '../../redux/user/actions'
 import { ReadContactDetails } from '../molecules'
 import { mapStateToProps } from '../../helpers';
-
-export interface ContactsFormValues {
-  firstName: string
-  lastName: string
-  contactEmail: string
-  telephoneNumber: string
-}
-
-const validationSchema = Yup.object({
-  firstName: Yup.string()
-    .required()
-    .max(255),
-  lastName: Yup.string()
-    .required()
-    .max(255),
-  contactEmail: Yup.string()
-    .email()
-    .required()
-    .max(255)
-    .label('Contact email'),
-  telephoneNumber: Yup.string()
-    .max(255)
-    .label('Telephone number'),
-})
+import { ComponentFormProps, componentForm } from './EditableContactDetails.form';
 
 interface Props {
   profile: RedProfile
-  profileSaveStart: (arg: ContactsFormValues & { id: string }) => void
+  profileSaveStart: ComponentFormProps['profileSaveStart']
 }
 
 const EditableContactDetails: FC<Props> = ({
-  profile: { id, firstName, lastName, contactEmail, telephoneNumber },
-  profileSaveStart
+  profile,
+  profileSaveStart,
 }) => {
 
-  const formik = useFormik<ContactsFormValues>({
-    initialValues: {
-      firstName,
-      lastName,
-      contactEmail,
-      telephoneNumber,
-    },
-    enableReinitialize: true,
-    validationSchema,
-    onSubmit: (profileContacts) => {
-      profileSaveStart({ ...profileContacts, id })
-    },
+  const formik = componentForm({
+    profile,
+    profileSaveStart
   })
 
   return (

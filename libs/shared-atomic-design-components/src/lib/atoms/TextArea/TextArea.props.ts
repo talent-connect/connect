@@ -26,7 +26,7 @@ export interface TextAreaProps<T extends string> {
   /** */
   isSubmitting?: boolean;
   /** */
-  touched: Record<T, unknown>; // TODO: fix
+  touched?: Record<T, unknown>; // TODO: fix
   /** */
-  errors: Record<T, unknown>; // TODO: fix
+  errors?: Record<T, unknown>; // TODO: fix
 }
