@@ -13,7 +13,7 @@ const Modal: FC<ModalProps> & Record<'Body' | 'Foot', FC> = ({
   confirm,
   styles
 }) => {
-  const setShowModal = stateFn ? () => stateFn(false) : undefined
+  const setShowModal = stateFn ? () => stateFn(false) : null
 
   const [internalShow, setInternalShow] = useState(false)
 
@@ -53,8 +53,11 @@ const Modal: FC<ModalProps> & Record<'Body' | 'Foot', FC> = ({
   )
 }
 
-function CloseButton({ onClick }: { onClick: () => void }) {
-  return (
+interface CloseButtonProps {
+  onClick: () => void;
+}
+
+const CloseButton: FC<CloseButtonProps> = ({ onClick }) => (
     <button
       type="button"
       onClick={() => onClick()}
@@ -62,7 +65,6 @@ function CloseButton({ onClick }: { onClick: () => void }) {
       aria-label="close"
     />
   )
-}
 
 Modal.Body = BulmaModal.Card.Body
 Modal.Foot = BulmaModal.Card.Foot

@@ -27,10 +27,7 @@ export const EditableDetails: FC<Props> = ({ profile, disableEditing }) => {
 
   return (
     <Editable
-      disableEditing={disableEditing}
-      isEditing={isEditing}
-      isFormDirty={isFormDirty}
-      setIsEditing={setIsEditing}
+      {...{ disableEditing, isEditing, isFormDirty, setIsEditing }}
       title="Details"
       readComponent={
         isEmpty ? (
@@ -51,16 +48,16 @@ export const EditableDetails: FC<Props> = ({ profile, disableEditing }) => {
                 gridRowGap: '32px',
               }}
             >
-              {profile?.industry ? (
+              {profile?.industry && (
                 <div>
                   <Caption>Industry</Caption>
                   <Content>
                     <p>{profile.industry}</p>
                   </Content>
                 </div>
-              ) : null}
+              )}
 
-              {profile?.website || profile?.linkedInUrl ? (
+              {(profile?.website || profile?.linkedInUrl) && (
                 <div>
                   <Caption>Links</Caption>
                   <Content>
@@ -75,7 +72,7 @@ export const EditableDetails: FC<Props> = ({ profile, disableEditing }) => {
                       ))}
                   </Content>
                 </div>
-              ) : null}
+              )}
             </div>
           </div>
         )
@@ -100,13 +97,15 @@ EditableDetails.isSectionFilled = ({ website, industry, linkedInUrl }: Partial<T
 EditableDetails.isSectionEmpty = (profile: Partial<TpCompanyProfile>) =>
   !EditableDetails.isSectionFilled(profile)
 
-function ModalForm({
-  setIsEditing,
-  setIsFormDirty,
-}: {
+interface ModalFormProps {
   setIsEditing: (boolean: boolean) => void
   setIsFormDirty: (boolean: boolean) => void
-}) {
+}
+
+const ModalForm: FC<ModalFormProps> = ({
+  setIsEditing,
+  setIsFormDirty,
+}) => {
   const { data: profile } = useTpCompanyProfileQuery()
   const mutation = useTpCompanyProfileUpdateMutation()
 

@@ -317,7 +317,7 @@ const ModalForm: FC<ModalFormProps> = ({
               Cancel
             </Button>
           </div>
-          {tpJobListingId ? (
+          {tpJobListingId && (
             <Button
               simple
               disabled={updateMutation.isLoading}
@@ -325,7 +325,7 @@ const ModalForm: FC<ModalFormProps> = ({
             >
               Delete
             </Button>
-          ) : null}
+          )}
         </div>
       </Modal.Body>
     </Modal>

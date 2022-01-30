@@ -35,7 +35,8 @@ const MContacts: FC<MContactProps> = ({
       className={classnames('m-contacts', { [`${className}`]: className })}
     >
       <ContactRow label="Email">
-        {contactEmail && <a href={`mailto:${contactEmail}`}>{contactEmail}</a>}
+        {contactEmail &&
+          <a href={`mailto:${contactEmail}`}>{contactEmail}</a>}
       </ContactRow>
       <ContactRow label="Phone">{telephoneNumber}</ContactRow>
       <ContactRow label="LinkedIn">

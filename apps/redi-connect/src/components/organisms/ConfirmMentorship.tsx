@@ -1,8 +1,5 @@
 import { useState } from 'react'
 import { connect } from 'react-redux'
-import { useHistory } from 'react-router-dom'
-import * as Yup from 'yup'
-import { useFormik } from 'formik'
 import { Content } from 'react-bulma-components'
 import {
   TextArea,
@@ -11,6 +8,7 @@ import {
 import { Modal } from '@talent-connect/shared-atomic-design-components'
 import { matchesAcceptMentorshipStart } from '../../redux/matches/actions'
 import { RedMatch } from '@talent-connect/shared-types'
+import { componentForm } from './ConfirmMentorship.form';
 
 interface ConfirmMentorshipProps {
   match: RedMatch
@@ -22,17 +20,6 @@ interface ConfirmMentorshipProps {
   ) => void
 }
 
-interface ConfirmMentorshipFormValues {
-  mentorReplyMessageOnAccept: string
-}
-
-const validationSchema = Yup.object({
-  mentorReplyMessageOnAccept: Yup.string()
-    .required('Write at least 250 characters to introduce yourself to your mentee.')
-    .min(250, 'Write at least 250 characters to introduce yourself to your mentee.')
-    .max(600, 'The introduction text can be up to 600 characters long.'),
-})
-
 // TODO: This throws a TS error: { dispatch, matchId }: ConnectButtonProps
 // What to replace with instead of below hack?
 const ConfirmMentorship = ({
@@ -41,7 +28,6 @@ const ConfirmMentorship = ({
   matchesAcceptMentorshipStart,
 }: ConfirmMentorshipProps) => {
   const [isModalActive, setModalActive] = useState(false)
-  const history = useHistory()
   const { mentee = { firstName: null } } = match
 
   //  Keeping this to make sure we address this as its not planned in the design, yet
@@ -57,20 +43,10 @@ const ConfirmMentorship = ({
   //     <>{children}</>
   //   )
 
-  const formik = useFormik<ConfirmMentorshipFormValues>({
-    initialValues: {
-      mentorReplyMessageOnAccept: '',
-    },
-    validationSchema,
-    onSubmit: async ({ mentorReplyMessageOnAccept }) => {
-      try {
-        matchesAcceptMentorshipStart(match.id, mentorReplyMessageOnAccept)
-        setModalActive(false)
-        history.push(`/app/mentorships/${match.id}`)
-      } catch (error) {
-        console.log('error ', error)
-      }
-    },
+  const formik = componentForm({
+    match,
+    matchesAcceptMentorshipStart,
+    setModalActive
   })
 
   const isFormSubmittable = formik.dirty && formik.isValid

@@ -16,19 +16,18 @@ const Me: FC<Props> = ({
 
   return (
     <Content>
-      {menteeCountCapacity && <p>{menteeCountCapacity}</p>}
+      {menteeCountCapacity &&
+        <p>{menteeCountCapacity}</p>}
       {!optOutOfMenteesFromOtherRediLocation && (
         <p>
           Let mentees in my location ({REDI_LOCATION_NAMES[rediLocation]}) AND
           other locations apply for mentorship
-        </p>
-      )}
+        </p>)}
       {optOutOfMenteesFromOtherRediLocation && (
         <p>
           Only let mentees from my own location (
           {REDI_LOCATION_NAMES[rediLocation]}) apply for mentorship
-        </p>
-      )}
+        </p>)}
     </Content>
   )
 }

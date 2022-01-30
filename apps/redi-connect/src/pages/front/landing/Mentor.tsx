@@ -19,7 +19,7 @@ const Mentor: FC = () => {
     <Landing>
       <RediHeroLanding type="mentor" />
       <Checklist type="mentor" />
-      {!isLoggedIn() ? (
+      {!isLoggedIn() && (
         <Section>
           <Container style={{ textAlign: 'center' }}>
             <Button onClick={() => history.push('/front/signup-landing')}>
@@ -27,7 +27,7 @@ const Mentor: FC = () => {
             </Button>
           </Container>
         </Section>
-      ) : null}
+      )}
       {/* <Carousel border="blue" title={title} headline={headline} /> */}
       <PreFooter />
     </Landing>

@@ -12,7 +12,7 @@ addons.setConfig({
   enableShortcuts: true,
   isToolshown: true,
   theme: ReDITheme,
-  selectedPanel: undefined,
+  selectedPanel: null,
   initialActive: 'sidebar',
   sidebar: {
     showRoots: false,

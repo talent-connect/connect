@@ -4,6 +4,8 @@ import {
   fetchCurrentUserTpJobSeekerCvById,
 } from '../services/api/api'
 
+const _5_MIN = 5 * 60 * 1000;
+
 interface Props {
   retry?: boolean
   enabled?: boolean
@@ -14,7 +16,7 @@ export function useTpJobSeekerCvQuery(props?: Props) {
     'allCurrentUserTpJobSeekerCv',
     fetchAllCurrentUserTpJobSeekerCv,
     {
-      staleTime: 5 * 60 * 1000,
+      staleTime: _5_MIN,
       retry: props?.retry ?? true,
       refetchOnWindowFocus: false,
     }
@@ -26,7 +28,7 @@ export function useTpJobSeekerCvByIdQuery(id: string, props?: Props) {
     ['currentUserTpJobSeekerCv', id],
     () => fetchCurrentUserTpJobSeekerCvById(id),
     {
-      staleTime: 5 * 60 * 1000,
+      staleTime: _5_MIN,
       retry: props?.retry ?? true,
       enabled: props?.enabled ?? true,
       refetchOnWindowFocus: false,

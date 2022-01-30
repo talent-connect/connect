@@ -19,17 +19,17 @@ const ReadEducation: FC<Props> = ({
   profile: { mentee_highestEducationLevel },
   shortInfo
 }) => {
-  if (!mentee_highestEducationLevel) {
+  if (!mentee_highestEducationLevel)
     return (
       <Placeholder>
         Input your information about your Education here.
       </Placeholder>
     )
-  }
 
   return (
     <>
-      {shortInfo && <Caption>Highest Education</Caption>}
+      {shortInfo &&
+        <Caption>Highest Education</Caption>}
       <Content>
         <p>{EDUCATION_LEVELS[mentee_highestEducationLevel]}</p>
       </Content>

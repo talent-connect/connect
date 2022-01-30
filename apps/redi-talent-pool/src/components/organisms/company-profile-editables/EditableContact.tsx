@@ -55,32 +55,30 @@ export const EditableContact: FC<Props> = ({
               gridRowGap: '32px',
             }}
           >
-            {firstName || lastName ? (
+            {(firstName || lastName) && (
               <div>
                 <Caption>Name</Caption>
                 <Content>
-                  <p>
-                    {firstName} {lastName}
-                  </p>
+                  <p>{firstName} {lastName}</p>
                 </Content>
               </div>
-            ) : null}
-            {phoneNumber ? (
+            )}
+            {phoneNumber && (
               <div>
                 <Caption>Phone</Caption>
                 <Content>
                   <p>{phoneNumber}</p>
                 </Content>
               </div>
-            ) : null}
-            {contactEmail ? (
+            )}
+            {contactEmail && (
               <div>
                 <Caption>Email</Caption>
                 <Content>
                   <p>{contactEmail}</p>
                 </Content>
               </div>
-            ) : null}
+            )}
           </div>
         )
       }
@@ -88,8 +86,7 @@ export const EditableContact: FC<Props> = ({
       modalHeadline="Contact"
       modalBody={
         <ModalForm
-          setIsEditing={setIsEditing}
-          setIsFormDirty={setIsFormDirty}
+          {...{ setIsEditing, setIsFormDirty }}
         />
       }
       modalStyles={{ minHeight: '40rem' }}
@@ -105,20 +102,22 @@ EditableContact.isSectionFilled = (profile: Partial<TpCompanyProfile>) =>
 EditableContact.isSectionEmpty = (profile: Partial<TpCompanyProfile>) =>
   !EditableContact.isSectionFilled(profile)
 
-function ModalForm({
-  setIsEditing,
-  setIsFormDirty,
-}: {
+interface ModalFormProps {
   setIsEditing: (boolean: boolean) => void
   setIsFormDirty: (boolean: boolean) => void
-}) {
+}
+
+const ModalForm: FC<ModalFormProps> = ({
+  setIsEditing,
+  setIsFormDirty,
+}) => {
   const { data: profile } = useTpCompanyProfileQuery()
   const mutation = useTpCompanyProfileUpdateMutation()
   const initialValues = useMemo(() => ({
-      firstName: profile?.firstName ?? '',
-      lastName: profile?.lastName ?? '',
-      contactEmail: profile?.contactEmail ?? '',
-      phoneNumber: profile?.phoneNumber ?? '',
+      firstName: profile?.firstName || '',
+      lastName: profile?.lastName || '',
+      contactEmail: profile?.contactEmail || '',
+      phoneNumber: profile?.phoneNumber || '',
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []

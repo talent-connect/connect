@@ -19,7 +19,7 @@ const Mentee: FC = () => {
     <Landing>
       <RediHeroLanding type="mentee" />
       <Checklist type="mentee" />
-      {!isLoggedIn() ? (
+      {!isLoggedIn() && (
         <Section>
           <Container style={{ textAlign: 'center' }}>
             <Button onClick={() => history.push('/front/signup-landing')}>
@@ -27,7 +27,7 @@ const Mentee: FC = () => {
             </Button>
           </Container>
         </Section>
-      ) : null}
+      )}
       {/* <Carousel border="orange" headline={headline} title={title} /> */}
       <PreFooter />
     </Landing>

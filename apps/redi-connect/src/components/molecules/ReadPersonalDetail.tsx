@@ -32,7 +32,8 @@ const ReadPersonalDetail: FC<Props> = ({
 
   return (
     <>
-      {caption && <Caption>Personal Details</Caption>}
+      {caption &&
+        <Caption>Personal Details</Caption>}
       <PipeList items={detailsList} />
     </>
   )

@@ -1,6 +1,5 @@
 import { FC } from 'react'
 import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
 
 import {
   Caption,
@@ -35,7 +34,8 @@ const ReadMentoringTopics: FC<ReadMentoringProps> = ({
 
   return (
     <>
-      {caption && <Caption>{'Mentoring Topics'}</Caption>}
+      {caption &&
+        <Caption>{'Mentoring Topics'}</Caption>}
       <ProfileTags items={categories} />
     </>
   )

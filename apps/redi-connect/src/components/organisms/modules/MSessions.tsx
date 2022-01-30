@@ -1,7 +1,6 @@
 import { FC, useState } from 'react'
 import { connect } from 'react-redux'
 import _uniqueId from 'lodash/uniqueId'
-import * as Yup from 'yup'
 import moment from 'moment'
 import {
   Button,
@@ -15,13 +14,10 @@ import {
   RedMentoringSession,
   FormSubmitResult,
 } from '@talent-connect/shared-types'
-import { useFormik } from 'formik'
-import {
-  MentoringSessionDurationOption,
-  MENTORING_SESSION_DURATION_OPTIONS,
-} from '@talent-connect/shared-config'
+import { MENTORING_SESSION_DURATION_OPTIONS } from '@talent-connect/shared-config'
 import { mentoringSessionsCreateStart } from '../../../redux/mentoringSessions/actions'
 import './MSessions.scss'
+import { componentForm } from './MSessions.form';
 
 const formMentoringSessionDurationOptions = MENTORING_SESSION_DURATION_OPTIONS
   .map((sessionDuration) => ({
@@ -40,20 +36,6 @@ const AddSession = ({ onClickHandler }: AddSessionProps) => (
     onClick={() => onClickHandler(true)}
   />
 )
-
-interface FormValues {
-  date: Date
-  minuteDuration?: MentoringSessionDurationOption
-}
-
-const validationSchema = Yup.object({
-  date: Yup.date()
-    .required()
-    .label('Date'),
-  minuteDuration: Yup.number()
-    .required('Please select the duration of the session.')
-    .oneOf([...MENTORING_SESSION_DURATION_OPTIONS], 'Please select a duration'),
-})
 
 interface MSessions {
   sessions: RedMentoringSession[]
@@ -77,30 +59,12 @@ const MSessions: FC<MSessions> = ({
     formik.resetForm()
   }
 
-  const formik = useFormik<FormValues>({
-    initialValues: {
-      date: new Date(),
-    },
-    enableReinitialize: true,
-    validationSchema,
-    onSubmit: async ({ date, minuteDuration }, actions) => {
-      setSubmitResult('submitting')
-      try {
-        await mentoringSessionsCreateStart({
-          date,
-          minuteDuration,
-          menteeId,
-        })
-        setSubmitResult('success')
-        setShowAddSession(false)
-        setTimeout(() => window.location.reload(), 2000)
-      } catch (err) {
-        setSubmitResult('error')
-      } finally {
-        actions.setSubmitting(false)
-      }
-    },
-  })
+  const formik = componentForm({
+    menteeId,
+    setShowAddSession,
+    setSubmitResult,
+    mentoringSessionsCreateStart,
+  });
 
   return (
     <Module

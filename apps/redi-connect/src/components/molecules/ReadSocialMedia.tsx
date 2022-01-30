@@ -30,7 +30,8 @@ const ReadSocialMedia: FC<Props> = ({
 
   return (
     <>
-      {shortInfo && <Caption>Social Media</Caption>}
+      {shortInfo &&
+        <Caption>Social Media</Caption>}
       <Content>
         {linkedInProfileUrl && (
           <p>
@@ -41,8 +42,7 @@ const ReadSocialMedia: FC<Props> = ({
             >
               {linkedInProfileUrl}
             </a>
-          </p>
-        )}
+          </p>)}
         {githubProfileUrl && (
           <p>
             <a
@@ -52,9 +52,9 @@ const ReadSocialMedia: FC<Props> = ({
             >
               {githubProfileUrl}
             </a>
-          </p>
-        )}
-        {slackUsername && <p>{slackUsername}</p>}
+          </p>)}
+        {slackUsername &&
+          <p>{slackUsername}</p>}
       </Content>
     </>
   )

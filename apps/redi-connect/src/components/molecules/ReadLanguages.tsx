@@ -24,7 +24,8 @@ const Some: FC<Props> = ({ profile: { languages } }) => {
   return (
     <>
       <Caption>Languages</Caption>
-      {languages && <PipeList items={languages} />}
+      {languages &&
+        <PipeList items={languages} />}
     </>
   )
 }

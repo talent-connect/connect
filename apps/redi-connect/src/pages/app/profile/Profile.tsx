@@ -37,8 +37,8 @@ interface RouteParams {
 }
 
 interface ProfileProps {
-  profile: RedProfile | undefined
-  currentUser: RedProfile | undefined
+  profile: RedProfile | null
+  currentUser: RedProfile | null
   hasReachedMenteeLimit: boolean
   profilesFetchOneStart: (profileId: string) => void
 }

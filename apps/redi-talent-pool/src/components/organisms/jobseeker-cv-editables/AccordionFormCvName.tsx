@@ -45,8 +45,10 @@ export const AccordionFormCvName: FC<Props> = ({
 }
 
 const validationSchema = Yup.object({
-  firstName: Yup.string().required('Your first name is required'),
-  lastName: Yup.string().required('Your last name is required'),
+  firstName: Yup.string()
+    .required('Your first name is required'),
+  lastName: Yup.string()
+    .required('Your last name is required'),
 })
 
 interface FormProps {

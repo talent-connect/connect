@@ -122,11 +122,11 @@ export const getProfiles = ({
   nameQuery,
 }: RedProfileFilters): Promise<RedProfile[]> => {
   const filterLanguages =
-    languages?.length ? { inq: languages } : undefined
+    languages?.length ? { inq: languages } : null
   const filterCategories =
-    categories?.length ? { inq: categories } : undefined
+    categories?.length ? { inq: categories } : null
   const filterLocations =
-    locations?.length ? { inq: locations } : undefined
+    locations?.length ? { inq: locations } : null
 
   return http(
     `${API_URL}/redProfiles?filter=${JSON.stringify({
@@ -178,15 +178,15 @@ export const getProfile = (profileId: string): Promise<RedProfile> =>
 
 // TODO: status: 'applied' here should be matched against RedMatch['status']
 export async function fetchApplicants (): Promise<RedProfile[]> {
-  const { data } = await http(
+  return (await http(
     `${API_URL}/redMatches?filter=` +
       JSON.stringify({
         where: {
           mentorId: getRedProfileFromLocalStorage().id,
           status: 'applied',
         },
-      }))
-  return data
+      })))
+    .data
 }
 
 export async function requestMentorship (
@@ -194,11 +194,11 @@ export async function requestMentorship (
   expectationText: string,
   mentorId: string
 ): Promise<RedMatch> {
-  const { data } = await http(`${API_URL}/redMatches/requestMentorship`, {
+  return (await http(`${API_URL}/redMatches/requestMentorship`, {
     method: 'post',
     data: { applicationText, expectationText, mentorId },
-  })
-  return data
+  }))
+    .data
 }
 
 export async function reportProblem (problemReport: RedProblemReportDto): Promise<any> {

@@ -91,6 +91,7 @@ import { API_URL } from './config'
 import {
   TpJobSeekerProfileState,
   TpCompanyProfileState,
+  RedProfile,
 } from '@talent-connect/shared-types'
 
 import { objectEntries, objectValues, mapOptionsObject } from '@talent-connect/typescript-utilities'
@@ -161,7 +162,7 @@ const RecordUpdatedAt: FC<RecordProps> = ({ addLabel = true, label = 'Record upd
 }
 
 const LanguageList: FC<{ data?: Record<string, string> }> = ({ data }) => {
-  return <span>{data ? Object.values(data).join(', ') : null}</span>
+  return <span>{data && Object.values(data).join(', ')}</span>
 }
 
 const CategoryList: FC<{ data: any }> = ({ data }) => {
@@ -339,9 +340,8 @@ function redProfileListExporter(profiles) {
     'administratorInternalComment',
   ]
 
-  const data = profiles.map((profile) => {
-    return Object.fromEntries(properties.map((prop) => [prop, profile[prop]]))
-  })
+  const data = profiles.map((profile) =>
+    objectEntries(properties.map((prop) => [prop, profile[prop]])))
 
   const csv = convertToCSV(data)
   downloadCSV(csv, 'yalla')
@@ -443,7 +443,7 @@ const RedProfileListFilters: FC = (props) => (
     />
   </Filter>
 )
-function userTypeToEmoji({ userType }) {
+function userTypeToEmoji({ userType }: RedProfile) {
   const emoji = {
     mentor: '🎁 Mentor',
     mentee: '💎 Mentee',
@@ -1056,7 +1056,7 @@ const RedMentoringSessionListFilters: FC = (props) => (
 const RedMentoringSessionListAside: FC = () => {
   const [fromDate, setFromDate] = useState(null)
   const [toDate, setToDate] = useState(null)
-  const [rediLocation, setRediLocation] = useState(undefined)
+  const [rediLocation, setRediLocation] = useState(null)
   const [loadState, setLoadState] = useState('pending')
   const [result, setResult] = useState(null)
   const [step, setStep] = useState(0)
@@ -1114,7 +1114,7 @@ const RedMentoringSessionListAside: FC = () => {
           value={rediLocation}
           onChange={(e) => setRediLocation(e.target.value)}
         >
-          <MenuItem value={undefined}>All cities</MenuItem>
+          <MenuItem value={null}>All cities</MenuItem>
           <MenuItem value="berlin">Berlin</MenuItem>
           <MenuItem value="munich">Munich</MenuItem>
           <MenuItem value="nrw">NRW</MenuItem>
@@ -1739,24 +1739,31 @@ const TpCompanyProfileListFilters: FC = (props) => (
   </Filter>
 )
 
-const ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldShow: FC<{ record?: any }> = (props) => { // TODO: type props
-  return props.record?.howDidHearAboutRediKey === 'other' &&
-    props.record?.howDidHearAboutRediOtherText ? (
+interface ProvProps {
+  record?: {
+    howDidHearAboutRediOtherText: string;
+    howDidHearAboutRediKey: string;
+  }
+}
+
+const ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldShow: FC<ProvProps> = (props) => { // TODO: type props
+  const { record: { howDidHearAboutRediKey, howDidHearAboutRediOtherText } } = props;
+  return howDidHearAboutRediOtherText && howDidHearAboutRediKey === 'other' && (
     <Labeled label="How They Heard about ReDI Talent Pool (If selected Other)">
       <TextField source="howDidHearAboutRediOtherText" {...props} />
     </Labeled>
-  ) : null
+  )
 }
 
-const ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldEdit: FC<{ record?: any }> = (props) => {
-  return props.record?.howDidHearAboutRediKey === 'other' &&
-    props.record?.howDidHearAboutRediOtherText ? (
+const ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldEdit: FC<ProvProps> = (props) => {
+  const { record: { howDidHearAboutRediKey, howDidHearAboutRediOtherText } } = props;
+  return howDidHearAboutRediOtherText && howDidHearAboutRediKey === 'other' && (
     <TextInput
       label="How They Heard about ReDI Talent Pool (If selected Other)"
       source="howDidHearAboutRediOtherText"
       {...props}
     />
-  ) : null
+  )
 }
 
 const TpCompanyProfileShow: FC = (props) => (

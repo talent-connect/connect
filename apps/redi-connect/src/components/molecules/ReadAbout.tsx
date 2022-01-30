@@ -14,14 +14,15 @@ interface Props {
 }
 
 const Me: FC<Props> = ({ profile: { personalDescription, expectations }}) => {
-  if (!personalDescription && !expectations) {
+  if (!personalDescription && !expectations)
     return <Placeholder>Please tell us a bit about yourself</Placeholder>
-  }
 
   return (
     <Content>
-      {personalDescription && <p>{personalDescription}</p>}
-      {expectations && <p>{expectations}</p>}
+      {personalDescription &&
+        <p>{personalDescription}</p>}
+      {expectations &&
+        <p>{expectations}</p>}
     </Content>
   )
 }
@@ -35,8 +36,10 @@ const Some: FC<Props> = ({
         About {firstName} {lastName}
       </Caption>
       <Content>
-        {personalDescription && <p>{personalDescription}</p>}
-        {expectations && <p>{expectations}</p>}
+        {personalDescription &&
+          <p>{personalDescription}</p>}
+        {expectations &&
+          <p>{expectations}</p>}
       </Content>
     </>
   )

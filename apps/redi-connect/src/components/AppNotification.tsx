@@ -58,7 +58,7 @@ const useNotificationStyles = makeStyles((theme: Theme) => ({
 
 export interface AppNotificationOptions {
   variant: NotificationVariant
-  autoHideDuration: number | undefined
+  autoHideDuration: number | null
 }
 interface SubjectShowNotification extends AppNotificationOptions {
   message: string | null

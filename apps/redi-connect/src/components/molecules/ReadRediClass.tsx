@@ -20,11 +20,11 @@ const ReadRediClass: FC<Props> = ({
 
   return (
     <>
-      {shortInfo && <Caption>Redi Class</Caption>}
+      {shortInfo &&
+        <Caption>Redi Class</Caption>}
       <Content>
-        {mentee_currentlyEnrolledInCourse && (
-          <p>{COURSES_MAP[mentee_currentlyEnrolledInCourse]}</p>
-        )}
+        {mentee_currentlyEnrolledInCourse && 
+          <p>{COURSES_MAP[mentee_currentlyEnrolledInCourse]}</p>}
       </Content>
     </>
   )

@@ -39,7 +39,7 @@ export default (apiUrl, httpClient = fetchJson) => {
         if (perPage > 0 && page >= 0) query.skip = (page - 1) * perPage;
 
         Object.keys(params).forEach((key) => {
-          if (!specialParams.includes(key) && params[key] !== undefined) {
+          if (!specialParams.includes(key) && !!params[key]) {
             query[key] = params[key];
           }
         });
@@ -75,7 +75,7 @@ export default (apiUrl, httpClient = fetchJson) => {
         if (perPage > 0 && page >= 0) query.skip = (page - 1) * perPage;
 
         Object.keys(params).forEach((key) => {
-          if (!specialParams.includes(key) && params[key] !== undefined) {
+          if (!specialParams.includes(key) && !!params[key]) {
             query[key] = params[key];
           }
         });

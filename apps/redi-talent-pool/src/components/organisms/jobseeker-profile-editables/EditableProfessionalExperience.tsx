@@ -90,7 +90,7 @@ export const  EditableProfessionalExperience: FC<Props> = ({
                   city={item?.city}
                   country={item?.country}
                 />
-                {item.description ? (
+                {item.description && (
                   <ReactMarkdown
                     components={{
                       p: ({ children }) => (
@@ -100,7 +100,7 @@ export const  EditableProfessionalExperience: FC<Props> = ({
                   >
                     {item.description.replace(/\n/g, `\n\n`)}
                   </ReactMarkdown>
-                ) : null}
+                )}
               </Content>
             </div>
           ))
@@ -336,7 +336,7 @@ export const JobSeekerFormSectionProfessionalExperience: FC<JobSeekerFormSection
                           </Columns.Column>
                         </Columns>
 
-                        {!formik.values.experience[index].current ? (
+                        {!formik.values.experience[index].current && (
                           <Columns>
                             <Columns.Column size={6}>
                               <FormSelect
@@ -355,7 +355,7 @@ export const JobSeekerFormSectionProfessionalExperience: FC<JobSeekerFormSection
                               />
                             </Columns.Column>
                           </Columns>
-                        ) : null}
+                        )}
                       </FormDraggableAccordion>
                     </div>
                   )}

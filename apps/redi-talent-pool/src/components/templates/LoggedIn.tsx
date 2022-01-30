@@ -37,22 +37,22 @@ const LoggedIn: FC<Props> = ({ children, hideNavigation }) => {
                   isActive={location.pathname === '/app/me'}
                 />
                 {companyProfile?.state === 'profile-approved' ||
-                jobseekerProfile?.state === 'profile-approved' ? (
+                jobseekerProfile?.state === 'profile-approved' && (
                   <TpMainNavItem
                     page="browse-page"
                     pageName="Browse"
                     to="/app/browse"
                     isActive={location.pathname === '/app/browse'}
                   />
-                ) : null}
-                {jobseekerProfile ? (
+                )}
+                {jobseekerProfile && (
                   <TpMainNavItem
                     page="cv-builder-page"
                     pageName="CV Builder"
                     to="/app/cv-builder"
                     isActive={location.pathname.includes('/app/cv-builder')}
                   />
-                ) : null}
+                )}
               </div>
               <div className="main-container--horizontal-spacer"></div>
             </>
@@ -66,7 +66,7 @@ const LoggedIn: FC<Props> = ({ children, hideNavigation }) => {
               {children}
             </Columns.Column>
           </Columns>
-          {hideNavigation ? null : (
+          {!hideNavigation && (
             <div className="main-container--horizontal-spacer is-hidden-desktop"></div>
           )}
         </div>

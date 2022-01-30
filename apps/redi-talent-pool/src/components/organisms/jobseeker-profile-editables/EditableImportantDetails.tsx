@@ -17,16 +17,15 @@ import {
   immigrationStatusOptionsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 import { mapOptions } from '@talent-connect/typescript-utilities';
-import { useFormik } from 'formik'
 import moment from 'moment'
-import { FC, useEffect, useMemo, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { Content, Element } from 'react-bulma-components'
 import { UseMutationResult, UseQueryResult } from 'react-query'
-import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
+import { componentForm } from './EditableImportantDetails.form';
 
 interface Props {
   profile?: Partial<TpJobSeekerProfile>
@@ -43,6 +42,7 @@ export const EditableImportantDetails: FC<Props> = ({
   if (overridingProfile) queryHookResult.data = overridingProfile
   const mutationHookResult = useTpjobseekerprofileUpdateMutation()
   const { data: profile } = queryHookResult
+
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
@@ -75,7 +75,7 @@ export const EditableImportantDetails: FC<Props> = ({
               gridRowGap: '32px',
             }}
           >
-            {profile?.desiredEmploymentType?.length ? (
+            {profile?.desiredEmploymentType?.length && (
               <div>
                 <Caption>Type of work</Caption>
                 <PipeList
@@ -83,20 +83,18 @@ export const EditableImportantDetails: FC<Props> = ({
                   overflowAllowed
                 />
               </div>
-            ) : null}
+            )}
 
-            {profile?.availability ? (
+            {profile?.availability && (
               <div>
                 <Caption>Availability</Caption>
                 <Content>
                   {profile?.availability && profile.availability !== 'date' && (
                     <p>
-                      {availabilityOptionsIdToLabelMap[profile?.availability]}
+                      {availabilityOptionsIdToLabelMap[profile.availability]}
                     </p>
                   )}
-                  {profile?.availability &&
-                    profile.availability === 'date' &&
-                    profile.ifAvailabilityIsDate_date && (
+                  { profile?.ifAvailabilityIsDate_date && profile.availability === 'date' && (
                       <p>
                         {moment(profile.ifAvailabilityIsDate_date).format(
                           'DD.MM.YYYY'
@@ -105,9 +103,9 @@ export const EditableImportantDetails: FC<Props> = ({
                     )}
                 </Content>
               </div>
-            ) : null}
+            )}
 
-            {profile?.phoneNumber || profile?.contactEmail ? (
+            {(profile?.phoneNumber || profile?.contactEmail) && (
               <div>
                 <Caption>Contact</Caption>
                 <Content>
@@ -118,27 +116,27 @@ export const EditableImportantDetails: FC<Props> = ({
                   .map((contactItem) => contactItem ? <p>{contactItem}</p> : null)}
                 </Content>
               </div>
-            ) : null}
+            )}
 
-            {profile?.immigrationStatus ? (
+            {profile?.immigrationStatus && (
               <div>
                 <Caption>Immigration status</Caption>
                 <Content>
                   <p>
-                    {immigrationStatusOptionsIdToLabelMap[profile?.immigrationStatus]}
+                    {immigrationStatusOptionsIdToLabelMap[profile.immigrationStatus]}
                   </p>
                 </Content>
               </div>
-            ) : null}
+            )}
 
-            {profile?.postalMailingAddress ? (
+            {profile?.postalMailingAddress && (
               <div>
                 <Caption>Postal mailing address</Caption>
                 <Content>
                   <p>{profile?.postalMailingAddress}</p>
                 </Content>
               </div>
-            ) : null}
+            )}
           </div>
         )
       }
@@ -146,10 +144,8 @@ export const EditableImportantDetails: FC<Props> = ({
       modalHeadline="Important Details"
       modalBody={
         <JobSeekerFormSectionImportantDetails
-          setIsEditing={setIsEditing}
+          {...{ setIsEditing, queryHookResult, mutationHookResult}}
           setIsFormDirty={setIsFormDirty}
-          queryHookResult={queryHookResult}
-          mutationHookResult={mutationHookResult}
         />
       }
       modalStyles={{ minHeight: '40rem' }}
@@ -157,24 +153,20 @@ export const EditableImportantDetails: FC<Props> = ({
   )
 }
 
-EditableImportantDetails.isSectionFilled = (
-  profile: Partial<TpJobSeekerProfile>
-) =>
+EditableImportantDetails.isSectionFilled = (profile: Partial<TpJobSeekerProfile>) =>
   profile?.availability ||
   profile?.desiredEmploymentType?.length ||
   profile?.phoneNumber ||
   profile?.immigrationStatus ||
-  profile?.postalMailingAddress
-EditableImportantDetails.isSectionEmpty = (
-  profile: Partial<TpJobSeekerProfile>
-) => !EditableImportantDetails.isSectionFilled(profile)
+  profile?.postalMailingAddress;
 
-const validationSchema = Yup.object({
-  desiredPositions: Yup.array().max(
-    3,
-    'You can select up to three desired positions'
-  ),
-})
+EditableImportantDetails.isSectionEmpty = (profile: Partial<TpJobSeekerProfile>) =>
+  !EditableImportantDetails.isSectionFilled(profile)
+
+// const validationSchema = Yup.object({
+//   desiredPositions: Yup.array()
+//     .max(3, 'You can select up to three desired positions'),
+// })
 
 interface JobSeekerFormSectionImportantDetailsProps {
   setIsEditing: (boolean: boolean) => void
@@ -207,42 +199,12 @@ export const JobSeekerFormSectionImportantDetails: FC<JobSeekerFormSectionImport
   hideNonContactDetailsFields,
 }) => {
   const { data: profile } = queryHookResult
-  const mutation = mutationHookResult
-  const initialValues: Partial<TpJobSeekerProfile> = useMemo(() => ({
-      availability: profile?.availability ?? '',
-      desiredEmploymentType: profile?.desiredEmploymentType ?? [],
-      contactEmail: profile?.contactEmail ?? '',
-      phoneNumber: profile?.phoneNumber ?? '',
-      postalMailingAddress: profile?.postalMailingAddress ?? '',
-      ifAvailabilityIsDate_date: profile?.ifAvailabilityIsDate_date
-        ? new Date(profile.ifAvailabilityIsDate_date)
-        : null,
-      immigrationStatus: profile?.immigrationStatus ?? '',
-    }),
-    [
-      profile?.availability,
-      profile?.contactEmail,
-      profile?.desiredEmploymentType,
-      profile?.ifAvailabilityIsDate_date,
-      profile?.immigrationStatus,
-      profile?.phoneNumber,
-      profile?.postalMailingAddress,
-    ]
-  )
 
-  const formik = useFormik<Partial<TpJobSeekerProfile>>({
-    initialValues,
-    validationSchema,
-    enableReinitialize: true,
-    validateOnMount: true,
-    onSubmit: (values, { setSubmitting }) => {
-      setSubmitting(true)
-      mutation.mutate(values, {
-        onSettled: () => setSubmitting(false),
-        onSuccess: () => setIsEditing(false),
-      })
-    },
-  })
+  const formik = componentForm({
+    profile,
+    mutationHookResult,
+    setIsEditing
+  });
 
   useEffect(() => setIsFormDirty?.(formik.dirty), [
     formik.dirty,
@@ -286,7 +248,7 @@ export const JobSeekerFormSectionImportantDetails: FC<JobSeekerFormSectionImport
             name="desiredEmploymentType"
             items={formDesiredEmploymentType}
             {...formik}
-            multiselect
+            multiSelect
           />
           <FormSelect
             label="When are you available to start?*"
@@ -294,7 +256,7 @@ export const JobSeekerFormSectionImportantDetails: FC<JobSeekerFormSectionImport
             items={formAvailabilityOptions}
             {...formik}
           />
-          {formik.values.availability === 'date' ? (
+          {formik.values.availability === 'date' && (
             <FormDatePicker
               placeholder="Select your date"
               name="ifAvailabilityIsDate_date"
@@ -306,7 +268,7 @@ export const JobSeekerFormSectionImportantDetails: FC<JobSeekerFormSectionImport
               isClearable
               {...formik}
             />
-          ) : null}
+          )}
           <FormSelect
             label="What is your immigration status?"
             name="immigrationStatus"
@@ -317,14 +279,14 @@ export const JobSeekerFormSectionImportantDetails: FC<JobSeekerFormSectionImport
       )}
 
       <Button
-        disabled={!formik.isValid || mutation.isLoading}
+        disabled={!formik.isValid || mutationHookResult.isLoading}
         onClick={formik.submitForm}
       >
         Save
       </Button>
       <Button
         simple
-        disabled={mutation.isLoading}
+        disabled={mutationHookResult.isLoading}
         onClick={() => setIsEditing(false)}
       >
         Cancel

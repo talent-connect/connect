@@ -17,15 +17,15 @@ const ReadContactDetails: FC<Props> = ({
 }) => {
   return (
     <>
-      {shortInfo && <Caption>Contact Details</Caption>}
+      {shortInfo &&
+        <Caption>Contact Details</Caption>}
       <Content>
-        {contactEmail && <p>{contactEmail}</p>}
-        {!shortInfo && (firstName || lastName) && (
-          <p>
-            {firstName} {lastName}
-          </p>
-        )}
-        {telephoneNumber && <p>{telephoneNumber}</p>}
+        {contactEmail &&
+          <p>{contactEmail}</p>}
+        {!shortInfo && (firstName || lastName) &&
+          <p>{firstName} {lastName}</p>}
+        {telephoneNumber &&
+          <p>{telephoneNumber}</p>}
       </Content>
     </>
   )

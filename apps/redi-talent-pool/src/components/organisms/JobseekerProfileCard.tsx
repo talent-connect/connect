@@ -80,13 +80,13 @@ export const JobSeekerProfileCard: FC<JobSeekerProfileCardProps> = ({
         >
           {desiredPositions}
         </Element>
-        {topSkills?.length ? (
+        {topSkills?.length && (
           <CardTags
             items={topSkills}
             shortList
             formatter={(skill: string) => topSkillsIdToLabelMap[skill]}
           />
-        ) : null}
+        )}
       </Card.Content>
     </Card>
   )

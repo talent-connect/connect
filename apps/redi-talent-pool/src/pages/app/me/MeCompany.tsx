@@ -74,9 +74,7 @@ const CallToActionButton: FC<{ profile: Partial<TpCompanyProfile>; }> = ({ profi
   [
     TpCompanyProfileState['drafting-profile'],
     TpCompanyProfileState['submitted-for-review'],
-  ].includes(state) ? (
-    <SendProfileForReviewButton />
-  ) : null
+  ].includes(state) && (<SendProfileForReviewButton />)
 }
 
 export const MeCompany: FC = () => {
@@ -89,7 +87,7 @@ export const MeCompany: FC = () => {
 
   return (
     <LoggedIn>
-      {isProfileApproved ? (
+      {isProfileApproved && (
         <Notification className="account-not-active double-bs">
           <Icon
             className="account-not-active__icon"
@@ -112,7 +110,7 @@ export const MeCompany: FC = () => {
             or <a href="/app/browse">browse our talent pool</a>!
           </Content>
         </Notification>
-      ) : null}
+      )}
       <Columns className="is-6 is-variable">
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'three-fifths' }}>
           <EditableNamePhotoLocation profile={profile} />
@@ -127,7 +125,7 @@ export const MeCompany: FC = () => {
               <OnboardingSteps
                 profile={profile}
                 isProfileComplete={isProfileComplete(profile)}
-                hasJobListing={jobListings?.length}
+                hasJobListing={jobListings?.length !== 0}
               />
             )}
           </div>

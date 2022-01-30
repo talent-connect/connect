@@ -341,7 +341,7 @@ export const JobSeekerFormSectionEducation: FC<JobSeekerFormSectionEducationProp
                           </Columns.Column>
                         </Columns>
 
-                        {!formik.values.education[index].current ? (
+                        {!formik.values.education[index].current && (
                           <Columns>
                             <Columns.Column size={6}>
                               <FormSelect
@@ -360,7 +360,7 @@ export const JobSeekerFormSectionEducation: FC<JobSeekerFormSectionEducationProp
                               />
                             </Columns.Column>
                           </Columns>
-                        ) : null}
+                        )}
                       </FormDraggableAccordion>
                     </div>
                   )}

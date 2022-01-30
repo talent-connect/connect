@@ -34,7 +34,7 @@ const Editable: FC<EditableProps> = ({
           {isEditing ? (
             <>
               <div
-                onClick={savePossible ? handleSave : undefined}
+                onClick={savePossible ? handleSave : null}
                 className={classnames('icon__button', {
                   'icon__button--disabled': !savePossible,
                 })}

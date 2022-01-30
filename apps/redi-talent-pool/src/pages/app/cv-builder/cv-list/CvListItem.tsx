@@ -122,9 +122,9 @@ const CvListItem: FC<CvListItemProps> = ({ id, name, createdAt }) => {
   const handleDuplicate = (): void => {
     createMutation.mutate({
       ...cvData,
-      id: undefined,
-      createdAt: undefined,
-      updatedAt: undefined,
+      id: null,
+      createdAt: null,
+      updatedAt: null,
       cvName: `${name} - Duplicate`,
     })
   }

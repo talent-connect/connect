@@ -30,20 +30,17 @@ export const EditableNamePhotoLocation: FC<Props> = ({ profile, disableEditing }
 
   return (
     <Editable
-      disableEditing={disableEditing}
-      isEditing={isEditing}
-      isFormDirty={isFormDirty}
-      setIsEditing={setIsEditing}
+      {...{ disableEditing, isEditing, isFormDirty, setIsEditing }}
       readComponent={
         <Columns vCentered breakpoint="mobile" className="oneandhalf-bs">
           <Columns.Column size={5}>
-            {profile ? (
+            {profile && (
               <Avatar.Editable
                 profile={profile}
                 profileSaveStart={mutation.mutate}
                 callToActionText="Please add your company logo"
               />
-            ) : null}
+            )}
           </Columns.Column>
           <Columns.Column size={7}>
             <Heading size="medium">{profile?.companyName}</Heading>
@@ -92,15 +89,14 @@ export const EditableNamePhotoLocation: FC<Props> = ({ profile, disableEditing }
   )
 }
 
-EditableNamePhotoLocation.isSectionFilled = (
-  profile: Partial<TpCompanyProfile>
-) => profile?.location
-EditableNamePhotoLocation.isPhotoSelected = (
-  profile: Partial<TpCompanyProfile>
-) => profile?.profileAvatarImageS3Key
-EditableNamePhotoLocation.isSectionEmpty = (
-  profile: Partial<TpCompanyProfile>
-) => !EditableNamePhotoLocation.isSectionFilled(profile)
+EditableNamePhotoLocation.isSectionFilled = (profile: Partial<TpCompanyProfile>) =>
+  profile?.location
+
+EditableNamePhotoLocation.isPhotoSelected = (profile: Partial<TpCompanyProfile>) =>
+  profile?.profileAvatarImageS3Key
+
+EditableNamePhotoLocation.isSectionEmpty = (profile: Partial<TpCompanyProfile>) =>
+  !EditableNamePhotoLocation.isSectionFilled(profile)
 
 const validationSchema = Yup.object({
   companyName: Yup.string()
@@ -109,19 +105,21 @@ const validationSchema = Yup.object({
     .required('Your location is required'),
 })
 
-function ModalForm({
+interface ModalFormProps {
+  setIsEditing: (boolean: boolean) => void;
+  setIsFormDirty: (boolean: boolean) => void;
+}
+
+const ModalForm: FC<ModalFormProps> =({
   setIsEditing,
   setIsFormDirty,
-}: {
-  setIsEditing: (boolean: boolean) => void
-  setIsFormDirty: (boolean: boolean) => void
-}) {
+}) => {
   const { data: profile } = useTpCompanyProfileQuery()
   const mutation = useTpCompanyProfileUpdateMutation()
   const initialValues = useMemo(() => ({
-      companyName: profile?.companyName ?? '',
-      location: profile?.location ?? '',
-      tagline: profile?.tagline ?? '',
+      companyName: profile?.companyName || '',
+      location: profile?.location || '',
+      tagline: profile?.tagline || '',
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []

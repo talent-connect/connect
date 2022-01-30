@@ -41,13 +41,13 @@ export const EditableNamePhotoLocation: FC<Props> = ({ profile, disableEditing }
       readComponent={
         <Columns vCentered breakpoint="mobile" className="oneandhalf-bs">
           <Columns.Column size={5}>
-            {profile && !disableEditing ? (
+            {profile && !disableEditing && (
               <Avatar.Editable
                 profile={profile}
                 profileSaveStart={mutation.mutate}
               />
-            ) : null}
-            {profile && disableEditing ? <Avatar profile={profile} /> : null}
+            )}
+            {profile && disableEditing && <Avatar profile={profile} />}
           </Columns.Column>
           <Columns.Column size={7}>
             <Heading size="medium">

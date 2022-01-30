@@ -54,8 +54,7 @@ const ReadOccupation: FC<Props> = ({
           <>
             <p>{mentor_occupation}</p>
             <p>{mentor_workPlace}</p>
-          </>
-        )}
+          </>)}
         {isMentee && (
           <>
             <p>
@@ -68,26 +67,22 @@ const ReadOccupation: FC<Props> = ({
               <>
                 <p>{mentee_occupationJob_placeOfEmployment}</p>
                 <p>{mentee_occupationJob_position}</p>
-              </>
-            )}
+              </>)}
 
             {mentee_occupationCategoryId === 'student' && (
               <>
                 <p>{mentee_occupationStudent_studyPlace}</p>
                 <p>{mentee_occupationStudent_studyName}</p>
-              </>
-            )}
+              </>)}
             {mentee_occupationCategoryId === 'lookingForJob' && (
               <>
                 <p>{mentee_occupationLookingForJob_what}</p>
-              </>
-            )}
+              </>)}
 
             {mentee_occupationCategoryId === 'other' && (
               <>
                 <p>{mentee_occupationOther_description}</p>
-              </>
-            )}
+              </>)}
           </>
         )}
       </Content>

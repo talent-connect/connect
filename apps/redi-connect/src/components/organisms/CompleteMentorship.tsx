@@ -1,6 +1,5 @@
 import { FC, useState } from 'react'
 import { connect } from 'react-redux'
-import { useFormik } from 'formik'
 import { Content } from 'react-bulma-components'
 import {
   TextArea,
@@ -9,14 +8,11 @@ import {
 import { Modal } from '@talent-connect/shared-atomic-design-components'
 import { matchesMarkAsComplete } from '../../redux/matches/actions'
 import { RedMatch } from '@talent-connect/shared-types'
+import { componentForm } from './CompleteMentorship.form';
 
 interface CompleteMentorshipProps {
   match: RedMatch
   matchesMarkAsComplete: (redMatchId: string, mentorMessageOnComplete: string) => void
-}
-
-interface CompleteMentorshipFormValues {
-  mentorMessageOnComplete: string
 }
 
 const CompleteMentorship: FC<CompleteMentorshipProps> = ({
@@ -25,19 +21,10 @@ const CompleteMentorship: FC<CompleteMentorshipProps> = ({
 }) => {
   const [isModalActive, setModalActive] = useState(false)
 
-
-  const formik = useFormik<CompleteMentorshipFormValues>({
-    initialValues: {
-      mentorMessageOnComplete: '',
-    },
-    onSubmit: ({ mentorMessageOnComplete }) => {
-      try {
-        matchesMarkAsComplete(id, mentorMessageOnComplete)
-        setModalActive(false)
-      } catch (error) {
-        console.log('error ', error)
-      }
-    },
+  const formik = componentForm({
+    id,
+    matchesMarkAsComplete,
+    setModalActive,
   })
 
   const handleCancel = () => {

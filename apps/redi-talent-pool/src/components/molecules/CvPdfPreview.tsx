@@ -18,8 +18,7 @@ import {
 } from '@talent-connect/talent-pool/config'
 import { objectValues, objectValues } from '@talent-connect/typescript-utilities';
 import { isEqual } from 'lodash'
-import moment from 'moment'
-import React, { FC, memo, useEffect } from 'react'
+import { FC, memo, useEffect } from 'react'
 import {
   Document as ReactPDFDocument,
   Page as ReactPDFPage,
@@ -248,14 +247,12 @@ const styles = StyleSheet.create({
   },
 })
 
-function isVeryLongExperienceLine(experience) {
+function isVeryLongExperienceLine(experience) { // TODO: review
   return experience?.title?.length || 0 + experience?.company?.length || 0 > 43
 }
 
-function isVeryLongEducationLine(education) {
-  return (
-    education?.type?.length || 0 + education?.institutionName?.length || 0 > 43
-  )
+function isVeryLongEducationLine(education) { // TODO: review
+  return education?.type?.length || 0 + education?.institutionName?.length || 0 > 43
 }
 
 export const CVPDF: FC<{ cvData: Partial<TpJobSeekerCv> }> = ({
@@ -298,7 +295,7 @@ export const CVPDF: FC<{ cvData: Partial<TpJobSeekerCv> }> = ({
               styles.headerText2,
               desiredPositions?.length > 2
                 ? styles.headerText2ExtraTop
-                : undefined,
+                : null,
             ]}
           >
             {firstName}
@@ -308,7 +305,7 @@ export const CVPDF: FC<{ cvData: Partial<TpJobSeekerCv> }> = ({
               styles.headerText3,
               desiredPositions?.length > 2
                 ? styles.headerText3ExtraTop
-                : undefined,
+                : null,
             ]}
           >
             {lastName}
@@ -420,9 +417,7 @@ export const CVPDF: FC<{ cvData: Partial<TpJobSeekerCv> }> = ({
                     <View style={styles.experienceView}>
                       <View
                         style={
-                          isVeryLongExperienceLine(experience)
-                            ? undefined
-                            : styles.experienceView1
+                          !isVeryLongExperienceLine(experience) && styles.experienceView1
                         }
                       >
                         <Text
@@ -473,9 +468,7 @@ export const CVPDF: FC<{ cvData: Partial<TpJobSeekerCv> }> = ({
                     <View style={styles.experienceView}>
                       <View
                         style={
-                          isVeryLongEducationLine(education)
-                            ? undefined
-                            : styles.experienceView1
+                          !isVeryLongEducationLine(education) && styles.experienceView1
                         }
                       >
                         <Text

@@ -139,7 +139,7 @@ const ApplicationCard: FC<Props> = ({
             <Content>{application.expectationText}</Content>
           </>
         )}
-        {currentUserIsMentor && application.status === 'applied' ? (
+        {currentUserIsMentor && application.status === 'applied' && (
           <>
             <ConfirmMentorship
               match={application}
@@ -147,7 +147,7 @@ const ApplicationCard: FC<Props> = ({
             />
             <DeclineMentorshipButton match={application} />
           </>
-        ) : null}
+        )}
       </div>
     </>
   )

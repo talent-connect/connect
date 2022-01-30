@@ -274,7 +274,7 @@ const users = fp.compose(
           'English'
         ),
         otherLanguages: randomString(),
-        personalDescription: randomString(undefined, 300),
+        personalDescription: randomString(null, 300),
         contactEmail: email,
         slackUsername: randomString(),
         githubProfileUrl: randomString(),

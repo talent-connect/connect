@@ -1,3 +1,5 @@
+import { FC, useState } from 'react'
+import { connect } from 'react-redux'
 import {
   Caption,
   TextArea,
@@ -8,34 +10,9 @@ import { Modal } from '@talent-connect/shared-atomic-design-components'
 import { Content, Form } from 'react-bulma-components'
 import { FormSubmitResult, RedProfile } from '@talent-connect/shared-types'
 
-import { useFormik } from 'formik'
-import { FC, useState } from 'react'
-import * as Yup from 'yup'
-import { requestMentorship } from '../../services/api/api'
-
 import { RootState } from '../../redux/types'
-import { connect } from 'react-redux'
 import { profilesFetchOneStart } from '../../redux/profiles/actions'
-
-interface ConnectionRequestFormValues {
-  applicationText: string
-  expectationText: string
-  dataSharingAccepted: boolean
-}
-
-const validationSchema = Yup.object({
-  applicationText: Yup.string()
-    .required('Write at least 250 characters to introduce yourself to your mentee.')
-    .min(250, 'Write at least 250 characters to introduce yourself to your mentee.')
-    .max(600, 'The introduction text can be up to 600 characters long.'),
-  expectationText: Yup.string()
-    .required('Write at least 250 characters about your expectations.')
-    .min(250, 'Write at least 250 characters about your expectations.')
-    .max(600, 'The expectations text can be up to 600 characters long.'),
-  dataSharingAccepted: Yup.boolean()
-    .required()
-    .oneOf([true], 'Sharing profile data with your mentor is required'),
-})
+import { componentForm } from './ApplyForMentor.form';
 
 interface Props {
   mentor: RedProfile
@@ -49,24 +26,11 @@ const ApplyForMentor: FC<Props> = ({
   const [submitResult, setSubmitResult] = useState<FormSubmitResult>('notSubmitted')
   const [show, setShow] = useState(false)
   
-  const formik = useFormik<ConnectionRequestFormValues>({
-    initialValues: {
-      applicationText: '',
-      expectationText: '',
-      dataSharingAccepted: false,
-    },
-    validationSchema,
-    enableReinitialize: true,
-    onSubmit: async ({ applicationText, expectationText }) => {
-      setSubmitResult('submitting')
-      try {
-        await requestMentorship(applicationText, expectationText, id)
-        setShow(false)
-        profilesFetchOneStart(id)
-      } catch (error) {
-        setSubmitResult('error')
-      }
-    },
+  const formik = componentForm({
+    id,
+    setSubmitResult,
+    profilesFetchOneStart,
+    setShow,
   })
 
   const handleCancel = () => {
@@ -84,10 +48,9 @@ const ApplyForMentor: FC<Props> = ({
       >
         <Modal.Body>
           <form>
-            {submitResult === 'success' && (
-              <>Your application was successfully submitted.</>
-            )}
-            {submitResult !== 'success' && (
+            {submitResult === 'success'
+              ? (<>Your application was successfully submitted.</>)
+              : (
               <>
                 <Caption>Motivation </Caption>
                 <Content>

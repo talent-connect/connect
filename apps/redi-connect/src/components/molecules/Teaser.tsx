@@ -54,7 +54,7 @@ export default {
     </TopIllustration>
   ),
   Miriam: () => {
-    const { userType } = useParams<RouteParams>() as RouteParams
+    const { userType } = useParams<RouteParams>()
 
     return (
       <>
@@ -126,9 +126,9 @@ export default {
         >
           “Hi, I am <strong>Christa</strong>, the mentorship coordinator of ReDI
           Connect.
-          {userType === 'public-sign-up-mentor-pending-review' && (
+          {userType === 'public-sign-up-mentor-pending-review' && ( 
             <>
-              {' '}
+              {' '} {/* TODO: what is this? */}
               I take the time to meet each mentor before they join our program."
             </>
           )}

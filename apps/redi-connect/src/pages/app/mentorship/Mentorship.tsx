@@ -92,7 +92,7 @@ const Mentorship: FC<MentorshipProps> = ({ currentUser, matches }) => {
             linkTo={`/app/mentorships/profile/${profile.id}`}
           />
           <MContacts
-            profile={profile as RedProfile}
+            profile={profile}
             className="is-hidden-tablet"
           />
           <MSessions
@@ -109,7 +109,7 @@ const Mentorship: FC<MentorshipProps> = ({ currentUser, matches }) => {
         </Columns.Column>
         <Columns.Column size={8}>
           <MContacts
-            profile={profile as RedProfile}
+            profile={profile}
             className="is-hidden-mobile"
           />
         </Columns.Column>

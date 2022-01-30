@@ -1,13 +1,13 @@
+import { FC, useEffect, useMemo, useState } from 'react'
+import { useFormik } from 'formik'
+import ReactMarkdown from 'react-markdown'
 import {
   Button,
   Caption,
   TextArea,
 } from '@talent-connect/shared-atomic-design-components'
 import { TpCompanyProfile } from '@talent-connect/shared-types'
-import { useFormik } from 'formik'
-import { FC, useEffect, useMemo, useState } from 'react'
 import { Content, Element } from 'react-bulma-components'
-import ReactMarkdown from 'react-markdown'
 import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
 import { Editable } from '../../molecules/Editable'
@@ -72,17 +72,19 @@ EditableAbout.isSectionFilled = (profile: Partial<TpCompanyProfile>) =>
 EditableAbout.isSectionEmpty = (profile: Partial<TpCompanyProfile>) =>
   !EditableAbout.isSectionFilled(profile)
 
-function ModalForm({
-  setIsEditing,
-  setIsFormDirty,
-}: {
+interface ModalFormProps {
   setIsEditing: (boolean: boolean) => void
   setIsFormDirty: (boolean: boolean) => void
-}) {
+}
+
+const ModalForm: FC<ModalFormProps> = ({
+  setIsEditing,
+  setIsFormDirty,
+}) => {
   const { data: profile } = useTpCompanyProfileQuery()
   const mutation = useTpCompanyProfileUpdateMutation()
   const initialValues = useMemo(() => ({
-      about: profile?.about ?? '',
+      about: profile?.about || '',
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []

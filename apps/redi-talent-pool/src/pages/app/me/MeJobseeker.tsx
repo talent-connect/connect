@@ -48,7 +48,7 @@ export function MeJobseeker() {
 
   return (
     <LoggedIn>
-      {profile?.state === 'profile-approved' ? (
+      {profile?.state === 'profile-approved' && (
         <Notification className="account-not-active double-bs">
           <Icon
             className="account-not-active__icon"
@@ -61,7 +61,7 @@ export function MeJobseeker() {
             <a href="/app/browse">browse open job postings</a>!
           </Content>
         </Notification>
-      ) : null}
+      )}
       <Columns className="is-6 is-variable">
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'three-fifths' }}>
           <div className="is-hidden-tablet">
@@ -116,9 +116,9 @@ const CallToActionButton: FC<{ profile: Partial<TpJobSeekerProfile> }> = ({
       [
         TpJobSeekerProfileState['drafting-profile'],
         TpJobSeekerProfileState['submitted-for-review'],
-      ].includes(profile.state as any) ? (
+      ].includes(profile.state) && (
         <SendProfileForReviewButton />
-      ) : null}
+      )}
       {/* {profile &&
       profile.state &&
       [
@@ -139,18 +139,15 @@ const steps = [
   // { number: 6, label: 'Interview match' },
 ]
 
-function determineCurrentStep(
-  profile: Partial<TpJobSeekerProfile>
-): [currentStep: number, stepStatus: 'todo' | 'pending' | 'complete'] {
-  if (profile.state === 'drafting-profile') {
+function determineCurrentStep (profile: Partial<TpJobSeekerProfile>):
+  [currentStep: number, stepStatus: 'todo' | 'pending' | 'complete']
+{
+  if (profile.state === 'drafting-profile')
     return isProfileComplete(profile) ? [2, 'todo'] : [1, 'todo']
-  }
-  if (profile.state === 'submitted-for-review') {
+  if (profile.state === 'submitted-for-review')
     return [3, 'pending']
-  }
-  if (profile.state === 'profile-approved') {
+  if (profile.state === 'profile-approved')
     return [3, 'complete']
-  }
   // if (
   //   profile.state ===
   //   'job-preferences-shared-with-redi-awaiting-interview-match'
@@ -160,15 +157,10 @@ function determineCurrentStep(
   // if (profile.state === 'matched-for-interview') {
   //   return [6, 'complete']
   // }
-  if (
-    profile.state ===
-    'job-preferences-shared-with-redi-awaiting-interview-match'
-  ) {
+  if (profile.state === 'job-preferences-shared-with-redi-awaiting-interview-match')
     return [3, 'complete']
-  }
-  if (profile.state === 'matched-for-interview') {
+  if (profile.state === 'matched-for-interview')
     return [3, 'complete']
-  }
 }
 
 export const OnboardingSteps: FC = () => {
@@ -203,21 +195,21 @@ export const OnboardingSteps: FC = () => {
             <ChecklistImage className="checklist-image" />
           )}
           <Element textSize="5">{label}</Element>
-          {currentStep > number ? (
+          {currentStep > number && (
             <CheckmarkImage className="checkmark-image" />
-          ) : null}
-          {currentStep < number ? ( 
+          )}
+          {currentStep < number && ( 
             <CheckmarkBorderOnlyImage className="checkmark-image" />
-          ) : null}
-          {currentStep === number && stepStatus === 'todo' ? ( // TODO: apply switch?
+          )}
+          {currentStep === number && stepStatus === 'todo' && ( // TODO: apply switch?
             <CheckmarkBorderOnlyImage className="checkmark-image" />
-          ) : null}
-          {currentStep === number && stepStatus === 'pending' ? (
+          )}
+          {currentStep === number && stepStatus === 'pending' && (
             <StepPendingImage className="checkmark-image" />
-          ) : null}
-          {currentStep === number && stepStatus === 'complete' ? (
+          )}
+          {currentStep === number && stepStatus === 'complete' && (
             <CheckmarkImage className="checkmark-image" />
-          ) : null}
+          )}
         </div>
       ))}
     </div>
@@ -241,9 +233,7 @@ function isProfileComplete(profile: Partial<TpJobSeekerProfile>): boolean {
   return mostSectionsComplete && experienceOrEducationSectionComplete
 }
 
-function areJobPreferencesInputted(
-  profile: Partial<TpJobSeekerProfile>
-): boolean {
+function areJobPreferencesInputted (profile: Partial<TpJobSeekerProfile>): boolean {
   return EditableJobPreferences.isSectionFilled(profile)
 }
 

@@ -127,7 +127,7 @@ export async function fetchAllTpJobSeekerProfiles({
     desiredPositions?.length ? { inq: desiredPositions } : null
   const filterJobFair2022Participant = isJobFair2022Participant
     ? { isJobFair2022Participant: true }
-    : undefined
+    : null
 
   return http(
     `${API_URL}/tpJobSeekerProfiles?filter=${JSON.stringify({
@@ -162,19 +162,17 @@ export async function fetchCurrentUserTpJobSeekerProfile(): Promise<
   Partial<TpJobSeekerProfile>
 > {
   const { userId } = getAccessTokenFromLocalStorage()
-  const resp = await http(`${API_URL}/redUsers/${userId}/tpJobSeekerProfile`)
-  return resp.data
+  return (await http(`${API_URL}/redUsers/${userId}/tpJobSeekerProfile`)).data
 }
 
 export async function updateCurrentUserTpJobSeekerProfile(
   profile: Partial<TpJobSeekerProfile>
 ): Promise<Partial<TpJobSeekerProfile>> {
   const { userId } = getAccessTokenFromLocalStorage()
-  const resp = await http(`${API_URL}/redUsers/${userId}/tpJobSeekerProfile`, {
+  return (await http(`${API_URL}/redUsers/${userId}/tpJobSeekerProfile`, {
     method: 'put',
     data: profile,
-  })
-  return resp.data
+  })).data
 }
 
 export async function fetchAllCurrentUserTpJobSeekerCv(): Promise<Partial<TpJobSeekerCv>[]> {
@@ -194,11 +192,10 @@ export function createCurrentUserTpJobSeekerCv() {
     data: Partial<TpJobSeekerCv>
   ): Promise<Partial<TpJobSeekerCv>> {
     const { userId } = getAccessTokenFromLocalStorage()
-    const resp = await http(`${API_URL}/redUsers/${userId}/tpJobSeekerCv`, {
+    return (await http(`${API_URL}/redUsers/${userId}/tpJobSeekerCv`, {
       method: 'post',
       data,
-    })
-    return resp.data
+    })).data
   }
 }
 
@@ -207,22 +204,20 @@ export function updateCurrentUserTpJobSeekerCv(id: string) {
     data: Partial<TpJobSeekerCv>
   ): Promise<Partial<TpJobSeekerCv>> {
     const { userId } = getAccessTokenFromLocalStorage()
-    const resp = await http(
+    return (await http(
       `${API_URL}/redUsers/${userId}/tpJobSeekerCv/${id}`,
       { method: 'put', data }
-    )
-    return resp.data
+    )).data
   }
 }
 
 export function deleteCurrentUserTpJobSeekerCv(id: string) {
   return async function () {
     const { userId } = getAccessTokenFromLocalStorage()
-    const resp = await http(
+    return (await http(
       `${API_URL}/redUsers/${userId}/tpJobSeekerCv/${id}`,
       { method: 'delete' }
-    )
-    return resp.data
+    )).data
   }
 }
 
@@ -230,19 +225,17 @@ export async function fetchCurrentUserTpCompanyProfile(): Promise<
   Partial<TpCompanyProfile>
 > {
   const { userId } = getAccessTokenFromLocalStorage()
-  const resp = await http(`${API_URL}/redUsers/${userId}/tpCompanyProfile`)
-  return resp.data
+  return (await http(`${API_URL}/redUsers/${userId}/tpCompanyProfile`)).data
 }
 
 export async function updateCurrentUserTpCompanyProfile(
   profile: Partial<TpCompanyProfile>
 ): Promise<Partial<TpCompanyProfile>> {
   const { userId } = getAccessTokenFromLocalStorage()
-  const resp = await http(`${API_URL}/redUsers/${userId}/tpCompanyProfile`, {
+  return (await http(`${API_URL}/redUsers/${userId}/tpCompanyProfile`, {
     method: 'put',
     data: profile,
-  })
-  return resp.data
+  })).data
 }
 
 export interface TpJobListingFilters {
@@ -257,16 +250,16 @@ export async function fetchAllTpJobListingsUsingFilters({
   isJobFair2022JobListing,
 }: TpJobListingFilters): Promise<Array<Partial<TpJobSeekerProfile>>> {
   const filterIdealTechnicalSkills =
-    idealTechnicalSkills && idealTechnicalSkills.length !== 0
+    idealTechnicalSkills?.length
       ? { inq: idealTechnicalSkills }
-      : undefined
+      : null
 
   const filterDesiredEmploymentTypeOptions =
     employmentType?.length ? { inq: employmentType } : null
 
   const filterJobFair2022JobListings = isJobFair2022JobListing
     ? { isJobFair2022JobListing: true }
-    : undefined
+    : null
 
   return http(
     `${API_URL}/tpJobListings?filter=${JSON.stringify({
@@ -290,77 +283,70 @@ export async function fetchAllTpJobListingsUsingFilters({
 }
 
 export async function fetchAllTpJobListings(): Promise<TpJobListing[]> {
-  const userId = getAccessTokenFromLocalStorage().userId
-  const resp = await http(`${API_URL}/redUsers/${userId}/tpJobListings`)
+  const { userId } = getAccessTokenFromLocalStorage()
+  const { data } = await http(`${API_URL}/redUsers/${userId}/tpJobListings`)
 
   // TODO: remove the `.filter()`. It
   // was inserted temporarily for the "dummy" job listings we created for HR Summit
   // 2021. Once the event is over, they can be removed from database completely.
   // Reason for filter here is so companies don't see these dummy job listings.
-  return resp.data.filter((listing) => !listing.dummy)
+  return data.filter((listing) => !listing.dummy)
 }
 
 export async function fetchOneTpJobListingOfCurrentUser(
   id: string
 ): Promise<TpJobListing> {
-  const userId = getAccessTokenFromLocalStorage().userId
-  const resp = await http(`${API_URL}/redUsers/${userId}/tpJobListings/${id}`)
-  return resp.data
+  const { userId } = getAccessTokenFromLocalStorage()
+  return (await http(`${API_URL}/redUsers/${userId}/tpJobListings/${id}`)).data
 }
 
 export async function fetchOneTpJobListing(id: string): Promise<TpJobListing> {
-  const resp = await http(`${API_URL}/tpJobListings/${id}`)
-  return resp.data
+  return (await http(`${API_URL}/tpJobListings/${id}`)).data
 }
 
 export async function createCurrentUserTpJobListing(
   jobListing: Partial<TpJobListing>
 ): Promise<Partial<TpJobListing>> {
-  const userId = getAccessTokenFromLocalStorage().userId
-  const resp = await http(`${API_URL}/redUsers/${userId}/tpJobListings`, {
+  const { userId } = getAccessTokenFromLocalStorage()
+  return (await http(`${API_URL}/redUsers/${userId}/tpJobListings`, {
     method: 'post',
     data: jobListing,
-  })
-  return resp.data
+  })).data
 }
 
 export async function updateCurrentUserTpJobListing(
   jobListing: Partial<TpJobListing>
 ): Promise<Partial<TpJobListing>> {
-  const userId = getAccessTokenFromLocalStorage().userId
-  const resp = await http(
+  const { userId } = getAccessTokenFromLocalStorage()
+  return (await http(
     `${API_URL}/redUsers/${userId}/tpJobListings/${jobListing.id}`,
     {
       method: 'put',
       data: jobListing,
     }
-  )
-  return resp.data
+  )).data
 }
 
 export async function deleteCurrentUserTpJobListing(
   jobListingId: string
 ): Promise<Partial<TpJobListing>> {
-  const userId = getAccessTokenFromLocalStorage().userId
-  const resp = await http(
+  const { userId } = getAccessTokenFromLocalStorage()
+  return (await http(
     `${API_URL}/redUsers/${userId}/tpJobListings/${jobListingId}`,
     {
       method: 'delete',
     }
-  )
-  return resp.data
+  )).data
 }
 
 export async function fetchAllTpJobFair2021InterviewMatches_tpJobListings(): Promise<TpJobListing[]> {
   const { data: interviewMatches } = await http(`${API_URL}/tpJobfair2021InterviewMatches`)
-  const jobListings: TpJobListing[] = interviewMatches.map((match) => match.jobListing)
-  return jobListings
+  return interviewMatches.map((match) => match.jobListing)
 }
 
 export async function fetchAllTpJobFair2021InterviewMatches_tpJobSeekerProfiles(): Promise<TpJobSeekerProfile[]> {
   const { data: interviewMatches } = await http(`${API_URL}/tpJobfair2021InterviewMatches`)
-  const jobseekerProfiles: TpJobSeekerProfile[] = interviewMatches.map((match) => match.interviewee)
-  return jobseekerProfiles
+  return interviewMatches.map((match) => match.interviewee)
 }
 
 export async function fetchTpJobSeekerProfileById(id: string): Promise<Partial<TpJobSeekerProfile>> {

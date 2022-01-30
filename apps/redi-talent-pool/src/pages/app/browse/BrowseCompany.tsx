@@ -30,7 +30,7 @@ export const BrowseCompany: FC = () => {
     name: withDefault(StringParam, ''),
     skills: withDefault(ArrayParam, []),
     desiredPositions: withDefault(ArrayParam, []),
-    isJobFair2022Participant: withDefault(BooleanParam, undefined),
+    isJobFair2022Participant: withDefault(BooleanParam, null),
   })
   const { name, skills, desiredPositions, isJobFair2022Participant } = query
 
@@ -51,11 +51,11 @@ export const BrowseCompany: FC = () => {
     setQuery((latestQuery) => ({
       ...latestQuery,
       isJobFair2022Participant:
-        isJobFair2022Participant === undefined ? true : undefined,
+        !isJobFair2022Participant ? true : null,
     }))
 
   const setName = (value) => {
-    setQuery((latestQuery) => ({ ...latestQuery, name: value || undefined }))
+    setQuery((latestQuery) => ({ ...latestQuery, name: value || null }))
   }
 
   const clearFilters = () => {
@@ -63,7 +63,7 @@ export const BrowseCompany: FC = () => {
       ...latestQuery,
       skills: [],
       desiredPositions: [],
-      isJobFair2022Participant: undefined,
+      isJobFair2022Participant: null,
     }))
   }
 

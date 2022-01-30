@@ -204,13 +204,13 @@ export default function SignUp() {
             </Notification>
           )}
           <form onSubmit={(e) => e.preventDefault()} className="form">
-            {type === 'company' ? (
+            {type === 'company' && (
               <TextInput
                 name="companyName"
                 placeholder="Your company name"
                 {...formik}
               />
-            ) : null}
+            )}
             <TextInput
               name="firstName"
               placeholder="Your first name"
@@ -250,7 +250,7 @@ export default function SignUp() {
               />
             )}
 
-            {type === 'jobseeker' ? (
+            {type === 'jobseeker' && (
               <Checkbox.Form
                 name="agreesWithCodeOfConduct"
                 checked={formik.values.agreesWithCodeOfConduct}
@@ -267,9 +267,9 @@ export default function SignUp() {
                 </a>{' '}
                 of ReDI School
               </Checkbox.Form>
-            ) : null}
+            )}
 
-            {type === 'company' ? (
+            {type === 'company' && (
               <>
                 <FormSelect
                   name="howDidHearAboutRediKey"
@@ -277,15 +277,15 @@ export default function SignUp() {
                   items={howDidHearAboutRediOptionsEntries}
                   {...formik}
                 />
-                {formik.values.howDidHearAboutRediKey === 'other' ? (
+                {formik.values.howDidHearAboutRediKey === 'other' && (
                   <TextInput
                     name="howDidHearAboutRediOtherText"
                     placeholder="Please tell us how you heard about ReDI Talent Pool"
                     {...formik}
                   />
-                ) : null}
+                )}
               </>
-            ) : null}
+            )}
 
             <Checkbox.Form
               name="gaveGdprConsent"

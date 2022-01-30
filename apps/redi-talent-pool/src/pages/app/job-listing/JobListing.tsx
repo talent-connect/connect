@@ -57,14 +57,14 @@ export const JobListing: FC = () => {
               alignItems: 'center',
             }}
           >
-            {jobListing?.location ? (
+            {jobListing?.location && (
               <>
                 <Icon icon="mapPin" />{' '}
                 <Content>
                   <strong>{jobListing?.location}</strong>
                 </Content>
               </>
-            ) : null}
+            )}
           </div>
         </div>
       </div>

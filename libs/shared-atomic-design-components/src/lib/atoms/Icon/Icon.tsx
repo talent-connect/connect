@@ -12,11 +12,11 @@ const Icon: FC<IconProps> = ({
   onClick,
   style = {},
 }) => {
-  const Icon = icon ? Icons[icon] : undefined
+  const Icon = icon ? Icons[icon] : null
 
   const iconSize = size || 'medium'
 
-  return Icon ? (
+  return Icon && (
     <Icon
       className={classnames('icon', {
         [`icon--space-${space}`]: space,
@@ -27,7 +27,7 @@ const Icon: FC<IconProps> = ({
       onClick={onClick}
       style={style}
     />
-  ) : null
+  )
 }
 
 export default Icon

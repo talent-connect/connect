@@ -140,7 +140,7 @@ module.exports = function (RedProfile) {
         });
       const countAcceptedMatches = () => countMatchesByType('accepted');
       const countAppliedMatches = () => countMatchesByType('applied');
-      const countTotal = () => countMatchesByType(undefined);
+      const countTotal = () => countMatchesByType(null);
 
       const numberOfPendingApplicationWithCurrentUser = () =>
         ctx.options.currentUser
@@ -202,7 +202,7 @@ module.exports = function (RedProfile) {
         },
         (err) => next(err)
       );
-    } else if (ctx.data && ctx.data.userType === 'mentee') {
+    } else if (ctx.data?.userType === 'mentee') {
       // In case RedProfile belongs to a mentee, add "computed properties"
       // numberOfPendingApplicationWithCurrentUser,
       const RedMatch = app.models.RedMatch;
@@ -254,23 +254,20 @@ module.exports = function (RedProfile) {
           redMentoringSessionsWithCurrentUser,
           allRedMatches,
         ]) => {
-          const currentActiveMentors = allRedMatches.filter(
-            (match) => match.status === 'accepted'
-          );
+          const currentActiveMentors = allRedMatches.filter(({ status }) =>
+            status === 'accepted');
+
           const currentActiveMentor =
             currentActiveMentors.length
               ? currentActiveMentors[0]
-              : undefined;
+              : null;
           const hasActiveMentor = !!currentActiveMentor;
           Object.assign(ctx.data, {
             activeMentorMatchesCount,
             redMatchesWithCurrentUser,
             redMentoringSessionsWithCurrentUser,
             ifUserIsMentee_hasActiveMentor: hasActiveMentor,
-            ifUserIsMentee_activeMentor:
-              currentActiveMentor &&
-              currentActiveMentor.toJSON &&
-              currentActiveMentor.toJSON().mentor,
+            ifUserIsMentee_activeMentor: currentActiveMentor?.toJSON?.().mentor,
           });
           next();
         },
@@ -308,11 +305,8 @@ module.exports = function (RedProfile) {
         const userType = redProfileInst.toJSON().userType;
         if (_.includes(pendingReviewTypes, userType)) {
           return of(redProfileInst);
-        } else {
-          throw new Error(
-            'Invalid current userType (user is not pending review)'
-          );
         }
+        throw new Error('Invalid current userType (user is not pending review)');
       });
       const setNewRedProfileProperties = switchMap((redProfileInst) =>
         loopbackModelMethodToObservable(
@@ -345,10 +339,9 @@ module.exports = function (RedProfile) {
           createRoleMapping,
           sendEmailUserReviewedAcceptedOrDenied
         )
-        .subscribe(
-          (redMatchInst) => {
-            callback(null, redMatchInst);
-          },
+        .subscribe((redMatchInst) => {
+          callback(null, redMatchInst);
+        },
           (err) => console.log(err)
         );
     };
@@ -369,10 +362,7 @@ module.exports = function (RedProfile) {
     // Special case: a new RedProfile is created (by code in red-user.js) if a user already exists
     // (RedUser) but they have an existing Tp Jobsekeer user (TpJobseekerProfile). If so, we don't
     // proceed with the below verification email, but shoot off a special email to the user.
-    if (
-      redProfile.signupSource ===
-      'existing-user-with-tp-profile-logging-into-con'
-    ) {
+    if (redProfile.signupSource === 'existing-user-with-tp-profile-logging-into-con') {
       sendEmailToUserWithTpJobseekerProfileSigningUpToCon({
         recipient: redUser.email,
         firstName: redProfile.firstName,

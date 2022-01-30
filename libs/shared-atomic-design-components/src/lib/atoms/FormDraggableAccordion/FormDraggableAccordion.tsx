@@ -43,9 +43,9 @@ const FormDraggableAccordion: FC<FormDraggableAccordionProps> = ({
           />
         </Columns.Column>
         <Columns.Column narrow>
-          {onRemove ? (
+          {onRemove && (
             <Icon icon="cancel" size="small" onClick={onRemove} />
-          ) : null}
+          )}
         </Columns.Column>
       </Columns>
       <Element

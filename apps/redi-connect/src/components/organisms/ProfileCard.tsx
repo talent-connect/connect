@@ -50,7 +50,7 @@ const ProfileCard: FC<ProfileCardProps> = ({
   return (
     <Card
       className={classnames('profile-card', { 'profile-card--active': linkTo })}
-      onClick={linkTo ? handleLinkTo : undefined}
+      onClick={linkTo ? handleLinkTo : null}
     >
       <Card.Image
         className="profile-card__image"

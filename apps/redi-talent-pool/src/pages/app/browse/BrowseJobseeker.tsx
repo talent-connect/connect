@@ -30,7 +30,7 @@ export const BrowseJobSeeker: FC = () => {
   const [query, setQuery] = useQueryParams({
     idealTechnicalSkills: withDefault(ArrayParam, []),
     employmentType: withDefault(ArrayParam, []),
-    isJobFair2022JobListing: withDefault(BooleanParam, undefined),
+    isJobFair2022JobListing: withDefault(BooleanParam, null),
   })
   
   const { idealTechnicalSkills, employmentType, isJobFair2022JobListing } = query
@@ -51,7 +51,7 @@ export const BrowseJobSeeker: FC = () => {
   setQuery((latestQuery) => ({
     ...latestQuery,
     isJobFair2022JobListing:
-    isJobFair2022JobListing === undefined ? true : undefined,
+    !isJobFair2022JobListing ? true : null,
   }))
   
   const clearFilters = () => {
@@ -59,7 +59,7 @@ export const BrowseJobSeeker: FC = () => {
       ...latestQuery,
       idealTechnicalSkills: [],
       employmentType: [],
-      isJobFair2022JobListing: undefined,
+      isJobFair2022JobListing: null,
     }))
   }
 
