@@ -18,14 +18,13 @@ const Icon: FC<IconProps> = ({
 
   return Icon && (
     <Icon
+      {...{ onClick, style }}
       className={classnames('icon', {
         [`icon--space-${space}`]: space,
         [`icon--${iconSize}`]: iconSize,
         'icon--active': onClick,
         [`${className}`]: className,
       })}
-      onClick={onClick}
-      style={style}
     />
   )
 }

@@ -34,7 +34,7 @@ const TextInput: FC<TextInputProps> = ({
           id={name}
           name={name}
           type={type}
-          color={hasError ? 'danger' : null}
+          color={hasError && 'danger'}
           placeholder={placeholder}
           // use lodash's so we can access stuff like experience[0].title
           value={get(values, name)}

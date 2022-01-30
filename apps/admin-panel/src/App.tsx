@@ -1318,7 +1318,7 @@ function tpJobSeekerProfileListExporter(profiles, fetchRelatedRecords) {
           return `${jobPosition}${jobId ? ` (${jobId})` : ''} --- ${companyName}`
         }
       )
-    delete profile.hrSummit2021JobFairCompanyJobPreferences
+    delete profile.hrSummit2021JobFairCompanyJobPreferences //TODO avoid delete
 
     const {
       firstName,
@@ -2238,10 +2238,10 @@ const TpJobFair2021InterviewMatchEdit: FC = (props) => (
 )
 
 const buildDataProvider = (normalDataProvider) => (verb, resource, params) => {
-  if (verb === 'GET_LIST' && params.filter) {
+  if (params.filter && verb === 'GET_LIST') {
     const filter = params.filter;
     const q = filter.q;
-    delete filter.q;
+    delete filter.q; //TODO avoid delete
     const newFilter = { and: [filter] };
 
     if (q) {

@@ -9,8 +9,8 @@ const Caption: FC<CaptionProps> = ({ children }) => (
     weight="normal"
     renderAs="h3"
     className="caption"
-    subtitle
     textTransform="uppercase"
+    subtitle
   >
     {children}
   </BulmaHeading>

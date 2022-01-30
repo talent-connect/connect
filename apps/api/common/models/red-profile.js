@@ -53,14 +53,8 @@ module.exports = function (RedProfile) {
       // TODO: the next two else-if blocks can definitely be DRY-ed. Merge them.
     }
 
-    if (
-      ctx.options &&
-      ctx.options.currentUser &&
-      ctx.options.currentUser.email === 'cloud-accounts@redi-school.org'
-    ) {
-    } else {
+    if (ctx.options?.currentUser?.email !== 'cloud-accounts@redi-school.org')
       return next();
-    }
 
     const RedMatch = app.models.RedMatch;
     const AccessToken = app.models.AccessToken;
@@ -75,7 +69,7 @@ module.exports = function (RedProfile) {
           limit: 1,
         }).pipe(
           map((accessTokens) =>
-            accessTokens && accessTokens[0] ? accessTokens[0].created : null
+            accessTokens?.[0] ? accessTokens[0].created : null
           )
         )
         : Rx.of([null]);
@@ -108,13 +102,8 @@ module.exports = function (RedProfile) {
     if (!ctx.data.categories) ctx.data.categories = [];
 
     // Strip away RedProfile.administratorInternalComment if user is NOT cloud-accounts@redi-school.org
-    if (
-      ctx.options &&
-      ctx.options.currentUser &&
-      ctx.options.currentUser.email === 'cloud-accounts@redi-school.org'
-    ) {
-    } else {
-      delete ctx.data.administratorInternalComment;
+    if (ctx.options?.currentUser?.email !== 'cloud-accounts@redi-school.org') {
+      delete ctx.data.administratorInternalComment; //TODO avoid delete
     }
 
     // If favouritedRedProfileIds[] isn't set, set it. But delete it if the accessing user doesn't own it.
@@ -122,11 +111,10 @@ module.exports = function (RedProfile) {
     const currentUserRedProfileId =
       ctx?.options?.currentUser?.redProfile?.id.toString();
     const isRedProfileOwnedByCurrentUser =
-      currentUserRedProfileId &&
       currentUserRedProfileId === ctx.data.id.toString();
-    if (!isRedProfileOwnedByCurrentUser) delete ctx.data.favouritedRedProfileIds;
+    if (!isRedProfileOwnedByCurrentUser) delete ctx.data.favouritedRedProfileIds; //TODO avoid delete
 
-    if (ctx.data && ctx.data.userType === 'mentor') {
+    if (ctx.data?.userType === 'mentor') {
       // In case RedProfile belongs to a mentor, add "computed properties"
       // currentMenteeCount, currentFreeMenteeSpots, and numberOfPendingApplicationWithCurrentUser,
       // currentApplicantCount

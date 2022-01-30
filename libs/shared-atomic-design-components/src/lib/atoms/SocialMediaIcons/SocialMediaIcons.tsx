@@ -14,7 +14,10 @@ const SocialMediaIcons: FC = () => (
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Icon icon={item.icon} className="media-icons__icon" />
+          <Icon
+            icon={item.icon}
+            className="media-icons__icon"
+          />
         </a>
       </li>
     ))}

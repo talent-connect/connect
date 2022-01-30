@@ -33,7 +33,7 @@ const TextArea: FC<TextAreaProps> = ({
         <Form.Textarea
           id={name}
           name={name}
-          color={hasError ? 'danger' : null}
+          color={hasError && 'danger'}
           rows={rows}
           placeholder={placeholder}
           value={get(values, name)}

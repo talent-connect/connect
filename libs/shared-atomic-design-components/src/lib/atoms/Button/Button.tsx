@@ -33,10 +33,7 @@ const Button: FC<ButtonProps> & { Icon: typeof Icon } = ({
   if (!to) return (
     <button
       type="button"
-      className={classNames}
-      style={style}
-      disabled={disabled}
-      onClick={onClick}
+      {...{ classNames, style, disabled, onClick }}
     >
       {children}
     </button>
@@ -47,8 +44,7 @@ const Button: FC<ButtonProps> & { Icon: typeof Icon } = ({
   if (isExternalLink) return (
     <button
       type="button"
-      className={classNames}
-      style={style}
+      {...{ classNames, style }}
       onClick={() => (window.location.href = to)}
     >
       {children}

@@ -39,14 +39,14 @@ const Modal: FC<ModalProps> & Record<'Body' | 'Foot', FC> = ({
       closeOnBlur={!confirm}
     >
       <BulmaModal.Card style={styles}>
-        {title ? (
-          <BulmaModal.Card.Head showClose={false} className="modal__heading">
-            {!confirm && <CloseButton onClick={setShowModal} />}
+        {title
+          ? (<BulmaModal.Card.Head showClose={false} className="modal__heading">
+            {!confirm &&
+              <CloseButton onClick={setShowModal} />}
             <Heading size="small">{title}</Heading>
-          </BulmaModal.Card.Head>
-        ) : (
-          !confirm && <CloseButton onClick={setShowModal} />
-        )}
+            </BulmaModal.Card.Head>)
+          : (!confirm &&
+            <CloseButton onClick={setShowModal} />)}
         {children}
       </BulmaModal.Card>
     </BulmaModal>
@@ -60,7 +60,7 @@ interface CloseButtonProps {
 const CloseButton: FC<CloseButtonProps> = ({ onClick }) => (
     <button
       type="button"
-      onClick={() => onClick()}
+      onClick={onClick}
       className="modal-close is-large"
       aria-label="close"
     />

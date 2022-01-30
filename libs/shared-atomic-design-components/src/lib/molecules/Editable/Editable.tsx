@@ -34,7 +34,7 @@ const Editable: FC<EditableProps> = ({
           {isEditing ? (
             <>
               <div
-                onClick={savePossible ? handleSave : null}
+                onClick={savePossible && handleSave}
                 className={classnames('icon__button', {
                   'icon__button--disabled': !savePossible,
                 })}
@@ -49,9 +49,7 @@ const Editable: FC<EditableProps> = ({
           ) : (
             <div
               className="icon__button"
-              onClick={() => {
-                setIsEditing(true)
-              }}
+              onClick={() => { setIsEditing(true) }}
             >
               <Icon icon="edit" />
             </div>

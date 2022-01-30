@@ -116,11 +116,8 @@ export const AppNotification: FC = () => {
         className={state ? styleClasses[state.variant] : ''}
         message={
           <span className={styleClasses.message}>
-            {Icon && (
-              <Icon
-                className={clsx(styleClasses.icon, styleClasses.iconVariant)}
-              />
-            )}
+            {Icon &&
+              <Icon className={clsx(styleClasses.icon, styleClasses.iconVariant)}/>}
             {state?.message}
           </span>
         }

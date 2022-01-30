@@ -7,7 +7,7 @@ export const authProvider = (loginApiUrl, noAccessPage = '/login') => {
   return (type, params) => {
     if (params?.username && !params.email) {
       params.email = params.username
-      delete params.username
+      delete params.username //TODO avoid delete
     }
     if (type === AUTH_LOGIN) {
       const request = new Request(loginApiUrl, {
@@ -17,9 +17,8 @@ export const authProvider = (loginApiUrl, noAccessPage = '/login') => {
       })
       return fetch(request)
         .then((response) => {
-          if (response.status < 200 || response.status >= 300) {
+          if (response.status < 200 || response.status >= 300)
             throw new Error(response.statusText)
-          }
           return response.json()
         })
         .then(({ ttl, ...data }) => {
@@ -40,12 +39,9 @@ export const authProvider = (loginApiUrl, noAccessPage = '/login') => {
     }
     if (type === AUTH_CHECK) {
       const token = storage.load('lbtoken')
-      if (token?.id) {
-        return Promise.resolve()
-      } else {
-        storage.remove('lbtoken')
-        return Promise.reject({ redirectTo: noAccessPage })
-      }
+      if (token?.id) return Promise.resolve()
+      storage.remove('lbtoken')
+      return Promise.reject({ redirectTo: noAccessPage })
     }
     return Promise.reject('Unknown method')
   }

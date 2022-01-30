@@ -87,8 +87,7 @@ const Profile: FC<ProfileProps> = ({
   const match =
     profile &&
     profile.userType === 'mentee' &&
-    profile.redMatchesWithCurrentUser &&
-    profile.redMatchesWithCurrentUser [
+    profile.redMatchesWithCurrentUser?.[
       profile.redMatchesWithCurrentUser.length - 1
     ]
 
@@ -164,8 +163,7 @@ const Profile: FC<ProfileProps> = ({
           {contactInfoAvailable && (
             <Element className="block-separator">
               <Columns>
-                {!shouldHidePrivateContactInfo &&
-                  (profile.firstName || profile.age) && (
+                {!shouldHidePrivateContactInfo && (profile.firstName || profile.age) && (
                     <Columns.Column>
                       <Element className="block-separator">
                         <ReadContactDetails.Some profile={profile} />
@@ -217,8 +215,7 @@ const Profile: FC<ProfileProps> = ({
             </Element>
           )}
 
-          {(profile.mentor_occupation ||
-            profile.mentee_occupationCategoryId) && (
+          {(profile.mentor_occupation || profile.mentee_occupationCategoryId) && (
             <Element className="block-separator">
               <Columns>
                 <Columns.Column>

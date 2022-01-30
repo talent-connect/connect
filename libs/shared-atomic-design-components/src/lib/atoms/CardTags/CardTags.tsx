@@ -24,14 +24,12 @@ const CardTags: FC<CardTagsProps> = ({ items, shortList, formatter }) => {
         const isLastVisibleTag = i === 2
 
         return hasAdditionalTags && isLastVisibleTag
-          ? (
-            <div className="tags__last-row" key={tagId}>
+          ? (<div className="tags__last-row" key={tagId}>
               {currentTag}
               <CardTag key={`restNr-${i}`} className="tag--rest">
                 {'+' + additionalTagsCount}
               </CardTag>
-            </div>
-          )
+            </div>)
           : currentTag
       })}
     </Tag.Group>

@@ -118,9 +118,9 @@ const FormSelect: FC<FormSelectProps> = ({
 
   const selectedValues = multiSelect
     ? get(values, name)
-        ?.map((selValue) => items.filter((availItem) => availItem.value === selValue))
+        ?.map((selValue) => items.filter(({ value }) => value === selValue))
         .flat()
-    : items.find((item) => item.value === get(values, name))
+    : items.find(({ value }) => value === get(values, name))
 
   return (
     <Form.Field>

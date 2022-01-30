@@ -22,10 +22,8 @@ const Checkbox: FC<CheckboxProps> & { Form: FC<CheckboxProps & { className: stri
       <input
         type="checkbox"
         className="redi-checkbox"
+        {...{ value, name, checked }}
         id={uid}
-        value={value}
-        name={name}
-        checked={checked}
         onChange={handleChange}
         onBlur={handleBlur}
         disabled={isSubmitting || disabled}

@@ -12,6 +12,7 @@ import {
   DELETE,
   DELETE_MANY,
 } from 'react-admin';
+import { objectKeys } from '@talent-connect/typescript-utilities';
 
 export * from './authProvider';
 export { default as storage } from './storage';
@@ -23,7 +24,7 @@ export default (apiUrl, httpClient = fetchJson) => {
    * @param {Object} params The data request params, depending on the type
    * @returns {Object} { url, options } The HTTP request parameters
    */
-  const convertDataRequestToHTTP = (type, resource, params) => {
+  const convertDataRequestToHTTP = (type: string, resource: string, params: object) => {
     let url = '';
     const options = {};
     const specialParams = ['pagination', 'sort', 'filter'];
@@ -43,9 +44,7 @@ export default (apiUrl, httpClient = fetchJson) => {
             query[key] = params[key];
           }
         });
-        url = `${apiUrl}/${resource}?${stringify({
-          filter: JSON.stringify(query),
-        })}`;
+        url = `${apiUrl}/${resource}?${stringify({ filter: JSON.stringify(query) })}`;
         break;
       }
       case GET_ONE:
@@ -74,10 +73,9 @@ export default (apiUrl, httpClient = fetchJson) => {
         if (perPage >= 0) query.limit = perPage;
         if (perPage > 0 && page >= 0) query.skip = (page - 1) * perPage;
 
-        Object.keys(params).forEach((key) => {
-          if (!specialParams.includes(key) && !!params[key]) {
+        objectKeys(params).forEach((key) => {
+          if (!specialParams.includes(key) && !!params[key])
             query[key] = params[key];
-          }
         });
 
         url = `${apiUrl}/${resource}?${stringify({
@@ -112,16 +110,17 @@ export default (apiUrl, httpClient = fetchJson) => {
    * @param {Object} params The data request params, depending on the type
    * @returns {Object} Data response
    */
-  const convertHTTPResponse = (response, type, resource, params) => {
+  const convertHTTPResponse = (response, type: string, resource: string, params) => {
     const { headers, json } = response;
     switch (type) {
       case GET_LIST:
       case GET_MANY_REFERENCE:
-        if (!headers.has('content-range')) {
+        if (!headers.has('content-range'))
           throw new Error(
-            'The Content-Range header is missing in the HTTP Response. The simple REST data provider expects responses for lists of resources to contain this header with the total number of results to build the pagination. If you are using CORS, did you declare Content-Range in the Access-Control-Expose-Headers header?'
-          );
-        }
+            `The Content-Range header is missing in the HTTP Response. 
+            The simple REST data provider expects responses for lists of resources to contain this header with the total number of results to build the pagination.
+            If you are using CORS, did you declare Content-Range in the Access-Control-Expose-Headers header?`);
+        
         return {
           data: json,
           total: parseInt(headers.get('content-range').split('/').pop(), 10),
@@ -136,12 +135,16 @@ export default (apiUrl, httpClient = fetchJson) => {
   };
 
   /**
-   * @param {string} type Request type, e.g GET_LIST
-   * @param {string} resource Resource name, e.g. "posts"
-   * @param {Object} payload Request parameters. Depends on the request type
    * @returns {Promise} the Promise for a data response
    */
-  return (type, resource, params) => {
+  return async function (
+    /** Request type, e.g GET_LIST */
+    type: string,
+    /** Resource name, e.g. "posts" */
+    resource: string,
+    /** Request parameters. Depends on the request type */
+    params: { ids: string[]; data: object; }
+  ): Promise<{ data: unknown[]; }> { // TODO: type
     // simple-rest doesn't handle filters on UPDATE route, so we fallback to calling UPDATE n times instead
     if (type === UPDATE_MANY) {
       return Promise.all(
@@ -152,7 +155,7 @@ export default (apiUrl, httpClient = fetchJson) => {
           })
         )
       ).then((responses) => ({
-        data: responses.map((response) => response.json),
+        data: responses.map(({ json }) => json),
       }));
     }
     // simple-rest doesn't handle filters on DELETE route, so we fallback to calling DELETE n times instead
@@ -164,7 +167,7 @@ export default (apiUrl, httpClient = fetchJson) => {
           })
         )
       ).then((responses) => ({
-        data: responses.map((response) => response.json),
+        data: responses.map(({ json }) => json),
       }));
     }
 

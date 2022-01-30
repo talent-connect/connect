@@ -3,7 +3,7 @@ export default {
     if (!Storage) return false
     var expirationMS = expirationSec * 1000
     var record = {
-      value: value,
+      value,
       timestamp: new Date().getTime() + expirationMS,
     }
     localStorage.setItem(key, JSON.stringify(record))
@@ -14,10 +14,8 @@ export default {
     if (!Storage) return false
     try {
       var record = JSON.parse(localStorage.getItem(key))
-      if (!record) {
-        return false
-      }
-      return new Date().getTime() < record.timestamp && record.value
+      if (!record) return false
+      return record.value && new Date().getTime() < record.timestamp
     } catch (e) {
       return false
     }
@@ -30,10 +28,8 @@ export default {
     if (!Storage) return false
     try {
       var record = JSON.parse(localStorage.getItem(key))
-      if (!record) {
-        return false
-      }
-      var updatedRecord = { value: value, timestamp: record.timestamp }
+      if (!record) return false
+      const updatedRecord = { value, timestamp: record.timestamp }
       localStorage.setItem(key, JSON.stringify(updatedRecord))
       return updatedRecord
     } catch (e) {

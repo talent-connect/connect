@@ -45,18 +45,14 @@ const FormDatePicker: FC<FormDatePickerProps> = ({
 
   return (
     <Form.Field>
-      {label && <Form.Label size="small">{label}</Form.Label>}
+      {label &&
+        <Form.Label size="small">{label}</Form.Label>}
       <Form.Control>
         <DatePicker
+          {...{ minDate, maxDate, dropdownMode, isClearable, showYearDropdown, showMonthDropdown }}
           selected={values[name]}
           customInput={<PickerTriggerWithPlaceholder />}
           dateFormat={dateFormat || 'dd.MM.yyyy'}
-          minDate={minDate}
-          maxDate={maxDate}
-          showMonthDropdown={showMonthDropdown}
-          showYearDropdown={showYearDropdown}
-          dropdownMode={dropdownMode}
-          isClearable={isClearable}
           onChange={changeHandler}
         />
       </Form.Control>

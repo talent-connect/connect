@@ -20,9 +20,8 @@ export const SearchField: FC<SearchFieldProps> = ({
 
   return (
     <Form.Input
-      placeholder={placeholder}
+      {...{ placeholder, value }}
       onChange={handleChange}
-      value={value}
     />
   )
 }
