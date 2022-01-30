@@ -8,7 +8,6 @@ import {
   Heading,
   SVGImage,
 } from '@talent-connect/shared-atomic-design-components'
-import { SVGImages } from '@talent-connect/shared-atomic-design-components'
 import classnames from 'classnames'
 import './SignUpLanding.scss'
 
@@ -16,8 +15,8 @@ const SignUpLanding: FC = () => {
   const [selectedType, setSelectedType] = useState('')
   const history = useHistory()
 
-  const renderType = (name: string) => {
-    const type = name.toLowerCase() as SVGImages
+  const renderType = (name: 'Mentee' | 'Mentor') => {
+    const type = name.toLowerCase() as Lowercase<typeof name>
 
     return (
       <div
@@ -51,7 +50,7 @@ const SignUpLanding: FC = () => {
             Do you want to become a <strong>mentor</strong> or a{' '}
             <strong>mentee</strong>?
           </Content>
-          <div className="signup">
+          <div className="sign-up">
             {renderType('Mentee')}
             {renderType('Mentor')}
           </div>

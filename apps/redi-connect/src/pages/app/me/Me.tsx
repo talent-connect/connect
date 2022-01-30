@@ -37,8 +37,9 @@ const Me: FC<Props> = ({
   loading,
   saveResult,
   profileFetchStart,
-  profile: { userType, firstName }
+  profile
 }) => {
+  const { userType, firstName } = profile;
   useEffect(() => {
     profileFetchStart()
   }, [profileFetchStart])
@@ -58,7 +59,7 @@ const Me: FC<Props> = ({
 
       <Columns vCentered breakpoint="mobile" className="oneandhalf-bs">
         <Columns.Column size={3}>
-          <Avatar.Editable />
+          <Avatar.Editable {...{ profile }}/>
         </Columns.Column>
         <Columns.Column size={8}>
           <Heading>Hi, {firstName}</Heading>

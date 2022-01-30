@@ -20,6 +20,7 @@ import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tp
 import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
+import { componentForm } from './EditableSummary.form';
 
 interface Props {
   profile?: Partial<TpJobSeekerProfile>
@@ -104,18 +105,6 @@ EditableSummary.isSectionEmpty = (profile: Partial<TpJobSeekerProfile>) =>
 
 const formTopSkills = mapOptions(topSkills)
 
-const [MIN_CHARS, MAX_CHARS] = [100, 600]
-
-const validationSchema = Yup.object({
-  topSkills: Yup.array()
-    .min(1, 'Pick at least one top technical skill')
-    .max(5, "Your profile can't contain too many skills - five at most"),
-  aboutYourself: Yup.string()
-    .required()
-    .min(MIN_CHARS, 'Write at least 100 characters about yourself.')
-    .max(MAX_CHARS, 'The text about yourself can be up to 600 characters long.'),
-})
-
 interface JobSeekerFormSectionSummaryProps {
   setIsEditing: (boolean: boolean) => void
   setIsFormDirty?: (boolean: boolean) => void
@@ -141,25 +130,17 @@ export const JobSeekerFormSectionSummary: FC<JobSeekerFormSectionSummaryProps> =
   const { data: profile } = queryHookResult
   const mutation = mutationHookResult
 
-  const initialValues = useMemo(() => ({
-      aboutYourself: profile?.aboutYourself || '',
-      topSkills: profile?.topSkills || [],
-    }),
-    [profile?.aboutYourself, profile?.topSkills]
-  )
+  // const initialValues = useMemo(() => ({
+  //     aboutYourself: profile?.aboutYourself || '',
+  //     topSkills: profile?.topSkills || [],
+  //   }),
+  //   [profile?.aboutYourself, profile?.topSkills]
+  // )
 
-  const formik = useFormik<typeof initialValues>({
-    initialValues,
-    validationSchema,
-    enableReinitialize: true,
-    validateOnMount: true,
-    onSubmit: (values, { setSubmitting }) => {
-      setSubmitting(true)
-      mutation.mutate(values, {
-        onSettled: () => setSubmitting(false),
-        onSuccess: () => setIsEditing(false),
-      })
-    },
+  const formik = componentForm({
+    mutationHookResult,
+    profile,
+    setIsEditing
   })
 
   useEffect(() => setIsFormDirty?.(formik.dirty), [
@@ -179,15 +160,15 @@ export const JobSeekerFormSectionSummary: FC<JobSeekerFormSectionSummaryProps> =
         what you’re passionate about in your field.
       </Element>
       <FormSelect
-        label="Your top technical skills (pick 1-5 skills)"
         name="topSkills"
+        label="Your top technical skills (pick 1-5 skills)"
         items={formTopSkills}
         {...formik}
         multiSelect
       />
       <TextArea
-        label="About you (100-600 characters)"
         name="aboutYourself"
+        label="About you (100-600 characters)"
         rows={7}
         placeholder="Example: UX Designer with an academic background in Psychology. Experienced in negotiating with different kinds of clients and resolving customer complaints with a high level of empathy. Committed to understanding the human mind and designing impactful products by leveraging a strong sense of analytical and critical thinking."
         minChar={100}

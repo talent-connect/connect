@@ -1,14 +1,14 @@
-import { createStore, applyMiddleware, compose } from 'redux'
+import { createStore, applyMiddleware, compose, StoreEnhancer } from 'redux'
 import { createEpicMiddleware } from 'redux-observable'
 import { rootEpic } from './epics'
 import { rootReducer } from './reducers'
 
 declare global {
   interface Window {
-    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: ({
+    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: ({
       trace: boolean,
       traceLimit: number,
-    }) => boolean; // TODO: boolean?
+    }) => (arg: StoreEnhancer) => StoreEnhancer;
   }
 }
 
@@ -16,12 +16,10 @@ declare global {
 const epicMiddleware = createEpicMiddleware()
 
 const composeEnhancers =
-  (
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__?.({
-      trace: true,
-      traceLimit: 50,
-    })
-  ) ||
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__?.({
+    trace: true,
+    traceLimit: 50,
+  }) ||
   compose
 
 export const store = createStore(

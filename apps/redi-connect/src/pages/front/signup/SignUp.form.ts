@@ -19,6 +19,8 @@ interface ComponentFormProps {
   setSubmitError: Dispatch<SetStateAction<boolean>>;
 }
 
+const coursesIds = courses.map((level) => level.id)
+
 export const componentForm = createComponentForm<ComponentFormProps>()
   .validation((yup) => ({
     firstName: yup.string()
@@ -48,7 +50,7 @@ export const componentForm = createComponentForm<ComponentFormProps>()
         is: 'public-sign-up-mentee-pending-review',
         then: yup.string()
           .required()
-          .oneOf(courses.map((level) => level.id))
+          .oneOf(coursesIds)
           .label('Currently enrolled in course'),
       }),
   }))
@@ -66,7 +68,7 @@ export const componentForm = createComponentForm<ComponentFormProps>()
   .formikConfig({
     enableReinitialize: true,
   })
-  .onSubmit(async (profile, { setSubmitting }, { setSubmitError }) => {
+  .onSubmit(async (profile, { setSubmitting }, { setSubmitError, userType }) => {
       setSubmitError(false)
       // TODO: this needs to be done in a smarter way, like iterating over the RedProfile definition or something
       const cleanProfile = omit(profile, [
@@ -84,7 +86,7 @@ export const componentForm = createComponentForm<ComponentFormProps>()
       try {
         await signUp(profile.contactEmail, profile.password, complementedProfile)
         setSubmitting(false)
-        history.push(`/front/signup-email-verification/${cleanProfile.userType}`)
+        history.push(`/front/signup-email-verification/${userType}`)
       } catch (error) {
         setSubmitting(false)
         setSubmitError(!!error)

@@ -6,7 +6,7 @@ export interface TextAreaProps<T extends string> {
   /** */
   className?: string
   /** */
-  label: string
+  label?: string
   /** */
   placeholder?: string
   /** */

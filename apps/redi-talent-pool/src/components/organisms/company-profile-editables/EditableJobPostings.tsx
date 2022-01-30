@@ -174,7 +174,7 @@ const ModalForm: FC<ModalFormProps> = ({
     : buildBlankJobListing(currentUserTpCompanyProfile?.id)
 
   const createMutation = useTpJobListingCreateMutation()
-  const updateMutation = useTpJobListingUpdateMutation(tpJobListingId)
+  const updateMutation = useTpJobListingUpdateMutation() // TODO: has "tpJobListingId" as param. Why?
   const deleteMutation = useTpJobListingDeleteMutation()
 
   const formik = useFormik<Partial<TpJobListing>>({
@@ -305,7 +305,7 @@ const ModalForm: FC<ModalFormProps> = ({
           <div style={{ flexGrow: 1 }}>
             <Button
               disabled={!formik.isValid || updateMutation.isLoading}
-              onClick={formik.handleSubmit}
+              onClick={(e) => formik.handleSubmit(e)}
             >
               Save
             </Button>

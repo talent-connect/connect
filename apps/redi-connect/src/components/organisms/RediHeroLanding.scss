@@ -31,14 +31,14 @@
   &--mentor {
     background-image: linear-gradient(
       to bottom,
-      colors.colors.$redi-blue-light 80%,
+      colors.$redi-blue-light 80%,
       colors.$white 80%
     );
 
     @include mobile() {
       background-image: linear-gradient(
         to bottom,
-        colors.colors.$redi-blue-light 95%,
+        colors.$redi-blue-light 95%,
         colors.$white 95%
       );
     }

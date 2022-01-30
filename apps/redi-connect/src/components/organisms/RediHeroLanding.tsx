@@ -13,19 +13,15 @@ import './RediHeroLanding.scss'
 import {
   Icon,
   SVGImage,
-  SVGTypes,
 } from '@talent-connect/shared-atomic-design-components'
+import { SVGTypes } from 'libs/shared-atomic-design-components/src/lib/atoms/SVGImage/SVGImage.props';
+import { UserRole } from '@talent-connect/shared-types';
 
 interface Props {
-  type: 'mentor' | 'mentee'
+  type: UserRole
 }
 
-interface imageType {
-  mentor: SVGTypes
-  mentee: SVGTypes
-}
-
-const typeToSvgImageMap: imageType = {
+const typeToSvgImageMap: Record<UserRole, SVGTypes> = {
   mentor: 'heroMentor',
   mentee: 'heroMentee',
 }

@@ -1,7 +1,5 @@
 import { FC } from 'react'
 import { connect } from 'react-redux'
-import * as Yup from 'yup'
-import { useFormik } from 'formik'
 
 import { FormSelect } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
@@ -12,23 +10,13 @@ import { ReadRediClass } from '../molecules'
 import { courses } from '../../config/config'
 import { mapOptions } from '@talent-connect/typescript-utilities';
 import { mapStateToProps } from '../../helpers';
+import { componentForm, ComponentFormProps } from './EditableRediClass.form';
 
 const formCourses = mapOptions(courses)
 
-export interface RediClassFormValues {
-  mentee_currentlyEnrolledInCourse: string
-}
-
-const validationSchema = Yup.object({
-  mentee_currentlyEnrolledInCourse: Yup.string()
-    .required()
-    .oneOf(courses.map(({ id }) => id))
-    .label('Currently enrolled in course'),
-})
-
 interface Props {
   profile: RedProfile
-  profileSaveStart: (arg: RediClassFormValues & { id: string }) => void
+  profileSaveStart: ComponentFormProps['profileSaveStart']
 }
 
 const EditableRediClass: FC<Props> = ({
@@ -36,15 +24,10 @@ const EditableRediClass: FC<Props> = ({
   profileSaveStart
 }) => {
   
-  const formik = useFormik<RediClassFormValues>({
-    initialValues: {
-      mentee_currentlyEnrolledInCourse,
-    },
-    enableReinitialize: true,
-    validationSchema,
-    onSubmit: (rediClass: RediClassFormValues) => {
-      profileSaveStart({ ...rediClass, id })
-    },
+  const formik = componentForm({
+    id,
+    mentee_currentlyEnrolledInCourse,
+    profileSaveStart
   })
 
   return (

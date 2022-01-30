@@ -1,10 +1,12 @@
 import { ChangeEventHandler, FocusEventHandler } from 'react';
 
-export interface FormSelectProps<T extends string> {
+type StringOrNumber = string | number;
+
+export interface FormSelectProps<T extends string, M extends boolean> {
   /** */
-  name: string;
+  name: T;
   /** */
-  items: { value: string | number; label: string; }[];
+  items: { value: StringOrNumber; label: string; }[];
   /** */
   placeholder?: string;
   /** */
@@ -12,15 +14,15 @@ export interface FormSelectProps<T extends string> {
   /** */
   label: string;
   /** */
-  values: Record<T, unknown>; // TODO: fix;
+  multiSelect?: M;
+  /** */
+  values: Record<T, M extends true ? StringOrNumber[] : StringOrNumber>; // TODO: fix;
   /** */
   handleChange: ChangeEventHandler<HTMLInputElement>;
   /** */
   isSubmitting: boolean;
   /** */
   handleBlur: FocusEventHandler<HTMLInputElement>;
-  /** */
-  multiSelect?: boolean;
   /** */
   setFieldTouched: (name: string, value: boolean, x: boolean) => void; // TODO: signature
   /** */

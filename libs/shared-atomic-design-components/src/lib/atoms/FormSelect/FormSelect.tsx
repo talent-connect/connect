@@ -23,7 +23,7 @@ const MultiValueRemove = (props: any) => (
   </components.MultiValueRemove>
 )
 
-const FormSelect: FC<FormSelectProps<string>> = ({
+const FormSelect = function <T extends string, M extends boolean>({
   name,
   items,
   placeholder,
@@ -37,7 +37,7 @@ const FormSelect: FC<FormSelectProps<string>> = ({
   touched,
   errors,
   disabled,
-}) => {
+}: FormSelectProps<T, M>) {
 
   const customStyles = {
     option: (provided: any, state: any) => ({
