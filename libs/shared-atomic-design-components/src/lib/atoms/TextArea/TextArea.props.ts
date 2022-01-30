@@ -1,14 +1,14 @@
 import { ChangeEventHandler, FocusEventHandler } from 'react';
 
-export interface TextAreaProps {
+export interface TextAreaProps<T extends string> {
   /** */
-  name: string
+  name: T
   /** */
   className?: string
   /** */
   label: string
   /** */
-  placeholder: string
+  placeholder?: string
   /** */
   disabled?: boolean
   /** */
@@ -18,7 +18,7 @@ export interface TextAreaProps {
   /** */
   maxChar?: number;
   /** */
-  values: Record<string, string>;
+  values: Record<T, string>; // TODO: fix
   /** */
   handleChange?: ChangeEventHandler<HTMLInputElement>
   /** */
@@ -26,7 +26,7 @@ export interface TextAreaProps {
   /** */
   isSubmitting?: boolean;
   /** */
-  touched: boolean;
+  touched: Record<T, unknown>; // TODO: fix
   /** */
-  errors: unknown;
+  errors: Record<T, unknown>; // TODO: fix
 }

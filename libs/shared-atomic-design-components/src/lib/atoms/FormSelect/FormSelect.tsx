@@ -23,7 +23,7 @@ const MultiValueRemove = (props: any) => (
   </components.MultiValueRemove>
 )
 
-const FormSelect: FC<FormSelectProps> = ({
+const FormSelect: FC<FormSelectProps<string>> = ({
   name,
   items,
   placeholder,

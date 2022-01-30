@@ -13,12 +13,29 @@ import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseeker
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
+function buildAllLinksArray(profile: Partial<TpJobSeekerProfile>): string[] {
+  return [
+    profile?.personalWebsite,
+    profile?.githubUrl,
+    profile?.linkedInUrl,
+    profile?.twitterUrl,
+    profile?.behanceUrl,
+    profile?.stackOverflowUrl,
+    profile?.dribbbleUrl,
+  ]
+}
+
 interface Props {
   profile?: Partial<TpJobSeekerProfile>
   disableEditing?: boolean
 }
 
-export const EditableLinks: FC<Props> = ({
+interface EditableLinksHelpers {
+  isSectionFilled: (profile: Partial<TpJobSeekerProfile>) => boolean;
+  isSectionEmpty: (profile: Partial<TpJobSeekerProfile>) => boolean;
+}
+
+export const EditableLinks: FC<Props> & EditableLinksHelpers = ({
   profile: overridingProfile,
   disableEditing,
 }) => {
@@ -81,22 +98,13 @@ export const EditableLinks: FC<Props> = ({
   )
 }
 
-function buildAllLinksArray(profile: Partial<TpJobSeekerProfile>): string[] {
-  return [
-    profile?.personalWebsite,
-    profile?.githubUrl,
-    profile?.linkedInUrl,
-    profile?.twitterUrl,
-    profile?.behanceUrl,
-    profile?.stackOverflowUrl,
-    profile?.dribbbleUrl,
-  ]
-}
-
 EditableLinks.isSectionFilled = (profile: Partial<TpJobSeekerProfile>) =>
   buildAllLinksArray(profile).some((p) => p)
+
 EditableLinks.isSectionEmpty = (profile: Partial<TpJobSeekerProfile>) =>
   !EditableLinks.isSectionFilled(profile)
+
+// #####################################################################
 
 const validationSchema = Yup.object({
   personalWebsite: Yup.string().url().label('Personal website URL'),

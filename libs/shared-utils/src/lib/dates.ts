@@ -1,6 +1,5 @@
-
-import * as moment from 'moment'
-
+// @ts-ignore //TODO
+import moment from "moment";
 
 /** */
 export function formatDate (month?: number, year?: number): string { // TODO: rethink 

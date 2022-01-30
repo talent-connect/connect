@@ -2,7 +2,7 @@ import { FC } from 'react'
 import classnames from 'classnames'
 
 import './Icon.scss'
-import { IconProps, Icons } from './Icon.props';
+import { IconProps, ICONS } from './Icon.props';
 
 const Icon: FC<IconProps> = ({
   icon,
@@ -12,7 +12,7 @@ const Icon: FC<IconProps> = ({
   onClick,
   style = {},
 }) => {
-  const Icon = icon ? Icons[icon] : null
+  const Icon = icon ? ICONS[icon] : null
 
   const iconSize = size || 'medium'
 

@@ -17,7 +17,13 @@ interface Props {
   profile: Partial<TpCompanyProfile>
   disableEditing?: boolean
 }
-export const EditableAbout: FC<Props> = ({ profile, disableEditing }) => {
+
+interface EditableAboutHelpers {
+  isSectionFilled: (profile: Partial<TpCompanyProfile>) => boolean;
+  isSectionEmpty: (profile: Partial<TpCompanyProfile>) => boolean;
+}
+
+export const EditableAbout: FC<Props> & EditableAboutHelpers = ({ profile, disableEditing }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
@@ -69,8 +75,11 @@ export const EditableAbout: FC<Props> = ({ profile, disableEditing }) => {
 
 EditableAbout.isSectionFilled = (profile: Partial<TpCompanyProfile>) =>
   !!profile?.about
+  
 EditableAbout.isSectionEmpty = (profile: Partial<TpCompanyProfile>) =>
   !EditableAbout.isSectionFilled(profile)
+
+// ######################################################################
 
 interface ModalFormProps {
   setIsEditing: (boolean: boolean) => void

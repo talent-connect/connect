@@ -32,7 +32,12 @@ interface Props {
   disableEditing?: boolean
 }
 
-export const EditableImportantDetails: FC<Props> = ({
+interface EditableImportantDetailsHelpers {
+  isSectionFilled: (profile: Partial<TpJobSeekerProfile>) => boolean;
+  isSectionEmpty: (profile: Partial<TpJobSeekerProfile>) => boolean;
+}
+
+export const EditableImportantDetails: FC<Props> & EditableImportantDetailsHelpers = ({
   profile: overridingProfile,
   disableEditing,
 }) => {
@@ -47,16 +52,15 @@ export const EditableImportantDetails: FC<Props> = ({
   const [isFormDirty, setIsFormDirty] = useState(false)
 
   const isEmpty = EditableImportantDetails.isSectionEmpty(profile)
-
+  
   if (disableEditing && isEmpty) return null
-
+  
   return (
     <Editable
-      disableEditing={disableEditing}
-      isEditing={isEditing}
-      isFormDirty={isFormDirty}
-      setIsEditing={setIsEditing}
       title="Important details"
+      modalTitle="Help employers get in touch"
+      modalHeadline="Important Details"
+      {...{ disableEditing, isEditing, isFormDirty, setIsEditing }}
       readComponent={
         isEmpty ? (
           <EmptySectionPlaceholder
@@ -140,12 +144,9 @@ export const EditableImportantDetails: FC<Props> = ({
           </div>
         )
       }
-      modalTitle="Help employers get in touch"
-      modalHeadline="Important Details"
       modalBody={
         <JobSeekerFormSectionImportantDetails
-          {...{ setIsEditing, queryHookResult, mutationHookResult}}
-          setIsFormDirty={setIsFormDirty}
+          {...{ setIsEditing, queryHookResult, mutationHookResult, setIsFormDirty }}
         />
       }
       modalStyles={{ minHeight: '40rem' }}
@@ -154,14 +155,16 @@ export const EditableImportantDetails: FC<Props> = ({
 }
 
 EditableImportantDetails.isSectionFilled = (profile: Partial<TpJobSeekerProfile>) =>
-  profile?.availability ||
-  profile?.desiredEmploymentType?.length ||
-  profile?.phoneNumber ||
-  profile?.immigrationStatus ||
-  profile?.postalMailingAddress;
+  !!profile?.availability ||
+  !!profile?.desiredEmploymentType?.length ||
+  !!profile?.phoneNumber ||
+  !!profile?.immigrationStatus ||
+  !!profile?.postalMailingAddress;
 
 EditableImportantDetails.isSectionEmpty = (profile: Partial<TpJobSeekerProfile>) =>
   !EditableImportantDetails.isSectionFilled(profile)
+
+// ################################################################################
 
 // const validationSchema = Yup.object({
 //   desiredPositions: Yup.array()

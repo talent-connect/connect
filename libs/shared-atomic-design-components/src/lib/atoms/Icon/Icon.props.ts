@@ -29,7 +29,7 @@ import { ReactComponent as Fb } from '../../../assets/images/fb.svg'
 import { ReactComponent as Loader } from '../../../assets/images/loader.svg'
 import { ReactComponent as MapPin } from '../../../assets/images/map-pin.svg'
 
-export const Icons = {
+export const ICONS = {
   arrowLeft: ArrowLeft,
   arrowRight: ArrowRight,
   account: Account,
@@ -62,7 +62,7 @@ export const Icons = {
 
 export interface IconProps {
   /** ... */
-  icon: keyof typeof Icons
+  icon: keyof typeof ICONS
   /** ... */
   size?: 'small' | 'medium' | 'large' | 'x-large'
   /** ... */
@@ -72,5 +72,5 @@ export interface IconProps {
   /** ... */
   style?: CSSProperties
   /** ... */
-  onClick?: MouseEventHandler<HTMLButtonElement>
+  onClick?: MouseEventHandler<SVGSVGElement>
 }

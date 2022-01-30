@@ -16,7 +16,7 @@ import {
   languageProficiencyLevelsIdToLabelMap,
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
-import { objectValues, objectValues } from '@talent-connect/typescript-utilities';
+import { objectValues } from '@talent-connect/typescript-utilities';
 import { isEqual } from 'lodash'
 import { FC, memo, useEffect } from 'react'
 import {

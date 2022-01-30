@@ -2,10 +2,10 @@ import { FC } from 'react';
 import classnames from 'classnames'
 import { Form } from 'react-bulma-components'
 import { get } from 'lodash'
-import { TextInputProps } from './TextInput.props';
+import { NumberInputProps } from './NumberInput.props';
 
 
-const TextInput: FC<TextInputProps<string>> = ({
+const NumberInput: FC<NumberInputProps<string>> = ({
   name,
   placeholder,
   label,
@@ -18,7 +18,6 @@ const TextInput: FC<TextInputProps<string>> = ({
   errors,
   disabled,
   domRef,
-  type = 'text',
   startAddon = null,
 }) => {
 
@@ -31,9 +30,9 @@ const TextInput: FC<TextInputProps<string>> = ({
       {startAddon}
       <Form.Control className={classnames({ 'field-clean': isValidField })}>
         <Form.Input
+          type='number'
           id={name}
           name={name}
-          type={type}
           color={hasError && 'danger'}
           placeholder={placeholder}
           // use lodash's so we can access stuff like experience[0].title
@@ -55,4 +54,4 @@ const TextInput: FC<TextInputProps<string>> = ({
   )
 }
 
-export default TextInput
+export default NumberInput

@@ -1,10 +1,10 @@
 import { ChangeEventHandler, FocusEventHandler } from 'react';
 
-export interface FormSelectProps {
+export interface FormSelectProps<T extends string> {
   /** */
   name: string;
   /** */
-  items: { value: string; }[];
+  items: { value: string | number; label: string; }[];
   /** */
   placeholder?: string;
   /** */
@@ -12,7 +12,7 @@ export interface FormSelectProps {
   /** */
   label: string;
   /** */
-  values: { value: string; }[];
+  values: Record<T, unknown>; // TODO: fix;
   /** */
   handleChange: ChangeEventHandler<HTMLInputElement>;
   /** */
@@ -26,9 +26,9 @@ export interface FormSelectProps {
   /** */
   setFieldValue: (name: string, value: boolean, x: boolean) => void ;  // TODO: signature
   /** */
-  touched: boolean;
+  touched: Record<T, unknown>; // TODO: fix;
   /** */
-  errors: unknown;
+  errors: Record<T, unknown>; // TODO: fix;
   /** */
   disabled?: boolean;
 }

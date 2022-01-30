@@ -16,6 +16,8 @@ import {
   TextInput,
   FormSelect,
   Icon,
+  TextArea,
+  NumberInput,
 } from '@talent-connect/shared-atomic-design-components'
 import {
   ExperienceRecord,
@@ -35,7 +37,12 @@ interface Props {
   disableEditing?: boolean
 }
 
-export const  EditableProfessionalExperience: FC<Props> = ({
+interface EditableProfessionalExperienceHelpers {
+  isSectionFilled: (profile: Partial<TpJobSeekerProfile>) => boolean;
+  isSectionEmpty: (profile: Partial<TpJobSeekerProfile>) => boolean;
+}
+
+export const  EditableProfessionalExperience: FC<Props> & EditableProfessionalExperienceHelpers = ({
   profile: overridingProfile,
   disableEditing,
 }) => {
@@ -52,11 +59,10 @@ export const  EditableProfessionalExperience: FC<Props> = ({
 
   return (
     <Editable
-      disableEditing={disableEditing}
-      isEditing={isEditing}
-      isFormDirty={isFormDirty}
-      setIsEditing={setIsEditing}
       title="Professional experience"
+      modalTitle="Work history"
+      modalHeadline="Professional experience"
+      {...{ disableEditing, isEditing, isFormDirty, setIsEditing }}
       readComponent={
         isEmpty ? (
           <EmptySectionPlaceholder
@@ -106,14 +112,9 @@ export const  EditableProfessionalExperience: FC<Props> = ({
           ))
         )
       }
-      modalTitle="Work history"
-      modalHeadline="Professional experience"
       modalBody={
         <JobSeekerFormSectionProfessionalExperience
-          setIsEditing={setIsEditing}
-          setIsFormDirty={setIsFormDirty}
-          queryHookResult={queryHookResult}
-          mutationHookResult={mutationHookResult}
+          {...{ setIsEditing, queryHookResult, setIsFormDirty, mutationHookResult }}
         />
       }
       modalStyles={{ minHeight: 700 }}
@@ -122,9 +123,12 @@ export const  EditableProfessionalExperience: FC<Props> = ({
 }
 
 EditableProfessionalExperience.isSectionFilled = (profile: Partial<TpJobSeekerProfile>) =>
-  profile?.experience?.length;
+  !!profile?.experience?.length;
+
 EditableProfessionalExperience.isSectionEmpty = (profile: Partial<TpJobSeekerProfile>) =>
   !EditableProfessionalExperience.isSectionFilled(profile);
+
+// ############################################################################################
 
 interface JobSeekerFormSectionProfessionalExperienceProps {
   setIsEditing: (boolean: boolean) => void
@@ -251,7 +255,10 @@ export const JobSeekerFormSectionProfessionalExperience: FC<JobSeekerFormSection
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="id">
           {(provided, snapshot) => (
-            <div {...provided.droppableProps} ref={provided.innerRef}>
+            <div
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
               {formik?.values?.experience.map((item, index) => (
                 <Draggable
                   key={item.uuid}
@@ -285,19 +292,19 @@ export const JobSeekerFormSectionProfessionalExperience: FC<JobSeekerFormSection
                           label="Company"
                           {...formik}
                         />
-                        <FormInput
+                        <TextInput
                           name={`experience[${index}].city`}
                           placeholder="Berlin"
                           label="City"
                           {...formik}
                         />
-                        <FormInput
+                        <TextInput
                           name={`experience[${index}].country`}
                           placeholder="Germany"
                           label="Country"
                           {...formik}
                         />
-                        <FormTextArea
+                        <TextArea
                           label="Roles & Responsibilities"
                           name={`experience[${index}].description`}
                           rows={7}
@@ -327,10 +334,9 @@ export const JobSeekerFormSectionProfessionalExperience: FC<JobSeekerFormSection
                             />
                           </Columns.Column>
                           <Columns.Column size={6}>
-                            <TextInput
+                            <NumberInput
                               name={`experience[${index}].startDateYear`}
                               label="Started in year"
-                              type="number"
                               {...formik}
                             />
                           </Columns.Column>
@@ -347,10 +353,9 @@ export const JobSeekerFormSectionProfessionalExperience: FC<JobSeekerFormSection
                               />
                             </Columns.Column>
                             <Columns.Column size={6}>
-                              <TextInput
+                              <NumberInput
                                 name={`experience[${index}].endDateYear`}
                                 label="Ended in year"
-                                type="number"
                                 {...formik}
                               />
                             </Columns.Column>

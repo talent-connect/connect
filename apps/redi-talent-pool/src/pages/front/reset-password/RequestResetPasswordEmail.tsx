@@ -17,8 +17,7 @@ interface FormValues {
 }
 
 const validationSchema = yup.object().shape({
-  email: yup
-    .string()
+  email: yup.string()
     .email('That doesn’t look quite right... please provide a valid email.')
     .required('Please provide an email address.'),
 })

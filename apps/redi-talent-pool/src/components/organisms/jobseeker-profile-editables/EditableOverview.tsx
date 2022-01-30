@@ -9,6 +9,7 @@ import {
   desiredPositions,
   desiredPositionsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
+import { mapOptions } from '@talent-connect/typescript-utilities';
 import { useFormik } from 'formik'
 import { FC, useEffect, useMemo, useState } from 'react'
 import { Element, Tag } from 'react-bulma-components'
@@ -24,7 +25,12 @@ interface Props {
   disableEditing?: boolean
 }
 
-export const EditableOverview: FC<Props> = ({
+interface EditableOverviewHelpers {
+  isSectionFilled: (profile: Partial<TpJobSeekerProfile>) => boolean;
+  isSectionEmpty: (profile: Partial<TpJobSeekerProfile>) => boolean;
+}
+
+export const EditableOverview: FC<Props> & EditableOverviewHelpers = ({
   profile: overridingProfile,
   disableEditing,
 }) => {
@@ -43,11 +49,10 @@ export const EditableOverview: FC<Props> = ({
 
   return (
     <Editable
-      disableEditing={disableEditing}
-      isEditing={isEditing}
-      isFormDirty={isFormDirty}
-      setIsEditing={setIsEditing}
       title="Overview"
+      modalTitle="Interests & About"
+      modalHeadline="Overview"
+      {...{ disableEditing, isEditing, isFormDirty, setIsEditing }}
       readComponent={
         isEmpty ? (
           <EmptySectionPlaceholder
@@ -67,14 +72,9 @@ export const EditableOverview: FC<Props> = ({
           </>
         )
       }
-      modalTitle="Interests & About"
-      modalHeadline="Overview"
       modalBody={
         <JobSeekerFormSectionOverview
-          setIsEditing={setIsEditing}
-          setIsFormDirty={setIsFormDirty}
-          queryHookResult={queryHookResult}
-          mutationHookResult={mutationHookResult}
+          {...{ setIsEditing, queryHookResult, mutationHookResult, setIsFormDirty }}
         />
       }
     />
@@ -82,10 +82,13 @@ export const EditableOverview: FC<Props> = ({
 }
 
 EditableOverview.isSectionFilled = (profile: Partial<TpJobSeekerProfile>) =>
-  profile?.desiredPositions?.length
+  !!profile?.desiredPositions?.length
+
 EditableOverview.isSectionEmpty = (profile: Partial<TpJobSeekerProfile>) =>
   !EditableOverview.isSectionFilled(profile)
 
+// ###########################################################################
+  
 const validationSchema = Yup.object({
   desiredPositions: Yup.array()
     .min(1, 'At least one desired position is required')

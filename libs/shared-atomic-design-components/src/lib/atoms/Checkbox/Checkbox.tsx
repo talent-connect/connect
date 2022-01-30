@@ -4,7 +4,7 @@ import _uniqueId from 'lodash/uniqueId'
 import { Form } from 'react-bulma-components'
 import './Checkbox.scss'
 
-const Checkbox: FC<CheckboxProps> & { Form: FC<CheckboxProps & { className: string;}> } = ({
+const Checkbox: FC<CheckboxProps> & { Form: FC<CheckboxProps & { className?: string;}> } = ({
   name,
   value,
   checked,

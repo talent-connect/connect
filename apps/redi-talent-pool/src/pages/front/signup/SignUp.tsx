@@ -42,7 +42,7 @@ const formCourses = coursesWithAlumniDeduped.map(({ id, label, location }) => ({
 
 const howDidHearAboutRediOptionsEntries = mapOptionsObject(howDidHearAboutRediOptions)
 
-function buildValidationSchema(signupType: SignUpPageType['type']) {
+function buildValidationSchema(signUpType: SignUpPageType['type']) {
   const baseSchema = {
     firstName: Yup.string().required('Your first name is invalid').max(255),
     lastName: Yup.string().required('Your last name is invalid').max(255),
@@ -63,7 +63,7 @@ function buildValidationSchema(signupType: SignUpPageType['type']) {
       .oneOf([true]),
   }
 
-  if (signupType === 'jobseeker') {
+  if (signUpType === 'jobSeeker') {
     return Yup.object({
       ...baseSchema,
       currentlyEnrolledInCourse: Yup.string()
@@ -74,7 +74,7 @@ function buildValidationSchema(signupType: SignUpPageType['type']) {
     })
   }
 
-  if (signupType === 'company') {
+  if (signUpType === 'company') {
     return Yup.object({
       ...baseSchema,
       companyName: Yup.string()
@@ -93,7 +93,7 @@ function buildValidationSchema(signupType: SignUpPageType['type']) {
 }
 
 type SignUpPageType = {
-  type: 'jobseeker' | 'company'
+  type: 'jobSeeker' | 'company'
 }
 
 export interface SignUpFormValues {
@@ -106,11 +106,11 @@ export interface SignUpFormValues {
   firstName: string
   lastName: string
   agreesWithCodeOfConduct?: boolean
-  jobseeker_currentlyEnrolledInCourse?: string
+  jobSeeker_currentlyEnrolledInCourse?: string
 }
 
 export default function SignUp() {
-  const { type } = useParams<SignUpPageType>()
+  const { type } = useParams<SignUpPageType>() as SignUpPageType;
 
   const initialValues: SignUpFormValues = useMemo(() => ({
       contactEmail: '',
@@ -121,9 +121,9 @@ export default function SignUp() {
     }),
     []
   )
-  if (type === 'jobseeker') {
+  if (type === 'jobSeeker') {
     initialValues.state = 'drafting-profile'
-    initialValues.jobseeker_currentlyEnrolledInCourse = ''
+    initialValues.jobSeeker_currentlyEnrolledInCourse = ''
     initialValues.agreesWithCodeOfConduct = false
   }
   if (type === 'company') {
@@ -136,12 +136,12 @@ export default function SignUp() {
   const formik = useFormik<SignUpFormValues>({
     initialValues,
     enableReinitialize: true,
-    validationSchema: buildValidationSchema(type as SignUpPageType['type']),
+    validationSchema: buildValidationSchema(type),
     onSubmit: async (profile, actions) => {
       setSubmitError(null)
   
       try {
-        if (type === 'jobseeker') {
+        if (type === 'jobSeeker') {
           profile.isProfileVisibleToCompanies = true
   
           // TODO: this needs to be done in a smarter way, like iterating over the TpJobSeekerProfile definition or something
@@ -240,7 +240,7 @@ export default function SignUp() {
               {...formik}
             />
 
-            {type === 'jobseeker' && (
+            {type === 'jobSeeker' && (
               <FormSelect
                 label="Current ReDI Course"
                 name="currentlyEnrolledInCourse"
@@ -250,7 +250,7 @@ export default function SignUp() {
               />
             )}
 
-            {type === 'jobseeker' && (
+            {type === 'jobSeeker' && (
               <Checkbox.Form
                 name="agreesWithCodeOfConduct"
                 checked={formik.values.agreesWithCodeOfConduct}

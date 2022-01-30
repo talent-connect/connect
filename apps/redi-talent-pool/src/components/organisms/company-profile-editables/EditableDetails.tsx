@@ -17,7 +17,13 @@ interface Props {
   disableEditing?: boolean
 }
 
-export const EditableDetails: FC<Props> = ({ profile, disableEditing }) => {
+interface EditableDetailsHelpers {
+  isSectionFilled: (profile: Partial<TpCompanyProfile>) => boolean;
+  isSectionEmpty: (profile: Partial<TpCompanyProfile>) => boolean;
+  isWebsiteSectionFilled: (profile: Partial<TpCompanyProfile>) => boolean;
+}
+
+export const EditableDetails: FC<Props> & EditableDetailsHelpers = ({ profile, disableEditing }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
@@ -91,9 +97,11 @@ export const EditableDetails: FC<Props> = ({ profile, disableEditing }) => {
 }
 
 EditableDetails.isWebsiteSectionFilled = ({ website }: Partial<TpCompanyProfile>) =>
-  website
+  !!website
+
 EditableDetails.isSectionFilled = ({ website, industry, linkedInUrl }: Partial<TpCompanyProfile>) =>
-  industry || website || linkedInUrl
+  !!industry || !!website || !!linkedInUrl
+
 EditableDetails.isSectionEmpty = (profile: Partial<TpCompanyProfile>) =>
   !EditableDetails.isSectionFilled(profile)
 

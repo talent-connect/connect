@@ -26,7 +26,12 @@ interface Props {
   disableEditing?: boolean
 }
 
-export const EditableSummary: FC<Props> = ({
+interface EditableSummaryHelpers {
+  isSectionFilled: (profile: Partial<TpJobSeekerProfile>) => boolean;
+  isSectionEmpty: (profile: Partial<TpJobSeekerProfile>) => boolean;
+}
+
+export const EditableSummary: FC<Props> & EditableSummaryHelpers = ({
   profile: overridingProfile,
   disableEditing,
 }) => {
@@ -43,11 +48,10 @@ export const EditableSummary: FC<Props> = ({
 
   return (
     <Editable
-      disableEditing={disableEditing}
-      isEditing={isEditing}
-      isFormDirty={isFormDirty}
-      setIsEditing={setIsEditing}
       title="Summary"
+      modalTitle="About you"
+      modalHeadline="Summary"
+      {...{ disableEditing, isEditing, isFormDirty, setIsEditing }}
       readComponent={
         <>
           <Caption>About</Caption>
@@ -80,14 +84,9 @@ export const EditableSummary: FC<Props> = ({
           )}
         </>
       }
-      modalTitle="About you"
-      modalHeadline="Summary"
       modalBody={
         <JobSeekerFormSectionSummary
-          setIsEditing={setIsEditing}
-          setIsFormDirty={setIsFormDirty}
-          queryHookResult={queryHookResult}
-          mutationHookResult={mutationHookResult}
+          {...{ setIsEditing, queryHookResult, mutationHookResult, setIsFormDirty }}
         />
       }
       modalStyles={{ minHeight: 700 }}
@@ -96,9 +95,12 @@ export const EditableSummary: FC<Props> = ({
 }
 
 EditableSummary.isSectionFilled = (profile: Partial<TpJobSeekerProfile>) =>
-  !!profile?.aboutYourself && profile?.topSkills?.length
+  !!profile?.aboutYourself && !!profile?.topSkills?.length
+
 EditableSummary.isSectionEmpty = (profile: Partial<TpJobSeekerProfile>) =>
   !EditableSummary.isSectionFilled(profile)
+
+// ########################################################################
 
 const formTopSkills = mapOptions(topSkills)
 
@@ -146,7 +148,7 @@ export const JobSeekerFormSectionSummary: FC<JobSeekerFormSectionSummaryProps> =
     [profile?.aboutYourself, profile?.topSkills]
   )
 
-  const formik = useFormik<Partial<TpJobSeekerProfile>>({
+  const formik = useFormik<typeof initialValues>({
     initialValues,
     validationSchema,
     enableReinitialize: true,

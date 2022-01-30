@@ -1,16 +1,16 @@
 import { ChangeEventHandler, FocusEventHandler } from 'react';
 
-export interface TextInputProps<T extends string> {
+export interface NumberInputProps<T extends string> {
   /** */
   name: T;
   /** */
-  placeholder: string;
+  placeholder?: string;
   /** */
   label?: string;
   /** */
   type?: 'email' | 'text' | 'password';
   /** */
-  dirty?: boolean;
+  dirty: boolean;
   /** */
   values: Record<T, unknown>; // TODO: fix 
   /** */
@@ -20,11 +20,11 @@ export interface TextInputProps<T extends string> {
   /** */
   handleBlur?: FocusEventHandler<HTMLInputElement>
   /** */
-  isSubmitting?: boolean;
+  isSubmitting: boolean;
   /** */
-  touched?: Record<T, unknown>; // TODO: fix
+  touched: Record<T, unknown>; // TODO: fix
   /** */
-  errors?: Record<T, unknown>; // TODO: fix
+  errors: Record<T, unknown>; // TODO: fix
   /** */
   disabled?: boolean;
   /** */

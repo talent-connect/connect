@@ -26,7 +26,12 @@ interface Props {
   triggerModalSignal?: Subject<void>
 }
 
-export const EditableJobPreferences: FC<Props> = ({ profile, triggerModalSignal }) => {
+interface EditableJobPreferencesHelpers {
+  isSectionFilled: (profile: Partial<TpJobSeekerProfile>) => boolean;
+  isSectionEmpty: (profile: Partial<TpJobSeekerProfile>) => boolean;
+}
+
+export const EditableJobPreferences: FC<Props> & EditableJobPreferencesHelpers = ({ profile, triggerModalSignal }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
@@ -86,6 +91,8 @@ EditableJobPreferences.isSectionFilled = (profile: Partial<TpJobSeekerProfile>) 
 
 EditableJobPreferences.isSectionEmpty = (profile: Partial<TpJobSeekerProfile>) =>
   !EditableJobPreferences.isSectionFilled(profile);
+
+// #################################################################################
 
 // TODO: put this one in config file
 const MAX_LANGUAGES = 6

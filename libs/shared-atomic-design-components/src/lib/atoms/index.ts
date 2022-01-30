@@ -16,6 +16,7 @@ export * from './SearchField'
 export * from './SVGImage'
 export * from './SVGImage'
 export * from './TextInput'
+export * from './NumberInput'
 
 export * from './RediConnectLogo'
 export * from './RediTalentPoolLogo'

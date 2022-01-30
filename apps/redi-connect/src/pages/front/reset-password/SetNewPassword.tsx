@@ -1,49 +1,31 @@
 import { FC, useState, useEffect } from 'react'
+import { RouteComponentProps } from 'react-router'
+import { Link } from 'react-router-dom'
+import { Columns, Content, Form } from 'react-bulma-components'
+
 import AccountOperation from '../../../components/templates/AccountOperation'
 import Teaser from '../../../components/molecules/Teaser'
-import { Columns, Content, Form } from 'react-bulma-components'
-import { Link } from 'react-router-dom'
 
-import * as Yup from 'yup'
-
-import { useFormik } from 'formik'
-import { history } from '../../../services/history/history'
-import { setPassword, fetchSaveRedProfile } from '../../../services/api/api'
+import { fetchSaveRedProfile } from '../../../services/api/api'
 import { saveAccessTokenToLocalStorage } from '../../../services/auth/auth'
-import { RouteComponentProps } from 'react-router'
-import { showNotification } from '../../../components/AppNotification'
 import {
   Button,
   TextInput,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
-
-interface SetNewPasswordValues {
-  password: string
-  passwordConfirm: string
-}
-
-const validationSchema = Yup.object({
-  password: Yup.string()
-    .min(8, 'Password must contain at least 8 characters')
-    .required('Enter your password')
-    .label('Password'),
-  passwordConfirm: Yup.string()
-    .required('Confirm your password')
-    .oneOf([Yup.ref('password')], 'Password does not match'),
-})
+import { componentForm } from './SetNewPassword.form';
 
 interface RouteParams {
   accessToken: string
 }
 
-export const SetNewPassword: FC<RouteComponentProps<RouteParams>> = (props) => {
+export const SetNewPassword: FC<RouteComponentProps<RouteParams>> = ({ match }) => {
   const [formError, setFormError] = useState<string>('')
   const [errorMsg, setErrorMsg] = useState<string>('')
 
   useEffect(() => {
     const load = async () => {
-      const accessTokenStr = decodeURIComponent(props.match.params.accessToken)
+      const accessTokenStr = decodeURIComponent(match.params.accessToken)
       let accessToken
       try {
         accessToken = JSON.parse(accessTokenStr)
@@ -51,43 +33,21 @@ export const SetNewPassword: FC<RouteComponentProps<RouteParams>> = (props) => {
         console.log('savetoken')
       } catch (err) {
         console.log('savetoken errp')
-        return setErrorMsg(
-          'Sorry, there seems to have been an error. Please try to reset your password again, or contact career@redi-school.org for assistance.'
-        )
+        return setErrorMsg('Sorry, there seems to have been an error. Please try to reset your password again, or contact career@redi-school.org for assistance.')
       }
       try {
         await fetchSaveRedProfile(accessToken)
         console.log('saveprofile')
       } catch (err) {
         console.log('saveprofile error')
-
-        return setErrorMsg(
-          'Sorry, the link you used seems to have expired. Please contact career@redi-school.org to receive a new one.'
-        )
+        return setErrorMsg('Sorry, the link you used seems to have expired. Please contact career@redi-school.org to receive a new one.')
       }
     }
     load()
-  }, [props.match.params.accessToken])
+  }, [match.params.accessToken])
 
-  const formik = useFormik<SetNewPasswordValues>({
-    initialValues: {
-      password: '',
-      passwordConfirm: '',
-    },
-    validationSchema,
-    onSubmit: async ({ password }, actions) => {
-      try {
-        await setPassword(password)
-        showNotification("Your new password is set and you're logged in :)", {
-          variant: 'success',
-          autoHideDuration: 8000,
-        })
-        history.push('/app/me')
-      } catch (err) {
-        setFormError('Invalid username or password')
-      }
-      actions.setSubmitting(false)
-    },
+  const formik = componentForm({
+    setFormError
   })
 
   return (

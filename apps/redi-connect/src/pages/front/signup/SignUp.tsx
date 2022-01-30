@@ -3,10 +3,6 @@ import AccountOperation from '../../../components/templates/AccountOperation'
 import { useParams } from 'react-router'
 import { Link } from 'react-router-dom'
 
-import * as Yup from 'yup'
-
-import { useFormik } from 'formik'
-import omit from 'lodash/omit'
 import {
   Button,
   Checkbox,
@@ -19,51 +15,15 @@ import Teaser from '../../../components/molecules/Teaser'
 
 import { Columns, Content, Form } from 'react-bulma-components'
 
-import { signUp } from '../../../services/api/api'
-import { Extends, RedProfile, UserRole } from '@talent-connect/shared-types'
-import { history } from '../../../services/history/history'
+import { UserRole } from '@talent-connect/shared-types'
 import { courses } from '../../../config/config'
+import { componentForm, SignUpUserType } from './SignUp.form';
 
-const formCourses = courses.map((course) => ({
-  value: course.id,
-  label: course.label,
-}))
-
-export const validationSchema = Yup.object({
-  firstName: Yup.string().required('Your first name is invalid').max(255),
-  lastName: Yup.string().required('Your last name is invalid').max(255),
-  contactEmail: Yup.string()
-    .email('Your email is invalid')
-    .required('You need to give an email address')
-    .label('Email')
-    .max(255),
-  password: Yup.string()
-    .min(8, 'The password has to consist of at least eight characters')
-    .required('You need to set a password')
-    .label('Password'),
-  passwordConfirm: Yup.string()
-    .required('Confirm your password')
-    .oneOf([Yup.ref('password')], 'Passwords does not match'),
-  agreesWithCodeOfConduct: Yup.boolean().required().oneOf([true]),
-  gaveGdprConsent: Yup.boolean().required().oneOf([true]),
-  mentee_currentlyEnrolledInCourse: Yup.string().when('userType', {
-    is: 'public-sign-up-mentee-pending-review',
-    then: Yup.string()
-      .required()
-      .oneOf(courses.map((level) => level.id))
-      .label('Currently enrolled in course'),
-  }),
-})
+const formCourses = courses.map(({ id, label }) => ({ value: id, label }))
 
 type SignUpPageType = {
   type: UserRole
 }
-
-type SignUpUserType = Extends< // TODO necessary?
-  RedProfile['userType'],
-  | 'public-sign-up-mentee-pending-review'
-  | 'public-sign-up-mentor-pending-review'
->
 
 export interface SignUpFormValues {
   userType: SignUpUserType
@@ -78,52 +38,19 @@ export interface SignUpFormValues {
 }
 
 const SignUp: FC = () => {
-  const { type } = useParams<SignUpPageType>()
+  const { type } = useParams<SignUpPageType>() as SignUpPageType
 
   // we may consider removing the backend types from frontend
-  const userType: SignUpUserType =
-    type === 'mentee'
+  const userType: SignUpUserType =  type === 'mentee'
       ? 'public-sign-up-mentee-pending-review'
       : 'public-sign-up-mentor-pending-review'
 
   const [submitError, setSubmitError] = useState(false)
 
-  const formik = useFormik<SignUpFormValues>({
-    initialValues: {
-      userType,
-      gaveGdprConsent: false,
-      contactEmail: '',
-      password: '',
-      passwordConfirm: '',
-      firstName: '',
-      lastName: '',
-      agreesWithCodeOfConduct: false,
-      mentee_currentlyEnrolledInCourse: '',
-    },
-    enableReinitialize: true,
-    validationSchema,
-    onSubmit: async (profile, actions) => {
-      setSubmitError(false)
-      // TODO: this needs to be done in a smarter way, like iterating over the RedProfile definition or something
-      const cleanProfile: Partial<RedProfile> = omit(profile, [
-        'password',
-        'passwordConfirm',
-        'agreesWithCodeOfConduct',
-        'gaveGdprConsent',
-      ])
-      cleanProfile.userActivated = false
-      cleanProfile.signupSource = 'public-sign-up'
-      cleanProfile.menteeCountCapacity = 1
-      try {
-        await signUp(profile.contactEmail, profile.password, cleanProfile)
-        actions.setSubmitting(false)
-        history.push(`/front/signup-email-verification/${cleanProfile.userType}`)
-      } catch (error) {
-        actions.setSubmitting(false)
-        setSubmitError(!!error)
-      }
-    },
-  })
+  const formik = componentForm({
+    setSubmitError,
+    userType
+  });
 
   return (
     <AccountOperation>

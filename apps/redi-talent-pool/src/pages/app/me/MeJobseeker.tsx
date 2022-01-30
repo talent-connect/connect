@@ -1,6 +1,6 @@
 import { FC, useCallback, useRef } from 'react'
 import classnames from 'clsx'
-import { Subject } from 'rxjs'
+// import { Subject } from 'rxjs'
 import { Tooltip } from '@material-ui/core'
 import { Columns, Element, Notification, Content } from 'react-bulma-components'
 import {
@@ -14,7 +14,7 @@ import {
 } from '@talent-connect/shared-types'
 import { EditableEducation } from '../../../components/organisms/jobseeker-profile-editables/EditableEducation'
 import { EditableImportantDetails } from '../../../components/organisms/jobseeker-profile-editables/EditableImportantDetails'
-import { EditableJobPreferences } from '../../../components/organisms/jobseeker-profile-editables/EditableJobPreferences'
+// import { EditableJobPreferences } from '../../../components/organisms/jobseeker-profile-editables/EditableJobPreferences'
 import { EditableLanguages } from '../../../components/organisms/jobseeker-profile-editables/EditableLanguages'
 import { EditableLinks } from '../../../components/organisms/jobseeker-profile-editables/EditableLinks'
 import { EditableNamePhotoLocation } from '../../../components/organisms/jobseeker-profile-editables/EditableNamePhotoLocation'
@@ -31,15 +31,15 @@ import { ReactComponent as CheckmarkImage } from './checkmark.svg'
 import './MeJobSeeker.scss'
 import { ReactComponent as StepPendingImage } from './pending.svg'
 
-export function MeJobseeker() {
+export const MeJobSeeker: FC = () => {
   const { data: profile } = useTpJobSeekerProfileQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
 
-  const currentStep = determineCurrentStep(profile)
+  // const currentStep = determineCurrentStep(profile)
 
-  const openJobPreferencesModalSignalRef = useRef(new Subject<void>())
+  // const openJobPreferencesModalSignalRef = useRef(new Subject<void>())
 
-  // This function is added for Job Fair 2022 only. Please remove after 11.02.2022
+  // TODO: This function is added for Job Fair 2022 only. Please remove after 11.02.2022
   const handleJobFairToggleChange = () =>
     mutation.mutate({
       ...profile,
@@ -110,15 +110,14 @@ export function MeJobseeker() {
 const CallToActionButton: FC<{ profile: Partial<TpJobSeekerProfile> }> = ({
   profile,
 }) => {
+  const showSendProfileForReviewButton =
+    profile.state === TpJobSeekerProfileState['drafting-profile'] ||
+    profile.state === TpJobSeekerProfileState['submitted-for-review'];
+  
   return (
     <>
-      {profile?.state &&
-      [
-        TpJobSeekerProfileState['drafting-profile'],
-        TpJobSeekerProfileState['submitted-for-review'],
-      ].includes(profile.state) && (
-        <SendProfileForReviewButton />
-      )}
+      {showSendProfileForReviewButton && // TODO: review
+          <SendProfileForReviewButton />}
       {/* {profile &&
       profile.state &&
       [
@@ -181,35 +180,28 @@ export const OnboardingSteps: FC = () => {
           Complete the steps below!
         </Element>
       </div>
-      {steps.map(({ number, label  }, index) => (
+      {steps.map(({ number, label }, i) => (
         <div
-          key={index}
+          key={i}
           className={classnames('onboarding-steps--item', {
             'current-step': number === currentStep,
             'completed-step': number < currentStep,
           })}
         >
-          {number < currentStep ? (
-            <ChecklistActiveImage className="checklist-image" />
-          ) : (
-            <ChecklistImage className="checklist-image" />
-          )}
+          {number < currentStep
+            ? (<ChecklistActiveImage className="checklist-image" />)
+            : (<ChecklistImage className="checklist-image" />)}
           <Element textSize="5">{label}</Element>
           {currentStep > number && (
-            <CheckmarkImage className="checkmark-image" />
-          )}
+            <CheckmarkImage className="checkmark-image" />)}
           {currentStep < number && ( 
-            <CheckmarkBorderOnlyImage className="checkmark-image" />
-          )}
+            <CheckmarkBorderOnlyImage className="checkmark-image" />)}
           {currentStep === number && stepStatus === 'todo' && ( // TODO: apply switch?
-            <CheckmarkBorderOnlyImage className="checkmark-image" />
-          )}
+            <CheckmarkBorderOnlyImage className="checkmark-image" />)}
           {currentStep === number && stepStatus === 'pending' && (
-            <StepPendingImage className="checkmark-image" />
-          )}
+            <StepPendingImage className="checkmark-image" />)}
           {currentStep === number && stepStatus === 'complete' && (
-            <CheckmarkImage className="checkmark-image" />
-          )}
+            <CheckmarkImage className="checkmark-image" />)}
         </div>
       ))}
     </div>
@@ -224,8 +216,7 @@ function isProfileComplete(profile: Partial<TpJobSeekerProfile>): boolean {
     EditableImportantDetails.isSectionFilled,
     EditableLanguages.isSectionFilled,
   ]
-    .map((checkerFn) => checkerFn(profile))
-    .every((p) => p)
+    .every((checkerFn) => checkerFn(profile))
   const experienceOrEducationSectionComplete =
     EditableProfessionalExperience.isSectionFilled(profile) ||
     EditableEducation.isSectionFilled(profile)
@@ -233,9 +224,9 @@ function isProfileComplete(profile: Partial<TpJobSeekerProfile>): boolean {
   return mostSectionsComplete && experienceOrEducationSectionComplete
 }
 
-function areJobPreferencesInputted (profile: Partial<TpJobSeekerProfile>): boolean {
-  return EditableJobPreferences.isSectionFilled(profile)
-}
+// function areJobPreferencesInputted (profile: Partial<TpJobSeekerProfile>): boolean {
+//   return EditableJobPreferences.isSectionFilled(profile)
+// }
 
 function SendProfileForReviewButton() {
   const { data: profile } = useTpJobSeekerProfileQuery()
@@ -266,33 +257,33 @@ function SendProfileForReviewButton() {
   }
 }
 
-function SendJobPreferencesForReviewButton() {
-  const { data: profile } = useTpJobSeekerProfileQuery()
-  const mutation = useTpjobseekerprofileUpdateMutation()
+// const SendJobPreferencesForReviewButton: FC = () => { // TODO: Remove?
+//   const { data: profile } = useTpJobSeekerProfileQuery()
+//   const mutation = useTpjobseekerprofileUpdateMutation()
 
-  const enabled =
-    profile?.state === 'profile-approved' &&
-    EditableJobPreferences.isSectionFilled(profile)
+//   const enabled =
+//     profile?.state === 'profile-approved' &&
+//     EditableJobPreferences.isSectionFilled(profile)
 
-  const onClick = useCallback(() => {
-    if (!window.confirm('Are you ready to share your job preferences?')) return
+//   const onClick = useCallback(() => {
+//     if (!window.confirm('Are you ready to share your job preferences?')) return
 
-    mutation.mutate({
-      ...profile,
-    })
-  }, [mutation, profile])
+//     mutation.mutate({
+//       ...profile,
+//     })
+//   }, [mutation, profile])
 
-  if (enabled) {
-    return <Button onClick={onClick}>Share your job preferences</Button>
-  } else {
-    return (
-      <Tooltip title="You need to input your job preferences before you can share them with us and get matched for an interview">
-        <span>
-          <Button disabled style={{ pointerEvents: 'none' }}>
-            Share your job preferences
-          </Button>
-        </span>
-      </Tooltip>
-    )
-  }
-}
+//   if (enabled) {
+//     return <Button onClick={onClick}>Share your job preferences</Button>
+//   } else {
+//     return (
+//       <Tooltip title="You need to input your job preferences before you can share them with us and get matched for an interview">
+//         <span>
+//           <Button disabled style={{ pointerEvents: 'none' }}>
+//             Share your job preferences
+//           </Button>
+//         </span>
+//       </Tooltip>
+//     )
+//   }
+// }

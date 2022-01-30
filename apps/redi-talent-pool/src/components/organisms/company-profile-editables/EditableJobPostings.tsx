@@ -235,7 +235,7 @@ const ModalForm: FC<ModalFormProps> = ({
           February 2022
         </Checkbox.Form>
 
-        <FormInput
+        <TextInput
           name={`title`}
           placeholder="Junior Frontend Developer"
           label="Job Title*"

@@ -7,9 +7,10 @@ import {
   Button,
   DecoratedHeadline,
   SVGImage,
-  SVGImages,
 } from '@talent-connect/shared-atomic-design-components'
 import './NavTiles.scss'
+
+import { SVGImages } from 'libs/shared-atomic-design-components/src/lib/atoms/SVGImage/SVGImage.props';
 
 const NavTile: FC<{ name: SVGImages }> = ({ name }) => {
   const { t } = useTranslation()

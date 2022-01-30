@@ -21,7 +21,13 @@ interface Props {
   disableEditing?: boolean
 }
 
-export const EditableNamePhotoLocation: FC<Props> = ({ profile, disableEditing }) => {
+interface EditableNamePhotoLocationHelpers {
+  isSectionFilled: (profile: Partial<TpCompanyProfile>) => boolean;
+  isSectionEmpty: (profile: Partial<TpCompanyProfile>) => boolean;
+  isPhotoSelected: (profile: Partial<TpCompanyProfile>) => boolean;
+}
+
+export const EditableNamePhotoLocation: FC<Props> & EditableNamePhotoLocationHelpers = ({ profile, disableEditing }) => {
   const mutation = useTpCompanyProfileUpdateMutation()
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
@@ -90,13 +96,15 @@ export const EditableNamePhotoLocation: FC<Props> = ({ profile, disableEditing }
 }
 
 EditableNamePhotoLocation.isSectionFilled = (profile: Partial<TpCompanyProfile>) =>
-  profile?.location
+  !!profile?.location
 
 EditableNamePhotoLocation.isPhotoSelected = (profile: Partial<TpCompanyProfile>) =>
-  profile?.profileAvatarImageS3Key
+  !!profile?.profileAvatarImageS3Key
 
 EditableNamePhotoLocation.isSectionEmpty = (profile: Partial<TpCompanyProfile>) =>
   !EditableNamePhotoLocation.isSectionFilled(profile)
+
+// #################################################################################
 
 const validationSchema = Yup.object({
   companyName: Yup.string()

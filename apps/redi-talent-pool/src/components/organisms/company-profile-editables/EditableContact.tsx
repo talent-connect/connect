@@ -17,7 +17,12 @@ interface Props {
   disableEditing?: boolean
 }
 
-export const EditableContact: FC<Props> = ({
+interface EditableContactHelpers {
+  isSectionFilled: (profile: Partial<TpCompanyProfile>) => boolean;
+  isSectionEmpty: (profile: Partial<TpCompanyProfile>) => boolean;
+}
+
+export const EditableContact: FC<Props> & EditableContactHelpers = ({
   profile,
   disableEditing
 }) => {
@@ -95,10 +100,11 @@ export const EditableContact: FC<Props> = ({
 }
 
 EditableContact.isSectionFilled = (profile: Partial<TpCompanyProfile>) =>
-  profile?.firstName ||
-  profile?.lastName ||
-  profile?.contactEmail ||
-  profile?.phoneNumber
+  !!profile?.firstName ||
+  !!profile?.lastName ||
+  !!profile?.contactEmail ||
+  !!profile?.phoneNumber
+
 EditableContact.isSectionEmpty = (profile: Partial<TpCompanyProfile>) =>
   !EditableContact.isSectionFilled(profile)
 

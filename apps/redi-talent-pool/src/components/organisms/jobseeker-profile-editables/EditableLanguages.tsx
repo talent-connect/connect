@@ -36,7 +36,12 @@ interface Props {
   disableEditing?: boolean
 }
 
-export const EditableLanguages: FC<Props> = ({
+interface EditableLanguagesHelpers {
+  isSectionFilled: (profile: Partial<TpJobSeekerProfile>) => boolean;
+  isSectionEmpty: (profile: Partial<TpJobSeekerProfile>) => boolean;
+}
+
+export const EditableLanguages: FC<Props> & EditableLanguagesHelpers = ({
   profile: overridingProfile,
   disableEditing,
 }) => {
@@ -56,11 +61,10 @@ export const EditableLanguages: FC<Props> = ({
 
   return (
     <Editable
-      disableEditing={disableEditing}
-      isEditing={isEditing}
-      isFormDirty={isFormDirty}
-      setIsEditing={setIsEditing}
       title="Languages"
+      modalTitle="Relevant languages you can speak"
+      modalHeadline="Languages"
+      {...{ disableEditing, isEditing, isFormDirty, setIsEditing }}
       readComponent={
         isEmpty ? (
           <EmptySectionPlaceholder
@@ -81,14 +85,9 @@ export const EditableLanguages: FC<Props> = ({
           </Content>
         )
       }
-      modalTitle="Relevant languages you can speak"
-      modalHeadline="Languages"
       modalBody={
         <JobSeekerFormSectionLanguages
-          setIsEditing={setIsEditing}
-          setIsFormDirty={setIsFormDirty}
-          queryHookResult={queryHookResult}
-          mutationHookResult={mutationHookResult}
+          {...{ setIsEditing, setIsFormDirty, queryHookResult, mutationHookResult }}
         />
       }
       modalStyles={{ minHeight: 700 }}
@@ -97,9 +96,12 @@ export const EditableLanguages: FC<Props> = ({
 }
 
 EditableLanguages.isSectionFilled = (profile: Partial<TpJobSeekerProfile>) =>
-  profile?.workingLanguages?.length
+  !!profile?.workingLanguages?.length
+
 EditableLanguages.isSectionEmpty = (profile: Partial<TpJobSeekerProfile>) =>
   !EditableLanguages.isSectionFilled(profile)
+
+// #############################################################################
 
 // TODO: put this one in config file
 const MAX_LANGUAGES = 6

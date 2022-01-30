@@ -7,6 +7,7 @@ import {
   FormSelect,
   TextArea,
   Icon,
+  NumberInput,
 } from '@talent-connect/shared-atomic-design-components'
 import * as Yup from 'yup'
 import {
@@ -39,7 +40,12 @@ interface Props {
   disableEditing?: boolean
 }
 
-export const EditableEducation: FC<Props> = ({
+interface EditableNamePhotoLocationHelpers {
+  isSectionFilled: (profile: Partial<TpJobSeekerProfile>) => boolean;
+  isSectionEmpty: (profile: Partial<TpJobSeekerProfile>) => boolean;
+}
+
+export const EditableEducation: FC<Props> & EditableNamePhotoLocationHelpers = ({
   profile: overridingProfile,
   disableEditing,
 }) => {
@@ -123,9 +129,12 @@ export const EditableEducation: FC<Props> = ({
 }
 
 EditableEducation.isSectionFilled = (profile: Partial<TpJobSeekerProfile>) =>
-  profile?.education?.length
+  !!profile?.education?.length
+
 EditableEducation.isSectionEmpty = (profile: Partial<TpJobSeekerProfile>) =>
   !EditableEducation.isSectionFilled(profile)
+
+// ############################################################################
 
 interface JobSeekerFormSectionEducationProps {
   setIsEditing: (boolean: boolean) => void
@@ -294,19 +303,19 @@ export const JobSeekerFormSectionEducation: FC<JobSeekerFormSectionEducationProp
                           label="The institution or school"
                           {...formik}
                         />
-                        <FormInput
+                        <TextInput
                           name={`education[${index}].institutionCity`}
                           placeholder="Munich"
                           label="The city of institution or school"
                           {...formik}
                         />
-                        <FormInput
+                        <TextInput
                           name={`education[${index}].institutionCountry`}
                           placeholder="Germany"
                           label="The country of institution or school"
                           {...formik}
                         />
-                        <FormTextArea
+                        <TextArea
                           label="Description (optional)"
                           name={`education[${index}].description`}
                           rows={7}
@@ -332,10 +341,9 @@ export const JobSeekerFormSectionEducation: FC<JobSeekerFormSectionEducationProp
                             />
                           </Columns.Column>
                           <Columns.Column size={6}>
-                            <TextInput
+                            <NumberInput
                               name={`education[${index}].startDateYear`}
                               label="Started in year"
-                              type="number"
                               {...formik}
                             />
                           </Columns.Column>
@@ -352,10 +360,9 @@ export const JobSeekerFormSectionEducation: FC<JobSeekerFormSectionEducationProp
                               />
                             </Columns.Column>
                             <Columns.Column size={6}>
-                              <TextInput
+                              <NumberInput
                                 name={`education[${index}].endDateYear`}
                                 label="Ended in year"
-                                type="number"
                                 {...formik}
                               />
                             </Columns.Column>

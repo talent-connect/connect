@@ -25,7 +25,12 @@ interface Props {
   disableEditing?: boolean
 }
 
-export const EditableNamePhotoLocation: FC<Props> = ({ profile, disableEditing }) => {
+interface EditableNamePhotoLocationHelpers {
+  isSectionFilled: (profile: Partial<TpJobSeekerProfile>) => boolean;
+  isSectionEmpty: (profile: Partial<TpJobSeekerProfile>) => boolean;
+}
+
+export const EditableNamePhotoLocation: FC<Props> & EditableNamePhotoLocationHelpers = ({ profile, disableEditing }) => {
   const mutation = useTpjobseekerprofileUpdateMutation()
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
@@ -34,20 +39,19 @@ export const EditableNamePhotoLocation: FC<Props> = ({ profile, disableEditing }
 
   return (
     <Editable
-      disableEditing={disableEditing}
-      isEditing={isEditing}
-      isFormDirty={isFormDirty}
-      setIsEditing={setIsEditing}
+      modalTitle="Basic information"
+      modalHeadline="Name and location"
+      {...{ disableEditing, isEditing, isFormDirty, setIsEditing }}
       readComponent={
         <Columns vCentered breakpoint="mobile" className="oneandhalf-bs">
           <Columns.Column size={5}>
-            {profile && !disableEditing && (
+            {profile && !disableEditing && 
               <Avatar.Editable
                 profile={profile}
                 profileSaveStart={mutation.mutate}
-              />
-            )}
-            {profile && disableEditing && <Avatar profile={profile} />}
+              />}
+            {profile && disableEditing &&
+              <Avatar profile={profile} />}
           </Columns.Column>
           <Columns.Column size={7}>
             <Heading size="medium">
@@ -81,12 +85,9 @@ export const EditableNamePhotoLocation: FC<Props> = ({ profile, disableEditing }
           </Columns.Column>
         </Columns>
       }
-      modalTitle="Basic information"
-      modalHeadline="Name and location"
       modalBody={
         <ModalForm
-          setIsEditing={setIsEditing}
-          setIsFormDirty={setIsFormDirty}
+          {...{ setIsEditing, setIsFormDirty }}
         />
       }
     />
@@ -94,10 +95,12 @@ export const EditableNamePhotoLocation: FC<Props> = ({ profile, disableEditing }
 }
 
 EditableNamePhotoLocation.isSectionFilled = (profile: Partial<TpJobSeekerProfile>) =>
-  profile?.location
+  !!profile?.location
 
 EditableNamePhotoLocation.isSectionEmpty = (profile: Partial<TpJobSeekerProfile>) =>
   !EditableNamePhotoLocation.isSectionFilled(profile)
+
+// ####################################################################################
 
 const validationSchema = Yup.object({
   firstName: Yup.string()

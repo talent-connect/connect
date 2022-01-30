@@ -14,7 +14,6 @@ const {
   sendMentorshipCompletionEmailToMentee,
   sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted,
 } = require('../../lib/email/email');
-const { objectValues } = require('../../../../libs/typescript-utilities/src/lib/object-tools');
 
 module.exports = function (RedMatch) {
   /**
@@ -103,7 +102,7 @@ module.exports = function (RedMatch) {
           ],
         };
         const existingWhere = ctx.query.where;
-        ctx.query.where = objectValues(existingWhere).length
+        ctx.query.where = Object.values(existingWhere).length
           ? { and: [currentUserMenteeOrMentor, existingWhere] }
           : currentUserMenteeOrMentor;
       }
