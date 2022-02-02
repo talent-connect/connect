@@ -625,6 +625,8 @@ export const desiredEmploymentTypeOptions = [
   { id: 'Internship', label: 'Internship' },
   { id: 'apprenticeshipAusbildung', label: 'Apprenticeship (Ausbildung)' },
   { id: 'traineeship', label: 'Traineeship' },
+  { id: 'dualStudyBachelor', label: 'Dual Study Bachelor' },
+  { id: 'dualStudyMaster', label: 'Dual Study Master' },
 ]
 
 export const desiredEmploymentTypeOptionsIdToLabelMap = mapValues(
@@ -714,6 +716,8 @@ export const employmentTypes: DropdownOptions = [
   { id: 'freelance', label: 'Freelance' },
   { id: 'contract', label: 'Contract' },
   { id: 'traineeship', label: 'Traineeship' },
+  { id: 'dualStudyBachelor', label: 'Dual Study Bachelor' },
+  { id: 'dualStudyMaster', label: 'Dual Study Master' },
 ]
 
 export const employmentTypesIdToLabelMap = mapValues(
