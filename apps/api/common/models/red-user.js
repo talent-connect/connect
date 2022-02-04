@@ -214,7 +214,7 @@ module.exports = function (RedUser) {
     return redUserInst
   }
 
-  function conRedProfileToTpJobseekerProfile(profile) {
+  function conRedProfileToTpJobseekerProfile(redProfile) {
     const tpJobseekerProfile = {
       firstName: redProfile.firstName,
       lastName: redProfile.lastName,
