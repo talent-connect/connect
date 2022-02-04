@@ -7,7 +7,7 @@ const { RedProfile, RedUser } = app.models
 
 ;(async () => {
   const allUsers = await RedUser.find({
-    include: ['redProfile', 'tpJobSeekerProfile', 'tpCompanyProfile'],
+    include: ['redProfile', 'tpJobseekerProfile', 'tpCompanyProfile'],
   })
 
   // Find orphaned RedUsers
@@ -24,8 +24,9 @@ const { RedProfile, RedUser } = app.models
     const id = userData.id.toString()
     const status =
       `redProfile? ${userData.redProfile ? '✅' : '❌'}` +
-      `\ntpJobseekerProfile? ${userData.tpJobSeekerProfile ? '✅' : '❌'}` +
-      `\ntpCompanyProfile? ${userData.tpCompanyProfile ? '✅' : '❌'}`
+      ` tpJobseekerProfile? ${userData.tpJobSeekerProfile ? '✅' : '❌'}` +
+      ` tpCompanyProfile? ${userData.tpCompanyProfile ? '✅' : '❌'}`
+    await RedUser.destroyById(id, (err) => console.log(err))
     console.log(
       `Deleting orphaned RedUser #${id} with email ${userData.email}. ${status}`
     )
