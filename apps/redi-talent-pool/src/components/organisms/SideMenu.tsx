@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import { FC } from 'react'
 import { NavLink } from 'react-router-dom'
 import { ReactComponent as Applications } from '../../assets/images/applications.svg'
 import { ReactComponent as Profile } from '../../assets/images/profile.svg'
@@ -6,10 +6,9 @@ import './SideMenu.scss'
 
 interface MenuItemProps {
   url: string
-  children: ReactNode
 }
 
-const MenuItem = ({ url, children }: MenuItemProps) => (
+const MenuItem: FC<MenuItemProps> = ({ url, children }) => (
   <li className="side-menu__item">
     <NavLink
       to={url}

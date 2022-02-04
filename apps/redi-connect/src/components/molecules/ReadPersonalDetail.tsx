@@ -1,7 +1,8 @@
-import React from 'react'
+import { FC } from 'react'
 import moment from 'moment'
-import { RedProfile } from '@talent-connect/shared-types'
 import { connect } from 'react-redux'
+
+import { RedProfile } from '@talent-connect/shared-types'
 import { RootState } from '../../redux/types'
 import {
   Caption,
@@ -9,15 +10,18 @@ import {
   PipeList,
 } from '@talent-connect/shared-atomic-design-components'
 import { GENDERS } from '@talent-connect/shared-config'
+import { mapStateToProps } from '../../helpers';
 
 interface Props {
   profile: RedProfile
   caption?: boolean
 }
 
-const ReadPersonalDetail = ({ profile, caption }: Props) => {
-  const { gender, birthDate } = profile
-
+const ReadPersonalDetail: FC<Props> = ({
+  profile: { gender, birthDate },
+  caption = false
+}) => {
+  
   const age = moment().diff(birthDate, 'years')
 
   const detailsList: string[] = gender ? [GENDERS[gender]] : []
@@ -28,19 +32,16 @@ const ReadPersonalDetail = ({ profile, caption }: Props) => {
 
   return (
     <>
-      {caption && <Caption>Personal Details</Caption>}
+      {caption &&
+        <Caption>Personal Details</Caption>}
       <PipeList items={detailsList} />
     </>
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile as RedProfile,
-})
-
 export default {
+  /** */
   Me: connect(mapStateToProps, {})(ReadPersonalDetail),
-  Some: ({ profile }: Props) => (
-    <ReadPersonalDetail profile={profile} caption />
-  ),
+  /** */
+  Some: ({ profile }: Props) => <ReadPersonalDetail profile={profile} caption />,
 }

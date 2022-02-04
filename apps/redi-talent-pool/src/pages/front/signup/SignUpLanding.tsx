@@ -2,10 +2,9 @@ import {
   Button,
   Heading,
   SVGImage,
-  SVGImages,
 } from '@talent-connect/shared-atomic-design-components'
 import classnames from 'classnames'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Columns, Content, Element } from 'react-bulma-components'
 import { useHistory } from 'react-router-dom'
 import TpTeaser from '../../../components/molecules/TpTeaser'
@@ -16,14 +15,14 @@ const SignUpLanding = () => {
   const [selectedType, setSelectedType] = useState('')
   const history = useHistory()
 
-  const renderType = (name: string) => {
-    const type = name.toLowerCase() as SVGImages
+  const renderType = (name: 'JobSeeker' | 'Company') => {
+    const type = name.toLowerCase() as Lowercase<typeof name>
 
     return (
       <div
         className={classnames('signup__type', {
           [`border-${type}`]: type === selectedType,
-          'no-shadow': type !== selectedType && selectedType !== '',
+          'no-shadow': selectedType && type !== selectedType,
         })}
         onClick={() => setSelectedType(type)}
       >
@@ -51,7 +50,7 @@ const SignUpLanding = () => {
             Are you a <strong>jobseeker</strong> or a <strong>company</strong>?
           </Content>
           <div className="signup">
-            {renderType('Jobseeker')}
+            {renderType('JobSeeker')}
             {renderType('Company')}
           </div>
           <Button

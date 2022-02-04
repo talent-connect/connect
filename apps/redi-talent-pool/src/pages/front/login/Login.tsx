@@ -1,59 +1,21 @@
+import { FC, useState } from 'react'
+import { Link } from 'react-router-dom'
 import {
   Button,
-  FormInput,
+  TextInput,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
-import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
-import React, { useCallback, useState } from 'react'
 import { Columns, Content, Form } from 'react-bulma-components'
-import { Link } from 'react-router-dom'
-import * as Yup from 'yup'
 import TpTeaser from '../../../components/molecules/TpTeaser'
 import AccountOperation from '../../../components/templates/AccountOperation'
-import { login } from '../../../services/api/api'
-import { saveAccessTokenToLocalStorage } from '../../../services/auth/auth'
-import { history } from '../../../services/history/history'
+import { componentForm } from './Login.form';
 
-interface LoginFormValues {
-  username: string
-  password: string
-}
 
-const initialValues: LoginFormValues = {
-  username: '',
-  password: '',
-}
-
-const validationSchema = Yup.object({
-  username: Yup.string().email().required().label('Email').max(255),
-  password: Yup.string().required().label('Password').max(255),
-})
-
-export default function Login() {
+const Login: FC = () => {
   const [loginError, setLoginError] = useState<string>('')
 
-  const submitForm = useCallback((values, actions) => {
-    ;(async (values: FormikValues, actions: FormikActions<LoginFormValues>) => {
-      const formValues = values as LoginFormValues
-      try {
-        const accessToken = await login(
-          formValues.username,
-          formValues.password
-        )
-        saveAccessTokenToLocalStorage(accessToken)
-        actions.setSubmitting(false)
-        history.push('/app/me')
-      } catch (err) {
-        actions.setSubmitting(false)
-        setLoginError('You entered an incorrect email, password, or both.')
-      }
-    })(values, actions)
-  }, [])
-
-  const formik = useFormik({
-    initialValues,
-    validationSchema,
-    onSubmit: submitForm,
+  const formik = componentForm({
+    setLoginError
   })
 
   return (
@@ -77,14 +39,14 @@ export default function Login() {
           </Content>
 
           <form onSubmit={(e) => e.preventDefault()}>
-            <FormInput
+            <TextInput
               name="username"
               type="email"
               placeholder="Email"
               {...formik}
             />
 
-            <FormInput
+            <TextInput
               name="password"
               type="password"
               placeholder="Password"
@@ -124,3 +86,5 @@ export default function Login() {
     </AccountOperation>
   )
 }
+
+export default Login

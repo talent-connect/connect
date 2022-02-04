@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { FC, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { getHasReachedMenteeLimit } from '../../../redux/user/selectors'
 import { useParams, useHistory } from 'react-router'
@@ -37,18 +37,18 @@ interface RouteParams {
 }
 
 interface ProfileProps {
-  profile: RedProfile | undefined
-  currentUser: RedProfile | undefined
+  profile: RedProfile | null
+  currentUser: RedProfile | null
   hasReachedMenteeLimit: boolean
-  profilesFetchOneStart: Function
+  profilesFetchOneStart: (profileId: string) => void
 }
 
-function Profile({
+const Profile: FC<ProfileProps> = ({
   profile,
   currentUser,
   hasReachedMenteeLimit,
   profilesFetchOneStart,
-}: ProfileProps) {
+}) => {
   const { profileId } = useParams<RouteParams>()
   const history = useHistory()
 
@@ -56,24 +56,21 @@ function Profile({
     profilesFetchOneStart(profileId)
   }, [profilesFetchOneStart, profileId])
 
-  const currentUserIsMentor = currentUser && currentUser.userType === 'mentor'
+  const currentUserIsMentor = currentUser?.userType === 'mentor'
 
-  const currentUserIsMentee = currentUser && currentUser.userType === 'mentee'
+  const currentUserIsMentee = currentUser?.userType === 'mentee'
 
   const isAcceptedMatch =
-    profile &&
-    profile.redMatchesWithCurrentUser &&
-    profile.redMatchesWithCurrentUser[0] &&
-    profile.redMatchesWithCurrentUser[0].status === 'accepted'
+    profile?.redMatchesWithCurrentUser?.[0].status === 'accepted'
 
   const hasOpenApplication =
-    profile && profile.numberOfPendingApplicationWithCurrentUser > 0
+    profile?.numberOfPendingApplicationWithCurrentUser > 0
 
   const userCanApplyForMentorship =
     !isAcceptedMatch &&
     currentUserIsMentee &&
     profile &&
-    profile.numberOfPendingApplicationWithCurrentUser === 0
+    !profile.numberOfPendingApplicationWithCurrentUser
 
   const contactInfoAvailable =
     profile &&
@@ -90,8 +87,7 @@ function Profile({
   const match =
     profile &&
     profile.userType === 'mentee' &&
-    profile.redMatchesWithCurrentUser &&
-    profile.redMatchesWithCurrentUser[
+    profile.redMatchesWithCurrentUser?.[
       profile.redMatchesWithCurrentUser.length - 1
     ]
 
@@ -121,11 +117,11 @@ function Profile({
           </Columns.Column>
         )}
 
-        {match && match.status === 'applied' && (
+        {match?.status === 'applied' && (
           <Columns.Column className="is-narrow">
             <ConfirmMentorship
               match={match}
-              menteeName={profile && profile.firstName}
+              menteeName={profile?.firstName}
               hasReachedMenteeLimit={hasReachedMenteeLimit}
             />
             <DeclineMentorshipButton match={match} />
@@ -158,7 +154,7 @@ function Profile({
             </Element>
           )}
 
-          {profile.categories?.length > 0 && (
+          {profile.categories?.length && (
             <Element className="block-separator">
               <ReadMentoringTopics.Some profile={profile} />
             </Element>
@@ -167,8 +163,7 @@ function Profile({
           {contactInfoAvailable && (
             <Element className="block-separator">
               <Columns>
-                {!shouldHidePrivateContactInfo &&
-                  (profile.firstName || profile.age) && (
+                {!shouldHidePrivateContactInfo && (profile.firstName || profile.age) && (
                     <Columns.Column>
                       <Element className="block-separator">
                         <ReadContactDetails.Some profile={profile} />
@@ -220,8 +215,7 @@ function Profile({
             </Element>
           )}
 
-          {(profile.mentor_occupation ||
-            profile.mentee_occupationCategoryId) && (
+          {(profile.mentor_occupation || profile.mentee_occupationCategoryId) && (
             <Element className="block-separator">
               <Columns>
                 <Columns.Column>
@@ -235,13 +229,13 @@ function Profile({
     </LoggedIn>
   )
 }
-const mapStateToProps = (state: RootState) => ({
-  profile: state.profiles.oneProfile,
-  currentUser: state.user.profile,
-  hasReachedMenteeLimit: getHasReachedMenteeLimit(state.user),
+const mapStateToProps = ({ profiles, user }: RootState) => ({
+  profile: profiles.oneProfile,
+  currentUser: user.profile,
+  hasReachedMenteeLimit: getHasReachedMenteeLimit(user),
 })
 
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: Function) => ({
   profilesFetchOneStart: (profileId: string) =>
     dispatch(profilesFetchOneStart(profileId)),
 })

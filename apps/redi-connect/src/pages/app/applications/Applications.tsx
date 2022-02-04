@@ -1,4 +1,4 @@
-import React from 'react'
+import { FC } from 'react'
 import { Content } from 'react-bulma-components'
 import { Heading } from '@talent-connect/shared-atomic-design-components'
 import { ApplicationCard } from '../../../components/organisms'
@@ -14,18 +14,18 @@ interface Props {
   applicants: RedMatch[]
 }
 
-function Applications({ applicants }: Props) {
+const  Applications: FC<Props> = ({ applicants }) => {
   const history = useHistory()
   const profile = getRedProfileFromLocalStorage()
 
-  if (profile.userActivated !== true) return <LoggedIn />
+  if (!profile.userActivated) return <LoggedIn />
 
   return (
     <LoggedIn>
       <Heading subtitle size="small" className="double-bs">
-        Applications {Boolean(applicants.length) && `(${applicants.length})`}
+        Applications {applicants.length && `(${applicants.length})`}
       </Heading>
-      {applicants.length === 0 ? (
+      {!applicants.length ? (
         <Content italic>
           {profile.userType === 'mentee' && (
             <>
@@ -58,8 +58,6 @@ function Applications({ applicants }: Props) {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  applicants: getApplicants(state.matches),
-})
+const mapStateToProps = ({ matches }: RootState) => ({ applicants: getApplicants(matches) })
 
 export default connect(mapStateToProps, null)(Applications)

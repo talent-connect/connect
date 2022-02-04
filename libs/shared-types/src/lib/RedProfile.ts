@@ -11,8 +11,11 @@ import {
   Language,
   MenteeOccupationCategoryKey,
 } from '@talent-connect/shared-config'
+import { Timestamp } from './Timestamp';
 
-export type RedProfile = {
+export type RedProfile =
+  & Timestamp
+  & {
   id: string
   userType: UserType
   rediLocation: RediLocation
@@ -21,7 +24,7 @@ export type RedProfile = {
   mentor_workPlace: string
   expectations: string // Field was used in Mentor typeform, as of today 14.05.2019 not asked in sign-up flow
   mentor_ifTypeForm_submittedAt: Date
-  mentee_ifTypeForm_preferredMentorSex: 'male' | 'female' | 'none'
+  mentee_ifTypeForm_preferredMentorSex: 'male' | 'female' | 'none' // TODO: use GenderKey?
   ifTypeForm_additionalComments: string
   mentee_currentCategory: 'student' | 'rediAlumnus'
   mentee_occupationCategoryId: MenteeOccupationCategoryKey // TODO: do TS magic to make this a union type
@@ -39,7 +42,7 @@ export type RedProfile = {
   gender: GenderKey
   age: number
   birthDate: Date
-  languages: Array<Language>
+  languages: Language[]
   otherLanguages: string
   personalDescription: string
   contactEmail: string
@@ -47,12 +50,10 @@ export type RedProfile = {
   githubProfileUrl: string
   slackUsername: string
   telephoneNumber: string
-  categories: Array<CategoryKey>
-  favouritedRedProfileIds: Array<string>
+  categories: CategoryKey[]
+  favouritedRedProfileIds: string[]
   optOutOfMenteesFromOtherRediLocation: boolean
 
-  createdAt: Date
-  updatedAt: Date
   userActivated?: boolean
   userActivatedAt?: Date
   gaveGdprConsentAt: Date
@@ -63,8 +64,8 @@ export type RedProfile = {
   currentMenteeCount: number
   currentFreeMenteeSpots: number
   numberOfPendingApplicationWithCurrentUser: number
-  redMatchesWithCurrentUser: Array<RedMatch>
-  redMentoringSessionsWithCurrentUser: Array<RedMentoringSession>
+  redMatchesWithCurrentUser: RedMatch[]
+  redMentoringSessionsWithCurrentUser: RedMentoringSession[]
   ifUserIsMentee_hasActiveMentor: boolean
   ifUserIsMentee_activeMentor: RedProfile
 }

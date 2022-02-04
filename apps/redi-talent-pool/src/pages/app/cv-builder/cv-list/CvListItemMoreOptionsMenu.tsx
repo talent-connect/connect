@@ -4,24 +4,22 @@
  * must be standardized within the project.
  */
 
-import React from 'react'
+import { FC, useState, MouseEvent } from 'react'
 
 import { Content } from 'react-bulma-components'
 import { Button, Popover } from '@material-ui/core'
 import { MoreHoriz as MoreHorizIcon } from '@material-ui/icons'
 
 interface CvListItemMoreOptionsMenuProps {
-  handleRenameClick(): void
-  handleDeleteClick(): void
-  handleDuplicateClick(): void
+  handleRenameClick: () => void;
+  handleDeleteClick: () => void;
+  handleDuplicateClick: () => void;
 }
 
-export function CvListItemMoreOptionsMenu(
-  props: CvListItemMoreOptionsMenuProps
-) {
-  const [anchorEl, setAnchorEl] = React.useState(null)
+export const CvListItemMoreOptionsMenu: FC<CvListItemMoreOptionsMenuProps> = (props) => {
+  const [anchorEl, setAnchorEl] = useState(null)
 
-  const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleButtonClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
   }
 
@@ -52,7 +50,7 @@ export function CvListItemMoreOptionsMenu(
       <Popover
         id="simple-menu"
         anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
+        open={!!anchorEl}
         onClose={handleClosePopover}
         anchorOrigin={{
           vertical: 'bottom',

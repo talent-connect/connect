@@ -1,40 +1,44 @@
+import { FC, useEffect, useState } from 'react'
+import { UseMutationResult, UseQueryResult } from 'react-query'
 import {
   Button,
   Caption,
   FaqItem,
   FormSelect,
-  FormTextArea,
+  TextArea,
 } from '@talent-connect/shared-atomic-design-components'
-import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
+import { TpJobSeekerCv, TpJobSeekerProfile } from '@talent-connect/shared-types'
 import {
   topSkills,
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
-import { useFormik } from 'formik'
-import React, { useEffect, useMemo, useState } from 'react'
+import { mapOptions } from '@talent-connect/typescript-utilities';
 import { Content, Element, Tag } from 'react-bulma-components'
-import { UseMutationResult, UseQueryResult } from 'react-query'
-import * as Yup from 'yup'
-import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
-import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobSeekerProfileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
+import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
+import { componentForm } from './EditableSummary.form';
 
 interface Props {
-  profile?: Partial<TpJobseekerProfile>
+  profile?: Partial<TpJobSeekerProfile>
   disableEditing?: boolean
 }
 
-export function EditableSummary({
+interface EditableSummaryHelpers {
+  isSectionFilled: (profile: Partial<TpJobSeekerProfile>) => boolean;
+  isSectionEmpty: (profile: Partial<TpJobSeekerProfile>) => boolean;
+}
+
+export const EditableSummary: FC<Props> & EditableSummaryHelpers = ({
   profile: overridingProfile,
   disableEditing,
-}: Props) {
-  const queryHookResult = useTpJobseekerProfileQuery({
+}) => {
+  const queryHookResult = useTpJobSeekerProfileQuery({
     enabled: !disableEditing,
   })
   if (overridingProfile) queryHookResult.data = overridingProfile
-  const mutationHookResult = useTpjobseekerprofileUpdateMutation()
+  const mutationHookResult = useTpJobSeekerProfileUpdateMutation()
   const { data: profile } = queryHookResult
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
@@ -43,11 +47,10 @@ export function EditableSummary({
 
   return (
     <Editable
-      disableEditing={disableEditing}
-      isEditing={isEditing}
-      isFormDirty={isFormDirty}
-      setIsEditing={setIsEditing}
       title="Summary"
+      modalTitle="About you"
+      modalHeadline="Summary"
+      {...{ disableEditing, isEditing, isFormDirty, setIsEditing }}
       readComponent={
         <>
           <Caption>About</Caption>
@@ -64,7 +67,7 @@ export function EditableSummary({
             )}
           </Content>
           <Caption>Top skills</Caption>
-          {profile?.topSkills?.length > 0 ? (
+          {profile?.topSkills?.length ? (
             <Tag.Group>
               {profile?.topSkills?.map((skill) => (
                 <Tag key={skill}>{topSkillsIdToLabelMap[skill]}</Tag>
@@ -80,14 +83,9 @@ export function EditableSummary({
           )}
         </>
       }
-      modalTitle="About you"
-      modalHeadline="Summary"
       modalBody={
-        <JobseekerFormSectionSummary
-          setIsEditing={setIsEditing}
-          setIsFormDirty={setIsFormDirty}
-          queryHookResult={queryHookResult}
-          mutationHookResult={mutationHookResult}
+        <JobSeekerFormSectionSummary
+          {...{ setIsEditing, queryHookResult, mutationHookResult, setIsFormDirty }}
         />
       }
       modalStyles={{ minHeight: 700 }}
@@ -95,77 +93,54 @@ export function EditableSummary({
   )
 }
 
-EditableSummary.isSectionFilled = (profile: Partial<TpJobseekerProfile>) =>
-  !!profile?.aboutYourself && profile?.topSkills?.length > 0
-EditableSummary.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
+EditableSummary.isSectionFilled = (profile: Partial<TpJobSeekerProfile>) =>
+  !!profile?.aboutYourself && !!profile?.topSkills?.length
+
+EditableSummary.isSectionEmpty = (profile: Partial<TpJobSeekerProfile>) =>
   !EditableSummary.isSectionFilled(profile)
 
-const formTopSkills = topSkills.map(({ id, label }) => ({
-  value: id,
-  label,
-}))
+// ########################################################################
 
-const minChars = 100
-const maxChars = 600
+const formTopSkills = mapOptions(topSkills)
 
-const validationSchema = Yup.object({
-  topSkills: Yup.array()
-    .min(1, 'Pick at least one top technical skill')
-    .max(5, "Your profile can't contain too many skills - five at most"),
-  aboutYourself: Yup.string()
-    .required()
-    .min(minChars, 'Write at least 100 characters about yourself.')
-    .max(maxChars, 'The text about yourself can be up to 600 characters long.'),
-})
-
-interface JobseekerFormSectionSummaryProps {
-  setIsEditing: (boolean) => void
-  setIsFormDirty?: (boolean) => void
+interface JobSeekerFormSectionSummaryProps {
+  setIsEditing: (boolean: boolean) => void
+  setIsFormDirty?: (boolean: boolean) => void
   queryHookResult: UseQueryResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobSeekerProfile | TpJobSeekerCv>,
     unknown
   >
   mutationHookResult: UseMutationResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobSeekerProfile | TpJobSeekerCv>,
     unknown,
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobSeekerProfile | TpJobSeekerCv>,
     unknown
   >
 }
 
-export function JobseekerFormSectionSummary({
+export const JobSeekerFormSectionSummary: FC<JobSeekerFormSectionSummaryProps> = ({
   setIsEditing,
   setIsFormDirty,
   queryHookResult,
   mutationHookResult,
-}: JobseekerFormSectionSummaryProps) {
+}) => {
+
   const { data: profile } = queryHookResult
   const mutation = mutationHookResult
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(
-    () => ({
-      aboutYourself: profile?.aboutYourself ? profile.aboutYourself : '',
-      topSkills: profile?.topSkills ?? [],
-    }),
-    [profile?.aboutYourself, profile?.topSkills]
-  )
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
-    formik.setSubmitting(true)
-    mutation.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
-      },
-    })
-  }
-  const formik = useFormik({
-    initialValues,
-    validationSchema,
-    enableReinitialize: true,
-    onSubmit,
-    validateOnMount: true,
+
+  // const initialValues = useMemo(() => ({
+  //     aboutYourself: profile?.aboutYourself || '',
+  //     topSkills: profile?.topSkills || [],
+  //   }),
+  //   [profile?.aboutYourself, profile?.topSkills]
+  // )
+
+  const formik = componentForm({
+    mutationHookResult,
+    profile,
+    setIsEditing
   })
+
   useEffect(() => setIsFormDirty?.(formik.dirty), [
     formik.dirty,
     setIsFormDirty,
@@ -183,17 +158,17 @@ export function JobseekerFormSectionSummary({
         what you’re passionate about in your field.
       </Element>
       <FormSelect
-        label="Your top technical skills (pick 1-5 skills)"
         name="topSkills"
+        label="Your top technical skills (pick 1-5 skills)"
         items={formTopSkills}
         {...formik}
-        multiselect
+        multiSelect
       />
-      <FormTextArea
-        label="About you (100-600 characters)"
+      <TextArea
         name="aboutYourself"
-        rows={7}
+        label="About you (100-600 characters)"
         placeholder="Example: UX Designer with an academic background in Psychology. Experienced in negotiating with different kinds of clients and resolving customer complaints with a high level of empathy. Committed to understanding the human mind and designing impactful products by leveraging a strong sense of analytical and critical thinking."
+        rows={7}
         minChar={100}
         maxChar={600}
         {...formik}
@@ -220,11 +195,14 @@ export function JobseekerFormSectionSummary({
   )
 }
 
-const summaryTips = `Write not more than 3-4 sentences.
-<br /><br />
-Make sure you talk about:<br />
-1. Who are you? - Include your professional title and past relevant experiences or education with key functions.
-<br /><br />
-2. What do you have to offer? - Emphasize your strengths and skills that matter in your desired job, mention notable achievements, projects.
-<br /><br />
-3. What is your goal? - Explain how you want to add value and how you approach problems you are passionate about solving.`
+const summaryTips = (
+  <>
+    Write not more than 3-4 sentences.
+    <br /><br />
+    Make sure you talk about:<br />
+    1. Who are you? - Include your professional title and past relevant experiences or education with key functions.
+    <br /><br />
+    2. What do you have to offer? - Emphasize your strengths and skills that matter in your desired job, mention notable achievements, projects.
+    <br /><br />
+    3. What is your goal? - Explain how you want to add value and how you approach problems you are passionate about solving.
+  </>)

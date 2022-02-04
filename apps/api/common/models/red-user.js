@@ -1,40 +1,40 @@
-'use strict'
+'use strict';
 
 const {
   sendResetPasswordEmail,
   sendMenteeRequestAppointmentEmail,
   sendMentorRequestAppointmentEmail,
-} = require('../../lib/email/email')
+} = require('../../lib/email/email');
 
 const {
-  sendTpJobseekerEmailVerificationSuccessfulEmail,
+  sendTpJobSeekerEmailVerificationSuccessfulEmail,
   sendTpCompanyEmailVerificationSuccessfulEmail,
   sendTpResetPasswordEmail,
-} = require('../../lib/email/tp-email')
+} = require('../../lib/email/tp-email');
 
 module.exports = function (RedUser) {
-  RedUser.observe('before save', function updateTimestamp(ctx, next) {
+  RedUser.observe('before save', function updateTimestamp (ctx, next) {
     if (ctx.instance) {
-      if (ctx.isNewInstance) ctx.instance.createdAt = new Date()
-      ctx.instance.updatedAt = new Date()
+      if (ctx.isNewInstance) ctx.instance.createdAt = new Date();
+      ctx.instance.updatedAt = new Date();
     } else {
-      ctx.data.updatedAt = new Date()
+      ctx.data.updatedAt = new Date();
     }
-    next()
-  })
+    next();
+  });
 
   RedUser.afterRemote('confirm', async function (ctx, inst, next) {
     const redUserInst = await RedUser.findById(ctx.args.uid, {
-      include: ['redProfile', 'tpJobseekerProfile', 'tpCompanyProfile'],
-    })
-    const redUser = redUserInst.toJSON()
+      include: ['redProfile', 'tpJobSeekerProfile', 'tpCompanyProfile'],
+    });
+    const redUser = redUserInst.toJSON();
 
-    const userSignedUpWithCon = !!redUser.redProfile
-    const userSignedUpWithTpAndIsJobseeker = !!redUser.tpJobseekerProfile
-    const userSignedUpWithTpAndIsCompany = !!redUser.tpCompanyProfile
+    const userSignedUpWithCon = !!redUser.redProfile;
+    const userSignedUpWithTpAndIsJobSeeker = !!redUser.tpJobSeekerProfile;
+    const userSignedUpWithTpAndIsCompany = !!redUser.tpCompanyProfile;
 
     if (userSignedUpWithCon) {
-      const userType = redUser.redProfile.userType
+      const userType = redUser.redProfile.userType;
 
       switch (userType) {
         case 'public-sign-up-mentee-pending-review':
@@ -42,83 +42,83 @@ module.exports = function (RedUser) {
             recipient: redUser.email,
             firstName: redUser.redProfile.firstName,
             rediLocation: redUser.redProfile.rediLocation,
-          }).toPromise()
-          return
+          }).toPromise();
+          return;
 
         case 'public-sign-up-mentor-pending-review':
           await sendMentorRequestAppointmentEmail({
             recipient: redUser.email,
             firstName: redUser.redProfile.firstName,
             rediLocation: redUser.redProfile.rediLocation,
-          }).toPromise()
-          return
+          }).toPromise();
+          return;
 
         default:
-          throw new Error('Invalid user type')
+          throw new Error('Invalid user type');
       }
     }
 
-    if (userSignedUpWithTpAndIsJobseeker) {
-      await sendTpJobseekerEmailVerificationSuccessfulEmail({
+    if (userSignedUpWithTpAndIsJobSeeker) {
+      await sendTpJobSeekerEmailVerificationSuccessfulEmail({
         recipient: redUser.email,
-        firstName: redUser.tpJobseekerProfile.firstName,
-      }).toPromise()
+        firstName: redUser.tpJobSeekerProfile.firstName,
+      }).toPromise();
     }
 
     if (userSignedUpWithTpAndIsCompany) {
       await sendTpCompanyEmailVerificationSuccessfulEmail({
         recipient: redUser.email,
         firstName: redUser.tpCompanyProfile.firstName,
-      }).toPromise()
+      }).toPromise();
     }
-  })
+  });
 
   RedUser.requestResetPasswordEmail = function (body, cb) {
-    const email = body.email
-    const redproduct = body.redproduct
+    const email = body.email;
+    const redproduct = body.redproduct;
     RedUser.resetPassword(
       {
         email,
         redproduct,
       },
       function (err) {
-        if (err) return cb(err)
-        cb(null)
+        if (err) return cb(err);
+        cb(null);
       }
-    )
-  }
+    );
+  };
 
   RedUser.remoteMethod('requestResetPasswordEmail', {
     accepts: { arg: 'data', type: 'object', http: { source: 'body' } },
     returns: { arg: 'resp', type: 'object', root: true },
-  })
+  });
 
   RedUser.on('resetPasswordRequest', async function (info) {
-    const accessToken = encodeURIComponent(JSON.stringify(info.accessToken))
-    const email = info.user.email
-    const redproduct = info.options.redproduct
+    const accessToken = encodeURIComponent(JSON.stringify(info.accessToken));
+    const email = info.user.email;
+    const redproduct = info.options.redproduct;
 
     const redUserInst = await RedUser.findById(info.user.id, {
-      include: ['redProfile', 'tpJobseekerProfile', 'tpCompanyProfile'],
-    })
-    const redUser = redUserInst.toJSON()
+      include: ['redProfile', 'tpJobSeekerProfile', 'tpCompanyProfile'],
+    });
+    const redUser = redUserInst.toJSON();
 
-    const userSignedUpWithCon = !!redUser.redProfile
-    const userSignedUpWithTpAndIsJobseeker = !!redUser.tpJobseekerProfile
-    const userSignedUpWithTpAndIsCompany = !!redUser.tpCompanyProfile
+    const userSignedUpWithCon = !!redUser.redProfile;
+    const userSignedUpWithTpAndIsJobSeeker = !!redUser.tpJobSeekerProfile;
+    const userSignedUpWithTpAndIsCompany = !!redUser.tpCompanyProfile;
 
-    let firstName
-    let rediLocation
+    let firstName;
+    let rediLocation;
 
     if (userSignedUpWithCon) {
-      firstName = redUser.redProfile.firstName
-      rediLocation = redUser.redProfile.rediLocation
+      firstName = redUser.redProfile.firstName;
+      rediLocation = redUser.redProfile.rediLocation;
     }
-    if (userSignedUpWithTpAndIsJobseeker) {
-      firstName = redUser.tpJobseekerProfile.firstName
+    if (userSignedUpWithTpAndIsJobSeeker) {
+      firstName = redUser.tpJobSeekerProfile.firstName;
     }
     if (userSignedUpWithTpAndIsCompany) {
-      firstName = redUser.tpCompanyProfile.firstName
+      firstName = redUser.tpCompanyProfile.firstName;
     }
 
     if (redproduct === 'CON') {
@@ -127,15 +127,16 @@ module.exports = function (RedUser) {
         firstName,
         accessToken,
         rediLocation,
-      }).subscribe()
+      }).subscribe();
     } else if (redproduct === 'TP') {
       sendTpResetPasswordEmail({
         recipient: email,
         firstName,
         accessToken,
-      }).subscribe()
+        rediLocation
+      }).subscribe();
     }
-  })
+  });
 
   /******************
    * Special post-login hook:
@@ -148,86 +149,86 @@ module.exports = function (RedUser) {
    * product profile.
    */
   RedUser.afterRemote('login', async function (ctx, loginOutput, next) {
-    const redProduct = ctx.req.headers.redproduct // either CON or TP
+    const redProduct = ctx.req.headers.redproduct; // either CON or TP
     switch (redProduct) {
       case 'CON':
-        return loginHook_caseLoginIntoConnect(ctx, next)
+        return loginHook_caseLoginIntoConnect(ctx, next);
       case 'TP':
-        return loginHook_caseLoginIntoTalentPool(ctx, next)
+        return loginHook_caseLoginIntoTalentPool(ctx, next);
       default:
-        return next()
+        return next();
     }
-  })
+  });
 
-  async function loginHook_caseLoginIntoConnect(context, next) {
-    const redUserInst = await loginHook_getRedUser(context)
-    const redUser = redUserInst.toJSON()
+  async function loginHook_caseLoginIntoConnect (context, next) {
+    const redUserInst = await loginHook_getRedUser(context);
+    const redUser = redUserInst.toJSON();
 
-    const userAlreadyHasConProfile = Boolean(redUser.redProfile)
+    const userAlreadyHasConProfile = Boolean(redUser.redProfile);
     const userDoesNotHaveTpJobseekerProfile = !Boolean(
       redUser.tpJobseekerProfile
-    )
+    );
 
     if (userAlreadyHasConProfile || userDoesNotHaveTpJobseekerProfile)
-      return next()
+      return next();
 
     const conProfile = tpJobseekerProfileToConRedProfile(
       redUser.tpJobseekerProfile
-    )
+    );
 
-    await redUserInst.redProfile.create(conProfile)
+    await redUserInst.redProfile.create(conProfile);
 
-    return next()
+    return next();
   }
 
-  async function loginHook_caseLoginIntoTalentPool(context, next) {
-    const redUserInst = await loginHook_getRedUser(context)
-    const redUser = redUserInst.toJSON()
+  async function loginHook_caseLoginIntoTalentPool (context, next) {
+    const redUserInst = await loginHook_getRedUser(context);
+    const redUser = redUserInst.toJSON();
 
     const userAlreadyHasTalentPoolJobseekerProfile = Boolean(
       redUser.tpJobseekerProfile
-    )
-    const userDoesNotHaveConnectProfile = !redUser.redProfile
+    );
+    const userDoesNotHaveConnectProfile = !redUser.redProfile;
 
     if (
       userAlreadyHasTalentPoolJobseekerProfile ||
       userDoesNotHaveConnectProfile
     ) {
-      return next()
+      return next();
     }
 
     const tpJobseekerProfile = conRedProfileToTpJobseekerProfile(
       redUser.redProfile
-    )
+    );
 
-    await redUserInst.tpJobseekerProfile.create(tpJobseekerProfile)
+    await redUserInst.tpJobseekerProfile.create(tpJobseekerProfile);
 
-    return next()
+    return next();
   }
 
-  async function loginHook_getRedUser(context) {
-    const redUserId = context.result.toJSON().userId.toString()
+  async function loginHook_getRedUser (context) {
+    const redUserId = context.result.toJSON().userId.toString();
     const redUserInst = await RedUser.findById(redUserId, {
       include: ['redProfile', 'tpJobseekerProfile'],
-    })
+    });
 
-    return redUserInst
+    return redUserInst;
   }
 
-  function conRedProfileToTpJobseekerProfile(profile) {
-    const tpJobseekerProfile = {
+  function conRedProfileToTpJobseekerProfile (redProfile) {
+    const tpJobSeekerProfile = {
       firstName: redProfile.firstName,
       lastName: redProfile.lastName,
       contactEmail: redProfile.contactEmail,
       currentlyEnrolledInCourse: redProfile.mentee_currentlyEnrolledInCourse,
       state: 'drafting-profile',
       gaveGdprConsentAt: redProfile.gaveGdprConsentAt,
-    }
+    };
 
-    return tpJobseekerProfile
+    return tpJobSeekerProfile;
   }
 
-  function tpJobseekerProfileToConRedProfile(tpJobseekerProfile) {
+  function tpJobseekerProfileToConRedProfile (tpJobseekerProfile) {
     const conRedProfile = {
       firstName: tpJobseekerProfile.firstName,
       lastName: tpJobseekerProfile.lastName,
@@ -239,8 +240,8 @@ module.exports = function (RedUser) {
       rediLocation: 'berlin',
       administratorInternalComment:
         'SYSTEM NOTE: This user first signed up in Talent Pool. They then logged into Connect. Their ReDI Location has been set to BERLIN. Make sure to figure out if they should be changed to Munich or NRW. If so, request Eric or Anil to do the change',
-    }
+    };
 
-    return conRedProfile
+    return conRedProfile;
   }
-}
+};

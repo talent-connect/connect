@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from 'react-query'
 import { updateCurrentUserTpJobListing } from '../services/api/api'
 
-export function useTpJobListingUpdateMutation(id: string) {
+export function useTpJobListingUpdateMutation() {
   const queryClient = useQueryClient()
 
   return useMutation(updateCurrentUserTpJobListing, {

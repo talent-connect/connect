@@ -15,7 +15,7 @@
   "relations": {
     "interviewee": {
       "type": "belongsTo",
-      "model": "TpJobseekerProfile",
+      "model": "TpJobSeekerProfile",
       "foreignKey": "",
       "options": {
         "nestRemoting": true

@@ -1,12 +1,12 @@
 import {
   Button,
   Caption,
-  FormInput,
+  TextInput,
 } from '@talent-connect/shared-atomic-design-components'
 import { TpCompanyProfile } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
-import React, { useEffect, useMemo, useState } from 'react'
-import { Columns, Content, Element } from 'react-bulma-components'
+import { FC, useEffect, useMemo, useState } from 'react'
+import { Content, Element } from 'react-bulma-components'
 import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
 import { Editable } from '../../molecules/Editable'
@@ -17,7 +17,17 @@ interface Props {
   disableEditing?: boolean
 }
 
-export function EditableContact({ profile, disableEditing }: Props) {
+interface EditableContactHelpers {
+  isSectionFilled: (profile: Partial<TpCompanyProfile>) => boolean;
+  isSectionEmpty: (profile: Partial<TpCompanyProfile>) => boolean;
+}
+
+export const EditableContact: FC<Props> & EditableContactHelpers = ({
+  profile,
+  disableEditing
+}) => {
+  const { firstName, lastName, phoneNumber, contactEmail } = profile
+
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
@@ -50,32 +60,30 @@ export function EditableContact({ profile, disableEditing }: Props) {
               gridRowGap: '32px',
             }}
           >
-            {profile?.firstName || profile?.lastName ? (
+            {(firstName || lastName) && (
               <div>
                 <Caption>Name</Caption>
                 <Content>
-                  <p>
-                    {profile?.firstName} {profile?.lastName}
-                  </p>
+                  <p>{firstName} {lastName}</p>
                 </Content>
               </div>
-            ) : null}
-            {profile.phoneNumber ? (
+            )}
+            {phoneNumber && (
               <div>
                 <Caption>Phone</Caption>
                 <Content>
-                  <p>{profile?.phoneNumber}</p>
+                  <p>{phoneNumber}</p>
                 </Content>
               </div>
-            ) : null}
-            {profile.contactEmail ? (
+            )}
+            {contactEmail && (
               <div>
                 <Caption>Email</Caption>
                 <Content>
-                  <p>{profile?.contactEmail}</p>
+                  <p>{contactEmail}</p>
                 </Content>
               </div>
-            ) : null}
+            )}
           </div>
         )
       }
@@ -83,8 +91,7 @@ export function EditableContact({ profile, disableEditing }: Props) {
       modalHeadline="Contact"
       modalBody={
         <ModalForm
-          setIsEditing={setIsEditing}
-          setIsFormDirty={setIsFormDirty}
+          {...{ setIsEditing, setIsFormDirty }}
         />
       }
       modalStyles={{ minHeight: '40rem' }}
@@ -93,47 +100,44 @@ export function EditableContact({ profile, disableEditing }: Props) {
 }
 
 EditableContact.isSectionFilled = (profile: Partial<TpCompanyProfile>) =>
-  profile?.firstName ||
-  profile?.lastName ||
-  profile?.contactEmail ||
-  profile?.phoneNumber
+  !!profile?.firstName ||
+  !!profile?.lastName ||
+  !!profile?.contactEmail ||
+  !!profile?.phoneNumber
+
 EditableContact.isSectionEmpty = (profile: Partial<TpCompanyProfile>) =>
   !EditableContact.isSectionFilled(profile)
 
-function ModalForm({
+interface ModalFormProps {
+  setIsEditing: (boolean: boolean) => void
+  setIsFormDirty: (boolean: boolean) => void
+}
+
+const ModalForm: FC<ModalFormProps> = ({
   setIsEditing,
   setIsFormDirty,
-}: {
-  setIsEditing: (boolean) => void
-  setIsFormDirty: (boolean) => void
-}) {
+}) => {
   const { data: profile } = useTpCompanyProfileQuery()
   const mutation = useTpCompanyProfileUpdateMutation()
-  const initialValues: Partial<TpCompanyProfile> = useMemo(
-    () => ({
-      firstName: profile?.firstName ?? '',
-      lastName: profile?.lastName ?? '',
-      contactEmail: profile?.contactEmail ?? '',
-      phoneNumber: profile?.phoneNumber ?? '',
+  const initialValues = useMemo(() => ({
+      firstName: profile?.firstName || '',
+      lastName: profile?.lastName || '',
+      contactEmail: profile?.contactEmail || '',
+      phoneNumber: profile?.phoneNumber || '',
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )
-  const onSubmit = (values: Partial<TpCompanyProfile>) => {
-    formik.setSubmitting(true)
-    mutation.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
-      },
-    })
-  }
-  const formik = useFormik({
+  const formik = useFormik<Partial<TpCompanyProfile>>({
     initialValues,
     enableReinitialize: true,
-    onSubmit,
+    onSubmit: (values, { setSubmitting }) => {
+      setSubmitting(true)
+      mutation.mutate(values, {
+        onSettled: () => setSubmitting(false),
+        onSuccess: () => setIsEditing(false),
+      })
+    },
   })
   useEffect(() => setIsFormDirty(formik.dirty), [formik.dirty, setIsFormDirty])
 
@@ -145,27 +149,27 @@ function ModalForm({
         responsive={{ mobile: { textSize: { value: 5 } } }}
         className="oneandhalf-bs"
       >
-        Let ReDI Jobseekers know how to get in touch.
+        Let ReDI JobSeekers know how to get in touch.
       </Element>
-      <FormInput
+      <TextInput
         name="firstName"
         placeholder="Erika"
         label="First name"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="lastName"
         placeholder="Mustermann"
         label="Last name"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="contactEmail"
         placeholder="your.name@company.com"
         label="Email"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="phoneNumber"
         placeholder="0176 01234567"
         label="Phone Number"

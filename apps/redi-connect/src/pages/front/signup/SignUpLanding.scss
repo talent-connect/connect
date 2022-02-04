@@ -1,7 +1,8 @@
+@use '_colors' as colors;
 @import '~bulma/sass/utilities/_all';
 @import '_variables.scss';
 
-.signup {
+.sign-up {
   margin-bottom: 3.875rem;
   display: flex;
   align-items: center;
@@ -39,9 +40,9 @@
 }
 
 .border-mentor {
-  border-color: $redi-blue-dark;
+  border-color: colors.$redi-blue-dark;
 }
 
 .border-mentee {
-  border-color: $redi-orange-dark;
+  border-color: colors.$redi-orange-dark;
 }

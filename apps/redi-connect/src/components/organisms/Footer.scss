@@ -1,9 +1,10 @@
+@use '_colors' as colors;
 @import '~bulma/sass/utilities/_all';
 @import '_variables.scss';
 
 .footer {
-  background: $white;
-  border-top: 1px solid $grey-light;
+  background: colors.$white;
+  border-top: 1px solid colors.$grey-light;
 
   &__logo {
     display: block;
@@ -15,7 +16,7 @@
 
   &__copyright {
     padding-top: 1.5rem;
-    border-top: 1px solid $grey-light;
+    border-top: 1px solid colors.$grey-light;
   }
 
   &__link {
@@ -42,7 +43,7 @@
       left: 0;
       bottom: 0;
       width: 1.5rem;
-      border-bottom: 2px solid $redi-orange-dark;
+      border-bottom: 2px solid colors.$redi-orange-dark;
     }
   }
 }

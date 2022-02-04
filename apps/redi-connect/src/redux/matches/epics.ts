@@ -7,7 +7,6 @@ import { profilesFetchOneStart } from '../profiles/actions'
 import { profileFetchStart } from '../user/actions'
 import {
   matchesAcceptMentorshipSuccess,
-  matchesMarkAsComplete,
   matchesFetchStart,
   matchesFetchSuccess,
 } from './actions'
@@ -30,7 +29,7 @@ export const matchesFetchEpic = (action$: ActionsObservable<MatchesActions>) =>
     switchMap(() =>
       http(`${API_URL}/redMatches?filter=${JSON.stringify(fetchFilter)}`)
     ),
-    map((resp) => resp.data),
+    map(({ data }) => data),
     map(matchesFetchSuccess)
   )
 
@@ -39,42 +38,38 @@ export const matchesMarkAsDismissed = (
 ) =>
   action$.pipe(
     ofType(MatchesActionType.MATCHES_MARK_AS_DISMISSED_START),
-    switchMap((action) =>
+    switchMap(({ payload }: MatchesMarkAsDismissedStartAction) =>
       http(`${API_URL}/redMatches/markAsDismissed`, {
         method: 'post',
         data: {
-          redMatchId: (action as MatchesMarkAsDismissedStartAction).payload
-            .redMatchId,
+          redMatchId: payload.redMatchId,
         },
       })
     ),
-    map((resp) => resp.data),
+    map(({ data }) => data),
     map(matchesFetchStart)
   )
 
 export const matchesAcceptMentorshipEpic = (action$: ActionsObservable<any>) =>
   action$.pipe(
     ofType(MatchesActionType.MATCHES_ACCEPT_MENTORSHIP_START),
-    switchMap((action) => {
+    switchMap(({ payload }: MatchesAcceptMentorshipStartAction) => {
       const request = from(
         http(`${API_URL}/redMatches/acceptMentorship`, {
           method: 'post',
           data: {
-            redMatchId: (action as MatchesAcceptMentorshipStartAction).payload
-              .redMatchId,
-            mentorReplyMessageOnAccept: (
-              action as MatchesAcceptMentorshipStartAction
-            ).payload.mentorReplyMessageOnAccept,
+            redMatchId: payload.redMatchId,
+            mentorReplyMessageOnAccept: payload.mentorReplyMessageOnAccept,
           },
         })
       ).pipe(
-        map((resp) => resp.data),
+        map(({ data }) => data),
         map(matchesAcceptMentorshipSuccess)
       )
 
       return request
     }),
-    switchMap((successAction: any) => {
+    switchMap((successAction) => {
       return concat(
         of(successAction),
         of(matchesFetchStart()),
@@ -98,32 +93,25 @@ export const matchesDeclineMentorshipEpic = (action$: ActionsObservable<any>) =>
   action$.pipe(
     tap((p) => console.log('Hello hello', p)),
     ofType(MatchesActionType.MATCHES_DECLINE_MENTORSHIP_START),
-    switchMap((action) => {
+    switchMap(({ payload }: MatchesDeclineMentorshipStartAction) => {
       const request = from(
         http(`${API_URL}/redMatches/declineMentorship`, {
           method: 'post',
           data: {
-            redMatchId: (action as MatchesDeclineMentorshipStartAction).payload
-              .redMatchId,
-            ifDeclinedByMentor_chosenReasonForDecline: (
-              action as MatchesDeclineMentorshipStartAction
-            ).payload.ifDeclinedByMentor_chosenReasonForDecline,
-            ifDeclinedByMentor_ifReasonIsOther_freeText: (
-              action as MatchesDeclineMentorshipStartAction
-            ).payload.ifDeclinedByMentor_ifReasonIsOther_freeText,
-            ifDeclinedByMentor_optionalMessageToMentee: (
-              action as MatchesDeclineMentorshipStartAction
-            ).payload.ifDeclinedByMentor_optionalMessageToMentee,
+            redMatchId: payload.redMatchId,
+            ifDeclinedByMentor_chosenReasonForDecline: payload.ifDeclinedByMentor_chosenReasonForDecline,
+            ifDeclinedByMentor_ifReasonIsOther_freeText: payload.ifDeclinedByMentor_ifReasonIsOther_freeText,
+            ifDeclinedByMentor_optionalMessageToMentee: payload.ifDeclinedByMentor_optionalMessageToMentee,
           },
         })
       ).pipe(
-        map((resp) => resp.data),
+        map(({ data }) => data),
         map(matchesAcceptMentorshipSuccess)
       )
 
       return request
     }),
-    switchMap((successAction: any) => {
+    switchMap((successAction) => {
       return concat(
         of(successAction),
         of(matchesFetchStart()),
@@ -146,25 +134,23 @@ export const matchesDeclineMentorshipEpic = (action$: ActionsObservable<any>) =>
 export const matchesMarkAsCompleteEpic = (action$: ActionsObservable<any>) =>
   action$.pipe(
     ofType(MatchesActionType.MATCHES_MARK_AS_COMPLETED),
-    switchMap((action) => {
+    switchMap(({ payload }: MatchesMarkAsCompleteAction) => {
       const request = from(
         http(`${API_URL}/redMatches/markAsCompleted`, {
           method: 'post',
           data: {
-            redMatchId: (action as MatchesMarkAsCompleteAction).payload
-              .redMatchId,
-            mentorMessageOnComplete: (action as MatchesMarkAsCompleteAction)
-              .payload.mentorMessageOnComplete,
+            redMatchId: payload.redMatchId,
+            mentorMessageOnComplete: payload.mentorMessageOnComplete,
           },
         })
       ).pipe(
-        map((resp) => resp.data),
+        map(({ data }) => data),
         map(matchesAcceptMentorshipSuccess)
       )
 
       return request
     }),
-    switchMap((successAction: any) => {
+    switchMap((successAction) => {
       return concat(
         of(successAction),
         of(matchesFetchStart()),

@@ -1,6 +1,9 @@
+import { Timestamp } from './Timestamp';
 import { TpCompanyProfileState } from './TpCompanyProfileState'
 
-export type TpCompanyProfile = {
+export type TpCompanyProfile =
+  & Timestamp
+  & {
   id: string
   firstName: string
   lastName: string
@@ -24,7 +27,4 @@ export type TpCompanyProfile = {
 
   howDidHearAboutRediKey?: string
   howDidHearAboutRediOtherText?: string
-
-  createdAt: Date
-  updatedAt: Date
 }

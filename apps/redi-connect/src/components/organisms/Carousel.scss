@@ -1,3 +1,4 @@
+@use '_colors' as colors;
 @import '~bulma/sass/utilities/_all';
 @import '_variables.scss';
 
@@ -10,7 +11,7 @@
 .slick-dots li {
   width: 0.75rem;
   height: 0.75rem;
-  background: $grey-light;
+  background: colors.$grey-light;
   border-radius: 50%;
 
   & button:before {
@@ -18,7 +19,7 @@
   }
 
   &.slick-active {
-    background: $red;
+    background: colors.$red;
   }
 }
 
@@ -38,11 +39,11 @@
     }
 
     &--border-orange {
-      border-image: linear-gradient(to right, $redi-orange 30%, white 30%) 10%;
+      border-image: linear-gradient(to right, colors.$redi-orange 30%, white 30%) 10%;
     }
 
     &--border-blue {
-      border-image: linear-gradient(to right, $redi-blue 30%, white 30%) 10%;
+      border-image: linear-gradient(to right, colors.$redi-blue 30%, white 30%) 10%;
     }
   }
 }

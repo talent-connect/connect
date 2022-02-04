@@ -1,3 +1,6 @@
+import { FC } from 'react'
+import { useHistory } from 'react-router-dom'
+
 import {
   FilterDropdown,
   Icon,
@@ -10,7 +13,6 @@ import {
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 import { Columns, Element, Tag } from 'react-bulma-components'
-import { useHistory } from 'react-router-dom'
 import {
   ArrayParam,
   BooleanParam,
@@ -20,48 +22,50 @@ import {
 import { JobListingCard } from '../../../components/organisms/JobListingCard'
 import { LoggedIn } from '../../../components/templates'
 import { useBrowseTpJobListingsQuery } from '../../../react-query/use-tpjoblisting-all-query'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { mapOptions } from '@talent-connect/typescript-utilities';
 
-export function BrowseJobseeker() {
-  const { data: currentJobseekerProfile } = useTpJobseekerProfileQuery()
-
+export const BrowseJobSeeker: FC = () => {
+  
   const [query, setQuery] = useQueryParams({
     idealTechnicalSkills: withDefault(ArrayParam, []),
     employmentType: withDefault(ArrayParam, []),
-    isJobFair2022JobListing: withDefault(BooleanParam, undefined),
+    isJobFair2022JobListing: withDefault(BooleanParam, null),
   })
-  const { idealTechnicalSkills, employmentType, isJobFair2022JobListing } =
-    query
-
+  
+  const { idealTechnicalSkills, employmentType, isJobFair2022JobListing } = query
+  
   const history = useHistory()
   const { data: jobListings } = useBrowseTpJobListingsQuery({
     idealTechnicalSkills,
     employmentType,
     isJobFair2022JobListing,
   })
-
+  
   const toggleFilters = (filtersArr, filterName, item) => {
     const newFilters = toggleValueInArray(filtersArr, item)
     setQuery((latestQuery) => ({ ...latestQuery, [filterName]: newFilters }))
   }
-
+  
   const toggleJobFair2022Filter = () =>
     setQuery((latestQuery) => ({
       ...latestQuery,
       isJobFair2022JobListing:
-        isJobFair2022JobListing === undefined ? true : undefined,
+      !isJobFair2022JobListing ? true : null,
     }))
-
+  
   const clearFilters = () => {
     setQuery((latestQuery) => ({
       ...latestQuery,
       idealTechnicalSkills: [],
       employmentType: [],
-      isJobFair2022JobListing: undefined,
+      isJobFair2022JobListing: null,
     }))
   }
 
-  if (currentJobseekerProfile?.state !== 'profile-approved') return null
+  const { data: currentJobSeekerProfile } = useTpJobSeekerProfileQuery()
+
+  if (currentJobSeekerProfile?.state !== 'profile-approved') return null
 
   return (
     <LoggedIn>
@@ -117,11 +121,9 @@ export function BrowseJobseeker() {
         </Checkbox>
       </div>
       <div className="active-filters">
-        {(idealTechnicalSkills.length !== 0 ||
-          employmentType.length !== 0 ||
-          isJobFair2022JobListing) && (
+        {(idealTechnicalSkills.length || employmentType.length || isJobFair2022JobListing) && (
           <>
-            {(idealTechnicalSkills as string[]).map((catId) => (
+            {idealTechnicalSkills.map((catId) => (
               <FilterTag
                 key={catId}
                 id={catId}
@@ -135,7 +137,7 @@ export function BrowseJobseeker() {
                 }
               />
             ))}
-            {(employmentType as string[]).map((catId) => (
+            {employmentType.map((catId) => (
               <FilterTag
                 key={catId}
                 id={catId}
@@ -174,11 +176,8 @@ export function BrowseJobseeker() {
   )
 }
 
-const skillsOptions = topSkills.map(({ id, label }) => ({ value: id, label }))
-const employmentTypeOptions = employmentTypes.map(({ id, label }) => ({
-  value: id,
-  label,
-}))
+const skillsOptions = mapOptions(topSkills)
+const employmentTypeOptions = mapOptions(employmentTypes)
 interface FilterTagProps {
   id: string
   label: string
@@ -198,7 +197,8 @@ const FilterTag = ({ id, label, onClickHandler }: FilterTagProps) => (
   </Tag>
 )
 
-export function toggleValueInArray<T>(array: Array<T>, value: T) {
-  if (array.includes(value)) return array.filter((val) => val !== value)
-  else return [...array, value]
+export function toggleValueInArray<T>(array: T[], value: T) {
+  return array.includes(value)
+    ? array.filter((val) => val !== value)
+    : [...array, value]
 }

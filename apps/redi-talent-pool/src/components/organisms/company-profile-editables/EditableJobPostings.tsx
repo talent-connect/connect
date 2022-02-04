@@ -1,21 +1,22 @@
 import {
   Button,
-  FormInput,
+  TextInput,
   FormSelect,
-  FormTextArea,
+  TextArea,
   Heading,
   Icon,
   Modal,
   Checkbox,
 } from '@talent-connect/shared-atomic-design-components'
-import { TpJobListing, TpJobseekerProfile } from '@talent-connect/shared-types'
+import { TpJobListing } from '@talent-connect/shared-types'
 import {
   desiredPositions,
   employmentTypes,
   topSkills,
 } from '@talent-connect/talent-pool/config'
+import { mapOptions } from '@talent-connect/typescript-utilities';
 import { useFormik } from 'formik'
-import React, { useCallback, useState, useEffect } from 'react'
+import { useCallback, useState, useEffect, FC } from 'react'
 import { Columns, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
@@ -29,17 +30,19 @@ import { JobListingCard } from '../JobListingCard'
 import JobPlaceholderCardUrl from './job-placeholder-card.svg'
 import { get } from 'lodash'
 
-export function EditableJobPostings({
+interface Props {
+  isJobPostingFormOpen: boolean
+  setIsJobPostingFormOpen: (value: boolean) => void
+}
+
+export const EditableJobPostings: FC<Props> = ({
   isJobPostingFormOpen,
   setIsJobPostingFormOpen,
-}) {
+}) => {
   const { data: jobListings } = useTpJobListingAllQuery()
   const [isEditing, setIsEditing] = useState(false)
   const [idOfTpJobListingBeingEdited, setIdOfTpJobListingBeingEdited] =
     useState<string | null>(null) // null = "new"
-
-  const hasJobListings = jobListings?.length > 0
-  const isEmpty = !hasJobListings
 
   const startAdding = useCallback(() => {
     setIdOfTpJobListingBeingEdited(null) // means "new"
@@ -51,15 +54,11 @@ export function EditableJobPostings({
   }, [])
 
   useEffect(() => {
-    if (isJobPostingFormOpen) {
-      setIsEditing(true)
-    }
+    if (isJobPostingFormOpen) setIsEditing(true)
   }, [isJobPostingFormOpen])
 
   useEffect(() => {
-    if (!isEditing) {
-      setIsJobPostingFormOpen(false)
-    }
+    if (!isEditing) setIsJobPostingFormOpen(false)
   }, [isEditing, setIsJobPostingFormOpen])
 
   return (
@@ -81,7 +80,7 @@ export function EditableJobPostings({
         </div>
 
         <div className="profile-section--body">
-          {isEmpty ? (
+          {!(jobListings?.length) ? (
             <EmptySectionPlaceholder
               height="none"
               onClick={() => setIsEditing(true)}
@@ -136,35 +135,35 @@ export function EditableJobPostings({
 }
 
 const validationSchema = Yup.object().shape({
-  title: Yup.string().required('Please provide a job title'),
-  location: Yup.string().required('Please provide a location'),
+  title: Yup.string()
+    .required('Please provide a job title'),
+  location: Yup.string()
+    .required('Please provide a location'),
   summary: Yup.string()
     .required('Please enter a short description of the job')
     .min(200, 'Job summary should be at least 200 characters'),
-  relatesToPositions: Yup.array().min(
-    1,
-    'Please select at least one related position'
-  ),
+  relatesToPositions: Yup.array()
+    .min(1, 'Please select at least one related position'),
   idealTechnicalSkills: Yup.array()
     .min(1, 'Please select at least one relevant technical skill')
     .max(6, 'Please select up to six skills'),
-  employmentType: Yup.mixed().required('Please select an employment type'),
-  languageRequirements: Yup.string().required(
-    'Please specify the language requirement(s)'
-  ),
+  employmentType: Yup.mixed()
+    .required('Please select an employment type'),
+  languageRequirements: Yup.string()
+    .required('Please specify the language requirement(s)'),
 })
 
 interface ModalFormProps {
   tpJobListingId: string
   isEditing: boolean
-  setIsEditing: (boolean) => void
+  setIsEditing: (boolean: boolean) => void
 }
 
-function ModalForm({
+const ModalForm: FC<ModalFormProps> = ({
   isEditing,
   setIsEditing,
-  tpJobListingId,
-}: ModalFormProps) {
+  tpJobListingId
+}) => {
   const { data } = useTpJobListingOneOfCurrentUserQuery(tpJobListingId)
   const { data: currentUserTpCompanyProfile } = useTpCompanyProfileQuery()
   const jobListing = tpJobListingId
@@ -172,40 +171,21 @@ function ModalForm({
     : buildBlankJobListing(currentUserTpCompanyProfile?.id)
 
   const createMutation = useTpJobListingCreateMutation()
-  const updateMutation = useTpJobListingUpdateMutation(tpJobListingId)
+  const updateMutation = useTpJobListingUpdateMutation() // TODO: has "tpJobListingId" as param. Why?
   const deleteMutation = useTpJobListingDeleteMutation()
 
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
-    if (tpJobListingId === null) {
-      // create new
-      formik.setSubmitting(true)
-      createMutation.mutate(values, {
-        onSettled: () => {
-          formik.setSubmitting(false)
-        },
-        onSuccess: () => {
-          setIsEditing(false)
-        },
-      })
-    } else {
-      // update existing
-      formik.setSubmitting(true)
-      updateMutation.mutate(values, {
-        onSettled: () => {
-          formik.setSubmitting(false)
-        },
-        onSuccess: () => {
-          setIsEditing(false)
-        },
-      })
-    }
-  }
-
-  const formik = useFormik({
+  const formik = useFormik<Partial<TpJobListing>>({
     initialValues: jobListing,
-    onSubmit,
     validationSchema,
     enableReinitialize: true,
+    onSubmit: (values, { setSubmitting }) => {
+      setSubmitting(true);
+      const mutation = !tpJobListingId ? createMutation : updateMutation;
+      mutation.mutate(values, {
+        onSettled: () => setSubmitting(false),
+        onSuccess: () => setIsEditing(false),
+      })
+    },
   })
 
   const handleDelete = useCallback(() => {
@@ -213,9 +193,7 @@ function ModalForm({
       window.confirm('Are you certain you wish to delete this job posting?')
     ) {
       deleteMutation.mutate(tpJobListingId, {
-        onSuccess: () => {
-          setIsEditing(false)
-        },
+        onSuccess: () => setIsEditing(false),
       })
       setIsEditing(false)
     }
@@ -243,7 +221,7 @@ function ModalForm({
         >
           Add the job postings you want to publish to jobseekers at ReDI School.
         </Element>
-        {/* This Checkbox is added only for JobFair 2022. Please remove after 11.02.2022 */}
+        {/* TODO: This Checkbox is added only for JobFair 2022. Please remove after 11.02.2022 */}
         <Checkbox.Form
           name="isJobFair2022JobListing"
           checked={get(formik.values, 'isJobFair2022JobListing', false)}
@@ -254,19 +232,19 @@ function ModalForm({
           February 2022
         </Checkbox.Form>
 
-        <FormInput
+        <TextInput
           name={`title`}
           placeholder="Junior Frontend Developer"
           label="Job Title*"
           {...formik}
         />
-        <FormInput
+        <TextInput
           name={`location`}
           placeholder="Where is the position based"
           label="Location*"
           {...formik}
         />
-        <FormTextArea
+        <TextArea
           label="Job Summary*"
           name={`summary`}
           rows={7}
@@ -279,7 +257,7 @@ function ModalForm({
           responsive={{ mobile: { textSize: { value: 5 } } }}
           className="oneandhalf-bs"
         >
-          We use a standardised list of skills and positions to help with the
+          We use a standardized list of skills and positions to help with the
           matching process of our candidates. Please select the top 6 skills you
           think are necessary for succeeding in this job, and up to 3 position
           titles that match this job. We will use those to suggest potential
@@ -290,14 +268,14 @@ function ModalForm({
           name={`relatesToPositions`}
           items={formRelatedPositions}
           {...formik}
-          multiselect
+          multiSelect
         />
         <FormSelect
           label="Ideal technical skills*"
           name={`idealTechnicalSkills`}
           items={formTopSkills}
           {...formik}
-          multiselect
+          multiSelect
         />
         <FormSelect
           label="Employment type*"
@@ -305,13 +283,13 @@ function ModalForm({
           items={formEmploymentType}
           {...formik}
         />
-        <FormInput
+        <TextInput
           name={`languageRequirements`}
           placeholder="German C1, English B2, French B1..."
           label="Language requirements*"
           {...formik}
         />
-        <FormInput
+        <TextInput
           label="Salary range"
           placeholder="€40K - €52K"
           name={`salaryRange`}
@@ -324,7 +302,7 @@ function ModalForm({
           <div style={{ flexGrow: 1 }}>
             <Button
               disabled={!formik.isValid || updateMutation.isLoading}
-              onClick={formik.handleSubmit}
+              onClick={(e) => formik.handleSubmit(e)}
             >
               Save
             </Button>
@@ -336,7 +314,7 @@ function ModalForm({
               Cancel
             </Button>
           </div>
-          {tpJobListingId ? (
+          {tpJobListingId && (
             <Button
               simple
               disabled={updateMutation.isLoading}
@@ -344,16 +322,14 @@ function ModalForm({
             >
               Delete
             </Button>
-          ) : null}
+          )}
         </div>
       </Modal.Body>
     </Modal>
   )
 }
 
-function buildBlankJobListing(
-  tpCompanyProfileId: string
-): Partial<TpJobListing> {
+function buildBlankJobListing(tpCompanyProfileId: string): Partial<TpJobListing> {
   return {
     title: '',
     location: '',
@@ -368,17 +344,8 @@ function buildBlankJobListing(
   }
 }
 
-const formTopSkills = topSkills.map(({ id, label }) => ({
-  value: id,
-  label,
-}))
+const formTopSkills = mapOptions(topSkills)
 
-const formEmploymentType = employmentTypes.map(({ id, label }) => ({
-  value: id,
-  label,
-}))
+const formEmploymentType = mapOptions(employmentTypes)
 
-const formRelatedPositions = desiredPositions.map(({ id, label }) => ({
-  value: id,
-  label,
-}))
+const formRelatedPositions = mapOptions(desiredPositions)

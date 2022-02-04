@@ -1,12 +1,11 @@
-import { Tooltip } from '@material-ui/core'
 import classnames from 'clsx'
-import React from 'react'
+import React, { FC, ReactNode, MouseEvent } from 'react'
 import { useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import './TpMainNavItem.scss'
 
 interface Props {
-  page: 'profile-page' | 'browse-page' | 'cv-builder-page'
+  page: `${'profile' | 'browse' | 'cv-builder'}-page`
   to: string
   isActive?: boolean
   isDisabled?: boolean
@@ -14,13 +13,12 @@ interface Props {
 }
 
 interface FancyLinkProps {
-  onClick: (event: React.MouseEvent) => void
+  onClick: (event: MouseEvent) => void
   isDisabled?: boolean
-  children?: React.ReactNode
+  children?: ReactNode
 }
 
-const FancyLink = React.forwardRef<HTMLAnchorElement>(
-  (props: FancyLinkProps, ref) => (
+const FancyLink = React.forwardRef<HTMLAnchorElement>((props: FancyLinkProps, ref) => (
     <a
       ref={ref}
       {...props}
@@ -32,19 +30,15 @@ const FancyLink = React.forwardRef<HTMLAnchorElement>(
   )
 )
 
-export function TpMainNavItem({
+export const TpMainNavItem: FC<Props> = ({
   page,
   to,
   isActive,
   isDisabled,
   pageName,
-}: Props) {
+}) => {
   const onClick = useCallback(
-    (event: React.MouseEvent) => {
-      if (isDisabled) {
-        event.preventDefault()
-      }
-    },
+    (event: MouseEvent) => { if (isDisabled) event.preventDefault() },
     [isDisabled]
   )
 
@@ -69,15 +63,17 @@ export function TpMainNavItem({
   )
 }
 
-function TpMainNavItemIcon({
-  page,
-  isDisabled,
-  pageName,
-}: {
+interface TpMainNavItemIconProps {
   page: string
   isDisabled?: boolean
   pageName?: string
-}) {
+}
+
+const TpMainNavItemIcon: FC<TpMainNavItemIconProps> = ({
+  page,
+  isDisabled,
+  pageName,
+}) => {
   return (
     <div
       style={{

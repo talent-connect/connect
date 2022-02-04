@@ -1,85 +1,67 @@
+import { FC, ReactNode } from 'react';
+import ReactS3Uploader, { S3Response } from 'react-s3-uploader'
+import classnames from 'classnames'
+
 import {
   AWS_PROFILE_AVATARS_BUCKET_BASE_URL,
   S3_UPLOAD_SIGN_URL,
 } from '@talent-connect/shared-config'
 import {
-  TpJobseekerProfile,
+  TpJobSeekerProfile,
   TpCompanyProfile,
 } from '@talent-connect/shared-types'
-import classnames from 'classnames'
-import { FormikValues, useFormik } from 'formik'
 import { Element } from 'react-bulma-components'
-import ReactS3Uploader from 'react-s3-uploader'
-import * as Yup from 'yup'
 import placeholderImage from '../../assets/img-placeholder.png'
 import { ReactComponent as UploadImage } from '../../assets/uploadImage.svg'
 import './Avatar.scss'
+import {  componentForm } from './Avatar.form'
 
 interface AvatarProps {
-  profile: Partial<TpJobseekerProfile> | Partial<TpCompanyProfile>
-}
-interface AvatarEditable {
-  profile: Partial<TpJobseekerProfile> | Partial<TpCompanyProfile>
-  profileSaveStart: (
-    profile: Partial<TpJobseekerProfile> | Partial<TpCompanyProfile>
-  ) => void
-  callToActionText?: string
+  profile: Partial<TpJobSeekerProfile> | Partial<TpCompanyProfile>
 }
 
-interface AvatarFormValues {
-  profileAvatarImageS3Key: string
-}
-
-const validationSchema = Yup.object({
-  profileAvatarImageS3Key: Yup.string().max(255),
-})
-
-const Avatar = ({ profile }: AvatarProps) => {
-  const { profileAvatarImageS3Key } = profile
+const Avatar: FC<AvatarProps> & { Editable: typeof AvatarEditable, Some: ReactNode }= ({
+  profile: { profileAvatarImageS3Key, firstName, lastName }
+}) => {
   const imgSrc = profileAvatarImageS3Key
-    ? AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
-    : placeholderImage
-
+  ? AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
+  : placeholderImage
+  
   return (
     <div
-      className={classnames('avatar', {
-        'avatar--placeholder': !profileAvatarImageS3Key,
-      })}
+    className={classnames('avatar', {
+      'avatar--placeholder': !profileAvatarImageS3Key,
+    })}
     >
       <img
         src={imgSrc}
-        alt={`${profile.firstName} ${profile.lastName}`}
+        alt={`${firstName} ${lastName}`}
         className="avatar__image"
-      />
+        />
     </div>
   )
 }
+interface AvatarEditableProps {
+  profile: Partial<TpJobSeekerProfile> | Partial<TpCompanyProfile>
+  profileSaveStart: (profile: Partial<TpJobSeekerProfile> | Partial<TpCompanyProfile>) => void
+  callToActionText?: string
+}
 
-const AvatarEditable = ({
-  profile,
+const AvatarEditable: FC<AvatarEditableProps> = ({
+  profile: { profileAvatarImageS3Key, id, firstName, lastName },
   profileSaveStart,
   callToActionText = 'Add your picture',
-}: AvatarEditable) => {
-  const { profileAvatarImageS3Key } = profile
+}) => {
   const imgURL = AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
 
-  const submitForm = async (values: FormikValues) => {
-    const profileMe = values as Partial<TpJobseekerProfile>
-    profileSaveStart({ ...profileMe, id: profile.id })
-  }
-
-  const initialValues: AvatarFormValues = {
-    profileAvatarImageS3Key: profileAvatarImageS3Key,
-  }
-
-  const formik = useFormik({
-    initialValues: initialValues,
-    validationSchema,
-    onSubmit: submitForm,
+  const formik = componentForm({
+    id,
+    profileAvatarImageS3Key,
+    profileSaveStart
   })
 
-  const onUploadSuccess = (result: any) => {
-    formik.setFieldValue('profileAvatarImageS3Key', result.fileKey)
+  const onUploadSuccess = ({ fileKey }: S3Response) => {
+    formik.setFieldValue('profileAvatarImageS3Key', fileKey)
     formik.handleSubmit()
   }
 
@@ -93,7 +75,7 @@ const AvatarEditable = ({
         <>
           <img
             src={imgURL}
-            alt={`${profile.firstName} ${profile.lastName}`}
+            alt={`${firstName} ${lastName}`}
             className="avatar__image"
           />
           <Element
@@ -127,8 +109,8 @@ const AvatarEditable = ({
         signingUrl={S3_UPLOAD_SIGN_URL}
         accept="image/*"
         uploadRequestHeaders={{ 'x-amz-acl': 'public-read' }}
-        onSignedUrl={(c: any) => console.log(c)}
-        onError={(c: any) => console.log(c)}
+        onSignedUrl={(c) => console.log(c)}
+        onError={(c) => console.log(c)}
         onFinish={onUploadSuccess}
         contentDisposition="auto"
       />
@@ -136,7 +118,7 @@ const AvatarEditable = ({
   )
 }
 
-Avatar.Some = (profile: TpJobseekerProfile) => <Avatar profile={profile} />
+Avatar.Some = (profile: TpJobSeekerProfile) => <Avatar profile={profile} />
 Avatar.Editable = AvatarEditable
 
 export default Avatar

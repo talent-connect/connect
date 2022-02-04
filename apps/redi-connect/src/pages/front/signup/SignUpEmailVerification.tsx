@@ -1,11 +1,10 @@
-import React from 'react'
+import { FC } from 'react'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import { Columns, Content } from 'react-bulma-components'
 import Teaser from '../../../components/molecules/Teaser'
 import { Heading } from '@talent-connect/shared-atomic-design-components'
-import { envRediLocation } from '../../../utils/env-redi-location'
 
-const SignUpEmailVerification = () => (
+const SignUpEmailVerification: FC = () => (
   <AccountOperation>
     <Columns vCentered>
       <Columns.Column

@@ -1,49 +1,30 @@
-import React, { useState } from 'react'
+import { FC, useState } from 'react'
 import { connect } from 'react-redux'
-import { useFormik } from 'formik'
 import { Content } from 'react-bulma-components'
 import {
-  FormTextArea,
+  TextArea,
   Button,
 } from '@talent-connect/shared-atomic-design-components'
 import { Modal } from '@talent-connect/shared-atomic-design-components'
 import { matchesMarkAsComplete } from '../../redux/matches/actions'
 import { RedMatch } from '@talent-connect/shared-types'
+import { componentForm } from './CompleteMentorship.form';
 
 interface CompleteMentorshipProps {
   match: RedMatch
-  matchesMarkAsComplete: (
-    redMatchId: string,
-    mentorMessageOnComplete: string
-  ) => void
+  matchesMarkAsComplete: (redMatchId: string, mentorMessageOnComplete: string) => void
 }
 
-interface CompleteMentorshipFormValues {
-  mentorMessageOnComplete: string
-}
-
-const initialValues = {
-  mentorMessageOnComplete: '',
-}
-
-const CompleteMentorship = ({
-  match,
+const CompleteMentorship: FC<CompleteMentorshipProps> = ({
+  match: { id },
   matchesMarkAsComplete,
-}: CompleteMentorshipProps) => {
+}) => {
   const [isModalActive, setModalActive] = useState(false)
 
-  const submitForm = async (values: CompleteMentorshipFormValues) => {
-    try {
-      matchesMarkAsComplete(match.id, values.mentorMessageOnComplete)
-      setModalActive(false)
-    } catch (error) {
-      console.log('error ', error)
-    }
-  }
-
-  const formik = useFormik({
-    initialValues,
-    onSubmit: submitForm,
+  const formik = componentForm({
+    id,
+    matchesMarkAsComplete,
+    setModalActive,
   })
 
   const handleCancel = () => {
@@ -71,12 +52,10 @@ const CompleteMentorship = ({
                 the platform.
               </p>
             </Content>
-            <FormTextArea
+            <TextArea
               name="mentorMessageOnComplete"
               rows={4}
-              placeholder={
-                'Is there anything you would like us to know about the mentorship match?'
-              }
+              placeholder={'Is there anything you would like us to know about the mentorship match?'}
               {...formik}
             />
           </form>
@@ -95,11 +74,9 @@ const CompleteMentorship = ({
   )
 }
 
-const mapDispatchToProps = (dispatch: any) => ({
-  matchesMarkAsComplete: (
-    redMatchId: string,
-    mentorMessageOnComplete: string
-  ) => dispatch(matchesMarkAsComplete(redMatchId, mentorMessageOnComplete)),
+const mapDispatchToProps = (dispatch: Function) => ({
+  matchesMarkAsComplete: (redMatchId: string, mentorMessageOnComplete: string) =>
+    dispatch(matchesMarkAsComplete(redMatchId, mentorMessageOnComplete)),
 })
 
 export default connect(null, mapDispatchToProps)(CompleteMentorship)

@@ -1,36 +1,33 @@
-import React from 'react'
+import { FC } from 'react'
 import { Subject } from 'rxjs'
-import { useTpjobseekerCvUpdateMutation } from '../../../react-query/use-tpjobseekercv-mutation'
-import { useTpJobseekerCvByIdQuery } from '../../../react-query/use-tpjobseekercv-query'
+import { useTpJobSeekerCvUpdateMutation } from '../../../react-query/use-tpjobseekercv-mutation'
+import { useTpJobSeekerCvByIdQuery } from '../../../react-query/use-tpjobseekercv-query'
 import { AccordionForm } from '../../molecules/AccordionForm'
-import { JobseekerFormSectionEducation } from '../jobseeker-profile-editables/EditableEducation'
+import { JobSeekerFormSectionEducation } from '../jobseeker-profile-editables/EditableEducation'
 
 interface Props {
-  tpJobseekerCvId: string
+  tpJobSeekerCvId: string
   onClose: () => void
   closeAccordionSignalSubject?: Subject<void>
 }
 
-export function AccordionFormCvEducation({
-  tpJobseekerCvId,
+export const AccordionFormCvEducation: FC<Props> = ({
+  tpJobSeekerCvId,
   closeAccordionSignalSubject,
   onClose: parentOnCloseCallback,
-}: Props) {
-  const onClose = () => {
-    parentOnCloseCallback()
-  }
+}) =>  {
 
-  const queryHookResult = useTpJobseekerCvByIdQuery(tpJobseekerCvId)
-  const mutationHookResult = useTpjobseekerCvUpdateMutation(tpJobseekerCvId)
+  const queryHookResult = useTpJobSeekerCvByIdQuery(tpJobSeekerCvId)
+  const mutationHookResult = useTpJobSeekerCvUpdateMutation(tpJobSeekerCvId)
 
   return (
     <AccordionForm
       title="Education"
       closeAccordionSignalSubject={closeAccordionSignalSubject}
     >
-      <JobseekerFormSectionEducation
+      <JobSeekerFormSectionEducation
         setIsEditing={(isEditing) => {
-          onClose()
+          parentOnCloseCallback()
         }}
         queryHookResult={queryHookResult}
         mutationHookResult={mutationHookResult}

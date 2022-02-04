@@ -2,7 +2,7 @@ import { Icon } from '@talent-connect/shared-atomic-design-components'
 import { RedMatch, RedProfile } from '@talent-connect/shared-types'
 import classnames from 'classnames'
 import moment from 'moment'
-import React, { useState } from 'react'
+import { FC, useState } from 'react'
 import { Columns, Content, Heading } from 'react-bulma-components'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -20,7 +20,7 @@ interface Props {
   currentUser?: RedProfile
 }
 
-const STATUS_LABELS: any = {
+const STATUS_LABELS = {
   applied: 'Pending',
   accepted: 'Accepted',
   completed: 'Accepted',
@@ -29,17 +29,16 @@ const STATUS_LABELS: any = {
   'invalidated-as-other-mentor-accepted': 'Cancelled',
 }
 
-const ApplicationCard = ({
+const ApplicationCard: FC<Props> = ({
   application,
   hasReachedMenteeLimit,
   currentUser,
-}: Props) => {
+}) => {
   const history = useHistory()
   const profile = getRedProfileFromLocalStorage()
   const [showDetails, setShowDetails] = useState(false)
   const applicationDate = new Date(application.createdAt || '')
-  const applicationUser =
-    profile.userType === 'mentee' ? application.mentor : application.mentee
+  const applicationUser = profile.userType === 'mentee' ? application.mentor : application.mentee
   const currentUserIsMentor = currentUser?.userType === 'mentor'
 
   return (
@@ -60,9 +59,7 @@ const ApplicationCard = ({
           >
             {applicationUser && (
               <>
-                <p>
-                  {applicationUser.firstName} {applicationUser.lastName}
-                </p>
+                <p>{applicationUser.firstName} {applicationUser.lastName}</p>
                 <p>{REDI_LOCATION_NAMES[applicationUser.rediLocation]}</p>
               </>
             )}
@@ -75,11 +72,7 @@ const ApplicationCard = ({
             <span
               className="application-card__link"
               onClick={() =>
-                history.push(
-                  `/app/applications/profile/${
-                    applicationUser && applicationUser.id
-                  }`
-                )
+                history.push(`/app/applications/profile/${applicationUser?.id}`)
               }
             >
               Visit Profile
@@ -144,7 +137,7 @@ const ApplicationCard = ({
             <Content>{application.expectationText}</Content>
           </>
         )}
-        {currentUserIsMentor && application.status === 'applied' ? (
+        {currentUserIsMentor && application.status === 'applied' && (
           <>
             <ConfirmMentorship
               match={application}
@@ -152,15 +145,15 @@ const ApplicationCard = ({
             />
             <DeclineMentorshipButton match={application} />
           </>
-        ) : null}
+        )}
       </div>
     </>
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  currentUser: state.user.profile,
-  hasReachedMenteeLimit: getHasReachedMenteeLimit(state.user),
+const mapStateToProps = ({ user }: RootState) => ({
+  currentUser: user.profile,
+  hasReachedMenteeLimit: getHasReachedMenteeLimit(user),
 })
 
 export default connect(mapStateToProps)(ApplicationCard)

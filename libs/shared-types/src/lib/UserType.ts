@@ -1,7 +1,17 @@
+import { RedProfile } from './RedProfile';
+
+export type UserRole = 'mentor' | 'mentee'
+
 export type UserType =
-  | 'mentor'
-  | 'mentee'
-  | 'public-sign-up-mentor-pending-review'
-  | 'public-sign-up-mentee-pending-review'
-  | 'public-sign-up-mentor-rejected'
-  | 'public-sign-up-mentee-rejected'
+  | UserRole 
+  | `public-sign-up-${UserRole}-pending-review`
+  | `public-sign-up-${UserRole}-rejected`;
+
+
+export type MentorMenteeRefs = {
+  [Role in UserRole]: RedProfile;
+};
+
+export type MentorMenteeIds = {
+  [Role in UserRole as `${Role}Id`]: RedProfile['id'];
+};

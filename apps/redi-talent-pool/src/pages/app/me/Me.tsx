@@ -1,16 +1,16 @@
-import React from 'react'
+import { FC } from 'react'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { MeCompany } from './MeCompany'
-import { MeJobseeker } from './MeJobseeker'
+import { MeJobSeeker } from './MeJobSeeker'
 
-function Me() {
-  const { data: jobseekerProfile } = useTpJobseekerProfileQuery({
+const Me: FC = () => {
+  const { data: jobSeekerProfile } = useTpJobSeekerProfileQuery({
     retry: false,
   })
   const { data: companyProfile } = useTpCompanyProfileQuery({ retry: false })
 
-  if (jobseekerProfile) return <MeJobseeker />
+  if (jobSeekerProfile) return <MeJobSeeker />
   if (companyProfile) return <MeCompany />
 
   return null

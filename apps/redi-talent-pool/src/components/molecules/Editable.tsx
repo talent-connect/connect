@@ -3,24 +3,24 @@ import {
   Icon,
   Modal,
 } from '@talent-connect/shared-atomic-design-components'
-import React from 'react'
+import { CSSProperties, FC, ReactNode } from 'react'
 import { Element } from 'react-bulma-components'
 import './Editable.scss'
 
 interface Props {
   isEditing: boolean
-  setIsEditing: (boolean) => void
+  setIsEditing: (boolean: boolean) => void
   disableEditing?: boolean
   isFormDirty?: boolean
   title?: string
-  readComponent: React.ReactNode
+  readComponent: ReactNode
   modalTitle: string
   modalHeadline: string
-  modalBody: React.ReactNode
-  modalStyles?: React.CSSProperties
+  modalBody: ReactNode
+  modalStyles?: CSSProperties
 }
 
-export function Editable({
+export const Editable: FC<Props> = ({
   isEditing,
   setIsEditing,
   disableEditing,
@@ -31,7 +31,7 @@ export function Editable({
   modalHeadline,
   modalBody,
   modalStyles,
-}: Props) {
+}) => {
   return (
     <div className="profile-section">
       {title ? (
@@ -45,26 +45,24 @@ export function Editable({
           >
             {title}
           </Element>
-          {!disableEditing ? (
+          {!disableEditing && (
             <div className="icon__button" onClick={() => setIsEditing(true)}>
               <Icon icon="edit" />
             </div>
-          ) : null}
+          )}
         </div>
       ) : (
         <div className="is-flex is-flex-direction-row">
           <span style={{ flexGrow: 1 }}>&nbsp;</span>
-          {!disableEditing ? (
-            <div
-              className="icon__button"
-              onClick={() => setIsEditing(true)}
-              style={{ position: 'relative', top: '50px' }}
-            >
-              <Icon icon="edit" />
-            </div>
-          ) : (
-            <div></div>
-          )}
+          {!disableEditing
+            ? (<div
+                className="icon__button"
+                onClick={() => setIsEditing(true)}
+                style={{ position: 'relative', top: '50px' }}
+              >
+                <Icon icon="edit" />
+              </div>)
+            : (<div></div>)}
         </div>
       )}
 

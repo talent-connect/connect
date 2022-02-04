@@ -1,49 +1,33 @@
-import React from 'react'
+import { FC } from 'react'
+import { connect } from 'react-redux'
+
 import { FormSelect } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile } from '@talent-connect/shared-types'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
 
 import { profileSaveStart } from '../../redux/user/actions'
-import * as Yup from 'yup'
-
-import { FormikValues, useFormik } from 'formik'
 
 import { LANGUAGES } from '@talent-connect/shared-config'
 import { ReadLanguages } from '../molecules'
+import { mapOptionsArray } from '@talent-connect/typescript-utilities'
+import { mapStateToProps } from '../../helpers';
+import { ComponentFormProps, componentForm } from './EditableLanguages.form';
 
-const formLanguages = LANGUAGES.map((language) => ({
-  value: language,
-  label: language,
-}))
+const formLanguages = mapOptionsArray(LANGUAGES)
 
-export interface LanguagesFormValues {
-  languages: string[]
+interface Props {
+  profile: RedProfile
+  profileSaveStart: ComponentFormProps['profileSaveStart']
 }
 
-const validationSchema = Yup.object({
-  languages: Yup.array().min(1).of(Yup.string().max(255)).label('Languages'),
-})
+const EditableLanguages: FC<Props> = ({
+  profile,
+  profileSaveStart
+}) => {
 
-// props: FormikProps<AboutFormValues>
-const EditableLanguages = ({ profile, profileSaveStart }: any) => {
-  const { id, languages } = profile
-
-  const submitForm = async (values: FormikValues) => {
-    const languagesContacts = values as Partial<RedProfile>
-    profileSaveStart({ ...languagesContacts, id })
-  }
-
-  const initialValues: LanguagesFormValues = {
-    languages: languages || [],
-  }
-
-  const formik = useFormik({
-    initialValues,
-    enableReinitialize: true,
-    validationSchema,
-    onSubmit: submitForm,
+  const formik = componentForm({
+    profile,
+    profileSaveStart,
   })
 
   return (
@@ -58,18 +42,14 @@ const EditableLanguages = ({ profile, profileSaveStart }: any) => {
         label="Which of these languages do you speak?*"
         name="languages"
         items={formLanguages}
-        multiselect
+        multiSelect
         {...formik}
       />
     </Editable>
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile,
-})
-
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: Function) => ({
   profileSaveStart: (profile: Partial<RedProfile>) =>
     dispatch(profileSaveStart(profile)),
 })

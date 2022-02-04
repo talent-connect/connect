@@ -1,9 +1,9 @@
-@import '_variables.scss';
+@use '_colors' as colors;
 
 .profile-section {
   &--title {
     padding-bottom: 0.5rem;
-    border-bottom: 1px solid $grey-light;
+    border-bottom: 1px solid colors.$grey-light;
     margin-bottom: 1rem;
   }
 

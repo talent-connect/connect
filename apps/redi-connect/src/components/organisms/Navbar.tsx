@@ -1,17 +1,18 @@
-import React, { useState } from 'react'
-import { isLoggedIn } from '../../services/auth/auth'
-import { logout } from '../../services/api/api'
-import { Section, Container, Element } from 'react-bulma-components'
+import { FC, useState } from 'react'
 import classnames from 'classnames'
 import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+
+import { isLoggedIn } from '../../services/auth/auth'
+import { logout } from '../../services/api/api'
+import { Section, Container, Element } from 'react-bulma-components'
 import './Navbar.scss'
 import {
   Button,
   RediConnectLogo,
 } from '@talent-connect/shared-atomic-design-components'
 
-const LoggedOutNavItems = () => {
+const LoggedOutNavItems: FC = () => {
   const { t } = useTranslation()
 
   return (
@@ -23,7 +24,7 @@ const LoggedOutNavItems = () => {
   )
 }
 
-const LoggedOutButtons = () => {
+const LoggedOutButtons: FC = () => {
   const { t } = useTranslation()
   const history = useHistory()
 
@@ -39,7 +40,7 @@ const LoggedOutButtons = () => {
   )
 }
 
-const LoggedInButtons = ({ mobile }: { mobile?: boolean }) => {
+const LoggedInButtons: FC<{ mobile?: boolean }> = ({ mobile }) => {
   const { t } = useTranslation()
   const history = useHistory()
 
@@ -61,7 +62,7 @@ const LoggedInButtons = ({ mobile }: { mobile?: boolean }) => {
   )
 }
 
-const Navbar = () => {
+const Navbar: FC = () => {
   const [menuActive, setMenuActive] = useState(false)
 
   const mobileMenu = (

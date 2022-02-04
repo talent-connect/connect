@@ -1,4 +1,5 @@
 import { DropdownOptions } from '@talent-connect/talent-pool/types'
+import { mapOptionsObject } from '@talent-connect/typescript-utilities';
 import { keyBy, mapValues } from 'lodash'
 
 export const desiredPositions: DropdownOptions = [
@@ -577,7 +578,8 @@ export const topSkills = [
   },
 ]
 
-export const topSkillsIdToLabelMap = mapValues(keyBy(topSkills, 'id'), 'label')
+export const topSkillsIdToLabelMap =
+  mapValues(keyBy(topSkills, 'id'), 'label')
 
 export const languageProficiencyLevels: DropdownOptions = [
   { id: 'elementaryProficiency', label: 'Elementary proficiency' },
@@ -589,10 +591,8 @@ export const languageProficiencyLevels: DropdownOptions = [
   },
 ]
 
-export const languageProficiencyLevelsIdToLabelMap = mapValues(
-  keyBy(languageProficiencyLevels, 'id'),
-  'label'
-)
+export const languageProficiencyLevelsIdToLabelMap =
+  mapValues(keyBy(languageProficiencyLevels, 'id'), 'label')
 
 export const yearsOfRelevantExperienceOptions: DropdownOptions = [
   { id: 'none', label: 'None' },
@@ -629,10 +629,8 @@ export const desiredEmploymentTypeOptions = [
   { id: 'dualStudyMaster', label: 'Dual Study Master' },
 ]
 
-export const desiredEmploymentTypeOptionsIdToLabelMap = mapValues(
-  keyBy(desiredEmploymentTypeOptions, 'id'),
-  'label'
-)
+export const desiredEmploymentTypeOptionsIdToLabelMap =
+  mapValues(keyBy(desiredEmploymentTypeOptions, 'id'), 'label')
 
 export const availabilityOptions = [
   { id: 'immediately', label: 'Immediately' },
@@ -642,10 +640,8 @@ export const availabilityOptions = [
   { id: 'date', label: 'Date' },
 ]
 
-export const availabilityOptionsIdToLabelMap = mapValues(
-  keyBy(availabilityOptions, 'id'),
-  'label'
-)
+export const availabilityOptionsIdToLabelMap =
+  mapValues(keyBy(availabilityOptions, 'id'), 'label')
 
 export const certificationTypes: DropdownOptions = [
   { id: 'confirmationOfAttendance', label: 'Confirmation of attendance' },
@@ -655,10 +651,8 @@ export const certificationTypes: DropdownOptions = [
   { id: 'other', label: 'Other' },
 ]
 
-export const certificationTypesIdToLabelMap = mapValues(
-  keyBy(certificationTypes, 'id'),
-  'label'
-)
+export const certificationTypesIdToLabelMap =
+  mapValues(keyBy(certificationTypes, 'id'), 'label')
 
 export const immigrationStatusOptions: DropdownOptions = [
   {
@@ -672,17 +666,15 @@ export const immigrationStatusOptions: DropdownOptions = [
     id: 'temporaryResidencePermissionAufenthaltstitel',
   },
   {
-    label: 'Visa (Nationalvisum or Jobseeker visum)',
-    id: 'visaNationalvisumOrJobseekerVisum',
+    label: 'Visa (Nationalvisum or JobSeeker visum)',
+    id: 'visaNationalvisumOrJobSeekerVisum',
   },
   { label: 'Student visa ', id: 'studentVisa' },
   { label: 'Schengen visa', id: 'schengenVisa' },
 ]
 
-export const immigrationStatusOptionsIdToLabelMap = mapValues(
-  keyBy(immigrationStatusOptions, 'id'),
-  'label'
-)
+export const immigrationStatusOptionsIdToLabelMap =
+  mapValues(keyBy(immigrationStatusOptions, 'id'), 'label')
 
 export const formMonths = {
   0: 'January',
@@ -699,12 +691,7 @@ export const formMonths = {
   11: 'December',
 }
 
-export const formMonthsOptions = Object.entries(formMonths).map(
-  ([value, label]) => ({
-    value,
-    label,
-  })
-)
+export const formMonthsOptions = mapOptionsObject(formMonths)
 
 export const employmentTypes: DropdownOptions = [
   { id: 'partTimeEmployment', label: 'Part-time employment' },
@@ -720,10 +707,8 @@ export const employmentTypes: DropdownOptions = [
   { id: 'dualStudyMaster', label: 'Dual Study Master' },
 ]
 
-export const employmentTypesIdToLabelMap = mapValues(
-  keyBy(employmentTypes, 'id'),
-  'label'
-)
+export const employmentTypesIdToLabelMap =
+  mapValues(keyBy(employmentTypes, 'id'), 'label')
 
 export const howDidHearAboutRediOptions = {
   'redi-team-member': 'ReDI Team Member',

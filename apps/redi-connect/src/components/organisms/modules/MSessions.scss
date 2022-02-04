@@ -1,3 +1,4 @@
+@use '_colors' as colors;
 @import '~bulma/sass/utilities/_all';
 @import '_variables.scss';
 
@@ -17,9 +18,9 @@
         display: inline-block;
         counter-increment: session;
         content: counter(session);
-        color: $white;
+        color: colors.$white;
         border-radius: 50%;
-        background-color: $redi-orange-dark;
+        background-color: colors.$redi-orange-dark;
         margin-right: 1.5rem;
       }
     }
@@ -33,7 +34,7 @@
     border-radius: 50%;
 
     &:hover {
-      background-color: $redi-orange-extra-light;
+      background-color: colors.$redi-orange-extra-light;
     }
   }
 }

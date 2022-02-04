@@ -1,58 +1,58 @@
-'use strict'
-const path = require('path')
+'use strict';
+const path = require('path');
 const res = require('dotenv').config({
   path: path.resolve(__dirname, '..', '.env.' + process.env.NODE_ENV),
-})
+});
 
 // required to set up logger
-require('../lib/logger')
+require('../lib/logger');
 
-var loopback = require('loopback')
-var boot = require('loopback-boot')
+var loopback = require('loopback');
+var boot = require('loopback-boot');
 
-var http = require('http')
-var https = require('https')
-var sslConfig = require('./ssl-config')
+var http = require('http');
+var https = require('https');
+var sslConfig = require('./ssl-config');
 
-const Rx = require('rxjs')
-const { bindNodeCallback, from } = Rx
-const { delay, switchMap, tap, map, filter, count } = require('rxjs/operators')
+const Rx = require('rxjs');
+const { bindNodeCallback, from } = Rx;
+const { delay, switchMap, tap, map, filter, count } = require('rxjs/operators');
 
-const { sendMenteeReminderToApplyToMentorEmail } = require('../lib/email/email')
-const { default: clsx } = require('clsx')
+const { sendMenteeReminderToApplyToMentorEmail } = require('../lib/email/email');
+const { default: clsx } = require('clsx');
 
-var app = (module.exports = loopback())
+var app = (module.exports = loopback());
 
-const sendAllReminderEmails = require('../daily-cronjob-reminder-email/index.js')
+const sendAllReminderEmails = require('../daily-cronjob-reminder-email/index.js');
 
 app.start = function () {
   // start the web server
   return app.listen(function () {
-    app.emit('started')
-    var baseUrl = app.get('url').replace(/\/$/, '')
-    console.log('Web server listening at: %s', baseUrl)
+    app.emit('started');
+    var baseUrl = app.get('url').replace(/\/$/, '');
+    console.log('Web server listening at: %s', baseUrl);
     if (app.get('loopback-component-explorer')) {
-      var explorerPath = app.get('loopback-component-explorer').mountPath
-      console.log('Browse your REST API at %s%s', baseUrl, explorerPath)
+      var explorerPath = app.get('loopback-component-explorer').mountPath;
+      console.log('Browse your REST API at %s%s', baseUrl, explorerPath);
     }
-  })
-}
+  });
+};
 
 app.get(
   '/secret-endpoint-that-will-be-contacted-by-autocode-to-trigger-automated-reminder-emails',
   (req, res) => {
     const secretToken =
-      process.env.DAILY_CRONJOB_SEND_REMINDER_EMAIL_SECRET_TOKEN
-    const authToken = req.query['auth-token']
-    const isDryRun = !!req.query['dry-run']
+      process.env.DAILY_CRONJOB_SEND_REMINDER_EMAIL_SECRET_TOKEN;
+    const authToken = req.query['auth-token'];
+    const isDryRun = !!req.query['dry-run'];
 
     if (authToken === secretToken) {
-      sendAllReminderEmails(isDryRun)
-      return res.send({ result: 'email-jobs-queued' })
+      sendAllReminderEmails(isDryRun);
+      return res.send({ result: 'email-jobs-queued' });
     }
-    return res.send({ result: 'nope, wrong pass bro' })
+    return res.send({ result: 'nope, wrong pass bro' });
   }
-)
+);
 
 // Inject current user into context
 app
@@ -60,19 +60,19 @@ app
   .phases.addBefore('invoke', 'options-from-request')
   .use(function (ctx, next) {
     if (!ctx.args || !ctx.args.options || !ctx.args.options.accessToken) {
-      return next()
+      return next();
     }
-    const RedUser = app.models.RedUser
+    const RedUser = app.models.RedUser;
     RedUser.findById(
       ctx.args.options.accessToken.userId,
-      { include: ['redProfile', 'tpJobseekerProfile', 'tpCompanyProfile'] },
+      { include: ['redProfile', 'tpJobSeekerProfile', 'tpCompanyProfile'] },
       function (err, user) {
-        if (err) return next(err)
-        ctx.args.options.currentUser = user.toJSON()
-        next()
+        if (err) return next(err);
+        ctx.args.options.currentUser = user.toJSON();
+        next();
       }
-    )
-  })
+    );
+  });
 
 app.use(
   '/s3',
@@ -84,14 +84,14 @@ app.use(
     ACL: 'public-read', // this is default
     uniquePrefix: true, // (4.0.2 and above) default is true, setting the attribute to false preserves the original filename in S3
   })
-)
+);
 
 // Bootstrap the application, configure models, datasources and middleware.
 // Sub-apps like REST API are mounted via boot scripts.
-boot(app, __dirname)
+boot(app, __dirname);
 
 app.start = function () {
-  const server = (function buildHttpOrHttpsServer() {
+  const server = (function buildHttpOrHttpsServer () {
     if (process.env.USE_HTTPS) {
       return https.createServer(
         {
@@ -99,28 +99,28 @@ app.start = function () {
           cert: sslConfig.certificate,
         },
         app
-      )
+      );
     } else {
-      return http.createServer(app)
+      return http.createServer(app);
     }
-  })()
+  })();
   server.listen(app.get('port'), function () {
     var baseUrl =
       (process.env.USE_HTTPS ? 'https://' : 'http://') +
       app.get('host') +
       ':' +
-      app.get('port')
-    app.emit('started', baseUrl)
-    console.log('LoopBack server listening @ %s%s', baseUrl, '/')
+      app.get('port');
+    app.emit('started', baseUrl);
+    console.log('LoopBack server listening @ %s%s', baseUrl, '/');
     if (app.get('loopback-component-explorer')) {
-      var explorerPath = app.get('loopback-component-explorer').mountPath
-      console.log('Browse your REST API at %s%s', baseUrl, explorerPath)
+      var explorerPath = app.get('loopback-component-explorer').mountPath;
+      console.log('Browse your REST API at %s%s', baseUrl, explorerPath);
     }
-  })
-  return server
-}
+  });
+  return server;
+};
 
 // start the server if `$ node server.js`
 if (require.main === module) {
-  app.start()
+  app.start();
 }

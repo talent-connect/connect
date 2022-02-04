@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import { FC } from 'react'
 import classnames from 'classnames'
 import { RedProfile } from '@talent-connect/shared-types'
 import { Module } from '@talent-connect/shared-atomic-design-components'
@@ -7,9 +7,9 @@ import './MContacts.scss'
 
 interface ContactRow {
   label: string
-  children: ReactNode
 }
-const ContactRow = ({ label, children }: ContactRow) =>
+
+const ContactRow: FC<ContactRow> = ({ label, children }) =>
   children ? (
     <div className="m-contacts__row">
       <div className="m-contacts__row__label">{label}</div>
@@ -19,18 +19,15 @@ const ContactRow = ({ label, children }: ContactRow) =>
     <></>
   )
 
-interface MContact {
+interface MContactProps {
   profile: RedProfile
   className?: string
 }
 
-const MContacts = ({ profile, className }: MContact) => {
-  const {
-    contactEmail,
-    telephoneNumber,
-    linkedInProfileUrl,
-    slackUsername,
-  } = profile
+const MContacts: FC<MContactProps> = ({
+  profile: { contactEmail, telephoneNumber, linkedInProfileUrl, slackUsername },
+  className
+}) => {
 
   return (
     <Module
@@ -38,7 +35,8 @@ const MContacts = ({ profile, className }: MContact) => {
       className={classnames('m-contacts', { [`${className}`]: className })}
     >
       <ContactRow label="Email">
-        {contactEmail && <a href={`mailto:${contactEmail}`}>{contactEmail}</a>}
+        {contactEmail &&
+          <a href={`mailto:${contactEmail}`}>{contactEmail}</a>}
       </ContactRow>
       <ContactRow label="Phone">{telephoneNumber}</ContactRow>
       <ContactRow label="LinkedIn">

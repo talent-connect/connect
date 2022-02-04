@@ -1,9 +1,9 @@
-import React, { useState, useCallback } from 'react'
+import { FC, useState, useCallback } from 'react'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import Teaser from '../../../components/molecules/Teaser'
 import * as Yup from 'yup'
 import { Link } from 'react-router-dom'
-import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
+import { useFormik } from 'formik'
 import { history } from '../../../services/history/history'
 import { login, fetchSaveRedProfile } from '../../../services/api/api'
 import {
@@ -18,7 +18,7 @@ import { buildFrontendUrl } from '../../../utils/build-frontend-url'
 import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import {
   Button,
-  FormInput,
+  TextInput,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
 
@@ -27,52 +27,48 @@ interface LoginFormValues {
   password: string
 }
 
-const initialValues: LoginFormValues = {
-  username: '',
-  password: '',
-}
-
 const validationSchema = Yup.object({
-  username: Yup.string().email().required().label('Email').max(255),
-  password: Yup.string().required().label('Password').max(255),
+  username: Yup.string()
+    .email()
+    .required()
+    .label('Email')
+    .max(255),
+  password: Yup.string()
+    .required()
+    .label('Password')
+    .max(255),
 })
 
-export default function Login() {
+const Login: FC = () => {
   const [loginError, setLoginError] = useState<string>('')
   const [isWrongRediLocationError, setIsWrongRediLocationError] =
     useState<boolean>(false)
 
-  const submitForm = useCallback((values, actions) => {
-    ;(async (values: FormikValues, actions: FormikActions<LoginFormValues>) => {
-      const formValues = values as LoginFormValues
-      try {
-        const accessToken = await login(
-          formValues.username,
-          formValues.password
-        )
-        saveAccessTokenToLocalStorage(accessToken)
-        const redProfile = await fetchSaveRedProfile(accessToken)
-        if (
-          redProfile.rediLocation !==
-          (process.env.NX_REDI_CONNECT_REDI_LOCATION as RediLocation)
-        ) {
-          setIsWrongRediLocationError(true)
-          purgeAllSessionData()
-          return
-        }
-        actions.setSubmitting(false)
-        history.push('/app/me')
-      } catch (err) {
-        actions.setSubmitting(false)
-        setLoginError('You entered an incorrect email, password, or both.')
-      }
-    })(values, actions)
-  }, [])
-
-  const formik = useFormik({
-    initialValues,
+  const formik = useFormik<LoginFormValues>({
+    initialValues: {
+      username: '',
+      password: '',
+    },
     validationSchema,
-    onSubmit: submitForm,
+    onSubmit: useCallback(({ username, password }, actions) => {
+      (async () => {
+        try {
+          const accessToken = await login(username, password)
+          saveAccessTokenToLocalStorage(accessToken)
+          const { rediLocation } = await fetchSaveRedProfile(accessToken)
+          if (rediLocation !== (process.env.NX_REDI_CONNECT_REDI_LOCATION as RediLocation)) {
+            setIsWrongRediLocationError(true)
+            purgeAllSessionData()
+            return
+          }
+          actions.setSubmitting(false)
+          history.push('/app/me')
+        } catch (err) {
+          actions.setSubmitting(false)
+          setLoginError('You entered an incorrect email, password, or both.')
+        }
+      })()
+    }, []),
   })
 
   return (
@@ -100,9 +96,7 @@ export default function Login() {
               You've tried to log into ReDI Connect{' '}
               <strong>
                 {
-                  REDI_LOCATION_NAMES[
-                    process.env.NX_REDI_CONNECT_REDI_LOCATION as RediLocation
-                  ]
+                  REDI_LOCATION_NAMES[process.env.NX_REDI_CONNECT_REDI_LOCATION as RediLocation]
                 }
               </strong>
               , but your account is linked to ReDI Connect{' '}
@@ -127,14 +121,14 @@ export default function Login() {
           )}
 
           <form onSubmit={(e) => e.preventDefault()}>
-            <FormInput
+            <TextInput
               name="username"
               type="email"
               placeholder="Email"
               {...formik}
             />
 
-            <FormInput
+            <TextInput
               name="password"
               type="password"
               placeholder="Password"
@@ -174,3 +168,5 @@ export default function Login() {
     </AccountOperation>
   )
 }
+
+export default Login

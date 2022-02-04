@@ -46,7 +46,7 @@ export const mentoringSessionsCreateEpic = (action$: ActionsObservable<any>) =>
 
       return request
     }),
-    switchMap((successAction: any) => {
+    switchMap((successAction) => {
       return concat(
         of(successAction),
         of(mentoringSessionsFetchStart()),

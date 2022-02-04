@@ -1,3 +1,4 @@
+@use '_colors' as colors;
 @import '~bulma/sass/utilities/_all';
 @import '_variables.scss';
 
@@ -7,9 +8,9 @@
     bottom: 0;
     right: 0;
     width: 100%;
-    background-color: $white;
+    background-color: colors.$white;
     z-index: 10;
-    border-top: 1px solid $grey-extra-light;
+    border-top: 1px solid colors.$grey-extra-light;
     box-shadow: 0 -1px 9px 0 rgba(179, 179, 179, 0.36);
   }
 }
@@ -30,7 +31,7 @@
     &__link {
       font-size: $size-6;
       font-weight: $weight-normal;
-      color: $grey-dark;
+      color: colors.$grey-dark;
       display: block;
 
       @include touch() {
@@ -51,7 +52,7 @@
       &--active {
         font-weight: $weight-bold;
         color: $black;
-        border-right: 5px solid $redi-blue;
+        border-right: 5px solid colors.$redi-blue;
 
         @include touch() {
           font-weight: $weight-normal;
@@ -64,7 +65,7 @@
         }
 
         & g {
-          fill: $red;
+          fill: colors.$red;
         }
       }
 

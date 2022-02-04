@@ -1,13 +1,13 @@
+import { FC, useEffect, useMemo, useState } from 'react'
+import { useFormik } from 'formik'
+import ReactMarkdown from 'react-markdown'
 import {
   Button,
   Caption,
-  FormTextArea,
+  TextArea,
 } from '@talent-connect/shared-atomic-design-components'
 import { TpCompanyProfile } from '@talent-connect/shared-types'
-import { useFormik } from 'formik'
-import React, { useEffect, useMemo, useState } from 'react'
 import { Content, Element } from 'react-bulma-components'
-import ReactMarkdown from 'react-markdown'
 import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
 import { Editable } from '../../molecules/Editable'
@@ -17,7 +17,13 @@ interface Props {
   profile: Partial<TpCompanyProfile>
   disableEditing?: boolean
 }
-export function EditableAbout({ profile, disableEditing }: Props) {
+
+interface EditableAboutHelpers {
+  isSectionFilled: (profile: Partial<TpCompanyProfile>) => boolean;
+  isSectionEmpty: (profile: Partial<TpCompanyProfile>) => boolean;
+}
+
+export const EditableAbout: FC<Props> & EditableAboutHelpers = ({ profile, disableEditing }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
@@ -42,7 +48,7 @@ export function EditableAbout({ profile, disableEditing }: Props) {
                   ),
                 }}
               >
-                {profile?.about?.replace(/\n/g, `\n\n`)}
+                {profile.about?.replace(/\n/g, `\n\n`)}
               </ReactMarkdown>
             ) : (
               <EmptySectionPlaceholder
@@ -69,41 +75,42 @@ export function EditableAbout({ profile, disableEditing }: Props) {
 
 EditableAbout.isSectionFilled = (profile: Partial<TpCompanyProfile>) =>
   !!profile?.about
+  
 EditableAbout.isSectionEmpty = (profile: Partial<TpCompanyProfile>) =>
   !EditableAbout.isSectionFilled(profile)
 
-function ModalForm({
+// ######################################################################
+
+interface ModalFormProps {
+  setIsEditing: (boolean: boolean) => void
+  setIsFormDirty: (boolean: boolean) => void
+}
+
+const ModalForm: FC<ModalFormProps> = ({
   setIsEditing,
   setIsFormDirty,
-}: {
-  setIsEditing: (boolean) => void
-  setIsFormDirty: (boolean) => void
-}) {
+}) => {
   const { data: profile } = useTpCompanyProfileQuery()
   const mutation = useTpCompanyProfileUpdateMutation()
-  const initialValues: Partial<TpCompanyProfile> = useMemo(
-    () => ({
-      about: profile?.about ?? '',
+  const initialValues = useMemo(() => ({
+      about: profile?.about || '',
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )
-  const onSubmit = (values: Partial<TpCompanyProfile>) => {
-    formik.setSubmitting(true)
-    mutation.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
-      },
-    })
-  }
-  const formik = useFormik({
+
+  const formik = useFormik<{ about: string }>({
     initialValues,
     enableReinitialize: true,
-    onSubmit,
+    onSubmit: (values, { setSubmitting }) => {
+      setSubmitting(true)
+      mutation.mutate(values, {
+        onSettled: () => setSubmitting(false),
+        onSuccess: () => setIsEditing(false),
+      })
+    },
   })
+
   useEffect(() => setIsFormDirty(formik.dirty), [formik.dirty, setIsFormDirty])
 
   return (
@@ -118,7 +125,12 @@ function ModalForm({
         stand out, what are you passionate about and what are your future
         aspirations.
       </Element>
-      <FormTextArea label="About you" name="about" rows={7} {...formik} />
+      <TextArea
+        label="About you"
+        name="about"
+        rows={7}
+        {...formik}
+      />
 
       <Button
         disabled={!formik.isValid || mutation.isLoading}

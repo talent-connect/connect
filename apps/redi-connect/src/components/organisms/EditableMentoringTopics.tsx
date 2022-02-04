@@ -1,19 +1,20 @@
-import React from 'react'
+import { ChangeEventHandler, FC } from 'react'
+import { connect } from 'react-redux'
 import groupBy from 'lodash/groupBy'
 import { Columns, Heading, Element, Content } from 'react-bulma-components'
+
 import { Checkbox } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
-import { RedProfile } from '@talent-connect/shared-types'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
+import { CategoryGroupId, RedProfile } from '@talent-connect/shared-types'
 
 import { profileSaveStart } from '../../redux/user/actions'
 import * as Yup from 'yup'
 
-import { FormikValues, useFormik } from 'formik'
-import { CATEGORIES, CATEGORY_GROUPS } from '@talent-connect/shared-config'
+import { useFormik } from 'formik'
+import { CATEGORIES, CategoryKey, CATEGORY_GROUPS } from '@talent-connect/shared-config'
 import { ReadMentoringTopics } from '../molecules'
 import { objectEntries } from '@talent-connect/typescript-utilities'
+import { mapStateToProps } from '../../helpers';
 
 export type UserType =
   | 'mentor'
@@ -23,7 +24,7 @@ export type UserType =
 
 export interface MentoringFormValues {
   isMentor: boolean
-  categories: string[]
+  categories: CategoryKey[]
 }
 
 const MAX_MENTORING_TOPICS_IF_USER_IS_MENTEE = 4
@@ -33,7 +34,8 @@ const validationSchema = Yup.object({
     .min(1)
     .when('isMentor', {
       is: false,
-      then: Yup.array().max(MAX_MENTORING_TOPICS_IF_USER_IS_MENTEE),
+      then: Yup.array()
+        .max(MAX_MENTORING_TOPICS_IF_USER_IS_MENTEE),
     }),
 })
 
@@ -42,31 +44,28 @@ const categoriesByGroup = groupBy(CATEGORIES, (category) => category.group)
 const formCategoryGroups = objectEntries(CATEGORY_GROUPS)
 
 interface Props {
-  profile: RedProfile | undefined
-  profileSaveStart: Function
+  profile: RedProfile
+  profileSaveStart: (arg: MentoringFormValues & { id: string }) => void
 }
 
-const EditableMentoringTopics = ({ profile, profileSaveStart }: Props) => {
-  const { id, userType, categories } = profile as RedProfile
-
-  const submitForm = async (values: FormikValues) => {
-    const profileMentoring = values as Partial<RedProfile>
-    profileSaveStart({ ...profileMentoring, id })
-  }
+const EditableMentoringTopics: FC<Props> = ({
+  profile: { id, userType, categories },
+  profileSaveStart
+}) => {
 
   const isMentor =
     userType === 'mentor' || userType === 'public-sign-up-mentor-pending-review'
 
-  const initialValues: MentoringFormValues = {
-    isMentor,
-    categories: categories || [],
-  }
-
-  const formik = useFormik({
-    initialValues,
+  const formik = useFormik<MentoringFormValues>({
+    initialValues: {
+      isMentor,
+      categories: categories || [],
+    },
     enableReinitialize: true,
     validationSchema,
-    onSubmit: submitForm,
+    onSubmit: (profileMentoring) => {
+      profileSaveStart({ ...profileMentoring, id })
+    },
   })
 
   const { categories: selectedCategories } = formik.values
@@ -74,12 +73,9 @@ const EditableMentoringTopics = ({ profile, profileSaveStart }: Props) => {
   const categoriesChange = (e: any) => {
     e.persist()
     const value = e.target.value
-    let newCategories
-    if (e.target.checked) {
-      newCategories = selectedCategories.concat(value)
-    } else {
-      newCategories = selectedCategories.filter((cat: any) => cat !== value)
-    }
+    const newCategories = e.target.checked
+      ? selectedCategories.concat(value)
+      : selectedCategories.filter((cat) => cat !== value)
     formik.setFieldValue('categories', newCategories)
     formik.setFieldTouched('categories', true, false)
   }
@@ -114,13 +110,21 @@ const EditableMentoringTopics = ({ profile, profileSaveStart }: Props) => {
   )
 }
 
-const CategoryGroup = ({
+interface CategoryGroupProps {
+  id: CategoryGroupId,
+  label: string,
+  selectedCategories: CategoryKey[],
+  onChange: ChangeEventHandler,
+  formik: any // TODO: remove this or workaround
+}
+
+const CategoryGroup: FC<CategoryGroupProps> = ({
   id,
   label,
   selectedCategories,
   onChange,
   formik,
-}: any) => {
+}) => { // TODO: types
   // The current REDI_LOCATION might not use the current CategoryGroup (e.g.
   // Munich doesnt, at the time or writing, use 'coding' or 'other'. If it's the case, return null
 
@@ -137,22 +141,21 @@ const CategoryGroup = ({
         {label}
       </Heading>
       <Element className="mentoring__group">
-        {categoriesByGroup[id].map((groupItem) => (
+        {categoriesByGroup[id].map(({ id, label }) => (
           <Checkbox.Form
-            name={`categories-${groupItem.id}`}
-            key={groupItem.id}
-            value={groupItem.id}
-            checked={selectedCategories.includes(groupItem.id)}
-            customOnChange={onChange}
+            name={`categories-${id}`}
+            key={id}
+            value={id}
+            checked={selectedCategories.includes(id)}
+            handleChange={onChange}
             disabled={
               !formik.values.isMentor &&
-              selectedCategories.length >=
-                MAX_MENTORING_TOPICS_IF_USER_IS_MENTEE &&
-              !selectedCategories.includes(groupItem.id)
+              selectedCategories.length >= MAX_MENTORING_TOPICS_IF_USER_IS_MENTEE &&
+              !selectedCategories.includes(id)
             }
             {...formik}
           >
-            {groupItem.label}
+            {label}
           </Checkbox.Form>
         ))}
       </Element>
@@ -160,16 +163,9 @@ const CategoryGroup = ({
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile,
-})
-
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: Function) => ({
   profileSaveStart: (profile: Partial<RedProfile>) =>
     dispatch(profileSaveStart(profile)),
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EditableMentoringTopics)
+export default connect(mapStateToProps, mapDispatchToProps)(EditableMentoringTopics)

@@ -1,11 +1,11 @@
-import React from 'react'
+import { FC } from 'react';
 import { useTranslation } from 'react-i18next'
 import Hero from '../../../components/organisms/RediHero'
 import Landing from '../../../components/templates/Landing'
 
 import { useConfetti } from '../../../utils/useConfetti'
 
-export default function Home() {
+const Home: FC = () => {
   const { t } = useTranslation()
 
   useConfetti({ keybind: 'r u r e d i' })
@@ -16,3 +16,5 @@ export default function Home() {
     </Landing>
   )
 }
+
+export default Home

@@ -1,31 +1,37 @@
 import {
   Button,
-  FormInput,
+  TextInput,
   Heading,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
-import { TpJobseekerProfile } from '@talent-connect/shared-types'
+import { TpJobSeekerProfile } from '@talent-connect/shared-types'
 import {
   availabilityOptions,
   desiredEmploymentTypeOptions,
 } from '@talent-connect/talent-pool/config'
+import { mapOptions } from '@talent-connect/typescript-utilities';
 import { useFormik } from 'formik'
-import React, { useEffect, useMemo, useState } from 'react'
+import { FC, useEffect, useMemo, useState } from 'react'
 import { Columns, Content, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
-import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobSeekerProfileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
+import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import Avatar from '../Avatar'
 
 interface Props {
-  profile: Partial<TpJobseekerProfile>
+  profile: Partial<TpJobSeekerProfile>
   disableEditing?: boolean
 }
 
-export function EditableNamePhotoLocation({ profile, disableEditing }: Props) {
-  const mutation = useTpjobseekerprofileUpdateMutation()
+interface EditableNamePhotoLocationHelpers {
+  isSectionFilled: (profile: Partial<TpJobSeekerProfile>) => boolean;
+  isSectionEmpty: (profile: Partial<TpJobSeekerProfile>) => boolean;
+}
+
+export const EditableNamePhotoLocation: FC<Props> & EditableNamePhotoLocationHelpers = ({ profile, disableEditing }) => {
+  const mutation = useTpJobSeekerProfileUpdateMutation()
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
@@ -33,20 +39,19 @@ export function EditableNamePhotoLocation({ profile, disableEditing }: Props) {
 
   return (
     <Editable
-      disableEditing={disableEditing}
-      isEditing={isEditing}
-      isFormDirty={isFormDirty}
-      setIsEditing={setIsEditing}
+      modalTitle="Basic information"
+      modalHeadline="Name and location"
+      {...{ disableEditing, isEditing, isFormDirty, setIsEditing }}
       readComponent={
         <Columns vCentered breakpoint="mobile" className="oneandhalf-bs">
           <Columns.Column size={5}>
-            {profile && !disableEditing ? (
+            {profile && !disableEditing && 
               <Avatar.Editable
                 profile={profile}
                 profileSaveStart={mutation.mutate}
-              />
-            ) : null}
-            {profile && disableEditing ? <Avatar profile={profile} /> : null}
+              />}
+            {profile && disableEditing &&
+              <Avatar profile={profile} />}
           </Columns.Column>
           <Columns.Column size={7}>
             <Heading size="medium">
@@ -80,42 +85,44 @@ export function EditableNamePhotoLocation({ profile, disableEditing }: Props) {
           </Columns.Column>
         </Columns>
       }
-      modalTitle="Basic information"
-      modalHeadline="Name and location"
       modalBody={
         <ModalForm
-          setIsEditing={setIsEditing}
-          setIsFormDirty={setIsFormDirty}
+          {...{ setIsEditing, setIsFormDirty }}
         />
       }
     />
   )
 }
 
-EditableNamePhotoLocation.isSectionFilled = (
-  profile: Partial<TpJobseekerProfile>
-) => profile?.location
-EditableNamePhotoLocation.isSectionEmpty = (
-  profile: Partial<TpJobseekerProfile>
-) => !EditableNamePhotoLocation.isSectionFilled(profile)
+EditableNamePhotoLocation.isSectionFilled = (profile: Partial<TpJobSeekerProfile>) =>
+  !!profile?.location
+
+EditableNamePhotoLocation.isSectionEmpty = (profile: Partial<TpJobSeekerProfile>) =>
+  !EditableNamePhotoLocation.isSectionFilled(profile)
+
+// ####################################################################################
 
 const validationSchema = Yup.object({
-  firstName: Yup.string().required('Your first name is required'),
-  lastName: Yup.string().required('Your last name is required'),
-  location: Yup.string().required('Your location is required'),
+  firstName: Yup.string()
+    .required('Your first name is required'),
+  lastName: Yup.string()
+    .required('Your last name is required'),
+  location: Yup.string()
+    .required('Your location is required'),
 })
 
-function ModalForm({
+interface ModalFormProps {
+  setIsEditing: (boolean: boolean) => void
+  setIsFormDirty: (boolean: boolean) => void
+}
+
+const ModalForm: FC<ModalFormProps> = ({
   setIsEditing,
   setIsFormDirty,
-}: {
-  setIsEditing: (boolean) => void
-  setIsFormDirty: (boolean) => void
-}) {
-  const { data: profile } = useTpJobseekerProfileQuery()
-  const mutation = useTpjobseekerprofileUpdateMutation()
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(
-    () => ({
+}) => {
+  const { data: profile } = useTpJobSeekerProfileQuery()
+  const mutation = useTpJobSeekerProfileUpdateMutation()
+  const initialValues = useMemo(() => ({
       firstName: profile?.firstName ?? '',
       lastName: profile?.lastName ?? '',
       genderPronouns: profile?.genderPronouns ?? '',
@@ -124,24 +131,21 @@ function ModalForm({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
-    formik.setSubmitting(true)
-    mutation.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
-      },
-    })
-  }
-  const formik = useFormik({
+
+  const formik = useFormik<Partial<TpJobSeekerProfile>>({
     initialValues,
     validationSchema,
     enableReinitialize: true,
-    onSubmit,
     validateOnMount: true,
+    onSubmit: (values, { setSubmitting }) => {
+      setSubmitting(true)
+      mutation.mutate(values, {
+        onSettled: () => setSubmitting(false),
+        onSuccess: () => setIsEditing(false),
+      })
+    },
   })
+
   useEffect(() => setIsFormDirty?.(formik.dirty), [
     formik.dirty,
     setIsFormDirty,
@@ -157,25 +161,25 @@ function ModalForm({
       >
         Add your name and location to the profile.
       </Element>
-      <FormInput
+      <TextInput
         name="firstName"
         placeholder="James"
         label="First name*"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="lastName"
         placeholder="Smith"
         label="Last name*"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="genderPronouns"
         placeholder="She/Her/Hers, He/Him/His, They/Them/Theirs, etc."
         label="Gender pronouns"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="location"
         placeholder="Berlin, Germany"
         label="Your place of residence (city, country)*"
@@ -198,11 +202,6 @@ function ModalForm({
   )
 }
 
-const formDesiredEmploymentType = desiredEmploymentTypeOptions.map(
-  ({ id, label }) => ({ value: id, label })
-)
+const formDesiredEmploymentType = mapOptions(desiredEmploymentTypeOptions)
 
-const formAvailabilityOptions = availabilityOptions.map(({ id, label }) => ({
-  value: id,
-  label,
-}))
+const formAvailabilityOptions = mapOptions(availabilityOptions)

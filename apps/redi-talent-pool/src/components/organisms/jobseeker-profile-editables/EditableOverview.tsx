@@ -4,35 +4,42 @@ import {
   FormSelect,
 } from '@talent-connect/shared-atomic-design-components'
 import { COURSES, REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
-import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
+import { TpJobSeekerCv, TpJobSeekerProfile } from '@talent-connect/shared-types'
 import {
   desiredPositions,
   desiredPositionsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
+import { mapOptions } from '@talent-connect/typescript-utilities';
 import { useFormik } from 'formik'
-import React, { useEffect, useMemo, useState } from 'react'
+import { FC, useEffect, useMemo, useState } from 'react'
 import { Element, Tag } from 'react-bulma-components'
 import { UseMutationResult, UseQueryResult } from 'react-query'
 import * as Yup from 'yup'
-import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobSeekerProfileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
+import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
+import { componentForm } from './EditableOverview.from';
 
 interface Props {
-  profile?: Partial<TpJobseekerProfile>
+  profile?: Partial<TpJobSeekerProfile>
   disableEditing?: boolean
 }
 
-export function EditableOverview({
+interface EditableOverviewHelpers {
+  isSectionFilled: (profile: Partial<TpJobSeekerProfile>) => boolean;
+  isSectionEmpty: (profile: Partial<TpJobSeekerProfile>) => boolean;
+}
+
+export const EditableOverview: FC<Props> & EditableOverviewHelpers = ({
   profile: overridingProfile,
   disableEditing,
-}: Props) {
-  const queryHookResult = useTpJobseekerProfileQuery({
+}) => {
+  const queryHookResult = useTpJobSeekerProfileQuery({
     enabled: !disableEditing,
   })
   if (overridingProfile) queryHookResult.data = overridingProfile
-  const mutationHookResult = useTpjobseekerprofileUpdateMutation()
+  const mutationHookResult = useTpJobSeekerProfileUpdateMutation()
   const { data: profile } = queryHookResult
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
@@ -43,11 +50,10 @@ export function EditableOverview({
 
   return (
     <Editable
-      disableEditing={Boolean(disableEditing)}
-      isEditing={isEditing}
-      isFormDirty={isFormDirty}
-      setIsEditing={setIsEditing}
       title="Overview"
+      modalTitle="Interests & About"
+      modalHeadline="Overview"
+      {...{ disableEditing, isEditing, isFormDirty, setIsEditing }}
       readComponent={
         isEmpty ? (
           <EmptySectionPlaceholder
@@ -67,86 +73,70 @@ export function EditableOverview({
           </>
         )
       }
-      modalTitle="Interests & About"
-      modalHeadline="Overview"
       modalBody={
-        <JobseekerFormSectionOverview
-          setIsEditing={setIsEditing}
-          setIsFormDirty={setIsFormDirty}
-          queryHookResult={queryHookResult}
-          mutationHookResult={mutationHookResult}
+        <JobSeekerFormSectionOverview
+          {...{ setIsEditing, queryHookResult, mutationHookResult, setIsFormDirty }}
         />
       }
     />
   )
 }
 
-EditableOverview.isSectionFilled = (profile: Partial<TpJobseekerProfile>) =>
-  profile?.desiredPositions?.length > 0
-EditableOverview.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
+EditableOverview.isSectionFilled = (profile: Partial<TpJobSeekerProfile>) =>
+  !!profile?.desiredPositions?.length
+
+EditableOverview.isSectionEmpty = (profile: Partial<TpJobSeekerProfile>) =>
   !EditableOverview.isSectionFilled(profile)
 
+// ###########################################################################
+  
 const validationSchema = Yup.object({
   desiredPositions: Yup.array()
     .min(1, 'At least one desired position is required')
     .max(3, 'You can select up to three desired positions'),
 })
 
-interface JobseekerFormSectionOverviewProps {
-  setIsEditing: (boolean) => void
-  setIsFormDirty?: (boolean) => void
+interface JobSeekerFormSectionOverviewProps {
+  setIsEditing: (boolean: boolean) => void
+  setIsFormDirty?: (boolean: boolean) => void
   queryHookResult: UseQueryResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobSeekerProfile | TpJobSeekerCv>,
     unknown
   >
   mutationHookResult: UseMutationResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobSeekerProfile | TpJobSeekerCv>,
     unknown,
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobSeekerProfile | TpJobSeekerCv>,
     unknown
   >
   hideCurrentRediCourseField?: boolean
 }
 
-export function JobseekerFormSectionOverview({
+export const JobSeekerFormSectionOverview: FC<JobSeekerFormSectionOverviewProps> = ({
   setIsEditing,
   setIsFormDirty,
-  queryHookResult,
+  queryHookResult: { data: profile },
   mutationHookResult,
   hideCurrentRediCourseField,
-}: JobseekerFormSectionOverviewProps) {
-  const { data: profile } = queryHookResult
-  const mutation = mutationHookResult
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(
-    () => ({
-      desiredPositions: profile?.desiredPositions ?? [],
-      currentlyEnrolledInCourse: profile?.currentlyEnrolledInCourse ?? '',
-    }),
-    [profile?.currentlyEnrolledInCourse, profile?.desiredPositions]
-  )
+}) => {
+  // const initialValues = useMemo(() => ({
+  //     desiredPositions: profile?.desiredPositions ?? [],
+  //     currentlyEnrolledInCourse: profile?.currentlyEnrolledInCourse ?? '',
+  //   }),
+  //   [profile?.currentlyEnrolledInCourse, profile?.desiredPositions]
+  // )
 
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
-    formik.setSubmitting(true)
-    mutation.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
-      },
-    })
-  }
-  const formik = useFormik({
-    initialValues,
-    validationSchema,
-    enableReinitialize: true,
-    onSubmit,
-    validateOnMount: true,
-  })
+  const formik = componentForm({
+    mutationHookResult,
+    profile,
+    setIsEditing
+  }) 
+
   useEffect(
     () => setIsFormDirty?.(formik.dirty),
     [formik.dirty, setIsFormDirty]
   )
+
   return (
     <>
       <Element
@@ -162,7 +152,7 @@ export function JobseekerFormSectionOverview({
         name="desiredPositions"
         items={formDesiredPositions}
         {...formik}
-        multiselect
+        multiSelect
       />
       {hideCurrentRediCourseField ? null : (
         <FormSelect
@@ -173,14 +163,14 @@ export function JobseekerFormSectionOverview({
         />
       )}
       <Button
-        disabled={!formik.isValid || mutation.isLoading}
+        disabled={!formik.isValid || mutationHookResult.isLoading}
         onClick={formik.submitForm}
       >
         Save
       </Button>
       <Button
         simple
-        disabled={mutation.isLoading}
+        disabled={mutationHookResult.isLoading}
         onClick={() => setIsEditing(false)}
       >
         Cancel
@@ -189,16 +179,11 @@ export function JobseekerFormSectionOverview({
   )
 }
 
-const formDesiredPositions = desiredPositions.map(({ id, label }) => ({
-  value: id,
-  label,
-}))
+const formDesiredPositions = mapOptions(desiredPositions)
 
 // TODO: merge this logic with the stuff in SignUp.tsx
 const coursesWithAlumniDeduped = [
-  ...COURSES.filter((c) => {
-    return !c.id.includes('alumni')
-  }),
+  ...COURSES.filter((c) =>  !c.id.includes('alumni')),
   {
     id: 'alumni',
     label: `I'm a ReDI School alumni (I took a course before)`,
@@ -206,13 +191,9 @@ const coursesWithAlumniDeduped = [
   },
 ]
 
-const formCourses = coursesWithAlumniDeduped.map((course) => {
-  const label =
-    course.id === 'alumni'
-      ? course.label
-      : `(ReDI ${REDI_LOCATION_NAMES[course.location]}) ${course.label}`
-  return {
-    value: course.id,
-    label: label,
-  }
-})
+const formCourses = coursesWithAlumniDeduped.map(({ id, label, location }) => ({
+    value: id,
+    label: id === 'alumni'
+      ? label
+      : `(ReDI ${REDI_LOCATION_NAMES[location]}) ${label}`,
+  }))

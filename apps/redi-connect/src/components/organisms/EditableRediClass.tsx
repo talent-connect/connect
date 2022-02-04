@@ -1,52 +1,33 @@
-import React from 'react'
+import { FC } from 'react'
+import { connect } from 'react-redux'
+
 import { FormSelect } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile } from '@talent-connect/shared-types'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
 
 import { profileSaveStart } from '../../redux/user/actions'
-import * as Yup from 'yup'
-
-import { FormikValues, useFormik } from 'formik'
-
 import { ReadRediClass } from '../molecules'
 import { courses } from '../../config/config'
+import { mapOptions } from '@talent-connect/typescript-utilities';
+import { mapStateToProps } from '../../helpers';
+import { componentForm, ComponentFormProps } from './EditableRediClass.form';
 
-const formCourses = courses.map((course) => ({
-  value: course.id,
-  label: course.label,
-}))
+const formCourses = mapOptions(courses)
 
-export interface RediClassFormValues {
-  mentee_currentlyEnrolledInCourse: string
+interface Props {
+  profile: RedProfile
+  profileSaveStart: ComponentFormProps['profileSaveStart']
 }
 
-const validationSchema = Yup.object({
-  mentee_currentlyEnrolledInCourse: Yup.string()
-    .required()
-    .oneOf(courses.map((level) => level.id))
-    .label('Currently enrolled in course'),
-})
-
-// props: FormikProps<AboutFormValues>
-const EditableRediClass = ({ profile, profileSaveStart }: any) => {
-  const { id, mentee_currentlyEnrolledInCourse } = profile
-
-  const submitForm = async (values: FormikValues) => {
-    const rediClass = values as Partial<RedProfile>
-    profileSaveStart({ ...rediClass, id })
-  }
-
-  const initialValues: RediClassFormValues = {
+const EditableRediClass: FC<Props> = ({
+  profile: { id, mentee_currentlyEnrolledInCourse },
+  profileSaveStart
+}) => {
+  
+  const formik = componentForm({
+    id,
     mentee_currentlyEnrolledInCourse,
-  }
-
-  const formik = useFormik({
-    initialValues,
-    enableReinitialize: true,
-    validationSchema,
-    onSubmit: submitForm,
+    profileSaveStart
   })
 
   return (
@@ -67,11 +48,7 @@ const EditableRediClass = ({ profile, profileSaveStart }: any) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile,
-})
-
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: Function) => ({
   profileSaveStart: (profile: Partial<RedProfile>) =>
     dispatch(profileSaveStart(profile)),
 })

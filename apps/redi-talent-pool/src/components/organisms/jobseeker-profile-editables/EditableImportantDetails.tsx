@@ -2,61 +2,65 @@ import {
   Button,
   Caption,
   FormDatePicker,
-  FormInput,
+  TextInput,
   FormSelect,
-  FormTextArea,
+  TextArea,
   PipeList,
 } from '@talent-connect/shared-atomic-design-components'
-import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
+import { TpJobSeekerCv, TpJobSeekerProfile } from '@talent-connect/shared-types'
 import {
   availabilityOptions,
   availabilityOptionsIdToLabelMap,
   desiredEmploymentTypeOptions,
   desiredEmploymentTypeOptionsIdToLabelMap,
-  desiredPositions,
   immigrationStatusOptions,
   immigrationStatusOptionsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
-import { useFormik } from 'formik'
+import { mapOptions } from '@talent-connect/typescript-utilities';
 import moment from 'moment'
-import React, { useEffect, useMemo, useState } from 'react'
-import { Columns, Content, Element } from 'react-bulma-components'
+import { FC, useEffect, useState } from 'react'
+import { Content, Element } from 'react-bulma-components'
 import { UseMutationResult, UseQueryResult } from 'react-query'
-import * as Yup from 'yup'
-import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobSeekerProfileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
+import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
+import { componentForm } from './EditableImportantDetails.form';
 
 interface Props {
-  profile?: Partial<TpJobseekerProfile>
+  profile?: Partial<TpJobSeekerProfile>
   disableEditing?: boolean
 }
 
-export function EditableImportantDetails({
+interface EditableImportantDetailsHelpers {
+  isSectionFilled: (profile: Partial<TpJobSeekerProfile>) => boolean;
+  isSectionEmpty: (profile: Partial<TpJobSeekerProfile>) => boolean;
+}
+
+export const EditableImportantDetails: FC<Props> & EditableImportantDetailsHelpers = ({
   profile: overridingProfile,
   disableEditing,
-}: Props) {
-  const queryHookResult = useTpJobseekerProfileQuery({
+}) => {
+  const queryHookResult = useTpJobSeekerProfileQuery({
     enabled: !disableEditing,
   })
   if (overridingProfile) queryHookResult.data = overridingProfile
-  const mutationHookResult = useTpjobseekerprofileUpdateMutation()
+  const mutationHookResult = useTpJobSeekerProfileUpdateMutation()
   const { data: profile } = queryHookResult
+
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
   const isEmpty = EditableImportantDetails.isSectionEmpty(profile)
-
+  
   if (disableEditing && isEmpty) return null
-
+  
   return (
     <Editable
-      disableEditing={disableEditing}
-      isEditing={isEditing}
-      isFormDirty={isFormDirty}
-      setIsEditing={setIsEditing}
       title="Important details"
+      modalTitle="Help employers get in touch"
+      modalHeadline="Important Details"
+      {...{ disableEditing, isEditing, isFormDirty, setIsEditing }}
       readComponent={
         isEmpty ? (
           <EmptySectionPlaceholder
@@ -75,90 +79,63 @@ export function EditableImportantDetails({
               gridRowGap: '32px',
             }}
           >
-            {profile &&
-            profile.desiredEmploymentType &&
-            profile.desiredEmploymentType.length > 0 ? (
+            {profile?.desiredEmploymentType?.length && (
               <div>
                 <Caption>Type of work</Caption>
                 <PipeList
-                  items={profile.desiredEmploymentType.map(
-                    (x) => desiredEmploymentTypeOptionsIdToLabelMap[x]
-                  )}
+                  items={profile.desiredEmploymentType.map((x) => desiredEmploymentTypeOptionsIdToLabelMap[x])}
                   overflowAllowed
                 />
               </div>
-            ) : null}
+            )}
 
-            {profile?.availability ? (
+            {profile?.availability && (
               <div>
                 <Caption>Availability</Caption>
                 <Content>
                   {profile?.availability && profile.availability !== 'date' && (
-                    <p>
-                      {availabilityOptionsIdToLabelMap[profile?.availability]}
-                    </p>
+                    <p>{availabilityOptionsIdToLabelMap[profile.availability]}</p>
                   )}
-                  {profile?.availability &&
-                    profile.availability === 'date' &&
-                    profile.ifAvailabilityIsDate_date && (
-                      <p>
-                        {moment(profile.ifAvailabilityIsDate_date).format(
-                          'DD.MM.YYYY'
-                        )}
-                      </p>
+                  { profile?.ifAvailabilityIsDate_date && profile.availability === 'date' && (
+                      <p>{moment(profile.ifAvailabilityIsDate_date).format('DD.MM.YYYY')}</p>
                     )}
                 </Content>
               </div>
-            ) : null}
+            )}
 
-            {profile?.phoneNumber || profile?.contactEmail ? (
+            {(profile?.phoneNumber || profile?.contactEmail) && (
               <div>
                 <Caption>Contact</Caption>
                 <Content>
-                  {[
-                    profile?.phoneNumber,
-                    profile?.contactEmail,
-                  ].map((contactItem) =>
-                    contactItem ? <p>{contactItem}</p> : null
-                  )}
+                  {[profile?.phoneNumber, profile?.contactEmail]
+                     .map((contactItem) => contactItem ? <p>{contactItem}</p> : null)}
                 </Content>
               </div>
-            ) : null}
+            )}
 
-            {profile?.immigrationStatus ? (
+            {profile?.immigrationStatus && (
               <div>
                 <Caption>Immigration status</Caption>
                 <Content>
-                  <p>
-                    {
-                      immigrationStatusOptionsIdToLabelMap[
-                        profile?.immigrationStatus
-                      ]
-                    }
-                  </p>
+                  <p>{immigrationStatusOptionsIdToLabelMap[profile.immigrationStatus]}</p>
                 </Content>
               </div>
-            ) : null}
+            )}
 
-            {profile?.postalMailingAddress ? (
+            {profile?.postalMailingAddress && (
               <div>
                 <Caption>Postal mailing address</Caption>
                 <Content>
                   <p>{profile?.postalMailingAddress}</p>
                 </Content>
               </div>
-            ) : null}
+            )}
           </div>
         )
       }
-      modalTitle="Help employers get in touch"
-      modalHeadline="Important Details"
       modalBody={
-        <JobseekerFormSectionImportantDetails
-          setIsEditing={setIsEditing}
-          setIsFormDirty={setIsFormDirty}
-          queryHookResult={queryHookResult}
-          mutationHookResult={mutationHookResult}
+        <JobSeekerFormSectionImportantDetails
+          {...{ setIsEditing, queryHookResult, mutationHookResult, setIsFormDirty }}
         />
       }
       modalStyles={{ minHeight: '40rem' }}
@@ -166,36 +143,34 @@ export function EditableImportantDetails({
   )
 }
 
-EditableImportantDetails.isSectionFilled = (
-  profile: Partial<TpJobseekerProfile>
-) =>
-  profile?.availability ||
-  profile?.desiredEmploymentType?.length > 0 ||
-  profile?.phoneNumber ||
-  profile?.immigrationStatus ||
-  profile?.postalMailingAddress
-EditableImportantDetails.isSectionEmpty = (
-  profile: Partial<TpJobseekerProfile>
-) => !EditableImportantDetails.isSectionFilled(profile)
+EditableImportantDetails.isSectionFilled = (profile: Partial<TpJobSeekerProfile>) =>
+  !!profile?.availability ||
+  !!profile?.desiredEmploymentType?.length ||
+  !!profile?.phoneNumber ||
+  !!profile?.immigrationStatus ||
+  !!profile?.postalMailingAddress;
 
-const validationSchema = Yup.object({
-  desiredPositions: Yup.array().max(
-    3,
-    'You can select up to three desired positions'
-  ),
-})
+EditableImportantDetails.isSectionEmpty = (profile: Partial<TpJobSeekerProfile>) =>
+  !EditableImportantDetails.isSectionFilled(profile)
 
-interface JobseekerFormSectionImportantDetailsProps {
-  setIsEditing: (boolean) => void
-  setIsFormDirty?: (boolean) => void
+// ################################################################################
+
+// const validationSchema = Yup.object({
+//   desiredPositions: Yup.array()
+//     .max(3, 'You can select up to three desired positions'),
+// })
+
+interface JobSeekerFormSectionImportantDetailsProps {
+  setIsEditing: (boolean: boolean) => void
+  setIsFormDirty?: (boolean: boolean) => void
   queryHookResult: UseQueryResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobSeekerProfile | TpJobSeekerCv>,
     unknown
   >
   mutationHookResult: UseMutationResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobSeekerProfile | TpJobSeekerCv>,
     unknown,
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobSeekerProfile | TpJobSeekerCv>,
     unknown
   >
   // TODO: this is a slippery slope. When this form section is used in the
@@ -208,55 +183,21 @@ interface JobseekerFormSectionImportantDetailsProps {
   hideNonContactDetailsFields?: boolean
 }
 
-export function JobseekerFormSectionImportantDetails({
+export const JobSeekerFormSectionImportantDetails: FC<JobSeekerFormSectionImportantDetailsProps> = ({
   setIsEditing,
   setIsFormDirty,
   queryHookResult,
   mutationHookResult,
   hideNonContactDetailsFields,
-}: JobseekerFormSectionImportantDetailsProps) {
+}) => {
   const { data: profile } = queryHookResult
-  const mutation = mutationHookResult
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(
-    () => ({
-      availability: profile?.availability ?? '',
-      desiredEmploymentType: profile?.desiredEmploymentType ?? [],
-      contactEmail: profile?.contactEmail ?? '',
-      phoneNumber: profile?.phoneNumber ?? '',
-      postalMailingAddress: profile?.postalMailingAddress ?? '',
-      ifAvailabilityIsDate_date: profile?.ifAvailabilityIsDate_date
-        ? new Date(profile.ifAvailabilityIsDate_date)
-        : null,
-      immigrationStatus: profile?.immigrationStatus ?? '',
-    }),
-    [
-      profile?.availability,
-      profile?.contactEmail,
-      profile?.desiredEmploymentType,
-      profile?.ifAvailabilityIsDate_date,
-      profile?.immigrationStatus,
-      profile?.phoneNumber,
-      profile?.postalMailingAddress,
-    ]
-  )
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
-    formik.setSubmitting(true)
-    mutation.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
-      },
-    })
-  }
-  const formik = useFormik({
-    initialValues,
-    validationSchema,
-    enableReinitialize: true,
-    onSubmit,
-    validateOnMount: true,
-  })
+
+  const formik = componentForm({
+    profile,
+    mutationHookResult,
+    setIsEditing
+  });
+
   useEffect(() => setIsFormDirty?.(formik.dirty), [
     formik.dirty,
     setIsFormDirty,
@@ -273,19 +214,19 @@ export function JobseekerFormSectionImportantDetails({
         This is where employers can get the basics that they need to get in
         touch and see your work.
       </Element>
-      <FormInput
+      <TextInput
         name="contactEmail"
         placeholder="awesome@gmail.com"
         label="Email*"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="phoneNumber"
         placeholder="0176 01234567"
         label="Phone Number"
         {...formik}
       />
-      <FormTextArea
+      <TextArea
         label="Postal mailing address"
         name="postalMailingAddress"
         rows={4}
@@ -299,7 +240,7 @@ export function JobseekerFormSectionImportantDetails({
             name="desiredEmploymentType"
             items={formDesiredEmploymentType}
             {...formik}
-            multiselect
+            multiSelect
           />
           <FormSelect
             label="When are you available to start?*"
@@ -307,7 +248,7 @@ export function JobseekerFormSectionImportantDetails({
             items={formAvailabilityOptions}
             {...formik}
           />
-          {formik.values.availability === 'date' ? (
+          {formik.values.availability === 'date' && (
             <FormDatePicker
               placeholder="Select your date"
               name="ifAvailabilityIsDate_date"
@@ -319,7 +260,7 @@ export function JobseekerFormSectionImportantDetails({
               isClearable
               {...formik}
             />
-          ) : null}
+          )}
           <FormSelect
             label="What is your immigration status?"
             name="immigrationStatus"
@@ -330,14 +271,14 @@ export function JobseekerFormSectionImportantDetails({
       )}
 
       <Button
-        disabled={!formik.isValid || mutation.isLoading}
+        disabled={!formik.isValid || mutationHookResult.isLoading}
         onClick={formik.submitForm}
       >
         Save
       </Button>
       <Button
         simple
-        disabled={mutation.isLoading}
+        disabled={mutationHookResult.isLoading}
         onClick={() => setIsEditing(false)}
       >
         Cancel
@@ -346,18 +287,8 @@ export function JobseekerFormSectionImportantDetails({
   )
 }
 
-const formAvailabilityOptions = availabilityOptions.map(({ id, label }) => ({
-  value: id,
-  label,
-}))
+const formAvailabilityOptions = mapOptions(availabilityOptions)
 
-const formDesiredEmploymentType = desiredEmploymentTypeOptions.map(
-  ({ id, label }) => ({ value: id, label })
-)
+const formDesiredEmploymentType = mapOptions(desiredEmploymentTypeOptions)
 
-const formImmigrationStatusOptions = immigrationStatusOptions.map(
-  ({ id, label }) => ({
-    value: id,
-    label,
-  })
-)
+const formImmigrationStatusOptions = mapOptions(immigrationStatusOptions)

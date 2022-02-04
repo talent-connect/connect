@@ -1,17 +1,15 @@
-import React from 'react'
-import { FormTextArea } from '@talent-connect/shared-atomic-design-components'
+import { FC } from 'react'
+import { TextArea } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile, UserType } from '@talent-connect/shared-types'
 import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
 import { profileSaveStart } from '../../redux/user/actions'
 
 import * as Yup from 'yup'
 
-import { FormikValues, useFormik } from 'formik'
+import { useFormik } from 'formik'
 import { ReadAbout } from '../molecules'
-
-import { assertUnreachable } from '@talent-connect/shared-utils'
+import { mapStateToProps } from '../../helpers';
 
 export interface AboutFormValues {
   userType: UserType
@@ -33,26 +31,28 @@ const validationSchema = Yup.object({
     )
     .label('Personal description'),
 })
-// props: FormikProps<AboutFormValues>
-const EditableAbout = ({ profile, profileSaveStart }: any) => {
-  const { id, userType, personalDescription, expectations } = profile
 
-  const submitForm = async (values: FormikValues) => {
-    const profileAbout = values as Partial<RedProfile>
-    profileSaveStart({ ...profileAbout, id })
-  }
+interface Props {
+  profile: RedProfile
+  profileSaveStart: (arg: AboutFormValues & { id: string }) => void
+}
 
-  const initialValues: AboutFormValues = {
-    userType,
-    personalDescription,
-    expectations,
-  }
+const EditableAbout: FC<Props> = ({
+  profile: { id, userType, personalDescription, expectations },
+  profileSaveStart
+}) => {
 
-  const formik = useFormik({
-    initialValues,
+  const formik = useFormik<AboutFormValues>({
+    initialValues: {
+      userType,
+      personalDescription,
+      expectations,
+    },
     enableReinitialize: true,
     validationSchema,
-    onSubmit: submitForm,
+    onSubmit: (profileAbout) => {
+      profileSaveStart({ ...profileAbout, id })
+    },
   })
 
   return (
@@ -63,7 +63,7 @@ const EditableAbout = ({ profile, profileSaveStart }: any) => {
       savePossible={formik.dirty && formik.isValid}
       read={<ReadAbout.Me />}
     >
-      <FormTextArea
+      <TextArea
         label="Tell us a few words about yourself (this will be displayed on your profile)* (100-600 characters)"
         name="personalDescription"
         rows={4}
@@ -72,7 +72,7 @@ const EditableAbout = ({ profile, profileSaveStart }: any) => {
         maxChar={personalDescriptionRange.max}
         {...formik}
       />
-      <FormTextArea
+      <TextArea
         label={expectationsFieldLabel(userType)}
         name="expectations"
         rows={4}
@@ -95,8 +95,6 @@ const expectationsFieldLabel = (userType: UserType): string => {
     case 'public-sign-up-mentor-rejected':
       return 'Feel free to share how you can best support your mentees and any expectations you may have towards them'
   }
-
-  return assertUnreachable(userType)
 }
 
 const expectationsFieldPlaceholder = (userType: UserType): string => {
@@ -111,15 +109,9 @@ const expectationsFieldPlaceholder = (userType: UserType): string => {
     case 'public-sign-up-mentor-rejected':
       return 'Providing career or technical support, expecting commitment, etc.'
   }
-
-  return assertUnreachable(userType)
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile,
-})
-
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: Function) => ({
   profileSaveStart: (profile: Partial<RedProfile>) =>
     dispatch(profileSaveStart(profile)),
 })

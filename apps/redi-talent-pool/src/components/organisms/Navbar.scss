@@ -1,3 +1,4 @@
+@use '_colors' as colors;
 @import '~bulma/sass/utilities/_all';
 @import '_variables.scss';
 
@@ -47,7 +48,7 @@
     height: 100%;
     z-index: 10;
     padding: 8rem 1.25rem;
-    background-color: $white;
+    background-color: colors.$white;
     // TODO: can we use relative import here instead?
     background-image: url('libs/shared-atomic-design-components/src/assets/images/bubbles.svg');
     background-repeat: no-repeat;
@@ -55,7 +56,7 @@
     background-position: 50% 50%;
 
     & hr {
-      border: 1px solid $grey;
+      border: 1px solid colors.$grey;
     }
   }
 
@@ -66,6 +67,6 @@
     right: 1.75rem;
     font-size: 1.5rem;
     line-height: 1.5rem;
-    color: $redi-orange-dark;
+    color: colors.$redi-orange-dark;
   }
 }

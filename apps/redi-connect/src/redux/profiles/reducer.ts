@@ -1,7 +1,7 @@
 import { ProfilesState, ProfilesActions, ProfilesActionType } from './types'
 
 const initialState: ProfilesState = {
-  oneProfile: undefined,
+  oneProfile: null,
   loading: false,
 }
 

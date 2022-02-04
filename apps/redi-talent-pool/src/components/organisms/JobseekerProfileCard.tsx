@@ -1,34 +1,34 @@
 import { CardTags } from '@talent-connect/shared-atomic-design-components'
 import { AWS_PROFILE_AVATARS_BUCKET_BASE_URL } from '@talent-connect/shared-config'
-import { TpJobseekerProfile } from '@talent-connect/shared-types'
+import { TpJobSeekerProfile } from '@talent-connect/shared-types'
 import {
   desiredPositionsIdToLabelMap,
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 import classnames from 'clsx'
-import React from 'react'
+import { FC } from 'react'
 import { Card, Element } from 'react-bulma-components'
-import './JobseekerProfileCard.scss'
+import './JobSeekerProfileCard.scss'
 import placeholderImage from '../../assets/img-placeholder.png'
 
-interface JobseekerProfileCardProps {
-  jobseekerProfile: Partial<TpJobseekerProfile>
+interface JobSeekerProfileCardProps {
+  jobseekerProfile: Partial<TpJobSeekerProfile>
   onClick?: () => void
   isFavorite?: boolean
   toggleFavorite?: (id: string) => void
 }
 
-export function JobseekerProfileCard({
+export const JobSeekerProfileCard: FC<JobSeekerProfileCardProps> = ({
   jobseekerProfile,
   onClick,
   toggleFavorite,
   isFavorite,
-}: JobseekerProfileCardProps) {
+}) => {
   // const history = useHistory()
 
-  const fullName = `${jobseekerProfile?.firstName} ${jobseekerProfile?.lastName}`
+  const fullName = `${jobseekerProfile.firstName} ${jobseekerProfile.lastName}`
   const desiredPositions =
-    jobseekerProfile?.desiredPositions
+    jobseekerProfile.desiredPositions
       ?.map((position) => desiredPositionsIdToLabelMap[position])
       .join(', ') ?? ''
   const topSkills = jobseekerProfile?.topSkills
@@ -38,7 +38,7 @@ export function JobseekerProfileCard({
   //   toggleFavorite && toggleFavorite(profile.id)
   // }
 
-  const imgSrc = jobseekerProfile?.profileAvatarImageS3Key
+  const imgSrc = jobseekerProfile.profileAvatarImageS3Key
     ? AWS_PROFILE_AVATARS_BUCKET_BASE_URL +
       jobseekerProfile?.profileAvatarImageS3Key
     : placeholderImage
@@ -80,13 +80,13 @@ export function JobseekerProfileCard({
         >
           {desiredPositions}
         </Element>
-        {topSkills?.length > 0 ? (
+        {topSkills?.length && (
           <CardTags
             items={topSkills}
             shortList
             formatter={(skill: string) => topSkillsIdToLabelMap[skill]}
           />
-        ) : null}
+        )}
       </Card.Content>
     </Card>
   )

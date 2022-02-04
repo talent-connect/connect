@@ -1,27 +1,32 @@
 import {
   Button,
-  FormInput,
-  FormTextArea,
+  TextInput,
+  TextArea,
   Heading,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
 import { TpCompanyProfile } from '@talent-connect/shared-types'
-import { useFormik } from 'formik'
-import React, { useEffect, useMemo, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { Columns, Content, Element } from 'react-bulma-components'
-import * as Yup from 'yup'
 import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import Avatar from '../Avatar'
+import { componentForm } from './EditableNamePhotoLocation.form';
 
 interface Props {
   profile: Partial<TpCompanyProfile>
   disableEditing?: boolean
 }
 
-export function EditableNamePhotoLocation({ profile, disableEditing }: Props) {
+interface EditableNamePhotoLocationHelpers {
+  isSectionFilled: (profile: Partial<TpCompanyProfile>) => boolean;
+  isSectionEmpty: (profile: Partial<TpCompanyProfile>) => boolean;
+  isPhotoSelected: (profile: Partial<TpCompanyProfile>) => boolean;
+}
+
+export const EditableNamePhotoLocation: FC<Props> & EditableNamePhotoLocationHelpers = ({ profile, disableEditing }) => {
   const mutation = useTpCompanyProfileUpdateMutation()
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
@@ -30,20 +35,17 @@ export function EditableNamePhotoLocation({ profile, disableEditing }: Props) {
 
   return (
     <Editable
-      disableEditing={disableEditing}
-      isEditing={isEditing}
-      isFormDirty={isFormDirty}
-      setIsEditing={setIsEditing}
+      {...{ disableEditing, isEditing, isFormDirty, setIsEditing }}
       readComponent={
         <Columns vCentered breakpoint="mobile" className="oneandhalf-bs">
           <Columns.Column size={5}>
-            {profile ? (
+            {profile && (
               <Avatar.Editable
                 profile={profile}
                 profileSaveStart={mutation.mutate}
                 callToActionText="Please add your company logo"
               />
-            ) : null}
+            )}
           </Columns.Column>
           <Columns.Column size={7}>
             <Heading size="medium">{profile?.companyName}</Heading>
@@ -92,57 +94,35 @@ export function EditableNamePhotoLocation({ profile, disableEditing }: Props) {
   )
 }
 
-EditableNamePhotoLocation.isSectionFilled = (
-  profile: Partial<TpCompanyProfile>
-) => profile?.location
-EditableNamePhotoLocation.isPhotoSelected = (
-  profile: Partial<TpCompanyProfile>
-) => profile?.profileAvatarImageS3Key
-EditableNamePhotoLocation.isSectionEmpty = (
-  profile: Partial<TpCompanyProfile>
-) => !EditableNamePhotoLocation.isSectionFilled(profile)
+EditableNamePhotoLocation.isSectionFilled = (profile: Partial<TpCompanyProfile>) =>
+  !!profile?.location
 
-const validationSchema = Yup.object({
-  companyName: Yup.string().required('Your company name is required'),
-  location: Yup.string().required('Your location is required'),
-})
+EditableNamePhotoLocation.isPhotoSelected = (profile: Partial<TpCompanyProfile>) =>
+  !!profile?.profileAvatarImageS3Key
 
-function ModalForm({
+EditableNamePhotoLocation.isSectionEmpty = (profile: Partial<TpCompanyProfile>) =>
+  !EditableNamePhotoLocation.isSectionFilled(profile)
+
+// #################################################################################
+
+
+interface ModalFormProps {
+  setIsEditing: (boolean: boolean) => void;
+  setIsFormDirty: (boolean: boolean) => void;
+}
+
+const ModalForm: FC<ModalFormProps> =({
   setIsEditing,
   setIsFormDirty,
-}: {
-  setIsEditing: (boolean) => void
-  setIsFormDirty: (boolean) => void
-}) {
+}) => {
   const { data: profile } = useTpCompanyProfileQuery()
   const mutation = useTpCompanyProfileUpdateMutation()
-  const initialValues: Partial<TpCompanyProfile> = useMemo(
-    () => ({
-      companyName: profile?.companyName ?? '',
-      location: profile?.location ?? '',
-      tagline: profile?.tagline ?? '',
-    }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  )
-  const onSubmit = (values: Partial<TpCompanyProfile>) => {
-    formik.setSubmitting(true)
-    mutation.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
-      },
-    })
-  }
-  const formik = useFormik({
-    initialValues,
-    validationSchema,
-    enableReinitialize: true,
-    onSubmit,
-    validateOnMount: true,
+
+  const formik = componentForm({
+    profile,
+    setIsEditing,
   })
+
   useEffect(() => setIsFormDirty(formik.dirty), [formik.dirty, setIsFormDirty])
 
   return (
@@ -158,19 +138,19 @@ function ModalForm({
         bit about yourself puts a friendly face on the other side of the table
         and encourages candidates to put their best foot forward.
       </Element>
-      <FormInput
+      <TextInput
         name="companyName"
         placeholder="ACME Inc."
         label="Company name*"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="location"
         placeholder="Relevant city/cities, regions, country..."
         label="Location(s)*"
         {...formik}
       />
-      <FormTextArea
+      <TextArea
         name="tagline"
         rows={2}
         placeholder="Let candidates know a bit why you love what you do."

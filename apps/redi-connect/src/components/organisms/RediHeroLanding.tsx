@@ -1,4 +1,5 @@
-import React from 'react'
+import { FC } from 'react'
+import { useTranslation } from 'react-i18next'
 import classnames from 'classnames'
 import {
   Section,
@@ -8,34 +9,27 @@ import {
   Content,
   Columns,
 } from 'react-bulma-components'
-import { useTranslation } from 'react-i18next'
 import './RediHeroLanding.scss'
 import {
   Icon,
   SVGImage,
-  SVGTypes,
 } from '@talent-connect/shared-atomic-design-components'
+import { SVGTypes } from 'libs/shared-atomic-design-components/src/lib/atoms/SVGImage/SVGImage.props';
+import { UserRole } from '@talent-connect/shared-types';
 
 interface Props {
-  type: 'mentor' | 'mentee'
+  type: UserRole
 }
 
-interface imageType {
-  mentor: SVGTypes
-  mentee: SVGTypes
-}
-
-const typeToSvgImageMap: imageType = {
+const typeToSvgImageMap: Record<UserRole, SVGTypes> = {
   mentor: 'heroMentor',
   mentee: 'heroMentee',
 }
 
-const RediHeroLanding = ({ type }: Props) => {
+const RediHeroLanding: FC<Props> = ({ type }) => {
   const { t } = useTranslation()
-  const programSteps: Array<{
-    name: string
-    image: any
-  }> = t(`loggedOutArea.homePage.hero.${type}.steps`, { returnObjects: true })
+  const programSteps: { name: string; image: any; }[] =
+    t(`loggedOutArea.homePage.hero.${type}.steps`, { returnObjects: true })
 
   return (
     <Section
@@ -93,9 +87,9 @@ const RediHeroLanding = ({ type }: Props) => {
               {t(`loggedOutArea.homePage.hero.${type}.programName`)}
             </Element>
           </Columns.Column>
-          {programSteps.map((step, index) => (
+          {programSteps.map(({ image, name }, index) => (
             <Columns.Column key={index}>
-              <Icon icon={step.image} size="x-large" />
+              <Icon icon={image} size="x-large" />
               <Element
                 renderAs="hr"
                 responsive={{ mobile: { hide: { value: true } } }}
@@ -104,7 +98,7 @@ const RediHeroLanding = ({ type }: Props) => {
               <Element textSize={5} renderAs="p">
                 <strong>{`0${index + 1}`}</strong>
                 <br />
-                {step.name}
+                {name}
               </Element>
             </Columns.Column>
           ))}

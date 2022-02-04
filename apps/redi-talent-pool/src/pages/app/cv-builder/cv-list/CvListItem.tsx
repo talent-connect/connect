@@ -4,14 +4,14 @@
  * must be standardized within the project.
  */
 
-import React from 'react'
+import { FC, useEffect, useState } from 'react'
 import { format as formatDate } from 'date-fns'
 import { useHistory } from 'react-router-dom'
 import { PDFDownloadLink } from '@react-pdf/renderer'
 
 import {
   Modal,
-  FormInput,
+  TextInput,
   Button,
 } from '@talent-connect/shared-atomic-design-components'
 import { Box, Content } from 'react-bulma-components'
@@ -19,38 +19,29 @@ import { Chip } from '@material-ui/core'
 import { AWS_PROFILE_AVATARS_BUCKET_BASE_URL } from '@talent-connect/shared-config'
 import placeholderImage from '../../../../assets/img-placeholder.png'
 
-import { useTpJobseekerCvByIdQuery } from '../../../../react-query/use-tpjobseekercv-query'
+import { useTpJobSeekerCvByIdQuery } from '../../../../react-query/use-tpjobseekercv-query'
 import {
-  useTpjobseekerCvCreateMutation,
-  useTpjobseekerCvDeleteMutation,
-  useTpjobseekerCvUpdateMutation,
+  useTpJobSeekerCvCreateMutation,
+  useTpJobSeekerCvDeleteMutation,
+  useTpJobSeekerCvUpdateMutation,
 } from '../../../../react-query/use-tpjobseekercv-mutation'
 
 import { CvListItemMoreOptionsMenu } from './CvListItemMoreOptionsMenu'
 import { CVPDF } from '../../../../components/molecules/CvPdfPreview'
-import { useTpJobseekerProfileQuery } from '../../../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobSeekerProfileQuery } from '../../../../react-query/use-tpjobseekerprofile-query'
 
 const CREATED_AT_DATE_FORMAT = 'dd.MM.yyyy'
 
-interface CvListItemProps {
-  id: string
-  name: string
-  createdAt: Date
-}
 
-interface CvListItemBoxProps {
-  children: React.ReactNode
-}
-
-export function CvListItemBox({ children }: CvListItemBoxProps) {
+export const CvListItemBox: FC = ({ children }) =>  {
   return (
     <Box
-      style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        padding: '24px 32px',
-        color: '#000000',
-      }}
+    style={{
+      display: 'flex',
+      justifyContent: 'space-between',
+      padding: '24px 32px',
+      color: '#000000',
+    }}
     >
       {children}
     </Box>
@@ -59,42 +50,45 @@ export function CvListItemBox({ children }: CvListItemBoxProps) {
 
 interface CvListItemChipProps {
   label: string
-  onClick?(): void
+  onClick?: () => void
   disabled?: boolean
   className?: string
 }
 
-function CvListItemChip(props: CvListItemChipProps) {
+const CvListItemChip: FC<CvListItemChipProps> = (props) => {
   return (
     <Chip
       style={{ width: 128, height: 40, marginRight: 32, fontSize: 16 }}
       {...props}
     />
-  )
+    )
+  }
+interface CvListItemProps {
+  id: string
+  name: string
+  createdAt: Date
 }
 
-const CvListItem = (props: CvListItemProps) => {
-  const [showCvNameModal, setShowCvNameModal] = React.useState(false)
-  const [newCvName, setNewCvName] = React.useState(props.name || '')
-  const [profileImageLoaded, setProfileImageLoaded] = React.useState(false)
+const CvListItem: FC<CvListItemProps> = ({ id, name, createdAt }) => {
+  const [showCvNameModal, setShowCvNameModal] = useState(false)
+  const [newCvName, setNewCvName] = useState(name || '')
+  const [profileImageLoaded, setProfileImageLoaded] = useState(false)
 
   const history = useHistory()
 
-  const { data: cvData, isSuccess: cvLoadSuccess } = useTpJobseekerCvByIdQuery(
-    props.id
-  )
+  const { data: cvData, isSuccess: cvLoadSuccess } = useTpJobSeekerCvByIdQuery(id)
   const {
     data: profileData,
     isSuccess: profileLoadSuccess,
-  } = useTpJobseekerProfileQuery()
+  } = useTpJobSeekerProfileQuery()
 
-  const createMutation = useTpjobseekerCvCreateMutation()
-  const updateMutation = useTpjobseekerCvUpdateMutation(props.id)
-  const deleteMutation = useTpjobseekerCvDeleteMutation(props.id)
+  const createMutation = useTpJobSeekerCvCreateMutation()
+  const updateMutation = useTpJobSeekerCvUpdateMutation(id)
+  const deleteMutation = useTpJobSeekerCvDeleteMutation(id)
 
   const setFocusOnRef = (ref: HTMLInputElement) => ref?.focus()
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (profileLoadSuccess && cvLoadSuccess) {
       cvData.profileAvatarImageS3Key = profileData.profileAvatarImageS3Key
         ? AWS_PROFILE_AVATARS_BUCKET_BASE_URL +
@@ -110,7 +104,7 @@ const CvListItem = (props: CvListItemProps) => {
   }
 
   const handleEditClick = (): void => {
-    history.push(`/app/cv-builder/${props.id}`)
+    history.push(`/app/cv-builder/${id}`)
   }
 
   const handleDelete = (): void => {
@@ -118,7 +112,7 @@ const CvListItem = (props: CvListItemProps) => {
   }
 
   const handleRename = (): void => {
-    if (newCvName !== props.name) {
+    if (newCvName !== name) {
       updateMutation
         .mutateAsync({ cvName: newCvName })
         .then(() => setShowCvNameModal(false))
@@ -128,10 +122,10 @@ const CvListItem = (props: CvListItemProps) => {
   const handleDuplicate = (): void => {
     createMutation.mutate({
       ...cvData,
-      id: undefined,
-      createdAt: undefined,
-      updatedAt: undefined,
-      cvName: `${props.name} - Duplicate`,
+      id: null,
+      createdAt: null,
+      updatedAt: null,
+      cvName: `${name} - Duplicate`,
     })
   }
 
@@ -143,10 +137,10 @@ const CvListItem = (props: CvListItemProps) => {
             marginless
             style={{ borderRight: '1px solid black', paddingRight: 10 }}
           >
-            {props.name}
+            {name}
           </Content>
           <Content marginless style={{ paddingLeft: 10 }}>
-            {formatDate(new Date(props.createdAt), CREATED_AT_DATE_FORMAT)}
+            {formatDate(new Date(createdAt), CREATED_AT_DATE_FORMAT)}
           </Content>
         </Content>
         <Content style={{ display: 'flex', alignItems: 'center' }}>
@@ -181,7 +175,7 @@ const CvListItem = (props: CvListItemProps) => {
         title="Rename CV"
       >
         <Modal.Body>
-          <FormInput
+          <TextInput
             name="newCvNameInput"
             label="Name of the CV"
             placeholder="CV for Microsoft Frontend Developer Internship"

@@ -1,20 +1,23 @@
-import React from 'react'
+import { FC } from 'react'
+import { connect } from 'react-redux'
+
 import { Content } from 'react-bulma-components'
 import { RedProfile } from '@talent-connect/shared-types'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
 import {
   Caption,
   Placeholder,
 } from '@talent-connect/shared-atomic-design-components'
+import { mapStateToProps } from '../../helpers';
 
 interface Props {
   profile: RedProfile
   shortInfo?: boolean
 }
 
-const ReadSocialMedia = ({ profile, shortInfo }: Props) => {
-  const { linkedInProfileUrl, githubProfileUrl, slackUsername } = profile
+const ReadSocialMedia: FC<Props> = ({
+  profile: { linkedInProfileUrl, githubProfileUrl, slackUsername },
+  shortInfo = false
+}) => {
 
   if (
     !shortInfo &&
@@ -27,7 +30,8 @@ const ReadSocialMedia = ({ profile, shortInfo }: Props) => {
 
   return (
     <>
-      {shortInfo && <Caption>Social Media</Caption>}
+      {shortInfo &&
+        <Caption>Social Media</Caption>}
       <Content>
         {linkedInProfileUrl && (
           <p>
@@ -38,8 +42,7 @@ const ReadSocialMedia = ({ profile, shortInfo }: Props) => {
             >
               {linkedInProfileUrl}
             </a>
-          </p>
-        )}
+          </p>)}
         {githubProfileUrl && (
           <p>
             <a
@@ -49,19 +52,17 @@ const ReadSocialMedia = ({ profile, shortInfo }: Props) => {
             >
               {githubProfileUrl}
             </a>
-          </p>
-        )}
-        {slackUsername && <p>{slackUsername}</p>}
+          </p>)}
+        {slackUsername &&
+          <p>{slackUsername}</p>}
       </Content>
     </>
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile as RedProfile,
-})
-
 export default {
+  /** */
   Me: connect(mapStateToProps, {})(ReadSocialMedia),
-  Some: ({ profile }: Props) => <ReadSocialMedia profile={profile} shortInfo />,
+  /** */
+  Some: (props: Props) => <ReadSocialMedia {...props} />,
 }

@@ -1,53 +1,53 @@
-import React from 'react'
+import { FC } from 'react'
 import { Content } from 'react-bulma-components'
 import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
+
 import {
   Caption,
   Placeholder,
 } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile } from '@talent-connect/shared-types'
+import { mapStateToProps } from '../../helpers';
 
 interface Props {
   profile: RedProfile
 }
 
-const Me = ({ profile }: Props) => {
-  const { personalDescription, expectations } = profile
-
-  if (!personalDescription && !expectations) {
+const Me: FC<Props> = ({ profile: { personalDescription, expectations }}) => {
+  if (!personalDescription && !expectations)
     return <Placeholder>Please tell us a bit about yourself</Placeholder>
-  }
 
   return (
     <Content>
-      {personalDescription && <p>{personalDescription}</p>}
-      {expectations && <p>{expectations}</p>}
+      {personalDescription &&
+        <p>{personalDescription}</p>}
+      {expectations &&
+        <p>{expectations}</p>}
     </Content>
   )
 }
 
-const Some = ({ profile }: Props) => {
-  const { firstName, lastName, personalDescription, expectations } = profile
-
+const Some: FC<Props> = ({
+  profile: { firstName, lastName, personalDescription, expectations }
+}) => {
   return (
     <>
       <Caption>
         About {firstName} {lastName}
       </Caption>
       <Content>
-        {personalDescription && <p>{personalDescription}</p>}
-        {expectations && <p>{expectations}</p>}
+        {personalDescription &&
+          <p>{personalDescription}</p>}
+        {expectations &&
+          <p>{expectations}</p>}
       </Content>
     </>
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile as RedProfile,
-})
-
 export default {
+  /** */
   Me: connect(mapStateToProps, {})(Me),
-  Some: ({ profile }: Props) => <Some profile={profile} />,
+  /** */
+  Some: (props: Props) => <Some {...props} />,
 }

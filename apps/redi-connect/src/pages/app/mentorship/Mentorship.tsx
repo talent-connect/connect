@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { FC, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { useParams, useHistory, Redirect } from 'react-router'
 import {
@@ -16,7 +16,6 @@ import { Columns, Content } from 'react-bulma-components'
 import { RootState } from '../../../redux/types'
 import { RedProfile } from '@talent-connect/shared-types'
 import { LoggedIn } from '../../../components/templates'
-import { useLoading } from '../../../hooks/WithLoading'
 import { getMatches } from '../../../redux/matches/selectors'
 import { RedMatch } from '@talent-connect/shared-types'
 import { matchesFetchStart } from '../../../redux/matches/actions'
@@ -29,14 +28,14 @@ interface MentorshipProps {
   matches: RedMatch[]
 }
 
-const Mentorship = ({ currentUser, matches }: MentorshipProps) => {
+const Mentorship: FC<MentorshipProps> = ({ currentUser, matches }) => {
   const { profileId } = useParams<RouteParams>()
   const history = useHistory()
   const currentUserIsMentor = currentUser?.userType === 'mentor'
   const currentUserIsMentee = currentUser?.userType === 'mentee'
-  const currentMatch = matches.find((match) => match.id === profileId)
+  const currentMatch = matches.find(({ id }) => id === profileId)
   const profile =
-    currentMatch && currentMatch[currentUserIsMentor ? 'mentee' : 'mentor']
+    currentMatch?.[currentUserIsMentor ? 'mentee' : 'mentor']
   const pageHeading = currentUserIsMentor
     ? `Mentorship with ${profile?.firstName} ${profile?.lastName}`
     : 'My Mentorship'
@@ -68,8 +67,7 @@ const Mentorship = ({ currentUser, matches }: MentorshipProps) => {
         </Columns.Column>
 
         <Columns.Column className="is-narrow">
-          {currentMatch &&
-            currentMatch.status === 'accepted' &&
+          {currentMatch?.status === 'accepted' &&
             currentUserIsMentor && <CompleteMentorship match={currentMatch} />}
         </Columns.Column>
       </Columns>
@@ -94,7 +92,7 @@ const Mentorship = ({ currentUser, matches }: MentorshipProps) => {
             linkTo={`/app/mentorships/profile/${profile.id}`}
           />
           <MContacts
-            profile={profile as RedProfile}
+            profile={profile}
             className="is-hidden-tablet"
           />
           <MSessions
@@ -111,7 +109,7 @@ const Mentorship = ({ currentUser, matches }: MentorshipProps) => {
         </Columns.Column>
         <Columns.Column size={8}>
           <MContacts
-            profile={profile as RedProfile}
+            profile={profile}
             className="is-hidden-mobile"
           />
         </Columns.Column>
@@ -120,9 +118,9 @@ const Mentorship = ({ currentUser, matches }: MentorshipProps) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  currentUser: state.user.profile,
-  matches: getMatches(state.matches),
+const mapStateToProps = ({ user, matches }: RootState) => ({
+  currentUser: user.profile,
+  matches: getMatches(matches),
 })
 
 export default connect(mapStateToProps, null)(Mentorship)

@@ -1,58 +1,51 @@
+import { FC, useCallback, useEffect, useRef, useState } from 'react'
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
+import { Columns, Content, Element } from 'react-bulma-components'
+import ReactMarkdown from 'react-markdown'
+import { UseMutationResult, UseQueryResult } from 'react-query'
+import { Subject } from 'rxjs'
 import {
   Button,
   Caption,
   Checkbox,
   FaqItem,
   FormDraggableAccordion,
-  FormInput,
+  TextInput,
   FormSelect,
-  FormTextArea,
   Icon,
+  TextArea,
+  NumberInput,
 } from '@talent-connect/shared-atomic-design-components'
 import {
-  ExperienceRecord,
-  TpJobseekerCv,
-  TpJobseekerProfile,
+  TpJobSeekerCv,
+  TpJobSeekerProfile,
 } from '@talent-connect/shared-types'
-import * as Yup from 'yup'
 import { formMonthsOptions } from '@talent-connect/talent-pool/config'
-import { useFormik } from 'formik'
-import moment from 'moment'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
-import { Columns, Content, Element } from 'react-bulma-components'
-import ReactMarkdown from 'react-markdown'
-import { UseMutationResult, UseQueryResult } from 'react-query'
-import { Subject } from 'rxjs'
-import { v4 as uuidv4 } from 'uuid'
-import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobSeekerProfileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
+import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Location } from '../../molecules/Location'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
-
-function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
-  const result = Array.from(list)
-  const [removed] = result.splice(startIndex, 1)
-  result.splice(endIndex, 0, removed)
-
-  return result
-}
+import { formatDate, reorder } from '@talent-connect/shared-utils';
+import { buildBlankExperienceRecord, componentForm } from './EditableProfessionalExperience.form';
 
 interface Props {
-  profile?: Partial<TpJobseekerProfile>
+  profile?: Partial<TpJobSeekerProfile>
   disableEditing?: boolean
 }
 
-export function EditableProfessionalExperience({
+interface EditableProfessionalExperienceHelpers {
+  isSectionFilled: (profile: Partial<TpJobSeekerProfile>) => boolean;
+  isSectionEmpty: (profile: Partial<TpJobSeekerProfile>) => boolean;
+}
+
+export const  EditableProfessionalExperience: FC<Props> & EditableProfessionalExperienceHelpers = ({
   profile: overridingProfile,
   disableEditing,
-}: Props) {
-  const queryHookResult = useTpJobseekerProfileQuery({
-    enabled: !disableEditing,
-  })
+}) => {
+  const queryHookResult = useTpJobSeekerProfileQuery({ enabled: !disableEditing })
   if (overridingProfile) queryHookResult.data = overridingProfile
-  const mutationHookResult = useTpjobseekerprofileUpdateMutation()
+  const mutationHookResult = useTpJobSeekerProfileUpdateMutation()
   const { data: profile } = queryHookResult
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
@@ -63,11 +56,10 @@ export function EditableProfessionalExperience({
 
   return (
     <Editable
-      disableEditing={disableEditing}
-      isEditing={isEditing}
-      isFormDirty={isFormDirty}
-      setIsEditing={setIsEditing}
       title="Professional experience"
+      modalTitle="Work history"
+      modalHeadline="Professional experience"
+      {...{ disableEditing, isEditing, isFormDirty, setIsEditing }}
       readComponent={
         isEmpty ? (
           <EmptySectionPlaceholder
@@ -101,7 +93,7 @@ export function EditableProfessionalExperience({
                   city={item?.city}
                   country={item?.country}
                 />
-                {item.description ? (
+                {item.description && (
                   <ReactMarkdown
                     components={{
                       p: ({ children }) => (
@@ -111,20 +103,15 @@ export function EditableProfessionalExperience({
                   >
                     {item.description.replace(/\n/g, `\n\n`)}
                   </ReactMarkdown>
-                ) : null}
+                )}
               </Content>
             </div>
           ))
         )
       }
-      modalTitle="Work history"
-      modalHeadline="Professional experience"
       modalBody={
-        <JobseekerFormSectionProfessionalExperience
-          setIsEditing={setIsEditing}
-          setIsFormDirty={setIsFormDirty}
-          queryHookResult={queryHookResult}
-          mutationHookResult={mutationHookResult}
+        <JobSeekerFormSectionProfessionalExperience
+          {...{ setIsEditing, queryHookResult, setIsFormDirty, mutationHookResult }}
         />
       }
       modalStyles={{ minHeight: 700 }}
@@ -132,98 +119,50 @@ export function EditableProfessionalExperience({
   )
 }
 
-EditableProfessionalExperience.isSectionFilled = (
-  profile: Partial<TpJobseekerProfile>
-) => profile?.experience?.length > 0
-EditableProfessionalExperience.isSectionEmpty = (
-  profile: Partial<TpJobseekerProfile>
-) => !EditableProfessionalExperience.isSectionFilled(profile)
+EditableProfessionalExperience.isSectionFilled = (profile: Partial<TpJobSeekerProfile>) =>
+  !!profile?.experience?.length;
 
-function formatDate(month?: number, year?: number): string {
-  if (year && !month) return String(year)
-  if (year && month) return moment().month(month).year(year).format('MMMM YYYY')
-  if (!year && month) return moment().month(month).format('MMMM')
-  return ''
-}
+EditableProfessionalExperience.isSectionEmpty = (profile: Partial<TpJobSeekerProfile>) =>
+  !EditableProfessionalExperience.isSectionFilled(profile);
 
-interface JobseekerFormSectionProfessionalExperienceProps {
-  setIsEditing: (boolean) => void
-  setIsFormDirty?: (boolean) => void
+// ############################################################################################
+
+interface JobSeekerFormSectionProfessionalExperienceProps {
+  setIsEditing: (boolean: boolean) => void
+  setIsFormDirty?: (boolean: boolean) => void
   queryHookResult: UseQueryResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobSeekerProfile | TpJobSeekerCv>,
     unknown
   >
   mutationHookResult: UseMutationResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobSeekerProfile | TpJobSeekerCv>,
     unknown,
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobSeekerProfile | TpJobSeekerCv>,
     unknown
   >
 }
 
-export function JobseekerFormSectionProfessionalExperience({
+export const JobSeekerFormSectionProfessionalExperience: FC<JobSeekerFormSectionProfessionalExperienceProps> = ({
   setIsEditing,
   setIsFormDirty,
-  queryHookResult,
+  queryHookResult: { data: profile },
   mutationHookResult,
-}: JobseekerFormSectionProfessionalExperienceProps) {
-  const { data: profile } = queryHookResult
-  const mutation = mutationHookResult
+}) => {
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
 
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(
-    () => ({
-      experience: profile?.experience ?? [buildBlankExperienceRecord()],
-    }),
-    [profile?.experience]
-  )
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
-    formik.setSubmitting(true)
-    mutation.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
-      },
-    })
-  }
+  // const initialValues = useMemo(() => ({
+  //     experience: profile?.experience ?? [buildBlankExperienceRecord()],
+  //   }),
+  //   [profile?.experience]
+  // )
 
-  const validationSchema = Yup.object().shape({
-    experience: Yup.array().of(
-      Yup.object().shape({
-        company: Yup.string().required('Company name is required!'),
-        city: Yup.string(),
-        country: Yup.string(),
-        title: Yup.string().required('Please provide a job title!'),
-        description: Yup.string().min(
-          10,
-          'Please provide at least one sentence about the experience'
-        ),
-        startDateMonth: Yup.number().required('Start date month is required'),
-        endDateMonth: Yup.number().when('current', {
-          is: false,
-          then: Yup.number().required('End date month is required'),
-        }),
-        startDateYear: Yup.number().required('Start date year is required!'),
-        current: Yup.boolean(),
-        endDateYear: Yup.number().when('current', {
-          is: false,
-          then: Yup.number().required(
-            'Provide an end date year or check the box!'
-          ),
-        }),
-      })
-    ),
+  const formik = componentForm({
+    mutationHookResult,
+    profile,
+    setIsEditing,
   })
 
-  const formik = useFormik({
-    initialValues,
-    onSubmit,
-    validationSchema,
-    enableReinitialize: true,
-  })
   useEffect(
     () => setIsFormDirty?.(formik.dirty),
     [formik.dirty, setIsFormDirty]
@@ -237,14 +176,13 @@ export function JobseekerFormSectionProfessionalExperience({
     closeAllAccordionsSignalSubject.current.next()
   }, [formik])
 
-  const onDragEnd = useCallback(
-    (result: any) => {
-      if (!result.destination) return
+  const onDragEnd = useCallback(({ destination, source }: any) => { // TODO: type
+      if (!destination) return
 
       const reorderedExperience = reorder(
         formik.values.experience,
-        result.source.index,
-        result.destination.index
+        source.index,
+        destination.index
       )
 
       formik.setFieldValue('experience', reorderedExperience)
@@ -274,15 +212,18 @@ export function JobseekerFormSectionProfessionalExperience({
       </Element>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="id">
-          {(provided, snapshot) => (
-            <div {...provided.droppableProps} ref={provided.innerRef}>
+          {(provided) => (
+            <div
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
               {formik?.values?.experience.map((item, index) => (
                 <Draggable
                   key={item.uuid}
                   draggableId={item.uuid}
                   index={index}
                 >
-                  {(provided, snapshot) => (
+                  {(provided) => (
                     <div
                       ref={provided.innerRef}
                       {...provided.draggableProps}
@@ -297,31 +238,31 @@ export function JobseekerFormSectionProfessionalExperience({
                           closeAllAccordionsSignalSubject.current
                         }
                       >
-                        <FormInput
+                        <TextInput
                           name={`experience[${index}].title`}
                           placeholder="Junior Frontend Developer"
                           label="Title of your position"
                           {...formik}
                         />
-                        <FormInput
+                        <TextInput
                           name={`experience[${index}].company`}
                           placeholder="Microsoft"
                           label="Company"
                           {...formik}
                         />
-                        <FormInput
+                        <TextInput
                           name={`experience[${index}].city`}
                           placeholder="Berlin"
                           label="City"
                           {...formik}
                         />
-                        <FormInput
+                        <TextInput
                           name={`experience[${index}].country`}
                           placeholder="Germany"
                           label="Country"
                           {...formik}
                         />
-                        <FormTextArea
+                        <TextArea
                           label="Roles & Responsibilities"
                           name={`experience[${index}].description`}
                           rows={7}
@@ -351,16 +292,15 @@ export function JobseekerFormSectionProfessionalExperience({
                             />
                           </Columns.Column>
                           <Columns.Column size={6}>
-                            <FormInput
+                            <NumberInput
                               name={`experience[${index}].startDateYear`}
                               label="Started in year"
-                              type="number"
                               {...formik}
                             />
                           </Columns.Column>
                         </Columns>
 
-                        {!formik.values.experience[index].current ? (
+                        {!formik.values.experience[index].current && (
                           <Columns>
                             <Columns.Column size={6}>
                               <FormSelect
@@ -371,15 +311,14 @@ export function JobseekerFormSectionProfessionalExperience({
                               />
                             </Columns.Column>
                             <Columns.Column size={6}>
-                              <FormInput
+                              <NumberInput
                                 name={`experience[${index}].endDateYear`}
                                 label="Ended in year"
-                                type="number"
                                 {...formik}
                               />
                             </Columns.Column>
                           </Columns>
-                        ) : null}
+                        )}
                       </FormDraggableAccordion>
                     </div>
                   )}
@@ -411,14 +350,14 @@ export function JobseekerFormSectionProfessionalExperience({
       </div>
 
       <Button
-        disabled={!formik.isValid || mutation.isLoading}
-        onClick={formik.handleSubmit}
+        disabled={!formik.isValid || mutationHookResult.isLoading}
+        onClick={(e) => formik.handleSubmit(e)}
       >
         Save
       </Button>
       <Button
         simple
-        disabled={mutation.isLoading}
+        disabled={mutationHookResult.isLoading}
         onClick={() => setIsEditing(false)}
       >
         Cancel
@@ -427,21 +366,6 @@ export function JobseekerFormSectionProfessionalExperience({
   )
 }
 
-function buildBlankExperienceRecord(): ExperienceRecord {
-  return {
-    uuid: uuidv4(),
-    title: '',
-    company: '',
-    city: '',
-    country: '',
-    description: '',
-    startDateMonth: undefined,
-    startDateYear: undefined,
-    endDateMonth: undefined,
-    endDateYear: undefined,
-    current: false,
-  }
-}
 
 const rolesAndResponsibilitiesPlaceholderText = `Example:
 
@@ -450,7 +374,12 @@ const rolesAndResponsibilitiesPlaceholderText = `Example:
 
 const rolesAndResponsibilitiesQuestion =
   'Our tips for writing Roles and Responsibilities'
-const rolesAndResponsibilitiesAnswer = `• Write a list of 2-3 bullet points.<br />
-• Begin sentences with action verbs, such as designed, created, provided, resolved, etc.<br />
-• Focus on skills and accomplishments.<br />
-• Quantify as much information as you can. (Example: Resolved customer complaints. --> Resolved customer complaints, answering approximately 200 calls per week.`
+
+const rolesAndResponsibilitiesAnswer = (
+  <>
+    • Write a list of 2 - 3 bullet points.< br />
+    • Begin sentences with action verbs, such as designed, created, provided, resolved, etc.<br />
+    • Focus on skills and accomplishments.<br />
+    • Quantify as much information as you can. (Example: Resolved customer complaints. --&gt; Resolved customer complaints, answering approximately 200 calls per week.
+  </>
+)

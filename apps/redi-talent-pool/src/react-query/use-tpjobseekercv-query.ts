@@ -1,39 +1,36 @@
 import { useQuery } from 'react-query'
 import {
-  fetchAllCurrentUserTpJobseekerCv,
-  fetchCurrentUserTpJobseekerCvById,
+  fetchAllCurrentUserTpJobSeekerCv,
+  fetchCurrentUserTpJobSeekerCvById,
 } from '../services/api/api'
+
+const _5_MIN = 5 * 60 * 1000;
 
 interface Props {
   retry?: boolean
   enabled?: boolean
 }
 
-export function useTpJobseekerCvQuery(props?: Props) {
-  const retry = props?.retry ?? true
-
+export function useTpJobSeekerCvQuery(props?: Props) {
   return useQuery(
-    'allCurrentUserTpJobseekerCv',
-    fetchAllCurrentUserTpJobseekerCv,
+    'allCurrentUserTpJobSeekerCv',
+    fetchAllCurrentUserTpJobSeekerCv,
     {
-      staleTime: 5 * 60 * 1000,
-      retry,
+      staleTime: _5_MIN,
+      retry: props?.retry ?? true,
       refetchOnWindowFocus: false,
     }
   )
 }
 
-export function useTpJobseekerCvByIdQuery(id: string, props?: Props) {
-  const retry = props?.retry ?? true
-  const enabled = props?.enabled ?? true
-
+export function useTpJobSeekerCvByIdQuery(id: string, props?: Props) {
   return useQuery(
-    ['currentUserTpJobseekerCv', id],
-    () => fetchCurrentUserTpJobseekerCvById(id),
+    ['currentUserTpJobSeekerCv', id],
+    () => fetchCurrentUserTpJobSeekerCvById(id),
     {
-      staleTime: 5 * 60 * 1000,
-      retry,
-      enabled,
+      staleTime: _5_MIN,
+      retry: props?.retry ?? true,
+      enabled: props?.enabled ?? true,
       refetchOnWindowFocus: false,
     }
   )

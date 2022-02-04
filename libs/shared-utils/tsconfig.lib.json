@@ -2,7 +2,8 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
-    "types": []
+    "types": [],
+    "esModuleInterop": false
   },
   "include": ["**/*.ts"],
   "exclude": ["**/*.spec.ts"]

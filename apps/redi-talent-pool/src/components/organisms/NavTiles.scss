@@ -1,3 +1,4 @@
+@use '_colors' as colors;
 @import '~bulma/sass/utilities/_all';
 @import '_variables.scss';
 
@@ -40,22 +41,22 @@
       padding-left: 0;
 
       &--mentor {
-        color: $redi-blue-dark;
+        color: colors.$redi-blue-dark;
 
         &:hover {
-          color: $redi-blue-dark;
+          color: colors.$redi-blue-dark;
         }
 
         .icon path {
-          fill: $redi-blue-dark;
+          fill: colors.$redi-blue-dark;
         }
       }
 
       &--mentee {
-        color: $redi-orange-dark;
+        color: colors.$redi-orange-dark;
 
         .icon path {
-          fill: $redi-orange-dark;
+          fill: colors.$redi-orange-dark;
         }
       }
     }

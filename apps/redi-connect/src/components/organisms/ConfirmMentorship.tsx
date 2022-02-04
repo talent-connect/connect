@@ -1,16 +1,14 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { connect } from 'react-redux'
-import { useHistory } from 'react-router-dom'
-import * as Yup from 'yup'
-import { useFormik } from 'formik'
 import { Content } from 'react-bulma-components'
 import {
-  FormTextArea,
+  TextArea,
   Button,
 } from '@talent-connect/shared-atomic-design-components'
 import { Modal } from '@talent-connect/shared-atomic-design-components'
 import { matchesAcceptMentorshipStart } from '../../redux/matches/actions'
 import { RedMatch } from '@talent-connect/shared-types'
+import { componentForm } from './ConfirmMentorship.form';
 
 interface ConfirmMentorshipProps {
   match: RedMatch
@@ -22,26 +20,6 @@ interface ConfirmMentorshipProps {
   ) => void
 }
 
-interface ConfirmMentorshipFormValues {
-  mentorReplyMessageOnAccept: string
-}
-
-const initialValues = {
-  mentorReplyMessageOnAccept: '',
-}
-
-const validationSchema = Yup.object({
-  mentorReplyMessageOnAccept: Yup.string()
-    .required(
-      'Write at least 250 characters to introduce yourself to your mentee.'
-    )
-    .min(
-      250,
-      'Write at least 250 characters to introduce yourself to your mentee.'
-    )
-    .max(600, 'The introduction text can be up to 600 characters long.'),
-})
-
 // TODO: This throws a TS error: { dispatch, matchId }: ConnectButtonProps
 // What to replace with instead of below hack?
 const ConfirmMentorship = ({
@@ -50,10 +28,9 @@ const ConfirmMentorship = ({
   matchesAcceptMentorshipStart,
 }: ConfirmMentorshipProps) => {
   const [isModalActive, setModalActive] = useState(false)
-  const history = useHistory()
   const { mentee = { firstName: null } } = match
 
-  //  Keeping this to make sure we address this as its not planned in the desing, yet
+  //  Keeping this to make sure we address this as its not planned in the design, yet
   //   <Tooltip> requires child <Button> to be wrapped in a div since it's disabled
   //   props.hasReachedMenteeLimit ? (
   //     <Tooltip
@@ -66,20 +43,10 @@ const ConfirmMentorship = ({
   //     <>{children}</>
   //   )
 
-  const submitForm = async (values: ConfirmMentorshipFormValues) => {
-    try {
-      matchesAcceptMentorshipStart(match.id, values.mentorReplyMessageOnAccept)
-      setModalActive(false)
-      history.push(`/app/mentorships/${match.id}`)
-    } catch (error) {
-      console.log('error ', error)
-    }
-  }
-
-  const formik = useFormik({
-    initialValues,
-    validationSchema,
-    onSubmit: submitForm,
+  const formik = componentForm({
+    match,
+    matchesAcceptMentorshipStart,
+    setModalActive
   })
 
   const isFormSubmittable = formik.dirty && formik.isValid
@@ -106,7 +73,7 @@ const ConfirmMentorship = ({
                 characters)
               </p>
             </Content>
-            <FormTextArea
+            <TextArea
               name="mentorReplyMessageOnAccept"
               rows={4}
               placeholder={`Dear ${mentee.firstName}...`}
@@ -130,14 +97,9 @@ const ConfirmMentorship = ({
   )
 }
 
-const mapDispatchToProps = (dispatch: any) => ({
-  matchesAcceptMentorshipStart: (
-    redMatchId: string,
-    mentorReplyMessageOnAccept: string
-  ) =>
-    dispatch(
-      matchesAcceptMentorshipStart(redMatchId, mentorReplyMessageOnAccept)
-    ),
+const mapDispatchToProps = (dispatch: Function) => ({
+  matchesAcceptMentorshipStart: (redMatchId: string, mentorReplyMessageOnAccept: string) =>
+    dispatch(matchesAcceptMentorshipStart(redMatchId, mentorReplyMessageOnAccept)),
 })
 
 export default connect(null, mapDispatchToProps)(ConfirmMentorship)

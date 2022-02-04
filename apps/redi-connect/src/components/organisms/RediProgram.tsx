@@ -1,8 +1,10 @@
+import { FC } from 'react'
+import { useTranslation } from 'react-i18next'
+
 import {
   DecoratedHeadline,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
-import React from 'react'
 import {
   Container,
   Section,
@@ -10,18 +12,17 @@ import {
   Element,
   Heading,
 } from 'react-bulma-components'
-import { useTranslation } from 'react-i18next'
 
 import './RediProgram.scss'
 
-const RediProgram = () => {
+const RediProgram: FC = () => {
   const { t } = useTranslation()
 
-  const programSteps: Array<{
+  const programSteps: {
     content: string
     headline: string
     image: any
-  }> = t('loggedOutArea.homePage.program.steps', { returnObjects: true })
+  }[] = t('loggedOutArea.homePage.program.steps', { returnObjects: true })
 
   return (
     <Section className="default-background">
@@ -31,23 +32,23 @@ const RediProgram = () => {
           headline={t('loggedOutArea.homePage.program.headline')}
         />
         <Columns>
-          {programSteps.map((step: any) => (
-            <Columns.Column textAlignment="centered" key={step.content}>
-              <Icon icon={step.image} size="x-large" className="program__img" />
+          {programSteps.map(({ content, image, headline }) => (
+            <Columns.Column textAlignment="centered" key={content}>
+              <Icon icon={image} size="x-large" className="program__img" />
               <Heading
                 size={4}
                 renderAs="h3"
                 marginless
                 responsive={{ tablet: { hide: { value: true } } }}
               >
-                {step.headline}
+                {headline}
               </Heading>
               <Element
                 textSize={4}
                 className="program__text"
                 responsive={{ mobile: { textSize: { value: 5 } } }}
               >
-                {step.content}
+                {content}
               </Element>
             </Columns.Column>
           ))}

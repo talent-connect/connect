@@ -1,3 +1,4 @@
+@use '_colors' as colors;
 @import '~bulma/sass/utilities/_all';
 @import '_variables.scss';
 
@@ -5,50 +6,50 @@
   &--mentee {
     background-image: linear-gradient(
       to bottom,
-      $redi-orange-light 80%,
-      $white 80%
+      colors.$redi-orange-light 80%,
+      colors.$white 80%
     );
 
     @include mobile() {
       background-image: linear-gradient(
         to bottom,
-        $redi-orange-light 95%,
-        $white 95%
+        colors.$redi-orange-light 95%,
+        colors.$white 95%
       );
     }
 
     g {
-      fill: $redi-orange-dark;
+      fill: colors.$redi-orange-dark;
     }
 
     .column,
     hr {
-      border-color: $redi-orange-dark;
+      border-color: colors.$redi-orange-dark;
     }
   }
 
   &--mentor {
     background-image: linear-gradient(
       to bottom,
-      $redi-blue-light 80%,
-      $white 80%
+      colors.$redi-blue-light 80%,
+      colors.$white 80%
     );
 
     @include mobile() {
       background-image: linear-gradient(
         to bottom,
-        $redi-blue-light 95%,
-        $white 95%
+        colors.$redi-blue-light 95%,
+        colors.$white 95%
       );
     }
 
     g {
-      fill: $redi-blue-dark;
+      fill: colors.$redi-blue-dark;
     }
 
     .column,
     hr {
-      border-color: $redi-blue-dark;
+      border-color: colors.$redi-blue-dark;
     }
   }
 
@@ -80,7 +81,7 @@
   }
 
   &__columns {
-    background: $white;
+    background: colors.$white;
     padding: 2rem;
     border-radius: 0.25rem;
     margin: 4rem 0;

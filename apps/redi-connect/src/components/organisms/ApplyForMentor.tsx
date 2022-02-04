@@ -1,6 +1,8 @@
+import { FC, useState } from 'react'
+import { connect } from 'react-redux'
 import {
   Caption,
-  FormTextArea,
+  TextArea,
   Checkbox,
   Button,
 } from '@talent-connect/shared-atomic-design-components'
@@ -8,79 +10,27 @@ import { Modal } from '@talent-connect/shared-atomic-design-components'
 import { Content, Form } from 'react-bulma-components'
 import { FormSubmitResult, RedProfile } from '@talent-connect/shared-types'
 
-import { FormikHelpers as FormikActions, useFormik } from 'formik'
-import React, { useState } from 'react'
-import * as Yup from 'yup'
-import { requestMentorship } from '../../services/api/api'
-
 import { RootState } from '../../redux/types'
-import { connect } from 'react-redux'
 import { profilesFetchOneStart } from '../../redux/profiles/actions'
-
-interface ConnectionRequestFormValues {
-  applicationText: string
-  expectationText: string
-  dataSharingAccepted: boolean
-}
-
-const initialValues = {
-  applicationText: '',
-  expectationText: '',
-  dataSharingAccepted: false,
-}
-
-const validationSchema = Yup.object({
-  applicationText: Yup.string()
-    .required(
-      'Write at least 250 characters to introduce yourself to your mentee.'
-    )
-    .min(
-      250,
-      'Write at least 250 characters to introduce yourself to your mentee.'
-    )
-    .max(600, 'The introduction text can be up to 600 characters long.'),
-  expectationText: Yup.string()
-    .required('Write at least 250 characters about your expectations.')
-    .min(250, 'Write at least 250 characters about your expectations.')
-    .max(600, 'The expectations text can be up to 600 characters long.'),
-  dataSharingAccepted: Yup.boolean()
-    .required()
-    .oneOf([true], 'Sharing profile data with your mentor is required'),
-})
+import { componentForm } from './ApplyForMentor.form';
 
 interface Props {
   mentor: RedProfile
-  profilesFetchOneStart: Function
+  profilesFetchOneStart: (is: string) => void
 }
 
-const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
-  const [submitResult, setSubmitResult] = useState<FormSubmitResult>(
-    'notSubmitted'
-  )
+const ApplyForMentor: FC<Props> = ({
+  mentor: { id, lastName, firstName },
+  profilesFetchOneStart
+}) => {
+  const [submitResult, setSubmitResult] = useState<FormSubmitResult>('notSubmitted')
   const [show, setShow] = useState(false)
-  const submitForm = async (
-    values: ConnectionRequestFormValues,
-    actions: FormikActions<ConnectionRequestFormValues>
-  ) => {
-    setSubmitResult('submitting')
-    try {
-      await requestMentorship(
-        values.applicationText,
-        values.expectationText,
-        mentor.id
-      )
-      setShow(false)
-      profilesFetchOneStart(mentor.id)
-    } catch (error) {
-      setSubmitResult('error')
-    }
-  }
-
-  const formik = useFormik({
-    enableReinitialize: true,
-    initialValues: initialValues,
-    validationSchema,
-    onSubmit: submitForm,
+  
+  const formik = componentForm({
+    id,
+    setSubmitResult,
+    profilesFetchOneStart,
+    setShow,
   })
 
   const handleCancel = () => {
@@ -94,28 +44,27 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
       <Modal
         show={show}
         stateFn={setShow}
-        title={`Application to ${mentor.firstName} ${mentor.lastName}`}
+        title={`Application to ${firstName} ${lastName}`}
       >
         <Modal.Body>
           <form>
-            {submitResult === 'success' && (
-              <>Your application was successfully submitted.</>
-            )}
-            {submitResult !== 'success' && (
+            {submitResult === 'success'
+              ? (<>Your application was successfully submitted.</>)
+              : (
               <>
                 <Caption>Motivation </Caption>
                 <Content>
                   <p>
-                    Write an application to the {mentor.firstName}{' '}
-                    {mentor.lastName} in which you describe why you think that
+                    Write an application to the {firstName}{' '}
+                    {lastName} in which you describe why you think that
                     the two of you are a great fit.
                   </p>
                 </Content>
-                <FormTextArea
+                <TextArea
                   name="applicationText"
                   className="oneandhalf-bs"
                   rows={4}
-                  placeholder={`Dear ${mentor.firstName}...`}
+                  placeholder={`Dear ${firstName}...`}
                   minChar={250}
                   maxChar={600}
                   {...formik}
@@ -128,7 +77,7 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
                     mentorship with this mentor.
                   </p>
                 </Content>
-                <FormTextArea
+                <TextArea
                   name="expectationText"
                   rows={4}
                   placeholder="My expectations for this mentorship…"
@@ -175,11 +124,9 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  mentor: state.profiles.oneProfile as RedProfile,
-})
+const mapStateToProps = ({ profiles }: RootState) => ({ mentor: profiles.oneProfile })
 
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: Function) => ({
   profilesFetchOneStart: (profileId: string) =>
     dispatch(profilesFetchOneStart(profileId)),
 })

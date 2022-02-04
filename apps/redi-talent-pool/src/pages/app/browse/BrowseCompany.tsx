@@ -10,6 +10,8 @@ import {
   topSkills,
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
+import { mapOptions } from '@talent-connect/typescript-utilities';
+import { FC } from 'react'
 import { Columns, Element, Tag } from 'react-bulma-components'
 import { useHistory } from 'react-router'
 import {
@@ -19,21 +21,21 @@ import {
   useQueryParams,
   withDefault,
 } from 'use-query-params'
-import { JobseekerProfileCard } from '../../../components/organisms/JobseekerProfileCard'
+import { JobSeekerProfileCard } from '../../../components/organisms/JobSeekerProfileCard'
 import { LoggedIn } from '../../../components/templates'
-import { useBrowseTpJobseekerProfilesQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useBrowseTpJobSeekerProfilesQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 
-export function BrowseCompany() {
+export const BrowseCompany: FC = () => {
   const [query, setQuery] = useQueryParams({
     name: withDefault(StringParam, ''),
     skills: withDefault(ArrayParam, []),
     desiredPositions: withDefault(ArrayParam, []),
-    isJobFair2022Participant: withDefault(BooleanParam, undefined),
+    isJobFair2022Participant: withDefault(BooleanParam, null),
   })
   const { name, skills, desiredPositions, isJobFair2022Participant } = query
 
   const history = useHistory()
-  const { data: jobseekerProfiles } = useBrowseTpJobseekerProfilesQuery({
+  const { data: jobSeekerProfiles } = useBrowseTpJobSeekerProfilesQuery({
     name,
     skills,
     desiredPositions,
@@ -49,11 +51,11 @@ export function BrowseCompany() {
     setQuery((latestQuery) => ({
       ...latestQuery,
       isJobFair2022Participant:
-        isJobFair2022Participant === undefined ? true : undefined,
+        !isJobFair2022Participant ? true : null,
     }))
 
   const setName = (value) => {
-    setQuery((latestQuery) => ({ ...latestQuery, name: value || undefined }))
+    setQuery((latestQuery) => ({ ...latestQuery, name: value || null }))
   }
 
   const clearFilters = () => {
@@ -61,7 +63,7 @@ export function BrowseCompany() {
       ...latestQuery,
       skills: [],
       desiredPositions: [],
-      isJobFair2022Participant: undefined,
+      isJobFair2022Participant: null,
     }))
   }
 
@@ -82,7 +84,7 @@ export function BrowseCompany() {
         responsive={{ mobile: { textSize: { value: 5 } } }}
         className="oneandhalf-bs"
       >
-        Browse our Jobseeker profiles and find the talent you're looking for.
+        Browse our JobSeeker profiles and find the talent you're looking for.
       </Element>
       <div className="filters">
         <SearchField
@@ -123,11 +125,9 @@ export function BrowseCompany() {
         </Checkbox>
       </div>
       <div className="active-filters">
-        {(skills.length !== 0 ||
-          desiredPositions.length !== 0 ||
-          isJobFair2022Participant) && (
+        {(skills.length || desiredPositions.length || isJobFair2022Participant) && (
           <>
-            {(skills as string[]).map((catId) => (
+            {skills.map((catId) => (
               <FilterTag
                 key={catId}
                 id={catId}
@@ -135,7 +135,7 @@ export function BrowseCompany() {
                 onClickHandler={(item) => toggleFilters(skills, 'skills', item)}
               />
             ))}
-            {(desiredPositions as string[]).map((id) => (
+            {desiredPositions.map((id) => (
               <FilterTag
                 key={id}
                 id={id}
@@ -161,13 +161,13 @@ export function BrowseCompany() {
         )}
       </div>
       <Columns>
-        {jobseekerProfiles?.map((profile) => (
+        {jobSeekerProfiles?.map((profile) => (
           <Columns.Column
             mobile={{ size: 12 }}
             tablet={{ size: 6 }}
             desktop={{ size: 4 }}
           >
-            <JobseekerProfileCard
+            <JobSeekerProfileCard
               key={profile.id}
               jobseekerProfile={profile}
               onClick={() =>
@@ -181,11 +181,8 @@ export function BrowseCompany() {
   )
 }
 
-const skillsOptions = topSkills.map(({ id, label }) => ({ value: id, label }))
-const desiredPositionsOptions = desiredPositions.map(({ id, label }) => ({
-  value: id,
-  label,
-}))
+const skillsOptions = mapOptions(topSkills)
+const desiredPositionsOptions = mapOptions(desiredPositions)
 
 interface FilterTagProps {
   id: string
@@ -206,7 +203,9 @@ const FilterTag = ({ id, label, onClickHandler }: FilterTagProps) => (
   </Tag>
 )
 
-export function toggleValueInArray<T>(array: Array<T>, value: T) {
-  if (array.includes(value)) return array.filter((val) => val !== value)
-  else return [...array, value]
+// TODO repeated
+export function toggleValueInArray<T>(array: T[], value: T) {
+  return array.includes(value)
+    ? array.filter((val) => val !== value)
+    : [...array, value]
 }

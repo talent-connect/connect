@@ -1,6 +1,8 @@
+import { Values } from '@talent-connect/typescript-utilities';
+
 /**
  * Although the natural lifecycle of a TpCompanyProfileState
- * is drafting-ptofile => submitted-for-review => profile-approved,
+ * is drafting-profile => submitted-for-review => profile-approved,
  * companies can be approved even if they are not submitted-for-review
  * yet. (See PR: https://github.com/talent-connect/connect/pull/460).
  * In some edge cases where companies reach out to a ReDI Admin and
@@ -13,5 +15,4 @@ export const TpCompanyProfileState = {
   'profile-approved': 'profile-approved',
 } as const
 
-export type TpCompanyProfileState =
-  typeof TpCompanyProfileState[keyof typeof TpCompanyProfileState]
+export type TpCompanyProfileState = Values<typeof TpCompanyProfileState>

@@ -4,13 +4,13 @@ import {
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
 import { AWS_PROFILE_AVATARS_BUCKET_BASE_URL } from '@talent-connect/shared-config'
-import React, { useCallback, useRef } from 'react'
+import { FC, useCallback, useRef, useState } from 'react'
 import { Box, Columns, Content, Section } from 'react-bulma-components'
 import { useHistory, useParams } from 'react-router-dom'
 import { Subject } from 'rxjs'
 import { CVPDFPreviewMemoized } from '../../../../components/molecules'
 import { AccordionFormCvDesiredPositions } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvDesiredPositions'
-import { AccordionFormCvDisplayCase } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvDisplayCase'
+// import { AccordionFormCvDisplayCase } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvDisplayCase'
 import { AccordionFormCvEducation } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvEducation'
 import { AccordionFormCvImportantDetails } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvImportantDetails'
 import { AccordionFormCvLanguages } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvLanguages'
@@ -18,45 +18,42 @@ import { AccordionFormCvName } from '../../../../components/organisms/jobseeker-
 import { AccordionFormCvProfessionalExperience } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvProfessionalExperience'
 import { AccordionFormCvSummary } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvSummary'
 import { LoggedIn } from '../../../../components/templates'
-import { useTpJobseekerCvByIdQuery } from '../../../../react-query/use-tpjobseekercv-query'
-import { useTpJobseekerProfileQuery } from '../../../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobSeekerCvByIdQuery } from '../../../../react-query/use-tpjobseekercv-query'
+import { useTpJobSeekerProfileQuery } from '../../../../react-query/use-tpjobseekerprofile-query'
 import './CvDetailPage.scss'
 import placeholderImage from '../../../../assets/img-placeholder.png'
 
-function InlineButton() {
-  return (
-    <Button
-      style={{
-        transform: 'scale(0.5)',
-        marginLeft: -24,
-        marginRight: -16,
-        pointerEvents: 'none',
-      }}
-    >
-      Start
-    </Button>
-  )
-}
+// const InlineButton: FC = () => {
+//   return (
+//     <Button
+//       style={{
+//         transform: 'scale(0.5)',
+//         marginLeft: -24,
+//         marginRight: -16,
+//         pointerEvents: 'none',
+//       }}
+//     >
+//       Start
+//     </Button>
+//   )
+// }
 
-function InlinePencilIcon() {
-  return (
-    <CreateOutlinedIcon style={{ color: '#EA5B25', margin: '0 12px -5px' }} />
-  )
-}
+// const InlinePencilIcon: FC = () => {
+//   return (
+//     <CreateOutlinedIcon style={{ color: '#EA5B25', margin: '0 12px -5px' }} />
+//   )
+// }
 
 interface ParamTypes {
   id: string
 }
 
-function CvDetailPage() {
+const CvDetailPage: FC = () => {
   const history = useHistory()
   const { id: cvId } = useParams<ParamTypes>()
 
-  const {
-    data: profile,
-    isSuccess: profileLoadSuccess,
-  } = useTpJobseekerProfileQuery()
-  const { data: cvData, isSuccess: cvLoadSuccess } = useTpJobseekerCvByIdQuery(
+  const { data: profile, isSuccess: profileLoadSuccess } = useTpJobSeekerProfileQuery()
+  const { data: cvData, isSuccess: cvLoadSuccess } = useTpJobSeekerCvByIdQuery(
     cvId,
     {
       enabled: profileLoadSuccess,
@@ -70,12 +67,9 @@ function CvDetailPage() {
 
   const handleCloseClick = () => history.push('/app/cv-builder')
 
-  const [
-    cvPreviewElementWidth,
-    setCvPreviewElementWidth,
-  ] = React.useState<number>(0)
-  const cvContainerRef = React.useRef<HTMLDivElement>(null)
-  const cvContainerRefCallback = React.useCallback((containerNode) => {
+  const [ cvPreviewElementWidth, setCvPreviewElementWidth] = useState<number>(0)
+  const cvContainerRef = useRef<HTMLDivElement>(null)
+  const cvContainerRefCallback = useCallback((containerNode) => {
     cvContainerRef.current = containerNode
     const elementWidth = containerNode?.clientWidth
     setCvPreviewElementWidth(elementWidth)
@@ -114,21 +108,21 @@ function CvDetailPage() {
               invited to an interview.
             </Content>
             <AccordionFormCvName
-              tpJobseekerCvId={cvId}
+              tpJobSeekerCvId={cvId}
               onClose={onClose}
               closeAccordionSignalSubject={
                 closeAllAccordionsSignalSubjectRef.current
               }
             />
             <AccordionFormCvDesiredPositions
-              tpJobseekerCvId={cvId}
+              tpJobSeekerCvId={cvId}
               onClose={onClose}
               closeAccordionSignalSubject={
                 closeAllAccordionsSignalSubjectRef.current
               }
             />
             <AccordionFormCvSummary
-              tpJobseekerCvId={cvId}
+              tpJobSeekerCvId={cvId}
               onClose={onClose}
               closeAccordionSignalSubject={
                 closeAllAccordionsSignalSubjectRef.current
@@ -136,35 +130,35 @@ function CvDetailPage() {
             />
 
             <AccordionFormCvLanguages
-              tpJobseekerCvId={cvId}
+              tpJobSeekerCvId={cvId}
               onClose={onClose}
               closeAccordionSignalSubject={
                 closeAllAccordionsSignalSubjectRef.current
               }
             />
             {/* <AccordionFormCvDisplayCase
-              tpJobseekerCvId={cvId}
+              tpJobSeekerCvId={cvId}
               onClose={onClose}
               closeAccordionSignalSubject={
                 closeAllAccordionsSignalSubjectRef.current
               }
             /> */}
             <AccordionFormCvImportantDetails
-              tpJobseekerCvId={cvId}
+              tpJobSeekerCvId={cvId}
               onClose={onClose}
               closeAccordionSignalSubject={
                 closeAllAccordionsSignalSubjectRef.current
               }
             />
             <AccordionFormCvProfessionalExperience
-              tpJobseekerCvId={cvId}
+              tpJobSeekerCvId={cvId}
               onClose={onClose}
               closeAccordionSignalSubject={
                 closeAllAccordionsSignalSubjectRef.current
               }
             />
             <AccordionFormCvEducation
-              tpJobseekerCvId={cvId}
+              tpJobSeekerCvId={cvId}
               onClose={onClose}
               closeAccordionSignalSubject={
                 closeAllAccordionsSignalSubjectRef.current

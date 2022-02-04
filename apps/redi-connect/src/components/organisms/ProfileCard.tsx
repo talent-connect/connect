@@ -1,17 +1,15 @@
-import React from 'react'
-import classnames from 'classnames'
-import { Card, Element, Tag } from 'react-bulma-components'
-import { Icon, PipeList } from '@talent-connect/shared-atomic-design-components'
-
+import { FC, MouseEvent } from 'react'
 import { useHistory } from 'react-router-dom'
+import classnames from 'classnames'
+
+import { Card, Element } from 'react-bulma-components'
+import { Icon, PipeList } from '@talent-connect/shared-atomic-design-components'
 import {
   AWS_PROFILE_AVATARS_BUCKET_BASE_URL,
   REDI_LOCATION_NAMES,
 } from '@talent-connect/shared-config'
-
 import placeholderImage from '../../assets/images/img-placeholder.png'
 import './ProfileCard.scss'
-
 import { RedProfile } from '@talent-connect/shared-types'
 import { ReadMentoringTopics } from '../molecules'
 
@@ -22,26 +20,25 @@ interface ProfileCardProps {
   toggleFavorite?: (id: string) => void
 }
 
-const ProfileCard = ({
-  profile,
-  linkTo,
-  toggleFavorite,
-  isFavorite,
-}: ProfileCardProps) => {
-  const history = useHistory()
-
-  const {
+const ProfileCard: FC<ProfileCardProps> = ({
+  profile: {
+    id,
     firstName,
     lastName,
     languages,
     categories,
     rediLocation,
     profileAvatarImageS3Key,
-  } = profile
+  },
+  linkTo,
+  toggleFavorite,
+  isFavorite,
+}) => {
+  const history = useHistory()
 
-  const handleFavorite = (e: React.MouseEvent) => {
+  const handleFavorite = (e: MouseEvent) => {
     e.stopPropagation()
-    toggleFavorite && toggleFavorite(profile.id)
+    toggleFavorite && toggleFavorite(id)
   }
 
   const handleLinkTo = () => linkTo && history.push(linkTo)
@@ -53,7 +50,7 @@ const ProfileCard = ({
   return (
     <Card
       className={classnames('profile-card', { 'profile-card--active': linkTo })}
-      onClick={linkTo ? handleLinkTo : undefined}
+      onClick={linkTo ? handleLinkTo : null}
     >
       <Card.Image
         className="profile-card__image"

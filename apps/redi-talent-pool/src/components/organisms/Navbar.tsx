@@ -2,9 +2,8 @@ import {
   Button,
   RediTalentPoolLogo,
 } from '@talent-connect/shared-atomic-design-components'
-import classnames from 'classnames'
-import React, { useState } from 'react'
-import { Container, Element, Section } from 'react-bulma-components'
+import { FC, useState } from 'react'
+import { Container, Element } from 'react-bulma-components'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 import { logout } from '../../services/api/api'
@@ -27,7 +26,7 @@ const LoggedOutButtons = () => {
   )
 }
 
-const LoggedInButtons = ({ mobile }: { mobile?: boolean }) => {
+const LoggedInButtons: FC<{ mobile?: boolean }> = ({ mobile }) => {
   const { t } = useTranslation()
   const history = useHistory()
 
@@ -49,8 +48,10 @@ const LoggedInButtons = ({ mobile }: { mobile?: boolean }) => {
   )
 }
 
-const Navbar = ({ leftPaddingOn = false }) => {
+const Navbar: FC = () => {
   const [menuActive, setMenuActive] = useState(false)
+
+  const loggedIn = isLoggedIn()
 
   const mobileMenu = (
     <Container className="navbar__mobile">
@@ -60,8 +61,8 @@ const Navbar = ({ leftPaddingOn = false }) => {
       >
         &times;
       </Element>
-      {isLoggedIn() && <LoggedInButtons mobile={true} />}
-      {!isLoggedIn() && <LoggedOutButtons />}
+      {loggedIn && <LoggedInButtons mobile={true} />}
+      {!loggedIn && <LoggedOutButtons />}
     </Container>
   )
 
@@ -82,8 +83,8 @@ const Navbar = ({ leftPaddingOn = false }) => {
             responsive={{ mobile: { hide: { value: true } } }}
             className="navbar__buttons"
           >
-            {isLoggedIn() && <LoggedInButtons />}
-            {!isLoggedIn() && <LoggedOutButtons />}
+            {loggedIn && <LoggedInButtons />}
+            {!loggedIn && <LoggedOutButtons />}
           </Element>
           <Element
             responsive={{ tablet: { hide: { value: true } } }}

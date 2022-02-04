@@ -1,4 +1,4 @@
-import React from 'react'
+import { FC } from 'react'
 import { Redirect } from 'react-router'
 import { Columns, Content } from 'react-bulma-components'
 import LoggedIn from '../../../components/templates/LoggedIn'
@@ -13,12 +13,12 @@ interface Props {
   matches: RedMatch[]
 }
 
-function MentorshipList({ matches }: Props) {
+const  MentorshipList: FC<Props> = ({ matches }) => {
   if (matches.length === 1)
     return <Redirect to={`/app/mentorships/${matches[0].id}`} />
 
   const subHeading =
-    matches.length === 0 ? (
+    !matches.length ? (
       <>
         You currently have no active mentorship. Once a mentee applies to you,
         we will inform you via email and you will see their application in the
@@ -36,7 +36,7 @@ function MentorshipList({ matches }: Props) {
         My mentees
       </Heading>
       <Content
-        italic={matches.length === 0}
+        italic={!matches.length}
         size="medium"
         className="double-bs"
         renderAs="p"
@@ -45,11 +45,11 @@ function MentorshipList({ matches }: Props) {
         {subHeading}
       </Content>
       <Columns>
-        {matches.map((match: RedMatch) => (
-          <Columns.Column size={4} key={match.id}>
+        {matches.map(({ id, mentee }) => (
+          <Columns.Column size={4} key={id}>
             <ProfileCard
-              linkTo={`/app/mentorships/${match.id}`}
-              profile={match.mentee}
+              linkTo={`/app/mentorships/${id}`}
+              profile={mentee}
             />
           </Columns.Column>
         ))}
@@ -58,8 +58,8 @@ function MentorshipList({ matches }: Props) {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  matches: getMatches(state.matches),
+const mapStateToProps = ({ matches }: RootState) => ({
+  matches: getMatches(matches),
 })
 
 export default connect(mapStateToProps, null)(MentorshipList)

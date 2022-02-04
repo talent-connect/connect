@@ -1,54 +1,22 @@
+import { FC, useState } from 'react'
+import { Link } from 'react-router-dom'
 import {
   Button,
-  FormInput,
+  TextInput,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
-import { FormikValues, useFormik } from 'formik'
-import React, { useState } from 'react'
 import { Columns, Content, Element, Form } from 'react-bulma-components'
-import { Link } from 'react-router-dom'
-import * as yup from 'yup'
 import TpTeaser from '../../../components/molecules/TpTeaser'
 import { AccountOperation } from '../../../components/templates'
-import { requestResetPasswordEmail } from '../../../services/api/api'
+import { componentForm } from './RequestResetPasswordEmail.form';
 
-interface FormValues {
-  email: string
-}
-
-const initialValues: FormValues = {
-  email: '',
-}
-
-const validationSchema = yup.object().shape({
-  email: yup
-    .string()
-    .email('That doesn’t look quite right... please provide a valid email.')
-    .required('Please provide an email address.'),
-})
-
-export const RequestResetPasswordEmail: React.FC = () => {
+export const RequestResetPasswordEmail: FC = () => {
   const [resetPasswordSuccess, setResetPasswordSuccess] = useState<string>('')
   const [resetPasswordError, setResetPasswordError] = useState<string>('')
 
-  const onSubmit = async (values: FormikValues) => {
-    try {
-      // Cast to string is safe as this only called if validated
-      await requestResetPasswordEmail(values.email as string)
-      setResetPasswordSuccess(
-        'If you have an account,we have sent you the password reset link to your email address.'
-      )
-    } catch (err) {
-      setResetPasswordError(
-        'Oh no, something went wrong :( Did you type your email address correctly?'
-      )
-    }
-  }
-
-  const formik = useFormik({
-    initialValues: initialValues,
-    validationSchema,
-    onSubmit: onSubmit,
+  const formik = componentForm({
+    setResetPasswordError,
+    setResetPasswordSuccess
   })
 
   const heading = resetPasswordSuccess
@@ -76,7 +44,7 @@ export const RequestResetPasswordEmail: React.FC = () => {
 
           {!resetPasswordSuccess && (
             <form onSubmit={(e) => e.preventDefault()}>
-              <FormInput
+              <TextInput
                 name="email"
                 type="email"
                 placeholder="Email"
@@ -102,9 +70,7 @@ export const RequestResetPasswordEmail: React.FC = () => {
             </form>
           )}
           <Element
-            className={`submit-link ${
-              !resetPasswordSuccess && 'submit-link--post'
-            }`}
+            className={`submit-link ${!resetPasswordSuccess && 'submit-link--post'}`}
             textTransform="uppercase"
           >
             <Link to="/front/login">Back to log in</Link>

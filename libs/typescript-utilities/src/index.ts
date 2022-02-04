@@ -1,3 +1,2 @@
-export * from './lib/object-entries'
-export * from './lib/object-keys'
-export * from './lib/object-values'
+export * from './lib/object-tools'
+export * from './lib/access'

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import { FC, useCallback, useState } from 'react'
 import { Tooltip } from '@material-ui/core'
 import { Button, Icon } from '@talent-connect/shared-atomic-design-components'
 import { Columns, Notification, Content } from 'react-bulma-components'
@@ -30,7 +30,7 @@ function isProfileComplete(profile: Partial<TpCompanyProfile>): boolean {
   return requiredSectionsComplete
 }
 
-function SendProfileForReviewButton() {
+const SendProfileForReviewButton: FC = () => {
   const { data: profile } = useTpCompanyProfileQuery()
   const { data: jobListings } = useTpJobListingAllQuery()
   const mutation = useTpCompanyProfileUpdateMutation()
@@ -38,7 +38,7 @@ function SendProfileForReviewButton() {
   const enabled =
     profile?.state === 'drafting-profile' &&
     isProfileComplete(profile) &&
-    jobListings?.length > 0
+    jobListings?.length
 
   const getTooltipText = () => {
     if (profile.state !== 'submitted-for-review') {
@@ -51,42 +51,30 @@ function SendProfileForReviewButton() {
   }
 
   const onClick = useCallback(() => {
-    if (!window.confirm('Would you like to submit your profile for review?'))
-      return
+    if (!confirm('Would you like to submit your profile for review?')) return
 
     mutation.mutate({ ...profile, state: 'submitted-for-review' })
   }, [mutation, profile])
 
-  if (enabled) {
-    return <Button onClick={onClick}>Send profile to review</Button>
-  } else {
-    return (
-      <Tooltip title={getTooltipText()}>
-        <span>
-          <Button disabled style={{ pointerEvents: 'none' }}>
-            Send profile to review
-          </Button>
-        </span>
-      </Tooltip>
-    )
-  }
+  if (enabled) return <Button onClick={onClick}>Send profile to review</Button>
+
+  return (
+    <Tooltip title={getTooltipText()}>
+      <span>
+        <Button style={{ pointerEvents: 'none' }} disabled>
+          Send profile to review
+        </Button>
+      </span>
+    </Tooltip>
+  )
 }
 
-const CallToActionButton = ({
-  profile,
-}: {
-  profile: Partial<TpCompanyProfile>
-}) =>
-  profile &&
-  profile.state &&
-  [
-    TpCompanyProfileState['drafting-profile'],
-    TpCompanyProfileState['submitted-for-review'],
-  ].includes(profile.state as any) ? (
-    <SendProfileForReviewButton />
-  ) : null
+const CallToActionButton: FC<{ profile: Partial<TpCompanyProfile>; }> = ({ profile: { state } }) => {
+  const showSendProfileForReviewButton = state && (state === TpCompanyProfileState['drafting-profile'] || state === TpCompanyProfileState['submitted-for-review'])
+  return showSendProfileForReviewButton && (<SendProfileForReviewButton />)
+}
 
-export function MeCompany() {
+export const MeCompany: FC = () => {
   const { data: profile } = useTpCompanyProfileQuery()
   const { data: jobListings } = useTpJobListingAllQuery()
 
@@ -96,7 +84,7 @@ export function MeCompany() {
 
   return (
     <LoggedIn>
-      {isProfileApproved ? (
+      {isProfileApproved && (
         <Notification className="account-not-active double-bs">
           <Icon
             className="account-not-active__icon"
@@ -119,7 +107,7 @@ export function MeCompany() {
             or <a href="/app/browse">browse our talent pool</a>!
           </Content>
         </Notification>
-      ) : null}
+      )}
       <Columns className="is-6 is-variable">
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'three-fifths' }}>
           <EditableNamePhotoLocation profile={profile} />
@@ -134,7 +122,7 @@ export function MeCompany() {
               <OnboardingSteps
                 profile={profile}
                 isProfileComplete={isProfileComplete(profile)}
-                hasJobListing={jobListings?.length > 0}
+                hasJobListing={jobListings?.length !== 0}
               />
             )}
           </div>

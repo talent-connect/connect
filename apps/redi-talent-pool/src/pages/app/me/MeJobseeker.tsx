@@ -1,46 +1,45 @@
+import { FC, useCallback, useRef } from 'react'
+import classnames from 'clsx'
+// import { Subject } from 'rxjs'
 import { Tooltip } from '@material-ui/core'
+import { Columns, Element, Notification, Content } from 'react-bulma-components'
 import {
   Button,
   Icon,
   Checkbox,
 } from '@talent-connect/shared-atomic-design-components'
 import {
-  TpJobseekerProfile,
-  TpJobseekerProfileState,
+  TpJobSeekerProfile,
+  TpJobSeekerProfileState,
 } from '@talent-connect/shared-types'
-import classnames from 'clsx'
-import React, { useCallback, useRef } from 'react'
-import { Columns, Element, Notification, Content } from 'react-bulma-components'
-import { Subject } from 'rxjs'
 import { EditableEducation } from '../../../components/organisms/jobseeker-profile-editables/EditableEducation'
 import { EditableImportantDetails } from '../../../components/organisms/jobseeker-profile-editables/EditableImportantDetails'
-import { EditableJobPreferences } from '../../../components/organisms/jobseeker-profile-editables/EditableJobPreferences'
+// import { EditableJobPreferences } from '../../../components/organisms/jobseeker-profile-editables/EditableJobPreferences'
 import { EditableLanguages } from '../../../components/organisms/jobseeker-profile-editables/EditableLanguages'
 import { EditableLinks } from '../../../components/organisms/jobseeker-profile-editables/EditableLinks'
 import { EditableNamePhotoLocation } from '../../../components/organisms/jobseeker-profile-editables/EditableNamePhotoLocation'
 import { EditableOverview } from '../../../components/organisms/jobseeker-profile-editables/EditableOverview'
 import { EditableProfessionalExperience } from '../../../components/organisms/jobseeker-profile-editables/EditableProfessionalExperience'
 import { EditableSummary } from '../../../components/organisms/jobseeker-profile-editables/EditableSummary'
-import { EditableVisibility } from '../../../components/organisms/jobseeker-profile-editables/EditableVisibility'
 import { LoggedIn } from '../../../components/templates'
-import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobSeekerProfileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
+import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { ReactComponent as ChecklistActiveImage } from './checklist-item-active.svg'
 import { ReactComponent as ChecklistImage } from './checklist-item.svg'
 import { ReactComponent as CheckmarkBorderOnlyImage } from './checkmark-border-only.svg'
 import { ReactComponent as CheckmarkImage } from './checkmark.svg'
-import './MeJobseeker.scss'
+import './MeJobSeeker.scss'
 import { ReactComponent as StepPendingImage } from './pending.svg'
 
-export function MeJobseeker() {
-  const { data: profile } = useTpJobseekerProfileQuery()
-  const mutation = useTpjobseekerprofileUpdateMutation()
+export const MeJobSeeker: FC = () => {
+  const { data: profile } = useTpJobSeekerProfileQuery()
+  const mutation = useTpJobSeekerProfileUpdateMutation()
 
-  const currentStep = determineCurrentStep(profile)
+  // const currentStep = determineCurrentStep(profile)
 
-  const openJobPreferencesModalSignalRef = useRef(new Subject<void>())
+  // const openJobPreferencesModalSignalRef = useRef(new Subject<void>())
 
-  // This function is added for Job Fair 2022 only. Please remove after 11.02.2022
+  // TODO: This function is added for Job Fair 2022 only. Please remove after 11.02.2022
   const handleJobFairToggleChange = () =>
     mutation.mutate({
       ...profile,
@@ -49,7 +48,7 @@ export function MeJobseeker() {
 
   return (
     <LoggedIn>
-      {profile?.state === 'profile-approved' ? (
+      {profile?.state === 'profile-approved' && (
         <Notification className="account-not-active double-bs">
           <Icon
             className="account-not-active__icon"
@@ -62,7 +61,7 @@ export function MeJobseeker() {
             <a href="/app/browse">browse open job postings</a>!
           </Content>
         </Notification>
-      ) : null}
+      )}
       <Columns className="is-6 is-variable">
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'three-fifths' }}>
           <div className="is-hidden-tablet">
@@ -108,25 +107,21 @@ export function MeJobseeker() {
   )
 }
 
-const CallToActionButton = ({
+const CallToActionButton: FC<{ profile: Partial<TpJobSeekerProfile> }> = ({
   profile,
-}: {
-  profile: Partial<TpJobseekerProfile>
 }) => {
+  const showSendProfileForReviewButton =
+    profile.state === TpJobSeekerProfileState['drafting-profile'] ||
+    profile.state === TpJobSeekerProfileState['submitted-for-review'];
+  
   return (
     <>
-      {profile &&
-      profile.state &&
-      [
-        TpJobseekerProfileState['drafting-profile'],
-        TpJobseekerProfileState['submitted-for-review'],
-      ].includes(profile.state as any) ? (
-        <SendProfileForReviewButton />
-      ) : null}
+      {showSendProfileForReviewButton && // TODO: review
+          <SendProfileForReviewButton />}
       {/* {profile &&
       profile.state &&
       [
-        TpJobseekerProfileState['profile-approved-awaiting-job-preferences'],
+        TpJobSeekerProfileState['profile-approved-awaiting-job-preferences'],
       ].includes(profile.state as any) ? (
         <SendJobPreferencesForReviewButton />
       ) : null} */}
@@ -143,18 +138,15 @@ const steps = [
   // { number: 6, label: 'Interview match' },
 ]
 
-function determineCurrentStep(
-  profile: Partial<TpJobseekerProfile>
-): [currentStep: number, stepStatus: 'todo' | 'pending' | 'complete'] {
-  if (profile.state === 'drafting-profile') {
+function determineCurrentStep (profile: Partial<TpJobSeekerProfile>):
+  [currentStep: number, stepStatus: 'todo' | 'pending' | 'complete']
+{
+  if (profile.state === 'drafting-profile')
     return isProfileComplete(profile) ? [2, 'todo'] : [1, 'todo']
-  }
-  if (profile.state === 'submitted-for-review') {
+  if (profile.state === 'submitted-for-review')
     return [3, 'pending']
-  }
-  if (profile.state === 'profile-approved') {
+  if (profile.state === 'profile-approved')
     return [3, 'complete']
-  }
   // if (
   //   profile.state ===
   //   'job-preferences-shared-with-redi-awaiting-interview-match'
@@ -164,21 +156,16 @@ function determineCurrentStep(
   // if (profile.state === 'matched-for-interview') {
   //   return [6, 'complete']
   // }
-  if (
-    profile.state ===
-    'job-preferences-shared-with-redi-awaiting-interview-match'
-  ) {
+  if (profile.state === 'job-preferences-shared-with-redi-awaiting-interview-match')
     return [3, 'complete']
-  }
-  if (profile.state === 'matched-for-interview') {
+  if (profile.state === 'matched-for-interview')
     return [3, 'complete']
-  }
 }
 
-export function OnboardingSteps() {
-  const { data: profile } = useTpJobseekerProfileQuery()
+export const OnboardingSteps: FC = () => {
+  const { data: profile } = useTpJobSeekerProfileQuery()
 
-  const currentStep = determineCurrentStep(profile)
+  const [currentStep, stepStatus] = determineCurrentStep(profile)
 
   return (
     <div className="onboarding-steps">
@@ -193,42 +180,35 @@ export function OnboardingSteps() {
           Complete the steps below!
         </Element>
       </div>
-      {steps.map((step, index) => (
+      {steps.map(({ number, label }, i) => (
         <div
-          key={index}
+          key={i}
           className={classnames('onboarding-steps--item', {
-            'current-step': step.number === currentStep[0],
-            'completed-step': step.number < currentStep[0],
+            'current-step': number === currentStep,
+            'completed-step': number < currentStep,
           })}
         >
-          {step.number < currentStep[0] ? (
-            <ChecklistActiveImage className="checklist-image" />
-          ) : (
-            <ChecklistImage className="checklist-image" />
-          )}
-          <Element textSize="5">{step.label}</Element>
-          {currentStep[0] > step.number ? (
-            <CheckmarkImage className="checkmark-image" />
-          ) : null}
-          {currentStep[0] < step.number ? (
-            <CheckmarkBorderOnlyImage className="checkmark-image" />
-          ) : null}
-          {currentStep[0] === step.number && currentStep[1] === 'todo' ? (
-            <CheckmarkBorderOnlyImage className="checkmark-image" />
-          ) : null}
-          {currentStep[0] === step.number && currentStep[1] === 'pending' ? (
-            <StepPendingImage className="checkmark-image" />
-          ) : null}
-          {currentStep[0] === step.number && currentStep[1] === 'complete' ? (
-            <CheckmarkImage className="checkmark-image" />
-          ) : null}
+          {number < currentStep
+            ? (<ChecklistActiveImage className="checklist-image" />)
+            : (<ChecklistImage className="checklist-image" />)}
+          <Element textSize="5">{label}</Element>
+          {currentStep > number && (
+            <CheckmarkImage className="checkmark-image" />)}
+          {currentStep < number && ( 
+            <CheckmarkBorderOnlyImage className="checkmark-image" />)}
+          {currentStep === number && stepStatus === 'todo' && ( // TODO: apply switch?
+            <CheckmarkBorderOnlyImage className="checkmark-image" />)}
+          {currentStep === number && stepStatus === 'pending' && (
+            <StepPendingImage className="checkmark-image" />)}
+          {currentStep === number && stepStatus === 'complete' && (
+            <CheckmarkImage className="checkmark-image" />)}
         </div>
       ))}
     </div>
   )
 }
 
-function isProfileComplete(profile: Partial<TpJobseekerProfile>): boolean {
+function isProfileComplete(profile: Partial<TpJobSeekerProfile>): boolean {
   const mostSectionsComplete = [
     EditableNamePhotoLocation.isSectionFilled,
     EditableOverview.isSectionFilled,
@@ -236,8 +216,7 @@ function isProfileComplete(profile: Partial<TpJobseekerProfile>): boolean {
     EditableImportantDetails.isSectionFilled,
     EditableLanguages.isSectionFilled,
   ]
-    .map((checkerFn) => checkerFn(profile))
-    .every((p) => p)
+    .every((checkerFn) => checkerFn(profile))
   const experienceOrEducationSectionComplete =
     EditableProfessionalExperience.isSectionFilled(profile) ||
     EditableEducation.isSectionFilled(profile)
@@ -245,15 +224,13 @@ function isProfileComplete(profile: Partial<TpJobseekerProfile>): boolean {
   return mostSectionsComplete && experienceOrEducationSectionComplete
 }
 
-function areJobPreferencesInputted(
-  profile: Partial<TpJobseekerProfile>
-): boolean {
-  return EditableJobPreferences.isSectionFilled(profile)
-}
+// function areJobPreferencesInputted (profile: Partial<TpJobSeekerProfile>): boolean {
+//   return EditableJobPreferences.isSectionFilled(profile)
+// }
 
 function SendProfileForReviewButton() {
-  const { data: profile } = useTpJobseekerProfileQuery()
-  const mutation = useTpjobseekerprofileUpdateMutation()
+  const { data: profile } = useTpJobSeekerProfileQuery()
+  const mutation = useTpJobSeekerProfileUpdateMutation()
 
   const enabled =
     profile?.state === 'drafting-profile' && isProfileComplete(profile)
@@ -280,33 +257,33 @@ function SendProfileForReviewButton() {
   }
 }
 
-function SendJobPreferencesForReviewButton() {
-  const { data: profile } = useTpJobseekerProfileQuery()
-  const mutation = useTpjobseekerprofileUpdateMutation()
+// const SendJobPreferencesForReviewButton: FC = () => { // TODO: Remove?
+//   const { data: profile } = useTpJobSeekerProfileQuery()
+//   const mutation = useTpjobseekerprofileUpdateMutation()
 
-  const enabled =
-    profile?.state === 'profile-approved' &&
-    EditableJobPreferences.isSectionFilled(profile)
+//   const enabled =
+//     profile?.state === 'profile-approved' &&
+//     EditableJobPreferences.isSectionFilled(profile)
 
-  const onClick = useCallback(() => {
-    if (!window.confirm('Are you ready to share your job preferences?')) return
+//   const onClick = useCallback(() => {
+//     if (!window.confirm('Are you ready to share your job preferences?')) return
 
-    mutation.mutate({
-      ...profile,
-    })
-  }, [mutation, profile])
+//     mutation.mutate({
+//       ...profile,
+//     })
+//   }, [mutation, profile])
 
-  if (enabled) {
-    return <Button onClick={onClick}>Share your job preferences</Button>
-  } else {
-    return (
-      <Tooltip title="You need to input your job preferences before you can share them with us and get matched for an interview">
-        <span>
-          <Button disabled style={{ pointerEvents: 'none' }}>
-            Share your job preferences
-          </Button>
-        </span>
-      </Tooltip>
-    )
-  }
-}
+//   if (enabled) {
+//     return <Button onClick={onClick}>Share your job preferences</Button>
+//   } else {
+//     return (
+//       <Tooltip title="You need to input your job preferences before you can share them with us and get matched for an interview">
+//         <span>
+//           <Button disabled style={{ pointerEvents: 'none' }}>
+//             Share your job preferences
+//           </Button>
+//         </span>
+//       </Tooltip>
+//     )
+//   }
+// }

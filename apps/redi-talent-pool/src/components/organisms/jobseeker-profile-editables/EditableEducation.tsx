@@ -2,64 +2,62 @@ import {
   Button,
   Caption,
   Checkbox,
-  FaqItem,
   FormDraggableAccordion,
-  FormInput,
+  TextInput,
   FormSelect,
-  FormTextArea,
+  TextArea,
   Icon,
+  NumberInput,
 } from '@talent-connect/shared-atomic-design-components'
 import * as Yup from 'yup'
 import {
   EducationRecord,
-  ExperienceRecord,
-  TpJobseekerCv,
-  TpJobseekerProfile,
+  TpJobSeekerCv,
+  TpJobSeekerProfile,
 } from '@talent-connect/shared-types'
+import { formatDate, reorder } from '@talent-connect/shared-utils';
 import {
   certificationTypes,
   formMonthsOptions,
 } from '@talent-connect/talent-pool/config'
+import { mapOptions } from '@talent-connect/typescript-utilities';
 import { useFormik } from 'formik'
-import moment from 'moment'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Columns, Content, Element } from 'react-bulma-components'
 import ReactMarkdown from 'react-markdown'
 import { UseMutationResult, UseQueryResult } from 'react-query'
 import { Subject } from 'rxjs'
 import { v4 as uuidv4 } from 'uuid'
-import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobSeekerProfileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
+import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { Location } from '../../molecules/Location'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
-function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
-  const result = Array.from(list)
-  const [removed] = result.splice(startIndex, 1)
-  result.splice(endIndex, 0, removed)
-
-  return result
-}
-
 interface Props {
-  profile?: Partial<TpJobseekerProfile>
+  profile?: Partial<TpJobSeekerProfile>
   disableEditing?: boolean
 }
 
-export function EditableEducation({
+interface EditableNamePhotoLocationHelpers {
+  isSectionFilled: (profile: Partial<TpJobSeekerProfile>) => boolean;
+  isSectionEmpty: (profile: Partial<TpJobSeekerProfile>) => boolean;
+}
+
+export const EditableEducation: FC<Props> & EditableNamePhotoLocationHelpers = ({
   profile: overridingProfile,
   disableEditing,
-}: Props) {
-  const queryHookResult = useTpJobseekerProfileQuery({
+}) => {
+  const queryHookResult = useTpJobSeekerProfileQuery({
     enabled: !disableEditing,
   })
   if (overridingProfile) queryHookResult.data = overridingProfile
-  const mutationHookResult = useTpjobseekerprofileUpdateMutation()
-  const { data: profile } = queryHookResult
+  const mutationHookResult = useTpJobSeekerProfileUpdateMutation()
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
+
+  const { data: profile } = queryHookResult
 
   const isEmpty = EditableEducation.isSectionEmpty(profile)
 
@@ -121,11 +119,8 @@ export function EditableEducation({
       modalTitle="Study, certifications, courses"
       modalHeadline="Education"
       modalBody={
-        <JobseekerFormSectionEducation
-          setIsEditing={setIsEditing}
-          setIsFormDirty={setIsFormDirty}
-          queryHookResult={queryHookResult}
-          mutationHookResult={mutationHookResult}
+        <JobSeekerFormSectionEducation
+          {...{ setIsEditing, setIsFormDirty, queryHookResult, mutationHookResult }}
         />
       }
       modalStyles={{ minHeight: 700 }}
@@ -133,87 +128,74 @@ export function EditableEducation({
   )
 }
 
-EditableEducation.isSectionFilled = (profile: Partial<TpJobseekerProfile>) =>
-  profile?.education?.length > 0
-EditableEducation.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
+EditableEducation.isSectionFilled = (profile: Partial<TpJobSeekerProfile>) =>
+  !!profile?.education?.length
+
+EditableEducation.isSectionEmpty = (profile: Partial<TpJobSeekerProfile>) =>
   !EditableEducation.isSectionFilled(profile)
 
-function formatDate(month?: number, year?: number): string {
-  if (year && !month) return String(year)
-  if (year && month) return moment().month(month).year(year).format('MMMM YYYY')
-  if (!year && month) return moment().month(month).format('MMMM')
-  return ''
-}
+// ############################################################################
 
-interface JobseekerFormSectionEducationeProps {
-  setIsEditing: (boolean) => void
-  setIsFormDirty?: (boolean) => void
+interface JobSeekerFormSectionEducationProps {
+  setIsEditing: (boolean: boolean) => void
+  setIsFormDirty?: (boolean: boolean) => void
   queryHookResult: UseQueryResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobSeekerProfile | TpJobSeekerCv>,
     unknown
   >
   mutationHookResult: UseMutationResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobSeekerProfile | TpJobSeekerCv>,
     unknown,
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobSeekerProfile | TpJobSeekerCv>,
     unknown
   >
 }
 
-export function JobseekerFormSectionEducation({
+export const JobSeekerFormSectionEducation: FC<JobSeekerFormSectionEducationProps> = ({
   setIsEditing,
   setIsFormDirty,
-  queryHookResult,
+  queryHookResult: { data: profile },
   mutationHookResult,
-}: JobseekerFormSectionEducationeProps) {
-  const { data: profile } = queryHookResult
-  const mutation = mutationHookResult
+}) => {
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
 
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(
-    () => ({
+  const initialValues: Partial<TpJobSeekerProfile> = useMemo(() => ({
       education: profile?.education ?? [buildBlankEducationRecord()],
     }),
     [profile?.education]
   )
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
-    formik.setSubmitting(true)
-    mutation.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
-      },
-    })
-  }
 
   const validationSchema = Yup.object().shape({
     education: Yup.array().of(
       Yup.object().shape({
-        institutionName: Yup.string().required(
-          'Nme of Institution is required!'
-        ),
-        certificationType: Yup.string().required(
-          'Please choose a certification type'
-        ),
+        institutionName: Yup.string()
+          .required('Nme of Institution is required!'),
+        certificationType: Yup.string()
+          .required('Please choose a certification type'),
         institutionCity: Yup.string(),
         institutionCountry: Yup.string(),
-        title: Yup.string().required('Title is required'),
-        description: Yup.string().min(10, 'Description is too short'),
-        startDateMonth: Yup.number().required('Start date month is required'),
-        startDateYear: Yup.number().required('Start date year is required'),
+        title: Yup.string()
+          .required('Title is required'),
+        description: Yup.string()
+          .min(10, 'Description is too short'),
+        startDateMonth: Yup.number()
+          .required('Start date month is required'),
+        startDateYear: Yup.number()
+          .required('Start date year is required'),
         current: Yup.boolean(),
-        endDateYear: Yup.number().when('current', {
+        endDateYear: Yup.number()
+          .when('current', {
           is: false,
           then: Yup.number().required(
             'Provide an end date year or check the box'
           ),
         }),
-        endDateMonth: Yup.number().when('current', {
-          is: false,
-          then: Yup.number().required('End date month is required'),
+        endDateMonth: Yup.number()
+          .when('current', {
+            is: false,
+            then: Yup.number()
+              .required('End date month is required'),
         }),
       })
     ),
@@ -221,10 +203,17 @@ export function JobseekerFormSectionEducation({
 
   const formik = useFormik({
     initialValues,
-    onSubmit,
     validationSchema,
     enableReinitialize: true,
+    onSubmit: (values, { setSubmitting }) => {
+      setSubmitting(true)
+      mutationHookResult.mutate(values, {
+        onSettled: () => setSubmitting(false),
+        onSuccess: () => setIsEditing(false),
+      })
+    },
   })
+  
   useEffect(
     () => setIsFormDirty?.(formik.dirty),
     [formik.dirty, setIsFormDirty]
@@ -239,14 +228,13 @@ export function JobseekerFormSectionEducation({
     closeAllAccordionsSignalSubject.current.next()
   }, [formik])
 
-  const onDragEnd = useCallback(
-    (result: any) => {
-      if (!result.destination) return
+  const onDragEnd = useCallback(({ destination, source }: any) => {
+      if (!destination) return
 
       const reorderedEducation = reorder(
         formik.values.education,
-        result.source.index,
-        result.destination.index
+        source.index,
+        destination.index
       )
 
       formik.setFieldValue('education', reorderedEducation)
@@ -278,10 +266,10 @@ export function JobseekerFormSectionEducation({
         <Droppable droppableId="id">
           {(provided, snapshot) => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
-              {formik?.values?.education.map((item, index) => (
+              {formik?.values?.education.map(({ uuid, title }, index) => (
                 <Draggable
-                  key={item.uuid}
-                  draggableId={item.uuid}
+                  key={uuid}
+                  draggableId={uuid}
                   index={index}
                 >
                   {(provided, snapshot) => (
@@ -291,15 +279,13 @@ export function JobseekerFormSectionEducation({
                       {...provided.dragHandleProps}
                     >
                       <FormDraggableAccordion
-                        title={
-                          item.title ? item.title : 'Click me to add details'
-                        }
-                        onRemove={() => onRemove(item.uuid)}
+                        title={title || 'Click me to add details'}
+                        onRemove={() => onRemove(uuid)}
                         closeAccordionSignalSubject={
                           closeAllAccordionsSignalSubject.current
                         }
                       >
-                        <FormInput
+                        <TextInput
                           name={`education[${index}].title`}
                           placeholder="Bachelor of Computer Science"
                           label="Title of your course/study/certification"
@@ -311,25 +297,25 @@ export function JobseekerFormSectionEducation({
                           items={formCertificationTypes}
                           {...formik}
                         />
-                        <FormInput
+                        <TextInput
                           name={`education[${index}].institutionName`}
                           placeholder="ReDI School of Digital Integration"
                           label="The institution or school"
                           {...formik}
                         />
-                        <FormInput
+                        <TextInput
                           name={`education[${index}].institutionCity`}
                           placeholder="Munich"
                           label="The city of institution or school"
                           {...formik}
                         />
-                        <FormInput
+                        <TextInput
                           name={`education[${index}].institutionCountry`}
                           placeholder="Germany"
                           label="The country of institution or school"
                           {...formik}
                         />
-                        <FormTextArea
+                        <TextArea
                           label="Description (optional)"
                           name={`education[${index}].description`}
                           rows={7}
@@ -355,16 +341,15 @@ export function JobseekerFormSectionEducation({
                             />
                           </Columns.Column>
                           <Columns.Column size={6}>
-                            <FormInput
+                            <NumberInput
                               name={`education[${index}].startDateYear`}
                               label="Started in year"
-                              type="number"
                               {...formik}
                             />
                           </Columns.Column>
                         </Columns>
 
-                        {!formik.values.education[index].current ? (
+                        {!formik.values.education[index].current && (
                           <Columns>
                             <Columns.Column size={6}>
                               <FormSelect
@@ -375,15 +360,14 @@ export function JobseekerFormSectionEducation({
                               />
                             </Columns.Column>
                             <Columns.Column size={6}>
-                              <FormInput
+                              <NumberInput
                                 name={`education[${index}].endDateYear`}
                                 label="Ended in year"
-                                type="number"
                                 {...formik}
                               />
                             </Columns.Column>
                           </Columns>
-                        ) : null}
+                        )}
                       </FormDraggableAccordion>
                     </div>
                   )}
@@ -415,14 +399,14 @@ export function JobseekerFormSectionEducation({
       </div>
 
       <Button
-        disabled={!formik.isValid || mutation.isLoading}
+        disabled={!formik.isValid || mutationHookResult.isLoading}
         onClick={formik.handleSubmit}
       >
         Save
       </Button>
       <Button
         simple
-        disabled={mutation.isLoading}
+        disabled={mutationHookResult.isLoading}
         onClick={() => setIsEditing(false)}
       >
         Cancel
@@ -431,10 +415,7 @@ export function JobseekerFormSectionEducation({
   )
 }
 
-const formCertificationTypes = certificationTypes.map(({ id, label }) => ({
-  value: id,
-  label,
-}))
+const formCertificationTypes = mapOptions(certificationTypes)
 
 function buildBlankEducationRecord(): EducationRecord {
   return {
@@ -445,10 +426,6 @@ function buildBlankEducationRecord(): EducationRecord {
     institutionCity: '',
     institutionCountry: '',
     certificationType: '',
-    startDateMonth: undefined,
-    startDateYear: undefined,
-    endDateMonth: undefined,
-    endDateYear: undefined,
     current: false,
   }
 }

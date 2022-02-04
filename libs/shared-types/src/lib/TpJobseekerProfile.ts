@@ -1,18 +1,21 @@
+import { Timestamp } from './Timestamp';
 import { EducationRecord } from './tp-jobseeker-profile-cv-shared-interfaces/EducationRecord'
 import { ExperienceRecord } from './tp-jobseeker-profile-cv-shared-interfaces/ExperienceRecord'
 import { HrSummit2021JobFairCompanyJobPreferenceRecord } from './tp-jobseeker-profile-cv-shared-interfaces/HrSummit2021JobFairCompanyJobPreferenceRecord'
 import { LanguageRecord } from './tp-jobseeker-profile-cv-shared-interfaces/LanguageRecord'
 import { ProjectRecord } from './tp-jobseeker-profile-cv-shared-interfaces/ProjectRecord'
-import { TpJobseekerProfileState } from './TpJobseekerProfileState'
+import { TpJobSeekerProfileState } from './TpJobSeekerProfileState'
 
-export type TpJobseekerProfile = {
+export type TpJobSeekerProfile =
+  & Timestamp
+  & {
   id: string
   firstName: string
   lastName: string
   contactEmail: string
   currentlyEnrolledInCourse: string
 
-  genderPronouns?: string
+  genderPronouns?: string // TODO use GenderKey?
 
   profileAvatarImageS3Key: string
 
@@ -42,10 +45,8 @@ export type TpJobseekerProfile = {
   education?: EducationRecord[]
   projects?: ProjectRecord[]
 
-  state: TpJobseekerProfileState
+  state: TpJobSeekerProfileState
 
-  createdAt: Date
-  updatedAt: Date
   gaveGdprConsentAt: Date
 
   hrSummit2021JobFairCompanyJobPreferences?: HrSummit2021JobFairCompanyJobPreferenceRecord[]

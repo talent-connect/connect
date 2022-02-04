@@ -1,12 +1,12 @@
 import {
   Button,
   Caption,
-  FormInput,
+  TextInput,
 } from '@talent-connect/shared-atomic-design-components'
 import { TpCompanyProfile } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
-import React, { useEffect, useMemo, useState } from 'react'
-import { Columns, Content, Element } from 'react-bulma-components'
+import { FC, useEffect, useMemo, useState } from 'react'
+import { Content, Element } from 'react-bulma-components'
 import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
 import { Editable } from '../../molecules/Editable'
@@ -17,7 +17,13 @@ interface Props {
   disableEditing?: boolean
 }
 
-export function EditableDetails({ profile, disableEditing }: Props) {
+interface EditableDetailsHelpers {
+  isSectionFilled: (profile: Partial<TpCompanyProfile>) => boolean;
+  isSectionEmpty: (profile: Partial<TpCompanyProfile>) => boolean;
+  isWebsiteSectionFilled: (profile: Partial<TpCompanyProfile>) => boolean;
+}
+
+export const EditableDetails: FC<Props> & EditableDetailsHelpers = ({ profile, disableEditing }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
@@ -27,10 +33,7 @@ export function EditableDetails({ profile, disableEditing }: Props) {
 
   return (
     <Editable
-      disableEditing={disableEditing}
-      isEditing={isEditing}
-      isFormDirty={isFormDirty}
-      setIsEditing={setIsEditing}
+      {...{ disableEditing, isEditing, isFormDirty, setIsEditing }}
       title="Details"
       readComponent={
         isEmpty ? (
@@ -51,16 +54,16 @@ export function EditableDetails({ profile, disableEditing }: Props) {
                 gridRowGap: '32px',
               }}
             >
-              {profile?.industry ? (
+              {profile?.industry && (
                 <div>
                   <Caption>Industry</Caption>
                   <Content>
                     <p>{profile.industry}</p>
                   </Content>
                 </div>
-              ) : null}
+              )}
 
-              {profile?.website || profile?.linkedInUrl ? (
+              {(profile?.website || profile?.linkedInUrl) && (
                 <div>
                   <Caption>Links</Caption>
                   <Content>
@@ -75,7 +78,7 @@ export function EditableDetails({ profile, disableEditing }: Props) {
                       ))}
                   </Content>
                 </div>
-              ) : null}
+              )}
             </div>
           </div>
         )
@@ -93,25 +96,28 @@ export function EditableDetails({ profile, disableEditing }: Props) {
   )
 }
 
-EditableDetails.isWebsiteSectionFilled = (profile: Partial<TpCompanyProfile>) =>
-  profile?.website
-EditableDetails.isSectionFilled = (profile: Partial<TpCompanyProfile>) =>
-  profile?.industry || profile?.website || profile?.linkedInUrl
+EditableDetails.isWebsiteSectionFilled = ({ website }: Partial<TpCompanyProfile>) =>
+  !!website
+
+EditableDetails.isSectionFilled = ({ website, industry, linkedInUrl }: Partial<TpCompanyProfile>) =>
+  !!industry || !!website || !!linkedInUrl
+
 EditableDetails.isSectionEmpty = (profile: Partial<TpCompanyProfile>) =>
   !EditableDetails.isSectionFilled(profile)
 
-function ModalForm({
+interface ModalFormProps {
+  setIsEditing: (boolean: boolean) => void
+  setIsFormDirty: (boolean: boolean) => void
+}
+
+const ModalForm: FC<ModalFormProps> = ({
   setIsEditing,
   setIsFormDirty,
-}: {
-  setIsEditing: (boolean) => void
-  setIsFormDirty: (boolean) => void
-}) {
+}) => {
   const { data: profile } = useTpCompanyProfileQuery()
   const mutation = useTpCompanyProfileUpdateMutation()
 
-  const initialValues: Partial<TpCompanyProfile> = useMemo(
-    () => ({
+  const initialValues = useMemo(() => ({
       industry: profile?.industry ?? '',
       website: profile?.website ?? '',
       linkedInUrl: profile?.linkedInUrl ?? '',
@@ -119,22 +125,19 @@ function ModalForm({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )
-  const onSubmit = (values: Partial<TpCompanyProfile>) => {
-    formik.setSubmitting(true)
-    mutation.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
-      },
-    })
-  }
-  const formik = useFormik({
+
+  const formik = useFormik<Partial<TpCompanyProfile>>({
     initialValues,
     enableReinitialize: true,
-    onSubmit,
+    onSubmit: (values, { setSubmitting }) => {
+      setSubmitting(true)
+      mutation.mutate(values, {
+        onSettled: () => setSubmitting(false),
+        onSuccess: () => setIsEditing(false),
+      })
+    },
   })
+
   useEffect(() => setIsFormDirty(formik.dirty), [formik.dirty, setIsFormDirty])
 
   return (
@@ -148,19 +151,19 @@ function ModalForm({
         This is where employers can get the basics that they need to get in
         touch and see your work.
       </Element>
-      <FormInput
+      <TextInput
         name="industry"
         placeholder="Company Software"
         label="Industry"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="website"
         placeholder="https://www.company.de"
         label="Website *"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="linkedInUrl"
         placeholder="https://www.linkedin.com/company-page"
         label="LinkedIn Page"

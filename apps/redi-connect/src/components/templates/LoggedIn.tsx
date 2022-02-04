@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect } from 'react'
+import { useEffect, FC } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
@@ -25,43 +25,42 @@ import { useTranslation } from 'react-i18next'
 import Footer from '../organisms/Footer'
 import { RedMatch } from '@talent-connect/shared-types'
 
-interface Props {
-  loading: boolean
-  children?: ReactNode
-  matches: RedMatch[]
-  matchesFetchStart: () => void
-  matchesMarkAsDismissed: (redMatchId: string) => void
-}
 
-const RediNotification: React.FC = ({ children }) => (
+const RediNotification: FC = ({ children }) => (
   <Notification className="account-not-active double-bs">
     <Icon
       className="account-not-active__icon"
       icon="mail"
       size="large"
       space="right"
-    />
+      />
     <Content dangerouslySetInnerHTML={{ __html: children }} />
   </Notification>
 )
 
-const LoggedIn = ({
+interface Props {
+  loading: boolean
+  matches: RedMatch[]
+  matchesFetchStart: () => void
+  matchesMarkAsDismissed: (redMatchId: string) => void
+}
+
+const LoggedIn: FC<Props> = ({
   loading,
-  children,
   matches,
   matchesFetchStart,
   matchesMarkAsDismissed,
-}: Props) => {
-  const profile = getRedProfileFromLocalStorage()
+  children
+}) => {
+  const { userType, firstName, userActivated } = getRedProfileFromLocalStorage()
   const history = useHistory()
-  const match = matches && matches.find((match) => match.status === 'accepted')
+  const match = matches?.find(({ status }) => status === 'accepted') || null
 
   const { t } = useTranslation()
 
   const isNewMatch =
-    profile.userType === 'mentee' &&
-    match &&
-    !match.hasMenteeDismissedMentorshipApplicationAcceptedNotification
+    userType === 'mentee' &&
+    !match?.hasMenteeDismissedMentorshipApplicationAcceptedNotification
 
   useEffect(() => {
     matchesFetchStart()
@@ -86,29 +85,29 @@ const LoggedIn = ({
               className="column--main-content"
             >
               <Loader loading={loading} />
-              {profile.userType === 'public-sign-up-mentee-pending-review' && (
+              {userType === 'public-sign-up-mentee-pending-review' && (
                 <RediNotification>
                   {t('loggedInArea.profile.notification.pendingMentee')}
                 </RediNotification>
               )}
-              {profile.userType === 'public-sign-up-mentor-pending-review' && (
+              {userType === 'public-sign-up-mentor-pending-review' && (
                 <RediNotification>
                   {t('loggedInArea.profile.notification.pendingMentor')}
                 </RediNotification>
               )}
-              {profile.userType === 'mentee' && !profile.userActivated && (
+              {userType === 'mentee' && !userActivated && (
                 <RediNotification>
                   {t('loggedInArea.profile.notification.deactivatedMentee', {
-                    name: profile.firstName,
+                    name: firstName,
                     email:
                       '<a href="mailto:paulina@redi-school.org">paulina@red-school.org</a>',
                   })}
                 </RediNotification>
               )}
-              {profile.userType === 'mentor' && !profile.userActivated && (
+              {userType === 'mentor' && !userActivated && (
                 <RediNotification>
                   {t('loggedInArea.profile.notification.deactivatedMentor', {
-                    name: profile.firstName,
+                    name: firstName,
                     email:
                       '<a href="mailto:miriam@redi-school.org">miriam@red-school.org</a>',
                   })}
@@ -123,11 +122,10 @@ const LoggedIn = ({
                   <Modal.Body>
                     <Content>
                       Hey{' '}
-                      <strong>{match.mentee && match.mentee.firstName}</strong>,
+                      <strong>{match.mentee?.firstName}</strong>,
                       good news!
                       <strong>
-                        {match.mentor &&
-                          ` ${match.mentor.firstName} ${match.mentor.lastName} `}
+                        {match.mentor && ` ${match.mentor.firstName} ${match.mentor.lastName} `}
                       </strong>
                       accepted your application. Here are already a few welcome
                       words from your new mentor.
@@ -155,16 +153,15 @@ const LoggedIn = ({
   )
 }
 
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: Function) => ({
   matchesFetchStart: () => dispatch(matchesFetchStart()),
   matchesMarkAsDismissed: (redMatchId: string) =>
     dispatch(matchesMarkAsDismissed(redMatchId)),
 })
 
-const mapStateToProps = (state: RootState) => ({
-  matches: state.matches.matches,
-  loading:
-    state.user.loading || state.profiles.loading || state.matches.loading,
+const mapStateToProps = ({ matches, user, profiles }: RootState) => ({
+  matches: matches.matches,
+  loading: user.loading || profiles.loading || matches.loading,
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoggedIn)

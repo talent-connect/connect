@@ -1,88 +1,41 @@
-import {
-  Button,
-  FormInput,
-  Heading,
-} from '@talent-connect/shared-atomic-design-components'
-import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
-import React, { useEffect, useState } from 'react'
-import { Columns, Content, Form } from 'react-bulma-components'
+import { FC, useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Link } from 'react-router-dom'
-import * as Yup from 'yup'
-import { showNotification } from '../../../components/AppNotification'
+import {
+  Button,
+  TextInput,
+  Heading,
+} from '@talent-connect/shared-atomic-design-components'
+import { Columns, Content, Form } from 'react-bulma-components'
 import AccountOperation from '../../../components/templates/AccountOperation'
-import { setPassword } from '../../../services/api/api'
 import { saveAccessTokenToLocalStorage } from '../../../services/auth/auth'
-import { history } from '../../../services/history/history'
-
-interface SetNewPasswordValues {
-  password: string
-  passwordConfirm: string
-}
-
-const initialValues: SetNewPasswordValues = {
-  password: '',
-  passwordConfirm: '',
-}
-
-const validationSchema = Yup.object({
-  password: Yup.string()
-    .min(8, 'Password must contain at least 8 characters')
-    .required('Enter your password')
-    .label('Password'),
-  passwordConfirm: Yup.string()
-    .required('Confirm your password')
-    .oneOf([Yup.ref('password')], 'Password does not match'),
-})
+import { componentForm } from './SetNewPassword.form';
 
 interface RouteParams {
   accessToken: string
 }
 
-export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
+export const SetNewPassword: FC<RouteComponentProps<RouteParams>> = ({
+  match: { params: { accessToken } }
+}) => {
   const [formError, setFormError] = useState<string>('')
   const [errorMsg, setErrorMsg] = useState<string>('')
 
   useEffect(() => {
-    const load = async () => {
-      const accessTokenStr = decodeURIComponent(props.match.params.accessToken)
-      let accessToken
+    (async () => {
+      const accessTokenStr = decodeURIComponent(accessToken)
       try {
-        accessToken = JSON.parse(accessTokenStr)
+        const accessToken = JSON.parse(accessTokenStr)
         saveAccessTokenToLocalStorage(accessToken)
         console.log('savetoken')
       } catch (err) {
         console.log('savetoken errp')
-        return setErrorMsg(
-          'Sorry, there seems to have been an error. Please try to reset your password again, or contact career@redi-school.org for assistance.'
-        )
+        return setErrorMsg('Sorry, there seems to have been an error. Please try to reset your password again, or contact career@redi-school.org for assistance.')
       }
-    }
-    load()
-  }, [props.match.params.accessToken])
+    })()
+  }, [accessToken])
 
-  const submitForm = async (
-    values: FormikValues,
-    actions: FormikActions<SetNewPasswordValues>
-  ) => {
-    try {
-      await setPassword(values.password)
-      showNotification("Your new password is set and you're logged in :)", {
-        variant: 'success',
-        autoHideDuration: 8000,
-      })
-      history.push('/app/me')
-    } catch (err) {
-      setFormError('Invalid username or password')
-    }
-    actions.setSubmitting(false)
-  }
-
-  const formik = useFormik({
-    initialValues: initialValues,
-    validationSchema,
-    onSubmit: submitForm,
-  })
+  const formik = componentForm({ setFormError });
 
   return (
     <AccountOperation>
@@ -100,17 +53,17 @@ export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
 
           {formError && { formError }}
           <form onSubmit={(e) => e.preventDefault()}>
-            <FormInput
+            <TextInput
               name="password"
               type="password"
               placeholder="Password"
               {...formik}
             />
 
-            <FormInput
+            <TextInput
               name="passwordConfirm"
               type="password"
-              placeholder="Repeat rassword"
+              placeholder="Repeat password"
               {...formik}
             />
 

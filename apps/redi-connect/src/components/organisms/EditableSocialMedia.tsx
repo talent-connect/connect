@@ -1,15 +1,14 @@
-import React from 'react'
-import { FormInput } from '@talent-connect/shared-atomic-design-components'
+import { FC } from 'react'
+import { connect } from 'react-redux'
+import * as Yup from 'yup'
+import { useFormik } from 'formik'
+
+import { TextInput } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile } from '@talent-connect/shared-types'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
-
 import { profileSaveStart } from '../../redux/user/actions'
-import * as Yup from 'yup'
-
-import { FormikValues, useFormik } from 'formik'
 import { ReadSocialMedia } from '../molecules'
+import { mapStateToProps } from '../../helpers';
 
 export interface SocialMediaFormValues {
   linkedInProfileUrl: string
@@ -18,31 +17,40 @@ export interface SocialMediaFormValues {
 }
 
 const validationSchema = Yup.object({
-  linkedInProfileUrl: Yup.string().max(255).url().label('LinkedIn Profile'),
-  githubProfileUrl: Yup.string().max(255).url().label('Github Profile'),
-  slackUsername: Yup.string().max(255).label('Slack username'),
+  linkedInProfileUrl: Yup.string()
+    .max(255)
+    .url()
+    .label('LinkedIn Profile'),
+  githubProfileUrl: Yup.string()
+    .max(255)
+    .url()
+    .label('Github Profile'),
+  slackUsername: Yup.string()
+    .max(255)
+    .label('Slack username'),
 })
 
-// props: FormikProps<AboutFormValues>
-const EditableSocialMedia = ({ profile, profileSaveStart }: any) => {
-  const { id, linkedInProfileUrl, githubProfileUrl, slackUsername } = profile
+interface Props {
+  profile: RedProfile
+  profileSaveStart: (arg: SocialMediaFormValues & { id: string }) => void
+}
 
-  const submitForm = async (values: FormikValues) => {
-    const profileSocialMedia = values as Partial<RedProfile>
-    profileSaveStart({ ...profileSocialMedia, id })
-  }
+const EditableSocialMedia: FC<Props> = ({
+  profile: { id, linkedInProfileUrl, githubProfileUrl, slackUsername },
+  profileSaveStart
+}) => {
 
-  const initialValues: SocialMediaFormValues = {
-    linkedInProfileUrl,
-    githubProfileUrl,
-    slackUsername,
-  }
-
-  const formik = useFormik({
-    initialValues,
+  const formik = useFormik<SocialMediaFormValues>({
+    initialValues: {
+      linkedInProfileUrl,
+      githubProfileUrl,
+      slackUsername,
+    },
     enableReinitialize: true,
     validationSchema,
-    onSubmit: submitForm,
+    onSubmit: (profileSocialMedia: SocialMediaFormValues) => {
+      profileSaveStart({ ...profileSocialMedia, id })
+    },
   })
 
   return (
@@ -53,19 +61,19 @@ const EditableSocialMedia = ({ profile, profileSaveStart }: any) => {
       savePossible={formik.dirty && formik.isValid}
       read={<ReadSocialMedia.Me />}
     >
-      <FormInput
+      <TextInput
         name="linkedInProfileUrl"
         placeholder="LinkedIn Profile"
         label="LinkedIn Profile"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="githubProfileUrl"
         placeholder="Github Profile"
         label="Github Profile"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="slackUsername"
         placeholder="Username in ReDI Slack"
         label="Username in ReDI Slack"
@@ -75,11 +83,7 @@ const EditableSocialMedia = ({ profile, profileSaveStart }: any) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile,
-})
-
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: Function) => ({
   profileSaveStart: (profile: Partial<RedProfile>) =>
     dispatch(profileSaveStart(profile)),
 })

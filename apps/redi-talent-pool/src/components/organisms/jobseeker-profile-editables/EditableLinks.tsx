@@ -1,37 +1,49 @@
 import {
   Button,
-  FormInput,
+  TextInput,
 } from '@talent-connect/shared-atomic-design-components'
-import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
+import { TpJobSeekerCv, TpJobSeekerProfile } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
-import React, { useEffect, useMemo, useState } from 'react'
-import {
-  Content,
-  Element,
-  Form,
-  Button as BulmaButton,
-} from 'react-bulma-components'
+import { useEffect, useMemo, useState, FC } from 'react'
+import { Content, Element } from 'react-bulma-components'
 import { UseMutationResult, UseQueryResult } from 'react-query'
 import * as Yup from 'yup'
-import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobSeekerProfileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
+import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
+function buildAllLinksArray(profile: Partial<TpJobSeekerProfile>): string[] {
+  return [
+    profile?.personalWebsite,
+    profile?.githubUrl,
+    profile?.linkedInUrl,
+    profile?.twitterUrl,
+    profile?.behanceUrl,
+    profile?.stackOverflowUrl,
+    profile?.dribbbleUrl,
+  ]
+}
+
 interface Props {
-  profile?: Partial<TpJobseekerProfile>
+  profile?: Partial<TpJobSeekerProfile>
   disableEditing?: boolean
 }
 
-export function EditableLinks({
+interface EditableLinksHelpers {
+  isSectionFilled: (profile: Partial<TpJobSeekerProfile>) => boolean;
+  isSectionEmpty: (profile: Partial<TpJobSeekerProfile>) => boolean;
+}
+
+export const EditableLinks: FC<Props> & EditableLinksHelpers = ({
   profile: overridingProfile,
   disableEditing,
-}: Props) {
-  const queryHookResult = useTpJobseekerProfileQuery({
+}) => {
+  const queryHookResult = useTpJobSeekerProfileQuery({
     enabled: !disableEditing,
   })
   if (overridingProfile) queryHookResult.data = overridingProfile
-  const mutationHookResult = useTpjobseekerprofileUpdateMutation()
+  const mutationHookResult = useTpJobSeekerProfileUpdateMutation()
   const { data: profile } = queryHookResult
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
@@ -74,7 +86,7 @@ export function EditableLinks({
       modalTitle="Your online presence"
       modalHeadline="Links"
       modalBody={
-        <JobseekerFormSectionLinks
+        <JobSeekerFormSectionLinks
           setIsEditing={setIsEditing}
           setIsFormDirty={setIsFormDirty}
           queryHookResult={queryHookResult}
@@ -86,22 +98,13 @@ export function EditableLinks({
   )
 }
 
-function buildAllLinksArray(profile: Partial<TpJobseekerProfile>): string[] {
-  return [
-    profile?.personalWebsite,
-    profile?.githubUrl,
-    profile?.linkedInUrl,
-    profile?.twitterUrl,
-    profile?.behanceUrl,
-    profile?.stackOverflowUrl,
-    profile?.dribbbleUrl,
-  ]
-}
-
-EditableLinks.isSectionFilled = (profile: Partial<TpJobseekerProfile>) =>
+EditableLinks.isSectionFilled = (profile: Partial<TpJobSeekerProfile>) =>
   buildAllLinksArray(profile).some((p) => p)
-EditableLinks.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
+
+EditableLinks.isSectionEmpty = (profile: Partial<TpJobSeekerProfile>) =>
   !EditableLinks.isSectionFilled(profile)
+
+// #####################################################################
 
 const validationSchema = Yup.object({
   personalWebsite: Yup.string().url().label('Personal website URL'),
@@ -113,32 +116,31 @@ const validationSchema = Yup.object({
   dribbbleUrl: Yup.string().url().label('Dribbble profile URL'),
 })
 
-interface JobseekerFormSectionLinksProps {
-  setIsEditing: (boolean) => void
-  setIsFormDirty?: (boolean) => void
+interface JobSeekerFormSectionLinksProps {
+  setIsEditing: (boolean: boolean) => void
+  setIsFormDirty?: (boolean: boolean) => void
   queryHookResult: UseQueryResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobSeekerProfile | TpJobSeekerCv>,
     unknown
   >
   mutationHookResult: UseMutationResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobSeekerProfile | TpJobSeekerCv>,
     unknown,
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobSeekerProfile | TpJobSeekerCv>,
     unknown
   >
 }
 
-export function JobseekerFormSectionLinks({
+export const JobSeekerFormSectionLinks: FC<JobSeekerFormSectionLinksProps> = ({
   setIsEditing,
   setIsFormDirty,
   queryHookResult,
   mutationHookResult,
-}: JobseekerFormSectionLinksProps) {
+}) => {
   const { data: profile } = queryHookResult
   const mutation = mutationHookResult
 
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(
-    () => ({
+  const initialValues = useMemo(() => ({
       personalWebsite: profile?.personalWebsite ?? '',
       githubUrl: profile?.githubUrl ?? '',
       linkedInUrl: profile?.linkedInUrl ?? '',
@@ -157,28 +159,26 @@ export function JobseekerFormSectionLinks({
       profile?.twitterUrl,
     ]
   )
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
-    formik.setSubmitting(true)
-    mutation.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
-      },
-    })
-  }
-  const formik = useFormik({
+
+  const formik = useFormik<Partial<TpJobSeekerProfile>>({
     initialValues,
     validationSchema,
     enableReinitialize: true,
-    onSubmit,
     validateOnMount: true,
+    onSubmit: (values, { setSubmitting }) => {
+      setSubmitting(true)
+      mutation.mutate(values, {
+        onSettled: () => setSubmitting(false),
+        onSuccess: () => setIsEditing(false),
+      })
+    },
   })
+
   useEffect(() => setIsFormDirty?.(formik.dirty), [
     formik.dirty,
     setIsFormDirty,
   ])
+
   return (
     <>
       <Element
@@ -190,43 +190,43 @@ export function JobseekerFormSectionLinks({
         Include links to where you have online profiles.
       </Element>
 
-      <FormInput
+      <TextInput
         name="personalWebsite"
         placeholder="https://www.mysite.com"
         label="Personal Website"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="githubUrl"
         placeholder="https://github.com/myusername"
         label="Github URL"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="linkedInUrl"
         placeholder="https://linkedin.com/in/firstname-lastname"
         label="LinkedIn Profile URL"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="twitterUrl"
         placeholder="https://twitter.com/mytwitterpage"
         label="Your twitter page URL"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="behanceUrl"
         placeholder="https://behance.net/mybehancepage"
         label="Your Behance page URL"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="stackOverflowUrl"
         placeholder="https://stackoverflow.com/users/mypage"
         label="Your Stackoverflow profile"
         {...formik}
       />
-      <FormInput
+      <TextInput
         name="dribbbleUrl"
         placeholder="https://dribbble.com/mypage"
         label="Your Dribbble Page"
@@ -250,11 +250,11 @@ export function JobseekerFormSectionLinks({
   )
 }
 
-const summaryTips = `Write not more than 3-4 sentences.
-<br /><br />
-Make sure you talk about:<br />
-1. Who are you? - Include your professional title and past relevant experiences or education with key funcitons.
-<br /><br />
-2. What do you have to offer?- Emphasize your strenghts and skills that matter in your desired job, mention notable achievements, projects.
-<br /><br />
-3. What is your goal?- Emplain how you want to add value and how your approach problems that your are passionate to solve.`
+// const summaryTips = `Write not more than 3-4 sentences. // TODO: remove?
+// <br /><br />
+// Make sure you talk about:<br />
+// 1. Who are you? - Include your professional title and past relevant experiences or education with key functions.
+// <br /><br />
+// 2. What do you have to offer?- Emphasize your strengths and skills that matter in your desired job, mention notable achievements, projects.
+// <br /><br />
+// 3. What is your goal?- Explain how you want to add value and how your approach problems that your are passionate to solve.`

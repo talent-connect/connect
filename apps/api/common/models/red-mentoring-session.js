@@ -1,10 +1,10 @@
-'use strict'
+'use strict';
 
-const Rx = require('rxjs')
-const { switchMap } = require('rxjs/operators')
+const Rx = require('rxjs');
+const { switchMap } = require('rxjs/operators');
 
-const app = require('../../server/server')
-const { sendMentoringSessionLoggedEmail } = require('../../lib/email/email')
+const app = require('../../server/server');
+const { sendMentoringSessionLoggedEmail } = require('../../lib/email/email');
 
 module.exports = function (RedMentoringSession) {
   // IMPORTANT ACL-related method: this combines with the ACL $authenticated-can-execute-find,
@@ -13,16 +13,16 @@ module.exports = function (RedMentoringSession) {
   // is used.
   RedMentoringSession.observe(
     'access',
-    function onlyMatchesRelatedToCurrentUser(ctx, next) {
-      if (!ctx.options.currentUser) return next()
+    function onlyMatchesRelatedToCurrentUser (ctx, next) {
+      if (!ctx.options.currentUser) return next();
 
-      const currentUserProfileId = ctx.options.currentUser.redProfile.id
+      const currentUserProfileId = ctx.options.currentUser.redProfile.id;
 
       // TODO: this one is included (as of writing) only for convenience in admin panel.
       // Considering putting in a if(adminUser) block
-      ctx.query.include = ['mentor', 'mentee']
+      ctx.query.include = ['mentor', 'mentee'];
 
-      if (!ctx.query.where) ctx.query.where = {}
+      if (!ctx.query.where) ctx.query.where = {};
 
       // TODO: Replace this with role-based 'admin' role check
       if (ctx.options.currentUser.email !== 'cloud-accounts@redi-school.org') {
@@ -31,29 +31,27 @@ module.exports = function (RedMentoringSession) {
             { mentorId: currentUserProfileId },
             { menteeId: currentUserProfileId },
           ],
-        }
-        const existingWhere = ctx.query.where
-        if (Object.values(existingWhere).length > 0) {
-          ctx.query.where = { and: [currentUserMenteeOrMentor, existingWhere] }
-        } else {
-          ctx.query.where = currentUserMenteeOrMentor
-        }
+        };
+        const existingWhere = ctx.query.where;
+        ctx.query.where = Object.values(existingWhere).length
+          ? { and: [currentUserMenteeOrMentor, existingWhere] }
+          : currentUserMenteeOrMentor;
       }
 
-      next()
+      next();
     }
-  )
+  );
 
   RedMentoringSession.observe(
     'before save',
-    async function updateTimestamp(ctx, next) {
+    async function updateTimestamp (ctx, next) {
       if (ctx.options.currentUser.email !== 'cloud-accounts@redi-school.org') {
         if (ctx.instance) {
           if (ctx.isNewInstance) {
-            ctx.instance.mentorId = ctx.options.currentUser.redProfile.id
+            ctx.instance.mentorId = ctx.options.currentUser.redProfile.id;
             const findOneRedProfile = Rx.bindNodeCallback(
               app.models.RedProfile.findOne.bind(app.models.RedProfile)
-            )
+            );
             Rx.zip(
               findOneRedProfile({ where: { id: ctx.instance.mentorId } }),
               findOneRedProfile({ where: { id: ctx.instance.menteeId } })
@@ -69,35 +67,35 @@ module.exports = function (RedMentoringSession) {
                   })
                 )
               )
-              .subscribe()
+              .subscribe();
           }
         }
       }
 
       if (ctx.instance) {
         if (ctx.isNewInstance) {
-          ctx.instance.createdAt = new Date()
+          ctx.instance.createdAt = new Date();
         }
-        ctx.instance.updatedAt = new Date()
+        ctx.instance.updatedAt = new Date();
       } else {
-        ctx.data.updatedAt = new Date()
+        ctx.data.updatedAt = new Date();
       }
 
-      const RedProfile = app.models.RedProfile
+      const RedProfile = app.models.RedProfile;
 
       if (process.env.NODE_ENV !== 'seeding') {
         if (ctx.instance) {
-          const mentee = await RedProfile.findById(ctx.instance.menteeId)
-          const menteeRediLocation = mentee.toJSON().rediLocation
-          ctx.instance.rediLocation = menteeRediLocation
+          const mentee = await RedProfile.findById(ctx.instance.menteeId);
+          const menteeRediLocation = mentee.toJSON().rediLocation;
+          ctx.instance.rediLocation = menteeRediLocation;
         } else {
-          const mentee = await RedProfile.findById(ctx.data.menteeId)
-          const menteeRediLocation = mentee.toJSON().rediLocation
-          ctx.data.rediLocation = menteeRediLocation
+          const mentee = await RedProfile.findById(ctx.data.menteeId);
+          const menteeRediLocation = mentee.toJSON().rediLocation;
+          ctx.data.rediLocation = menteeRediLocation;
         }
       }
 
-      next()
+      next();
     }
-  )
-}
+  );
+};

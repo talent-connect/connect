@@ -13,7 +13,7 @@ import ErrorIcon from '@material-ui/icons/Error'
 import InfoIcon from '@material-ui/icons/Info'
 import WarningIcon from '@material-ui/icons/Warning'
 import clsx from 'clsx'
-import React, { useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { Subject } from 'rxjs'
 import { Optional } from 'utility-types'
 
@@ -58,7 +58,7 @@ const useNotificationStyles = makeStyles((theme: Theme) => ({
 
 export interface AppNotificationOptions {
   variant: NotificationVariant
-  autoHideDuration: number | undefined
+  autoHideDuration: number | null
 }
 interface SubjectShowNotification extends AppNotificationOptions {
   message: string | null
@@ -79,7 +79,7 @@ export const showNotification = (
 
 export const hideNotification = () => subjectHideNotification.next()
 
-export function AppNotification() {
+export const AppNotification: FC = () => {
   const [state, setState] = useState<AppNotificationState>(null)
 
   const show = (options: SubjectShowNotification) => {
@@ -116,12 +116,9 @@ export function AppNotification() {
         className={state ? styleClasses[state.variant] : ''}
         message={
           <span className={styleClasses.message}>
-            {Icon && (
-              <Icon
-                className={clsx(styleClasses.icon, styleClasses.iconVariant)}
-              />
-            )}
-            {state && state.message}
+            {Icon &&
+              <Icon className={clsx(styleClasses.icon, styleClasses.iconVariant)}/>}
+            {state?.message}
           </span>
         }
         action={[

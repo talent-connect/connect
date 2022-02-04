@@ -21,17 +21,17 @@
         "nestRemoting": true
       }
     },
-    "tpJobseekerProfile": {
+    "tpJobSeekerProfile": {
       "type": "hasOne",
-      "model": "TpJobseekerProfile",
+      "model": "TpJobSeekerProfile",
       "foreignKey": "",
       "options": {
         "nestRemoting": true
       }
     },
-    "tpJobseekerCv": {
+    "tpJobSeekerCv": {
       "type": "hasMany",
-      "model": "TpJobseekerCv",
+      "model": "TpJobSeekerCv",
       "foreignKey": "",
       "options": {
         "nestRemoting": true
@@ -64,16 +64,16 @@
         "__create__redProfile",
         "__update__redProfile",
         "__get__redProfile",
-        "__create__tpJobseekerProfile",
-        "__update__tpJobseekerProfile",
-        "__get__tpJobseekerProfile",
-        "__create__tpJobseekerCv",
-        "__update__tpJobseekerCv",
-        "__get__tpJobseekerCv",
-        "__findById__tpJobseekerCv",
-        "__updateById__tpJobseekerCv",
-        "__destroyById__tpJobseekerCv",
-        "__delete__tpJobseekerCv",
+        "__create__tpJobSeekerProfile",
+        "__update__tpJobSeekerProfile",
+        "__get__tpJobSeekerProfile",
+        "__create__tpJobSeekerCv",
+        "__update__tpJobSeekerCv",
+        "__get__tpJobSeekerCv",
+        "__findById__tpJobSeekerCv",
+        "__updateById__tpJobSeekerCv",
+        "__destroyById__tpJobSeekerCv",
+        "__delete__tpJobSeekerCv",
         "__create__tpCompanyProfile",
         "__update__tpCompanyProfile",
         "__get__tpCompanyProfile",

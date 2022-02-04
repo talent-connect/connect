@@ -1,58 +1,61 @@
-import React from 'react'
+import { FC } from 'react'
 import { subYears } from 'date-fns'
+import { connect } from 'react-redux'
+import * as Yup from 'yup'
+import { useFormik } from 'formik'
 
 import {
   FormDatePicker,
-  FormInput,
   FormSelect,
 } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile } from '@talent-connect/shared-types'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
 
 import { profileSaveStart } from '../../redux/user/actions'
-import * as Yup from 'yup'
 
-import { FormikValues, useFormik } from 'formik'
 
 import { GENDERS } from '@talent-connect/shared-config'
 import { ReadPersonalDetail } from '../molecules'
 
-import { objectEntries, objectKeys } from '@talent-connect/typescript-utilities'
+import { mapOptionsObject, objectKeys } from '@talent-connect/typescript-utilities'
+import { mapStateToProps } from '../../helpers';
 
-const formGenders = objectEntries(GENDERS).map(([value, label]) => ({
-  value,
-  label,
-}))
+const formGenders = mapOptionsObject(GENDERS)
+
 export interface PersonalDetailFormValues {
   gender: string
   birthDate: Date | null
 }
 
 const validationSchema = Yup.object({
-  gender: Yup.string().oneOf(objectKeys(GENDERS)).label('Gender'),
-  birthDate: Yup.date().nullable(true).label('Date'),
+  gender: Yup.string()
+    .oneOf(objectKeys(GENDERS))
+    .label('Gender'),
+  birthDate: Yup.date()
+    .nullable(true)
+    .label('Date'),
 })
 
-const EditablePersonalDetail = ({ profile, profileSaveStart }: any) => {
-  const { id, gender, birthDate } = profile
+interface Props {
+  profile: RedProfile
+  profileSaveStart: (arg: PersonalDetailFormValues & { id: string}) => void
+}
 
-  const submitForm = async (values: FormikValues) => {
-    const personalDetail = values as Partial<RedProfile>
-    profileSaveStart({ ...personalDetail, id })
-  }
+const EditablePersonalDetail: FC<Props> = ({
+  profile: { id, gender, birthDate },
+  profileSaveStart
+}) => {
 
-  const initialValues: PersonalDetailFormValues = {
-    gender,
-    birthDate: birthDate ? new Date(birthDate) : null,
-  }
-
-  const formik = useFormik({
-    initialValues,
+  const formik = useFormik<PersonalDetailFormValues>({
+    initialValues: {
+      gender,
+      birthDate: birthDate ? new Date(birthDate) : null,
+    },
     enableReinitialize: true,
     validationSchema,
-    onSubmit: submitForm,
+    onSubmit: (personalDetail) => {
+      profileSaveStart({ ...personalDetail, id })
+    },
   })
 
   return (
@@ -88,16 +91,9 @@ const EditablePersonalDetail = ({ profile, profileSaveStart }: any) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile,
-})
-
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: Function) => ({
   profileSaveStart: (profile: Partial<RedProfile>) =>
-    dispatch(profileSaveStart(profile)),
+    dispatch(profileSaveStart(profile))
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EditablePersonalDetail)
+export default connect(mapStateToProps, mapDispatchToProps)(EditablePersonalDetail)

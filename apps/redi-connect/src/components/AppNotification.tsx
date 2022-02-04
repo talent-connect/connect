@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect, FC } from 'react'
 import {
   Snackbar,
   Slide,
@@ -58,7 +58,7 @@ const useNotificationStyles = makeStyles((theme: Theme) => ({
 
 export interface AppNotificationOptions {
   variant: NotificationVariant
-  autoHideDuration: number | undefined
+  autoHideDuration: number | null
 }
 interface SubjectShowNotification extends AppNotificationOptions {
   message: string | null
@@ -79,7 +79,7 @@ export const showNotification = (
 
 export const hideNotification = () => subjectHideNotification.next()
 
-export function AppNotification() {
+export const AppNotification: FC = () => {
   const [state, setState] = useState<AppNotificationState>(null)
 
   const show = (options: SubjectShowNotification) => {
@@ -99,7 +99,7 @@ export function AppNotification() {
 
   const styleClasses = useNotificationStyles()
 
-  const Icon = state ? variantIcon[state.variant] : null
+  const Icon = variantIcon[state?.variant] || null
 
   return (
     <Snackbar
@@ -121,7 +121,7 @@ export function AppNotification() {
                 className={clsx(styleClasses.icon, styleClasses.iconVariant)}
               />
             )}
-            {state && state.message}
+            {state?.message}
           </span>
         }
         action={[

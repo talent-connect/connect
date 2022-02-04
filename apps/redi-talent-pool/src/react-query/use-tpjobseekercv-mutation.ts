@@ -1,51 +1,49 @@
 import { useMutation, useQueryClient } from 'react-query'
 import {
-  createCurrentUserTpJobseekerCv,
-  deleteCurrentUserTpJobseekerCv,
-  updateCurrentUserTpJobseekerCv,
+  createCurrentUserTpJobSeekerCv,
+  deleteCurrentUserTpJobSeekerCv,
+  updateCurrentUserTpJobSeekerCv,
 } from '../services/api/api'
 
-export function useTpjobseekerCvCreateMutation() {
+export function useTpJobSeekerCvCreateMutation() {
   const queryClient = useQueryClient()
 
   return useMutation(
-    'currentUserTpJobseekerCvCreate',
-    createCurrentUserTpJobseekerCv(),
+    'currentUserTpJobSeekerCvCreate',
+    createCurrentUserTpJobSeekerCv(),
     {
       onSuccess: (data) => {
-        queryClient.invalidateQueries('allCurrentUserTpJobseekerCv')
-        queryClient.setQueryData('currentUserTpJobseekerCvCreate', data)
+        queryClient.invalidateQueries('allCurrentUserTpJobSeekerCv')
+        queryClient.setQueryData('currentUserTpJobSeekerCvCreate', data)
       },
     }
   )
 }
 
-export function useTpjobseekerCvUpdateMutation(id: string) {
+export function useTpJobSeekerCvUpdateMutation(id: string) {
   const queryClient = useQueryClient()
 
   return useMutation(
-    'currentUserTpJobseekerCvUpdate',
-    updateCurrentUserTpJobseekerCv(id),
+    'currentUserTpJobSeekerCvUpdate',
+    updateCurrentUserTpJobSeekerCv(id),
     {
       onSuccess: (data) => {
-        queryClient.invalidateQueries('allCurrentUserTpJobseekerCv')
-        queryClient.invalidateQueries(['currentUserTpJobseekerCv', id])
-        queryClient.setQueryData('currentUserTpJobseekerCvUpdate', data)
+        queryClient.invalidateQueries('allCurrentUserTpJobSeekerCv')
+        queryClient.invalidateQueries(['currentUserTpJobSeekerCv', id])
+        queryClient.setQueryData('currentUserTpJobSeekerCvUpdate', data)
       },
     }
   )
 }
 
-export function useTpjobseekerCvDeleteMutation(id: string) {
+export function useTpJobSeekerCvDeleteMutation(id: string) {
   const queryClient = useQueryClient()
 
   return useMutation(
-    'currentUserTpJobseekerCvDelete',
-    deleteCurrentUserTpJobseekerCv(id),
+    'currentUserTpJobSeekerCvDelete',
+    deleteCurrentUserTpJobSeekerCv(id),
     {
-      onSuccess: () => {
-        queryClient.invalidateQueries('allCurrentUserTpJobseekerCv')
-      },
+      onSuccess: () => queryClient.invalidateQueries('allCurrentUserTpJobSeekerCv'),
     }
   )
 }

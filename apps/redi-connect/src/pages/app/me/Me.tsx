@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react'
+import { FC, useEffect } from 'react'
 import { connect } from 'react-redux'
+
 import { RootState } from '../../../redux/types'
 import { profileFetchStart } from '../../../redux/user/actions'
 import { Columns, Content, Element } from 'react-bulma-components'
@@ -22,9 +23,23 @@ import {
 } from '../../../components/organisms'
 
 import { LoggedIn } from '../../../components/templates'
+import { RedProfile } from '@talent-connect/shared-types';
 // CHECK OUT THE LOADER
 
-const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
+interface Props {
+  loading: boolean;
+  saveResult: 'error' | 'submitting',
+  profileFetchStart: () => void,
+  profile: RedProfile
+}
+
+const Me: FC<Props> = ({
+  loading,
+  saveResult,
+  profileFetchStart,
+  profile
+}) => {
+  const { userType, firstName } = profile;
   useEffect(() => {
     profileFetchStart()
   }, [profileFetchStart])
@@ -32,12 +47,10 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
   if (loading) return <Loader loading={true} />
 
   const userIsMentee =
-    profile.userType === 'mentee' ||
-    profile.userType === 'public-sign-up-mentee-pending-review'
+    userType === 'mentee' || userType === 'public-sign-up-mentee-pending-review'
 
   const userIsMentor =
-    profile.userType === 'mentor' ||
-    profile.userType === 'public-sign-up-mentor-pending-review'
+    userType === 'mentor' || userType === 'public-sign-up-mentor-pending-review'
 
   return (
     <LoggedIn>
@@ -46,10 +59,10 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
 
       <Columns vCentered breakpoint="mobile" className="oneandhalf-bs">
         <Columns.Column size={3}>
-          <Avatar.Editable />
+          <Avatar.Editable {...{ profile, profileSaveStart }}/>
         </Columns.Column>
         <Columns.Column size={8}>
-          <Heading>Hi, {profile.firstName}</Heading>
+          <Heading>Hi, {firstName}</Heading>
           <Content
             size="medium"
             renderAs="p"
@@ -141,13 +154,10 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  saveResult: state.user.saveResult,
-  loading: state.user.loading,
-  profile: state.user.profile,
-})
+const mapStateToProps = ({ user: { saveResult, loading, profile } }: RootState) =>
+  ({ saveResult, loading, profile })
 
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: Function) => ({
   profileFetchStart: () => dispatch(profileFetchStart()),
 })
 

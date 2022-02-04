@@ -1,7 +1,9 @@
-export const TpJobseekerProfileState = {
+import { Values } from '@talent-connect/typescript-utilities';
+
+export const TpJobSeekerProfileState = {
   'drafting-profile': 'drafting-profile',
   'submitted-for-review': 'submitted-for-review',
   'profile-approved': 'profile-approved',
 } as const
-export type TpJobseekerProfileState =
-  typeof TpJobseekerProfileState[keyof typeof TpJobseekerProfileState]
+
+export type TpJobSeekerProfileState = Values<typeof TpJobSeekerProfileState>

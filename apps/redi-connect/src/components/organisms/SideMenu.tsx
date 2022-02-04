@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import { FC } from 'react'
 import { getRedProfileFromLocalStorage } from '../../services/auth/auth'
 import './SideMenu.scss'
 import { NavLink } from 'react-router-dom'
@@ -8,10 +8,9 @@ import { ReactComponent as Profile } from '../../assets/images/profile.svg'
 
 interface MenuItemProps {
   url: string
-  children: ReactNode
 }
 
-const MenuItem = ({ url, children }: MenuItemProps) => (
+const MenuItem: FC<MenuItemProps> = ({ url, children }) => (
   <li className="side-menu__item">
     <NavLink
       to={url}
@@ -23,19 +22,15 @@ const MenuItem = ({ url, children }: MenuItemProps) => (
   </li>
 )
 
-const SideMenu = () => {
-  const profile = getRedProfileFromLocalStorage()
-  const isActivatedMentor =
-    profile.userType === 'mentor' && profile.userActivated
-  const isActivatedMentee =
-    profile.userType === 'mentee' && profile.userActivated
+const SideMenu: FC = () => {
+  const { userType, userActivated, ifUserIsMentee_hasActiveMentor  } = getRedProfileFromLocalStorage()
+  const isActivatedMentor = userType === 'mentor' && userActivated
+  const isActivatedMentee = userType === 'mentee' && userActivated
   const isMentee =
     isActivatedMentee ||
-    profile.userType === 'public-sign-up-mentee-pending-review'
-  const isMenteeWithoutMentor =
-    isMentee && !profile.ifUserIsMentee_hasActiveMentor
-  const isMenteeWithMentor =
-    isActivatedMentee && profile.ifUserIsMentee_hasActiveMentor
+    userType === 'public-sign-up-mentee-pending-review'
+  const isMenteeWithoutMentor = isMentee && !ifUserIsMentee_hasActiveMentor
+  const isMenteeWithMentor = isActivatedMentee && ifUserIsMentee_hasActiveMentor
 
   return (
     <ul className="side-menu">

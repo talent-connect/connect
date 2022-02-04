@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
+import { FC, useState } from 'react'
 import { connect } from 'react-redux'
 import _uniqueId from 'lodash/uniqueId'
-import * as Yup from 'yup'
 import moment from 'moment'
 import {
   Button,
@@ -15,18 +14,15 @@ import {
   RedMentoringSession,
   FormSubmitResult,
 } from '@talent-connect/shared-types'
-import { useFormik, FormikHelpers } from 'formik'
-import {
-  MentoringSessionDurationOption,
-  MENTORING_SESSION_DURATION_OPTIONS,
-} from '@talent-connect/shared-config'
+import { MENTORING_SESSION_DURATION_OPTIONS } from '@talent-connect/shared-config'
 import { mentoringSessionsCreateStart } from '../../../redux/mentoringSessions/actions'
 import './MSessions.scss'
+import { componentForm } from './MSessions.form';
 
-const formMentoringSessionDurationOptions =
-  MENTORING_SESSION_DURATION_OPTIONS.map((sesstionDuration) => ({
-    value: sesstionDuration,
-    label: `${sesstionDuration} min`,
+const formMentoringSessionDurationOptions = MENTORING_SESSION_DURATION_OPTIONS
+  .map((sessionDuration) => ({
+    value: sessionDuration,
+    label: `${sessionDuration} min`,
   }))
 
 interface AddSessionProps {
@@ -41,22 +37,6 @@ const AddSession = ({ onClickHandler }: AddSessionProps) => (
   />
 )
 
-interface FormValues {
-  date: Date
-  minuteDuration?: MentoringSessionDurationOption
-}
-
-const initialFormValues: FormValues = {
-  date: new Date(),
-}
-
-const validationSchema = Yup.object({
-  date: Yup.date().required().label('Date'),
-  minuteDuration: Yup.number()
-    .required('Please select the duration of the session.')
-    .oneOf([...MENTORING_SESSION_DURATION_OPTIONS], 'Please select a duration'),
-})
-
 interface MSessions {
   sessions: RedMentoringSession[]
   menteeId: string
@@ -64,51 +44,27 @@ interface MSessions {
   mentoringSessionsCreateStart: (mentoringSession: RedMentoringSession) => void
 }
 
-const MSessions = ({
+const MSessions: FC<MSessions> = ({
   sessions,
   menteeId,
   editable,
   mentoringSessionsCreateStart,
-}: MSessions) => {
+}) => {
   const [showAddSession, setShowAddSession] = useState(false)
   const [submitResult, setSubmitResult] =
     useState<FormSubmitResult>('notSubmitted')
-
-  const submitForm = async (
-    values: FormValues,
-    actions: FormikHelpers<FormValues>
-  ) => {
-    setSubmitResult('submitting')
-    try {
-      const mentoringSession: RedMentoringSession = {
-        date: values.date,
-        minuteDuration: Number(
-          values.minuteDuration
-        ) as MentoringSessionDurationOption,
-        menteeId: menteeId,
-      }
-      await mentoringSessionsCreateStart(mentoringSession)
-      setSubmitResult('success')
-      setShowAddSession(false)
-      setTimeout(() => window.location.reload(), 2000)
-    } catch (err) {
-      setSubmitResult('error')
-    } finally {
-      actions.setSubmitting(false)
-    }
-  }
 
   const handleCancel = () => {
     setShowAddSession(false)
     formik.resetForm()
   }
 
-  const formik = useFormik({
-    enableReinitialize: true,
-    initialValues: initialFormValues,
-    validationSchema,
-    onSubmit: submitForm,
-  })
+  const formik = componentForm({
+    menteeId,
+    setShowAddSession,
+    setSubmitResult,
+    mentoringSessionsCreateStart,
+  });
 
   return (
     <Module
@@ -116,16 +72,16 @@ const MSessions = ({
       className="m-sessions"
       buttons={editable && <AddSession onClickHandler={setShowAddSession} />}
     >
-      {sessions.length > 0 ? (
+      {sessions.length ? (
         <ul className="m-sessions__list">
-          {sessions.map((session) => (
+          {sessions.map(({ date, minuteDuration }) => (
             <li
               className="m-sessions__list__item"
-              key={session.date.toString()}
+              key={date.toString()}
             >
-              {moment(session.date).format('DD.MM.YYYY')} -{' '}
+              {moment(date).format('DD.MM.YYYY')} -{' '}
               <Element renderAs="span" textColor="grey">
-                {session.minuteDuration} min
+                {minuteDuration} min
               </Element>
             </li>
           ))}
@@ -186,7 +142,7 @@ const MSessions = ({
   )
 }
 
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: Function) => ({
   mentoringSessionsCreateStart: (session: RedMentoringSession) =>
     dispatch(mentoringSessionsCreateStart(session)),
 })

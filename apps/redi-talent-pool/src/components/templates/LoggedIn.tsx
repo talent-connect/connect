@@ -1,10 +1,10 @@
 import { Loader } from '@talent-connect/shared-atomic-design-components'
-import React, { ReactNode } from 'react'
-import { Columns, Container, Section } from 'react-bulma-components'
+import { FC } from 'react'
+import { Columns, Container } from 'react-bulma-components'
 import { useLocation } from 'react-router'
 import { useIsBusy } from '../../hooks/useIsBusy'
 import { useTpCompanyProfileQuery } from '../../react-query/use-tpcompanyprofile-query'
-import { useTpJobseekerProfileQuery } from '../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobSeekerProfileQuery } from '../../react-query/use-tpjobseekerprofile-query'
 import { TpMainNavItem } from '../molecules/TpMainNavItem'
 import { Navbar } from '../organisms'
 import Footer from '../organisms/Footer'
@@ -12,13 +12,12 @@ import './LoggedIn.scss'
 
 interface Props {
   hideNavigation?: boolean
-  children?: ReactNode
 }
 
-const LoggedIn = ({ children, hideNavigation }: Props) => {
+const LoggedIn: FC<Props> = ({ children, hideNavigation }) => {
   const isBusy = useIsBusy()
   const location = useLocation()
-  const { data: jobseekerProfile } = useTpJobseekerProfileQuery({
+  const { data: jobseekerProfile } = useTpJobSeekerProfileQuery({
     retry: false,
   })
   const { data: companyProfile } = useTpCompanyProfileQuery({ retry: false })
@@ -38,22 +37,22 @@ const LoggedIn = ({ children, hideNavigation }: Props) => {
                   isActive={location.pathname === '/app/me'}
                 />
                 {companyProfile?.state === 'profile-approved' ||
-                jobseekerProfile?.state === 'profile-approved' ? (
+                jobseekerProfile?.state === 'profile-approved' && (
                   <TpMainNavItem
                     page="browse-page"
                     pageName="Browse"
                     to="/app/browse"
                     isActive={location.pathname === '/app/browse'}
                   />
-                ) : null}
-                {jobseekerProfile ? (
+                )}
+                {jobseekerProfile && (
                   <TpMainNavItem
                     page="cv-builder-page"
                     pageName="CV Builder"
                     to="/app/cv-builder"
                     isActive={location.pathname.includes('/app/cv-builder')}
                   />
-                ) : null}
+                )}
               </div>
               <div className="main-container--horizontal-spacer"></div>
             </>
@@ -67,7 +66,7 @@ const LoggedIn = ({ children, hideNavigation }: Props) => {
               {children}
             </Columns.Column>
           </Columns>
-          {hideNavigation ? null : (
+          {!hideNavigation && (
             <div className="main-container--horizontal-spacer is-hidden-desktop"></div>
           )}
         </div>

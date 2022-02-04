@@ -1,42 +1,38 @@
-import React from 'react'
-import { RedProfile } from '@talent-connect/shared-types'
+import { FC } from 'react'
 import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
+
+import { RedProfile } from '@talent-connect/shared-types'
 import {
   Caption,
   Placeholder,
   PipeList,
 } from '@talent-connect/shared-atomic-design-components'
+import { mapStateToProps } from '../../helpers';
 
 interface Props {
   profile: RedProfile
 }
 
-const Me = ({ profile }: Props) => {
-  const { languages } = profile
-
+const Me: FC<Props> = ({ profile: { languages } }) => {
   if (!languages)
     return <Placeholder>Input languages you speak here.</Placeholder>
 
   return <PipeList items={languages} />
 }
 
-const Some = ({ profile }: Props) => {
-  const { languages } = profile
-
+const Some: FC<Props> = ({ profile: { languages } }) => {
   return (
     <>
       <Caption>Languages</Caption>
-      {languages && <PipeList items={languages} />}
+      {languages &&
+        <PipeList items={languages} />}
     </>
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile as RedProfile,
-})
-
 export default {
+  /** */
   Me: connect(mapStateToProps, {})(Me),
-  Some: ({ profile }: Props) => <Some profile={profile} />,
+  /** */
+  Some: (props: Props) => <Some {...props} />,
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import { FC } from 'react'
 import { ReactComponent as WelcomeIllustration } from '../../assets/images/welcome-user.svg'
 import { ReactComponent as MiriamSvg } from '../../assets/images/miriam.svg'
 import { ReactComponent as PaulinaSvg } from '../../assets/images/paulina.svg'
@@ -17,18 +17,20 @@ type RouteParams = {
 const miriamStyles = {
   padding: '0 200px',
 }
+
 const Miriam = (props: any) => (
   <div style={miriamStyles}>
     <MiriamSvg {...props} />
   </div>
 )
+
 const Paulina = (props: any) => (
   <div style={miriamStyles}>
     <PaulinaSvg {...props} />
   </div>
 )
 
-const TopIllustration: React.FunctionComponent = ({ children }) => {
+const TopIllustration: FC = ({ children }) => {
   return (
     <>
       <WelcomeIllustration className="illustration illustration--rightOut" />
@@ -52,7 +54,7 @@ export default {
     </TopIllustration>
   ),
   Miriam: () => {
-    const { userType } = useParams<RouteParams>() as RouteParams
+    const { userType } = useParams<RouteParams>()
 
     return (
       <>
@@ -124,9 +126,9 @@ export default {
         >
           “Hi, I am <strong>Christa</strong>, the mentorship coordinator of ReDI
           Connect.
-          {userType === 'public-sign-up-mentor-pending-review' && (
+          {userType === 'public-sign-up-mentor-pending-review' && ( 
             <>
-              {' '}
+              {' '} {/* TODO: what is this? */}
               I take the time to meet each mentor before they join our program."
             </>
           )}

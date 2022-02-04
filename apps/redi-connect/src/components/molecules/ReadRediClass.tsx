@@ -1,38 +1,34 @@
-import React from 'react'
+import { FC } from 'react'
+import { connect } from 'react-redux'
+
 import { Content } from 'react-bulma-components'
 import { RedProfile } from '@talent-connect/shared-types'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
 import { Caption } from '@talent-connect/shared-atomic-design-components'
 import { COURSES } from '@talent-connect/shared-config'
+import { mapStateToProps } from '../../helpers';
 
 interface Props {
   profile: RedProfile
   shortInfo?: boolean
 }
 
-const ReadRediClass = ({ profile, shortInfo }: Props) => {
-  const { mentee_currentlyEnrolledInCourse } = profile
-
-  const COURSES_MAP = Object.fromEntries(
-    COURSES.map((course) => [course.id, course.label])
-  )
+const ReadRediClass: FC<Props> = ({
+  profile: { mentee_currentlyEnrolledInCourse },
+  shortInfo = false
+}) => {
+  const COURSES_MAP = Object.fromEntries(COURSES.map(({ id, label }) => [id, label]))
 
   return (
     <>
-      {shortInfo && <Caption>Redi Class</Caption>}
+      {shortInfo &&
+        <Caption>Redi Class</Caption>}
       <Content>
-        {mentee_currentlyEnrolledInCourse && (
-          <p>{COURSES_MAP[mentee_currentlyEnrolledInCourse]}</p>
-        )}
+        {mentee_currentlyEnrolledInCourse && 
+          <p>{COURSES_MAP[mentee_currentlyEnrolledInCourse]}</p>}
       </Content>
     </>
   )
 }
-
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile as RedProfile,
-})
 
 export default {
   Me: connect(mapStateToProps, {})(ReadRediClass),

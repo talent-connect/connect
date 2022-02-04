@@ -1,8 +1,8 @@
-import React from 'react'
+import { FC, ReactNode } from 'react'
 import { ReactComponent as UploadImage } from '../../assets/images/uploadImage.svg'
 import ReactS3Uploader from 'react-s3-uploader'
 import { Element } from 'react-bulma-components'
-import { FormikValues, useFormik } from 'formik'
+import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import {
   AWS_PROFILE_AVATARS_BUCKET_BASE_URL,
@@ -11,32 +11,27 @@ import {
 import classnames from 'classnames'
 import placeholderImage from '../../assets/images/img-placeholder.png'
 
-import { RootState } from '../../redux/types'
 import { connect } from 'react-redux'
 
 import './Avatar.scss'
 
 import { profileSaveStart } from '../../redux/user/actions'
 import { RedProfile } from '@talent-connect/shared-types'
+import { mapStateToProps } from '../../helpers';
+
+// TODO: this looks like a repeated component. Move to shared components?
 
 interface AvatarProps {
   profile: RedProfile
-}
-interface AvatarEditable {
-  profile: RedProfile
-  profileSaveStart: Function
-}
-
-interface AvatarFormValues {
-  profileAvatarImageS3Key: string
 }
 
 const validationSchema = Yup.object({
   profileAvatarImageS3Key: Yup.string().max(255),
 })
 
-const Avatar = ({ profile }: AvatarProps) => {
-  const { profileAvatarImageS3Key } = profile
+const Avatar: FC<AvatarProps> & { Some: (profile: RedProfile) => ReactNode, Editable: typeof AvatarEditable }= ({
+  profile: { profileAvatarImageS3Key, firstName, lastName }
+}) => {
   const imgSrc = profileAvatarImageS3Key
     ? AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
     : placeholderImage
@@ -49,30 +44,36 @@ const Avatar = ({ profile }: AvatarProps) => {
     >
       <img
         src={imgSrc}
-        alt={`${profile.firstName} ${profile.lastName}`}
+        alt={`${firstName} ${lastName}`}
         className="avatar__image"
       />
     </div>
   )
 }
 
-const AvatarEditable = ({ profile, profileSaveStart }: AvatarEditable) => {
-  const { profileAvatarImageS3Key } = profile
+interface AvatarFormValues {
+  profileAvatarImageS3Key: string
+}
+
+interface AvatarEditable {
+  profile: RedProfile
+  profileSaveStart: (arg: AvatarFormValues & { id: string; }) => void
+}
+
+const AvatarEditable: FC<AvatarEditable> = ({
+  profile: { profileAvatarImageS3Key, id, firstName, lastName },
+  profileSaveStart
+}) => {
   const imgURL = AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
 
-  const submitForm = async (values: FormikValues) => {
-    const profileMe = values as Partial<RedProfile>
-    profileSaveStart({ ...profileMe, id: profile.id })
-  }
-
-  const initialValues: AvatarFormValues = {
-    profileAvatarImageS3Key: profileAvatarImageS3Key,
-  }
-
-  const formik = useFormik({
-    initialValues: initialValues,
+  const formik = useFormik<AvatarFormValues>({
+    initialValues: {
+      profileAvatarImageS3Key
+    },
     validationSchema,
-    onSubmit: submitForm,
+    onSubmit: (profileMe) => {
+      profileSaveStart({ ...profileMe, id })
+    },
   })
 
   const onUploadSuccess = (result: any) => {
@@ -90,7 +91,7 @@ const AvatarEditable = ({ profile, profileSaveStart }: AvatarEditable) => {
         <>
           <img
             src={imgURL}
-            alt={`${profile.firstName} ${profile.lastName}`}
+            alt={`${firstName} ${lastName}`}
             className="avatar__image"
           />
           <Element
@@ -126,8 +127,8 @@ const AvatarEditable = ({ profile, profileSaveStart }: AvatarEditable) => {
         signingUrl={S3_UPLOAD_SIGN_URL}
         accept="image/*"
         uploadRequestHeaders={{ 'x-amz-acl': 'public-read' }}
-        onSignedUrl={(c: any) => console.log(c)}
-        onError={(c: any) => console.log(c)}
+        onSignedUrl={(c) => console.log(c)}
+        onError={(c) => console.log(c)}
         onFinish={onUploadSuccess}
         contentDisposition="auto"
       />
@@ -135,11 +136,7 @@ const AvatarEditable = ({ profile, profileSaveStart }: AvatarEditable) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile as RedProfile,
-})
-
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: Function) => ({
   profileSaveStart: (profile: Partial<RedProfile>) =>
     dispatch(profileSaveStart(profile)),
 })

@@ -2,38 +2,32 @@ import {
   Button,
   Caption,
   FormDraggableAccordion,
-  FormInput,
+  TextInput,
 } from '@talent-connect/shared-atomic-design-components'
-import {
-  HrSummit2021JobFairCompanyJobPreferenceRecord,
-  TpJobseekerProfile,
-} from '@talent-connect/shared-types'
-import { useFormik } from 'formik'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { TpJobSeekerProfile } from '@talent-connect/shared-types'
+import { reorder } from '@talent-connect/shared-utils';
+import { FC, useCallback, useEffect, useRef, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Content, Element } from 'react-bulma-components'
 import { Subject } from 'rxjs'
-import { v4 as uuidv4 } from 'uuid'
 import * as Yup from 'yup'
-import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobSeekerProfileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
+import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
-
-function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
-  const result = Array.from(list)
-  const [removed] = result.splice(startIndex, 1)
-  result.splice(endIndex, 0, removed)
-
-  return result
-}
+import { componentForm } from './EditableJobPreferences.form';
 
 interface Props {
-  profile: Partial<TpJobseekerProfile>
+  profile: Partial<TpJobSeekerProfile>
   triggerModalSignal?: Subject<void>
 }
 
-export function EditableJobPreferences({ profile, triggerModalSignal }: Props) {
+interface EditableJobPreferencesHelpers {
+  isSectionFilled: (profile: Partial<TpJobSeekerProfile>) => boolean;
+  isSectionEmpty: (profile: Partial<TpJobSeekerProfile>) => boolean;
+}
+
+export const EditableJobPreferences: FC<Props> & EditableJobPreferencesHelpers = ({ profile, triggerModalSignal }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
@@ -46,10 +40,10 @@ export function EditableJobPreferences({ profile, triggerModalSignal }: Props) {
 
   return (
     <Editable
-      isEditing={isEditing}
-      isFormDirty={isFormDirty}
-      setIsEditing={setIsEditing}
       title="Job Preferences"
+      modalTitle="Help us to match you"
+      modalHeadline="Job Preferences"
+      {...{ isEditing, isFormDirty, setIsEditing }}
       readComponent={
         isEmpty ? (
           <EmptySectionPlaceholder
@@ -60,7 +54,7 @@ export function EditableJobPreferences({ profile, triggerModalSignal }: Props) {
           </EmptySectionPlaceholder>
         ) : (
           <Content>
-            {profile?.hrSummit2021JobFairCompanyJobPreferences?.map(
+            {profile.hrSummit2021JobFairCompanyJobPreferences?.map(
               ({ uuid, jobPosition, jobId, companyName }, index) => (
                 <div key={uuid} style={{ marginBottom: '2rem' }}>
                   <Caption>Priority {index + 1}</Caption>
@@ -74,30 +68,20 @@ export function EditableJobPreferences({ profile, triggerModalSignal }: Props) {
           </Content>
         )
       }
-      modalTitle="Help us to match you"
-      modalHeadline="Job Preferences"
-      modalBody={
-        <ModalForm
-          setIsEditing={setIsEditing}
-          setIsFormDirty={setIsFormDirty}
-        />
-      }
+      modalBody={<ModalForm {...{ setIsEditing, setIsFormDirty }}/>}
       modalStyles={{ minHeight: 700 }}
     />
   )
 }
 
-EditableJobPreferences.isSectionFilled = (
-  profile: Partial<TpJobseekerProfile>
-) =>
-  profile?.hrSummit2021JobFairCompanyJobPreferences?.length === 4 &&
-  validationSchema.isValidSync(profile)
-EditableJobPreferences.isSectionEmpty = (
-  profile: Partial<TpJobseekerProfile>
-) => !EditableJobPreferences.isSectionFilled(profile)
+EditableJobPreferences.isSectionFilled = (profile: Partial<TpJobSeekerProfile>) =>
+  profile.hrSummit2021JobFairCompanyJobPreferences?.length === 4 &&
+  validationSchema.isValidSync(profile);
 
-// TODO: put this one in config file
-const MAX_LANGUAGES = 6
+EditableJobPreferences.isSectionEmpty = (profile: Partial<TpJobSeekerProfile>) =>
+  !EditableJobPreferences.isSectionFilled(profile);
+
+// #################################################################################
 
 const validationSchema = Yup.object({
   hrSummit2021JobFairCompanyJobPreferences: Yup.array().of(
@@ -108,58 +92,37 @@ const validationSchema = Yup.object({
   ),
 })
 
-function ModalForm({
+interface ModalFormProps {
+  setIsEditing: (boolean: boolean) => void
+  setIsFormDirty: (boolean: boolean) => void
+}
+
+const ModalForm: FC<ModalFormProps> = ({
   setIsEditing,
   setIsFormDirty,
-}: {
-  setIsEditing: (boolean) => void
-  setIsFormDirty: (boolean) => void
-}) {
-  const { data: profile } = useTpJobseekerProfileQuery()
-  const mutation = useTpjobseekerprofileUpdateMutation()
+}) => {
+  const { data: profile } = useTpJobSeekerProfileQuery()
+  const mutation = useTpJobSeekerProfileUpdateMutation()
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
-
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(
-    () => ({
-      hrSummit2021JobFairCompanyJobPreferences:
-        profile?.hrSummit2021JobFairCompanyJobPreferences ??
-        buildBlankHrSummit2021JobFairCompanyJobPreferences(),
-    }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  )
-
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
-    formik.setSubmitting(true)
-    mutation.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
-      },
-    })
-  }
-  const formik = useFormik({
-    initialValues,
-    validationSchema,
-    onSubmit,
-    validateOnMount: true,
+  
+  const formik = componentForm({
+    profile,
+    setIsEditing,
   })
+
   useEffect(() => setIsFormDirty?.(formik.dirty), [
     formik.dirty,
     setIsFormDirty,
   ])
 
-  const onDragEnd = useCallback(
-    (result: any) => {
-      if (!result.destination) return
+  const onDragEnd = useCallback(({ destination, source }: any) => {
+      if (!destination) return
 
       const reorderedHrSummit2021JobFairCompanyJobPreferences = reorder(
         formik.values.hrSummit2021JobFairCompanyJobPreferences,
-        result.source.index,
-        result.destination.index
+        source.index,
+        destination.index
       )
 
       formik.setFieldValue(
@@ -219,19 +182,19 @@ function ModalForm({
                             closeAllAccordionsSignalSubject.current
                           }
                         >
-                          <FormInput
+                          <TextInput
                             name={`hrSummit2021JobFairCompanyJobPreferences[${index}].jobPosition`}
                             label="Job Position*"
                             placeholder="The title of the job you found"
                             {...formik}
                           />
-                          <FormInput
+                          <TextInput
                             name={`hrSummit2021JobFairCompanyJobPreferences[${index}].jobId`}
                             label="Job ID"
                             placeholder="Did you see an ID for the job?"
                             {...formik}
                           />
-                          <FormInput
+                          <TextInput
                             name={`hrSummit2021JobFairCompanyJobPreferences[${index}].companyName`}
                             label="Company Name*"
                             placeholder="What's the name of the company?"
@@ -268,12 +231,3 @@ function ModalForm({
   )
 }
 
-function buildBlankHrSummit2021JobFairCompanyJobPreferences(): HrSummit2021JobFairCompanyJobPreferenceRecord[] {
-  // Return exactly three elements since the job preferences consists of four priorities, relfected by the order of this array
-  return [
-    { uuid: uuidv4() },
-    { uuid: uuidv4() },
-    { uuid: uuidv4() },
-    { uuid: uuidv4() },
-  ]
-}

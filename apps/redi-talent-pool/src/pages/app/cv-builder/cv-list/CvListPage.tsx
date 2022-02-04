@@ -1,47 +1,44 @@
-import React from 'react'
+import { FC, useState, ChangeEvent } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import {
   Heading,
   Button,
   Modal,
-  FormInput,
+  TextInput,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
 import { Section, Columns, Content, Box } from 'react-bulma-components'
 
-import { useTpjobseekerCvCreateMutation } from '../../../../react-query/use-tpjobseekercv-mutation'
-import { useTpJobseekerCvQuery } from '../../../../react-query/use-tpjobseekercv-query'
+import { useTpJobSeekerCvCreateMutation } from '../../../../react-query/use-tpjobseekercv-mutation'
+import { useTpJobSeekerCvQuery } from '../../../../react-query/use-tpjobseekercv-query'
 
 import { LoggedIn } from '../../../../components/templates'
 import { EmptySectionPlaceholder } from '../../../../components/molecules/EmptySectionPlaceholder'
 import CvListItem from './CvListItem'
-import { useTpJobseekerProfileQuery } from '../../../../react-query/use-tpjobseekerprofile-query'
-import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
+import { useTpJobSeekerProfileQuery } from '../../../../react-query/use-tpjobseekerprofile-query'
+import { TpJobSeekerCv, TpJobSeekerProfile } from '@talent-connect/shared-types'
 
 import './CvListPage.scss'
 
-function CvListPage() {
-  const [showCvNameModal, setShowCvNameModal] = React.useState(false)
-  const [newCvName, setNewCvName] = React.useState('')
+const CvListPage: FC = () => {
+  const [showCvNameModal, setShowCvNameModal] = useState(false)
+  const [newCvName, setNewCvName] = useState('')
 
   const history = useHistory()
 
-  const { data: profile } = useTpJobseekerProfileQuery()
-  const { data: cvList } = useTpJobseekerCvQuery()
-  const createMutation = useTpjobseekerCvCreateMutation()
+  const { data: profile } = useTpJobSeekerProfileQuery()
+  const { data: cvList } = useTpJobSeekerCvQuery()
+  const createMutation = useTpJobSeekerCvCreateMutation()
 
   const setFocusOnRef = (ref: HTMLInputElement) => ref?.focus()
 
   const toggleCvNameModal = (isOpen) => {
     setShowCvNameModal(isOpen)
-
-    if (!isOpen) {
-      setNewCvName('')
-    }
+    if (!isOpen) setNewCvName('')
   }
 
-  const handleCvNameChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+  const handleCvNameChange = (e: ChangeEvent<HTMLInputElement>) =>
     setNewCvName(e.target.value)
 
   const handleCreateNewCv = (): void => {
@@ -99,14 +96,14 @@ function CvListPage() {
         <Heading size="small">Your CVs</Heading>
       </Section>
       <Section paddingless>
-        {cvList?.length > 0 ? (
+        {cvList?.length ? (
           <div>
-            {cvList.map((cv) => (
+            {cvList.map(({ id, cvName, createdAt }) => (
               <CvListItem
-                key={cv.id}
-                id={cv.id}
-                name={cv.cvName}
-                createdAt={cv.createdAt}
+                key={id}
+                id={id}
+                name={cvName}
+                createdAt={createdAt}
               />
             ))}
             <Box
@@ -156,7 +153,7 @@ function CvListPage() {
         title="Create a CV"
       >
         <Modal.Body>
-          <FormInput
+          <TextInput
             name="newCvNameInput"
             label="Name of the CV"
             placeholder="CV for Microsoft Frontend Developer Internship"
@@ -178,8 +175,8 @@ function CvListPage() {
 export default CvListPage
 
 function convertProfileToCv(
-  profile: Partial<TpJobseekerProfile>
-): Partial<TpJobseekerCv> {
+  profile: Partial<TpJobSeekerProfile>
+): Partial<TpJobSeekerCv> {
   return {
     firstName: profile.firstName,
     lastName: profile.lastName,

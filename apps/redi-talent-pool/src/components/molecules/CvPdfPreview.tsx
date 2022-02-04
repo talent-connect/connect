@@ -9,15 +9,16 @@ import {
   usePDF,
   View,
 } from '@react-pdf/renderer'
-import { TpJobseekerCv } from '@talent-connect/shared-types'
+import { TpJobSeekerCv } from '@talent-connect/shared-types'
+import { formatDate } from '@talent-connect/shared-utils';
 import {
   desiredPositionsIdToLabelMap,
   languageProficiencyLevelsIdToLabelMap,
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
+import { objectValues } from '@talent-connect/typescript-utilities';
 import { isEqual } from 'lodash'
-import moment from 'moment'
-import React, { useEffect } from 'react'
+import { FC, memo, useEffect } from 'react'
 import {
   Document as ReactPDFDocument,
   Page as ReactPDFPage,
@@ -246,17 +247,15 @@ const styles = StyleSheet.create({
   },
 })
 
-function isVeryLongExperienceLine(experience) {
+function isVeryLongExperienceLine(experience) { // TODO: review
   return experience?.title?.length || 0 + experience?.company?.length || 0 > 43
 }
 
-function isVeryLongEducationLine(education) {
-  return (
-    education?.type?.length || 0 + education?.institutionName?.length || 0 > 43
-  )
+function isVeryLongEducationLine(education) { // TODO: review
+  return education?.type?.length || 0 + education?.institutionName?.length || 0 > 43
 }
 
-export const CVPDF = ({
+export const CVPDF: FC<{ cvData: Partial<TpJobSeekerCv> }> = ({
   cvData: {
     firstName,
     lastName,
@@ -265,13 +264,11 @@ export const CVPDF = ({
     aboutYourself,
     topSkills,
     workingLanguages,
-    projects,
     experience,
     education,
     phoneNumber,
     contactEmail,
     postalMailingAddress,
-
     personalWebsite,
     githubUrl,
     linkedInUrl,
@@ -280,8 +277,6 @@ export const CVPDF = ({
     stackOverflowUrl,
     dribbbleUrl,
   },
-}: {
-  cvData: Partial<TpJobseekerCv>
 }) => {
   return (
     <Document title={`${firstName}_${lastName}_CV.pdf`}>
@@ -300,7 +295,7 @@ export const CVPDF = ({
               styles.headerText2,
               desiredPositions?.length > 2
                 ? styles.headerText2ExtraTop
-                : undefined,
+                : null,
             ]}
           >
             {firstName}
@@ -310,7 +305,7 @@ export const CVPDF = ({
               styles.headerText3,
               desiredPositions?.length > 2
                 ? styles.headerText3ExtraTop
-                : undefined,
+                : null,
             ]}
           >
             {lastName}
@@ -347,8 +342,7 @@ export const CVPDF = ({
             <View style={styles.contentViewLeft}>
               <Text style={styles.contentHeading}>Languages</Text>
               <View style={styles.ContentList}>
-                {workingLanguages?.map(
-                  ({ language, proficiencyLevelId }, index) => (
+                {workingLanguages?.map(({ language, proficiencyLevelId }, index) => (
                     <Text
                       key={`language_${index}`}
                       style={styles.ContentListItem}
@@ -417,19 +411,13 @@ export const CVPDF = ({
             <View style={styles.contentViewRight}>
               <Text style={styles.contentHeading}>Work Experience</Text>
               {experience
-                ?.filter((item) => {
-                  const { uuid, ...all } = item
-                  const vals = Object.values(all)
-                  return vals.some((val) => val)
-                })
+                ?.filter(({ uuid, ...all }) => objectValues(all).some((val) => val))
                 .map((experience, index) => (
                   <View key={`experience_${index}`} style={{ width: '100%' }}>
                     <View style={styles.experienceView}>
                       <View
                         style={
-                          isVeryLongExperienceLine(experience)
-                            ? undefined
-                            : styles.experienceView1
+                          !isVeryLongExperienceLine(experience) && styles.experienceView1
                         }
                       >
                         <Text
@@ -474,19 +462,13 @@ export const CVPDF = ({
             <View style={styles.contentViewRight}>
               <Text style={styles.contentHeading}>Education</Text>
               {education
-                ?.filter((item) => {
-                  const { uuid, ...all } = item
-                  const vals = Object.values(all)
-                  return vals.some((val) => val)
-                })
+                ?.filter(({ uuid, ...all }) => objectValues(all).some((val) => val))
                 .map((education, index) => (
                   <View key={`experience_${index}`} style={{ width: '100%' }}>
                     <View style={styles.experienceView}>
                       <View
                         style={
-                          isVeryLongEducationLine(education)
-                            ? undefined
-                            : styles.experienceView1
+                          !isVeryLongEducationLine(education) && styles.experienceView1
                         }
                       >
                         <Text
@@ -535,13 +517,6 @@ export const CVPDF = ({
   )
 }
 
-function formatDate(month?: number, year?: number): string {
-  if (year && !month) return String(year)
-  if (year && month) return moment().month(month).year(year).format('MMMM YYYY')
-  if (!year && month) return moment().month(month).format('MMMM')
-  return ''
-}
-
 const concatenateToMultiline = (items: string[]): string => {
   return items
     .reduce((acc, curr) => (curr ? `${acc}\n${curr}` : acc), '')
@@ -571,16 +546,16 @@ const getNodeTopPosition = (xPath: string) => {
 }
 
 interface CVPDFPreviewProps {
-  cvData: Partial<TpJobseekerCv>
+  cvData: Partial<TpJobSeekerCv>
   pdfHeightPx: number
   pdfWidthPx: number
 }
 
-export const CVPDFPreview = ({
+export const CVPDFPreview: FC<CVPDFPreviewProps> = ({
   cvData,
   pdfHeightPx,
   pdfWidthPx,
-}: CVPDFPreviewProps) =>
+}) =>
   //pdfWidthPx: number
   {
     const [instance, updateInstance] = usePDF({
@@ -639,7 +614,7 @@ export const CVPDFPreview = ({
     )
   }
 
-export const CVPDFPreviewMemoized = React.memo(
+export const CVPDFPreviewMemoized = memo(
   CVPDFPreview,
   (prevProps, nextProps) => isEqual(prevProps, nextProps)
 )

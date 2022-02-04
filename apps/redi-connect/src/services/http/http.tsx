@@ -1,4 +1,4 @@
-import React from 'react'
+import { createContext } from 'react'
 import axios from 'axios'
 import has from 'lodash/has'
 import includes from 'lodash/includes'
@@ -19,8 +19,8 @@ http.interceptors.request.use(
     const isAuthorizationHeaderSet = has(config, 'headers.Authorization')
     const _isLoggedIn = isLoggedIn()
     if (_isLoggedIn && !isAuthorizationHeaderSet) {
-      const accessToken = getAccessTokenFromLocalStorage()
-      config.headers.Authorization = `${accessToken.id}`
+      const { id } = getAccessTokenFromLocalStorage()
+      config.headers.Authorization = id
     }
     return config
   },
@@ -44,16 +44,14 @@ http.interceptors.response.use(
 
     if (includes([401, 403], err.response.status)) {
       purgeAllSessionData()
-      history.push(
-        `/front/login?goto=${encodeURIComponent(history.location.pathname)}`
-      )
+      history.push(`/front/login?goto=${encodeURIComponent(history.location.pathname)}`)
     } else {
       history.push('/error/4xx')
     }
   }
 )
 
-export const HttpContext = React.createContext(http)
+export const HttpContext = createContext(http)
 
 /*
 export function with$Http(Component) {

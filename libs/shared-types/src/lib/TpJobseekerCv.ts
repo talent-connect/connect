@@ -1,9 +1,12 @@
+import { Timestamp } from './Timestamp';
 import { EducationRecord } from './tp-jobseeker-profile-cv-shared-interfaces/EducationRecord'
 import { ExperienceRecord } from './tp-jobseeker-profile-cv-shared-interfaces/ExperienceRecord'
 import { LanguageRecord } from './tp-jobseeker-profile-cv-shared-interfaces/LanguageRecord'
 import { ProjectRecord } from './tp-jobseeker-profile-cv-shared-interfaces/ProjectRecord'
 
-export type TpJobseekerCv = {
+export type TpJobSeekerCv =
+  & Timestamp
+  & {
   id: string
   cvName: string
 
@@ -11,7 +14,7 @@ export type TpJobseekerCv = {
   lastName: string
   contactEmail: string
 
-  genderPronouns?: string
+  genderPronouns?: string // TODO use GenderKey?
 
   profileAvatarImageS3Key: string
 
@@ -41,10 +44,7 @@ export type TpJobseekerCv = {
   education?: EducationRecord[]
   projects?: ProjectRecord[]
 
-  createdAt: Date
-  updatedAt: Date
-
-  // TODO: this was added here to make <JobseekerFormSectionOverview>
+  // TODO: this was added here to make <JobSeekerFormSectionOverview>
   // work in both CV Builder and Profile builder. Refactor that component
   // (probably needs to be split up) so that we can remove this property
   currentlyEnrolledInCourse?: string

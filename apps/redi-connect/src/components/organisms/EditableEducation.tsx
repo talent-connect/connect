@@ -1,4 +1,4 @@
-import React from 'react'
+import { FC } from 'react'
 import { FormSelect } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile } from '@talent-connect/shared-types'
@@ -8,27 +8,14 @@ import { RootState } from '../../redux/types'
 import { profileSaveStart } from '../../redux/user/actions'
 import * as Yup from 'yup'
 
-import { FormikValues, useFormik } from 'formik'
+import { useFormik } from 'formik'
 
 import { EDUCATION_LEVELS } from '@talent-connect/shared-config'
 import { ReadEducation } from '../molecules'
-import { objectEntries, objectKeys } from '@talent-connect/typescript-utilities'
+import { mapOptionsObject, objectKeys } from '@talent-connect/typescript-utilities'
+import { mapStateToProps } from '../../helpers';
 
-const formEducationLevels = objectEntries(EDUCATION_LEVELS).map(
-  ([value, label]) => ({
-    value,
-    label,
-  })
-)
-
-// do we really need all these type???
-export type UserType =
-  | 'mentor'
-  | 'mentee'
-  | 'public-sign-up-mentor-pending-review'
-  | 'public-sign-up-mentee-pending-review'
-  | 'public-sign-up-mentor-rejected'
-  | 'public-sign-up-mentee-rejected'
+const formEducationLevels = mapOptionsObject(EDUCATION_LEVELS)
 
 export interface EducationFormValues {
   mentee_highestEducationLevel: string
@@ -40,23 +27,25 @@ const validationSchema = Yup.object({
     .label('Highest Education Level'),
 })
 
-const EditableEducation = ({ profile, profileSaveStart }: any) => {
-  const { id, mentee_highestEducationLevel } = profile
+interface Props {
+  profile: RedProfile
+  profileSaveStart: (arg: EducationFormValues & { id: string }) => void
+}
 
-  const submitForm = async (values: FormikValues) => {
-    const education = values as Partial<RedProfile>
-    profileSaveStart({ ...education, id })
-  }
+const EditableEducation: FC<Props> = ({
+  profile: { id, mentee_highestEducationLevel },
+  profileSaveStart
+}) => {
 
-  const initialValues: EducationFormValues = {
-    mentee_highestEducationLevel,
-  }
-
-  const formik = useFormik({
-    initialValues,
+  const formik = useFormik<EducationFormValues>({
+    initialValues: {
+      mentee_highestEducationLevel,
+    },
     enableReinitialize: true,
     validationSchema,
-    onSubmit: submitForm,
+    onSubmit: (education) => {
+      profileSaveStart({ ...education, id })
+    },
   })
 
   return (
@@ -78,11 +67,7 @@ const EditableEducation = ({ profile, profileSaveStart }: any) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile,
-})
-
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: Function) => ({
   profileSaveStart: (profile: Partial<RedProfile>) =>
     dispatch(profileSaveStart(profile)),
 })

@@ -1,26 +1,24 @@
-import React from 'react'
+import { FC } from 'react'
 import { Content } from 'react-bulma-components'
 import { RedProfile } from '@talent-connect/shared-types'
 import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
 import {
   Caption,
   Placeholder,
 } from '@talent-connect/shared-atomic-design-components'
 import { MENTEE_OCCUPATION_CATEGORY } from '@talent-connect/shared-config'
-import { objectEntries } from '@talent-connect/typescript-utilities'
+import { mapOptionsObject } from '@talent-connect/typescript-utilities'
+import { mapStateToProps } from '../../helpers';
 
 interface Props {
   profile: RedProfile
   shortInfo?: boolean
 }
 
-const formMenteeOccupationCategories = objectEntries(
-  MENTEE_OCCUPATION_CATEGORY
-).map(([value, label]) => ({ value, label }))
+const formMenteeOccupationCategories = mapOptionsObject(MENTEE_OCCUPATION_CATEGORY)
 
-const ReadOccupation = ({ profile, shortInfo }: Props) => {
-  const {
+const ReadOccupation: FC<Props> = ({
+  profile: {
     userType,
     mentor_occupation,
     mentor_workPlace,
@@ -31,7 +29,9 @@ const ReadOccupation = ({ profile, shortInfo }: Props) => {
     mentee_occupationStudent_studyName,
     mentee_occupationLookingForJob_what,
     mentee_occupationOther_description,
-  } = profile
+  },
+  shortInfo = false
+}) => {
 
   if (!mentor_occupation && !mentee_occupationCategoryId) {
     return (
@@ -54,40 +54,35 @@ const ReadOccupation = ({ profile, shortInfo }: Props) => {
           <>
             <p>{mentor_occupation}</p>
             <p>{mentor_workPlace}</p>
-          </>
-        )}
+          </>)}
         {isMentee && (
           <>
             <p>
               {formMenteeOccupationCategories
-                .filter((level) => level.value === mentee_occupationCategoryId)
-                .map((level) => level.label)}
+                .filter(({ value }) => value === mentee_occupationCategoryId)
+                .map(({ label }) => label)}
             </p>
 
             {mentee_occupationCategoryId === 'job' && (
               <>
                 <p>{mentee_occupationJob_placeOfEmployment}</p>
                 <p>{mentee_occupationJob_position}</p>
-              </>
-            )}
+              </>)}
 
             {mentee_occupationCategoryId === 'student' && (
               <>
                 <p>{mentee_occupationStudent_studyPlace}</p>
                 <p>{mentee_occupationStudent_studyName}</p>
-              </>
-            )}
+              </>)}
             {mentee_occupationCategoryId === 'lookingForJob' && (
               <>
                 <p>{mentee_occupationLookingForJob_what}</p>
-              </>
-            )}
+              </>)}
 
             {mentee_occupationCategoryId === 'other' && (
               <>
                 <p>{mentee_occupationOther_description}</p>
-              </>
-            )}
+              </>)}
           </>
         )}
       </Content>
@@ -95,11 +90,9 @@ const ReadOccupation = ({ profile, shortInfo }: Props) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile as RedProfile,
-})
-
 export default {
+  /** */
   Me: connect(mapStateToProps, {})(ReadOccupation),
-  Some: ({ profile }: Props) => <ReadOccupation profile={profile} shortInfo />,
+  /** */
+  Some: (props: Props) => <ReadOccupation {...props} />,
 }

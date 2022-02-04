@@ -1,1 +1,6 @@
 export * from './lib/config'
+export * from './lib/languages'
+export * from './lib/categories'
+export * from './lib/courses'
+export * from './lib/profile'
+export * from './lib/locations'

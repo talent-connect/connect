@@ -1,4 +1,6 @@
-import React from 'react'
+import { FC } from 'react'
+import { useTranslation } from 'react-i18next'
+import Slider from 'react-slick'
 import {
   Section,
   Container,
@@ -7,9 +9,7 @@ import {
   Content,
   Image,
 } from 'react-bulma-components'
-import { useTranslation } from 'react-i18next'
 import classnames from 'classnames'
-import Slider from 'react-slick'
 import khaled from '../../assets/images/profile-khaled.jpg'
 import halil from '../../assets/images/profile-halil.jpg'
 import dragos from '../../assets/images/profile-dragos.jpg'
@@ -22,7 +22,7 @@ interface Props {
   border: 'blue' | 'orange'
 }
 
-const Carousel = ({ headline, title, border }: Props) => {
+const Carousel: FC<Props> = ({ headline, title, border }) => {
   const { t } = useTranslation()
 
   const quotes = [
@@ -60,14 +60,14 @@ const Carousel = ({ headline, title, border }: Props) => {
       <Container>
         <DecoratedHeadline title={title} headline={headline} />
         <Slider {...settings}>
-          {quotes.map((quote: any) => {
+          {quotes.map(({ img, title, text }) => {
             return (
-              <div className="carousel" key={quote.img}>
+              <div className="carousel" key={img}>
                 <Columns vCentered>
                   <Columns.Column size={6}>
                     <Image
-                      src={quote.img}
-                      alt={quote.title}
+                      src={img}
+                      alt={title}
                       className={classnames('carousel__image', {
                         [`carousel__image--border-${border}`]: border,
                       })}
@@ -81,14 +81,14 @@ const Carousel = ({ headline, title, border }: Props) => {
                       className="decoration decoration--bottomLeft oneandhalf-bs"
                       responsive={{ mobile: { hide: { value: true } } }}
                     >
-                      {quote.title}
+                      {title}
                     </Element>
                     <Content
                       renderAs="p"
                       textSize={4}
                       responsive={{ mobile: { textSize: { value: 5 } } }}
                     >
-                      {quote.text}
+                      {text}
                     </Content>
                     <Element
                       textSize={7}
@@ -97,7 +97,7 @@ const Carousel = ({ headline, title, border }: Props) => {
                       className="oneandhalf-bs"
                       responsive={{ desktop: { hide: { value: true } } }}
                     >
-                      {quote.title}
+                      {title}
                     </Element>
                   </Columns.Column>
                 </Columns>

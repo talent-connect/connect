@@ -1,4 +1,4 @@
-import React from 'react'
+import { FC } from 'react'
 import Landing from '../../../components/templates/Landing'
 import { useTranslation } from 'react-i18next'
 import Hero from '../../../components/organisms/RediHero'
@@ -7,7 +7,7 @@ import RediProgram from '../../../components/organisms/RediProgram'
 import Carousel from '../../../components/organisms/Carousel'
 import PreFooter from '../../../components/organisms/PreFooter'
 
-export default function Home() {
+const Home: FC = () => {
   const { t } = useTranslation()
   return (
     <Landing>
@@ -26,3 +26,5 @@ export default function Home() {
     </Landing>
   )
 }
+
+export default Home

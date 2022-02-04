@@ -1,5 +1,5 @@
 import { Button } from '@talent-connect/shared-atomic-design-components'
-import React from 'react'
+import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import Checklist from '../../../components/organisms/Checklist'
 import PreFooter from '../../../components/organisms/PreFooter'
@@ -9,7 +9,7 @@ import { isLoggedIn } from '../../../services/auth/auth'
 import { Section, Container } from 'react-bulma-components'
 import { useHistory } from 'react-router-dom'
 
-const Mentor = () => {
+const Mentor: FC = () => {
   const { t } = useTranslation()
   const title = t('loggedOutArea.homePage.carousel.titleMentorOrMentee')
   const headline = t('loggedOutArea.homePage.carousel.headlineMentorOrMentee')
@@ -19,7 +19,7 @@ const Mentor = () => {
     <Landing>
       <RediHeroLanding type="mentor" />
       <Checklist type="mentor" />
-      {!isLoggedIn() ? (
+      {!isLoggedIn() && (
         <Section>
           <Container style={{ textAlign: 'center' }}>
             <Button onClick={() => history.push('/front/signup-landing')}>
@@ -27,7 +27,7 @@ const Mentor = () => {
             </Button>
           </Container>
         </Section>
-      ) : null}
+      )}
       {/* <Carousel border="blue" title={title} headline={headline} /> */}
       <PreFooter />
     </Landing>

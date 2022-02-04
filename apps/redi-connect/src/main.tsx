@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react'
+import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
 import './styles/main.scss'
 import App from './App'
@@ -13,9 +13,9 @@ import './services/i18n/i18n'
 // }
 
 ReactDOM.render(
-  <React.StrictMode>
+  <StrictMode>
     <App />
-  </React.StrictMode>,
+  </StrictMode>,
   document.getElementById('root')
 )
 

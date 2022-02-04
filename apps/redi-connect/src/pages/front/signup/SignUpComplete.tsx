@@ -1,4 +1,4 @@
-import React from 'react'
+import { FC } from 'react'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import { ReactComponent as WelcomeIllustration } from '../../../assets/images/welcome-user.svg'
 import { Columns, Form, Content } from 'react-bulma-components'
@@ -13,9 +13,9 @@ type RouteParams = {
   userType: UserType
 }
 
-export default function SignUpComplete() {
+const SignUpComplete: FC = () => {
   const history = useHistory()
-  const { userType } = useParams<RouteParams>() as RouteParams
+  const { userType } = useParams<RouteParams>()
 
   return (
     <AccountOperation>
@@ -71,3 +71,5 @@ export default function SignUpComplete() {
     </AccountOperation>
   )
 }
+
+export default SignUpComplete
