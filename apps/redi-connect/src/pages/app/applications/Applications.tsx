@@ -14,7 +14,7 @@ interface Props {
   applicants: RedMatch[]
 }
 
-const  Applications: FC<Props> = ({ applicants }) => {
+function Applications ({ applicants }: Props) {
   const history = useHistory()
   const profile = getRedProfileFromLocalStorage()
 

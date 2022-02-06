@@ -28,12 +28,12 @@ import {
 
 import { CvListItemMoreOptionsMenu } from './CvListItemMoreOptionsMenu'
 import { CVPDF } from '../../../../components/molecules/CvPdfPreview'
-import { useTpJobSeekerProfileQuery } from '../../../../react-query/use-tpjobSeekerprofile-query'
+import { useTpJobseekerProfileQuery } from '../../../../react-query/use-tpjobSeekerprofile-query'
 
 const CREATED_AT_DATE_FORMAT = 'dd.MM.yyyy'
 
 
-export const CvListItemBox: FC = ({ children }) =>  {
+export function CvListItemBox ({ children }) {
   return (
     <Box
     style={{
@@ -55,21 +55,22 @@ interface CvListItemChipProps {
   className?: string
 }
 
-const CvListItemChip: FC<CvListItemChipProps> = (props) => {
+function CvListItemChip (props: CvListItemChipProps) {
   return (
     <Chip
       style={{ width: 128, height: 40, marginRight: 32, fontSize: 16 }}
       {...props}
     />
     )
-  }
+}
+  
 interface CvListItemProps {
   id: string
   name: string
   createdAt: Date
 }
 
-const CvListItem: FC<CvListItemProps> = ({ id, name, createdAt }) => {
+function CvListItem ({ id, name, createdAt }: CvListItemProps) {
   const [showCvNameModal, setShowCvNameModal] = useState(false)
   const [newCvName, setNewCvName] = useState(name || '')
   const [profileImageLoaded, setProfileImageLoaded] = useState(false)
@@ -80,7 +81,7 @@ const CvListItem: FC<CvListItemProps> = ({ id, name, createdAt }) => {
   const {
     data: profileData,
     isSuccess: profileLoadSuccess,
-  } = useTpJobSeekerProfileQuery()
+  } = useTpJobseekerProfileQuery()
 
   const createMutation = useTpJobSeekerCvCreateMutation()
   const updateMutation = useTpJobSeekerCvUpdateMutation(id)

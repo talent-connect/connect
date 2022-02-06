@@ -1,11 +1,11 @@
-import { FC } from 'react'
 import { Redirect } from 'react-router'
+import { connect } from 'react-redux'
 import { Columns, Content } from 'react-bulma-components'
+
 import LoggedIn from '../../../components/templates/LoggedIn'
 import { ProfileCard } from '../../../components/organisms'
 import { RootState } from '../../../redux/types'
 import { getMatches } from '../../../redux/matches/selectors'
-import { connect } from 'react-redux'
 import { RedMatch } from '@talent-connect/shared-types'
 import { Heading } from '@talent-connect/shared-atomic-design-components'
 
@@ -13,7 +13,7 @@ interface Props {
   matches: RedMatch[]
 }
 
-const  MentorshipList: FC<Props> = ({ matches }) => {
+function MentorshipList ({ matches }: Props) {
   if (matches.length === 1)
     return <Redirect to={`/app/mentorships/${matches[0].id}`} />
 

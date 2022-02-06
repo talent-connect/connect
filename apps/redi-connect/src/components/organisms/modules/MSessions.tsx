@@ -29,13 +29,15 @@ interface AddSessionProps {
   onClickHandler: Function
 }
 
-const AddSession = ({ onClickHandler }: AddSessionProps) => (
-  <Icon
-    icon="plus"
-    className="m-sessions__add"
-    onClick={() => onClickHandler(true)}
-  />
-)
+function AddSession ({ onClickHandler }: AddSessionProps) {
+  return (
+    <Icon
+      icon="plus"
+      className="m-sessions__add"
+      onClick={() => onClickHandler(true)}
+    />
+  );
+}
 
 interface MSessions {
   sessions: RedMentoringSession[]
@@ -44,12 +46,12 @@ interface MSessions {
   mentoringSessionsCreateStart: (mentoringSession: RedMentoringSession) => void
 }
 
-const MSessions: FC<MSessions> = ({
+function MSessions ({
   sessions,
   menteeId,
   editable,
   mentoringSessionsCreateStart,
-}) => {
+}: MSessions) {
   const [showAddSession, setShowAddSession] = useState(false)
   const [submitResult, setSubmitResult] =
     useState<FormSubmitResult>('notSubmitted')

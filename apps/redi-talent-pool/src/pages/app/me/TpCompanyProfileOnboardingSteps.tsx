@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import classnames from 'clsx'
 import { Element } from 'react-bulma-components'
 
@@ -38,7 +37,7 @@ interface Props {
   hasJobListing: boolean
 }
   
-export const OnboardingSteps: FC<Props> = ({ profile, isProfileComplete, hasJobListing }) => {
+export function OnboardingSteps ({ profile, isProfileComplete, hasJobListing }: Props) {
   const [currentStep, stepStatus] = determineCurrentStep(
     profile,
     isProfileComplete,

@@ -1,10 +1,9 @@
-import { FC } from 'react';
 import { CheckboxProps } from './Checkbox.props';
 import _uniqueId from 'lodash/uniqueId'
 import { Form } from 'react-bulma-components'
 import './Checkbox.scss'
 
-const Checkbox: FC<CheckboxProps> & { Form: FC<CheckboxProps & { className?: string;}> } = ({
+function Checkbox ({
   name,
   value,
   checked,
@@ -13,7 +12,7 @@ const Checkbox: FC<CheckboxProps> & { Form: FC<CheckboxProps & { className?: str
   handleBlur,
   isSubmitting,
   children
-}) => {
+}: CheckboxProps) {
 
   const uid = _uniqueId('cx_')
 

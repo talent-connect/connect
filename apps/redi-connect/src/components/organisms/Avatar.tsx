@@ -1,4 +1,3 @@
-import { FC, ReactNode } from 'react'
 import { ReactComponent as UploadImage } from '../../assets/images/uploadImage.svg'
 import ReactS3Uploader from 'react-s3-uploader'
 import { Element } from 'react-bulma-components'
@@ -29,9 +28,9 @@ const validationSchema = Yup.object({
   profileAvatarImageS3Key: Yup.string().max(255),
 })
 
-const Avatar: FC<AvatarProps> & { Some: (profile: RedProfile) => ReactNode, Editable: typeof AvatarEditable }= ({
+function Avatar ({
   profile: { profileAvatarImageS3Key, firstName, lastName }
-}) => {
+}: AvatarProps) {
   const imgSrc = profileAvatarImageS3Key
     ? AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
     : placeholderImage
@@ -60,10 +59,10 @@ interface AvatarEditable {
   profileSaveStart: (arg: AvatarFormValues & { id: string; }) => void
 }
 
-const AvatarEditable: FC<AvatarEditable> = ({
+function AvatarEditable ({
   profile: { profileAvatarImageS3Key, id, firstName, lastName },
   profileSaveStart
-}) => {
+}: AvatarEditable) {
   const imgURL = AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
 
   const formik = useFormik<AvatarFormValues>({

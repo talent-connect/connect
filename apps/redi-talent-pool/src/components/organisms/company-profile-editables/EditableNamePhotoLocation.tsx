@@ -20,13 +20,7 @@ interface Props {
   disableEditing?: boolean
 }
 
-interface EditableNamePhotoLocationHelpers {
-  isSectionFilled: (profile: Partial<TpCompanyProfile>) => boolean;
-  isSectionEmpty: (profile: Partial<TpCompanyProfile>) => boolean;
-  isPhotoSelected: (profile: Partial<TpCompanyProfile>) => boolean;
-}
-
-export const EditableNamePhotoLocation: FC<Props> & EditableNamePhotoLocationHelpers = ({ profile, disableEditing }) => {
+export function EditableNamePhotoLocation ({ profile, disableEditing }: Props) {
   const mutation = useTpCompanyProfileUpdateMutation()
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
@@ -111,10 +105,7 @@ interface ModalFormProps {
   setIsFormDirty: (boolean: boolean) => void;
 }
 
-const ModalForm: FC<ModalFormProps> =({
-  setIsEditing,
-  setIsFormDirty,
-}) => {
+function ModalForm ({ setIsEditing, setIsFormDirty }: ModalFormProps) {
   const { data: profile } = useTpCompanyProfileQuery()
   const mutation = useTpCompanyProfileUpdateMutation()
 

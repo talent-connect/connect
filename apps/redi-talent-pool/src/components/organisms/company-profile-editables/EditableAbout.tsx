@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useFormik } from 'formik'
 import ReactMarkdown from 'react-markdown'
 import {
@@ -18,12 +18,7 @@ interface Props {
   disableEditing?: boolean
 }
 
-interface EditableAboutHelpers {
-  isSectionFilled: (profile: Partial<TpCompanyProfile>) => boolean;
-  isSectionEmpty: (profile: Partial<TpCompanyProfile>) => boolean;
-}
-
-export const EditableAbout: FC<Props> & EditableAboutHelpers = ({ profile, disableEditing }) => {
+export function EditableAbout ({ profile, disableEditing }: Props) {
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
@@ -86,10 +81,10 @@ interface ModalFormProps {
   setIsFormDirty: (boolean: boolean) => void
 }
 
-const ModalForm: FC<ModalFormProps> = ({
+function ModalForm ({
   setIsEditing,
   setIsFormDirty,
-}) => {
+}: ModalFormProps) {
   const { data: profile } = useTpCompanyProfileQuery()
   const mutation = useTpCompanyProfileUpdateMutation()
   const initialValues = useMemo(() => ({

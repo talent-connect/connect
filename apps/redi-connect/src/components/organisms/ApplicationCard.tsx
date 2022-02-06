@@ -2,7 +2,7 @@ import { Icon } from '@talent-connect/shared-atomic-design-components'
 import { RedMatch, RedProfile } from '@talent-connect/shared-types'
 import classnames from 'classnames'
 import moment from 'moment'
-import { FC, useState } from 'react'
+import { useState } from 'react'
 import { Columns, Content, Heading } from 'react-bulma-components'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -29,11 +29,11 @@ const STATUS_LABELS = {
   'invalidated-as-other-mentor-accepted': 'Cancelled',
 }
 
-const ApplicationCard: FC<Props> = ({
+function ApplicationCard ({
   application,
   hasReachedMenteeLimit,
   currentUser,
-}) => {
+}: Props) {
   const history = useHistory()
   const profile = getRedProfileFromLocalStorage()
   const [showDetails, setShowDetails] = useState(false)

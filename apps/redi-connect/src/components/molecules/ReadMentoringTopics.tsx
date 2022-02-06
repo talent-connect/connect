@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import { connect } from 'react-redux'
 
 import {
@@ -17,17 +16,19 @@ interface ReadMentoringProps {
   caption?: boolean
 }
 
-export const ProfileTags: FC<CardTagsProps> = (props) => (
-  <CardTags
-    {...props}
-    formatter={(item: string) => CATEGORIES_MAP[item]}
-  />
-)
+export function ProfileTags (props: CardTagsProps) {
+  return (
+    <CardTags
+      {...props}
+      formatter={(item: string) => CATEGORIES_MAP[item]}
+    />
+  );
+}
 
-const ReadMentoringTopics: FC<ReadMentoringProps> = ({
+function ReadMentoringTopics ({
   profile: { categories },
   caption = false
-}) => {
+}: ReadMentoringProps) {
 
   if (!categories?.length && !caption)
     return <Placeholder>Please pick up to four mentoring topics.</Placeholder>

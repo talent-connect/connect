@@ -4,7 +4,7 @@ import {
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
 import { AWS_PROFILE_AVATARS_BUCKET_BASE_URL } from '@talent-connect/shared-config'
-import { FC, useCallback, useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { Box, Columns, Content, Section } from 'react-bulma-components'
 import { useHistory, useParams } from 'react-router-dom'
 import { Subject } from 'rxjs'
@@ -19,40 +19,19 @@ import { AccordionFormCvProfessionalExperience } from '../../../../components/or
 import { AccordionFormCvSummary } from '../../../../components/organisms/jobSeeker-cv-editables/AccordionFormCvSummary'
 import { LoggedIn } from '../../../../components/templates'
 import { useTpJobSeekerCvByIdQuery } from '../../../../react-query/use-tpjobSeekercv-query'
-import { useTpJobSeekerProfileQuery } from '../../../../react-query/use-tpjobSeekerprofile-query'
+import { useTpJobseekerProfileQuery } from '../../../../react-query/use-tpjobSeekerprofile-query'
 import './CvDetailPage.scss'
 import placeholderImage from '../../../../assets/img-placeholder.png'
-
-// const InlineButton: FC = () => {
-//   return (
-//     <Button
-//       style={{
-//         transform: 'scale(0.5)',
-//         marginLeft: -24,
-//         marginRight: -16,
-//         pointerEvents: 'none',
-//       }}
-//     >
-//       Start
-//     </Button>
-//   )
-// }
-
-// const InlinePencilIcon: FC = () => {
-//   return (
-//     <CreateOutlinedIcon style={{ color: '#EA5B25', margin: '0 12px -5px' }} />
-//   )
-// }
 
 interface ParamTypes {
   id: string
 }
 
-const CvDetailPage: FC = () => {
+function CvDetailPage () {
   const history = useHistory()
   const { id: cvId } = useParams<ParamTypes>()
 
-  const { data: profile, isSuccess: profileLoadSuccess } = useTpJobSeekerProfileQuery()
+  const { data: profile, isSuccess: profileLoadSuccess } = useTpJobseekerProfileQuery()
   const { data: cvData, isSuccess: cvLoadSuccess } = useTpJobSeekerCvByIdQuery(
     cvId,
     {

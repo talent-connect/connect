@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import { Content } from 'react-bulma-components'
 import { connect } from 'react-redux'
 
@@ -13,7 +12,7 @@ interface Props {
   profile: RedProfile
 }
 
-const Me: FC<Props> = ({ profile: { personalDescription, expectations }}) => {
+function Me ({ profile: { personalDescription, expectations }}: Props) {
   if (!personalDescription && !expectations)
     return <Placeholder>Please tell us a bit about yourself</Placeholder>
 
@@ -27,9 +26,9 @@ const Me: FC<Props> = ({ profile: { personalDescription, expectations }}) => {
   )
 }
 
-const Some: FC<Props> = ({
+function Some ({
   profile: { firstName, lastName, personalDescription, expectations }
-}) => {
+}: Props) {
   return (
     <>
       <Caption>

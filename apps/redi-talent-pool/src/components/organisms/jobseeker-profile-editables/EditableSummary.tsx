@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { UseMutationResult, UseQueryResult } from 'react-query'
 import {
   Button,
@@ -15,26 +15,21 @@ import {
 import { mapOptions } from '@talent-connect/typescript-utilities';
 import { Content, Element, Tag } from 'react-bulma-components'
 import { useTpJobSeekerProfileUpdateMutation } from '../../../react-query/use-tpjobSeekerprofile-mutation'
-import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobSeekerprofile-query'
+import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobSeekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import { componentForm } from './EditableSummary.form';
 
-interface Props {
+interface EditableSummaryProps {
   profile?: Partial<TpJobSeekerProfile>
   disableEditing?: boolean
 }
 
-interface EditableSummaryHelpers {
-  isSectionFilled: (profile: Partial<TpJobSeekerProfile>) => boolean;
-  isSectionEmpty: (profile: Partial<TpJobSeekerProfile>) => boolean;
-}
-
-export const EditableSummary: FC<Props> & EditableSummaryHelpers = ({
+export function EditableSummary ({
   profile: overridingProfile,
   disableEditing,
-}) => {
-  const queryHookResult = useTpJobSeekerProfileQuery({
+}: EditableSummaryProps) {
+  const queryHookResult = useTpJobseekerProfileQuery({
     enabled: !disableEditing,
   })
   if (overridingProfile) queryHookResult.data = overridingProfile
@@ -118,12 +113,12 @@ interface JobSeekerFormSectionSummaryProps {
   >
 }
 
-export const JobSeekerFormSectionSummary: FC<JobSeekerFormSectionSummaryProps> = ({
+export function JobSeekerFormSectionSummary ({
   setIsEditing,
   setIsFormDirty,
   queryHookResult,
   mutationHookResult,
-}) => {
+}: JobSeekerFormSectionSummaryProps) {
 
   const { data: profile } = queryHookResult
   const mutation = mutationHookResult

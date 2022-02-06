@@ -11,7 +11,7 @@ import AccountOperation from '../../../components/templates/AccountOperation'
 import { componentForm } from './Login.form';
 
 
-const Login: FC = () => {
+const Login() {
   const [loginError, setLoginError] = useState<string>('')
 
   const formik = componentForm({

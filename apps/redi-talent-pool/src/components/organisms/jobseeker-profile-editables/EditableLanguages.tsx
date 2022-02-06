@@ -14,13 +14,11 @@ import {
   languageProficiencyLevels,
   languageProficiencyLevelsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
-import { useFormik } from 'formik'
 import { Subject } from 'rxjs'
-import { FC, useCallback, useState, useRef, useEffect, useMemo } from 'react'
+import { useCallback, useState, useRef, useEffect } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Content, Element } from 'react-bulma-components'
-import * as Yup from 'yup'
-import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobSeekerprofile-query'
+import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobSeekerprofile-query'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import { useTpJobSeekerProfileUpdateMutation } from '../../../react-query/use-tpjobSeekerprofile-mutation'
 import { Editable } from '../../molecules/Editable'
@@ -31,21 +29,16 @@ import { buildBlankLanguageRecord, componentForm } from './EditableLanguages.for
 
 // TODO: Repeated component?
 
-interface Props {
+interface EditableLanguagesProps {
   profile?: Partial<TpJobSeekerProfile>
   disableEditing?: boolean
 }
 
-interface EditableLanguagesHelpers {
-  isSectionFilled: (profile: Partial<TpJobSeekerProfile>) => boolean;
-  isSectionEmpty: (profile: Partial<TpJobSeekerProfile>) => boolean;
-}
-
-export const EditableLanguages: FC<Props> & EditableLanguagesHelpers = ({
+export function EditableLanguages ({
   profile: overridingProfile,
   disableEditing,
-}) => {
-  const queryHookResult = useTpJobSeekerProfileQuery({
+}: EditableLanguagesProps) {
+  const queryHookResult = useTpJobseekerProfileQuery({
     enabled: !disableEditing,
   })
   if (overridingProfile) queryHookResult.data = overridingProfile
@@ -121,12 +114,12 @@ interface JobSeekerFormSectionLanguagesProps {
   >
 }
 
-export const JobSeekerFormSectionLanguages: FC<JobSeekerFormSectionLanguagesProps> = ({
+export function JobSeekerFormSectionLanguages ({
   setIsEditing,
   setIsFormDirty,
   queryHookResult: { data: profile },
   mutationHookResult,
-}) => {
+}: JobSeekerFormSectionLanguagesProps) {
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
 
   const formik = componentForm({

@@ -4,7 +4,7 @@
  * must be standardized within the project.
  */
 
-import { FC, useState, MouseEvent } from 'react'
+import { useState, MouseEvent } from 'react'
 
 import { Content } from 'react-bulma-components'
 import { Button, Popover } from '@material-ui/core'
@@ -16,7 +16,7 @@ interface CvListItemMoreOptionsMenuProps {
   handleDuplicateClick: () => void;
 }
 
-export const CvListItemMoreOptionsMenu: FC<CvListItemMoreOptionsMenuProps> = (props) => {
+export function CvListItemMoreOptionsMenu (props: CvListItemMoreOptionsMenuProps) {
   const [anchorEl, setAnchorEl] = useState(null)
 
   const handleButtonClick = (event: MouseEvent<HTMLButtonElement>) => {

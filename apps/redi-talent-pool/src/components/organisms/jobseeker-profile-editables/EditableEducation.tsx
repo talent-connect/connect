@@ -22,7 +22,7 @@ import {
 } from '@talent-connect/talent-pool/config'
 import { mapOptions } from '@talent-connect/typescript-utilities';
 import { useFormik } from 'formik'
-import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Columns, Content, Element } from 'react-bulma-components'
 import ReactMarkdown from 'react-markdown'
@@ -30,26 +30,21 @@ import { UseMutationResult, UseQueryResult } from 'react-query'
 import { Subject } from 'rxjs'
 import { v4 as uuidv4 } from 'uuid'
 import { useTpJobSeekerProfileUpdateMutation } from '../../../react-query/use-tpjobSeekerprofile-mutation'
-import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobSeekerprofile-query'
+import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobSeekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { Location } from '../../molecules/Location'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
-interface Props {
+interface EditableEducationProps {
   profile?: Partial<TpJobSeekerProfile>
   disableEditing?: boolean
 }
 
-interface EditableNamePhotoLocationHelpers {
-  isSectionFilled: (profile: Partial<TpJobSeekerProfile>) => boolean;
-  isSectionEmpty: (profile: Partial<TpJobSeekerProfile>) => boolean;
-}
-
-export const EditableEducation: FC<Props> & EditableNamePhotoLocationHelpers = ({
+export function EditableEducation ({
   profile: overridingProfile,
   disableEditing,
-}) => {
-  const queryHookResult = useTpJobSeekerProfileQuery({
+}: EditableEducationProps) {
+  const queryHookResult = useTpJobseekerProfileQuery({
     enabled: !disableEditing,
   })
   if (overridingProfile) queryHookResult.data = overridingProfile
@@ -151,12 +146,12 @@ interface JobSeekerFormSectionEducationProps {
   >
 }
 
-export const JobSeekerFormSectionEducation: FC<JobSeekerFormSectionEducationProps> = ({
+export function JobSeekerFormSectionEducation ({
   setIsEditing,
   setIsFormDirty,
   queryHookResult: { data: profile },
   mutationHookResult,
-}) => {
+}: JobSeekerFormSectionEducationProps) {
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
 
@@ -400,7 +395,7 @@ export const JobSeekerFormSectionEducation: FC<JobSeekerFormSectionEducationProp
 
       <Button
         disabled={!formik.isValid || mutationHookResult.isLoading}
-        onClick={formik.handleSubmit}
+        onClick={(e) => formik.handleSubmit(e)}
       >
         Save
       </Button>

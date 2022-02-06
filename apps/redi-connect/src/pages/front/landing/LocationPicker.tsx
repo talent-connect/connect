@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import Landing from '../../../components/templates/Landing'
 import classnames from 'classnames'
 
@@ -22,7 +21,7 @@ import '../../../components/organisms/Navbar.scss'
 import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
 
-const LocationPicker: FC = () => {
+function LocationPicker () {
   const { t } = useTranslation()
   return (
     <>

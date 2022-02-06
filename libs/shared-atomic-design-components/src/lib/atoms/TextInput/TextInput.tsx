@@ -5,7 +5,7 @@ import { get } from 'lodash'
 import { TextInputProps } from './TextInput.props';
 
 
-const TextInput: FC<TextInputProps<string>> = ({
+function TextInput<T extends string> ({
   name,
   placeholder,
   label,
@@ -20,7 +20,7 @@ const TextInput: FC<TextInputProps<string>> = ({
   domRef,
   type = 'text',
   startAddon = null,
-}) => {
+}: TextInputProps<T>) {
 
   const hasError = !!get(touched, name) && !!get(errors, name)
   const isValidField = dirty && !!get(touched, name) && !get(errors, name)

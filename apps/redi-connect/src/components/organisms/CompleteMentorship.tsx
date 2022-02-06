@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { useState } from 'react'
 import { connect } from 'react-redux'
 import { Content } from 'react-bulma-components'
 import {
@@ -15,10 +15,10 @@ interface CompleteMentorshipProps {
   matchesMarkAsComplete: (redMatchId: string, mentorMessageOnComplete: string) => void
 }
 
-const CompleteMentorship: FC<CompleteMentorshipProps> = ({
+function CompleteMentorship ({
   match: { id },
   matchesMarkAsComplete,
-}) => {
+}: CompleteMentorshipProps) {
   const [isModalActive, setModalActive] = useState(false)
 
   const formik = componentForm({

@@ -31,7 +31,7 @@ const validationSchema = Yup.object({
     .max(1000),
 })
 
-const ReportProblem: FC<ReportProblemProps> = ({ redProfileId: reporteeId, type }) => {
+function ReportProblem ({ redProfileId: reporteeId, type }: ReportProblemProps) {
   const [showProblemDialog, setShowProblemDialog] = useState(false)
   const [submitResult, setSubmitResult] = useState<FormSubmitResult>('notSubmitted')
   const history = useHistory()

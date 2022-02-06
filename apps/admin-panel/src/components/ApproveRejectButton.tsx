@@ -1,6 +1,5 @@
-import { FC } from 'react'
 import Button from '@material-ui/core/Button'
 
-export const ApproveRejectButton: FC = () => {
+export function ApproveRejectButton () {
   return <Button>Hello</Button>
 }

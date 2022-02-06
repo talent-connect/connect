@@ -37,7 +37,7 @@ export interface SignUpFormValues {
   mentee_currentlyEnrolledInCourse: string
 }
 
-const SignUp: FC = () => {
+const SignUp() {
   const { type } = useParams<SignUpPageType>() as SignUpPageType
 
   // we may consider removing the backend types from frontend

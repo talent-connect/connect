@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Link } from 'react-router-dom'
 import {
@@ -15,9 +15,9 @@ interface RouteParams {
   accessToken: string
 }
 
-export const SetNewPassword: FC<RouteComponentProps<RouteParams>> = ({
+export function SetNewPassword ({
   match: { params: { accessToken } }
-}) => {
+}: RouteComponentProps<RouteParams>) {
   const [formError, setFormError] = useState<string>('')
   const [errorMsg, setErrorMsg] = useState<string>('')
 

@@ -1,13 +1,19 @@
-import { FC } from 'react'
+import { ReactNode } from 'react'
 import Footer from '../organisms/Footer'
 import Navbar from '../organisms/Navbar'
 
-const Landing: FC = ({ children }) => (
-  <>
-    <Navbar />
-    {children}
-    <Footer />
-  </>
-)
+interface LandingProps {
+  children: ReactNode
+}
+
+function Landing ({ children }: LandingProps) {
+  return (
+    <>
+      <Navbar />
+      {children}
+      <Footer />
+    </>
+  );
+}
 
 export default Landing

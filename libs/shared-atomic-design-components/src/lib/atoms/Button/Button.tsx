@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import classnames from 'classnames'
 import { NavLink } from 'react-router-dom'
 import { Icon } from '../Icon'
@@ -7,7 +6,7 @@ import './Button.scss'
 
 const baseClass = 'button-atom'
 
-const Button: FC<ButtonProps> & { Icon: typeof Icon } = ({
+function Button ({
   children,
   className,
   fullWidth,
@@ -18,7 +17,7 @@ const Button: FC<ButtonProps> & { Icon: typeof Icon } = ({
   size = 'small',
   simple = false,
   style = {},
-}) => {
+}: ButtonProps) {
 
   const classNames = classnames(
     baseClass,

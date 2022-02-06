@@ -4,7 +4,7 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import { TpJobSeekerCv } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
-import { FC, useEffect, useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Element } from 'react-bulma-components'
 import { UseMutationResult, UseQueryResult } from 'react-query'
 import { Subject } from 'rxjs'
@@ -19,11 +19,11 @@ interface Props {
   closeAccordionSignalSubject?: Subject<void>
 }
 
-export const AccordionFormCvName: FC<Props> = ({
+export function AccordionFormCvName ({
   tpJobSeekerCvId,
   closeAccordionSignalSubject,
   onClose: parentOnCloseCallback,
-}) => {
+}: Props) {
 
   const queryHookResult = useTpJobSeekerCvByIdQuery(tpJobSeekerCvId)
   const mutationHookResult = useTpJobSeekerCvUpdateMutation(tpJobSeekerCvId)
@@ -63,15 +63,15 @@ interface FormProps {
   >
 }
 
-const Form: FC<FormProps> = ({
+function Form ({
   setIsEditing,
   setIsFormDirty,
   queryHookResult: { data: profile },
   mutationHookResult,
-}) => {
+}: FormProps) {
   const initialValues = useMemo(() => ({
-      firstName: profile?.firstName ?? '',
-      lastName: profile?.lastName ?? '',
+      firstName: profile?.firstName || '',
+      lastName: profile?.lastName || '',
     }),
     [profile?.firstName, profile?.lastName]
   )

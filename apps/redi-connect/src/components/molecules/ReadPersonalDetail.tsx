@@ -1,9 +1,7 @@
-import { FC } from 'react'
 import moment from 'moment'
 import { connect } from 'react-redux'
 
 import { RedProfile } from '@talent-connect/shared-types'
-import { RootState } from '../../redux/types'
 import {
   Caption,
   Placeholder,
@@ -17,10 +15,10 @@ interface Props {
   caption?: boolean
 }
 
-const ReadPersonalDetail: FC<Props> = ({
+function ReadPersonalDetail ({
   profile: { gender, birthDate },
   caption = false
-}) => {
+}: Props) {
   
   const age = moment().diff(birthDate, 'years')
 

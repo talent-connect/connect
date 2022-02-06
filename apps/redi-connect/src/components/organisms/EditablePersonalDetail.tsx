@@ -41,10 +41,10 @@ interface Props {
   profileSaveStart: (arg: PersonalDetailFormValues & { id: string}) => void
 }
 
-const EditablePersonalDetail: FC<Props> = ({
+function EditablePersonalDetail ({
   profile: { id, gender, birthDate },
   profileSaveStart
-}) => {
+}: Props) {
 
   const formik = useFormik<PersonalDetailFormValues>({
     initialValues: {

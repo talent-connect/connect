@@ -5,7 +5,7 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import { TpCompanyProfile } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
-import { FC, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Content, Element } from 'react-bulma-components'
 import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
@@ -17,13 +17,7 @@ interface Props {
   disableEditing?: boolean
 }
 
-interface EditableDetailsHelpers {
-  isSectionFilled: (profile: Partial<TpCompanyProfile>) => boolean;
-  isSectionEmpty: (profile: Partial<TpCompanyProfile>) => boolean;
-  isWebsiteSectionFilled: (profile: Partial<TpCompanyProfile>) => boolean;
-}
-
-export const EditableDetails: FC<Props> & EditableDetailsHelpers = ({ profile, disableEditing }) => {
+export function EditableDetails ({ profile, disableEditing }: Props) {
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
@@ -110,17 +104,17 @@ interface ModalFormProps {
   setIsFormDirty: (boolean: boolean) => void
 }
 
-const ModalForm: FC<ModalFormProps> = ({
+function ModalForm ({
   setIsEditing,
   setIsFormDirty,
-}) => {
+}: ModalFormProps) {
   const { data: profile } = useTpCompanyProfileQuery()
   const mutation = useTpCompanyProfileUpdateMutation()
 
   const initialValues = useMemo(() => ({
-      industry: profile?.industry ?? '',
-      website: profile?.website ?? '',
-      linkedInUrl: profile?.linkedInUrl ?? '',
+      industry: profile?.industry || '',
+      website: profile?.website || '',
+      linkedInUrl: profile?.linkedInUrl || '',
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []

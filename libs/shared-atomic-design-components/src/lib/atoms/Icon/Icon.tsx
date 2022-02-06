@@ -1,17 +1,16 @@
-import { FC } from 'react'
 import classnames from 'classnames'
 
 import './Icon.scss'
 import { IconProps, ICONS } from './Icon.props';
 
-const Icon: FC<IconProps> = ({
+function Icon ({
   icon,
   space,
   size,
   className,
   onClick,
   style = {},
-}) => {
+}: IconProps) {
   const Icon = icon ? ICONS[icon] : null
 
   const iconSize = size || 'medium'

@@ -17,7 +17,7 @@ interface Props {
 
 const formMenteeOccupationCategories = mapOptionsObject(MENTEE_OCCUPATION_CATEGORY)
 
-const ReadOccupation: FC<Props> = ({
+const ReadOccupation<Props> = ({
   profile: {
     userType,
     mentor_occupation,

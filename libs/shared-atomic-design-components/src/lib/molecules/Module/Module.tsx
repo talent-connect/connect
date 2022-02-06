@@ -1,15 +1,14 @@
-import { FC } from 'react'
 import { Caption } from '../../atoms'
 import classnames from 'classnames'
 import './Module.scss'
 import { ModuleProps } from './Module.props';
 
-const Module: FC<ModuleProps> = ({
+function Module ({
   title,
   children,
   buttons,
   className
-}) => {
+}: ModuleProps) {
   return (
     <div className={classnames('module', { [`${className}`]: className })}>
       <div className="module__header">

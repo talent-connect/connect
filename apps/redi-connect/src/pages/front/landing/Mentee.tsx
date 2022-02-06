@@ -9,7 +9,7 @@ import Landing from '../../../components/templates/Landing'
 import { isLoggedIn } from '../../../services/auth/auth'
 import { Section, Container, Element } from 'react-bulma-components'
 
-const Mentee: FC = () => {
+const Mentee() {
   const { t } = useTranslation()
   const title = t('loggedOutArea.homePage.carousel.titleMentorOrMentee')
   const headline = t('loggedOutArea.homePage.carousel.headlineMentorOrMentee')

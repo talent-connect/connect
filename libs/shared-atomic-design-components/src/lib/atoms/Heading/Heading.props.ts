@@ -19,6 +19,8 @@ export const sizes = {
 
 export interface HeadingProps {
   /** */
+  children: string
+  /** */
   className?: string;
   /** */
   size?: keyof typeof sizes;

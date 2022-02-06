@@ -1,28 +1,31 @@
-import { FC } from 'react'
 import { getRedProfileFromLocalStorage } from '../../services/auth/auth'
 import './SideMenu.scss'
 import { NavLink } from 'react-router-dom'
 import { ReactComponent as Mentorship } from '../../assets/images/mentorship.svg'
 import { ReactComponent as Applications } from '../../assets/images/applications.svg'
 import { ReactComponent as Profile } from '../../assets/images/profile.svg'
+import { ReactNode } from 'react';
 
 interface MenuItemProps {
-  url: string
+  url: string;
+  children: ReactNode;
 }
 
-const MenuItem: FC<MenuItemProps> = ({ url, children }) => (
-  <li className="side-menu__item">
-    <NavLink
-      to={url}
-      className="side-menu__item__link"
-      activeClassName="side-menu__item__link--active"
-    >
-      {children}
-    </NavLink>
-  </li>
-)
+function MenuItem ({ url, children }: MenuItemProps) {
+  return (
+    <li className="side-menu__item">
+      <NavLink
+        to={url}
+        className="side-menu__item__link"
+        activeClassName="side-menu__item__link--active"
+      >
+        {children}
+      </NavLink>
+    </li>
+  );
+}
 
-const SideMenu: FC = () => {
+function SideMenu () {
   const { userType, userActivated, ifUserIsMentee_hasActiveMentor  } = getRedProfileFromLocalStorage()
   const isActivatedMentor = userType === 'mentor' && userActivated
   const isActivatedMentee = userType === 'mentee' && userActivated

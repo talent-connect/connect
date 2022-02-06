@@ -13,7 +13,7 @@ import {
 import { useTranslation } from 'react-i18next'
 import './RediProgram.scss'
 
-const RediProgram: FC = () => {
+const RediProgram() {
   const { t } = useTranslation()
 
   const programSteps: { content: string; headline: string; image: any; }[] =

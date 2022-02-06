@@ -37,10 +37,10 @@ interface Props {
   profileSaveStart: (arg: AboutFormValues & { id: string }) => void
 }
 
-const EditableAbout: FC<Props> = ({
+function EditableAbout ({
   profile: { id, userType, personalDescription, expectations },
   profileSaveStart
-}) => {
+}: Props) {
 
   const formik = useFormik<AboutFormValues>({
     initialValues: {

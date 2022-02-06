@@ -35,10 +35,10 @@ interface Props {
   profileSaveStart: (arg: SocialMediaFormValues & { id: string }) => void
 }
 
-const EditableSocialMedia: FC<Props> = ({
+function EditableSocialMedia ({
   profile: { id, linkedInProfileUrl, githubProfileUrl, slackUsername },
   profileSaveStart
-}) => {
+}: Props) {
 
   const formik = useFormik<SocialMediaFormValues>({
     initialValues: {

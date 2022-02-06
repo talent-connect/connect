@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import { Content } from 'react-bulma-components'
 import { connect } from 'react-redux'
 
@@ -11,10 +10,10 @@ interface Props {
   shortInfo?: boolean
 }
 
-const ReadContactDetails: FC<Props> = ({
+function ReadContactDetails ({
   profile: { firstName, lastName, contactEmail, telephoneNumber },
   shortInfo
-}) => {
+}: Props) {
   return (
     <>
       {shortInfo &&

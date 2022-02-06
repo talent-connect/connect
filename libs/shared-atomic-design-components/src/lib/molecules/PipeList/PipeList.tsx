@@ -1,10 +1,9 @@
-import { FC } from 'react'
 import { Element } from 'react-bulma-components'
 import { PipeListProps } from './PipeList.props';
 import './PipeList.scss'
 
 
-const PipeList: FC<PipeListProps> = ({ items, overflowAllowed }) => {
+function PipeList ({ items, overflowAllowed }: PipeListProps) {
   return (
     <Element
       renderAs="ul"

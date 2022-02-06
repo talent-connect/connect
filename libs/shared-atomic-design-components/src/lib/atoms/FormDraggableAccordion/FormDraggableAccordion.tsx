@@ -1,5 +1,5 @@
 import classnames from 'clsx'
-import { useEffect, useState, FC } from 'react'
+import { useEffect, useState } from 'react'
 import { Columns, Element } from 'react-bulma-components'
 import { Icon } from '../Icon'
 import { FormDraggableAccordionProps } from './FormDraggableAccordion.props';
@@ -7,13 +7,13 @@ import './FormDraggableAccordion.scss'
 
 import { ReactComponent as AccordionHandleIcon } from '../../../assets/images/accordion-handle.svg'
 
-const FormDraggableAccordion: FC<FormDraggableAccordionProps> = ({
+function FormDraggableAccordion ({
   title,
   children,
   onRemove = null,
   initialOpen = false,
   closeAccordionSignalSubject = null,
-}) => {
+}: FormDraggableAccordionProps) {
   const [showAnswer, setShowAnswer] = useState(initialOpen)
 
   useEffect(() => {

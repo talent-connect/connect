@@ -15,7 +15,7 @@ import {
 
 import './RediProgram.scss'
 
-const RediProgram: FC = () => {
+const RediProgram() {
   const { t } = useTranslation()
 
   const programSteps: {

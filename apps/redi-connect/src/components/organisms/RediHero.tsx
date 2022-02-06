@@ -19,7 +19,7 @@ import {
   SVGImage,
 } from '@talent-connect/shared-atomic-design-components'
 
-const RediHero: FC = () => {
+const RediHero() {
   const history = useHistory()
   const { t } = useTranslation()
 

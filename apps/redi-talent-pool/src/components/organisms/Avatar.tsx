@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import ReactS3Uploader, { S3Response } from 'react-s3-uploader'
 import classnames from 'classnames'
 
@@ -20,9 +20,9 @@ interface AvatarProps {
   profile: Partial<TpJobSeekerProfile> | Partial<TpCompanyProfile>
 }
 
-const Avatar: FC<AvatarProps> & { Editable: typeof AvatarEditable, Some: ReactNode }= ({
+function Avatar ({
   profile: { profileAvatarImageS3Key, firstName, lastName }
-}) => {
+}: AvatarProps) {
   const imgSrc = profileAvatarImageS3Key
   ? AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
   : placeholderImage
@@ -47,11 +47,11 @@ interface AvatarEditableProps {
   callToActionText?: string
 }
 
-const AvatarEditable: FC<AvatarEditableProps> = ({
+function AvatarEditable ({
   profile: { profileAvatarImageS3Key, id, firstName, lastName },
   profileSaveStart,
   callToActionText = 'Add your picture',
-}) => {
+}: AvatarEditableProps) {
   const imgURL = AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
 
   const formik = componentForm({

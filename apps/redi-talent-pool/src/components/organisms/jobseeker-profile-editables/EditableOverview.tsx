@@ -10,32 +10,25 @@ import {
   desiredPositionsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 import { mapOptions } from '@talent-connect/typescript-utilities';
-import { useFormik } from 'formik'
-import { FC, useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Element, Tag } from 'react-bulma-components'
 import { UseMutationResult, UseQueryResult } from 'react-query'
-import * as Yup from 'yup'
 import { useTpJobSeekerProfileUpdateMutation } from '../../../react-query/use-tpjobSeekerprofile-mutation'
-import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobSeekerprofile-query'
+import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobSeekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import { componentForm } from './EditableOverview.from';
 
-interface Props {
+interface EditableOverviewProps {
   profile?: Partial<TpJobSeekerProfile>
   disableEditing?: boolean
 }
 
-interface EditableOverviewHelpers {
-  isSectionFilled: (profile: Partial<TpJobSeekerProfile>) => boolean;
-  isSectionEmpty: (profile: Partial<TpJobSeekerProfile>) => boolean;
-}
-
-export const EditableOverview: FC<Props> & EditableOverviewHelpers = ({
+export function EditableOverview ({
   profile: overridingProfile,
   disableEditing,
-}) => {
-  const queryHookResult = useTpJobSeekerProfileQuery({
+}: EditableOverviewProps) {
+  const queryHookResult = useTpJobseekerProfileQuery({
     enabled: !disableEditing,
   })
   if (overridingProfile) queryHookResult.data = overridingProfile
@@ -90,12 +83,6 @@ EditableOverview.isSectionEmpty = (profile: Partial<TpJobSeekerProfile>) =>
 
 // ###########################################################################
   
-const validationSchema = Yup.object({
-  desiredPositions: Yup.array()
-    .min(1, 'At least one desired position is required')
-    .max(3, 'You can select up to three desired positions'),
-})
-
 interface JobSeekerFormSectionOverviewProps {
   setIsEditing: (boolean: boolean) => void
   setIsFormDirty?: (boolean: boolean) => void
@@ -112,19 +99,13 @@ interface JobSeekerFormSectionOverviewProps {
   hideCurrentRediCourseField?: boolean
 }
 
-export const JobSeekerFormSectionOverview: FC<JobSeekerFormSectionOverviewProps> = ({
+export function JobSeekerFormSectionOverview ({
   setIsEditing,
   setIsFormDirty,
   queryHookResult: { data: profile },
   mutationHookResult,
   hideCurrentRediCourseField,
-}) => {
-  // const initialValues = useMemo(() => ({
-  //     desiredPositions: profile?.desiredPositions ?? [],
-  //     currentlyEnrolledInCourse: profile?.currentlyEnrolledInCourse ?? '',
-  //   }),
-  //   [profile?.currentlyEnrolledInCourse, profile?.desiredPositions]
-  // )
+}: JobSeekerFormSectionOverviewProps) {
 
   const formik = componentForm({
     mutationHookResult,

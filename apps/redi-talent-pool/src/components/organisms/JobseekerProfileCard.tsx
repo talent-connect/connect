@@ -6,7 +6,6 @@ import {
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 import classnames from 'clsx'
-import { FC } from 'react'
 import { Card, Element } from 'react-bulma-components'
 import './JobSeekerProfileCard.scss'
 import placeholderImage from '../../assets/img-placeholder.png'
@@ -18,12 +17,12 @@ interface JobSeekerProfileCardProps {
   toggleFavorite?: (id: string) => void
 }
 
-export const JobSeekerProfileCard: FC<JobSeekerProfileCardProps> = ({
+export function JobSeekerProfileCard ({
   jobSeekerProfile,
   onClick,
   toggleFavorite,
   isFavorite,
-}) => {
+}: JobSeekerProfileCardProps) {
   // const history = useHistory()
 
   const fullName = `${jobSeekerProfile.firstName} ${jobSeekerProfile.lastName}`

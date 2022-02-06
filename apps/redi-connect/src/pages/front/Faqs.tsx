@@ -15,7 +15,7 @@ import {
 
 type QandA = { question: string; answer: string; };
 
-const Faqs: FC = () => {
+const Faqs() {
   const { t } = useTranslation()
 
   const topics: { title: string; qAndAs: QandA[] }[] = t('faq.topics', { returnObjects: true })

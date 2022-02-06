@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import { connect } from 'react-redux'
 
 import { Content } from 'react-bulma-components'
@@ -12,10 +11,10 @@ interface Props {
   shortInfo?: boolean
 }
 
-const ReadRediClass: FC<Props> = ({
+function ReadRediClass ({
   profile: { mentee_currentlyEnrolledInCourse },
-  shortInfo = false
-}) => {
+  shortInfo = false,
+}: Props) {
   const COURSES_MAP = Object.fromEntries(COURSES.map(({ id, label }) => [id, label]))
 
   return (

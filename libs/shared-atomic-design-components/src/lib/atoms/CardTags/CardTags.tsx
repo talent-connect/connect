@@ -1,16 +1,17 @@
-import { FC } from 'react';
 import { Tag } from 'react-bulma-components'
 
 import { CardTagProps, CardTagsProps } from './CardTags.props';
 import './CardTags.scss'
 
-const CardTag: FC<CardTagProps> = ({ children, className }) => (
-  <Tag className={className} size="medium" textWeight="bold" rounded>
-    {children}
-  </Tag>
-)
+function CardTag ({ children, className }: CardTagProps) {
+  return (
+    <Tag className={className} size="medium" textWeight="bold" rounded>
+      {children}
+    </Tag>
+  );
+}
 
-const CardTags: FC<CardTagsProps> = ({ items, shortList, formatter }) => {
+function CardTags ({ items, shortList, formatter }: CardTagsProps) {
   const additionalTagsCount = items.length - 3
   const tagList = shortList ? items.slice(0, 3) : items
   const hasAdditionalTags = shortList && additionalTagsCount > 0

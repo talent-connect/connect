@@ -20,7 +20,7 @@ interface Props {
   modalStyles?: CSSProperties
 }
 
-export const Editable: FC<Props> = ({
+export function Editable ({
   isEditing,
   setIsEditing,
   disableEditing,
@@ -31,7 +31,7 @@ export const Editable: FC<Props> = ({
   modalHeadline,
   modalBody,
   modalStyles,
-}) => {
+}: Props) {
   return (
     <div className="profile-section">
       {title ? (

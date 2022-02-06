@@ -3,7 +3,7 @@ import {
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
 import classnames from 'clsx'
-import { FC, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Columns, Element } from 'react-bulma-components'
 import { Subject } from 'rxjs'
 import './AccordionForm.scss'
@@ -14,11 +14,11 @@ interface Props {
   closeAccordionSignalSubject?: Subject<void>
 }
 
-export const AccordionForm: FC<Props> = ({
+export function AccordionForm ({
   title,
   closeAccordionSignalSubject,
   children,
-}) => {
+}: Props) {
   const [isOpen, setIsOpen] = useState(false)
 
   useEffect(() => {

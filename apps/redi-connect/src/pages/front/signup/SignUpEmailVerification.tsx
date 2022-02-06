@@ -1,10 +1,9 @@
-import { FC } from 'react'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import { Columns, Content } from 'react-bulma-components'
 import Teaser from '../../../components/molecules/Teaser'
 import { Heading } from '@talent-connect/shared-atomic-design-components'
 
-const SignUpEmailVerification: FC = () => (
+function SignUpEmailVerification () (
   <AccountOperation>
     <Columns vCentered>
       <Columns.Column

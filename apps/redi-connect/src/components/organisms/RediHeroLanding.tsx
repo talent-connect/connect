@@ -26,7 +26,7 @@ const typeToSvgImageMap: Record<UserRole, SVGTypes> = {
   mentee: 'heroMentee',
 }
 
-const RediHeroLanding: FC<Props> = ({ type }) => {
+function RediHeroLanding ({ type }: Props) {
   const { t } = useTranslation()
   const programSteps: { name: string; image: any; }[] =
     t(`loggedOutArea.homePage.hero.${type}.steps`, { returnObjects: true })

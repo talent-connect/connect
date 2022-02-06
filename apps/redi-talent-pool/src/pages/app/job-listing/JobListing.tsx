@@ -18,7 +18,7 @@ import { EditableDetails } from '../../../components/organisms/company-profile-e
 import { LoggedIn } from '../../../components/templates'
 import { useTpJobListingOneQuery } from '../../../react-query/use-tpjoblisting-one-query'
 
-export const JobListing: FC = () => {
+export const JobListing() {
   const { tpJobListingId }: { tpJobListingId: string } = useParams()
   const { data: jobListing } = useTpJobListingOneQuery(tpJobListingId)
 

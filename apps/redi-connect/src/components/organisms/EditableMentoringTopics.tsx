@@ -1,4 +1,4 @@
-import { ChangeEventHandler, FC } from 'react'
+import { ChangeEventHandler } from 'react'
 import { connect } from 'react-redux'
 import groupBy from 'lodash/groupBy'
 import { Columns, Heading, Element, Content } from 'react-bulma-components'
@@ -48,10 +48,10 @@ interface Props {
   profileSaveStart: (arg: MentoringFormValues & { id: string }) => void
 }
 
-const EditableMentoringTopics: FC<Props> = ({
+function EditableMentoringTopics ({
   profile: { id, userType, categories },
   profileSaveStart
-}) => {
+}: Props) {
 
   const isMentor =
     userType === 'mentor' || userType === 'public-sign-up-mentor-pending-review'
@@ -118,13 +118,13 @@ interface CategoryGroupProps {
   formik: any // TODO: remove this or workaround
 }
 
-const CategoryGroup: FC<CategoryGroupProps> = ({
+function CategoryGroup ({
   id,
   label,
   selectedCategories,
   onChange,
   formik,
-}) => { // TODO: types
+}: CategoryGroupProps) { // TODO: types
   // The current REDI_LOCATION might not use the current CategoryGroup (e.g.
   // Munich doesnt, at the time or writing, use 'coding' or 'other'. If it's the case, return null
 

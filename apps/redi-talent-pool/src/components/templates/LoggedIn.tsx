@@ -1,10 +1,9 @@
 import { Loader } from '@talent-connect/shared-atomic-design-components'
-import { FC } from 'react'
 import { Columns, Container } from 'react-bulma-components'
 import { useLocation } from 'react-router'
 import { useIsBusy } from '../../hooks/useIsBusy'
 import { useTpCompanyProfileQuery } from '../../react-query/use-tpcompanyprofile-query'
-import { useTpJobSeekerProfileQuery } from '../../react-query/use-tpjobSeekerprofile-query'
+import { useTpJobseekerProfileQuery } from '../../react-query/use-tpjobSeekerprofile-query'
 import { TpMainNavItem } from '../molecules/TpMainNavItem'
 import { Navbar } from '../organisms'
 import Footer from '../organisms/Footer'
@@ -14,10 +13,10 @@ interface Props {
   hideNavigation?: boolean
 }
 
-const LoggedIn: FC<Props> = ({ children, hideNavigation }) => {
+function LoggedIn ({ children, hideNavigation }: Props) {
   const isBusy = useIsBusy()
   const location = useLocation()
-  const { data: jobSeekerProfile } = useTpJobSeekerProfileQuery({
+  const { data: jobSeekerProfile } = useTpJobseekerProfileQuery({
     retry: false,
   })
   const { data: companyProfile } = useTpCompanyProfileQuery({ retry: false })

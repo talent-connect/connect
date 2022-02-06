@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import { Form } from 'react-bulma-components'
 import DatePicker from 'react-datepicker'
 import { Icon } from '../Icon'
@@ -12,17 +11,21 @@ interface PickerTriggerProps {
   onClick?: () => void
 }
 
-const PickerTrigger = (placeholder: string) => ({
-  value,
-  onClick,
-}: PickerTriggerProps) => (
-  <div className="datepicker-trigger" onClick={onClick}>
-    <Form.Input id={value} value={value} placeholder={placeholder} />
-    <Icon icon="calendar" className="datepicker-trigger__icon" size="medium" />
-  </div>
-)
+function PickerTrigger (placeholder: string) {
+  return function ({
+    value,
+    onClick,
+  }: PickerTriggerProps) {
+    return (
+      <div className="datepicker-trigger" onClick={onClick}>
+        <Form.Input id={value} value={value} placeholder={placeholder} />
+        <Icon icon="calendar" className="datepicker-trigger__icon" size="medium" />
+      </div>
+    );
+  };
+}
 
-const FormDatePicker: FC<FormDatePickerProps> = ({
+function FormDatePicker ({
   name,
   placeholder,
   label,
@@ -35,7 +38,7 @@ const FormDatePicker: FC<FormDatePickerProps> = ({
   dropdownMode,
   isClearable,
   setFieldValue,
-}) => {
+}: FormDatePickerProps) {
 
   const changeHandler = (date: Date) => {
     setFieldValue(name, date)

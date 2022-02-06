@@ -1,11 +1,10 @@
-import { FC } from 'react';
 import classnames from 'classnames'
 import { Form } from 'react-bulma-components'
 import { get } from 'lodash'
 import { NumberInputProps } from './NumberInput.props';
 
 
-const NumberInput: FC<NumberInputProps<string>> = ({
+function NumberInput <T extends string> ({
   name,
   placeholder,
   label,
@@ -19,7 +18,7 @@ const NumberInput: FC<NumberInputProps<string>> = ({
   disabled,
   domRef,
   startAddon = null,
-}) => {
+}: NumberInputProps<T>) {
 
   const hasError = !!get(touched, name) && !!get(errors, name)
   const isValidField = dirty && !!get(touched, name) && !get(errors, name)

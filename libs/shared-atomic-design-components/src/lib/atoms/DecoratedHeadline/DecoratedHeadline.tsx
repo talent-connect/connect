@@ -1,10 +1,10 @@
-import { FC } from 'react';
 import { Element } from 'react-bulma-components'
+
 import { Heading } from '../Heading'
 import { DecoratedHeadlineProps } from './DecoratedHeadline.props';
 import './DecoratedHeadline.scss'
 
-const DecoratedHeadline: FC<DecoratedHeadlineProps>  = ({ title, headline }) => {
+function DecoratedHeadline ({ title, headline }: DecoratedHeadlineProps) {
   return (
     <div className="decorated-headline">
       <Element

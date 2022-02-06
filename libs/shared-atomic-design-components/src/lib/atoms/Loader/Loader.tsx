@@ -1,12 +1,9 @@
-import { FC } from 'react';
 import classnames from 'classnames'
 import { Icon } from '../Icon'
 import './Loader.scss'
 import { LoaderProps } from './Loader.props';
 
-const Loader: FC<LoaderProps> = ({
-  loading
-}) => {
+function Loader ({ loading }: LoaderProps) {
   return (
     <div className={classnames('loader', { 'loader--active': loading })}>
       <Icon

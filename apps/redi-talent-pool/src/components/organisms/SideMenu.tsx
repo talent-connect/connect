@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import { NavLink } from 'react-router-dom'
 import { ReactComponent as Applications } from '../../assets/images/applications.svg'
 import { ReactComponent as Profile } from '../../assets/images/profile.svg'
@@ -8,17 +7,19 @@ interface MenuItemProps {
   url: string
 }
 
-const MenuItem: FC<MenuItemProps> = ({ url, children }) => (
-  <li className="side-menu__item">
-    <NavLink
-      to={url}
-      className="side-menu__item__link"
-      activeClassName="side-menu__item__link--active"
-    >
-      {children}
-    </NavLink>
-  </li>
-)
+function MenuItem ({ url, children }: MenuItemProps) {
+  return (
+    <li className="side-menu__item">
+      <NavLink
+        to={url}
+        className="side-menu__item__link"
+        activeClassName="side-menu__item__link--active"
+      >
+        {children}
+      </NavLink>
+    </li>
+  );
+}
 
 const SideMenu = () => {
   return (

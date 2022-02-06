@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import { connect } from 'react-redux'
 
 import { Content } from 'react-bulma-components'
@@ -14,10 +13,10 @@ interface Props {
   shortInfo?: boolean
 }
 
-const ReadSocialMedia: FC<Props> = ({
+function ReadSocialMedia ({
   profile: { linkedInProfileUrl, githubProfileUrl, slackUsername },
   shortInfo = false
-}) => {
+}: Props) {
 
   if (
     !shortInfo &&

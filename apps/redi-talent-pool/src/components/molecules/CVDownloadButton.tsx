@@ -1,7 +1,6 @@
 import { PDFDownloadLink, StyleSheet } from '@react-pdf/renderer'
 import { Button } from '@talent-connect/shared-atomic-design-components'
 import { TpJobSeekerCv } from '@talent-connect/shared-types';
-import { FC } from 'react'
 import { CVPDF } from './CvPdfPreview'
 
 // Create styles
@@ -14,7 +13,7 @@ interface CVDownloadButtonProps {
   cvData: TpJobSeekerCv
 }
 
-const CVDownloadButton: FC<CVDownloadButtonProps> = ({ cvData }) => {
+function CVDownloadButton ({ cvData }: CVDownloadButtonProps) {
   return (
     <PDFDownloadLink
       style={styles.downloadBtn}

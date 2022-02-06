@@ -4,12 +4,12 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import { TpJobSeekerCv, TpJobSeekerProfile } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
-import { useEffect, useMemo, useState, FC } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Content, Element } from 'react-bulma-components'
 import { UseMutationResult, UseQueryResult } from 'react-query'
 import * as Yup from 'yup'
 import { useTpJobSeekerProfileUpdateMutation } from '../../../react-query/use-tpjobSeekerprofile-mutation'
-import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobSeekerprofile-query'
+import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobSeekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
@@ -25,21 +25,16 @@ function buildAllLinksArray(profile: Partial<TpJobSeekerProfile>): string[] {
   ]
 }
 
-interface Props {
+interface EditableLinksProps {
   profile?: Partial<TpJobSeekerProfile>
   disableEditing?: boolean
 }
 
-interface EditableLinksHelpers {
-  isSectionFilled: (profile: Partial<TpJobSeekerProfile>) => boolean;
-  isSectionEmpty: (profile: Partial<TpJobSeekerProfile>) => boolean;
-}
-
-export const EditableLinks: FC<Props> & EditableLinksHelpers = ({
+export function EditableLinks ({
   profile: overridingProfile,
   disableEditing,
-}) => {
-  const queryHookResult = useTpJobSeekerProfileQuery({
+}: EditableLinksProps) {
+  const queryHookResult = useTpJobseekerProfileQuery({
     enabled: !disableEditing,
   })
   if (overridingProfile) queryHookResult.data = overridingProfile
@@ -107,13 +102,27 @@ EditableLinks.isSectionEmpty = (profile: Partial<TpJobSeekerProfile>) =>
 // #####################################################################
 
 const validationSchema = Yup.object({
-  personalWebsite: Yup.string().url().label('Personal website URL'),
-  githubUrl: Yup.string().url().label('Github profile URL'),
-  linkedInUrl: Yup.string().url().label('LinkedIn profile URL'),
-  twitterUrl: Yup.string().url().label('Twitter profile URL'),
-  behanceUrl: Yup.string().url().label('Behance profile URL'),
-  stackOverflowUrl: Yup.string().url().label('Stackoverflow profile URL'),
-  dribbbleUrl: Yup.string().url().label('Dribbble profile URL'),
+  personalWebsite: Yup.string()
+    .url()
+    .label('Personal website URL'),
+  githubUrl: Yup.string()
+    .url()
+    .label('Github profile URL'),
+  linkedInUrl: Yup.string()
+    .url()
+    .label('LinkedIn profile URL'),
+  twitterUrl: Yup.string()
+    .url()
+    .label('Twitter profile URL'),
+  behanceUrl: Yup.string()
+    .url()
+    .label('Behance profile URL'),
+  stackOverflowUrl: Yup.string()
+    .url()
+    .label('Stackoverflow profile URL'),
+  dribbbleUrl: Yup.string()
+    .url()
+    .label('Dribbble profile URL'),
 })
 
 interface JobSeekerFormSectionLinksProps {
@@ -131,23 +140,23 @@ interface JobSeekerFormSectionLinksProps {
   >
 }
 
-export const JobSeekerFormSectionLinks: FC<JobSeekerFormSectionLinksProps> = ({
+export function JobSeekerFormSectionLinks ({
   setIsEditing,
   setIsFormDirty,
   queryHookResult,
   mutationHookResult,
-}) => {
+}: JobSeekerFormSectionLinksProps) {
   const { data: profile } = queryHookResult
   const mutation = mutationHookResult
 
   const initialValues = useMemo(() => ({
-      personalWebsite: profile?.personalWebsite ?? '',
-      githubUrl: profile?.githubUrl ?? '',
-      linkedInUrl: profile?.linkedInUrl ?? '',
-      twitterUrl: profile?.twitterUrl ?? '',
-      behanceUrl: profile?.behanceUrl ?? '',
-      stackOverflowUrl: profile?.stackOverflowUrl ?? '',
-      dribbbleUrl: profile?.dribbbleUrl ?? '',
+      personalWebsite: profile?.personalWebsite || '',
+      githubUrl: profile?.githubUrl || '',
+      linkedInUrl: profile?.linkedInUrl || '',
+      twitterUrl: profile?.twitterUrl || '',
+      behanceUrl: profile?.behanceUrl || '',
+      stackOverflowUrl: profile?.stackOverflowUrl || '',
+      dribbbleUrl: profile?.dribbbleUrl || '',
     }),
     [
       profile?.behanceUrl,

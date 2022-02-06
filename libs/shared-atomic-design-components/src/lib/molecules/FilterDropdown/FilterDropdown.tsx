@@ -6,13 +6,13 @@ import { FilterDropdownProps } from './FilterDropdown.props';
 
 const baseClass = 'filter-dropdown'
 
-const FilterDropdown: FC<FilterDropdownProps> = ({
+function FilterDropdown ({
   label,
   className,
   selected,
   items,
   onChange,
-}) => {
+}: FilterDropdownProps) {
   const filterDropdown = useRef<any>(null)
   const [showDropdown, setShowDropdown] = useState(false)
 

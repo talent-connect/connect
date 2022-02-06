@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Columns, Content, Element } from 'react-bulma-components'
 import ReactMarkdown from 'react-markdown'
@@ -22,28 +22,23 @@ import {
 } from '@talent-connect/shared-types'
 import { formMonthsOptions } from '@talent-connect/talent-pool/config'
 import { useTpJobSeekerProfileUpdateMutation } from '../../../react-query/use-tpjobSeekerprofile-mutation'
-import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobSeekerprofile-query'
+import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobSeekerprofile-query'
 import { Location } from '../../molecules/Location'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import { formatDate, reorder } from '@talent-connect/shared-utils';
 import { buildBlankExperienceRecord, componentForm } from './EditableProfessionalExperience.form';
 
-interface Props {
+interface EditableProfessionalExperienceProps {
   profile?: Partial<TpJobSeekerProfile>
   disableEditing?: boolean
 }
 
-interface EditableProfessionalExperienceHelpers {
-  isSectionFilled: (profile: Partial<TpJobSeekerProfile>) => boolean;
-  isSectionEmpty: (profile: Partial<TpJobSeekerProfile>) => boolean;
-}
-
-export const  EditableProfessionalExperience: FC<Props> & EditableProfessionalExperienceHelpers = ({
+export function EditableProfessionalExperience ({
   profile: overridingProfile,
   disableEditing,
-}) => {
-  const queryHookResult = useTpJobSeekerProfileQuery({ enabled: !disableEditing })
+}: EditableProfessionalExperienceProps) {
+  const queryHookResult = useTpJobseekerProfileQuery({ enabled: !disableEditing })
   if (overridingProfile) queryHookResult.data = overridingProfile
   const mutationHookResult = useTpJobSeekerProfileUpdateMutation()
   const { data: profile } = queryHookResult
@@ -142,12 +137,12 @@ interface JobSeekerFormSectionProfessionalExperienceProps {
   >
 }
 
-export const JobSeekerFormSectionProfessionalExperience: FC<JobSeekerFormSectionProfessionalExperienceProps> = ({
+export function JobSeekerFormSectionProfessionalExperience ({
   setIsEditing,
   setIsFormDirty,
   queryHookResult: { data: profile },
   mutationHookResult,
-}) => {
+}: JobSeekerFormSectionProfessionalExperienceProps) {
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
 

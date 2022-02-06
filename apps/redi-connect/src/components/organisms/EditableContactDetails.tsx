@@ -14,10 +14,10 @@ interface Props {
   profileSaveStart: ComponentFormProps['profileSaveStart']
 }
 
-const EditableContactDetails: FC<Props> = ({
+function EditableContactDetails ({
   profile,
   profileSaveStart,
-}) => {
+}: Props) {
 
   const formik = componentForm({
     profile,

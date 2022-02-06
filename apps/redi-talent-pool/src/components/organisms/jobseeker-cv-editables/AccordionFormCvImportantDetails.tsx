@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import { Subject } from 'rxjs'
 import { useTpJobSeekerCvUpdateMutation } from '../../../react-query/use-tpjobSeekercv-mutation'
 import { useTpJobSeekerCvByIdQuery } from '../../../react-query/use-tpjobSeekercv-query'
@@ -11,11 +10,11 @@ interface Props {
   closeAccordionSignalSubject?: Subject<void>
 }
 
-export const AccordionFormCvImportantDetails: FC<Props> = ({
+export function AccordionFormCvImportantDetails ({
   tpJobSeekerCvId,
   closeAccordionSignalSubject,
   onClose: parentOnCloseCallback,
-}) => {
+}: Props) {
   const queryHookResult = useTpJobSeekerCvByIdQuery(tpJobSeekerCvId)
   const mutationHookResult = useTpJobSeekerCvUpdateMutation(tpJobSeekerCvId)
 

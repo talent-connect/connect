@@ -11,7 +11,7 @@ import {
 import classnames from 'classnames'
 import './SignUpLanding.scss'
 
-const SignUpLanding: FC = () => {
+const SignUpLanding() {
   const [selectedType, setSelectedType] = useState('')
   const history = useHistory()
 

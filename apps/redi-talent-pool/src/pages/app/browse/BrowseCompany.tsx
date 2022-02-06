@@ -11,7 +11,6 @@ import {
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 import { mapOptions } from '@talent-connect/typescript-utilities';
-import { FC } from 'react'
 import { Columns, Element, Tag } from 'react-bulma-components'
 import { useHistory } from 'react-router'
 import {
@@ -23,9 +22,9 @@ import {
 } from 'use-query-params'
 import { JobSeekerProfileCard } from '../../../components/organisms/JobSeekerProfileCard'
 import { LoggedIn } from '../../../components/templates'
-import { useBrowseTpJobSeekerProfilesQuery } from '../../../react-query/use-tpjobSeekerprofile-query'
+import { useBrowseTpJobseekerProfilesQuery } from '../../../react-query/use-tpjobSeekerprofile-query'
 
-export const BrowseCompany: FC = () => {
+export function BrowseCompany () {
   const [query, setQuery] = useQueryParams({
     name: withDefault(StringParam, ''),
     skills: withDefault(ArrayParam, []),
@@ -35,7 +34,7 @@ export const BrowseCompany: FC = () => {
   const { name, skills, desiredPositions, isJobFair2022Participant } = query
 
   const history = useHistory()
-  const { data: jobSeekerProfiles } = useBrowseTpJobSeekerProfilesQuery({
+  const { data: jobSeekerProfiles } = useBrowseTpJobseekerProfilesQuery({
     name,
     skills,
     desiredPositions,

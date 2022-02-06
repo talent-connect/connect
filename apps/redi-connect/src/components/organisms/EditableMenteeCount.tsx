@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import { connect } from 'react-redux'
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
@@ -54,10 +53,10 @@ interface Props {
   profileSaveStart: (arg: AboutFormValues & { id: string; }) => void
 }
 
-const EditableMenteeCount: FC<Props> = ({
+function EditableMenteeCount ({
   profile: { id, menteeCountCapacity, optOutOfMenteesFromOtherRediLocation, rediLocation },
   profileSaveStart
-}) => {
+}: Props) {
 
   const formik = useFormik<AboutFormValues>({
     initialValues: {

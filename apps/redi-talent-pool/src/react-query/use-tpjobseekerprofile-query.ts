@@ -15,7 +15,7 @@ const MS_IN_5_MIN = 5 * 60 * 1000
 
 // TODO: refactor name to make clear this is a hook for fetching
 // CURRENT USER's profile
-export function useTpJobSeekerProfileQuery(props?: Props) {
+export function useTpJobseekerProfileQuery(props?: Props) {
   return useQuery(
     'currentUserTpJobSeekerProfile',
     fetchCurrentUserTpJobSeekerProfile,
@@ -28,13 +28,13 @@ export function useTpJobSeekerProfileQuery(props?: Props) {
   )
 }
 
-export function useTpJobSeekerProfileByIdQuery(id: string) {
+export function useTpJobseekerProfileByIdQuery(id: string) {
   return useQuery(['oneTpJobSeekerProfile', id], () =>
     fetchTpJobSeekerProfileById(id)
   )
 }
 
-export function useBrowseTpJobSeekerProfilesQuery(
+export function useBrowseTpJobseekerProfilesQuery(
   filters: TpJobSeekerProfileFilters
 ) {
   return useQuery(['browseTpJobSeekerProfiles', filters], () =>

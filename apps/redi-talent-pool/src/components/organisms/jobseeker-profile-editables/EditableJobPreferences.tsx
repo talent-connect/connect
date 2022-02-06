@@ -6,28 +6,23 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import { TpJobSeekerProfile } from '@talent-connect/shared-types'
 import { reorder } from '@talent-connect/shared-utils';
-import { FC, useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Content, Element } from 'react-bulma-components'
 import { Subject } from 'rxjs'
 import * as Yup from 'yup'
 import { useTpJobSeekerProfileUpdateMutation } from '../../../react-query/use-tpjobSeekerprofile-mutation'
-import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobSeekerprofile-query'
+import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobSeekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import { componentForm } from './EditableJobPreferences.form';
 
-interface Props {
+interface EditableJobPreferencesProps {
   profile: Partial<TpJobSeekerProfile>
   triggerModalSignal?: Subject<void>
 }
 
-interface EditableJobPreferencesHelpers {
-  isSectionFilled: (profile: Partial<TpJobSeekerProfile>) => boolean;
-  isSectionEmpty: (profile: Partial<TpJobSeekerProfile>) => boolean;
-}
-
-export const EditableJobPreferences: FC<Props> & EditableJobPreferencesHelpers = ({ profile, triggerModalSignal }) => {
+export function EditableJobPreferences ({ profile, triggerModalSignal }: EditableJobPreferencesProps) {
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
@@ -86,8 +81,10 @@ EditableJobPreferences.isSectionEmpty = (profile: Partial<TpJobSeekerProfile>) =
 const validationSchema = Yup.object({
   hrSummit2021JobFairCompanyJobPreferences: Yup.array().of(
     Yup.object().shape({
-      jobPosition: Yup.string().required('Job position is required'),
-      companyName: Yup.string().required('Company name is required'),
+      jobPosition: Yup.string()
+        .required('Job position is required'),
+      companyName: Yup.string()
+        .required('Company name is required'),
     })
   ),
 })
@@ -97,11 +94,11 @@ interface ModalFormProps {
   setIsFormDirty: (boolean: boolean) => void
 }
 
-const ModalForm: FC<ModalFormProps> = ({
+function ModalForm ({
   setIsEditing,
   setIsFormDirty,
-}) => {
-  const { data: profile } = useTpJobSeekerProfileQuery()
+}: ModalFormProps) {
+  const { data: profile } = useTpJobseekerProfileQuery()
   const mutation = useTpJobSeekerProfileUpdateMutation()
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())

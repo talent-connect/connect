@@ -28,7 +28,7 @@ interface MentorshipProps {
   matches: RedMatch[]
 }
 
-const Mentorship: FC<MentorshipProps> = ({ currentUser, matches }) => {
+function Mentorship ({ currentUser, matches }: MentorshipProps) {
   const { profileId } = useParams<RouteParams>()
   const history = useHistory()
   const currentUserIsMentor = currentUser?.userType === 'mentor'

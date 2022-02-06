@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 import { Container, Heading, Section } from 'react-bulma-components'
@@ -11,7 +10,7 @@ import {
 import { SVGImages } from 'libs/shared-atomic-design-components/src/lib/atoms/SVGImage/SVGImage.props';
 import './NavTiles.scss'
 
-const NavTile: FC<{ name: SVGImages }> = ({ name }) => {
+function NavTile ({ name }: { name: SVGImages }) {
   const { t } = useTranslation()
   const history = useHistory()
 

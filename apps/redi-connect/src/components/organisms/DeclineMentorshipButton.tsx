@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { useState } from 'react'
 import { connect } from 'react-redux'
 import { Content } from 'react-bulma-components'
 import {
@@ -22,10 +22,10 @@ interface DeclineMentorshipButtonProps {
 
 // TODO: This throws a TS error: { dispatch, matchId }: ConnectButtonProps
 // What to replace with instead of below hack?
-const DeclineMentorshipButton: FC<DeclineMentorshipButtonProps> = ({
+function DeclineMentorshipButton ({
   match: { id: redMatchId },
   matchesDeclineMentorshipStart,
-}) => {
+}: DeclineMentorshipButtonProps) {
   const [isModalActive, setModalActive] = useState(false)
 
   const formik = componentForm({

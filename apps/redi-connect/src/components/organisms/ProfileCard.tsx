@@ -20,7 +20,7 @@ interface ProfileCardProps {
   toggleFavorite?: (id: string) => void
 }
 
-const ProfileCard: FC<ProfileCardProps> = ({
+function ProfileCard ({
   profile: {
     id,
     firstName,
@@ -33,7 +33,7 @@ const ProfileCard: FC<ProfileCardProps> = ({
   linkTo,
   toggleFavorite,
   isFavorite,
-}) => {
+}: ProfileCardProps) {
   const history = useHistory()
 
   const handleFavorite = (e: MouseEvent) => {

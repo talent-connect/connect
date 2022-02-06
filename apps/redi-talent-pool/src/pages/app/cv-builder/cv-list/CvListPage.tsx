@@ -1,4 +1,4 @@
-import { FC, useState, ChangeEvent } from 'react'
+import { useState, ChangeEvent } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import {
@@ -16,18 +16,18 @@ import { useTpJobSeekerCvQuery } from '../../../../react-query/use-tpjobSeekercv
 import { LoggedIn } from '../../../../components/templates'
 import { EmptySectionPlaceholder } from '../../../../components/molecules/EmptySectionPlaceholder'
 import CvListItem from './CvListItem'
-import { useTpJobSeekerProfileQuery } from '../../../../react-query/use-tpjobSeekerprofile-query'
+import { useTpJobseekerProfileQuery } from '../../../../react-query/use-tpjobSeekerprofile-query'
 import { TpJobSeekerCv, TpJobSeekerProfile } from '@talent-connect/shared-types'
 
 import './CvListPage.scss'
 
-const CvListPage: FC = () => {
+function CvListPage () {
   const [showCvNameModal, setShowCvNameModal] = useState(false)
   const [newCvName, setNewCvName] = useState('')
 
   const history = useHistory()
 
-  const { data: profile } = useTpJobSeekerProfileQuery()
+  const { data: profile } = useTpJobseekerProfileQuery()
   const { data: cvList } = useTpJobSeekerCvQuery()
   const createMutation = useTpJobSeekerCvCreateMutation()
 

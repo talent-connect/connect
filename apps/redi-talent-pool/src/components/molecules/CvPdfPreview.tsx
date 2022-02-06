@@ -18,7 +18,7 @@ import {
 } from '@talent-connect/talent-pool/config'
 import { objectValues } from '@talent-connect/typescript-utilities';
 import { isEqual } from 'lodash'
-import { FC, memo, useEffect } from 'react'
+import { memo, useEffect } from 'react'
 import {
   Document as ReactPDFDocument,
   Page as ReactPDFPage,
@@ -255,7 +255,11 @@ function isVeryLongEducationLine(education) { // TODO: review
   return education?.type?.length || 0 + education?.institutionName?.length || 0 > 43
 }
 
-export const CVPDF: FC<{ cvData: Partial<TpJobSeekerCv> }> = ({
+interface CVPDFProps {
+  cvData: Partial<TpJobSeekerCv>;
+}
+
+export function CVPDF ({
   cvData: {
     firstName,
     lastName,
@@ -277,7 +281,7 @@ export const CVPDF: FC<{ cvData: Partial<TpJobSeekerCv> }> = ({
     stackOverflowUrl,
     dribbbleUrl,
   },
-}) => {
+}: CVPDFProps) {
   return (
     <Document title={`${firstName}_${lastName}_CV.pdf`}>
       <Page size="A4" style={styles.page}>
@@ -551,13 +555,12 @@ interface CVPDFPreviewProps {
   pdfWidthPx: number
 }
 
-export const CVPDFPreview: FC<CVPDFPreviewProps> = ({
+export function CVPDFPreview ({
   cvData,
   pdfHeightPx,
   pdfWidthPx,
-}) =>
+}: CVPDFPreviewProps) {
   //pdfWidthPx: number
-  {
     const [instance, updateInstance] = usePDF({
       document: <CVPDF cvData={cvData} />,
     })

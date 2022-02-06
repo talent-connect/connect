@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { Section, Container, Element } from 'react-bulma-components'
@@ -8,7 +7,7 @@ interface Props {
   type: 'mentor' | 'mentee'
 }
 
-const Checklist: FC<Props> = ({ type }) => {
+function Checklist ({ type }: Props) {
   const { t } = useTranslation()
 
   const checklist: {

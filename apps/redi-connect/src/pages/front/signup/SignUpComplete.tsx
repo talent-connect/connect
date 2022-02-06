@@ -13,7 +13,7 @@ type RouteParams = {
   userType: UserType
 }
 
-const SignUpComplete: FC = () => {
+function SignUpComplete () {
   const history = useHistory()
   const { userType } = useParams<RouteParams>()
 

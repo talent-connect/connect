@@ -1,11 +1,9 @@
-import { FC } from 'react'
 import {
   TextInput,
   FormSelect,
 } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
 import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
 
 import { profileSaveStart } from '../../redux/user/actions'
 import * as Yup from 'yup'
@@ -85,7 +83,7 @@ interface Props {
   profileSaveStart: (arg: OccupationFormValues & { id: string }) => void
 }
 
-const EditableOccupation: FC<Props> = ({
+function EditableOccupation ({
   profile: {
     id,
     userType,
@@ -100,7 +98,7 @@ const EditableOccupation: FC<Props> = ({
     mentee_occupationOther_description,
   },
   profileSaveStart
-}) => {
+}: Props) {
 
   const isMentee =
     userType === 'mentee' || userType === 'public-sign-up-mentee-pending-review'

@@ -1,18 +1,18 @@
-import { FC, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Heading } from '../../atoms'
 import { Modal as BulmaModal } from 'react-bulma-components'
 import './Modal.scss'
 import { ModalProps } from './Modal.props';
 
 
-const Modal: FC<ModalProps> & Record<'Body' | 'Foot', FC> = ({
+function Modal ({
   title,
   children,
   stateFn,
   show,
   confirm,
   styles
-}) => {
+}: ModalProps) {
   const setShowModal = stateFn ? () => stateFn(false) : null
 
   const [internalShow, setInternalShow] = useState(false)
@@ -57,14 +57,16 @@ interface CloseButtonProps {
   onClick: () => void;
 }
 
-const CloseButton: FC<CloseButtonProps> = ({ onClick }) => (
+function CloseButton ({ onClick }: CloseButtonProps) {
+  return (
     <button
       type="button"
       onClick={onClick}
       className="modal-close is-large"
       aria-label="close"
     />
-  )
+  );
+}
 
 Modal.Body = BulmaModal.Card.Body
 Modal.Foot = BulmaModal.Card.Foot

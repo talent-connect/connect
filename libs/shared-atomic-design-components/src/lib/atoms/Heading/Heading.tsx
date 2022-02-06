@@ -1,10 +1,9 @@
-import { FC } from 'react'
 import classnames from 'classnames'
 import { Heading as BulmaHeading } from 'react-bulma-components'
 import './Heading.scss'
 import { HeadingProps, sizes } from './Heading.props';
 
-const Heading: FC<HeadingProps> = ({
+function Heading ({
   children,
   border,
   center,
@@ -12,7 +11,7 @@ const Heading: FC<HeadingProps> = ({
   className,
   tag = 'h1',
   size = 'large',
-}) => {
+}: HeadingProps) {
   const classNames = classnames({
     [`decoration decoration--${border}`]: border,
     'oneandhalf-bs': border === 'bottomLeft',

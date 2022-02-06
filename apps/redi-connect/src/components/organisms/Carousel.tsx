@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import Slider from 'react-slick'
 import {
@@ -22,7 +21,7 @@ interface Props {
   border: 'blue' | 'orange'
 }
 
-const Carousel: FC<Props> = ({ headline, title, border }) => {
+function Carousel ({ headline, title, border }: Props) {
   const { t } = useTranslation()
 
   const quotes = [

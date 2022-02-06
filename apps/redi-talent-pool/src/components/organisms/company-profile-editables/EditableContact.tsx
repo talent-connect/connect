@@ -5,7 +5,7 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import { TpCompanyProfile } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
-import { FC, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Content, Element } from 'react-bulma-components'
 import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
@@ -17,15 +17,10 @@ interface Props {
   disableEditing?: boolean
 }
 
-interface EditableContactHelpers {
-  isSectionFilled: (profile: Partial<TpCompanyProfile>) => boolean;
-  isSectionEmpty: (profile: Partial<TpCompanyProfile>) => boolean;
-}
-
-export const EditableContact: FC<Props> & EditableContactHelpers = ({
+export function EditableContact ({
   profile,
   disableEditing
-}) => {
+}: Props) {
   const { firstName, lastName, phoneNumber, contactEmail } = profile
 
   const [isEditing, setIsEditing] = useState(false)
@@ -113,10 +108,10 @@ interface ModalFormProps {
   setIsFormDirty: (boolean: boolean) => void
 }
 
-const ModalForm: FC<ModalFormProps> = ({
+function ModalForm ({
   setIsEditing,
   setIsFormDirty,
-}) => {
+}: ModalFormProps) {
   const { data: profile } = useTpCompanyProfileQuery()
   const mutation = useTpCompanyProfileUpdateMutation()
   const initialValues = useMemo(() => ({

@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { useState } from 'react'
 import { connect } from 'react-redux'
 import {
   Caption,
@@ -19,10 +19,10 @@ interface Props {
   profilesFetchOneStart: (is: string) => void
 }
 
-const ApplyForMentor: FC<Props> = ({
+function ApplyForMentor ({
   mentor: { id, lastName, firstName },
   profilesFetchOneStart
-}) => {
+}: Props) {
   const [submitResult, setSubmitResult] = useState<FormSubmitResult>('notSubmitted')
   const [show, setShow] = useState(false)
   

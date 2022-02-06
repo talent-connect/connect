@@ -18,30 +18,25 @@ import {
 } from '@talent-connect/talent-pool/config'
 import { mapOptions } from '@talent-connect/typescript-utilities';
 import moment from 'moment'
-import { FC, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Content, Element } from 'react-bulma-components'
 import { UseMutationResult, UseQueryResult } from 'react-query'
 import { useTpJobSeekerProfileUpdateMutation } from '../../../react-query/use-tpjobSeekerprofile-mutation'
-import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobSeekerprofile-query'
+import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobSeekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import { componentForm } from './EditableImportantDetails.form';
 
-interface Props {
+interface EditableImportantDetailsProps {
   profile?: Partial<TpJobSeekerProfile>
   disableEditing?: boolean
 }
 
-interface EditableImportantDetailsHelpers {
-  isSectionFilled: (profile: Partial<TpJobSeekerProfile>) => boolean;
-  isSectionEmpty: (profile: Partial<TpJobSeekerProfile>) => boolean;
-}
-
-export const EditableImportantDetails: FC<Props> & EditableImportantDetailsHelpers = ({
+export function EditableImportantDetails ({
   profile: overridingProfile,
   disableEditing,
-}) => {
-  const queryHookResult = useTpJobSeekerProfileQuery({
+}: EditableImportantDetailsProps) {
+  const queryHookResult = useTpJobseekerProfileQuery({
     enabled: !disableEditing,
   })
   if (overridingProfile) queryHookResult.data = overridingProfile
@@ -174,7 +169,7 @@ interface JobSeekerFormSectionImportantDetailsProps {
     unknown
   >
   // TODO: this is a slippery slope. When this form section is used in the
-  // Profiile Builder, we need all the below fields. In the CV Builder we
+  // Profile Builder, we need all the below fields. In the CV Builder we
   // only need these "contact details" fields. Instead of "customizing"
   // from component, we should probably build a new component
   // EditableContactDetails or something. Over the longer run, we might
@@ -183,13 +178,13 @@ interface JobSeekerFormSectionImportantDetailsProps {
   hideNonContactDetailsFields?: boolean
 }
 
-export const JobSeekerFormSectionImportantDetails: FC<JobSeekerFormSectionImportantDetailsProps> = ({
+export function JobSeekerFormSectionImportantDetails ({
   setIsEditing,
   setIsFormDirty,
   queryHookResult,
   mutationHookResult,
   hideNonContactDetailsFields,
-}) => {
+}: JobSeekerFormSectionImportantDetailsProps) {
   const { data: profile } = queryHookResult
 
   const formik = componentForm({

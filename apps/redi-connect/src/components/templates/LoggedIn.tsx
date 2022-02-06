@@ -26,17 +26,19 @@ import Footer from '../organisms/Footer'
 import { RedMatch } from '@talent-connect/shared-types'
 
 
-const RediNotification: FC = ({ children }) => (
-  <Notification className="account-not-active double-bs">
-    <Icon
-      className="account-not-active__icon"
-      icon="mail"
-      size="large"
-      space="right"
+function RediNotification ({ children }) {
+  return (
+    <Notification className="account-not-active double-bs">
+      <Icon
+        className="account-not-active__icon"
+        icon="mail"
+        size="large"
+        space="right"
       />
-    <Content dangerouslySetInnerHTML={{ __html: children }} />
-  </Notification>
-)
+      <Content dangerouslySetInnerHTML={{ __html: children }} />
+    </Notification>
+  );
+}
 
 interface Props {
   loading: boolean
@@ -45,13 +47,13 @@ interface Props {
   matchesMarkAsDismissed: (redMatchId: string) => void
 }
 
-const LoggedIn: FC<Props> = ({
+function LoggedIn ({
   loading,
   matches,
   matchesFetchStart,
   matchesMarkAsDismissed,
-  children
-}) => {
+  children,
+}: Props) {
   const { userType, firstName, userActivated } = getRedProfileFromLocalStorage()
   const history = useHistory()
   const match = matches?.find(({ status }) => status === 'accepted') || null
@@ -74,7 +76,7 @@ const LoggedIn: FC<Props> = ({
   return (
     <>
       <Navbar />
-      <Section className="section--bottom-large-spaceing color-half-tablet section--separator">
+      <Section className="section--bottom-large-spacing color-half-tablet section--separator">
         <Container className="color-side-menu">
           <Columns>
             <Columns.Column desktop={{ size: 2 }} className="column--side-menu">

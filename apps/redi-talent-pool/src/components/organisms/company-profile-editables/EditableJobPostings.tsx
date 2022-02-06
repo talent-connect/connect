@@ -16,7 +16,7 @@ import {
 } from '@talent-connect/talent-pool/config'
 import { mapOptions } from '@talent-connect/typescript-utilities';
 import { useFormik } from 'formik'
-import { useCallback, useState, useEffect, FC } from 'react'
+import { useCallback, useState, useEffect } from 'react'
 import { Columns, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
@@ -35,10 +35,10 @@ interface Props {
   setIsJobPostingFormOpen: (value: boolean) => void
 }
 
-export const EditableJobPostings: FC<Props> = ({
+export function EditableJobPostings ({
   isJobPostingFormOpen,
   setIsJobPostingFormOpen,
-}) => {
+}: Props) {
   const { data: jobListings } = useTpJobListingAllQuery()
   const [isEditing, setIsEditing] = useState(false)
   const [idOfTpJobListingBeingEdited, setIdOfTpJobListingBeingEdited] =
@@ -159,11 +159,11 @@ interface ModalFormProps {
   setIsEditing: (boolean: boolean) => void
 }
 
-const ModalForm: FC<ModalFormProps> = ({
+function ModalForm ({
   isEditing,
   setIsEditing,
   tpJobListingId
-}) => {
+}: ModalFormProps) {
   const { data } = useTpJobListingOneOfCurrentUserQuery(tpJobListingId)
   const { data: currentUserTpCompanyProfile } = useTpCompanyProfileQuery()
   const jobListing = tpJobListingId

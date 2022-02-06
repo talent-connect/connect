@@ -39,7 +39,7 @@ const validationSchema = Yup.object({
     .max(255),
 })
 
-const Login: FC = () => {
+const Login() {
   const [loginError, setLoginError] = useState<string>('')
   const [isWrongRediLocationError, setIsWrongRediLocationError] =
     useState<boolean>(false)

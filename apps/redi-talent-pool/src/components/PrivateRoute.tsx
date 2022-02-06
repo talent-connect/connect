@@ -1,8 +1,7 @@
-import { FC } from 'react'
 import { Route, RouteProps } from 'react-router-dom'
 import { useNotAuthenticatedRedirector } from '../hooks/useNotAuthenticatedRedirector'
 
-export const PrivateRoute: FC<RouteProps> = (props) => {
+export function PrivateRoute (props: RouteProps) {
   const { isRedirectingToLogin } = useNotAuthenticatedRedirector()
 
   // If the hook determined user not authenticated it'll take care of redirect to

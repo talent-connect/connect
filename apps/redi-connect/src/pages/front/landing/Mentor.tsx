@@ -9,7 +9,7 @@ import { isLoggedIn } from '../../../services/auth/auth'
 import { Section, Container } from 'react-bulma-components'
 import { useHistory } from 'react-router-dom'
 
-const Mentor: FC = () => {
+const Mentor() {
   const { t } = useTranslation()
   const title = t('loggedOutArea.homePage.carousel.titleMentorOrMentee')
   const headline = t('loggedOutArea.homePage.carousel.headlineMentorOrMentee')

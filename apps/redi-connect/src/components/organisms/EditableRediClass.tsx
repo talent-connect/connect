@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import { connect } from 'react-redux'
 
 import { FormSelect } from '@talent-connect/shared-atomic-design-components'
@@ -19,10 +18,10 @@ interface Props {
   profileSaveStart: ComponentFormProps['profileSaveStart']
 }
 
-const EditableRediClass: FC<Props> = ({
+function EditableRediClass ({
   profile: { id, mentee_currentlyEnrolledInCourse },
   profileSaveStart
-}) => {
+}: Props) {
   
   const formik = componentForm({
     id,

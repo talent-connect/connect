@@ -5,7 +5,7 @@ import { icons } from './SocialMediaIcons.props';
 
 import { envRediLocation } from '../../../../../../apps/redi-connect/src/utils/env-redi-location'
 
-const SocialMediaIcons: FC = () => (
+const SocialMediaIcons() (
   <ul className="media-icons__list">
     {icons.map((item) => (
       <li key={item.icon}>

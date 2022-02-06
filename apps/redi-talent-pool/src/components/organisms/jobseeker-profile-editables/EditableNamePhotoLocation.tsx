@@ -11,26 +11,24 @@ import {
 } from '@talent-connect/talent-pool/config'
 import { mapOptions } from '@talent-connect/typescript-utilities';
 import { useFormik } from 'formik'
-import { FC, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Columns, Content, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
 import { useTpJobSeekerProfileUpdateMutation } from '../../../react-query/use-tpjobSeekerprofile-mutation'
-import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobSeekerprofile-query'
+import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobSeekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import Avatar from '../Avatar'
 
-interface Props {
+interface EditableNamePhotoLocationProps {
   profile: Partial<TpJobSeekerProfile>
   disableEditing?: boolean
 }
 
-interface EditableNamePhotoLocationHelpers {
-  isSectionFilled: (profile: Partial<TpJobSeekerProfile>) => boolean;
-  isSectionEmpty: (profile: Partial<TpJobSeekerProfile>) => boolean;
-}
-
-export const EditableNamePhotoLocation: FC<Props> & EditableNamePhotoLocationHelpers = ({ profile, disableEditing }) => {
+export function EditableNamePhotoLocation ({
+  profile,
+  disableEditing,
+}: EditableNamePhotoLocationProps) {
   const mutation = useTpJobSeekerProfileUpdateMutation()
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
@@ -116,17 +114,17 @@ interface ModalFormProps {
   setIsFormDirty: (boolean: boolean) => void
 }
 
-const ModalForm: FC<ModalFormProps> = ({
+function ModalForm ({
   setIsEditing,
   setIsFormDirty,
-}) => {
-  const { data: profile } = useTpJobSeekerProfileQuery()
+}: ModalFormProps) {
+  const { data: profile } = useTpJobseekerProfileQuery()
   const mutation = useTpJobSeekerProfileUpdateMutation()
   const initialValues = useMemo(() => ({
-      firstName: profile?.firstName ?? '',
-      lastName: profile?.lastName ?? '',
-      genderPronouns: profile?.genderPronouns ?? '',
-      location: profile?.location ?? '',
+      firstName: profile?.firstName || '',
+      lastName: profile?.lastName || '',
+      genderPronouns: profile?.genderPronouns || '',
+      location: profile?.location || '',
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []

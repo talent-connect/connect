@@ -12,7 +12,7 @@ import {
   RediConnectLogo,
 } from '@talent-connect/shared-atomic-design-components'
 
-const LoggedOutNavItems: FC = () => {
+function LoggedOutNavItems() {
   const { t } = useTranslation()
 
   return (
@@ -24,7 +24,7 @@ const LoggedOutNavItems: FC = () => {
   )
 }
 
-const LoggedOutButtons: FC = () => {
+function LoggedOutButtons() {
   const { t } = useTranslation()
   const history = useHistory()
 
@@ -40,7 +40,7 @@ const LoggedOutButtons: FC = () => {
   )
 }
 
-const LoggedInButtons: FC<{ mobile?: boolean }> = ({ mobile }) => {
+function LoggedInButtons ({ mobile }: { mobile?: boolean }) {
   const { t } = useTranslation()
   const history = useHistory()
 
@@ -62,7 +62,7 @@ const LoggedInButtons: FC<{ mobile?: boolean }> = ({ mobile }) => {
   )
 }
 
-const Navbar: FC = () => {
+function Navbar() {
   const [menuActive, setMenuActive] = useState(false)
 
   const mobileMenu = (

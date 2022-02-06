@@ -20,23 +20,23 @@ interface FancyLinkProps {
 
 const FancyLink = React.forwardRef<HTMLAnchorElement>((props: FancyLinkProps, ref) => (
     <a
-      ref={ref}
-      {...props}
       className="tp-main-nav-item"
       style={{ cursor: props.isDisabled ? 'not-allowed' : 'pointer' }}
+      ref={ref}
+      {...props}
     >
       {props.children}
     </a>
   )
 )
 
-export const TpMainNavItem: FC<Props> = ({
+export function TpMainNavItem ({
   page,
   to,
   isActive,
   isDisabled,
   pageName,
-}) => {
+}: Props) {
   const onClick = useCallback(
     (event: MouseEvent) => { if (isDisabled) event.preventDefault() },
     [isDisabled]
@@ -45,17 +45,16 @@ export const TpMainNavItem: FC<Props> = ({
   return (
     <Link
       to={to}
-      component={(props) => (
-        <FancyLink isDisabled={isDisabled} pageName={pageName} {...props} />
-      )}
       onClick={onClick}
+      component={(props) => (
+        <FancyLink
+          {...{ isDisabled, pageName }}
+          {...props}
+        />
+      )}
     >
       <div></div>
-      <TpMainNavItemIcon
-        page={page}
-        isDisabled={isDisabled}
-        pageName={pageName}
-      />
+      <TpMainNavItemIcon {...{ page, isDisabled, pageName }} />
       <div
         className={classnames({ 'tp-main-nav-item__active-bar': isActive })}
       ></div>
@@ -69,11 +68,11 @@ interface TpMainNavItemIconProps {
   pageName?: string
 }
 
-const TpMainNavItemIcon: FC<TpMainNavItemIconProps> = ({
+function TpMainNavItemIcon ({
   page,
   isDisabled,
   pageName,
-}) => {
+}: TpMainNavItemIconProps) {
   return (
     <div
       style={{

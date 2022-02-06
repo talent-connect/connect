@@ -1,10 +1,10 @@
-import { FC, useState } from 'react'
+import { useState } from 'react'
 import { Caption, Icon } from '../../atoms'
 import classnames from 'classnames'
 import './Editable.scss'
 import { EditableProps } from './Editable.props';
 
-const Editable: FC<EditableProps> = ({
+function Editable ({
   title,
   children,
   read,
@@ -12,7 +12,7 @@ const Editable: FC<EditableProps> = ({
   onClose,
   savePossible,
   className,
-}) => {
+}: EditableProps) {
 
   const [isEditing, setIsEditing] = useState(false)
 

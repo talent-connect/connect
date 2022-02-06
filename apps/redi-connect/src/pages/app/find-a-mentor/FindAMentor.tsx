@@ -36,25 +36,27 @@ interface FilterTagProps {
   onClickHandler: (item: string) => void
 }
 
-const FilterTag: FC<FilterTagProps> = ({ id, label, onClickHandler }) => (
-  <Tag size="medium" rounded textWeight="bold">
-    {label}
-    <Icon
-      icon="cancel"
-      onClick={() => {
-        onClickHandler(id)
-      }}
-      className="active-filters__remove"
-    />
-  </Tag>
-)
+function FilterTag ({ id, label, onClickHandler }: FilterTagProps) {
+  return (
+    <Tag size="medium" rounded textWeight="bold">
+      {label}
+      <Icon
+        icon="cancel"
+        onClick={() => {
+          onClickHandler(id);
+        }}
+        className="active-filters__remove"
+      />
+    </Tag>
+  );
+}
 
 interface FindAMentorProps {
   profile: RedProfile
   profileSaveStart: (profile: Partial<RedProfile>) => void
 }
 
-const FindAMentor: FC<FindAMentorProps> = ({
+function FindAMentor ({
   profile: {
     id,
     userActivated,
@@ -63,7 +65,7 @@ const FindAMentor: FC<FindAMentorProps> = ({
     rediLocation,
   },
   profileSaveStart
-}) => {
+}: FindAMentorProps) {
   const { Loading, isLoading, setLoading } = useLoading()
   const [showFavorites, setShowFavorites] = useState<boolean>(false)
   const [mentors, setMentors] = useState<RedProfile[]>([])

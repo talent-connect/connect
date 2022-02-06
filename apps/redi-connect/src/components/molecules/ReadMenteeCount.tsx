@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import { Content } from 'react-bulma-components'
 import { connect } from 'react-redux'
 
@@ -10,9 +9,9 @@ interface Props {
   profile: RedProfile
 }
 
-const Me: FC<Props> = ({
+function Me ({
   profile: { menteeCountCapacity, optOutOfMenteesFromOtherRediLocation, rediLocation }
-}) => {
+}: Props) {
 
   return (
     <Content>

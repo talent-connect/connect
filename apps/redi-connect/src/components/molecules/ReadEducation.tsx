@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import { Content } from 'react-bulma-components'
 import { connect } from 'react-redux'
 
@@ -15,10 +14,10 @@ interface Props {
   shortInfo?: boolean
 }
 
-const ReadEducation: FC<Props> = ({
+function ReadEducation ({
   profile: { mentee_highestEducationLevel },
   shortInfo
-}) => {
+}: Props) {
   if (!mentee_highestEducationLevel)
     return (
       <Placeholder>

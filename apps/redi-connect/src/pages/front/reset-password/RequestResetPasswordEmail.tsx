@@ -24,7 +24,7 @@ const validationSchema = yup.object().shape({
     .required('Please provide an email address.'),
 })
 
-export const RequestResetPasswordEmail: FC = () => {
+export const RequestResetPasswordEmail() {
   const [resetPasswordSuccess, setResetPasswordSuccess] = useState<string>('')
   const [resetPasswordError, setResetPasswordError] = useState<string>('')
 

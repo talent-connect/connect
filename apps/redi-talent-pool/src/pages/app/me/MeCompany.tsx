@@ -30,7 +30,7 @@ function isProfileComplete(profile: Partial<TpCompanyProfile>): boolean {
   return requiredSectionsComplete
 }
 
-const SendProfileForReviewButton: FC = () => {
+const SendProfileForReviewButton() {
   const { data: profile } = useTpCompanyProfileQuery()
   const { data: jobListings } = useTpJobListingAllQuery()
   const mutation = useTpCompanyProfileUpdateMutation()
@@ -69,12 +69,12 @@ const SendProfileForReviewButton: FC = () => {
   )
 }
 
-const CallToActionButton: FC<{ profile: Partial<TpCompanyProfile>; }> = ({ profile: { state } }) => {
+function CallToActionButton ({ profile: { state } }: { profile: Partial<TpCompanyProfile>; }) {
   const showSendProfileForReviewButton = state && (state === TpCompanyProfileState['drafting-profile'] || state === TpCompanyProfileState['submitted-for-review'])
   return showSendProfileForReviewButton && (<SendProfileForReviewButton />)
 }
 
-export const MeCompany: FC = () => {
+export function MeCompany() {
   const { data: profile } = useTpCompanyProfileQuery()
   const { data: jobListings } = useTpJobListingAllQuery()
 

@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import {
@@ -22,10 +21,10 @@ import {
 import { JobListingCard } from '../../../components/organisms/JobListingCard'
 import { LoggedIn } from '../../../components/templates'
 import { useBrowseTpJobListingsQuery } from '../../../react-query/use-tpjoblisting-all-query'
-import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobSeekerprofile-query'
+import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobSeekerprofile-query'
 import { mapOptions } from '@talent-connect/typescript-utilities';
 
-export const BrowseJobSeeker: FC = () => {
+export function BrowseJobSeeker () {
   
   const [query, setQuery] = useQueryParams({
     idealTechnicalSkills: withDefault(ArrayParam, []),
@@ -63,7 +62,7 @@ export const BrowseJobSeeker: FC = () => {
     }))
   }
 
-  const { data: currentJobSeekerProfile } = useTpJobSeekerProfileQuery()
+  const { data: currentJobSeekerProfile } = useTpJobseekerProfileQuery()
 
   if (currentJobSeekerProfile?.state !== 'profile-approved') return null
 

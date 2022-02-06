@@ -3,7 +3,6 @@ import { AWS_PROFILE_AVATARS_BUCKET_BASE_URL } from '@talent-connect/shared-conf
 import { TpJobListing } from '@talent-connect/shared-types'
 import { topSkillsIdToLabelMap } from '@talent-connect/talent-pool/config'
 import classnames from 'clsx'
-import { FC } from 'react'
 import { Card, Element } from 'react-bulma-components'
 // import placeholderImage from '../../assets/images/img-placeholder.png'
 import './JobListingCard.scss'
@@ -15,12 +14,12 @@ interface JobListingCardProps {
   toggleFavorite?: (id: string) => void
 }
 
-export const JobListingCard: FC<JobListingCardProps> = ({
+export function JobListingCard ({
   jobListing,
   onClick,
   toggleFavorite,
   isFavorite,
-}) => {
+}: JobListingCardProps) {
   // const history = useHistory()
 
   const jobTitle = jobListing.title
@@ -64,8 +63,8 @@ export const JobListingCard: FC<JobListingCardProps> = ({
           key="name"
           renderAs="h3"
           textWeight="bold"
-          textSize={4}
           className="job-posting-card__job-title"
+          textSize={4}
         >
           {jobTitle}
         </Element>

@@ -1,9 +1,7 @@
-import { FC } from 'react'
 import { FormSelect } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile } from '@talent-connect/shared-types'
 import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
 
 import { profileSaveStart } from '../../redux/user/actions'
 import * as Yup from 'yup'
@@ -32,10 +30,10 @@ interface Props {
   profileSaveStart: (arg: EducationFormValues & { id: string }) => void
 }
 
-const EditableEducation: FC<Props> = ({
+function EditableEducation ({
   profile: { id, mentee_highestEducationLevel },
   profileSaveStart
-}) => {
+}: Props) {
 
   const formik = useFormik<EducationFormValues>({
     initialValues: {

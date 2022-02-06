@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { ReactNode } from 'react'
 import classnames from 'classnames'
 import { RedProfile } from '@talent-connect/shared-types'
 import { Module } from '@talent-connect/shared-atomic-design-components'
@@ -7,10 +7,11 @@ import './MContacts.scss'
 
 interface ContactRow {
   label: string
+  children?: ReactNode
 }
 
-const ContactRow: FC<ContactRow> = ({ label, children }) =>
-  children ? (
+function ContactRow ({ label, children }: ContactRow) {
+  return children ? (
     <div className="m-contacts__row">
       <div className="m-contacts__row__label">{label}</div>
       <div className="m-contacts__row__content">{children}</div>
@@ -18,16 +19,17 @@ const ContactRow: FC<ContactRow> = ({ label, children }) =>
   ) : (
     <></>
   )
+}
 
 interface MContactProps {
   profile: RedProfile
   className?: string
 }
 
-const MContacts: FC<MContactProps> = ({
+function MContacts ({
   profile: { contactEmail, telephoneNumber, linkedInProfileUrl, slackUsername },
   className
-}) => {
+}: MContactProps) {
 
   return (
     <Module

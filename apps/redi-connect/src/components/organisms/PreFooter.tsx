@@ -10,7 +10,7 @@ import { Container, Section, Columns, Content } from 'react-bulma-components'
 
 import './PreFooter.scss'
 
-const PreFooter: FC = () => {
+const PreFooter() {
   const { t } = useTranslation()
 
   return (
