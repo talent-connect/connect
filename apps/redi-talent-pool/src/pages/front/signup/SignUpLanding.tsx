@@ -47,7 +47,7 @@ const SignUpLanding = () => {
         <Columns.Column size={5} offset={1}>
           <Heading border="bottomLeft">Sign-up</Heading>
           <Content size="large" renderAs="p" className="oneandhalf-bs">
-            Are you a <strong>jobseeker</strong> or a <strong>company</strong>?
+            Are you a <strong>jobSeeker</strong> or a <strong>company</strong>?
           </Content>
           <div className="signup">
             {renderType('JobSeeker')}

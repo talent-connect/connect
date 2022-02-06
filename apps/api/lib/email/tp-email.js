@@ -73,7 +73,7 @@ const sendTpJobSeekerVerificationEmail = ({
   const verificationSuccessPageUrl = `${buildTpFrontendUrl(
     process.env.NODE_ENV,
     rediLocation
-  )}/front/signup-complete/jobseeker`;
+  )}/front/signup-complete/jobSeeker`;
   const verificationUrl = `${buildBackendUrl(
     process.env.NODE_ENV
   )}/api/redUsers/confirm?uid=${redUserId}&token=${verificationToken}&redirect=${encodeURI(
@@ -81,7 +81,7 @@ const sendTpJobSeekerVerificationEmail = ({
   )}`;
   const sendTpJobSeekerVerificationEmailParsed = convertTemplateToHtml(
     null,
-    `jobseeker-validate-email-address`
+    `jobSeeker-validate-email-address`
   );
   const html = sendTpJobSeekerVerificationEmailParsed
     .replace(/\${firstName}/g, firstName)
@@ -98,7 +98,7 @@ const sendTpJobSeekerEmailVerificationSuccessfulEmail = ({
   firstName,
 }) => {
   const sendTpJobSeekerEmailVerificationSuccessfulEmailParsed =
-    convertTemplateToHtml(null, 'jobseeker-validate-email-address-successful');
+    convertTemplateToHtml(null, 'jobSeeker-validate-email-address-successful');
   const html = sendTpJobSeekerEmailVerificationSuccessfulEmailParsed.replace(
     /\${firstName}/g,
     firstName
@@ -110,11 +110,11 @@ const sendTpJobSeekerEmailVerificationSuccessfulEmail = ({
   });
 };
 
-const sendTpJobSeekerjobseekerProfileApprovedInstructToSubmitJobPreferencesEmail =
+const sendTpJobSeekerjobSeekerProfileApprovedInstructToSubmitJobPreferencesEmail =
   ({ recipient, firstName }) => {
     const emailParsed = convertTemplateToHtml(
       null,
-      'jobseeker-profile-approved-instruct-to-submit-job-preferences'
+      'jobSeeker-profile-approved-instruct-to-submit-job-preferences'
     );
     const html = emailParsed.replace(/\${firstName}/g, firstName);
     return sendMjmlEmailFactory({
@@ -124,13 +124,13 @@ const sendTpJobSeekerjobseekerProfileApprovedInstructToSubmitJobPreferencesEmail
     });
   };
 
-const sendTpJobSeekerjobseekerProfileNotApprovedYet = ({
+const sendTpJobSeekerjobSeekerProfileNotApprovedYet = ({
   recipient,
   firstName,
 }) => {
   const emailParsed = convertTemplateToHtml(
     null,
-    'jobseeker-profile-not-approved-yet'
+    'jobSeeker-profile-not-approved-yet'
   );
   const html = emailParsed.replace(/\${firstName}/g, firstName);
   return sendMjmlEmailFactory({
@@ -224,8 +224,8 @@ module.exports = {
   sendTpResetPasswordEmail,
   sendTpJobSeekerVerificationEmail,
   sendTpJobSeekerEmailVerificationSuccessfulEmail,
-  sendTpJobSeekerjobseekerProfileApprovedInstructToSubmitJobPreferencesEmail,
-  sendTpJobSeekerjobseekerProfileNotApprovedYet,
+  sendTpJobSeekerjobSeekerProfileApprovedInstructToSubmitJobPreferencesEmail,
+  sendTpJobSeekerjobSeekerProfileNotApprovedYet,
   sendTpCompanyVerificationEmail,
   sendTpCompanyEmailVerificationSuccessfulEmail,
   sendTpCompanyProfileApprovedEmail,

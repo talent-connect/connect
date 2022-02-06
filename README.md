@@ -3,7 +3,7 @@
 You'll find two sister products in this repository:
 
 - ReDI Connect, a tool to connect mentees to mentors, deployed to https://connect.redi-school.org
-- ReDI Talent Pool, a tool to connect jobseekers to companies and get jobs, deployed to https://cv-builder.redi-school.org
+- ReDI Talent Pool, a tool to connect jobSeekers to companies and get jobs, deployed to https://cv-builder.redi-school.org
 
 Both are created, run and managed by ReDI School of Digital Integration. We're a non-profit school in Germany (in Berlin, Munich and NRW) with a community of hundreds of professionals from the digital industry volunteering to teach and mentor students. Our students are tech-interested locals and newcomers to Germany.
 

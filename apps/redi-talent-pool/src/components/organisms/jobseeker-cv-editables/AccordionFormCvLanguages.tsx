@@ -1,9 +1,9 @@
 import React, { FC } from 'react'
 import { Subject } from 'rxjs'
-import { useTpJobSeekerCvUpdateMutation } from '../../../react-query/use-tpjobseekercv-mutation'
-import { useTpJobSeekerCvByIdQuery } from '../../../react-query/use-tpjobseekercv-query'
+import { useTpJobSeekerCvUpdateMutation } from '../../../react-query/use-tpjobSeekercv-mutation'
+import { useTpJobSeekerCvByIdQuery } from '../../../react-query/use-tpjobSeekercv-query'
 import { AccordionForm } from '../../molecules/AccordionForm'
-import { JobSeekerFormSectionLanguages } from '../jobseeker-profile-editables/EditableLanguages'
+import { JobSeekerFormSectionLanguages } from '../jobSeeker-profile-editables/EditableLanguages'
 
 interface Props {
   tpJobSeekerCvId: string

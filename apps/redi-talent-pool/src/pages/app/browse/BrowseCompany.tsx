@@ -23,7 +23,7 @@ import {
 } from 'use-query-params'
 import { JobSeekerProfileCard } from '../../../components/organisms/JobSeekerProfileCard'
 import { LoggedIn } from '../../../components/templates'
-import { useBrowseTpJobSeekerProfilesQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useBrowseTpJobSeekerProfilesQuery } from '../../../react-query/use-tpjobSeekerprofile-query'
 
 export const BrowseCompany: FC = () => {
   const [query, setQuery] = useQueryParams({
@@ -169,9 +169,9 @@ export const BrowseCompany: FC = () => {
           >
             <JobSeekerProfileCard
               key={profile.id}
-              jobseekerProfile={profile}
+              jobSeekerProfile={profile}
               onClick={() =>
-                history.push(`/app/jobseeker-profile/${profile.id}`)
+                history.push(`/app/jobSeeker-profile/${profile.id}`)
               }
             />
           </Columns.Column>

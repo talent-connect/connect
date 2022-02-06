@@ -10,13 +10,13 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import { Section, Columns, Content, Box } from 'react-bulma-components'
 
-import { useTpJobSeekerCvCreateMutation } from '../../../../react-query/use-tpjobseekercv-mutation'
-import { useTpJobSeekerCvQuery } from '../../../../react-query/use-tpjobseekercv-query'
+import { useTpJobSeekerCvCreateMutation } from '../../../../react-query/use-tpjobSeekercv-mutation'
+import { useTpJobSeekerCvQuery } from '../../../../react-query/use-tpjobSeekercv-query'
 
 import { LoggedIn } from '../../../../components/templates'
 import { EmptySectionPlaceholder } from '../../../../components/molecules/EmptySectionPlaceholder'
 import CvListItem from './CvListItem'
-import { useTpJobSeekerProfileQuery } from '../../../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobSeekerProfileQuery } from '../../../../react-query/use-tpjobSeekerprofile-query'
 import { TpJobSeekerCv, TpJobSeekerProfile } from '@talent-connect/shared-types'
 
 import './CvListPage.scss'

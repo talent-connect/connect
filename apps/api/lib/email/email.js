@@ -1,39 +1,39 @@
-'use strict'
+'use strict';
 
-const aws = require('aws-sdk')
-const Rx = require('rxjs')
-const mjml2html = require('mjml')
-const nodemailer = require('nodemailer')
-const fs = require('fs')
-const path = require('path')
+const aws = require('aws-sdk');
+const Rx = require('rxjs');
+const mjml2html = require('mjml');
+const nodemailer = require('nodemailer');
+const fs = require('fs');
+const path = require('path');
 
 const config = {
   accessKeyId: process.env.EMAILER_AWS_ACCESS_KEY,
   secretAccessKey: process.env.EMAILER_AWS_SECRET_KEY,
   region: process.env.EMAILER_AWS_REGION,
-}
-const { buildFrontendUrl } = require('../build-frontend-url')
-const { buildBackendUrl } = require('../build-backend-url')
+};
+const { buildFrontendUrl } = require('../build-frontend-url');
+const { buildBackendUrl } = require('../build-backend-url');
 
-const ses = new aws.SES(config)
+const ses = new aws.SES(config);
 
 const transporter = nodemailer.createTransport({
   SES: ses,
-})
+});
 
 const isProductionOrDemonstration = () =>
-  ['production', 'demonstration', 'staging'].includes(process.env.NODE_ENV)
+  ['production', 'demonstration', 'staging'].includes(process.env.NODE_ENV);
 
-const sendEmail = Rx.bindNodeCallback(ses.sendEmail.bind(ses))
+const sendEmail = Rx.bindNodeCallback(ses.sendEmail.bind(ses));
 const sendMjmlEmail = Rx.bindNodeCallback(
   transporter.sendMail.bind(transporter)
-)
+);
 const sendEmailFactory = (to, subject, body, rediLocation) => {
-  let toSanitized = isProductionOrDemonstration() ? to : ''
+  let toSanitized = isProductionOrDemonstration() ? to : '';
   if (process.env.DEV_MODE_EMAIL_RECIPIENT) {
-    toSanitized = process.env.DEV_MODE_EMAIL_RECIPIENT
+    toSanitized = process.env.DEV_MODE_EMAIL_RECIPIENT;
   }
-  let sender = 'career@redi-school.org'
+  let sender = 'career@redi-school.org';
   return sendEmail({
     Source: sender,
     Destination: {
@@ -52,62 +52,62 @@ const sendEmailFactory = (to, subject, body, rediLocation) => {
         Data: buildSubjectLine(subject, process.env.NODE_ENV),
       },
     },
-  })
-}
+  });
+};
 const sendMjmlEmailFactory = ({ to, subject, html }) => {
-  let toSanitized = isProductionOrDemonstration() ? to : ''
+  let toSanitized = isProductionOrDemonstration() ? to : '';
   if (process.env.DEV_MODE_EMAIL_RECIPIENT) {
-    toSanitized = process.env.DEV_MODE_EMAIL_RECIPIENT
+    toSanitized = process.env.DEV_MODE_EMAIL_RECIPIENT;
   }
-  let sender = 'career@redi-school.org'
+  let sender = 'career@redi-school.org';
   return sendMjmlEmail({
     from: sender,
     to: toSanitized,
     bcc: ['career@redi-school.org'],
     subject: buildSubjectLine(subject, process.env.NODE_ENV),
     html: html,
-  })
-}
+  });
+};
 
-function buildSubjectLine(subject, env) {
+function buildSubjectLine (subject, env) {
   switch (env) {
     case 'production':
-      return subject
+      return subject;
 
     case 'demonstration':
-      return `[DEMO ENVIRONMENT] ${subject}`
+      return `[DEMO ENVIRONMENT] ${subject}`;
 
     default:
-      return `[DEV ENVIRONMENT] ${subject}`
+      return `[DEV ENVIRONMENT] ${subject}`;
   }
 }
 
 const sendReportProblemEmailTemplate = fs.readFileSync(
   path.resolve(__dirname, 'templates', 'send-problem-report.mjml'),
   'utf-8'
-)
+);
 const sendReportProblemEmailParsed = mjml2html(sendReportProblemEmailTemplate, {
   filePath: path.resolve(__dirname, 'templates'),
-})
+});
 
 const sendReportProblemEmail = ({ sendingUserEmail, message }) => {
   const html = sendReportProblemEmailParsed.html
     .replace(/\${sendingUserEmail}/g, sendingUserEmail)
-    .replace(/\${message}/g, message)
+    .replace(/\${message}/g, message);
   return sendMjmlEmailFactory({
     to: 'career@redi-school.org',
     subject: 'New problem report',
     html: html,
-  })
-}
+  });
+};
 
 const sendResetPasswordEmailTemplate = fs.readFileSync(
   path.resolve(__dirname, 'templates', 'reset-password.mjml'),
   'utf-8'
-)
+);
 const sendResetPasswordEmailParsed = mjml2html(sendResetPasswordEmailTemplate, {
   filePath: path.resolve(__dirname, 'templates'),
-})
+});
 
 const sendResetPasswordEmail = ({
   recipient,
@@ -118,19 +118,19 @@ const sendResetPasswordEmail = ({
   const resetPasswordUrl = `${buildFrontendUrl(
     process.env.NODE_ENV,
     rediLocation
-  )}/front/reset-password/set-new-password/${accessToken}`
-  const rediEmailAdress = 'career@redi-school.org'
+  )}/front/reset-password/set-new-password/${accessToken}`;
+  const rediEmailAdress = 'career@redi-school.org';
   const html = sendResetPasswordEmailParsed.html
     .replace(/\${firstName}/g, firstName)
     .replace(/\${resetPasswordUrl}/g, resetPasswordUrl)
     .replace(/\${rediEmailAdress}/g, rediEmailAdress)
-    .replace(/\${emailAdress}/g, recipient)
+    .replace(/\${emailAdress}/g, recipient);
   return sendMjmlEmailFactory({
     to: recipient,
     subject: 'Password Reset for ReDI Connect',
     html: html,
-  })
-}
+  });
+};
 
 const sendPendingReviewDeclinedEmail = ({
   recipient,
@@ -138,58 +138,57 @@ const sendPendingReviewDeclinedEmail = ({
   rediLocation,
   userType,
 }) => {
-  const rediEmailAdress = 'career@redi-school.org'
+  const rediEmailAdress = 'career@redi-school.org';
 
   const sendPendingReviewDeclinedEmailParsed = convertTemplateToHtml(
     null,
     `pending-review-declined-email--${userType}`
-  )
+  );
 
   const html = sendPendingReviewDeclinedEmailParsed
     .replace(/\${firstName}/g, firstName)
     .replace(/\${rediLocation}/g, rediLocation)
-    .replace(/\${rediEmailAdress}/g, rediEmailAdress)
+    .replace(/\${rediEmailAdress}/g, rediEmailAdress);
   return sendMjmlEmailFactory({
     to: recipient,
     subject: 'ReDI Connect: Your user registration was declined',
     html: html,
-  })
-}
+  });
+};
 
 const convertTemplateToHtml = (rediLocation, templateString) => {
   const convertTemplate = fs.readFileSync(
     path.resolve(
       __dirname,
       'templates',
-      `${templateString}${
-        rediLocation ? `.${rediLocation.toLowerCase()}` : ''
+      `${templateString}${rediLocation ? `.${rediLocation.toLowerCase()}` : ''
       }.mjml`
     ),
     'utf-8'
-  )
+  );
   const parsedTemplate = mjml2html(convertTemplate, {
     filePath: path.resolve(__dirname, 'templates'),
-  })
-  return parsedTemplate.html
-}
+  });
+  return parsedTemplate.html;
+};
 
 const sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted =
   ({ recipient, mentorName, menteeName, rediLocation }) => {
-    const rediEmailAdress = 'career@redi-school.org'
+    const rediEmailAdress = 'career@redi-school.org';
     const sendMenteePendingReviewAcceptedEmailParsed = convertTemplateToHtml(
       null,
       'expired-notification-application'
-    )
+    );
     const html = sendMenteePendingReviewAcceptedEmailParsed
       .replace(/\${mentorName}/g, mentorName)
       .replace(/\${menteeName}/g, menteeName)
-      .replace(/\${rediEmailAdress}/g, rediEmailAdress)
+      .replace(/\${rediEmailAdress}/g, rediEmailAdress);
     return sendMjmlEmailFactory({
       to: recipient,
       subject: `${menteeName}’s mentee application to you has expired!`,
       html: html,
-    })
-  }
+    });
+  };
 
 const sendMenteePendingReviewAcceptedEmail = ({
   recipient,
@@ -199,22 +198,22 @@ const sendMenteePendingReviewAcceptedEmail = ({
   const homePageUrl = `${buildFrontendUrl(
     process.env.NODE_ENV,
     rediLocation
-  )}/front/login/`
+  )}/front/login/`;
   const sendMenteePendingReviewAcceptedEmailParsed = convertTemplateToHtml(
     null,
     'welcome-to-redi-mentee'
-  )
+  );
   const html = sendMenteePendingReviewAcceptedEmailParsed
     .replace(/\${firstName}/g, firstName)
     .replace(/\${mentorOrMentee}/g, 'mentee')
     .replace(/\${mentorOrMenteeOpposite}/g, 'mentor')
-    .replace(/\${homePageUrl}/g, homePageUrl)
+    .replace(/\${homePageUrl}/g, homePageUrl);
   return sendMjmlEmailFactory({
     to: recipient,
     subject: 'Your ReDI Connect profile is now activated!',
     html: html,
-  })
-}
+  });
+};
 
 const sendMentorPendingReviewAcceptedEmail = ({
   recipient,
@@ -224,22 +223,22 @@ const sendMentorPendingReviewAcceptedEmail = ({
   const homePageUrl = `${buildFrontendUrl(
     process.env.NODE_ENV,
     rediLocation
-  )}/front/login/`
+  )}/front/login/`;
   const sendMentorPendingReviewAcceptedEmailParsed = convertTemplateToHtml(
     rediLocation,
     'welcome-to-redi-mentor'
-  )
+  );
   const html = sendMentorPendingReviewAcceptedEmailParsed
     .replace(/\${firstName}/g, firstName)
     .replace(/\${mentorOrMentee}/g, 'mentor')
     .replace(/\${mentorOrMenteeOpposite}/g, 'mentee')
-    .replace(/\${homePageUrl}/g, homePageUrl)
+    .replace(/\${homePageUrl}/g, homePageUrl);
   return sendMjmlEmailFactory({
     to: recipient,
     subject: 'Your ReDI Connect profile is now activated!',
     html: html,
-  })
-}
+  });
+};
 
 const sendMenteeRequestAppointmentEmail = ({
   recipient,
@@ -249,17 +248,17 @@ const sendMenteeRequestAppointmentEmail = ({
   const sendMenteeRequestAppointmentEmailParsed = convertTemplateToHtml(
     null,
     'validate-email-address-successful-mentee'
-  )
+  );
   const html = sendMenteeRequestAppointmentEmailParsed.replace(
     /\${firstName}/g,
     firstName
-  )
+  );
   return sendMjmlEmailFactory({
     to: recipient,
     subject: 'Your email has been verified for ReDI Connect',
     html: html,
-  })
-}
+  });
+};
 
 const sendMentorRequestAppointmentEmail = ({
   recipient,
@@ -269,34 +268,34 @@ const sendMentorRequestAppointmentEmail = ({
   const sendMenteeRequestAppointmentEmailParsed = convertTemplateToHtml(
     null,
     'validate-email-address-successful-mentor'
-  )
+  );
   const html = sendMenteeRequestAppointmentEmailParsed.replace(
     /\${firstName}/g,
     firstName
-  )
+  );
   return sendMjmlEmailFactory({
     to: recipient,
     subject: 'Your email has been verified for ReDI Connect',
     html: html,
-  })
-}
+  });
+};
 
-const sendEmailToUserWithTpJobseekerProfileSigningUpToCon = ({
+const sendEmailToUserWithTpJobSeekerProfileSigningUpToCon = ({
   recipient,
   firstName,
 }) => {
-  console.log(recipient, firstName)
+  console.log(recipient, firstName);
   const emailParsed = convertTemplateToHtml(
     null,
-    `schedule-onboarding-call-for-tp-jobseeker-signed-up-as-mentee`
-  )
-  const html = emailParsed.replace(/\${firstName}/g, firstName)
+    `schedule-onboarding-call-for-tp-jobSeeker-signed-up-as-mentee`
+  );
+  const html = emailParsed.replace(/\${firstName}/g, firstName);
   return sendMjmlEmailFactory({
     to: recipient,
     subject: 'Welcome to ReDI Connect!',
     html: html,
-  })
-}
+  });
+};
 
 const sendVerificationEmail = ({
   recipient,
@@ -309,30 +308,30 @@ const sendVerificationEmail = ({
   const userType = {
     'public-sign-up-mentor-pending-review': 'mentor',
     'public-sign-up-mentee-pending-review': 'mentee',
-  }[signupType]
+  }[signupType];
   const verificationSuccessPageUrl = `${buildFrontendUrl(
     process.env.NODE_ENV,
     rediLocation
-  )}/front/signup-complete/${signupType}`
+  )}/front/signup-complete/${signupType}`;
   const verificationUrl = `${buildBackendUrl(
     process.env.NODE_ENV
   )}/api/redUsers/confirm?uid=${redUserId}&token=${verificationToken}&redirect=${encodeURI(
     verificationSuccessPageUrl
-  )}`
+  )}`;
   const sendMenteeRequestAppointmentEmailParsed = convertTemplateToHtml(
     null,
     `validate-email-address-${userType}`
-  )
+  );
   const html = sendMenteeRequestAppointmentEmailParsed
     .replace(/\${firstName}/g, firstName)
     .replace(/\${mentorOrMentee}/g, userType)
-    .replace(/\${verificationUrl}/g, verificationUrl)
+    .replace(/\${verificationUrl}/g, verificationUrl);
   return sendMjmlEmailFactory({
     to: recipient,
     subject: 'Verify your email address!',
     html: html,
-  })
-}
+  });
+};
 
 const sendMentoringSessionLoggedEmail = ({
   recipient,
@@ -343,15 +342,15 @@ const sendMentoringSessionLoggedEmail = ({
   const loginUrl = `${buildFrontendUrl(
     process.env.NODE_ENV,
     rediLocation
-  )}/front/login`
+  )}/front/login`;
   const sendMentoringSessionLoggedEmailParsed = convertTemplateToHtml(
     null,
     'mentoring-session-logged-email'
-  )
+  );
   const html = sendMentoringSessionLoggedEmailParsed
     .replace(/\${mentorName}/g, mentorName)
     .replace(/\${menteeFirstName}/g, menteeFirstName)
-    .replace(/\${loginUrl}/g, loginUrl)
+    .replace(/\${loginUrl}/g, loginUrl);
   return sendMjmlEmailFactory({
     to: recipient,
     subject:
@@ -361,8 +360,8 @@ const sendMentoringSessionLoggedEmail = ({
       ),
     html: html,
     rediLocation,
-  })
-}
+  });
+};
 
 const sendMenteeReminderToApplyToMentorEmail = ({
   recipient,
@@ -371,17 +370,17 @@ const sendMenteeReminderToApplyToMentorEmail = ({
   const sendMenteeReminderToApplyToMentorEmailParsed = convertTemplateToHtml(
     null,
     'apply-to-mentor-reminder-for-mentee'
-  )
+  );
   const html = sendMenteeReminderToApplyToMentorEmailParsed.replace(
     /\${menteeFirstName}/g,
     menteeFirstName
-  )
+  );
   return sendMjmlEmailFactory({
     to: recipient,
     subject: 'Have you checked out or amazing mentors yet?',
     html: html,
-  })
-}
+  });
+};
 
 const sendMentorCancelledMentorshipNotificationEmail = ({
   recipient,
@@ -389,17 +388,17 @@ const sendMentorCancelledMentorshipNotificationEmail = ({
   rediLocation,
 }) => {
   const sendMentorCancelledMentorshipNotificationEmailParsed =
-    convertTemplateToHtml(null, 'mentorship-cancelation-email-mentee')
+    convertTemplateToHtml(null, 'mentorship-cancelation-email-mentee');
   const html = sendMentorCancelledMentorshipNotificationEmailParsed.replace(
     /\${firstName}/g,
     firstName
-  )
+  );
   return sendMjmlEmailFactory({
     to: recipient,
     subject: 'Your mentor has quit your connection',
     html: html,
-  })
-}
+  });
+};
 
 const sendToMentorConfirmationOfMentorshipCancelled = ({
   recipient,
@@ -408,16 +407,16 @@ const sendToMentorConfirmationOfMentorshipCancelled = ({
   rediLocation,
 }) => {
   const sendMentorCancelledMentorshipNotificationEmailParsed =
-    convertTemplateToHtml(null, 'mentorship-cancelation-email-mentor')
+    convertTemplateToHtml(null, 'mentorship-cancelation-email-mentor');
   const html = sendMentorCancelledMentorshipNotificationEmailParsed
     .replace(/\${mentorFirstName}/g, mentorFirstName)
-    .replace(/\${menteeFullName}/g, menteeFullName)
+    .replace(/\${menteeFullName}/g, menteeFullName);
   return sendMjmlEmailFactory({
     to: recipient,
     subject: `Your mentorship of ${menteeFullName} has ben cancelled`,
     html: html,
-  })
-}
+  });
+};
 
 const sendMentorshipCompletionEmailToMentor = ({
   recipient,
@@ -427,16 +426,16 @@ const sendMentorshipCompletionEmailToMentor = ({
   const sendMentorshipCompletionEmailToMentorParsed = convertTemplateToHtml(
     null,
     'complete-mentorship-for-mentor'
-  )
+  );
   const html = sendMentorshipCompletionEmailToMentorParsed
     .replace(/\${mentorFirstName}/g, mentorFirstName)
-    .replace(/\${menteeFirstName}/g, menteeFirstName)
+    .replace(/\${menteeFirstName}/g, menteeFirstName);
   return sendMjmlEmailFactory({
     to: recipient,
     subject: `Your mentorship with ${menteeFirstName} is completed!`,
     html: html,
-  })
-}
+  });
+};
 
 const sendMentorshipCompletionEmailToMentee = ({
   recipient,
@@ -446,16 +445,16 @@ const sendMentorshipCompletionEmailToMentee = ({
   const sendMentorshipCompletionEmailToMenteeParsed = convertTemplateToHtml(
     null,
     'complete-mentorship-for-mentee'
-  )
+  );
   const html = sendMentorshipCompletionEmailToMenteeParsed
     .replace(/\${mentorFirstName}/g, mentorFirstName)
-    .replace(/\${menteeFirstName}/g, menteeFirstName)
+    .replace(/\${menteeFirstName}/g, menteeFirstName);
   return sendMjmlEmailFactory({
     to: recipient,
     subject: `Your mentorship with ${mentorFirstName} is completed!`,
     html: html,
-  })
-}
+  });
+};
 
 const sendMentorshipRequestReceivedEmail = ({
   recipient,
@@ -467,11 +466,11 @@ const sendMentorshipRequestReceivedEmail = ({
   const loginUrl = `${buildFrontendUrl(
     'production',
     mentorRediLocation
-  )}/front/login`
+  )}/front/login`;
   const sendMentorshipRequestReceivedEmailParsed = convertTemplateToHtml(
     null,
     'mentorship-request-email'
-  )
+  );
   const html = sendMentorshipRequestReceivedEmailParsed
     .replace(
       /\${locationNameFormatted}/g,
@@ -479,13 +478,13 @@ const sendMentorshipRequestReceivedEmail = ({
     )
     .replace(/\${mentorName}/g, mentorName)
     .replace(/\${menteeFullName}/g, menteeFullName)
-    .replace(/\${loginUrl}/g, loginUrl)
+    .replace(/\${loginUrl}/g, loginUrl);
   return sendMjmlEmailFactory({
     to: recipient,
     subject: `You have received an application from ${menteeFullName}!`,
     html: html,
-  })
-}
+  });
+};
 
 const sendMentorshipAcceptedEmail = ({
   recipient,
@@ -494,22 +493,22 @@ const sendMentorshipAcceptedEmail = ({
   mentorReplyMessageOnAccept,
   rediLocation,
 }) => {
-  const rediEmailAdress = 'career@redi-school.org'
+  const rediEmailAdress = 'career@redi-school.org';
   const sendMentorshipAcceptedEmailParsed = convertTemplateToHtml(
     null,
     'mentorship-acceptance-email'
-  )
+  );
   const html = sendMentorshipAcceptedEmailParsed
     .replace(/\${mentorName}/g, mentorName)
     .replace(/\${menteeName}/g, menteeName)
     .replace(/\${rediEmailAdress}/g, rediEmailAdress)
-    .replace(/\${mentorReplyMessageOnAccept}/g, mentorReplyMessageOnAccept)
+    .replace(/\${mentorReplyMessageOnAccept}/g, mentorReplyMessageOnAccept);
   return sendMjmlEmailFactory({
     to: recipient,
     subject: `Congratulations! Mentor ${mentorName} has accepted your application, ${menteeName}!`,
     html: html,
-  })
-}
+  });
+};
 
 // TODO: I'm a duplicate of libs/shared-config/src/lib/config.ts, keep me in sync
 const mentorDeclinesMentorshipReasonForDecliningOptions = [
@@ -523,7 +522,7 @@ const mentorDeclinesMentorshipReasonForDecliningOptions = [
     label: 'I think another mentor would be more suitable',
   },
   { id: 'other', label: 'Other' },
-]
+];
 
 const sendMentorshipDeclinedEmail = ({
   recipient,
@@ -535,13 +534,13 @@ const sendMentorshipDeclinedEmail = ({
 }) => {
   let reasonForDecline = mentorDeclinesMentorshipReasonForDecliningOptions.find(
     (option) => option.id === ifDeclinedByMentor_chosenReasonForDecline
-  ).label
+  ).label;
   if (ifDeclinedByMentor_chosenReasonForDecline === 'other') {
     ifDeclinedByMentor_chosenReasonForDecline =
-      ifDeclinedByMentor_ifReasonIsOther_freeText
+      ifDeclinedByMentor_ifReasonIsOther_freeText;
   }
 
-  const parsed = convertTemplateToHtml(null, 'mentorship-decline-email')
+  const parsed = convertTemplateToHtml(null, 'mentorship-decline-email');
   const html = parsed
     .replace(/\${mentorName}/g, mentorName)
     .replace(/\${menteeName}/g, menteeName)
@@ -549,7 +548,7 @@ const sendMentorshipDeclinedEmail = ({
     .replace(
       /\${optionalMessageToMentee}/g,
       ifDeclinedByMentor_optionalMessageToMentee
-    )
+    );
   return sendMjmlEmailFactory({
     to: recipient,
     subject: `This time it wasn't a match`.replace(
@@ -557,16 +556,16 @@ const sendMentorshipDeclinedEmail = ({
       mentorName
     ),
     html: html,
-  })
-}
+  });
+};
 
 const formatLocationName = (locationIdentifier) => {
   return {
     berlin: 'Berlin',
     munich: 'Munich',
     nrw: 'NRW',
-  }[locationIdentifier]
-}
+  }[locationIdentifier];
+};
 
 module.exports = {
   sendReportProblemEmail,
@@ -586,8 +585,8 @@ module.exports = {
   sendMenteeRequestAppointmentEmail,
   sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted,
   sendResetPasswordEmail,
-  sendEmailToUserWithTpJobseekerProfileSigningUpToCon,
+  sendEmailToUserWithTpJobSeekerProfileSigningUpToCon,
   sendVerificationEmail,
   sendEmailFactory,
   sendMjmlEmailFactory,
-}
+};

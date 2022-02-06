@@ -1,7 +1,7 @@
 import { HrSummit2021JobFairCompanyJobPreferenceRecord, TpJobSeekerProfile } from '@talent-connect/shared-types';
 import { createComponentForm } from '@talent-connect/shared-utils';
 import { v4 as uuidv4 } from 'uuid'
-import { useTpJobSeekerProfileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation';
+import { useTpJobSeekerProfileUpdateMutation } from '../../../react-query/use-tpjobSeekerprofile-mutation';
 
 const mutation = useTpJobSeekerProfileUpdateMutation()
 

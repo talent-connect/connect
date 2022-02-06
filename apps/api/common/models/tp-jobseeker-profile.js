@@ -8,8 +8,8 @@ const { switchMap, map } = require('rxjs/operators');
 const app = require('../../server/server');
 const {
   sendTpJobSeekerVerificationEmail,
-  sendTpJobSeekerjobseekerProfileApprovedInstructToSubmitJobPreferencesEmail,
-  sendTpJobSeekerjobseekerProfileNotApprovedYet,
+  sendTpJobSeekerjobSeekerProfileApprovedInstructToSubmitJobPreferencesEmail,
+  sendTpJobSeekerjobSeekerProfileNotApprovedYet,
 } = require('../../lib/email/tp-email');
 
 const addFullNamePropertyForAdminSearch = (ctx) => {
@@ -133,8 +133,8 @@ module.exports = function (TpJobSeekerProfile) {
         throw new Error('Invalid acceptDecline parameter');
       }
       const { tpJobSeekerProfileId } = data;
-      const jobseekerRole = await app.models.Role.findOne({
-        where: { name: 'jobseeker' },
+      const jobSeekerRole = await app.models.Role.findOne({
+        where: { name: 'jobSeeker' },
       });
       const findTpJobSeekerProfile = switchMap(({ tpJobSeekerProfileId }) =>
         loopbackModelMethodToObservable(
@@ -165,7 +165,7 @@ module.exports = function (TpJobSeekerProfile) {
       );
       const createRoleMapping = switchMap((tpJobSeekerProfileInst) => {
         const { redUserId } = tpJobSeekerProfileInst.toJSON();
-        jobseekerRole.principals.create({
+        jobSeekerRole.principals.create({
           principalType: app.models.RoleMapping.USER,
           principalId: redUserId,
         });
@@ -177,8 +177,8 @@ module.exports = function (TpJobSeekerProfile) {
           const { contactEmail, firstName } = tpJobSeekerProfileInst.toJSON();
           const stateToEmailFuncMap = {
             ACCEPT:
-              sendTpJobSeekerjobseekerProfileApprovedInstructToSubmitJobPreferencesEmail,
-            DECLINE: sendTpJobSeekerjobseekerProfileNotApprovedYet,
+              sendTpJobSeekerjobSeekerProfileApprovedInstructToSubmitJobPreferencesEmail,
+            DECLINE: sendTpJobSeekerjobSeekerProfileNotApprovedYet,
           };
           const emailFunc = stateToEmailFuncMap[acceptDecline];
           return emailFunc({

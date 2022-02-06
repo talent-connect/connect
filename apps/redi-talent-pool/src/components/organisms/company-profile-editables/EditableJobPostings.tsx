@@ -219,7 +219,7 @@ const ModalForm: FC<ModalFormProps> = ({
           responsive={{ mobile: { textSize: { value: 5 } } }}
           className="oneandhalf-bs"
         >
-          Add the job postings you want to publish to jobseekers at ReDI School.
+          Add the job postings you want to publish to jobSeekers at ReDI School.
         </Element>
         {/* TODO: This Checkbox is added only for JobFair 2022. Please remove after 11.02.2022 */}
         <Checkbox.Form

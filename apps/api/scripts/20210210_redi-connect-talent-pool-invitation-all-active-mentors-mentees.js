@@ -54,7 +54,7 @@ const emailBodyMjml = newsletterTemplateMjml.replace(
 
 <mj-text mj-class="text" padding="0 0 20px 0">ReDI Connect's playmate will be... ReDI Talent Pool!</mj-text>
 
-<mj-text mj-class="text" padding="0 0 20px 0">A new meeting place, this time for jobseekers and companies. Positions will be posted and ReDI jobseekers (many of them ReDI Connect mentees) will apply to them. JobSeekers will also get help to prepare their stunning CVs.</mj-text>
+<mj-text mj-class="text" padding="0 0 20px 0">A new meeting place, this time for jobSeekers and companies. Positions will be posted and ReDI jobSeekers (many of them ReDI Connect mentees) will apply to them. JobSeekers will also get help to prepare their stunning CVs.</mj-text>
 
 <mj-text mj-class="text" padding="0 0 20px 0">We need some help to get started, and here is where the next surprise comes in:</mj-text>
 

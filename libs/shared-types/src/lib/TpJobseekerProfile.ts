@@ -1,9 +1,9 @@
 import { Timestamp } from './Timestamp';
-import { EducationRecord } from './tp-jobseeker-profile-cv-shared-interfaces/EducationRecord'
-import { ExperienceRecord } from './tp-jobseeker-profile-cv-shared-interfaces/ExperienceRecord'
-import { HrSummit2021JobFairCompanyJobPreferenceRecord } from './tp-jobseeker-profile-cv-shared-interfaces/HrSummit2021JobFairCompanyJobPreferenceRecord'
-import { LanguageRecord } from './tp-jobseeker-profile-cv-shared-interfaces/LanguageRecord'
-import { ProjectRecord } from './tp-jobseeker-profile-cv-shared-interfaces/ProjectRecord'
+import { EducationRecord } from './tp-jobSeeker-profile-cv-shared-interfaces/EducationRecord'
+import { ExperienceRecord } from './tp-jobSeeker-profile-cv-shared-interfaces/ExperienceRecord'
+import { HrSummit2021JobFairCompanyJobPreferenceRecord } from './tp-jobSeeker-profile-cv-shared-interfaces/HrSummit2021JobFairCompanyJobPreferenceRecord'
+import { LanguageRecord } from './tp-jobSeeker-profile-cv-shared-interfaces/LanguageRecord'
+import { ProjectRecord } from './tp-jobSeeker-profile-cv-shared-interfaces/ProjectRecord'
 import { TpJobSeekerProfileState } from './TpJobSeekerProfileState'
 
 export type TpJobSeekerProfile =

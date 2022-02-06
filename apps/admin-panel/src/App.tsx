@@ -1268,17 +1268,17 @@ const TpJobSeekerProfileList: FC = (props) => {
       <p>A quick note regard <strong>state</strong>:</p>
       <ol>
         <li style={{ marginBottom: '12px' }}>
-          <strong>drafting-profile</strong>: the very first state. The jobseeker
+          <strong>drafting-profile</strong>: the very first state. The jobSeeker
           has just signed up and his drafting their profile.
         </li>
         <li style={{ marginBottom: '12px' }}>
-          <strong>submitted-for-review</strong>: the jobseeker has provided at
+          <strong>submitted-for-review</strong>: the jobSeeker has provided at
           least as much information as Talent Pool requires. Their profile has
           been submitted to ReDI for review. Click Show &gt; Edit to find two
           buttons to Approve/Decline their profile.
         </li>
         <li style={{ marginBottom: '12px' }}>
-          <strong>profile-approved</strong>: the jobseeker's profile is approved
+          <strong>profile-approved</strong>: the jobSeeker's profile is approved
         </li>
       </ol>
     </>
@@ -1324,7 +1324,7 @@ function tpJobSeekerProfileListExporter(profiles, fetchRelatedRecords) {
       contactEmail,
       createdAt,
       state,
-      jobseeker_currentlyEnrolledInCourse,
+      jobSeeker_currentlyEnrolledInCourse,
       currentlyEnrolledInCourse,
       loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName,
       updatedAt,
@@ -1339,7 +1339,7 @@ function tpJobSeekerProfileListExporter(profiles, fetchRelatedRecords) {
       contactEmail,
       createdAt,
       state,
-      jobseeker_currentlyEnrolledInCourse,
+      jobSeeker_currentlyEnrolledInCourse,
       currentlyEnrolledInCourse,
       loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName,
       updatedAt,

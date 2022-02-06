@@ -19,16 +19,16 @@ import { Chip } from '@material-ui/core'
 import { AWS_PROFILE_AVATARS_BUCKET_BASE_URL } from '@talent-connect/shared-config'
 import placeholderImage from '../../../../assets/img-placeholder.png'
 
-import { useTpJobSeekerCvByIdQuery } from '../../../../react-query/use-tpjobseekercv-query'
+import { useTpJobSeekerCvByIdQuery } from '../../../../react-query/use-tpjobSeekercv-query'
 import {
   useTpJobSeekerCvCreateMutation,
   useTpJobSeekerCvDeleteMutation,
   useTpJobSeekerCvUpdateMutation,
-} from '../../../../react-query/use-tpjobseekercv-mutation'
+} from '../../../../react-query/use-tpjobSeekercv-mutation'
 
 import { CvListItemMoreOptionsMenu } from './CvListItemMoreOptionsMenu'
 import { CVPDF } from '../../../../components/molecules/CvPdfPreview'
-import { useTpJobSeekerProfileQuery } from '../../../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobSeekerProfileQuery } from '../../../../react-query/use-tpjobSeekerprofile-query'
 
 const CREATED_AT_DATE_FORMAT = 'dd.MM.yyyy'
 

@@ -4,7 +4,7 @@ import { Columns, Container } from 'react-bulma-components'
 import { useLocation } from 'react-router'
 import { useIsBusy } from '../../hooks/useIsBusy'
 import { useTpCompanyProfileQuery } from '../../react-query/use-tpcompanyprofile-query'
-import { useTpJobSeekerProfileQuery } from '../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobSeekerProfileQuery } from '../../react-query/use-tpjobSeekerprofile-query'
 import { TpMainNavItem } from '../molecules/TpMainNavItem'
 import { Navbar } from '../organisms'
 import Footer from '../organisms/Footer'
@@ -17,7 +17,7 @@ interface Props {
 const LoggedIn: FC<Props> = ({ children, hideNavigation }) => {
   const isBusy = useIsBusy()
   const location = useLocation()
-  const { data: jobseekerProfile } = useTpJobSeekerProfileQuery({
+  const { data: jobSeekerProfile } = useTpJobSeekerProfileQuery({
     retry: false,
   })
   const { data: companyProfile } = useTpCompanyProfileQuery({ retry: false })
@@ -37,7 +37,7 @@ const LoggedIn: FC<Props> = ({ children, hideNavigation }) => {
                   isActive={location.pathname === '/app/me'}
                 />
                 {companyProfile?.state === 'profile-approved' ||
-                jobseekerProfile?.state === 'profile-approved' && (
+                jobSeekerProfile?.state === 'profile-approved' && (
                   <TpMainNavItem
                     page="browse-page"
                     pageName="Browse"
@@ -45,7 +45,7 @@ const LoggedIn: FC<Props> = ({ children, hideNavigation }) => {
                     isActive={location.pathname === '/app/browse'}
                   />
                 )}
-                {jobseekerProfile && (
+                {jobSeekerProfile && (
                   <TpMainNavItem
                     page="cv-builder-page"
                     pageName="CV Builder"

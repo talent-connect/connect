@@ -1,8 +1,8 @@
 import { Timestamp } from './Timestamp';
-import { EducationRecord } from './tp-jobseeker-profile-cv-shared-interfaces/EducationRecord'
-import { ExperienceRecord } from './tp-jobseeker-profile-cv-shared-interfaces/ExperienceRecord'
-import { LanguageRecord } from './tp-jobseeker-profile-cv-shared-interfaces/LanguageRecord'
-import { ProjectRecord } from './tp-jobseeker-profile-cv-shared-interfaces/ProjectRecord'
+import { EducationRecord } from './tp-jobSeeker-profile-cv-shared-interfaces/EducationRecord'
+import { ExperienceRecord } from './tp-jobSeeker-profile-cv-shared-interfaces/ExperienceRecord'
+import { LanguageRecord } from './tp-jobSeeker-profile-cv-shared-interfaces/LanguageRecord'
+import { ProjectRecord } from './tp-jobSeeker-profile-cv-shared-interfaces/ProjectRecord'
 
 export type TpJobSeekerCv =
   & Timestamp

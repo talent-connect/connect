@@ -21,8 +21,8 @@ import {
   TpJobSeekerProfile,
 } from '@talent-connect/shared-types'
 import { formMonthsOptions } from '@talent-connect/talent-pool/config'
-import { useTpJobSeekerProfileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobSeekerProfileUpdateMutation } from '../../../react-query/use-tpjobSeekerprofile-mutation'
+import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobSeekerprofile-query'
 import { Location } from '../../molecules/Location'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'

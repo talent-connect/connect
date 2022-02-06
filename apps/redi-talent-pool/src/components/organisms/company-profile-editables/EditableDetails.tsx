@@ -83,7 +83,7 @@ export const EditableDetails: FC<Props> & EditableDetailsHelpers = ({ profile, d
           </div>
         )
       }
-      modalTitle="Help jobseekers get in touch"
+      modalTitle="Help jobSeekers get in touch"
       modalHeadline="Important Details"
       modalBody={
         <ModalForm

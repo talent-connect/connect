@@ -16,7 +16,7 @@ export const svgImages = {
 export const images = {
   mentee: Mentee,
   mentor: Mentor,
-  jobseeker: Mentee,
+  jobSeeker: Mentee,
   company: Mentor,
   hero: Hero,
   hello: Hello,

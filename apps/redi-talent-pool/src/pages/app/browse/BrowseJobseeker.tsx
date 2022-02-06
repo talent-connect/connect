@@ -22,7 +22,7 @@ import {
 import { JobListingCard } from '../../../components/organisms/JobListingCard'
 import { LoggedIn } from '../../../components/templates'
 import { useBrowseTpJobListingsQuery } from '../../../react-query/use-tpjoblisting-all-query'
-import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobSeekerprofile-query'
 import { mapOptions } from '@talent-connect/typescript-utilities';
 
 export const BrowseJobSeeker: FC = () => {

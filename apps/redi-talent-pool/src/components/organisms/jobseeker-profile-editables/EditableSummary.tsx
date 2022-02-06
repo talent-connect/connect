@@ -14,8 +14,8 @@ import {
 } from '@talent-connect/talent-pool/config'
 import { mapOptions } from '@talent-connect/typescript-utilities';
 import { Content, Element, Tag } from 'react-bulma-components'
-import { useTpJobSeekerProfileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobSeekerProfileUpdateMutation } from '../../../react-query/use-tpjobSeekerprofile-mutation'
+import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobSeekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import { componentForm } from './EditableSummary.form';

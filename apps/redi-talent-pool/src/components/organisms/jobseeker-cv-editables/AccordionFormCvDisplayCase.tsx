@@ -1,9 +1,9 @@
 import { FC } from 'react'
 import { Subject } from 'rxjs'
-import { useTpJobSeekerCvUpdateMutation } from '../../../react-query/use-tpjobseekercv-mutation'
-import { useTpJobSeekerCvByIdQuery } from '../../../react-query/use-tpjobseekercv-query'
+import { useTpJobSeekerCvUpdateMutation } from '../../../react-query/use-tpjobSeekercv-mutation'
+import { useTpJobSeekerCvByIdQuery } from '../../../react-query/use-tpjobSeekercv-query'
 import { AccordionForm } from '../../molecules/AccordionForm'
-import { JobSeekerFormSectionProfessionalExperience } from '../jobseeker-profile-editables/EditableProfessionalExperience'
+import { JobSeekerFormSectionProfessionalExperience } from '../jobSeeker-profile-editables/EditableProfessionalExperience'
 
 interface Props {
   tpJobSeekerCvId: string

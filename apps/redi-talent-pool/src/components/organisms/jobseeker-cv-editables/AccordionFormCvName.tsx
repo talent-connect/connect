@@ -9,8 +9,8 @@ import { Element } from 'react-bulma-components'
 import { UseMutationResult, UseQueryResult } from 'react-query'
 import { Subject } from 'rxjs'
 import * as Yup from 'yup'
-import { useTpJobSeekerCvUpdateMutation } from '../../../react-query/use-tpjobseekercv-mutation'
-import { useTpJobSeekerCvByIdQuery } from '../../../react-query/use-tpjobseekercv-query'
+import { useTpJobSeekerCvUpdateMutation } from '../../../react-query/use-tpjobSeekercv-mutation'
+import { useTpJobSeekerCvByIdQuery } from '../../../react-query/use-tpjobSeekercv-query'
 import { AccordionForm } from '../../molecules/AccordionForm'
 
 interface Props {

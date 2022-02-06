@@ -12,18 +12,18 @@ import {
   TpJobSeekerProfile,
   TpJobSeekerProfileState,
 } from '@talent-connect/shared-types'
-import { EditableEducation } from '../../../components/organisms/jobseeker-profile-editables/EditableEducation'
-import { EditableImportantDetails } from '../../../components/organisms/jobseeker-profile-editables/EditableImportantDetails'
-// import { EditableJobPreferences } from '../../../components/organisms/jobseeker-profile-editables/EditableJobPreferences'
-import { EditableLanguages } from '../../../components/organisms/jobseeker-profile-editables/EditableLanguages'
-import { EditableLinks } from '../../../components/organisms/jobseeker-profile-editables/EditableLinks'
-import { EditableNamePhotoLocation } from '../../../components/organisms/jobseeker-profile-editables/EditableNamePhotoLocation'
-import { EditableOverview } from '../../../components/organisms/jobseeker-profile-editables/EditableOverview'
-import { EditableProfessionalExperience } from '../../../components/organisms/jobseeker-profile-editables/EditableProfessionalExperience'
-import { EditableSummary } from '../../../components/organisms/jobseeker-profile-editables/EditableSummary'
+import { EditableEducation } from '../../../components/organisms/jobSeeker-profile-editables/EditableEducation'
+import { EditableImportantDetails } from '../../../components/organisms/jobSeeker-profile-editables/EditableImportantDetails'
+// import { EditableJobPreferences } from '../../../components/organisms/jobSeeker-profile-editables/EditableJobPreferences'
+import { EditableLanguages } from '../../../components/organisms/jobSeeker-profile-editables/EditableLanguages'
+import { EditableLinks } from '../../../components/organisms/jobSeeker-profile-editables/EditableLinks'
+import { EditableNamePhotoLocation } from '../../../components/organisms/jobSeeker-profile-editables/EditableNamePhotoLocation'
+import { EditableOverview } from '../../../components/organisms/jobSeeker-profile-editables/EditableOverview'
+import { EditableProfessionalExperience } from '../../../components/organisms/jobSeeker-profile-editables/EditableProfessionalExperience'
+import { EditableSummary } from '../../../components/organisms/jobSeeker-profile-editables/EditableSummary'
 import { LoggedIn } from '../../../components/templates'
-import { useTpJobSeekerProfileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobSeekerProfileUpdateMutation } from '../../../react-query/use-tpjobSeekerprofile-mutation'
+import { useTpJobSeekerProfileQuery } from '../../../react-query/use-tpjobSeekerprofile-query'
 import { ReactComponent as ChecklistActiveImage } from './checklist-item-active.svg'
 import { ReactComponent as ChecklistImage } from './checklist-item.svg'
 import { ReactComponent as CheckmarkBorderOnlyImage } from './checkmark-border-only.svg'
@@ -259,7 +259,7 @@ function SendProfileForReviewButton() {
 
 // const SendJobPreferencesForReviewButton: FC = () => { // TODO: Remove?
 //   const { data: profile } = useTpJobSeekerProfileQuery()
-//   const mutation = useTpjobseekerprofileUpdateMutation()
+//   const mutation = useTpjobSeekerprofileUpdateMutation()
 
 //   const enabled =
 //     profile?.state === 'profile-approved' &&

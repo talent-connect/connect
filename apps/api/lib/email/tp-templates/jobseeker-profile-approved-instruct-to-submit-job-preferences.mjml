@@ -33,7 +33,7 @@
             ></mj-text
           >
           <mj-text mj-class="text" padding="0 0 20px 0"
-            >The companies are also able to browse all jobseekers, see your profile and invite you to an interview,
+            >The companies are also able to browse all jobSeekers, see your profile and invite you to an interview,
             if you fit the requirements of any of their open positions.</mj-text
           >
           
