@@ -8,4 +8,5 @@ export interface EditableProps {
   className?: string
   placeholder?: string
   savePossible?: boolean
+  children: ReactNode
 }

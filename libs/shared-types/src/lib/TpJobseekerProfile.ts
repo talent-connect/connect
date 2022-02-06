@@ -9,48 +9,48 @@ import { TpJobSeekerProfileState } from './TpJobSeekerProfileState'
 export type TpJobSeekerProfile =
   & Timestamp
   & {
-  id: string
-  firstName: string
-  lastName: string
-  contactEmail: string
-  currentlyEnrolledInCourse: string
+    id: string
+    firstName: string
+    lastName: string
+    contactEmail: string
+    currentlyEnrolledInCourse: string
 
-  genderPronouns?: string // TODO use GenderKey?
+    genderPronouns?: string // TODO use GenderKey?
 
-  profileAvatarImageS3Key: string
+    profileAvatarImageS3Key: string
 
-  desiredPositions?: string[]
-  profileImage?: string // TODO: delete me. I'm only used in the CV bukder prototype
-  phoneNumber?: string
-  postalMailingAddress?: string
-  location?: string
+    desiredPositions?: string[]
+    profileImage?: string // TODO: delete me. I'm only used in the CV bukder prototype
+    phoneNumber?: string
+    postalMailingAddress?: string
+    location?: string
 
-  personalWebsite?: string
-  githubUrl?: string
-  linkedInUrl?: string
-  twitterUrl?: string
-  behanceUrl?: string
-  stackOverflowUrl?: string
-  dribbbleUrl?: string
+    personalWebsite?: string
+    githubUrl?: string
+    linkedInUrl?: string
+    twitterUrl?: string
+    behanceUrl?: string
+    stackOverflowUrl?: string
+    dribbbleUrl?: string
 
-  workingLanguages?: LanguageRecord[]
-  yearsOfRelevantExperience?: string
-  desiredEmploymentType?: string[]
-  availability?: string
-  ifAvailabilityIsDate_date?: Date
-  immigrationStatus?: string
-  aboutYourself?: string
-  topSkills?: string[]
-  experience?: ExperienceRecord[]
-  education?: EducationRecord[]
-  projects?: ProjectRecord[]
+    workingLanguages?: LanguageRecord[]
+    yearsOfRelevantExperience?: string
+    desiredEmploymentType?: string[]
+    availability?: string
+    ifAvailabilityIsDate_date?: Date
+    immigrationStatus?: string
+    aboutYourself?: string
+    topSkills?: string[]
+    experience?: ExperienceRecord[]
+    education?: EducationRecord[]
+    projects?: ProjectRecord[]
 
-  state: TpJobSeekerProfileState
+    state: TpJobSeekerProfileState
 
-  gaveGdprConsentAt: Date
+    gaveGdprConsentAt: Date
 
-  hrSummit2021JobFairCompanyJobPreferences?: HrSummit2021JobFairCompanyJobPreferenceRecord[]
-  isJobFair2022Participant?: boolean
+    hrSummit2021JobFairCompanyJobPreferences?: HrSummit2021JobFairCompanyJobPreferenceRecord[]
+    isJobFair2022Participant?: boolean
 
-  isProfileVisibleToCompanies: boolean
-}
+    isProfileVisibleToCompanies: boolean
+  }

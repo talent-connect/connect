@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import Landing from '../../components/templates/Landing'
 import {
@@ -15,7 +14,7 @@ import {
 
 type QandA = { question: string; answer: string; };
 
-const Faqs() {
+function Faqs() {
   const { t } = useTranslation()
 
   const topics: { title: string; qAndAs: QandA[] }[] = t('faq.topics', { returnObjects: true })

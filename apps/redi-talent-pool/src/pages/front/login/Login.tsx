@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
   Button,
@@ -11,7 +11,7 @@ import AccountOperation from '../../../components/templates/AccountOperation'
 import { componentForm } from './Login.form';
 
 
-const Login() {
+function Login() {
   const [loginError, setLoginError] = useState<string>('')
 
   const formik = componentForm({

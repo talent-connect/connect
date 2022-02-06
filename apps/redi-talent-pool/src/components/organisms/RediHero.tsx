@@ -17,7 +17,7 @@ import { useHistory } from 'react-router-dom'
 import { envRediLocation } from '../../utils/env-redi-location'
 import './RediHero.scss'
 
-const RediHero() {
+function RediHero() {
   const history = useHistory()
   const { t } = useTranslation()
 

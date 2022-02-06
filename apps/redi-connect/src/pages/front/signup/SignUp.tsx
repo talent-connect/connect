@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { useState } from 'react'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import { useParams } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -37,7 +37,7 @@ export interface SignUpFormValues {
   mentee_currentlyEnrolledInCourse: string
 }
 
-const SignUp() {
+function SignUp() {
   const { type } = useParams<SignUpPageType>() as SignUpPageType
 
   // we may consider removing the backend types from frontend

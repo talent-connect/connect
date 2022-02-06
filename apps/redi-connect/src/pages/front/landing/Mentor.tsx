@@ -1,15 +1,15 @@
-import { Button } from '@talent-connect/shared-atomic-design-components'
-import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useHistory } from 'react-router-dom'
+import { Section, Container } from 'react-bulma-components'
+
+import { Button } from '@talent-connect/shared-atomic-design-components'
 import Checklist from '../../../components/organisms/Checklist'
 import PreFooter from '../../../components/organisms/PreFooter'
 import RediHeroLanding from '../../../components/organisms/RediHeroLanding'
 import Landing from '../../../components/templates/Landing'
 import { isLoggedIn } from '../../../services/auth/auth'
-import { Section, Container } from 'react-bulma-components'
-import { useHistory } from 'react-router-dom'
 
-const Mentor() {
+function Mentor() {
   const { t } = useTranslation()
   const title = t('loggedOutArea.homePage.carousel.titleMentorOrMentee')
   const headline = t('loggedOutArea.homePage.carousel.headlineMentorOrMentee')

@@ -1,7 +1,8 @@
-import { CSSProperties, MouseEventHandler } from 'react'
+import { CSSProperties, MouseEventHandler, ReactNode } from 'react'
 
 export interface ButtonProps {
   className?: string
+  children: ReactNode
   size?: 'large' | 'medium' | 'small'
   fullWidth?: boolean
   disabled?: boolean

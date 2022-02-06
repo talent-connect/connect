@@ -5,7 +5,7 @@ export type RedMentoringSession =
   & Partial<MentorMenteeRefs>
   & Partial<MentorMenteeIds>
   & {
-  id?: string
-  date: Date
-  minuteDuration: MentoringSessionDurationOption
-}
+    id?: string
+    date: Date
+    minuteDuration: MentoringSessionDurationOption
+  }

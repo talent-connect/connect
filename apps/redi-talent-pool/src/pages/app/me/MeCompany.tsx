@@ -30,7 +30,7 @@ function isProfileComplete(profile: Partial<TpCompanyProfile>): boolean {
   return requiredSectionsComplete
 }
 
-const SendProfileForReviewButton() {
+function SendProfileForReviewButton() {
   const { data: profile } = useTpCompanyProfileQuery()
   const { data: jobListings } = useTpJobListingAllQuery()
   const mutation = useTpCompanyProfileUpdateMutation()

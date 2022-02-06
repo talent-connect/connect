@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
@@ -19,7 +18,7 @@ import {
   SVGImage,
 } from '@talent-connect/shared-atomic-design-components'
 
-const RediHero() {
+function RediHero() {
   const history = useHistory()
   const { t } = useTranslation()
 

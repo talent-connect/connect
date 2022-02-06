@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Content, Columns, Element } from 'react-bulma-components'
 import AccountOperation from '../../../components/templates/AccountOperation'
@@ -11,7 +11,7 @@ import {
 import classnames from 'classnames'
 import './SignUpLanding.scss'
 
-const SignUpLanding() {
+function SignUpLanding() {
   const [selectedType, setSelectedType] = useState('')
   const history = useHistory()
 

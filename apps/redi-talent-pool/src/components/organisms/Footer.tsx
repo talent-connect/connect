@@ -12,7 +12,7 @@ type Link = {
   name: string;
 }
 
-const RediFooter() {
+function RediFooter() {
   const year = new Date().getFullYear()
   const { t } = useTranslation()
 

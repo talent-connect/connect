@@ -3,16 +3,16 @@ import { Link } from 'react-router-dom'
 import { ReactComponent as WelcomeIllustration } from '../../assets/images/hero-mentor-and-mentee.svg'
 import './TpTeaser.scss'
 
-function TopIllustration ({ children }) {
-  return (
-    <>
-      <WelcomeIllustration className="tp-illustration tp-illustration--rightOut" />
-      <Element renderAs="p" textTransform="uppercase" textSize={6}>
-        {children}
-      </Element>
-    </>
-  )
-}
+// function TopIllustration ({ children }) { // TODO: remove?
+//   return (
+//     <>
+//       <WelcomeIllustration className="tp-illustration tp-illustration--rightOut" />
+//       <Element renderAs="p" textTransform="uppercase" textSize={6}>
+//         {children}
+//       </Element>
+//     </>
+//   )
+// }
 
 // TODO: rename this component to Teaser, TpTeaser was an attempt at a fix, when it was another issue that was the issue
 export default {

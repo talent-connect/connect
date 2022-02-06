@@ -10,7 +10,7 @@ import TpTeaser from '../../../components/molecules/TpTeaser'
 import { AccountOperation } from '../../../components/templates'
 import { componentForm } from './RequestResetPasswordEmail.form';
 
-export const RequestResetPasswordEmail() {
+export function RequestResetPasswordEmail() {
   const [resetPasswordSuccess, setResetPasswordSuccess] = useState<string>('')
   const [resetPasswordError, setResetPasswordError] = useState<string>('')
 

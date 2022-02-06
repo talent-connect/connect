@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export const sizes = {
   large: {
     desktop: 1,
@@ -19,7 +21,7 @@ export const sizes = {
 
 export interface HeadingProps {
   /** */
-  children: string
+  children: ReactNode
   /** */
   className?: string;
   /** */

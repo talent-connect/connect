@@ -1,9 +1,10 @@
+import { ReactNode } from 'react';
+import { Container, Section } from 'react-bulma-components'
 import Footer from '../organisms/Footer'
 import { RediConnectLogo } from '@talent-connect/shared-atomic-design-components'
 
-import { Container, Section } from 'react-bulma-components'
 
-function AccountOperation ({ children }) {
+function AccountOperation ({ children }: { children: ReactNode }) {
   return (
     <>
       <Section className="navbar color-half-desktop">

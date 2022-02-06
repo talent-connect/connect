@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { NavLink } from 'react-router-dom'
 import { ReactComponent as Applications } from '../../assets/images/applications.svg'
 import { ReactComponent as Profile } from '../../assets/images/profile.svg'
@@ -5,6 +6,7 @@ import './SideMenu.scss'
 
 interface MenuItemProps {
   url: string
+  children: ReactNode
 }
 
 function MenuItem ({ url, children }: MenuItemProps) {

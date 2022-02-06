@@ -3,7 +3,7 @@ import {
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
 import classnames from 'clsx'
-import { useEffect, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { Columns, Element } from 'react-bulma-components'
 import { Subject } from 'rxjs'
 import './AccordionForm.scss'
@@ -12,6 +12,7 @@ interface Props {
   title: string
   isSaveDisabled?: boolean
   closeAccordionSignalSubject?: Subject<void>
+  children: ReactNode
 }
 
 export function AccordionForm ({

@@ -4,27 +4,27 @@ import { TpCompanyProfileState } from './TpCompanyProfileState'
 export type TpCompanyProfile =
   & Timestamp
   & {
-  id: string
-  firstName: string
-  lastName: string
-  contactEmail: string
+    id: string
+    firstName: string
+    lastName: string
+    contactEmail: string
 
-  profileAvatarImageS3Key: string
+    profileAvatarImageS3Key: string
 
-  companyName?: string
-  location?: string
-  tagline?: string
+    companyName?: string
+    location?: string
+    tagline?: string
 
-  industry?: string
-  website?: string
-  linkedInUrl?: string
+    industry?: string
+    website?: string
+    linkedInUrl?: string
 
-  phoneNumber?: string
+    phoneNumber?: string
 
-  about?: string
+    about?: string
 
-  state: TpCompanyProfileState
+    state: TpCompanyProfileState
 
-  howDidHearAboutRediKey?: string
-  howDidHearAboutRediOtherText?: string
-}
+    howDidHearAboutRediKey?: string
+    howDidHearAboutRediOtherText?: string
+  }

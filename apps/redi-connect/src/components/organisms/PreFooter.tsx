@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import {
@@ -10,7 +9,7 @@ import { Container, Section, Columns, Content } from 'react-bulma-components'
 
 import './PreFooter.scss'
 
-const PreFooter() {
+function PreFooter() {
   const { t } = useTranslation()
 
   return (

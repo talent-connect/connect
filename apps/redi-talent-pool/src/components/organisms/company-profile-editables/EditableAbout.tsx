@@ -26,11 +26,10 @@ export function EditableAbout ({ profile, disableEditing }: Props) {
 
   return (
     <Editable
-      disableEditing={disableEditing}
-      isEditing={isEditing}
-      isFormDirty={isFormDirty}
-      setIsEditing={setIsEditing}
       title="About"
+      modalTitle="About"
+      modalHeadline="Summary"
+      {...{ disableEditing, isEditing, isFormDirty, setIsEditing }}
       readComponent={
         <>
           <Caption>Summary</Caption>
@@ -56,13 +55,8 @@ export function EditableAbout ({ profile, disableEditing }: Props) {
           </Content>
         </>
       }
-      modalTitle="About"
-      modalHeadline="Summary"
       modalBody={
-        <ModalForm
-          setIsEditing={setIsEditing}
-          setIsFormDirty={setIsFormDirty}
-        />
+        <ModalForm {...{ setIsEditing, setIsFormDirty }}/>
       }
     />
   )

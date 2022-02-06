@@ -79,7 +79,7 @@ export const showNotification = (
 
 export const hideNotification = () => subjectHideNotification.next()
 
-export const AppNotification() {
+export function AppNotification() {
   const [state, setState] = useState<AppNotificationState>(null)
 
   const show = (options: SubjectShowNotification) => {

@@ -8,7 +8,6 @@ import {
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 import moment from 'moment'
-import { FC } from 'react';
 import { Columns, Content, Element, Tag } from 'react-bulma-components'
 import ReactMarkdown from 'react-markdown'
 import { useParams } from 'react-router-dom'
@@ -18,7 +17,7 @@ import { EditableDetails } from '../../../components/organisms/company-profile-e
 import { LoggedIn } from '../../../components/templates'
 import { useTpJobListingOneQuery } from '../../../react-query/use-tpjoblisting-one-query'
 
-export const JobListing() {
+export function JobListing() {
   const { tpJobListingId }: { tpJobListingId: string } = useParams()
   const { data: jobListing } = useTpJobListingOneQuery(tpJobListingId)
 

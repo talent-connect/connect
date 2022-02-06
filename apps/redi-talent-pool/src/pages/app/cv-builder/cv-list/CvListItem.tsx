@@ -4,7 +4,7 @@
  * must be standardized within the project.
  */
 
-import { FC, useEffect, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { format as formatDate } from 'date-fns'
 import { useHistory } from 'react-router-dom'
 import { PDFDownloadLink } from '@react-pdf/renderer'
@@ -33,7 +33,7 @@ import { useTpJobseekerProfileQuery } from '../../../../react-query/use-tpjobSee
 const CREATED_AT_DATE_FORMAT = 'dd.MM.yyyy'
 
 
-export function CvListItemBox ({ children }) {
+export function CvListItemBox ({ children }: { children: ReactNode }) {
   return (
     <Box
     style={{

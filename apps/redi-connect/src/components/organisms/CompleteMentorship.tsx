@@ -62,7 +62,7 @@ function CompleteMentorship ({
         </Modal.Body>
 
         <Modal.Foot>
-          <Button onClick={() => formik.handleSubmit()}>
+        <Button onClick={() => formik.handleSubmit()}>
             Complete mentorship
           </Button>
           <Button onClick={handleCancel} simple>

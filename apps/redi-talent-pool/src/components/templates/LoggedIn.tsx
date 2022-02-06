@@ -1,4 +1,5 @@
 import { Loader } from '@talent-connect/shared-atomic-design-components'
+import { ReactNode } from 'react';
 import { Columns, Container } from 'react-bulma-components'
 import { useLocation } from 'react-router'
 import { useIsBusy } from '../../hooks/useIsBusy'
@@ -11,6 +12,7 @@ import './LoggedIn.scss'
 
 interface Props {
   hideNavigation?: boolean
+  children: ReactNode
 }
 
 function LoggedIn ({ children, hideNavigation }: Props) {

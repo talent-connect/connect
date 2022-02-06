@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { Subject } from 'rxjs'
 
 export interface FormDraggableAccordionProps {
@@ -9,4 +10,5 @@ export interface FormDraggableAccordionProps {
   onRemove?: () => void
   /** */
   closeAccordionSignalSubject?: Subject<void>
+  children: ReactNode
 }

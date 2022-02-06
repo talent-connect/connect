@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { Element, Columns, Container, Section } from 'react-bulma-components'
@@ -12,7 +11,7 @@ type Link = {
   name: string;
 }
 
-const RediFooter() {
+function RediFooter() {
   const year = new Date().getFullYear()
   const { t } = useTranslation()
 
