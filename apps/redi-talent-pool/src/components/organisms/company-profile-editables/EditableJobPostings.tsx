@@ -15,13 +15,10 @@ import {
   topSkills,
 } from '@talent-connect/talent-pool/config'
 import { mapOptions } from '@talent-connect/typescript-utilities';
-import { useFormik } from 'formik'
 import { useCallback, useState, useEffect } from 'react'
 import { Columns, Element } from 'react-bulma-components'
-import * as Yup from 'yup'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
 import { useTpJobListingAllQuery } from '../../../react-query/use-tpjoblisting-all-query'
-import { useTpJobListingCreateMutation } from '../../../react-query/use-tpjoblisting-create-mutation'
 import { useTpJobListingDeleteMutation } from '../../../react-query/use-tpjoblisting-delete-mutation'
 import { useTpJobListingOneOfCurrentUserQuery } from '../../../react-query/use-tpjoblisting-one-query'
 import { useTpJobListingUpdateMutation } from '../../../react-query/use-tpjoblisting-update-mutation'
@@ -29,6 +26,7 @@ import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder
 import { JobListingCard } from '../JobListingCard'
 import JobPlaceholderCardUrl from './job-placeholder-card.svg'
 import { get } from 'lodash'
+import { componentForm } from './EditableJobPostings.form';
 
 interface Props {
   isJobPostingFormOpen: boolean
@@ -134,25 +132,6 @@ export function EditableJobPostings ({
   )
 }
 
-const validationSchema = Yup.object().shape({
-  title: Yup.string()
-    .required('Please provide a job title'),
-  location: Yup.string()
-    .required('Please provide a location'),
-  summary: Yup.string()
-    .required('Please enter a short description of the job')
-    .min(200, 'Job summary should be at least 200 characters'),
-  relatesToPositions: Yup.array()
-    .min(1, 'Please select at least one related position'),
-  idealTechnicalSkills: Yup.array()
-    .min(1, 'Please select at least one relevant technical skill')
-    .max(6, 'Please select up to six skills'),
-  employmentType: Yup.mixed()
-    .required('Please select an employment type'),
-  languageRequirements: Yup.string()
-    .required('Please specify the language requirement(s)'),
-})
-
 interface ModalFormProps {
   tpJobListingId: string
   isEditing: boolean
@@ -170,28 +149,18 @@ function ModalForm ({
     ? data
     : buildBlankJobListing(currentUserTpCompanyProfile?.id)
 
-  const createMutation = useTpJobListingCreateMutation()
   const updateMutation = useTpJobListingUpdateMutation() // TODO: has "tpJobListingId" as param. Why?
   const deleteMutation = useTpJobListingDeleteMutation()
 
-  const formik = useFormik<Partial<TpJobListing>>({
-    initialValues: jobListing,
-    validationSchema,
-    enableReinitialize: true,
-    onSubmit: (values, { setSubmitting }) => {
-      setSubmitting(true);
-      const mutation = !tpJobListingId ? createMutation : updateMutation;
-      mutation.mutate(values, {
-        onSettled: () => setSubmitting(false),
-        onSuccess: () => setIsEditing(false),
-      })
-    },
-  })
+  const formik = componentForm({
+    jobListing,
+    setIsEditing,
+    tpJobListingId
+  }) 
 
   const handleDelete = useCallback(() => {
-    if (
-      window.confirm('Are you certain you wish to delete this job posting?')
-    ) {
+    const confirmation = window.confirm('Are you certain you wish to delete this job posting?')
+    if (confirmation) {
       deleteMutation.mutate(tpJobListingId, {
         onSuccess: () => setIsEditing(false),
       })

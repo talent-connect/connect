@@ -26,7 +26,7 @@ const formMentoringSessionDurationOptions = MENTORING_SESSION_DURATION_OPTIONS
   }))
 
 interface AddSessionProps {
-  onClickHandler: Function
+  onClickHandler: (param: boolean) => void; 
 }
 
 function AddSession ({ onClickHandler }: AddSessionProps) {
