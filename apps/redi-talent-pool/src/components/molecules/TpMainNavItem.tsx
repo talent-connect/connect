@@ -1,5 +1,5 @@
 import classnames from 'clsx'
-import React, { FC, ReactNode, MouseEvent } from 'react'
+import React, { ReactNode, MouseEvent } from 'react'
 import { useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import './TpMainNavItem.scss'

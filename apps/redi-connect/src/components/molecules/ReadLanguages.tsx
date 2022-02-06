@@ -12,6 +12,8 @@ interface Props {
   profile: RedProfile
 }
 
+// TODO: language check due to previous wrong typing?
+
 function Me ({ profile: { languages } }: Props) {
   if (!languages)
     return <Placeholder>Input languages you speak here.</Placeholder>
@@ -23,7 +25,7 @@ function Some ({ profile: { languages } }: Props) {
   return (
     <>
       <Caption>Languages</Caption>
-      {languages &&
+      {languages && 
         <PipeList items={languages} />}
     </>
   )

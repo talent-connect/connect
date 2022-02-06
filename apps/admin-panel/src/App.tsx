@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { get, mapValues, keyBy, groupBy } from 'lodash'
 import {
   Admin,

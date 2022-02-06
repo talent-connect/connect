@@ -3,7 +3,7 @@ import {
   Icon,
   Modal,
 } from '@talent-connect/shared-atomic-design-components'
-import { CSSProperties, FC, ReactNode } from 'react'
+import { CSSProperties, ReactNode } from 'react'
 import { Element } from 'react-bulma-components'
 import './Editable.scss'
 

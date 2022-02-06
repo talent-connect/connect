@@ -4,7 +4,6 @@ import {
   SVGImage,
 } from '@talent-connect/shared-atomic-design-components'
 import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
-import { FC } from 'react'
 import {
   Columns,
   Container,

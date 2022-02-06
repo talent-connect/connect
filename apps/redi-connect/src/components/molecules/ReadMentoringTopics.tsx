@@ -20,7 +20,7 @@ export function ProfileTags (props: CardTagsProps) {
   return (
     <CardTags
       {...props}
-      formatter={(item: string) => CATEGORIES_MAP[item]}
+      formatter={(item) => CATEGORIES_MAP[item]}
     />
   );
 }

@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { useState } from 'react'
 import { Columns, Content, Element, Form } from 'react-bulma-components'
 import {
   Heading,

@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import { subYears } from 'date-fns'
 import { connect } from 'react-redux'
 import * as Yup from 'yup'

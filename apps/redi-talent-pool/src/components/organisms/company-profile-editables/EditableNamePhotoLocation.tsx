@@ -6,7 +6,7 @@ import {
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
 import { TpCompanyProfile } from '@talent-connect/shared-types'
-import { FC, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Columns, Content, Element } from 'react-bulma-components'
 import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'

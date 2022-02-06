@@ -2,7 +2,6 @@ import Select, { components } from 'react-select'
 import { Form } from 'react-bulma-components'
 import { Icon } from '../Icon'
 import { get } from 'lodash'
-import { FC } from 'react';
 import { FormSelectProps } from './FormSelect.props';
 
 const DropdownIndicator = (props: any) => (

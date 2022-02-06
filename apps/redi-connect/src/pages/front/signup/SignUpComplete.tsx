@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import { ReactComponent as WelcomeIllustration } from '../../../assets/images/welcome-user.svg'
 import { Columns, Form, Content } from 'react-bulma-components'

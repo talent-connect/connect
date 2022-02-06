@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { useState } from 'react'
 import { connect } from 'react-redux'
 import _uniqueId from 'lodash/uniqueId'
 import moment from 'moment'

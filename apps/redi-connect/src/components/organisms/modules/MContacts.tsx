@@ -11,13 +11,13 @@ interface ContactRow {
 }
 
 function ContactRow ({ label, children }: ContactRow) {
-  return children ? (
+  if (!children) return null
+  
+  return (
     <div className="m-contacts__row">
       <div className="m-contacts__row__label">{label}</div>
       <div className="m-contacts__row__content">{children}</div>
     </div>
-  ) : (
-    <></>
   )
 }
 
@@ -44,9 +44,9 @@ function MContacts ({
       <ContactRow label="LinkedIn">
         {linkedInProfileUrl && (
           <a
-            href={linkedInProfileUrl}
             target="_blank"
             rel="noopener noreferrer"
+            href={linkedInProfileUrl}
           >
             {linkedInProfileUrl}
           </a>

@@ -11,12 +11,12 @@ interface Props {
   shortInfo?: boolean
 }
 
+const COURSES_MAP = Object.fromEntries(COURSES.map(({ id, label }) => [id, label]))
+
 function ReadRediClass ({
   profile: { mentee_currentlyEnrolledInCourse },
   shortInfo = false,
 }: Props) {
-  const COURSES_MAP = Object.fromEntries(COURSES.map(({ id, label }) => [id, label]))
-
   return (
     <>
       {shortInfo &&

@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import {
@@ -15,7 +14,7 @@ import {
 
 import './RediProgram.scss'
 
-const RediProgram() {
+function RediProgram() {
   const { t } = useTranslation()
 
   const programSteps: {

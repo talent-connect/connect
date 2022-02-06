@@ -1,4 +1,4 @@
-import { FC, useState, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import Teaser from '../../../components/molecules/Teaser'
 import * as Yup from 'yup'

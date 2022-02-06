@@ -52,8 +52,8 @@ export default {
       Already have an account? <Link to="/front/login">login here</Link>
     </TopIllustration>
   ),
-  Miriam: () => {
-    const { userType } = useParams<RouteParams>()
+  Miriam: () => { // TODO: refactor using a map.
+    const { userType } = useParams<RouteParams>() as RouteParams
 
     return (
       <>
@@ -70,10 +70,18 @@ export default {
               the ReDI Career Department. I take the time to meet each mentor
               before they join our program."
             </Element>
-            <Element renderAs="p" textAlignment="centered" textSize={5}>
+            <Element
+              renderAs="p"
+              textAlignment="centered"
+              textSize={5}
+            >
               <strong>Miriam Abu Hamdan</strong>
             </Element>
-            <Element renderAs="p" textAlignment="centered" textSize={6}>
+            <Element
+              renderAs="p"
+              textAlignment="centered"
+              textSize={6}
+            >
               Manager Mentorship Program
               <br />
               Career Department ReDI School <br />
@@ -94,16 +102,22 @@ export default {
               integration coordinator at the ReDI Career Department. I take the
               time to go through your application before you join our program."
             </Element>
-            <Element renderAs="p" textAlignment="centered" textSize={5}>
+            <Element
+              renderAs="p"
+              textAlignment="centered"
+              textSize={5}
+            >
               <strong>Paulina Muñoz</strong>
             </Element>
-            <Element renderAs="p" textAlignment="centered" textSize={6}>
+            <Element
+              renderAs="p"
+              textAlignment="centered"
+              textSize={6}
+            >
               Manager Coaching and Job Integration
               <br />
               Career Department ReDI School <br />
-              <a href="mailto:paulina@redi-school.org">
-                paulina@redi-school.org
-              </a>
+              <a href="mailto:paulina@redi-school.org">paulina@redi-school.org</a>
             </Element>
           </>
         )}
@@ -111,7 +125,7 @@ export default {
       </>
     )
   },
-  Christa: () => {
+  Christa: () => { // TODO: this, in addition to the previous one, can use a factory.
     const { userType } = useParams<RouteParams>() as RouteParams
 
     return (
@@ -139,10 +153,18 @@ export default {
             </>
           )}
         </Element>
-        <Element renderAs="p" textAlignment="centered" textSize={5}>
+        <Element
+          renderAs="p"
+          textAlignment="centered"
+          textSize={5}
+        >
           <strong>Christa Baron</strong>
         </Element>
-        <Element renderAs="p" textAlignment="centered" textSize={6}>
+        <Element
+          renderAs="p"
+          textAlignment="centered"
+          textSize={6}
+        >
           Head of Community Development Munich
           <br />
           ReDI School Munich

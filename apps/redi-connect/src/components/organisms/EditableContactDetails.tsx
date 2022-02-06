@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import { connect } from 'react-redux'
 
 import { TextInput } from '@talent-connect/shared-atomic-design-components'

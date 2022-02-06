@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import { Content } from 'react-bulma-components'
 import { RedProfile } from '@talent-connect/shared-types'
 import { connect } from 'react-redux'
@@ -17,7 +16,7 @@ interface Props {
 
 const formMenteeOccupationCategories = mapOptionsObject(MENTEE_OCCUPATION_CATEGORY)
 
-const ReadOccupation<Props> = ({
+function ReadOccupation ({
   profile: {
     userType,
     mentor_occupation,
@@ -31,7 +30,7 @@ const ReadOccupation<Props> = ({
     mentee_occupationOther_description,
   },
   shortInfo = false
-}) => {
+}: Props) {
 
   if (!mentor_occupation && !mentee_occupationCategoryId) {
     return (

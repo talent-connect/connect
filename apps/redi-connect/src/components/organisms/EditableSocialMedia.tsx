@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import { connect } from 'react-redux'
 import * as Yup from 'yup'
 import { useFormik } from 'formik'

@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { useState } from 'react'
 import { useHistory } from 'react-router'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'

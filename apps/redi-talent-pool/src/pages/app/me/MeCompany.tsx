@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Tooltip } from '@material-ui/core'
 import { Button, Icon } from '@talent-connect/shared-atomic-design-components'
 import { Columns, Notification, Content } from 'react-bulma-components'

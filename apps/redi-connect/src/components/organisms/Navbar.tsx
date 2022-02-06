@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { useState } from 'react'
 import classnames from 'classnames'
 import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'

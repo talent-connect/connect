@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import { Content } from 'react-bulma-components'
 import { Heading } from '@talent-connect/shared-atomic-design-components'
 import { ApplicationCard } from '../../../components/organisms'

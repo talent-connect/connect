@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import { TextArea } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile, UserType } from '@talent-connect/shared-types'
