@@ -27,4 +27,6 @@ export type TpCompanyProfile = {
 
   createdAt: Date
   updatedAt: Date
+
+  isProfileVisibleToJobseekers: boolean
 }

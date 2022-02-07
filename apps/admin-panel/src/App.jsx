@@ -1751,6 +1751,7 @@ const TpCompanyProfileShow = (props) => (
       <TabbedShowLayout>
         <Tab label="Profile">
           <Avatar />
+          <BooleanField source="isProfileVisibleToJobseekers" />
           <TextField source="companyName" />
           <TextField source="firstName" />
           <TextField source="lastName" />
@@ -1828,6 +1829,7 @@ const TpCompanyProfileEdit = (props) => (
     <TabbedForm>
       <FormTab label="Profile">
         <Avatar />
+        <BooleanInput source="isProfileVisibleToJobseekers" />
         <TextInput source="companyName" />
         <TextInput source="firstName" />
         <TextInput source="lastName" />

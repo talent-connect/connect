@@ -296,7 +296,13 @@ export async function fetchAllTpJobListingsUsingFilters({
       order: 'createdAt DESC',
       limit: 0,
     })}`
-  ).then((resp) => resp.data.filter((listing) => !listing.dummy))
+  ).then((resp) =>
+    resp.data
+      .filter((listing) => !listing.dummy)
+      .filter(
+        (listing) => listing.tpCompanyProfile?.isProfileVisibleToJobseekers
+      )
+  )
 }
 
 export async function fetchAllTpJobListings(): Promise<Array<TpJobListing>> {
