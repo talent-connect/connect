@@ -10,17 +10,6 @@ const { RedProfile, RedUser } = app.models
     include: ['redProfile', 'tpJobseekerProfile', 'tpCompanyProfile'],
   })
 
-  [
-    {
-      id: "blabla"
-      email": "blabla",
-      password": "blabla",
-      redProfile: {}
-      tpJobseekerProfile: {}
-      tpCompanyProfile: {}
-    }
-  ]
-
   // Find orphaned RedUsers
   const usersWithoutProfile = allUsers.filter((u) => {
     const user = u.toJSON()
