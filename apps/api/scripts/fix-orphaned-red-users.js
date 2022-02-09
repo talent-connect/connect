@@ -10,12 +10,23 @@ const { RedProfile, RedUser } = app.models
     include: ['redProfile', 'tpJobseekerProfile', 'tpCompanyProfile'],
   })
 
+  [
+    {
+      id: "blabla"
+      email": "blabla",
+      password": "blabla",
+      redProfile: {}
+      tpJobseekerProfile: {}
+      tpCompanyProfile: {}
+    }
+  ]
+
   // Find orphaned RedUsers
   const usersWithoutProfile = allUsers.filter((u) => {
     const user = u.toJSON()
     const hasProfile =
       Boolean(user.redProfile) ||
-      Boolean(user.tpJobSeekerProfile) ||
+      Boolean(user.tpJobseekerProfile) ||
       Boolean(user.tpCompanyProfile)
     return !hasProfile
   })
@@ -24,7 +35,7 @@ const { RedProfile, RedUser } = app.models
     const id = userData.id.toString()
     const status =
       `redProfile? ${userData.redProfile ? '✅' : '❌'}` +
-      ` tpJobseekerProfile? ${userData.tpJobSeekerProfile ? '✅' : '❌'}` +
+      ` tpJobseekerProfile? ${userData.tpJobseekerProfile ? '✅' : '❌'}` +
       ` tpCompanyProfile? ${userData.tpCompanyProfile ? '✅' : '❌'}`
     await RedUser.destroyById(id, (err) => console.log(err))
     console.log(
