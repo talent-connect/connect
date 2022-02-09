@@ -1,6 +1,7 @@
 import {
   Button,
   FormInput,
+  FormSelect,
   Heading,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
@@ -8,6 +9,7 @@ import { TpJobseekerProfile } from '@talent-connect/shared-types'
 import {
   availabilityOptions,
   desiredEmploymentTypeOptions,
+  locationStatesOptions,
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
 import React, { useEffect, useMemo, useState } from 'react'
@@ -103,6 +105,7 @@ const validationSchema = Yup.object({
   firstName: Yup.string().required('Your first name is required'),
   lastName: Yup.string().required('Your last name is required'),
   location: Yup.string().required('Your location is required'),
+  locationState: Yup.string().required('Please select the state you live in'),
 })
 
 function ModalForm({
@@ -120,6 +123,7 @@ function ModalForm({
       lastName: profile?.lastName ?? '',
       genderPronouns: profile?.genderPronouns ?? '',
       location: profile?.location ?? '',
+      locationState: profile?.locationState ?? '',
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -142,10 +146,10 @@ function ModalForm({
     onSubmit,
     validateOnMount: true,
   })
-  useEffect(() => setIsFormDirty?.(formik.dirty), [
-    formik.dirty,
-    setIsFormDirty,
-  ])
+  useEffect(
+    () => setIsFormDirty?.(formik.dirty),
+    [formik.dirty, setIsFormDirty]
+  )
 
   return (
     <>
@@ -179,6 +183,12 @@ function ModalForm({
         name="location"
         placeholder="Berlin, Germany"
         label="Your place of residence (city, country)*"
+        {...formik}
+      />
+      <FormSelect
+        name="locationState"
+        label="Your place of residence (state)*"
+        items={locationStatesOptions}
         {...formik}
       />
       <Button

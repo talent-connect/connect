@@ -745,3 +745,29 @@ export const howDidHearAboutRediOptions = {
   'social-media': 'Social Media',
   other: 'Other',
 } as const
+
+export const locationStates = {
+  'baden-wuerttemberg': 'Baden-Württemberg',
+  bayern: 'Bayern',
+  berlin: 'Berlin',
+  brandenburg: 'Brandenburg',
+  bremen: 'Bremen',
+  hamburg: 'Hamburg',
+  hessen: 'Hessen',
+  'mecklenburg-vorpommern': 'Mecklenburg-Vorpommern',
+  niedersachsen: 'Niedersachsen',
+  'nordrhein-westfalen': 'Nordrhein-Westfalen',
+  'rheinland-pfalz': 'Rheinland-Pfalz',
+  saarland: 'Saarland',
+  sachsen: 'Sachsen',
+  sachsenAnhalt: 'Sachsen-Anhalt',
+  schleswigHolstein: 'Schleswig-Holstein',
+  thueringen: 'Thüringen',
+} as const
+
+export const locationStatesOptions = Object.entries(locationStates).map(
+  ([value, label]) => ({
+    value,
+    label,
+  })
+)

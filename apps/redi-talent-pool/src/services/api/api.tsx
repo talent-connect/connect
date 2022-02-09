@@ -112,6 +112,7 @@ export interface TpJobseekerProfileFilters {
   name: string
   skills: string[]
   desiredPositions: string[]
+  locations: string[]
   isJobFair2022Participant: boolean
 }
 
@@ -119,6 +120,7 @@ export async function fetchAllTpJobseekerProfiles({
   name,
   skills: topSkills,
   desiredPositions,
+  locations,
   isJobFair2022Participant,
 }: TpJobseekerProfileFilters): Promise<Array<Partial<TpJobseekerProfile>>> {
   const filterTopSkills =
@@ -127,6 +129,8 @@ export async function fetchAllTpJobseekerProfiles({
     desiredPositions && desiredPositions.length !== 0
       ? { inq: desiredPositions }
       : undefined
+  const filterLocations =
+    locations && locations.length !== 0 ? { inq: locations } : undefined
   const filterJobFair2022Participant = isJobFair2022Participant
     ? { isJobFair2022Participant: true }
     : undefined
@@ -149,6 +153,7 @@ export async function fetchAllTpJobseekerProfiles({
             })),
           { topSkills: filterTopSkills },
           { desiredPositions: filterDesiredPositions },
+          { locationState: filterLocations },
           { ...filterJobFair2022Participant },
         ],
       },

@@ -7,9 +7,12 @@ import {
 import {
   desiredPositions,
   desiredPositionsIdToLabelMap,
+  locationStates,
+  locationStatesOptions,
   topSkills,
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
+import { useEffect } from 'react'
 import { Columns, Element, Tag } from 'react-bulma-components'
 import { useHistory } from 'react-router'
 import {
@@ -28,15 +31,23 @@ export function BrowseCompany() {
     name: withDefault(StringParam, ''),
     skills: withDefault(ArrayParam, []),
     desiredPositions: withDefault(ArrayParam, []),
+    locations: withDefault(ArrayParam, []),
     isJobFair2022Participant: withDefault(BooleanParam, undefined),
   })
-  const { name, skills, desiredPositions, isJobFair2022Participant } = query
+  const {
+    name,
+    skills,
+    desiredPositions,
+    locations,
+    isJobFair2022Participant,
+  } = query
 
   const history = useHistory()
   const { data: jobseekerProfiles } = useBrowseTpJobseekerProfilesQuery({
     name,
     skills,
     desiredPositions,
+    locations,
     isJobFair2022Participant,
   })
 
@@ -112,6 +123,15 @@ export function BrowseCompany() {
             }
           />
         </div>
+        <div className="filters-inner">
+          <FilterDropdown
+            items={locationStatesOptions}
+            className="filters__dropdown"
+            label="Location"
+            selected={locations}
+            onChange={(item) => toggleFilters(locations, 'locations', item)}
+          />
+        </div>
       </div>
       <div className="filters">
         <Checkbox
@@ -125,6 +145,7 @@ export function BrowseCompany() {
       <div className="active-filters">
         {(skills.length !== 0 ||
           desiredPositions.length !== 0 ||
+          locations.length !== 0 ||
           isJobFair2022Participant) && (
           <>
             {(skills as string[]).map((catId) => (
@@ -142,6 +163,16 @@ export function BrowseCompany() {
                 label={desiredPositionsIdToLabelMap[id]}
                 onClickHandler={(item) =>
                   toggleFilters(desiredPositions, 'desiredPositions', item)
+                }
+              />
+            ))}
+            {(locations as string[]).map((id) => (
+              <FilterTag
+                key={id}
+                id={id}
+                label={locationStates[id]}
+                onClickHandler={(item) =>
+                  toggleFilters(locations, 'locations', item)
                 }
               />
             ))}
