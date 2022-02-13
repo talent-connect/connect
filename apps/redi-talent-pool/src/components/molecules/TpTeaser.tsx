@@ -44,7 +44,7 @@ export default {
       <Content>
         <Element renderAs="p" textTransform="uppercase" textSize={6}>
           Don't have an account yet?{' '}
-          <Link to="/front/signup/jobseeker">signup here</Link>
+          <Link to="front/signup-landing">signup here</Link>
         </Element>
       </Content>
     </>
