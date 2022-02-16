@@ -192,28 +192,44 @@ export function JobseekerFormSectionEducation({
   const validationSchema = Yup.object().shape({
     education: Yup.array().of(
       Yup.object().shape({
-        institutionName: Yup.string().required(
-          'Nme of Institution is required!'
-        ),
+        title: Yup.string().required('Please provide a title'),
         certificationType: Yup.string().required(
-          'Please choose a certification type'
+          'Please select a certification type'
         ),
-        institutionCity: Yup.string(),
-        institutionCountry: Yup.string(),
-        title: Yup.string().required('Title is required'),
-        description: Yup.string().min(10, 'Description is too short'),
-        startDateMonth: Yup.number().required('Start date month is required'),
-        startDateYear: Yup.number().required('Start date year is required'),
-        current: Yup.boolean(),
-        endDateYear: Yup.number().when('current', {
-          is: false,
-          then: Yup.number().required(
-            'Provide an end date year or check the box'
+        institutionName: Yup.string().required(
+          'Please provide an institution name'
+        ),
+        startDateMonth: Yup.number().required('Please select the start month'),
+        startDateYear: Yup.number()
+          .required('Please provide the start year')
+          .test(
+            'len',
+            'Please enter a valid year value',
+            (val) => val && val.toString().length === 4
+          )
+          .max(new Date().getFullYear(), 'Please enter a valid year value')
+          .min(
+            new Date().getFullYear() - 100,
+            'Please enter a valid year value'
           ),
-        }),
         endDateMonth: Yup.number().when('current', {
           is: false,
-          then: Yup.number().required('End date month is required'),
+          then: Yup.number().required('Please select the end month'),
+        }),
+        endDateYear: Yup.number().when('current', {
+          is: false,
+          then: Yup.number()
+            .required('Please provide the end year')
+            .test(
+              'len',
+              'Please enter a valid year value',
+              (val) => val && val.toString().length === 4
+            )
+            .max(new Date().getFullYear(), 'Please enter a valid year value')
+            .min(
+              new Date().getFullYear() - 100,
+              'Please enter a valid year value'
+            ),
         }),
       })
     ),
@@ -302,19 +318,19 @@ export function JobseekerFormSectionEducation({
                         <FormInput
                           name={`education[${index}].title`}
                           placeholder="Bachelor of Computer Science"
-                          label="Title of your course/study/certification"
+                          label="Title of your course/study/certification*"
                           {...formik}
                         />
                         <FormSelect
                           name={`education[${index}].certificationType`}
-                          label="The type of certification"
+                          label="The type of certification*"
                           items={formCertificationTypes}
                           {...formik}
                         />
                         <FormInput
                           name={`education[${index}].institutionName`}
                           placeholder="ReDI School of Digital Integration"
-                          label="The institution or school"
+                          label="The institution or school*"
                           {...formik}
                         />
                         <FormInput
@@ -349,7 +365,7 @@ export function JobseekerFormSectionEducation({
                           <Columns.Column size={6}>
                             <FormSelect
                               name={`education[${index}].startDateMonth`}
-                              label="Started in month"
+                              label="Started in month*"
                               items={formMonthsOptions}
                               {...formik}
                             />
@@ -357,7 +373,7 @@ export function JobseekerFormSectionEducation({
                           <Columns.Column size={6}>
                             <FormInput
                               name={`education[${index}].startDateYear`}
-                              label="Started in year"
+                              label="Started in year*"
                               type="number"
                               {...formik}
                             />
@@ -369,7 +385,7 @@ export function JobseekerFormSectionEducation({
                             <Columns.Column size={6}>
                               <FormSelect
                                 name={`education[${index}].endDateMonth`}
-                                label="Ended in month"
+                                label="Ended in month*"
                                 items={formMonthsOptions}
                                 {...formik}
                               />
@@ -377,7 +393,7 @@ export function JobseekerFormSectionEducation({
                             <Columns.Column size={6}>
                               <FormInput
                                 name={`education[${index}].endDateYear`}
-                                label="Ended in year"
+                                label="Ended in year*"
                                 type="number"
                                 {...formik}
                               />
