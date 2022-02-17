@@ -1,25 +1,19 @@
 const { bindNodeCallback, from } = require('rxjs')
-const {
-  switchMap,
-  concatMap,
-  map,
-  tap,
-  count
-} = require('rxjs/operators')
+const { switchMap, concatMap, map, tap, count } = require('rxjs/operators')
 
 const app = require('../server/server')
 const { Role, RedUser, RoleMapping } = app.models
 
 const roleFindOne = bindNodeCallback(Role.findOne.bind(Role))
 const userFind = bindNodeCallback(RedUser.find.bind(RedUser))
-const rolePrincipalCreate = role =>
+const rolePrincipalCreate = (role) =>
   bindNodeCallback(role.principals.create.bind(role))
 
-let menteeRole, mentorRole, adminRole
+let menteeRole, mentorRole, adminRole, companyRole, jobseekerRole
 
 roleFindOne({ where: { name: 'mentee' } })
   .pipe(
-    map(menteeRole => ({ menteeRole })),
+    map((menteeRole) => ({ menteeRole })),
     switchMap(
       () => roleFindOne({ where: { name: 'mentor' } }),
       (data, mentorRole) => ({ ...data, mentorRole })
@@ -28,33 +22,54 @@ roleFindOne({ where: { name: 'mentee' } })
       () => roleFindOne({ where: { name: 'admin' } }),
       (data, adminRole) => ({ ...data, adminRole })
     ),
+    switchMap(
+      () => roleFindOne({ where: { name: 'company' } }),
+      (data, companyRole) => ({ ...data, companyRole })
+    ),
+    switchMap(
+      () => roleFindOne({ where: { name: 'jobseeker' } }),
+      (data, jobseekerRole) => ({ ...data, jobseekerRole })
+    ),
     tap(
       ({
         mentorRole: _mentorRole,
         menteeRole: _menteeRole,
-        adminRole: _adminRole
+        adminRole: _adminRole,
+        companyRole: _companyRole,
+        jobseekerRole: _jobseekerRole,
       }) => {
         menteeRole = _menteeRole
         mentorRole = _mentorRole
         adminRole = _adminRole
+        companyRole = _companyRole
+        jobseekerRole = _jobseekerRole
       }
     ),
     switchMap(() => userFind({ include: 'redProfile' })),
-    switchMap(users => from(users)),
-    concatMap(user => {
-      let role
-      const userType = user.toJSON().redProfile.userType
-      const accountEmail = user.toJSON().email
-      if (accountEmail === 'cloud-accounts@redi-school.org') {
+    switchMap((users) => from(users)),
+    concatMap((user) => {
+      let role, userType
+      const userJSON = user.toJSON()
+
+      if (userJSON.redProfile) userType = userJSON.redProfile.userType
+      else if (userJSON.tpCompanyProfile) userType = 'tpCompany'
+      else if (userJSON.tpJobseekerProfile) userType = 'tpJobseeker'
+
+      if (userJSON.email === 'cloud-accounts@redi-school.org') {
         role = adminRole
       } else if (userType === 'mentor') {
         role = mentorRole
-      } else {
+      } else if (userType === 'mentee') {
         role = menteeRole
+      } else if (userType === 'tpCompany') {
+        role = tpCompanyRole
+      } else if (userType === 'tpJobseeker') {
+        role = tpJobseekerRole
       }
+
       return rolePrincipalCreate(role)({
         principalType: RoleMapping.USER,
-        principalId: user.toJSON().id
+        principalId: user.toJSON().id,
       })
     }),
     count()

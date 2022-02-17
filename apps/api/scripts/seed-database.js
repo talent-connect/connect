@@ -22,20 +22,24 @@ const {
   AccessToken,
   Role,
   RoleMapping,
+  TpCompanyProfile,
+  TpJobListing,
+  TpJobseekerProfile,
 } = app.models
 
-const personsRaw = require('./random-names.json')
-const persons = []
-personsRaw.forEach((person) => {
-  for (let i = 1; i <= 5; i++) {
-    persons.push({
-      name: `${person.name}${i}`,
-      surname: `${person.surname}${i}`,
-      gender: person.gender,
-      region: person.region,
-    })
-  }
-})
+const persons = require('./random-names.json')
+
+// const persons = []
+// personsRaw.forEach((person) => {
+//   for (let i = 1; i <= 5; i++) {
+//     persons.push({
+//       name: `${person.name}${i}`,
+//       surname: `${person.surname}${i}`,
+//       gender: person.gender,
+//       region: person.region,
+//     })
+//   }
+// })
 
 const categories = [
   {
@@ -174,14 +178,6 @@ const categories = [
 
 const Languages = ['German', 'Arabic', 'Farsi', 'Tigrinya']
 
-const genders = [
-  { id: 'male', label: 'Male' },
-  { id: 'female', label: 'Female' },
-  { id: 'other', label: 'Other' },
-]
-
-const menteeCountCapacityOptions = [1, 2, 3, 4]
-
 const educationLevels = [
   { id: 'middleSchool', label: 'Middle School' },
   { id: 'highSchool', label: 'High School' },
@@ -236,11 +232,11 @@ const pickRandomUserType = () => {
 }
 
 const users = fp.compose(
-  fp.take(1000),
+  fp.take(5),
   fp.map(({ name, surname, gender }) => {
     const rediLocation =
       Math.random() > 0.5 ? 'berlin' : Math.random() > 0.5 ? 'munich' : 'nrw'
-    const email = randomString() + '@' + randomString() + '.com'
+    const email = `${name.toLowerCase()}@${surname.toLowerCase()}.com`
     const password = email
     return {
       redUser: {
@@ -295,6 +291,57 @@ const users = fp.compose(
   })
 )(persons)
 
+const possibleTpStates = [
+  'drafting-profile',
+  'submitted-for-review',
+  'profile-approved',
+]
+
+const tpCompanyUsers = fp.compose(
+  fp.take(5),
+  fp.map(({ name, surname }) => {
+    const email = `${randomString()}@${randomString()}.com`
+    const password = email
+    return {
+      redUser: {
+        email,
+        password,
+      },
+      tpCompanyProfile: {
+        firstName: name,
+        lastName: surname,
+        contactEmail: `${name.toLowerCase()}@${surname.toLowerCase()}.com`,
+        companyName: `${surname} ACME Company`,
+        state:
+          possibleTpStates[Math.floor(Math.random() * possibleTpStates.length)],
+        howDidHearAboutRediKey: 'redi-team-member',
+      },
+    }
+  })
+)(persons)
+
+const tpJobseekerUsers = fp.compose(
+  fp.takeRight(5),
+  fp.map(({ name, surname }) => {
+    const email = `${randomString()}@${randomString()}.com`
+    const password = email
+    return {
+      redUser: {
+        email,
+        password,
+      },
+      tpJobseekerProfile: {
+        firstName: name,
+        lastName: surname,
+        contactEmail: `${name.toLowerCase()}@${surname.toLowerCase()}.com`,
+        state:
+          possibleTpStates[Math.floor(Math.random() * possibleTpStates.length)],
+        currentlyEnrolledInCourse: 'react',
+      },
+    }
+  })
+)(persons)
+
 const accessTokenDestroyAll = Rx.bindNodeCallback(
   AccessToken.destroyAll.bind(AccessToken)
 )
@@ -313,6 +360,15 @@ const redMatchDestroyAll = Rx.bindNodeCallback(
 const redMentoringSessionDestroyAll = Rx.bindNodeCallback(
   RedMentoringSession.destroyAll.bind(RedMentoringSession)
 )
+const tpCompanyProfileDestroyAll = Rx.bindNodeCallback(
+  TpCompanyProfile.destroyAll.bind(TpCompanyProfile)
+)
+const tpJobseekerProfileDestroyAll = Rx.bindNodeCallback(
+  TpJobseekerProfile.destroyAll.bind(TpJobseekerProfile)
+)
+const tpJobListingDestroyAll = Rx.bindNodeCallback(
+  TpJobListing.destroyAll.bind(TpJobListing)
+)
 
 const redMatchCreate = (redMatch) =>
   Rx.bindNodeCallback(RedMatch.create.bind(RedMatch))(redMatch)
@@ -322,6 +378,19 @@ const redProfileCreateOnRedUser = (redUserInst) => (redProfile) =>
   Rx.bindNodeCallback(redUserInst.redProfile.create.bind(redUserInst))(
     redProfile
   )
+
+const tpJobListingCreate = (tpJobListing) =>
+  Rx.bindNodeCallback(tpJobListing.create.bind(TpJobListing))(tpJobListing)
+
+const tpCompanyProfileCreateOnRedUser = (redUserInst) => (tpCompanyProfile) =>
+  Rx.bindNodeCallback(redUserInst.tpCompanyProfile.create.bind(redUserInst))(
+    tpCompanyProfile
+  )
+const tpJobseekerProfileCreateOnRedUser =
+  (redUserInst) => (tpJobseekerProfile) =>
+    Rx.bindNodeCallback(
+      redUserInst.tpJobseekerProfile.create.bind(redUserInst)
+    )(tpJobseekerProfile)
 
 const ericMenteeRedUser = {
   password: 'career+testmentee@redi-school.org',
@@ -446,6 +515,31 @@ const ericAdminRedProfile = {
   username: 'cloud-accounts@redi-school.org',
 }
 
+const testTpCompanyRedUser = {
+  email: 'john+doe@test-company.org',
+  password: 'john+doe@test-company.org',
+}
+const testTpCompanyProfile = {
+  firstName: 'John',
+  lastName: 'Doe',
+  contactEmail: 'john+doe@test-company.org',
+  companyName: 'Test Company',
+  state: 'drafting-profile',
+  howDidHearAboutRediKey: 'redi-team-member',
+}
+
+const testTpJobseekerRedUser = {
+  email: 'jane+doe@test-jobseeker.com',
+  password: 'jane+doe@test-jobseeker.com',
+}
+const testTpJobseekerProfile = {
+  firstName: 'Test',
+  lastName: 'Jobseeker',
+  contactEmail: 'jane+doe@test-jobseeker.com',
+  state: 'drafting-profile',
+  currentlyEnrolledInCourse: 'react',
+}
+
 Rx.of({})
   .pipe(
     switchMap(accessTokenDestroyAll),
@@ -454,6 +548,9 @@ Rx.of({})
     switchMap(redMatchDestroyAll),
     switchMap(redUserDestroyAll),
     switchMap(redProfileDestroyAll),
+    switchMap(tpCompanyProfileDestroyAll),
+    switchMap(tpJobseekerProfileDestroyAll),
+    switchMap(tpJobListingDestroyAll),
     tap(() => console.log('destroyed')),
     delay(10000),
     // switchMap(redMentoringSessionDestroyAll),
@@ -466,12 +563,20 @@ Rx.of({})
       redProfileCreateOnRedUser(redUser)(ericMenteeRedProfile)
     ),
     switchMap(() => redUserCreate(ericMentorRedUser)),
-    tap(console.log),
     switchMap((redUser) =>
       redProfileCreateOnRedUser(redUser)(ericMentorRedProfile)
     ),
-    switchMapTo(users),
+    switchMap(() => redUserCreate(testTpCompanyRedUser)),
+    switchMap((redUser) =>
+      tpCompanyProfileCreateOnRedUser(redUser)(testTpCompanyProfile)
+    ),
+    switchMap(() => redUserCreate(testTpJobseekerRedUser)),
+    switchMap((redUser) =>
+      tpJobseekerProfileCreateOnRedUser(redUser)(testTpJobseekerProfile)
+    ),
+    switchMapTo(users), // switchMap(() => users)
     concatMap(
+      // users.map( (userData) => {} )
       (userData) => redUserCreate(userData.redUser),
       (userData, redUserInst) => ({ ...userData, redUserInst })
     ),
@@ -527,7 +632,40 @@ Rx.of({})
       }
       return Rx.from(matchesFlat)
     }),
-    concatMap(redMatchCreate)
+    concatMap(redMatchCreate),
+    // seed talent pool db
+    switchMapTo(tpJobseekerUsers),
+    tap(console.log),
+    concatMap(
+      (userData) => redUserCreate(userData.redUser),
+      (userData, redUserInst) => ({ ...userData, redUserInst })
+    ),
+    concatMap(
+      (userData) =>
+        tpJobseekerProfileCreateOnRedUser(userData.redUserInst)(
+          userData.tpJobseekerProfile
+        ),
+      (userData, tpJobseekerProfileInst) => ({
+        ...userData,
+        tpJobseekerProfileInst,
+      })
+    ),
+    switchMapTo(tpCompanyUsers),
+    tap(console.log),
+    concatMap(
+      (userData) => redUserCreate(userData.redUser),
+      (userData, redUserInst) => ({ ...userData, redUserInst })
+    ),
+    concatMap(
+      (userData) =>
+        tpCompanyProfileCreateOnRedUser(userData.redUserInst)(
+          userData.tpCompanyProfile
+        ),
+      (userData, tpCompanyProfileInst) => ({
+        ...userData,
+        tpCompanyProfileInst,
+      })
+    )
   )
   .subscribe(
     () => console.log('next'),
