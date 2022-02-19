@@ -670,7 +670,7 @@ Rx.of({})
         ...userData,
         tpCompanyProfileInst,
       })
-    )
+    ),
     tap(() => console.log('--- DONE Seed Talent Pool DB -----------------'))
   )
   .subscribe(
