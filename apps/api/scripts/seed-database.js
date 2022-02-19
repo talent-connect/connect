@@ -20,7 +20,6 @@ const {
   RedMatch,
   RedMentoringSession,
   AccessToken,
-  Role,
   RoleMapping,
   TpCompanyProfile,
   TpJobListing,
