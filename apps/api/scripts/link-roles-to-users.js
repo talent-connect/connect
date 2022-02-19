@@ -65,6 +65,9 @@ roleFindOne({ where: { name: 'mentee' } })
         role = companyRole
       } else if (userType === 'tpJobseeker') {
         role = jobseekerRole
+      } else {
+        // e.g. public-sign-up-mentee-pending-review
+        role = menteeRole
       }
 
       return rolePrincipalCreate(role)({
