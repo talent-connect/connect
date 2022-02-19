@@ -62,9 +62,9 @@ roleFindOne({ where: { name: 'mentee' } })
       } else if (userType === 'mentee') {
         role = menteeRole
       } else if (userType === 'tpCompany') {
-        role = tpCompanyRole
+        role = companyRole
       } else if (userType === 'tpJobseeker') {
-        role = tpJobseekerRole
+        role = jobseekerRole
       }
 
       return rolePrincipalCreate(role)({
