@@ -23,8 +23,7 @@ Rx.of({})
     tap(() => console.log('-------- Create New Roles --------------------')),
     switchMapTo(roles),
     // tap((role) => console.log(`role ${role}`)),
-    concatMap((role) => roleCreate({ name: role })),
-    tap(() => console.log('--- DONE Create New Roles --------------------'))
+    concatMap((role) => roleCreate({ name: role }))
   )
   .subscribe(console.log, null, () => {
     console.log('*** DONE Create Roles **********************')
