@@ -345,7 +345,6 @@ const tpJobseekerUsers = fp.compose(
 const accessTokenDestroyAll = Rx.bindNodeCallback(
   AccessToken.destroyAll.bind(AccessToken)
 )
-const roleDestroyAll = Rx.bindNodeCallback(Role.destroyAll.bind(Role))
 const roleMappingDestroyAll = Rx.bindNodeCallback(
   RoleMapping.destroyAll.bind(RoleMapping)
 )
@@ -545,7 +544,6 @@ Rx.of({})
     tap(() => console.log('******** Start Seed DB ***********************')),
     tap(() => console.log('------ Destroy -------------------------------')),
     switchMap(accessTokenDestroyAll),
-    switchMap(roleDestroyAll),
     switchMap(roleMappingDestroyAll),
     switchMap(redMatchDestroyAll),
     switchMap(redUserDestroyAll),
