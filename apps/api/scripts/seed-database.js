@@ -635,6 +635,7 @@ Rx.of({})
       return Rx.from(matchesFlat)
     }),
     concatMap(redMatchCreate),
+    toArray(), //
     tap(() => console.log('--- DONE Create Match Mentor-Mentee Pairs ----')),
     tap(() => console.log('------ Seed Talent Pool DB -------------------')),
     // seed talent pool db
@@ -655,7 +656,8 @@ Rx.of({})
         tpJobseekerProfileInst,
       })
     ),
-    tap(() => console.log('--- tpJobseekerUsers -------------------------')),
+    toArray(), //
+    tap(() => console.log('--- tpCompanyUsers -------------------------')),
     switchMapTo(tpCompanyUsers),
     tap(console.log),
     concatMap(
@@ -672,6 +674,7 @@ Rx.of({})
         tpCompanyProfileInst,
       })
     ),
+    toArray(), //
     tap(() => console.log('--- DONE Seed Talent Pool DB -----------------'))
   )
   .subscribe(
