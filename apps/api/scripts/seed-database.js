@@ -542,6 +542,8 @@ const testTpJobseekerProfile = {
 
 Rx.of({})
   .pipe(
+    tap(() => console.log('******** Start Seed DB ***********************')),
+    tap(() => console.log('------ Destroy -------------------------------')),
     switchMap(accessTokenDestroyAll),
     switchMap(roleDestroyAll),
     switchMap(roleMappingDestroyAll),
@@ -551,9 +553,10 @@ Rx.of({})
     switchMap(tpCompanyProfileDestroyAll),
     switchMap(tpJobseekerProfileDestroyAll),
     switchMap(tpJobListingDestroyAll),
-    tap(() => console.log('destroyed')),
+    tap(() => console.log('--- DONE Destroy -----------------------------')),
     delay(10000),
     // switchMap(redMentoringSessionDestroyAll),
+    tap(() => console.log('------ Create Test Users ---------------------')),
     switchMap(() => redUserCreate(ericAdminUser)),
     switchMap((redUser) =>
       redProfileCreateOnRedUser(redUser)(ericAdminRedProfile)
@@ -574,6 +577,8 @@ Rx.of({})
     switchMap((redUser) =>
       tpJobseekerProfileCreateOnRedUser(redUser)(testTpJobseekerProfile)
     ),
+    tap(() => console.log('--- DONE Create Test Users -------------------')),
+    tap(() => console.log('------ Create All Users ----------------------')),
     switchMapTo(users), // switchMap(() => users)
     concatMap(
       // users.map( (userData) => {} )
@@ -586,6 +591,8 @@ Rx.of({})
       (userData, redProfileInst) => ({ ...userData, redProfileInst })
     ),
     toArray(),
+    tap(() => console.log('--- DONE Create All Users --------------------')),
+    tap(() => console.log('------ Create Match Mentor-Mentee Pairs ------')),
     // Pick X mentor-mentee pairs, create match
     switchMap((data) => {
       const mentors = data.filter(
@@ -630,7 +637,10 @@ Rx.of({})
       return Rx.from(matchesFlat)
     }),
     concatMap(redMatchCreate),
+    tap(() => console.log('--- DONE Create Match Mentor-Mentee Pairs ----')),
+    tap(() => console.log('------ Seed Talent Pool DB -------------------')),
     // seed talent pool db
+    tap(() => console.log('------ tpJobseekerUsers ----------------------')),
     switchMapTo(tpJobseekerUsers),
     tap(console.log),
     concatMap(
@@ -663,12 +673,13 @@ Rx.of({})
         tpCompanyProfileInst,
       })
     )
+    tap(() => console.log('--- DONE Seed Talent Pool DB -----------------'))
   )
   .subscribe(
     () => console.log('next'),
     console.log,
     () => {
-      console.log('done')
+      console.log('***** DONE Seed DB ***************************')
       process.exit()
     }
   )
