@@ -605,17 +605,14 @@ Rx.of({})
         const menteesInLocation = mentees.filter(
           (data) => data.redProfile.rediLocation === location
         )
-        console.log('******************************')
-        console.log('location', location)
-        console.log(mentorsInLocation.length)
-        console.log(menteesInLocation.length)
-        console.log('******************************')
+        console.log(
+          `Location: ${location}, #mentors: ${mentorsInLocation.length}, #mentees: ${menteesInLocation.length}`
+        )
         const matches = mentorsInLocation.map((mentor) => {
           return _.sampleSize(
             menteesInLocation,
             Math.floor(Math.random() * 10)
           ).map((mentee) => {
-            console.log(location)
             return {
               rediLocation: '' + location + '',
               applicationText: randomString(),
