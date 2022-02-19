@@ -672,7 +672,7 @@ Rx.of({})
     // seed talent pool db
     tap(() => console.log('------ tpJobseekerUsers ----------------------')),
     switchMapTo(tpJobseekerUsers),
-    tap(console.log),
+    // tap(console.log),
     concatMap(
       (userData) => redUserCreate(userData.redUser),
       (userData, redUserInst) => ({ ...userData, redUserInst })
@@ -690,7 +690,7 @@ Rx.of({})
     toArray(), //
     tap(() => console.log('--- tpCompanyUsers -------------------------')),
     switchMapTo(tpCompanyUsers),
-    tap(console.log),
+    // tap(console.log),
     concatMap(
       (userData) => redUserCreate(userData.redUser),
       (userData, redUserInst) => ({ ...userData, redUserInst })
