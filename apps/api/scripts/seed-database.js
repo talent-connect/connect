@@ -219,6 +219,14 @@ const randomString = (charset = 'abcdefghijklmnopqrstuvwxyz', length = 10) => {
   return str
 }
 
+const randomEmail = (name, surname) => {
+  return `${name.toLowerCase()}.${surname.toLowerCase()}_${randomString()}@${surname.toLowerCase()}.com`
+}
+
+const pickRandomCourseId = () => {
+  return courses[Math.floor(Math.random() * courses.length)].id
+}
+
 const pickRandomUserType = () => {
   const possibleUserTypes = [
     'mentor',
@@ -231,7 +239,7 @@ const pickRandomUserType = () => {
 }
 
 const users = fp.compose(
-  fp.take(5),
+  fp.take(25),
   fp.map(({ name, surname, gender }) => {
     const rediLocation =
       Math.random() > 0.5 ? 'berlin' : Math.random() > 0.5 ? 'munich' : 'nrw'
@@ -283,23 +291,49 @@ const users = fp.compose(
         mentee_highestEducationLevel:
           educationLevels[Math.floor(Math.random() * educationLevels.length)]
             .id,
-        mentee_currentlyEnrolledInCourse:
-          courses[Math.floor(Math.random() * courses.length)].id,
+        mentee_currentlyEnrolledInCourse: pickRandomCourseId(),
       },
     }
   })
 )(persons)
 
-const possibleTpStates = [
-  'drafting-profile',
-  'submitted-for-review',
-  'profile-approved',
-]
+const pickRandomPossibleTpStates = () => {
+  const possibleTpStates = [
+    'drafting-profile',
+    'submitted-for-review',
+    'profile-approved',
+  ]
+  const randomIndex = Math.floor(Math.random() * possibleTpStates.length)
+  return possibleTpStates[randomIndex]
+}
+
+const pickRandomHowDidHearAboutRedi = () => {
+  const possibleHowDidHearAboutRedi = [
+    'redi-team-member',
+    'redi-student-alumni',
+    'redi-website',
+    'collegue',
+    'already-volunteer-at-redi',
+    'internet-search',
+    'social-media',
+    'other',
+  ]
+  const randomIndex = Math.floor(
+    Math.random() * possibleHowDidHearAboutRedi.length
+  )
+  return possibleHowDidHearAboutRedi[randomIndex]
+}
+
+const pickRandomCompanyType = () => {
+  const possibleCompanyType = ['GbR', 'UG', 'AG', 'GbR', 'GmbH']
+  const randomIndex = Math.floor(Math.random() * possibleCompanyType.length)
+  return possibleCompanyType[randomIndex]
+}
 
 const tpCompanyUsers = fp.compose(
   fp.take(5),
   fp.map(({ name, surname }) => {
-    const email = `${randomString()}@${randomString()}.com`
+    const email = randomEmail(name, surname)
     const password = email
     return {
       redUser: {
@@ -309,11 +343,10 @@ const tpCompanyUsers = fp.compose(
       tpCompanyProfile: {
         firstName: name,
         lastName: surname,
-        contactEmail: `${name.toLowerCase()}@${surname.toLowerCase()}.com`,
-        companyName: `${surname} ACME Company`,
-        state:
-          possibleTpStates[Math.floor(Math.random() * possibleTpStates.length)],
-        howDidHearAboutRediKey: 'redi-team-member',
+        contactEmail: email,
+        companyName: `${surname} ${pickRandomCompanyType()}`,
+        state: pickRandomPossibleTpStates(),
+        howDidHearAboutRediKey: pickRandomHowDidHearAboutRedi(),
       },
     }
   })
@@ -322,7 +355,7 @@ const tpCompanyUsers = fp.compose(
 const tpJobseekerUsers = fp.compose(
   fp.takeRight(5),
   fp.map(({ name, surname }) => {
-    const email = `${randomString()}@${randomString()}.com`
+    const email = randomEmail(name, surname)
     const password = email
     return {
       redUser: {
@@ -332,10 +365,9 @@ const tpJobseekerUsers = fp.compose(
       tpJobseekerProfile: {
         firstName: name,
         lastName: surname,
-        contactEmail: `${name.toLowerCase()}@${surname.toLowerCase()}.com`,
-        state:
-          possibleTpStates[Math.floor(Math.random() * possibleTpStates.length)],
-        currentlyEnrolledInCourse: 'react',
+        contactEmail: email,
+        state: pickRandomPossibleTpStates(),
+        currentlyEnrolledInCourse: pickRandomCourseId(),
       },
     }
   })
