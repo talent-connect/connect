@@ -1,100 +1,93 @@
-import React, { useEffect } from 'react'
-import { get, mapValues, keyBy, groupBy } from 'lodash'
-import {
-  Admin,
-  Resource,
-  List,
-  Tab,
-  Create,
-  Pagination,
-  Filter,
-  Datagrid,
-  TabbedForm,
-  FunctionField,
-  TabbedShowLayout,
-  TextField,
-  ReferenceInput,
-  AutocompleteInput,
-  DateField,
-  TextInput,
-  BooleanInput,
-  NullableBooleanInput,
-  NumberField,
-  FormTab,
-  NumberInput,
-  Show,
-  ShowButton,
-  LongTextInput,
-  CardActions,
-  DateInput,
-  EditButton,
-  SelectInput,
-  Edit,
-  SimpleForm,
-  ArrayField,
-  BooleanField,
-  SimpleShowLayout,
-  SelectArrayInput,
-  downloadCSV,
-  ReferenceField,
-  Labeled,
-  ReferenceManyField,
-  SearchInput,
-} from 'react-admin'
-import classNames from 'classnames'
-import { unparse as convertToCSV } from 'papaparse/papaparse.min'
+import DateFnsUtils from '@date-io/date-fns'
 import { createStyles, withStyles } from '@material-ui/core'
-import { Person as PersonIcon } from '@material-ui/icons'
 import Button from '@material-ui/core/Button'
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent'
+import FormControl from '@material-ui/core/FormControl'
+import InputLabel from '@material-ui/core/InputLabel'
+import MenuItem from '@material-ui/core/MenuItem'
+import Select from '@material-ui/core/Select'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
-import FormControl from '@material-ui/core/FormControl'
-import InputLabel from '@material-ui/core/InputLabel'
-import Select from '@material-ui/core/Select'
-import MenuItem from '@material-ui/core/MenuItem'
 import Typography from '@material-ui/core/Typography'
-import Card from '@material-ui/core/Card'
-import CardContent from '@material-ui/core/CardContent'
-import DateFnsUtils from '@date-io/date-fns'
-
+import { Clear, Person as PersonIcon } from '@material-ui/icons'
+import Done from '@material-ui/icons/Done'
 import {
-  MuiPickersUtilsProvider,
   KeyboardDatePicker,
+  MuiPickersUtilsProvider,
 } from '@material-ui/pickers'
-
 import {
-  REDI_LOCATION_NAMES,
-  LANGUAGES,
-  CATEGORY_GROUPS,
   CATEGORIES,
+  CATEGORY_GROUPS,
   COURSES,
   GENDERS,
+  LANGUAGES,
   MENTORING_SESSION_DURATION_OPTIONS,
+  REDI_LOCATION_NAMES,
   RED_MATCH_STATUSES,
 } from '@talent-connect/shared-config'
-
+import {
+  TpCompanyProfileState,
+  TpJobseekerProfileState,
+} from '@talent-connect/shared-types'
 import { calculateAge } from '@talent-connect/shared-utils'
-
 import { howDidHearAboutRediOptions } from '@talent-connect/talent-pool/config'
-
-import loopbackClient, { authProvider } from './lib/react-admin-loopback/src'
+import { objectEntries } from '@talent-connect/typescript-utilities'
+import classNames from 'classnames'
+import { get, groupBy, keyBy, mapValues } from 'lodash'
+import { unparse as convertToCSV } from 'papaparse/papaparse.min'
+import React, { useEffect } from 'react'
+import {
+  Admin,
+  ArrayField,
+  AutocompleteInput,
+  BooleanField,
+  BooleanInput,
+  CardActions,
+  Create,
+  Datagrid,
+  DateField,
+  DateInput,
+  downloadCSV,
+  Edit,
+  EditButton,
+  Filter,
+  FormTab,
+  FunctionField,
+  Labeled,
+  List,
+  LongTextInput,
+  NullableBooleanInput,
+  NumberField,
+  NumberInput,
+  Pagination,
+  ReferenceField,
+  ReferenceInput,
+  ReferenceManyField,
+  Resource,
+  SearchInput,
+  SelectArrayInput,
+  SelectInput,
+  Show,
+  ShowButton,
+  SimpleForm,
+  SimpleShowLayout,
+  Tab,
+  TabbedForm,
+  TabbedShowLayout,
+  TextField,
+  TextInput,
+} from 'react-admin'
 import { ApproveButton } from './components/ApproveButton'
 import { DeclineButton } from './components/DeclineButton'
+import { TpCompanyProfileApproveButton } from './components/TpCompanyProfileApproveButton'
 import { TpJobseekerProfileApproveButton } from './components/TpJobseekerProfileApproveButton'
 import { TpJobseekerProfileDeclineButton } from './components/TpJobseekerProfileDeclineButton'
-import { TpCompanyProfileApproveButton } from './components/TpCompanyProfileApproveButton'
-
 import { API_URL } from './config'
-import {
-  TpJobseekerProfileState,
-  TpCompanyProfileState,
-} from '@talent-connect/shared-types'
-
-import { objectEntries } from '@talent-connect/typescript-utilities'
-
+import loopbackClient, { authProvider } from './lib/react-admin-loopback/src'
 import { redMatchesCsvExporter } from './utils/csvExport'
 
 /** REFERENCE DATA */
@@ -395,6 +388,14 @@ const RedProfileListExpandPane = (props) => {
         </ArrayField>
         <MenteeEnrolledInCourseField />
         <TextField source="contactEmail" />
+        {props.record.userType === 'mentor' && (
+          <FunctionField
+            render={({ optOutOfMenteesFromOtherRediLocation }) =>
+              optOutOfMenteesFromOtherRediLocation ? <Done /> : <Clear />
+            }
+            label="Mentor has opted out of receiving applications from mentees from other redi locations"
+          />
+        )}
         <RecordCreatedAt />
         <RecordUpdatedAt />
       </SimpleShowLayout>
@@ -517,6 +518,12 @@ const RedProfileShow = (props) => (
             source="menteeCountCapacity"
             label="Total mentee count capacity"
           />
+          <FunctionField
+            render={({ optOutOfMenteesFromOtherRediLocation }) =>
+              optOutOfMenteesFromOtherRediLocation ? <Done /> : <Clear />
+            }
+            label="Mentor has opted out of receiving applications from mentees from other redi locations"
+          />
           <h4>Mentee-specific fields:</h4>
           <TextField
             source="mentee_occupationCategoryId"
@@ -632,7 +639,10 @@ const RedProfileEdit = (props) => (
         <CategoriesInput />
         <MenteeEnrolledInCourseInput />
         <NumberInput source="menteeCountCapacity" />
-        <BooleanInput source="optOutOfMenteesFromOtherRediLocation" />
+        <BooleanInput
+          source="optOutOfMenteesFromOtherRediLocation"
+          label="Mentor has opted out of receiving applications from mentees from other redi locations"
+        />
       </FormTab>
       <FormTab label="Internal comments">
         <LongTextInput source="administratorInternalComment" />
