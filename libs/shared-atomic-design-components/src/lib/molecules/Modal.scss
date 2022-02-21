@@ -11,17 +11,17 @@
     position: absolute;
 
     &:hover {
-      background-color: $white !important;
+      background-color: $grey-light !important;
     }
 
     &::before {
-      width: 80%;
-      height: 1px;
+      width: 80% !important;
+      height: 1px !important;
       background-color: $black;
     }
     &::after {
-      height: 80%;
-      width: 1px;
+      height: 80% !important;
+      width: 1px !important;
       background-color: $black;
     }
   }
