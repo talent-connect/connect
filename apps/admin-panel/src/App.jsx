@@ -715,6 +715,7 @@ const RedMatchList = (props) => (
         <FullName source="mentor" />
       </ReferenceField>
       <TextField source="status" />
+      <DateField source="matchCompletedOn" label="Completed on" />
       <ShowButton />
       <EditButton />
     </Datagrid>
