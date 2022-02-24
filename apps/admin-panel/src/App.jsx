@@ -716,11 +716,29 @@ const RedMatchList = (props) => (
       </ReferenceField>
       <TextField source="status" />
       <DateField source="matchCompletedOn" label="Completed on" />
+      <RedMatchListRelatedMentoringSessionsNumber label="Number of mentoring sessions" />
       <ShowButton />
       <EditButton />
     </Datagrid>
   </List>
 )
+const RedMatchListRelatedMentoringSessionsNumber = ({
+  record: { mentorId, menteeId },
+}) => {
+  const [mentoringSessions, setMentoringSessions] = React.useState([])
+  useEffect(() => {
+    dataProvider('GET_LIST', 'redMentoringSessions', {
+      pagination: { page: 1, perPage: 0 },
+      sort: { field: 'date', order: 'ASC' },
+      filter: { mentorId, menteeId },
+    }).then(({ data }) => setMentoringSessions(data))
+  }, [mentorId, menteeId])
+  if (!mentoringSessions) {
+    return '0'
+  }
+  return `${mentoringSessions.length}`
+}
+
 const RedMatchListFilters = (props) => (
   <Filter {...props}>
     <SelectInput source="status" choices={formRedMatchStatuses} />
