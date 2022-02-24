@@ -810,7 +810,7 @@ const RedMatchShow_RelatedMentoringSessions = ({
     0
   )
   if (mentoringSessions && mentoringSessions.length === 0) {
-    return <h3>NO mentoring sessions registerd yet.</h3>
+    return <h3>NO mentoring sessions registered yet.</h3>
   }
   return (
     mentoringSessions &&
