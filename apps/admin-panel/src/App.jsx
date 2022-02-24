@@ -809,11 +809,11 @@ const RedMatchShow = (props) => (
         label="When did the mentor decline?"
       />
 
-      <RedMatchShow_RelatedMentoringSessions />
+      <RedMatchShowRelatedMentoringSessions />
     </SimpleShowLayout>
   </Show>
 )
-const RedMatchShow_RelatedMentoringSessions = ({
+const RedMatchShowRelatedMentoringSessions = ({
   record: { mentorId, menteeId },
 }) => {
   const [mentoringSessions, setMentoringSessions] = React.useState([])
