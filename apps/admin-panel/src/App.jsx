@@ -733,9 +733,6 @@ const RedMatchListRelatedMentoringSessionsNumber = ({
       filter: { mentorId, menteeId },
     }).then(({ data }) => setMentoringSessions(data))
   }, [mentorId, menteeId])
-  if (!mentoringSessions) {
-    return '0'
-  }
   return `${mentoringSessions.length}`
 }
 
