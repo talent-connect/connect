@@ -790,6 +790,7 @@ const RedMatchShow = (props) => (
       />
       <RecordCreatedAt />
       <RecordUpdatedAt />
+      <DateField source="matchCompletedOn" label="Completed on" />
       <h3>Information about a mentor declining the mentorship</h3>
       <TextField
         source="ifDeclinedByMentor_chosenReasonForDecline"
@@ -966,6 +967,11 @@ const RedMatchEdit = (props) => (
       <TextInput
         source="matchMadeActiveOn"
         label="If match is/was active, when was it made active?"
+      />
+      <DateInput
+        source="matchCompletedOn"
+        parse={d => (d === '' ? null : d)}
+        label="Completed on"
       />
       <h3>Information about a mentor declining the mentorship</h3>
       <TextInput
