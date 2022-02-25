@@ -983,7 +983,7 @@ const RedMatchEdit = (props) => (
       />
       <TextInput
         source="ifDeclinedByMentor_dateTime"
-        label="If watch was declined by mentor, when?"
+        label="If match was declined by mentor, when?"
         helperText="This field shows the date and time of when a mentor declined this mentorship application from the mentee"
       />
     </SimpleForm>
