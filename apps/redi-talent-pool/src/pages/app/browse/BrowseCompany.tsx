@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import {
   FilterDropdown,
   Checkbox,
@@ -7,11 +8,12 @@ import {
 import {
   desiredPositions,
   desiredPositionsIdToLabelMap,
+  desiredEmploymentTypeOptions,
   germanFederalStates,
   topSkills,
   topSkillsIdToLabelMap,
+  desiredEmploymentTypeOptionsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
-import { useEffect } from 'react'
 import { Columns, Element, Tag } from 'react-bulma-components'
 import { useHistory } from 'react-router'
 import {
@@ -35,15 +37,17 @@ const germanFederalStatesOptions = Object.entries(germanFederalStates).map(
 export function BrowseCompany() {
   const [query, setQuery] = useQueryParams({
     name: withDefault(StringParam, ''),
-    skills: withDefault(ArrayParam, []),
     desiredPositions: withDefault(ArrayParam, []),
+    employmentTypes: withDefault(ArrayParam, []),
+    skills: withDefault(ArrayParam, []),
     federalStates: withDefault(ArrayParam, []),
     isJobFair2022Participant: withDefault(BooleanParam, undefined),
   })
   const {
     name,
-    skills,
     desiredPositions,
+    employmentTypes,
+    skills,
     federalStates,
     isJobFair2022Participant,
   } = query
@@ -51,8 +55,9 @@ export function BrowseCompany() {
   const history = useHistory()
   const { data: jobseekerProfiles } = useBrowseTpJobseekerProfilesQuery({
     name,
-    skills,
     desiredPositions,
+    employmentTypes,
+    skills,
     federalStates,
     isJobFair2022Participant,
   })
@@ -78,9 +83,27 @@ export function BrowseCompany() {
       ...latestQuery,
       skills: [],
       desiredPositions: [],
+      employmentTypes: [],
+      federalStates: [],
       isJobFair2022Participant: undefined,
     }))
   }
+
+  const shouldShowFilters = useMemo(
+    () =>
+      skills.length !== 0 ||
+      desiredPositions.length !== 0 ||
+      federalStates.length !== 0 ||
+      employmentTypes.length !== 0 ||
+      isJobFair2022Participant,
+    [
+      skills,
+      desiredPositions,
+      federalStates,
+      employmentTypes,
+      isJobFair2022Participant,
+    ]
+  )
 
   return (
     <LoggedIn>
@@ -120,15 +143,14 @@ export function BrowseCompany() {
             }
           />
         </div>
-        {/* TODO: Change to Employment Types */}
         <div className="filters-inner">
           <FilterDropdown
-            items={desiredPositionsOptions}
+            items={employmentTypesOptions}
             className="filters__dropdown"
             label="Employment Type"
-            selected={desiredPositions}
+            selected={employmentTypes}
             onChange={(item) =>
-              toggleFilters(desiredPositions, 'desiredPositions', item)
+              toggleFilters(employmentTypes, 'employmentTypes', item)
             }
           />
         </div>
@@ -165,10 +187,7 @@ export function BrowseCompany() {
         </div>
       </div>
       <div className="active-filters">
-        {(skills.length !== 0 ||
-          desiredPositions.length !== 0 ||
-          federalStates.length !== 0 ||
-          isJobFair2022Participant) && (
+        {shouldShowFilters && (
           <>
             {(skills as string[]).map((catId) => (
               <FilterTag
@@ -185,6 +204,16 @@ export function BrowseCompany() {
                 label={desiredPositionsIdToLabelMap[id]}
                 onClickHandler={(item) =>
                   toggleFilters(desiredPositions, 'desiredPositions', item)
+                }
+              />
+            ))}
+            {(employmentTypes as string[]).map((id) => (
+              <FilterTag
+                key={id}
+                id={id}
+                label={desiredEmploymentTypeOptionsIdToLabelMap[id]}
+                onClickHandler={(item) =>
+                  toggleFilters(employmentTypes, 'employmentTypes', item)
                 }
               />
             ))}
@@ -239,6 +268,12 @@ const desiredPositionsOptions = desiredPositions.map(({ id, label }) => ({
   value: id,
   label,
 }))
+const employmentTypesOptions = desiredEmploymentTypeOptions.map(
+  ({ id, label }) => ({
+    value: id,
+    label,
+  })
+)
 
 interface FilterTagProps {
   id: string

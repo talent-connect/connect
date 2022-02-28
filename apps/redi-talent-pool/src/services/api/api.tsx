@@ -110,29 +110,39 @@ export const setPassword = async (password: string) => {
 
 export interface TpJobseekerProfileFilters {
   name: string
-  skills: string[]
   desiredPositions: string[]
+  employmentTypes: string[]
+  skills: string[]
   federalStates: string[]
   isJobFair2022Participant: boolean
 }
 
 export async function fetchAllTpJobseekerProfiles({
   name,
-  skills: topSkills,
   desiredPositions,
+  employmentTypes,
+  skills: topSkills,
   federalStates,
   isJobFair2022Participant,
 }: TpJobseekerProfileFilters): Promise<Array<Partial<TpJobseekerProfile>>> {
-  const filterTopSkills =
-    topSkills && topSkills.length !== 0 ? { inq: topSkills } : undefined
   const filterDesiredPositions =
     desiredPositions && desiredPositions.length !== 0
       ? { inq: desiredPositions }
       : undefined
+
+  const filterEmploymentTypes =
+    employmentTypes && employmentTypes.length !== 0
+      ? { inq: employmentTypes }
+      : undefined
+
+  const filterTopSkills =
+    topSkills && topSkills.length !== 0 ? { inq: topSkills } : undefined
+
   const filterFederalStates =
     federalStates && federalStates.length !== 0
       ? { inq: federalStates }
       : undefined
+
   const filterJobFair2022Participant = isJobFair2022Participant
     ? { isJobFair2022Participant: true }
     : undefined
@@ -153,8 +163,9 @@ export async function fetchAllTpJobseekerProfiles({
                 options: 'i',
               },
             })),
-          { topSkills: filterTopSkills },
           { desiredPositions: filterDesiredPositions },
+          { desiredEmploymentType: filterEmploymentTypes },
+          { topSkills: filterTopSkills },
           { federalState: filterFederalStates },
           { ...filterJobFair2022Participant },
         ],
