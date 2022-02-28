@@ -9,7 +9,7 @@ import { TpJobseekerProfile } from '@talent-connect/shared-types'
 import {
   availabilityOptions,
   desiredEmploymentTypeOptions,
-  locationStatesOptions,
+  germanFederalStates,
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
 import React, { useEffect, useMemo, useState } from 'react'
@@ -25,6 +25,13 @@ interface Props {
   profile: Partial<TpJobseekerProfile>
   disableEditing?: boolean
 }
+
+const federalStatesOptions = Object.entries(germanFederalStates).map(
+  ([value, label]) => ({
+    value,
+    label,
+  })
+)
 
 export function EditableNamePhotoLocation({ profile, disableEditing }: Props) {
   const mutation = useTpjobseekerprofileUpdateMutation()
@@ -105,7 +112,7 @@ const validationSchema = Yup.object({
   firstName: Yup.string().required('Your first name is required'),
   lastName: Yup.string().required('Your last name is required'),
   location: Yup.string().required('Your location is required'),
-  locationState: Yup.string().required('Please select the state you live in'),
+  federalState: Yup.string().required('Please select the state you live in'),
 })
 
 function ModalForm({
@@ -123,7 +130,7 @@ function ModalForm({
       lastName: profile?.lastName ?? '',
       genderPronouns: profile?.genderPronouns ?? '',
       location: profile?.location ?? '',
-      locationState: profile?.locationState ?? '',
+      federalState: profile?.federalState ?? '',
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -186,9 +193,9 @@ function ModalForm({
         {...formik}
       />
       <FormSelect
-        name="locationState"
+        name="federalState"
         label="Your place of residence (state)*"
-        items={locationStatesOptions}
+        items={federalStatesOptions}
         {...formik}
       />
       <Button

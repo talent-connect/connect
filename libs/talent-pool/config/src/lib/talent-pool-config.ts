@@ -746,7 +746,7 @@ export const howDidHearAboutRediOptions = {
   other: 'Other',
 } as const
 
-export const locationStates = {
+export const germanFederalStates = {
   'baden-wuerttemberg': 'Baden-Württemberg',
   bayern: 'Bayern',
   berlin: 'Berlin',
@@ -764,10 +764,3 @@ export const locationStates = {
   schleswigHolstein: 'Schleswig-Holstein',
   thueringen: 'Thüringen',
 } as const
-
-export const locationStatesOptions = Object.entries(locationStates).map(
-  ([value, label]) => ({
-    value,
-    label,
-  })
-)

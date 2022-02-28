@@ -80,7 +80,7 @@ import { calculateAge } from '@talent-connect/shared-utils'
 
 import {
   howDidHearAboutRediOptions,
-  locationStates,
+  germanFederalStates,
 } from '@talent-connect/talent-pool/config'
 
 import loopbackClient, { authProvider } from './lib/react-admin-loopback/src'
@@ -1380,8 +1380,8 @@ const TpJobseekerProfileShow = (props) => (
           <TextField source="phoneNumber" />
           <TextField source="location" />
           <FunctionField
-            label="Location (State)"
-            render={(record) => locationStates[record?.locationState]}
+            label="Location (Federal State)"
+            render={(record) => germanFederalStates[record?.federalState]}
           />
           <TextField source="personalWebsite" />
           <TextField source="githubUrl" />
@@ -1534,9 +1534,9 @@ const TpJobseekerProfileEdit = (props) => (
         <TextInput source="phoneNumber" />
         <TextInput source="location" />
         <SelectInput
-          label="Location (State)"
-          source="locationState"
-          choices={Object.entries(locationStates).map(([id, name]) => ({
+          label="Location (Federal State)"
+          source="federalState"
+          choices={Object.entries(germanFederalStates).map(([id, name]) => ({
             id,
             name,
           }))}

@@ -7,8 +7,7 @@ import {
 import {
   desiredPositions,
   desiredPositionsIdToLabelMap,
-  locationStates,
-  locationStatesOptions,
+  germanFederalStates,
   topSkills,
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
@@ -26,19 +25,26 @@ import { JobseekerProfileCard } from '../../../components/organisms/JobseekerPro
 import { LoggedIn } from '../../../components/templates'
 import { useBrowseTpJobseekerProfilesQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 
+const germanFederalStatesOptions = Object.entries(germanFederalStates).map(
+  ([value, label]) => ({
+    value,
+    label,
+  })
+)
+
 export function BrowseCompany() {
   const [query, setQuery] = useQueryParams({
     name: withDefault(StringParam, ''),
     skills: withDefault(ArrayParam, []),
     desiredPositions: withDefault(ArrayParam, []),
-    locations: withDefault(ArrayParam, []),
+    federalStates: withDefault(ArrayParam, []),
     isJobFair2022Participant: withDefault(BooleanParam, undefined),
   })
   const {
     name,
     skills,
     desiredPositions,
-    locations,
+    federalStates,
     isJobFair2022Participant,
   } = query
 
@@ -47,7 +53,7 @@ export function BrowseCompany() {
     name,
     skills,
     desiredPositions,
-    locations,
+    federalStates,
     isJobFair2022Participant,
   })
 
@@ -96,20 +102,11 @@ export function BrowseCompany() {
         Browse our Jobseeker profiles and find the talent you're looking for.
       </Element>
       <div className="filters">
-        <SearchField
-          defaultValue={name}
-          valueChange={setName}
-          placeholder="Search by name"
-        />
-      </div>
-      <div className="filters">
-        <div className="filters-wrapper">
-          <FilterDropdown
-            items={skillsOptions}
-            className="filters__dropdown"
-            label="Skills"
-            selected={skills}
-            onChange={(item) => toggleFilters(skills, 'skills', item)}
+        <div className="filters-inner">
+          <SearchField
+            defaultValue={name}
+            valueChange={setName}
+            placeholder="Search by name"
           />
         </div>
         <div className="filters-inner">
@@ -123,29 +120,54 @@ export function BrowseCompany() {
             }
           />
         </div>
+        {/* TODO: Change to Employment Types */}
         <div className="filters-inner">
           <FilterDropdown
-            items={locationStatesOptions}
+            items={desiredPositionsOptions}
             className="filters__dropdown"
-            label="Location"
-            selected={locations}
-            onChange={(item) => toggleFilters(locations, 'locations', item)}
+            label="Employment Type"
+            selected={desiredPositions}
+            onChange={(item) =>
+              toggleFilters(desiredPositions, 'desiredPositions', item)
+            }
           />
         </div>
       </div>
       <div className="filters">
-        <Checkbox
-          name="isJobFair2022Participant"
-          checked={isJobFair2022Participant || false}
-          handleChange={toggleJobFair2022Filter}
-        >
-          Filter by ReDI Job Fair 2022
-        </Checkbox>
+        <div className="filters-inner">
+          <FilterDropdown
+            items={skillsOptions}
+            className="filters__dropdown"
+            label="Skills"
+            selected={skills}
+            onChange={(item) => toggleFilters(skills, 'skills', item)}
+          />
+        </div>
+        <div className="filters-inner">
+          <FilterDropdown
+            items={germanFederalStatesOptions}
+            className="filters__dropdown"
+            label="Federal State"
+            selected={federalStates}
+            onChange={(item) =>
+              toggleFilters(federalStates, 'federalStates', item)
+            }
+          />
+        </div>
+        <div className="filters-inner filters__jobfair2022">
+          <Checkbox
+            name="isJobFair2022Participant"
+            checked={isJobFair2022Participant || false}
+            handleChange={toggleJobFair2022Filter}
+          >
+            Filter by ReDI Job Fair 2022
+          </Checkbox>
+        </div>
       </div>
       <div className="active-filters">
         {(skills.length !== 0 ||
           desiredPositions.length !== 0 ||
-          locations.length !== 0 ||
+          federalStates.length !== 0 ||
           isJobFair2022Participant) && (
           <>
             {(skills as string[]).map((catId) => (
@@ -166,13 +188,13 @@ export function BrowseCompany() {
                 }
               />
             ))}
-            {(locations as string[]).map((id) => (
+            {(federalStates as string[]).map((id) => (
               <FilterTag
                 key={id}
                 id={id}
-                label={locationStates[id]}
+                label={germanFederalStates[id]}
                 onClickHandler={(item) =>
-                  toggleFilters(locations, 'locations', item)
+                  toggleFilters(federalStates, 'federalStates', item)
                 }
               />
             ))}
