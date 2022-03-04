@@ -62,7 +62,7 @@ export const RequestResetPasswordEmail: React.FC = () => {
 
   return (
     <AccountOperation>
-      <Columns vCentered>
+      <Columns>
         <Columns.Column
           size={6}
           responsive={{ mobile: { hide: { value: true } } }}
