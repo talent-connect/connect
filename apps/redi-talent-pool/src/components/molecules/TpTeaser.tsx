@@ -23,7 +23,7 @@ export default {
   SignUp: () => (
     <>
       <WelcomeIllustration className="tp-illustration tp-illustration--rightOut" />
-      <Content>
+      <Content style={{ textAlign: 'center' }}>
         {/* TODO: restore these?figma
          */}
         {/* <Element renderAs="p" textSize={4}>
