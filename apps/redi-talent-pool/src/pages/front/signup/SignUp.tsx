@@ -211,7 +211,7 @@ export default function SignUp() {
 
   return (
     <AccountOperation>
-      <Columns vCentered={false}>
+      <Columns>
         <Columns.Column
           size={6}
           responsive={{ mobile: { hide: { value: true } } }}
