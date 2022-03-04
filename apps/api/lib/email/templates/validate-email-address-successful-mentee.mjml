@@ -17,19 +17,21 @@
             >Your email address was successfully verified!</mj-text
           >
           <mj-text mj-class="text"
-            >Your next step is to watch a short <b>onboarding tutorial</b> to
-            get a good overview of the mentorship program and how our matching
-            platform ReDI Connect works.</mj-text
+            >Your next step is to watch a short
+            <strong>onboarding tutorial</strong> to get a good overview of the
+            mentorship program and how our matching platform ReDI Connect
+            works.</mj-text
           >
           <mj-text mj-class="text" padding="0 0 20px 0">
             You will use the platform to find your mentor and connect with them
             there.</mj-text
           >
           <mj-text mj-class="text" padding="0 0 0 0">
-            Please make sure to <b>fully watch</b> the onboarding tutorial
-            because it contains all the <b>information</b> you need to be able
-            to successfully navigate the platform and get a good understanding
-            of what mentorship means in the ReDI context.
+            Please make sure to <strong>fully watch</strong> the onboarding
+            tutorial because it contains all the
+            <strong>information</strong> you need to be able to successfully
+            navigate the platform and get a good understanding of what
+            mentorship means in the ReDI context.
           </mj-text>
           <mj-image
             src="https://redi-connect-email-assets.s3.eu-west-1.amazonaws.com/redi-connect-sign-up-video-thumbnail.jpeg"
@@ -48,17 +50,17 @@
             href="https://www.youtube.com/watch?v=M3nwS3QfdMM"
           />
           <mj-text mj-class="text" padding="0 0 20px 0"
-            >Your <b>final step</b> after watching this video will be your
-            <b>activation call</b> with our Mentorship Community Manager
-            Johanna, who will be happy to answer any remaining questions and
-            will then activate your account - only then will you be able to
+            >Your <strong>final step</strong> after watching this video will be
+            your <strong>activation call</strong> with our Mentorship Community
+            Manager Johanna, who will be happy to answer any remaining questions
+            and will then activate your account - only then will you be able to
             fully use the platform and search for a mentor.</mj-text
           >
           <mj-text mj-class="text" padding="0 0 0 0"
-            ><b>Schedule your activation call now</b> and make sure to watch the
-            onboarding tutorial <b>before</b> attending your activation call -
-            there won’t be time to explain everything from scratch during this
-            call.</mj-text
+            ><strong>Schedule your activation call now</strong> and make sure to
+            watch the onboarding tutorial <strong>before</strong> attending your
+            activation call - there won’t be time to explain everything from
+            scratch during this call.</mj-text
           >
           <mj-image
             src="https://redi-connect-email-assets.s3.eu-west-1.amazonaws.com/schedule-activation-call-now-button.png"
@@ -79,8 +81,9 @@
           />
           <mj-text mj-class="text" padding="0 0 20px 0"
             >In case of any questions, you can
-            <b>message Johanna on Slack</b> or send us an <b>email</b> at
-            <b>career@redischool.org</b>.</mj-text
+            <strong>message Johanna on Slack</strong> or send us an
+            <strong>email</strong> at
+            <strong>career@redischool.org</strong>.</mj-text
           >
           <mj-text mj-class="text" padding="0 0 20px 0"
             >We’re looking forward to getting to know you soon!
