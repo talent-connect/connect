@@ -5,6 +5,8 @@ import { RediLocation } from '@talent-connect/shared-types'
 export function buildFrontendUrl(env: string, rediLocation: RediLocation) {
   if (env === 'production' && rediLocation === 'berlin') {
     return 'https://connect.berlin.redi-school.org'
+  } else if (env === 'production' && rediLocation === 'hamburg') {
+    return 'https://connect.hamburg.redi-school.org'
   } else if (env === 'production' && rediLocation === 'munich') {
     return 'https://connect.munich.redi-school.org'
   } else if (env === 'production' && rediLocation === 'nrw') {
