@@ -108,6 +108,9 @@ const coursesFlat = [
   ...coursesByLocation.berlin.map((cat) =>
     Object.assign(cat, { label: `Berlin: ${cat.label}` })
   ),
+  ...coursesByLocation.hamburg.map((cat) =>
+    Object.assign(cat, { label: `Hamburg: ${cat.label}` })
+  ),
   ...coursesByLocation.munich.map((cat) =>
     Object.assign(cat, { label: `Munich: ${cat.label}` })
   ),
@@ -356,6 +359,7 @@ const FreeMenteeSpotsPerLocationAside = () => {
       .reduce((acc, curr) => acc + curr.currentFreeMenteeSpots, 0)
 
   const totalFreeMenteeSpotsBerlin = getFreeSpotsCount('berlin')
+  const totalFreeMenteeSpotsHamburg = getFreeSpotsCount('hamburg')
   const totalFreeMenteeSpotsMunich = getFreeSpotsCount('munich')
   const totalFreeMenteeSpotsNRW = getFreeSpotsCount('nrw')
 
@@ -366,6 +370,9 @@ const FreeMenteeSpotsPerLocationAside = () => {
           <Typography gutterBottom>Free Mentee Spots Per Location</Typography>
           <Typography variant="body2" gutterBottom>
             Berlin: {totalFreeMenteeSpotsBerlin} mentoring spots available
+          </Typography>
+          <Typography variant="body2" gutterBottom>
+            Hamburg: {totalFreeMenteeSpotsHamburg} mentoring spots available
           </Typography>
           <Typography variant="body2" gutterBottom>
             Munich: {totalFreeMenteeSpotsMunich} mentoring spots available
@@ -1105,6 +1112,7 @@ const RedMentoringSessionListAside = () => {
         >
           <MenuItem value={undefined}>All cities</MenuItem>
           <MenuItem value="berlin">Berlin</MenuItem>
+          <MenuItem value="hamburg">Hamburg</MenuItem>
           <MenuItem value="munich">Munich</MenuItem>
           <MenuItem value="nrw">NRW</MenuItem>
         </Select>
