@@ -1,19 +1,19 @@
-import { useMemo } from 'react'
 import {
-  FilterDropdown,
   Checkbox,
+  FilterDropdown,
   Icon,
   SearchField,
 } from '@talent-connect/shared-atomic-design-components'
 import {
+  desiredEmploymentTypeOptions,
+  desiredEmploymentTypeOptionsIdToLabelMap,
   desiredPositions,
   desiredPositionsIdToLabelMap,
-  desiredEmploymentTypeOptions,
   germanFederalStates,
   topSkills,
   topSkillsIdToLabelMap,
-  desiredEmploymentTypeOptionsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
+import { useMemo } from 'react'
 import { Columns, Element, Tag } from 'react-bulma-components'
 import { useHistory } from 'react-router'
 import {

@@ -1,42 +1,59 @@
-import {
-  FilterDropdown,
-  Icon,
-  Checkbox,
-} from '@talent-connect/shared-atomic-design-components'
-import {
-  employmentTypes,
-  employmentTypesIdToLabelMap,
-  topSkills,
-  topSkillsIdToLabelMap,
-} from '@talent-connect/talent-pool/config'
-import { Columns, Element, Tag } from 'react-bulma-components'
+import { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
+import { Columns, Element, Tag } from 'react-bulma-components'
 import {
   ArrayParam,
   BooleanParam,
   useQueryParams,
   withDefault,
 } from 'use-query-params'
+
+import {
+  Checkbox,
+  FilterDropdown,
+  Icon,
+  SearchField,
+} from '@talent-connect/shared-atomic-design-components'
+import {
+  desiredPositions,
+  desiredPositionsIdToLabelMap,
+  employmentTypes,
+  employmentTypesIdToLabelMap,
+  germanFederalStates,
+  topSkills,
+  topSkillsIdToLabelMap,
+} from '@talent-connect/talent-pool/config'
+
 import { JobListingCard } from '../../../components/organisms/JobListingCard'
 import { LoggedIn } from '../../../components/templates'
 import { useBrowseTpJobListingsQuery } from '../../../react-query/use-tpjoblisting-all-query'
 import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 
 export function BrowseJobseeker() {
+  const [companyName, setCompanyName] = useState('')
   const { data: currentJobseekerProfile } = useTpJobseekerProfileQuery()
 
   const [query, setQuery] = useQueryParams({
+    relatedPositions: withDefault(ArrayParam, []),
     idealTechnicalSkills: withDefault(ArrayParam, []),
     employmentType: withDefault(ArrayParam, []),
+    federalStates: withDefault(ArrayParam, []),
     isJobFair2022JobListing: withDefault(BooleanParam, undefined),
   })
-  const { idealTechnicalSkills, employmentType, isJobFair2022JobListing } =
-    query
+  const {
+    relatedPositions,
+    idealTechnicalSkills,
+    employmentType,
+    federalStates,
+    isJobFair2022JobListing,
+  } = query
 
   const history = useHistory()
   const { data: jobListings } = useBrowseTpJobListingsQuery({
+    relatedPositions,
     idealTechnicalSkills,
     employmentType,
+    federalStates,
     isJobFair2022JobListing,
   })
 
@@ -84,18 +101,25 @@ export function BrowseJobseeker() {
         posted by ReDI's partner companies.
       </Element>
       <div className="filters">
-        <div className="filters-wrapper">
+        <div className="filters-inner">
+          <SearchField
+            defaultValue={companyName}
+            valueChange={setCompanyName}
+            placeholder="Search by Company Name"
+          />
+        </div>
+        <div className="filters-inner">
           <FilterDropdown
-            items={skillsOptions}
+            items={relatedPositionsOptions}
             className="filters__dropdown"
-            label="Skills"
-            selected={idealTechnicalSkills}
+            label="Related Positions"
+            selected={relatedPositions}
             onChange={(item) =>
-              toggleFilters(idealTechnicalSkills, 'idealTechnicalSkills', item)
+              toggleFilters(relatedPositions, 'relatedPositions', item)
             }
           />
         </div>
-        <div className="filters-wrapper">
+        <div className="filters-inner">
           <FilterDropdown
             items={employmentTypeOptions}
             className="filters__dropdown"
@@ -108,19 +132,56 @@ export function BrowseJobseeker() {
         </div>
       </div>
       <div className="filters">
-        <Checkbox
-          name="isJobFair2022JobListing"
-          checked={isJobFair2022JobListing || false}
-          handleChange={toggleJobFair2022Filter}
-        >
-          Filter by ReDI Job Fair 2022
-        </Checkbox>
+        <div className="filters-inner">
+          <FilterDropdown
+            items={skillsOptions}
+            className="filters__dropdown"
+            label="Skills"
+            selected={idealTechnicalSkills}
+            onChange={(item) =>
+              toggleFilters(idealTechnicalSkills, 'idealTechnicalSkills', item)
+            }
+          />
+        </div>
+        {/* TODO: Uncomment the next block when we have federal states for joblistings */}
+        {/* <div className="filters-inner">
+          <FilterDropdown
+            items={germanFederalStatesOptions}
+            className="filters__dropdown"
+            label="Federal State"
+            selected={federalStates}
+            onChange={(item) =>
+              toggleFilters(federalStates, 'federalStates', item)
+            }
+          />
+        </div> */}
+        <div className="filters-inner filters__jobfair2022">
+          <Checkbox
+            name="isJobFair2022JobListing"
+            checked={isJobFair2022JobListing || false}
+            handleChange={toggleJobFair2022Filter}
+          >
+            Filter by ReDI Job Fair 2022
+          </Checkbox>
+        </div>
       </div>
       <div className="active-filters">
-        {(idealTechnicalSkills.length !== 0 ||
+        {(relatedPositions.length !== 0 ||
+          idealTechnicalSkills.length !== 0 ||
           employmentType.length !== 0 ||
+          federalStates.length !== 0 ||
           isJobFair2022JobListing) && (
           <>
+            {(relatedPositions as string[]).map((catId) => (
+              <FilterTag
+                key={catId}
+                id={catId}
+                label={desiredPositionsIdToLabelMap[catId]}
+                onClickHandler={(item) =>
+                  toggleFilters(relatedPositions, 'relatedPositions', item)
+                }
+              />
+            ))}
             {(idealTechnicalSkills as string[]).map((catId) => (
               <FilterTag
                 key={catId}
@@ -145,6 +206,17 @@ export function BrowseJobseeker() {
                 }
               />
             ))}
+            {/* TODO: Uncomment the next block when we have federal states for joblistings */}
+            {/* {(federalStates as string[]).map((catId) => (
+              <FilterTag
+                key={catId}
+                id={catId}
+                label={germanFederalStates[catId]}
+                onClickHandler={(item) =>
+                  toggleFilters(federalStates, 'federalStates', item)
+                }
+              />
+            ))} */}
             {isJobFair2022JobListing && (
               <FilterTag
                 id="redi-job-fair-2022-filter"
@@ -160,25 +232,52 @@ export function BrowseJobseeker() {
         )}
       </div>
       <Columns>
-        {jobListings?.map((jobListing) => (
-          <Columns.Column mobile={{ size: 12 }} tablet={{ size: 6 }}>
-            <JobListingCard
-              key={jobListing.id}
-              jobListing={jobListing}
-              onClick={() => history.push(`/app/job-listing/${jobListing.id}`)}
-            />
-          </Columns.Column>
-        ))}
+        {jobListings
+          ?.filter(
+            (jobListing) =>
+              jobListing.tpCompanyProfile.companyName
+                .toLowerCase()
+                .indexOf(companyName.toLowerCase()) > -1
+          )
+          .map((jobListing) => (
+            <Columns.Column mobile={{ size: 12 }} tablet={{ size: 6 }}>
+              <JobListingCard
+                key={jobListing.id}
+                jobListing={jobListing}
+                onClick={() =>
+                  history.push(`/app/job-listing/${jobListing.id}`)
+                }
+              />
+            </Columns.Column>
+          ))}
       </Columns>
     </LoggedIn>
   )
 }
 
+/**
+ * Following four function are used to convert the lists in the TP Config
+ * to a format that is easier to use in a dropdown in the UI. A possible
+ * refactor will remove the need for this conversion.
+ */
 const skillsOptions = topSkills.map(({ id, label }) => ({ value: id, label }))
+
 const employmentTypeOptions = employmentTypes.map(({ id, label }) => ({
   value: id,
   label,
 }))
+
+const relatedPositionsOptions = desiredPositions.map(({ id, label }) => ({
+  value: id,
+  label,
+}))
+
+const germanFederalStatesOptions = Object.entries(germanFederalStates).map(
+  ([value, label]) => ({
+    value,
+    label,
+  })
+)
 interface FilterTagProps {
   id: string
   label: string

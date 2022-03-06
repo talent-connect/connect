@@ -272,16 +272,25 @@ export async function updateCurrentUserTpCompanyProfile(
 }
 
 export interface TpJobListingFilters {
+  relatedPositions: string[]
   idealTechnicalSkills: string[]
   employmentType: string[]
+  federalStates: string[]
   isJobFair2022JobListing: boolean
 }
 
 export async function fetchAllTpJobListingsUsingFilters({
+  relatedPositions,
   idealTechnicalSkills,
   employmentType,
+  federalStates,
   isJobFair2022JobListing,
-}: TpJobListingFilters): Promise<Array<Partial<TpJobseekerProfile>>> {
+}: TpJobListingFilters): Promise<Array<TpJobListing>> {
+  const filterRelatedPositions =
+    relatedPositions && relatedPositions.length !== 0
+      ? { inq: relatedPositions }
+      : undefined
+
   const filterIdealTechnicalSkills =
     idealTechnicalSkills && idealTechnicalSkills.length !== 0
       ? { inq: idealTechnicalSkills }
@@ -305,6 +314,7 @@ export async function fetchAllTpJobListingsUsingFilters({
         // },
         and: [
           {
+            relatesToPositions: filterRelatedPositions,
             idealTechnicalSkills: filterIdealTechnicalSkills,
             employmentType: filterDesiredEmploymentTypeOptions,
             ...filterJobFair2022JobListings,
