@@ -221,7 +221,7 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
               <FilterTag
                 key={catId}
                 id={catId}
-                label={CATEGORIES[catId]}
+                label={CATEGORIES.find((item) => item.id === catId).label}
                 onClickHandler={(item) => toggleFilters(topics, 'topics', item)}
               />
             ))}

@@ -563,6 +563,7 @@ const sendMentorshipDeclinedEmail = ({
 const formatLocationName = (locationIdentifier) => {
   return {
     berlin: 'Berlin',
+    hamburg: 'Hamburg',
     munich: 'Munich',
     nrw: 'NRW',
   }[locationIdentifier]
