@@ -22,6 +22,9 @@ import {
 } from '../../../components/organisms'
 
 import { LoggedIn } from '../../../components/templates'
+import EditableMentoringTopicsNew2022 from '../../../components/organisms/EditableMentoringTopicsNew2022'
+import EditableProfessionalExperienceFields from '../../../components/organisms/EditableProfessionalExperienceFields'
+import EditableMentoringGoals from '../../../components/organisms/EditableMentoringGoals'
 // CHECK OUT THE LOADER
 
 const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
@@ -73,10 +76,6 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
       </Element>
       <Element className="block-separator">
         <EditableAbout />
-      </Element>
-
-      <Element className="block-separator">
-        <EditableMentoringTopics />
       </Element>
 
       {userIsMentor && (
@@ -136,6 +135,21 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
             <EditableOccupation />
           </Columns.Column>
         </Columns>
+      </Element>
+
+      <Element className="block-separator">
+        <Columns>
+          <Columns.Column size={6}>
+            <EditableMentoringGoals />
+          </Columns.Column>
+          <Columns.Column size={6}>
+            <EditableProfessionalExperienceFields />
+          </Columns.Column>
+        </Columns>
+      </Element>
+
+      <Element className="block-separator">
+        <EditableMentoringTopicsNew2022 />
       </Element>
     </LoggedIn>
   )
