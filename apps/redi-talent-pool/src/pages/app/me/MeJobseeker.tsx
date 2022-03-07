@@ -1,8 +1,8 @@
 import { Tooltip } from '@material-ui/core'
 import {
   Button,
-  Icon,
   Checkbox,
+  Icon,
 } from '@talent-connect/shared-atomic-design-components'
 import {
   TpJobseekerProfile,
@@ -40,6 +40,12 @@ export function MeJobseeker() {
 
   const openJobPreferencesModalSignalRef = useRef(new Subject<void>())
 
+  const onHideFromCompaniesCheckboxChange = () =>
+    mutation.mutate({
+      ...profile,
+      isProfileVisibleToCompanies: !profile.isProfileVisibleToCompanies,
+    })
+  
   // This function is added for Job Fair 2022 only. Please remove after 11.02.2022
   const handleJobFairToggleChange = () =>
     mutation.mutate({
@@ -96,6 +102,12 @@ export function MeJobseeker() {
           <EditableImportantDetails profile={profile} />
           <EditableLanguages profile={profile} />
           <EditableLinks profile={profile} />
+          <Checkbox
+            checked={!profile.isProfileVisibleToCompanies}
+            customOnChange={onHideFromCompaniesCheckboxChange}
+          >
+            Hide my profile from companies
+          </Checkbox>
           {/* {currentStep[0] >= 4 ? (
             <EditableJobPreferences
               profile={profile}

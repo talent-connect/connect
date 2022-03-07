@@ -3,9 +3,9 @@
 You'll find two sister products in this repository:
 
 - ReDI Connect, a tool to connect mentees to mentors, deployed to https://connect.redi-school.org
-- ReDI Talent Pool, a tool to connect jobseekers to companies and get jobs, deployed to https://cv-builder.redi-school.org
+- ReDI Talent Pool, a tool to connect jobseekers to companies and get jobs, deployed to https://talent-pool.redi-school.org
 
-Both are created, run and managed by ReDI School of Digital Integration. We're a non-profit school in Germany (in Berlin, Munich and NRW) with a community of hundreds of professionals from the digital industry volunteering to teach and mentor students. Our students are tech-interested locals and newcomers to Germany.
+Both are created, run and managed by [ReDI School of Digital Integration](https://www.redi-school.org). We're a non-profit school in Germany (in Berlin, Hamburg, Munich and NRW) with a community of hundreds of professionals from the digital industry volunteering to teach and mentor students. Our students are tech-interested locals and newcomers to Germany.
 
 ## Getting started for developers
 
@@ -15,13 +15,15 @@ Both are created, run and managed by ReDI School of Digital Integration. We're a
 4. If you're re-seeding, drop the database files: `rm -rf mongodb-data/*` and run `yarn seed` to seed the database.
 
    Alternatively, you can drop the database in the MongoDB Shell. In a new terminal window run the following:
+
    ```
    $ mongo
    $ use mongodb
    $ db.dropDatabase()
    ```
+
    Then run `yarn seed` in project root to seed the database.
-   
+
 5. Run `yarn start:all` to boot all apps, _or_ a subset of apps using the `start:x` commands in package.json.
 
    It'll take a while and lots of warnings will show until everything's booted.

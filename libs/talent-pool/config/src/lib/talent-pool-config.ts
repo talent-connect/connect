@@ -45,6 +45,10 @@ export const desiredPositions: DropdownOptions = [
     label: 'Digital Marketer',
   },
   {
+    id: 'embeddedSystemsEngineer',
+    label: 'Embedded Systems Engineer',
+  },
+  {
     id: 'frontendDeveloper',
     label: 'Frontend Developer',
   },
@@ -52,6 +56,8 @@ export const desiredPositions: DropdownOptions = [
     id: 'fullstackDeveloper',
     label: 'Fullstack Developer',
   },
+  { id: 'hardwareDeveloper', label: 'Hardware Developer' },
+  { id: 'iotDeveloper', label: 'IoT Developer' },
   { id: 'itAdministrator', label: 'IT Administrator' },
   { id: 'itSpecialist', label: 'IT Specialist' },
   { id: 'itSupportTechnician', label: 'IT Support Technician' },
@@ -219,6 +225,7 @@ export const topSkills = [
     id: 'cPlusPlus',
     label: 'C++',
   },
+  { id: 'cad', label: 'CAD' },
   {
     id: 'camunda',
     label: 'Camunda',
@@ -275,6 +282,7 @@ export const topSkills = [
     id: 'domainModelling',
     label: 'Domain Modelling',
   },
+  { id: 'embeddedSystems', label: 'Embedded Systems' },
   {
     id: 'figma',
     label: 'Figma',
@@ -291,6 +299,7 @@ export const topSkills = [
     id: 'graphicDesign',
     label: 'Graphic Design',
   },
+  { id: 'hardware', label: 'Hardware' },
   {
     id: 'hpAlm',
     label: 'HP ALM',
@@ -319,6 +328,7 @@ export const topSkills = [
     id: 'invision',
     label: 'Invision',
   },
+  { id: 'iot', label: 'IoT' },
   {
     id: 'itServiceManagement',
     label: 'IT Service Management',
@@ -625,6 +635,8 @@ export const desiredEmploymentTypeOptions = [
   { id: 'Internship', label: 'Internship' },
   { id: 'apprenticeshipAusbildung', label: 'Apprenticeship (Ausbildung)' },
   { id: 'traineeship', label: 'Traineeship' },
+  { id: 'dualStudyBachelor', label: 'Dual Study Bachelor' },
+  { id: 'dualStudyMaster', label: 'Dual Study Master' },
 ]
 
 export const desiredEmploymentTypeOptionsIdToLabelMap = mapValues(
@@ -714,6 +726,8 @@ export const employmentTypes: DropdownOptions = [
   { id: 'freelance', label: 'Freelance' },
   { id: 'contract', label: 'Contract' },
   { id: 'traineeship', label: 'Traineeship' },
+  { id: 'dualStudyBachelor', label: 'Dual Study Bachelor' },
+  { id: 'dualStudyMaster', label: 'Dual Study Master' },
 ]
 
 export const employmentTypesIdToLabelMap = mapValues(

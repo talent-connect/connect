@@ -173,6 +173,7 @@ export default function SignUp() {
       }
       if (type === 'company') {
         const profile = values as Partial<TpCompanyProfile>
+        profile.isProfileVisibleToJobseekers = true
 
         // TODO: this needs to be done in a smarter way, like iterating over the TpJobseekerProfile definition or something
         const cleanProfile:
@@ -210,7 +211,7 @@ export default function SignUp() {
 
   return (
     <AccountOperation>
-      <Columns vCentered>
+      <Columns>
         <Columns.Column
           size={6}
           responsive={{ mobile: { hide: { value: true } } }}
