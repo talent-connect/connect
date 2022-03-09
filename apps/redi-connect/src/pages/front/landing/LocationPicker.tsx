@@ -22,6 +22,13 @@ import '../../../components/organisms/Navbar.scss'
 import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
 
+const LOCATIONS: Array<keyof typeof REDI_LOCATION_NAMES> = [
+  'berlin',
+  'munich',
+  'nrw',
+  'hamburg',
+]
+
 export default function LocationPicker() {
   const { t } = useTranslation()
   return (
@@ -57,9 +64,12 @@ export default function LocationPicker() {
               <Content>
                 <Heading size="medium">Pick your location:</Heading>
               </Content>
-              {objectEntries(REDI_LOCATION_NAMES).map(([key, value]) => (
-                <Button to={`https://connect.${key}.redi-school.org`}>
-                  {value}
+              {LOCATIONS.map((key) => (
+                <Button
+                  to={`https://connect.${key}.redi-school.org`}
+                  style={{ marginBottom: '20px' }}
+                >
+                  {REDI_LOCATION_NAMES[key]}
                 </Button>
               ))}
             </Columns.Column>
