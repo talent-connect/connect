@@ -45,7 +45,7 @@ export default function SignUpComplete() {
               <p>
                 Now, we would like to get to know you better. To activate your
                 account,{' '}
-                <a href="https://calendly.com/d/ch4-6xt-2j3/mentee-onboarding-to-redi-connect">
+                <a href="https://calendly.com/johanna-redi-team/redi-connect-mentee-activation">
                   <strong>please schedule a 15-minute meeting with us. </strong>
                 </a>
               </p>
