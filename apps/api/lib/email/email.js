@@ -293,7 +293,7 @@ const sendEmailToUserWithTpJobseekerProfileSigningUpToCon = ({
   const html = emailParsed.replace(/\${firstName}/g, firstName)
   return sendMjmlEmailFactory({
     to: recipient,
-    subject: 'Welcome to ReDI Connect!',
+    subject: 'Thanks for signing up to ReDI Connect!',
     html: html,
   })
 }
