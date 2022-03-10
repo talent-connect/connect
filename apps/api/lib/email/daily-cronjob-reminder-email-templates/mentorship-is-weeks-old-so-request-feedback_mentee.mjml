@@ -1,5 +1,5 @@
 <mjml>
-  <mj-include path="../templates/head.mjml" />
+  <mj-include path="./head.mjml" />
   <mj-body mj-class="body">
     <mj-wrapper background-color="#F0F0F0">
       <mj-section />

@@ -24,7 +24,7 @@ const convertTemplateToHtml = (templateIdentifier) => {
     'utf-8'
   )
   const parsedTemplate = mjml2html(convertTemplate, {
-    filePath: path.resolve(__dirname, 'daily-cronjob-reminder-email-templates'),
+    filePath: path.resolve(__dirname, 'templates'),
   })
   return parsedTemplate.html
 }
