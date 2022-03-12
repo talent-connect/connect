@@ -233,11 +233,10 @@ export function BrowseJobseeker() {
       </div>
       <Columns>
         {jobListings
-          ?.filter(
-            (jobListing) =>
-              jobListing.tpCompanyProfile.companyName
-                .toLowerCase()
-                .indexOf(companyName.toLowerCase()) > -1
+          ?.filter((jobListing) =>
+            jobListing.tpCompanyProfile.companyName
+              .toLowerCase()
+              .includes(companyName.toLowerCase())
           )
           .map((jobListing) => (
             <Columns.Column mobile={{ size: 12 }} tablet={{ size: 6 }}>
