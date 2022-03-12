@@ -89,21 +89,12 @@ export function BrowseCompany() {
     }))
   }
 
-  const shouldShowFilters = useMemo(
-    () =>
-      skills.length !== 0 ||
-      desiredPositions.length !== 0 ||
-      federalStates.length !== 0 ||
-      employmentTypes.length !== 0 ||
-      isJobFair2022Participant,
-    [
-      skills,
-      desiredPositions,
-      federalStates,
-      employmentTypes,
-      isJobFair2022Participant,
-    ]
-  )
+  const shouldShowFilters =
+    skills.length !== 0 ||
+    desiredPositions.length !== 0 ||
+    federalStates.length !== 0 ||
+    employmentTypes.length !== 0 ||
+    isJobFair2022Participant
 
   return (
     <LoggedIn>
