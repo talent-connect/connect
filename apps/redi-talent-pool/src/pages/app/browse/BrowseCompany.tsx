@@ -21,6 +21,8 @@ import {
 } from 'use-query-params'
 import { JobseekerProfileCard } from '../../../components/organisms/JobseekerProfileCard'
 import { LoggedIn } from '../../../components/templates'
+import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
+import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
 import { useBrowseTpJobseekerProfilesQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 
 export function BrowseCompany() {
@@ -33,12 +35,23 @@ export function BrowseCompany() {
   const { name, skills, desiredPositions, isJobFair2022Participant } = query
 
   const history = useHistory()
+
   const { data: jobseekerProfiles } = useBrowseTpJobseekerProfilesQuery({
     name,
     skills,
     desiredPositions,
     isJobFair2022Participant,
   })
+  const { data: companyProfile } = useTpCompanyProfileQuery()
+  const tpCompanyProfileUpdateMutation = useTpCompanyProfileUpdateMutation()
+
+  const toggleFavorites = (favoritesArr, value) => {
+    const newFavorites = toggleValueInArray(favoritesArr, value)
+
+    tpCompanyProfileUpdateMutation.mutate({
+      favouritedTpJobseekerIds: newFavorites,
+    })
+  }
 
   const toggleFilters = (filtersArr, filterName, item) => {
     const newFilters = toggleValueInArray(filtersArr, item)
@@ -173,6 +186,12 @@ export function BrowseCompany() {
               onClick={() =>
                 history.push(`/app/jobseeker-profile/${profile.id}`)
               }
+              toggleFavorite={(item) =>
+                toggleFavorites(companyProfile.favouritedTpJobseekerIds, item)
+              }
+              isFavorite={companyProfile.favouritedTpJobseekerIds.includes(
+                profile.id
+              )}
             />
           </Columns.Column>
         ))}
