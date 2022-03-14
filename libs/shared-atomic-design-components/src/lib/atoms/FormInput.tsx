@@ -1,14 +1,13 @@
 import React from 'react'
 import classnames from 'classnames'
 import { Form } from 'react-bulma-components'
-import './FormInput.scss'
 import { get } from 'lodash'
 
 interface Props {
   name: string
   placeholder: string
   label?: string
-  type?: 'email' | 'text' | 'password' | 'number'
+  type?: 'email' | 'text' | 'password'
 }
 
 const FormInput = (props: any) => {

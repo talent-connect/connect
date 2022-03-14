@@ -201,12 +201,10 @@ export function JobseekerFormSectionEducation({
         ),
         startDateMonth: Yup.number().required('Please select the start month'),
         startDateYear: Yup.number()
+          .typeError('Please enter a valid year value')
+          .integer('Please enter a valid year value')
+          .positive('Please enter a valid year value')
           .required('Please provide the start year')
-          .test(
-            'len',
-            'Please enter a valid year value',
-            (val) => val && val.toString().length === 4
-          )
           .max(new Date().getFullYear(), 'Please enter a valid year value')
           .min(
             new Date().getFullYear() - 100,
@@ -219,12 +217,10 @@ export function JobseekerFormSectionEducation({
         endDateYear: Yup.number().when('current', {
           is: false,
           then: Yup.number()
+            .typeError('Please enter a valid year value')
+            .integer('Please enter a valid year value')
+            .positive('Please enter a valid year value')
             .required('Please provide the end year')
-            .test(
-              'len',
-              'Please enter a valid year value',
-              (val) => val && val.toString().length === 4
-            )
             .max(new Date().getFullYear(), 'Please enter a valid year value')
             .min(
               new Date().getFullYear() - 100,
@@ -374,7 +370,6 @@ export function JobseekerFormSectionEducation({
                             <FormInput
                               name={`education[${index}].startDateYear`}
                               label="Started in year*"
-                              type="number"
                               {...formik}
                             />
                           </Columns.Column>
@@ -394,7 +389,6 @@ export function JobseekerFormSectionEducation({
                               <FormInput
                                 name={`education[${index}].endDateYear`}
                                 label="Ended in year*"
-                                type="number"
                                 {...formik}
                               />
                             </Columns.Column>
