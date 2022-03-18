@@ -44,7 +44,7 @@ jobs:
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
-          app-name: app-staging-redi
+          app-name: app-staging-red
           images: ${{ env.AZURE_IMAGE_NAME_WITH_LATEST_TAG }}
 
       - name: Azure logout
