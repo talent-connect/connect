@@ -1,3 +1,11 @@
+import React, { useMemo, useState } from 'react'
+import { useParams } from 'react-router'
+import { Link } from 'react-router-dom'
+import omit from 'lodash/omit'
+import * as Yup from 'yup'
+import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
+import { Columns, Content, Form, Notification } from 'react-bulma-components'
+
 import {
   Button,
   Checkbox,
@@ -5,15 +13,14 @@ import {
   FormSelect,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
-import { courses, rediLocationNames } from '@talent-connect/shared-config'
-import { RedProfile, TpJobseekerProfile } from '@talent-connect/shared-types'
-import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
-import omit from 'lodash/omit'
-import React, { useMemo, useState } from 'react'
-import { Columns, Form, Notification } from 'react-bulma-components'
-import { useParams } from 'react-router'
-import { Link } from 'react-router-dom'
-import * as Yup from 'yup'
+import { COURSES, REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
+import {
+  TpJobseekerProfile,
+  TpCompanyProfile,
+} from '@talent-connect/shared-types'
+
+import { howDidHearAboutRediOptions } from '@talent-connect/talent-pool/config'
+
 import TpTeaser from '../../../components/molecules/TpTeaser'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import { signUpCompany, signUpJobseeker } from '../../../services/api/api'
@@ -21,7 +28,7 @@ import { history } from '../../../services/history/history'
 
 // TODO: replace with proper dropdown
 const coursesWithAlumniDeduped = [
-  ...courses.filter((c) => {
+  ...COURSES.filter((c) => {
     return !c.id.includes('alumni')
   }),
   {
@@ -35,12 +42,16 @@ const formCourses = coursesWithAlumniDeduped.map((course) => {
   const label =
     course.id === 'alumni'
       ? course.label
-      : `(ReDI ${rediLocationNames[course.location]}) ${course.label}`
+      : `(ReDI ${REDI_LOCATION_NAMES[course.location]}) ${course.label}`
   return {
     value: course.id,
     label: label,
   }
 })
+
+const howDidHearAboutRediOptionsEntries = Object.entries(
+  howDidHearAboutRediOptions
+).map(([value, label]) => ({ value, label }))
 
 function buildValidationSchema(signupType: SignUpPageType['type']) {
   const baseSchema = {
@@ -66,17 +77,26 @@ function buildValidationSchema(signupType: SignUpPageType['type']) {
       ...baseSchema,
       currentlyEnrolledInCourse: Yup.string()
         .required()
-        .oneOf(courses.map((level) => level.id))
+        .oneOf(COURSES.map((level) => level.id))
         .label('Currently enrolled in course'),
       agreesWithCodeOfConduct: Yup.boolean().required().oneOf([true]),
     })
   }
+
   if (signupType === 'company') {
     return Yup.object({
       ...baseSchema,
       companyName: Yup.string()
         .required('Your company name is required')
         .max(255),
+      howDidHearAboutRediKey: Yup.string().required('This field is required'),
+      howDidHearAboutRediOtherText: Yup.string().when(
+        'howDidHearAboutRediKey',
+        {
+          is: (howDidHearAboutRediKey) => howDidHearAboutRediKey === 'other',
+          then: Yup.string().required('This field is required'),
+        }
+      ),
     })
   }
 }
@@ -118,6 +138,7 @@ export default function SignUp() {
   }
   if (type === 'company') {
     initialValues.companyName = ''
+    initialValues.state = 'drafting-profile'
   }
 
   const [submitError, setSubmitError] = useState(null)
@@ -126,17 +147,24 @@ export default function SignUp() {
     actions: FormikActions<SignUpFormValues>
   ) => {
     setSubmitError(null)
-    const profile = values as Partial<TpJobseekerProfile>
-    profile.isProfileVisibleToCompanies = true
-    // TODO: this needs to be done in a smarter way, like iterating over the TpJobseekerProfile definition or something
-    const cleanProfile: Partial<TpJobseekerProfile> = omit(profile, [
-      'password',
-      'passwordConfirm',
-      'agreesWithCodeOfConduct',
-      'gaveGdprConsent',
-    ])
+
+    let profile
+
     try {
       if (type === 'jobseeker') {
+        const profile = values as Partial<TpJobseekerProfile>
+        profile.isProfileVisibleToCompanies = true
+
+        // TODO: this needs to be done in a smarter way, like iterating over the TpJobseekerProfile definition or something
+        const cleanProfile:
+          | Partial<TpJobseekerProfile>
+          | Partial<TpCompanyProfile> = omit(profile, [
+          'password',
+          'passwordConfirm',
+          'agreesWithCodeOfConduct',
+          'gaveGdprConsent',
+        ])
+
         await signUpJobseeker(
           values.contactEmail,
           values.password,
@@ -144,6 +172,19 @@ export default function SignUp() {
         )
       }
       if (type === 'company') {
+        const profile = values as Partial<TpCompanyProfile>
+        profile.isProfileVisibleToJobseekers = true
+
+        // TODO: this needs to be done in a smarter way, like iterating over the TpJobseekerProfile definition or something
+        const cleanProfile:
+          | Partial<TpJobseekerProfile>
+          | Partial<TpCompanyProfile> = omit(profile, [
+          'password',
+          'passwordConfirm',
+          'agreesWithCodeOfConduct',
+          'gaveGdprConsent',
+        ])
+
         await signUpCompany(values.contactEmail, values.password, cleanProfile)
       }
       actions.setSubmitting(false)
@@ -170,7 +211,7 @@ export default function SignUp() {
 
   return (
     <AccountOperation>
-      <Columns vCentered>
+      <Columns>
         <Columns.Column
           size={6}
           responsive={{ mobile: { hide: { value: true } } }}
@@ -180,6 +221,10 @@ export default function SignUp() {
 
         <Columns.Column size={5} offset={1}>
           <Heading border="bottomLeft">Sign-up</Heading>
+          <Content size="small" renderAs="p">
+            Got a ReDI Connect user account? You can log in with the same
+            username and password <Link to="/front/login">here</Link>.
+          </Content>
           {submitError === 'user-already-exists' && (
             <Notification color="info" className="is-light">
               You already have an account. Please{' '}
@@ -255,6 +300,24 @@ export default function SignUp() {
                 </a>{' '}
                 of ReDI School
               </Checkbox.Form>
+            ) : null}
+
+            {type === 'company' ? (
+              <>
+                <FormSelect
+                  name="howDidHearAboutRediKey"
+                  placeholder="How did you first hear about ReDI Talent Pool?"
+                  items={howDidHearAboutRediOptionsEntries}
+                  {...formik}
+                />
+                {formik.values.howDidHearAboutRediKey === 'other' ? (
+                  <FormInput
+                    name="howDidHearAboutRediOtherText"
+                    placeholder="Please tell us how you heard about ReDI Talent Pool"
+                    {...formik}
+                  />
+                ) : null}
+              </>
             ) : null}
 
             <Checkbox.Form

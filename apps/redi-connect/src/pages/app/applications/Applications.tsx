@@ -18,12 +18,14 @@ function Applications({ applicants }: Props) {
   const history = useHistory()
   const profile = getRedProfileFromLocalStorage()
 
+  if (profile.userActivated !== true) return <LoggedIn />
+
   return (
     <LoggedIn>
       <Heading subtitle size="small" className="double-bs">
         Applications {Boolean(applicants.length) && `(${applicants.length})`}
       </Heading>
-      {applicants.length === 0 && (
+      {applicants.length === 0 ? (
         <Content italic>
           {profile.userType === 'mentee' && (
             <>
@@ -35,18 +37,22 @@ function Applications({ applicants }: Props) {
           )}
           {profile.userType === 'mentor' && (
             <>
-              You have not received mentee applications yet. Make sure your
-              profile is up to date and complete.
+              You currently have no mentee applications. To increase your
+              chances of receiving an application, make sure that your profile
+              is up-to-date, informative and friendly.
             </>
           )}
         </Content>
-      )}
-      {applicants.length > 0 && (
-        <>
-          {applicants.map((application: RedMatch) => (
+      ) : (
+        applicants
+          .sort((a, b) => {
+            const dateA = new Date(a.createdAt).getTime()
+            const dateB = new Date(b.createdAt).getTime()
+            return dateA < dateB ? 1 : -1
+          })
+          .map((application: RedMatch) => (
             <ApplicationCard key={application.id} application={application} />
-          ))}
-        </>
+          ))
       )}
     </LoggedIn>
   )

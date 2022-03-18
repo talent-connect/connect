@@ -1,4 +1,4 @@
-import { Language } from '@talent-connect/shared-types'
+import { Language } from '@talent-connect/shared-config'
 
 export interface TpProfile {
   id: string

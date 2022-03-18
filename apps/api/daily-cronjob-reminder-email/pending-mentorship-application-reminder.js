@@ -20,7 +20,7 @@ const {
 
 module.exports = {
   // Find mentorships that are 6 days old and pending
-  pendingMentorshipApplicationReminder: function () {
+  pendingMentorshipApplicationReminder: (isDryRun) => () => {
     return redMatchFind({
       where: {
         status: 'applied',
@@ -29,9 +29,12 @@ module.exports = {
     }).pipe(
       switchMap((redMatches) => from(redMatches)),
       map((redMatch) => redMatch.toJSON()),
+      filterForActiveMentors(),
       filterForExistingMentorOrMentee(),
       filterOnlyXDayOldMatches(6),
-      doSendPendingMentorshipApplicationReminderEmailToMentor(),
+      isDryRun === false
+        ? doSendPendingMentorshipApplicationReminderEmailToMentor()
+        : tap(),
       tap((redMatch) =>
         reminderEmailLogger.info(
           `pendingMentorshipApplicationReminder: sent email to mentor ${redMatch.mentor.contactEmail} for match #${redMatch.id}`
@@ -43,6 +46,10 @@ module.exports = {
 
 const redMatchFind = (q) =>
   bindNodeCallback(app.models.RedMatch.find.bind(app.models.RedMatch))(q)
+
+function filterForActiveMentors() {
+  return filter((redMatch) => redMatch.mentor && redMatch.mentor.userActivated)
+}
 
 function filterOnlyXDayOldMatches(days) {
   return filter((match) => {
@@ -63,7 +70,7 @@ function doSendPendingMentorshipApplicationReminderEmailToMentor(
   return mergeMap(
     (redMatch) =>
       sendPendingMentorshipApplicationReminderEmailToMentor({
-        recipient: redMatch.mentee.contactEmail,
+        recipient: redMatch.mentor.contactEmail,
         mentorFirstName: redMatch.mentor.firstName,
         menteeFirstName: redMatch.mentee.firstName,
         menteeLastName: redMatch.mentee.lastName,

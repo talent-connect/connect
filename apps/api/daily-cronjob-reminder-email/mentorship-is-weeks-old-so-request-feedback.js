@@ -21,17 +21,22 @@ const {
 
 module.exports = {
   // Find mentorships that are 6 weeks old (6*7 = 42 days)
-  mentorshipIsWeeksOldSoRequestFeedback: function () {
+  mentorshipIsWeeksOldSoRequestFeedback: (isDryRun) => () => {
     return redMatchFind({
       where: { status: 'accepted' },
       include: ['mentor', 'mentee'],
     }).pipe(
       switchMap((redMatches) => from(redMatches)),
       map((redMatch) => redMatch.toJSON()),
+      filterForActiveMentors(),
       filterForExistingMentorOrMentee(),
       filterOnlyXDayOldMatches(6 * 7),
-      doSendMentorshipIsWeeksOldSoRequestFeedbackEmailToMentor(),
-      doSendMentorshipIsWeeksOldSoRequestFeedbackEmailToMentee(),
+      isDryRun === false
+        ? doSendMentorshipIsWeeksOldSoRequestFeedbackEmailToMentor()
+        : tap(),
+      isDryRun === false
+        ? doSendMentorshipIsWeeksOldSoRequestFeedbackEmailToMentee()
+        : tap(),
       tap((redMatch) =>
         reminderEmailLogger.info(
           `mentorshipIsWeeksOldSoRequestFeedback: sent email to mentor ${redMatch.mentor.contactEmail} and mentee ${redMatch.mentee.contactEmail} for match #${redMatch.id}`
@@ -43,6 +48,10 @@ module.exports = {
 
 const redMatchFind = (q) =>
   bindNodeCallback(app.models.RedMatch.find.bind(app.models.RedMatch))(q)
+
+function filterForActiveMentors() {
+  return filter((redMatch) => redMatch.mentor && redMatch.mentor.userActivated)
+}
 
 function filterOnlyXDayOldMatches(days) {
   return filter((match) => {
@@ -63,7 +72,7 @@ function doSendMentorshipIsWeeksOldSoRequestFeedbackEmailToMentor(
   return mergeMap(
     (redMatch) =>
       sendMentorshipIsWeeksOldSoRequestFeedbackEmailToMentor({
-        recipient: redMatch.mentee.contactEmail,
+        recipient: redMatch.mentor.contactEmail,
         mentorFirstName: redMatch.mentor.firstName,
         menteeFirstName: redMatch.mentee.firstName,
         matchMadeActiveOn: DateTime.fromISO(redMatch.matchMadeActiveOn),
@@ -77,7 +86,7 @@ function doSendMentorshipIsWeeksOldSoRequestFeedbackEmailToMentee(
   return mergeMap(
     (redMatch) =>
       sendMentorshipIsWeeksOldSoRequestFeedbackEmailToMentee({
-        recipient: redMatch.mentor.contactEmail,
+        recipient: redMatch.mentee.contactEmail,
         mentorFirstName: redMatch.mentor.firstName,
         menteeFirstName: redMatch.mentee.firstName,
         matchMadeActiveOn: DateTime.fromISO(redMatch.matchMadeActiveOn),

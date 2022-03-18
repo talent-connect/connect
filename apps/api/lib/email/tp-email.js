@@ -189,6 +189,38 @@ const sendTpCompanyEmailVerificationSuccessfulEmail = ({
   })
 }
 
+const sendTpCompanyProfileApprovedEmail = ({ recipient, firstName }) => {
+  const sendTpCompanyProfileApprovedEmailParsed = convertTemplateToHtml(
+    null,
+    'company-profile-approved'
+  )
+  const html = sendTpCompanyProfileApprovedEmailParsed.replace(
+    /\${firstName}/g,
+    firstName
+  )
+  return sendMjmlEmailFactory({
+    to: recipient,
+    subject: 'Your company profile has been approved for Talent Pool',
+    html: html,
+  })
+}
+
+const sendTpCompanyProfileSubmittedForReviewEmail = ({ companyName }) => {
+  const sendTpCompanyProfileSubmittedForReviewEmailParsed =
+    convertTemplateToHtml(null, 'company-profile-submitted-for-review')
+
+  const html = sendTpCompanyProfileSubmittedForReviewEmailParsed.replace(
+    /\${companyName}/g,
+    companyName
+  )
+
+  return sendMjmlEmailFactory({
+    to: 'birgit@redi-school.org',
+    subject: 'New company in Talent Pool',
+    html,
+  })
+}
+
 module.exports = {
   sendTpResetPasswordEmail,
   sendTpJobseekerVerificationEmail,
@@ -197,4 +229,6 @@ module.exports = {
   sendTpJobseekerjobseekerProfileNotApprovedYet,
   sendTpCompanyVerificationEmail,
   sendTpCompanyEmailVerificationSuccessfulEmail,
+  sendTpCompanyProfileApprovedEmail,
+  sendTpCompanyProfileSubmittedForReviewEmail,
 }

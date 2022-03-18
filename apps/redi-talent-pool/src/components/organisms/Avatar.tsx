@@ -2,7 +2,10 @@ import {
   AWS_PROFILE_AVATARS_BUCKET_BASE_URL,
   S3_UPLOAD_SIGN_URL,
 } from '@talent-connect/shared-config'
-import { TpJobseekerProfile } from '@talent-connect/shared-types'
+import {
+  TpJobseekerProfile,
+  TpCompanyProfile,
+} from '@talent-connect/shared-types'
 import classnames from 'classnames'
 import { FormikValues, useFormik } from 'formik'
 import { Element } from 'react-bulma-components'
@@ -13,11 +16,14 @@ import { ReactComponent as UploadImage } from '../../assets/uploadImage.svg'
 import './Avatar.scss'
 
 interface AvatarProps {
-  profile: Partial<TpJobseekerProfile>
+  profile: Partial<TpJobseekerProfile> | Partial<TpCompanyProfile>
 }
 interface AvatarEditable {
-  profile: Partial<TpJobseekerProfile>
-  profileSaveStart: (profile: Partial<TpJobseekerProfile>) => void
+  profile: Partial<TpJobseekerProfile> | Partial<TpCompanyProfile>
+  profileSaveStart: (
+    profile: Partial<TpJobseekerProfile> | Partial<TpCompanyProfile>
+  ) => void
+  callToActionText?: string
 }
 
 interface AvatarFormValues {
@@ -49,7 +55,11 @@ const Avatar = ({ profile }: AvatarProps) => {
   )
 }
 
-const AvatarEditable = ({ profile, profileSaveStart }: AvatarEditable) => {
+const AvatarEditable = ({
+  profile,
+  profileSaveStart,
+  callToActionText = 'Add your picture',
+}: AvatarEditable) => {
   const { profileAvatarImageS3Key } = profile
   const imgURL = AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
 
@@ -98,18 +108,16 @@ const AvatarEditable = ({ profile, profileSaveStart }: AvatarEditable) => {
       )}
 
       {!profileAvatarImageS3Key && (
-        <>
-          <div className="avatar__placeholder">
-            <UploadImage className="avatar__placeholder__image" />
-            <Element
-              textSize={6}
-              className="avatar__placeholder__text"
-              responsive={{ mobile: { hide: { value: true } } }}
-            >
-              Add your picture
-            </Element>
-          </div>
-        </>
+        <div className="avatar__placeholder">
+          <UploadImage className="avatar__placeholder__image" />
+          <Element
+            textSize={6}
+            className="avatar__placeholder__text"
+            responsive={{ mobile: { hide: { value: true } } }}
+          >
+            {callToActionText}
+          </Element>
+        </div>
       )}
 
       <ReactS3Uploader

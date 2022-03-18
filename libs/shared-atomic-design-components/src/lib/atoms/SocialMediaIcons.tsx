@@ -8,24 +8,29 @@ const icons: Array<SocialMediaIcon> = [
   {
     icon: 'fb',
     berlin: 'https://www.facebook.com/redischool/',
+    hamburg: 'https://www.facebook.com/redischool/',
     munich: 'https://www.facebook.com/redimunich/',
     nrw: 'https://www.facebook.com/redischoolnrw/',
   },
   {
     icon: 'meetup',
     berlin: 'https://www.meetup.com/en-AU/ReDI-school/',
+    hamburg: 'https://www.meetup.com/en-AU/ReDI-school/',
     munich: 'https://www.meetup.com/Tech-Talks-Hosted-by-ReDI-School-Munich/',
     nrw: 'https://www.meetup.com/ReDI-School-NRW/',
   },
   {
     icon: 'instagram',
     berlin: 'https://www.instagram.com/redischoolberlin/',
+    hamburg: 'https://www.instagram.com/redischoolberlin/',
     munich: 'https://www.instagram.com/redimunich/',
     nrw: 'https://www.instagram.com/redischoolberlin/',
   },
   {
     icon: 'linkedin',
     berlin:
+      'https://www.linkedin.com/school/redi-school-of-digital-integration/',
+    hamburg:
       'https://www.linkedin.com/school/redi-school-of-digital-integration/',
     munich:
       'https://www.linkedin.com/school/redi-school-of-digital-integration/',
@@ -34,6 +39,7 @@ const icons: Array<SocialMediaIcon> = [
   {
     icon: 'twitter',
     berlin: 'https://twitter.com/redischool?lang=en',
+    hamburg: 'https://twitter.com/redischool?lang=en',
     munich: 'https://twitter.com/redischool?lang=en',
     nrw: 'https://twitter.com/redischool?lang=en',
   },
@@ -42,6 +48,7 @@ const icons: Array<SocialMediaIcon> = [
 interface SocialMediaIcon {
   icon: IconProps['icon']
   berlin: string
+  hamburg: string
   munich: string
   nrw: string
 }
@@ -51,7 +58,7 @@ const SocialMediaIcons = () => (
     {icons.map((item: SocialMediaIcon) => (
       <li key={item.icon}>
         <a
-          href={item[envRediLocation()]}
+          href={item[envRediLocation()] || item['berlin']}
           target="_blank"
           rel="noopener noreferrer"
         >

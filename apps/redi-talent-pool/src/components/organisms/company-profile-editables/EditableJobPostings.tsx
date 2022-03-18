@@ -6,6 +6,7 @@ import {
   Heading,
   Icon,
   Modal,
+  Checkbox,
 } from '@talent-connect/shared-atomic-design-components'
 import { TpJobListing, TpJobseekerProfile } from '@talent-connect/shared-types'
 import {
@@ -14,7 +15,7 @@ import {
   topSkills,
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import { Columns, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
@@ -26,8 +27,12 @@ import { useTpJobListingUpdateMutation } from '../../../react-query/use-tpjoblis
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import { JobListingCard } from '../JobListingCard'
 import JobPlaceholderCardUrl from './job-placeholder-card.svg'
+import { get } from 'lodash'
 
-export function EditableJobPostings() {
+export function EditableJobPostings({
+  isJobPostingFormOpen,
+  setIsJobPostingFormOpen,
+}) {
   const { data: jobListings } = useTpJobListingAllQuery()
   const [isEditing, setIsEditing] = useState(false)
   const [idOfTpJobListingBeingEdited, setIdOfTpJobListingBeingEdited] =
@@ -44,6 +49,18 @@ export function EditableJobPostings() {
     setIdOfTpJobListingBeingEdited(id)
     setIsEditing(true)
   }, [])
+
+  useEffect(() => {
+    if (isJobPostingFormOpen) {
+      setIsEditing(true)
+    }
+  }, [isJobPostingFormOpen])
+
+  useEffect(() => {
+    if (!isEditing) {
+      setIsJobPostingFormOpen(false)
+    }
+  }, [isEditing, setIsJobPostingFormOpen])
 
   return (
     <>
@@ -120,7 +137,21 @@ export function EditableJobPostings() {
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required('Please provide a job title'),
-  idealTechnicalSkills: Yup.array().max(6, 'Please select up to six skills'),
+  location: Yup.string().required('Please provide a location'),
+  summary: Yup.string()
+    .required('Please enter a short description of the job')
+    .min(200, 'Job summary should be at least 200 characters'),
+  relatesToPositions: Yup.array().min(
+    1,
+    'Please select at least one related position'
+  ),
+  idealTechnicalSkills: Yup.array()
+    .min(1, 'Please select at least one relevant technical skill')
+    .max(6, 'Please select up to six skills'),
+  employmentType: Yup.mixed().required('Please select an employment type'),
+  languageRequirements: Yup.string().required(
+    'Please specify the language requirement(s)'
+  ),
 })
 
 interface ModalFormProps {
@@ -212,6 +243,17 @@ function ModalForm({
         >
           Add the job postings you want to publish to jobseekers at ReDI School.
         </Element>
+        {/* This Checkbox is added only for JobFair 2022. Please remove after 11.02.2022 */}
+        <Checkbox.Form
+          name="isJobFair2022JobListing"
+          checked={get(formik.values, 'isJobFair2022JobListing', false)}
+          handleChange={formik.handleChange}
+          {...formik}
+        >
+          We will recruit for this job listing at the ReDI Job Fair on 11
+          February 2022
+        </Checkbox.Form>
+
         <FormInput
           name={`title`}
           placeholder="Junior Frontend Developer"
@@ -221,11 +263,11 @@ function ModalForm({
         <FormInput
           name={`location`}
           placeholder="Where is the position based"
-          label="Location"
+          label="Location*"
           {...formik}
         />
         <FormTextArea
-          label="Job Summary"
+          label="Job Summary*"
           name={`summary`}
           rows={7}
           placeholder="Tell us a bit about the position, expectations & ideal candidate."
@@ -244,21 +286,21 @@ function ModalForm({
           matches.
         </Element>
         <FormSelect
-          label="Related positions"
+          label="Related positions*"
           name={`relatesToPositions`}
           items={formRelatedPositions}
           {...formik}
           multiselect
         />
         <FormSelect
-          label="Ideal technical skills"
+          label="Ideal technical skills*"
           name={`idealTechnicalSkills`}
           items={formTopSkills}
           {...formik}
           multiselect
         />
         <FormSelect
-          label="Employment type"
+          label="Employment type*"
           name={`employmentType`}
           items={formEmploymentType}
           {...formik}
@@ -266,7 +308,7 @@ function ModalForm({
         <FormInput
           name={`languageRequirements`}
           placeholder="German C1, English B2, French B1..."
-          label="Language requirements"
+          label="Language requirements*"
           {...formik}
         />
         <FormInput

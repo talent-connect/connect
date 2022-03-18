@@ -1,112 +1,115 @@
-import React, { useEffect } from 'react'
-import { get, mapValues, keyBy, groupBy } from 'lodash'
-import moment from 'moment'
-import {
-  Admin,
-  ChipField,
-  Resource,
-  List,
-  Tab,
-  Create,
-  Pagination,
-  Filter,
-  Datagrid,
-  TabbedForm,
-  FunctionField,
-  TabbedShowLayout,
-  TextField,
-  ReferenceInput,
-  SingleFieldList,
-  AutocompleteInput,
-  DateField,
-  TextInput,
-  BooleanInput,
-  NullableBooleanInput,
-  NumberField,
-  FormTab,
-  NumberInput,
-  Show,
-  ShowButton,
-  LongTextInput,
-  CardActions,
-  DateInput,
-  EditButton,
-  SelectInput,
-  Edit,
-  SimpleForm,
-  ArrayField,
-  BooleanField,
-  SimpleShowLayout,
-  SelectArrayInput,
-  downloadCSV,
-  ReferenceField,
-  Labeled,
-  ReferenceManyField,
-  required,
-} from 'react-admin'
-import classNames from 'classnames'
-import { unparse as convertToCSV } from 'papaparse/papaparse.min'
+import DateFnsUtils from '@date-io/date-fns'
 import { createStyles, withStyles } from '@material-ui/core'
-import { Person as PersonIcon } from '@material-ui/icons'
 import Button from '@material-ui/core/Button'
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent'
+import FormControl from '@material-ui/core/FormControl'
+import InputLabel from '@material-ui/core/InputLabel'
+import MenuItem from '@material-ui/core/MenuItem'
+import Select from '@material-ui/core/Select'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
-import FormControl from '@material-ui/core/FormControl'
-import InputLabel from '@material-ui/core/InputLabel'
-import Select from '@material-ui/core/Select'
-import MenuItem from '@material-ui/core/MenuItem'
 import Typography from '@material-ui/core/Typography'
-import Card from '@material-ui/core/Card'
-import CardContent from '@material-ui/core/CardContent'
-import DateFnsUtils from '@date-io/date-fns'
-
+import { Clear, Person as PersonIcon } from '@material-ui/icons'
+import Done from '@material-ui/icons/Done'
 import {
-  MuiPickersUtilsProvider,
   KeyboardDatePicker,
+  MuiPickersUtilsProvider,
 } from '@material-ui/pickers'
-
 import {
-  rediLocationNames,
-  Languages as configLanguages,
-  categoryGroups,
-  categories,
-  courses,
-  genders as configGenders,
-  mentoringSessionDurationOptions,
-  categoriesIdToLabelMap,
+  CATEGORIES,
+  CATEGORY_GROUPS,
+  COURSES,
+  GENDERS,
+  LANGUAGES,
+  MENTORING_SESSION_DURATION_OPTIONS,
+  REDI_LOCATION_NAMES,
+  RED_MATCH_STATUSES,
 } from '@talent-connect/shared-config'
-
+import {
+  TpCompanyProfileState,
+  TpJobseekerProfileState,
+} from '@talent-connect/shared-types'
 import { calculateAge } from '@talent-connect/shared-utils'
-
-import loopbackClient, { authProvider } from './lib/react-admin-loopback/src'
+import { howDidHearAboutRediOptions } from '@talent-connect/talent-pool/config'
+import { objectEntries } from '@talent-connect/typescript-utilities'
+import classNames from 'classnames'
+import { get, groupBy, keyBy, mapValues } from 'lodash'
+import { unparse as convertToCSV } from 'papaparse/papaparse.min'
+import React, { useEffect } from 'react'
+import {
+  Admin,
+  ArrayField,
+  AutocompleteInput,
+  BooleanField,
+  BooleanInput,
+  CardActions,
+  Create,
+  Datagrid,
+  DateField,
+  DateInput,
+  downloadCSV,
+  Edit,
+  EditButton,
+  Filter,
+  FormTab,
+  FunctionField,
+  Labeled,
+  List,
+  LongTextInput,
+  NullableBooleanInput,
+  NumberField,
+  NumberInput,
+  Pagination,
+  ReferenceField,
+  ReferenceInput,
+  ReferenceManyField,
+  Resource,
+  SearchInput,
+  SelectArrayInput,
+  SelectInput,
+  Show,
+  ShowButton,
+  SimpleForm,
+  SimpleShowLayout,
+  Tab,
+  TabbedForm,
+  TabbedShowLayout,
+  TextField,
+  TextInput,
+} from 'react-admin'
 import { ApproveButton } from './components/ApproveButton'
 import { DeclineButton } from './components/DeclineButton'
+import { TpCompanyProfileApproveButton } from './components/TpCompanyProfileApproveButton'
 import { TpJobseekerProfileApproveButton } from './components/TpJobseekerProfileApproveButton'
 import { TpJobseekerProfileDeclineButton } from './components/TpJobseekerProfileDeclineButton'
-
 import { API_URL } from './config'
-import { TpJobseekerProfileState } from '@talent-connect/shared-types'
+import loopbackClient, { authProvider } from './lib/react-admin-loopback/src'
+import { redMatchesCsvExporter } from './utils/csvExport'
 
 /** REFERENCE DATA */
 
-const rediLocations = Object.entries(rediLocationNames).map(([id, label]) => ({
+const rediLocations = objectEntries(REDI_LOCATION_NAMES).map(([id, label]) => ({
   id,
   label,
 }))
 
-const categoriesFlat = categories.map((cat) => ({
+const categoriesFlat = CATEGORIES.map((cat) => ({
   ...cat,
   labelClean: cat.label,
   label: `${cat.label} (${cat.group})`,
 }))
 
-const coursesByLocation = groupBy(courses, 'location')
+const coursesByLocation = groupBy(COURSES, 'location')
 const coursesFlat = [
   ...coursesByLocation.berlin.map((cat) =>
     Object.assign(cat, { label: `Berlin: ${cat.label}` })
+  ),
+  ...coursesByLocation.hamburg.map((cat) =>
+    Object.assign(cat, { label: `Hamburg: ${cat.label}` })
   ),
   ...coursesByLocation.munich.map((cat) =>
     Object.assign(cat, { label: `Munich: ${cat.label}` })
@@ -116,20 +119,26 @@ const coursesFlat = [
   ),
 ]
 
-const categoryGroupsToLabelMap = mapValues(keyBy(categoryGroups, 'id'), 'label')
 const categoriesIdToLabelCleanMap = mapValues(
   keyBy(categoriesFlat, 'id'),
   'labelClean'
 )
 const categoriesIdToGroupMap = mapValues(keyBy(categoriesFlat, 'id'), 'group')
 
-const genders = [...configGenders, { id: '', name: 'Prefers not to answer' }]
+const genders = [
+  ...Object.entries(GENDERS).map((key, value) => ({ id: key, name: value })),
+  { id: '', name: 'Prefers not to answer' },
+]
 
-const languages = configLanguages.map((lang) => ({ id: lang, name: lang }))
+const languages = LANGUAGES.map((lang) => ({ id: lang, name: lang }))
 
 const courseIdToLabelMap = mapValues(keyBy(coursesFlat, 'id'), 'label')
 const AWS_PROFILE_AVATARS_BUCKET_BASE_URL =
   'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/'
+
+export const formRedMatchStatuses = Object.entries(RED_MATCH_STATUSES).map(
+  ([key, value]) => ({ id: key, name: value })
+)
 
 /** START OF SHARED STUFF */
 
@@ -159,7 +168,7 @@ const CategoryList = (props) => {
       {Object.keys(categoriesGrouped).map((groupId, index) => (
         <React.Fragment key={index}>
           <span>
-            <strong>{categoryGroupsToLabelMap[groupId]}:</strong>{' '}
+            <strong>{CATEGORY_GROUPS[groupId]}:</strong>{' '}
             {categoriesGrouped[groupId]
               .map((catId) => categoriesIdToLabelCleanMap[catId])
               .join(', ')}
@@ -218,6 +227,7 @@ const RedProfileList = (props) => {
       filters={<RedProfileListFilters />}
       pagination={<AllModelsPagination />}
       aside={<FreeMenteeSpotsPerLocationAside />}
+      exporter={redProfileListExporter}
     >
       <Datagrid expand={<RedProfileListExpandPane />}>
         <TextField source="rediLocation" label="City" />
@@ -270,6 +280,67 @@ const RedProfileList = (props) => {
   )
 }
 
+function redProfileListExporter(profiles) {
+  const properties = [
+    'id',
+    'userType',
+    'rediLocation',
+    'firstName',
+    'lastName',
+    'gender',
+    'age',
+    'birthDate',
+    'userActivated',
+    'userActivatedAt',
+    'mentor_occupation',
+    'mentor_workPlace',
+    'expectations',
+    'mentor_ifTypeForm_submittedAt',
+    'mentee_ifTypeForm_preferredMentorSex',
+    'mentee_currentCategory',
+    'mentee_occupationCategoryId',
+    'mentee_occupationJob_placeOfEmployment',
+    'mentee_occupationJob_position',
+    'mentee_occupationStudent_studyPlace',
+    'mentee_occupationStudent_studyName',
+    'mentee_occupationLookingForJob_what',
+    'mentee_occupationOther_description',
+    'mentee_highestEducationLevel',
+    'mentee_currentlyEnrolledInCourse',
+    'profileAvatarImageS3Key',
+    'languages',
+    'otherLanguages',
+    'personalDescription',
+    'contactEmail',
+    'linkedInProfileUrl',
+    'githubProfileUrl',
+    'slackUsername',
+    'telephoneNumber',
+    'categories',
+    'favouritedRedProfileIds',
+    'optOutOfMenteesFromOtherRediLocation',
+    'signupSource',
+    'currentApplicantCount',
+    'menteeCountCapacity',
+    'currentMenteeCount',
+    'currentFreeMenteeSpots',
+    'ifUserIsMentee_hasActiveMentor',
+    'ifUserIsMentee_activeMentor',
+    'ifTypeForm_additionalComments',
+    'createdAt',
+    'updatedAt',
+    'gaveGdprConsentAt',
+    'administratorInternalComment',
+  ]
+
+  const data = profiles.map((profile) => {
+    return Object.fromEntries(properties.map((prop) => [prop, profile[prop]]))
+  })
+
+  const csv = convertToCSV(data)
+  downloadCSV(csv, 'yalla')
+}
+
 const FreeMenteeSpotsPerLocationAside = () => {
   const [mentorsList, setMentorsList] = React.useState([])
 
@@ -288,6 +359,7 @@ const FreeMenteeSpotsPerLocationAside = () => {
       .reduce((acc, curr) => acc + curr.currentFreeMenteeSpots, 0)
 
   const totalFreeMenteeSpotsBerlin = getFreeSpotsCount('berlin')
+  const totalFreeMenteeSpotsHamburg = getFreeSpotsCount('hamburg')
   const totalFreeMenteeSpotsMunich = getFreeSpotsCount('munich')
   const totalFreeMenteeSpotsNRW = getFreeSpotsCount('nrw')
 
@@ -298,6 +370,9 @@ const FreeMenteeSpotsPerLocationAside = () => {
           <Typography gutterBottom>Free Mentee Spots Per Location</Typography>
           <Typography variant="body2" gutterBottom>
             Berlin: {totalFreeMenteeSpotsBerlin} mentoring spots available
+          </Typography>
+          <Typography variant="body2" gutterBottom>
+            Hamburg: {totalFreeMenteeSpotsHamburg} mentoring spots available
           </Typography>
           <Typography variant="body2" gutterBottom>
             Munich: {totalFreeMenteeSpotsMunich} mentoring spots available
@@ -320,6 +395,14 @@ const RedProfileListExpandPane = (props) => {
         </ArrayField>
         <MenteeEnrolledInCourseField />
         <TextField source="contactEmail" />
+        {props.record.userType === 'mentor' && (
+          <FunctionField
+            render={({ optOutOfMenteesFromOtherRediLocation }) =>
+              optOutOfMenteesFromOtherRediLocation ? <Done /> : <Clear />
+            }
+            label="Mentor has opted out of receiving applications from mentees from other redi locations"
+          />
+        )}
         <RecordCreatedAt />
         <RecordUpdatedAt />
       </SimpleShowLayout>
@@ -442,6 +525,12 @@ const RedProfileShow = (props) => (
             source="menteeCountCapacity"
             label="Total mentee count capacity"
           />
+          <FunctionField
+            render={({ optOutOfMenteesFromOtherRediLocation }) =>
+              optOutOfMenteesFromOtherRediLocation ? <Done /> : <Clear />
+            }
+            label="Mentor has opted out of receiving applications from mentees from other redi locations"
+          />
           <h4>Mentee-specific fields:</h4>
           <TextField
             source="mentee_occupationCategoryId"
@@ -557,7 +646,10 @@ const RedProfileEdit = (props) => (
         <CategoriesInput />
         <MenteeEnrolledInCourseInput />
         <NumberInput source="menteeCountCapacity" />
-        <BooleanInput source="optOutOfMenteesFromOtherRediLocation" />
+        <BooleanInput
+          source="optOutOfMenteesFromOtherRediLocation"
+          label="Mentor has opted out of receiving applications from mentees from other redi locations"
+        />
       </FormTab>
       <FormTab label="Internal comments">
         <LongTextInput source="administratorInternalComment" />
@@ -618,6 +710,7 @@ const RedMatchList = (props) => (
     sort={{ field: 'createdAt', order: 'DESC' }}
     pagination={<AllModelsPagination />}
     filters={<RedMatchListFilters />}
+    exporter={redMatchesCsvExporter}
   >
     <Datagrid>
       <TextField source="rediLocation" label="City" />
@@ -636,19 +729,7 @@ const RedMatchList = (props) => (
 )
 const RedMatchListFilters = (props) => (
   <Filter {...props}>
-    <SelectInput
-      source="status"
-      choices={[
-        { id: 'accepted', name: 'Accepted' },
-        { id: 'completed', name: 'Completed' },
-        { id: 'cancelled', name: 'Cancelled' },
-        { id: 'applied', name: 'Applied' },
-        {
-          id: 'invalidated-as-other-mentor-accepted',
-          name: 'Invalidated due to other mentor accepting',
-        },
-      ]}
-    />
+    <SelectInput source="status" choices={formRedMatchStatuses} />
     <SelectInput
       source="rediLocation"
       choices={rediLocations.map(({ id, label }) => ({ id, name: label }))}
@@ -697,6 +778,25 @@ const RedMatchShow = (props) => (
       />
       <RecordCreatedAt />
       <RecordUpdatedAt />
+      <h3>Information about a mentor declining the mentorship</h3>
+      <TextField
+        source="ifDeclinedByMentor_chosenReasonForDecline"
+        label="Reason chosen for decline"
+      />
+      <TextField
+        source="ifDeclinedByMentor_ifReasonIsOther_freeText"
+        label="If reason was other, free text field"
+      />
+      <TextField
+        source="ifDeclinedByMentor_optionalMessageToMentee"
+        label="Optional message by mentor to mentee written on moment of decline"
+        helperText="This field shows the date and time of when a mentor declined this mentorship application from the mentee"
+      />
+      <DateField
+        source="ifDeclinedByMentor_dateTime"
+        label="When did the mentor decline?"
+      />
+
       <RedMatchShow_RelatedMentoringSessions />
     </SimpleShowLayout>
   </Show>
@@ -717,7 +817,7 @@ const RedMatchShow_RelatedMentoringSessions = ({
     0
   )
   if (mentoringSessions && mentoringSessions.length === 0) {
-    return <h3>NO mentoring sessions registerd yet.</h3>
+    return <h3>NO mentoring sessions registered yet.</h3>
   }
   return (
     mentoringSessions &&
@@ -808,15 +908,7 @@ const RedMatchCreate = (props) => (
 const RedMatchEdit = (props) => (
   <Edit {...props}>
     <SimpleForm>
-      <SelectInput
-        source="status"
-        choices={[
-          { id: 'applied', name: 'Applied' },
-          { id: 'accepted', name: 'Accepted' },
-          { id: 'completed', name: 'Completed' },
-          { id: 'cancelled', name: 'Cancelled' },
-        ]}
-      />
+      <SelectInput source="status" choices={formRedMatchStatuses} />
       <ReferenceInput
         label="Mentor"
         source="mentorId"
@@ -862,6 +954,25 @@ const RedMatchEdit = (props) => (
       <TextInput
         source="matchMadeActiveOn"
         label="If match is/was active, when was it made active?"
+      />
+      <h3>Information about a mentor declining the mentorship</h3>
+      <TextInput
+        source="ifDeclinedByMentor_chosenReasonForDecline"
+        label="Reason chosen for decline"
+      />
+      <TextInput
+        source="ifDeclinedByMentor_ifReasonIsOther_freeText"
+        label="If reason was other, free text field"
+      />
+      <TextInput
+        source="ifDeclinedByMentor_optionalMessageToMentee"
+        label="Optional message by mentor to mentee written on moment of decline"
+        helperText="This field shows the date and time of when a mentor declined this mentorship application from the mentee"
+      />
+      <TextInput
+        source="ifDeclinedByMentor_dateTime"
+        label="If watch was declined by mentor, when?"
+        helperText="This field shows the date and time of when a mentor declined this mentorship application from the mentee"
       />
     </SimpleForm>
   </Edit>
@@ -942,7 +1053,7 @@ const RedMentoringSessionListAside = () => {
   const [loadState, setLoadState] = React.useState('pending')
   const [result, setResult] = React.useState(null)
   const [step, setStep] = React.useState(0)
-  const increaseStep = React.useCallback(() => setStep((step) => step + 1))
+  const increaseStep = () => setStep((step) => step + 1)
 
   const picker = (getter, setter, label) => (
     <KeyboardDatePicker
@@ -1001,6 +1112,7 @@ const RedMentoringSessionListAside = () => {
         >
           <MenuItem value={undefined}>All cities</MenuItem>
           <MenuItem value="berlin">Berlin</MenuItem>
+          <MenuItem value="hamburg">Hamburg</MenuItem>
           <MenuItem value="munich">Munich</MenuItem>
           <MenuItem value="nrw">NRW</MenuItem>
         </Select>
@@ -1081,7 +1193,7 @@ const RedMentoringSessionCreate = (props) => (
       <DateInput label="Date of mentoring session" source="date" />
       <SelectInput
         source="minuteDuration"
-        choices={mentoringSessionDurationOptions.map((duration) => ({
+        choices={MENTORING_SESSION_DURATION_OPTIONS.map((duration) => ({
           id: duration,
           name: duration,
         }))}
@@ -1117,7 +1229,7 @@ const RedMentoringSessionEdit = (props) => (
       <DateInput label="Date of mentoring session" source="date" />
       <SelectInput
         source="minuteDuration"
-        choices={mentoringSessionDurationOptions.map((duration) => ({
+        choices={MENTORING_SESSION_DURATION_OPTIONS.map((duration) => ({
           id: duration,
           name: duration,
         }))}
@@ -1159,19 +1271,7 @@ const TpJobseekerProfileList = (props) => {
           buttons to Approve/Decline their profile.
         </li>
         <li style={{ marginBottom: '12px' }}>
-          <strong>profile-approved-awaiting-job-preferences</strong>: the
-          jobseeker's profile was approved, and we're now waiting for them to
-          provide their job preferences/priorities
-        </li>
-        <li style={{ marginBottom: '12px' }}>
-          <strong>
-            job-preferences-shared-with-redi-awaiting-interview-match
-          </strong>
-          : the jobseeker has provided their job preferences, and are now
-          waiting to be matched against companies/jobs for interview(s)
-        </li>
-        <li style={{ marginBottom: '12px' }}>
-          <strong>matched-for-interview</strong>: matched for interview
+          <strong>profile-approved</strong>: the jobseeker's profile is approved
         </li>
       </ol>
     </>
@@ -1200,17 +1300,21 @@ const TpJobseekerProfileListFilters = (props) => (
         name: val,
       }))}
     />
+    <NullableBooleanInput source="isJobFair2022Participant" />
   </Filter>
 )
 
 function tpJobseekerProfileListExporter(profiles, fetchRelatedRecords) {
   const data = profiles.map((profile) => {
     let { hrSummit2021JobFairCompanyJobPreferences } = profile
-    hrSummit2021JobFairCompanyJobPreferences = hrSummit2021JobFairCompanyJobPreferences?.map(
-      ({ jobPosition, jobId, companyName }) => {
-        return `${jobPosition}${jobId ? ` (${jobId})` : ''} --- ${companyName}`
-      }
-    )
+    hrSummit2021JobFairCompanyJobPreferences =
+      hrSummit2021JobFairCompanyJobPreferences?.map(
+        ({ jobPosition, jobId, companyName }) => {
+          return `${jobPosition}${
+            jobId ? ` (${jobId})` : ''
+          } --- ${companyName}`
+        }
+      )
     delete profile.hrSummit2021JobFairCompanyJobPreferences
 
     const {
@@ -1225,6 +1329,7 @@ function tpJobseekerProfileListExporter(profiles, fetchRelatedRecords) {
       updatedAt,
       lastLoginDateTime,
       postalMailingAddress,
+      genderPronouns,
     } = profile
 
     return {
@@ -1239,6 +1344,7 @@ function tpJobseekerProfileListExporter(profiles, fetchRelatedRecords) {
       updatedAt,
       lastLoginDateTime,
       postalMailingAddress,
+      genderPronouns,
       jobPreference1: hrSummit2021JobFairCompanyJobPreferences?.[0],
       jobPreference2: hrSummit2021JobFairCompanyJobPreferences?.[1],
       jobPreference3: hrSummit2021JobFairCompanyJobPreferences?.[2],
@@ -1270,6 +1376,10 @@ const TpJobseekerProfileShow = (props) => (
         <Tab label="Profile">
           <TextField source="state" />
           <BooleanField source="isProfileVisibleToCompanies" />
+          <BooleanField
+            initialValue={false}
+            source="isJobFair2022Participant"
+          />
           <Avatar />
           <TextField source="firstName" />
           <TextField source="lastName" />
@@ -1310,6 +1420,8 @@ const TpJobseekerProfileShow = (props) => (
             <Datagrid>
               <TextField source="title" />
               <TextField source="company" />
+              <TextField source="city" />
+              <TextField source="country" />
               <TextField
                 source="description"
                 label="Roles & responsibilities"
@@ -1339,6 +1451,8 @@ const TpJobseekerProfileShow = (props) => (
             <Datagrid>
               <TextField source="title" />
               <TextField source="institutionName" />
+              <TextField source="institutionCity" />
+              <TextField source="institutionCountry" />
               <TextField source="certificationType" />
               <TextField source="description" label="Description" />
               <FunctionField
@@ -1415,6 +1529,7 @@ const TpJobseekerProfileEdit = (props) => (
       <FormTab label="Profile">
         <TextField source="state" />
         <BooleanInput source="isProfileVisibleToCompanies" />
+        <BooleanInput initialValue={false} source="isJobFair2022Participant" />
         {/* <Avatar /> */}
         <TextInput source="firstName" />
         <TextInput source="lastName" />
@@ -1560,19 +1675,92 @@ const TpJobseekerProfileEditActions = (props) => {
   )
 }
 
+const TpCompanyProfileEditActions = (props) => {
+  if (props?.data?.state === 'profile-approved') return null
+
+  return (
+    <CardActions style={{ display: 'flex', alignItems: 'center' }}>
+      Company profile needs to be approved before becoming active. Please{' '}
+      <TpCompanyProfileApproveButton {...props} />
+    </CardActions>
+  )
+}
+
 const TpCompanyProfileList = (props) => {
   return (
-    <List {...props} pagination={<AllModelsPagination />}>
-      <Datagrid>
-        <TextField source="companyName" />
-        <TextField source="firstName" />
-        <TextField source="lastName" />
-        <RecordCreatedAt />
-        <ShowButton />
-        <EditButton />
-      </Datagrid>
-    </List>
+    <>
+      <List
+        {...props}
+        pagination={<AllModelsPagination />}
+        filters={<TpCompanyProfileListFilters />}
+      >
+        <Datagrid>
+          <TextField source="companyName" />
+          <TextField source="firstName" />
+          <TextField source="lastName" />
+          <TextField source="state" />
+          <RecordCreatedAt />
+          <ShowButton />
+          <EditButton />
+        </Datagrid>
+      </List>
+      <p>
+        A quick note regard <strong>state</strong>:
+      </p>
+      <ol>
+        <li style={{ marginBottom: '12px' }}>
+          <strong>drafting-profile</strong>: the very first state. The company
+          has just signed up and his drafting their profile.
+        </li>
+        <li style={{ marginBottom: '12px' }}>
+          <strong>submitted-for-review</strong>: the company has provided at
+          least as much information as Talent Pool requires. Their profile has
+          been submitted to ReDI for review. Click Show &gt; Edit to find two
+          buttons to Approve/Decline their profile.
+        </li>
+        <li style={{ marginBottom: '12px' }}>
+          <strong>profile-approved</strong>: the company's profile is approved
+        </li>
+      </ol>
+    </>
   )
+}
+
+const TpCompanyProfileListFilters = (props) => (
+  <Filter {...props}>
+    <SearchInput label="Search by company name" source="q" />
+    <SelectInput
+      source="state"
+      choices={Object.values(TpCompanyProfileState).map((val) => ({
+        id: val,
+        name: val,
+      }))}
+    />
+  </Filter>
+)
+
+const ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldShow = (
+  props
+) => {
+  return props.record?.howDidHearAboutRediKey === 'other' &&
+    props.record?.howDidHearAboutRediOtherText ? (
+    <Labeled label="How They Heard about ReDI Talent Pool (If selected Other)">
+      <TextField source="howDidHearAboutRediOtherText" {...props} />
+    </Labeled>
+  ) : null
+}
+
+const ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldEdit = (
+  props
+) => {
+  return props.record?.howDidHearAboutRediKey === 'other' &&
+    props.record?.howDidHearAboutRediOtherText ? (
+    <TextInput
+      label="How They Heard about ReDI Talent Pool (If selected Other)"
+      source="howDidHearAboutRediOtherText"
+      {...props}
+    />
+  ) : null
 }
 
 const TpCompanyProfileShow = (props) => (
@@ -1581,6 +1769,7 @@ const TpCompanyProfileShow = (props) => (
       <TabbedShowLayout>
         <Tab label="Profile">
           <Avatar />
+          <BooleanField source="isProfileVisibleToJobseekers" />
           <TextField source="companyName" />
           <TextField source="firstName" />
           <TextField source="lastName" />
@@ -1592,7 +1781,13 @@ const TpCompanyProfileShow = (props) => (
           <TextField source="linkedInUrl" />
           <TextField source="phoneNumber" />
           <TextField source="about" />
-
+          <FunctionField
+            label="How They Heard about ReDI Talent Pool"
+            render={(record) =>
+              howDidHearAboutRediOptions[record.howDidHearAboutRediKey]
+            }
+          />
+          <ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldShow />
           <ReferenceManyField
             label="Job Listings"
             reference="tpJobListings"
@@ -1648,10 +1843,11 @@ const TpCompanyProfileShow = (props) => (
 )
 
 const TpCompanyProfileEdit = (props) => (
-  <Edit {...props}>
+  <Edit {...props} actions={<TpCompanyProfileEditActions />}>
     <TabbedForm>
       <FormTab label="Profile">
         <Avatar />
+        <BooleanInput source="isProfileVisibleToJobseekers" />
         <TextInput source="companyName" />
         <TextInput source="firstName" />
         <TextInput source="lastName" />
@@ -1663,6 +1859,14 @@ const TpCompanyProfileEdit = (props) => (
         <TextInput source="linkedInUrl" />
         <TextInput source="phoneNumber" />
         <TextInput source="about" />
+        <SelectInput
+          label="How They Heard about ReDI Talent Pool"
+          source="howDidHearAboutRediKey"
+          choices={Object.entries(howDidHearAboutRediOptions).map(
+            ([id, name]) => ({ id, name })
+          )}
+        />
+        <ConditionalTpCompanyProfileHowDidHearAboutRediOtherTextFieldEdit />
 
         <ReferenceManyField
           label="Job Listings"
@@ -1709,11 +1913,18 @@ const TpCompanyProfileEdit = (props) => (
   </Edit>
 )
 
+const TpJobListingListFilters = (props) => (
+  <Filter {...props}>
+    <NullableBooleanInput source="isJobFair2022JobListing" />
+  </Filter>
+)
+
 const TpJobListingList = (props) => {
   return (
     <List
       {...props}
       pagination={<AllModelsPagination />}
+      filters={<TpJobListingListFilters />}
       exporter={tpJobListingListExporter}
     >
       <Datagrid>
@@ -1786,6 +1997,7 @@ const TpJobListingShow = (props) => (
       </ReferenceField>
       <TextField source="title" />
       <TextField source="location" />
+      <BooleanField initialValue={false} source="isJobFair2022JobListing" />
       <TextField source="summary" />
       <TextField source="proficiencyLevelId" />
       <FunctionField
@@ -1816,6 +2028,7 @@ const TpJobListingEdit = (props) => (
       </ReferenceField>
       <TextInput source="title" />
       <TextInput source="location" />
+      <BooleanInput initialValue={false} source="isJobFair2022JobListing" />
       <TextInput source="summary" multiline />
       <TextInput source="proficiencyLevelId" />
       <FunctionField
@@ -2056,6 +2269,24 @@ const buildDataProvider = (normalDataProvider) => (verb, resource, params) => {
       if (q) {
         const andConditions = q.split(' ').map((word) => ({
           loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName: {
+            like: word,
+            options: 'i',
+          },
+        }))
+        newFilter.and = [...newFilter.and, ...andConditions]
+      }
+      params.filter = newFilter
+    }
+  }
+  if (verb === 'GET_LIST' && resource === 'tpCompanyProfiles') {
+    if (params.filter) {
+      const filter = params.filter
+      const q = filter.q
+      delete filter.q
+      const newFilter = { and: [filter] }
+      if (q) {
+        const andConditions = q.split(' ').map((word) => ({
+          companyName: {
             like: word,
             options: 'i',
           },

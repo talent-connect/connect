@@ -9,7 +9,7 @@ async function updatePassword() {
     where: { email: emailOfUserToUpdate },
   })
   console.log(redUserInst)
-  await redUserInst.setPassword('')
+  await redUserInst.setPassword('yalla')
 }
 
 updatePassword()

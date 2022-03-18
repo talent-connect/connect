@@ -9,6 +9,7 @@ import {
   FormTextArea,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
+import * as Yup from 'yup'
 import {
   EducationRecord,
   ExperienceRecord,
@@ -31,6 +32,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
+import { Location } from '../../molecules/Location'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
 function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
@@ -97,9 +99,11 @@ export function EditableEducation({
                 </span>
               </div>
               <Content style={{ marginTop: '-0.5rem' }}>
-                {item.institutionName ? (
-                  <p style={{ color: '#979797' }}>{item.institutionName}</p>
-                ) : null}
+                <Location
+                  institution={item?.institutionName}
+                  city={item?.institutionCity}
+                  country={item?.institutionCountry}
+                />
                 <ReactMarkdown
                   components={{
                     p: ({ children }) => (
@@ -185,15 +189,58 @@ export function JobseekerFormSectionEducation({
     })
   }
 
+  const validationSchema = Yup.object().shape({
+    education: Yup.array().of(
+      Yup.object().shape({
+        title: Yup.string().required('Please provide a title'),
+        certificationType: Yup.string().required(
+          'Please select a certification type'
+        ),
+        institutionName: Yup.string().required(
+          'Please provide an institution name'
+        ),
+        startDateMonth: Yup.number().required('Please select the start month'),
+        startDateYear: Yup.number()
+          .typeError('Please enter a valid year value')
+          .integer('Please enter a valid year value')
+          .positive('Please enter a valid year value')
+          .required('Please provide the start year')
+          .max(new Date().getFullYear(), 'Please enter a valid year value')
+          .min(
+            new Date().getFullYear() - 100,
+            'Please enter a valid year value'
+          ),
+        endDateMonth: Yup.number().when('current', {
+          is: false,
+          then: Yup.number().required('Please select the end month'),
+        }),
+        endDateYear: Yup.number().when('current', {
+          is: false,
+          then: Yup.number()
+            .typeError('Please enter a valid year value')
+            .integer('Please enter a valid year value')
+            .positive('Please enter a valid year value')
+            .required('Please provide the end year')
+            .max(new Date().getFullYear(), 'Please enter a valid year value')
+            .min(
+              new Date().getFullYear() - 100,
+              'Please enter a valid year value'
+            ),
+        }),
+      })
+    ),
+  })
+
   const formik = useFormik({
     initialValues,
     onSubmit,
+    validationSchema,
     enableReinitialize: true,
   })
-  useEffect(() => setIsFormDirty?.(formik.dirty), [
-    formik.dirty,
-    setIsFormDirty,
-  ])
+  useEffect(
+    () => setIsFormDirty?.(formik.dirty),
+    [formik.dirty, setIsFormDirty]
+  )
 
   const onClickAddEducation = useCallback(() => {
     formik.setFieldValue('education', [
@@ -267,19 +314,31 @@ export function JobseekerFormSectionEducation({
                         <FormInput
                           name={`education[${index}].title`}
                           placeholder="Bachelor of Computer Science"
-                          label="Title of your course/study/certification"
+                          label="Title of your course/study/certification*"
                           {...formik}
                         />
                         <FormSelect
                           name={`education[${index}].certificationType`}
-                          label="The type of certification"
+                          label="The type of certification*"
                           items={formCertificationTypes}
                           {...formik}
                         />
                         <FormInput
                           name={`education[${index}].institutionName`}
                           placeholder="ReDI School of Digital Integration"
-                          label="The institution or school"
+                          label="The institution or school*"
+                          {...formik}
+                        />
+                        <FormInput
+                          name={`education[${index}].institutionCity`}
+                          placeholder="Munich"
+                          label="The city of institution or school"
+                          {...formik}
+                        />
+                        <FormInput
+                          name={`education[${index}].institutionCountry`}
+                          placeholder="Germany"
+                          label="The country of institution or school"
                           {...formik}
                         />
                         <FormTextArea
@@ -302,7 +361,7 @@ export function JobseekerFormSectionEducation({
                           <Columns.Column size={6}>
                             <FormSelect
                               name={`education[${index}].startDateMonth`}
-                              label="Started in month"
+                              label="Started in month*"
                               items={formMonthsOptions}
                               {...formik}
                             />
@@ -310,8 +369,7 @@ export function JobseekerFormSectionEducation({
                           <Columns.Column size={6}>
                             <FormInput
                               name={`education[${index}].startDateYear`}
-                              label="Started in year"
-                              type="number"
+                              label="Started in year*"
                               {...formik}
                             />
                           </Columns.Column>
@@ -322,7 +380,7 @@ export function JobseekerFormSectionEducation({
                             <Columns.Column size={6}>
                               <FormSelect
                                 name={`education[${index}].endDateMonth`}
-                                label="Ended in month"
+                                label="Ended in month*"
                                 items={formMonthsOptions}
                                 {...formik}
                               />
@@ -330,8 +388,7 @@ export function JobseekerFormSectionEducation({
                             <Columns.Column size={6}>
                               <FormInput
                                 name={`education[${index}].endDateYear`}
-                                label="Ended in year"
-                                type="number"
+                                label="Ended in year*"
                                 {...formik}
                               />
                             </Columns.Column>
@@ -395,6 +452,8 @@ function buildBlankEducationRecord(): EducationRecord {
     title: '',
     institutionName: '',
     description: '',
+    institutionCity: '',
+    institutionCountry: '',
     certificationType: '',
     startDateMonth: undefined,
     startDateYear: undefined,

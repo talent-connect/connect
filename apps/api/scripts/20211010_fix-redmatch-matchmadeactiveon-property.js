@@ -25,11 +25,13 @@ function correctDate(date) {
   if (date === 'matched 2018') {
     return DateTime.fromISO('2018-01-01')
   } else if (date.length === 10) return DateTime.fromFormat(date, 'dd.LL.y')
-  else {
+  else if (date.length === 62) {
     return DateTime.fromFormat(
       date.replace(' GMT+0000 (Coordinated Universal Time)', ''),
       'ccc LLL dd yyyy TT'
     )
+  } else {
+    return DateTime.fromISO(date)
   }
 }
 

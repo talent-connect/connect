@@ -1,5 +1,6 @@
 import React from 'react'
 import AccountOperation from '../../../components/templates/AccountOperation'
+import { ReactComponent as WelcomeIllustration } from '../../../assets/images/welcome-user.svg'
 import { Columns, Form, Content } from 'react-bulma-components'
 import { useHistory, useParams } from 'react-router'
 import { UserType } from '@talent-connect/shared-types'
@@ -23,49 +24,57 @@ export default function SignUpComplete() {
           size={5}
           responsive={{ mobile: { hide: { value: true } } }}
         >
-          {userType === 'public-sign-up-mentor-pending-review' && (
-            <>Meet Miriam</>
-          )}
-          {userType === 'public-sign-up-mentee-pending-review' && (
-            <>Meet Paulina</>
-          )}
+          <WelcomeIllustration className="illustration illustration--rightOut" />
         </Columns.Column>
         <Columns.Column size={5} offset={2}>
-          <Heading border="bottomLeft">
-            {userType === 'public-sign-up-mentor-pending-review' && (
-              <>Meet Miriam</>
-            )}
-            {userType === 'public-sign-up-mentee-pending-review' && (
-              <>Meet Paulina</>
-            )}
-          </Heading>
+          <Heading border="bottomLeft">Meet the team</Heading>
           <Content size="large" renderAs="div">
             <p>Your email address was successfully verified!</p>
             {userType === 'public-sign-up-mentor-pending-review' && (
               <p>
-                Now, we would like to get to know you better. To activate your
-                account, please
-                {` `}
-                <strong>
-                  <a href="https://calendly.com/redi-miriam/mentor-onboarding">
-                    schedule a 20 minute meeting with Miriam here
-                  </a>
-                </strong>
-                .
+                Now, we would like to get to know you better. We regularly
+                organize mentor onboardings in small groups.{' '}
+                <a href="https://calendly.com/redi-miriam/redi-mentor-group-onboarding">
+                  <strong>
+                    Please book yourself in for one of the open 30-minute slots.
+                  </strong>
+                </a>
               </p>
             )}
             {userType === 'public-sign-up-mentee-pending-review' && (
               <>
                 <p>
-                  Now, we would like to get to know you better. To activate your
-                  account, please{' '}
-                  <strong>schedule a 15 minute meeting with Paulina. </strong>
+                  Your next step is to watch a short onboarding tutorial to get
+                  a good overview of the mentorship program and how our matching
+                  platform ReDI Connect works.
                 </p>
                 <p>
-                  Please schedule a time for a meeting with me here:{' '}
-                  <a href="https://calendly.com/paulina-redi/getting-to-know-you">
-                    Getting-to-know-you
+                  <a
+                    href="https://www.youtube.com/watch?v=M3nwS3QfdMM"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <img
+                      style={{ width: '100%' }}
+                      src="https://redi-connect-email-assets.s3.eu-west-1.amazonaws.com/redi-connect-sign-up-video-thumbnail.jpeg"
+                      alt=""
+                    />
                   </a>
+                </p>
+
+                <p>
+                  Your <strong>final step</strong> after watching this video
+                  will be your activation call with our team.
+                </p>
+                <p>
+                  <a
+                    href="https://calendly.com/johanna-redi-team/redi-connect-mentee-activation"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Schedule your activation call now
+                  </a>
+                  .
                 </p>
               </>
             )}

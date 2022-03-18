@@ -28,8 +28,9 @@ import {
 import { LoggedIn } from '../../../components/templates'
 import { RedProfile } from '@talent-connect/shared-types'
 import { profilesFetchOneStart } from '../../../redux/profiles/actions'
-import { rediLocationNames } from '@talent-connect/shared-config'
+import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import './Profile.scss'
+import DeclineMentorshipButton from '../../../components/organisms/DeclineMentorshipButton'
 
 interface RouteParams {
   profileId: string
@@ -127,6 +128,7 @@ function Profile({
               menteeName={profile && profile.firstName}
               hasReachedMenteeLimit={hasReachedMenteeLimit}
             />
+            <DeclineMentorshipButton match={match} />
           </Columns.Column>
         )}
       </Columns>
@@ -144,7 +146,7 @@ function Profile({
               <Element className="location-tag">
                 <Icon icon="mapPin" className="icon-align" />
                 <Content size="medium" renderAs="p">
-                  {rediLocationNames[profile.rediLocation]}
+                  {REDI_LOCATION_NAMES[profile.rediLocation]}
                 </Content>
               </Element>
             </Columns.Column>

@@ -15,7 +15,7 @@ import { Columns, Form, Content, Notification } from 'react-bulma-components'
 import { capitalize } from 'lodash'
 import { RediLocation } from '@talent-connect/shared-types'
 import { buildFrontendUrl } from '../../../utils/build-frontend-url'
-import { rediLocationNames } from '@talent-connect/shared-config'
+import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import {
   Button,
   FormInput,
@@ -39,10 +39,8 @@ const validationSchema = Yup.object({
 
 export default function Login() {
   const [loginError, setLoginError] = useState<string>('')
-  const [
-    isWrongRediLocationError,
-    setIsWrongRediLocationError,
-  ] = useState<boolean>(false)
+  const [isWrongRediLocationError, setIsWrongRediLocationError] =
+    useState<boolean>(false)
 
   const submitForm = useCallback((values, actions) => {
     ;(async (values: FormikValues, actions: FormikActions<LoginFormValues>) => {
@@ -88,9 +86,13 @@ export default function Login() {
         </Columns.Column>
 
         <Columns.Column size={5} offset={1}>
-          <Heading border="bottomLeft">Sign-in</Heading>
+          <Heading border="bottomLeft">Login</Heading>
           <Content size="large" renderAs="p">
             Enter your email and password below.
+          </Content>
+          <Content size="small" renderAs="p">
+            Got a ReDI Talent Pool user account? You can use the same username
+            and password here.
           </Content>
 
           {isWrongRediLocationError && (
@@ -98,7 +100,7 @@ export default function Login() {
               You've tried to log into ReDI Connect{' '}
               <strong>
                 {
-                  rediLocationNames[
+                  REDI_LOCATION_NAMES[
                     process.env.NX_REDI_CONNECT_REDI_LOCATION as RediLocation
                   ]
                 }

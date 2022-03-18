@@ -8,7 +8,7 @@ import {
   Placeholder,
   CardTagsProps,
 } from '@talent-connect/shared-atomic-design-components'
-import { categoriesIdToLabelMap } from '@talent-connect/shared-config'
+import { CATEGORIES_MAP } from '@talent-connect/shared-config'
 import { RedProfile } from '@talent-connect/shared-types'
 
 interface ReadMentoringProps {
@@ -20,7 +20,7 @@ export const ProfileTags = ({ items, shortList }: CardTagsProps) => (
   <CardTags
     items={items}
     shortList={shortList}
-    formatter={(item: string) => categoriesIdToLabelMap[item]}
+    formatter={(item: string) => CATEGORIES_MAP[item]}
   />
 )
 

@@ -8,6 +8,7 @@ const { DateTime } = require('luxon')
 const app = require('../../server/server')
 const {
   sendMentorshipRequestReceivedEmail,
+  sendMentorshipDeclinedEmail,
   sendMentorshipAcceptedEmail,
   sendMentorshipCompletionEmailToMentor,
   sendMentorshipCompletionEmailToMentee,
@@ -132,7 +133,7 @@ module.exports = function (RedMatch) {
     })
 
     await sendMentorshipAcceptedEmail({
-      recipients: [mentee.contactEmail, mentor.contactEmail],
+      recipient: [mentee.contactEmail, mentor.contactEmail],
       mentorName: mentor.firstName,
       menteeName: mentee.firstName,
       mentorReplyMessageOnAccept: mentorReplyMessageOnAccept,
@@ -163,12 +164,53 @@ module.exports = function (RedMatch) {
           {
             recipient: pendingMatchData.mentor.contactEmail,
             mentorName: pendingMatchData.mentor.firstName,
-            menteeName: pendingMatchData.mentee.firstName,
+            menteeName:
+              pendingMatchData.mentee.firstName +
+              ' ' +
+              pendingMatchData.mentee.lastName,
             rediLocation: options.currentUser.redProfile.rediLocation,
           }
         ).toPromise()
       })
     )
+
+    return redMatch.toJSON()
+  }
+
+  RedMatch.declineMentorship = async (data, options, callback) => {
+    const {
+      redMatchId,
+      ifDeclinedByMentor_chosenReasonForDecline,
+      ifDeclinedByMentor_ifReasonIsOther_freeText,
+      ifDeclinedByMentor_optionalMessageToMentee,
+    } = data
+
+    const RedProfile = app.models.RedProfile
+
+    let redMatch = await RedMatch.findById(redMatchId)
+    const redMatchData = redMatch.toJSON()
+    const [mentor, mentee] = await Promise.all([
+      RedProfile.findById(redMatchData.mentorId),
+      RedProfile.findById(redMatchData.menteeId),
+    ])
+
+    redMatch = await redMatch.updateAttributes({
+      status: 'declined-by-mentor',
+      ifDeclinedByMentor_chosenReasonForDecline,
+      ifDeclinedByMentor_ifReasonIsOther_freeText,
+      ifDeclinedByMentor_optionalMessageToMentee,
+      ifDeclinedByMentor_dateTime: DateTime.utc().toString(),
+      rediLocation: options.currentUser.redProfile.rediLocation,
+    })
+
+    await sendMentorshipDeclinedEmail({
+      recipient: mentee.contactEmail,
+      mentorName: mentor.firstName,
+      menteeName: mentee.firstName,
+      ifDeclinedByMentor_chosenReasonForDecline,
+      ifDeclinedByMentor_ifReasonIsOther_freeText,
+      ifDeclinedByMentor_optionalMessageToMentee,
+    }).toPromise()
 
     return redMatch.toJSON()
   }

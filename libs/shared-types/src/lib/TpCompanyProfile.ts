@@ -1,3 +1,5 @@
+import { TpCompanyProfileState } from './TpCompanyProfileState'
+
 export type TpCompanyProfile = {
   id: string
   firstName: string
@@ -18,6 +20,13 @@ export type TpCompanyProfile = {
 
   about?: string
 
+  state: TpCompanyProfileState
+
+  howDidHearAboutRediKey?: string
+  howDidHearAboutRediOtherText?: string
+
   createdAt: Date
   updatedAt: Date
+
+  isProfileVisibleToJobseekers: boolean
 }

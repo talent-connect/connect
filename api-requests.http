@@ -1,0 +1,56 @@
+// Various requests made by CON / TP to the API.
+
+// Use this file with VsCode and this extension:
+// https://marketplace.visualstudio.com/items?itemName=humao.rest-client
+// This gives you "Send Request" buttons.
+
+@randomUsernamePasswordToken = eric+{{$timestamp}}@binarylights.com
+@apiUrl = http://localhost:3003/api
+@companyName = Company ABC
+@firstName = ReDI
+@lastName = Superstar
+
+# @name signup
+POST {{apiUrl}}/redUsers
+Content-Type: application/json
+RedProduct: TP
+
+{
+  "email": "{{randomUsernamePasswordToken}}",
+  "password": "{{randomUsernamePasswordToken}}"
+}
+
+###
+
+@usernamePasswordToken = {{signup.response.body.email}}
+@userId = {{signup.response.body.id}}
+
+# @name login
+
+POST {{apiUrl}}/redUsers/login
+Content-Type: application/json
+RedProduct: TP
+
+{
+  "email": "{{usernamePasswordToken}}",
+  "password": "{{usernamePasswordToken}}"
+}
+
+###
+
+@accessToken = {{login.response.body.id}}
+
+# @name createTpCompanyProfile
+
+POST {{apiUrl}}/redUsers/{{userId}}/tpCompanyProfile
+Content-Type: application/json
+Authorization: {{accessToken}}
+RedProduct: TP
+
+{
+  "firstName": "{{companyName}}",
+  "lastName": "{{firstName}}",
+  "companyName": "{{lastName}}",
+  "contactEmail": "{{usernamePasswordToken}}",
+  "state": "drafting-profile"
+}

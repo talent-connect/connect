@@ -23,7 +23,7 @@ export default {
   SignUp: () => (
     <>
       <WelcomeIllustration className="tp-illustration tp-illustration--rightOut" />
-      <Content>
+      <Content style={{ textAlign: 'center' }}>
         {/* TODO: restore these?figma
          */}
         {/* <Element renderAs="p" textSize={4}>
@@ -33,7 +33,7 @@ export default {
           You're one step closer to finding your next great opportunity.
         </Element> */}
         <Element renderAs="p" textTransform="uppercase" textSize={6}>
-          Already have an account? <Link to="/front/login">sign-in here</Link>
+          Already have an account? <Link to="/front/login">login here</Link>
         </Element>
       </Content>
     </>
@@ -44,7 +44,7 @@ export default {
       <Content>
         <Element renderAs="p" textTransform="uppercase" textSize={6}>
           Don't have an account yet?{' '}
-          <Link to="/front/signup/jobseeker">signup here</Link>
+          <Link to="front/signup-landing">signup here</Link>
         </Element>
       </Content>
     </>

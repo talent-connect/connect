@@ -11,11 +11,9 @@ import { profileSaveStart } from '../../redux/user/actions'
 import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
-import {
-  categories as availableCategories,
-  categoryGroups,
-} from '@talent-connect/shared-config'
+import { CATEGORIES, CATEGORY_GROUPS } from '@talent-connect/shared-config'
 import { ReadMentoringTopics } from '../molecules'
+import { objectEntries } from '@talent-connect/typescript-utilities'
 
 export type UserType =
   | 'mentor'
@@ -39,10 +37,9 @@ const validationSchema = Yup.object({
     }),
 })
 
-const categoriesByGroup = groupBy(
-  availableCategories,
-  (category) => category.group
-)
+const categoriesByGroup = groupBy(CATEGORIES, (category) => category.group)
+
+const formCategoryGroups = objectEntries(CATEGORY_GROUPS)
 
 interface Props {
   profile: RedProfile | undefined
@@ -102,11 +99,11 @@ const EditableMentoringTopics = ({ profile, profileSaveStart }: Props) => {
           : 'You can select between 1 and up to 4 topics.'}
       </Content>
       <Columns>
-        {categoryGroups.map((group) => (
+        {formCategoryGroups.map(([groupId, groupLabel]) => (
           <CategoryGroup
-            key={group.id}
-            id={group.id}
-            label={group.label}
+            key={groupId}
+            id={groupId}
+            label={groupLabel}
             selectedCategories={selectedCategories}
             onChange={categoriesChange}
             formik={formik}

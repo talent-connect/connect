@@ -23,19 +23,24 @@ const {
 
 module.exports = {
   // No sessions logged within 10 days
-  noMentoringSessionLoggedYet: function () {
+  noMentoringSessionLoggedYet: (isDryRun) => () => {
     return redMatchFind({
       where: { status: 'accepted' },
       include: ['mentor', 'mentee'],
     }).pipe(
       switchMap((redMatches) => from(redMatches)),
       map((redMatch) => redMatch.toJSON()),
+      filterForActiveMentors(),
       filterForExistingMentorOrMentee(),
       filterOnlyXDayOldMatches(10),
       fetchAssignRelatedMentoringSessions(),
       filter((match) => match.mentoringSessions.length === 0),
-      doSendNoMentoringSessionLoggedYetEmailToMentee(),
-      doSendNoMentoringSessionLoggedYetEmailToMentor(),
+      isDryRun === false
+        ? doSendNoMentoringSessionLoggedYetEmailToMentee()
+        : tap(),
+      isDryRun === false
+        ? doSendNoMentoringSessionLoggedYetEmailToMentor()
+        : tap(),
       tap((redMatch) =>
         reminderEmailLogger.info(
           `noMentoringSessionLoggedYet: sent email to mentor ${redMatch.mentor.contactEmail} and mentee ${redMatch.mentee.contactEmail} for match #${redMatch.id}`
@@ -44,19 +49,24 @@ module.exports = {
     )
   },
   // No sessions logged within 30 days
-  noMentoringSessionLoggedYetSecondReminder: function () {
+  noMentoringSessionLoggedYetSecondReminder: (isDryRun) => () => {
     return redMatchFind({
       where: { status: 'accepted' },
       include: ['mentor', 'mentee'],
     }).pipe(
       switchMap((redMatches) => from(redMatches)),
       map((redMatch) => redMatch.toJSON()),
+      filterForActiveMentors(),
       filterForExistingMentorOrMentee(),
       filterOnlyXDayOldMatches(30),
       fetchAssignRelatedMentoringSessions(),
       filter((match) => match.mentoringSessions.length === 0),
-      doSendNoMentoringSessionLoggedYetSecondReminderEmailToMentee(),
-      doSendNoMentoringSessionLoggedYetSecondReminderEmailToMentor(),
+      isDryRun === false
+        ? doSendNoMentoringSessionLoggedYetSecondReminderEmailToMentee()
+        : tap(),
+      isDryRun === false
+        ? doSendNoMentoringSessionLoggedYetSecondReminderEmailToMentor()
+        : tap(),
       tap((redMatch) =>
         reminderEmailLogger.info(
           `noMentoringSessionLoggedYetSecondReminder: sent email to mentor ${redMatch.mentor.contactEmail} and mentee ${redMatch.mentee.contactEmail} for match #${redMatch.id}`
@@ -72,6 +82,10 @@ const redMentoringSessionFind = (q) =>
   bindNodeCallback(
     app.models.RedMentoringSession.find.bind(app.models.RedMentoringSession)
   )(q)
+
+function filterForActiveMentors() {
+  return filter((redMatch) => redMatch.mentor && redMatch.mentor.userActivated)
+}
 
 function filterOnlyXDayOldMatches(days) {
   return filter((match) => {

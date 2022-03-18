@@ -3,20 +3,32 @@
 You'll find two sister products in this repository:
 
 - ReDI Connect, a tool to connect mentees to mentors, deployed to https://connect.redi-school.org
-- ReDI Talent Pool, a tool to connect jobseekers to companies and get jobs, deployed to https://cv-builder.redi-school.org
+- ReDI Talent Pool, a tool to connect jobseekers to companies and get jobs, deployed to https://talent-pool.redi-school.org
 
-Both are created, run and managed by ReDI School of Digital Integration. We're a non-profit school in Germany (in Berlin, Munich and NRW) with a community of hundreds of professionals from the digital industry volunteering to teach and mentor students. Our students are tech-interested locals and newcomers to Germany.
+Both are created, run and managed by [ReDI School of Digital Integration](https://www.redi-school.org). We're a non-profit school in Germany (in Berlin, Hamburg, Munich and NRW) with a community of hundreds of professionals from the digital industry volunteering to teach and mentor students. Our students are tech-interested locals and newcomers to Germany.
 
 ## Getting started for developers
 
-1. Make sure mongodb is installed your computer
-2. If you're re-seeding, drop the database files: `rm -rf mongodb-data/*`
-3. Run `yarn` in project root to install dependencies
-4. Run `yarn start:all` to boot all apps, _or_ a subset of apps using the `start:x` commands in package.json.
+1. Make sure [MongoDB](https://docs.mongodb.com/manual/installation/) is installed on your computer.
+2. Make sure you're running the _v14.17.6_ version of Node locally when you're running the backend server and checkout to a new branch. To do this, you can use [nvm](https://github.com/nvm-sh/nvm#node-version-manager), which allows you to select different versions of Node via the command line. Alternatively, we have added support for [Volta](https://docs.volta.sh/guide/understanding). So if you choose, you can use Volta, which sets project-defined tools automatically.
+3. Run `yarn` in project root to install dependencies.
+4. If you're re-seeding, drop the database files: `rm -rf mongodb-data/*` and run `yarn seed` to seed the database.
+
+   Alternatively, you can drop the database in the MongoDB Shell. In a new terminal window run the following:
+
+   ```
+   $ mongo
+   $ use mongodb
+   $ db.dropDatabase()
+   ```
+
+   Then run `yarn seed` in project root to seed the database.
+
+5. Run `yarn start:all` to boot all apps, _or_ a subset of apps using the `start:x` commands in package.json.
 
    It'll take a while and lots of warnings will show until everything's booted.
 
-5. If you're re-seeding, run `yarn seed` to seed database
+6. See the [Onboarding Checklist](https://github.com/talent-connect/connect/wiki#onboarding-checklist) in our Wiki.
 
 You can open these in your browser:
 
@@ -41,7 +53,7 @@ Use trunk-based branching - create feature/bugfix/docs/refactor/blabla branches 
 
 ## Getting started for designers
 
-See the [Onboarding Checklist](https://github.com/talent-connect/connect/wiki#onboarding-checklist) and [Workflow for design tasks](https://github.com/talent-connect/connect/wiki#onboarding-checklist) in our Wiki.
+See the [Onboarding Checklist](https://github.com/talent-connect/connect/wiki#onboarding-checklist) and [Workflow for design tasks](https://github.com/talent-connect/connect/wiki#workflow-design-tasks) in our Wiki.
 
 ## Getting started in depth
 
@@ -63,6 +75,13 @@ Main benefits:
 - one linter to rule them all - no more crazy pull requests with style changes
 - one command to start it all - no more four terminal windows to start all the apps
 - overall easier to extend & scale - there’s future work in the pipeline for which Nx is a great match (NestJS, Storybook, hint hint)
+
+## System Architecture
+
+ReDI Connect and ReDI Talent Pool are two React front-ends that use a Express/Loopback/NodeJS back-end to access data stored in a MongoDB database. The backend is hosted on a virtual machine, whereas the React front-ends are compiled into static assets stored on AWS S3 / CloudFront. Emails to users are sent via AWS SES. Some other static assets plus user uploads are hosted in AWS S3 buckets.
+
+This diagram shows the current system architecture of both platforms:
+![Architecture](https://user-images.githubusercontent.com/51786805/144653051-c8be1ee0-26da-42e0-b119-4d0d07754d79.png)
 
 # Nx out-of-the-box docs
 

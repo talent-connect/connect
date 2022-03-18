@@ -3,7 +3,7 @@ import {
   Heading,
   SVGImage,
 } from '@talent-connect/shared-atomic-design-components'
-import { rediLocationNames } from '@talent-connect/shared-config'
+import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import React from 'react'
 import {
   Columns,
@@ -28,7 +28,7 @@ const RediHero = () => {
           <Columns.Column size={5}>
             <Heading>
               {t('loggedOutArea.homePage.hero.about.headline')}{' '}
-              {rediLocationNames[envRediLocation()]}
+              {REDI_LOCATION_NAMES[envRediLocation()]}
             </Heading>
             <Columns.Column responsive={{ tablet: { hide: { value: true } } }}>
               <SVGImage image="hello" className="redi-hero__image" />

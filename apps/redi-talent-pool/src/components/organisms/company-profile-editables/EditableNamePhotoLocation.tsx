@@ -41,6 +41,7 @@ export function EditableNamePhotoLocation({ profile, disableEditing }: Props) {
               <Avatar.Editable
                 profile={profile}
                 profileSaveStart={mutation.mutate}
+                callToActionText="Please add your company logo"
               />
             ) : null}
           </Columns.Column>
@@ -94,6 +95,9 @@ export function EditableNamePhotoLocation({ profile, disableEditing }: Props) {
 EditableNamePhotoLocation.isSectionFilled = (
   profile: Partial<TpCompanyProfile>
 ) => profile?.location
+EditableNamePhotoLocation.isPhotoSelected = (
+  profile: Partial<TpCompanyProfile>
+) => profile?.profileAvatarImageS3Key
 EditableNamePhotoLocation.isSectionEmpty = (
   profile: Partial<TpCompanyProfile>
 ) => !EditableNamePhotoLocation.isSectionFilled(profile)

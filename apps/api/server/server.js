@@ -44,9 +44,10 @@ app.get(
     const secretToken =
       process.env.DAILY_CRONJOB_SEND_REMINDER_EMAIL_SECRET_TOKEN
     const authToken = req.query['auth-token']
+    const isDryRun = !!req.query['dry-run']
 
     if (authToken === secretToken) {
-      sendAllReminderEmails()
+      sendAllReminderEmails(isDryRun)
       return res.send({ result: 'email-jobs-queued' })
     }
     return res.send({ result: 'nope, wrong pass bro' })

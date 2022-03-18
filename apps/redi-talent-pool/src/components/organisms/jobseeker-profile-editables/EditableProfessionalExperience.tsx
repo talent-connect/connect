@@ -14,10 +14,11 @@ import {
   TpJobseekerCv,
   TpJobseekerProfile,
 } from '@talent-connect/shared-types'
+import * as Yup from 'yup'
 import { formMonthsOptions } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
 import moment from 'moment'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Columns, Content, Element } from 'react-bulma-components'
 import ReactMarkdown from 'react-markdown'
@@ -26,6 +27,7 @@ import { Subject } from 'rxjs'
 import { v4 as uuidv4 } from 'uuid'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { Location } from '../../molecules/Location'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
@@ -94,9 +96,11 @@ export function EditableProfessionalExperience({
                 </span>
               </div>
               <Content style={{ marginTop: '-0.5rem' }}>
-                {item.company ? (
-                  <p style={{ color: '#979797' }}>{item.company}</p>
-                ) : null}
+                <Location
+                  institution={item?.company}
+                  city={item?.city}
+                  country={item?.country}
+                />
                 {item.description ? (
                   <ReactMarkdown
                     components={{
@@ -186,15 +190,53 @@ export function JobseekerFormSectionProfessionalExperience({
     })
   }
 
+  const validationSchema = Yup.object().shape({
+    experience: Yup.array().of(
+      Yup.object().shape({
+        title: Yup.string().required('Please provide a job title'),
+        company: Yup.string().required('Please provide a company name'),
+        startDateMonth: Yup.number().required('Please select the start month'),
+        startDateYear: Yup.number()
+          .typeError('Please enter a valid year value')
+          .integer('Please enter a valid year value')
+          .positive('Please enter a valid year value')
+          .required('Please provide the start year')
+          .max(new Date().getFullYear(), 'Please enter a valid year value')
+          .min(
+            new Date().getFullYear() - 100,
+            'Please enter a valid year value'
+          ),
+        endDateMonth: Yup.number().when('current', {
+          is: false,
+          then: Yup.number().required('Please select the end month'),
+        }),
+        endDateYear: Yup.number().when('current', {
+          is: false,
+          then: Yup.number()
+            .typeError('Please enter a valid year value')
+            .integer('Please enter a valid year value')
+            .positive('Please enter a valid year value')
+            .required('Please provide the end year')
+            .max(new Date().getFullYear(), 'Please enter a valid year value')
+            .min(
+              new Date().getFullYear() - 100,
+              'Please enter a valid year value'
+            ),
+        }),
+      })
+    ),
+  })
+
   const formik = useFormik({
     initialValues,
     onSubmit,
+    validationSchema,
     enableReinitialize: true,
   })
-  useEffect(() => setIsFormDirty?.(formik.dirty), [
-    formik.dirty,
-    setIsFormDirty,
-  ])
+  useEffect(
+    () => setIsFormDirty?.(formik.dirty),
+    [formik.dirty, setIsFormDirty]
+  )
 
   const onClickAddExperience = useCallback(() => {
     formik.setFieldValue('experience', [
@@ -267,13 +309,25 @@ export function JobseekerFormSectionProfessionalExperience({
                         <FormInput
                           name={`experience[${index}].title`}
                           placeholder="Junior Frontend Developer"
-                          label="Title of your position"
+                          label="Title of your position*"
                           {...formik}
                         />
                         <FormInput
                           name={`experience[${index}].company`}
                           placeholder="Microsoft"
-                          label="Company"
+                          label="Company*"
+                          {...formik}
+                        />
+                        <FormInput
+                          name={`experience[${index}].city`}
+                          placeholder="Berlin"
+                          label="City"
+                          {...formik}
+                        />
+                        <FormInput
+                          name={`experience[${index}].country`}
+                          placeholder="Germany"
+                          label="Country"
                           {...formik}
                         />
                         <FormTextArea
@@ -300,7 +354,7 @@ export function JobseekerFormSectionProfessionalExperience({
                           <Columns.Column size={6}>
                             <FormSelect
                               name={`experience[${index}].startDateMonth`}
-                              label="Started in month"
+                              label="Started in month*"
                               items={formMonthsOptions}
                               {...formik}
                             />
@@ -308,8 +362,7 @@ export function JobseekerFormSectionProfessionalExperience({
                           <Columns.Column size={6}>
                             <FormInput
                               name={`experience[${index}].startDateYear`}
-                              label="Started in year"
-                              type="number"
+                              label="Started in year*"
                               {...formik}
                             />
                           </Columns.Column>
@@ -320,7 +373,7 @@ export function JobseekerFormSectionProfessionalExperience({
                             <Columns.Column size={6}>
                               <FormSelect
                                 name={`experience[${index}].endDateMonth`}
-                                label="Ended in month"
+                                label="Ended in month*"
                                 items={formMonthsOptions}
                                 {...formik}
                               />
@@ -328,8 +381,7 @@ export function JobseekerFormSectionProfessionalExperience({
                             <Columns.Column size={6}>
                               <FormInput
                                 name={`experience[${index}].endDateYear`}
-                                label="Ended in year"
-                                type="number"
+                                label="Ended in year*"
                                 {...formik}
                               />
                             </Columns.Column>
@@ -387,6 +439,8 @@ function buildBlankExperienceRecord(): ExperienceRecord {
     uuid: uuidv4(),
     title: '',
     company: '',
+    city: '',
+    country: '',
     description: '',
     startDateMonth: undefined,
     startDateYear: undefined,

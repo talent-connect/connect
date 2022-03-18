@@ -324,8 +324,8 @@ const redProfileCreateOnRedUser = (redUserInst) => (redProfile) =>
   )
 
 const ericMenteeRedUser = {
-  password: 'eric@binarylights.com',
-  email: 'eric@binarylights.com',
+  password: 'career+testmentee@redi-school.org',
+  email: 'career+testmentee@redi-school.org',
 }
 const ericMenteeRedProfile = {
   rediLocation: 'berlin',
@@ -342,8 +342,8 @@ const ericMenteeRedProfile = {
   mentee_occupationOther_description: randomString(),
   profileAvatarImageS3Key:
     'c1774822-9495-4bd6-866a-bf4d28aaddc8_ScreenShot2019-03-12at22.22.20.png',
-  firstName: 'Eric',
-  lastName: 'Bolikowski',
+  firstName: 'Mentee',
+  lastName: 'ReDI Person',
   birthDate: moment(
     '01.01.' + (new Date().getFullYear() - _.random(18, 100, false)),
     'DD.MM.YYYY'
@@ -352,8 +352,8 @@ const ericMenteeRedProfile = {
   languages: ['German', 'Farsi'],
   otherLanguages: '',
   personalDescription:
-    'eric@binarylights.comeric@binarylights.comeric@binarylights.comeric@binarylights.comeric@binarylights.comeric@binarylights.comeric@binarylights.comeric@binarylights.com',
-  contactEmail: 'eric@binarylights.com',
+    'career+testmentee@redi-school.orgcareer+testmentee@redi-school.orgcareer+testmentee@redi-school.orgcareer+testmentee@redi-school.orgcareer+testmentee@redi-school.orgcareer+testmentee@redi-school.orgcareer+testmentee@redi-school.orgcareer+testmentee@redi-school.org',
+  contactEmail: 'career+testmentee@redi-school.org',
   slackUsername: '',
   githubProfileUrl: '',
   telephoneNumber: '',
@@ -361,12 +361,12 @@ const ericMenteeRedProfile = {
   menteeCountCapacity: 1,
   mentee_highestEducationLevel: 'highSchool',
   mentee_currentlyEnrolledInCourse: 'salesforceFundamentals',
-  username: 'eric@binarylights.com',
+  username: 'career+testmentee@redi-school.org',
 }
 
 const ericMentorRedUser = {
-  password: 'info@binarylights.com',
-  email: 'info@binarylights.com',
+  password: 'career+testmentor@redi-school.org',
+  email: 'career+testmentor@redi-school.org',
 }
 const ericMentorRedProfile = {
   rediLocation: 'berlin',
@@ -385,8 +385,8 @@ const ericMentorRedProfile = {
   mentee_currentlyEnrolledInCourse: randomString(),
   profileAvatarImageS3Key:
     'c1774822-9495-4bd6-866a-bf4d28aaddc8_ScreenShot2019-03-12at22.22.20.png',
-  firstName: 'Info',
-  lastName: 'Binary Lights',
+  firstName: 'Mentor',
+  lastName: 'at ReDI',
   birthDate: moment(
     '01.01.' + (new Date().getFullYear() - _.random(18, 100, false)),
     'DD.MM.YYYY'
@@ -395,14 +395,14 @@ const ericMentorRedProfile = {
   languages: ['German', 'Farsi'],
   otherLanguages: '',
   personalDescription:
-    'eric@binarylights.comeric@binarylights.comeric@binarylights.comeric@binarylights.comeric@binarylights.comeric@binarylights.comeric@binarylights.comeric@binarylights.com',
-  contactEmail: 'info@binarylights.com',
+    'info@binarylights.cominfo@binarylights.cominfo@binarylights.cominfo@binarylights.cominfo@binarylights.cominfo@binarylights.cominfo@binarylights.cominfo@binarylights.com',
+  contactEmail: 'career+testmentor@redi-school.org',
   slackUsername: '',
   githubProfileUrl: '',
   telephoneNumber: '',
   categories: categories.map((c) => c.id).filter(() => Math.random() < 0.4),
   menteeCountCapacity: 2,
-  username: 'info@binarylights.com',
+  username: 'career+testmentor@redi-school.org',
 }
 
 const ericAdminUser = {

@@ -3,7 +3,7 @@ const app = require('../server/server.js')
 const Rx = require('rxjs')
 const { reminderEmailLogger } = require('../lib/logger.js')
 
-const { bindNodeCallback, from, concat } = Rx
+const { bindNodeCallback, from, concat, EMPTY } = Rx
 const {
   map,
   mapTo,
@@ -30,15 +30,19 @@ const {
 
 // I'll be triggered once a day by Autocode contacting
 // my endpoint.
-module.exports = async function sendAllReminderEmails() {
+module.exports = async function sendAllReminderEmails(isDryRun) {
   // menteeNotSentApplicationAfterActivation()
 
   reminderEmailLogger.info('sendAllReminderEmails called')
+  if (isDryRun) {
+    reminderEmailLogger.info('[DRY RUN]')
+  }
+
   concat(
-    noMentoringSessionLoggedYet(),
-    noMentoringSessionLoggedYetSecondReminder(),
-    mentorshipIsWeeksOldSoRequestFeedback(),
-    pendingMentorshipApplicationReminder()
+    noMentoringSessionLoggedYet(isDryRun)(),
+    noMentoringSessionLoggedYetSecondReminder(isDryRun)(),
+    mentorshipIsWeeksOldSoRequestFeedback(isDryRun)(),
+    pendingMentorshipApplicationReminder(isDryRun)()
   ).subscribe(null, null, () =>
     reminderEmailLogger.info('sendAllReminderEmails done')
   )

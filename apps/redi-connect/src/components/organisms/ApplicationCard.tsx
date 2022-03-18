@@ -1,31 +1,46 @@
-import React, { useState } from 'react'
-import classnames from 'classnames'
-import { Columns, Heading, Content } from 'react-bulma-components'
-import moment from 'moment'
-import { getRedProfileFromLocalStorage } from '../../services/auth/auth'
-import { RedMatch } from '@talent-connect/shared-types'
 import { Icon } from '@talent-connect/shared-atomic-design-components'
-import { Avatar } from '../organisms'
+import { RedMatch, RedProfile } from '@talent-connect/shared-types'
+import classnames from 'classnames'
+import moment from 'moment'
+import React, { useState } from 'react'
+import { Columns, Content, Heading } from 'react-bulma-components'
+import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-
+import { RootState } from '../../redux/types'
+import { getHasReachedMenteeLimit } from '../../redux/user/selectors'
+import { getRedProfileFromLocalStorage } from '../../services/auth/auth'
+import { Avatar, ConfirmMentorship } from '../organisms'
 import './ApplicationCard.scss'
-import { rediLocationNames } from '@talent-connect/shared-config'
+import DeclineMentorshipButton from './DeclineMentorshipButton'
+import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 
 interface Props {
   application: RedMatch & { createdAt?: string }
+  hasReachedMenteeLimit: boolean
+  currentUser?: RedProfile
 }
 
 const STATUS_LABELS: any = {
   applied: 'Pending',
+  accepted: 'Accepted',
+  completed: 'Accepted',
+  cancelled: 'Cancelled',
+  'declined-by-mentor': 'Declined',
+  'invalidated-as-other-mentor-accepted': 'Cancelled',
 }
 
-const ApplicationCard = ({ application }: Props) => {
+const ApplicationCard = ({
+  application,
+  hasReachedMenteeLimit,
+  currentUser,
+}: Props) => {
   const history = useHistory()
   const profile = getRedProfileFromLocalStorage()
   const [showDetails, setShowDetails] = useState(false)
   const applicationDate = new Date(application.createdAt || '')
   const applicationUser =
     profile.userType === 'mentee' ? application.mentor : application.mentee
+  const currentUserIsMentor = currentUser?.userType === 'mentor'
 
   return (
     <>
@@ -34,13 +49,22 @@ const ApplicationCard = ({ application }: Props) => {
         onClick={() => setShowDetails(!showDetails)}
       >
         <Columns vCentered>
-          <Columns.Column size={4} className="application-card__avatar">
+          <Columns.Column size={1} className="application-card__avatar">
             <Avatar profile={applicationUser} />
+          </Columns.Column>
+
+          <Columns.Column
+            size={3}
+            textAlignment="left"
+            responsive={{ mobile: { textAlignment: { value: 'centered' } } }}
+          >
             {applicationUser && (
-              <span>
-                {applicationUser.firstName} {applicationUser.lastName} (in{' '}
-                {rediLocationNames[applicationUser.rediLocation]})
-              </span>
+              <>
+                <p>
+                  {applicationUser.firstName} {applicationUser.lastName}
+                </p>
+                <p>{REDI_LOCATION_NAMES[applicationUser.rediLocation]}</p>
+              </>
             )}
           </Columns.Column>
 
@@ -120,9 +144,23 @@ const ApplicationCard = ({ application }: Props) => {
             <Content>{application.expectationText}</Content>
           </>
         )}
+        {currentUserIsMentor && application.status === 'applied' ? (
+          <>
+            <ConfirmMentorship
+              match={application}
+              hasReachedMenteeLimit={hasReachedMenteeLimit}
+            />
+            <DeclineMentorshipButton match={application} />
+          </>
+        ) : null}
       </div>
     </>
   )
 }
 
-export default ApplicationCard
+const mapStateToProps = (state: RootState) => ({
+  currentUser: state.user.profile,
+  hasReachedMenteeLimit: getHasReachedMenteeLimit(state.user),
+})
+
+export default connect(mapStateToProps)(ApplicationCard)
