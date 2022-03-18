@@ -5,16 +5,5 @@
     "./lib/shared-atomic-design-components",
     "./libs/shared-types"
   ],
-  "typescript.preferences.importModuleSpecifier": "project-relative",
-  "cSpell.words": [
-    "Deloitte",
-    "Formik",
-    "Jobseeker",
-    "marginless",
-    "mentee",
-    "mentees",
-    "paddingless",
-    "Paulina",
-    "redi"
-  ]
+  "typescript.preferences.importModuleSpecifier": "project-relative"
 }
