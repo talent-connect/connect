@@ -37,7 +37,7 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - run: |
-          docker build -t ${{ env.AZURE_IMAGE_NAME_WITH_SHA_TAG }} -t ${{ env.AZURE_IMAGE_NAME_WITH_LATEST_TAG }} .
+          DOCKER_BUILDKIT=1 docker build -t ${{ env.AZURE_IMAGE_NAME_WITH_SHA_TAG }} -t ${{ env.AZURE_IMAGE_NAME_WITH_LATEST_TAG }} .
           docker push ${{ env.AZURE_IMAGE_NAME_WITH_SHA_TAG }}
           docker push ${{ env.AZURE_IMAGE_NAME_WITH_LATEST_TAG }}
 
