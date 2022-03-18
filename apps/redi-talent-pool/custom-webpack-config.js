@@ -26,8 +26,6 @@ module.exports = (config, context) => {
   })
 
   return mergedConfig
-
-  return { ...config, node: undefined }
 }
 
 /**
