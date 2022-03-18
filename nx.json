@@ -33,6 +33,9 @@
       "tags": [],
       "implicitDependencies": []
     },
+    "nestjs-api": {
+      "tags": []
+    },
     "redi-connect": {
       "tags": []
     },

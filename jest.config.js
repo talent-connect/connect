@@ -9,5 +9,6 @@ module.exports = {
     '<rootDir>/libs/talent-pool/config',
     '<rootDir>/libs/shared-utils',
     '<rootDir>/libs/typescript-utilities',
+    '<rootDir>/apps/nestjs-api',
   ],
 }
