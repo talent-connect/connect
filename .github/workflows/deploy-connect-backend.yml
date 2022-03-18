@@ -4,20 +4,22 @@ on:
   push:
     branches:
       - master
+      - chore/reinstate-terraform-for-azure-migration
+
     paths:
-      - 'redi-connect-backend/**'
+      - 'apps/nestjs-api/**'
       - '.github/workflows/deploy-connect-backend.yml'
 
 jobs:
   deploy-staging:
-    if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
+#    if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
     environment:
       name: staging
       url: https://app-staging-redi.azurewebsites.net
     runs-on: ubuntu-latest
     env:
       AZURE_CONTAINER_REGISTRY: ${{ secrets.REGISTRY_NAME }}.azurecr.io
-      AZURE_IMAGE_NAME_WITH_TAG: ${{ secrets.REGISTRY_NAME }}.azurecr.io/red-platform-backend:${{ github.sha }}
+      AZURE_IMAGE_NAME_WITH_SHA_TAG: ${{ secrets.REGISTRY_NAME }}.azurecr.io/red-platform-backend:${{ github.sha }}
       AZURE_IMAGE_NAME_WITH_LATEST_TAG: ${{ secrets.REGISTRY_NAME }}.azurecr.io/red-platform-backend:latest
 
     steps:
@@ -35,8 +37,8 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - run: |
-          docker build redi-connect-backend -t ${{ env.AZURE_IMAGE_NAME_WITH_TAG }} -t ${{ env.AZURE_IMAGE_NAME_WITH_LATEST_TAG }}
-          docker push ${{ env.AZURE_IMAGE_NAME_WITH_TAG }}
+          docker build redi-connect-backend -t ${{ env.AZURE_IMAGE_NAME_WITH_SHA_TAG }} -t ${{ env.AZURE_IMAGE_NAME_WITH_LATEST_TAG }} .
+          docker push ${{ env.AZURE_IMAGE_NAME_WITH_SHA_TAG }}
           docker push ${{ env.AZURE_IMAGE_NAME_WITH_LATEST_TAG }}
 
       - name: Deploy to Azure Web App
@@ -58,7 +60,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       AZURE_CONTAINER_REGISTRY: ${{ secrets.REGISTRY_NAME }}.azurecr.io
-      AZURE_IMAGE_NAME_WITH_TAG: ${{ secrets.REGISTRY_NAME }}.azurecr.io/red-platform-backend:${{ github.sha }}
+      AZURE_IMAGE_NAME_WITH_SHA_TAG: ${{ secrets.REGISTRY_NAME }}.azurecr.io/red-platform-backend:${{ github.sha }}
       AZURE_IMAGE_NAME_WITH_LATEST_TAG: ${{ secrets.REGISTRY_NAME }}.azurecr.io/red-platform-backend:latest
 
     steps:
@@ -76,8 +78,8 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - run: |
-          docker build redi-connect-backend -t ${{ env.AZURE_IMAGE_NAME_WITH_TAG }} -t ${{ env.AZURE_IMAGE_NAME_WITH_LATEST_TAG }}
-          docker push ${{ env.AZURE_IMAGE_NAME_WITH_TAG }}
+          docker build redi-connect-backend -t ${{ env.AZURE_IMAGE_NAME_WITH_SHA_TAG }} -t ${{ env.AZURE_IMAGE_NAME_WITH_LATEST_TAG }} .
+          docker push ${{ env.AZURE_IMAGE_NAME_WITH_SHA_TAG }}
           docker push ${{ env.AZURE_IMAGE_NAME_WITH_LATEST_TAG }}
 
       - name: Deploy to Azure Web App
