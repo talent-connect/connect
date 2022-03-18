@@ -9,7 +9,7 @@ const rediLocationNames = {
   'location-picker': 'Location Picker',
 }
 
-const rediLocation = process.env.NX_REDI_CONNECT_REDI_LOCATION as RediLocation
+const rediLocation = 'berlin' // process.env.NX_REDI_CONNECT_REDI_LOCATION as RediLocation
 const validRediLocations = Object.keys(rediLocationNames)
 
 if (!validRediLocations.includes(rediLocation))
