@@ -1,3 +1,8 @@
+import { useEffect, useMemo, useState } from 'react'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
+import { Columns, Content, Element } from 'react-bulma-components'
+
 import {
   Button,
   FormInput,
@@ -11,12 +16,11 @@ import {
   desiredEmploymentTypeOptions,
   germanFederalStates,
 } from '@talent-connect/talent-pool/config'
-import { useFormik } from 'formik'
-import React, { useEffect, useMemo, useState } from 'react'
-import { Columns, Content, Element } from 'react-bulma-components'
-import * as Yup from 'yup'
+import { objectEntries } from '@talent-connect/typescript-utilities'
+
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import Avatar from '../Avatar'
@@ -26,7 +30,7 @@ interface Props {
   disableEditing?: boolean
 }
 
-const federalStatesOptions = Object.entries(germanFederalStates).map(
+const federalStatesOptions = objectEntries(germanFederalStates).map(
   ([value, label]) => ({
     value,
     label,

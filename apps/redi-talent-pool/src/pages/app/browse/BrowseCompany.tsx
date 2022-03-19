@@ -1,9 +1,20 @@
+import { useHistory } from 'react-router'
+import {
+  ArrayParam,
+  BooleanParam,
+  StringParam,
+  useQueryParams,
+  withDefault,
+} from 'use-query-params'
+
+import { Columns, Element, Tag } from 'react-bulma-components'
 import {
   Checkbox,
   FilterDropdown,
   Icon,
   SearchField,
 } from '@talent-connect/shared-atomic-design-components'
+
 import {
   desiredEmploymentTypeOptions,
   desiredEmploymentTypeOptionsIdToLabelMap,
@@ -13,21 +24,13 @@ import {
   topSkills,
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
-import { useMemo } from 'react'
-import { Columns, Element, Tag } from 'react-bulma-components'
-import { useHistory } from 'react-router'
-import {
-  ArrayParam,
-  BooleanParam,
-  StringParam,
-  useQueryParams,
-  withDefault,
-} from 'use-query-params'
-import { JobseekerProfileCard } from '../../../components/organisms/JobseekerProfileCard'
+import { objectEntries } from '@talent-connect/typescript-utilities'
+
 import { LoggedIn } from '../../../components/templates'
+import { JobseekerProfileCard } from '../../../components/organisms/JobseekerProfileCard'
 import { useBrowseTpJobseekerProfilesQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 
-const germanFederalStatesOptions = Object.entries(germanFederalStates).map(
+const germanFederalStatesOptions = objectEntries(germanFederalStates).map(
   ([value, label]) => ({
     value,
     label,

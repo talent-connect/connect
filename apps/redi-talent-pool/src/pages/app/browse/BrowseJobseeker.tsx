@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Columns, Element, Tag } from 'react-bulma-components'
 import {
@@ -19,15 +19,15 @@ import {
   desiredPositionsIdToLabelMap,
   employmentTypes,
   employmentTypesIdToLabelMap,
-  germanFederalStates,
   topSkills,
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 
-import { JobListingCard } from '../../../components/organisms/JobListingCard'
-import { LoggedIn } from '../../../components/templates'
 import { useBrowseTpJobListingsQuery } from '../../../react-query/use-tpjoblisting-all-query'
 import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+
+import { LoggedIn } from '../../../components/templates'
+import { JobListingCard } from '../../../components/organisms/JobListingCard'
 
 export function BrowseJobseeker() {
   const [companyName, setCompanyName] = useState('')
@@ -143,18 +143,6 @@ export function BrowseJobseeker() {
             }
           />
         </div>
-        {/* TODO: Uncomment the next block when we have federal states for joblistings */}
-        {/* <div className="filters-inner">
-          <FilterDropdown
-            items={germanFederalStatesOptions}
-            className="filters__dropdown"
-            label="Federal State"
-            selected={federalStates}
-            onChange={(item) =>
-              toggleFilters(federalStates, 'federalStates', item)
-            }
-          />
-        </div> */}
         <div className="filters-inner filters__jobfair2022">
           <Checkbox
             name="isJobFair2022JobListing"
@@ -206,17 +194,6 @@ export function BrowseJobseeker() {
                 }
               />
             ))}
-            {/* TODO: Uncomment the next block when we have federal states for joblistings */}
-            {/* {(federalStates as string[]).map((catId) => (
-              <FilterTag
-                key={catId}
-                id={catId}
-                label={germanFederalStates[catId]}
-                onClickHandler={(item) =>
-                  toggleFilters(federalStates, 'federalStates', item)
-                }
-              />
-            ))} */}
             {isJobFair2022JobListing && (
               <FilterTag
                 id="redi-job-fair-2022-filter"
@@ -270,13 +247,6 @@ const relatedPositionsOptions = desiredPositions.map(({ id, label }) => ({
   value: id,
   label,
 }))
-
-const germanFederalStatesOptions = Object.entries(germanFederalStates).map(
-  ([value, label]) => ({
-    value,
-    label,
-  })
-)
 interface FilterTagProps {
   id: string
   label: string
