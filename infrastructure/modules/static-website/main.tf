@@ -16,10 +16,6 @@ resource "azurerm_storage_account" "static_storage" {
     index_document     = "index.html"
     error_404_document = "index.html"
   }
-
-  tags = {
-    product = var.organisation
-  }
 }
 
 

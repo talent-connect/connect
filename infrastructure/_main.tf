@@ -6,12 +6,12 @@ locals {
   env_prefix              = "${local.env}-${var.organisation}"
   env_prefix_no_separator = "${local.env}${var.organisation}"
   // todo these two need to be rcemoved when we move to REDI connect azure account.
-  resource-group-name     = "red-platform-env-${local.env}"
+  resource-group-name     = "red-platform-${local.env}"
   resource-group-location = "germanywestcentral"
 }
 
 resource "azurerm_resource_group" "rg" {
-  name     = "red-platform-env-${local.env_prefix}"
+  name     = "red-platform-${local.env}"
   location = var.location
 }
 
@@ -87,7 +87,7 @@ module "static-website-tp" {
 # Azure container registry & Web app container
 #----------------------------------------------------------
 resource "azurerm_container_registry" "acr" {
-  name                = "registry${local.env_prefix_no_separator}"
+  name                = "containerregistry${local.env_prefix_no_separator}"
   resource_group_name = local.resource-group-name
   location            = var.location
   sku                 = var.tier
@@ -107,7 +107,7 @@ module "web_app_container" {
   container_image          = "${azurerm_container_registry.acr.login_server}/red-platform-backend:latest"
 
   plan = {
-    name     = "plan-${local.env_prefix}"
+    name                     = "app-${local.env_prefix}"
     sku_size = var.sku_size
   }
 

@@ -5,6 +5,7 @@ on:
     branches:
       - master
       - chore/reinstate-terraform-for-azure-migration
+      - chore/latest-terraform-greek-god-awesome-stuff-terrastos
     paths:
       - 'apps/redi-connect/**'
       - 'libs/**'
@@ -35,7 +36,7 @@ jobs:
     needs: [install]
     environment:
       name: staging
-      url: https://cdn-endpoint-front-berlin-staging-red.azureedge.net
+      url: https://cdn-endpoint-front-berlin-staging-redos.azureedge.net
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -67,13 +68,13 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az storage blob upload-batch --account-name "frontberlinstagingred" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
+            az storage blob upload-batch --account-name "frontberlinstagingredos" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
 
       - name: Purge pre-loaded content for the CDN endpoint
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-berlin-staging-red" --name "cdn-endpoint-front-berlin-staging-red" --resource-group "red-platform"
+            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-berlin-staging-redos" --name "cdn-endpoint-front-berlin-staging-redos" --resource-group "red-platform-env-staging"
 
       - name: Logout from Azure
         run: |
@@ -84,7 +85,7 @@ jobs:
     needs: [install]
     environment:
       name: staging
-      url: https://cdn-endpoint-front-munich-staging-red.azureedge.net
+      url: https://cdn-endpoint-front-munich-staging-redos.azureedge.net
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -116,13 +117,13 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az storage blob upload-batch --account-name "frontmunichstagingred" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
+            az storage blob upload-batch --account-name "frontmunichstagingredos" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
 
       - name: Purge pre-loaded content for the CDN endpoint
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-munich-staging-red" --name "cdn-endpoint-front-munich-staging-red" --resource-group "red-platform"
+            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-munich-staging-redos" --name "cdn-endpoint-front-munich-staging-redos" --resource-group "red-platform-env-staging"
 
       - name: Logout from Azure
         run: |
@@ -133,7 +134,7 @@ jobs:
     needs: [install]
     environment:
       name: staging
-      url: https://cdn-endpoint-front-nrw-staging-red.azureedge.net
+      url: https://cdn-endpoint-front-nrw-staging-redos.azureedge.net
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -165,13 +166,13 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az storage blob upload-batch --account-name "frontnrwstagingred" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
+            az storage blob upload-batch --account-name "frontnrwstagingredos" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
 
       - name: Purge pre-loaded content for the CDN endpoint
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-nrw-staging-red" --name "cdn-endpoint-front-nrw-staging-red" --resource-group "red-platform"
+            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-nrw-staging-redos" --name "cdn-endpoint-front-nrw-staging-redos" --resource-group "red-platform-env-staging"
 
       - name: Logout from Azure
         run: |
@@ -182,7 +183,7 @@ jobs:
     needs: [install]
     environment:
       name: staging
-      url: https://cdn-endpoint-front-picker-staging-red.azureedge.net
+      url: https://cdn-endpoint-front-picker-staging-redos.azureedge.net
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -214,13 +215,13 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az storage blob upload-batch --account-name "frontpickerstagingred" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
+            az storage blob upload-batch --account-name "frontpickerstagingredos" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
 
       - name: Purge pre-loaded content for the CDN endpoint
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-picker-staging-red" --name "cdn-endpoint-front-picker-staging-red" --resource-group "red-platform"
+            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-picker-staging-redos" --name "cdn-endpoint-front-picker-staging-redos" --resource-group "red-platform-env-staging"
 
       - name: Logout from Azure
         run: |
@@ -231,7 +232,7 @@ jobs:
     needs: [install]
     environment:
       name: staging
-      url: https://cdn-endpoint-front-tp-staging-red.azureedge.net
+      url: https://cdn-endpoint-front-tp-staging-redos.azureedge.net
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -263,13 +264,13 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az storage blob upload-batch --account-name "fronttpstagingred" --auth-mode key -d '$web' -s ./dist/apps/redi-talent-pool
+            az storage blob upload-batch --account-name "fronttpstagingredos" --auth-mode key -d '$web' -s ./dist/apps/redi-talent-pool
 
       - name: Purge pre-loaded content for the CDN endpoint
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-tp-staging-red" --name "cdn-endpoint-front-tp-staging-red" --resource-group "red-platform"
+            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-tp-staging-redos" --name "cdn-endpoint-front-tp-staging-redos" --resource-group "red-platform-env-staging"
 
       - name: Logout from Azure
         run: |
