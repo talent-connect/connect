@@ -98,7 +98,7 @@ resource "azurerm_container_registry" "acr" {
 
 module "web_app_container" {
   source                   = "innovationnorway/web-app-container/azurerm"
-  name                     = "app-${local.env_prefix}"
+  name                     = "api-${local.env_prefix}"
   resource_group_name      = local.resource-group-name
   docker_registry_url      = azurerm_container_registry.acr.login_server
   docker_registry_username = azurerm_container_registry.acr.admin_username
