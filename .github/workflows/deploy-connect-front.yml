@@ -453,7 +453,7 @@ jobs:
           # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
           # For instance you have an unused variable on your code
           CI: ""
-        run: yarn build:redi-connect:picker
+        run: yarn build:redi-connect:location-picker
 
       - name: Upload webapp artifacts to blob storage
         uses: azure/CLI@v1
