@@ -1,5 +1,25 @@
 {
   "version": 2,
+  "cli": {
+    "defaultCollection": "@nrwl/react"
+  },
+  "defaultProject": "redi-connect",
+  "generators": {
+    "@nrwl/react": {
+      "application": {
+        "style": "scss",
+        "linter": "eslint",
+        "babel": true
+      },
+      "component": {
+        "style": "scss"
+      },
+      "library": {
+        "style": "scss",
+        "linter": "eslint"
+      }
+    }
+  },
   "projects": {
     "admin-panel": {
       "root": "apps/admin-panel",
@@ -7,7 +27,7 @@
       "projectType": "application",
       "targets": {
         "build": {
-          "executor": "@nrwl/web:webpack",
+          "executor": "@nrwl/web:build",
           "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/apps/admin-panel",
@@ -48,7 +68,6 @@
         "serve": {
           "executor": "@nrwl/web:dev-server",
           "options": {
-            "baseHref": "/",
             "buildTarget": "admin-panel:build",
             "port": 3001
           },
@@ -62,8 +81,7 @@
           "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["apps/admin-panel/**/*.{ts,tsx,js,jsx}"]
-          },
-          "outputs": ["{options.outputFile}"]
+          }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
@@ -73,8 +91,7 @@
             "passWithNoTests": true
           }
         }
-      },
-      "tags": []
+      }
     },
     "admin-panel-e2e": {
       "root": "apps/admin-panel-e2e",
@@ -98,12 +115,9 @@
           "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["apps/admin-panel-e2e/**/*.{js,ts}"]
-          },
-          "outputs": ["{options.outputFile}"]
+          }
         }
-      },
-      "tags": [],
-      "implicitDependencies": ["admin-panel"]
+      }
     },
     "api": {
       "root": "apps/api",
@@ -123,9 +137,7 @@
             ]
           }
         }
-      },
-      "tags": [],
-      "implicitDependencies": []
+      }
     },
     "redi-connect": {
       "root": "apps/redi-connect",
@@ -133,7 +145,7 @@
       "projectType": "application",
       "targets": {
         "build": {
-          "executor": "@nrwl/web:webpack",
+          "executor": "@nrwl/web:build",
           "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/apps/redi-connect",
@@ -181,7 +193,6 @@
         "serve": {
           "executor": "@nrwl/web:dev-server",
           "options": {
-            "baseHref": "/",
             "buildTarget": "redi-connect:build",
             "port": 3000
           },
@@ -195,8 +206,7 @@
           "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["apps/redi-connect/**/*.{ts,tsx,js,jsx}"]
-          },
-          "outputs": ["{options.outputFile}"]
+          }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
@@ -206,8 +216,7 @@
             "passWithNoTests": true
           }
         }
-      },
-      "tags": []
+      }
     },
     "redi-connect-e2e": {
       "root": "apps/redi-connect-e2e",
@@ -231,12 +240,9 @@
           "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["apps/redi-connect-e2e/**/*.{js,ts}"]
-          },
-          "outputs": ["{options.outputFile}"]
+          }
         }
-      },
-      "tags": [],
-      "implicitDependencies": ["redi-connect"]
+      }
     },
     "redi-talent-pool": {
       "root": "apps/redi-talent-pool",
@@ -244,7 +250,7 @@
       "projectType": "application",
       "targets": {
         "build": {
-          "executor": "@nrwl/web:webpack",
+          "executor": "@nrwl/web:build",
           "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/apps/redi-talent-pool",
@@ -294,7 +300,6 @@
         "serve": {
           "executor": "@nrwl/web:dev-server",
           "options": {
-            "baseHref": "/",
             "buildTarget": "redi-talent-pool:build",
             "port": 2999
           },
@@ -308,8 +313,7 @@
           "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["apps/redi-talent-pool/**/*.{ts,tsx,js,jsx}"]
-          },
-          "outputs": ["{options.outputFile}"]
+          }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
@@ -319,8 +323,7 @@
             "passWithNoTests": true
           }
         }
-      },
-      "tags": []
+      }
     },
     "redi-talent-pool-e2e": {
       "root": "apps/redi-talent-pool-e2e",
@@ -344,12 +347,9 @@
           "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["apps/redi-talent-pool-e2e/**/*.{js,ts}"]
-          },
-          "outputs": ["{options.outputFile}"]
+          }
         }
-      },
-      "tags": [],
-      "implicitDependencies": ["redi-talent-pool"]
+      }
     },
     "shared-atomic-design-components": {
       "root": "libs/shared-atomic-design-components",
@@ -362,8 +362,7 @@
             "lintFilePatterns": [
               "libs/shared-atomic-design-components/**/*.{ts,tsx,js,jsx}"
             ]
-          },
-          "outputs": ["{options.outputFile}"]
+          }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
@@ -404,8 +403,7 @@
             }
           }
         }
-      },
-      "tags": []
+      }
     },
     "shared-config": {
       "root": "libs/shared-config",
@@ -416,8 +414,7 @@
           "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/shared-config/**/*.ts"]
-          },
-          "outputs": ["{options.outputFile}"]
+          }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
@@ -427,8 +424,7 @@
             "passWithNoTests": true
           }
         }
-      },
-      "tags": []
+      }
     },
     "shared-types": {
       "root": "libs/shared-types",
@@ -439,11 +435,9 @@
           "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/shared-types/**/*.ts"]
-          },
-          "outputs": ["{options.outputFile}"]
+          }
         }
-      },
-      "tags": []
+      }
     },
     "shared-utils": {
       "root": "libs/shared-utils",
@@ -454,8 +448,7 @@
           "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/shared-utils/**/*.ts"]
-          },
-          "outputs": ["{options.outputFile}"]
+          }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
@@ -465,8 +458,7 @@
             "passWithNoTests": true
           }
         }
-      },
-      "tags": []
+      }
     },
     "talent-pool-config": {
       "root": "libs/talent-pool/config",
@@ -477,8 +469,7 @@
           "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/talent-pool/config/**/*.ts"]
-          },
-          "outputs": ["{options.outputFile}"]
+          }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
@@ -488,8 +479,7 @@
             "passWithNoTests": true
           }
         }
-      },
-      "tags": []
+      }
     },
     "talent-pool-types": {
       "root": "libs/talent-pool/types",
@@ -500,8 +490,7 @@
           "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/talent-pool/types/**/*.ts"]
-          },
-          "outputs": ["{options.outputFile}"]
+          }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
@@ -511,8 +500,7 @@
             "passWithNoTests": true
           }
         }
-      },
-      "tags": []
+      }
     },
     "typescript-utilities": {
       "root": "libs/typescript-utilities",
@@ -523,8 +511,7 @@
           "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/typescript-utilities/**/*.ts"]
-          },
-          "outputs": ["{options.outputFile}"]
+          }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
@@ -534,8 +521,7 @@
             "passWithNoTests": true
           }
         }
-      },
-      "tags": []
+      }
     }
   }
 }
