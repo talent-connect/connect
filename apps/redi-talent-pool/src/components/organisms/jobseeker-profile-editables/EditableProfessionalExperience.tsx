@@ -193,26 +193,35 @@ export function JobseekerFormSectionProfessionalExperience({
   const validationSchema = Yup.object().shape({
     experience: Yup.array().of(
       Yup.object().shape({
-        company: Yup.string().required('Company name is required!'),
-        city: Yup.string(),
-        country: Yup.string(),
-        title: Yup.string().required('Please provide a job title!'),
-        description: Yup.string().min(
-          10,
-          'Please provide at least one sentence about the experience'
-        ),
-        startDateMonth: Yup.number().required('Start date month is required'),
+        title: Yup.string().required('Please provide a job title'),
+        company: Yup.string().required('Please provide a company name'),
+        startDateMonth: Yup.number().required('Please select the start month'),
+        startDateYear: Yup.number()
+          .typeError('Please enter a valid year value')
+          .integer('Please enter a valid year value')
+          .positive('Please enter a valid year value')
+          .required('Please provide the start year')
+          .max(new Date().getFullYear(), 'Please enter a valid year value')
+          .min(
+            new Date().getFullYear() - 100,
+            'Please enter a valid year value'
+          ),
         endDateMonth: Yup.number().when('current', {
           is: false,
-          then: Yup.number().required('End date month is required'),
+          then: Yup.number().required('Please select the end month'),
         }),
-        startDateYear: Yup.number().required('Start date year is required!'),
-        current: Yup.boolean(),
         endDateYear: Yup.number().when('current', {
           is: false,
-          then: Yup.number().required(
-            'Provide an end date year or check the box!'
-          ),
+          then: Yup.number()
+            .typeError('Please enter a valid year value')
+            .integer('Please enter a valid year value')
+            .positive('Please enter a valid year value')
+            .required('Please provide the end year')
+            .max(new Date().getFullYear(), 'Please enter a valid year value')
+            .min(
+              new Date().getFullYear() - 100,
+              'Please enter a valid year value'
+            ),
         }),
       })
     ),
@@ -300,13 +309,13 @@ export function JobseekerFormSectionProfessionalExperience({
                         <FormInput
                           name={`experience[${index}].title`}
                           placeholder="Junior Frontend Developer"
-                          label="Title of your position"
+                          label="Title of your position*"
                           {...formik}
                         />
                         <FormInput
                           name={`experience[${index}].company`}
                           placeholder="Microsoft"
-                          label="Company"
+                          label="Company*"
                           {...formik}
                         />
                         <FormInput
@@ -345,7 +354,7 @@ export function JobseekerFormSectionProfessionalExperience({
                           <Columns.Column size={6}>
                             <FormSelect
                               name={`experience[${index}].startDateMonth`}
-                              label="Started in month"
+                              label="Started in month*"
                               items={formMonthsOptions}
                               {...formik}
                             />
@@ -353,8 +362,7 @@ export function JobseekerFormSectionProfessionalExperience({
                           <Columns.Column size={6}>
                             <FormInput
                               name={`experience[${index}].startDateYear`}
-                              label="Started in year"
-                              type="number"
+                              label="Started in year*"
                               {...formik}
                             />
                           </Columns.Column>
@@ -365,7 +373,7 @@ export function JobseekerFormSectionProfessionalExperience({
                             <Columns.Column size={6}>
                               <FormSelect
                                 name={`experience[${index}].endDateMonth`}
-                                label="Ended in month"
+                                label="Ended in month*"
                                 items={formMonthsOptions}
                                 {...formik}
                               />
@@ -373,8 +381,7 @@ export function JobseekerFormSectionProfessionalExperience({
                             <Columns.Column size={6}>
                               <FormInput
                                 name={`experience[${index}].endDateYear`}
-                                label="Ended in year"
-                                type="number"
+                                label="Ended in year*"
                                 {...formik}
                               />
                             </Columns.Column>
