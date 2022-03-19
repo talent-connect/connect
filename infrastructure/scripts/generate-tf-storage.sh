@@ -1,7 +1,7 @@
 #!/bin/bash
 
-STORAGE_ACCOUNT_NAME=redplatformtfprod$RANDOM
-RESOURCE_GROUP_NAME=red-platform
+STORAGE_ACCOUNT_NAME=redplatformtf$RANDOM
+RESOURCE_GROUP_NAME=red-platform-terraform-state
 CONTAINER_NAME=terraform-state
 
 # Create storage account

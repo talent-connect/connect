@@ -6,17 +6,14 @@ locals {
   env_prefix              = "${local.env}-${var.organisation}"
   env_prefix_no_separator = "${local.env}${var.organisation}"
   // todo these two need to be rcemoved when we move to REDI connect azure account.
-  resource-group-name     = "red-platform"
+  resource-group-name     = "red-platform-env-${local.env}"
   resource-group-location = "germanywestcentral"
 }
 
-// todo
-//  In reality we would like terraform to create this resource group for us in azure.
-//  However since we are operating now under the microsoft account we have a resource group created for us.
-//resource "azurerm_resource_group" "webapp-rg" {
-//  name     = "rg-${local.env_prefix}"
-//  location = var.location
-//}
+resource "azurerm_resource_group" "rg" {
+  name     = "red-platform-env-${local.env_prefix}"
+  location = var.location
+}
 
 #---------------------------------------------------------
 # Storage Account Creation and enable static website
@@ -30,6 +27,8 @@ module "static-website-berlin" {
   resource-group-location = local.resource-group-location
   env_prefix              = local.env_prefix
   env_prefix_no_separator = local.env_prefix_no_separator
+  # TODO: make this dynamic and env-specific
+  depends_on               = [azurerm_resource_group.rg]
 }
 
 module "static-website-munich" {
@@ -41,6 +40,8 @@ module "static-website-munich" {
   resource-group-location = local.resource-group-location
   env_prefix              = local.env_prefix
   env_prefix_no_separator = local.env_prefix_no_separator
+  # TODO: make this dynamic and env-specific
+  depends_on               = [azurerm_resource_group.rg]
 }
 
 module "static-website-picker" {
@@ -52,6 +53,8 @@ module "static-website-picker" {
   resource-group-location = local.resource-group-location
   env_prefix              = local.env_prefix
   env_prefix_no_separator = local.env_prefix_no_separator
+  # TODO: make this dynamic and env-specific
+  depends_on               = [azurerm_resource_group.rg]
 }
 
 module "static-website-nrw" {
@@ -63,6 +66,8 @@ module "static-website-nrw" {
   resource-group-location = local.resource-group-location
   env_prefix              = local.env_prefix
   env_prefix_no_separator = local.env_prefix_no_separator
+  # TODO: make this dynamic and env-specific
+  depends_on               = [azurerm_resource_group.rg]
 }
 
 module "static-website-tp" {
@@ -74,6 +79,8 @@ module "static-website-tp" {
   resource-group-location = local.resource-group-location
   env_prefix              = local.env_prefix
   env_prefix_no_separator = local.env_prefix_no_separator
+  # TODO: make this dynamic and env-specific
+  depends_on               = [azurerm_resource_group.rg]
 }
 
 #---------------------------------------------------------
@@ -85,6 +92,8 @@ resource "azurerm_container_registry" "acr" {
   location            = var.location
   sku                 = var.tier
   admin_enabled       = true
+  # TODO: make this dynamic and env-specific
+  depends_on               = [azurerm_resource_group.rg]
 }
 
 module "web_app_container" {
@@ -101,4 +110,7 @@ module "web_app_container" {
     name     = "plan-${local.env_prefix}"
     sku_size = var.sku_size
   }
+
+  # TODO: make this dynamic and env-specific
+ depends_on               = [azurerm_resource_group.rg]
 }

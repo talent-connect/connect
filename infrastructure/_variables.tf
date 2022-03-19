@@ -1,9 +1,3 @@
-variable "organisation" {
-  type        = string
-  description = "This variable defines the name of the company"
-  default     = "red"
-}
-
 variable "location" {
   type        = string
   description = "Azure region where resources will be created"
