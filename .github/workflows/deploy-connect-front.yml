@@ -62,7 +62,7 @@ jobs:
 
           # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
           # For instance you have an unused variable on your code
-          CI: ''
+          CI: ""
         run: yarn build:redi-connect:berlin
 
       - name: Upload webapp artifacts to blob storage
@@ -112,7 +112,7 @@ jobs:
 
           # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
           # For instance you have an unused variable on your code
-          CI: ''
+          CI: ""
         run: yarn build:redi-connect:munich
 
       - name: Upload webapp artifacts to blob storage
@@ -161,7 +161,7 @@ jobs:
 
           # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
           # For instance you have an unused variable on your code
-          CI: ''
+          CI: ""
         run: yarn build:redi-connect:nrw
 
       - name: Upload webapp artifacts to blob storage
@@ -210,7 +210,7 @@ jobs:
 
           # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
           # For instance you have an unused variable on your code
-          CI: ''
+          CI: ""
         run: yarn build:redi-connect:location-picker
 
       - name: Upload webapp artifacts to blob storage
@@ -259,7 +259,7 @@ jobs:
 
           # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
           # For instance you have an unused variable on your code
-          CI: ''
+          CI: ""
         run: yarn build:redi-talent-pool
 
       - name: Upload webapp artifacts to blob storage
@@ -279,8 +279,10 @@ jobs:
           az logout
 
 
-  deploy-berlin-production:
-#    if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
+
+  deploy-berlin-prod:
+    #    TODO uncomment when you merge on master
+    # if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
     needs: [deploy-berlin-staging]
     environment:
       name: production
@@ -305,7 +307,7 @@ jobs:
 
       - name: Build webapp
         env:
-          # CI needs to be `true` ideally. However at the moment the app wont build because of some js errors.
+          # CI needs to be `true` ideally. However at the moment the app won't build because of some js errors.
           # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
           # For instance you have an unused variable on your code
           CI: ""
@@ -314,21 +316,20 @@ jobs:
       - name: Upload webapp artifacts to blob storage
         uses: azure/CLI@v1
         with:
-          azcliversion:  2.19.1
           inlineScript: |
             az storage blob upload-batch --account-name "frontberlinprodredos" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
       - name: Purge pre-loaded content for the CDN endpoint
         uses: azure/CLI@v1
         with:
-          azcliversion: 2.19.1
           inlineScript: |
-            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-berlin-prod-redos" --name "cdn-endpoint-front-berlin-prod-redos" --resource-group "red-platform-staging"
+            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-berlin-prod-redos" --name "cdn-endpoint-front-berlin-prod-redos" --resource-group "red-platform-prod"
       - name: Logout from Azure
         run: |
           az logout
 
-  deploy-munich-production:
-#    if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
+  deploy-munich-prod:
+    #    TODO uncomment when you merge on master
+    # if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
     needs: [deploy-munich-staging]
     environment:
       name: production
@@ -353,7 +354,7 @@ jobs:
 
       - name: Build webapp
         env:
-          # CI needs to be `true` ideally. However at the moment the app wont build because of some js errors.
+          # CI needs to be `true` ideally. However at the moment the app won't build because of some js errors.
           # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
           # For instance you have an unused variable on your code
           CI: ""
@@ -362,21 +363,19 @@ jobs:
       - name: Upload webapp artifacts to blob storage
         uses: azure/CLI@v1
         with:
-          azcliversion:  2.19.1
           inlineScript: |
             az storage blob upload-batch --account-name "frontmunichprodredos" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
       - name: Purge pre-loaded content for the CDN endpoint
         uses: azure/CLI@v1
         with:
-          azcliversion: 2.19.1
           inlineScript: |
-            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-munich-prod-redos" --name "cdn-endpoint-front-munich-prod-redos" --resource-group "red-platform-staging"
+            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-munich-prod-redos" --name "cdn-endpoint-front-munich-prod-redos" --resource-group "red-platform-prod"
       - name: Logout from Azure
         run: |
           az logout
 
-  deploy-nrw-production:
-#    if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
+  deploy-nrw-prod:
+    # if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
     needs: [deploy-nrw-staging]
     environment:
       name: production
@@ -401,7 +400,7 @@ jobs:
 
       - name: Build webapp
         env:
-          # CI needs to be `true` ideally. However at the moment the app wont build because of some js errors.
+          # CI needs to be `true` ideally. However at the moment the app won't build because of some js errors.
           # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
           # For instance you have an unused variable on your code
           CI: ""
@@ -410,21 +409,19 @@ jobs:
       - name: Upload webapp artifacts to blob storage
         uses: azure/CLI@v1
         with:
-          azcliversion:  2.19.1
           inlineScript: |
             az storage blob upload-batch --account-name "frontnrwprodredos" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
       - name: Purge pre-loaded content for the CDN endpoint
         uses: azure/CLI@v1
         with:
-          azcliversion: 2.19.1
           inlineScript: |
-            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-nrw-prod-redos" --name "cdn-endpoint-front-nrw-prod-redos" --resource-group "red-platform-staging"
+            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-nrw-prod-redos" --name "cdn-endpoint-front-nrw-prod-redos" --resource-group "red-platform-prod"
       - name: Logout from Azure
         run: |
           az logout
 
-  deploy-picker-production:
-#    if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
+  deploy-picker-prod:
+    # if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
     needs: [deploy-picker-staging]
     environment:
       name: production
@@ -449,7 +446,7 @@ jobs:
 
       - name: Build webapp
         env:
-          # CI needs to be `true` ideally. However at the moment the app wont build because of some js errors.
+          # CI needs to be `true` ideally. However at the moment the app won't build because of some js errors.
           # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
           # For instance you have an unused variable on your code
           CI: ""
@@ -458,21 +455,19 @@ jobs:
       - name: Upload webapp artifacts to blob storage
         uses: azure/CLI@v1
         with:
-          azcliversion:  2.19.1
           inlineScript: |
             az storage blob upload-batch --account-name "frontpickerprodredos" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
       - name: Purge pre-loaded content for the CDN endpoint
         uses: azure/CLI@v1
         with:
-          azcliversion: 2.19.1
           inlineScript: |
-            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-picker-prod-redos" --name "cdn-endpoint-front-picker-prod-redos" --resource-group "red-platform-staging"
+            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-picker-prod-redos" --name "cdn-endpoint-front-picker-prod-redos" --resource-group "red-platform-prod"
       - name: Logout from Azure
         run: |
           az logout
 
-  deploy-tp-production:
-#    if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
+  deploy-tp-prod:
+    # if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
     needs: [deploy-tp-staging]
     environment:
       name: production
@@ -497,24 +492,22 @@ jobs:
 
       - name: Build webapp
         env:
-          # CI needs to be `true` ideally. However at the moment the app wont build because of some js errors.
+          # CI needs to be `true` ideally. However at the moment the app won't build because of some js errors.
           # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
           # For instance you have an unused variable on your code
           CI: ""
-        run: yarn build:redi-connect:tp
+        run: yarn build:redi-talent-pool
 
       - name: Upload webapp artifacts to blob storage
         uses: azure/CLI@v1
         with:
-          azcliversion:  2.19.1
           inlineScript: |
             az storage blob upload-batch --account-name "fronttpprodredos" --auth-mode key -d '$web' -s ./dist/apps/redi-talent-pool
       - name: Purge pre-loaded content for the CDN endpoint
         uses: azure/CLI@v1
         with:
-          azcliversion: 2.19.1
           inlineScript: |
-            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-tp-prod-redos" --name "cdn-endpoint-front-tp-prod-redos" --resource-group "red-platform-staging"
+            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-tp-prod-redos" --name "cdn-endpoint-front-tp-prod-redos" --resource-group "red-platform-prod"
       - name: Logout from Azure
         run: |
           az logout
