@@ -316,7 +316,7 @@ jobs:
         with:
           azcliversion:  2.19.1
           inlineScript: |
-            az storage blob upload-batch --account-name "frontberlinprodredos" -d '$web' -s ./redi-connect-front/build
+            az storage blob upload-batch --account-name "frontberlinprodredos" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
       - name: Purge pre-loaded content for the CDN endpoint
         uses: azure/CLI@v1
         with:
@@ -364,7 +364,7 @@ jobs:
         with:
           azcliversion:  2.19.1
           inlineScript: |
-            az storage blob upload-batch --account-name "frontmunichprodredos" -d '$web' -s ./redi-connect-front/build
+            az storage blob upload-batch --account-name "frontmunichprodredos" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
       - name: Purge pre-loaded content for the CDN endpoint
         uses: azure/CLI@v1
         with:
@@ -412,7 +412,7 @@ jobs:
         with:
           azcliversion:  2.19.1
           inlineScript: |
-            az storage blob upload-batch --account-name "frontnrwprodredos" -d '$web' -s ./redi-connect-front/build
+            az storage blob upload-batch --account-name "frontnrwprodredos" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
       - name: Purge pre-loaded content for the CDN endpoint
         uses: azure/CLI@v1
         with:
@@ -460,7 +460,7 @@ jobs:
         with:
           azcliversion:  2.19.1
           inlineScript: |
-            az storage blob upload-batch --account-name "frontpickerprodredos" -d '$web' -s ./redi-connect-front/build
+            az storage blob upload-batch --account-name "frontpickerprodredos" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
       - name: Purge pre-loaded content for the CDN endpoint
         uses: azure/CLI@v1
         with:
@@ -508,7 +508,7 @@ jobs:
         with:
           azcliversion:  2.19.1
           inlineScript: |
-            az storage blob upload-batch --account-name "fronttpprodredos" -d '$web' -s ./redi-connect-front/build
+            az storage blob upload-batch --account-name "fronttpprodredos" --auth-mode key -d '$web' -s ./dist/apps/redi-talent-pool
       - name: Purge pre-loaded content for the CDN endpoint
         uses: azure/CLI@v1
         with:
