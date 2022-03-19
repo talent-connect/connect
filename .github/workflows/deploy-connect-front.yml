@@ -6,10 +6,10 @@ on:
       - master
       - chore/reinstate-terraform-for-azure-migration
       - chore/latest-terraform-greek-god-awesome-stuff-terrastos
-    paths:
-      - 'apps/redi-connect/**'
-      - 'libs/**'
-      - '.github/workflows/deploy-connect-front.yml'
+#    paths:
+#      - 'apps/redi-connect/**'
+#      - 'libs/**'
+#      - '.github/workflows/deploy-connect-front.yml'
 
 jobs:
   install:

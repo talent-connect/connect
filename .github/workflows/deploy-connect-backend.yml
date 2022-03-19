@@ -7,9 +7,9 @@ on:
       - chore/reinstate-terraform-for-azure-migration
       - chore/latest-terraform-greek-god-awesome-stuff-terrastos
 
-    paths:
-      - 'apps/nestjs-api/**'
-      - '.github/workflows/deploy-connect-backend.yml'
+#    paths:
+#      - 'apps/nestjs-api/**'
+#      - '.github/workflows/deploy-connect-backend.yml'
 
 jobs:
   deploy-staging:
