@@ -1,9 +1,10 @@
 # Connect
 
-You'll find two sister products in this repository:
+You'll find three sister products in this repository:
 
 - ReDI Connect, a tool to connect mentees to mentors, deployed to https://connect.redi-school.org
 - ReDI Talent Pool, a tool to connect jobseekers to companies and get jobs, deployed to https://talent-pool.redi-school.org
+- Christos
 
 Both are created, run and managed by [ReDI School of Digital Integration](https://www.redi-school.org). We're a non-profit school in Germany (in Berlin, Hamburg, Munich and NRW) with a community of hundreds of professionals from the digital industry volunteering to teach and mentor students. Our students are tech-interested locals and newcomers to Germany.
 
