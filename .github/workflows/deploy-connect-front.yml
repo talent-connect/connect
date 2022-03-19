@@ -74,7 +74,7 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-berlin-staging-redos" --name "cdn-endpoint-front-berlin-staging-redos" --resource-group "red-platform-env-staging"
+            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-berlin-staging-redos" --name "cdn-endpoint-front-berlin-staging-redos" --resource-group "red-platform-staging"
 
       - name: Logout from Azure
         run: |
@@ -123,7 +123,7 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-munich-staging-redos" --name "cdn-endpoint-front-munich-staging-redos" --resource-group "red-platform-env-staging"
+            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-munich-staging-redos" --name "cdn-endpoint-front-munich-staging-redos" --resource-group "red-platform-staging"
 
       - name: Logout from Azure
         run: |
@@ -172,7 +172,7 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-nrw-staging-redos" --name "cdn-endpoint-front-nrw-staging-redos" --resource-group "red-platform-env-staging"
+            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-nrw-staging-redos" --name "cdn-endpoint-front-nrw-staging-redos" --resource-group "red-platform-staging"
 
       - name: Logout from Azure
         run: |
@@ -221,7 +221,7 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-picker-staging-redos" --name "cdn-endpoint-front-picker-staging-redos" --resource-group "red-platform-env-staging"
+            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-picker-staging-redos" --name "cdn-endpoint-front-picker-staging-redos" --resource-group "red-platform-staging"
 
       - name: Logout from Azure
         run: |
@@ -270,7 +270,7 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-tp-staging-redos" --name "cdn-endpoint-front-tp-staging-redos" --resource-group "red-platform-env-staging"
+            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-tp-staging-redos" --name "cdn-endpoint-front-tp-staging-redos" --resource-group "red-platform-staging"
 
       - name: Logout from Azure
         run: |
