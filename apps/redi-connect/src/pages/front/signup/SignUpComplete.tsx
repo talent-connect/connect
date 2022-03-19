@@ -42,13 +42,41 @@ export default function SignUpComplete() {
               </p>
             )}
             {userType === 'public-sign-up-mentee-pending-review' && (
-              <p>
-                Now, we would like to get to know you better. To activate your
-                account,{' '}
-                <a href="https://calendly.com/d/ch4-6xt-2j3/mentee-onboarding-to-redi-connect">
-                  <strong>please schedule a 15-minute meeting with us. </strong>
-                </a>
-              </p>
+              <>
+                <p>
+                  Your next step is to watch a short onboarding tutorial to get
+                  a good overview of the mentorship program and how our matching
+                  platform ReDI Connect works.
+                </p>
+                <p>
+                  <a
+                    href="https://www.youtube.com/watch?v=M3nwS3QfdMM"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <img
+                      style={{ width: '100%' }}
+                      src="https://redi-connect-email-assets.s3.eu-west-1.amazonaws.com/redi-connect-sign-up-video-thumbnail.jpeg"
+                      alt=""
+                    />
+                  </a>
+                </p>
+
+                <p>
+                  Your <strong>final step</strong> after watching this video
+                  will be your activation call with our team.
+                </p>
+                <p>
+                  <a
+                    href="https://calendly.com/johanna-redi-team/redi-connect-mentee-activation"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Schedule your activation call now
+                  </a>
+                  .
+                </p>
+              </>
             )}
           </Content>
           <Form.Field className="submit-spacer">

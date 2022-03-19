@@ -380,11 +380,6 @@ export const COURSES = [
     label: `UX/UI Design Basics`,
     location: 'hamburg',
   },
-  {
-    id: 'hamburg_alumni',
-    label: `I'm a ReDI School alumni (I took a course before)`,
-    location: 'hamburg',
-  },
 
   {
     id: 'munich_introComputerScience',
