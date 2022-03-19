@@ -32,6 +32,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
   deploy-berlin-staging:
+    #    TODO uncomment when you merge on master
     # if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
     needs: [install]
     environment:
@@ -81,6 +82,7 @@ jobs:
           az logout
 
   deploy-munich-staging:
+    #    TODO uncomment when you merge on master
     # if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
     needs: [install]
     environment:
@@ -275,3 +277,245 @@ jobs:
       - name: Logout from Azure
         run: |
           az logout
+
+
+  deploy-berlin-production:
+#    if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
+    needs: [deploy-berlin-staging]
+    environment:
+      name: production
+      url: https://cdn-endpoint-front-berlin-prod-redos.azureedge.net
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+
+      - uses: actions/cache@v2
+        id: yarn-cache
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Login in Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Build webapp
+        env:
+          # CI needs to be `true` ideally. However at the moment the app wont build because of some js errors.
+          # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
+          # For instance you have an unused variable on your code
+          CI: ""
+        run: yarn build:redi-connect:berlin
+
+      - name: Upload webapp artifacts to blob storage
+        uses: azure/CLI@v1
+        with:
+          azcliversion:  2.19.1
+          inlineScript: |
+            az storage blob upload-batch --account-name "frontberlinprodredos" -d '$web' -s ./redi-connect-front/build
+      - name: Purge pre-loaded content for the CDN endpoint
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.19.1
+          inlineScript: |
+            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-berlin-prod-redos" --name "cdn-endpoint-front-berlin-prod-redos" --resource-group "red-platform-staging"
+      - name: Logout from Azure
+        run: |
+          az logout
+
+  deploy-munich-production:
+#    if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
+    needs: [deploy-munich-staging]
+    environment:
+      name: production
+      url: https://cdn-endpoint-front-munich-prod-redos.azureedge.net
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+
+      - uses: actions/cache@v2
+        id: yarn-cache
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Login in Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Build webapp
+        env:
+          # CI needs to be `true` ideally. However at the moment the app wont build because of some js errors.
+          # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
+          # For instance you have an unused variable on your code
+          CI: ""
+        run: yarn build:redi-connect:munich
+
+      - name: Upload webapp artifacts to blob storage
+        uses: azure/CLI@v1
+        with:
+          azcliversion:  2.19.1
+          inlineScript: |
+            az storage blob upload-batch --account-name "frontmunichprodredos" -d '$web' -s ./redi-connect-front/build
+      - name: Purge pre-loaded content for the CDN endpoint
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.19.1
+          inlineScript: |
+            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-munich-prod-redos" --name "cdn-endpoint-front-munich-prod-redos" --resource-group "red-platform-staging"
+      - name: Logout from Azure
+        run: |
+          az logout
+
+  deploy-nrw-production:
+#    if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
+    needs: [deploy-nrw-staging]
+    environment:
+      name: production
+      url: https://cdn-endpoint-front-nrw-prod-redos.azureedge.net
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+
+      - uses: actions/cache@v2
+        id: yarn-cache
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Login in Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Build webapp
+        env:
+          # CI needs to be `true` ideally. However at the moment the app wont build because of some js errors.
+          # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
+          # For instance you have an unused variable on your code
+          CI: ""
+        run: yarn build:redi-connect:nrw
+
+      - name: Upload webapp artifacts to blob storage
+        uses: azure/CLI@v1
+        with:
+          azcliversion:  2.19.1
+          inlineScript: |
+            az storage blob upload-batch --account-name "frontnrwprodredos" -d '$web' -s ./redi-connect-front/build
+      - name: Purge pre-loaded content for the CDN endpoint
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.19.1
+          inlineScript: |
+            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-nrw-prod-redos" --name "cdn-endpoint-front-nrw-prod-redos" --resource-group "red-platform-staging"
+      - name: Logout from Azure
+        run: |
+          az logout
+
+  deploy-picker-production:
+#    if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
+    needs: [deploy-picker-staging]
+    environment:
+      name: production
+      url: https://cdn-endpoint-front-picker-prod-redos.azureedge.net
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+
+      - uses: actions/cache@v2
+        id: yarn-cache
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Login in Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Build webapp
+        env:
+          # CI needs to be `true` ideally. However at the moment the app wont build because of some js errors.
+          # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
+          # For instance you have an unused variable on your code
+          CI: ""
+        run: yarn build:redi-connect:picker
+
+      - name: Upload webapp artifacts to blob storage
+        uses: azure/CLI@v1
+        with:
+          azcliversion:  2.19.1
+          inlineScript: |
+            az storage blob upload-batch --account-name "frontpickerprodredos" -d '$web' -s ./redi-connect-front/build
+      - name: Purge pre-loaded content for the CDN endpoint
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.19.1
+          inlineScript: |
+            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-picker-prod-redos" --name "cdn-endpoint-front-picker-prod-redos" --resource-group "red-platform-staging"
+      - name: Logout from Azure
+        run: |
+          az logout
+
+  deploy-tp-production:
+#    if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
+    needs: [deploy-tp-staging]
+    environment:
+      name: production
+      url: https://cdn-endpoint-front-tp-prod-redos.azureedge.net
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+
+      - uses: actions/cache@v2
+        id: yarn-cache
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Login in Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Build webapp
+        env:
+          # CI needs to be `true` ideally. However at the moment the app wont build because of some js errors.
+          # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
+          # For instance you have an unused variable on your code
+          CI: ""
+        run: yarn build:redi-connect:tp
+
+      - name: Upload webapp artifacts to blob storage
+        uses: azure/CLI@v1
+        with:
+          azcliversion:  2.19.1
+          inlineScript: |
+            az storage blob upload-batch --account-name "fronttpprodredos" -d '$web' -s ./redi-connect-front/build
+      - name: Purge pre-loaded content for the CDN endpoint
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.19.1
+          inlineScript: |
+            az cdn endpoint purge --content-paths  "/*" --profile-name "cdn-profile-front-tp-prod-redos" --name "cdn-endpoint-front-tp-prod-redos" --resource-group "red-platform-staging"
+      - name: Logout from Azure
+        run: |
+          az logout
+

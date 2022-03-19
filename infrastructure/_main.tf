@@ -27,7 +27,7 @@ module "static-website-berlin" {
   resource-group-location = local.resource-group-location
   env_prefix              = local.env_prefix
   env_prefix_no_separator = local.env_prefix_no_separator
-  # TODO: make this dynamic and env-specific
+
   depends_on               = [azurerm_resource_group.rg]
 }
 
@@ -40,7 +40,7 @@ module "static-website-munich" {
   resource-group-location = local.resource-group-location
   env_prefix              = local.env_prefix
   env_prefix_no_separator = local.env_prefix_no_separator
-  # TODO: make this dynamic and env-specific
+
   depends_on               = [azurerm_resource_group.rg]
 }
 
@@ -53,7 +53,7 @@ module "static-website-picker" {
   resource-group-location = local.resource-group-location
   env_prefix              = local.env_prefix
   env_prefix_no_separator = local.env_prefix_no_separator
-  # TODO: make this dynamic and env-specific
+
   depends_on               = [azurerm_resource_group.rg]
 }
 
@@ -66,7 +66,7 @@ module "static-website-nrw" {
   resource-group-location = local.resource-group-location
   env_prefix              = local.env_prefix
   env_prefix_no_separator = local.env_prefix_no_separator
-  # TODO: make this dynamic and env-specific
+
   depends_on               = [azurerm_resource_group.rg]
 }
 
@@ -79,7 +79,7 @@ module "static-website-tp" {
   resource-group-location = local.resource-group-location
   env_prefix              = local.env_prefix
   env_prefix_no_separator = local.env_prefix_no_separator
-  # TODO: make this dynamic and env-specific
+
   depends_on               = [azurerm_resource_group.rg]
 }
 
@@ -92,7 +92,7 @@ resource "azurerm_container_registry" "acr" {
   location            = var.location
   sku                 = var.tier
   admin_enabled       = true
-  # TODO: make this dynamic and env-specific
+
   depends_on               = [azurerm_resource_group.rg]
 }
 
@@ -107,10 +107,9 @@ module "web_app_container" {
   container_image          = "${azurerm_container_registry.acr.login_server}/red-platform-backend:latest"
 
   plan = {
-    name                     = "app-${local.env_prefix}"
+    name                     = "api-${local.env_prefix}"
     sku_size = var.sku_size
   }
 
-  # TODO: make this dynamic and env-specific
  depends_on               = [azurerm_resource_group.rg]
 }
