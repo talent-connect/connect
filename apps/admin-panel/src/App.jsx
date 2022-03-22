@@ -34,7 +34,10 @@ import {
   TpJobseekerProfileState,
 } from '@talent-connect/shared-types'
 import { calculateAge } from '@talent-connect/shared-utils'
-import { howDidHearAboutRediOptions } from '@talent-connect/talent-pool/config'
+import {
+  germanFederalStates,
+  howDidHearAboutRediOptions,
+} from '@talent-connect/talent-pool/config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
 import classNames from 'classnames'
 import { get, groupBy, keyBy, mapValues } from 'lodash'
@@ -1394,6 +1397,10 @@ const TpJobseekerProfileShow = (props) => (
           <TextField source="profileImage" />
           <TextField source="phoneNumber" />
           <TextField source="location" />
+          <FunctionField
+            label="Location (Federal State)"
+            render={(record) => germanFederalStates[record?.federalState]}
+          />
           <TextField source="personalWebsite" />
           <TextField source="githubUrl" />
           <TextField source="linkedInUrl" />
@@ -1544,6 +1551,14 @@ const TpJobseekerProfileEdit = (props) => (
         <TextField source="profileImage" />
         <TextInput source="phoneNumber" />
         <TextInput source="location" />
+        <SelectInput
+          label="Location (Federal State)"
+          source="federalState"
+          choices={Object.entries(germanFederalStates).map(([id, name]) => ({
+            id,
+            name,
+          }))}
+        />
         <TextInput source="personalWebsite" />
         <TextInput source="githubUrl" />
         <TextInput source="linkedInUrl" />

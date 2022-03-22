@@ -21,6 +21,7 @@ export type TpJobseekerProfile = {
   phoneNumber?: string
   postalMailingAddress?: string
   location?: string
+  federalState?: string
 
   personalWebsite?: string
   githubUrl?: string
