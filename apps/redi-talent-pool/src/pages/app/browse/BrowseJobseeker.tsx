@@ -28,6 +28,7 @@ import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseeker
 
 import { LoggedIn } from '../../../components/templates'
 import { JobListingCard } from '../../../components/organisms/JobListingCard'
+import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 
 export function BrowseJobseeker() {
   const [companyName, setCompanyName] = useState('')
@@ -38,6 +39,7 @@ export function BrowseJobseeker() {
     idealTechnicalSkills: withDefault(ArrayParam, []),
     employmentType: withDefault(ArrayParam, []),
     federalStates: withDefault(ArrayParam, []),
+    onlyFavorites: withDefault(BooleanParam, undefined),
     isJobFair2022JobListing: withDefault(BooleanParam, undefined),
   })
   const {
@@ -45,10 +47,15 @@ export function BrowseJobseeker() {
     idealTechnicalSkills,
     employmentType,
     federalStates,
+    onlyFavorites,
     isJobFair2022JobListing,
   } = query
 
   const history = useHistory()
+
+  const { data: jobseekerProfile } = useTpJobseekerProfileQuery()
+  const tpjobseekerprofileUpdateMutation = useTpjobseekerprofileUpdateMutation()
+
   const { data: jobListings } = useBrowseTpJobListingsQuery({
     relatedPositions,
     idealTechnicalSkills,
@@ -56,6 +63,23 @@ export function BrowseJobseeker() {
     federalStates,
     isJobFair2022JobListing,
   })
+
+  const toggleFavorites = (value) => {
+    const newFavorites = !jobseekerProfile.favouritedTpJobListingIds
+      ? [value]
+      : toggleValueInArray(jobseekerProfile.favouritedTpJobListingIds, value)
+
+    tpjobseekerprofileUpdateMutation.mutate({
+      favouritedTpJobListingIds: newFavorites,
+    })
+  }
+
+  const toggleOnlyFavoritesFilter = () => {
+    setQuery((latestQuery) => ({
+      ...latestQuery,
+      onlyFavorites: onlyFavorites ? undefined : true,
+    }))
+  }
 
   const toggleFilters = (filtersArr, filterName, item) => {
     const newFilters = toggleValueInArray(filtersArr, item)
@@ -143,6 +167,17 @@ export function BrowseJobseeker() {
             }
           />
         </div>
+        <div
+          className="filters-inner filter-favourites"
+          onClick={toggleOnlyFavoritesFilter}
+        >
+          <Icon
+            icon={onlyFavorites ? 'heartFilled' : 'heart'}
+            className="filter-favourites__icon"
+            space="right"
+          />
+          Only Favorites
+        </div>
         <div className="filters-inner filters__jobfair2022">
           <Checkbox
             name="isJobFair2022JobListing"
@@ -215,17 +250,28 @@ export function BrowseJobseeker() {
               .toLowerCase()
               .includes(companyName.toLowerCase())
           )
-          .map((jobListing) => (
-            <Columns.Column mobile={{ size: 12 }} tablet={{ size: 6 }}>
-              <JobListingCard
-                key={jobListing.id}
-                jobListing={jobListing}
-                onClick={() =>
-                  history.push(`/app/job-listing/${jobListing.id}`)
-                }
-              />
-            </Columns.Column>
-          ))}
+          .map((jobListing) => {
+            const isFavorite =
+              jobseekerProfile.favouritedTpJobListingIds?.includes(
+                jobListing.id
+              )
+
+            if (!isFavorite && onlyFavorites) return
+
+            return (
+              <Columns.Column mobile={{ size: 12 }} tablet={{ size: 6 }}>
+                <JobListingCard
+                  key={jobListing.id}
+                  jobListing={jobListing}
+                  onClick={() =>
+                    history.push(`/app/job-listing/${jobListing.id}`)
+                  }
+                  toggleFavorite={toggleFavorites}
+                  isFavorite={isFavorite}
+                />
+              </Columns.Column>
+            )
+          })}
       </Columns>
     </LoggedIn>
   )

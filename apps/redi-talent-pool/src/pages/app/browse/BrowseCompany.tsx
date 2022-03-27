@@ -75,10 +75,9 @@ export function BrowseCompany() {
   const tpCompanyProfileUpdateMutation = useTpCompanyProfileUpdateMutation()
 
   const toggleFavorites = (value) => {
-    const newFavorites = toggleValueInArray(
-      companyProfile.favouritedTpJobseekerIds,
-      value
-    )
+    const newFavorites = !companyProfile.favouritedTpJobseekerIds
+      ? [value]
+      : toggleValueInArray(companyProfile.favouritedTpJobseekerIds, value)
 
     tpCompanyProfileUpdateMutation.mutate({
       favouritedTpJobseekerIds: newFavorites,
@@ -278,7 +277,7 @@ export function BrowseCompany() {
       </div>
       <Columns>
         {jobseekerProfiles?.map((profile) => {
-          const isFavorite = companyProfile.favouritedTpJobseekerIds.includes(
+          const isFavorite = companyProfile.favouritedTpJobseekerIds?.includes(
             profile.id
           )
 

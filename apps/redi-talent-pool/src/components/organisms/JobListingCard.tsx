@@ -1,10 +1,11 @@
-import { CardTags } from '@talent-connect/shared-atomic-design-components'
+import React from 'react'
+import classnames from 'clsx'
+import { Card, Element } from 'react-bulma-components'
+
+import { CardTags, Icon } from '@talent-connect/shared-atomic-design-components'
 import { AWS_PROFILE_AVATARS_BUCKET_BASE_URL } from '@talent-connect/shared-config'
 import { TpJobListing } from '@talent-connect/shared-types'
 import { topSkillsIdToLabelMap } from '@talent-connect/talent-pool/config'
-import classnames from 'clsx'
-import React from 'react'
-import { Card, Element } from 'react-bulma-components'
 // import placeholderImage from '../../assets/images/img-placeholder.png'
 import './JobListingCard.scss'
 
@@ -30,10 +31,10 @@ export function JobListingCard({
   const companyAvatarImage =
     jobListing?.tpCompanyProfile?.profileAvatarImageS3Key
 
-  // const handleFavorite = (e: React.MouseEvent) => {
-  //   e.stopPropagation()
-  //   toggleFavorite && toggleFavorite(profile.id)
-  // }
+  const handleFavorite = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    toggleFavorite && toggleFavorite(jobListing.id)
+  }
 
   const imgSrc = companyAvatarImage
     ? AWS_PROFILE_AVATARS_BUCKET_BASE_URL + companyAvatarImage
@@ -52,14 +53,14 @@ export function JobListingCard({
         alt={jobTitle}
       />
       <Card.Content>
-        {/* {toggleFavorite && (
+        {toggleFavorite && (
           <div className="job-posting-card__favorite" onClick={handleFavorite}>
             <Icon
               icon={isFavorite ? 'heartFilled' : 'heart'}
               className="job-posting-card__favorite__icon"
             />
           </div>
-        )} */}
+        )}
         <Element
           key="name"
           renderAs="h3"
