@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useHistory } from 'react-router'
 import {
   ArrayParam,
@@ -47,6 +48,7 @@ export function BrowseCompany() {
     employmentTypes: withDefault(ArrayParam, []),
     skills: withDefault(ArrayParam, []),
     federalStates: withDefault(ArrayParam, []),
+    onlyFavorites: withDefault(BooleanParam, undefined),
     isJobFair2022Participant: withDefault(BooleanParam, undefined),
   })
   const {
@@ -55,6 +57,7 @@ export function BrowseCompany() {
     employmentTypes,
     skills,
     federalStates,
+    onlyFavorites,
     isJobFair2022Participant,
   } = query
 
@@ -80,6 +83,13 @@ export function BrowseCompany() {
     tpCompanyProfileUpdateMutation.mutate({
       favouritedTpJobseekerIds: newFavorites,
     })
+  }
+
+  const toggleOnlyFavoritesFilter = () => {
+    setQuery((latestQuery) => ({
+      ...latestQuery,
+      onlyFavorites: onlyFavorites ? undefined : true,
+    }))
   }
 
   const toggleFilters = (filtersArr, filterName, item) => {
@@ -187,6 +197,19 @@ export function BrowseCompany() {
             }
           />
         </div>
+        <div
+          className="filters-inner filter-favourites"
+          onClick={toggleOnlyFavoritesFilter}
+        >
+          <Icon
+            icon={onlyFavorites ? 'heartFilled' : 'heart'}
+            className="filter-favourites__icon"
+            space="right"
+          />
+          Only Favorites
+        </div>
+      </div>
+      <div className="filters">
         <div className="filters-inner filters__jobfair2022">
           <Checkbox
             name="isJobFair2022Participant"
@@ -254,25 +277,31 @@ export function BrowseCompany() {
         )}
       </div>
       <Columns>
-        {jobseekerProfiles?.map((profile) => (
-          <Columns.Column
-            mobile={{ size: 12 }}
-            tablet={{ size: 6 }}
-            desktop={{ size: 4 }}
-          >
-            <JobseekerProfileCard
-              key={profile.id}
-              jobseekerProfile={profile}
-              onClick={() =>
-                history.push(`/app/jobseeker-profile/${profile.id}`)
-              }
-              toggleFavorite={(item) => toggleFavorites(item)}
-              isFavorite={companyProfile.favouritedTpJobseekerIds.includes(
-                profile.id
-              )}
-            />
-          </Columns.Column>
-        ))}
+        {jobseekerProfiles?.map((profile) => {
+          const isFavorite = companyProfile.favouritedTpJobseekerIds.includes(
+            profile.id
+          )
+
+          if (!isFavorite && onlyFavorites) return
+
+          return (
+            <Columns.Column
+              mobile={{ size: 12 }}
+              tablet={{ size: 6 }}
+              desktop={{ size: 4 }}
+            >
+              <JobseekerProfileCard
+                key={profile.id}
+                jobseekerProfile={profile}
+                onClick={() =>
+                  history.push(`/app/jobseeker-profile/${profile.id}`)
+                }
+                toggleFavorite={(item) => toggleFavorites(item)}
+                isFavorite={isFavorite}
+              />
+            </Columns.Column>
+          )
+        })}
       </Columns>
     </LoggedIn>
   )
