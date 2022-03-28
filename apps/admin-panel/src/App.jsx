@@ -725,11 +725,27 @@ const RedMatchList = (props) => (
         <FullName source="mentor" />
       </ReferenceField>
       <TextField source="status" />
+      <DateField source="matchCompletedOn" label="Completed on" />
+      <RedMatchListRelatedMentoringSessionsNumber label="Number of mentoring sessions" />
       <ShowButton />
       <EditButton />
     </Datagrid>
   </List>
 )
+const RedMatchListRelatedMentoringSessionsNumber = ({
+  record: { mentorId, menteeId },
+}) => {
+  const [mentoringSessions, setMentoringSessions] = React.useState([])
+  useEffect(() => {
+    dataProvider('GET_LIST', 'redMentoringSessions', {
+      pagination: { page: 1, perPage: 0 },
+      sort: { field: 'date', order: 'ASC' },
+      filter: { mentorId, menteeId },
+    }).then(({ data }) => setMentoringSessions(data))
+  }, [mentorId, menteeId])
+  return `${mentoringSessions.length}`
+}
+
 const RedMatchListFilters = (props) => (
   <Filter {...props}>
     <SelectInput source="status" choices={formRedMatchStatuses} />
@@ -781,6 +797,7 @@ const RedMatchShow = (props) => (
       />
       <RecordCreatedAt />
       <RecordUpdatedAt />
+      <DateField source="matchCompletedOn" label="Completed on" />
       <h3>Information about a mentor declining the mentorship</h3>
       <TextField
         source="ifDeclinedByMentor_chosenReasonForDecline"
@@ -800,11 +817,11 @@ const RedMatchShow = (props) => (
         label="When did the mentor decline?"
       />
 
-      <RedMatchShow_RelatedMentoringSessions />
+      <RedMatchShowRelatedMentoringSessions />
     </SimpleShowLayout>
   </Show>
 )
-const RedMatchShow_RelatedMentoringSessions = ({
+const RedMatchShowRelatedMentoringSessions = ({
   record: { mentorId, menteeId },
 }) => {
   const [mentoringSessions, setMentoringSessions] = React.useState([])
@@ -958,6 +975,11 @@ const RedMatchEdit = (props) => (
         source="matchMadeActiveOn"
         label="If match is/was active, when was it made active?"
       />
+      <DateInput
+        source="matchCompletedOn"
+        parse={d => (d === '' ? null : d)}
+        label="Completed on"
+      />
       <h3>Information about a mentor declining the mentorship</h3>
       <TextInput
         source="ifDeclinedByMentor_chosenReasonForDecline"
@@ -974,7 +996,7 @@ const RedMatchEdit = (props) => (
       />
       <TextInput
         source="ifDeclinedByMentor_dateTime"
-        label="If watch was declined by mentor, when?"
+        label="If match was declined by mentor, when?"
         helperText="This field shows the date and time of when a mentor declined this mentorship application from the mentee"
       />
     </SimpleForm>
