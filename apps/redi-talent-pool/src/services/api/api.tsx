@@ -301,6 +301,11 @@ export async function fetchAllTpJobListingsUsingFilters({
       ? { inq: employmentType }
       : undefined
 
+  const filterFederalStates =
+    federalStates && federalStates.length !== 0
+      ? { inq: federalStates }
+      : undefined
+
   const filterJobFair2022JobListings = isJobFair2022JobListing
     ? { isJobFair2022JobListing: true }
     : undefined
@@ -317,6 +322,7 @@ export async function fetchAllTpJobListingsUsingFilters({
             relatesToPositions: filterRelatedPositions,
             idealTechnicalSkills: filterIdealTechnicalSkills,
             employmentType: filterDesiredEmploymentTypeOptions,
+            federalState: filterFederalStates,
             ...filterJobFair2022JobListings,
           },
         ],

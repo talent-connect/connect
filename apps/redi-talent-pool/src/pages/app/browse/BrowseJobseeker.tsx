@@ -19,6 +19,7 @@ import {
   desiredPositionsIdToLabelMap,
   employmentTypes,
   employmentTypesIdToLabelMap,
+  germanFederalStates,
   topSkills,
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
@@ -28,6 +29,7 @@ import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseeker
 
 import { LoggedIn } from '../../../components/templates'
 import { JobListingCard } from '../../../components/organisms/JobListingCard'
+import { objectEntries } from '@talent-connect/typescript-utilities'
 
 export function BrowseJobseeker() {
   const [companyName, setCompanyName] = useState('')
@@ -74,6 +76,7 @@ export function BrowseJobseeker() {
       ...latestQuery,
       idealTechnicalSkills: [],
       employmentType: [],
+      federalStates: [],
       isJobFair2022JobListing: undefined,
     }))
   }
@@ -140,6 +143,17 @@ export function BrowseJobseeker() {
             selected={idealTechnicalSkills}
             onChange={(item) =>
               toggleFilters(idealTechnicalSkills, 'idealTechnicalSkills', item)
+            }
+          />
+        </div>
+        <div className="filters-inner">
+          <FilterDropdown
+            items={germanFederalStatesOptions}
+            className="filters__dropdown"
+            label="Federal State"
+            selected={federalStates}
+            onChange={(item) =>
+              toggleFilters(federalStates, 'federalStates', item)
             }
           />
         </div>
@@ -270,3 +284,10 @@ export function toggleValueInArray<T>(array: Array<T>, value: T) {
   if (array.includes(value)) return array.filter((val) => val !== value)
   else return [...array, value]
 }
+
+const germanFederalStatesOptions = objectEntries(germanFederalStates).map(
+  ([value, label]) => ({
+    value,
+    label,
+  })
+)
