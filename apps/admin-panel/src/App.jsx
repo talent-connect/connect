@@ -726,7 +726,7 @@ const RedMatchList = (props) => (
       </ReferenceField>
       <TextField source="status" />
       <DateField source="matchCompletedOn" label="Completed on" />
-      <RedMatchListRelatedMentoringSessionsNumber label="Number of mentoring sessions" />
+      <RedMatchListRelatedMentoringSessionsNumber label="Number of sessions" />
       <ShowButton />
       <EditButton />
     </Datagrid>
@@ -977,7 +977,7 @@ const RedMatchEdit = (props) => (
       />
       <DateInput
         source="matchCompletedOn"
-        parse={d => (d === '' ? null : d)}
+        parse={(d) => (d === '' ? null : d)}
         label="Completed on"
       />
       <h3>Information about a mentor declining the mentorship</h3>
