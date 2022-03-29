@@ -724,7 +724,16 @@ const RedMatchList = (props) => (
       <ReferenceField label="Mentor" source="mentorId" reference="redProfiles">
         <FullName source="mentor" />
       </ReferenceField>
-      <TextField source="status" />
+      <FunctionField
+        label="Status"
+        render={(record) =>
+          record?.status.replace(
+            'invalidated-as-other-mentor-accepted',
+            'invalidated'
+          )
+        }
+        style={{ fontSize: '8pt' }}
+      />
       <DateField source="matchCompletedOn" label="Completed on" />
       <RedMatchListRelatedMentoringSessionsNumber label="Number of sessions" />
       <ShowButton />
