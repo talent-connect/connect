@@ -64,7 +64,7 @@ export function BrowseJobseeker() {
     isJobFair2022JobListing,
   })
 
-  const toggleFavorites = (value) => {
+  const handleFavoriteJobListing = (value) => {
     const newFavorites = !jobseekerProfile.favouritedTpJobListingIds
       ? [value]
       : toggleValueInArray(jobseekerProfile.favouritedTpJobListingIds, value)
@@ -266,7 +266,7 @@ export function BrowseJobseeker() {
                   onClick={() =>
                     history.push(`/app/job-listing/${jobListing.id}`)
                   }
-                  toggleFavorite={toggleFavorites}
+                  toggleFavorite={handleFavoriteJobListing}
                   isFavorite={isFavorite}
                 />
               </Columns.Column>

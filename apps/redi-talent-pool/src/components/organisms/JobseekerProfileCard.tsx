@@ -33,7 +33,7 @@ export function JobseekerProfileCard({
       .join(', ') ?? ''
   const topSkills = jobseekerProfile?.topSkills
 
-  const handleFavorite = (e: React.MouseEvent) => {
+  const handleFavoriteClick = (e: React.MouseEvent) => {
     e.stopPropagation()
     toggleFavorite && toggleFavorite(jobseekerProfile.id)
   }
@@ -59,7 +59,7 @@ export function JobseekerProfileCard({
         {toggleFavorite && (
           <div
             className="jobseeker-profile-card__favorite"
-            onClick={handleFavorite}
+            onClick={handleFavoriteClick}
           >
             <Icon
               icon={isFavorite ? 'heartFilled' : 'heart'}

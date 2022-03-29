@@ -31,7 +31,7 @@ export function JobListingCard({
   const companyAvatarImage =
     jobListing?.tpCompanyProfile?.profileAvatarImageS3Key
 
-  const handleFavorite = (e: React.MouseEvent) => {
+  const handleFavoriteClick = (e: React.MouseEvent) => {
     e.stopPropagation()
     toggleFavorite && toggleFavorite(jobListing.id)
   }
@@ -54,7 +54,10 @@ export function JobListingCard({
       />
       <Card.Content>
         {toggleFavorite && (
-          <div className="job-posting-card__favorite" onClick={handleFavorite}>
+          <div
+            className="job-posting-card__favorite"
+            onClick={handleFavoriteClick}
+          >
             <Icon
               icon={isFavorite ? 'heartFilled' : 'heart'}
               className="job-posting-card__favorite__icon"
