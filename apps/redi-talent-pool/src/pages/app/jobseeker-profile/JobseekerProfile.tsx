@@ -13,9 +13,8 @@ import { EditableNamePhotoLocation } from '../../../components/organisms/jobseek
 
 export function JobseekerProfile() {
   const { tpJobseekerProfileId }: { tpJobseekerProfileId: string } = useParams()
-  const { data: jobseekerProfile } = useTpJobseekerProfileByIdQuery(
-    tpJobseekerProfileId
-  )
+  const { data: jobseekerProfile } =
+    useTpJobseekerProfileByIdQuery(tpJobseekerProfileId)
 
   console.log(jobseekerProfile)
 
@@ -36,7 +35,11 @@ export function JobseekerProfile() {
           <EditableEducation profile={jobseekerProfile} disableEditing />
         </Columns.Column>
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'two-fifths' }}>
-          <EditableImportantDetails profile={jobseekerProfile} disableEditing />
+          <EditableImportantDetails
+            profile={jobseekerProfile}
+            disableEditing
+            hideFullAddress
+          />
           <EditableLanguages profile={jobseekerProfile} disableEditing />
           <EditableLinks profile={jobseekerProfile} disableEditing />
         </Columns.Column>

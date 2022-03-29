@@ -31,11 +31,13 @@ import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder
 interface Props {
   profile?: Partial<TpJobseekerProfile>
   disableEditing?: boolean
+  hideFullAddress?: boolean
 }
 
 export function EditableImportantDetails({
   profile: overridingProfile,
   disableEditing,
+  hideFullAddress,
 }: Props) {
   const queryHookResult = useTpJobseekerProfileQuery({
     enabled: !disableEditing,
@@ -115,11 +117,8 @@ export function EditableImportantDetails({
               <div>
                 <Caption>Contact</Caption>
                 <Content>
-                  {[
-                    profile?.phoneNumber,
-                    profile?.contactEmail,
-                  ].map((contactItem) =>
-                    contactItem ? <p>{contactItem}</p> : null
+                  {[profile?.phoneNumber, profile?.contactEmail].map(
+                    (contactItem) => (contactItem ? <p>{contactItem}</p> : null)
                   )}
                 </Content>
               </div>
@@ -140,7 +139,7 @@ export function EditableImportantDetails({
               </div>
             ) : null}
 
-            {profile?.postalMailingAddress ? (
+            {!hideFullAddress && profile?.postalMailingAddress ? (
               <div>
                 <Caption>Postal mailing address</Caption>
                 <Content>
@@ -257,10 +256,10 @@ export function JobseekerFormSectionImportantDetails({
     onSubmit,
     validateOnMount: true,
   })
-  useEffect(() => setIsFormDirty?.(formik.dirty), [
-    formik.dirty,
-    setIsFormDirty,
-  ])
+  useEffect(
+    () => setIsFormDirty?.(formik.dirty),
+    [formik.dirty, setIsFormDirty]
+  )
 
   return (
     <>
