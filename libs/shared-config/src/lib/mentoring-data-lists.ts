@@ -350,6 +350,8 @@ export const MENTORING_TOPICS_MAP = Object.fromEntries(
   MENTORING_TOPICS.map((topic) => [topic.id, topic.label])
 ) as Record<MentoringTopicKey, MentoringTopicLabel>
 
+// TODO: these are the **old** 'categories' (i.e. mentoring topics). To be deleted after
+// we migrate to the above!
 export const CATEGORY_GROUPS = {
   softwareEngineering: '👩‍💻 Software Engineering',
   design: '🎨 Design',
