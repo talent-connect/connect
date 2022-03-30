@@ -40,6 +40,7 @@ import {
 } from '@talent-connect/talent-pool/config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
 import classNames from 'classnames'
+import { ca } from 'date-fns/locale'
 import { get, groupBy, keyBy, mapValues } from 'lodash'
 import { unparse as convertToCSV } from 'papaparse/papaparse.min'
 import React, { useEffect } from 'react'
@@ -707,13 +708,22 @@ FullName.defaultProps = {
   label: 'Full name',
 }
 
-const RedMatchList = (props) => (
+const redMatchStyles = {
+  list: {
+    '& th, & td': {
+      padding: '0 6px',
+    },
+  },
+}
+
+const RedMatchList = withStyles(redMatchStyles)(({ classes, ...props }) => (
   <List
     {...props}
     sort={{ field: 'createdAt', order: 'DESC' }}
     pagination={<AllModelsPagination />}
     filters={<RedMatchListFilters />}
     exporter={redMatchesCsvExporter}
+    className={classes.list}
   >
     <Datagrid>
       <TextField source="rediLocation" label="City" />
@@ -727,12 +737,10 @@ const RedMatchList = (props) => (
       <FunctionField
         label="Status"
         render={(record) =>
-          record?.status.replace(
-            'invalidated-as-other-mentor-accepted',
-            'invalidated'
-          )
+          record?.status
+            .replace('invalidated-as-other-mentor-accepted', 'invalidated')
+            .replace('declined-by-mentor', 'declined')
         }
-        style={{ fontSize: '8pt' }}
       />
       <DateField source="matchCompletedOn" label="Completed on" />
       <RedMatchListRelatedMentoringSessionsNumber label="Number of sessions" />
@@ -740,7 +748,7 @@ const RedMatchList = (props) => (
       <EditButton />
     </Datagrid>
   </List>
-)
+))
 const RedMatchListRelatedMentoringSessionsNumber = ({
   record: { mentorId, menteeId },
 }) => {
