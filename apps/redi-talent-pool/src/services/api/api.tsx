@@ -302,7 +302,7 @@ export async function fetchAllTpJobListingsUsingFilters({
       : undefined
 
   const filterFederalStates =
-    federalStates && federalStates.length !== 0
+    federalStates?.length !== 0
       ? { inq: federalStates }
       : undefined
 
