@@ -26,11 +26,11 @@
           >
           <mj-text mj-class="text" padding="0 0 20px 0"
             >If you did see it and cannot mentor ${menteeFirstName} for some
-            reason, we would still ask you to get in touch to let them know. 
-            You will find a 'Decline mentorship' button in your profile. Please 
-            make sure to send with it a little text explaining your decision, so 
-            that they can start looking for another mentor </mj-text
-          >
+            reason, we would still ask you to get in touch to let them know. You
+            will find a 'Decline mentorship' button in your profile. Please make
+            sure to send with it a little text explaining your decision, so that
+            they can start looking for another mentor
+          </mj-text>
           <mj-text mj-class="text" padding="0 0 20px 0"
             >Please reach out if we can support you with anything!</mj-text
           >

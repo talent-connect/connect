@@ -17,15 +17,23 @@
     @include tablet() {
       flex-grow: 1;
       flex-basis: 0;
-      margin: 0 1rem 0 0;
     }
+  }
+
+  &__jobfair2022 {
+    align-items: center;
   }
 }
 
 .filters-inner {
   @include tablet() {
     display: flex;
-    flex-grow: 1;
+    width: 33%;
+    margin: 0 1rem 0 0;
+
+    &:last-child {
+      margin: 0;
+    }
   }
 }
 

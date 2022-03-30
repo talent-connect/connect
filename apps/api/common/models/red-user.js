@@ -228,19 +228,42 @@ module.exports = function (RedUser) {
   }
 
   function tpJobseekerProfileToConRedProfile(tpJobseekerProfile) {
+    let rediLocation = determineRediLocationByCourse(
+      tpJobseekerProfile.currentlyEnrolledInCourse
+    )
+
     const conRedProfile = {
       firstName: tpJobseekerProfile.firstName,
       lastName: tpJobseekerProfile.lastName,
       contactEmail: tpJobseekerProfile.contactEmail,
-      currentlyEnrolledInCourse: tpJobseekerProfile.currentlyEnrolledInCourse,
+      mentee_currentlyEnrolledInCourse: tpJobseekerProfile.currentlyEnrolledInCourse,
       userType: 'public-sign-up-mentee-pending-review',
       gaveGdprConsentAt: tpJobseekerProfile.gaveGdprConsentAt,
       signupSource: 'existing-user-with-tp-profile-logging-into-con',
-      rediLocation: 'berlin',
+      rediLocation: rediLocation ?? 'berlin',
       administratorInternalComment:
-        'SYSTEM NOTE: This user first signed up in Talent Pool. They then logged into Connect. Their ReDI Location has been set to BERLIN. Make sure to figure out if they should be changed to Hamburg, Munich or NRW. If so, request Eric or Anil to do the change',
+        rediLocation === null
+          ? "SYSTEM NOTE: This user first signed up in Talent Pool. They then logged into Connect. Their ReDI Location has been set to BERLIN by default since we don't know which location they belong to, and there is no information available about what course they are currently taking. Make sure to figure out if they should be changed to Hamburg, Munich or NRW. If so, request Eric or Anil to do the change"
+          : undefined,
+      userActivated: false,
     }
 
     return conRedProfile
   }
+}
+
+function determineRediLocationByCourse(course) {
+  if (course.includes('munich')) {
+    return 'munich'
+  }
+  if (course.includes('hamburg')) {
+    return 'hamburg'
+  }
+  if (course.includes('nrw')) {
+    return 'nrw'
+  }
+  if (course.includes('alumni')) {
+    return null
+  }
+  return 'berlin'
 }

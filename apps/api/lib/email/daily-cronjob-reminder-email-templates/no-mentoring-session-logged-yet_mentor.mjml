@@ -11,39 +11,45 @@
           <mj-divider mj-class="divider-top" css-class="divider" />
 
           <mj-text mj-class="text" padding="0 0 20px 0"
-            >Dear ${mentorFirstName},</mj-text
+            >Hi ${mentorFirstName},</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text" padding="0 0 20px 0" align="justify"
             >We are happy to see that you and ${menteeFirstName} had a
             mentorship match on ${matchMadeActiveOn}!</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text" padding="0 0 20px 0" align="justify"
             >Until now, we haven’t seen you log any mentoring sessions on the
             platform. We wanted to check in whether you and ${menteeFirstName}
             have started your mentorship already.</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text" padding="0 0 20px 0" align="justify"
             >If you have already met, please log the mentoring sessions that
-            you’ve already had. If you have not yet met for the first time,
-            please remember to log the sessions once you start meeting. You can
-            log your sessions on the ‘My Mentorship’ page on your ReDI Connect
-            account.</mj-text
+            you’ve had. If you have not yet met for the first time, please
+            remember to log the sessions once you start meeting. You will
+            receive a <strong>certificate of completion</strong> when finishing
+            this mentorship but only if you logged
+            <strong>at least four sessions</strong> with your mentee in ReDI
+            Connect.</mj-text
+          >
+          <mj-text mj-class="text" padding="0 0 20px 0" align="justify"
+            >You can log your sessions on the ‘My Mentorship’ page on your ReDI
+            Connect account.</mj-text
           >
           <mj-text mj-class="text" padding="0 0 20px 0"
-            ><a href="${logMentoringSessionUrl}"
+            ><a href="${logMentoringSessionUrl}" class="text-link"
               >Log mentoring sessions here</a
             ></mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0"
-            >In any case, we are so happy to have you as a mentor and please
-            reach out if you have any questions.</mj-text
+          <mj-text mj-class="text" padding="0 0 20px 0" align="justify"
+            >We are so happy to have you as a mentor and please reach out if you
+            have any questions.</mj-text
           >
 
           <mj-text mj-class="text">All the best,</mj-text>
           <mj-text mj-class="text">Your ReDI Career Support Team</mj-text>
         </mj-column>
       </mj-section>
-      <mj-include path="./footer.career.support.team.mjml" />
+      <mj-include path="../templates/footer.career.support.team.mjml" />
       <mj-section />
     </mj-wrapper>
   </mj-body>

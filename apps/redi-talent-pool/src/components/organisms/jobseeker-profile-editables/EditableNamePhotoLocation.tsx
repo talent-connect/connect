@@ -1,6 +1,12 @@
+import { useEffect, useMemo, useState } from 'react'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
+import { Columns, Content, Element } from 'react-bulma-components'
+
 import {
   Button,
   FormInput,
+  FormSelect,
   Heading,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
@@ -8,13 +14,13 @@ import { TpJobseekerProfile } from '@talent-connect/shared-types'
 import {
   availabilityOptions,
   desiredEmploymentTypeOptions,
+  germanFederalStates,
 } from '@talent-connect/talent-pool/config'
-import { useFormik } from 'formik'
-import React, { useEffect, useMemo, useState } from 'react'
-import { Columns, Content, Element } from 'react-bulma-components'
-import * as Yup from 'yup'
+import { objectEntries } from '@talent-connect/typescript-utilities'
+
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import Avatar from '../Avatar'
@@ -23,6 +29,13 @@ interface Props {
   profile: Partial<TpJobseekerProfile>
   disableEditing?: boolean
 }
+
+const federalStatesOptions = objectEntries(germanFederalStates).map(
+  ([value, label]) => ({
+    value,
+    label,
+  })
+)
 
 export function EditableNamePhotoLocation({ profile, disableEditing }: Props) {
   const mutation = useTpjobseekerprofileUpdateMutation()
@@ -103,6 +116,7 @@ const validationSchema = Yup.object({
   firstName: Yup.string().required('Your first name is required'),
   lastName: Yup.string().required('Your last name is required'),
   location: Yup.string().required('Your location is required'),
+  federalState: Yup.string().required('Please select the state you live in'),
 })
 
 function ModalForm({
@@ -120,6 +134,7 @@ function ModalForm({
       lastName: profile?.lastName ?? '',
       genderPronouns: profile?.genderPronouns ?? '',
       location: profile?.location ?? '',
+      federalState: profile?.federalState ?? '',
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -142,10 +157,10 @@ function ModalForm({
     onSubmit,
     validateOnMount: true,
   })
-  useEffect(() => setIsFormDirty?.(formik.dirty), [
-    formik.dirty,
-    setIsFormDirty,
-  ])
+  useEffect(
+    () => setIsFormDirty?.(formik.dirty),
+    [formik.dirty, setIsFormDirty]
+  )
 
   return (
     <>
@@ -179,6 +194,12 @@ function ModalForm({
         name="location"
         placeholder="Berlin, Germany"
         label="Your place of residence (city, country)*"
+        {...formik}
+      />
+      <FormSelect
+        name="federalState"
+        label="Your place of residence (state)*"
+        items={federalStatesOptions}
         {...formik}
       />
       <Button
