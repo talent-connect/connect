@@ -276,7 +276,6 @@ export interface TpJobListingFilters {
   idealTechnicalSkills: string[]
   employmentType: string[]
   federalStates: string[]
-  isJobFair2022JobListing: boolean
 }
 
 export async function fetchAllTpJobListingsUsingFilters({
@@ -284,7 +283,6 @@ export async function fetchAllTpJobListingsUsingFilters({
   idealTechnicalSkills,
   employmentType,
   federalStates,
-  isJobFair2022JobListing,
 }: TpJobListingFilters): Promise<Array<TpJobListing>> {
   const filterRelatedPositions =
     relatedPositions && relatedPositions.length !== 0
@@ -301,10 +299,6 @@ export async function fetchAllTpJobListingsUsingFilters({
       ? { inq: employmentType }
       : undefined
 
-  const filterJobFair2022JobListings = isJobFair2022JobListing
-    ? { isJobFair2022JobListing: true }
-    : undefined
-
   return http(
     `${API_URL}/tpJobListings?filter=${JSON.stringify({
       where: {
@@ -317,7 +311,6 @@ export async function fetchAllTpJobListingsUsingFilters({
             relatesToPositions: filterRelatedPositions,
             idealTechnicalSkills: filterIdealTechnicalSkills,
             employmentType: filterDesiredEmploymentTypeOptions,
-            ...filterJobFair2022JobListings,
           },
         ],
       },
