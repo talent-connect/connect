@@ -45,7 +45,7 @@ export function MeJobseeker() {
       ...profile,
       isProfileVisibleToCompanies: !profile.isProfileVisibleToCompanies,
     })
-  
+
   // This function is added for Job Fair 2022 only. Please remove after 11.02.2022
   const handleJobFairToggleChange = () =>
     mutation.mutate({
@@ -99,7 +99,7 @@ export function MeJobseeker() {
             <OnboardingSteps />
           </div>
           {/* <EditableVisibility /> */}
-          <EditableImportantDetails profile={profile} />
+          <EditableImportantDetails profile={profile} showFullAddress />
           <EditableLanguages profile={profile} />
           <EditableLinks profile={profile} />
           <Checkbox
