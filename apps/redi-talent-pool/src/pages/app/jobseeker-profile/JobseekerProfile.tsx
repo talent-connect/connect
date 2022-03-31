@@ -35,11 +35,7 @@ export function JobseekerProfile() {
           <EditableEducation profile={jobseekerProfile} disableEditing />
         </Columns.Column>
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'two-fifths' }}>
-          <EditableImportantDetails
-            profile={jobseekerProfile}
-            disableEditing
-            hideFullAddress
-          />
+          <EditableImportantDetails profile={jobseekerProfile} disableEditing />
           <EditableLanguages profile={jobseekerProfile} disableEditing />
           <EditableLinks profile={jobseekerProfile} disableEditing />
         </Columns.Column>

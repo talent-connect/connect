@@ -31,13 +31,13 @@ import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder
 interface Props {
   profile?: Partial<TpJobseekerProfile>
   disableEditing?: boolean
-  hideFullAddress?: boolean
+  showFullAddress?: boolean
 }
 
 export function EditableImportantDetails({
   profile: overridingProfile,
   disableEditing,
-  hideFullAddress,
+  showFullAddress,
 }: Props) {
   const queryHookResult = useTpJobseekerProfileQuery({
     enabled: !disableEditing,
@@ -139,7 +139,7 @@ export function EditableImportantDetails({
               </div>
             ) : null}
 
-            {!hideFullAddress && profile?.postalMailingAddress ? (
+            {showFullAddress && profile?.postalMailingAddress ? (
               <div>
                 <Caption>Postal mailing address</Caption>
                 <Content>
