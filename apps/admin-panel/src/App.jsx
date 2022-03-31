@@ -1967,18 +1967,11 @@ const TpCompanyProfileEdit = (props) => (
   </Edit>
 )
 
-const TpJobListingListFilters = (props) => (
-  <Filter {...props}>
-    <NullableBooleanInput source="isJobFair2022JobListing" />
-  </Filter>
-)
-
 const TpJobListingList = (props) => {
   return (
     <List
       {...props}
       pagination={<AllModelsPagination />}
-      filters={<TpJobListingListFilters />}
       exporter={tpJobListingListExporter}
     >
       <Datagrid>
@@ -2051,7 +2044,6 @@ const TpJobListingShow = (props) => (
       </ReferenceField>
       <TextField source="title" />
       <TextField source="location" />
-      <BooleanField initialValue={false} source="isJobFair2022JobListing" />
       <TextField source="summary" />
       <TextField source="proficiencyLevelId" />
       <FunctionField
@@ -2082,7 +2074,6 @@ const TpJobListingEdit = (props) => (
       </ReferenceField>
       <TextInput source="title" />
       <TextInput source="location" />
-      <BooleanInput initialValue={false} source="isJobFair2022JobListing" />
       <TextInput source="summary" multiline />
       <TextInput source="proficiencyLevelId" />
       <FunctionField
