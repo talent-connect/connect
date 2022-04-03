@@ -12,6 +12,7 @@ import { TpJobListing, TpJobseekerProfile } from '@talent-connect/shared-types'
 import {
   desiredPositions,
   employmentTypes,
+  germanFederalStates,
   topSkills,
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
@@ -28,6 +29,7 @@ import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder
 import { JobListingCard } from '../JobListingCard'
 import JobPlaceholderCardUrl from './job-placeholder-card.svg'
 import { get } from 'lodash'
+import { objectEntries } from '@talent-connect/typescript-utilities'
 
 export function EditableJobPostings({
   isJobPostingFormOpen,
@@ -255,6 +257,12 @@ function ModalForm({
           label="Location*"
           {...formik}
         />
+        <FormSelect
+          name="federalState"
+          label="Location (Federal State in Germany)"
+          items={federalStatesOptions}
+          {...formik}
+        />
         <FormTextArea
           label="Job Summary*"
           name={`summary`}
@@ -371,3 +379,10 @@ const formRelatedPositions = desiredPositions.map(({ id, label }) => ({
   value: id,
   label,
 }))
+
+const federalStatesOptions = objectEntries(germanFederalStates).map(
+  ([value, label]) => ({
+    value,
+    label,
+  })
+)

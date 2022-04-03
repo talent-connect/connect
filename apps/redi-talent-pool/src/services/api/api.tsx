@@ -299,6 +299,9 @@ export async function fetchAllTpJobListingsUsingFilters({
       ? { inq: employmentType }
       : undefined
 
+  const filterFederalStates =
+    federalStates?.length !== 0 ? { inq: federalStates } : undefined
+
   return http(
     `${API_URL}/tpJobListings?filter=${JSON.stringify({
       where: {
@@ -311,6 +314,7 @@ export async function fetchAllTpJobListingsUsingFilters({
             relatesToPositions: filterRelatedPositions,
             idealTechnicalSkills: filterIdealTechnicalSkills,
             employmentType: filterDesiredEmploymentTypeOptions,
+            federalState: filterFederalStates,
           },
         ],
       },
