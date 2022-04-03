@@ -19,6 +19,7 @@ import {
   desiredPositionsIdToLabelMap,
   employmentTypes,
   employmentTypesIdToLabelMap,
+  germanFederalStates,
   topSkills,
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
@@ -29,6 +30,7 @@ import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseeker
 import { LoggedIn } from '../../../components/templates'
 import { JobListingCard } from '../../../components/organisms/JobListingCard'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
+import { objectEntries } from '@talent-connect/typescript-utilities'
 
 export function BrowseJobseeker() {
   const [companyName, setCompanyName] = useState('')
@@ -40,7 +42,6 @@ export function BrowseJobseeker() {
     employmentType: withDefault(ArrayParam, []),
     federalStates: withDefault(ArrayParam, []),
     onlyFavorites: withDefault(BooleanParam, undefined),
-    isJobFair2022JobListing: withDefault(BooleanParam, undefined),
   })
   const {
     relatedPositions,
@@ -48,7 +49,6 @@ export function BrowseJobseeker() {
     employmentType,
     federalStates,
     onlyFavorites,
-    isJobFair2022JobListing,
   } = query
 
   const history = useHistory()
@@ -61,7 +61,6 @@ export function BrowseJobseeker() {
     idealTechnicalSkills,
     employmentType,
     federalStates,
-    isJobFair2022JobListing,
   })
 
   const handleFavoriteJobListing = (value) => {
@@ -86,19 +85,12 @@ export function BrowseJobseeker() {
     setQuery((latestQuery) => ({ ...latestQuery, [filterName]: newFilters }))
   }
 
-  const toggleJobFair2022Filter = () =>
-    setQuery((latestQuery) => ({
-      ...latestQuery,
-      isJobFair2022JobListing:
-        isJobFair2022JobListing === undefined ? true : undefined,
-    }))
-
   const clearFilters = () => {
     setQuery((latestQuery) => ({
       ...latestQuery,
       idealTechnicalSkills: [],
       employmentType: [],
-      isJobFair2022JobListing: undefined,
+      federalStates: [],
     }))
   }
 
@@ -178,22 +170,23 @@ export function BrowseJobseeker() {
           />
           Only Favorites
         </div>
-        <div className="filters-inner filters__jobfair2022">
-          <Checkbox
-            name="isJobFair2022JobListing"
-            checked={isJobFair2022JobListing || false}
-            handleChange={toggleJobFair2022Filter}
-          >
-            Filter by ReDI Job Fair 2022
-          </Checkbox>
+        <div className="filters-inner">
+          <FilterDropdown
+            items={germanFederalStatesOptions}
+            className="filters__dropdown"
+            label="Federal State"
+            selected={federalStates}
+            onChange={(item) =>
+              toggleFilters(federalStates, 'federalStates', item)
+            }
+          />
         </div>
       </div>
       <div className="active-filters">
         {(relatedPositions.length !== 0 ||
           idealTechnicalSkills.length !== 0 ||
           employmentType.length !== 0 ||
-          federalStates.length !== 0 ||
-          isJobFair2022JobListing) && (
+          federalStates.length !== 0) && (
           <>
             {(relatedPositions as string[]).map((catId) => (
               <FilterTag
@@ -229,13 +222,6 @@ export function BrowseJobseeker() {
                 }
               />
             ))}
-            {isJobFair2022JobListing && (
-              <FilterTag
-                id="redi-job-fair-2022-filter"
-                label="ReDI Job Fair 2022"
-                onClickHandler={toggleJobFair2022Filter}
-              />
-            )}
             <span className="active-filters__clear-all" onClick={clearFilters}>
               Delete all filters
               <Icon icon="cancel" size="small" space="left" />
@@ -316,3 +302,10 @@ export function toggleValueInArray<T>(array: Array<T>, value: T) {
   if (array.includes(value)) return array.filter((val) => val !== value)
   else return [...array, value]
 }
+
+const germanFederalStatesOptions = objectEntries(germanFederalStates).map(
+  ([value, label]) => ({
+    value,
+    label,
+  })
+)

@@ -12,6 +12,7 @@ import { TpJobListing, TpJobseekerProfile } from '@talent-connect/shared-types'
 import {
   desiredPositions,
   employmentTypes,
+  germanFederalStates,
   topSkills,
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
@@ -28,6 +29,7 @@ import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder
 import { JobListingCard } from '../JobListingCard'
 import JobPlaceholderCardUrl from './job-placeholder-card.svg'
 import { get } from 'lodash'
+import { objectEntries } from '@talent-connect/typescript-utilities'
 
 export function EditableJobPostings({
   isJobPostingFormOpen,
@@ -243,17 +245,6 @@ function ModalForm({
         >
           Add the job postings you want to publish to jobseekers at ReDI School.
         </Element>
-        {/* This Checkbox is added only for JobFair 2022. Please remove after 11.02.2022 */}
-        <Checkbox.Form
-          name="isJobFair2022JobListing"
-          checked={get(formik.values, 'isJobFair2022JobListing', false)}
-          handleChange={formik.handleChange}
-          {...formik}
-        >
-          We will recruit for this job listing at the ReDI Job Fair on 11
-          February 2022
-        </Checkbox.Form>
-
         <FormInput
           name={`title`}
           placeholder="Junior Frontend Developer"
@@ -264,6 +255,12 @@ function ModalForm({
           name={`location`}
           placeholder="Where is the position based"
           label="Location*"
+          {...formik}
+        />
+        <FormSelect
+          name="federalState"
+          label="Location (Federal State in Germany)"
+          items={federalStatesOptions}
           {...formik}
         />
         <FormTextArea
@@ -382,3 +379,10 @@ const formRelatedPositions = desiredPositions.map(({ id, label }) => ({
   value: id,
   label,
 }))
+
+const federalStatesOptions = objectEntries(germanFederalStates).map(
+  ([value, label]) => ({
+    value,
+    label,
+  })
+)
