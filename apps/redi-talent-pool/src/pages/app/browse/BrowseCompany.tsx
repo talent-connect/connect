@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useHistory } from 'react-router'
 import {
   ArrayParam,
@@ -28,6 +29,9 @@ import { objectEntries } from '@talent-connect/typescript-utilities'
 
 import { LoggedIn } from '../../../components/templates'
 import { JobseekerProfileCard } from '../../../components/organisms/JobseekerProfileCard'
+
+import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
+import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
 import { useBrowseTpJobseekerProfilesQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 
 const germanFederalStatesOptions = objectEntries(germanFederalStates).map(
@@ -44,6 +48,7 @@ export function BrowseCompany() {
     employmentTypes: withDefault(ArrayParam, []),
     skills: withDefault(ArrayParam, []),
     federalStates: withDefault(ArrayParam, []),
+    onlyFavorites: withDefault(BooleanParam, undefined),
     isJobFair2022Participant: withDefault(BooleanParam, undefined),
   })
   const {
@@ -52,10 +57,12 @@ export function BrowseCompany() {
     employmentTypes,
     skills,
     federalStates,
+    onlyFavorites,
     isJobFair2022Participant,
   } = query
 
   const history = useHistory()
+
   const { data: jobseekerProfiles } = useBrowseTpJobseekerProfilesQuery({
     name,
     desiredPositions,
@@ -64,6 +71,25 @@ export function BrowseCompany() {
     federalStates,
     isJobFair2022Participant,
   })
+  const { data: companyProfile } = useTpCompanyProfileQuery()
+  const tpCompanyProfileUpdateMutation = useTpCompanyProfileUpdateMutation()
+
+  const handleFavoriteJobseeker = (value) => {
+    const newFavorites = !companyProfile.favouritedTpJobseekerIds
+      ? [value]
+      : toggleValueInArray(companyProfile.favouritedTpJobseekerIds, value)
+
+    tpCompanyProfileUpdateMutation.mutate({
+      favouritedTpJobseekerIds: newFavorites,
+    })
+  }
+
+  const toggleOnlyFavoritesFilter = () => {
+    setQuery((latestQuery) => ({
+      ...latestQuery,
+      onlyFavorites: onlyFavorites ? undefined : true,
+    }))
+  }
 
   const toggleFilters = (filtersArr, filterName, item) => {
     const newFilters = toggleValueInArray(filtersArr, item)
@@ -170,6 +196,19 @@ export function BrowseCompany() {
             }
           />
         </div>
+        <div
+          className="filters-inner filter-favourites"
+          onClick={toggleOnlyFavoritesFilter}
+        >
+          <Icon
+            icon={onlyFavorites ? 'heartFilled' : 'heart'}
+            className="filter-favourites__icon"
+            space="right"
+          />
+          Only Favorites
+        </div>
+      </div>
+      <div className="filters">
         <div className="filters-inner filters__jobfair2022">
           <Checkbox
             name="isJobFair2022Participant"
@@ -237,21 +276,31 @@ export function BrowseCompany() {
         )}
       </div>
       <Columns>
-        {jobseekerProfiles?.map((profile) => (
-          <Columns.Column
-            mobile={{ size: 12 }}
-            tablet={{ size: 6 }}
-            desktop={{ size: 4 }}
-          >
-            <JobseekerProfileCard
-              key={profile.id}
-              jobseekerProfile={profile}
-              onClick={() =>
-                history.push(`/app/jobseeker-profile/${profile.id}`)
-              }
-            />
-          </Columns.Column>
-        ))}
+        {jobseekerProfiles?.map((profile) => {
+          const isFavorite = companyProfile.favouritedTpJobseekerIds?.includes(
+            profile.id
+          )
+
+          if (!isFavorite && onlyFavorites) return
+
+          return (
+            <Columns.Column
+              mobile={{ size: 12 }}
+              tablet={{ size: 6 }}
+              desktop={{ size: 4 }}
+            >
+              <JobseekerProfileCard
+                key={profile.id}
+                jobseekerProfile={profile}
+                onClick={() =>
+                  history.push(`/app/jobseeker-profile/${profile.id}`)
+                }
+                toggleFavorite={handleFavoriteJobseeker}
+                isFavorite={isFavorite}
+              />
+            </Columns.Column>
+          )
+        })}
       </Columns>
     </LoggedIn>
   )

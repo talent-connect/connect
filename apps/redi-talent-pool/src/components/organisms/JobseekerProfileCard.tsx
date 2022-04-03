@@ -1,4 +1,4 @@
-import { CardTags } from '@talent-connect/shared-atomic-design-components'
+import { CardTags, Icon } from '@talent-connect/shared-atomic-design-components'
 import { AWS_PROFILE_AVATARS_BUCKET_BASE_URL } from '@talent-connect/shared-config'
 import { TpJobseekerProfile } from '@talent-connect/shared-types'
 import {
@@ -33,10 +33,10 @@ export function JobseekerProfileCard({
       .join(', ') ?? ''
   const topSkills = jobseekerProfile?.topSkills
 
-  // const handleFavorite = (e: React.MouseEvent) => {
-  //   e.stopPropagation()
-  //   toggleFavorite && toggleFavorite(profile.id)
-  // }
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    toggleFavorite && toggleFavorite(jobseekerProfile.id)
+  }
 
   const imgSrc = jobseekerProfile?.profileAvatarImageS3Key
     ? AWS_PROFILE_AVATARS_BUCKET_BASE_URL +
@@ -56,14 +56,17 @@ export function JobseekerProfileCard({
         alt={fullName}
       />
       <Card.Content>
-        {/* {toggleFavorite && (
-          <div className="jobseeker-profile-card__favorite" onClick={handleFavorite}>
+        {toggleFavorite && (
+          <div
+            className="jobseeker-profile-card__favorite"
+            onClick={handleFavoriteClick}
+          >
             <Icon
               icon={isFavorite ? 'heartFilled' : 'heart'}
               className="jobseeker-profile-card__favorite__icon"
             />
           </div>
-        )} */}
+        )}
         <Element
           key="name"
           renderAs="h3"
