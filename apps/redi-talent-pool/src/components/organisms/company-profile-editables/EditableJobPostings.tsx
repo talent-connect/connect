@@ -245,7 +245,6 @@ function ModalForm({
         >
           Add the job postings you want to publish to jobseekers at ReDI School.
         </Element>
-
         <FormInput
           name={`title`}
           placeholder="Junior Frontend Developer"

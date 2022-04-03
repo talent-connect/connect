@@ -40,14 +40,12 @@ export function BrowseJobseeker() {
     idealTechnicalSkills: withDefault(ArrayParam, []),
     employmentType: withDefault(ArrayParam, []),
     federalStates: withDefault(ArrayParam, []),
-    isJobFair2022JobListing: withDefault(BooleanParam, undefined),
   })
   const {
     relatedPositions,
     idealTechnicalSkills,
     employmentType,
     federalStates,
-    isJobFair2022JobListing,
   } = query
 
   const history = useHistory()
@@ -56,7 +54,6 @@ export function BrowseJobseeker() {
     idealTechnicalSkills,
     employmentType,
     federalStates,
-    isJobFair2022JobListing,
   })
 
   const toggleFilters = (filtersArr, filterName, item) => {
@@ -64,20 +61,12 @@ export function BrowseJobseeker() {
     setQuery((latestQuery) => ({ ...latestQuery, [filterName]: newFilters }))
   }
 
-  const toggleJobFair2022Filter = () =>
-    setQuery((latestQuery) => ({
-      ...latestQuery,
-      isJobFair2022JobListing:
-        isJobFair2022JobListing === undefined ? true : undefined,
-    }))
-
   const clearFilters = () => {
     setQuery((latestQuery) => ({
       ...latestQuery,
       idealTechnicalSkills: [],
       employmentType: [],
       federalStates: [],
-      isJobFair2022JobListing: undefined,
     }))
   }
 
@@ -157,22 +146,12 @@ export function BrowseJobseeker() {
             }
           />
         </div>
-        <div className="filters-inner filters__jobfair2022">
-          <Checkbox
-            name="isJobFair2022JobListing"
-            checked={isJobFair2022JobListing || false}
-            handleChange={toggleJobFair2022Filter}
-          >
-            Filter by ReDI Job Fair 2022
-          </Checkbox>
-        </div>
       </div>
       <div className="active-filters">
         {(relatedPositions.length !== 0 ||
           idealTechnicalSkills.length !== 0 ||
           employmentType.length !== 0 ||
-          federalStates.length !== 0 ||
-          isJobFair2022JobListing) && (
+          federalStates.length !== 0) && (
           <>
             {(relatedPositions as string[]).map((catId) => (
               <FilterTag
@@ -208,13 +187,6 @@ export function BrowseJobseeker() {
                 }
               />
             ))}
-            {isJobFair2022JobListing && (
-              <FilterTag
-                id="redi-job-fair-2022-filter"
-                label="ReDI Job Fair 2022"
-                onClickHandler={toggleJobFair2022Filter}
-              />
-            )}
             <span className="active-filters__clear-all" onClick={clearFilters}>
               Delete all filters
               <Icon icon="cancel" size="small" space="left" />
