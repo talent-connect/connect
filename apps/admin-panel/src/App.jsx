@@ -1862,7 +1862,6 @@ const TpCompanyProfileShow = (props) => (
               />
               <TextField source="employmentType" />
               <TextField source="languageRequirements" />
-              <TextField source="desiredExperience" />
               <TextField source="salaryRange" />
               <ShowButton />
               <EditButton />
@@ -1942,7 +1941,6 @@ const TpCompanyProfileEdit = (props) => (
             />
             <TextField source="employmentType" />
             <TextField source="languageRequirements" />
-            <TextField source="desiredExperience" />
             <TextField source="salaryRange" />
             <ShowButton />
             <EditButton />
@@ -2000,7 +1998,6 @@ function tpJobListingListExporter(jobListings, fetchRelatedRecords) {
       tpCompanyProfile: { companyName },
       employmentType,
       languageRequirements,
-      desiredExperience,
       salaryRange,
     } = job
 
@@ -2010,7 +2007,6 @@ function tpJobListingListExporter(jobListings, fetchRelatedRecords) {
       companyName,
       employmentType,
       languageRequirements,
-      desiredExperience,
       salaryRange,
     }
   })
@@ -2056,7 +2052,6 @@ const TpJobListingShow = (props) => (
       />
       <TextField source="employmentType" />
       <TextField source="languageRequirements" />
-      <TextField source="desiredExperience" />
       <TextField source="salaryRange" />
     </SimpleShowLayout>
   </Show>
@@ -2086,7 +2081,6 @@ const TpJobListingEdit = (props) => (
       />
       <TextInput source="employmentType" />
       <TextInput source="languageRequirements" />
-      <TextInput source="desiredExperience" />
       <TextInput source="salaryRange" />
     </SimpleForm>
   </Edit>
