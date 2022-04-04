@@ -9,7 +9,6 @@ export type TpJobListing = {
   relatesToPositions?: string[]
   employmentType?: string
   languageRequirements?: string
-  desiredExperience?: string
   salaryRange?: string
 
   tpCompanyProfileId?: string

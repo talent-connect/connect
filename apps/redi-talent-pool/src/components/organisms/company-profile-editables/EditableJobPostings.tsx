@@ -359,7 +359,6 @@ function buildBlankJobListing(
     idealTechnicalSkills: [],
     employmentType: '',
     languageRequirements: '',
-    desiredExperience: '',
     salaryRange: '',
     tpCompanyProfileId,
   }
