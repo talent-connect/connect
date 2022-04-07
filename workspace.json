@@ -126,58 +126,6 @@
       "tags": [],
       "implicitDependencies": []
     },
-    "nestjs-api": {
-      "root": "apps/nestjs-api",
-      "sourceRoot": "apps/nestjs-api/src",
-      "projectType": "application",
-      "targets": {
-        "build": {
-          "executor": "@nrwl/node:webpack",
-          "outputs": ["{options.outputPath}"],
-          "options": {
-            "outputPath": "dist/apps/nestjs-api",
-            "main": "apps/nestjs-api/src/main.ts",
-            "tsConfig": "apps/nestjs-api/tsconfig.app.json",
-            "assets": ["apps/nestjs-api/src/assets"]
-          },
-          "configurations": {
-            "production": {
-              "optimization": true,
-              "extractLicenses": true,
-              "inspect": false,
-              "fileReplacements": [
-                {
-                  "replace": "apps/nestjs-api/src/environments/environment.ts",
-                  "with": "apps/nestjs-api/src/environments/environment.prod.ts"
-                }
-              ]
-            }
-          }
-        },
-        "serve": {
-          "executor": "@nrwl/node:node",
-          "options": {
-            "buildTarget": "nestjs-api:build"
-          }
-        },
-        "lint": {
-          "executor": "@nrwl/linter:eslint",
-          "outputs": ["{options.outputFile}"],
-          "options": {
-            "lintFilePatterns": ["apps/nestjs-api/**/*.ts"]
-          }
-        },
-        "test": {
-          "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/nestjs-api"],
-          "options": {
-            "jestConfig": "apps/nestjs-api/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      },
-      "tags": []
-    },
     "redi-connect": {
       "root": "apps/redi-connect",
       "sourceRoot": "apps/redi-connect/src",
