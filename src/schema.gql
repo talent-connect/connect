@@ -1,0 +1,32 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type ConProfile {
+  """Example field (placeholder)"""
+  exampleField: Int!
+  expectations: String!
+  personalDescription: String!
+}
+
+input CreateConProfileInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+type Mutation {
+  createConProfile(createConProfileInput: CreateConProfileInput!): ConProfile!
+  removeConProfile(id: Int!): ConProfile!
+  updateConProfile(updateConProfileInput: UpdateConProfileInput!): ConProfile!
+}
+
+type Query {
+  conProfile(id: Int!): ConProfile!
+  conProfiles: [ConProfile!]!
+}
+
+input UpdateConProfileInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}

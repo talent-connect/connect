@@ -2,6 +2,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo'
 import { Module } from '@nestjs/common'
 import { GraphQLModule } from '@nestjs/graphql'
 import { join } from 'path'
+import { ConProfilesModule } from '../con-profiles/con-profiles.module'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 
@@ -11,7 +12,10 @@ import { AppService } from './app.service'
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
+      playground: true,
+      debug: true,
     }),
+    ConProfilesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
