@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common'
 import { GraphQLModule } from '@nestjs/graphql'
 import { join } from 'path'
 import { ConProfilesModule } from '../con-profiles/con-profiles.module'
+import { SalesforceApiModule } from '../salesforce-api/salesforce-api.module'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 
@@ -16,6 +17,7 @@ import { AppService } from './app.service'
       debug: true,
     }),
     ConProfilesModule,
+    SalesforceApiModule,
   ],
   controllers: [AppController],
   providers: [AppService],
