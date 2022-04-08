@@ -3,10 +3,11 @@
 # ------------------------------------------------------
 
 type ConProfile {
+  Expectations__c: String!
+
   """Example field (placeholder)"""
-  exampleField: Int!
-  expectations: String!
-  personalDescription: String!
+  Id: String!
+  Personal_Description__c: String!
 }
 
 input CreateConProfileInput {

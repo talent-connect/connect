@@ -1,13 +1,19 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql'
+import { Field, ObjectType } from '@nestjs/graphql'
+import { ConProfileRecordType } from './con-profile-record-type.entity'
 
 @ObjectType()
 export class ConProfile {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
-  exampleField: number
+  @Field({ name: 'id' })
+  Id: string
 
-  @Field()
-  expectations: string
+  @Field({ name: 'expectations' })
+  Expectations__c: string
 
-  @Field()
-  personalDescription: string
+  @Field({ name: 'personalDescription' })
+  Personal_Description__c: string
+
+  // @Field((type) => RecordType, { name: 'recordType' })
+  // This line and the one above are equivalent
+  @Field({ name: 'profileType' })
+  RecordType: ConProfileRecordType
 }
