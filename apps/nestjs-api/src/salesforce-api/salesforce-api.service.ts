@@ -48,10 +48,12 @@ export class SalesforceApiService {
     return new Promise((resolve, reject) => {
       this.connection
         .sobject(objectName)
-        .find({}, fieldList, (err, results) => {
+        .find({}, fieldList)
+        .execute((err, results) => {
           if (err) {
             return reject(err)
           }
+          console.log(JSON.stringify(results, null, 2))
           resolve(results)
         })
     })

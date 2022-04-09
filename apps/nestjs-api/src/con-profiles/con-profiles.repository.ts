@@ -11,7 +11,14 @@ export class ConProfilesRepository {
 
     const results: any = await this.salesforceApi.allRecordsOfObject(
       'ReDI_Connect_Profile__c',
-      ['RecordType.Name', 'Id', 'Expectations__c', 'Personal_Description__c']
+      [
+        'RecordType.DeveloperName',
+        'Id',
+        'Expectations__c',
+        'Personal_Description__c',
+        'Contact__r.FirstName',
+        'Contact__r.LastName',
+      ]
     )
 
     return results
