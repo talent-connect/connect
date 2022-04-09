@@ -62,14 +62,14 @@ jobs:
 
           # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
           # For instance you have an unused variable on your code
-          CI: ""
+          CI: ''
         run: yarn build:redi-connect:berlin
 
       - name: Upload webapp artifacts to blob storage
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az storage blob upload-batch --account-name "frontberlinstagingredos" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
+            az storage blob upload-batch --overwrite --account-name "frontberlinstagingredos" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
 
       - name: Purge pre-loaded content for the CDN endpoint
         uses: azure/CLI@v1
@@ -112,14 +112,14 @@ jobs:
 
           # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
           # For instance you have an unused variable on your code
-          CI: ""
+          CI: ''
         run: yarn build:redi-connect:munich
 
       - name: Upload webapp artifacts to blob storage
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az storage blob upload-batch --account-name "frontmunichstagingredos" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
+            az storage blob upload-batch --overwrite --account-name "frontmunichstagingredos" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
 
       - name: Purge pre-loaded content for the CDN endpoint
         uses: azure/CLI@v1
@@ -161,14 +161,14 @@ jobs:
 
           # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
           # For instance you have an unused variable on your code
-          CI: ""
+          CI: ''
         run: yarn build:redi-connect:nrw
 
       - name: Upload webapp artifacts to blob storage
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az storage blob upload-batch --account-name "frontnrwstagingredos" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
+            az storage blob upload-batch --overwrite --account-name "frontnrwstagingredos" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
 
       - name: Purge pre-loaded content for the CDN endpoint
         uses: azure/CLI@v1
@@ -210,14 +210,14 @@ jobs:
 
           # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
           # For instance you have an unused variable on your code
-          CI: ""
+          CI: ''
         run: yarn build:redi-connect:location-picker
 
       - name: Upload webapp artifacts to blob storage
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az storage blob upload-batch --account-name "frontpickerstagingredos" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
+            az storage blob upload-batch --overwrite --account-name "frontpickerstagingredos" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
 
       - name: Purge pre-loaded content for the CDN endpoint
         uses: azure/CLI@v1
@@ -259,14 +259,14 @@ jobs:
 
           # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
           # For instance you have an unused variable on your code
-          CI: ""
+          CI: ''
         run: yarn build:redi-talent-pool
 
       - name: Upload webapp artifacts to blob storage
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az storage blob upload-batch --account-name "fronttpstagingredos" --auth-mode key -d '$web' -s ./dist/apps/redi-talent-pool
+            az storage blob upload-batch --overwrite --account-name "fronttpstagingredos" --auth-mode key -d '$web' -s ./dist/apps/redi-talent-pool
 
       - name: Purge pre-loaded content for the CDN endpoint
         uses: azure/CLI@v1
@@ -277,8 +277,6 @@ jobs:
       - name: Logout from Azure
         run: |
           az logout
-
-
 
   deploy-berlin-prod:
     #    TODO uncomment when you merge on master
@@ -310,14 +308,14 @@ jobs:
           # CI needs to be `true` ideally. However at the moment the app won't build because of some js errors.
           # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
           # For instance you have an unused variable on your code
-          CI: ""
+          CI: ''
         run: yarn build:redi-connect:berlin
 
       - name: Upload webapp artifacts to blob storage
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az storage blob upload-batch --account-name "frontberlinprodredos" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
+            az storage blob upload-batch --overwrite --account-name "frontberlinprodredos" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
       - name: Purge pre-loaded content for the CDN endpoint
         uses: azure/CLI@v1
         with:
@@ -357,14 +355,14 @@ jobs:
           # CI needs to be `true` ideally. However at the moment the app won't build because of some js errors.
           # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
           # For instance you have an unused variable on your code
-          CI: ""
+          CI: ''
         run: yarn build:redi-connect:munich
 
       - name: Upload webapp artifacts to blob storage
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az storage blob upload-batch --account-name "frontmunichprodredos" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
+            az storage blob upload-batch --overwrite --account-name "frontmunichprodredos" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
       - name: Purge pre-loaded content for the CDN endpoint
         uses: azure/CLI@v1
         with:
@@ -403,14 +401,14 @@ jobs:
           # CI needs to be `true` ideally. However at the moment the app won't build because of some js errors.
           # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
           # For instance you have an unused variable on your code
-          CI: ""
+          CI: ''
         run: yarn build:redi-connect:nrw
 
       - name: Upload webapp artifacts to blob storage
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az storage blob upload-batch --account-name "frontnrwprodredos" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
+            az storage blob upload-batch --overwrite --account-name "frontnrwprodredos" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
       - name: Purge pre-loaded content for the CDN endpoint
         uses: azure/CLI@v1
         with:
@@ -449,14 +447,14 @@ jobs:
           # CI needs to be `true` ideally. However at the moment the app won't build because of some js errors.
           # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
           # For instance you have an unused variable on your code
-          CI: ""
+          CI: ''
         run: yarn build:redi-connect:location-picker
 
       - name: Upload webapp artifacts to blob storage
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az storage blob upload-batch --account-name "frontpickerprodredos" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
+            az storage blob upload-batch --overwrite --account-name "frontpickerprodredos" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
       - name: Purge pre-loaded content for the CDN endpoint
         uses: azure/CLI@v1
         with:
@@ -495,14 +493,14 @@ jobs:
           # CI needs to be `true` ideally. However at the moment the app won't build because of some js errors.
           # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
           # For instance you have an unused variable on your code
-          CI: ""
+          CI: ''
         run: yarn build:redi-talent-pool
 
       - name: Upload webapp artifacts to blob storage
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az storage blob upload-batch --account-name "fronttpprodredos" --auth-mode key -d '$web' -s ./dist/apps/redi-talent-pool
+            az storage blob upload-batch --overwrite --account-name "fronttpprodredos" --auth-mode key -d '$web' -s ./dist/apps/redi-talent-pool
       - name: Purge pre-loaded content for the CDN endpoint
         uses: azure/CLI@v1
         with:
@@ -511,4 +509,3 @@ jobs:
       - name: Logout from Azure
         run: |
           az logout
-
