@@ -8,16 +8,11 @@ export class ConProfilesRepository {
 
   async findAll() {
     await this.salesforceApi.connect()
-    // const results = await this.salesforceApi.query(
-    //   'SELECT Id, Expectations__c, Personal_Description__c, RecordType.Name FROM ReDI_Connect_Profile__c'
-    // )
 
     const results: any = await this.salesforceApi.allRecordsOfObject(
       'ReDI_Connect_Profile__c',
       ['RecordType.Name', 'Id', 'Expectations__c', 'Personal_Description__c']
     )
-
-    console.log(JSON.stringify(results, null, 2))
 
     return results
   }

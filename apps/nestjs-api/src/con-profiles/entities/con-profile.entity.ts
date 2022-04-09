@@ -1,5 +1,18 @@
-import { Field, ObjectType } from '@nestjs/graphql'
-import { ConProfileRecordType } from './con-profile-record-type.entity'
+import {
+  Field,
+  FieldMiddleware,
+  MiddlewareContext,
+  NextFn,
+  ObjectType,
+} from '@nestjs/graphql'
+
+const recordTypeFlattener: FieldMiddleware = async (
+  ctx: MiddlewareContext,
+  next: NextFn
+) => {
+  const value = await next()
+  return value.Name
+}
 
 @ObjectType()
 export class ConProfile {
@@ -14,6 +27,9 @@ export class ConProfile {
 
   // @Field((type) => RecordType, { name: 'recordType' })
   // This line and the one above are equivalent
-  @Field({ name: 'profileType' })
-  RecordType: ConProfileRecordType
+  // @Field({ name: 'profileType' })
+  // RecordType: ConProfileRecordType
+
+  @Field({ name: 'profileType', middleware: [recordTypeFlattener] })
+  RecordType: string
 }

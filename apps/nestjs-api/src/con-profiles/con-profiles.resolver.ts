@@ -16,8 +16,9 @@ export class ConProfilesResolver {
   }
 
   @Query(() => [ConProfile], { name: 'conProfiles' })
-  findAll() {
-    return this.conProfilesService.findAll()
+  async findAll() {
+    const data = await this.conProfilesService.findAll()
+    return data
   }
 
   @Query(() => ConProfile, { name: 'conProfile' })

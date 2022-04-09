@@ -45,8 +45,6 @@ export class SalesforceApiService {
   }
 
   allRecordsOfObject(objectName: string, fieldList: string[]) {
-    // console.log('field list')
-    // console.log(fieldList)
     return new Promise((resolve, reject) => {
       this.connection
         .sobject(objectName)
