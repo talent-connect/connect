@@ -3,8 +3,8 @@ import * as jsforce from 'jsforce'
 import { ConProfile } from '../con-profiles/entities/con-profile.entity'
 
 const USERNAME = 'eric@redi-school.org.local'
-const PASSWORD = 'fdz2drn2bnq@CPW5afd'
-const SECURITY_TOKEN = 'M8gmqSWxaoVdK0R6rrca5NP3y'
+const PASSWORD = ''
+const SECURITY_TOKEN = ''
 
 @Injectable()
 export class SalesforceApiService {
