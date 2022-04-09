@@ -25,11 +25,6 @@ export class ConProfile {
   @Field({ name: 'personalDescription' })
   Personal_Description__c: string
 
-  // @Field((type) => RecordType, { name: 'recordType' })
-  // This line and the one above are equivalent
-  // @Field({ name: 'profileType' })
-  // RecordType: ConProfileRecordType
-
   @Field({ name: 'profileType', middleware: [recordTypeFlattener] })
   RecordType: string
 }
