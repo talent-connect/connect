@@ -138,7 +138,8 @@
             "outputPath": "dist/apps/nestjs-api",
             "main": "apps/nestjs-api/src/main.ts",
             "tsConfig": "apps/nestjs-api/tsconfig.app.json",
-            "assets": ["apps/nestjs-api/src/assets"]
+            "assets": ["apps/nestjs-api/src/assets"],
+            "webpackConfig": "apps/nestjs-api/enhance-nx-webpack-config.js"
           },
           "configurations": {
             "production": {
