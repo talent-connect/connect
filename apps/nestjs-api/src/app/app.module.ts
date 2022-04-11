@@ -1,11 +1,13 @@
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo'
 import { Module } from '@nestjs/common'
+import { ConfigModule } from '@nestjs/config'
 import { GraphQLModule } from '@nestjs/graphql'
-import { join } from 'path'
 import { ConProfilesModule } from '../con-profiles/con-profiles.module'
 import { SalesforceApiModule } from '../salesforce-api/salesforce-api.module'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
+
+console.log(process.env)
 
 @Module({
   imports: [
@@ -19,6 +21,7 @@ import { AppService } from './app.service'
     }),
     ConProfilesModule,
     SalesforceApiModule,
+    ConfigModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [AppService],

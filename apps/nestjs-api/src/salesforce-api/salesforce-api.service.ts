@@ -1,20 +1,41 @@
 import { Injectable } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import * as jsforce from 'jsforce'
-import { ConProfile } from '../con-profiles/entities/con-profile.entity'
-
-const USERNAME = 'eric@redi-school.org.local'
-const PASSWORD = ''
-const SECURITY_TOKEN = ''
 
 @Injectable()
 export class SalesforceApiService {
-  connection = new jsforce.Connection({
-    loginUrl: 'https://redischool--local.my.salesforce.com',
-    clientId:
-      '3MVG9r_yMkYxwhkhe93YHPwED2NXNc8.SxuEEjQypGmL13P_uG7oYxxVemqizk9CLj5ZMK_Q_PPrtT_0Sq7hZ',
-    clientSecret:
-      'C8324C27F239CDDF43725CA52E93D8356EEDA4E217CC7E3B597EECCD1325E4B5',
-  })
+  private loginUrl: string
+  private username: string
+  private password: string
+  private securityToken: string
+  private clientId: string
+  private clientSecret: string
+  private connection: any
+
+  constructor(private configService: ConfigService) {
+    this.loginUrl = this.configService.get<string>(
+      'NX_SALESFORCE_API_LOGIN_URL'
+    )
+    this.username = this.configService.get<string>('NX_SALESFORCE_API_USERNAME')
+    this.password = this.configService.get<string>('NX_SALESFORCE_API_PASSWORD')
+    this.securityToken = this.configService.get<string>(
+      'NX_SALESFORCE_API_SECURITY_TOKEN'
+    )
+    this.clientId = this.configService.get<string>(
+      'NX_SALESFORCE_API_CLIENT_ID'
+    )
+    this.clientSecret = this.configService.get<string>(
+      'NX_SALESFORCE_API_CLIENT_SECRET'
+    )
+
+    this.connection = new jsforce.Connection({
+      loginUrl: this.loginUrl,
+      clientId:
+        '3MVG9r_yMkYxwhkhe93YHPwED2H06d8Z1zYgRHAgkljlSq2x8XtnqpP4GdpS4.GDeqEgOVLfi2E1YNLxk4WaZ',
+      clientSecret:
+        'C41F3552AA09D4F8E375E3854D9C73A5EE769B8476915022FC68436523C6CA9A',
+    })
+  }
 
   async connect() {
     return new Promise((resolve, reject) => {
@@ -24,8 +45,8 @@ export class SalesforceApiService {
 
   _connect(onSuccess: (value: unknown) => void) {
     this.connection.login(
-      USERNAME,
-      `${PASSWORD}${SECURITY_TOKEN}`,
+      this.username,
+      `${this.password}${this.securityToken}`,
       (err, userInfo) => {
         if (err) {
           return console.error(err)
