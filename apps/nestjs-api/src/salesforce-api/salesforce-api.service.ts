@@ -65,19 +65,13 @@ export class SalesforceApiService {
     )
   }
 
-  allRecordsOfObject(objectName: string, fieldList: string[]) {
-    return new Promise((resolve, reject) => {
-      this.connection
-        .sobject(objectName)
-        .find({}, fieldList)
-        .execute((err, results) => {
-          if (err) {
-            return reject(err)
-          }
-          console.log(JSON.stringify(results, null, 2))
-          resolve(results)
-        })
-    })
+  async allRecordsOfObject(objectName: string, fieldList: string[]) {
+    const results = await this.connection
+      .sobject(objectName)
+      .find({}, fieldList)
+      .execute()
+    console.log(JSON.stringify(results, null, 2))
+    return results
   }
 
   query(query: string) {
