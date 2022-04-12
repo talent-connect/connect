@@ -111,6 +111,7 @@
     "i18next": "^19.4.4",
     "i18next-browser-languagedetector": "^4.1.1",
     "i18next-http-backend": "^1.0.8",
+    "immer": "^9.0.12",
     "jsforce": "^1.11.0",
     "lodash": "^4.17.19",
     "loopback": "^3.25.1",
