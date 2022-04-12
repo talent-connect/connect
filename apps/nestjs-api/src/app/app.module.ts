@@ -7,8 +7,6 @@ import { SalesforceApiModule } from '../salesforce-api/salesforce-api.module'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 
-console.log(process.env)
-
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
