@@ -148,6 +148,7 @@
     "reflect-metadata": "^0.1.13",
     "regenerator-runtime": "0.13.7",
     "rxjs": "^7.0.0",
+    "rxjs-boost": "^1.1.1",
     "serve-favicon": "^2.0.1",
     "slick-carousel": "^1.8.1",
     "strong-error-handler": "^3.0.0",

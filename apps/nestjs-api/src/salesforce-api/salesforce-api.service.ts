@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import * as jsforce from 'jsforce'
+import { SfBaseObject } from './objects/types/sf-base-object.interface'
 
 @Injectable()
 export class SalesforceApiService {
@@ -30,47 +31,29 @@ export class SalesforceApiService {
 
     this.connection = new jsforce.Connection({
       loginUrl: this.loginUrl,
-      clientId:
-        '3MVG9r_yMkYxwhkhe93YHPwED2H06d8Z1zYgRHAgkljlSq2x8XtnqpP4GdpS4.GDeqEgOVLfi2E1YNLxk4WaZ',
-      clientSecret:
-        'C41F3552AA09D4F8E375E3854D9C73A5EE769B8476915022FC68436523C6CA9A',
+      clientId: this.clientId,
+      clientSecret: this.clientSecret,
     })
   }
 
   async connect() {
-    return new Promise((resolve, reject) => {
-      this._connect(resolve)
-    })
-  }
-
-  _connect(onSuccess: (value: unknown) => void) {
-    this.connection.login(
+    await this.connection.login(
       this.username,
-      `${this.password}${this.securityToken}`,
-      (err, userInfo) => {
-        if (err) {
-          return console.error(err)
-        }
-        // Now you can get the access token and instance URL information.
-        // Save them to establish connection next time.
-        // console.log(this.connection.accessToken)
-        // console.log(this.connection.instanceUrl)
-        // logged in user property
-        // console.log('User ID: ' + userInfo.id)
-        // console.log('Org ID: ' + userInfo.organizationId)
-        // ...
-
-        onSuccess(null)
-      }
+      `${this.password}${this.securityToken}`
     )
   }
 
-  async allRecordsOfObject(objectName: string, fieldList: string[]) {
+  // TODO: SfObject should point to the _class_, not an instance of the class.
+  // I (Eric) tried for a couple of days to get this to work, without success.
+  async allRecordsOfObject<T extends SfBaseObject>(SfObject: T) {
     const results = await this.connection
-      .sobject(objectName)
-      .find({}, fieldList)
-      .execute()
-    console.log(JSON.stringify(results, null, 2))
+      .sobject(SfObject.SALESFORCE_OBJECT_NAME)
+      .find({}, SfObject.SALESFORCE_OBJECT_FIELDS)
+      .execute({ autoFetch: true, maxFetch: 10000 })
+
+    // con  sole.log(`I got ${results.length} records`)
+    // console.log(JSON.stringify(results, null, 2))
+
     return results
   }
 

@@ -586,6 +586,7 @@
         }
       },
       "tags": []
-    }
+    },
+    "typescript-utils": "libs/typescript-utils"
   }
 }
