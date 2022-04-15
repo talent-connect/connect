@@ -17,6 +17,7 @@ export class ConProfile extends BaseDomainModel {
   @Field((type) => UserType)
   userType: UserType //* DONE
 
+  @Field((type) => RediLocation)
   rediLocation: RediLocation //* DONE
   mentor_occupation?: string //* DONE
   mentor_workPlace?: string //* DONE
