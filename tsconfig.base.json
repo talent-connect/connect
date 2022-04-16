@@ -29,8 +29,7 @@
       ],
       "@talent-connect/typescript-utilities": [
         "libs/typescript-utilities/src/index.ts"
-      ],
-      "@talent-connect/typescript-utils": ["libs/typescript-utils/src/index.ts"]
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]
