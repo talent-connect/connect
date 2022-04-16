@@ -12,7 +12,7 @@ export class SalesforceApiRepository {
   private clientSecret: string
   private connection: any
 
-  constructor(private configService: ConfigService) {
+  constructor(private readonly configService: ConfigService) {
     this.loginUrl = this.configService.get<string>(
       'NX_SALESFORCE_API_LOGIN_URL'
     )
