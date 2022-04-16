@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common'
-import { ConProfilesService } from './con-profiles.service'
+import { SalesforceApiConProfilesService } from '../salesforce-api/salesforce-api-con-profiles.service'
 import { ConProfilesResolver } from './con-profiles.resolver'
-import { ConProfilesRepository } from './con-profiles.repository'
-import { SalesforceApiModule } from '../salesforce-api/salesforce-api.module'
+import { ConProfilesService } from './con-profiles.service'
+import { ConProfilesMapper } from './mappers/con-profiles.mapper'
 
 @Module({
-  imports: [SalesforceApiModule],
-  providers: [ConProfilesResolver, ConProfilesService, ConProfilesRepository],
+  imports: [SalesforceApiConProfilesService],
+  providers: [ConProfilesResolver, ConProfilesService, ConProfilesMapper],
 })
 export class ConProfilesModule {}

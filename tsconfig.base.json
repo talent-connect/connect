@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@talent-connect/common-types": ["libs/common-types/src/index.ts"],
       "@talent-connect/shared-atomic-design-components": [
         "libs/shared-atomic-design-components/src/index.ts"
       ],

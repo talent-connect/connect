@@ -1,32 +1,32 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql'
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql'
+import { ConProfileEntity } from '@talent-connect/common-types'
 import { ConProfilesService } from './con-profiles.service'
-import { ConProfile } from './entities/con-profile.entity'
 import { CreateConProfileInput } from './dto/create-con-profile.input'
 import { UpdateConProfileInput } from './dto/update-con-profile.input'
 
-@Resolver(() => ConProfile)
+@Resolver(() => ConProfileEntity)
 export class ConProfilesResolver {
   constructor(private readonly conProfilesService: ConProfilesService) {}
 
-  @Mutation(() => ConProfile)
+  @Mutation(() => ConProfileEntity)
   createConProfile(
     @Args('createConProfileInput') createConProfileInput: CreateConProfileInput
   ) {
     return this.conProfilesService.create(createConProfileInput)
   }
 
-  @Query(() => [ConProfile], { name: 'conProfiles' })
+  @Query(() => [ConProfileEntity], { name: 'conProfiles' })
   async findAll() {
     const data = await this.conProfilesService.findAll()
     return data
   }
 
-  @Query(() => ConProfile, { name: 'conProfile' })
+  @Query(() => ConProfileEntity, { name: 'conProfile' })
   findOne(@Args('id', { type: () => Int }) id: number) {
     return this.conProfilesService.findOne(id)
   }
 
-  @Mutation(() => ConProfile)
+  @Mutation(() => ConProfileEntity)
   updateConProfile(
     @Args('updateConProfileInput') updateConProfileInput: UpdateConProfileInput
   ) {
@@ -36,7 +36,7 @@ export class ConProfilesResolver {
     )
   }
 
-  @Mutation(() => ConProfile)
+  @Mutation(() => ConProfileEntity)
   removeConProfile(@Args('id', { type: () => Int }) id: number) {
     return this.conProfilesService.remove(id)
   }

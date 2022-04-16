@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
-import { SalesforceApiService } from './salesforce-api.service'
+import { SalesforceApiConProfilesService } from './salesforce-api-con-profiles.service'
+import { SalesforceApiRepository } from './salesforce-api.repository'
 
 @Module({
-  providers: [SalesforceApiService],
+  providers: [SalesforceApiConProfilesService, SalesforceApiRepository],
   imports: [ConfigModule],
-  exports: [SalesforceApiService],
+  exports: [SalesforceApiConProfilesService],
 })
 export class SalesforceApiModule {}

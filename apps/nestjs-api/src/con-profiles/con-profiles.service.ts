@@ -1,20 +1,31 @@
 import { Injectable } from '@nestjs/common'
-import { ConProfilesRepository } from './con-profiles.repository'
+import { ConProfileEntity } from '@talent-connect/common-types'
+import { SalesforceApiConProfilesService } from '../salesforce-api/salesforce-api-con-profiles.service'
 import { CreateConProfileInput } from './dto/create-con-profile.input'
 import { UpdateConProfileInput } from './dto/update-con-profile.input'
-import { ConProfile } from './entities/con-profile.entity'
+import { ConProfilesMapper } from './mappers/con-profiles.mapper'
 
 @Injectable()
 export class ConProfilesService {
-  constructor(private readonly repository: ConProfilesRepository) {}
+  constructor(
+    private readonly api: SalesforceApiConProfilesService,
+    private readonly mapper: ConProfilesMapper
+  ) {}
 
   create(createConProfileInput: CreateConProfileInput) {
     return 'This action adds a new conProfile'
   }
 
   async findAll() {
-    const results = await this.repository.findAll()
-    return results
+    // TODO: We should pass in simply `SfConProfile` (the class) instead of an instance thereof
+    // I (Eric) tried for a couple of days to get this to work, without success.
+    const persistedConProfiles = await this.api.getAllConProfiles()
+
+    const entities: ConProfileEntity[] = persistedConProfiles.map((source) =>
+      this.mapper.fromPersistence(source)
+    )
+
+    return entities
   }
 
   findOne(id: number) {

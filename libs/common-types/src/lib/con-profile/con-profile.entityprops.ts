@@ -1,16 +1,17 @@
+import { Entity, EntityProps } from '../base-interfaces-types-classes'
 import { Field, ID, ObjectType } from '@nestjs/graphql'
-import { BaseDomainModel } from '../../core/models/generics/base-domain.model'
-import { ConnectProfileLanguage } from '../enums/connect-profile-language.enum'
-import { EducationLevel } from '../enums/education-level.enum'
-import { Gender } from '../enums/gender.enum'
-import { OccupationCategory } from '../enums/occupation-category.enum'
-import { RediCourse } from '../enums/redi-course.enum'
-import { RediLocation } from '../enums/redi-location.enum'
-import { UserType } from '../enums/user-type.enum'
-import { Contact } from './contact.entity'
+import {
+  ConnectProfileLanguage,
+  EducationLevel,
+  OccupationCategory,
+  RediCourse,
+  RediLocation,
+  UserType,
+} from './enums'
+import { Gender } from './enums/gender.enum'
 
-@ObjectType()
-export class ConProfile extends BaseDomainModel {
+@ObjectType('ConProfile')
+export class ConProfileEntityProps implements EntityProps {
   @Field((type) => ID)
   id: string //* DONE
 
@@ -34,7 +35,7 @@ export class ConProfile extends BaseDomainModel {
   mentee_highestEducationLevel?: EducationLevel //* DONE
   @Field((type) => RediCourse) //* DONE
   mentee_currentlyEnrolledInCourse: RediCourse //* DONE
-  profileAvatarImageS3Ke?: string //* DONE
+  profileAvatarImageS3Key?: string //* DONE
 
   firstName: string //* DONE
   lastName: string //* DONE

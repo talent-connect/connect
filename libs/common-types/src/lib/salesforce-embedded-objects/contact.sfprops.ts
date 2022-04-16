@@ -1,12 +1,4 @@
-import { ObjectType } from '@nestjs/graphql'
-import { ConProfile } from '../../con-profiles/entities/con-profile.entity'
-import { SfBaseObject } from './types/sf-base-object.interface'
-
-@ObjectType()
-export class SfContact implements SfBaseObject {
-  readonly SALESFORCE_OBJECT_NAME = 'Contact'
-  readonly SALESFORCE_OBJECT_FIELDS = null
-
+export class ContactSfProps {
   FirstName?: string
   LastName: string
   ReDI_Behance_URL__c?: string
