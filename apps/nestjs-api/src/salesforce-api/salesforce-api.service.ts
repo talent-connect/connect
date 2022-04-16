@@ -45,7 +45,9 @@ export class SalesforceApiService {
 
   // TODO: SfObject should point to the _class_, not an instance of the class.
   // I (Eric) tried for a couple of days to get this to work, without success.
-  async allRecordsOfObject<T extends SfBaseObject>(SfObject: T) {
+  async allRecordsOfObject<T extends SfBaseObject>(SfObject: T): Promise<T[]> {
+    this.connect()
+
     const results = await this.connection
       .sobject(SfObject.SALESFORCE_OBJECT_NAME)
       .find({}, SfObject.SALESFORCE_OBJECT_FIELDS)
