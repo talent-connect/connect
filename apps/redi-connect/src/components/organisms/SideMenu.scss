@@ -82,3 +82,44 @@
     }
   }
 }
+
+.badge {
+  position: relative;
+
+  &__item {
+    border-radius: 10px;
+    background-color: $redi-orange-dark;
+    font-family: $family-primary;
+    color: $white;
+    height: 1rem;
+    min-width: 1rem;
+    font-size: 0.65rem;
+    text-align: center;
+    padding: 2px 2px;
+    letter-spacing: normal;
+    position: absolute;
+    top: -6px;
+
+    @include touch() {
+      display: none;
+    }
+
+    &--mobile {
+      @extend .badge__item;
+      display: none;
+
+      @include touch() {
+        display: inline;
+        position: absolute;
+        top: -2px;
+        right: 13px;
+      }
+    }
+  }
+
+  @include touch() {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}

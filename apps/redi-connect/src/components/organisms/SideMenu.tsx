@@ -5,6 +5,8 @@ import { NavLink } from 'react-router-dom'
 import { ReactComponent as Mentorship } from '../../assets/images/mentorship.svg'
 import { ReactComponent as Applications } from '../../assets/images/applications.svg'
 import { ReactComponent as Profile } from '../../assets/images/profile.svg'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../redux/types'
 
 interface MenuItemProps {
   url: string
@@ -36,6 +38,9 @@ const SideMenu = () => {
     isMentee && !profile.ifUserIsMentee_hasActiveMentor
   const isMenteeWithMentor =
     isActivatedMentee && profile.ifUserIsMentee_hasActiveMentor
+  const pendingApplicationsCount = useSelector(
+    (state: RootState) => state.user.profile.currentApplicantCount
+  )
 
   return (
     <ul className="side-menu">
@@ -59,8 +64,18 @@ const SideMenu = () => {
       )}
 
       <MenuItem url="/app/applications">
-        <Applications className="side-menu__icon" />
-        Applications
+        <div className="badge">
+          <Applications className="side-menu__icon" />
+          {Boolean(pendingApplicationsCount) && (
+            <span className="badge__item--mobile">
+              {pendingApplicationsCount}
+            </span>
+          )}
+          Applications
+          {Boolean(pendingApplicationsCount) && (
+            <span className="badge__item">{pendingApplicationsCount}</span>
+          )}
+        </div>
       </MenuItem>
     </ul>
   )
