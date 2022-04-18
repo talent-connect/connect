@@ -10,6 +10,7 @@ export type TpJobListing = {
   employmentType?: string
   languageRequirements?: string
   salaryRange?: string
+  isRemotePossible?: boolean
 
   tpCompanyProfileId?: string
   tpCompanyProfile?: TpCompanyProfile

@@ -31,6 +31,7 @@ import { LoggedIn } from '../../../components/templates'
 import { JobListingCard } from '../../../components/organisms/JobListingCard'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { objectEntries } from '@talent-connect/typescript-utilities'
+import { Home, HomeOutlined } from '@material-ui/icons'
 
 export function BrowseJobseeker() {
   const [companyName, setCompanyName] = useState('')
@@ -42,6 +43,7 @@ export function BrowseJobseeker() {
     employmentType: withDefault(ArrayParam, []),
     federalStates: withDefault(ArrayParam, []),
     onlyFavorites: withDefault(BooleanParam, undefined),
+    isRemotePossible: withDefault(BooleanParam, undefined),
   })
   const {
     relatedPositions,
@@ -49,6 +51,7 @@ export function BrowseJobseeker() {
     employmentType,
     federalStates,
     onlyFavorites,
+    isRemotePossible,
   } = query
 
   const history = useHistory()
@@ -61,6 +64,7 @@ export function BrowseJobseeker() {
     idealTechnicalSkills,
     employmentType,
     federalStates,
+    isRemotePossible,
   })
 
   const handleFavoriteJobListing = (value) => {
@@ -77,6 +81,13 @@ export function BrowseJobseeker() {
     setQuery((latestQuery) => ({
       ...latestQuery,
       onlyFavorites: onlyFavorites ? undefined : true,
+    }))
+  }
+
+  const toggleRemoteAvailableFilter = () => {
+    setQuery((latestQuery) => ({
+      ...latestQuery,
+      isRemotePossible: isRemotePossible ? undefined : true,
     }))
   }
 
@@ -180,6 +191,15 @@ export function BrowseJobseeker() {
               toggleFilters(federalStates, 'federalStates', item)
             }
           />
+        </div>
+      </div>
+      <div className="filters">
+        <div
+          className="filters-inner filter-remote"
+          onClick={toggleRemoteAvailableFilter}
+        >
+          {isRemotePossible ? <Home /> : <HomeOutlined />}
+          Remote Working Possible
         </div>
       </div>
       <div className="active-filters">

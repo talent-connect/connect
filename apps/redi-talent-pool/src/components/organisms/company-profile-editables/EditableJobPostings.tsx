@@ -263,6 +263,13 @@ function ModalForm({
           items={federalStatesOptions}
           {...formik}
         />
+        <Checkbox.Form
+          name="isRemotePossible"
+          checked={formik.values?.isRemotePossible}
+          {...formik}
+        >
+          Remote working is possible for this job listing
+        </Checkbox.Form>
         <FormTextArea
           label="Job Summary*"
           name={`summary`}

@@ -90,7 +90,7 @@
   }
 }
 
-.filter-favourites {
+@mixin filter-box {
   display: flex;
   height: $control-height;
   border: 1px solid $input-border-color;
@@ -103,9 +103,30 @@
   &:hover {
     border-color: $input-hover-border-color;
   }
+}
+
+.filter-favourites {
+  @include filter-box;
 
   &__icon {
     font-size: 1.2rem;
+    path {
+      fill: $redi-orange-dark;
+    }
+  }
+
+  &--active {
+    background-color: $input-hover-border-color;
+    color: white;
+  }
+}
+
+.filter-remote {
+  @include filter-box;
+
+  & svg {
+    font-size: 1.2rem;
+    margin-right: 0.5em;
     path {
       fill: $redi-orange-dark;
     }
