@@ -1,4 +1,5 @@
 'use strict'
+const { DateTime } = require('luxon')
 const fs = require('fs')
 const app = require('../server/server.js')
 const nodemailer = require('nodemailer')
@@ -205,54 +206,75 @@ function insertMatch(p) {
   )
 }
 
+let usersWithTwoProfiles = 0
+
 function buildContact(redUser) {
   const u = redUser
-  const conFields = [
-    'firstName',
-    'lastName',
-    'contactEmail',
-    'gender',
-    'birthDate',
-    'linkedInProfileUrl',
-    'githubProfileUrl',
-    'slackUsername',
-    'telephoneNumber',
-  ]
-  const tpJobseekerFields = [
-    'firstName',
-    'lastName',
-    'contactEmail',
-    'genderPronouns',
-    'telephoneNumber', // remapped
-    'postalMailingAddress',
-    'linkedInProfileUrl', // name remapped
-    'githubProfileUrl', // name remapped
-    'postalMailingAddress',
-    'personalWebsite',
-    'twitterUrl',
-    'behanceUrl',
-    'stackOverflowUrl',
-    'dribbbleUrl',
-    'immigrationStatus',
-  ]
-  const tpCompanyProfileFields = [
-    'howDidHearAboutRediKey',
-    'howDidHearAboutRediOtherText',
-    'firstName',
-    'lastName',
-  ]
+
+  const fields = {
+    conProfile: [
+      'firstName',
+      'lastName',
+      'contactEmail',
+      'gender',
+      'birthDate',
+      'linkedInProfileUrl',
+      'githubProfileUrl',
+      'slackUsername',
+      'telephoneNumber',
+      'createdAt',
+      'updatedAt',
+    ],
+    tpJobseekerProfile: [
+      'firstName',
+      'lastName',
+      'contactEmail',
+      'genderPronouns',
+      'telephoneNumber', // remapped
+      'postalMailingAddress',
+      'linkedInProfileUrl', // name remapped
+      'githubProfileUrl', // name remapped
+      'postalMailingAddress',
+      'personalWebsite',
+      'twitterUrl',
+      'behanceUrl',
+      'stackOverflowUrl',
+      'dribbbleUrl',
+      'immigrationStatus',
+      'createdAt',
+      'updatedAt',
+    ],
+    tpCompanyProfile: [
+      'howDidHearAboutRediKey',
+      'howDidHearAboutRediOtherText',
+      'firstName',
+      'lastName',
+      'createdAt',
+      'updatedAt',
+    ],
+  }
+
+  if (u.redProfile) u.redProfile.is = 'conProfile'
+  if (u.tpJobseekerProfile) u.tpJobseekerProfile.is = 'tpJobseekerProfile'
+  if (u.tpCompanyProfile) u.tpCompanyProfile.is = 'tpCompanyProfile'
 
   const profiles = [u.redProfile, u.tpJobseekerProfile, u.tpCompanyProfile]
     .filter((p) => p)
     .sort((a, b) => {
-      return Date(a.updatedAt) - Date(b.updatedAt)
+      return Date.parse(a.updatedAt) - Date.parse(b.updatedAt)
     })
 
-  if (profiles.length > 2) {
-    console.log(profiles)
-  }
-
   redUser.contact = {}
+  profiles.forEach((profile) => {
+    const profileType = profile.is
+    const fieldsToAssignToContactFromProfile = fields[profileType]
+    const fieldsAndValues = _.pick(profile, fieldsToAssignToContactFromProfile)
+    redUser.contact = Object.assign({}, redUser.contact, fieldsAndValues)
+  })
+
+  if (profiles.length >= 2) {
+    console.log(redUser)
+  }
 
   return redUser
 }
@@ -307,17 +329,18 @@ function buildContact(redUser) {
 
   console.log('We have:')
   console.log('users', allUsers.length)
+
   // console.log('conProfiles', allConProfiles.length)
-  console.log('conMatches', allConMatches.length)
-  console.log('conMentoringSessions', allConMentoringSessions.length)
+  // console.log('conMatches', allConMatches.length)
+  // console.log('conMentoringSessions', allConMentoringSessions.length)
   // console.log('tpCompanyProfiles', allTpCompanyProfiles.length)
   // console.log('tpJobListings', allTpJobListings.length)
   // console.log('tpJobsekeerProfiles', allTpJobseekerProfiles.length)
   // console.log('tpJobseekerCvs', allTpJobseekerCvs.length)
 
-  const someConProfiles = _.take(allConProfiles, 50)
+  // const someConProfiles = _.take(allConProfiles, 50)
 
-  await conn.login(USERNAME, `${PASSWORD}${SECURITY_TOKEN}`)
+  // await conn.login(USERNAME, `${PASSWORD}${SECURITY_TOKEN}`)
 
   // await from(allConProfiles)
   //   .pipe(
@@ -345,9 +368,9 @@ function buildContact(redUser) {
 
   // fs.writeFileSync('./map.json', JSON.stringify(REDPROFILE_SFCONTACT))
 
-  const json = fs.readFileSync('./map.json')
+  // const json = fs.readFileSync('./map.json')
 
-  REDPROFILE_SFCONTACT = JSON.parse(json)
+  // REDPROFILE_SFCONTACT = JSON.parse(json)
 
   // await from(allConMentoringSessions)
   //   .pipe(
