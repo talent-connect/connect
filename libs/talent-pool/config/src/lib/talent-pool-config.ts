@@ -760,7 +760,8 @@ export const germanFederalStates = {
   'rheinland-pfalz': 'Rheinland-Pfalz',
   saarland: 'Saarland',
   sachsen: 'Sachsen',
-  sachsenAnhalt: 'Sachsen-Anhalt',
-  schleswigHolstein: 'Schleswig-Holstein',
+  'sachsen-anhalt': 'Sachsen-Anhalt',
+  'schleswig-holstein': 'Schleswig-Holstein',
   thueringen: 'Thüringen',
+  'outside-germany': 'Outside Germany',
 } as const

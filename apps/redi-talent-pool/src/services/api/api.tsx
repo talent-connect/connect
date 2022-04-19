@@ -276,6 +276,7 @@ export interface TpJobListingFilters {
   idealTechnicalSkills: string[]
   employmentType: string[]
   federalStates: string[]
+  isRemotePossible: boolean
 }
 
 export async function fetchAllTpJobListingsUsingFilters({
@@ -283,6 +284,7 @@ export async function fetchAllTpJobListingsUsingFilters({
   idealTechnicalSkills,
   employmentType,
   federalStates,
+  isRemotePossible,
 }: TpJobListingFilters): Promise<Array<TpJobListing>> {
   const filterRelatedPositions =
     relatedPositions && relatedPositions.length !== 0
@@ -315,6 +317,7 @@ export async function fetchAllTpJobListingsUsingFilters({
             idealTechnicalSkills: filterIdealTechnicalSkills,
             employmentType: filterDesiredEmploymentTypeOptions,
             federalState: filterFederalStates,
+            isRemotePossible,
           },
         ],
       },
