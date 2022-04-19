@@ -17,10 +17,11 @@ module.exports = function (config, context) {
           require('@nestjs/graphql/plugin').before(
             {
               typeFileNameSuffix: [
-                '.input.ts',
-                '.args.ts',
-                '.entity.ts',
-                '.model.ts',
+                // '.input.ts',
+                // '.args.ts',
+                // '.entity.ts',
+                // '.model.ts',
+                '.entityprops.ts',
               ],
               introspectComments: true,
             },

@@ -36,7 +36,7 @@ export class SalesforceApiRepository {
   }
 
   async connect() {
-    await this.connection.login(
+    const res = await this.connection.login(
       this.username,
       `${this.password}${this.securityToken}`
     )
@@ -48,7 +48,7 @@ export class SalesforceApiRepository {
     objectName: string,
     objectFields: string[]
   ): Promise<any[]> {
-    this.connect()
+    await this.connect()
 
     const results = await this.connection
       .sobject(objectName)
@@ -56,7 +56,7 @@ export class SalesforceApiRepository {
       .execute({ autoFetch: true, maxFetch: 10000 })
 
     console.log(`I got ${results.length} records`)
-    console.log(JSON.stringify(results, null, 2))
+    // console.log(JSON.stringify(results, null, 2))
 
     return results
   }

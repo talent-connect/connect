@@ -95,6 +95,7 @@ async function insertContactFn(p) {
   const result = await conn.sobject('Contact').create({
     // AccountId: '0019X000002URWKQA4',
     RecordTypeId: '0121i000000HMq9AAG',
+    Loopback_User_ID__c: p.redUserId,
     FirstName: `${p.firstName}`,
     LastName: `${p.lastName}`,
     redi_Contact_Gender__c: p.gender ? p.gender.toUpperCase() : 'OTHER',
@@ -103,7 +104,6 @@ async function insertContactFn(p) {
     ReDI_GitHub_Profile__c: p.githubProfileUrl,
     ReDI_Slack_Username__c: p.slackUsername,
     MobilePhone: p.telephoneNumber,
-    // Name: `${p.firstName} ${p.lastName}`,
   })
   return { ...p, sfContactId: result.id }
 }
@@ -174,27 +174,141 @@ function insertMentoringSession(p) {
   )
 }
 
+async function insertMatchFn(p) {
+  console.log('trying to insert match', p.id)
+  const result = await conn.sobject('Mentorship_Match__c').create({
+    Acceptance_Notification_Dismissed__c:
+      p.hasMenteeDismissedMentorshipApplicationAcceptedNotification,
+    Application_Accepted_On__c: p.matchMadeActiveOn,
+    Application_Text__c: p.applicationText,
+    Decline_Message__c: p.ifDeclinedByMentor_optionalMessageToMentee
+      ? p.ifDeclinedByMentor_optionalMessageToMentee.substr(0, 1000)
+      : undefined,
+    Decline_Reason__c: p.ifDeclinedByMentor_chosenReasonForDecline,
+    Decline_Reason_Other__c: p.ifDeclinedByMentor_ifReasonIsOther_freeText,
+    Declined_On__c: p.ifDeclinedByMentor_dateTime,
+    Expectations__c: p.expectationText,
+    Mentor_Acceptance_Message__c: p.mentorReplyMessageOnAccept,
+    Mentor_Completion_Message__c: p.mentorMessageOnComplete
+      ? p.mentorMessageOnComplete.substr(0, 1000)
+      : undefined,
+    Status__c: p.status,
+    Mentee__c: REDPROFILE_SFCONTACT[p.menteeId],
+    Mentor__c: REDPROFILE_SFCONTACT[p.mentorId],
+  })
+  return { ...p, sfId: result.id }
+}
+function insertMatch(p) {
+  return of(p).pipe(
+    switchMap((x) => from(insertMatchFn(p))),
+    retryWithDelay(DELAY, RETRIES)
+  )
+}
+
+function buildContact(redUser) {
+  const u = redUser
+  const conFields = [
+    'firstName',
+    'lastName',
+    'contactEmail',
+    'gender',
+    'birthDate',
+    'linkedInProfileUrl',
+    'githubProfileUrl',
+    'slackUsername',
+    'telephoneNumber',
+  ]
+  const tpJobseekerFields = [
+    'firstName',
+    'lastName',
+    'contactEmail',
+    'genderPronouns',
+    'telephoneNumber', // remapped
+    'postalMailingAddress',
+    'linkedInProfileUrl', // name remapped
+    'githubProfileUrl', // name remapped
+    'postalMailingAddress',
+    'personalWebsite',
+    'twitterUrl',
+    'behanceUrl',
+    'stackOverflowUrl',
+    'dribbbleUrl',
+    'immigrationStatus',
+  ]
+  const tpCompanyProfileFields = [
+    'howDidHearAboutRediKey',
+    'howDidHearAboutRediOtherText',
+    'firstName',
+    'lastName',
+  ]
+
+  const profiles = [u.redProfile, u.tpJobseekerProfile, u.tpCompanyProfile]
+    .filter((p) => p)
+    .sort((a, b) => {
+      return Date(a.updatedAt) - Date(b.updatedAt)
+    })
+
+  if (profiles.length > 2) {
+    console.log(profiles)
+  }
+
+  redUser.contact = {}
+
+  return redUser
+}
+
 ;(async () => {
-  const allUsers = await RedUser.find().map((p) => p.toJSON())
-  const allConProfiles = await RedProfile.find().map((p) => p.toJSON())
+  const allUsers = await RedUser.find({
+    include: [
+      'redProfile',
+      'tpJobseekerProfile',
+      'tpJobseekerCv',
+      'tpCompanyProfile',
+      'tpJobListings',
+    ],
+  })
+    .map((u) => u.toJSON())
+    .map((u) => {
+      if (
+        u.conProfile &&
+        u.conProfile.mentee_currentlyEnrolledInCourse ===
+          'munich_frontendDevelopment'
+      ) {
+        u.conProfile.json.mentee_currentlyEnrolledInCourse = 'munich_frontend1'
+      }
+      return u
+    })
+    .map((u) => {
+      if (u.tpCompanyProfile) {
+        u.tpCompanyProfile.telephoneNumber = u.tpCompanyProfile.phoneNumber
+        delete u.tpCompanyProfile.phoneNumber
+      }
+      return u
+    })
+    .map((u) => {
+      if (u.tpJobseekerProfile) {
+        u.tpJobseekerProfile.telephoneNumber = u.tpJobseekerProfile.phoneNumber
+        delete u.tpJobseekerProfile.phoneNumber
+        u.tpJobseekerProfile.linkedInProfileUrl =
+          u.tpJobseekerProfile.linkedInUrl
+        delete u.tpJobseekerProfile.linkedInUrl
+        u.tpJobseekerProfile.githubProfileUrl = u.tpJobseekerProfile.githubUrl
+        delete u.tpJobseekerProfile.githubUrl
+      }
+      return u
+    })
+    .filter((u) => u.redProfile || u.tpJobseekerProfile || u.tpCompanyProfile)
+    .map(buildContact)
   const allConMatches = await RedMatch.find().map((p) => p.toJSON())
   const allConMentoringSessions = await RedMentoringSession.find().map((p) =>
-    p.toJSON()
-  )
-
-  const allTpCompanyProfiles = await TpCompanyProfile.find().map((p) =>
-    p.toJSON()
-  )
-  const allTpJobListings = await TpJobListing.find().map((p) => p.toJSON())
-  const allTpJobseekerProfiles = await TpJobseekerProfile.find().map((p) =>
     p.toJSON()
   )
   const allTpJobseekerCvs = await TpJobseekerCv.find().map((p) => p.toJSON())
 
   console.log('We have:')
   console.log('users', allUsers.length)
-  console.log('conProfiles', allConProfiles.length)
-  // console.log('conMatches', allConMatches.length)
+  // console.log('conProfiles', allConProfiles.length)
+  console.log('conMatches', allConMatches.length)
   console.log('conMentoringSessions', allConMentoringSessions.length)
   // console.log('tpCompanyProfiles', allTpCompanyProfiles.length)
   // console.log('tpJobListings', allTpJobListings.length)
@@ -235,19 +349,33 @@ function insertMentoringSession(p) {
 
   REDPROFILE_SFCONTACT = JSON.parse(json)
 
-  await from(allConMentoringSessions)
-    .pipe(
-      filter((p) => p.mentorId && p.menteeId),
-      filter(
-        (p) =>
-          REDPROFILE_SFCONTACT[p.mentorId] && REDPROFILE_SFCONTACT[p.menteeId]
-      ),
-      mergeMap((p) => insertMentoringSession(p), CONCURRENCY),
-      tap((p) => console.log('Inserted Mentoring Session #', p.sfId)),
-      scan((acc, curr) => acc + 1, 0),
-      tap(console.log)
-    )
-    .toPromise()
+  // await from(allConMentoringSessions)
+  //   .pipe(
+  //     filter((p) => p.mentorId && p.menteeId),
+  //     filter(
+  //       (p) =>
+  //         REDPROFILE_SFCONTACT[p.mentorId] && REDPROFILE_SFCONTACT[p.menteeId]
+  //     ),
+  //     mergeMap((p) => insertMentoringSession(p), CONCURRENCY / 2),
+  //     tap((p) => console.log('Inserted Mentoring Session #', p.sfId)),
+  //     scan((acc, curr) => acc + 1, 0),
+  //     tap(console.log)
+  //   )
+  //   .toPromise()
+
+  // await from(allConMatches)
+  //   .pipe(
+  //     filter((p) => p.mentorId && p.menteeId),
+  //     filter(
+  //       (p) =>
+  //         REDPROFILE_SFCONTACT[p.mentorId] && REDPROFILE_SFCONTACT[p.menteeId]
+  //     ),
+  //     mergeMap((p) => insertMatch(p), CONCURRENCY / 2),
+  //     tap((p) => console.log('Inserted Match #', p.sfId)),
+  //     scan((acc, curr) => acc + 1, 0),
+  //     tap(console.log)
+  //   )
+  //   .toPromise()
 })()
 
 function redProfileToProfileStatus(redProfile) {

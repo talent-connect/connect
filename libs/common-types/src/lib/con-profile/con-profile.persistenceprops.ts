@@ -43,8 +43,6 @@ export class ConProfilePersistenceProps implements PersistenceProps {
   }
 
   public static create(rawProps: any) {
-    return plainToClass(ConProfilePersistenceProps, rawProps, {
-      excludeExtraneousValues: true,
-    })
+    return plainToClass(ConProfilePersistenceProps, rawProps, {})
   }
 }

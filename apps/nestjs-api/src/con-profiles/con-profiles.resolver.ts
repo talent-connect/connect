@@ -1,5 +1,8 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql'
-import { ConProfileEntity } from '@talent-connect/common-types'
+import {
+  ConProfileEntity,
+  ConProfileEntityProps,
+} from '@talent-connect/common-types'
 import { ConProfilesService } from './con-profiles.service'
 import { CreateConProfileInput } from './dto/create-con-profile.input'
 import { UpdateConProfileInput } from './dto/update-con-profile.input'
@@ -8,36 +11,36 @@ import { UpdateConProfileInput } from './dto/update-con-profile.input'
 export class ConProfilesResolver {
   constructor(private readonly conProfilesService: ConProfilesService) {}
 
-  @Mutation(() => ConProfileEntity)
-  createConProfile(
-    @Args('createConProfileInput') createConProfileInput: CreateConProfileInput
-  ) {
-    return this.conProfilesService.create(createConProfileInput)
-  }
+  // @Mutation(() => ConProfileEntity)
+  // createConProfile(
+  //   @Args('createConProfileInput') createConProfileInput: CreateConProfileInput
+  // ) {
+  //   return this.conProfilesService.create(createConProfileInput)
+  // }
 
-  @Query(() => [ConProfileEntity], { name: 'conProfiles' })
+  @Query(() => [ConProfileEntityProps], { name: 'conProfiles' })
   async findAll() {
     const data = await this.conProfilesService.findAll()
     return data
   }
 
-  @Query(() => ConProfileEntity, { name: 'conProfile' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.conProfilesService.findOne(id)
-  }
+  // @Query(() => ConProfileEntity, { name: 'conProfile' })
+  // findOne(@Args('id', { type: () => Int }) id: number) {
+  //   return this.conProfilesService.findOne(id)
+  // }
 
-  @Mutation(() => ConProfileEntity)
-  updateConProfile(
-    @Args('updateConProfileInput') updateConProfileInput: UpdateConProfileInput
-  ) {
-    return this.conProfilesService.update(
-      updateConProfileInput.id,
-      updateConProfileInput
-    )
-  }
+  // @Mutation(() => ConProfileEntity)
+  // updateConProfile(
+  //   @Args('updateConProfileInput') updateConProfileInput: UpdateConProfileInput
+  // ) {
+  //   return this.conProfilesService.update(
+  //     updateConProfileInput.id,
+  //     updateConProfileInput
+  //   )
+  // }
 
-  @Mutation(() => ConProfileEntity)
-  removeConProfile(@Args('id', { type: () => Int }) id: number) {
-    return this.conProfilesService.remove(id)
-  }
+  // @Mutation(() => ConProfileEntity)
+  // removeConProfile(@Args('id', { type: () => Int }) id: number) {
+  //   return this.conProfilesService.remove(id)
+  // }
 }
