@@ -13,14 +13,12 @@ const _ = require('lodash')
 const { ConsoleLogger } = require('@nestjs/common')
 const { connect } = require('http2')
 
-const USERNAME = 'eric@redi-school.org.local'
-const PASSWORD = ',9ed[ZEJ,)SUfM5(whA#?J2{#Nz#)pHSBf^st(F.'
-const SECURITY_TOKEN = 'rjGY2M8RkEvHBzwB0ycxnC5B'
+const USERNAME = process.env.USERNAME
+const PASSWORD = process.env.PASSWORD
+const SECURITY_TOKEN = process.env.SECURITY_TOKEN
 const LOGIN_URL = 'https://redischool--local.my.salesforce.com'
-const CLIENT_ID =
-  '3MVG9r_yMkYxwhkhe93YHPwED2H06d8Z1zYgRHAgkljlSq2x8XtnqpP4GdpS4.GDeqEgOVLfi2E1YNLxk4WaZ'
-const CLIENT_SECRET =
-  'C41F3552AA09D4F8E375E3854D9C73A5EE769B8476915022FC68436523C6CA9A'
+const CLIENT_ID = process.env.CLIENT_ID
+const CLIENT_SECRET = process.env.CLIENT_SECRET
 
 const {
   RedUser,
