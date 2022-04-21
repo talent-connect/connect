@@ -14,8 +14,8 @@ const { ConsoleLogger } = require('@nestjs/common')
 const { connect } = require('http2')
 
 const USERNAME = 'eric@redi-school.org.local'
-const PASSWORD = 'P;JR2d.KmqzM$~Q,B.hzw6EJ9NU7Q^'
-const SECURITY_TOKEN = 'KwGRXbhpAXpH2rv9LpnFDwrs'
+const PASSWORD = ',9ed[ZEJ,)SUfM5(whA#?J2{#Nz#)pHSBf^st(F.'
+const SECURITY_TOKEN = 'rjGY2M8RkEvHBzwB0ycxnC5B'
 const LOGIN_URL = 'https://redischool--local.my.salesforce.com'
 const CLIENT_ID =
   '3MVG9r_yMkYxwhkhe93YHPwED2H06d8Z1zYgRHAgkljlSq2x8XtnqpP4GdpS4.GDeqEgOVLfi2E1YNLxk4WaZ'
@@ -66,7 +66,6 @@ const {
 const { of } = require('rxjs')
 
 const LANGUAGES = require('./languages')
-const { merge } = require('lodash')
 
 const DELAY = 2500
 const RETRIES = 10
@@ -206,7 +205,91 @@ function insertMatch(p) {
   )
 }
 
-let usersWithTwoProfiles = 0
+function insertJobseekerProfile(p) {
+  return of(p).pipe(
+    switchMap((x) => from(insertContactFn(p))),
+    retryWithDelay(DELAY, RETRIES)
+  )
+}
+async function insertJobseekerProfileFn(p) {
+  const result = await conn.sobject('ReDI_Connect_Profile__c').create({
+    Contact__c: p.sfContactId,
+    RecordTypeId: p.userType.indexOf('mentor') !== -1 ? MENTOR : MENTEE,
+    Profile_Status__c: redProfileToProfileStatus(p),
+    ReDI_Location__c: p.rediLocation,
+    Occupation__c: p.mentor_occupation,
+
+    Work_Place__c: p.mentor_workPlace,
+    Expectations__c: p.expectations
+      ? p.expectations.substr(0, 1000)
+      : undefined,
+    Occupation_Category__c: p.mentee_occupationCategoryId,
+    Place_of_Employment__c: p.mentee_occupationJob_placeOfEmployment,
+    Job_Title__c: p.mentee_occupationJob_position,
+    Study_Place__c: p.mentee_occupationStudent_studyPlace,
+    Study_Name__c: p.mentee_occupationStudent_studyName,
+    Desired_Job__c: p.mentee_occupationLookingForJob_what,
+    Main_Occupation_Other__c: p.mentee_occupationOther_description,
+    Education__c: p.mentee_highestEducationLevel,
+    ReDI_Course__c: p.mentee_currentlyEnrolledInCourse || 'alumni',
+    Avatar_Image_URL__c: p.profileAvatarImageS3Key,
+    Personal_Description__c: p.personalDescription
+      ? p.personalDescription.substr(0, 600)
+      : undefined,
+    Languages__c: p.languages
+      ? p.languages.map((langLabel) => LANGUAGES[langLabel]).join(';')
+      : undefined,
+    Opt_Out_Mentees_From_Other_Locations__c:
+      p.optOutOfMenteesFromOtherRediLocation,
+    Profile_First_Approved_At__c: p.userActivatedAt,
+    // CreatedDate: p.createdAt, //! Use Jonida trick
+    // LastModifiedDate: p.updatedAt, //! Use Jonida trick
+  })
+  return { ...p, sfConnectProfileId: result.id }
+}
+
+function insertAccountForCompanyProfile(p) {
+  return of(p).pipe(
+    switchMap((x) => from(insertContactFn(p))),
+    retryWithDelay(DELAY, RETRIES)
+  )
+}
+async function insertAccountForCompanyProfileFn(p) {
+  const result = await conn.sobject('ReDI_Connect_Profile__c').create({
+    Contact__c: p.sfContactId,
+    RecordTypeId: p.userType.indexOf('mentor') !== -1 ? MENTOR : MENTEE,
+    Profile_Status__c: redProfileToProfileStatus(p),
+    ReDI_Location__c: p.rediLocation,
+    Occupation__c: p.mentor_occupation,
+
+    Work_Place__c: p.mentor_workPlace,
+    Expectations__c: p.expectations
+      ? p.expectations.substr(0, 1000)
+      : undefined,
+    Occupation_Category__c: p.mentee_occupationCategoryId,
+    Place_of_Employment__c: p.mentee_occupationJob_placeOfEmployment,
+    Job_Title__c: p.mentee_occupationJob_position,
+    Study_Place__c: p.mentee_occupationStudent_studyPlace,
+    Study_Name__c: p.mentee_occupationStudent_studyName,
+    Desired_Job__c: p.mentee_occupationLookingForJob_what,
+    Main_Occupation_Other__c: p.mentee_occupationOther_description,
+    Education__c: p.mentee_highestEducationLevel,
+    ReDI_Course__c: p.mentee_currentlyEnrolledInCourse || 'alumni',
+    Avatar_Image_URL__c: p.profileAvatarImageS3Key,
+    Personal_Description__c: p.personalDescription
+      ? p.personalDescription.substr(0, 600)
+      : undefined,
+    Languages__c: p.languages
+      ? p.languages.map((langLabel) => LANGUAGES[langLabel]).join(';')
+      : undefined,
+    Opt_Out_Mentees_From_Other_Locations__c:
+      p.optOutOfMenteesFromOtherRediLocation,
+    Profile_First_Approved_At__c: p.userActivatedAt,
+    // CreatedDate: p.createdAt, //! Use Jonida trick
+    // LastModifiedDate: p.updatedAt, //! Use Jonida trick
+  })
+  return { ...p, sfConnectProfileId: result.id }
+}
 
 function buildContact(redUser) {
   const u = redUser
@@ -272,10 +355,6 @@ function buildContact(redUser) {
     redUser.contact = Object.assign({}, redUser.contact, fieldsAndValues)
   })
 
-  if (profiles.length >= 2) {
-    console.log(redUser)
-  }
-
   return redUser
 }
 
@@ -288,6 +367,7 @@ function buildContact(redUser) {
       'tpCompanyProfile',
       'tpJobListings',
     ],
+    // limit: 300,
   })
     .map((u) => u.toJSON())
     .map((u) => {
@@ -320,6 +400,15 @@ function buildContact(redUser) {
       return u
     })
     .filter((u) => u.redProfile || u.tpJobseekerProfile || u.tpCompanyProfile)
+    .filter((u) => {
+      if (
+        u.redProfile &&
+        u.redProfile['signup-source'] &&
+        u.redProfile['signup-source'] === 'manual-import-via-script'
+      )
+        return false
+      return true
+    })
     .map(buildContact)
   const allConMatches = await RedMatch.find().map((p) => p.toJSON())
   const allConMentoringSessions = await RedMentoringSession.find().map((p) =>
@@ -330,41 +419,42 @@ function buildContact(redUser) {
   console.log('We have:')
   console.log('users', allUsers.length)
 
-  // console.log('conProfiles', allConProfiles.length)
+  console.log(
+    'conProfiles',
+    allUsers.map((p) => p.redProfile).filter((p) => p).length
+  )
   // console.log('conMatches', allConMatches.length)
   // console.log('conMentoringSessions', allConMentoringSessions.length)
-  // console.log('tpCompanyProfiles', allTpCompanyProfiles.length)
-  // console.log('tpJobListings', allTpJobListings.length)
-  // console.log('tpJobsekeerProfiles', allTpJobseekerProfiles.length)
+  console.log(
+    'tpCompanyProfiles',
+    allUsers.map((p) => p.tpCompanyProfile).filter((p) => p).length
+  )
+  const allJobListings = _.flatten(allUsers.map((p) => p.tpJobListings))
+  console.log('tpJobListings', allJobListings.length)
+  console.log(
+    'tpJobsekeerProfiles',
+    allUsers.map((p) => p.tpJobseekerProfile).filter((p) => p).length
+  )
   // console.log('tpJobseekerCvs', allTpJobseekerCvs.length)
 
   // const someConProfiles = _.take(allConProfiles, 50)
 
   // await conn.login(USERNAME, `${PASSWORD}${SECURITY_TOKEN}`)
 
-  // await from(allConProfiles)
-  //   .pipe(
-  //     filter((p) => p['signup-source'] != 'manual-import-via-script'),
-  //     map((p) => {
-  //       if (
-  //         p.mentee_currentlyEnrolledInCourse === 'munich_frontendDevelopment'
-  //       ) {
-  //         p.mentee_currentlyEnrolledInCourse = 'munich_frontend1'
-  //       }
-  //       return p
-  //     }),
-  //     mergeMap((p) => insertContact(p), CONCURRENCY),
-  //     tap((p) => console.log('Inserted Contact #', p.sfContactId)),
-  //     mergeMap((p) => insertConnectProfile(p), CONCURRENCY),
-  //     tap((p) => console.log('Inserted ConProfile #', p.sfConnectProfileId)),
-  //     tap(({ id, sfContactId, sfConnectProfileId }) => {
-  //       REDPROFILE_SFCONTACT[id] = sfContactId
-  //       REDPROFILE_SFCONNECTPROFILE[id] = sfConnectProfileId
-  //     }),
-  //     scan((acc, curr) => acc + 1, 0),
-  //     tap(console.log)
-  //   )
-  //   .toPromise()
+  await from(allConProfiles)
+    .pipe(
+      mergeMap((p) => insertContact(p), CONCURRENCY),
+      tap((p) => console.log('Inserted Contact #', p.sfContactId)),
+      mergeMap((p) => insertConnectProfile(p), CONCURRENCY),
+      tap((p) => console.log('Inserted ConProfile #', p.sfConnectProfileId)),
+      tap(({ id, sfContactId, sfConnectProfileId }) => {
+        REDPROFILE_SFCONTACT[id] = sfContactId
+        REDPROFILE_SFCONNECTPROFILE[id] = sfConnectProfileId
+      }),
+      scan((acc, curr) => acc + 1, 0),
+      tap(console.log)
+    )
+    .toPromise()
 
   // fs.writeFileSync('./map.json', JSON.stringify(REDPROFILE_SFCONTACT))
 
