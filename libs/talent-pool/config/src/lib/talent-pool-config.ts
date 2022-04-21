@@ -1,5 +1,5 @@
-import { DropdownOptions } from '@talent-connect/talent-pool/types'
-import { keyBy, mapValues } from 'lodash'
+import { value DropdownOptions } from '@talent-connect/talent-pool/types'
+import { value keyBy, value mapValues } from 'lodash'
 
 export const desiredPositions: DropdownOptions = [
   {
