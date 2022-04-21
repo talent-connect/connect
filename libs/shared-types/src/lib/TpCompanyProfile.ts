@@ -1,4 +1,4 @@
-import { TpCompanyProfileState } from './TpCompanyProfileState'
+import { value TpCompanyProfileState } from './TpCompanyProfileState'
 
 export type TpCompanyProfile = {
   id: string
@@ -29,4 +29,6 @@ export type TpCompanyProfile = {
   updatedAt: Date
 
   isProfileVisibleToJobseekers: boolean
+
+  favouritedTpJobseekerIds: string[]
 }
