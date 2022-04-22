@@ -1,4 +1,4 @@
-import { value TpCompanyProfileState } from './TpCompanyProfileState'
+import { TpCompanyProfileState } from './TpCompanyProfileState'
 
 export type TpCompanyProfile = {
   id: string
