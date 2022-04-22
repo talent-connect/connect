@@ -1,6 +1,7 @@
 'use strict'
 const app = require('../server/server.js')
 const Rx = require('rxjs')
+const fs = require('fs')
 const { bindNodeCallback, from } = Rx
 const jsforce = require('jsforce')
 const _ = require('lodash')
@@ -308,7 +309,6 @@ function insertConnectProfile(p) {
 }
 
 async function insertMentoringSessionFn(p) {
-  console.log('trying to insert mentoring session', p.id)
   const result = await conn.sobject('Mentoring_Session__c').create({
     Date__c: p.date,
     Mentee__c: REDPROFILE_SFCONTACT[p.menteeId],
@@ -325,7 +325,6 @@ function insertMentoringSession(p) {
 }
 
 async function insertMatchFn(p) {
-  console.log('trying to insert match', p.id)
   const result = await conn.sobject('Mentorship_Match__c').create({
     Acceptance_Notification_Dismissed__c:
       p.hasMenteeDismissedMentorshipApplicationAcceptedNotification,
@@ -450,6 +449,101 @@ function insertJobseekerProfile(p) {
   )
 }
 
+async function insertJobseekerCvFn(p) {
+  const jobseekerResult = await conn.sobject('Jobseeker_Profile__c').create({
+    Contact__c: p.contact.sfContactId,
+    ReDI_Location__c: p.tpJobseekerProfile.rediLocation,
+    ReDI_Course__c: p.tpJobseekerProfile.currentlyEnrolledInCourse,
+    Avatar_Image_URL__c:
+      'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/' +
+      p.tpJobseekerProfile.profileAvatarImageS3Key,
+    Desired_Positions__c: p.tpJobseekerProfile.desiredPositions
+      ? p.tpJobseekerProfile.desiredPositions.join(';')
+      : undefined,
+    Location__c: p.tpJobseekerProfile.location,
+    Desired_Employment_Type__c: p.tpJobseekerProfile.desiredEmploymentType
+      ? p.tpJobseekerProfile.desiredEmploymentType.join(';')
+      : undefined,
+    Availability__c: p.tpJobseekerProfile.availability,
+    Availability_Date__c: p.tpJobseekerProfile.ifAvailabilityIsDate_date,
+    About_Yourself__c: p.tpJobseekerProfile.aboutYourself,
+    Top_Skills__c: p.tpJobseekerProfile.topSkills
+      ? p.tpJobseekerProfile.topSkills.join(';')
+      : undefined,
+    Profile_Status__c: p.tpJobseekerProfile.state,
+    // CreatedDate: p.tpJobseekerProfile.createdAt,//! Use Jonida trick
+    // LastModifiedDate: p.tpJobseekerProfile.updatedAt,//! Use Jonida trick
+    Is_Job_Fair_2022_Participant__c:
+      p.tpJobseekerProfile.isJobFair2022Participant,
+    Is_Visible_to_Companies__c:
+      p.tpJobseekerProfile.isProfileVisibleToCompanies,
+  })
+  const RECORD_TYPE_EXPERIENCE = '0129X0000001RUPQA2'
+  const RECORD_TYPE_EDUCATION = '0129X0000001RSnQAM'
+
+  if (p.tpJobseekerProfile.experience) {
+    for (const experienceItem of p.tpJobseekerProfile.experience) {
+      await conn.sobject('Jobseeker_Line_Item__c').create({
+        Jobseeker_Profile__c: jobseekerResult.id,
+        RecordTypeId: RECORD_TYPE_EXPERIENCE,
+        Description__c: experienceItem.description,
+        Institution_City__c: experienceItem.institutionCity,
+        Institution_Country__c: experienceItem.institutionCountry,
+        Institution_Name__c: experienceItem.institutionName,
+        Name: experienceItem.title,
+        Certification_Type__c: experienceItem.certificationType,
+        Description__c: experienceItem.description,
+        Start_Date_Month__c: experienceItem.startDateMonth,
+        Start_Date_Year__c: experienceItem.startDateYear,
+        End_Date_Month__c: experienceItem.endDateMonth,
+        End_Date_Year__c: experienceItem.endDateYear,
+        Current__c: experienceItem.current,
+      })
+      console.log('inserted jobseeker experience item')
+    }
+  }
+  if (p.tpJobseekerProfile.experience) {
+    for (const experienceItem of p.tpJobseekerProfile.experience) {
+      await conn.sobject('Jobseeker_Line_Item__c').create({
+        Jobseeker_Profile__c: jobseekerResult.id,
+        RecordTypeId: RECORD_TYPE_EDUCATION,
+        Description__c: experienceItem.description,
+        City__c: experienceItem.city,
+        Name: experienceItem.title,
+        Country__c: experienceItem.country,
+        Company__c: experienceItem.company,
+        Description__c: experienceItem.description,
+        Start_Date_Month__c: experienceItem.startDateMonth,
+        Start_Date_Year__c: experienceItem.startDateYear,
+        End_Date_Month__c: experienceItem.endDateMonth,
+        End_Date_Year__c: experienceItem.endDateYear,
+        Current__c: experienceItem.current,
+      })
+      console.log('inserted jobseeker education item')
+    }
+  }
+  if (p.tpJobseekerProfile.workingLanguages) {
+    for (const langItem of p.tpJobseekerProfile.workingLanguages) {
+      await conn.sobject('hed__Contact_Language__c').create({
+        hed__Contact__c: p.contact.sfContactId,
+        hed__Fluency__c: langItem.proficiencyLevelId,
+        hed__Language__c: LANGUAGE_TO_ID_MAP[langItem.language],
+      })
+      console.log('inserted jobseeker langauge record')
+    }
+  }
+  return { ...p.tpJobseekerProfile, sfJobseekerProfileId: jobseekerResult.id }
+}
+function insertJobseekerCv(p) {
+  return of(p).pipe(
+    switchMap(
+      (x) => from(insertJobseekerProfileFn(p)),
+      (outer, inner) => ({ ...outer, tpJobseekerProfile: inner })
+    ),
+    retryWithDelay(DELAY, RETRIES)
+  )
+}
+
 async function insertAccountForCompanyProfileFn(p) {
   const accountResult = await conn.sobject('Account').create({
     ReDI_Avatar_Image_URL__c:
@@ -523,6 +617,41 @@ function insertAccountForCompanyProfile(p) {
     switchMap(
       (x) => from(insertAccountForCompanyProfileFn(p)),
       (outer, inner) => ({ ...outer, tpCompanyProfile: inner })
+    ),
+    retryWithDelay(DELAY, RETRIES)
+  )
+}
+
+async function insertFavoriteMentorFn({ menteeId, mentorId }) {
+  await conn.sobject('Mentee_Favorited_Mentor_Profile__c').create({
+    Favoritee_ReDI_Connect_Profile__c: menteeId,
+    Favoriter_ReDI_Connect_Profile__c: mentorId,
+  })
+}
+function insertFavouriteMentor(o) {
+  return of(o).pipe(
+    switchMap(
+      (x) => from(insertFavoriteMentorFn(o)),
+      () => o
+    ),
+    retryWithDelay(DELAY, RETRIES)
+  )
+}
+
+async function insertJobseekerFavoriteJobListingFn({
+  jobseekerId,
+  jobListingId,
+}) {
+  await conn.sobject('Jobseeker_Favorited_Job_Listing__c').create({
+    Jobseeker_Profile__c: jobseekerId,
+    Job_Listing__c: jobListingId,
+  })
+}
+function insertJobseekerFavoriteJobListing(o) {
+  return of(o).pipe(
+    switchMap(
+      (x) => from(insertJobseekerFavoriteJobListingFn(o)),
+      () => o
     ),
     retryWithDelay(DELAY, RETRIES)
   )
@@ -608,11 +737,11 @@ function buildContact(redUser) {
     .map((u) => u.toJSON())
     .map((u) => {
       if (
-        u.conProfile &&
-        u.conProfile.mentee_currentlyEnrolledInCourse ===
+        u.redProfile &&
+        u.redProfile.mentee_currentlyEnrolledInCourse ===
           'munich_frontendDevelopment'
       ) {
-        u.conProfile.mentee_currentlyEnrolledInCourse = 'munich_frontend1'
+        u.redProfile.mentee_currentlyEnrolledInCourse = 'munich_frontend1'
       }
       return u
     })
@@ -694,8 +823,8 @@ function buildContact(redUser) {
     'conProfiles',
     allUsers.map((p) => p.redProfile).filter((p) => p).length
   )
-  // console.log('conMatches', allConMatches.length)
-  // console.log('conMentoringSessions', allConMentoringSessions.length)
+  console.log('conMatches', allConMatches.length)
+  console.log('conMentoringSessions', allConMentoringSessions.length)
   console.log(
     'tpCompanyProfiles',
     allUsers.map((p) => p.tpCompanyProfile).filter((p) => p).length
@@ -707,8 +836,6 @@ function buildContact(redUser) {
     allUsers.map((p) => p.tpJobseekerProfile).filter((p) => p).length
   )
   // console.log('tpJobseekerCvs', allTpJobseekerCvs.length)
-
-  // const someConProfiles = _.take(allConProfiles, 50)
 
   await conn.login(USERNAME, `${PASSWORD}${SECURITY_TOKEN}`)
 
@@ -786,56 +913,132 @@ function buildContact(redUser) {
     )
     .toPromise()
 
-  console.log(allUsers)
+  const menteeFavoritedMentorsToInsert = []
+  allUsers.forEach((u) => {
+    if (u.redProfile && u.redProfile.favouritedRedProfileIds) {
+      u.redProfile.favouritedRedProfileIds.forEach((mentorProfileId) => {
+        if (
+          REDPROFILE_SFREDICONNECTPROFILE[u.redProfile.id.toString()] &&
+          REDPROFILE_SFREDICONNECTPROFILE[mentorProfileId.toString()]
+        ) {
+          menteeFavoritedMentorsToInsert.push([
+            REDPROFILE_SFREDICONNECTPROFILE[u.redProfile.id.toString()],
+            REDPROFILE_SFREDICONNECTPROFILE[mentorProfileId.toString()],
+          ])
+        }
+      })
+    }
+  })
 
-  // await from(allConProfiles)
-  //   .pipe(
-  //     mergeMap((p) => insertContact(p), CONCURRENCY),
-  //     tap((p) => console.log('Inserted Contact #', p.sfContactId)),
-  //     mergeMap((p) => insertConnectProfile(p), CONCURRENCY),
-  //     tap((p) => console.log('Inserted ConProfile #', p.sfConnectProfileId)),
-  //     tap(({ id, sfContactId, sfConnectProfileId }) => {
-  //       REDPROFILE_SFCONTACT[id] = sfContactId
-  //       REDPROFILE_SFCONNECTPROFILE[id] = sfConnectProfileId
-  //     }),
-  //     scan((acc, curr) => acc + 1, 0),
-  //     tap(console.log)
-  //   )
-  //   .toPromise()
+  //! Ignoring this one - it was buggy and there is a grand total of ONE record
+  // const companyFavoritedJobseekersToInsert = {}
+  // allUsers.forEach((u) => {
+  //   if (u.tpCompanyProfile && u.tpCompanyProfile.favouritedTpJobseekerIds) {
+  //     u.tpCompanyProfile.favouritedTpJobseekerIds.forEach((tpJobseekerId) => {
+  //       companyFavoritedJobseekersToInsert[
+  //         TPCOMPANYPROFILE_SFACCOUNT[u.tpCompanyProfile.id.toString()]
+  //       ] = TPJOBSEEKERPROFILE_SFJOBSEEKERPROFILE[tpJobseekerId.toString()]
+  //     })
+  //   }
+  // })
 
-  // fs.writeFileSync('./map.json', JSON.stringify(REDPROFILE_SFCONTACT))
+  const jobseekerFavoritedJobListingsToInsert = []
+  allUsers.forEach((u) => {
+    if (
+      u.tpJobseekerProfile &&
+      u.tpJobseekerProfile.favouritedTpJobListingIds
+    ) {
+      u.tpJobseekerProfile.favouritedTpJobListingIds.forEach(
+        (tpJobListingId) => {
+          if (
+            TPJOBSEEKERPROFILE_SFJOBSEEKERPROFILE[
+              u.tpJobseekerProfile.id.toString()
+            ] &&
+            TPJOBLISTING_SFJOBLISTING[tpJobListingId.toString()]
+          ) {
+            jobseekerFavoritedJobListingsToInsert.push([
+              TPJOBSEEKERPROFILE_SFJOBSEEKERPROFILE[
+                u.tpJobseekerProfile.id.toString()
+              ],
+              TPJOBLISTING_SFJOBLISTING[tpJobListingId.toString()],
+            ])
+          }
+        }
+      )
+    }
+  })
 
-  // const json = fs.readFileSync('./map.json')
+  await from(menteeFavoritedMentorsToInsert)
+    .pipe(
+      tap((p) => console.log('inserting favourite mentor', p)),
+      mergeMap(
+        ([menteeId, mentorId]) => insertFavouriteMentor({ menteeId, mentorId }),
+        CONCURRENCY
+      )
+    )
+    .toPromise()
 
-  // REDPROFILE_SFCONTACT = JSON.parse(json)
+  //! Ignoring this one - it was buggy and there is a grand total of ONE record
+  // await from(companyFavoritedJobseekersToInsert).pipe().toPromise()
 
-  // await from(allConMentoringSessions)
-  //   .pipe(
-  //     filter((p) => p.mentorId && p.menteeId),
-  //     filter(
-  //       (p) =>
-  //         REDPROFILE_SFCONTACT[p.mentorId] && REDPROFILE_SFCONTACT[p.menteeId]
-  //     ),
-  //     mergeMap((p) => insertMentoringSession(p), CONCURRENCY / 2),
-  //     tap((p) => console.log('Inserted Mentoring Session #', p.sfId)),
-  //     scan((acc, curr) => acc + 1, 0),
-  //     tap(console.log)
-  //   )
-  //   .toPromise()
+  await from(jobseekerFavoritedJobListingsToInsert)
+    .pipe(
+      tap((p) => console.log('inserting jobseekers favourited joblisting', p)),
+      mergeMap(
+        ([jobseekerId, jobListingId]) =>
+          insertJobseekerFavoriteJobListing({ jobseekerId, jobListingId }),
+        CONCURRENCY
+      )
+    )
+    .toPromise()
 
-  // await from(allConMatches)
-  //   .pipe(
-  //     filter((p) => p.mentorId && p.menteeId),
-  //     filter(
-  //       (p) =>
-  //         REDPROFILE_SFCONTACT[p.mentorId] && REDPROFILE_SFCONTACT[p.menteeId]
-  //     ),
-  //     mergeMap((p) => insertMatch(p), CONCURRENCY / 2),
-  //     tap((p) => console.log('Inserted Match #', p.sfId)),
-  //     scan((acc, curr) => acc + 1, 0),
-  //     tap(console.log)
-  //   )
-  //   .toPromise()
+  // fs.writeFileSync('./REDPROFILE_SFCONTACT.json', REDPROFILE_SFCONTACT)
+  // fs.writeFileSync(
+  //   './REDPROFILE_SFREDICONNECTPROFILE.json',
+  //   REDPROFILE_SFREDICONNECTPROFILE
+  // )
+  // fs.writeFileSync(
+  //   './TPCOMPANYPROFILE_SFACCOUNT.json',
+  //   TPCOMPANYPROFILE_SFACCOUNT
+  // )
+  // fs.writeFileSync(
+  //   './TPJOBSEEKERPROFILE_SFJOBSEEKERPROFILE.json',
+  //   TPJOBSEEKERPROFILE_SFJOBSEEKERPROFILE
+  // )
+  // fs.writeFileSync(
+  //   './TPJOBLISTING_SFJOBLISTING.json',
+  //   TPJOBLISTING_SFJOBLISTING
+  // )
+
+  await from(allConMentoringSessions)
+    .pipe(
+      filter((p) => p.mentorId && p.menteeId),
+      filter(
+        (p) =>
+          REDPROFILE_SFCONTACT[p.mentorId] && REDPROFILE_SFCONTACT[p.menteeId]
+      ),
+      mergeMap((p) => insertMentoringSession(p), CONCURRENCY / 2),
+      tap((p) => console.log('Inserted Mentoring Session #', p.sfId)),
+      scan((acc, curr) => acc + 1, 0),
+      tap(console.log)
+    )
+    .toPromise()
+
+  await from(allConMatches)
+    .pipe(
+      filter((p) => p.mentorId && p.menteeId),
+      filter(
+        (p) =>
+          REDPROFILE_SFCONTACT[p.mentorId] && REDPROFILE_SFCONTACT[p.menteeId]
+      ),
+      mergeMap((p) => insertMatch(p), CONCURRENCY / 2),
+      tap((p) => console.log('Inserted Match #', p.sfId)),
+      scan((acc, curr) => acc + 1, 0),
+      tap(console.log)
+    )
+    .toPromise()
+
+  console.log('phou!')
 })()
 
 function redProfileToProfileStatus(redProfile) {

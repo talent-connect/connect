@@ -124,7 +124,7 @@ module.exports = function (RedProfile) {
     const isRedProfileOwnedByCurrentUser =
       currentUserRedProfileId &&
       currentUserRedProfileId === ctx.data.id.toString()
-    if (!isRedProfileOwnedByCurrentUser) delete ctx.data.favouritedRedProfileIds
+    // if (!isRedProfileOwnedByCurrentUser) delete ctx.data.favouritedRedProfileIds
 
     if (ctx.data && ctx.data.userType === 'mentor') {
       // In case RedProfile belongs to a mentor, add "computed properties"
