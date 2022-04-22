@@ -1,17 +1,9 @@
 'use strict'
-const { DateTime } = require('luxon')
-const fs = require('fs')
 const app = require('../server/server.js')
-const nodemailer = require('nodemailer')
 const Rx = require('rxjs')
-const path = require('path')
-const mjml2html = require('mjml')
 const { bindNodeCallback, from } = Rx
-const aws = require('aws-sdk')
 const jsforce = require('jsforce')
 const _ = require('lodash')
-const { ConsoleLogger } = require('@nestjs/common')
-const { connect } = require('http2')
 
 const USERNAME = process.env.USERNAME
 const PASSWORD = process.env.PASSWORD
@@ -37,8 +29,11 @@ const conn = new jsforce.Connection({
   clientSecret: CLIENT_SECRET,
 })
 
-let REDPROFILE_SFCONTACT = {}
-let REDPROFILE_SFCONNECTPROFILE = {}
+const REDPROFILE_SFCONTACT = {}
+const REDPROFILE_SFREDICONNECTPROFILE = {}
+const TPCOMPANYPROFILE_SFACCOUNT = {}
+const TPJOBSEEKERPROFILE_SFJOBSEEKERPROFILE = {}
+const TPJOBLISTING_SFJOBLISTING = {}
 
 const MENTOR = '0129X0000001EXBQA2'
 const MENTEE = '0129X0000001EYnQAM'
@@ -493,7 +488,7 @@ async function insertAccountForCompanyProfileFn(p) {
       if (jobListing.employmentType === 'apprenticeship') {
         jobListing.employmentType = 'apprenticeshipAusbildung'
       }
-      await conn.sobject('Job_Listing__c').create({
+      const jobListingResult = await conn.sobject('Job_Listing__c').create({
         Account__c: accountResult.id,
 
         Title__c: jobListing.title,
@@ -513,6 +508,7 @@ async function insertAccountForCompanyProfileFn(p) {
         // createdAt: Date //! Use Jonida trick
         // updatedAt: Date //! Use Jonida trick
       })
+      TPJOBLISTING_SFJOBLISTING[jobListing.id] = jobListingResult.id
       console.log('inserted job listing')
     }
   }
@@ -616,7 +612,7 @@ function buildContact(redUser) {
         u.conProfile.mentee_currentlyEnrolledInCourse ===
           'munich_frontendDevelopment'
       ) {
-        u.conProfile.json.mentee_currentlyEnrolledInCourse = 'munich_frontend1'
+        u.conProfile.mentee_currentlyEnrolledInCourse = 'munich_frontend1'
       }
       return u
     })
@@ -683,7 +679,7 @@ function buildContact(redUser) {
       return true
     })
     .map(buildContact)
-    .filter((u) => u.tpCompanyProfile)
+  // .filter((u) => u.tpCompanyProfile)
 
   const allConMatches = await RedMatch.find().map((p) => p.toJSON())
   const allConMentoringSessions = await RedMentoringSession.find().map((p) =>
@@ -718,36 +714,52 @@ function buildContact(redUser) {
 
   await from(allUsers)
     .pipe(
+      // ! Contacts
       mergeMap((u) => insertContact(u), CONCURRENCY),
       tap((u) => console.log('Inserted Contact #', u.contact.sfContactId)),
-      // mergeMap(
-      //   (u) => (u.redProfile ? insertConnectProfile(u) : of(u)),
-      //   CONCURRENCY
-      // ),
-      // tap(
-      //   (u) =>
-      //     u.redProfile &&
-      //     console.log(
-      //       'Inserted ReDI Connect Profile #',
-      //       u.redProfile.sfConnectProfileId
-      //     )
-      // ),
 
-      /* Jobseeker profiles */
-      // mergeMap(
-      //   (u) => (u.tpJobseekerProfile ? insertJobseekerProfile(u) : of(u)),
-      //   CONCURRENCY
-      // ),
-      // tap((u) => {
-      //   if (u.tpJobseekerProfile) {
-      //     console.log(
-      //       'Inserted Jobseeker Profile #',
-      //       u.tpJobseekerProfile.sfJobseekerProfileId
-      //     )
-      //   }
-      // }),
+      // ! ReDI Conenct Profiles
+      mergeMap(
+        (u) => (u.redProfile ? insertConnectProfile(u) : of(u)),
+        CONCURRENCY
+      ),
+      tap(
+        (u) =>
+          u.redProfile &&
+          console.log(
+            'Inserted ReDI Connect Profile #',
+            u.redProfile.sfConnectProfileId
+          )
+      ),
+      tap((u) => {
+        if (u.redProfile) {
+          REDPROFILE_SFREDICONNECTPROFILE[u.redProfile.id] =
+            u.redProfile.sfConnectProfileId
+          REDPROFILE_SFCONTACT[u.redProfile.id] = u.contact.sfContactId
+        }
+      }),
 
-      /* Company profiles */
+      // ! Jobseeker profiles
+      mergeMap(
+        (u) => (u.tpJobseekerProfile ? insertJobseekerProfile(u) : of(u)),
+        CONCURRENCY
+      ),
+      tap((u) => {
+        if (u.tpJobseekerProfile) {
+          console.log(
+            'Inserted Jobseeker Profile #',
+            u.tpJobseekerProfile.sfJobseekerProfileId
+          )
+        }
+      }),
+      tap((u) => {
+        if (u.tpJobseekerProfile) {
+          TPJOBSEEKERPROFILE_SFJOBSEEKERPROFILE[u.tpJobseekerProfile.id] =
+            u.tpJobseekerProfile.sfJobseekerProfileId
+        }
+      }),
+
+      // ! Company profiles
       mergeMap(
         (u) => (u.tpCompanyProfile ? insertAccountForCompanyProfile(u) : of(u)),
         CONCURRENCY
@@ -762,11 +774,19 @@ function buildContact(redUser) {
           )
         }
       }),
+      tap((u) => {
+        if (u.tpCompanyProfile) {
+          TPCOMPANYPROFILE_SFACCOUNT[u.tpCompanyProfile.id] =
+            u.tpCompanyProfile.sfAccountId
+        }
+      }),
 
       scan((acc, curr) => acc + 1, 0),
       tap(console.log)
     )
     .toPromise()
+
+  console.log(allUsers)
 
   // await from(allConProfiles)
   //   .pipe(
