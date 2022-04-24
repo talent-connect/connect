@@ -65,7 +65,7 @@ const { lang } = require('moment')
 
 const DELAY = 1500
 const RETRIES = 5
-const CONCURRENCY = 75
+const CONCURRENCY = 60 // 60 has worked before, with some errors. For actual data migration, use a low value, such as 15.
 
 const LANGUAGE_TO_ID_MAP = {
   Afrikaans: 'a0B9X0000004BPtUAM',
@@ -232,39 +232,105 @@ function retryWithDelay(delayTime, count = 1) {
     )
 }
 
+function deleteFalsyProperties(obj) {
+  for (const property in obj) {
+    if (!obj[property]) {
+      delete obj[property]
+    }
+  }
+
+  return obj
+}
+
 async function insertContactFn(p) {
-  const result = await conn.sobject('Contact').create({
-    // AccountId: '0019X000002URWKQA4',
-    RecordTypeId: '0121i000000HMq9AAG',
-    Loopback_User_ID__c: p.redUserId,
-    FirstName: `${
-      p.firstName
-        ? p.firstName
-            .toLocaleLowerCase()
-            .replace(/(^\w|\s\w)/g, (m) => m.toUpperCase())
-        : ''
-    }`,
-    LastName: `${
-      p.lastName
-        ? p.lastName
-            .toLocaleLowerCase()
-            .replace(/(^\w|\s\w)/g, (m) => m.toUpperCase())
-        : ''
-    }`,
-    redi_Contact_Gender__c: p.gender ? p.gender.toUpperCase() : 'OTHER',
-    ReDI_Birth_Date__c: p.birthDate,
-    LinkedIn_Profile__c: p.linkedInProfileUrl,
-    ReDI_GitHub_Profile__c: p.githubProfileUrl,
-    ReDI_Slack_Username__c: p.slackUsername,
-    MobilePhone: p.telephoneNumber,
-  })
-  return { ...p, sfContactId: result.id }
+  const existingContacts = await conn
+    .sobject('Contact')
+    .find({ Email: p.email.toLocaleLowerCase() })
+  const existingContactCount = existingContacts.length
+  let newOrExisting
+  let contactIdUpdatedOrInserted
+
+  if (existingContactCount === 0) {
+    newOrExisting = 'new'
+    const insertResult = await conn.sobject('Contact').create(
+      deleteFalsyProperties({
+        Email: p.email,
+        RecordTypeId: '0121i000000HMq9AAG',
+        Loopback_User_ID__c: p.contact.redUserId,
+        FirstName: `${
+          p.contact.firstName
+            ? p.contact.firstName
+                .toLocaleLowerCase()
+                .replace(/(^\w|\s\w)/g, (m) => m.toUpperCase())
+            : ''
+        }`,
+        LastName: `${
+          p.contact.lastName
+            ? p.contact.lastName
+                .toLocaleLowerCase()
+                .replace(/(^\w|\s\w)/g, (m) => m.toUpperCase())
+            : ''
+        }`,
+        redi_Contact_Gender__c: p.contact.gender
+          ? p.contact.gender.toUpperCase()
+          : 'OTHER',
+        ReDI_Birth_Date__c: p.contact.birthDate,
+        LinkedIn_Profile__c: p.contact.linkedInProfileUrl,
+        ReDI_GitHub_Profile__c: p.contact.githubProfileUrl,
+        ReDI_Slack_Username__c: p.contact.slackUsername,
+        MobilePhone: p.contact.telephoneNumber,
+        Upserted_by_CON_TP_data_migration: true,
+      })
+    )
+    contactIdUpdatedOrInserted = insertResult.id
+  } else {
+    newOrExisting = 'existing'
+    contactIdUpdatedOrInserted = existingContacts[0].Id
+    await conn.sobject('Contact').update(
+      deleteFalsyProperties({
+        Id: existingContacts[0].Id,
+        Email: p.email,
+        RecordTypeId: '0121i000000HMq9AAG',
+        Loopback_User_ID__c: p.contact.redUserId,
+        FirstName: `${
+          p.contact.firstName
+            ? p.contact.firstName
+                .toLocaleLowerCase()
+                .replace(/(^\w|\s\w)/g, (m) => m.toUpperCase())
+            : ''
+        }`,
+        LastName: `${
+          p.contact.lastName
+            ? p.contact.lastName
+                .toLocaleLowerCase()
+                .replace(/(^\w|\s\w)/g, (m) => m.toUpperCase())
+            : ''
+        }`,
+        redi_Contact_Gender__c: p.contact.gender
+          ? p.contact.gender.toUpperCase()
+          : 'OTHER',
+        ReDI_Birth_Date__c: p.contact.birthDate,
+        LinkedIn_Profile__c: p.contact.linkedInProfileUrl,
+        ReDI_GitHub_Profile__c: p.contact.githubProfileUrl,
+        ReDI_Slack_Username__c: p.contact.slackUsername,
+        MobilePhone: p.contact.telephoneNumber,
+        Upserted_by_CON_TP_data_migration: true,
+      })
+    )
+  }
+
+  return {
+    ...p.contact,
+    newOrExisting,
+    sfContactId: contactIdUpdatedOrInserted,
+    existingContactCount,
+  }
 }
 
 function insertContact(p) {
   return of(p).pipe(
     switchMap(
-      (x) => from(insertContactFn(p.contact)),
+      (x) => from(insertContactFn(p)),
       (outer, inner) => ({ ...outer, contact: inner })
     ),
     retryWithDelay(DELAY, RETRIES)
@@ -421,7 +487,7 @@ async function insertJobseekerProfileFn(p) {
         End_Date_Year__c: experienceItem.endDateYear,
         Current__c: experienceItem.current,
       })
-      console.log('inserted jobseeker experience item')
+      // console.log('inserted jobseeker experience item')
     }
   }
   if (p.tpJobseekerProfile.experience) {
@@ -441,7 +507,7 @@ async function insertJobseekerProfileFn(p) {
         End_Date_Year__c: experienceItem.endDateYear,
         Current__c: experienceItem.current,
       })
-      console.log('inserted jobseeker education item')
+      // console.log('inserted jobseeker education item')
     }
   }
   if (p.tpJobseekerProfile.workingLanguages) {
@@ -451,7 +517,7 @@ async function insertJobseekerProfileFn(p) {
         hed__Fluency__c: langItem.proficiencyLevelId,
         hed__Language__c: LANGUAGE_TO_ID_MAP[langItem.language],
       })
-      console.log('inserted jobseeker langauge record')
+      // console.log('inserted jobseeker langauge record')
     }
   }
   return { ...p.tpJobseekerProfile, sfJobseekerProfileId: jobseekerResult.id }
@@ -522,7 +588,7 @@ async function insertJobseekerCvFn(cv) {
         End_Date_Year__c: experienceItem.endDateYear,
         Current__c: experienceItem.current,
       })
-      console.log('inserted cv experience item')
+      // console.log('inserted cv experience item')
     }
   }
   if (cv.experience) {
@@ -542,7 +608,7 @@ async function insertJobseekerCvFn(cv) {
         End_Date_Year__c: experienceItem.endDateYear,
         Current__c: experienceItem.current,
       })
-      console.log('inserted cv education item')
+      // console.log('inserted cv education item')
     }
   }
   if (cv.workingLanguages) {
@@ -557,7 +623,7 @@ async function insertJobseekerCvFn(cv) {
           Language__c: LANGUAGE_TO_ID_MAP[langItem.language],
         })
       }
-      console.log('inserted cv langauge record')
+      // console.log('inserted cv langauge record')
     }
   }
   return { ...cv, sfCvId: cvResult.id }
@@ -763,6 +829,10 @@ function buildContact(redUser) {
   })
     .map((u) => u.toJSON())
     .map((u) => {
+      u.email = u.email.toLocaleLowerCase()
+      return u
+    })
+    .map((u) => {
       if (
         u.redProfile &&
         u.redProfile.mentee_currentlyEnrolledInCourse ===
@@ -872,7 +942,23 @@ function buildContact(redUser) {
     .pipe(
       // ! Contacts
       mergeMap((u) => insertContact(u), CONCURRENCY),
-      tap((u) => console.log('Inserted Contact #', u.contact.sfContactId)),
+
+      // If u.contact.sfContactId is falsy, we updated an existing contact. In that case,
+      // grab the existing contact and put its ID into u.contact.sfContactId
+      tap((u) => {
+        if (u.contact.newOrExisting === 'new') {
+          console.log('Inserted Contact #', u.contact.sfContactId)
+        } else {
+          console.log('Updated existing Contact #', u.contact.sfContactId)
+        }
+        if (u.contact.existingContactCount > 1) {
+          console.log(
+            'NOTE: we found more than one Contact with the email',
+            u.email,
+            'in Salesforce. We only updated the first one that was found.'
+          )
+        }
+      }),
 
       // ! ReDI Conenct Profiles
       mergeMap(
@@ -974,18 +1060,6 @@ function buildContact(redUser) {
     }
   })
 
-  //! Ignoring this one - it was buggy and there is a grand total of ONE record
-  // const companyFavoritedJobseekersToInsert = {}
-  // allUsers.forEach((u) => {
-  //   if (u.tpCompanyProfile && u.tpCompanyProfile.favouritedTpJobseekerIds) {
-  //     u.tpCompanyProfile.favouritedTpJobseekerIds.forEach((tpJobseekerId) => {
-  //       companyFavoritedJobseekersToInsert[
-  //         TPCOMPANYPROFILE_SFACCOUNT[u.tpCompanyProfile.id.toString()]
-  //       ] = TPJOBSEEKERPROFILE_SFJOBSEEKERPROFILE[tpJobseekerId.toString()]
-  //     })
-  //   }
-  // })
-
   const jobseekerFavoritedJobListingsToInsert = []
   allUsers.forEach((u) => {
     if (
@@ -1021,9 +1095,6 @@ function buildContact(redUser) {
       )
     )
     .toPromise()
-
-  //! Ignoring this one - it was buggy and there is a grand total of ONE record
-  // await from(companyFavoritedJobseekersToInsert).pipe().toPromise()
 
   await from(jobseekerFavoritedJobListingsToInsert)
     .pipe(
