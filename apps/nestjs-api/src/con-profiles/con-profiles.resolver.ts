@@ -20,8 +20,9 @@ export class ConProfilesResolver {
 
   @Query(() => [ConProfileEntityProps], { name: 'conProfiles' })
   async findAll() {
-    const data = await this.conProfilesService.findAll()
-    return data
+    const entities = await this.conProfilesService.findAll()
+    const props = entities.map((entity) => entity.props)
+    return props
   }
 
   // @Query(() => ConProfileEntity, { name: 'conProfile' })

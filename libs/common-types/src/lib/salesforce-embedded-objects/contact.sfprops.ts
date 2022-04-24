@@ -1,7 +1,10 @@
+import { Type } from 'class-transformer'
+
 export class ContactSfProps {
   FirstName?: string
   LastName: string
   ReDI_Behance_URL__c?: string
+  @Type(() => Date)
   ReDI_Birth_Date__c?: Date
   ReDI_Dribbble_URL__c?: string
   ReDI_Preferred_Pronouns__c?: string

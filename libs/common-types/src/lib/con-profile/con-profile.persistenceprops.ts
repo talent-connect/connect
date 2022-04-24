@@ -27,6 +27,7 @@ export class ConProfilePersistenceProps implements PersistenceProps {
   Opt_Out_Mentees_From_Other_Locations__c?: boolean
   Personal_Description__c?: string
   Place_of_Employment__c?: string
+  @Type(() => Date)
   Profile_First_Approved_At__c?: Date
   Profile_Status__c?: PicklistValue
   ReDI_Course__c: PicklistValue

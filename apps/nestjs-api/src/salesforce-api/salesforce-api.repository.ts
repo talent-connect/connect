@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import * as jsforce from 'jsforce'
+import * as _ from 'lodash'
 
 @Injectable()
 export class SalesforceApiRepository {
@@ -56,6 +57,7 @@ export class SalesforceApiRepository {
       .execute({ autoFetch: true, maxFetch: 10000 })
 
     console.log(`I got ${results.length} records`)
+    // console.log(_.pick(results, ['']))
     // console.log(JSON.stringify(results, null, 2))
 
     return results
