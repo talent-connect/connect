@@ -2,6 +2,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo'
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { GraphQLModule } from '@nestjs/graphql'
+import { ConMentoringSessionsModule } from '../con-mentoring-sessions/con-mentoring-sessions.module'
 import { ConProfilesModule } from '../con-profiles/con-profiles.module'
 import { SalesforceApiModule } from '../salesforce-api/salesforce-api.module'
 import { AppController } from './app.controller'
@@ -18,6 +19,7 @@ import { AppService } from './app.service'
       debug: true,
     }),
     ConProfilesModule,
+    ConMentoringSessionsModule,
     SalesforceApiModule,
   ],
   controllers: [AppController],

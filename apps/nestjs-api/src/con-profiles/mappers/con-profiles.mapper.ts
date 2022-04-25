@@ -23,6 +23,7 @@ export class ConProfilesMapper
     const props = new ConProfileEntityProps()
 
     props.id = raw.props.Id
+    props._contactId = raw.props.Contact__r.Id
     props.userType = raw.props.RecordType.DeveloperName as UserType
     props.rediLocation = raw.props.ReDI_Location__c as RediLocation
     props.mentor_occupation = raw.props.Occupation__c

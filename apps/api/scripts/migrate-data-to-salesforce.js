@@ -463,6 +463,8 @@ async function insertJobseekerProfileFn(p) {
       p.tpJobseekerProfile.isJobFair2022Participant,
     Is_Visible_to_Companies__c:
       p.tpJobseekerProfile.isProfileVisibleToCompanies,
+    Is_Hired__c: p.tpJobseekerProfile.isHired,
+
     CreatedDate: p.tpJobseekerProfile.createdAt,
     LastModifiedDate: p.tpJobseekerProfile.updatedAt,
   })

@@ -21,6 +21,7 @@ export class ConProfilePersistence extends Persistence<ConProfilePersistenceProp
     SALESFORCE_OBJECT_FIELDS: [
       'Id',
       'RecordType.DeveloperName', // Enum: MENTOR/MENTEE
+      'Contact__r.Id',
       'Contact__r.FirstName',
       'Contact__r.LastName',
       'Contact__r.ReDI_Behance_URL__c',

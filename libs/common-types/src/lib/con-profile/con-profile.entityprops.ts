@@ -9,39 +9,41 @@ import {
   UserType,
 } from './enums'
 import { Gender } from './enums/gender.enum'
+import { ConMentoringSessionEntityProps } from '../con-mentoring-session'
 
 @ObjectType('ConProfile')
 export class ConProfileEntityProps implements EntityProps {
   @Field((type) => ID)
-  id: string //* DONE
+  id: string
+  _contactId: string
 
   @Field((type) => UserType)
-  userType: UserType //* DONE
+  userType: UserType
 
   @Field((type) => RediLocation)
-  rediLocation: RediLocation //* DONE
-  mentor_occupation?: string //* DONE
-  mentor_workPlace?: string //* DONE
-  expectations?: string //* DONE
-  @Field((type) => OccupationCategory) //* DONE
-  mentee_occupationCategoryId?: OccupationCategory //* DONE
-  mentee_occupationJob_placeOfEmployment?: string //* DONE
-  mentee_occupationJob_position?: string //* DONE
-  mentee_occupationStudent_studyPlace?: string //* DONE
-  mentee_occupationStudent_studyName?: string //* DONE
-  mentee_occupationLookingForJob_what?: string //* DONE
-  mentee_occupationOther_description?: string //* DONE
-  @Field((type) => EducationLevel) //* DONE
-  mentee_highestEducationLevel?: EducationLevel //* DONE
-  @Field((type) => RediCourse) //* DONE
-  mentee_currentlyEnrolledInCourse: RediCourse //* DONE
-  profileAvatarImageS3Key?: string //* DONE
+  rediLocation: RediLocation
+  mentor_occupation?: string
+  mentor_workPlace?: string
+  expectations?: string
+  @Field((type) => OccupationCategory)
+  mentee_occupationCategoryId?: OccupationCategory
+  mentee_occupationJob_placeOfEmployment?: string
+  mentee_occupationJob_position?: string
+  mentee_occupationStudent_studyPlace?: string
+  mentee_occupationStudent_studyName?: string
+  mentee_occupationLookingForJob_what?: string
+  mentee_occupationOther_description?: string
+  @Field((type) => EducationLevel)
+  mentee_highestEducationLevel?: EducationLevel
+  @Field((type) => RediCourse)
+  mentee_currentlyEnrolledInCourse: RediCourse
+  profileAvatarImageS3Key?: string
 
-  firstName: string //* DONE
-  lastName: string //* DONE
-  @Field((type) => Gender) //* DONE
-  gender?: Gender //* DONE
-  birthDate?: Date //* DONE
+  firstName: string
+  lastName: string
+  @Field((type) => Gender)
+  gender?: Gender
+  birthDate?: Date
 
   @Field((type) => [ConnectProfileLanguage])
   languages?: Array<ConnectProfileLanguage>
@@ -53,6 +55,9 @@ export class ConProfileEntityProps implements EntityProps {
   // categories: Array<CategoryKey> //! REMOVE IN FAVOUR OF MENTORING TOPICS
   // favouritedRedProfileIds: Array<string> //! REPLACED BY NEW JUNCTION OBJECT
   optOutOfMenteesFromOtherRediLocation: boolean
+
+  @Field((type) => [ConMentoringSessionEntityProps])
+  mentoringSessions: ConMentoringSessionEntityProps[]
 
   createdAt: Date
   updatedAt: Date

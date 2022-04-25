@@ -1,5 +1,4 @@
 'use strict'
-const app = require('../server/server.js')
 const Rx = require('rxjs')
 const fs = require('fs')
 const { bindNodeCallback, from } = Rx
@@ -21,13 +20,18 @@ const conn = new jsforce.Connection({
 ;(async () => {
   await conn.login(USERNAME, `${PASSWORD}${SECURITY_TOKEN}`)
 
-  const res = await conn.sobject('Contact').upsert(
-    {
-      ReDI_Preferred_Pronouns__c: 'test',
-      Email: 'aakashgenani@gmail.com',
-    },
-    'Email'
-  )
+  const res = await conn
+    .sobject('Mentoring_Session__c')
+    .find(
+      {
+        $or: [
+          { Mentee__c: '0039X0000007zdFQAQ' },
+          { Mentor__c: '0039X0000007zdFQAQ' },
+        ],
+      },
+      '*'
+    )
+    .sort('Id')
 
   console.log(res)
 })()

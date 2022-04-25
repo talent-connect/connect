@@ -1,6 +1,7 @@
 import { Type } from 'class-transformer'
 
 export class ContactSfProps {
+  Id: string
   FirstName?: string
   LastName: string
   ReDI_Behance_URL__c?: string

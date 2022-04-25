@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import * as jsforce from 'jsforce'
 import * as _ from 'lodash'
+const async = require('async')
 
 @Injectable()
 export class SalesforceApiRepository {
@@ -33,6 +34,7 @@ export class SalesforceApiRepository {
       loginUrl: this.loginUrl,
       clientId: this.clientId,
       clientSecret: this.clientSecret,
+      maxRequest: 100,
     })
   }
 
@@ -43,23 +45,41 @@ export class SalesforceApiRepository {
     )
   }
 
-  // TODO: SfObject should point to the _class_, not an instance of the class.
-  // I (Eric) tried for a couple of days to get this to work, without success.
-  async allRecordsOfObject(
-    objectName: string,
-    objectFields: string[]
-  ): Promise<any[]> {
-    await this.connect()
+  private findRecordsOfObjectQueue = async.queue(
+    async (task: FindRecordsParams, callback) => {
+      await this.connect()
+      const { objectName, objectFields, conditions, limit, offset } = task
 
-    const results = await this.connection
-      .sobject(objectName)
-      .find({}, objectFields)
-      .execute({ autoFetch: true, maxFetch: 10000 })
+      try {
+        const results = await this.connection
+          .sobject(objectName)
+          .find(conditions, objectFields, { limit, offset })
+          .execute({ autoFetch: true, maxFetch: 10000 })
 
-    console.log(`I got ${results.length} records`)
-    // console.log(_.pick(results, ['']))
-    // console.log(JSON.stringify(results, null, 2))
+        if (results.length > 0) console.log(`I got ${results.length} records`)
 
-    return results
+        callback(results)
+      } catch (err) {
+        console.log(err)
+        callback([])
+      }
+    },
+    40
+  )
+
+  findRecordsOfObject(args: FindRecordsParams): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      this.findRecordsOfObjectQueue.push(args, (result) => {
+        resolve(result)
+      })
+    })
   }
+}
+
+interface FindRecordsParams {
+  objectName: string
+  objectFields: string[]
+  conditions?: any
+  limit?: number
+  offset?: number
 }

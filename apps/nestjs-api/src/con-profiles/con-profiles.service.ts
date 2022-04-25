@@ -16,10 +16,12 @@ export class ConProfilesService {
     return 'This action adds a new conProfile'
   }
 
-  async findAll() {
-    // TODO: We should pass in simply `SfConProfile` (the class) instead of an instance thereof
-    // I (Eric) tried for a couple of days to get this to work, without success.
-    const persistedConProfiles = await this.api.getAllConProfiles()
+  async findAll(conditions: any = {}, limit: number = 100, offset: number = 0) {
+    const persistedConProfiles = await this.api.getAllConProfiles(
+      conditions,
+      limit,
+      offset
+    )
 
     const entities: ConProfileEntity[] = persistedConProfiles.map((source) =>
       this.mapper.fromPersistence(source)
