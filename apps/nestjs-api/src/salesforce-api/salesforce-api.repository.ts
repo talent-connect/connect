@@ -56,22 +56,17 @@ export class SalesforceApiRepository {
         offset = 0,
       } = task
 
-      try {
-        let query = this.connection
-          .sobject(objectName)
-          .find(conditions, objectFields, { limit, offset })
-        const results = await query.execute({
-          autoFetch: true,
-          maxFetch: 10000,
-        })
+      let query = this.connection
+        .sobject(objectName)
+        .find(conditions, objectFields, { limit, offset })
+      const results = await query.execute({
+        autoFetch: true,
+        maxFetch: 10000,
+      })
 
-        if (results.length > 0) console.log(`I got ${results.length} records`)
+      if (results.length > 0) console.log(`I got ${results.length} records`)
 
-        callback(results)
-      } catch (err) {
-        console.log(err)
-        callback([])
-      }
+      callback(results)
     },
     40
   )
