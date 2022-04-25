@@ -1342,7 +1342,6 @@ const TpJobseekerProfileListFilters = (props) => (
         name: val,
       }))}
     />
-    <NullableBooleanInput source="isJobFair2022Participant" />
   </Filter>
 )
 
@@ -1418,10 +1417,7 @@ const TpJobseekerProfileShow = (props) => (
         <Tab label="Profile">
           <TextField source="state" />
           <BooleanField source="isProfileVisibleToCompanies" />
-          <BooleanField
-            initialValue={false}
-            source="isJobFair2022Participant"
-          />
+          <BooleanField initialValue={false} source="isHired" />
           <Avatar />
           <TextField source="firstName" />
           <TextField source="lastName" />
@@ -1575,7 +1571,7 @@ const TpJobseekerProfileEdit = (props) => (
       <FormTab label="Profile">
         <TextField source="state" />
         <BooleanInput source="isProfileVisibleToCompanies" />
-        <BooleanInput initialValue={false} source="isJobFair2022Participant" />
+        <BooleanInput initialValue={false} source="isHired" />
         {/* <Avatar /> */}
         <TextInput source="firstName" />
         <TextInput source="lastName" />
