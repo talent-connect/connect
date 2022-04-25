@@ -353,6 +353,11 @@ export const COURSES = [
     label: 'Coding Fundamentals',
     location: 'berlin',
   },
+  {
+    id: 'dataAnalyticsWithPython',
+    label: 'Data Analytics with Python (pilot)',
+    location: 'berlin',
+  },
   { id: 'uiUxDesignBasics', label: 'UX/UI Design Basics', location: 'berlin' },
   {
     id: 'uiUxDesignIntermediate',
