@@ -48,13 +48,22 @@ export class SalesforceApiRepository {
   private findRecordsOfObjectQueue = async.queue(
     async (task: FindRecordsParams, callback) => {
       await this.connect()
-      const { objectName, objectFields, conditions, limit, offset } = task
+      const {
+        objectName,
+        objectFields,
+        conditions = {},
+        limit = 100,
+        offset = 0,
+      } = task
 
       try {
-        const results = await this.connection
+        let query = this.connection
           .sobject(objectName)
           .find(conditions, objectFields, { limit, offset })
-          .execute({ autoFetch: true, maxFetch: 10000 })
+        const results = await query.execute({
+          autoFetch: true,
+          maxFetch: 10000,
+        })
 
         if (results.length > 0) console.log(`I got ${results.length} records`)
 
