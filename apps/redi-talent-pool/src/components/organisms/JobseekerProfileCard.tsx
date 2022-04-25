@@ -7,10 +7,9 @@ import {
 } from '@talent-connect/talent-pool/config'
 import classnames from 'clsx'
 import React from 'react'
-import { Card, Element } from 'react-bulma-components'
+import { Card, Element, Tag } from 'react-bulma-components'
 import './JobseekerProfileCard.scss'
 import placeholderImage from '../../assets/img-placeholder.png'
-
 interface JobseekerProfileCardProps {
   jobseekerProfile: Partial<TpJobseekerProfile>
   onClick?: () => void
@@ -56,6 +55,9 @@ export function JobseekerProfileCard({
         alt={fullName}
       />
       <Card.Content>
+        {jobseekerProfile.isHired ? (
+          <Tag className="jobseeker-profile-card__hired-tag">HIRED!</Tag>
+        ) : null}
         {toggleFavorite && (
           <div
             className="jobseeker-profile-card__favorite"
