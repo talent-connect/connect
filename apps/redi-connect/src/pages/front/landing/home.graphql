@@ -1,0 +1,9 @@
+query test {
+  conProfiles {
+    id
+    firstName
+    lastName
+    rediLocation
+    gender
+  }
+}

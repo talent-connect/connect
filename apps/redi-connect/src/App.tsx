@@ -11,6 +11,7 @@ import { envRediLocation } from './utils/env-redi-location'
 import LocationPicker from './pages/front/landing/LocationPicker'
 import { Route } from 'react-router-dom'
 import { QueryParamProvider } from 'use-query-params'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 const App = () => {
   switch (envRediLocation()) {
@@ -26,6 +27,8 @@ const App = () => {
   }
 }
 
+const queryClient = new QueryClient()
+
 const NormalRediConnect = () => {
   useEffect(() => {
     store.dispatch(profileFetchStart())
@@ -34,15 +37,17 @@ const NormalRediConnect = () => {
   return (
     <>
       <AppNotification />
-      <StoreProvider store={store}>
-        <Router history={history}>
-          <Suspense fallback={<Loader loading={true} />}>
-            <QueryParamProvider ReactRouterRoute={Route}>
-              <Routes />
-            </QueryParamProvider>
-          </Suspense>
-        </Router>
-      </StoreProvider>
+      <QueryClientProvider client={queryClient}>
+        <StoreProvider store={store}>
+          <Router history={history}>
+            <Suspense fallback={<Loader loading={true} />}>
+              <QueryParamProvider ReactRouterRoute={Route}>
+                <Routes />
+              </QueryParamProvider>
+            </Suspense>
+          </Router>
+        </StoreProvider>
+      </QueryClientProvider>
     </>
   )
 }

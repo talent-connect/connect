@@ -1,0 +1,20 @@
+overwrite: true
+schema: 'http://localhost:3333/graphql'
+#documents: 'apps/redi-connect/src/**/*.graphql'
+documents: 'apps/redi-connect/src/**/*.graphql'
+generates:
+  apps/redi-connect/src/types.ts:
+    - 'typescript'
+      # namingConvention: constantCase
+      # typesPrefix: test
+  apps/redi-connect/src/:
+    preset: near-operation-file
+    presetConfig:
+      extension: .generated.tsx
+      baseTypesPath: types.ts
+    plugins:
+      - typescript-operations
+      - typescript-react-query
+    config:
+      withHooks: true
+      fetcher: '@talent-connect/data-access#fetcher'

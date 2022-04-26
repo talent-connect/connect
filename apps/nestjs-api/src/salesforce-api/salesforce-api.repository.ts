@@ -58,7 +58,7 @@ export class SalesforceApiRepository {
 
       let query = this.connection
         .sobject(objectName)
-        .find(conditions, objectFields, { limit, offset })
+        .find(conditions, objectFields, { limit: 100, offset })
       const results = await query.execute({
         autoFetch: true,
         maxFetch: 10000,
