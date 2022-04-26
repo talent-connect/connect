@@ -6,19 +6,9 @@ import NavTiles from '../../../components/organisms/NavTiles'
 import RediProgram from '../../../components/organisms/RediProgram'
 import Carousel from '../../../components/organisms/Carousel'
 import PreFooter from '../../../components/organisms/PreFooter'
-import { useTestQuery } from './home.generated'
 
 export default function Home() {
   const { t } = useTranslation()
-
-  const { data } = useTestQuery()
-
-  if (data) {
-    data.conProfiles.forEach((profile) => {
-      if (profile?.gender === 'Male') {
-      }
-    })
-  }
 
   return (
     <Landing>
