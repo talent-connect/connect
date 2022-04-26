@@ -58,16 +58,16 @@ export class ConProfilesResolver {
   //   return this.conProfilesService.remove(id)
   // }
 
-  // @ResolveField((of) => [ConMentoringSessionEntityProps])
-  // async mentoringSessions(
-  //   @Parent() conProfile: ConProfileEntityProps
-  // ): Promise<ConMentoringSessionEntityProps[]> {
-  //   const { _contactId } = conProfile
-  //   const mentoringSessions = await this.conMentoringSessionsService.findAll({
-  //     $or: [{ Mentee__c: _contactId }, { Mentor__c: _contactId }],
-  //   })
-  //   const props = mentoringSessions.map((entity) => entity.props)
+  @ResolveField((of) => [ConMentoringSessionEntityProps])
+  async mentoringSessions(
+    @Parent() conProfile: ConProfileEntityProps
+  ): Promise<ConMentoringSessionEntityProps[]> {
+    const { _contactId } = conProfile
+    const mentoringSessions = await this.conMentoringSessionsService.findAll({
+      $or: [{ Mentee__c: _contactId }, { Mentor__c: _contactId }],
+    })
+    const props = mentoringSessions.map((entity) => entity.props)
 
-  //   return props
-  // }
+    return props
+  }
 }

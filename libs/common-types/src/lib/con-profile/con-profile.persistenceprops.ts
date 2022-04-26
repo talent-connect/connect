@@ -10,7 +10,7 @@ export class ConProfilePersistenceProps implements PersistenceProps {
   Id: string
   Avatar_Image_URL__c?: string
   @Type(() => Date)
-  CreatedDate?: Date
+  CreatedDate: Date
   Desired_Job__c?: string
   Education__c?: PicklistValue
   Expectations__c?: string

@@ -1,28 +1,23 @@
 import { Injectable } from '@nestjs/common'
-import { ConMentoringSessionPersistence } from '@talent-connect/common-types'
+import { ConMentorshipMatchPersistence } from '@talent-connect/common-types'
 import { SalesforceApiRepository } from './salesforce-api.repository'
 
 @Injectable()
-export class SalesforceApiConMentoringSessionsService {
+export class SalesforceApiConMentorshipMatchesService {
   constructor(private readonly repository: SalesforceApiRepository) {}
   // constructor(private readonly repository: SalesforceApiRepository) {}
-  async getAllConMentoringSessions(
-    conditions: any = {},
-    limit: number = 100,
-    offset: number = 0
-  ): Promise<ConMentoringSessionPersistence[]> {
+  async getAllConMentorshipMatches(
+    conditions: any = {}
+  ): Promise<ConMentorshipMatchPersistence[]> {
     const rawRecords = await this.repository.findRecordsOfObject({
-      objectName:
-        ConMentoringSessionPersistence.metadata.SALESFORCE_OBJECT_NAME,
+      objectName: ConMentorshipMatchPersistence.metadata.SALESFORCE_OBJECT_NAME,
       objectFields:
-        ConMentoringSessionPersistence.metadata.SALESFORCE_OBJECT_FIELDS,
+        ConMentorshipMatchPersistence.metadata.SALESFORCE_OBJECT_FIELDS,
       conditions,
-      limit,
-      offset,
     })
-    const conMentoringSessionsPersistence = rawRecords.map((rawRecord) =>
-      ConMentoringSessionPersistence.create(rawRecord)
+    const conMentorshipMatchesPersistence = rawRecords.map((rawRecord) =>
+      ConMentorshipMatchPersistence.create(rawRecord)
     )
-    return conMentoringSessionsPersistence
+    return conMentorshipMatchesPersistence
   }
 }

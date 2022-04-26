@@ -8,56 +8,71 @@ import {
   Parent,
 } from '@nestjs/graphql'
 import {
-  ConMentoringSessionEntityProps,
+  ConMentorshipMatchEntityProps,
   ConProfileEntityProps,
 } from '@talent-connect/common-types'
-import { ConMentoringSessionsService } from './con-mentorship-matches.service'
-import { CreateConMentoringSessionInput } from './dto/create-con-mentorship-match.input'
-import { UpdateConMentoringSessionInput } from './dto/update-con-mentorship-match.input'
+import { ConProfilesService } from '../con-profiles/con-profiles.service'
+import { ConMentorshipMatchesService } from './con-mentorship-matches.service'
+import { CreateConMentorshipMatchInput } from './dto/create-con-mentorship-match.input'
+import { UpdateConMentorshipMatchInput } from './dto/update-con-mentorship-match.input'
 
-@Resolver(() => ConMentoringSessionEntityProps)
-export class ConMentoringSessionsResolver {
+@Resolver(() => ConMentorshipMatchEntityProps)
+export class ConMentorshipMatchesResolver {
   constructor(
-    private readonly conMentoringSessionsService: ConMentoringSessionsService
+    private readonly conMentorshipMatchesService: ConMentorshipMatchesService,
+    private readonly conProfilesService: ConProfilesService
   ) {}
 
-  // @Mutation(() => ConMentoringSession)
-  // createConMentoringSession(
-  //   @Args('createConMentoringSessionInput')
-  //   createConMentoringSessionInput: CreateConMentoringSessionInput
+  // @Mutation(() => ConMentorshipMatch)
+  // createConMentorshipMatch(
+  //   @Args('createConMentorshipMatchInput')
+  //   createConMentorshipMatchInput: CreateConMentorshipMatchInput
   // ) {
-  //   return this.conMentoringSessionsService.create(
-  //     createConMentoringSessionInput
+  //   return this.conMentorshipMatchesService.create(
+  //     createConMentorshipMatchInput
   //   )
   // }
 
-  @Query(() => [ConMentoringSessionEntityProps], {
-    name: 'conMentoringSessions',
+  @Query(() => [ConMentorshipMatchEntityProps], {
+    name: 'conMentorshipMatches',
   })
   async findAll() {
-    const entities = await this.conMentoringSessionsService.findAll()
+    const entities = await this.conMentorshipMatchesService.findAll()
     const props = entities.map((entity) => entity.props)
     return props
   }
 
-  // @Query(() => ConMentoringSession, { name: 'conMentoringSession' })
+  // @Query(() => ConMentorshipMatch, { name: 'conMentorshipMatch' })
   // findOne(@Args('id', { type: () => Int }) id: number) {
-  //   return this.conMentoringSessionsService.findOne(id)
+  //   return this.conMentorshipMatchesService.findOne(id)
   // }
 
-  // @Mutation(() => ConMentoringSession)
-  // updateConMentoringSession(
-  //   @Args('updateConMentoringSessionInput')
-  //   updateConMentoringSessionInput: UpdateConMentoringSessionInput
+  // @Mutation(() => ConMentorshipMatch)
+  // updateConMentorshipMatch(
+  //   @Args('updateConMentorshipMatchInput')
+  //   updateConMentorshipMatchInput: UpdateConMentorshipMatchInput
   // ) {
-  //   return this.conMentoringSessionsService.update(
-  //     updateConMentoringSessionInput.id,
-  //     updateConMentoringSessionInput
+  //   return this.conMentorshipMatchesService.update(
+  //     updateConMentorshipMatchInput.id,
+  //     updateConMentorshipMatchInput
   //   )
   // }
 
-  // @Mutation(() => ConMentoringSession)
-  // removeConMentoringSession(@Args('id', { type: () => Int }) id: number) {
-  //   return this.conMentoringSessionsService.remove(id)
+  // @Mutation(() => ConMentorshipMatch)
+  // removeConMentorshipMatch(@Args('id', { type: () => Int }) id: number) {
+  //   return this.conMentorshipMatchesService.remove(id)
   // }
+
+  @ResolveField((of) => ConProfileEntityProps)
+  async mentee(
+    @Parent() conMentorshipMatch: ConMentorshipMatchEntityProps
+  ): Promise<ConProfileEntityProps> {
+    const { menteeId } = conMentorshipMatch
+    const conProfiles = await this.conProfilesService.findAll({
+      'Contact__r.Id': menteeId,
+    })
+    const conProfile = conProfiles[0]
+
+    return conProfile.props
+  }
 }

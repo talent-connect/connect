@@ -52,7 +52,7 @@ export class SalesforceApiRepository {
         objectName,
         objectFields,
         conditions = {},
-        limit = 100,
+        limit = 5000,
         offset = 0,
       } = task
 
@@ -77,6 +77,17 @@ export class SalesforceApiRepository {
         resolve(result)
       })
     })
+  }
+
+  async findSingleRecord(objectName: string, id: string): Promise<any> {
+    await this.connect()
+
+    const record = await this.connection
+      .sobject(objectName)
+      .find({ Id: id })
+      .execute()
+
+    return record[0]
   }
 }
 

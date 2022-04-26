@@ -7,9 +7,7 @@ export class SalesforceApiConMentoringSessionsService {
   constructor(private readonly repository: SalesforceApiRepository) {}
   // constructor(private readonly repository: SalesforceApiRepository) {}
   async getAllConMentoringSessions(
-    conditions: any = {},
-    limit: number = 100,
-    offset: number = 0
+    conditions: any = {}
   ): Promise<ConMentoringSessionPersistence[]> {
     const rawRecords = await this.repository.findRecordsOfObject({
       objectName:
@@ -17,8 +15,6 @@ export class SalesforceApiConMentoringSessionsService {
       objectFields:
         ConMentoringSessionPersistence.metadata.SALESFORCE_OBJECT_FIELDS,
       conditions,
-      limit,
-      offset,
     })
     const conMentoringSessionsPersistence = rawRecords.map((rawRecord) =>
       ConMentoringSessionPersistence.create(rawRecord)

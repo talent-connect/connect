@@ -3,22 +3,22 @@ import { ConMentoringSessionEntity } from '@talent-connect/common-types'
 import { SalesforceApiConMentoringSessionsService } from '../salesforce-api/salesforce-api-con-mentoring-sessions.service'
 import { CreateConMentoringSessionInput } from './dto/create-con-mentoring-session.input'
 import { UpdateConMentoringSessionInput } from './dto/update-con-mentoring-session.input'
-import { ConMentoringSessionsMapper } from './mappers/con-mentoring-sessions.mapper'
+import { ConMentoringSessionMapper } from './mappers/con-mentoring-session.mapper'
 
 @Injectable()
 export class ConMentoringSessionsService {
   constructor(
     private readonly api: SalesforceApiConMentoringSessionsService,
-    private readonly mapper: ConMentoringSessionsMapper
+    private readonly mapper: ConMentoringSessionMapper
   ) {}
 
   create(createConMentoringSessionInput: CreateConMentoringSessionInput) {
     return 'This action adds a new conMentoringSession'
   }
 
-  async findAll(conditions: any = {}, limit: number = 100, offset: number = 0) {
+  async findAll(conditions: any = {}) {
     const persistedConMentoringSessions =
-      await this.api.getAllConMentoringSessions(conditions, limit, offset)
+      await this.api.getAllConMentoringSessions(conditions)
 
     const entities: ConMentoringSessionEntity[] =
       persistedConMentoringSessions.map((source) =>

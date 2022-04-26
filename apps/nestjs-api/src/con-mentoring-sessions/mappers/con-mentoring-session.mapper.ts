@@ -8,7 +8,7 @@ import {
 } from '@talent-connect/common-types'
 
 @Injectable()
-export class ConMentoringSessionsMapper
+export class ConMentoringSessionMapper
   implements Mapper<ConMentoringSessionEntity, ConMentoringSessionPersistence>
 {
   fromPersistence(

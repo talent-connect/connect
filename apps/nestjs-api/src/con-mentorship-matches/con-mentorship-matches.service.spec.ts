@@ -1,16 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { ConMentoringSessionsService } from './con-mentorship-matches.service'
+import { ConMentorshipMatchesService } from './con-mentorship-matches.service'
 
-describe('ConMentoringSessionsService', () => {
-  let service: ConMentoringSessionsService
+describe('ConMentorshipMatchesService', () => {
+  let service: ConMentorshipMatchesService
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ConMentoringSessionsService],
+      providers: [ConMentorshipMatchesService],
     }).compile()
 
-    service = module.get<ConMentoringSessionsService>(
-      ConMentoringSessionsService
+    service = module.get<ConMentorshipMatchesService>(
+      ConMentorshipMatchesService
     )
   })
 

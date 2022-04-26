@@ -1,17 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { ConMentoringSessionsResolver } from './con-mentorship-matches.resolver'
-import { ConMentoringSessionsService } from './con-mentorship-matches.service'
+import { ConMentorshipMatchesResolver } from './con-mentorship-matches.resolver'
+import { ConMentorshipMatchesService } from './con-mentorship-matches.service'
 
-describe('ConMentoringSessionsResolver', () => {
-  let resolver: ConMentoringSessionsResolver
+describe('ConMentorshipMatchesResolver', () => {
+  let resolver: ConMentorshipMatchesResolver
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ConMentoringSessionsResolver, ConMentoringSessionsService],
+      providers: [ConMentorshipMatchesResolver, ConMentorshipMatchesService],
     }).compile()
 
-    resolver = module.get<ConMentoringSessionsResolver>(
-      ConMentoringSessionsResolver
+    resolver = module.get<ConMentorshipMatchesResolver>(
+      ConMentorshipMatchesResolver
     )
   })
 

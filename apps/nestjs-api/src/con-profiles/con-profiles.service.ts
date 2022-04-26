@@ -3,25 +3,21 @@ import { ConProfileEntity } from '@talent-connect/common-types'
 import { SalesforceApiConProfilesService } from '../salesforce-api/salesforce-api-con-profiles.service'
 import { CreateConProfileInput } from './dto/create-con-profile.input'
 import { UpdateConProfileInput } from './dto/update-con-profile.input'
-import { ConProfilesMapper } from './mappers/con-profiles.mapper'
+import { ConProfileMapper } from './mappers/con-profile.mapper'
 
 @Injectable()
 export class ConProfilesService {
   constructor(
     private readonly api: SalesforceApiConProfilesService,
-    private readonly mapper: ConProfilesMapper
+    private readonly mapper: ConProfileMapper
   ) {}
 
   create(createConProfileInput: CreateConProfileInput) {
     return 'This action adds a new conProfile'
   }
 
-  async findAll(conditions: any = {}, limit: number = 100, offset: number = 0) {
-    const persistedConProfiles = await this.api.getAllConProfiles(
-      conditions,
-      limit,
-      offset
-    )
+  async findAll(conditions: any = {}) {
+    const persistedConProfiles = await this.api.getAllConProfiles(conditions)
 
     const entities: ConProfileEntity[] = persistedConProfiles.map((source) =>
       this.mapper.fromPersistence(source)
@@ -30,8 +26,12 @@ export class ConProfilesService {
     return entities
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} conProfile`
+  async findOne(id: string) {
+    const persistedConProfile = await this.api.getConProfile(id)
+
+    const entity = this.mapper.fromPersistence(persistedConProfile)
+
+    return entity
   }
 
   update(id: number, updateConProfileInput: UpdateConProfileInput) {

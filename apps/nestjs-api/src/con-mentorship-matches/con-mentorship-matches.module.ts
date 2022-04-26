@@ -1,16 +1,17 @@
 import { Module } from '@nestjs/common'
+import { ConProfilesModule } from '../con-profiles/con-profiles.module'
 import { SalesforceApiModule } from '../salesforce-api/salesforce-api.module'
-import { ConMentoringSessionsResolver } from './con-mentorship-matches.resolver'
-import { ConMentoringSessionsService } from './con-mentorship-matches.service'
-import { ConMentoringSessionsMapper } from './mappers/con-mentoring-sessions.mapper'
+import { ConMentorshipMatchesResolver } from './con-mentorship-matches.resolver'
+import { ConMentorshipMatchesService } from './con-mentorship-matches.service'
+import { ConMentorshipMatchMapper } from './mappers/con-mentorship-match.mapper'
 
 @Module({
-  imports: [SalesforceApiModule],
+  imports: [SalesforceApiModule, ConProfilesModule],
   providers: [
-    ConMentoringSessionsResolver,
-    ConMentoringSessionsService,
-    ConMentoringSessionsMapper,
+    ConMentorshipMatchesResolver,
+    ConMentorshipMatchesService,
+    ConMentorshipMatchMapper,
   ],
-  exports: [ConMentoringSessionsService],
+  exports: [ConMentorshipMatchesService],
 })
-export class ConMentoringSessionsModule {}
+export class ConMentorshipMatchesModule {}

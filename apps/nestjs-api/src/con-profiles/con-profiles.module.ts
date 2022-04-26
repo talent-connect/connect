@@ -4,10 +4,11 @@ import { SalesforceApiConProfilesService } from '../salesforce-api/salesforce-ap
 import { SalesforceApiModule } from '../salesforce-api/salesforce-api.module'
 import { ConProfilesResolver } from './con-profiles.resolver'
 import { ConProfilesService } from './con-profiles.service'
-import { ConProfilesMapper } from './mappers/con-profiles.mapper'
+import { ConProfileMapper } from './mappers/con-profile.mapper'
 
 @Module({
   imports: [SalesforceApiModule, ConMentoringSessionsModule],
-  providers: [ConProfilesResolver, ConProfilesService, ConProfilesMapper],
+  providers: [ConProfilesResolver, ConProfilesService, ConProfileMapper],
+  exports: [ConProfilesService],
 })
 export class ConProfilesModule {}

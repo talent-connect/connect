@@ -299,9 +299,9 @@ export const LANGUAGES = {
 export type LanguageKey = keyof typeof LANGUAGES
 
 export const GENDERS = {
-  male: 'Male',
-  female: 'Female',
-  other: 'Other',
+  Male: 'Male',
+  Female: 'Female',
+  Other: 'Other',
 } as const
 export type GenderKey = keyof typeof GENDERS
 
@@ -529,12 +529,12 @@ export const MENTOR_DECLINES_MENTORSHIP_REASON_FOR_DECLINING = {
 }
 
 export const RED_MATCH_STATUSES = {
-  accepted: 'Accepted',
-  completed: 'Completed',
-  cancelled: 'Cancelled',
-  applied: 'Applied',
-  'declined-by-mentor': 'Declined by mentor',
-  'invalidated-as-other-mentor-accepted':
+  ACCEPTED: 'Accepted',
+  COMPLETED: 'Completed',
+  CANCELLED: 'Cancelled',
+  APPLIED: 'Applied',
+  DECLINED_BY_MENTOR: 'Declined by mentor',
+  INVALIDATED_AS_OTHER_MENTOR_ACCEPTED:
     'Invalidated due to other mentor accepting',
 } as const
 

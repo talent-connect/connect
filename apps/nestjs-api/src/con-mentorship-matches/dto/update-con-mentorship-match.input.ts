@@ -1,9 +1,9 @@
-import { CreateConMentoringSessionInput } from './create-con-mentorship-match.input'
+import { CreateConMentorshipMatchInput } from './create-con-mentorship-match.input'
 import { InputType, Field, Int, PartialType } from '@nestjs/graphql'
 
 @InputType()
-export class UpdateConMentoringSessionInput extends PartialType(
-  CreateConMentoringSessionInput
+export class UpdateConMentorshipMatchInput extends PartialType(
+  CreateConMentorshipMatchInput
 ) {
   @Field(() => Int)
   id: number

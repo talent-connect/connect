@@ -1,19 +1,6 @@
-import {
-  Resolver,
-  Query,
-  Mutation,
-  Args,
-  Int,
-  ResolveField,
-  Parent,
-} from '@nestjs/graphql'
-import {
-  ConMentoringSessionEntityProps,
-  ConProfileEntityProps,
-} from '@talent-connect/common-types'
+import { Query, Resolver } from '@nestjs/graphql'
+import { ConMentoringSessionEntityProps } from '@talent-connect/common-types'
 import { ConMentoringSessionsService } from './con-mentoring-sessions.service'
-import { CreateConMentoringSessionInput } from './dto/create-con-mentoring-session.input'
-import { UpdateConMentoringSessionInput } from './dto/update-con-mentoring-session.input'
 
 @Resolver(() => ConMentoringSessionEntityProps)
 export class ConMentoringSessionsResolver {

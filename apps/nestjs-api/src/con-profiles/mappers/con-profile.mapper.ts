@@ -5,18 +5,16 @@ import {
   ConProfileEntityProps,
   ConProfilePersistence,
   EducationLevel,
-  Entity,
   Gender,
   Mapper,
   OccupationCategory,
-  Persistence,
   RediCourse,
   RediLocation,
   UserType,
 } from '@talent-connect/common-types'
 
 @Injectable()
-export class ConProfilesMapper
+export class ConProfileMapper
   implements Mapper<ConProfileEntity, ConProfilePersistence>
 {
   fromPersistence(raw: ConProfilePersistence): ConProfileEntity {
@@ -47,7 +45,18 @@ export class ConProfilesMapper
 
     props.firstName = String(raw.props.Contact__r.FirstName)
     props.lastName = raw.props.Contact__r.LastName
-    props.gender = raw.props.Contact__r.redi_Contact_Gender__c as Gender
+
+    const contactGender = raw.props.Contact__r.redi_Contact_Gender__c
+      ? raw.props.Contact__r.redi_Contact_Gender__c
+          .toLocaleLowerCase()
+          .replace(/(^\w|\s\w)/g, (m) => m.toUpperCase())
+      : undefined
+    if (['Male', 'Female', 'Other'].includes(contactGender)) {
+      props.gender = contactGender as Gender
+    } else {
+      props.gender = undefined
+    }
+
     props.birthDate = raw.props.Contact__r.ReDI_Birth_Date__c
     props.languages =
       (raw.props.Languages__c?.split(';') as ConnectProfileLanguage[]) ??

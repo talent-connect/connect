@@ -9,7 +9,7 @@ export class ConMentoringSessionPersistenceProps implements PersistenceProps {
   Durations_in_Minutes__c: number
 
   @Type(() => Date)
-  CreatedDate?: Date
+  CreatedDate: Date
   @Type(() => Date)
   LastModifiedDate: Date
 
