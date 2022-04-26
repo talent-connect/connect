@@ -286,6 +286,7 @@ export enum RediCourse {
   CloudComputing = 'cloudComputing',
   CodingFundamentals = 'codingFundamentals',
   DataAnalytics = 'dataAnalytics',
+  HamburgAlumni = 'hamburg_alumni',
   HamburgHtmlCss = 'hamburg_htmlCss',
   HamburgIntroComputerScience = 'hamburg_introComputerScience',
   HamburgUxUiDesignBasics = 'hamburg_uxUiDesignBasics',

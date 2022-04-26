@@ -5,8 +5,6 @@ documents: 'apps/redi-connect/src/**/*.graphql'
 generates:
   apps/redi-connect/src/types.ts:
     - 'typescript'
-      # namingConvention: constantCase
-      # typesPrefix: test
   apps/redi-connect/src/:
     preset: near-operation-file
     presetConfig:

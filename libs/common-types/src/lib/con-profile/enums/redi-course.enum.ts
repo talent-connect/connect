@@ -20,6 +20,7 @@ export enum RediCourse {
   hamburg_htmlCss = 'hamburg_htmlCss',
   hamburg_introComputerScience = 'hamburg_introComputerScience',
   hamburg_uxUiDesignBasics = 'hamburg_uxUiDesignBasics',
+  hamburg_alumni = 'hamburg_alumni',
   munich_introComputerScience = 'munich_introComputerScience',
   munich_pythonIntermediate = 'munich_pythonIntermediate',
   munich_frontend1 = 'munich_frontend1',
