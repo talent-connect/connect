@@ -12,10 +12,11 @@ import { FormikValues, useFormik } from 'formik'
 
 import { LANGUAGES } from '@talent-connect/shared-config'
 import { ReadLanguages } from '../molecules'
+import { objectEntries } from '@talent-connect/typescript-utilities'
 
-const formLanguages = LANGUAGES.map((language) => ({
-  value: language,
-  label: language,
+const formLanguages = objectEntries(LANGUAGES).map(([value, label]) => ({
+  value,
+  label,
 }))
 
 export interface LanguagesFormValues {
