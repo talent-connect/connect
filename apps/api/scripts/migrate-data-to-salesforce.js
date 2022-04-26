@@ -359,6 +359,9 @@ async function insertConnectProfileFn(p) {
     Expectations__c: p.redProfile.expectations
       ? p.redProfile.expectations.substr(0, 1000)
       : undefined,
+    Mentoring_Topics__c: p.redProfile.categories
+      ? p.redProfile.categories.join(';')
+      : undefined,
     Occupation_Category__c: p.redProfile.mentee_occupationCategoryId,
     Place_of_Employment__c: p.redProfile.mentee_occupationJob_placeOfEmployment,
     Job_Title__c: p.redProfile.mentee_occupationJob_position,
