@@ -20,9 +20,10 @@ import Teaser from '../../../components/molecules/Teaser'
 import { Columns, Content, Form } from 'react-bulma-components'
 
 import { signUp } from '../../../services/api/api'
-import { Extends, RedProfile } from '@talent-connect/shared-types'
+import { RedProfile } from '@talent-connect/shared-types'
 import { history } from '../../../services/history/history'
 import { courses } from '../../../config/config'
+import { Extends } from '@talent-connect/typescript-utilities'
 
 const formCourses = courses.map((course) => ({
   value: course.id,

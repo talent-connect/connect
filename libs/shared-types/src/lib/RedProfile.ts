@@ -8,7 +8,7 @@ import {
   CourseKey,
   EducationLevelKey,
   GenderKey,
-  Language,
+  LanguageKey,
   MenteeOccupationCategoryKey,
 } from '@talent-connect/shared-config'
 
@@ -39,7 +39,7 @@ export type RedProfile = {
   gender: GenderKey
   age: number //! DEPRECATE - this is a computed field
   birthDate: Date
-  languages: Array<Language>
+  languages: Array<LanguageKey>
   otherLanguages: string //! DEPRECATE
   personalDescription: string
   contactEmail: string //! DEPRECATE - move to user level somehow
