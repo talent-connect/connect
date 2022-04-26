@@ -37,9 +37,6 @@ const TPCOMPANYPROFILE_SFACCOUNT = {}
 const TPJOBSEEKERPROFILE_SFJOBSEEKERPROFILE = {}
 const TPJOBLISTING_SFJOBLISTING = {}
 
-const MENTOR = '0129X0000001EXBQA2'
-const MENTEE = '0129X0000001EYnQAM'
-
 const {
   scan,
   concatMap,
@@ -66,6 +63,15 @@ const { lang } = require('moment')
 const DELAY = 1500
 const RETRIES = 5
 const CONCURRENCY = 60 // 60 has worked before, with some errors. For actual data migration, use a low value, such as 15.
+
+const CONTACT_RECORD_TYPE = '0121i000000HMq9AAG'
+const CONNECT_PROFILE_MENTOR_RECORD_TYPE = '0129X0000001EXBQA2'
+const CONNECT_PROFILE_MENTEE_RECORD_TYPE = '0129X0000001EYnQAM'
+const ACCOUNT_RECORD_TYPE_BUSINESS_ORGANIZATION = '0121i0000000LvUAAU'
+const CV_LINE_ITEM_RECORD_TYPE_EXPERIENCE = '0129X0000001RXdQAM'
+const CV_LINE_ITEM_RECORD_TYPE_EDUCATION = '0129X0000001RW1QAM'
+const JOBSEEKER_PROFILE_LINE_ITEM_RECORD_TYPE_EXPERIENCE = '0129X0000001RUPQA2'
+const JOBSEEKER_PROFILE_LINE_ITEM_RECORD_TYPE_EDUCATION = '0129X0000001RSnQAM'
 
 const LANGUAGE_TO_ID_MAP = {
   Afrikaans: 'a0B9X0000004BPtUAM',
@@ -255,7 +261,7 @@ async function insertContactFn(p) {
     const insertResult = await conn.sobject('Contact').create(
       deleteFalsyProperties({
         Email: p.email,
-        RecordTypeId: '0121i000000HMq9AAG',
+        RecordTypeId: CONTACT_RECORD_TYPE,
         Loopback_User_ID__c: p.contact.redUserId,
         FirstName: `${
           p.contact.firstName
@@ -272,8 +278,10 @@ async function insertContactFn(p) {
             : ''
         }`,
         redi_Contact_Gender__c: p.contact.gender
-          ? p.contact.gender.toUpperCase()
-          : 'OTHER',
+          ? p.contact.gender
+              .toLocaleLowerCase()
+              .replace(/(^\w|\s\w)/g, (m) => m.toUpperCase())
+          : undefined,
         ReDI_Birth_Date__c: p.contact.birthDate,
         LinkedIn_Profile__c: p.contact.linkedInProfileUrl,
         ReDI_GitHub_Profile__c: p.contact.githubProfileUrl,
@@ -290,7 +298,7 @@ async function insertContactFn(p) {
       deleteFalsyProperties({
         Id: existingContacts[0].Id,
         Email: p.email,
-        RecordTypeId: '0121i000000HMq9AAG',
+        RecordTypeId: CONTACT_RECORD_TYPE,
         Loopback_User_ID__c: p.contact.redUserId,
         FirstName: `${
           p.contact.firstName
@@ -340,7 +348,9 @@ async function insertConnectProfileFn(p) {
   const result = await conn.sobject('ReDI_Connect_Profile__c').create({
     Contact__c: p.contact.sfContactId,
     RecordTypeId:
-      p.redProfile.userType.indexOf('mentor') !== -1 ? MENTOR : MENTEE,
+      p.redProfile.userType.indexOf('mentor') !== -1
+        ? CONNECT_PROFILE_MENTOR_RECORD_TYPE
+        : CONNECT_PROFILE_MENTEE_RECORD_TYPE,
     Profile_Status__c: redProfileToProfileStatus(p.redProfile),
     ReDI_Location__c: p.redProfile.rediLocation,
     Occupation__c: p.redProfile.mentor_occupation,
@@ -358,9 +368,10 @@ async function insertConnectProfileFn(p) {
     Main_Occupation_Other__c: p.redProfile.mentee_occupationOther_description,
     Education__c: p.redProfile.mentee_highestEducationLevel,
     ReDI_Course__c: p.redProfile.mentee_currentlyEnrolledInCourse || 'alumni',
-    Avatar_Image_URL__c:
-      'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/' +
-      p.redProfile.profileAvatarImageS3Key,
+    Avatar_Image_URL__c: p.redProfile.profileAvatarImageS3Key
+      ? 'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/' +
+        p.redProfile.profileAvatarImageS3Key
+      : undefined,
     Personal_Description__c: p.redProfile.personalDescription
       ? p.redProfile.personalDescription.substr(0, 600)
       : undefined,
@@ -372,6 +383,8 @@ async function insertConnectProfileFn(p) {
     Opt_Out_Mentees_From_Other_Locations__c:
       p.redProfile.optOutOfMenteesFromOtherRediLocation,
     Profile_First_Approved_At__c: p.redProfile.userActivatedAt,
+    Administrator_Internal_Comment__c:
+      p.redProfile.administratorInternalComment,
     CreatedDate: p.createdAt,
     LastModifiedDate: p.updatedAt,
   })
@@ -422,7 +435,7 @@ async function insertMatchFn(p) {
     Mentor_Completion_Message__c: p.mentorMessageOnComplete
       ? p.mentorMessageOnComplete.substr(0, 1000)
       : undefined,
-    Status__c: p.status,
+    Status__c: p.status.toUpperCase().replace(/-/g, '_'),
     Mentee__c: REDPROFILE_SFCONTACT[p.menteeId],
     Mentor__c: REDPROFILE_SFCONTACT[p.mentorId],
     CreatedDate: p.createdAt,
@@ -442,9 +455,10 @@ async function insertJobseekerProfileFn(p) {
     Contact__c: p.contact.sfContactId,
     ReDI_Location__c: p.tpJobseekerProfile.rediLocation,
     ReDI_Course__c: p.tpJobseekerProfile.currentlyEnrolledInCourse,
-    Avatar_Image_URL__c:
-      'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/' +
-      p.tpJobseekerProfile.profileAvatarImageS3Key,
+    Avatar_Image_URL__c: p.tpJobseekerProfile.profileAvatarImageS3Key
+      ? 'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/' +
+        p.tpJobseekerProfile.profileAvatarImageS3Key
+      : undefined,
     Desired_Positions__c: p.tpJobseekerProfile.desiredPositions
       ? p.tpJobseekerProfile.desiredPositions.join(';')
       : undefined,
@@ -464,18 +478,18 @@ async function insertJobseekerProfileFn(p) {
     Is_Visible_to_Companies__c:
       p.tpJobseekerProfile.isProfileVisibleToCompanies,
     Is_Hired__c: p.tpJobseekerProfile.isHired,
+    Administrator_Internal_Comment__c:
+      p.tpJobseekerProfile.administratorInternalComment,
 
     CreatedDate: p.tpJobseekerProfile.createdAt,
     LastModifiedDate: p.tpJobseekerProfile.updatedAt,
   })
-  const RECORD_TYPE_EXPERIENCE = '0129X0000001RUPQA2'
-  const RECORD_TYPE_EDUCATION = '0129X0000001RSnQAM'
 
   if (p.tpJobseekerProfile.experience) {
     for (const experienceItem of p.tpJobseekerProfile.experience) {
       await conn.sobject('Jobseeker_Line_Item__c').create({
         Jobseeker_Profile__c: jobseekerResult.id,
-        RecordTypeId: RECORD_TYPE_EXPERIENCE,
+        RecordTypeId: JOBSEEKER_PROFILE_LINE_ITEM_RECORD_TYPE_EXPERIENCE,
         Description__c: experienceItem.description,
         Institution_City__c: experienceItem.institutionCity,
         Institution_Country__c: experienceItem.institutionCountry,
@@ -496,7 +510,7 @@ async function insertJobseekerProfileFn(p) {
     for (const experienceItem of p.tpJobseekerProfile.experience) {
       await conn.sobject('Jobseeker_Line_Item__c').create({
         Jobseeker_Profile__c: jobseekerResult.id,
-        RecordTypeId: RECORD_TYPE_EDUCATION,
+        RecordTypeId: JOBSEEKER_PROFILE_LINE_ITEM_RECORD_TYPE_EDUCATION,
         Description__c: experienceItem.description,
         City__c: experienceItem.city,
         Name: experienceItem.title,
@@ -538,9 +552,10 @@ async function insertJobseekerCvFn(cv) {
   const cvResult = await conn.sobject('Jobseeker_CV__c').create({
     Contact__c: REDUSER_SFCONTACT[cv.redUserId],
     Name: cv.cvName,
-    Avatar_Image_URL__c:
-      'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/' +
-      cv.profileAvatarImageS3Key,
+    Avatar_Image_URL__c: cv.profileAvatarImageS3Key
+      ? 'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/' +
+        cv.profileAvatarImageS3Key
+      : undefined,
 
     About_Yourself__c: cv.aboutYourself,
     Availability__c: cv.availability,
@@ -569,14 +584,12 @@ async function insertJobseekerCvFn(cv) {
     LastModifiedDate: cv.updatedAt,
     CreatedDate: cv.createdAt,
   })
-  const RECORD_TYPE_EXPERIENCE = '0129X0000001RXdQAM'
-  const RECORD_TYPE_EDUCATION = '0129X0000001RW1QAM'
 
   if (cv.experience) {
     for (const experienceItem of cv.experience) {
       await conn.sobject('Jobseeker_CV_Line_Item__c').create({
         Jobseeker_CV__c: cvResult.id,
-        RecordTypeId: RECORD_TYPE_EXPERIENCE,
+        RecordTypeId: CV_LINE_ITEM_RECORD_TYPE_EXPERIENCE,
         Description__c: experienceItem.description,
         Institution_City__c: experienceItem.institutionCity,
         Institution_Country__c: experienceItem.institutionCountry,
@@ -597,7 +610,7 @@ async function insertJobseekerCvFn(cv) {
     for (const experienceItem of cv.experience) {
       await conn.sobject('Jobseeker_CV_Line_Item__c').create({
         Jobseeker_CV__c: cvResult.id,
-        RecordTypeId: RECORD_TYPE_EDUCATION,
+        RecordTypeId: CV_LINE_ITEM_RECORD_TYPE_EDUCATION,
         Description__c: experienceItem.description,
         City__c: experienceItem.city,
         Name: experienceItem.title,
@@ -642,9 +655,11 @@ function insertJobseekerCv(cv) {
 
 async function insertAccountForCompanyProfileFn(p) {
   const accountResult = await conn.sobject('Account').create({
-    ReDI_Avatar_Image_URL__c:
-      'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/' +
-      p.tpCompanyProfile.profileAvatarImageS3Key,
+    RecordTypeId: ACCOUNT_RECORD_TYPE_BUSINESS_ORGANIZATION,
+    ReDI_Avatar_Image_URL__c: p.tpCompanyProfile.profileAvatarImageS3Key
+      ? 'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/' +
+        p.tpCompanyProfile.profileAvatarImageS3Key
+      : undefined,
     Name: p.tpCompanyProfile.companyName,
     Location__c: p.tpCompanyProfile.location,
     ReDI_Tagline__c: p.tpCompanyProfile.tagline,
@@ -656,6 +671,8 @@ async function insertAccountForCompanyProfileFn(p) {
     ReDI_Talent_Pool_State__c: p.tpCompanyProfile.state,
     ReDI_Visible_to_Jobseekers__c:
       p.tpCompanyProfile.isProfileVisibleToJobseekers,
+    ReDI_Administrator_Internal_Comment__c:
+      p.tpCompanyProfile.administratorInternalComment,
     // CreatedDate: p.createdAt, //! Use Jonida trick
     // LastModifiedDate: p.updatedAt, //! Use Jonida trick
   })
