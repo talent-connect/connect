@@ -8,13 +8,13 @@ import {
 } from '@nestjs/graphql'
 import {
   ConMentoringSessionEntityProps,
-  ConProfileSimpleEntityProps,
+  ConProfileEntityProps,
   UpdateConProfileInput,
 } from '@talent-connect/common-types'
 import { ConMentoringSessionsService } from '../con-mentoring-sessions/con-mentoring-sessions.service'
 import { ConProfilesService } from './con-profiles.service'
 
-@Resolver(() => ConProfileSimpleEntityProps)
+@Resolver(() => ConProfileEntityProps)
 export class ConProfilesResolver {
   constructor(
     private readonly conProfilesService: ConProfilesService,
@@ -28,14 +28,14 @@ export class ConProfilesResolver {
   //   return this.conProfilesService.create(createConProfileInput)
   // }
 
-  @Query(() => [ConProfileSimpleEntityProps], { name: 'conProfiles' })
+  @Query(() => [ConProfileEntityProps], { name: 'conProfiles' })
   async findAll() {
     const entities = await this.conProfilesService.findAll({})
     const props = entities.map((entity) => entity.props)
     return props
   }
 
-  @Query(() => ConProfileSimpleEntityProps, {
+  @Query(() => ConProfileEntityProps, {
     name: 'conProfileByLoopbackUserId',
   })
   async findOneByLoopbackUserId(
@@ -52,7 +52,7 @@ export class ConProfilesResolver {
   //   return this.conProfilesService.findOne(id)
   // }
 
-  @Mutation(() => ConProfileSimpleEntityProps)
+  @Mutation(() => ConProfileEntityProps)
   updateConProfile(
     @Args('updateConProfileInput') updateConProfileInput: UpdateConProfileInput
   ) {
@@ -66,7 +66,7 @@ export class ConProfilesResolver {
 
   @ResolveField((of) => [ConMentoringSessionEntityProps])
   async mentoringSessions(
-    @Parent() conProfile: ConProfileSimpleEntityProps
+    @Parent() conProfile: ConProfileEntityProps
   ): Promise<ConMentoringSessionEntityProps[]> {
     const { _contactId } = conProfile
     const mentoringSessions = await this.conMentoringSessionsService.findAll({

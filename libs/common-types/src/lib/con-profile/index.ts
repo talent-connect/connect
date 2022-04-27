@@ -1,5 +1,4 @@
 export * from './con-profile.entity'
-export * from './con-profile-simple.entityprops'
 export * from './con-profile.entityprops'
 export * from './con-profile.persistence'
 export * from './con-profile.persistenceprops'

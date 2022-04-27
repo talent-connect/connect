@@ -3,7 +3,7 @@ import {
   ConnectProfileLanguage,
   ConProfileEntity,
   ConProfilePersistence,
-  ConProfileSimpleEntityProps,
+  ConProfileEntityProps,
   EducationLevel,
   Gender,
   Mapper,
@@ -19,7 +19,7 @@ export class ConProfileMapper
   implements Mapper<ConProfileEntity, ConProfilePersistence>
 {
   fromPersistence(raw: ConProfilePersistence): ConProfileEntity {
-    const props = new ConProfileSimpleEntityProps()
+    const props = new ConProfileEntityProps()
 
     props.id = raw.props.Id
     props.userType = raw.props.RecordType.DeveloperName as UserType

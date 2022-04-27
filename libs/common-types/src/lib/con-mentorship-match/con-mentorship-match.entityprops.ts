@@ -1,6 +1,6 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql'
 import { EntityProps } from '../base-interfaces-types-classes'
-import { ConProfileSimpleEntityProps } from '../con-profile'
+import { ConProfileEntityProps } from '../con-profile'
 import { MentorshipMatchStatus } from './enums'
 
 @ObjectType('ConMentorshipMatch')
@@ -22,11 +22,11 @@ export class ConMentorshipMatchEntityProps implements EntityProps {
   ifDeclinedByMentor_dateTime?: Date
 
   // TODO: is there a way we can get rid of the id field?
-  @Field((type) => ConProfileSimpleEntityProps)
-  mentor: ConProfileSimpleEntityProps
+  @Field((type) => ConProfileEntityProps)
+  mentor: ConProfileEntityProps
   mentorId: string
-  @Field((type) => ConProfileSimpleEntityProps)
-  mentee: ConProfileSimpleEntityProps
+  @Field((type) => ConProfileEntityProps)
+  mentee: ConProfileEntityProps
   menteeId: string
 
   createdAt: Date
