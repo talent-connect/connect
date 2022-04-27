@@ -22,6 +22,7 @@ module.exports = function (config, context) {
                 // '.entity.ts',
                 // '.model.ts',
                 '.entityprops.ts',
+                '.entityinput.ts',
               ],
               introspectComments: true,
             },

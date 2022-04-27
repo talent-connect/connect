@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import * as jsforce from 'jsforce'
-import * as _ from 'lodash'
 const async = require('async')
 
 @Injectable()

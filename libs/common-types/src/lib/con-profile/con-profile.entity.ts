@@ -1,14 +1,14 @@
 import { Entity } from '../base-interfaces-types-classes'
-import { ConProfileEntityProps } from './con-profile.entityprops'
+import { ConProfileSimpleEntityProps } from './con-profile-simple.entityprops'
 
-export class ConProfileEntity extends Entity<ConProfileEntityProps> {
-  props: ConProfileEntityProps
+export class ConProfileEntity extends Entity<ConProfileSimpleEntityProps> {
+  props: ConProfileSimpleEntityProps
 
-  private constructor(props: ConProfileEntityProps) {
+  private constructor(props: ConProfileSimpleEntityProps) {
     super(props)
   }
 
-  public static create(props: ConProfileEntityProps) {
+  public static create(props: ConProfileSimpleEntityProps) {
     return new ConProfileEntity(props)
   }
 }

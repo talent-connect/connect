@@ -1,9 +1,12 @@
-import { InputType, PickType, PartialType } from '@nestjs/graphql'
-import { ConProfileEntityProps } from '@talent-connect/common-types'
+import { Field, InputType, PartialType, PickType } from '@nestjs/graphql'
+import {
+  ConProfileSimpleEntityPropsInput,
+  ConProfileSimpleEntityProps,
+} from '../con-profile-simple.entityprops'
 
-@InputType()
+@InputType('UpdateConProfileInput', { isAbstract: true })
 export class UpdateConProfileInput extends PartialType(
-  PickType(ConProfileEntityProps, [
+  PickType(ConProfileSimpleEntityPropsInput, [
     'id',
     'mentor_occupation',
     'mentor_workPlace',

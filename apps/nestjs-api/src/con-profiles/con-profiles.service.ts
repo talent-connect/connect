@@ -1,9 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
-import {
-  ConProfileEntity,
-  CreateConProfileInput,
-  UpdateConProfileInput,
-} from '@talent-connect/common-types'
+import { ConProfileEntity } from '@talent-connect/common-types'
 import { SalesforceApiConProfilesService } from '../salesforce-api/salesforce-api-con-profiles.service'
 import { ConProfileMapper } from './mappers/con-profile.mapper'
 
@@ -14,9 +10,9 @@ export class ConProfilesService {
     private readonly mapper: ConProfileMapper
   ) {}
 
-  create(createConProfileInput: CreateConProfileInput) {
-    return 'This action adds a new conProfile'
-  }
+  // create(createConProfileInput: CreateConProfileInput) {
+  //   return 'This action adds a new conProfile'
+  // }
 
   async findAll(conditions: any = {}) {
     const persistedConProfiles = await this.api.getAllConProfiles(conditions)
@@ -39,10 +35,10 @@ export class ConProfilesService {
     }
   }
 
-  async update(updateConProfileInput: UpdateConProfileInput) {
-    // updateConProfileInput.
-    return {}
-  }
+  // async update(updateConProfileInput: UpdateConProfileInput) {
+  //   // updateConProfileInput.
+  //   return {}
+  // }
 
   remove(id: number) {
     return `This action removes a #${id} conProfile`

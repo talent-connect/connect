@@ -1,3 +1,0 @@
-interface QueryParams {
-  redUserId: string
-}

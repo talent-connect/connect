@@ -1,7 +1,5 @@
-import { NotFoundException } from '@nestjs/common'
 import {
   Args,
-  Int,
   Mutation,
   Parent,
   Query,
@@ -10,14 +8,13 @@ import {
 } from '@nestjs/graphql'
 import {
   ConMentoringSessionEntityProps,
-  ConProfileEntity,
-  ConProfileEntityProps,
+  ConProfileSimpleEntityProps,
   UpdateConProfileInput,
 } from '@talent-connect/common-types'
 import { ConMentoringSessionsService } from '../con-mentoring-sessions/con-mentoring-sessions.service'
 import { ConProfilesService } from './con-profiles.service'
 
-@Resolver(() => ConProfileEntityProps)
+@Resolver(() => ConProfileSimpleEntityProps)
 export class ConProfilesResolver {
   constructor(
     private readonly conProfilesService: ConProfilesService,
@@ -31,14 +28,16 @@ export class ConProfilesResolver {
   //   return this.conProfilesService.create(createConProfileInput)
   // }
 
-  @Query(() => [ConProfileEntityProps], { name: 'conProfiles' })
+  @Query(() => [ConProfileSimpleEntityProps], { name: 'conProfiles' })
   async findAll() {
     const entities = await this.conProfilesService.findAll({})
     const props = entities.map((entity) => entity.props)
     return props
   }
 
-  @Query(() => ConProfileEntityProps, { name: 'conProfileByLoopbackUserId' })
+  @Query(() => ConProfileSimpleEntityProps, {
+    name: 'conProfileByLoopbackUserId',
+  })
   async findOneByLoopbackUserId(
     @Args('loopbackUserId') loopbackUserId: string
   ) {
@@ -53,11 +52,11 @@ export class ConProfilesResolver {
   //   return this.conProfilesService.findOne(id)
   // }
 
-  @Mutation(() => ConProfileEntityProps)
+  @Mutation(() => ConProfileSimpleEntityProps)
   updateConProfile(
     @Args('updateConProfileInput') updateConProfileInput: UpdateConProfileInput
   ) {
-    return this.conProfilesService.update(updateConProfileInput)
+    // return this.conProfilesService.update(updateConProfileInput)
   }
 
   // @Mutation(() => ConProfileEntity)
@@ -67,7 +66,7 @@ export class ConProfilesResolver {
 
   @ResolveField((of) => [ConMentoringSessionEntityProps])
   async mentoringSessions(
-    @Parent() conProfile: ConProfileEntityProps
+    @Parent() conProfile: ConProfileSimpleEntityProps
   ): Promise<ConMentoringSessionEntityProps[]> {
     const { _contactId } = conProfile
     const mentoringSessions = await this.conMentoringSessionsService.findAll({

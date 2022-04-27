@@ -1,20 +1,10 @@
-import {
-  Resolver,
-  Query,
-  Mutation,
-  Args,
-  Int,
-  ResolveField,
-  Parent,
-} from '@nestjs/graphql'
+import { Parent, Query, ResolveField, Resolver } from '@nestjs/graphql'
 import {
   ConMentorshipMatchEntityProps,
-  ConProfileEntityProps,
+  ConProfileSimpleEntityProps,
 } from '@talent-connect/common-types'
 import { ConProfilesService } from '../con-profiles/con-profiles.service'
 import { ConMentorshipMatchesService } from './con-mentorship-matches.service'
-import { CreateConMentorshipMatchInput } from './dto/create-con-mentorship-match.input'
-import { UpdateConMentorshipMatchInput } from './dto/update-con-mentorship-match.input'
 
 @Resolver(() => ConMentorshipMatchEntityProps)
 export class ConMentorshipMatchesResolver {
@@ -63,10 +53,10 @@ export class ConMentorshipMatchesResolver {
   //   return this.conMentorshipMatchesService.remove(id)
   // }
 
-  @ResolveField((of) => ConProfileEntityProps)
+  @ResolveField((of) => ConProfileSimpleEntityProps)
   async mentee(
     @Parent() conMentorshipMatch: ConMentorshipMatchEntityProps
-  ): Promise<ConProfileEntityProps> {
+  ): Promise<ConProfileSimpleEntityProps> {
     const { menteeId } = conMentorshipMatch
     const conProfiles = await this.conProfilesService.findAll({
       'Contact__r.Id': menteeId,
