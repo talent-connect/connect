@@ -8,6 +8,7 @@ import { ContactSfProps } from '../salesforce-embedded-objects'
 
 export class ConProfilePersistenceProps implements PersistenceProps {
   Id: string
+  Email: string
   Avatar_Image_URL__c?: string
   @Type(() => Date)
   CreatedDate: Date

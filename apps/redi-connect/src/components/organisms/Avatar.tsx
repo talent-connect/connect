@@ -18,8 +18,13 @@ import './Avatar.scss'
 
 import { profileSaveStart } from '../../redux/user/actions'
 import { RedProfile } from '@talent-connect/shared-types'
-import { ConProfile, useLoadMyProfileQuery } from '@talent-connect/data-access'
+import {
+  ConProfile,
+  useLoadMyProfileQuery,
+  usePatchMyProfileMutation,
+} from '@talent-connect/data-access'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
+import { useQueryClient } from 'react-query'
 
 type AvatarProps = {
   profile: Pick<
@@ -49,21 +54,34 @@ function Avatar({ profile }: AvatarProps) {
 }
 
 function AvatarEditable() {
-  const myProfileResult = useLoadMyProfileQuery({
-    loopbackUserId: getAccessTokenFromLocalStorage().userId,
+  const loopbackUserId = getAccessTokenFromLocalStorage().userId
+
+  const queryClient = useQueryClient()
+  const myProfileQuery = useLoadMyProfileQuery({
+    loopbackUserId,
   })
+  const patchMyProfileMutation = usePatchMyProfileMutation()
+  // patchMyProfileMutation.mutate({ input: {} })
 
-  if (!myProfileResult.isSuccess) return null
+  if (!myProfileQuery.isSuccess) return null
 
-  const profile = myProfileResult.data.conProfile
+  const profile = myProfileQuery.data.conProfile
 
   const { profileAvatarImageS3Key } = profile
   const imgURL = profileAvatarImageS3Key
 
-  const onUploadSuccess = (result: any) => {
+  const onUploadSuccess = async (result: any) => {
     const profileAvatarImageS3Key =
       AWS_PROFILE_AVATARS_BUCKET_BASE_URL + result.fileKey
-    // save it
+    const mutationResult = await patchMyProfileMutation.mutateAsync({
+      input: { id: profile.id, profileAvatarImageS3Key },
+    })
+    queryClient.setQueryData(
+      useLoadMyProfileQuery.getKey({
+        loopbackUserId,
+      }),
+      { conProfile: mutationResult.patchConProfile }
+    )
   }
 
   return (

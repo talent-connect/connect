@@ -27,7 +27,14 @@ const App = () => {
   }
 }
 
-const queryClient = new QueryClient()
+// TODO: put this into a lib
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+})
 
 const NormalRediConnect = () => {
   useEffect(() => {

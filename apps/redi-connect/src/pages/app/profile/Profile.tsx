@@ -31,6 +31,7 @@ import { profilesFetchOneStart } from '../../../redux/profiles/actions'
 import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import './Profile.scss'
 import DeclineMentorshipButton from '../../../components/organisms/DeclineMentorshipButton'
+import { ConProfile } from '@talent-connect/data-access'
 
 interface RouteParams {
   profileId: string
@@ -171,7 +172,10 @@ function Profile({
                   (profile.firstName || profile.age) && (
                     <Columns.Column>
                       <Element className="block-separator">
-                        <ReadContactDetails.Some profile={profile} />
+                        {/* //! TODO: fix this type assertion */}
+                        <ReadContactDetails.Some
+                          profile={profile as unknown as ConProfile}
+                        />
                       </Element>
                     </Columns.Column>
                   )}

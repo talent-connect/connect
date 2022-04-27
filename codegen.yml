@@ -9,10 +9,11 @@ generates:
     preset: near-operation-file
     presetConfig:
       extension: .generated.ts
-      baseTypesPath: ~@talent-connect/data-access
+      baseTypesPath: '~@talent-connect/data-access'
     plugins:
       - typescript-operations
-      - typescript-react-query
+      - typescript-react-query:
+          exposeQueryKeys: true
     config:
       withHooks: true
       fetcher: '@talent-connect/data-access#fetcher'

@@ -23,6 +23,7 @@ export class ConProfilePersistence extends Persistence<ConProfilePersistenceProp
       'RecordType.DeveloperName', // Enum: MENTOR/MENTEE
       'Contact__r.Id',
       'Contact__r.Loopback_User_ID__c',
+      'Contact__r.Email',
       'Contact__r.FirstName',
       'Contact__r.LastName',
       'Contact__r.ReDI_Behance_URL__c',

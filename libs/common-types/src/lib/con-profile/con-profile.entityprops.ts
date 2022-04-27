@@ -9,6 +9,7 @@ import {
   RediLocation,
   UserType,
 } from './enums'
+import { ConnectProfileStatus } from './enums/connect-profile-status.enum'
 import { Gender } from './enums/gender.enum'
 import { MentoringTopic } from './enums/mentoring-topic.enum'
 
@@ -17,6 +18,7 @@ export class ConProfileEntityProps implements EntityProps {
   @Field((type) => ID)
   id: string
   _contactId: string
+  email: string
   @Field((type) => UserType)
   userType: UserType
   @Field((type) => RediLocation)
@@ -58,6 +60,8 @@ export class ConProfileEntityProps implements EntityProps {
   loopbackUserId: string
   createdAt: Date
   updatedAt: Date
+  @Field((type) => ConnectProfileStatus)
+  profileStatus: ConnectProfileStatus
   // userActivated?: boolean //! REINSTATE, COMPLEX CASE
   userActivatedAt?: Date
 }

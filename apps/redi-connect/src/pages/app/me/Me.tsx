@@ -25,6 +25,7 @@ import { LoggedIn } from '../../../components/templates'
 import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
 
 import { useLoadMyProfileQuery } from '@talent-connect/data-access'
+import { useIsFetching, useIsMutating } from 'react-query'
 // CHECK OUT THE LOADER
 
 const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
@@ -32,12 +33,18 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
     loopbackUserId: getAccessTokenFromLocalStorage().userId,
   })
 
+  const isFetching = useIsFetching()
+  const isMutating = useIsMutating()
+
+  const isBusy = isFetching || isMutating
+
   useEffect(() => {
     profileFetchStart()
   }, [profileFetchStart])
 
-  if (myProfileResult.isLoading || loading) return <Loader loading={true} />
-  if (myProfileResult.isLoading) return <Loader loading={true} />
+  if (myProfileResult.isLoading) {
+    return <Loader loading={true} />
+  }
 
   // TODO: insert proper error handling here and elsewhere. We should cover cases where we
   // get values usch as myProfileResult.isError. Perhaps we-ure the error boundary logic
@@ -47,25 +54,19 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
 
   console.log(conProfile)
 
-  const userIsMentee =
-    profile.userType === 'mentee' ||
-    profile.userType === 'public-sign-up-mentee-pending-review'
-
-  const userIsMentor =
-    profile.userType === 'mentor' ||
-    profile.userType === 'public-sign-up-mentor-pending-review'
+  const userIsMentee = conProfile.userType === 'MENTEE'
+  const userIsMentor = conProfile.userType === 'MENTOR'
 
   return (
     <LoggedIn>
-      {saveResult === 'error' && <>An error occurred, please try again.</>}
-      {saveResult === 'submitting' && <Loader loading={true} />}
+      {isBusy ? <Loader loading={true} /> : null}
 
       <Columns vCentered breakpoint="mobile" className="oneandhalf-bs">
         <Columns.Column size={3}>
           <Avatar.Editable />
         </Columns.Column>
         <Columns.Column size={8}>
-          <Heading>Hi, {profile.firstName}</Heading>
+          <Heading>Hi, {conProfile.firstName}</Heading>
           <Content
             size="medium"
             renderAs="p"

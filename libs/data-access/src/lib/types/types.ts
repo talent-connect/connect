@@ -51,6 +51,7 @@ export type ConProfile = {
   birthDate?: Maybe<Scalars['DateTime']>;
   categories: Array<MentoringTopic>;
   createdAt: Scalars['DateTime'];
+  email: Scalars['String'];
   expectations?: Maybe<Scalars['String']>;
   firstName: Scalars['String'];
   gender?: Maybe<Gender>;
@@ -75,6 +76,7 @@ export type ConProfile = {
   optOutOfMenteesFromOtherRediLocation: Scalars['Boolean'];
   personalDescription?: Maybe<Scalars['String']>;
   profileAvatarImageS3Key?: Maybe<Scalars['String']>;
+  profileStatus: ConnectProfileStatus;
   rediLocation: RediLocation;
   slackUsername?: Maybe<Scalars['String']>;
   telephoneNumber?: Maybe<Scalars['String']>;
@@ -229,6 +231,13 @@ export enum ConnectProfileLanguage {
   Zulu = 'Zulu'
 }
 
+export enum ConnectProfileStatus {
+  Approved = 'APPROVED',
+  Deactivated = 'DEACTIVATED',
+  Pending = 'PENDING',
+  Rejected = 'REJECTED'
+}
+
 export enum EducationLevel {
   Apprenticeship = 'apprenticeship',
   HighSchool = 'highSchool',
@@ -311,6 +320,16 @@ export enum MentorshipMatchStatus {
   InvalidatedAsOtherMentorAccepted = 'INVALIDATED_AS_OTHER_MENTOR_ACCEPTED'
 }
 
+export type Mutation = {
+  __typename?: 'Mutation';
+  patchConProfile: ConProfile;
+};
+
+
+export type MutationPatchConProfileArgs = {
+  patchConProfileInput: UpdateConProfileInput;
+};
+
 export enum OccupationCategory {
   Job = 'job',
   LookingForJob = 'lookingForJob',
@@ -328,7 +347,8 @@ export type Query = {
 
 
 export type QueryConProfileArgs = {
-  loopbackUserId: Scalars['String'];
+  id?: InputMaybe<Scalars['ID']>;
+  loopbackUserId?: InputMaybe<Scalars['ID']>;
 };
 
 export enum RediCourse {
@@ -381,6 +401,35 @@ export enum RediLocation {
   Munich = 'MUNICH',
   Nrw = 'NRW'
 }
+
+export type UpdateConProfileInput = {
+  birthDate?: InputMaybe<Scalars['DateTime']>;
+  categories?: InputMaybe<Array<MentoringTopic>>;
+  expectations?: InputMaybe<Scalars['String']>;
+  firstName?: InputMaybe<Scalars['String']>;
+  gender?: InputMaybe<Gender>;
+  githubProfileUrl?: InputMaybe<Scalars['String']>;
+  id: Scalars['ID'];
+  languages?: InputMaybe<Array<ConnectProfileLanguage>>;
+  lastName?: InputMaybe<Scalars['String']>;
+  linkedInProfileUrl?: InputMaybe<Scalars['String']>;
+  mentee_currentlyEnrolledInCourse?: InputMaybe<RediCourse>;
+  mentee_highestEducationLevel?: InputMaybe<EducationLevel>;
+  mentee_occupationCategoryId?: InputMaybe<OccupationCategory>;
+  mentee_occupationJob_placeOfEmployment?: InputMaybe<Scalars['String']>;
+  mentee_occupationJob_position?: InputMaybe<Scalars['String']>;
+  mentee_occupationLookingForJob_what?: InputMaybe<Scalars['String']>;
+  mentee_occupationOther_description?: InputMaybe<Scalars['String']>;
+  mentee_occupationStudent_studyName?: InputMaybe<Scalars['String']>;
+  mentee_occupationStudent_studyPlace?: InputMaybe<Scalars['String']>;
+  mentor_occupation?: InputMaybe<Scalars['String']>;
+  mentor_workPlace?: InputMaybe<Scalars['String']>;
+  optOutOfMenteesFromOtherRediLocation?: InputMaybe<Scalars['Boolean']>;
+  personalDescription?: InputMaybe<Scalars['String']>;
+  profileAvatarImageS3Key?: InputMaybe<Scalars['String']>;
+  slackUsername?: InputMaybe<Scalars['String']>;
+  telephoneNumber?: InputMaybe<Scalars['String']>;
+};
 
 export enum UserType {
   Mentee = 'MENTEE',

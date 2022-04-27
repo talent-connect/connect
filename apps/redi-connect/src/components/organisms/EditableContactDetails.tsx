@@ -10,35 +10,52 @@ import * as Yup from 'yup'
 
 import { FormikValues, useFormik } from 'formik'
 import { ReadContactDetails } from '../molecules'
+import {
+  useLoadMyProfileQuery,
+  usePatchMyProfileMutation,
+} from '@talent-connect/data-access'
+import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
+import { useQueryClient } from 'react-query'
+import { omit } from 'lodash'
 
 export interface ContactsFormValues {
   firstName: string
   lastName: string
-  contactEmail: string
+  email: string
   telephoneNumber: string
 }
 
 const validationSchema = Yup.object({
   firstName: Yup.string().required().max(255),
   lastName: Yup.string().required().max(255),
-  contactEmail: Yup.string().email().required().max(255).label('Contact email'),
+  // email: Yup.string().email().required().max(255).label('Contact email'),
   telephoneNumber: Yup.string().max(255).label('Telephone number'),
 })
 
 // props: FormikProps<AboutFormValues>
-const EditableContactDetails = ({ profile, profileSaveStart }: any) => {
-  const { id, firstName, lastName, contactEmail, telephoneNumber } = profile
+export function EditableContactDetails() {
+  const loopbackUserId = getAccessTokenFromLocalStorage().userId
+  const queryClient = useQueryClient()
+  const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
+  const patchMyProfileMutation = usePatchMyProfileMutation()
+
+  const profile = myProfileQuery.data.conProfile
 
   const submitForm = async (values: FormikValues) => {
-    const profileContacts = values as Partial<RedProfile>
-    profileSaveStart({ ...profileContacts, id })
+    const cleanValues = omit(values, ['email'])
+    const mutationResult = await patchMyProfileMutation.mutateAsync({
+      input: { id: profile.id, ...cleanValues },
+    })
+    queryClient.setQueryData(useLoadMyProfileQuery.getKey({ loopbackUserId }), {
+      conProfile: mutationResult.patchConProfile,
+    })
   }
 
   const initialValues: ContactsFormValues = {
-    firstName,
-    lastName,
-    contactEmail,
-    telephoneNumber,
+    firstName: profile?.firstName,
+    lastName: profile?.lastName,
+    email: profile?.email,
+    telephoneNumber: profile?.telephoneNumber,
   }
 
   const formik = useFormik({
@@ -47,6 +64,8 @@ const EditableContactDetails = ({ profile, profileSaveStart }: any) => {
     validationSchema,
     onSubmit: submitForm,
   })
+
+  if (!myProfileQuery.isSuccess) return null
 
   return (
     <Editable
@@ -68,10 +87,11 @@ const EditableContactDetails = ({ profile, profileSaveStart }: any) => {
         label="Last name"
         {...formik}
       />
+      {/* TODO: find a nicer way of showing this non-editable email */}
       <FormInput
-        name="contactEmail"
+        disabled
+        name="email"
         type="email"
-        placeholder="Email"
         label="E-mail address"
         {...formik}
       />
@@ -85,16 +105,4 @@ const EditableContactDetails = ({ profile, profileSaveStart }: any) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile,
-})
-
-const mapDispatchToProps = (dispatch: any) => ({
-  profileSaveStart: (profile: Partial<RedProfile>) =>
-    dispatch(profileSaveStart(profile)),
-})
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EditableContactDetails)
+export default EditableContactDetails

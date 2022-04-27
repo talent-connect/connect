@@ -18,7 +18,7 @@ module.exports = function (config, context) {
             {
               typeFileNameSuffix: [
                 // '.input.ts',
-                // '.args.ts',
+                '.args.ts',
                 // '.entity.ts',
                 // '.model.ts',
                 '.entityprops.ts',

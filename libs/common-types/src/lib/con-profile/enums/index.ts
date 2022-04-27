@@ -1,4 +1,5 @@
 export * from './connect-profile-language.enum'
+export * from './connect-profile-status.enum'
 export * from './education-level.enum'
 export * from './gender.enum'
 export * from './occupation-category.enum'

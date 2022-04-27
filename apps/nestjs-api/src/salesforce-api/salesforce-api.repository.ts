@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import * as jsforce from 'jsforce'
+import { update } from 'lodash'
 const async = require('async')
 
 @Injectable()
@@ -87,6 +88,12 @@ export class SalesforceApiRepository {
       .execute()
 
     return record[0]
+  }
+
+  async updateRecord<T>(objectName: string, record: T): Promise<T> {
+    await this.connect()
+    const updateResult = this.connection.sobject(objectName).update(record)
+    return updateResult
   }
 }
 

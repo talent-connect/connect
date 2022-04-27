@@ -1,3 +1,4 @@
+import { BadRequestException } from '@nestjs/common'
 import {
   Args,
   Mutation,
@@ -9,9 +10,11 @@ import {
 import {
   ConMentoringSessionEntityProps,
   ConProfileEntityProps,
-  UpdateConProfileInput,
+  Entity,
+  PatchConProfileInput,
 } from '@talent-connect/common-types'
 import { ConMentoringSessionsService } from '../con-mentoring-sessions/con-mentoring-sessions.service'
+import { FindOneConProfileArgs } from './args/find-one-con-profile.args'
 import { ConProfilesService } from './con-profiles.service'
 
 @Resolver(() => ConProfileEntityProps)
@@ -36,15 +39,25 @@ export class ConProfilesResolver {
   }
 
   @Query(() => ConProfileEntityProps, {
-    name: 'conProfileByLoopbackUserId',
+    name: 'conProfile',
   })
-  async findOneByLoopbackUserId(
-    @Args('loopbackUserId') loopbackUserId: string
-  ) {
-    const entity = await this.conProfilesService.findOneByLoopbackUserId(
-      loopbackUserId
-    )
-    return entity.props
+  async findOne(@Args() args: FindOneConProfileArgs) {
+    if (args.id && args.loopbackUserId) {
+      throw new BadRequestException(
+        'You cannot pass both id and loopbackUserId'
+      )
+    }
+    if (args.loopbackUserId) {
+      const entity = await this.conProfilesService.findOneByLoopbackUserId(
+        args.loopbackUserId
+      )
+      return entity.props
+    }
+    if (args.id) {
+      const entity = await this.conProfilesService.findOneById(args.id)
+      return entity.props
+    }
+    throw new BadRequestException('Must provide either loopbackUserId or id')
   }
 
   // @Query(() => ConProfileEntity, { name: 'conProfile' })
@@ -52,11 +65,14 @@ export class ConProfilesResolver {
   //   return this.conProfilesService.findOne(id)
   // }
 
-  @Mutation(() => ConProfileEntityProps)
-  updateConProfile(
-    @Args('updateConProfileInput') updateConProfileInput: UpdateConProfileInput
+  @Mutation(() => ConProfileEntityProps, { name: 'patchConProfile' })
+  async patch(
+    @Args('patchConProfileInput') patchConProfileInput: PatchConProfileInput
   ) {
-    // return this.conProfilesService.update(updateConProfileInput)
+    const updatedEntity = await this.conProfilesService.update(
+      patchConProfileInput
+    )
+    return updatedEntity.props
   }
 
   // @Mutation(() => ConProfileEntity)

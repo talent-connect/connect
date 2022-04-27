@@ -4,6 +4,7 @@ export class ContactSfProps {
   Id: string
   FirstName?: string
   LastName: string
+  Email: string
   ReDI_Behance_URL__c?: string
   @Type(() => Date)
   ReDI_Birth_Date__c?: Date
@@ -16,5 +17,4 @@ export class ContactSfProps {
   MobilePhone?: string
   redi_Contact_Gender__c?: string
   Loopback_User_ID__c?: string
-  Name: string
 }

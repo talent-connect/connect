@@ -7,9 +7,14 @@ import {
   Placeholder,
 } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile } from '@talent-connect/shared-types'
+import { ConProfile, useLoadMyProfileQuery } from '@talent-connect/data-access'
+import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 
 interface Props {
-  profile: RedProfile
+  profile: Pick<
+    ConProfile,
+    'firstName' | 'lastName' | 'personalDescription' | 'expectations'
+  >
 }
 
 const Me = ({ profile }: Props) => {
@@ -43,11 +48,14 @@ const Some = ({ profile }: Props) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile as RedProfile,
-})
-
 export default {
-  Me: connect(mapStateToProps, {})(Me),
+  Me: () => {
+    const loopbackUserId = getAccessTokenFromLocalStorage().userId
+    const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
+
+    if (!myProfileQuery.isSuccess) return null
+
+    return <Me profile={myProfileQuery.data.conProfile} />
+  },
   Some: ({ profile }: Props) => <Some profile={profile} />,
 }
