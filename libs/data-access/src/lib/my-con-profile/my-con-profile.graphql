@@ -1,0 +1,36 @@
+# Write your query or mutation here
+query loadMyProfile($loopbackUserId: String!) {
+  conProfileByLoopbackUserId(loopbackUserId: $loopbackUserId) {
+    birthDate
+    createdAt
+    expectations
+    firstName
+    gender
+    githubProfileUrl
+    id
+    languages
+    lastName
+    linkedInProfileUrl
+    loopbackUserId
+    mentee_currentlyEnrolledInCourse
+    mentee_highestEducationLevel
+    mentee_occupationCategoryId
+    mentee_occupationJob_placeOfEmployment
+    mentee_occupationJob_position
+    mentee_occupationLookingForJob_what
+    mentee_occupationOther_description
+    mentee_occupationStudent_studyName
+    mentee_occupationStudent_studyPlace
+    mentor_occupation
+    mentor_workPlace
+    optOutOfMenteesFromOtherRediLocation
+    personalDescription
+    profileAvatarImageS3Key
+    rediLocation
+    slackUsername
+    telephoneNumber
+    updatedAt
+    userActivatedAt
+    userType
+  }
+}

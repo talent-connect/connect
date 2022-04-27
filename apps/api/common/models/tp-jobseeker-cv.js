@@ -18,7 +18,8 @@ const addFullNamePropertyForAdminSearch = (ctx) => {
 
   if (firstName || lastName) {
     const merged = `${firstName ? firstName + ' ' : ''}${lastName || ''}`
-    thingToUpdate.loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName = merged
+    thingToUpdate.loopbackComputedDoNotSetElsewhere__forAdminSearch__fullName =
+      merged
   }
 }
 
@@ -43,14 +44,14 @@ module.exports = function (TpJobseekerCv) {
       // TODO: the next two else-if blocks can definitely be DRY-ed. Merge them.
     }
 
-    if (
-      ctx.options &&
-      ctx.options.currentUser &&
-      ctx.options.currentUser.email === 'cloud-accounts@redi-school.org'
-    ) {
-    } else {
-      delete ctx.data.administratorInternalComment
-    }
+    // if (
+    //   ctx.options &&
+    //   ctx.options.currentUser &&
+    //   ctx.options.currentUser.email === 'cloud-accounts@redi-school.org'
+    // ) {
+    // } else {
+    //   delete ctx.data.administratorInternalComment
+    // }
 
     next()
   })

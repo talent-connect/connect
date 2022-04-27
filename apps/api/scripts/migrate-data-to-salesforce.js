@@ -62,7 +62,7 @@ const { lang } = require('moment')
 
 const DELAY = 1500
 const RETRIES = 5
-const CONCURRENCY = 15 // 60 has worked before, with some errors. For actual data migration, use a low value, such as 15.
+const CONCURRENCY = 40 // 60 has worked before, with some errors. For actual data migration, use a low value, such as 15.
 
 const CONTACT_RECORD_TYPE = '0121i000000HMq9AAG'
 const CONNECT_PROFILE_MENTOR_RECORD_TYPE = '0129X0000001EXBQA2'
@@ -262,7 +262,7 @@ async function insertContactFn(p) {
       deleteFalsyProperties({
         Email: p.email,
         RecordTypeId: CONTACT_RECORD_TYPE,
-        Loopback_User_ID__c: p.contact.redUserId,
+        Loopback_User_ID__c: p.sfId,
         FirstName: `${
           p.contact.firstName
             ? p.contact.firstName
@@ -299,7 +299,7 @@ async function insertContactFn(p) {
         Id: existingContacts[0].Id,
         Email: p.email,
         RecordTypeId: CONTACT_RECORD_TYPE,
-        Loopback_User_ID__c: p.contact.redUserId,
+        Loopback_User_ID__c: p.id,
         FirstName: `${
           p.contact.firstName
             ? p.contact.firstName
@@ -315,8 +315,10 @@ async function insertContactFn(p) {
             : ''
         }`,
         redi_Contact_Gender__c: p.contact.gender
-          ? p.contact.gender.toUpperCase()
-          : 'OTHER',
+          ? p.contact.gender
+              .toLocaleLowerCase()
+              .replace(/(^\w|\s\w)/g, (m) => m.toUpperCase())
+          : undefined,
         ReDI_Birth_Date__c: p.contact.birthDate,
         LinkedIn_Profile__c: p.contact.linkedInProfileUrl,
         ReDI_GitHub_Profile__c: p.contact.githubProfileUrl,
@@ -345,57 +347,73 @@ function insertContact(p) {
   )
 }
 async function insertConnectProfileFn(p) {
-  const result = await conn.sobject('ReDI_Connect_Profile__c').upsert(
-    {
-      Loopback_Original_ID__c: p.redProfile.id,
-      Contact__c: p.contact.sfContactId,
-      RecordTypeId:
-        p.redProfile.userType.indexOf('mentor') !== -1
-          ? CONNECT_PROFILE_MENTOR_RECORD_TYPE
-          : CONNECT_PROFILE_MENTEE_RECORD_TYPE,
-      Profile_Status__c: redProfileToProfileStatus(p.redProfile),
-      ReDI_Location__c: p.redProfile.rediLocation,
-      Occupation__c: p.redProfile.mentor_occupation,
+  if (!p.redProfile.id) {
+    console.log('WARNING: NO ID')
+  }
+  let result
+  try {
+    result = await conn.sobject('ReDI_Connect_Profile__c').create(
+      {
+        Loopback_Original_ID__c: p.redProfile.id,
+        Contact__c: p.contact.sfContactId,
+        RecordTypeId:
+          p.redProfile.userType.indexOf('mentor') !== -1
+            ? CONNECT_PROFILE_MENTOR_RECORD_TYPE
+            : CONNECT_PROFILE_MENTEE_RECORD_TYPE,
+        Profile_Status__c: redProfileToProfileStatus(p.redProfile),
+        ReDI_Location__c: p.redProfile.rediLocation,
+        Occupation__c: p.redProfile.mentor_occupation,
 
-      Work_Place__c: p.redProfile.mentor_workPlace,
-      Expectations__c: p.redProfile.expectations
-        ? p.redProfile.expectations.substr(0, 1000)
-        : undefined,
-      Mentoring_Topics__c: p.redProfile.categories
-        ? p.redProfile.categories.join(';')
-        : undefined,
-      Occupation_Category__c: p.redProfile.mentee_occupationCategoryId,
-      Place_of_Employment__c:
-        p.redProfile.mentee_occupationJob_placeOfEmployment,
-      Job_Title__c: p.redProfile.mentee_occupationJob_position,
-      Study_Place__c: p.redProfile.mentee_occupationStudent_studyPlace,
-      Study_Name__c: p.redProfile.mentee_occupationStudent_studyName,
-      Desired_Job__c: p.redProfile.mentee_occupationLookingForJob_what,
-      Main_Occupation_Other__c: p.redProfile.mentee_occupationOther_description,
-      Education__c: p.redProfile.mentee_highestEducationLevel,
-      ReDI_Course__c: p.redProfile.mentee_currentlyEnrolledInCourse || 'alumni',
-      Avatar_Image_URL__c: p.redProfile.profileAvatarImageS3Key
-        ? 'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/' +
-          p.redProfile.profileAvatarImageS3Key
-        : undefined,
-      Personal_Description__c: p.redProfile.personalDescription
-        ? p.redProfile.personalDescription.substr(0, 600)
-        : undefined,
-      Languages__c: p.redProfile.languages
-        ? p.redProfile.languages
-            .map((langLabel) => LANGUAGES[langLabel])
-            .join(';')
-        : undefined,
-      Opt_Out_Mentees_From_Other_Locations__c:
-        p.redProfile.optOutOfMenteesFromOtherRediLocation,
-      Profile_First_Approved_At__c: p.redProfile.userActivatedAt,
-      Administrator_Internal_Comment__c:
-        p.redProfile.administratorInternalComment,
-      CreatedDate: p.createdAt,
-      LastModifiedDate: p.updatedAt,
-    },
-    'Loopback_Original_ID__c'
-  )
+        Work_Place__c: p.redProfile.mentor_workPlace,
+        Expectations__c: p.redProfile.expectations
+          ? p.redProfile.expectations.substr(0, 1000)
+          : undefined,
+        Mentoring_Topics__c: p.redProfile.categories
+          ? p.redProfile.categories.join(';')
+          : undefined,
+        Occupation_Category__c: p.redProfile.mentee_occupationCategoryId,
+        Place_of_Employment__c:
+          p.redProfile.mentee_occupationJob_placeOfEmployment,
+        Job_Title__c: p.redProfile.mentee_occupationJob_position,
+        Study_Place__c: p.redProfile.mentee_occupationStudent_studyPlace,
+        Study_Name__c: p.redProfile.mentee_occupationStudent_studyName,
+        Desired_Job__c: p.redProfile.mentee_occupationLookingForJob_what,
+        Main_Occupation_Other__c:
+          p.redProfile.mentee_occupationOther_description,
+        Education__c: p.redProfile.mentee_highestEducationLevel,
+        ReDI_Course__c:
+          p.redProfile.mentee_currentlyEnrolledInCourse || 'alumni',
+        Avatar_Image_URL__c: p.redProfile.profileAvatarImageS3Key
+          ? 'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/' +
+            p.redProfile.profileAvatarImageS3Key
+          : undefined,
+        Personal_Description__c: p.redProfile.personalDescription
+          ? p.redProfile.personalDescription.substr(0, 600)
+          : undefined,
+        Languages__c: p.redProfile.languages
+          ? p.redProfile.languages
+              .map((langLabel) => LANGUAGES[langLabel])
+              .join(';')
+          : undefined,
+        Opt_Out_Mentees_From_Other_Locations__c:
+          p.redProfile.optOutOfMenteesFromOtherRediLocation,
+        Profile_First_Approved_At__c: p.redProfile.userActivatedAt,
+        Administrator_Internal_Comment__c:
+          p.redProfile.administratorInternalComment,
+        CreatedDate: p.redProfile.createdAt,
+        LastModifiedDate: p.redProfile.updatedAt,
+      }
+
+      // 'Loopback_Original_ID__c'
+    )
+  } catch (err) {
+    const idMatch = err.message.match(/([a-zA-Z0-9]{15})/g)
+    if (idMatch && idMatch[0]) {
+      result = { id: idMatch[0] }
+    } else {
+      throw err
+    }
+  }
   return { ...p.redProfile, sfConnectProfileId: result.id }
 }
 function insertConnectProfile(p) {
@@ -409,18 +427,28 @@ function insertConnectProfile(p) {
 }
 
 async function insertMentoringSessionFn(p) {
-  const result = await conn.sobject('Mentoring_Session__c').upsert(
-    {
-      Loopback_Original_ID__c: p.id,
-      Date__c: p.date,
-      Mentee__c: REDPROFILE_SFCONTACT[p.menteeId],
-      Mentor__c: REDPROFILE_SFCONTACT[p.mentorId],
-      Durations_in_Minutes__c: p.minuteDuration,
-      CreatedDate: p.createdAt,
-      LastModifiedDate: p.updatedAt,
-    },
-    'Loopback_Original_ID__c'
-  )
+  let result
+  try {
+    result = await conn.sobject('Mentoring_Session__c').create(
+      {
+        Loopback_Original_ID__c: p.id,
+        Date__c: p.date,
+        Mentee__c: REDPROFILE_SFCONTACT[p.menteeId],
+        Mentor__c: REDPROFILE_SFCONTACT[p.mentorId],
+        Durations_in_Minutes__c: p.minuteDuration,
+        CreatedDate: p.createdAt,
+        LastModifiedDate: p.updatedAt,
+      }
+      // 'Loopback_Original_ID__c'
+    )
+  } catch (err) {
+    const idMatch = err.message.match(/([a-zA-Z0-9]{15})/g)
+    if (idMatch && idMatch[0]) {
+      result = { id: idMatch[0] }
+    } else {
+      throw err
+    }
+  }
   return { ...p, sfId: result.id }
 }
 function insertMentoringSession(p) {
@@ -431,29 +459,42 @@ function insertMentoringSession(p) {
 }
 
 async function insertMatchFn(p) {
-  const result = await conn.sobject('Mentorship_Match__c').upsert({
-    Loopback_Original_ID__c: p.id,
-    Acceptance_Notification_Dismissed__c:
-      p.hasMenteeDismissedMentorshipApplicationAcceptedNotification,
-    Application_Accepted_On__c: p.matchMadeActiveOn,
-    Application_Text__c: p.applicationText,
-    Decline_Message__c: p.ifDeclinedByMentor_optionalMessageToMentee
-      ? p.ifDeclinedByMentor_optionalMessageToMentee.substr(0, 1000)
-      : undefined,
-    Decline_Reason__c: p.ifDeclinedByMentor_chosenReasonForDecline,
-    Decline_Reason_Other__c: p.ifDeclinedByMentor_ifReasonIsOther_freeText,
-    Declined_On__c: p.ifDeclinedByMentor_dateTime,
-    Expectations__c: p.expectationText,
-    Mentor_Acceptance_Message__c: p.mentorReplyMessageOnAccept,
-    Mentor_Completion_Message__c: p.mentorMessageOnComplete
-      ? p.mentorMessageOnComplete.substr(0, 1000)
-      : undefined,
-    Status__c: p.status.toUpperCase().replace(/-/g, '_'),
-    Mentee__c: REDPROFILE_SFCONTACT[p.menteeId],
-    Mentor__c: REDPROFILE_SFCONTACT[p.mentorId],
-    CreatedDate: p.createdAt,
-    LastModifiedDate: p.updatedAt,
-  })
+  let result
+  try {
+    result = await conn.sobject('Mentorship_Match__c').create(
+      {
+        Loopback_Original_ID__c: p.id,
+        Acceptance_Notification_Dismissed__c:
+          p.hasMenteeDismissedMentorshipApplicationAcceptedNotification,
+        Application_Accepted_On__c: p.matchMadeActiveOn,
+        Application_Text__c: p.applicationText,
+        Decline_Message__c: p.ifDeclinedByMentor_optionalMessageToMentee
+          ? p.ifDeclinedByMentor_optionalMessageToMentee.substr(0, 1000)
+          : undefined,
+        Decline_Reason__c: p.ifDeclinedByMentor_chosenReasonForDecline,
+        Decline_Reason_Other__c: p.ifDeclinedByMentor_ifReasonIsOther_freeText,
+        Declined_On__c: p.ifDeclinedByMentor_dateTime,
+        Expectations__c: p.expectationText,
+        Mentor_Acceptance_Message__c: p.mentorReplyMessageOnAccept,
+        Mentor_Completion_Message__c: p.mentorMessageOnComplete
+          ? p.mentorMessageOnComplete.substr(0, 1000)
+          : undefined,
+        Status__c: p.status.toUpperCase().replace(/-/g, '_'),
+        Mentee__c: REDPROFILE_SFCONTACT[p.menteeId],
+        Mentor__c: REDPROFILE_SFCONTACT[p.mentorId],
+        CreatedDate: p.createdAt,
+        LastModifiedDate: p.updatedAt,
+      }
+      // 'Loopback_Original_ID__c
+    )
+  } catch (err) {
+    const idMatch = err.message.match(/([a-zA-Z0-9]{15})/g)
+    if (idMatch && idMatch[0]) {
+      result = { id: idMatch[0] }
+    } else {
+      throw err
+    }
+  }
   return { ...p, sfId: result.id }
 }
 function insertMatch(p) {
@@ -464,93 +505,106 @@ function insertMatch(p) {
 }
 
 async function insertJobseekerProfileFn(p) {
-  const jobseekerResult = await conn.sobject('Jobseeker_Profile__c').upsert(
-    {
-      Loopback_Original_ID__c: p.tpJobseekerProfile.id,
-      Contact__c: p.contact.sfContactId,
-      ReDI_Location__c: p.tpJobseekerProfile.rediLocation,
-      ReDI_Course__c: p.tpJobseekerProfile.currentlyEnrolledInCourse,
-      Avatar_Image_URL__c: p.tpJobseekerProfile.profileAvatarImageS3Key
-        ? 'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/' +
-          p.tpJobseekerProfile.profileAvatarImageS3Key
-        : undefined,
-      Desired_Positions__c: p.tpJobseekerProfile.desiredPositions
-        ? p.tpJobseekerProfile.desiredPositions.join(';')
-        : undefined,
-      Location__c: p.tpJobseekerProfile.location,
-      Desired_Employment_Type__c: p.tpJobseekerProfile.desiredEmploymentType
-        ? p.tpJobseekerProfile.desiredEmploymentType.join(';')
-        : undefined,
-      Availability__c: p.tpJobseekerProfile.availability,
-      Availability_Date__c: p.tpJobseekerProfile.ifAvailabilityIsDate_date,
-      About_Yourself__c: p.tpJobseekerProfile.aboutYourself,
-      Top_Skills__c: p.tpJobseekerProfile.topSkills
-        ? p.tpJobseekerProfile.topSkills.join(';')
-        : undefined,
-      Profile_Status__c: p.tpJobseekerProfile.state,
-      Is_Job_Fair_2022_Participant__c:
-        p.tpJobseekerProfile.isJobFair2022Participant,
-      Is_Visible_to_Companies__c:
-        p.tpJobseekerProfile.isProfileVisibleToCompanies,
-      Is_Hired__c: p.tpJobseekerProfile.isHired,
-      Administrator_Internal_Comment__c:
-        p.tpJobseekerProfile.administratorInternalComment,
+  let jobseekerFreshlyCreated
+  let jobseekerResult
+  try {
+    jobseekerResult = await conn.sobject('Jobseeker_Profile__c').create(
+      {
+        Loopback_Original_ID__c: p.tpJobseekerProfile.id,
+        Contact__c: p.contact.sfContactId,
+        ReDI_Location__c: p.tpJobseekerProfile.rediLocation,
+        ReDI_Course__c: p.tpJobseekerProfile.currentlyEnrolledInCourse,
+        Avatar_Image_URL__c: p.tpJobseekerProfile.profileAvatarImageS3Key
+          ? 'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/' +
+            p.tpJobseekerProfile.profileAvatarImageS3Key
+          : undefined,
+        Desired_Positions__c: p.tpJobseekerProfile.desiredPositions
+          ? p.tpJobseekerProfile.desiredPositions.join(';')
+          : undefined,
+        Location__c: p.tpJobseekerProfile.location,
+        Desired_Employment_Type__c: p.tpJobseekerProfile.desiredEmploymentType
+          ? p.tpJobseekerProfile.desiredEmploymentType.join(';')
+          : undefined,
+        Availability__c: p.tpJobseekerProfile.availability,
+        Availability_Date__c: p.tpJobseekerProfile.ifAvailabilityIsDate_date,
+        About_Yourself__c: p.tpJobseekerProfile.aboutYourself,
+        Top_Skills__c: p.tpJobseekerProfile.topSkills
+          ? p.tpJobseekerProfile.topSkills.join(';')
+          : undefined,
+        Profile_Status__c: p.tpJobseekerProfile.state,
+        Is_Job_Fair_2022_Participant__c:
+          p.tpJobseekerProfile.isJobFair2022Participant,
+        Is_Visible_to_Companies__c:
+          p.tpJobseekerProfile.isProfileVisibleToCompanies,
+        Is_Hired__c: p.tpJobseekerProfile.isHired,
+        Administrator_Internal_Comment__c:
+          p.tpJobseekerProfile.administratorInternalComment,
 
-      CreatedDate: p.tpJobseekerProfile.createdAt,
-      LastModifiedDate: p.tpJobseekerProfile.updatedAt,
-    },
-    p.tpJobseekerProfile.id
-  )
-
-  if (p.tpJobseekerProfile.experience) {
-    for (const experienceItem of p.tpJobseekerProfile.experience) {
-      await conn.sobject('Jobseeker_Line_Item__c').create({
-        Jobseeker_Profile__c: jobseekerResult.id,
-        RecordTypeId: JOBSEEKER_PROFILE_LINE_ITEM_RECORD_TYPE_EXPERIENCE,
-        Description__c: experienceItem.description,
-        Institution_City__c: experienceItem.institutionCity,
-        Institution_Country__c: experienceItem.institutionCountry,
-        Institution_Name__c: experienceItem.institutionName,
-        Name: experienceItem.title,
-        Certification_Type__c: experienceItem.certificationType,
-        Description__c: experienceItem.description,
-        Start_Date_Month__c: experienceItem.startDateMonth,
-        Start_Date_Year__c: experienceItem.startDateYear,
-        End_Date_Month__c: experienceItem.endDateMonth,
-        End_Date_Year__c: experienceItem.endDateYear,
-        Current__c: experienceItem.current,
-      })
-      // console.log('inserted jobseeker experience item')
+        CreatedDate: p.tpJobseekerProfile.createdAt,
+        LastModifiedDate: p.tpJobseekerProfile.updatedAt,
+      }
+      // 'Loopback_Original_ID__c'
+    )
+    jobseekerFreshlyCreated = true
+  } catch (err) {
+    const idMatch = err.message.match(/([a-zA-Z0-9]{15})/g)
+    if (idMatch && idMatch[0]) {
+      jobseekerResult = { id: idMatch[0] }
+      jobseekerFreshlyCreated = false
+    } else {
+      throw err
     }
   }
-  if (p.tpJobseekerProfile.experience) {
-    for (const experienceItem of p.tpJobseekerProfile.experience) {
-      await conn.sobject('Jobseeker_Line_Item__c').create({
-        Jobseeker_Profile__c: jobseekerResult.id,
-        RecordTypeId: JOBSEEKER_PROFILE_LINE_ITEM_RECORD_TYPE_EDUCATION,
-        Description__c: experienceItem.description,
-        City__c: experienceItem.city,
-        Name: experienceItem.title,
-        Country__c: experienceItem.country,
-        Company__c: experienceItem.company,
-        Description__c: experienceItem.description,
-        Start_Date_Month__c: experienceItem.startDateMonth,
-        Start_Date_Year__c: experienceItem.startDateYear,
-        End_Date_Month__c: experienceItem.endDateMonth,
-        End_Date_Year__c: experienceItem.endDateYear,
-        Current__c: experienceItem.current,
-      })
-      // console.log('inserted jobseeker education item')
+
+  if (jobseekerFreshlyCreated) {
+    if (p.tpJobseekerProfile.education) {
+      for (const educationItem of p.tpJobseekerProfile.educatoin) {
+        await conn.sobject('Jobseeker_Line_Item__c').create({
+          Jobseeker_Profile__c: jobseekerResult.id,
+          RecordTypeId: JOBSEEKER_PROFILE_LINE_ITEM_RECORD_TYPE_EDUCATION,
+          Description__c: educationItem.description,
+          Institution_City__c: educationItem.institutionCity,
+          Institution_Country__c: educationItem.institutionCountry,
+          Institution_Name__c: educationItem.institutionName,
+          Name: educationItem.title,
+          Certification_Type__c: educationItem.certificationType,
+          Description__c: educationItem.description,
+          Start_Date_Month__c: educationItem.startDateMonth,
+          Start_Date_Year__c: educationItem.startDateYear,
+          End_Date_Month__c: educationItem.endDateMonth,
+          End_Date_Year__c: educationItem.endDateYear,
+          Current__c: educationItem.current,
+        })
+      }
     }
-  }
-  if (p.tpJobseekerProfile.workingLanguages) {
-    for (const langItem of p.tpJobseekerProfile.workingLanguages) {
-      await conn.sobject('hed__Contact_Language__c').create({
-        hed__Contact__c: p.contact.sfContactId,
-        hed__Fluency__c: langItem.proficiencyLevelId,
-        hed__Language__c: LANGUAGE_TO_ID_MAP[langItem.language],
-      })
-      // console.log('inserted jobseeker langauge record')
+    if (p.tpJobseekerProfile.experience) {
+      for (const experienceItem of p.tpJobseekerProfile.experience) {
+        await conn.sobject('Jobseeker_Line_Item__c').create({
+          Jobseeker_Profile__c: jobseekerResult.id,
+          RecordTypeId: JOBSEEKER_PROFILE_LINE_ITEM_RECORD_TYPE_EXPERIENCE,
+          Description__c: experienceItem.description,
+          City__c: experienceItem.city,
+          Name: experienceItem.title,
+          Country__c: experienceItem.country,
+          Company__c: experienceItem.company,
+          Description__c: experienceItem.description,
+          Start_Date_Month__c: experienceItem.startDateMonth,
+          Start_Date_Year__c: experienceItem.startDateYear,
+          End_Date_Month__c: experienceItem.endDateMonth,
+          End_Date_Year__c: experienceItem.endDateYear,
+          Current__c: experienceItem.current,
+        })
+      }
+    }
+    if (p.tpJobseekerProfile.workingLanguages) {
+      for (const langItem of p.tpJobseekerProfile.workingLanguages) {
+        await conn.sobject('hed__Contact_Language__c').create({
+          hed__Contact__c: p.contact.sfContactId,
+          hed__Fluency__c: langItem.proficiencyLevelId,
+          hed__Language__c: LANGUAGE_TO_ID_MAP[langItem.language],
+        })
+        // console.log('inserted jobseeker langauge record')
+      }
     }
   }
   return { ...p.tpJobseekerProfile, sfJobseekerProfileId: jobseekerResult.id }
@@ -566,100 +620,115 @@ function insertJobseekerProfile(p) {
 }
 
 async function insertJobseekerCvFn(cv) {
-  const cvResult = await conn.sobject('Jobseeker_CV__c').upsert(
-    {
-      Loopback_Original_ID__c: cv.id,
-      Contact__c: REDUSER_SFCONTACT[cv.redUserId],
-      Name: cv.cvName,
-      Avatar_Image_URL__c: cv.profileAvatarImageS3Key
-        ? 'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/' +
-          cv.profileAvatarImageS3Key
-        : undefined,
+  let cvResult
+  let cvFreshlyCreated
+  try {
+    cvResult = await conn.sobject('Jobseeker_CV__c').create(
+      {
+        Loopback_Original_ID__c: cv.id,
+        Contact__c: REDUSER_SFCONTACT[cv.redUserId],
+        Name: cv.cvName,
+        Avatar_Image_URL__c: cv.profileAvatarImageS3Key
+          ? 'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/' +
+            cv.profileAvatarImageS3Key
+          : undefined,
 
-      About_Yourself__c: cv.aboutYourself,
-      Availability__c: cv.availability,
-      Availability_Date__c: cv.ifAvailabilityIsDate_date,
-      Behance_URL__c: cv.behanceUrl,
-      Desired_Employment_Type__c: cv.desiredEmploymentType
-        ? cv.desiredEmploymentType.join(';')
-        : undefined,
-      Desired_Positions__c: cv.desiredPositions
-        ? cv.desiredPositions.join(';')
-        : undefined,
-      Dribbble_URL__c: cv.dribbbleUrl,
-      Email__c: cv.contactEmail,
-      First_Name__c: cv.firstName,
-      GitHub_URL__c: cv.githubUrl,
-      Immigration_Status__c: cv.immigrationStatus,
-      Last_Name__c: cv.lastName,
-      LinkedIn_URL__c: cv.linkedInUrl,
-      Location__c: cv.location,
-      Mailing_Address__c: cv.postalMailingAddress,
-      Phone_Number__c: cv.phoneNumber,
-      Stack_Overflow_URL__c: cv.stackOverflowUrl,
-      Top_Skills__c: cv.topSkills ? cv.topSkills.join(';') : undefined,
-      Twitter_URL__c: cv.twitterUrl,
-      Website_Portfolio__c: cv.personalWebsite,
-      LastModifiedDate: cv.updatedAt,
-      CreatedDate: cv.createdAt,
-    },
-    'Loopback_Original_ID__c'
-  )
-
-  if (cv.experience) {
-    for (const experienceItem of cv.experience) {
-      await conn.sobject('Jobseeker_CV_Line_Item__c').create({
-        Jobseeker_CV__c: cvResult.id,
-        RecordTypeId: CV_LINE_ITEM_RECORD_TYPE_EXPERIENCE,
-        Description__c: experienceItem.description,
-        Institution_City__c: experienceItem.institutionCity,
-        Institution_Country__c: experienceItem.institutionCountry,
-        Institution_Name__c: experienceItem.institutionName,
-        Name: experienceItem.title,
-        Certification_Type__c: experienceItem.certificationType,
-        Description__c: experienceItem.description,
-        Start_Date_Month__c: experienceItem.startDateMonth,
-        Start_Date_Year__c: experienceItem.startDateYear,
-        End_Date_Month__c: experienceItem.endDateMonth,
-        End_Date_Year__c: experienceItem.endDateYear,
-        Current__c: experienceItem.current,
-      })
-      // console.log('inserted cv experience item')
-    }
-  }
-  if (cv.experience) {
-    for (const experienceItem of cv.experience) {
-      await conn.sobject('Jobseeker_CV_Line_Item__c').create({
-        Jobseeker_CV__c: cvResult.id,
-        RecordTypeId: CV_LINE_ITEM_RECORD_TYPE_EDUCATION,
-        Description__c: experienceItem.description,
-        City__c: experienceItem.city,
-        Name: experienceItem.title,
-        Country__c: experienceItem.country,
-        Company__c: experienceItem.company,
-        Description__c: experienceItem.description,
-        Start_Date_Month__c: experienceItem.startDateMonth,
-        Start_Date_Year__c: experienceItem.startDateYear,
-        End_Date_Month__c: experienceItem.endDateMonth,
-        End_Date_Year__c: experienceItem.endDateYear,
-        Current__c: experienceItem.current,
-      })
-      // console.log('inserted cv education item')
-    }
-  }
-  if (cv.workingLanguages) {
-    for (const langItem of cv.workingLanguages) {
-      if (
-        langItem.proficiencyLevelId &&
-        LANGUAGE_TO_ID_MAP[langItem.language]
-      ) {
-        await conn.sobject('Jobseeker_CV_Language_Item__c').create({
-          Jobseeker_CV__c: cvResult.id,
-          Fluency__c: langItem.proficiencyLevelId,
-          Language__c: LANGUAGE_TO_ID_MAP[langItem.language],
-        })
+        About_Yourself__c: cv.aboutYourself,
+        Availability__c: cv.availability,
+        Availability_Date__c: cv.ifAvailabilityIsDate_date,
+        Behance_URL__c: cv.behanceUrl,
+        Desired_Employment_Type__c: cv.desiredEmploymentType
+          ? cv.desiredEmploymentType.join(';')
+          : undefined,
+        Desired_Positions__c: cv.desiredPositions
+          ? cv.desiredPositions.join(';')
+          : undefined,
+        Dribbble_URL__c: cv.dribbbleUrl,
+        Email__c: cv.contactEmail,
+        First_Name__c: cv.firstName,
+        GitHub_URL__c: cv.githubUrl,
+        Immigration_Status__c: cv.immigrationStatus,
+        Last_Name__c: cv.lastName,
+        LinkedIn_URL__c: cv.linkedInUrl,
+        Location__c: cv.location,
+        Mailing_Address__c: cv.postalMailingAddress,
+        Phone_Number__c: cv.phoneNumber,
+        Stack_Overflow_URL__c: cv.stackOverflowUrl,
+        Top_Skills__c: cv.topSkills ? cv.topSkills.join(';') : undefined,
+        Twitter_URL__c: cv.twitterUrl,
+        Website_Portfolio__c: cv.personalWebsite,
+        LastModifiedDate: cv.updatedAt,
+        CreatedDate: cv.createdAt,
       }
-      // console.log('inserted cv langauge record')
+      // 'Loopback_Original_ID__c'
+    )
+    cvFreshlyCreated = true
+  } catch (err) {
+    const idMatch = err.message.match(/([a-zA-Z0-9]{15})/g)
+    if (idMatch && idMatch[0]) {
+      cvResult = { id: idMatch[0] }
+      cvFreshlyCreated = false
+    } else {
+      throw err
+    }
+  }
+
+  if (cvFreshlyCreated) {
+    if (cv.education) {
+      for (const educationItem of cv.education) {
+        await conn.sobject('Jobseeker_CV_Line_Item__c').create({
+          Jobseeker_CV__c: cvResult.id,
+          RecordTypeId: CV_LINE_ITEM_RECORD_TYPE_EDUCATION,
+          Description__c: educationItem.description,
+          Institution_City__c: educationItem.institutionCity,
+          Institution_Country__c: educationItem.institutionCountry,
+          Institution_Name__c: educationItem.institutionName,
+          Name: educationItem.title,
+          Certification_Type__c: educationItem.certificationType,
+          Description__c: educationItem.description,
+          Start_Date_Month__c: educationItem.startDateMonth,
+          Start_Date_Year__c: educationItem.startDateYear,
+          End_Date_Month__c: educationItem.endDateMonth,
+          End_Date_Year__c: educationItem.endDateYear,
+          Current__c: educationItem.current,
+        })
+        // console.log('inserted cv experience item')
+      }
+    }
+    if (cv.experience) {
+      for (const experienceItem of cv.experience) {
+        await conn.sobject('Jobseeker_CV_Line_Item__c').create({
+          Jobseeker_CV__c: cvResult.id,
+          RecordTypeId: CV_LINE_ITEM_RECORD_TYPE_EXPERIENCE,
+          Description__c: experienceItem.description,
+          City__c: experienceItem.city,
+          Name: experienceItem.title,
+          Country__c: experienceItem.country,
+          Company__c: experienceItem.company,
+          Description__c: experienceItem.description,
+          Start_Date_Month__c: experienceItem.startDateMonth,
+          Start_Date_Year__c: experienceItem.startDateYear,
+          End_Date_Month__c: experienceItem.endDateMonth,
+          End_Date_Year__c: experienceItem.endDateYear,
+          Current__c: experienceItem.current,
+        })
+        // console.log('inserted cv education item')
+      }
+    }
+    if (cv.workingLanguages) {
+      for (const langItem of cv.workingLanguages) {
+        if (
+          langItem.proficiencyLevelId &&
+          LANGUAGE_TO_ID_MAP[langItem.language]
+        ) {
+          await conn.sobject('Jobseeker_CV_Language_Item__c').create({
+            Jobseeker_CV__c: cvResult.id,
+            Fluency__c: langItem.proficiencyLevelId,
+            Language__c: LANGUAGE_TO_ID_MAP[langItem.language],
+          })
+        }
+        // console.log('inserted cv langauge record')
+      }
     }
   }
   return { ...cv, sfCvId: cvResult.id }
@@ -675,40 +744,58 @@ function insertJobseekerCv(cv) {
 }
 
 async function insertAccountForCompanyProfileFn(p) {
-  const accountResult = await conn.sobject('Account').upsert(
-    {
-      Loopback_Original_ID__c: p.tpCompanyProfile.id,
-      RecordTypeId: ACCOUNT_RECORD_TYPE_BUSINESS_ORGANIZATION,
-      ReDI_Avatar_Image_URL__c: p.tpCompanyProfile.profileAvatarImageS3Key
-        ? 'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/' +
-          p.tpCompanyProfile.profileAvatarImageS3Key
-        : undefined,
-      Name: p.tpCompanyProfile.companyName,
-      Location__c: p.tpCompanyProfile.location,
-      ReDI_Tagline__c: p.tpCompanyProfile.tagline,
-      Industry: p.tpCompanyProfile.industry,
-      Website: p.tpCompanyProfile.website,
-      ReDI_LinkedIn_Page__c: p.tpCompanyProfile.linkedInUrl,
-      Phone: p.tpCompanyProfile.phoneNumber,
-      Description: p.tpCompanyProfile.about,
-      ReDI_Talent_Pool_State__c: p.tpCompanyProfile.state,
-      ReDI_Visible_to_Jobseekers__c:
-        p.tpCompanyProfile.isProfileVisibleToJobseekers,
-      ReDI_Administrator_Internal_Comment__c:
-        p.tpCompanyProfile.administratorInternalComment,
-      // CreatedDate: p.createdAt, //! Use Jonida trick
-      // LastModifiedDate: p.updatedAt, //! Use Jonida trick
-    },
-    'Loopback_Original_ID__c'
-  )
-  const accountContactResult = await conn
-    .sobject('AccountContactRelation')
-    .create({
+  let accountResult
+  try {
+    accountResult = await conn.sobject('Account').create(
+      {
+        Loopback_Original_ID__c: p.tpCompanyProfile.id,
+        RecordTypeId: ACCOUNT_RECORD_TYPE_BUSINESS_ORGANIZATION,
+        ReDI_Avatar_Image_URL__c: p.tpCompanyProfile.profileAvatarImageS3Key
+          ? 'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/' +
+            p.tpCompanyProfile.profileAvatarImageS3Key
+          : undefined,
+        Name: p.tpCompanyProfile.companyName,
+        Location__c: p.tpCompanyProfile.location,
+        ReDI_Tagline__c: p.tpCompanyProfile.tagline,
+        Industry: p.tpCompanyProfile.industry,
+        Website: p.tpCompanyProfile.website,
+        ReDI_LinkedIn_Page__c: p.tpCompanyProfile.linkedInUrl,
+        Phone: p.tpCompanyProfile.phoneNumber,
+        Description: p.tpCompanyProfile.about,
+        ReDI_Talent_Pool_State__c: p.tpCompanyProfile.state,
+        ReDI_Visible_to_Jobseekers__c:
+          p.tpCompanyProfile.isProfileVisibleToJobseekers,
+        ReDI_Administrator_Internal_Comment__c:
+          p.tpCompanyProfile.administratorInternalComment,
+        // CreatedDate: p.createdAt, //! Use Jonida trick
+        // LastModifiedDate: p.updatedAt, //! Use Jonida trick
+      }
+      // 'Loopback_Original_ID__c'
+    )
+  } catch (err) {
+    const idMatch = err.message.match(/([a-zA-Z0-9]{15})/g)
+    if (idMatch && idMatch[0]) {
+      accountResult = { id: idMatch[0] }
+    } else {
+      throw err
+    }
+  }
+  let accountContactResult
+  try {
+    accountContactResult = await conn.sobject('AccountContactRelation').create({
       AccountId: accountResult.id,
       ContactId: p.contact.sfContactId,
       ReDI_Company_Representative_Status__c: 'APPROVED',
       Roles: 'TALENT_POOL_COMPANY_REPRESENTATIVE',
     })
+  } catch (err) {
+    const idMatch = err.message.match(/([a-zA-Z0-9]{15})/g)
+    if (idMatch && idMatch[0]) {
+      accountContactResult = { id: idMatch[0] }
+    } else {
+      throw err
+    }
+  }
   if (p.tpJobListings) {
     for (const jobListing of p.tpJobListings) {
       if (jobListing.employmentType === 'partTimeEmployment') {
@@ -720,28 +807,38 @@ async function insertAccountForCompanyProfileFn(p) {
       if (jobListing.employmentType === 'apprenticeship') {
         jobListing.employmentType = 'apprenticeshipAusbildung'
       }
-      const jobListingResult = await conn.sobject('Job_Listing__c').upsert(
-        {
-          Loopback_Original_ID__c: jobListing.id,
-          Account__c: accountResult.id,
-          Title__c: jobListing.title,
-          Location__c: jobListing.location,
-          Summary__c: jobListing.summary,
-          Ideal_Technical_Skills__c: jobListing.idealTechnicalSkills
-            ? jobListing.idealTechnicalSkills.join(';')
-            : undefined,
-          Relates_to_Positions__c: jobListing.relatesToPositions
-            ? jobListing.relatesToPositions.join(';')
-            : undefined,
-          Employment_Type__c: jobListing.employmentType,
-          Language_Requirements__c: jobListing.languageRequirements,
-          Salary_Range__c: jobListing.salaryRange,
-          Remote_Possible__c: jobListing.isRemotePossible,
-          CreatedDate: jobListing.createdAt,
-          LastModifiedDate: jobListing.updatedAt,
-        },
-        'Loopback_Original_ID__c'
-      )
+      let jobListingResult
+      try {
+        jobListingResult = await conn.sobject('Job_Listing__c').create(
+          {
+            Loopback_Original_ID__c: jobListing.id,
+            Account__c: accountResult.id,
+            Title__c: jobListing.title,
+            Location__c: jobListing.location,
+            Summary__c: jobListing.summary,
+            Ideal_Technical_Skills__c: jobListing.idealTechnicalSkills
+              ? jobListing.idealTechnicalSkills.join(';')
+              : undefined,
+            Relates_to_Positions__c: jobListing.relatesToPositions
+              ? jobListing.relatesToPositions.join(';')
+              : undefined,
+            Employment_Type__c: jobListing.employmentType,
+            Language_Requirements__c: jobListing.languageRequirements,
+            Salary_Range__c: jobListing.salaryRange,
+            Remote_Possible__c: jobListing.isRemotePossible,
+            CreatedDate: jobListing.createdAt,
+            LastModifiedDate: jobListing.updatedAt,
+          }
+          // 'Loopback_Original_ID__c'
+        )
+      } catch (err) {
+        const idMatch = err.message.match(/([a-zA-Z0-9]{15})/g)
+        if (idMatch && idMatch[0]) {
+          jobListingResult = { id: idMatch[0] }
+        } else {
+          throw err
+        }
+      }
       TPJOBLISTING_SFJOBLISTING[jobListing.id] = jobListingResult.id
       console.log('inserted job listing')
     }
@@ -763,10 +860,20 @@ function insertAccountForCompanyProfile(p) {
 }
 
 async function insertFavoriteMentorFn({ menteeId, mentorId }) {
-  await conn.sobject('Mentee_Favorited_Mentor_Profile__c').create({
-    Favoritee_ReDI_Connect_Profile__c: menteeId,
-    Favoriter_ReDI_Connect_Profile__c: mentorId,
-  })
+  const loopbackId = menteeId + mentorId
+  try {
+    await conn.sobject('Mentee_Favorited_Mentor_Profile__c').create({
+      Loopback_Original_ID__c: loopbackId,
+      Favoritee_ReDI_Connect_Profile__c: menteeId,
+      Favoriter_ReDI_Connect_Profile__c: mentorId,
+    })
+  } catch (err) {
+    const idMatch = err.message.match(/([a-zA-Z0-9]{15})/g)
+    if (idMatch && idMatch[0]) {
+    } else {
+      throw err
+    }
+  }
 }
 function insertFavouriteMentor(o) {
   return of(o).pipe(
@@ -782,10 +889,20 @@ async function insertJobseekerFavoriteJobListingFn({
   jobseekerId,
   jobListingId,
 }) {
-  await conn.sobject('Jobseeker_Favorited_Job_Listing__c').create({
-    Jobseeker_Profile__c: jobseekerId,
-    Job_Listing__c: jobListingId,
-  })
+  const loopbackId = jobseekerId + jobListingId
+  try {
+    await conn.sobject('Jobseeker_Favorited_Job_Listing__c').create({
+      Loopback_Original_ID__c: loopbackId,
+      Jobseeker_Profile__c: jobseekerId,
+      Job_Listing__c: jobListingId,
+    })
+  } catch (err) {
+    const idMatch = err.message.match(/([a-zA-Z0-9]{15})/g)
+    if (idMatch && idMatch[0]) {
+    } else {
+      throw err
+    }
+  }
 }
 function insertJobseekerFavoriteJobListing(o) {
   return of(o).pipe(
@@ -858,7 +975,8 @@ function buildContact(redUser) {
     const profileType = profile.is
     const fieldsToAssignToContactFromProfile = fields[profileType]
     const fieldsAndValues = _.pick(profile, fieldsToAssignToContactFromProfile)
-    redUser.contact = Object.assign({}, redUser.contact, fieldsAndValues)
+    const fieldAndNonFalsyValues = deleteFalsyProperties(fieldsAndValues)
+    redUser.contact = Object.assign({}, redUser.contact, fieldAndNonFalsyValues)
   })
 
   return redUser
@@ -1082,7 +1200,7 @@ function buildContact(redUser) {
     .pipe(
       // ! CVs
       filter((cv) => REDUSER_SFCONTACT[cv.redUserId]),
-      mergeMap((u) => insertJobseekerCv(u), Math.floor(CONCURRENCY / 4)),
+      mergeMap((u) => insertJobseekerCv(u), Math.floor(CONCURRENCY / 2)),
       tap((cv) => console.log('Inserted CV #', cv.sfCvId)),
 
       scan((acc, curr) => acc + 1, 0),
@@ -1200,7 +1318,7 @@ function buildContact(redUser) {
         (p) =>
           REDPROFILE_SFCONTACT[p.mentorId] && REDPROFILE_SFCONTACT[p.menteeId]
       ),
-      mergeMap((p) => insertMatch(p), CONCURRENCY / 2),
+      mergeMap((p) => insertMatch(p), 1),
       tap((p) => console.log('Inserted Match #', p.sfId)),
       scan((acc, curr) => acc + 1, 0),
       tap(console.log)

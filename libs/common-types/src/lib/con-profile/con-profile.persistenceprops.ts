@@ -19,7 +19,7 @@ export class ConProfilePersistenceProps implements PersistenceProps {
   @Type(() => Date)
   LastModifiedDate: Date
   Main_Occupation_Other__c?: string
-  Mentoring_Topics__c?: string
+  Mentoring_Topics__c?: PicklistValuesSemicolonSeparated
   Name: string
   Occupation__c?: string
   Occupation_Category__c?: PicklistValue

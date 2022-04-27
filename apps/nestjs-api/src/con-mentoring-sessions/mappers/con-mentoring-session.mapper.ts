@@ -27,4 +27,10 @@ export class ConMentoringSessionMapper
 
     return entity
   }
+
+  public toPersistence(
+    source: ConMentoringSessionEntity
+  ): ConMentoringSessionPersistence {
+    throw new Error('Method not implemented.')
+  }
 }

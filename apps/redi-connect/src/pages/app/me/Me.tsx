@@ -22,14 +22,30 @@ import {
 } from '../../../components/organisms'
 
 import { LoggedIn } from '../../../components/templates'
+import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
+
+import { useLoadMyProfileQuery } from '@talent-connect/data-access'
 // CHECK OUT THE LOADER
 
 const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
+  const myProfileResult = useLoadMyProfileQuery({
+    loopbackUserId: getAccessTokenFromLocalStorage().userId,
+  })
+
   useEffect(() => {
     profileFetchStart()
   }, [profileFetchStart])
 
-  if (loading) return <Loader loading={true} />
+  if (myProfileResult.isLoading || loading) return <Loader loading={true} />
+  if (myProfileResult.isLoading) return <Loader loading={true} />
+
+  // TODO: insert proper error handling here and elsewhere. We should cover cases where we
+  // get values usch as myProfileResult.isError. Perhaps we-ure the error boundary logic
+  // that Eric has been looking into.
+
+  const conProfile = myProfileResult.data.conProfile
+
+  console.log(conProfile)
 
   const userIsMentee =
     profile.userType === 'mentee' ||

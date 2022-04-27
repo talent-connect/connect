@@ -15,5 +15,6 @@ export class ContactSfProps {
   ReDI_GitHub_Profile__c?: string
   MobilePhone?: string
   redi_Contact_Gender__c?: string
+  Loopback_User_ID__c?: string
   Name: string
 }

@@ -21,43 +21,10 @@ const conn = new jsforce.Connection({
 ;(async () => {
   await conn.login(USERNAME, `${PASSWORD}${SECURITY_TOKEN}`)
 
-  // const res = await conn
-  //   .sobject('ReDI_Connect_Profile__c')
-  //   .select('*, Contact__r.*')
-  //   .include('Mentoring_Sessions_Mentee__r')
-  //   .select('*')
-  //   .end()
-  // // .find({ Id: 'a2F9X0000000mrKUAQ' })
-  // // .include('Contact')
-  // // .select('*')
-  // // .end()
+  const res2 = await conn
+    .sobject('ReDI_Connect_Profile__c')
+    .find({ 'Contact__r.Loopback_User_ID__c': '625f36cc7044a41e7f169365' })
 
-  // const firstRes = res[0]
-  // console.log(firstRes)
-
-  const res = await conn
-    .sobject('Contact')
-    .find({})
-    .include('ReDI_Connect_Profiles__r')
-    .select('*')
-    .end()
-    .include('Mentoring_Sessions_Mentee__r')
-    .select('*')
-    .end()
-    .include('Mentoring_Sessions__r')
-    .select('*')
-    .end()
-    .execute({ autoFetch: true, maxFetch: 10000 })
-
-  console.log(res[0])
-
-  // const res2 = await conn
-  //   .sobject('Contact')
-  //   .find({ Id: '0039X0000007yirQAA' })
-  //   .include('Mentoring_Sessions__r')
-  //   .select('*')
-  //   .end()
-
-  // console.log(res2[0])
+  console.log(res2[0])
   console.log()
 })()

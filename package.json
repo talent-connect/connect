@@ -150,7 +150,7 @@
     "redux-observable": "1.2.0",
     "reflect-metadata": "^0.1.13",
     "regenerator-runtime": "0.13.7",
-    "rxjs": "^7.0.0",
+    "rxjs": "^6.6.7",
     "rxjs-boost": "^1.1.1",
     "serve-favicon": "^2.0.1",
     "slick-carousel": "^1.8.1",

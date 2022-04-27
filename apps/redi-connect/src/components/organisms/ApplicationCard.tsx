@@ -50,7 +50,7 @@ const ApplicationCard = ({
       >
         <Columns vCentered>
           <Columns.Column size={1} className="application-card__avatar">
-            <Avatar profile={applicationUser} />
+            <Avatar profile={profile} />
           </Columns.Column>
 
           <Columns.Column

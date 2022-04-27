@@ -4,6 +4,7 @@ import {
   ConProfileEntity,
   ConProfileEntityProps,
   ConProfilePersistence,
+  ConProfilePersistenceProps,
   EducationLevel,
   Gender,
   Mapper,
@@ -12,6 +13,8 @@ import {
   RediLocation,
   UserType,
 } from '@talent-connect/common-types'
+import { CategoryKey } from '@talent-connect/shared-config'
+import { MentoringTopic } from 'libs/common-types/src/lib/con-profile/enums/mentoring-topic.enum'
 
 @Injectable()
 export class ConProfileMapper
@@ -21,8 +24,8 @@ export class ConProfileMapper
     const props = new ConProfileEntityProps()
 
     props.id = raw.props.Id
-    props._contactId = raw.props.Contact__r.Id
     props.userType = raw.props.RecordType.DeveloperName as UserType
+    props.loopbackUserId = raw.props.Contact__r.Loopback_User_ID__c
     props.rediLocation = raw.props.ReDI_Location__c as RediLocation
     props.mentor_occupation = raw.props.Occupation__c
     props.mentor_workPlace = raw.props.Work_Place__c
@@ -72,8 +75,58 @@ export class ConProfileMapper
     props.updatedAt = raw.props.LastModifiedDate
     props.userActivatedAt = raw.props.Profile_First_Approved_At__c
 
+    props.categories =
+      (raw.props.Mentoring_Topics__c?.split(';') as MentoringTopic[]) ?? []
+
     const entity = ConProfileEntity.create(props)
 
     return entity
+  }
+
+  public toPersistence(source: ConProfileEntity): ConProfilePersistence {
+    const props = new ConProfilePersistenceProps()
+    const srcProps = source.props
+
+    props.Id = srcProps.id
+    // props.RecordType.DeveloperName = srcProps.RecordType.userType
+    props.Contact__r.Loopback_User_ID__c = srcProps.loopbackUserId
+    props.ReDI_Location__c = srcProps.rediLocation
+    props.Occupation__c = srcProps.mentor_occupation
+    props.Work_Place__c = srcProps.mentor_workPlace
+    props.Expectations__c = srcProps.expectations
+    props.Occupation_Category__c = srcProps.mentee_occupationCategoryId
+    props.Place_of_Employment__c =
+      srcProps.mentee_occupationJob_placeOfEmployment
+    props.Job_Title__c = srcProps.mentee_occupationJob_position
+    props.Study_Place__c = srcProps.mentee_occupationStudent_studyPlace
+    props.Study_Name__c = srcProps.mentee_occupationStudent_studyName
+    props.Desired_Job__c = srcProps.mentee_occupationLookingForJob_what
+    props.Main_Occupation_Other__c = srcProps.mentee_occupationOther_description
+    props.Education__c = srcProps.mentee_highestEducationLevel
+    props.ReDI_Course__c = srcProps.mentee_currentlyEnrolledInCourse
+    props.Avatar_Image_URL__c = srcProps.profileAvatarImageS3Key
+
+    props.Contact__r.FirstName = srcProps.firstName
+    props.Contact__r.LastName = srcProps.lastName
+    props.Contact__r.redi_Contact_Gender__c = srcProps.gender
+
+    props.Contact__r.ReDI_Birth_Date__c = srcProps.birthDate
+    props.Languages__c = srcProps.languages?.join(';')
+    props.Personal_Description__c = srcProps.personalDescription
+    props.Contact__r.LinkedIn_Profile__c = srcProps.linkedInProfileUrl
+    props.Contact__r.ReDI_GitHub_Profile__c = srcProps.githubProfileUrl
+    props.Contact__r.ReDI_Slack_Username__c = srcProps.slackUsername
+    props.Contact__r.MobilePhone = srcProps.telephoneNumber
+    props.Opt_Out_Mentees_From_Other_Locations__c =
+      srcProps.optOutOfMenteesFromOtherRediLocation
+    props.CreatedDate = srcProps.createdAt
+    props.LastModifiedDate = srcProps.updatedAt
+    props.Profile_First_Approved_At__c = srcProps.userActivatedAt
+
+    props.Mentoring_Topics__c = srcProps.categories?.join(';')
+
+    const persistence = ConProfilePersistence.create(props)
+
+    return persistence
   }
 }

@@ -10,6 +10,8 @@ import {
 } from './enums'
 import { Gender } from './enums/gender.enum'
 import { ConMentoringSessionEntityProps } from '../con-mentoring-session'
+import { CategoryKey } from '@talent-connect/shared-config'
+import { MentoringTopic } from './enums/mentoring-topic.enum'
 
 @ObjectType('ConProfile')
 export class ConProfileEntityProps implements EntityProps {
@@ -52,12 +54,15 @@ export class ConProfileEntityProps implements EntityProps {
   githubProfileUrl?: string
   slackUsername?: string
   telephoneNumber?: string
-  // categories: Array<CategoryKey> //! REMOVE IN FAVOUR OF MENTORING TOPICS
+  @Field((type) => [MentoringTopic])
+  categories: Array<MentoringTopic>
   // favouritedRedProfileIds: Array<string> //! REPLACED BY NEW JUNCTION OBJECT
   optOutOfMenteesFromOtherRediLocation: boolean
 
   @Field((type) => [ConMentoringSessionEntityProps])
   mentoringSessions: ConMentoringSessionEntityProps[]
+
+  loopbackUserId: string
 
   createdAt: Date
   updatedAt: Date

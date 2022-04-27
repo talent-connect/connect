@@ -1,8 +1,10 @@
-import { Injectable } from '@nestjs/common'
-import { ConProfileEntity } from '@talent-connect/common-types'
+import { Injectable, NotFoundException } from '@nestjs/common'
+import {
+  ConProfileEntity,
+  CreateConProfileInput,
+  UpdateConProfileInput,
+} from '@talent-connect/common-types'
 import { SalesforceApiConProfilesService } from '../salesforce-api/salesforce-api-con-profiles.service'
-import { CreateConProfileInput } from './dto/create-con-profile.input'
-import { UpdateConProfileInput } from './dto/update-con-profile.input'
 import { ConProfileMapper } from './mappers/con-profile.mapper'
 
 @Injectable()
@@ -26,16 +28,20 @@ export class ConProfilesService {
     return entities
   }
 
-  async findOne(id: string) {
-    const persistedConProfile = await this.api.getConProfile(id)
-
-    const entity = this.mapper.fromPersistence(persistedConProfile)
-
-    return entity
+  async findOneByLoopbackUserId(loopbackUserId: string) {
+    const entities = await this.findAll({
+      'Contact__r.Loopback_User_ID__c': loopbackUserId,
+    })
+    if (entities.length > 0) {
+      return entities[0]
+    } else {
+      throw new NotFoundException('ConProfile not found')
+    }
   }
 
-  update(id: number, updateConProfileInput: UpdateConProfileInput) {
-    return `This action updates a #${id} conProfile`
+  async update(updateConProfileInput: UpdateConProfileInput) {
+    // updateConProfileInput.
+    return {}
   }
 
   remove(id: number) {

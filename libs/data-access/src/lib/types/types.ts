@@ -49,6 +49,7 @@ export type ConProfile = {
   __typename?: 'ConProfile';
   _contactId: Scalars['String'];
   birthDate?: Maybe<Scalars['DateTime']>;
+  categories: Array<MentoringTopic>;
   createdAt: Scalars['DateTime'];
   expectations?: Maybe<Scalars['String']>;
   firstName: Scalars['String'];
@@ -58,6 +59,7 @@ export type ConProfile = {
   languages?: Maybe<Array<ConnectProfileLanguage>>;
   lastName: Scalars['String'];
   linkedInProfileUrl?: Maybe<Scalars['String']>;
+  loopbackUserId: Scalars['String'];
   mentee_currentlyEnrolledInCourse: RediCourse;
   mentee_highestEducationLevel?: Maybe<EducationLevel>;
   mentee_occupationCategoryId?: Maybe<OccupationCategory>;
@@ -257,6 +259,49 @@ export enum MentoringSessionDuration {
   Min180 = 'MIN180'
 }
 
+export enum MentoringTopic {
+  BasicGerman = 'basicGerman',
+  BasicProgrammingSkills = 'basicProgrammingSkills',
+  Blockchain = 'blockchain',
+  BuildingProfessionalNetwork = 'buildingProfessionalNetwork',
+  BusinessDevelopment = 'businessDevelopment',
+  BusinessGerman = 'businessGerman',
+  CareerOrientationAndPlanning = 'careerOrientationAndPlanning',
+  CodingChallengePreparation = 'codingChallengePreparation',
+  ComputerNetworking = 'computerNetworking',
+  DataAnalytics = 'dataAnalytics',
+  DevOpsCloud = 'devOpsCloud',
+  DigitalMarketing = 'digitalMarketing',
+  DontKnowYet = 'dontKnowYet',
+  English = 'english',
+  Entrepreneurship = 'entrepreneurship',
+  Freelancing = 'freelancing',
+  FriendAndHelp = 'friendAndHelp',
+  GraphicDesign = 'graphicDesign',
+  HtmlCss = 'htmlCss',
+  InternshipOrWorkingStudent = 'internshipOrWorkingStudent',
+  InterviewPreparation = 'interviewPreparation',
+  Iot = 'iot',
+  Java = 'java',
+  Javascript = 'javascript',
+  JobApplicationsCvPreparationEnglish = 'jobApplicationsCvPreparationEnglish',
+  JobApplicationsCvPreparationGerman = 'jobApplicationsCvPreparationGerman',
+  JobSearch = 'jobSearch',
+  MachineLearning = 'machineLearning',
+  MobileDevelopmentAndroid = 'mobileDevelopmentAndroid',
+  MobileDevelopmentIos = 'mobileDevelopmentIos',
+  MotivationAndEncouragement = 'motivationAndEncouragement',
+  ProductManagement = 'productManagement',
+  ProjectManagement = 'projectManagement',
+  Python = 'python',
+  QualityAssurance = 'qualityAssurance',
+  React = 'react',
+  Sales = 'sales',
+  Salesforce = 'salesforce',
+  UserExperienceDesign = 'userExperienceDesign',
+  UserInterfaceDesign = 'userInterfaceDesign'
+}
+
 export enum MentorshipMatchStatus {
   Accepted = 'ACCEPTED',
   Applied = 'APPLIED',
@@ -277,7 +322,13 @@ export type Query = {
   __typename?: 'Query';
   conMentoringSessions: Array<ConMentoringSession>;
   conMentorshipMatches: Array<ConMentorshipMatch>;
+  conProfile: ConProfile;
   conProfiles: Array<ConProfile>;
+};
+
+
+export type QueryConProfileArgs = {
+  loopbackUserId: Scalars['String'];
 };
 
 export enum RediCourse {

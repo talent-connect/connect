@@ -1,3 +1,4 @@
+import { NotFoundException } from '@nestjs/common'
 import {
   Args,
   Int,
@@ -11,11 +12,10 @@ import {
   ConMentoringSessionEntityProps,
   ConProfileEntity,
   ConProfileEntityProps,
+  UpdateConProfileInput,
 } from '@talent-connect/common-types'
 import { ConMentoringSessionsService } from '../con-mentoring-sessions/con-mentoring-sessions.service'
 import { ConProfilesService } from './con-profiles.service'
-import { CreateConProfileInput } from './dto/create-con-profile.input'
-import { UpdateConProfileInput } from './dto/update-con-profile.input'
 
 @Resolver(() => ConProfileEntityProps)
 export class ConProfilesResolver {
@@ -38,20 +38,27 @@ export class ConProfilesResolver {
     return props
   }
 
+  @Query(() => ConProfileEntityProps, { name: 'conProfileByLoopbackUserId' })
+  async findOneByLoopbackUserId(
+    @Args('loopbackUserId') loopbackUserId: string
+  ) {
+    const entity = await this.conProfilesService.findOneByLoopbackUserId(
+      loopbackUserId
+    )
+    return entity.props
+  }
+
   // @Query(() => ConProfileEntity, { name: 'conProfile' })
   // findOne(@Args('id', { type: () => Int }) id: number) {
   //   return this.conProfilesService.findOne(id)
   // }
 
-  // @Mutation(() => ConProfileEntity)
-  // updateConProfile(
-  //   @Args('updateConProfileInput') updateConProfileInput: UpdateConProfileInput
-  // ) {
-  //   return this.conProfilesService.update(
-  //     updateConProfileInput.id,
-  //     updateConProfileInput
-  //   )
-  // }
+  @Mutation(() => ConProfileEntityProps)
+  updateConProfile(
+    @Args('updateConProfileInput') updateConProfileInput: UpdateConProfileInput
+  ) {
+    return this.conProfilesService.update(updateConProfileInput)
+  }
 
   // @Mutation(() => ConProfileEntity)
   // removeConProfile(@Args('id', { type: () => Int }) id: number) {

@@ -8,4 +8,5 @@ export abstract class Mapper<
   SpecificPersistence extends Persistence<PersistenceProps>
 > {
   public abstract fromPersistence(source: SpecificPersistence): SpecificEntity
+  // public abstract toPersistence(source: SpecificEntity): SpecificPersistence
 }

@@ -44,4 +44,10 @@ export class ConMentorshipMatchMapper
 
     return entity
   }
+
+  public toPersistence(
+    source: ConMentorshipMatchEntity
+  ): ConMentorshipMatchPersistence {
+    throw new Error('Method not implemented.')
+  }
 }

@@ -18,33 +18,25 @@ import './Avatar.scss'
 
 import { profileSaveStart } from '../../redux/user/actions'
 import { RedProfile } from '@talent-connect/shared-types'
+import { ConProfile, useLoadMyProfileQuery } from '@talent-connect/data-access'
+import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 
-interface AvatarProps {
-  profile: RedProfile
-}
-interface AvatarEditable {
-  profile: RedProfile
-  profileSaveStart: Function
-}
-
-interface AvatarFormValues {
-  profileAvatarImageS3Key: string
+type AvatarProps = {
+  profile: Pick<
+    ConProfile,
+    'firstName' | 'lastName' | 'profileAvatarImageS3Key'
+  >
 }
 
-const validationSchema = Yup.object({
-  profileAvatarImageS3Key: Yup.string().max(255),
-})
-
-const Avatar = ({ profile }: AvatarProps) => {
-  const { profileAvatarImageS3Key } = profile
-  const imgSrc = profileAvatarImageS3Key
-    ? AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
+function Avatar({ profile }: AvatarProps) {
+  const imgSrc = profile.profileAvatarImageS3Key
+    ? profile.profileAvatarImageS3Key
     : placeholderImage
 
   return (
     <div
       className={classnames('avatar', {
-        'avatar--placeholder': !profileAvatarImageS3Key,
+        'avatar--placeholder': !profile.profileAvatarImageS3Key,
       })}
     >
       <img
@@ -56,28 +48,22 @@ const Avatar = ({ profile }: AvatarProps) => {
   )
 }
 
-const AvatarEditable = ({ profile, profileSaveStart }: AvatarEditable) => {
-  const { profileAvatarImageS3Key } = profile
-  const imgURL = AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
-
-  const submitForm = async (values: FormikValues) => {
-    const profileMe = values as Partial<RedProfile>
-    profileSaveStart({ ...profileMe, id: profile.id })
-  }
-
-  const initialValues: AvatarFormValues = {
-    profileAvatarImageS3Key: profileAvatarImageS3Key,
-  }
-
-  const formik = useFormik({
-    initialValues: initialValues,
-    validationSchema,
-    onSubmit: submitForm,
+function AvatarEditable() {
+  const myProfileResult = useLoadMyProfileQuery({
+    loopbackUserId: getAccessTokenFromLocalStorage().userId,
   })
 
+  if (!myProfileResult.isSuccess) return null
+
+  const profile = myProfileResult.data.conProfile
+
+  const { profileAvatarImageS3Key } = profile
+  const imgURL = profileAvatarImageS3Key
+
   const onUploadSuccess = (result: any) => {
-    formik.setFieldValue('profileAvatarImageS3Key', result.fileKey)
-    formik.handleSubmit()
+    const profileAvatarImageS3Key =
+      AWS_PROFILE_AVATARS_BUCKET_BASE_URL + result.fileKey
+    // save it
   }
 
   return (
@@ -135,16 +121,7 @@ const AvatarEditable = ({ profile, profileSaveStart }: AvatarEditable) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile as RedProfile,
-})
-
-const mapDispatchToProps = (dispatch: any) => ({
-  profileSaveStart: (profile: Partial<RedProfile>) =>
-    dispatch(profileSaveStart(profile)),
-})
-
-Avatar.Some = (profile: RedProfile) => <Avatar profile={profile} />
-Avatar.Editable = connect(mapStateToProps, mapDispatchToProps)(AvatarEditable)
+Avatar.Some = Avatar
+Avatar.Editable = AvatarEditable
 
 export default Avatar
