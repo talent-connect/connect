@@ -1,7 +1,7 @@
 import { Loader } from '@talent-connect/shared-atomic-design-components'
 import React, { ReactNode } from 'react'
 import { Columns, Container, Section } from 'react-bulma-components'
-import { useLocation } from 'react-router'
+import { useLocation } from 'react-router-dom'
 import { useIsBusy } from '../../hooks/useIsBusy'
 import { useTpCompanyProfileQuery } from '../../react-query/use-tpcompanyprofile-query'
 import { useTpJobseekerProfileQuery } from '../../react-query/use-tpjobseekerprofile-query'
