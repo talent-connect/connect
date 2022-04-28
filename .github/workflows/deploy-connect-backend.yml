@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - salesforce-integration
       - chore/reinstate-terraform-for-azure-migration
       - chore/latest-terraform-greek-god-awesome-stuff-terrastos
 
@@ -54,8 +55,8 @@ jobs:
           az logout
 
   deploy-production:
-#    TODO uncomment when you merge on master
-#    if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
+    #    TODO uncomment when you merge on master
+    #    if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
     needs: [deploy-staging]
     environment:
       name: production
