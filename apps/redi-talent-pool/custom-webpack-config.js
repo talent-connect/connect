@@ -16,8 +16,6 @@ module.exports = (config, context) => {
     })
   )
 
-  // console.log(JSON.stringify(config, null, 2))
-
   return { ...config, node: undefined }
 }
 
