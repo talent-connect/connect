@@ -29,7 +29,8 @@ export class ConProfilePersistence extends Persistence<ConProfilePersistenceProp
       'Contact__r.ReDI_Behance_URL__c',
       'Contact__r.ReDI_Birth_Date__c',
       'Contact__r.ReDI_Dribbble_URL__c',
-      'Contact__r.ReDI_Preferred_Pronouns__c',
+      //! TODO: Re-enable when I deal with TP
+      // 'Contact__r.ReDI_Preferred_Pronouns__c',
       'Contact__r.ReDI_Slack_Username__c',
       'Contact__r.ReDI_Stack_Overflow_URL__c',
       'Contact__r.LinkedIn_Profile__c',
