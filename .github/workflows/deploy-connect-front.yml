@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - salesforce-integration
       - chore/reinstate-terraform-for-azure-migration
       - chore/latest-terraform-greek-god-awesome-stuff-terrastos
 #    paths:
@@ -62,7 +63,7 @@ jobs:
 
           # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
           # For instance you have an unused variable on your code
-          CI: ""
+          CI: ''
         run: yarn build:redi-connect:berlin
 
       - name: Upload webapp artifacts to blob storage
@@ -112,7 +113,7 @@ jobs:
 
           # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
           # For instance you have an unused variable on your code
-          CI: ""
+          CI: ''
         run: yarn build:redi-connect:munich
 
       - name: Upload webapp artifacts to blob storage
@@ -161,7 +162,7 @@ jobs:
 
           # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
           # For instance you have an unused variable on your code
-          CI: ""
+          CI: ''
         run: yarn build:redi-connect:nrw
 
       - name: Upload webapp artifacts to blob storage
@@ -210,7 +211,7 @@ jobs:
 
           # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
           # For instance you have an unused variable on your code
-          CI: ""
+          CI: ''
         run: yarn build:redi-connect:location-picker
 
       - name: Upload webapp artifacts to blob storage
@@ -259,7 +260,7 @@ jobs:
 
           # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
           # For instance you have an unused variable on your code
-          CI: ""
+          CI: ''
         run: yarn build:redi-talent-pool
 
       - name: Upload webapp artifacts to blob storage
@@ -277,8 +278,6 @@ jobs:
       - name: Logout from Azure
         run: |
           az logout
-
-
 
   deploy-berlin-prod:
     #    TODO uncomment when you merge on master
@@ -310,7 +309,7 @@ jobs:
           # CI needs to be `true` ideally. However at the moment the app won't build because of some js errors.
           # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
           # For instance you have an unused variable on your code
-          CI: ""
+          CI: ''
         run: yarn build:redi-connect:berlin
 
       - name: Upload webapp artifacts to blob storage
@@ -357,7 +356,7 @@ jobs:
           # CI needs to be `true` ideally. However at the moment the app won't build because of some js errors.
           # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
           # For instance you have an unused variable on your code
-          CI: ""
+          CI: ''
         run: yarn build:redi-connect:munich
 
       - name: Upload webapp artifacts to blob storage
@@ -403,7 +402,7 @@ jobs:
           # CI needs to be `true` ideally. However at the moment the app won't build because of some js errors.
           # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
           # For instance you have an unused variable on your code
-          CI: ""
+          CI: ''
         run: yarn build:redi-connect:nrw
 
       - name: Upload webapp artifacts to blob storage
@@ -449,7 +448,7 @@ jobs:
           # CI needs to be `true` ideally. However at the moment the app won't build because of some js errors.
           # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
           # For instance you have an unused variable on your code
-          CI: ""
+          CI: ''
         run: yarn build:redi-connect:location-picker
 
       - name: Upload webapp artifacts to blob storage
@@ -495,7 +494,7 @@ jobs:
           # CI needs to be `true` ideally. However at the moment the app won't build because of some js errors.
           # This is because production builds are more "sensitive" and therefore fail in cases that a normal build wouldn't.
           # For instance you have an unused variable on your code
-          CI: ""
+          CI: ''
         run: yarn build:redi-talent-pool
 
       - name: Upload webapp artifacts to blob storage
@@ -511,4 +510,3 @@ jobs:
       - name: Logout from Azure
         run: |
           az logout
-
