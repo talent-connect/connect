@@ -9,9 +9,16 @@ const _ = require('lodash')
 const USERNAME = process.env.USERNAME
 const PASSWORD = process.env.PASSWORD
 const SECURITY_TOKEN = process.env.SECURITY_TOKEN
-const LOGIN_URL = 'https://redischool--local.my.salesforce.com'
+const LOGIN_URL = process.env.LOGIN_URL
 const CLIENT_ID = process.env.CLIENT_ID
 const CLIENT_SECRET = process.env.CLIENT_SECRET
+
+console.log('USERNAME', USERNAME)
+console.log('PASSWORD', PASSWORD)
+console.log('SECURITY_TOKEN', SECURITY_TOKEN)
+console.log('LOGIN_URL', LOGIN_URL)
+console.log('CLIENT_ID', CLIENT_ID)
+console.log('CLIENT_SECRET', CLIENT_SECRET)
 
 const {
   RedUser,
@@ -62,18 +69,319 @@ const { lang } = require('moment')
 
 const DELAY = 1500
 const RETRIES = 5
-const CONCURRENCY = 10 // 60 has worked before, with some errors. For actual data migration, use a low value, such as 15.
+const CONCURRENCY = 30 // 60 has worked before, with some errors. For actual data migration, use a low value, such as 15.
 
-const CONTACT_RECORD_TYPE = '0121i000000HMq9AAG'
-const CONNECT_PROFILE_MENTOR_RECORD_TYPE = '0129X0000001EXBQA2'
-const CONNECT_PROFILE_MENTEE_RECORD_TYPE = '0129X0000001EYnQAM'
-const ACCOUNT_RECORD_TYPE_BUSINESS_ORGANIZATION = '0121i0000000LvUAAU'
-const CV_LINE_ITEM_RECORD_TYPE_EXPERIENCE = '0129X0000001RXdQAM'
-const CV_LINE_ITEM_RECORD_TYPE_EDUCATION = '0129X0000001RW1QAM'
-const JOBSEEKER_PROFILE_LINE_ITEM_RECORD_TYPE_EXPERIENCE = '0129X0000001RUPQA2'
-const JOBSEEKER_PROFILE_LINE_ITEM_RECORD_TYPE_EDUCATION = '0129X0000001RSnQAM'
+// const LOCAL_CONTACT_RECORD_TYPE = '0121i000000HMq9AAG'
+// const LOCAL_CONNECT_PROFILE_MENTOR_RECORD_TYPE = '0129X0000001EXBQA2'
+// const LOCAL_CONNECT_PROFILE_MENTEE_RECORD_TYPE = '0129X0000001EYnQAM'
+// const LOCAL_ACCOUNT_RECORD_TYPE_BUSINESS_ORGANIZATION = '0121i0000000LvUAAU'
+// const LOCAL_CV_LINE_ITEM_RECORD_TYPE_EXPERIENCE = '0129X0000001RXdQAM'
+// const LOCAL_CV_LINE_ITEM_RECORD_TYPE_EDUCATION = '0129X0000001RW1QAM'
+// const LOCAL_JOBSEEKER_PROFILE_LINE_ITEM_RECORD_TYPE_EXPERIENCE = '0129X0000001RUPQA2'
+// const LOCAL_JOBSEEKER_PROFILE_LINE_ITEM_RECORD_TYPE_EDUCATION = '0129X0000001RSnQAM'
 
-const LANGUAGE_TO_ID_MAP = {
+const PARTIALSBX_CONTACT_RECORD_TYPE = '0121i000000HMq9AAG'
+const PARTIALSBX_CONNECT_PROFILE_MENTOR_RECORD_TYPE = '0129Q00000000wAQAQ'
+const PARTIALSBX_CONNECT_PROFILE_MENTEE_RECORD_TYPE = '0129Q00000000w9QAA'
+const PARTIALSBX_ACCOUNT_RECORD_TYPE_BUSINESS_ORGANIZATION =
+  '0121i0000000LvUAAU'
+const PARTIALSBX_CV_LINE_ITEM_RECORD_TYPE_EXPERIENCE = '0129Q00000000w6QAA'
+const PARTIALSBX_CV_LINE_ITEM_RECORD_TYPE_EDUCATION = '0129Q00000000w5QAA'
+const PARTIALSBX_JOBSEEKER_PROFILE_LINE_ITEM_RECORD_TYPE_EXPERIENCE =
+  '0129Q00000000w8QAA'
+const PARTIALSBX_JOBSEEKER_PROFILE_LINE_ITEM_RECORD_TYPE_EDUCATION =
+  '0129Q00000000w7QAA'
+
+/* LOCAL SANDBOX */
+// const LANGUAGE_TO_ID_MAP = {
+//   Afrikaans: 'a0B9X0000004BPtUAM',
+//   Albanian: 'a0B9X0000004BPuUAM',
+//   Amharic: 'a0B9X0000004BPvUAM',
+//   Arabic: 'a0B9X0000004BPwUAM',
+//   Aramaic: 'a0B9X0000004BPxUAM',
+//   Armenian: 'a0B9X0000004BPyUAM',
+//   Assamese: 'a0B9X0000004BPzUAM',
+//   Aymara: 'a0B9X0000004BQ0UAM',
+//   Azerbaijani: 'a0B9X0000004BQ1UAM',
+//   Balochi: 'a0B9X0000004BQ2UAM',
+//   Bamanankan: 'a0B9X0000004BQ3UAM',
+//   'Bashkort (Bashkir)': 'a0B9X0000004BQ4UAM',
+//   Basque: 'a0B9X0000004BQ5UAM',
+//   Belarusan: 'a0B9X0000004BQ6UAM',
+//   Bengali: 'a0B9X0000004BQ7UAM',
+//   Bhojpuri: 'a0B9X0000004BQ8UAM',
+//   Bislama: 'a0B9X0000004BQ9UAM',
+//   Bosnian: 'a0B9X0000004BQAUA2',
+//   Brahui: 'a0B9X0000004BQBUA2',
+//   Bulgarian: 'a0B9X0000004BQCUA2',
+//   Burmese: 'a0B9X0000004BQDUA2',
+//   Cantonese: 'a0B9X0000004BQEUA2',
+//   Catalan: 'a0B9X0000004BQFUA2',
+//   Cebuano: 'a0B9X0000004BQGUA2',
+//   Chechen: 'a0B9X0000004BQHUA2',
+//   Cherokee: 'a0B9X0000004BQIUA2',
+//   Croatian: 'a0B9X0000004BQJUA2',
+//   Czech: 'a0B9X0000004BQKUA2',
+//   Dakota: 'a0B9X0000004BQLUA2',
+//   Danish: 'a0B9X0000004BQMUA2',
+//   Dari: 'a0B9X0000004BQNUA2',
+//   Dholuo: 'a0B9X0000004BQOUA2',
+//   Dutch: 'a0B9X0000004BQPUA2',
+//   English: 'a0B9X0000004BQQUA2',
+//   Esperanto: 'a0B9X0000004BQRUA2',
+//   Estonian: 'a0B9X0000004BQSUA2',
+//   Finnish: 'a0B9X0000004BQUUA2',
+//   French: 'a0B9X0000004BQVUA2',
+//   Georgian: 'a0B9X0000004BQWUA2',
+//   German: 'a0B9X0000004BQXUA2',
+//   Gikuyu: 'a0B9X0000004BQYUA2',
+//   Greek: 'a0B9X0000004BQZUA2',
+//   Guarani: 'a0B9X0000004BQaUAM',
+//   Gujarati: 'a0B9X0000004BQbUAM',
+//   'Haitian Creole': 'a0B9X0000004BQcUAM',
+//   Hausa: 'a0B9X0000004BQdUAM',
+//   Hawaiian: 'a0B9X0000004BQeUAM',
+//   'Hawaiian Creole': 'a0B9X0000004BQfUAM',
+//   Hebrew: 'a0B9X0000004BQgUAM',
+//   Hiligaynon: 'a0B9X0000004BQhUAM',
+//   Hindi: 'a0B9X0000004BQiUAM',
+//   Hungarian: 'a0B9X0000004BQjUAM',
+//   Icelandic: 'a0B9X0000004BQkUAM',
+//   Igbo: 'a0B9X0000004BQlUAM',
+//   Ilocano: 'a0B9X0000004BQmUAM',
+//   'Indonesian (Bahasa Indonesia)': 'a0B9X0000004BQnUAM',
+//   'Inuit/Inupiaq': 'a0B9X0000004BQoUAM',
+//   'Irish Gaelic': 'a0B9X0000004BQpUAM',
+//   Italian: 'a0B9X0000004BQqUAM',
+//   Japanese: 'a0B9X0000004BQrUAM',
+//   Jarai: 'a0B9X0000004BQsUAM',
+//   Javanese: 'a0B9X0000004BQtUAM',
+//   'Kâicheâ': 'a0B9X0000004BQuUAM',
+//   Kabyle: 'a0B9X0000004BQvUAM',
+//   Kannada: 'a0B9X0000004BQwUAM',
+//   Kashmiri: 'a0B9X0000004BQxUAM',
+//   Kazakh: 'a0B9X0000004BQyUAM',
+//   Khmer: 'a0B9X0000004BQzUAM',
+//   Khoekhoe: 'a0B9X0000004BR0UAM',
+//   Korean: 'a0B9X0000004BR1UAM',
+//   Kurdish: 'a0B9X0000004BR2UAM',
+//   Kyrgyz: 'a0B9X0000004BR3UAM',
+//   Lao: 'a0B9X0000004BR4UAM',
+//   Latin: 'a0B9X0000004BR5UAM',
+//   Latvian: 'a0B9X0000004BR6UAM',
+//   Lingala: 'a0B9X0000004BR7UAM',
+//   Lithuanian: 'a0B9X0000004BR8UAM',
+//   Macedonian: 'a0B9X0000004BR9UAM',
+//   Maithili: 'a0B9X0000004BRAUA2',
+//   Malagasy: 'a0B9X0000004BRBUA2',
+//   'Malay (Bahasa Melayu)': 'a0B9X0000004BRCUA2',
+//   Malayalam: 'a0B9X0000004BRDUA2',
+//   'Mandarin (Chinese)': 'a0B9X0000004BREUA2',
+//   Marathi: 'a0B9X0000004BRFUA2',
+//   Mende: 'a0B9X0000004BRGUA2',
+//   Mongolian: 'a0B9X0000004BRHUA2',
+//   Nahuatl: 'a0B9X0000004BRIUA2',
+//   Navajo: 'a0B9X0000004BRJUA2',
+//   Nepali: 'a0B9X0000004BRKUA2',
+//   Norwegian: 'a0B9X0000004BRLUA2',
+//   Ojibwa: 'a0B9X0000004BRMUA2',
+//   Oriya: 'a0B9X0000004BRNUA2',
+//   Oromo: 'a0B9X0000004BROUA2',
+//   Pashto: 'a0B9X0000004BRPUA2',
+//   Persian: 'a0B9X0000004BRQUA2',
+//   Polish: 'a0B9X0000004BRRUA2',
+//   Portuguese: 'a0B9X0000004BRSUA2',
+//   Punjabi: 'a0B9X0000004BRTUA2',
+//   Quechua: 'a0B9X0000004BRUUA2',
+//   Romani: 'a0B9X0000004BRVUA2',
+//   Romanian: 'a0B9X0000004BRWUA2',
+//   Russian: 'a0B9X0000004BRXUA2',
+//   Rwanda: 'a0B9X0000004BRYUA2',
+//   Samoan: 'a0B9X0000004BRZUA2',
+//   Sanskrit: 'a0B9X0000004BRaUAM',
+//   Serbian: 'a0B9X0000004BRbUAM',
+//   Shona: 'a0B9X0000004BRcUAM',
+//   Sindhi: 'a0B9X0000004BRdUAM',
+//   Sinhala: 'a0B9X0000004BReUAM',
+//   Slovak: 'a0B9X0000004BRfUAM',
+//   Slovene: 'a0B9X0000004BRgUAM',
+//   Somali: 'a0B9X0000004BRhUAM',
+//   Spanish: 'a0B9X0000004BRiUAM',
+//   Swahili: 'a0B9X0000004BRjUAM',
+//   Swedish: 'a0B9X0000004BRkUAM',
+//   Tachelhit: 'a0B9X0000004BRlUAM',
+//   Tagalog: 'a0B9X0000004BRmUAM',
+//   Tajiki: 'a0B9X0000004BRnUAM',
+//   Tamil: 'a0B9X0000004BRoUAM',
+//   Tatar: 'a0B9X0000004BRpUAM',
+//   Telugu: 'a0B9X0000004BRqUAM',
+//   Thai: 'a0B9X0000004BRrUAM',
+//   'Tibetic languages': 'a0B9X0000004BRsUAM',
+//   Tigrigna: 'a0B9X0000004BRtUAM',
+//   'Tok Pisin': 'a0B9X0000004BRuUAM',
+//   Turkish: 'a0B9X0000004BRvUAM',
+//   Turkmen: 'a0B9X0000004BRwUAM',
+//   Ukrainian: 'a0B9X0000004BRxUAM',
+//   Urdu: 'a0B9X0000004BRyUAM',
+//   Uyghur: 'a0B9X0000004BRzUAM',
+//   Uzbek: 'a0B9X0000004BS0UAM',
+//   Vietnamese: 'a0B9X0000004BS1UAM',
+//   Warlpiri: 'a0B9X0000004BS2UAM',
+//   Welsh: 'a0B9X0000004BS3UAM',
+//   Wolof: 'a0B9X0000004BS4UAM',
+//   Xhosa: 'a0B9X0000004BS5UAM',
+//   Yakut: 'a0B9X0000004BS6UAM',
+//   Yiddish: 'a0B9X0000004BS7UAM',
+//   Yoruba: 'a0B9X0000004BS8UAM',
+//   Yucatec: 'a0B9X0000004BS9UAM',
+//   Zapotec: 'a0B9X0000004BSAUA2',
+//   Zulu: 'a0B9X0000004BSBUA2',
+// }
+
+const PARTIALSBX_LANGUAGE_TO_ID_MAP = {
+  German: 'a0B1i000001KVpGEAW',
+  Afrikaans: 'a0B9W000000CQr7UAG',
+  Albanian: 'a0B9W000000CQr8UAG',
+  Amharic: 'a0B9W000000CQr9UAG',
+  Arabic: 'a0B9W000000CQrAUAW',
+  Aramaic: 'a0B9W000000CQrBUAW',
+  Armenian: 'a0B9W000000CQrCUAW',
+  Assamese: 'a0B9W000000CQrDUAW',
+  Aymara: 'a0B9W000000CQrEUAW',
+  Azerbaijani: 'a0B9W000000CQrFUAW',
+  Balochi: 'a0B9W000000CQrGUAW',
+  Bamanankan: 'a0B9W000000CQrHUAW',
+  'Bashkort (Bashkir)': 'a0B9W000000CQrIUAW',
+  Basque: 'a0B9W000000CQrJUAW',
+  Belarusan: 'a0B9W000000CQrKUAW',
+  Bengali: 'a0B9W000000CQrLUAW',
+  Bhojpuri: 'a0B9W000000CQrMUAW',
+  Bislama: 'a0B9W000000CQrNUAW',
+  Bosnian: 'a0B9W000000CQrOUAW',
+  Brahui: 'a0B9W000000CQrPUAW',
+  Bulgarian: 'a0B9W000000CQrQUAW',
+  Burmese: 'a0B9W000000CQrRUAW',
+  Cantonese: 'a0B9W000000CQrSUAW',
+  Catalan: 'a0B9W000000CQrTUAW',
+  Cebuano: 'a0B9W000000CQrUUAW',
+  Chechen: 'a0B9W000000CQrVUAW',
+  Cherokee: 'a0B9W000000CQrWUAW',
+  Croatian: 'a0B9W000000CQrXUAW',
+  Czech: 'a0B9W000000CQrYUAW',
+  Dakota: 'a0B9W000000CQrZUAW',
+  Danish: 'a0B9W000000CQraUAG',
+  Dari: 'a0B9W000000CQrbUAG',
+  Dholuo: 'a0B9W000000CQrcUAG',
+  Dutch: 'a0B9W000000CQrdUAG',
+  English: 'a0B9W000000CQreUAG',
+  Esperanto: 'a0B9W000000CQrfUAG',
+  Estonian: 'a0B9W000000CQrgUAG',
+  Finnish: 'a0B9W000000CQriUAG',
+  French: 'a0B9W000000CQrjUAG',
+  Georgian: 'a0B9W000000CQrkUAG',
+  Gikuyu: 'a0B9W000000CQrlUAG',
+  Greek: 'a0B9W000000CQrmUAG',
+  Guarani: 'a0B9W000000CQrnUAG',
+  Gujarati: 'a0B9W000000CQroUAG',
+  'Haitian Creole': 'a0B9W000000CQrpUAG',
+  Hausa: 'a0B9W000000CQrqUAG',
+  Hawaiian: 'a0B9W000000CQrrUAG',
+  'Hawaiian Creole': 'a0B9W000000CQrsUAG',
+  Hebrew: 'a0B9W000000CQrtUAG',
+  Hiligaynon: 'a0B9W000000CQruUAG',
+  Hindi: 'a0B9W000000CQrvUAG',
+  Hungarian: 'a0B9W000000CQrwUAG',
+  Icelandic: 'a0B9W000000CQrxUAG',
+  Igbo: 'a0B9W000000CQryUAG',
+  Ilocano: 'a0B9W000000CQrzUAG',
+  'Indonesian (Bahasa Indonesia)': 'a0B9W000000CQs0UAG',
+  'Inuit/Inupiaq': 'a0B9W000000CQs1UAG',
+  'Irish Gaelic': 'a0B9W000000CQs2UAG',
+  Italian: 'a0B9W000000CQs3UAG',
+  Japanese: 'a0B9W000000CQs4UAG',
+  Jarai: 'a0B9W000000CQs5UAG',
+  Javanese: 'a0B9W000000CQs6UAG',
+  'Kâicheâ': 'a0B9W000000CQs7UAG',
+  Kabyle: 'a0B9W000000CQs8UAG',
+  Kannada: 'a0B9W000000CQs9UAG',
+  Kashmiri: 'a0B9W000000CQsAUAW',
+  Kazakh: 'a0B9W000000CQsBUAW',
+  Khmer: 'a0B9W000000CQsCUAW',
+  Khoekhoe: 'a0B9W000000CQsDUAW',
+  Korean: 'a0B9W000000CQsEUAW',
+  Kurdish: 'a0B9W000000CQsFUAW',
+  Kyrgyz: 'a0B9W000000CQsGUAW',
+  Lao: 'a0B9W000000CQsHUAW',
+  Latin: 'a0B9W000000CQsIUAW',
+  Latvian: 'a0B9W000000CQsJUAW',
+  Lingala: 'a0B9W000000CQsKUAW',
+  Lithuanian: 'a0B9W000000CQsLUAW',
+  Macedonian: 'a0B9W000000CQsMUAW',
+  Maithili: 'a0B9W000000CQsNUAW',
+  Malagasy: 'a0B9W000000CQsOUAW',
+  'Malay (Bahasa Melayu)': 'a0B9W000000CQsPUAW',
+  Malayalam: 'a0B9W000000CQsQUAW',
+  'Mandarin (Chinese)': 'a0B9W000000CQsRUAW',
+  Marathi: 'a0B9W000000CQsSUAW',
+  Mende: 'a0B9W000000CQsTUAW',
+  Mongolian: 'a0B9W000000CQsUUAW',
+  Nahuatl: 'a0B9W000000CQsVUAW',
+  Navajo: 'a0B9W000000CQsWUAW',
+  Nepali: 'a0B9W000000CQsXUAW',
+  Norwegian: 'a0B9W000000CQsYUAW',
+  Ojibwa: 'a0B9W000000CQsZUAW',
+  Oriya: 'a0B9W000000CQsaUAG',
+  Oromo: 'a0B9W000000CQsbUAG',
+  Pashto: 'a0B9W000000CQscUAG',
+  Persian: 'a0B9W000000CQsdUAG',
+  Polish: 'a0B9W000000CQseUAG',
+  Portuguese: 'a0B9W000000CQsfUAG',
+  Punjabi: 'a0B9W000000CQsgUAG',
+  Quechua: 'a0B9W000000CQshUAG',
+  Romani: 'a0B9W000000CQsiUAG',
+  Romanian: 'a0B9W000000CQsjUAG',
+  Russian: 'a0B9W000000CQskUAG',
+  Rwanda: 'a0B9W000000CQslUAG',
+  Samoan: 'a0B9W000000CQsmUAG',
+  Sanskrit: 'a0B9W000000CQsnUAG',
+  Serbian: 'a0B9W000000CQsoUAG',
+  Shona: 'a0B9W000000CQspUAG',
+  Sindhi: 'a0B9W000000CQsqUAG',
+  Sinhala: 'a0B9W000000CQsrUAG',
+  Slovak: 'a0B9W000000CQssUAG',
+  Slovene: 'a0B9W000000CQstUAG',
+  Somali: 'a0B9W000000CQsuUAG',
+  Spanish: 'a0B9W000000CQsvUAG',
+  Swahili: 'a0B9W000000CQswUAG',
+  Swedish: 'a0B9W000000CQsxUAG',
+  Tachelhit: 'a0B9W000000CQsyUAG',
+  Tagalog: 'a0B9W000000CQszUAG',
+  Tajiki: 'a0B9W000000CQt0UAG',
+  Tamil: 'a0B9W000000CQt1UAG',
+  Tatar: 'a0B9W000000CQt2UAG',
+  Telugu: 'a0B9W000000CQt3UAG',
+  Thai: 'a0B9W000000CQt4UAG',
+  'Tibetic languages': 'a0B9W000000CQt5UAG',
+  Tigrigna: 'a0B9W000000CQt6UAG',
+  'Tok Pisin': 'a0B9W000000CQt7UAG',
+  Turkish: 'a0B9W000000CQt8UAG',
+  Turkmen: 'a0B9W000000CQt9UAG',
+  Ukrainian: 'a0B9W000000CQtAUAW',
+  Urdu: 'a0B9W000000CQtBUAW',
+  Uyghur: 'a0B9W000000CQtCUAW',
+  Uzbek: 'a0B9W000000CQtDUAW',
+  Vietnamese: 'a0B9W000000CQtEUAW',
+  Warlpiri: 'a0B9W000000CQtFUAW',
+  Welsh: 'a0B9W000000CQtGUAW',
+  Wolof: 'a0B9W000000CQtHUAW',
+  Xhosa: 'a0B9W000000CQtIUAW',
+  Yakut: 'a0B9W000000CQtJUAW',
+  Yiddish: 'a0B9W000000CQtKUAW',
+  Yoruba: 'a0B9W000000CQtLUAW',
+  Yucatec: 'a0B9W000000CQtMUAW',
+  Zapotec: 'a0B9W000000CQtNUAW',
+  Zulu: 'a0B9W000000CQtOUAW',
+
   Afrikaans: 'a0B9X0000004BPtUAM',
   Albanian: 'a0B9X0000004BPuUAM',
   Amharic: 'a0B9X0000004BPvUAM',
@@ -261,7 +569,7 @@ async function insertContactFn(p) {
     const insertResult = await conn.sobject('Contact').create(
       deleteFalsyProperties({
         Email: p.email,
-        RecordTypeId: CONTACT_RECORD_TYPE,
+        RecordTypeId: PARTIALSBX_CONTACT_RECORD_TYPE,
         Loopback_User_ID__c: p.sfId,
         FirstName: `${
           p.contact.firstName
@@ -298,7 +606,7 @@ async function insertContactFn(p) {
       deleteFalsyProperties({
         Id: existingContacts[0].Id,
         Email: p.email,
-        RecordTypeId: CONTACT_RECORD_TYPE,
+        RecordTypeId: PARTIALSBX_CONTACT_RECORD_TYPE,
         Loopback_User_ID__c: p.id,
         FirstName: `${
           p.contact.firstName
@@ -358,8 +666,8 @@ async function insertConnectProfileFn(p) {
         Contact__c: p.contact.sfContactId,
         RecordTypeId:
           p.redProfile.userType.indexOf('mentor') !== -1
-            ? CONNECT_PROFILE_MENTOR_RECORD_TYPE
-            : CONNECT_PROFILE_MENTEE_RECORD_TYPE,
+            ? PARTIALSBX_CONNECT_PROFILE_MENTOR_RECORD_TYPE
+            : PARTIALSBX_CONNECT_PROFILE_MENTEE_RECORD_TYPE,
         Profile_Status__c: redProfileToProfileStatus(p.redProfile),
         ReDI_Location__c: p.redProfile.rediLocation,
         Occupation__c: p.redProfile.mentor_occupation,
@@ -408,6 +716,8 @@ async function insertConnectProfileFn(p) {
       // 'Loopback_Original_ID__c'
     )
   } catch (err) {
+    //! TODO: RE-ENABLE!
+    // console.log('ConProfile insertion error:', err)
     const idMatch = err.message.match(/([a-zA-Z0-9]{15})/g)
     if (idMatch && idMatch[0]) {
       result = { id: idMatch[0] }
@@ -559,42 +869,54 @@ async function insertJobseekerProfileFn(p) {
 
   if (jobseekerFreshlyCreated) {
     if (p.tpJobseekerProfile.education) {
-      for (const educationItem of p.tpJobseekerProfile.educatoin) {
-        await conn.sobject('Jobseeker_Line_Item__c').create({
-          Jobseeker_Profile__c: jobseekerResult.id,
-          RecordTypeId: JOBSEEKER_PROFILE_LINE_ITEM_RECORD_TYPE_EDUCATION,
-          Description__c: educationItem.description,
-          Institution_City__c: educationItem.institutionCity,
-          Institution_Country__c: educationItem.institutionCountry,
-          Institution_Name__c: educationItem.institutionName,
-          Name: educationItem.title,
-          Certification_Type__c: educationItem.certificationType,
-          Description__c: educationItem.description,
-          Start_Date_Month__c: educationItem.startDateMonth,
-          Start_Date_Year__c: educationItem.startDateYear,
-          End_Date_Month__c: educationItem.endDateMonth,
-          End_Date_Year__c: educationItem.endDateYear,
-          Current__c: educationItem.current,
-        })
+      for (const educationItem of p.tpJobseekerProfile.education) {
+        try {
+          await conn.sobject('Jobseeker_Line_Item__c').create({
+            Jobseeker_Profile__c: jobseekerResult.id,
+            RecordTypeId:
+              PARTIALSBX_JOBSEEKER_PROFILE_LINE_ITEM_RECORD_TYPE_EDUCATION,
+            Description__c: educationItem.description,
+            Institution_City__c: educationItem.institutionCity,
+            Institution_Country__c: educationItem.institutionCountry,
+            Institution_Name__c: educationItem.institutionName
+              ? educationItem.institutionName.substr(0, 255)
+              : undefined,
+            Title__c: educationItem.title,
+            Certification_Type__c: educationItem.certificationType,
+            Description__c: educationItem.description,
+            Start_Date_Month__c: educationItem.startDateMonth,
+            Start_Date_Year__c: educationItem.startDateYear,
+            End_Date_Month__c: educationItem.endDateMonth,
+            End_Date_Year__c: educationItem.endDateYear,
+            Current__c: educationItem.current,
+          })
+        } catch (err) {
+          console.log('Error inserting Jobseeker Line Item (Education)', err)
+        }
       }
     }
     if (p.tpJobseekerProfile.experience) {
       for (const experienceItem of p.tpJobseekerProfile.experience) {
-        await conn.sobject('Jobseeker_Line_Item__c').create({
-          Jobseeker_Profile__c: jobseekerResult.id,
-          RecordTypeId: JOBSEEKER_PROFILE_LINE_ITEM_RECORD_TYPE_EXPERIENCE,
-          Description__c: experienceItem.description,
-          City__c: experienceItem.city,
-          Name: experienceItem.title,
-          Country__c: experienceItem.country,
-          Company__c: experienceItem.company,
-          Description__c: experienceItem.description,
-          Start_Date_Month__c: experienceItem.startDateMonth,
-          Start_Date_Year__c: experienceItem.startDateYear,
-          End_Date_Month__c: experienceItem.endDateMonth,
-          End_Date_Year__c: experienceItem.endDateYear,
-          Current__c: experienceItem.current,
-        })
+        try {
+          await conn.sobject('Jobseeker_Line_Item__c').create({
+            Jobseeker_Profile__c: jobseekerResult.id,
+            RecordTypeId:
+              PARTIALSBX_JOBSEEKER_PROFILE_LINE_ITEM_RECORD_TYPE_EXPERIENCE,
+            Description__c: experienceItem.description,
+            City__c: experienceItem.city,
+            Title__c: experienceItem.title,
+            Country__c: experienceItem.country,
+            Company__c: experienceItem.company,
+            Description__c: experienceItem.description,
+            Start_Date_Month__c: experienceItem.startDateMonth,
+            Start_Date_Year__c: experienceItem.startDateYear,
+            End_Date_Month__c: experienceItem.endDateMonth,
+            End_Date_Year__c: experienceItem.endDateYear,
+            Current__c: experienceItem.current,
+          })
+        } catch (err) {
+          console.log('Error inserting Jobseeker Line Item (Experience)', err)
+        }
       }
     }
     if (p.tpJobseekerProfile.workingLanguages) {
@@ -602,7 +924,7 @@ async function insertJobseekerProfileFn(p) {
         await conn.sobject('hed__Contact_Language__c').create({
           hed__Contact__c: p.contact.sfContactId,
           hed__Fluency__c: langItem.proficiencyLevelId,
-          hed__Language__c: LANGUAGE_TO_ID_MAP[langItem.language],
+          hed__Language__c: PARTIALSBX_LANGUAGE_TO_ID_MAP[langItem.language],
         })
         // console.log('inserted jobseeker langauge record')
       }
@@ -677,42 +999,52 @@ async function insertJobseekerCvFn(cv) {
   if (cvFreshlyCreated) {
     if (cv.education) {
       for (const educationItem of cv.education) {
-        await conn.sobject('Jobseeker_CV_Line_Item__c').create({
-          Jobseeker_CV__c: cvResult.id,
-          RecordTypeId: CV_LINE_ITEM_RECORD_TYPE_EDUCATION,
-          Description__c: educationItem.description,
-          Institution_City__c: educationItem.institutionCity,
-          Institution_Country__c: educationItem.institutionCountry,
-          Institution_Name__c: educationItem.institutionName,
-          Name: educationItem.title,
-          Certification_Type__c: educationItem.certificationType,
-          Description__c: educationItem.description,
-          Start_Date_Month__c: educationItem.startDateMonth,
-          Start_Date_Year__c: educationItem.startDateYear,
-          End_Date_Month__c: educationItem.endDateMonth,
-          End_Date_Year__c: educationItem.endDateYear,
-          Current__c: educationItem.current,
-        })
+        try {
+          await conn.sobject('Jobseeker_CV_Line_Item__c').create({
+            Jobseeker_CV__c: cvResult.id,
+            RecordTypeId: PARTIALSBX_CV_LINE_ITEM_RECORD_TYPE_EDUCATION,
+            Description__c: educationItem.description,
+            Institution_City__c: educationItem.institutionCity,
+            Institution_Country__c: educationItem.institutionCountry,
+            Institution_Name__c: educationItem.institutionName
+              ? educationItem.institutionName.substr(0, 255)
+              : undefined,
+            Title__c: educationItem.title,
+            Certification_Type__c: educationItem.certificationType,
+            Description__c: educationItem.description,
+            Start_Date_Month__c: educationItem.startDateMonth,
+            Start_Date_Year__c: educationItem.startDateYear,
+            End_Date_Month__c: educationItem.endDateMonth,
+            End_Date_Year__c: educationItem.endDateYear,
+            Current__c: educationItem.current,
+          })
+        } catch (err) {
+          console.log('Error inserting CV Line Item (Education)', err)
+        }
         // console.log('inserted cv experience item')
       }
     }
     if (cv.experience) {
       for (const experienceItem of cv.experience) {
-        await conn.sobject('Jobseeker_CV_Line_Item__c').create({
-          Jobseeker_CV__c: cvResult.id,
-          RecordTypeId: CV_LINE_ITEM_RECORD_TYPE_EXPERIENCE,
-          Description__c: experienceItem.description,
-          City__c: experienceItem.city,
-          Name: experienceItem.title,
-          Country__c: experienceItem.country,
-          Company__c: experienceItem.company,
-          Description__c: experienceItem.description,
-          Start_Date_Month__c: experienceItem.startDateMonth,
-          Start_Date_Year__c: experienceItem.startDateYear,
-          End_Date_Month__c: experienceItem.endDateMonth,
-          End_Date_Year__c: experienceItem.endDateYear,
-          Current__c: experienceItem.current,
-        })
+        try {
+          await conn.sobject('Jobseeker_CV_Line_Item__c').create({
+            Jobseeker_CV__c: cvResult.id,
+            RecordTypeId: PARTIALSBX_CV_LINE_ITEM_RECORD_TYPE_EXPERIENCE,
+            Description__c: experienceItem.description,
+            City__c: experienceItem.city,
+            Title__c: experienceItem.title,
+            Country__c: experienceItem.country,
+            Company__c: experienceItem.company,
+            Description__c: experienceItem.description,
+            Start_Date_Month__c: experienceItem.startDateMonth,
+            Start_Date_Year__c: experienceItem.startDateYear,
+            End_Date_Month__c: experienceItem.endDateMonth,
+            End_Date_Year__c: experienceItem.endDateYear,
+            Current__c: experienceItem.current,
+          })
+        } catch (err) {
+          console.log('Error inserting CV Line Item (Experience)', err)
+        }
         // console.log('inserted cv education item')
       }
     }
@@ -720,12 +1052,12 @@ async function insertJobseekerCvFn(cv) {
       for (const langItem of cv.workingLanguages) {
         if (
           langItem.proficiencyLevelId &&
-          LANGUAGE_TO_ID_MAP[langItem.language]
+          PARTIALSBX_LANGUAGE_TO_ID_MAP[langItem.language]
         ) {
           await conn.sobject('Jobseeker_CV_Language_Item__c').create({
             Jobseeker_CV__c: cvResult.id,
             Fluency__c: langItem.proficiencyLevelId,
-            Language__c: LANGUAGE_TO_ID_MAP[langItem.language],
+            Language__c: PARTIALSBX_LANGUAGE_TO_ID_MAP[langItem.language],
           })
         }
         // console.log('inserted cv langauge record')
@@ -750,7 +1082,7 @@ async function insertAccountForCompanyProfileFn(p) {
     accountResult = await conn.sobject('Account').create(
       {
         Loopback_Original_ID__c: p.tpCompanyProfile.id,
-        RecordTypeId: ACCOUNT_RECORD_TYPE_BUSINESS_ORGANIZATION,
+        RecordTypeId: PARTIALSBX_ACCOUNT_RECORD_TYPE_BUSINESS_ORGANIZATION,
         ReDI_Avatar_Image_URL__c: p.tpCompanyProfile.profileAvatarImageS3Key
           ? 'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/' +
             p.tpCompanyProfile.profileAvatarImageS3Key
