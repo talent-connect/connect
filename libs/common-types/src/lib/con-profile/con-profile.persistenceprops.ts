@@ -36,6 +36,7 @@ export class ConProfilePersistenceProps implements PersistenceProps {
   Study_Name__c?: string
   Study_Place__c?: string
   Work_Place__c?: string
+  total_mentee_capacity__c?: number
 
   @Type(() => ContactSfProps)
   Contact__r: ContactSfProps

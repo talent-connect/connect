@@ -1,23 +1,18 @@
-import React from 'react'
-import { FormTextArea } from '@talent-connect/shared-atomic-design-components'
-import { Editable } from '@talent-connect/shared-atomic-design-components'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
-import { profileSaveStart } from '../../redux/user/actions'
-
-import * as Yup from 'yup'
-
-import { FormikValues, useFormik } from 'formik'
-import { ReadAbout } from '../molecules'
-
-import { assertUnreachable } from '@talent-connect/shared-utils'
-import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
-import { useQueryClient } from 'react-query'
 import {
-  UserType,
   useLoadMyProfileQuery,
   usePatchMyProfileMutation,
+  UserType,
 } from '@talent-connect/data-access'
+import {
+  Editable,
+  FormTextArea,
+} from '@talent-connect/shared-atomic-design-components'
+import { FormikValues, useFormik } from 'formik'
+import React from 'react'
+import { useQueryClient } from 'react-query'
+import * as Yup from 'yup'
+import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
+import { ReadAbout } from '../molecules'
 
 export interface AboutFormValues {
   personalDescription: string

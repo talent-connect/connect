@@ -1,4 +1,4 @@
-import { Field, ID, InputType, ObjectType } from '@nestjs/graphql'
+import { Field, ID, InputType, Int, ObjectType } from '@nestjs/graphql'
 import { EntityProps } from '../base-interfaces-types-classes'
 import { ConMentoringSessionEntityProps } from '../con-mentoring-session'
 import {
@@ -62,6 +62,8 @@ export class ConProfileEntityProps implements EntityProps {
   updatedAt: Date
   @Field((type) => ConnectProfileStatus)
   profileStatus: ConnectProfileStatus
+  @Field((type) => Int)
+  menteeCountCapacity?: number
   // userActivated?: boolean //! REINSTATE, COMPLEX CASE
   userActivatedAt?: Date
 }

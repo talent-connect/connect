@@ -1,30 +1,27 @@
-import React from 'react'
-import { subYears } from 'date-fns'
-
 import {
+  useLoadMyProfileQuery,
+  usePatchMyProfileMutation,
+} from '@talent-connect/data-access'
+import {
+  Editable,
   FormDatePicker,
-  FormInput,
   FormSelect,
 } from '@talent-connect/shared-atomic-design-components'
-import { Editable } from '@talent-connect/shared-atomic-design-components'
-import { RedProfile } from '@talent-connect/shared-types'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
-
-import { profileSaveStart } from '../../redux/user/actions'
-import * as Yup from 'yup'
-
-import { FormikValues, useFormik } from 'formik'
-
 import { GENDERS } from '@talent-connect/shared-config'
-import { ReadPersonalDetail } from '../molecules'
-
 import { objectEntries, objectKeys } from '@talent-connect/typescript-utilities'
+import { subYears } from 'date-fns'
+import { FormikValues, useFormik } from 'formik'
+import React from 'react'
+import { useQueryClient } from 'react-query'
+import * as Yup from 'yup'
+import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
+import { ReadPersonalDetail } from '../molecules'
 
 const formGenders = objectEntries(GENDERS).map(([value, label]) => ({
   value,
   label,
 }))
+console.log(formGenders)
 export interface PersonalDetailFormValues {
   gender: string
   birthDate: Date | null
@@ -35,12 +32,24 @@ const validationSchema = Yup.object({
   birthDate: Yup.date().nullable(true).label('Date'),
 })
 
-const EditablePersonalDetail = ({ profile, profileSaveStart }: any) => {
-  const { id, gender, birthDate } = profile
+const EditablePersonalDetail = () => {
+  const loopbackUserId = getAccessTokenFromLocalStorage().userId
+  const queryClient = useQueryClient()
+  const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
+  const patchMyProfileMutation = usePatchMyProfileMutation()
+
+  const profile = myProfileQuery.data.conProfile
+
+  const gender = profile?.gender
+  const birthDate = profile?.birthDate
 
   const submitForm = async (values: FormikValues) => {
-    const personalDetail = values as Partial<RedProfile>
-    profileSaveStart({ ...personalDetail, id })
+    const mutationResult = await patchMyProfileMutation.mutateAsync({
+      input: { id: profile.id, ...values },
+    })
+    queryClient.setQueryData(useLoadMyProfileQuery.getKey({ loopbackUserId }), {
+      conProfile: mutationResult.patchConProfile,
+    })
   }
 
   const initialValues: PersonalDetailFormValues = {
@@ -88,16 +97,4 @@ const EditablePersonalDetail = ({ profile, profileSaveStart }: any) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile,
-})
-
-const mapDispatchToProps = (dispatch: any) => ({
-  profileSaveStart: (profile: Partial<RedProfile>) =>
-    dispatch(profileSaveStart(profile)),
-})
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EditablePersonalDetail)
+export default EditablePersonalDetail

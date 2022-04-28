@@ -81,6 +81,8 @@ export class ConProfileMapper
     props.categories =
       (raw.props.Mentoring_Topics__c?.split(';') as MentoringTopic[]) ?? []
 
+    props.menteeCountCapacity = raw.props.total_mentee_capacity__c
+
     const entity = ConProfileEntity.create(props)
 
     return entity
@@ -118,6 +120,7 @@ export class ConProfileMapper
     props.Profile_First_Approved_At__c = srcProps.userActivatedAt
 
     props.Mentoring_Topics__c = srcProps.categories?.join(';')
+    props.total_mentee_capacity__c = srcProps.menteeCountCapacity
 
     props.Contact__r = {
       Email: srcProps.email,

@@ -1,15 +1,17 @@
-import React from 'react'
-import { Content } from 'react-bulma-components'
-import { RedProfile } from '@talent-connect/shared-types'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
+import { ConProfile, useLoadMyProfileQuery } from '@talent-connect/data-access'
 import {
   Caption,
   Placeholder,
 } from '@talent-connect/shared-atomic-design-components'
+import React from 'react'
+import { Content } from 'react-bulma-components'
+import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 
 interface Props {
-  profile: RedProfile
+  profile: Pick<
+    ConProfile,
+    'linkedInProfileUrl' | 'githubProfileUrl' | 'slackUsername'
+  >
   shortInfo?: boolean
 }
 
@@ -57,11 +59,14 @@ const ReadSocialMedia = ({ profile, shortInfo }: Props) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile as RedProfile,
-})
-
 export default {
-  Me: connect(mapStateToProps, {})(ReadSocialMedia),
+  Me: () => {
+    const loopbackUserId = getAccessTokenFromLocalStorage().userId
+    const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
+
+    if (!myProfileQuery.isSuccess) return null
+
+    return <ReadSocialMedia profile={myProfileQuery.data.conProfile} />
+  },
   Some: ({ profile }: Props) => <ReadSocialMedia profile={profile} shortInfo />,
 }

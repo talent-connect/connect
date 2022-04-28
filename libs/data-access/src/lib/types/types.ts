@@ -61,6 +61,7 @@ export type ConProfile = {
   lastName: Scalars['String'];
   linkedInProfileUrl?: Maybe<Scalars['String']>;
   loopbackUserId: Scalars['String'];
+  menteeCountCapacity?: Maybe<Scalars['Int']>;
   mentee_currentlyEnrolledInCourse: RediCourse;
   mentee_highestEducationLevel?: Maybe<EducationLevel>;
   mentee_occupationCategoryId?: Maybe<OccupationCategory>;
@@ -413,6 +414,7 @@ export type UpdateConProfileInput = {
   languages?: InputMaybe<Array<ConnectProfileLanguage>>;
   lastName?: InputMaybe<Scalars['String']>;
   linkedInProfileUrl?: InputMaybe<Scalars['String']>;
+  menteeCountCapacity?: InputMaybe<Scalars['Int']>;
   mentee_currentlyEnrolledInCourse?: InputMaybe<RediCourse>;
   mentee_highestEducationLevel?: InputMaybe<EducationLevel>;
   mentee_occupationCategoryId?: InputMaybe<OccupationCategory>;

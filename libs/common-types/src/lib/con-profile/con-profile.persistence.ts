@@ -60,6 +60,7 @@ export class ConProfilePersistence extends Persistence<ConProfilePersistenceProp
       'Study_Name__c',
       'Study_Place__c',
       'Work_Place__c',
+      'total_mentee_capacity__c',
     ],
   }
 }

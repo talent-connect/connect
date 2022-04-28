@@ -1,8 +1,8 @@
 export const REDI_LOCATION_NAMES = {
-  berlin: 'Berlin',
-  hamburg: 'Hamburg',
-  munich: 'Munich',
-  nrw: 'NRW',
+  BERLIN: 'Berlin',
+  HAMBURG: 'Hamburg',
+  MUNICH: 'Munich',
+  NRW: 'NRW',
 } as const
 
 export const CATEGORY_GROUPS = {

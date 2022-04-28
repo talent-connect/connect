@@ -1,18 +1,16 @@
-import React from 'react'
-import { Tag } from 'react-bulma-components'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
+import { ConProfile, useLoadMyProfileQuery } from '@talent-connect/data-access'
 import {
   Caption,
   CardTags,
-  Placeholder,
   CardTagsProps,
+  Placeholder,
 } from '@talent-connect/shared-atomic-design-components'
 import { CATEGORIES_MAP } from '@talent-connect/shared-config'
-import { RedProfile } from '@talent-connect/shared-types'
+import React from 'react'
+import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 
 interface ReadMentoringProps {
-  profile: RedProfile
+  profile: Pick<ConProfile, 'categories'>
   caption?: boolean
 }
 
@@ -38,12 +36,15 @@ const ReadMentoringTopics = ({ profile, caption }: ReadMentoringProps) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile as RedProfile,
-})
-
 export default {
-  Me: connect(mapStateToProps, {})(ReadMentoringTopics),
+  Me: () => {
+    const loopbackUserId = getAccessTokenFromLocalStorage().userId
+    const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
+
+    if (!myProfileQuery.isSuccess) return null
+
+    return <ReadMentoringTopics profile={myProfileQuery.data.conProfile} />
+  },
   Some: ({ profile }: ReadMentoringProps) => (
     <ReadMentoringTopics profile={profile} caption />
   ),

@@ -40,6 +40,7 @@ export class PatchConProfileInput extends IntersectionType(
       'telephoneNumber',
       'categories',
       'optOutOfMenteesFromOtherRediLocation',
+      'menteeCountCapacity',
     ] as const)
   )
 ) {}

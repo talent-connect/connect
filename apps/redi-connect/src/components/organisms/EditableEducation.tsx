@@ -1,18 +1,19 @@
-import React from 'react'
-import { FormSelect } from '@talent-connect/shared-atomic-design-components'
-import { Editable } from '@talent-connect/shared-atomic-design-components'
-import { RedProfile } from '@talent-connect/shared-types'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
-
-import { profileSaveStart } from '../../redux/user/actions'
-import * as Yup from 'yup'
-
-import { FormikValues, useFormik } from 'formik'
-
+import {
+  useLoadMyProfileQuery,
+  usePatchMyProfileMutation,
+} from '@talent-connect/data-access'
+import {
+  Editable,
+  FormSelect,
+} from '@talent-connect/shared-atomic-design-components'
 import { EDUCATION_LEVELS } from '@talent-connect/shared-config'
-import { ReadEducation } from '../molecules'
 import { objectEntries, objectKeys } from '@talent-connect/typescript-utilities'
+import { FormikValues, useFormik } from 'formik'
+import React from 'react'
+import { useQueryClient } from 'react-query'
+import * as Yup from 'yup'
+import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
+import { ReadEducation } from '../molecules'
 
 const formEducationLevels = objectEntries(EDUCATION_LEVELS).map(
   ([value, label]) => ({
@@ -20,15 +21,6 @@ const formEducationLevels = objectEntries(EDUCATION_LEVELS).map(
     label,
   })
 )
-
-// do we really need all these type???
-export type UserType =
-  | 'mentor'
-  | 'mentee'
-  | 'public-sign-up-mentor-pending-review'
-  | 'public-sign-up-mentee-pending-review'
-  | 'public-sign-up-mentor-rejected'
-  | 'public-sign-up-mentee-rejected'
 
 export interface EducationFormValues {
   mentee_highestEducationLevel: string
@@ -40,12 +32,23 @@ const validationSchema = Yup.object({
     .label('Highest Education Level'),
 })
 
-const EditableEducation = ({ profile, profileSaveStart }: any) => {
-  const { id, mentee_highestEducationLevel } = profile
+function EditableEducation() {
+  const loopbackUserId = getAccessTokenFromLocalStorage().userId
+  const queryClient = useQueryClient()
+  const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
+  const patchMyProfileMutation = usePatchMyProfileMutation()
+
+  const profile = myProfileQuery.data.conProfile
+
+  const mentee_highestEducationLevel = profile?.mentee_highestEducationLevel
 
   const submitForm = async (values: FormikValues) => {
-    const education = values as Partial<RedProfile>
-    profileSaveStart({ ...education, id })
+    const mutationResult = await patchMyProfileMutation.mutateAsync({
+      input: { id: profile.id, ...values },
+    })
+    queryClient.setQueryData(useLoadMyProfileQuery.getKey({ loopbackUserId }), {
+      conProfile: mutationResult.patchConProfile,
+    })
   }
 
   const initialValues: EducationFormValues = {
@@ -78,13 +81,4 @@ const EditableEducation = ({ profile, profileSaveStart }: any) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile,
-})
-
-const mapDispatchToProps = (dispatch: any) => ({
-  profileSaveStart: (profile: Partial<RedProfile>) =>
-    dispatch(profileSaveStart(profile)),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(EditableEducation)
+export default EditableEducation

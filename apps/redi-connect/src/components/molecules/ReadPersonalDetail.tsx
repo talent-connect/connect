@@ -1,21 +1,20 @@
-import React from 'react'
-import moment from 'moment'
-import { RedProfile } from '@talent-connect/shared-types'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
+import { ConProfile, useLoadMyProfileQuery } from '@talent-connect/data-access'
 import {
   Caption,
-  Placeholder,
   PipeList,
+  Placeholder,
 } from '@talent-connect/shared-atomic-design-components'
 import { GENDERS } from '@talent-connect/shared-config'
+import moment from 'moment'
+import React from 'react'
+import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 
 interface Props {
-  profile: RedProfile
+  profile: Pick<ConProfile, 'gender' | 'birthDate'>
   caption?: boolean
 }
 
-const ReadPersonalDetail = ({ profile, caption }: Props) => {
+function ReadPersonalDetail({ profile, caption }: Props) {
   const { gender, birthDate } = profile
 
   const age = moment().diff(birthDate, 'years')
@@ -34,12 +33,15 @@ const ReadPersonalDetail = ({ profile, caption }: Props) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile as RedProfile,
-})
-
 export default {
-  Me: connect(mapStateToProps, {})(ReadPersonalDetail),
+  Me: () => {
+    const loopbackUserId = getAccessTokenFromLocalStorage().userId
+    const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
+
+    if (!myProfileQuery.isSuccess) return null
+
+    return <ReadPersonalDetail profile={myProfileQuery.data.conProfile} />
+  },
   Some: ({ profile }: Props) => (
     <ReadPersonalDetail profile={profile} caption />
   ),

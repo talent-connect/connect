@@ -161,7 +161,10 @@ function Profile({
 
           {profile.categories?.length > 0 && (
             <Element className="block-separator">
-              <ReadMentoringTopics.Some profile={profile} />
+              {/* //! TODO: fix this type assertion */}
+              <ReadMentoringTopics.Some
+                profile={profile as unknown as ConProfile}
+              />
             </Element>
           )}
 
@@ -196,12 +199,17 @@ function Profile({
                 {(profile.gender || profile.age) && (
                   <Columns.Column>
                     <Element className="block-separator">
-                      <ReadPersonalDetail.Some profile={profile} />
+                      {/* //! TODO: fix this type assertion */}
+                      <ReadPersonalDetail.Some
+                        profile={profile as unknown as ConProfile}
+                      />
                     </Element>
                   </Columns.Column>
                 )}
                 <Columns.Column>
-                  <ReadLanguages.Some profile={profile} />
+                  <ReadLanguages.Some
+                    profile={profile as unknown as ConProfile}
+                  />
                 </Columns.Column>
               </Columns>
             </Element>
@@ -213,12 +221,16 @@ function Profile({
                 {profile.mentee_highestEducationLevel && (
                   <Columns.Column>
                     <Element className="block-separator">
-                      <ReadEducation.Some profile={profile} />
+                      <ReadEducation.Some
+                        profile={profile as unknown as ConProfile}
+                      />
                     </Element>
                   </Columns.Column>
                 )}
                 <Columns.Column>
-                  <ReadRediClass.Some profile={profile} />
+                  <ReadRediClass.Some
+                    profile={profile as unknown as ConProfile}
+                  />
                 </Columns.Column>
               </Columns>
             </Element>
@@ -229,7 +241,9 @@ function Profile({
             <Element className="block-separator">
               <Columns>
                 <Columns.Column>
-                  <ReadOccupation.Some profile={profile} />
+                  <ReadOccupation.Some
+                    profile={profile as unknown as ConProfile}
+                  />
                 </Columns.Column>
               </Columns>
             </Element>

@@ -1,22 +1,18 @@
-import React from 'react'
-import { FormInput } from '@talent-connect/shared-atomic-design-components'
-import { Editable } from '@talent-connect/shared-atomic-design-components'
-import { RedProfile } from '@talent-connect/shared-types'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
-
-import { profileSaveStart } from '../../redux/user/actions'
-import * as Yup from 'yup'
-
-import { FormikValues, useFormik } from 'formik'
-import { ReadContactDetails } from '../molecules'
 import {
   useLoadMyProfileQuery,
   usePatchMyProfileMutation,
 } from '@talent-connect/data-access'
-import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
-import { useQueryClient } from 'react-query'
+import {
+  Editable,
+  FormInput,
+} from '@talent-connect/shared-atomic-design-components'
+import { FormikValues, useFormik } from 'formik'
 import { omit } from 'lodash'
+import React from 'react'
+import { useQueryClient } from 'react-query'
+import * as Yup from 'yup'
+import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
+import { ReadContactDetails } from '../molecules'
 
 export interface ContactsFormValues {
   firstName: string

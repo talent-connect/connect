@@ -62,7 +62,7 @@ const { lang } = require('moment')
 
 const DELAY = 1500
 const RETRIES = 5
-const CONCURRENCY = 40 // 60 has worked before, with some errors. For actual data migration, use a low value, such as 15.
+const CONCURRENCY = 10 // 60 has worked before, with some errors. For actual data migration, use a low value, such as 15.
 
 const CONTACT_RECORD_TYPE = '0121i000000HMq9AAG'
 const CONNECT_PROFILE_MENTOR_RECORD_TYPE = '0129X0000001EXBQA2'
@@ -400,6 +400,7 @@ async function insertConnectProfileFn(p) {
         Profile_First_Approved_At__c: p.redProfile.userActivatedAt,
         Administrator_Internal_Comment__c:
           p.redProfile.administratorInternalComment,
+        total_mentee_capacity__c: p.redProfile.menteeCountCapacity,
         CreatedDate: p.redProfile.createdAt,
         LastModifiedDate: p.redProfile.updatedAt,
       }

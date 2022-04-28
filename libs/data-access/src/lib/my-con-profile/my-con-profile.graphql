@@ -43,4 +43,6 @@ fragment fields on ConProfile {
   telephoneNumber
   userActivatedAt
   userType
+  categories
+  menteeCountCapacity
 }

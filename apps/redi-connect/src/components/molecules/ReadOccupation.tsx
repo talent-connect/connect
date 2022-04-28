@@ -1,17 +1,28 @@
-import React from 'react'
-import { Content } from 'react-bulma-components'
-import { RedProfile } from '@talent-connect/shared-types'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
+import { ConProfile, useLoadMyProfileQuery } from '@talent-connect/data-access'
 import {
   Caption,
   Placeholder,
 } from '@talent-connect/shared-atomic-design-components'
 import { MENTEE_OCCUPATION_CATEGORY } from '@talent-connect/shared-config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
+import React from 'react'
+import { Content } from 'react-bulma-components'
+import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 
 interface Props {
-  profile: RedProfile
+  profile: Pick<
+    ConProfile,
+    | 'userType'
+    | 'mentor_occupation'
+    | 'mentor_workPlace'
+    | 'mentee_occupationCategoryId'
+    | 'mentee_occupationJob_placeOfEmployment'
+    | 'mentee_occupationJob_position'
+    | 'mentee_occupationStudent_studyPlace'
+    | 'mentee_occupationStudent_studyName'
+    | 'mentee_occupationLookingForJob_what'
+    | 'mentee_occupationOther_description'
+  >
   shortInfo?: boolean
 }
 
@@ -41,10 +52,8 @@ const ReadOccupation = ({ profile, shortInfo }: Props) => {
     )
   }
 
-  const isMentee =
-    userType === 'mentee' || userType === 'public-sign-up-mentee-pending-review'
-  const isMentor =
-    userType === 'mentor' || userType === 'public-sign-up-mentor-pending-review'
+  const isMentee = userType === 'MENTEE'
+  const isMentor = userType === 'MENTOR'
 
   return (
     <>
@@ -95,11 +104,14 @@ const ReadOccupation = ({ profile, shortInfo }: Props) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile as RedProfile,
-})
-
 export default {
-  Me: connect(mapStateToProps, {})(ReadOccupation),
+  Me: () => {
+    const loopbackUserId = getAccessTokenFromLocalStorage().userId
+    const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
+
+    if (!myProfileQuery.isSuccess) return null
+
+    return <ReadOccupation profile={myProfileQuery.data.conProfile} />
+  },
   Some: ({ profile }: Props) => <ReadOccupation profile={profile} shortInfo />,
 }

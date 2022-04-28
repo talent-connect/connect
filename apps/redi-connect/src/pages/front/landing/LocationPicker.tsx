@@ -23,10 +23,10 @@ import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
 
 const LOCATIONS: Array<keyof typeof REDI_LOCATION_NAMES> = [
-  'berlin',
-  'munich',
-  'nrw',
-  'hamburg',
+  'BERLIN',
+  'MUNICH',
+  'NRW',
+  'HAMBURG',
 ]
 
 export default function LocationPicker() {
