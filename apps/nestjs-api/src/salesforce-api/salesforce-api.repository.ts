@@ -79,17 +79,6 @@ export class SalesforceApiRepository {
     })
   }
 
-  async findSingleRecord(objectName: string, id: string): Promise<any> {
-    await this.connect()
-
-    const record = await this.connection
-      .sobject(objectName)
-      .find({ Id: id })
-      .execute()
-
-    return record[0]
-  }
-
   async updateRecord<T>(objectName: string, record: T): Promise<T> {
     await this.connect()
     const updateResult = this.connection.sobject(objectName).update(record)
