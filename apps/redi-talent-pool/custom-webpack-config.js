@@ -1,7 +1,22 @@
 const nrwlConfig = require('@nrwl/react/plugins/webpack.js') // require the main @nrwl/react/plugins/webpack configuration function.
+const webpack = require('webpack')
 
 module.exports = (config, context) => {
   nrwlConfig(config) // first call it so that it @nrwl/react plugin adds its configs,
+
+  config.resolve.fallback = config.resolve.fallback ?? {}
+  config.resolve.fallback.stream = require.resolve('stream-browserify')
+  config.resolve.fallback.zlib = require.resolve('browserify-zlib')
+
+  config.plugins = config.plugins ?? []
+  config.plugins.push(
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+      Buffer: ['buffer', 'Buffer'],
+    })
+  )
+
+  // console.log(JSON.stringify(config, null, 2))
 
   return { ...config, node: undefined }
 }
