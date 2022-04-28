@@ -1,4 +1,4 @@
-import { Language } from '@talent-connect/shared-config'
+import { LanguageKey } from '@talent-connect/shared-config'
 
 export interface TpProfile {
   id: string
@@ -19,7 +19,7 @@ export interface TpProfile {
   stackOverflowUrl?: string
   dribbbleUrl?: string
 
-  workingLanguages?: Language[]
+  workingLanguages?: LanguageKey[]
   yearsOfRelevantExperience?: string
   desiredEmploymentType?: string
   availability?: string

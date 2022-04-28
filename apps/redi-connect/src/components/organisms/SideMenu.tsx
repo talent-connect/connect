@@ -18,7 +18,7 @@ const MenuItem = ({ url, children }: MenuItemProps) => (
       className="side-menu__item__link"
       activeClassName="side-menu__item__link--active"
     >
-      {children}
+      <>{children}</>
     </NavLink>
   </li>
 )

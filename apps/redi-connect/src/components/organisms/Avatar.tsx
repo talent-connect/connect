@@ -122,19 +122,20 @@ function AvatarEditable() {
           </div>
         </>
       )}
-
-      <ReactS3Uploader
-        name="avatar-upload"
-        id="avatar-upload"
-        className="avatar__input"
-        signingUrl={S3_UPLOAD_SIGN_URL}
-        accept="image/*"
-        uploadRequestHeaders={{ 'x-amz-acl': 'public-read' }}
-        onSignedUrl={(c: any) => console.log(c)}
-        onError={(c: any) => console.log(c)}
-        onFinish={onUploadSuccess}
-        contentDisposition="auto"
-      />
+      <div>
+        <ReactS3Uploader
+          name="avatar-upload"
+          id="avatar-upload"
+          className="avatar__input"
+          signingUrl={S3_UPLOAD_SIGN_URL}
+          accept="image/*"
+          uploadRequestHeaders={{ 'x-amz-acl': 'public-read' }}
+          onSignedUrl={(c: any) => console.log(c)}
+          onError={(c: any) => console.log(c)}
+          onFinish={onUploadSuccess}
+          contentDisposition="auto"
+        />
+      </div>
     </div>
   )
 }

@@ -13,9 +13,8 @@ import { EditableNamePhotoLocation } from '../../../components/organisms/jobseek
 
 export function JobseekerProfile() {
   const { tpJobseekerProfileId }: { tpJobseekerProfileId: string } = useParams()
-  const { data: jobseekerProfile } = useTpJobseekerProfileByIdQuery(
-    tpJobseekerProfileId
-  )
+  const { data: jobseekerProfile } =
+    useTpJobseekerProfileByIdQuery(tpJobseekerProfileId)
 
   console.log(jobseekerProfile)
 

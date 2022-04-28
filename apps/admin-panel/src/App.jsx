@@ -34,9 +34,13 @@ import {
   TpJobseekerProfileState,
 } from '@talent-connect/shared-types'
 import { calculateAge } from '@talent-connect/shared-utils'
-import { howDidHearAboutRediOptions } from '@talent-connect/talent-pool/config'
+import {
+  germanFederalStates,
+  howDidHearAboutRediOptions,
+} from '@talent-connect/talent-pool/config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
 import classNames from 'classnames'
+import { ca } from 'date-fns/locale'
 import { get, groupBy, keyBy, mapValues } from 'lodash'
 import { unparse as convertToCSV } from 'papaparse/papaparse.min'
 import React, { useEffect } from 'react'
@@ -704,13 +708,22 @@ FullName.defaultProps = {
   label: 'Full name',
 }
 
-const RedMatchList = (props) => (
+const redMatchStyles = {
+  list: {
+    '& th, & td': {
+      padding: '0 6px',
+    },
+  },
+}
+
+const RedMatchList = withStyles(redMatchStyles)(({ classes, ...props }) => (
   <List
     {...props}
     sort={{ field: 'createdAt', order: 'DESC' }}
     pagination={<AllModelsPagination />}
     filters={<RedMatchListFilters />}
     exporter={redMatchesCsvExporter}
+    className={classes.list}
   >
     <Datagrid>
       <TextField source="rediLocation" label="City" />
@@ -721,12 +734,35 @@ const RedMatchList = (props) => (
       <ReferenceField label="Mentor" source="mentorId" reference="redProfiles">
         <FullName source="mentor" />
       </ReferenceField>
-      <TextField source="status" />
+      <FunctionField
+        label="Status"
+        render={(record) =>
+          record?.status
+            .replace('invalidated-as-other-mentor-accepted', 'invalidated')
+            .replace('declined-by-mentor', 'declined')
+        }
+      />
+      <DateField source="matchCompletedOn" label="Completed on" />
+      <RedMatchListRelatedMentoringSessionsNumber label="Number of sessions" />
       <ShowButton />
       <EditButton />
     </Datagrid>
   </List>
-)
+))
+const RedMatchListRelatedMentoringSessionsNumber = ({
+  record: { mentorId, menteeId },
+}) => {
+  const [mentoringSessions, setMentoringSessions] = React.useState([])
+  useEffect(() => {
+    dataProvider('GET_LIST', 'redMentoringSessions', {
+      pagination: { page: 1, perPage: 0 },
+      sort: { field: 'date', order: 'ASC' },
+      filter: { mentorId, menteeId },
+    }).then(({ data }) => setMentoringSessions(data))
+  }, [mentorId, menteeId])
+  return `${mentoringSessions.length}`
+}
+
 const RedMatchListFilters = (props) => (
   <Filter {...props}>
     <SelectInput source="status" choices={formRedMatchStatuses} />
@@ -778,6 +814,7 @@ const RedMatchShow = (props) => (
       />
       <RecordCreatedAt />
       <RecordUpdatedAt />
+      <DateField source="matchCompletedOn" label="Completed on" />
       <h3>Information about a mentor declining the mentorship</h3>
       <TextField
         source="ifDeclinedByMentor_chosenReasonForDecline"
@@ -797,11 +834,11 @@ const RedMatchShow = (props) => (
         label="When did the mentor decline?"
       />
 
-      <RedMatchShow_RelatedMentoringSessions />
+      <RedMatchShowRelatedMentoringSessions />
     </SimpleShowLayout>
   </Show>
 )
-const RedMatchShow_RelatedMentoringSessions = ({
+const RedMatchShowRelatedMentoringSessions = ({
   record: { mentorId, menteeId },
 }) => {
   const [mentoringSessions, setMentoringSessions] = React.useState([])
@@ -955,6 +992,11 @@ const RedMatchEdit = (props) => (
         source="matchMadeActiveOn"
         label="If match is/was active, when was it made active?"
       />
+      <DateInput
+        source="matchCompletedOn"
+        parse={(d) => (d === '' ? null : d)}
+        label="Completed on"
+      />
       <h3>Information about a mentor declining the mentorship</h3>
       <TextInput
         source="ifDeclinedByMentor_chosenReasonForDecline"
@@ -971,7 +1013,7 @@ const RedMatchEdit = (props) => (
       />
       <TextInput
         source="ifDeclinedByMentor_dateTime"
-        label="If watch was declined by mentor, when?"
+        label="If match was declined by mentor, when?"
         helperText="This field shows the date and time of when a mentor declined this mentorship application from the mentee"
       />
     </SimpleForm>
@@ -1300,7 +1342,6 @@ const TpJobseekerProfileListFilters = (props) => (
         name: val,
       }))}
     />
-    <NullableBooleanInput source="isJobFair2022Participant" />
   </Filter>
 )
 
@@ -1376,10 +1417,7 @@ const TpJobseekerProfileShow = (props) => (
         <Tab label="Profile">
           <TextField source="state" />
           <BooleanField source="isProfileVisibleToCompanies" />
-          <BooleanField
-            initialValue={false}
-            source="isJobFair2022Participant"
-          />
+          <BooleanField initialValue={false} source="isHired" />
           <Avatar />
           <TextField source="firstName" />
           <TextField source="lastName" />
@@ -1394,6 +1432,10 @@ const TpJobseekerProfileShow = (props) => (
           <TextField source="profileImage" />
           <TextField source="phoneNumber" />
           <TextField source="location" />
+          <FunctionField
+            label="Location (Federal State)"
+            render={(record) => germanFederalStates[record?.federalState]}
+          />
           <TextField source="personalWebsite" />
           <TextField source="githubUrl" />
           <TextField source="linkedInUrl" />
@@ -1529,7 +1571,7 @@ const TpJobseekerProfileEdit = (props) => (
       <FormTab label="Profile">
         <TextField source="state" />
         <BooleanInput source="isProfileVisibleToCompanies" />
-        <BooleanInput initialValue={false} source="isJobFair2022Participant" />
+        <BooleanInput initialValue={false} source="isHired" />
         {/* <Avatar /> */}
         <TextInput source="firstName" />
         <TextInput source="lastName" />
@@ -1544,6 +1586,14 @@ const TpJobseekerProfileEdit = (props) => (
         <TextField source="profileImage" />
         <TextInput source="phoneNumber" />
         <TextInput source="location" />
+        <SelectInput
+          label="Location (Federal State)"
+          source="federalState"
+          choices={Object.entries(germanFederalStates).map(([id, name]) => ({
+            id,
+            name,
+          }))}
+        />
         <TextInput source="personalWebsite" />
         <TextInput source="githubUrl" />
         <TextInput source="linkedInUrl" />
@@ -1808,7 +1858,6 @@ const TpCompanyProfileShow = (props) => (
               />
               <TextField source="employmentType" />
               <TextField source="languageRequirements" />
-              <TextField source="desiredExperience" />
               <TextField source="salaryRange" />
               <ShowButton />
               <EditButton />
@@ -1888,7 +1937,6 @@ const TpCompanyProfileEdit = (props) => (
             />
             <TextField source="employmentType" />
             <TextField source="languageRequirements" />
-            <TextField source="desiredExperience" />
             <TextField source="salaryRange" />
             <ShowButton />
             <EditButton />
@@ -1913,18 +1961,11 @@ const TpCompanyProfileEdit = (props) => (
   </Edit>
 )
 
-const TpJobListingListFilters = (props) => (
-  <Filter {...props}>
-    <NullableBooleanInput source="isJobFair2022JobListing" />
-  </Filter>
-)
-
 const TpJobListingList = (props) => {
   return (
     <List
       {...props}
       pagination={<AllModelsPagination />}
-      filters={<TpJobListingListFilters />}
       exporter={tpJobListingListExporter}
     >
       <Datagrid>
@@ -1953,7 +1994,6 @@ function tpJobListingListExporter(jobListings, fetchRelatedRecords) {
       tpCompanyProfile: { companyName },
       employmentType,
       languageRequirements,
-      desiredExperience,
       salaryRange,
     } = job
 
@@ -1963,7 +2003,6 @@ function tpJobListingListExporter(jobListings, fetchRelatedRecords) {
       companyName,
       employmentType,
       languageRequirements,
-      desiredExperience,
       salaryRange,
     }
   })
@@ -1997,7 +2036,6 @@ const TpJobListingShow = (props) => (
       </ReferenceField>
       <TextField source="title" />
       <TextField source="location" />
-      <BooleanField initialValue={false} source="isJobFair2022JobListing" />
       <TextField source="summary" />
       <TextField source="proficiencyLevelId" />
       <FunctionField
@@ -2010,7 +2048,6 @@ const TpJobListingShow = (props) => (
       />
       <TextField source="employmentType" />
       <TextField source="languageRequirements" />
-      <TextField source="desiredExperience" />
       <TextField source="salaryRange" />
     </SimpleShowLayout>
   </Show>
@@ -2028,7 +2065,6 @@ const TpJobListingEdit = (props) => (
       </ReferenceField>
       <TextInput source="title" />
       <TextInput source="location" />
-      <BooleanInput initialValue={false} source="isJobFair2022JobListing" />
       <TextInput source="summary" multiline />
       <TextInput source="proficiencyLevelId" />
       <FunctionField
@@ -2041,7 +2077,6 @@ const TpJobListingEdit = (props) => (
       />
       <TextInput source="employmentType" />
       <TextInput source="languageRequirements" />
-      <TextInput source="desiredExperience" />
       <TextInput source="salaryRange" />
     </SimpleForm>
   </Edit>

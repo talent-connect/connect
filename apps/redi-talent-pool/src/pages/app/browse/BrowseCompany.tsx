@@ -1,16 +1,4 @@
-import {
-  FilterDropdown,
-  Checkbox,
-  Icon,
-  SearchField,
-} from '@talent-connect/shared-atomic-design-components'
-import {
-  desiredPositions,
-  desiredPositionsIdToLabelMap,
-  topSkills,
-  topSkillsIdToLabelMap,
-} from '@talent-connect/talent-pool/config'
-import { Columns, Element, Tag } from 'react-bulma-components'
+import { useState } from 'react'
 import { useHistory } from 'react-router'
 import {
   ArrayParam,
@@ -19,26 +7,89 @@ import {
   useQueryParams,
   withDefault,
 } from 'use-query-params'
-import { JobseekerProfileCard } from '../../../components/organisms/JobseekerProfileCard'
+
+import { Columns, Element, Tag } from 'react-bulma-components'
+import {
+  Checkbox,
+  FilterDropdown,
+  Icon,
+  SearchField,
+} from '@talent-connect/shared-atomic-design-components'
+
+import {
+  desiredEmploymentTypeOptions,
+  desiredEmploymentTypeOptionsIdToLabelMap,
+  desiredPositions,
+  desiredPositionsIdToLabelMap,
+  germanFederalStates,
+  topSkills,
+  topSkillsIdToLabelMap,
+} from '@talent-connect/talent-pool/config'
+import { objectEntries } from '@talent-connect/typescript-utilities'
+
 import { LoggedIn } from '../../../components/templates'
+import { JobseekerProfileCard } from '../../../components/organisms/JobseekerProfileCard'
+
+import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
+import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
 import { useBrowseTpJobseekerProfilesQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+
+const germanFederalStatesOptions = objectEntries(germanFederalStates).map(
+  ([value, label]) => ({
+    value,
+    label,
+  })
+)
 
 export function BrowseCompany() {
   const [query, setQuery] = useQueryParams({
     name: withDefault(StringParam, ''),
-    skills: withDefault(ArrayParam, []),
     desiredPositions: withDefault(ArrayParam, []),
+    employmentTypes: withDefault(ArrayParam, []),
+    skills: withDefault(ArrayParam, []),
+    federalStates: withDefault(ArrayParam, []),
+    onlyFavorites: withDefault(BooleanParam, undefined),
     isJobFair2022Participant: withDefault(BooleanParam, undefined),
   })
-  const { name, skills, desiredPositions, isJobFair2022Participant } = query
+  const {
+    name,
+    desiredPositions,
+    employmentTypes,
+    skills,
+    federalStates,
+    onlyFavorites,
+    isJobFair2022Participant,
+  } = query
 
   const history = useHistory()
+
   const { data: jobseekerProfiles } = useBrowseTpJobseekerProfilesQuery({
     name,
-    skills,
     desiredPositions,
+    employmentTypes,
+    skills,
+    federalStates,
     isJobFair2022Participant,
   })
+  const { data: companyProfile } = useTpCompanyProfileQuery()
+  const tpCompanyProfileUpdateMutation = useTpCompanyProfileUpdateMutation()
+
+  const handleFavoriteJobseeker = (value) => {
+    const newFavorites = !companyProfile.favouritedTpJobseekerIds
+      ? [value]
+      : toggleValueInArray(companyProfile.favouritedTpJobseekerIds, value)
+
+    tpCompanyProfileUpdateMutation.mutate({
+      favouritedTpJobseekerIds: newFavorites,
+    })
+  }
+
+  const toggleOnlyFavoritesFilter = () => {
+    setQuery((latestQuery) => ({
+      ...latestQuery,
+      onlyFavorites: onlyFavorites ? undefined : true,
+    }))
+  }
 
   const toggleFilters = (filtersArr, filterName, item) => {
     const newFilters = toggleValueInArray(filtersArr, item)
@@ -61,9 +112,18 @@ export function BrowseCompany() {
       ...latestQuery,
       skills: [],
       desiredPositions: [],
+      employmentTypes: [],
+      federalStates: [],
       isJobFair2022Participant: undefined,
     }))
   }
+
+  const shouldShowFilters =
+    skills.length !== 0 ||
+    desiredPositions.length !== 0 ||
+    federalStates.length !== 0 ||
+    employmentTypes.length !== 0 ||
+    isJobFair2022Participant
 
   return (
     <LoggedIn>
@@ -85,20 +145,11 @@ export function BrowseCompany() {
         Browse our Jobseeker profiles and find the talent you're looking for.
       </Element>
       <div className="filters">
-        <SearchField
-          defaultValue={name}
-          valueChange={setName}
-          placeholder="Search by name"
-        />
-      </div>
-      <div className="filters">
-        <div className="filters-wrapper">
-          <FilterDropdown
-            items={skillsOptions}
-            className="filters__dropdown"
-            label="Skills"
-            selected={skills}
-            onChange={(item) => toggleFilters(skills, 'skills', item)}
+        <div className="filters-inner">
+          <SearchField
+            defaultValue={name}
+            valueChange={setName}
+            placeholder="Search by name"
           />
         </div>
         <div className="filters-inner">
@@ -112,20 +163,64 @@ export function BrowseCompany() {
             }
           />
         </div>
+        <div className="filters-inner">
+          <FilterDropdown
+            items={employmentTypesOptions}
+            className="filters__dropdown"
+            label="Employment Type"
+            selected={employmentTypes}
+            onChange={(item) =>
+              toggleFilters(employmentTypes, 'employmentTypes', item)
+            }
+          />
+        </div>
       </div>
       <div className="filters">
-        <Checkbox
-          name="isJobFair2022Participant"
-          checked={isJobFair2022Participant || false}
-          handleChange={toggleJobFair2022Filter}
+        <div className="filters-inner">
+          <FilterDropdown
+            items={skillsOptions}
+            className="filters__dropdown"
+            label="Skills"
+            selected={skills}
+            onChange={(item) => toggleFilters(skills, 'skills', item)}
+          />
+        </div>
+        <div className="filters-inner">
+          <FilterDropdown
+            items={germanFederalStatesOptions}
+            className="filters__dropdown"
+            label="Federal State"
+            selected={federalStates}
+            onChange={(item) =>
+              toggleFilters(federalStates, 'federalStates', item)
+            }
+          />
+        </div>
+        <div
+          className="filters-inner filter-favourites"
+          onClick={toggleOnlyFavoritesFilter}
         >
-          Filter by ReDI Job Fair 2022
-        </Checkbox>
+          <Icon
+            icon={onlyFavorites ? 'heartFilled' : 'heart'}
+            className="filter-favourites__icon"
+            space="right"
+          />
+          Only Favorites
+        </div>
+      </div>
+      <div className="filters">
+        <div className="filters-inner filters__jobfair2022">
+          <Checkbox
+            name="isJobFair2022Participant"
+            checked={isJobFair2022Participant || false}
+            handleChange={toggleJobFair2022Filter}
+          >
+            Filter by ReDI Job Fair 2022
+          </Checkbox>
+        </div>
       </div>
       <div className="active-filters">
-        {(skills.length !== 0 ||
-          desiredPositions.length !== 0 ||
-          isJobFair2022Participant) && (
+        {shouldShowFilters && (
           <>
             {(skills as string[]).map((catId) => (
               <FilterTag
@@ -145,6 +240,26 @@ export function BrowseCompany() {
                 }
               />
             ))}
+            {(employmentTypes as string[]).map((id) => (
+              <FilterTag
+                key={id}
+                id={id}
+                label={desiredEmploymentTypeOptionsIdToLabelMap[id]}
+                onClickHandler={(item) =>
+                  toggleFilters(employmentTypes, 'employmentTypes', item)
+                }
+              />
+            ))}
+            {(federalStates as string[]).map((id) => (
+              <FilterTag
+                key={id}
+                id={id}
+                label={germanFederalStates[id]}
+                onClickHandler={(item) =>
+                  toggleFilters(federalStates, 'federalStates', item)
+                }
+              />
+            ))}
             {isJobFair2022Participant && (
               <FilterTag
                 key="redi-job-fair-2022-filter"
@@ -161,21 +276,31 @@ export function BrowseCompany() {
         )}
       </div>
       <Columns>
-        {jobseekerProfiles?.map((profile) => (
-          <Columns.Column
-            mobile={{ size: 12 }}
-            tablet={{ size: 6 }}
-            desktop={{ size: 4 }}
-          >
-            <JobseekerProfileCard
-              key={profile.id}
-              jobseekerProfile={profile}
-              onClick={() =>
-                history.push(`/app/jobseeker-profile/${profile.id}`)
-              }
-            />
-          </Columns.Column>
-        ))}
+        {jobseekerProfiles?.map((profile) => {
+          const isFavorite = companyProfile.favouritedTpJobseekerIds?.includes(
+            profile.id
+          )
+
+          if (!isFavorite && onlyFavorites) return
+
+          return (
+            <Columns.Column
+              mobile={{ size: 12 }}
+              tablet={{ size: 6 }}
+              desktop={{ size: 4 }}
+            >
+              <JobseekerProfileCard
+                key={profile.id}
+                jobseekerProfile={profile}
+                onClick={() =>
+                  history.push(`/app/jobseeker-profile/${profile.id}`)
+                }
+                toggleFavorite={handleFavoriteJobseeker}
+                isFavorite={isFavorite}
+              />
+            </Columns.Column>
+          )
+        })}
       </Columns>
     </LoggedIn>
   )
@@ -186,6 +311,12 @@ const desiredPositionsOptions = desiredPositions.map(({ id, label }) => ({
   value: id,
   label,
 }))
+const employmentTypesOptions = desiredEmploymentTypeOptions.map(
+  ({ id, label }) => ({
+    value: id,
+    label,
+  })
+)
 
 interface FilterTagProps {
   id: string

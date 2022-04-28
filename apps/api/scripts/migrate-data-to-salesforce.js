@@ -707,6 +707,9 @@ async function insertJobseekerProfileFn(p) {
         Is_Hired__c: p.tpJobseekerProfile.isHired,
         Administrator_Internal_Comment__c:
           p.tpJobseekerProfile.administratorInternalComment,
+        Federal_State__c: p.federalState
+          ? p.federalState.toUpperCase().replace(/-/g, '_')
+          : undefined,
 
         CreatedDate: p.tpJobseekerProfile.createdAt,
         LastModifiedDate: p.tpJobseekerProfile.updatedAt,

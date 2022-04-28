@@ -110,7 +110,7 @@ const LoggedIn = ({
                   {t('loggedInArea.profile.notification.deactivatedMentor', {
                     name: profile.firstName,
                     email:
-                      '<a href="mailto:miriam@redi-school.org">miriam@red-school.org</a>',
+                      '<a href="mailto:miriam@redi-school.org">miriam@redi-school.org</a>',
                   })}
                 </RediNotification>
               )}

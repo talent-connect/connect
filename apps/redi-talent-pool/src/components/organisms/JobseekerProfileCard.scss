@@ -25,6 +25,15 @@
     color: $grey;
   }
 
+  &__hired-tag {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    border-radius: 0 !important;
+    border-bottom-right-radius: 4px !important;
+  }
+
   &__image {
     img {
       height: 9.5rem;
@@ -43,7 +52,7 @@
       transition: $transition;
 
       path {
-        fill: white;
+        fill: $redi-orange-dark;
       }
 
       &:hover {

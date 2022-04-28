@@ -1,5 +1,5 @@
-import { value DropdownOptions } from '@talent-connect/talent-pool/types'
-import { value keyBy, value mapValues } from 'lodash'
+import { DropdownOptions } from '@talent-connect/talent-pool/types'
+import { keyBy, mapValues } from 'lodash'
 
 export const desiredPositions: DropdownOptions = [
   {
@@ -744,4 +744,24 @@ export const howDidHearAboutRediOptions = {
   'internet-search': 'Internet Search',
   'social-media': 'Social Media',
   other: 'Other',
+} as const
+
+export const germanFederalStates = {
+  BADEN_WUERTTEMBERG: 'Baden-Württemberg',
+  BAYERN: 'Bayern',
+  BERLIN: 'Berlin',
+  BRANDENBURG: 'Brandenburg',
+  BREMEN: 'Bremen',
+  HAMBURG: 'Hamburg',
+  HESSEN: 'Hessen',
+  MECKLENBURG_VORPOMMERN: 'Mecklenburg-Vorpommern',
+  NIEDERSACHSEN: 'Niedersachsen',
+  NORDRHEIN_WESTFALEN: 'Nordrhein-Westfalen',
+  RHEINLAND_PFALZ: 'Rheinland-Pfalz',
+  SAARLAND: 'Saarland',
+  SACHSEN: 'Sachsen',
+  SACHSEN_ANHALT: 'Sachsen-Anhalt',
+  SCHLESWIG_HOLSTEIN: 'Schleswig-Holstein',
+  THUERINGEN: 'Thüringen',
+  OUTSIDE_GERMANY: 'Outside Germany',
 } as const
