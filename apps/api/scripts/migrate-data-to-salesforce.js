@@ -453,6 +453,12 @@ async function insertContactFn(p) {
         ReDI_Slack_Username__c: p.contact.slackUsername,
         MobilePhone: p.contact.telephoneNumber,
         Upserted_by_CON_TP_data_migration__c: true,
+        ReDI_First_Point_of_Contact_Talent_Pool__c: p.contact
+          .howDidHearAboutRediKey
+          ? p.contact.howDidHearAboutRediKey.toUpperCase().replace(/-/g, '_')
+          : undefined,
+        First_Point_of_Contact_Other_TP__c:
+          p.contact.howDidHearAboutRediOtherText,
       })
     )
     contactIdUpdatedOrInserted = insertResult.id
@@ -490,6 +496,12 @@ async function insertContactFn(p) {
         ReDI_Slack_Username__c: p.contact.slackUsername,
         MobilePhone: p.contact.telephoneNumber,
         Upserted_by_CON_TP_data_migration__c: true,
+        ReDI_First_Point_of_Contact_Talent_Pool__c: p.contact
+          .howDidHearAboutRediKey
+          ? p.contact.howDidHearAboutRediKey.toUpperCase().replace(/-/g, '_')
+          : undefined,
+        First_Point_of_Contact_Other_TP__c:
+          p.contact.howDidHearAboutRediOtherText,
       })
     )
   }
@@ -1036,6 +1048,7 @@ async function insertAccountForCompanyProfileFn(p) {
       console.log('inserted job listing')
     }
   }
+
   return {
     ...p,
     sfAccountId: accountResult.id,
