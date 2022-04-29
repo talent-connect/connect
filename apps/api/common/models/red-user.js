@@ -12,6 +12,9 @@ const {
   sendTpResetPasswordEmail,
 } = require('../../lib/email/tp-email')
 
+const jwt = require('jsonwebtoken')
+const { CONTEXT } = require('@nestjs/graphql')
+
 module.exports = function (RedUser) {
   RedUser.observe('before save', function updateTimestamp(ctx, next) {
     if (ctx.instance) {
@@ -148,6 +151,12 @@ module.exports = function (RedUser) {
    * product profile.
    */
   RedUser.afterRemote('login', async function (ctx, loginOutput, next) {
+    const jwtToken = jwt.sign(
+      JSON.parse(JSON.stringify(ctx.result)),
+      process.env.NX_JWT_SECRET,
+      { expiresIn: '7d' }
+    )
+    ctx.result.jwtToken = jwtToken
     const redProduct = ctx.req.headers.redproduct // either CON or TP
     switch (redProduct) {
       case 'CON':
@@ -236,7 +245,8 @@ module.exports = function (RedUser) {
       firstName: tpJobseekerProfile.firstName,
       lastName: tpJobseekerProfile.lastName,
       contactEmail: tpJobseekerProfile.contactEmail,
-      mentee_currentlyEnrolledInCourse: tpJobseekerProfile.currentlyEnrolledInCourse,
+      mentee_currentlyEnrolledInCourse:
+        tpJobseekerProfile.currentlyEnrolledInCourse,
       userType: 'public-sign-up-mentee-pending-review',
       gaveGdprConsentAt: tpJobseekerProfile.gaveGdprConsentAt,
       signupSource: 'existing-user-with-tp-profile-logging-into-con',
