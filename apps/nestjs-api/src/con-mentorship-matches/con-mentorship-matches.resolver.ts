@@ -1,11 +1,14 @@
+import { UseGuards } from '@nestjs/common'
 import { Parent, Query, ResolveField, Resolver } from '@nestjs/graphql'
 import {
   ConMentorshipMatchEntityProps,
   ConProfileEntityProps,
 } from '@talent-connect/common-types'
+import { GqlJwtAuthGuard } from '../auth/gql-jwt-auth.guard'
 import { ConProfilesService } from '../con-profiles/con-profiles.service'
 import { ConMentorshipMatchesService } from './con-mentorship-matches.service'
 
+@UseGuards(GqlJwtAuthGuard)
 @Resolver(() => ConMentorshipMatchEntityProps)
 export class ConMentorshipMatchesResolver {
   constructor(
@@ -23,6 +26,7 @@ export class ConMentorshipMatchesResolver {
   //   )
   // }
 
+  //! TODO: Add auth
   @Query(() => [ConMentorshipMatchEntityProps], {
     name: 'conMentorshipMatches',
   })
@@ -53,6 +57,7 @@ export class ConMentorshipMatchesResolver {
   //   return this.conMentorshipMatchesService.remove(id)
   // }
 
+  //! TODO: Add auth
   @ResolveField((of) => ConProfileEntityProps)
   async mentee(
     @Parent() conMentorshipMatch: ConMentorshipMatchEntityProps

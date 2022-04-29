@@ -1,7 +1,10 @@
+import { UseGuards } from '@nestjs/common'
 import { Query, Resolver } from '@nestjs/graphql'
 import { ConMentoringSessionEntityProps } from '@talent-connect/common-types'
+import { GqlJwtAuthGuard } from '../auth/gql-jwt-auth.guard'
 import { ConMentoringSessionsService } from './con-mentoring-sessions.service'
 
+@UseGuards(GqlJwtAuthGuard)
 @Resolver(() => ConMentoringSessionEntityProps)
 export class ConMentoringSessionsResolver {
   constructor(
@@ -18,6 +21,7 @@ export class ConMentoringSessionsResolver {
   //   )
   // }
 
+  //! TODO: Add auth
   @Query(() => [ConMentoringSessionEntityProps], {
     name: 'conMentoringSessions',
   })

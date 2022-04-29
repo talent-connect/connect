@@ -1,4 +1,4 @@
-import { BadRequestException } from '@nestjs/common'
+import { BadRequestException, UseGuards } from '@nestjs/common'
 import {
   Args,
   Mutation,
@@ -13,10 +13,13 @@ import {
   Entity,
   PatchConProfileInput,
 } from '@talent-connect/common-types'
+import { GqlJwtAuthGuard } from '../auth/gql-jwt-auth.guard'
+import { JwtAuthGuard } from '../auth/jwt-auth.guard'
 import { ConMentoringSessionsService } from '../con-mentoring-sessions/con-mentoring-sessions.service'
 import { FindOneConProfileArgs } from './args/find-one-con-profile.args'
 import { ConProfilesService } from './con-profiles.service'
 
+@UseGuards(GqlJwtAuthGuard)
 @Resolver(() => ConProfileEntityProps)
 export class ConProfilesResolver {
   constructor(
@@ -30,7 +33,7 @@ export class ConProfilesResolver {
   // ) {
   //   return this.conProfilesService.create(createConProfileInput)
   // }
-
+  //! TODO: Add auth
   @Query(() => [ConProfileEntityProps], { name: 'conProfiles' })
   async findAll() {
     const entities = await this.conProfilesService.findAll({})
@@ -38,6 +41,7 @@ export class ConProfilesResolver {
     return props
   }
 
+  //! TODO: Add auth
   @Query(() => ConProfileEntityProps, {
     name: 'conProfile',
   })
@@ -65,6 +69,7 @@ export class ConProfilesResolver {
   //   return this.conProfilesService.findOne(id)
   // }
 
+  //! TODO: Add auth
   @Mutation(() => ConProfileEntityProps, { name: 'patchConProfile' })
   async patch(
     @Args('patchConProfileInput') patchConProfileInput: PatchConProfileInput
@@ -80,6 +85,7 @@ export class ConProfilesResolver {
   //   return this.conProfilesService.remove(id)
   // }
 
+  //! TODO: Add auth
   @ResolveField((of) => [ConMentoringSessionEntityProps])
   async mentoringSessions(
     @Parent() conProfile: ConProfileEntityProps
