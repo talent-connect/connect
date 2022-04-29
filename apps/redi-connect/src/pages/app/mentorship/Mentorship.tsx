@@ -1,26 +1,23 @@
-import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
-import { useParams, useHistory } from 'react-router'
-import { Redirect } from 'react-router-dom'
 import {
-  Heading,
   Button,
+  Heading,
 } from '@talent-connect/shared-atomic-design-components'
+import { RedMatch, RedProfile } from '@talent-connect/shared-types'
+import React, { useEffect } from 'react'
+import { Columns, Content } from 'react-bulma-components'
+import { connect } from 'react-redux'
+import { Redirect, useHistory, useParams } from 'react-router-dom'
 import {
-  ProfileCard,
+  CompleteMentorship,
   MContacts,
   MSessions,
+  ProfileCard,
   ReportProblem,
-  CompleteMentorship,
 } from '../../../components/organisms'
-import { Columns, Content } from 'react-bulma-components'
-import { RootState } from '../../../redux/types'
-import { RedProfile } from '@talent-connect/shared-types'
 import { LoggedIn } from '../../../components/templates'
-import { useLoading } from '../../../hooks/WithLoading'
-import { getMatches } from '../../../redux/matches/selectors'
-import { RedMatch } from '@talent-connect/shared-types'
 import { matchesFetchStart } from '../../../redux/matches/actions'
+import { getMatches } from '../../../redux/matches/selectors'
+import { RootState } from '../../../redux/types'
 
 interface RouteParams {
   profileId: string

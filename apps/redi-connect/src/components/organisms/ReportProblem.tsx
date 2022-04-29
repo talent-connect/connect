@@ -1,20 +1,20 @@
-import React, { useState } from 'react'
-import { useHistory } from 'react-router'
 import {
   Button,
-  FormTextArea,
   Checkbox,
+  FormTextArea,
+  Modal,
 } from '@talent-connect/shared-atomic-design-components'
-import { Modal } from '@talent-connect/shared-atomic-design-components'
-import { useFormik, FormikHelpers } from 'formik'
-import * as Yup from 'yup'
-import { reportProblem } from '../../services/api/api'
 import {
   FormSubmitResult,
   RedProblemReportDto,
   UserType,
 } from '@talent-connect/shared-types'
+import { FormikHelpers, useFormik } from 'formik'
+import React, { useState } from 'react'
 import { Content } from 'react-bulma-components'
+import { useHistory } from 'react-router-dom'
+import * as Yup from 'yup'
+import { reportProblem } from '../../services/api/api'
 import './ReportProblem.scss'
 
 export interface ReportProblemProps {
@@ -41,9 +41,8 @@ const validationSchema = Yup.object({
 
 const ReportProblem = ({ redProfileId, type }: ReportProblemProps) => {
   const [showProblemDialog, setShowProblemDialog] = useState(false)
-  const [submitResult, setSubmitResult] = useState<FormSubmitResult>(
-    'notSubmitted'
-  )
+  const [submitResult, setSubmitResult] =
+    useState<FormSubmitResult>('notSubmitted')
   const history = useHistory()
   const isMentor = type === 'mentor'
 
@@ -51,9 +50,8 @@ const ReportProblem = ({ redProfileId, type }: ReportProblemProps) => {
     values: FormValues,
     actions: FormikHelpers<FormValues>
   ) => {
-    const {
-      ifFromMentor_cancelMentorshipImmediately: isCancelImmediately,
-    } = values
+    const { ifFromMentor_cancelMentorshipImmediately: isCancelImmediately } =
+      values
     if (isCancelImmediately) {
       const userIsCertain = window.confirm(
         'Are you sure you want to cancel this mentorship?'
@@ -94,9 +92,8 @@ const ReportProblem = ({ redProfileId, type }: ReportProblemProps) => {
     onSubmit: submitForm,
   })
 
-  const {
-    ifFromMentor_cancelMentorshipImmediately: isCancelImmediatly,
-  } = formik.values
+  const { ifFromMentor_cancelMentorshipImmediately: isCancelImmediatly } =
+    formik.values
 
   return (
     <>
