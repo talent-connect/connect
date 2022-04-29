@@ -13,6 +13,7 @@ import {
   Entity,
   PatchConProfileInput,
 } from '@talent-connect/common-types'
+import { CurrentUser } from '../auth/current-user.decorator'
 import { GqlJwtAuthGuard } from '../auth/gql-jwt-auth.guard'
 import { JwtAuthGuard } from '../auth/jwt-auth.guard'
 import { ConMentoringSessionsService } from '../con-mentoring-sessions/con-mentoring-sessions.service'
