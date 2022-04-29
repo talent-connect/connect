@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { useParams, useHistory, Redirect } from 'react-router'
+import { useParams, useHistory } from 'react-router'
+import { Redirect } from 'react-router-dom'
 import {
   Heading,
   Button,
