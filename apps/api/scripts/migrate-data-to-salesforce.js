@@ -69,7 +69,7 @@ const { lang } = require('moment')
 
 const DELAY = 1500
 const RETRIES = 5
-const CONCURRENCY = 30 // 60 has worked before, with some errors. For actual data migration, use a low value, such as 15.
+const CONCURRENCY = 75 // 60 has worked before, with some errors. For actual data migration, use a low value, such as 15.
 
 // const LOCAL_CONTACT_RECORD_TYPE = '0121i000000HMq9AAG'
 // const LOCAL_CONNECT_PROFILE_MENTOR_RECORD_TYPE = '0129X0000001EXBQA2'
@@ -457,7 +457,7 @@ async function insertContactFn(p) {
           .howDidHearAboutRediKey
           ? p.contact.howDidHearAboutRediKey.toUpperCase().replace(/-/g, '_')
           : undefined,
-        First_Point_of_Contact_Other_TP__c:
+        ReDI_First_Point_of_Contact_Other_TP__c:
           p.contact.howDidHearAboutRediOtherText,
       })
     )
@@ -500,7 +500,7 @@ async function insertContactFn(p) {
           .howDidHearAboutRediKey
           ? p.contact.howDidHearAboutRediKey.toUpperCase().replace(/-/g, '_')
           : undefined,
-        First_Point_of_Contact_Other_TP__c:
+        ReDI_First_Point_of_Contact_Other_TP__c:
           p.contact.howDidHearAboutRediOtherText,
       })
     )
