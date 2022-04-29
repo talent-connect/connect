@@ -87,7 +87,7 @@
   position: relative;
 
   &__item {
-    border-radius: 10px;
+    border-radius: 50%;
     background-color: $redi-orange-dark;
     font-family: $family-primary;
     color: $white;
@@ -95,7 +95,7 @@
     min-width: 1rem;
     font-size: 0.65rem;
     text-align: center;
-    padding: 2px 2px;
+    line-height: 1rem;
     letter-spacing: normal;
     position: absolute;
     top: -6px;
