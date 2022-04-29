@@ -1,10 +1,15 @@
 import {
+  useLoadMyProfileQuery,
+  usePatchMyProfileMutation,
+} from '@talent-connect/data-access'
+import {
   Button,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
 import { RedMatch, RedProfile } from '@talent-connect/shared-types'
 import React, { useEffect } from 'react'
 import { Columns, Content } from 'react-bulma-components'
+import { useQueryClient } from 'react-query'
 import { connect } from 'react-redux'
 import { Redirect, useHistory, useParams } from 'react-router-dom'
 import {
@@ -18,9 +23,10 @@ import { LoggedIn } from '../../../components/templates'
 import { matchesFetchStart } from '../../../redux/matches/actions'
 import { getMatches } from '../../../redux/matches/selectors'
 import { RootState } from '../../../redux/types'
+import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
 
 interface RouteParams {
-  profileId: string
+  matchId: string
 }
 interface MentorshipProps {
   currentUser?: RedProfile
@@ -28,11 +34,16 @@ interface MentorshipProps {
 }
 
 const Mentorship = ({ currentUser, matches }: MentorshipProps) => {
-  const { profileId } = useParams<RouteParams>()
+  const loopbackUserId = getAccessTokenFromLocalStorage().userId
+  const queryClient = useQueryClient()
+  const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
+  const patchMyProfileMutation = usePatchMyProfileMutation()
+  const { matchId } = useParams<RouteParams>()
   const history = useHistory()
+
   const currentUserIsMentor = currentUser?.userType === 'mentor'
   const currentUserIsMentee = currentUser?.userType === 'mentee'
-  const currentMatch = matches.find((match) => match.id === profileId)
+  const currentMatch = matches.find((match) => match.id === matchId)
   const profile =
     currentMatch && currentMatch[currentUserIsMentor ? 'mentee' : 'mentor']
   const pageHeading = currentUserIsMentor
@@ -42,6 +53,13 @@ const Mentorship = ({ currentUser, matches }: MentorshipProps) => {
   useEffect(() => {
     if (!profile) matchesFetchStart()
   }, [profile])
+
+  if (!myProfileQuery.isSuccess) return null
+
+  const myProfile = myProfileQuery.data.conProfile
+  const myUserType = myProfile.userType
+
+  console.log(myUserType, myProfile)
 
   if (!profile) return <Redirect to={'/app/mentorships/'} />
 
