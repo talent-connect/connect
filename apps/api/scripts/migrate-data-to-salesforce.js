@@ -719,8 +719,8 @@ async function insertJobseekerProfileFn(p) {
         Is_Hired__c: p.tpJobseekerProfile.isHired,
         Administrator_Internal_Comment__c:
           p.tpJobseekerProfile.administratorInternalComment,
-        Federal_State__c: p.federalState
-          ? p.federalState.toUpperCase().replace(/-/g, '_')
+        Federal_State__c: p.tpJobseekerProfile.federalState
+          ? p.tpJobseekerProfile.federalState.toUpperCase().replace(/-/g, '_')
           : undefined,
 
         CreatedDate: p.tpJobseekerProfile.createdAt,
@@ -793,6 +793,12 @@ async function insertJobseekerProfileFn(p) {
     }
     if (p.tpJobseekerProfile.workingLanguages) {
       for (const langItem of p.tpJobseekerProfile.workingLanguages) {
+        if (langItem.language === 'Tigrinya') {
+          langItem.language = 'Tigrigna'
+        }
+        if (langItem.language === 'Farsi') {
+          langItem.language = 'Persian'
+        }
         await conn.sobject('hed__Contact_Language__c').create({
           hed__Contact__c: p.contact.sfContactId,
           hed__Fluency__c: langItem.proficiencyLevelId,
@@ -1279,6 +1285,21 @@ function buildContact(redUser) {
         }
         if (u.tpJobseekerProfile.currentlyEnrolledInCourse === 'introPython') {
           u.tpJobseekerProfile.currentlyEnrolledInCourse = 'pythonFoundation'
+        }
+        if (
+          u.tpJobseekerProfile.workingLanguages &&
+          u.tpJobseekerProfile.workingLanguages.length > 0
+        ) {
+          u.tpJobseekerProfile.workingLanguages =
+            u.tpJobseekerProfile.workingLanguages.map((languageRecord) => {
+              if (languageRecord.language === 'Tigrinya') {
+                languageRecord.language = 'Tigrigna'
+              }
+              if (languageRecord.language === 'Farsi') {
+                languageRecord.language = 'Persian'
+              }
+              return languageRecord
+            })
         }
       }
       return u
