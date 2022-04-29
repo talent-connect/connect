@@ -10,6 +10,7 @@ import {
   saveAccessTokenToLocalStorage,
   getRedProfileFromLocalStorage,
   purgeAllSessionData,
+  setGraphQlClientAuthHeader,
 } from '../../../services/auth/auth'
 import { Columns, Form, Content, Notification } from 'react-bulma-components'
 import { capitalize } from 'lodash'
@@ -51,6 +52,7 @@ export default function Login() {
           formValues.password
         )
         saveAccessTokenToLocalStorage(accessToken)
+        setGraphQlClientAuthHeader(accessToken)
         const redProfile = await fetchSaveRedProfile(accessToken)
         if (
           redProfile.rediLocation !==
