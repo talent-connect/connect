@@ -736,14 +736,14 @@ export const employmentTypesIdToLabelMap = mapValues(
 )
 
 export const howDidHearAboutRediOptions = {
-  'redi-team-member': 'ReDI Team Member',
-  'redi-student-alumni': 'Redi Student/Alumni',
-  'redi-website': 'ReDI Website',
-  collegue: 'A Colleague',
-  'already-volunteer-at-redi': 'I am a volunteer at ReDI School',
-  'internet-search': 'Internet Search',
-  'social-media': 'Social Media',
-  other: 'Other',
+  REDI_TEAM_MEMBER: 'ReDI Team Member',
+  REDI_STUDENT_ALUMNI: 'Redi Student/Alumni',
+  REDI_WEBSITE: 'ReDI Website',
+  COLLEGUE: 'A Colleague',
+  ALREADY_VOLUNTEER_AT_REDI: 'I am a volunteer at ReDI School',
+  INTERNET_SEARCH: 'Internet Search',
+  SOCIAL_MEDIA: 'Social Media',
+  OTHER: 'Other',
 } as const
 
 export const germanFederalStates = {
