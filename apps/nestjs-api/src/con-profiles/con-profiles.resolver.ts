@@ -1,4 +1,8 @@
-import { BadRequestException, UseGuards } from '@nestjs/common'
+import {
+  BadRequestException,
+  UnauthorizedException,
+  UseGuards,
+} from '@nestjs/common'
 import {
   Args,
   Mutation,
@@ -10,12 +14,11 @@ import {
 import {
   ConMentoringSessionEntityProps,
   ConProfileEntityProps,
-  Entity,
   PatchConProfileInput,
 } from '@talent-connect/common-types'
 import { CurrentUser } from '../auth/current-user.decorator'
+import { CurrentUserInfo } from '../auth/current-user.interface'
 import { GqlJwtAuthGuard } from '../auth/gql-jwt-auth.guard'
-import { JwtAuthGuard } from '../auth/jwt-auth.guard'
 import { ConMentoringSessionsService } from '../con-mentoring-sessions/con-mentoring-sessions.service'
 import { FindOneConProfileArgs } from './args/find-one-con-profile.args'
 import { ConProfilesService } from './con-profiles.service'
@@ -63,6 +66,16 @@ export class ConProfilesResolver {
       return entity.props
     }
     throw new BadRequestException('Must provide either loopbackUserId or id')
+  }
+
+  @Query(() => ConProfileEntityProps, {
+    name: 'myConProfile',
+  })
+  async findCurrentUser(@CurrentUser() currentUser: CurrentUserInfo) {
+    const entity = await this.conProfilesService.findOneByLoopbackUserId(
+      currentUser.userId
+    )
+    return entity.props
   }
 
   // @Query(() => ConProfileEntity, { name: 'conProfile' })
