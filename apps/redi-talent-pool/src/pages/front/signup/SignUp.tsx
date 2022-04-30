@@ -25,29 +25,20 @@ import TpTeaser from '../../../components/molecules/TpTeaser'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import { signUpCompany, signUpJobseeker } from '../../../services/api/api'
 import { history } from '../../../services/history/history'
+import { objectEntries } from '@talent-connect/typescript-utilities'
 
-// TODO: replace with proper dropdown
-const coursesWithAlumniDeduped = [
-  ...COURSES.filter((c) => {
-    return !c.id.includes('alumni')
-  }),
-  {
-    id: 'alumni',
-    label: `I'm a ReDI School alumni (I took a course before)`,
-    location: 'berlin',
-  },
-]
+const formRediLocations = objectEntries(REDI_LOCATION_NAMES).map(
+  ([id, label]) => ({
+    value: id,
+    label,
+  })
+)
 
-const formCourses = coursesWithAlumniDeduped.map((course) => {
-  const label =
-    course.id === 'alumni'
-      ? course.label
-      : `(ReDI ${REDI_LOCATION_NAMES[course.location]}) ${course.label}`
-  return {
-    value: course.id,
-    label: label,
-  }
-})
+const formCourses = COURSES.map((course) => ({
+  value: course.id,
+  label: course.label,
+  location: course.location,
+}))
 
 const howDidHearAboutRediOptionsEntries = Object.entries(
   howDidHearAboutRediOptions
@@ -75,6 +66,10 @@ function buildValidationSchema(signupType: SignUpPageType['type']) {
   if (signupType === 'jobseeker') {
     return Yup.object({
       ...baseSchema,
+      rediLocation: Yup.string()
+        .required()
+        .oneOf(formRediLocations.map((loc) => loc.value))
+        .label('Current ReDI Location'),
       currentlyEnrolledInCourse: Yup.string()
         .required()
         .oneOf(COURSES.map((level) => level.id))
@@ -275,10 +270,23 @@ export default function SignUp() {
 
             {type === 'jobseeker' && (
               <FormSelect
+                label="Current ReDI Location"
+                name="rediLocation"
+                placeholder="Choose your ReDI Location"
+                items={formRediLocations}
+                {...formik}
+              />
+            )}
+
+            {type === 'jobseeker' && (
+              <FormSelect
                 label="Current ReDI Course"
                 name="currentlyEnrolledInCourse"
                 placeholder="Choose your ReDI Course"
-                items={formCourses}
+                disabled={!formik.values.rediLocation}
+                items={formCourses.filter(
+                  (course) => course.location === formik.values.rediLocation
+                )}
                 {...formik}
               />
             )}
