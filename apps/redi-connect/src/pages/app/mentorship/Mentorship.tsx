@@ -28,10 +28,6 @@ import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
 export interface MentorshipRouteParams {
   matchId: string
 }
-interface MentorshipProps {
-  currentUser?: RedProfile
-  matches: RedMatch[]
-}
 
 function Mentorship() {
   const myAcceptedMatchesQuery = useMyMatchesQuery({
