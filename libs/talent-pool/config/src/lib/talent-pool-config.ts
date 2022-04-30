@@ -765,23 +765,3 @@ export const germanFederalStates = {
   THUERINGEN: 'Thüringen',
   OUTSIDE_GERMANY: 'Outside Germany',
 } as const
-
-export const germanFederalStates = {
-  'baden-wuerttemberg': 'Baden-Württemberg',
-  bayern: 'Bayern',
-  berlin: 'Berlin',
-  brandenburg: 'Brandenburg',
-  bremen: 'Bremen',
-  hamburg: 'Hamburg',
-  hessen: 'Hessen',
-  'mecklenburg-vorpommern': 'Mecklenburg-Vorpommern',
-  niedersachsen: 'Niedersachsen',
-  'nordrhein-westfalen': 'Nordrhein-Westfalen',
-  'rheinland-pfalz': 'Rheinland-Pfalz',
-  saarland: 'Saarland',
-  sachsen: 'Sachsen',
-  'sachsen-anhalt': 'Sachsen-Anhalt',
-  'schleswig-holstein': 'Schleswig-Holstein',
-  thueringen: 'Thüringen',
-  'outside-germany': 'Outside Germany',
-} as const
