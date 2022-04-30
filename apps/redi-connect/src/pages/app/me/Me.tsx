@@ -52,8 +52,6 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
 
   const conProfile = myProfileResult.data.conProfile
 
-  console.log(conProfile)
-
   const userIsMentee = conProfile.userType === 'MENTEE'
   const userIsMentor = conProfile.userType === 'MENTOR'
 

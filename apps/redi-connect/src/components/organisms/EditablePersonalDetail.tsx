@@ -21,7 +21,6 @@ const formGenders = objectEntries(GENDERS).map(([value, label]) => ({
   value,
   label,
 }))
-console.log(formGenders)
 export interface PersonalDetailFormValues {
   gender: string
   birthDate: Date | null

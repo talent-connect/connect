@@ -1,24 +1,28 @@
-import React from 'react'
-import { Redirect } from 'react-router-dom'
-import { Columns, Content } from 'react-bulma-components'
-import LoggedIn from '../../../components/templates/LoggedIn'
-import { ProfileCard } from '../../../components/organisms'
-import { RootState } from '../../../redux/types'
-import { getMatches } from '../../../redux/matches/selectors'
-import { connect } from 'react-redux'
-import { RedMatch } from '@talent-connect/shared-types'
+import {
+  MentorshipMatchStatus,
+  useMyMatchesQuery,
+} from '@talent-connect/data-access'
 import { Heading } from '@talent-connect/shared-atomic-design-components'
+import React from 'react'
+import { Columns, Content } from 'react-bulma-components'
+import { Redirect } from 'react-router-dom'
+import { ProfileCard } from '../../../components/organisms'
+import LoggedIn from '../../../components/templates/LoggedIn'
 
-interface Props {
-  matches: RedMatch[]
-}
+function MentorshipList() {
+  const myMatchesQuery = useMyMatchesQuery({
+    status: MentorshipMatchStatus.Accepted,
+  })
 
-function MentorshipList({ matches }: Props) {
-  if (matches.length === 1)
-    return <Redirect to={`/app/mentorships/${matches[0].id}`} />
+  if (!myMatchesQuery.isSuccess) return null
+
+  const myMatches = myMatchesQuery.data.conMentorshipMatches
+
+  if (myMatches.length === 1)
+    return <Redirect to={`/app/mentorships/${myMatches[0].id}`} />
 
   const subHeading =
-    matches.length === 0 ? (
+    myMatches.length === 0 ? (
       <>
         You currently have no active mentorship. Once a mentee applies to you,
         we will inform you via email and you will see their application in the
@@ -26,7 +30,7 @@ function MentorshipList({ matches }: Props) {
       </>
     ) : (
       <>
-        You currently mentor <strong>{matches.length} mentees</strong>.
+        You currently mentor <strong>{myMatches.length} mentees</strong>.
       </>
     )
 
@@ -36,7 +40,7 @@ function MentorshipList({ matches }: Props) {
         My mentees
       </Heading>
       <Content
-        italic={matches.length === 0}
+        italic={myMatches.length === 0}
         size="medium"
         className="double-bs"
         renderAs="p"
@@ -45,7 +49,7 @@ function MentorshipList({ matches }: Props) {
         {subHeading}
       </Content>
       <Columns>
-        {matches.map((match: RedMatch) => (
+        {myMatches.map((match) => (
           <Columns.Column size={4} key={match.id}>
             <ProfileCard
               linkTo={`/app/mentorships/${match.id}`}
@@ -58,8 +62,4 @@ function MentorshipList({ matches }: Props) {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  matches: getMatches(state.matches),
-})
-
-export default connect(mapStateToProps, null)(MentorshipList)
+export default MentorshipList

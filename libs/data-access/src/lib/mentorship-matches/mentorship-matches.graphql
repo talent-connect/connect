@@ -1,0 +1,52 @@
+query myMatches($status: MentorshipMatchStatus) {
+  conMentorshipMatches(status: $status) {
+    id
+    applicationText
+    expectationText
+    mentee {
+      id
+      firstName
+      lastName
+
+      languages
+      categories
+      rediLocation
+      profileAvatarImageS3Key
+    }
+  }
+}
+
+query findMatch($id: ID!) {
+  conMentorshipMatch(id: $id) {
+    id
+    applicationText
+    expectationText
+    status
+    mentee {
+      ...conProfileFields
+    }
+    mentor {
+      ...conProfileFields
+    }
+    mentoringSessions {
+      id
+      date
+      minuteDuration
+    }
+  }
+}
+
+fragment conProfileFields on ConProfile {
+  _contactId
+  id
+  firstName
+  lastName
+  languages
+  categories
+  rediLocation
+  profileAvatarImageS3Key
+  email
+  telephoneNumber
+  linkedInProfileUrl
+  slackUsername
+}

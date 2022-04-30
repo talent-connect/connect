@@ -1,6 +1,11 @@
-import { UseGuards } from '@nestjs/common'
-import { Query, Resolver } from '@nestjs/graphql'
-import { ConMentoringSessionEntityProps } from '@talent-connect/common-types'
+import { UnauthorizedException, UseGuards } from '@nestjs/common'
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
+import {
+  ConMentoringSessionEntityProps,
+  CreateConMentoringSessionInput,
+} from '@talent-connect/common-types'
+import { CurrentUser } from '../auth/current-user.decorator'
+import { CurrentUserInfo } from '../auth/current-user.interface'
 import { GqlJwtAuthGuard } from '../auth/gql-jwt-auth.guard'
 import { ConMentoringSessionsService } from './con-mentoring-sessions.service'
 
@@ -11,15 +16,22 @@ export class ConMentoringSessionsResolver {
     private readonly conMentoringSessionsService: ConMentoringSessionsService
   ) {}
 
-  // @Mutation(() => ConMentoringSession)
-  // createConMentoringSession(
-  //   @Args('createConMentoringSessionInput')
-  //   createConMentoringSessionInput: CreateConMentoringSessionInput
-  // ) {
-  //   return this.conMentoringSessionsService.create(
-  //     createConMentoringSessionInput
-  //   )
-  // }
+  @Mutation(() => ConMentoringSessionEntityProps, {
+    name: 'createConMentoringSession',
+  })
+  async createConMentoringSession(
+    @CurrentUser() currentUser: CurrentUserInfo,
+    @Args('createConMentoringSessionInput')
+    input: CreateConMentoringSessionInput
+  ) {
+    console.log('input', input)
+    const insertedEntity = await this.conMentoringSessionsService.create(
+      input,
+      currentUser
+    )
+
+    return insertedEntity.props
+  }
 
   //! TODO: Add auth
   @Query(() => [ConMentoringSessionEntityProps], {

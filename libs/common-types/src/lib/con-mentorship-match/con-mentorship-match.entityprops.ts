@@ -1,5 +1,6 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql'
 import { EntityProps } from '../base-interfaces-types-classes'
+import { ConMentoringSessionEntityProps } from '../con-mentoring-session/con-mentoring-session.entityprops'
 import { ConProfileEntityProps } from '../con-profile'
 import { MentorshipMatchStatus } from './enums'
 
@@ -28,6 +29,9 @@ export class ConMentorshipMatchEntityProps implements EntityProps {
   @Field((type) => ConProfileEntityProps)
   mentee: ConProfileEntityProps
   menteeId: string
+
+  @Field((type) => [ConMentoringSessionEntityProps])
+  mentoringSessions: ConMentoringSessionEntityProps[]
 
   createdAt: Date
   updatedAt: Date

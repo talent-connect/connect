@@ -17,6 +17,8 @@ import { SalesforceApiRepository } from './salesforce-api.repository'
     SalesforceApiConProfilesService,
     SalesforceApiConMentoringSessionsService,
     SalesforceApiConMentorshipMatchesService,
+    //! TODO: this was hack - remote this export
+    SalesforceApiRepository,
   ],
 })
 export class SalesforceApiModule {}

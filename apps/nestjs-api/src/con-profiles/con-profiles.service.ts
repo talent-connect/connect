@@ -17,8 +17,8 @@ export class ConProfilesService {
   //   return 'This action adds a new conProfile'
   // }
 
-  async findAll(conditions: any = {}) {
-    const persistedConProfiles = await this.api.getAllConProfiles(conditions)
+  async findAll(filter: any = {}) {
+    const persistedConProfiles = await this.api.getAllConProfiles(filter)
 
     const entities: ConProfileEntity[] = persistedConProfiles.map((source) =>
       this.mapper.fromPersistence(source)

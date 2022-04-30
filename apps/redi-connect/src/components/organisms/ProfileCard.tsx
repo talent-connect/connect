@@ -14,9 +14,22 @@ import './ProfileCard.scss'
 
 import { RedProfile } from '@talent-connect/shared-types'
 import { ReadMentoringTopics } from '../molecules'
+import { ConProfile } from '@talent-connect/data-access'
+
+type ConProfileProps = Pick<
+  ConProfile,
+  | 'id'
+  | 'firstName'
+  | 'lastName'
+  | 'languages'
+  | 'categories'
+  | 'rediLocation'
+  | 'profileAvatarImageS3Key'
+>
 
 interface ProfileCardProps {
-  profile: RedProfile
+  //! TODO: remove RedProfile
+  profile: RedProfile | ConProfileProps
   linkTo?: string
   isFavorite?: boolean
   toggleFavorite?: (id: string) => void
@@ -47,7 +60,7 @@ const ProfileCard = ({
   const handleLinkTo = () => linkTo && history.push(linkTo)
 
   const imgSrc = profileAvatarImageS3Key
-    ? AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
+    ? profileAvatarImageS3Key
     : placeholderImage
 
   return (

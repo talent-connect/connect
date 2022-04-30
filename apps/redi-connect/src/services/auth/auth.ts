@@ -29,6 +29,7 @@ export const saveRedProfileToLocalStorage = (redProfile: RedProfile) => {
   window.localStorage.setItem('redProfile', JSON.stringify(redProfile))
 }
 
+// TODO: add | undefined here...
 export const getAccessTokenFromLocalStorage = (): AccessToken =>
   JSON.parse(window.localStorage.getItem('accessToken') as string)
 

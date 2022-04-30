@@ -19,6 +19,8 @@ export type ConMentoringSession = {
   createdAt: Scalars['DateTime'];
   date: Scalars['DateTime'];
   id: Scalars['ID'];
+  menteeId: Scalars['ID'];
+  mentorId: Scalars['ID'];
   minuteDuration: MentoringSessionDuration;
   updatedAt: Scalars['DateTime'];
 };
@@ -41,6 +43,7 @@ export type ConMentorshipMatch = {
   mentorId: Scalars['String'];
   mentorMessageOnComplete?: Maybe<Scalars['String']>;
   mentorReplyMessageOnAccept?: Maybe<Scalars['String']>;
+  mentoringSessions: Array<ConMentoringSession>;
   status: MentorshipMatchStatus;
   updatedAt: Scalars['DateTime'];
 };
@@ -239,6 +242,12 @@ export enum ConnectProfileStatus {
   Rejected = 'REJECTED'
 }
 
+export type CreateConMentoringSessionInput = {
+  date: Scalars['DateTime'];
+  menteeId: Scalars['ID'];
+  minuteDuration: MentoringSessionDuration;
+};
+
 export enum EducationLevel {
   Apprenticeship = 'apprenticeship',
   HighSchool = 'highSchool',
@@ -323,7 +332,13 @@ export enum MentorshipMatchStatus {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createConMentoringSession: ConMentoringSession;
   patchConProfile: ConProfile;
+};
+
+
+export type MutationCreateConMentoringSessionArgs = {
+  createConMentoringSessionInput: CreateConMentoringSessionInput;
 };
 
 
@@ -341,9 +356,20 @@ export enum OccupationCategory {
 export type Query = {
   __typename?: 'Query';
   conMentoringSessions: Array<ConMentoringSession>;
+  conMentorshipMatch: ConMentorshipMatch;
   conMentorshipMatches: Array<ConMentorshipMatch>;
   conProfile: ConProfile;
   conProfiles: Array<ConProfile>;
+};
+
+
+export type QueryConMentorshipMatchArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryConMentorshipMatchesArgs = {
+  status?: InputMaybe<MentorshipMatchStatus>;
 };
 
 

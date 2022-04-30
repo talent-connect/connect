@@ -51,14 +51,14 @@ export class SalesforceApiRepository {
       const {
         objectName,
         objectFields,
-        conditions = {},
+        filter = {},
         limit = 5000,
         offset = 0,
       } = task
 
       let query = this.connection
         .sobject(objectName)
-        .find(conditions, objectFields, { limit, offset })
+        .find(filter, objectFields, { limit, offset })
       const results = await query.execute({
         autoFetch: true,
         maxFetch: 10000,
@@ -79,7 +79,20 @@ export class SalesforceApiRepository {
     })
   }
 
-  async updateRecord<T>(objectName: string, record: T): Promise<T> {
+  async createRecord<T>(
+    objectName: string,
+    record: T
+  ): Promise<{ id: string }> {
+    console.log(record)
+    await this.connect()
+    const createResult = this.connection.sobject(objectName).create(record)
+    return createResult
+  }
+
+  async updateRecord<T>(
+    objectName: string,
+    record: T
+  ): Promise<{ id: string }> {
     await this.connect()
     const updateResult = this.connection.sobject(objectName).update(record)
     return updateResult
@@ -89,7 +102,7 @@ export class SalesforceApiRepository {
 interface FindRecordsParams {
   objectName: string
   objectFields: string[]
-  conditions?: any
+  filter?: any
   limit?: number
   offset?: number
 }

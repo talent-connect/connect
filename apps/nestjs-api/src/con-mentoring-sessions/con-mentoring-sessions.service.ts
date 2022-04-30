@@ -1,8 +1,13 @@
-import { Injectable } from '@nestjs/common'
-import { ConMentoringSessionEntity } from '@talent-connect/common-types'
+import { Injectable, NotFoundException } from '@nestjs/common'
+import { ObjectType } from '@nestjs/graphql'
+import {
+  ConMentoringSessionEntity,
+  ConMentoringSessionEntityProps,
+  CreateConMentoringSessionInput,
+} from '@talent-connect/common-types'
+import { CurrentUser } from '../auth/current-user.decorator'
+import { CurrentUserInfo } from '../auth/current-user.interface'
 import { SalesforceApiConMentoringSessionsService } from '../salesforce-api/salesforce-api-con-mentoring-sessions.service'
-import { CreateConMentoringSessionInput } from './dto/create-con-mentoring-session.input'
-import { UpdateConMentoringSessionInput } from './dto/update-con-mentoring-session.input'
 import { ConMentoringSessionMapper } from './mappers/con-mentoring-session.mapper'
 
 @Injectable()
@@ -12,13 +17,23 @@ export class ConMentoringSessionsService {
     private readonly mapper: ConMentoringSessionMapper
   ) {}
 
-  create(createConMentoringSessionInput: CreateConMentoringSessionInput) {
-    return 'This action adds a new conMentoringSession'
+  // TODO: think about - can this method get user not from the resolver?
+  async create(input: CreateConMentoringSessionInput, user: CurrentUserInfo) {
+    const props = new ConMentoringSessionEntityProps()
+    Object.assign(props, input)
+    props.mentorId = user.contactId
+    const entityToPersist = ConMentoringSessionEntity.create(props)
+    const persistedObject = await this.api.createConMentoringSession(
+      this.mapper.toPersistence(entityToPersist)
+    )
+    const persistedEntity = this.mapper.fromPersistence(persistedObject)
+
+    return persistedEntity
   }
 
-  async findAll(conditions: any = {}) {
+  async findAll(filter: any = {}) {
     const persistedConMentoringSessions =
-      await this.api.getAllConMentoringSessions(conditions)
+      await this.api.getAllConMentoringSessions(filter)
 
     const entities: ConMentoringSessionEntity[] =
       persistedConMentoringSessions.map((source) =>
@@ -28,18 +43,14 @@ export class ConMentoringSessionsService {
     return entities
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} conMentoringSession`
-  }
-
-  update(
-    id: number,
-    updateConMentoringSessionInput: UpdateConMentoringSessionInput
-  ) {
-    return `This action updates a #${id} conMentoringSession`
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} conMentoringSession`
+  async findOneById(id: number) {
+    const entities = await this.findAll({
+      Id: id,
+    })
+    if (entities.length > 0) {
+      return entities[0]
+    } else {
+      throw new NotFoundException('ConMentoringSession not found')
+    }
   }
 }

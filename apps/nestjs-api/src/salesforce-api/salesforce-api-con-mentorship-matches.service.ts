@@ -7,13 +7,13 @@ export class SalesforceApiConMentorshipMatchesService {
   constructor(private readonly repository: SalesforceApiRepository) {}
   // constructor(private readonly repository: SalesforceApiRepository) {}
   async getAllConMentorshipMatches(
-    conditions: any = {}
+    filter: any = {}
   ): Promise<ConMentorshipMatchPersistence[]> {
     const rawRecords = await this.repository.findRecordsOfObject({
       objectName: ConMentorshipMatchPersistence.metadata.SALESFORCE_OBJECT_NAME,
       objectFields:
         ConMentorshipMatchPersistence.metadata.SALESFORCE_OBJECT_FIELDS,
-      conditions,
+      filter,
     })
     const conMentorshipMatchesPersistence = rawRecords.map((rawRecord) =>
       ConMentorshipMatchPersistence.create(rawRecord)

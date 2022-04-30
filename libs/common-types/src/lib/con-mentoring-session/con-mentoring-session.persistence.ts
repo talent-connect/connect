@@ -22,6 +22,8 @@ export class ConMentoringSessionPersistence extends Persistence<ConMentoringSess
       'Id',
       'Date__c',
       'Durations_in_Minutes__c',
+      'Mentee__c',
+      'Mentor__c',
       'CreatedDate',
       'LastModifiedDate',
     ],

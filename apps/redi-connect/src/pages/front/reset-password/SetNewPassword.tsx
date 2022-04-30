@@ -53,19 +53,14 @@ export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
       try {
         accessToken = JSON.parse(accessTokenStr)
         saveAccessTokenToLocalStorage(accessToken)
-        console.log('savetoken')
       } catch (err) {
-        console.log('savetoken errp')
         return setErrorMsg(
           'Sorry, there seems to have been an error. Please try to reset your password again, or contact career@redi-school.org for assistance.'
         )
       }
       try {
         await fetchSaveRedProfile(accessToken)
-        console.log('saveprofile')
       } catch (err) {
-        console.log('saveprofile error')
-
         return setErrorMsg(
           'Sorry, the link you used seems to have expired. Please contact career@redi-school.org to receive a new one.'
         )
