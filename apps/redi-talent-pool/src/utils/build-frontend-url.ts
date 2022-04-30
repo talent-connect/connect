@@ -3,13 +3,13 @@
 import { RediLocation } from '@talent-connect/shared-types'
 
 export function buildFrontendUrl(env: string, rediLocation: RediLocation) {
-  if (env === 'production' && rediLocation === 'berlin') {
+  if (env === 'production' && rediLocation === 'BERLIN') {
     return 'https://connect.berlin.redi-school.org'
-  } else if (env === 'production' && rediLocation === 'hamburg') {
+  } else if (env === 'production' && rediLocation === 'HAMBURG') {
     return 'https://connect.hamburg.redi-school.org'
-  } else if (env === 'production' && rediLocation === 'munich') {
+  } else if (env === 'production' && rediLocation === 'MUNICH') {
     return 'https://connect.munich.redi-school.org'
-  } else if (env === 'production' && rediLocation === 'nrw') {
+  } else if (env === 'production' && rediLocation === 'NRW') {
     return 'https://connect.nrw.redi-school.org'
   } else if (env === 'demonstration') {
     return 'https://app.demo.connect.redi-school.org'
