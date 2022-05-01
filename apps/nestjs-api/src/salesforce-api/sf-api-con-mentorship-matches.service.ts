@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common'
 import { ConMentorshipMatchPersistence } from '@talent-connect/common-types'
-import { SalesforceApiRepository } from './salesforce-api.repository'
+import { SfApiRepository } from './sf-api.repository'
 
 @Injectable()
-export class SalesforceApiConMentorshipMatchesService {
-  constructor(private readonly repository: SalesforceApiRepository) {}
+export class SfApiConMentorshipMatchesService {
+  constructor(private readonly repository: SfApiRepository) {}
   // constructor(private readonly repository: SalesforceApiRepository) {}
   async getAllConMentorshipMatches(
     filter: any = {}

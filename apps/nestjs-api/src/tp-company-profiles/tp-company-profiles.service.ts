@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common'
 import { TpCompanyProfileEntity } from '@talent-connect/common-types'
-import { SalesforceApiTpCompanyProfilesService } from '../salesforce-api/salesforce-api-tp-company-profiles.service'
+import { SfApiTpCompanyProfilesService } from '../salesforce-api/sf-api-tp-company-profiles.service'
 import { TpCompanyProfileMapper } from './mappers/tp-company-profile.mapper'
 
 @Injectable()
 export class TpCompanyProfilesService {
   constructor(
-    private readonly sfService: SalesforceApiTpCompanyProfilesService,
+    private readonly sfService: SfApiTpCompanyProfilesService,
     private readonly mapper: TpCompanyProfileMapper
   ) {}
 

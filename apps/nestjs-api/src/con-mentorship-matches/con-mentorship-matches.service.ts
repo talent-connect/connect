@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { ConMentorshipMatchEntity } from '@talent-connect/common-types'
-import { SalesforceApiConMentorshipMatchesService } from '../salesforce-api/salesforce-api-con-mentorship-matches.service'
+import { SfApiConMentorshipMatchesService } from '../salesforce-api/sf-api-con-mentorship-matches.service'
 import { CreateConMentorshipMatchInput } from './dto/create-con-mentorship-match.input'
 import { UpdateConMentorshipMatchInput } from './dto/update-con-mentorship-match.input'
 import { ConMentorshipMatchMapper } from './mappers/con-mentorship-match.mapper'
@@ -8,7 +8,7 @@ import { ConMentorshipMatchMapper } from './mappers/con-mentorship-match.mapper'
 @Injectable()
 export class ConMentorshipMatchesService {
   constructor(
-    private readonly api: SalesforceApiConMentorshipMatchesService,
+    private readonly api: SfApiConMentorshipMatchesService,
     private readonly mapper: ConMentorshipMatchMapper
   ) {}
 
@@ -17,21 +17,19 @@ export class ConMentorshipMatchesService {
   }
 
   async findAll(filter: any = {}) {
-    const persistedConMentorshipMatches =
-      await this.api.getAllConMentorshipMatches(filter)
+    const persistedEntities = await this.api.getAllConMentorshipMatches(filter)
 
-    const entities: ConMentorshipMatchEntity[] =
-      persistedConMentorshipMatches.map((source) =>
-        this.mapper.fromPersistence(source)
-      )
+    const entities: ConMentorshipMatchEntity[] = persistedEntities.map(
+      (source) => this.mapper.fromPersistence(source)
+    )
 
     return entities
   }
 
   async findOne(filter: any = {}) {
-    const persistedConMentorshipMatches = await this.findAll(filter)
-    if (persistedConMentorshipMatches.length > 0) {
-      return persistedConMentorshipMatches[0]
+    const persistedEntities = await this.findAll(filter)
+    if (persistedEntities.length > 0) {
+      return persistedEntities[0]
     } else {
       throw new NotFoundException('ConMentorshipMatch not found')
     }

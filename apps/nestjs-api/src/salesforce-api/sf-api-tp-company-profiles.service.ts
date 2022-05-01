@@ -5,11 +5,11 @@ import {
   ConProfilePersistence,
 } from '@talent-connect/common-types'
 import { omit } from 'lodash'
-import { SalesforceApiRepository } from './salesforce-api.repository'
+import { SfApiRepository } from './sf-api.repository'
 
 @Injectable()
-export class SalesforceApiTpCompanyProfilesService {
-  constructor(private readonly repository: SalesforceApiRepository) {}
+export class SfApiTpCompanyProfilesService {
+  constructor(private readonly repository: SfApiRepository) {}
   // constructor(private readonly repository: SalesforceApiRepository) {}
   async getAllTpEnabledAccounts(
     filter: any = {}

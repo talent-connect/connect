@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common'
 import { ConProfilePersistence } from '@talent-connect/common-types'
 import { omit } from 'lodash'
-import { SalesforceApiRepository } from './salesforce-api.repository'
+import { SfApiRepository } from './sf-api.repository'
 
 @Injectable()
-export class SalesforceApiConProfilesService {
-  constructor(private readonly repository: SalesforceApiRepository) {}
+export class SfApiConProfilesService {
+  constructor(private readonly repository: SfApiRepository) {}
   // constructor(private readonly repository: SalesforceApiRepository) {}
   async getAllConProfiles(filter: any = {}): Promise<ConProfilePersistence[]> {
     const rawRecords = await this.repository.findRecordsOfObject({

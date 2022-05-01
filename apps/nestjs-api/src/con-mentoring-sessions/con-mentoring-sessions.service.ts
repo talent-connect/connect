@@ -7,13 +7,13 @@ import {
 } from '@talent-connect/common-types'
 import { CurrentUser } from '../auth/current-user.decorator'
 import { CurrentUserInfo } from '../auth/current-user.interface'
-import { SalesforceApiConMentoringSessionsService } from '../salesforce-api/salesforce-api-con-mentoring-sessions.service'
+import { SfApiConMentoringSessionsService } from '../salesforce-api/sf-api-con-mentoring-sessions.service'
 import { ConMentoringSessionMapper } from './mappers/con-mentoring-session.mapper'
 
 @Injectable()
 export class ConMentoringSessionsService {
   constructor(
-    private readonly api: SalesforceApiConMentoringSessionsService,
+    private readonly api: SfApiConMentoringSessionsService,
     private readonly mapper: ConMentoringSessionMapper
   ) {}
 

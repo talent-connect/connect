@@ -93,12 +93,12 @@ export class ConMentorshipMatchesResolver {
     @Parent() conMentorshipMatch: ConMentorshipMatchEntityProps
   ): Promise<ConProfileEntityProps> {
     const { menteeId } = conMentorshipMatch
-    const conProfiles = await this.conProfilesService.findAll({
+    const entities = await this.conProfilesService.findAll({
       'Contact__r.Id': menteeId,
     })
-    const conProfile = conProfiles[0]
+    const entity = entities[0]
 
-    return conProfile.props
+    return entity.props
   }
 
   //! TODO: Add auth
@@ -107,12 +107,12 @@ export class ConMentorshipMatchesResolver {
     @Parent() conMentorshipMatch: ConMentorshipMatchEntityProps
   ): Promise<ConProfileEntityProps> {
     const { mentorId } = conMentorshipMatch
-    const conProfiles = await this.conProfilesService.findAll({
+    const entities = await this.conProfilesService.findAll({
       'Contact__r.Id': mentorId,
     })
-    const conProfile = conProfiles[0]
+    const entity = entities[0]
 
-    return conProfile.props
+    return entity.props
   }
 
   @ResolveField((of) => [ConMentoringSessionEntityProps])

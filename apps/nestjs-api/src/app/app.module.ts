@@ -6,7 +6,7 @@ import { AuthModule } from '../auth/auth.module'
 import { ConMentoringSessionsModule } from '../con-mentoring-sessions/con-mentoring-sessions.module'
 import { ConMentorshipMatchesModule } from '../con-mentorship-matches/con-mentorship-matches.module'
 import { ConProfilesModule } from '../con-profiles/con-profiles.module'
-import { SalesforceApiModule } from '../salesforce-api/salesforce-api.module'
+import { SfApiModule } from '../salesforce-api/sf-api.module'
 import { TpCompanyProfilesModule } from '../tp-company-profiles/tp-company-profiles.module'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
@@ -26,7 +26,7 @@ import { AppService } from './app.service'
     ConMentoringSessionsModule,
     ConMentorshipMatchesModule,
     TpCompanyProfilesModule,
-    SalesforceApiModule,
+    SfApiModule,
   ],
   controllers: [AppController],
   providers: [AppService],

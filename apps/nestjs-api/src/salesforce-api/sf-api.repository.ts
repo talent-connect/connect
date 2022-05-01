@@ -5,7 +5,7 @@ import { update } from 'lodash'
 const async = require('async')
 
 @Injectable()
-export class SalesforceApiRepository {
+export class SfApiRepository {
   private loginUrl: string
   private username: string
   private password: string

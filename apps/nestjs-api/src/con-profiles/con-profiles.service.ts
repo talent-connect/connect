@@ -3,13 +3,13 @@ import {
   ConProfileEntity,
   PatchConProfileInput,
 } from '@talent-connect/common-types'
-import { SalesforceApiConProfilesService } from '../salesforce-api/salesforce-api-con-profiles.service'
+import { SfApiConProfilesService } from '../salesforce-api/sf-api-con-profiles.service'
 import { ConProfileMapper } from './mappers/con-profile.mapper'
 
 @Injectable()
 export class ConProfilesService {
   constructor(
-    private readonly api: SalesforceApiConProfilesService,
+    private readonly api: SfApiConProfilesService,
     private readonly mapper: ConProfileMapper
   ) {}
 
@@ -18,9 +18,9 @@ export class ConProfilesService {
   // }
 
   async findAll(filter: any = {}) {
-    const persistedConProfiles = await this.api.getAllConProfiles(filter)
+    const persistedEntities = await this.api.getAllConProfiles(filter)
 
-    const entities: ConProfileEntity[] = persistedConProfiles.map((source) =>
+    const entities: ConProfileEntity[] = persistedEntities.map((source) =>
       this.mapper.fromPersistence(source)
     )
 

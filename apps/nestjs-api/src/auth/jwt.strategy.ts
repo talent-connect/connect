@@ -2,14 +2,14 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { PassportStrategy } from '@nestjs/passport'
 import { ExtractJwt, Strategy } from 'passport-jwt'
-import { SalesforceApiRepository } from '../salesforce-api/salesforce-api.repository'
+import { SfApiRepository } from '../salesforce-api/sf-api.repository'
 import { CurrentUserInfo } from './current-user.interface'
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
     private readonly configService: ConfigService,
-    private readonly salesforceRepository: SalesforceApiRepository
+    private readonly salesforceRepository: SfApiRepository
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
