@@ -14,6 +14,12 @@ export type Scalars = {
   DateTime: any;
 };
 
+export enum CompanyTalentPoolState {
+  DraftingProfile = 'DRAFTING_PROFILE',
+  ProfileApproved = 'PROFILE_APPROVED',
+  SubmittedForReview = 'SUBMITTED_FOR_REVIEW'
+}
+
 export type ConMentoringSession = {
   __typename?: 'ConMentoringSession';
   createdAt: Scalars['DateTime'];
@@ -360,6 +366,8 @@ export type Query = {
   conMentorshipMatches: Array<ConMentorshipMatch>;
   conProfile: ConProfile;
   conProfiles: Array<ConProfile>;
+  myConProfile: ConProfile;
+  tpCompanyProfiles: Array<TpCompanyProfile>;
 };
 
 
@@ -428,6 +436,24 @@ export enum RediLocation {
   Munich = 'MUNICH',
   Nrw = 'NRW'
 }
+
+export type TpCompanyProfile = {
+  __typename?: 'TpCompanyProfile';
+  about?: Maybe<Scalars['String']>;
+  companyName: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  industry?: Maybe<Scalars['String']>;
+  isProfileVisibleToJobseekers: Scalars['Boolean'];
+  linkedInUrl?: Maybe<Scalars['String']>;
+  location?: Maybe<Scalars['String']>;
+  phoneNumber?: Maybe<Scalars['String']>;
+  profileAvatarImageS3Key?: Maybe<Scalars['String']>;
+  state: CompanyTalentPoolState;
+  tagline?: Maybe<Scalars['String']>;
+  updatedAt: Scalars['DateTime'];
+  website?: Maybe<Scalars['String']>;
+};
 
 export type UpdateConProfileInput = {
   birthDate?: InputMaybe<Scalars['DateTime']>;

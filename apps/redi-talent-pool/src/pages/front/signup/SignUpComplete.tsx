@@ -1,7 +1,7 @@
 import { Button } from '@talent-connect/shared-atomic-design-components'
 import { UserType } from '@talent-connect/shared-types'
 import { Columns, Content, Form } from 'react-bulma-components'
-import { useHistory, useParams } from 'react-router'
+import { useHistory, useParams } from 'react-router-dom'
 import AccountOperation from '../../../components/templates/AccountOperation'
 
 type RouteParams = {

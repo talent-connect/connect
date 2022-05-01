@@ -1,5 +1,4 @@
-export * from './mentoring-sessions'
-export * from './mentorship-matches'
-export * from './my-con-profile'
+export * from './con'
+export * from './tp'
 export * from './graphql-client'
 export * from './types'

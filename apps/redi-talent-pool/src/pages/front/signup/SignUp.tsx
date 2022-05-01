@@ -1,11 +1,4 @@
-import React, { useMemo, useState } from 'react'
-import { useParams } from 'react-router'
-import { Link } from 'react-router-dom'
-import omit from 'lodash/omit'
-import * as Yup from 'yup'
-import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
-import { Columns, Content, Form, Notification } from 'react-bulma-components'
-
+import { useListAllTpCompanyNamesQuery } from '@talent-connect/data-access'
 import {
   Button,
   Checkbox,
@@ -15,17 +8,21 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import { COURSES, REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import {
-  TpJobseekerProfile,
   TpCompanyProfile,
+  TpJobseekerProfile,
 } from '@talent-connect/shared-types'
-
 import { howDidHearAboutRediOptions } from '@talent-connect/talent-pool/config'
-
+import { objectEntries } from '@talent-connect/typescript-utilities'
+import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
+import omit from 'lodash/omit'
+import React, { useMemo, useState } from 'react'
+import { Columns, Content, Form, Notification } from 'react-bulma-components'
+import { Link, useParams } from 'react-router-dom'
+import * as Yup from 'yup'
 import TpTeaser from '../../../components/molecules/TpTeaser'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import { signUpCompany, signUpJobseeker } from '../../../services/api/api'
 import { history } from '../../../services/history/history'
-import { objectEntries } from '@talent-connect/typescript-utilities'
 
 const formRediLocations = objectEntries(REDI_LOCATION_NAMES).map(
   ([id, label]) => ({
@@ -114,6 +111,9 @@ export interface SignUpFormValues {
 }
 
 export default function SignUp() {
+  const listAllTpCompanyNamesQuery = useListAllTpCompanyNamesQuery()
+  console.log(listAllTpCompanyNamesQuery.data?.tpCompanyProfiles)
+
   const { type } = useParams<SignUpPageType>()
 
   const initialValues: SignUpFormValues = useMemo(

@@ -1,0 +1,6 @@
+query listAllTpCompanyNames {
+  tpCompanyProfiles {
+    id
+    companyName
+  }
+}
