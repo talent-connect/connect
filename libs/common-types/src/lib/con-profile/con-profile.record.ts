@@ -2,7 +2,7 @@ import {
   Persistence,
   PersistenceMetadata,
 } from '../base-interfaces-types-classes'
-import { ConProfilePersistenceProps } from './con-profile.persistenceprops'
+import { ConProfilePersistenceProps } from './con-profile.recordprops'
 
 export class ConProfilePersistence extends Persistence<ConProfilePersistenceProps> {
   props: ConProfilePersistenceProps

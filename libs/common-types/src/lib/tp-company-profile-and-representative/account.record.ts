@@ -2,7 +2,7 @@ import {
   Persistence,
   PersistenceMetadata,
 } from '../base-interfaces-types-classes'
-import { AccountPersistenceProps } from './account.persistenceprops'
+import { AccountPersistenceProps } from './account.recordprops'
 
 export class AccountPersistence extends Persistence<AccountPersistenceProps> {
   props: AccountPersistenceProps

@@ -2,7 +2,7 @@ import {
   Persistence,
   PersistenceMetadata,
 } from '../base-interfaces-types-classes'
-import { ConMentorshipMatchPersistenceProps } from './con-mentorship-match.persistenceprops'
+import { ConMentorshipMatchPersistenceProps } from './con-mentorship-match.recordprops'
 
 export class ConMentorshipMatchPersistence extends Persistence<ConMentorshipMatchPersistenceProps> {
   props: ConMentorshipMatchPersistenceProps

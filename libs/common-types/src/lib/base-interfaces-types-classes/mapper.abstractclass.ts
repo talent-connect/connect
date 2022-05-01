@@ -1,7 +1,7 @@
 import { EntityProps } from './entity-props.interface'
 import { Entity } from './entity.abstractclass'
-import { PersistenceProps } from './persistence-props.interface'
-import { Persistence } from './persistence.abstractclass'
+import { PersistenceProps } from './record-props.interface'
+import { Persistence } from './record.abstractclass'
 
 export abstract class Mapper<
   SpecificEntity extends Entity<EntityProps>,

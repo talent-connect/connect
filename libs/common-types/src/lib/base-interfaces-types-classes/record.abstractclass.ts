@@ -1,4 +1,4 @@
-import { PersistenceProps as IPersistenceProps } from './persistence-props.interface'
+import { PersistenceProps as IPersistenceProps } from './record-props.interface'
 
 export abstract class Persistence<PersistenceProps extends IPersistenceProps> {
   props: PersistenceProps

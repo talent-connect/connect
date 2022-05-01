@@ -21,7 +21,7 @@ module.exports = function (config, context) {
                 '.args.ts',
                 // '.entity.ts',
                 // '.model.ts',
-                '.entityprops.ts',
+                '.recordprops.ts',
                 '.entityinput.ts',
               ],
               introspectComments: true,

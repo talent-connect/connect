@@ -1,5 +1,5 @@
 import { Entity } from '../base-interfaces-types-classes'
-import { TpCompanyProfileEntityProps } from './tp-company-profile.entityprops'
+import { TpCompanyProfileEntityProps } from './tp-company-profile.recordprops'
 
 export class TpCompanyProfileEntity extends Entity<TpCompanyProfileEntityProps> {
   props: TpCompanyProfileEntityProps

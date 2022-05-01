@@ -2,7 +2,7 @@ import {
   Persistence,
   PersistenceMetadata,
 } from '../base-interfaces-types-classes'
-import { ConMentoringSessionPersistenceProps } from './con-mentoring-session.persistenceprops'
+import { ConMentoringSessionPersistenceProps } from './con-mentoring-session.recordprops'
 
 export class ConMentoringSessionPersistence extends Persistence<ConMentoringSessionPersistenceProps> {
   props: ConMentoringSessionPersistenceProps
