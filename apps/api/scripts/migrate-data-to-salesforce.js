@@ -973,7 +973,9 @@ async function insertAccountForCompanyProfileFn(p) {
         ReDI_LinkedIn_Page__c: p.tpCompanyProfile.linkedInUrl,
         Phone: p.tpCompanyProfile.phoneNumber,
         Description: p.tpCompanyProfile.about,
-        ReDI_Talent_Pool_State__c: p.tpCompanyProfile.state,
+        ReDI_Talent_Pool_State__c: p.tpCompanyProfile.state
+          .toUpperCase()
+          .replace(/-/g, '_'),
         ReDI_Visible_to_Jobseekers__c:
           p.tpCompanyProfile.isProfileVisibleToJobseekers,
         ReDI_Administrator_Internal_Comment__c:

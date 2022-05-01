@@ -1,5 +1,5 @@
 import { UseGuards } from '@nestjs/common'
-import { Resolver } from '@nestjs/graphql'
+import { Query, Resolver } from '@nestjs/graphql'
 import { TpCompanyProfileEntityProps } from '@talent-connect/common-types'
 import { GqlJwtAuthGuard } from '../auth/gql-jwt-auth.guard'
 import { TpCompanyProfilesService } from './tp-company-profiles.service'
@@ -12,12 +12,12 @@ export class TpCompanyProfilesResolver {
   ) {}
 
   //! TODO: Add auth
-  // @Query(() => [ConProfileEntityProps], { name: 'conProfiles' })
-  // async findAll() {
-  //   const entities = await this.conProfilesService.findAll({})
-  //   const props = entities.map((entity) => entity.props)
-  //   return props
-  // }
+  @Query(() => [TpCompanyProfileEntityProps], { name: 'tpCompanyProfiles' })
+  async findAll() {
+    const entities = await this.tpCompanyProfilesService.findAll({})
+    const props = entities.map((entity) => entity.props)
+    return props
+  }
 
   //! TODO: Add auth
   // @Query(() => ConProfileEntityProps, {

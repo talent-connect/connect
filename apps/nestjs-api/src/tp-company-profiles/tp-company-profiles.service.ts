@@ -1,28 +1,28 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
-import {
-  ConProfileEntity,
-  PatchConProfileInput,
-} from '@talent-connect/common-types'
-import { SalesforceApiConProfilesService } from '../salesforce-api/salesforce-api-con-profiles.service'
-import { SalesforceApiRepository } from '../salesforce-api/salesforce-api.repository'
+import { Injectable } from '@nestjs/common'
+import { TpCompanyProfileEntity } from '@talent-connect/common-types'
+import { SalesforceApiTpCompanyProfilesService } from '../salesforce-api/salesforce-api-tp-company-profiles.service'
+import { TpCompanyProfileMapper } from './mappers/tp-company-profile.mapper'
 
 @Injectable()
 export class TpCompanyProfilesService {
-  constructor(private readonly api: SalesforceApiRepository) {}
+  constructor(
+    private readonly sfService: SalesforceApiTpCompanyProfilesService,
+    private readonly mapper: TpCompanyProfileMapper
+  ) {}
 
   // create(createConProfileInput: CreateConProfileInput) {
   //   return 'This action adds a new conProfile'
   // }
 
-  // async findAll(filter: any = {}) {
-  //   const persistedConProfiles = await this.api.getAllConProfiles(filter)
+  async findAll(filter: any = {}) {
+    const records = await this.sfService.getAllTpEnabledAccounts(filter)
 
-  //   const entities: ConProfileEntity[] = persistedConProfiles.map((source) =>
-  //     this.mapper.fromPersistence(source)
-  //   )
+    const entities: TpCompanyProfileEntity[] = records.map((source) =>
+      this.mapper.fromPersistence(source)
+    )
 
-  //   return entities
-  // }
+    return entities
+  }
 
   // async findOneById(id: string) {
   //   const entities = await this.findAll({
@@ -65,14 +65,4 @@ export class TpCompanyProfilesService {
   // remove(id: number) {
   //   return `This action removes a #${id} conProfile`
   // }
-}
-
-function deleteUndefinedProps<T extends object>(obj: T): T {
-  const returnObject = {}
-  for (const key in obj) {
-    if (obj[key] !== undefined) {
-      Object.assign(returnObject, { [key]: obj[key] })
-    }
-  }
-  return returnObject as T
 }

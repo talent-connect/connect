@@ -5,11 +5,12 @@ const { bindNodeCallback, from } = Rx
 const jsforce = require('jsforce')
 const _ = require('lodash')
 const { first } = require('lodash')
+const e = require('cors')
 
 const USERNAME = process.env.USERNAME
 const PASSWORD = process.env.PASSWORD
 const SECURITY_TOKEN = process.env.SECURITY_TOKEN
-const LOGIN_URL = 'https://redischool--local.my.salesforce.com'
+const LOGIN_URL = process.env.LOGIN_URL
 const CLIENT_ID = process.env.CLIENT_ID
 const CLIENT_SECRET = process.env.CLIENT_SECRET
 
@@ -21,10 +22,10 @@ const conn = new jsforce.Connection({
 ;(async () => {
   await conn.login(USERNAME, `${PASSWORD}${SECURITY_TOKEN}`)
 
-  const res2 = await conn
-    .sobject('ReDI_Connect_Profile__c')
-    .find({ 'Contact__r.Loopback_User_ID__c': '625f36cc7044a41e7f169365' })
-
-  console.log(res2[0])
-  console.log()
+  const res = await conn.sobject('Account').find({
+    ReDI_Talent_Pool_State__c: {
+      $in: ['DRAFTING_PROFILE', 'SUBMITTED_FOR_REVIEW', 'PROFILE_APPROVED'],
+    },
+  })
+  console.log(res)
 })()

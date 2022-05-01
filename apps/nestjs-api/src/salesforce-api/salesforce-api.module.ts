@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config'
 import { SalesforceApiConMentoringSessionsService } from './salesforce-api-con-mentoring-sessions.service'
 import { SalesforceApiConMentorshipMatchesService } from './salesforce-api-con-mentorship-matches.service'
 import { SalesforceApiConProfilesService } from './salesforce-api-con-profiles.service'
+import { SalesforceApiTpCompanyProfilesService } from './salesforce-api-tp-company-profiles.service'
 import { SalesforceApiRepository } from './salesforce-api.repository'
 
 @Module({
@@ -11,6 +12,7 @@ import { SalesforceApiRepository } from './salesforce-api.repository'
     SalesforceApiConMentoringSessionsService,
     SalesforceApiConMentorshipMatchesService,
     SalesforceApiRepository,
+    SalesforceApiTpCompanyProfilesService,
   ],
   imports: [ConfigModule],
   exports: [
@@ -19,6 +21,7 @@ import { SalesforceApiRepository } from './salesforce-api.repository'
     SalesforceApiConMentorshipMatchesService,
     //! TODO: this was hack - remote this export
     SalesforceApiRepository,
+    SalesforceApiTpCompanyProfilesService,
   ],
 })
 export class SalesforceApiModule {}
