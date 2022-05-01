@@ -112,7 +112,7 @@ export interface SignUpFormValues {
 
 export default function SignUp() {
   const listAllTpCompanyNamesQuery = useListAllTpCompanyNamesQuery()
-  console.log(listAllTpCompanyNamesQuery.data?.tpCompanyProfiles)
+  console.log(listAllTpCompanyNamesQuery.data?.publicTpCompanyProfiles)
 
   const { type } = useParams<SignUpPageType>()
 

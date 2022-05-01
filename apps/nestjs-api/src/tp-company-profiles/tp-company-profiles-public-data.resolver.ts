@@ -10,7 +10,9 @@ export class TpCompanyProfilesResolverPublicData {
     private readonly tpCompanyProfilesService: TpCompanyProfilesService
   ) {}
 
-  @Query(() => [TpCompanyProfileEntityProps], { name: 'tpCompanyProfiles' })
+  @Query(() => [TpCompanyProfileEntityProps], {
+    name: 'publicTpCompanyProfiles',
+  })
   async findAll() {
     const entities = await this.tpCompanyProfilesService.findAll({})
     const props = entities.map((entity) => entity.props)

@@ -5,12 +5,12 @@ import { fetcher } from '@talent-connect/data-access';
 export type ListAllTpCompanyNamesQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 
-export type ListAllTpCompanyNamesQuery = { __typename?: 'Query', tpCompanyProfiles: Array<{ __typename?: 'TpCompanyProfile', id: string, companyName: string }> };
+export type ListAllTpCompanyNamesQuery = { __typename?: 'Query', publicTpCompanyProfiles: Array<{ __typename?: 'TpCompanyProfile', id: string, companyName: string }> };
 
 
 export const ListAllTpCompanyNamesDocument = `
     query listAllTpCompanyNames {
-  tpCompanyProfiles {
+  publicTpCompanyProfiles {
     id
     companyName
   }

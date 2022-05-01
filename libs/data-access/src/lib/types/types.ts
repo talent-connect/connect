@@ -367,7 +367,7 @@ export type Query = {
   conProfile: ConProfile;
   conProfiles: Array<ConProfile>;
   myConProfile: ConProfile;
-  tpCompanyProfiles: Array<TpCompanyProfile>;
+  publicTpCompanyProfiles: Array<TpCompanyProfile>;
 };
 
 
