@@ -43,8 +43,8 @@ export class ConMentorshipMatchesResolver {
   ) {
     const filter: any = {
       $or: [
-        { 'Mentor__r.Loopback_User_ID__c': user.userId },
-        { 'Mentee__r.Loopback_User_ID__c': user.userId },
+        { 'Mentor__r.Loopback_User_ID__c': user.loopbackUserId },
+        { 'Mentee__r.Loopback_User_ID__c': user.loopbackUserId },
       ],
     }
     if (args.status) {
@@ -62,8 +62,8 @@ export class ConMentorshipMatchesResolver {
   ) {
     const filter: any = {
       $or: [
-        { 'Mentor__r.Loopback_User_ID__c': user.userId },
-        { 'Mentee__r.Loopback_User_ID__c': user.userId },
+        { 'Mentor__r.Loopback_User_ID__c': user.loopbackUserId },
+        { 'Mentee__r.Loopback_User_ID__c': user.loopbackUserId },
       ],
       Id: args.id,
     }
@@ -122,8 +122,8 @@ export class ConMentorshipMatchesResolver {
   ) {
     const filter = {
       $or: [
-        { 'Mentor__r.Loopback_User_ID__c': user.userId },
-        { 'Mentee__r.Loopback_User_ID__c': user.userId },
+        { 'Mentor__r.Loopback_User_ID__c': user.loopbackUserId },
+        { 'Mentee__r.Loopback_User_ID__c': user.loopbackUserId },
       ],
       Mentor__c: parent.mentorId,
       Mentee__c: parent.menteeId,

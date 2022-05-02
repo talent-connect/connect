@@ -73,7 +73,7 @@ export class ConProfilesResolver {
   })
   async findCurrentUser(@CurrentUser() currentUser: CurrentUserInfo) {
     const entity = await this.conProfilesService.findOneByLoopbackUserId(
-      currentUser.userId
+      currentUser.loopbackUserId
     )
     return entity.props
   }

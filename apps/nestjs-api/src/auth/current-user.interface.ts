@@ -1,4 +1,4 @@
 export interface CurrentUserInfo {
-  userId: string
+  loopbackUserId: string
   contactId: string
 }

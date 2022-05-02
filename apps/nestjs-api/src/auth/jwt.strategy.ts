@@ -18,19 +18,23 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     })
   }
 
-  //! TODO: access this properly via a service...
+  //! TODO: access this data properly via a service, not via the sf repository...
   async validate(payload: any): Promise<CurrentUserInfo> {
     const contactRecords = await this.salesforceRepository.findRecordsOfObject({
       objectName: 'Contact',
       objectFields: ['Id'],
       filter: { Loopback_User_ID__c: payload.userId },
     })
-    if (contactRecords.length === 0) {
-      throw new InternalServerErrorException('SF Contact for user not found')
+    let contactId = null
+
+    // When a user signs up with Loopback and then immediately sends a request
+    // to NestJS, there will be no Salesforce Contact record for the user.
+    if (contactRecords.length > 0) {
+      contactId = contactRecords[0].Id
     }
     //! TODO: introduce caching here, this is a lot of simple loolups
     // for something that will never change. Can DataLoader fix it?
-    const contact = contactRecords[0]
-    return { userId: payload.userId, contactId: contact.Id }
+
+    return { loopbackUserId: payload.userId, contactId }
   }
 }
