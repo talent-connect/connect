@@ -20,6 +20,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   //! TODO: access this data properly via a service, not via the sf repository...
   async validate(payload: any): Promise<CurrentUserInfo> {
+    //! TODO: introduce caching here, this is a lot of simple loolups
+    // for something that will never change. Can DataLoader fix it?
     const contactRecords = await this.salesforceRepository.findRecordsOfObject({
       objectName: 'Contact',
       objectFields: ['Id'],
@@ -32,8 +34,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     if (contactRecords.length > 0) {
       contactId = contactRecords[0].Id
     }
-    //! TODO: introduce caching here, this is a lot of simple loolups
-    // for something that will never change. Can DataLoader fix it?
 
     return { loopbackUserId: payload.userId, contactId }
   }

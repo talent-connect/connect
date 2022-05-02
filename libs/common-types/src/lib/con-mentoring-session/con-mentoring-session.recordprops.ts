@@ -1,7 +1,7 @@
 import { plainToClass, Type } from 'class-transformer'
-import { PersistenceProps } from '../base-interfaces-types-classes'
+import { RecordProps } from '../base-interfaces-types-classes'
 
-export class ConMentoringSessionPersistenceProps implements PersistenceProps {
+export class ConMentoringSessionRecordProps implements RecordProps {
   Id: string
 
   @Type(() => Date)
@@ -17,6 +17,6 @@ export class ConMentoringSessionPersistenceProps implements PersistenceProps {
   LastModifiedDate: Date
 
   public static create(rawProps: any) {
-    return plainToClass(ConMentoringSessionPersistenceProps, rawProps, {})
+    return plainToClass(ConMentoringSessionRecordProps, rawProps, {})
   }
 }

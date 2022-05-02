@@ -1,22 +1,19 @@
-import {
-  Persistence,
-  PersistenceMetadata,
-} from '../base-interfaces-types-classes'
-import { ConMentoringSessionPersistenceProps } from './con-mentoring-session.recordprops'
+import { Record, RecordMetadata } from '../base-interfaces-types-classes'
+import { ConMentoringSessionRecordProps } from './con-mentoring-session.recordprops'
 
-export class ConMentoringSessionPersistence extends Persistence<ConMentoringSessionPersistenceProps> {
-  props: ConMentoringSessionPersistenceProps
+export class ConMentoringSessionRecord extends Record<ConMentoringSessionRecordProps> {
+  props: ConMentoringSessionRecordProps
 
-  private constructor(props: ConMentoringSessionPersistenceProps) {
+  private constructor(props: ConMentoringSessionRecordProps) {
     super(props)
   }
 
-  public static create(rawProps: ConMentoringSessionPersistenceProps) {
-    const props = ConMentoringSessionPersistenceProps.create(rawProps)
-    return new ConMentoringSessionPersistence(props)
+  public static create(rawProps: ConMentoringSessionRecordProps) {
+    const props = ConMentoringSessionRecordProps.create(rawProps)
+    return new ConMentoringSessionRecord(props)
   }
 
-  public static metadata: PersistenceMetadata = {
+  public static metadata: RecordMetadata = {
     SALESFORCE_OBJECT_NAME: 'Mentoring_Session__c',
     SALESFORCE_OBJECT_FIELDS: [
       'Id',

@@ -2,18 +2,16 @@ import { Injectable } from '@nestjs/common'
 import {
   ConMentorshipMatchEntity,
   ConMentorshipMatchEntityProps,
-  ConMentorshipMatchPersistence,
+  ConMentorshipMatchRecord,
   Mapper,
   MentorshipMatchStatus,
 } from '@talent-connect/common-types'
 
 @Injectable()
 export class ConMentorshipMatchMapper
-  implements Mapper<ConMentorshipMatchEntity, ConMentorshipMatchPersistence>
+  implements Mapper<ConMentorshipMatchEntity, ConMentorshipMatchRecord>
 {
-  fromPersistence(
-    raw: ConMentorshipMatchPersistence
-  ): ConMentorshipMatchEntity {
+  fromRecord(raw: ConMentorshipMatchRecord): ConMentorshipMatchEntity {
     const props = new ConMentorshipMatchEntityProps()
 
     props.id = raw.props.Id
@@ -45,9 +43,7 @@ export class ConMentorshipMatchMapper
     return entity
   }
 
-  public toPersistence(
-    source: ConMentorshipMatchEntity
-  ): ConMentorshipMatchPersistence {
+  public toRecord(source: ConMentorshipMatchEntity): ConMentorshipMatchRecord {
     throw new Error('Method not implemented.')
   }
 }

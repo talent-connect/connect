@@ -1,22 +1,19 @@
-import {
-  Persistence,
-  PersistenceMetadata,
-} from '../base-interfaces-types-classes'
-import { ConProfilePersistenceProps } from './con-profile.recordprops'
+import { Record, RecordMetadata } from '../base-interfaces-types-classes'
+import { ConProfileRecordProps } from './con-profile.recordprops'
 
-export class ConProfilePersistence extends Persistence<ConProfilePersistenceProps> {
-  props: ConProfilePersistenceProps
+export class ConProfileRecord extends Record<ConProfileRecordProps> {
+  props: ConProfileRecordProps
 
-  private constructor(props: ConProfilePersistenceProps) {
+  private constructor(props: ConProfileRecordProps) {
     super(props)
   }
 
-  public static create(rawProps: ConProfilePersistenceProps) {
-    const props = ConProfilePersistenceProps.create(rawProps)
-    return new ConProfilePersistence(props)
+  public static create(rawProps: ConProfileRecordProps) {
+    const props = ConProfileRecordProps.create(rawProps)
+    return new ConProfileRecord(props)
   }
 
-  public static metadata: PersistenceMetadata = {
+  public static metadata: RecordMetadata = {
     SALESFORCE_OBJECT_NAME: 'ReDI_Connect_Profile__c',
     SALESFORCE_OBJECT_FIELDS: [
       'Id',

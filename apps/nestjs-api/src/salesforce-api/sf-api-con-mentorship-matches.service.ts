@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { ConMentorshipMatchPersistence } from '@talent-connect/common-types'
+import { ConMentorshipMatchRecord } from '@talent-connect/common-types'
 import { SfApiRepository } from './sf-api.repository'
 
 @Injectable()
@@ -8,16 +8,15 @@ export class SfApiConMentorshipMatchesService {
   // constructor(private readonly repository: SalesforceApiRepository) {}
   async getAllConMentorshipMatches(
     filter: any = {}
-  ): Promise<ConMentorshipMatchPersistence[]> {
+  ): Promise<ConMentorshipMatchRecord[]> {
     const rawRecords = await this.repository.findRecordsOfObject({
-      objectName: ConMentorshipMatchPersistence.metadata.SALESFORCE_OBJECT_NAME,
-      objectFields:
-        ConMentorshipMatchPersistence.metadata.SALESFORCE_OBJECT_FIELDS,
+      objectName: ConMentorshipMatchRecord.metadata.SALESFORCE_OBJECT_NAME,
+      objectFields: ConMentorshipMatchRecord.metadata.SALESFORCE_OBJECT_FIELDS,
       filter,
     })
-    const conMentorshipMatchesPersistence = rawRecords.map((rawRecord) =>
-      ConMentorshipMatchPersistence.create(rawRecord)
+    const conMentorshipMatchesRecord = rawRecords.map((rawRecord) =>
+      ConMentorshipMatchRecord.create(rawRecord)
     )
-    return conMentorshipMatchesPersistence
+    return conMentorshipMatchesRecord
   }
 }

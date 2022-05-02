@@ -1,10 +1,7 @@
 import { ArgsType, Field, ID } from '@nestjs/graphql'
 
 @ArgsType()
-export class FindOneConProfileArgs {
-  @Field((of) => ID)
-  loopbackUserId?: string
-
+export class FindOneTpCompanyProfileArgs {
   @Field((of) => ID)
   id?: string
 }

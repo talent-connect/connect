@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { TpCompanyProfileEntity } from '@talent-connect/common-types'
 import { SfApiTpCompanyProfilesService } from '../salesforce-api/sf-api-tp-company-profiles.service'
 import { TpCompanyProfileMapper } from './mappers/tp-company-profile.mapper'
@@ -18,33 +18,33 @@ export class TpCompanyProfilesService {
     const records = await this.sfService.getAllTpEnabledAccounts(filter)
 
     const entities: TpCompanyProfileEntity[] = records.map((source) =>
-      this.mapper.fromPersistence(source)
+      this.mapper.fromRecord(source)
     )
 
     return entities
   }
 
-  // async findOneById(id: string) {
-  //   const entities = await this.findAll({
-  //     Id: id,
-  //   })
-  //   if (entities.length > 0) {
-  //     return entities[0]
-  //   } else {
-  //     throw new NotFoundException('ConProfile not found')
-  //   }
-  // }
+  async findOneById(id: string) {
+    const entities = await this.findAll({
+      Id: id,
+    })
+    if (entities.length > 0) {
+      return entities[0]
+    } else {
+      throw new NotFoundException('TpCompanyProfile not found')
+    }
+  }
 
-  // async findOneByLoopbackUserId(loopbackUserId: string) {
-  //   const entities = await this.findAll({
-  //     'Contact__r.Loopback_User_ID__c': loopbackUserId,
-  //   })
-  //   if (entities.length > 0) {
-  //     return entities[0]
-  //   } else {
-  //     throw new NotFoundException('ConProfile not found')
-  //   }
-  // }
+  async findOneByLoopbackUserId(loopbackUserId: string) {
+    const entities = await this.findAll({
+      'Contact__r.Loopback_User_ID__c': loopbackUserId,
+    })
+    if (entities.length > 0) {
+      return entities[0]
+    } else {
+      throw new NotFoundException('ConProfile not found')
+    }
+  }
 
   // async update(updateConProfileInput: PatchConProfileInput) {
   //   const existingEntity = await this.findOneById(updateConProfileInput.id)
@@ -55,9 +55,9 @@ export class TpCompanyProfilesService {
   //   })
   //   const entityToPersist = ConProfileEntity.create(props)
   //   const persistedObject = await this.api.updateConProfile(
-  //     this.mapper.toPersistence(entityToPersist)
+  //     this.mapper.toRecord(entityToPersist)
   //   )
-  //   const updatedEntity = this.mapper.fromPersistence(persistedObject)
+  //   const updatedEntity = this.mapper.fromRecord(persistedObject)
 
   //   return updatedEntity
   // }

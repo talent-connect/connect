@@ -1,22 +1,19 @@
-import {
-  Persistence,
-  PersistenceMetadata,
-} from '../base-interfaces-types-classes'
-import { ConMentorshipMatchPersistenceProps } from './con-mentorship-match.recordprops'
+import { Record, RecordMetadata } from '../base-interfaces-types-classes'
+import { ConMentorshipMatchRecordProps } from './con-mentorship-match.recordprops'
 
-export class ConMentorshipMatchPersistence extends Persistence<ConMentorshipMatchPersistenceProps> {
-  props: ConMentorshipMatchPersistenceProps
+export class ConMentorshipMatchRecord extends Record<ConMentorshipMatchRecordProps> {
+  props: ConMentorshipMatchRecordProps
 
-  private constructor(props: ConMentorshipMatchPersistenceProps) {
+  private constructor(props: ConMentorshipMatchRecordProps) {
     super(props)
   }
 
-  public static create(rawProps: ConMentorshipMatchPersistenceProps) {
-    const props = ConMentorshipMatchPersistenceProps.create(rawProps)
-    return new ConMentorshipMatchPersistence(props)
+  public static create(rawProps: ConMentorshipMatchRecordProps) {
+    const props = ConMentorshipMatchRecordProps.create(rawProps)
+    return new ConMentorshipMatchRecord(props)
   }
 
-  public static metadata: PersistenceMetadata = {
+  public static metadata: RecordMetadata = {
     SALESFORCE_OBJECT_NAME: 'Mentorship_Match__c',
     SALESFORCE_OBJECT_FIELDS: [
       'Id',

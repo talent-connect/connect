@@ -1,3 +1,3 @@
-export interface PersistenceProps {
+export interface RecordProps {
   Id: string
 }

@@ -2,19 +2,17 @@ import { Injectable } from '@nestjs/common'
 import {
   ConMentoringSessionEntity,
   ConMentoringSessionEntityProps,
-  ConMentoringSessionPersistence,
-  ConMentoringSessionPersistenceProps,
+  ConMentoringSessionRecord,
+  ConMentoringSessionRecordProps,
   Mapper,
   MentoringSessionDuration,
 } from '@talent-connect/common-types'
 
 @Injectable()
 export class ConMentoringSessionMapper
-  implements Mapper<ConMentoringSessionEntity, ConMentoringSessionPersistence>
+  implements Mapper<ConMentoringSessionEntity, ConMentoringSessionRecord>
 {
-  fromPersistence(
-    raw: ConMentoringSessionPersistence
-  ): ConMentoringSessionEntity {
+  fromRecord(raw: ConMentoringSessionRecord): ConMentoringSessionEntity {
     const props = new ConMentoringSessionEntityProps()
 
     props.id = raw.props.Id
@@ -31,13 +29,11 @@ export class ConMentoringSessionMapper
     return entity
   }
 
-  public toPersistence(
+  public toRecord(
     source: ConMentoringSessionEntity
-  ): ConMentoringSessionPersistence {
-    const props = new ConMentoringSessionPersistenceProps()
+  ): ConMentoringSessionRecord {
+    const props = new ConMentoringSessionRecordProps()
     const srcProps = source.props
-
-    props.Id = srcProps.id
     props.Date__c = srcProps.date
     props.Durations_in_Minutes__c = parseInt(
       srcProps.minuteDuration.replace('MIN', '')
@@ -45,8 +41,8 @@ export class ConMentoringSessionMapper
     props.Mentor__c = srcProps.mentorId
     props.Mentee__c = srcProps.menteeId
 
-    const persistence = ConMentoringSessionPersistence.create(props)
+    const record = ConMentoringSessionRecord.create(props)
 
-    return persistence
+    return record
   }
 }

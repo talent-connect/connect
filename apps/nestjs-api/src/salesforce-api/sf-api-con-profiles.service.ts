@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { ConProfilePersistence } from '@talent-connect/common-types'
+import { ConProfileRecord } from '@talent-connect/common-types'
 import { omit } from 'lodash'
 import { SfApiRepository } from './sf-api.repository'
 
@@ -7,27 +7,25 @@ import { SfApiRepository } from './sf-api.repository'
 export class SfApiConProfilesService {
   constructor(private readonly repository: SfApiRepository) {}
   // constructor(private readonly repository: SalesforceApiRepository) {}
-  async getAllConProfiles(filter: any = {}): Promise<ConProfilePersistence[]> {
+  async getAllConProfiles(filter: any = {}): Promise<ConProfileRecord[]> {
     const rawRecords = await this.repository.findRecordsOfObject({
-      objectName: ConProfilePersistence.metadata.SALESFORCE_OBJECT_NAME,
-      objectFields: ConProfilePersistence.metadata.SALESFORCE_OBJECT_FIELDS,
+      objectName: ConProfileRecord.metadata.SALESFORCE_OBJECT_NAME,
+      objectFields: ConProfileRecord.metadata.SALESFORCE_OBJECT_FIELDS,
       filter,
     })
-    const conProfilesPersistence = rawRecords.map((rawRecord) =>
-      ConProfilePersistence.create(rawRecord)
+    const conProfilesRecord = rawRecords.map((rawRecord) =>
+      ConProfileRecord.create(rawRecord)
     )
-    return conProfilesPersistence
+    return conProfilesRecord
   }
 
-  async getConProfile(id: string): Promise<ConProfilePersistence> {
-    const conProfilesPersistence = await this.getAllConProfiles({ Id: id })
-    return conProfilesPersistence[0]
+  async getConProfile(id: string): Promise<ConProfileRecord> {
+    const conProfilesRecord = await this.getAllConProfiles({ Id: id })
+    return conProfilesRecord[0]
   }
 
-  async updateConProfile(
-    persistence: ConProfilePersistence
-  ): Promise<ConProfilePersistence> {
-    const conProfileProps = persistence.props
+  async updateConProfile(record: ConProfileRecord): Promise<ConProfileRecord> {
+    const conProfileProps = record.props
     const contactProps = conProfileProps.Contact__r
 
     const cleanConProfileProps = omit(conProfileProps, [
@@ -41,7 +39,7 @@ export class SfApiConProfilesService {
       contactProps
     )
     const updateConProfileResult = await this.repository.updateRecord(
-      ConProfilePersistence.metadata.SALESFORCE_OBJECT_NAME,
+      ConProfileRecord.metadata.SALESFORCE_OBJECT_NAME,
       cleanConProfileProps
     )
     const updatedConProfile = await this.getConProfile(conProfileProps.Id)

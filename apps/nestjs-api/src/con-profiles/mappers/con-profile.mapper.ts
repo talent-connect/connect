@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 import {
   ConnectProfileLanguage,
   ConProfileEntity,
-  ConProfilePersistence,
+  ConProfileRecord,
   ConProfileEntityProps,
   EducationLevel,
   Gender,
@@ -11,16 +11,16 @@ import {
   RediCourse,
   RediLocation,
   UserType,
-  ConProfilePersistenceProps,
+  ConProfileRecordProps,
   ConnectProfileStatus,
 } from '@talent-connect/common-types'
 import { MentoringTopic } from 'libs/common-types/src/lib/con-profile/enums/mentoring-topic.enum'
 
 @Injectable()
 export class ConProfileMapper
-  implements Mapper<ConProfileEntity, ConProfilePersistence>
+  implements Mapper<ConProfileEntity, ConProfileRecord>
 {
-  fromPersistence(raw: ConProfilePersistence): ConProfileEntity {
+  fromRecord(raw: ConProfileRecord): ConProfileEntity {
     const props = new ConProfileEntityProps()
 
     props.id = raw.props.Id
@@ -88,8 +88,8 @@ export class ConProfileMapper
     return entity
   }
 
-  public toPersistence(source: ConProfileEntity): ConProfilePersistence {
-    const props = new ConProfilePersistenceProps()
+  public toRecord(source: ConProfileEntity): ConProfileRecord {
+    const props = new ConProfileRecordProps()
     const srcProps = source.props
 
     props.Id = srcProps.id
@@ -136,8 +136,8 @@ export class ConProfileMapper
       Loopback_User_ID__c: srcProps.loopbackUserId,
     }
 
-    const persistence = ConProfilePersistence.create(props)
+    const record = ConProfileRecord.create(props)
 
-    return persistence
+    return record
   }
 }

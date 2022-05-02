@@ -1,7 +1,7 @@
 import { plainToClass, Type } from 'class-transformer'
-import { PersistenceProps } from '../base-interfaces-types-classes'
+import { RecordProps } from '../base-interfaces-types-classes'
 
-export class AccountPersistenceProps implements PersistenceProps {
+export class AccountRecordProps implements RecordProps {
   Id: string
 
   ReDI_Avatar_Image_URL__c?: string
@@ -22,6 +22,6 @@ export class AccountPersistenceProps implements PersistenceProps {
   LastModifiedDate: Date
 
   public static create(rawProps: any) {
-    return plainToClass(AccountPersistenceProps, rawProps, {})
+    return plainToClass(AccountRecordProps, rawProps, {})
   }
 }

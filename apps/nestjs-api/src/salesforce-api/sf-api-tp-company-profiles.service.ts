@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import {
-  AccountPersistence,
+  AccountRecord,
   CompanyTalentPoolState,
-  ConProfilePersistence,
+  ConProfileRecord,
 } from '@talent-connect/common-types'
 import { omit } from 'lodash'
 import { SfApiRepository } from './sf-api.repository'
@@ -11,20 +11,23 @@ import { SfApiRepository } from './sf-api.repository'
 export class SfApiTpCompanyProfilesService {
   constructor(private readonly repository: SfApiRepository) {}
   // constructor(private readonly repository: SalesforceApiRepository) {}
-  async getAllTpEnabledAccounts(
-    filter: any = {}
-  ): Promise<AccountPersistence[]> {
+  async getAllTpEnabledAccounts(filter: any = {}): Promise<AccountRecord[]> {
     filter.ReDI_Talent_Pool_State__c = {
       $in: Object.values(CompanyTalentPoolState),
     }
     const rawRecords = await this.repository.findRecordsOfObject({
-      objectName: AccountPersistence.metadata.SALESFORCE_OBJECT_NAME,
-      objectFields: AccountPersistence.metadata.SALESFORCE_OBJECT_FIELDS,
+      objectName: AccountRecord.metadata.SALESFORCE_OBJECT_NAME,
+      objectFields: AccountRecord.metadata.SALESFORCE_OBJECT_FIELDS,
       filter,
     })
     const records = rawRecords.map((rawRecord) =>
-      AccountPersistence.create(rawRecord)
+      AccountRecord.create(rawRecord)
     )
     return records
   }
+
+  async createAccount() {}
+
+  async createContact() {}
+  async createAccountContactRelationship() {}
 }

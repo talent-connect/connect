@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import {
-  AccountPersistence,
-  AccountPersistenceProps,
+  AccountRecord,
+  AccountRecordProps,
   CompanyTalentPoolState,
   Mapper,
   TpCompanyProfileEntity,
@@ -10,9 +10,9 @@ import {
 
 @Injectable()
 export class TpCompanyProfileMapper
-  implements Mapper<TpCompanyProfileEntity, AccountPersistence>
+  implements Mapper<TpCompanyProfileEntity, AccountRecord>
 {
-  fromPersistence(raw: AccountPersistence): TpCompanyProfileEntity {
+  fromRecord(raw: AccountRecord): TpCompanyProfileEntity {
     const props = new TpCompanyProfileEntityProps()
 
     props.id = raw.props.Id
@@ -37,8 +37,8 @@ export class TpCompanyProfileMapper
     return entity
   }
 
-  public toPersistence(source: TpCompanyProfileEntity): AccountPersistence {
-    const props = new AccountPersistenceProps()
+  public toRecord(source: TpCompanyProfileEntity): AccountRecord {
+    const props = new AccountRecordProps()
     const srcProps = source.props
 
     props.Id = srcProps.id
@@ -58,8 +58,8 @@ export class TpCompanyProfileMapper
     props.CreatedDate = srcProps.createdAt
     props.LastModifiedDate = srcProps.updatedAt
 
-    const persistence = AccountPersistence.create(props)
+    const record = AccountRecord.create(props)
 
-    return persistence
+    return record
   }
 }

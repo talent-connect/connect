@@ -1,10 +1,7 @@
 import { plainToClass, Type } from 'class-transformer'
-import {
-  PersistenceProps,
-  PicklistValue,
-} from '../base-interfaces-types-classes'
+import { RecordProps, PicklistValue } from '../base-interfaces-types-classes'
 
-export class ConMentorshipMatchPersistenceProps implements PersistenceProps {
+export class ConMentorshipMatchRecordProps implements RecordProps {
   Id: string
   @Type(() => Boolean)
   Acceptance_Notification_Dismissed__c?: boolean
@@ -29,6 +26,6 @@ export class ConMentorshipMatchPersistenceProps implements PersistenceProps {
   LastModifiedDate: Date
 
   public static create(rawProps: any) {
-    return plainToClass(ConMentorshipMatchPersistenceProps, rawProps, {})
+    return plainToClass(ConMentorshipMatchRecordProps, rawProps, {})
   }
 }

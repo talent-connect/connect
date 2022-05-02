@@ -1,12 +1,12 @@
 import { plainToClass, Type } from 'class-transformer'
 import {
-  PersistenceProps,
+  RecordProps,
   PicklistValue,
   PicklistValuesSemicolonSeparated,
 } from '../base-interfaces-types-classes'
-import { ContactSfProps } from '../salesforce-embedded-objects'
+import { ContactSfProps } from '../common-salesforce-objects'
 
-export class ConProfilePersistenceProps implements PersistenceProps {
+export class ConProfileRecordProps implements RecordProps {
   Id: string
   Email: string
   Avatar_Image_URL__c?: string
@@ -46,6 +46,6 @@ export class ConProfilePersistenceProps implements PersistenceProps {
   }
 
   public static create(rawProps: any) {
-    return plainToClass(ConProfilePersistenceProps, rawProps, {})
+    return plainToClass(ConProfileRecordProps, rawProps, {})
   }
 }
