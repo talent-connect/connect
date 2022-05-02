@@ -22,10 +22,17 @@ const conn = new jsforce.Connection({
 ;(async () => {
   await conn.login(USERNAME, `${PASSWORD}${SECURITY_TOKEN}`)
 
-  const res = await conn.sobject('Account').find({
-    ReDI_Talent_Pool_State__c: {
-      $in: ['DRAFTING_PROFILE', 'SUBMITTED_FOR_REVIEW', 'PROFILE_APPROVED'],
-    },
+  var channel = '/event/ReDI_Connect_Profile_Statuc_Change_Event__e'
+  var replayId = 8 // -1 = Only New messages | -2 = All Window and New
+
+  var client = conn.streaming.createClient([
+    new jsforce.StreamingExtension.Replay(channel, replayId),
+    new jsforce.StreamingExtension.AuthFailure(function () {
+      return process.exit(1)
+    }),
+  ])
+
+  var subscription = client.subscribe(channel, function (data) {
+    console.log('received data', JSON.stringify(data))
   })
-  console.log(res)
 })()
