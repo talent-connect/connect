@@ -980,8 +980,8 @@ async function insertAccountForCompanyProfileFn(p) {
           p.tpCompanyProfile.isProfileVisibleToJobseekers,
         ReDI_Administrator_Internal_Comment__c:
           p.tpCompanyProfile.administratorInternalComment,
-        // CreatedDate: p.createdAt, //! Use Jonida trick
-        // LastModifiedDate: p.updatedAt, //! Use Jonida trick
+        CreatedDate: p.createdAt, //! Use Jonida trick
+        LastModifiedDate: p.updatedAt, //! Use Jonida trick
       }
       // 'Loopback_Original_ID__c'
     )
