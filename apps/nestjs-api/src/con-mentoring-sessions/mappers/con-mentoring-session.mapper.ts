@@ -12,7 +12,7 @@ import {
 export class ConMentoringSessionMapper
   implements Mapper<ConMentoringSessionEntity, ConMentoringSessionRecord>
 {
-  fromRecord(raw: ConMentoringSessionRecord): ConMentoringSessionEntity {
+  fromPersistence(raw: ConMentoringSessionRecord): ConMentoringSessionEntity {
     const props = new ConMentoringSessionEntityProps()
 
     props.id = raw.props.Id
@@ -29,7 +29,7 @@ export class ConMentoringSessionMapper
     return entity
   }
 
-  public toRecord(
+  public toPersistence(
     source: ConMentoringSessionEntity
   ): ConMentoringSessionRecord {
     const props = new ConMentoringSessionRecordProps()

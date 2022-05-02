@@ -21,7 +21,7 @@ export class ConProfilesService {
     const persistedEntities = await this.api.getAllConProfiles(filter)
 
     const entities: ConProfileEntity[] = persistedEntities.map((source) =>
-      this.mapper.fromRecord(source)
+      this.mapper.fromPersistence(source)
     )
 
     return entities
@@ -58,9 +58,9 @@ export class ConProfilesService {
     })
     const entityToPersist = ConProfileEntity.create(props)
     const persistedObject = await this.api.updateConProfile(
-      this.mapper.toRecord(entityToPersist)
+      this.mapper.toPersistence(entityToPersist)
     )
-    const updatedEntity = this.mapper.fromRecord(persistedObject)
+    const updatedEntity = this.mapper.fromPersistence(persistedObject)
 
     return updatedEntity
   }

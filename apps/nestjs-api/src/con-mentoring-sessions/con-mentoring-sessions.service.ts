@@ -24,9 +24,9 @@ export class ConMentoringSessionsService {
     props.mentorId = user.contactId
     const entityToPersist = ConMentoringSessionEntity.create(props)
     const persistedObject = await this.api.createConMentoringSession(
-      this.mapper.toRecord(entityToPersist)
+      this.mapper.toPersistence(entityToPersist)
     )
-    const persistedEntity = this.mapper.fromRecord(persistedObject)
+    const persistedEntity = this.mapper.fromPersistence(persistedObject)
 
     return persistedEntity
   }
@@ -37,7 +37,7 @@ export class ConMentoringSessionsService {
 
     const entities: ConMentoringSessionEntity[] =
       persistedConMentoringSessions.map((source) =>
-        this.mapper.fromRecord(source)
+        this.mapper.fromPersistence(source)
       )
 
     return entities

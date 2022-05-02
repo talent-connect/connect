@@ -11,7 +11,7 @@ import {
 export class ConMentorshipMatchMapper
   implements Mapper<ConMentorshipMatchEntity, ConMentorshipMatchRecord>
 {
-  fromRecord(raw: ConMentorshipMatchRecord): ConMentorshipMatchEntity {
+  fromPersistence(raw: ConMentorshipMatchRecord): ConMentorshipMatchEntity {
     const props = new ConMentorshipMatchEntityProps()
 
     props.id = raw.props.Id
@@ -43,7 +43,9 @@ export class ConMentorshipMatchMapper
     return entity
   }
 
-  public toRecord(source: ConMentorshipMatchEntity): ConMentorshipMatchRecord {
+  public toPersistence(
+    source: ConMentorshipMatchEntity
+  ): ConMentorshipMatchRecord {
     throw new Error('Method not implemented.')
   }
 }

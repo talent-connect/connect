@@ -7,6 +7,6 @@ export abstract class Mapper<
   SpecificEntity extends Entity<EntityProps>,
   SpecificRecord extends Record<RecordProps>
 > {
-  public abstract fromRecord(source: SpecificRecord): SpecificEntity
-  // public abstract toRecord(source: SpecificEntity): SpecificRecord
+  public abstract fromPersistence(source: SpecificRecord): SpecificEntity
+  public abstract toPersistence(source: SpecificEntity): SpecificRecord
 }

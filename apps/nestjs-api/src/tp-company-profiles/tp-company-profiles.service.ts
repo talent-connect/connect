@@ -18,7 +18,7 @@ export class TpCompanyProfilesService {
     const records = await this.sfService.getAllTpEnabledAccounts(filter)
 
     const entities: TpCompanyProfileEntity[] = records.map((source) =>
-      this.mapper.fromRecord(source)
+      this.mapper.fromPersistence(source)
     )
 
     return entities

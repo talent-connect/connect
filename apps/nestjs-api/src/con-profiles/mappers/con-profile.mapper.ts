@@ -20,7 +20,7 @@ import { MentoringTopic } from 'libs/common-types/src/lib/con-profile/enums/ment
 export class ConProfileMapper
   implements Mapper<ConProfileEntity, ConProfileRecord>
 {
-  fromRecord(raw: ConProfileRecord): ConProfileEntity {
+  fromPersistence(raw: ConProfileRecord): ConProfileEntity {
     const props = new ConProfileEntityProps()
 
     props.id = raw.props.Id
@@ -88,7 +88,7 @@ export class ConProfileMapper
     return entity
   }
 
-  public toRecord(source: ConProfileEntity): ConProfileRecord {
+  public toPersistence(source: ConProfileEntity): ConProfileRecord {
     const props = new ConProfileRecordProps()
     const srcProps = source.props
 

@@ -20,7 +20,7 @@ export class ConMentorshipMatchesService {
     const persistedEntities = await this.api.getAllConMentorshipMatches(filter)
 
     const entities: ConMentorshipMatchEntity[] = persistedEntities.map(
-      (source) => this.mapper.fromRecord(source)
+      (source) => this.mapper.fromPersistence(source)
     )
 
     return entities

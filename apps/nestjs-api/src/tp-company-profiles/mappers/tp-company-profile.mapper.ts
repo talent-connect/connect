@@ -12,7 +12,7 @@ import {
 export class TpCompanyProfileMapper
   implements Mapper<TpCompanyProfileEntity, AccountRecord>
 {
-  fromRecord(raw: AccountRecord): TpCompanyProfileEntity {
+  fromPersistence(raw: AccountRecord): TpCompanyProfileEntity {
     const props = new TpCompanyProfileEntityProps()
 
     props.id = raw.props.Id
@@ -37,7 +37,7 @@ export class TpCompanyProfileMapper
     return entity
   }
 
-  public toRecord(source: TpCompanyProfileEntity): AccountRecord {
+  public toPersistence(source: TpCompanyProfileEntity): AccountRecord {
     const props = new AccountRecordProps()
     const srcProps = source.props
 
