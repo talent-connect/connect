@@ -34,6 +34,8 @@ export class TpCompanyProfileSignUpUseCase {
     currentUser: CurrentUserInfo
   ): Promise<TpCompanyProfileSignUpMutationOutputDto> {
     let companyEntity: TpCompanyProfileEntity
+
+    console.log('creating new company or getting existing one')
     if (
       input.operationType ===
       TpCompanyProfileSignUpOperationType.EXISTING_COMPANY
@@ -58,6 +60,7 @@ export class TpCompanyProfileSignUpUseCase {
       input.firstPointOfContact
     contactRecordProps.Loopback_User_ID__c = currentUser.loopbackUserId
 
+    console.log('updating contact record')
     const contactRecord = await this.sfService.updateContact(
       ContactRecord.create(contactRecordProps)
     )
@@ -68,6 +71,7 @@ export class TpCompanyProfileSignUpUseCase {
     accountContactRecordProps.Roles = 'TALENT_POOL_COMPANY_REPRESENTATIVE'
     accountContactRecordProps.ReDI_Company_Representative_Status__c = 'PENDING'
 
+    console.log('inserting accountcontact record')
     await this.sfService.createAccountContactRelationship(
       AccountContactRecord.create(accountContactRecordProps)
     )

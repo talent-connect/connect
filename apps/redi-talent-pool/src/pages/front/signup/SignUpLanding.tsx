@@ -52,7 +52,7 @@ const SignUpLanding = () => {
           </Content>
           <div className="signup">
             {renderType('Jobseeker')}
-            {renderType('Company')}
+            {/* {renderType('Company')} */}
           </div>
           <Button
             fullWidth
