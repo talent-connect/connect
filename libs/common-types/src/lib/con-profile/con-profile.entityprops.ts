@@ -10,7 +10,7 @@ import {
   UserType,
 } from './enums'
 import { ConnectProfileStatus } from './enums/connect-profile-status.enum'
-import { Gender } from './enums/gender.enum'
+import { Gender } from '../common-objects/contact/enums/gender.enum'
 import { MentoringTopic } from './enums/mentoring-topic.enum'
 
 @ObjectType('ConProfile')

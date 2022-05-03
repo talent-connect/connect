@@ -1,16 +1,17 @@
 import { Record, RecordMetadata } from '../base-interfaces-types-classes'
+import { AccountContactRecordProps } from './account-contact.recordprops'
 import { AccountRecord } from './account.record'
 import { AccountRecordProps } from './account.recordprops'
 
-export class AccountContactRecord extends Record<AccountRecordProps> {
-  props: AccountRecordProps
+export class AccountContactRecord extends Record<AccountContactRecordProps> {
+  props: AccountContactRecordProps
 
-  private constructor(props: AccountRecordProps) {
+  private constructor(props: AccountContactRecordProps) {
     super(props)
   }
 
-  public static create(rawProps: AccountRecordProps) {
-    const props = AccountRecordProps.create(rawProps)
+  public static create(rawProps: AccountContactRecordProps) {
+    const props = AccountContactRecordProps.create(rawProps)
     return new AccountContactRecord(props)
   }
 

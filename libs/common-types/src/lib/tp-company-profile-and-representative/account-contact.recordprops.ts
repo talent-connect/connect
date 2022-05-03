@@ -10,6 +10,7 @@ export class AccountContactRecordProps implements RecordProps {
   AccountId: string
   ContactId: string
   Roles: PicklistValuesSemicolonSeparated
+  ReDI_Company_Representative_Status__c: PicklistValue
 
   @Type(() => Date)
   CreatedDate: Date

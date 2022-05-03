@@ -1,6 +1,12 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { PassportStrategy } from '@nestjs/passport'
+import {
+  ContactMapper,
+  ContactRecord,
+  ContactRecordProps,
+} from '@talent-connect/common-types'
+import { takeRight } from 'lodash'
 import { ExtractJwt, Strategy } from 'passport-jwt'
 import { SfApiRepository } from '../salesforce-api/sf-api.repository'
 import { CurrentUserInfo } from './current-user.interface'
@@ -9,7 +15,8 @@ import { CurrentUserInfo } from './current-user.interface'
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
     private readonly configService: ConfigService,
-    private readonly salesforceRepository: SfApiRepository
+    private readonly salesforceRepository: SfApiRepository,
+    private readonly contactMapper: ContactMapper
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -20,21 +27,46 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   //! TODO: access this data properly via a service, not via the sf repository...
   async validate(payload: any): Promise<CurrentUserInfo> {
+    const loopbackUserId = payload.userId
+    const email = payload.email
     //! TODO: introduce caching here, this is a lot of simple loolups
     // for something that will never change. Can DataLoader fix it?
-    const contactRecords = await this.salesforceRepository.findRecordsOfObject({
-      objectName: 'Contact',
-      objectFields: ['Id'],
-      filter: { Loopback_User_ID__c: payload.userId },
-    })
-    let contactId = null
+    let contactRecord: ContactRecordProps = null
 
-    // When a user signs up with Loopback and then immediately sends a request
-    // to NestJS, there will be no Salesforce Contact record for the user.
-    if (contactRecords.length > 0) {
-      contactId = contactRecords[0].Id
+    let contactRecords = await this.salesforceRepository.findRecordsOfObject({
+      objectName: ContactRecord.metadata.SALESFORCE_OBJECT_NAME,
+      objectFields: ContactRecord.metadata.SALESFORCE_OBJECT_FIELDS,
+      filter: { Loopback_User_ID__c: loopbackUserId, Email: email },
+    })
+
+    if (contactRecords.length === 0) {
+      const createContactResult = await this.salesforceRepository.createRecord(
+        ContactRecord.metadata.SALESFORCE_OBJECT_NAME,
+        {
+          FirstName: 'CON/TP Contact in creation',
+          LastName: email,
+          Email: email,
+          Loopback_User_ID__c: payload.userId,
+        }
+      )
+      contactRecords = await this.salesforceRepository.findRecordsOfObject({
+        objectName: ContactRecord.metadata.SALESFORCE_OBJECT_NAME,
+        objectFields: ContactRecord.metadata.SALESFORCE_OBJECT_FIELDS,
+        filter: { Id: createContactResult.id },
+      })
+      contactRecord = contactRecords[0]
+    } else {
+      contactRecord = contactRecords[0]
     }
 
-    return { loopbackUserId: payload.userId, contactId }
+    const contactEntity = this.contactMapper.fromPersistence(
+      ContactRecord.create(contactRecord)
+    )
+
+    return {
+      loopbackUserId: payload.userId,
+      contactId: contactEntity.props.id,
+      contactProps: contactEntity.props,
+    }
   }
 }

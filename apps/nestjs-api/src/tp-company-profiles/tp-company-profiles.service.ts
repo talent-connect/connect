@@ -1,5 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
-import { TpCompanyProfileEntity } from '@talent-connect/common-types'
+import {
+  ContactRecord,
+  TpCompanyProfileEntity,
+} from '@talent-connect/common-types'
 import { SfApiTpCompanyProfilesService } from '../salesforce-api/sf-api-tp-company-profiles.service'
 import { TpCompanyProfileMapper } from './mappers/tp-company-profile.mapper'
 
@@ -9,10 +12,6 @@ export class TpCompanyProfilesService {
     private readonly sfService: SfApiTpCompanyProfilesService,
     private readonly mapper: TpCompanyProfileMapper
   ) {}
-
-  // create(createConProfileInput: CreateConProfileInput) {
-  //   return 'This action adds a new conProfile'
-  // }
 
   async findAll(filter: any = {}) {
     const records = await this.sfService.getAllTpEnabledAccounts(filter)

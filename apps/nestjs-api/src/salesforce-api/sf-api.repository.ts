@@ -64,7 +64,8 @@ export class SfApiRepository {
         maxFetch: 10000,
       })
 
-      if (results.length > 0) console.log(`I got ${results.length} records`)
+      if (results.length > 0)
+        console.log(`Found ${results.length} records of ${objectName}`)
 
       callback(results)
     },
@@ -83,7 +84,6 @@ export class SfApiRepository {
     objectName: string,
     record: T
   ): Promise<{ id: string }> {
-    console.log(record)
     await this.connect()
     const createResult = this.connection.sobject(objectName).create(record)
     return createResult

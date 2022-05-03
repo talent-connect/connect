@@ -134,6 +134,8 @@ export class ConProfileMapper
       ReDI_Slack_Username__c: srcProps.slackUsername,
       MobilePhone: srcProps.telephoneNumber,
       Loopback_User_ID__c: srcProps.loopbackUserId,
+      CreatedDate: srcProps.createdAt,
+      LastModifiedDate: srcProps.updatedAt,
     }
 
     const record = ConProfileRecord.create(props)

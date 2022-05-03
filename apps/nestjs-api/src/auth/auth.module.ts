@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { JwtModule } from '@nestjs/jwt'
 import { PassportModule } from '@nestjs/passport'
+import { ContactMapper } from '@talent-connect/common-types'
 import { SfApiModule } from '../salesforce-api/sf-api.module'
 import { GqlJwtAuthGuard } from './gql-jwt-auth.guard'
 import { JwtAuthGuard } from './jwt-auth.guard'
@@ -20,7 +21,7 @@ import { JwtStrategy } from './jwt.strategy'
       inject: [ConfigService],
     }),
   ],
-  providers: [JwtStrategy, JwtAuthGuard, GqlJwtAuthGuard],
+  providers: [JwtStrategy, JwtAuthGuard, GqlJwtAuthGuard, ContactMapper],
   exports: [JwtAuthGuard, GqlJwtAuthGuard],
 })
 export class AuthModule {}

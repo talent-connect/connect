@@ -4,7 +4,7 @@ import {
   PicklistValue,
   PicklistValuesSemicolonSeparated,
 } from '../base-interfaces-types-classes'
-import { ContactSfProps } from '../common-salesforce-objects'
+import { ContactRecordProps } from '../common-objects'
 
 export class ConProfileRecordProps implements RecordProps {
   Id: string
@@ -38,11 +38,24 @@ export class ConProfileRecordProps implements RecordProps {
   Work_Place__c?: string
   total_mentee_capacity__c?: number
 
-  @Type(() => ContactSfProps)
-  Contact__r: ContactSfProps
+  @Type(() => ContactRecordProps)
+  Contact__r: ContactRecordProps
 
   RecordType: {
     DeveloperName: string
+  }
+  props: {
+    Email: string
+    Id: string
+    FirstName: string
+    LastName: string
+    redi_Contact_Gender__c: import('/Users/eric/r/connect/connect/libs/common-types/src/lib/common-objects/index').Gender
+    ReDI_Birth_Date__c: Date
+    LinkedIn_Profile__c: string
+    ReDI_GitHub_Profile__c: string
+    ReDI_Slack_Username__c: string
+    MobilePhone: string
+    Loopback_User_ID__c: string
   }
 
   public static create(rawProps: any) {

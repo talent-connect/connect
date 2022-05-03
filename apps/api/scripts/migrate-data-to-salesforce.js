@@ -451,6 +451,10 @@ async function insertContactFn(p) {
         LinkedIn_Profile__c: p.contact.linkedInProfileUrl,
         ReDI_GitHub_Profile__c: p.contact.githubProfileUrl,
         ReDI_Slack_Username__c: p.contact.slackUsername,
+        ReDI_Behance_URL__c: p.contact.behanceUrl,
+        ReDI_Dribbble_URL__c: p.contact.dribbbleUrl,
+        ReDI_Stack_Overflow_URL__c: p.contact.stackOverflowUrl,
+        CON_TP_Mailing_Address__c: p.contact.postalMailingAddress,
         MobilePhone: p.contact.telephoneNumber,
         Upserted_by_CON_TP_data_migration__c: true,
         ReDI_First_Point_of_Contact_Talent_Pool__c: p.contact
@@ -494,6 +498,10 @@ async function insertContactFn(p) {
         LinkedIn_Profile__c: p.contact.linkedInProfileUrl,
         ReDI_GitHub_Profile__c: p.contact.githubProfileUrl,
         ReDI_Slack_Username__c: p.contact.slackUsername,
+        ReDI_Behance_URL__c: p.contact.behanceUrl,
+        ReDI_Dribbble_URL__c: p.contact.dribbbleUrl,
+        ReDI_Stack_Overflow_URL__c: p.contact.stackOverflowUrl,
+        CON_TP_Mailing_Address__c: p.contact.postalMailingAddress,
         MobilePhone: p.contact.telephoneNumber,
         Upserted_by_CON_TP_data_migration__c: true,
         ReDI_First_Point_of_Contact_Talent_Pool__c: p.contact
@@ -711,7 +719,9 @@ async function insertJobseekerProfileFn(p) {
         Top_Skills__c: p.tpJobseekerProfile.topSkills
           ? p.tpJobseekerProfile.topSkills.join(';')
           : undefined,
-        Profile_Status__c: p.tpJobseekerProfile.state,
+        Profile_Status__c: p.tpJobseekerProfile.state
+          .toUpperCase()
+          .replace(/-/g, '_'),
         Is_Job_Fair_2022_Participant__c:
           p.tpJobseekerProfile.isJobFair2022Participant,
         Is_Visible_to_Companies__c:

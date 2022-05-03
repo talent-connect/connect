@@ -1,6 +1,5 @@
 import { Field, InputType, ObjectType, registerEnumType } from '@nestjs/graphql'
-import { MutationOutputDto } from '../../base-interfaces-types-classes/mutation-output-dto.abstractclass'
-import { FirstPointOfTpContactOption } from '../enums'
+import { FirstPointOfTpContactOption } from '../../common-objects'
 import { TpCompanyProfileSignUpOperationType } from '../enums/tp-company-profile-sign-up-operation-type.enum'
 
 @InputType('TpCompanyProfileSignUpInputDto')
@@ -20,6 +19,6 @@ export class TpCompanyProfileSignUpMutationInputDto {
 }
 
 @ObjectType('TpCompanyProfileSignUpInputOutputDto')
-export class TpCompanyProfileSignUpMutationOutputDto extends MutationOutputDto {
-  data: {}
+export class TpCompanyProfileSignUpMutationOutputDto {
+  ok: boolean
 }

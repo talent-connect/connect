@@ -151,12 +151,16 @@ module.exports = function (RedUser) {
    * product profile.
    */
   RedUser.afterRemote('login', async function (ctx, loginOutput, next) {
+    const email = ctx.req.body.email
     const jwtToken = jwt.sign(
-      JSON.parse(JSON.stringify(ctx.result)),
+      { ...loginOutput.toJSON(), email },
       process.env.NX_JWT_SECRET,
-      { expiresIn: '7d' }
+      {
+        expiresIn: '7d',
+      }
     )
     ctx.result.jwtToken = jwtToken
+
     const redProduct = ctx.req.headers.redproduct // either CON or TP
     switch (redProduct) {
       case 'CON':
