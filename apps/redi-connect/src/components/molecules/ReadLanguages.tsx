@@ -6,7 +6,6 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile } from '@talent-connect/shared-types'
 import React from 'react'
-import { RootState } from '../../redux/types'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 
 interface Props {
@@ -32,10 +31,6 @@ const Some = ({ profile }: Props) => {
     </>
   )
 }
-
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile as RedProfile,
-})
 
 export default {
   Me: () => {

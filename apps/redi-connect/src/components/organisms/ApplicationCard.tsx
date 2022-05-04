@@ -6,13 +6,12 @@ import React, { useState } from 'react'
 import { Columns, Content, Heading } from 'react-bulma-components'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { RootState } from '../../redux/types'
-import { getHasReachedMenteeLimit } from '../../redux/user/selectors'
-import { getRedProfileFromLocalStorage } from '../../services/auth/auth'
 import { Avatar, ConfirmMentorship } from '../organisms'
 import './ApplicationCard.scss'
 import DeclineMentorshipButton from './DeclineMentorshipButton'
 import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
+import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
+import { useLoadMyProfileQuery } from '@talent-connect/data-access'
 
 interface Props {
   application: RedMatch & { createdAt?: string }
@@ -34,13 +33,17 @@ const ApplicationCard = ({
   hasReachedMenteeLimit,
   currentUser,
 }: Props) => {
+  const loopbackUserId = getAccessTokenFromLocalStorage().userId
+  const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
   const history = useHistory()
-  const profile = getRedProfileFromLocalStorage()
   const [showDetails, setShowDetails] = useState(false)
   const applicationDate = new Date(application.createdAt || '')
   const applicationUser =
-    profile.userType === 'mentee' ? application.mentor : application.mentee
-  const currentUserIsMentor = currentUser?.userType === 'mentor'
+    myProfileQuery.data?.conProfile.userType === 'MENTEE'
+      ? application.mentor
+      : application.mentee
+  const currentUserIsMentor =
+    myProfileQuery.data?.conProfile.userType === 'MENTOR'
 
   return (
     <>
@@ -158,9 +161,4 @@ const ApplicationCard = ({
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  currentUser: state.user.profile,
-  hasReachedMenteeLimit: getHasReachedMenteeLimit(state.user),
-})
-
-export default connect(mapStateToProps)(ApplicationCard)
+export default ApplicationCard

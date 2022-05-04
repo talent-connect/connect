@@ -11,13 +11,8 @@ import {
 import classnames from 'classnames'
 import placeholderImage from '../../assets/images/img-placeholder.png'
 
-import { RootState } from '../../redux/types'
-import { connect } from 'react-redux'
-
 import './Avatar.scss'
 
-import { profileSaveStart } from '../../redux/user/actions'
-import { RedProfile } from '@talent-connect/shared-types'
 import {
   ConProfile,
   useLoadMyProfileQuery,

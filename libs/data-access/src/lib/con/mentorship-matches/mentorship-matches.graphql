@@ -7,12 +7,22 @@ query myMatches($status: MentorshipMatchStatus) {
       id
       firstName
       lastName
-
       languages
       categories
       rediLocation
       profileAvatarImageS3Key
     }
+    mentor {
+      id
+      firstName
+      lastName
+      languages
+      categories
+      rediLocation
+      profileAvatarImageS3Key
+    }
+    mentorReplyMessageOnAccept
+    hasMenteeDismissedMentorshipApplicationAcceptedNotification
   }
 }
 
@@ -49,4 +59,12 @@ fragment conProfileFields on ConProfile {
   telephoneNumber
   linkedInProfileUrl
   slackUsername
+}
+
+mutation conMatchMarkMentorshipAcceptedNotificationDismissed($id: String!) {
+  conMatchMarkMentorshipAcceptedNotificationDismissed(
+    conMentorshipMatchId: $id
+  ) {
+    ok
+  }
 }

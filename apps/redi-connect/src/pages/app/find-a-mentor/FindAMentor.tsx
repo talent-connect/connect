@@ -1,32 +1,40 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import { Content, Columns, Tag, Form } from 'react-bulma-components'
-import { debounce } from 'lodash'
 import {
+  ConnectProfileLanguage,
+  ConnectProfileStatus,
+  MentoringTopic,
+  RediLocation,
+  useFavoriteMentorMutation,
+  useFindAvailableMentorsQuery,
+  useListFavoriteMentorsQuery,
+  useLoadMyProfileQuery,
+  useUnfavoriteMentorMutation,
+} from '@talent-connect/data-access'
+import {
+  FilterDropdown,
   Heading,
   Icon,
   SearchField,
 } from '@talent-connect/shared-atomic-design-components'
-import { FilterDropdown } from '@talent-connect/shared-atomic-design-components'
-import { ProfileCard } from '../../../components/organisms'
-import { useLoading } from '../../../hooks/WithLoading'
-import { getMentors } from '../../../services/api/api'
-import { RediLocation, RedProfile } from '@talent-connect/shared-types'
-import { profileSaveStart } from '../../../redux/user/actions'
-import { connect } from 'react-redux'
-import { RootState } from '../../../redux/types'
-import { LoggedIn } from '../../../components/templates'
-
 import { CATEGORIES, REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
-import './FindAMentor.scss'
-import { toggleValueInArray } from './utils'
+import { RedProfile } from '@talent-connect/shared-types'
+import { objectKeys } from '@talent-connect/typescript-utilities'
+import React, { useEffect, useState } from 'react'
+import { Columns, Content, Tag } from 'react-bulma-components'
+import { useQueryClient } from 'react-query'
+import { connect } from 'react-redux'
 import {
-  StringParam,
-  useQueryParams,
   ArrayParam,
   BooleanParam,
+  StringParam,
+  useQueryParams,
   withDefault,
 } from 'use-query-params'
-import { objectKeys } from '@talent-connect/typescript-utilities'
+import { ProfileCard } from '../../../components/organisms'
+import { LoggedIn } from '../../../components/templates'
+import { useLoading } from '../../../hooks/WithLoading'
+import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
+import './FindAMentor.scss'
+import { toggleValueInArray } from './utils'
 
 const filterCategories = CATEGORIES.map((category) => ({
   value: category.id,
@@ -57,14 +65,23 @@ interface FindAMentorProps {
   profileSaveStart: (profile: Partial<RedProfile>) => void
 }
 
-const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
+const FindAMentor = () => {
+  const queryClient = useQueryClient()
+  const loopbackUserId = getAccessTokenFromLocalStorage().userId
+  const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
+  const favouriteMentorsQuery = useListFavoriteMentorsQuery({})
+  const favoriteMentorMutation = useFavoriteMentorMutation()
+  const unfavoriteMentorMutation = useUnfavoriteMentorMutation()
+
   const { Loading, isLoading, setLoading } = useLoading()
-  const {
-    id,
-    categories: categoriesFromProfile,
-    favouritedRedProfileIds,
-    rediLocation,
-  } = profile
+
+  // const {
+  //   id,
+  //   categories: categoriesFromProfile,
+  //   favouritedRedProfileIds,
+  //   rediLocation,
+  // } = profile
+
   const [showFavorites, setShowFavorites] = useState<boolean>(false)
   const [mentors, setMentors] = useState<RedProfile[]>([])
   const [query, setQuery] = useQueryParams({
@@ -76,6 +93,16 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
   })
   const { topics, name, languages, locations, onlyFavorites } = query
 
+  const mentorsQuery = useFindAvailableMentorsQuery({
+    filter: {
+      // TODO: find a way to pass type information to the useQueryParams() above
+      categories: topics as MentoringTopic[],
+      name,
+      languages: languages as ConnectProfileLanguage[],
+      locations: locations as RediLocation[],
+    },
+  })
+
   useEffect(() => {
     const hasQuery =
       topics.length > 0 ||
@@ -83,8 +110,12 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
       locations.length > 0 ||
       Boolean(name) ||
       onlyFavorites
-    setQuery(hasQuery ? query : { ...query, topics: categoriesFromProfile })
-  }, [])
+    setQuery(
+      hasQuery
+        ? query
+        : { ...query, topics: myProfileQuery.data?.conProfile.categories ?? [] }
+    )
+  }, [myProfileQuery.data])
 
   const toggleFilters = (filtersArr, filterName, item) => {
     const newFilters = toggleValueInArray(filtersArr, item)
@@ -95,11 +126,20 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
     setQuery((latestQuery) => ({ ...latestQuery, name: value || undefined }))
   }
 
-  const toggleFavorites = (favoritesArr, value) => {
-    const newFavorites = toggleValueInArray(favoritesArr, value)
-    setLoading(true)
-    profileSaveStart({ favouritedRedProfileIds: newFavorites, id })
-    setLoading(false)
+  const currentFavorites =
+    favouriteMentorsQuery.data?.conMenteeFavoritedMentors.map(
+      (item) => item.mentorId
+    ) ?? []
+
+  const toggleFavorite = async (mentorId) => {
+    const isMentorCurrentlyFavorited = currentFavorites.includes(mentorId)
+    if (isMentorCurrentlyFavorited) {
+      await unfavoriteMentorMutation.mutateAsync({ input: { mentorId } })
+      queryClient.invalidateQueries(useListFavoriteMentorsQuery.getKey())
+    } else {
+      await favoriteMentorMutation.mutateAsync({ input: { mentorId } })
+      queryClient.invalidateQueries(useListFavoriteMentorsQuery.getKey())
+    }
   }
 
   const setFavorites = () => {
@@ -138,28 +178,12 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
     })
   )
 
-  useEffect(() => {
-    setLoading(true)
-    getMentors({
-      categories: topics,
-      languages,
-      nameQuery: name || '',
-      locations,
-    }).then((mentors) => {
-      setMentors(
-        mentors
-          .filter((mentor) => mentor.currentFreeMenteeSpots > 0)
-          .filter(
-            (mentor) =>
-              !mentor.optOutOfMenteesFromOtherRediLocation ||
-              mentor.rediLocation === rediLocation
-          )
-      )
-      setLoading(false)
-    })
-  }, [topics, languages, locations, name])
-
-  if (profile.userActivated !== true) return <LoggedIn />
+  if (
+    myProfileQuery.data?.conProfile &&
+    myProfileQuery.data?.conProfile?.profileStatus !==
+      ConnectProfileStatus.Approved
+  )
+    return <LoggedIn />
 
   return (
     <LoggedIn>
@@ -258,7 +282,7 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
 
       <Columns>
         {mentors.map((mentor: RedProfile) => {
-          const isFavorite = favouritedRedProfileIds.includes(mentor.id)
+          const isFavorite = currentFavorites.includes(mentor.id)
 
           if (!isFavorite && showFavorites) return
 
@@ -267,9 +291,7 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
               <ProfileCard
                 profile={mentor}
                 linkTo={`/app/find-a-mentor/profile/${mentor.id}`}
-                toggleFavorite={(item) =>
-                  toggleFavorites(favouritedRedProfileIds, item)
-                }
+                toggleFavorite={() => toggleFavorite(mentor.id)}
                 isFavorite={isFavorite}
               />
             </Columns.Column>
@@ -288,12 +310,5 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
     </LoggedIn>
   )
 }
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile as RedProfile,
-})
 
-const mapDispatchToProps = (dispatch: any) => ({
-  profileSaveStart: (profile: Partial<RedProfile>) =>
-    dispatch(profileSaveStart(profile)),
-})
-export default connect(mapStateToProps, mapDispatchToProps)(FindAMentor)
+export default FindAMentor

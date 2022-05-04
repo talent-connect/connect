@@ -1,10 +1,14 @@
 import React, { ReactNode } from 'react'
-import { getRedProfileFromLocalStorage } from '../../services/auth/auth'
 import './SideMenu.scss'
 import { NavLink } from 'react-router-dom'
 import { ReactComponent as Mentorship } from '../../assets/images/mentorship.svg'
 import { ReactComponent as Applications } from '../../assets/images/applications.svg'
 import { ReactComponent as Profile } from '../../assets/images/profile.svg'
+import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
+import {
+  ConnectProfileStatus,
+  useLoadMyProfileQuery,
+} from '@talent-connect/data-access'
 
 interface MenuItemProps {
   url: string
@@ -24,18 +28,21 @@ const MenuItem = ({ url, children }: MenuItemProps) => (
 )
 
 const SideMenu = () => {
-  const profile = getRedProfileFromLocalStorage()
+  const loopbackUserId = getAccessTokenFromLocalStorage().userId
+  const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
+  const profile = myProfileQuery.data?.conProfile
   const isActivatedMentor =
-    profile.userType === 'mentor' && profile.userActivated
+    profile?.userType === 'MENTOR' &&
+    profile?.profileStatus === ConnectProfileStatus.Approved
   const isActivatedMentee =
-    profile.userType === 'mentee' && profile.userActivated
+    profile?.userType === 'MENTEE' &&
+    profile?.profileStatus === ConnectProfileStatus.Approved
   const isMentee =
-    isActivatedMentee ||
-    profile.userType === 'public-sign-up-mentee-pending-review'
+    isActivatedMentee || profile?.profileStatus === ConnectProfileStatus.Pending
   const isMenteeWithoutMentor =
-    isMentee && !profile.ifUserIsMentee_hasActiveMentor
+    isMentee && profile.ifUserMentee_activeMentorshipMatches === 0
   const isMenteeWithMentor =
-    isActivatedMentee && profile.ifUserIsMentee_hasActiveMentor
+    isActivatedMentee && profile.ifUserMentee_activeMentorshipMatches > 0
 
   return (
     <ul className="side-menu">

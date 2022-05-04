@@ -21,8 +21,6 @@ import {
   ReportProblem,
 } from '../../../components/organisms'
 import { LoggedIn } from '../../../components/templates'
-import { getMatches } from '../../../redux/matches/selectors'
-import { RootState } from '../../../redux/types'
 import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
 
 export interface MentorshipRouteParams {
@@ -129,9 +127,4 @@ function Mentorship() {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  currentUser: state.user.profile,
-  matches: getMatches(state.matches),
-})
-
-export default connect(mapStateToProps, null)(Mentorship)
+export default Mentorship

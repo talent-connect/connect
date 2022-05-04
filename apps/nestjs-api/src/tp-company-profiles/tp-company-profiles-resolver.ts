@@ -1,16 +1,16 @@
 import { UseGuards } from '@nestjs/common'
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
-import {
-  TpCompanyProfileEntityProps,
-  TpCompanyProfileSignUpMutationInputDto,
-  TpCompanyProfileSignUpMutationOutputDto,
-} from '@talent-connect/common-types'
+import { TpCompanyProfileEntityProps } from '@talent-connect/common-types'
 import { CurrentUser } from '../auth/current-user.decorator'
 import { CurrentUserInfo } from '../auth/current-user.interface'
 import { GqlJwtAuthGuard } from '../auth/gql-jwt-auth.guard'
 import { FindOneTpCompanyProfileArgs } from './args/find-one-tp-company-profile.args'
 import { TpCompanyProfilesService } from './tp-company-profiles.service'
-import { TpCompanyProfileSignUpUseCase } from './use-cases/tp-company-profile-sign-up.use-case'
+import {
+  TpCompanyProfileSignUpMutationInputDto,
+  TpCompanyProfileSignUpMutationOutputDto,
+} from './use-cases/tp-company-profile-sign-up/tp-company-profile-sign-up.mutation-dtos'
+import { TpCompanyProfileSignUpUseCase } from './use-cases/tp-company-profile-sign-up/tp-company-profile-sign-up.use-case'
 
 @UseGuards(GqlJwtAuthGuard)
 @Resolver(() => TpCompanyProfileEntityProps)

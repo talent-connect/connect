@@ -1,8 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
-import { ConMentorshipMatchEntity } from '@talent-connect/common-types'
+import {
+  ConMentorshipMatchEntity,
+  ConMentorshipMatchEntityProps,
+} from '@talent-connect/common-types'
 import { SfApiConMentorshipMatchesService } from '../salesforce-api/sf-api-con-mentorship-matches.service'
-import { CreateConMentorshipMatchInput } from './dto/create-con-mentorship-match.input'
-import { UpdateConMentorshipMatchInput } from './dto/update-con-mentorship-match.input'
 import { ConMentorshipMatchMapper } from './mappers/con-mentorship-match.mapper'
 
 @Injectable()
@@ -12,9 +13,9 @@ export class ConMentorshipMatchesService {
     private readonly mapper: ConMentorshipMatchMapper
   ) {}
 
-  create(createConMentorshipMatchInput: CreateConMentorshipMatchInput) {
-    return 'This action adds a new conMentorshipMatch'
-  }
+  // create(createConMentorshipMatchInput: CreateConMentorshipMatchInput) {
+  //   return 'This action adds a new conMentorshipMatch'
+  // }
 
   async findAll(filter: any = {}) {
     const persistedEntities = await this.api.getAllConMentorshipMatches(filter)
@@ -35,11 +36,23 @@ export class ConMentorshipMatchesService {
     }
   }
 
-  update(
-    id: number,
-    updateConMentorshipMatchInput: UpdateConMentorshipMatchInput
-  ) {
-    return `This action updates a #${id} conMentorshipMatch`
+  async patch(
+    conMentorshipMatchId: string,
+    updates: Partial<ConMentorshipMatchEntityProps>
+  ): Promise<ConMentorshipMatchEntity> {
+    const existingEntity = await this.findOne({ Id: conMentorshipMatchId })
+    const pendingEntityProps = Object.assign(
+      {},
+      existingEntity.props,
+      updates
+    ) as ConMentorshipMatchEntityProps
+    const pendingEntity = ConMentorshipMatchEntity.create(pendingEntityProps)
+    const persistedRecord = await this.api.updateConMentorshipMatch(
+      this.mapper.toPersistence(pendingEntity)
+    )
+    const persistedEntity = this.mapper.fromPersistence(persistedRecord)
+
+    return persistedEntity
   }
 
   remove(id: number) {

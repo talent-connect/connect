@@ -7,7 +7,7 @@ export type LoadMyProfileQueryVariables = Types.Exact<{
 }>;
 
 
-export type LoadMyProfileQuery = { __typename?: 'Query', conProfile: { __typename?: 'ConProfile', profileStatus: Types.ConnectProfileStatus, birthDate?: any | null, email: string, expectations?: string | null, firstName: string, gender?: Types.Gender | null, githubProfileUrl?: string | null, id: string, languages?: Array<Types.ConnectProfileLanguage> | null, lastName: string, linkedInProfileUrl?: string | null, loopbackUserId: string, mentee_currentlyEnrolledInCourse: Types.RediCourse, mentee_highestEducationLevel?: Types.EducationLevel | null, mentee_occupationCategoryId?: Types.OccupationCategory | null, mentee_occupationJob_placeOfEmployment?: string | null, mentee_occupationJob_position?: string | null, mentee_occupationLookingForJob_what?: string | null, mentee_occupationOther_description?: string | null, mentee_occupationStudent_studyName?: string | null, mentee_occupationStudent_studyPlace?: string | null, mentor_occupation?: string | null, mentor_workPlace?: string | null, optOutOfMenteesFromOtherRediLocation: boolean, personalDescription?: string | null, profileAvatarImageS3Key?: string | null, rediLocation: Types.RediLocation, slackUsername?: string | null, telephoneNumber?: string | null, userActivatedAt?: any | null, userType: Types.UserType, categories: Array<Types.MentoringTopic>, menteeCountCapacity?: number | null } };
+export type LoadMyProfileQuery = { __typename?: 'Query', conProfile: { __typename?: 'ConProfile', ifUserMentee_activeMentorshipMatches: number, ifUserMentor_activeMentorshipMatches: number, profileStatus: Types.ConnectProfileStatus, birthDate?: any | null, email: string, expectations?: string | null, firstName: string, gender?: Types.Gender | null, githubProfileUrl?: string | null, id: string, languages?: Array<Types.ConnectProfileLanguage> | null, lastName: string, linkedInProfileUrl?: string | null, loopbackUserId: string, mentee_currentlyEnrolledInCourse: Types.RediCourse, mentee_highestEducationLevel?: Types.EducationLevel | null, mentee_occupationCategoryId?: Types.OccupationCategory | null, mentee_occupationJob_placeOfEmployment?: string | null, mentee_occupationJob_position?: string | null, mentee_occupationLookingForJob_what?: string | null, mentee_occupationOther_description?: string | null, mentee_occupationStudent_studyName?: string | null, mentee_occupationStudent_studyPlace?: string | null, mentor_occupation?: string | null, mentor_workPlace?: string | null, optOutOfMenteesFromOtherRediLocation: boolean, personalDescription?: string | null, profileAvatarImageS3Key?: string | null, rediLocation: Types.RediLocation, slackUsername?: string | null, telephoneNumber?: string | null, userActivatedAt?: any | null, userType: Types.UserType, categories: Array<Types.MentoringTopic>, menteeCountCapacity?: number | null } };
 
 export type PatchMyProfileMutationVariables = Types.Exact<{
   input: Types.UpdateConProfileInput;
@@ -59,6 +59,8 @@ export const LoadMyProfileDocument = `
     query loadMyProfile($loopbackUserId: ID!) {
   conProfile(loopbackUserId: $loopbackUserId) {
     ...fields
+    ifUserMentee_activeMentorshipMatches
+    ifUserMentor_activeMentorshipMatches
   }
 }
     ${FieldsFragmentDoc}`;

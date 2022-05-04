@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { RootState } from '../../../redux/types'
-import { profileFetchStart } from '../../../redux/user/actions'
 import { Columns, Content, Element } from 'react-bulma-components'
 import {
   Heading,
@@ -28,7 +26,7 @@ import { useLoadMyProfileQuery } from '@talent-connect/data-access'
 import { useIsFetching, useIsMutating } from 'react-query'
 // CHECK OUT THE LOADER
 
-const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
+const Me = () => {
   const myProfileResult = useLoadMyProfileQuery({
     loopbackUserId: getAccessTokenFromLocalStorage().userId,
   })
@@ -37,10 +35,6 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
   const isMutating = useIsMutating()
 
   const isBusy = isFetching || isMutating
-
-  useEffect(() => {
-    profileFetchStart()
-  }, [profileFetchStart])
 
   if (myProfileResult.isLoading) {
     return <Loader loading={true} />
@@ -156,14 +150,4 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  saveResult: state.user.saveResult,
-  loading: state.user.loading,
-  profile: state.user.profile,
-})
-
-const mapDispatchToProps = (dispatch: any) => ({
-  profileFetchStart: () => dispatch(profileFetchStart()),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Me)
+export default Me

@@ -1,13 +1,13 @@
 import * as Types from '@talent-connect/data-access';
 
-import { useQuery, UseQueryOptions } from 'react-query';
+import { useQuery, useMutation, UseQueryOptions, UseMutationOptions } from 'react-query';
 import { fetcher } from '@talent-connect/data-access';
 export type MyMatchesQueryVariables = Types.Exact<{
   status?: Types.InputMaybe<Types.MentorshipMatchStatus>;
 }>;
 
 
-export type MyMatchesQuery = { __typename?: 'Query', conMentorshipMatches: Array<{ __typename?: 'ConMentorshipMatch', id: string, applicationText?: string | null, expectationText?: string | null, mentee: { __typename?: 'ConProfile', id: string, firstName: string, lastName: string, languages?: Array<Types.ConnectProfileLanguage> | null, categories: Array<Types.MentoringTopic>, rediLocation: Types.RediLocation, profileAvatarImageS3Key?: string | null } }> };
+export type MyMatchesQuery = { __typename?: 'Query', conMentorshipMatches: Array<{ __typename?: 'ConMentorshipMatch', id: string, applicationText?: string | null, expectationText?: string | null, mentorReplyMessageOnAccept?: string | null, hasMenteeDismissedMentorshipApplicationAcceptedNotification?: boolean | null, mentee: { __typename?: 'ConProfile', id: string, firstName: string, lastName: string, languages?: Array<Types.ConnectProfileLanguage> | null, categories: Array<Types.MentoringTopic>, rediLocation: Types.RediLocation, profileAvatarImageS3Key?: string | null }, mentor: { __typename?: 'ConProfile', id: string, firstName: string, lastName: string, languages?: Array<Types.ConnectProfileLanguage> | null, categories: Array<Types.MentoringTopic>, rediLocation: Types.RediLocation, profileAvatarImageS3Key?: string | null } }> };
 
 export type FindMatchQueryVariables = Types.Exact<{
   id: Types.Scalars['ID'];
@@ -17,6 +17,13 @@ export type FindMatchQueryVariables = Types.Exact<{
 export type FindMatchQuery = { __typename?: 'Query', conMentorshipMatch: { __typename?: 'ConMentorshipMatch', id: string, applicationText?: string | null, expectationText?: string | null, status: Types.MentorshipMatchStatus, mentee: { __typename?: 'ConProfile', _contactId: string, id: string, firstName: string, lastName: string, languages?: Array<Types.ConnectProfileLanguage> | null, categories: Array<Types.MentoringTopic>, rediLocation: Types.RediLocation, profileAvatarImageS3Key?: string | null, email: string, telephoneNumber?: string | null, linkedInProfileUrl?: string | null, slackUsername?: string | null }, mentor: { __typename?: 'ConProfile', _contactId: string, id: string, firstName: string, lastName: string, languages?: Array<Types.ConnectProfileLanguage> | null, categories: Array<Types.MentoringTopic>, rediLocation: Types.RediLocation, profileAvatarImageS3Key?: string | null, email: string, telephoneNumber?: string | null, linkedInProfileUrl?: string | null, slackUsername?: string | null }, mentoringSessions: Array<{ __typename?: 'ConMentoringSession', id: string, date: any, minuteDuration: Types.MentoringSessionDuration }> } };
 
 export type ConProfileFieldsFragment = { __typename?: 'ConProfile', _contactId: string, id: string, firstName: string, lastName: string, languages?: Array<Types.ConnectProfileLanguage> | null, categories: Array<Types.MentoringTopic>, rediLocation: Types.RediLocation, profileAvatarImageS3Key?: string | null, email: string, telephoneNumber?: string | null, linkedInProfileUrl?: string | null, slackUsername?: string | null };
+
+export type ConMatchMarkMentorshipAcceptedNotificationDismissedMutationVariables = Types.Exact<{
+  id: Types.Scalars['String'];
+}>;
+
+
+export type ConMatchMarkMentorshipAcceptedNotificationDismissedMutation = { __typename?: 'Mutation', conMatchMarkMentorshipAcceptedNotificationDismissed: { __typename?: 'OkResponseMutationOutputDto', ok: boolean } };
 
 export const ConProfileFieldsFragmentDoc = `
     fragment conProfileFields on ConProfile {
@@ -49,6 +56,17 @@ export const MyMatchesDocument = `
       rediLocation
       profileAvatarImageS3Key
     }
+    mentor {
+      id
+      firstName
+      lastName
+      languages
+      categories
+      rediLocation
+      profileAvatarImageS3Key
+    }
+    mentorReplyMessageOnAccept
+    hasMenteeDismissedMentorshipApplicationAcceptedNotification
   }
 }
     `;
@@ -104,3 +122,20 @@ export const useFindMatchQuery = <
 
 useFindMatchQuery.getKey = (variables: FindMatchQueryVariables) => ['findMatch', variables];
 ;
+
+export const ConMatchMarkMentorshipAcceptedNotificationDismissedDocument = `
+    mutation conMatchMarkMentorshipAcceptedNotificationDismissed($id: String!) {
+  conMatchMarkMentorshipAcceptedNotificationDismissed(conMentorshipMatchId: $id) {
+    ok
+  }
+}
+    `;
+export const useConMatchMarkMentorshipAcceptedNotificationDismissedMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<ConMatchMarkMentorshipAcceptedNotificationDismissedMutation, TError, ConMatchMarkMentorshipAcceptedNotificationDismissedMutationVariables, TContext>) =>
+    useMutation<ConMatchMarkMentorshipAcceptedNotificationDismissedMutation, TError, ConMatchMarkMentorshipAcceptedNotificationDismissedMutationVariables, TContext>(
+      ['conMatchMarkMentorshipAcceptedNotificationDismissed'],
+      (variables?: ConMatchMarkMentorshipAcceptedNotificationDismissedMutationVariables) => fetcher<ConMatchMarkMentorshipAcceptedNotificationDismissedMutation, ConMatchMarkMentorshipAcceptedNotificationDismissedMutationVariables>(ConMatchMarkMentorshipAcceptedNotificationDismissedDocument, variables)(),
+      options
+    );

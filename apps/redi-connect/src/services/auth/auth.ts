@@ -15,20 +15,6 @@ export const isLoggedIn = (): boolean => {
   }
 }
 
-export const getRedUserFromLocalStorage = (): RedUser =>
-  JSON.parse(window.localStorage.getItem('redUser') as string)
-
-export const saveRedUserToLocalStorage = (redUser: RedUser) => {
-  window.localStorage.setItem('redUser', JSON.stringify(redUser))
-}
-
-export const getRedProfileFromLocalStorage = (): RedProfile =>
-  JSON.parse(window.localStorage.getItem('redProfile') as string)
-
-export const saveRedProfileToLocalStorage = (redProfile: RedProfile) => {
-  window.localStorage.setItem('redProfile', JSON.stringify(redProfile))
-}
-
 // TODO: add | undefined here...
 export const getAccessTokenFromLocalStorage = (): AccessToken =>
   JSON.parse(window.localStorage.getItem('accessToken') as string)

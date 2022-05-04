@@ -17,8 +17,6 @@ import React from 'react'
 import { useQueryClient } from 'react-query'
 import { connect } from 'react-redux'
 import * as Yup from 'yup'
-import { RootState } from '../../redux/types'
-import { profileSaveStart } from '../../redux/user/actions'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 import { ReadMenteeCount } from '../molecules'
 

@@ -20,6 +20,33 @@ export enum CompanyTalentPoolState {
   SubmittedForReview = 'SUBMITTED_FOR_REVIEW'
 }
 
+export type ConMenteeFavoritedMentor = {
+  __typename?: 'ConMenteeFavoritedMentor';
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  menteeId: Scalars['ID'];
+  mentorId: Scalars['ID'];
+  updatedAt: Scalars['DateTime'];
+};
+
+export type ConMenteeFavoritedMentorCreateMutationInputDto = {
+  mentorId: Scalars['String'];
+};
+
+export type ConMenteeFavoritedMentorCreateMutationOutputDto = {
+  __typename?: 'ConMenteeFavoritedMentorCreateMutationOutputDto';
+  ok: Scalars['Boolean'];
+};
+
+export type ConMenteeFavoritedMentorDeleteMutationInputDto = {
+  mentorId: Scalars['String'];
+};
+
+export type ConMenteeFavoritedMentorDeleteMutationOutputDto = {
+  __typename?: 'ConMenteeFavoritedMentorDeleteMutationOutputDto';
+  ok: Scalars['Boolean'];
+};
+
 export type ConMentoringSession = {
   __typename?: 'ConMentoringSession';
   createdAt: Scalars['DateTime'];
@@ -66,6 +93,8 @@ export type ConProfile = {
   gender?: Maybe<Gender>;
   githubProfileUrl?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
+  ifUserMentee_activeMentorshipMatches: Scalars['Float'];
+  ifUserMentor_activeMentorshipMatches: Scalars['Float'];
   languages?: Maybe<Array<ConnectProfileLanguage>>;
   lastName: Scalars['String'];
   linkedInProfileUrl?: Maybe<Scalars['String']>;
@@ -92,6 +121,14 @@ export type ConProfile = {
   telephoneNumber?: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
   userActivatedAt?: Maybe<Scalars['DateTime']>;
+  userType: UserType;
+};
+
+export type ConProfileSignUpInput = {
+  email: Scalars['String'];
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  rediLocation: RediLocation;
   userType: UserType;
 };
 
@@ -263,6 +300,24 @@ export enum EducationLevel {
   UniversityPhd = 'universityPhd'
 }
 
+export type FindConProfilesArgsFilter = {
+  categories?: InputMaybe<Array<MentoringTopic>>;
+  languages?: InputMaybe<Array<ConnectProfileLanguage>>;
+  locations?: InputMaybe<Array<RediLocation>>;
+  name?: InputMaybe<Scalars['String']>;
+};
+
+export enum FirstPointOfTpContactOption {
+  AlreadyVolunteerAtRedi = 'ALREADY_VOLUNTEER_AT_REDI',
+  Collegue = 'COLLEGUE',
+  InternetSearch = 'INTERNET_SEARCH',
+  Other = 'OTHER',
+  RediStudentAlumni = 'REDI_STUDENT_ALUMNI',
+  RediTeamMember = 'REDI_TEAM_MEMBER',
+  RediWebsite = 'REDI_WEBSITE',
+  SocialMedia = 'SOCIAL_MEDIA'
+}
+
 export enum Gender {
   Female = 'Female',
   Male = 'Male',
@@ -338,8 +393,33 @@ export enum MentorshipMatchStatus {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  conMatchMarkMentorshipAcceptedNotificationDismissed: OkResponseMutationOutputDto;
+  conMenteeFavoritedMentorCreate: ConMenteeFavoritedMentorCreateMutationOutputDto;
+  conMenteeFavoritedMentorDelete: ConMenteeFavoritedMentorDeleteMutationOutputDto;
+  conProfileSignUp: ConProfile;
   createConMentoringSession: ConMentoringSession;
   patchConProfile: ConProfile;
+  tpCompanyProfileSignUp: TpCompanyProfileSignUpInputOutputDto;
+};
+
+
+export type MutationConMatchMarkMentorshipAcceptedNotificationDismissedArgs = {
+  conMentorshipMatchId: Scalars['String'];
+};
+
+
+export type MutationConMenteeFavoritedMentorCreateArgs = {
+  input: ConMenteeFavoritedMentorCreateMutationInputDto;
+};
+
+
+export type MutationConMenteeFavoritedMentorDeleteArgs = {
+  input: ConMenteeFavoritedMentorDeleteMutationInputDto;
+};
+
+
+export type MutationConProfileSignUpArgs = {
+  input: ConProfileSignUpInput;
 };
 
 
@@ -352,6 +432,11 @@ export type MutationPatchConProfileArgs = {
   patchConProfileInput: UpdateConProfileInput;
 };
 
+
+export type MutationTpCompanyProfileSignUpArgs = {
+  input: TpCompanyProfileSignUpInputDto;
+};
+
 export enum OccupationCategory {
   Job = 'job',
   LookingForJob = 'lookingForJob',
@@ -359,15 +444,23 @@ export enum OccupationCategory {
   Student = 'student'
 }
 
+export type OkResponseMutationOutputDto = {
+  __typename?: 'OkResponseMutationOutputDto';
+  ok: Scalars['Boolean'];
+};
+
 export type Query = {
   __typename?: 'Query';
+  conMenteeFavoritedMentors: Array<ConMenteeFavoritedMentor>;
   conMentoringSessions: Array<ConMentoringSession>;
   conMentorshipMatch: ConMentorshipMatch;
   conMentorshipMatches: Array<ConMentorshipMatch>;
   conProfile: ConProfile;
-  conProfiles: Array<ConProfile>;
+  conProfilesAvailableMentors: Array<ConProfile>;
   myConProfile: ConProfile;
+  myTpCompanyProfile: TpCompanyProfile;
   publicTpCompanyProfiles: Array<TpCompanyProfile>;
+  tpCompanyProfile: TpCompanyProfile;
 };
 
 
@@ -384,6 +477,16 @@ export type QueryConMentorshipMatchesArgs = {
 export type QueryConProfileArgs = {
   id?: InputMaybe<Scalars['ID']>;
   loopbackUserId?: InputMaybe<Scalars['ID']>;
+};
+
+
+export type QueryConProfilesAvailableMentorsArgs = {
+  filter: FindConProfilesArgsFilter;
+};
+
+
+export type QueryTpCompanyProfileArgs = {
+  id?: InputMaybe<Scalars['ID']>;
 };
 
 export enum RediCourse {
@@ -454,6 +557,26 @@ export type TpCompanyProfile = {
   updatedAt: Scalars['DateTime'];
   website?: Maybe<Scalars['String']>;
 };
+
+export type TpCompanyProfileSignUpInputDto = {
+  companyIdOrName: Scalars['String'];
+  email: Scalars['String'];
+  firstName: Scalars['String'];
+  firstPointOfContact: FirstPointOfTpContactOption;
+  firstPointOfContactOther?: InputMaybe<Scalars['String']>;
+  lastName: Scalars['String'];
+  operationType: TpCompanyProfileSignUpOperationType;
+};
+
+export type TpCompanyProfileSignUpInputOutputDto = {
+  __typename?: 'TpCompanyProfileSignUpInputOutputDto';
+  ok: Scalars['Boolean'];
+};
+
+export enum TpCompanyProfileSignUpOperationType {
+  ExistingCompany = 'EXISTING_COMPANY',
+  NewCompany = 'NEW_COMPANY'
+}
 
 export type UpdateConProfileInput = {
   birthDate?: InputMaybe<Scalars['DateTime']>;

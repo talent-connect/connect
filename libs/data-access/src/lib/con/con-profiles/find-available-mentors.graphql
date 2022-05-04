@@ -1,0 +1,10 @@
+query findAvailableMentors($filter: FindConProfilesArgsFilter!) {
+  conProfilesAvailableMentors(filter: $filter) {
+    id
+    userType
+    firstName
+    lastName
+    categories
+    languages
+  }
+}

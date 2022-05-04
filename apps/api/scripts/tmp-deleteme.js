@@ -22,17 +22,26 @@ const conn = new jsforce.Connection({
 ;(async () => {
   await conn.login(USERNAME, `${PASSWORD}${SECURITY_TOKEN}`)
 
-  var channel = '/event/ReDI_Connect_Profile_Statuc_Change_Event__e'
-  var replayId = 8 // -1 = Only New messages | -2 = All Window and New
+  // var channel = '/event/ReDI_Connect_Profile_Statuc_Change_Event__e'
+  // var replayId = 8 // -1 = Only New messages | -2 = All Window and New
 
-  var client = conn.streaming.createClient([
-    new jsforce.StreamingExtension.Replay(channel, replayId),
-    new jsforce.StreamingExtension.AuthFailure(function () {
-      return process.exit(1)
-    }),
-  ])
+  // var client = conn.streaming.createClient([
+  //   new jsforce.StreamingExtension.Replay(channel, replayId),
+  //   new jsforce.StreamingExtension.AuthFailure(function () {
+  //     return process.exit(1)
+  //   }),
+  // ])
 
-  var subscription = client.subscribe(channel, function (data) {
-    console.log('received data', JSON.stringify(data))
+  // var subscription = client.subscribe(channel, function (data) {
+  //   console.log('received data', JSON.stringify(data))
+  // })
+
+  const res = await conn.sobject('ReDI_Connect_Profile__c').find({
+    // 'Contact__r.Name': { $like: '%eric%' },
+    // Mentoring_Topics__c: { $includes: ['htmlCss', 'react'] },
+    // Languages__c: { $includes: ['Norwegian'] },
+    ReDI_Location__c: { $in: ['NRW', 'BERLIN'] },
   })
+
+  console.log(res)
 })()

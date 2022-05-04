@@ -5,7 +5,7 @@ import { TpCompanyProfileMapper } from './mappers/tp-company-profile.mapper'
 import { TpCompanyProfilesResolverPublicData } from './tp-company-profiles-public-data.resolver'
 import { TpCompanyProfilesResolver } from './tp-company-profiles-resolver'
 import { TpCompanyProfilesService } from './tp-company-profiles.service'
-import { TpCompanyProfileSignUpUseCase } from './use-cases/tp-company-profile-sign-up.use-case'
+import { TpCompanyProfileSignUpUseCase } from './use-cases/tp-company-profile-sign-up/tp-company-profile-sign-up.use-case'
 
 @Module({
   imports: [AuthModule, SfApiModule],

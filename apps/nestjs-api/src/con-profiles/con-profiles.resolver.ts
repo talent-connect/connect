@@ -13,15 +13,18 @@ import {
 } from '@nestjs/graphql'
 import {
   ConMentoringSessionEntityProps,
+  ConProfileEntity,
   ConProfileEntityProps,
-  PatchConProfileInput,
 } from '@talent-connect/common-types'
 import { CurrentUser } from '../auth/current-user.decorator'
 import { CurrentUserInfo } from '../auth/current-user.interface'
 import { GqlJwtAuthGuard } from '../auth/gql-jwt-auth.guard'
 import { ConMentoringSessionsService } from '../con-mentoring-sessions/con-mentoring-sessions.service'
+import { FindConProfilesArgs } from './args/find-con-profiles.args'
 import { FindOneConProfileArgs } from './args/find-one-con-profile.args'
 import { ConProfilesService } from './con-profiles.service'
+import { ConProfileSignUpInput } from './dtos/con-profile-sign-up.entityinput'
+import { PatchConProfileInput } from './dtos/patch-con-profile.entityinput'
 
 @UseGuards(GqlJwtAuthGuard)
 @Resolver(() => ConProfileEntityProps)
@@ -31,16 +34,21 @@ export class ConProfilesResolver {
     private readonly conMentoringSessionsService: ConMentoringSessionsService
   ) {}
 
-  // @Mutation(() => ConProfileEntity)
-  // createConProfile(
-  //   @Args('createConProfileInput') createConProfileInput: CreateConProfileInput
-  // ) {
-  //   return this.conProfilesService.create(createConProfileInput)
-  // }
+  @Mutation(() => ConProfileEntityProps, { name: 'conProfileSignUp' })
+  async createConProfile(
+    @Args('input') createConProfileInput: ConProfileSignUpInput,
+    @CurrentUser() currentUser: CurrentUserInfo
+  ) {
+    const entity = await this.conProfilesService.signUp(
+      createConProfileInput,
+      currentUser
+    )
+    return entity.props
+  }
   //! TODO: Add auth
-  @Query(() => [ConProfileEntityProps], { name: 'conProfiles' })
-  async findAll() {
-    const entities = await this.conProfilesService.findAll({})
+  @Query(() => [ConProfileEntityProps], { name: 'conProfilesAvailableMentors' })
+  async findAllAvailableMentors(@Args() args: FindConProfilesArgs) {
+    const entities = await this.conProfilesService.findAllAvailableMentors(args)
     const props = entities.map((entity) => entity.props)
     return props
   }

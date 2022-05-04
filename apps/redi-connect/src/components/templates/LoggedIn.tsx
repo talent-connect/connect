@@ -1,7 +1,6 @@
 import React, { ReactNode, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
 import {
   Button,
   Icon,
@@ -16,21 +15,21 @@ import {
   Content,
   Notification,
 } from 'react-bulma-components'
-import { getRedProfileFromLocalStorage } from '../../services/auth/auth'
-import {
-  matchesFetchStart,
-  matchesMarkAsDismissed,
-} from '../../redux/matches/actions'
 import { useTranslation } from 'react-i18next'
 import Footer from '../organisms/Footer'
 import { RedMatch } from '@talent-connect/shared-types'
+import {
+  ConnectProfileStatus,
+  MentorshipMatchStatus,
+  useConMatchMarkMentorshipAcceptedNotificationDismissedMutation,
+  useLoadMyProfileQuery,
+  useMyMatchesQuery,
+} from '@talent-connect/data-access'
+import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
+import { useIsFetching } from 'react-query'
 
 interface Props {
-  loading: boolean
   children?: ReactNode
-  matches: RedMatch[]
-  matchesFetchStart: () => void
-  matchesMarkAsDismissed: (redMatchId: string) => void
 }
 
 const RediNotification: React.FC = ({ children }) => (
@@ -45,30 +44,35 @@ const RediNotification: React.FC = ({ children }) => (
   </Notification>
 )
 
-const LoggedIn = ({
-  loading,
-  children,
-  matches,
-  matchesFetchStart,
-  matchesMarkAsDismissed,
-}: Props) => {
-  const profile = getRedProfileFromLocalStorage()
+function LoggedIn({ children }: Props) {
+  const loopbackUserId = getAccessTokenFromLocalStorage().userId
+  const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
+  const myMatchesQuery = useMyMatchesQuery({
+    status: MentorshipMatchStatus.Accepted,
+  })
+  const conMatchMarkMentorshipAcceptedNotificationDismissedMutation =
+    useConMatchMarkMentorshipAcceptedNotificationDismissedMutation()
+  const isFetching = useIsFetching() === 0
+
   const history = useHistory()
-  const match = matches && matches.find((match) => match.status === 'accepted')
+
+  const match =
+    myMatchesQuery.isSuccess &&
+    myMatchesQuery.data?.conMentorshipMatches.length > 0 &&
+    myMatchesQuery.data?.conMentorshipMatches[0]
+  const profile = myProfileQuery.data?.conProfile
 
   const { t } = useTranslation()
 
   const isNewMatch =
-    profile.userType === 'mentee' &&
+    profile?.userType === 'MENTEE' &&
     match &&
-    !match.hasMenteeDismissedMentorshipApplicationAcceptedNotification
-
-  useEffect(() => {
-    matchesFetchStart()
-  }, [])
+    !match?.hasMenteeDismissedMentorshipApplicationAcceptedNotification
 
   const handleModalClose = (redMatchId: string) => {
-    matchesMarkAsDismissed(redMatchId)
+    conMatchMarkMentorshipAcceptedNotificationDismissedMutation.mutate({
+      id: redMatchId,
+    })
     history.push(`/app/mentorships/${redMatchId}`)
   }
 
@@ -85,35 +89,39 @@ const LoggedIn = ({
               desktop={{ size: 9, offset: 1 }}
               className="column--main-content"
             >
-              <Loader loading={loading} />
-              {profile.userType === 'public-sign-up-mentee-pending-review' && (
-                <RediNotification>
-                  {t('loggedInArea.profile.notification.pendingMentee')}
-                </RediNotification>
-              )}
-              {profile.userType === 'public-sign-up-mentor-pending-review' && (
-                <RediNotification>
-                  {t('loggedInArea.profile.notification.pendingMentor')}
-                </RediNotification>
-              )}
-              {profile.userType === 'mentee' && !profile.userActivated && (
-                <RediNotification>
-                  {t('loggedInArea.profile.notification.deactivatedMentee', {
-                    name: profile.firstName,
-                    email:
-                      '<a href="mailto:paulina@redi-school.org">paulina@red-school.org</a>',
-                  })}
-                </RediNotification>
-              )}
-              {profile.userType === 'mentor' && !profile.userActivated && (
-                <RediNotification>
-                  {t('loggedInArea.profile.notification.deactivatedMentor', {
-                    name: profile.firstName,
-                    email:
-                      '<a href="mailto:miriam@redi-school.org">miriam@redi-school.org</a>',
-                  })}
-                </RediNotification>
-              )}
+              <Loader loading={isFetching} />
+              {profile?.userType === 'MENTEE' &&
+                profile?.profileStatus === ConnectProfileStatus.Pending && (
+                  <RediNotification>
+                    {t('loggedInArea.profile.notification.pendingMentee')}
+                  </RediNotification>
+                )}
+              {profile?.userType === 'MENTOR' &&
+                profile?.profileStatus === ConnectProfileStatus.Pending && (
+                  <RediNotification>
+                    {t('loggedInArea.profile.notification.pendingMentor')}
+                  </RediNotification>
+                )}
+              {profile?.userType === 'MENTEE' &&
+                profile?.profileStatus === ConnectProfileStatus.Deactivated && (
+                  <RediNotification>
+                    {t('loggedInArea.profile.notification.deactivatedMentee', {
+                      name: profile.firstName,
+                      email:
+                        '<a href="mailto:paulina@redi-school.org">paulina@red-school.org</a>',
+                    })}
+                  </RediNotification>
+                )}
+              {profile?.userType === 'MENTOR' &&
+                profile?.profileStatus === ConnectProfileStatus.Deactivated && (
+                  <RediNotification>
+                    {t('loggedInArea.profile.notification.deactivatedMentor', {
+                      name: profile?.firstName,
+                      email:
+                        '<a href="mailto:miriam@redi-school.org">miriam@redi-school.org</a>',
+                    })}
+                  </RediNotification>
+                )}
               {match && isNewMatch && (
                 <Modal
                   show={isNewMatch}
@@ -145,7 +153,7 @@ const LoggedIn = ({
                   </Modal.Foot>
                 </Modal>
               )}
-              {!loading && children}
+              {!isFetching && children}
             </Columns.Column>
           </Columns>
         </Container>
@@ -155,16 +163,4 @@ const LoggedIn = ({
   )
 }
 
-const mapDispatchToProps = (dispatch: any) => ({
-  matchesFetchStart: () => dispatch(matchesFetchStart()),
-  matchesMarkAsDismissed: (redMatchId: string) =>
-    dispatch(matchesMarkAsDismissed(redMatchId)),
-})
-
-const mapStateToProps = (state: RootState) => ({
-  matches: state.matches.matches,
-  loading:
-    state.user.loading || state.profiles.loading || state.matches.loading,
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(LoggedIn)
+export default LoggedIn

@@ -2,6 +2,8 @@
 query loadMyProfile($loopbackUserId: ID!) {
   conProfile(loopbackUserId: $loopbackUserId) {
     ...fields
+    ifUserMentee_activeMentorshipMatches
+    ifUserMentor_activeMentorshipMatches
   }
 }
 

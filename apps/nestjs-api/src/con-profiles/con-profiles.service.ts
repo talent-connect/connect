@@ -1,9 +1,15 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import {
+  ConnectProfileStatus,
   ConProfileEntity,
-  PatchConProfileInput,
+  ConProfileEntityProps,
+  UserType,
 } from '@talent-connect/common-types'
+import { CurrentUserInfo } from '../auth/current-user.interface'
 import { SfApiConProfilesService } from '../salesforce-api/sf-api-con-profiles.service'
+import { FindConProfilesArgs } from './args/find-con-profiles.args'
+import { ConProfileSignUpInput } from './dtos/con-profile-sign-up.entityinput'
+import { PatchConProfileInput } from './dtos/patch-con-profile.entityinput'
 import { ConProfileMapper } from './mappers/con-profile.mapper'
 
 @Injectable()
@@ -13,11 +19,31 @@ export class ConProfilesService {
     private readonly mapper: ConProfileMapper
   ) {}
 
-  // create(createConProfileInput: CreateConProfileInput) {
-  //   return 'This action adds a new conProfile'
-  // }
+  async signUp(
+    input: ConProfileSignUpInput,
+    user: CurrentUserInfo
+  ): Promise<ConProfileEntity> {
+    const entityProps = new ConProfileEntityProps()
+    entityProps._contactId = user.contactId
+    entityProps.firstName = input.firstName
+    entityProps.lastName = input.lastName
+
+    const entity = ConProfileEntity.create(entityProps)
+
+    const persistedRecord = await this.api.createConProfileForSignUp({
+      contactId: user.contactId,
+      firstName: input.firstName,
+      lastName: input.lastName,
+      loopbackUserId: user.loopbackUserId,
+      profileStatus: ConnectProfileStatus.PENDING,
+      rediLocation: input.rediLocation,
+    })
+
+    return this.mapper.fromPersistence(persistedRecord)
+  }
 
   async findAll(filter: any = {}) {
+    console.log(filter)
     const persistedEntities = await this.api.getAllConProfiles(filter)
 
     const entities: ConProfileEntity[] = persistedEntities.map((source) =>
@@ -25,6 +51,22 @@ export class ConProfilesService {
     )
 
     return entities
+  }
+
+  async findAllAvailableMentors(_filter: FindConProfilesArgs) {
+    const filter: any = {
+      'RecordType.DeveloperName': UserType.MENTOR,
+      Available_Mentorship_Slots__c: { $gte: 1 },
+    }
+    if (_filter.filter.name)
+      filter['Contact__r.Name'] = { $like: `%${_filter.filter.name}%` }
+    if (_filter.filter.categories)
+      filter.Mentoring_Topics__c = { $includes: _filter.filter.categories }
+    if (_filter.filter.locations)
+      filter.ReDI_Location__c = { $in: _filter.filter.locations }
+    if (_filter.filter.languages)
+      filter.Languages__c = { $includes: _filter.filter.languages }
+    return this.findAll(filter)
   }
 
   async findOneById(id: string) {

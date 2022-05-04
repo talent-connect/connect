@@ -38,6 +38,9 @@ export class ConProfileRecordProps implements RecordProps {
   Work_Place__c?: string
   total_mentee_capacity__c?: number
 
+  Active_Mentorship_Matches_Mentee__c: number
+  Active_Mentorship_Matches_Mentor__c: number
+
   @Type(() => ContactRecordProps)
   Contact__r: ContactRecordProps
 

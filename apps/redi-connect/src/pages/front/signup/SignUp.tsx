@@ -19,11 +19,17 @@ import Teaser from '../../../components/molecules/Teaser'
 
 import { Columns, Content, Form } from 'react-bulma-components'
 
-import { signUp } from '../../../services/api/api'
+import { signUpLoopback } from '../../../services/api/api'
 import { RedProfile } from '@talent-connect/shared-types'
 import { history } from '../../../services/history/history'
 import { courses } from '../../../config/config'
 import { Extends } from '@talent-connect/typescript-utilities'
+import {
+  RediLocation,
+  useConProfileSignUpMutation,
+  UserType,
+} from '@talent-connect/data-access'
+import { envRediLocation } from '../../../utils/env-redi-location'
 
 const formCourses = courses.map((course) => ({
   value: course.id,
@@ -33,7 +39,7 @@ const formCourses = courses.map((course) => ({
 export const validationSchema = Yup.object({
   firstName: Yup.string().required('Your first name is invalid').max(255),
   lastName: Yup.string().required('Your last name is invalid').max(255),
-  contactEmail: Yup.string()
+  email: Yup.string()
     .email('Your email is invalid')
     .required('You need to give an email address')
     .label('Email')
@@ -60,16 +66,10 @@ type SignUpPageType = {
   type: 'mentor' | 'mentee'
 }
 
-type SignUpUserType = Extends<
-  RedProfile['userType'],
-  | 'public-sign-up-mentee-pending-review'
-  | 'public-sign-up-mentor-pending-review'
->
-
 export interface SignUpFormValues {
-  userType: SignUpUserType
+  userType: UserType
   gaveGdprConsent: boolean
-  contactEmail: string
+  email: string
   password: string
   passwordConfirm: string
   firstName: string
@@ -79,18 +79,13 @@ export interface SignUpFormValues {
 }
 
 export default function SignUp() {
+  const signUpMutation = useConProfileSignUpMutation()
   const { type } = useParams<SignUpPageType>()
 
-  // we may consider removing the backend types from frontend
-  const userType: SignUpUserType =
-    type === 'mentee'
-      ? 'public-sign-up-mentee-pending-review'
-      : 'public-sign-up-mentor-pending-review'
-
   const initialValues: SignUpFormValues = {
-    userType,
+    userType: type.toUpperCase() as UserType,
     gaveGdprConsent: false,
-    contactEmail: '',
+    email: '',
     password: '',
     passwordConfirm: '',
     firstName: '',
@@ -117,7 +112,16 @@ export default function SignUp() {
     cleanProfile.signupSource = 'public-sign-up'
     cleanProfile.menteeCountCapacity = 1
     try {
-      await signUp(values.contactEmail, values.password, cleanProfile)
+      await signUpLoopback(values.email, values.password, cleanProfile)
+      await signUpMutation.mutateAsync({
+        input: {
+          email: values.email,
+          firstName: values.firstName,
+          lastName: values.lastName,
+          userType: type.toUpperCase() as UserType,
+          rediLocation: envRediLocation() as RediLocation,
+        },
+      })
       actions.setSubmitting(false)
       history.push(`/front/signup-email-verification/${cleanProfile.userType}`)
     } catch (error) {
@@ -166,7 +170,7 @@ export default function SignUp() {
             />
 
             <FormInput
-              name="contactEmail"
+              name="email"
               type="email"
               placeholder="Your Email"
               {...formik}

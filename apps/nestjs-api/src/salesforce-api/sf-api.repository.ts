@@ -97,6 +97,36 @@ export class SfApiRepository {
     const updateResult = this.connection.sobject(objectName).update(record)
     return updateResult
   }
+
+  async deleteRecord<T>(objectName: string, recordId: string): Promise<void> {
+    await this.connection.sobject(objectName).delete(recordId)
+  }
+
+  async findUpdateOrInsert<T>(
+    objectName: string,
+    filter: any,
+    record: T
+  ): Promise<{ id: string }> {
+    await this.connect()
+    const findResult = await this.findRecordsOfObject({
+      objectName: objectName,
+      objectFields: ['Id'],
+      filter: filter,
+      limit: 1,
+    })
+    if (findResult.length > 0) {
+      const existingRecord = findResult[0]
+      const updatedRecord = {
+        Id: existingRecord.Id,
+        ...record,
+      }
+      const updateResult = await this.updateRecord(objectName, updatedRecord)
+      return { id: updateResult.id }
+    } else {
+      const insertedRecordResult = await this.createRecord(objectName, record)
+      return { id: insertedRecordResult.id }
+    }
+  }
 }
 
 interface FindRecordsParams {

@@ -4,7 +4,6 @@ import { COURSES } from '@talent-connect/shared-config'
 import { RedProfile } from '@talent-connect/shared-types'
 import React from 'react'
 import { Content } from 'react-bulma-components'
-import { RootState } from '../../redux/types'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 
 interface Props {
@@ -30,10 +29,6 @@ const ReadRediClass = ({ profile, shortInfo }: Props) => {
     </>
   )
 }
-
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile as RedProfile,
-})
 
 export default {
   Me: () => {

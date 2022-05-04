@@ -8,8 +8,6 @@ import { QueryParamProvider } from 'use-query-params'
 import AppNotification from './components/AppNotification'
 import { Routes } from './components/Routes'
 import LocationPicker from './pages/front/landing/LocationPicker'
-import { store } from './redux/store'
-import { profileFetchStart } from './redux/user/actions'
 import { getAccessTokenFromLocalStorage } from './services/auth/auth'
 import { history, Router } from './services/history/history'
 import { envRediLocation } from './utils/env-redi-location'
@@ -44,23 +42,17 @@ const queryClient = new QueryClient({
 })
 
 const NormalRediConnect = () => {
-  useEffect(() => {
-    store.dispatch(profileFetchStart())
-  }, [])
-
   return (
     <>
       <AppNotification />
       <QueryClientProvider client={queryClient}>
-        <StoreProvider store={store}>
-          <Router history={history}>
-            <Suspense fallback={<Loader loading={true} />}>
-              <QueryParamProvider ReactRouterRoute={Route}>
-                <Routes />
-              </QueryParamProvider>
-            </Suspense>
-          </Router>
-        </StoreProvider>
+        <Router history={history}>
+          <Suspense fallback={<Loader loading={true} />}>
+            <QueryParamProvider ReactRouterRoute={Route}>
+              <Routes />
+            </QueryParamProvider>
+          </Suspense>
+        </Router>
       </QueryClientProvider>
     </>
   )

@@ -34,8 +34,8 @@ export class ConProfileRecord extends Record<ConProfileRecordProps> {
       'Contact__r.ReDI_GitHub_Profile__c',
       'Contact__r.MobilePhone',
       'Contact__r.redi_Contact_Gender__c',
-      'Contact__r.LastModifiedAt',
-      'Contact__r.CreatedAt',
+      'Contact__r.LastModifiedDate',
+      'Contact__r.CreatedDate',
       'Avatar_Image_URL__c',
       'CreatedDate',
       'Desired_Job__c',
@@ -61,6 +61,9 @@ export class ConProfileRecord extends Record<ConProfileRecordProps> {
       'Study_Place__c',
       'Work_Place__c',
       'total_mentee_capacity__c',
+
+      'Active_Mentorship_Matches_Mentee__c',
+      'Active_Mentorship_Matches_Mentor__c',
     ],
   }
 }

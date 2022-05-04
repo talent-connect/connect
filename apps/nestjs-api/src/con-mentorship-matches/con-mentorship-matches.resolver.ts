@@ -1,9 +1,18 @@
 import { UseGuards } from '@nestjs/common'
-import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql'
+import {
+  Args,
+  ID,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql'
 import {
   ConMentoringSessionEntityProps,
   ConMentorshipMatchEntityProps,
   ConProfileEntityProps,
+  OkResponseMutationOutputDto,
 } from '@talent-connect/common-types'
 import { CurrentUser } from '../auth/current-user.decorator'
 import { CurrentUserInfo } from '../auth/current-user.interface'
@@ -71,16 +80,18 @@ export class ConMentorshipMatchesResolver {
     return entity.props
   }
 
-  // @Mutation(() => ConMentorshipMatch)
-  // updateConMentorshipMatch(
-  //   @Args('updateConMentorshipMatchInput')
-  //   updateConMentorshipMatchInput: UpdateConMentorshipMatchInput
-  // ) {
-  //   return this.conMentorshipMatchesService.update(
-  //     updateConMentorshipMatchInput.id,
-  //     updateConMentorshipMatchInput
-  //   )
-  // }
+  //! TODO: Add auth
+  @Mutation(() => OkResponseMutationOutputDto, {
+    name: 'conMatchMarkMentorshipAcceptedNotificationDismissed',
+  })
+  async patch(
+    @Args('conMentorshipMatchId', { type: () => String }) id: string
+  ) {
+    const updatedEntity = this.conMentorshipMatchesService.patch(id, {
+      hasMenteeDismissedMentorshipApplicationAcceptedNotification: true,
+    })
+    return { ok: true }
+  }
 
   // @Mutation(() => ConMentorshipMatch)
   // removeConMentorshipMatch(@Args('id', { type: () => Int }) id: number) {

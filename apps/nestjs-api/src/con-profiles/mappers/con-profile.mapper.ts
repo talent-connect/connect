@@ -83,6 +83,11 @@ export class ConProfileMapper
 
     props.menteeCountCapacity = raw.props.total_mentee_capacity__c
 
+    props.ifUserMentee_activeMentorshipMatches =
+      raw.props.Active_Mentorship_Matches_Mentee__c
+    props.ifUserMentor_activeMentorshipMatches =
+      raw.props.Active_Mentorship_Matches_Mentor__c
+
     const entity = ConProfileEntity.create(props)
 
     return entity

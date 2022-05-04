@@ -66,4 +66,7 @@ export class ConProfileEntityProps implements EntityProps {
   menteeCountCapacity?: number
   // userActivated?: boolean //! REINSTATE, COMPLEX CASE
   userActivatedAt?: Date
+
+  ifUserMentee_activeMentorshipMatches: number
+  ifUserMentor_activeMentorshipMatches: number
 }

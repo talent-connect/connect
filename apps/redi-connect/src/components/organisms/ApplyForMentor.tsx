@@ -13,10 +13,6 @@ import React, { useState } from 'react'
 import * as Yup from 'yup'
 import { requestMentorship } from '../../services/api/api'
 
-import { RootState } from '../../redux/types'
-import { connect } from 'react-redux'
-import { profilesFetchOneStart } from '../../redux/profiles/actions'
-
 interface ConnectionRequestFormValues {
   applicationText: string
   expectationText: string
@@ -54,9 +50,8 @@ interface Props {
 }
 
 const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
-  const [submitResult, setSubmitResult] = useState<FormSubmitResult>(
-    'notSubmitted'
-  )
+  const [submitResult, setSubmitResult] =
+    useState<FormSubmitResult>('notSubmitted')
   const [show, setShow] = useState(false)
   const submitForm = async (
     values: ConnectionRequestFormValues,
@@ -175,13 +170,4 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  mentor: state.profiles.oneProfile as RedProfile,
-})
-
-const mapDispatchToProps = (dispatch: any) => ({
-  profilesFetchOneStart: (profileId: string) =>
-    dispatch(profilesFetchOneStart(profileId)),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(ApplyForMentor)
+export ApplyForMentor

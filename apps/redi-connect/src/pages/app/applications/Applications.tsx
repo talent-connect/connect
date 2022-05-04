@@ -3,22 +3,30 @@ import { Content } from 'react-bulma-components'
 import { Heading } from '@talent-connect/shared-atomic-design-components'
 import { ApplicationCard } from '../../../components/organisms'
 import LoggedIn from '../../../components/templates/LoggedIn'
-import { RootState } from '../../../redux/types'
-import { getApplicants } from '../../../redux/matches/selectors'
 import { connect } from 'react-redux'
 import { RedMatch } from '@talent-connect/shared-types'
 import { useHistory } from 'react-router-dom'
-import { getRedProfileFromLocalStorage } from '../../../services/auth/auth'
+import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
+import {
+  ConnectProfileStatus,
+  useLoadMyProfileQuery,
+} from '@talent-connect/data-access'
 
 interface Props {
   applicants: RedMatch[]
 }
 
 function Applications({ applicants }: Props) {
+  const loopbackUserId = getAccessTokenFromLocalStorage().userId
+  const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
   const history = useHistory()
-  const profile = getRedProfileFromLocalStorage()
 
-  if (profile.userActivated !== true) return <LoggedIn />
+  if (!myProfileQuery.isSuccess) return null
+
+  const profile = myProfileQuery.data.conProfile
+
+  if (profile.profileStatus !== ConnectProfileStatus.Approved)
+    return <LoggedIn />
 
   return (
     <LoggedIn>
@@ -27,7 +35,7 @@ function Applications({ applicants }: Props) {
       </Heading>
       {applicants.length === 0 ? (
         <Content italic>
-          {profile.userType === 'mentee' && (
+          {profile.userType === 'MENTEE' && (
             <>
               You have not applied for a mentor yet.{' '}
               <a onClick={() => history.push('/app/find-a-mentor')}>
@@ -35,7 +43,7 @@ function Applications({ applicants }: Props) {
               </a>
             </>
           )}
-          {profile.userType === 'mentor' && (
+          {profile.userType === 'MENTOR' && (
             <>
               You currently have no mentee applications. To increase your
               chances of receiving an application, make sure that your profile

@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { getHasReachedMenteeLimit } from '../../../redux/user/selectors'
 import { useParams, useHistory } from 'react-router'
-import { RootState } from '../../../redux/types'
 import { Columns, Element, Notification, Content } from 'react-bulma-components'
 import {
   Button,
@@ -27,7 +25,6 @@ import {
 } from '../../../components/organisms'
 import { LoggedIn } from '../../../components/templates'
 import { RedProfile } from '@talent-connect/shared-types'
-import { profilesFetchOneStart } from '../../../redux/profiles/actions'
 import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import './Profile.scss'
 import DeclineMentorshipButton from '../../../components/organisms/DeclineMentorshipButton'
@@ -52,10 +49,6 @@ function Profile({
 }: ProfileProps) {
   const { profileId } = useParams<RouteParams>()
   const history = useHistory()
-
-  useEffect(() => {
-    profilesFetchOneStart(profileId)
-  }, [profilesFetchOneStart, profileId])
 
   const currentUserIsMentor = currentUser && currentUser.userType === 'mentor'
 
@@ -253,15 +246,5 @@ function Profile({
     </LoggedIn>
   )
 }
-const mapStateToProps = (state: RootState) => ({
-  profile: state.profiles.oneProfile,
-  currentUser: state.user.profile,
-  hasReachedMenteeLimit: getHasReachedMenteeLimit(state.user),
-})
 
-const mapDispatchToProps = (dispatch: any) => ({
-  profilesFetchOneStart: (profileId: string) =>
-    dispatch(profilesFetchOneStart(profileId)),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Profile)
+export default Profile

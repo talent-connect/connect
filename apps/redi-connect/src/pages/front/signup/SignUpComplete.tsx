@@ -3,11 +3,11 @@ import AccountOperation from '../../../components/templates/AccountOperation'
 import { ReactComponent as WelcomeIllustration } from '../../../assets/images/welcome-user.svg'
 import { Columns, Form, Content } from 'react-bulma-components'
 import { useHistory, useParams } from 'react-router'
-import { UserType } from '@talent-connect/shared-types'
 import {
   Heading,
   Button,
 } from '@talent-connect/shared-atomic-design-components'
+import { UserType } from '@talent-connect/data-access'
 
 type RouteParams = {
   userType: UserType
@@ -30,7 +30,7 @@ export default function SignUpComplete() {
           <Heading border="bottomLeft">Meet the team</Heading>
           <Content size="large" renderAs="div">
             <p>Your email address was successfully verified!</p>
-            {userType === 'public-sign-up-mentor-pending-review' && (
+            {userType === 'MENTOR' && (
               <p>
                 Now, we would like to get to know you better. We regularly
                 organize mentor onboardings in small groups.{' '}
@@ -41,7 +41,7 @@ export default function SignUpComplete() {
                 </a>
               </p>
             )}
-            {userType === 'public-sign-up-mentee-pending-review' && (
+            {userType === 'MENTEE' && (
               <>
                 <p>
                   Your next step is to watch a short onboarding tutorial to get
