@@ -6,6 +6,7 @@ import { AuthModule } from '../auth/auth.module'
 import { ConMenteeFavoritedMentorsModule } from '../con-mentee-favorited-mentors/con-mentee-favorited-mentors.module'
 import { ConMentoringSessionsModule } from '../con-mentoring-sessions/con-mentoring-sessions.module'
 import { ConMentorshipMatchesModule } from '../con-mentorship-matches/con-mentorship-matches.module'
+import { ConProblemReportModule } from '../con-problem-report/con-problem-report.module'
 import { ConProfilesModule } from '../con-profiles/con-profiles.module'
 import { EmailModule } from '../email/email.module'
 import { SfApiModule } from '../salesforce-api/sf-api.module'
@@ -28,6 +29,7 @@ import { AppService } from './app.service'
     ConMentoringSessionsModule,
     ConMentorshipMatchesModule,
     ConMenteeFavoritedMentorsModule,
+    ConProblemReportModule,
     TpCompanyProfilesModule,
     EmailModule,
     SfApiModule,
