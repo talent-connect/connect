@@ -4,7 +4,7 @@ import {
   PicklistValue,
   PicklistValuesSemicolonSeparated,
 } from '../base-interfaces-types-classes'
-import { ContactRecordProps } from '../common-objects'
+import { ContactRecordProps, Gender } from '../common-objects'
 
 export class ConProfileRecordProps implements RecordProps {
   Id: string
@@ -49,7 +49,7 @@ export class ConProfileRecordProps implements RecordProps {
     Id: string
     FirstName: string
     LastName: string
-    redi_Contact_Gender__c: import('/Users/eric/r/connect/connect/libs/common-types/src/lib/common-objects/index').Gender
+    redi_Contact_Gender__c: Gender
     ReDI_Birth_Date__c: Date
     LinkedIn_Profile__c: string
     ReDI_GitHub_Profile__c: string
