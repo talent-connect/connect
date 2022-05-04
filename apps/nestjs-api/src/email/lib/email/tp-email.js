@@ -23,7 +23,7 @@ const sendTpResetPasswordEmailParsed = mjml2html(
   }
 )
 
-const sendTpResetPasswordEmail = ({
+export const sendTpResetPasswordEmail = ({
   recipient,
   firstName,
   accessToken,
@@ -63,7 +63,7 @@ const convertTemplateToHtml = (rediLocation, templateString) => {
   return parsedTemplate.html
 }
 
-const sendTpJobseekerVerificationEmail = ({
+export const sendTpJobseekerVerificationEmail = ({
   recipient,
   redUserId,
   firstName,
@@ -94,7 +94,7 @@ const sendTpJobseekerVerificationEmail = ({
   })
 }
 
-const sendTpJobseekerEmailVerificationSuccessfulEmail = ({
+export const sendTpJobseekerEmailVerificationSuccessfulEmail = ({
   recipient,
   firstName,
 }) => {
@@ -111,7 +111,7 @@ const sendTpJobseekerEmailVerificationSuccessfulEmail = ({
   })
 }
 
-const sendTpJobseekerjobseekerProfileApprovedInstructToSubmitJobPreferencesEmail =
+export const sendTpJobseekerjobseekerProfileApprovedInstructToSubmitJobPreferencesEmail =
   ({ recipient, firstName }) => {
     const emailParsed = convertTemplateToHtml(
       null,
@@ -125,7 +125,7 @@ const sendTpJobseekerjobseekerProfileApprovedInstructToSubmitJobPreferencesEmail
     })
   }
 
-const sendTpJobseekerjobseekerProfileNotApprovedYet = ({
+export const sendTpJobseekerjobseekerProfileNotApprovedYet = ({
   recipient,
   firstName,
 }) => {
@@ -141,7 +141,7 @@ const sendTpJobseekerjobseekerProfileNotApprovedYet = ({
   })
 }
 
-const sendTpCompanyVerificationEmail = ({
+export const sendTpCompanyVerificationEmail = ({
   recipient,
   redUserId,
   firstName,
@@ -172,7 +172,7 @@ const sendTpCompanyVerificationEmail = ({
   })
 }
 
-const sendTpCompanyEmailVerificationSuccessfulEmail = ({
+export const sendTpCompanyEmailVerificationSuccessfulEmail = ({
   recipient,
   firstName,
 }) => {
@@ -189,7 +189,7 @@ const sendTpCompanyEmailVerificationSuccessfulEmail = ({
   })
 }
 
-const sendTpCompanyProfileApprovedEmail = ({ recipient, firstName }) => {
+export const sendTpCompanyProfileApprovedEmail = ({ recipient, firstName }) => {
   const sendTpCompanyProfileApprovedEmailParsed = convertTemplateToHtml(
     null,
     'company-profile-approved'
@@ -205,7 +205,9 @@ const sendTpCompanyProfileApprovedEmail = ({ recipient, firstName }) => {
   })
 }
 
-const sendTpCompanyProfileSubmittedForReviewEmail = ({ companyName }) => {
+export const sendTpCompanyProfileSubmittedForReviewEmail = ({
+  companyName,
+}) => {
   const sendTpCompanyProfileSubmittedForReviewEmailParsed =
     convertTemplateToHtml(null, 'company-profile-submitted-for-review')
 

@@ -7,7 +7,10 @@ export class ConProblemReportService {
   constructor(private readonly emailService: EmailService) {}
 
   async create(createConProblemReportInput: CreateConProblemReportInput) {
-    const lib = this.emailService.emailLib()
-    console.log('tets')
+    this.emailService.sendMenteePendingReviewAcceptedEmail({
+      recipient: 'eric@binarylights.com',
+      firstName: 'Eric',
+      rediLocation: 'berlin',
+    })
   }
 }

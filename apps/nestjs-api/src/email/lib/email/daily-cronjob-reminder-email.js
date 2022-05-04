@@ -1,4 +1,4 @@
-'use strict'
+§'use strict'
 
 const aws = require('aws-sdk')
 const Rx = require('rxjs')
@@ -29,7 +29,7 @@ const convertTemplateToHtml = (templateIdentifier) => {
   return parsedTemplate.html
 }
 
-function sendNoMentoringSessionLoggedYetEmailToMentor({
+export function sendNoMentoringSessionLoggedYetEmailToMentor({
   recipient,
   menteeFirstName,
   mentorFirstName,
@@ -65,7 +65,7 @@ function sendNoMentoringSessionLoggedYetEmailToMentor({
   })
 }
 
-function sendNoMentoringSessionLoggedYetEmailToMentee({
+export function sendNoMentoringSessionLoggedYetEmailToMentee({
   recipient,
   menteeFirstName,
   mentorFirstName,
@@ -101,7 +101,7 @@ function sendNoMentoringSessionLoggedYetEmailToMentee({
   })
 }
 
-function sendNoMentoringSessionLoggedYetSecondReminderEmailToMentor({
+export function sendNoMentoringSessionLoggedYetSecondReminderEmailToMentor({
   recipient,
   menteeFirstName,
   mentorFirstName,
@@ -138,7 +138,7 @@ function sendNoMentoringSessionLoggedYetSecondReminderEmailToMentor({
   })
 }
 
-function sendNoMentoringSessionLoggedYetSecondReminderEmailToMentee({
+export function sendNoMentoringSessionLoggedYetSecondReminderEmailToMentee({
   recipient,
   menteeFirstName,
   mentorFirstName,
@@ -175,7 +175,7 @@ function sendNoMentoringSessionLoggedYetSecondReminderEmailToMentee({
   })
 }
 
-function sendMentorshipIsWeeksOldSoRequestFeedbackEmailToMentor({
+export function sendMentorshipIsWeeksOldSoRequestFeedbackEmailToMentor({
   recipient,
   menteeFirstName,
   mentorFirstName,
@@ -204,7 +204,7 @@ function sendMentorshipIsWeeksOldSoRequestFeedbackEmailToMentor({
   })
 }
 
-function sendMentorshipIsWeeksOldSoRequestFeedbackEmailToMentee({
+export function sendMentorshipIsWeeksOldSoRequestFeedbackEmailToMentee({
   recipient,
   menteeFirstName,
   mentorFirstName,
@@ -232,7 +232,7 @@ function sendMentorshipIsWeeksOldSoRequestFeedbackEmailToMentee({
   })
 }
 
-function sendPendingMentorshipApplicationReminderEmailToMentor({
+export function sendPendingMentorshipApplicationReminderEmailToMentor({
   recipient,
   menteeFirstName,
   menteeLastName,
@@ -260,14 +260,4 @@ function sendPendingMentorshipApplicationReminderEmailToMentor({
       `applied to you on ReDI Connect!`,
     html: html,
   })
-}
-
-module.exports = {
-  sendNoMentoringSessionLoggedYetEmailToMentor,
-  sendNoMentoringSessionLoggedYetEmailToMentee,
-  sendNoMentoringSessionLoggedYetSecondReminderEmailToMentor,
-  sendNoMentoringSessionLoggedYetSecondReminderEmailToMentee,
-  sendMentorshipIsWeeksOldSoRequestFeedbackEmailToMentor,
-  sendMentorshipIsWeeksOldSoRequestFeedbackEmailToMentee,
-  sendPendingMentorshipApplicationReminderEmailToMentor,
 }

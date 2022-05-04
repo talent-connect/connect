@@ -1,5 +1,8 @@
 'use strict'
 
+import { buildBackendUrl } from '../build-backend-url'
+import { buildFrontendUrl } from '../build-frontend-url'
+
 const aws = require('aws-sdk')
 const Rx = require('rxjs')
 const mjml2html = require('mjml')
@@ -8,12 +11,10 @@ const fs = require('fs')
 const path = require('path')
 
 const config = {
-  accessKeyId: process.env.EMAILER_AWS_ACCESS_KEY,
-  secretAccessKey: process.env.EMAILER_AWS_SECRET_KEY,
-  region: process.env.EMAILER_AWS_REGION,
+  accessKeyId: process.env.NX_EMAILER_AWS_ACCESS_KEY,
+  secretAccessKey: process.env.NX_EMAILER_AWS_SECRET_KEY,
+  region: process.env.NX_EMAILER_AWS_REGION,
 }
-const { buildFrontendUrl } = require('../build-frontend-url')
-const { buildBackendUrl } = require('../build-backend-url')
 
 const ses = new aws.SES(config)
 
@@ -24,14 +25,14 @@ const transporter = nodemailer.createTransport({
 const isProductionOrDemonstration = () =>
   ['production', 'demonstration', 'staging'].includes(process.env.NODE_ENV)
 
-const sendEmail = Rx.bindNodeCallback(ses.sendEmail.bind(ses))
-const sendMjmlEmail = Rx.bindNodeCallback(
+export const sendEmail = Rx.bindNodeCallback(ses.sendEmail.bind(ses))
+export const sendMjmlEmail = Rx.bindNodeCallback(
   transporter.sendMail.bind(transporter)
 )
-const sendEmailFactory = (to, subject, body, rediLocation) => {
+export const sendEmailFactory = (to, subject, body, rediLocation) => {
   let toSanitized = isProductionOrDemonstration() ? to : ''
-  if (process.env.DEV_MODE_EMAIL_RECIPIENT) {
-    toSanitized = process.env.DEV_MODE_EMAIL_RECIPIENT
+  if (process.env.NX_DEV_MODE_EMAIL_RECIPIENT) {
+    toSanitized = process.env.NX_DEV_MODE_EMAIL_RECIPIENT
   }
   let sender = 'career@redi-school.org'
   return sendEmail({
@@ -54,10 +55,10 @@ const sendEmailFactory = (to, subject, body, rediLocation) => {
     },
   })
 }
-const sendMjmlEmailFactory = ({ to, subject, html }) => {
+export const sendMjmlEmailFactory = ({ to, subject, html }) => {
   let toSanitized = isProductionOrDemonstration() ? to : ''
-  if (process.env.DEV_MODE_EMAIL_RECIPIENT) {
-    toSanitized = process.env.DEV_MODE_EMAIL_RECIPIENT
+  if (process.env.NX_DEV_MODE_EMAIL_RECIPIENT) {
+    toSanitized = process.env.NX_DEV_MODE_EMAIL_RECIPIENT
   }
   let sender = 'career@redi-school.org'
   return sendMjmlEmail({
@@ -83,11 +84,17 @@ function buildSubjectLine(subject, env) {
 }
 
 const sendReportProblemEmailTemplate = fs.readFileSync(
-  path.resolve(__dirname, 'templates', 'send-problem-report.mjml'),
+  path.resolve(
+    __dirname,
+    'assets',
+    'email',
+    'templates',
+    'send-problem-report.mjml'
+  ),
   'utf-8'
 )
 const sendReportProblemEmailParsed = mjml2html(sendReportProblemEmailTemplate, {
-  filePath: path.resolve(__dirname, 'templates'),
+  filePath: path.resolve(__dirname, 'assets', 'email', 'templates'),
 })
 
 export const sendReportProblemEmail = ({ sendingUserEmail, message }) => {
@@ -102,14 +109,23 @@ export const sendReportProblemEmail = ({ sendingUserEmail, message }) => {
 }
 
 const sendResetPasswordEmailTemplate = fs.readFileSync(
-  path.resolve(__dirname, 'templates', 'reset-password.mjml'),
+  path.resolve(
+    __dirname,
+    'assets',
+    'email',
+    'templates',
+    'reset-password.mjml'
+  ),
   'utf-8'
 )
-const sendResetPasswordEmailParsed = mjml2html(sendResetPasswordEmailTemplate, {
-  filePath: path.resolve(__dirname, 'templates'),
-})
+export const sendResetPasswordEmailParsed = mjml2html(
+  sendResetPasswordEmailTemplate,
+  {
+    filePath: path.resolve(__dirname, 'assets', 'email', 'templates'),
+  }
+)
 
-const sendResetPasswordEmail = ({
+export const sendResetPasswordEmail = ({
   recipient,
   firstName,
   accessToken,
@@ -132,7 +148,7 @@ const sendResetPasswordEmail = ({
   })
 }
 
-const sendPendingReviewDeclinedEmail = ({
+export const sendPendingReviewDeclinedEmail = ({
   recipient,
   firstName,
   rediLocation,
@@ -160,6 +176,8 @@ const convertTemplateToHtml = (rediLocation, templateString) => {
   const convertTemplate = fs.readFileSync(
     path.resolve(
       __dirname,
+      'assets',
+      'email',
       'templates',
       `${templateString}${
         rediLocation ? `.${rediLocation.toLowerCase()}` : ''
@@ -168,12 +186,12 @@ const convertTemplateToHtml = (rediLocation, templateString) => {
     'utf-8'
   )
   const parsedTemplate = mjml2html(convertTemplate, {
-    filePath: path.resolve(__dirname, 'templates'),
+    filePath: path.resolve(__dirname, 'assets', 'email', 'templates'),
   })
   return parsedTemplate.html
 }
 
-const sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted =
+export const sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted =
   ({ recipient, mentorName, menteeName, rediLocation }) => {
     const rediEmailAdress = 'career@redi-school.org'
     const sendMenteePendingReviewAcceptedEmailParsed = convertTemplateToHtml(
@@ -191,7 +209,7 @@ const sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccep
     })
   }
 
-const sendMenteePendingReviewAcceptedEmail = ({
+export const sendMenteePendingReviewAcceptedEmail = ({
   recipient,
   firstName,
   rediLocation,
@@ -209,6 +227,7 @@ const sendMenteePendingReviewAcceptedEmail = ({
     .replace(/\${mentorOrMentee}/g, 'mentee')
     .replace(/\${mentorOrMenteeOpposite}/g, 'mentor')
     .replace(/\${homePageUrl}/g, homePageUrl)
+
   return sendMjmlEmailFactory({
     to: recipient,
     subject: 'Your ReDI Connect profile is now activated!',
@@ -216,7 +235,7 @@ const sendMenteePendingReviewAcceptedEmail = ({
   })
 }
 
-const sendMentorPendingReviewAcceptedEmail = ({
+export const sendMentorPendingReviewAcceptedEmail = ({
   recipient,
   firstName,
   rediLocation,
@@ -241,7 +260,7 @@ const sendMentorPendingReviewAcceptedEmail = ({
   })
 }
 
-const sendMenteeRequestAppointmentEmail = ({
+export const sendMenteeRequestAppointmentEmail = ({
   recipient,
   firstName,
   rediLocation,
@@ -261,7 +280,7 @@ const sendMenteeRequestAppointmentEmail = ({
   })
 }
 
-const sendMentorRequestAppointmentEmail = ({
+export const sendMentorRequestAppointmentEmail = ({
   recipient,
   firstName,
   rediLocation,
@@ -281,7 +300,7 @@ const sendMentorRequestAppointmentEmail = ({
   })
 }
 
-const sendEmailToUserWithTpJobseekerProfileSigningUpToCon = ({
+export const sendEmailToUserWithTpJobseekerProfileSigningUpToCon = ({
   recipient,
   firstName,
 }) => {
@@ -298,7 +317,7 @@ const sendEmailToUserWithTpJobseekerProfileSigningUpToCon = ({
   })
 }
 
-const sendVerificationEmail = ({
+export const sendVerificationEmail = ({
   recipient,
   redUserId,
   firstName,
@@ -334,7 +353,7 @@ const sendVerificationEmail = ({
   })
 }
 
-const sendMentoringSessionLoggedEmail = ({
+export const sendMentoringSessionLoggedEmail = ({
   recipient,
   mentorName,
   menteeFirstName,
@@ -364,7 +383,7 @@ const sendMentoringSessionLoggedEmail = ({
   })
 }
 
-const sendMenteeReminderToApplyToMentorEmail = ({
+export const sendMenteeReminderToApplyToMentorEmail = ({
   recipient,
   menteeFirstName,
 }) => {
@@ -383,7 +402,7 @@ const sendMenteeReminderToApplyToMentorEmail = ({
   })
 }
 
-const sendMentorCancelledMentorshipNotificationEmail = ({
+export const sendMentorCancelledMentorshipNotificationEmail = ({
   recipient,
   firstName,
   rediLocation,
@@ -401,7 +420,7 @@ const sendMentorCancelledMentorshipNotificationEmail = ({
   })
 }
 
-const sendToMentorConfirmationOfMentorshipCancelled = ({
+export const sendToMentorConfirmationOfMentorshipCancelled = ({
   recipient,
   mentorFirstName,
   menteeFullName,
@@ -419,7 +438,7 @@ const sendToMentorConfirmationOfMentorshipCancelled = ({
   })
 }
 
-const sendMentorshipCompletionEmailToMentor = ({
+export const sendMentorshipCompletionEmailToMentor = ({
   recipient,
   mentorFirstName,
   menteeFirstName,
@@ -438,7 +457,7 @@ const sendMentorshipCompletionEmailToMentor = ({
   })
 }
 
-const sendMentorshipCompletionEmailToMentee = ({
+export const sendMentorshipCompletionEmailToMentee = ({
   recipient,
   mentorFirstName,
   menteeFirstName,
@@ -457,7 +476,7 @@ const sendMentorshipCompletionEmailToMentee = ({
   })
 }
 
-const sendMentorshipRequestReceivedEmail = ({
+export const sendMentorshipRequestReceivedEmail = ({
   recipient,
   mentorName,
   menteeFullName,
@@ -487,7 +506,7 @@ const sendMentorshipRequestReceivedEmail = ({
   })
 }
 
-const sendMentorshipAcceptedEmail = ({
+export const sendMentorshipAcceptedEmail = ({
   recipient,
   mentorName,
   menteeName,

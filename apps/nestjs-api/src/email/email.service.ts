@@ -1,9 +1,16 @@
 import { Injectable } from '@nestjs/common'
-import { sendMentorshipDeclinedEmail } from './lib/email/email'
+import {
+  sendReportProblemEmail,
+  sendMenteePendingReviewAcceptedEmail,
+} from './lib/email/email'
 
 @Injectable()
 export class EmailService {
-  emailLib() {
-    sendMentorshipDeclinedEmail()
+  sendReportProblemEmail(params) {
+    return sendReportProblemEmail(params).subscribe()
+  }
+
+  sendMenteePendingReviewAcceptedEmail(params) {
+    return sendMenteePendingReviewAcceptedEmail(params).subscribe()
   }
 }
