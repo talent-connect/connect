@@ -17,7 +17,6 @@
     "paths": {
       "@talent-connect/common-types": ["libs/common-types/src/index.ts"],
       "@talent-connect/data-access": ["libs/data-access/src/index.ts"],
-      "@talent-connect/email": ["libs/email/src/index.js"],
       "@talent-connect/shared-atomic-design-components": [
         "libs/shared-atomic-design-components/src/index.ts"
       ],
