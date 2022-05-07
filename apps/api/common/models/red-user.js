@@ -184,15 +184,12 @@ module.exports = function (RedUser) {
     const redUserInst = await loginHook_getRedUser(context)
     const redUser = redUserInst.toJSON()
 
-    const userAlreadyHasTalentPoolJobseekerProfile = Boolean(
-      redUser.tpJobseekerProfile
+    const userAlreadyHasTalentPoolProfile = Boolean(
+      redUser.tpJobseekerProfile || redUser.tpCompanyProfile
     )
     const userDoesNotHaveConnectProfile = !redUser.redProfile
 
-    if (
-      userAlreadyHasTalentPoolJobseekerProfile ||
-      userDoesNotHaveConnectProfile
-    ) {
+    if (userAlreadyHasTalentPoolProfile || userDoesNotHaveConnectProfile) {
       return next()
     }
 
@@ -208,7 +205,7 @@ module.exports = function (RedUser) {
   async function loginHook_getRedUser(context) {
     const redUserId = context.result.toJSON().userId.toString()
     const redUserInst = await RedUser.findById(redUserId, {
-      include: ['redProfile', 'tpJobseekerProfile'],
+      include: ['redProfile', 'tpJobseekerProfile', 'tpCompanyProfile'],
     })
 
     return redUserInst
@@ -236,7 +233,8 @@ module.exports = function (RedUser) {
       firstName: tpJobseekerProfile.firstName,
       lastName: tpJobseekerProfile.lastName,
       contactEmail: tpJobseekerProfile.contactEmail,
-      mentee_currentlyEnrolledInCourse: tpJobseekerProfile.currentlyEnrolledInCourse,
+      mentee_currentlyEnrolledInCourse:
+        tpJobseekerProfile.currentlyEnrolledInCourse,
       userType: 'public-sign-up-mentee-pending-review',
       gaveGdprConsentAt: tpJobseekerProfile.gaveGdprConsentAt,
       signupSource: 'existing-user-with-tp-profile-logging-into-con',
