@@ -204,7 +204,7 @@ const AvatarEditable = ({
           <Cropper
             image={imageSrc}
             crop={crop}
-            aspect={2 / 1}
+            aspect={1 / 1}
             style={{ containerStyle: { top: 73 } }}
             zoom={zoom}
             showGrid={false}
