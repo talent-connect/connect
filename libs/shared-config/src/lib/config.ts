@@ -207,6 +207,11 @@ export const COURSES = [
     label: 'Coding Fundamentals',
     location: 'berlin',
   },
+  {
+    id: 'dataAnalyticsWithPython',
+    label: 'Data Analytics with Python (pilot)',
+    location: 'berlin',
+  },
   { id: 'uiUxDesignBasics', label: 'UX/UI Design Basics', location: 'berlin' },
   {
     id: 'uiUxDesignIntermediate',
@@ -253,6 +258,11 @@ export const COURSES = [
   {
     id: 'munich_frontend2',
     label: `Frontend 2`,
+    location: 'munich',
+  },
+  {
+    id: 'munich_frontend_vollzeitkurs',
+    label: 'Frontend Development Vollzeitkurs',
     location: 'munich',
   },
   {

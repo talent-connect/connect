@@ -19,6 +19,7 @@ import {
   desiredPositionsIdToLabelMap,
   employmentTypes,
   employmentTypesIdToLabelMap,
+  germanFederalStates,
   topSkills,
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
@@ -28,6 +29,9 @@ import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseeker
 
 import { LoggedIn } from '../../../components/templates'
 import { JobListingCard } from '../../../components/organisms/JobListingCard'
+import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
+import { objectEntries } from '@talent-connect/typescript-utilities'
+import { Home, HomeOutlined } from '@material-ui/icons'
 
 export function BrowseJobseeker() {
   const [companyName, setCompanyName] = useState('')
@@ -38,43 +42,66 @@ export function BrowseJobseeker() {
     idealTechnicalSkills: withDefault(ArrayParam, []),
     employmentType: withDefault(ArrayParam, []),
     federalStates: withDefault(ArrayParam, []),
-    isJobFair2022JobListing: withDefault(BooleanParam, undefined),
+    onlyFavorites: withDefault(BooleanParam, undefined),
+    isRemotePossible: withDefault(BooleanParam, undefined),
   })
   const {
     relatedPositions,
     idealTechnicalSkills,
     employmentType,
     federalStates,
-    isJobFair2022JobListing,
+    onlyFavorites,
+    isRemotePossible,
   } = query
 
   const history = useHistory()
+
+  const { data: jobseekerProfile } = useTpJobseekerProfileQuery()
+  const tpjobseekerprofileUpdateMutation = useTpjobseekerprofileUpdateMutation()
+
   const { data: jobListings } = useBrowseTpJobListingsQuery({
     relatedPositions,
     idealTechnicalSkills,
     employmentType,
     federalStates,
-    isJobFair2022JobListing,
+    isRemotePossible,
   })
+
+  const handleFavoriteJobListing = (value) => {
+    const newFavorites = !jobseekerProfile.favouritedTpJobListingIds
+      ? [value]
+      : toggleValueInArray(jobseekerProfile.favouritedTpJobListingIds, value)
+
+    tpjobseekerprofileUpdateMutation.mutate({
+      favouritedTpJobListingIds: newFavorites,
+    })
+  }
+
+  const toggleOnlyFavoritesFilter = () => {
+    setQuery((latestQuery) => ({
+      ...latestQuery,
+      onlyFavorites: onlyFavorites ? undefined : true,
+    }))
+  }
+
+  const toggleRemoteAvailableFilter = () => {
+    setQuery((latestQuery) => ({
+      ...latestQuery,
+      isRemotePossible: isRemotePossible ? undefined : true,
+    }))
+  }
 
   const toggleFilters = (filtersArr, filterName, item) => {
     const newFilters = toggleValueInArray(filtersArr, item)
     setQuery((latestQuery) => ({ ...latestQuery, [filterName]: newFilters }))
   }
 
-  const toggleJobFair2022Filter = () =>
-    setQuery((latestQuery) => ({
-      ...latestQuery,
-      isJobFair2022JobListing:
-        isJobFair2022JobListing === undefined ? true : undefined,
-    }))
-
   const clearFilters = () => {
     setQuery((latestQuery) => ({
       ...latestQuery,
       idealTechnicalSkills: [],
       employmentType: [],
-      isJobFair2022JobListing: undefined,
+      federalStates: [],
     }))
   }
 
@@ -143,22 +170,43 @@ export function BrowseJobseeker() {
             }
           />
         </div>
-        <div className="filters-inner filters__jobfair2022">
-          <Checkbox
-            name="isJobFair2022JobListing"
-            checked={isJobFair2022JobListing || false}
-            handleChange={toggleJobFair2022Filter}
-          >
-            Filter by ReDI Job Fair 2022
-          </Checkbox>
+        <div
+          className="filters-inner filter-favourites"
+          onClick={toggleOnlyFavoritesFilter}
+        >
+          <Icon
+            icon={onlyFavorites ? 'heartFilled' : 'heart'}
+            className="filter-favourites__icon"
+            space="right"
+          />
+          Only Favorites
+        </div>
+        <div className="filters-inner">
+          <FilterDropdown
+            items={germanFederalStatesOptions}
+            className="filters__dropdown"
+            label="Federal State"
+            selected={federalStates}
+            onChange={(item) =>
+              toggleFilters(federalStates, 'federalStates', item)
+            }
+          />
+        </div>
+      </div>
+      <div className="filters">
+        <div
+          className="filters-inner filter-remote"
+          onClick={toggleRemoteAvailableFilter}
+        >
+          {isRemotePossible ? <Home /> : <HomeOutlined />}
+          Remote Working Possible
         </div>
       </div>
       <div className="active-filters">
         {(relatedPositions.length !== 0 ||
           idealTechnicalSkills.length !== 0 ||
           employmentType.length !== 0 ||
-          federalStates.length !== 0 ||
-          isJobFair2022JobListing) && (
+          federalStates.length !== 0) && (
           <>
             {(relatedPositions as string[]).map((catId) => (
               <FilterTag
@@ -194,13 +242,6 @@ export function BrowseJobseeker() {
                 }
               />
             ))}
-            {isJobFair2022JobListing && (
-              <FilterTag
-                id="redi-job-fair-2022-filter"
-                label="ReDI Job Fair 2022"
-                onClickHandler={toggleJobFair2022Filter}
-              />
-            )}
             <span className="active-filters__clear-all" onClick={clearFilters}>
               Delete all filters
               <Icon icon="cancel" size="small" space="left" />
@@ -215,17 +256,28 @@ export function BrowseJobseeker() {
               .toLowerCase()
               .includes(companyName.toLowerCase())
           )
-          .map((jobListing) => (
-            <Columns.Column mobile={{ size: 12 }} tablet={{ size: 6 }}>
-              <JobListingCard
-                key={jobListing.id}
-                jobListing={jobListing}
-                onClick={() =>
-                  history.push(`/app/job-listing/${jobListing.id}`)
-                }
-              />
-            </Columns.Column>
-          ))}
+          .map((jobListing) => {
+            const isFavorite =
+              jobseekerProfile.favouritedTpJobListingIds?.includes(
+                jobListing.id
+              )
+
+            if (!isFavorite && onlyFavorites) return
+
+            return (
+              <Columns.Column mobile={{ size: 12 }} tablet={{ size: 6 }}>
+                <JobListingCard
+                  key={jobListing.id}
+                  jobListing={jobListing}
+                  onClick={() =>
+                    history.push(`/app/job-listing/${jobListing.id}`)
+                  }
+                  toggleFavorite={handleFavoriteJobListing}
+                  isFavorite={isFavorite}
+                />
+              </Columns.Column>
+            )
+          })}
       </Columns>
     </LoggedIn>
   )
@@ -270,3 +322,10 @@ export function toggleValueInArray<T>(array: Array<T>, value: T) {
   if (array.includes(value)) return array.filter((val) => val !== value)
   else return [...array, value]
 }
+
+const germanFederalStatesOptions = objectEntries(germanFederalStates).map(
+  ([value, label]) => ({
+    value,
+    label,
+  })
+)

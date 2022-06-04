@@ -1342,7 +1342,6 @@ const TpJobseekerProfileListFilters = (props) => (
         name: val,
       }))}
     />
-    <NullableBooleanInput source="isJobFair2022Participant" />
   </Filter>
 )
 
@@ -1418,10 +1417,7 @@ const TpJobseekerProfileShow = (props) => (
         <Tab label="Profile">
           <TextField source="state" />
           <BooleanField source="isProfileVisibleToCompanies" />
-          <BooleanField
-            initialValue={false}
-            source="isJobFair2022Participant"
-          />
+          <BooleanField initialValue={false} source="isHired" />
           <Avatar />
           <TextField source="firstName" />
           <TextField source="lastName" />
@@ -1575,7 +1571,7 @@ const TpJobseekerProfileEdit = (props) => (
       <FormTab label="Profile">
         <TextField source="state" />
         <BooleanInput source="isProfileVisibleToCompanies" />
-        <BooleanInput initialValue={false} source="isJobFair2022Participant" />
+        <BooleanInput initialValue={false} source="isHired" />
         {/* <Avatar /> */}
         <TextInput source="firstName" />
         <TextInput source="lastName" />
@@ -1862,7 +1858,6 @@ const TpCompanyProfileShow = (props) => (
               />
               <TextField source="employmentType" />
               <TextField source="languageRequirements" />
-              <TextField source="desiredExperience" />
               <TextField source="salaryRange" />
               <ShowButton />
               <EditButton />
@@ -1942,7 +1937,6 @@ const TpCompanyProfileEdit = (props) => (
             />
             <TextField source="employmentType" />
             <TextField source="languageRequirements" />
-            <TextField source="desiredExperience" />
             <TextField source="salaryRange" />
             <ShowButton />
             <EditButton />
@@ -1967,18 +1961,11 @@ const TpCompanyProfileEdit = (props) => (
   </Edit>
 )
 
-const TpJobListingListFilters = (props) => (
-  <Filter {...props}>
-    <NullableBooleanInput source="isJobFair2022JobListing" />
-  </Filter>
-)
-
 const TpJobListingList = (props) => {
   return (
     <List
       {...props}
       pagination={<AllModelsPagination />}
-      filters={<TpJobListingListFilters />}
       exporter={tpJobListingListExporter}
     >
       <Datagrid>
@@ -2007,7 +1994,6 @@ function tpJobListingListExporter(jobListings, fetchRelatedRecords) {
       tpCompanyProfile: { companyName },
       employmentType,
       languageRequirements,
-      desiredExperience,
       salaryRange,
     } = job
 
@@ -2017,7 +2003,6 @@ function tpJobListingListExporter(jobListings, fetchRelatedRecords) {
       companyName,
       employmentType,
       languageRequirements,
-      desiredExperience,
       salaryRange,
     }
   })
@@ -2051,7 +2036,6 @@ const TpJobListingShow = (props) => (
       </ReferenceField>
       <TextField source="title" />
       <TextField source="location" />
-      <BooleanField initialValue={false} source="isJobFair2022JobListing" />
       <TextField source="summary" />
       <TextField source="proficiencyLevelId" />
       <FunctionField
@@ -2064,7 +2048,6 @@ const TpJobListingShow = (props) => (
       />
       <TextField source="employmentType" />
       <TextField source="languageRequirements" />
-      <TextField source="desiredExperience" />
       <TextField source="salaryRange" />
     </SimpleShowLayout>
   </Show>
@@ -2082,7 +2065,6 @@ const TpJobListingEdit = (props) => (
       </ReferenceField>
       <TextInput source="title" />
       <TextInput source="location" />
-      <BooleanInput initialValue={false} source="isJobFair2022JobListing" />
       <TextInput source="summary" multiline />
       <TextInput source="proficiencyLevelId" />
       <FunctionField
@@ -2095,7 +2077,6 @@ const TpJobListingEdit = (props) => (
       />
       <TextInput source="employmentType" />
       <TextInput source="languageRequirements" />
-      <TextInput source="desiredExperience" />
       <TextInput source="salaryRange" />
     </SimpleForm>
   </Edit>

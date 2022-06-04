@@ -52,17 +52,25 @@ export function JobListing() {
           <div
             style={{
               display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
+              flexDirection: 'column',
+              justifyContent: 'center',
             }}
           >
             {jobListing?.location ? (
-              <>
+              <div style={{ display: 'flex', marginBottom: '4px' }}>
                 <Icon icon="mapPin" />{' '}
                 <Content>
                   <strong>{jobListing?.location}</strong>
                 </Content>
-              </>
+              </div>
+            ) : null}
+            {jobListing?.isRemotePossible ? (
+              <div style={{ display: 'flex' }}>
+                <Icon icon="mapPin" />{' '}
+                <Content>
+                  <strong>Remote working possible</strong>
+                </Content>
+              </div>
             ) : null}
           </div>
         </div>

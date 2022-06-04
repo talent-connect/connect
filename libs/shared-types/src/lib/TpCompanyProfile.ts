@@ -29,4 +29,6 @@ export type TpCompanyProfile = {
   updatedAt: Date
 
   isProfileVisibleToJobseekers: boolean
+
+  favouritedTpJobseekerIds: string[]
 }

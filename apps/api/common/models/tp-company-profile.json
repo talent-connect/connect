@@ -15,6 +15,9 @@
     },
     "createdAt": {
       "type": "date"
+    },
+    "favouritedTpJobseekerIds": {
+      "type": ["string"]
     }
   },
   "validations": [],

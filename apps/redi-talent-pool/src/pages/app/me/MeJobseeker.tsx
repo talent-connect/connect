@@ -45,13 +45,6 @@ export function MeJobseeker() {
       ...profile,
       isProfileVisibleToCompanies: !profile.isProfileVisibleToCompanies,
     })
-  
-  // This function is added for Job Fair 2022 only. Please remove after 11.02.2022
-  const handleJobFairToggleChange = () =>
-    mutation.mutate({
-      ...profile,
-      isJobFair2022Participant: !profile.isJobFair2022Participant,
-    })
 
   return (
     <LoggedIn>
@@ -78,14 +71,6 @@ export function MeJobseeker() {
             <OnboardingSteps />
           </div>
           <EditableNamePhotoLocation profile={profile} />
-          {/* This Checkbox is added only for JobFair 2022. Please remove after 11.02.2022 */}
-          <Checkbox.Form
-            name="isJobFair2022Participant"
-            checked={profile.isJobFair2022Participant}
-            handleChange={handleJobFairToggleChange}
-          >
-            I will participate in the ReDI Job Fair on 11 February 2022
-          </Checkbox.Form>
           <EditableOverview profile={profile} />
           <EditableSummary profile={profile} />
           <EditableProfessionalExperience profile={profile} />
@@ -99,7 +84,7 @@ export function MeJobseeker() {
             <OnboardingSteps />
           </div>
           {/* <EditableVisibility /> */}
-          <EditableImportantDetails profile={profile} />
+          <EditableImportantDetails profile={profile} showFullAddress />
           <EditableLanguages profile={profile} />
           <EditableLinks profile={profile} />
           <Checkbox
