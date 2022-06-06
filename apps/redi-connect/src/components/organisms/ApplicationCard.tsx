@@ -42,10 +42,15 @@ const ApplicationCard = ({
     profile.userType === 'mentee' ? application.mentor : application.mentee
   const currentUserIsMentor = currentUser?.userType === 'mentor'
 
+  const getClassName =
+    application.status !== 'applied'
+      ? 'application-card'
+      : 'application-card-pending'
+
   return (
     <>
       <div
-        className="application-card"
+        className={getClassName}
         onClick={() => setShowDetails(!showDetails)}
       >
         <Columns vCentered>
@@ -92,6 +97,11 @@ const ApplicationCard = ({
 
           <Columns.Column
             size={2}
+            className={
+              application.status === 'applied'
+                ? 'application-card-pending__status'
+                : null
+            }
             responsive={{ mobile: { textAlignment: { value: 'centered' } } }}
             textAlignment="right"
           >

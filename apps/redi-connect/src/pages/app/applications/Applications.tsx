@@ -1,14 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Content } from 'react-bulma-components'
 import { Heading } from '@talent-connect/shared-atomic-design-components'
-import { ApplicationCard, TabsMenu } from '../../../components/organisms'
 import LoggedIn from '../../../components/templates/LoggedIn'
 import { RootState } from '../../../redux/types'
 import { getApplicants } from '../../../redux/matches/selectors'
 import { connect } from 'react-redux'
 import { RedMatch } from '@talent-connect/shared-types'
-import { NavLink, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { getRedProfileFromLocalStorage } from '../../../services/auth/auth'
+import MobileView from './MobileView'
+import DesktopView from './DesktopView'
+import './Applications.scss'
 
 interface Props {
   applicants: RedMatch[]
@@ -17,7 +19,7 @@ interface Props {
 function Applications({ applicants }: Props) {
   const history = useHistory()
   const profile = getRedProfileFromLocalStorage()
-  const [activeTab, setActiveTab] = useState('all')
+  const [activeFilter, setActiveFilter] = useState('all')
 
   if (profile.userActivated !== true) return <LoggedIn />
 
@@ -28,14 +30,14 @@ function Applications({ applicants }: Props) {
   })
 
   const filterbyStatus = (item) => {
-    if (activeTab === 'all') return true
-    if (activeTab === 'pending') {
+    if (activeFilter === 'all') return true
+    if (activeFilter === 'pending') {
       return item.status === 'applied'
-    } else if (activeTab === 'accepted') {
+    } else if (activeFilter === 'accepted') {
       return item.status === 'accepted' || item.status === 'completed'
-    } else if (activeTab === 'declined') {
+    } else if (activeFilter === 'declined') {
       return item.status === 'declined-by-mentor'
-    } else if (activeTab === 'cancelled') {
+    } else if (activeFilter === 'cancelled') {
       return (
         item.status === 'cancelled' ||
         item.status === 'invalidated-as-other-mentor-accepted'
@@ -70,17 +72,17 @@ function Applications({ applicants }: Props) {
         </Content>
       ) : (
         <div>
-          <TabsMenu
+          <DesktopView
             applicants={applicants}
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
+            filteredApplicants={filteredApplications}
+            activeFilter={activeFilter}
+            setActiveFilter={setActiveFilter}
           />
-
-          <div>
-            {filteredApplications.map((application: RedMatch) => (
-              <ApplicationCard key={application.id} application={application} />
-            ))}
-          </div>
+          <MobileView
+            applicants={applicants}
+            filteredApplicants={filteredApplications}
+            setActiveFilter={setActiveFilter}
+          />
         </div>
       )}
     </LoggedIn>

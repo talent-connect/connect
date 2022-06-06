@@ -1,15 +1,19 @@
 @import '~bulma/sass/utilities/_all';
 @import '_variables.scss';
 
+.desktop-tabs {
+  display: block;
+
+  @include mobile() {
+    display: none;
+  }
+}
+
 .tabs-menu {
   display: flex;
   justify-content: space-between;
   margin-bottom: 1.5rem;
   border-bottom: 1px solid $grey-light;
-
-  @include mobile() {
-    display: none;
-  }
 
   &__item {
     text-transform: capitalize;

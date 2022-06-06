@@ -72,4 +72,13 @@
       // float: right;
     }
   }
+
+  &-pending {
+    @extend .application-card;
+    border: 1px solid $redi-orange-dark;
+
+    &__status {
+      color: #fd4d00;
+    }
+  }
 }

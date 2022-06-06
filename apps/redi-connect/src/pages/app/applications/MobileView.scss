@@ -1,0 +1,38 @@
+@import '~bulma/sass/utilities/_all';
+@import '_variables.scss';
+
+.mobile-filter {
+  display: none;
+
+  @include mobile() {
+    display: block;
+  }
+}
+
+.message {
+  display: inline-block;
+  background-color: $redi-orange-extra-light;
+  color: $red;
+  border-radius: 8px;
+  padding: 6px 11px;
+  margin-bottom: 24px;
+}
+
+.filters-wrapper {
+  display: flex;
+  margin-bottom: 24px;
+}
+
+.dropdown-filter {
+  width: 50%;
+}
+
+.all-filter {
+  text-transform: capitalize;
+  font-size: $size-5;
+  font-weight: $weight-light;
+  color: $redi-orange-dark;
+  letter-spacing: 0.5px;
+  width: auto;
+  margin-left: 16px;
+}
