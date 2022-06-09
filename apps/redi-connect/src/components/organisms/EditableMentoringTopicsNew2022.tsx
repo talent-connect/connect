@@ -25,7 +25,7 @@ export type UserType =
   | 'public-sign-up-mentee-pending-review'
 
 export interface FormValues {
-  mentoringTopics: MentoringTopicKey[]
+  mentor_mentoringTopics: MentoringTopicKey[]
 }
 
 const mentoringTopicsByGroup = groupBy(MENTORING_TOPICS, (topic) => topic.group)
@@ -38,7 +38,7 @@ interface Props {
 }
 
 const EditableMentoringTopics = ({ profile, profileSaveStart }: Props) => {
-  const { id, userType, mentoringTopics } = profile as RedProfile
+  const { id, userType, mentor_mentoringTopics } = profile as RedProfile
 
   const submitForm = async (values: FormikValues) => {
     const profileMentoring = values as Partial<RedProfile>
@@ -46,7 +46,7 @@ const EditableMentoringTopics = ({ profile, profileSaveStart }: Props) => {
   }
 
   const initialValues: FormValues = {
-    mentoringTopics: mentoringTopics || [],
+    mentor_mentoringTopics: mentor_mentoringTopics || [],
   }
 
   const formik = useFormik({
@@ -55,7 +55,7 @@ const EditableMentoringTopics = ({ profile, profileSaveStart }: Props) => {
     onSubmit: submitForm,
   })
 
-  const { mentoringTopics: selectedMentoringTopics } = formik.values
+  const { mentor_mentoringTopics: selectedMentoringTopics } = formik.values
 
   const mentoringTopicsChange = (e: any) => {
     e.persist()
@@ -68,8 +68,8 @@ const EditableMentoringTopics = ({ profile, profileSaveStart }: Props) => {
         (cat: any) => cat !== value
       )
     }
-    formik.setFieldValue('mentoringTopics', newMentoringTopics)
-    formik.setFieldTouched('mentoringTopics', true, false)
+    formik.setFieldValue('mentor_mentoringTopics', newMentoringTopics)
+    formik.setFieldTouched('mentor_mentoringTopics', true, false)
   }
 
   return (
@@ -122,7 +122,7 @@ const MentoringTopicGroup = ({
       <Element className="mentoring__group">
         {mentoringTopicsByGroup[id].map((groupItem) => (
           <Checkbox.Form
-            name={`mentoringTopics-${groupItem.id}`}
+            name={`mentor_mentoringTopics-${groupItem.id}`}
             key={groupItem.id}
             value={groupItem.id}
             checked={selectedMentoringTopics.includes(groupItem.id)}

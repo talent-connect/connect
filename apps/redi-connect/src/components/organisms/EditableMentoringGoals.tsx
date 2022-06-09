@@ -31,7 +31,11 @@ const validationSchema = Yup.object({
 })
 
 const EditableMentoringGoals = ({ profile, profileSaveStart }: Props) => {
-  const { id, userType, mentoringGoals } = profile as RedProfile
+  const {
+    id,
+    userType,
+    mentor_mentoringGoals: mentoringGoals,
+  } = profile as RedProfile
 
   const submitForm = async (values: FormikValues) => {
     const profileMentoring = values as Partial<RedProfile>

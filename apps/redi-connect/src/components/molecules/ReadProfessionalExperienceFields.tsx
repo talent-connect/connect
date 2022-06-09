@@ -4,7 +4,7 @@ import {
   CardTagsProps,
   Placeholder,
 } from '@talent-connect/shared-atomic-design-components'
-import { PROFESSIONAL_EXPERIENCE_FIELDS } from '@talent-connect/shared-config'
+import { FIELDS_OF_EXPERTISE } from '@talent-connect/shared-config'
 import { RedProfile } from '@talent-connect/shared-types'
 import React from 'react'
 import { connect } from 'react-redux'
@@ -19,7 +19,7 @@ export const ProfileTags = ({ items, shortList }: CardTagsProps) => (
   <CardTags
     items={items}
     shortList={shortList}
-    formatter={(item: string) => PROFESSIONAL_EXPERIENCE_FIELDS[item]}
+    formatter={(item: string) => FIELDS_OF_EXPERTISE[item]}
   />
 )
 
@@ -27,7 +27,8 @@ const ReadProfessionalExperienceFields = ({
   profile,
   caption,
 }: ReadMentoringProps) => {
-  const { professionalExperienceFields } = profile
+  const { mentor_professionalExperienceFields: professionalExperienceFields } =
+    profile
 
   if (!professionalExperienceFields?.length && !caption)
     return <Placeholder>Select your fields of expertise</Placeholder>

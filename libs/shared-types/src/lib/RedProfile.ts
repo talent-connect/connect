@@ -10,8 +10,9 @@ import {
   GenderKey,
   Language,
   MenteeOccupationCategoryKey,
+  MentoringGoalKey,
   MentoringTopicKey,
-  ProfessionalExperienceFieldKey,
+  FieldOfExperienceKey,
 } from '@talent-connect/shared-config'
 
 export type RedProfile = {
@@ -53,9 +54,17 @@ export type RedProfile = {
   favouritedRedProfileIds: Array<string>
   optOutOfMenteesFromOtherRediLocation: boolean
 
-  mentoringTopics: Array<MentoringTopicKey>
-  mentoringGoals: Array<MentoringTopicKey>
-  professionalExperienceFields: Array<ProfessionalExperienceFieldKey>
+  mentor_mentoringTopics: Array<MentoringTopicKey>
+  mentor_mentoringGoals: Array<MentoringTopicKey>
+  mentor_professionalExperienceFields: Array<FieldOfExperienceKey>
+
+  mentee_mentoringGoal: MentoringGoalKey
+  mentee_overarchingMentoringTopics: Array<MentoringTopicKey>
+  mentee_primaryRole_fieldOfExpertise: FieldOfExperienceKey
+  mentee_primaryRole_mentoringTopics: Array<MentoringTopicKey>
+  mentee_secondaryRole_fieldOfExpertise: FieldOfExperienceKey
+  mentee_secondaryRole_mentoringTopics: Array<MentoringTopicKey>
+  mentee_toolsAndFrameworks_mentoringTopics: Array<MentoringTopicKey>
 
   createdAt: Date
   updatedAt: Date

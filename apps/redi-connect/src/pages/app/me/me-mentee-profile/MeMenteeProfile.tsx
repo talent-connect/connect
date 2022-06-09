@@ -1,4 +1,5 @@
 import {
+  Caption,
   Heading,
   Loader,
 } from '@talent-connect/shared-atomic-design-components'
@@ -19,7 +20,8 @@ import {
 import { LoggedIn } from '../../../../components/templates'
 import { RootState } from '../../../../redux/types'
 import { profileFetchStart } from '../../../../redux/user/actions'
-import EditableMentoringGoal from './EditableMentoringGoal'
+import EditableMentoringGoalTopics from './EditableMentoringGoalTopics'
+import EditableToolsAndFrameworks from './EditableToolsAndFrameworks'
 
 const MeMenteeProfile = ({ loading, saveResult, profile }: any) => {
   if (loading) return <Loader loading={true} />
@@ -47,7 +49,7 @@ const MeMenteeProfile = ({ loading, saveResult, profile }: any) => {
         </Columns.Column>
       </Columns>
       <Element
-        className="block-separator"
+        className="block-thicker-separator"
         responsive={{ tablet: { hide: { value: true } } }}
       >
         <Content size="medium" renderAs="p">
@@ -56,14 +58,15 @@ const MeMenteeProfile = ({ loading, saveResult, profile }: any) => {
           out your profile: Great! Make sure you keep it up to date.
         </Content>
       </Element>
-      <Element className="block-separator">
+      <Element className="block-thicker-separator">
         <EditableAbout />
       </Element>
 
-      <Element className="block-separator">
+      <Element className="block-thicker-separator-dashed">
+        <Caption bold>Professional experience and contact details</Caption>
         <Columns>
           <Columns.Column size={6}>
-            <Element className="block-separator">
+            <Element className="block-thicker-separator">
               <EditableContactDetails />
             </Element>
           </Columns.Column>
@@ -73,10 +76,10 @@ const MeMenteeProfile = ({ loading, saveResult, profile }: any) => {
         </Columns>
       </Element>
 
-      <Element className="block-separator">
+      <Element className="block-thicker-separator-dashed">
         <Columns>
           <Columns.Column size={6}>
-            <Element className="block-separator">
+            <Element className="block-thicker-separator">
               <EditablePersonalDetail />
             </Element>
           </Columns.Column>
@@ -86,10 +89,10 @@ const MeMenteeProfile = ({ loading, saveResult, profile }: any) => {
         </Columns>
       </Element>
 
-      <Element className="block-separator">
+      <Element className="block-thicker-separator-dashed">
         <Columns>
           <Columns.Column size={6}>
-            <Element className="block-separator">
+            <Element className="block-thicker-separator">
               <EditableEducation />
             </Element>
           </Columns.Column>
@@ -99,7 +102,7 @@ const MeMenteeProfile = ({ loading, saveResult, profile }: any) => {
         </Columns>
       </Element>
 
-      <Element className="block-separator">
+      <Element className="block-thicker-separator">
         <Columns>
           <Columns.Column size={6}>
             <EditableOccupation />
@@ -107,26 +110,12 @@ const MeMenteeProfile = ({ loading, saveResult, profile }: any) => {
         </Columns>
       </Element>
 
-      <Element className="block-separator">
-        <Element
-          renderAs="h3"
-          textSize={8}
-          textWeight="bold"
-          textTransform="uppercase"
-        >
-          Mentoring Goals and Topics
-        </Element>
-
-        <Columns>
-          <Columns.Column size={6}>
-            <EditableMentoringGoal />
-          </Columns.Column>
-          <Columns.Column size={6}></Columns.Column>
-        </Columns>
+      <Element className="block-thicker-separator">
+        <EditableMentoringGoalTopics />
       </Element>
 
-      <Element className="block-separator">
-        {/* <EditableMentoringTopicsNew2022 /> */}
+      <Element className="block-thicker-separator">
+        <EditableToolsAndFrameworks />
       </Element>
     </LoggedIn>
   )

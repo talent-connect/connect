@@ -2,7 +2,7 @@ import {
   Checkbox,
   Editable,
 } from '@talent-connect/shared-atomic-design-components'
-import { PROFESSIONAL_EXPERIENCE_FIELDS } from '@talent-connect/shared-config'
+import { FIELDS_OF_EXPERTISE } from '@talent-connect/shared-config'
 import { RedProfile } from '@talent-connect/shared-types'
 import { objectEntries } from '@talent-connect/typescript-utilities'
 import { FormikValues, useFormik } from 'formik'
@@ -19,9 +19,7 @@ export interface FormValues {
   professionalExperienceFields: string[]
 }
 
-const formProfessionalExperienceFields = objectEntries(
-  PROFESSIONAL_EXPERIENCE_FIELDS
-)
+const formProfessionalExperienceFields = objectEntries(FIELDS_OF_EXPERTISE)
 
 interface Props {
   profile: RedProfile | undefined
@@ -32,7 +30,11 @@ const EditableProfessionalExperienceFields = ({
   profile,
   profileSaveStart,
 }: Props) => {
-  const { id, userType, professionalExperienceFields } = profile as RedProfile
+  const {
+    id,
+    userType,
+    mentor_professionalExperienceFields: professionalExperienceFields,
+  } = profile as RedProfile
 
   const submitForm = async (values: FormikValues) => {
     const profileMentoring = values as Partial<RedProfile>

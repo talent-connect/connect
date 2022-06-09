@@ -96,7 +96,6 @@ export const matchesAcceptMentorshipEpic = (action$: ActionsObservable<any>) =>
 
 export const matchesDeclineMentorshipEpic = (action$: ActionsObservable<any>) =>
   action$.pipe(
-    tap((p) => console.log('Hello hello', p)),
     ofType(MatchesActionType.MATCHES_DECLINE_MENTORSHIP_START),
     switchMap((action) => {
       const request = from(

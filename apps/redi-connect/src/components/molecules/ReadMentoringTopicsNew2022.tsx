@@ -27,15 +27,15 @@ const ReadMentoringTopicsNew2022 = ({
   profile,
   caption,
 }: ReadMentoringProps) => {
-  const { mentoringTopics } = profile
+  const { mentor_mentoringTopics } = profile
 
-  if (!mentoringTopics?.length && !caption)
+  if (!mentor_mentoringTopics?.length && !caption)
     return <Placeholder>Please pick mentoring topics.</Placeholder>
 
   return (
     <>
       {caption && <Caption>{'Mentoring Topics'}</Caption>}
-      <ProfileTags items={mentoringTopics} />
+      <ProfileTags items={mentor_mentoringTopics} />
     </>
   )
 }

@@ -24,7 +24,7 @@ export const ProfileTags = ({ items, shortList }: CardTagsProps) => (
 )
 
 const ReadMentoringGoals = ({ profile, caption }: ReadMentoringProps) => {
-  const { mentoringGoals } = profile
+  const { mentor_mentoringGoals: mentoringGoals } = profile
 
   if (!mentoringGoals?.length && !caption)
     return (

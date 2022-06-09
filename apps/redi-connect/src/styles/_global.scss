@@ -16,3 +16,35 @@
     border-bottom: 1px solid $grey-light;
   }
 }
+
+.block-thicker-separator {
+  .block-thicker-separator {
+    @include mobile() {
+      padding-bottom: 1.5rem;
+      margin-bottom: -0.5rem;
+      border-bottom: 2px solid $grey-light;
+    }
+  }
+
+  &:not(:last-child) {
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid $grey-light;
+  }
+}
+
+.block-thicker-separator-dashed {
+  .block-thicker-separator-dashed {
+    @include mobile() {
+      padding-bottom: 1.5rem;
+      margin-bottom: -0.5rem;
+      border-bottom: 2px dashed $grey-light;
+    }
+  }
+
+  &:not(:last-child) {
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px dashed $grey-light;
+  }
+}

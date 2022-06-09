@@ -5,6 +5,7 @@ import './Editable.scss'
 
 interface Props {
   title: string
+  titleBold?: boolean
   onSave: () => void
   onClose: () => void
   read: React.ReactNode
@@ -17,6 +18,7 @@ interface Props {
 function Editable(props: Props) {
   const {
     title,
+    titleBold,
     children,
     read,
     onSave,
@@ -40,7 +42,7 @@ function Editable(props: Props) {
   return (
     <div className={classnames('editable', { [`${className}`]: className })}>
       <div className="editable__header">
-        <Caption>{title}</Caption>
+        <Caption bold={Boolean(titleBold)}>{title}</Caption>
         <div className="editable__header__buttons">
           {isEditing ? (
             <>
