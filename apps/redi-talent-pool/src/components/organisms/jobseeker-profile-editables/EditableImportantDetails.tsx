@@ -338,15 +338,6 @@ export function JobseekerFormSectionImportantDetails({
             items={formImmigrationStatusOptions}
             {...formik}
           />
-          <FormSelect
-            label="Are you willing to relocate"
-            name="willingToRelocate"
-            items={[
-              { value: true, label: 'Yes' },
-              { value: false, label: 'No' },
-            ]}
-            {...formik}
-          />
         </>
       )}
 
