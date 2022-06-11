@@ -27,7 +27,9 @@ export function JobListing() {
     <LoggedIn>
       <div style={{ display: 'flex' }}>
         <div style={{ width: '15rem' }}>
-          {jobListing ? <Avatar profile={jobListing.tpCompanyProfile} /> : null}
+          {jobListing ? (
+            <Avatar profile={jobListing.tpCompanyProfile} shape="square" />
+          ) : null}
         </div>
         <div
           style={{
