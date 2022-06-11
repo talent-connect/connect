@@ -44,6 +44,7 @@ export type TpJobseekerProfile = {
   projects?: ProjectRecord[]
 
   state: TpJobseekerProfileState
+  willingToRelocate?: boolean
 
   createdAt: Date
   updatedAt: Date

@@ -19,6 +19,7 @@ export type TpJobseekerCv = {
   phoneNumber?: string
   postalMailingAddress?: string
   location?: string
+  willingToRelocate?: boolean
 
   // TODO: consider making this a array of URLs
   personalWebsite?: string
