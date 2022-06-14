@@ -41,6 +41,18 @@ const validationSchema = Yup.object({
   mentee_primaryRole_fieldOfExpertise: Yup.string()
     .nullable()
     .required('Select a role'),
+  mentee_overarchingMentoringTopics: Yup.array().max(
+    3,
+    'You can select up to three topics'
+  ),
+  mentee_primaryRole_mentoringTopics: Yup.array().max(
+    3,
+    'You can select up to three skills'
+  ),
+  mentee_secondaryRole_mentoringTopics: Yup.array().max(
+    3,
+    'You can select up to three skills'
+  ),
 })
 
 const EditableMentoringGoalTopics = ({ profile, profileSaveStart }: Props) => {
