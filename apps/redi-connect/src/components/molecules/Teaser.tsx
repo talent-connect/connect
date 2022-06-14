@@ -50,6 +50,7 @@ export default {
       Already have an account? <Link to="/front/login">login here</Link>
     </TopIllustration>
   ),
+  IllustrationOnly: () => <TopIllustration>&nbsp;</TopIllustration>,
   Miriam: () => {
     const { userType } = useParams<RouteParams>() as RouteParams
 

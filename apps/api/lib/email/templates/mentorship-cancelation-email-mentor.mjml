@@ -20,13 +20,14 @@
             cancel the mentorship so we know how to make the mentorship program
             even better. Simply write us an
             <a
-              href="mailto:miriam@redi-school.org?subject=Cancelation of Mentorship"
+              href="mailto:career@redi-school.org?subject=Cancelation of Mentorship"
               class="text-link"
               >email</a
             >.</mj-text
           >
+          // TODO: Career
           <mj-text mj-class="text">Best,</mj-text>
-          <mj-text mj-class="text">Miriam</mj-text>
+          <mj-text mj-class="text">ReDI</mj-text>
         </mj-column>
       </mj-section>
       <mj-include path="./footer.berlin.miriam.mjml" />
