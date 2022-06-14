@@ -23,6 +23,7 @@ import './Avatar.scss'
 
 interface AvatarProps {
   profile: Partial<TpJobseekerProfile> | Partial<TpCompanyProfile>
+  shape?: 'circle' | 'square'
 }
 interface AvatarEditable {
   profile: Partial<TpJobseekerProfile> | Partial<TpCompanyProfile>
@@ -30,6 +31,7 @@ interface AvatarEditable {
     profile: Partial<TpJobseekerProfile> | Partial<TpCompanyProfile>
   ) => void
   callToActionText?: string
+  shape?: 'circle' | 'square'
 }
 
 interface AvatarFormValues {
@@ -40,7 +42,7 @@ const validationSchema = Yup.object({
   profileAvatarImageS3Key: Yup.string().max(255),
 })
 
-const Avatar = ({ profile }: AvatarProps) => {
+const Avatar = ({ profile, shape = 'circle' }: AvatarProps) => {
   const { profileAvatarImageS3Key } = profile
   const imgSrc = profileAvatarImageS3Key
     ? AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
@@ -50,12 +52,15 @@ const Avatar = ({ profile }: AvatarProps) => {
     <div
       className={classnames('avatar', {
         'avatar--placeholder': !profileAvatarImageS3Key,
+        'avatar--square': shape === 'square',
       })}
     >
       <img
         src={imgSrc}
         alt={`${profile.firstName} ${profile.lastName}`}
-        className="avatar__image"
+        className={classnames('avatar__image', {
+          'avatar__image--square': shape === 'square',
+        })}
       />
     </div>
   )
@@ -73,6 +78,7 @@ const AvatarEditable = ({
   profile,
   profileSaveStart,
   callToActionText = 'Add your picture',
+  shape = 'circle',
 }: AvatarEditable) => {
   const [showCropperModal, setShowCropperModal] = useState(false)
   const [imageSrc, setImageSrc] = useState(null)
@@ -146,6 +152,7 @@ const AvatarEditable = ({
     <div
       className={classnames('avatar avatar--editable', {
         'avatar--placeholder': !profileAvatarImageS3Key,
+        'avatar--square': shape === 'square',
       })}
     >
       {profileAvatarImageS3Key && (
@@ -153,7 +160,9 @@ const AvatarEditable = ({
           <img
             src={imgURL}
             alt={`${profile.firstName} ${profile.lastName}`}
-            className="avatar__image"
+            className={classnames('avatar__image', {
+              'avatar__image--square': shape === 'square',
+            })}
           />
           <Element
             renderAs="span"
@@ -205,7 +214,6 @@ const AvatarEditable = ({
             image={imageSrc}
             crop={crop}
             aspect={1 / 1}
-            style={{ containerStyle: { top: 73 } }}
             zoom={zoom}
             showGrid={false}
             onCropChange={setCrop}

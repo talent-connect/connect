@@ -42,6 +42,7 @@ export function EditableNamePhotoLocation({ profile, disableEditing }: Props) {
                 profile={profile}
                 profileSaveStart={mutation.mutate}
                 callToActionText="Please add your company logo"
+                shape="square"
               />
             ) : null}
           </Columns.Column>
