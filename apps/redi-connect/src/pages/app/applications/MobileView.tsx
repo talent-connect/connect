@@ -1,11 +1,8 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import Select from 'react-select'
 
-import { RootState } from '../../../redux/types'
-import {
-  FormSelect,
-  Button,
-} from '@talent-connect/shared-atomic-design-components'
+import { Button } from '@talent-connect/shared-atomic-design-components'
+import { customStyles } from '../../../../../../libs/shared-atomic-design-components/src/lib/atoms/SelectStyles'
 import ApplicationCard from '../../../components/organisms/ApplicationCard'
 import './MobileView.scss'
 
@@ -16,26 +13,63 @@ const applicationStatuses = [
   { value: 'cancelled', label: 'Cancelled' },
 ]
 
-const MobileView = ({ applicants, filteredApplicants, setActiveFilter }) => {
-  const pendingApplicationsCount = useSelector(
-    (state: RootState) => state.user.profile.currentApplicantCount
+const MobileView = ({
+  applicants,
+  filteredApplicants,
+  setActiveFilter,
+  activeFilter,
+}) => {
+  const pendingApplications = applicants.filter(
+    (applicant) => applicant.status === 'applied'
   )
+  const hasPendingApplications = Boolean(pendingApplications.length)
+
+  const hasAcceptedApplications = applicants.some(
+    (applicant) =>
+      applicant.status === 'accepted' || applicant.status === 'completed'
+  )
+
+  const hasDeclinedApplications = applicants.some(
+    (applicant) => applicant.status === 'declined-by-mentor'
+  )
+
+  const hasCancelledApplications = applicants.some(
+    (applicant) =>
+      applicant.status === 'cancelled' ||
+      applicant.status === 'invalidated-as-other-mentor-accepted'
+  )
+
+  const value =
+    activeFilter === 'all'
+      ? null
+      : applicationStatuses.find(({ value }) => value === activeFilter)
+
+  const renderEmptyStateMessage = (filter, condition) => {
+    return (
+      activeFilter === filter &&
+      condition &&
+      `You currently have no ${filter} applications.`
+    )
+  }
 
   return (
     <div className="mobile-filter">
-      {Boolean(pendingApplicationsCount) && (
+      {hasPendingApplications && (
         <div className="message">
-          You have {pendingApplicationsCount} pending{' '}
-          {pendingApplicationsCount === 1 ? 'application' : 'applications'}
+          You have {pendingApplications.length} pending{' '}
+          {pendingApplications.length === 1 ? 'application' : 'applications'}
         </div>
       )}
 
       <div className="filters-wrapper">
         <div className="dropdown-filter">
-          <FormSelect
-            items={applicationStatuses}
+          <Select
+            value={value}
+            options={applicationStatuses}
+            onChange={(selected) => setActiveFilter(selected.value)}
             placeholder="Filter by Status"
-            customOnChange={(selected) => setActiveFilter(selected.value)}
+            styles={customStyles}
+            isSearchable={false}
           />
         </div>
 
@@ -49,6 +83,11 @@ const MobileView = ({ applicants, filteredApplicants, setActiveFilter }) => {
       </div>
 
       <div>
+        {renderEmptyStateMessage('pending', !hasPendingApplications)}
+        {renderEmptyStateMessage('accepted', !hasAcceptedApplications)}
+        {renderEmptyStateMessage('declined', !hasDeclinedApplications)}
+        {renderEmptyStateMessage('cancelled', !hasCancelledApplications)}
+
         {filteredApplicants.map((application) => (
           <ApplicationCard key={application.id} application={application} />
         ))}

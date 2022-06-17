@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Content } from 'react-bulma-components'
 import { Heading } from '@talent-connect/shared-atomic-design-components'
 import LoggedIn from '../../../components/templates/LoggedIn'
@@ -71,7 +71,7 @@ function Applications({ applicants }: Props) {
           )}
         </Content>
       ) : (
-        <div>
+        <>
           <DesktopView
             applicants={applicants}
             filteredApplicants={filteredApplications}
@@ -81,9 +81,10 @@ function Applications({ applicants }: Props) {
           <MobileView
             applicants={applicants}
             filteredApplicants={filteredApplications}
+            activeFilter={activeFilter}
             setActiveFilter={setActiveFilter}
           />
-        </div>
+        </>
       )}
     </LoggedIn>
   )
