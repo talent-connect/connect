@@ -25,9 +25,8 @@
               >email</a
             >.</mj-text
           >
-          // TODO: Career
           <mj-text mj-class="text">Best,</mj-text>
-          <mj-text mj-class="text">ReDI</mj-text>
+          <mj-text mj-class="text">Your ReDI Career Support Team</mj-text>
         </mj-column>
       </mj-section>
       <mj-include path="./footer.career.support.team.mjml" />
