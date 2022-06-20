@@ -30,7 +30,7 @@
           <mj-text mj-class="text">ReDI</mj-text>
         </mj-column>
       </mj-section>
-      <mj-include path="./footer.berlin.miriam.mjml" />
+      <mj-include path="./footer.career.support.team.mjml" />
       <mj-section />
     </mj-wrapper>
   </mj-body>

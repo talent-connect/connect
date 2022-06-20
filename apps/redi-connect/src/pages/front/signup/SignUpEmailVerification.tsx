@@ -12,8 +12,7 @@ const SignUpEmailVerification = () => (
         size={5}
         responsive={{ mobile: { hide: { value: true } } }}
       >
-        {/* TODO: show the illustration here as well */}
-        <Teaser.Miriam />
+        <Teaser.IllustrationOnly />
       </Columns.Column>
 
       <Columns.Column size={5} offset={2}>
