@@ -11,8 +11,11 @@ import { envRediLocation } from './utils/env-redi-location'
 import LocationPicker from './pages/front/landing/LocationPicker'
 import { Route } from 'react-router-dom'
 import { QueryParamProvider } from 'use-query-params'
+import { useConfetti } from './utils/useConfetti'
 
 const App = () => {
+  useConfetti({ keybind: 'm i r i a m a l w a y s r e d i' })
+
   switch (envRediLocation()) {
     case 'location-picker':
       return (
