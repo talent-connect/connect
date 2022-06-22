@@ -1,6 +1,8 @@
 import React from 'react'
 import Select from 'react-select'
+import { useSelector } from 'react-redux'
 
+import { RootState } from '../../../redux/types'
 import { Button } from '@talent-connect/shared-atomic-design-components'
 import { customStyles } from '../../../../../../libs/shared-atomic-design-components/src/lib/atoms/SelectStyles'
 import ApplicationCard from '../../../components/organisms/ApplicationCard'
@@ -19,6 +21,9 @@ const MobileView = ({
   setActiveFilter,
   activeFilter,
 }) => {
+  const profile = useSelector((state: RootState) => state.user.profile)
+  const isMentor = profile.userType === 'mentor'
+
   const pendingApplications = applicants.filter(
     (applicant) => applicant.status === 'applied'
   )
@@ -54,7 +59,7 @@ const MobileView = ({
 
   return (
     <div className="mobile-filter">
-      {hasPendingApplications && (
+      {isMentor && hasPendingApplications && (
         <div className="message">
           You have {pendingApplications.length} pending{' '}
           {pendingApplications.length === 1 ? 'application' : 'applications'}
