@@ -35,7 +35,6 @@ export const MENTORING_TOPIC_GROUPS = {
   productAndProjectManagement: '📋 Product and project management',
   softwareDevelopment: '👩‍💻 Software development',
   toolsAndFrameworks: '🛠️ Tools and frameworks',
-  toolsAndFrameworks2: '🛠️ Tools and frameworks',
 } as const
 
 /*
