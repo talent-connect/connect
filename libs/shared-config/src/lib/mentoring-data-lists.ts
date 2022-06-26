@@ -29,6 +29,7 @@ export type FieldOfExperienceKey = keyof typeof FIELDS_OF_EXPERTISE
 
 export const MENTORING_TOPIC_GROUPS = {
   overarchingTopics: '🌈 Overarching topics',
+  marketingSocialMediaAndSales: '🚦 Marketing, social media and sales',
   requirementsAnalysisAndResearch: '🧪 Requirements analysis and research',
   uxAndUiDesign: '🎨 UX and UI design',
   testingAndQualityAssurance: '🏎️ Testing and Quality Assurance',
@@ -50,7 +51,11 @@ export const MENTORING_TOPICS = [
     group: 'overarchingTopics',
   },
   { id: 'Communication', label: 'Communication', group: 'overarchingTopics' },
-  { id: 'Cross-cultural teams', label: 'Cross-cultural teams', group: '' },
+  {
+    id: 'Cross-cultural teams',
+    label: 'Cross-cultural teams',
+    group: 'overarchingTopics',
+  },
   {
     id: 'Cross-functional work',
     label: 'Cross-functional work',
