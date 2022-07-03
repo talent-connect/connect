@@ -13,6 +13,7 @@ import {
   UserType,
   ConProfileRecordProps,
   ConnectProfileStatus,
+  ContactRecordProps,
 } from '@talent-connect/common-types'
 import { MentoringTopic } from 'libs/common-types/src/lib/con-profile/enums/mentoring-topic.enum'
 
@@ -83,10 +84,12 @@ export class ConProfileMapper
 
     props.menteeCountCapacity = raw.props.total_mentee_capacity__c
 
+    // The next ones are computed fields in Salesforce
     props.ifUserMentee_activeMentorshipMatches =
       raw.props.Active_Mentorship_Matches_Mentee__c
     props.ifUserMentor_activeMentorshipMatches =
       raw.props.Active_Mentorship_Matches_Mentor__c
+    props.age = raw.props.Contact__r.ReDI_Age__c
 
     const entity = ConProfileEntity.create(props)
 
@@ -96,6 +99,21 @@ export class ConProfileMapper
   public toPersistence(source: ConProfileEntity): ConProfileRecord {
     const props = new ConProfileRecordProps()
     const srcProps = source.props
+
+    const Contact__r = new ContactRecordProps()
+    Contact__r.Email = srcProps.email
+    Contact__r.Id = srcProps._contactId
+    Contact__r.FirstName = srcProps.firstName
+    Contact__r.LastName = srcProps.lastName
+    Contact__r.redi_Contact_Gender__c = srcProps.gender
+    Contact__r.ReDI_Birth_Date__c = srcProps.birthDate
+    Contact__r.LinkedIn_Profile__c = srcProps.linkedInProfileUrl
+    Contact__r.ReDI_GitHub_Profile__c = srcProps.githubProfileUrl
+    Contact__r.ReDI_Slack_Username__c = srcProps.slackUsername
+    Contact__r.MobilePhone = srcProps.telephoneNumber
+    Contact__r.Loopback_User_ID__c = srcProps.loopbackUserId
+    Contact__r.CreatedDate = srcProps.createdAt
+    Contact__r.LastModifiedDate = srcProps.updatedAt
 
     props.Id = srcProps.id
     props.Profile_Status__c = srcProps.profileStatus
@@ -127,21 +145,7 @@ export class ConProfileMapper
     props.Mentoring_Topics__c = srcProps.categories?.join(';')
     props.total_mentee_capacity__c = srcProps.menteeCountCapacity
 
-    props.Contact__r = {
-      Email: srcProps.email,
-      Id: srcProps._contactId,
-      FirstName: srcProps.firstName,
-      LastName: srcProps.lastName,
-      redi_Contact_Gender__c: srcProps.gender,
-      ReDI_Birth_Date__c: srcProps.birthDate,
-      LinkedIn_Profile__c: srcProps.linkedInProfileUrl,
-      ReDI_GitHub_Profile__c: srcProps.githubProfileUrl,
-      ReDI_Slack_Username__c: srcProps.slackUsername,
-      MobilePhone: srcProps.telephoneNumber,
-      Loopback_User_ID__c: srcProps.loopbackUserId,
-      CreatedDate: srcProps.createdAt,
-      LastModifiedDate: srcProps.updatedAt,
-    }
+    props.Contact__r = Contact__r
 
     const record = ConProfileRecord.create(props)
 

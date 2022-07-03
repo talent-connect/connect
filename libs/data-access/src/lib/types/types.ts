@@ -85,6 +85,7 @@ export type ConMentorshipMatch = {
 export type ConProfile = {
   __typename?: 'ConProfile';
   _contactId: Scalars['String'];
+  age: Scalars['Float'];
   birthDate?: Maybe<Scalars['DateTime']>;
   categories: Array<MentoringTopic>;
   createdAt: Scalars['DateTime'];

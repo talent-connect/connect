@@ -19,6 +19,8 @@ export class ContactRecordProps implements RecordProps {
   redi_Contact_Gender__c?: string
   Loopback_User_ID__c: string
 
+  ReDI_Age__c: number
+
   ReDI_First_Point_of_Contact_Talent_Pool__c?: string
   ReDI_First_Point_of_Contact_Other_TP__c?: string
 

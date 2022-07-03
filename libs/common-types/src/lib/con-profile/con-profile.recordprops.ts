@@ -59,6 +59,7 @@ export class ConProfileRecordProps implements RecordProps {
     ReDI_Slack_Username__c: string
     MobilePhone: string
     Loopback_User_ID__c: string
+    ReDI_Age__c: number
   }
 
   public static create(rawProps: any) {

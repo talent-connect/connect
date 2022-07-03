@@ -63,6 +63,7 @@ type ConMentorshipMatch {
 
 type ConProfile {
   _contactId: String!
+  age: Float!
   birthDate: DateTime
   categories: [MentoringTopic!]!
   createdAt: DateTime!

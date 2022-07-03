@@ -69,6 +69,8 @@ export class ConProfileEntityProps implements EntityProps {
   // userActivated?: boolean //! REINSTATE, COMPLEX CASE
   userActivatedAt?: Date
 
+  // The next ones are computed fields in Salesforce
   ifUserMentee_activeMentorshipMatches: number
   ifUserMentor_activeMentorshipMatches: number
+  age: number
 }
