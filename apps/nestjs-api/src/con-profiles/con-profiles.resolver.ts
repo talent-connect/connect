@@ -1,5 +1,7 @@
 import {
   BadRequestException,
+  forwardRef,
+  Inject,
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common'
@@ -13,6 +15,7 @@ import {
 } from '@nestjs/graphql'
 import {
   ConMentoringSessionEntityProps,
+  ConMentorshipMatchEntityProps,
   ConProfileEntity,
   ConProfileEntityProps,
 } from '@talent-connect/common-types'
@@ -20,6 +23,7 @@ import { CurrentUser } from '../auth/current-user.decorator'
 import { CurrentUserInfo } from '../auth/current-user.interface'
 import { GqlJwtAuthGuard } from '../auth/gql-jwt-auth.guard'
 import { ConMentoringSessionsService } from '../con-mentoring-sessions/con-mentoring-sessions.service'
+import { ConMentorshipMatchesService } from '../con-mentorship-matches/con-mentorship-matches.service'
 import { FindConProfilesArgs } from './args/find-con-profiles.args'
 import { FindOneConProfileArgs } from './args/find-one-con-profile.args'
 import { ConProfilesService } from './con-profiles.service'
@@ -31,7 +35,9 @@ import { PatchConProfileInput } from './dtos/patch-con-profile.entityinput'
 export class ConProfilesResolver {
   constructor(
     private readonly conProfilesService: ConProfilesService,
-    private readonly conMentoringSessionsService: ConMentoringSessionsService
+    private readonly conMentoringSessionsService: ConMentoringSessionsService,
+    // @Inject(forwardRef(() => ConMentorshipMatchesService))
+    private readonly conMentorshipMatchesService: ConMentorshipMatchesService
   ) {}
 
   @Mutation(() => ConProfileEntityProps, { name: 'conProfileSignUp' })
@@ -117,6 +123,20 @@ export class ConProfilesResolver {
       $or: [{ Mentee__c: _contactId }, { Mentor__c: _contactId }],
     })
     const props = mentoringSessions.map((entity) => entity.props)
+
+    return props
+  }
+
+  //! TODO: Add auth
+  @ResolveField((of) => [ConMentorshipMatchEntityProps])
+  async mentorshipMatches(
+    @Parent() conProfile: ConProfileEntityProps
+  ): Promise<ConMentorshipMatchEntityProps[]> {
+    const { _contactId } = conProfile
+    const mentorshipMatches = await this.conMentorshipMatchesService.findAll({
+      $or: [{ Mentee__c: _contactId }, { Mentor__c: _contactId }],
+    })
+    const props = mentorshipMatches.map((entity) => entity.props)
 
     return props
   }

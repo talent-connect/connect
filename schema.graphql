@@ -1,0 +1,540 @@
+// THIS FILE IS GENERATED, DO NOT EDIT!
+enum CompanyTalentPoolState {
+  DRAFTING_PROFILE
+  PROFILE_APPROVED
+  SUBMITTED_FOR_REVIEW
+}
+
+type ConMenteeFavoritedMentor {
+  createdAt: DateTime!
+  id: ID!
+  menteeId: ID!
+  mentorId: ID!
+  updatedAt: DateTime!
+}
+
+input ConMenteeFavoritedMentorCreateMutationInputDto {
+  mentorId: String!
+}
+
+type ConMenteeFavoritedMentorCreateMutationOutputDto {
+  ok: Boolean!
+}
+
+input ConMenteeFavoritedMentorDeleteMutationInputDto {
+  mentorId: String!
+}
+
+type ConMenteeFavoritedMentorDeleteMutationOutputDto {
+  ok: Boolean!
+}
+
+type ConMentoringSession {
+  createdAt: DateTime!
+  date: DateTime!
+  id: ID!
+  menteeId: ID!
+  mentorId: ID!
+  minuteDuration: MentoringSessionDuration!
+  updatedAt: DateTime!
+}
+
+type ConMentorshipMatch {
+  applicationText: String
+  createdAt: DateTime!
+  expectationText: String
+  hasMenteeDismissedMentorshipApplicationAcceptedNotification: Boolean
+  id: ID!
+  ifDeclinedByMentor_chosenReasonForDecline: String
+  ifDeclinedByMentor_dateTime: DateTime
+  ifDeclinedByMentor_ifReasonIsOther_freeText: String
+  ifDeclinedByMentor_optionalMessageToMentee: String
+  matchMadeActiveOn: DateTime
+  mentee: ConProfile!
+  menteeId: String!
+  mentor: ConProfile!
+  mentorId: String!
+  mentorMessageOnComplete: String
+  mentorReplyMessageOnAccept: String
+  mentoringSessions: [ConMentoringSession!]!
+  status: MentorshipMatchStatus!
+  updatedAt: DateTime!
+}
+
+type ConProfile {
+  _contactId: String!
+  birthDate: DateTime
+  categories: [MentoringTopic!]!
+  createdAt: DateTime!
+  email: String!
+  expectations: String
+  firstName: String!
+  gender: Gender
+  githubProfileUrl: String
+  id: ID!
+  ifUserMentee_activeMentorshipMatches: Float!
+  ifUserMentor_activeMentorshipMatches: Float!
+  languages: [ConnectProfileLanguage!]
+  lastName: String!
+  linkedInProfileUrl: String
+  loopbackUserId: String!
+  menteeCountCapacity: Int
+  mentee_currentlyEnrolledInCourse: RediCourse!
+  mentee_highestEducationLevel: EducationLevel
+  mentee_occupationCategoryId: OccupationCategory
+  mentee_occupationJob_placeOfEmployment: String
+  mentee_occupationJob_position: String
+  mentee_occupationLookingForJob_what: String
+  mentee_occupationOther_description: String
+  mentee_occupationStudent_studyName: String
+  mentee_occupationStudent_studyPlace: String
+  mentor_occupation: String
+  mentor_workPlace: String
+  mentoringSessions: [ConMentoringSession!]!
+  mentorshipMatches: [ConMentorshipMatch!]!
+  optOutOfMenteesFromOtherRediLocation: Boolean!
+  personalDescription: String
+  profileAvatarImageS3Key: String
+  profileStatus: ConnectProfileStatus!
+  rediLocation: RediLocation!
+  slackUsername: String
+  telephoneNumber: String
+  updatedAt: DateTime!
+  userActivatedAt: DateTime
+  userType: UserType!
+}
+
+input ConProfileSignUpInput {
+  email: String!
+  firstName: String!
+  lastName: String!
+  rediLocation: RediLocation!
+  userType: UserType!
+}
+
+enum ConnectProfileLanguage {
+  Afrikaans
+  Albanian
+  Amharic
+  Arabic
+  Aramaic
+  Armenian
+  Assamese
+  Aymara
+  Azerbaijani
+  Balochi
+  Bamanankan
+  BashkortBashkir
+  Basque
+  Belarusan
+  Bengali
+  Bhojpuri
+  Bislama
+  Bosnian
+  Brahui
+  Bulgarian
+  Burmese
+  Cantonese
+  Catalan
+  Cebuano
+  Chechen
+  Cherokee
+  Croatian
+  Czech
+  Dakota
+  Danish
+  Dari
+  Dholuo
+  Dutch
+  English
+  Esperanto
+  Estonian
+  Ewe
+  Finnish
+  French
+  Georgian
+  German
+  Gikuyu
+  Greek
+  Guarani
+  Gujarati
+  HaitianCreole
+  Hausa
+  Hawaiian
+  HawaiianCreole
+  Hebrew
+  Hiligaynon
+  Hindi
+  Hungarian
+  Icelandic
+  Igbo
+  Ilocano
+  IndonesianBahasaIndonesia
+  InuitInupiaq
+  IrishGaelic
+  Italian
+  Japanese
+  Jarai
+  Javanese
+  Kabyle
+  Kannada
+  Kashmiri
+  Kazakh
+  Khmer
+  Khoekhoe
+  Kiche
+  Korean
+  Kurdish
+  Kyrgyz
+  Lao
+  Latin
+  Latvian
+  Lingala
+  Lithuanian
+  Macedonian
+  Maithili
+  Malagasy
+  MalayBahasaMelayu
+  Malayalam
+  MandarinChinese
+  Marathi
+  Mende
+  Mongolian
+  Nahuatl
+  Navajo
+  Nepali
+  Norwegian
+  Ojibwa
+  Oriya
+  Oromo
+  Pashto
+  Persian
+  Polish
+  Portuguese
+  Punjabi
+  Quechua
+  Romani
+  Romanian
+  Russian
+  Rwanda
+  Samoan
+  Sanskrit
+  Serbian
+  Shona
+  Sindhi
+  Sinhala
+  Slovak
+  Slovene
+  Somali
+  Spanish
+  Swahili
+  Swedish
+  Tachelhit
+  Tagalog
+  Tajiki
+  Tamil
+  Tatar
+  Telugu
+  Thai
+  TibeticLanguages
+  Tigrigna
+  TokPisin
+  Turkish
+  Turkmen
+  Ukrainian
+  Urdu
+  Uyghur
+  Uzbek
+  Vietnamese
+  Warlpiri
+  Welsh
+  Wolof
+  Xhosa
+  Yakut
+  Yiddish
+  Yoruba
+  Yucatec
+  Zapotec
+  Zulu
+}
+
+enum ConnectProfileStatus {
+  APPROVED
+  DEACTIVATED
+  PENDING
+  REJECTED
+}
+
+input CreateConMentoringSessionInput {
+  date: DateTime!
+  menteeId: ID!
+  minuteDuration: MentoringSessionDuration!
+}
+
+input CreateConProblemReportInput {
+  ifFromMentor_cancelMentorshipImmediately: Boolean
+  problemDescription: String!
+  reporteeId: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+enum EducationLevel {
+  apprenticeship
+  highSchool
+  middleSchool
+  universityBachelor
+  universityMaster
+  universityPhd
+}
+
+input FindConProfilesArgsFilter {
+  categories: [MentoringTopic!]
+  languages: [ConnectProfileLanguage!]
+  locations: [RediLocation!]
+  name: String
+}
+
+enum FirstPointOfTpContactOption {
+  ALREADY_VOLUNTEER_AT_REDI
+  COLLEGUE
+  INTERNET_SEARCH
+  OTHER
+  REDI_STUDENT_ALUMNI
+  REDI_TEAM_MEMBER
+  REDI_WEBSITE
+  SOCIAL_MEDIA
+}
+
+enum Gender {
+  Female
+  Male
+  Other
+}
+
+enum MentoringSessionDuration {
+  MIN15
+  MIN30
+  MIN45
+  MIN60
+  MIN75
+  MIN90
+  MIN105
+  MIN120
+  MIN135
+  MIN150
+  MIN165
+  MIN180
+}
+
+enum MentoringTopic {
+  basicGerman
+  basicProgrammingSkills
+  blockchain
+  buildingProfessionalNetwork
+  businessDevelopment
+  businessGerman
+  careerOrientationAndPlanning
+  codingChallengePreparation
+  computerNetworking
+  dataAnalytics
+  devOpsCloud
+  digitalMarketing
+  dontKnowYet
+  english
+  entrepreneurship
+  freelancing
+  friendAndHelp
+  graphicDesign
+  htmlCss
+  internshipOrWorkingStudent
+  interviewPreparation
+  iot
+  java
+  javascript
+  jobApplicationsCvPreparationEnglish
+  jobApplicationsCvPreparationGerman
+  jobSearch
+  machineLearning
+  mobileDevelopmentAndroid
+  mobileDevelopmentIos
+  motivationAndEncouragement
+  productManagement
+  projectManagement
+  python
+  qualityAssurance
+  react
+  sales
+  salesforce
+  userExperienceDesign
+  userInterfaceDesign
+}
+
+enum MentorshipMatchStatus {
+  ACCEPTED
+  APPLIED
+  CANCELLED
+  COMPLETED
+  DECLINED_BY_MENTOR
+  INVALIDATED_AS_OTHER_MENTOR_ACCEPTED
+}
+
+type Mutation {
+  conMatchMarkMentorshipAcceptedNotificationDismissed(conMentorshipMatchId: String!): OkResponseMutationOutputDto!
+  conMenteeFavoritedMentorCreate(input: ConMenteeFavoritedMentorCreateMutationInputDto!): ConMenteeFavoritedMentorCreateMutationOutputDto!
+  conMenteeFavoritedMentorDelete(input: ConMenteeFavoritedMentorDeleteMutationInputDto!): ConMenteeFavoritedMentorDeleteMutationOutputDto!
+  conProblemReportCreate(input: CreateConProblemReportInput!): OkResponseMutationOutputDto!
+  conProfileSignUp(input: ConProfileSignUpInput!): ConProfile!
+  createConMentoringSession(createConMentoringSessionInput: CreateConMentoringSessionInput!): ConMentoringSession!
+  patchConProfile(patchConProfileInput: UpdateConProfileInput!): ConProfile!
+  tpCompanyProfileSignUp(input: TpCompanyProfileSignUpInputDto!): TpCompanyProfileSignUpInputOutputDto!
+}
+
+enum OccupationCategory {
+  job
+  lookingForJob
+  other
+  student
+}
+
+type OkResponseMutationOutputDto {
+  ok: Boolean!
+}
+
+type Query {
+  conMenteeFavoritedMentors: [ConMenteeFavoritedMentor!]!
+  conMentoringSessions: [ConMentoringSession!]!
+  conMentorshipMatch(id: ID!): ConMentorshipMatch!
+  conMentorshipMatches(status: MentorshipMatchStatus): [ConMentorshipMatch!]!
+  conProfile(id: ID, loopbackUserId: ID): ConProfile!
+  conProfilesAvailableMentors(filter: FindConProfilesArgsFilter!): [ConProfile!]!
+  myConProfile: ConProfile!
+  myTpCompanyProfile: TpCompanyProfile!
+  publicTpCompanyProfiles: [TpCompanyProfile!]!
+  tpCompanyProfile(id: ID): TpCompanyProfile!
+}
+
+enum RediCourse {
+  advancedJava
+  alumni
+  cloudComputing
+  codingFundamentals
+  dataAnalytics
+  hamburg_alumni
+  hamburg_htmlCss
+  hamburg_introComputerScience
+  hamburg_uxUiDesignBasics
+  htmlCss
+  intermediateJava
+  introComputerScience
+  introJava
+  iot
+  javaScript
+  munich_alumni
+  munich_backend2
+  munich_cloudComputing
+  munich_cloudComputingAdvance
+  munich_dataAnalytics2
+  munich_dataStructuresAlgorithmsWithGoogle
+  munich_frontend1
+  munich_frontend2
+  munich_introComputerScience
+  munich_pythonIntermediate
+  munich_uxUiDesign
+  nrw_alumni
+  nrw_cloudComputing
+  nrw_dataAnalytics
+  nrw_htmlCss
+  nrw_infrastructureBasics
+  nrw_iot
+  nrw_javascript
+  nrw_machineLearning
+  nrw_pythonIntroduction
+  nrw_uxDesign
+  pythonFoundation
+  react
+  salesforceFundamentals
+  uiUxDesignBasics
+  uiUxDesignIntermediate
+}
+
+enum RediLocation {
+  BERLIN
+  HAMBURG
+  MUNICH
+  NRW
+}
+
+type TpCompanyProfile {
+  about: String
+  companyName: String!
+  createdAt: DateTime!
+  id: ID!
+  industry: String
+  isProfileVisibleToJobseekers: Boolean!
+  linkedInUrl: String
+  location: String
+  phoneNumber: String
+  profileAvatarImageS3Key: String
+  state: CompanyTalentPoolState!
+  tagline: String
+  updatedAt: DateTime!
+  website: String
+}
+
+input TpCompanyProfileSignUpInputDto {
+  companyIdOrName: String!
+  email: String!
+  firstName: String!
+  firstPointOfContact: FirstPointOfTpContactOption!
+  firstPointOfContactOther: String
+  lastName: String!
+  operationType: TpCompanyProfileSignUpOperationType!
+}
+
+type TpCompanyProfileSignUpInputOutputDto {
+  ok: Boolean!
+}
+
+enum TpCompanyProfileSignUpOperationType {
+  EXISTING_COMPANY
+  NEW_COMPANY
+}
+
+input UpdateConProfileInput {
+  birthDate: DateTime
+  categories: [MentoringTopic!]
+  expectations: String
+  firstName: String
+  gender: Gender
+  githubProfileUrl: String
+  id: ID!
+  languages: [ConnectProfileLanguage!]
+  lastName: String
+  linkedInProfileUrl: String
+  menteeCountCapacity: Int
+  mentee_currentlyEnrolledInCourse: RediCourse
+  mentee_highestEducationLevel: EducationLevel
+  mentee_occupationCategoryId: OccupationCategory
+  mentee_occupationJob_placeOfEmployment: String
+  mentee_occupationJob_position: String
+  mentee_occupationLookingForJob_what: String
+  mentee_occupationOther_description: String
+  mentee_occupationStudent_studyName: String
+  mentee_occupationStudent_studyPlace: String
+  mentor_occupation: String
+  mentor_workPlace: String
+  optOutOfMenteesFromOtherRediLocation: Boolean
+  personalDescription: String
+  profileAvatarImageS3Key: String
+  slackUsername: String
+  telephoneNumber: String
+}
+
+enum UserType {
+  MENTEE
+  MENTOR
+}

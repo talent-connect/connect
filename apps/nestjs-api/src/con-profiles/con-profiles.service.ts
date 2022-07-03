@@ -43,7 +43,6 @@ export class ConProfilesService {
   }
 
   async findAll(filter: any = {}) {
-    console.log(filter)
     const persistedEntities = await this.api.getAllConProfiles(filter)
 
     const entities: ConProfileEntity[] = persistedEntities.map((source) =>

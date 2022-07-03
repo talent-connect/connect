@@ -1,3 +1,4 @@
+// THIS FILE IS GENERATED, DO NOT EDIT!
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -112,6 +113,7 @@ export type ConProfile = {
   mentor_occupation?: Maybe<Scalars['String']>;
   mentor_workPlace?: Maybe<Scalars['String']>;
   mentoringSessions: Array<ConMentoringSession>;
+  mentorshipMatches: Array<ConMentorshipMatch>;
   optOutOfMenteesFromOtherRediLocation: Scalars['Boolean'];
   personalDescription?: Maybe<Scalars['String']>;
   profileAvatarImageS3Key?: Maybe<Scalars['String']>;
@@ -291,6 +293,12 @@ export type CreateConMentoringSessionInput = {
   minuteDuration: MentoringSessionDuration;
 };
 
+export type CreateConProblemReportInput = {
+  ifFromMentor_cancelMentorshipImmediately?: InputMaybe<Scalars['Boolean']>;
+  problemDescription: Scalars['String'];
+  reporteeId: Scalars['String'];
+};
+
 export enum EducationLevel {
   Apprenticeship = 'apprenticeship',
   HighSchool = 'highSchool',
@@ -396,6 +404,7 @@ export type Mutation = {
   conMatchMarkMentorshipAcceptedNotificationDismissed: OkResponseMutationOutputDto;
   conMenteeFavoritedMentorCreate: ConMenteeFavoritedMentorCreateMutationOutputDto;
   conMenteeFavoritedMentorDelete: ConMenteeFavoritedMentorDeleteMutationOutputDto;
+  conProblemReportCreate: OkResponseMutationOutputDto;
   conProfileSignUp: ConProfile;
   createConMentoringSession: ConMentoringSession;
   patchConProfile: ConProfile;
@@ -415,6 +424,11 @@ export type MutationConMenteeFavoritedMentorCreateArgs = {
 
 export type MutationConMenteeFavoritedMentorDeleteArgs = {
   input: ConMenteeFavoritedMentorDeleteMutationInputDto;
+};
+
+
+export type MutationConProblemReportCreateArgs = {
+  input: CreateConProblemReportInput;
 };
 
 

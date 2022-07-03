@@ -1,0 +1,17 @@
+query findConProfile($conProfileId: ID!) {
+  conProfile(id: $conProfileId) {
+    _contactId
+    id
+    firstName
+    lastName
+    languages
+    categories
+    rediLocation
+    profileAvatarImageS3Key
+    email
+    telephoneNumber
+    githubProfileUrl
+    linkedInProfileUrl
+    slackUsername
+  }
+}

@@ -5,5 +5,13 @@
     "./lib/shared-atomic-design-components",
     "./libs/shared-types"
   ],
-  "typescript.preferences.importModuleSpecifier": "project-relative"
+  "typescript.preferences.importModuleSpecifier": "project-relative",
+  "emeraldwalk.runonsave": {
+    "commands": [
+      {
+        "match": "\\.graphql$",
+        "cmd": "yarn graphql:codegen"
+      }
+    ]
+  }
 }

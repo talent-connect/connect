@@ -4,6 +4,29 @@ query loadMyProfile($loopbackUserId: ID!) {
     ...fields
     ifUserMentee_activeMentorshipMatches
     ifUserMentor_activeMentorshipMatches
+    mentorshipMatches {
+      id
+      status
+      matchMadeActiveOn
+      applicationText
+      expectationText
+      mentorReplyMessageOnAccept
+      mentorMessageOnComplete
+      hasMenteeDismissedMentorshipApplicationAcceptedNotification
+      ifDeclinedByMentor_chosenReasonForDecline
+      ifDeclinedByMentor_ifReasonIsOther_freeText
+      ifDeclinedByMentor_optionalMessageToMentee
+      ifDeclinedByMentor_dateTime
+      mentorId
+      menteeId
+      createdAt
+      mentor {
+        ...AllConProfileFields
+      }
+      mentee {
+        id
+      }
+    }
   }
 }
 

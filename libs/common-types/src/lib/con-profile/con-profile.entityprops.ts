@@ -12,6 +12,7 @@ import {
 import { ConnectProfileStatus } from './enums/connect-profile-status.enum'
 import { Gender } from '../common-objects/contact/enums/gender.enum'
 import { MentoringTopic } from './enums/mentoring-topic.enum'
+import { ConMentorshipMatchEntityProps } from '../con-mentorship-match'
 
 @ObjectType('ConProfile')
 export class ConProfileEntityProps implements EntityProps {
@@ -57,6 +58,7 @@ export class ConProfileEntityProps implements EntityProps {
   optOutOfMenteesFromOtherRediLocation: boolean
   @Field((type) => [ConMentoringSessionEntityProps])
   mentoringSessions: ConMentoringSessionEntityProps[]
+  mentorshipMatches: ConMentorshipMatchEntityProps[]
   loopbackUserId: string
   createdAt: Date
   updatedAt: Date

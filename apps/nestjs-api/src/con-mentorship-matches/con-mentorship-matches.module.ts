@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common'
+import { forwardRef, Module } from '@nestjs/common'
 import { AuthModule } from '../auth/auth.module'
 import { ConMentoringSessionsModule } from '../con-mentoring-sessions/con-mentoring-sessions.module'
 import { ConProfilesModule } from '../con-profiles/con-profiles.module'
@@ -10,8 +10,8 @@ import { ConMentorshipMatchMapper } from './mappers/con-mentorship-match.mapper'
 @Module({
   imports: [
     SfApiModule,
-    ConProfilesModule,
     ConMentoringSessionsModule,
+    forwardRef(() => ConProfilesModule),
     AuthModule,
   ],
   providers: [

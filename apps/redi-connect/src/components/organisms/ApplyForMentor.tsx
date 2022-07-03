@@ -170,4 +170,4 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
   )
 }
 
-export ApplyForMentor
+export default ApplyForMentor

@@ -28,7 +28,13 @@ import { RedProfile } from '@talent-connect/shared-types'
 import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import './Profile.scss'
 import DeclineMentorshipButton from '../../../components/organisms/DeclineMentorshipButton'
-import { ConProfile } from '@talent-connect/data-access'
+import {
+  ConProfile,
+  MentorshipMatchStatus,
+  useFindConProfileQuery,
+  useLoadMyProfileQuery,
+} from '@talent-connect/data-access'
+import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
 
 interface RouteParams {
   profileId: string
@@ -41,53 +47,59 @@ interface ProfileProps {
   profilesFetchOneStart: Function
 }
 
+/**
+ *
+ * What do we need?
+ * - if mentor, computer whether mentee limit has been reached
+ * - load current user's matches with the given mentor/mentee
+ */
+
 function Profile({
-  profile,
   currentUser,
   hasReachedMenteeLimit,
   profilesFetchOneStart,
 }: ProfileProps) {
   const { profileId } = useParams<RouteParams>()
+  const profileQuery = useFindConProfileQuery({ conProfileId: profileId })
+  const myProfileQuery = useLoadMyProfileQuery({
+    loopbackUserId: getAccessTokenFromLocalStorage().userId,
+  })
   const history = useHistory()
+
+  if (!profileQuery.isSuccess || !myProfileQuery.isSuccess) return null
+
+  const myProfile = myProfileQuery.data.conProfile
+  const profile = profileQuery.data.conProfile
 
   const currentUserIsMentor = currentUser && currentUser.userType === 'mentor'
 
   const currentUserIsMentee = currentUser && currentUser.userType === 'mentee'
 
-  const isAcceptedMatch =
-    profile &&
-    profile.redMatchesWithCurrentUser &&
-    profile.redMatchesWithCurrentUser[0] &&
-    profile.redMatchesWithCurrentUser[0].status === 'accepted'
+  const myMatchWithThisProfile = myProfile.mentorshipMatches.find(
+    (match) => match.mentee.id === profileId || match.mentor.id === profileId
+  )
+
+  const isAcceptedMatch = Boolean(
+    myMatchWithThisProfile?.status === MentorshipMatchStatus.Accepted
+  )
 
   const hasOpenApplication =
-    profile && profile.numberOfPendingApplicationWithCurrentUser > 0
+    myMatchWithThisProfile?.status === MentorshipMatchStatus.Applied
 
   const userCanApplyForMentorship =
-    !isAcceptedMatch &&
-    currentUserIsMentee &&
-    profile &&
-    profile.numberOfPendingApplicationWithCurrentUser === 0
+    !isAcceptedMatch && currentUserIsMentee && !hasOpenApplication
 
   const contactInfoAvailable =
     profile &&
     (profile.firstName ||
       profile.lastName ||
-      profile.contactEmail ||
+      profile.email ||
       profile.telephoneNumber ||
       profile.linkedInProfileUrl ||
       profile.githubProfileUrl ||
       profile.slackUsername)
 
   const shouldHidePrivateContactInfo = currentUserIsMentee && !isAcceptedMatch
-
-  const match =
-    profile &&
-    profile.userType === 'mentee' &&
-    profile.redMatchesWithCurrentUser &&
-    profile.redMatchesWithCurrentUser[
-      profile.redMatchesWithCurrentUser.length - 1
-    ]
 
   return (
     <LoggedIn>
@@ -115,14 +127,14 @@ function Profile({
           </Columns.Column>
         )}
 
-        {match && match.status === 'applied' && (
+        {myMatchWithThisProfile && myMatchWithThisProfile.status === 'applied' && (
           <Columns.Column className="is-narrow">
             <ConfirmMentorship
-              match={match}
+              match={myMatchWithThisProfile}
               menteeName={profile && profile.firstName}
               hasReachedMenteeLimit={hasReachedMenteeLimit}
             />
-            <DeclineMentorshipButton match={match} />
+            <DeclineMentorshipButton match={myMatchWithThisProfile} />
           </Columns.Column>
         )}
       </Columns>

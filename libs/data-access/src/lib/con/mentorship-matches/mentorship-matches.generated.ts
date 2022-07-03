@@ -1,3 +1,4 @@
+// THIS FILE IS GENERATED, DO NOT EDIT!
 import * as Types from '@talent-connect/data-access';
 
 import { useQuery, useMutation, UseQueryOptions, UseMutationOptions } from 'react-query';

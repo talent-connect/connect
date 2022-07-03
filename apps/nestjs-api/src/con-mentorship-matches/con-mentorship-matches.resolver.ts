@@ -1,4 +1,4 @@
-import { UseGuards } from '@nestjs/common'
+import { forwardRef, Inject, UseGuards } from '@nestjs/common'
 import {
   Args,
   ID,
@@ -28,6 +28,7 @@ import { ConMentorshipMatchesService } from './con-mentorship-matches.service'
 export class ConMentorshipMatchesResolver {
   constructor(
     private readonly conMentorshipMatchesService: ConMentorshipMatchesService,
+    // @Inject(forwardRef(() => ConProfilesService))
     private readonly conProfilesService: ConProfilesService,
     private readonly conMentoringSessionsService: ConMentoringSessionsService
   ) {}
