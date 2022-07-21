@@ -8,16 +8,15 @@ import { GENDERS } from '@talent-connect/shared-config'
 import moment from 'moment'
 import React from 'react'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
+import { ReadPersonalDetailProfilePropFragment } from './ReadPersonalDetail.generated'
 
 interface Props {
-  profile: Pick<ConProfile, 'gender' | 'birthDate'>
+  profile: ReadPersonalDetailProfilePropFragment
   caption?: boolean
 }
 
 function ReadPersonalDetail({ profile, caption }: Props) {
-  const { gender, birthDate } = profile
-
-  const age = moment().diff(birthDate, 'years')
+  const { gender, age } = profile
 
   const detailsList: string[] = gender ? [GENDERS[gender]] : []
   if (age) detailsList.push(`${age} years old`)

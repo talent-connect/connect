@@ -1,0 +1,5 @@
+fragment ReadAboutProfileProp on ConProfile {
+  fullName
+  personalDescription
+  expectations
+}

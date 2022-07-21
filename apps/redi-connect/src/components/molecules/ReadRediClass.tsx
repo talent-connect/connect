@@ -5,9 +5,10 @@ import { RedProfile } from '@talent-connect/shared-types'
 import React from 'react'
 import { Content } from 'react-bulma-components'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
+import { ReadRediClassProfilePropFragment } from './ReadRediClass.generated'
 
 interface Props {
-  profile: Pick<ConProfile, 'mentee_currentlyEnrolledInCourse'>
+  profile: ReadRediClassProfilePropFragment
   shortInfo?: boolean
 }
 

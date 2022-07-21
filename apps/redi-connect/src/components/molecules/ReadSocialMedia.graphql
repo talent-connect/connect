@@ -1,0 +1,5 @@
+fragment ReadSocialMediaPropFragment on ConProfile {
+  linkedInProfileUrl
+  githubProfileUrl
+  slackUsername
+}

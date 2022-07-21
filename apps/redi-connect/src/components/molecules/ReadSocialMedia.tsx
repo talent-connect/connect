@@ -6,12 +6,10 @@ import {
 import React from 'react'
 import { Content } from 'react-bulma-components'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
+import { ReadSocialMediaPropFragmentFragment } from './ReadSocialMedia.generated'
 
 interface Props {
-  profile: Pick<
-    ConProfile,
-    'linkedInProfileUrl' | 'githubProfileUrl' | 'slackUsername'
-  >
+  profile: ReadSocialMediaPropFragmentFragment
   shortInfo?: boolean
 }
 

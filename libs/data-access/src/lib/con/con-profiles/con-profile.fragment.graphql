@@ -1,11 +1,13 @@
 fragment AllConProfileFields on ConProfile {
   _contactId
+  age
   birthDate
   categories
   createdAt
   email
   expectations
   firstName
+  fullName
   gender
   githubProfileUrl
   id

@@ -8,21 +8,10 @@ import { objectEntries } from '@talent-connect/typescript-utilities'
 import React from 'react'
 import { Content } from 'react-bulma-components'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
+import { ReadOccupationProfilePropFragment } from './ReadOccupation.generated'
 
 interface Props {
-  profile: Pick<
-    ConProfile,
-    | 'userType'
-    | 'mentor_occupation'
-    | 'mentor_workPlace'
-    | 'mentee_occupationCategoryId'
-    | 'mentee_occupationJob_placeOfEmployment'
-    | 'mentee_occupationJob_position'
-    | 'mentee_occupationStudent_studyPlace'
-    | 'mentee_occupationStudent_studyName'
-    | 'mentee_occupationLookingForJob_what'
-    | 'mentee_occupationOther_description'
-  >
+  profile: ReadOccupationProfilePropFragment
   shortInfo?: boolean
 }
 

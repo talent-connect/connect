@@ -6,9 +6,10 @@ import {
 import React from 'react'
 import { Content } from 'react-bulma-components'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
+import { ReadAboutProfilePropFragment } from './ReadAbout.generated'
 
 interface Props {
-  profile: Pick<ConProfile, 'fullName' | 'personalDescription' | 'expectations'>
+  profile: ReadAboutProfilePropFragment
 }
 
 const Me = ({ profile }: Props) => {

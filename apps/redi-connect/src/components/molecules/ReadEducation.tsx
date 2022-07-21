@@ -9,9 +9,10 @@ import {
 import { EDUCATION_LEVELS } from '@talent-connect/shared-config'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 import { ConProfile, useLoadMyProfileQuery } from '@talent-connect/data-access'
+import { ReadEducationProfilePropFragment } from './ReadEducation.generated'
 
 interface Props {
-  profile: Pick<ConProfile, 'mentee_highestEducationLevel'>
+  profile: ReadEducationProfilePropFragment
   shortInfo?: boolean
 }
 

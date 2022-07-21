@@ -7,9 +7,10 @@ import {
 import { RedProfile } from '@talent-connect/shared-types'
 import React from 'react'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
+import { ReadLanguagesProfilePropFragment } from './ReadLanguages.generated'
 
 interface Props {
-  profile: Pick<ConProfile, 'languages'>
+  profile: ReadLanguagesProfilePropFragment
 }
 
 const Me = ({ profile }: Props) => {

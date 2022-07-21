@@ -1,5 +1,7 @@
 query ProfilePageQuery($id: ID!) {
   conProfile(id: $id) {
+    id
+    fullName
     firstName
     lastName
     email

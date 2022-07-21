@@ -8,12 +8,14 @@ export type ProfilePageQueryQueryVariables = Types.Exact<{
 }>;
 
 
-export type ProfilePageQueryQuery = { __typename?: 'Query', conProfile: { __typename?: 'ConProfile', firstName: string, lastName: string, email: string, telephoneNumber?: string | null, linkedInProfileUrl?: string | null, githubProfileUrl?: string | null, slackUsername?: string | null, rediLocation: Types.RediLocation, personalDescription?: string | null, expectations?: string | null, categories: Array<Types.MentoringTopic>, age: number, languages?: Array<Types.ConnectProfileLanguage> | null, mentee_highestEducationLevel?: Types.EducationLevel | null, mentor_occupation?: string | null, gender?: Types.Gender | null, mentee_occupationCategoryId?: Types.OccupationCategory | null } };
+export type ProfilePageQueryQuery = { __typename?: 'Query', conProfile: { __typename?: 'ConProfile', id: string, fullName: string, firstName: string, lastName: string, email: string, telephoneNumber?: string | null, linkedInProfileUrl?: string | null, githubProfileUrl?: string | null, slackUsername?: string | null, rediLocation: Types.RediLocation, personalDescription?: string | null, expectations?: string | null, categories: Array<Types.MentoringTopic>, age: number, languages?: Array<Types.ConnectProfileLanguage> | null, mentee_highestEducationLevel?: Types.EducationLevel | null, mentor_occupation?: string | null, gender?: Types.Gender | null, mentee_occupationCategoryId?: Types.OccupationCategory | null } };
 
 
 export const ProfilePageQueryDocument = `
     query ProfilePageQuery($id: ID!) {
   conProfile(id: $id) {
+    id
+    fullName
     firstName
     lastName
     email

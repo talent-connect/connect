@@ -124,7 +124,7 @@ function Profile({
 
         {userCanApplyForMentorship && (
           <Columns.Column className="is-narrow">
-            <ApplyForMentor />
+            <ApplyForMentor mentor={profile} />
           </Columns.Column>
         )}
 

@@ -3,9 +3,10 @@ import { Caption } from '@talent-connect/shared-atomic-design-components'
 import React from 'react'
 import { Content } from 'react-bulma-components'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
+import { ReadContactDetailsProfilePropFragment } from './ReadContactDetails.generated'
 
 interface Props {
-  profile: Pick<ConProfile, 'fullName' | 'email' | 'telephoneNumber'>
+  profile: ReadContactDetailsProfilePropFragment
   shortInfo?: boolean
 }
 
