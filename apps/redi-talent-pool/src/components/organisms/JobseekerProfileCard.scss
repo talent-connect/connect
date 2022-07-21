@@ -35,10 +35,20 @@
   }
 
   &__image {
+    .image {
+      display: flex;
+      justify-content: center;
+    }
+
     img {
+      width: 9.5rem;
       height: 9.5rem;
       overflow: hidden;
       object-fit: contain;
+
+      border: 2px solid $redi-orange-dark;
+      border-radius: 50%;
+      box-shadow: 2px 0 15px 0 rgba(255, 92, 31, 0.34);
     }
   }
 

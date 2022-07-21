@@ -412,6 +412,11 @@ export const COURSES = [
     location: 'MUNICH',
   },
   {
+    id: 'munich_frontend_vollzeitkurs',
+    label: 'Frontend Development Vollzeitkurs',
+    location: 'munich',
+  },
+  {
     id: 'munich_dataAnalytics2',
     label: `Data Analytics`,
     location: 'MUNICH',

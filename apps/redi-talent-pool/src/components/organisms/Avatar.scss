@@ -60,6 +60,14 @@
     }
   }
 
+  &--square {
+    border-radius: 10px;
+  }
+
+  &--square::before {
+    border-radius: 0;
+  }
+
   &--placeholder:before {
     border: 1px solid #a0a0a0;
     background-color: $grey-extra-light;
@@ -74,6 +82,10 @@
     height: 100%;
     object-fit: cover;
     z-index: 1;
+  }
+
+  &__image--square {
+    border-radius: 0;
   }
 
   &__button {
@@ -123,4 +135,8 @@
     width: 100%;
     z-index: 5;
   }
+}
+
+.reactEasyCrop_Container {
+  top: 73px;
 }

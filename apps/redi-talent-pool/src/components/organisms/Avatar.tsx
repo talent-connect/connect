@@ -1,22 +1,29 @@
+import { useCallback, useState } from 'react'
+import { FormikValues, useFormik } from 'formik'
+import classnames from 'classnames'
+import * as Yup from 'yup'
+import Cropper from 'react-easy-crop'
+import ReactS3Uploader from 'react-s3-uploader'
+import { Element } from 'react-bulma-components'
+
+import { Button, Modal } from '@talent-connect/shared-atomic-design-components'
 import {
   AWS_PROFILE_AVATARS_BUCKET_BASE_URL,
   S3_UPLOAD_SIGN_URL,
 } from '@talent-connect/shared-config'
 import {
-  TpJobseekerProfile,
   TpCompanyProfile,
+  TpJobseekerProfile,
 } from '@talent-connect/shared-types'
-import classnames from 'classnames'
-import { FormikValues, useFormik } from 'formik'
-import { Element } from 'react-bulma-components'
-import ReactS3Uploader from 'react-s3-uploader'
-import * as Yup from 'yup'
+import { getCroppedImg } from '@talent-connect/shared-utils'
+
 import placeholderImage from '../../assets/img-placeholder.png'
 import { ReactComponent as UploadImage } from '../../assets/uploadImage.svg'
 import './Avatar.scss'
 
 interface AvatarProps {
   profile: Partial<TpJobseekerProfile> | Partial<TpCompanyProfile>
+  shape?: 'circle' | 'square'
 }
 interface AvatarEditable {
   profile: Partial<TpJobseekerProfile> | Partial<TpCompanyProfile>
@@ -24,6 +31,7 @@ interface AvatarEditable {
     profile: Partial<TpJobseekerProfile> | Partial<TpCompanyProfile>
   ) => void
   callToActionText?: string
+  shape?: 'circle' | 'square'
 }
 
 interface AvatarFormValues {
@@ -34,7 +42,7 @@ const validationSchema = Yup.object({
   profileAvatarImageS3Key: Yup.string().max(255),
 })
 
-const Avatar = ({ profile }: AvatarProps) => {
+const Avatar = ({ profile, shape = 'circle' }: AvatarProps) => {
   const { profileAvatarImageS3Key } = profile
   const imgSrc = profileAvatarImageS3Key
     ? AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
@@ -44,22 +52,47 @@ const Avatar = ({ profile }: AvatarProps) => {
     <div
       className={classnames('avatar', {
         'avatar--placeholder': !profileAvatarImageS3Key,
+        'avatar--square': shape === 'square',
       })}
     >
       <img
         src={imgSrc}
         alt={`${profile.firstName} ${profile.lastName}`}
-        className="avatar__image"
+        className={classnames('avatar__image', {
+          'avatar__image--square': shape === 'square',
+        })}
       />
     </div>
   )
+}
+
+function readFile(file) {
+  return new Promise((resolve) => {
+    const reader = new FileReader()
+    reader.addEventListener('load', () => resolve(reader.result), false)
+    reader.readAsDataURL(file)
+  })
 }
 
 const AvatarEditable = ({
   profile,
   profileSaveStart,
   callToActionText = 'Add your picture',
+  shape = 'circle',
 }: AvatarEditable) => {
+  const [showCropperModal, setShowCropperModal] = useState(false)
+  const [imageSrc, setImageSrc] = useState(null)
+  const [imageFileName, setImageFileName] = useState('')
+
+  const [crop, setCrop] = useState({ x: 0, y: 0 })
+  const [zoom, setZoom] = useState(1)
+
+  // This is how to keep functions in React state: https://stackoverflow.com/questions/55621212/is-it-possible-to-react-usestate-in-react
+  const [nextFn, setNextFn] = useState(() => (croppedImgFile) => {
+    return
+  })
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null)
+
   const { profileAvatarImageS3Key } = profile
   const imgURL = AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
 
@@ -78,15 +111,48 @@ const AvatarEditable = ({
     onSubmit: submitForm,
   })
 
-  const onUploadSuccess = (result: any) => {
+  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels)
+  }, [])
+
+  const onUploadStart = async (file, next) => {
+    const imageDataUrl = await readFile(file)
+
+    setImageSrc(imageDataUrl)
+    setImageFileName(file.name)
+
+    // Storing next function passed by react-s3-uploader to be called in another function (onSaveClick)
+    setNextFn(() => (croppedImgFile) => next(croppedImgFile))
+
+    setShowCropperModal(true)
+  }
+
+  const onSaveClick = useCallback(async () => {
+    try {
+      const croppedImage = (await getCroppedImg(
+        imageSrc,
+        croppedAreaPixels
+      )) as BlobPart
+      const croppedImgFile = new File([croppedImage], imageFileName)
+
+      nextFn(croppedImgFile)
+    } catch (e) {
+      console.error(e)
+    }
+  }, [imageSrc, imageFileName, croppedAreaPixels, nextFn])
+
+  const onUploadFinish = (result: any) => {
     formik.setFieldValue('profileAvatarImageS3Key', result.fileKey)
     formik.handleSubmit()
+
+    setShowCropperModal(false)
   }
 
   return (
     <div
       className={classnames('avatar avatar--editable', {
         'avatar--placeholder': !profileAvatarImageS3Key,
+        'avatar--square': shape === 'square',
       })}
     >
       {profileAvatarImageS3Key && (
@@ -94,7 +160,9 @@ const AvatarEditable = ({
           <img
             src={imgURL}
             alt={`${profile.firstName} ${profile.lastName}`}
-            className="avatar__image"
+            className={classnames('avatar__image', {
+              'avatar__image--square': shape === 'square',
+            })}
           />
           <Element
             renderAs="span"
@@ -127,11 +195,36 @@ const AvatarEditable = ({
         signingUrl={S3_UPLOAD_SIGN_URL}
         accept="image/*"
         uploadRequestHeaders={{ 'x-amz-acl': 'public-read' }}
-        onSignedUrl={(c: any) => console.log(c)}
         onError={(c: any) => console.log(c)}
-        onFinish={onUploadSuccess}
+        preprocess={onUploadStart}
+        onFinish={onUploadFinish}
         contentDisposition="auto"
       />
+
+      <Modal
+        styles={{
+          height: 600,
+        }}
+        show={showCropperModal && imageSrc}
+        stateFn={setShowCropperModal}
+        title="Crop your profile picture"
+      >
+        <Modal.Body>
+          <Cropper
+            image={imageSrc}
+            crop={crop}
+            aspect={1 / 1}
+            zoom={zoom}
+            showGrid={false}
+            onCropChange={setCrop}
+            onCropComplete={onCropComplete}
+            onZoomChange={setZoom}
+          />
+        </Modal.Body>
+        <Modal.Foot>
+          <Button onClick={onSaveClick}>Save</Button>
+        </Modal.Foot>
+      </Modal>
     </div>
   )
 }

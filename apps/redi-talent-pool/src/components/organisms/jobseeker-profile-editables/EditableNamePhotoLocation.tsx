@@ -5,6 +5,7 @@ import { Columns, Content, Element } from 'react-bulma-components'
 
 import {
   Button,
+  Checkbox,
   FormInput,
   FormSelect,
   Heading,
@@ -135,6 +136,7 @@ function ModalForm({
       genderPronouns: profile?.genderPronouns ?? '',
       location: profile?.location ?? '',
       federalState: profile?.federalState ?? '',
+      willingToRelocate: profile?.willingToRelocate,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -202,6 +204,13 @@ function ModalForm({
         items={federalStatesOptions}
         {...formik}
       />
+      <Checkbox.Form
+        name={`willingToRelocate`}
+        checked={formik.values.willingToRelocate}
+        {...formik}
+      >
+        I am willing to relocate for a new job
+      </Checkbox.Form>
       <Button
         disabled={!formik.isValid || mutation.isLoading}
         onClick={formik.submitForm}

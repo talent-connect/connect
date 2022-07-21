@@ -1,3 +1,11 @@
+import React, { useEffect, useMemo, useState } from 'react'
+import { UseMutationResult, UseQueryResult } from 'react-query'
+import { useFormik } from 'formik'
+import moment from 'moment'
+import * as Yup from 'yup'
+import { Content, Element } from 'react-bulma-components'
+import isNil from 'lodash/isNil'
+
 import {
   Button,
   Caption,
@@ -17,12 +25,6 @@ import {
   immigrationStatusOptions,
   immigrationStatusOptionsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
-import { useFormik } from 'formik'
-import moment from 'moment'
-import React, { useEffect, useMemo, useState } from 'react'
-import { Columns, Content, Element } from 'react-bulma-components'
-import { UseMutationResult, UseQueryResult } from 'react-query'
-import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
@@ -147,6 +149,15 @@ export function EditableImportantDetails({
                 </Content>
               </div>
             ) : null}
+
+            {!isNil(profile?.willingToRelocate) ? (
+              <div>
+                <Caption>Willing to relocate</Caption>
+                <Content>
+                  <p>{profile?.willingToRelocate ? 'Yes' : 'No'}</p>
+                </Content>
+              </div>
+            ) : null}
           </div>
         )
       }
@@ -227,6 +238,7 @@ export function JobseekerFormSectionImportantDetails({
         ? new Date(profile.ifAvailabilityIsDate_date)
         : null,
       immigrationStatus: profile?.immigrationStatus ?? '',
+      willingToRelocate: profile?.willingToRelocate,
     }),
     [
       profile?.availability,
@@ -236,6 +248,7 @@ export function JobseekerFormSectionImportantDetails({
       profile?.immigrationStatus,
       profile?.phoneNumber,
       profile?.postalMailingAddress,
+      profile?.willingToRelocate,
     ]
   )
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {

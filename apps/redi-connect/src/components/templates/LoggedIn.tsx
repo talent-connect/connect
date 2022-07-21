@@ -26,7 +26,7 @@ import {
   useMyMatchesQuery,
 } from '@talent-connect/data-access'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
-import { useIsFetching } from 'react-query'
+import { useIsFetching, useIsMutating } from 'react-query'
 
 interface Props {
   children?: ReactNode
@@ -52,7 +52,9 @@ function LoggedIn({ children }: Props) {
   })
   const conMatchMarkMentorshipAcceptedNotificationDismissedMutation =
     useConMatchMarkMentorshipAcceptedNotificationDismissedMutation()
-  const isFetching = useIsFetching() === 0
+  const ongoingFetchCount = useIsFetching()
+  const ongoingMutatationCount = useIsMutating()
+  const isFetching = ongoingFetchCount > 0 || ongoingMutatationCount > 0
 
   const history = useHistory()
 

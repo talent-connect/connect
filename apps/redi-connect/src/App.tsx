@@ -3,22 +3,18 @@ import { Loader } from '@talent-connect/shared-atomic-design-components'
 import React, { Suspense, useEffect } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { Provider as StoreProvider } from 'react-redux'
-import { Route } from 'react-router-dom'
-import { QueryParamProvider } from 'use-query-params'
-import AppNotification from './components/AppNotification'
-import { Routes } from './components/Routes'
-import LocationPicker from './pages/front/landing/LocationPicker'
-import { getAccessTokenFromLocalStorage } from './services/auth/auth'
 import { history, Router } from './services/history/history'
 import { envRediLocation } from './utils/env-redi-location'
-
-//! TODO: find a better place to ... place this "connector logic"
-const authToken = getAccessTokenFromLocalStorage()
-if (authToken) {
-  graphqlClient.setHeader('Authorization', `Bearer ${authToken.jwtToken}`)
-}
+import LocationPicker from './pages/front/landing/LocationPicker'
+import { Route } from 'react-router-dom'
+import { QueryParamProvider } from 'use-query-params'
+import { useConfetti } from './utils/useConfetti'
+import AppNotification from './components/AppNotification'
+import { Routes } from './components/Routes'
 
 const App = () => {
+  useConfetti({ keybind: 'm i r i a m a l w a y s r e d i' })
+
   switch (envRediLocation()) {
     case 'location-picker':
       return (
