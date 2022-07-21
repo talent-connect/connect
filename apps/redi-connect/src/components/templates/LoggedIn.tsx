@@ -134,8 +134,7 @@ function LoggedIn({ children }: Props) {
                       <strong>{match.mentee && match.mentee.firstName}</strong>,
                       good news!
                       <strong>
-                        {match.mentor &&
-                          ` ${match.mentor.firstName} ${match.mentor.lastName} `}
+                        {match.mentor && ` ${match.mentor.fullName} `}
                       </strong>
                       accepted your application. Here are already a few welcome
                       words from your new mentor.

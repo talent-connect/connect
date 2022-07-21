@@ -27,8 +27,6 @@ fragment AllConProfileFields on ConProfile {
   mentee_occupationStudent_studyPlace
   mentor_occupation
   mentor_workPlace
-  # mentoringSessions
-  # mentorshipMatches
   optOutOfMenteesFromOtherRediLocation
   personalDescription
   profileAvatarImageS3Key

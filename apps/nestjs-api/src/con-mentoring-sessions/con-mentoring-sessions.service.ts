@@ -7,6 +7,8 @@ import {
 } from '@talent-connect/common-types'
 import { CurrentUser } from '../auth/current-user.decorator'
 import { CurrentUserInfo } from '../auth/current-user.interface'
+import { ConProfilesService } from '../con-profiles/con-profiles.service'
+import { EmailService } from '../email/email.service'
 import { SfApiConMentoringSessionsService } from '../salesforce-api/sf-api-con-mentoring-sessions.service'
 import { ConMentoringSessionMapper } from './mappers/con-mentoring-session.mapper'
 
@@ -14,7 +16,9 @@ import { ConMentoringSessionMapper } from './mappers/con-mentoring-session.mappe
 export class ConMentoringSessionsService {
   constructor(
     private readonly api: SfApiConMentoringSessionsService,
-    private readonly mapper: ConMentoringSessionMapper
+    private readonly mapper: ConMentoringSessionMapper,
+    private readonly emailService: EmailService,
+    private readonly profilesService: ConProfilesService
   ) {}
 
   // TODO: think about - can this method get user not from the resolver?
@@ -23,17 +27,24 @@ export class ConMentoringSessionsService {
     Object.assign(props, input)
     props.mentorId = user.contactId
     const entityToPersist = ConMentoringSessionEntity.create(props)
-    const persistedObject = await this.api.createConMentoringSession(
-      this.mapper.toPersistence(entityToPersist)
-    )
-    const persistedEntity = this.mapper.fromPersistence(persistedObject)
 
-    return persistedEntity
+    const [mentorProfile, menteeProfile] = await Promise.all([
+      this.profilesService.findOne({ 'Contact__r.Id': user.contactId }),
+      this.profilesService.findOne({ 'Contact__r.Id': input.menteeId }),
+    ])
+
+    this.emailService.sendMentoringSessionLoggedEmail({
+      recipient: mentorProfile.props.email,
+      mentorName: mentorProfile.props.firstName,
+      menteeFirstName: menteeProfile.props.firstName,
+      rediLocation: mentorProfile.props.rediLocation,
+    })
+
+    return await this.api.create(this.mapper.toPersistence(entityToPersist))
   }
 
   async findAll(filter: any = {}) {
-    const persistedConMentoringSessions =
-      await this.api.getAllConMentoringSessions(filter)
+    const persistedConMentoringSessions = await this.api.getAll(filter)
 
     const entities: ConMentoringSessionEntity[] =
       persistedConMentoringSessions.map((source) =>

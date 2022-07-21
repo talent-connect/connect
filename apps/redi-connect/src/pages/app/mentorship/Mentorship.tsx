@@ -52,7 +52,7 @@ function Mentorship() {
   const currentMatch = findMatchQuery.data.conMentorshipMatch
   const viewProfile = currentMatch[currentUserIsMentor ? 'mentee' : 'mentor']
   const pageHeading = currentUserIsMentor
-    ? `Mentorship with ${viewProfile.firstName} ${viewProfile.lastName}`
+    ? `Mentorship with ${viewProfile.fullName}`
     : 'My Mentorship'
 
   return (
@@ -89,10 +89,7 @@ function Mentorship() {
           responsive={{ mobile: { hide: { value: true } } }}
         >
           Below you can see your ongoing mentorship with your mentor{' '}
-          <strong>
-            {viewProfile.firstName} {viewProfile.lastName}
-          </strong>
-          .
+          <strong>{viewProfile.fullName}</strong>.
         </Content>
       )}
 

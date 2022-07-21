@@ -1,0 +1,6 @@
+fragment ConfirmMentorshipMatchProp on ConMentorshipMatch {
+  ...AllConMentorshipMatchFields
+  mentee {
+    firstName
+  }
+}

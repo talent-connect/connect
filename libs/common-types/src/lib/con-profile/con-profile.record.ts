@@ -21,6 +21,7 @@ export class ConProfileRecord extends Record<ConProfileRecordProps> {
       'Contact__r.Id',
       'Contact__r.Loopback_User_ID__c',
       'Contact__r.Email',
+      'Contact__r.Name',
       'Contact__r.FirstName',
       'Contact__r.LastName',
       'Contact__r.ReDI_Behance_URL__c',

@@ -13,9 +13,10 @@ import {
 import { Modal } from '@talent-connect/shared-atomic-design-components'
 import { RedMatch } from '@talent-connect/shared-types'
 import { MENTOR_DECLINES_MENTORSHIP_REASON_FOR_DECLINING } from '@talent-connect/shared-config'
+import { DeclineMentorshipButtonMatchPropFragment } from './DeclineMentorshipButton.generated'
 
 interface DeclineMentorshipButtonProps {
-  match: RedMatch
+  match: DeclineMentorshipButtonMatchPropFragment
   menteeName?: string
   matchesDeclineMentorshipStart: (options: {
     redMatchId: string

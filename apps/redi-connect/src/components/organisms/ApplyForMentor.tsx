@@ -12,6 +12,7 @@ import { FormikHelpers as FormikActions, useFormik } from 'formik'
 import React, { useState } from 'react'
 import * as Yup from 'yup'
 import { requestMentorship } from '../../services/api/api'
+import { ApplyForMentorMentorPropFragment } from './ApplyForMentor.generated'
 
 interface ConnectionRequestFormValues {
   applicationText: string
@@ -45,11 +46,10 @@ const validationSchema = Yup.object({
 })
 
 interface Props {
-  mentor: RedProfile
-  profilesFetchOneStart: Function
+  mentor: ApplyForMentorMentorPropFragment
 }
 
-const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
+const ApplyForMentor = ({ mentor }: Props) => {
   const [submitResult, setSubmitResult] =
     useState<FormSubmitResult>('notSubmitted')
   const [show, setShow] = useState(false)
@@ -89,7 +89,7 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
       <Modal
         show={show}
         stateFn={setShow}
-        title={`Application to ${mentor.firstName} ${mentor.lastName}`}
+        title={`Application to ${mentor.fullName}`}
       >
         <Modal.Body>
           <form>
@@ -101,9 +101,8 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
                 <Caption>Motivation </Caption>
                 <Content>
                   <p>
-                    Write an application to the {mentor.firstName}{' '}
-                    {mentor.lastName} in which you describe why you think that
-                    the two of you are a great fit.
+                    Write an application to the {mentor.fullName} in which you
+                    describe why you think that the two of you are a great fit.
                   </p>
                 </Content>
                 <FormTextArea

@@ -19,8 +19,7 @@ import { ConProfile } from '@talent-connect/data-access'
 type ConProfileProps = Pick<
   ConProfile,
   | 'id'
-  | 'firstName'
-  | 'lastName'
+  | 'fullName'
   | 'languages'
   | 'categories'
   | 'rediLocation'
@@ -44,8 +43,7 @@ const ProfileCard = ({
   const history = useHistory()
 
   const {
-    firstName,
-    lastName,
+    fullName,
     languages,
     categories,
     rediLocation,
@@ -68,11 +66,7 @@ const ProfileCard = ({
       className={classnames('profile-card', { 'profile-card--active': linkTo })}
       onClick={linkTo ? handleLinkTo : undefined}
     >
-      <Card.Image
-        className="profile-card__image"
-        src={imgSrc}
-        alt={`${firstName} ${lastName}`}
-      />
+      <Card.Image className="profile-card__image" src={imgSrc} alt={fullName} />
       <Card.Content>
         {toggleFavorite && (
           <div className="profile-card__favorite" onClick={handleFavorite}>
@@ -89,7 +83,7 @@ const ProfileCard = ({
           textSize={4}
           className="profile-card__name"
         >
-          {firstName} {lastName}
+          {fullName}
         </Element>
         <Element key="location" renderAs="span" className="content">
           {REDI_LOCATION_NAMES[rediLocation]}

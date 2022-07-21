@@ -35,6 +35,7 @@ import {
   useLoadMyProfileQuery,
 } from '@talent-connect/data-access'
 import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
+import { useProfilePageQueryQuery } from './Profile.generated'
 
 interface RouteParams {
   profileId: string
@@ -60,7 +61,7 @@ function Profile({
   profilesFetchOneStart,
 }: ProfileProps) {
   const { profileId } = useParams<RouteParams>()
-  const profileQuery = useFindConProfileQuery({ conProfileId: profileId })
+  const profileQuery = useProfilePageQueryQuery({ id: profileId })
   const myProfileQuery = useLoadMyProfileQuery({
     loopbackUserId: getAccessTokenFromLocalStorage().userId,
   })
@@ -127,16 +128,17 @@ function Profile({
           </Columns.Column>
         )}
 
-        {myMatchWithThisProfile && myMatchWithThisProfile.status === 'applied' && (
-          <Columns.Column className="is-narrow">
-            <ConfirmMentorship
-              match={myMatchWithThisProfile}
-              menteeName={profile && profile.firstName}
-              hasReachedMenteeLimit={hasReachedMenteeLimit}
-            />
-            <DeclineMentorshipButton match={myMatchWithThisProfile} />
-          </Columns.Column>
-        )}
+        {myMatchWithThisProfile &&
+          myMatchWithThisProfile.status === MentorshipMatchStatus.Applied && (
+            <Columns.Column className="is-narrow">
+              <ConfirmMentorship
+                match={myMatchWithThisProfile}
+                menteeName={profile && profile.firstName}
+                hasReachedMenteeLimit={hasReachedMenteeLimit}
+              />
+              <DeclineMentorshipButton match={myMatchWithThisProfile} />
+            </Columns.Column>
+          )}
       </Columns>
 
       {profile && (
@@ -146,9 +148,7 @@ function Profile({
               <Avatar profile={profile} />
             </Columns.Column>
             <Columns.Column size={9}>
-              <Heading>
-                {profile.firstName} {profile.lastName}
-              </Heading>
+              <Heading>{profile.fullName}</Heading>
               <Element className="location-tag">
                 <Icon icon="mapPin" className="icon-align" />
                 <Content size="medium" renderAs="p">

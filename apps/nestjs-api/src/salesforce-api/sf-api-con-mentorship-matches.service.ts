@@ -1,5 +1,8 @@
 import { Injectable } from '@nestjs/common'
-import { ConMentorshipMatchRecord } from '@talent-connect/common-types'
+import {
+  ConMentorshipMatchRecord,
+  SalesforceMutationIdResult,
+} from '@talent-connect/common-types'
 import { omit } from 'lodash'
 import { SfApiRepository } from './sf-api.repository'
 
@@ -7,9 +10,7 @@ import { SfApiRepository } from './sf-api.repository'
 export class SfApiConMentorshipMatchesService {
   constructor(private readonly repository: SfApiRepository) {}
   // constructor(private readonly repository: SalesforceApiRepository) {}
-  async getAllConMentorshipMatches(
-    filter: any = {}
-  ): Promise<ConMentorshipMatchRecord[]> {
+  async getAll(filter: any = {}): Promise<ConMentorshipMatchRecord[]> {
     const rawRecords = await this.repository.findRecordsOfObject({
       objectName: ConMentorshipMatchRecord.metadata.SALESFORCE_OBJECT_NAME,
       objectFields: ConMentorshipMatchRecord.metadata.SALESFORCE_OBJECT_FIELDS,
@@ -21,31 +22,38 @@ export class SfApiConMentorshipMatchesService {
     return conMentorshipMatchesRecord
   }
 
-  async getConMentorshipMatch(id: string): Promise<ConMentorshipMatchRecord> {
-    const conMentorshipMatchRecords = await this.getAllConMentorshipMatches({
+  async get(id: string): Promise<ConMentorshipMatchRecord> {
+    const conMentorshipMatchRecords = await this.getAll({
       Id: id,
     })
     return conMentorshipMatchRecords[0]
   }
 
-  async updateConMentorshipMatch(
+  async create(
     record: ConMentorshipMatchRecord
-  ): Promise<ConMentorshipMatchRecord> {
+  ): Promise<SalesforceMutationIdResult> {
+    const conMentorshipMatchRecordProps = record.props
+
+    return await this.repository.createRecord(
+      ConMentorshipMatchRecord.metadata.SALESFORCE_OBJECT_NAME,
+      conMentorshipMatchRecordProps
+    )
+  }
+
+  async update(
+    record: ConMentorshipMatchRecord
+  ): Promise<SalesforceMutationIdResult> {
     const conMentorshipMatchProps = record.props
 
     const cleanConMentorshipMatchProps = omit(conMentorshipMatchProps, [
       'CreatedDate',
       'LastModifiedDate',
+      'Mentor__c',
     ])
 
-    const updateConMentorshipMatchResult = await this.repository.updateRecord(
+    return await this.repository.updateRecord(
       ConMentorshipMatchRecord.metadata.SALESFORCE_OBJECT_NAME,
       cleanConMentorshipMatchProps
     )
-    const updatedConMentorshipMatchRecord = await this.getConMentorshipMatch(
-      cleanConMentorshipMatchProps.Id
-    )
-
-    return updatedConMentorshipMatchRecord
   }
 }

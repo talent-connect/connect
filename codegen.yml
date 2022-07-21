@@ -1,13 +1,13 @@
 overwrite: true
 schema: 'http://localhost:3333/graphql'
 #documents: 'apps/redi-connect/src/**/*.graphql'
-documents: 'libs/**/*.graphql'
+documents: ['libs/**/*.graphql', 'apps/**/*.graphql']
 generates:
   libs/data-access/src/lib/types/types.ts:
     - add:
         content: '// THIS FILE IS GENERATED, DO NOT EDIT!'
     - 'typescript'
-  /libs:
+  /:
     preset: near-operation-file
     presetConfig:
       extension: .generated.ts

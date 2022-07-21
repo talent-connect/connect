@@ -1,0 +1,5 @@
+fragment ApplyForMentorMentorProp on ConProfile {
+  id
+  firstName
+  lastName
+}

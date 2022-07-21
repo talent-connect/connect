@@ -15,6 +15,7 @@ query ProfilePageQuery($id: ID!) {
     languages
     mentee_highestEducationLevel
     mentor_occupation
+    gender
     mentee_occupationCategoryId
   }
 }

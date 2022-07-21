@@ -7,9 +7,7 @@ import { SfApiRepository } from './sf-api.repository'
 export class SfApiConMentoringSessionsService {
   constructor(private readonly repository: SfApiRepository) {}
   // constructor(private readonly repository: SalesforceApiRepository) {}
-  async getAllConMentoringSessions(
-    filter: any = {}
-  ): Promise<ConMentoringSessionRecord[]> {
+  async getAll(filter: any = {}): Promise<ConMentoringSessionRecord[]> {
     const rawRecords = await this.repository.findRecordsOfObject({
       objectName: ConMentoringSessionRecord.metadata.SALESFORCE_OBJECT_NAME,
       objectFields: ConMentoringSessionRecord.metadata.SALESFORCE_OBJECT_FIELDS,
@@ -21,12 +19,12 @@ export class SfApiConMentoringSessionsService {
     return conMentoringSessionsRecord
   }
 
-  async getConMentoringSession(id: string): Promise<ConMentoringSessionRecord> {
-    const entities = await this.getAllConMentoringSessions({ Id: id })
+  async get(id: string): Promise<ConMentoringSessionRecord> {
+    const entities = await this.getAll({ Id: id })
     return entities[0]
   }
 
-  async createConMentoringSession(record: ConMentoringSessionRecord) {
+  async create(record: ConMentoringSessionRecord) {
     const cleanProps = pick(record.props, [
       'Date__c',
       'Durations_in_Minutes__c',
@@ -39,8 +37,6 @@ export class SfApiConMentoringSessionsService {
       cleanProps
     )
 
-    const createdRecord = await this.getConMentoringSession(createResult.id)
-
-    return createdRecord
+    return createResult
   }
 }

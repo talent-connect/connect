@@ -24,13 +24,15 @@ export class ConMentoringSessionsResolver {
     @Args('createConMentoringSessionInput')
     input: CreateConMentoringSessionInput
   ) {
-    console.log('input', input)
-    const insertedEntity = await this.conMentoringSessionsService.create(
+    const result = await this.conMentoringSessionsService.create(
       input,
       currentUser
     )
 
-    return insertedEntity.props
+    return {
+      ok: true,
+      id: result.id,
+    }
   }
 
   //! TODO: Add auth

@@ -1,7 +1,16 @@
 import { Injectable } from '@nestjs/common'
 import {
   sendReportProblemEmail,
+  sendMentorCancelledMentorshipNotificationEmail,
+  sendToMentorConfirmationOfMentorshipCancelled,
   sendMenteePendingReviewAcceptedEmail,
+  sendMentorshipRequestReceivedEmail,
+  sendMentorshipCompletionEmailToMentor,
+  sendMentorshipCompletionEmailToMentee,
+  sendMentorshipAcceptedEmail,
+  sendMentorshipDeclinedEmail,
+  sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted,
+  sendMentoringSessionLoggedEmail,
 } from './lib/email/email'
 
 @Injectable()
@@ -10,7 +19,45 @@ export class EmailService {
     return sendReportProblemEmail(params).subscribe()
   }
 
+  sendMentorCancelledMentorshipNotificationEmail(params) {
+    return sendMentorCancelledMentorshipNotificationEmail(params).subscribe()
+  }
+
+  sendToMentorConfirmationOfMentorshipCancelled(params) {
+    return sendToMentorConfirmationOfMentorshipCancelled(params).subscribe()
+  }
+
   sendMenteePendingReviewAcceptedEmail(params) {
     return sendMenteePendingReviewAcceptedEmail(params).subscribe()
+  }
+
+  sendMentorshipRequestReceivedEmail(params) {
+    return sendMentorshipRequestReceivedEmail(params).subscribe()
+  }
+
+  sendMentorshipCompletionEmailToMentor(params) {
+    return sendMentorshipCompletionEmailToMentor(params).subscribe()
+  }
+  sendMentorshipCompletionEmailToMentee(params) {
+    return sendMentorshipCompletionEmailToMentee(params).subscribe()
+  }
+
+  sendMentorshipAcceptedEmail(params) {
+    return sendMentorshipAcceptedEmail(params).subscribe()
+  }
+  sendMentorshipDeclinedEmail(params) {
+    return sendMentorshipDeclinedEmail(params).subscribe()
+  }
+
+  sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted(
+    params
+  ) {
+    return sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted(
+      params
+    ).subscribe()
+  }
+
+  sendMentoringSessionLoggedEmail(params) {
+    return sendMentoringSessionLoggedEmail(params).subscribe()
   }
 }

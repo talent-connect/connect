@@ -82,6 +82,63 @@ export type ConMentorshipMatch = {
   updatedAt: Scalars['DateTime'];
 };
 
+export type ConMentorshipMatchesAcceptMentorshipInputDto = {
+  mentorReplyMessageOnAccept: Scalars['String'];
+  mentorshipMatchId: Scalars['String'];
+};
+
+export type ConMentorshipMatchesAcceptMentorshipOutputDto = {
+  __typename?: 'ConMentorshipMatchesAcceptMentorshipOutputDto';
+  id: Scalars['String'];
+  ok: Scalars['Boolean'];
+};
+
+export type ConMentorshipMatchesApplyForMentorshipInputDto = {
+  applicationText: Scalars['String'];
+  expectationText: Scalars['String'];
+  mentorId: Scalars['String'];
+};
+
+export type ConMentorshipMatchesApplyForMentorshipOutputDto = {
+  __typename?: 'ConMentorshipMatchesApplyForMentorshipOutputDto';
+  id: Scalars['String'];
+  ok: Scalars['Boolean'];
+};
+
+export type ConMentorshipMatchesCompleteMentorshipInputDto = {
+  mentorMessageOnComplete: Scalars['String'];
+  mentorshipMatchId: Scalars['String'];
+};
+
+export type ConMentorshipMatchesCompleteMentorshipOutputDto = {
+  __typename?: 'ConMentorshipMatchesCompleteMentorshipOutputDto';
+  id: Scalars['String'];
+  ok: Scalars['Boolean'];
+};
+
+export type ConMentorshipMatchesDeclineMentorshipInputDto = {
+  ifDeclinedByMentor_chosenReasonForDecline: DeclineReason;
+  ifDeclinedByMentor_ifReasonIsOther_freeText: Scalars['String'];
+  ifDeclinedByMentor_optionalMessageToMentee: Scalars['String'];
+  mentorshipMatchId: Scalars['String'];
+};
+
+export type ConMentorshipMatchesDeclineMentorshipOutputDto = {
+  __typename?: 'ConMentorshipMatchesDeclineMentorshipOutputDto';
+  id: Scalars['String'];
+  ok: Scalars['Boolean'];
+};
+
+export type ConMentorshipMatchesMarkAsDismissedInputDto = {
+  conMentorshipMatchId: Scalars['String'];
+};
+
+export type ConMentorshipMatchesMarkAsDismissedOutputDto = {
+  __typename?: 'ConMentorshipMatchesMarkAsDismissedOutputDto';
+  id: Scalars['String'];
+  ok: Scalars['Boolean'];
+};
+
 export type ConProfile = {
   __typename?: 'ConProfile';
   _contactId: Scalars['String'];
@@ -92,6 +149,7 @@ export type ConProfile = {
   email: Scalars['String'];
   expectations?: Maybe<Scalars['String']>;
   firstName: Scalars['String'];
+  fullName: Scalars['String'];
   gender?: Maybe<Gender>;
   githubProfileUrl?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
@@ -300,6 +358,13 @@ export type CreateConProblemReportInput = {
   reporteeId: Scalars['String'];
 };
 
+export enum DeclineReason {
+  AnotherMentorMoreSuitable = 'anotherMentorMoreSuitable',
+  NotEnoughTimeNowToBeMentor = 'notEnoughTimeNowToBeMentor',
+  NotRightExpertise = 'notRightExpertise',
+  Other = 'other'
+}
+
 export enum EducationLevel {
   Apprenticeship = 'apprenticeship',
   HighSchool = 'highSchool',
@@ -405,6 +470,11 @@ export type Mutation = {
   conMatchMarkMentorshipAcceptedNotificationDismissed: OkResponseMutationOutputDto;
   conMenteeFavoritedMentorCreate: ConMenteeFavoritedMentorCreateMutationOutputDto;
   conMenteeFavoritedMentorDelete: ConMenteeFavoritedMentorDeleteMutationOutputDto;
+  conMentorshipMatchesAcceptMentorship: ConMentorshipMatchesAcceptMentorshipOutputDto;
+  conMentorshipMatchesApplyForMentorship: ConMentorshipMatchesApplyForMentorshipOutputDto;
+  conMentorshipMatchesCompleteMentorship: ConMentorshipMatchesCompleteMentorshipOutputDto;
+  conMentorshipMatchesDeclineMentorship: ConMentorshipMatchesDeclineMentorshipOutputDto;
+  conMentorshipMatchesMarkAsDismissed: ConMentorshipMatchesMarkAsDismissedOutputDto;
   conProblemReportCreate: OkResponseMutationOutputDto;
   conProfileSignUp: ConProfile;
   createConMentoringSession: ConMentoringSession;
@@ -425,6 +495,31 @@ export type MutationConMenteeFavoritedMentorCreateArgs = {
 
 export type MutationConMenteeFavoritedMentorDeleteArgs = {
   input: ConMenteeFavoritedMentorDeleteMutationInputDto;
+};
+
+
+export type MutationConMentorshipMatchesAcceptMentorshipArgs = {
+  input: ConMentorshipMatchesAcceptMentorshipInputDto;
+};
+
+
+export type MutationConMentorshipMatchesApplyForMentorshipArgs = {
+  input: ConMentorshipMatchesApplyForMentorshipInputDto;
+};
+
+
+export type MutationConMentorshipMatchesCompleteMentorshipArgs = {
+  input: ConMentorshipMatchesCompleteMentorshipInputDto;
+};
+
+
+export type MutationConMentorshipMatchesDeclineMentorshipArgs = {
+  input: ConMentorshipMatchesDeclineMentorshipInputDto;
+};
+
+
+export type MutationConMentorshipMatchesMarkAsDismissedArgs = {
+  input: ConMentorshipMatchesMarkAsDismissedInputDto;
 };
 
 

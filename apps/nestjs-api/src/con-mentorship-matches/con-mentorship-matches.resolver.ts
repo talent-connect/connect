@@ -1,7 +1,6 @@
-import { forwardRef, Inject, UseGuards } from '@nestjs/common'
+import { UseGuards } from '@nestjs/common'
 import {
   Args,
-  ID,
   Mutation,
   Parent,
   Query,
@@ -22,6 +21,26 @@ import { ConProfilesService } from '../con-profiles/con-profiles.service'
 import { FindMentorshipMatchesArgs } from './args/find-mentorship-matches.args'
 import { FindOneMentorshipMatchArgs } from './args/find-one-mentorship-match.args'
 import { ConMentorshipMatchesService } from './con-mentorship-matches.service'
+import {
+  ConMentorshipMatchesAcceptMentorshipInputDto,
+  ConMentorshipMatchesAcceptMentorshipOutputDto,
+} from './dto/con-mentorship-matches-accept-mentorship.mutation-dtos'
+import {
+  ConMentorshipMatchesApplyForMentorshipInputDto,
+  ConMentorshipMatchesApplyForMentorshipOutputDto,
+} from './dto/con-mentorship-matches-apply-for-mentorship.mutation-dtos'
+import {
+  ConMentorshipMatchesCompleteMentorshipInputDto,
+  ConMentorshipMatchesCompleteMentorshipOutputDto,
+} from './dto/con-mentorship-matches-complete-mentorship.mutation-dtos'
+import {
+  ConMentorshipMatchesDeclineMentorshipInputDto,
+  ConMentorshipMatchesDeclineMentorshipOutputDto,
+} from './dto/con-mentorship-matches-decline-mentorship.mutation-dtos'
+import {
+  ConMentorshipMatchesMarkAsDismissedInputDto,
+  ConMentorshipMatchesMarkAsDismissedOutputDto,
+} from './dto/con-mentorship-matches-mark-as-dismissed.mutation-dtos'
 
 @UseGuards(GqlJwtAuthGuard)
 @Resolver(() => ConMentorshipMatchEntityProps)
@@ -88,7 +107,7 @@ export class ConMentorshipMatchesResolver {
   async patch(
     @Args('conMentorshipMatchId', { type: () => String }) id: string
   ) {
-    const updatedEntity = this.conMentorshipMatchesService.patch(id, {
+    this.conMentorshipMatchesService.patch(id, {
       hasMenteeDismissedMentorshipApplicationAcceptedNotification: true,
     })
     return { ok: true }
@@ -142,5 +161,71 @@ export class ConMentorshipMatchesResolver {
     }
     const entities = await this.conMentoringSessionsService.findAll(filter)
     return entities.map((entity) => entity.props)
+  }
+
+  @Mutation(() => ConMentorshipMatchesAcceptMentorshipOutputDto, {
+    name: 'conMentorshipMatchesAcceptMentorship',
+  })
+  async acceptMentorship(
+    @Args('input') input: ConMentorshipMatchesAcceptMentorshipInputDto
+  ) {
+    const result = await this.conMentorshipMatchesService.acceptMentorship(
+      input
+    )
+
+    return { ok: true, id: result.id }
+  }
+
+  @Mutation(() => ConMentorshipMatchesDeclineMentorshipOutputDto, {
+    name: 'conMentorshipMatchesDeclineMentorship',
+  })
+  async declineMentorship(
+    @Args('input') input: ConMentorshipMatchesDeclineMentorshipInputDto
+  ) {
+    const result = await this.conMentorshipMatchesService.declineMentorship(
+      input
+    )
+
+    return { ok: true, id: result.id }
+  }
+
+  @Mutation(() => ConMentorshipMatchesCompleteMentorshipOutputDto, {
+    name: 'conMentorshipMatchesCompleteMentorship',
+  })
+  async completeMentorship(
+    @Args('input') input: ConMentorshipMatchesCompleteMentorshipInputDto
+  ) {
+    const result = await this.conMentorshipMatchesService.completeMentorship(
+      input
+    )
+
+    return { ok: true, id: result.id }
+  }
+
+  @Mutation(() => ConMentorshipMatchesApplyForMentorshipOutputDto, {
+    name: 'conMentorshipMatchesApplyForMentorship',
+  })
+  async applyForMentorship(
+    @CurrentUser() user: CurrentUserInfo,
+    @Args('input') input: ConMentorshipMatchesApplyForMentorshipInputDto
+  ) {
+    const result = await this.conMentorshipMatchesService.applyForMentorship(
+      user.contactId,
+      input
+    )
+
+    return { ok: true, id: result.id }
+  }
+
+  @Mutation(() => ConMentorshipMatchesMarkAsDismissedOutputDto, {
+    name: 'conMentorshipMatchesMarkAsDismissed',
+  })
+  async markAsDismissed(
+    @CurrentUser() user: CurrentUserInfo,
+    @Args('input') input: ConMentorshipMatchesMarkAsDismissedInputDto
+  ) {
+    const result = await this.conMentorshipMatchesService.markAsDismissed(input)
+
+    return { ok: true, id: result.id }
   }
 }

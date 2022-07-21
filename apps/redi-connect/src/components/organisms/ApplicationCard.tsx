@@ -63,9 +63,7 @@ const ApplicationCard = ({
           >
             {applicationUser && (
               <>
-                <p>
-                  {applicationUser.firstName} {applicationUser.lastName}
-                </p>
+                <p>{applicationUser.fullName}</p>
                 <p>{REDI_LOCATION_NAMES[applicationUser.rediLocation]}</p>
               </>
             )}

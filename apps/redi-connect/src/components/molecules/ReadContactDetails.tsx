@@ -5,26 +5,19 @@ import { Content } from 'react-bulma-components'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 
 interface Props {
-  profile: Pick<
-    ConProfile,
-    'firstName' | 'lastName' | 'email' | 'telephoneNumber'
-  >
+  profile: Pick<ConProfile, 'fullName' | 'email' | 'telephoneNumber'>
   shortInfo?: boolean
 }
 
 const ReadContactDetails = ({ profile, shortInfo }: Props) => {
-  const { firstName, lastName, email, telephoneNumber } = profile
+  const { fullName, email, telephoneNumber } = profile
 
   return (
     <>
       {shortInfo && <Caption>Contact Details</Caption>}
       <Content>
         {email && <p>{email}</p>}
-        {!shortInfo && (firstName || lastName) && (
-          <p>
-            {firstName} {lastName}
-          </p>
-        )}
+        {!shortInfo && fullName && <p>{fullName}</p>}
         {telephoneNumber && <p>{telephoneNumber}</p>}
       </Content>
     </>

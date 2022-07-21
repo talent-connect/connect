@@ -32,7 +32,6 @@ export class ConMenteeFavoritedMentorsResolver {
     @Args('input')
     input: ConMenteeFavoritedMentorCreateMutationInputDto
   ) {
-    console.log('input', input)
     await this.conMenteeFavoritedMentorsService.create(input, currentUser)
 
     return { ok: true }

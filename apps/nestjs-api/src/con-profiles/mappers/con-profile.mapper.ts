@@ -90,6 +90,7 @@ export class ConProfileMapper
     props.ifUserMentor_activeMentorshipMatches =
       raw.props.Active_Mentorship_Matches_Mentor__c
     props.age = raw.props.Contact__r.ReDI_Age__c
+    props.fullName = raw.props.Contact__r.Name
 
     const entity = ConProfileEntity.create(props)
 

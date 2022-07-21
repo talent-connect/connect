@@ -61,6 +61,58 @@ type ConMentorshipMatch {
   updatedAt: DateTime!
 }
 
+input ConMentorshipMatchesAcceptMentorshipInputDto {
+  mentorReplyMessageOnAccept: String!
+  mentorshipMatchId: String!
+}
+
+type ConMentorshipMatchesAcceptMentorshipOutputDto {
+  id: String!
+  ok: Boolean!
+}
+
+input ConMentorshipMatchesApplyForMentorshipInputDto {
+  applicationText: String!
+  expectationText: String!
+  mentorId: String!
+}
+
+type ConMentorshipMatchesApplyForMentorshipOutputDto {
+  id: String!
+  ok: Boolean!
+}
+
+input ConMentorshipMatchesCompleteMentorshipInputDto {
+  mentorMessageOnComplete: String!
+  mentorshipMatchId: String!
+}
+
+type ConMentorshipMatchesCompleteMentorshipOutputDto {
+  id: String!
+  ok: Boolean!
+}
+
+input ConMentorshipMatchesDeclineMentorshipInputDto {
+  ifDeclinedByMentor_chosenReasonForDecline: DeclineReason!
+  ifDeclinedByMentor_ifReasonIsOther_freeText: String!
+  ifDeclinedByMentor_optionalMessageToMentee: String!
+  mentorshipMatchId: String!
+}
+
+type ConMentorshipMatchesDeclineMentorshipOutputDto {
+  id: String!
+  ok: Boolean!
+}
+
+input ConMentorshipMatchesMarkAsDismissedInputDto {
+  conMentorshipMatchId: String!
+}
+
+type ConMentorshipMatchesMarkAsDismissedOutputDto {
+  id: String!
+  ok: Boolean!
+}
+
 type ConProfile {
   _contactId: String!
   age: Float!
@@ -70,6 +122,7 @@ type ConProfile {
   email: String!
   expectations: String
   firstName: String!
+  fullName: String!
   gender: Gender
   githubProfileUrl: String
   id: ID!
@@ -283,6 +336,13 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+enum DeclineReason {
+  anotherMentorMoreSuitable
+  notEnoughTimeNowToBeMentor
+  notRightExpertise
+  other
+}
+
 enum EducationLevel {
   apprenticeship
   highSchool
@@ -387,6 +447,11 @@ type Mutation {
   conMatchMarkMentorshipAcceptedNotificationDismissed(conMentorshipMatchId: String!): OkResponseMutationOutputDto!
   conMenteeFavoritedMentorCreate(input: ConMenteeFavoritedMentorCreateMutationInputDto!): ConMenteeFavoritedMentorCreateMutationOutputDto!
   conMenteeFavoritedMentorDelete(input: ConMenteeFavoritedMentorDeleteMutationInputDto!): ConMenteeFavoritedMentorDeleteMutationOutputDto!
+  conMentorshipMatchesAcceptMentorship(input: ConMentorshipMatchesAcceptMentorshipInputDto!): ConMentorshipMatchesAcceptMentorshipOutputDto!
+  conMentorshipMatchesApplyForMentorship(input: ConMentorshipMatchesApplyForMentorshipInputDto!): ConMentorshipMatchesApplyForMentorshipOutputDto!
+  conMentorshipMatchesCompleteMentorship(input: ConMentorshipMatchesCompleteMentorshipInputDto!): ConMentorshipMatchesCompleteMentorshipOutputDto!
+  conMentorshipMatchesDeclineMentorship(input: ConMentorshipMatchesDeclineMentorshipInputDto!): ConMentorshipMatchesDeclineMentorshipOutputDto!
+  conMentorshipMatchesMarkAsDismissed(input: ConMentorshipMatchesMarkAsDismissedInputDto!): ConMentorshipMatchesMarkAsDismissedOutputDto!
   conProblemReportCreate(input: CreateConProblemReportInput!): OkResponseMutationOutputDto!
   conProfileSignUp(input: ConProfileSignUpInput!): ConProfile!
   createConMentoringSession(createConMentoringSessionInput: CreateConMentoringSessionInput!): ConMentoringSession!

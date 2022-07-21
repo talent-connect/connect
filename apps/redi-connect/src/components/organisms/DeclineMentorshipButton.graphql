@@ -1,0 +1,6 @@
+fragment DeclineMentorshipButtonMatchProp on ConMentorshipMatch {
+  ...AllConMentorshipMatchFields
+  mentee {
+    firstName
+  }
+}

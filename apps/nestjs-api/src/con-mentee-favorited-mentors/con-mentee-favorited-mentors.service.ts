@@ -31,7 +31,7 @@ export class ConMenteeFavoritedMentorsService {
     const entityToPersist = ConMenteeFavoritedMentorEntity.create(props)
     const recordToPersist = this.mapper.toPersistence(entityToPersist)
 
-    const persistedObject = await this.repository.createRecord(
+    await this.repository.createRecord(
       ConMenteeFavoritedMentorRecord.metadata.SALESFORCE_OBJECT_NAME,
       recordToPersist.props
     )

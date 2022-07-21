@@ -11,9 +11,11 @@ import {
 import { Modal } from '@talent-connect/shared-atomic-design-components'
 import { matchesAcceptMentorshipStart } from '../../redux/matches/actions'
 import { ConMentorshipMatch } from '@talent-connect/data-access'
+import { AllConMentorshipMatchFieldsFragment } from 'libs/data-access/src/lib/con/mentorship-matches/con-mentorship-match.fragment.generated'
+import { ConfirmMentorshipMatchPropFragment } from './ConfirmMentorship.generated'
 
 interface ConfirmMentorshipProps {
-  match: Pick<ConMentorshipMatch, ''>
+  match: ConfirmMentorshipMatchPropFragment
   menteeName?: string
   hasReachedMenteeLimit: boolean
   matchesAcceptMentorshipStart: (

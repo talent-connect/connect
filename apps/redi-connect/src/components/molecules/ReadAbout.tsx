@@ -8,10 +8,7 @@ import { Content } from 'react-bulma-components'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 
 interface Props {
-  profile: Pick<
-    ConProfile,
-    'firstName' | 'lastName' | 'personalDescription' | 'expectations'
-  >
+  profile: Pick<ConProfile, 'fullName' | 'personalDescription' | 'expectations'>
 }
 
 const Me = ({ profile }: Props) => {
@@ -30,13 +27,11 @@ const Me = ({ profile }: Props) => {
 }
 
 const Some = ({ profile }: Props) => {
-  const { firstName, lastName, personalDescription, expectations } = profile
+  const { fullName, personalDescription, expectations } = profile
 
   return (
     <>
-      <Caption>
-        About {firstName} {lastName}
-      </Caption>
+      <Caption>About {fullName}</Caption>
       <Content>
         {personalDescription && <p>{personalDescription}</p>}
         {expectations && <p>{expectations}</p>}

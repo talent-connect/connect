@@ -31,6 +31,9 @@ export class ContactRecordProps implements RecordProps {
   @Type(() => Date)
   LastModifiedDate: Date
 
+  // Only computed fields below
+  Name: string // full name
+
   public static create(rawProps: any) {
     return plainToClass(ContactRecordProps, rawProps, {})
   }

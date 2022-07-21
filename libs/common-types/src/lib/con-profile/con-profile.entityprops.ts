@@ -73,4 +73,5 @@ export class ConProfileEntityProps implements EntityProps {
   ifUserMentee_activeMentorshipMatches: number
   ifUserMentor_activeMentorshipMatches: number
   age: number
+  fullName: string
 }

@@ -1,0 +1,18 @@
+fragment AllConMentorshipMatchFields on ConMentorshipMatch {
+  applicationText
+  createdAt
+  expectationText
+  hasMenteeDismissedMentorshipApplicationAcceptedNotification
+  id
+  ifDeclinedByMentor_chosenReasonForDecline
+  ifDeclinedByMentor_dateTime
+  ifDeclinedByMentor_ifReasonIsOther_freeText
+  ifDeclinedByMentor_optionalMessageToMentee
+  matchMadeActiveOn
+  menteeId
+  mentorId
+  mentorMessageOnComplete
+  mentorReplyMessageOnAccept
+  status
+  updatedAt
+}

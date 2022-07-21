@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import { SalesforceMutationIdResult } from '@talent-connect/common-types'
 import * as jsforce from 'jsforce'
 import { update } from 'lodash'
 const async = require('async')
@@ -83,7 +84,7 @@ export class SfApiRepository {
   async createRecord<T>(
     objectName: string,
     record: T
-  ): Promise<{ id: string }> {
+  ): Promise<SalesforceMutationIdResult> {
     await this.connect()
     const createResult = this.connection.sobject(objectName).create(record)
     return createResult
@@ -92,7 +93,7 @@ export class SfApiRepository {
   async updateRecord<T>(
     objectName: string,
     record: T
-  ): Promise<{ id: string }> {
+  ): Promise<SalesforceMutationIdResult> {
     await this.connect()
     const updateResult = this.connection.sobject(objectName).update(record)
     return updateResult
@@ -106,7 +107,7 @@ export class SfApiRepository {
     objectName: string,
     filter: any,
     record: T
-  ): Promise<{ id: string }> {
+  ): Promise<SalesforceMutationIdResult> {
     await this.connect()
     const findResult = await this.findRecordsOfObject({
       objectName: objectName,

@@ -3,6 +3,7 @@ import {
   ConMentorshipMatchEntity,
   ConMentorshipMatchEntityProps,
   ConMentorshipMatchRecord,
+  ConMentorshipMatchRecordProps,
   Mapper,
   MentorshipMatchStatus,
 } from '@talent-connect/common-types'
@@ -46,6 +47,32 @@ export class ConMentorshipMatchMapper
   public toPersistence(
     source: ConMentorshipMatchEntity
   ): ConMentorshipMatchRecord {
-    throw new Error('Method not implemented.')
+    const dstProps = new ConMentorshipMatchRecordProps()
+    const srcProps = source.props
+
+    dstProps.Id = srcProps.id
+    dstProps.Application_Text__c = srcProps.applicationText
+    dstProps.Expectations__c = srcProps.expectationText
+    dstProps.Acceptance_Notification_Dismissed__c =
+      srcProps.hasMenteeDismissedMentorshipApplicationAcceptedNotification
+    dstProps.Decline_Reason__c =
+      srcProps.ifDeclinedByMentor_chosenReasonForDecline
+    dstProps.Declined_On__c = srcProps.ifDeclinedByMentor_dateTime
+    dstProps.Decline_Reason_Other__c =
+      srcProps.ifDeclinedByMentor_ifReasonIsOther_freeText
+    dstProps.Decline_Message__c =
+      srcProps.ifDeclinedByMentor_optionalMessageToMentee
+    dstProps.Application_Accepted_On__c = srcProps.matchMadeActiveOn
+    dstProps.Mentor_Completion_Message__c = srcProps.mentorMessageOnComplete
+    dstProps.Mentor_Acceptance_Message__c = srcProps.mentorReplyMessageOnAccept
+    dstProps.Status__c = srcProps.status
+    dstProps.Mentee__c = srcProps.menteeId
+    dstProps.Mentor__c = srcProps.mentorId
+    dstProps.CreatedDate = srcProps.createdAt
+    dstProps.LastModifiedDate = srcProps.updatedAt
+
+    const record = ConMentorshipMatchRecord.create(dstProps)
+
+    return record
   }
 }

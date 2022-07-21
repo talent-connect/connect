@@ -22,10 +22,7 @@ import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 import { useQueryClient } from 'react-query'
 
 type AvatarProps = {
-  profile: Pick<
-    ConProfile,
-    'firstName' | 'lastName' | 'profileAvatarImageS3Key'
-  >
+  profile: Pick<ConProfile, 'fullName' | 'profileAvatarImageS3Key'>
 }
 
 function Avatar({ profile }: AvatarProps) {
@@ -39,11 +36,7 @@ function Avatar({ profile }: AvatarProps) {
         'avatar--placeholder': !profile.profileAvatarImageS3Key,
       })}
     >
-      <img
-        src={imgSrc}
-        alt={`${profile.firstName} ${profile.lastName}`}
-        className="avatar__image"
-      />
+      <img src={imgSrc} alt={profile.fullName} className="avatar__image" />
     </div>
   )
 }
@@ -87,11 +80,7 @@ function AvatarEditable() {
     >
       {profileAvatarImageS3Key && (
         <>
-          <img
-            src={imgURL}
-            alt={`${profile.firstName} ${profile.lastName}`}
-            className="avatar__image"
-          />
+          <img src={imgURL} alt={profile.fullName} className="avatar__image" />
           <Element
             renderAs="span"
             className="avatar__button"

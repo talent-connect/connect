@@ -75,7 +75,18 @@ export class ConProfilesService {
     if (entities.length > 0) {
       return entities[0]
     } else {
-      throw new NotFoundException('ConProfile not found')
+      throw new NotFoundException('ConProfile not found with id: ' + id)
+    }
+  }
+
+  async findOne(filter: any = {}) {
+    const entities = await this.findAll(filter)
+    if (entities.length > 0) {
+      return entities[0]
+    } else {
+      throw new NotFoundException(
+        'ConProfile not found with filter: ' + JSON.stringify(filter)
+      )
     }
   }
 
