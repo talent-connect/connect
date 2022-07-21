@@ -23,6 +23,4 @@ generates:
       fetcher: '@talent-connect/data-access#fetcher'
   ./schema.graphql:
     plugins:
-      - add:
-          content: '// THIS FILE IS GENERATED, DO NOT EDIT!'
       - schema-ast

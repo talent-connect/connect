@@ -124,7 +124,10 @@ function Profile({
 
         {userCanApplyForMentorship && (
           <Columns.Column className="is-narrow">
-            <ApplyForMentor mentor={profile} />
+            <ApplyForMentor
+              mentor={profile}
+              onApplyForMentorSettled={() => profileQuery.refetch()}
+            />
           </Columns.Column>
         )}
 

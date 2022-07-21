@@ -4,3 +4,11 @@ fragment ConfirmMentorshipMatchProp on ConMentorshipMatch {
     firstName
   }
 }
+
+mutation acceptMentorship(
+  $input: ConMentorshipMatchesAcceptMentorshipInputDto!
+) {
+  conMentorshipMatchesAcceptMentorship(input: $input) {
+    ok
+  }
+}

@@ -1,27 +1,23 @@
-import React, { useState } from 'react'
+import {
+  Button,
+  FormTextArea,
+  Modal,
+} from '@talent-connect/shared-atomic-design-components'
+import { useFormik } from 'formik'
+import { useState } from 'react'
+import { Content } from 'react-bulma-components'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import * as Yup from 'yup'
-import { useFormik } from 'formik'
-import { Content } from 'react-bulma-components'
 import {
-  FormTextArea,
-  Button,
-} from '@talent-connect/shared-atomic-design-components'
-import { Modal } from '@talent-connect/shared-atomic-design-components'
-import { matchesAcceptMentorshipStart } from '../../redux/matches/actions'
-import { ConMentorshipMatch } from '@talent-connect/data-access'
-import { AllConMentorshipMatchFieldsFragment } from 'libs/data-access/src/lib/con/mentorship-matches/con-mentorship-match.fragment.generated'
-import { ConfirmMentorshipMatchPropFragment } from './ConfirmMentorship.generated'
+  ConfirmMentorshipMatchPropFragment,
+  useAcceptMentorshipMutation,
+} from './ConfirmMentorship.generated'
 
 interface ConfirmMentorshipProps {
   match: ConfirmMentorshipMatchPropFragment
   menteeName?: string
   hasReachedMenteeLimit: boolean
-  matchesAcceptMentorshipStart: (
-    redMatchId: string,
-    mentorReplyMessageOnAccept: string
-  ) => void
 }
 
 interface ConfirmMentorshipFormValues {
@@ -49,8 +45,8 @@ const validationSchema = Yup.object({
 const ConfirmMentorship = ({
   match,
   hasReachedMenteeLimit,
-  matchesAcceptMentorshipStart,
 }: ConfirmMentorshipProps) => {
+  const acceptMentorshipMutation = useAcceptMentorshipMutation()
   const [isModalActive, setModalActive] = useState(false)
   const history = useHistory()
   const { mentee = { firstName: null } } = match
@@ -70,7 +66,12 @@ const ConfirmMentorship = ({
 
   const submitForm = async (values: ConfirmMentorshipFormValues) => {
     try {
-      matchesAcceptMentorshipStart(match.id, values.mentorReplyMessageOnAccept)
+      await acceptMentorshipMutation.mutateAsync({
+        input: {
+          mentorReplyMessageOnAccept: values.mentorReplyMessageOnAccept,
+          mentorshipMatchId: match.id,
+        },
+      })
       setModalActive(false)
       history.push(`/app/mentorships/${match.id}`)
     } catch (error) {
@@ -132,14 +133,4 @@ const ConfirmMentorship = ({
   )
 }
 
-const mapDispatchToProps = (dispatch: any) => ({
-  matchesAcceptMentorshipStart: (
-    redMatchId: string,
-    mentorReplyMessageOnAccept: string
-  ) =>
-    dispatch(
-      matchesAcceptMentorshipStart(redMatchId, mentorReplyMessageOnAccept)
-    ),
-})
-
-export default connect(null, mapDispatchToProps)(ConfirmMentorship)
+export default ConfirmMentorship

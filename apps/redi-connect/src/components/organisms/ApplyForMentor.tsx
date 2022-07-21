@@ -1,18 +1,21 @@
 import {
-  Caption,
-  FormTextArea,
-  Checkbox,
   Button,
+  Caption,
+  Checkbox,
+  FormTextArea,
+  Modal,
 } from '@talent-connect/shared-atomic-design-components'
-import { Modal } from '@talent-connect/shared-atomic-design-components'
 import { Content, Form } from 'react-bulma-components'
-import { FormSubmitResult, RedProfile } from '@talent-connect/shared-types'
 
-import { FormikHelpers as FormikActions, useFormik } from 'formik'
-import React, { useState } from 'react'
+import { useFormik } from 'formik'
+import { useState } from 'react'
+import { useQueryClient } from 'react-query'
 import * as Yup from 'yup'
 import { requestMentorship } from '../../services/api/api'
-import { ApplyForMentorMentorPropFragment } from './ApplyForMentor.generated'
+import {
+  ApplyForMentorMentorPropFragment,
+  useApplyForMentorshipMutation,
+} from './ApplyForMentor.generated'
 
 interface ConnectionRequestFormValues {
   applicationText: string
@@ -47,28 +50,29 @@ const validationSchema = Yup.object({
 
 interface Props {
   mentor: ApplyForMentorMentorPropFragment
+  onApplyForMentorSettled: () => void
 }
 
-const ApplyForMentor = ({ mentor }: Props) => {
-  const [submitResult, setSubmitResult] =
-    useState<FormSubmitResult>('notSubmitted')
+const ApplyForMentor = ({ mentor, onApplyForMentorSettled }: Props) => {
+  const queryClient = useQueryClient()
+  const applyForMentorshipMutation = useApplyForMentorshipMutation()
+
   const [show, setShow] = useState(false)
-  const submitForm = async (
-    values: ConnectionRequestFormValues,
-    actions: FormikActions<ConnectionRequestFormValues>
-  ) => {
-    setSubmitResult('submitting')
-    try {
-      await requestMentorship(
-        values.applicationText,
-        values.expectationText,
-        mentor.id
-      )
-      setShow(false)
-      profilesFetchOneStart(mentor.id)
-    } catch (error) {
-      setSubmitResult('error')
-    }
+  const submitForm = async (values: ConnectionRequestFormValues) => {
+    await applyForMentorshipMutation.mutateAsync({
+      input: {
+        applicationText: values.applicationText,
+        expectationText: values.expectationText,
+        mentorId: mentor.id,
+      },
+    })
+    await requestMentorship(
+      values.applicationText,
+      values.expectationText,
+      mentor.id
+    )
+    setShow(false)
+    onApplyForMentorSettled()
   }
 
   const formik = useFormik({
@@ -93,10 +97,10 @@ const ApplyForMentor = ({ mentor }: Props) => {
       >
         <Modal.Body>
           <form>
-            {submitResult === 'success' && (
+            {applyForMentorshipMutation.isSuccess && (
               <>Your application was successfully submitted.</>
             )}
-            {submitResult !== 'success' && (
+            {!applyForMentorshipMutation.isSuccess && (
               <>
                 <Caption>Motivation </Caption>
                 <Content>
@@ -133,9 +137,11 @@ const ApplyForMentor = ({ mentor }: Props) => {
 
                 <Form.Help
                   color="danger"
-                  className={submitResult === 'error' ? 'help--show' : ''}
+                  className={
+                    applyForMentorshipMutation.isError ? 'help--show' : ''
+                  }
                 >
-                  {submitResult === 'error' &&
+                  {applyForMentorshipMutation.isError &&
                     'An error occurred, please try again.'}
                 </Form.Help>
 

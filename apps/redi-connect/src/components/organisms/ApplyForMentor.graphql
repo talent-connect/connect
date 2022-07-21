@@ -1,5 +1,13 @@
 fragment ApplyForMentorMentorProp on ConProfile {
   id
+  fullName
   firstName
-  lastName
+}
+
+mutation applyForMentorship(
+  $input: ConMentorshipMatchesApplyForMentorshipInputDto!
+) {
+  conMentorshipMatchesApplyForMentorship(input: $input) {
+    ok
+  }
 }

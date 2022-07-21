@@ -1,2 +1,2 @@
 schema: ./schema.graphql
-documents: ./apps/**/*.tsx
+documents: ./{apps,libs}/**/*.graphql
