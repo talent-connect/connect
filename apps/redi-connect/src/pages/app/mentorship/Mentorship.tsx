@@ -78,7 +78,7 @@ function Mentorship() {
         <Columns.Column className="is-narrow">
           {viewMatch.status === MentorshipMatchStatus.Accepted &&
             currentUserIsMentor && (
-              <CompleteMentorship match={currentMatch as unknown as RedMatch} />
+              <CompleteMentorship mentorshipMatchId={currentMatch.id} />
             )}
         </Columns.Column>
       </Columns>

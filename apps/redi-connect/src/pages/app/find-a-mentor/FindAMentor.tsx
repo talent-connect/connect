@@ -73,7 +73,7 @@ const FindAMentor = () => {
   const favoriteMentorMutation = useFavoriteMentorMutation()
   const unfavoriteMentorMutation = useUnfavoriteMentorMutation()
 
-  const { Loading, isLoading, setLoading } = useLoading()
+  const { Loading, isLoading } = useLoading()
 
   // const {
   //   id,
@@ -83,7 +83,6 @@ const FindAMentor = () => {
   // } = profile
 
   const [showFavorites, setShowFavorites] = useState<boolean>(false)
-  const [mentors, setMentors] = useState<RedProfile[]>([])
   const [query, setQuery] = useQueryParams({
     name: withDefault(StringParam, undefined),
     topics: withDefault(ArrayParam, []),
@@ -159,17 +158,23 @@ const FindAMentor = () => {
     }))
   }
 
-  const filterLanguages = Array.from(
-    new Set(
-      mentors
-        .map((mentor) => mentor.languages || [])
-        .flat()
-        .sort()
-    )
-  ).map((language) => ({
-    value: language,
-    label: language,
-  }))
+  const [filterLanguages, setFilterLanguages] = useState([])
+  useEffect(() => {
+    if (mentorsQuery?.data?.conProfilesAvailableMentors?.length > 0)
+      setFilterLanguages(
+        Array.from(
+          new Set(
+            mentorsQuery.data.conProfilesAvailableMentors
+              .map((mentor) => mentor.languages || [])
+              .flat()
+              .sort()
+          )
+        ).map((language) => ({
+          value: language,
+          label: language,
+        }))
+      )
+  }, [mentorsQuery.data.conProfilesAvailableMentors])
 
   const filterRediLocations = objectKeys(REDI_LOCATION_NAMES).map(
     (location) => ({
@@ -184,6 +189,10 @@ const FindAMentor = () => {
       ConnectProfileStatus.Approved
   )
     return <LoggedIn />
+
+  if (mentorsQuery.isLoading) return <Loading />
+
+  const mentors = mentorsQuery.data.conProfilesAvailableMentors
 
   return (
     <LoggedIn>
@@ -281,7 +290,7 @@ const FindAMentor = () => {
       </div>
 
       <Columns>
-        {mentors.map((mentor: RedProfile) => {
+        {mentors.map((mentor) => {
           const isFavorite = currentFavorites.includes(mentor.id)
 
           if (!isFavorite && showFavorites) return

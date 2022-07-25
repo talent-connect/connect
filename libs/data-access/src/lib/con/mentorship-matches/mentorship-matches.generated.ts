@@ -8,16 +8,16 @@ export type MyMatchesQueryVariables = Types.Exact<{
 }>;
 
 
-export type MyMatchesQuery = { __typename?: 'Query', conMentorshipMatches: Array<{ __typename?: 'ConMentorshipMatch', id: string, applicationText?: string | null, expectationText?: string | null, mentorReplyMessageOnAccept?: string | null, hasMenteeDismissedMentorshipApplicationAcceptedNotification?: boolean | null, mentee: { __typename?: 'ConProfile', id: string, firstName: string, lastName: string, languages?: Array<Types.ConnectProfileLanguage> | null, categories: Array<Types.MentoringTopic>, rediLocation: Types.RediLocation, profileAvatarImageS3Key?: string | null }, mentor: { __typename?: 'ConProfile', id: string, firstName: string, lastName: string, languages?: Array<Types.ConnectProfileLanguage> | null, categories: Array<Types.MentoringTopic>, rediLocation: Types.RediLocation, profileAvatarImageS3Key?: string | null } }> };
+export type MyMatchesQuery = { __typename?: 'Query', conMentorshipMatches: Array<{ __typename?: 'ConMentorshipMatch', id: string, applicationText?: string | null, expectationText?: string | null, mentorReplyMessageOnAccept?: string | null, hasMenteeDismissedMentorshipApplicationAcceptedNotification?: boolean | null, mentee: { __typename?: 'ConProfile', id: string, fullName: string, firstName: string, lastName: string, languages?: Array<Types.ConnectProfileLanguage> | null, categories: Array<Types.MentoringTopic>, rediLocation: Types.RediLocation, profileAvatarImageS3Key?: string | null }, mentor: { __typename?: 'ConProfile', id: string, fullName: string, firstName: string, lastName: string, languages?: Array<Types.ConnectProfileLanguage> | null, categories: Array<Types.MentoringTopic>, rediLocation: Types.RediLocation, profileAvatarImageS3Key?: string | null } }> };
 
 export type FindMatchQueryVariables = Types.Exact<{
   id: Types.Scalars['ID'];
 }>;
 
 
-export type FindMatchQuery = { __typename?: 'Query', conMentorshipMatch: { __typename?: 'ConMentorshipMatch', id: string, applicationText?: string | null, expectationText?: string | null, status: Types.MentorshipMatchStatus, mentee: { __typename?: 'ConProfile', _contactId: string, id: string, firstName: string, lastName: string, languages?: Array<Types.ConnectProfileLanguage> | null, categories: Array<Types.MentoringTopic>, rediLocation: Types.RediLocation, profileAvatarImageS3Key?: string | null, email: string, telephoneNumber?: string | null, linkedInProfileUrl?: string | null, slackUsername?: string | null }, mentor: { __typename?: 'ConProfile', _contactId: string, id: string, firstName: string, lastName: string, languages?: Array<Types.ConnectProfileLanguage> | null, categories: Array<Types.MentoringTopic>, rediLocation: Types.RediLocation, profileAvatarImageS3Key?: string | null, email: string, telephoneNumber?: string | null, linkedInProfileUrl?: string | null, slackUsername?: string | null }, mentoringSessions: Array<{ __typename?: 'ConMentoringSession', id: string, date: any, minuteDuration: Types.MentoringSessionDuration }> } };
+export type FindMatchQuery = { __typename?: 'Query', conMentorshipMatch: { __typename?: 'ConMentorshipMatch', id: string, applicationText?: string | null, expectationText?: string | null, status: Types.MentorshipMatchStatus, mentee: { __typename?: 'ConProfile', _contactId: string, id: string, fullName: string, firstName: string, lastName: string, languages?: Array<Types.ConnectProfileLanguage> | null, categories: Array<Types.MentoringTopic>, rediLocation: Types.RediLocation, profileAvatarImageS3Key?: string | null, email: string, telephoneNumber?: string | null, linkedInProfileUrl?: string | null, slackUsername?: string | null }, mentor: { __typename?: 'ConProfile', _contactId: string, id: string, fullName: string, firstName: string, lastName: string, languages?: Array<Types.ConnectProfileLanguage> | null, categories: Array<Types.MentoringTopic>, rediLocation: Types.RediLocation, profileAvatarImageS3Key?: string | null, email: string, telephoneNumber?: string | null, linkedInProfileUrl?: string | null, slackUsername?: string | null }, mentoringSessions: Array<{ __typename?: 'ConMentoringSession', id: string, date: any, minuteDuration: Types.MentoringSessionDuration }> } };
 
-export type ConProfileFieldsFragment = { __typename?: 'ConProfile', _contactId: string, id: string, firstName: string, lastName: string, languages?: Array<Types.ConnectProfileLanguage> | null, categories: Array<Types.MentoringTopic>, rediLocation: Types.RediLocation, profileAvatarImageS3Key?: string | null, email: string, telephoneNumber?: string | null, linkedInProfileUrl?: string | null, slackUsername?: string | null };
+export type ConProfileFieldsFragment = { __typename?: 'ConProfile', _contactId: string, id: string, fullName: string, firstName: string, lastName: string, languages?: Array<Types.ConnectProfileLanguage> | null, categories: Array<Types.MentoringTopic>, rediLocation: Types.RediLocation, profileAvatarImageS3Key?: string | null, email: string, telephoneNumber?: string | null, linkedInProfileUrl?: string | null, slackUsername?: string | null };
 
 export type ConMatchMarkMentorshipAcceptedNotificationDismissedMutationVariables = Types.Exact<{
   id: Types.Scalars['String'];
@@ -30,6 +30,7 @@ export const ConProfileFieldsFragmentDoc = `
     fragment conProfileFields on ConProfile {
   _contactId
   id
+  fullName
   firstName
   lastName
   languages
@@ -50,6 +51,7 @@ export const MyMatchesDocument = `
     expectationText
     mentee {
       id
+      fullName
       firstName
       lastName
       languages
@@ -59,6 +61,7 @@ export const MyMatchesDocument = `
     }
     mentor {
       id
+      fullName
       firstName
       lastName
       languages

@@ -3,7 +3,6 @@ import {
   useMyMatchesQuery,
 } from '@talent-connect/data-access'
 import { Heading } from '@talent-connect/shared-atomic-design-components'
-import React from 'react'
 import { Columns, Content } from 'react-bulma-components'
 import { Redirect } from 'react-router-dom'
 import { ProfileCard } from '../../../components/organisms'

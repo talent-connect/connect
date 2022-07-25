@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { Columns, Content, Element } from 'react-bulma-components'
 import {
@@ -22,14 +22,20 @@ import {
 import { LoggedIn } from '../../../components/templates'
 import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
 
-import { useLoadMyProfileQuery } from '@talent-connect/data-access'
-import { useIsFetching, useIsMutating } from 'react-query'
+import { useLoadMyProfileQuery, UserType } from '@talent-connect/data-access'
+import { useIsFetching, useIsMutating, useQueryClient } from 'react-query'
 // CHECK OUT THE LOADER
 
-const Me = () => {
-  const myProfileResult = useLoadMyProfileQuery({
-    loopbackUserId: getAccessTokenFromLocalStorage().userId,
-  })
+function Me() {
+  const queryClient = useQueryClient()
+  console.log(queryClient.getQueryCache())
+  console.log(queryClient.getDefaultOptions())
+  const myProfileResult = useLoadMyProfileQuery(
+    {
+      loopbackUserId: getAccessTokenFromLocalStorage().userId,
+    },
+    { onSuccess: () => console.log('Me loaded it') }
+  )
 
   const isFetching = useIsFetching()
   const isMutating = useIsMutating()
@@ -44,10 +50,12 @@ const Me = () => {
   // get values usch as myProfileResult.isError. Perhaps we-ure the error boundary logic
   // that Eric has been looking into.
 
-  const conProfile = myProfileResult.data.conProfile
+  const conProfile = myProfileResult?.data.conProfile
 
-  const userIsMentee = conProfile.userType === 'MENTEE'
-  const userIsMentor = conProfile.userType === 'MENTOR'
+  console.log(conProfile)
+
+  const userIsMentee = conProfile.userType === UserType.Mentee
+  const userIsMentor = conProfile.userType === UserType.Mentor
 
   return (
     <LoggedIn>
@@ -87,7 +95,6 @@ const Me = () => {
       <Element className="block-separator">
         <EditableMentoringTopics />
       </Element>
-
       {userIsMentor && (
         <Element className="block-separator">
           <Columns>

@@ -1,0 +1,24 @@
+query getMentorshipMatches {
+  conMentorshipMatches {
+    id
+    createdAt
+    status
+    applicationText
+    expectationText
+    mentorId
+    mentor {
+      id
+      firstName
+      fullName
+      rediLocation
+    }
+    menteeId
+    mentee {
+      id
+      firstName
+      fullName
+      rediLocation
+    }
+    updatedAt
+  }
+}

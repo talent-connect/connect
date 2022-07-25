@@ -37,8 +37,12 @@ const validationSchema = Yup.object({
 function EditableAbout() {
   const loopbackUserId = getAccessTokenFromLocalStorage().userId
   const queryClient = useQueryClient()
-  const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
+  const myProfileQuery = useLoadMyProfileQuery(
+    { loopbackUserId },
+    { onSuccess: () => console.log('EditableAbout loaded it') }
+  )
   const patchMyProfileMutation = usePatchMyProfileMutation()
+  console.log('rerender')
 
   const profile = myProfileQuery.data.conProfile
 
@@ -47,6 +51,7 @@ function EditableAbout() {
   const expectations = profile?.expectations
 
   const submitForm = async (values: FormikValues) => {
+    console.log('submit form')
     const mutationResult = await patchMyProfileMutation.mutateAsync({
       input: { id: profile.id, ...values },
     })

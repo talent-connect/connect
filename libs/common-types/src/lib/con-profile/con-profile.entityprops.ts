@@ -72,6 +72,8 @@ export class ConProfileEntityProps implements EntityProps {
   // The next ones are computed fields in Salesforce
   ifUserMentee_activeMentorshipMatches: number
   ifUserMentor_activeMentorshipMatches: number
-  age: number
+  ifUserMentor_hasAvailableMentorshipSlot: boolean
+  ifUserMentor_doesntHaveAvailableMentorshipSlot: boolean
+  age?: number
   fullName: string
 }

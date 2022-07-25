@@ -40,10 +40,15 @@ export class SfApiRepository {
   }
 
   async connect() {
-    const res = await this.connection.login(
-      this.username,
-      `${this.password}${this.securityToken}`
-    )
+    try {
+      const res = await this.connection.login(
+        this.username,
+        `${this.password}${this.securityToken}`
+      )
+      console.log('sf connection result', res)
+    } catch (err) {
+      console.log('connection err', err)
+    }
   }
 
   private findRecordsOfObjectQueue = async.queue(

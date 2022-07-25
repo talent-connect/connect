@@ -7,15 +7,11 @@ import {
   Button,
 } from '@talent-connect/shared-atomic-design-components'
 import { Modal } from '@talent-connect/shared-atomic-design-components'
-import { matchesMarkAsComplete } from '../../redux/matches/actions'
 import { RedMatch } from '@talent-connect/shared-types'
+import { useCompleteMentorshipMutation } from './CompleteMentorship.generated'
 
 interface CompleteMentorshipProps {
-  match: RedMatch
-  matchesMarkAsComplete: (
-    redMatchId: string,
-    mentorMessageOnComplete: string
-  ) => void
+  mentorshipMatchId: string
 }
 
 interface CompleteMentorshipFormValues {
@@ -26,15 +22,18 @@ const initialValues = {
   mentorMessageOnComplete: '',
 }
 
-const CompleteMentorship = ({
-  match,
-  matchesMarkAsComplete,
-}: CompleteMentorshipProps) => {
+const CompleteMentorship = ({ mentorshipMatchId }: CompleteMentorshipProps) => {
+  const completeMentorshipMutation = useCompleteMentorshipMutation()
   const [isModalActive, setModalActive] = useState(false)
 
   const submitForm = async (values: CompleteMentorshipFormValues) => {
     try {
-      matchesMarkAsComplete(match.id, values.mentorMessageOnComplete)
+      await completeMentorshipMutation.mutateAsync({
+        input: {
+          mentorshipMatchId,
+          mentorMessageOnComplete: values.mentorMessageOnComplete,
+        },
+      })
       setModalActive(false)
     } catch (error) {
       console.log('error ', error)
@@ -95,11 +94,4 @@ const CompleteMentorship = ({
   )
 }
 
-const mapDispatchToProps = (dispatch: any) => ({
-  matchesMarkAsComplete: (
-    redMatchId: string,
-    mentorMessageOnComplete: string
-  ) => dispatch(matchesMarkAsComplete(redMatchId, mentorMessageOnComplete)),
-})
-
-export default connect(null, mapDispatchToProps)(CompleteMentorship)
+export default CompleteMentorship

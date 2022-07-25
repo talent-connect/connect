@@ -2,9 +2,8 @@ import React, { useState, useCallback } from 'react'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import Teaser from '../../../components/molecules/Teaser'
 import * as Yup from 'yup'
-import { Link } from 'react-router-dom'
+import { Link, Redirect, useHistory } from 'react-router-dom'
 import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
-import { history } from '../../../services/history/history'
 import { login } from '../../../services/api/api'
 import {
   saveAccessTokenToLocalStorage,
@@ -41,6 +40,7 @@ const validationSchema = Yup.object({
 })
 
 export default function Login() {
+  const history = useHistory()
   const accessToken = getAccessTokenFromLocalStorage()
   const loopbackUserId = accessToken?.userId ?? ''
   const [stateLoopbackUserId, setStateLoopbackUserId] = useState(loopbackUserId)
@@ -66,7 +66,6 @@ export default function Login() {
         formik.values.password
       )
       setStateLoopbackUserId(accessToken.userId)
-
       formik.setSubmitting(false)
       history.push('/app/me')
     } catch (err) {

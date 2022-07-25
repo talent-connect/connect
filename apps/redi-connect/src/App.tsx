@@ -11,8 +11,13 @@ import { QueryParamProvider } from 'use-query-params'
 import { useConfetti } from './utils/useConfetti'
 import AppNotification from './components/AppNotification'
 import { Routes } from './components/Routes'
+import {
+  getAccessTokenFromLocalStorage,
+  isLoggedIn,
+  setGraphQlClientAuthHeader,
+} from './services/auth/auth'
 
-const App = () => {
+function App() {
   useConfetti({ keybind: 'm i r i a m a l w a y s r e d i' })
 
   switch (envRediLocation()) {
@@ -33,11 +38,21 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
+      cacheTime: 5 * 60 * 1000,
+
+      //! TODO: Investigate which one of the following or combination thereof is ideal
+      // docs here: https://react-query-v3.tanstack.com/guides/important-defaults
+      // staleTime: 5 * 60 * 1000,
+      refetchOnMount: false,
     },
   },
 })
 
-const NormalRediConnect = () => {
+if (isLoggedIn()) {
+  setGraphQlClientAuthHeader(getAccessTokenFromLocalStorage())
+}
+
+function NormalRediConnect() {
   return (
     <>
       <AppNotification />

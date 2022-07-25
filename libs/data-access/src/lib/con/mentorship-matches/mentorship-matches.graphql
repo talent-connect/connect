@@ -5,6 +5,7 @@ query myMatches($status: MentorshipMatchStatus) {
     expectationText
     mentee {
       id
+      fullName
       firstName
       lastName
       languages
@@ -14,6 +15,7 @@ query myMatches($status: MentorshipMatchStatus) {
     }
     mentor {
       id
+      fullName
       firstName
       lastName
       languages
@@ -49,6 +51,7 @@ query findMatch($id: ID!) {
 fragment conProfileFields on ConProfile {
   _contactId
   id
+  fullName
   firstName
   lastName
   languages

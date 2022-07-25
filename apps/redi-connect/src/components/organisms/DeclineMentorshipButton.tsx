@@ -1,39 +1,34 @@
-import React, { useState } from 'react'
-import { connect } from 'react-redux'
-import { useHistory } from 'react-router-dom'
-import * as Yup from 'yup'
-import { useFormik } from 'formik'
-import { Content } from 'react-bulma-components'
+import { DeclineReason } from '@talent-connect/data-access'
 import {
-  FormTextArea,
   Button,
-  FormSelect,
   FormInput,
+  FormSelect,
+  FormTextArea,
+  Modal,
 } from '@talent-connect/shared-atomic-design-components'
-import { Modal } from '@talent-connect/shared-atomic-design-components'
-import { RedMatch } from '@talent-connect/shared-types'
 import { MENTOR_DECLINES_MENTORSHIP_REASON_FOR_DECLINING } from '@talent-connect/shared-config'
-import { DeclineMentorshipButtonMatchPropFragment } from './DeclineMentorshipButton.generated'
+import { useFormik } from 'formik'
+import { useState } from 'react'
+import { Content } from 'react-bulma-components'
+import * as Yup from 'yup'
+import {
+  DeclineMentorshipButtonMatchPropFragment,
+  useDeclineMentorshipMutation,
+} from './DeclineMentorshipButton.generated'
 
 interface DeclineMentorshipButtonProps {
   match: DeclineMentorshipButtonMatchPropFragment
   menteeName?: string
-  matchesDeclineMentorshipStart: (options: {
-    redMatchId: string
-    ifDeclinedByMentor_chosenReasonForDecline: string
-    ifDeclinedByMentor_ifReasonIsOther_freeText: string
-    ifDeclinedByMentor_optionalMessageToMentee: string
-  }) => void
 }
 
 interface DeclineMentorshipFormValues {
-  ifDeclinedByMentor_chosenReasonForDecline: string
+  ifDeclinedByMentor_chosenReasonForDecline?: DeclineReason
   ifDeclinedByMentor_ifReasonIsOther_freeText: string
   ifDeclinedByMentor_optionalMessageToMentee: string
 }
 
 const initialValues: DeclineMentorshipFormValues = {
-  ifDeclinedByMentor_chosenReasonForDecline: '',
+  ifDeclinedByMentor_chosenReasonForDecline: null,
   ifDeclinedByMentor_ifReasonIsOther_freeText: '',
   ifDeclinedByMentor_optionalMessageToMentee: '',
 }
@@ -46,17 +41,22 @@ const validationSchema = Yup.object({
 
 // TODO: This throws a TS error: { dispatch, matchId }: ConnectButtonProps
 // What to replace with instead of below hack?
-const DeclineMentorshipButton = ({
-  match,
-  matchesDeclineMentorshipStart,
-}: DeclineMentorshipButtonProps) => {
+const DeclineMentorshipButton = ({ match }: DeclineMentorshipButtonProps) => {
+  const declineMentorshipMutation = useDeclineMentorshipMutation()
   const [isModalActive, setModalActive] = useState(false)
 
   const submitForm = async (values: DeclineMentorshipFormValues) => {
     try {
-      matchesDeclineMentorshipStart({
-        redMatchId: match.id,
-        ...values,
+      await declineMentorshipMutation.mutateAsync({
+        input: {
+          mentorshipMatchId: match.id,
+          ifDeclinedByMentor_chosenReasonForDecline:
+            values.ifDeclinedByMentor_chosenReasonForDecline,
+          ifDeclinedByMentor_ifReasonIsOther_freeText:
+            values.ifDeclinedByMentor_ifReasonIsOther_freeText,
+          ifDeclinedByMentor_optionalMessageToMentee:
+            values.ifDeclinedByMentor_optionalMessageToMentee,
+        },
       })
       setModalActive(false)
     } catch (error) {
@@ -131,14 +131,4 @@ const formDeclineOptions = Object.entries(
   MENTOR_DECLINES_MENTORSHIP_REASON_FOR_DECLINING
 ).map(([value, label]) => ({ value, label }))
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const mapDispatchToProps = (dispatch: any) => ({
-  matchesDeclineMentorshipStart: (options: {
-    redMatchId: string
-    ifDeclinedByMentor_chosenReasonForDecline: string
-    ifDeclinedByMentor_ifReasonIsOther_freeText: string
-    ifDeclinedByMentor_optionalMessageToMentee: string
-  }) => dispatch(matchesDeclineMentorshipStart(options)),
-})
-
-export default connect(null, mapDispatchToProps)(DeclineMentorshipButton)
+export default DeclineMentorshipButton

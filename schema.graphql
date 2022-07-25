@@ -114,7 +114,7 @@ type ConMentorshipMatchesMarkAsDismissedOutputDto {
 
 type ConProfile {
   _contactId: String!
-  age: Float!
+  age: Float
   birthDate: DateTime
   categories: [MentoringTopic!]!
   createdAt: DateTime!
@@ -127,6 +127,8 @@ type ConProfile {
   id: ID!
   ifUserMentee_activeMentorshipMatches: Float!
   ifUserMentor_activeMentorshipMatches: Float!
+  ifUserMentor_doesntHaveAvailableMentorshipSlot: Boolean!
+  ifUserMentor_hasAvailableMentorshipSlot: Boolean!
   languages: [ConnectProfileLanguage!]
   lastName: String!
   linkedInProfileUrl: String

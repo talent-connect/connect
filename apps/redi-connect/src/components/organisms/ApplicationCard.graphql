@@ -1,0 +1,22 @@
+fragment ApplicationCardApplicationProp on ConMentorshipMatch {
+  id
+  createdAt
+  mentorId
+  applicationText
+  expectationText
+  mentor {
+    id
+    firstName
+    fullName
+    rediLocation
+  }
+  menteeId
+  mentee {
+    id
+    firstName
+    fullName
+    rediLocation
+  }
+  status
+  updatedAt
+}

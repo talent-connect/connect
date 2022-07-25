@@ -1,20 +1,23 @@
+import {
+  MentorshipMatchStatus,
+  useLoadMyProfileQuery,
+} from '@talent-connect/data-access'
 import { Icon } from '@talent-connect/shared-atomic-design-components'
-import { RedMatch, RedProfile } from '@talent-connect/shared-types'
+import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
+import { RedProfile } from '@talent-connect/shared-types'
 import classnames from 'classnames'
 import moment from 'moment'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Columns, Content, Heading } from 'react-bulma-components'
-import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
+import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 import { Avatar, ConfirmMentorship } from '../organisms'
+import { ApplicationCardApplicationPropFragment } from './ApplicationCard.generated'
 import './ApplicationCard.scss'
 import DeclineMentorshipButton from './DeclineMentorshipButton'
-import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
-import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
-import { useLoadMyProfileQuery } from '@talent-connect/data-access'
 
 interface Props {
-  application: RedMatch & { createdAt?: string }
+  application: ApplicationCardApplicationPropFragment
   hasReachedMenteeLimit: boolean
   currentUser?: RedProfile
 }
@@ -53,7 +56,7 @@ const ApplicationCard = ({
       >
         <Columns vCentered>
           <Columns.Column size={1} className="application-card__avatar">
-            <Avatar profile={profile} />
+            <Avatar profile={applicationUser} />
           </Columns.Column>
 
           <Columns.Column
@@ -145,7 +148,8 @@ const ApplicationCard = ({
             <Content>{application.expectationText}</Content>
           </>
         )}
-        {currentUserIsMentor && application.status === 'applied' ? (
+        {currentUserIsMentor &&
+        application.status === MentorshipMatchStatus.Applied ? (
           <>
             <ConfirmMentorship
               match={application}

@@ -89,6 +89,10 @@ export class ConProfileMapper
       raw.props.Active_Mentorship_Matches_Mentee__c
     props.ifUserMentor_activeMentorshipMatches =
       raw.props.Active_Mentorship_Matches_Mentor__c
+    props.ifUserMentor_hasAvailableMentorshipSlot =
+      raw.props.Has_Available_Mentorship_Slot__c
+    props.ifUserMentor_doesntHaveAvailableMentorshipSlot =
+      raw.props.Doesnt_Have_Available_Mentorship_Slot__c
     props.age = raw.props.Contact__r.ReDI_Age__c
     props.fullName = raw.props.Contact__r.Name
 
@@ -113,8 +117,6 @@ export class ConProfileMapper
     Contact__r.ReDI_Slack_Username__c = srcProps.slackUsername
     Contact__r.MobilePhone = srcProps.telephoneNumber
     Contact__r.Loopback_User_ID__c = srcProps.loopbackUserId
-    Contact__r.CreatedDate = srcProps.createdAt
-    Contact__r.LastModifiedDate = srcProps.updatedAt
 
     props.Id = srcProps.id
     props.Profile_Status__c = srcProps.profileStatus

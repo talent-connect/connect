@@ -6,5 +6,7 @@ query findAvailableMentors($filter: FindConProfilesArgsFilter!) {
     lastName
     categories
     languages
+    fullName
+    rediLocation
   }
 }

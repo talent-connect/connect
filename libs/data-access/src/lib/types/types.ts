@@ -142,7 +142,7 @@ export type ConMentorshipMatchesMarkAsDismissedOutputDto = {
 export type ConProfile = {
   __typename?: 'ConProfile';
   _contactId: Scalars['String'];
-  age: Scalars['Float'];
+  age?: Maybe<Scalars['Float']>;
   birthDate?: Maybe<Scalars['DateTime']>;
   categories: Array<MentoringTopic>;
   createdAt: Scalars['DateTime'];
@@ -155,6 +155,8 @@ export type ConProfile = {
   id: Scalars['ID'];
   ifUserMentee_activeMentorshipMatches: Scalars['Float'];
   ifUserMentor_activeMentorshipMatches: Scalars['Float'];
+  ifUserMentor_doesntHaveAvailableMentorshipSlot: Scalars['Boolean'];
+  ifUserMentor_hasAvailableMentorshipSlot: Scalars['Boolean'];
   languages?: Maybe<Array<ConnectProfileLanguage>>;
   lastName: Scalars['String'];
   linkedInProfileUrl?: Maybe<Scalars['String']>;

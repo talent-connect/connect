@@ -40,6 +40,8 @@ export class ConProfileRecordProps implements RecordProps {
 
   Active_Mentorship_Matches_Mentee__c: number
   Active_Mentorship_Matches_Mentor__c: number
+  Has_Available_Mentorship_Slot__c: boolean
+  Doesnt_Have_Available_Mentorship_Slot__c: boolean
 
   @Type(() => ContactRecordProps)
   Contact__r: ContactRecordProps

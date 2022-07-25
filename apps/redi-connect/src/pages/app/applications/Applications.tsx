@@ -11,12 +11,10 @@ import {
   ConnectProfileStatus,
   useLoadMyProfileQuery,
 } from '@talent-connect/data-access'
+import { useGetMentorshipMatchesQuery } from './Applications.generated'
 
-interface Props {
-  applicants: RedMatch[]
-}
-
-function Applications({ applicants }: Props) {
+function Applications() {
+  const mentorshipMatchesQuery = useGetMentorshipMatchesQuery()
   const loopbackUserId = getAccessTokenFromLocalStorage().userId
   const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
   const history = useHistory()
@@ -27,6 +25,10 @@ function Applications({ applicants }: Props) {
 
   if (profile.profileStatus !== ConnectProfileStatus.Approved)
     return <LoggedIn />
+
+  if (mentorshipMatchesQuery.isLoading) return null
+
+  const applicants = mentorshipMatchesQuery.data?.conMentorshipMatches
 
   return (
     <LoggedIn>
@@ -58,16 +60,18 @@ function Applications({ applicants }: Props) {
             const dateB = new Date(b.createdAt).getTime()
             return dateA < dateB ? 1 : -1
           })
-          .map((application: RedMatch) => (
-            <ApplicationCard key={application.id} application={application} />
+          .map((application) => (
+            <ApplicationCard
+              key={application.id}
+              application={application}
+              hasReachedMenteeLimit={
+                profile.ifUserMentor_doesntHaveAvailableMentorshipSlot
+              }
+            />
           ))
       )}
     </LoggedIn>
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  applicants: getApplicants(state.matches),
-})
-
-export default connect(mapStateToProps, null)(Applications)
+export default Applications

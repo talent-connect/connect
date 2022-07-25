@@ -4,3 +4,11 @@ fragment DeclineMentorshipButtonMatchProp on ConMentorshipMatch {
     firstName
   }
 }
+
+mutation declineMentorship(
+  $input: ConMentorshipMatchesDeclineMentorshipInputDto!
+) {
+  conMentorshipMatchesDeclineMentorship(input: $input) {
+    ok
+  }
+}

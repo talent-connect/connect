@@ -15,20 +15,10 @@ import './ProfileCard.scss'
 import { RedProfile } from '@talent-connect/shared-types'
 import { ReadMentoringTopics } from '../molecules'
 import { ConProfile } from '@talent-connect/data-access'
-
-type ConProfileProps = Pick<
-  ConProfile,
-  | 'id'
-  | 'fullName'
-  | 'languages'
-  | 'categories'
-  | 'rediLocation'
-  | 'profileAvatarImageS3Key'
->
+import { ProfileCardProfilePropFragment } from './ProfileCard.generated'
 
 interface ProfileCardProps {
-  //! TODO: remove RedProfile
-  profile: RedProfile | ConProfileProps
+  profile: ProfileCardProfilePropFragment
   linkTo?: string
   isFavorite?: boolean
   toggleFavorite?: (id: string) => void
