@@ -112,7 +112,7 @@ export default function SignUp() {
         },
       })
       actions.setSubmitting(false)
-      history.push(`/front/signup-email-verification/${type}`)
+      history.push(`/front/signup-complete/${type}`)
     } catch (error) {
       actions.setSubmitting(false)
       setLoopbackSubmitError(Boolean(error))

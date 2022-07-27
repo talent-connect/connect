@@ -260,45 +260,52 @@ export const sendMentorPendingReviewAcceptedEmail = ({
   })
 }
 
-export const sendMenteeRequestAppointmentEmail = ({
-  recipient,
-  firstName,
-  rediLocation,
-}) => {
-  const sendMenteeRequestAppointmentEmailParsed = convertTemplateToHtml(
-    null,
-    'validate-email-address-successful-mentee'
-  )
-  const html = sendMenteeRequestAppointmentEmailParsed.replace(
-    /\${firstName}/g,
-    firstName
-  )
-  return sendMjmlEmailFactory({
-    to: recipient,
-    subject: 'Your email has been verified for ReDI Connect',
-    html: html,
-  })
-}
+/**
+ * These two functions were used to send a "congratulations you're verified"
+ * emails following successful email veriification. They were commetned out
+ * when we migrated to Salesforce and decided to deactivate email verification
+ * to save time. We might want to reactivate it in the future.
+ */
 
-export const sendMentorRequestAppointmentEmail = ({
-  recipient,
-  firstName,
-  rediLocation,
-}) => {
-  const sendMenteeRequestAppointmentEmailParsed = convertTemplateToHtml(
-    null,
-    'validate-email-address-successful-mentor'
-  )
-  const html = sendMenteeRequestAppointmentEmailParsed.replace(
-    /\${firstName}/g,
-    firstName
-  )
-  return sendMjmlEmailFactory({
-    to: recipient,
-    subject: 'Your email has been verified for ReDI Connect',
-    html: html,
-  })
-}
+// export const sendMenteeRequestAppointmentEmail = ({
+//   recipient,
+//   firstName,
+//   rediLocation,
+// }) => {
+//   const sendMenteeRequestAppointmentEmailParsed = convertTemplateToHtml(
+//     null,
+//     'validate-email-address-successful-mentee'
+//   )
+//   const html = sendMenteeRequestAppointmentEmailParsed.replace(
+//     /\${firstName}/g,
+//     firstName
+//   )
+//   return sendMjmlEmailFactory({
+//     to: recipient,
+//     subject: 'Your email has been verified for ReDI Connect',
+//     html: html,
+//   })
+// }
+
+// export const sendMentorRequestAppointmentEmail = ({
+//   recipient,
+//   firstName,
+//   rediLocation,
+// }) => {
+//   const sendMenteeRequestAppointmentEmailParsed = convertTemplateToHtml(
+//     null,
+//     'validate-email-address-successful-mentor'
+//   )
+//   const html = sendMenteeRequestAppointmentEmailParsed.replace(
+//     /\${firstName}/g,
+//     firstName
+//   )
+//   return sendMjmlEmailFactory({
+//     to: recipient,
+//     subject: 'Your email has been verified for ReDI Connect',
+//     html: html,
+//   })
+// }
 
 export const sendEmailToUserWithTpJobseekerProfileSigningUpToCon = ({
   recipient,
@@ -317,41 +324,47 @@ export const sendEmailToUserWithTpJobseekerProfileSigningUpToCon = ({
   })
 }
 
-export const sendVerificationEmail = ({
-  recipient,
-  redUserId,
-  firstName,
-  userType: signupType,
-  verificationToken,
-  rediLocation,
-}) => {
-  const userType = {
-    'public-sign-up-mentor-pending-review': 'mentor',
-    'public-sign-up-mentee-pending-review': 'mentee',
-  }[signupType]
-  const verificationSuccessPageUrl = `${buildFrontendUrl(
-    process.env.NODE_ENV,
-    rediLocation
-  )}/front/signup-complete/${signupType}`
-  const verificationUrl = `${buildBackendUrl(
-    process.env.NODE_ENV
-  )}/api/redUsers/confirm?uid=${redUserId}&token=${verificationToken}&redirect=${encodeURI(
-    verificationSuccessPageUrl
-  )}`
-  const sendMenteeRequestAppointmentEmailParsed = convertTemplateToHtml(
-    null,
-    `validate-email-address-${userType}`
-  )
-  const html = sendMenteeRequestAppointmentEmailParsed
-    .replace(/\${firstName}/g, firstName)
-    .replace(/\${mentorOrMentee}/g, userType)
-    .replace(/\${verificationUrl}/g, verificationUrl)
-  return sendMjmlEmailFactory({
-    to: recipient,
-    subject: 'Verify your email address!',
-    html: html,
-  })
-}
+/**
+ * This function was used for email verification. It was commented out when we
+ * migrated to Salesforce and decided to deactivate email verification to save
+ * time. We might want to reactivate it in the future.
+ */
+
+// export const sendVerificationEmail = ({
+//   recipient,
+//   redUserId,
+//   firstName,
+//   userType: signupType,
+//   verificationToken,
+//   rediLocation,
+// }) => {
+//   const userType = {
+//     'public-sign-up-mentor-pending-review': 'mentor',
+//     'public-sign-up-mentee-pending-review': 'mentee',
+//   }[signupType]
+//   const verificationSuccessPageUrl = `${buildFrontendUrl(
+//     process.env.NODE_ENV,
+//     rediLocation
+//   )}/front/signup-complete/${signupType}`
+//   const verificationUrl = `${buildBackendUrl(
+//     process.env.NODE_ENV
+//   )}/api/redUsers/confirm?uid=${redUserId}&token=${verificationToken}&redirect=${encodeURI(
+//     verificationSuccessPageUrl
+//   )}`
+//   const sendMenteeRequestAppointmentEmailParsed = convertTemplateToHtml(
+//     null,
+//     `validate-email-address-${userType}`
+//   )
+//   const html = sendMenteeRequestAppointmentEmailParsed
+//     .replace(/\${firstName}/g, firstName)
+//     .replace(/\${mentorOrMentee}/g, userType)
+//     .replace(/\${verificationUrl}/g, verificationUrl)
+//   return sendMjmlEmailFactory({
+//     to: recipient,
+//     subject: 'Verify your email address!',
+//     html: html,
+//   })
+// }
 
 export const sendMentoringSessionLoggedEmail = ({
   recipient,

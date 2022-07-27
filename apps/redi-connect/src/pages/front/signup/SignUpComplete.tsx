@@ -4,7 +4,7 @@ import {
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
 import { Columns, Content, Form } from 'react-bulma-components'
-import { useHistory, useParams } from 'react-router'
+import { useHistory, useParams } from 'react-router-dom'
 import { Teaser } from '../../../components/molecules'
 import AccountOperation from '../../../components/templates/AccountOperation'
 
@@ -29,8 +29,8 @@ export default function SignUpComplete() {
         <Columns.Column size={5} offset={1}>
           <Heading border="bottomLeft">Meet the team</Heading>
           <Content size="large" renderAs="div">
-            <p>Your email address was successfully verified!</p>
-            {userType === UserType.Mentor && (
+            <p>Thank you for signing up!</p>
+            {userType.toLowerCase() === UserType.Mentor.toLowerCase() && (
               <p>
                 Now, we would like to get to know you better. We regularly
                 organize mentor onboardings in small groups.{' '}
@@ -41,7 +41,7 @@ export default function SignUpComplete() {
                 </a>
               </p>
             )}
-            {userType === UserType.Mentee && (
+            {userType.toLowerCase() === UserType.Mentee.toLowerCase() && (
               <>
                 <p>
                   Your next step is to watch a short onboarding tutorial to get
