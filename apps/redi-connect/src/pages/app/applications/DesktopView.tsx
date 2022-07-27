@@ -1,7 +1,8 @@
 import React from 'react'
 
 import { Button } from '@talent-connect/shared-atomic-design-components'
-import ApplicationCard from '../../../components/organisms/ApplicationCard'
+import ApplicationCard from './application-card/ApplicationCard'
+import { useFilter } from './useFilter'
 import './DesktopView.scss'
 
 const DesktopView = ({
@@ -10,25 +11,13 @@ const DesktopView = ({
   activeFilter,
   setActiveFilter,
 }) => {
-  const pendingApplications = applicants.filter(
-    (applicant) => applicant.status === 'applied'
-  )
-  const hasPendingApplications = Boolean(pendingApplications.length)
-
-  const hasAcceptedApplications = applicants.some(
-    (applicant) =>
-      applicant.status === 'accepted' || applicant.status === 'completed'
-  )
-
-  const hasDeclinedApplications = applicants.some(
-    (applicant) => applicant.status === 'declined-by-mentor'
-  )
-
-  const hasCancelledApplications = applicants.some(
-    (applicant) =>
-      applicant.status === 'cancelled' ||
-      applicant.status === 'invalidated-as-other-mentor-accepted'
-  )
+  const {
+    pendingApplications,
+    hasPendingApplications,
+    hasAcceptedApplications,
+    hasDeclinedApplications,
+    hasCancelledApplications,
+  } = useFilter(applicants)
 
   const handleActiveFilter = (tabName) => {
     setActiveFilter(tabName)

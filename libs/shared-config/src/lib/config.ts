@@ -542,3 +542,12 @@ export const API_URL = process.env.NX_API_URL
 export const S3_UPLOAD_SIGN_URL = process.env.NX_S3_UPLOAD_SIGN_URL
   ? process.env.NX_S3_UPLOAD_SIGN_URL
   : 'http://127.0.0.1:3003/s3/sign'
+
+export const STATUS_LABELS: any = {
+  applied: 'Pending',
+  accepted: 'Accepted',
+  completed: 'Accepted',
+  cancelled: 'Cancelled',
+  'declined-by-mentor': 'Declined',
+  'invalidated-as-other-mentor-accepted': 'Cancelled',
+}

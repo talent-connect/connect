@@ -6,27 +6,24 @@ import React, { useState } from 'react'
 import { Columns, Content, Heading } from 'react-bulma-components'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { RootState } from '../../redux/types'
-import { getHasReachedMenteeLimit } from '../../redux/user/selectors'
-import { getRedProfileFromLocalStorage } from '../../services/auth/auth'
-import { Avatar, ConfirmMentorship } from '../organisms'
+import { RootState } from '../../../../redux/types'
+import { getHasReachedMenteeLimit } from '../../../../redux/user/selectors'
+import { getRedProfileFromLocalStorage } from '../../../../services/auth/auth'
+import {
+  Avatar,
+  ConfirmMentorship,
+  DeclineMentorshipButton,
+} from '../../../../components/organisms'
 import './ApplicationCard.scss'
-import DeclineMentorshipButton from './DeclineMentorshipButton'
-import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
+import {
+  REDI_LOCATION_NAMES,
+  STATUS_LABELS,
+} from '@talent-connect/shared-config'
 
 interface Props {
   application: RedMatch & { createdAt?: string }
   hasReachedMenteeLimit: boolean
   currentUser?: RedProfile
-}
-
-const STATUS_LABELS: any = {
-  applied: 'Pending',
-  accepted: 'Accepted',
-  completed: 'Accepted',
-  cancelled: 'Cancelled',
-  'declined-by-mentor': 'Declined',
-  'invalidated-as-other-mentor-accepted': 'Cancelled',
 }
 
 const ApplicationCard = ({
@@ -42,15 +39,14 @@ const ApplicationCard = ({
     profile.userType === 'mentee' ? application.mentor : application.mentee
   const currentUserIsMentor = currentUser?.userType === 'mentor'
 
-  const getClassName =
-    application.status !== 'applied'
-      ? 'application-card'
-      : 'application-card-pending'
-
   return (
     <>
       <div
-        className={getClassName}
+        className={
+          application.status !== 'applied'
+            ? 'application-card'
+            : 'application-card-pending'
+        }
         onClick={() => setShowDetails(!showDetails)}
       >
         <Columns vCentered>

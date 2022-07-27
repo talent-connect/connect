@@ -5,7 +5,8 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../../../redux/types'
 import { Button } from '@talent-connect/shared-atomic-design-components'
 import { customStyles } from '../../../../../../libs/shared-atomic-design-components/src/lib/atoms/SelectStyles'
-import ApplicationCard from '../../../components/organisms/ApplicationCard'
+import MobileApplicationCard from './application-card/MobileApplicationCard'
+import { useFilter } from './useFilter'
 import './MobileView.scss'
 
 const applicationStatuses = [
@@ -24,27 +25,15 @@ const MobileView = ({
   const profile = useSelector((state: RootState) => state.user.profile)
   const isMentor = profile.userType === 'mentor'
 
-  const pendingApplications = applicants.filter(
-    (applicant) => applicant.status === 'applied'
-  )
-  const hasPendingApplications = Boolean(pendingApplications.length)
+  const {
+    pendingApplications,
+    hasPendingApplications,
+    hasAcceptedApplications,
+    hasDeclinedApplications,
+    hasCancelledApplications,
+  } = useFilter(applicants)
 
-  const hasAcceptedApplications = applicants.some(
-    (applicant) =>
-      applicant.status === 'accepted' || applicant.status === 'completed'
-  )
-
-  const hasDeclinedApplications = applicants.some(
-    (applicant) => applicant.status === 'declined-by-mentor'
-  )
-
-  const hasCancelledApplications = applicants.some(
-    (applicant) =>
-      applicant.status === 'cancelled' ||
-      applicant.status === 'invalidated-as-other-mentor-accepted'
-  )
-
-  const value =
+  const activeFilterValue =
     activeFilter === 'all'
       ? null
       : applicationStatuses.find(({ value }) => value === activeFilter)
@@ -69,7 +58,7 @@ const MobileView = ({
       <div className="filters-wrapper">
         <div className="dropdown-filter">
           <Select
-            value={value}
+            value={activeFilterValue}
             options={applicationStatuses}
             onChange={(selected) => setActiveFilter(selected.value)}
             placeholder="Filter by Status"
@@ -94,7 +83,10 @@ const MobileView = ({
         {renderEmptyStateMessage('cancelled', !hasCancelledApplications)}
 
         {filteredApplicants.map((application) => (
-          <ApplicationCard key={application.id} application={application} />
+          <MobileApplicationCard
+            key={application.id}
+            application={application}
+          />
         ))}
       </div>
     </div>

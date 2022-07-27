@@ -10,7 +10,6 @@ import { useHistory } from 'react-router-dom'
 import { getRedProfileFromLocalStorage } from '../../../services/auth/auth'
 import MobileView from './MobileView'
 import DesktopView from './DesktopView'
-import './Applications.scss'
 
 interface Props {
   applicants: RedMatch[]
