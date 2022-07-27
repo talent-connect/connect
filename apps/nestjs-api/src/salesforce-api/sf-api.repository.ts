@@ -45,7 +45,6 @@ export class SfApiRepository {
         this.username,
         `${this.password}${this.securityToken}`
       )
-      console.log('sf connection result', res)
     } catch (err) {
       console.log('connection err', err)
     }

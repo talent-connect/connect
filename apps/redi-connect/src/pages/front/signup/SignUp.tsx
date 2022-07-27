@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import AccountOperation from '../../../components/templates/AccountOperation'
-import { useParams } from 'react-router'
+import { useParams } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 
 import * as Yup from 'yup'
@@ -94,25 +94,14 @@ export default function SignUp() {
     mentee_currentlyEnrolledInCourse: '',
   }
 
-  const [submitError, setSubmitError] = useState(false)
+  const [loopbackSubmitError, setLoopbackSubmitError] = useState(false)
   const submitForm = async (
     values: FormikValues,
     actions: FormikActions<SignUpFormValues>
   ) => {
-    setSubmitError(false)
-    const profile = values as Partial<RedProfile>
-    // TODO: this needs to be done in a smarter way, like iterating over the RedProfile definition or something
-    const cleanProfile: Partial<RedProfile> = omit(profile, [
-      'password',
-      'passwordConfirm',
-      'agreesWithCodeOfConduct',
-      'gaveGdprConsent',
-    ])
-    cleanProfile.userActivated = false
-    cleanProfile.signupSource = 'public-sign-up'
-    cleanProfile.menteeCountCapacity = 1
+    setLoopbackSubmitError(false)
     try {
-      await signUpLoopback(values.email, values.password, cleanProfile)
+      await signUpLoopback(values.email, values.password)
       await signUpMutation.mutateAsync({
         input: {
           email: values.email,
@@ -123,10 +112,10 @@ export default function SignUp() {
         },
       })
       actions.setSubmitting(false)
-      history.push(`/front/signup-email-verification/${cleanProfile.userType}`)
+      history.push(`/front/signup-email-verification/${type}`)
     } catch (error) {
       actions.setSubmitting(false)
-      setSubmitError(Boolean(error))
+      setLoopbackSubmitError(Boolean(error))
     }
   }
 
@@ -233,9 +222,14 @@ export default function SignUp() {
             </Checkbox.Form>
             <Form.Help
               color="danger"
-              className={submitError ? 'help--show' : ''}
+              className={
+                loopbackSubmitError || signUpMutation.isError
+                  ? 'help--show'
+                  : ''
+              }
             >
-              {submitError && 'An error occurred, please try again.'}
+              {(loopbackSubmitError || signUpMutation.isError) &&
+                'An error occurred, please try again.'}
             </Form.Help>
             <Form.Field>
               <Form.Control>

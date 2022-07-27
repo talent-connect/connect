@@ -27,6 +27,7 @@ export class ConProfilesService {
     entityProps._contactId = user.contactId
     entityProps.firstName = input.firstName
     entityProps.lastName = input.lastName
+    entityProps.menteeCountCapacity = 1
 
     const entity = ConProfileEntity.create(entityProps)
 

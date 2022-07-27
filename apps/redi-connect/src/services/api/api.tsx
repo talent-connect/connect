@@ -17,17 +17,14 @@ import {
 import { history } from '../history/history'
 import { http } from '../http/http'
 
-export const signUpLoopback = async (
-  email: string,
-  password: string,
-  redProfile: Partial<RedProfile>
-) => {
+export const signUpLoopback = async (email: string, password: string) => {
   email = email.toLowerCase()
-  const rediLocation = process.env.NX_REDI_CONNECT_REDI_LOCATION as RediLocation
-  redProfile.rediLocation = rediLocation
   const userResponse = await http(`${API_URL}/redUsers`, {
     method: 'post',
-    data: { email, password, rediLocation },
+    data: {
+      email,
+      password,
+    },
   })
   const accessToken = await login(email, password)
   saveAccessTokenToLocalStorage(accessToken)

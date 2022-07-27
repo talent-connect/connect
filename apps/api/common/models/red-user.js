@@ -26,6 +26,13 @@ module.exports = function (RedUser) {
     next()
   })
 
+  // Hook for sending verification email
+  RedUser.observe('after save', async function (context, next) {
+    if (process.env.NODE_ENV === 'seeding') return next()
+    // Onky continue if this is a brand new user
+    if (!context.isNewInstance) return next()
+  })
+
   RedUser.afterRemote('confirm', async function (ctx, inst, next) {
     const redUserInst = await RedUser.findById(ctx.args.uid, {
       include: ['redProfile', 'tpJobseekerProfile', 'tpCompanyProfile'],
