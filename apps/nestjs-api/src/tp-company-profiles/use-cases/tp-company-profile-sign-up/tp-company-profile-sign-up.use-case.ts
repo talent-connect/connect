@@ -36,7 +36,10 @@ export class TpCompanyProfileSignUpUseCase {
   ): Promise<TpCompanyProfileSignUpMutationOutputDto> {
     let companyEntity: TpCompanyProfileEntity
 
-    console.log('creating new company or getting existing one')
+    console.log(
+      '[TpCompanyProfileSignUpUseCase]',
+      'creating new company or getting existing one'
+    )
     if (
       input.operationType ===
       TpCompanyProfileSignUpOperationType.EXISTING_COMPANY
@@ -44,11 +47,21 @@ export class TpCompanyProfileSignUpUseCase {
       companyEntity = await this.tpCompanyProfilesSerivce.findOneById(
         input.companyIdOrName
       )
+      console.log(
+        '[TpCompanyProfileSignUpUseCase]',
+        'found existing company',
+        companyEntity.props.id
+      )
     } else {
       const accountRecord = await this.sfService.createAccountWithName(
         input.companyIdOrName
       )
       companyEntity = this.mapper.fromPersistence(accountRecord)
+      console.log(
+        '[TpCompanyProfileSignUpUseCase]',
+        'created new company',
+        companyEntity.props.id
+      )
     }
 
     const contactRecordProps = new ContactRecordProps()
@@ -61,20 +74,39 @@ export class TpCompanyProfileSignUpUseCase {
       input.firstPointOfContact
     contactRecordProps.Loopback_User_ID__c = currentUser.loopbackUserId
 
-    console.log('updating contact record')
+    // INFO: it might seem counterintuitive to UPDATE a Contact record here,
+    // instead of rather creating a new one. This is due to a abstraction. The
+    // resolver that calls this use case (TpCompanyProfilesResolver) is
+    // protected by GqlJwtAuthGuard. It currently auto-creates a Contact
+    // record if it doesn't find one. Arguably, this violates SRP, and we might
+    // TODO want to do replace this later on.
     const contactRecord = await this.sfService.updateContact(
       ContactRecord.create(contactRecordProps)
+    )
+    console.log(
+      '[TpCompanyProfileSignUpUseCase]',
+      'created contact record',
+      contactRecord.props.Id
     )
 
     const accountContactRecordProps = new AccountContactRecordProps()
     accountContactRecordProps.AccountId = companyEntity.props.id
     accountContactRecordProps.ContactId = contactRecord.props.Id
     accountContactRecordProps.Roles = 'TALENT_POOL_COMPANY_REPRESENTATIVE'
-    accountContactRecordProps.ReDI_Company_Representative_Status__c = 'PENDING'
+    accountContactRecordProps.ReDI_Company_Representative_Status__c =
+      input.operationType ===
+      TpCompanyProfileSignUpOperationType.EXISTING_COMPANY
+        ? 'PENDING'
+        : 'APPROVED'
 
-    console.log('inserting accountcontact record')
-    await this.sfService.createAccountContactRelationship(
-      AccountContactRecord.create(accountContactRecordProps)
+    const accountContactRecordCreationResult =
+      await this.sfService.createAccountContactRelationship(
+        AccountContactRecord.create(accountContactRecordProps)
+      )
+    console.log(
+      '[TpCompanyProfileSignUpUseCase]',
+      'created accountcontact record',
+      accountContactRecordCreationResult.id
     )
 
     return { ok: true }

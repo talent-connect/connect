@@ -70,7 +70,10 @@ export class SfApiRepository {
       })
 
       if (results.length > 0)
-        console.log(`Found ${results.length} records of ${objectName}`)
+        console.log(
+          '[SfApiRepository]',
+          `Found ${results.length} records of ${objectName}`
+        )
 
       callback(results)
     },

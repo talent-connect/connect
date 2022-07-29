@@ -102,18 +102,10 @@ export class SfApiTpCompanyProfilesService {
     return updatedContactRecord
   }
 
-  async createAccountContactRelationship(
-    accountContact: AccountContactRecord
-  ): Promise<AccountContactRecord> {
-    const createAccountContactResult = await this.repository.createRecord(
+  async createAccountContactRelationship(accountContact: AccountContactRecord) {
+    return await this.repository.createRecord(
       AccountContactRecord.metadata.SALESFORCE_OBJECT_NAME,
       accountContact.props
     )
-
-    const createdContactRecord = await this.getAccountContactById(
-      createAccountContactResult.id
-    )
-
-    return createdContactRecord
   }
 }
