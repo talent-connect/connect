@@ -1,12 +1,9 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
 import AccountOperation from '../../../components/templates/AccountOperation'
-import { useParams } from 'react-router-dom'
-import { Link } from 'react-router-dom'
 
 import * as Yup from 'yup'
 
-import { FormikValues, FormikHelpers as FormikActions, useFormik } from 'formik'
-import omit from 'lodash/omit'
 import {
   Button,
   Checkbox,
@@ -14,21 +11,20 @@ import {
   FormSelect,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
+import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
 
 import Teaser from '../../../components/molecules/Teaser'
 
-import { Columns, Content, Form } from 'react-bulma-components'
+import { Columns, Content, Form, Notification } from 'react-bulma-components'
 
-import { signUpLoopback } from '../../../services/api/api'
-import { RedProfile } from '@talent-connect/shared-types'
-import { history } from '../../../services/history/history'
-import { courses } from '../../../config/config'
-import { Extends } from '@talent-connect/typescript-utilities'
 import {
   RediLocation,
   useConProfileSignUpMutation,
   UserType,
 } from '@talent-connect/data-access'
+import { courses } from '../../../config/config'
+import { signUpLoopback } from '../../../services/api/api'
+import { history } from '../../../services/history/history'
 import { envRediLocation } from '../../../utils/env-redi-location'
 
 const formCourses = courses.map((course) => ({
@@ -94,14 +90,17 @@ export default function SignUp() {
     mentee_currentlyEnrolledInCourse: '',
   }
 
-  const [loopbackSubmitError, setLoopbackSubmitError] = useState(false)
+  const [loopbackSubmitError, setLoopbackSubmitError] = useState<string | null>(
+    'generic'
+  )
   const submitForm = async (
     values: FormikValues,
     actions: FormikActions<SignUpFormValues>
   ) => {
-    setLoopbackSubmitError(false)
+    setLoopbackSubmitError(null)
     try {
       await signUpLoopback(values.email, values.password)
+      console.log('for some reason we are here')
       await signUpMutation.mutateAsync({
         input: {
           email: values.email,
@@ -115,7 +114,15 @@ export default function SignUp() {
       history.push(`/front/signup-complete/${type}`)
     } catch (error) {
       actions.setSubmitting(false)
-      setLoopbackSubmitError(Boolean(error))
+      if (
+        error?.response?.data?.error?.details?.codes?.email.includes(
+          'uniqueness'
+        )
+      ) {
+        setLoopbackSubmitError('user-already-exists')
+      } else {
+        setLoopbackSubmitError('generic')
+      }
     }
   }
 
@@ -144,6 +151,12 @@ export default function SignUp() {
               username and password <Link to="/front/login">here</Link>.
             </Content>
           )}
+          {loopbackSubmitError === 'user-already-exists' ? (
+            <Notification color="info" className="is-light">
+              You already have an account. Please{' '}
+              <Link to="/front/login">log in</Link>.
+            </Notification>
+          ) : null}
 
           <form onSubmit={(e) => e.preventDefault()} className="form">
             <FormInput
@@ -220,17 +233,13 @@ export default function SignUp() {
                 Data Protection
               </a>
             </Checkbox.Form>
-            <Form.Help
-              color="danger"
-              className={
-                loopbackSubmitError || signUpMutation.isError
-                  ? 'help--show'
-                  : ''
-              }
-            >
-              {(loopbackSubmitError || signUpMutation.isError) &&
-                'An error occurred, please try again.'}
-            </Form.Help>
+            {loopbackSubmitError !== 'user-already-exists' &&
+            (loopbackSubmitError || signUpMutation.isError) ? (
+              <Form.Help color="danger" className="help--show">
+                An error occurred, please try again.
+              </Form.Help>
+            ) : null}
+
             <Form.Field>
               <Form.Control>
                 <Button
