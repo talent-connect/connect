@@ -18,6 +18,9 @@
     "paths": {
       "@talent-connect/common-types": ["libs/common-types/src/index.ts"],
       "@talent-connect/data-access": ["libs/data-access/src/index.ts"],
+      "@talent-connect/salesforce-record-events": [
+        "libs/salesforce-record-events/src/index.ts"
+      ],
       "@talent-connect/shared-atomic-design-components": [
         "libs/shared-atomic-design-components/src/index.ts"
       ],

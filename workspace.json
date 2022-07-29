@@ -447,6 +447,29 @@
       "tags": [],
       "implicitDependencies": ["redi-talent-pool"]
     },
+    "salesforce-record-events": {
+      "root": "libs/salesforce-record-events",
+      "sourceRoot": "libs/salesforce-record-events/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/salesforce-record-events/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/salesforce-record-events"],
+          "options": {
+            "jestConfig": "libs/salesforce-record-events/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
     "shared-atomic-design-components": {
       "root": "libs/shared-atomic-design-components",
       "sourceRoot": "libs/shared-atomic-design-components/src",

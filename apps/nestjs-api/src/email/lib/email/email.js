@@ -151,20 +151,17 @@ export const sendResetPasswordEmail = ({
 export const sendPendingReviewDeclinedEmail = ({
   recipient,
   firstName,
-  rediLocation,
   userType,
 }) => {
-  const rediEmailAdress = 'career@redi-school.org'
-
   const sendPendingReviewDeclinedEmailParsed = convertTemplateToHtml(
     null,
     `pending-review-declined-email--${userType}`
   )
 
-  const html = sendPendingReviewDeclinedEmailParsed
-    .replace(/\${firstName}/g, firstName)
-    .replace(/\${rediLocation}/g, rediLocation)
-    .replace(/\${rediEmailAdress}/g, rediEmailAdress)
+  const html = sendPendingReviewDeclinedEmailParsed.replace(
+    /\${firstName}/g,
+    firstName
+  )
   return sendMjmlEmailFactory({
     to: recipient,
     subject: 'ReDI Connect: Your user registration was declined',
@@ -365,6 +362,30 @@ export const sendEmailToUserWithTpJobseekerProfileSigningUpToCon = ({
 //     html: html,
 //   })
 // }
+
+export const sendMenteeSignupCompleteEmail = ({ recipient, firstName }) => {
+  const html = convertTemplateToHtml(null, 'signup-complete-mentee').replace(
+    /\${firstName}/g,
+    firstName
+  )
+  return sendMjmlEmailFactory({
+    to: recipient,
+    subject: 'Sign-up complete!',
+    html,
+  })
+}
+
+export const sendMentorSignupCompleteEmail = ({ recipient, firstName }) => {
+  const html = convertTemplateToHtml(null, 'signup-complete-mentor').replace(
+    /\${firstName}/g,
+    firstName
+  )
+  return sendMjmlEmailFactory({
+    to: recipient,
+    subject: 'Sign-up complete!',
+    html,
+  })
+}
 
 export const sendMentoringSessionLoggedEmail = ({
   recipient,

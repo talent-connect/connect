@@ -4,6 +4,8 @@ import {
   sendMentorCancelledMentorshipNotificationEmail,
   sendToMentorConfirmationOfMentorshipCancelled,
   sendMenteePendingReviewAcceptedEmail,
+  sendMentorPendingReviewAcceptedEmail,
+  sendPendingReviewDeclinedEmail,
   sendMentorshipRequestReceivedEmail,
   sendMentorshipCompletionEmailToMentor,
   sendMentorshipCompletionEmailToMentee,
@@ -11,6 +13,8 @@ import {
   sendMentorshipDeclinedEmail,
   sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted,
   sendMentoringSessionLoggedEmail,
+  sendMenteeSignupCompleteEmail,
+  sendMentorSignupCompleteEmail,
 } from './lib/email/email'
 
 @Injectable()
@@ -29,6 +33,14 @@ export class EmailService {
 
   sendMenteePendingReviewAcceptedEmail(params) {
     return sendMenteePendingReviewAcceptedEmail(params).subscribe()
+  }
+
+  sendMentorPendingReviewAcceptedEmail(params) {
+    return sendMentorPendingReviewAcceptedEmail(params).subscribe()
+  }
+
+  sendPendingReviewDeclinedEmail(params) {
+    return sendPendingReviewDeclinedEmail(params).subscribe()
   }
 
   sendMentorshipRequestReceivedEmail(params) {
@@ -59,5 +71,13 @@ export class EmailService {
 
   sendMentoringSessionLoggedEmail(params) {
     return sendMentoringSessionLoggedEmail(params).subscribe()
+  }
+
+  sendMenteeSignupCompleteEmail(params) {
+    return sendMenteeSignupCompleteEmail(params).subscribe()
+  }
+
+  sendMentorSignupCompleteEmail(params) {
+    return sendMentorSignupCompleteEmail(params).subscribe()
   }
 }
