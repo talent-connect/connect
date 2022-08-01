@@ -6,11 +6,11 @@ jobs:
   to_mirror_repo:
     runs-on: ubuntu-latest
     steps: # <-- must use actions/checkout before mirroring!
-      - uses: actions/checkout@v2
+      - name: repo-sync
+        uses: wei/git-sync@v3
         with:
-          fetch-depth: 0
-      - uses: pixta-dev/repository-mirroring-action@v1
-        with:
-          target_repo_url: ${{ secrets.SYNC_REPOSITORY_TARGET_URL }}
-          ssh_private_key: # <-- use 'secrets' to pass credential information.
-            ${{ secrets.SYNC_REPOSITORY_DEPLOY_TOKEN }}
+          source_repo: 'talent-connect/connect'
+          destination_repo: 'talent-connect/connnect-ffg-private'
+          source_branch: 'refs/remotes/source/*'
+          destination_branch: 'refs/heads/*'
+          destination_ssh_private_key: ${{ secrets.SYNC_REPOSITORY_DEPLOY_TOKEN }}
