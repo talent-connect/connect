@@ -41,6 +41,7 @@ Thumbs.db
 # mongodb data
 /mongodb-data/*
 !/mongodb-data/.gitkeep
+/mongodb-data2/*
 
 
 # environment variables
