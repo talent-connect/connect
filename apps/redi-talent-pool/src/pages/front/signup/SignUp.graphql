@@ -1,0 +1,5 @@
+mutation signUpCompany($input: TpCompanyProfileSignUpInputDto!) {
+  tpCompanyProfileSignUp(input: $input) {
+    ok
+  }
+}

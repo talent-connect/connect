@@ -26,9 +26,8 @@ export const signUpLoopback = async (email: string, password: string) => {
       password,
     },
   })
-  // const accessToken = await login(email, password)
-  // saveAccessTokenToLocalStorage(accessToken)
-  throw new Error('haha')
+  const accessToken = await login(email, password)
+  saveAccessTokenToLocalStorage(accessToken)
 }
 
 export const login = async (

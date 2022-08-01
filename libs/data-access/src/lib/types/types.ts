@@ -672,7 +672,6 @@ export type TpCompanyProfile = {
 
 export type TpCompanyProfileSignUpInputDto = {
   companyIdOrName: Scalars['String'];
-  email: Scalars['String'];
   firstName: Scalars['String'];
   firstPointOfContact: FirstPointOfTpContactOption;
   firstPointOfContactOther?: InputMaybe<Scalars['String']>;

@@ -1,4 +1,7 @@
-import { useListAllTpCompanyNamesQuery } from '@talent-connect/data-access'
+import {
+  TpCompanyProfileSignUpOperationType,
+  useListAllTpCompanyNamesQuery,
+} from '@talent-connect/data-access'
 import {
   Button,
   Checkbox,
@@ -21,8 +24,13 @@ import { Link, useParams } from 'react-router-dom'
 import * as Yup from 'yup'
 import TpTeaser from '../../../components/molecules/TpTeaser'
 import AccountOperation from '../../../components/templates/AccountOperation'
-import { signUpCompany, signUpJobseeker } from '../../../services/api/api'
+import {
+  signUpCompany,
+  signUpJobseeker,
+  signUpLoopback,
+} from '../../../services/api/api'
 import { history } from '../../../services/history/history'
+import { useSignUpCompanyMutation } from './SignUp.generated'
 
 const formRediLocations = objectEntries(REDI_LOCATION_NAMES).map(
   ([id, label]) => ({
@@ -45,7 +53,7 @@ function buildValidationSchema(signupType: SignUpPageType['type']) {
   const baseSchema = {
     firstName: Yup.string().required('Your first name is invalid').max(255),
     lastName: Yup.string().required('Your last name is invalid').max(255),
-    contactEmail: Yup.string()
+    email: Yup.string()
       .email('Your email is invalid')
       .required('You need to give an email address')
       .label('Email')
@@ -100,7 +108,7 @@ type SignUpPageType = {
 export interface SignUpFormValues {
   // TODO: Make this into an enum/type in shared confif/types
   state?: string
-  contactEmail: string
+  email: string
   password: string
   passwordConfirm: string
   companyName?: string
@@ -112,13 +120,13 @@ export interface SignUpFormValues {
 
 export default function SignUp() {
   const listAllTpCompanyNamesQuery = useListAllTpCompanyNamesQuery()
-  console.log(listAllTpCompanyNamesQuery.data?.publicTpCompanyProfiles)
+  const signUpCompanyMutation = useSignUpCompanyMutation()
 
   const { type } = useParams<SignUpPageType>()
 
   const initialValues: SignUpFormValues = useMemo(
     () => ({
-      contactEmail: '',
+      email: '',
       password: '',
       passwordConfirm: '',
       firstName: '',
@@ -136,16 +144,15 @@ export default function SignUp() {
     initialValues.state = 'drafting-profile'
   }
 
-  const [submitError, setSubmitError] = useState(null)
+  const [loopbackSubmitError, setLoopbackSubmitError] = useState(null)
   const submitForm = async (
     values: FormikValues,
     actions: FormikActions<SignUpFormValues>
   ) => {
-    setSubmitError(null)
-
-    let profile
-
     try {
+      setLoopbackSubmitError(null)
+      await signUpLoopback(values.email, values.password)
+
       if (type === 'jobseeker') {
         const profile = values as Partial<TpJobseekerProfile>
         profile.isProfileVisibleToCompanies = true
@@ -160,27 +167,19 @@ export default function SignUp() {
           'gaveGdprConsent',
         ])
 
-        await signUpJobseeker(
-          values.contactEmail,
-          values.password,
-          cleanProfile
-        )
+        await signUpJobseeker(values.email, values.password, cleanProfile)
       }
       if (type === 'company') {
-        const profile = values as Partial<TpCompanyProfile>
-        profile.isProfileVisibleToJobseekers = true
-
-        // TODO: this needs to be done in a smarter way, like iterating over the TpJobseekerProfile definition or something
-        const cleanProfile:
-          | Partial<TpJobseekerProfile>
-          | Partial<TpCompanyProfile> = omit(profile, [
-          'password',
-          'passwordConfirm',
-          'agreesWithCodeOfConduct',
-          'gaveGdprConsent',
-        ])
-
-        await signUpCompany(values.contactEmail, values.password, cleanProfile)
+        await signUpCompanyMutation.mutateAsync({
+          input: {
+            companyIdOrName: values.companyName,
+            firstName: values.firstName,
+            lastName: values.lastName,
+            operationType: TpCompanyProfileSignUpOperationType.NewCompany,
+            firstPointOfContact: values.howDidHearAboutRediKey,
+            firstPointOfContactOther: values.howDidHearAboutRediOtherText,
+          },
+        })
       }
       actions.setSubmitting(false)
       history.push(`/front/signup-email-verification`)
@@ -191,9 +190,9 @@ export default function SignUp() {
           'uniqueness'
         )
       ) {
-        return setSubmitError('user-already-exists')
+        return setLoopbackSubmitError('user-already-exists')
       }
-      return setSubmitError('generic')
+      return setLoopbackSubmitError('generic')
     }
   }
 
@@ -220,7 +219,7 @@ export default function SignUp() {
             Got a ReDI Connect user account? You can log in with the same
             username and password <Link to="/front/login">here</Link>.
           </Content>
-          {submitError === 'user-already-exists' && (
+          {loopbackSubmitError === 'user-already-exists' && (
             <Notification color="info" className="is-light">
               You already have an account. Please{' '}
               <Link to="/front/login">log in</Link>.
@@ -248,7 +247,7 @@ export default function SignUp() {
             />
 
             <FormInput
-              name="contactEmail"
+              name="email"
               type="email"
               placeholder="Your Email"
               {...formik}
@@ -344,9 +343,9 @@ export default function SignUp() {
             </Checkbox.Form>
             <Form.Help
               color="danger"
-              className={submitError ? 'help--show' : ''}
+              className={loopbackSubmitError ? 'help--show' : ''}
             >
-              {submitError === 'generic' &&
+              {loopbackSubmitError === 'generic' &&
                 'An error occurred, please try again.'}
             </Form.Help>
             <Form.Field>

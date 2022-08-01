@@ -554,7 +554,6 @@ type TpCompanyProfile {
 
 input TpCompanyProfileSignUpInputDto {
   companyIdOrName: String!
-  email: String!
   firstName: String!
   firstPointOfContact: FirstPointOfTpContactOption!
   firstPointOfContactOther: String

@@ -100,7 +100,6 @@ export default function SignUp() {
     setLoopbackSubmitError(null)
     try {
       await signUpLoopback(values.email, values.password)
-      console.log('for some reason we are here')
       await signUpMutation.mutateAsync({
         input: {
           email: values.email,

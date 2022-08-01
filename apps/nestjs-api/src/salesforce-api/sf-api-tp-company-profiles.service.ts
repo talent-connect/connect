@@ -36,12 +36,14 @@ export class SfApiTpCompanyProfilesService {
 
   // TODO: Eliminate this method, replace with a generic createAccount instead that takes
   // a Record object as input
+  //! TODO: the default values here should be moved to the use case / service call
   async createAccountWithName(companyName: string): Promise<AccountRecord> {
     const insertResult = await this.repository.createRecord(
       AccountRecord.metadata.SALESFORCE_OBJECT_NAME,
       {
         Name: companyName,
         ReDI_Talent_Pool_State__c: 'DRAFTING_PROFILE',
+        ReDI_Visible_to_Jobseekers__c: true,
       }
     )
 

@@ -17,6 +17,11 @@ import {
   sendMentorSignupCompleteEmail,
 } from './lib/email/email'
 
+import {
+  sendCompanySignupCompleteEmail,
+  sendJobseekerSignupCompleteEmail,
+} from './lib/email/tp-email'
+
 @Injectable()
 export class EmailService {
   sendReportProblemEmail(params) {
@@ -79,5 +84,12 @@ export class EmailService {
 
   sendMentorSignupCompleteEmail(params) {
     return sendMentorSignupCompleteEmail(params).subscribe()
+  }
+
+  sendCompanySignupCompleteEmail(params) {
+    return sendCompanySignupCompleteEmail(params).subscribe()
+  }
+  sendJobseekerSignupCompleteEmail(params) {
+    return sendJobseekerSignupCompleteEmail(params).subscribe()
   }
 }

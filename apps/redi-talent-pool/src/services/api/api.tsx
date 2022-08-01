@@ -14,11 +14,25 @@ import {
   purgeAllSessionData,
   saveAccessTokenToLocalStorage,
   saveRedUserToLocalStorage,
+  setGraphQlClientAuthHeader,
 } from '../auth/auth'
 import { history } from '../history/history'
 import { http } from '../http/http'
 
 export const queryClient = new QueryClient()
+
+export const signUpLoopback = async (email: string, password: string) => {
+  email = email.toLowerCase()
+  const userResponse = await http(`${API_URL}/redUsers`, {
+    method: 'post',
+    data: {
+      email,
+      password,
+    },
+  })
+  const accessToken = await login(email, password)
+  saveAccessTokenToLocalStorage(accessToken)
+}
 
 export const signUpJobseeker = async (
   email: string,
@@ -85,6 +99,8 @@ export const login = async (
     },
   })
   const accessToken = loginResp.data as AccessToken
+  saveAccessTokenToLocalStorage(accessToken)
+  setGraphQlClientAuthHeader(accessToken)
   return accessToken
 }
 
