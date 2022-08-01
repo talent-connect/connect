@@ -14,4 +14,3 @@ jobs:
           source_branch: 'refs/remotes/source/*'
           destination_branch: 'refs/heads/*'
           destination_ssh_private_key: ${{ secrets.SYNC_REPOSITORY_DEPLOY_TOKEN }}
-          # ${{ secrets.SYNC_REPOSITORY_TARGET_URL }}
