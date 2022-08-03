@@ -11,6 +11,7 @@ const {
   tap,
   toArray,
   delay,
+  mergeMap,
 } = require('rxjs/operators')
 const moment = require('moment')
 
@@ -68,7 +69,8 @@ const DESIRED_ROLES = {
   softwareDevelopment: 'Software development',
   uxAndUiDesign: 'UX and UI design',
   testingAndQualityAssurance: 'Testing and Quality Assurance',
-  other: 'Other',
+  // other: 'Other', // specifically commented out as there are no
+  // mentoring topics in the group 'other'. It causes issues when seeding
 }
 const desiredRolesKeys = Object.keys(DESIRED_ROLES)
 
@@ -579,7 +581,7 @@ const categories = [
   },
   { id: 'entrepreneurship', label: 'Entrepreneurship', group: 'careerSupport' },
   { id: 'freelancing', label: 'Freelancing', group: 'careerSupport' },
-]
+].map((p) => p.id)
 
 const Languages = ['German', 'Arabic', 'Farsi', 'Tigrinya']
 
@@ -644,6 +646,67 @@ const pickRandomUserType = () => {
   return possibleUserTypes[randomIndex]
 }
 
+const addMentorSpecificProperties = (profile) => {
+  profile.mentor_mentoringTopics = pickRandomArrayElements(
+    mentoringTopicsKeys,
+    6
+  )
+  profile.mentor_mentoringGoals = pickRandomArrayElements(mentoringGoalsKeys, 2)
+  profile.mentor_professionalExperienceFields = pickRandomArrayElements(
+    fieldsOfExpertiseKeys,
+    2
+  )
+  return profile
+}
+
+const addMenteeSpecificProperties = (profile) => {
+  profile.mentee_mentoringGoal = pickRandomArrayElement(mentoringGoalsKeys)
+  profile.mentee_overarchingMentoringTopics = pickRandomArrayElements(
+    mentoringTopicsByDesiredRole['overarchingTopics'].map((p) => p.id),
+    3
+  )
+  profile.mentee_primaryRole_fieldOfExpertise =
+    pickRandomArrayElement(desiredRolesKeys)
+  if (
+    !mentoringTopicsByDesiredRole[profile.mentee_primaryRole_fieldOfExpertise]
+  ) {
+    console.log(profile.mentee_primaryRole_fieldOfExpertise)
+    console.log(
+      mentoringTopicsByDesiredRole[profile.mentee_primaryRole_fieldOfExpertise]
+    )
+  }
+  profile.mentee_primaryRole_mentoringTopics = pickRandomArrayElements(
+    mentoringTopicsByDesiredRole[
+      profile.mentee_primaryRole_fieldOfExpertise
+    ].map((p) => p.id),
+    3
+  )
+  profile.mentee_secondaryRole_fieldOfExpertise =
+    pickRandomArrayElement(desiredRolesKeys)
+  if (
+    !mentoringTopicsByDesiredRole[profile.mentee_secondaryRole_fieldOfExpertise]
+  ) {
+    console.log(profile.mentee_secondaryRole_fieldOfExpertise)
+    console.log(
+      mentoringTopicsByDesiredRole[
+        profile.mentee_secondaryRole_fieldOfExpertise
+      ]
+    )
+  }
+  profile.mentee_secondaryRole_mentoringTopics = pickRandomArrayElements(
+    mentoringTopicsByDesiredRole[
+      profile.mentee_secondaryRole_fieldOfExpertise
+    ].map((p) => p.id),
+    3
+  )
+  profile.mentee_toolsAndFrameworks_mentoringTopics = pickRandomArrayElements(
+    mentoringTopicsByDesiredRole['toolsAndFrameworks'].map((p) => p.id),
+    6
+  )
+
+  return profile
+}
+
 const users = fp.compose(
   fp.take(1000),
   fp.map(({ name, surname, gender }) => {
@@ -681,8 +744,8 @@ const users = fp.compose(
         mentee_occupationOther_description: randomString(),
         profileAvatarImageS3Key:
           'c1774822-9495-4bd6-866a-bf4d28aaddc8_ScreenShot2019-03-12at22.22.20.png',
-        languages: Languages.filter(() => Math.random() > 0.5).concat(
-          'English'
+        languages: ['English'].concat(
+          Languages.filter(() => Math.random() > 0.5)
         ),
         otherLanguages: randomString(),
         personalDescription: randomString(undefined, 300),
@@ -702,44 +765,9 @@ const users = fp.compose(
       },
     }
     if (profile.redProfile.userType.indexOf('mentee') !== -1) {
-      profile.redProfile.mentee_mentoringGoal =
-        pickRandomArrayElement(mentoringGoalsKeys)
-      profile.redProfile.mentee_overarchingMentoringTopics =
-        pickRandomArrayElements(mentoringGoalsKeys, 3)
-      profile.redProfile.mentee_primaryRole_fieldOfExpertise =
-        pickRandomArrayElement(desiredRolesKeys)
-      profile.redProfile.mentee_primaryRole_mentoringTopics =
-        pickRandomArrayElements(
-          mentoringTopicsByDesiredRole[
-            profile.redProfile.mentee_primaryRole_fieldOfExpertise
-          ],
-          3
-        )
-      profile.redProfile.mentee_secondaryRole_fieldOfExpertise =
-        pickRandomArrayElement(desiredRolesKeys)
-      profile.redProfile.mentee_secondaryRole_mentoringTopics =
-        pickRandomArrayElements(
-          mentoringTopicsByDesiredRole[
-            profile.redProfile.mentee_secondaryRole_fieldOfExpertise
-          ],
-          3
-        )
-      profile.redProfile.mentee_toolsAndFrameworks_mentoringTopics =
-        pickRandomArrayElements(
-          mentoringTopicsByDesiredRole['toolsAndFrameworks'],
-          6
-        )
+      addMenteeSpecificProperties(profile.redProfile)
     } else {
-      profile.redProfile.mentor_mentoringTopics = pickRandomArrayElements(
-        mentoringTopicsKeys,
-        12
-      )
-      profile.redProfile.mentor_mentoringGoals = pickRandomArrayElements(
-        mentoringGoalsKeys,
-        3
-      )
-      profile.redProfile.mentor_professionalExperienceFields =
-        pickRandomArrayElements(fieldsOfExpertiseKeys, 3)
+      addMentorSpecificProperties(profile.redProfile)
     }
     return profile
   })
@@ -813,6 +841,7 @@ const ericMenteeRedProfile = {
   mentee_currentlyEnrolledInCourse: 'salesforceFundamentals',
   username: 'career+testmentee@redi-school.org',
 }
+addMenteeSpecificProperties(ericMenteeRedProfile)
 
 const ericMentorRedUser = {
   password: 'career+testmentor@redi-school.org',
@@ -854,6 +883,7 @@ const ericMentorRedProfile = {
   menteeCountCapacity: 2,
   username: 'career+testmentor@redi-school.org',
 }
+addMentorSpecificProperties(ericMentorRedProfile)
 
 const ericAdminUser = {
   email: 'cloud-accounts@redi-school.org',
@@ -892,7 +922,7 @@ const ericAdminRedProfile = {
   githubProfileUrl: '',
   telephoneNumber: '',
   categories: categories.map((c) => c.id).filter(() => Math.random() < 0.4),
-  menteeCountCapacity: 2,
+  menteeCountCapacity: 0,
   username: 'cloud-accounts@redi-school.org',
 }
 
@@ -905,7 +935,7 @@ Rx.of({})
     switchMap(redUserDestroyAll),
     switchMap(redProfileDestroyAll),
     tap(() => console.log('destroyed')),
-    delay(10000),
+    delay(2000),
     // switchMap(redMentoringSessionDestroyAll),
     switchMap(() => redUserCreate(ericAdminUser)),
     switchMap((redUser) =>
@@ -921,14 +951,16 @@ Rx.of({})
       redProfileCreateOnRedUser(redUser)(ericMentorRedProfile)
     ),
     switchMapTo(users),
-    concatMap(
+    mergeMap(
       (userData) => redUserCreate(userData.redUser),
-      (userData, redUserInst) => ({ ...userData, redUserInst })
+      (userData, redUserInst) => ({ ...userData, redUserInst }),
+      10
     ),
-    concatMap(
+    mergeMap(
       (userData) =>
         redProfileCreateOnRedUser(userData.redUserInst)(userData.redProfile),
-      (userData, redProfileInst) => ({ ...userData, redProfileInst })
+      (userData, redProfileInst) => ({ ...userData, redProfileInst }),
+      10
     ),
     toArray(),
     // Pick X mentor-mentee pairs, create match

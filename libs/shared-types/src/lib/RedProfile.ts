@@ -55,7 +55,7 @@ export type RedProfile = {
   optOutOfMenteesFromOtherRediLocation: boolean
 
   mentor_mentoringTopics: Array<MentoringTopicKey>
-  mentor_mentoringGoals: Array<MentoringTopicKey>
+  mentor_mentoringGoals: Array<MentoringGoalKey>
   mentor_professionalExperienceFields: Array<FieldOfExperienceKey>
 
   mentee_mentoringGoal: MentoringGoalKey

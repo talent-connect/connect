@@ -20,6 +20,8 @@ export const DESIRED_ROLES = {
   other: 'Other',
 } as const
 
+export type DesiredRolesKey = keyof typeof FIELDS_OF_EXPERTISE
+
 export const FIELDS_OF_EXPERTISE = {
   humanResourcesAndRecruiting: 'Human resources and recruiting',
   ...DESIRED_ROLES,
