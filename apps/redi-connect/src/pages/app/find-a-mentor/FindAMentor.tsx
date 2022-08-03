@@ -292,7 +292,9 @@ function FindAMentor({ profile, profileSaveStart }: FindAMentorProps) {
       )}
       {mentorCount > 0 && (
         <>
-          <h3 style={{ fontSize: '20pt' }}>Best Matches</h3>
+          <h3 style={{ fontSize: '20pt' }}>
+            Best Matches ({mentorGroups.bestMatchMentors.length})
+          </h3>
           <Columns>
             {mentorGroups.bestMatchMentors.map((mentor: RedProfile) => (
               <Columns.Column size={4} key={mentor.id}>
@@ -307,7 +309,9 @@ function FindAMentor({ profile, profileSaveStart }: FindAMentorProps) {
               </Columns.Column>
             ))}
           </Columns>
-          <h3 style={{ fontSize: '20pt' }}>All mentors</h3>
+          <h3 style={{ fontSize: '20pt' }}>
+            All mentors ({mentorGroups.otherMentors.length})
+          </h3>
           <Columns>
             {mentorGroups.otherMentors.map((mentor: RedProfile) => (
               <Columns.Column size={4} key={mentor.id}>
@@ -423,6 +427,7 @@ const filterGroupRankMentors = (
 
   return groupedMentors
 }
+
 const curriedFilterFunctions = (filters: FiltersValues) => {
   const allMenteeRoleMentoringTopics = [
     ...filters.menteePrimaryRoleMentoringTopics,
