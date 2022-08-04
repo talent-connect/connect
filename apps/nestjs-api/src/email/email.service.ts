@@ -18,7 +18,8 @@ import {
 } from './lib/email/email'
 
 import {
-  sendCompanySignupCompleteEmail,
+  sendCompanySignupForNewCompanyCompleteEmail,
+  sendCompanySignupForExistingCompanyCompleteEmail,
   sendJobseekerSignupCompleteEmail,
 } from './lib/email/tp-email'
 
@@ -86,8 +87,11 @@ export class EmailService {
     return sendMentorSignupCompleteEmail(params).subscribe()
   }
 
-  sendCompanySignupCompleteEmail(params) {
-    return sendCompanySignupCompleteEmail(params).subscribe()
+  sendCompanySignupForNewCompanyCompleteEmail(params) {
+    return sendCompanySignupForNewCompanyCompleteEmail(params).subscribe()
+  }
+  sendCompanySignupForExistingCompanyCompleteEmail(params) {
+    return sendCompanySignupForExistingCompanyCompleteEmail(params).subscribe()
   }
   sendJobseekerSignupCompleteEmail(params) {
     return sendJobseekerSignupCompleteEmail(params).subscribe()

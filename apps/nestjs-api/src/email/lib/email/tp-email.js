@@ -255,11 +255,32 @@ export const sendTpCompanyProfileSubmittedForReviewEmail = ({
   })
 }
 
-export const sendCompanySignupCompleteEmail = ({ recipient, firstName }) => {
-  const html = convertTemplateToHtml(null, 'signup-complete-company').replace(
-    /\${firstName}/g,
-    firstName
+export const sendCompanySignupForNewCompanyCompleteEmail = ({
+  recipient,
+  firstName,
+}) => {
+  const html = convertTemplateToHtml(
+    null,
+    'signup-complete-company--signup-type-new-company'
+  ).replace(/\${firstName}/g, firstName)
+  return sendMjmlEmailFactory({
+    to: recipient,
+    subject: 'Sign-up complete!',
+    html,
+  })
+}
+
+export const sendCompanySignupForExistingCompanyCompleteEmail = ({
+  recipient,
+  firstName,
+  companyName,
+}) => {
+  const html = convertTemplateToHtml(
+    null,
+    'signup-complete-company--signup-type-existing-company'
   )
+    .replace(/\${firstName}/g, firstName)
+    .replace(/\${companyName}/g, companyName)
   return sendMjmlEmailFactory({
     to: recipient,
     subject: 'Sign-up complete!',

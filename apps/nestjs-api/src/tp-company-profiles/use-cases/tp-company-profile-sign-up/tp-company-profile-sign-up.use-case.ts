@@ -8,6 +8,7 @@ import {
 } from '@talent-connect/common-types'
 import { TpCompanyProfileSignUpOperationType } from 'apps/nestjs-api/src/tp-company-profiles/use-cases/tp-company-profile-sign-up/tp-company-profile-sign-up-operation-type.enum'
 import { CurrentUserInfo } from '../../../auth/current-user.interface'
+import { EmailService } from '../../../email/email.service'
 import { SfApiTpCompanyProfilesService } from '../../../salesforce-api/sf-api-tp-company-profiles.service'
 import { TpCompanyProfileMapper } from '../../mappers/tp-company-profile.mapper'
 import { TpCompanyProfilesService } from '../../tp-company-profiles.service'
@@ -21,7 +22,8 @@ export class TpCompanyProfileSignUpUseCase {
   constructor(
     private readonly mapper: TpCompanyProfileMapper,
     private readonly sfService: SfApiTpCompanyProfilesService,
-    private readonly tpCompanyProfilesSerivce: TpCompanyProfilesService
+    private readonly tpCompanyProfilesSerivce: TpCompanyProfilesService,
+    private readonly emailService: EmailService
   ) {}
 
   // TODO: use a mapper here for more elegnat conversion
@@ -108,6 +110,23 @@ export class TpCompanyProfileSignUpUseCase {
       'created accountcontact record',
       accountContactRecordCreationResult.id
     )
+
+    switch (input.operationType) {
+      case TpCompanyProfileSignUpOperationType.NEW_COMPANY:
+        this.emailService.sendCompanySignupForNewCompanyCompleteEmail({
+          recipient: currentUser.contactProps.email,
+          firstName: contactRecord.props.FirstName,
+        })
+        break
+
+      case TpCompanyProfileSignUpOperationType.EXISTING_COMPANY:
+        this.emailService.sendCompanySignupForExistingCompanyCompleteEmail({
+          recipient: currentUser.contactProps.email,
+          firstName: contactRecord.props.FirstName,
+          companyName: companyEntity.props.companyName,
+        })
+        break
+    }
 
     return { ok: true }
   }
