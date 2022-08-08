@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import {
-  ContactRecord,
   TpCompanyProfileEntity,
   TpCompanyProfileMapper,
 } from '@talent-connect/common-types'

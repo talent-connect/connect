@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common'
+import { TpCompanyProfileMapper } from '@talent-connect/common-types'
 import { AuthModule } from '../auth/auth.module'
 import { EmailModule } from '../email/email.module'
 import { SfApiModule } from '../salesforce-api/sf-api.module'
@@ -10,6 +11,7 @@ import { TpCompanyProfileSignUpUseCase } from './use-cases/tp-company-profile-si
 @Module({
   imports: [AuthModule, EmailModule, SfApiModule],
   providers: [
+    TpCompanyProfileMapper,
     TpCompanyProfilesResolverPublicData,
     TpCompanyProfilesResolver,
     TpCompanyProfilesService,

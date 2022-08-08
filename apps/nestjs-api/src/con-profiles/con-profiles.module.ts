@@ -1,4 +1,5 @@
 import { forwardRef, Module } from '@nestjs/common'
+import { ConProfileMapper } from '@talent-connect/common-types'
 import { AuthModule } from '../auth/auth.module'
 import { ConMentoringSessionsModule } from '../con-mentoring-sessions/con-mentoring-sessions.module'
 import { ConMentorshipMatchesModule } from '../con-mentorship-matches/con-mentorship-matches.module'
@@ -17,6 +18,7 @@ import { ConProfilesService } from './con-profiles.service'
     EmailModule,
   ],
   providers: [
+    ConProfileMapper,
     ConProfilesResolver,
     ConProfilesService,
     ConProfilesSalesforceEventHandlerService,

@@ -1,4 +1,5 @@
 import { forwardRef, Module } from '@nestjs/common'
+import { ConMentoringSessionMapper } from '@talent-connect/common-types'
 import { AuthModule } from '../auth/auth.module'
 import { ConProfilesModule } from '../con-profiles/con-profiles.module'
 import { EmailModule } from '../email/email.module'
@@ -13,7 +14,11 @@ import { ConMentoringSessionsService } from './con-mentoring-sessions.service'
     EmailModule,
     forwardRef(() => ConProfilesModule),
   ],
-  providers: [ConMentoringSessionsResolver, ConMentoringSessionsService],
+  providers: [
+    ConMentoringSessionsResolver,
+    ConMentoringSessionsService,
+    ConMentoringSessionMapper,
+  ],
   exports: [ConMentoringSessionsService],
 })
 export class ConMentoringSessionsModule {}
