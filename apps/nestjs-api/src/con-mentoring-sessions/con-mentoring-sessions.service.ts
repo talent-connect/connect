@@ -1,16 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
-import { ObjectType } from '@nestjs/graphql'
 import {
   ConMentoringSessionEntity,
   ConMentoringSessionEntityProps,
+  ConMentoringSessionMapper,
   CreateConMentoringSessionInput,
 } from '@talent-connect/common-types'
-import { CurrentUser } from '../auth/current-user.decorator'
 import { CurrentUserInfo } from '../auth/current-user.interface'
 import { ConProfilesService } from '../con-profiles/con-profiles.service'
 import { EmailService } from '../email/email.service'
 import { SfApiConMentoringSessionsService } from '../salesforce-api/sf-api-con-mentoring-sessions.service'
-import { ConMentoringSessionMapper } from './mappers/con-mentoring-session.mapper'
 
 @Injectable()
 export class ConMentoringSessionsService {

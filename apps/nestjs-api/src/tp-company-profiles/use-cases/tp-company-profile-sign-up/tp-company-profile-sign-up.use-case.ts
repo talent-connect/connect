@@ -5,12 +5,13 @@ import {
   ContactRecord,
   ContactRecordProps,
   TpCompanyProfileEntity,
+  TpCompanyProfileMapper,
+  TpCompanyRepresentativeRelationshipStatus,
 } from '@talent-connect/common-types'
 import { TpCompanyProfileSignUpOperationType } from 'apps/nestjs-api/src/tp-company-profiles/use-cases/tp-company-profile-sign-up/tp-company-profile-sign-up-operation-type.enum'
 import { CurrentUserInfo } from '../../../auth/current-user.interface'
 import { EmailService } from '../../../email/email.service'
 import { SfApiTpCompanyProfilesService } from '../../../salesforce-api/sf-api-tp-company-profiles.service'
-import { TpCompanyProfileMapper } from '../../mappers/tp-company-profile.mapper'
 import { TpCompanyProfilesService } from '../../tp-company-profiles.service'
 import {
   TpCompanyProfileSignUpMutationInputDto,
@@ -98,8 +99,8 @@ export class TpCompanyProfileSignUpUseCase {
     accountContactRecordProps.ReDI_Company_Representative_Status__c =
       input.operationType ===
       TpCompanyProfileSignUpOperationType.EXISTING_COMPANY
-        ? 'PENDING'
-        : 'APPROVED'
+        ? TpCompanyRepresentativeRelationshipStatus.PENDING
+        : TpCompanyRepresentativeRelationshipStatus.APPROVED
 
     const accountContactRecordCreationResult =
       await this.sfService.createAccountContactRelationship(

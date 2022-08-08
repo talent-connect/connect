@@ -2,8 +2,6 @@ import { Entity } from '../base-interfaces-types-classes'
 import { TpCompanyProfileEntityProps } from './tp-company-profile.entityprops'
 
 export class TpCompanyProfileEntity extends Entity<TpCompanyProfileEntityProps> {
-  props: TpCompanyProfileEntityProps
-
   private constructor(props: TpCompanyProfileEntityProps) {
     super(props)
   }

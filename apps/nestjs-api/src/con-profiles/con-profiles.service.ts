@@ -3,6 +3,7 @@ import {
   ConnectProfileStatus,
   ConProfileEntity,
   ConProfileEntityProps,
+  ConProfileMapper,
   UserType,
 } from '@talent-connect/common-types'
 import { CurrentUserInfo } from '../auth/current-user.interface'
@@ -10,7 +11,6 @@ import { SfApiConProfilesService } from '../salesforce-api/sf-api-con-profiles.s
 import { FindConProfilesArgs } from './args/find-con-profiles.args'
 import { ConProfileSignUpInput } from './dtos/con-profile-sign-up.entityinput'
 import { PatchConProfileInput } from './dtos/patch-con-profile.entityinput'
-import { ConProfileMapper } from './mappers/con-profile.mapper'
 
 @Injectable()
 export class ConProfilesService {

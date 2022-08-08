@@ -1,5 +1,6 @@
 export * from './con-profile.entity'
 export * from './con-profile.entityprops'
+export * from './con-profile.mapper'
 export * from './con-profile.record'
 export * from './con-profile.recordprops'
 export * from './entity-dtos'

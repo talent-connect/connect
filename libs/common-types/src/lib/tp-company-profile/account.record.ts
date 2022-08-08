@@ -1,6 +1,16 @@
 import { Record, RecordMetadata } from '../base-interfaces-types-classes'
 import { AccountRecordProps } from './account.recordprops'
 
+/**
+ * The Entity equivalent of this Record is TpCompanyRepresentativeRelationshipEntity.
+ * In the Salesforce domain, this object/record simply represents any relationship
+ * between an Account and a Contact. In the context of the core/TP domain, where
+ * each Contact is a user, and each Account is a TpCompanyProfile, this object
+ * is mapped to a TpCompanyRepresentativeRelationshipEntity. That entity tracks the
+ * relationship between a Contact and a TpCompanyProfile, and what status that
+ * relationship has.
+ */
+
 export class AccountRecord extends Record<AccountRecordProps> {
   props: AccountRecordProps
 

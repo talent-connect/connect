@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import {
   ConMentorshipMatchEntity,
   ConMentorshipMatchEntityProps,
+  ConMentorshipMatchMapper,
   MentorshipMatchStatus,
 } from '@talent-connect/common-types'
 import { DateTime } from 'luxon'
@@ -13,7 +14,6 @@ import { ConMentorshipMatchesApplyForMentorshipInputDto } from './dto/con-mentor
 import { ConMentorshipMatchesCompleteMentorshipInputDto } from './dto/con-mentorship-matches-complete-mentorship.mutation-dtos'
 import { ConMentorshipMatchesDeclineMentorshipInputDto } from './dto/con-mentorship-matches-decline-mentorship.mutation-dtos'
 import { ConMentorshipMatchesMarkAsDismissedInputDto } from './dto/con-mentorship-matches-mark-as-dismissed.mutation-dtos'
-import { ConMentorshipMatchMapper } from './mappers/con-mentorship-match.mapper'
 
 @Injectable()
 export class ConMentorshipMatchesService {

@@ -5,7 +5,6 @@ import { EmailModule } from '../email/email.module'
 import { SfApiModule } from '../salesforce-api/sf-api.module'
 import { ConMentoringSessionsResolver } from './con-mentoring-sessions.resolver'
 import { ConMentoringSessionsService } from './con-mentoring-sessions.service'
-import { ConMentoringSessionMapper } from './mappers/con-mentoring-session.mapper'
 
 @Module({
   imports: [
@@ -14,11 +13,7 @@ import { ConMentoringSessionMapper } from './mappers/con-mentoring-session.mappe
     EmailModule,
     forwardRef(() => ConProfilesModule),
   ],
-  providers: [
-    ConMentoringSessionsResolver,
-    ConMentoringSessionsService,
-    ConMentoringSessionMapper,
-  ],
+  providers: [ConMentoringSessionsResolver, ConMentoringSessionsService],
   exports: [ConMentoringSessionsService],
 })
 export class ConMentoringSessionsModule {}

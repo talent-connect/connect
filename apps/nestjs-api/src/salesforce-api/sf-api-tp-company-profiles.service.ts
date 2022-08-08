@@ -52,6 +52,7 @@ export class SfApiTpCompanyProfilesService {
     return record
   }
 
+  // TODO: move to another service
   async getContactById(id: string): Promise<ContactRecord> {
     const rawRecords = await this.repository.findRecordsOfObject({
       objectName: ContactRecord.metadata.SALESFORCE_OBJECT_NAME,
@@ -76,6 +77,7 @@ export class SfApiTpCompanyProfilesService {
     return record
   }
 
+  // TODO: move to another service
   async createContact(contact: ContactRecord): Promise<ContactRecord> {
     const cleanProps = omit(contact.props, ['Id'])
 
@@ -91,6 +93,7 @@ export class SfApiTpCompanyProfilesService {
     return createdContactRecord
   }
 
+  // TODO: move to another service
   async updateContact(contact: ContactRecord): Promise<ContactRecord> {
     const updatedContactResult = await this.repository.updateRecord(
       ContactRecord.metadata.SALESFORCE_OBJECT_NAME,

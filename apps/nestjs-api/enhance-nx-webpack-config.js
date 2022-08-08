@@ -19,6 +19,7 @@ module.exports = function (config, context) {
               typeFileNameSuffix: [
                 '.args.ts',
                 '.mutation-dtos.ts',
+                '.dto.ts',
                 '.entityprops.ts',
                 '.entityinput.ts',
               ],

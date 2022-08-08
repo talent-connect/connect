@@ -14,8 +14,8 @@ import {
   ConProfileRecordProps,
   ConnectProfileStatus,
   ContactRecordProps,
+  MentoringTopic,
 } from '@talent-connect/common-types'
-import { MentoringTopic } from 'libs/common-types/src/lib/con-profile/enums/mentoring-topic.enum'
 
 @Injectable()
 export class ConProfileMapper

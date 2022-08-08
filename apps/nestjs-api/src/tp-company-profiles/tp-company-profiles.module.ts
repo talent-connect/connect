@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common'
 import { AuthModule } from '../auth/auth.module'
 import { EmailModule } from '../email/email.module'
 import { SfApiModule } from '../salesforce-api/sf-api.module'
-import { TpCompanyProfileMapper } from './mappers/tp-company-profile.mapper'
 import { TpCompanyProfilesResolverPublicData } from './tp-company-profiles-public-data.resolver'
 import { TpCompanyProfilesResolver } from './tp-company-profiles-resolver'
 import { TpCompanyProfilesService } from './tp-company-profiles.service'
@@ -14,7 +13,6 @@ import { TpCompanyProfileSignUpUseCase } from './use-cases/tp-company-profile-si
     TpCompanyProfilesResolverPublicData,
     TpCompanyProfilesResolver,
     TpCompanyProfilesService,
-    TpCompanyProfileMapper,
     TpCompanyProfileSignUpUseCase,
   ],
   exports: [],

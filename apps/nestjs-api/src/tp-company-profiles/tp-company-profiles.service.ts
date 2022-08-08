@@ -2,9 +2,9 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import {
   ContactRecord,
   TpCompanyProfileEntity,
+  TpCompanyProfileMapper,
 } from '@talent-connect/common-types'
 import { SfApiTpCompanyProfilesService } from '../salesforce-api/sf-api-tp-company-profiles.service'
-import { TpCompanyProfileMapper } from './mappers/tp-company-profile.mapper'
 
 @Injectable()
 export class TpCompanyProfilesService {

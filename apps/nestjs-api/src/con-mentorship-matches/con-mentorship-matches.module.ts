@@ -6,7 +6,6 @@ import { EmailModule } from '../email/email.module'
 import { SfApiModule } from '../salesforce-api/sf-api.module'
 import { ConMentorshipMatchesResolver } from './con-mentorship-matches.resolver'
 import { ConMentorshipMatchesService } from './con-mentorship-matches.service'
-import { ConMentorshipMatchMapper } from './mappers/con-mentorship-match.mapper'
 
 @Module({
   imports: [
@@ -16,11 +15,7 @@ import { ConMentorshipMatchMapper } from './mappers/con-mentorship-match.mapper'
     AuthModule,
     EmailModule,
   ],
-  providers: [
-    ConMentorshipMatchesResolver,
-    ConMentorshipMatchesService,
-    ConMentorshipMatchMapper,
-  ],
+  providers: [ConMentorshipMatchesResolver, ConMentorshipMatchesService],
   exports: [ConMentorshipMatchesService],
 })
 export class ConMentorshipMatchesModule {}
