@@ -1,16 +1,10 @@
 import { Button } from '@talent-connect/shared-atomic-design-components'
-import { UserType } from '@talent-connect/shared-types'
 import { Columns, Content, Form } from 'react-bulma-components'
 import { useHistory, useParams } from 'react-router-dom'
 import AccountOperation from '../../../components/templates/AccountOperation'
 
-type RouteParams = {
-  userType: UserType
-}
-
 export default function SignUpComplete() {
   const history = useHistory()
-  const { userType } = useParams<RouteParams>() as RouteParams
 
   return (
     <AccountOperation>
@@ -21,7 +15,7 @@ export default function SignUpComplete() {
         ></Columns.Column>
         <Columns.Column size={5} offset={2}>
           <Content size="large" renderAs="div">
-            <p>Your email address was successfully verified!</p>
+            <p>Thank you for signing up!</p>
             <p>Now it's time to work on your profile:</p>
           </Content>
           <Form.Field className="submit-spacer">

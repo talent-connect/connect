@@ -5,7 +5,7 @@ import { MentoringSessionDuration } from './enums'
 @ObjectType('ConMentoringSession')
 export class ConMentoringSessionEntityProps implements EntityProps {
   @Field((type) => ID)
-  id: string //* DONE
+  id: string
 
   date: Date
   @Field((type) => MentoringSessionDuration)
