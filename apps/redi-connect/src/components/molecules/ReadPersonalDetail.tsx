@@ -1,12 +1,10 @@
-import { ConProfile, useLoadMyProfileQuery } from '@talent-connect/data-access'
+import { useLoadMyProfileQuery } from '@talent-connect/data-access'
 import {
   Caption,
   PipeList,
   Placeholder,
 } from '@talent-connect/shared-atomic-design-components'
 import { GENDERS } from '@talent-connect/shared-config'
-import moment from 'moment'
-import React from 'react'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 import { ReadPersonalDetailProfilePropFragment } from './ReadPersonalDetail.generated'
 

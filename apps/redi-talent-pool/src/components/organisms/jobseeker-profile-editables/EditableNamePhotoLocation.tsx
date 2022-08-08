@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState } from 'react'
 import { useFormik } from 'formik'
-import * as Yup from 'yup'
+import { useEffect, useMemo, useState } from 'react'
 import { Columns, Content, Element } from 'react-bulma-components'
+import * as Yup from 'yup'
 
 import {
   Button,

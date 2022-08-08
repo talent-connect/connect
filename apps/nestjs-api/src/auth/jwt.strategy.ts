@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { PassportStrategy } from '@nestjs/passport'
 import {
@@ -6,7 +6,6 @@ import {
   ContactRecord,
   ContactRecordProps,
 } from '@talent-connect/common-types'
-import { takeRight } from 'lodash'
 import { ExtractJwt, Strategy } from 'passport-jwt'
 import { SfApiRepository } from '../salesforce-api/sf-api.repository'
 import { CurrentUserInfo } from './current-user.interface'

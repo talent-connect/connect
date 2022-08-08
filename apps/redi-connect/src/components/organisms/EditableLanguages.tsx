@@ -7,12 +7,9 @@ import {
   FormSelect,
 } from '@talent-connect/shared-atomic-design-components'
 import { LANGUAGES } from '@talent-connect/shared-config'
-import { RedProfile } from '@talent-connect/shared-types'
 import { objectEntries } from '@talent-connect/typescript-utilities'
 import { FormikValues, useFormik } from 'formik'
-import React from 'react'
 import { useQueryClient } from 'react-query'
-import { connect } from 'react-redux'
 import * as Yup from 'yup'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 import { ReadLanguages } from '../molecules'

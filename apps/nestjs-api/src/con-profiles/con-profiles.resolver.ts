@@ -1,10 +1,4 @@
-import {
-  BadRequestException,
-  forwardRef,
-  Inject,
-  UnauthorizedException,
-  UseGuards,
-} from '@nestjs/common'
+import { BadRequestException, UseGuards } from '@nestjs/common'
 import {
   Args,
   Mutation,
@@ -16,7 +10,6 @@ import {
 import {
   ConMentoringSessionEntityProps,
   ConMentorshipMatchEntityProps,
-  ConProfileEntity,
   ConProfileEntityProps,
 } from '@talent-connect/common-types'
 import { CurrentUser } from '../auth/current-user.decorator'

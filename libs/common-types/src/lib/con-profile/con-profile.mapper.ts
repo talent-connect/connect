@@ -1,20 +1,20 @@
 import { Injectable } from '@nestjs/common'
 import {
   ConnectProfileLanguage,
+  ConnectProfileStatus,
   ConProfileEntity,
-  ConProfileRecord,
   ConProfileEntityProps,
+  ConProfileRecord,
+  ConProfileRecordProps,
+  ContactRecordProps,
   EducationLevel,
   Gender,
   Mapper,
+  MentoringTopic,
   OccupationCategory,
   RediCourse,
   RediLocation,
   UserType,
-  ConProfileRecordProps,
-  ConnectProfileStatus,
-  ContactRecordProps,
-  MentoringTopic,
 } from '@talent-connect/common-types'
 
 @Injectable()

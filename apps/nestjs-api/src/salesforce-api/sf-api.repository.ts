@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { SalesforceMutationIdResult } from '@talent-connect/common-types'
 import * as jsforce from 'jsforce'
-import { update } from 'lodash'
 const async = require('async')
 
 @Injectable()

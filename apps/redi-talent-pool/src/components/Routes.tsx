@@ -1,4 +1,3 @@
-import React from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import { allRoutes } from '../routes/index'
 import { PrivateRoute } from './PrivateRoute'

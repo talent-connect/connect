@@ -1,9 +1,8 @@
-import { ConProfile, useLoadMyProfileQuery } from '@talent-connect/data-access'
+import { useLoadMyProfileQuery } from '@talent-connect/data-access'
 import {
   Caption,
   Placeholder,
 } from '@talent-connect/shared-atomic-design-components'
-import React from 'react'
 import { Content } from 'react-bulma-components'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 import { ReadAboutProfilePropFragment } from './ReadAbout.generated'

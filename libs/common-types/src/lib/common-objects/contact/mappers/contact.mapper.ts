@@ -1,20 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import {
-  ConnectProfileLanguage,
-  ConProfileEntity,
-  ConProfileRecord,
-  ConProfileEntityProps,
-  EducationLevel,
-  Gender,
-  Mapper,
-  OccupationCategory,
-  RediCourse,
-  RediLocation,
-  UserType,
-  ConProfileRecordProps,
-  ConnectProfileStatus,
-} from '@talent-connect/common-types'
-import { MentoringTopic } from 'libs/common-types/src/lib/con-profile/enums/mentoring-topic.enum'
+import { Gender, Mapper } from '@talent-connect/common-types'
 import { ContactEntity } from '../contact.entity'
 import { ContactEntityProps } from '../contact.entityprops'
 import { ContactRecord } from '../contact.record'

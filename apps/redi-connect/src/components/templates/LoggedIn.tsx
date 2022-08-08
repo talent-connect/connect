@@ -1,23 +1,3 @@
-import React, { ReactNode, useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
-import { connect } from 'react-redux'
-import {
-  Button,
-  Icon,
-  Loader,
-} from '@talent-connect/shared-atomic-design-components'
-import { Modal } from '@talent-connect/shared-atomic-design-components'
-import { Navbar, SideMenu } from '../organisms'
-import {
-  Container,
-  Section,
-  Columns,
-  Content,
-  Notification,
-} from 'react-bulma-components'
-import { useTranslation } from 'react-i18next'
-import Footer from '../organisms/Footer'
-import { RedMatch } from '@talent-connect/shared-types'
 import {
   ConnectProfileStatus,
   MentorshipMatchStatus,
@@ -25,8 +5,26 @@ import {
   useLoadMyProfileQuery,
   useMyMatchesQuery,
 } from '@talent-connect/data-access'
-import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
+import {
+  Button,
+  Icon,
+  Loader,
+  Modal,
+} from '@talent-connect/shared-atomic-design-components'
+import React, { ReactNode } from 'react'
+import {
+  Columns,
+  Container,
+  Content,
+  Notification,
+  Section,
+} from 'react-bulma-components'
+import { useTranslation } from 'react-i18next'
 import { useIsFetching, useIsMutating } from 'react-query'
+import { useHistory } from 'react-router-dom'
+import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
+import { Navbar, SideMenu } from '../organisms'
+import Footer from '../organisms/Footer'
 
 interface Props {
   children?: ReactNode

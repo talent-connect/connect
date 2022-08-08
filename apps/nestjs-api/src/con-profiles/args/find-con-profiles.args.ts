@@ -1,4 +1,4 @@
-import { ArgsType, Field, ID, InputType } from '@nestjs/graphql'
+import { ArgsType, Field, InputType } from '@nestjs/graphql'
 import {
   ConnectProfileLanguage,
   MentoringTopic,

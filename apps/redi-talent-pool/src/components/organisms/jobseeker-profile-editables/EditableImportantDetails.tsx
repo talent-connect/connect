@@ -1,10 +1,10 @@
-import React, { useEffect, useMemo, useState } from 'react'
-import { UseMutationResult, UseQueryResult } from 'react-query'
 import { useFormik } from 'formik'
-import moment from 'moment'
-import * as Yup from 'yup'
-import { Content, Element } from 'react-bulma-components'
 import isNil from 'lodash/isNil'
+import moment from 'moment'
+import { useEffect, useMemo, useState } from 'react'
+import { Content, Element } from 'react-bulma-components'
+import { UseMutationResult, UseQueryResult } from 'react-query'
+import * as Yup from 'yup'
 
 import {
   Button,
@@ -21,7 +21,6 @@ import {
   availabilityOptionsIdToLabelMap,
   desiredEmploymentTypeOptions,
   desiredEmploymentTypeOptionsIdToLabelMap,
-  desiredPositions,
   immigrationStatusOptions,
   immigrationStatusOptionsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'

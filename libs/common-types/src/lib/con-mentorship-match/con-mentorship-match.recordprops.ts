@@ -1,5 +1,5 @@
 import { plainToClass, Type } from 'class-transformer'
-import { RecordProps, PicklistValue } from '../base-interfaces-types-classes'
+import { PicklistValue, RecordProps } from '../base-interfaces-types-classes'
 
 export class ConMentorshipMatchRecordProps implements RecordProps {
   Id: string

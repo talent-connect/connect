@@ -6,7 +6,6 @@ import {
   Placeholder,
 } from '@talent-connect/shared-atomic-design-components'
 import { CATEGORIES_MAP } from '@talent-connect/shared-config'
-import React from 'react'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 
 interface ReadMentoringProps {

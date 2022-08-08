@@ -1,21 +1,19 @@
-import { graphqlClient } from '@talent-connect/data-access'
 import { Loader } from '@talent-connect/shared-atomic-design-components'
-import React, { Suspense, useEffect } from 'react'
+import { Suspense } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
-import { Provider as StoreProvider } from 'react-redux'
-import { history, Router } from './services/history/history'
-import { envRediLocation } from './utils/env-redi-location'
-import LocationPicker from './pages/front/landing/LocationPicker'
 import { Route } from 'react-router-dom'
 import { QueryParamProvider } from 'use-query-params'
-import { useConfetti } from './utils/useConfetti'
 import AppNotification from './components/AppNotification'
 import { Routes } from './components/Routes'
+import LocationPicker from './pages/front/landing/LocationPicker'
 import {
   getAccessTokenFromLocalStorage,
   isLoggedIn,
   setGraphQlClientAuthHeader,
 } from './services/auth/auth'
+import { history, Router } from './services/history/history'
+import { envRediLocation } from './utils/env-redi-location'
+import { useConfetti } from './utils/useConfetti'
 
 function App() {
   useConfetti({ keybind: 'm i r i a m a l w a y s r e d i' })

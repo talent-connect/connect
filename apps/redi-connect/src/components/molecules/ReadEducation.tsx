@@ -1,14 +1,11 @@
-import React from 'react'
-import { Content } from 'react-bulma-components'
-import { RedProfile } from '@talent-connect/shared-types'
-import { connect } from 'react-redux'
+import { useLoadMyProfileQuery } from '@talent-connect/data-access'
 import {
   Caption,
   Placeholder,
 } from '@talent-connect/shared-atomic-design-components'
 import { EDUCATION_LEVELS } from '@talent-connect/shared-config'
+import { Content } from 'react-bulma-components'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
-import { ConProfile, useLoadMyProfileQuery } from '@talent-connect/data-access'
 import { ReadEducationProfilePropFragment } from './ReadEducation.generated'
 
 interface Props {

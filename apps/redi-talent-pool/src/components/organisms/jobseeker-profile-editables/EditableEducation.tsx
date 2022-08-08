@@ -2,17 +2,14 @@ import {
   Button,
   Caption,
   Checkbox,
-  FaqItem,
   FormDraggableAccordion,
   FormInput,
   FormSelect,
   FormTextArea,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
-import * as Yup from 'yup'
 import {
   EducationRecord,
-  ExperienceRecord,
   TpJobseekerCv,
   TpJobseekerProfile,
 } from '@talent-connect/shared-types'
@@ -22,18 +19,19 @@ import {
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
 import moment from 'moment'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Columns, Content, Element } from 'react-bulma-components'
 import ReactMarkdown from 'react-markdown'
 import { UseMutationResult, UseQueryResult } from 'react-query'
 import { Subject } from 'rxjs'
 import { v4 as uuidv4 } from 'uuid'
+import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
-import { Location } from '../../molecules/Location'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
+import { Location } from '../../molecules/Location'
 
 function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
   const result = Array.from(list)

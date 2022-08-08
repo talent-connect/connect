@@ -11,11 +11,8 @@ import {
   MENTEE_COUNT_CAPACITY_OPTIONS,
   REDI_LOCATION_NAMES,
 } from '@talent-connect/shared-config'
-import { RediLocation, RedProfile } from '@talent-connect/shared-types'
 import { FormikValues, useFormik } from 'formik'
-import React from 'react'
 import { useQueryClient } from 'react-query'
-import { connect } from 'react-redux'
 import * as Yup from 'yup'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 import { ReadMenteeCount } from '../molecules'

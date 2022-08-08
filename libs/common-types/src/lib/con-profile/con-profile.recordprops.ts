@@ -1,8 +1,8 @@
 import { plainToClass, Type } from 'class-transformer'
 import {
-  RecordProps,
   PicklistValue,
   PicklistValuesSemicolonSeparated,
+  RecordProps,
 } from '../base-interfaces-types-classes'
 import { ContactRecordProps, Gender } from '../common-objects'
 

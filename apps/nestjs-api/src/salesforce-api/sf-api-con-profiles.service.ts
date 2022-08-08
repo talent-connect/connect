@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { ConProfileRecord, ContactEntity } from '@talent-connect/common-types'
+import { ConProfileRecord } from '@talent-connect/common-types'
 import { omit } from 'lodash'
 import { SfApiRepository } from './sf-api.repository'
 

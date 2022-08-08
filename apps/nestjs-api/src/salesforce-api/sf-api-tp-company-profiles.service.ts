@@ -3,7 +3,6 @@ import {
   AccountContactRecord,
   AccountRecord,
   CompanyTalentPoolState,
-  ConProfileRecord,
   ContactRecord,
 } from '@talent-connect/common-types'
 import { omit } from 'lodash'

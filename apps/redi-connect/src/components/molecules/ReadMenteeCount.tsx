@@ -1,9 +1,6 @@
-import React from 'react'
-import { Content } from 'react-bulma-components'
-import { RedProfile } from '@talent-connect/shared-types'
-import { connect } from 'react-redux'
-import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import { ConProfile, useLoadMyProfileQuery } from '@talent-connect/data-access'
+import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
+import { Content } from 'react-bulma-components'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 
 interface Props {

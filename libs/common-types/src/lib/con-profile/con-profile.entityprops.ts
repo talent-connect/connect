@@ -1,6 +1,8 @@
-import { Field, ID, InputType, Int, ObjectType } from '@nestjs/graphql'
+import { Field, ID, Int, ObjectType } from '@nestjs/graphql'
 import { EntityProps } from '../base-interfaces-types-classes'
+import { Gender } from '../common-objects/contact/enums/gender.enum'
 import { ConMentoringSessionEntityProps } from '../con-mentoring-session'
+import { ConMentorshipMatchEntityProps } from '../con-mentorship-match'
 import {
   ConnectProfileLanguage,
   EducationLevel,
@@ -10,9 +12,7 @@ import {
   UserType,
 } from './enums'
 import { ConnectProfileStatus } from './enums/connect-profile-status.enum'
-import { Gender } from '../common-objects/contact/enums/gender.enum'
 import { MentoringTopic } from './enums/mentoring-topic.enum'
-import { ConMentorshipMatchEntityProps } from '../con-mentorship-match'
 
 @ObjectType('ConProfile')
 export class ConProfileEntityProps implements EntityProps {

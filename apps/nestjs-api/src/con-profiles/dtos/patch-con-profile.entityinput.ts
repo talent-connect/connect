@@ -1,9 +1,8 @@
 import {
-  Field,
   InputType,
+  IntersectionType,
   PartialType,
   PickType,
-  IntersectionType,
 } from '@nestjs/graphql'
 import { ConProfileEntityProps } from '@talent-connect/common-types'
 

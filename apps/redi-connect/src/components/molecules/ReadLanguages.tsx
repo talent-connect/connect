@@ -1,11 +1,9 @@
-import { ConProfile, useLoadMyProfileQuery } from '@talent-connect/data-access'
+import { useLoadMyProfileQuery } from '@talent-connect/data-access'
 import {
   Caption,
   PipeList,
   Placeholder,
 } from '@talent-connect/shared-atomic-design-components'
-import { RedProfile } from '@talent-connect/shared-types'
-import React from 'react'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 import { ReadLanguagesProfilePropFragment } from './ReadLanguages.generated'
 

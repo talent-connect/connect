@@ -6,7 +6,6 @@ import {
   ConProfileStatusChangedInternalEventDto,
   SalesforceRecordEvents,
 } from '@talent-connect/salesforce-record-events'
-import { userInfo } from 'os'
 import { EmailService } from '../email/email.service'
 import { ConProfilesService } from './con-profiles.service'
 

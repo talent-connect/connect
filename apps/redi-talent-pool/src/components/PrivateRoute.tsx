@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react'
+import { FunctionComponent } from 'react'
 import { Route, RouteProps } from 'react-router-dom'
 import { useNotAuthenticatedRedirector } from '../hooks/useNotAuthenticatedRedirector'
 

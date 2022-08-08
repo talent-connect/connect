@@ -1,7 +1,7 @@
-import React, { Suspense } from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom'
-import './styles/main.scss'
 import App from './App'
+import './styles/main.scss'
 // import i18n (needs to be bundled ;))
 import './services/i18n/i18n'
 // Needed for datepicker in <LogMentoringSessionDialog>

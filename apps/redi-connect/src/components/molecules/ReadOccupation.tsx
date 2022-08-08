@@ -1,11 +1,10 @@
-import { ConProfile, useLoadMyProfileQuery } from '@talent-connect/data-access'
+import { useLoadMyProfileQuery } from '@talent-connect/data-access'
 import {
   Caption,
   Placeholder,
 } from '@talent-connect/shared-atomic-design-components'
 import { MENTEE_OCCUPATION_CATEGORY } from '@talent-connect/shared-config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
-import React from 'react'
 import { Content } from 'react-bulma-components'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 import { ReadOccupationProfilePropFragment } from './ReadOccupation.generated'

@@ -1,5 +1,5 @@
-import mousetrap from './mousetrap'
 import confetti from 'canvas-confetti'
+import mousetrap from './mousetrap'
 
 const duration = 10 * 1000
 const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 }
