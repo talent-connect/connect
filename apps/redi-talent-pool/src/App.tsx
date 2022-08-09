@@ -7,7 +7,16 @@ import { QueryParamProvider } from 'use-query-params'
 import AppNotification from './components/AppNotification'
 import { Routes } from './components/Routes'
 import { queryClient } from './services/api/api'
+import {
+  getAccessTokenFromLocalStorage,
+  isLoggedIn,
+  setGraphQlClientAuthHeader,
+} from './services/auth/auth'
 import { history, Router } from './services/history/history'
+
+if (isLoggedIn()) {
+  setGraphQlClientAuthHeader(getAccessTokenFromLocalStorage())
+}
 
 const App = () => {
   return (
