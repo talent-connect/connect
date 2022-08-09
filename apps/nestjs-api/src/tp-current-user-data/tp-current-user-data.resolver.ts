@@ -29,7 +29,7 @@ export class TpCurrentUserDataResolver {
   }
 
   @ResolveField((of) => TpCompanyRepresentativeRelationshipEntityProps)
-  async companyRepresentationStatus(
+  async companyRepresentativeStatus(
     @CurrentUser() currentUser: CurrentUserInfo
   ) {
     const entity =

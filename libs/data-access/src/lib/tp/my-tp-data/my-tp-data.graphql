@@ -1,0 +1,7 @@
+query myTpData {
+  tpCurrentUserDataGet {
+    companyRepresentativeStatus {
+      id
+    }
+  }
+}

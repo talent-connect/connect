@@ -708,7 +708,6 @@ export enum TpCompanyRepresentativeRelationshipStatus {
 
 export type TpCurrentUserData = {
   __typename?: 'TpCurrentUserData';
-  companyRepresentationStatus: TpCompanyRepresentativeRelationship;
   companyRepresentativeStatus: TpCompanyRepresentativeRelationship;
   representedCompany: TpCompanyProfile;
 };

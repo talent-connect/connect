@@ -587,7 +587,6 @@ enum TpCompanyRepresentativeRelationshipStatus {
 }
 
 type TpCurrentUserData {
-  companyRepresentationStatus: TpCompanyRepresentativeRelationship!
   companyRepresentativeStatus: TpCompanyRepresentativeRelationship!
   representedCompany: TpCompanyProfile!
 }
