@@ -24,7 +24,7 @@ export class ConProfilesService {
     user: CurrentUserInfo
   ): Promise<ConProfileEntity> {
     const entityProps = new ConProfileEntityProps()
-    entityProps._contactId = user.contactId
+    entityProps.userId = user.userId
     entityProps.firstName = input.firstName
     entityProps.lastName = input.lastName
     entityProps.menteeCountCapacity = 1
@@ -32,7 +32,7 @@ export class ConProfilesService {
     const entity = ConProfileEntity.create(entityProps)
 
     const persistedRecord = await this.api.createConProfileForSignUp({
-      contactId: user.contactId,
+      userId: user.userId,
       firstName: input.firstName,
       lastName: input.lastName,
       loopbackUserId: user.loopbackUserId,

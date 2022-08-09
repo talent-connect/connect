@@ -12,12 +12,12 @@ import { EmailModule } from '../email/email.module'
 import { SfApiModule } from '../salesforce-api/sf-api.module'
 import { SalesforceRecordEventsListenerModule } from '../salesforce-record-events-listener/salesforce-record-events-listener.module'
 import { TpCompanyProfilesModule } from '../tp-company-profiles/tp-company-profiles.module'
+import { TpCurrentUserDataModule } from '../tp-current-user-data/tp-current-user-data.module'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 
 @Module({
   imports: [
-    AuthModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       // autoSchemaFile: join(__dirname, '..', '..', 'schema.gql'),
@@ -26,16 +26,18 @@ import { AppService } from './app.service'
       playground: true,
       debug: true,
     }),
+    EventEmitterModule.forRoot(),
+    EmailModule,
+    SfApiModule,
+    SalesforceRecordEventsListenerModule,
+    AuthModule,
     ConProfilesModule,
     ConMentoringSessionsModule,
     ConMentorshipMatchesModule,
     ConMenteeFavoritedMentorsModule,
     ConProblemReportModule,
     TpCompanyProfilesModule,
-    EmailModule,
-    SfApiModule,
-    SalesforceRecordEventsListenerModule,
-    EventEmitterModule.forRoot(),
+    TpCurrentUserDataModule,
   ],
   controllers: [AppController],
   providers: [AppService],

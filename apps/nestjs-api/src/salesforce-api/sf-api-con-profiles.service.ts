@@ -25,7 +25,7 @@ export class SfApiConProfilesService {
   }
 
   async createConProfileForSignUp(data: {
-    contactId: string
+    userId: string
     firstName: string
     lastName: string
     rediLocation: string
@@ -33,16 +33,16 @@ export class SfApiConProfilesService {
     loopbackUserId: string
   }): Promise<ConProfileRecord> {
     const upsertContactResult = await this.repository.updateRecord('Contact', {
-      Id: data.contactId,
+      Id: data.userId,
       FirstName: data.firstName,
       LastName: data.lastName,
     })
 
     const insertConProfileResult = await this.repository.findUpdateOrInsert(
       ConProfileRecord.metadata.SALESFORCE_OBJECT_NAME,
-      { Contact__c: data.contactId },
+      { Contact__c: data.userId },
       {
-        Contact__c: data.contactId,
+        Contact__c: data.userId,
         Profile_Status__c: data.profileStatus,
         ReDI_Location__c: data.rediLocation,
       }

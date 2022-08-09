@@ -18,7 +18,7 @@ import { MentoringTopic } from './enums/mentoring-topic.enum'
 export class ConProfileEntityProps implements EntityProps {
   @Field((type) => ID)
   id: string
-  _contactId: string
+  userId: string
   email: string
   @Field((type) => UserType)
   userType: UserType

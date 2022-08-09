@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { PassportStrategy } from '@nestjs/passport'
 import {
-  ContactMapper,
   ContactRecord,
   ContactRecordProps,
+  UserMapper,
 } from '@talent-connect/common-types'
 import { ExtractJwt, Strategy } from 'passport-jwt'
 import { SfApiRepository } from '../salesforce-api/sf-api.repository'
@@ -15,7 +15,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
     private readonly configService: ConfigService,
     private readonly salesforceRepository: SfApiRepository,
-    private readonly contactMapper: ContactMapper
+    private readonly userMapper: UserMapper
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -58,14 +58,14 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       contactRecord = contactRecords[0]
     }
 
-    const contactEntity = this.contactMapper.fromPersistence(
+    const userEntity = this.userMapper.fromPersistence(
       ContactRecord.create(contactRecord)
     )
 
     return {
       loopbackUserId: payload.userId,
-      contactId: contactEntity.props.id,
-      contactProps: contactEntity.props,
+      userId: userEntity.props.id,
+      userProps: userEntity.props,
     }
   }
 }

@@ -112,4 +112,29 @@ export class SfApiTpCompanyProfilesService {
       accountContact.props
     )
   }
+
+  async getCompanyRepresentativeRelationshipByUser(userId: string) {
+    const rawRecords = await this.repository.findRecordsOfObject({
+      objectName: AccountContactRecord.metadata.SALESFORCE_OBJECT_NAME,
+      objectFields: AccountContactRecord.metadata.SALESFORCE_OBJECT_FIELDS,
+      filter: {
+        ContactId: userId,
+        Roles: { $in: ['TALENT_POOL_COMPANY_REPRESENTATIVE'] },
+      },
+    })
+    const rawRecord = rawRecords[0]
+    const record = AccountContactRecord.create(rawRecord)
+
+    return record
+  }
+
+  async getCompanyRepresentedByUser(userId: string) {
+    const accountContactRecord =
+      await this.getCompanyRepresentativeRelationshipByUser(userId)
+    const accountRecord = await this.getById(
+      accountContactRecord.props.AccountId
+    )
+
+    return accountRecord
+  }
 }

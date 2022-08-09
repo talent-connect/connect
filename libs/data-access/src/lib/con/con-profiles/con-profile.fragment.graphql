@@ -1,5 +1,5 @@
 fragment AllConProfileFields on ConProfile {
-  _contactId
+  userId
   age
   birthDate
   categories

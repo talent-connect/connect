@@ -68,7 +68,7 @@ export class TpCompanyProfileSignUpUseCase {
     }
 
     const contactRecordProps = new ContactRecordProps()
-    contactRecordProps.Id = currentUser.contactId
+    contactRecordProps.Id = currentUser.userId
     contactRecordProps.FirstName = input.firstName
     contactRecordProps.LastName = input.lastName
     contactRecordProps.ReDI_First_Point_of_Contact_Other_TP__c =
@@ -115,14 +115,14 @@ export class TpCompanyProfileSignUpUseCase {
     switch (input.operationType) {
       case TpCompanyProfileSignUpOperationType.NEW_COMPANY:
         this.emailService.sendCompanySignupForNewCompanyCompleteEmail({
-          recipient: currentUser.contactProps.email,
+          recipient: currentUser.userProps.email,
           firstName: contactRecord.props.FirstName,
         })
         break
 
       case TpCompanyProfileSignUpOperationType.EXISTING_COMPANY:
         this.emailService.sendCompanySignupForExistingCompanyCompleteEmail({
-          recipient: currentUser.contactProps.email,
+          recipient: currentUser.userProps.email,
           firstName: contactRecord.props.FirstName,
           companyName: companyEntity.props.companyName,
         })

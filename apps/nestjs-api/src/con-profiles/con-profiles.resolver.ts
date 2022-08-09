@@ -111,9 +111,9 @@ export class ConProfilesResolver {
   async mentoringSessions(
     @Parent() conProfile: ConProfileEntityProps
   ): Promise<ConMentoringSessionEntityProps[]> {
-    const { _contactId } = conProfile
+    const { userId } = conProfile
     const mentoringSessions = await this.conMentoringSessionsService.findAll({
-      $or: [{ Mentee__c: _contactId }, { Mentor__c: _contactId }],
+      $or: [{ Mentee__c: userId }, { Mentor__c: userId }],
     })
     const props = mentoringSessions.map((entity) => entity.props)
 
@@ -125,9 +125,9 @@ export class ConProfilesResolver {
   async mentorshipMatches(
     @Parent() conProfile: ConProfileEntityProps
   ): Promise<ConMentorshipMatchEntityProps[]> {
-    const { _contactId } = conProfile
+    const { userId } = conProfile
     const mentorshipMatches = await this.conMentorshipMatchesService.findAll({
-      $or: [{ Mentee__c: _contactId }, { Mentor__c: _contactId }],
+      $or: [{ Mentee__c: userId }, { Mentor__c: userId }],
     })
     const props = mentorshipMatches.map((entity) => entity.props)
 

@@ -49,7 +49,7 @@ query findMatch($id: ID!) {
 }
 
 fragment conProfileFields on ConProfile {
-  _contactId
+  userId
   id
   fullName
   firstName

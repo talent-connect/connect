@@ -18,13 +18,13 @@ export class ConProblemReportService {
     currentUser: CurrentUserInfo
   ) {
     this.emailService.sendReportProblemEmail({
-      sendingUserEmail: currentUser.contactProps.email,
+      sendingUserEmail: currentUser.userProps.email,
       message: input.problemDescription,
     })
 
     if (input.ifFromMentor_cancelMentorshipImmediately) {
       await this.mentorshipMatchesService.cancelMentorshipFromProblemReport(
-        currentUser.contactId,
+        currentUser.userId,
         input.reporteeId
       )
 
@@ -37,8 +37,8 @@ export class ConProblemReportService {
         firstName: menteeProfile.props.firstName,
       })
       this.emailService.sendToMentorConfirmationOfMentorshipCancelled({
-        recipient: currentUser.contactProps.email,
-        mentorFirstName: currentUser.contactProps.firstName,
+        recipient: currentUser.userProps.email,
+        mentorFirstName: currentUser.userProps.firstName,
         menteeFullName: menteeProfile.props.fullName,
       })
     }

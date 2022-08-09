@@ -8,10 +8,8 @@ import {
   Button,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
-import { RedMatch, RedProfile, UserType } from '@talent-connect/shared-types'
-import React from 'react'
+import { RedProfile, UserType } from '@talent-connect/shared-types'
 import { Columns, Content } from 'react-bulma-components'
-import { connect } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 import {
   CompleteMentorship,
@@ -105,7 +103,7 @@ function Mentorship() {
           />
           <MSessions
             sessions={viewMatch.mentoringSessions}
-            menteeId={viewProfile._contactId}
+            menteeId={viewProfile.userId}
             editable={currentUserIsMentor}
           />
           <ReportProblem

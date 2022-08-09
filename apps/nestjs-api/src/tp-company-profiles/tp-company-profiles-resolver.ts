@@ -29,16 +29,6 @@ export class TpCompanyProfilesResolver {
     return entity.props
   }
 
-  @Query(() => TpCompanyProfileEntityProps, {
-    name: 'myTpCompanyProfile',
-  })
-  async findCurrentUser(@CurrentUser() currentUser: CurrentUserInfo) {
-    const entity = await this.tpCompanyProfilesService.findOneByLoopbackUserId(
-      currentUser.loopbackUserId
-    )
-    return entity.props
-  }
-
   @Mutation((of) => TpCompanyProfileSignUpMutationOutputDto, {
     name: 'tpCompanyProfileSignUp',
   })

@@ -1,7 +1,5 @@
 import { Record, RecordMetadata } from '../base-interfaces-types-classes'
 import { AccountContactRecordProps } from './account-contact.recordprops'
-import { AccountRecord } from './account.record'
-import { AccountRecordProps } from './account.recordprops'
 
 export class AccountContactRecord extends Record<AccountContactRecordProps> {
   props: AccountContactRecordProps
@@ -24,6 +22,7 @@ export class AccountContactRecord extends Record<AccountContactRecordProps> {
       'AccountId',
       'ContactId',
       'Roles',
+      'ReDI_Company_Representative_Status__c',
     ],
   }
 }

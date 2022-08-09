@@ -141,7 +141,6 @@ export type ConMentorshipMatchesMarkAsDismissedOutputDto = {
 
 export type ConProfile = {
   __typename?: 'ConProfile';
-  _contactId: Scalars['String'];
   age?: Maybe<Scalars['Float']>;
   birthDate?: Maybe<Scalars['DateTime']>;
   categories: Array<MentoringTopic>;
@@ -184,6 +183,7 @@ export type ConProfile = {
   telephoneNumber?: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
   userActivatedAt?: Maybe<Scalars['DateTime']>;
+  userId: Scalars['String'];
   userType: UserType;
 };
 
@@ -570,9 +570,9 @@ export type Query = {
   conProfile: ConProfile;
   conProfilesAvailableMentors: Array<ConProfile>;
   myConProfile: ConProfile;
-  myTpCompanyProfile: TpCompanyProfile;
   publicTpCompanyProfiles: Array<TpCompanyProfile>;
   tpCompanyProfile: TpCompanyProfile;
+  tpCurrentUserDataGet: TpCurrentUserData;
 };
 
 
@@ -688,6 +688,30 @@ export enum TpCompanyProfileSignUpOperationType {
   ExistingCompany = 'EXISTING_COMPANY',
   NewCompany = 'NEW_COMPANY'
 }
+
+export type TpCompanyRepresentativeRelationship = {
+  __typename?: 'TpCompanyRepresentativeRelationship';
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  status: TpCompanyRepresentativeRelationshipStatus;
+  tpCompanyProfileId: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+  userId: Scalars['String'];
+};
+
+export enum TpCompanyRepresentativeRelationshipStatus {
+  Approved = 'APPROVED',
+  Deactivated = 'DEACTIVATED',
+  Pending = 'PENDING',
+  Rejected = 'REJECTED'
+}
+
+export type TpCurrentUserData = {
+  __typename?: 'TpCurrentUserData';
+  companyRepresentationStatus: TpCompanyRepresentativeRelationship;
+  companyRepresentativeStatus: TpCompanyRepresentativeRelationship;
+  representedCompany: TpCompanyProfile;
+};
 
 export type UpdateConProfileInput = {
   birthDate?: InputMaybe<Scalars['DateTime']>;

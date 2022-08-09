@@ -26,7 +26,7 @@ export class ConProfileMapper
 
     props.id = raw.props.Id
     props.profileStatus = raw.props.Profile_Status__c as ConnectProfileStatus
-    props._contactId = raw.props.Contact__r.Id
+    props.userId = raw.props.Contact__r.Id
     props.email = raw.props.Contact__r.Email
     props.userType = raw.props.RecordType.DeveloperName as UserType
     props.loopbackUserId = raw.props.Contact__r.Loopback_User_ID__c
@@ -107,7 +107,7 @@ export class ConProfileMapper
 
     const Contact__r = new ContactRecordProps()
     Contact__r.Email = srcProps.email
-    Contact__r.Id = srcProps._contactId
+    Contact__r.Id = srcProps.userId
     Contact__r.FirstName = srcProps.firstName
     Contact__r.LastName = srcProps.lastName
     Contact__r.redi_Contact_Gender__c = srcProps.gender

@@ -1,6 +1,6 @@
 query findConProfile($conProfileId: ID!) {
   conProfile(id: $conProfileId) {
-    _contactId
+    userId
     id
     firstName
     lastName

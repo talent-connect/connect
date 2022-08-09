@@ -1,5 +1,3 @@
-export * from './account-contact.record'
-export * from './account-contact.recordprops'
 export * from './account.record'
 export * from './account.recordprops'
 export * from './enums'

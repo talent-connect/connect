@@ -23,11 +23,11 @@ export class ConMentoringSessionsService {
   async create(input: CreateConMentoringSessionInput, user: CurrentUserInfo) {
     const props = new ConMentoringSessionEntityProps()
     Object.assign(props, input)
-    props.mentorId = user.contactId
+    props.mentorId = user.userId
     const entityToPersist = ConMentoringSessionEntity.create(props)
 
     const [mentorProfile, menteeProfile] = await Promise.all([
-      this.profilesService.findOne({ 'Contact__r.Id': user.contactId }),
+      this.profilesService.findOne({ 'Contact__r.Id': user.userId }),
       this.profilesService.findOne({ 'Contact__r.Id': input.menteeId }),
     ])
 

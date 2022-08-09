@@ -32,35 +32,4 @@ export class TpCompanyProfilesService {
       throw new NotFoundException('TpCompanyProfile not found')
     }
   }
-
-  async findOneByLoopbackUserId(loopbackUserId: string) {
-    const entities = await this.findAll({
-      'Contact__r.Loopback_User_ID__c': loopbackUserId,
-    })
-    if (entities.length > 0) {
-      return entities[0]
-    } else {
-      throw new NotFoundException('ConProfile not found')
-    }
-  }
-
-  // async update(updateConProfileInput: PatchConProfileInput) {
-  //   const existingEntity = await this.findOneById(updateConProfileInput.id)
-  //   const props = existingEntity.props
-  //   const updatesSanitized = deleteUndefinedProps(updateConProfileInput)
-  //   Object.entries(updatesSanitized).forEach(([key, value]) => {
-  //     props[key] = value
-  //   })
-  //   const entityToPersist = ConProfileEntity.create(props)
-  //   const persistedObject = await this.api.updateConProfile(
-  //     this.mapper.toRecord(entityToPersist)
-  //   )
-  //   const updatedEntity = this.mapper.fromRecord(persistedObject)
-
-  //   return updatedEntity
-  // }
-
-  // remove(id: number) {
-  //   return `This action removes a #${id} conProfile`
-  // }
 }

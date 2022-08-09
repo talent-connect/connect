@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common'
 import { Gender, Mapper } from '@talent-connect/common-types'
-import { ContactEntity } from '../contact.entity'
-import { ContactEntityProps } from '../contact.entityprops'
 import { ContactRecord } from '../contact.record'
 import { ContactRecordProps } from '../contact.recordprops'
+import { UserEntity } from '../user.entity'
+import { UserEntityProps } from '../user.entityprops'
 
 @Injectable()
-export class ContactMapper implements Mapper<ContactEntity, ContactRecord> {
-  fromPersistence(raw: ContactRecord): ContactEntity {
-    const props = new ContactEntityProps()
+export class UserMapper implements Mapper<UserEntity, ContactRecord> {
+  fromPersistence(raw: ContactRecord): UserEntity {
+    const props = new UserEntityProps()
 
     props.id = raw.props.Id
     props.email = raw.props.Email
@@ -41,12 +41,12 @@ export class ContactMapper implements Mapper<ContactEntity, ContactRecord> {
     props.createdAt = raw.props.CreatedDate
     props.updatedAt = raw.props.LastModifiedDate
 
-    const entity = ContactEntity.create(props)
+    const entity = UserEntity.create(props)
 
     return entity
   }
 
-  public toPersistence(source: ContactEntity): ContactRecord {
+  public toPersistence(source: UserEntity): ContactRecord {
     const props = new ContactRecordProps()
     const srcProps = source.props
 

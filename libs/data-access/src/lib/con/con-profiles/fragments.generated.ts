@@ -1,10 +1,50 @@
-import * as Types from '@talent-connect/data-access';
+import * as Types from '@talent-connect/data-access'
 
-export type AllConProfileFieldsFragment = { __typename?: 'ConProfile', _contactId: string, birthDate?: any | null, categories: Array<Types.MentoringTopic>, createdAt: any, email: string, expectations?: string | null, firstName: string, gender?: Types.Gender | null, githubProfileUrl?: string | null, id: string, ifUserMentee_activeMentorshipMatches: number, ifUserMentor_activeMentorshipMatches: number, languages?: Array<Types.ConnectProfileLanguage> | null, lastName: string, linkedInProfileUrl?: string | null, loopbackUserId: string, menteeCountCapacity?: number | null, mentee_currentlyEnrolledInCourse: Types.RediCourse, mentee_highestEducationLevel?: Types.EducationLevel | null, mentee_occupationCategoryId?: Types.OccupationCategory | null, mentee_occupationJob_placeOfEmployment?: string | null, mentee_occupationJob_position?: string | null, mentee_occupationLookingForJob_what?: string | null, mentee_occupationOther_description?: string | null, mentee_occupationStudent_studyName?: string | null, mentee_occupationStudent_studyPlace?: string | null, mentor_occupation?: string | null, mentor_workPlace?: string | null, optOutOfMenteesFromOtherRediLocation: boolean, personalDescription?: string | null, profileAvatarImageS3Key?: string | null, profileStatus: Types.ConnectProfileStatus, rediLocation: Types.RediLocation, slackUsername?: string | null, telephoneNumber?: string | null, updatedAt: any, userActivatedAt?: any | null, userType: Types.UserType };
+export type AllConProfileFieldsFragment = {
+  __typename?: 'ConProfile'
+  userId: string
+  birthDate?: any | null
+  categories: Array<Types.MentoringTopic>
+  createdAt: any
+  email: string
+  expectations?: string | null
+  firstName: string
+  gender?: Types.Gender | null
+  githubProfileUrl?: string | null
+  id: string
+  ifUserMentee_activeMentorshipMatches: number
+  ifUserMentor_activeMentorshipMatches: number
+  languages?: Array<Types.ConnectProfileLanguage> | null
+  lastName: string
+  linkedInProfileUrl?: string | null
+  loopbackUserId: string
+  menteeCountCapacity?: number | null
+  mentee_currentlyEnrolledInCourse: Types.RediCourse
+  mentee_highestEducationLevel?: Types.EducationLevel | null
+  mentee_occupationCategoryId?: Types.OccupationCategory | null
+  mentee_occupationJob_placeOfEmployment?: string | null
+  mentee_occupationJob_position?: string | null
+  mentee_occupationLookingForJob_what?: string | null
+  mentee_occupationOther_description?: string | null
+  mentee_occupationStudent_studyName?: string | null
+  mentee_occupationStudent_studyPlace?: string | null
+  mentor_occupation?: string | null
+  mentor_workPlace?: string | null
+  optOutOfMenteesFromOtherRediLocation: boolean
+  personalDescription?: string | null
+  profileAvatarImageS3Key?: string | null
+  profileStatus: Types.ConnectProfileStatus
+  rediLocation: Types.RediLocation
+  slackUsername?: string | null
+  telephoneNumber?: string | null
+  updatedAt: any
+  userActivatedAt?: any | null
+  userType: Types.UserType
+}
 
 export const AllConProfileFieldsFragmentDoc = `
     fragment AllConProfileFields on ConProfile {
-  _contactId
+  userId
   birthDate
   categories
   createdAt
@@ -43,4 +83,4 @@ export const AllConProfileFieldsFragmentDoc = `
   userActivatedAt
   userType
 }
-    `;
+    `

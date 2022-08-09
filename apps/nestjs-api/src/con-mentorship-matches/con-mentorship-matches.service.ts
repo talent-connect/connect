@@ -126,7 +126,7 @@ export class ConMentorshipMatchesService {
     const result = await this.api.update(this.mapper.toPersistence(entity))
 
     const menteePendingMentorshipMatches = await this.findAll({
-      Mentee__c: menteeProfile.props._contactId,
+      Mentee__c: menteeProfile.props.userId,
       Status__c: MentorshipMatchStatus.APPLIED,
     })
 
@@ -201,7 +201,7 @@ export class ConMentorshipMatchesService {
   }
 
   async applyForMentorship(
-    requestingMenteeContactId: string,
+    requestingMenteeUserId: string,
     input: ConMentorshipMatchesApplyForMentorshipInputDto
   ) {
     // TODO: enforce following rules
@@ -212,14 +212,14 @@ export class ConMentorshipMatchesService {
 
     const [menteeProfile, mentorProfile] = await Promise.all([
       this.conProfilesServices.findOne({
-        'Contact__r.Id': requestingMenteeContactId,
+        'Contact__r.Id': requestingMenteeUserId,
       }),
       this.conProfilesServices.findOneById(input.mentorId),
     ])
 
     const entityProps = {
-      menteeId: menteeProfile.props._contactId,
-      mentorId: mentorProfile.props._contactId,
+      menteeId: menteeProfile.props.userId,
+      mentorId: mentorProfile.props.userId,
       status: MentorshipMatchStatus.APPLIED,
       applicationText: input.applicationText,
       expectationText: input.expectationText,

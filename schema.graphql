@@ -113,7 +113,6 @@ type ConMentorshipMatchesMarkAsDismissedOutputDto {
 }
 
 type ConProfile {
-  _contactId: String!
   age: Float
   birthDate: DateTime
   categories: [MentoringTopic!]!
@@ -156,6 +155,7 @@ type ConProfile {
   telephoneNumber: String
   updatedAt: DateTime!
   userActivatedAt: DateTime
+  userId: String!
   userType: UserType!
 }
 
@@ -479,9 +479,9 @@ type Query {
   conProfile(id: ID, loopbackUserId: ID): ConProfile!
   conProfilesAvailableMentors(filter: FindConProfilesArgsFilter!): [ConProfile!]!
   myConProfile: ConProfile!
-  myTpCompanyProfile: TpCompanyProfile!
   publicTpCompanyProfiles: [TpCompanyProfile!]!
   tpCompanyProfile(id: ID): TpCompanyProfile!
+  tpCurrentUserDataGet: TpCurrentUserData!
 }
 
 enum RediCourse {
@@ -568,6 +568,28 @@ type TpCompanyProfileSignUpInputOutputDto {
 enum TpCompanyProfileSignUpOperationType {
   EXISTING_COMPANY
   NEW_COMPANY
+}
+
+type TpCompanyRepresentativeRelationship {
+  createdAt: DateTime!
+  id: ID!
+  status: TpCompanyRepresentativeRelationshipStatus!
+  tpCompanyProfileId: String!
+  updatedAt: DateTime!
+  userId: String!
+}
+
+enum TpCompanyRepresentativeRelationshipStatus {
+  APPROVED
+  DEACTIVATED
+  PENDING
+  REJECTED
+}
+
+type TpCurrentUserData {
+  companyRepresentationStatus: TpCompanyRepresentativeRelationship!
+  companyRepresentativeStatus: TpCompanyRepresentativeRelationship!
+  representedCompany: TpCompanyProfile!
 }
 
 input UpdateConProfileInput {

@@ -210,7 +210,7 @@ export class ConMentorshipMatchesResolver {
     @Args('input') input: ConMentorshipMatchesApplyForMentorshipInputDto
   ) {
     const result = await this.conMentorshipMatchesService.applyForMentorship(
-      user.contactId,
+      user.userId,
       input
     )
 
