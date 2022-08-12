@@ -38,7 +38,7 @@ export class ConProfileEntityProps implements EntityProps {
   @Field((type) => EducationLevel)
   mentee_highestEducationLevel?: EducationLevel
   @Field((type) => RediCourse)
-  mentee_currentlyEnrolledInCourse: RediCourse
+  mentee_currentlyEnrolledInCourse?: RediCourse
   profileAvatarImageS3Key?: string
   firstName: string
   lastName: string

@@ -161,7 +161,7 @@ export type ConProfile = {
   linkedInProfileUrl?: Maybe<Scalars['String']>;
   loopbackUserId: Scalars['String'];
   menteeCountCapacity?: Maybe<Scalars['Int']>;
-  mentee_currentlyEnrolledInCourse: RediCourse;
+  mentee_currentlyEnrolledInCourse?: Maybe<RediCourse>;
   mentee_highestEducationLevel?: Maybe<EducationLevel>;
   mentee_occupationCategoryId?: Maybe<OccupationCategory>;
   mentee_occupationJob_placeOfEmployment?: Maybe<Scalars['String']>;
@@ -191,6 +191,7 @@ export type ConProfileSignUpInput = {
   email: Scalars['String'];
   firstName: Scalars['String'];
   lastName: Scalars['String'];
+  mentee_currentlyEnrolledInCourse?: InputMaybe<RediCourse>;
   rediLocation: RediLocation;
   userType: UserType;
 };
@@ -478,7 +479,7 @@ export type Mutation = {
   conMentorshipMatchesDeclineMentorship: ConMentorshipMatchesDeclineMentorshipOutputDto;
   conMentorshipMatchesMarkAsDismissed: ConMentorshipMatchesMarkAsDismissedOutputDto;
   conProblemReportCreate: OkResponseMutationOutputDto;
-  conProfileSignUp: ConProfile;
+  conProfileSignUp: OkIdResponseMutationOutputDto;
   createConMentoringSession: ConMentoringSession;
   patchConProfile: ConProfile;
   tpCompanyProfileSignUp: TpCompanyProfileSignUpInputOutputDto;
@@ -555,6 +556,12 @@ export enum OccupationCategory {
   Other = 'other',
   Student = 'student'
 }
+
+export type OkIdResponseMutationOutputDto = {
+  __typename?: 'OkIdResponseMutationOutputDto';
+  id: Scalars['String'];
+  ok: Scalars['Boolean'];
+};
 
 export type OkResponseMutationOutputDto = {
   __typename?: 'OkResponseMutationOutputDto';

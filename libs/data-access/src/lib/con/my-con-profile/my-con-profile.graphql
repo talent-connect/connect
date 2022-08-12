@@ -16,38 +16,6 @@ query loadMyProfile($loopbackUserId: ID!) {
 
 mutation patchMyProfile($input: UpdateConProfileInput!) {
   patchConProfile(patchConProfileInput: $input) {
-    profileStatus
-    birthDate
-    email
-    expectations
-    firstName
-    gender
-    githubProfileUrl
-    id
-    languages
-    lastName
-    linkedInProfileUrl
-    loopbackUserId
-    mentee_currentlyEnrolledInCourse
-    mentee_highestEducationLevel
-    mentee_occupationCategoryId
-    mentee_occupationJob_placeOfEmployment
-    mentee_occupationJob_position
-    mentee_occupationLookingForJob_what
-    mentee_occupationOther_description
-    mentee_occupationStudent_studyName
-    mentee_occupationStudent_studyPlace
-    mentor_occupation
-    mentor_workPlace
-    optOutOfMenteesFromOtherRediLocation
-    personalDescription
-    profileAvatarImageS3Key
-    rediLocation
-    slackUsername
-    telephoneNumber
-    userActivatedAt
-    userType
-    categories
-    menteeCountCapacity
+    ...AllConProfileFields
   }
 }

@@ -11,6 +11,7 @@ import {
   ConMentoringSessionEntityProps,
   ConMentorshipMatchEntityProps,
   ConProfileEntityProps,
+  OkIdResponseMutationOutputDto,
 } from '@talent-connect/common-types'
 import { CurrentUser } from '../auth/current-user.decorator'
 import { CurrentUserInfo } from '../auth/current-user.interface'
@@ -33,16 +34,16 @@ export class ConProfilesResolver {
     private readonly conMentorshipMatchesService: ConMentorshipMatchesService
   ) {}
 
-  @Mutation(() => ConProfileEntityProps, { name: 'conProfileSignUp' })
+  @Mutation(() => OkIdResponseMutationOutputDto, { name: 'conProfileSignUp' })
   async createConProfile(
     @Args('input') createConProfileInput: ConProfileSignUpInput,
     @CurrentUser() currentUser: CurrentUserInfo
   ) {
-    const entity = await this.conProfilesService.signUp(
+    const id = await this.conProfilesService.signUp(
       createConProfileInput,
       currentUser
     )
-    return entity.props
+    return { ok: true, id }
   }
   //! TODO: Add auth
   @Query(() => [ConProfileEntityProps], { name: 'conProfilesAvailableMentors' })

@@ -133,7 +133,7 @@ type ConProfile {
   linkedInProfileUrl: String
   loopbackUserId: String!
   menteeCountCapacity: Int
-  mentee_currentlyEnrolledInCourse: RediCourse!
+  mentee_currentlyEnrolledInCourse: RediCourse
   mentee_highestEducationLevel: EducationLevel
   mentee_occupationCategoryId: OccupationCategory
   mentee_occupationJob_placeOfEmployment: String
@@ -163,6 +163,7 @@ input ConProfileSignUpInput {
   email: String!
   firstName: String!
   lastName: String!
+  mentee_currentlyEnrolledInCourse: RediCourse
   rediLocation: RediLocation!
   userType: UserType!
 }
@@ -454,7 +455,7 @@ type Mutation {
   conMentorshipMatchesDeclineMentorship(input: ConMentorshipMatchesDeclineMentorshipInputDto!): ConMentorshipMatchesDeclineMentorshipOutputDto!
   conMentorshipMatchesMarkAsDismissed(input: ConMentorshipMatchesMarkAsDismissedInputDto!): ConMentorshipMatchesMarkAsDismissedOutputDto!
   conProblemReportCreate(input: CreateConProblemReportInput!): OkResponseMutationOutputDto!
-  conProfileSignUp(input: ConProfileSignUpInput!): ConProfile!
+  conProfileSignUp(input: ConProfileSignUpInput!): OkIdResponseMutationOutputDto!
   createConMentoringSession(createConMentoringSessionInput: CreateConMentoringSessionInput!): ConMentoringSession!
   patchConProfile(patchConProfileInput: UpdateConProfileInput!): ConProfile!
   tpCompanyProfileSignUp(input: TpCompanyProfileSignUpInputDto!): TpCompanyProfileSignUpInputOutputDto!
@@ -465,6 +466,11 @@ enum OccupationCategory {
   lookingForJob
   other
   student
+}
+
+type OkIdResponseMutationOutputDto {
+  id: String!
+  ok: Boolean!
 }
 
 type OkResponseMutationOutputDto {

@@ -8,7 +8,7 @@ export type ConProfileSignUpMutationVariables = Types.Exact<{
 }>;
 
 
-export type ConProfileSignUpMutation = { __typename?: 'Mutation', conProfileSignUp: { __typename?: 'ConProfile', id: string } };
+export type ConProfileSignUpMutation = { __typename?: 'Mutation', conProfileSignUp: { __typename?: 'OkIdResponseMutationOutputDto', id: string } };
 
 
 export const ConProfileSignUpDocument = `

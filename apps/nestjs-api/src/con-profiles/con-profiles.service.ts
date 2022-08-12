@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import {
   ConnectProfileStatus,
   ConProfileEntity,
-  ConProfileEntityProps,
   ConProfileMapper,
   UserType,
 } from '@talent-connect/common-types'
@@ -22,25 +21,17 @@ export class ConProfilesService {
   async signUp(
     input: ConProfileSignUpInput,
     user: CurrentUserInfo
-  ): Promise<ConProfileEntity> {
-    const entityProps = new ConProfileEntityProps()
-    entityProps.userId = user.userId
-    entityProps.firstName = input.firstName
-    entityProps.lastName = input.lastName
-    entityProps.menteeCountCapacity = 1
-
-    const entity = ConProfileEntity.create(entityProps)
-
-    const persistedRecord = await this.api.createConProfileForSignUp({
+  ): Promise<string> {
+    return await this.api.createConProfileForSignUp({
       userId: user.userId,
       firstName: input.firstName,
       lastName: input.lastName,
       loopbackUserId: user.loopbackUserId,
       profileStatus: ConnectProfileStatus.PENDING,
       rediLocation: input.rediLocation,
+      userType: input.userType,
+      mentee_currentlyEnrolledInCourse: input.mentee_currentlyEnrolledInCourse,
     })
-
-    return this.mapper.fromPersistence(persistedRecord)
   }
 
   async findAll(filter: any = {}) {

@@ -18,6 +18,7 @@ import Teaser from '../../../components/molecules/Teaser'
 import { Columns, Content, Form, Notification } from 'react-bulma-components'
 
 import {
+  RediCourse,
   RediLocation,
   useConProfileSignUpMutation,
   UserType,
@@ -71,7 +72,7 @@ export interface SignUpFormValues {
   firstName: string
   lastName: string
   agreesWithCodeOfConduct: boolean
-  mentee_currentlyEnrolledInCourse: string
+  mentee_currentlyEnrolledInCourse?: RediCourse
 }
 
 export default function SignUp() {
@@ -87,7 +88,7 @@ export default function SignUp() {
     firstName: '',
     lastName: '',
     agreesWithCodeOfConduct: false,
-    mentee_currentlyEnrolledInCourse: '',
+    mentee_currentlyEnrolledInCourse: undefined,
   }
 
   const [loopbackSubmitError, setLoopbackSubmitError] = useState<string | null>(
@@ -107,6 +108,8 @@ export default function SignUp() {
           lastName: values.lastName,
           userType: type.toUpperCase() as UserType,
           rediLocation: envRediLocation() as RediLocation,
+          mentee_currentlyEnrolledInCourse:
+            values.mentee_currentlyEnrolledInCourse,
         },
       })
       actions.setSubmitting(false)

@@ -1,10 +1,4 @@
-import {
-  Field,
-  InputType,
-  PartialType,
-  PickType,
-  IntersectionType,
-} from '@nestjs/graphql'
+import { InputType, PickType } from '@nestjs/graphql'
 import { ConProfileEntityProps } from '@talent-connect/common-types'
 
 @InputType({ isAbstract: true })
@@ -17,4 +11,5 @@ export class ConProfileSignUpInput extends PickType(_ConProfileEntityProps, [
   'lastName',
   'userType',
   'rediLocation',
+  'mentee_currentlyEnrolledInCourse',
 ] as const) {}

@@ -12,7 +12,6 @@ import { objectEntries } from '@talent-connect/typescript-utilities'
 import { FormikValues, useFormik } from 'formik'
 import { omit } from 'lodash'
 import groupBy from 'lodash/groupBy'
-import React from 'react'
 import { Columns, Content, Element, Heading } from 'react-bulma-components'
 import { useQueryClient } from 'react-query'
 import * as Yup from 'yup'
@@ -77,6 +76,8 @@ function EditableMentoringTopics() {
     validationSchema,
     onSubmit: submitForm,
   })
+
+  console.log(formik.values)
 
   const { categories: selectedCategories } = formik.values
 

@@ -134,6 +134,24 @@ export class SfApiRepository {
       return { id: insertedRecordResult.id }
     }
   }
+
+  async findRecordIdOfObject(
+    objectName: string,
+    recordName: string
+  ): Promise<string> {
+    await this.connect()
+    try {
+      const result = await this.connection.sobject(objectName).describe()
+      return result.recordTypeInfos.find(
+        (recordType) =>
+          recordType.name.toLowerCase() === recordName.toLowerCase()
+      ).recordTypeId
+    } catch (err) {
+      throw new Error(
+        `[SfApiRepository] Could not find record type id (sobject ${objectName}, record name ${recordName})`
+      )
+    }
+  }
 }
 
 interface FindRecordsParams {

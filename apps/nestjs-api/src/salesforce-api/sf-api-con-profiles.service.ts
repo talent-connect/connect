@@ -1,5 +1,9 @@
 import { Injectable } from '@nestjs/common'
-import { ConProfileRecord } from '@talent-connect/common-types'
+import {
+  ConProfileRecord,
+  RediCourse,
+  UserType,
+} from '@talent-connect/common-types'
 import { omit } from 'lodash'
 import { SfApiRepository } from './sf-api.repository'
 
@@ -31,13 +35,18 @@ export class SfApiConProfilesService {
     rediLocation: string
     profileStatus: string
     loopbackUserId: string
-  }): Promise<ConProfileRecord> {
+    userType: UserType
+    mentee_currentlyEnrolledInCourse: RediCourse
+  }) {
     const upsertContactResult = await this.repository.updateRecord('Contact', {
       Id: data.userId,
       FirstName: data.firstName,
       LastName: data.lastName,
     })
-
+    const recordTypeId = await this.repository.findRecordIdOfObject(
+      ConProfileRecord.metadata.SALESFORCE_OBJECT_NAME,
+      data.userType
+    )
     const insertConProfileResult = await this.repository.findUpdateOrInsert(
       ConProfileRecord.metadata.SALESFORCE_OBJECT_NAME,
       { Contact__c: data.userId },
@@ -45,10 +54,12 @@ export class SfApiConProfilesService {
         Contact__c: data.userId,
         Profile_Status__c: data.profileStatus,
         ReDI_Location__c: data.rediLocation,
+        RecordTypeId: recordTypeId,
+        ReDI_Course__c: data.mentee_currentlyEnrolledInCourse,
       }
     )
 
-    return this.getConProfile(insertConProfileResult.id)
+    return insertConProfileResult.id
   }
 
   async updateConProfile(record: ConProfileRecord): Promise<ConProfileRecord> {
