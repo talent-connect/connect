@@ -11,7 +11,6 @@ import { useFormik } from 'formik'
 import { useState } from 'react'
 import { useQueryClient } from 'react-query'
 import * as Yup from 'yup'
-import { requestMentorship } from '../../services/api/api'
 import {
   ApplyForMentorMentorPropFragment,
   useApplyForMentorshipMutation,
@@ -66,11 +65,6 @@ const ApplyForMentor = ({ mentor, onApplyForMentorSettled }: Props) => {
         mentorId: mentor.id,
       },
     })
-    await requestMentorship(
-      values.applicationText,
-      values.expectationText,
-      mentor.id
-    )
     setShow(false)
     onApplyForMentorSettled()
   }

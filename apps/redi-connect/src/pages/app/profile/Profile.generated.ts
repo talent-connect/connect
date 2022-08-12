@@ -1,6 +1,7 @@
 // THIS FILE IS GENERATED, DO NOT EDIT!
 import * as Types from '@talent-connect/data-access';
 
+import { AllConProfileFieldsFragmentDoc } from '../../../../../../libs/data-access/src/lib/con/con-profiles/con-profile.fragment.generated';
 import { useQuery, UseQueryOptions } from 'react-query';
 import { fetcher } from '@talent-connect/data-access';
 export type ProfilePageQueryQueryVariables = Types.Exact<{
@@ -8,34 +9,16 @@ export type ProfilePageQueryQueryVariables = Types.Exact<{
 }>;
 
 
-export type ProfilePageQueryQuery = { __typename?: 'Query', conProfile: { __typename?: 'ConProfile', id: string, fullName: string, firstName: string, lastName: string, email: string, telephoneNumber?: string | null, linkedInProfileUrl?: string | null, githubProfileUrl?: string | null, slackUsername?: string | null, rediLocation: Types.RediLocation, personalDescription?: string | null, expectations?: string | null, categories: Array<Types.MentoringTopic>, age?: number | null, languages?: Array<Types.ConnectProfileLanguage> | null, mentee_highestEducationLevel?: Types.EducationLevel | null, mentor_occupation?: string | null, gender?: Types.Gender | null, mentee_occupationCategoryId?: Types.OccupationCategory | null } };
+export type ProfilePageQueryQuery = { __typename?: 'Query', conProfile: { __typename?: 'ConProfile', userId: string, age?: number | null, birthDate?: any | null, categories: Array<Types.MentoringTopic>, createdAt: any, email: string, expectations?: string | null, firstName: string, fullName: string, gender?: Types.Gender | null, githubProfileUrl?: string | null, id: string, ifUserMentee_activeMentorshipMatches: number, ifUserMentor_activeMentorshipMatches: number, ifUserMentor_hasAvailableMentorshipSlot: boolean, ifUserMentor_doesntHaveAvailableMentorshipSlot: boolean, languages?: Array<Types.ConnectProfileLanguage> | null, lastName: string, linkedInProfileUrl?: string | null, loopbackUserId: string, menteeCountCapacity?: number | null, mentee_currentlyEnrolledInCourse?: Types.RediCourse | null, mentee_highestEducationLevel?: Types.EducationLevel | null, mentee_occupationCategoryId?: Types.OccupationCategory | null, mentee_occupationJob_placeOfEmployment?: string | null, mentee_occupationJob_position?: string | null, mentee_occupationLookingForJob_what?: string | null, mentee_occupationOther_description?: string | null, mentee_occupationStudent_studyName?: string | null, mentee_occupationStudent_studyPlace?: string | null, mentor_occupation?: string | null, mentor_workPlace?: string | null, optOutOfMenteesFromOtherRediLocation: boolean, personalDescription?: string | null, profileAvatarImageS3Key?: string | null, profileStatus: Types.ConnectProfileStatus, rediLocation: Types.RediLocation, slackUsername?: string | null, telephoneNumber?: string | null, updatedAt: any, userActivatedAt?: any | null, userType: Types.UserType } };
 
 
 export const ProfilePageQueryDocument = `
     query ProfilePageQuery($id: ID!) {
   conProfile(id: $id) {
-    id
-    fullName
-    firstName
-    lastName
-    email
-    telephoneNumber
-    linkedInProfileUrl
-    githubProfileUrl
-    slackUsername
-    rediLocation
-    personalDescription
-    expectations
-    categories
-    age
-    languages
-    mentee_highestEducationLevel
-    mentor_occupation
-    gender
-    mentee_occupationCategoryId
+    ...AllConProfileFields
   }
 }
-    `;
+    ${AllConProfileFieldsFragmentDoc}`;
 export const useProfilePageQueryQuery = <
       TData = ProfilePageQueryQuery,
       TError = unknown

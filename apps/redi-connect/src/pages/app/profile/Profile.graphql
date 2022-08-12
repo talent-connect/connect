@@ -1,23 +1,5 @@
 query ProfilePageQuery($id: ID!) {
   conProfile(id: $id) {
-    id
-    fullName
-    firstName
-    lastName
-    email
-    telephoneNumber
-    linkedInProfileUrl
-    githubProfileUrl
-    slackUsername
-    rediLocation
-    personalDescription
-    expectations
-    categories
-    age
-    languages
-    mentee_highestEducationLevel
-    mentor_occupation
-    gender
-    mentee_occupationCategoryId
+    ...AllConProfileFields
   }
 }

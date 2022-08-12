@@ -1,65 +1,44 @@
-import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
-import { useParams, useHistory } from 'react-router'
-import { Columns, Element, Notification, Content } from 'react-bulma-components'
+import {
+  ConProfile,
+  MentorshipMatchStatus,
+  useLoadMyProfileQuery,
+  UserType,
+} from '@talent-connect/data-access'
 import {
   Button,
   Heading,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
+import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
+import { Columns, Content, Element, Notification } from 'react-bulma-components'
+import { useHistory, useParams } from 'react-router-dom'
 import {
   ReadAbout,
-  ReadMentoringTopics,
-  ReadEducation,
   ReadContactDetails,
-  ReadSocialMedia,
+  ReadEducation,
   ReadLanguages,
+  ReadMentoringTopics,
+  ReadOccupation,
   ReadPersonalDetail,
   ReadRediClass,
-  ReadOccupation,
+  ReadSocialMedia,
 } from '../../../components/molecules'
 import {
   ApplyForMentor,
   Avatar,
   ConfirmMentorship,
 } from '../../../components/organisms'
-import { LoggedIn } from '../../../components/templates'
-import { RedProfile } from '@talent-connect/shared-types'
-import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
-import './Profile.scss'
 import DeclineMentorshipButton from '../../../components/organisms/DeclineMentorshipButton'
-import {
-  ConProfile,
-  MentorshipMatchStatus,
-  useFindConProfileQuery,
-  useLoadMyProfileQuery,
-} from '@talent-connect/data-access'
+import { LoggedIn } from '../../../components/templates'
 import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
 import { useProfilePageQueryQuery } from './Profile.generated'
+import './Profile.scss'
 
 interface RouteParams {
   profileId: string
 }
 
-interface ProfileProps {
-  profile: RedProfile | undefined
-  currentUser: RedProfile | undefined
-  hasReachedMenteeLimit: boolean
-  profilesFetchOneStart: Function
-}
-
-/**
- *
- * What do we need?
- * - if mentor, computer whether mentee limit has been reached
- * - load current user's matches with the given mentor/mentee
- */
-
-function Profile({
-  currentUser,
-  hasReachedMenteeLimit,
-  profilesFetchOneStart,
-}: ProfileProps) {
+function Profile() {
   const { profileId } = useParams<RouteParams>()
   const profileQuery = useProfilePageQueryQuery({ id: profileId })
   const myProfileQuery = useLoadMyProfileQuery({
@@ -72,9 +51,8 @@ function Profile({
   const myProfile = myProfileQuery.data.conProfile
   const profile = profileQuery.data.conProfile
 
-  const currentUserIsMentor = currentUser && currentUser.userType === 'mentor'
-
-  const currentUserIsMentee = currentUser && currentUser.userType === 'mentee'
+  const currentUserIsMentor = myProfile.userType === UserType.Mentor
+  const currentUserIsMentee = myProfile.userType === UserType.Mentee
 
   const myMatchWithThisProfile = myProfile.mentorshipMatches.find(
     (match) => match.mentee.id === profileId || match.mentor.id === profileId
@@ -101,6 +79,9 @@ function Profile({
       profile.slackUsername)
 
   const shouldHidePrivateContactInfo = currentUserIsMentee && !isAcceptedMatch
+
+  const hasReachedMenteeLimit =
+    myProfile.ifUserMentor_hasAvailableMentorshipSlot
 
   return (
     <LoggedIn>
@@ -132,6 +113,7 @@ function Profile({
         )}
 
         {myMatchWithThisProfile &&
+          currentUserIsMentor &&
           myMatchWithThisProfile.status === MentorshipMatchStatus.Applied && (
             <Columns.Column className="is-narrow">
               <ConfirmMentorship
