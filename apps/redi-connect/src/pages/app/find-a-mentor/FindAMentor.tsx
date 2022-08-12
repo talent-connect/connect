@@ -18,10 +18,9 @@ import {
 import { CATEGORIES, REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import { RedProfile } from '@talent-connect/shared-types'
 import { objectKeys } from '@talent-connect/typescript-utilities'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Columns, Content, Tag } from 'react-bulma-components'
 import { useQueryClient } from 'react-query'
-import { connect } from 'react-redux'
 import {
   ArrayParam,
   BooleanParam,
@@ -174,7 +173,7 @@ const FindAMentor = () => {
           label: language,
         }))
       )
-  }, [mentorsQuery.data.conProfilesAvailableMentors])
+  }, [mentorsQuery.data?.conProfilesAvailableMentors])
 
   const filterRediLocations = objectKeys(REDI_LOCATION_NAMES).map(
     (location) => ({
@@ -190,15 +189,13 @@ const FindAMentor = () => {
   )
     return <LoggedIn />
 
-  if (mentorsQuery.isLoading) return <Loading />
-
-  const mentors = mentorsQuery.data.conProfilesAvailableMentors
+  const mentors = mentorsQuery.data?.conProfilesAvailableMentors
 
   return (
     <LoggedIn>
       <Loading />
       <Heading subtitle size="small" className="oneandhalf-bs">
-        Available mentors ({mentors.length})
+        Available mentors ({mentors?.length})
       </Heading>
       <div className="filters">
         <SearchField
@@ -290,7 +287,7 @@ const FindAMentor = () => {
       </div>
 
       <Columns>
-        {mentors.map((mentor) => {
+        {mentors?.map((mentor) => {
           const isFavorite = currentFavorites.includes(mentor.id)
 
           if (!isFavorite && showFavorites) return
@@ -308,7 +305,7 @@ const FindAMentor = () => {
         })}
       </Columns>
 
-      {mentors.length === 0 && !isLoading && (
+      {mentors?.length === 0 && !isLoading && (
         <Content>
           <>
             Unfortunately <strong>could not find any mentors</strong> matching

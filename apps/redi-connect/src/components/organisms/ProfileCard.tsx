@@ -1,20 +1,15 @@
-import React from 'react'
-import classnames from 'classnames'
-import { Card, Element, Tag } from 'react-bulma-components'
 import { Icon, PipeList } from '@talent-connect/shared-atomic-design-components'
+import classnames from 'classnames'
+import React from 'react'
+import { Card, Element } from 'react-bulma-components'
 
+import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import { useHistory } from 'react-router-dom'
-import {
-  AWS_PROFILE_AVATARS_BUCKET_BASE_URL,
-  REDI_LOCATION_NAMES,
-} from '@talent-connect/shared-config'
 
 import placeholderImage from '../../assets/images/img-placeholder.png'
 import './ProfileCard.scss'
 
-import { RedProfile } from '@talent-connect/shared-types'
 import { ReadMentoringTopics } from '../molecules'
-import { ConProfile } from '@talent-connect/data-access'
 import { ProfileCardProfilePropFragment } from './ProfileCard.generated'
 
 interface ProfileCardProps {

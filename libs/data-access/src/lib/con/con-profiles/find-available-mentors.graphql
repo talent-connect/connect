@@ -8,5 +8,6 @@ query findAvailableMentors($filter: FindConProfilesArgsFilter!) {
     languages
     fullName
     rediLocation
+    profileAvatarImageS3Key
   }
 }
