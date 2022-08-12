@@ -1,10 +1,12 @@
+import { useMyTpDataQuery } from '@talent-connect/data-access'
 import { Button } from '@talent-connect/shared-atomic-design-components'
 import { Columns, Content, Form } from 'react-bulma-components'
-import { useHistory, useParams } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import AccountOperation from '../../../components/templates/AccountOperation'
 
 export default function SignUpComplete() {
   const history = useHistory()
+  const { data: myTpUserData } = useMyTpDataQuery()
 
   return (
     <AccountOperation>
