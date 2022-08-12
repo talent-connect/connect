@@ -1,22 +1,20 @@
-import React, { useEffect, useState } from 'react'
-import { connect } from 'react-redux'
-import { Columns, Content, Element } from 'react-bulma-components'
 import {
   Heading,
   Loader,
 } from '@talent-connect/shared-atomic-design-components'
+import { Columns, Content, Element } from 'react-bulma-components'
 import {
   Avatar,
   EditableAbout,
   EditableContactDetails,
   EditableEducation,
   EditableLanguages,
+  EditableMenteeCount,
   EditableMentoringTopics,
   EditableOccupation,
   EditablePersonalDetail,
   EditableRediClass,
   EditableSocialMedia,
-  EditableMenteeCount,
 } from '../../../components/organisms'
 
 import { LoggedIn } from '../../../components/templates'
@@ -28,8 +26,6 @@ import { useIsFetching, useIsMutating, useQueryClient } from 'react-query'
 
 function Me() {
   const queryClient = useQueryClient()
-  console.log(queryClient.getQueryCache())
-  console.log(queryClient.getDefaultOptions())
   const myProfileResult = useLoadMyProfileQuery(
     {
       loopbackUserId: getAccessTokenFromLocalStorage().userId,
@@ -51,8 +47,6 @@ function Me() {
   // that Eric has been looking into.
 
   const conProfile = myProfileResult?.data.conProfile
-
-  console.log(conProfile)
 
   const userIsMentee = conProfile.userType === UserType.Mentee
   const userIsMentor = conProfile.userType === UserType.Mentor

@@ -1,22 +1,20 @@
-import { useParams } from 'react-router-dom'
 import { Columns } from 'react-bulma-components'
+import { useParams } from 'react-router-dom'
+import { EditableEducation } from '../../../components/organisms/jobseeker-profile-editables/EditableEducation'
+import { EditableImportantDetails } from '../../../components/organisms/jobseeker-profile-editables/EditableImportantDetails'
+import { EditableLanguages } from '../../../components/organisms/jobseeker-profile-editables/EditableLanguages'
+import { EditableLinks } from '../../../components/organisms/jobseeker-profile-editables/EditableLinks'
+import { EditableNamePhotoLocation } from '../../../components/organisms/jobseeker-profile-editables/EditableNamePhotoLocation'
+import { EditableOverview } from '../../../components/organisms/jobseeker-profile-editables/EditableOverview'
+import { EditableProfessionalExperience } from '../../../components/organisms/jobseeker-profile-editables/EditableProfessionalExperience'
+import { EditableSummary } from '../../../components/organisms/jobseeker-profile-editables/EditableSummary'
 import { LoggedIn } from '../../../components/templates'
 import { useTpJobseekerProfileByIdQuery } from '../../../react-query/use-tpjobseekerprofile-query'
-import { EditableLanguages } from '../../../components/organisms/jobseeker-profile-editables/EditableLanguages'
-import { EditableImportantDetails } from '../../../components/organisms/jobseeker-profile-editables/EditableImportantDetails'
-import { EditableLinks } from '../../../components/organisms/jobseeker-profile-editables/EditableLinks'
-import { EditableOverview } from '../../../components/organisms/jobseeker-profile-editables/EditableOverview'
-import { EditableSummary } from '../../../components/organisms/jobseeker-profile-editables/EditableSummary'
-import { EditableProfessionalExperience } from '../../../components/organisms/jobseeker-profile-editables/EditableProfessionalExperience'
-import { EditableEducation } from '../../../components/organisms/jobseeker-profile-editables/EditableEducation'
-import { EditableNamePhotoLocation } from '../../../components/organisms/jobseeker-profile-editables/EditableNamePhotoLocation'
 
 export function JobseekerProfile() {
   const { tpJobseekerProfileId }: { tpJobseekerProfileId: string } = useParams()
   const { data: jobseekerProfile } =
     useTpJobseekerProfileByIdQuery(tpJobseekerProfileId)
-
-  console.log(jobseekerProfile)
 
   return (
     <LoggedIn>

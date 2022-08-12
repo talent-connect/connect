@@ -21,8 +21,6 @@ export function JobListing() {
   const { tpJobListingId }: { tpJobListingId: string } = useParams()
   const { data: jobListing } = useTpJobListingOneQuery(tpJobListingId)
 
-  console.log(jobListing)
-
   return (
     <LoggedIn>
       <div style={{ display: 'flex' }}>

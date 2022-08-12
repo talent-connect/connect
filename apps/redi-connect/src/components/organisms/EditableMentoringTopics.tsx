@@ -77,8 +77,6 @@ function EditableMentoringTopics() {
     onSubmit: submitForm,
   })
 
-  console.log(formik.values)
-
   const { categories: selectedCategories } = formik.values
 
   const categoriesChange = (e: any) => {

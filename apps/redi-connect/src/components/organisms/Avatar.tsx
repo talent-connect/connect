@@ -1,15 +1,12 @@
-import React from 'react'
-import { ReactComponent as UploadImage } from '../../assets/images/uploadImage.svg'
-import ReactS3Uploader from 'react-s3-uploader'
-import { Element } from 'react-bulma-components'
-import { FormikValues, useFormik } from 'formik'
-import * as Yup from 'yup'
 import {
   AWS_PROFILE_AVATARS_BUCKET_BASE_URL,
   S3_UPLOAD_SIGN_URL,
 } from '@talent-connect/shared-config'
 import classnames from 'classnames'
+import { Element } from 'react-bulma-components'
+import ReactS3Uploader from 'react-s3-uploader'
 import placeholderImage from '../../assets/images/img-placeholder.png'
+import { ReactComponent as UploadImage } from '../../assets/images/uploadImage.svg'
 
 import './Avatar.scss'
 
@@ -18,8 +15,8 @@ import {
   useLoadMyProfileQuery,
   usePatchMyProfileMutation,
 } from '@talent-connect/data-access'
-import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 import { useQueryClient } from 'react-query'
+import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 
 type AvatarProps = {
   profile: Pick<ConProfile, 'fullName' | 'profileAvatarImageS3Key'>
@@ -114,8 +111,6 @@ function AvatarEditable() {
           signingUrl={S3_UPLOAD_SIGN_URL}
           accept="image/*"
           uploadRequestHeaders={{ 'x-amz-acl': 'public-read' }}
-          onSignedUrl={(c: any) => console.log(c)}
-          onError={(c: any) => console.log(c)}
           onFinish={onUploadSuccess}
           contentDisposition="auto"
         />

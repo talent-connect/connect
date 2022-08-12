@@ -1,9 +1,8 @@
-import React from 'react'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
 import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import './Browse.scss'
 import { BrowseCompany } from './BrowseCompany'
 import { BrowseJobseeker } from './BrowseJobseeker'
-import './Browse.scss'
 
 function Browse() {
   const { data: jobseekerProfile } = useTpJobseekerProfileQuery({
@@ -14,7 +13,6 @@ function Browse() {
   if (jobseekerProfile) return <BrowseJobseeker />
   if (companyProfile) return <BrowseCompany />
 
-  console.log('t!')
   return null
 }
 
