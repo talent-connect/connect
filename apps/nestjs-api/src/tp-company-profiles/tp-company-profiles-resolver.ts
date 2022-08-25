@@ -21,6 +21,16 @@ export class TpCompanyProfilesResolver {
   ) {}
 
   //! TODO: Add auth
+  @Query(() => [TpCompanyProfileEntityProps], {
+    name: 'tpCompanyProfiles',
+  })
+  async findAll() {
+    const entities = await this.tpCompanyProfilesService.findAll({})
+    const props = entities.map((entity) => entity.props)
+    return props
+  }
+
+  //! TODO: Add auth
   @Query(() => TpCompanyProfileEntityProps, {
     name: 'tpCompanyProfile',
   })
