@@ -16,7 +16,6 @@ import {
   SearchField,
 } from '@talent-connect/shared-atomic-design-components'
 import { CATEGORIES, REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
-import { RedProfile } from '@talent-connect/shared-types'
 import { objectKeys } from '@talent-connect/typescript-utilities'
 import { useEffect, useState } from 'react'
 import { Columns, Content, Tag } from 'react-bulma-components'
@@ -59,11 +58,6 @@ const FilterTag = ({ id, label, onClickHandler }: FilterTagProps) => (
   </Tag>
 )
 
-interface FindAMentorProps {
-  profile: RedProfile
-  profileSaveStart: (profile: Partial<RedProfile>) => void
-}
-
 const FindAMentor = () => {
   const queryClient = useQueryClient()
   const loopbackUserId = getAccessTokenFromLocalStorage().userId
@@ -73,13 +67,6 @@ const FindAMentor = () => {
   const unfavoriteMentorMutation = useUnfavoriteMentorMutation()
 
   const { Loading, isLoading } = useLoading()
-
-  // const {
-  //   id,
-  //   categories: categoriesFromProfile,
-  //   favouritedRedProfileIds,
-  //   rediLocation,
-  // } = profile
 
   const [showFavorites, setShowFavorites] = useState<boolean>(false)
   const [query, setQuery] = useQueryParams({

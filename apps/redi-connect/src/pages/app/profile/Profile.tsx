@@ -1,5 +1,4 @@
 import {
-  ConProfile,
   MentorshipMatchStatus,
   useLoadMyProfileQuery,
   UserType,
@@ -144,10 +143,7 @@ function Profile() {
 
           {profile.categories?.length > 0 && (
             <Element className="block-separator">
-              {/* //! TODO: fix this type assertion */}
-              <ReadMentoringTopics.Some
-                profile={profile as unknown as ConProfile}
-              />
+              <ReadMentoringTopics.Some profile={profile} />
             </Element>
           )}
 
@@ -158,10 +154,7 @@ function Profile() {
                   (profile.firstName || profile.age) && (
                     <Columns.Column>
                       <Element className="block-separator">
-                        {/* //! TODO: fix this type assertion */}
-                        <ReadContactDetails.Some
-                          profile={profile as unknown as ConProfile}
-                        />
+                        <ReadContactDetails.Some profile={profile} />
                       </Element>
                     </Columns.Column>
                   )}
@@ -182,17 +175,12 @@ function Profile() {
                 {(profile.gender || profile.age) && (
                   <Columns.Column>
                     <Element className="block-separator">
-                      {/* //! TODO: fix this type assertion */}
-                      <ReadPersonalDetail.Some
-                        profile={profile as unknown as ConProfile}
-                      />
+                      <ReadPersonalDetail.Some profile={profile} />
                     </Element>
                   </Columns.Column>
                 )}
                 <Columns.Column>
-                  <ReadLanguages.Some
-                    profile={profile as unknown as ConProfile}
-                  />
+                  <ReadLanguages.Some profile={profile} />
                 </Columns.Column>
               </Columns>
             </Element>
@@ -204,16 +192,12 @@ function Profile() {
                 {profile.mentee_highestEducationLevel && (
                   <Columns.Column>
                     <Element className="block-separator">
-                      <ReadEducation.Some
-                        profile={profile as unknown as ConProfile}
-                      />
+                      <ReadEducation.Some profile={profile} />
                     </Element>
                   </Columns.Column>
                 )}
                 <Columns.Column>
-                  <ReadRediClass.Some
-                    profile={profile as unknown as ConProfile}
-                  />
+                  <ReadRediClass.Some profile={profile} />
                 </Columns.Column>
               </Columns>
             </Element>
@@ -224,9 +208,7 @@ function Profile() {
             <Element className="block-separator">
               <Columns>
                 <Columns.Column>
-                  <ReadOccupation.Some
-                    profile={profile as unknown as ConProfile}
-                  />
+                  <ReadOccupation.Some profile={profile} />
                 </Columns.Column>
               </Columns>
             </Element>

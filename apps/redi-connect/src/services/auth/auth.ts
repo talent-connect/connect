@@ -1,7 +1,5 @@
 import { graphqlClient } from '@talent-connect/data-access'
-import { RedUser } from '@talent-connect/shared-types'
 import { AccessToken } from '@talent-connect/shared-types'
-import { RedProfile } from '@talent-connect/shared-types'
 
 export const isLoggedIn = (): boolean => {
   const accessToken: any = window.localStorage.getItem('accessToken')

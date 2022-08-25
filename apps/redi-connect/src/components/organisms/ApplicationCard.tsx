@@ -4,7 +4,6 @@ import {
 } from '@talent-connect/data-access'
 import { Icon } from '@talent-connect/shared-atomic-design-components'
 import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
-import { RedProfile } from '@talent-connect/shared-types'
 import classnames from 'classnames'
 import moment from 'moment'
 import { useState } from 'react'
@@ -18,7 +17,6 @@ import DeclineMentorshipButton from './DeclineMentorshipButton'
 
 interface Props {
   application: ApplicationCardApplicationPropFragment
-  currentUser?: RedProfile
 }
 
 const STATUS_LABELS: any = {
@@ -30,7 +28,9 @@ const STATUS_LABELS: any = {
   'invalidated-as-other-mentor-accepted': 'Cancelled',
 }
 
-const ApplicationCard = ({ application, currentUser }: Props) => {
+export default function ApplicationCard({ application }: Props) {
+  console.log('hello')
+
   const loopbackUserId = getAccessTokenFromLocalStorage().userId
   const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
   const history = useHistory()
@@ -154,5 +154,3 @@ const ApplicationCard = ({ application, currentUser }: Props) => {
     </>
   )
 }
-
-export default ApplicationCard
