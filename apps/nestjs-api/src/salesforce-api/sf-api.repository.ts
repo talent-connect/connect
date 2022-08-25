@@ -92,7 +92,12 @@ export class SfApiRepository {
     record: T
   ): Promise<SalesforceMutationIdResult> {
     await this.connect()
-    const createResult = this.connection.sobject(objectName).create(record)
+    const createResult = await this.connection
+      .sobject(objectName)
+      .create(record)
+    console.log(
+      `[SfApiRepository] CREATEd ${objectName} record with id ${createResult.id}`
+    )
     return createResult
   }
 
@@ -101,12 +106,20 @@ export class SfApiRepository {
     record: T
   ): Promise<SalesforceMutationIdResult> {
     await this.connect()
-    const updateResult = this.connection.sobject(objectName).update(record)
+    const updateResult = await this.connection
+      .sobject(objectName)
+      .update(record)
+    console.log(
+      `[SfApiRepository] UPDATEd ${objectName} record with id ${updateResult.id}`
+    )
     return updateResult
   }
 
   async deleteRecord<T>(objectName: string, recordId: string): Promise<void> {
     await this.connection.sobject(objectName).delete(recordId)
+    console.log(
+      `[SfApiRepository] DELETEd ${objectName} record with id ${recordId}`
+    )
   }
 
   async findUpdateOrInsert<T>(

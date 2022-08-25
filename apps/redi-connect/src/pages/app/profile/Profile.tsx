@@ -80,9 +80,6 @@ function Profile() {
 
   const shouldHidePrivateContactInfo = currentUserIsMentee && !isAcceptedMatch
 
-  const hasReachedMenteeLimit =
-    myProfile.ifUserMentor_hasAvailableMentorshipSlot
-
   return (
     <LoggedIn>
       {hasOpenApplication && (
@@ -105,10 +102,7 @@ function Profile() {
 
         {userCanApplyForMentorship && (
           <Columns.Column className="is-narrow">
-            <ApplyForMentor
-              mentor={profile}
-              onApplyForMentorSettled={() => profileQuery.refetch()}
-            />
+            <ApplyForMentor mentor={profile} />
           </Columns.Column>
         )}
 
@@ -119,7 +113,6 @@ function Profile() {
               <ConfirmMentorship
                 match={myMatchWithThisProfile}
                 menteeName={profile && profile.firstName}
-                hasReachedMenteeLimit={hasReachedMenteeLimit}
               />
               <DeclineMentorshipButton match={myMatchWithThisProfile} />
             </Columns.Column>

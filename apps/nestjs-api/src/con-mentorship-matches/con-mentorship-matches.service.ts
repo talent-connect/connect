@@ -251,10 +251,13 @@ export class ConMentorshipMatchesService {
     return result
   }
 
-  async cancelMentorshipFromProblemReport(mentorId: string, menteeId: string) {
+  async cancelMentorshipFromProblemReport(
+    mentorUserId: string,
+    menteeUserId: string
+  ) {
     const entity = await this.findOne({
-      Mentor__c: mentorId,
-      Mentee__c: menteeId,
+      Mentor__c: mentorUserId,
+      Mentee__c: menteeUserId,
     })
     entity.props.status = MentorshipMatchStatus.CANCELLED
     const result = await this.api.update(this.mapper.toPersistence(entity))

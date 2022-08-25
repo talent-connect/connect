@@ -37,6 +37,7 @@ export class SfApiConProfilesService {
     loopbackUserId: string
     userType: UserType
     mentee_currentlyEnrolledInCourse: RediCourse
+    menteeCountCapacity: number
   }) {
     const upsertContactResult = await this.repository.updateRecord('Contact', {
       Id: data.userId,
@@ -56,6 +57,7 @@ export class SfApiConProfilesService {
         ReDI_Location__c: data.rediLocation,
         RecordTypeId: recordTypeId,
         ReDI_Course__c: data.mentee_currentlyEnrolledInCourse,
+        total_mentee_capacity__c: data.menteeCountCapacity,
       }
     )
 

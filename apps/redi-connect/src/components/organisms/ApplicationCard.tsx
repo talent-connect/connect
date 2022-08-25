@@ -18,7 +18,6 @@ import DeclineMentorshipButton from './DeclineMentorshipButton'
 
 interface Props {
   application: ApplicationCardApplicationPropFragment
-  hasReachedMenteeLimit: boolean
   currentUser?: RedProfile
 }
 
@@ -31,11 +30,7 @@ const STATUS_LABELS: any = {
   'invalidated-as-other-mentor-accepted': 'Cancelled',
 }
 
-const ApplicationCard = ({
-  application,
-  hasReachedMenteeLimit,
-  currentUser,
-}: Props) => {
+const ApplicationCard = ({ application, currentUser }: Props) => {
   const loopbackUserId = getAccessTokenFromLocalStorage().userId
   const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
   const history = useHistory()
@@ -151,10 +146,7 @@ const ApplicationCard = ({
         {currentUserIsMentor &&
         application.status === MentorshipMatchStatus.Applied ? (
           <>
-            <ConfirmMentorship
-              match={application}
-              hasReachedMenteeLimit={hasReachedMenteeLimit}
-            />
+            <ConfirmMentorship match={application} />
             <DeclineMentorshipButton match={application} />
           </>
         ) : null}

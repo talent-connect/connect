@@ -20,7 +20,7 @@ import {
   Section,
 } from 'react-bulma-components'
 import { useTranslation } from 'react-i18next'
-import { useIsFetching, useIsMutating } from 'react-query'
+import { useIsFetching, useIsMutating, useQueryClient } from 'react-query'
 import { useHistory } from 'react-router-dom'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 import { Navbar, SideMenu } from '../organisms'
@@ -43,6 +43,7 @@ const RediNotification: React.FC = ({ children }) => (
 )
 
 function LoggedIn({ children }: Props) {
+  const queryClient = useQueryClient()
   const loopbackUserId = getAccessTokenFromLocalStorage().userId
   const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
   const myMatchesQuery = useMyMatchesQuery({
@@ -69,10 +70,13 @@ function LoggedIn({ children }: Props) {
     match &&
     !match?.hasMenteeDismissedMentorshipApplicationAcceptedNotification
 
-  const handleModalClose = (redMatchId: string) => {
-    conMatchMarkMentorshipAcceptedNotificationDismissedMutation.mutate({
-      id: redMatchId,
-    })
+  const handleModalClose = async (redMatchId: string) => {
+    await conMatchMarkMentorshipAcceptedNotificationDismissedMutation.mutateAsync(
+      {
+        id: redMatchId,
+      }
+    )
+    queryClient.invalidateQueries()
     history.push(`/app/mentorships/${redMatchId}`)
   }
 

@@ -31,6 +31,7 @@ export class ConProfilesService {
       rediLocation: input.rediLocation,
       userType: input.userType,
       mentee_currentlyEnrolledInCourse: input.mentee_currentlyEnrolledInCourse,
+      menteeCountCapacity: input.userType === UserType.MENTOR ? 1 : 0,
     })
   }
 

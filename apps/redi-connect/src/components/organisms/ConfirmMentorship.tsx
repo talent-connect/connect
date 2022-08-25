@@ -6,7 +6,6 @@ import {
 import { useFormik } from 'formik'
 import { useState } from 'react'
 import { Content } from 'react-bulma-components'
-import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import * as Yup from 'yup'
 import {
@@ -17,7 +16,6 @@ import {
 interface ConfirmMentorshipProps {
   match: ConfirmMentorshipMatchPropFragment
   menteeName?: string
-  hasReachedMenteeLimit: boolean
 }
 
 interface ConfirmMentorshipFormValues {
@@ -42,27 +40,11 @@ const validationSchema = Yup.object({
 
 // TODO: This throws a TS error: { dispatch, matchId }: ConnectButtonProps
 // What to replace with instead of below hack?
-const ConfirmMentorship = ({
-  match,
-  hasReachedMenteeLimit,
-}: ConfirmMentorshipProps) => {
+const ConfirmMentorship = ({ match }: ConfirmMentorshipProps) => {
   const acceptMentorshipMutation = useAcceptMentorshipMutation()
   const [isModalActive, setModalActive] = useState(false)
   const history = useHistory()
   const { mentee = { firstName: null } } = match
-
-  //  Keeping this to make sure we address this as its not planned in the desing, yet
-  //   <Tooltip> requires child <Button> to be wrapped in a div since it's disabled
-  //   props.hasReachedMenteeLimit ? (
-  //     <Tooltip
-  //       placement="top"
-  //       title="You're reached the number of mentees you've specified as able to take on"
-  //     >
-  //       <div onClick={e => e.stopPropagation()}>{children}</div>
-  //     </Tooltip>
-  //   ) : (
-  //     <>{children}</>
-  //   )
 
   const submitForm = async (values: ConfirmMentorshipFormValues) => {
     try {
@@ -89,12 +71,7 @@ const ConfirmMentorship = ({
 
   return (
     <>
-      <Button
-        onClick={() => setModalActive(true)}
-        disabled={hasReachedMenteeLimit}
-      >
-        Accept
-      </Button>
+      <Button onClick={() => setModalActive(true)}>Accept</Button>
       <Modal
         show={isModalActive}
         stateFn={setModalActive}

@@ -107,7 +107,7 @@ export class ConMentorshipMatchesResolver {
   async patch(
     @Args('conMentorshipMatchId', { type: () => String }) id: string
   ) {
-    this.conMentorshipMatchesService.patch(id, {
+    await this.conMentorshipMatchesService.patch(id, {
       hasMenteeDismissedMentorshipApplicationAcceptedNotification: true,
     })
     return { ok: true }

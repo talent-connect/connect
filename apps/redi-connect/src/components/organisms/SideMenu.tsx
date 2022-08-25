@@ -1,14 +1,14 @@
-import React, { ReactNode } from 'react'
-import './SideMenu.scss'
-import { NavLink } from 'react-router-dom'
-import { ReactComponent as Mentorship } from '../../assets/images/mentorship.svg'
-import { ReactComponent as Applications } from '../../assets/images/applications.svg'
-import { ReactComponent as Profile } from '../../assets/images/profile.svg'
-import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 import {
   ConnectProfileStatus,
   useLoadMyProfileQuery,
 } from '@talent-connect/data-access'
+import { ReactNode } from 'react'
+import { NavLink } from 'react-router-dom'
+import { ReactComponent as Applications } from '../../assets/images/applications.svg'
+import { ReactComponent as Mentorship } from '../../assets/images/mentorship.svg'
+import { ReactComponent as Profile } from '../../assets/images/profile.svg'
+import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
+import './SideMenu.scss'
 
 interface MenuItemProps {
   url: string

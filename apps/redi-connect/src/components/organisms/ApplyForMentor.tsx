@@ -49,10 +49,9 @@ const validationSchema = Yup.object({
 
 interface Props {
   mentor: ApplyForMentorMentorPropFragment
-  onApplyForMentorSettled: () => void
 }
 
-const ApplyForMentor = ({ mentor, onApplyForMentorSettled }: Props) => {
+const ApplyForMentor = ({ mentor }: Props) => {
   const queryClient = useQueryClient()
   const applyForMentorshipMutation = useApplyForMentorshipMutation()
 
@@ -65,8 +64,8 @@ const ApplyForMentor = ({ mentor, onApplyForMentorSettled }: Props) => {
         mentorId: mentor.id,
       },
     })
+    queryClient.invalidateQueries()
     setShow(false)
-    onApplyForMentorSettled()
   }
 
   const formik = useFormik({

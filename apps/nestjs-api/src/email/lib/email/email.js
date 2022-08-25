@@ -1,6 +1,5 @@
 'use strict'
 
-import { buildBackendUrl } from '../build-backend-url'
 import { buildFrontendUrl } from '../build-frontend-url'
 
 const aws = require('aws-sdk')
@@ -518,7 +517,7 @@ export const sendMentorshipRequestReceivedEmail = ({
   mentorRediLocation,
 }) => {
   const loginUrl = `${buildFrontendUrl(
-    'production',
+    process.env.NODE_ENV,
     mentorRediLocation
   )}/front/login`
   const sendMentorshipRequestReceivedEmailParsed = convertTemplateToHtml(

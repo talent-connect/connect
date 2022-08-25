@@ -1,4 +1,8 @@
-import { ConProfile, useLoadMyProfileQuery } from '@talent-connect/data-access'
+import {
+  ConProfile,
+  useLoadMyProfileQuery,
+  UserType,
+} from '@talent-connect/data-access'
 import {
   Caption,
   CardTags,
@@ -9,7 +13,7 @@ import { CATEGORIES_MAP } from '@talent-connect/shared-config'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 
 interface ReadMentoringProps {
-  profile: Pick<ConProfile, 'categories'>
+  profile: Pick<ConProfile, 'categories' | 'userType'>
   caption?: boolean
 }
 
@@ -22,10 +26,19 @@ export const ProfileTags = ({ items, shortList }: CardTagsProps) => (
 )
 
 const ReadMentoringTopics = ({ profile, caption }: ReadMentoringProps) => {
-  const { categories } = profile
+  const { categories, userType } = profile
 
-  if (!categories?.length && !caption)
+  const showPlaceholderCaption = !categories?.length && !caption
+
+  if (showPlaceholderCaption && userType === UserType.Mentee)
     return <Placeholder>Please pick up to four mentoring topics.</Placeholder>
+
+  if (showPlaceholderCaption && userType === UserType.Mentor)
+    return (
+      <Placeholder>
+        Please pick topics where you believe you can support you future mentee.
+      </Placeholder>
+    )
 
   return (
     <>

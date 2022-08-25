@@ -8,7 +8,6 @@ import {
   Button,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
-import { RedProfile, UserType } from '@talent-connect/shared-types'
 import { Columns, Content } from 'react-bulma-components'
 import { useHistory, useParams } from 'react-router-dom'
 import {
@@ -97,25 +96,19 @@ function Mentorship() {
             profile={viewProfile}
             linkTo={`/app/mentorships/profile/${viewProfile.id}`}
           />
-          <MContacts
-            profile={viewProfile as unknown as RedProfile}
-            className="is-hidden-tablet"
-          />
+          <MContacts profile={viewProfile} className="is-hidden-tablet" />
           <MSessions
             sessions={viewMatch.mentoringSessions}
             menteeId={viewProfile.userId}
             editable={currentUserIsMentor}
           />
           <ReportProblem
-            type={myProfile.userType as unknown as UserType}
-            redProfileId={myProfile.id}
+            type={myProfile.userType}
+            redProfileId={viewProfile.id}
           />
         </Columns.Column>
         <Columns.Column size={8}>
-          <MContacts
-            profile={viewProfile as unknown as RedProfile}
-            className="is-hidden-mobile"
-          />
+          <MContacts profile={viewProfile} className="is-hidden-mobile" />
         </Columns.Column>
       </Columns>
     </LoggedIn>

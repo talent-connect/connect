@@ -23,14 +23,14 @@ export class ConProblemReportService {
     })
 
     if (input.ifFromMentor_cancelMentorshipImmediately) {
-      await this.mentorshipMatchesService.cancelMentorshipFromProblemReport(
-        currentUser.userId,
-        input.reporteeId
+      const menteeProfile = await this.profilesService.findOneById(
+        input.reporteeProfileId
       )
 
-      const menteeProfile = await this.profilesService.findOne({
-        'Contact__r.Id': input.reporteeId,
-      })
+      await this.mentorshipMatchesService.cancelMentorshipFromProblemReport(
+        currentUser.userId,
+        menteeProfile.props.userId
+      )
 
       this.emailService.sendMentorCancelledMentorshipNotificationEmail({
         recipient: menteeProfile.props.email,

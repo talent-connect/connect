@@ -54,6 +54,7 @@ fragment conProfileFields on ConProfile {
   fullName
   firstName
   lastName
+  email
   languages
   categories
   rediLocation

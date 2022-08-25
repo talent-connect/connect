@@ -1,200 +1,208 @@
 // THIS FILE IS GENERATED, DO NOT EDIT!
-export type Maybe<T> = T | null;
-export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type Maybe<T> = T | null
+export type InputMaybe<T> = Maybe<T>
+export type Exact<T extends { [key: string]: unknown }> = {
+  [K in keyof T]: T[K]
+}
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]?: Maybe<T[SubKey]>
+}
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]: Maybe<T[SubKey]>
+}
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: string;
-  String: string;
-  Boolean: boolean;
-  Int: number;
-  Float: number;
+  ID: string
+  String: string
+  Boolean: boolean
+  Int: number
+  Float: number
   /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
-  DateTime: any;
-};
+  DateTime: any
+}
 
 export enum CompanyTalentPoolState {
   DraftingProfile = 'DRAFTING_PROFILE',
   ProfileApproved = 'PROFILE_APPROVED',
-  SubmittedForReview = 'SUBMITTED_FOR_REVIEW'
+  SubmittedForReview = 'SUBMITTED_FOR_REVIEW',
 }
 
 export type ConMenteeFavoritedMentor = {
-  __typename?: 'ConMenteeFavoritedMentor';
-  createdAt: Scalars['DateTime'];
-  id: Scalars['ID'];
-  menteeId: Scalars['ID'];
-  mentorId: Scalars['ID'];
-  updatedAt: Scalars['DateTime'];
-};
+  __typename?: 'ConMenteeFavoritedMentor'
+  createdAt: Scalars['DateTime']
+  id: Scalars['ID']
+  menteeId: Scalars['ID']
+  mentorId: Scalars['ID']
+  updatedAt: Scalars['DateTime']
+}
 
 export type ConMenteeFavoritedMentorCreateMutationInputDto = {
-  mentorId: Scalars['String'];
-};
+  mentorId: Scalars['String']
+}
 
 export type ConMenteeFavoritedMentorCreateMutationOutputDto = {
-  __typename?: 'ConMenteeFavoritedMentorCreateMutationOutputDto';
-  ok: Scalars['Boolean'];
-};
+  __typename?: 'ConMenteeFavoritedMentorCreateMutationOutputDto'
+  ok: Scalars['Boolean']
+}
 
 export type ConMenteeFavoritedMentorDeleteMutationInputDto = {
-  mentorId: Scalars['String'];
-};
+  mentorId: Scalars['String']
+}
 
 export type ConMenteeFavoritedMentorDeleteMutationOutputDto = {
-  __typename?: 'ConMenteeFavoritedMentorDeleteMutationOutputDto';
-  ok: Scalars['Boolean'];
-};
+  __typename?: 'ConMenteeFavoritedMentorDeleteMutationOutputDto'
+  ok: Scalars['Boolean']
+}
 
 export type ConMentoringSession = {
-  __typename?: 'ConMentoringSession';
-  createdAt: Scalars['DateTime'];
-  date: Scalars['DateTime'];
-  id: Scalars['ID'];
-  menteeId: Scalars['ID'];
-  mentorId: Scalars['ID'];
-  minuteDuration: MentoringSessionDuration;
-  updatedAt: Scalars['DateTime'];
-};
+  __typename?: 'ConMentoringSession'
+  createdAt: Scalars['DateTime']
+  date: Scalars['DateTime']
+  id: Scalars['ID']
+  menteeId: Scalars['ID']
+  mentorId: Scalars['ID']
+  minuteDuration: MentoringSessionDuration
+  updatedAt: Scalars['DateTime']
+}
 
 export type ConMentorshipMatch = {
-  __typename?: 'ConMentorshipMatch';
-  applicationText?: Maybe<Scalars['String']>;
-  createdAt: Scalars['DateTime'];
-  expectationText?: Maybe<Scalars['String']>;
-  hasMenteeDismissedMentorshipApplicationAcceptedNotification?: Maybe<Scalars['Boolean']>;
-  id: Scalars['ID'];
-  ifDeclinedByMentor_chosenReasonForDecline?: Maybe<Scalars['String']>;
-  ifDeclinedByMentor_dateTime?: Maybe<Scalars['DateTime']>;
-  ifDeclinedByMentor_ifReasonIsOther_freeText?: Maybe<Scalars['String']>;
-  ifDeclinedByMentor_optionalMessageToMentee?: Maybe<Scalars['String']>;
-  matchMadeActiveOn?: Maybe<Scalars['DateTime']>;
-  mentee: ConProfile;
-  menteeId: Scalars['String'];
-  mentor: ConProfile;
-  mentorId: Scalars['String'];
-  mentorMessageOnComplete?: Maybe<Scalars['String']>;
-  mentorReplyMessageOnAccept?: Maybe<Scalars['String']>;
-  mentoringSessions: Array<ConMentoringSession>;
-  status: MentorshipMatchStatus;
-  updatedAt: Scalars['DateTime'];
-};
+  __typename?: 'ConMentorshipMatch'
+  applicationText?: Maybe<Scalars['String']>
+  createdAt: Scalars['DateTime']
+  expectationText?: Maybe<Scalars['String']>
+  hasMenteeDismissedMentorshipApplicationAcceptedNotification?: Maybe<
+    Scalars['Boolean']
+  >
+  id: Scalars['ID']
+  ifDeclinedByMentor_chosenReasonForDecline?: Maybe<Scalars['String']>
+  ifDeclinedByMentor_dateTime?: Maybe<Scalars['DateTime']>
+  ifDeclinedByMentor_ifReasonIsOther_freeText?: Maybe<Scalars['String']>
+  ifDeclinedByMentor_optionalMessageToMentee?: Maybe<Scalars['String']>
+  matchMadeActiveOn?: Maybe<Scalars['DateTime']>
+  mentee: ConProfile
+  menteeId: Scalars['String']
+  mentor: ConProfile
+  mentorId: Scalars['String']
+  mentorMessageOnComplete?: Maybe<Scalars['String']>
+  mentorReplyMessageOnAccept?: Maybe<Scalars['String']>
+  mentoringSessions: Array<ConMentoringSession>
+  status: MentorshipMatchStatus
+  updatedAt: Scalars['DateTime']
+}
 
 export type ConMentorshipMatchesAcceptMentorshipInputDto = {
-  mentorReplyMessageOnAccept: Scalars['String'];
-  mentorshipMatchId: Scalars['String'];
-};
+  mentorReplyMessageOnAccept: Scalars['String']
+  mentorshipMatchId: Scalars['String']
+}
 
 export type ConMentorshipMatchesAcceptMentorshipOutputDto = {
-  __typename?: 'ConMentorshipMatchesAcceptMentorshipOutputDto';
-  id: Scalars['String'];
-  ok: Scalars['Boolean'];
-};
+  __typename?: 'ConMentorshipMatchesAcceptMentorshipOutputDto'
+  id: Scalars['String']
+  ok: Scalars['Boolean']
+}
 
 export type ConMentorshipMatchesApplyForMentorshipInputDto = {
-  applicationText: Scalars['String'];
-  expectationText: Scalars['String'];
-  mentorId: Scalars['String'];
-};
+  applicationText: Scalars['String']
+  expectationText: Scalars['String']
+  mentorId: Scalars['String']
+}
 
 export type ConMentorshipMatchesApplyForMentorshipOutputDto = {
-  __typename?: 'ConMentorshipMatchesApplyForMentorshipOutputDto';
-  id: Scalars['String'];
-  ok: Scalars['Boolean'];
-};
+  __typename?: 'ConMentorshipMatchesApplyForMentorshipOutputDto'
+  id: Scalars['String']
+  ok: Scalars['Boolean']
+}
 
 export type ConMentorshipMatchesCompleteMentorshipInputDto = {
-  mentorMessageOnComplete: Scalars['String'];
-  mentorshipMatchId: Scalars['String'];
-};
+  mentorMessageOnComplete: Scalars['String']
+  mentorshipMatchId: Scalars['String']
+}
 
 export type ConMentorshipMatchesCompleteMentorshipOutputDto = {
-  __typename?: 'ConMentorshipMatchesCompleteMentorshipOutputDto';
-  id: Scalars['String'];
-  ok: Scalars['Boolean'];
-};
+  __typename?: 'ConMentorshipMatchesCompleteMentorshipOutputDto'
+  id: Scalars['String']
+  ok: Scalars['Boolean']
+}
 
 export type ConMentorshipMatchesDeclineMentorshipInputDto = {
-  ifDeclinedByMentor_chosenReasonForDecline: DeclineReason;
-  ifDeclinedByMentor_ifReasonIsOther_freeText: Scalars['String'];
-  ifDeclinedByMentor_optionalMessageToMentee: Scalars['String'];
-  mentorshipMatchId: Scalars['String'];
-};
+  ifDeclinedByMentor_chosenReasonForDecline: DeclineReason
+  ifDeclinedByMentor_ifReasonIsOther_freeText: Scalars['String']
+  ifDeclinedByMentor_optionalMessageToMentee: Scalars['String']
+  mentorshipMatchId: Scalars['String']
+}
 
 export type ConMentorshipMatchesDeclineMentorshipOutputDto = {
-  __typename?: 'ConMentorshipMatchesDeclineMentorshipOutputDto';
-  id: Scalars['String'];
-  ok: Scalars['Boolean'];
-};
+  __typename?: 'ConMentorshipMatchesDeclineMentorshipOutputDto'
+  id: Scalars['String']
+  ok: Scalars['Boolean']
+}
 
 export type ConMentorshipMatchesMarkAsDismissedInputDto = {
-  conMentorshipMatchId: Scalars['String'];
-};
+  conMentorshipMatchId: Scalars['String']
+}
 
 export type ConMentorshipMatchesMarkAsDismissedOutputDto = {
-  __typename?: 'ConMentorshipMatchesMarkAsDismissedOutputDto';
-  id: Scalars['String'];
-  ok: Scalars['Boolean'];
-};
+  __typename?: 'ConMentorshipMatchesMarkAsDismissedOutputDto'
+  id: Scalars['String']
+  ok: Scalars['Boolean']
+}
 
 export type ConProfile = {
-  __typename?: 'ConProfile';
-  age?: Maybe<Scalars['Float']>;
-  birthDate?: Maybe<Scalars['DateTime']>;
-  categories: Array<MentoringTopic>;
-  createdAt: Scalars['DateTime'];
-  email: Scalars['String'];
-  expectations?: Maybe<Scalars['String']>;
-  firstName: Scalars['String'];
-  fullName: Scalars['String'];
-  gender?: Maybe<Gender>;
-  githubProfileUrl?: Maybe<Scalars['String']>;
-  id: Scalars['ID'];
-  ifUserMentee_activeMentorshipMatches: Scalars['Float'];
-  ifUserMentor_activeMentorshipMatches: Scalars['Float'];
-  ifUserMentor_doesntHaveAvailableMentorshipSlot: Scalars['Boolean'];
-  ifUserMentor_hasAvailableMentorshipSlot: Scalars['Boolean'];
-  languages?: Maybe<Array<ConnectProfileLanguage>>;
-  lastName: Scalars['String'];
-  linkedInProfileUrl?: Maybe<Scalars['String']>;
-  loopbackUserId: Scalars['String'];
-  menteeCountCapacity?: Maybe<Scalars['Int']>;
-  mentee_currentlyEnrolledInCourse?: Maybe<RediCourse>;
-  mentee_highestEducationLevel?: Maybe<EducationLevel>;
-  mentee_occupationCategoryId?: Maybe<OccupationCategory>;
-  mentee_occupationJob_placeOfEmployment?: Maybe<Scalars['String']>;
-  mentee_occupationJob_position?: Maybe<Scalars['String']>;
-  mentee_occupationLookingForJob_what?: Maybe<Scalars['String']>;
-  mentee_occupationOther_description?: Maybe<Scalars['String']>;
-  mentee_occupationStudent_studyName?: Maybe<Scalars['String']>;
-  mentee_occupationStudent_studyPlace?: Maybe<Scalars['String']>;
-  mentor_occupation?: Maybe<Scalars['String']>;
-  mentor_workPlace?: Maybe<Scalars['String']>;
-  mentoringSessions: Array<ConMentoringSession>;
-  mentorshipMatches: Array<ConMentorshipMatch>;
-  optOutOfMenteesFromOtherRediLocation: Scalars['Boolean'];
-  personalDescription?: Maybe<Scalars['String']>;
-  profileAvatarImageS3Key?: Maybe<Scalars['String']>;
-  profileStatus: ConnectProfileStatus;
-  rediLocation: RediLocation;
-  slackUsername?: Maybe<Scalars['String']>;
-  telephoneNumber?: Maybe<Scalars['String']>;
-  updatedAt: Scalars['DateTime'];
-  userActivatedAt?: Maybe<Scalars['DateTime']>;
-  userId: Scalars['String'];
-  userType: UserType;
-};
+  __typename?: 'ConProfile'
+  age?: Maybe<Scalars['Float']>
+  birthDate?: Maybe<Scalars['DateTime']>
+  categories: Array<MentoringTopic>
+  createdAt: Scalars['DateTime']
+  email: Scalars['String']
+  expectations?: Maybe<Scalars['String']>
+  firstName: Scalars['String']
+  fullName: Scalars['String']
+  gender?: Maybe<Gender>
+  githubProfileUrl?: Maybe<Scalars['String']>
+  id: Scalars['ID']
+  ifUserMentee_activeMentorshipMatches: Scalars['Float']
+  ifUserMentor_activeMentorshipMatches: Scalars['Float']
+  ifUserMentor_doesntHaveAvailableMentorshipSlot: Scalars['Boolean']
+  ifUserMentor_hasAvailableMentorshipSlot: Scalars['Boolean']
+  languages?: Maybe<Array<ConnectProfileLanguage>>
+  lastName: Scalars['String']
+  linkedInProfileUrl?: Maybe<Scalars['String']>
+  loopbackUserId: Scalars['String']
+  menteeCountCapacity?: Maybe<Scalars['Int']>
+  mentee_currentlyEnrolledInCourse?: Maybe<RediCourse>
+  mentee_highestEducationLevel?: Maybe<EducationLevel>
+  mentee_occupationCategoryId?: Maybe<OccupationCategory>
+  mentee_occupationJob_placeOfEmployment?: Maybe<Scalars['String']>
+  mentee_occupationJob_position?: Maybe<Scalars['String']>
+  mentee_occupationLookingForJob_what?: Maybe<Scalars['String']>
+  mentee_occupationOther_description?: Maybe<Scalars['String']>
+  mentee_occupationStudent_studyName?: Maybe<Scalars['String']>
+  mentee_occupationStudent_studyPlace?: Maybe<Scalars['String']>
+  mentor_occupation?: Maybe<Scalars['String']>
+  mentor_workPlace?: Maybe<Scalars['String']>
+  mentoringSessions: Array<ConMentoringSession>
+  mentorshipMatches: Array<ConMentorshipMatch>
+  optOutOfMenteesFromOtherRediLocation: Scalars['Boolean']
+  personalDescription?: Maybe<Scalars['String']>
+  profileAvatarImageS3Key?: Maybe<Scalars['String']>
+  profileStatus: ConnectProfileStatus
+  rediLocation: RediLocation
+  slackUsername?: Maybe<Scalars['String']>
+  telephoneNumber?: Maybe<Scalars['String']>
+  updatedAt: Scalars['DateTime']
+  userActivatedAt?: Maybe<Scalars['DateTime']>
+  userId: Scalars['String']
+  userType: UserType
+}
 
 export type ConProfileSignUpInput = {
-  email: Scalars['String'];
-  firstName: Scalars['String'];
-  lastName: Scalars['String'];
-  mentee_currentlyEnrolledInCourse?: InputMaybe<RediCourse>;
-  rediLocation: RediLocation;
-  userType: UserType;
-};
+  email: Scalars['String']
+  firstName: Scalars['String']
+  lastName: Scalars['String']
+  mentee_currentlyEnrolledInCourse?: InputMaybe<RediCourse>
+  rediLocation: RediLocation
+  userType: UserType
+}
 
 export enum ConnectProfileLanguage {
   Afrikaans = 'Afrikaans',
@@ -339,33 +347,33 @@ export enum ConnectProfileLanguage {
   Yoruba = 'Yoruba',
   Yucatec = 'Yucatec',
   Zapotec = 'Zapotec',
-  Zulu = 'Zulu'
+  Zulu = 'Zulu',
 }
 
 export enum ConnectProfileStatus {
   Approved = 'APPROVED',
   Deactivated = 'DEACTIVATED',
   Pending = 'PENDING',
-  Rejected = 'REJECTED'
+  Rejected = 'REJECTED',
 }
 
 export type CreateConMentoringSessionInput = {
-  date: Scalars['DateTime'];
-  menteeId: Scalars['ID'];
-  minuteDuration: MentoringSessionDuration;
-};
+  date: Scalars['DateTime']
+  menteeId: Scalars['ID']
+  minuteDuration: MentoringSessionDuration
+}
 
 export type CreateConProblemReportInput = {
-  ifFromMentor_cancelMentorshipImmediately?: InputMaybe<Scalars['Boolean']>;
-  problemDescription: Scalars['String'];
-  reporteeId: Scalars['String'];
-};
+  ifFromMentor_cancelMentorshipImmediately?: InputMaybe<Scalars['Boolean']>
+  problemDescription: Scalars['String']
+  reporteeProfileId: Scalars['String']
+}
 
 export enum DeclineReason {
   AnotherMentorMoreSuitable = 'anotherMentorMoreSuitable',
   NotEnoughTimeNowToBeMentor = 'notEnoughTimeNowToBeMentor',
   NotRightExpertise = 'notRightExpertise',
-  Other = 'other'
+  Other = 'other',
 }
 
 export enum EducationLevel {
@@ -374,15 +382,15 @@ export enum EducationLevel {
   MiddleSchool = 'middleSchool',
   UniversityBachelor = 'universityBachelor',
   UniversityMaster = 'universityMaster',
-  UniversityPhd = 'universityPhd'
+  UniversityPhd = 'universityPhd',
 }
 
 export type FindConProfilesArgsFilter = {
-  categories?: InputMaybe<Array<MentoringTopic>>;
-  languages?: InputMaybe<Array<ConnectProfileLanguage>>;
-  locations?: InputMaybe<Array<RediLocation>>;
-  name?: InputMaybe<Scalars['String']>;
-};
+  categories?: InputMaybe<Array<MentoringTopic>>
+  languages?: InputMaybe<Array<ConnectProfileLanguage>>
+  locations?: InputMaybe<Array<RediLocation>>
+  name?: InputMaybe<Scalars['String']>
+}
 
 export enum FirstPointOfTpContactOption {
   AlreadyVolunteerAtRedi = 'ALREADY_VOLUNTEER_AT_REDI',
@@ -392,13 +400,13 @@ export enum FirstPointOfTpContactOption {
   RediStudentAlumni = 'REDI_STUDENT_ALUMNI',
   RediTeamMember = 'REDI_TEAM_MEMBER',
   RediWebsite = 'REDI_WEBSITE',
-  SocialMedia = 'SOCIAL_MEDIA'
+  SocialMedia = 'SOCIAL_MEDIA',
 }
 
 export enum Gender {
   Female = 'Female',
   Male = 'Male',
-  Other = 'Other'
+  Other = 'Other',
 }
 
 export enum MentoringSessionDuration {
@@ -413,7 +421,7 @@ export enum MentoringSessionDuration {
   Min135 = 'MIN135',
   Min150 = 'MIN150',
   Min165 = 'MIN165',
-  Min180 = 'MIN180'
+  Min180 = 'MIN180',
 }
 
 export enum MentoringTopic {
@@ -456,7 +464,7 @@ export enum MentoringTopic {
   Sales = 'sales',
   Salesforce = 'salesforce',
   UserExperienceDesign = 'userExperienceDesign',
-  UserInterfaceDesign = 'userInterfaceDesign'
+  UserInterfaceDesign = 'userInterfaceDesign',
 }
 
 export enum MentorshipMatchStatus {
@@ -465,148 +473,130 @@ export enum MentorshipMatchStatus {
   Cancelled = 'CANCELLED',
   Completed = 'COMPLETED',
   DeclinedByMentor = 'DECLINED_BY_MENTOR',
-  InvalidatedAsOtherMentorAccepted = 'INVALIDATED_AS_OTHER_MENTOR_ACCEPTED'
+  InvalidatedAsOtherMentorAccepted = 'INVALIDATED_AS_OTHER_MENTOR_ACCEPTED',
 }
 
 export type Mutation = {
-  __typename?: 'Mutation';
-  conMatchMarkMentorshipAcceptedNotificationDismissed: OkResponseMutationOutputDto;
-  conMenteeFavoritedMentorCreate: ConMenteeFavoritedMentorCreateMutationOutputDto;
-  conMenteeFavoritedMentorDelete: ConMenteeFavoritedMentorDeleteMutationOutputDto;
-  conMentorshipMatchesAcceptMentorship: ConMentorshipMatchesAcceptMentorshipOutputDto;
-  conMentorshipMatchesApplyForMentorship: ConMentorshipMatchesApplyForMentorshipOutputDto;
-  conMentorshipMatchesCompleteMentorship: ConMentorshipMatchesCompleteMentorshipOutputDto;
-  conMentorshipMatchesDeclineMentorship: ConMentorshipMatchesDeclineMentorshipOutputDto;
-  conMentorshipMatchesMarkAsDismissed: ConMentorshipMatchesMarkAsDismissedOutputDto;
-  conProblemReportCreate: OkResponseMutationOutputDto;
-  conProfileSignUp: OkIdResponseMutationOutputDto;
-  createConMentoringSession: ConMentoringSession;
-  patchConProfile: ConProfile;
-  tpCompanyProfileSignUp: TpCompanyProfileSignUpInputOutputDto;
-};
-
+  __typename?: 'Mutation'
+  conMatchMarkMentorshipAcceptedNotificationDismissed: OkResponseMutationOutputDto
+  conMenteeFavoritedMentorCreate: ConMenteeFavoritedMentorCreateMutationOutputDto
+  conMenteeFavoritedMentorDelete: ConMenteeFavoritedMentorDeleteMutationOutputDto
+  conMentorshipMatchesAcceptMentorship: ConMentorshipMatchesAcceptMentorshipOutputDto
+  conMentorshipMatchesApplyForMentorship: ConMentorshipMatchesApplyForMentorshipOutputDto
+  conMentorshipMatchesCompleteMentorship: ConMentorshipMatchesCompleteMentorshipOutputDto
+  conMentorshipMatchesDeclineMentorship: ConMentorshipMatchesDeclineMentorshipOutputDto
+  conMentorshipMatchesMarkAsDismissed: ConMentorshipMatchesMarkAsDismissedOutputDto
+  conProblemReportCreate: OkResponseMutationOutputDto
+  conProfileSignUp: OkIdResponseMutationOutputDto
+  createConMentoringSession: ConMentoringSession
+  patchConProfile: ConProfile
+  tpCompanyProfileSignUp: TpCompanyProfileSignUpInputOutputDto
+}
 
 export type MutationConMatchMarkMentorshipAcceptedNotificationDismissedArgs = {
-  conMentorshipMatchId: Scalars['String'];
-};
-
+  conMentorshipMatchId: Scalars['String']
+}
 
 export type MutationConMenteeFavoritedMentorCreateArgs = {
-  input: ConMenteeFavoritedMentorCreateMutationInputDto;
-};
-
+  input: ConMenteeFavoritedMentorCreateMutationInputDto
+}
 
 export type MutationConMenteeFavoritedMentorDeleteArgs = {
-  input: ConMenteeFavoritedMentorDeleteMutationInputDto;
-};
-
+  input: ConMenteeFavoritedMentorDeleteMutationInputDto
+}
 
 export type MutationConMentorshipMatchesAcceptMentorshipArgs = {
-  input: ConMentorshipMatchesAcceptMentorshipInputDto;
-};
-
+  input: ConMentorshipMatchesAcceptMentorshipInputDto
+}
 
 export type MutationConMentorshipMatchesApplyForMentorshipArgs = {
-  input: ConMentorshipMatchesApplyForMentorshipInputDto;
-};
-
+  input: ConMentorshipMatchesApplyForMentorshipInputDto
+}
 
 export type MutationConMentorshipMatchesCompleteMentorshipArgs = {
-  input: ConMentorshipMatchesCompleteMentorshipInputDto;
-};
-
+  input: ConMentorshipMatchesCompleteMentorshipInputDto
+}
 
 export type MutationConMentorshipMatchesDeclineMentorshipArgs = {
-  input: ConMentorshipMatchesDeclineMentorshipInputDto;
-};
-
+  input: ConMentorshipMatchesDeclineMentorshipInputDto
+}
 
 export type MutationConMentorshipMatchesMarkAsDismissedArgs = {
-  input: ConMentorshipMatchesMarkAsDismissedInputDto;
-};
-
+  input: ConMentorshipMatchesMarkAsDismissedInputDto
+}
 
 export type MutationConProblemReportCreateArgs = {
-  input: CreateConProblemReportInput;
-};
-
+  input: CreateConProblemReportInput
+}
 
 export type MutationConProfileSignUpArgs = {
-  input: ConProfileSignUpInput;
-};
-
+  input: ConProfileSignUpInput
+}
 
 export type MutationCreateConMentoringSessionArgs = {
-  createConMentoringSessionInput: CreateConMentoringSessionInput;
-};
-
+  createConMentoringSessionInput: CreateConMentoringSessionInput
+}
 
 export type MutationPatchConProfileArgs = {
-  patchConProfileInput: UpdateConProfileInput;
-};
-
+  patchConProfileInput: UpdateConProfileInput
+}
 
 export type MutationTpCompanyProfileSignUpArgs = {
-  input: TpCompanyProfileSignUpInputDto;
-};
+  input: TpCompanyProfileSignUpInputDto
+}
 
 export enum OccupationCategory {
   Job = 'job',
   LookingForJob = 'lookingForJob',
   Other = 'other',
-  Student = 'student'
+  Student = 'student',
 }
 
 export type OkIdResponseMutationOutputDto = {
-  __typename?: 'OkIdResponseMutationOutputDto';
-  id: Scalars['String'];
-  ok: Scalars['Boolean'];
-};
+  __typename?: 'OkIdResponseMutationOutputDto'
+  id: Scalars['String']
+  ok: Scalars['Boolean']
+}
 
 export type OkResponseMutationOutputDto = {
-  __typename?: 'OkResponseMutationOutputDto';
-  ok: Scalars['Boolean'];
-};
+  __typename?: 'OkResponseMutationOutputDto'
+  ok: Scalars['Boolean']
+}
 
 export type Query = {
-  __typename?: 'Query';
-  conMenteeFavoritedMentors: Array<ConMenteeFavoritedMentor>;
-  conMentoringSessions: Array<ConMentoringSession>;
-  conMentorshipMatch: ConMentorshipMatch;
-  conMentorshipMatches: Array<ConMentorshipMatch>;
-  conProfile: ConProfile;
-  conProfilesAvailableMentors: Array<ConProfile>;
-  myConProfile: ConProfile;
-  publicTpCompanyProfiles: Array<TpCompanyProfile>;
-  tpCompanyProfile: TpCompanyProfile;
-  tpCurrentUserDataGet: TpCurrentUserData;
-};
-
+  __typename?: 'Query'
+  conMenteeFavoritedMentors: Array<ConMenteeFavoritedMentor>
+  conMentoringSessions: Array<ConMentoringSession>
+  conMentorshipMatch: ConMentorshipMatch
+  conMentorshipMatches: Array<ConMentorshipMatch>
+  conProfile: ConProfile
+  conProfilesAvailableMentors: Array<ConProfile>
+  myConProfile: ConProfile
+  publicTpCompanyProfiles: Array<TpCompanyProfile>
+  tpCompanyProfile: TpCompanyProfile
+  tpCurrentUserDataGet: TpCurrentUserData
+}
 
 export type QueryConMentorshipMatchArgs = {
-  id: Scalars['ID'];
-};
-
+  id: Scalars['ID']
+}
 
 export type QueryConMentorshipMatchesArgs = {
-  status?: InputMaybe<MentorshipMatchStatus>;
-};
-
+  status?: InputMaybe<MentorshipMatchStatus>
+}
 
 export type QueryConProfileArgs = {
-  id?: InputMaybe<Scalars['ID']>;
-  loopbackUserId?: InputMaybe<Scalars['ID']>;
-};
-
+  id?: InputMaybe<Scalars['ID']>
+  loopbackUserId?: InputMaybe<Scalars['ID']>
+}
 
 export type QueryConProfilesAvailableMentorsArgs = {
-  filter: FindConProfilesArgsFilter;
-};
-
+  filter: FindConProfilesArgsFilter
+}
 
 export type QueryTpCompanyProfileArgs = {
-  id?: InputMaybe<Scalars['ID']>;
-};
+  id?: InputMaybe<Scalars['ID']>
+}
 
 export enum RediCourse {
   AdvancedJava = 'advancedJava',
@@ -649,107 +639,107 @@ export enum RediCourse {
   React = 'react',
   SalesforceFundamentals = 'salesforceFundamentals',
   UiUxDesignBasics = 'uiUxDesignBasics',
-  UiUxDesignIntermediate = 'uiUxDesignIntermediate'
+  UiUxDesignIntermediate = 'uiUxDesignIntermediate',
 }
 
 export enum RediLocation {
   Berlin = 'BERLIN',
   Hamburg = 'HAMBURG',
   Munich = 'MUNICH',
-  Nrw = 'NRW'
+  Nrw = 'NRW',
 }
 
 export type TpCompanyProfile = {
-  __typename?: 'TpCompanyProfile';
-  about?: Maybe<Scalars['String']>;
-  companyName: Scalars['String'];
-  createdAt: Scalars['DateTime'];
-  id: Scalars['ID'];
-  industry?: Maybe<Scalars['String']>;
-  isProfileVisibleToJobseekers: Scalars['Boolean'];
-  linkedInUrl?: Maybe<Scalars['String']>;
-  location?: Maybe<Scalars['String']>;
-  phoneNumber?: Maybe<Scalars['String']>;
-  profileAvatarImageS3Key?: Maybe<Scalars['String']>;
-  state: CompanyTalentPoolState;
-  tagline?: Maybe<Scalars['String']>;
-  updatedAt: Scalars['DateTime'];
-  website?: Maybe<Scalars['String']>;
-};
+  __typename?: 'TpCompanyProfile'
+  about?: Maybe<Scalars['String']>
+  companyName: Scalars['String']
+  createdAt: Scalars['DateTime']
+  id: Scalars['ID']
+  industry?: Maybe<Scalars['String']>
+  isProfileVisibleToJobseekers: Scalars['Boolean']
+  linkedInUrl?: Maybe<Scalars['String']>
+  location?: Maybe<Scalars['String']>
+  phoneNumber?: Maybe<Scalars['String']>
+  profileAvatarImageS3Key?: Maybe<Scalars['String']>
+  state: CompanyTalentPoolState
+  tagline?: Maybe<Scalars['String']>
+  updatedAt: Scalars['DateTime']
+  website?: Maybe<Scalars['String']>
+}
 
 export type TpCompanyProfileSignUpInputDto = {
-  companyIdOrName: Scalars['String'];
-  firstName: Scalars['String'];
-  firstPointOfContact: FirstPointOfTpContactOption;
-  firstPointOfContactOther?: InputMaybe<Scalars['String']>;
-  lastName: Scalars['String'];
-  operationType: TpCompanyProfileSignUpOperationType;
-};
+  companyIdOrName: Scalars['String']
+  firstName: Scalars['String']
+  firstPointOfContact: FirstPointOfTpContactOption
+  firstPointOfContactOther?: InputMaybe<Scalars['String']>
+  lastName: Scalars['String']
+  operationType: TpCompanyProfileSignUpOperationType
+}
 
 export type TpCompanyProfileSignUpInputOutputDto = {
-  __typename?: 'TpCompanyProfileSignUpInputOutputDto';
-  ok: Scalars['Boolean'];
-};
+  __typename?: 'TpCompanyProfileSignUpInputOutputDto'
+  ok: Scalars['Boolean']
+}
 
 export enum TpCompanyProfileSignUpOperationType {
   ExistingCompany = 'EXISTING_COMPANY',
-  NewCompany = 'NEW_COMPANY'
+  NewCompany = 'NEW_COMPANY',
 }
 
 export type TpCompanyRepresentativeRelationship = {
-  __typename?: 'TpCompanyRepresentativeRelationship';
-  createdAt: Scalars['DateTime'];
-  id: Scalars['ID'];
-  status: TpCompanyRepresentativeRelationshipStatus;
-  tpCompanyProfileId: Scalars['String'];
-  updatedAt: Scalars['DateTime'];
-  userId: Scalars['String'];
-};
+  __typename?: 'TpCompanyRepresentativeRelationship'
+  createdAt: Scalars['DateTime']
+  id: Scalars['ID']
+  status: TpCompanyRepresentativeRelationshipStatus
+  tpCompanyProfileId: Scalars['String']
+  updatedAt: Scalars['DateTime']
+  userId: Scalars['String']
+}
 
 export enum TpCompanyRepresentativeRelationshipStatus {
   Approved = 'APPROVED',
   Deactivated = 'DEACTIVATED',
   Pending = 'PENDING',
-  Rejected = 'REJECTED'
+  Rejected = 'REJECTED',
 }
 
 export type TpCurrentUserData = {
-  __typename?: 'TpCurrentUserData';
-  companyRepresentativeStatus: TpCompanyRepresentativeRelationship;
-  representedCompany: TpCompanyProfile;
-};
+  __typename?: 'TpCurrentUserData'
+  companyRepresentativeStatus: TpCompanyRepresentativeRelationship
+  representedCompany: TpCompanyProfile
+}
 
 export type UpdateConProfileInput = {
-  birthDate?: InputMaybe<Scalars['DateTime']>;
-  categories?: InputMaybe<Array<MentoringTopic>>;
-  expectations?: InputMaybe<Scalars['String']>;
-  firstName?: InputMaybe<Scalars['String']>;
-  gender?: InputMaybe<Gender>;
-  githubProfileUrl?: InputMaybe<Scalars['String']>;
-  id: Scalars['ID'];
-  languages?: InputMaybe<Array<ConnectProfileLanguage>>;
-  lastName?: InputMaybe<Scalars['String']>;
-  linkedInProfileUrl?: InputMaybe<Scalars['String']>;
-  menteeCountCapacity?: InputMaybe<Scalars['Int']>;
-  mentee_currentlyEnrolledInCourse?: InputMaybe<RediCourse>;
-  mentee_highestEducationLevel?: InputMaybe<EducationLevel>;
-  mentee_occupationCategoryId?: InputMaybe<OccupationCategory>;
-  mentee_occupationJob_placeOfEmployment?: InputMaybe<Scalars['String']>;
-  mentee_occupationJob_position?: InputMaybe<Scalars['String']>;
-  mentee_occupationLookingForJob_what?: InputMaybe<Scalars['String']>;
-  mentee_occupationOther_description?: InputMaybe<Scalars['String']>;
-  mentee_occupationStudent_studyName?: InputMaybe<Scalars['String']>;
-  mentee_occupationStudent_studyPlace?: InputMaybe<Scalars['String']>;
-  mentor_occupation?: InputMaybe<Scalars['String']>;
-  mentor_workPlace?: InputMaybe<Scalars['String']>;
-  optOutOfMenteesFromOtherRediLocation?: InputMaybe<Scalars['Boolean']>;
-  personalDescription?: InputMaybe<Scalars['String']>;
-  profileAvatarImageS3Key?: InputMaybe<Scalars['String']>;
-  slackUsername?: InputMaybe<Scalars['String']>;
-  telephoneNumber?: InputMaybe<Scalars['String']>;
-};
+  birthDate?: InputMaybe<Scalars['DateTime']>
+  categories?: InputMaybe<Array<MentoringTopic>>
+  expectations?: InputMaybe<Scalars['String']>
+  firstName?: InputMaybe<Scalars['String']>
+  gender?: InputMaybe<Gender>
+  githubProfileUrl?: InputMaybe<Scalars['String']>
+  id: Scalars['ID']
+  languages?: InputMaybe<Array<ConnectProfileLanguage>>
+  lastName?: InputMaybe<Scalars['String']>
+  linkedInProfileUrl?: InputMaybe<Scalars['String']>
+  menteeCountCapacity?: InputMaybe<Scalars['Int']>
+  mentee_currentlyEnrolledInCourse?: InputMaybe<RediCourse>
+  mentee_highestEducationLevel?: InputMaybe<EducationLevel>
+  mentee_occupationCategoryId?: InputMaybe<OccupationCategory>
+  mentee_occupationJob_placeOfEmployment?: InputMaybe<Scalars['String']>
+  mentee_occupationJob_position?: InputMaybe<Scalars['String']>
+  mentee_occupationLookingForJob_what?: InputMaybe<Scalars['String']>
+  mentee_occupationOther_description?: InputMaybe<Scalars['String']>
+  mentee_occupationStudent_studyName?: InputMaybe<Scalars['String']>
+  mentee_occupationStudent_studyPlace?: InputMaybe<Scalars['String']>
+  mentor_occupation?: InputMaybe<Scalars['String']>
+  mentor_workPlace?: InputMaybe<Scalars['String']>
+  optOutOfMenteesFromOtherRediLocation?: InputMaybe<Scalars['Boolean']>
+  personalDescription?: InputMaybe<Scalars['String']>
+  profileAvatarImageS3Key?: InputMaybe<Scalars['String']>
+  slackUsername?: InputMaybe<Scalars['String']>
+  telephoneNumber?: InputMaybe<Scalars['String']>
+}
 
 export enum UserType {
   Mentee = 'MENTEE',
-  Mentor = 'MENTOR'
+  Mentor = 'MENTOR',
 }

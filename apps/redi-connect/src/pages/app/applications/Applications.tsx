@@ -1,16 +1,14 @@
-import React from 'react'
-import { Content } from 'react-bulma-components'
-import { Heading } from '@talent-connect/shared-atomic-design-components'
-import { ApplicationCard } from '../../../components/organisms'
-import LoggedIn from '../../../components/templates/LoggedIn'
-import { connect } from 'react-redux'
-import { RedMatch } from '@talent-connect/shared-types'
-import { useHistory } from 'react-router-dom'
-import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
 import {
   ConnectProfileStatus,
+  MentorshipMatchStatus,
   useLoadMyProfileQuery,
 } from '@talent-connect/data-access'
+import { Heading } from '@talent-connect/shared-atomic-design-components'
+import { Content } from 'react-bulma-components'
+import { useHistory } from 'react-router-dom'
+import { ApplicationCard } from '../../../components/organisms'
+import LoggedIn from '../../../components/templates/LoggedIn'
+import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
 import { useGetMentorshipMatchesQuery } from './Applications.generated'
 
 function Applications() {
@@ -28,7 +26,9 @@ function Applications() {
 
   if (mentorshipMatchesQuery.isLoading) return null
 
-  const applicants = mentorshipMatchesQuery.data?.conMentorshipMatches
+  const applicants = mentorshipMatchesQuery.data?.conMentorshipMatches?.filter(
+    (match) => match.status === MentorshipMatchStatus.Applied
+  )
 
   return (
     <LoggedIn>
@@ -61,13 +61,7 @@ function Applications() {
             return dateA < dateB ? 1 : -1
           })
           .map((application) => (
-            <ApplicationCard
-              key={application.id}
-              application={application}
-              hasReachedMenteeLimit={
-                profile.ifUserMentor_doesntHaveAvailableMentorshipSlot
-              }
-            />
+            <ApplicationCard key={application.id} application={application} />
           ))
       )}
     </LoggedIn>

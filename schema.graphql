@@ -330,7 +330,7 @@ input CreateConMentoringSessionInput {
 input CreateConProblemReportInput {
   ifFromMentor_cancelMentorshipImmediately: Boolean
   problemDescription: String!
-  reporteeId: String!
+  reporteeProfileId: String!
 }
 
 """
@@ -446,19 +446,43 @@ enum MentorshipMatchStatus {
 }
 
 type Mutation {
-  conMatchMarkMentorshipAcceptedNotificationDismissed(conMentorshipMatchId: String!): OkResponseMutationOutputDto!
-  conMenteeFavoritedMentorCreate(input: ConMenteeFavoritedMentorCreateMutationInputDto!): ConMenteeFavoritedMentorCreateMutationOutputDto!
-  conMenteeFavoritedMentorDelete(input: ConMenteeFavoritedMentorDeleteMutationInputDto!): ConMenteeFavoritedMentorDeleteMutationOutputDto!
-  conMentorshipMatchesAcceptMentorship(input: ConMentorshipMatchesAcceptMentorshipInputDto!): ConMentorshipMatchesAcceptMentorshipOutputDto!
-  conMentorshipMatchesApplyForMentorship(input: ConMentorshipMatchesApplyForMentorshipInputDto!): ConMentorshipMatchesApplyForMentorshipOutputDto!
-  conMentorshipMatchesCompleteMentorship(input: ConMentorshipMatchesCompleteMentorshipInputDto!): ConMentorshipMatchesCompleteMentorshipOutputDto!
-  conMentorshipMatchesDeclineMentorship(input: ConMentorshipMatchesDeclineMentorshipInputDto!): ConMentorshipMatchesDeclineMentorshipOutputDto!
-  conMentorshipMatchesMarkAsDismissed(input: ConMentorshipMatchesMarkAsDismissedInputDto!): ConMentorshipMatchesMarkAsDismissedOutputDto!
-  conProblemReportCreate(input: CreateConProblemReportInput!): OkResponseMutationOutputDto!
-  conProfileSignUp(input: ConProfileSignUpInput!): OkIdResponseMutationOutputDto!
-  createConMentoringSession(createConMentoringSessionInput: CreateConMentoringSessionInput!): ConMentoringSession!
+  conMatchMarkMentorshipAcceptedNotificationDismissed(
+    conMentorshipMatchId: String!
+  ): OkResponseMutationOutputDto!
+  conMenteeFavoritedMentorCreate(
+    input: ConMenteeFavoritedMentorCreateMutationInputDto!
+  ): ConMenteeFavoritedMentorCreateMutationOutputDto!
+  conMenteeFavoritedMentorDelete(
+    input: ConMenteeFavoritedMentorDeleteMutationInputDto!
+  ): ConMenteeFavoritedMentorDeleteMutationOutputDto!
+  conMentorshipMatchesAcceptMentorship(
+    input: ConMentorshipMatchesAcceptMentorshipInputDto!
+  ): ConMentorshipMatchesAcceptMentorshipOutputDto!
+  conMentorshipMatchesApplyForMentorship(
+    input: ConMentorshipMatchesApplyForMentorshipInputDto!
+  ): ConMentorshipMatchesApplyForMentorshipOutputDto!
+  conMentorshipMatchesCompleteMentorship(
+    input: ConMentorshipMatchesCompleteMentorshipInputDto!
+  ): ConMentorshipMatchesCompleteMentorshipOutputDto!
+  conMentorshipMatchesDeclineMentorship(
+    input: ConMentorshipMatchesDeclineMentorshipInputDto!
+  ): ConMentorshipMatchesDeclineMentorshipOutputDto!
+  conMentorshipMatchesMarkAsDismissed(
+    input: ConMentorshipMatchesMarkAsDismissedInputDto!
+  ): ConMentorshipMatchesMarkAsDismissedOutputDto!
+  conProblemReportCreate(
+    input: CreateConProblemReportInput!
+  ): OkResponseMutationOutputDto!
+  conProfileSignUp(
+    input: ConProfileSignUpInput!
+  ): OkIdResponseMutationOutputDto!
+  createConMentoringSession(
+    createConMentoringSessionInput: CreateConMentoringSessionInput!
+  ): ConMentoringSession!
   patchConProfile(patchConProfileInput: UpdateConProfileInput!): ConProfile!
-  tpCompanyProfileSignUp(input: TpCompanyProfileSignUpInputDto!): TpCompanyProfileSignUpInputOutputDto!
+  tpCompanyProfileSignUp(
+    input: TpCompanyProfileSignUpInputDto!
+  ): TpCompanyProfileSignUpInputOutputDto!
 }
 
 enum OccupationCategory {
@@ -483,7 +507,9 @@ type Query {
   conMentorshipMatch(id: ID!): ConMentorshipMatch!
   conMentorshipMatches(status: MentorshipMatchStatus): [ConMentorshipMatch!]!
   conProfile(id: ID, loopbackUserId: ID): ConProfile!
-  conProfilesAvailableMentors(filter: FindConProfilesArgsFilter!): [ConProfile!]!
+  conProfilesAvailableMentors(
+    filter: FindConProfilesArgsFilter!
+  ): [ConProfile!]!
   myConProfile: ConProfile!
   publicTpCompanyProfiles: [TpCompanyProfile!]!
   tpCompanyProfile(id: ID): TpCompanyProfile!
