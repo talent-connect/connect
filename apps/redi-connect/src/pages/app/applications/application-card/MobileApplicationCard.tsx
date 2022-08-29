@@ -55,7 +55,7 @@ const MobileApplicationCard = ({
         <Columns.Column className="mobile-application-card__avatar">
           <Avatar profile={applicationUser} />
         </Columns.Column>
-        <Columns.Column>
+        <Columns>
           <Columns.Column>
             {applicationUser && (
               <span
@@ -79,8 +79,8 @@ const MobileApplicationCard = ({
               <p>{REDI_LOCATION_NAMES[applicationUser.rediLocation]}</p>
             )}
           </Columns.Column>
-        </Columns.Column>
-        <Columns.Column>
+        </Columns>
+        <Columns>
           <Columns.Column
             className={
               application.status === 'applied'
@@ -93,7 +93,7 @@ const MobileApplicationCard = ({
           <Columns.Column>
             {moment(applicationDate).format('DD.MM.YYYY')}
           </Columns.Column>
-        </Columns.Column>
+        </Columns>
         <Columns.Column className="mobile-application-card__icon">
           <Icon
             icon="chevron"
