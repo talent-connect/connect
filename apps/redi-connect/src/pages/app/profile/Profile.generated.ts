@@ -1,7 +1,7 @@
 // THIS FILE IS GENERATED, DO NOT EDIT!
 import * as Types from '@talent-connect/data-access';
 
-import { AllConProfileFieldsFragmentDoc } from '../../../../../../libs/data-access/src/lib/con/con-profiles/con-profile.fragment.generated';
+import { AllConProfileFieldsFragmentDoc } from '../../../../../../libs/data-access/src/lib/connect/con-profiles/con-profile.fragment.generated';
 import { useQuery, UseQueryOptions } from 'react-query';
 import { fetcher } from '@talent-connect/data-access';
 export type ProfilePageQueryQueryVariables = Types.Exact<{
