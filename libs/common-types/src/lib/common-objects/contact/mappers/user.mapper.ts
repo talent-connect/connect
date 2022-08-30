@@ -11,7 +11,7 @@ export class UserMapper implements Mapper<UserEntity, ContactRecord> {
     const props = new UserEntityProps()
 
     props.id = raw.props.Id
-    props.email = raw.props.Email
+    props.email = raw.props.ReDI_Email_Address__c
     props.loopbackUserId = raw.props.Loopback_User_ID__c
     props.firstName = String(raw.props.FirstName)
     props.lastName = raw.props.LastName
@@ -51,7 +51,7 @@ export class UserMapper implements Mapper<UserEntity, ContactRecord> {
     const srcProps = source.props
 
     props.Id = srcProps.id
-    props.Email = srcProps.email
+    props.ReDI_Email_Address__c = srcProps.email
     props.Loopback_User_ID__c = srcProps.loopbackUserId
     props.FirstName = srcProps.firstName
     props.LastName = srcProps.lastName

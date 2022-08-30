@@ -35,7 +35,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     let contactRecords = await this.salesforceRepository.findRecordsOfObject({
       objectName: ContactRecord.metadata.SALESFORCE_OBJECT_NAME,
       objectFields: ContactRecord.metadata.SALESFORCE_OBJECT_FIELDS,
-      filter: { Loopback_User_ID__c: loopbackUserId, Email: email },
+      filter: {
+        Loopback_User_ID__c: loopbackUserId,
+        ReDI_Email_Address__c: email,
+      },
     })
 
     if (contactRecords.length === 0) {
@@ -44,7 +47,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         {
           FirstName: 'CON/TP Contact in creation',
           LastName: email,
-          Email: email,
+          ReDI_Email_Address__c: email,
           Loopback_User_ID__c: payload.userId,
         }
       )

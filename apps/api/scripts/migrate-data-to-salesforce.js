@@ -416,7 +416,7 @@ function deleteFalsyProperties(obj) {
 async function insertContactFn(p) {
   const existingContacts = await conn
     .sobject('Contact')
-    .find({ Email: p.email.toLocaleLowerCase() })
+    .find({ ReDI_Email_Address__c: p.email.toLocaleLowerCase() })
   const existingContactCount = existingContacts.length
   let newOrExisting
   let contactIdUpdatedOrInserted
@@ -425,7 +425,7 @@ async function insertContactFn(p) {
     newOrExisting = 'new'
     const insertResult = await conn.sobject('Contact').create(
       deleteFalsyProperties({
-        Email: p.email,
+        ReDI_Email_Address__c: p.email,
         RecordTypeId: PARTIALSBX_CONTACT_RECORD_TYPE,
         Loopback_User_ID__c: p.sfId,
         FirstName: `${
@@ -472,7 +472,7 @@ async function insertContactFn(p) {
     await conn.sobject('Contact').update(
       deleteFalsyProperties({
         Id: existingContacts[0].Id,
-        Email: p.email,
+        ReDI_Email_Address__c: p.email,
         RecordTypeId: PARTIALSBX_CONTACT_RECORD_TYPE,
         Loopback_User_ID__c: p.id,
         FirstName: `${

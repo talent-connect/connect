@@ -20,7 +20,7 @@ export class ConProfileRecord extends Record<ConProfileRecordProps> {
       'RecordType.DeveloperName', // Enum: MENTOR/MENTEE
       'Contact__r.Id',
       'Contact__r.Loopback_User_ID__c',
-      'Contact__r.Email',
+      'Contact__r.ReDI_Email_Address__c',
       'Contact__r.Name',
       'Contact__r.FirstName',
       'Contact__r.LastName',

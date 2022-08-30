@@ -5,7 +5,7 @@ export class ContactRecordProps implements RecordProps {
   Id: string
   FirstName?: string
   LastName: string
-  Email: string
+  ReDI_Email_Address__c: string
   ReDI_Behance_URL__c?: string
   @Type(() => Date)
   ReDI_Birth_Date__c?: Date

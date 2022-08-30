@@ -17,7 +17,7 @@ export class ContactRecord extends Record<ContactRecordProps> {
     SALESFORCE_OBJECT_FIELDS: [
       'Id',
       'Loopback_User_ID__c',
-      'Email',
+      'ReDI_Email_Address__c',
       'FirstName',
       'LastName',
       'ReDI_Behance_URL__c',

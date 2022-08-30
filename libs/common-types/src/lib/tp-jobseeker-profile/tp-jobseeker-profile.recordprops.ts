@@ -4,7 +4,7 @@ import { ContactRecordProps } from '../common-objects'
 
 export class TpJobseekerProfileRecordProps implements RecordProps {
   Id: string
-  Email: string
+  ReDI_Email_Address__c: string
   @Type(() => Date)
   CreatedDate: Date
   LastModifiedDate: Date
@@ -14,7 +14,7 @@ export class TpJobseekerProfileRecordProps implements RecordProps {
   Contact__r: ContactRecordProps
 
   // props: {
-  //   Email: string
+  //   ReDI_Email_Address__c: string
   //   Id: string
   //   FirstName: string
   //   LastName: string

@@ -8,7 +8,7 @@ import { ContactRecordProps, Gender } from '../common-objects'
 
 export class ConProfileRecordProps implements RecordProps {
   Id: string
-  Email: string
+  ReDI_Email_Address__c: string
   Avatar_Image_URL__c?: string
   @Type(() => Date)
   CreatedDate: Date
@@ -50,7 +50,7 @@ export class ConProfileRecordProps implements RecordProps {
     DeveloperName: string
   }
   props: {
-    Email: string
+    ReDI_Email_Address__c: string
     Id: string
     FirstName: string
     LastName: string
