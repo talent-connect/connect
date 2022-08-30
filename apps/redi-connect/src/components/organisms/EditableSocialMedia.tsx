@@ -7,7 +7,6 @@ import {
   FormInput,
 } from '@talent-connect/shared-atomic-design-components'
 import { FormikValues, useFormik } from 'formik'
-import React from 'react'
 import { useQueryClient } from 'react-query'
 import * as Yup from 'yup'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
@@ -32,7 +31,7 @@ function EditableSocialMedia() {
   const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
   const patchMyProfileMutation = usePatchMyProfileMutation()
 
-  const profile = myProfileQuery.data.conProfile
+  const profile = myProfileQuery.data?.conProfile
 
   const linkedInProfileUrl = profile?.linkedInProfileUrl
   const githubProfileUrl = profile?.githubProfileUrl
@@ -59,6 +58,8 @@ function EditableSocialMedia() {
     validationSchema,
     onSubmit: submitForm,
   })
+
+  if (!myProfileQuery.isSuccess) return null
 
   return (
     <Editable

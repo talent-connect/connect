@@ -1,6 +1,8 @@
 import {
   ConnectProfileStatus,
+  MentorshipMatchStatus,
   useLoadMyProfileQuery,
+  UserType,
 } from '@talent-connect/data-access'
 import { ReactNode } from 'react'
 import { NavLink } from 'react-router-dom'
@@ -31,18 +33,17 @@ const SideMenu = () => {
   const loopbackUserId = getAccessTokenFromLocalStorage().userId
   const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
   const profile = myProfileQuery.data?.conProfile
-  const isActivatedMentor =
-    profile?.userType === 'MENTOR' &&
-    profile?.profileStatus === ConnectProfileStatus.Approved
-  const isActivatedMentee =
-    profile?.userType === 'MENTEE' &&
-    profile?.profileStatus === ConnectProfileStatus.Approved
-  const isMentee =
-    isActivatedMentee || profile?.profileStatus === ConnectProfileStatus.Pending
-  const isMenteeWithoutMentor =
-    isMentee && profile.ifUserMentee_activeMentorshipMatches === 0
-  const isMenteeWithMentor =
-    isActivatedMentee && profile.ifUserMentee_activeMentorshipMatches > 0
+
+  const isMentor = profile?.userType === UserType.Mentor
+  const isMentee = profile?.userType === UserType.Mentee
+
+  const isActivated = profile?.profileStatus === ConnectProfileStatus.Approved
+  const isNotPending = profile?.profileStatus !== ConnectProfileStatus.Pending
+
+  const hasActiveMentorship = profile?.mentorshipMatches?.some(
+    (match) => match.status === MentorshipMatchStatus.Accepted
+  )
+  const hasNoActiveMentorship = !hasActiveMentorship
 
   return (
     <ul className="side-menu">
@@ -51,24 +52,26 @@ const SideMenu = () => {
         My Profile
       </MenuItem>
 
-      {isMenteeWithoutMentor && (
+      {isMentee && isActivated && hasNoActiveMentorship && (
         <MenuItem url="/app/find-a-mentor/">
           <Mentorship className="side-menu__icon" />
           Find a mentor
         </MenuItem>
       )}
 
-      {(isActivatedMentor || isMenteeWithMentor) && (
+      {((isMentor && isActivated) || (isMentee && hasActiveMentorship)) && (
         <MenuItem url="/app/mentorships/">
           <Mentorship className="side-menu__icon" />
           My Mentorship
         </MenuItem>
       )}
 
-      <MenuItem url="/app/applications">
-        <Applications className="side-menu__icon" />
-        Applications
-      </MenuItem>
+      {isNotPending && (
+        <MenuItem url="/app/applications">
+          <Applications className="side-menu__icon" />
+          Applications
+        </MenuItem>
+      )}
     </ul>
   )
 }

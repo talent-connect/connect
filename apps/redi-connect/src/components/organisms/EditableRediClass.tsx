@@ -7,7 +7,6 @@ import {
   FormSelect,
 } from '@talent-connect/shared-atomic-design-components'
 import { FormikValues, useFormik } from 'formik'
-import React from 'react'
 import { useQueryClient } from 'react-query'
 import * as Yup from 'yup'
 import { courses } from '../../config/config'
@@ -36,7 +35,7 @@ function EditableRediClass() {
   const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
   const patchMyProfileMutation = usePatchMyProfileMutation()
 
-  const profile = myProfileQuery.data.conProfile
+  const profile = myProfileQuery.data?.conProfile
 
   const mentee_currentlyEnrolledInCourse =
     profile?.mentee_currentlyEnrolledInCourse
@@ -60,6 +59,8 @@ function EditableRediClass() {
     validationSchema,
     onSubmit: submitForm,
   })
+
+  if (!myProfileQuery.isSuccess) return null
 
   return (
     <Editable

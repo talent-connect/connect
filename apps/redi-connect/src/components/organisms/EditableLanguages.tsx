@@ -34,7 +34,7 @@ function EditableLanguages() {
   const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
   const patchMyProfileMutation = usePatchMyProfileMutation()
 
-  const profile = myProfileQuery.data.conProfile
+  const profile = myProfileQuery.data?.conProfile
 
   const languages = profile?.languages
 
@@ -57,6 +57,8 @@ function EditableLanguages() {
     validationSchema,
     onSubmit: submitForm,
   })
+
+  if (!myProfileQuery.isSuccess) return null
 
   return (
     <Editable

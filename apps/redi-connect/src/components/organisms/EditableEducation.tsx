@@ -9,7 +9,6 @@ import {
 import { EDUCATION_LEVELS } from '@talent-connect/shared-config'
 import { objectEntries, objectKeys } from '@talent-connect/typescript-utilities'
 import { FormikValues, useFormik } from 'formik'
-import React from 'react'
 import { useQueryClient } from 'react-query'
 import * as Yup from 'yup'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
@@ -38,7 +37,7 @@ function EditableEducation() {
   const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
   const patchMyProfileMutation = usePatchMyProfileMutation()
 
-  const profile = myProfileQuery.data.conProfile
+  const profile = myProfileQuery.data?.conProfile
 
   const mentee_highestEducationLevel = profile?.mentee_highestEducationLevel
 
@@ -61,6 +60,8 @@ function EditableEducation() {
     validationSchema,
     onSubmit: submitForm,
   })
+
+  if (!myProfileQuery.isSuccess) return null
 
   return (
     <Editable

@@ -39,7 +39,7 @@ function EditableAbout() {
   const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
   const patchMyProfileMutation = usePatchMyProfileMutation()
 
-  const profile = myProfileQuery.data.conProfile
+  const profile = myProfileQuery.data?.conProfile
 
   const userType = profile?.userType
   const personalDescription = profile?.personalDescription
@@ -65,6 +65,8 @@ function EditableAbout() {
     validationSchema,
     onSubmit: submitForm,
   })
+
+  if (!myProfileQuery.isSuccess) return null
 
   return (
     <Editable

@@ -12,7 +12,6 @@ import { MENTEE_OCCUPATION_CATEGORY } from '@talent-connect/shared-config'
 import { objectKeys } from '@talent-connect/typescript-utilities'
 import { FormikValues, useFormik } from 'formik'
 import { omit } from 'lodash'
-import React from 'react'
 import { useQueryClient } from 'react-query'
 import * as Yup from 'yup'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
@@ -108,7 +107,7 @@ function EditableOccupation() {
   const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
   const patchMyProfileMutation = usePatchMyProfileMutation()
 
-  const profile = myProfileQuery.data.conProfile
+  const profile = myProfileQuery.data?.conProfile
 
   const userType = profile?.userType
   const mentor_occupation = profile?.mentor_occupation
@@ -160,6 +159,8 @@ function EditableOccupation() {
   })
 
   const { mentee_occupationCategoryId: occupation } = formik.values
+
+  if (!myProfileQuery.isSuccess) return null
 
   return (
     <Editable

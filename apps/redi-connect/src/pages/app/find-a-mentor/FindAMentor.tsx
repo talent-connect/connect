@@ -180,7 +180,6 @@ const FindAMentor = () => {
 
   return (
     <LoggedIn>
-      <Loading />
       <Heading subtitle size="small" className="oneandhalf-bs">
         Available mentors ({mentors?.length})
       </Heading>

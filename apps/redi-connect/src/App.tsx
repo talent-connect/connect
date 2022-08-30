@@ -1,6 +1,11 @@
 import { Loader } from '@talent-connect/shared-atomic-design-components'
 import { Suspense } from 'react'
-import { QueryClient, QueryClientProvider } from 'react-query'
+import {
+  QueryClient,
+  QueryClientProvider,
+  useIsFetching,
+  useIsMutating,
+} from 'react-query'
 import { Route } from 'react-router-dom'
 import { QueryParamProvider } from 'use-query-params'
 import AppNotification from './components/AppNotification'
@@ -27,7 +32,7 @@ function App() {
       )
 
     default:
-      return <NormalRediConnect />
+      return <NormalRediConnectWrapper />
   }
 }
 
@@ -50,20 +55,31 @@ if (isLoggedIn()) {
   setGraphQlClientAuthHeader(getAccessTokenFromLocalStorage())
 }
 
-function NormalRediConnect() {
+function NormalRediConnectWrapper() {
   return (
     <>
       <AppNotification />
       <QueryClientProvider client={queryClient}>
-        <Router history={history}>
-          <Suspense fallback={<Loader loading={true} />}>
-            <QueryParamProvider ReactRouterRoute={Route}>
-              <Routes />
-            </QueryParamProvider>
-          </Suspense>
-        </Router>
+        <NormalRediConnect />
       </QueryClientProvider>
     </>
+  )
+}
+
+function NormalRediConnect() {
+  const ongoingFetchCount = useIsFetching()
+  const ongoingMutatationCount = useIsMutating()
+  const isFetching = ongoingFetchCount > 0 || ongoingMutatationCount > 0
+
+  return (
+    <Router history={history}>
+      <Suspense fallback={<Loader loading={true} />}>
+        <QueryParamProvider ReactRouterRoute={Route}>
+          <Loader loading={isFetching} />
+          <Routes />
+        </QueryParamProvider>
+      </Suspense>
+    </Router>
   )
 }
 

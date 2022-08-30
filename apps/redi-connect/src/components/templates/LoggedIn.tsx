@@ -8,7 +8,6 @@ import {
 import {
   Button,
   Icon,
-  Loader,
   Modal,
 } from '@talent-connect/shared-atomic-design-components'
 import React, { ReactNode } from 'react'
@@ -93,7 +92,6 @@ function LoggedIn({ children }: Props) {
               desktop={{ size: 9, offset: 1 }}
               className="column--main-content"
             >
-              <Loader loading={isFetching} />
               {profile?.userType === 'MENTEE' &&
                 profile?.profileStatus === ConnectProfileStatus.Pending && (
                   <RediNotification>
@@ -156,7 +154,7 @@ function LoggedIn({ children }: Props) {
                   </Modal.Foot>
                 </Modal>
               )}
-              {!isFetching && children}
+              {children}
             </Columns.Column>
           </Columns>
         </Container>

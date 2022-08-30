@@ -50,7 +50,7 @@ function EditableMentoringTopics() {
   const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
   const patchMyProfileMutation = usePatchMyProfileMutation()
 
-  const profile = myProfileQuery.data.conProfile
+  const profile = myProfileQuery.data?.conProfile
 
   const userType = profile?.userType
   const categories = profile?.categories
@@ -91,6 +91,8 @@ function EditableMentoringTopics() {
     formik.setFieldValue('categories', newCategories)
     formik.setFieldTouched('categories', true, false)
   }
+
+  if (!myProfileQuery.isSuccess) return null
 
   return (
     <Editable

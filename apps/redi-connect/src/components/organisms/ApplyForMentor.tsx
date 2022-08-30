@@ -64,7 +64,9 @@ const ApplyForMentor = ({ mentor }: Props) => {
         mentorId: mentor.id,
       },
     })
-    queryClient.invalidateQueries()
+    setTimeout(() => {
+      queryClient.invalidateQueries()
+    }, 100)
     setShow(false)
   }
 

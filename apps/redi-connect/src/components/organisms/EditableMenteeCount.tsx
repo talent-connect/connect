@@ -56,7 +56,7 @@ function EditableMenteeCount() {
   const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
   const patchMyProfileMutation = usePatchMyProfileMutation()
 
-  const profile = myProfileQuery.data.conProfile
+  const profile = myProfileQuery.data?.conProfile
 
   const menteeCountCapacity = profile?.menteeCountCapacity
   const optOutOfMenteesFromOtherRediLocation =
@@ -83,6 +83,8 @@ function EditableMenteeCount() {
     validationSchema,
     onSubmit: submitForm,
   })
+
+  if (!myProfileQuery.isSuccess) return null
 
   return (
     <Editable

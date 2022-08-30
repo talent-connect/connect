@@ -81,7 +81,7 @@ function Profile() {
 
   return (
     <LoggedIn>
-      {hasOpenApplication && (
+      {currentUserIsMentee && hasOpenApplication && (
         <Notification>
           Awesome, your application has been sent. If you want to read it later
           on you can find it in{' '}

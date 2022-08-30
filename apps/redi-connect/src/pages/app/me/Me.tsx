@@ -1,7 +1,4 @@
-import {
-  Heading,
-  Loader,
-} from '@talent-connect/shared-atomic-design-components'
+import { Heading } from '@talent-connect/shared-atomic-design-components'
 import { Columns, Content, Element } from 'react-bulma-components'
 import {
   Avatar,
@@ -21,11 +18,17 @@ import { LoggedIn } from '../../../components/templates'
 import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
 
 import { useLoadMyProfileQuery, UserType } from '@talent-connect/data-access'
-import { useIsFetching, useIsMutating, useQueryClient } from 'react-query'
+import { useEffect } from 'react'
 // CHECK OUT THE LOADER
 
 function Me() {
-  const queryClient = useQueryClient()
+  useEffect(() => {
+    console.log('useEffect: Me')
+    return () => {
+      console.log('unmount: Me')
+    }
+  }, [])
+
   const myProfileResult = useLoadMyProfileQuery(
     {
       loopbackUserId: getAccessTokenFromLocalStorage().userId,
@@ -33,34 +36,23 @@ function Me() {
     { onSuccess: () => console.log('Me loaded it') }
   )
 
-  const isFetching = useIsFetching()
-  const isMutating = useIsMutating()
-
-  const isBusy = isFetching || isMutating
-
-  if (myProfileResult.isLoading) {
-    return <Loader loading={true} />
-  }
-
   // TODO: insert proper error handling here and elsewhere. We should cover cases where we
   // get values usch as myProfileResult.isError. Perhaps we-ure the error boundary logic
   // that Eric has been looking into.
 
-  const conProfile = myProfileResult?.data.conProfile
+  const conProfile = myProfileResult?.data?.conProfile
 
-  const userIsMentee = conProfile.userType === UserType.Mentee
-  const userIsMentor = conProfile.userType === UserType.Mentor
+  const userIsMentee = conProfile?.userType === UserType.Mentee
+  const userIsMentor = conProfile?.userType === UserType.Mentor
 
   return (
     <LoggedIn>
-      {isBusy ? <Loader loading={true} /> : null}
-
       <Columns vCentered breakpoint="mobile" className="oneandhalf-bs">
         <Columns.Column size={3}>
           <Avatar.Editable />
         </Columns.Column>
         <Columns.Column size={8}>
-          <Heading>Hi, {conProfile.firstName}</Heading>
+          <Heading>Hi, {conProfile?.firstName}</Heading>
           <Content
             size="medium"
             renderAs="p"

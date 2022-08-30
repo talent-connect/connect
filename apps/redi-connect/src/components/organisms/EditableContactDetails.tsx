@@ -8,7 +8,6 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import { FormikValues, useFormik } from 'formik'
 import { omit } from 'lodash'
-import React from 'react'
 import { useQueryClient } from 'react-query'
 import * as Yup from 'yup'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
@@ -35,7 +34,7 @@ export function EditableContactDetails() {
   const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
   const patchMyProfileMutation = usePatchMyProfileMutation()
 
-  const profile = myProfileQuery.data.conProfile
+  const profile = myProfileQuery.data?.conProfile
 
   const submitForm = async (values: FormikValues) => {
     const cleanValues = omit(values, ['email'])

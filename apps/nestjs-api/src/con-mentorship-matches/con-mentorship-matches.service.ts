@@ -226,7 +226,7 @@ export class ConMentorshipMatchesService {
     } as ConMentorshipMatchEntityProps
     const entity = ConMentorshipMatchEntity.create(entityProps)
     const record = this.mapper.toPersistence(entity)
-    console.log(JSON.stringify(record, null, 2))
+
     const result = await this.api.create(record)
 
     this.emailService.sendMentorshipRequestReceivedEmail({
