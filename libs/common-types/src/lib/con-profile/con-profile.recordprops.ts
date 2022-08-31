@@ -4,7 +4,7 @@ import {
   PicklistValuesSemicolonSeparated,
   RecordProps,
 } from '../base-interfaces-types-classes'
-import { ContactRecordProps, Gender } from '../common-objects'
+import { ContactRecordProps } from '../common-objects'
 
 export class ConProfileRecordProps implements RecordProps {
   Id: string
@@ -48,20 +48,6 @@ export class ConProfileRecordProps implements RecordProps {
 
   RecordType: {
     DeveloperName: string
-  }
-  props: {
-    ReDI_Email_Address__c: string
-    Id: string
-    FirstName: string
-    LastName: string
-    redi_Contact_Gender__c: Gender
-    ReDI_Birth_Date__c: Date
-    LinkedIn_Profile__c: string
-    ReDI_GitHub_Profile__c: string
-    ReDI_Slack_Username__c: string
-    MobilePhone: string
-    Loopback_User_ID__c: string
-    ReDI_Age__c: number
   }
 
   public static create(rawProps: any) {
