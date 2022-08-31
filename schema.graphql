@@ -124,10 +124,6 @@ type ConProfile {
   gender: Gender
   githubProfileUrl: String
   id: ID!
-  ifUserMentee_activeMentorshipMatches: Float!
-  ifUserMentor_activeMentorshipMatches: Float!
-  ifUserMentor_doesntHaveAvailableMentorshipSlot: Boolean!
-  ifUserMentor_hasAvailableMentorshipSlot: Boolean!
   languages: [ConnectProfileLanguage!]
   lastName: String!
   linkedInProfileUrl: String

@@ -85,14 +85,6 @@ export class ConProfileMapper
     props.menteeCountCapacity = raw.props.total_mentee_capacity__c
 
     // The next ones are computed fields in Salesforce
-    props.ifUserMentee_activeMentorshipMatches =
-      raw.props.Active_Mentorship_Matches_Mentee__c
-    props.ifUserMentor_activeMentorshipMatches =
-      raw.props.Active_Mentorship_Matches_Mentor__c
-    props.ifUserMentor_hasAvailableMentorshipSlot =
-      raw.props.Has_Available_Mentorship_Slot__c
-    props.ifUserMentor_doesntHaveAvailableMentorshipSlot =
-      raw.props.Doesnt_Have_Available_Mentorship_Slot__c
     props.age = raw.props.Contact__r.ReDI_Age__c
     props.fullName = raw.props.Contact__r.Name
 

@@ -152,10 +152,6 @@ export type ConProfile = {
   gender?: Maybe<Gender>;
   githubProfileUrl?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
-  ifUserMentee_activeMentorshipMatches: Scalars['Float'];
-  ifUserMentor_activeMentorshipMatches: Scalars['Float'];
-  ifUserMentor_doesntHaveAvailableMentorshipSlot: Scalars['Boolean'];
-  ifUserMentor_hasAvailableMentorshipSlot: Scalars['Boolean'];
   languages?: Maybe<Array<ConnectProfileLanguage>>;
   lastName: Scalars['String'];
   linkedInProfileUrl?: Maybe<Scalars['String']>;

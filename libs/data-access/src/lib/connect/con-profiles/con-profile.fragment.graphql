@@ -11,10 +11,6 @@ fragment AllConProfileFields on ConProfile {
   gender
   githubProfileUrl
   id
-  ifUserMentee_activeMentorshipMatches
-  ifUserMentor_activeMentorshipMatches
-  ifUserMentor_hasAvailableMentorshipSlot
-  ifUserMentor_doesntHaveAvailableMentorshipSlot
   languages
   lastName
   linkedInProfileUrl
