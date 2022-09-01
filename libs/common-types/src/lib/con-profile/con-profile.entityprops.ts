@@ -1,8 +1,6 @@
 import { Field, ID, Int, ObjectType } from '@nestjs/graphql'
 import { EntityProps } from '../base-interfaces-types-classes'
 import { Gender } from '../common-objects/contact/enums/gender.enum'
-import { ConMentoringSessionEntityProps } from '../con-mentoring-session'
-import { ConMentorshipMatchEntityProps } from '../con-mentorship-match'
 import {
   ConnectProfileLanguage,
   EducationLevel,
@@ -56,9 +54,9 @@ export class ConProfileEntityProps implements EntityProps {
   categories: Array<MentoringTopic>
   // favouritedRedProfileIds: Array<string> //! REPLACED BY NEW JUNCTION OBJECT
   optOutOfMenteesFromOtherRediLocation: boolean
-  @Field((type) => [ConMentoringSessionEntityProps])
-  mentoringSessions: ConMentoringSessionEntityProps[]
-  mentorshipMatches: ConMentorshipMatchEntityProps[]
+  // @Field((type) => [ConMentoringSessionEntityProps])
+  // mentoringSessions: ConMentoringSessionEntityProps[]
+  // mentorshipMatches: ConMentorshipMatchEntityProps[]
   loopbackUserId: string
   createdAt: Date
   updatedAt: Date

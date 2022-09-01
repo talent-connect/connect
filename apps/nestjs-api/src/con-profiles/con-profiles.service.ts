@@ -36,9 +36,9 @@ export class ConProfilesService {
   }
 
   async findAll(filter: any = {}) {
-    const persistedEntities = await this.api.getAllConProfiles(filter)
+    const persistedRecords = await this.api.getAllConProfiles(filter)
 
-    const entities: ConProfileEntity[] = persistedEntities.map((source) =>
+    const entities: ConProfileEntity[] = persistedRecords.map((source) =>
       this.mapper.fromPersistence(source)
     )
 
@@ -53,11 +53,11 @@ export class ConProfilesService {
     }
     if (_filter.filter.name)
       filter['Contact__r.Name'] = { $like: `%${_filter.filter.name}%` }
-    if (_filter.filter.categories.length > 0)
+    if (_filter.filter.categories?.length > 0)
       filter.Mentoring_Topics__c = { $includes: _filter.filter.categories }
-    if (_filter.filter.locations.length > 0)
+    if (_filter.filter.locations?.length > 0)
       filter.ReDI_Location__c = { $in: _filter.filter.locations }
-    if (_filter.filter.languages.length > 0)
+    if (_filter.filter.languages?.length > 0)
       filter.Languages__c = { $includes: _filter.filter.languages }
     return this.findAll(filter)
   }

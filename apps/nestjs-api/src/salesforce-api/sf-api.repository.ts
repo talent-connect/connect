@@ -58,11 +58,18 @@ export class SfApiRepository {
         filter = {},
         limit = 5000,
         offset = 0,
+        childObjects,
       } = task
 
       let query = this.connection
         .sobject(objectName)
         .find(filter, objectFields, { limit, offset })
+      if (childObjects) {
+        childObjects.forEach((childObject) => {
+          query.include(childObject.name).select(childObject.fields).end()
+        })
+      }
+
       const results = await query.execute({
         autoFetch: true,
         maxFetch: 10000,
@@ -173,4 +180,5 @@ interface FindRecordsParams {
   filter?: any
   limit?: number
   offset?: number
+  childObjects?: { name: string; fields: string[] }[]
 }

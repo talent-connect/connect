@@ -1,1 +1,5 @@
 export * from './enums'
+export * from './tp-jobseeker-profile.entity'
+export * from './tp-jobseeker-profile.entityprops'
+export * from './tp-jobseeker-profile.record'
+export * from './tp-jobseeker-profile.recordprops'
