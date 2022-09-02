@@ -18,17 +18,14 @@ import { howDidHearAboutRediOptions } from '@talent-connect/talent-pool/config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
 import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
 import omit from 'lodash/omit'
-import React, { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
+
 import { Columns, Content, Form, Notification } from 'react-bulma-components'
 import { Link, useParams } from 'react-router-dom'
 import * as Yup from 'yup'
 import TpTeaser from '../../../components/molecules/TpTeaser'
 import AccountOperation from '../../../components/templates/AccountOperation'
-import {
-  signUpCompany,
-  signUpJobseeker,
-  signUpLoopback,
-} from '../../../services/api/api'
+import { signUpJobseeker, signUpLoopback } from '../../../services/api/api'
 import { history } from '../../../services/history/history'
 import { useSignUpCompanyMutation } from './SignUp.generated'
 
@@ -86,7 +83,7 @@ function buildValidationSchema(signupType: SignUpPageType['type']) {
   if (signupType === 'company') {
     return Yup.object({
       ...baseSchema,
-      companyName: Yup.string()
+      companyNameOrId: Yup.string()
         .required('Your company name is required')
         .max(255),
       howDidHearAboutRediKey: Yup.string().required('This field is required'),
@@ -111,7 +108,7 @@ export interface SignUpFormValues {
   email: string
   password: string
   passwordConfirm: string
-  companyName?: string
+  companyNameOrId?: string
   firstName: string
   lastName: string
   agreesWithCodeOfConduct?: boolean
@@ -119,7 +116,6 @@ export interface SignUpFormValues {
 }
 
 export default function SignUp() {
-  const listAllTpCompanyNamesQuery = useListAllTpCompanyNamesQuery()
   const signUpCompanyMutation = useSignUpCompanyMutation()
 
   const { type } = useParams<SignUpPageType>()
@@ -140,11 +136,18 @@ export default function SignUp() {
     initialValues.agreesWithCodeOfConduct = false
   }
   if (type === 'company') {
-    initialValues.companyName = ''
+    initialValues.companyNameOrId = ''
     initialValues.state = 'drafting-profile'
   }
 
+  const {
+    data: tpCompanyNames,
+    isLoading: isLoadingTpCompanyNames,
+    isSuccess: isSuccessTpCompanyNames,
+  } = useListAllTpCompanyNamesQuery({}, { enabled: type === 'company' })
+
   const [loopbackSubmitError, setLoopbackSubmitError] = useState(null)
+
   const submitForm = async (
     values: FormikValues,
     actions: FormikActions<SignUpFormValues>
@@ -169,13 +172,20 @@ export default function SignUp() {
 
         await signUpJobseeker(values.email, values.password, cleanProfile)
       }
+
       if (type === 'company') {
+        const isExistingCompany = tpCompanyNames?.publicTpCompanyProfiles.some(
+          (company) => company.id === values.companyNameOrId
+        )
+
         await signUpCompanyMutation.mutateAsync({
           input: {
-            companyIdOrName: values.companyName,
+            companyIdOrName: values.companyNameOrId,
             firstName: values.firstName,
             lastName: values.lastName,
-            operationType: TpCompanyProfileSignUpOperationType.NewCompany,
+            operationType: isExistingCompany
+              ? TpCompanyProfileSignUpOperationType.ExistingCompany
+              : TpCompanyProfileSignUpOperationType.NewCompany,
             firstPointOfContact: values.howDidHearAboutRediKey,
             firstPointOfContactOther: values.howDidHearAboutRediOtherText,
           },
@@ -227,9 +237,21 @@ export default function SignUp() {
           )}
           <form onSubmit={(e) => e.preventDefault()} className="form">
             {type === 'company' ? (
-              <FormInput
-                name="companyName"
+              <FormSelect
+                name="companyNameOrId"
                 placeholder="Your company name"
+                items={
+                  isSuccessTpCompanyNames
+                    ? tpCompanyNames?.publicTpCompanyProfiles.map(
+                        (company) => ({
+                          label: company.companyName,
+                          value: company.id,
+                        })
+                      )
+                    : []
+                }
+                creatable
+                isLoading={isLoadingTpCompanyNames}
                 {...formik}
               />
             ) : null}

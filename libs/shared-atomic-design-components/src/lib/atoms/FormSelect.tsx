@@ -1,5 +1,6 @@
 import React from 'react'
 import Select, { components } from 'react-select'
+import CreatableSelect from 'react-select/creatable'
 import { Form } from 'react-bulma-components'
 import { Icon } from '../atoms'
 import { get } from 'lodash'
@@ -39,7 +40,12 @@ function FormSelect(props: any) {
     touched,
     errors,
     disabled,
+    creatable = false,
+    customOnCreate,
+    isLoading,
   } = props
+
+  const SelectComponent = creatable ? CreatableSelect : Select
 
   const customStyles = {
     option: (provided: any, state: any) => ({
@@ -101,16 +107,30 @@ function FormSelect(props: any) {
   }
 
   const handleOnChangeDefault = (option: any = []) => {
-    setFieldValue(
-      name,
-      multiselect
-        ? option
-          ? option.map((item: any) => item.value)
-          : []
-        : option.value,
-      true
-    )
+    // option is null when clearing the select
+    if (!option) {
+      setFieldValue(name, '', true)
+    } else {
+      setFieldValue(
+        name,
+        multiselect
+          ? option
+            ? option.map((item: any) => item.value)
+            : []
+          : option.value,
+        true
+      )
+    }
     setFieldTouched(name, true, false)
+  }
+
+  const handleOnCreateDefault = (inputValue: string) => {
+    setFieldValue(name, inputValue, true)
+    setFieldTouched(name, true, false)
+  }
+
+  const handleIsValidNewOption = (inputValue: string) => {
+    return !items.find((item: any) => item.label === inputValue)
   }
 
   const handleOnBlur = (e: any) => {
@@ -120,6 +140,7 @@ function FormSelect(props: any) {
 
   const hasError = !!get(touched, name) && !!get(errors, name)
   const handleOnChange = customOnChange || handleOnChangeDefault
+  const handleOnCreate = customOnCreate || handleOnCreateDefault
 
   const selectedValues = multiselect
     ? get(values, name)
@@ -128,12 +149,14 @@ function FormSelect(props: any) {
         )
         .flat()
     : items.find((item: any) => item.value === get(values, name))
+    ? items.find((item: any) => item.value === get(values, name))
+    : { label: get(values, name) }
 
   return (
     <Form.Field>
       {label && <Form.Label size="small">{label}</Form.Label>}
       <Form.Control>
-        <Select
+        <SelectComponent
           value={selectedValues}
           components={{ DropdownIndicator, ClearIndicator, MultiValueRemove }}
           options={items}
@@ -145,6 +168,14 @@ function FormSelect(props: any) {
           styles={customStyles}
           menuPortalTarget={document.body}
           menuPosition="fixed"
+          isLoading={isLoading}
+          {...(creatable
+            ? {
+                isValidNewOption: handleIsValidNewOption,
+                onCreateOption: handleOnCreate,
+                isClearable: true,
+              }
+            : {})}
         />
       </Form.Control>
       <Form.Help color="danger" className={hasError ? 'help--show' : ''}>
