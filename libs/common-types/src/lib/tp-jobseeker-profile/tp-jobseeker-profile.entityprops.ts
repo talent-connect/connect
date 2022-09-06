@@ -19,11 +19,21 @@ export class TpJobseekerProfileEntityProps implements EntityProps {
   loopbackUserId: string
   firstName: string
   lastName: string
-  birthDate?: Date
-  linkedInProfileUrl?: string
-  githubProfileUrl?: string
-  slackUsername?: string
+
+  personalWebsite?: string
+  githubUrl?: string
+  linkedInUrl?: string
+  twitterUrl?: string
+  behanceUrl?: string
+  stackOverflowUrl?: string
+  dribbbleUrl?: string
+
+  postalMailingAddress?: string
   telephoneNumber?: string
+
+  genderPronouns?: string
+
+  location?: string
 
   rediLocation?: string
   currentlyEnrolledInCourse?: string
@@ -44,13 +54,12 @@ export class TpJobseekerProfileEntityProps implements EntityProps {
   isProfileVisibleToCompanies: boolean
   isHired: boolean
   @Field((type) => FederalState)
-  federalState: FederalState
+  federalState?: FederalState
   willingToRelocate: boolean
 
   createdAt: Date
   updatedAt: Date
 
   // The next ones are computed fields in Salesforce
-  age?: number
   fullName: string
 }
