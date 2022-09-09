@@ -15,7 +15,7 @@ Both are created, run and managed by [ReDI School of Digital Integration](https:
 4. Run `yarn` in project root to install dependencies.
 5. If you're re-seeding, drop the database files: `rm -rf mongodb-data/*` and run `yarn seed` to seed the database.
 
-   Alternatively, you can drop the database in the MongoDB Shell - [mongo](https://www.mongodb.com/docs/v4.4/mongo/#std-label-compare-mongosh-mongo) or [mongosh](https://www.mongodb.com/docs/mongodb-shell/). In a new terminal window run the following:
+   Alternatively, you can drop the database in the MongoDB Shell - [mongo](https://www.mongodb.com/docs/v4.4/mongo/) or [mongosh](https://www.mongodb.com/docs/mongodb-shell/). In a new terminal window run the following:
 
    ```
    $ mongo
