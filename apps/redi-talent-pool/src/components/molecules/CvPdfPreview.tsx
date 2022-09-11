@@ -265,7 +265,6 @@ export const CVPDF = ({
     aboutYourself,
     topSkills,
     workingLanguages,
-    projects,
     experience,
     education,
     phoneNumber,
@@ -364,18 +363,6 @@ export const CVPDF = ({
                 )}
               </View>
             </View>
-            {/* <View style={styles.contentViewLeft}>
-              <Text style={styles.contentHeading}>{`Display Case`}</Text>
-              {projects?.map((project, index) => (
-                <View key={`project_${index}`} style={styles.projectView}>
-                  <Text style={styles.contentSubHeading}>{project.title}</Text>
-                  <Link src={project.link} style={styles.contentLink}>
-                    {project.link.split('//')[1]}
-                  </Link>
-                  <Text style={styles.contentPara}>{project.description}</Text>
-                </View>
-              ))}
-            </View> */}
             <Text style={styles.hiddenText}>endOfContentLeft</Text>
           </View>
           <View style={styles.whitespaceBetweenLeftAndRight} />

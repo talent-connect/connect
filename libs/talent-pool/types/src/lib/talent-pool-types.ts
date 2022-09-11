@@ -27,7 +27,6 @@ export interface TpProfile {
   topSkills?: string[]
   experience?: ExperienceRecord[]
   education?: EducationRecord[]
-  projects?: ProjectRecord[]
   createdAt?: Date
 }
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -50,12 +49,6 @@ interface EducationRecord {
   endDate?: Date
   current?: boolean
   description?: string
-}
-
-interface ProjectRecord {
-  title?: string
-  description?: string
-  link?: string
 }
 
 export interface DropdownOption {

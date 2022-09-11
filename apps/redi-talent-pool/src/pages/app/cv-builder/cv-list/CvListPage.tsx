@@ -2,22 +2,22 @@ import React from 'react'
 import { useHistory } from 'react-router-dom'
 
 import {
-  Heading,
   Button,
-  Modal,
   FormInput,
+  Heading,
   Icon,
+  Modal,
 } from '@talent-connect/shared-atomic-design-components'
-import { Section, Columns, Content, Box } from 'react-bulma-components'
+import { Box, Columns, Content, Section } from 'react-bulma-components'
 
 import { useTpjobseekerCvCreateMutation } from '../../../../react-query/use-tpjobseekercv-mutation'
 import { useTpJobseekerCvQuery } from '../../../../react-query/use-tpjobseekercv-query'
 
-import { LoggedIn } from '../../../../components/templates'
-import { EmptySectionPlaceholder } from '../../../../components/molecules/EmptySectionPlaceholder'
-import CvListItem from './CvListItem'
-import { useTpJobseekerProfileQuery } from '../../../../react-query/use-tpjobseekerprofile-query'
 import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
+import { EmptySectionPlaceholder } from '../../../../components/molecules/EmptySectionPlaceholder'
+import { LoggedIn } from '../../../../components/templates'
+import { useTpJobseekerProfileQuery } from '../../../../react-query/use-tpjobseekerprofile-query'
+import CvListItem from './CvListItem'
 
 import './CvListPage.scss'
 
@@ -199,6 +199,5 @@ function convertProfileToCv(
     topSkills: profile.topSkills,
     experience: profile.experience,
     education: profile.education,
-    projects: profile.projects,
   }
 }

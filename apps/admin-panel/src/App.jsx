@@ -40,7 +40,6 @@ import {
 } from '@talent-connect/talent-pool/config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
 import classNames from 'classnames'
-import { ca } from 'date-fns/locale'
 import { get, groupBy, keyBy, mapValues } from 'lodash'
 import { unparse as convertToCSV } from 'papaparse/papaparse.min'
 import React, { useEffect } from 'react'
@@ -1518,7 +1517,6 @@ const TpJobseekerProfileShow = (props) => (
               <BooleanField source="current" />
             </Datagrid>
           </ArrayField>
-          {/* <ArrayField source="projects" /> */}
           <ArrayField
             source="hrSummit2021JobFairCompanyJobPreferences"
             fieldKey="uuid"
@@ -1672,7 +1670,6 @@ const TpJobseekerProfileEdit = (props) => (
             <BooleanField source="current" />
           </Datagrid>
         </ArrayField>
-        {/* <ArrayField source="projects" /> */}
         <ArrayField
           source="hrSummit2021JobFairCompanyJobPreferences"
           fieldKey="uuid"
