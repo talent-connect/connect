@@ -26,10 +26,11 @@ export class TpJobseekerProfileRecord extends Record<TpJobseekerProfileRecordPro
       'Contact__r.ReDI_Behance_URL__c',
       'Contact__r.ReDI_Birth_Date__c',
       'Contact__r.ReDI_Dribbble_URL__c',
-      //! TODO: Re-enable when I deal with TP
-      // 'Contact__r.ReDI_Preferred_Pronouns__c',
+      'Contact__r.ReDI_Gender_Pronouns__c',
       'Contact__r.ReDI_Slack_Username__c',
       'Contact__r.ReDI_Stack_Overflow_URL__c',
+      'Contact__r.CON_TP_Mailing_Address__c',
+      'Contact__r.ReDI_Website_Portfolio__c',
       'Contact__r.LinkedIn_Profile__c',
       'Contact__r.ReDI_GitHub_Profile__c',
       'Contact__r.MobilePhone',
@@ -59,10 +60,10 @@ export class TpJobseekerProfileRecord extends Record<TpJobseekerProfileRecordPro
       'Willing_to_Relocate__c',
     ],
     SALESFORCE_CHILD_OBJECTS: [
-      {
-        name: 'Jobseeker_Line_Item__r',
-        fields: ['Certification_Type__c', 'City__c', 'Company__c'],
-      },
+      // {
+      //   name: 'Jobseeker_Line_Item__r',
+      //   fields: ['Certification_Type__c', 'City__c', 'Company__c'],
+      // },
     ],
   }
 }

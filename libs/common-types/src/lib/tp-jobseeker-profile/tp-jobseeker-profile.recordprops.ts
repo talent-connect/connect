@@ -10,6 +10,7 @@ export class TpJobseekerProfileRecordProps implements RecordProps {
   Id: string
   @Type(() => Date)
   CreatedDate: Date
+  @Type(() => Date)
   LastModifiedDate: Date
   Name: string
 
@@ -23,10 +24,11 @@ export class TpJobseekerProfileRecordProps implements RecordProps {
   Location__c?: string
   Desired_Employment_Type__c?: PicklistValuesSemicolonSeparated
   Availability__c?: PicklistValue
+  @Type(() => Date)
   Availability_Date__c?: Date
   About_Yourself__c?: string
   Top_Skills__c?: PicklistValuesSemicolonSeparated
-  Profile_Status__c?: PicklistValue
+  Profile_Status__c: PicklistValue
   Is_Job_Fair_2022_Participant__c: boolean
   Is_Visible_to_Companies__c: boolean
   Is_Hired__c: boolean

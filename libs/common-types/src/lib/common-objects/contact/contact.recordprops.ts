@@ -10,9 +10,10 @@ export class ContactRecordProps implements RecordProps {
   @Type(() => Date)
   ReDI_Birth_Date__c?: Date
   ReDI_Dribbble_URL__c?: string
-  ReDI_Preferred_Pronouns__c?: string
+  ReDI_Gender_Pronouns__c?: string
   ReDI_Slack_Username__c?: string
   ReDI_Stack_Overflow_URL__c?: string
+  ReDI_Website_Portfolio__c?: string
   LinkedIn_Profile__c?: string
   ReDI_GitHub_Profile__c?: string
   MobilePhone?: string

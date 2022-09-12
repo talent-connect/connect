@@ -26,6 +26,7 @@ export class ContactRecord extends Record<ContactRecordProps> {
       'ReDI_Gender_Pronouns__c',
       'ReDI_Slack_Username__c',
       'ReDI_Stack_Overflow_URL__c',
+      'ReDI_Website_Portfolio__c',
       'LinkedIn_Profile__c',
       'ReDI_GitHub_Profile__c',
       'MobilePhone',

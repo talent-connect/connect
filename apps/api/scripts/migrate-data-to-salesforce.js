@@ -69,7 +69,7 @@ const { lang } = require('moment')
 
 const DELAY = 1500
 const RETRIES = 5
-const CONCURRENCY = 30 // 60 has worked before, with some errors. For actual data migration, use a low value, such as 15.
+const CONCURRENCY = 50 // 60 has worked before, with some errors. For actual data migration, use a low value, such as 15.
 
 // const LOCAL_CONTACT_RECORD_TYPE = '0121i000000HMq9AAG'
 // const LOCAL_CONNECT_PROFILE_MENTOR_RECORD_TYPE = '0129X0000001EXBQA2'
@@ -425,6 +425,7 @@ async function insertContactFn(p) {
     newOrExisting = 'new'
     const insertResult = await conn.sobject('Contact').create(
       deleteFalsyProperties({
+        Email: p.email,
         ReDI_Email_Address__c: p.email,
         RecordTypeId: PARTIALSBX_CONTACT_RECORD_TYPE,
         Loopback_User_ID__c: p.sfId,
@@ -449,6 +450,7 @@ async function insertContactFn(p) {
           : undefined,
         ReDI_Birth_Date__c: p.contact.birthDate,
         LinkedIn_Profile__c: p.contact.linkedInProfileUrl,
+        ReDI_Website_Portfolio__c: p.contact.personalWebsite,
         ReDI_GitHub_Profile__c: p.contact.githubProfileUrl,
         ReDI_Slack_Username__c: p.contact.slackUsername,
         ReDI_Behance_URL__c: p.contact.behanceUrl,
@@ -463,6 +465,7 @@ async function insertContactFn(p) {
           : undefined,
         ReDI_First_Point_of_Contact_Other_TP__c:
           p.contact.howDidHearAboutRediOtherText,
+        ReDI_Gender_Pronouns__c: p.contact.genderPronouns,
       })
     )
     contactIdUpdatedOrInserted = insertResult.id
@@ -472,6 +475,7 @@ async function insertContactFn(p) {
     await conn.sobject('Contact').update(
       deleteFalsyProperties({
         Id: existingContacts[0].Id,
+        Email: p.email,
         ReDI_Email_Address__c: p.email,
         RecordTypeId: PARTIALSBX_CONTACT_RECORD_TYPE,
         Loopback_User_ID__c: p.id,
@@ -496,6 +500,7 @@ async function insertContactFn(p) {
           : undefined,
         ReDI_Birth_Date__c: p.contact.birthDate,
         LinkedIn_Profile__c: p.contact.linkedInProfileUrl,
+        ReDI_Website_Portfolio__c: p.contact.personalWebsite,
         ReDI_GitHub_Profile__c: p.contact.githubProfileUrl,
         ReDI_Slack_Username__c: p.contact.slackUsername,
         ReDI_Behance_URL__c: p.contact.behanceUrl,
@@ -732,6 +737,7 @@ async function insertJobseekerProfileFn(p) {
         Federal_State__c: p.tpJobseekerProfile.federalState
           ? p.tpJobseekerProfile.federalState.toUpperCase().replace(/-/g, '_')
           : undefined,
+        Willing_to_Relocate__c: p.tpJobseekerProfile.willingToRelocate,
 
         CreatedDate: p.tpJobseekerProfile.createdAt,
         LastModifiedDate: p.tpJobseekerProfile.updatedAt,
@@ -868,6 +874,7 @@ async function insertJobseekerCvFn(cv) {
         Top_Skills__c: cv.topSkills ? cv.topSkills.join(';') : undefined,
         Twitter_URL__c: cv.twitterUrl,
         Website_Portfolio__c: cv.personalWebsite,
+        Willing_to_Relocate__c: cv.willingToRelocate,
         LastModifiedDate: cv.updatedAt,
         CreatedDate: cv.createdAt,
       }
@@ -966,33 +973,34 @@ function insertJobseekerCv(cv) {
 
 async function insertAccountForCompanyProfileFn(p) {
   let accountResult
+  let account = {
+    Loopback_Original_ID__c: p.tpCompanyProfile.id,
+    RecordTypeId: PARTIALSBX_ACCOUNT_RECORD_TYPE_BUSINESS_ORGANIZATION,
+    ReDI_Avatar_Image_URL__c: p.tpCompanyProfile.profileAvatarImageS3Key
+      ? 'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/' +
+        p.tpCompanyProfile.profileAvatarImageS3Key
+      : undefined,
+    Name: p.tpCompanyProfile.companyName,
+    Location__c: p.tpCompanyProfile.location,
+    ReDI_Tagline__c: p.tpCompanyProfile.tagline,
+    Industry: p.tpCompanyProfile.industry,
+    Website: p.tpCompanyProfile.website,
+    ReDI_LinkedIn_Page__c: p.tpCompanyProfile.linkedInUrl,
+    Phone: p.tpCompanyProfile.phoneNumber,
+    Description: p.tpCompanyProfile.about,
+    ReDI_Talent_Pool_State__c: p.tpCompanyProfile.state
+      .toUpperCase()
+      .replace(/-/g, '_'),
+    ReDI_Visible_to_Jobseekers__c:
+      p.tpCompanyProfile.isProfileVisibleToJobseekers,
+    ReDI_Administrator_Internal_Comment__c:
+      p.tpCompanyProfile.administratorInternalComment,
+    CreatedDate: p.createdAt, //! Use Jonida trick
+    LastModifiedDate: p.updatedAt, //! Use Jonida trick
+  }
   try {
     accountResult = await conn.sobject('Account').create(
-      {
-        Loopback_Original_ID__c: p.tpCompanyProfile.id,
-        RecordTypeId: PARTIALSBX_ACCOUNT_RECORD_TYPE_BUSINESS_ORGANIZATION,
-        ReDI_Avatar_Image_URL__c: p.tpCompanyProfile.profileAvatarImageS3Key
-          ? 'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/' +
-            p.tpCompanyProfile.profileAvatarImageS3Key
-          : undefined,
-        Name: p.tpCompanyProfile.companyName,
-        Location__c: p.tpCompanyProfile.location,
-        ReDI_Tagline__c: p.tpCompanyProfile.tagline,
-        Industry: p.tpCompanyProfile.industry,
-        Website: p.tpCompanyProfile.website,
-        ReDI_LinkedIn_Page__c: p.tpCompanyProfile.linkedInUrl,
-        Phone: p.tpCompanyProfile.phoneNumber,
-        Description: p.tpCompanyProfile.about,
-        ReDI_Talent_Pool_State__c: p.tpCompanyProfile.state
-          .toUpperCase()
-          .replace(/-/g, '_'),
-        ReDI_Visible_to_Jobseekers__c:
-          p.tpCompanyProfile.isProfileVisibleToJobseekers,
-        ReDI_Administrator_Internal_Comment__c:
-          p.tpCompanyProfile.administratorInternalComment,
-        CreatedDate: p.createdAt, //! Use Jonida trick
-        LastModifiedDate: p.updatedAt, //! Use Jonida trick
-      }
+      account
       // 'Loopback_Original_ID__c'
     )
   } catch (err) {
@@ -1000,23 +1008,34 @@ async function insertAccountForCompanyProfileFn(p) {
     if (idMatch && idMatch[0]) {
       accountResult = { id: idMatch[0] }
     } else {
-      throw err
+      console.log('*** EXCEPTION ***')
+      console.log('Inserting Account failed:')
+      console.log(account)
+      console.log(err)
+      // throw err
     }
+  }
+  let accountContact = {
+    AccountId: accountResult.id,
+    ContactId: p.contact.sfContactId,
+    ReDI_Company_Representative_Status__c: 'APPROVED',
+    Roles: 'TALENT_POOL_COMPANY_REPRESENTATIVE',
   }
   let accountContactResult
   try {
-    accountContactResult = await conn.sobject('AccountContactRelation').create({
-      AccountId: accountResult.id,
-      ContactId: p.contact.sfContactId,
-      ReDI_Company_Representative_Status__c: 'APPROVED',
-      Roles: 'TALENT_POOL_COMPANY_REPRESENTATIVE',
-    })
+    accountContactResult = await conn
+      .sobject('AccountContactRelation')
+      .create(accountContact)
   } catch (err) {
     const idMatch = err.message.match(/([a-zA-Z0-9]{15})/g)
     if (idMatch && idMatch[0]) {
       accountContactResult = { id: idMatch[0] }
     } else {
-      throw err
+      console.log('*** EXCEPTION ***')
+      console.log('Inserting AccountContactRelation failed:')
+      console.log(account)
+      console.log(err)
+      // throw err
     }
   }
   if (p.tpJobListings) {
@@ -1069,8 +1088,8 @@ async function insertAccountForCompanyProfileFn(p) {
 
   return {
     ...p,
-    sfAccountId: accountResult.id,
-    sfAccountContactId: accountContactResult.id,
+    sfAccountId: accountResult?.id,
+    sfAccountContactId: accountContactResult?.id,
   }
 }
 function insertAccountForCompanyProfile(p) {
@@ -1313,6 +1332,57 @@ function buildContact(redUser) {
               return languageRecord
             })
         }
+        if (
+          u.tpJobseekerProfile.desiredPositions &&
+          u.tpJobseekerProfile.desiredPositions.length > 0
+        ) {
+          u.tpJobseekerProfile.desiredPositions =
+            u.tpJobseekerProfile.desiredPositions.map((position) => {
+              if (position === 'SEO Manager') {
+                return 'seoManager'
+              } else {
+                return position
+              }
+            })
+        }
+      }
+      return u
+    })
+    .map((u) => {
+      if (u.tpJobseekerCv && u.tpJobseekerCv.length > 0) {
+        u.tpJobseekerCv = u.tpJobseekerCv.map((cv) => {
+          if (cv && cv.desiredPositions && cv.desiredPositions.length > 0) {
+            cv.desiredPositions = cv.desiredPositions.map((position) => {
+              if (position === 'SEO Manager') {
+                return 'seoManager'
+              } else {
+                return position
+              }
+            })
+          }
+        })
+      }
+      return u
+    })
+    .map((u) => {
+      if (u.tpJobListings && u.tpJobListings.length > 0) {
+        u.tpJobListings = u.tpJobListings.map((listing) => {
+          if (
+            listing &&
+            listing.relatesToPositions &&
+            listing.relatesToPositions.length > 0
+          ) {
+            listing.relatesToPositions = listing.relatesToPositions.map(
+              (position) => {
+                if (position === 'SEO Manager') {
+                  return 'seoManager'
+                } else {
+                  return position
+                }
+              }
+            )
+          }
+        })
       }
       return u
     })
