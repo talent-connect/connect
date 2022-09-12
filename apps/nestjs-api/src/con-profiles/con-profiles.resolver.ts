@@ -45,7 +45,7 @@ export class ConProfilesResolver {
     )
     return { ok: true, id }
   }
-  //
+
   //! TODO: Add auth
   @Query(() => [ConProfileEntityProps], { name: 'conProfilesAvailableMentors' })
   async findAllAvailableMentors(@Args() args: FindConProfilesArgs) {
