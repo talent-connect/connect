@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common'
 import {
-  ConnectProfileLanguage,
   ConnectProfileStatus,
   ConProfileEntity,
   ConProfileEntityProps,
@@ -9,6 +8,7 @@ import {
   ContactRecordProps,
   EducationLevel,
   Gender,
+  Language,
   Mapper,
   MentoringTopic,
   OccupationCategory,
@@ -66,8 +66,7 @@ export class ConProfileMapper
 
     props.birthDate = raw.props.Contact__r.ReDI_Birth_Date__c
     props.languages =
-      (raw.props.Languages__c?.split(';') as ConnectProfileLanguage[]) ??
-      undefined
+      (raw.props.Languages__c?.split(';') as Language[]) ?? undefined
     props.personalDescription = raw.props.Personal_Description__c
     props.linkedInProfileUrl = raw.props.Contact__r.LinkedIn_Profile__c
     props.githubProfileUrl = raw.props.Contact__r.ReDI_GitHub_Profile__c

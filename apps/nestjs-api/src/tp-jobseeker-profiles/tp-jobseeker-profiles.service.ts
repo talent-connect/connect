@@ -18,4 +18,17 @@ export class TpJobseekerProfilesService {
 
     return entities
   }
+
+  async findOne(id: string, loadLanguages: boolean = false) {
+    const record = await this.api.getOne(id)
+
+    const entity = this.mapper.fromPersistence(record)
+
+    if (loadLanguages) {
+    }
+
+    return entity
+  }
+
+  private async loadContactLanguages(contactId: string) {}
 }

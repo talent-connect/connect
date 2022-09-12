@@ -6,15 +6,27 @@ import { SfApiRepository } from './sf-api.repository'
 export class SfApiTpJobseekerProfilesService {
   constructor(private readonly repository: SfApiRepository) {}
 
-  async getAllJobseekerProfiles() {
+  async getAllJobseekerProfiles(filter: any = {}) {
     const rawRecords = await this.repository.findRecordsOfObject({
       objectName: TpJobseekerProfileRecord.metadata.SALESFORCE_OBJECT_NAME,
       objectFields: TpJobseekerProfileRecord.metadata.SALESFORCE_OBJECT_FIELDS,
       childObjects: TpJobseekerProfileRecord.metadata.SALESFORCE_CHILD_OBJECTS,
+      filter,
     })
     const jobseekerProfileRecords = rawRecords.map((rawRecord) =>
       TpJobseekerProfileRecord.create(rawRecord)
     )
     return jobseekerProfileRecords
   }
+
+  async getOne(id: string) {
+    const conProfilesRecord = await this.getAllJobseekerProfiles({ Id: id })
+    return conProfilesRecord[0]
+  }
+
+  // async getContactLanguageRecords(contactId: string) {
+  //   const rawRecords = await this.repository.findRecordsOfObject({
+  //     objectName: '',
+  //   })
+  // }
 }

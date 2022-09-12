@@ -1,6 +1,6 @@
 import { ArgsType, Field, InputType } from '@nestjs/graphql'
 import {
-  ConnectProfileLanguage,
+  Language,
   MentoringTopic,
   RediLocation,
 } from '@talent-connect/common-types'
@@ -15,8 +15,8 @@ class FindConProfilesArgsFilter {
   name?: string
   @Field((type) => [MentoringTopic])
   categories?: MentoringTopic[]
-  @Field((type) => [ConnectProfileLanguage])
-  languages?: ConnectProfileLanguage
+  @Field((type) => [Language])
+  languages?: Language[]
   @Field((type) => [RediLocation])
   locations?: RediLocation[]
 }

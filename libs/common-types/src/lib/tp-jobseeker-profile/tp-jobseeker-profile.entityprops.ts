@@ -1,5 +1,6 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql'
 import { EntityProps } from '../base-interfaces-types-classes'
+import { Language, LanguageProficiencyLevel } from '../common-objects'
 import {
   FederalState,
   JobseekerProfileStatus,
@@ -63,6 +64,9 @@ export class TpJobseekerProfileEntityProps implements EntityProps {
   @Field((type) => [EducationRecord])
   education?: Array<EducationRecord>
 
+  //! NOTE: this field is NOT set by the TpJobseekerProfileMapper due to Salesforce querying limitations. It's set "manually" through a manual flag. See the related TpJobseekerProfile serice methods.
+  workingLanguages?: Array<LanguageRecord>
+
   createdAt: Date
   updatedAt: Date
 
@@ -101,4 +105,13 @@ export class EducationRecord {
   endDateMonth?: number
   endDateYear?: number
   current?: boolean
+}
+
+@ObjectType('LanguageRecord')
+export class LanguageRecord {
+  @Field((type) => Language)
+  language: Language
+
+  @Field((type) => LanguageProficiencyLevel)
+  proficiencyLevelId: LanguageProficiencyLevel
 }

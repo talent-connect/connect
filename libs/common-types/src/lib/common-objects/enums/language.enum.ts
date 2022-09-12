@@ -1,6 +1,6 @@
 import { registerEnumType } from '@nestjs/graphql'
 
-export enum ConnectProfileLanguage {
+export enum Language {
   Afrikaans = 'Afrikaans',
   Albanian = 'Albanian',
   Amharic = 'Amharic',
@@ -146,4 +146,4 @@ export enum ConnectProfileLanguage {
   Zulu = 'Zulu',
 }
 
-registerEnumType(ConnectProfileLanguage, { name: 'ConnectProfileLanguage' })
+registerEnumType(Language, { name: 'Language' })
