@@ -414,9 +414,22 @@ function deleteFalsyProperties(obj) {
 }
 
 async function insertContactFn(p) {
-  const existingContacts = await conn
+  const existingContacts1 = await conn
     .sobject('Contact')
     .find({ ReDI_Email_Address__c: p.email.toLocaleLowerCase() })
+  const existingContacts2 = await conn
+    .sobject('Contact')
+    .find({ Loopback_User_ID__c: String(p.id) })
+  const existingContacts = []
+
+  if (existingContacts1.length > 0) {
+    existingContacts.push(existingContacts1[0])
+  } else {
+    if (existingContacts2.length > 0) {
+      existingContacts.push(existingContacts2[0])
+    }
+  }
+
   const existingContactCount = existingContacts.length
   let newOrExisting
   let contactIdUpdatedOrInserted
@@ -428,7 +441,7 @@ async function insertContactFn(p) {
         Email: p.email,
         ReDI_Email_Address__c: p.email,
         RecordTypeId: PARTIALSBX_CONTACT_RECORD_TYPE,
-        Loopback_User_ID__c: p.sfId,
+        Loopback_User_ID__c: String(p.id), // USED TO BE .sfId ... why?
         FirstName: `${
           p.contact.firstName
             ? p.contact.firstName
@@ -469,7 +482,7 @@ async function insertContactFn(p) {
       })
     )
     contactIdUpdatedOrInserted = insertResult.id
-  } else {
+  } else if (existingContactCount === 1) {
     newOrExisting = 'existing'
     contactIdUpdatedOrInserted = existingContacts[0].Id
     await conn.sobject('Contact').update(
@@ -478,7 +491,7 @@ async function insertContactFn(p) {
         Email: p.email,
         ReDI_Email_Address__c: p.email,
         RecordTypeId: PARTIALSBX_CONTACT_RECORD_TYPE,
-        Loopback_User_ID__c: p.id,
+        Loopback_User_ID__c: String(p.id),
         FirstName: `${
           p.contact.firstName
             ? p.contact.firstName
@@ -756,10 +769,15 @@ async function insertJobseekerProfileFn(p) {
   }
 
   if (jobseekerFreshlyCreated) {
-    if (p.tpJobseekerProfile.education) {
-      for (const educationItem of p.tpJobseekerProfile.education) {
+    if (
+      p.tpJobseekerProfile.education &&
+      p.tpJobseekerProfile.education.length
+    ) {
+      for (let i = 0; i < p.tpJobseekerProfile.education.length; i++) {
+        const educationItem = p.tpJobseekerProfile.education[i]
         try {
           await conn.sobject('Jobseeker_Line_Item__c').create({
+            Frontend_View_Index__c: Number(i + 1),
             Jobseeker_Profile__c: jobseekerResult.id,
             RecordTypeId:
               PARTIALSBX_JOBSEEKER_PROFILE_LINE_ITEM_RECORD_TYPE_EDUCATION,
@@ -783,10 +801,15 @@ async function insertJobseekerProfileFn(p) {
         }
       }
     }
-    if (p.tpJobseekerProfile.experience) {
-      for (const experienceItem of p.tpJobseekerProfile.experience) {
+    if (
+      p.tpJobseekerProfile.experience &&
+      p.tpJobseekerProfile.experience.length
+    ) {
+      for (let i = 0; i < p.tpJobseekerProfile.experience.length; i++) {
+        const experienceItem = p.tpJobseekerProfile.experience[i]
         try {
           await conn.sobject('Jobseeker_Line_Item__c').create({
+            Frontend_View_Index__c: Number(i + 1),
             Jobseeker_Profile__c: jobseekerResult.id,
             RecordTypeId:
               PARTIALSBX_JOBSEEKER_PROFILE_LINE_ITEM_RECORD_TYPE_EXPERIENCE,
@@ -892,10 +915,12 @@ async function insertJobseekerCvFn(cv) {
   }
 
   if (cvFreshlyCreated) {
-    if (cv.education) {
-      for (const educationItem of cv.education) {
+    if (cv.education && cv.education.length) {
+      for (let i = 0; i < cv.education.length; i++) {
+        const educationItem = cv.education[i]
         try {
           await conn.sobject('Jobseeker_CV_Line_Item__c').create({
+            Frontend_View_Index__c: Number(i + 1),
             Jobseeker_CV__c: cvResult.id,
             RecordTypeId: PARTIALSBX_CV_LINE_ITEM_RECORD_TYPE_EDUCATION,
             Description__c: educationItem.description,
@@ -919,10 +944,12 @@ async function insertJobseekerCvFn(cv) {
         // console.log('inserted cv experience item')
       }
     }
-    if (cv.experience) {
-      for (const experienceItem of cv.experience) {
+    if (cv.experience && cv.experience.length) {
+      for (let i = 0; i < cv.experience.length; i++) {
+        const experienceItem = cv.experience[i]
         try {
           await conn.sobject('Jobseeker_CV_Line_Item__c').create({
+            Frontend_View_Index__c: Number(i + 1),
             Jobseeker_CV__c: cvResult.id,
             RecordTypeId: PARTIALSBX_CV_LINE_ITEM_RECORD_TYPE_EXPERIENCE,
             Description__c: experienceItem.description,
@@ -1023,6 +1050,9 @@ async function insertAccountForCompanyProfileFn(p) {
   }
   let accountContactResult
   try {
+    console.log(
+      `Insert AccountContactRelation between ${p.tpCompanyProfile.companyName} and ${p.contact.firstName} ${p.contact.lastName}`
+    )
     accountContactResult = await conn
       .sobject('AccountContactRelation')
       .create(accountContact)
@@ -1033,7 +1063,7 @@ async function insertAccountForCompanyProfileFn(p) {
     } else {
       console.log('*** EXCEPTION ***')
       console.log('Inserting AccountContactRelation failed:')
-      console.log(account)
+      console.log(accountContact)
       console.log(err)
       // throw err
     }
@@ -1226,7 +1256,7 @@ function buildContact(redUser) {
 }
 
 ;(async () => {
-  const allUsers = await RedUser.find({
+  let allUsers = await RedUser.find({
     include: [
       'redProfile',
       'tpJobseekerProfile',
@@ -1234,8 +1264,9 @@ function buildContact(redUser) {
       'tpCompanyProfile',
       'tpJobListings',
     ],
-  })
-    .map((u) => u.toJSON())
+  }).map((u) => u.toJSON())
+  // allUsers = _.slice(allUsers, 1000, 2500)
+  allUsers = allUsers
     .map((u) => {
       u.email = u.email.toLocaleLowerCase()
       return u
@@ -1360,6 +1391,7 @@ function buildContact(redUser) {
               }
             })
           }
+          return cv
         })
       }
       return u
@@ -1382,6 +1414,7 @@ function buildContact(redUser) {
               }
             )
           }
+          return listing
         })
       }
       return u

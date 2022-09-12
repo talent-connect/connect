@@ -6,6 +6,7 @@ import {
   TpAvailabilityOption,
   TpDesiredEmploymentType,
   TpDesiredPosition,
+  TpEducationCertificationType,
   TpTechnicalSkill,
 } from './enums'
 
@@ -92,6 +93,7 @@ export class EducationRecord {
   institutionCountry?: string
   institutionName?: string
   description?: string
+  @Field((type) => TpEducationCertificationType)
   certificationType?: string
 
   startDateMonth?: number
