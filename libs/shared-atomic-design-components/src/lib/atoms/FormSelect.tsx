@@ -1,9 +1,8 @@
-import React from 'react'
+import { get } from 'lodash'
+import { Form } from 'react-bulma-components'
 import Select, { components } from 'react-select'
 import CreatableSelect from 'react-select/creatable'
-import { Form } from 'react-bulma-components'
 import { Icon } from '../atoms'
-import { get } from 'lodash'
 
 const DropdownIndicator = (props: any) => (
   <components.DropdownIndicator {...props}>
@@ -142,6 +141,9 @@ function FormSelect(props: any) {
   const handleOnChange = customOnChange || handleOnChangeDefault
   const handleOnCreate = customOnCreate || handleOnCreateDefault
 
+  // If multiselect is true, we need to convert the values to an array of objects
+  // with the value and label properties. Otherwise, we check if the value is already
+  // in the items. If not (case of creatable select), we set the selecter value manually
   const selectedValues = multiselect
     ? get(values, name)
         ?.map((selValue: any) =>
@@ -150,7 +152,9 @@ function FormSelect(props: any) {
         .flat()
     : items.find((item: any) => item.value === get(values, name))
     ? items.find((item: any) => item.value === get(values, name))
-    : { label: get(values, name) }
+    : get(values, name)
+    ? { label: get(values, name) }
+    : undefined
 
   return (
     <Form.Field>
