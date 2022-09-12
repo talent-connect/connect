@@ -60,10 +60,26 @@ export class TpJobseekerProfileRecord extends Record<TpJobseekerProfileRecordPro
       'Willing_to_Relocate__c',
     ],
     SALESFORCE_CHILD_OBJECTS: [
-      // {
-      //   name: 'Jobseeker_Line_Item__r',
-      //   fields: ['Certification_Type__c', 'City__c', 'Company__c'],
-      // },
+      {
+        name: 'Jobseeker_Line_Items__r',
+        fields: [
+          'RecordType.DeveloperName',
+          'Description__c',
+          'Institution_City__c',
+          'Institution_Country__c',
+          'Institution_Name__c',
+          'Title__c',
+          'Certification_Type__c',
+          'Start_Date_Month__c',
+          'Start_Date_Year__c',
+          'End_Date_Month__c',
+          'End_Date_Year__c',
+          'Current__c',
+          'City__c',
+          'Country__c',
+          'Company__c',
+        ],
+      },
     ],
   }
 }

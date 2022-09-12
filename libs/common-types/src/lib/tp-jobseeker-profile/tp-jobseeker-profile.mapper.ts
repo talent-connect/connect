@@ -10,7 +10,11 @@ import {
   TpTechnicalSkill,
 } from './enums'
 import { TpJobseekerProfileEntity } from './tp-jobseeker-profile.entity'
-import { TpJobseekerProfileEntityProps } from './tp-jobseeker-profile.entityprops'
+import {
+  EducationRecord,
+  ExperienceRecord,
+  TpJobseekerProfileEntityProps,
+} from './tp-jobseeker-profile.entityprops'
 import { TpJobseekerProfileRecord } from './tp-jobseeker-profile.record'
 import { TpJobseekerProfileRecordProps } from './tp-jobseeker-profile.recordprops'
 
@@ -64,6 +68,43 @@ export class TpJobseekerProfileMapper
 
     props.updatedAt = raw.props.LastModifiedDate
     props.createdAt = raw.props.CreatedDate
+
+    // Handling any (if any) child Lineseeker objects
+    props.experience = []
+    props.education = []
+    if (raw.props.Jobseeker_Line_Items__r?.records?.length) {
+      const records = raw.props.Jobseeker_Line_Items__r?.records
+      for (let i = 0; i < records.length; i++) {
+        const record = records[i]
+        let baseRecord = {} as ExperienceRecord | EducationRecord
+        baseRecord.uuid = String(record.Frontend_View_Index__c)
+        baseRecord.title = record.Title__c
+        baseRecord.description = record.Description__c
+        baseRecord.startDateMonth = record.Start_Date_Month__c
+        baseRecord.startDateYear = record.Start_Date_Year__c
+        baseRecord.endDateMonth = record.End_Date_Month__c
+        baseRecord.endDateYear = record.End_Date_Year__c
+        baseRecord.current = record.Current__c
+        if (record.RecordType.DeveloperName === 'Education') {
+          const educationRecord = baseRecord as EducationRecord
+          educationRecord.institutionCity = record.Institution_City__c
+          educationRecord.institutionCountry = record.Institution_Country__c
+          educationRecord.institutionName = record.Institution_Name__c
+          educationRecord.certificationType = record.Certification_Type__c
+          props.education.push(educationRecord)
+        } else if (record.RecordType.DeveloperName === 'Experience') {
+          const experienceRecord = baseRecord as ExperienceRecord
+          experienceRecord.city = record.City__c
+          experienceRecord.country = record.Country__c
+          experienceRecord.company = record.Company__c
+          props.experience.push(experienceRecord)
+        } else {
+          throw new Error(
+            '[TpJobseekerProfileMapper] Unknown Jobseeker_Line_Item__c RecordType'
+          )
+        }
+      }
+    }
 
     // The next ones are computed fields in Salesforce
     props.fullName = raw.props.Contact__r.Name
