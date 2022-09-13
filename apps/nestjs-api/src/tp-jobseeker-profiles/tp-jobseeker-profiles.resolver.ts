@@ -1,4 +1,4 @@
-import { NotImplementedException, UseGuards } from '@nestjs/common'
+import { UseGuards } from '@nestjs/common'
 import { Args, Query, Resolver } from '@nestjs/graphql'
 import { TpJobseekerProfileEntityProps } from '@talent-connect/common-types'
 import { GqlJwtAuthGuard } from '../auth/gql-jwt-auth.guard'
@@ -15,13 +15,17 @@ export class TpJobseekerProfilesResolver {
     name: 'tpJobseekerProfiles',
   })
   async findAllVisible(@Args() args: FindAllVisibleTpJobseekerProfilesArgs) {
-    if (args.loadLanguages) {
-      throw new NotImplementedException(
-        'Querying all TpJobseekerProfiles with language loading is not supported yet due to the massive Salesforce querying it would entail. Only when querying single profiles.'
-      )
-    }
     const entities = await this.service.findAll()
     const props = entities.map((entity) => entity.props)
     return props
+  }
+
+  // //! TODO: Add auth
+  @Query(() => [TpJobseekerProfileEntityProps], {
+    name: 'tpJobseekerProfile',
+  })
+  async findOne(@Args('id') id: string) {
+    const entity = await this.service.findOne(id)
+    return entity.props
   }
 }

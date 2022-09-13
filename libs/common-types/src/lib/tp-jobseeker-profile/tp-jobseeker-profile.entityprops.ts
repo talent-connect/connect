@@ -64,7 +64,6 @@ export class TpJobseekerProfileEntityProps implements EntityProps {
   @Field((type) => [EducationRecord])
   education?: Array<EducationRecord>
 
-  //! NOTE: this field is NOT set by the TpJobseekerProfileMapper due to Salesforce querying limitations. It's set "manually" through a manual flag. See the related TpJobseekerProfile serice methods.
   workingLanguages?: Array<LanguageRecord>
 
   createdAt: Date

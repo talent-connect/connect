@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { TpJobseekerProfileMapper } from '@talent-connect/common-types'
 import { SfApiTpJobseekerProfilesService } from '../salesforce-api/sf-api-tp-jobseeker-profiles.service'
 
@@ -9,8 +9,8 @@ export class TpJobseekerProfilesService {
     private readonly mapper: TpJobseekerProfileMapper
   ) {}
 
-  async findAll() {
-    const records = await this.api.getAllJobseekerProfiles()
+  async findAll(filter: any = {}) {
+    const records = await this.api.findAllJobseekerProfiles(filter)
 
     const entities = records.map((source) =>
       this.mapper.fromPersistence(source)
@@ -19,16 +19,14 @@ export class TpJobseekerProfilesService {
     return entities
   }
 
-  async findOne(id: string, loadLanguages: boolean = false) {
-    const record = await this.api.getOne(id)
-
-    const entity = this.mapper.fromPersistence(record)
-
-    if (loadLanguages) {
+  async findOne(id: string) {
+    const entities = await this.findAll({
+      Id: id,
+    })
+    if (entities.length > 0) {
+      return entities[0]
+    } else {
+      throw new NotFoundException('TpJobseekerProfile not found with id: ' + id)
     }
-
-    return entity
   }
-
-  private async loadContactLanguages(contactId: string) {}
 }

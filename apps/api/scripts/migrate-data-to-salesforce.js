@@ -69,7 +69,7 @@ const { lang } = require('moment')
 
 const DELAY = 1500
 const RETRIES = 5
-const CONCURRENCY = 50 // 60 has worked before, with some errors. For actual data migration, use a low value, such as 15.
+const CONCURRENCY = 50 // 50 generally works, with only a few (< 10) errors. For actual data migration, use a low value, such as 15.
 
 // const LOCAL_CONTACT_RECORD_TYPE = '0121i000000HMq9AAG'
 // const LOCAL_CONNECT_PROFILE_MENTOR_RECORD_TYPE = '0129X0000001EXBQA2'
@@ -777,6 +777,7 @@ async function insertJobseekerProfileFn(p) {
         try {
           await conn.sobject('Jobseeker_Line_Item__c').create({
             Frontend_View_Index__c: Number(i + 1),
+            Contact__c: p.contact.sfContactId,
             Jobseeker_Profile__c: jobseekerResult.id,
             RecordTypeId:
               PARTIALSBX_JOBSEEKER_PROFILE_LINE_ITEM_RECORD_TYPE_EDUCATION,
@@ -809,6 +810,7 @@ async function insertJobseekerProfileFn(p) {
         try {
           await conn.sobject('Jobseeker_Line_Item__c').create({
             Frontend_View_Index__c: Number(i + 1),
+            Contact__c: p.contact.sfContactId,
             Jobseeker_Profile__c: jobseekerResult.id,
             RecordTypeId:
               PARTIALSBX_JOBSEEKER_PROFILE_LINE_ITEM_RECORD_TYPE_EXPERIENCE,
@@ -1682,7 +1684,7 @@ function buildContact(redUser) {
         (p) =>
           REDPROFILE_SFCONTACT[p.mentorId] && REDPROFILE_SFCONTACT[p.menteeId]
       ),
-      mergeMap((p) => insertMatch(p), 5),
+      mergeMap((p) => insertMatch(p), 10),
       tap((p) => console.log('Inserted Match #', p.sfId)),
       scan((acc, curr) => acc + 1, 0),
       tap(console.log)

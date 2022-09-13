@@ -4,7 +4,6 @@ import {
   PicklistValuesSemicolonSeparated,
   RecordProps,
 } from '../base-interfaces-types-classes'
-import { ContactRecordProps } from '../common-objects'
 
 class JobseekerLineItemsWrapper {
   @Type(() => JobseekerLineItem)
@@ -32,16 +31,17 @@ class JobseekerLineItem {
   Company__c?: string
 }
 
-export class TpJobseekerProfileRecordProps implements RecordProps {
+class JobseekerProfileItemWrapper {
+  @Type(() => JobseekerProfileItem)
+  records: Array<JobseekerProfileItem>
+}
+
+class JobseekerProfileItem {
   Id: string
   @Type(() => Date)
   CreatedDate: Date
   @Type(() => Date)
   LastModifiedDate: Date
-  Name: string
-
-  @Type(() => ContactRecordProps)
-  Contact__r: ContactRecordProps
 
   ReDI_Location__c?: PicklistValue
   ReDI_Course__c?: PicklistValue
@@ -60,9 +60,60 @@ export class TpJobseekerProfileRecordProps implements RecordProps {
   Is_Hired__c: boolean
   Federal_State__c?: PicklistValue
   Willing_to_Relocate__c: boolean
+}
+
+class JobseekerLanguageItemsWrapper {
+  @Type(() => JobseekerLanguageItem)
+  records: Array<JobseekerLanguageItem>
+}
+
+class LanguageWrapper {
+  Name: string
+}
+
+class JobseekerLanguageItem {
+  hed__Fluency__c: string
+  @Type(() => LanguageWrapper)
+  hed__Language__r: LanguageWrapper
+}
+export class TpJobseekerProfileRecordProps implements RecordProps {
+  Id: string
+
+  FirstName?: string
+  LastName: string
+  ReDI_Email_Address__c: string
+  ReDI_Behance_URL__c?: string
+  @Type(() => Date)
+  ReDI_Birth_Date__c?: Date
+  ReDI_Dribbble_URL__c?: string
+  ReDI_Gender_Pronouns__c?: string
+  ReDI_Slack_Username__c?: string
+  ReDI_Stack_Overflow_URL__c?: string
+  ReDI_Website_Portfolio__c?: string
+  LinkedIn_Profile__c?: string
+  ReDI_GitHub_Profile__c?: string
+  MobilePhone?: string
+  redi_Contact_Gender__c?: string
+  Loopback_User_ID__c: string
+
+  ReDI_Age__c: number
+
+  ReDI_First_Point_of_Contact_Talent_Pool__c?: string
+  ReDI_First_Point_of_Contact_Other_TP__c?: string
+
+  CON_TP_Mailing_Address__c?: string
 
   @Type(() => JobseekerLineItemsWrapper)
   Jobseeker_Line_Items__r?: JobseekerLineItemsWrapper
+
+  @Type(() => JobseekerProfileItemWrapper)
+  Jobseeker_Profiles__r: JobseekerProfileItemWrapper
+
+  @Type(() => JobseekerLanguageItemsWrapper)
+  hed__Contact_Languages__r?: JobseekerLanguageItemsWrapper
+
+  // Only computed fields below
+  Name: string // full name
 
   public static create(rawProps: any) {
     return plainToClass(TpJobseekerProfileRecordProps, rawProps, {})
