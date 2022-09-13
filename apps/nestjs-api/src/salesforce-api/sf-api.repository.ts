@@ -59,6 +59,7 @@ export class SfApiRepository {
         limit = 5000,
         offset = 0,
         childObjects,
+        rawWhereClause,
       } = task
 
       let query = this.connection
@@ -68,6 +69,9 @@ export class SfApiRepository {
         childObjects.forEach((childObject) => {
           query.include(childObject.name).select(childObject.fields).end()
         })
+      }
+      if (rawWhereClause) {
+        query = query.where(rawWhereClause)
       }
 
       const results = await query.execute({
@@ -181,4 +185,5 @@ interface FindRecordsParams {
   limit?: number
   offset?: number
   childObjects?: { name: string; fields: string[] }[]
+  rawWhereClause?: string
 }

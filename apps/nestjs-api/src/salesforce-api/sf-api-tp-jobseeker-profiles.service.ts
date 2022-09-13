@@ -11,7 +11,7 @@ export class SfApiTpJobseekerProfilesService {
       objectName: TpJobseekerProfileRecord.metadata.SALESFORCE_OBJECT_NAME,
       objectFields: TpJobseekerProfileRecord.metadata.SALESFORCE_OBJECT_FIELDS,
       childObjects: TpJobseekerProfileRecord.metadata.SALESFORCE_CHILD_OBJECTS,
-      filter,
+      rawWhereClause: 'Id IN (SELECT Contact__c FROM Jobseeker_Profile__c)',
     })
     const jobseekerProfileRecords = rawRecords.map((rawRecord) =>
       TpJobseekerProfileRecord.create(rawRecord)
