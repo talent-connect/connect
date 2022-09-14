@@ -43,8 +43,7 @@ const MobileApplicationCard = ({
 
   return (
     <>
-      <Columns
-        breakpoint="mobile"
+      <div
         className={
           application.status !== 'applied'
             ? 'mobile-application-card'
@@ -52,11 +51,11 @@ const MobileApplicationCard = ({
         }
         onClick={() => setShowDetails(!showDetails)}
       >
-        <Columns.Column className="mobile-application-card__avatar">
-          <Avatar profile={applicationUser} />
-        </Columns.Column>
-        <Columns>
-          <Columns.Column>
+        <Columns breakpoint="mobile" multiline={false} vCentered>
+          <Columns.Column className="mobile-application-card__avatar">
+            <Avatar profile={applicationUser} />
+          </Columns.Column>
+          <Columns.Column className="mobile-column">
             {applicationUser && (
               <span
                 className="mobile-application-card__link"
@@ -73,35 +72,36 @@ const MobileApplicationCard = ({
                 </p>
               </span>
             )}
-          </Columns.Column>
-          <Columns.Column>
             {applicationUser && (
               <p>{REDI_LOCATION_NAMES[applicationUser.rediLocation]}</p>
             )}
           </Columns.Column>
-        </Columns>
-        <Columns>
           <Columns.Column
-            className={
-              application.status === 'applied'
-                ? 'application-card-pending__status'
-                : null
-            }
+            className="mobile-column"
+            textAlignment="right"
+            narrow
+            textSize="6"
           >
-            {STATUS_LABELS[application.status]}
+            <p
+              className={
+                application.status === 'applied'
+                  ? 'application-card-pending__status'
+                  : null
+              }
+            >
+              {STATUS_LABELS[application.status]}
+            </p>
+            <p>{moment(applicationDate).format('DD.MM.YYYY')}</p>
           </Columns.Column>
-          <Columns.Column>
-            {moment(applicationDate).format('DD.MM.YYYY')}
+          <Columns.Column className="mobile-application-card__icon">
+            <Icon
+              icon="chevron"
+              size="small"
+              className={classnames({ 'icon--rotate': showDetails })}
+            />
           </Columns.Column>
         </Columns>
-        <Columns.Column className="mobile-application-card__icon">
-          <Icon
-            icon="chevron"
-            size="small"
-            className={classnames({ 'icon--rotate': showDetails })}
-          />
-        </Columns.Column>
-      </Columns>
+      </div>
 
       <div
         className={classnames('mobile-application-card-details', {

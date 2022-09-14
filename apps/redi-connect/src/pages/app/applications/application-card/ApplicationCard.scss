@@ -20,17 +20,11 @@
   &__avatar {
     display: flex;
     align-items: center;
-
-    // @include mobile() {
-    //   justify-content: center;
-    // }
+    flex-grow: 0;
 
     .avatar {
-      width: 2rem;
-      height: 2rem;
-      padding-top: 2rem;
-      margin: 0 0.5rem;
-      flex-shrink: 0;
+      width: 4rem;
+      height: 4rem;
     }
   }
 
@@ -68,10 +62,6 @@
         transform: rotate(180deg);
       }
     }
-
-    // @include tablet() {
-    //   // float: right;
-    // }
   }
 
   &-pending {

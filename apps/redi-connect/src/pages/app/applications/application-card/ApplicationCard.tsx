@@ -50,15 +50,11 @@ const ApplicationCard = ({
         onClick={() => setShowDetails(!showDetails)}
       >
         <Columns vCentered>
-          <Columns.Column size={1} className="application-card__avatar">
+          <Columns.Column className="application-card__avatar">
             <Avatar profile={applicationUser} />
           </Columns.Column>
 
-          <Columns.Column
-            size={3}
-            textAlignment="left"
-            responsive={{ mobile: { textAlignment: { value: 'centered' } } }}
-          >
+          <Columns.Column size={3} textAlignment="left">
             {applicationUser && (
               <>
                 <p>
@@ -69,10 +65,7 @@ const ApplicationCard = ({
             )}
           </Columns.Column>
 
-          <Columns.Column
-            size={2}
-            responsive={{ mobile: { textAlignment: { value: 'centered' } } }}
-          >
+          <Columns.Column textAlignment="centered">
             <span
               className="application-card__link"
               onClick={() =>
@@ -87,27 +80,24 @@ const ApplicationCard = ({
             </span>
           </Columns.Column>
 
-          <Columns.Column size={3} textAlignment="centered">
+          <Columns.Column textAlignment="centered" tablet={{ narrow: true }}>
             From {moment(applicationDate).format('DD.MM.YYYY')}
           </Columns.Column>
 
           <Columns.Column
-            size={2}
             className={
               application.status === 'applied'
                 ? 'application-card-pending__status'
                 : null
             }
-            responsive={{ mobile: { textAlignment: { value: 'centered' } } }}
-            textAlignment="right"
+            textAlignment="centered"
           >
             {STATUS_LABELS[application.status]}
           </Columns.Column>
 
           <Columns.Column
-            size={1}
             className="application-card-dropdown"
-            textAlignment="centered"
+            style={{ flexGrow: '0' }}
           >
             <Icon
               icon="chevron"

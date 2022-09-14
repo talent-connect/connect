@@ -6,6 +6,7 @@
   border-radius: $radius;
   transition: $transition;
   box-shadow: $card-shadow;
+  cursor: pointer;
 
   &:not(:last-child) {
     margin-bottom: $block-spacing;
@@ -14,14 +15,11 @@
   &__avatar {
     display: flex;
     align-items: center;
-    justify-content: left;
+    flex-grow: 0;
 
     .avatar {
       width: 4rem;
       height: 4rem;
-      padding-top: 2rem;
-      margin: 0 0.5rem;
-      flex-shrink: 0;
       z-index: 0;
     }
   }
@@ -35,6 +33,8 @@
     display: flex;
     align-items: center;
     justify-content: end;
+    padding-left: 0;
+    flex-grow: 0;
   }
 
   &-details {
@@ -79,4 +79,8 @@
   justify-content: flex-end;
   padding-bottom: 8px;
   gap: 30px;
+}
+
+.mobile-column {
+  padding-left: 0;
 }
