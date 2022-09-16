@@ -1,4 +1,4 @@
-export const customStyles = {
+export const styles = {
   option: (provided: any, state: any) => ({
     ...provided,
     padding: '13px',

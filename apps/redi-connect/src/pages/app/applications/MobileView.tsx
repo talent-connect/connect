@@ -1,10 +1,9 @@
 import React from 'react'
-import Select from 'react-select'
 import { useSelector } from 'react-redux'
 
 import { RootState } from '../../../redux/types'
 import { Button } from '@talent-connect/shared-atomic-design-components'
-import { customStyles } from '../../../../../../libs/shared-atomic-design-components/src/lib/atoms/SelectStyles'
+import SelectDropdown from '../../../../../../libs/shared-atomic-design-components/src/lib/atoms/SelectDropdown'
 import MobileApplicationCard from './application-card/MobileApplicationCard'
 import { useFilter } from './useFilter'
 import './MobileView.scss'
@@ -57,13 +56,11 @@ const MobileView = ({
 
       <div className="filters-wrapper">
         <div className="dropdown-filter">
-          <Select
-            value={activeFilterValue}
-            options={applicationStatuses}
-            onChange={(selected) => setActiveFilter(selected.value)}
+          <SelectDropdown
+            activeFilterValue={activeFilterValue}
+            applicationStatuses={applicationStatuses}
+            setActiveFilter={setActiveFilter}
             placeholder="Filter by Status"
-            styles={customStyles}
-            isSearchable={false}
           />
         </div>
 
