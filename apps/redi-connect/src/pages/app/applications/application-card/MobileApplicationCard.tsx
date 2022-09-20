@@ -6,9 +6,9 @@ import moment from 'moment'
 import classnames from 'classnames'
 
 import { RootState } from '../../../../redux/types'
-import { RedMatch, RedProfile } from '@talent-connect/shared-types'
 import { getHasReachedMenteeLimit } from '../../../../redux/user/selectors'
 import { getRedProfileFromLocalStorage } from '../../../../services/auth/auth'
+import { RedMatch, RedProfile } from '@talent-connect/shared-types'
 import {
   REDI_LOCATION_NAMES,
   STATUS_LABELS,
@@ -19,8 +19,8 @@ import {
   ConfirmMentorship,
   DeclineMentorshipButton,
 } from '../../../../components/organisms'
+import { useApplicationCard } from './useApplicationCard'
 import './MobileApplicationCard.scss'
-import eachDayOfInterval from 'date-fns/fp/eachDayOfInterval/index'
 
 interface Props {
   application: RedMatch & { createdAt?: string }
@@ -33,13 +33,20 @@ const MobileApplicationCard = ({
   hasReachedMenteeLimit,
   currentUser,
 }: Props) => {
-  const history = useHistory()
-  const profile = getRedProfileFromLocalStorage()
-  const [showDetails, setShowDetails] = useState(false)
-  const applicationDate = new Date(application.createdAt || '')
-  const applicationUser =
-    profile.userType === 'mentee' ? application.mentor : application.mentee
-  const currentUserIsMentor = currentUser?.userType === 'mentor'
+  const {
+    history,
+    showDetails,
+    setShowDetails,
+    applicationUser,
+    applicationDate,
+    currentUserIsMentor,
+  } = useApplicationCard(
+    useHistory,
+    getRedProfileFromLocalStorage,
+    useState,
+    application,
+    currentUser
+  )
 
   return (
     <>
@@ -93,7 +100,7 @@ const MobileApplicationCard = ({
             </p>
             <p>{moment(applicationDate).format('DD.MM.YYYY')}</p>
           </Columns.Column>
-          <Columns.Column className="mobile-application-card__icon">
+          <Columns.Column className="mobile-application-card-dropdown">
             <Icon
               icon="chevron"
               size="small"

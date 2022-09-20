@@ -28,7 +28,7 @@ function Applications({ applicants }: Props) {
     return dateA < dateB ? 1 : -1
   })
 
-  const filterbyStatus = (item) => {
+  const filteredApplications = applicationsSortedByDate.filter((item) => {
     if (activeFilter === 'all') return true
     if (activeFilter === 'pending') {
       return item.status === 'applied'
@@ -42,9 +42,8 @@ function Applications({ applicants }: Props) {
         item.status === 'invalidated-as-other-mentor-accepted'
       )
     }
-  }
-
-  const filteredApplications = applicationsSortedByDate.filter(filterbyStatus)
+    return true
+  })
 
   return (
     <LoggedIn>

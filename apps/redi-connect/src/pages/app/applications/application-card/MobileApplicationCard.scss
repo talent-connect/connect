@@ -8,13 +8,15 @@
   box-shadow: $card-shadow;
   cursor: pointer;
 
+  &:hover {
+    box-shadow: $card-shadow-hover;
+  }
+
   &:not(:last-child) {
     margin-bottom: $block-spacing;
   }
 
   &__avatar {
-    display: flex;
-    align-items: center;
     flex-grow: 0;
 
     .avatar {
@@ -27,14 +29,10 @@
   &__link {
     font-weight: $weight-bold;
     color: $primary;
-  }
 
-  &__icon {
-    display: flex;
-    align-items: center;
-    justify-content: end;
-    padding-left: 0;
-    flex-grow: 0;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   &-details {
@@ -50,9 +48,7 @@
   }
 
   &-dropdown {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-grow: 0;
 
     .icon {
       transition: $transition;

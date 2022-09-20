@@ -1,24 +1,26 @@
-import { Icon } from '@talent-connect/shared-atomic-design-components'
-import { RedMatch, RedProfile } from '@talent-connect/shared-types'
-import classnames from 'classnames'
-import moment from 'moment'
 import React, { useState } from 'react'
-import { Columns, Content, Heading } from 'react-bulma-components'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
+import { Columns, Content, Heading } from 'react-bulma-components'
+import moment from 'moment'
+import classnames from 'classnames'
+
 import { RootState } from '../../../../redux/types'
 import { getHasReachedMenteeLimit } from '../../../../redux/user/selectors'
 import { getRedProfileFromLocalStorage } from '../../../../services/auth/auth'
+import { RedMatch, RedProfile } from '@talent-connect/shared-types'
+import {
+  REDI_LOCATION_NAMES,
+  STATUS_LABELS,
+} from '@talent-connect/shared-config'
+import { Icon } from '@talent-connect/shared-atomic-design-components'
 import {
   Avatar,
   ConfirmMentorship,
   DeclineMentorshipButton,
 } from '../../../../components/organisms'
+import { useApplicationCard } from './useApplicationCard'
 import './ApplicationCard.scss'
-import {
-  REDI_LOCATION_NAMES,
-  STATUS_LABELS,
-} from '@talent-connect/shared-config'
 
 interface Props {
   application: RedMatch & { createdAt?: string }
@@ -31,13 +33,20 @@ const ApplicationCard = ({
   hasReachedMenteeLimit,
   currentUser,
 }: Props) => {
-  const history = useHistory()
-  const profile = getRedProfileFromLocalStorage()
-  const [showDetails, setShowDetails] = useState(false)
-  const applicationDate = new Date(application.createdAt || '')
-  const applicationUser =
-    profile.userType === 'mentee' ? application.mentor : application.mentee
-  const currentUserIsMentor = currentUser?.userType === 'mentor'
+  const {
+    history,
+    showDetails,
+    setShowDetails,
+    applicationUser,
+    applicationDate,
+    currentUserIsMentor,
+  } = useApplicationCard(
+    useHistory,
+    getRedProfileFromLocalStorage,
+    useState,
+    application,
+    currentUser
+  )
 
   return (
     <>
@@ -95,10 +104,7 @@ const ApplicationCard = ({
             {STATUS_LABELS[application.status]}
           </Columns.Column>
 
-          <Columns.Column
-            className="application-card-dropdown"
-            style={{ flexGrow: '0' }}
-          >
+          <Columns.Column className="application-card-dropdown">
             <Icon
               icon="chevron"
               size="small"

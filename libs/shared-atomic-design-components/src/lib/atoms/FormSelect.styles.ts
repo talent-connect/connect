@@ -1,4 +1,4 @@
-export const styles = {
+export const formSelectStyles = {
   option: (provided: any, state: any) => ({
     ...provided,
     padding: '13px',

@@ -3,7 +3,7 @@ import Select, { components } from 'react-select'
 import { Form } from 'react-bulma-components'
 import { Icon } from '../atoms'
 import { get } from 'lodash'
-import { styles } from './styles'
+import { formSelectStyles } from './FormSelect.styles'
 
 export const DropdownIndicator = (props: any) => (
   <components.DropdownIndicator {...props}>
@@ -84,7 +84,7 @@ function FormSelect(props: any) {
           onBlur={handleOnBlur}
           isDisabled={isSubmitting || disabled}
           isMulti={multiselect}
-          styles={styles}
+          styles={formSelectStyles}
           menuPortalTarget={document.body}
           menuPosition="fixed"
         />
