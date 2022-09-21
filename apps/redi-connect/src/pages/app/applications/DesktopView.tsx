@@ -1,29 +1,37 @@
 import React from 'react'
 
+import { RedMatch } from '@talent-connect/shared-types'
 import { Button } from '@talent-connect/shared-atomic-design-components'
 import ApplicationCard from './application-card/ApplicationCard'
 import { useFilter } from './useFilter'
 import './DesktopView.scss'
+
+interface Props {
+  applicants: RedMatch[]
+  filteredApplicants: RedMatch[]
+  activeFilter: string
+  setActiveFilter: (filterValue: string) => void
+}
 
 const DesktopView = ({
   applicants,
   filteredApplicants,
   activeFilter,
   setActiveFilter,
-}) => {
+}: Props) => {
   const {
     pendingApplications,
     hasPendingApplications,
     hasAcceptedApplications,
     hasDeclinedApplications,
     hasCancelledApplications,
-  } = useFilter(applicants)
+  } = useFilter({ applicants })
 
-  const handleActiveFilter = (tabName) => {
+  const handleActiveFilter = (tabName: string) => {
     setActiveFilter(tabName)
   }
 
-  const getClassName = (tabName) => {
+  const getClassName = (tabName: string) => {
     return activeFilter === tabName
       ? 'tabs-menu__item--active'
       : 'tabs-menu__item'

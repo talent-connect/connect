@@ -1,4 +1,10 @@
-export const useFilter = (applicants) => {
+import { RedMatch } from '@talent-connect/shared-types'
+
+interface Props {
+  applicants: RedMatch[]
+}
+
+export const useFilter = ({ applicants }: Props) => {
   const pendingApplications = applicants.filter(
     (applicant) => applicant.status === 'applied'
   )

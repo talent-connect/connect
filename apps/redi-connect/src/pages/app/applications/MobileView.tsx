@@ -2,6 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 
 import { RootState } from '../../../redux/types'
+import { RedMatch } from '@talent-connect/shared-types'
 import { Button } from '@talent-connect/shared-atomic-design-components'
 import SelectDropdown from '../../../../../../libs/shared-atomic-design-components/src/lib/atoms/SelectDropdown'
 import MobileApplicationCard from './application-card/MobileApplicationCard'
@@ -15,12 +16,19 @@ const applicationStatuses = [
   { value: 'cancelled', label: 'Cancelled' },
 ]
 
+interface Props {
+  applicants: RedMatch[]
+  filteredApplicants: RedMatch[]
+  activeFilter: string
+  setActiveFilter: (filterValue: string) => void
+}
+
 const MobileView = ({
   applicants,
   filteredApplicants,
   setActiveFilter,
   activeFilter,
-}) => {
+}: Props) => {
   const profile = useSelector((state: RootState) => state.user.profile)
   const isMentor = profile.userType === 'mentor'
 
@@ -30,18 +38,18 @@ const MobileView = ({
     hasAcceptedApplications,
     hasDeclinedApplications,
     hasCancelledApplications,
-  } = useFilter(applicants)
+  } = useFilter({ applicants })
 
   const activeFilterValue =
     activeFilter === 'all'
       ? null
       : applicationStatuses.find(({ value }) => value === activeFilter)
 
-  const renderEmptyStateMessage = (filter, condition) => {
+  const renderEmptyStateMessage = (filterValue: string, condition: boolean) => {
     return (
-      activeFilter === filter &&
+      activeFilter === filterValue &&
       condition &&
-      `You currently have no ${filter} applications.`
+      `You currently have no ${filterValue} applications.`
     )
   }
 

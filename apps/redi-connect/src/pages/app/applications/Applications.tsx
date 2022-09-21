@@ -18,7 +18,7 @@ interface Props {
 function Applications({ applicants }: Props) {
   const history = useHistory()
   const profile = getRedProfileFromLocalStorage()
-  const [activeFilter, setActiveFilter] = useState('all')
+  const [activeFilter, setActiveFilter] = useState<string>('all')
 
   if (profile.userActivated !== true) return <LoggedIn />
 

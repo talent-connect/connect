@@ -1,13 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
-import { useHistory } from 'react-router-dom'
 import { Columns, Content, Heading } from 'react-bulma-components'
 import moment from 'moment'
 import classnames from 'classnames'
 
 import { RootState } from '../../../../redux/types'
 import { getHasReachedMenteeLimit } from '../../../../redux/user/selectors'
-import { getRedProfileFromLocalStorage } from '../../../../services/auth/auth'
 import { RedMatch, RedProfile } from '@talent-connect/shared-types'
 import {
   REDI_LOCATION_NAMES,
@@ -40,13 +38,10 @@ const MobileApplicationCard = ({
     applicationUser,
     applicationDate,
     currentUserIsMentor,
-  } = useApplicationCard(
-    useHistory,
-    getRedProfileFromLocalStorage,
-    useState,
+  } = useApplicationCard({
     application,
-    currentUser
-  )
+    currentUser,
+  })
 
   return (
     <>
