@@ -1,20 +1,16 @@
 import React from 'react'
 import Select from 'react-select'
+
 import { DropdownIndicator } from './FormSelect'
 import { formSelectStyles } from './FormSelect.styles'
 
-const SelectDropdown = ({
-  activeFilterValue,
-  applicationStatuses,
-  setActiveFilter,
-  placeholder,
-}) => {
+const SelectDropdown = ({ selectedValue, options, setValue, placeholder }) => {
   return (
     <Select
-      value={activeFilterValue}
+      value={selectedValue}
       components={{ DropdownIndicator }}
-      options={applicationStatuses}
-      onChange={(selected) => setActiveFilter(selected.value)}
+      options={options}
+      onChange={(selected) => setValue(selected.value)}
       placeholder={placeholder}
       styles={formSelectStyles}
       isSearchable={false}

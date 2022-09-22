@@ -65,9 +65,9 @@ const MobileView = ({
       <div className="filters-wrapper">
         <div className="dropdown-filter">
           <SelectDropdown
-            activeFilterValue={activeFilterValue}
-            applicationStatuses={applicationStatuses}
-            setActiveFilter={setActiveFilter}
+            selectedValue={activeFilterValue}
+            options={applicationStatuses}
+            setValue={setActiveFilter}
             placeholder="Filter by Status"
           />
         </div>
