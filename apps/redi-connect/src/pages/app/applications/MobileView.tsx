@@ -1,4 +1,4 @@
-import React from 'react'
+import { useContext } from 'react'
 import { useSelector } from 'react-redux'
 
 import { RootState } from '../../../redux/types'
@@ -7,6 +7,7 @@ import { Button } from '@talent-connect/shared-atomic-design-components'
 import SelectDropdown from '../../../../../../libs/shared-atomic-design-components/src/lib/atoms/SelectDropdown'
 import MobileApplicationCard from './application-card/MobileApplicationCard'
 import { useFilter } from './useFilter'
+import ActiveFilterContext from './ActiveFilterContext'
 import './MobileView.scss'
 
 const applicationStatuses = [
@@ -19,18 +20,13 @@ const applicationStatuses = [
 interface Props {
   applicants: RedMatch[]
   filteredApplicants: RedMatch[]
-  activeFilter: string
-  setActiveFilter: (filterValue: string) => void
 }
 
-const MobileView = ({
-  applicants,
-  filteredApplicants,
-  setActiveFilter,
-  activeFilter,
-}: Props) => {
+const MobileView = ({ applicants, filteredApplicants }: Props) => {
   const profile = useSelector((state: RootState) => state.user.profile)
   const isMentor = profile.userType === 'mentor'
+
+  const { activeFilter, handleActiveFilter } = useContext(ActiveFilterContext)
 
   const {
     pendingApplications,
@@ -67,13 +63,13 @@ const MobileView = ({
           <SelectDropdown
             selectedValue={activeFilterValue}
             options={applicationStatuses}
-            setValue={setActiveFilter}
+            setValue={handleActiveFilter}
             placeholder="Filter by Status"
           />
         </div>
 
         <Button
-          onClick={() => setActiveFilter('all')}
+          onClick={() => handleActiveFilter('all')}
           className="all-filter"
           simple
         >

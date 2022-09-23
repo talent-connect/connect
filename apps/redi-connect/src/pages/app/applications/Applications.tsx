@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Content } from 'react-bulma-components'
 import { Heading } from '@talent-connect/shared-atomic-design-components'
 import LoggedIn from '../../../components/templates/LoggedIn'
@@ -10,6 +10,7 @@ import { useHistory } from 'react-router-dom'
 import { getRedProfileFromLocalStorage } from '../../../services/auth/auth'
 import MobileView from './MobileView'
 import DesktopView from './DesktopView'
+import ActiveFilterContext from './ActiveFilterContext'
 
 interface Props {
   applicants: RedMatch[]
@@ -45,6 +46,8 @@ function Applications({ applicants }: Props) {
     return true
   })
 
+  const handleActiveFilter = (tabName: string) => setActiveFilter(tabName)
+
   return (
     <LoggedIn>
       <Heading subtitle size="small" className="double-bs">
@@ -69,20 +72,19 @@ function Applications({ applicants }: Props) {
           )}
         </Content>
       ) : (
-        <>
+        <ActiveFilterContext.Provider
+          value={{ activeFilter, handleActiveFilter }}
+        >
           <DesktopView
             applicants={applicants}
             filteredApplicants={filteredApplications}
-            activeFilter={activeFilter}
-            setActiveFilter={setActiveFilter}
           />
+
           <MobileView
             applicants={applicants}
             filteredApplicants={filteredApplications}
-            activeFilter={activeFilter}
-            setActiveFilter={setActiveFilter}
           />
-        </>
+        </ActiveFilterContext.Provider>
       )}
     </LoggedIn>
   )
