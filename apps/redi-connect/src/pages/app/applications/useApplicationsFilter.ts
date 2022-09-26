@@ -4,7 +4,7 @@ interface Props {
   applicants: RedMatch[]
 }
 
-export const useFilter = ({ applicants }: Props) => {
+export const useApplicationsFilter = ({ applicants }: Props) => {
   const pendingApplications = applicants.filter(
     (applicant) => applicant.status === 'applied'
   )

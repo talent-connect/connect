@@ -6,8 +6,8 @@ import { RedMatch } from '@talent-connect/shared-types'
 import { Button } from '@talent-connect/shared-atomic-design-components'
 import SelectDropdown from '../../../../../../libs/shared-atomic-design-components/src/lib/atoms/SelectDropdown'
 import MobileApplicationCard from './application-card/MobileApplicationCard'
-import { useFilter } from './useFilter'
-import ActiveFilterContext from './ActiveFilterContext'
+import { useApplicationsFilter } from './useApplicationsFilter'
+import { ActiveFilterContext } from './ActiveFilterContext'
 import './MobileView.scss'
 
 const applicationStatuses = [
@@ -34,7 +34,7 @@ const MobileView = ({ applicants, filteredApplicants }: Props) => {
     hasAcceptedApplications,
     hasDeclinedApplications,
     hasCancelledApplications,
-  } = useFilter({ applicants })
+  } = useApplicationsFilter({ applicants })
 
   const activeFilterValue =
     activeFilter === 'all'

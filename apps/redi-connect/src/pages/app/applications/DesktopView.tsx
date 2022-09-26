@@ -1,7 +1,7 @@
 import { RedMatch } from '@talent-connect/shared-types'
 import ApplicationCard from './application-card/ApplicationCard'
 import FilterButton from './FilterButton'
-import { useFilter } from './useFilter'
+import { useApplicationsFilter } from './useApplicationsFilter'
 import './DesktopView.scss'
 
 interface Props {
@@ -16,7 +16,7 @@ const DesktopView = ({ applicants, filteredApplicants }: Props) => {
     hasAcceptedApplications,
     hasDeclinedApplications,
     hasCancelledApplications,
-  } = useFilter({ applicants })
+  } = useApplicationsFilter({ applicants })
 
   return (
     <div className="desktop-tabs">

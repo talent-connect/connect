@@ -11,6 +11,7 @@ import { envRediLocation } from './utils/env-redi-location'
 import LocationPicker from './pages/front/landing/LocationPicker'
 import { Route } from 'react-router-dom'
 import { QueryParamProvider } from 'use-query-params'
+import { ActiveFilterContextProvider } from './pages/app/applications/ActiveFilterContext'
 
 const App = () => {
   switch (envRediLocation()) {
@@ -38,7 +39,9 @@ const NormalRediConnect = () => {
         <Router history={history}>
           <Suspense fallback={<Loader loading={true} />}>
             <QueryParamProvider ReactRouterRoute={Route}>
-              <Routes />
+              <ActiveFilterContextProvider>
+                <Routes />
+              </ActiveFilterContextProvider>
             </QueryParamProvider>
           </Suspense>
         </Router>
