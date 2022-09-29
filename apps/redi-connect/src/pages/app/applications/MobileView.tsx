@@ -2,12 +2,10 @@ import { useContext } from 'react'
 import { useSelector } from 'react-redux'
 
 import { RootState } from '../../../redux/types'
-import { RedMatch } from '@talent-connect/shared-types'
 import { Button } from '@talent-connect/shared-atomic-design-components'
 import SelectDropdown from '../../../../../../libs/shared-atomic-design-components/src/lib/atoms/SelectDropdown'
 import MobileApplicationCard from './application-card/MobileApplicationCard'
-import { useApplicationsFilter } from './useApplicationsFilter'
-import { ActiveFilterContext } from './ActiveFilterContext'
+import { ApplicationsFilterContext } from './ApplicationsFilterContext'
 import './MobileView.scss'
 
 const applicationStatuses = [
@@ -17,24 +15,20 @@ const applicationStatuses = [
   { value: 'cancelled', label: 'Cancelled' },
 ]
 
-interface Props {
-  applicants: RedMatch[]
-  filteredApplicants: RedMatch[]
-}
-
-const MobileView = ({ applicants, filteredApplicants }: Props) => {
+const MobileView = () => {
   const profile = useSelector((state: RootState) => state.user.profile)
   const isMentor = profile.userType === 'mentor'
 
-  const { activeFilter, handleActiveFilter } = useContext(ActiveFilterContext)
-
   const {
+    activeFilter,
+    setActiveFilter,
+    filteredAndSortedApplications,
     pendingApplications,
     hasPendingApplications,
     hasAcceptedApplications,
     hasDeclinedApplications,
     hasCancelledApplications,
-  } = useApplicationsFilter({ applicants })
+  } = useContext(ApplicationsFilterContext)
 
   const activeFilterValue =
     activeFilter === 'all'
@@ -63,13 +57,13 @@ const MobileView = ({ applicants, filteredApplicants }: Props) => {
           <SelectDropdown
             selectedValue={activeFilterValue}
             options={applicationStatuses}
-            setValue={handleActiveFilter}
+            setValue={setActiveFilter}
             placeholder="Filter by Status"
           />
         </div>
 
         <Button
-          onClick={() => handleActiveFilter('all')}
+          onClick={() => setActiveFilter('all')}
           className="all-filter"
           simple
         >
@@ -83,7 +77,7 @@ const MobileView = ({ applicants, filteredApplicants }: Props) => {
         {renderEmptyStateMessage('declined', !hasDeclinedApplications)}
         {renderEmptyStateMessage('cancelled', !hasCancelledApplications)}
 
-        {filteredApplicants.map((application) => (
+        {filteredAndSortedApplications.map((application) => (
           <MobileApplicationCard
             key={application.id}
             application={application}

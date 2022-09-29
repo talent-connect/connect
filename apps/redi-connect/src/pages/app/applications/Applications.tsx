@@ -1,4 +1,3 @@
-import { useContext } from 'react'
 import { Content } from 'react-bulma-components'
 import { Heading } from '@talent-connect/shared-atomic-design-components'
 import LoggedIn from '../../../components/templates/LoggedIn'
@@ -10,7 +9,7 @@ import { useHistory } from 'react-router-dom'
 import { getRedProfileFromLocalStorage } from '../../../services/auth/auth'
 import MobileView from './MobileView'
 import DesktopView from './DesktopView'
-import { ActiveFilterContext } from './ActiveFilterContext'
+import { ApplicationsFilterContextProvider } from './ApplicationsFilterContext'
 
 interface Props {
   applicants: RedMatch[]
@@ -19,32 +18,8 @@ interface Props {
 const Applications = ({ applicants }: Props) => {
   const history = useHistory()
   const profile = getRedProfileFromLocalStorage()
-  const { activeFilter } = useContext(ActiveFilterContext)
 
   if (profile.userActivated !== true) return <LoggedIn />
-
-  const applicationsSortedByDate = applicants.sort((a, b) => {
-    const dateA = new Date(a.createdAt).getTime()
-    const dateB = new Date(b.createdAt).getTime()
-    return dateA < dateB ? 1 : -1
-  })
-
-  const filteredApplications = applicationsSortedByDate.filter((item) => {
-    if (activeFilter === 'all') return true
-    if (activeFilter === 'pending') {
-      return item.status === 'applied'
-    } else if (activeFilter === 'accepted') {
-      return item.status === 'accepted' || item.status === 'completed'
-    } else if (activeFilter === 'declined') {
-      return item.status === 'declined-by-mentor'
-    } else if (activeFilter === 'cancelled') {
-      return (
-        item.status === 'cancelled' ||
-        item.status === 'invalidated-as-other-mentor-accepted'
-      )
-    }
-    return true
-  })
 
   return (
     <LoggedIn>
@@ -70,17 +45,11 @@ const Applications = ({ applicants }: Props) => {
           )}
         </Content>
       ) : (
-        <>
-          <DesktopView
-            applicants={applicants}
-            filteredApplicants={filteredApplications}
-          />
+        <ApplicationsFilterContextProvider>
+          <DesktopView applicants={applicants} />
 
-          <MobileView
-            applicants={applicants}
-            filteredApplicants={filteredApplications}
-          />
-        </>
+          <MobileView />
+        </ApplicationsFilterContextProvider>
       )}
     </LoggedIn>
   )

@@ -1,22 +1,23 @@
+import { useContext } from 'react'
 import { RedMatch } from '@talent-connect/shared-types'
 import ApplicationCard from './application-card/ApplicationCard'
 import FilterButton from './FilterButton'
-import { useApplicationsFilter } from './useApplicationsFilter'
+import { ApplicationsFilterContext } from './ApplicationsFilterContext'
 import './DesktopView.scss'
 
 interface Props {
   applicants: RedMatch[]
-  filteredApplicants: RedMatch[]
 }
 
-const DesktopView = ({ applicants, filteredApplicants }: Props) => {
+const DesktopView = ({ applicants }: Props) => {
   const {
+    filteredAndSortedApplications,
     pendingApplications,
     hasPendingApplications,
     hasAcceptedApplications,
     hasDeclinedApplications,
     hasCancelledApplications,
-  } = useApplicationsFilter({ applicants })
+  } = useContext(ApplicationsFilterContext)
 
   return (
     <div className="desktop-tabs">
@@ -50,7 +51,7 @@ const DesktopView = ({ applicants, filteredApplicants }: Props) => {
         </FilterButton>
       </div>
       <div>
-        {filteredApplicants.map((application) => (
+        {filteredAndSortedApplications.map((application) => (
           <ApplicationCard key={application.id} application={application} />
         ))}
       </div>

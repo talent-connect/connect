@@ -1,7 +1,7 @@
 import { useContext, ReactNode } from 'react'
 
 import { Button } from '@talent-connect/shared-atomic-design-components'
-import { ActiveFilterContext } from './ActiveFilterContext'
+import { ApplicationsFilterContext } from './ApplicationsFilterContext'
 
 interface Props {
   filterValue: string
@@ -10,11 +10,13 @@ interface Props {
 }
 
 const FilterButton = ({ filterValue, isDisabled, children }: Props) => {
-  const { activeFilter, handleActiveFilter } = useContext(ActiveFilterContext)
+  const { activeFilter, setActiveFilter } = useContext(
+    ApplicationsFilterContext
+  )
 
   return (
     <Button
-      onClick={() => handleActiveFilter(filterValue)}
+      onClick={() => setActiveFilter(filterValue)}
       className={
         activeFilter === filterValue
           ? 'tabs-menu__item--active'
