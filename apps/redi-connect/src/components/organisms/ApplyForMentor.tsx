@@ -54,9 +54,8 @@ interface Props {
 }
 
 const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
-  const [submitResult, setSubmitResult] = useState<FormSubmitResult>(
-    'notSubmitted'
-  )
+  const [submitResult, setSubmitResult] =
+    useState<FormSubmitResult>('notSubmitted')
   const [show, setShow] = useState(false)
   const submitForm = async (
     values: ConnectionRequestFormValues,
@@ -103,12 +102,18 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
             )}
             {submitResult !== 'success' && (
               <>
+                <Content size="small">
+                  <p>
+                    In each text box below, you need to write a minimum amount
+                    of 250 characters and a maximum of 600 characters.
+                  </p>
+                </Content>
                 <Caption>Motivation </Caption>
                 <Content>
                   <p>
-                    Write an application to the {mentor.firstName}{' '}
-                    {mentor.lastName} in which you describe why you think that
-                    the two of you are a great fit.
+                    Write an application to {mentor.firstName} {mentor.lastName}{' '}
+                    in which you describe why you think the two of you are a
+                    great fit.
                   </p>
                 </Content>
                 <FormTextArea
@@ -118,6 +123,7 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
                   placeholder={`Dear ${mentor.firstName}...`}
                   minChar={250}
                   maxChar={600}
+                  maxlength={600}
                   {...formik}
                 />
 
@@ -134,6 +140,7 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
                   placeholder="My expectations for this mentorship…"
                   minChar={250}
                   maxChar={600}
+                  maxlength={600}
                   {...formik}
                 />
 

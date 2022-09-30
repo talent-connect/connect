@@ -31,9 +31,13 @@ function FormTextArea(props: any) {
     touched,
     errors,
     disabled,
+    maxlength,
   } = props
 
   const hasError = !!get(touched, name) && !!get(errors, name)
+
+  const minCharAmountReached =
+    minChar && values[name] && values[name].length >= minChar
 
   return (
     <Form.Field className={classnames({ [`${className}`]: className })}>
@@ -42,13 +46,14 @@ function FormTextArea(props: any) {
         <Form.Textarea
           id={name}
           name={name}
-          color={hasError ? 'danger' : null}
+          color={hasError || !minCharAmountReached ? 'danger' : 'success'}
           rows={rows}
           placeholder={placeholder}
           value={get(values, name)}
           onChange={handleChange}
           onBlur={handleBlur}
           disabled={isSubmitting || disabled}
+          maxlength={maxlength}
         />
       </Form.Control>
 
@@ -67,17 +72,13 @@ function FormTextArea(props: any) {
               textColor="danger"
               className="help help--show redi-textarea-characters"
             >
-              {minChar - (values[name] ? values[name].length : 0)} more{' '}
-              {minChar - (values[name] ? values[name].length : 0) > 1
-                ? 'characters'
-                : 'character'}{' '}
-              needed
+              {minChar - (values[name] ? values[name].length : 0)}/{maxChar}{' '}
+              characters
             </Content>
           )}
           {maxChar &&
             (!values[name] || values[name].length <= maxChar) &&
-            (!minChar ||
-              (minChar && values[name] && values[name].length >= minChar)) && (
+            (!minChar || minCharAmountReached) && (
               <Content
                 textColor="grey-dark"
                 className="help help--show redi-textarea-characters"
@@ -89,16 +90,6 @@ function FormTextArea(props: any) {
                 left
               </Content>
             )}
-          {maxChar && values[name] && values[name].length > maxChar && (
-            <Content
-              textColor="danger"
-              className="help help--show redi-textarea-characters"
-            >
-              {values[name].length - maxChar}{' '}
-              {values[name].length - maxChar > 1 ? 'characters' : 'character'}{' '}
-              over
-            </Content>
-          )}
         </Columns.Column>
       </Columns>
     </Form.Field>
