@@ -129,7 +129,7 @@ export class TpJobseekerProfileMapper
       for (let i = 0; i < records.length; i++) {
         const record = records[i]
         const workingLanguage: LanguageRecord = {
-          language: record.hed__Language__r.Name as Language,
+          language: record.hed__Language__r.Slug__c as Language,
           proficiencyLevelId:
             record.hed__Fluency__c as LanguageProficiencyLevel,
         }

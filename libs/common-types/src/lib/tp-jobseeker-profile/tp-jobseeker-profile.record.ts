@@ -39,7 +39,7 @@ export class TpJobseekerProfileRecord extends Record<TpJobseekerProfileRecordPro
     SALESFORCE_CHILD_OBJECTS: [
       {
         name: 'hed__Contact_Languages__r',
-        fields: ['hed__Fluency__c', 'hed__Language__r.Name'],
+        fields: ['hed__Fluency__c', 'hed__Language__r.Slug__c'],
       },
       {
         name: 'Jobseeker_Line_Items__r',

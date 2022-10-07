@@ -124,7 +124,7 @@ type ConProfile {
   gender: Gender
   githubProfileUrl: String
   id: ID!
-  languages: [ConnectProfileLanguage!]
+  languages: [Language!]
   lastName: String!
   linkedInProfileUrl: String
   loopbackUserId: String!
@@ -164,7 +164,135 @@ input ConProfileSignUpInput {
   userType: UserType!
 }
 
-enum ConnectProfileLanguage {
+enum ConnectProfileStatus {
+  APPROVED
+  DEACTIVATED
+  PENDING
+  REJECTED
+}
+
+input CreateConMentoringSessionInput {
+  date: DateTime!
+  menteeId: ID!
+  minuteDuration: MentoringSessionDuration!
+}
+
+input CreateConProblemReportInput {
+  ifFromMentor_cancelMentorshipImmediately: Boolean
+  problemDescription: String!
+  reporteeProfileId: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+enum DeclineReason {
+  anotherMentorMoreSuitable
+  notEnoughTimeNowToBeMentor
+  notRightExpertise
+  other
+}
+
+enum EducationLevel {
+  apprenticeship
+  highSchool
+  middleSchool
+  universityBachelor
+  universityMaster
+  universityPhd
+}
+
+type EducationRecord {
+  certificationType: TpEducationCertificationType
+  current: Boolean
+  description: String
+  endDateMonth: Float
+  endDateYear: Float
+  institutionCity: String
+  institutionCountry: String
+  institutionName: String
+  startDateMonth: Float
+  startDateYear: Float
+  title: String
+  uuid: String!
+}
+
+type ExperienceRecord {
+  city: String
+  company: String
+  country: String
+  current: Boolean
+  description: String
+  endDateMonth: Float
+  endDateYear: Float
+  startDateMonth: Float
+  startDateYear: Float
+  title: String
+  uuid: String!
+}
+
+enum FederalState {
+  BADEN_WUERTTEMBERG
+  BAYERN
+  BERLIN
+  BRANDENBURG
+  BREMEN
+  HAMBURG
+  HESSEN
+  MECKLENBURG_VORPOMMERN
+  NIEDERSACHSEN
+  NORDRHEIN_WESTFALEN
+  OUTSIDE_GERMANY
+  RHEINLAND_PFALZ
+  SAARLAND
+  SACHSEN
+  SACHSEN_ANHALT
+  SCHLESWIG_HOLSTEIN
+  THUERINGEN
+}
+
+input FindAllVisibleTpJobseekerProfilesArgsFilter {
+  desiredPositions: [TpDesiredPosition!]
+  employmentTypes: [TpDesiredEmploymentType!]
+  federalStates: [FederalState!]
+  isJobFair2022Participant: Boolean
+  name: String
+  skills: [TpTechnicalSkill!]
+}
+
+input FindConProfilesArgsFilter {
+  categories: [MentoringTopic!]
+  languages: [Language!]
+  locations: [RediLocation!]
+  name: String
+}
+
+enum FirstPointOfTpContactOption {
+  ALREADY_VOLUNTEER_AT_REDI
+  COLLEGUE
+  INTERNET_SEARCH
+  OTHER
+  REDI_STUDENT_ALUMNI
+  REDI_TEAM_MEMBER
+  REDI_WEBSITE
+  SOCIAL_MEDIA
+}
+
+enum Gender {
+  Female
+  Male
+  Other
+}
+
+enum JobseekerProfileStatus {
+  DRAFTING_PROFILE
+  PROFILE_APPROVED
+  SUBMITTED_FOR_REVIEW
+}
+
+enum Language {
   Afrikaans
   Albanian
   Amharic
@@ -310,68 +438,16 @@ enum ConnectProfileLanguage {
   Zulu
 }
 
-enum ConnectProfileStatus {
-  APPROVED
-  DEACTIVATED
-  PENDING
-  REJECTED
+enum LanguageProficiencyLevel {
+  elementaryProficiency
+  fullWorkingProficiency
+  limitedWorkingProficiency
+  nativeOrBilingualProficiency
 }
 
-input CreateConMentoringSessionInput {
-  date: DateTime!
-  menteeId: ID!
-  minuteDuration: MentoringSessionDuration!
-}
-
-input CreateConProblemReportInput {
-  ifFromMentor_cancelMentorshipImmediately: Boolean
-  problemDescription: String!
-  reporteeProfileId: String!
-}
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
-enum DeclineReason {
-  anotherMentorMoreSuitable
-  notEnoughTimeNowToBeMentor
-  notRightExpertise
-  other
-}
-
-enum EducationLevel {
-  apprenticeship
-  highSchool
-  middleSchool
-  universityBachelor
-  universityMaster
-  universityPhd
-}
-
-input FindConProfilesArgsFilter {
-  categories: [MentoringTopic!]
-  languages: [ConnectProfileLanguage!]
-  locations: [RediLocation!]
-  name: String
-}
-
-enum FirstPointOfTpContactOption {
-  ALREADY_VOLUNTEER_AT_REDI
-  COLLEGUE
-  INTERNET_SEARCH
-  OTHER
-  REDI_STUDENT_ALUMNI
-  REDI_TEAM_MEMBER
-  REDI_WEBSITE
-  SOCIAL_MEDIA
-}
-
-enum Gender {
-  Female
-  Male
-  Other
+type LanguageRecord {
+  language: Language!
+  proficiencyLevelId: LanguageProficiencyLevel!
 }
 
 enum MentoringSessionDuration {
@@ -485,6 +561,8 @@ type Query {
   tpCompanyProfile(id: ID): TpCompanyProfile!
   tpCompanyProfiles: [TpCompanyProfile!]!
   tpCurrentUserDataGet: TpCurrentUserData!
+  tpJobseekerProfile(id: String!): [TpJobseekerProfile!]!
+  tpJobseekerProfiles(filter: FindAllVisibleTpJobseekerProfilesArgsFilter!): [TpJobseekerProfile!]!
 }
 
 enum RediCourse {
@@ -536,6 +614,14 @@ enum RediLocation {
   HAMBURG
   MUNICH
   NRW
+}
+
+enum TpAvailabilityOption {
+  date
+  immediately
+  oneMonthNotice
+  threeMonthNotice
+  twoMonthNotice
 }
 
 type TpCompanyProfile {
@@ -594,6 +680,227 @@ type TpCurrentUserData {
   representedCompany: TpCompanyProfile!
 }
 
+enum TpDesiredEmploymentType {
+  Internship
+  apprenticeshipAusbildung
+  dualStudyBachelor
+  dualStudyMaster
+  fullTime
+  partTime
+  traineeship
+  werkstudium
+}
+
+enum TpDesiredPosition {
+  administrativeAssistant
+  agileScrumCoach
+  azureSpecialist
+  backendDeveloper
+  blockchainDeveloper
+  businessAnalyst
+  cloudEngineer
+  cloudSpecialist
+  dataAnalyst
+  dataScientist
+  devOpsSpecialist
+  digitalMarketer
+  embeddedSystemsEngineer
+  frontendDeveloper
+  fullstackDeveloper
+  hardwareDeveloper
+  iotDeveloper
+  itAdministrator
+  itSpecialist
+  itSupportTechnician
+  javaDeveloper
+  linuxSystemAdministrator
+  marketingAssistant
+  mobileDeveloperAndroid
+  mobileDeveloperIos
+  nodeJsDeveloper
+  operationsManager
+  productDesigner
+  productManager
+  projectAssistant
+  projectManager
+  pythonDeveloper
+  qaEngineer
+  reactDeveloper
+  requirementsEngineer
+  salesManager
+  salesforceAdministrator
+  securityAdministrator
+  seoManager
+  systemEngineer
+  technicalArchitect
+  uiDesigner
+  uiDeveloper
+  uiUxDesigner
+  usabilityengineer
+  userResearcher
+  uxDesigner
+}
+
+enum TpEducationCertificationType {
+  confirmationOfAttendance
+  other
+  professionalCertification
+  rediSchoolCourse
+  universityDegreeDiploma
+}
+
+type TpJobseekerProfile {
+  aboutYourself: String
+  availability: TpAvailabilityOption
+  behanceUrl: String
+  createdAt: DateTime!
+  currentlyEnrolledInCourse: String
+  desiredEmploymentType: [TpDesiredEmploymentType!]
+  desiredPositions: [TpDesiredPosition!]
+  dribbbleUrl: String
+  education: [EducationRecord!]
+  email: String!
+  experience: [ExperienceRecord!]
+  federalState: FederalState
+  firstName: String!
+  fullName: String!
+  genderPronouns: String
+  githubUrl: String
+  id: ID!
+  ifAvailabilityIsDate_date: DateTime
+  isHired: Boolean!
+  isJobFair2022Participant: Boolean!
+  isProfileVisibleToCompanies: Boolean!
+  lastName: String!
+  linkedInUrl: String
+  location: String
+  loopbackUserId: String!
+  personalWebsite: String
+  postalMailingAddress: String
+  profileAvatarImageS3Key: String
+  rediLocation: String
+  stackOverflowUrl: String
+  state: JobseekerProfileStatus!
+  telephoneNumber: String
+  topSkills: [TpTechnicalSkill!]
+  twitterUrl: String
+  updatedAt: DateTime!
+  userId: String!
+  willingToRelocate: Boolean!
+  workingLanguages: [LanguageRecord!]
+}
+
+enum TpTechnicalSkill {
+  adobeCreativeSuite
+  adobePhotoshop
+  agileMethodology
+  applicationOperation
+  artificialIntellegence
+  aspNet
+  atlassianConfluence
+  atlassianJira
+  atlassianSuite
+  aws
+  balsamiqMockup
+  bpmn
+  c
+  cPlusPlus
+  cad
+  camunda
+  cloudApplications
+  cloudComputing
+  conceptDevelopment
+  crm
+  css
+  customerService
+  customerSupport
+  dataAnalysis
+  databaseDesign
+  designThinking
+  devOps
+  domainDrivenDesign
+  domainModelling
+  embeddedSystems
+  figma
+  git
+  googleCloudPlatform
+  graphicDesign
+  hardware
+  hpAlm
+  hpQualityCenter
+  html
+  illustrator
+  informationArchitecture
+  interactionDesign
+  invision
+  iot
+  itServiceManagement
+  itil
+  java
+  javaScript
+  kafka
+  kanban
+  leanPrinciples
+  linux
+  macOsServer
+  microsoftAzure
+  microsoftOffice
+  netFramework
+  networkAdministration
+  networkDesign
+  networkSecurity
+  nodeJs
+  operationsManagement
+  oracleDatabase
+  php
+  problemSolving
+  processModelling
+  processOptimization
+  productDevelopment
+  productManagement
+  programManagement
+  projectManagement
+  prototyping
+  python
+  qualitativeResearch
+  qualityAssurance
+  qualityManagement
+  quantitativeResearch
+  rProgrammingLanguage
+  reactJs
+  requirementsAnalysis
+  responsiveWebDesign
+  salesforce
+  sapProducts
+  scrum
+  sketch
+  sketching
+  softwareArchitecture
+  softwareDevelopmentLifecycle
+  sql
+  teamLeadership
+  technicalSupport
+  testing
+  troubleshooting
+  typography
+  uml
+  usabilityTesting
+  userCenteredDesign
+  userExperience
+  userStoryMapping
+  visualBasic
+  vmWare
+  webApplications
+  webDesign
+  webDevelopment
+  webServices
+  windowsServer
+  wireframes
+  xRay
+  xml
+  zephyr
+}
+
 input UpdateConProfileInput {
   birthDate: DateTime
   categories: [MentoringTopic!]
@@ -602,7 +909,7 @@ input UpdateConProfileInput {
   gender: Gender
   githubProfileUrl: String
   id: ID!
-  languages: [ConnectProfileLanguage!]
+  languages: [Language!]
   lastName: String
   linkedInProfileUrl: String
   menteeCountCapacity: Int

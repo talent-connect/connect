@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { useHistory } from 'react-router'
 import {
   ArrayParam,
@@ -8,13 +7,13 @@ import {
   withDefault,
 } from 'use-query-params'
 
-import { Columns, Element, Tag } from 'react-bulma-components'
 import {
   Checkbox,
   FilterDropdown,
   Icon,
   SearchField,
 } from '@talent-connect/shared-atomic-design-components'
+import { Columns, Element, Tag } from 'react-bulma-components'
 
 import {
   desiredEmploymentTypeOptions,
@@ -27,12 +26,12 @@ import {
 } from '@talent-connect/talent-pool/config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
 
-import { LoggedIn } from '../../../components/templates'
 import { JobseekerProfileCard } from '../../../components/organisms/JobseekerProfileCard'
+import { LoggedIn } from '../../../components/templates'
 
 import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
-import { useBrowseTpJobseekerProfilesQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useLoadVisibleJobseekerProfilesQuery } from './BrowseCompany.generated'
 
 const germanFederalStatesOptions = objectEntries(germanFederalStates).map(
   ([value, label]) => ({
@@ -63,14 +62,28 @@ export function BrowseCompany() {
 
   const history = useHistory()
 
-  const { data: jobseekerProfiles } = useBrowseTpJobseekerProfilesQuery({
-    name,
-    desiredPositions,
-    employmentTypes,
-    skills,
-    federalStates,
-    isJobFair2022Participant,
+  const jobseekerProfilesQuery = useLoadVisibleJobseekerProfilesQuery({
+    filter: {
+      name,
+      desiredPositions,
+      employmentTypes,
+      skills,
+      federalStates,
+      isJobFair2022Participant,
+    },
   })
+  const {
+    data: { tpJobseekerProfiles: jobseekerProfiles },
+  } = jobseekerProfilesQuery
+
+  // const { data: jobseekerProfiles } = useBrowseTpJobseekerProfilesQuery({
+  //   name,
+  //   desiredPositions,
+  //   employmentTypes,
+  //   skills,
+  //   federalStates,
+  //   isJobFair2022Participant,
+  // })
   const { data: companyProfile } = useTpCompanyProfileQuery()
   const tpCompanyProfileUpdateMutation = useTpCompanyProfileUpdateMutation()
 

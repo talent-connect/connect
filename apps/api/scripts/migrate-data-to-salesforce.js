@@ -278,6 +278,7 @@ const PARTIALSBX_LANGUAGE_TO_ID_MAP = {
   Finnish: 'a0B9W000000CQri',
   French: 'a0B9W000000CQrj',
   Georgian: 'a0B9W000000CQrk',
+  German: 'a0B9Q0000000iAjUAI',
   Gikuyu: 'a0B9W000000CQrl',
   Greek: 'a0B9W000000CQrm',
   Guarani: 'a0B9W000000CQrn',
@@ -833,6 +834,20 @@ async function insertJobseekerProfileFn(p) {
     }
     if (p.tpJobseekerProfile.workingLanguages) {
       for (const langItem of p.tpJobseekerProfile.workingLanguages) {
+        if (!langItem.language || !langItem.proficiencyLevelId) {
+          break
+        }
+        if (!PARTIALSBX_LANGUAGE_TO_ID_MAP[langItem.language]) {
+          console.log(
+            '*** ERROR: USER LANGUAGE DOES NOT MAP TO A SALESFORCE LANGUAGE OBJECT ***'
+          )
+          console.log(JSON.stringify(langItem, 0, 2))
+          console.log(
+            `Jobseeker in question: ${p.tpJobseekerProfile.id} ${p.contact.firstName} ${p.contact.lastName}`
+          )
+
+          break
+        }
         if (langItem.language === 'Tigrinya') {
           langItem.language = 'Tigrigna'
         }
@@ -1271,7 +1286,7 @@ function buildContact(redUser) {
       'tpJobListings',
     ],
   }).map((u) => u.toJSON())
-  // allUsers = _.slice(allUsers, 1500, 2000)
+  // allUsers = _.slice(allUsers, 1200, 1600)
   allUsers = allUsers
     .map((u) => {
       u.email = u.email.toLocaleLowerCase()

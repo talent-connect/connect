@@ -15,7 +15,7 @@ export class TpJobseekerProfilesResolver {
     name: 'tpJobseekerProfiles',
   })
   async findAllVisible(@Args() args: FindAllVisibleTpJobseekerProfilesArgs) {
-    const entities = await this.service.findAll()
+    const entities = await this.service.findAllVisibleJobseekers(args)
     const props = entities.map((entity) => entity.props)
     return props
   }

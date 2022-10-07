@@ -68,7 +68,7 @@ class JobseekerLanguageItemsWrapper {
 }
 
 class LanguageWrapper {
-  Name: string
+  Slug__c: string
 }
 
 class JobseekerLanguageItem {
