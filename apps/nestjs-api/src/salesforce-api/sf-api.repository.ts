@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { SalesforceMutationIdResult } from '@talent-connect/common-types'
 import * as jsforce from 'jsforce'
+import { omit, pick } from 'lodash'
 const async = require('async')
 
 @Injectable()
@@ -59,29 +60,54 @@ export class SfApiRepository {
         limit = 5000,
         offset = 0,
         childObjects,
+        rawWhereClause,
       } = task
+
+      const childObjectKeys = childObjects
+        ? Object.values(childObjects).map((child) => child.name)
+        : []
+      const childObjectFilters = pick(filter, childObjectKeys) ?? {}
+      const baseObjectFilter = omit(filter, childObjectKeys)
 
       let query = this.connection
         .sobject(objectName)
-        .find(filter, objectFields, { limit, offset })
+        .find({}, objectFields, { limit, offset })
+        .where(baseObjectFilter)
       if (childObjects) {
         childObjects.forEach((childObject) => {
-          query.include(childObject.name).select(childObject.fields).end()
+          query
+            .include(childObject.name)
+            .select(childObject.fields)
+            .where(childObjectFilters[childObject.name] ?? {})
+            .end()
         })
       }
 
-      const results = await query.execute({
-        autoFetch: true,
-        maxFetch: 10000,
-      })
+      let soql = await query.toSOQL()
 
-      if (results.length > 0)
+      if (rawWhereClause) {
+        const lastIndex = soql.lastIndexOf('WHERE')
+        if (lastIndex !== -1) {
+          soql =
+            soql.substring(0, lastIndex + 5) +
+            ` ${rawWhereClause} AND ` +
+            soql.substring(lastIndex + 5)
+        }
+      }
+
+      console.log(`[SfApiRepository] Executing SOQL: ${soql}`)
+
+      const result = await this.connection.query(soql)
+
+      if (result?.records?.length > 0) {
         console.log(
           '[SfApiRepository]',
-          `Found ${results.length} records of ${objectName}`
+          `Found ${result.records.length} records of ${objectName}`
         )
-
-      callback(results)
+        callback(result.records)
+      } else {
+        callback([])
+      }
     },
     40
   )
@@ -181,4 +207,5 @@ interface FindRecordsParams {
   limit?: number
   offset?: number
   childObjects?: { name: string; fields: string[] }[]
+  rawWhereClause?: string
 }

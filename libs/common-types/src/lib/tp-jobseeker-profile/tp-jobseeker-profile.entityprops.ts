@@ -1,11 +1,13 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql'
 import { EntityProps } from '../base-interfaces-types-classes'
+import { Language, LanguageProficiencyLevel } from '../common-objects'
 import {
   FederalState,
   JobseekerProfileStatus,
   TpAvailabilityOption,
   TpDesiredEmploymentType,
   TpDesiredPosition,
+  TpEducationCertificationType,
   TpTechnicalSkill,
 } from './enums'
 
@@ -57,9 +59,58 @@ export class TpJobseekerProfileEntityProps implements EntityProps {
   federalState?: FederalState
   willingToRelocate: boolean
 
+  @Field((type) => [ExperienceRecord])
+  experience?: Array<ExperienceRecord>
+  @Field((type) => [EducationRecord])
+  education?: Array<EducationRecord>
+
+  workingLanguages?: Array<LanguageRecord>
+
   createdAt: Date
   updatedAt: Date
 
   // The next ones are computed fields in Salesforce
   fullName: string
+}
+
+@ObjectType('ExperienceRecord')
+export class ExperienceRecord {
+  uuid: string
+  city?: string
+  title?: string
+  country?: string
+  company?: string
+  description?: string
+  startDateMonth?: number
+  startDateYear?: number
+  endDateMonth?: number
+  endDateYear?: number
+  current?: boolean
+}
+
+@ObjectType('EducationRecord')
+export class EducationRecord {
+  uuid: string
+  institutionCity?: string
+  title?: string
+  institutionCountry?: string
+  institutionName?: string
+  description?: string
+  @Field((type) => TpEducationCertificationType)
+  certificationType?: string
+
+  startDateMonth?: number
+  startDateYear?: number
+  endDateMonth?: number
+  endDateYear?: number
+  current?: boolean
+}
+
+@ObjectType('LanguageRecord')
+export class LanguageRecord {
+  @Field((type) => Language)
+  language: Language
+
+  @Field((type) => LanguageProficiencyLevel)
+  proficiencyLevelId: LanguageProficiencyLevel
 }

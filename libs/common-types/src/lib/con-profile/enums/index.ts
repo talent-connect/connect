@@ -1,5 +1,3 @@
-export * from '../../common-objects/enums/redi-location.enum'
-export * from './connect-profile-language.enum'
 export * from './connect-profile-status.enum'
 export * from './education-level.enum'
 export * from './mentoring-topic.enum'

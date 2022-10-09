@@ -1,12 +1,11 @@
 import { Field, ID, Int, ObjectType } from '@nestjs/graphql'
 import { EntityProps } from '../base-interfaces-types-classes'
+import { Language, RediLocation } from '../common-objects'
 import { Gender } from '../common-objects/contact/enums/gender.enum'
 import {
-  ConnectProfileLanguage,
   EducationLevel,
   OccupationCategory,
   RediCourse,
-  RediLocation,
   UserType,
 } from './enums'
 import { ConnectProfileStatus } from './enums/connect-profile-status.enum'
@@ -43,8 +42,8 @@ export class ConProfileEntityProps implements EntityProps {
   @Field((type) => Gender)
   gender?: Gender
   birthDate?: Date
-  @Field((type) => [ConnectProfileLanguage])
-  languages?: Array<ConnectProfileLanguage>
+  @Field((type) => [Language])
+  languages?: Array<Language>
   personalDescription?: string
   linkedInProfileUrl?: string
   githubProfileUrl?: string

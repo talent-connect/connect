@@ -22,6 +22,25 @@ const conn = new jsforce.Connection({
 ;(async () => {
   await conn.login(USERNAME, `${PASSWORD}${SECURITY_TOKEN}`)
 
+  const res = await conn.sobject('hed__Language__c').find()
+
+  res.forEach(async (lang) => {
+    const updatedLang = {
+      Id: lang.Id,
+      Name: lang.Name,
+      Slug__c: lang.Name,
+    }
+
+    try {
+      await conn.sobject('hed__Language__c').update(updatedLang)
+      console.log('did update')
+    } catch (err) {
+      console.log(err)
+    }
+  })
+
+  console.log(res)
+
   // var channel = '/event/ReDI_Connect_Profile_Statuc_Change_Event__e'
   // var channel2 = '/event/ReDI_Connect_Profile_Creation_Event__e'
   // var replayId = -1 // -1 = Only New messages | -2 = All Window and New
@@ -42,6 +61,6 @@ const conn = new jsforce.Connection({
   // var subscription = client.subscribe(channel2, function (data) {
   //   console.log('received creation data', JSON.stringify(data))
 
-  const res = await conn.sobject('ReDI_Connect_Profile__c').describe()
-  console.log(res)
+  // const res = await conn.sobject('ReDI_Connect_Profile__c').describe()
+  // console.log(res)
 })()

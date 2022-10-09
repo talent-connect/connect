@@ -8,7 +8,7 @@ export type FindConProfileQueryVariables = Types.Exact<{
 }>;
 
 
-export type FindConProfileQuery = { __typename?: 'Query', conProfile: { __typename?: 'ConProfile', userId: string, id: string, firstName: string, lastName: string, languages?: Array<Types.ConnectProfileLanguage> | null, categories: Array<Types.MentoringTopic>, rediLocation: Types.RediLocation, profileAvatarImageS3Key?: string | null, email: string, telephoneNumber?: string | null, githubProfileUrl?: string | null, linkedInProfileUrl?: string | null, slackUsername?: string | null } };
+export type FindConProfileQuery = { __typename?: 'Query', conProfile: { __typename?: 'ConProfile', userId: string, id: string, firstName: string, lastName: string, languages?: Array<Types.Language> | null, categories: Array<Types.MentoringTopic>, rediLocation: Types.RediLocation, profileAvatarImageS3Key?: string | null, email: string, telephoneNumber?: string | null, githubProfileUrl?: string | null, linkedInProfileUrl?: string | null, slackUsername?: string | null } };
 
 
 export const FindConProfileDocument = `

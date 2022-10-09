@@ -1,0 +1,12 @@
+query loadVisibleJobseekerProfiles(
+  $filter: FindAllVisibleTpJobseekerProfilesArgsFilter!
+) {
+  tpJobseekerProfiles(filter: $filter) {
+    id
+    fullName
+    firstName
+    lastName
+    aboutYourself
+    email
+  }
+}

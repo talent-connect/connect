@@ -8,7 +8,7 @@ export type FindAvailableMentorsQueryVariables = Types.Exact<{
 }>;
 
 
-export type FindAvailableMentorsQuery = { __typename?: 'Query', conProfilesAvailableMentors: Array<{ __typename?: 'ConProfile', id: string, userType: Types.UserType, firstName: string, lastName: string, categories: Array<Types.MentoringTopic>, languages?: Array<Types.ConnectProfileLanguage> | null, fullName: string, rediLocation: Types.RediLocation, profileAvatarImageS3Key?: string | null }> };
+export type FindAvailableMentorsQuery = { __typename?: 'Query', conProfilesAvailableMentors: Array<{ __typename?: 'ConProfile', id: string, userType: Types.UserType, firstName: string, lastName: string, categories: Array<Types.MentoringTopic>, languages?: Array<Types.Language> | null, fullName: string, rediLocation: Types.RediLocation, profileAvatarImageS3Key?: string | null }> };
 
 
 export const FindAvailableMentorsDocument = `

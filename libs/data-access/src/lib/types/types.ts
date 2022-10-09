@@ -152,7 +152,7 @@ export type ConProfile = {
   gender?: Maybe<Gender>;
   githubProfileUrl?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
-  languages?: Maybe<Array<ConnectProfileLanguage>>;
+  languages?: Maybe<Array<Language>>;
   lastName: Scalars['String'];
   linkedInProfileUrl?: Maybe<Scalars['String']>;
   loopbackUserId: Scalars['String'];
@@ -192,7 +192,132 @@ export type ConProfileSignUpInput = {
   userType: UserType;
 };
 
-export enum ConnectProfileLanguage {
+export enum ConnectProfileStatus {
+  Approved = 'APPROVED',
+  Deactivated = 'DEACTIVATED',
+  Pending = 'PENDING',
+  Rejected = 'REJECTED'
+}
+
+export type CreateConMentoringSessionInput = {
+  date: Scalars['DateTime'];
+  menteeId: Scalars['ID'];
+  minuteDuration: MentoringSessionDuration;
+};
+
+export type CreateConProblemReportInput = {
+  ifFromMentor_cancelMentorshipImmediately?: InputMaybe<Scalars['Boolean']>;
+  problemDescription: Scalars['String'];
+  reporteeProfileId: Scalars['String'];
+};
+
+export enum DeclineReason {
+  AnotherMentorMoreSuitable = 'anotherMentorMoreSuitable',
+  NotEnoughTimeNowToBeMentor = 'notEnoughTimeNowToBeMentor',
+  NotRightExpertise = 'notRightExpertise',
+  Other = 'other'
+}
+
+export enum EducationLevel {
+  Apprenticeship = 'apprenticeship',
+  HighSchool = 'highSchool',
+  MiddleSchool = 'middleSchool',
+  UniversityBachelor = 'universityBachelor',
+  UniversityMaster = 'universityMaster',
+  UniversityPhd = 'universityPhd'
+}
+
+export type EducationRecord = {
+  __typename?: 'EducationRecord';
+  certificationType?: Maybe<TpEducationCertificationType>;
+  current?: Maybe<Scalars['Boolean']>;
+  description?: Maybe<Scalars['String']>;
+  endDateMonth?: Maybe<Scalars['Float']>;
+  endDateYear?: Maybe<Scalars['Float']>;
+  institutionCity?: Maybe<Scalars['String']>;
+  institutionCountry?: Maybe<Scalars['String']>;
+  institutionName?: Maybe<Scalars['String']>;
+  startDateMonth?: Maybe<Scalars['Float']>;
+  startDateYear?: Maybe<Scalars['Float']>;
+  title?: Maybe<Scalars['String']>;
+  uuid: Scalars['String'];
+};
+
+export type ExperienceRecord = {
+  __typename?: 'ExperienceRecord';
+  city?: Maybe<Scalars['String']>;
+  company?: Maybe<Scalars['String']>;
+  country?: Maybe<Scalars['String']>;
+  current?: Maybe<Scalars['Boolean']>;
+  description?: Maybe<Scalars['String']>;
+  endDateMonth?: Maybe<Scalars['Float']>;
+  endDateYear?: Maybe<Scalars['Float']>;
+  startDateMonth?: Maybe<Scalars['Float']>;
+  startDateYear?: Maybe<Scalars['Float']>;
+  title?: Maybe<Scalars['String']>;
+  uuid: Scalars['String'];
+};
+
+export enum FederalState {
+  BadenWuerttemberg = 'BADEN_WUERTTEMBERG',
+  Bayern = 'BAYERN',
+  Berlin = 'BERLIN',
+  Brandenburg = 'BRANDENBURG',
+  Bremen = 'BREMEN',
+  Hamburg = 'HAMBURG',
+  Hessen = 'HESSEN',
+  MecklenburgVorpommern = 'MECKLENBURG_VORPOMMERN',
+  Niedersachsen = 'NIEDERSACHSEN',
+  NordrheinWestfalen = 'NORDRHEIN_WESTFALEN',
+  OutsideGermany = 'OUTSIDE_GERMANY',
+  RheinlandPfalz = 'RHEINLAND_PFALZ',
+  Saarland = 'SAARLAND',
+  Sachsen = 'SACHSEN',
+  SachsenAnhalt = 'SACHSEN_ANHALT',
+  SchleswigHolstein = 'SCHLESWIG_HOLSTEIN',
+  Thueringen = 'THUERINGEN'
+}
+
+export type FindAllVisibleTpJobseekerProfilesArgsFilter = {
+  desiredPositions?: InputMaybe<Array<TpDesiredPosition>>;
+  employmentTypes?: InputMaybe<Array<TpDesiredEmploymentType>>;
+  federalStates?: InputMaybe<Array<FederalState>>;
+  isJobFair2022Participant?: InputMaybe<Scalars['Boolean']>;
+  name?: InputMaybe<Scalars['String']>;
+  skills?: InputMaybe<Array<TpTechnicalSkill>>;
+};
+
+export type FindConProfilesArgsFilter = {
+  categories?: InputMaybe<Array<MentoringTopic>>;
+  languages?: InputMaybe<Array<Language>>;
+  locations?: InputMaybe<Array<RediLocation>>;
+  name?: InputMaybe<Scalars['String']>;
+};
+
+export enum FirstPointOfTpContactOption {
+  AlreadyVolunteerAtRedi = 'ALREADY_VOLUNTEER_AT_REDI',
+  Collegue = 'COLLEGUE',
+  InternetSearch = 'INTERNET_SEARCH',
+  Other = 'OTHER',
+  RediStudentAlumni = 'REDI_STUDENT_ALUMNI',
+  RediTeamMember = 'REDI_TEAM_MEMBER',
+  RediWebsite = 'REDI_WEBSITE',
+  SocialMedia = 'SOCIAL_MEDIA'
+}
+
+export enum Gender {
+  Female = 'Female',
+  Male = 'Male',
+  Other = 'Other'
+}
+
+export enum JobseekerProfileStatus {
+  DraftingProfile = 'DRAFTING_PROFILE',
+  ProfileApproved = 'PROFILE_APPROVED',
+  SubmittedForReview = 'SUBMITTED_FOR_REVIEW'
+}
+
+export enum Language {
   Afrikaans = 'Afrikaans',
   Albanian = 'Albanian',
   Amharic = 'Amharic',
@@ -338,64 +463,18 @@ export enum ConnectProfileLanguage {
   Zulu = 'Zulu'
 }
 
-export enum ConnectProfileStatus {
-  Approved = 'APPROVED',
-  Deactivated = 'DEACTIVATED',
-  Pending = 'PENDING',
-  Rejected = 'REJECTED'
+export enum LanguageProficiencyLevel {
+  ElementaryProficiency = 'elementaryProficiency',
+  FullWorkingProficiency = 'fullWorkingProficiency',
+  LimitedWorkingProficiency = 'limitedWorkingProficiency',
+  NativeOrBilingualProficiency = 'nativeOrBilingualProficiency'
 }
 
-export type CreateConMentoringSessionInput = {
-  date: Scalars['DateTime'];
-  menteeId: Scalars['ID'];
-  minuteDuration: MentoringSessionDuration;
+export type LanguageRecord = {
+  __typename?: 'LanguageRecord';
+  language: Language;
+  proficiencyLevelId: LanguageProficiencyLevel;
 };
-
-export type CreateConProblemReportInput = {
-  ifFromMentor_cancelMentorshipImmediately?: InputMaybe<Scalars['Boolean']>;
-  problemDescription: Scalars['String'];
-  reporteeProfileId: Scalars['String'];
-};
-
-export enum DeclineReason {
-  AnotherMentorMoreSuitable = 'anotherMentorMoreSuitable',
-  NotEnoughTimeNowToBeMentor = 'notEnoughTimeNowToBeMentor',
-  NotRightExpertise = 'notRightExpertise',
-  Other = 'other'
-}
-
-export enum EducationLevel {
-  Apprenticeship = 'apprenticeship',
-  HighSchool = 'highSchool',
-  MiddleSchool = 'middleSchool',
-  UniversityBachelor = 'universityBachelor',
-  UniversityMaster = 'universityMaster',
-  UniversityPhd = 'universityPhd'
-}
-
-export type FindConProfilesArgsFilter = {
-  categories?: InputMaybe<Array<MentoringTopic>>;
-  languages?: InputMaybe<Array<ConnectProfileLanguage>>;
-  locations?: InputMaybe<Array<RediLocation>>;
-  name?: InputMaybe<Scalars['String']>;
-};
-
-export enum FirstPointOfTpContactOption {
-  AlreadyVolunteerAtRedi = 'ALREADY_VOLUNTEER_AT_REDI',
-  Collegue = 'COLLEGUE',
-  InternetSearch = 'INTERNET_SEARCH',
-  Other = 'OTHER',
-  RediStudentAlumni = 'REDI_STUDENT_ALUMNI',
-  RediTeamMember = 'REDI_TEAM_MEMBER',
-  RediWebsite = 'REDI_WEBSITE',
-  SocialMedia = 'SOCIAL_MEDIA'
-}
-
-export enum Gender {
-  Female = 'Female',
-  Male = 'Male',
-  Other = 'Other'
-}
 
 export enum MentoringSessionDuration {
   Min15 = 'MIN15',
@@ -577,6 +656,8 @@ export type Query = {
   tpCompanyProfile: TpCompanyProfile;
   tpCompanyProfiles: Array<TpCompanyProfile>;
   tpCurrentUserDataGet: TpCurrentUserData;
+  tpJobseekerProfile: Array<TpJobseekerProfile>;
+  tpJobseekerProfiles: Array<TpJobseekerProfile>;
 };
 
 
@@ -603,6 +684,16 @@ export type QueryConProfilesAvailableMentorsArgs = {
 
 export type QueryTpCompanyProfileArgs = {
   id?: InputMaybe<Scalars['ID']>;
+};
+
+
+export type QueryTpJobseekerProfileArgs = {
+  id: Scalars['String'];
+};
+
+
+export type QueryTpJobseekerProfilesArgs = {
+  filter: FindAllVisibleTpJobseekerProfilesArgsFilter;
 };
 
 export enum RediCourse {
@@ -654,6 +745,14 @@ export enum RediLocation {
   Hamburg = 'HAMBURG',
   Munich = 'MUNICH',
   Nrw = 'NRW'
+}
+
+export enum TpAvailabilityOption {
+  Date = 'date',
+  Immediately = 'immediately',
+  OneMonthNotice = 'oneMonthNotice',
+  ThreeMonthNotice = 'threeMonthNotice',
+  TwoMonthNotice = 'twoMonthNotice'
 }
 
 export type TpCompanyProfile = {
@@ -716,6 +815,228 @@ export type TpCurrentUserData = {
   representedCompany: TpCompanyProfile;
 };
 
+export enum TpDesiredEmploymentType {
+  Internship = 'Internship',
+  ApprenticeshipAusbildung = 'apprenticeshipAusbildung',
+  DualStudyBachelor = 'dualStudyBachelor',
+  DualStudyMaster = 'dualStudyMaster',
+  FullTime = 'fullTime',
+  PartTime = 'partTime',
+  Traineeship = 'traineeship',
+  Werkstudium = 'werkstudium'
+}
+
+export enum TpDesiredPosition {
+  AdministrativeAssistant = 'administrativeAssistant',
+  AgileScrumCoach = 'agileScrumCoach',
+  AzureSpecialist = 'azureSpecialist',
+  BackendDeveloper = 'backendDeveloper',
+  BlockchainDeveloper = 'blockchainDeveloper',
+  BusinessAnalyst = 'businessAnalyst',
+  CloudEngineer = 'cloudEngineer',
+  CloudSpecialist = 'cloudSpecialist',
+  DataAnalyst = 'dataAnalyst',
+  DataScientist = 'dataScientist',
+  DevOpsSpecialist = 'devOpsSpecialist',
+  DigitalMarketer = 'digitalMarketer',
+  EmbeddedSystemsEngineer = 'embeddedSystemsEngineer',
+  FrontendDeveloper = 'frontendDeveloper',
+  FullstackDeveloper = 'fullstackDeveloper',
+  HardwareDeveloper = 'hardwareDeveloper',
+  IotDeveloper = 'iotDeveloper',
+  ItAdministrator = 'itAdministrator',
+  ItSpecialist = 'itSpecialist',
+  ItSupportTechnician = 'itSupportTechnician',
+  JavaDeveloper = 'javaDeveloper',
+  LinuxSystemAdministrator = 'linuxSystemAdministrator',
+  MarketingAssistant = 'marketingAssistant',
+  MobileDeveloperAndroid = 'mobileDeveloperAndroid',
+  MobileDeveloperIos = 'mobileDeveloperIos',
+  NodeJsDeveloper = 'nodeJsDeveloper',
+  OperationsManager = 'operationsManager',
+  ProductDesigner = 'productDesigner',
+  ProductManager = 'productManager',
+  ProjectAssistant = 'projectAssistant',
+  ProjectManager = 'projectManager',
+  PythonDeveloper = 'pythonDeveloper',
+  QaEngineer = 'qaEngineer',
+  ReactDeveloper = 'reactDeveloper',
+  RequirementsEngineer = 'requirementsEngineer',
+  SalesManager = 'salesManager',
+  SalesforceAdministrator = 'salesforceAdministrator',
+  SecurityAdministrator = 'securityAdministrator',
+  SeoManager = 'seoManager',
+  SystemEngineer = 'systemEngineer',
+  TechnicalArchitect = 'technicalArchitect',
+  UiDesigner = 'uiDesigner',
+  UiDeveloper = 'uiDeveloper',
+  UiUxDesigner = 'uiUxDesigner',
+  Usabilityengineer = 'usabilityengineer',
+  UserResearcher = 'userResearcher',
+  UxDesigner = 'uxDesigner'
+}
+
+export enum TpEducationCertificationType {
+  ConfirmationOfAttendance = 'confirmationOfAttendance',
+  Other = 'other',
+  ProfessionalCertification = 'professionalCertification',
+  RediSchoolCourse = 'rediSchoolCourse',
+  UniversityDegreeDiploma = 'universityDegreeDiploma'
+}
+
+export type TpJobseekerProfile = {
+  __typename?: 'TpJobseekerProfile';
+  aboutYourself?: Maybe<Scalars['String']>;
+  availability?: Maybe<TpAvailabilityOption>;
+  behanceUrl?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  currentlyEnrolledInCourse?: Maybe<Scalars['String']>;
+  desiredEmploymentType?: Maybe<Array<TpDesiredEmploymentType>>;
+  desiredPositions?: Maybe<Array<TpDesiredPosition>>;
+  dribbbleUrl?: Maybe<Scalars['String']>;
+  education?: Maybe<Array<EducationRecord>>;
+  email: Scalars['String'];
+  experience?: Maybe<Array<ExperienceRecord>>;
+  federalState?: Maybe<FederalState>;
+  firstName: Scalars['String'];
+  fullName: Scalars['String'];
+  genderPronouns?: Maybe<Scalars['String']>;
+  githubUrl?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  ifAvailabilityIsDate_date?: Maybe<Scalars['DateTime']>;
+  isHired: Scalars['Boolean'];
+  isJobFair2022Participant: Scalars['Boolean'];
+  isProfileVisibleToCompanies: Scalars['Boolean'];
+  lastName: Scalars['String'];
+  linkedInUrl?: Maybe<Scalars['String']>;
+  location?: Maybe<Scalars['String']>;
+  loopbackUserId: Scalars['String'];
+  personalWebsite?: Maybe<Scalars['String']>;
+  postalMailingAddress?: Maybe<Scalars['String']>;
+  profileAvatarImageS3Key?: Maybe<Scalars['String']>;
+  rediLocation?: Maybe<Scalars['String']>;
+  stackOverflowUrl?: Maybe<Scalars['String']>;
+  state: JobseekerProfileStatus;
+  telephoneNumber?: Maybe<Scalars['String']>;
+  topSkills?: Maybe<Array<TpTechnicalSkill>>;
+  twitterUrl?: Maybe<Scalars['String']>;
+  updatedAt: Scalars['DateTime'];
+  userId: Scalars['String'];
+  willingToRelocate: Scalars['Boolean'];
+  workingLanguages?: Maybe<Array<LanguageRecord>>;
+};
+
+export enum TpTechnicalSkill {
+  AdobeCreativeSuite = 'adobeCreativeSuite',
+  AdobePhotoshop = 'adobePhotoshop',
+  AgileMethodology = 'agileMethodology',
+  ApplicationOperation = 'applicationOperation',
+  ArtificialIntellegence = 'artificialIntellegence',
+  AspNet = 'aspNet',
+  AtlassianConfluence = 'atlassianConfluence',
+  AtlassianJira = 'atlassianJira',
+  AtlassianSuite = 'atlassianSuite',
+  Aws = 'aws',
+  BalsamiqMockup = 'balsamiqMockup',
+  Bpmn = 'bpmn',
+  C = 'c',
+  CPlusPlus = 'cPlusPlus',
+  Cad = 'cad',
+  Camunda = 'camunda',
+  CloudApplications = 'cloudApplications',
+  CloudComputing = 'cloudComputing',
+  ConceptDevelopment = 'conceptDevelopment',
+  Crm = 'crm',
+  Css = 'css',
+  CustomerService = 'customerService',
+  CustomerSupport = 'customerSupport',
+  DataAnalysis = 'dataAnalysis',
+  DatabaseDesign = 'databaseDesign',
+  DesignThinking = 'designThinking',
+  DevOps = 'devOps',
+  DomainDrivenDesign = 'domainDrivenDesign',
+  DomainModelling = 'domainModelling',
+  EmbeddedSystems = 'embeddedSystems',
+  Figma = 'figma',
+  Git = 'git',
+  GoogleCloudPlatform = 'googleCloudPlatform',
+  GraphicDesign = 'graphicDesign',
+  Hardware = 'hardware',
+  HpAlm = 'hpAlm',
+  HpQualityCenter = 'hpQualityCenter',
+  Html = 'html',
+  Illustrator = 'illustrator',
+  InformationArchitecture = 'informationArchitecture',
+  InteractionDesign = 'interactionDesign',
+  Invision = 'invision',
+  Iot = 'iot',
+  ItServiceManagement = 'itServiceManagement',
+  Itil = 'itil',
+  Java = 'java',
+  JavaScript = 'javaScript',
+  Kafka = 'kafka',
+  Kanban = 'kanban',
+  LeanPrinciples = 'leanPrinciples',
+  Linux = 'linux',
+  MacOsServer = 'macOsServer',
+  MicrosoftAzure = 'microsoftAzure',
+  MicrosoftOffice = 'microsoftOffice',
+  NetFramework = 'netFramework',
+  NetworkAdministration = 'networkAdministration',
+  NetworkDesign = 'networkDesign',
+  NetworkSecurity = 'networkSecurity',
+  NodeJs = 'nodeJs',
+  OperationsManagement = 'operationsManagement',
+  OracleDatabase = 'oracleDatabase',
+  Php = 'php',
+  ProblemSolving = 'problemSolving',
+  ProcessModelling = 'processModelling',
+  ProcessOptimization = 'processOptimization',
+  ProductDevelopment = 'productDevelopment',
+  ProductManagement = 'productManagement',
+  ProgramManagement = 'programManagement',
+  ProjectManagement = 'projectManagement',
+  Prototyping = 'prototyping',
+  Python = 'python',
+  QualitativeResearch = 'qualitativeResearch',
+  QualityAssurance = 'qualityAssurance',
+  QualityManagement = 'qualityManagement',
+  QuantitativeResearch = 'quantitativeResearch',
+  RProgrammingLanguage = 'rProgrammingLanguage',
+  ReactJs = 'reactJs',
+  RequirementsAnalysis = 'requirementsAnalysis',
+  ResponsiveWebDesign = 'responsiveWebDesign',
+  Salesforce = 'salesforce',
+  SapProducts = 'sapProducts',
+  Scrum = 'scrum',
+  Sketch = 'sketch',
+  Sketching = 'sketching',
+  SoftwareArchitecture = 'softwareArchitecture',
+  SoftwareDevelopmentLifecycle = 'softwareDevelopmentLifecycle',
+  Sql = 'sql',
+  TeamLeadership = 'teamLeadership',
+  TechnicalSupport = 'technicalSupport',
+  Testing = 'testing',
+  Troubleshooting = 'troubleshooting',
+  Typography = 'typography',
+  Uml = 'uml',
+  UsabilityTesting = 'usabilityTesting',
+  UserCenteredDesign = 'userCenteredDesign',
+  UserExperience = 'userExperience',
+  UserStoryMapping = 'userStoryMapping',
+  VisualBasic = 'visualBasic',
+  VmWare = 'vmWare',
+  WebApplications = 'webApplications',
+  WebDesign = 'webDesign',
+  WebDevelopment = 'webDevelopment',
+  WebServices = 'webServices',
+  WindowsServer = 'windowsServer',
+  Wireframes = 'wireframes',
+  XRay = 'xRay',
+  Xml = 'xml',
+  Zephyr = 'zephyr'
+}
+
 export type UpdateConProfileInput = {
   birthDate?: InputMaybe<Scalars['DateTime']>;
   categories?: InputMaybe<Array<MentoringTopic>>;
@@ -724,7 +1045,7 @@ export type UpdateConProfileInput = {
   gender?: InputMaybe<Gender>;
   githubProfileUrl?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
-  languages?: InputMaybe<Array<ConnectProfileLanguage>>;
+  languages?: InputMaybe<Array<Language>>;
   lastName?: InputMaybe<Scalars['String']>;
   linkedInProfileUrl?: InputMaybe<Scalars['String']>;
   menteeCountCapacity?: InputMaybe<Scalars['Int']>;

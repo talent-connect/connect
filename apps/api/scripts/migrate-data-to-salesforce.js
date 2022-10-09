@@ -69,7 +69,7 @@ const { lang } = require('moment')
 
 const DELAY = 1500
 const RETRIES = 5
-const CONCURRENCY = 50 // 60 has worked before, with some errors. For actual data migration, use a low value, such as 15.
+const CONCURRENCY = 50 // 50 generally works, with only a few (< 10) errors. For actual data migration, use a low value, such as 15.
 
 // const LOCAL_CONTACT_RECORD_TYPE = '0121i000000HMq9AAG'
 // const LOCAL_CONNECT_PROFILE_MENTOR_RECORD_TYPE = '0129X0000001EXBQA2'
@@ -239,148 +239,148 @@ const PARTIALSBX_JOBSEEKER_PROFILE_LINE_ITEM_RECORD_TYPE_EDUCATION =
 // }
 
 const PARTIALSBX_LANGUAGE_TO_ID_MAP = {
-  Afrikaans: 'a0B9X0000004BPtUAM',
-  Albanian: 'a0B9X0000004BPuUAM',
-  Amharic: 'a0B9X0000004BPvUAM',
-  Arabic: 'a0B9X0000004BPwUAM',
-  Aramaic: 'a0B9X0000004BPxUAM',
-  Armenian: 'a0B9X0000004BPyUAM',
-  Assamese: 'a0B9X0000004BPzUAM',
-  Aymara: 'a0B9X0000004BQ0UAM',
-  Azerbaijani: 'a0B9X0000004BQ1UAM',
-  Balochi: 'a0B9X0000004BQ2UAM',
-  Bamanankan: 'a0B9X0000004BQ3UAM',
-  'Bashkort (Bashkir)': 'a0B9X0000004BQ4UAM',
-  Basque: 'a0B9X0000004BQ5UAM',
-  Belarusan: 'a0B9X0000004BQ6UAM',
-  Bengali: 'a0B9X0000004BQ7UAM',
-  Bhojpuri: 'a0B9X0000004BQ8UAM',
-  Bislama: 'a0B9X0000004BQ9UAM',
-  Bosnian: 'a0B9X0000004BQAUA2',
-  Brahui: 'a0B9X0000004BQBUA2',
-  Bulgarian: 'a0B9X0000004BQCUA2',
-  Burmese: 'a0B9X0000004BQDUA2',
-  Cantonese: 'a0B9X0000004BQEUA2',
-  Catalan: 'a0B9X0000004BQFUA2',
-  Cebuano: 'a0B9X0000004BQGUA2',
-  Chechen: 'a0B9X0000004BQHUA2',
-  Cherokee: 'a0B9X0000004BQIUA2',
-  Croatian: 'a0B9X0000004BQJUA2',
-  Czech: 'a0B9X0000004BQKUA2',
-  Dakota: 'a0B9X0000004BQLUA2',
-  Danish: 'a0B9X0000004BQMUA2',
-  Dari: 'a0B9X0000004BQNUA2',
-  Dholuo: 'a0B9X0000004BQOUA2',
-  Dutch: 'a0B9X0000004BQPUA2',
-  English: 'a0B9X0000004BQQUA2',
-  Esperanto: 'a0B9X0000004BQRUA2',
-  Estonian: 'a0B9X0000004BQSUA2',
-  Finnish: 'a0B9X0000004BQUUA2',
-  French: 'a0B9X0000004BQVUA2',
-  Georgian: 'a0B9X0000004BQWUA2',
-  German: 'a0B9X0000004BQXUA2',
-  Gikuyu: 'a0B9X0000004BQYUA2',
-  Greek: 'a0B9X0000004BQZUA2',
-  Guarani: 'a0B9X0000004BQaUAM',
-  Gujarati: 'a0B9X0000004BQbUAM',
-  'Haitian Creole': 'a0B9X0000004BQcUAM',
-  Hausa: 'a0B9X0000004BQdUAM',
-  Hawaiian: 'a0B9X0000004BQeUAM',
-  'Hawaiian Creole': 'a0B9X0000004BQfUAM',
-  Hebrew: 'a0B9X0000004BQgUAM',
-  Hiligaynon: 'a0B9X0000004BQhUAM',
-  Hindi: 'a0B9X0000004BQiUAM',
-  Hungarian: 'a0B9X0000004BQjUAM',
-  Icelandic: 'a0B9X0000004BQkUAM',
-  Igbo: 'a0B9X0000004BQlUAM',
-  Ilocano: 'a0B9X0000004BQmUAM',
-  'Indonesian (Bahasa Indonesia)': 'a0B9X0000004BQnUAM',
-  'Inuit/Inupiaq': 'a0B9X0000004BQoUAM',
-  'Irish Gaelic': 'a0B9X0000004BQpUAM',
-  Italian: 'a0B9X0000004BQqUAM',
-  Japanese: 'a0B9X0000004BQrUAM',
-  Jarai: 'a0B9X0000004BQsUAM',
-  Javanese: 'a0B9X0000004BQtUAM',
-  'Kâicheâ': 'a0B9X0000004BQuUAM',
-  Kabyle: 'a0B9X0000004BQvUAM',
-  Kannada: 'a0B9X0000004BQwUAM',
-  Kashmiri: 'a0B9X0000004BQxUAM',
-  Kazakh: 'a0B9X0000004BQyUAM',
-  Khmer: 'a0B9X0000004BQzUAM',
-  Khoekhoe: 'a0B9X0000004BR0UAM',
-  Korean: 'a0B9X0000004BR1UAM',
-  Kurdish: 'a0B9X0000004BR2UAM',
-  Kyrgyz: 'a0B9X0000004BR3UAM',
-  Lao: 'a0B9X0000004BR4UAM',
-  Latin: 'a0B9X0000004BR5UAM',
-  Latvian: 'a0B9X0000004BR6UAM',
-  Lingala: 'a0B9X0000004BR7UAM',
-  Lithuanian: 'a0B9X0000004BR8UAM',
-  Macedonian: 'a0B9X0000004BR9UAM',
-  Maithili: 'a0B9X0000004BRAUA2',
-  Malagasy: 'a0B9X0000004BRBUA2',
-  'Malay (Bahasa Melayu)': 'a0B9X0000004BRCUA2',
-  Malayalam: 'a0B9X0000004BRDUA2',
-  'Mandarin (Chinese)': 'a0B9X0000004BREUA2',
-  Marathi: 'a0B9X0000004BRFUA2',
-  Mende: 'a0B9X0000004BRGUA2',
-  Mongolian: 'a0B9X0000004BRHUA2',
-  Nahuatl: 'a0B9X0000004BRIUA2',
-  Navajo: 'a0B9X0000004BRJUA2',
-  Nepali: 'a0B9X0000004BRKUA2',
-  Norwegian: 'a0B9X0000004BRLUA2',
-  Ojibwa: 'a0B9X0000004BRMUA2',
-  Oriya: 'a0B9X0000004BRNUA2',
-  Oromo: 'a0B9X0000004BROUA2',
-  Pashto: 'a0B9X0000004BRPUA2',
-  Persian: 'a0B9X0000004BRQUA2',
-  Polish: 'a0B9X0000004BRRUA2',
-  Portuguese: 'a0B9X0000004BRSUA2',
-  Punjabi: 'a0B9X0000004BRTUA2',
-  Quechua: 'a0B9X0000004BRUUA2',
-  Romani: 'a0B9X0000004BRVUA2',
-  Romanian: 'a0B9X0000004BRWUA2',
-  Russian: 'a0B9X0000004BRXUA2',
-  Rwanda: 'a0B9X0000004BRYUA2',
-  Samoan: 'a0B9X0000004BRZUA2',
-  Sanskrit: 'a0B9X0000004BRaUAM',
-  Serbian: 'a0B9X0000004BRbUAM',
-  Shona: 'a0B9X0000004BRcUAM',
-  Sindhi: 'a0B9X0000004BRdUAM',
-  Sinhala: 'a0B9X0000004BReUAM',
-  Slovak: 'a0B9X0000004BRfUAM',
-  Slovene: 'a0B9X0000004BRgUAM',
-  Somali: 'a0B9X0000004BRhUAM',
-  Spanish: 'a0B9X0000004BRiUAM',
-  Swahili: 'a0B9X0000004BRjUAM',
-  Swedish: 'a0B9X0000004BRkUAM',
-  Tachelhit: 'a0B9X0000004BRlUAM',
-  Tagalog: 'a0B9X0000004BRmUAM',
-  Tajiki: 'a0B9X0000004BRnUAM',
-  Tamil: 'a0B9X0000004BRoUAM',
-  Tatar: 'a0B9X0000004BRpUAM',
-  Telugu: 'a0B9X0000004BRqUAM',
-  Thai: 'a0B9X0000004BRrUAM',
-  'Tibetic languages': 'a0B9X0000004BRsUAM',
-  Tigrigna: 'a0B9X0000004BRtUAM',
-  'Tok Pisin': 'a0B9X0000004BRuUAM',
-  Turkish: 'a0B9X0000004BRvUAM',
-  Turkmen: 'a0B9X0000004BRwUAM',
-  Ukrainian: 'a0B9X0000004BRxUAM',
-  Urdu: 'a0B9X0000004BRyUAM',
-  Uyghur: 'a0B9X0000004BRzUAM',
-  Uzbek: 'a0B9X0000004BS0UAM',
-  Vietnamese: 'a0B9X0000004BS1UAM',
-  Warlpiri: 'a0B9X0000004BS2UAM',
-  Welsh: 'a0B9X0000004BS3UAM',
-  Wolof: 'a0B9X0000004BS4UAM',
-  Xhosa: 'a0B9X0000004BS5UAM',
-  Yakut: 'a0B9X0000004BS6UAM',
-  Yiddish: 'a0B9X0000004BS7UAM',
-  Yoruba: 'a0B9X0000004BS8UAM',
-  Yucatec: 'a0B9X0000004BS9UAM',
-  Zapotec: 'a0B9X0000004BSAUA2',
-  Zulu: 'a0B9X0000004BSBUA2',
+  Afrikaans: 'a0B9W000000CQr7',
+  Albanian: 'a0B9W000000CQr8',
+  Amharic: 'a0B9W000000CQr9',
+  Arabic: 'a0B9W000000CQrA',
+  Aramaic: 'a0B9W000000CQrB',
+  Armenian: 'a0B9W000000CQrC',
+  Assamese: 'a0B9W000000CQrD',
+  Aymara: 'a0B9W000000CQrE',
+  Azerbaijani: 'a0B9W000000CQrF',
+  Balochi: 'a0B9W000000CQrG',
+  Bamanankan: 'a0B9W000000CQrH',
+  'Bashkort (Bashkir)': 'a0B9W000000CQrI',
+  Basque: 'a0B9W000000CQrJ',
+  Belarusan: 'a0B9W000000CQrK',
+  Bengali: 'a0B9W000000CQrL',
+  Bhojpuri: 'a0B9W000000CQrM',
+  Bislama: 'a0B9W000000CQrN',
+  Bosnian: 'a0B9W000000CQrO',
+  Brahui: 'a0B9W000000CQrP',
+  Bulgarian: 'a0B9W000000CQrQ',
+  Burmese: 'a0B9W000000CQrR',
+  Cantonese: 'a0B9W000000CQrS',
+  Catalan: 'a0B9W000000CQrT',
+  Cebuano: 'a0B9W000000CQrU',
+  Chechen: 'a0B9W000000CQrV',
+  Cherokee: 'a0B9W000000CQrW',
+  Croatian: 'a0B9W000000CQrX',
+  Czech: 'a0B9W000000CQrY',
+  Dakota: 'a0B9W000000CQrZ',
+  Danish: 'a0B9W000000CQra',
+  Dari: 'a0B9W000000CQrb',
+  Dholuo: 'a0B9W000000CQrc',
+  Dutch: 'a0B9W000000CQrd',
+  English: 'a0B9W000000CQre',
+  Esperanto: 'a0B9W000000CQrf',
+  Estonian: 'a0B9W000000CQrg',
+  Finnish: 'a0B9W000000CQri',
+  French: 'a0B9W000000CQrj',
+  Georgian: 'a0B9W000000CQrk',
+  German: 'a0B9Q0000000iAjUAI',
+  Gikuyu: 'a0B9W000000CQrl',
+  Greek: 'a0B9W000000CQrm',
+  Guarani: 'a0B9W000000CQrn',
+  Gujarati: 'a0B9W000000CQro',
+  'Haitian Creole': 'a0B9W000000CQrp',
+  Hausa: 'a0B9W000000CQrq',
+  Hawaiian: 'a0B9W000000CQrr',
+  'Hawaiian Creole': 'a0B9W000000CQrs',
+  Hebrew: 'a0B9W000000CQrt',
+  Hiligaynon: 'a0B9W000000CQru',
+  Hindi: 'a0B9W000000CQrv',
+  Hungarian: 'a0B9W000000CQrw',
+  Icelandic: 'a0B9W000000CQrx',
+  Igbo: 'a0B9W000000CQry',
+  Ilocano: 'a0B9W000000CQrz',
+  'Indonesian (Bahasa Indonesia)': 'a0B9W000000CQs0',
+  'Inuit/Inupiaq': 'a0B9W000000CQs1',
+  'Irish Gaelic': 'a0B9W000000CQs2',
+  Italian: 'a0B9W000000CQs3',
+  Japanese: 'a0B9W000000CQs4',
+  Jarai: 'a0B9W000000CQs5',
+  Javanese: 'a0B9W000000CQs6',
+  'Kâicheâ': 'a0B9W000000CQs7',
+  Kabyle: 'a0B9W000000CQs8',
+  Kannada: 'a0B9W000000CQs9',
+  Kashmiri: 'a0B9W000000CQsA',
+  Kazakh: 'a0B9W000000CQsB',
+  Khmer: 'a0B9W000000CQsC',
+  Khoekhoe: 'a0B9W000000CQsD',
+  Korean: 'a0B9W000000CQsE',
+  Kurdish: 'a0B9W000000CQsF',
+  Kyrgyz: 'a0B9W000000CQsG',
+  Lao: 'a0B9W000000CQsH',
+  Latin: 'a0B9W000000CQsI',
+  Latvian: 'a0B9W000000CQsJ',
+  Lingala: 'a0B9W000000CQsK',
+  Lithuanian: 'a0B9W000000CQsL',
+  Macedonian: 'a0B9W000000CQsM',
+  Maithili: 'a0B9W000000CQsN',
+  Malagasy: 'a0B9W000000CQsO',
+  'Malay (Bahasa Melayu)': 'a0B9W000000CQsP',
+  Malayalam: 'a0B9W000000CQsQ',
+  'Mandarin (Chinese)': 'a0B9W000000CQsR',
+  Marathi: 'a0B9W000000CQsS',
+  Mende: 'a0B9W000000CQsT',
+  Mongolian: 'a0B9W000000CQsU',
+  Nahuatl: 'a0B9W000000CQsV',
+  Navajo: 'a0B9W000000CQsW',
+  Nepali: 'a0B9W000000CQsX',
+  Norwegian: 'a0B9W000000CQsY',
+  Ojibwa: 'a0B9W000000CQsZ',
+  Oriya: 'a0B9W000000CQsa',
+  Oromo: 'a0B9W000000CQsb',
+  Pashto: 'a0B9W000000CQsc',
+  Persian: 'a0B9W000000CQsd',
+  Polish: 'a0B9W000000CQse',
+  Portuguese: 'a0B9W000000CQsf',
+  Punjabi: 'a0B9W000000CQsg',
+  Quechua: 'a0B9W000000CQsh',
+  Romani: 'a0B9W000000CQsi',
+  Romanian: 'a0B9W000000CQsj',
+  Russian: 'a0B9W000000CQsk',
+  Rwanda: 'a0B9W000000CQsl',
+  Samoan: 'a0B9W000000CQsm',
+  Sanskrit: 'a0B9W000000CQsn',
+  Serbian: 'a0B9W000000CQso',
+  Shona: 'a0B9W000000CQsp',
+  Sindhi: 'a0B9W000000CQsq',
+  Sinhala: 'a0B9W000000CQsr',
+  Slovak: 'a0B9W000000CQss',
+  Slovene: 'a0B9W000000CQst',
+  Somali: 'a0B9W000000CQsu',
+  Spanish: 'a0B9W000000CQsv',
+  Swahili: 'a0B9W000000CQsw',
+  Swedish: 'a0B9W000000CQsx',
+  Tachelhit: 'a0B9W000000CQsy',
+  Tagalog: 'a0B9W000000CQsz',
+  Tajiki: 'a0B9W000000CQt0',
+  Tamil: 'a0B9W000000CQt1',
+  Tatar: 'a0B9W000000CQt2',
+  Telugu: 'a0B9W000000CQt3',
+  Thai: 'a0B9W000000CQt4',
+  'Tibetic languages': 'a0B9W000000CQt5',
+  Tigrigna: 'a0B9W000000CQt6',
+  'Tok Pisin': 'a0B9W000000CQt7',
+  Turkish: 'a0B9W000000CQt8',
+  Turkmen: 'a0B9W000000CQt9',
+  Ukrainian: 'a0B9W000000CQtA',
+  Urdu: 'a0B9W000000CQtB',
+  Uyghur: 'a0B9W000000CQtC',
+  Uzbek: 'a0B9W000000CQtD',
+  Vietnamese: 'a0B9W000000CQtE',
+  Warlpiri: 'a0B9W000000CQtF',
+  Welsh: 'a0B9W000000CQtG',
+  Wolof: 'a0B9W000000CQtH',
+  Xhosa: 'a0B9W000000CQtI',
+  Yakut: 'a0B9W000000CQtJ',
+  Yiddish: 'a0B9W000000CQtK',
+  Yoruba: 'a0B9W000000CQtL',
+  Yucatec: 'a0B9W000000CQtM',
+  Zapotec: 'a0B9W000000CQtN',
+  Zulu: 'a0B9W000000CQtO',
 }
 
 function retryWithDelay(delayTime, count = 1) {
@@ -414,9 +414,22 @@ function deleteFalsyProperties(obj) {
 }
 
 async function insertContactFn(p) {
-  const existingContacts = await conn
+  const existingContacts1 = await conn
     .sobject('Contact')
     .find({ ReDI_Email_Address__c: p.email.toLocaleLowerCase() })
+  const existingContacts2 = await conn
+    .sobject('Contact')
+    .find({ Loopback_User_ID__c: String(p.id) })
+  const existingContacts = []
+
+  if (existingContacts1.length > 0) {
+    existingContacts.push(existingContacts1[0])
+  } else {
+    if (existingContacts2.length > 0) {
+      existingContacts.push(existingContacts2[0])
+    }
+  }
+
   const existingContactCount = existingContacts.length
   let newOrExisting
   let contactIdUpdatedOrInserted
@@ -428,7 +441,7 @@ async function insertContactFn(p) {
         Email: p.email,
         ReDI_Email_Address__c: p.email,
         RecordTypeId: PARTIALSBX_CONTACT_RECORD_TYPE,
-        Loopback_User_ID__c: p.sfId,
+        Loopback_User_ID__c: String(p.id), // USED TO BE .sfId ... why?
         FirstName: `${
           p.contact.firstName
             ? p.contact.firstName
@@ -469,7 +482,7 @@ async function insertContactFn(p) {
       })
     )
     contactIdUpdatedOrInserted = insertResult.id
-  } else {
+  } else if (existingContactCount === 1) {
     newOrExisting = 'existing'
     contactIdUpdatedOrInserted = existingContacts[0].Id
     await conn.sobject('Contact').update(
@@ -478,7 +491,7 @@ async function insertContactFn(p) {
         Email: p.email,
         ReDI_Email_Address__c: p.email,
         RecordTypeId: PARTIALSBX_CONTACT_RECORD_TYPE,
-        Loopback_User_ID__c: p.id,
+        Loopback_User_ID__c: String(p.id),
         FirstName: `${
           p.contact.firstName
             ? p.contact.firstName
@@ -756,10 +769,16 @@ async function insertJobseekerProfileFn(p) {
   }
 
   if (jobseekerFreshlyCreated) {
-    if (p.tpJobseekerProfile.education) {
-      for (const educationItem of p.tpJobseekerProfile.education) {
+    if (
+      p.tpJobseekerProfile.education &&
+      p.tpJobseekerProfile.education.length
+    ) {
+      for (let i = 0; i < p.tpJobseekerProfile.education.length; i++) {
+        const educationItem = p.tpJobseekerProfile.education[i]
         try {
           await conn.sobject('Jobseeker_Line_Item__c').create({
+            Frontend_View_Index__c: Number(i + 1),
+            Contact__c: p.contact.sfContactId,
             Jobseeker_Profile__c: jobseekerResult.id,
             RecordTypeId:
               PARTIALSBX_JOBSEEKER_PROFILE_LINE_ITEM_RECORD_TYPE_EDUCATION,
@@ -783,10 +802,16 @@ async function insertJobseekerProfileFn(p) {
         }
       }
     }
-    if (p.tpJobseekerProfile.experience) {
-      for (const experienceItem of p.tpJobseekerProfile.experience) {
+    if (
+      p.tpJobseekerProfile.experience &&
+      p.tpJobseekerProfile.experience.length
+    ) {
+      for (let i = 0; i < p.tpJobseekerProfile.experience.length; i++) {
+        const experienceItem = p.tpJobseekerProfile.experience[i]
         try {
           await conn.sobject('Jobseeker_Line_Item__c').create({
+            Frontend_View_Index__c: Number(i + 1),
+            Contact__c: p.contact.sfContactId,
             Jobseeker_Profile__c: jobseekerResult.id,
             RecordTypeId:
               PARTIALSBX_JOBSEEKER_PROFILE_LINE_ITEM_RECORD_TYPE_EXPERIENCE,
@@ -809,18 +834,37 @@ async function insertJobseekerProfileFn(p) {
     }
     if (p.tpJobseekerProfile.workingLanguages) {
       for (const langItem of p.tpJobseekerProfile.workingLanguages) {
+        if (!langItem.language || !langItem.proficiencyLevelId) {
+          break
+        }
+        if (!PARTIALSBX_LANGUAGE_TO_ID_MAP[langItem.language]) {
+          console.log(
+            '*** ERROR: USER LANGUAGE DOES NOT MAP TO A SALESFORCE LANGUAGE OBJECT ***'
+          )
+          console.log(JSON.stringify(langItem, 0, 2))
+          console.log(
+            `Jobseeker in question: ${p.tpJobseekerProfile.id} ${p.contact.firstName} ${p.contact.lastName}`
+          )
+
+          break
+        }
         if (langItem.language === 'Tigrinya') {
           langItem.language = 'Tigrigna'
         }
         if (langItem.language === 'Farsi') {
           langItem.language = 'Persian'
         }
-        await conn.sobject('hed__Contact_Language__c').create({
-          hed__Contact__c: p.contact.sfContactId,
-          hed__Fluency__c: langItem.proficiencyLevelId,
-          hed__Language__c: PARTIALSBX_LANGUAGE_TO_ID_MAP[langItem.language],
-        })
-        // console.log('inserted jobseeker langauge record')
+        try {
+          await conn.sobject('hed__Contact_Language__c').create({
+            hed__Contact__c: p.contact.sfContactId,
+            hed__Fluency__c: langItem.proficiencyLevelId,
+            hed__Language__c: PARTIALSBX_LANGUAGE_TO_ID_MAP[langItem.language],
+          })
+          console.log('inserted jobseeker language record')
+        } catch (err) {
+          console.log('*** LANGUAGE RECORD INSERTION ERROR ***')
+          console.log(err)
+        }
       }
     }
   }
@@ -892,10 +936,12 @@ async function insertJobseekerCvFn(cv) {
   }
 
   if (cvFreshlyCreated) {
-    if (cv.education) {
-      for (const educationItem of cv.education) {
+    if (cv.education && cv.education.length) {
+      for (let i = 0; i < cv.education.length; i++) {
+        const educationItem = cv.education[i]
         try {
           await conn.sobject('Jobseeker_CV_Line_Item__c').create({
+            Frontend_View_Index__c: Number(i + 1),
             Jobseeker_CV__c: cvResult.id,
             RecordTypeId: PARTIALSBX_CV_LINE_ITEM_RECORD_TYPE_EDUCATION,
             Description__c: educationItem.description,
@@ -919,10 +965,12 @@ async function insertJobseekerCvFn(cv) {
         // console.log('inserted cv experience item')
       }
     }
-    if (cv.experience) {
-      for (const experienceItem of cv.experience) {
+    if (cv.experience && cv.experience.length) {
+      for (let i = 0; i < cv.experience.length; i++) {
+        const experienceItem = cv.experience[i]
         try {
           await conn.sobject('Jobseeker_CV_Line_Item__c').create({
+            Frontend_View_Index__c: Number(i + 1),
             Jobseeker_CV__c: cvResult.id,
             RecordTypeId: PARTIALSBX_CV_LINE_ITEM_RECORD_TYPE_EXPERIENCE,
             Description__c: experienceItem.description,
@@ -1023,6 +1071,9 @@ async function insertAccountForCompanyProfileFn(p) {
   }
   let accountContactResult
   try {
+    console.log(
+      `Insert AccountContactRelation between ${p.tpCompanyProfile.companyName} and ${p.contact.firstName} ${p.contact.lastName}`
+    )
     accountContactResult = await conn
       .sobject('AccountContactRelation')
       .create(accountContact)
@@ -1033,7 +1084,7 @@ async function insertAccountForCompanyProfileFn(p) {
     } else {
       console.log('*** EXCEPTION ***')
       console.log('Inserting AccountContactRelation failed:')
-      console.log(account)
+      console.log(accountContact)
       console.log(err)
       // throw err
     }
@@ -1226,7 +1277,7 @@ function buildContact(redUser) {
 }
 
 ;(async () => {
-  const allUsers = await RedUser.find({
+  let allUsers = await RedUser.find({
     include: [
       'redProfile',
       'tpJobseekerProfile',
@@ -1234,8 +1285,9 @@ function buildContact(redUser) {
       'tpCompanyProfile',
       'tpJobListings',
     ],
-  })
-    .map((u) => u.toJSON())
+  }).map((u) => u.toJSON())
+  // allUsers = _.slice(allUsers, 1200, 1600)
+  allUsers = allUsers
     .map((u) => {
       u.email = u.email.toLocaleLowerCase()
       return u
@@ -1360,6 +1412,7 @@ function buildContact(redUser) {
               }
             })
           }
+          return cv
         })
       }
       return u
@@ -1382,6 +1435,7 @@ function buildContact(redUser) {
               }
             )
           }
+          return listing
         })
       }
       return u
@@ -1645,7 +1699,7 @@ function buildContact(redUser) {
         (p) =>
           REDPROFILE_SFCONTACT[p.mentorId] && REDPROFILE_SFCONTACT[p.menteeId]
       ),
-      mergeMap((p) => insertMatch(p), 1),
+      mergeMap((p) => insertMatch(p), 10),
       tap((p) => console.log('Inserted Match #', p.sfId)),
       scan((acc, curr) => acc + 1, 0),
       tap(console.log)
