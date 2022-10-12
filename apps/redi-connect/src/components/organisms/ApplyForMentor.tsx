@@ -30,19 +30,8 @@ const initialValues = {
 }
 
 const validationSchema = Yup.object({
-  applicationText: Yup.string()
-    .required(
-      'Write at least 250 characters to introduce yourself to your mentee.'
-    )
-    .min(
-      250,
-      'Write at least 250 characters to introduce yourself to your mentee.'
-    )
-    .max(600, 'The introduction text can be up to 600 characters long.'),
-  expectationText: Yup.string()
-    .required('Write at least 250 characters about your expectations.')
-    .min(250, 'Write at least 250 characters about your expectations.')
-    .max(600, 'The expectations text can be up to 600 characters long.'),
+  applicationText: Yup.string().required().min(250).max(600),
+  expectationText: Yup.string().required().min(250).max(600),
   dataSharingAccepted: Yup.boolean()
     .required()
     .oneOf([true], 'Sharing profile data with your mentor is required'),
@@ -102,12 +91,6 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
             )}
             {submitResult !== 'success' && (
               <>
-                <Content size="small">
-                  <p>
-                    In each text box below, you need to write a minimum amount
-                    of 250 characters and a maximum of 600 characters.
-                  </p>
-                </Content>
                 <Caption>Motivation </Caption>
                 <Content>
                   <p>
@@ -123,7 +106,7 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
                   placeholder={`Dear ${mentor.firstName}...`}
                   minChar={250}
                   maxChar={600}
-                  maxlength={600}
+                  maxLength={600}
                   {...formik}
                 />
 
@@ -140,7 +123,7 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
                   placeholder="My expectations for this mentorship…"
                   minChar={250}
                   maxChar={600}
-                  maxlength={600}
+                  maxLength={600}
                   {...formik}
                 />
 
