@@ -9,7 +9,7 @@ import { getHasReachedMenteeLimit } from '../../../../redux/user/selectors'
 import { RedMatch, RedProfile } from '@talent-connect/shared-types'
 import {
   REDI_LOCATION_NAMES,
-  STATUS_LABELS,
+  MENTORSHIP_MATCH_STATUS_LABELS,
 } from '@talent-connect/shared-config'
 import { Icon } from '@talent-connect/shared-atomic-design-components'
 import {
@@ -96,7 +96,7 @@ const ApplicationCard = ({
             }
             textAlignment="centered"
           >
-            {STATUS_LABELS[application.status]}
+            {MENTORSHIP_MATCH_STATUS_LABELS[application.status]}
           </Columns.Column>
 
           <Columns.Column className="application-card-dropdown">

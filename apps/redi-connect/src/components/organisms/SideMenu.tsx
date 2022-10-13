@@ -66,13 +66,14 @@ const SideMenu = () => {
       <MenuItem url="/app/applications">
         <div className="badge">
           <Applications className="side-menu__icon" />
-          {Boolean(pendingApplicationsCount) && (
+          {/* A badge with the number of pending applications is displayed only for mentors */}
+          {isActivatedMentor && pendingApplicationsCount > 0 && (
             <span className="badge__item--mobile">
               {pendingApplicationsCount}
             </span>
           )}
           Applications
-          {Boolean(pendingApplicationsCount) && (
+          {isActivatedMentor && pendingApplicationsCount > 0 && (
             <span className="badge__item">{pendingApplicationsCount}</span>
           )}
         </div>

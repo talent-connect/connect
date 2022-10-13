@@ -3,9 +3,16 @@ import { useSelector } from 'react-redux'
 import { RedMatch } from '@talent-connect/shared-types'
 import { RootState } from '../../../redux/types'
 
+type ActiveFilterType =
+  | 'all'
+  | 'pending'
+  | 'accepted'
+  | 'declined'
+  | 'cancelled'
+
 interface ApplicationsFilterContextProps {
-  activeFilter: string
-  setActiveFilter: (newFilter: string) => void
+  activeFilter: ActiveFilterType
+  setActiveFilter: (newFilter: ActiveFilterType) => void
   filteredAndSortedApplications: RedMatch[]
   pendingApplications: RedMatch[]
   hasPendingApplications: boolean
@@ -33,7 +40,7 @@ interface ApplicationsFilterContextProviderProps {
 export const ApplicationsFilterContextProvider = ({
   children,
 }: ApplicationsFilterContextProviderProps) => {
-  const [activeFilter, setActiveFilter] = useState<string>('all')
+  const [activeFilter, setActiveFilter] = useState<ActiveFilterType>('all')
 
   const applicants = useSelector((state: RootState) => state.matches.matches)
 
