@@ -5,7 +5,10 @@ import { RootState } from '../../../redux/types'
 import { Button } from '@talent-connect/shared-atomic-design-components'
 import SelectDropdown from '../../../../../../libs/shared-atomic-design-components/src/lib/atoms/SelectDropdown'
 import MobileApplicationCard from './application-card/MobileApplicationCard'
-import { ApplicationsFilterContext } from './ApplicationsFilterContext'
+import {
+  ApplicationsFilterContext,
+  ActiveFilterType,
+} from './ApplicationsFilterContext'
 import './MobileView.scss'
 
 const applicationStatuses = [
@@ -35,7 +38,10 @@ const MobileView = () => {
       ? null
       : applicationStatuses.find(({ value }) => value === activeFilter)
 
-  const renderEmptyStateMessage = (filterValue: string, condition: boolean) => {
+  const renderEmptyStateMessage = (
+    filterValue: ActiveFilterType,
+    condition: boolean
+  ) => {
     return (
       activeFilter === filterValue &&
       condition &&
