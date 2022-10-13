@@ -1,10 +1,13 @@
 import { useContext, ReactNode } from 'react'
 
 import { Button } from '@talent-connect/shared-atomic-design-components'
-import { ApplicationsFilterContext } from './ApplicationsFilterContext'
+import {
+  ApplicationsFilterContext,
+  ActiveFilterType,
+} from './ApplicationsFilterContext'
 
 interface Props {
-  filterValue: string
+  filterValue: ActiveFilterType
   isDisabled?: boolean
   children: ReactNode
 }
