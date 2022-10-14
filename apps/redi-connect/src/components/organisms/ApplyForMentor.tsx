@@ -113,7 +113,7 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
                 <Caption>Expectation </Caption>
                 <Content>
                   <p>
-                    Please also write a few words about your expectations on the
+                    Please also write a few words about your expectations of the
                     mentorship with this mentor.
                   </p>
                 </Content>
