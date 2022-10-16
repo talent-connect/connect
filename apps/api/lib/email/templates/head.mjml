@@ -31,6 +31,7 @@
     />
     <mj-class name="text-padding" padding="20px 0 30px 0" />
     <mj-class name="top-padding" padding="20px 0 0 0" />
+    <mj-class name="bottom-padding" padding="0 0 20px 0" />
     <mj-class name="column" padding="0 20px 0 0" />
     <mj-class name="italic" font-style="italic" />
     <mj-class
