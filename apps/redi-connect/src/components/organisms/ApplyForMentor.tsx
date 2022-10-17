@@ -91,6 +91,15 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
             )}
             {submitResult !== 'success' && (
               <>
+                <Content size="small">
+                  <p>
+                    Want to apply to {mentor.firstName} {mentor.lastName}?
+                    Great! Next step is to write an application so they can
+                    decide to be your mentor or not. Write about your Motivation
+                    and Expectation below. Write at least 250 characters in
+                    each, but not more than 600 characters.
+                  </p>
+                </Content>
                 <Caption>Motivation </Caption>
                 <Content>
                   <p>

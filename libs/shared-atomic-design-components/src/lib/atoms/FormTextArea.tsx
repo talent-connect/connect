@@ -35,6 +35,12 @@ function FormTextArea(props: any) {
 
   const charactersLength = values[name]?.length || 0
 
+  const numberOfCharsRequiredToMinAmount =
+    minChar - (values[name] ? charactersLength : 0)
+
+  const numberOfCharsAllowedToMaxAmount =
+    maxChar - (values[name] ? charactersLength : 0)
+
   const minCharAmountReached =
     minChar && values[name] && charactersLength >= minChar
 
@@ -88,7 +94,6 @@ function FormTextArea(props: any) {
               min {minChar} characters required
             </Content>
           )}
-
           {minChar &&
             !isTouched &&
             values[name] &&
@@ -98,14 +103,13 @@ function FormTextArea(props: any) {
                 textColor="grey-dark"
                 className="help help--show redi-textarea-characters"
               >
-                {minChar - (values[name] ? charactersLength : 0)} more{' '}
-                {minChar - (values[name] ? charactersLength : 0) > 1
+                {numberOfCharsRequiredToMinAmount} more{' '}
+                {numberOfCharsRequiredToMinAmount > 1
                   ? 'characters'
                   : 'character'}{' '}
                 required
               </Content>
             )}
-
           {minChar &&
             isTouched &&
             (!values[name] || charactersLength < minChar) && (
@@ -113,8 +117,8 @@ function FormTextArea(props: any) {
                 textColor="danger"
                 className="help help--show redi-textarea-characters"
               >
-                {minChar - (values[name] ? charactersLength : 0)} more{' '}
-                {minChar - (values[name] ? charactersLength : 0) > 1
+                {numberOfCharsRequiredToMinAmount} more{' '}
+                {numberOfCharsRequiredToMinAmount > 1
                   ? 'characters'
                   : 'character'}{' '}
                 required
@@ -128,8 +132,8 @@ function FormTextArea(props: any) {
                 textColor="grey-dark"
                 className="help help--show redi-textarea-characters"
               >
-                {maxChar - (values[name] ? charactersLength : 0)}{' '}
-                {maxChar - (values[name] ? charactersLength : 0) !== 1
+                {numberOfCharsAllowedToMaxAmount}{' '}
+                {numberOfCharsAllowedToMaxAmount !== 1
                   ? 'characters'
                   : 'character'}{' '}
                 left
