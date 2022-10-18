@@ -30,19 +30,8 @@ const initialValues = {
 }
 
 const validationSchema = Yup.object({
-  applicationText: Yup.string()
-    .required(
-      'Write at least 250 characters to introduce yourself to your mentee.'
-    )
-    .min(
-      250,
-      'Write at least 250 characters to introduce yourself to your mentee.'
-    )
-    .max(600, 'The introduction text can be up to 600 characters long.'),
-  expectationText: Yup.string()
-    .required('Write at least 250 characters about your expectations.')
-    .min(250, 'Write at least 250 characters about your expectations.')
-    .max(600, 'The expectations text can be up to 600 characters long.'),
+  applicationText: Yup.string().required().min(250).max(600),
+  expectationText: Yup.string().required().min(250).max(600),
   dataSharingAccepted: Yup.boolean()
     .required()
     .oneOf([true], 'Sharing profile data with your mentor is required'),
@@ -54,9 +43,8 @@ interface Props {
 }
 
 const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
-  const [submitResult, setSubmitResult] = useState<FormSubmitResult>(
-    'notSubmitted'
-  )
+  const [submitResult, setSubmitResult] =
+    useState<FormSubmitResult>('notSubmitted')
   const [show, setShow] = useState(false)
   const submitForm = async (
     values: ConnectionRequestFormValues,
@@ -103,12 +91,21 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
             )}
             {submitResult !== 'success' && (
               <>
+                <Content size="small">
+                  <p>
+                    Want to apply to {mentor.firstName} {mentor.lastName}?
+                    Great! Next step is to write an application so they can
+                    decide to be your mentor or not. Write about your Motivation
+                    and Expectation below. Write at least 250 characters in
+                    each, but not more than 600 characters.
+                  </p>
+                </Content>
                 <Caption>Motivation </Caption>
                 <Content>
                   <p>
-                    Write an application to the {mentor.firstName}{' '}
-                    {mentor.lastName} in which you describe why you think that
-                    the two of you are a great fit.
+                    Write an application to {mentor.firstName} {mentor.lastName}{' '}
+                    in which you describe why you think the two of you are a
+                    great fit.
                   </p>
                 </Content>
                 <FormTextArea
@@ -118,13 +115,14 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
                   placeholder={`Dear ${mentor.firstName}...`}
                   minChar={250}
                   maxChar={600}
+                  maxLength={600}
                   {...formik}
                 />
 
                 <Caption>Expectation </Caption>
                 <Content>
                   <p>
-                    Please also write a few words about your expectations on the
+                    Please also write a few words about your expectations of the
                     mentorship with this mentor.
                   </p>
                 </Content>
@@ -134,6 +132,7 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
                   placeholder="My expectations for this mentorship…"
                   minChar={250}
                   maxChar={600}
+                  maxLength={600}
                   {...formik}
                 />
 
