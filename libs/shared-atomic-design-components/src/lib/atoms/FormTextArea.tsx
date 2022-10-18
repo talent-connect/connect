@@ -35,21 +35,36 @@ function FormTextArea(props: any) {
 
   const charactersLength = values[name]?.length || 0
 
+  const isMinCharAmountReached =
+    minChar && values[name] && charactersLength >= minChar
+
+  const isTouched = !!get(touched, name)
+
+  const hasError = isTouched && !isMinCharAmountReached && !!get(errors, name)
+
   const numberOfCharsRequiredToMinAmount =
     minChar - (values[name] ? charactersLength : 0)
 
   const numberOfCharsAllowedToMaxAmount =
     maxChar - (values[name] ? charactersLength : 0)
 
-  const minCharAmountReached =
-    minChar && values[name] && charactersLength >= minChar
+  const isFieldFresh = !isTouched && !values[name] && charactersLength === 0
 
-  const isTouched = !!get(touched, name)
+  const isSelectedAndBelowMinCharAmount =
+    !isTouched &&
+    values[name] &&
+    charactersLength < minChar &&
+    !isMinCharAmountReached
 
-  const hasError = isTouched && !minCharAmountReached && !!get(errors, name)
+  const wasVisitedAndBelowMinCharAmount =
+    isTouched && (!values[name] || charactersLength < minChar)
+
+  const isAboveMinCharAmount =
+    (!values[name] || charactersLength <= maxChar) &&
+    (!minChar || (minChar && isMinCharAmountReached))
 
   const defineTextAreaOutlineColor = () => {
-    if (minCharAmountReached) return 'success'
+    if (isMinCharAmountReached) return 'success'
 
     if (hasError) return 'danger'
 
@@ -61,7 +76,7 @@ function FormTextArea(props: any) {
   return (
     <Form.Field className={classnames({ [`${className}`]: className })}>
       {label && <Form.Label size="small">{label}</Form.Label>}
-      <Form.Control className={minCharAmountReached ? 'textarea-clean' : ''}>
+      <Form.Control className={isMinCharAmountReached ? 'textarea-clean' : ''}>
         <Form.Textarea
           id={name}
           name={name}
@@ -86,7 +101,7 @@ function FormTextArea(props: any) {
           </Form.Help>
         </Columns.Column>
         <Columns.Column>
-          {minChar && !isTouched && !values[name] && charactersLength === 0 && (
+          {minChar && isFieldFresh && (
             <Content
               textColor="grey-dark"
               className="help help--show redi-textarea-characters"
@@ -94,51 +109,44 @@ function FormTextArea(props: any) {
               min {minChar} characters required
             </Content>
           )}
-          {minChar &&
-            !isTouched &&
-            values[name] &&
-            charactersLength < minChar &&
-            !minCharAmountReached && (
-              <Content
-                textColor="grey-dark"
-                className="help help--show redi-textarea-characters"
-              >
-                {numberOfCharsRequiredToMinAmount} more{' '}
-                {numberOfCharsRequiredToMinAmount > 1
-                  ? 'characters'
-                  : 'character'}{' '}
-                required
-              </Content>
-            )}
-          {minChar &&
-            isTouched &&
-            (!values[name] || charactersLength < minChar) && (
-              <Content
-                textColor="danger"
-                className="help help--show redi-textarea-characters"
-              >
-                {numberOfCharsRequiredToMinAmount} more{' '}
-                {numberOfCharsRequiredToMinAmount > 1
-                  ? 'characters'
-                  : 'character'}{' '}
-                required
-              </Content>
-            )}
 
-          {maxChar &&
-            (!values[name] || charactersLength <= maxChar) &&
-            (!minChar || (minChar && minCharAmountReached)) && (
-              <Content
-                textColor="grey-dark"
-                className="help help--show redi-textarea-characters"
-              >
-                {numberOfCharsAllowedToMaxAmount}{' '}
-                {numberOfCharsAllowedToMaxAmount !== 1
-                  ? 'characters'
-                  : 'character'}{' '}
-                left
-              </Content>
-            )}
+          {minChar && isSelectedAndBelowMinCharAmount && (
+            <Content
+              textColor="grey-dark"
+              className="help help--show redi-textarea-characters"
+            >
+              {numberOfCharsRequiredToMinAmount} more{' '}
+              {numberOfCharsRequiredToMinAmount > 1
+                ? 'characters'
+                : 'character'}{' '}
+              required
+            </Content>
+          )}
+          {minChar && wasVisitedAndBelowMinCharAmount && (
+            <Content
+              textColor="danger"
+              className="help help--show redi-textarea-characters"
+            >
+              {numberOfCharsRequiredToMinAmount} more{' '}
+              {numberOfCharsRequiredToMinAmount > 1
+                ? 'characters'
+                : 'character'}{' '}
+              required
+            </Content>
+          )}
+
+          {maxChar && isAboveMinCharAmount && (
+            <Content
+              textColor="grey-dark"
+              className="help help--show redi-textarea-characters"
+            >
+              {numberOfCharsAllowedToMaxAmount}{' '}
+              {numberOfCharsAllowedToMaxAmount !== 1
+                ? 'characters'
+                : 'character'}{' '}
+              left
+            </Content>
+          )}
         </Columns.Column>
       </Columns>
     </Form.Field>
