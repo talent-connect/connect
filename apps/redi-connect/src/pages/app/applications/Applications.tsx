@@ -1,7 +1,5 @@
-import React from 'react'
 import { Content } from 'react-bulma-components'
 import { Heading } from '@talent-connect/shared-atomic-design-components'
-import { ApplicationCard } from '../../../components/organisms'
 import LoggedIn from '../../../components/templates/LoggedIn'
 import { RootState } from '../../../redux/types'
 import { getApplicants } from '../../../redux/matches/selectors'
@@ -9,12 +7,15 @@ import { connect } from 'react-redux'
 import { RedMatch } from '@talent-connect/shared-types'
 import { useHistory } from 'react-router-dom'
 import { getRedProfileFromLocalStorage } from '../../../services/auth/auth'
+import MobileView from './MobileView'
+import DesktopView from './DesktopView'
+import { ApplicationsFilterContextProvider } from './ApplicationsFilterContext'
 
 interface Props {
   applicants: RedMatch[]
 }
 
-function Applications({ applicants }: Props) {
+const Applications = ({ applicants }: Props) => {
   const history = useHistory()
   const profile = getRedProfileFromLocalStorage()
 
@@ -23,7 +24,7 @@ function Applications({ applicants }: Props) {
   return (
     <LoggedIn>
       <Heading subtitle size="small" className="double-bs">
-        Applications {Boolean(applicants.length) && `(${applicants.length})`}
+        Applications
       </Heading>
       {applicants.length === 0 ? (
         <Content italic>
@@ -44,15 +45,11 @@ function Applications({ applicants }: Props) {
           )}
         </Content>
       ) : (
-        applicants
-          .sort((a, b) => {
-            const dateA = new Date(a.createdAt).getTime()
-            const dateB = new Date(b.createdAt).getTime()
-            return dateA < dateB ? 1 : -1
-          })
-          .map((application: RedMatch) => (
-            <ApplicationCard key={application.id} application={application} />
-          ))
+        <ApplicationsFilterContextProvider>
+          <DesktopView applicants={applicants} />
+
+          <MobileView />
+        </ApplicationsFilterContextProvider>
       )}
     </LoggedIn>
   )

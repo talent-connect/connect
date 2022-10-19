@@ -1,18 +1,24 @@
-import { Icon } from '@talent-connect/shared-atomic-design-components'
-import { RedMatch, RedProfile } from '@talent-connect/shared-types'
-import classnames from 'classnames'
-import moment from 'moment'
-import React, { useState } from 'react'
-import { Columns, Content, Heading } from 'react-bulma-components'
+import React from 'react'
 import { connect } from 'react-redux'
-import { useHistory } from 'react-router-dom'
-import { RootState } from '../../redux/types'
-import { getHasReachedMenteeLimit } from '../../redux/user/selectors'
-import { getRedProfileFromLocalStorage } from '../../services/auth/auth'
-import { Avatar, ConfirmMentorship } from '../organisms'
+import { Columns, Content, Heading } from 'react-bulma-components'
+import moment from 'moment'
+import classnames from 'classnames'
+
+import { RootState } from '../../../../redux/types'
+import { getHasReachedMenteeLimit } from '../../../../redux/user/selectors'
+import { RedMatch, RedProfile } from '@talent-connect/shared-types'
+import {
+  REDI_LOCATION_NAMES,
+  MENTORSHIP_MATCH_STATUS_LABELS,
+} from '@talent-connect/shared-config'
+import { Icon } from '@talent-connect/shared-atomic-design-components'
+import {
+  Avatar,
+  ConfirmMentorship,
+  DeclineMentorshipButton,
+} from '../../../../components/organisms'
+import { useApplicationCard } from './useApplicationCard'
 import './ApplicationCard.scss'
-import DeclineMentorshipButton from './DeclineMentorshipButton'
-import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 
 interface Props {
   application: RedMatch & { createdAt?: string }
@@ -20,44 +26,39 @@ interface Props {
   currentUser?: RedProfile
 }
 
-const STATUS_LABELS: any = {
-  applied: 'Pending',
-  accepted: 'Accepted',
-  completed: 'Accepted',
-  cancelled: 'Cancelled',
-  'declined-by-mentor': 'Declined',
-  'invalidated-as-other-mentor-accepted': 'Cancelled',
-}
-
 const ApplicationCard = ({
   application,
   hasReachedMenteeLimit,
   currentUser,
 }: Props) => {
-  const history = useHistory()
-  const profile = getRedProfileFromLocalStorage()
-  const [showDetails, setShowDetails] = useState(false)
-  const applicationDate = new Date(application.createdAt || '')
-  const applicationUser =
-    profile.userType === 'mentee' ? application.mentor : application.mentee
-  const currentUserIsMentor = currentUser?.userType === 'mentor'
+  const {
+    history,
+    showDetails,
+    setShowDetails,
+    applicationUser,
+    applicationDate,
+    currentUserIsMentor,
+  } = useApplicationCard({
+    application,
+    currentUser,
+  })
 
   return (
     <>
       <div
-        className="application-card"
+        className={
+          application.status !== 'applied'
+            ? 'application-card'
+            : 'application-card-pending'
+        }
         onClick={() => setShowDetails(!showDetails)}
       >
         <Columns vCentered>
-          <Columns.Column size={1} className="application-card__avatar">
+          <Columns.Column className="application-card__avatar">
             <Avatar profile={applicationUser} />
           </Columns.Column>
 
-          <Columns.Column
-            size={3}
-            textAlignment="left"
-            responsive={{ mobile: { textAlignment: { value: 'centered' } } }}
-          >
+          <Columns.Column size={3} textAlignment="left">
             {applicationUser && (
               <>
                 <p>
@@ -68,10 +69,7 @@ const ApplicationCard = ({
             )}
           </Columns.Column>
 
-          <Columns.Column
-            size={2}
-            responsive={{ mobile: { textAlignment: { value: 'centered' } } }}
-          >
+          <Columns.Column textAlignment="centered">
             <span
               className="application-card__link"
               onClick={() =>
@@ -86,23 +84,22 @@ const ApplicationCard = ({
             </span>
           </Columns.Column>
 
-          <Columns.Column size={3} textAlignment="centered">
+          <Columns.Column textAlignment="centered" tablet={{ narrow: true }}>
             From {moment(applicationDate).format('DD.MM.YYYY')}
           </Columns.Column>
 
           <Columns.Column
-            size={2}
-            responsive={{ mobile: { textAlignment: { value: 'centered' } } }}
-            textAlignment="right"
-          >
-            {STATUS_LABELS[application.status]}
-          </Columns.Column>
-
-          <Columns.Column
-            size={1}
-            className="application-card-dropdown"
+            className={
+              application.status === 'applied'
+                ? 'application-card-pending__status'
+                : null
+            }
             textAlignment="centered"
           >
+            {MENTORSHIP_MATCH_STATUS_LABELS[application.status]}
+          </Columns.Column>
+
+          <Columns.Column className="application-card-dropdown">
             <Icon
               icon="chevron"
               size="small"

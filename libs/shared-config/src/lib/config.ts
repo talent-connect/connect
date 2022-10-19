@@ -543,6 +543,15 @@ export const RED_MATCH_STATUSES = {
     'Invalidated due to other mentor accepting',
 } as const
 
+export const MENTORSHIP_MATCH_STATUS_LABELS: any = {
+  applied: 'Pending',
+  accepted: 'Accepted',
+  completed: 'Accepted',
+  cancelled: 'Cancelled',
+  'declined-by-mentor': 'Declined',
+  'invalidated-as-other-mentor-accepted': 'Cancelled',
+}
+
 export const AWS_PROFILE_AVATARS_BUCKET_BASE_URL =
   'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/'
 
