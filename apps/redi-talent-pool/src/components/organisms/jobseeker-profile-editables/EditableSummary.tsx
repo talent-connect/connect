@@ -105,17 +105,11 @@ const formTopSkills = topSkills.map(({ id, label }) => ({
   label,
 }))
 
-const minChars = 100
-const maxChars = 600
-
 const validationSchema = Yup.object({
   topSkills: Yup.array()
     .min(1, 'Pick at least one top technical skill')
     .max(5, "Your profile can't contain too many skills - five at most"),
-  aboutYourself: Yup.string()
-    .required()
-    .min(minChars, 'Write at least 100 characters about yourself.')
-    .max(maxChars, 'The text about yourself can be up to 600 characters long.'),
+  aboutYourself: Yup.string().required().min(100).max(600),
 })
 
 interface JobseekerFormSectionSummaryProps {
@@ -195,7 +189,6 @@ export function JobseekerFormSectionSummary({
         rows={7}
         placeholder="Example: UX Designer with an academic background in Psychology. Experienced in negotiating with different kinds of clients and resolving customer complaints with a high level of empathy. Committed to understanding the human mind and designing impactful products by leveraging a strong sense of analytical and critical thinking."
         minChar={100}
-        maxChar={600}
         maxLength={600}
         formik={formik}
       />

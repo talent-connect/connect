@@ -19,18 +19,11 @@ export interface AboutFormValues {
   expectations: string
 }
 
-const personalDescriptionRange = { min: 100, max: 600 }
 const validationSchema = Yup.object({
   personalDescription: Yup.string()
-    .required('Write at least 100 characters about yourself.')
-    .min(
-      personalDescriptionRange.min,
-      'Write at least 100 characters about yourself.'
-    )
-    .max(
-      personalDescriptionRange.max,
-      'The introduction text can be up to 600 characters long.'
-    )
+    .required()
+    .min(100)
+    .max(600)
     .label('Personal description'),
 })
 // props: FormikProps<AboutFormValues>
@@ -68,8 +61,7 @@ const EditableAbout = ({ profile, profileSaveStart }: any) => {
         name="personalDescription"
         rows={4}
         placeholder="About you"
-        minChar={personalDescriptionRange.min}
-        maxChar={personalDescriptionRange.max}
+        minChar={100}
         maxLength={600}
         formik={formik}
       />

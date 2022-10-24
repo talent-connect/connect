@@ -122,7 +122,6 @@ const ReportProblem = ({ redProfileId, type }: ReportProblemProps) => {
               rows={4}
               placeholder="I have concerns about…"
               minChar={25}
-              maxChar={1000}
               maxLength={1000}
               formik={formik}
             />

@@ -10,7 +10,6 @@ interface FormTextAreaProps {
   label?: string
   placeholder?: string
   minChar?: number
-  maxChar?: number
   rows?: number
   maxLength?: number
   disabled?: boolean
@@ -26,7 +25,6 @@ function FormTextArea(props: FormTextAreaProps) {
     label,
     placeholder,
     minChar,
-    maxChar,
     rows,
     maxLength,
     disabled,
@@ -46,7 +44,7 @@ function FormTextArea(props: FormTextAreaProps) {
     minChar - (values[name] ? charactersLength : 0)
 
   const numberOfCharsAllowedToMaxAmount =
-    maxChar - (values[name] ? charactersLength : 0)
+    maxLength - (values[name] ? charactersLength : 0)
 
   const isFieldFresh = !isTouched && !values[name] && charactersLength === 0
 
@@ -60,7 +58,7 @@ function FormTextArea(props: FormTextAreaProps) {
     isTouched && (!values[name] || charactersLength < minChar)
 
   const isAboveMinCharAmount =
-    (!values[name] || charactersLength <= maxChar) &&
+    (!values[name] || charactersLength <= maxLength) &&
     (!minChar || (minChar && isMinCharAmountReached))
 
   const defineTextAreaOutlineColor = () => {
@@ -95,7 +93,7 @@ function FormTextArea(props: FormTextAreaProps) {
         <Columns.Column>
           <Form.Help
             color="danger"
-            className={hasError && !maxChar && !minChar ? 'help--show' : ''}
+            className={hasError && !maxLength && !minChar ? 'help--show' : ''}
           >
             {hasError && <>{get(errors, name)}</>}
           </Form.Help>
@@ -135,7 +133,7 @@ function FormTextArea(props: FormTextAreaProps) {
             </Content>
           )}
 
-          {maxChar && isAboveMinCharAmount && (
+          {maxLength && isAboveMinCharAmount && (
             <Content
               textColor="grey-dark"
               className="help help--show redi-textarea-characters"

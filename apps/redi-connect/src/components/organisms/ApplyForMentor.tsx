@@ -111,7 +111,6 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
                   rows={4}
                   placeholder={`Dear ${mentor.firstName}...`}
                   minChar={250}
-                  maxChar={600}
                   maxLength={600}
                   formik={formik}
                 />
@@ -128,7 +127,6 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
                   rows={4}
                   placeholder="My expectations for this mentorship…"
                   minChar={250}
-                  maxChar={600}
                   maxLength={600}
                   formik={formik}
                 />
