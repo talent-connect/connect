@@ -166,10 +166,10 @@ export function JobseekerFormSectionSummary({
     onSubmit,
     validateOnMount: true,
   })
-  useEffect(() => setIsFormDirty?.(formik.dirty), [
-    formik.dirty,
-    setIsFormDirty,
-  ])
+  useEffect(
+    () => setIsFormDirty?.(formik.dirty),
+    [formik.dirty, setIsFormDirty]
+  )
 
   return (
     <>
@@ -196,7 +196,8 @@ export function JobseekerFormSectionSummary({
         placeholder="Example: UX Designer with an academic background in Psychology. Experienced in negotiating with different kinds of clients and resolving customer complaints with a high level of empathy. Committed to understanding the human mind and designing impactful products by leveraging a strong sense of analytical and critical thinking."
         minChar={100}
         maxChar={600}
-        {...formik}
+        maxLength={600}
+        formik={formik}
       />
       <FaqItem
         question="Our tips for writing your Summary"

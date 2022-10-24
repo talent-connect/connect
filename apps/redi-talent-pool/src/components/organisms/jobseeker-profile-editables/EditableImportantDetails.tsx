@@ -302,7 +302,7 @@ export function JobseekerFormSectionImportantDetails({
         name="postalMailingAddress"
         rows={4}
         placeholder={`Max Mustermann,\nBerlinstraße 123,\n12345 Berlin,\nGermany`}
-        {...formik}
+        formik={formik}
       />
       {hideNonContactDetailsFields ? null : (
         <>

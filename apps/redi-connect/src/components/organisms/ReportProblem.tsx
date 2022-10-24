@@ -36,14 +36,14 @@ const validationSchema = Yup.object({
   problemDescription: Yup.string()
     .required()
     .label('Problem description')
+    .min(25)
     .max(1000),
 })
 
 const ReportProblem = ({ redProfileId, type }: ReportProblemProps) => {
   const [showProblemDialog, setShowProblemDialog] = useState(false)
-  const [submitResult, setSubmitResult] = useState<FormSubmitResult>(
-    'notSubmitted'
-  )
+  const [submitResult, setSubmitResult] =
+    useState<FormSubmitResult>('notSubmitted')
   const history = useHistory()
   const isMentor = type === 'mentor'
 
@@ -51,9 +51,8 @@ const ReportProblem = ({ redProfileId, type }: ReportProblemProps) => {
     values: FormValues,
     actions: FormikHelpers<FormValues>
   ) => {
-    const {
-      ifFromMentor_cancelMentorshipImmediately: isCancelImmediately,
-    } = values
+    const { ifFromMentor_cancelMentorshipImmediately: isCancelImmediately } =
+      values
     if (isCancelImmediately) {
       const userIsCertain = window.confirm(
         'Are you sure you want to cancel this mentorship?'
@@ -94,9 +93,8 @@ const ReportProblem = ({ redProfileId, type }: ReportProblemProps) => {
     onSubmit: submitForm,
   })
 
-  const {
-    ifFromMentor_cancelMentorshipImmediately: isCancelImmediatly,
-  } = formik.values
+  const { ifFromMentor_cancelMentorshipImmediately: isCancelImmediatly } =
+    formik.values
 
   return (
     <>
@@ -123,8 +121,10 @@ const ReportProblem = ({ redProfileId, type }: ReportProblemProps) => {
               name="problemDescription"
               rows={4}
               placeholder="I have concerns about…"
+              minChar={25}
               maxChar={1000}
-              {...formik}
+              maxLength={1000}
+              formik={formik}
             />
             {isMentor && (
               <Checkbox.Form

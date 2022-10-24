@@ -91,21 +91,18 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
             )}
             {submitResult !== 'success' && (
               <>
-                <Content size="small">
+                <Content>
                   <p>
                     Want to apply to {mentor.firstName} {mentor.lastName}?
-                    Great! Next step is to write an application so they can
-                    decide to be your mentor or not. Write about your Motivation
-                    and Expectation below. Write at least 250 characters in
-                    each, but not more than 600 characters.
+                    Great! Next step is to write about your Motivation and
+                    Expectation below.
                   </p>
                 </Content>
                 <Caption>Motivation </Caption>
-                <Content>
+                <Content size="small">
                   <p>
-                    Write an application to {mentor.firstName} {mentor.lastName}{' '}
-                    in which you describe why you think the two of you are a
-                    great fit.
+                    Describe why you think the two of you are a great fit
+                    (250-600 characters).
                   </p>
                 </Content>
                 <FormTextArea
@@ -116,14 +113,14 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
                   minChar={250}
                   maxChar={600}
                   maxLength={600}
-                  {...formik}
+                  formik={formik}
                 />
 
                 <Caption>Expectation </Caption>
-                <Content>
+                <Content size="small">
                   <p>
-                    Please also write a few words about your expectations of the
-                    mentorship with this mentor.
+                    Write a few words about your expectations of the mentorship
+                    with {mentor.firstName}.
                   </p>
                 </Content>
                 <FormTextArea
@@ -133,7 +130,7 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
                   minChar={250}
                   maxChar={600}
                   maxLength={600}
-                  {...formik}
+                  formik={formik}
                 />
 
                 <Form.Help

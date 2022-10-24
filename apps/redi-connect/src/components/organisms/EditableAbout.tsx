@@ -70,14 +70,15 @@ const EditableAbout = ({ profile, profileSaveStart }: any) => {
         placeholder="About you"
         minChar={personalDescriptionRange.min}
         maxChar={personalDescriptionRange.max}
-        {...formik}
+        maxLength={600}
+        formik={formik}
       />
       <FormTextArea
         label={expectationsFieldLabel(userType)}
         name="expectations"
         rows={4}
         placeholder={expectationsFieldPlaceholder(userType)}
-        {...formik}
+        formik={formik}
       />
     </Editable>
   )

@@ -1,20 +1,25 @@
-import classnames from 'classnames'
-import { Form, Content, Columns } from 'react-bulma-components'
-import './FormTextArea.scss'
 import { get } from 'lodash'
+import { Form, Content, Columns } from 'react-bulma-components'
+import classnames from 'classnames'
+import { useFormik } from 'formik'
+import './FormTextArea.scss'
 
-interface Props {
+interface FormTextAreaProps {
   name: string
-  className: string
-  label: string
-  placeholder: string
-  disabled?: boolean
+  className?: string
+  label?: string
+  placeholder?: string
+  minChar?: number
+  maxChar?: number
   rows?: number
+  maxLength?: number
+  disabled?: boolean
+  formik: ReturnType<typeof useFormik>
 }
 
-// the any is not the best solution here, I would need to use the props needed for
-// the field and the formik values coming from the form context
-function FormTextArea(props: any) {
+// This component by itself handles validation messages under the text area
+
+function FormTextArea(props: FormTextAreaProps) {
   const {
     name,
     className,
@@ -23,14 +28,9 @@ function FormTextArea(props: any) {
     minChar,
     maxChar,
     rows,
-    values,
-    handleChange,
-    handleBlur,
-    isSubmitting,
-    touched,
-    errors,
-    disabled,
     maxLength,
+    disabled,
+    formik: { values, handleChange, handleBlur, isSubmitting, touched, errors },
   } = props
 
   const charactersLength = values[name]?.length || 0

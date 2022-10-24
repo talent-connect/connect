@@ -275,7 +275,7 @@ function ModalForm({
           name={`summary`}
           rows={7}
           placeholder="Tell us a bit about the position, expectations & ideal candidate."
-          {...formik}
+          formik={formik}
         />
         <Element
           renderAs="p"

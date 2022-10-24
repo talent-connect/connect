@@ -102,8 +102,8 @@ const ConfirmMentorship = ({
             <Content>
               <p>
                 Please write a few welcoming words to your future mentee and
-                give some information on your first meeting. (write at least 250
-                characters)
+                give some information on your first meeting (250-600
+                characters).
               </p>
             </Content>
             <FormTextArea
@@ -112,7 +112,8 @@ const ConfirmMentorship = ({
               placeholder={`Dear ${mentee.firstName}...`}
               minChar={250}
               maxChar={600}
-              {...formik}
+              maxLength={600}
+              formik={formik}
             />
           </form>
         </Modal.Body>
