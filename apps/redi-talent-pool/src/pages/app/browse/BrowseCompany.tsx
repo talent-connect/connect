@@ -29,6 +29,12 @@ import { objectEntries } from '@talent-connect/typescript-utilities'
 import { JobseekerProfileCard } from '../../../components/organisms/JobseekerProfileCard'
 import { LoggedIn } from '../../../components/templates'
 
+import {
+  FederalState,
+  TpDesiredEmploymentType,
+  TpDesiredPosition,
+  TpTechnicalSkill,
+} from '@talent-connect/data-access'
 import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
 import { useLoadVisibleJobseekerProfilesQuery } from './BrowseCompany.generated'
@@ -39,6 +45,16 @@ const germanFederalStatesOptions = objectEntries(germanFederalStates).map(
     label,
   })
 )
+
+interface QueryStringParams {
+  name: string
+  desiredPositions: TpDesiredPosition[]
+  employmentTypes: TpDesiredEmploymentType[]
+  skills: TpTechnicalSkill[]
+  federalStates: FederalState[]
+  onlyFavorites: boolean
+  isJobFair2022Participant: boolean
+}
 
 export function BrowseCompany() {
   const [query, setQuery] = useQueryParams({
@@ -58,7 +74,7 @@ export function BrowseCompany() {
     federalStates,
     onlyFavorites,
     isJobFair2022Participant,
-  } = query
+  } = query as QueryStringParams
 
   const history = useHistory()
 

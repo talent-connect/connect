@@ -1,19 +1,19 @@
 import {
-  ConnectProfileLanguage,
   ConnectProfileStatus,
+  Language,
   MentoringTopic,
   RediLocation,
   useFavoriteMentorMutation,
   useFindAvailableMentorsQuery,
   useListFavoriteMentorsQuery,
   useLoadMyProfileQuery,
-  useUnfavoriteMentorMutation
+  useUnfavoriteMentorMutation,
 } from '@talent-connect/data-access'
 import {
   FilterDropdown,
   Heading,
   Icon,
-  SearchField
+  SearchField,
 } from '@talent-connect/shared-atomic-design-components'
 import { CATEGORIES, REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import { objectKeys } from '@talent-connect/typescript-utilities'
@@ -25,7 +25,7 @@ import {
   BooleanParam,
   StringParam,
   useQueryParams,
-  withDefault
+  withDefault,
 } from 'use-query-params'
 import { ProfileCard } from '../../../components/organisms'
 import { LoggedIn } from '../../../components/templates'
@@ -83,7 +83,7 @@ const FindAMentor = () => {
       // TODO: find a way to pass type information to the useQueryParams() above
       categories: topics as MentoringTopic[],
       name,
-      languages: languages as ConnectProfileLanguage[],
+      languages: languages as Language[],
       locations: locations as RediLocation[],
     },
   })
@@ -274,7 +274,6 @@ const FindAMentor = () => {
 
       <Columns>
         {mentors?.map((mentor) => {
-          mentor.
           const isFavorite = currentFavorites.includes(mentor.id)
 
           if (!isFavorite && showFavorites) return
