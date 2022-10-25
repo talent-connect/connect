@@ -104,7 +104,7 @@
     "loopback-content-range": "^1.1.0",
     "luxon": "^2.0.2",
     "mjml": "^4.6.3",
-    "moment": "^2.29.2",
+    "moment": "^2.29.4",
     "nodemailer": "^6.4.8",
     "papaparse": "5.2.0",
     "query-string": "^7.0.0",
