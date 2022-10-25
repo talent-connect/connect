@@ -32,12 +32,15 @@ const initialFormValues: FormValues = {
   ifFromMentor_cancelMentorshipImmediately: false,
 }
 
+const MIN_CHARS_COUNT = 25
+const MAX_CHARS_COUNT = 1000
+
 const validationSchema = Yup.object({
   problemDescription: Yup.string()
     .required()
     .label('Problem description')
-    .min(25)
-    .max(1000),
+    .min(MIN_CHARS_COUNT)
+    .max(MAX_CHARS_COUNT),
 })
 
 const ReportProblem = ({ redProfileId, type }: ReportProblemProps) => {
@@ -121,8 +124,8 @@ const ReportProblem = ({ redProfileId, type }: ReportProblemProps) => {
               name="problemDescription"
               rows={4}
               placeholder="I have concerns about…"
-              minChar={25}
-              maxLength={1000}
+              minChar={MIN_CHARS_COUNT}
+              maxLength={MAX_CHARS_COUNT}
               formik={formik}
             />
             {isMentor && (

@@ -19,11 +19,14 @@ export interface AboutFormValues {
   expectations: string
 }
 
+const MIN_CHARS_COUNT = 100
+const MAX_CHARS_COUNT = 600
+
 const validationSchema = Yup.object({
   personalDescription: Yup.string()
     .required()
-    .min(100)
-    .max(600)
+    .min(MIN_CHARS_COUNT)
+    .max(MAX_CHARS_COUNT)
     .label('Personal description'),
 })
 // props: FormikProps<AboutFormValues>
@@ -61,8 +64,8 @@ const EditableAbout = ({ profile, profileSaveStart }: any) => {
         name="personalDescription"
         rows={4}
         placeholder="About you"
-        minChar={100}
-        maxLength={600}
+        minChar={MIN_CHARS_COUNT}
+        maxLength={MAX_CHARS_COUNT}
         formik={formik}
       />
       <FormTextArea

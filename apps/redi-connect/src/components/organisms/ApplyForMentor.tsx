@@ -29,9 +29,18 @@ const initialValues = {
   dataSharingAccepted: false,
 }
 
+const MIN_CHARS_COUNT = 250
+const MAX_CHARS_COUNT = 600
+
 const validationSchema = Yup.object({
-  applicationText: Yup.string().required().min(250).max(600),
-  expectationText: Yup.string().required().min(250).max(600),
+  applicationText: Yup.string()
+    .required()
+    .min(MIN_CHARS_COUNT)
+    .max(MAX_CHARS_COUNT),
+  expectationText: Yup.string()
+    .required()
+    .min(MIN_CHARS_COUNT)
+    .max(MAX_CHARS_COUNT),
   dataSharingAccepted: Yup.boolean()
     .required()
     .oneOf([true], 'Sharing profile data with your mentor is required'),
@@ -110,8 +119,8 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
                   className="oneandhalf-bs"
                   rows={4}
                   placeholder={`Dear ${mentor.firstName}...`}
-                  minChar={250}
-                  maxLength={600}
+                  minChar={MIN_CHARS_COUNT}
+                  maxLength={MAX_CHARS_COUNT}
                   formik={formik}
                 />
 
@@ -126,8 +135,8 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
                   name="expectationText"
                   rows={4}
                   placeholder="My expectations for this mentorship…"
-                  minChar={250}
-                  maxLength={600}
+                  minChar={MIN_CHARS_COUNT}
+                  maxLength={MAX_CHARS_COUNT}
                   formik={formik}
                 />
 
