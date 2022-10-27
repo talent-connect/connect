@@ -7,6 +7,8 @@ import { useHistory } from 'react-router-dom'
 import {
   AWS_PROFILE_AVATARS_BUCKET_BASE_URL,
   REDI_LOCATION_NAMES,
+  FIELDS_OF_EXPERTISE,
+  MENTORING_TOPICS_MAP,
 } from '@talent-connect/shared-config'
 
 import placeholderImage from '../../assets/images/img-placeholder.png'
@@ -30,14 +32,22 @@ const ProfileCard = ({
 }: ProfileCardProps) => {
   const history = useHistory()
 
-  const {
+  let {
     firstName,
     lastName,
     languages,
-    categories,
+    mentor_mentoringTopics,
+    mentor_professionalExperienceFields,
     rediLocation,
     profileAvatarImageS3Key,
   } = profile
+
+  const mentoringTopics =
+    mentor_mentoringTopics?.map((topic) => MENTORING_TOPICS_MAP[topic]) ?? []
+  const professionalExperienceFields =
+    mentor_professionalExperienceFields?.map(
+      (field) => FIELDS_OF_EXPERTISE[field]
+    ) ?? []
 
   const handleFavorite = (e: React.MouseEvent) => {
     e.stopPropagation()
@@ -82,9 +92,19 @@ const ProfileCard = ({
           {REDI_LOCATION_NAMES[rediLocation]}
         </Element>
         {languages && <PipeList items={languages} />}
-        {categories && (
-          <ReadMentoringTopics.Tags items={categories} shortList />
-        )}
+        <p style={{ fontSize: 'smaller' }}>
+          <strong>
+            Mentors in these overarching topics, role-related skills and
+            tools/frameworks:
+          </strong>
+          {mentoringTopics?.length > 0 ? mentoringTopics.join(' | ') : null}
+        </p>
+        <p style={{ fontSize: 'smaller' }}>
+          <strong>Has professional experience in these fields:</strong>
+          {professionalExperienceFields?.length > 0
+            ? professionalExperienceFields.join(' | ')
+            : null}
+        </p>
       </Card.Content>
     </Card>
   )
