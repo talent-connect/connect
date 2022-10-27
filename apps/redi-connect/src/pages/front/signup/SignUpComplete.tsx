@@ -36,7 +36,7 @@ export default function SignUpComplete() {
               <p>
                 Now, we would like to get to know you better. We regularly
                 organize mentor onboardings in small groups.{' '}
-                <a href="https://calendly.com/johanna-redi-team/redi-connect-mentors-onboarding">
+                <a href="https://calendly.com/hadeertalentsucess/redi-connect-mentors-onboarding">
                   <strong>
                     Please book yourself in for one of the open 30-minute slots.
                   </strong>
@@ -70,7 +70,7 @@ export default function SignUpComplete() {
                 </p>
                 <p>
                   <a
-                    href="https://calendly.com/johanna-redi-team/redi-connect-mentee-activation"
+                    href="https://calendly.com/hadeertalentsucess/redi-connect-mentees-activation-call"
                     target="_blank"
                     rel="noreferrer"
                   >
