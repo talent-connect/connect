@@ -21,5 +21,7 @@ ReactDOM.render(
 
 console.log(
   'This ReDI Connect build is configured for location: ',
-  process.env.NX_REDI_CONNECT_REDI_LOCATION
+  process.env.NX_REDI_CONNECT_REDI_LOCATION,
+  ', and for environment:',
+  process.env.NODE_ENV
 )
