@@ -22,24 +22,31 @@ const conn = new jsforce.Connection({
 ;(async () => {
   await conn.login(USERNAME, `${PASSWORD}${SECURITY_TOKEN}`)
 
-  const res = await conn.sobject('hed__Language__c').find()
+  const result = await conn.sobject('ReDI_Connect_Profile__c').describe()
+  const result2 = result.recordTypeInfos.find(
+    (recordType) => recordType.name.toLowerCase() === 'MENTEE'.toLowerCase()
+  ).recordTypeId
 
-  res.forEach(async (lang) => {
-    const updatedLang = {
-      Id: lang.Id,
-      Name: lang.Name,
-      Slug__c: lang.Name,
-    }
+  console.log(result2)
 
-    try {
-      await conn.sobject('hed__Language__c').update(updatedLang)
-      console.log('did update')
-    } catch (err) {
-      console.log(err)
-    }
-  })
+  // const res = await conn.sobject('hed__Language__c').find()
 
-  console.log(res)
+  // res.forEach(async (lang) => {
+  //   const updatedLang = {
+  //     Id: lang.Id,
+  //     Name: lang.Name,
+  //     Slug__c: lang.Name,
+  //   }
+
+  //   try {
+  //     await conn.sobject('hed__Language__c').update(updatedLang)
+  //     console.log('did update')
+  //   } catch (err) {
+  //     console.log(err)
+  //   }
+  // })
+
+  // console.log(res)
 
   // var channel = '/event/ReDI_Connect_Profile_Statuc_Change_Event__e'
   // var channel2 = '/event/ReDI_Connect_Profile_Creation_Event__e'

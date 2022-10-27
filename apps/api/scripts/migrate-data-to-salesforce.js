@@ -13,6 +13,11 @@ const LOGIN_URL = process.env.LOGIN_URL
 const CLIENT_ID = process.env.CLIENT_ID
 const CLIENT_SECRET = process.env.CLIENT_SECRET
 
+//? BEFORE MIGRATE:
+/**
+ * 1. Check that the Audit fields permissions are active (see Jonida email)
+ */
+
 console.log('USERNAME', USERNAME)
 console.log('PASSWORD', PASSWORD)
 console.log('SECURITY_TOKEN', SECURITY_TOKEN)
@@ -67,9 +72,9 @@ const { of } = require('rxjs')
 const LANGUAGES = require('./languages')
 const { lang } = require('moment')
 
-const DELAY = 1500
+const DELAY = 2000
 const RETRIES = 5
-const CONCURRENCY = 50 // 50 generally works, with only a few (< 10) errors. For actual data migration, use a low value, such as 15.
+const CONCURRENCY = 10 // 50 generally works, with only a few (< 10) errors. For actual data migration, use a low value, such as 15.
 
 // const LOCAL_CONTACT_RECORD_TYPE = '0121i000000HMq9AAG'
 // const LOCAL_CONNECT_PROFILE_MENTOR_RECORD_TYPE = '0129X0000001EXBQA2'
@@ -80,17 +85,18 @@ const CONCURRENCY = 50 // 50 generally works, with only a few (< 10) errors. For
 // const LOCAL_JOBSEEKER_PROFILE_LINE_ITEM_RECORD_TYPE_EXPERIENCE = '0129X0000001RUPQA2'
 // const LOCAL_JOBSEEKER_PROFILE_LINE_ITEM_RECORD_TYPE_EDUCATION = '0129X0000001RSnQAM'
 
+//? BEFORE MIGRATE: CHECK ALL THESE CONSTANTS
 const PARTIALSBX_CONTACT_RECORD_TYPE = '0121i000000HMq9AAG'
-const PARTIALSBX_CONNECT_PROFILE_MENTOR_RECORD_TYPE = '0129Q00000000wAQAQ'
-const PARTIALSBX_CONNECT_PROFILE_MENTEE_RECORD_TYPE = '0129Q00000000w9QAA'
+const PARTIALSBX_CONNECT_PROFILE_MENTOR_RECORD_TYPE = '0129W0000004HiqQAE'
+const PARTIALSBX_CONNECT_PROFILE_MENTEE_RECORD_TYPE = '0129W0000004HipQAE'
 const PARTIALSBX_ACCOUNT_RECORD_TYPE_BUSINESS_ORGANIZATION =
   '0121i0000000LvUAAU'
-const PARTIALSBX_CV_LINE_ITEM_RECORD_TYPE_EXPERIENCE = '0129Q00000000w6QAA'
-const PARTIALSBX_CV_LINE_ITEM_RECORD_TYPE_EDUCATION = '0129Q00000000w5QAA'
+const PARTIALSBX_CV_LINE_ITEM_RECORD_TYPE_EXPERIENCE = '0129W0000004HimQAE'
+const PARTIALSBX_CV_LINE_ITEM_RECORD_TYPE_EDUCATION = '0129W0000004HilQAE'
 const PARTIALSBX_JOBSEEKER_PROFILE_LINE_ITEM_RECORD_TYPE_EXPERIENCE =
-  '0129Q00000000w8QAA'
+  '0129W0000004HioQAE'
 const PARTIALSBX_JOBSEEKER_PROFILE_LINE_ITEM_RECORD_TYPE_EDUCATION =
-  '0129Q00000000w7QAA'
+  '0129W0000004HinQAE'
 
 /* LOCAL SANDBOX */
 // const LANGUAGE_TO_ID_MAP = {
@@ -238,6 +244,7 @@ const PARTIALSBX_JOBSEEKER_PROFILE_LINE_ITEM_RECORD_TYPE_EDUCATION =
 //   Zulu: 'a0B9X0000004BSBUA2',
 // }
 
+//? BEFORE MIGRATE: run a "Languages" report in SF. Ensure filters set to show ALL 142 languages.
 const PARTIALSBX_LANGUAGE_TO_ID_MAP = {
   Afrikaans: 'a0B9W000000CQr7',
   Albanian: 'a0B9W000000CQr8',
@@ -278,7 +285,7 @@ const PARTIALSBX_LANGUAGE_TO_ID_MAP = {
   Finnish: 'a0B9W000000CQri',
   French: 'a0B9W000000CQrj',
   Georgian: 'a0B9W000000CQrk',
-  German: 'a0B9Q0000000iAjUAI',
+  German: 'a0B1i000001KVpG',
   Gikuyu: 'a0B9W000000CQrl',
   Greek: 'a0B9W000000CQrm',
   Guarani: 'a0B9W000000CQrn',
@@ -436,100 +443,112 @@ async function insertContactFn(p) {
 
   if (existingContactCount === 0) {
     newOrExisting = 'new'
-    const insertResult = await conn.sobject('Contact').create(
-      deleteFalsyProperties({
-        Email: p.email,
-        ReDI_Email_Address__c: p.email,
-        RecordTypeId: PARTIALSBX_CONTACT_RECORD_TYPE,
-        Loopback_User_ID__c: String(p.id), // USED TO BE .sfId ... why?
-        FirstName: `${
-          p.contact.firstName
-            ? p.contact.firstName
-                .toLocaleLowerCase()
-                .replace(/(^\w|\s\w)/g, (m) => m.toUpperCase())
-            : ''
-        }`,
-        LastName: `${
-          p.contact.lastName
-            ? p.contact.lastName
-                .toLocaleLowerCase()
-                .replace(/(^\w|\s\w)/g, (m) => m.toUpperCase())
-            : ''
-        }`,
-        redi_Contact_Gender__c: p.contact.gender
-          ? p.contact.gender
+    let insertResult
+    const insertThis = deleteFalsyProperties({
+      Email: p.email,
+      ReDI_Email_Address__c: p.email,
+      RecordTypeId: PARTIALSBX_CONTACT_RECORD_TYPE,
+      Loopback_User_ID__c: String(p.id), // USED TO BE .sfId ... why?
+      FirstName: `${
+        p.contact.firstName
+          ? p.contact.firstName
               .toLocaleLowerCase()
               .replace(/(^\w|\s\w)/g, (m) => m.toUpperCase())
-          : undefined,
-        ReDI_Birth_Date__c: p.contact.birthDate,
-        LinkedIn_Profile__c: p.contact.linkedInProfileUrl,
-        ReDI_Website_Portfolio__c: p.contact.personalWebsite,
-        ReDI_GitHub_Profile__c: p.contact.githubProfileUrl,
-        ReDI_Slack_Username__c: p.contact.slackUsername,
-        ReDI_Behance_URL__c: p.contact.behanceUrl,
-        ReDI_Dribbble_URL__c: p.contact.dribbbleUrl,
-        ReDI_Stack_Overflow_URL__c: p.contact.stackOverflowUrl,
-        CON_TP_Mailing_Address__c: p.contact.postalMailingAddress,
-        MobilePhone: p.contact.telephoneNumber,
-        Upserted_by_CON_TP_data_migration__c: true,
-        ReDI_First_Point_of_Contact_Talent_Pool__c: p.contact
-          .howDidHearAboutRediKey
-          ? p.contact.howDidHearAboutRediKey.toUpperCase().replace(/-/g, '_')
-          : undefined,
-        ReDI_First_Point_of_Contact_Other_TP__c:
-          p.contact.howDidHearAboutRediOtherText,
-        ReDI_Gender_Pronouns__c: p.contact.genderPronouns,
-      })
-    )
-    contactIdUpdatedOrInserted = insertResult.id
+          : ''
+      }`,
+      LastName: `${
+        p.contact.lastName
+          ? p.contact.lastName
+              .toLocaleLowerCase()
+              .replace(/(^\w|\s\w)/g, (m) => m.toUpperCase())
+          : ''
+      }`,
+      redi_Contact_Gender__c: p.contact.gender
+        ? p.contact.gender
+            .toLocaleLowerCase()
+            .replace(/(^\w|\s\w)/g, (m) => m.toUpperCase())
+        : undefined,
+      ReDI_Birth_Date__c: p.contact.birthDate,
+      LinkedIn_Profile__c: p.contact.linkedInProfileUrl,
+      ReDI_Website_Portfolio__c: p.contact.personalWebsite,
+      ReDI_GitHub_Profile__c: p.contact.githubProfileUrl,
+      ReDI_Slack_Username__c: p.contact.slackUsername,
+      ReDI_Behance_URL__c: p.contact.behanceUrl,
+      ReDI_Dribbble_URL__c: p.contact.dribbbleUrl,
+      ReDI_Stack_Overflow_URL__c: p.contact.stackOverflowUrl,
+      CON_TP_Mailing_Address__c: p.contact.postalMailingAddress,
+      MobilePhone: p.contact.telephoneNumber,
+      Upserted_by_CON_TP_data_migration__c: true,
+      ReDI_First_Point_of_Contact_Talent_Pool__c: p.contact
+        .howDidHearAboutRediKey
+        ? p.contact.howDidHearAboutRediKey.toUpperCase().replace(/-/g, '_')
+        : undefined,
+      ReDI_First_Point_of_Contact_Other_TP__c:
+        p.contact.howDidHearAboutRediOtherText,
+      ReDI_Gender_Pronouns__c: p.contact.genderPronouns,
+    })
+    try {
+      insertResult = await conn.sobject('Contact').create(insertThis)
+      contactIdUpdatedOrInserted = insertResult.id
+    } catch (err) {
+      console.log('Contact insertion error:', err)
+      console.log(insertThis)
+      throw err
+    }
   } else if (existingContactCount === 1) {
     newOrExisting = 'existing'
     contactIdUpdatedOrInserted = existingContacts[0].Id
-    await conn.sobject('Contact').update(
-      deleteFalsyProperties({
-        Id: existingContacts[0].Id,
-        Email: p.email,
-        ReDI_Email_Address__c: p.email,
-        RecordTypeId: PARTIALSBX_CONTACT_RECORD_TYPE,
-        Loopback_User_ID__c: String(p.id),
-        FirstName: `${
-          p.contact.firstName
-            ? p.contact.firstName
-                .toLocaleLowerCase()
-                .replace(/(^\w|\s\w)/g, (m) => m.toUpperCase())
-            : ''
-        }`,
-        LastName: `${
-          p.contact.lastName
-            ? p.contact.lastName
-                .toLocaleLowerCase()
-                .replace(/(^\w|\s\w)/g, (m) => m.toUpperCase())
-            : ''
-        }`,
-        redi_Contact_Gender__c: p.contact.gender
-          ? p.contact.gender
+    const insertThis = deleteFalsyProperties({
+      Id: existingContacts[0].Id,
+      Email: p.email,
+      ReDI_Email_Address__c: p.email,
+      RecordTypeId: PARTIALSBX_CONTACT_RECORD_TYPE,
+      Loopback_User_ID__c: String(p.id),
+      FirstName: `${
+        p.contact.firstName
+          ? p.contact.firstName
               .toLocaleLowerCase()
               .replace(/(^\w|\s\w)/g, (m) => m.toUpperCase())
-          : undefined,
-        ReDI_Birth_Date__c: p.contact.birthDate,
-        LinkedIn_Profile__c: p.contact.linkedInProfileUrl,
-        ReDI_Website_Portfolio__c: p.contact.personalWebsite,
-        ReDI_GitHub_Profile__c: p.contact.githubProfileUrl,
-        ReDI_Slack_Username__c: p.contact.slackUsername,
-        ReDI_Behance_URL__c: p.contact.behanceUrl,
-        ReDI_Dribbble_URL__c: p.contact.dribbbleUrl,
-        ReDI_Stack_Overflow_URL__c: p.contact.stackOverflowUrl,
-        CON_TP_Mailing_Address__c: p.contact.postalMailingAddress,
-        MobilePhone: p.contact.telephoneNumber,
-        Upserted_by_CON_TP_data_migration__c: true,
-        ReDI_First_Point_of_Contact_Talent_Pool__c: p.contact
-          .howDidHearAboutRediKey
-          ? p.contact.howDidHearAboutRediKey.toUpperCase().replace(/-/g, '_')
-          : undefined,
-        ReDI_First_Point_of_Contact_Other_TP__c:
-          p.contact.howDidHearAboutRediOtherText,
-      })
-    )
+          : ''
+      }`,
+      LastName: `${
+        p.contact.lastName
+          ? p.contact.lastName
+              .toLocaleLowerCase()
+              .replace(/(^\w|\s\w)/g, (m) => m.toUpperCase())
+          : ''
+      }`,
+      redi_Contact_Gender__c: p.contact.gender
+        ? p.contact.gender
+            .toLocaleLowerCase()
+            .replace(/(^\w|\s\w)/g, (m) => m.toUpperCase())
+        : undefined,
+      ReDI_Birth_Date__c: p.contact.birthDate,
+      LinkedIn_Profile__c: p.contact.linkedInProfileUrl,
+      ReDI_Website_Portfolio__c: p.contact.personalWebsite,
+      ReDI_GitHub_Profile__c: p.contact.githubProfileUrl,
+      ReDI_Slack_Username__c: p.contact.slackUsername,
+      ReDI_Behance_URL__c: p.contact.behanceUrl,
+      ReDI_Dribbble_URL__c: p.contact.dribbbleUrl,
+      ReDI_Stack_Overflow_URL__c: p.contact.stackOverflowUrl,
+      CON_TP_Mailing_Address__c: p.contact.postalMailingAddress,
+      MobilePhone: p.contact.telephoneNumber,
+      Upserted_by_CON_TP_data_migration__c: true,
+      ReDI_First_Point_of_Contact_Talent_Pool__c: p.contact
+        .howDidHearAboutRediKey
+        ? p.contact.howDidHearAboutRediKey.toUpperCase().replace(/-/g, '_')
+        : undefined,
+      ReDI_First_Point_of_Contact_Other_TP__c:
+        p.contact.howDidHearAboutRediOtherText,
+    })
+    let result
+    try {
+      result = await conn.sobject('Contact').update(insertThis)
+    } catch (err) {
+      console.log('Contact insertion error:', err)
+      console.log(insertThis)
+      throw err
+    }
   }
 
   return {
@@ -611,12 +630,11 @@ async function insertConnectProfileFn(p) {
       // 'Loopback_Original_ID__c'
     )
   } catch (err) {
-    //! TODO: RE-ENABLE!
-    // console.log('ConProfile insertion error:', err)
     const idMatch = err.message.match(/([a-zA-Z0-9]{15})/g)
     if (idMatch && idMatch[0]) {
       result = { id: idMatch[0] }
     } else {
+      console.log('ConProfile insertion error:', err)
       throw err
     }
   }
@@ -652,6 +670,7 @@ async function insertMentoringSessionFn(p) {
     if (idMatch && idMatch[0]) {
       result = { id: idMatch[0] }
     } else {
+      console.log('MentoringSession insertion error:', err)
       throw err
     }
   }
@@ -698,6 +717,7 @@ async function insertMatchFn(p) {
     if (idMatch && idMatch[0]) {
       result = { id: idMatch[0] }
     } else {
+      console.log('MentorshipMatch insertion error:', err)
       throw err
     }
   }
@@ -764,6 +784,7 @@ async function insertJobseekerProfileFn(p) {
       jobseekerResult = { id: idMatch[0] }
       jobseekerFreshlyCreated = false
     } else {
+      console.log('JobseekerProfile insertion error:', err)
       throw err
     }
   }
@@ -931,6 +952,7 @@ async function insertJobseekerCvFn(cv) {
       cvResult = { id: idMatch[0] }
       cvFreshlyCreated = false
     } else {
+      console.log('JobseekerProfileCv insertion error:', err)
       throw err
     }
   }
@@ -1129,6 +1151,7 @@ async function insertAccountForCompanyProfileFn(p) {
         if (idMatch && idMatch[0]) {
           jobListingResult = { id: idMatch[0] }
         } else {
+          console.log('JobListing insertion error:', err)
           throw err
         }
       }
@@ -1165,6 +1188,7 @@ async function insertFavoriteMentorFn({ menteeId, mentorId }) {
     const idMatch = err.message.match(/([a-zA-Z0-9]{15})/g)
     if (idMatch && idMatch[0]) {
     } else {
+      console.log('FavoriteMentor insertion error:', err)
       throw err
     }
   }
@@ -1194,6 +1218,7 @@ async function insertJobseekerFavoriteJobListingFn({
     const idMatch = err.message.match(/([a-zA-Z0-9]{15})/g)
     if (idMatch && idMatch[0]) {
     } else {
+      console.log('JobseekerFavoriteListing insertion error:', err)
       throw err
     }
   }
@@ -1286,7 +1311,11 @@ function buildContact(redUser) {
       'tpJobListings',
     ],
   }).map((u) => u.toJSON())
-  // allUsers = _.slice(allUsers, 1200, 1600)
+  // allUsers = _.slice(allUsers, 1000 + 440)
+  allUsers = allUsers.filter(
+    (u) => u.id.toString() === '613731c6e0624f069aa223d9'
+  )
+  console.log(allUsers)
   allUsers = allUsers
     .map((u) => {
       u.email = u.email.toLocaleLowerCase()
@@ -1699,7 +1728,7 @@ function buildContact(redUser) {
         (p) =>
           REDPROFILE_SFCONTACT[p.mentorId] && REDPROFILE_SFCONTACT[p.menteeId]
       ),
-      mergeMap((p) => insertMatch(p), 10),
+      mergeMap((p) => insertMatch(p), 5),
       tap((p) => console.log('Inserted Match #', p.sfId)),
       scan((acc, curr) => acc + 1, 0),
       tap(console.log)
