@@ -61,19 +61,20 @@ const {
   throwError,
   filter,
   retryWhen,
+  catchError,
   delay,
   mergeMap,
   startWith,
   count,
 } = require('rxjs/operators')
 
-const { of } = require('rxjs')
+const { of, EMPTY } = require('rxjs')
 
 const LANGUAGES = require('./languages')
 const { lang } = require('moment')
 
 const DELAY = 2000
-const RETRIES = 5
+const RETRIES = 2
 const CONCURRENCY = 10 // 50 generally works, with only a few (< 10) errors. For actual data migration, use a low value, such as 15.
 
 // const LOCAL_CONTACT_RECORD_TYPE = '0121i000000HMq9AAG'
@@ -409,6 +410,15 @@ function retryWithDelay(delayTime, count = 1) {
       )
     )
 }
+function onErrorLogAndResumeNext(logFormatter = defaultErrorFormatter) {
+  return catchError((err) => {
+    console.log(logFormatter(err))
+    return EMPTY
+  })
+}
+function defaultErrorFormatter(value) {
+  return 'Error occured related to value' + value
+}
 
 function deleteFalsyProperties(obj) {
   for (const property in obj) {
@@ -561,11 +571,12 @@ async function insertContactFn(p) {
 
 function insertContact(p) {
   return of(p).pipe(
-    switchMap(
+    mergeMap(
       (x) => from(insertContactFn(p)),
       (outer, inner) => ({ ...outer, contact: inner })
     ),
-    retryWithDelay(DELAY, RETRIES)
+    retryWithDelay(DELAY, RETRIES),
+    onErrorLogAndResumeNext()
   )
 }
 async function insertConnectProfileFn(p) {
