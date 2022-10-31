@@ -21,7 +21,7 @@ export const CATEGORIES = [
     group: 'softwareEngineering',
   },
   { id: 'htmlCss', label: 'HTML & CSS', group: 'softwareEngineering' },
-  { id: 'javascript', label: 'Javascript', group: 'softwareEngineering' },
+  { id: 'javascript', label: 'JavaScript', group: 'softwareEngineering' },
   { id: 'react', label: 'React', group: 'softwareEngineering' },
   { id: 'java', label: 'Java', group: 'softwareEngineering' },
   { id: 'python', label: 'Python', group: 'softwareEngineering' },
@@ -316,20 +316,20 @@ export const EDUCATION_LEVELS = {
 export type EducationLevelKey = keyof typeof EDUCATION_LEVELS
 
 export const COURSES = [
-  { id: 'introJava', label: 'Intro to Java', location: 'berlin' },
+  { id: 'cyberSecurity', label: 'Cyber Security', location: 'berlin' },
   {
-    id: 'intermediateJava',
+    id: 'dataCircle',
+    label: 'Data Circle',
+    location: 'berlin',
+  },
+  {
+    id: 'programmingWithJava',
     label: 'Programming with Java',
     location: 'berlin',
   },
   {
-    id: 'advancedJava',
-    label: 'Advanced Java',
-    location: 'berlin',
-  },
-  {
-    id: 'cloudComputing',
-    label: 'Cloud computing',
+    id: 'javaCircle',
+    label: 'Java Circle',
     location: 'berlin',
   },
   { id: 'pythonFoundation', label: 'Python Foundation', location: 'berlin' },
@@ -341,21 +341,15 @@ export const COURSES = [
   },
   {
     id: 'introComputerScience',
-    label: 'Intro to Computer Science',
+    label: 'Introduction to Computer Science',
     location: 'berlin',
   },
   { id: 'htmlCss', label: 'HTML & CSS', location: 'berlin' },
-  { id: 'javaScript', label: 'JavaScript', location: 'berlin' },
+  { id: 'javascript', label: 'JavaScript', location: 'berlin' },
   { id: 'react', label: 'React', location: 'berlin' },
-  { id: 'iot', label: 'IoT', location: 'berlin' },
   {
     id: 'codingFundamentals',
     label: 'Coding Fundamentals',
-    location: 'berlin',
-  },
-  {
-    id: 'dataAnalyticsWithPython',
-    label: 'Data Analytics with Python (pilot)',
     location: 'berlin',
   },
   { id: 'uiUxDesignBasics', label: 'UX/UI Design Basics', location: 'berlin' },
@@ -366,23 +360,63 @@ export const COURSES = [
   },
   {
     id: 'alumni',
-    label: `I'm a ReDI School alumni (I took a course before)`,
+    label: `I'm a ReDI School alumni (I took a course in the past)`,
     location: 'berlin',
   },
 
   {
     id: 'hamburg_htmlCss',
-    label: `HTML and CSS`,
+    label: `HTML & CSS`,
     location: 'hamburg',
   },
   {
-    id: 'hamburg_introComputerScience',
-    label: `Intro to Computer Science`,
+    id: 'hamburg_javascript',
+    label: `JavaScript`,
+    location: 'hamburg',
+  },
+  {
+    id: 'hamburg_introComputerScienceOnline',
+    label: `Introduction to Computer Science (Online)`,
+    location: 'hamburg',
+  },
+  {
+    id: 'hamburg_introComputerScienceHybrid',
+    label: `Introduction to Computer Science (Hybrid)`,
+    location: 'hamburg',
+  },
+  {
+    id: 'hamburg_introComputerScienceUkr',
+    label: `Introduction to Computer Science (UKR)`,
     location: 'hamburg',
   },
   {
     id: 'hamburg_uxUiDesignBasics',
     label: `UX/UI Design Basics`,
+    location: 'hamburg',
+  },
+  {
+    id: 'hamburg_pythonIntermediateOnline',
+    label: `Python Intermediate (Online)`,
+    location: 'hamburg',
+  },
+  {
+    id: 'hamburg_pythonIntermediateHybrid',
+    label: `Python Intermediate (Hybrid)`,
+    location: 'hamburg',
+  },
+  {
+    id: 'hamburg_dataAnalytics',
+    label: `Data Analytics`,
+    location: 'hamburg',
+  },
+  {
+    id: 'hamburg_backendDevelopment',
+    label: `Back-End Development`,
+    location: 'hamburg',
+  },
+  {
+    id: 'alumni',
+    label: `I'm a ReDI School alumni (I took a course in the past)`,
     location: 'hamburg',
   },
 
@@ -392,33 +426,8 @@ export const COURSES = [
     location: 'munich',
   },
   {
-    id: 'munich_pythonIntermediate',
-    label: `Python Intermediate`,
-    location: 'munich',
-  },
-  {
-    id: 'munich_frontend1',
-    label: `Frontend 1`,
-    location: 'munich',
-  },
-  {
-    id: 'munich_frontend2',
-    label: `Frontend 2`,
-    location: 'munich',
-  },
-  {
-    id: 'munich_frontend_vollzeitkurs',
-    label: 'Frontend Development Vollzeitkurs',
-    location: 'munich',
-  },
-  {
-    id: 'munich_dataAnalytics2',
-    label: `Data Analytics`,
-    location: 'munich',
-  },
-  {
-    id: 'munich_backend2',
-    label: `Backend 2`,
+    id: 'munich_htmlCss',
+    label: `HTML & CSS`,
     location: 'munich',
   },
   {
@@ -427,23 +436,13 @@ export const COURSES = [
     location: 'munich',
   },
   {
-    id: 'munich_cloudComputing',
-    label: `Cloud Computing`,
-    location: 'munich',
-  },
-  {
-    id: 'munich_cloudComputingAdvance',
-    label: `Cloud Computing Advance`,
-    location: 'munich',
-  },
-  {
-    id: 'munich_dataStructuresAlgorithmsWithGoogle',
-    label: `Data Structures & Algorithms with Google`,
+    id: 'munich_iot',
+    label: `Internet of Things`,
     location: 'munich',
   },
   {
     id: 'munich_alumni',
-    label: `I'm a ReDI School alumni (I took a course before)`,
+    label: `I'm a ReDI School alumni (I took a course in the past)`,
     location: 'munich',
   },
 
@@ -458,8 +457,18 @@ export const COURSES = [
     location: 'nrw',
   },
   {
-    id: 'nrw_uxDesign',
-    label: 'UX Design Basics',
+    id: 'nrw_react',
+    label: 'React',
+    location: 'nrw',
+  },
+  {
+    id: 'nrw_uxUiDesignBasics',
+    label: 'UX/UI Design Basics',
+    location: 'nrw',
+  },
+  {
+    id: 'nrw_uiUxDesignIntermediate',
+    label: 'UX/UI Design Intermediate',
     location: 'nrw',
   },
   {
@@ -484,7 +493,7 @@ export const COURSES = [
   },
   {
     id: 'nrw_cloudComputing',
-    label: 'Cloud computing',
+    label: 'Cloud Computing',
     location: 'nrw',
   },
   {
