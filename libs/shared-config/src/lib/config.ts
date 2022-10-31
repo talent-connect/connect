@@ -415,7 +415,7 @@ export const COURSES = [
     location: 'hamburg',
   },
   {
-    id: 'alumni',
+    id: 'hamburg_alumni',
     label: `I'm a ReDI School alumni (I took a course in the past)`,
     location: 'hamburg',
   },

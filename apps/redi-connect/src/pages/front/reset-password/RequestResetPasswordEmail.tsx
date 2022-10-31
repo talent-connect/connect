@@ -24,7 +24,7 @@ const initialValues: FormValues = {
 const validationSchema = yup.object().shape({
   email: yup
     .string()
-    .email('That doesn’t look quite right... please provide a valid email.')
+    .email('Please enter a valid email.')
     .required('Please provide an email address.'),
 })
 
@@ -37,11 +37,11 @@ export const RequestResetPasswordEmail: React.FC = () => {
       // Cast to string is safe as this only called if validated
       await requestResetPasswordEmail(values.email as string)
       setResetPasswordSuccess(
-        'If you have an account,we have sent you the password reset link to your email address.'
+        'If you have an account, we have sent you the password reset link to your email address.'
       )
     } catch (err) {
       setResetPasswordError(
-        'Oh no, something went wrong :( Did you type your email address correctly?'
+        'This email is not found. Please enter correct email.'
       )
     }
   }
