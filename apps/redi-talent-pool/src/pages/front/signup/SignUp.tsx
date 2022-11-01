@@ -46,20 +46,20 @@ const howDidHearAboutRediOptionsEntries = Object.entries(
 
 function buildValidationSchema(signupType: SignUpPageType['type']) {
   const baseSchema = {
-    firstName: Yup.string().required('Your first name is invalid').max(255),
-    lastName: Yup.string().required('Your last name is invalid').max(255),
+    firstName: Yup.string().required('Your first name is required').max(255),
+    lastName: Yup.string().required('Your last name is required').max(255),
     contactEmail: Yup.string()
-      .email('Your email is invalid')
-      .required('You need to give an email address')
+      .email('Please enter a valid email')
+      .required('Your email is required')
       .label('Email')
       .max(255),
     password: Yup.string()
-      .min(8, 'The password has to consist of at least eight characters')
-      .required('You need to set a password')
+      .min(8, 'Password must contain at least 8 characters')
+      .required('Please set a password')
       .label('Password'),
     passwordConfirm: Yup.string()
-      .required('Confirm your password')
-      .oneOf([Yup.ref('password')], 'Passwords does not match'),
+      .required('Please confirm your password')
+      .oneOf([Yup.ref('password')], 'Passwords do not match'),
     gaveGdprConsent: Yup.boolean().required().oneOf([true]),
   }
 
@@ -71,7 +71,7 @@ function buildValidationSchema(signupType: SignUpPageType['type']) {
         .oneOf(formRediLocations.map((loc) => loc.value))
         .label('Current ReDI Location'),
       currentlyEnrolledInCourse: Yup.string()
-        .required()
+        .required('Please select current ReDI course')
         .oneOf(COURSES.map((level) => level.id))
         .label('Currently enrolled in course'),
       agreesWithCodeOfConduct: Yup.boolean().required().oneOf([true]),
