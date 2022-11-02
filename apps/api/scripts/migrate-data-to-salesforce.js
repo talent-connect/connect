@@ -74,8 +74,8 @@ const LANGUAGES = require('./languages')
 const { lang } = require('moment')
 
 const DELAY = 2000
-const RETRIES = 2
-const CONCURRENCY = 10 // 50 generally works, with only a few (< 10) errors. For actual data migration, use a low value, such as 15.
+const RETRIES = 3
+const CONCURRENCY = 50 // 50 generally works, with only a few (< 10) errors. For actual data migration, use a low value, such as 15.
 
 // const LOCAL_CONTACT_RECORD_TYPE = '0121i000000HMq9AAG'
 // const LOCAL_CONNECT_PROFILE_MENTOR_RECORD_TYPE = '0129X0000001EXBQA2'
@@ -417,7 +417,7 @@ function onErrorLogAndResumeNext(logFormatter = defaultErrorFormatter) {
   })
 }
 function defaultErrorFormatter(value) {
-  return 'Error occured related to value' + value
+  return 'Gave up trying to retry handling this error: ' + value
 }
 
 function deleteFalsyProperties(obj) {
@@ -436,15 +436,18 @@ async function insertContactFn(p) {
     .find({ ReDI_Email_Address__c: p.email.toLocaleLowerCase() })
   const existingContacts2 = await conn
     .sobject('Contact')
+    .find({ Email: p.email.toLocaleLowerCase() })
+  const existingContacts3 = await conn
+    .sobject('Contact')
     .find({ Loopback_User_ID__c: String(p.id) })
   const existingContacts = []
 
   if (existingContacts1.length > 0) {
     existingContacts.push(existingContacts1[0])
-  } else {
-    if (existingContacts2.length > 0) {
-      existingContacts.push(existingContacts2[0])
-    }
+  } else if (existingContacts2.length > 0) {
+    existingContacts.push(existingContacts2[0])
+  } else if (existingContacts3.length > 0) {
+    existingContacts.push(existingContacts3[0])
   }
 
   const existingContactCount = existingContacts.length
@@ -501,6 +504,7 @@ async function insertContactFn(p) {
       insertResult = await conn.sobject('Contact').create(insertThis)
       contactIdUpdatedOrInserted = insertResult.id
     } catch (err) {
+      // INSERTION EXCEPTION CAUGHT
       console.log('Contact insertion error:', err)
       console.log(insertThis)
       throw err
@@ -555,6 +559,7 @@ async function insertContactFn(p) {
     try {
       result = await conn.sobject('Contact').update(insertThis)
     } catch (err) {
+      // INSERTION EXCEPTION CAUGHT
       console.log('Contact insertion error:', err)
       console.log(insertThis)
       throw err
@@ -641,6 +646,7 @@ async function insertConnectProfileFn(p) {
       // 'Loopback_Original_ID__c'
     )
   } catch (err) {
+    // INSERTION EXCEPTION CAUGHT
     const idMatch = err.message.match(/([a-zA-Z0-9]{15})/g)
     if (idMatch && idMatch[0]) {
       result = { id: idMatch[0] }
@@ -657,7 +663,8 @@ function insertConnectProfile(p) {
       (x) => from(insertConnectProfileFn(p)),
       (outer, inner) => ({ ...outer, redProfile: inner })
     ),
-    retryWithDelay(DELAY, RETRIES)
+    retryWithDelay(DELAY, RETRIES),
+    onErrorLogAndResumeNext()
   )
 }
 
@@ -677,6 +684,7 @@ async function insertMentoringSessionFn(p) {
       // 'Loopback_Original_ID__c'
     )
   } catch (err) {
+    // INSERTION EXCEPTION CAUGHT
     const idMatch = err.message.match(/([a-zA-Z0-9]{15})/g)
     if (idMatch && idMatch[0]) {
       result = { id: idMatch[0] }
@@ -690,7 +698,8 @@ async function insertMentoringSessionFn(p) {
 function insertMentoringSession(p) {
   return of(p).pipe(
     switchMap((x) => from(insertMentoringSessionFn(p))),
-    retryWithDelay(DELAY, RETRIES)
+    retryWithDelay(DELAY, RETRIES),
+    onErrorLogAndResumeNext()
   )
 }
 
@@ -724,6 +733,7 @@ async function insertMatchFn(p) {
       // 'Loopback_Original_ID__c
     )
   } catch (err) {
+    // INSERTION EXCEPTION CAUGHT
     const idMatch = err.message.match(/([a-zA-Z0-9]{15})/g)
     if (idMatch && idMatch[0]) {
       result = { id: idMatch[0] }
@@ -737,7 +747,8 @@ async function insertMatchFn(p) {
 function insertMatch(p) {
   return of(p).pipe(
     switchMap((x) => from(insertMatchFn(p))),
-    retryWithDelay(DELAY, RETRIES)
+    retryWithDelay(DELAY, RETRIES),
+    onErrorLogAndResumeNext()
   )
 }
 
@@ -790,6 +801,7 @@ async function insertJobseekerProfileFn(p) {
     )
     jobseekerFreshlyCreated = true
   } catch (err) {
+    // INSERTION EXCEPTION CAUGHT
     const idMatch = err.message.match(/([a-zA-Z0-9]{15})/g)
     if (idMatch && idMatch[0]) {
       jobseekerResult = { id: idMatch[0] }
@@ -908,7 +920,8 @@ function insertJobseekerProfile(p) {
       (x) => from(insertJobseekerProfileFn(p)),
       (outer, inner) => ({ ...outer, tpJobseekerProfile: inner })
     ),
-    retryWithDelay(DELAY, RETRIES)
+    retryWithDelay(DELAY, RETRIES),
+    onErrorLogAndResumeNext()
   )
 }
 
@@ -958,6 +971,7 @@ async function insertJobseekerCvFn(cv) {
     )
     cvFreshlyCreated = true
   } catch (err) {
+    // INSERTION EXCEPTION CAUGHT
     const idMatch = err.message.match(/([a-zA-Z0-9]{15})/g)
     if (idMatch && idMatch[0]) {
       cvResult = { id: idMatch[0] }
@@ -1048,7 +1062,8 @@ function insertJobseekerCv(cv) {
       (x) => from(insertJobseekerCvFn(cv)),
       (outer, inner) => inner
     ),
-    retryWithDelay(DELAY, RETRIES)
+    retryWithDelay(DELAY, RETRIES),
+    onErrorLogAndResumeNext()
   )
 }
 
@@ -1085,6 +1100,7 @@ async function insertAccountForCompanyProfileFn(p) {
       // 'Loopback_Original_ID__c'
     )
   } catch (err) {
+    // INSERTION EXCEPTION CAUGHT
     const idMatch = err.message.match(/([a-zA-Z0-9]{15})/g)
     if (idMatch && idMatch[0]) {
       accountResult = { id: idMatch[0] }
@@ -1093,7 +1109,7 @@ async function insertAccountForCompanyProfileFn(p) {
       console.log('Inserting Account failed:')
       console.log(account)
       console.log(err)
-      // throw err
+      throw err
     }
   }
   let accountContact = {
@@ -1111,6 +1127,7 @@ async function insertAccountForCompanyProfileFn(p) {
       .sobject('AccountContactRelation')
       .create(accountContact)
   } catch (err) {
+    // INSERTION EXCEPTION CAUGHT
     const idMatch = err.message.match(/([a-zA-Z0-9]{15})/g)
     if (idMatch && idMatch[0]) {
       accountContactResult = { id: idMatch[0] }
@@ -1119,7 +1136,7 @@ async function insertAccountForCompanyProfileFn(p) {
       console.log('Inserting AccountContactRelation failed:')
       console.log(accountContact)
       console.log(err)
-      // throw err
+      throw err
     }
   }
   if (p.tpJobListings) {
@@ -1158,6 +1175,7 @@ async function insertAccountForCompanyProfileFn(p) {
           // 'Loopback_Original_ID__c'
         )
       } catch (err) {
+        // INSERTION EXCEPTION CAUGHT
         const idMatch = err.message.match(/([a-zA-Z0-9]{15})/g)
         if (idMatch && idMatch[0]) {
           jobListingResult = { id: idMatch[0] }
@@ -1183,7 +1201,8 @@ function insertAccountForCompanyProfile(p) {
       (x) => from(insertAccountForCompanyProfileFn(p)),
       (outer, inner) => ({ ...outer, tpCompanyProfile: inner })
     ),
-    retryWithDelay(DELAY, RETRIES)
+    retryWithDelay(DELAY, RETRIES),
+    onErrorLogAndResumeNext()
   )
 }
 
@@ -1196,6 +1215,7 @@ async function insertFavoriteMentorFn({ menteeId, mentorId }) {
       Favoriter_ReDI_Connect_Profile__c: mentorId,
     })
   } catch (err) {
+    // INSERTION EXCEPTION CAUGHT
     const idMatch = err.message.match(/([a-zA-Z0-9]{15})/g)
     if (idMatch && idMatch[0]) {
     } else {
@@ -1210,7 +1230,8 @@ function insertFavouriteMentor(o) {
       (x) => from(insertFavoriteMentorFn(o)),
       () => o
     ),
-    retryWithDelay(DELAY, RETRIES)
+    retryWithDelay(DELAY, RETRIES),
+    onErrorLogAndResumeNext()
   )
 }
 
@@ -1226,6 +1247,7 @@ async function insertJobseekerFavoriteJobListingFn({
       Job_Listing__c: jobListingId,
     })
   } catch (err) {
+    // INSERTION EXCEPTION CAUGHT
     const idMatch = err.message.match(/([a-zA-Z0-9]{15})/g)
     if (idMatch && idMatch[0]) {
     } else {
@@ -1240,7 +1262,8 @@ function insertJobseekerFavoriteJobListing(o) {
       (x) => from(insertJobseekerFavoriteJobListingFn(o)),
       () => o
     ),
-    retryWithDelay(DELAY, RETRIES)
+    retryWithDelay(DELAY, RETRIES),
+    onErrorLogAndResumeNext()
   )
 }
 
@@ -1323,9 +1346,9 @@ function buildContact(redUser) {
     ],
   }).map((u) => u.toJSON())
   // allUsers = _.slice(allUsers, 1000 + 440)
-  allUsers = allUsers.filter(
-    (u) => u.id.toString() === '613731c6e0624f069aa223d9'
-  )
+  // allUsers = allUsers.filter(
+  //   (u) => u.id.toString() === '613731c6e0624f069aa223d9'
+  // )
   console.log(allUsers)
   allUsers = allUsers
     .map((u) => {

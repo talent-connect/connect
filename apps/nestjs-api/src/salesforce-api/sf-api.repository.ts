@@ -86,12 +86,30 @@ export class SfApiRepository {
       let soql = await query.toSOQL()
 
       if (rawWhereClause) {
-        const lastIndex = soql.lastIndexOf('WHERE')
-        if (lastIndex !== -1) {
-          soql =
-            soql.substring(0, lastIndex + 5) +
-            ` ${rawWhereClause} AND ` +
-            soql.substring(lastIndex + 5)
+        // Check if we have any base object filters. In other words, we check
+        // if there is any WHERE clause on the base object. If there is one,
+        // we want to detect where the WHERE clause is and concatenate the
+        // rawWhereClause into it at the right place.
+        // If there is no WHERE clause on the base object, we have to add the
+        // WHERE clause ourselves.
+        if (Object.keys(baseObjectFilter).length > 0) {
+          const searchTerm = 'WHERE'
+          const lastIndex = soql.lastIndexOf(searchTerm)
+          if (lastIndex !== -1) {
+            soql =
+              soql.substring(0, lastIndex + searchTerm.length) +
+              ` ${rawWhereClause} AND ` +
+              soql.substring(lastIndex + searchTerm.length)
+          }
+        } else {
+          const searchTerm = `FROM ${objectName}`
+          const lastIndex = soql.lastIndexOf(searchTerm)
+          if (lastIndex !== -1) {
+            soql =
+              soql.substring(0, lastIndex + searchTerm.length) +
+              ` WHERE ${rawWhereClause} ` +
+              soql.substring(lastIndex + searchTerm.length)
+          }
         }
       }
 

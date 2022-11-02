@@ -22,29 +22,29 @@ const conn = new jsforce.Connection({
 ;(async () => {
   await conn.login(USERNAME, `${PASSWORD}${SECURITY_TOKEN}`)
 
-  const result = await conn.sobject('ReDI_Connect_Profile__c').describe()
-  const result2 = result.recordTypeInfos.find(
-    (recordType) => recordType.name.toLowerCase() === 'MENTEE'.toLowerCase()
-  ).recordTypeId
+  // const result = await conn.sobject('ReDI_Connect_Profile__c').describe()
+  // const result2 = result.recordTypeInfos.find(
+  //   (recordType) => recordType.name.toLowerCase() === 'MENTEE'.toLowerCase()
+  // ).recordTypeId
 
-  console.log(result2)
+  // console.log(result2)
 
-  // const res = await conn.sobject('hed__Language__c').find()
+  const res = await conn.sobject('hed__Language__c').find()
 
-  // res.forEach(async (lang) => {
-  //   const updatedLang = {
-  //     Id: lang.Id,
-  //     Name: lang.Name,
-  //     Slug__c: lang.Name,
-  //   }
+  for (const lang of res) {
+    const updatedLang = {
+      Id: lang.Id,
+      Name: lang.Name,
+      Slug__c: lang.Name,
+    }
 
-  //   try {
-  //     await conn.sobject('hed__Language__c').update(updatedLang)
-  //     console.log('did update')
-  //   } catch (err) {
-  //     console.log(err)
-  //   }
-  // })
+    try {
+      await conn.sobject('hed__Language__c').update(updatedLang)
+      console.log('did update')
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   // console.log(res)
 
