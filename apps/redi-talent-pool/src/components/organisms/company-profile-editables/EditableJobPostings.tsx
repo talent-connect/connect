@@ -223,6 +223,8 @@ function ModalForm({
     }
   }, [deleteMutation, setIsEditing, tpJobListingId])
 
+  if (!formik.values) return null
+
   return (
     <Modal
       title=""
