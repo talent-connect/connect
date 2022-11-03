@@ -177,7 +177,7 @@ function ModalForm({
   const updateMutation = useTpJobListingUpdateMutation(tpJobListingId)
   const deleteMutation = useTpJobListingDeleteMutation()
 
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
+  const onSubmit = (values: Partial<TpJobseekerProfile>, { resetForm }) => {
     if (tpJobListingId === null) {
       // create new
       formik.setSubmitting(true)
@@ -187,6 +187,7 @@ function ModalForm({
         },
         onSuccess: () => {
           setIsEditing(false)
+          resetForm()
         },
       })
     } else {
