@@ -354,7 +354,6 @@ export const COURSES = [
     label: 'Coding Fundamentals',
     location: 'berlin',
   },
-  { id: 'BERLIN_DATA_ANALYTICS', label: 'Data Analytics', location: 'berlin' },
   {
     id: 'BERLIN_DIGITAL_LITERACY_PROGRAM',
     label: 'Digital Literacy Program',
