@@ -416,22 +416,22 @@ export const COURSES = [
     location: 'munich',
   },
   {
-    id: 'MUNICH_PYTHON_INTERMEDIATE',
+    id: 'MUNICH_PYTHON_INTERMEDIATE_ONLINE',
     label: 'Python Intermediate (Online)',
     location: 'munich',
   },
   {
-    id: 'MUNICH_PYTHON_INTERMEDIATE',
+    id: 'MUNICH_PYTHON_INTERMEDIATE_HYBRID',
     label: 'Python Intermediate (Hybrid)',
     location: 'munich',
   },
   {
-    id: 'MUNICH_FRONT_END_DEVELOPMENT',
+    id: 'MUNICH_FRONT_END_DEVELOPMENT_HTML_CSS',
     label: 'Front-End Development (HTML/CSS)',
     location: 'munich',
   },
   {
-    id: 'MUNICH_FRONT_END_DEVELOPMENT',
+    id: 'MUNICH_FRONT_END_DEVELOPMENT_JAVASCRIPT',
     label: 'Front-End Development (JavaScript)',
     location: 'munich',
   },
