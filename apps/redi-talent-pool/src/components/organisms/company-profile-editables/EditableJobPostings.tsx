@@ -199,6 +199,7 @@ function ModalForm({
         },
         onSuccess: () => {
           setIsEditing(false)
+          resetForm()
         },
       })
     }
