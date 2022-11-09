@@ -71,8 +71,7 @@ function FindAMentor({ profile, profileSaveStart }: FindAMentorProps) {
     getMentors({
       nameQuery: nameQuery ?? '',
     }).then((mentors) => {
-      console.log(mentors)
-      setAllFetchedMentors(mentors)
+      setAllFetchedMentors(ensureNoUndefinedArrayProperties(mentors))
       setLoading(false)
     })
   }, [nameQuery])
@@ -321,7 +320,7 @@ function FindAMentor({ profile, profileSaveStart }: FindAMentorProps) {
                   toggleFavorite={(item) =>
                     toggleFavorites(favouritedRedProfileIds, item)
                   }
-                  isFavorite={favouritedRedProfileIds.includes(mentor.id)}
+                  isFavorite={favouritedRedProfileIds?.includes(mentor.id)}
                 />
               </Columns.Column>
             ))}
@@ -441,13 +440,13 @@ const curriedFilterFunctions = (filters: FiltersValues) => {
     },
     chosenMentoringTopics(mentor: RedProfile) {
       if (filters.chosenMentoringTopics.length === 0) return true
-      return mentor.mentor_mentoringTopics.some((topic) =>
+      return mentor.mentor_mentoringTopics?.some((topic) =>
         filters.chosenMentoringTopics.includes(topic)
       )
     },
     chosenToolsAndFrameworks(mentor: RedProfile) {
       if (filters.chosenToolsAndFrameworks.length === 0) return true
-      return mentor.mentor_mentoringTopics.some((topic) =>
+      return mentor.mentor_mentoringTopics?.some((topic) =>
         filters.chosenToolsAndFrameworks.includes(topic)
       )
     },
@@ -457,13 +456,15 @@ const curriedFilterFunctions = (filters: FiltersValues) => {
     },
     chosenDesiredRoles(mentor: RedProfile) {
       if (filters.chosedDesiredRoles.length === 0) return true
-      return mentor.mentor_professionalExperienceFields.some((field) =>
+      return mentor.mentor_professionalExperienceFields?.some((field) =>
         filters.chosedDesiredRoles.includes(field)
       )
     },
     mentorSharesLanguageWithMentee(mentor: RedProfile) {
-      return mentor.languages.some((lang) =>
-        filters.menteeLanguages.includes(lang)
+      return (
+        mentor.languages?.some((lang) =>
+          filters.menteeLanguages.includes(lang)
+        ) || []
       )
     },
     menteeMentoringGoalCompatibleWithMentor(mentor: RedProfile) {
@@ -508,7 +509,7 @@ const curriedFilterFunctions = (filters: FiltersValues) => {
         case 'buildingAProfessionalNetwork':
         case 'entrepreneurshipAndFreelancing':
           return allMenteeRoleMentoringTopics.some((topic) =>
-            mentor.mentor_mentoringTopics.includes(topic)
+            mentor.mentor_mentoringTopics?.includes(topic)
           )
 
         default:
@@ -519,4 +520,30 @@ const curriedFilterFunctions = (filters: FiltersValues) => {
       }
     },
   }
+}
+
+function ensureNoUndefinedArrayProperties(mentors: RedProfile[]) {
+  const keys = [
+    'languages',
+    'categories',
+    'favouritedRedProfileIds',
+    'mentor_mentoringTopics',
+    'mentor_mentoringGoals',
+    'mentor_professionalExperienceFields',
+    'mentee_overarchingMentoringTopics',
+    'mentee_primaryRole_mentoringTopics',
+    'mentee_secondaryRole_mentoringTopics',
+    'mentee_toolsAndFrameworks_mentoringTopics',
+  ]
+  const fixedMentors = mentors.map((mentor) => {
+    keys.forEach((key) => {
+      if (mentor[key] === undefined) {
+        mentor[key] = []
+      }
+    })
+
+    return mentor
+  })
+
+  return fixedMentors
 }
