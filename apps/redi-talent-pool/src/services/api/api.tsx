@@ -308,6 +308,8 @@ export async function fetchAllTpJobListingsUsingFilters({
 
   const filterFederalStates =
     federalStates?.length !== 0 ? { inq: federalStates } : undefined
+  
+  const currentDate = new Date()
 
   return http(
     `${API_URL}/tpJobListings?filter=${JSON.stringify({
@@ -316,6 +318,10 @@ export async function fetchAllTpJobListingsUsingFilters({
         //   like: 'Carlotta3',
         //   options: 'i',
         // },
+        or: [
+          {expiresAt:{gt:currentDate}},
+          {$exists: false}
+        ],
         and: [
           {
             relatesToPositions: filterRelatedPositions,
@@ -340,6 +346,7 @@ export async function fetchAllTpJobListingsUsingFilters({
 
 export async function fetchAllTpJobListings(): Promise<Array<TpJobListing>> {
   const userId = getAccessTokenFromLocalStorage().userId
+  const currentDate = new Date()
   const resp = await http(`${API_URL}/redUsers/${userId}/tpJobListings`)
 
   // TODO: remove the `.filter()`. It
@@ -347,6 +354,32 @@ export async function fetchAllTpJobListings(): Promise<Array<TpJobListing>> {
   // 2021. Once the event is over, they can be removed from database completely.
   // Reason for filter here is so companies don't see these dummy job listings.
   return resp.data.filter((listing) => !listing.dummy)
+}
+
+export async function fetchExpiredTpJobListings(): Promise<Array<TpJobListing>> {
+  const userId = getAccessTokenFromLocalStorage().userId
+  const currentDate = new Date()
+  const resp = await http(`${API_URL}/redUsers/${userId}/tpJobListings?filter=${JSON.stringify({
+    where:{
+      expiresAt:{lt:currentDate}
+    }
+  })}`)
+
+  return resp.data
+}
+
+export async function fetchActiveTpJobListings(): Promise<Array<TpJobListing>> {
+  const userId = getAccessTokenFromLocalStorage().userId
+  const currentDate = new Date()
+  const resp = await http(`${API_URL}/redUsers/${userId}/tpJobListings?filter=${JSON.stringify({
+    where:{
+      or: [
+        {expiresAt:{gt:currentDate}},
+        {$exists: false},
+      ],
+    }
+  })}`)
+  return resp.data
 }
 
 export async function fetchOneTpJobListingOfCurrentUser(

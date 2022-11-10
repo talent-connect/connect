@@ -7,8 +7,10 @@ import {
   Icon,
   Modal,
   Checkbox,
+  FormDatePicker,
 } from '@talent-connect/shared-atomic-design-components'
-import { TpJobListing, TpJobseekerProfile } from '@talent-connect/shared-types'
+import { addMonths, subYears } from 'date-fns'
+import { TpJobListing } from '@talent-connect/shared-types'
 import {
   desiredPositions,
   employmentTypes,
@@ -20,7 +22,11 @@ import React, { useCallback, useState, useEffect } from 'react'
 import { Columns, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
-import { useTpJobListingAllQuery } from '../../../react-query/use-tpjoblisting-all-query'
+import {
+  useTpJobActiveListingQuery,
+  useTpJobListingAllQuery,
+} from '../../../react-query/use-tpjoblisting-all-query'
+import { useTpJobExpiredListingQuery } from '../../../react-query/use-tpjoblisting-all-query'
 import { useTpJobListingCreateMutation } from '../../../react-query/use-tpjoblisting-create-mutation'
 import { useTpJobListingDeleteMutation } from '../../../react-query/use-tpjoblisting-delete-mutation'
 import { useTpJobListingOneOfCurrentUserQuery } from '../../../react-query/use-tpjoblisting-one-query'
@@ -28,25 +34,29 @@ import { useTpJobListingUpdateMutation } from '../../../react-query/use-tpjoblis
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import { JobListingCard } from '../JobListingCard'
 import JobPlaceholderCardUrl from './job-placeholder-card.svg'
-import { get } from 'lodash'
+
 import { objectEntries } from '@talent-connect/typescript-utilities'
 
 export function EditableJobPostings({
   isJobPostingFormOpen,
   setIsJobPostingFormOpen,
 }) {
-  const { data: jobListings } = useTpJobListingAllQuery()
+  const { data: jobListings } = useTpJobActiveListingQuery()
+  const { data: expiredJobListings } = useTpJobExpiredListingQuery()
   const [isEditing, setIsEditing] = useState(false)
   const [idOfTpJobListingBeingEdited, setIdOfTpJobListingBeingEdited] =
     useState<string | null>(null) // null = "new"
 
   const hasJobListings = jobListings?.length > 0
+  const hasExpiredJobListings = expiredJobListings?.length > 0
   const isEmpty = !hasJobListings
+  const isExpiredJobsEmpty = !hasExpiredJobListings
 
   const startAdding = useCallback(() => {
     setIdOfTpJobListingBeingEdited(null) // means "new"
     setIsEditing(true)
   }, [])
+
   const startEditing = useCallback((id: string) => {
     setIdOfTpJobListingBeingEdited(id)
     setIsEditing(true)
@@ -75,7 +85,7 @@ export function EditableJobPostings({
             className="is-flex-grow-1"
             style={{ flexGrow: 1 }}
           >
-            Job postings
+            Active job postings
           </Element>
           <div className="icon__button" onClick={startAdding}>
             <Icon icon="plus" />
@@ -127,6 +137,45 @@ export function EditableJobPostings({
             </Columns>
           )}
         </div>
+        <div className="profile-section--title is-flex is-flex-direction-row">
+          <Element
+            renderAs="h4"
+            textSize={4}
+            responsive={{ mobile: { textSize: { value: 7 } } }}
+            className="is-flex-grow-1"
+            style={{ flexGrow: 1 }}
+          >
+            Expired job postings
+          </Element>
+        </div>
+        <div className="profile-section--body">
+          {isExpiredJobsEmpty ? (
+            <div
+              style={{
+                backgroundImage: `url(${JobPlaceholderCardUrl})`,
+                backgroundRepeat: 'x-repeat',
+                backgroundSize: 'contain',
+                height: '13rem',
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            ></div>
+          ) : (
+            <Columns>
+              {expiredJobListings?.map((jobListing) => (
+                <Columns.Column mobile={{ size: 12 }} tablet={{ size: 6 }}>
+                  <JobListingCard
+                    key={jobListing.id}
+                    jobListing={jobListing}
+                    onClick={() => startEditing(jobListing.id)}
+                  />
+                </Columns.Column>
+              ))}
+            </Columns>
+          )}
+        </div>
       </div>
       <ModalForm
         tpJobListingId={idOfTpJobListingBeingEdited}
@@ -154,6 +203,7 @@ const validationSchema = Yup.object().shape({
   languageRequirements: Yup.string().required(
     'Please specify the language requirement(s)'
   ),
+  expiresAt: Yup.date().nullable(true).label('Expiry Date'),
 })
 
 interface ModalFormProps {
@@ -167,8 +217,11 @@ function ModalForm({
   setIsEditing,
   tpJobListingId,
 }: ModalFormProps) {
-  const { data } = useTpJobListingOneOfCurrentUserQuery(tpJobListingId)
+  const { data, isLoading: isLoadingJobListing } =
+    useTpJobListingOneOfCurrentUserQuery(tpJobListingId)
+
   const { data: currentUserTpCompanyProfile } = useTpCompanyProfileQuery()
+
   const jobListing = tpJobListingId
     ? data
     : buildBlankJobListing(currentUserTpCompanyProfile?.id)
@@ -177,7 +230,7 @@ function ModalForm({
   const updateMutation = useTpJobListingUpdateMutation(tpJobListingId)
   const deleteMutation = useTpJobListingDeleteMutation()
 
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
+  const onSubmit = (values: Partial<TpJobListing>) => {
     if (tpJobListingId === null) {
       // create new
       formik.setSubmitting(true)
@@ -203,8 +256,13 @@ function ModalForm({
     }
   }
 
+  const initialValues: Partial<TpJobListing> = {
+    ...jobListing,
+    expiresAt: jobListing?.expiresAt ? new Date(jobListing.expiresAt) : null,
+  }
+
   const formik = useFormik({
-    initialValues: jobListing,
+    initialValues,
     onSubmit,
     validationSchema,
     enableReinitialize: true,
@@ -223,7 +281,7 @@ function ModalForm({
     }
   }, [deleteMutation, setIsEditing, tpJobListingId])
 
-  if (!formik.values) return null
+  if (!formik.values || isLoadingJobListing) return null
 
   return (
     <Modal
@@ -321,6 +379,19 @@ function ModalForm({
           label="Salary range"
           placeholder="€40K - €52K"
           name={`salaryRange`}
+          {...formik}
+        />
+        <FormDatePicker
+          label="Expiry Date"
+          name="expiresAt"
+          placeholder="Add expiry date for the job"
+          dateFormat="dd MMMM yyyy"
+          minDate={subYears(new Date(), 0)}
+          maxDate={addMonths(new Date(), 6)}
+          showMonthDropdown
+          showYearDropdown
+          dropdownMode="select"
+          isClearable
           {...formik}
         />
 

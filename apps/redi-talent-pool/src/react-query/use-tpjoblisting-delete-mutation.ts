@@ -7,6 +7,8 @@ export function useTpJobListingDeleteMutation() {
   return useMutation(deleteCurrentUserTpJobListing, {
     onSuccess: (data) => {
       queryClient.invalidateQueries(['allTpJobListings'])
+      queryClient.invalidateQueries(['expiredTpJobListings'])
+      queryClient.invalidateQueries(['activeTpJobListings'])
       queryClient.invalidateQueries(['oneTpJobListing', data.id])
     },
   })

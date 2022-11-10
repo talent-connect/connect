@@ -7,6 +7,8 @@ export function useTpJobListingUpdateMutation(id: string) {
   return useMutation(updateCurrentUserTpJobListing, {
     onSuccess: (data) => {
       queryClient.invalidateQueries(['allTpJobListings'])
+      queryClient.invalidateQueries(['activeTpJobListings'])
+      queryClient.invalidateQueries(['expiredTpJobListings'])
       queryClient.invalidateQueries(['oneTpJobListing', data.id])
     },
   })

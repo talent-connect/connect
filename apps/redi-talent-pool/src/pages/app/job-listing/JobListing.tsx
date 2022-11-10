@@ -170,6 +170,12 @@ export function JobListing() {
                     {jobListing?.salaryRange ? jobListing.salaryRange : 'N/A'}
                   </Content>
                 </div>
+                <div>
+                  <Caption>Expiry Date</Caption>
+                  <Content>
+                    {jobListing?.expiresAt ? jobListing.expiresAt : 'N/A'}
+                  </Content>
+                </div>
               </div>
             </div>
           </div>
