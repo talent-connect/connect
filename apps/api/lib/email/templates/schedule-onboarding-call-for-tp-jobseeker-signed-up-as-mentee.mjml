@@ -17,17 +17,14 @@
             >Thank you for signing up as a <strong>mentee</strong> on ReDI
             Connect!</mj-text
           >
-          <mj-text mj-class="text"
+          <mj-text mj-class="text" padding="0 0 20px 0" align="justify"
             >Your next step is to watch a short
             <strong>onboarding tutorial</strong> to get a good overview of the
             mentorship program and how our matching platform ReDI Connect
-            works.</mj-text
-          >
-          <mj-text mj-class="text" padding="0 0 20px 0">
-            You will use the platform to find your mentor and connect with them
+            works. You will use the platform to find your mentor and connect with them
             there.</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 0 0">
+          <mj-text mj-class="text" padding="0 0 0 0" align="justify">
             Please make sure to <strong>fully watch</strong> the onboarding
             tutorial because it contains all the
             <strong>information</strong> you need to be able to successfully
@@ -50,14 +47,14 @@
             css-class="button-mobile"
             href="https://www.youtube.com/watch?v=M3nwS3QfdMM"
           />
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text" padding="0 0 20px 0" align="justify"
             >Your <strong>final step</strong> after watching this video will be
             your <strong>activation call</strong> with our Mentorship Community
-            Manager Johanna, who will be happy to answer any remaining questions
-            and will then activate your account - only then will you be able to
+            Manager, <strong>Hadeer</strong>, who will be happy to answer any remaining questions
+            and then activate your account - only then will you be able to
             fully use the platform and search for a mentor.</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 0 0"
+          <mj-text mj-class="text" padding="0 0 0 0" align="justify"
             ><strong>Schedule your activation call now</strong> and make sure to
             watch the onboarding tutorial <strong>before</strong> attending your
             activation call - there won’t be time to explain everything from
@@ -80,10 +77,10 @@
             css-class="button-mobile"
             href="https://calendly.com/hadeertalentsucess/redi-connect-mentees-activation-call"
           />
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text" padding="0 0 20px 0" align="justify"
             >In case of any questions, you can
-            <strong>message Johanna on Slack</strong> or send us an
-            <strong>email</strong> at
+            <strong>message Hadeer on Slack</strong> or send us an
+            <strong>e-mail</strong> at
             <strong>career@redischool.org</strong>.</mj-text
           >
           <mj-text mj-class="text" padding="0 0 20px 0"
