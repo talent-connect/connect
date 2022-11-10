@@ -32,18 +32,21 @@ const initialFormValues: FormValues = {
   ifFromMentor_cancelMentorshipImmediately: false,
 }
 
+const MIN_CHARS_COUNT = 25
+const MAX_CHARS_COUNT = 1000
+
 const validationSchema = Yup.object({
   problemDescription: Yup.string()
     .required()
     .label('Problem description')
-    .max(1000),
+    .min(MIN_CHARS_COUNT)
+    .max(MAX_CHARS_COUNT),
 })
 
 const ReportProblem = ({ redProfileId, type }: ReportProblemProps) => {
   const [showProblemDialog, setShowProblemDialog] = useState(false)
-  const [submitResult, setSubmitResult] = useState<FormSubmitResult>(
-    'notSubmitted'
-  )
+  const [submitResult, setSubmitResult] =
+    useState<FormSubmitResult>('notSubmitted')
   const history = useHistory()
   const isMentor = type === 'mentor'
 
@@ -51,9 +54,8 @@ const ReportProblem = ({ redProfileId, type }: ReportProblemProps) => {
     values: FormValues,
     actions: FormikHelpers<FormValues>
   ) => {
-    const {
-      ifFromMentor_cancelMentorshipImmediately: isCancelImmediately,
-    } = values
+    const { ifFromMentor_cancelMentorshipImmediately: isCancelImmediately } =
+      values
     if (isCancelImmediately) {
       const userIsCertain = window.confirm(
         'Are you sure you want to cancel this mentorship?'
@@ -94,9 +96,8 @@ const ReportProblem = ({ redProfileId, type }: ReportProblemProps) => {
     onSubmit: submitForm,
   })
 
-  const {
-    ifFromMentor_cancelMentorshipImmediately: isCancelImmediatly,
-  } = formik.values
+  const { ifFromMentor_cancelMentorshipImmediately: isCancelImmediatly } =
+    formik.values
 
   return (
     <>
@@ -123,8 +124,9 @@ const ReportProblem = ({ redProfileId, type }: ReportProblemProps) => {
               name="problemDescription"
               rows={4}
               placeholder="I have concerns about…"
-              maxChar={1000}
-              {...formik}
+              minChar={MIN_CHARS_COUNT}
+              maxLength={MAX_CHARS_COUNT}
+              formik={formik}
             />
             {isMentor && (
               <Checkbox.Form

@@ -1,36 +1,34 @@
-import classnames from 'classnames'
-import { Form, Content, Columns } from 'react-bulma-components'
-import './FormTextArea.scss'
 import { get } from 'lodash'
+import { Form, Content, Columns } from 'react-bulma-components'
+import classnames from 'classnames'
+import { useFormik } from 'formik'
+import './FormTextArea.scss'
 
-interface Props {
+interface FormTextAreaProps {
   name: string
-  className: string
-  label: string
-  placeholder: string
-  disabled?: boolean
+  className?: string
+  label?: string
+  placeholder?: string
+  minChar?: number
   rows?: number
+  maxLength?: number
+  disabled?: boolean
+  formik: ReturnType<typeof useFormik>
 }
 
-// the any is not the best solution here, I would need to use the props needed for
-// the field and the formik values coming from the form context
-function FormTextArea(props: any) {
+// This component by itself handles validation messages under the text area
+
+function FormTextArea(props: FormTextAreaProps) {
   const {
     name,
     className,
     label,
     placeholder,
     minChar,
-    maxChar,
     rows,
-    values,
-    handleChange,
-    handleBlur,
-    isSubmitting,
-    touched,
-    errors,
-    disabled,
     maxLength,
+    disabled,
+    formik: { values, handleChange, handleBlur, isSubmitting, touched, errors },
   } = props
 
   const charactersLength = values[name]?.length || 0
@@ -46,7 +44,7 @@ function FormTextArea(props: any) {
     minChar - (values[name] ? charactersLength : 0)
 
   const numberOfCharsAllowedToMaxAmount =
-    maxChar - (values[name] ? charactersLength : 0)
+    maxLength - (values[name] ? charactersLength : 0)
 
   const isFieldFresh = !isTouched && !values[name] && charactersLength === 0
 
@@ -60,7 +58,7 @@ function FormTextArea(props: any) {
     isTouched && (!values[name] || charactersLength < minChar)
 
   const isAboveMinCharAmount =
-    (!values[name] || charactersLength <= maxChar) &&
+    (!values[name] || charactersLength <= maxLength) &&
     (!minChar || (minChar && isMinCharAmountReached))
 
   const defineTextAreaOutlineColor = () => {
@@ -95,7 +93,7 @@ function FormTextArea(props: any) {
         <Columns.Column>
           <Form.Help
             color="danger"
-            className={hasError && !maxChar && !minChar ? 'help--show' : ''}
+            className={hasError && !maxLength && !minChar ? 'help--show' : ''}
           >
             {hasError && <>{get(errors, name)}</>}
           </Form.Help>
@@ -135,7 +133,7 @@ function FormTextArea(props: any) {
             </Content>
           )}
 
-          {maxChar && isAboveMinCharAmount && (
+          {maxLength && isAboveMinCharAmount && (
             <Content
               textColor="grey-dark"
               className="help help--show redi-textarea-characters"
