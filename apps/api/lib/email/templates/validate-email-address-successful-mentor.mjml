@@ -16,19 +16,13 @@
           <mj-text mj-class="text" padding="0 0 20px 0"
             >Your email address was successfully verified!</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 0 0"
-            >Your next step is to book a quick onboarding session.
-          </mj-text>
-          <mj-text mj-class="text" padding="0 0 0 0"
-            >This is the last step before you can get started as a
-            <strong>mentor</strong>.
-          </mj-text>
-          <mj-text mj-class="text" padding="0 0 0 0"
-            >We regularly organize mentor onboardings in small groups.
-          </mj-text>
-          <mj-text mj-class="text" padding="0 0 0 0"
-            >Please, book yourself in for one of the open 30-minute
+          <mj-text mj-class="text" padding="0 0 20px 0" align="justify"
+            >Your next step is to book a quick onboarding session. This is the last step before you can get started as a
+            <strong>mentor</strong>. We regularly organize mentor onboardings in small groups. Please, book yourself in for one of the open 30-minute
             slots.</mj-text
+          >
+          <mj-text mj-class="text" padding="0 0 0 0" align="justify"
+            >(If you are a ReDI partner, your profile will be activated automatically - you don't have to select a date!)</mj-text
           >
           <mj-image
             src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/schedule-meeting-large.png"
