@@ -16,12 +16,18 @@ import { EditableContact } from '../../../components/organisms/company-profile-e
 import { EditableDetails } from '../../../components/organisms/company-profile-editables/EditableDetails'
 import { LoggedIn } from '../../../components/templates'
 import { useTpJobListingOneQuery } from '../../../react-query/use-tpjoblisting-one-query'
+import { useHistory } from 'react-router-dom'
 
 export function JobListing() {
   const { tpJobListingId }: { tpJobListingId: string } = useParams()
   const { data: jobListing } = useTpJobListingOneQuery(tpJobListingId)
 
-  console.log(jobListing)
+  const history = useHistory()
+
+  const handleCompanyClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    history.push(`/app/company-profile/${jobListing.tpCompanyProfileId}`)
+  }
 
   return (
     <LoggedIn>
@@ -41,10 +47,11 @@ export function JobListing() {
         >
           <Heading size="medium">{jobListing?.title}</Heading>
           <Element
-            renderAs="p"
+            renderAs="a"
             textSize={4}
             responsive={{ mobile: { textSize: { value: 5 } } }}
             className="oneandhalf-bs"
+            onClick={handleCompanyClick}
           >
             at {jobListing?.tpCompanyProfile?.companyName}
           </Element>

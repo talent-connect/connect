@@ -35,7 +35,13 @@ const JobListing = lazy(
 const JobseekerProfile = lazy(
   () =>
     import(
-      /* webpackChunkName: "Browse", webpackPreload: true  */ '../pages/app/jobseeker-profile/JobseekerProfile'
+      /* webpackChunkName: "JobseekerProfile", webpackPreload: true  */ '../pages/app/jobseeker-profile/JobseekerProfile'
+    )
+)
+const CompanyProfile = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "CompanyProfile", webpackPreload: true  */ '../pages/app/company-profile/CompanyProfile'
     )
 )
 
@@ -67,6 +73,11 @@ const routes: RouteDefinition[] = [
   {
     path: '/app/jobseeker-profile/:tpJobseekerProfileId',
     component: JobseekerProfile,
+    exact: true,
+  },
+  {
+    path: '/app/company-profile/:tpCompanyProfileId',
+    component: CompanyProfile,
     exact: true,
   },
 ]

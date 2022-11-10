@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query'
-import { fetchCurrentUserTpCompanyProfile } from '../services/api/api'
+import { fetchCurrentUserTpCompanyProfile, fetchTpCompanyProfileById } from '../services/api/api'
 
 interface Props {
   retry: boolean
@@ -16,5 +16,11 @@ export function useTpCompanyProfileQuery(props?: Props) {
       retry,
       refetchOnWindowFocus: false,
     }
+  )
+}
+
+export function useTpCompanyProfileByIdQuery(id: string) {
+  return useQuery(['oneTpCompanyProfile', id], () => 
+    fetchTpCompanyProfileById(id)
   )
 }
