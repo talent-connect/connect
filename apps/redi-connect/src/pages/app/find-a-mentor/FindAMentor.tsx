@@ -45,6 +45,7 @@ interface FindAMentorProps {
 }
 
 function FindAMentor({ profile, profileSaveStart }: FindAMentorProps) {
+  profile = ensureNoUndefinedArrayPropertiesInProfile(profile)
   const { Loading, isLoading, setLoading } = useLoading()
   const [allFetchedMentors, setAllFetchedMentors] = useState<RedProfile[]>([])
   const [
@@ -71,7 +72,7 @@ function FindAMentor({ profile, profileSaveStart }: FindAMentorProps) {
     getMentors({
       nameQuery: nameQuery ?? '',
     }).then((mentors) => {
-      setAllFetchedMentors(ensureNoUndefinedArrayProperties(mentors))
+      setAllFetchedMentors(ensureNoUndefinedArrayPropertiesInProfiles(mentors))
       setLoading(false)
     })
   }, [nameQuery])
@@ -320,7 +321,7 @@ function FindAMentor({ profile, profileSaveStart }: FindAMentorProps) {
                   toggleFavorite={(item) =>
                     toggleFavorites(favouritedRedProfileIds, item)
                   }
-                  isFavorite={favouritedRedProfileIds?.includes(mentor.id)}
+                  isFavorite={favouritedRedProfileIds.includes(mentor.id)}
                 />
               </Columns.Column>
             ))}
@@ -440,13 +441,13 @@ const curriedFilterFunctions = (filters: FiltersValues) => {
     },
     chosenMentoringTopics(mentor: RedProfile) {
       if (filters.chosenMentoringTopics.length === 0) return true
-      return mentor.mentor_mentoringTopics?.some((topic) =>
+      return mentor.mentor_mentoringTopics.some((topic) =>
         filters.chosenMentoringTopics.includes(topic)
       )
     },
     chosenToolsAndFrameworks(mentor: RedProfile) {
       if (filters.chosenToolsAndFrameworks.length === 0) return true
-      return mentor.mentor_mentoringTopics?.some((topic) =>
+      return mentor.mentor_mentoringTopics.some((topic) =>
         filters.chosenToolsAndFrameworks.includes(topic)
       )
     },
@@ -456,13 +457,13 @@ const curriedFilterFunctions = (filters: FiltersValues) => {
     },
     chosenDesiredRoles(mentor: RedProfile) {
       if (filters.chosedDesiredRoles.length === 0) return true
-      return mentor.mentor_professionalExperienceFields?.some((field) =>
+      return mentor.mentor_professionalExperienceFields.some((field) =>
         filters.chosedDesiredRoles.includes(field)
       )
     },
     mentorSharesLanguageWithMentee(mentor: RedProfile) {
       return (
-        mentor.languages?.some((lang) =>
+        mentor.languages.some((lang) =>
           filters.menteeLanguages.includes(lang)
         ) || []
       )
@@ -509,7 +510,7 @@ const curriedFilterFunctions = (filters: FiltersValues) => {
         case 'buildingAProfessionalNetwork':
         case 'entrepreneurshipAndFreelancing':
           return allMenteeRoleMentoringTopics.some((topic) =>
-            mentor.mentor_mentoringTopics?.includes(topic)
+            mentor.mentor_mentoringTopics.includes(topic)
           )
 
         default:
@@ -522,7 +523,7 @@ const curriedFilterFunctions = (filters: FiltersValues) => {
   }
 }
 
-function ensureNoUndefinedArrayProperties(mentors: RedProfile[]) {
+function ensureNoUndefinedArrayPropertiesInProfile(mentor: RedProfile) {
   const keys = [
     'languages',
     'categories',
@@ -535,15 +536,18 @@ function ensureNoUndefinedArrayProperties(mentors: RedProfile[]) {
     'mentee_secondaryRole_mentoringTopics',
     'mentee_toolsAndFrameworks_mentoringTopics',
   ]
-  const fixedMentors = mentors.map((mentor) => {
-    keys.forEach((key) => {
-      if (mentor[key] === undefined) {
-        mentor[key] = []
-      }
-    })
 
-    return mentor
+  keys.forEach((key) => {
+    if (mentor[key] === undefined) {
+      mentor[key] = []
+    }
   })
+
+  return mentor
+}
+
+function ensureNoUndefinedArrayPropertiesInProfiles(mentors: RedProfile[]) {
+  const fixedMentors = mentors.map(ensureNoUndefinedArrayPropertiesInProfile)
 
   return fixedMentors
 }
