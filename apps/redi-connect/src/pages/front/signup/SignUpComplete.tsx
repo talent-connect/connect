@@ -42,7 +42,7 @@ export default function SignUpComplete() {
                     </strong>
                   </a>
                 </p>
-                <p style={{textAlign: 'justify'}}>(If you are a ReDI partner, your profile will be activated automatically - you don't have to select a date!)</p>
+                <p style={{textAlign: 'justify'}}>If you are a ReDI partner, your profile will be activated automatically - you don't have to select a date!</p>
               </>
             )}
             {userType === 'public-sign-up-mentee-pending-review' && (
