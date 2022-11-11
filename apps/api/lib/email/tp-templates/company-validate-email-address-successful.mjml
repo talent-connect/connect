@@ -13,7 +13,7 @@
           <mj-text mj-class="text text-padding"
             >Your email address was successfully verified.</mj-text
           >
-          <mj-text mj-class="text"
+          <mj-text mj-class="text" align="justify"
             >Now, it's time to log into
             <a href="https://talent-pool.redi-school.org/front/login" 
                class="text-link"
@@ -25,14 +25,14 @@
           <mj-text mj-class="text text-padding">
             Once it's complete, please send it to me for review.
           </mj-text>
-          <mj-text mj-class="text" padding="20px 0 30px 0"
+          <mj-text mj-class="text" padding="0 0 30px 0"
             >We are excited to have you on board!</mj-text
           >
           <mj-text mj-class="text">Best,</mj-text>
-          <mj-text mj-class="text">Birgit</mj-text>
+          <mj-text mj-class="text">Janis</mj-text>
         </mj-column>
       </mj-section>
-      <mj-include path="../templates/footer.birgit.mjml" />
+      <mj-include path="../templates/footer.janis.mjml" />
       <mj-section />
     </mj-wrapper>
   </mj-body>

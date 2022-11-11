@@ -11,12 +11,9 @@
           <mj-text mj-class="text text-padding"
             >Thank you for signing up to the Talent Pool of ReDI School.
           </mj-text>
-          <mj-text mj-class="text text-padding"
+          <mj-text mj-class="text" align="justify"
             >Please verify your email address by using the following
-            button.</mj-text
-          >
-          <mj-text mj-class="text">
-            Then it’s time to complete your company profile, the first step to
+            button. Then it’s time to complete your company profile, the first step to
             using Talent Pool to post the jobs you'd like to advertise for our
             ReDI talent!</mj-text
           >
@@ -28,14 +25,14 @@
             width="353px"
             href="${verificationUrl}"
           />
-          <mj-text mj-class="text" padding="20px 0 30px 0"
+          <mj-text mj-class="text" padding="0 0 30px 0"
             >I am excited to see you on Talent Pool soon!</mj-text
           >
           <mj-text mj-class="text">Best,</mj-text>
-          <mj-text mj-class="text">Birgit</mj-text>
+          <mj-text mj-class="text">Janis</mj-text>
         </mj-column>
       </mj-section>
-      <mj-include path="../templates/footer.birgit.mjml" />
+      <mj-include path="../templates/footer.janis.mjml" />
       <mj-section />
     </mj-wrapper>
   </mj-body>

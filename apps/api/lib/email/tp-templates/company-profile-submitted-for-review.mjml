@@ -7,7 +7,7 @@
         <mj-column>
           <mj-text mj-class="headline">New company in Talent Pool!</mj-text>
           <mj-divider mj-class="divider-top" css-class="divider" />
-          <mj-text mj-class="text" padding="0 0 20px 0">Hi Birgit,</mj-text>
+          <mj-text mj-class="text" padding="0 0 20px 0">Hi Janis,</mj-text>
 
           <mj-text mj-class="text" padding="0 0 20px 0"
             >One more company, <strong>${companyName}</strong>, just submitted

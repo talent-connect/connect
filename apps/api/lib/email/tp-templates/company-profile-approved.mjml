@@ -17,18 +17,18 @@
           <mj-text mj-class="text" padding="0 0 20px 0"
             >Congratulations - your company profile has been approved!</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text" padding="0 0 20px 0" align="justify"
             >Now you are able to browse through our ReDI jobseekers to look for
             people who could match the criteria of your job opening. Please feel
             free to contact them through the email address they provided. You
             can always add new job listings to your company profile when
             relevant.</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text" padding="0 0 20px 0" align="justify"
             >If you have any questions in the process, please don’t hesitate to
             reach out.</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text" padding="0 0 20px 0" align="justify"
             >And we always love to know success stories, so please let us know
             when you hire one of our ReDI talents!</mj-text
           >
@@ -36,10 +36,10 @@
             >Happy talent scouting!</mj-text
           >
           <mj-text mj-class="text">Best,</mj-text>
-          <mj-text mj-class="text">Birgit</mj-text>
+          <mj-text mj-class="text">Janis</mj-text>
         </mj-column>
       </mj-section>
-      <mj-include path="../templates/footer.birgit.mjml" />
+      <mj-include path="../templates/footer.janis.mjml" />
       <mj-section />
     </mj-wrapper>
   </mj-body>
