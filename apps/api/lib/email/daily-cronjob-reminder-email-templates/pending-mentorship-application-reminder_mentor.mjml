@@ -14,24 +14,24 @@
           <mj-text mj-class="text" padding="0 0 20px 0"
             >Dear ${mentorFirstName},</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph" 
             >On ${matchRequestedOn}, ${menteeFirstName} has applied to you as a
             mentee via ReDI Connect. So far, their application to you is still
             pending.
           </mj-text>
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph" 
             >That’s why we wanted to follow up whether you have received this
             application? Sometimes the email notification about an application
             can go to your spam folder.</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph" 
             >If you did see it and cannot mentor ${menteeFirstName} for some
             reason, we would still ask you to get in touch to let them know. You
             will find a 'Decline mentorship' button in your profile. Please make
             sure to send with it a little text explaining your decision, so that
             they can start looking for another mentor
           </mj-text>
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph" 
             >Please reach out if we can support you with anything!</mj-text
           >
 

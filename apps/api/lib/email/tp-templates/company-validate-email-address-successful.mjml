@@ -9,11 +9,11 @@
             >Verification has been successful!</mj-text
           >
           <mj-divider mj-class="divider-top" css-class="divider" />
-          <mj-text mj-class="text">Hello ${firstName},</mj-text>
-          <mj-text mj-class="text text-padding"
+          <mj-text mj-class="text" padding="0 0 20px 0">Hello ${firstName},</mj-text>
+          <mj-text mj-class="text paragraph"
             >Your email address was successfully verified.</mj-text
           >
-          <mj-text mj-class="text" align="justify"
+          <mj-text mj-class="text paragraph" 
             >Now, it's time to log into
             <a href="https://talent-pool.redi-school.org/front/login" 
                class="text-link"
@@ -22,10 +22,10 @@
             will be able to add your vacant tech-related job listings – whether
             they are apprenticeships, internships or regular positions.
           </mj-text>
-          <mj-text mj-class="text text-padding">
+          <mj-text mj-class="text paragraph">
             Once it's complete, please send it to me for review.
           </mj-text>
-          <mj-text mj-class="text" padding="0 0 30px 0"
+          <mj-text mj-class="text paragraph" 
             >We are excited to have you on board!</mj-text
           >
           <mj-text mj-class="text">Best,</mj-text>

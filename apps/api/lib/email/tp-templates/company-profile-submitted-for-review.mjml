@@ -9,11 +9,11 @@
           <mj-divider mj-class="divider-top" css-class="divider" />
           <mj-text mj-class="text" padding="0 0 20px 0">Hi Janis,</mj-text>
 
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph" 
             >One more company, <strong>${companyName}</strong>, just submitted
             their profile for review on our Talent Pool!</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph" 
             >Check their profile and job listing(s) to decide whether they are
             ReDI to browse our talent. If they are good to go and hopefully also
             paid a little, let's approve them.</mj-text

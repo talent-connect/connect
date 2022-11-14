@@ -7,22 +7,22 @@
         <mj-column>
           <mj-text mj-class="headline">Mentorship application reminder</mj-text>
           <mj-divider mj-class="divider-top" css-class="divider" />
-          <mj-text mj-class="text">Dear ${menteeFirstName},</mj-text>
-          <mj-text mj-class="text" padding="20px 0 0" align="justify"
+          <mj-text mj-class="text" padding="0 0 20px 0">Dear ${menteeFirstName},</mj-text>
+          <mj-text mj-class="text paragraph"
             >You are receiving this e-mail because you had your onboarding 
             session one week ago but have not yet applied to any 
             mentor.</mj-text
           >
-          <mj-text mj-class="text text-padding"
+          <mj-text mj-class="text paragraph"
             >This is what you need to do now:</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0" align="justify"
+          <mj-text mj-class="text paragraph" 
             >1. If you have not done so already, please complete your profile on
             ReDI Connect (Nice to have: a picture, a link to your LinkedIn profile, clear
             expectations, and goals). This helps future mentors get an idea
             of whether you two can be a good match.</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0" align="justify"
+          <mj-text mj-class="text paragraph"
             >2. When you are done, you need to start searching for a mentor on
             the platform (under 'Find a mentor') and apply to the one you
             think would be the best match. You can choose to apply to 2 or 3
@@ -30,7 +30,7 @@
             mentor, and the one who accepts you first will be your
             mentor.</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0" align="justify"
+          <mj-text mj-class="text paragraph" 
             >3. You should hopefully receive an answer from at least one of the
             mentors within one week. If this does not happen, you can let us
             know
@@ -39,7 +39,7 @@
             >,
             or you can log in again and try to apply to a couple more mentors.
           </mj-text>
-          <mj-text mj-class="text" padding="0 0 20px 0" align="justify"
+          <mj-text mj-class="text paragraph" 
             >If you have any questions, need support to complete your profile
             and application, or choose a mentor, just let me know!
             You may also contact Hadeer
@@ -48,12 +48,12 @@
             >) if you need help finding the right mentor, as she knows
             most of them.</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0" align="justify"
+          <mj-text mj-class="text paragraph" 
             >If you have already applied for a mentor, please check under
             'Applications' whether your application has been sent. If you cannot
             find your application there, please get in touch with me.</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph" 
             >Looking forward to seeing you matched with a mentor soon!</mj-text
           >
           <mj-text mj-class="text">Kind regards,</mj-text>

@@ -14,23 +14,23 @@
           <mj-text mj-class="text" padding="0 0 20px 0"
             >Dear ${menteeFirstName},</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph" 
             >A few weeks ago we already reached out to you asking whether you
             and your mentor ${mentorFirstName} had started the mentorship
             already. Until now, we are still not seeing any sessions being
             logged on the platform.</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph" 
             >If you have started your mentoring sessions, please do remind your
             mentor to log the sessions retroactively, and continue to log them
             moving forward.
           </mj-text>
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph"
             >If you haven’t started the mentorship yet, may we ask what is the
             reason for this? We are always here to support you in any way we
             can.</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph" 
             >Please let us know!</mj-text
           >
 

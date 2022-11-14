@@ -12,29 +12,29 @@
             >Dear ${menteeName},</mj-text
           >
 
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph"
             >Unfortunately ${mentorName} cannot accept your mentorship
             application at this time.</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph" 
             >They provided the following reason and message for you:</mj-text
           >
 
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph" 
             ><em>${reasonForDecline}</em></mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph"
             ><em>${optionalMessageToMentee}</em></mj-text
           >
 
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph" 
             >Even if this match did not work out, we still have many amazing
             mentors waiting for your application. So please have a look and
             apply to another mentor who might be an even better match for
             you.</mj-text
           >
 
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph" 
             >If you need any support in the process, please reach out to us at
             <a href="mailto:career@redi-school.org">career@redi-school.org</a
             >.</mj-text
