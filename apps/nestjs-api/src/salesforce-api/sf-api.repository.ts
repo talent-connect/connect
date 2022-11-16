@@ -120,7 +120,7 @@ export class SfApiRepository {
       if (result?.records?.length > 0) {
         console.log(
           '[SfApiRepository]',
-          `Found ${result.records.length} records of ${objectName}`
+          `Found ${result.records.length} records of ${objectName} (total ${result.totalSize})`
         )
         callback(result.records)
       } else {
