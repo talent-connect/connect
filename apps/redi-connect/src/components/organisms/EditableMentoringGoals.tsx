@@ -16,14 +16,14 @@ import ReadMentoringGoals from '../molecules/ReadMentoringGoals'
 
 export interface FormValues {
   isMentor: boolean
-  mentoringGoals: string[]
+  mentor_mentoringGoals: string[]
 }
 
 const formMentoringGoals = objectEntries(MENTORING_GOALS)
 
 interface Props {
   profile: RedProfile | undefined
-  profileSaveStart: Function
+  profileSaveStart: (arg0: Partial<RedProfile>) => void
 }
 
 const validationSchema = Yup.object({
@@ -47,7 +47,7 @@ const EditableMentoringGoals = ({ profile, profileSaveStart }: Props) => {
 
   const initialValues: FormValues = {
     isMentor,
-    mentoringGoals: mentoringGoals || [],
+    mentor_mentoringGoals: mentoringGoals || [],
   }
 
   const formik = useFormik({
@@ -57,7 +57,7 @@ const EditableMentoringGoals = ({ profile, profileSaveStart }: Props) => {
     onSubmit: submitForm,
   })
 
-  const { mentoringGoals: selectedMentoringGoals } = formik.values
+  const { mentor_mentoringGoals: selectedMentoringGoals } = formik.values
 
   const mentoringGoalsChange = (e: any) => {
     e.persist()
@@ -70,8 +70,8 @@ const EditableMentoringGoals = ({ profile, profileSaveStart }: Props) => {
         (cat: any) => cat !== value
       )
     }
-    formik.setFieldValue('mentoringGoals', newMentoringGoals)
-    formik.setFieldTouched('mentoringGoals', true, false)
+    formik.setFieldValue('mentor_mentoringGoals', newMentoringGoals)
+    formik.setFieldTouched('mentor_mentoringGoals', true, false)
   }
 
   return (
