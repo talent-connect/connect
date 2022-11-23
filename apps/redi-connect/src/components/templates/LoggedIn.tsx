@@ -24,6 +24,7 @@ import {
 import { useTranslation } from 'react-i18next'
 import Footer from '../organisms/Footer'
 import { RedMatch } from '@talent-connect/shared-types'
+import { ensureMenteeProfileIsComplete } from '../../../../redi-connect/src/pages/app/find-a-mentor/utils'
 
 interface Props {
   loading: boolean
@@ -72,6 +73,8 @@ const LoggedIn = ({
     history.push(`/app/mentorships/${redMatchId}`)
   }
 
+  const isMenteeProfileComplete = ensureMenteeProfileIsComplete(profile)
+
   return (
     <>
       <Navbar />
@@ -94,6 +97,11 @@ const LoggedIn = ({
               {profile.userType === 'public-sign-up-mentor-pending-review' && (
                 <RediNotification>
                   {t('loggedInArea.profile.notification.pendingMentor')}
+                </RediNotification>
+              )}
+              {profile.userType === 'mentee' && !isMenteeProfileComplete && (
+                <RediNotification>
+                  {t('loggedInArea.profile.notification.missingMentoringGoal')}
                 </RediNotification>
               )}
               {profile.userType === 'mentee' && !profile.userActivated && (

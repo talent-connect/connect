@@ -16,7 +16,7 @@ import ReadProfessionalExperienceFields from '../molecules/ReadProfessionalExper
 
 export interface FormValues {
   isMentor: boolean
-  professionalExperienceFields: string[]
+  mentor_professionalExperienceFields: string[]
 }
 
 const formProfessionalExperienceFields = objectEntries(FIELDS_OF_EXPERTISE)
@@ -46,7 +46,7 @@ const EditableProfessionalExperienceFields = ({
 
   const initialValues: FormValues = {
     isMentor,
-    professionalExperienceFields: professionalExperienceFields || [],
+    mentor_professionalExperienceFields: professionalExperienceFields || [],
   }
 
   const formik = useFormik({
@@ -55,7 +55,7 @@ const EditableProfessionalExperienceFields = ({
     onSubmit: submitForm,
   })
 
-  const { professionalExperienceFields: selectedProfessionalExperienceFields } =
+  const { mentor_professionalExperienceFields: selectedProfessionalExperienceFields } =
     formik.values
 
   const professionalExperienceFieldsChange = (e: any) => {
@@ -70,10 +70,10 @@ const EditableProfessionalExperienceFields = ({
         selectedProfessionalExperienceFields.filter((cat: any) => cat !== value)
     }
     formik.setFieldValue(
-      'professionalExperienceFields',
+      'mentor_professionalExperienceFields',
       newProfessionalExperienceFields
     )
-    formik.setFieldTouched('professionalExperienceFields', true, false)
+    formik.setFieldTouched('mentor_professionalExperienceFields', true, false)
   }
 
   return (

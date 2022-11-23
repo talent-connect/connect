@@ -29,7 +29,7 @@ import {
   FieldOfExperienceKey,
 } from '@talent-connect/shared-config'
 import './FindAMentor.scss'
-import { toggleValueInArray } from './utils'
+import { toggleValueInArray, ensureMenteeProfileIsComplete } from './utils'
 import {
   StringParam,
   useQueryParams,
@@ -117,7 +117,9 @@ function FindAMentor({ profile, profileSaveStart }: FindAMentorProps) {
     }))
   }
 
-  if (profile.userActivated !== true) return <LoggedIn />
+  const isMenteeProfileComplete = ensureMenteeProfileIsComplete(profile)
+  
+  if (profile.userActivated !== true || !isMenteeProfileComplete) return <LoggedIn />
 
   const eligibleMentors = allFetchedMentors
     .filter((mentor) => mentor.currentFreeMenteeSpots > 0)
@@ -470,6 +472,11 @@ const curriedFilterFunctions = (filters: FiltersValues) => {
     },
     menteeMentoringGoalCompatibleWithMentor(mentor: RedProfile) {
       switch (filters.menteeMentoringGoal) {
+        /**
+         * When mentee has one of the following goals from a mentorship,
+         * we filter the mentors with relevant professional experience with mentee's
+         * desired roles
+         */
         case 'tutoringInAParticularSkillTool':
         case 'preparationForACertificationInterview':
         case 'careerOrientatioPlanning':
@@ -480,9 +487,15 @@ const curriedFilterFunctions = (filters: FiltersValues) => {
           )
             return false
 
+        /**
+         * If the mentee has Primary or Secondary Skills selected, we match those
+         * with the mentor's mentoringTopics to filter mentors. If they are not selected
+         * we don't filter.
+         */
         case 'tutoringInAParticularSkillTool':
         case 'preparationForACertificationInterview':
           if (
+            allMenteeRoleMentoringTopics.length > 0 &&
             !allMenteeRoleMentoringTopics.some((topic) =>
               mentor.mentor_mentoringTopics.includes(topic)
             )
@@ -531,11 +544,13 @@ function ensureNoUndefinedArrayPropertiesInProfile(mentor: RedProfile) {
     'mentor_mentoringTopics',
     'mentor_mentoringGoals',
     'mentor_professionalExperienceFields',
+    'mentee_mentoringGoal',
     'mentee_overarchingMentoringTopics',
     'mentee_primaryRole_mentoringTopics',
     'mentee_secondaryRole_mentoringTopics',
     'mentee_toolsAndFrameworks_mentoringTopics',
   ]
+
 
   keys.forEach((key) => {
     if (mentor[key] === undefined) {
