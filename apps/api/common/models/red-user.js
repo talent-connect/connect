@@ -251,13 +251,13 @@ module.exports = function (RedUser) {
 }
 
 function determineRediLocationByCourse(course) {
-  if (course.includes('munich')) {
+  if (course.includes('MUNICH')) {
     return 'munich'
   }
-  if (course.includes('hamburg')) {
+  if (course.includes('HAMBURG')) {
     return 'hamburg'
   }
-  if (course.includes('nrw')) {
+  if (course.includes('NRW')) {
     return 'nrw'
   }
   if (course.includes('alumni')) {
