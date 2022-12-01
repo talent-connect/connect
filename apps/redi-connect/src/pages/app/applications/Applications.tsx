@@ -9,6 +9,7 @@ import { connect } from 'react-redux'
 import { RedMatch } from '@talent-connect/shared-types'
 import { useHistory } from 'react-router-dom'
 import { getRedProfileFromLocalStorage } from '../../../services/auth/auth'
+import { ensureMenteeProfileIsComplete } from '../find-a-mentor/utils'
 
 interface Props {
   applicants: RedMatch[]
@@ -18,7 +19,9 @@ function Applications({ applicants }: Props) {
   const history = useHistory()
   const profile = getRedProfileFromLocalStorage()
 
-  if (profile.userActivated !== true) return <LoggedIn />
+  const isMenteeProfileComplete = ensureMenteeProfileIsComplete(profile)
+
+  if (profile.userActivated !== true || !isMenteeProfileComplete) return <LoggedIn />
 
   return (
     <LoggedIn>

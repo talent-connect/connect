@@ -86,7 +86,7 @@ const EditableToolsAndFrameworks = ({ profile, profileSaveStart }: Props) => {
         className="mentoring"
       >
         <Placeholder>
-          Please select tool and technologies you are particularly interested in
+          Please select tools and technologies you are particularly interested in
           (max 3).
         </Placeholder>
         <Columns>
