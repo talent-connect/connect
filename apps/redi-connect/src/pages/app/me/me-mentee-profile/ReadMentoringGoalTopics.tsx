@@ -39,8 +39,8 @@ const ReadMentoringGoalTopics = ({ profile, caption }: ReadMentoringProps) => {
               <CardTags items={[MENTORING_GOALS[mentee_mentoringGoal]]} />
             ) : (
               <Placeholder>
-                The most important goal you would like to adress with your
-                mentor
+                The most important goal to address with your
+                mentor.
               </Placeholder>
             )}
           </Columns.Column>
@@ -53,7 +53,7 @@ const ReadMentoringGoalTopics = ({ profile, caption }: ReadMentoringProps) => {
               />
             ) : (
               <Placeholder>
-                General topics you would like to me mentored on
+                General topics you would like to be mentored on.
               </Placeholder>
             )}
           </Columns.Column>
@@ -84,7 +84,7 @@ const ReadMentoringGoalTopics = ({ profile, caption }: ReadMentoringProps) => {
               />
             ) : (
               <Placeholder>
-                Role-related skills you would like to mentored on (optional)
+                Role-related skills you would like to be mentored on.
               </Placeholder>
             )}
           </Columns.Column>
@@ -93,7 +93,7 @@ const ReadMentoringGoalTopics = ({ profile, caption }: ReadMentoringProps) => {
       <Element className="block-thicker-separator-dashed">
         <Columns>
           <Columns.Column size={6}>
-            <Caption>Secondary role (optional)</Caption>
+            <Caption>Secondary role</Caption>
             {mentee_secondaryRole_fieldOfExpertise ? (
               <CardTags
                 items={[
@@ -115,7 +115,7 @@ const ReadMentoringGoalTopics = ({ profile, caption }: ReadMentoringProps) => {
               />
             ) : (
               <Placeholder>
-                Role-related skills you would like to mentored on (optional)
+                Role-related skills you would like to be mentored on.
               </Placeholder>
             )}
           </Columns.Column>

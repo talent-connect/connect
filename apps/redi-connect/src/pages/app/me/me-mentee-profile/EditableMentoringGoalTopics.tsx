@@ -37,10 +37,10 @@ interface Props {
 const validationSchema = Yup.object({
   mentee_mentoringGoal: Yup.string()
     .nullable()
-    .required('Select a mentoring goal'),
+    .required('Please select a mentoring goal'),
   mentee_primaryRole_fieldOfExpertise: Yup.string()
     .nullable()
-    .required('Select a role'),
+    .required('Please select a role'),
   mentee_overarchingMentoringTopics: Yup.array().max(
     3,
     'You can select up to three topics'
@@ -116,7 +116,7 @@ const EditableMentoringGoalTopics = ({ profile, profileSaveStart }: Props) => {
             <Columns.Column size={6}>
               <Caption>Goal</Caption>
               <FormSelect
-                label="The most important goal you would like to adress with your mentor"
+                label="The most important goal to address with your mentor*"
                 name="mentee_mentoringGoal"
                 placeholder="Select..."
                 items={formMentoringGoals}
@@ -126,7 +126,7 @@ const EditableMentoringGoalTopics = ({ profile, profileSaveStart }: Props) => {
             <Columns.Column size={6}>
               <Caption>Topics</Caption>
               <FormSelect
-                label="General topics you would like to me mentored on"
+                label="General topics you would like to be mentored on (optional)"
                 name="mentee_overarchingMentoringTopics"
                 placeholder="Select..."
                 items={formMentoringTopicsInGroup('overarchingTopics')}
@@ -141,7 +141,7 @@ const EditableMentoringGoalTopics = ({ profile, profileSaveStart }: Props) => {
             <Columns.Column size={6}>
               <Caption>Primary role</Caption>
               <FormSelect
-                label="The primary role you would like to be mentored on."
+                label="The primary role you would like to be mentored on*"
                 name="mentee_primaryRole_fieldOfExpertise"
                 placeholder="Select..."
                 items={formFieldsOfExpertise}
@@ -151,7 +151,7 @@ const EditableMentoringGoalTopics = ({ profile, profileSaveStart }: Props) => {
             <Columns.Column size={6}>
               <Caption>Skills</Caption>
               <FormSelect
-                label="Role-related skills you would like to mentored on (optional)"
+                label="Role-related skills you would like to be mentored on (optional)"
                 name="mentee_primaryRole_mentoringTopics"
                 placeholder="Select..."
                 disabled={
@@ -171,7 +171,7 @@ const EditableMentoringGoalTopics = ({ profile, profileSaveStart }: Props) => {
             <Columns.Column size={6}>
               <Caption>Secondary role</Caption>
               <FormSelect
-                label="The secondary role you would like to be mentored on."
+                label="The secondary role you would like to be mentored on (optional)"
                 name="mentee_secondaryRole_fieldOfExpertise"
                 placeholder="Select..."
                 items={formFieldsOfExpertise}
@@ -181,7 +181,7 @@ const EditableMentoringGoalTopics = ({ profile, profileSaveStart }: Props) => {
             <Columns.Column size={6}>
               <Caption>Skills</Caption>
               <FormSelect
-                label="Role-related skills you would like to mentored on (optional)"
+                label="Role-related skills you would like to be mentored on (optional)"
                 name="mentee_secondaryRole_mentoringTopics"
                 placeholder="Select..."
                 disabled={
