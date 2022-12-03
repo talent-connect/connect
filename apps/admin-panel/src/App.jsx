@@ -1416,6 +1416,7 @@ const TpJobseekerProfileShow = (props) => (
       <TabbedShowLayout>
         <Tab label="Profile">
           <TextField source="state" />
+          <BooleanField source="isJobFair2023Participant" />
           <BooleanField source="isProfileVisibleToCompanies" />
           <BooleanField initialValue={false} source="isHired" />
           <Avatar />

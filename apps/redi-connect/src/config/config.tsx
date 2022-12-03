@@ -13,6 +13,8 @@ const rediLocation = process.env.NX_REDI_CONNECT_REDI_LOCATION as RediLocation
 const validRediLocations = Object.keys(rediLocationNames)
 
 if (!validRediLocations.includes(rediLocation))
-  throw new Error('Invalid RediLocation')
+  throw new Error(
+    `Invalid RediLocation: ${rediLocation}. Valid Locations: ${validRediLocations}`
+  )
 
 export const courses = allCourses.filter((c) => c.location === rediLocation)
