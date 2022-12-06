@@ -187,7 +187,7 @@
       "notification": {
         "pendingMentor": "<strong>Thanks for signing up!</strong> We are reviewing your profile and will send you an email once we're done. Students will be able to apply to become your mentee once your account is active.",
         "pendingMentee": "<strong>Thanks for signing up!</strong> Please schedule a time for an onboarding session with us. You find the link in the email you received. Meanwhile, we encourage you to fill in your profile.",
-        "missingMentoringGoal": "<strong>Welcome to ReDI Connect!</strong> Please select a mentoring goal and a primary role you would like to be mentored on. You will be able to find a mentor once your profile is complete.",
+        "missingMentoringGoal": "<strong>Welcome to ReDI Connect!</strong> Please fill in your profile and select a <strong>mentoring goal</strong> and a <strong>primary role</strong> you would like to be mentored on. You will be able to find a mentor once your profile is complete.",
         "deactivatedMentee": "Dear {{ name }}, your ReDI Connect profile has been deactivated by the Career Support Team. This could be for a number of reasons. If you think this has been done by mistake, please contact Paulina at {{ email }}. Thank you!",
         "deactivatedMentor": "Dear {{ name }}, your ReDI Connect profile has been deactivated by the Career Support Team. Likely you have not been active for a while. This means you are not visible to prospective mentees. If you want to become active as a mentor again, please contact Miriam at {{ email }}. Speak soon!"
       }

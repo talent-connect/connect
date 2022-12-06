@@ -314,6 +314,16 @@ export const MENTORING_TOPICS = [
     group: 'productAndProjectManagement',
   },
   {
+    id: 'Front-end development',
+    label: 'Front-end Development',
+    group: 'softwareDevelopment',
+  },
+  {
+    id: 'Back-end development',
+    label: 'Back-end Development',
+    group: 'softwareDevelopment',
+  },
+  {
     id: 'Android Mobile Development',
     label: 'Android Mobile Development',
     group: 'softwareDevelopment',
