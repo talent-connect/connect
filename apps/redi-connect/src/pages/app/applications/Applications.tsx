@@ -21,8 +21,6 @@ function Applications({ applicants }: Props) {
 
   const isMenteeProfileComplete = ensureMenteeProfileIsComplete(profile)
 
-  console.log('isMenteeProfileComplete', isMenteeProfileComplete)
-
   if (
     profile.userActivated !== true ||
     (profile.userType === 'mentee' && !isMenteeProfileComplete)
