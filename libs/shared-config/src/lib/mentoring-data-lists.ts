@@ -420,7 +420,7 @@ export const MENTORING_TOPICS = [
   { id: 'Zephyr', label: 'Zephyr', group: 'toolsAndFrameworks' },
   { id: 'VMWare', label: 'VMWare', group: 'toolsAndFrameworks' },
   { id: 'Virtual Box', label: 'Virtual Box', group: 'toolsAndFrameworks' },
-]
+] as const
 
 export type MentoringTopicKey = typeof MENTORING_TOPICS[number]['id']
 export type MentoringTopicLabel = typeof MENTORING_TOPICS[number]['label']
