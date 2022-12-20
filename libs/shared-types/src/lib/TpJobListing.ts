@@ -4,6 +4,7 @@ export type TpJobListing = {
   id: string
   title?: string
   location?: string
+  federalState: string[]
   summary?: string
   idealTechnicalSkills?: string[]
   relatesToPositions?: string[]
