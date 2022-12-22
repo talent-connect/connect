@@ -188,6 +188,8 @@ export function JobseekerFormSectionSummary({
         items={formTopSkills}
         {...formik}
         multiselect
+        placeholder="Start typing and select skills"
+        closeMenuOnSelect={false}
       />
       <FormTextArea
         label="About you* (100-600 characters)"
