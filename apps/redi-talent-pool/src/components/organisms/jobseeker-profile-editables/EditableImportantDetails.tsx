@@ -312,6 +312,8 @@ export function JobseekerFormSectionImportantDetails({
             items={formDesiredEmploymentType}
             {...formik}
             multiselect
+            placeholder="Select desired employment types"
+            closeMenuOnSelect={false}
           />
           <FormSelect
             label="When are you available to start?*"

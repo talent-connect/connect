@@ -59,6 +59,7 @@ const EditableLanguages = ({ profile, profileSaveStart }: any) => {
         name="languages"
         items={formLanguages}
         multiselect
+        placeholder="Start typing and select languages"
         {...formik}
       />
     </Editable>
