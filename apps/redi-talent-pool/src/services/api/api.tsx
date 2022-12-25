@@ -308,7 +308,7 @@ export async function fetchAllTpJobListingsUsingFilters({
 
   const filterFederalStates =
     federalStates?.length !== 0 ? { inq: federalStates } : undefined
-  
+
   const currentDate = new Date()
 
   return http(
@@ -318,10 +318,7 @@ export async function fetchAllTpJobListingsUsingFilters({
         //   like: 'Carlotta3',
         //   options: 'i',
         // },
-        or: [
-          {expiresAt:{gt:currentDate}},
-          {$exists: false}
-        ],
+        or: [{ expiresAt: { gt: currentDate } }, { exists: false }],
         and: [
           {
             relatesToPositions: filterRelatedPositions,
@@ -356,14 +353,18 @@ export async function fetchAllTpJobListings(): Promise<Array<TpJobListing>> {
   return resp.data.filter((listing) => !listing.dummy)
 }
 
-export async function fetchExpiredTpJobListings(): Promise<Array<TpJobListing>> {
+export async function fetchExpiredTpJobListings(): Promise<
+  Array<TpJobListing>
+> {
   const userId = getAccessTokenFromLocalStorage().userId
   const currentDate = new Date()
-  const resp = await http(`${API_URL}/redUsers/${userId}/tpJobListings?filter=${JSON.stringify({
-    where:{
-      expiresAt:{lt:currentDate}
-    }
-  })}`)
+  const resp = await http(
+    `${API_URL}/redUsers/${userId}/tpJobListings?filter=${JSON.stringify({
+      where: {
+        expiresAt: { lt: currentDate },
+      },
+    })}`
+  )
 
   return resp.data
 }
@@ -371,14 +372,13 @@ export async function fetchExpiredTpJobListings(): Promise<Array<TpJobListing>> 
 export async function fetchActiveTpJobListings(): Promise<Array<TpJobListing>> {
   const userId = getAccessTokenFromLocalStorage().userId
   const currentDate = new Date()
-  const resp = await http(`${API_URL}/redUsers/${userId}/tpJobListings?filter=${JSON.stringify({
-    where:{
-      or: [
-        {expiresAt:{gt:currentDate}},
-        {$exists: false},
-      ],
-    }
-  })}`)
+  const resp = await http(
+    `${API_URL}/redUsers/${userId}/tpJobListings?filter=${JSON.stringify({
+      where: {
+        or: [{ expiresAt: { gt: currentDate } }, { exists: false }],
+      },
+    })}`
+  )
   return resp.data
 }
 

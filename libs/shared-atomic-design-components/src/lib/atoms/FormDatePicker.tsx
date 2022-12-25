@@ -12,15 +12,19 @@ interface PickerTriggerProps {
   onClick?: () => void
 }
 
-const PickerTrigger = (placeholder: string) => ({
-  value,
-  onClick,
-}: PickerTriggerProps) => (
-  <div className="datepicker-trigger" onClick={onClick}>
-    <Form.Input id={value} value={value} placeholder={placeholder} />
-    <Icon icon="calendar" className="datepicker-trigger__icon" size="medium" />
-  </div>
-)
+const PickerTrigger =
+  (placeholder: string) =>
+  ({ value, onClick }: PickerTriggerProps) =>
+    (
+      <div className="datepicker-trigger" onClick={onClick}>
+        <Form.Input id={value} value={value} placeholder={placeholder} />
+        <Icon
+          icon="calendar"
+          className="datepicker-trigger__icon"
+          size="medium"
+        />
+      </div>
+    )
 
 interface FormDatePickerProps {
   name: string
