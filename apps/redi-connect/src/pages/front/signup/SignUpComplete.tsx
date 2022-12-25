@@ -17,8 +17,7 @@ type RouteParams = {
 export default function SignUpComplete() {
   const history = useHistory()
   const { userType } = useParams<RouteParams>() as RouteParams
-  // TODO: Fix the weird layout issue, and make sure we only show the left-hand side illustration
-  // as on initial sign up page, but withhout the sign up link.
+
   return (
     <AccountOperation>
       <Columns vCentered>
@@ -33,15 +32,18 @@ export default function SignUpComplete() {
           <Content size="large" renderAs="div">
             <p>Your email address was successfully verified!</p>
             {userType === 'public-sign-up-mentor-pending-review' && (
-              <p>
+              <>
+                <p style={{textAlign: 'justify'}}>
                 Now, we would like to get to know you better. We regularly
                 organize mentor onboardings in small groups.{' '}
-                <a href="https://calendly.com/hadeertalentsucess/redi-connect-mentors-onboarding">
-                  <strong>
-                    Please book yourself in for one of the open 30-minute slots.
-                  </strong>
-                </a>
-              </p>
+                  <a href="https://calendly.com/hadeertalentsucess/redi-connect-mentors-onboarding">
+                    <strong>
+                      Please book yourself in for one of the open 30-minute slots.
+                    </strong>
+                  </a>
+                </p>
+                <p style={{textAlign: 'justify'}}>If you are a ReDI partner, your profile will be activated automatically - you don't have to select a date!</p>
+              </>
             )}
             {userType === 'public-sign-up-mentee-pending-review' && (
               <>

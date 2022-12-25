@@ -346,7 +346,7 @@ export function JobseekerFormSectionEducation({
                           name={`education[${index}].description`}
                           rows={7}
                           placeholder="Tell us a little bit about your course, what you learned and what you excelled at."
-                          {...formik}
+                          formik={formik}
                         />
 
                         <Checkbox.Form

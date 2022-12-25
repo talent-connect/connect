@@ -114,7 +114,7 @@ export interface TpJobseekerProfileFilters {
   employmentTypes: string[]
   skills: string[]
   federalStates: string[]
-  isJobFair2022Participant: boolean
+  isJobFair2023Participant: boolean
 }
 
 export async function fetchAllTpJobseekerProfiles({
@@ -123,7 +123,7 @@ export async function fetchAllTpJobseekerProfiles({
   employmentTypes,
   skills: topSkills,
   federalStates,
-  isJobFair2022Participant,
+  isJobFair2023Participant,
 }: TpJobseekerProfileFilters): Promise<Array<Partial<TpJobseekerProfile>>> {
   const filterDesiredPositions =
     desiredPositions && desiredPositions.length !== 0
@@ -143,8 +143,8 @@ export async function fetchAllTpJobseekerProfiles({
       ? { inq: federalStates }
       : undefined
 
-  const filterJobFair2022Participant = isJobFair2022Participant
-    ? { isJobFair2022Participant: true }
+  const filterJobFair2023Participant = isJobFair2023Participant
+    ? { isJobFair2023Participant: true }
     : undefined
 
   return http(
@@ -172,7 +172,7 @@ export async function fetchAllTpJobseekerProfiles({
               { willingToRelocate: true },
             ],
           },
-          { ...filterJobFair2022Participant },
+          { ...filterJobFair2023Participant },
         ],
       },
       order: 'createdAt DESC',

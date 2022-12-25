@@ -10,6 +10,7 @@ export function useTpJobListingUpdateMutation(id: string) {
       queryClient.invalidateQueries(['activeTpJobListings'])
       queryClient.invalidateQueries(['expiredTpJobListings'])
       queryClient.invalidateQueries(['oneTpJobListing', data.id])
+      queryClient.invalidateQueries(['oneTpJobListingOfCurrentUser', data.id])
     },
   })
 }

@@ -29,9 +29,18 @@ const initialValues = {
   dataSharingAccepted: false,
 }
 
+const MIN_CHARS_COUNT = 250
+const MAX_CHARS_COUNT = 600
+
 const validationSchema = Yup.object({
-  applicationText: Yup.string().required().min(250).max(600),
-  expectationText: Yup.string().required().min(250).max(600),
+  applicationText: Yup.string()
+    .required()
+    .min(MIN_CHARS_COUNT)
+    .max(MAX_CHARS_COUNT),
+  expectationText: Yup.string()
+    .required()
+    .min(MIN_CHARS_COUNT)
+    .max(MAX_CHARS_COUNT),
   dataSharingAccepted: Yup.boolean()
     .required()
     .oneOf([true], 'Sharing profile data with your mentor is required'),
@@ -91,21 +100,18 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
             )}
             {submitResult !== 'success' && (
               <>
-                <Content size="small">
+                <Content>
                   <p>
                     Want to apply to {mentor.firstName} {mentor.lastName}?
-                    Great! Next step is to write an application so they can
-                    decide to be your mentor or not. Write about your Motivation
-                    and Expectation below. Write at least 250 characters in
-                    each, but not more than 600 characters.
+                    Great! Next step is to write about your Motivation and
+                    Expectation below.
                   </p>
                 </Content>
                 <Caption>Motivation </Caption>
-                <Content>
+                <Content size="small">
                   <p>
-                    Write an application to {mentor.firstName} {mentor.lastName}{' '}
-                    in which you describe why you think the two of you are a
-                    great fit.
+                    Describe why you think the two of you are a great fit
+                    (250-600 characters).
                   </p>
                 </Content>
                 <FormTextArea
@@ -113,27 +119,25 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
                   className="oneandhalf-bs"
                   rows={4}
                   placeholder={`Dear ${mentor.firstName}...`}
-                  minChar={250}
-                  maxChar={600}
-                  maxLength={600}
-                  {...formik}
+                  minChar={MIN_CHARS_COUNT}
+                  maxLength={MAX_CHARS_COUNT}
+                  formik={formik}
                 />
 
                 <Caption>Expectation </Caption>
-                <Content>
+                <Content size="small">
                   <p>
-                    Please also write a few words about your expectations of the
-                    mentorship with this mentor.
+                    Write a few words about your expectations of the mentorship
+                    with {mentor.firstName}.
                   </p>
                 </Content>
                 <FormTextArea
                   name="expectationText"
                   rows={4}
                   placeholder="My expectations for this mentorship…"
-                  minChar={250}
-                  maxChar={600}
-                  maxLength={600}
-                  {...formik}
+                  minChar={MIN_CHARS_COUNT}
+                  maxLength={MAX_CHARS_COUNT}
+                  formik={formik}
                 />
 
                 <Form.Help

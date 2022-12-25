@@ -46,6 +46,12 @@ export function MeJobseeker() {
       isProfileVisibleToCompanies: !profile.isProfileVisibleToCompanies,
     })
 
+  const onJobFair2023ParticipateChange = () =>
+    mutation.mutate({
+      ...profile,
+      isJobFair2023Participant: !profile.isJobFair2023Participant,
+    })
+
   return (
     <LoggedIn>
       {profile?.state === 'profile-approved' ? (
@@ -71,6 +77,15 @@ export function MeJobseeker() {
             <OnboardingSteps />
           </div>
           <EditableNamePhotoLocation profile={profile} />
+          <div style={{ marginBottom: '1.5rem' }}>
+            <Checkbox
+              checked={profile.isJobFair2023Participant}
+              customOnChange={onJobFair2023ParticipateChange}
+            >
+              I will attend the <b>ReDI Job Fair</b> happening on{' '}
+              <b>15/02/2023</b>.
+            </Checkbox>
+          </div>
           <EditableOverview profile={profile} />
           <EditableSummary profile={profile} />
           <EditableProfessionalExperience profile={profile} />

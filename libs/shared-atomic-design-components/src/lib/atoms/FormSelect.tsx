@@ -40,6 +40,7 @@ function FormSelect(props: any) {
     touched,
     errors,
     disabled,
+    closeMenuOnSelect,
   } = props
 
   const handleOnChangeDefault = (option: any = []) => {
@@ -87,6 +88,7 @@ function FormSelect(props: any) {
           styles={formSelectStyles}
           menuPortalTarget={document.body}
           menuPosition="fixed"
+          closeMenuOnSelect={closeMenuOnSelect}
         />
       </Form.Control>
       <Form.Help color="danger" className={hasError ? 'help--show' : ''}>

@@ -14,20 +14,20 @@
           <mj-text mj-class="text" padding="0 0 20px 0"
             >Dear ${menteeFirstName},</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph" 
             >We are so happy to see that you and ${mentorFirstName} have
             embarked together on your mentoring journey.</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph" 
             >Today we would like to check in with you on how it is going! How do
             you feel, is everything working well? Do you feel like you are
             getting the support you need?
           </mj-text>
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph" 
             >We would love to get your feedback and wanted to emphasize again
             that we are always here to support and listen to you.</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph" 
             >And as a reminder: please check with your mentor whether they are
             logging your mentoring sessions :)</mj-text
           >

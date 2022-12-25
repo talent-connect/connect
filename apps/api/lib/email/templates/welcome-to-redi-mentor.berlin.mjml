@@ -11,30 +11,30 @@
           <mj-text mj-class="text" padding="0 0 20px 0"
             >Hi ${firstName},</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph"
             >We are very happy to welcome you as a mentor to ReDI
             Connect!</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph" 
             >Thank you again for having made the time to meet for our onboarding
             session.</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 0 0"
+          <mj-text mj-class="text paragraph" 
             >What are your next steps?</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph" 
             >Please complete your personal profile, if you haven’t done so
             already. This way your future mentee will get a good idea of what
             kind of support you can offer, so that the two of you will be a
             great match!
           </mj-text>
-          <mj-text mj-class="text" padding="0 0 0 0"
+          <mj-text mj-class="text paragraph" 
             >To complete your ReDI Connect profile, login here:</mj-text
           >
           <mj-image
             src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/signin-web.png"
             align="left"
-            padding="30px 0"
+            padding="10px 0 30px 0"
             target="_blank"
             width="158px"
             css-class="button-desktop"
@@ -43,12 +43,12 @@
           <mj-image
             src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/signin-mobile.png"
             align="left"
-            padding="30px 0"
+            padding="10px 0 30px 0"
             target="_blank"
             css-class="button-mobile"
             href="${homePageUrl}"
           />
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph" 
             >While you’re waiting for an application from a mentee, please join
             our group for mentors on 
             <a href="https://www.linkedin.com/groups/8733859/">LinkedIn</a> and 
@@ -57,18 +57,18 @@
              href="https://join.slack.com/t/redi-school/shared_invite/zt-yx95a42f-jserxMHtnXxdKtmQzdTAAg"  
                >ReDI slack space</a>.
           </mj-text>
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph" 
             >We will add you to the private mentors Slack channel where we post
             updates and mentor event invites and you can connect with other ReDI
             mentors. Please feel free to also join any of the open channels,
             such as #events_and_workshops for updates on general ReDI
             events.</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph" 
             >If you have any questions or feedback at any point, feel free to
             reach out.</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph" 
             >We wish you a wonderful mentorship experience!</mj-text
           >
 
