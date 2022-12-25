@@ -14,21 +14,21 @@
           <mj-text mj-class="text" padding="0 0 20px 0"
             >Hi ${mentorName},</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 0 0"
+          <mj-text mj-class="text paragraph" 
             >Thank you for logging the session(s) you had with
             ${menteeFirstName}!</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph" 
             >This is super helpful because it’s currently the only way for us to
             track the progress of your mentorship.
           </mj-text>
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph" 
             >Please keep logging your sessions!</mj-text
           >
           <mj-image
             src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/log-next-session.png"
             align="left"
-            padding="0 0 30px"
+            padding="10px 0 30px"
             target="_blank"
             width="250px"
             href="${loginUrl}"

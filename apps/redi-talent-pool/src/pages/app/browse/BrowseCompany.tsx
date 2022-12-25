@@ -49,7 +49,7 @@ export function BrowseCompany() {
     skills: withDefault(ArrayParam, []),
     federalStates: withDefault(ArrayParam, []),
     onlyFavorites: withDefault(BooleanParam, undefined),
-    isJobFair2022Participant: withDefault(BooleanParam, undefined),
+    isJobFair2023Participant: withDefault(BooleanParam, undefined),
   })
   const {
     name,
@@ -58,7 +58,7 @@ export function BrowseCompany() {
     skills,
     federalStates,
     onlyFavorites,
-    isJobFair2022Participant,
+    isJobFair2023Participant,
   } = query
 
   const history = useHistory()
@@ -69,7 +69,7 @@ export function BrowseCompany() {
     employmentTypes,
     skills,
     federalStates,
-    isJobFair2022Participant,
+    isJobFair2023Participant,
   })
   const { data: companyProfile } = useTpCompanyProfileQuery()
   const tpCompanyProfileUpdateMutation = useTpCompanyProfileUpdateMutation()
@@ -96,11 +96,11 @@ export function BrowseCompany() {
     setQuery((latestQuery) => ({ ...latestQuery, [filterName]: newFilters }))
   }
 
-  const toggleJobFair2022Filter = () =>
+  const toggleJobFair2023Filter = () =>
     setQuery((latestQuery) => ({
       ...latestQuery,
-      isJobFair2022Participant:
-        isJobFair2022Participant === undefined ? true : undefined,
+      isJobFair2023Participant:
+        isJobFair2023Participant === undefined ? true : undefined,
     }))
 
   const setName = (value) => {
@@ -114,7 +114,7 @@ export function BrowseCompany() {
       desiredPositions: [],
       employmentTypes: [],
       federalStates: [],
-      isJobFair2022Participant: undefined,
+      isJobFair2023Participant: undefined,
     }))
   }
 
@@ -123,7 +123,7 @@ export function BrowseCompany() {
     desiredPositions.length !== 0 ||
     federalStates.length !== 0 ||
     employmentTypes.length !== 0 ||
-    isJobFair2022Participant
+    isJobFair2023Participant
 
   return (
     <LoggedIn>
@@ -209,13 +209,13 @@ export function BrowseCompany() {
         </div>
       </div>
       <div className="filters">
-        <div className="filters-inner filters__jobfair2022">
+        <div className="filters-inner filters__jobfair">
           <Checkbox
-            name="isJobFair2022Participant"
-            checked={isJobFair2022Participant || false}
-            handleChange={toggleJobFair2022Filter}
+            name="isJobFair2023Participant"
+            checked={isJobFair2023Participant || false}
+            handleChange={toggleJobFair2023Filter}
           >
-            Filter by ReDI Job Fair 2022
+            Attending ReDI Job Fair 2023
           </Checkbox>
         </div>
       </div>
@@ -260,12 +260,12 @@ export function BrowseCompany() {
                 }
               />
             ))}
-            {isJobFair2022Participant && (
+            {isJobFair2023Participant && (
               <FilterTag
                 key="redi-job-fair-2022-filter"
                 id="redi-job-fair-2022-filter"
-                label="ReDI Job Fair 2022"
-                onClickHandler={toggleJobFair2022Filter}
+                label="Attending ReDI Job Fair 2023"
+                onClickHandler={toggleJobFair2023Filter}
               />
             )}
             <span className="active-filters__clear-all" onClick={clearFilters}>

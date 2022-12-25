@@ -105,8 +105,8 @@ const formTopSkills = topSkills.map(({ id, label }) => ({
   label,
 }))
 
-const minChars = 100
-const maxChars = 600
+const MIN_CHARS_COUNT = 100
+const MAX_CHARS_COUNT = 600
 
 const validationSchema = Yup.object({
   topSkills: Yup.array()
@@ -114,8 +114,8 @@ const validationSchema = Yup.object({
     .max(5, "Your profile can't contain too many skills - five at most"),
   aboutYourself: Yup.string()
     .required()
-    .min(minChars, 'Write at least 100 characters about yourself.')
-    .max(maxChars, 'The text about yourself can be up to 600 characters long.'),
+    .min(MIN_CHARS_COUNT)
+    .max(MAX_CHARS_COUNT),
 })
 
 interface JobseekerFormSectionSummaryProps {
@@ -166,10 +166,10 @@ export function JobseekerFormSectionSummary({
     onSubmit,
     validateOnMount: true,
   })
-  useEffect(() => setIsFormDirty?.(formik.dirty), [
-    formik.dirty,
-    setIsFormDirty,
-  ])
+  useEffect(
+    () => setIsFormDirty?.(formik.dirty),
+    [formik.dirty, setIsFormDirty]
+  )
 
   return (
     <>
@@ -188,15 +188,17 @@ export function JobseekerFormSectionSummary({
         items={formTopSkills}
         {...formik}
         multiselect
+        placeholder="Start typing and select skills"
+        closeMenuOnSelect={false}
       />
       <FormTextArea
-        label="About you (100-600 characters)"
+        label="About you* (100-600 characters)"
         name="aboutYourself"
         rows={7}
         placeholder="Example: UX Designer with an academic background in Psychology. Experienced in negotiating with different kinds of clients and resolving customer complaints with a high level of empathy. Committed to understanding the human mind and designing impactful products by leveraging a strong sense of analytical and critical thinking."
-        minChar={100}
-        maxChar={600}
-        {...formik}
+        minChar={MIN_CHARS_COUNT}
+        maxLength={MAX_CHARS_COUNT}
+        formik={formik}
       />
       <FaqItem
         question="Our tips for writing your Summary"
