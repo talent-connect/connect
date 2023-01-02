@@ -141,7 +141,8 @@ const MIN_CHARS_COUNT = 200
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required('Please provide a job title'),
-  location: Yup.string().required('Please provide a location'),
+  location: Yup.string().required('Please provide a work location'),
+  federalState: Yup.array().min(1, 'Please select at least one federal state'),
   summary: Yup.string().required().min(MIN_CHARS_COUNT),
   relatesToPositions: Yup.array().min(
     1,
@@ -259,16 +260,18 @@ function ModalForm({
           />
           <FormInput
             name={`location`}
-            placeholder="Where is the position based"
-            label="Location*"
+            placeholder="City where is the position based"
+            label="City*"
             {...formik}
           />
           <FormSelect
             name="federalState"
-            label="Location (Federal State in Germany)"
+            label="Federal State in Germany*"
+            placeholder="State where is the position based"
             items={federalStatesOptions}
             placeholder="Select federal states"
             {...formik}
+            multiselect
           />
           <Checkbox.Form
             name="isRemotePossible"
