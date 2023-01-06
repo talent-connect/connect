@@ -28,8 +28,12 @@ const validationSchema = Yup.object({
     .transform(toPascalCaseAndTrim)
     .required('Your last name is required')
     .max(255),
-  contactEmail: Yup.string().email().required().max(255).label('Contact email'),
-  telephoneNumber: Yup.string().max(255).label('Telephone number'),
+  contactEmail: Yup.string()
+    .email()
+    .required()
+    .max(255)
+    .label('E-mail address'),
+  telephoneNumber: Yup.string().max(255).label('Telephone Number'),
 })
 
 // props: FormikProps<AboutFormValues>
@@ -80,7 +84,7 @@ const EditableContactDetails = ({ profile, profileSaveStart }: any) => {
         name="contactEmail"
         type="email"
         placeholder="E-mail"
-        label="E-mail address"
+        label="E-mail address*"
         {...formik}
       />
       <FormInput
