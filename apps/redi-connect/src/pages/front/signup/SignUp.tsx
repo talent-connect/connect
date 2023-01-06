@@ -21,6 +21,7 @@ import { Columns, Content, Form } from 'react-bulma-components'
 
 import { signUp } from '../../../services/api/api'
 import { Extends, RedProfile } from '@talent-connect/shared-types'
+import { toPascalCaseAndTrim } from '@talent-connect/shared-utils'
 import { history } from '../../../services/history/history'
 import { courses } from '../../../config/config'
 
@@ -30,8 +31,14 @@ const formCourses = courses.map((course) => ({
 }))
 
 export const validationSchema = Yup.object({
-  firstName: Yup.string().required('Your first name is required').max(255),
-  lastName: Yup.string().required('Your last name is required').max(255),
+  firstName: Yup.string()
+    .transform(toPascalCaseAndTrim)
+    .required('Your first name is required')
+    .max(255),
+  lastName: Yup.string()
+    .transform(toPascalCaseAndTrim)
+    .required('Your last name is required')
+    .max(255),
   contactEmail: Yup.string()
     .email('Please enter a valid email')
     .required('Your email is required')
@@ -104,7 +111,9 @@ export default function SignUp() {
     actions: FormikActions<SignUpFormValues>
   ) => {
     setSubmitError(false)
-    const profile = values as Partial<RedProfile>
+    const transformedValues = validationSchema.cast(values)
+    const profile = transformedValues as Partial<RedProfile>
+    // const profile = values as Partial<RedProfile>
     // TODO: this needs to be done in a smarter way, like iterating over the RedProfile definition or something
     const cleanProfile: Partial<RedProfile> = omit(profile, [
       'password',
