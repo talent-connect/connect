@@ -154,8 +154,9 @@ export default function SignUp() {
 
     try {
       if (type === 'jobseeker') {
-        const transformedValues = buildValidationSchema.cast(values)
-        const profile = values as Partial<TpJobseekerProfile>
+        const transformedValues =
+          buildValidationSchema('jobseeker').cast(values)
+        const profile = transformedValues as Partial<TpJobseekerProfile>
         profile.isProfileVisibleToCompanies = true
 
         // TODO: this needs to be done in a smarter way, like iterating over the TpJobseekerProfile definition or something
@@ -175,7 +176,8 @@ export default function SignUp() {
         )
       }
       if (type === 'company') {
-        const profile = values as Partial<TpCompanyProfile>
+        const transformedValues = buildValidationSchema('company').cast(values)
+        const profile = transformedValues as Partial<TpCompanyProfile>
         profile.isProfileVisibleToJobseekers = true
 
         // TODO: this needs to be done in a smarter way, like iterating over the TpJobseekerProfile definition or something
