@@ -113,7 +113,6 @@ export default function SignUp() {
     setSubmitError(false)
     const transformedValues = validationSchema.cast(values)
     const profile = transformedValues as Partial<RedProfile>
-    // const profile = values as Partial<RedProfile>
     // TODO: this needs to be done in a smarter way, like iterating over the RedProfile definition or something
     const cleanProfile: Partial<RedProfile> = omit(profile, [
       'password',

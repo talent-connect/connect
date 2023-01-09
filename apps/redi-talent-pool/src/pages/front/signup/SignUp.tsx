@@ -154,7 +154,7 @@ export default function SignUp() {
 
     try {
       if (type === 'jobseeker') {
-        // const transformedValues = buildValidationSchema.cast(values)
+        const transformedValues = buildValidationSchema.cast(values)
         const profile = values as Partial<TpJobseekerProfile>
         profile.isProfileVisibleToCompanies = true
 
