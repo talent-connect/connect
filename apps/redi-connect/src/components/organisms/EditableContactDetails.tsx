@@ -2,6 +2,7 @@ import React from 'react'
 import { FormInput } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile } from '@talent-connect/shared-types'
+import { toPascalCaseAndTrim } from '@talent-connect/shared-utils'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
 
@@ -19,10 +20,20 @@ export interface ContactsFormValues {
 }
 
 const validationSchema = Yup.object({
-  firstName: Yup.string().required().max(255),
-  lastName: Yup.string().required().max(255),
-  contactEmail: Yup.string().email().required().max(255).label('Contact email'),
-  telephoneNumber: Yup.string().max(255).label('Telephone number'),
+  firstName: Yup.string()
+    .transform(toPascalCaseAndTrim)
+    .required('Your first name is required')
+    .max(255),
+  lastName: Yup.string()
+    .transform(toPascalCaseAndTrim)
+    .required('Your last name is required')
+    .max(255),
+  contactEmail: Yup.string()
+    .email()
+    .required()
+    .max(255)
+    .label('E-mail address'),
+  telephoneNumber: Yup.string().max(255).label('Telephone Number'),
 })
 
 // props: FormikProps<AboutFormValues>
@@ -30,7 +41,8 @@ const EditableContactDetails = ({ profile, profileSaveStart }: any) => {
   const { id, firstName, lastName, contactEmail, telephoneNumber } = profile
 
   const submitForm = async (values: FormikValues) => {
-    const profileContacts = values as Partial<RedProfile>
+    const transformedValues = validationSchema.cast(values)
+    const profileContacts = transformedValues as Partial<RedProfile>
     profileSaveStart({ ...profileContacts, id })
   }
 
@@ -59,20 +71,20 @@ const EditableContactDetails = ({ profile, profileSaveStart }: any) => {
       <FormInput
         name="firstName"
         placeholder="First name"
-        label="First name"
+        label="First name*"
         {...formik}
       />
       <FormInput
         name="lastName"
         placeholder="Last name"
-        label="Last name"
+        label="Last name*"
         {...formik}
       />
       <FormInput
         name="contactEmail"
         type="email"
-        placeholder="Email"
-        label="E-mail address"
+        placeholder="E-mail"
+        label="E-mail address*"
         {...formik}
       />
       <FormInput
