@@ -20,22 +20,25 @@ const {
   RedMatch,
   RedMentoringSession,
   AccessToken,
-  Role,
   RoleMapping,
+  TpCompanyProfile,
+  TpJobListing,
+  TpJobseekerProfile,
 } = app.models
 
-const personsRaw = require('./random-names.json')
-const persons = []
-personsRaw.forEach((person) => {
-  for (let i = 1; i <= 5; i++) {
-    persons.push({
-      name: `${person.name}${i}`,
-      surname: `${person.surname}${i}`,
-      gender: person.gender,
-      region: person.region,
-    })
-  }
-})
+const persons = require('./random-names.json')
+
+// const persons = []
+// personsRaw.forEach((person) => {
+//   for (let i = 1; i <= 5; i++) {
+//     persons.push({
+//       name: `${person.name}${i}`,
+//       surname: `${person.surname}${i}`,
+//       gender: person.gender,
+//       region: person.region,
+//     })
+//   }
+// })
 
 const categories = [
   {
@@ -174,14 +177,6 @@ const categories = [
 
 const Languages = ['German', 'Arabic', 'Farsi', 'Tigrinya']
 
-const genders = [
-  { id: 'male', label: 'Male' },
-  { id: 'female', label: 'Female' },
-  { id: 'other', label: 'Other' },
-]
-
-const menteeCountCapacityOptions = [1, 2, 3, 4]
-
 const educationLevels = [
   { id: 'middleSchool', label: 'Middle School' },
   { id: 'highSchool', label: 'High School' },
@@ -224,6 +219,14 @@ const randomString = (charset = 'abcdefghijklmnopqrstuvwxyz', length = 10) => {
   return str
 }
 
+const randomEmail = (name, surname) => {
+  return `${name.toLowerCase()}.${surname.toLowerCase()}_${randomString()}@${surname.toLowerCase()}.com`
+}
+
+const pickRandomCourseId = () => {
+  return courses[Math.floor(Math.random() * courses.length)].id
+}
+
 const pickRandomUserType = () => {
   const possibleUserTypes = [
     'mentor',
@@ -236,11 +239,11 @@ const pickRandomUserType = () => {
 }
 
 const users = fp.compose(
-  fp.take(1000),
+  fp.take(25),
   fp.map(({ name, surname, gender }) => {
     const rediLocation =
       Math.random() > 0.5 ? 'berlin' : Math.random() > 0.5 ? 'munich' : 'nrw'
-    const email = randomString() + '@' + randomString() + '.com'
+    const email = `${name.toLowerCase()}@${surname.toLowerCase()}.com`
     const password = email
     return {
       redUser: {
@@ -288,8 +291,83 @@ const users = fp.compose(
         mentee_highestEducationLevel:
           educationLevels[Math.floor(Math.random() * educationLevels.length)]
             .id,
-        mentee_currentlyEnrolledInCourse:
-          courses[Math.floor(Math.random() * courses.length)].id,
+        mentee_currentlyEnrolledInCourse: pickRandomCourseId(),
+      },
+    }
+  })
+)(persons)
+
+const pickRandomPossibleTpStates = () => {
+  const possibleTpStates = [
+    'drafting-profile',
+    'submitted-for-review',
+    'profile-approved',
+  ]
+  const randomIndex = Math.floor(Math.random() * possibleTpStates.length)
+  return possibleTpStates[randomIndex]
+}
+
+const pickRandomHowDidHearAboutRedi = () => {
+  const possibleHowDidHearAboutRedi = [
+    'redi-team-member',
+    'redi-student-alumni',
+    'redi-website',
+    'collegue',
+    'already-volunteer-at-redi',
+    'internet-search',
+    'social-media',
+    'other',
+  ]
+  const randomIndex = Math.floor(
+    Math.random() * possibleHowDidHearAboutRedi.length
+  )
+  return possibleHowDidHearAboutRedi[randomIndex]
+}
+
+const pickRandomCompanyType = () => {
+  const possibleCompanyType = ['GbR', 'UG', 'AG', 'GbR', 'GmbH']
+  const randomIndex = Math.floor(Math.random() * possibleCompanyType.length)
+  return possibleCompanyType[randomIndex]
+}
+
+const tpCompanyUsers = fp.compose(
+  fp.take(5),
+  fp.map(({ name, surname }) => {
+    const email = randomEmail(name, surname)
+    const password = email
+    return {
+      redUser: {
+        email,
+        password,
+      },
+      tpCompanyProfile: {
+        firstName: name,
+        lastName: surname,
+        contactEmail: email,
+        companyName: `${surname} ${pickRandomCompanyType()}`,
+        state: pickRandomPossibleTpStates(),
+        howDidHearAboutRediKey: pickRandomHowDidHearAboutRedi(),
+      },
+    }
+  })
+)(persons)
+
+const tpJobseekerUsers = fp.compose(
+  fp.takeRight(5),
+  fp.map(({ name, surname }) => {
+    const email = randomEmail(name, surname)
+    const password = email
+    return {
+      redUser: {
+        email,
+        password,
+      },
+      tpJobseekerProfile: {
+        firstName: name,
+        lastName: surname,
+        contactEmail: email,
+        state: pickRandomPossibleTpStates(),
+        currentlyEnrolledInCourse: pickRandomCourseId(),
       },
     }
   })
@@ -298,7 +376,6 @@ const users = fp.compose(
 const accessTokenDestroyAll = Rx.bindNodeCallback(
   AccessToken.destroyAll.bind(AccessToken)
 )
-const roleDestroyAll = Rx.bindNodeCallback(Role.destroyAll.bind(Role))
 const roleMappingDestroyAll = Rx.bindNodeCallback(
   RoleMapping.destroyAll.bind(RoleMapping)
 )
@@ -313,6 +390,15 @@ const redMatchDestroyAll = Rx.bindNodeCallback(
 const redMentoringSessionDestroyAll = Rx.bindNodeCallback(
   RedMentoringSession.destroyAll.bind(RedMentoringSession)
 )
+const tpCompanyProfileDestroyAll = Rx.bindNodeCallback(
+  TpCompanyProfile.destroyAll.bind(TpCompanyProfile)
+)
+const tpJobseekerProfileDestroyAll = Rx.bindNodeCallback(
+  TpJobseekerProfile.destroyAll.bind(TpJobseekerProfile)
+)
+const tpJobListingDestroyAll = Rx.bindNodeCallback(
+  TpJobListing.destroyAll.bind(TpJobListing)
+)
 
 const redMatchCreate = (redMatch) =>
   Rx.bindNodeCallback(RedMatch.create.bind(RedMatch))(redMatch)
@@ -322,6 +408,19 @@ const redProfileCreateOnRedUser = (redUserInst) => (redProfile) =>
   Rx.bindNodeCallback(redUserInst.redProfile.create.bind(redUserInst))(
     redProfile
   )
+
+const tpJobListingCreate = (tpJobListing) =>
+  Rx.bindNodeCallback(tpJobListing.create.bind(TpJobListing))(tpJobListing)
+
+const tpCompanyProfileCreateOnRedUser = (redUserInst) => (tpCompanyProfile) =>
+  Rx.bindNodeCallback(redUserInst.tpCompanyProfile.create.bind(redUserInst))(
+    tpCompanyProfile
+  )
+const tpJobseekerProfileCreateOnRedUser =
+  (redUserInst) => (tpJobseekerProfile) =>
+    Rx.bindNodeCallback(
+      redUserInst.tpJobseekerProfile.create.bind(redUserInst)
+    )(tpJobseekerProfile)
 
 const ericMenteeRedUser = {
   password: 'career+testmentee@redi-school.org',
@@ -446,17 +545,47 @@ const ericAdminRedProfile = {
   username: 'cloud-accounts@redi-school.org',
 }
 
+const testTpCompanyRedUser = {
+  email: 'john+doe@test-company.org',
+  password: 'john+doe@test-company.org',
+}
+const testTpCompanyProfile = {
+  firstName: 'John',
+  lastName: 'Doe',
+  contactEmail: 'john+doe@test-company.org',
+  companyName: 'Test Company',
+  state: 'drafting-profile',
+  howDidHearAboutRediKey: 'redi-team-member',
+}
+
+const testTpJobseekerRedUser = {
+  email: 'jane+doe@test-jobseeker.com',
+  password: 'jane+doe@test-jobseeker.com',
+}
+const testTpJobseekerProfile = {
+  firstName: 'Test',
+  lastName: 'Jobseeker',
+  contactEmail: 'jane+doe@test-jobseeker.com',
+  state: 'drafting-profile',
+  currentlyEnrolledInCourse: 'react',
+}
+
 Rx.of({})
   .pipe(
+    tap(() => console.log('******** Start Seed DB ***********************')),
+    tap(() => console.log('------ Destroy -------------------------------')),
     switchMap(accessTokenDestroyAll),
-    switchMap(roleDestroyAll),
     switchMap(roleMappingDestroyAll),
     switchMap(redMatchDestroyAll),
     switchMap(redUserDestroyAll),
     switchMap(redProfileDestroyAll),
-    tap(() => console.log('destroyed')),
+    switchMap(tpCompanyProfileDestroyAll),
+    switchMap(tpJobseekerProfileDestroyAll),
+    switchMap(tpJobListingDestroyAll),
+    tap(() => console.log('--- DONE Destroy -----------------------------')),
     delay(10000),
     // switchMap(redMentoringSessionDestroyAll),
+    tap(() => console.log('------ Create Test Users ---------------------')),
     switchMap(() => redUserCreate(ericAdminUser)),
     switchMap((redUser) =>
       redProfileCreateOnRedUser(redUser)(ericAdminRedProfile)
@@ -466,12 +595,22 @@ Rx.of({})
       redProfileCreateOnRedUser(redUser)(ericMenteeRedProfile)
     ),
     switchMap(() => redUserCreate(ericMentorRedUser)),
-    tap(console.log),
     switchMap((redUser) =>
       redProfileCreateOnRedUser(redUser)(ericMentorRedProfile)
     ),
-    switchMapTo(users),
+    switchMap(() => redUserCreate(testTpCompanyRedUser)),
+    switchMap((redUser) =>
+      tpCompanyProfileCreateOnRedUser(redUser)(testTpCompanyProfile)
+    ),
+    switchMap(() => redUserCreate(testTpJobseekerRedUser)),
+    switchMap((redUser) =>
+      tpJobseekerProfileCreateOnRedUser(redUser)(testTpJobseekerProfile)
+    ),
+    tap(() => console.log('--- DONE Create Test Users -------------------')),
+    tap(() => console.log('------ Create All Users ----------------------')),
+    switchMapTo(users), // switchMap(() => users)
     concatMap(
+      // users.map( (userData) => {} )
       (userData) => redUserCreate(userData.redUser),
       (userData, redUserInst) => ({ ...userData, redUserInst })
     ),
@@ -481,6 +620,8 @@ Rx.of({})
       (userData, redProfileInst) => ({ ...userData, redProfileInst })
     ),
     toArray(),
+    tap(() => console.log('--- DONE Create All Users --------------------')),
+    tap(() => console.log('------ Create Match Mentor-Mentee Pairs ------')),
     // Pick X mentor-mentee pairs, create match
     switchMap((data) => {
       const mentors = data.filter(
@@ -500,17 +641,14 @@ Rx.of({})
         const menteesInLocation = mentees.filter(
           (data) => data.redProfile.rediLocation === location
         )
-        console.log('******************************')
-        console.log('location', location)
-        console.log(mentorsInLocation.length)
-        console.log(menteesInLocation.length)
-        console.log('******************************')
+        console.log(
+          `Location: ${location}, #mentors: ${mentorsInLocation.length}, #mentees: ${menteesInLocation.length}`
+        )
         const matches = mentorsInLocation.map((mentor) => {
           return _.sampleSize(
             menteesInLocation,
             Math.floor(Math.random() * 10)
           ).map((mentee) => {
-            console.log(location)
             return {
               rediLocation: '' + location + '',
               applicationText: randomString(),
@@ -527,13 +665,54 @@ Rx.of({})
       }
       return Rx.from(matchesFlat)
     }),
-    concatMap(redMatchCreate)
+    concatMap(redMatchCreate),
+    toArray(), //
+    tap(() => console.log('--- DONE Create Match Mentor-Mentee Pairs ----')),
+    tap(() => console.log('------ Seed Talent Pool DB -------------------')),
+    // seed talent pool db
+    tap(() => console.log('------ tpJobseekerUsers ----------------------')),
+    switchMapTo(tpJobseekerUsers),
+    // tap(console.log),
+    concatMap(
+      (userData) => redUserCreate(userData.redUser),
+      (userData, redUserInst) => ({ ...userData, redUserInst })
+    ),
+    concatMap(
+      (userData) =>
+        tpJobseekerProfileCreateOnRedUser(userData.redUserInst)(
+          userData.tpJobseekerProfile
+        ),
+      (userData, tpJobseekerProfileInst) => ({
+        ...userData,
+        tpJobseekerProfileInst,
+      })
+    ),
+    toArray(), //
+    tap(() => console.log('--- tpCompanyUsers -------------------------')),
+    switchMapTo(tpCompanyUsers),
+    // tap(console.log),
+    concatMap(
+      (userData) => redUserCreate(userData.redUser),
+      (userData, redUserInst) => ({ ...userData, redUserInst })
+    ),
+    concatMap(
+      (userData) =>
+        tpCompanyProfileCreateOnRedUser(userData.redUserInst)(
+          userData.tpCompanyProfile
+        ),
+      (userData, tpCompanyProfileInst) => ({
+        ...userData,
+        tpCompanyProfileInst,
+      })
+    ),
+    toArray(), //
+    tap(() => console.log('--- DONE Seed Talent Pool DB -----------------'))
   )
   .subscribe(
     () => console.log('next'),
     console.log,
     () => {
-      console.log('done')
+      console.log('***** DONE Seed DB ***************************')
       process.exit()
     }
   )

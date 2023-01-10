@@ -1,13 +1,31 @@
 const { bindNodeCallback, from } = require('rxjs')
-const { concatMap } = require('rxjs/operators')
+const Rx = require('rxjs')
+const { concatMap, switchMap, switchMapTo, tap } = require('rxjs/operators')
 
 const app = require('../server/server')
 const { Role } = app.models
 
+const roleDestroyAll = Rx.bindNodeCallback(Role.destroyAll.bind(Role))
 const roleCreate = bindNodeCallback(Role.create.bind(Role))
+const roleListAll = bindNodeCallback(Role.find.bind(Role))
 
 const roles = ['admin', 'mentee', 'mentor', 'jobseeker', 'company']
 
-from(roles)
-  .pipe(concatMap((role) => roleCreate({ name: role })))
-  .subscribe(console.log, null, () => process.exit())
+Rx.of({})
+  .pipe(
+    tap(() => console.log('********** Create Roles **********************')),
+    tap(() => console.log('-------- Destroy Old List roles --------------')),
+    switchMap(roleDestroyAll),
+    tap(() => console.log('-------- List roles after destroy ------------')),
+    switchMap(roleListAll),
+    tap(console.log),
+    tap(() => console.log('--- DONE Destroy List Roles ------------------')),
+    tap(() => console.log('-------- Create New Roles --------------------')),
+    switchMapTo(roles),
+    // tap((role) => console.log(`role ${role}`)),
+    concatMap((role) => roleCreate({ name: role }))
+  )
+  .subscribe(console.log, null, () => {
+    console.log('*** DONE Create Roles **********************')
+    process.exit()
+  })
