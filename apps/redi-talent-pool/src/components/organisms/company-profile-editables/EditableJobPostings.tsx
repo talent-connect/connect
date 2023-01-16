@@ -7,6 +7,7 @@ import {
   Icon,
   Modal,
   Checkbox,
+  TextEditor,
 } from '@talent-connect/shared-atomic-design-components'
 import { TpJobListing, TpJobseekerProfile } from '@talent-connect/shared-types'
 import {
@@ -15,8 +16,8 @@ import {
   germanFederalStates,
   topSkills,
 } from '@talent-connect/talent-pool/config'
-import { useFormik } from 'formik'
-import React, { useCallback, useState, useEffect } from 'react'
+import { useFormik, Formik } from 'formik'
+import { useCallback, useState, useEffect } from 'react'
 import { Columns, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
@@ -180,11 +181,7 @@ function ModalForm({
   const onSubmit = (values: Partial<TpJobseekerProfile>, { resetForm }) => {
     if (tpJobListingId === null) {
       // create new
-      formik.setSubmitting(true)
       createMutation.mutate(values, {
-        onSettled: () => {
-          formik.setSubmitting(false)
-        },
         onSuccess: () => {
           setIsEditing(false)
           resetForm()
@@ -192,11 +189,7 @@ function ModalForm({
       })
     } else {
       // update existing
-      formik.setSubmitting(true)
       updateMutation.mutate(values, {
-        onSettled: () => {
-          formik.setSubmitting(false)
-        },
         onSuccess: () => {
           setIsEditing(false)
           resetForm()
@@ -205,12 +198,12 @@ function ModalForm({
     }
   }
 
-  const formik = useFormik({
-    initialValues: jobListing,
-    onSubmit,
-    validationSchema,
-    enableReinitialize: true,
-  })
+  // const formik = useFormik({
+  //   initialValues: jobListing,
+  //   onSubmit,
+  //   validationSchema,
+  //   enableReinitialize: true,
+  // })
 
   const handleDelete = useCallback(() => {
     if (
@@ -225,146 +218,156 @@ function ModalForm({
     }
   }, [deleteMutation, setIsEditing, tpJobListingId])
 
-  if (!formik.values) return null
+  // if (!formik.values) return null
 
   return (
-    <Modal
-      title=""
-      show={isEditing}
-      stateFn={setIsEditing}
-      confirm={formik.dirty}
+    <Formik
+      initialValues={jobListing}
+      onSubmit={onSubmit}
+      enableReinitialize={true}
     >
-      {formik.values && (
-        <Modal.Body>
-          <Element renderAs="h4" textTransform="uppercase" textSize={6}>
-            Publish job postings on Talent Pool
-          </Element>
-          <Heading size="medium" border="bottomLeft">
-            Job Posting
-          </Heading>
-          <Element
-            renderAs="p"
-            textSize={4}
-            responsive={{ mobile: { textSize: { value: 5 } } }}
-            className="oneandhalf-bs"
+      {(formikProps) => (
+        <form>
+          <Modal
+            title=""
+            show={isEditing}
+            stateFn={setIsEditing}
+            confirm={formikProps.dirty}
           >
-            Add the job postings you want to publish to jobseekers at ReDI
-            School.
-          </Element>
-          <FormInput
-            name={`title`}
-            placeholder="Junior Frontend Developer"
-            label="Job Title*"
-            {...formik}
-          />
-          <FormInput
-            name={`location`}
-            placeholder="Where is the position based"
-            label="Location*"
-            {...formik}
-          />
-          <FormSelect
-            name="federalState"
-            label="Location (Federal State in Germany)"
-            items={federalStatesOptions}
-            placeholder="Select federal states"
-            {...formik}
-          />
-          <Checkbox.Form
-            name="isRemotePossible"
-            checked={formik.values?.isRemotePossible}
-            {...formik}
-          >
-            Remote working is possible for this job listing
-          </Checkbox.Form>
-          <FormTextArea
-            label="Job Summary*"
-            name={`summary`}
-            rows={7}
-            placeholder="Tell us a bit about the position, expectations & ideal candidate."
-            minChar={MIN_CHARS_COUNT}
-            formik={formik}
-          />
-          <Element
-            renderAs="p"
-            textSize={6}
-            responsive={{ mobile: { textSize: { value: 5 } } }}
-            className="oneandhalf-bs"
-          >
-            We use a standardised list of skills and positions to help with the
-            matching process of our candidates. Please select the top 6 skills
-            you think are necessary for succeeding in this job, and up to 3
-            position titles that match this job. We will use those to suggest
-            potential matches.
-          </Element>
-          <FormSelect
-            label="Related positions*"
-            name={`relatesToPositions`}
-            items={formRelatedPositions}
-            {...formik}
-            multiselect
-            placeholder="Start typing and select positions"
-            closeMenuOnSelect={false}
-          />
-          <FormSelect
-            label="Ideal technical skills*"
-            name={`idealTechnicalSkills`}
-            items={formTopSkills}
-            {...formik}
-            multiselect
-            placeholder="Start typing and select skills"
-            closeMenuOnSelect={false}
-          />
-          <FormSelect
-            label="Employment type*"
-            name={`employmentType`}
-            items={formEmploymentType}
-            {...formik}
-          />
-          <FormInput
-            name={`languageRequirements`}
-            placeholder="German C1, English B2, French B1..."
-            label="Language requirements*"
-            {...formik}
-          />
-          <FormInput
-            label="Salary range"
-            placeholder="€40K - €52K"
-            name={`salaryRange`}
-            {...formik}
-          />
+            {formikProps.values && (
+              <Modal.Body>
+                <Element renderAs="h4" textTransform="uppercase" textSize={6}>
+                  Publish job postings on Talent Pool
+                </Element>
+                <Heading size="medium" border="bottomLeft">
+                  Job Posting
+                </Heading>
+                <Element
+                  renderAs="p"
+                  textSize={4}
+                  responsive={{ mobile: { textSize: { value: 5 } } }}
+                  className="oneandhalf-bs"
+                >
+                  Add the job postings you want to publish to jobseekers at ReDI
+                  School.
+                </Element>
+                <FormInput
+                  name={`title`}
+                  placeholder="Junior Frontend Developer"
+                  label="Job Title*"
+                  {...formikProps}
+                />
+                <FormInput
+                  name={`location`}
+                  placeholder="Where is the position based"
+                  label="Location*"
+                  {...formikProps}
+                />
+                <FormSelect
+                  name="federalState"
+                  label="Location (Federal State in Germany)"
+                  items={federalStatesOptions}
+                  placeholder="Select federal states"
+                  {...formikProps}
+                />
+                <Checkbox.Form
+                  name="isRemotePossible"
+                  checked={formikProps.values?.isRemotePossible}
+                  {...formikProps}
+                >
+                  Remote working is possible for this job listing
+                </Checkbox.Form>
+                <TextEditor
+                  name="summary"
+                  label="Job Summary*"
+                  placeholder="Tell us a bit about the position, expectations & ideal candidate..."
+                  formik={formikProps}
+                />
+                <Element
+                  renderAs="p"
+                  textSize={6}
+                  responsive={{ mobile: { textSize: { value: 5 } } }}
+                  className="oneandhalf-bs"
+                >
+                  We use a standardised list of skills and positions to help
+                  with the matching process of our candidates. Please select the
+                  top 6 skills you think are necessary for succeeding in this
+                  job, and up to 3 position titles that match this job. We will
+                  use those to suggest potential matches.
+                </Element>
+                <FormSelect
+                  label="Related positions*"
+                  name={`relatesToPositions`}
+                  items={formRelatedPositions}
+                  {...formikProps}
+                  multiselect
+                  placeholder="Start typing and select positions"
+                  closeMenuOnSelect={false}
+                />
+                <FormSelect
+                  label="Ideal technical skills*"
+                  name={`idealTechnicalSkills`}
+                  items={formTopSkills}
+                  {...formikProps}
+                  multiselect
+                  placeholder="Start typing and select skills"
+                  closeMenuOnSelect={false}
+                />
+                <FormSelect
+                  label="Employment type*"
+                  name={`employmentType`}
+                  items={formEmploymentType}
+                  {...formikProps}
+                />
+                <FormInput
+                  name={`languageRequirements`}
+                  placeholder="German C1, English B2, French B1..."
+                  label="Language requirements*"
+                  {...formikProps}
+                />
+                <FormInput
+                  label="Salary range"
+                  placeholder="€40K - €52K"
+                  name={`salaryRange`}
+                  {...formikProps}
+                />
 
-          <div style={{ height: '30px' }} />
+                <div style={{ height: '30px' }} />
 
-          <div style={{ display: 'flex' }}>
-            <div style={{ flexGrow: 1 }}>
-              <Button
-                disabled={!formik.isValid || updateMutation.isLoading}
-                onClick={formik.handleSubmit}
-              >
-                Save
-              </Button>
-              <Button
-                simple
-                disabled={updateMutation.isLoading}
-                onClick={() => setIsEditing(false)}
-              >
-                Cancel
-              </Button>
-            </div>
-            {tpJobListingId ? (
-              <Button
-                simple
-                disabled={updateMutation.isLoading}
-                onClick={handleDelete}
-              >
-                Delete
-              </Button>
-            ) : null}
-          </div>
-        </Modal.Body>
+                <div style={{ display: 'flex' }}>
+                  <div style={{ flexGrow: 1 }}>
+                    <Button
+                      disabled={
+                        !formikProps.isValid || updateMutation.isLoading
+                      }
+                      onClick={formikProps.handleSubmit}
+                    >
+                      Save
+                    </Button>
+                    <Button
+                      simple
+                      disabled={updateMutation.isLoading}
+                      onClick={() => setIsEditing(false)}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                  {tpJobListingId ? (
+                    <Button
+                      simple
+                      disabled={updateMutation.isLoading}
+                      onClick={handleDelete}
+                    >
+                      Delete
+                    </Button>
+                  ) : null}
+                </div>
+              </Modal.Body>
+            )}
+          </Modal>
+        </form>
       )}
-    </Modal>
+    </Formik>
   )
 }
 
