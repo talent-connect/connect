@@ -16,7 +16,7 @@ import {
   germanFederalStates,
   topSkills,
 } from '@talent-connect/talent-pool/config'
-import { useFormik, Formik } from 'formik'
+import { useFormik, Formik, Form } from 'formik'
 import { useCallback, useState, useEffect } from 'react'
 import { Columns, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
@@ -227,7 +227,7 @@ function ModalForm({
       enableReinitialize={true}
     >
       {(formikProps) => (
-        <form>
+        <Form>
           <Modal
             title=""
             show={isEditing}
@@ -278,7 +278,7 @@ function ModalForm({
                   Remote working is possible for this job listing
                 </Checkbox.Form>
                 <TextEditor
-                  name="summary"
+                  name={`summary`}
                   label="Job Summary*"
                   placeholder="Tell us a bit about the position, expectations & ideal candidate..."
                   formik={formikProps}
@@ -365,7 +365,7 @@ function ModalForm({
               </Modal.Body>
             )}
           </Modal>
-        </form>
+        </Form>
       )}
     </Formik>
   )

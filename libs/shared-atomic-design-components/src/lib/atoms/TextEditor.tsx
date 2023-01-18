@@ -1,5 +1,6 @@
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
+import { get } from 'lodash'
 import { Field, FormikValues } from 'formik'
 import { Content } from 'react-bulma-components'
 
@@ -29,15 +30,18 @@ const TextEditor = (props: TextEditorProps) => {
     name,
     label,
     placeholder,
-    formik: { values, setFieldValue },
+    formik: { values, setFieldValue, touched },
   } = props
 
   console.log('formik', props.formik)
-  console.log('summary', values.summary)
+  console.log('values', values)
+
+  const isTouched = !!get(touched, name)
+  console.log('isTouched', isTouched)
 
   return (
     <Field name={name}>
-      {() => (
+      {({ field }) => (
         <>
           <Content size="small" className="label">
             {label}
@@ -46,6 +50,8 @@ const TextEditor = (props: TextEditorProps) => {
             theme="snow"
             value={values[name]}
             onChange={(content) => setFieldValue(name, content)}
+            // value={field.value}
+            // onChange={field.onChange(field.name)}
             placeholder={placeholder}
             modules={modules}
           />
