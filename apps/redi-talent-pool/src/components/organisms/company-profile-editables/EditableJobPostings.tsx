@@ -141,7 +141,9 @@ const MIN_CHARS_COUNT = 200
 const validationSchema = Yup.object().shape({
   title: Yup.string().required('Please provide a job title'),
   location: Yup.string().required('Please provide a location'),
-  summary: Yup.string().required().min(MIN_CHARS_COUNT),
+  summary: Yup.string()
+    .required('Please provide job description')
+    .min(MIN_CHARS_COUNT),
   relatesToPositions: Yup.array().min(
     1,
     'Please select at least one related position'
@@ -280,6 +282,7 @@ function ModalForm({
             name={`summary`}
             label="Job Summary*"
             placeholder="Tell us a bit about the position, expectations & ideal candidate."
+            minChar={MIN_CHARS_COUNT}
             formik={formik}
           />
           <Element

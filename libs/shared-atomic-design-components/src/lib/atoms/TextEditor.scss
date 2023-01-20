@@ -6,12 +6,18 @@
   box-shadow: inset 0 2px 6px rgb(178 180 181 / 30%);
 }
 
-.quill:hover {
-  border-color: $input-hover-border-color;
+.valid {
+  @extend .quill;
+  border-color: $green;
 }
 
-.quill:focus {
-  border-color: $input-focus-border-color;
+.invalid {
+  @extend .quill;
+  border-color: $red;
+}
+
+.help-text {
+  text-align: right;
 }
 
 .ql-container.ql-snow {
@@ -22,7 +28,6 @@
   min-height: 150px;
   font-family: $family-primary;
   font-size: $size-5;
-  color: #363636;
 }
 
 .ql-snow a {

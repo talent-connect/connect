@@ -11,6 +11,7 @@ import moment from 'moment'
 import { Columns, Content, Element, Tag } from 'react-bulma-components'
 import ReactMarkdown from 'react-markdown'
 import { useParams } from 'react-router-dom'
+import 'react-quill/dist/quill.snow.css'
 import Avatar from '../../../components/organisms/Avatar'
 import { EditableContact } from '../../../components/organisms/company-profile-editables/EditableContact'
 import { EditableDetails } from '../../../components/organisms/company-profile-editables/EditableDetails'
@@ -91,9 +92,14 @@ export function JobListing() {
                 About the Role
               </Element>
             </div>
-
-            <div className="profile-section--body">
-              <ReactMarkdown>{jobListing?.summary}</ReactMarkdown>
+            <div
+              /* Adding "ql-editor" class enables ReactQuill's styles (imported above) for this element*/
+              className="profile-section--body ql-editor"
+              style={{ padding: '0' }}
+            >
+              <Element
+                dangerouslySetInnerHTML={{ __html: jobListing?.summary }}
+              />
             </div>
           </div>
           <div className="profile-section">
