@@ -1,0 +1,29 @@
+.editor-output .ql-align-left {
+  text-align: left;
+}
+
+.editor-output .ql-align-center {
+  text-align: center;
+}
+
+.editor-output .ql-align-right {
+  text-align: right;
+}
+
+.editor-output .ql-align-justify {
+  text-align: justify;
+}
+
+.editor-output ol,
+.editor-output ul {
+  padding-left: 1.5rem;
+}
+
+.editor-output ul > li {
+  list-style-type: disc;
+  margin-top: 0.25rem;
+}
+
+.editor-output ol > li {
+  margin-top: 0.25rem;
+}

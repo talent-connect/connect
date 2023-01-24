@@ -25,7 +25,7 @@
 }
 
 .ql-editor {
-  min-height: 150px;
+  min-height: 8rem;
   font-family: $family-primary;
   font-size: $size-5;
 }
@@ -44,6 +44,11 @@
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
   padding: 6px;
+}
+
+.ql-editor ol,
+.ql-editor ul {
+  padding-left: 0;
 }
 
 .ql-snow.ql-toolbar button:hover,

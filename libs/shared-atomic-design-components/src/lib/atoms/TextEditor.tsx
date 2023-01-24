@@ -84,7 +84,7 @@ const TextEditor = (props: TextEditorProps) => {
       <Form.Control className={isMinCharAmountReached ? 'textarea-clean' : ''}>
         <ReactQuill
           theme="snow"
-          value={values[name]}
+          value={get(values, name)}
           onChange={(content) => setFieldValue(name, content)}
           placeholder={placeholder}
           className={editorOutlineColor}
