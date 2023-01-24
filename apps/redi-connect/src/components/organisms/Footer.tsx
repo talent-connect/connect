@@ -41,6 +41,7 @@ const RediFooter = () => {
                 className="footer__logo"
               >
                 <Deloitte />
+                {/* this is just a placeholder */}
               </Element>
             </Columns.Column>
             <Columns.Column
