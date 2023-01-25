@@ -269,8 +269,11 @@ export function BrowseJobseeker() {
                 <JobListingCard
                   key={jobListing.id}
                   jobListing={jobListing}
-                  onClick={() =>
+                  onCardClick={() =>
                     history.push(`/app/job-listing/${jobListing.id}`)
+                  }
+                  onCompanyNameClick={() =>
+                    history.push(`/app/company-profile/${jobListing.tpCompanyProfileId}`)
                   }
                   toggleFavorite={handleFavoriteJobListing}
                   isFavorite={isFavorite}

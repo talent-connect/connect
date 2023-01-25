@@ -28,6 +28,28 @@ export function EditableNamePhotoLocation({ profile, disableEditing }: Props) {
 
   const isLocationEmpty = EditableNamePhotoLocation.isSectionEmpty(profile)
 
+  function getCorrectAvatar(profile, disableEditing): JSX.Element {
+    if (profile && disableEditing) {
+      return (
+        <Avatar
+          profile={profile}
+          shape="square"
+        />
+      )
+    } else if (profile && !disableEditing) {
+      return (
+        <Avatar.Editable
+          profile={profile}
+          profileSaveStart={mutation.mutate}
+          callToActionText="Please add your company logo"
+          shape="square"
+        />
+      )
+    } else {
+      return null
+    }
+  }
+
   return (
     <Editable
       disableEditing={disableEditing}
@@ -37,14 +59,7 @@ export function EditableNamePhotoLocation({ profile, disableEditing }: Props) {
       readComponent={
         <Columns vCentered breakpoint="mobile" className="oneandhalf-bs">
           <Columns.Column size={5}>
-            {profile ? (
-              <Avatar.Editable
-                profile={profile}
-                profileSaveStart={mutation.mutate}
-                callToActionText="Please add your company logo"
-                shape="square"
-              />
-            ) : null}
+            { getCorrectAvatar(profile, disableEditing) }
           </Columns.Column>
           <Columns.Column size={7}>
             <Heading size="medium">{profile?.companyName}</Heading>

@@ -120,7 +120,7 @@ export function EditableJobPostings({
                   <JobListingCard
                     key={jobListing.id}
                     jobListing={jobListing}
-                    onClick={() => startEditing(jobListing.id)}
+                    onCardClick={() => startEditing(jobListing.id)}
                   />
                 </Columns.Column>
               ))}

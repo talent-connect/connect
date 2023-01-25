@@ -349,6 +349,11 @@ export async function fetchAllTpJobListings(): Promise<Array<TpJobListing>> {
   return resp.data.filter((listing) => !listing.dummy)
 }
 
+export async function fetchAllTpJobListingsOfOneUser( id: string): Promise<Array<TpJobListing>> {
+  const resp = await http(`${API_URL}/redUsers/${id}/tpJobListings`)
+  return resp.data
+}
+
 export async function fetchOneTpJobListingOfCurrentUser(
   id: string
 ): Promise<TpJobListing> {
@@ -428,5 +433,12 @@ export async function fetchTpJobseekerProfileById(
   id: string
 ): Promise<Partial<TpJobseekerProfile>> {
   const resp = await http(`${API_URL}/tpJobseekerProfiles/${id}`)
+  return resp.data
+}
+
+export async function fetchTpCompanyProfileById(
+  id: string
+): Promise<Partial<TpCompanyProfile>> {
+  const resp = await http(`${API_URL}/tpCompanyProfiles/${id}`)
   return resp.data
 }

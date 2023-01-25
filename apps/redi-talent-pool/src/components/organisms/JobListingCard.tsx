@@ -11,14 +11,16 @@ import './JobListingCard.scss'
 
 interface JobListingCardProps {
   jobListing: Partial<TpJobListing>
-  onClick?: () => void
+  onCardClick?: () => void
+  onCompanyNameClick?: () => void
   isFavorite?: boolean
   toggleFavorite?: (id: string) => void
 }
 
 export function JobListingCard({
   jobListing,
-  onClick,
+  onCardClick,
+  onCompanyNameClick,
   toggleFavorite,
   isFavorite,
 }: JobListingCardProps) {
@@ -36,6 +38,11 @@ export function JobListingCard({
     toggleFavorite && toggleFavorite(jobListing.id)
   }
 
+  const handleCompanyNameClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    onCompanyNameClick()
+  }
+
   const imgSrc = companyAvatarImage
     ? AWS_PROFILE_AVATARS_BUCKET_BASE_URL + companyAvatarImage
     : null
@@ -43,9 +50,9 @@ export function JobListingCard({
   return (
     <Card
       className={classnames('job-posting-card', {
-        'job-posting-card--active': onClick,
+        'job-posting-card--active': onCardClick,
       })}
-      onClick={onClick}
+      onClick={onCardClick}
     >
       <Card.Image
         className="job-posting-card__image"
@@ -76,7 +83,8 @@ export function JobListingCard({
         <Element
           className="content job-posting-card__company-name"
           key="location"
-          renderAs="div"
+          renderAs="a"
+          onClick={handleCompanyNameClick}
         >
           {companyName}
         </Element>
