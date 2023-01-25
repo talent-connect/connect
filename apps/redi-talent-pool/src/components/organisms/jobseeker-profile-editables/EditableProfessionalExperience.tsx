@@ -6,7 +6,7 @@ import {
   FormDraggableAccordion,
   FormInput,
   FormSelect,
-  TextEditor,
+  FormTextArea,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
 import {
@@ -21,6 +21,7 @@ import moment from 'moment'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Columns, Content, Element } from 'react-bulma-components'
+import ReactMarkdown from 'react-markdown'
 import { UseMutationResult, UseQueryResult } from 'react-query'
 import { Subject } from 'rxjs'
 import { v4 as uuidv4 } from 'uuid'
@@ -29,7 +30,6 @@ import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseeker
 import { Location } from '../../molecules/Location'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
-import './EditableProfessionalExperience.scss'
 
 function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
   const result = Array.from(list)
@@ -78,7 +78,7 @@ export function EditableProfessionalExperience({
           </EmptySectionPlaceholder>
         ) : (
           profile?.experience?.map((item) => (
-            <div style={{ marginBottom: '2rem' }}>
+            <div style={{ marginBottom: '2.8rem' }}>
               <div
                 style={{
                   display: 'flex',
@@ -95,21 +95,24 @@ export function EditableProfessionalExperience({
                     : formatDate(item.endDateMonth, item.endDateYear)}
                 </span>
               </div>
-              <Element style={{ marginTop: '-0.5rem' }}>
+              <Content style={{ marginTop: '-0.5rem' }}>
                 <Location
                   institution={item?.company}
                   city={item?.city}
                   country={item?.country}
                 />
                 {item.description ? (
-                  <Element
-                    className="editor-output"
-                    dangerouslySetInnerHTML={{
-                      __html: item.description,
+                  <ReactMarkdown
+                    components={{
+                      p: ({ children }) => (
+                        <p style={{ marginBottom: '0' }}>{children}</p>
+                      ),
                     }}
-                  />
+                  >
+                    {item.description.replace(/\n/g, `\n\n`)}
+                  </ReactMarkdown>
                 ) : null}
-              </Element>
+              </Content>
             </div>
           ))
         )
@@ -268,8 +271,6 @@ export function JobseekerFormSectionProfessionalExperience({
     [formik]
   )
 
-  console.log('formik', formik)
-
   return (
     <>
       <Element
@@ -329,9 +330,10 @@ export function JobseekerFormSectionProfessionalExperience({
                           label="Country"
                           {...formik}
                         />
-                        <TextEditor
+                        <FormTextArea
                           label="Roles & Responsibilities"
                           name={`experience[${index}].description`}
+                          rows={7}
                           placeholder={rolesAndResponsibilitiesPlaceholderText}
                           formik={formik}
                         />
@@ -449,6 +451,8 @@ function buildBlankExperienceRecord(): ExperienceRecord {
 }
 
 const rolesAndResponsibilitiesPlaceholderText = `Example:
+
+• Supported the Visual Studio Team by creating wireframes using storyboarding and customer mapping.
 • Validated design decisions by conducting remote usability, resulted in an increase of conversion rate by 10%.`
 
 const rolesAndResponsibilitiesQuestion =
