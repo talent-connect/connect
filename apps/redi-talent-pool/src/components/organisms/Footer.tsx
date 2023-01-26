@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { ReactComponent as RediSchool } from '../../assets/redi-school-logo.svg'
 import MicrosoftLogo from '../../assets/images/microsoft-logo.png'
 import DeloitteLogo from '../../assets/images/deloitte-logo.png'
+import JpmLogo from '../../assets/images/jpm-logo-print.png'
 import './Footer.scss'
 
 const RediFooter = () => {
@@ -36,37 +37,41 @@ const RediFooter = () => {
                 <RediSchool />
               </Element>
               <Columns breakpoint="mobile">
-                <Columns.Column>
-                  <Element renderAs="small">Supported by</Element>
-                  <Element
-                    renderAs="a"
-                    href="https://www.microsoft.com/de-de/berlin/corporate-digital-responsibility.aspx?id=tab01"
-                    target="_blank"
-                    className="footer__logo oneandhalf-bs"
-                    style={{ marginTop: 0 }}
-                  >
-                    <img
-                      src={MicrosoftLogo}
-                      alt="Supported by Microsoft"
-                      style={{ maxWidth: '6rem' }}
-                    />
+                <Columns.Column size={4}>
+                  <Element renderAs="small" style={{ fontSize: '0.72rem' }}>
+                    Supported by
                   </Element>
+                  <Element
+                    renderAs="img"
+                    src={MicrosoftLogo}
+                    alt="Supported by Microsoft"
+                    style={{ maxWidth: '5rem' }}
+                    className="footer__logo oneandhalf-bs"
+                  ></Element>
                 </Columns.Column>
-                <Columns.Column>
-                  <Element renderAs="small">Supported by</Element>
-                  <Element
-                    renderAs="a"
-                    href=""
-                    target="_blank"
-                    className="footer__logo oneandhalf-bs"
-                    style={{ marginTop: 0 }}
-                  >
-                    <img
-                      src={DeloitteLogo}
-                      alt="Supported by Deloitte"
-                      style={{ maxWidth: '6rem' }}
-                    />
+                <Columns.Column size={4}>
+                  <Element renderAs="small" style={{ fontSize: '0.72rem' }}>
+                    Supported by
                   </Element>
+                  <Element
+                    renderAs="img"
+                    src={DeloitteLogo}
+                    alt="Supported by Deloitte"
+                    style={{ maxWidth: '5rem' }}
+                    className="footer__logo oneandhalf-bs"
+                  ></Element>
+                </Columns.Column>
+                <Columns.Column size={4}>
+                  <Element renderAs="small" style={{ fontSize: '0.72rem' }}>
+                    Supported by
+                  </Element>
+                  <Element
+                    renderAs="img"
+                    src={JpmLogo}
+                    alt="Supported by J.P. Morgan"
+                    style={{ maxWidth: '5rem' }}
+                    className="footer__logo oneandhalf-bs"
+                  ></Element>
                 </Columns.Column>
               </Columns>
             </Columns.Column>

@@ -3,8 +3,9 @@ import { Element, Columns, Container, Section } from 'react-bulma-components'
 import { useTranslation } from 'react-i18next'
 import { ReactComponent as RediSchool } from '../../assets/images/redi-school-logo.svg'
 import { ReactComponent as Deloitte } from '../../assets/images/deloitte.svg'
-import './Footer.scss'
 import { SocialMediaIcons } from '@talent-connect/shared-atomic-design-components'
+import JpmLogo from '../../assets/images/Jpm-logo.png'
+import './Footer.scss'
 
 const RediFooter = () => {
   const year = new Date().getFullYear()
@@ -34,16 +35,24 @@ const RediFooter = () => {
               >
                 <RediSchool />
               </Element>
-              <Element
-                renderAs="a"
-                href="https://www2.deloitte.com/"
-                target="_blank"
-                className="footer__logo"
-              >
-                <Deloitte />
-                {/* this is just a placeholder */}
-              </Element>
+              <Columns.Column mobile={{ size: 12 }}>
+                <Element
+                  alt="Supported by Deloitte"
+                  style={{ maxWidth: '6rem' }}
+                  className="footer__logo"
+                >
+                  <Deloitte />
+                </Element>
+                <Element
+                  renderAs="img"
+                  src={JpmLogo}
+                  alt="Supported by J.P. Morgan"
+                  style={{ maxWidth: '6rem' }}
+                  className="footer__logo oneandhalf-bs"
+                ></Element>
+              </Columns.Column>
             </Columns.Column>
+
             <Columns.Column
               mobile={{ offset: null, size: 6 }}
               desktop={{ offset: 1 }}
