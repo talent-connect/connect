@@ -253,13 +253,13 @@ function ModalForm({
             School.
           </Element>
           <FormInput
-            name={`title`}
+            name="title"
             placeholder="Junior Frontend Developer"
             label="Job Title*"
             {...formik}
           />
           <FormInput
-            name={`location`}
+            name="location"
             placeholder="Where is the position based"
             label="Location*"
             {...formik}
@@ -279,7 +279,7 @@ function ModalForm({
             Remote working is possible for this job listing
           </Checkbox.Form>
           <TextEditor
-            name={`summary`}
+            name="summary"
             label="Job Summary*"
             placeholder="Tell us a bit about the position, expectations & ideal candidate."
             minChar={MIN_CHARS_COUNT}
@@ -299,7 +299,7 @@ function ModalForm({
           </Element>
           <FormSelect
             label="Related positions*"
-            name={`relatesToPositions`}
+            name="relatesToPositions"
             items={formRelatedPositions}
             {...formik}
             multiselect
@@ -308,7 +308,7 @@ function ModalForm({
           />
           <FormSelect
             label="Ideal technical skills*"
-            name={`idealTechnicalSkills`}
+            name="idealTechnicalSkills"
             items={formTopSkills}
             {...formik}
             multiselect
@@ -317,12 +317,12 @@ function ModalForm({
           />
           <FormSelect
             label="Employment type*"
-            name={`employmentType`}
+            name="employmentType"
             items={formEmploymentType}
             {...formik}
           />
           <FormInput
-            name={`languageRequirements`}
+            name="languageRequirements"
             placeholder="German C1, English B2, French B1..."
             label="Language requirements*"
             {...formik}
@@ -330,7 +330,7 @@ function ModalForm({
           <FormInput
             label="Salary range"
             placeholder="€40K - €52K"
-            name={`salaryRange`}
+            name="salaryRange"
             {...formik}
           />
 

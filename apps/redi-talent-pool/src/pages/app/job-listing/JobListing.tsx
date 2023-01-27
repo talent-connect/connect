@@ -94,7 +94,7 @@ export function JobListing() {
             </div>
             <div className="profile-section--body">
               <Element
-                className="editor-output"
+                className="quill-editor-output"
                 dangerouslySetInnerHTML={{ __html: jobListing?.summary }}
               />
             </div>

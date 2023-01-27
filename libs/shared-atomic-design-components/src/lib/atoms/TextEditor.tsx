@@ -1,12 +1,13 @@
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { get } from 'lodash'
+import DOMPurify from 'dompurify'
 import { FormikValues } from 'formik'
 import { Form, Content, Columns } from 'react-bulma-components'
 
 import './TextEditor.scss'
 
-const modules = {
+const MODULES = {
   toolbar: [
     'bold',
     'italic',
@@ -18,7 +19,7 @@ const modules = {
   ],
 }
 
-const formats = [
+const FORMATS = [
   'bold',
   'italic',
   'underline',
@@ -45,19 +46,24 @@ const TextEditor = (props: TextEditorProps) => {
     formik: { values, setFieldValue, setFieldTouched, touched, errors },
   } = props
 
-  const charactersLength = values[name]?.length || 0
+  const editorsHtmlOutput = values[name]
+  const strippedString = DOMPurify.sanitize(editorsHtmlOutput, {
+    USE_PROFILES: { html: false },
+  })
+
+  const charactersLength = strippedString.length
 
   const isMinCharAmountReached =
     minChar && values[name] && charactersLength >= minChar
 
-  const isTouched = !!get(touched, name)
+  const isTouched = Boolean(get(touched, name))
 
-  const hasError = isTouched && !isMinCharAmountReached && !!get(errors, name)
+  const hasError =
+    isTouched && !isMinCharAmountReached && Boolean(get(errors, name))
 
-  const numberOfCharsRequiredToMinAmount =
-    minChar - (values[name] ? charactersLength : 0)
+  const numberOfCharsRequiredToMinAmount = minChar - charactersLength
 
-  const isFieldFresh = !isTouched && !values[name] && charactersLength === 0
+  const isFieldFresh = !isTouched && !values[name]
 
   const isSelectedAndBelowMinCharAmount =
     !isTouched &&
@@ -71,7 +77,7 @@ const TextEditor = (props: TextEditorProps) => {
   const defineEditorOutlineColor = () => {
     if (isMinCharAmountReached) return 'valid'
 
-    if (hasError) return 'invalid'
+    if (hasError || wasVisitedAndBelowMinCharAmount) return 'invalid'
 
     return null
   }
@@ -88,8 +94,8 @@ const TextEditor = (props: TextEditorProps) => {
           onChange={(content) => setFieldValue(name, content)}
           placeholder={placeholder}
           className={editorOutlineColor}
-          modules={modules}
-          formats={formats}
+          modules={MODULES}
+          formats={FORMATS}
           onBlur={() => setFieldTouched(name, true)}
         />
       </Form.Control>
