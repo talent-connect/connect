@@ -1,7 +1,6 @@
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { get } from 'lodash'
-import DOMPurify from 'dompurify'
 import { FormikValues } from 'formik'
 import { Form, Content, Columns } from 'react-bulma-components'
 
@@ -47,11 +46,11 @@ const TextEditor = (props: TextEditorProps) => {
   } = props
 
   const editorsHtmlOutput = values[name]
-  const strippedString = DOMPurify.sanitize(editorsHtmlOutput, {
-    USE_PROFILES: { html: false },
-  })
 
-  const charactersLength = strippedString.length
+  const charactersLength = new DOMParser().parseFromString(
+    editorsHtmlOutput,
+    'text/html'
+  ).body.textContent.length
 
   const isMinCharAmountReached =
     minChar && values[name] && charactersLength >= minChar
