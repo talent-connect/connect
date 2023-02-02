@@ -7,7 +7,14 @@
 
   &__logo {
     display: block;
+    max-width: 6rem;
+    @include mobile() {
+      margin-top: 1rem;
+    }
+  }
 
+  &__supported {
+    font-size: 0.65rem;
     @include mobile() {
       margin-top: 1rem;
     }
