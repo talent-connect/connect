@@ -2,9 +2,9 @@ import React from 'react'
 import { Element, Columns, Container, Section } from 'react-bulma-components'
 import { useTranslation } from 'react-i18next'
 import { ReactComponent as RediSchool } from '../../assets/images/redi-school-logo.svg'
-import { ReactComponent as Deloitte } from '../../assets/images/deloitte.svg'
 import { SocialMediaIcons } from '@talent-connect/shared-atomic-design-components'
 import JpmLogo from '../../assets/images/Jpm-logo.png'
+import DeloitteLogo from '../../assets/images/deloitte-logo.png'
 import './Footer.scss'
 
 const RediFooter = () => {
@@ -35,22 +35,30 @@ const RediFooter = () => {
               >
                 <RediSchool />
               </Element>
-              <Columns.Column mobile={{ size: 12 }}>
-                <Element
-                  alt="Supported by Deloitte"
-                  style={{ maxWidth: '6rem' }}
-                  className="footer__logo"
-                >
-                  <Deloitte />
-                </Element>
-                <Element
-                  renderAs="img"
-                  src={JpmLogo}
-                  alt="Supported by J.P. Morgan"
-                  style={{ maxWidth: '6rem' }}
-                  className="footer__logo oneandhalf-bs"
-                ></Element>
-              </Columns.Column>
+              <Columns breakpoint="mobile">
+                <Columns.Column mobile={{ size: 12 }} size={6}>
+                  <Element renderAs="small" className="footer__supported">
+                    In collaboration with
+                  </Element>
+                  <Element
+                    renderAs="img"
+                    src={DeloitteLogo}
+                    alt="Supported by Deloitte"
+                    className="footer__logo oneandhalf-bs"
+                  ></Element>
+                </Columns.Column>
+                <Columns.Column mobile={{ size: 12 }} size={6}>
+                  <Element renderAs="small" className="footer__supported">
+                    In collaboration with
+                  </Element>
+                  <Element
+                    renderAs="img"
+                    src={JpmLogo}
+                    alt="Supported by J.P. Morgan"
+                    className="footer__logo oneandhalf-bs"
+                  ></Element>
+                </Columns.Column>
+              </Columns>
             </Columns.Column>
 
             <Columns.Column
