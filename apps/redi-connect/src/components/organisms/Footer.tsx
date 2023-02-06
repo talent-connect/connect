@@ -26,7 +26,7 @@ const RediFooter = () => {
       <Section>
         <Container>
           <Columns breakpoint="mobile">
-            <Columns.Column mobile={{ size: 12 }}>
+            <Columns.Column mobile={{ size: 12 }} tablet={{ size: 6 }}>
               <Element
                 renderAs="a"
                 href="https://www.redi-school.org"
@@ -36,7 +36,11 @@ const RediFooter = () => {
                 <RediSchool />
               </Element>
               <Columns breakpoint="mobile">
-                <Columns.Column mobile={{ size: 12 }} size={6}>
+                <Columns.Column
+                  mobile={{ size: 12 }}
+                  size={6}
+                  tablet={{ size: 12 }}
+                >
                   <Element renderAs="small" className="footer__supported">
                     In collaboration with
                   </Element>
