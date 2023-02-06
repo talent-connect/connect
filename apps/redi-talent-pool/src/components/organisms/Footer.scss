@@ -7,7 +7,15 @@
 
   &__logo {
     display: block;
+    max-width: 5rem;
+    @include mobile() {
+      margin-top: 1rem;
+    }
+  }
 
+  &__supportedBy {
+    display: block;
+    font-size: 0.72rem;
     @include mobile() {
       margin-top: 1rem;
     }
