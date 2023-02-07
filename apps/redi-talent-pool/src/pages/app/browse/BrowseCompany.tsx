@@ -206,19 +206,6 @@ export function BrowseCompany() {
             }
           />
         </div>
-        <div
-          className="filters-inner filter-favourites"
-          onClick={toggleOnlyFavoritesFilter}
-        >
-          <Icon
-            icon={onlyFavorites ? 'heartFilled' : 'heart'}
-            className="filter-favourites__icon"
-            space="right"
-          />
-          Only Favorites
-        </div>
-      </div>
-      <div className="filters">
         <div className="filters-inner">
           <FilterDropdown
             items={desiredLanguagesOptions}
@@ -229,6 +216,19 @@ export function BrowseCompany() {
               toggleFilters(desiredLanguages, 'desiredLanguages', item)
             }
           />
+        </div>
+      </div>
+      <div className="filters">
+        <div
+          className="filters-inner filter-favourites"
+          onClick={toggleOnlyFavoritesFilter}
+        >
+          <Icon
+            icon={onlyFavorites ? 'heartFilled' : 'heart'}
+            className="filter-favourites__icon"
+            space="right"
+          />
+          Only Favorites
         </div>
         <div className="filters-inner filters__jobfair">
           <Checkbox
