@@ -25,6 +25,7 @@ import {
   topSkills,
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
+import { LANGUAGES } from '@talent-connect/shared-config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
 
 import { LoggedIn } from '../../../components/templates'
@@ -44,6 +45,7 @@ const germanFederalStatesOptions = objectEntries(germanFederalStates).map(
 export function BrowseCompany() {
   const [query, setQuery] = useQueryParams({
     name: withDefault(StringParam, ''),
+    desiredLanguages: withDefault(ArrayParam, []),
     desiredPositions: withDefault(ArrayParam, []),
     employmentTypes: withDefault(ArrayParam, []),
     skills: withDefault(ArrayParam, []),
@@ -53,6 +55,7 @@ export function BrowseCompany() {
   })
   const {
     name,
+    desiredLanguages,
     desiredPositions,
     employmentTypes,
     skills,
@@ -65,12 +68,17 @@ export function BrowseCompany() {
 
   const { data: jobseekerProfiles } = useBrowseTpJobseekerProfilesQuery({
     name,
+    workingLanguages: desiredLanguages,
     desiredPositions,
     employmentTypes,
     skills,
     federalStates,
     isJobFair2023Participant,
   })
+
+  console.log('jobseekerProfiles', jobseekerProfiles)
+  console.log('desiredLanguages', desiredLanguages)
+
   const { data: companyProfile } = useTpCompanyProfileQuery()
   const tpCompanyProfileUpdateMutation = useTpCompanyProfileUpdateMutation()
 
@@ -110,6 +118,7 @@ export function BrowseCompany() {
   const clearFilters = () => {
     setQuery((latestQuery) => ({
       ...latestQuery,
+      desiredLanguages: [],
       skills: [],
       desiredPositions: [],
       employmentTypes: [],
@@ -119,6 +128,7 @@ export function BrowseCompany() {
   }
 
   const shouldShowFilters =
+    desiredLanguages.length !== 0 ||
     skills.length !== 0 ||
     desiredPositions.length !== 0 ||
     federalStates.length !== 0 ||
@@ -209,6 +219,17 @@ export function BrowseCompany() {
         </div>
       </div>
       <div className="filters">
+        <div className="filters-inner">
+          <FilterDropdown
+            items={desiredLanguagesOptions}
+            className="filters__dropdown"
+            label="Languages"
+            selected={desiredLanguages}
+            onChange={(item) =>
+              toggleFilters(desiredLanguages, 'desiredLanguages', item)
+            }
+          />
+        </div>
         <div className="filters-inner filters__jobfair">
           <Checkbox
             name="isJobFair2023Participant"
@@ -228,6 +249,16 @@ export function BrowseCompany() {
                 id={catId}
                 label={topSkillsIdToLabelMap[catId]}
                 onClickHandler={(item) => toggleFilters(skills, 'skills', item)}
+              />
+            ))}
+            {(desiredLanguages as string[]).map((id) => (
+              <FilterTag
+                key={id}
+                id={id}
+                label={id}
+                onClickHandler={(item) =>
+                  toggleFilters(desiredLanguages, 'desiredLanguages', item)
+                }
               />
             ))}
             {(desiredPositions as string[]).map((id) => (
@@ -317,6 +348,10 @@ const employmentTypesOptions = desiredEmploymentTypeOptions.map(
     label,
   })
 )
+const desiredLanguagesOptions = LANGUAGES.map((language) => ({
+  value: language,
+  label: language,
+}))
 
 interface FilterTagProps {
   id: string

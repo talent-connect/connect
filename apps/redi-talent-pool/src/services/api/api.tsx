@@ -110,6 +110,7 @@ export const setPassword = async (password: string) => {
 
 export interface TpJobseekerProfileFilters {
   name: string
+  workingLanguages: string[]
   desiredPositions: string[]
   employmentTypes: string[]
   skills: string[]
@@ -119,12 +120,15 @@ export interface TpJobseekerProfileFilters {
 
 export async function fetchAllTpJobseekerProfiles({
   name,
+  workingLanguages,
   desiredPositions,
   employmentTypes,
   skills: topSkills,
   federalStates,
   isJobFair2023Participant,
 }: TpJobseekerProfileFilters): Promise<Array<Partial<TpJobseekerProfile>>> {
+  console.log('workingLanguages', workingLanguages)
+
   const filterDesiredPositions =
     desiredPositions && desiredPositions.length !== 0
       ? { inq: desiredPositions }
@@ -181,6 +185,8 @@ export async function fetchAllTpJobseekerProfiles({
   ).then((resp) =>
     resp.data.filter(
       (p) => p.isProfileVisibleToCompanies && p.state === 'profile-approved'
+      // &&
+      // p.workingLanguages?.some((elem) => elem?.language === 'Afrikaans')
     )
   )
 }
