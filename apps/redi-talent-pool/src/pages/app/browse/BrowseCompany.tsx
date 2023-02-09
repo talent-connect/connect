@@ -76,9 +76,6 @@ export function BrowseCompany() {
     isJobFair2023Participant,
   })
 
-  console.log('jobseekerProfiles', jobseekerProfiles)
-  console.log('desiredLanguages', desiredLanguages)
-
   const { data: companyProfile } = useTpCompanyProfileQuery()
   const tpCompanyProfileUpdateMutation = useTpCompanyProfileUpdateMutation()
 

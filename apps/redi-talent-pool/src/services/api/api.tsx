@@ -120,15 +120,13 @@ export interface TpJobseekerProfileFilters {
 
 export async function fetchAllTpJobseekerProfiles({
   name,
-  workingLanguages,
+  workingLanguages: desiredLanguages,
   desiredPositions,
   employmentTypes,
   skills: topSkills,
   federalStates,
   isJobFair2023Participant,
 }: TpJobseekerProfileFilters): Promise<Array<Partial<TpJobseekerProfile>>> {
-  console.log('workingLanguages', workingLanguages)
-
   const filterDesiredPositions =
     desiredPositions && desiredPositions.length !== 0
       ? { inq: desiredPositions }
@@ -182,13 +180,33 @@ export async function fetchAllTpJobseekerProfiles({
       order: 'createdAt DESC',
       limit: 0,
     })}`
-  ).then((resp) =>
-    resp.data.filter(
+  ).then((resp) => {
+    const filteredJobseekers = resp.data.filter(
       (p) => p.isProfileVisibleToCompanies && p.state === 'profile-approved'
-      // &&
-      // p.workingLanguages?.some((elem) => elem?.language === 'Afrikaans')
     )
-  )
+
+    const hasLanguagesQuery = desiredLanguages && desiredLanguages.length !== 0
+
+    const filteredByDesiredLanguages = filteredJobseekers.filter(
+      (jobseeker) => {
+        if (
+          jobseeker.workingLanguages &&
+          jobseeker.workingLanguages.length > 0
+        ) {
+          return jobseeker.workingLanguages.some((langObj) =>
+            desiredLanguages.includes(langObj.language)
+          )
+        }
+        return false
+      }
+    )
+
+    const jobseekersToRender = hasLanguagesQuery
+      ? filteredByDesiredLanguages
+      : filteredJobseekers
+
+    return jobseekersToRender
+  })
 }
 
 export async function fetchCurrentUserTpJobseekerProfile(): Promise<
@@ -339,7 +357,9 @@ export async function fetchAllTpJobListingsUsingFilters({
     resp.data
       .filter((listing) => !listing.dummy)
       .filter(
-        (listing) => listing.tpCompanyProfile?.isProfileVisibleToJobseekers
+        (listing) =>
+          listing.tpCompanyProfile?.isProfileVisibleToJobseekers &&
+          listing.tpCompanyProfile.state === 'profile-approved'
       )
   )
 }
