@@ -106,13 +106,19 @@
 }
 
 .filter-favourites {
-  @include filter-box;
+  display: flex;
 
   &__icon {
-    font-size: 1.2rem;
-    path {
-      fill: $redi-orange-dark;
-    }
+    transition: $transition;
+    margin-right: 0.3rem;
+
+      path {
+        fill: $redi-orange-dark;
+      }
+
+      &:hover {
+        transform: scale(1.2);
+      }
   }
 
   &--active {
