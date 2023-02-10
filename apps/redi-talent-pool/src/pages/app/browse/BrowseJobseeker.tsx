@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useHistory, Link } from 'react-router-dom'
 import { Columns, Element, Tag } from 'react-bulma-components'
 import {
   ArrayParam,
@@ -53,8 +52,6 @@ export function BrowseJobseeker() {
     onlyFavorites,
     isRemotePossible,
   } = query
-
-  const history = useHistory()
 
   const { data: jobseekerProfile } = useTpJobseekerProfileQuery()
   const tpjobseekerprofileUpdateMutation = useTpjobseekerprofileUpdateMutation()
@@ -266,19 +263,13 @@ export function BrowseJobseeker() {
 
             return (
               <Columns.Column mobile={{ size: 12 }} tablet={{ size: 6 }}>
-                <Link to={`/app/job-listing/${jobListing.id}`} onClick={() =>
-                    history.push(`/app/job-listing/${jobListing.id}`)
-                  }>
                 <JobListingCard
                   key={jobListing.id}
                   jobListing={jobListing}
-                  // onClick={() =>
-                  //   history.push(`/app/job-listing/${jobListing.id}`)
-                  // }
                   toggleFavorite={handleFavoriteJobListing}
                   isFavorite={isFavorite}
+                  linkTo={`/app/job-listing/${jobListing.id}`}
                 />
-                </Link>
               </Columns.Column>
             )
           })}
