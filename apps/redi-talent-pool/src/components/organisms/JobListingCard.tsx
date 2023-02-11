@@ -14,6 +14,7 @@ interface JobListingCardProps {
   isFavorite?: boolean
   toggleFavorite?: (id: string) => void
   linkTo?: string
+  onClick?: () => void
 }
 
 export function JobListingCard({
@@ -21,8 +22,8 @@ export function JobListingCard({
   toggleFavorite,
   isFavorite,
   linkTo,
+  onClick,
 }: JobListingCardProps) {
-
   const jobTitle = jobListing?.title
   const idealTechnicalSkills = jobListing?.idealTechnicalSkills
 
@@ -40,7 +41,7 @@ export function JobListingCard({
     : null
 
   return (
-    <NavLink to={linkTo} className="job-posting-link">
+    <NavLink to={linkTo} onClick={onClick} className="job-posting-link">
       <Card className="job-posting-card">
         <Card.Image
           className="job-posting-card__image"
@@ -85,6 +86,5 @@ export function JobListingCard({
         </Card.Content>
       </Card>
     </NavLink>
-    
   )
 }
