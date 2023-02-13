@@ -60,6 +60,11 @@ export class SalesforceRecordEventsListenerService {
 
     var replayId = -1 // -1 = Only New messages | -2 = All Window and New
 
+    console.log(
+      `[SalesforceRecordEventsListenerService]`,
+      `Setting up SF event listeners`
+    )
+
     var client = this.connection.streaming.createClient([
       ...Object.keys(ChannelToEventMap).map(
         (channel) => new jsforce.StreamingExtension.Replay(channel, replayId)
