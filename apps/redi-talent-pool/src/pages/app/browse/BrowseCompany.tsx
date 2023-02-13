@@ -68,7 +68,7 @@ export function BrowseCompany() {
 
   const { data: jobseekerProfiles } = useBrowseTpJobseekerProfilesQuery({
     name,
-    workingLanguages: desiredLanguages,
+    desiredLanguages,
     desiredPositions,
     employmentTypes,
     skills,

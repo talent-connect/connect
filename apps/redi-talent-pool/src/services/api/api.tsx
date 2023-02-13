@@ -110,7 +110,7 @@ export const setPassword = async (password: string) => {
 
 export interface TpJobseekerProfileFilters {
   name: string
-  workingLanguages: string[]
+  desiredLanguages: string[]
   desiredPositions: string[]
   employmentTypes: string[]
   skills: string[]
@@ -120,7 +120,7 @@ export interface TpJobseekerProfileFilters {
 
 export async function fetchAllTpJobseekerProfiles({
   name,
-  workingLanguages: desiredLanguages,
+  desiredLanguages,
   desiredPositions,
   employmentTypes,
   skills: topSkills,
@@ -181,31 +181,23 @@ export async function fetchAllTpJobseekerProfiles({
       limit: 0,
     })}`
   ).then((resp) => {
-    const filteredJobseekers = resp.data.filter(
-      (p) => p.isProfileVisibleToCompanies && p.state === 'profile-approved'
-    )
+    const filteredJobseekers = resp.data
+      .filter(
+        (p) => p.isProfileVisibleToCompanies && p.state === 'profile-approved'
+      )
+      .filter((p) => {
+        const isLanguagesQueryEmpty =
+          !desiredLanguages || desiredLanguages.length === 0
+        if (isLanguagesQueryEmpty) return true
 
-    const hasLanguagesQuery = desiredLanguages && desiredLanguages.length !== 0
-
-    const filteredByDesiredLanguages = filteredJobseekers.filter(
-      (jobseeker) => {
-        if (
-          jobseeker.workingLanguages &&
-          jobseeker.workingLanguages.length > 0
-        ) {
-          return jobseeker.workingLanguages.some((langObj) =>
+        const doesJobseekerWorkingLanguagesOverlapWithLanguagesQuery =
+          p.workingLanguages?.some((langObj) =>
             desiredLanguages.includes(langObj.language)
           )
-        }
-        return false
-      }
-    )
 
-    const jobseekersToRender = hasLanguagesQuery
-      ? filteredByDesiredLanguages
-      : filteredJobseekers
-
-    return jobseekersToRender
+        return doesJobseekerWorkingLanguagesOverlapWithLanguagesQuery
+      })
+    return filteredJobseekers
   })
 }
 
