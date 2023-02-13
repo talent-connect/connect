@@ -92,7 +92,7 @@ export default function SignUp() {
   }
 
   const [loopbackSubmitError, setLoopbackSubmitError] = useState<string | null>(
-    'generic'
+    null
   )
   const submitForm = async (
     values: FormikValues,
@@ -239,6 +239,7 @@ export default function SignUp() {
             (loopbackSubmitError || signUpMutation.isError) ? (
               <Form.Help color="danger" className="help--show">
                 An error occurred, please try again.
+                {signUpMutation.isError ? 'yes' : 'no'}
               </Form.Help>
             ) : null}
 
