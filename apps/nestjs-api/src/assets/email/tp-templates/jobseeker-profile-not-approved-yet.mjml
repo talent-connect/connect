@@ -12,18 +12,16 @@
           <mj-text mj-class="text" padding="0 0 20px 0"
             >Dear ${firstName},</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph"
             >We have not approved your profile yet. We want to help you to be
             able to show the best of you to the companies attending our Job
             Fair!</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph"
             >Please, go back to your profile and review it!</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0"
-            >Here are some suggestions for you:</mj-text
-          >
-          <mj-text mj-class="text" padding="0 0 20px 0">
+          <mj-text mj-class="text">Here are some suggestions for you:</mj-text>
+          <mj-text mj-class="text paragraph">
             <ul>
               <li>look for spelling mistakes</li>
               <li>
@@ -46,7 +44,7 @@
               </li>
             </ul>
           </mj-text>
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph"
             >As soon as you are done updating your profile, please
             <strong
               >send your profile to us for review <em>over again</em></strong

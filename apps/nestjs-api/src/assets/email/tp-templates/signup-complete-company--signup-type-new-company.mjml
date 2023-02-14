@@ -7,22 +7,22 @@
         <mj-column>
           <mj-text mj-class="headline">Sign-up complete!</mj-text>
           <mj-divider mj-class="divider-top" css-class="divider" />
-          <mj-text mj-class="text" padding="0px 0 30px 0"
+          <mj-text mj-class="text" padding="0 0 20px 0"
             >Hello ${firstName},</mj-text
           >
-          <mj-text mj-class="text" padding="0px 0 30px 0"
+          <mj-text mj-class="text paragraph"
             >Thank you for signing up!</mj-text
           >
-          <mj-text mj-class="text" padding="0px 0 30px 0"
+          <mj-text mj-class="text paragraph"
             >Now, it's time to log into Talent Pool and complete your company
             profile and add your job listings. You will be able to add your
             vacant tech-related job listings – whether they are apprenticeships,
             internships or regular positions.
           </mj-text>
-          <mj-text mj-class="text" padding="0px 0 30px 0">
+          <mj-text mj-class="text paragraph"
             Once it's complete, please send it to me for review.
           </mj-text>
-          <mj-text mj-class="text" padding="0px 0 30px 0"
+          <mj-text mj-class="text paragraph"
             >We are excited to have you on board!</mj-text
           >
           <mj-text mj-class="text">Best,</mj-text>
