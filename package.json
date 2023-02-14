@@ -111,7 +111,7 @@
     "papaparse": "5.2.0",
     "query-string": "^7.0.0",
     "react": "17.0.2",
-    "react-admin": "2.9.9",
+    "react-admin": "3.19.12",
     "react-beautiful-dnd": "^13.1.0",
     "react-bulma-components": "^3.2.0",
     "react-datepicker": "^3.8.0",
