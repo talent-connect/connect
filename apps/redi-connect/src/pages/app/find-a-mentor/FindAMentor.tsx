@@ -181,7 +181,7 @@ const FindAMentor = () => {
   return (
     <LoggedIn>
       <Heading subtitle size="small" className="oneandhalf-bs">
-        Available mentors ({mentors?.length})
+        Available mentors {mentors?.length ? `(${mentors.length})` : ''}
       </Heading>
       <div className="filters">
         <SearchField
