@@ -9,21 +9,22 @@
             >ReDI Connect: your user registration was declined</mj-text
           >
           <mj-divider mj-class="divider-top" css-class="divider" />
-          <mj-text mj-class="text">Dear ${firstName},</mj-text>
-          <mj-text mj-class="text text-padding"
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >Dear ${firstName},</mj-text
+          >
+          <mj-text mj-class="text paragraph"
             >unfortunately your profile has not been approved. Most likely this
             has been discussed with you in your conversation with one of our
             Career Support team members.</mj-text
           >
 
-          <mj-text mj-class="text" padding="0 0 30px 0"
+          <mj-text mj-class="text paragraph"
             >If you feel like this has been done without your knowledge, please
-            reach out to us at
-            <a href="mailto:career@redi-school.org">career@redi-school.org</a>
-            so we can get in touch with you.</mj-text
+            reach out to us at ${rediEmailAdress} so we can get in touch with
+            you.</mj-text
           >
-          <mj-text mj-class="text"
-            >Your Career Support Team at ReDI School</mj-text
+          <mj-text mj-class="text paragraph"
+            >Your Career Support Team at ReDI School, ${rediLocation}</mj-text
           >
         </mj-column>
       </mj-section>

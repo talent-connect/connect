@@ -7,8 +7,8 @@
         <mj-column>
           <mj-text mj-class="headline">New problem report</mj-text>
           <mj-divider mj-class="divider-top" css-class="divider" />
-          <mj-text mj-class="text">Source: ${sendingUserEmail}</mj-text>
-          <mj-text mj-class="text text-padding">${message}</mj-text>
+          <mj-text mj-class="text" padding="0 0 20px 0">Source: ${sendingUserEmail}</mj-text>
+          <mj-text mj-class="text paragraph">${message}</mj-text>
         </mj-column>
       </mj-section>
     </mj-wrapper>
