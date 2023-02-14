@@ -7,6 +7,7 @@ import { useFormik } from 'formik'
 import { useState } from 'react'
 import { Content } from 'react-bulma-components'
 import { useQueryClient } from 'react-query'
+import { useHistory } from 'react-router-dom'
 import { useCompleteMentorshipMutation } from './CompleteMentorship.generated'
 
 interface CompleteMentorshipProps {
@@ -23,6 +24,7 @@ const initialValues = {
 
 const CompleteMentorship = ({ mentorshipMatchId }: CompleteMentorshipProps) => {
   const queryClient = useQueryClient()
+  const history = useHistory()
   const completeMentorshipMutation = useCompleteMentorshipMutation()
   const [isModalActive, setModalActive] = useState(false)
 
@@ -35,7 +37,7 @@ const CompleteMentorship = ({ mentorshipMatchId }: CompleteMentorshipProps) => {
         },
       })
       setModalActive(false)
-      queryClient.invalidateQueries()
+      history.replace('/app/applications')
     } catch (error) {
       console.log('error ', error)
     }

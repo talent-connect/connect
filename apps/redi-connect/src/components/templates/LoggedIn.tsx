@@ -10,7 +10,7 @@ import {
   Icon,
   Modal,
 } from '@talent-connect/shared-atomic-design-components'
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useEffect } from 'react'
 import {
   Columns,
   Container,
@@ -19,8 +19,8 @@ import {
   Section,
 } from 'react-bulma-components'
 import { useTranslation } from 'react-i18next'
-import { useIsFetching, useIsMutating, useQueryClient } from 'react-query'
-import { useHistory } from 'react-router-dom'
+import { useQueryClient } from 'react-query'
+import { useHistory, useLocation } from 'react-router-dom'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 import { Navbar, SideMenu } from '../organisms'
 import Footer from '../organisms/Footer'
@@ -50,11 +50,14 @@ function LoggedIn({ children }: Props) {
   })
   const conMatchMarkMentorshipAcceptedNotificationDismissedMutation =
     useConMatchMarkMentorshipAcceptedNotificationDismissedMutation()
-  const ongoingFetchCount = useIsFetching()
-  const ongoingMutatationCount = useIsMutating()
-  const isFetching = ongoingFetchCount > 0 || ongoingMutatationCount > 0
 
   const history = useHistory()
+
+  const location = useLocation()
+
+  useEffect(() => {
+    queryClient.invalidateQueries()
+  }, [location])
 
   const match =
     myMatchesQuery.isSuccess &&

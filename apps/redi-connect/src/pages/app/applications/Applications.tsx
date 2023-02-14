@@ -4,7 +4,6 @@ import {
   useLoadMyProfileQuery,
 } from '@talent-connect/data-access'
 import { Heading } from '@talent-connect/shared-atomic-design-components'
-import { useEffect } from 'react'
 import { Content } from 'react-bulma-components'
 import { useQueryClient } from 'react-query'
 import { useHistory } from 'react-router-dom'
@@ -19,12 +18,6 @@ function Applications() {
   const loopbackUserId = getAccessTokenFromLocalStorage().userId
   const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
   const history = useHistory()
-
-  useEffect(() => {
-    queryClient.invalidateQueries({
-      queryKey: useGetMentorshipMatchesQuery.getKey(),
-    })
-  }, [])
 
   if (!myProfileQuery.isSuccess) return null
 
