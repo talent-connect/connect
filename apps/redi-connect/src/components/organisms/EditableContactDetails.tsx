@@ -24,7 +24,7 @@ const validationSchema = Yup.object({
   firstName: Yup.string().required().max(255),
   lastName: Yup.string().required().max(255),
   // email: Yup.string().email().required().max(255).label('Contact email'),
-  telephoneNumber: Yup.string().max(255).label('Telephone number'),
+  telephoneNumber: Yup.string().nullable().max(255).label('Telephone number'),
 })
 
 // props: FormikProps<AboutFormValues>

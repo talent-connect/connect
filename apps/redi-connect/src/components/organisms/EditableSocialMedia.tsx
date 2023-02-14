@@ -19,9 +19,17 @@ export interface SocialMediaFormValues {
 }
 
 const validationSchema = Yup.object({
-  linkedInProfileUrl: Yup.string().max(255).url().label('LinkedIn Profile'),
-  githubProfileUrl: Yup.string().max(255).url().label('Github Profile'),
-  slackUsername: Yup.string().max(255).label('Slack username'),
+  linkedInProfileUrl: Yup.string()
+    .nullable()
+    .max(255)
+    .url()
+    .label('LinkedIn Profile'),
+  githubProfileUrl: Yup.string()
+    .nullable()
+    .max(255)
+    .url()
+    .label('Github Profile'),
+  slackUsername: Yup.string().nullable().max(255).label('Slack username'),
 })
 
 // props: FormikProps<AboutFormValues>
