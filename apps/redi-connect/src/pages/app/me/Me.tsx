@@ -18,17 +18,9 @@ import { LoggedIn } from '../../../components/templates'
 import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
 
 import { useLoadMyProfileQuery, UserType } from '@talent-connect/data-access'
-import { useEffect } from 'react'
 // CHECK OUT THE LOADER
 
 function Me() {
-  useEffect(() => {
-    console.log('useEffect: Me')
-    return () => {
-      console.log('unmount: Me')
-    }
-  }, [])
-
   const myProfileResult = useLoadMyProfileQuery(
     {
       loopbackUserId: getAccessTokenFromLocalStorage().userId,
