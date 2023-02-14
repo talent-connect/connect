@@ -3,6 +3,7 @@ export const REDI_LOCATION_NAMES = {
   hamburg: 'Hamburg',
   munich: 'Munich',
   nrw: 'NRW',
+  cyberspace: 'Cyberspace',
 } as const
 
 export const CATEGORY_GROUPS = {
