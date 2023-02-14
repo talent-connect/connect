@@ -14,7 +14,7 @@ interface JobListingCardProps {
   isFavorite?: boolean
   toggleFavorite?: (id: string) => void
   linkTo?: string
-  onClick?: () => void
+  onClick?: (e: React.MouseEvent) => void
 }
 
 export function JobListingCard({
