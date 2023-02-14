@@ -11,6 +11,7 @@ const icons: Array<SocialMediaIcon> = [
     hamburg: 'https://www.facebook.com/redischool/',
     munich: 'https://www.facebook.com/redimunich/',
     nrw: 'https://www.facebook.com/redischoolnrw/',
+    cyberspace: 'https://www.facebook.com/redischoolcyberspace/',
   },
   {
     icon: 'meetup',
@@ -18,6 +19,7 @@ const icons: Array<SocialMediaIcon> = [
     hamburg: 'https://www.meetup.com/en-AU/ReDI-school/',
     munich: 'https://www.meetup.com/Tech-Talks-Hosted-by-ReDI-School-Munich/',
     nrw: 'https://www.meetup.com/ReDI-School-NRW/',
+    cyberspace: 'https://www.meetup.com/ReDI-School-Cyberspace/',
   },
   {
     icon: 'instagram',
@@ -25,6 +27,7 @@ const icons: Array<SocialMediaIcon> = [
     hamburg: 'https://www.instagram.com/redischoolberlin/',
     munich: 'https://www.instagram.com/redimunich/',
     nrw: 'https://www.instagram.com/redischoolberlin/',
+    cyberspace: 'https://www.instagram.com/redischoolcyberspace/',
   },
   {
     icon: 'linkedin',
@@ -35,6 +38,8 @@ const icons: Array<SocialMediaIcon> = [
     munich:
       'https://www.linkedin.com/school/redi-school-of-digital-integration/',
     nrw: 'https://www.linkedin.com/school/redi-school-of-digital-integration/',
+    cyberspace:
+      'https://www.linkedin.com/school/redi-school-of-digital-integration/',
   },
   {
     icon: 'twitter',
@@ -42,6 +47,7 @@ const icons: Array<SocialMediaIcon> = [
     hamburg: 'https://twitter.com/redischool?lang=en',
     munich: 'https://twitter.com/redischool?lang=en',
     nrw: 'https://twitter.com/redischool?lang=en',
+    cyberspace: 'https://twitter.com/redischool?lang=en',
   },
 ]
 
@@ -51,6 +57,7 @@ interface SocialMediaIcon {
   hamburg: string
   munich: string
   nrw: string
+  cyberspace: string
 }
 
 const SocialMediaIcons = () => (
