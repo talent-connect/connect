@@ -120,6 +120,7 @@ export function EditableJobPostings({
                     key={jobListing.id}
                     jobListing={jobListing}
                     onClick={() => startEditing(jobListing.id)}
+                    linkTo="#"
                   />
                 </Columns.Column>
               ))}
