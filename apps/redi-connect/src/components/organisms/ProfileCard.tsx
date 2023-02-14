@@ -38,7 +38,7 @@ const ProfileCard = ({
   } = profile
 
   const handleFavorite = (e: React.MouseEvent) => {
-    e.stopPropagation()
+    e.preventDefault()
     toggleFavorite && toggleFavorite(profile.id)
   }
 

@@ -32,7 +32,7 @@ export function JobListingCard({
     jobListing?.tpCompanyProfile?.profileAvatarImageS3Key
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
-    e.stopPropagation()
+    e.preventDefault()
     toggleFavorite && toggleFavorite(jobListing.id)
   }
 

@@ -32,7 +32,7 @@ export function JobseekerProfileCard({
   const topSkills = jobseekerProfile?.topSkills
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
-    e.stopPropagation()
+    e.preventDefault()
     toggleFavorite && toggleFavorite(jobseekerProfile.id)
   }
 
