@@ -1,24 +1,15 @@
 // THIS FILE IS GENERATED, DO NOT EDIT!
-import * as Types from '@talent-connect/data-access'
+import * as Types from '@talent-connect/data-access';
 
-import { fetcher } from '@talent-connect/data-access'
-import { useQuery, UseQueryOptions } from 'react-query'
+import { useQuery, UseQueryOptions } from 'react-query';
+import { fetcher } from '@talent-connect/data-access';
 export type LoadVisibleJobseekerProfilesQueryVariables = Types.Exact<{
-  filter: Types.FindAllVisibleTpJobseekerProfilesArgsFilter
-}>
+  filter: Types.FindAllVisibleTpJobseekerProfilesArgsFilter;
+}>;
 
-export type LoadVisibleJobseekerProfilesQuery = {
-  __typename?: 'Query'
-  tpJobseekerProfiles: Array<{
-    __typename?: 'TpJobseekerProfile'
-    id: string
-    fullName: string
-    firstName: string
-    lastName: string
-    aboutYourself?: string | null
-    email: string
-  }>
-}
+
+export type LoadVisibleJobseekerProfilesQuery = { __typename?: 'Query', tpJobseekerProfiles: Array<{ __typename?: 'TpJobseekerProfile', id: string, fullName: string, firstName: string, lastName: string, aboutYourself?: string | null, email: string }> };
+
 
 export const LoadVisibleJobseekerProfilesDocument = `
     query loadVisibleJobseekerProfiles($filter: FindAllVisibleTpJobseekerProfilesArgsFilter!) {
@@ -31,23 +22,19 @@ export const LoadVisibleJobseekerProfilesDocument = `
     email
   }
 }
-    `
+    `;
 export const useLoadVisibleJobseekerProfilesQuery = <
-  TData = LoadVisibleJobseekerProfilesQuery,
-  TError = unknown
->(
-  variables: LoadVisibleJobseekerProfilesQueryVariables,
-  options?: UseQueryOptions<LoadVisibleJobseekerProfilesQuery, TError, TData>
-) =>
-  useQuery<LoadVisibleJobseekerProfilesQuery, TError, TData>(
-    ['loadVisibleJobseekerProfiles', variables],
-    fetcher<
-      LoadVisibleJobseekerProfilesQuery,
-      LoadVisibleJobseekerProfilesQueryVariables
-    >(LoadVisibleJobseekerProfilesDocument, variables),
-    options
-  )
+      TData = LoadVisibleJobseekerProfilesQuery,
+      TError = unknown
+    >(
+      variables: LoadVisibleJobseekerProfilesQueryVariables,
+      options?: UseQueryOptions<LoadVisibleJobseekerProfilesQuery, TError, TData>
+    ) =>
+    useQuery<LoadVisibleJobseekerProfilesQuery, TError, TData>(
+      ['loadVisibleJobseekerProfiles', variables],
+      fetcher<LoadVisibleJobseekerProfilesQuery, LoadVisibleJobseekerProfilesQueryVariables>(LoadVisibleJobseekerProfilesDocument, variables),
+      options
+    );
 
-useLoadVisibleJobseekerProfilesQuery.getKey = (
-  variables: LoadVisibleJobseekerProfilesQueryVariables
-) => ['loadVisibleJobseekerProfiles', variables]
+useLoadVisibleJobseekerProfilesQuery.getKey = (variables: LoadVisibleJobseekerProfilesQueryVariables) => ['loadVisibleJobseekerProfiles', variables];
+;

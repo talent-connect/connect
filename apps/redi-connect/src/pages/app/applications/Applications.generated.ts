@@ -6,7 +6,7 @@ import { fetcher } from '@talent-connect/data-access';
 export type GetMentorshipMatchesQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 
-export type GetMentorshipMatchesQuery = { __typename?: 'Query', conMentorshipMatches: Array<{ __typename?: 'ConMentorshipMatch', id: string, createdAt: any, status: Types.MentorshipMatchStatus, applicationText?: string | null, expectationText?: string | null, mentorId: string, menteeId: string, updatedAt: any, mentor: { __typename?: 'ConProfile', id: string, firstName: string, fullName: string, rediLocation: Types.RediLocation }, mentee: { __typename?: 'ConProfile', id: string, firstName: string, fullName: string, rediLocation: Types.RediLocation } }> };
+export type GetMentorshipMatchesQuery = { __typename?: 'Query', conMentorshipMatches: Array<{ __typename?: 'ConMentorshipMatch', id: string, createdAt: any, status: Types.MentorshipMatchStatus, applicationText?: string | null, expectationText?: string | null, mentorId: string, menteeId: string, updatedAt: any, mentor: { __typename?: 'ConProfile', id: string, firstName: string, fullName: string, rediLocation: Types.RediLocation, profileAvatarImageS3Key?: string | null }, mentee: { __typename?: 'ConProfile', id: string, firstName: string, fullName: string, rediLocation: Types.RediLocation, profileAvatarImageS3Key?: string | null } }> };
 
 
 export const GetMentorshipMatchesDocument = `
@@ -23,6 +23,7 @@ export const GetMentorshipMatchesDocument = `
       firstName
       fullName
       rediLocation
+      profileAvatarImageS3Key
     }
     menteeId
     mentee {
@@ -30,6 +31,7 @@ export const GetMentorshipMatchesDocument = `
       firstName
       fullName
       rediLocation
+      profileAvatarImageS3Key
     }
     updatedAt
   }

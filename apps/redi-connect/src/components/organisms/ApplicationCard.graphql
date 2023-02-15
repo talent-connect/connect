@@ -9,6 +9,7 @@ fragment ApplicationCardApplicationProp on ConMentorshipMatch {
     firstName
     fullName
     rediLocation
+    profileAvatarImageS3Key
   }
   menteeId
   mentee {
@@ -16,6 +17,7 @@ fragment ApplicationCardApplicationProp on ConMentorshipMatch {
     firstName
     fullName
     rediLocation
+    profileAvatarImageS3Key
   }
   status
   updatedAt

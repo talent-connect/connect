@@ -29,8 +29,6 @@ const STATUS_LABELS: any = {
 }
 
 export default function ApplicationCard({ application }: Props) {
-  console.log('hello')
-
   const loopbackUserId = getAccessTokenFromLocalStorage().userId
   const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
   const history = useHistory()

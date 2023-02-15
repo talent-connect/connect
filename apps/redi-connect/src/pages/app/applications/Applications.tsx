@@ -5,7 +5,6 @@ import {
 } from '@talent-connect/data-access'
 import { Heading } from '@talent-connect/shared-atomic-design-components'
 import { Content } from 'react-bulma-components'
-import { useQueryClient } from 'react-query'
 import { useHistory } from 'react-router-dom'
 import { ApplicationCard } from '../../../components/organisms'
 import LoggedIn from '../../../components/templates/LoggedIn'
@@ -13,7 +12,6 @@ import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
 import { useGetMentorshipMatchesQuery } from './Applications.generated'
 
 function Applications() {
-  const queryClient = useQueryClient()
   const mentorshipMatchesQuery = useGetMentorshipMatchesQuery()
   const loopbackUserId = getAccessTokenFromLocalStorage().userId
   const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })

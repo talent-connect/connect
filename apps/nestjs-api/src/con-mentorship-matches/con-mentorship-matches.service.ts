@@ -97,6 +97,32 @@ export class ConMentorshipMatchesService {
       mentorReplyMessageOnAccept: input.mentorReplyMessageOnAccept,
     })
 
+    const menteePendingMentorshipMatches = await this.findAll({
+      Mentee__c: menteeProfile.props.userId,
+      Status__c: MentorshipMatchStatus.APPLIED,
+    })
+
+    menteePendingMentorshipMatches.forEach(async (match) => {
+      match.props.status =
+        MentorshipMatchStatus.INVALIDATED_AS_OTHER_MENTOR_ACCEPTED
+      this.api.update(this.mapper.toPersistence(match))
+      const [menteeProfile, mentorProfile] = await Promise.all([
+        this.conProfilesServices.findOne({
+          'Contact__r.Id': match.props.menteeId,
+        }),
+        this.conProfilesServices.findOne({
+          'Contact__r.Id': match.props.mentorId,
+        }),
+      ])
+      this.emailService.sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted(
+        {
+          recipient: mentorProfile.props.email,
+          mentorName: mentorProfile.props.firstName,
+          menteeName: menteeProfile.props.fullName,
+        }
+      )
+    })
+
     return result
   }
 
@@ -124,32 +150,6 @@ export class ConMentorshipMatchesService {
       input.ifDeclinedByMentor_optionalMessageToMentee
     entity.props.ifDeclinedByMentor_dateTime = DateTime.utc().toString()
     const result = await this.api.update(this.mapper.toPersistence(entity))
-
-    const menteePendingMentorshipMatches = await this.findAll({
-      Mentee__c: menteeProfile.props.userId,
-      Status__c: MentorshipMatchStatus.APPLIED,
-    })
-
-    menteePendingMentorshipMatches.forEach(async (match) => {
-      match.props.status =
-        MentorshipMatchStatus.INVALIDATED_AS_OTHER_MENTOR_ACCEPTED
-      this.api.update(this.mapper.toPersistence(match))
-      const [menteeProfile, mentorProfile] = await Promise.all([
-        this.conProfilesServices.findOne({
-          'Contact__r.Id': match.props.menteeId,
-        }),
-        this.conProfilesServices.findOne({
-          'Contact__r.Id': match.props.mentorId,
-        }),
-      ])
-      this.emailService.sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted(
-        {
-          recipient: mentorProfile.props.email,
-          mentorName: mentorProfile.props.firstName,
-          menteeName: menteeProfile.props.fullName,
-        }
-      )
-    })
 
     this.emailService.sendMentorshipDeclinedEmail({
       recipient: menteeProfile.props.email,
