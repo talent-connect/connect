@@ -14,7 +14,7 @@ interface JobListingCardProps {
   isFavorite?: boolean
   toggleFavorite?: (id: string) => void
   linkTo?: string
-  onClick?: () => void
+  onClick?: (e: React.MouseEvent) => void
 }
 
 export function JobListingCard({
@@ -31,14 +31,6 @@ export function JobListingCard({
   const companyAvatarImage =
     jobListing?.tpCompanyProfile?.profileAvatarImageS3Key
 
-  let actualOnClick
-  if (onClick) {
-    actualOnClick = (e: React.MouseEvent) => {
-      e.preventDefault()
-      onClick()
-    }
-  }
-
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.preventDefault()
     toggleFavorite && toggleFavorite(jobListing.id)
@@ -49,7 +41,7 @@ export function JobListingCard({
     : null
 
   return (
-    <NavLink to={linkTo} onClick={actualOnClick} className="job-posting-link">
+    <NavLink to={linkTo} onClick={onClick} className="job-posting-link">
       <Card className="job-posting-card">
         <Card.Image
           className="job-posting-card__image"
