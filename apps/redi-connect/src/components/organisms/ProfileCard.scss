@@ -1,16 +1,16 @@
 @import '_variables.scss';
 
+.profile-card-link:hover {
+  text-decoration: none;
+}
+
 .profile-card {
   border-radius: 4px;
   height: 24.5rem;
   overflow: hidden;
 
-  &--active {
-    cursor: pointer;
-
-    &:hover {
-      box-shadow: $card-shadow-hover;
-    }
+  &:hover {
+    box-shadow: $card-shadow-hover;
   }
 
   &__name {
