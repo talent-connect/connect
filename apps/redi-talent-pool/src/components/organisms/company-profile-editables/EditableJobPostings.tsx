@@ -63,11 +63,6 @@ export function EditableJobPostings({
     }
   }, [isEditing, setIsJobPostingFormOpen])
 
-  const handleStartEditingClick = (id, e: React.MouseEvent) => {
-    e.preventDefault()
-    startEditing(id)
-  }
-
   return (
     <>
       <div className="profile-section">
@@ -124,8 +119,7 @@ export function EditableJobPostings({
                   <JobListingCard
                     key={jobListing.id}
                     jobListing={jobListing}
-                    onClick={(e) => handleStartEditingClick(jobListing.id, e)}
-                    linkTo="#"
+                    onClick={() => startEditing(jobListing.id)}
                   />
                 </Columns.Column>
               ))}
