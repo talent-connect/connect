@@ -10,6 +10,7 @@ import { MENTOR_DECLINES_MENTORSHIP_REASON_FOR_DECLINING } from '@talent-connect
 import { useFormik } from 'formik'
 import { useState } from 'react'
 import { Content } from 'react-bulma-components'
+import { useQueryClient } from 'react-query'
 import * as Yup from 'yup'
 import {
   DeclineMentorshipButtonMatchPropFragment,
@@ -42,6 +43,7 @@ const validationSchema = Yup.object({
 // TODO: This throws a TS error: { dispatch, matchId }: ConnectButtonProps
 // What to replace with instead of below hack?
 const DeclineMentorshipButton = ({ match }: DeclineMentorshipButtonProps) => {
+  const queryClient = useQueryClient()
   const declineMentorshipMutation = useDeclineMentorshipMutation()
   const [isModalActive, setModalActive] = useState(false)
 
@@ -59,6 +61,10 @@ const DeclineMentorshipButton = ({ match }: DeclineMentorshipButtonProps) => {
         },
       })
       setModalActive(false)
+
+      setTimeout(() => {
+        queryClient.invalidateQueries()
+      })
     } catch (error) {
       console.log('error ', error)
     }
