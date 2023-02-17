@@ -19,14 +19,15 @@
             >${mentorReplyMessageOnAccept}</mj-text
           >
 
-          <mj-text mj-class="text paragraph" 
+          <mj-text mj-class="text paragraph"
             >Please make sure to respond to their message to you as soon as
             possible so that the two of you can get started on your mentorship
             journey!</mj-text
           >
-          <mj-text mj-class="text paragraph" 
+          <mj-text mj-class="text paragraph"
             >If you have any questions, you can always email us (<a
               href="mailto:career@redi-school.org"
+              class="text-link"
               >career@redi-school.org</a
             >) or message us on slack.</mj-text
           >

@@ -81,6 +81,7 @@ export class TpJobseekerProfileRecord extends Record<TpJobseekerProfileRecordPro
           'Top_Skills__c',
           'Profile_Status__c',
           'Is_Job_Fair_2022_Participant__c',
+          'Is_Job_Fair_2023_Participant__c',
           'Is_Visible_to_Companies__c',
           'Is_Hired__c',
           'Federal_State__c',

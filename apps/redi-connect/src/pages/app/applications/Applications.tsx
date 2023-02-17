@@ -6,10 +6,12 @@ import {
 import { Heading } from '@talent-connect/shared-atomic-design-components'
 import { Content } from 'react-bulma-components'
 import { useHistory } from 'react-router-dom'
-import { ApplicationCard } from '../../../components/organisms'
 import LoggedIn from '../../../components/templates/LoggedIn'
 import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
 import { useGetMentorshipMatchesQuery } from './Applications.generated'
+import { ApplicationsFilterContextProvider } from './ApplicationsFilterContext'
+import DesktopView from './DesktopView'
+import MobileView from './MobileView'
 
 function Applications() {
   const mentorshipMatchesQuery = useGetMentorshipMatchesQuery()
@@ -33,7 +35,7 @@ function Applications() {
   return (
     <LoggedIn>
       <Heading subtitle size="small" className="double-bs">
-        Applications {Boolean(applicants.length) && `(${applicants.length})`}
+        Applications
       </Heading>
       {applicants.length === 0 ? (
         <Content italic>
@@ -54,15 +56,11 @@ function Applications() {
           )}
         </Content>
       ) : (
-        applicants
-          .sort((a, b) => {
-            const dateA = new Date(a.createdAt).getTime()
-            const dateB = new Date(b.createdAt).getTime()
-            return dateA < dateB ? 1 : -1
-          })
-          .map((application) => (
-            <ApplicationCard key={application.id} application={application} />
-          ))
+        <ApplicationsFilterContextProvider>
+          <DesktopView applicants={applicants} />
+
+          <MobileView />
+        </ApplicationsFilterContextProvider>
       )}
     </LoggedIn>
   )

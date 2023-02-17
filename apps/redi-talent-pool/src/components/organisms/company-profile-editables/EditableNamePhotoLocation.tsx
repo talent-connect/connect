@@ -176,7 +176,7 @@ function ModalForm({
         rows={2}
         placeholder="Let candidates know a bit why you love what you do."
         label="Your tagline"
-        {...formik}
+        formik={formik}
       />
       <Button
         disabled={!formik.isValid || mutation.isLoading}

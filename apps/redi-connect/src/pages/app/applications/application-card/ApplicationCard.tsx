@@ -1,62 +1,69 @@
+import classnames from 'classnames'
+import moment from 'moment'
+import { Columns, Content, Heading } from 'react-bulma-components'
+
 import {
+  AllConProfileFieldsFragment,
   MentorshipMatchStatus,
   useLoadMyProfileQuery,
 } from '@talent-connect/data-access'
 import { Icon } from '@talent-connect/shared-atomic-design-components'
-import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
-import classnames from 'classnames'
-import moment from 'moment'
-import { useState } from 'react'
-import { Columns, Content, Heading } from 'react-bulma-components'
-import { useHistory } from 'react-router-dom'
-import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
-import { Avatar, ConfirmMentorship } from '../organisms'
-import { ApplicationCardApplicationPropFragment } from './ApplicationCard.generated'
+import {
+  MENTORSHIP_MATCH_STATUS_LABELS,
+  REDI_LOCATION_NAMES,
+} from '@talent-connect/shared-config'
+import {
+  Avatar,
+  ConfirmMentorship,
+  DeclineMentorshipButton,
+} from '../../../../components/organisms'
+import { getAccessTokenFromLocalStorage } from '../../../../services/auth/auth'
+import { ApplicationsPageApplicationFragment } from '../Applications.generated'
 import './ApplicationCard.scss'
-import DeclineMentorshipButton from './DeclineMentorshipButton'
+import { useApplicationCard } from './useApplicationCard'
 
 interface Props {
-  application: ApplicationCardApplicationPropFragment
+  application: ApplicationsPageApplicationFragment
+  hasReachedMenteeLimit: boolean
+  currentUser?: AllConProfileFieldsFragment
 }
 
-const STATUS_LABELS: any = {
-  applied: 'Pending',
-  accepted: 'Accepted',
-  completed: 'Accepted',
-  cancelled: 'Cancelled',
-  'declined-by-mentor': 'Declined',
-  'invalidated-as-other-mentor-accepted': 'Cancelled',
-}
-
-export default function ApplicationCard({ application }: Props) {
+const ApplicationCard = ({ application }: Props) => {
   const loopbackUserId = getAccessTokenFromLocalStorage().userId
   const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
-  const history = useHistory()
-  const [showDetails, setShowDetails] = useState(false)
-  const applicationDate = new Date(application.createdAt || '')
-  const applicationUser =
-    myProfileQuery.data?.conProfile.userType === 'MENTEE'
-      ? application.mentor
-      : application.mentee
-  const currentUserIsMentor =
-    myProfileQuery.data?.conProfile.userType === 'MENTOR'
+
+  const hasReachedMenteeLimit =
+    myProfileQuery.data.conProfile.doesNotHaveAvailableMentorshipSlot
+  const currentUser = myProfileQuery.data.conProfile
+
+  const {
+    history,
+    showDetails,
+    setShowDetails,
+    applicationUser,
+    applicationDate,
+    currentUserIsMentor,
+  } = useApplicationCard({
+    application,
+    currentUser,
+  })
 
   return (
     <>
       <div
-        className="application-card"
+        className={
+          application.status !== MentorshipMatchStatus.Applied
+            ? 'application-card'
+            : 'application-card-pending'
+        }
         onClick={() => setShowDetails(!showDetails)}
       >
         <Columns vCentered>
-          <Columns.Column size={1} className="application-card__avatar">
+          <Columns.Column className="application-card__avatar">
             <Avatar profile={applicationUser} />
           </Columns.Column>
 
-          <Columns.Column
-            size={3}
-            textAlignment="left"
-            responsive={{ mobile: { textAlignment: { value: 'centered' } } }}
-          >
+          <Columns.Column size={3} textAlignment="left">
             {applicationUser && (
               <>
                 <p>{applicationUser.fullName}</p>
@@ -65,10 +72,7 @@ export default function ApplicationCard({ application }: Props) {
             )}
           </Columns.Column>
 
-          <Columns.Column
-            size={2}
-            responsive={{ mobile: { textAlignment: { value: 'centered' } } }}
-          >
+          <Columns.Column textAlignment="centered">
             <span
               className="application-card__link"
               onClick={() =>
@@ -83,23 +87,22 @@ export default function ApplicationCard({ application }: Props) {
             </span>
           </Columns.Column>
 
-          <Columns.Column size={3} textAlignment="centered">
+          <Columns.Column textAlignment="centered" tablet={{ narrow: true }}>
             From {moment(applicationDate).format('DD.MM.YYYY')}
           </Columns.Column>
 
           <Columns.Column
-            size={2}
-            responsive={{ mobile: { textAlignment: { value: 'centered' } } }}
-            textAlignment="right"
-          >
-            {STATUS_LABELS[application.status]}
-          </Columns.Column>
-
-          <Columns.Column
-            size={1}
-            className="application-card-dropdown"
+            className={
+              application.status === MentorshipMatchStatus.Applied
+                ? 'application-card-pending__status'
+                : null
+            }
             textAlignment="centered"
           >
+            {MENTORSHIP_MATCH_STATUS_LABELS[application.status]}
+          </Columns.Column>
+
+          <Columns.Column className="application-card-dropdown">
             <Icon
               icon="chevron"
               size="small"
@@ -152,3 +155,5 @@ export default function ApplicationCard({ application }: Props) {
     </>
   )
 }
+
+export default ApplicationCard

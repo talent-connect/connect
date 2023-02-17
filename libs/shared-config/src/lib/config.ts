@@ -21,7 +21,7 @@ export const CATEGORIES = [
     group: 'softwareEngineering',
   },
   { id: 'htmlCss', label: 'HTML & CSS', group: 'softwareEngineering' },
-  { id: 'javascript', label: 'Javascript', group: 'softwareEngineering' },
+  { id: 'javascript', label: 'JavaScript', group: 'softwareEngineering' },
   { id: 'react', label: 'React', group: 'softwareEngineering' },
   { id: 'java', label: 'Java', group: 'softwareEngineering' },
   { id: 'python', label: 'Python', group: 'softwareEngineering' },
@@ -324,11 +324,13 @@ export const COURSES = [
     location: 'BERLIN',
   },
   { id: 'BERLIN_JAVA_CIRCLE', label: 'Java Circle', location: 'BERLIN' },
+  { id: 'BERLIN_JAVA_CIRCLE', label: 'Java Circle', location: 'BERLIN' },
   {
     id: 'BERLIN_PYTHON_FOUNDATION',
     label: 'Python Foundation',
     location: 'BERLIN',
   },
+  { id: 'BERLIN_DATA_ANALYTICS', label: 'Data Analytics', location: 'BERLIN' },
   { id: 'BERLIN_DATA_ANALYTICS', label: 'Data Analytics', location: 'BERLIN' },
   {
     id: 'BERLIN_SALESFORCE_FUNDAMENTALS',
@@ -384,6 +386,9 @@ export const COURSES = [
     label: 'UX/UI Design Intermediate',
     location: 'NRW',
   },
+  { id: 'NRW_HTML_AND_CSS', label: 'HTML and CSS', location: 'NRW' },
+  { id: 'NRW_JAVASCRIPT', label: 'JavaScript', location: 'NRW' },
+  { id: 'NRW_REACT', label: 'React', location: 'NRW' },
   {
     id: 'NRW_INFRASTRUCTURE_BASICS',
     label: 'Infrastructure Basics',
@@ -405,6 +410,7 @@ export const COURSES = [
     label: 'Introduction to Computer Science (Online)',
     location: 'MUNICH',
   },
+  { id: 'NRW_CLOUD_COMPUTING', label: 'Cloud Computing', location: 'NRW' },
   {
     id: 'MUNICH_INTRODUCTION_TO_COMPUTER_SCIENCE_HYBRID',
     label: 'Introduction to Computer Science (Hybrid)',
@@ -514,6 +520,15 @@ export const RED_MATCH_STATUSES = {
   INVALIDATED_AS_OTHER_MENTOR_ACCEPTED:
     'Invalidated due to other mentor accepting',
 } as const
+
+export const MENTORSHIP_MATCH_STATUS_LABELS: any = {
+  applied: 'Pending',
+  accepted: 'Accepted',
+  completed: 'Accepted',
+  cancelled: 'Cancelled',
+  'declined-by-mentor': 'Declined',
+  'invalidated-as-other-mentor-accepted': 'Cancelled',
+}
 
 export const AWS_PROFILE_AVATARS_BUCKET_BASE_URL =
   'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/'

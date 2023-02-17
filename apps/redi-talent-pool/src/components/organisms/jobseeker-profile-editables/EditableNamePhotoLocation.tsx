@@ -12,6 +12,7 @@ import {
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
 import { TpJobseekerProfile } from '@talent-connect/shared-types'
+import { toPascalCaseAndTrim } from '@talent-connect/shared-utils'
 import {
   availabilityOptions,
   desiredEmploymentTypeOptions,
@@ -114,8 +115,12 @@ EditableNamePhotoLocation.isSectionEmpty = (
 ) => !EditableNamePhotoLocation.isSectionFilled(profile)
 
 const validationSchema = Yup.object({
-  firstName: Yup.string().required('Your first name is required'),
-  lastName: Yup.string().required('Your last name is required'),
+  firstName: Yup.string()
+    .transform(toPascalCaseAndTrim)
+    .required('Your first name is required'),
+  lastName: Yup.string()
+    .transform(toPascalCaseAndTrim)
+    .required('Your last name is required'),
   location: Yup.string().required('Your location is required'),
   federalState: Yup.string().required('Please select the state you live in'),
 })
@@ -143,7 +148,8 @@ function ModalForm({
   )
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
     formik.setSubmitting(true)
-    mutation.mutate(values, {
+    const transformedValues = validationSchema.cast(values)
+    mutation.mutate(transformedValues, {
       onSettled: () => {
         formik.setSubmitting(false)
       },

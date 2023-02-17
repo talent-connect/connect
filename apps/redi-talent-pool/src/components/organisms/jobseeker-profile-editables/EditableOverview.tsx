@@ -163,6 +163,8 @@ export function JobseekerFormSectionOverview({
         items={formDesiredPositions}
         {...formik}
         multiselect
+        placeholder="Start typing and select positions"
+        closeMenuOnSelect={false}
       />
       {hideCurrentRediCourseField ? null : (
         <FormSelect

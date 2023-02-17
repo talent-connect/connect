@@ -40,10 +40,16 @@ const SideMenu = () => {
   const isActivated = profile?.profileStatus === ConnectProfileStatus.Approved
   const isNotPending = profile?.profileStatus !== ConnectProfileStatus.Pending
 
+  const isActivatedMentor = isMentor && isActivated
+
   const hasActiveMentorship = profile?.mentorshipMatches?.some(
     (match) => match.status === MentorshipMatchStatus.Accepted
   )
   const hasNoActiveMentorship = !hasActiveMentorship
+
+  const pendingApplicationsCount = profile?.mentorshipMatches?.filter(
+    (match) => match.status === MentorshipMatchStatus.Applied
+  ).length
 
   return (
     <ul className="side-menu">
@@ -66,12 +72,21 @@ const SideMenu = () => {
         </MenuItem>
       )}
 
-      {isNotPending && (
-        <MenuItem url="/app/applications">
+      <MenuItem url="/app/applications">
+        <div className="badge">
           <Applications className="side-menu__icon" />
+          {/* A badge with the number of pending applications is displayed only for mentors */}
+          {isActivatedMentor && pendingApplicationsCount > 0 && (
+            <span className="badge__item--mobile">
+              {pendingApplicationsCount}
+            </span>
+          )}
           Applications
-        </MenuItem>
-      )}
+          {isActivatedMentor && pendingApplicationsCount > 0 && (
+            <span className="badge__item">{pendingApplicationsCount}</span>
+          )}
+        </div>
+      </MenuItem>
     </ul>
   )
 }

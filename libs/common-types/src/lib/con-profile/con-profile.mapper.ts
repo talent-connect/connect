@@ -86,6 +86,8 @@ export class ConProfileMapper
     // The next ones are computed fields in Salesforce
     props.age = raw.props.Contact__r.ReDI_Age__c
     props.fullName = raw.props.Contact__r.Name
+    props.doesNotHaveAvailableMentorshipSlot =
+      raw.props.Doesnt_Have_Available_Mentorship_Slot__c
 
     const entity = ConProfileEntity.create(props)
 

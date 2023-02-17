@@ -4,6 +4,7 @@ fragment AllConProfileFields on ConProfile {
   birthDate
   categories
   createdAt
+  doesNotHaveAvailableMentorshipSlot
   email
   expectations
   firstName

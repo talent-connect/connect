@@ -79,7 +79,7 @@ const CompleteMentorship = ({ mentorshipMatchId }: CompleteMentorshipProps) => {
               placeholder={
                 'Is there anything you would like us to know about the mentorship match?'
               }
-              {...formik}
+              formik={formik}
             />
           </form>
         </Modal.Body>

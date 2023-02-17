@@ -177,7 +177,7 @@ function CvListPage() {
 
 export default CvListPage
 
-function convertProfileToCv(
+export function convertProfileToCv(
   profile: Partial<TpJobseekerProfile>
 ): Partial<TpJobseekerCv> {
   return {

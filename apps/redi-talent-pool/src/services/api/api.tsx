@@ -126,20 +126,22 @@ export const setPassword = async (password: string) => {
 
 export interface TpJobseekerProfileFilters {
   name: string
+  desiredLanguages: string[]
   desiredPositions: string[]
   employmentTypes: string[]
   skills: string[]
   federalStates: string[]
-  isJobFair2022Participant: boolean
+  isJobFair2023Participant: boolean
 }
 
 export async function fetchAllTpJobseekerProfiles({
   name,
+  desiredLanguages,
   desiredPositions,
   employmentTypes,
   skills: topSkills,
   federalStates,
-  isJobFair2022Participant,
+  isJobFair2023Participant,
 }: TpJobseekerProfileFilters): Promise<Array<Partial<TpJobseekerProfile>>> {
   const filterDesiredPositions =
     desiredPositions && desiredPositions.length !== 0
@@ -159,8 +161,8 @@ export async function fetchAllTpJobseekerProfiles({
       ? { inq: federalStates }
       : undefined
 
-  const filterJobFair2022Participant = isJobFair2022Participant
-    ? { isJobFair2022Participant: true }
+  const filterJobFair2023Participant = isJobFair2023Participant
+    ? { isJobFair2023Participant: true }
     : undefined
 
   return http(
@@ -188,17 +190,31 @@ export async function fetchAllTpJobseekerProfiles({
               { willingToRelocate: true },
             ],
           },
-          { ...filterJobFair2022Participant },
+          { ...filterJobFair2023Participant },
         ],
       },
       order: 'createdAt DESC',
       limit: 0,
     })}`
-  ).then((resp) =>
-    resp.data.filter(
-      (p) => p.isProfileVisibleToCompanies && p.state === 'profile-approved'
-    )
-  )
+  ).then((resp) => {
+    const filteredJobseekers = resp.data
+      .filter(
+        (p) => p.isProfileVisibleToCompanies && p.state === 'profile-approved'
+      )
+      .filter((p) => {
+        const isLanguagesQueryEmpty =
+          !desiredLanguages || desiredLanguages.length === 0
+        if (isLanguagesQueryEmpty) return true
+
+        const doesJobseekerWorkingLanguagesOverlapWithLanguagesQuery =
+          p.workingLanguages?.some((langObj) =>
+            desiredLanguages.includes(langObj.language)
+          )
+
+        return doesJobseekerWorkingLanguagesOverlapWithLanguagesQuery
+      })
+    return filteredJobseekers
+  })
 }
 
 export async function fetchCurrentUserTpJobseekerProfile(): Promise<
@@ -349,7 +365,9 @@ export async function fetchAllTpJobListingsUsingFilters({
     resp.data
       .filter((listing) => !listing.dummy)
       .filter(
-        (listing) => listing.tpCompanyProfile?.isProfileVisibleToJobseekers
+        (listing) =>
+          listing.tpCompanyProfile?.isProfileVisibleToJobseekers &&
+          listing.tpCompanyProfile.state === 'profile-approved'
       )
   )
 }

@@ -73,6 +73,7 @@ function EditableLanguages() {
         name="languages"
         items={formLanguages}
         multiselect
+        placeholder="Start typing and select languages"
         {...formik}
       />
     </Editable>

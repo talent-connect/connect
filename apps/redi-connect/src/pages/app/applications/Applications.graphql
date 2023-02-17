@@ -1,26 +1,30 @@
+fragment ApplicationsPageApplication on ConMentorshipMatch {
+  id
+  createdAt
+  status
+  applicationText
+  expectationText
+  mentorId
+  mentor {
+    id
+    firstName
+    fullName
+    rediLocation
+    profileAvatarImageS3Key
+  }
+  menteeId
+  mentee {
+    id
+    firstName
+    fullName
+    rediLocation
+    profileAvatarImageS3Key
+  }
+  updatedAt
+}
+
 query getMentorshipMatches {
   conMentorshipMatches {
-    id
-    createdAt
-    status
-    applicationText
-    expectationText
-    mentorId
-    mentor {
-      id
-      firstName
-      fullName
-      rediLocation
-      profileAvatarImageS3Key
-    }
-    menteeId
-    mentee {
-      id
-      firstName
-      fullName
-      rediLocation
-      profileAvatarImageS3Key
-    }
-    updatedAt
+    ...ApplicationsPageApplication
   }
 }

@@ -76,6 +76,8 @@ export class TpJobseekerProfileMapper
       jobseekerProfileRecord.Profile_Status__c as JobseekerProfileStatus
     props.isJobFair2022Participant =
       jobseekerProfileRecord.Is_Job_Fair_2022_Participant__c
+    props.isJobFair2023Participant =
+      jobseekerProfileRecord.Is_Job_Fair_2023_Participant__c
     props.isProfileVisibleToCompanies =
       jobseekerProfileRecord.Is_Visible_to_Companies__c
     props.isHired = jobseekerProfileRecord.Is_Hired__c
@@ -182,6 +184,7 @@ export class TpJobseekerProfileMapper
     // props.Top_Skills__c = srcProps.topSkills?.join(';')
     // props.Profile_Status__c = srcProps.state
     // props.Is_Job_Fair_2022_Participant__c = srcProps.isJobFair2022Participant
+    // props.Is_Job_Fair_2023_Participant__c = srcProps.isJobFair2023Participant
     // props.Is_Visible_to_Companies__c = srcProps.isProfileVisibleToCompanies
     // props.Is_Hired__c = srcProps.isHired
     // props.Federal_State__c = srcProps.federalState

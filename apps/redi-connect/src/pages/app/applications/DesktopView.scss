@@ -1,0 +1,29 @@
+@import '~bulma/sass/utilities/_all';
+@import '_variables.scss';
+
+.desktop-tabs {
+  display: block;
+
+  @include mobile() {
+    display: none;
+  }
+}
+
+.tabs-menu {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid $grey-light;
+
+  &__item {
+    text-transform: capitalize;
+    font-size: $size-4;
+    font-weight: $weight-normal;
+
+    &--active {
+      @extend .tabs-menu__item;
+      color: $red;
+      border-bottom: 3px solid $red;
+    }
+  }
+}

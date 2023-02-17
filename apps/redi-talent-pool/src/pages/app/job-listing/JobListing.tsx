@@ -16,6 +16,7 @@ import { EditableContact } from '../../../components/organisms/company-profile-e
 import { EditableDetails } from '../../../components/organisms/company-profile-editables/EditableDetails'
 import { LoggedIn } from '../../../components/templates'
 import { useTpJobListingOneQuery } from '../../../react-query/use-tpjoblisting-one-query'
+import './JobListing.scss'
 
 export function JobListing() {
   const { tpJobListingId }: { tpJobListingId: string } = useParams()
@@ -89,9 +90,11 @@ export function JobListing() {
                 About the Role
               </Element>
             </div>
-
             <div className="profile-section--body">
-              <ReactMarkdown>{jobListing?.summary}</ReactMarkdown>
+              <Element
+                className="quill-editor-output"
+                dangerouslySetInnerHTML={{ __html: jobListing?.summary }}
+              />
             </div>
           </div>
           <div className="profile-section">

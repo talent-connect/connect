@@ -145,6 +145,7 @@ export type ConProfile = {
   birthDate?: Maybe<Scalars['DateTime']>;
   categories: Array<MentoringTopic>;
   createdAt: Scalars['DateTime'];
+  doesNotHaveAvailableMentorshipSlot: Scalars['Boolean'];
   email: Scalars['String'];
   expectations?: Maybe<Scalars['String']>;
   firstName: Scalars['String'];
@@ -910,6 +911,7 @@ export type TpJobseekerProfile = {
   ifAvailabilityIsDate_date?: Maybe<Scalars['DateTime']>;
   isHired: Scalars['Boolean'];
   isJobFair2022Participant: Scalars['Boolean'];
+  isJobFair2023Participant: Scalars['Boolean'];
   isProfileVisibleToCompanies: Scalars['Boolean'];
   lastName: Scalars['String'];
   linkedInUrl?: Maybe<Scalars['String']>;

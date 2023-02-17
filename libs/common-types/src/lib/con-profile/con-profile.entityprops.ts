@@ -69,4 +69,5 @@ export class ConProfileEntityProps implements EntityProps {
   // The next ones are computed fields in Salesforce
   age?: number
   fullName: string
+  doesNotHaveAvailableMentorshipSlot: boolean
 }

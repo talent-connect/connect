@@ -18,18 +18,14 @@ export interface AboutFormValues {
   expectations: string
 }
 
-const personalDescriptionRange = { min: 100, max: 600 }
+const MIN_CHARS_COUNT = 100
+const MAX_CHARS_COUNT = 600
+
 const validationSchema = Yup.object({
   personalDescription: Yup.string()
-    .required('Write at least 100 characters about yourself.')
-    .min(
-      personalDescriptionRange.min,
-      'Write at least 100 characters about yourself.'
-    )
-    .max(
-      personalDescriptionRange.max,
-      'The introduction text can be up to 600 characters long.'
-    )
+    .required()
+    .min(MIN_CHARS_COUNT)
+    .max(MAX_CHARS_COUNT)
     .label('Personal description'),
 })
 // props: FormikProps<AboutFormValues>
@@ -81,16 +77,16 @@ function EditableAbout() {
         name="personalDescription"
         rows={4}
         placeholder="About you"
-        minChar={personalDescriptionRange.min}
-        maxChar={personalDescriptionRange.max}
-        {...formik}
+        minChar={MIN_CHARS_COUNT}
+        maxLength={MAX_CHARS_COUNT}
+        formik={formik}
       />
       <FormTextArea
         label={expectationsFieldLabel(userType)}
         name="expectations"
         rows={4}
         placeholder={expectationsFieldPlaceholder(userType)}
-        {...formik}
+        formik={formik}
       />
     </Editable>
   )

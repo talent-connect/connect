@@ -18,8 +18,8 @@
             >Congratulations - your profile has been approved!</mj-text
           >
           <mj-text mj-class="text" padding="0 0 20px 0"
-            >You are now ReDI to start browsing all the job openings companies are sharing with us here on our
-            Talent Pool platform.</mj-text
+            >You are now ReDI to start browsing all the job openings companies
+            are sharing with us here on our Talent Pool platform.</mj-text
           >
           <mj-text mj-class="text" padding="0 0 20px 0"
             >How to do this?</mj-text
@@ -28,23 +28,25 @@
             >Just log back into Talent Pool:</mj-text
           >
           <mj-text mj-class="text" padding="0 0 20px 0"
-            ><a href="https://talent-pool.redi-school.org"
+            ><a href="https://talent-pool.redi-school.org" class="text-link"
               >https://talent-pool.redi-school.org</a
             ></mj-text
           >
           <mj-text mj-class="text" padding="0 0 20px 0"
-            >The companies are also able to browse all jobseekers, see your profile and invite you to an interview,
-            if you fit the requirements of any of their open positions.</mj-text
+            >The companies are also able to browse all jobseekers, see your
+            profile and invite you to an interview, if you fit the requirements
+            of any of their open positions.</mj-text
           >
-          
+
           <mj-text mj-class="text" padding="0 0 20px 0"
-              >Please let us know, if you get invited for an interview
-              and of course if you get hired!</mj-text
-            ></mj-text
+            >Please let us know, if you get invited for an interview and of
+            course if you get hired!</mj-text
           >
 
           <mj-text mj-class="text">Best wishes,</mj-text>
-          <mj-text mj-class="text">Paulina and your Career Support Team</mj-text>
+          <mj-text mj-class="text"
+            >Paulina and your Career Support Team</mj-text
+          >
         </mj-column>
       </mj-section>
       <mj-include path="../templates/footer.berlin.paulina.mjml" />

@@ -53,6 +53,7 @@ export class TpJobseekerProfileEntityProps implements EntityProps {
   @Field((type) => JobseekerProfileStatus)
   state: JobseekerProfileStatus
   isJobFair2022Participant: boolean
+  isJobFair2023Participant: boolean
   isProfileVisibleToCompanies: boolean
   isHired: boolean
   @Field((type) => FederalState)

@@ -1,8 +1,8 @@
 @import '~bulma/sass/utilities/_all';
 @import '_variables.scss';
 
-.application-card {
-  padding: $block-spacing;
+.mobile-application-card {
+  padding: $column-gap;
   border-radius: $radius;
   transition: $transition;
   box-shadow: $card-shadow;
@@ -16,21 +16,13 @@
     margin-bottom: $block-spacing;
   }
 
-  // not happy with the solution, time for refactoring together with avatar
   &__avatar {
-    display: flex;
-    align-items: center;
-
-    @include mobile() {
-      justify-content: center;
-    }
+    flex-grow: 0;
 
     .avatar {
-      width: 2rem;
-      height: 2rem;
-      padding-top: 2rem;
-      margin: 0 0.5rem;
-      flex-shrink: 0;
+      width: 4rem;
+      height: 4rem;
+      z-index: 0;
     }
   }
 
@@ -56,9 +48,7 @@
   }
 
   &-dropdown {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-grow: 0;
 
     .icon {
       transition: $transition;
@@ -67,9 +57,26 @@
         transform: rotate(180deg);
       }
     }
+  }
 
-    @include tablet() {
-      // float: right;
+  &-pending {
+    @extend .mobile-application-card;
+    border: 1px solid $redi-orange-dark;
+
+    &__status {
+      color: #fd4d00;
     }
   }
+}
+
+.action-buttons {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  padding-bottom: 8px;
+  gap: 30px;
+}
+
+.mobile-column {
+  padding-left: 0;
 }

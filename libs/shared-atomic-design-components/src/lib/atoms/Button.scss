@@ -93,6 +93,12 @@
     &:hover {
       color: $redi-orange-dark;
     }
+
+    &:disabled,
+    &:hover:disabled {
+      color: $grey-light;
+      cursor: not-allowed;
+    }
   }
 
   &--nav {

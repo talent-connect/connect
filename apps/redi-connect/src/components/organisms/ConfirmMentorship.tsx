@@ -26,20 +26,16 @@ const initialValues = {
   mentorReplyMessageOnAccept: '',
 }
 
+const MIN_CHARS_COUNT = 250
+const MAX_CHARS_COUNT = 600
+
 const validationSchema = Yup.object({
   mentorReplyMessageOnAccept: Yup.string()
-    .required(
-      'Write at least 250 characters to introduce yourself to your mentee.'
-    )
-    .min(
-      250,
-      'Write at least 250 characters to introduce yourself to your mentee.'
-    )
-    .max(600, 'The introduction text can be up to 600 characters long.'),
+    .required()
+    .min(MIN_CHARS_COUNT)
+    .max(MAX_CHARS_COUNT),
 })
 
-// TODO: This throws a TS error: { dispatch, matchId }: ConnectButtonProps
-// What to replace with instead of below hack?
 const ConfirmMentorship = ({ match }: ConfirmMentorshipProps) => {
   const acceptMentorshipMutation = useAcceptMentorshipMutation()
   const [isModalActive, setModalActive] = useState(false)
@@ -82,17 +78,17 @@ const ConfirmMentorship = ({ match }: ConfirmMentorshipProps) => {
             <Content>
               <p>
                 Please write a few welcoming words to your future mentee and
-                give some information on your first meeting. (write at least 250
-                characters)
+                give some information on your first meeting (250-600
+                characters).
               </p>
             </Content>
             <FormTextArea
               name="mentorReplyMessageOnAccept"
               rows={4}
               placeholder={`Dear ${mentee.firstName}...`}
-              minChar={250}
-              maxChar={600}
-              {...formik}
+              minChar={MIN_CHARS_COUNT}
+              maxLength={MAX_CHARS_COUNT}
+              formik={formik}
             />
           </form>
         </Modal.Body>

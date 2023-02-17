@@ -82,13 +82,7 @@ function buildSubjectLine(subject, env) {
   }
 }
 
-const sendReportProblemEmailTemplate = fs.readFileSync(
-  path.resolve(__dirname, 'templates', 'send-problem-report.mjml'),
-  'utf-8'
-)
-const sendReportProblemEmailParsed = mjml2html(sendReportProblemEmailTemplate, {
-  filePath: path.resolve(__dirname, 'templates'),
-})
+const sendReportProblemEmailParsed = ''
 
 const sendReportProblemEmail = ({ sendingUserEmail, message }) => {
   const html = sendReportProblemEmailParsed.html
@@ -101,13 +95,7 @@ const sendReportProblemEmail = ({ sendingUserEmail, message }) => {
   })
 }
 
-const sendResetPasswordEmailTemplate = fs.readFileSync(
-  path.resolve(__dirname, 'templates', 'reset-password.mjml'),
-  'utf-8'
-)
-const sendResetPasswordEmailParsed = mjml2html(sendResetPasswordEmailTemplate, {
-  filePath: path.resolve(__dirname, 'templates'),
-})
+const sendResetPasswordEmailParsed = ''
 
 const sendResetPasswordEmail = ({
   recipient,

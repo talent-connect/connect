@@ -50,9 +50,10 @@
           <mj-text mj-class="text" padding="0 0 20px 0"
             >Your <strong>final step</strong> after watching this video will be
             your <strong>activation call</strong> with our Mentorship Community
-            Manager Johanna, who will be happy to answer any remaining questions
-            and will then activate your account - only then will you be able to
-            fully use the platform and search for a mentor.</mj-text
+            Manager, <strong>Hadeer</strong>, who will be happy to answer any
+            remaining questions and will then activate your account - only then
+            will you be able to fully use the platform and search for a
+            mentor.</mj-text
           >
           <mj-text mj-class="text" padding="0 0 0 0"
             ><strong>Schedule your activation call now</strong> and make sure to
@@ -67,7 +68,7 @@
             target="_blank"
             width="358px"
             css-class="button-desktop"
-            href="https://calendly.com/johanna-redi-team/redi-connect-mentee-activation"
+            href="https://calendly.com/hadeertalentsucess/redi-connect-mentees-activation-call"
           />
           <mj-image
             src="https://redi-connect-email-assets.s3.eu-west-1.amazonaws.com/schedule-activation-call-now-button.png"
@@ -75,11 +76,11 @@
             padding="30px 0"
             target="_blank"
             css-class="button-mobile"
-            href="https://calendly.com/johanna-redi-team/redi-connect-mentee-activation"
+            href="https://calendly.com/hadeertalentsucess/redi-connect-mentees-activation-call"
           />
           <mj-text mj-class="text" padding="0 0 20px 0"
             >In case of any questions, you can
-            <strong>message Johanna on Slack</strong> or send us an
+            <strong>message Hadeer on Slack</strong> or send us an
             <strong>email</strong> at
             <strong>career@redi-school.org</strong>.</mj-text
           >

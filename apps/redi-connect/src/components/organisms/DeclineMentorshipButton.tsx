@@ -115,7 +115,7 @@ const DeclineMentorshipButton = ({ match }: DeclineMentorshipButtonProps) => {
               rows={4}
               label="Would you like to send the mentee a short message with your cancellation?"
               placeholder={`Hi there, thanks for sending me a mentorship application. Unfortunately I am declining since ...`}
-              {...formik}
+              formik={formik}
             />
           </form>
         </Modal.Body>

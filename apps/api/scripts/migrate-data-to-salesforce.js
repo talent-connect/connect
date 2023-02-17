@@ -783,6 +783,8 @@ async function insertJobseekerProfileFn(p) {
       .replace(/-/g, '_'),
     Is_Job_Fair_2022_Participant__c:
       p.tpJobseekerProfile.isJobFair2022Participant,
+    Is_Job_Fair_2023_Participant__c:
+      p.tpJobseekerProfile.isJobFair2023Participant,
     Is_Visible_to_Companies__c:
       p.tpJobseekerProfile.isProfileVisibleToCompanies,
     Is_Hired__c: p.tpJobseekerProfile.isHired,
@@ -1103,6 +1105,8 @@ async function insertAccountForCompanyProfileFn(p) {
       .replace(/-/g, '_'),
     ReDI_Visible_to_Jobseekers__c:
       p.tpCompanyProfile.isProfileVisibleToJobseekers,
+    ReDI_Is_Job_Fair_2023_Participant__c:
+      p.tpCompanyProfile.isJobFair2023Participant,
     ReDI_Administrator_Internal_Comment__c:
       p.tpCompanyProfile.administratorInternalComment,
     CreatedDate: p.createdAt, //! Use Jonida trick

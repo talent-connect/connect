@@ -12,10 +12,11 @@ Both are created, run and managed by [ReDI School of Digital Integration](https:
 
 1. Make sure [MongoDB](https://docs.mongodb.com/manual/installation/) is installed on your computer.
 2. Make sure you're running the _v14.17.6_ version of Node locally when you're running the backend server and checkout to a new branch. To do this, you can use [nvm](https://github.com/nvm-sh/nvm#node-version-manager), which allows you to select different versions of Node via the command line. Alternatively, we have added support for [Volta](https://docs.volta.sh/guide/understanding). So if you choose, you can use Volta, which sets project-defined tools automatically.
-3. Run `yarn` in project root to install dependencies.
-4. If you're re-seeding, drop the database files: `rm -rf mongodb-data/*` and run `yarn seed` to seed the database.
+3. Request information for environment variables from @ericbolikowski.
+4. Run `yarn` in project root to install dependencies.
+5. If you're re-seeding, drop the database files: `rm -rf mongodb-data/*` and run `yarn seed` to seed the database.
 
-   Alternatively, you can drop the database in the MongoDB Shell. In a new terminal window run the following:
+   Alternatively, you can drop the database in the MongoDB Shell - [mongo](https://www.mongodb.com/docs/v4.4/mongo/) or [mongosh](https://www.mongodb.com/docs/mongodb-shell/). In a new terminal window run the following:
 
    ```
    $ mongo
@@ -25,13 +26,13 @@ Both are created, run and managed by [ReDI School of Digital Integration](https:
 
    ~~Then run `yarn seed` in project root to seed the database.~~
 
-5. Run `yarn start:all` to boot all apps, _or_ a subset of apps using the `start:x` commands in package.json.
+6. Run `yarn start:all` to boot all apps, _or_ a subset of apps using the `start:x` commands in package.json.
 
    It'll take a while and lots of warnings will show until everything's booted.
 
-6. If you don't have environment variables set up, talk to @ericbolikowski to get these. The NestJS backend will not work without them.
+7. If you don't have environment variables set up, talk to @ericbolikowski to get these. The NestJS backend will not work without them.
 
-7. See the [Onboarding Checklist](https://github.com/talent-connect/connect/wiki#onboarding-checklist) in our Wiki.
+8. See the [Onboarding Checklist](https://github.com/talent-connect/connect/wiki#onboarding-checklist) in our Wiki.
 
 You can open these in your browser:
 

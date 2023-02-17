@@ -1415,6 +1415,7 @@ const TpJobseekerProfileShow = (props) => (
       <TabbedShowLayout>
         <Tab label="Profile">
           <TextField source="state" />
+          <BooleanField source="isJobFair2023Participant" />
           <BooleanField source="isProfileVisibleToCompanies" />
           <BooleanField initialValue={false} source="isHired" />
           <Avatar />
@@ -1817,6 +1818,7 @@ const TpCompanyProfileShow = (props) => (
         <Tab label="Profile">
           <Avatar />
           <BooleanField source="isProfileVisibleToJobseekers" />
+          <BooleanField source="isJobFair2023Participant" />
           <TextField source="companyName" />
           <TextField source="firstName" />
           <TextField source="lastName" />
@@ -1894,6 +1896,7 @@ const TpCompanyProfileEdit = (props) => (
       <FormTab label="Profile">
         <Avatar />
         <BooleanInput source="isProfileVisibleToJobseekers" />
+        <BooleanInput source="isJobFair2023Participant" />
         <TextInput source="companyName" />
         <TextInput source="firstName" />
         <TextInput source="lastName" />

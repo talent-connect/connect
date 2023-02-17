@@ -301,7 +301,7 @@ export function JobseekerFormSectionImportantDetails({
         name="postalMailingAddress"
         rows={4}
         placeholder={`Max Mustermann,\nBerlinstraße 123,\n12345 Berlin,\nGermany`}
-        {...formik}
+        formik={formik}
       />
       {hideNonContactDetailsFields ? null : (
         <>
@@ -311,6 +311,8 @@ export function JobseekerFormSectionImportantDetails({
             items={formDesiredEmploymentType}
             {...formik}
             multiselect
+            placeholder="Select desired employment types"
+            closeMenuOnSelect={false}
           />
           <FormSelect
             label="When are you available to start?*"

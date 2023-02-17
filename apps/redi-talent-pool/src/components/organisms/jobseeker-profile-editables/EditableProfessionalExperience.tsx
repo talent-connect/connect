@@ -335,7 +335,7 @@ export function JobseekerFormSectionProfessionalExperience({
                           name={`experience[${index}].description`}
                           rows={7}
                           placeholder={rolesAndResponsibilitiesPlaceholderText}
-                          {...formik}
+                          formik={formik}
                         />
                         <FaqItem
                           question={rolesAndResponsibilitiesQuestion}

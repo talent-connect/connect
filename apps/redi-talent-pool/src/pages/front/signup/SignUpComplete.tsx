@@ -1,7 +1,8 @@
 import { useMyTpDataQuery } from '@talent-connect/data-access'
 import { Button, Loader } from '@talent-connect/shared-atomic-design-components'
 import { Columns, Content, Form } from 'react-bulma-components'
-import { useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router'
+import TpTeaser from '../../../components/molecules/TpTeaser'
 import AccountOperation from '../../../components/templates/AccountOperation'
 
 export default function SignUpComplete() {
@@ -22,7 +23,9 @@ export default function SignUpComplete() {
         <Columns.Column
           size={5}
           responsive={{ mobile: { hide: { value: true } } }}
-        ></Columns.Column>
+        >
+          <TpTeaser.IllustrationOnly />
+        </Columns.Column>
         <Columns.Column size={5} offset={2}>
           <Content size="large" renderAs="div">
             <p>Thank you for signing up!</p>

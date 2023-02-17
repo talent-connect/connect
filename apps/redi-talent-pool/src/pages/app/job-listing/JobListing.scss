@@ -1,0 +1,29 @@
+.quill-editor-output .ql-align-left {
+  text-align: left;
+}
+
+.quill-editor-output .ql-align-center {
+  text-align: center;
+}
+
+.quill-editor-output .ql-align-right {
+  text-align: right;
+}
+
+.quill-editor-output .ql-align-justify {
+  text-align: justify;
+}
+
+.quill-editor-output ol,
+.quill-editor-output ul {
+  padding-left: 1.5rem;
+}
+
+.quill-editor-output ul > li {
+  list-style-type: disc;
+  margin-top: 0.25rem;
+}
+
+.quill-editor-output ol > li {
+  margin-top: 0.25rem;
+}

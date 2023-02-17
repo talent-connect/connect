@@ -118,7 +118,7 @@ function ModalForm({
         stand out, what are you passionate about and what are your future
         aspirations.
       </Element>
-      <FormTextArea label="About you" name="about" rows={7} {...formik} />
+      <FormTextArea label="About you" name="about" rows={7} formik={formik} />
 
       <Button
         disabled={!formik.isValid || mutation.isLoading}

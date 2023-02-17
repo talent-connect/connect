@@ -48,6 +48,20 @@
       transform: rotate(45deg);
     }
   }
+
+  &.textarea-clean {
+    &:after {
+      position: absolute;
+      opacity: 1;
+      width: 0.5rem;
+      height: 1rem;
+      bottom: 10px;
+      right: 14px;
+      border: solid $green;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+  }
 }
 
 .submit-spacer {

@@ -15,8 +15,7 @@ type RouteParams = {
 export default function SignUpComplete() {
   const history = useHistory()
   const { userType } = useParams<RouteParams>() as RouteParams
-  // TODO: Fix the weird layout issue, and make sure we only show the left-hand side illustration
-  // as on initial sign up page, but withhout the sign up link.
+
   return (
     <AccountOperation>
       <Columns vCentered>
@@ -30,18 +29,25 @@ export default function SignUpComplete() {
           <Heading border="bottomLeft">Meet the team</Heading>
           <Content size="large" renderAs="div">
             <p>Thank you for signing up!</p>
-            {userType.toLowerCase() === UserType.Mentor.toLowerCase() && (
-              <p>
-                Now, we would like to get to know you better. We regularly
-                organize mentor onboardings in small groups.{' '}
-                <a href="https://calendly.com/johanna-redi-team/redi-connect-mentors-onboarding">
-                  <strong>
-                    Please book yourself in for one of the open 30-minute slots.
-                  </strong>
-                </a>
-              </p>
+            {userType === UserType.Mentor && (
+              <>
+                <p>
+                  Now, we would like to get to know you better. We regularly
+                  organize mentor onboardings in small groups.{' '}
+                  <a href="https://calendly.com/hadeertalentsucess/redi-connect-mentors-onboarding">
+                    <strong>
+                      Please book yourself in for one of the open 30-minute
+                      slots.
+                    </strong>
+                  </a>
+                </p>
+                <p style={{ textAlign: 'justify' }}>
+                  If you are a ReDI partner, your profile will be activated
+                  automatically - you don't have to select a date!
+                </p>
+              </>
             )}
-            {userType.toLowerCase() === UserType.Mentee.toLowerCase() && (
+            {userType === UserType.Mentee && (
               <>
                 <p>
                   Your next step is to watch a short onboarding tutorial to get
@@ -68,7 +74,7 @@ export default function SignUpComplete() {
                 </p>
                 <p>
                   <a
-                    href="https://calendly.com/johanna-redi-team/redi-connect-mentee-activation"
+                    href="https://calendly.com/hadeertalentsucess/redi-connect-mentees-activation-call"
                     target="_blank"
                     rel="noreferrer"
                   >

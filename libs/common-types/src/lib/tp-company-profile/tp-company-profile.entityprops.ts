@@ -19,6 +19,7 @@ export class TpCompanyProfileEntityProps implements EntityProps {
   @Field((type) => CompanyTalentPoolState)
   state: CompanyTalentPoolState
   isProfileVisibleToJobseekers: boolean
+  isJobFair2023Participant: boolean
 
   createdAt: Date
   updatedAt: Date

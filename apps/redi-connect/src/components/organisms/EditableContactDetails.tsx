@@ -6,11 +6,13 @@ import {
   Editable,
   FormInput,
 } from '@talent-connect/shared-atomic-design-components'
+import { toPascalCaseAndTrim } from '@talent-connect/shared-utils'
 import { FormikValues, useFormik } from 'formik'
 import { omit } from 'lodash'
 import { useQueryClient } from 'react-query'
 import * as Yup from 'yup'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
+
 import { ReadContactDetails } from '../molecules'
 
 export interface ContactsFormValues {
@@ -21,10 +23,15 @@ export interface ContactsFormValues {
 }
 
 const validationSchema = Yup.object({
-  firstName: Yup.string().required().max(255),
-  lastName: Yup.string().required().max(255),
-  // email: Yup.string().email().required().max(255).label('Contact email'),
-  telephoneNumber: Yup.string().nullable().max(255).label('Telephone number'),
+  firstName: Yup.string()
+    .transform(toPascalCaseAndTrim)
+    .required('Your first name is required')
+    .max(255),
+  lastName: Yup.string()
+    .transform(toPascalCaseAndTrim)
+    .required('Your last name is required')
+    .max(255),
+  telephoneNumber: Yup.string().nullable().max(255).label('Telephone Number'),
 })
 
 // props: FormikProps<AboutFormValues>
@@ -37,7 +44,8 @@ export function EditableContactDetails() {
   const profile = myProfileQuery.data?.conProfile
 
   const submitForm = async (values: FormikValues) => {
-    const cleanValues = omit(values, ['email'])
+    const transformedValues = validationSchema.cast(values)
+    const cleanValues = omit(transformedValues, ['email'])
     const mutationResult = await patchMyProfileMutation.mutateAsync({
       input: { id: profile.id, ...cleanValues },
     })
@@ -73,13 +81,13 @@ export function EditableContactDetails() {
       <FormInput
         name="firstName"
         placeholder="First name"
-        label="First name"
+        label="First name*"
         {...formik}
       />
       <FormInput
         name="lastName"
         placeholder="Last name"
-        label="Last name"
+        label="Last name*"
         {...formik}
       />
       {/* TODO: find a nicer way of showing this non-editable email */}
@@ -87,7 +95,8 @@ export function EditableContactDetails() {
         disabled
         name="email"
         type="email"
-        label="E-mail address"
+        placeholder="E-mail"
+        label="E-mail address*"
         {...formik}
       />
       <FormInput

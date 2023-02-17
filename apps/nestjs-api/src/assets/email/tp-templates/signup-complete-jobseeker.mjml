@@ -12,8 +12,14 @@
           >
           <mj-text mj-class="text paragraph">Thank you for signing up!</mj-text>
           <mj-text mj-class="text paragraph"
-            >Now, it's time to log into Talent Pool and work on your profile.
-            Once it's complete, you will be able to send it to me for review.
+            >Now, it's time to log into
+            <a
+              href="https://talent-pool.redi-school.org/front/login"
+              class="text-link"
+              >Talent Pool</a
+            >
+            and work on your profile. Once it's complete, you will be able to
+            send it to me for review.
           </mj-text>
           <mj-text mj-class="text paragraph"
             >I am excited to get to know you soon!</mj-text

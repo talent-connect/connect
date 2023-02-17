@@ -20,8 +20,9 @@
           <mj-text mj-class="text paragraph"
             >If you feel like this has been done without your knowledge, please
             reach out to us at
-            <a href="mailto:career@redi-school.org">career@redi-school.org</a>,
-            so we can get in touch with you.</mj-text
+            <a href="mailto:career@redi-school.org" class="text-link"
+              >career@redi-school.org</a
+            >, so we can get in touch with you.</mj-text
           >
           <mj-text mj-class="text"
             >Best,<br />Your Career Support Team at ReDI School</mj-text
