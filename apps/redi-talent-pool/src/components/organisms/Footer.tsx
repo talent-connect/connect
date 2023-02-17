@@ -43,7 +43,7 @@ const RediFooter = () => {
               >
                 Supported by
               </Element>
-              <Columns breakpoint="mobile" gap={2}>
+              <Columns breakpoint="desktop" gap={2}>
                 <Columns.Column size={4}>
                   <Element
                     renderAs="img"
