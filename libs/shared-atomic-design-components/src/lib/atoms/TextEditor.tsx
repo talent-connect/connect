@@ -1,8 +1,8 @@
+import { FormikValues } from 'formik'
+import { get } from 'lodash'
+import { Columns, Content, Form } from 'react-bulma-components'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
-import { get } from 'lodash'
-import { FormikValues } from 'formik'
-import { Form, Content, Columns } from 'react-bulma-components'
 
 import './TextEditor.scss'
 
