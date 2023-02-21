@@ -115,17 +115,24 @@ export class SfApiRepository {
 
       console.log(`[SfApiRepository] Executing SOQL: ${soql}`)
 
-      const result = await this.connection.query(soql)
+      let records = []
 
-      if (result?.records?.length > 0) {
-        console.log(
-          '[SfApiRepository]',
-          `Found ${result.records.length} records of ${objectName} (total ${result.totalSize})`
-        )
-        callback(result.records)
-      } else {
-        callback([])
-      }
+      let result = this.connection.query(soql)
+
+      result.on('record', function (record) {
+        records.push(record)
+      })
+
+      result.on('end', function () {
+        console.log('[SfApiRepository]', `Found ${records.length} records`)
+        callback(records)
+      })
+
+      result.on('error', function (err) {
+        console.error(err)
+      })
+
+      result.run({ autoFetch: true })
     },
     40
   )

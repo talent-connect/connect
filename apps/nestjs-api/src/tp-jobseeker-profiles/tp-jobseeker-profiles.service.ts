@@ -58,8 +58,25 @@ export class TpJobseekerProfilesService {
     if (_filter.filter.isJobFair2022Participant) {
       filter.Jobseeker_Profiles__r.Is_Job_Fair_2022_Participant__c = true
     }
+    if (_filter.filter.isJobFair2023Participant) {
+      filter.Jobseeker_Profiles__r.Is_Job_Fair_2023_Participant__c = true
+    }
 
-    return this.findAll(filter)
+    const entities = await this.findAll(filter)
+
+    return entities.filter((entity) => {
+      const isLanguagesQueryEmpty =
+        !_filter.filter.desiredLanguages ||
+        _filter.filter.desiredLanguages.length === 0
+      if (isLanguagesQueryEmpty) return true
+
+      const doesJobseekerWorkingLanguagesOverlapWithLanguagesQuery =
+        entity.props.workingLanguages?.some((langObj) =>
+          _filter.filter.desiredLanguages.includes(langObj.language)
+        )
+
+      return doesJobseekerWorkingLanguagesOverlapWithLanguagesQuery
+    })
   }
 
   async findOne(id: string) {

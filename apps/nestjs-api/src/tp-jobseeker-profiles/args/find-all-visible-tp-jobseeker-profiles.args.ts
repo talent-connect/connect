@@ -1,6 +1,7 @@
 import { ArgsType, Field, InputType } from '@nestjs/graphql'
 import {
   FederalState,
+  Language,
   TpDesiredEmploymentType,
   TpDesiredPosition,
   TpTechnicalSkill,
@@ -14,6 +15,8 @@ export class FindAllVisibleTpJobseekerProfilesArgs {
 @InputType('FindAllVisibleTpJobseekerProfilesArgsFilter')
 class FindAllVisibleTpJobseekerProfilesArgsFilter {
   name?: string
+  @Field((type) => [Language])
+  desiredLanguages?: Language[]
   @Field((type) => [TpDesiredPosition])
   desiredPositions?: TpDesiredPosition[]
   @Field((type) => [TpDesiredEmploymentType])
@@ -23,4 +26,5 @@ class FindAllVisibleTpJobseekerProfilesArgsFilter {
   @Field((type) => [FederalState])
   federalStates?: FederalState[]
   isJobFair2022Participant?: boolean
+  isJobFair2023Participant?: boolean
 }
