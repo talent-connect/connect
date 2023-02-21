@@ -43,6 +43,7 @@ export class TpCompanyProfileSignUpUseCase {
       '[TpCompanyProfileSignUpUseCase]',
       'creating new company or getting existing one'
     )
+
     if (
       input.operationType ===
       TpCompanyProfileSignUpOperationType.EXISTING_COMPANY
@@ -50,6 +51,7 @@ export class TpCompanyProfileSignUpUseCase {
       companyEntity = await this.tpCompanyProfilesSerivce.findOneById(
         input.companyIdOrName
       )
+
       console.log(
         '[TpCompanyProfileSignUpUseCase]',
         'found existing company',
@@ -86,6 +88,7 @@ export class TpCompanyProfileSignUpUseCase {
     const contactRecord = await this.sfService.updateContact(
       ContactRecord.create(contactRecordProps)
     )
+
     console.log(
       '[TpCompanyProfileSignUpUseCase]',
       'created contact record',

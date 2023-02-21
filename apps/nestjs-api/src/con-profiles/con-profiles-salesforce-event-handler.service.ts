@@ -72,6 +72,7 @@ export class ConProfilesSalesforceEventHandlerService {
       'ConProfileCreated handler trigger for conProfileId:',
       payload.conProfileId
     )
+
     const conProfile = await this.service.findOneById(payload.conProfileId)
     switch (conProfile.props.userType) {
       case UserType.MENTEE:
