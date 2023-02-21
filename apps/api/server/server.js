@@ -9,8 +9,6 @@ process.env.AWS_SECRET_ACCESS_KEY = process.env.NX_AWS_SECRET_ACCESS_KEY
 // required to set up logger
 require('../lib/logger')
 
-console.log(process.env.DEV_MODE_EMAIL_RECIPIENT)
-
 var loopback = require('loopback')
 var boot = require('loopback-boot')
 
