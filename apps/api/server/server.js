@@ -27,10 +27,6 @@ var app = (module.exports = loopback())
 
 const sendAllReminderEmails = require('../daily-cronjob-reminder-email/index.js')
 
-Object.entries(process.env).forEach(([key, value]) => {
-  if (/^NX_/.test(key)) console.log(key, value)
-})
-
 app.start = function () {
   // start the web server
   return app.listen(function () {
