@@ -42,7 +42,7 @@ export class SfApiTpCompanyProfilesService {
       {
         Name: companyName,
         ReDI_Talent_Pool_State__c: 'DRAFTING_PROFILE',
-        ReDI_Visible_to_Jobseekers__c: true,
+        ReDI_Visible_to_Jobseekers__c: false,
       }
     )
 
