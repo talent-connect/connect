@@ -11,5 +11,6 @@ import { TpJobseekerProfilesService } from './tp-jobseeker-profiles.service'
     TpJobseekerProfileMapper,
   ],
   imports: [SfApiModule],
+  exports: [TpJobseekerProfilesService],
 })
 export class TpJobseekerProfilesModule {}

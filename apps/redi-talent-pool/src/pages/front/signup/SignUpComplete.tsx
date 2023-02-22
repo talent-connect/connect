@@ -33,7 +33,12 @@ export default function SignUpComplete() {
               <>
                 <p>
                   You've requested to represent a company already signed up on
-                  Talent Pool, companyName!
+                  Talent Pool,{' '}
+                  {
+                    myTpUserData.tpCurrentUserDataGet.representedCompany
+                      ?.companyName
+                  }
+                  !
                 </p>
                 <p>
                   We'll contact the existing representatives to validate and

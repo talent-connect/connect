@@ -6,5 +6,8 @@ query myTpData {
     representedCompany {
       ...AllTpCompanyProfileFields
     }
+    jobseekerProfile {
+      ...AllTpJobseekerProfileFields
+    }
   }
 }

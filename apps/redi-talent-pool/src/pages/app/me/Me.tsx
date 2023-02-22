@@ -13,17 +13,23 @@ function Me() {
 
   const history = useHistory()
 
+  if (isLoading) return <Loader loading />
+
+  debugger
+
+  if (jobseekerProfile) return <MeJobseeker />
+
   const companyRepresentativeStatus =
     myTpUserData?.tpCurrentUserDataGet?.companyRepresentativeStatus?.status
 
-  if (isLoading) return <Loader loading />
-
-  if (companyRepresentativeStatus === 'PENDING') {
-    history.push('/front/signup-complete')
+  switch (companyRepresentativeStatus) {
+    case 'PENDING':
+    case 'REJECTED':
+    case 'DEACTIVATED':
+      history.push('/front/signup-complete')
+    case 'APPROVED':
+      return <MeCompany />
   }
-
-  if (jobseekerProfile) return <MeJobseeker />
-  if (companyRepresentativeStatus === 'APPROVED') return <MeCompany />
 
   return null
 }

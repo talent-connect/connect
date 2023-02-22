@@ -89,4 +89,15 @@ export class TpJobseekerProfilesService {
       throw new NotFoundException('TpJobseekerProfile not found with id: ' + id)
     }
   }
+
+  async findOneByUserId(userId: string) {
+    const entities = await this.findAll({
+      Id: userId,
+    })
+    if (entities.length > 0) {
+      return entities[0]
+    } else {
+      throw new NotFoundException('TpJobseekerProfile not found')
+    }
+  }
 }

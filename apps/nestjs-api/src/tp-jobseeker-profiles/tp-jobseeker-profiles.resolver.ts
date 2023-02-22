@@ -21,11 +21,12 @@ export class TpJobseekerProfilesResolver {
   }
 
   // //! TODO: Add auth
-  @Query(() => [TpJobseekerProfileEntityProps], {
-    name: 'tpJobseekerProfile',
-  })
-  async findOne(@Args('id') id: string) {
-    const entity = await this.service.findOne(id)
-    return entity.props
-  }
+  //? THIS CALLS .findOne that looks up by contactId, not jobseekerprofileId. Fix that.
+  // @Query(() => [TpJobseekerProfileEntityProps], {
+  //   name: 'tpJobseekerProfile',
+  // })
+  // async findOne(@Args('id') id: string) {
+  //   const entity = await this.service.findOne(id)
+  //   return entity.props
+  // }
 }

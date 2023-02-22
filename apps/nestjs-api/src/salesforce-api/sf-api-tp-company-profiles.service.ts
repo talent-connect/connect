@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import {
   AccountContactRecord,
   AccountRecord,
@@ -122,6 +122,12 @@ export class SfApiTpCompanyProfilesService {
         Roles: { $in: ['TALENT_POOL_COMPANY_REPRESENTATIVE'] },
       },
     })
+    if (rawRecords.length === 0)
+      throw new NotFoundException(
+        '[SfApiTpCompanyProfilesService]' +
+          ' getCompanyRepresentativeRelationshipByUser:' +
+          ' No company representative relationship found for user'
+      )
     const rawRecord = rawRecords[0]
     const record = AccountContactRecord.create(rawRecord)
 

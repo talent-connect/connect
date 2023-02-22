@@ -280,10 +280,12 @@ export enum FederalState {
 }
 
 export type FindAllVisibleTpJobseekerProfilesArgsFilter = {
+  desiredLanguages?: InputMaybe<Array<Language>>;
   desiredPositions?: InputMaybe<Array<TpDesiredPosition>>;
   employmentTypes?: InputMaybe<Array<TpDesiredEmploymentType>>;
   federalStates?: InputMaybe<Array<FederalState>>;
   isJobFair2022Participant?: InputMaybe<Scalars['Boolean']>;
+  isJobFair2023Participant?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
   skills?: InputMaybe<Array<TpTechnicalSkill>>;
 };
@@ -767,6 +769,7 @@ export type TpCompanyProfile = {
   createdAt: Scalars['DateTime'];
   id: Scalars['ID'];
   industry?: Maybe<Scalars['String']>;
+  isJobFair2023Participant: Scalars['Boolean'];
   isProfileVisibleToJobseekers: Scalars['Boolean'];
   linkedInUrl?: Maybe<Scalars['String']>;
   location?: Maybe<Scalars['String']>;
@@ -817,6 +820,7 @@ export enum TpCompanyRepresentativeRelationshipStatus {
 export type TpCurrentUserData = {
   __typename?: 'TpCurrentUserData';
   companyRepresentativeStatus: TpCompanyRepresentativeRelationship;
+  jobseekerProfile: TpJobseekerProfile;
   representedCompany: TpCompanyProfile;
 };
 

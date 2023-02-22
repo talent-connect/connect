@@ -255,10 +255,12 @@ enum FederalState {
 }
 
 input FindAllVisibleTpJobseekerProfilesArgsFilter {
+  desiredLanguages: [Language!]
   desiredPositions: [TpDesiredPosition!]
   employmentTypes: [TpDesiredEmploymentType!]
   federalStates: [FederalState!]
   isJobFair2022Participant: Boolean
+  isJobFair2023Participant: Boolean
   name: String
   skills: [TpTechnicalSkill!]
 }
@@ -635,6 +637,7 @@ type TpCompanyProfile {
   createdAt: DateTime!
   id: ID!
   industry: String
+  isJobFair2023Participant: Boolean!
   isProfileVisibleToJobseekers: Boolean!
   linkedInUrl: String
   location: String
@@ -682,6 +685,7 @@ enum TpCompanyRepresentativeRelationshipStatus {
 
 type TpCurrentUserData {
   companyRepresentativeStatus: TpCompanyRepresentativeRelationship!
+  jobseekerProfile: TpJobseekerProfile!
   representedCompany: TpCompanyProfile!
 }
 
