@@ -20,6 +20,7 @@ module.exports = function (TpJobListing) {
         ctx.instance.createdAt = currentDate
       }
       ctx.instance.updatedAt = new Date()
+      console.log(ctx.instance.summary)
       ctx.instance.summary = DOMPurify.sanitize(ctx.instance.summary)
     } else {
       ctx.data.updatedAt = new Date()
@@ -28,9 +29,8 @@ module.exports = function (TpJobListing) {
       // Uncommenting the following code will cause the cyclic dependency error
       // ctx.instance is not defined at this point so we cannot use it
 
-      // ctx.data.summary = DOMPurify.sanitize(ctx.data.summary, {
-      //   RETURN_DOM: true,
-      // })
+      console.log(ctx.data.summary)
+      ctx.data.summary = DOMPurify.sanitize(ctx.data.summary ?? '')
     }
     next()
   })
