@@ -1,6 +1,7 @@
 import { Loader } from '@talent-connect/shared-atomic-design-components'
-import { ReactNode } from 'react'
+import { ReactNode, useEffect } from 'react'
 import { Columns, Container } from 'react-bulma-components'
+import { useQueryClient } from 'react-query'
 import { useLocation } from 'react-router-dom'
 import { useIsBusy } from '../../hooks/useIsBusy'
 import { useTpCompanyProfileQuery } from '../../react-query/use-tpcompanyprofile-query'
@@ -16,12 +17,18 @@ interface Props {
 }
 
 const LoggedIn = ({ children, hideNavigation }: Props) => {
+  const queryClient = useQueryClient()
   const isBusy = useIsBusy()
-  const location = useLocation()
   const { data: jobseekerProfile } = useTpJobseekerProfileQuery({
     retry: false,
   })
   const { data: companyProfile } = useTpCompanyProfileQuery({ retry: false })
+
+  const location = useLocation()
+
+  useEffect(() => {
+    queryClient.invalidateQueries()
+  }, [location])
 
   return (
     <>
