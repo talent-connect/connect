@@ -5,19 +5,18 @@ import { MeCompany } from './MeCompany'
 import { MeJobseeker } from './MeJobseeker'
 
 function Me() {
-  const {
-    data: {
-      tpCurrentUserDataGet: {
-        companyRepresentativeRelationship,
-        jobseekerProfile,
-      },
-    },
-    isLoading,
-  } = useMyTpDataQuery()
+  const { data, isLoading } = useMyTpDataQuery()
 
   const history = useHistory()
 
   if (isLoading) return <Loader loading />
+
+  const {
+    tpCurrentUserDataGet: {
+      companyRepresentativeRelationship,
+      jobseekerProfile,
+    },
+  } = data
 
   // If the user has-a JobseekerProfile, we assume that user is a jobseeker, and show them the "me"
   // page for jobseekers
