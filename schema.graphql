@@ -564,7 +564,6 @@ type Query {
   tpCompanyProfile(id: ID): TpCompanyProfile!
   tpCompanyProfiles: [TpCompanyProfile!]!
   tpCurrentUserDataGet: TpCurrentUserData!
-  tpJobseekerProfile(id: String!): [TpJobseekerProfile!]!
   tpJobseekerProfiles(filter: FindAllVisibleTpJobseekerProfilesArgsFilter!): [TpJobseekerProfile!]!
 }
 
@@ -684,9 +683,9 @@ enum TpCompanyRepresentativeRelationshipStatus {
 }
 
 type TpCurrentUserData {
-  companyRepresentativeStatus: TpCompanyRepresentativeRelationship!
-  jobseekerProfile: TpJobseekerProfile!
-  representedCompany: TpCompanyProfile!
+  companyRepresentativeRelationship: TpCompanyRepresentativeRelationship
+  jobseekerProfile: TpJobseekerProfile
+  representedCompany: TpCompanyProfile
 }
 
 enum TpDesiredEmploymentType {

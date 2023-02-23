@@ -11,7 +11,7 @@ export class TpCurrentUserData {
   representedCompany?: TpCompanyProfileEntityProps
 
   @Field((type) => TpCompanyRepresentativeRelationshipEntityProps)
-  companyRepresentativeStatus?: TpCompanyRepresentativeRelationshipEntityProps
+  companyRepresentativeRelationship?: TpCompanyRepresentativeRelationshipEntityProps
 
   @Field((type) => TpJobseekerProfileEntityProps)
   jobseekerProfile?: TpJobseekerProfileEntityProps

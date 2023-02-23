@@ -1,6 +1,6 @@
 query myTpData {
   tpCurrentUserDataGet {
-    companyRepresentativeStatus {
+    companyRepresentativeRelationship {
       ...AllCompanyRepresentativeRelationshipFields
     }
     representedCompany {

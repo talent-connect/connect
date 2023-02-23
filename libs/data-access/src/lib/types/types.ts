@@ -659,7 +659,6 @@ export type Query = {
   tpCompanyProfile: TpCompanyProfile;
   tpCompanyProfiles: Array<TpCompanyProfile>;
   tpCurrentUserDataGet: TpCurrentUserData;
-  tpJobseekerProfile: Array<TpJobseekerProfile>;
   tpJobseekerProfiles: Array<TpJobseekerProfile>;
 };
 
@@ -687,11 +686,6 @@ export type QueryConProfilesAvailableMentorsArgs = {
 
 export type QueryTpCompanyProfileArgs = {
   id?: InputMaybe<Scalars['ID']>;
-};
-
-
-export type QueryTpJobseekerProfileArgs = {
-  id: Scalars['String'];
 };
 
 
@@ -819,9 +813,9 @@ export enum TpCompanyRepresentativeRelationshipStatus {
 
 export type TpCurrentUserData = {
   __typename?: 'TpCurrentUserData';
-  companyRepresentativeStatus: TpCompanyRepresentativeRelationship;
-  jobseekerProfile: TpJobseekerProfile;
-  representedCompany: TpCompanyProfile;
+  companyRepresentativeRelationship?: Maybe<TpCompanyRepresentativeRelationship>;
+  jobseekerProfile?: Maybe<TpJobseekerProfile>;
+  representedCompany?: Maybe<TpCompanyProfile>;
 };
 
 export enum TpDesiredEmploymentType {

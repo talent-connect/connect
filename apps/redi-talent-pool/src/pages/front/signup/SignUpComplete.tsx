@@ -11,7 +11,8 @@ export default function SignUpComplete() {
   const { data: myTpUserData, isLoading } = useMyTpDataQuery()
 
   const representativeStatus =
-    myTpUserData?.tpCurrentUserDataGet?.companyRepresentativeStatus?.status
+    myTpUserData?.tpCurrentUserDataGet?.companyRepresentativeRelationship
+      ?.status
 
   if (isLoading) {
     return <Loader loading />
