@@ -2,19 +2,19 @@ import { UseGuards } from '@nestjs/common'
 import { Args, Query, Resolver } from '@nestjs/graphql'
 import { TpJobseekerProfileEntityProps } from '@talent-connect/common-types'
 import { GqlJwtAuthGuard } from '../auth/gql-jwt-auth.guard'
-import { FindAllVisibleTpJobseekerProfilesArgs } from './args/find-all-visible-tp-jobseeker-profiles.args'
-import { TpJobseekerProfilesService } from './tp-jobseeker-profiles.service'
+import { FindAllVisibleTpJobListingsArgs } from './args/find-all-visible-tp-jobseeker-profiles.args'
+import { TpJobListingsService } from './tp-job-listings.service'
 
 @UseGuards(GqlJwtAuthGuard)
 @Resolver(() => TpJobseekerProfileEntityProps)
-export class TpJobseekerProfilesResolver {
-  constructor(private readonly service: TpJobseekerProfilesService) {}
+export class TpJobListingsResolver {
+  constructor(private readonly service: TpJobListingsService) {}
 
   // //! TODO: Add auth
   @Query(() => [TpJobseekerProfileEntityProps], {
-    name: 'tpJobseekerProfiles',
+    name: 'tpJobListings',
   })
-  async findAllVisible(@Args() args: FindAllVisibleTpJobseekerProfilesArgs) {
+  async findAllVisible(@Args() args: FindAllVisibleTpJobListingsArgs) {
     const entities = await this.service.findAllVisibleJobseekers(args)
     const props = entities.map((entity) => entity.props)
     return props

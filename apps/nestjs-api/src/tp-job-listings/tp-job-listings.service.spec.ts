@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { TpJobseekerProfilesService } from './tp-jobseeker-profiles.service'
+import { TpJobListingsService } from './tp-jobseeker-profiles.service'
 
-describe('TpJobseekerProfilesService', () => {
-  let service: TpJobseekerProfilesService
+describe('TpJobListingsService', () => {
+  let service: TpJobListingsService
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [TpJobseekerProfilesService],
+      providers: [TpJobListingsService],
     }).compile()
 
-    service = module.get<TpJobseekerProfilesService>(TpJobseekerProfilesService)
+    service = module.get<TpJobListingsService>(TpJobListingsService)
   })
 
   it('should be defined', () => {

@@ -1,17 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { TpJobseekerProfilesResolver } from './tp-jobseeker-profiles.resolver'
 
-describe('TpJobseekerProfilesResolver', () => {
-  let resolver: TpJobseekerProfilesResolver
+describe('TpJobListingsResolver', () => {
+  let resolver: TpJobListingsResolver
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [TpJobseekerProfilesResolver],
+      providers: [TpJobListingsResolver],
     }).compile()
 
-    resolver = module.get<TpJobseekerProfilesResolver>(
-      TpJobseekerProfilesResolver
-    )
+    resolver = module.get<TpJobListingsResolver>(TpJobListingsResolver)
   })
 
   it('should be defined', () => {

@@ -1,16 +1,16 @@
 import { Module } from '@nestjs/common'
 import { TpJobseekerProfileMapper } from '@talent-connect/common-types'
 import { SfApiModule } from '../salesforce-api/sf-api.module'
-import { TpJobseekerProfilesResolver } from './tp-jobseeker-profiles.resolver'
-import { TpJobseekerProfilesService } from './tp-jobseeker-profiles.service'
+import { TpJobListingsResolver } from './tp-job-listings.resolver'
+import { TpJobListingsService } from './tp-job-listings.service'
 
 @Module({
   providers: [
-    TpJobseekerProfilesResolver,
-    TpJobseekerProfilesService,
+    TpJobListingsResolver,
+    TpJobListingsService,
     TpJobseekerProfileMapper,
   ],
   imports: [SfApiModule],
-  exports: [TpJobseekerProfilesService],
+  exports: [TpJobListingsService],
 })
-export class TpJobseekerProfilesModule {}
+export class TpJobListingsModule {}

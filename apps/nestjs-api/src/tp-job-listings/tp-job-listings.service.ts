@@ -1,20 +1,17 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
-import {
-  JobseekerProfileStatus,
-  TpJobseekerProfileMapper,
-} from '@talent-connect/common-types'
-import { SfApiTpJobseekerProfilesService } from '../salesforce-api/sf-api-tp-jobseeker-profiles.service'
-import { FindAllVisibleTpJobseekerProfilesArgs } from './args/find-all-visible-tp-jobseeker-profiles.args'
+import { TpJobseekerProfileMapper } from '@talent-connect/common-types'
+import { SfApiTpJobListingsService } from '../salesforce-api/sf-api-tp-job-listings.service'
+import { FindAllVisibleTpJobListingsArgs } from './args/find-all-visible-tp-jobseeker-profiles.args'
 
 @Injectable()
-export class TpJobseekerProfilesService {
+export class TpJobListingsService {
   constructor(
-    private readonly api: SfApiTpJobseekerProfilesService,
+    private readonly api: SfApiTpJobListingsService,
     private readonly mapper: TpJobseekerProfileMapper
   ) {}
 
   async findAll(filter: any = {}) {
-    const records = await this.api.findAllJobseekerProfiles(filter)
+    const records = await this.api.findAllJobListings(filter)
 
     const entities = records.map((source) =>
       this.mapper.fromPersistence(source)
@@ -23,18 +20,26 @@ export class TpJobseekerProfilesService {
     return entities
   }
 
-  async findAllVisibleJobseekers(
-    _filter: FindAllVisibleTpJobseekerProfilesArgs
-  ) {
-    const filter: any = {
-      Jobseeker_Profiles__r: {
-        Profile_Status__c: JobseekerProfileStatus.PROFILE_APPROVED,
-        Is_Visible_to_Companies__c: true,
-      },
+  async findAllVisibleJobListings(_filter: FindAllVisibleTpJobListingsArgs) {
+    const filter: any = {}
+    if (_filter.filter.relatesToPositions?.length > 0) {
+      filter.Relates_to_Positions__c = {
+        $includes: _filter.filter.relatesToPositions,
+      }
     }
-    if (_filter.filter.name) {
-      filter.Name = { $like: `%${_filter.filter.name}%` }
+    if (_filter.filter.skills?.length > 0) {
+      filter.Ideal_Technical_Skills__c = {
+        $includes: _filter.filter.skills,
+      }
     }
+    if (_filter.filter.employmentTypes?.length > 0) {
+      filter.Employment_Type__c = {
+        $includes: _filter.filter.employmentTypes
+      }
+    }
+    if (_filter.filter.federalStates?.length > 0) {
+
+
     if (_filter.filter.desiredPositions?.length > 0) {
       filter.Jobseeker_Profiles__r.Desired_Positions__c = {
         $includes: _filter.filter.desiredPositions,
