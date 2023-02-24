@@ -4,6 +4,7 @@ import { SfApiConMentoringSessionsService } from './sf-api-con-mentoring-session
 import { SfApiConMentorshipMatchesService } from './sf-api-con-mentorship-matches.service'
 import { SfApiConProfilesService } from './sf-api-con-profiles.service'
 import { SfApiTpCompanyProfilesService } from './sf-api-tp-company-profiles.service'
+import { SfApiTpJobListingsService } from './sf-api-tp-job-listings.service'
 import { SfApiTpJobseekerProfilesService } from './sf-api-tp-jobseeker-profiles.service'
 import { SfApiRepository } from './sf-api.repository'
 
@@ -15,6 +16,7 @@ import { SfApiRepository } from './sf-api.repository'
     SfApiRepository,
     SfApiTpCompanyProfilesService,
     SfApiTpJobseekerProfilesService,
+    SfApiTpJobListingsService,
   ],
   imports: [ConfigModule],
   exports: [
@@ -25,6 +27,7 @@ import { SfApiRepository } from './sf-api.repository'
     SfApiRepository,
     SfApiTpCompanyProfilesService,
     SfApiTpJobseekerProfilesService,
+    SfApiTpJobListingsService,
   ],
 })
 export class SfApiModule {}

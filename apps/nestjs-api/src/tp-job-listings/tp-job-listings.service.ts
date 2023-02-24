@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
-import { TpJobseekerProfileMapper } from '@talent-connect/common-types'
+import { TpJobListingMapper } from '@talent-connect/common-types'
 import { SfApiTpJobListingsService } from '../salesforce-api/sf-api-tp-job-listings.service'
 import { FindAllVisibleTpJobListingsArgs } from './args/find-all-visible-tp-jobseeker-profiles.args'
 
@@ -7,11 +7,11 @@ import { FindAllVisibleTpJobListingsArgs } from './args/find-all-visible-tp-jobs
 export class TpJobListingsService {
   constructor(
     private readonly api: SfApiTpJobListingsService,
-    private readonly mapper: TpJobseekerProfileMapper
+    private readonly mapper: TpJobListingMapper
   ) {}
 
   async findAll(filter: any = {}) {
-    const records = await this.api.findAllJobListings(filter)
+    const records = await this.api.getAll(filter)
 
     const entities = records.map((source) =>
       this.mapper.fromPersistence(source)
@@ -34,53 +34,24 @@ export class TpJobListingsService {
     }
     if (_filter.filter.employmentTypes?.length > 0) {
       filter.Employment_Type__c = {
-        $includes: _filter.filter.employmentTypes
+        $in: _filter.filter.employmentTypes,
       }
     }
     if (_filter.filter.federalStates?.length > 0) {
-
-
-    if (_filter.filter.desiredPositions?.length > 0) {
-      filter.Jobseeker_Profiles__r.Desired_Positions__c = {
-        $includes: _filter.filter.desiredPositions,
-      }
-    }
-    if (_filter.filter.employmentTypes?.length > 0) {
-      filter.Jobseeker_Profiles__r.Desired_Employment_Type__c = {
-        $includes: _filter.filter.employmentTypes,
-      }
-    }
-    if (_filter.filter.skills?.length > 0) {
-      filter.Jobseeker_Profiles__r.Top_Skills__c = {
-        $includes: _filter.filter.skills,
-      }
-    }
-    if (_filter.filter.federalStates?.length > 0) {
-      filter.Jobseeker_Profiles__r.Federal_State__c = {
+      filter.Federal_State__c = {
         $in: _filter.filter.federalStates,
       }
     }
-    if (_filter.filter.isJobFair2022Participant) {
-      filter.Jobseeker_Profiles__r.Is_Job_Fair_2022_Participant__c = true
-    }
-    if (_filter.filter.isJobFair2023Participant) {
-      filter.Jobseeker_Profiles__r.Is_Job_Fair_2023_Participant__c = true
+    if (_filter.filter.isRemotePossible) {
+      filter.Remote_Possible__c = true
     }
 
-    const entities = await this.findAll(filter)
+    return await this.findAll(filter)
+  }
 
-    return entities.filter((entity) => {
-      const isLanguagesQueryEmpty =
-        !_filter.filter.desiredLanguages ||
-        _filter.filter.desiredLanguages.length === 0
-      if (isLanguagesQueryEmpty) return true
-
-      const doesJobseekerWorkingLanguagesOverlapWithLanguagesQuery =
-        entity.props.workingLanguages?.some((langObj) =>
-          _filter.filter.desiredLanguages.includes(langObj.language)
-        )
-
-      return doesJobseekerWorkingLanguagesOverlapWithLanguagesQuery
+  async findAllBelongingToCompany(companyId: string) {
+    return await this.findAll({
+      Account__c: companyId,
     })
   }
 
@@ -91,18 +62,7 @@ export class TpJobListingsService {
     if (entities.length > 0) {
       return entities[0]
     } else {
-      throw new NotFoundException('TpJobseekerProfile not found with id: ' + id)
-    }
-  }
-
-  async findOneByUserId(userId: string) {
-    const entities = await this.findAll({
-      Id: userId,
-    })
-    if (entities.length > 0) {
-      return entities[0]
-    } else {
-      throw new NotFoundException('TpJobseekerProfile not found')
+      throw new NotFoundException('TpJobListing not found with id: ' + id)
     }
   }
 }
