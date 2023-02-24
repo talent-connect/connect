@@ -2,6 +2,7 @@ import { Field, ObjectType } from '@nestjs/graphql'
 import {
   TpCompanyProfileEntityProps,
   TpCompanyRepresentativeRelationshipEntityProps,
+  TpJobListingEntityProps,
   TpJobseekerProfileEntityProps,
 } from '@talent-connect/common-types'
 
@@ -15,4 +16,7 @@ export class TpCurrentUserData {
 
   @Field((type) => TpJobseekerProfileEntityProps)
   jobseekerProfile?: TpJobseekerProfileEntityProps
+
+  @Field((type) => [TpJobListingEntityProps])
+  jobListings?: Array<TpJobListingEntityProps>
 }

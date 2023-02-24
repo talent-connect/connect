@@ -17,8 +17,11 @@ export class ConMentoringSessionMapper
 
     props.id = raw.props.Id
     props.date = raw.props.Date__c
+
     props.minuteDuration =
-      MentoringSessionDuration[`MIN${raw.props.Durations_in_Minutes__c}`]
+      MentoringSessionDuration[
+        `MIN${raw.props.Durations_in_Minutes__c as Duration}`
+      ]
     props.mentorId = raw.props.Mentor__c
     props.menteeId = raw.props.Mentee__c
     props.createdAt = raw.props.CreatedDate
@@ -46,3 +49,5 @@ export class ConMentoringSessionMapper
     return record
   }
 }
+
+type Duration = 15 | 30 | 45 | 60 | 75 | 90 | 105 | 120

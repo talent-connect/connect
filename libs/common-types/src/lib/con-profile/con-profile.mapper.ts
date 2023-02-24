@@ -57,7 +57,7 @@ export class ConProfileMapper
       ? raw.props.Contact__r.redi_Contact_Gender__c
           .toLocaleLowerCase()
           .replace(/(^\w|\s\w)/g, (m) => m.toUpperCase())
-      : undefined
+      : ''
     if (['Male', 'Female', 'Other'].includes(contactGender)) {
       props.gender = contactGender as Gender
     } else {
@@ -72,8 +72,9 @@ export class ConProfileMapper
     props.githubProfileUrl = raw.props.Contact__r.ReDI_GitHub_Profile__c
     props.slackUsername = raw.props.Contact__r.ReDI_Slack_Username__c
     props.telephoneNumber = raw.props.Contact__r.MobilePhone
-    props.optOutOfMenteesFromOtherRediLocation =
+    props.optOutOfMenteesFromOtherRediLocation = Boolean(
       raw.props.Opt_Out_Mentees_From_Other_Locations__c
+    )
     props.createdAt = raw.props.CreatedDate
     props.updatedAt = raw.props.LastModifiedDate
     props.userActivatedAt = raw.props.Profile_First_Approved_At__c

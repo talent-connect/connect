@@ -1,5 +1,9 @@
 import { Tooltip } from '@material-ui/core'
 import {
+  CompanyTalentPoolState,
+  useMyTpDataQuery,
+} from '@talent-connect/data-access'
+import {
   Button,
   Checkbox,
   Icon,
@@ -8,7 +12,7 @@ import {
   TpCompanyProfile,
   TpCompanyProfileState,
 } from '@talent-connect/shared-types'
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 import { Columns, Content, Notification } from 'react-bulma-components'
 import { EditableAbout } from '../../../components/organisms/company-profile-editables/EditableAbout'
 import { EditableContact } from '../../../components/organisms/company-profile-editables/EditableContact'
@@ -16,31 +20,41 @@ import { EditableDetails } from '../../../components/organisms/company-profile-e
 import { EditableJobPostings } from '../../../components/organisms/company-profile-editables/EditableJobPostings'
 import { EditableNamePhotoLocation } from '../../../components/organisms/company-profile-editables/EditableNamePhotoLocation'
 import { LoggedIn } from '../../../components/templates'
+import { useIsBusy } from '../../../hooks/useIsBusy'
 import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
-import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
 import { useTpJobListingAllQuery } from '../../../react-query/use-tpjoblisting-all-query'
 import { OnboardingSteps } from './TpCompanyProfileOnboardingSteps'
 
 export function MeCompany() {
-  const { data: profile } = useTpCompanyProfileQuery()
-  const { data: jobListings } = useTpJobListingAllQuery()
-  const mutation = useTpCompanyProfileUpdateMutation()
+  const isBusy = useIsBusy()
+  const myData = useMyTpDataQuery()
+  const { data: jobListings } = useTpJobListingAllQuery() //TODO: replace
+  const mutation = useTpCompanyProfileUpdateMutation() //TODO: replace
 
   const [isJobPostingFormOpen, setIsJobPostingFormOpen] = useState(false)
 
-  const isProfileApproved = profile?.state === 'profile-approved'
+  // const onHideFromJobseekersCheckboxChange = () =>
+  //   mutation.mutate({
+  //     ...profile,
+  //     isProfileVisibleToJobseekers: !profile.isProfileVisibleToJobseekers,
+  //   })
 
-  const onHideFromJobseekersCheckboxChange = () =>
-    mutation.mutate({
-      ...profile,
-      isProfileVisibleToJobseekers: !profile.isProfileVisibleToJobseekers,
-    })
+  // TODO: finish function
+  const onJobFair2023ParticipateChange = () => {}
+  // mutation.mutate({
+  //   ...profile,
+  //   isJobFair2023Participant: !profile.isJobFair2023Participant,
+  // })
 
-  const onJobFair2023ParticipateChange = () =>
-    mutation.mutate({
-      ...profile,
-      isJobFair2023Participant: !profile.isJobFair2023Participant,
-    })
+  if (isBusy) return null
+
+  const {
+    companyRepresentativeRelationship: representativeRelationship,
+    representedCompany: companyProfile,
+  } = myData.data.tpCurrentUserDataGet
+
+  const isProfileApproved =
+    companyProfile.state === CompanyTalentPoolState.ProfileApproved
 
   return (
     <LoggedIn>
@@ -70,35 +84,35 @@ export function MeCompany() {
       ) : null}
       <Columns className="is-6 is-variable">
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'three-fifths' }}>
-          <EditableNamePhotoLocation profile={profile} />
+          <EditableNamePhotoLocation profile={companyProfile} />
           <div style={{ marginBottom: '1.5rem' }}>
             <Checkbox
-              checked={profile.isJobFair2023Participant}
+              checked={companyProfile.isJobFair2023Participant}
               customOnChange={onJobFair2023ParticipateChange}
             >
               My company will attend the <strong>ReDI Job Fair</strong>{' '}
               happening on <strong>15/02/2023</strong>.
             </Checkbox>
           </div>
-          <EditableAbout profile={profile} />
+          <EditableAbout profile={companyProfile} />
         </Columns.Column>
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'two-fifths' }}>
           <div className="is-hidden-mobile">
             <div style={{ textAlign: 'right', marginBottom: '1.5rem' }}>
-              <CallToActionButton profile={profile} />
+              <CallToActionButton profile={companyProfile} />
             </div>
             {!isProfileApproved && (
               <OnboardingSteps
-                profile={profile}
-                isProfileComplete={isProfileComplete(profile)}
+                profile={companyProfile}
+                isProfileComplete={isProfileComplete(companyProfile)}
                 hasJobListing={jobListings?.length > 0}
               />
             )}
           </div>
-          <EditableDetails profile={profile} />
-          <EditableContact profile={profile} />
+          <EditableDetails profile={companyProfile} />
+          <EditableContact profile={companyProfile} />
           <Checkbox
-            checked={!profile.isProfileVisibleToJobseekers}
+            checked={!companyProfile.isProfileVisibleToJobseekers}
             customOnChange={onHideFromJobseekersCheckboxChange}
           >
             Hide job listings from jobseekers
@@ -127,7 +141,10 @@ function isProfileComplete(profile: Partial<TpCompanyProfile>): boolean {
 }
 
 function SendProfileForReviewButton() {
-  const { data: profile } = useTpCompanyProfileQuery()
+  const isBusy = useIsBusy()
+  const myData = useMyTpDataQuery()
+
+  // const { data: profile } = useTpCompanyProfileQuery()
   const { data: jobListings } = useTpJobListingAllQuery()
   const mutation = useTpCompanyProfileUpdateMutation()
 
@@ -146,12 +163,12 @@ function SendProfileForReviewButton() {
     return 'Your profile is currently being reviewed'
   }
 
-  const onClick = useCallback(() => {
+  const onClick = () => {
     if (!window.confirm('Would you like to submit your profile for review?'))
       return
 
     mutation.mutate({ ...profile, state: 'submitted-for-review' })
-  }, [mutation, profile])
+  }
 
   if (enabled) {
     return <Button onClick={onClick}>Send profile to review</Button>
@@ -171,7 +188,7 @@ function SendProfileForReviewButton() {
 const CallToActionButton = ({
   profile,
 }: {
-  profile: Partial<TpCompanyProfile>
+  profile: Pick<TpCompanyProfile, 'state'>
 }) =>
   profile &&
   profile.state &&

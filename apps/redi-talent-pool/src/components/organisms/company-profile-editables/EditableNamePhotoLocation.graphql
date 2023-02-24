@@ -1,0 +1,6 @@
+fragment EditableNamePhotoLocationProfileProp on TpCompanyProfile {
+  companyName
+  location
+  tagline
+  profileAvatarImageS3Key
+}

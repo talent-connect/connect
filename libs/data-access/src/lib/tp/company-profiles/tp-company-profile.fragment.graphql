@@ -11,6 +11,7 @@ fragment AllTpCompanyProfileFields on TpCompanyProfile {
   about
   state
   isProfileVisibleToJobseekers
+  isJobFair2023Participant
   createdAt
   updatedAt
 }

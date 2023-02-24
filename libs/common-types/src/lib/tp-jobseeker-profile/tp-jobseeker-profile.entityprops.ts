@@ -1,14 +1,17 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql'
 import { EntityProps } from '../base-interfaces-types-classes'
-import { Language, LanguageProficiencyLevel } from '../common-objects'
+import {
+  Language,
+  LanguageProficiencyLevel,
+  TpDesiredEmploymentType,
+  TpDesiredPosition,
+  TpTechnicalSkill,
+} from '../common-objects'
 import {
   FederalState,
   JobseekerProfileStatus,
   TpAvailabilityOption,
-  TpDesiredEmploymentType,
-  TpDesiredPosition,
   TpEducationCertificationType,
-  TpTechnicalSkill,
 } from './enums'
 
 @ObjectType('TpJobseekerProfile')

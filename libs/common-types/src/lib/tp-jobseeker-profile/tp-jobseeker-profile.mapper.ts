@@ -4,14 +4,14 @@ import {
   ContactRecordProps,
   Language,
   LanguageProficiencyLevel,
+  TpDesiredEmploymentType,
+  TpDesiredPosition,
+  TpTechnicalSkill,
 } from '../common-objects'
 import {
   FederalState,
   JobseekerProfileStatus,
   TpAvailabilityOption,
-  TpDesiredEmploymentType,
-  TpDesiredPosition,
-  TpTechnicalSkill,
 } from './enums'
 import { TpJobseekerProfileEntity } from './tp-jobseeker-profile.entity'
 import {
