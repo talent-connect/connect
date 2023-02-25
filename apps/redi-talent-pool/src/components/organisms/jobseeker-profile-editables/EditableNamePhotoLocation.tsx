@@ -233,12 +233,3 @@ function ModalForm({
     </>
   )
 }
-
-const formDesiredEmploymentType = desiredEmploymentTypeOptions.map(
-  ({ id, label }) => ({ value: id, label })
-)
-
-const formAvailabilityOptions = availabilityOptions.map(({ id, label }) => ({
-  value: id,
-  label,
-}))

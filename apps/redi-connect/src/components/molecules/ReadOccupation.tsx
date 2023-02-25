@@ -75,15 +75,11 @@ const ReadOccupation = ({ profile, shortInfo }: Props) => {
               </>
             )}
             {mentee_occupationCategoryId === 'lookingForJob' && (
-              <>
-                <p>{mentee_occupationLookingForJob_what}</p>
-              </>
+              <p>{mentee_occupationLookingForJob_what}</p>
             )}
 
             {mentee_occupationCategoryId === 'other' && (
-              <>
-                <p>{mentee_occupationOther_description}</p>
-              </>
+              <p>{mentee_occupationOther_description}</p>
             )}
           </>
         )}

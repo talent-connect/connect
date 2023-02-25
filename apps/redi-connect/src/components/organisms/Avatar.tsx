@@ -90,18 +90,16 @@ function AvatarEditable() {
       )}
 
       {!profileAvatarImageS3Key && (
-        <>
-          <div className="avatar__placeholder">
-            <UploadImage className="avatar__placeholder__image" />
-            <Element
-              textSize={6}
-              className="avatar__placeholder__text"
-              responsive={{ mobile: { hide: { value: true } } }}
-            >
-              Add your picture
-            </Element>
-          </div>
-        </>
+        <div className="avatar__placeholder">
+          <UploadImage className="avatar__placeholder__image" />
+          <Element
+            textSize={6}
+            className="avatar__placeholder__text"
+            responsive={{ mobile: { hide: { value: true } } }}
+          >
+            Add your picture
+          </Element>
+        </div>
       )}
       <div>
         <ReactS3Uploader
