@@ -15,9 +15,7 @@ const ContactRow = ({ label, children }: ContactRow) =>
       <div className="m-contacts__row__label">{label}</div>
       <div className="m-contacts__row__content">{children}</div>
     </div>
-  ) : (
-    <></>
-  )
+  ) : null
 
 interface MContact {
   profile: RedProfile
@@ -25,12 +23,8 @@ interface MContact {
 }
 
 const MContacts = ({ profile, className }: MContact) => {
-  const {
-    contactEmail,
-    telephoneNumber,
-    linkedInProfileUrl,
-    slackUsername,
-  } = profile
+  const { contactEmail, telephoneNumber, linkedInProfileUrl, slackUsername } =
+    profile
 
   return (
     <Module
