@@ -1,15 +1,13 @@
-import React from 'react'
-import { Tag } from 'react-bulma-components'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
 import {
   Caption,
   CardTags,
-  Placeholder,
   CardTagsProps,
+  Placeholder,
 } from '@talent-connect/shared-atomic-design-components'
 import { CATEGORIES_MAP } from '@talent-connect/shared-config'
 import { RedProfile } from '@talent-connect/shared-types'
+import { connect } from 'react-redux'
+import { RootState } from '../../redux/types'
 
 interface ReadMentoringProps {
   profile: RedProfile

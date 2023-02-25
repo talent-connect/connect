@@ -9,8 +9,8 @@ import {
   TpJobseekerProfileState,
 } from '@talent-connect/shared-types'
 import classnames from 'clsx'
-import React, { useCallback, useRef } from 'react'
-import { Columns, Element, Notification, Content } from 'react-bulma-components'
+import { useCallback, useRef } from 'react'
+import { Columns, Content, Element, Notification } from 'react-bulma-components'
 import { Subject } from 'rxjs'
 import { EditableEducation } from '../../../components/organisms/jobseeker-profile-editables/EditableEducation'
 import { EditableImportantDetails } from '../../../components/organisms/jobseeker-profile-editables/EditableImportantDetails'
@@ -21,7 +21,6 @@ import { EditableNamePhotoLocation } from '../../../components/organisms/jobseek
 import { EditableOverview } from '../../../components/organisms/jobseeker-profile-editables/EditableOverview'
 import { EditableProfessionalExperience } from '../../../components/organisms/jobseeker-profile-editables/EditableProfessionalExperience'
 import { EditableSummary } from '../../../components/organisms/jobseeker-profile-editables/EditableSummary'
-import { EditableVisibility } from '../../../components/organisms/jobseeker-profile-editables/EditableVisibility'
 import { LoggedIn } from '../../../components/templates'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'

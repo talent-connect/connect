@@ -1,13 +1,14 @@
-import React from 'react'
-import { FormInput } from '@talent-connect/shared-atomic-design-components'
-import { Editable } from '@talent-connect/shared-atomic-design-components'
+import {
+  Editable,
+  FormInput,
+} from '@talent-connect/shared-atomic-design-components'
 import { RedProfile } from '@talent-connect/shared-types'
 import { toPascalCaseAndTrim } from '@talent-connect/shared-utils'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
 
-import { profileSaveStart } from '../../redux/user/actions'
 import * as Yup from 'yup'
+import { profileSaveStart } from '../../redux/user/actions'
 
 import { FormikValues, useFormik } from 'formik'
 import { ReadContactDetails } from '../molecules'

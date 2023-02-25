@@ -1,7 +1,6 @@
-import React from 'react'
-import { Section, Container, Element } from 'react-bulma-components'
-import { useTranslation } from 'react-i18next'
 import { DecoratedHeadline } from '@talent-connect/shared-atomic-design-components'
+import { Container, Element, Section } from 'react-bulma-components'
+import { useTranslation } from 'react-i18next'
 import './Checklist.scss'
 interface Props {
   type: 'mentor' | 'mentee'

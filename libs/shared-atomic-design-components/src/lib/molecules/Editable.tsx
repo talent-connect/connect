@@ -1,6 +1,6 @@
+import classnames from 'classnames'
 import React, { useState } from 'react'
 import { Caption, Icon } from '../atoms'
-import classnames from 'classnames'
 import './Editable.scss'
 
 interface Props {
@@ -15,15 +15,8 @@ interface Props {
 }
 
 function Editable(props: Props) {
-  const {
-    title,
-    children,
-    read,
-    onSave,
-    onClose,
-    savePossible,
-    className,
-  } = props
+  const { title, children, read, onSave, onClose, savePossible, className } =
+    props
 
   const [isEditing, setIsEditing] = useState(false)
 

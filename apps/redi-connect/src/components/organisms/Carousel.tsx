@@ -1,20 +1,19 @@
-import React from 'react'
+import { DecoratedHeadline } from '@talent-connect/shared-atomic-design-components'
+import classnames from 'classnames'
 import {
-  Section,
-  Container,
-  Element,
   Columns,
+  Container,
   Content,
+  Element,
   Image,
+  Section,
 } from 'react-bulma-components'
 import { useTranslation } from 'react-i18next'
-import classnames from 'classnames'
 import Slider from 'react-slick'
-import khaled from '../../assets/images/profile-khaled.jpg'
-import halil from '../../assets/images/profile-halil.jpg'
 import dragos from '../../assets/images/profile-dragos.jpg'
+import halil from '../../assets/images/profile-halil.jpg'
+import khaled from '../../assets/images/profile-khaled.jpg'
 import './Carousel.scss'
-import { DecoratedHeadline } from '@talent-connect/shared-atomic-design-components'
 
 interface Props {
   headline: string

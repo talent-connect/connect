@@ -1,9 +1,8 @@
-import React from 'react'
+import { Caption } from '@talent-connect/shared-atomic-design-components'
+import { RedProfile } from '@talent-connect/shared-types'
 import { Content } from 'react-bulma-components'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
-import { Caption } from '@talent-connect/shared-atomic-design-components'
-import { RedProfile } from '@talent-connect/shared-types'
 
 interface Props {
   profile: RedProfile

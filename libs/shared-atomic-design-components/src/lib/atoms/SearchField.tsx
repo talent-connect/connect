@@ -1,6 +1,6 @@
-import { Form } from 'react-bulma-components'
 import { debounce } from 'lodash'
 import { useCallback, useEffect, useState } from 'react'
+import { Form } from 'react-bulma-components'
 
 export const SearchField = ({
   valueChange,

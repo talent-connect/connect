@@ -1,13 +1,12 @@
-import React from 'react'
-import { Section, Container, Heading } from 'react-bulma-components'
-import { useTranslation } from 'react-i18next'
-import { useHistory } from 'react-router-dom'
 import {
   Button,
   DecoratedHeadline,
   SVGImage,
   SVGImages,
 } from '@talent-connect/shared-atomic-design-components'
+import { Container, Heading, Section } from 'react-bulma-components'
+import { useTranslation } from 'react-i18next'
+import { useHistory } from 'react-router-dom'
 import './NavTiles.scss'
 
 const NavTile = ({ name }: { name: string }) => {

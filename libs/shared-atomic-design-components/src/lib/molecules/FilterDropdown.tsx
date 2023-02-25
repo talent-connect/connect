@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'
-import { Checkbox, Icon } from '../atoms'
 import classnames from 'classnames'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { Checkbox, Icon } from '../atoms'
 import './FilterDropdown.scss'
 
 type Item = { label: string; value: string }

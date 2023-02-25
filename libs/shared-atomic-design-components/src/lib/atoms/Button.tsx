@@ -1,8 +1,8 @@
-import React from 'react'
 import classnames from 'classnames'
+import React from 'react'
 import { NavLink } from 'react-router-dom'
-import Icon from './Icon'
 import './Button.scss'
+import Icon from './Icon'
 
 export interface ButtonProps {
   children: any

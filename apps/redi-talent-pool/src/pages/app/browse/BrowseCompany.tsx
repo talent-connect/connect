@@ -6,14 +6,15 @@ import {
   withDefault,
 } from 'use-query-params'
 
-import { Columns, Element, Tag } from 'react-bulma-components'
 import {
   Checkbox,
   FilterDropdown,
   Icon,
   SearchField,
 } from '@talent-connect/shared-atomic-design-components'
+import { Columns, Element, Tag } from 'react-bulma-components'
 
+import { LANGUAGES } from '@talent-connect/shared-config'
 import {
   desiredEmploymentTypeOptions,
   desiredEmploymentTypeOptionsIdToLabelMap,
@@ -23,11 +24,10 @@ import {
   topSkills,
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
-import { LANGUAGES } from '@talent-connect/shared-config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
 
-import { LoggedIn } from '../../../components/templates'
 import { JobseekerProfileCard } from '../../../components/organisms/JobseekerProfileCard'
+import { LoggedIn } from '../../../components/templates'
 
 import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'

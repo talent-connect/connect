@@ -1,6 +1,7 @@
-import React from 'react'
-import { FormTextArea } from '@talent-connect/shared-atomic-design-components'
-import { Editable } from '@talent-connect/shared-atomic-design-components'
+import {
+  Editable,
+  FormTextArea,
+} from '@talent-connect/shared-atomic-design-components'
 import { RedProfile, UserType } from '@talent-connect/shared-types'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'

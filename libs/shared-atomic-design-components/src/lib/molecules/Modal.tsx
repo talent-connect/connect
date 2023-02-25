@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect, useState } from 'react'
+import { Modal as BulmaModal } from 'react-bulma-components'
 import { Heading } from '../atoms'
-import { Box, Modal as BulmaModal } from 'react-bulma-components'
 import './Modal.scss'
 
 interface Props {

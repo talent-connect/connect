@@ -1,23 +1,22 @@
-import React from 'react'
-import { ReactComponent as UploadImage } from '../../assets/images/uploadImage.svg'
-import ReactS3Uploader from 'react-s3-uploader'
-import { Element } from 'react-bulma-components'
-import { FormikValues, useFormik } from 'formik'
-import * as Yup from 'yup'
 import {
   AWS_PROFILE_AVATARS_BUCKET_BASE_URL,
   S3_UPLOAD_SIGN_URL,
 } from '@talent-connect/shared-config'
 import classnames from 'classnames'
+import { FormikValues, useFormik } from 'formik'
+import { Element } from 'react-bulma-components'
+import ReactS3Uploader from 'react-s3-uploader'
+import * as Yup from 'yup'
 import placeholderImage from '../../assets/images/img-placeholder.png'
+import { ReactComponent as UploadImage } from '../../assets/images/uploadImage.svg'
 
-import { RootState } from '../../redux/types'
 import { connect } from 'react-redux'
+import { RootState } from '../../redux/types'
 
 import './Avatar.scss'
 
-import { profileSaveStart } from '../../redux/user/actions'
 import { RedProfile } from '@talent-connect/shared-types'
+import { profileSaveStart } from '../../redux/user/actions'
 
 interface AvatarProps {
   profile: RedProfile

@@ -4,7 +4,7 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import { TpJobseekerCv } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
-import React, { useEffect, useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Element } from 'react-bulma-components'
 import { UseMutationResult, UseQueryResult } from 'react-query'
 import { Subject } from 'rxjs'
@@ -98,10 +98,10 @@ function Form({
     onSubmit,
     validateOnMount: true,
   })
-  useEffect(() => setIsFormDirty?.(formik.dirty), [
-    formik.dirty,
-    setIsFormDirty,
-  ])
+  useEffect(
+    () => setIsFormDirty?.(formik.dirty),
+    [formik.dirty, setIsFormDirty]
+  )
 
   return (
     <>
