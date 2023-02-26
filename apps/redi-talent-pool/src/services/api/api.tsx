@@ -371,35 +371,6 @@ export async function fetchAllTpJobListings(): Promise<Array<TpJobListing>> {
   return resp.data.filter((listing) => !listing.dummy)
 }
 
-export async function fetchExpiredTpJobListings(): Promise<
-  Array<TpJobListing>
-> {
-  const userId = getAccessTokenFromLocalStorage().userId
-  const currentDate = new Date()
-  const resp = await http(
-    `${API_URL}/redUsers/${userId}/tpJobListings?filter=${JSON.stringify({
-      where: {
-        expiresAt: { lt: currentDate },
-      },
-    })}`
-  )
-
-  return resp.data
-}
-
-export async function fetchActiveTpJobListings(): Promise<Array<TpJobListing>> {
-  const userId = getAccessTokenFromLocalStorage().userId
-  const currentDate = new Date()
-  const resp = await http(
-    `${API_URL}/redUsers/${userId}/tpJobListings?filter=${JSON.stringify({
-      where: {
-        or: [{ expiresAt: { gt: currentDate } }, { exists: false }],
-      },
-    })}`
-  )
-  return resp.data
-}
-
 export async function fetchOneTpJobListingOfCurrentUser(
   id: string
 ): Promise<TpJobListing> {
