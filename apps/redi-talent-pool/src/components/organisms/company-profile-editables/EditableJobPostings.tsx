@@ -2,12 +2,12 @@ import {
   Button,
   FormInput,
   FormSelect,
-  FormTextArea,
   Heading,
   Icon,
   Modal,
   Checkbox,
   FormDatePicker,
+  TextEditor,
 } from '@talent-connect/shared-atomic-design-components'
 import { addMonths, subYears } from 'date-fns'
 import { TpJobListing, TpJobseekerProfile } from '@talent-connect/shared-types'
@@ -18,7 +18,7 @@ import {
   topSkills,
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
-import React, { useCallback, useState, useEffect } from 'react'
+import { useCallback, useState, useEffect } from 'react'
 import { Columns, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
@@ -73,6 +73,11 @@ export function EditableJobPostings({
       setIsJobPostingFormOpen(false)
     }
   }, [isEditing, setIsJobPostingFormOpen])
+
+  const handleStartEditingClick = (id, e: React.MouseEvent) => {
+    e.preventDefault()
+    startEditing(id)
+  }
 
   return (
     <>
@@ -130,7 +135,7 @@ export function EditableJobPostings({
                   <JobListingCard
                     key={jobListing.id}
                     jobListing={jobListing}
-                    onClick={() => startEditing(jobListing.id)}
+                    onClick={(e) => handleStartEditingClick(jobListing.id, e)}
                   />
                 </Columns.Column>
               ))}
@@ -191,7 +196,9 @@ const MIN_CHARS_COUNT = 200
 const validationSchema = Yup.object().shape({
   title: Yup.string().required('Please provide a job title'),
   location: Yup.string().required('Please provide a location'),
-  summary: Yup.string().required().min(MIN_CHARS_COUNT),
+  summary: Yup.string()
+    .required('Please provide job description')
+    .min(MIN_CHARS_COUNT),
   relatesToPositions: Yup.array().min(
     1,
     'Please select at least one related position'
@@ -310,13 +317,13 @@ function ModalForm({
             School.
           </Element>
           <FormInput
-            name={`title`}
+            name="title"
             placeholder="Junior Frontend Developer"
             label="Job Title*"
             {...formik}
           />
           <FormInput
-            name={`location`}
+            name="location"
             placeholder="Where is the position based"
             label="Location*"
             {...formik}
@@ -335,10 +342,9 @@ function ModalForm({
           >
             Remote working is possible for this job listing
           </Checkbox.Form>
-          <FormTextArea
+          <TextEditor
+            name="summary"
             label="Job Summary*"
-            name={`summary`}
-            rows={7}
             placeholder="Tell us a bit about the position, expectations & ideal candidate."
             minChar={MIN_CHARS_COUNT}
             formik={formik}
@@ -357,7 +363,7 @@ function ModalForm({
           </Element>
           <FormSelect
             label="Related positions*"
-            name={`relatesToPositions`}
+            name="relatesToPositions"
             items={formRelatedPositions}
             {...formik}
             multiselect
@@ -366,7 +372,7 @@ function ModalForm({
           />
           <FormSelect
             label="Ideal technical skills*"
-            name={`idealTechnicalSkills`}
+            name="idealTechnicalSkills"
             items={formTopSkills}
             {...formik}
             multiselect
@@ -375,12 +381,12 @@ function ModalForm({
           />
           <FormSelect
             label="Employment type*"
-            name={`employmentType`}
+            name="employmentType"
             items={formEmploymentType}
             {...formik}
           />
           <FormInput
-            name={`languageRequirements`}
+            name="languageRequirements"
             placeholder="German C1, English B2, French B1..."
             label="Language requirements*"
             {...formik}
@@ -388,7 +394,7 @@ function ModalForm({
           <FormInput
             label="Salary range"
             placeholder="€40K - €52K"
-            name={`salaryRange`}
+            name="salaryRange"
             {...formik}
           />
           <FormDatePicker

@@ -1,11 +1,9 @@
-import React from 'react'
 import { Form } from 'react-bulma-components'
 import DatePicker from 'react-datepicker'
 import { Icon } from '../atoms'
 
 import 'react-datepicker/dist/react-datepicker.css'
 import './FormDatePicker.scss'
-import { get } from 'lodash'
 
 interface PickerTriggerProps {
   value?: string

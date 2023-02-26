@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from 'react'
 import {
-  Snackbar,
-  Slide,
-  SnackbarContent,
-  makeStyles,
-  Theme,
   IconButton,
+  makeStyles,
+  Slide,
+  Snackbar,
+  SnackbarContent,
+  Theme,
 } from '@material-ui/core'
+import { amber, green } from '@material-ui/core/colors'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
+import CloseIcon from '@material-ui/icons/Close'
 import ErrorIcon from '@material-ui/icons/Error'
 import InfoIcon from '@material-ui/icons/Info'
 import WarningIcon from '@material-ui/icons/Warning'
-import CloseIcon from '@material-ui/icons/Close'
-import { amber, green } from '@material-ui/core/colors'
+import clsx from 'clsx'
+import { useEffect, useState } from 'react'
 import { Subject } from 'rxjs'
 import { Optional } from 'utility-types'
-import clsx from 'clsx'
 
 const subjectShowNotification = new Subject<SubjectShowNotification>()
 const subjectHideNotification = new Subject()

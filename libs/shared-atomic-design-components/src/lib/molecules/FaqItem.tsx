@@ -1,5 +1,5 @@
 import classnames from 'clsx'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Columns, Element } from 'react-bulma-components'
 import { Icon } from '../atoms'
 import './FaqItem.scss'

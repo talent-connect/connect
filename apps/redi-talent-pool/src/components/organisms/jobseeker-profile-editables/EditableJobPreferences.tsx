@@ -9,7 +9,7 @@ import {
   TpJobseekerProfile,
 } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Content, Element } from 'react-bulma-components'
 import { Subject } from 'rxjs'
@@ -147,10 +147,10 @@ function ModalForm({
     onSubmit,
     validateOnMount: true,
   })
-  useEffect(() => setIsFormDirty?.(formik.dirty), [
-    formik.dirty,
-    setIsFormDirty,
-  ])
+  useEffect(
+    () => setIsFormDirty?.(formik.dirty),
+    [formik.dirty, setIsFormDirty]
+  )
 
   const onDragEnd = useCallback(
     (result: any) => {

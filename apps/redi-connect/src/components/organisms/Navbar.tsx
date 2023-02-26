@@ -1,15 +1,15 @@
-import React, { useState } from 'react'
-import { isLoggedIn } from '../../services/auth/auth'
-import { logout } from '../../services/api/api'
-import { Section, Container, Element } from 'react-bulma-components'
-import classnames from 'classnames'
-import { useHistory } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import './Navbar.scss'
 import {
   Button,
   RediConnectLogo,
 } from '@talent-connect/shared-atomic-design-components'
+import classnames from 'classnames'
+import { useState } from 'react'
+import { Container, Element, Section } from 'react-bulma-components'
+import { useTranslation } from 'react-i18next'
+import { useHistory } from 'react-router-dom'
+import { logout } from '../../services/api/api'
+import { isLoggedIn } from '../../services/auth/auth'
+import './Navbar.scss'
 
 const LoggedOutNavItems = () => {
   const { t } = useTranslation()

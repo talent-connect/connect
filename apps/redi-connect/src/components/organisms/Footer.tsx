@@ -1,10 +1,10 @@
-import React from 'react'
-import { Element, Columns, Container, Section } from 'react-bulma-components'
-import { useTranslation } from 'react-i18next'
-import { ReactComponent as RediSchool } from '../../assets/images/redi-school-logo.svg'
-import { ReactComponent as Deloitte } from '../../assets/images/deloitte.svg'
-import './Footer.scss'
 import { SocialMediaIcons } from '@talent-connect/shared-atomic-design-components'
+import { Columns, Container, Element, Section } from 'react-bulma-components'
+import { useTranslation } from 'react-i18next'
+import DeloitteLogo from '../../assets/images/deloitte-logo.png'
+import JpmLogo from '../../assets/images/Jpm-logo.png'
+import { ReactComponent as RediSchool } from '../../assets/images/redi-school-logo.svg'
+import './Footer.scss'
 
 const RediFooter = () => {
   const year = new Date().getFullYear()
@@ -25,7 +25,7 @@ const RediFooter = () => {
       <Section>
         <Container>
           <Columns breakpoint="mobile">
-            <Columns.Column mobile={{ size: 12 }}>
+            <Columns.Column mobile={{ size: 12 }} tablet={{ size: 6 }}>
               <Element
                 renderAs="a"
                 href="https://www.redi-school.org"
@@ -34,15 +34,36 @@ const RediFooter = () => {
               >
                 <RediSchool />
               </Element>
-              <Element
-                renderAs="a"
-                href="https://www2.deloitte.com/"
-                target="_blank"
-                className="footer__logo"
-              >
-                <Deloitte />
-              </Element>
+              <Columns breakpoint="mobile">
+                <Columns.Column
+                  mobile={{ size: 12 }}
+                  size={6}
+                  tablet={{ size: 12 }}
+                >
+                  <Element renderAs="small" className="footer__supported">
+                    In collaboration with
+                  </Element>
+                  <Element
+                    renderAs="img"
+                    src={DeloitteLogo}
+                    alt="Supported by Deloitte"
+                    className="footer__logo oneandhalf-bs"
+                  ></Element>
+                </Columns.Column>
+                <Columns.Column mobile={{ size: 12 }} size={6}>
+                  <Element renderAs="small" className="footer__supported">
+                    In collaboration with
+                  </Element>
+                  <Element
+                    renderAs="img"
+                    src={JpmLogo}
+                    alt="Supported by J.P. Morgan"
+                    className="footer__logo oneandhalf-bs"
+                  ></Element>
+                </Columns.Column>
+              </Columns>
             </Columns.Column>
+
             <Columns.Column
               mobile={{ offset: null, size: 6 }}
               desktop={{ offset: 1 }}

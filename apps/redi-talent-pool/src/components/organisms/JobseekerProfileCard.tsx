@@ -5,26 +5,24 @@ import {
   desiredPositionsIdToLabelMap,
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
-import classnames from 'clsx'
 import React from 'react'
 import { Card, Element, Tag } from 'react-bulma-components'
-import './JobseekerProfileCard.scss'
+import { NavLink } from 'react-router-dom'
 import placeholderImage from '../../assets/img-placeholder.png'
+import './JobseekerProfileCard.scss'
 interface JobseekerProfileCardProps {
   jobseekerProfile: Partial<TpJobseekerProfile>
-  onClick?: () => void
+  linkTo?: string
   isFavorite?: boolean
   toggleFavorite?: (id: string) => void
 }
 
 export function JobseekerProfileCard({
   jobseekerProfile,
-  onClick,
+  linkTo,
   toggleFavorite,
   isFavorite,
 }: JobseekerProfileCardProps) {
-  // const history = useHistory()
-
   const fullName = `${jobseekerProfile?.firstName} ${jobseekerProfile?.lastName}`
   const desiredPositions =
     jobseekerProfile?.desiredPositions
@@ -33,7 +31,7 @@ export function JobseekerProfileCard({
   const topSkills = jobseekerProfile?.topSkills
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
-    e.stopPropagation()
+    e.preventDefault()
     toggleFavorite && toggleFavorite(jobseekerProfile.id)
   }
 
@@ -43,56 +41,53 @@ export function JobseekerProfileCard({
     : placeholderImage
 
   return (
-    <Card
-      className={classnames('jobseeker-profile-card', {
-        'jobseeker-profile-card--active': onClick,
-      })}
-      onClick={onClick}
-    >
-      <Card.Image
-        className="jobseeker-profile-card__image"
-        src={imgSrc}
-        alt={fullName}
-      />
-      <Card.Content>
-        {jobseekerProfile.isHired ? (
-          <Tag className="jobseeker-profile-card__hired-tag">HIRED!</Tag>
-        ) : null}
-        {toggleFavorite && (
-          <div
-            className="jobseeker-profile-card__favorite"
-            onClick={handleFavoriteClick}
+    <NavLink to={linkTo} className="jobseeker-profile-link">
+      <Card className="jobseeker-profile-card">
+        <Card.Image
+          className="jobseeker-profile-card__image"
+          src={imgSrc}
+          alt={fullName}
+        />
+        <Card.Content>
+          {jobseekerProfile.isHired ? (
+            <Tag className="jobseeker-profile-card__hired-tag">HIRED!</Tag>
+          ) : null}
+          {toggleFavorite && (
+            <div
+              className="jobseeker-profile-card__favorite"
+              onClick={handleFavoriteClick}
+            >
+              <Icon
+                icon={isFavorite ? 'heartFilled' : 'heart'}
+                className="jobseeker-profile-card__favorite__icon"
+              />
+            </div>
+          )}
+          <Element
+            key="name"
+            renderAs="h3"
+            textWeight="bold"
+            textSize={4}
+            className="jobseeker-profile-card__job-title"
           >
-            <Icon
-              icon={isFavorite ? 'heartFilled' : 'heart'}
-              className="jobseeker-profile-card__favorite__icon"
+            {fullName}
+          </Element>
+          <Element
+            className="content jobseeker-profile-card__company-name"
+            key="location"
+            renderAs="div"
+          >
+            {desiredPositions}
+          </Element>
+          {topSkills?.length > 0 ? (
+            <CardTags
+              items={topSkills}
+              shortList
+              formatter={(skill: string) => topSkillsIdToLabelMap[skill]}
             />
-          </div>
-        )}
-        <Element
-          key="name"
-          renderAs="h3"
-          textWeight="bold"
-          textSize={4}
-          className="jobseeker-profile-card__job-title"
-        >
-          {fullName}
-        </Element>
-        <Element
-          className="content jobseeker-profile-card__company-name"
-          key="location"
-          renderAs="div"
-        >
-          {desiredPositions}
-        </Element>
-        {topSkills?.length > 0 ? (
-          <CardTags
-            items={topSkills}
-            shortList
-            formatter={(skill: string) => topSkillsIdToLabelMap[skill]}
-          />
-        ) : null}
-      </Card.Content>
-    </Card>
+          ) : null}
+        </Card.Content>
+      </Card>
+    </NavLink>
   )
 }

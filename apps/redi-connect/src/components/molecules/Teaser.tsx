@@ -1,12 +1,9 @@
+import { UserType } from '@talent-connect/shared-types'
 import React from 'react'
-import { ReactComponent as WelcomeIllustration } from '../../assets/images/welcome-user.svg'
-import { ReactComponent as PaulinaSvg } from '../../assets/images/paulina.svg'
-import { ReactComponent as RedCircle } from '../../assets/images/red-circle.svg'
 import { Element } from 'react-bulma-components'
 import { Link } from 'react-router-dom'
+import { ReactComponent as WelcomeIllustration } from '../../assets/images/welcome-user.svg'
 import './Teaser.scss'
-import { UserType } from '@talent-connect/shared-types'
-import { useParams } from 'react-router'
 
 type RouteParams = {
   userType: UserType

@@ -14,6 +14,7 @@ import {
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
 import { COURSES, REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
+import { toPascalCaseAndTrim } from '@talent-connect/shared-utils'
 import {
   TpJobseekerProfile,
   TpCompanyProfile,
@@ -46,8 +47,14 @@ const howDidHearAboutRediOptionsEntries = Object.entries(
 
 function buildValidationSchema(signupType: SignUpPageType['type']) {
   const baseSchema = {
-    firstName: Yup.string().required('Your first name is required').max(255),
-    lastName: Yup.string().required('Your last name is required').max(255),
+    firstName: Yup.string()
+      .transform(toPascalCaseAndTrim)
+      .required('Your first name is required')
+      .max(255),
+    lastName: Yup.string()
+      .transform(toPascalCaseAndTrim)
+      .required('Your last name is required')
+      .max(255),
     contactEmail: Yup.string()
       .email('Please enter a valid email')
       .required('Your email is required')
@@ -147,7 +154,9 @@ export default function SignUp() {
 
     try {
       if (type === 'jobseeker') {
-        const profile = values as Partial<TpJobseekerProfile>
+        const transformedValues =
+          buildValidationSchema('jobseeker').cast(values)
+        const profile = transformedValues as Partial<TpJobseekerProfile>
         profile.isProfileVisibleToCompanies = true
 
         // TODO: this needs to be done in a smarter way, like iterating over the TpJobseekerProfile definition or something
@@ -167,7 +176,8 @@ export default function SignUp() {
         )
       }
       if (type === 'company') {
-        const profile = values as Partial<TpCompanyProfile>
+        const transformedValues = buildValidationSchema('company').cast(values)
+        const profile = transformedValues as Partial<TpCompanyProfile>
         profile.isProfileVisibleToJobseekers = true
 
         // TODO: this needs to be done in a smarter way, like iterating over the TpJobseekerProfile definition or something

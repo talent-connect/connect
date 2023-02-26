@@ -4,7 +4,9 @@ import {
   FormInput,
 } from '@talent-connect/shared-atomic-design-components'
 import { TpCompanyProfile } from '@talent-connect/shared-types'
+import { toPascalCaseAndTrim } from '@talent-connect/shared-utils'
 import { useFormik } from 'formik'
+import * as Yup from 'yup'
 import React, { useEffect, useMemo, useState } from 'react'
 import { Columns, Content, Element } from 'react-bulma-components'
 import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
@@ -70,7 +72,7 @@ export function EditableContact({ profile, disableEditing }: Props) {
             ) : null}
             {profile.contactEmail ? (
               <div>
-                <Caption>Email</Caption>
+                <Caption>E-mail</Caption>
                 <Content>
                   <p>{profile?.contactEmail}</p>
                 </Content>
@@ -100,6 +102,19 @@ EditableContact.isSectionFilled = (profile: Partial<TpCompanyProfile>) =>
 EditableContact.isSectionEmpty = (profile: Partial<TpCompanyProfile>) =>
   !EditableContact.isSectionFilled(profile)
 
+const validationSchema = Yup.object({
+  firstName: Yup.string()
+    .transform(toPascalCaseAndTrim)
+    .required('Your first name is required')
+    .max(255),
+  lastName: Yup.string()
+    .transform(toPascalCaseAndTrim)
+    .required('Your last name is required')
+    .max(255),
+  contactEmail: Yup.string().email().required().label('E-mail'),
+  phoneNumber: Yup.string().max(255).label('Phone Number'),
+})
+
 function ModalForm({
   setIsEditing,
   setIsFormDirty,
@@ -121,7 +136,8 @@ function ModalForm({
   )
   const onSubmit = (values: Partial<TpCompanyProfile>) => {
     formik.setSubmitting(true)
-    mutation.mutate(values, {
+    const transformedValues = validationSchema.cast(values)
+    mutation.mutate(transformedValues, {
       onSettled: () => {
         formik.setSubmitting(false)
       },
@@ -133,6 +149,7 @@ function ModalForm({
   const formik = useFormik({
     initialValues,
     enableReinitialize: true,
+    validationSchema,
     onSubmit,
   })
   useEffect(() => setIsFormDirty(formik.dirty), [formik.dirty, setIsFormDirty])
@@ -150,19 +167,19 @@ function ModalForm({
       <FormInput
         name="firstName"
         placeholder="Erika"
-        label="First name"
+        label="First name*"
         {...formik}
       />
       <FormInput
         name="lastName"
         placeholder="Mustermann"
-        label="Last name"
+        label="Last name*"
         {...formik}
       />
       <FormInput
         name="contactEmail"
         placeholder="your.name@company.com"
-        label="Email"
+        label="E-mail*"
         {...formik}
       />
       <FormInput

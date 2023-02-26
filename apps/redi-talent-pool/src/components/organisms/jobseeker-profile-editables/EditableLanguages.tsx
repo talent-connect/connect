@@ -15,17 +15,17 @@ import {
   languageProficiencyLevelsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
-import { Subject } from 'rxjs'
-import React, { useCallback, useState, useRef, useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Content, Element } from 'react-bulma-components'
+import { UseMutationResult, UseQueryResult } from 'react-query'
+import { Subject } from 'rxjs'
 import { v4 as uuidv4 } from 'uuid'
 import * as Yup from 'yup'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
-import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
+import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
-import { UseMutationResult, UseQueryResult } from 'react-query'
+import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
 function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
   const result = Array.from(list)
@@ -109,10 +109,19 @@ EditableLanguages.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
 const MAX_LANGUAGES = 6
 
 const validationSchema = Yup.object({
-  workingLanguages: Yup.array().min(1).max(6).of(Yup.object().shape({
-    language: Yup.string().required("Please select a language from the menu!"),
-    proficiencyLevelId: Yup.string().required("Please choose your level of proficiency!")
-  })),
+  workingLanguages: Yup.array()
+    .min(1)
+    .max(6)
+    .of(
+      Yup.object().shape({
+        language: Yup.string().required(
+          'Please select a language from the menu!'
+        ),
+        proficiencyLevelId: Yup.string().required(
+          'Please choose your level of proficiency!'
+        ),
+      })
+    ),
 })
 
 interface JobseekerFormSectionLanguagesProps {

@@ -1,7 +1,7 @@
-import { get } from 'lodash'
-import { Form, Content, Columns } from 'react-bulma-components'
 import classnames from 'classnames'
 import { useFormik } from 'formik'
+import { get } from 'lodash'
+import { Columns, Content, Form } from 'react-bulma-components'
 import './FormTextArea.scss'
 
 interface FormTextAreaProps {

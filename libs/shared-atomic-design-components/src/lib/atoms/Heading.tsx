@@ -1,5 +1,5 @@
-import React from 'react'
 import classnames from 'classnames'
+import React from 'react'
 import { Heading as BulmaHeading } from 'react-bulma-components'
 import './Heading.scss'
 

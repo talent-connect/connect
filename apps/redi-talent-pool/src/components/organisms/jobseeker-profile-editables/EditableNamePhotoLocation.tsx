@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState } from 'react'
 import { useFormik } from 'formik'
-import * as Yup from 'yup'
+import { useEffect, useMemo, useState } from 'react'
 import { Columns, Content, Element } from 'react-bulma-components'
+import * as Yup from 'yup'
 
 import {
   Button,
@@ -12,11 +12,8 @@ import {
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
 import { TpJobseekerProfile } from '@talent-connect/shared-types'
-import {
-  availabilityOptions,
-  desiredEmploymentTypeOptions,
-  germanFederalStates,
-} from '@talent-connect/talent-pool/config'
+import { toPascalCaseAndTrim } from '@talent-connect/shared-utils'
+import { germanFederalStates } from '@talent-connect/talent-pool/config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
 
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
@@ -114,8 +111,12 @@ EditableNamePhotoLocation.isSectionEmpty = (
 ) => !EditableNamePhotoLocation.isSectionFilled(profile)
 
 const validationSchema = Yup.object({
-  firstName: Yup.string().required('Your first name is required'),
-  lastName: Yup.string().required('Your last name is required'),
+  firstName: Yup.string()
+    .transform(toPascalCaseAndTrim)
+    .required('Your first name is required'),
+  lastName: Yup.string()
+    .transform(toPascalCaseAndTrim)
+    .required('Your last name is required'),
   location: Yup.string().required('Your location is required'),
   federalState: Yup.string().required('Please select the state you live in'),
 })
@@ -143,7 +144,8 @@ function ModalForm({
   )
   const onSubmit = (values: Partial<TpJobseekerProfile>) => {
     formik.setSubmitting(true)
-    mutation.mutate(values, {
+    const transformedValues = validationSchema.cast(values)
+    mutation.mutate(transformedValues, {
       onSettled: () => {
         formik.setSubmitting(false)
       },
@@ -227,12 +229,3 @@ function ModalForm({
     </>
   )
 }
-
-const formDesiredEmploymentType = desiredEmploymentTypeOptions.map(
-  ({ id, label }) => ({ value: id, label })
-)
-
-const formAvailabilityOptions = availabilityOptions.map(({ id, label }) => ({
-  value: id,
-  label,
-}))

@@ -1,10 +1,9 @@
-import React from 'react'
-import { Content } from 'react-bulma-components'
-import { RedProfile } from '@talent-connect/shared-types'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
 import { Caption } from '@talent-connect/shared-atomic-design-components'
 import { COURSES } from '@talent-connect/shared-config'
+import { RedProfile } from '@talent-connect/shared-types'
+import { Content } from 'react-bulma-components'
+import { connect } from 'react-redux'
+import { RootState } from '../../redux/types'
 
 interface Props {
   profile: RedProfile

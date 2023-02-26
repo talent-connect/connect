@@ -4,7 +4,6 @@ import {
   SVGImage,
   SVGImages,
 } from '@talent-connect/shared-atomic-design-components'
-import React from 'react'
 import { Container, Heading, Section } from 'react-bulma-components'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'

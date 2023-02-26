@@ -1,5 +1,5 @@
-import './EmptySectionPlaceholder.scss'
 import classnames from 'clsx'
+import './EmptySectionPlaceholder.scss'
 
 interface Props {
   height: 'extra-slim' | 'slim' | 'tall' | 'none'

@@ -1,14 +1,14 @@
-import React, { useState } from 'react'
-import { connect } from 'react-redux'
-import { useFormik } from 'formik'
-import { Content } from 'react-bulma-components'
 import {
-  FormTextArea,
   Button,
+  FormTextArea,
+  Modal,
 } from '@talent-connect/shared-atomic-design-components'
-import { Modal } from '@talent-connect/shared-atomic-design-components'
-import { matchesMarkAsComplete } from '../../redux/matches/actions'
 import { RedMatch } from '@talent-connect/shared-types'
+import { useFormik } from 'formik'
+import { useState } from 'react'
+import { Content } from 'react-bulma-components'
+import { connect } from 'react-redux'
+import { matchesMarkAsComplete } from '../../redux/matches/actions'
 
 interface CompleteMentorshipProps {
   match: RedMatch

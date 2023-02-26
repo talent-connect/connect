@@ -1,5 +1,3 @@
-import { useState } from 'react'
-import { useHistory } from 'react-router'
 import {
   ArrayParam,
   BooleanParam,
@@ -8,14 +6,15 @@ import {
   withDefault,
 } from 'use-query-params'
 
-import { Columns, Element, Tag } from 'react-bulma-components'
 import {
   Checkbox,
   FilterDropdown,
   Icon,
   SearchField,
 } from '@talent-connect/shared-atomic-design-components'
+import { Columns, Element, Tag } from 'react-bulma-components'
 
+import { LANGUAGES } from '@talent-connect/shared-config'
 import {
   desiredEmploymentTypeOptions,
   desiredEmploymentTypeOptionsIdToLabelMap,
@@ -27,8 +26,8 @@ import {
 } from '@talent-connect/talent-pool/config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
 
-import { LoggedIn } from '../../../components/templates'
 import { JobseekerProfileCard } from '../../../components/organisms/JobseekerProfileCard'
+import { LoggedIn } from '../../../components/templates'
 
 import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
@@ -44,6 +43,7 @@ const germanFederalStatesOptions = objectEntries(germanFederalStates).map(
 export function BrowseCompany() {
   const [query, setQuery] = useQueryParams({
     name: withDefault(StringParam, ''),
+    desiredLanguages: withDefault(ArrayParam, []),
     desiredPositions: withDefault(ArrayParam, []),
     employmentTypes: withDefault(ArrayParam, []),
     skills: withDefault(ArrayParam, []),
@@ -53,6 +53,7 @@ export function BrowseCompany() {
   })
   const {
     name,
+    desiredLanguages,
     desiredPositions,
     employmentTypes,
     skills,
@@ -61,16 +62,16 @@ export function BrowseCompany() {
     isJobFair2023Participant,
   } = query
 
-  const history = useHistory()
-
   const { data: jobseekerProfiles } = useBrowseTpJobseekerProfilesQuery({
     name,
+    desiredLanguages,
     desiredPositions,
     employmentTypes,
     skills,
     federalStates,
     isJobFair2023Participant,
   })
+
   const { data: companyProfile } = useTpCompanyProfileQuery()
   const tpCompanyProfileUpdateMutation = useTpCompanyProfileUpdateMutation()
 
@@ -110,6 +111,7 @@ export function BrowseCompany() {
   const clearFilters = () => {
     setQuery((latestQuery) => ({
       ...latestQuery,
+      desiredLanguages: [],
       skills: [],
       desiredPositions: [],
       employmentTypes: [],
@@ -119,6 +121,7 @@ export function BrowseCompany() {
   }
 
   const shouldShowFilters =
+    desiredLanguages.length !== 0 ||
     skills.length !== 0 ||
     desiredPositions.length !== 0 ||
     federalStates.length !== 0 ||
@@ -196,16 +199,16 @@ export function BrowseCompany() {
             }
           />
         </div>
-        <div
-          className="filters-inner filter-favourites"
-          onClick={toggleOnlyFavoritesFilter}
-        >
-          <Icon
-            icon={onlyFavorites ? 'heartFilled' : 'heart'}
-            className="filter-favourites__icon"
-            space="right"
+        <div className="filters-inner">
+          <FilterDropdown
+            items={desiredLanguagesOptions}
+            className="filters__dropdown"
+            label="Languages"
+            selected={desiredLanguages}
+            onChange={(item) =>
+              toggleFilters(desiredLanguages, 'desiredLanguages', item)
+            }
           />
-          Only Favorites
         </div>
       </div>
       <div className="filters">
@@ -218,6 +221,18 @@ export function BrowseCompany() {
             Attending ReDI Job Fair 2023
           </Checkbox>
         </div>
+        <div
+          className="filters-inner filter-favourites"
+          onClick={toggleOnlyFavoritesFilter}
+        >
+          <Icon
+            icon={onlyFavorites ? 'heartFilled' : 'heart'}
+            size="medium"
+            className="filter-favourites__icon"
+            space="right"
+          />
+          Only Favorites
+        </div>
       </div>
       <div className="active-filters">
         {shouldShowFilters && (
@@ -228,6 +243,16 @@ export function BrowseCompany() {
                 id={catId}
                 label={topSkillsIdToLabelMap[catId]}
                 onClickHandler={(item) => toggleFilters(skills, 'skills', item)}
+              />
+            ))}
+            {(desiredLanguages as string[]).map((id) => (
+              <FilterTag
+                key={id}
+                id={id}
+                label={id}
+                onClickHandler={(item) =>
+                  toggleFilters(desiredLanguages, 'desiredLanguages', item)
+                }
               />
             ))}
             {(desiredPositions as string[]).map((id) => (
@@ -292,9 +317,7 @@ export function BrowseCompany() {
               <JobseekerProfileCard
                 key={profile.id}
                 jobseekerProfile={profile}
-                onClick={() =>
-                  history.push(`/app/jobseeker-profile/${profile.id}`)
-                }
+                linkTo={`/app/jobseeker-profile/${profile.id}`}
                 toggleFavorite={handleFavoriteJobseeker}
                 isFavorite={isFavorite}
               />
@@ -317,6 +340,10 @@ const employmentTypesOptions = desiredEmploymentTypeOptions.map(
     label,
   })
 )
+const desiredLanguagesOptions = LANGUAGES.map((language) => ({
+  value: language,
+  label: language,
+}))
 
 interface FilterTagProps {
   id: string

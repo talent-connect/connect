@@ -1,19 +1,20 @@
-import React from 'react'
-import groupBy from 'lodash/groupBy'
-import { Columns, Heading, Element, Content } from 'react-bulma-components'
-import { Checkbox } from '@talent-connect/shared-atomic-design-components'
-import { Editable } from '@talent-connect/shared-atomic-design-components'
+import {
+  Checkbox,
+  Editable,
+} from '@talent-connect/shared-atomic-design-components'
 import { RedProfile } from '@talent-connect/shared-types'
+import groupBy from 'lodash/groupBy'
+import { Columns, Content, Element, Heading } from 'react-bulma-components'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
 
-import { profileSaveStart } from '../../redux/user/actions'
 import * as Yup from 'yup'
+import { profileSaveStart } from '../../redux/user/actions'
 
-import { FormikValues, useFormik } from 'formik'
 import { CATEGORIES, CATEGORY_GROUPS } from '@talent-connect/shared-config'
-import { ReadMentoringTopics } from '../molecules'
 import { objectEntries } from '@talent-connect/typescript-utilities'
+import { FormikValues, useFormik } from 'formik'
+import { ReadMentoringTopics } from '../molecules'
 
 export type UserType =
   | 'mentor'

@@ -1,9 +1,8 @@
-import React from 'react'
-import { Content } from 'react-bulma-components'
+import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import { RedProfile } from '@talent-connect/shared-types'
+import { Content } from 'react-bulma-components'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
-import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 
 interface Props {
   profile: RedProfile

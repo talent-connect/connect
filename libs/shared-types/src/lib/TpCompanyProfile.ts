@@ -31,4 +31,6 @@ export type TpCompanyProfile = {
   isProfileVisibleToJobseekers: boolean
 
   favouritedTpJobseekerIds: string[]
+
+  isJobFair2023Participant?: boolean
 }

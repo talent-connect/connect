@@ -2,8 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
 // import i18n (needs to be bundled ;))
-import './services/i18n/i18n'
 import './main.scss'
+import './services/i18n/i18n'
 // Needed for datepicker in <LogMentoringSessionDialog>
 
 // uncomment this to see wasted/unnecessary renders of your components
