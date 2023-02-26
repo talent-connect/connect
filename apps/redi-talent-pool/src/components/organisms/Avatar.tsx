@@ -1,10 +1,11 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useState, useRef } from 'react'
 import { FormikValues, useFormik } from 'formik'
 import classnames from 'classnames'
 import * as Yup from 'yup'
 import Cropper from 'react-easy-crop'
 import ReactS3Uploader from 'react-s3-uploader'
 import { Element } from 'react-bulma-components'
+import { CircularProgress, LinearProgress } from '@material-ui/core'
 
 import { Button, Modal } from '@talent-connect/shared-atomic-design-components'
 import {
@@ -20,6 +21,9 @@ import { getCroppedImg } from '@talent-connect/shared-utils'
 import placeholderImage from '../../assets/img-placeholder.png'
 import { ReactComponent as UploadImage } from '../../assets/uploadImage.svg'
 import './Avatar.scss'
+
+const MAX_FILE_SIZE = 1000000
+const CROPPER_CONTAINER_HEIGHT = 450
 
 interface AvatarProps {
   profile: Partial<TpJobseekerProfile> | Partial<TpCompanyProfile>
@@ -84,8 +88,12 @@ const AvatarEditable = ({
   const [imageSrc, setImageSrc] = useState(null)
   const [imageFileName, setImageFileName] = useState('')
 
+  const [isUploading, setIsUploading] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState(0)
+
   const [crop, setCrop] = useState({ x: 0, y: 0 })
   const [zoom, setZoom] = useState(1)
+  const [minZoom, setMinZoom] = useState(1)
 
   // This is how to keep functions in React state: https://stackoverflow.com/questions/55621212/is-it-possible-to-react-usestate-in-react
   const [nextFn, setNextFn] = useState(() => (croppedImgFile) => {
@@ -116,6 +124,12 @@ const AvatarEditable = ({
   }, [])
 
   const onUploadStart = async (file, next) => {
+    // Alert the user that the file is too big if the file size is more than 1MB
+    if (file.size > MAX_FILE_SIZE) {
+      alert('File Size Error: Please select a file smaller than 1MB')
+      return
+    }
+
     const imageDataUrl = await readFile(file)
 
     setImageSrc(imageDataUrl)
@@ -129,6 +143,8 @@ const AvatarEditable = ({
 
   const onSaveClick = useCallback(async () => {
     try {
+      setIsUploading(true)
+
       const croppedImage = (await getCroppedImg(
         imageSrc,
         croppedAreaPixels
@@ -145,7 +161,11 @@ const AvatarEditable = ({
     formik.setFieldValue('profileAvatarImageS3Key', result.fileKey)
     formik.handleSubmit()
 
+    setIsUploading(false)
     setShowCropperModal(false)
+    setMinZoom(1)
+    setZoom(1)
+    setUploadProgress(0)
   }
 
   return (
@@ -197,32 +217,56 @@ const AvatarEditable = ({
         uploadRequestHeaders={{ 'x-amz-acl': 'public-read' }}
         onError={(c: any) => console.log(c)}
         preprocess={onUploadStart}
+        onProgress={setUploadProgress}
         onFinish={onUploadFinish}
         contentDisposition="auto"
       />
 
       <Modal
-        styles={{
-          height: 600,
-        }}
         show={showCropperModal && imageSrc}
         stateFn={setShowCropperModal}
         title="Crop your profile picture"
       >
-        <Modal.Body>
+        <Modal.Body
+          style={{
+            padding: 0,
+            height: CROPPER_CONTAINER_HEIGHT,
+          }}
+        >
           <Cropper
+            style={{
+              containerStyle: {
+                position: 'relative',
+                height: '100%',
+              },
+            }}
             image={imageSrc}
             crop={crop}
             aspect={1 / 1}
             zoom={zoom}
+            minZoom={minZoom}
             showGrid={false}
             onCropChange={setCrop}
             onCropComplete={onCropComplete}
             onZoomChange={setZoom}
+            onMediaLoaded={(mediaSize) => {
+              if (mediaSize.naturalHeight < mediaSize.naturalWidth) {
+                setMinZoom(
+                  (mediaSize.naturalHeight / mediaSize.naturalWidth) * 0.9
+                )
+              } else {
+                setMinZoom(
+                  (mediaSize.naturalWidth / mediaSize.naturalHeight) * 0.9
+                )
+              }
+            }}
+            restrictPosition={false}
           />
         </Modal.Body>
         <Modal.Foot>
-          <Button onClick={onSaveClick}>Save</Button>
+          <Button onClick={onSaveClick} disabled={isUploading}>
+            {isUploading ? 'Uploading... ' + uploadProgress + '%' : 'Save'}
+          </Button>
         </Modal.Foot>
       </Modal>
     </div>
