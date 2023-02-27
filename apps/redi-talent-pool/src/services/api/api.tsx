@@ -3,8 +3,8 @@ import {
   AccessToken,
   RedUser,
   TpCompanyProfile,
-  TpJobseekerCv,
   TpJobListing,
+  TpJobseekerCv,
   TpJobseekerProfile,
 } from '@talent-connect/shared-types'
 import axios from 'axios'
@@ -333,7 +333,7 @@ export async function fetchAllTpJobListingsUsingFilters({
       ? { inq: idealTechnicalSkills }
       : undefined
 
-  const filterDesiredEmploymentTypeOptions =
+  const filterEmploymentTypeOptions =
     employmentType && employmentType.length !== 0
       ? { inq: employmentType }
       : undefined
@@ -352,7 +352,7 @@ export async function fetchAllTpJobListingsUsingFilters({
           {
             relatesToPositions: filterRelatedPositions,
             idealTechnicalSkills: filterIdealTechnicalSkills,
-            employmentType: filterDesiredEmploymentTypeOptions,
+            employmentType: filterEmploymentTypeOptions,
             federalState: filterFederalStates,
             isRemotePossible,
           },

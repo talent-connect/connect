@@ -4,8 +4,8 @@ import {
   ContactRecordProps,
   Language,
   LanguageProficiencyLevel,
-  TpDesiredEmploymentType,
   TpDesiredPosition,
+  TpEmploymentType,
   TpTechnicalSkill,
 } from '../common-objects'
 import {
@@ -62,7 +62,7 @@ export class TpJobseekerProfileMapper
     props.desiredEmploymentType =
       (jobseekerProfileRecord.Desired_Employment_Type__c?.split(
         ';'
-      ) as TpDesiredEmploymentType[]) ?? undefined
+      ) as TpEmploymentType[]) ?? undefined
     props.availability =
       jobseekerProfileRecord.Availability__c as TpAvailabilityOption
     props.ifAvailabilityIsDate_date =

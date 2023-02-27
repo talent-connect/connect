@@ -3,8 +3,8 @@ import { EntityProps } from '../base-interfaces-types-classes'
 import {
   Language,
   LanguageProficiencyLevel,
-  TpDesiredEmploymentType,
   TpDesiredPosition,
+  TpEmploymentType,
   TpTechnicalSkill,
 } from '../common-objects'
 import {
@@ -45,8 +45,8 @@ export class TpJobseekerProfileEntityProps implements EntityProps {
   profileAvatarImageS3Key?: string
   @Field((type) => [TpDesiredPosition])
   desiredPositions?: Array<TpDesiredPosition>
-  @Field((type) => [TpDesiredEmploymentType])
-  desiredEmploymentType?: Array<TpDesiredEmploymentType>
+  @Field((type) => [TpEmploymentType])
+  desiredEmploymentType?: Array<TpEmploymentType>
   @Field((type) => TpAvailabilityOption)
   availability?: TpAvailabilityOption
   ifAvailabilityIsDate_date?: Date

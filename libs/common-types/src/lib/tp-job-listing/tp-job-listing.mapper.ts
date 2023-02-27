@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import {
   Mapper,
-  TpDesiredEmploymentType,
   TpDesiredPosition,
+  TpEmploymentType,
   TpJobListingEntity,
   TpJobListingEntityProps,
   TpJobListingRecord,
@@ -28,8 +28,7 @@ export class TpJobListingMapper
     props.relatesToPositions =
       (raw.props.Relates_to_Positions__c?.split(';') as TpDesiredPosition[]) ??
       undefined
-    props.employmentType = raw.props
-      .Employment_Type__c as TpDesiredEmploymentType
+    props.employmentType = raw.props.Employment_Type__c as TpEmploymentType
     props.languageRequirements = raw.props.Language_Requirements__c
     props.salaryRange = raw.props.Salary_Range__c
     props.isRemotePossible = raw.props.Remote_Possible__c

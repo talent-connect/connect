@@ -254,10 +254,18 @@ enum FederalState {
   THUERINGEN
 }
 
+input FindAllVisibleTpJobListingsArgsFilter {
+  employmentTypes: [TpEmploymentType!]
+  federalStates: [FederalState!]
+  isRemotePossible: Boolean
+  relatesToPositions: [TpDesiredPosition!]
+  skills: [TpTechnicalSkill!]
+}
+
 input FindAllVisibleTpJobseekerProfilesArgsFilter {
   desiredLanguages: [Language!]
   desiredPositions: [TpDesiredPosition!]
-  employmentTypes: [TpDesiredEmploymentType!]
+  employmentTypes: [TpEmploymentType!]
   federalStates: [FederalState!]
   isJobFair2022Participant: Boolean
   isJobFair2023Participant: Boolean
@@ -564,6 +572,7 @@ type Query {
   tpCompanyProfile(id: ID): TpCompanyProfile!
   tpCompanyProfiles: [TpCompanyProfile!]!
   tpCurrentUserDataGet: TpCurrentUserData!
+  tpJobListings(filter: FindAllVisibleTpJobListingsArgsFilter!): [TpJobListing!]!
   tpJobseekerProfiles(filter: FindAllVisibleTpJobseekerProfilesArgsFilter!): [TpJobseekerProfile!]!
 }
 
@@ -684,19 +693,9 @@ enum TpCompanyRepresentativeRelationshipStatus {
 
 type TpCurrentUserData {
   companyRepresentativeRelationship: TpCompanyRepresentativeRelationship
+  jobListings: [TpJobListing!]
   jobseekerProfile: TpJobseekerProfile
   representedCompany: TpCompanyProfile
-}
-
-enum TpDesiredEmploymentType {
-  Internship
-  apprenticeshipAusbildung
-  dualStudyBachelor
-  dualStudyMaster
-  fullTime
-  partTime
-  traineeship
-  werkstudium
 }
 
 enum TpDesiredPosition {
@@ -757,13 +756,41 @@ enum TpEducationCertificationType {
   universityDegreeDiploma
 }
 
+enum TpEmploymentType {
+  Internship
+  apprenticeshipAusbildung
+  contract
+  dualStudyBachelor
+  dualStudyMaster
+  freelance
+  fullTime
+  partTime
+  traineeship
+  werkstudium
+}
+
+type TpJobListing {
+  createdAt: DateTime!
+  employmentType: TpEmploymentType
+  id: ID!
+  idealTechnicalSkills: [TpTechnicalSkill!]
+  isRemotePossible: Boolean
+  languageRequirements: String
+  location: String
+  relatesToPositions: [TpDesiredPosition!]
+  salaryRange: String
+  summary: String
+  title: String
+  updatedAt: DateTime!
+}
+
 type TpJobseekerProfile {
   aboutYourself: String
   availability: TpAvailabilityOption
   behanceUrl: String
   createdAt: DateTime!
   currentlyEnrolledInCourse: String
-  desiredEmploymentType: [TpDesiredEmploymentType!]
+  desiredEmploymentType: [TpEmploymentType!]
   desiredPositions: [TpDesiredPosition!]
   dribbbleUrl: String
   education: [EducationRecord!]

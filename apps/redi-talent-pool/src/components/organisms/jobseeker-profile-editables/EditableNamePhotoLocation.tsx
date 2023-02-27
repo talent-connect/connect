@@ -13,11 +13,7 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import { TpJobseekerProfile } from '@talent-connect/shared-types'
 import { toPascalCaseAndTrim } from '@talent-connect/shared-utils'
-import {
-  availabilityOptions,
-  desiredEmploymentTypeOptions,
-  germanFederalStates,
-} from '@talent-connect/talent-pool/config'
+import { germanFederalStates } from '@talent-connect/talent-pool/config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
 
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'

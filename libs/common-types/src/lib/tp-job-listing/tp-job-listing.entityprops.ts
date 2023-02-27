@@ -1,8 +1,8 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql'
 import { EntityProps } from '../base-interfaces-types-classes'
 import {
-  TpDesiredEmploymentType,
   TpDesiredPosition,
+  TpEmploymentType,
   TpTechnicalSkill,
 } from '../common-objects'
 
@@ -18,8 +18,8 @@ export class TpJobListingEntityProps implements EntityProps {
   idealTechnicalSkills?: TpTechnicalSkill[]
   @Field((type) => [TpDesiredPosition])
   relatesToPositions?: TpDesiredPosition[]
-  @Field((type) => TpDesiredEmploymentType)
-  employmentType?: TpDesiredEmploymentType
+  @Field((type) => TpEmploymentType)
+  employmentType?: TpEmploymentType
   languageRequirements?: string
   salaryRange?: string
   isRemotePossible?: boolean

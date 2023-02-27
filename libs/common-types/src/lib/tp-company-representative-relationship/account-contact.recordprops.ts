@@ -1,8 +1,7 @@
 import { plainToClass, Type } from 'class-transformer'
 import {
-  RecordProps,
-  PicklistValue,
   PicklistValuesSemicolonSeparated,
+  RecordProps,
 } from '../base-interfaces-types-classes'
 import { TpCompanyRepresentativeRelationshipStatus } from '../tp-company-representative-relationship/enums'
 

@@ -1,8 +1,8 @@
 import { ArgsType, Field, InputType } from '@nestjs/graphql'
 import {
   FederalState,
-  TpDesiredEmploymentType,
   TpDesiredPosition,
+  TpEmploymentType,
   TpTechnicalSkill,
 } from '@talent-connect/common-types'
 
@@ -19,8 +19,8 @@ class FindAllVisibleTpJobListingsArgsFilter {
   @Field((type) => [TpTechnicalSkill])
   skills?: TpTechnicalSkill[]
 
-  @Field((type) => [TpDesiredEmploymentType])
-  employmentTypes?: TpDesiredEmploymentType[]
+  @Field((type) => [TpEmploymentType])
+  employmentTypes?: TpEmploymentType[]
 
   @Field((type) => [FederalState])
   federalStates?: FederalState[]

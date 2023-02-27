@@ -628,19 +628,21 @@ export const yearsOfRelevantExperienceOptions: DropdownOptions = [
   { id: '20OrMore', label: '20 or more years' },
 ]
 
-export const desiredEmploymentTypeOptions = [
+export const employmentTypes = [
   { id: 'partTime', label: 'Part-time employment' },
   { id: 'fullTime', label: 'Full-time employment' },
   { id: 'werkstudium', label: 'Werkstudent*in (working student position)' },
   { id: 'Internship', label: 'Internship' },
   { id: 'apprenticeshipAusbildung', label: 'Apprenticeship (Ausbildung)' },
+  { id: 'freelance', label: 'Freelance' },
+  { id: 'contract', label: 'Contract' },
   { id: 'traineeship', label: 'Traineeship' },
   { id: 'dualStudyBachelor', label: 'Dual Study Bachelor' },
   { id: 'dualStudyMaster', label: 'Dual Study Master' },
 ]
 
-export const desiredEmploymentTypeOptionsIdToLabelMap = mapValues(
-  keyBy(desiredEmploymentTypeOptions, 'id'),
+export const employmentTypesIdToLabelMap = mapValues(
+  keyBy(employmentTypes, 'id'),
   'label'
 )
 
@@ -714,25 +716,6 @@ export const formMonthsOptions = Object.entries(formMonths).map(
     value,
     label,
   })
-)
-
-export const employmentTypes: DropdownOptions = [
-  { id: 'partTimeEmployment', label: 'Part-time employment' },
-  { id: 'fullTimeEmployment', label: 'Full-time employment' },
-  { id: 'werkstudium', label: 'Werkstudent*in (working student position)' },
-  { id: 'internship', label: 'Internship' },
-  { id: 'apprenticeship', label: 'Apprenticeship (Ausbildung)' },
-  { id: 'selfEmployed', label: 'Self-employed' },
-  { id: 'freelance', label: 'Freelance' },
-  { id: 'contract', label: 'Contract' },
-  { id: 'traineeship', label: 'Traineeship' },
-  { id: 'dualStudyBachelor', label: 'Dual Study Bachelor' },
-  { id: 'dualStudyMaster', label: 'Dual Study Master' },
-]
-
-export const employmentTypesIdToLabelMap = mapValues(
-  keyBy(employmentTypes, 'id'),
-  'label'
 )
 
 export const howDidHearAboutRediOptions = {

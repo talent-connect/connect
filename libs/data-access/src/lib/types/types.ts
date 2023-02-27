@@ -279,10 +279,18 @@ export enum FederalState {
   Thueringen = 'THUERINGEN'
 }
 
+export type FindAllVisibleTpJobListingsArgsFilter = {
+  employmentTypes?: InputMaybe<Array<TpEmploymentType>>;
+  federalStates?: InputMaybe<Array<FederalState>>;
+  isRemotePossible?: InputMaybe<Scalars['Boolean']>;
+  relatesToPositions?: InputMaybe<Array<TpDesiredPosition>>;
+  skills?: InputMaybe<Array<TpTechnicalSkill>>;
+};
+
 export type FindAllVisibleTpJobseekerProfilesArgsFilter = {
   desiredLanguages?: InputMaybe<Array<Language>>;
   desiredPositions?: InputMaybe<Array<TpDesiredPosition>>;
-  employmentTypes?: InputMaybe<Array<TpDesiredEmploymentType>>;
+  employmentTypes?: InputMaybe<Array<TpEmploymentType>>;
   federalStates?: InputMaybe<Array<FederalState>>;
   isJobFair2022Participant?: InputMaybe<Scalars['Boolean']>;
   isJobFair2023Participant?: InputMaybe<Scalars['Boolean']>;
@@ -659,6 +667,7 @@ export type Query = {
   tpCompanyProfile: TpCompanyProfile;
   tpCompanyProfiles: Array<TpCompanyProfile>;
   tpCurrentUserDataGet: TpCurrentUserData;
+  tpJobListings: Array<TpJobListing>;
   tpJobseekerProfiles: Array<TpJobseekerProfile>;
 };
 
@@ -686,6 +695,11 @@ export type QueryConProfilesAvailableMentorsArgs = {
 
 export type QueryTpCompanyProfileArgs = {
   id?: InputMaybe<Scalars['ID']>;
+};
+
+
+export type QueryTpJobListingsArgs = {
+  filter: FindAllVisibleTpJobListingsArgsFilter;
 };
 
 
@@ -814,20 +828,10 @@ export enum TpCompanyRepresentativeRelationshipStatus {
 export type TpCurrentUserData = {
   __typename?: 'TpCurrentUserData';
   companyRepresentativeRelationship?: Maybe<TpCompanyRepresentativeRelationship>;
+  jobListings?: Maybe<Array<TpJobListing>>;
   jobseekerProfile?: Maybe<TpJobseekerProfile>;
   representedCompany?: Maybe<TpCompanyProfile>;
 };
-
-export enum TpDesiredEmploymentType {
-  Internship = 'Internship',
-  ApprenticeshipAusbildung = 'apprenticeshipAusbildung',
-  DualStudyBachelor = 'dualStudyBachelor',
-  DualStudyMaster = 'dualStudyMaster',
-  FullTime = 'fullTime',
-  PartTime = 'partTime',
-  Traineeship = 'traineeship',
-  Werkstudium = 'werkstudium'
-}
 
 export enum TpDesiredPosition {
   AdministrativeAssistant = 'administrativeAssistant',
@@ -887,6 +891,35 @@ export enum TpEducationCertificationType {
   UniversityDegreeDiploma = 'universityDegreeDiploma'
 }
 
+export enum TpEmploymentType {
+  Internship = 'Internship',
+  ApprenticeshipAusbildung = 'apprenticeshipAusbildung',
+  Contract = 'contract',
+  DualStudyBachelor = 'dualStudyBachelor',
+  DualStudyMaster = 'dualStudyMaster',
+  Freelance = 'freelance',
+  FullTime = 'fullTime',
+  PartTime = 'partTime',
+  Traineeship = 'traineeship',
+  Werkstudium = 'werkstudium'
+}
+
+export type TpJobListing = {
+  __typename?: 'TpJobListing';
+  createdAt: Scalars['DateTime'];
+  employmentType?: Maybe<TpEmploymentType>;
+  id: Scalars['ID'];
+  idealTechnicalSkills?: Maybe<Array<TpTechnicalSkill>>;
+  isRemotePossible?: Maybe<Scalars['Boolean']>;
+  languageRequirements?: Maybe<Scalars['String']>;
+  location?: Maybe<Scalars['String']>;
+  relatesToPositions?: Maybe<Array<TpDesiredPosition>>;
+  salaryRange?: Maybe<Scalars['String']>;
+  summary?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  updatedAt: Scalars['DateTime'];
+};
+
 export type TpJobseekerProfile = {
   __typename?: 'TpJobseekerProfile';
   aboutYourself?: Maybe<Scalars['String']>;
@@ -894,7 +927,7 @@ export type TpJobseekerProfile = {
   behanceUrl?: Maybe<Scalars['String']>;
   createdAt: Scalars['DateTime'];
   currentlyEnrolledInCourse?: Maybe<Scalars['String']>;
-  desiredEmploymentType?: Maybe<Array<TpDesiredEmploymentType>>;
+  desiredEmploymentType?: Maybe<Array<TpEmploymentType>>;
   desiredPositions?: Maybe<Array<TpDesiredPosition>>;
   dribbbleUrl?: Maybe<Scalars['String']>;
   education?: Maybe<Array<EducationRecord>>;

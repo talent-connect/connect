@@ -16,10 +16,10 @@ import { Columns, Element, Tag } from 'react-bulma-components'
 
 import { LANGUAGES } from '@talent-connect/shared-config'
 import {
-  desiredEmploymentTypeOptions,
-  desiredEmploymentTypeOptionsIdToLabelMap,
   desiredPositions,
   desiredPositionsIdToLabelMap,
+  employmentTypes,
+  employmentTypesIdToLabelMap,
   germanFederalStates,
   topSkills,
   topSkillsIdToLabelMap,
@@ -269,7 +269,7 @@ export function BrowseCompany() {
               <FilterTag
                 key={id}
                 id={id}
-                label={desiredEmploymentTypeOptionsIdToLabelMap[id]}
+                label={employmentTypesIdToLabelMap[id]}
                 onClickHandler={(item) =>
                   toggleFilters(employmentTypes, 'employmentTypes', item)
                 }
@@ -334,12 +334,10 @@ const desiredPositionsOptions = desiredPositions.map(({ id, label }) => ({
   value: id,
   label,
 }))
-const employmentTypesOptions = desiredEmploymentTypeOptions.map(
-  ({ id, label }) => ({
-    value: id,
-    label,
-  })
-)
+const employmentTypesOptions = employmentTypes.map(({ id, label }) => ({
+  value: id,
+  label,
+}))
 const desiredLanguagesOptions = Object.entries(LANGUAGES).map(
   ([value, label]) => ({
     value,

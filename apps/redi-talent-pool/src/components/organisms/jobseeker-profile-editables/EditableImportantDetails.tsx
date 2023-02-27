@@ -19,8 +19,8 @@ import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
 import {
   availabilityOptions,
   availabilityOptionsIdToLabelMap,
-  desiredEmploymentTypeOptions,
-  desiredEmploymentTypeOptionsIdToLabelMap,
+  employmentTypes,
+  employmentTypesIdToLabelMap,
   immigrationStatusOptions,
   immigrationStatusOptionsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
@@ -85,7 +85,7 @@ export function EditableImportantDetails({
                 <Caption>Type of work</Caption>
                 <PipeList
                   items={profile.desiredEmploymentType.map(
-                    (x) => desiredEmploymentTypeOptionsIdToLabelMap[x]
+                    (x) => employmentTypesIdToLabelMap[x]
                   )}
                   overflowAllowed
                 />
@@ -308,7 +308,7 @@ export function JobseekerFormSectionImportantDetails({
           <FormSelect
             label="What kind of employment are you looking for?*"
             name="desiredEmploymentType"
-            items={formDesiredEmploymentType}
+            items={formEmploymentTypes}
             {...formik}
             multiselect
             placeholder="Select desired employment types"
@@ -364,9 +364,10 @@ const formAvailabilityOptions = availabilityOptions.map(({ id, label }) => ({
   label,
 }))
 
-const formDesiredEmploymentType = desiredEmploymentTypeOptions.map(
-  ({ id, label }) => ({ value: id, label })
-)
+const formEmploymentTypes = employmentTypes.map(({ id, label }) => ({
+  value: id,
+  label,
+}))
 
 const formImmigrationStatusOptions = immigrationStatusOptions.map(
   ({ id, label }) => ({

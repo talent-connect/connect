@@ -1,14 +1,16 @@
 import { registerEnumType } from '@nestjs/graphql'
 
-export enum TpDesiredEmploymentType {
+export enum TpEmploymentType {
   partTime = 'partTime',
   fullTime = 'fullTime',
   werkstudium = 'werkstudium',
   Internship = 'Internship',
   apprenticeshipAusbildung = 'apprenticeshipAusbildung',
+  freelance = 'contract',
+  contract = 'freelance',
   traineeship = 'traineeship',
   dualStudyBachelor = 'dualStudyBachelor',
   dualStudyMaster = 'dualStudyMaster',
 }
 
-registerEnumType(TpDesiredEmploymentType, { name: 'TpDesiredEmploymentType' })
+registerEnumType(TpEmploymentType, { name: 'TpEmploymentType' })
