@@ -81,9 +81,13 @@ export class TpCurrentUserDataResolver {
       representativeRelationship.status ===
       TpCompanyRepresentativeRelationshipStatus.APPROVED
     ) {
-      return this.jobListingsService.findAllBelongingToCompany(
-        companyProfile.id
-      )
+      const jobListings =
+        await this.jobListingsService.findAllBelongingToCompany(
+          companyProfile.id
+        )
+      const props = jobListings.map((jobListing) => jobListing.props)
+
+      return props
     }
   }
 }
