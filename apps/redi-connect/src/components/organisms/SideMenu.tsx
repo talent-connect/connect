@@ -1,12 +1,12 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
+import { useSelector } from 'react-redux'
+import { NavLink } from 'react-router-dom'
+import { ReactComponent as Applications } from '../../assets/images/applications.svg'
+import { ReactComponent as Mentorship } from '../../assets/images/mentorship.svg'
+import { ReactComponent as Profile } from '../../assets/images/profile.svg'
+import { RootState } from '../../redux/types'
 import { getRedProfileFromLocalStorage } from '../../services/auth/auth'
 import './SideMenu.scss'
-import { NavLink } from 'react-router-dom'
-import { ReactComponent as Mentorship } from '../../assets/images/mentorship.svg'
-import { ReactComponent as Applications } from '../../assets/images/applications.svg'
-import { ReactComponent as Profile } from '../../assets/images/profile.svg'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../redux/types'
 
 interface MenuItemProps {
   url: string

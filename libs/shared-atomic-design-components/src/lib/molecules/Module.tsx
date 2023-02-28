@@ -1,6 +1,6 @@
+import classnames from 'classnames'
 import React from 'react'
 import { Caption } from '../atoms'
-import classnames from 'classnames'
 import './Module.scss'
 
 interface Props {

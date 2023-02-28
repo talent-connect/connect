@@ -1,14 +1,13 @@
-import React from 'react'
-import { Content } from 'react-bulma-components'
-import { RedProfile } from '@talent-connect/shared-types'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
 import {
   Caption,
   Placeholder,
 } from '@talent-connect/shared-atomic-design-components'
 import { MENTEE_OCCUPATION_CATEGORY } from '@talent-connect/shared-config'
+import { RedProfile } from '@talent-connect/shared-types'
 import { objectEntries } from '@talent-connect/typescript-utilities'
+import { Content } from 'react-bulma-components'
+import { connect } from 'react-redux'
+import { RootState } from '../../redux/types'
 
 interface Props {
   profile: RedProfile
@@ -78,15 +77,11 @@ const ReadOccupation = ({ profile, shortInfo }: Props) => {
               </>
             )}
             {mentee_occupationCategoryId === 'lookingForJob' && (
-              <>
-                <p>{mentee_occupationLookingForJob_what}</p>
-              </>
+              <p>{mentee_occupationLookingForJob_what}</p>
             )}
 
             {mentee_occupationCategoryId === 'other' && (
-              <>
-                <p>{mentee_occupationOther_description}</p>
-              </>
+              <p>{mentee_occupationOther_description}</p>
             )}
           </>
         )}

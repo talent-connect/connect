@@ -1,8 +1,7 @@
-import React from 'react'
-import Select, { components } from 'react-select'
-import { Form } from 'react-bulma-components'
-import { Icon } from '../atoms'
 import { get } from 'lodash'
+import { Form } from 'react-bulma-components'
+import Select, { components } from 'react-select'
+import { Icon } from '../atoms'
 import { formSelectStyles } from './FormSelect.styles'
 
 export const DropdownIndicator = (props: any) => (

@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState } from 'react'
 import { useFormik } from 'formik'
-import * as Yup from 'yup'
+import { useEffect, useMemo, useState } from 'react'
 import { Columns, Content, Element } from 'react-bulma-components'
+import * as Yup from 'yup'
 
 import {
   Button,
@@ -13,11 +13,7 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import { TpJobseekerProfile } from '@talent-connect/shared-types'
 import { toPascalCaseAndTrim } from '@talent-connect/shared-utils'
-import {
-  availabilityOptions,
-  desiredEmploymentTypeOptions,
-  germanFederalStates,
-} from '@talent-connect/talent-pool/config'
+import { germanFederalStates } from '@talent-connect/talent-pool/config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
 
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
@@ -233,12 +229,3 @@ function ModalForm({
     </>
   )
 }
-
-const formDesiredEmploymentType = desiredEmploymentTypeOptions.map(
-  ({ id, label }) => ({ value: id, label })
-)
-
-const formAvailabilityOptions = availabilityOptions.map(({ id, label }) => ({
-  value: id,
-  label,
-}))

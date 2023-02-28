@@ -1,7 +1,6 @@
-import React from 'react'
 import classnames from 'classnames'
-import { Form } from 'react-bulma-components'
 import { get } from 'lodash'
+import { Form } from 'react-bulma-components'
 
 interface Props {
   name: string

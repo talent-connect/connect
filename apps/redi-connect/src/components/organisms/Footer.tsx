@@ -1,10 +1,9 @@
-import React from 'react'
-import { Element, Columns, Container, Section } from 'react-bulma-components'
-import { useTranslation } from 'react-i18next'
-import { ReactComponent as RediSchool } from '../../assets/images/redi-school-logo.svg'
 import { SocialMediaIcons } from '@talent-connect/shared-atomic-design-components'
-import JpmLogo from '../../assets/images/Jpm-logo.png'
+import { Columns, Container, Element, Section } from 'react-bulma-components'
+import { useTranslation } from 'react-i18next'
 import DeloitteLogo from '../../assets/images/deloitte-logo.png'
+import JpmLogo from '../../assets/images/Jpm-logo.png'
+import { ReactComponent as RediSchool } from '../../assets/images/redi-school-logo.svg'
 import './Footer.scss'
 
 const RediFooter = () => {

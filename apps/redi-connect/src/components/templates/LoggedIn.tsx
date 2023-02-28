@@ -1,29 +1,29 @@
-import React, { ReactNode, useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
 import {
   Button,
   Icon,
   Loader,
+  Modal,
 } from '@talent-connect/shared-atomic-design-components'
-import { Modal } from '@talent-connect/shared-atomic-design-components'
-import { Navbar, SideMenu } from '../organisms'
+import { RedMatch } from '@talent-connect/shared-types'
+import React, { ReactNode, useEffect } from 'react'
 import {
-  Container,
-  Section,
   Columns,
+  Container,
   Content,
   Notification,
+  Section,
 } from 'react-bulma-components'
-import { getRedProfileFromLocalStorage } from '../../services/auth/auth'
+import { useTranslation } from 'react-i18next'
+import { connect } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import {
   matchesFetchStart,
   matchesMarkAsDismissed,
 } from '../../redux/matches/actions'
-import { useTranslation } from 'react-i18next'
+import { RootState } from '../../redux/types'
+import { getRedProfileFromLocalStorage } from '../../services/auth/auth'
+import { Navbar, SideMenu } from '../organisms'
 import Footer from '../organisms/Footer'
-import { RedMatch } from '@talent-connect/shared-types'
 
 interface Props {
   loading: boolean

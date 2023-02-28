@@ -1,9 +1,8 @@
-import React from 'react'
+import { ReactComponent as HelloMobile } from '../../assets/images/hello-mobile.svg'
+import { ReactComponent as Hello } from '../../assets/images/hello.svg'
 import { ReactComponent as HeroMentee } from '../../assets/images/hero-mentee.svg'
 import { ReactComponent as HeroMentor } from '../../assets/images/hero-mentor.svg'
 import { ReactComponent as Hero } from '../../assets/images/hero.svg'
-import { ReactComponent as Hello } from '../../assets/images/hello.svg'
-import { ReactComponent as HelloMobile } from '../../assets/images/hello-mobile.svg'
 import { ReactComponent as Mentee } from '../../assets/images/mentee.svg'
 import { ReactComponent as Mentor } from '../../assets/images/mentor.svg'
 

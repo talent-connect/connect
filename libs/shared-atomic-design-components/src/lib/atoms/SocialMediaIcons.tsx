@@ -1,4 +1,3 @@
-import React from 'react'
 import Icon, { IconProps } from '../atoms/Icon'
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { envRediLocation } from '../../../../../apps/redi-connect/src/utils/env-redi-location'

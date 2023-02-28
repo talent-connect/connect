@@ -1,8 +1,4 @@
-import {
-  Button,
-  Caption,
-  Icon,
-} from '@talent-connect/shared-atomic-design-components'
+import { Caption, Icon } from '@talent-connect/shared-atomic-design-components'
 import classnames from 'clsx'
 import React, { useEffect, useState } from 'react'
 import { Columns, Element } from 'react-bulma-components'

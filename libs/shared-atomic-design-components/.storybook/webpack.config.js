@@ -1,4 +1,3 @@
-const path = require('path')
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 const rootWebpackConfig = require('../../../.storybook/webpack.config')
 /**
@@ -25,9 +24,8 @@ module.exports = async ({ config, mode }) => {
 
     return test.toString().startsWith('/\\.(svg|ico')
   })
-  config.module.rules[
-    svgRuleIndex
-  ].test = /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|cur|ani|pdf)(\?.*)?$/
+  config.module.rules[svgRuleIndex].test =
+    /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|cur|ani|pdf)(\?.*)?$/
 
   config.module.rules.push(
     {

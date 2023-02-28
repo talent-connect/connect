@@ -1,9 +1,9 @@
 import classnames from 'clsx'
 import React, { useEffect, useState } from 'react'
 import { Columns, Element } from 'react-bulma-components'
+import { Subject } from 'rxjs'
 import { Icon } from '../atoms'
 import './FormDraggableAccordion.scss'
-import { Subject } from 'rxjs'
 
 import { ReactComponent as AccordionHandleIcon } from '../../assets/images/accordion-handle.svg'
 

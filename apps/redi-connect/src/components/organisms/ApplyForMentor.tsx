@@ -1,21 +1,21 @@
 import {
-  Caption,
-  FormTextArea,
-  Checkbox,
   Button,
+  Caption,
+  Checkbox,
+  FormTextArea,
+  Modal,
 } from '@talent-connect/shared-atomic-design-components'
-import { Modal } from '@talent-connect/shared-atomic-design-components'
-import { Content, Form } from 'react-bulma-components'
 import { FormSubmitResult, RedProfile } from '@talent-connect/shared-types'
+import { Content, Form } from 'react-bulma-components'
 
 import { FormikHelpers as FormikActions, useFormik } from 'formik'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import * as Yup from 'yup'
 import { requestMentorship } from '../../services/api/api'
 
-import { RootState } from '../../redux/types'
 import { connect } from 'react-redux'
 import { profilesFetchOneStart } from '../../redux/profiles/actions'
+import { RootState } from '../../redux/types'
 
 interface ConnectionRequestFormValues {
   applicationText: string

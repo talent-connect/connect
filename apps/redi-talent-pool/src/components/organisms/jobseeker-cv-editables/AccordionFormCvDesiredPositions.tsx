@@ -1,4 +1,3 @@
-import React from 'react'
 import { Subject } from 'rxjs'
 import { useTpjobseekerCvUpdateMutation } from '../../../react-query/use-tpjobseekercv-mutation'
 import { useTpJobseekerCvByIdQuery } from '../../../react-query/use-tpjobseekercv-query'

@@ -1,7 +1,7 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
-import { Card, Element, Tag } from 'react-bulma-components'
 import { Icon, PipeList } from '@talent-connect/shared-atomic-design-components'
+import React from 'react'
+import { Card, Element } from 'react-bulma-components'
+import { NavLink } from 'react-router-dom'
 
 import {
   AWS_PROFILE_AVATARS_BUCKET_BASE_URL,
@@ -27,7 +27,6 @@ const ProfileCard = ({
   toggleFavorite,
   isFavorite,
 }: ProfileCardProps) => {
-
   const {
     firstName,
     lastName,
@@ -82,7 +81,6 @@ const ProfileCard = ({
         </Card.Content>
       </Card>
     </NavLink>
-    
   )
 }
 

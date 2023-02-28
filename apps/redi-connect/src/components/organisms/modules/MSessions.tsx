@@ -1,25 +1,25 @@
-import React, { useState } from 'react'
-import { connect } from 'react-redux'
-import _uniqueId from 'lodash/uniqueId'
-import * as Yup from 'yup'
-import moment from 'moment'
 import {
   Button,
-  Icon,
-  FormSelect,
   FormDatePicker,
+  FormSelect,
+  Icon,
+  Modal,
+  Module,
 } from '@talent-connect/shared-atomic-design-components'
-import { Module, Modal } from '@talent-connect/shared-atomic-design-components'
-import { Content, Element } from 'react-bulma-components'
-import {
-  RedMentoringSession,
-  FormSubmitResult,
-} from '@talent-connect/shared-types'
-import { useFormik, FormikHelpers } from 'formik'
 import {
   MentoringSessionDurationOption,
   MENTORING_SESSION_DURATION_OPTIONS,
 } from '@talent-connect/shared-config'
+import {
+  FormSubmitResult,
+  RedMentoringSession,
+} from '@talent-connect/shared-types'
+import { FormikHelpers, useFormik } from 'formik'
+import moment from 'moment'
+import { useState } from 'react'
+import { Content, Element } from 'react-bulma-components'
+import { connect } from 'react-redux'
+import * as Yup from 'yup'
 import { mentoringSessionsCreateStart } from '../../../redux/mentoringSessions/actions'
 import './MSessions.scss'
 
