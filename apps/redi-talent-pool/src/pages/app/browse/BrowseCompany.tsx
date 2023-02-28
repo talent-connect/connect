@@ -1,5 +1,3 @@
-import { useState } from 'react'
-import { useHistory } from 'react-router'
 import {
   ArrayParam,
   BooleanParam,
@@ -63,8 +61,6 @@ export function BrowseCompany() {
     onlyFavorites,
     isJobFair2023Participant,
   } = query
-
-  const history = useHistory()
 
   const { data: jobseekerProfiles } = useBrowseTpJobseekerProfilesQuery({
     name,
@@ -321,9 +317,7 @@ export function BrowseCompany() {
               <JobseekerProfileCard
                 key={profile.id}
                 jobseekerProfile={profile}
-                onClick={() =>
-                  history.push(`/app/jobseeker-profile/${profile.id}`)
-                }
+                linkTo={`/app/jobseeker-profile/${profile.id}`}
                 toggleFavorite={handleFavoriteJobseeker}
                 isFavorite={isFavorite}
               />

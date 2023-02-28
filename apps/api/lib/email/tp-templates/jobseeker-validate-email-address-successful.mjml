@@ -14,7 +14,9 @@
             >your email address was successfully verified.</mj-text
           >
           <mj-text mj-class="text paragraph"
-            >Now, it's time to log into Talent Pool and work on your profile.
+            >Now, it's time to log into <a href="https://talent-pool.redi-school.org/front/login" 
+               class="text-link"
+               >Talent Pool</a> and work on your profile.
             Once it's complete, you will be able to send it to me for review.
           </mj-text>
           <mj-text mj-class="text paragraph"

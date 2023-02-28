@@ -1,5 +1,5 @@
 import React from 'react'
-import classnames from 'clsx'
+import { NavLink } from 'react-router-dom'
 import { Card, Element } from 'react-bulma-components'
 
 import { CardTags, Icon } from '@talent-connect/shared-atomic-design-components'
@@ -11,19 +11,19 @@ import './JobListingCard.scss'
 
 interface JobListingCardProps {
   jobListing: Partial<TpJobListing>
-  onClick?: () => void
   isFavorite?: boolean
   toggleFavorite?: (id: string) => void
+  linkTo?: string
+  onClick?: (e: React.MouseEvent) => void
 }
 
 export function JobListingCard({
   jobListing,
-  onClick,
   toggleFavorite,
   isFavorite,
+  linkTo = '#',
+  onClick,
 }: JobListingCardProps) {
-  // const history = useHistory()
-
   const jobTitle = jobListing?.title
   const idealTechnicalSkills = jobListing?.idealTechnicalSkills
 
@@ -32,7 +32,7 @@ export function JobListingCard({
     jobListing?.tpCompanyProfile?.profileAvatarImageS3Key
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
-    e.stopPropagation()
+    e.preventDefault()
     toggleFavorite && toggleFavorite(jobListing.id)
   }
 
@@ -41,53 +41,50 @@ export function JobListingCard({
     : null
 
   return (
-    <Card
-      className={classnames('job-posting-card', {
-        'job-posting-card--active': onClick,
-      })}
-      onClick={onClick}
-    >
-      <Card.Image
-        className="job-posting-card__image"
-        src={imgSrc}
-        alt={jobTitle}
-      />
-      <Card.Content>
-        {toggleFavorite && (
-          <div
-            className="job-posting-card__favorite"
-            onClick={handleFavoriteClick}
+    <NavLink to={linkTo} onClick={onClick} className="job-posting-link">
+      <Card className="job-posting-card">
+        <Card.Image
+          className="job-posting-card__image"
+          src={imgSrc}
+          alt={jobTitle}
+        />
+        <Card.Content>
+          {toggleFavorite && (
+            <div
+              className="job-posting-card__favorite"
+              onClick={handleFavoriteClick}
+            >
+              <Icon
+                icon={isFavorite ? 'heartFilled' : 'heart'}
+                className="job-posting-card__favorite__icon"
+              />
+            </div>
+          )}
+          <Element
+            key="name"
+            renderAs="h3"
+            textWeight="bold"
+            textSize={4}
+            className="job-posting-card__job-title"
           >
-            <Icon
-              icon={isFavorite ? 'heartFilled' : 'heart'}
-              className="job-posting-card__favorite__icon"
+            {jobTitle}
+          </Element>
+          <Element
+            className="content job-posting-card__company-name"
+            key="location"
+            renderAs="div"
+          >
+            {companyName}
+          </Element>
+          {idealTechnicalSkills?.length > 0 ? (
+            <CardTags
+              items={idealTechnicalSkills}
+              shortList
+              formatter={(skill: string) => topSkillsIdToLabelMap[skill]}
             />
-          </div>
-        )}
-        <Element
-          key="name"
-          renderAs="h3"
-          textWeight="bold"
-          textSize={4}
-          className="job-posting-card__job-title"
-        >
-          {jobTitle}
-        </Element>
-        <Element
-          className="content job-posting-card__company-name"
-          key="location"
-          renderAs="div"
-        >
-          {companyName}
-        </Element>
-        {idealTechnicalSkills?.length > 0 ? (
-          <CardTags
-            items={idealTechnicalSkills}
-            shortList
-            formatter={(skill: string) => topSkillsIdToLabelMap[skill]}
-          />
-        ) : null}
-      </Card.Content>
-    </Card>
+          ) : null}
+        </Card.Content>
+      </Card>
+    </NavLink>
   )
 }

@@ -1,6 +1,7 @@
 import { Button } from '@talent-connect/shared-atomic-design-components'
 import { UserType } from '@talent-connect/shared-types'
 import { Columns, Content, Form } from 'react-bulma-components'
+import TpTeaser from '../../../components/molecules/TpTeaser'
 import { useHistory, useParams } from 'react-router'
 import AccountOperation from '../../../components/templates/AccountOperation'
 
@@ -18,7 +19,7 @@ export default function SignUpComplete() {
         <Columns.Column
           size={5}
           responsive={{ mobile: { hide: { value: true } } }}
-        ></Columns.Column>
+        ><TpTeaser.IllustrationOnly /></Columns.Column>
         <Columns.Column size={5} offset={2}>
           <Content size="large" renderAs="div">
             <p>Your email address was successfully verified!</p>
