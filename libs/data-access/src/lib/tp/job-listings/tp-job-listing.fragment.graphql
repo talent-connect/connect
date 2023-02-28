@@ -1,0 +1,14 @@
+fragment AllTpJobListingFields on TpJobListing {
+  createdAt
+  title
+  updatedAt
+  employmentType
+  id
+  idealTechnicalSkills
+  isRemotePossible
+  languageRequirements
+  location
+  relatesToPositions
+  salaryRange
+  summary
+}

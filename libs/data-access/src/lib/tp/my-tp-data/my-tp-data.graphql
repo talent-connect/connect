@@ -9,5 +9,8 @@ query myTpData {
     jobseekerProfile {
       ...AllTpJobseekerProfileFields
     }
+    jobListings {
+      ...AllTpJobListingFields
+    }
   }
 }

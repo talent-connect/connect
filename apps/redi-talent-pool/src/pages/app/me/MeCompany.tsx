@@ -1,6 +1,7 @@
 import { Tooltip } from '@material-ui/core'
 import {
   CompanyTalentPoolState,
+  MyTpDataQuery,
   useMyTpDataQuery,
 } from '@talent-connect/data-access'
 import {
@@ -8,10 +9,7 @@ import {
   Checkbox,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
-import {
-  TpCompanyProfile,
-  TpCompanyProfileState,
-} from '@talent-connect/shared-types'
+import { AllTpCompanyProfileFieldsFragment } from 'libs/data-access/src/lib/tp/company-profiles/tp-company-profile.fragment.generated'
 import { useState } from 'react'
 import { Columns, Content, Notification } from 'react-bulma-components'
 import { EditableAbout } from '../../../components/organisms/company-profile-editables/EditableAbout'
@@ -127,7 +125,9 @@ export function MeCompany() {
   )
 }
 
-function isProfileComplete(profile: Partial<TpCompanyProfile>): boolean {
+function isProfileComplete(
+  profile: MyTpDataQuery['tpCurrentUserDataGet']['representedCompany']
+): boolean {
   const requiredSectionsComplete = [
     EditableNamePhotoLocation.isSectionFilled,
     EditableNamePhotoLocation.isPhotoSelected,
@@ -144,12 +144,15 @@ function SendProfileForReviewButton() {
   const isBusy = useIsBusy()
   const myData = useMyTpDataQuery()
 
+  const profile = myData.data?.tpCurrentUserDataGet?.representedCompany
+  const jobListings = myData.data?.tpCurrentUserDataGet
+
   // const { data: profile } = useTpCompanyProfileQuery()
-  const { data: jobListings } = useTpJobListingAllQuery()
+  // const { data: jobListings } = useTpJobListingAllQuery()
   const mutation = useTpCompanyProfileUpdateMutation()
 
   const enabled =
-    profile?.state === 'drafting-profile' &&
+    profile?.state === CompanyTalentPoolState.DraftingProfile &&
     isProfileComplete(profile) &&
     jobListings?.length > 0
 
@@ -188,13 +191,13 @@ function SendProfileForReviewButton() {
 const CallToActionButton = ({
   profile,
 }: {
-  profile: Pick<TpCompanyProfile, 'state'>
+  profile: Pick<AllTpCompanyProfileFieldsFragment, 'state'>
 }) =>
   profile &&
   profile.state &&
   [
-    TpCompanyProfileState['drafting-profile'],
-    TpCompanyProfileState['submitted-for-review'],
+    CompanyTalentPoolState.DraftingProfile,
+    CompanyTalentPoolState.SubmittedForReview,
   ].includes(profile.state as any) ? (
     <SendProfileForReviewButton />
   ) : null
