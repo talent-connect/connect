@@ -222,10 +222,14 @@ export async function updateCurrentUserTpJobseekerProfile(
 
 export async function fetchAllCurrentUserTpJobseekerCv(): Promise<
   Array<Partial<TpJobseekerCv>>
-> {
+  > {
   const userId = getAccessTokenFromLocalStorage().userId
-  const resp = await http(`${API_URL}/redUsers/${userId}/tpJobseekerCv`)
-  return resp.data
+  return http(
+    `${API_URL}/redUsers/${userId}/tpJobseekerCv?filter=${JSON.stringify({
+      order: 'createdAt DESC',
+      limit: 0,
+    })}`)
+    .then((resp) => resp.data)
 }
 
 export async function fetchCurrentUserTpJobseekerCvById(
