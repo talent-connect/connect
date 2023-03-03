@@ -1,4 +1,5 @@
 import { Record, RecordMetadata } from '../base-interfaces-types-classes'
+import { ContactRecord } from '../common-objects'
 import { AccountContactRecordProps } from './account-contact.recordprops'
 
 export class AccountContactRecord extends Record<AccountContactRecordProps> {
@@ -23,6 +24,9 @@ export class AccountContactRecord extends Record<AccountContactRecordProps> {
       'ContactId',
       'Roles',
       'ReDI_Company_Representative_Status__c',
+      ...ContactRecord.metadata.SALESFORCE_OBJECT_FIELDS.map(
+        (field) => `Contact.${field}`
+      ),
     ],
   }
 }

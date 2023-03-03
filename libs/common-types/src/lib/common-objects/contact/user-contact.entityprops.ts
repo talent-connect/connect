@@ -3,8 +3,8 @@ import { EntityProps } from '../../base-interfaces-types-classes'
 import { FirstPointOfTpContactOption } from './enums'
 import { Gender } from './enums/gender.enum'
 
-@ObjectType('Contact')
-export class UserEntityProps implements EntityProps {
+@ObjectType('UserContact')
+export class UserContactEntityProps implements EntityProps {
   @Field((type) => ID)
   id: string
   email: string

@@ -11,4 +11,5 @@ fragment AllTpJobListingFields on TpJobListing {
   relatesToPositions
   salaryRange
   summary
+  companyProfileId
 }

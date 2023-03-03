@@ -12,5 +12,8 @@ query myTpData {
     jobListings {
       ...AllTpJobListingFields
     }
+    userContact {
+      ...AllUserContactFields
+    }
   }
 }

@@ -14,6 +14,8 @@ export class TpJobListingRecordProps implements RecordProps {
   Salary_Range__c?: string
   Remote_Possible__c: boolean
 
+  Account__c: string
+
   @Type(() => Date)
   CreatedDate: Date
   @Type(() => Date)

@@ -5,23 +5,24 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import { TpCompanyProfile } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
-import React, { useEffect, useMemo, useState } from 'react'
-import { Columns, Content, Element } from 'react-bulma-components'
+import { useEffect, useMemo, useState } from 'react'
+import { Content, Element } from 'react-bulma-components'
 import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
+import { EditableDetailsCompanyProfilePropFragment } from './EditableDetails.generated'
 
 interface Props {
-  profile: Partial<TpCompanyProfile>
+  companyProfile: EditableDetailsCompanyProfilePropFragment
   disableEditing?: boolean
 }
 
-export function EditableDetails({ profile, disableEditing }: Props) {
+export function EditableDetails({ companyProfile, disableEditing }: Props) {
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
-  const isEmpty = EditableDetails.isSectionEmpty(profile)
+  const isEmpty = EditableDetails.isSectionEmpty(companyProfile)
 
   if (disableEditing && isEmpty) return null
 
@@ -51,20 +52,20 @@ export function EditableDetails({ profile, disableEditing }: Props) {
                 gridRowGap: '32px',
               }}
             >
-              {profile?.industry ? (
+              {companyProfile?.industry ? (
                 <div>
                   <Caption>Industry</Caption>
                   <Content>
-                    <p>{profile.industry}</p>
+                    <p>{companyProfile.industry}</p>
                   </Content>
                 </div>
               ) : null}
 
-              {profile?.website || profile?.linkedInUrl ? (
+              {companyProfile?.website || companyProfile?.linkedInUrl ? (
                 <div>
                   <Caption>Links</Caption>
                   <Content>
-                    {[profile?.website, profile?.linkedInUrl]
+                    {[companyProfile?.website, companyProfile?.linkedInUrl]
                       .filter((l) => l)
                       .map((link, idx) => (
                         <p key={idx}>
@@ -93,10 +94,15 @@ export function EditableDetails({ profile, disableEditing }: Props) {
   )
 }
 
-EditableDetails.isWebsiteSectionFilled = (profile: Partial<TpCompanyProfile>) =>
-  profile?.website
-EditableDetails.isSectionFilled = (profile: Partial<TpCompanyProfile>) =>
-  profile?.industry || profile?.website || profile?.linkedInUrl
+EditableDetails.isWebsiteSectionFilled = (
+  companyProfile: EditableDetailsCompanyProfilePropFragment
+) => companyProfile?.website
+EditableDetails.isSectionFilled = (
+  companyProfile: EditableDetailsCompanyProfilePropFragment
+) =>
+  companyProfile?.industry ||
+  companyProfile?.website ||
+  companyProfile?.linkedInUrl
 EditableDetails.isSectionEmpty = (profile: Partial<TpCompanyProfile>) =>
   !EditableDetails.isSectionFilled(profile)
 

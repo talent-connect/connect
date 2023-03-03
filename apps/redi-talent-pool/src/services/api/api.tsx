@@ -19,7 +19,19 @@ import {
 import { history } from '../history/history'
 import { http } from '../http/http'
 
-export const queryClient = new QueryClient()
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      cacheTime: 5 * 60 * 1000,
+
+      //! TODO: Investigate which one of the following or combination thereof is ideal
+      // docs here: https://react-query-v3.tanstack.com/guides/important-defaults
+      // staleTime: 5 * 60 * 1000,
+      refetchOnMount: false,
+    },
+  },
+})
 
 export const signUpLoopback = async (email: string, password: string) => {
   email = email.toLowerCase()

@@ -1,11 +1,12 @@
+import { useMyTpDataQuery } from '@talent-connect/data-access'
 import {
   Button,
+  Checkbox,
   FormInput,
   FormSelect,
   Heading,
   Icon,
   Modal,
-  Checkbox,
   TextEditor,
 } from '@talent-connect/shared-atomic-design-components'
 import { TpJobListing, TpJobseekerProfile } from '@talent-connect/shared-types'
@@ -15,12 +16,12 @@ import {
   germanFederalStates,
   topSkills,
 } from '@talent-connect/talent-pool/config'
+import { objectEntries } from '@talent-connect/typescript-utilities'
 import { useFormik } from 'formik'
-import { useCallback, useState, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Columns, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
 import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
-import { useTpJobListingAllQuery } from '../../../react-query/use-tpjoblisting-all-query'
 import { useTpJobListingCreateMutation } from '../../../react-query/use-tpjoblisting-create-mutation'
 import { useTpJobListingDeleteMutation } from '../../../react-query/use-tpjoblisting-delete-mutation'
 import { useTpJobListingOneOfCurrentUserQuery } from '../../../react-query/use-tpjoblisting-one-query'
@@ -28,13 +29,13 @@ import { useTpJobListingUpdateMutation } from '../../../react-query/use-tpjoblis
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import { JobListingCard } from '../JobListingCard'
 import JobPlaceholderCardUrl from './job-placeholder-card.svg'
-import { objectEntries } from '@talent-connect/typescript-utilities'
 
 export function EditableJobPostings({
   isJobPostingFormOpen,
   setIsJobPostingFormOpen,
 }) {
-  const { data: jobListings } = useTpJobListingAllQuery()
+  const myData = useMyTpDataQuery()
+  const jobListings = myData.data?.tpCurrentUserDataGet?.jobListings
   const [isEditing, setIsEditing] = useState(false)
   const [idOfTpJobListingBeingEdited, setIdOfTpJobListingBeingEdited] =
     useState<string | null>(null) // null = "new"

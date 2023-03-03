@@ -20,35 +20,39 @@ import { EditableNamePhotoLocation } from '../../../components/organisms/company
 import { LoggedIn } from '../../../components/templates'
 import { useIsBusy } from '../../../hooks/useIsBusy'
 import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
-import { useTpJobListingAllQuery } from '../../../react-query/use-tpjoblisting-all-query'
 import { OnboardingSteps } from './TpCompanyProfileOnboardingSteps'
 
 export function MeCompany() {
   const isBusy = useIsBusy()
   const myData = useMyTpDataQuery()
-  const { data: jobListings } = useTpJobListingAllQuery() //TODO: replace
+
   const mutation = useTpCompanyProfileUpdateMutation() //TODO: replace
 
   const [isJobPostingFormOpen, setIsJobPostingFormOpen] = useState(false)
 
-  // const onHideFromJobseekersCheckboxChange = () =>
-  //   mutation.mutate({
-  //     ...profile,
-  //     isProfileVisibleToJobseekers: !profile.isProfileVisibleToJobseekers,
-  //   })
+  // TODO: finish function
+  const onHideFromJobseekersCheckboxChange = () => {
+    // mutation.mutate({
+    //   ...profile,
+    //   isProfileVisibleToJobseekers: !profile.isProfileVisibleToJobseekers,
+    // })
+  }
 
   // TODO: finish function
-  const onJobFair2023ParticipateChange = () => {}
-  // mutation.mutate({
-  //   ...profile,
-  //   isJobFair2023Participant: !profile.isJobFair2023Participant,
-  // })
+  const onJobFair2023ParticipateChange = () => {
+    // mutation.mutate({
+    //   ...profile,
+    //   isJobFair2023Participant: !profile.isJobFair2023Participant,
+    // })
+  }
 
   if (isBusy) return null
 
   const {
     companyRepresentativeRelationship: representativeRelationship,
     representedCompany: companyProfile,
+    jobListings,
+    userContact,
   } = myData.data.tpCurrentUserDataGet
 
   const isProfileApproved =
@@ -102,13 +106,19 @@ export function MeCompany() {
             {!isProfileApproved && (
               <OnboardingSteps
                 profile={companyProfile}
-                isProfileComplete={isProfileComplete(companyProfile)}
+                isProfileComplete={isProfileComplete(
+                  companyProfile,
+                  userContact
+                )}
                 hasJobListing={jobListings?.length > 0}
               />
             )}
           </div>
-          <EditableDetails profile={companyProfile} />
-          <EditableContact profile={companyProfile} />
+          <EditableDetails companyProfile={companyProfile} />
+          <EditableContact
+            companyProfile={companyProfile}
+            userContact={userContact}
+          />
           <Checkbox
             checked={!companyProfile.isProfileVisibleToJobseekers}
             customOnChange={onHideFromJobseekersCheckboxChange}
@@ -126,7 +136,8 @@ export function MeCompany() {
 }
 
 function isProfileComplete(
-  profile: MyTpDataQuery['tpCurrentUserDataGet']['representedCompany']
+  companyProfile: MyTpDataQuery['tpCurrentUserDataGet']['representedCompany'],
+  userContact: MyTpDataQuery['tpCurrentUserDataGet']['userContact']
 ): boolean {
   const requiredSectionsComplete = [
     EditableNamePhotoLocation.isSectionFilled,
@@ -134,7 +145,7 @@ function isProfileComplete(
     EditableContact.isSectionFilled,
     EditableDetails.isWebsiteSectionFilled,
   ]
-    .map((checkerFn) => checkerFn(profile))
+    .map((checkerFn) => checkerFn(companyProfile, userContact))
     .every((p) => p)
 
   return requiredSectionsComplete
@@ -144,21 +155,22 @@ function SendProfileForReviewButton() {
   const isBusy = useIsBusy()
   const myData = useMyTpDataQuery()
 
-  const profile = myData.data?.tpCurrentUserDataGet?.representedCompany
-  const jobListings = myData.data?.tpCurrentUserDataGet
+  const companyProfile = myData.data?.tpCurrentUserDataGet?.representedCompany
+  const userContact = myData.data?.tpCurrentUserDataGet?.userContact
+  const jobListings = myData.data?.tpCurrentUserDataGet?.jobListings
 
   // const { data: profile } = useTpCompanyProfileQuery()
   // const { data: jobListings } = useTpJobListingAllQuery()
   const mutation = useTpCompanyProfileUpdateMutation()
 
   const enabled =
-    profile?.state === CompanyTalentPoolState.DraftingProfile &&
-    isProfileComplete(profile) &&
+    companyProfile?.state === CompanyTalentPoolState.DraftingProfile &&
+    isProfileComplete(companyProfile, userContact) &&
     jobListings?.length > 0
 
   const getTooltipText = () => {
-    if (profile.state !== 'submitted-for-review') {
-      return isProfileComplete(profile)
+    if (companyProfile.state !== CompanyTalentPoolState.SubmittedForReview) {
+      return isProfileComplete(companyProfile, userContact)
         ? 'You need to post a job listing before you can send it for review'
         : 'You need to complete your profile before you can send it for review'
     }
@@ -170,7 +182,7 @@ function SendProfileForReviewButton() {
     if (!window.confirm('Would you like to submit your profile for review?'))
       return
 
-    mutation.mutate({ ...profile, state: 'submitted-for-review' })
+    mutation.mutate({ ...companyProfile, state: 'submitted-for-review' })
   }
 
   if (enabled) {

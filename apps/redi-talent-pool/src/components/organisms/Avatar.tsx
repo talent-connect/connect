@@ -1,10 +1,10 @@
-import { useCallback, useState } from 'react'
-import { FormikValues, useFormik } from 'formik'
 import classnames from 'classnames'
-import * as Yup from 'yup'
+import { FormikValues, useFormik } from 'formik'
+import { useCallback, useState } from 'react'
+import { Element } from 'react-bulma-components'
 import Cropper from 'react-easy-crop'
 import ReactS3Uploader from 'react-s3-uploader'
-import { Element } from 'react-bulma-components'
+import * as Yup from 'yup'
 
 import { Button, Modal } from '@talent-connect/shared-atomic-design-components'
 import {
@@ -22,7 +22,9 @@ import { ReactComponent as UploadImage } from '../../assets/uploadImage.svg'
 import './Avatar.scss'
 
 interface AvatarProps {
-  profile: Partial<TpJobseekerProfile> | Partial<TpCompanyProfile>
+  profile: {
+    profileAvatarImageS3Key?: string
+  }
   shape?: 'circle' | 'square'
 }
 interface AvatarEditable {
@@ -57,7 +59,6 @@ const Avatar = ({ profile, shape = 'circle' }: AvatarProps) => {
     >
       <img
         src={imgSrc}
-        alt={`${profile.firstName} ${profile.lastName}`}
         className={classnames('avatar__image', {
           'avatar__image--square': shape === 'square',
         })}
@@ -159,7 +160,6 @@ const AvatarEditable = ({
         <>
           <img
             src={imgURL}
-            alt={`${profile.firstName} ${profile.lastName}`}
             className={classnames('avatar__image', {
               'avatar__image--square': shape === 'square',
             })}

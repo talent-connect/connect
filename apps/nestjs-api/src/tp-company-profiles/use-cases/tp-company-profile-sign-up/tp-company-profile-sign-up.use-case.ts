@@ -91,7 +91,7 @@ export class TpCompanyProfileSignUpUseCase {
 
     console.log(
       '[TpCompanyProfileSignUpUseCase]',
-      'created contact record',
+      'updated contact record',
       contactRecord.props.Id
     )
 

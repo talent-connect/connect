@@ -29,6 +29,8 @@ export class TpJobListingRecord extends Record<TpJobListingRecordProps> {
       'Language_Requirements__c',
       'Salary_Range__c',
       'Remote_Possible__c',
+
+      'Account__c',
     ],
   }
 }

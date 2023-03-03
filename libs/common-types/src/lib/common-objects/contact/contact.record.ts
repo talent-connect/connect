@@ -34,6 +34,8 @@ export class ContactRecord extends Record<ContactRecordProps> {
       'ReDI_First_Point_of_Contact_Talent_Pool__c',
       'ReDI_First_Point_of_Contact_Other_TP__c',
       'CON_TP_Mailing_Address__c',
+      'CreatedDate',
+      'LastModifiedDate',
     ],
   }
 }

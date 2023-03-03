@@ -24,6 +24,9 @@ export class TpJobListingEntityProps implements EntityProps {
   salaryRange?: string
   isRemotePossible?: boolean
 
+  @Field((type) => ID)
+  companyProfileId: string
+
   createdAt: Date
   updatedAt: Date
 }

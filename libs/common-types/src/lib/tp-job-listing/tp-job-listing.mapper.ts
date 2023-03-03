@@ -33,6 +33,8 @@ export class TpJobListingMapper
     props.salaryRange = raw.props.Salary_Range__c
     props.isRemotePossible = raw.props.Remote_Possible__c
 
+    props.companyProfileId = raw.props.Account__c
+
     props.createdAt = raw.props.CreatedDate
     props.updatedAt = raw.props.LastModifiedDate
 
@@ -56,6 +58,8 @@ export class TpJobListingMapper
     props.Language_Requirements__c = srcProps.languageRequirements
     props.Salary_Range__c = srcProps.salaryRange
     props.Remote_Possible__c = Boolean(srcProps.isRemotePossible)
+
+    props.Account__c = srcProps.companyProfileId
 
     const record = TpJobListingRecord.create(props)
 

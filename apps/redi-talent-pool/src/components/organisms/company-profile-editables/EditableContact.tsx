@@ -1,3 +1,4 @@
+import { useMyTpDataQuery } from '@talent-connect/data-access'
 import {
   Button,
   Caption,
@@ -6,24 +7,32 @@ import {
 import { TpCompanyProfile } from '@talent-connect/shared-types'
 import { toPascalCaseAndTrim } from '@talent-connect/shared-utils'
 import { useFormik } from 'formik'
+import { useEffect, useMemo, useState } from 'react'
+import { Content, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
-import React, { useEffect, useMemo, useState } from 'react'
-import { Columns, Content, Element } from 'react-bulma-components'
 import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
-import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
+import {
+  EditableContactCompanyProfilePropFragment,
+  EditableContactUserContactPropFragment,
+} from './EditableContact.generated'
 
 interface Props {
-  profile: Partial<TpCompanyProfile>
+  companyProfile: EditableContactCompanyProfilePropFragment
+  userContact: EditableContactUserContactPropFragment
   disableEditing?: boolean
 }
 
-export function EditableContact({ profile, disableEditing }: Props) {
+export function EditableContact({
+  companyProfile,
+  userContact,
+  disableEditing,
+}: Props) {
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
-  const isEmpty = EditableContact.isSectionEmpty(profile)
+  const isEmpty = EditableContact.isSectionEmpty(companyProfile, userContact)
 
   if (disableEditing && isEmpty) return null
 
@@ -52,29 +61,29 @@ export function EditableContact({ profile, disableEditing }: Props) {
               gridRowGap: '32px',
             }}
           >
-            {profile?.firstName || profile?.lastName ? (
+            {userContact?.firstName || userContact?.lastName ? (
               <div>
                 <Caption>Name</Caption>
                 <Content>
                   <p>
-                    {profile?.firstName} {profile?.lastName}
+                    {userContact?.firstName} {userContact?.lastName}
                   </p>
                 </Content>
               </div>
             ) : null}
-            {profile.phoneNumber ? (
+            {companyProfile.phoneNumber ? (
               <div>
                 <Caption>Phone</Caption>
                 <Content>
-                  <p>{profile?.phoneNumber}</p>
+                  <p>{companyProfile?.phoneNumber}</p>
                 </Content>
               </div>
             ) : null}
-            {profile.contactEmail ? (
+            {userContact.email ? (
               <div>
                 <Caption>E-mail</Caption>
                 <Content>
-                  <p>{profile?.contactEmail}</p>
+                  <p>{userContact.email}</p>
                 </Content>
               </div>
             ) : null}
@@ -94,13 +103,18 @@ export function EditableContact({ profile, disableEditing }: Props) {
   )
 }
 
-EditableContact.isSectionFilled = (profile: Partial<TpCompanyProfile>) =>
-  profile?.firstName ||
-  profile?.lastName ||
-  profile?.contactEmail ||
-  profile?.phoneNumber
-EditableContact.isSectionEmpty = (profile: Partial<TpCompanyProfile>) =>
-  !EditableContact.isSectionFilled(profile)
+EditableContact.isSectionFilled = (
+  companyProfile: EditableContactCompanyProfilePropFragment,
+  userContact: EditableContactUserContactPropFragment
+) =>
+  userContact?.firstName ||
+  userContact?.lastName ||
+  userContact?.email ||
+  companyProfile?.phoneNumber
+EditableContact.isSectionEmpty = (
+  companyProfile: EditableContactCompanyProfilePropFragment,
+  userContact: EditableContactUserContactPropFragment
+) => !EditableContact.isSectionFilled(companyProfile, userContact)
 
 const validationSchema = Yup.object({
   firstName: Yup.string()
@@ -122,14 +136,18 @@ function ModalForm({
   setIsEditing: (boolean) => void
   setIsFormDirty: (boolean) => void
 }) {
-  const { data: profile } = useTpCompanyProfileQuery()
+  const myData = useMyTpDataQuery()
+  const { userContact, representedCompany: companyProfile } =
+    myData?.data?.tpCurrentUserDataGet
+
   const mutation = useTpCompanyProfileUpdateMutation()
-  const initialValues: Partial<TpCompanyProfile> = useMemo(
+  const initialValues: EditableContactCompanyProfilePropFragment &
+    EditableContactUserContactPropFragment = useMemo(
     () => ({
-      firstName: profile?.firstName ?? '',
-      lastName: profile?.lastName ?? '',
-      contactEmail: profile?.contactEmail ?? '',
-      phoneNumber: profile?.phoneNumber ?? '',
+      firstName: userContact?.firstName ?? '',
+      lastName: userContact?.lastName ?? '',
+      email: userContact?.email ?? '',
+      phoneNumber: companyProfile?.phoneNumber ?? '',
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []

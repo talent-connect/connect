@@ -1,7 +1,7 @@
-import { UserEntityProps } from '@talent-connect/common-types'
+import { UserContactEntityProps } from '@talent-connect/common-types'
 
 export interface CurrentUserInfo {
   loopbackUserId: string
   userId: string
-  userProps: UserEntityProps
+  userProps: UserContactEntityProps
 }

@@ -5,6 +5,7 @@ import {
   TpCompanyRepresentativeRelationshipStatus,
   TpJobListingEntityProps,
   TpJobseekerProfileEntityProps,
+  UserContactEntityProps,
 } from '@talent-connect/common-types'
 import { CurrentUser } from '../auth/current-user.decorator'
 import { CurrentUserInfo } from '../auth/current-user.interface'
@@ -89,5 +90,10 @@ export class TpCurrentUserDataResolver {
 
       return props
     }
+  }
+
+  @ResolveField((of) => UserContactEntityProps)
+  async userContact(@CurrentUser() currentUser: CurrentUserInfo) {
+    return currentUser.userProps
   }
 }

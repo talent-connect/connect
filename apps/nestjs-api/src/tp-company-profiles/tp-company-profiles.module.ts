@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common'
 import {
   TpCompanyProfileMapper,
   TpCompanyRepresentativeRelationshipMapper,
+  UserMapper,
 } from '@talent-connect/common-types'
 import { AuthModule } from '../auth/auth.module'
 import { EmailModule } from '../email/email.module'
@@ -22,7 +23,11 @@ import { TpCompanyProfileSignUpUseCase } from './use-cases/tp-company-profile-si
     TpCompanyProfilesService,
     TpCompanyRepresentativeRelationshipsService,
     TpCompanyProfileSignUpUseCase,
+    UserMapper,
   ],
-  exports: [TpCompanyRepresentativeRelationshipsService],
+  exports: [
+    TpCompanyRepresentativeRelationshipsService,
+    TpCompanyProfilesService,
+  ],
 })
 export class TpCompanyProfilesModule {}

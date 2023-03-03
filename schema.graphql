@@ -280,6 +280,10 @@ input FindConProfilesArgsFilter {
   name: String
 }
 
+input FindOneTpJobListingArgsFilter {
+  id: ID!
+}
+
 enum FirstPointOfTpContactOption {
   ALREADY_VOLUNTEER_AT_REDI
   COLLEGUE
@@ -572,6 +576,7 @@ type Query {
   tpCompanyProfile(id: ID): TpCompanyProfile!
   tpCompanyProfiles: [TpCompanyProfile!]!
   tpCurrentUserDataGet: TpCurrentUserData!
+  tpJobListing(filter: FindOneTpJobListingArgsFilter!): TpJobListing!
   tpJobListings(filter: FindAllVisibleTpJobListingsArgsFilter!): [TpJobListing!]!
   tpJobseekerProfiles(filter: FindAllVisibleTpJobseekerProfilesArgsFilter!): [TpJobseekerProfile!]!
 }
@@ -642,6 +647,7 @@ enum TpAvailabilityOption {
 type TpCompanyProfile {
   about: String
   companyName: String!
+  companyRepresentatives: [UserContact!]!
   createdAt: DateTime!
   id: ID!
   industry: String
@@ -696,6 +702,7 @@ type TpCurrentUserData {
   jobListings: [TpJobListing!]
   jobseekerProfile: TpJobseekerProfile
   representedCompany: TpCompanyProfile
+  userContact: UserContact!
 }
 
 enum TpDesiredPosition {
@@ -770,6 +777,8 @@ enum TpEmploymentType {
 }
 
 type TpJobListing {
+  companyProfile: TpCompanyProfile!
+  companyProfileId: ID!
   createdAt: DateTime!
   employmentType: TpEmploymentType
   id: ID!
@@ -965,6 +974,31 @@ input UpdateConProfileInput {
   profileAvatarImageS3Key: String
   slackUsername: String
   telephoneNumber: String
+}
+
+type UserContact {
+  behanceUrl: String
+  birthDate: DateTime
+  createdAt: DateTime!
+  dribbbleUrl: String
+  email: String!
+  firstName: String!
+  gender: Gender
+  githubProfileUrl: String
+  howDidHearAboutRediKey: FirstPointOfTpContactOption
+  howDidHearAboutRediOtherText: String
+  id: ID!
+  lastName: String!
+  linkedInProfileUrl: String
+  loopbackUserId: String!
+  personalDescription: String
+  personalWebsite: String
+  postalMailingAddress: String
+  slackUsername: String
+  stackOverflowUrl: String
+  telephoneNumber: String
+  twitterUrl: String
+  updatedAt: DateTime!
 }
 
 enum UserType {

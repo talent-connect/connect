@@ -1,3 +1,4 @@
+import { useFindJobListingQuery } from '@talent-connect/data-access'
 import {
   Caption,
   Heading,
@@ -15,19 +16,26 @@ import Avatar from '../../../components/organisms/Avatar'
 import { EditableContact } from '../../../components/organisms/company-profile-editables/EditableContact'
 import { EditableDetails } from '../../../components/organisms/company-profile-editables/EditableDetails'
 import { LoggedIn } from '../../../components/templates'
-import { useTpJobListingOneQuery } from '../../../react-query/use-tpjoblisting-one-query'
 import './JobListing.scss'
 
 export function JobListing() {
   const { tpJobListingId }: { tpJobListingId: string } = useParams()
-  const { data: jobListing } = useTpJobListingOneQuery(tpJobListingId)
+
+  const jobListingQuery = useFindJobListingQuery({
+    filter: { id: tpJobListingId },
+  })
+
+  if (jobListingQuery.isError) return null
+  if (jobListingQuery.isLoading) return null
+
+  const jobListing = jobListingQuery.data.tpJobListing
 
   return (
     <LoggedIn>
       <div style={{ display: 'flex' }}>
         <div style={{ width: '15rem' }}>
           {jobListing ? (
-            <Avatar profile={jobListing.tpCompanyProfile} shape="square" />
+            <Avatar profile={jobListing.companyProfile} shape="square" />
           ) : null}
         </div>
         <div
@@ -38,17 +46,17 @@ export function JobListing() {
             justifyContent: 'center',
           }}
         >
-          <Heading size="medium">{jobListing?.title}</Heading>
+          <Heading size="medium">{jobListing.title}</Heading>
           <Element
             renderAs="p"
             textSize={4}
             responsive={{ mobile: { textSize: { value: 5 } } }}
             className="oneandhalf-bs"
           >
-            at {jobListing?.tpCompanyProfile?.companyName}
+            at {jobListing.companyProfile.companyName}
           </Element>
           <Caption>
-            Posted {moment(jobListing?.createdAt).format('DD.MM.YYYY')}
+            Posted {moment(jobListing.createdAt).format('DD.MM.YYYY')}
           </Caption>
           <div
             style={{
@@ -57,15 +65,15 @@ export function JobListing() {
               justifyContent: 'center',
             }}
           >
-            {jobListing?.location ? (
+            {jobListing.location ? (
               <div style={{ display: 'flex', marginBottom: '4px' }}>
                 <Icon icon="mapPin" />{' '}
                 <Content>
-                  <strong>{jobListing?.location}</strong>
+                  <strong>{jobListing.location}</strong>
                 </Content>
               </div>
             ) : null}
-            {jobListing?.isRemotePossible ? (
+            {jobListing.isRemotePossible ? (
               <div style={{ display: 'flex' }}>
                 <Icon icon="mapPin" />{' '}
                 <Content>
@@ -93,7 +101,7 @@ export function JobListing() {
             <div className="profile-section--body">
               <Element
                 className="quill-editor-output"
-                dangerouslySetInnerHTML={{ __html: jobListing?.summary }}
+                dangerouslySetInnerHTML={{ __html: jobListing.summary }}
               />
             </div>
           </div>
@@ -111,7 +119,7 @@ export function JobListing() {
             </div>
 
             <div className="profile-section--body">
-              {jobListing?.idealTechnicalSkills?.length > 0 ? (
+              {jobListing.idealTechnicalSkills?.length > 0 ? (
                 <Tag.Group>
                   {jobListing.idealTechnicalSkills.map((skill) => (
                     <Tag key={skill}>{topSkillsIdToLabelMap[skill]}</Tag>
@@ -150,7 +158,7 @@ export function JobListing() {
                 <div>
                   <Caption>Employment type</Caption>
                   <Content>
-                    {jobListing?.employmentType
+                    {jobListing.employmentType
                       ? employmentTypesIdToLabelMap[jobListing.employmentType]
                       : 'N/A'}
                   </Content>
@@ -159,7 +167,7 @@ export function JobListing() {
                 <div>
                   <Caption>Language requirements</Caption>
                   <Content>
-                    {jobListing?.languageRequirements
+                    {jobListing.languageRequirements
                       ? jobListing.languageRequirements
                       : 'N/A'}
                   </Content>
@@ -168,7 +176,7 @@ export function JobListing() {
                 <div>
                   <Caption>Salary range</Caption>
                   <Content>
-                    {jobListing?.salaryRange ? jobListing.salaryRange : 'N/A'}
+                    {jobListing.salaryRange ? jobListing.salaryRange : 'N/A'}
                   </Content>
                 </div>
               </div>
@@ -192,19 +200,18 @@ export function JobListing() {
             </div>
 
             <div className="profile-section--body">
-              <ReactMarkdown>
-                {jobListing?.tpCompanyProfile?.about}
-              </ReactMarkdown>
+              <ReactMarkdown>{jobListing.companyProfile.about}</ReactMarkdown>
             </div>
           </div>
         </Columns.Column>
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'two-fifths' }}>
           <EditableDetails
-            profile={jobListing?.tpCompanyProfile}
+            companyProfile={jobListing.companyProfile}
             disableEditing
           />
           <EditableContact
-            profile={jobListing?.tpCompanyProfile}
+            companyProfile={jobListing.companyProfile}
+            userContact={jobListing.companyProfile.companyRepresentatives[0]}
             disableEditing
           />
         </Columns.Column>

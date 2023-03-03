@@ -3,6 +3,7 @@ import {
   PicklistValuesSemicolonSeparated,
   RecordProps,
 } from '../base-interfaces-types-classes'
+import { ContactRecordProps } from '../common-objects'
 import { TpCompanyRepresentativeRelationshipStatus } from '../tp-company-representative-relationship/enums'
 
 export class AccountContactRecordProps implements RecordProps {
@@ -11,6 +12,9 @@ export class AccountContactRecordProps implements RecordProps {
   ContactId: string
   Roles: PicklistValuesSemicolonSeparated
   ReDI_Company_Representative_Status__c: TpCompanyRepresentativeRelationshipStatus
+
+  @Type(() => ContactRecordProps)
+  Contact: ContactRecordProps
 
   @Type(() => Date)
   CreatedDate: Date

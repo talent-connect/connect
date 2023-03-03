@@ -1,0 +1,8 @@
+fragment EditableContactCompanyProfileProp on TpCompanyProfile {
+  phoneNumber
+}
+fragment EditableContactUserContactProp on UserContact {
+  firstName
+  lastName
+  email
+}

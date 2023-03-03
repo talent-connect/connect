@@ -305,6 +305,10 @@ export type FindConProfilesArgsFilter = {
   name?: InputMaybe<Scalars['String']>;
 };
 
+export type FindOneTpJobListingArgsFilter = {
+  id: Scalars['ID'];
+};
+
 export enum FirstPointOfTpContactOption {
   AlreadyVolunteerAtRedi = 'ALREADY_VOLUNTEER_AT_REDI',
   Collegue = 'COLLEGUE',
@@ -667,6 +671,7 @@ export type Query = {
   tpCompanyProfile: TpCompanyProfile;
   tpCompanyProfiles: Array<TpCompanyProfile>;
   tpCurrentUserDataGet: TpCurrentUserData;
+  tpJobListing: TpJobListing;
   tpJobListings: Array<TpJobListing>;
   tpJobseekerProfiles: Array<TpJobseekerProfile>;
 };
@@ -695,6 +700,11 @@ export type QueryConProfilesAvailableMentorsArgs = {
 
 export type QueryTpCompanyProfileArgs = {
   id?: InputMaybe<Scalars['ID']>;
+};
+
+
+export type QueryTpJobListingArgs = {
+  filter: FindOneTpJobListingArgsFilter;
 };
 
 
@@ -774,6 +784,7 @@ export type TpCompanyProfile = {
   __typename?: 'TpCompanyProfile';
   about?: Maybe<Scalars['String']>;
   companyName: Scalars['String'];
+  companyRepresentatives: Array<UserContact>;
   createdAt: Scalars['DateTime'];
   id: Scalars['ID'];
   industry?: Maybe<Scalars['String']>;
@@ -831,6 +842,7 @@ export type TpCurrentUserData = {
   jobListings?: Maybe<Array<TpJobListing>>;
   jobseekerProfile?: Maybe<TpJobseekerProfile>;
   representedCompany?: Maybe<TpCompanyProfile>;
+  userContact: UserContact;
 };
 
 export enum TpDesiredPosition {
@@ -906,6 +918,8 @@ export enum TpEmploymentType {
 
 export type TpJobListing = {
   __typename?: 'TpJobListing';
+  companyProfile: TpCompanyProfile;
+  companyProfileId: Scalars['ID'];
   createdAt: Scalars['DateTime'];
   employmentType?: Maybe<TpEmploymentType>;
   id: Scalars['ID'];
@@ -1102,6 +1116,32 @@ export type UpdateConProfileInput = {
   profileAvatarImageS3Key?: InputMaybe<Scalars['String']>;
   slackUsername?: InputMaybe<Scalars['String']>;
   telephoneNumber?: InputMaybe<Scalars['String']>;
+};
+
+export type UserContact = {
+  __typename?: 'UserContact';
+  behanceUrl?: Maybe<Scalars['String']>;
+  birthDate?: Maybe<Scalars['DateTime']>;
+  createdAt: Scalars['DateTime'];
+  dribbbleUrl?: Maybe<Scalars['String']>;
+  email: Scalars['String'];
+  firstName: Scalars['String'];
+  gender?: Maybe<Gender>;
+  githubProfileUrl?: Maybe<Scalars['String']>;
+  howDidHearAboutRediKey?: Maybe<FirstPointOfTpContactOption>;
+  howDidHearAboutRediOtherText?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  lastName: Scalars['String'];
+  linkedInProfileUrl?: Maybe<Scalars['String']>;
+  loopbackUserId: Scalars['String'];
+  personalDescription?: Maybe<Scalars['String']>;
+  personalWebsite?: Maybe<Scalars['String']>;
+  postalMailingAddress?: Maybe<Scalars['String']>;
+  slackUsername?: Maybe<Scalars['String']>;
+  stackOverflowUrl?: Maybe<Scalars['String']>;
+  telephoneNumber?: Maybe<Scalars['String']>;
+  twitterUrl?: Maybe<Scalars['String']>;
+  updatedAt: Scalars['DateTime'];
 };
 
 export enum UserType {
