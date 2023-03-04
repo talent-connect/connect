@@ -8,7 +8,6 @@ import {
 } from 'use-query-params'
 
 import {
-  Checkbox,
   FilterDropdown,
   Icon,
   SearchField,
@@ -26,11 +25,11 @@ import {
 import { useBrowseTpJobListingsQuery } from '../../../react-query/use-tpjoblisting-all-query'
 import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 
-import { LoggedIn } from '../../../components/templates'
-import { JobListingCard } from '../../../components/organisms/JobListingCard'
-import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { objectEntries } from '@talent-connect/typescript-utilities'
 import { Home, HomeOutlined } from '@material-ui/icons'
+import { objectEntries } from '@talent-connect/typescript-utilities'
+import { JobListingCard } from '../../../components/organisms/JobListingCard'
+import { LoggedIn } from '../../../components/templates'
+import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 
 export function BrowseJobseeker() {
   const [companyName, setCompanyName] = useState('')
@@ -265,7 +264,7 @@ export function BrowseJobseeker() {
               <Columns.Column mobile={{ size: 12 }} tablet={{ size: 6 }}>
                 <JobListingCard
                   key={jobListing.id}
-                  jobListing={jobListing}
+                  jobListing={jobListing as unknown as any}
                   toggleFavorite={handleFavoriteJobListing}
                   isFavorite={isFavorite}
                   linkTo={`/app/job-listing/${jobListing.id}`}
