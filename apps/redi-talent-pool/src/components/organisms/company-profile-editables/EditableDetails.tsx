@@ -1,3 +1,4 @@
+import { useMyTpDataQuery } from '@talent-connect/data-access'
 import {
   Button,
   Caption,
@@ -8,7 +9,6 @@ import { useFormik } from 'formik'
 import { useEffect, useMemo, useState } from 'react'
 import { Content, Element } from 'react-bulma-components'
 import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
-import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import { EditableDetailsCompanyProfilePropFragment } from './EditableDetails.generated'
@@ -113,14 +113,16 @@ function ModalForm({
   setIsEditing: (boolean) => void
   setIsFormDirty: (boolean) => void
 }) {
-  const { data: profile } = useTpCompanyProfileQuery()
+  const myData = useMyTpDataQuery()
+  const { representedCompany: companyProfile } =
+    myData?.data?.tpCurrentUserDataGet
   const mutation = useTpCompanyProfileUpdateMutation()
 
   const initialValues: Partial<TpCompanyProfile> = useMemo(
     () => ({
-      industry: profile?.industry ?? '',
-      website: profile?.website ?? '',
-      linkedInUrl: profile?.linkedInUrl ?? '',
+      industry: companyProfile?.industry ?? '',
+      website: companyProfile?.website ?? '',
+      linkedInUrl: companyProfile?.linkedInUrl ?? '',
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []

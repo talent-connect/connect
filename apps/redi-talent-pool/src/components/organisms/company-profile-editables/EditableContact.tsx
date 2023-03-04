@@ -125,7 +125,6 @@ const validationSchema = Yup.object({
     .transform(toPascalCaseAndTrim)
     .required('Your last name is required')
     .max(255),
-  contactEmail: Yup.string().email().required().label('E-mail'),
   phoneNumber: Yup.string().max(255).label('Phone Number'),
 })
 
@@ -146,8 +145,8 @@ function ModalForm({
     () => ({
       firstName: userContact?.firstName ?? '',
       lastName: userContact?.lastName ?? '',
-      email: userContact?.email ?? '',
       phoneNumber: companyProfile?.phoneNumber ?? '',
+      email: userContact?.email ?? '',
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -195,10 +194,11 @@ function ModalForm({
         {...formik}
       />
       <FormInput
-        name="contactEmail"
+        name="email"
         placeholder="your.name@company.com"
         label="E-mail*"
         {...formik}
+        disabled
       />
       <FormInput
         name="phoneNumber"

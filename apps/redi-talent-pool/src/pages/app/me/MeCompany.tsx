@@ -83,7 +83,7 @@ export function MeCompany() {
       ) : null}
       <Columns className="is-6 is-variable">
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'three-fifths' }}>
-          <EditableNamePhotoLocation profile={companyProfile} />
+          <EditableNamePhotoLocation companyProfile={companyProfile} />
           <div style={{ marginBottom: '1.5rem' }}>
             <Checkbox
               checked={companyProfile.isJobFair2023Participant}
@@ -93,7 +93,7 @@ export function MeCompany() {
               happening on <strong>15/02/2023</strong>.
             </Checkbox>
           </div>
-          <EditableAbout profile={companyProfile} />
+          <EditableAbout companyProfile={companyProfile} />
         </Columns.Column>
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'two-fifths' }}>
           <div className="is-hidden-mobile">

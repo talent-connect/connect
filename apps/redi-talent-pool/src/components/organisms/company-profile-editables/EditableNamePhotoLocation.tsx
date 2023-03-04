@@ -1,3 +1,4 @@
+import { useMyTpDataQuery } from '@talent-connect/data-access'
 import {
   Button,
   FormInput,
@@ -11,23 +12,26 @@ import { useEffect, useMemo, useState } from 'react'
 import { Columns, Content, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
 import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
-import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import Avatar from '../Avatar'
 import { EditableNamePhotoLocationProfilePropFragment } from './EditableNamePhotoLocation.generated'
 
 interface Props {
-  profile: EditableNamePhotoLocationProfilePropFragment
+  companyProfile: EditableNamePhotoLocationProfilePropFragment
   disableEditing?: boolean
 }
 
-export function EditableNamePhotoLocation({ profile, disableEditing }: Props) {
+export function EditableNamePhotoLocation({
+  companyProfile,
+  disableEditing,
+}: Props) {
   const mutation = useTpCompanyProfileUpdateMutation()
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
-  const isLocationEmpty = EditableNamePhotoLocation.isSectionEmpty(profile)
+  const isLocationEmpty =
+    EditableNamePhotoLocation.isSectionEmpty(companyProfile)
 
   return (
     <Editable
@@ -38,9 +42,9 @@ export function EditableNamePhotoLocation({ profile, disableEditing }: Props) {
       readComponent={
         <Columns vCentered breakpoint="mobile" className="oneandhalf-bs">
           <Columns.Column size={5}>
-            {profile ? (
+            {companyProfile ? (
               <Avatar.Editable
-                profile={profile}
+                profile={companyProfile}
                 profileSaveStart={mutation.mutate}
                 callToActionText="Please add your company logo"
                 shape="square"
@@ -48,14 +52,16 @@ export function EditableNamePhotoLocation({ profile, disableEditing }: Props) {
             ) : null}
           </Columns.Column>
           <Columns.Column size={7}>
-            <Heading size="medium">{profile?.companyName}</Heading>
+            <Heading size="medium">{companyProfile.companyName}</Heading>
             <Element
               renderAs="p"
               textSize={4}
               responsive={{ mobile: { textSize: { value: 5 } } }}
               className="oneandhalf-bs"
             >
-              {profile?.tagline ? profile.tagline : 'Add your tagline here.'}
+              {companyProfile.tagline
+                ? companyProfile.tagline
+                : 'Add your tagline here.'}
             </Element>
             <div
               style={{
@@ -75,7 +81,7 @@ export function EditableNamePhotoLocation({ profile, disableEditing }: Props) {
                 </EmptySectionPlaceholder>
               ) : (
                 <Content>
-                  <strong>{profile?.location}</strong>
+                  <strong>{companyProfile.location}</strong>
                 </Content>
               )}
             </div>
@@ -95,14 +101,14 @@ export function EditableNamePhotoLocation({ profile, disableEditing }: Props) {
 }
 
 EditableNamePhotoLocation.isSectionFilled = (
-  profile: EditableNamePhotoLocationProfilePropFragment
-) => profile?.location
+  companyProfile: EditableNamePhotoLocationProfilePropFragment
+) => companyProfile.location
 EditableNamePhotoLocation.isPhotoSelected = (
-  profile: EditableNamePhotoLocationProfilePropFragment
-) => profile?.profileAvatarImageS3Key
+  companyProfile: EditableNamePhotoLocationProfilePropFragment
+) => companyProfile.profileAvatarImageS3Key
 EditableNamePhotoLocation.isSectionEmpty = (
-  profile: EditableNamePhotoLocationProfilePropFragment
-) => !EditableNamePhotoLocation.isSectionFilled(profile)
+  companyProfile: EditableNamePhotoLocationProfilePropFragment
+) => !EditableNamePhotoLocation.isSectionFilled(companyProfile)
 
 const validationSchema = Yup.object({
   companyName: Yup.string().required('Your company name is required'),
@@ -116,13 +122,15 @@ function ModalForm({
   setIsEditing: (boolean) => void
   setIsFormDirty: (boolean) => void
 }) {
-  const { data: profile } = useTpCompanyProfileQuery()
+  const myData = useMyTpDataQuery()
+  const { representedCompany: companyProfile } =
+    myData?.data?.tpCurrentUserDataGet
   const mutation = useTpCompanyProfileUpdateMutation()
   const initialValues: Partial<TpCompanyProfile> = useMemo(
     () => ({
-      companyName: profile?.companyName ?? '',
-      location: profile?.location ?? '',
-      tagline: profile?.tagline ?? '',
+      companyName: companyProfile?.companyName ?? '',
+      location: companyProfile?.location ?? '',
+      tagline: companyProfile?.tagline ?? '',
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
