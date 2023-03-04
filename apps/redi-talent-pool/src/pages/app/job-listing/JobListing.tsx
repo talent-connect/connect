@@ -1,4 +1,3 @@
-import { useFindJobListingQuery } from '@talent-connect/data-access'
 import {
   Caption,
   Heading,
@@ -16,12 +15,13 @@ import Avatar from '../../../components/organisms/Avatar'
 import { EditableContact } from '../../../components/organisms/company-profile-editables/EditableContact'
 import { EditableDetails } from '../../../components/organisms/company-profile-editables/EditableDetails'
 import { LoggedIn } from '../../../components/templates'
+import { useFindOneJobListingQuery } from './JobListing.generated'
 import './JobListing.scss'
 
 export function JobListing() {
   const { tpJobListingId }: { tpJobListingId: string } = useParams()
 
-  const jobListingQuery = useFindJobListingQuery({
+  const jobListingQuery = useFindOneJobListingQuery({
     filter: { id: tpJobListingId },
   })
 
