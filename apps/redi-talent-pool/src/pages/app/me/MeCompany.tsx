@@ -23,7 +23,6 @@ import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpco
 import { OnboardingSteps } from './TpCompanyProfileOnboardingSteps'
 
 export function MeCompany() {
-  const isBusy = useIsBusy()
   const myData = useMyTpDataQuery()
 
   const mutation = useTpCompanyProfileUpdateMutation() //TODO: replace
@@ -45,8 +44,6 @@ export function MeCompany() {
     //   isJobFair2023Participant: !profile.isJobFair2023Participant,
     // })
   }
-
-  if (isBusy) return null
 
   const {
     companyRepresentativeRelationship: representativeRelationship,
