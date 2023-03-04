@@ -777,6 +777,7 @@ enum TpEmploymentType {
 }
 
 type TpJobListing {
+  companyName: String!
   companyProfile: TpCompanyProfile!
   companyProfileId: ID!
   createdAt: DateTime!
@@ -786,6 +787,7 @@ type TpJobListing {
   isRemotePossible: Boolean
   languageRequirements: String
   location: String
+  profileAvatarImageS3Key: String
   relatesToPositions: [TpDesiredPosition!]
   salaryRange: String
   summary: String

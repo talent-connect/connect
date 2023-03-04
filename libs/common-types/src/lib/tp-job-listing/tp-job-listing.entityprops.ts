@@ -29,4 +29,8 @@ export class TpJobListingEntityProps implements EntityProps {
 
   createdAt: Date
   updatedAt: Date
+
+  // These are included from the Company Profile (SF: Account)
+  companyName: string
+  profileAvatarImageS3Key?: string
 }

@@ -12,4 +12,6 @@ fragment AllTpJobListingFields on TpJobListing {
   salaryRange
   summary
   companyProfileId
+  companyName
+  profileAvatarImageS3Key
 }

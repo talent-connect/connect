@@ -31,6 +31,8 @@ export class TpJobListingRecord extends Record<TpJobListingRecordProps> {
       'Remote_Possible__c',
 
       'Account__c',
+      'Account__r.Name',
+      'Account__r.ReDI_Avatar_Image_URL__c',
     ],
   }
 }

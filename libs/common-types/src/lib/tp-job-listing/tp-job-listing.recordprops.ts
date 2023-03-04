@@ -21,6 +21,11 @@ export class TpJobListingRecordProps implements RecordProps {
   @Type(() => Date)
   LastModifiedDate: Date
 
+  Account__r: {
+    Name: string
+    ReDI_Avatar_Image_URL__c?: string
+  }
+
   public static create(rawProps: any) {
     return plainToClass(TpJobListingRecordProps, rawProps, {})
   }

@@ -17,6 +17,8 @@ export class TpJobListingMapper
   fromPersistence(raw: TpJobListingRecord): TpJobListingEntity {
     const props = new TpJobListingEntityProps()
 
+    console.log(raw)
+
     props.id = raw.props.Id
 
     props.title = raw.props.Title__c
@@ -37,6 +39,10 @@ export class TpJobListingMapper
 
     props.createdAt = raw.props.CreatedDate
     props.updatedAt = raw.props.LastModifiedDate
+
+    props.companyName = raw.props.Account__r.Name
+    props.profileAvatarImageS3Key =
+      raw.props.Account__r.ReDI_Avatar_Image_URL__c
 
     const entity = TpJobListingEntity.create(props)
 

@@ -918,6 +918,7 @@ export enum TpEmploymentType {
 
 export type TpJobListing = {
   __typename?: 'TpJobListing';
+  companyName: Scalars['String'];
   companyProfile: TpCompanyProfile;
   companyProfileId: Scalars['ID'];
   createdAt: Scalars['DateTime'];
@@ -927,6 +928,7 @@ export type TpJobListing = {
   isRemotePossible?: Maybe<Scalars['Boolean']>;
   languageRequirements?: Maybe<Scalars['String']>;
   location?: Maybe<Scalars['String']>;
+  profileAvatarImageS3Key?: Maybe<Scalars['String']>;
   relatesToPositions?: Maybe<Array<TpDesiredPosition>>;
   salaryRange?: Maybe<Scalars['String']>;
   summary?: Maybe<Scalars['String']>;

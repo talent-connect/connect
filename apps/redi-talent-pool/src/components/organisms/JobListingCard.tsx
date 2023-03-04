@@ -3,13 +3,13 @@ import { Card, Element } from 'react-bulma-components'
 import { NavLink } from 'react-router-dom'
 
 import { CardTags, Icon } from '@talent-connect/shared-atomic-design-components'
-import { TpJobListing } from '@talent-connect/shared-types'
 import { topSkillsIdToLabelMap } from '@talent-connect/talent-pool/config'
 // import placeholderImage from '../../assets/images/img-placeholder.png'
 import './JobListingCard.scss'
+import { JobListingCardJobListingPropFragment } from './jobseeker-profile-editables/JobListingCard.generated'
 
 interface JobListingCardProps {
-  jobListing: Partial<TpJobListing>
+  jobListing: JobListingCardJobListingPropFragment
   isFavorite?: boolean
   toggleFavorite?: (id: string) => void
   linkTo?: string
@@ -26,9 +26,8 @@ export function JobListingCard({
   const jobTitle = jobListing?.title
   const idealTechnicalSkills = jobListing?.idealTechnicalSkills
 
-  const companyName = jobListing?.tpCompanyProfile?.companyName
-  const companyAvatarImage =
-    jobListing?.tpCompanyProfile?.profileAvatarImageS3Key
+  const companyName = jobListing?.companyName
+  const companyAvatarImage = jobListing?.profileAvatarImageS3Key
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.preventDefault()
