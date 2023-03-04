@@ -17,8 +17,6 @@ export class TpJobListingMapper
   fromPersistence(raw: TpJobListingRecord): TpJobListingEntity {
     const props = new TpJobListingEntityProps()
 
-    console.log(raw)
-
     props.id = raw.props.Id
 
     props.title = raw.props.Title__c
