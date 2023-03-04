@@ -1,11 +1,12 @@
+import {
+  CompanyTalentPoolState,
+  JobseekerProfileStatus,
+  useMyTpDataQuery,
+} from '@talent-connect/data-access'
 import { Loader } from '@talent-connect/shared-atomic-design-components'
-import { ReactNode, useEffect } from 'react'
+import { ReactNode } from 'react'
 import { Columns, Container } from 'react-bulma-components'
-import { useQueryClient } from 'react-query'
-import { useLocation } from 'react-router-dom'
 import { useIsBusy } from '../../hooks/useIsBusy'
-import { useTpCompanyProfileQuery } from '../../react-query/use-tpcompanyprofile-query'
-import { useTpJobseekerProfileQuery } from '../../react-query/use-tpjobseekerprofile-query'
 import { TpMainNavItem } from '../molecules/TpMainNavItem'
 import { Navbar } from '../organisms'
 import Footer from '../organisms/Footer'
@@ -17,18 +18,16 @@ interface Props {
 }
 
 const LoggedIn = ({ children, hideNavigation }: Props) => {
-  const queryClient = useQueryClient()
+  const { data } = useMyTpDataQuery()
+
+  const {
+    tpCurrentUserDataGet: {
+      representedCompany: companyProfile,
+      jobseekerProfile,
+    },
+  } = data
+
   const isBusy = useIsBusy()
-  const { data: jobseekerProfile } = useTpJobseekerProfileQuery({
-    retry: false,
-  })
-  const { data: companyProfile } = useTpCompanyProfileQuery({ retry: false })
-
-  const location = useLocation()
-
-  useEffect(() => {
-    queryClient.invalidateQueries()
-  }, [location])
 
   return (
     <>
@@ -44,8 +43,10 @@ const LoggedIn = ({ children, hideNavigation }: Props) => {
                   to="/app/me"
                   isActive={location.pathname === '/app/me'}
                 />
-                {companyProfile?.state === 'profile-approved' ||
-                jobseekerProfile?.state === 'profile-approved' ? (
+                {companyProfile?.state ===
+                  CompanyTalentPoolState.ProfileApproved ||
+                jobseekerProfile?.state ===
+                  JobseekerProfileStatus.ProfileApproved ? (
                   <TpMainNavItem
                     page="browse-page"
                     pageName="Browse"

@@ -1,8 +1,8 @@
 import { Loader } from '@talent-connect/shared-atomic-design-components'
-import { Suspense } from 'react'
-import { QueryClientProvider } from 'react-query'
+import { Suspense, useEffect } from 'react'
+import { QueryClientProvider, useQueryClient } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
-import { Route } from 'react-router-dom'
+import { Route, useLocation } from 'react-router-dom'
 import { QueryParamProvider } from 'use-query-params'
 import AppNotification from './components/AppNotification'
 import { Routes } from './components/Routes'
@@ -28,12 +28,29 @@ const App = () => {
       <Router history={history}>
         <Suspense fallback={<Loader loading={true} />}>
           <QueryParamProvider ReactRouterRoute={Route}>
-            <Routes />
+            <InvalidateQueriesOnNavigation>
+              <Routes />
+            </InvalidateQueriesOnNavigation>
           </QueryParamProvider>
         </Suspense>
       </Router>
     </QueryClientProvider>
   )
+}
+
+function InvalidateQueriesOnNavigation({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  const location = useLocation()
+  const queryClient = useQueryClient()
+
+  useEffect(() => {
+    queryClient.invalidateQueries()
+  }, [location])
+
+  return <>{children}</>
 }
 
 export default App
