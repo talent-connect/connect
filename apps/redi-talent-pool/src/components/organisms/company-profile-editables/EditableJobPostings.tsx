@@ -21,13 +21,12 @@ import { useFormik } from 'formik'
 import { useCallback, useEffect, useState } from 'react'
 import { Columns, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
-import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
 import { useTpJobListingCreateMutation } from '../../../react-query/use-tpjoblisting-create-mutation'
 import { useTpJobListingDeleteMutation } from '../../../react-query/use-tpjoblisting-delete-mutation'
-import { useTpJobListingOneOfCurrentUserQuery } from '../../../react-query/use-tpjoblisting-one-query'
 import { useTpJobListingUpdateMutation } from '../../../react-query/use-tpjoblisting-update-mutation'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import { JobListingCard } from '../JobListingCard'
+import { useLoadModalFormJobListingDataQuery } from './EditableJobPostings.generated'
 import JobPlaceholderCardUrl from './job-placeholder-card.svg'
 
 export function EditableJobPostings({
@@ -174,15 +173,27 @@ function ModalForm({
   setIsEditing,
   tpJobListingId,
 }: ModalFormProps) {
-  const { data } = useTpJobListingOneOfCurrentUserQuery(tpJobListingId)
-  const { data: currentUserTpCompanyProfile } = useTpCompanyProfileQuery()
-  const jobListing = tpJobListingId
-    ? data
-    : buildBlankJobListing(currentUserTpCompanyProfile?.id)
+  const jobListingToBeEditedQuery = useLoadModalFormJobListingDataQuery(
+    { id: tpJobListingId },
+    { enabled: Boolean(tpJobListingId) && isEditing }
+  )
+  const myDataQuery = useMyTpDataQuery()
 
   const createMutation = useTpJobListingCreateMutation()
   const updateMutation = useTpJobListingUpdateMutation(tpJobListingId)
   const deleteMutation = useTpJobListingDeleteMutation()
+
+  let jobListing = null
+  if (isEditing) {
+    if (tpJobListingId && jobListingToBeEditedQuery.isSuccess) {
+      jobListing = jobListingToBeEditedQuery.data.tpJobListing
+    }
+    if (!tpJobListingId) {
+      jobListing = buildBlankJobListing(
+        myDataQuery.data.tpCurrentUserDataGet.representedCompany.id
+      )
+    }
+  }
 
   const onSubmit = (values: Partial<TpJobseekerProfile>, { resetForm }) => {
     if (tpJobListingId === null) {
