@@ -4,31 +4,30 @@
  * must be standardized within the project.
  */
 
-import React from 'react'
-import { format as formatDate } from 'date-fns'
-import { useHistory } from 'react-router-dom'
 import { PDFDownloadLink } from '@react-pdf/renderer'
+import { format as formatDate } from 'date-fns'
+import React from 'react'
+import { useHistory } from 'react-router-dom'
 
+import { Chip } from '@material-ui/core'
 import {
-  Modal,
-  FormInput,
   Button,
+  FormInput,
+  Modal,
 } from '@talent-connect/shared-atomic-design-components'
 import { Box, Content } from 'react-bulma-components'
-import { Chip } from '@material-ui/core'
-import { AWS_PROFILE_AVATARS_BUCKET_BASE_URL } from '@talent-connect/shared-config'
 import placeholderImage from '../../../../assets/img-placeholder.png'
 
-import { useTpJobseekerCvByIdQuery } from '../../../../react-query/use-tpjobseekercv-query'
 import {
   useTpjobseekerCvCreateMutation,
   useTpjobseekerCvDeleteMutation,
   useTpjobseekerCvUpdateMutation,
 } from '../../../../react-query/use-tpjobseekercv-mutation'
+import { useTpJobseekerCvByIdQuery } from '../../../../react-query/use-tpjobseekercv-query'
 
-import { CvListItemMoreOptionsMenu } from './CvListItemMoreOptionsMenu'
 import { CVPDF } from '../../../../components/molecules/CvPdfPreview'
 import { useTpJobseekerProfileQuery } from '../../../../react-query/use-tpjobseekerprofile-query'
+import { CvListItemMoreOptionsMenu } from './CvListItemMoreOptionsMenu'
 
 const CREATED_AT_DATE_FORMAT = 'dd.MM.yyyy'
 
@@ -83,10 +82,8 @@ const CvListItem = (props: CvListItemProps) => {
   const { data: cvData, isSuccess: cvLoadSuccess } = useTpJobseekerCvByIdQuery(
     props.id
   )
-  const {
-    data: profileData,
-    isSuccess: profileLoadSuccess,
-  } = useTpJobseekerProfileQuery()
+  const { data: profileData, isSuccess: profileLoadSuccess } =
+    useTpJobseekerProfileQuery()
 
   const createMutation = useTpjobseekerCvCreateMutation()
   const updateMutation = useTpjobseekerCvUpdateMutation(props.id)
@@ -97,8 +94,7 @@ const CvListItem = (props: CvListItemProps) => {
   React.useEffect(() => {
     if (profileLoadSuccess && cvLoadSuccess) {
       cvData.profileAvatarImageS3Key = profileData.profileAvatarImageS3Key
-        ? AWS_PROFILE_AVATARS_BUCKET_BASE_URL +
-          profileData.profileAvatarImageS3Key
+        ? profileData.profileAvatarImageS3Key
         : placeholderImage
 
       setProfileImageLoaded(true)

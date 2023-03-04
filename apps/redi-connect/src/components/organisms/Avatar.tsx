@@ -1,7 +1,4 @@
-import {
-  AWS_PROFILE_AVATARS_BUCKET_BASE_URL,
-  S3_UPLOAD_SIGN_URL,
-} from '@talent-connect/shared-config'
+import { S3_UPLOAD_SIGN_URL } from '@talent-connect/shared-config'
 import classnames from 'classnames'
 import { Element } from 'react-bulma-components'
 import ReactS3Uploader from 'react-s3-uploader'
@@ -56,8 +53,7 @@ function AvatarEditable() {
   const imgURL = profileAvatarImageS3Key
 
   const onUploadSuccess = async (result: any) => {
-    const profileAvatarImageS3Key =
-      AWS_PROFILE_AVATARS_BUCKET_BASE_URL + result.fileKey
+    const profileAvatarImageS3Key = result.fileKey
     const mutationResult = await patchMyProfileMutation.mutateAsync({
       input: { id: profile.id, profileAvatarImageS3Key },
     })

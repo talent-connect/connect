@@ -1,9 +1,8 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
 import { Card, Element } from 'react-bulma-components'
+import { NavLink } from 'react-router-dom'
 
 import { CardTags, Icon } from '@talent-connect/shared-atomic-design-components'
-import { AWS_PROFILE_AVATARS_BUCKET_BASE_URL } from '@talent-connect/shared-config'
 import { TpJobListing } from '@talent-connect/shared-types'
 import { topSkillsIdToLabelMap } from '@talent-connect/talent-pool/config'
 // import placeholderImage from '../../assets/images/img-placeholder.png'
@@ -36,9 +35,7 @@ export function JobListingCard({
     toggleFavorite && toggleFavorite(jobListing.id)
   }
 
-  const imgSrc = companyAvatarImage
-    ? AWS_PROFILE_AVATARS_BUCKET_BASE_URL + companyAvatarImage
-    : null
+  const imgSrc = companyAvatarImage ? companyAvatarImage : null
 
   return (
     <NavLink to={linkTo} onClick={onClick} className="job-posting-link">

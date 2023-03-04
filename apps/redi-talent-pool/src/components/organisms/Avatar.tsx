@@ -7,10 +7,7 @@ import ReactS3Uploader from 'react-s3-uploader'
 import * as Yup from 'yup'
 
 import { Button, Modal } from '@talent-connect/shared-atomic-design-components'
-import {
-  AWS_PROFILE_AVATARS_BUCKET_BASE_URL,
-  S3_UPLOAD_SIGN_URL,
-} from '@talent-connect/shared-config'
+import { S3_UPLOAD_SIGN_URL } from '@talent-connect/shared-config'
 import {
   TpCompanyProfile,
   TpJobseekerProfile,
@@ -47,7 +44,7 @@ const validationSchema = Yup.object({
 const Avatar = ({ profile, shape = 'circle' }: AvatarProps) => {
   const { profileAvatarImageS3Key } = profile
   const imgSrc = profileAvatarImageS3Key
-    ? AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
+    ? profileAvatarImageS3Key
     : placeholderImage
 
   return (
@@ -95,7 +92,7 @@ const AvatarEditable = ({
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null)
 
   const { profileAvatarImageS3Key } = profile
-  const imgURL = AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
+  const imgURL = profileAvatarImageS3Key
 
   const submitForm = async (values: FormikValues) => {
     const profileMe = values as Partial<TpJobseekerProfile>

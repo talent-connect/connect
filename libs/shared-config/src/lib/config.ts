@@ -530,9 +530,6 @@ export const MENTORSHIP_MATCH_STATUS_LABELS: any = {
   'invalidated-as-other-mentor-accepted': 'Cancelled',
 }
 
-export const AWS_PROFILE_AVATARS_BUCKET_BASE_URL =
-  'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/'
-
 export const API_URL = process.env.NX_API_URL
   ? process.env.NX_API_URL
   : 'http://127.0.0.1:3003/api'
