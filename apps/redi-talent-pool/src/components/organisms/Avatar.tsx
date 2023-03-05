@@ -5,9 +5,12 @@ import * as Yup from 'yup'
 import Cropper from 'react-easy-crop'
 import ReactS3Uploader from 'react-s3-uploader'
 import { Element } from 'react-bulma-components'
-import { CircularProgress, LinearProgress } from '@material-ui/core'
 
-import { Button, Modal } from '@talent-connect/shared-atomic-design-components'
+import {
+  Button,
+  Loader,
+  Modal,
+} from '@talent-connect/shared-atomic-design-components'
 import {
   AWS_PROFILE_AVATARS_BUCKET_BASE_URL,
   S3_UPLOAD_SIGN_URL,
@@ -21,6 +24,10 @@ import { getCroppedImg } from '@talent-connect/shared-utils'
 import placeholderImage from '../../assets/img-placeholder.png'
 import { ReactComponent as UploadImage } from '../../assets/uploadImage.svg'
 import './Avatar.scss'
+
+import Resizer from 'react-image-file-resizer'
+import { ZoomIn, ZoomOut, ZoomOutMap } from '@material-ui/icons'
+import { IconButton, Tooltip } from '@material-ui/core'
 
 const MAX_FILE_SIZE = 1000000
 const CROPPER_CONTAINER_HEIGHT = 450
@@ -70,13 +77,31 @@ const Avatar = ({ profile, shape = 'circle' }: AvatarProps) => {
   )
 }
 
-function readFile(file) {
+function readFile(file): Promise<string | ArrayBuffer> {
   return new Promise((resolve) => {
     const reader = new FileReader()
     reader.addEventListener('load', () => resolve(reader.result), false)
     reader.readAsDataURL(file)
   })
 }
+
+const resizeFile = (
+  file,
+  width,
+  height
+): Promise<string | Blob | File | ProgressEvent<FileReader>> =>
+  new Promise((resolve) => {
+    Resizer.imageFileResizer(
+      file,
+      width,
+      height,
+      'JPEG',
+      100,
+      0,
+      (value) => resolve(value),
+      'base64'
+    )
+  })
 
 const AvatarEditable = ({
   profile,
@@ -125,20 +150,49 @@ const AvatarEditable = ({
 
   const onUploadStart = async (file, next) => {
     // Alert the user that the file is too big if the file size is more than 1MB
-    if (file.size > MAX_FILE_SIZE) {
-      alert('File Size Error: Please select a file smaller than 1MB')
-      return
+    let imageDataUrl = ''
+    let imageWidth = 0
+    let imageHeight = 0
+
+    const image = new Image()
+
+    image.onload = async function () {
+      imageWidth = image.width
+      imageHeight = image.height
+
+      if (file.size > MAX_FILE_SIZE) {
+        const resizeRatio = Math.sqrt(MAX_FILE_SIZE / file.size)
+        const newWidth = Math.round(imageWidth * resizeRatio)
+        const newHeight = Math.round(imageHeight * resizeRatio)
+
+        imageDataUrl = (await resizeFile(file, newWidth, newHeight)) as string
+      } else {
+        imageDataUrl = (await readFile(file)) as string
+      }
+
+      setImageSrc(imageDataUrl)
+      setImageFileName(file.name)
+
+      // Storing next function passed by react-s3-uploader to be called in another function (onSaveClick)
+      setNextFn(() => (croppedImgFile) => next(croppedImgFile))
+      setShowCropperModal(true)
     }
 
-    const imageDataUrl = await readFile(file)
+    image.src = URL.createObjectURL(file)
+  }
 
-    setImageSrc(imageDataUrl)
-    setImageFileName(file.name)
+  const onZoomIn = () => {
+    setZoom(zoom + 0.1)
+  }
 
-    // Storing next function passed by react-s3-uploader to be called in another function (onSaveClick)
-    setNextFn(() => (croppedImgFile) => next(croppedImgFile))
+  const onZoomOut = () => {
+    if (zoom <= minZoom) return
+    setZoom(zoom - 0.1)
+  }
 
-    setShowCropperModal(true)
+  const onZoomReset = () => {
+    setZoom(1)
+    setCrop({ x: 0, y: 0 })
   }
 
   const onSaveClick = useCallback(async () => {
@@ -267,6 +321,23 @@ const AvatarEditable = ({
           <Button onClick={onSaveClick} disabled={isUploading}>
             {isUploading ? 'Uploading... ' + uploadProgress + '%' : 'Save'}
           </Button>
+          <div className="zoom-icons-container">
+            <Tooltip title="Zoom In" placement="top">
+              <IconButton onClick={onZoomIn} aria-label="zoom in">
+                <ZoomIn />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Zoom Out" placement="top">
+              <IconButton onClick={onZoomOut} aria-label="zoom out">
+                <ZoomOut />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Reset Zoom" placement="top">
+              <IconButton onClick={onZoomReset} aria-label="reset zoom">
+                <ZoomOutMap />
+              </IconButton>
+            </Tooltip>
+          </div>
         </Modal.Foot>
       </Modal>
     </div>
