@@ -215,14 +215,10 @@ const sendTpCompanyProfileSubmittedForReviewEmail = ({ companyName }) => {
     companyName
   )
 
-  const emailRecipients = ['birgit@redi-school.org', 'janis@redi-school.org']
-
-  return emailRecipients.forEach((recipient) => {
-    sendMjmlEmailFactory({
-      to: recipient,
-      subject: 'New company in Talent Pool',
-      html,
-    })
+  return sendMjmlEmailFactory({
+    to: ['birgit@redi-school.org', 'janis@redi-school.org'],
+    subject: 'New company in Talent Pool',
+    html,
   })
 }
 
