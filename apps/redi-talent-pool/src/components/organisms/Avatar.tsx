@@ -1,4 +1,4 @@
-import { useCallback, useState, useRef } from 'react'
+import { useCallback, useState } from 'react'
 import { FormikValues, useFormik } from 'formik'
 import classnames from 'classnames'
 import * as Yup from 'yup'
@@ -6,11 +6,7 @@ import Cropper from 'react-easy-crop'
 import ReactS3Uploader from 'react-s3-uploader'
 import { Element } from 'react-bulma-components'
 
-import {
-  Button,
-  Loader,
-  Modal,
-} from '@talent-connect/shared-atomic-design-components'
+import { Button, Modal } from '@talent-connect/shared-atomic-design-components'
 import {
   AWS_PROFILE_AVATARS_BUCKET_BASE_URL,
   S3_UPLOAD_SIGN_URL,
