@@ -5,6 +5,7 @@ import {
   ConProfileMapper,
   UserType,
 } from '@talent-connect/common-types'
+import { deleteUndefinedProperties } from '@talent-connect/shared-utils'
 import { CurrentUserInfo } from '../auth/current-user.interface'
 import { SfApiConProfilesService } from '../salesforce-api/sf-api-con-profiles.service'
 import { FindConProfilesArgs } from './args/find-con-profiles.args'
@@ -98,7 +99,7 @@ export class ConProfilesService {
   async update(updateConProfileInput: PatchConProfileInput) {
     const existingEntity = await this.findOneById(updateConProfileInput.id)
     const props = existingEntity.props
-    const updatesSanitized = deleteUndefinedProps(updateConProfileInput)
+    const updatesSanitized = deleteUndefinedProperties(updateConProfileInput)
     Object.entries(updatesSanitized).forEach(([key, value]) => {
       props[key] = value
     })
@@ -114,14 +115,4 @@ export class ConProfilesService {
   remove(id: number) {
     return `This action removes a #${id} conProfile`
   }
-}
-
-function deleteUndefinedProps<T extends object>(obj: T): T {
-  const returnObject = {}
-  for (const key in obj) {
-    if (obj[key] !== undefined) {
-      Object.assign(returnObject, { [key]: obj[key] })
-    }
-  }
-  return returnObject as T
 }
