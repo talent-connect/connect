@@ -1,9 +1,7 @@
-import React from 'react'
 import { subYears } from 'date-fns'
 
 import {
   FormDatePicker,
-  FormInput,
   FormSelect,
 } from '@talent-connect/shared-atomic-design-components'
 import { Editable } from '@talent-connect/shared-atomic-design-components'
@@ -68,7 +66,7 @@ const EditablePersonalDetail = ({ profile, profileSaveStart }: any) => {
         name="gender"
         placeholder="Prefer not to answer"
         items={formGenders}
-        {...formik}
+        formik={formik}
       />
 
       <FormDatePicker

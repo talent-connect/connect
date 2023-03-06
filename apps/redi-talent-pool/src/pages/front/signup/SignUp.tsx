@@ -284,7 +284,7 @@ export default function SignUp() {
                 name="rediLocation"
                 placeholder="Choose your ReDI Location"
                 items={formRediLocations}
-                {...formik}
+                formik={formik}
               />
             )}
 
@@ -297,7 +297,7 @@ export default function SignUp() {
                 items={formCourses.filter(
                   (course) => course.location === formik.values.rediLocation
                 )}
-                {...formik}
+                formik={formik}
               />
             )}
 
@@ -326,7 +326,7 @@ export default function SignUp() {
                   name="howDidHearAboutRediKey"
                   placeholder="How did you first hear about ReDI Talent Pool?"
                   items={howDidHearAboutRediOptionsEntries}
-                  {...formik}
+                  formik={formik}
                 />
                 {formik.values.howDidHearAboutRediKey === 'other' ? (
                   <FormInput

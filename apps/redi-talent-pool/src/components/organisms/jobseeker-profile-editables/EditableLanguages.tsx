@@ -251,13 +251,13 @@ export function JobseekerFormSectionLanguages({
                           name={`workingLanguages[${index}].language`}
                           label="Language*"
                           items={formLanguages}
-                          {...formik}
+                          formik={formik}
                         />
                         <FormSelect
                           name={`workingLanguages[${index}].proficiencyLevelId`}
                           label="Level of proficiency*"
                           items={formLanguageProficiencyLevels}
-                          {...formik}
+                          formik={formik}
                         />
                       </FormDraggableAccordion>
                     </div>

@@ -199,7 +199,7 @@ export default function SignUp() {
                 name="mentee_currentlyEnrolledInCourse"
                 placeholder="Choose your ReDI Course"
                 items={formCourses}
-                {...formik}
+                formik={formik}
               />
             )}
 

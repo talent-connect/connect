@@ -163,7 +163,7 @@ const MSessions = ({
                 name="minuteDuration"
                 placeholder="Add the duration of the session"
                 items={formMentoringSessionDurationOptions}
-                {...formik}
+                formik={formik}
               />
             </form>
           </Modal.Body>

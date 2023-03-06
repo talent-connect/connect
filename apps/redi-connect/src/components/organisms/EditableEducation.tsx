@@ -72,7 +72,7 @@ const EditableEducation = ({ profile, profileSaveStart }: any) => {
         name="mentee_highestEducationLevel"
         placeholder="Education Level"
         items={formEducationLevels}
-        {...formik}
+        formik={formik}
       />
     </Editable>
   )

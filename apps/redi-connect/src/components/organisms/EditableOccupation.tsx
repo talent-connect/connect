@@ -155,7 +155,7 @@ const EditableOccupation = ({ profile, profileSaveStart }: any) => {
             name="mentee_occupationCategoryId"
             placeholder="Current Occupation"
             items={formMenteeOccupationCategories}
-            {...formik}
+            formik={formik}
           />
           {occupation === 'job' && (
             <>

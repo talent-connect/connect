@@ -274,7 +274,7 @@ function ModalForm({
             label="Location (Federal State in Germany)"
             items={federalStatesOptions}
             placeholder="Select federal states"
-            {...formik}
+            formik={formik}
           />
           <Checkbox.Form
             name="isRemotePossible"
@@ -306,7 +306,7 @@ function ModalForm({
             label="Related positions*"
             name="relatesToPositions"
             items={formRelatedPositions}
-            {...formik}
+            formik={formik}
             multiselect
             placeholder="Start typing and select positions"
             closeMenuOnSelect={false}
@@ -315,7 +315,7 @@ function ModalForm({
             label="Ideal technical skills*"
             name="idealTechnicalSkills"
             items={formTopSkills}
-            {...formik}
+            formik={formik}
             multiselect
             placeholder="Start typing and select skills"
             closeMenuOnSelect={false}
@@ -324,7 +324,7 @@ function ModalForm({
             label="Employment type*"
             name="employmentType"
             items={formEmploymentType}
-            {...formik}
+            formik={formik}
           />
           <FormInput
             name="languageRequirements"

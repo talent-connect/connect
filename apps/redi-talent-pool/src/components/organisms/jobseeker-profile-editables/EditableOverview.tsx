@@ -161,7 +161,7 @@ export function JobseekerFormSectionOverview({
         label="Desired position* (pick 1-3)"
         name="desiredPositions"
         items={formDesiredPositions}
-        {...formik}
+        formik={formik}
         multiselect
         placeholder="Start typing and select positions"
         closeMenuOnSelect={false}
@@ -171,7 +171,7 @@ export function JobseekerFormSectionOverview({
           label="Current ReDI course"
           name="currentlyEnrolledInCourse"
           items={formCourses}
-          {...formik}
+          formik={formik}
         />
       )}
       <Button

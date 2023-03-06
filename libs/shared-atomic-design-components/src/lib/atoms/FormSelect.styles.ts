@@ -25,11 +25,11 @@ export const formSelectStyles = {
   }),
   control: (provided: any, state: any) => ({
     ...provided,
-    borderColor: state.isFocused ? '#ea5b29' : '#a0a0a0',
+    borderColor: state.isFocused ? 'black' : '#A0A0A0',
     minHeight: '48px',
     boxShadow: 'inset 0 2px 6px rgba(178, 180, 181, 0.3)',
     '&:hover': {
-      borderColor: state.isFocused ? '#ea5b29' : '#f6b9a2',
+      borderColor: 'black'
     },
   }),
   multiValue: (provided: any) => ({

@@ -1,8 +1,8 @@
-import React from 'react'
 import Select, { components } from 'react-select'
 import { Form } from 'react-bulma-components'
 import { Icon } from '../atoms'
 import { get } from 'lodash'
+import { useFormik } from 'formik'
 import { formSelectStyles } from './FormSelect.styles'
 
 export const DropdownIndicator = (props: any) => (
@@ -23,24 +23,34 @@ const MultiValueRemove = (props: any) => (
   </components.MultiValueRemove>
 )
 
-// TODO add typed safe props
-function FormSelect(props: any) {
+interface FormSelectOption {
+  value: string | number
+  label: string
+}
+
+interface FormSelectProps {
+  name: string
+  items?: FormSelectOption[]
+  placeholder?: string
+  label?: string
+  customOnChange?: () => void,
+  multiselect?: boolean,
+  disabled?: boolean,
+  closeMenuOnSelect?: boolean,
+  formik: ReturnType<typeof useFormik>
+}
+
+function FormSelect(props: FormSelectProps) {
   const {
     name,
     items,
     placeholder,
     label,
     customOnChange,
-    values,
-    setFieldTouched,
-    handleBlur,
     multiselect,
-    isSubmitting,
-    setFieldValue,
-    touched,
-    errors,
     disabled,
     closeMenuOnSelect,
+    formik: { values, setFieldTouched, setFieldValue, touched, errors, handleBlur, isSubmitting }
   } = props
 
   const handleOnChangeDefault = (option: any = []) => {

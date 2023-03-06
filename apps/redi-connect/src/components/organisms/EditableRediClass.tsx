@@ -61,7 +61,7 @@ const EditableRediClass = ({ profile, profileSaveStart }: any) => {
         label="Which course are you taking at ReDI?"
         name="mentee_currentlyEnrolledInCourse"
         items={formCourses}
-        {...formik}
+        formik={formik}
       />
     </Editable>
   )
