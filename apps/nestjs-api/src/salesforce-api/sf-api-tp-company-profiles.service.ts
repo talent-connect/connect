@@ -163,4 +163,15 @@ export class SfApiTpCompanyProfilesService {
 
     return contactRecords
   }
+
+  async updateTpCompanyProfile(record: AccountRecord) {
+    const accountProps = record.props
+
+    const cleanAccountProps = omit(accountProps, [
+      'CreatedDate',
+      'LastModifiedDate',
+    ])
+
+    await this.repository.updateRecord('Account', cleanAccountProps)
+  }
 }

@@ -8,6 +8,7 @@ import {
   Resolver,
 } from '@nestjs/graphql'
 import {
+  OkResponseMutationOutputDto,
   TpCompanyProfileEntityProps,
   UserContactEntityProps,
 } from '@talent-connect/common-types'
@@ -15,6 +16,7 @@ import { CurrentUser } from '../auth/current-user.decorator'
 import { CurrentUserInfo } from '../auth/current-user.interface'
 import { GqlJwtAuthGuard } from '../auth/gql-jwt-auth.guard'
 import { FindOneTpCompanyProfileArgs } from './args/find-one-tp-company-profile.args'
+import { TpCompanyProfilePatchInput } from './dtos/tp-company-profile-patch.entityinput'
 import { TpCompanyProfilesService } from './tp-company-profiles.service'
 import { TpCompanyRepresentativeRelationshipsService } from './tp-company-representative-relationships.service'
 import {
@@ -62,6 +64,17 @@ export class TpCompanyProfilesResolver {
     const props = entities.map((entity) => entity.props)
 
     return props
+  }
+
+  //! TODO: Add auth
+  @Mutation(() => OkResponseMutationOutputDto, {
+    name: 'tpCompanyProfilePatch',
+  })
+  async patch(
+    @Args('tpCompanyProfilePatchInput') input: TpCompanyProfilePatchInput
+  ) {
+    await this.tpCompanyProfilesService.patch(input)
+    return { ok: true }
   }
 
   @Mutation((of) => TpCompanyProfileSignUpMutationOutputDto, {

@@ -3,7 +3,9 @@ import {
   TpCompanyProfileEntity,
   TpCompanyProfileMapper,
 } from '@talent-connect/common-types'
+import { deleteUndefinedProperties } from '@talent-connect/shared-utils'
 import { SfApiTpCompanyProfilesService } from '../salesforce-api/sf-api-tp-company-profiles.service'
+import { TpCompanyProfilePatchInput } from './dtos/tp-company-profile-patch.entityinput'
 
 @Injectable()
 export class TpCompanyProfilesService {
@@ -31,5 +33,18 @@ export class TpCompanyProfilesService {
     } else {
       throw new NotFoundException('TpCompanyProfile not found')
     }
+  }
+
+  async patch(updateConProfileInput: TpCompanyProfilePatchInput) {
+    const existingEntity = await this.findOneById(updateConProfileInput.id)
+    const props = existingEntity.props
+    const updatesSanitized = deleteUndefinedProperties(updateConProfileInput)
+    Object.entries(updatesSanitized).forEach(([key, value]) => {
+      props[key] = value
+    })
+    const entityToPersist = TpCompanyProfileEntity.create(props)
+    await this.sfService.updateTpCompanyProfile(
+      this.mapper.toPersistence(entityToPersist)
+    )
   }
 }
