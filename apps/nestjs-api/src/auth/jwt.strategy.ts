@@ -4,7 +4,7 @@ import { PassportStrategy } from '@nestjs/passport'
 import {
   ContactRecord,
   ContactRecordProps,
-  UserMapper,
+  UserContactMapper,
 } from '@talent-connect/common-types'
 import { ExtractJwt, Strategy } from 'passport-jwt'
 import { SfApiRepository } from '../salesforce-api/sf-api.repository'
@@ -15,7 +15,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
     private readonly configService: ConfigService,
     private readonly salesforceRepository: SfApiRepository,
-    private readonly userMapper: UserMapper
+    private readonly userMapper: UserContactMapper
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),

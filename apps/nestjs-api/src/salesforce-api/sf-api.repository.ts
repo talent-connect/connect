@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common'
+import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { SalesforceMutationIdResult } from '@talent-connect/common-types'
+import { Cache } from 'cache-manager'
 import * as jsforce from 'jsforce'
 import { omit, pick } from 'lodash'
 const async = require('async')
@@ -15,7 +16,10 @@ export class SfApiRepository {
   private clientSecret: string
   private connection: any
 
-  constructor(private readonly configService: ConfigService) {
+  constructor(
+    private readonly configService: ConfigService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache
+  ) {
     this.loginUrl = this.configService.get<string>(
       'NX_SALESFORCE_API_LOGIN_URL'
     )
@@ -52,6 +56,12 @@ export class SfApiRepository {
 
   private findRecordsOfObjectQueue = async.queue(
     async (task: FindRecordsParams, callback) => {
+      const cacheKey = JSON.stringify(task)
+      const cachedResult = await this.cacheManager.get(cacheKey)
+      if (cachedResult) {
+        return callback(cachedResult)
+      }
+
       await this.connect()
       const {
         objectName,
@@ -123,8 +133,9 @@ export class SfApiRepository {
         records.push(record)
       })
 
-      result.on('end', function () {
+      result.on('end', async () => {
         console.log('[SfApiRepository]', `Found ${records.length} records`)
+        await this.cacheManager.set(cacheKey, records, 60 * 10)
         callback(records)
       })
 
@@ -156,6 +167,7 @@ export class SfApiRepository {
     console.log(
       `[SfApiRepository] CREATEd ${objectName} record with id ${createResult.id}`
     )
+    await this.cacheManager.reset()
     return createResult
   }
 
@@ -170,6 +182,7 @@ export class SfApiRepository {
     console.log(
       `[SfApiRepository] UPDATEd ${objectName} record with id ${updateResult.id}`
     )
+    await this.cacheManager.reset()
     return updateResult
   }
 
@@ -178,6 +191,7 @@ export class SfApiRepository {
     console.log(
       `[SfApiRepository] DELETEd ${objectName} record with id ${recordId}`
     )
+    await this.cacheManager.reset()
   }
 
   async findUpdateOrInsert<T>(

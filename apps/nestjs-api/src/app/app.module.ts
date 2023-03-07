@@ -1,5 +1,5 @@
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo'
-import { Module } from '@nestjs/common'
+import { CacheModule, Module } from '@nestjs/common'
 import { EventEmitterModule } from '@nestjs/event-emitter'
 import { GraphQLModule } from '@nestjs/graphql'
 import { AuthModule } from '../auth/auth.module'
@@ -14,6 +14,7 @@ import { SalesforceRecordEventsListenerModule } from '../salesforce-record-event
 import { TpCompanyProfilesModule } from '../tp-company-profiles/tp-company-profiles.module'
 import { TpCurrentUserDataModule } from '../tp-current-user-data/tp-current-user-data.module'
 import { TpJobseekerProfilesModule } from '../tp-jobseeker-profiles/tp-jobseeker-profiles.module'
+import { UserContactModule } from '../user-contact/user-contact.module'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 
@@ -28,6 +29,7 @@ import { AppService } from './app.service'
       debug: true,
     }),
     EventEmitterModule.forRoot(),
+    CacheModule.register(),
     EmailModule,
     SfApiModule,
     SalesforceRecordEventsListenerModule,
@@ -40,6 +42,7 @@ import { AppService } from './app.service'
     TpCompanyProfilesModule,
     TpJobseekerProfilesModule,
     TpCurrentUserDataModule,
+    UserContactModule,
   ],
   controllers: [AppController],
   providers: [AppService],

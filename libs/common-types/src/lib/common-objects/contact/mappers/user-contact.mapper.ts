@@ -1,12 +1,18 @@
 import { Injectable } from '@nestjs/common'
-import { Gender, Mapper } from '@talent-connect/common-types'
+import {
+  FirstPointOfTpContactOption,
+  Gender,
+  Mapper,
+} from '@talent-connect/common-types'
 import { ContactRecord } from '../contact.record'
 import { ContactRecordProps } from '../contact.recordprops'
 import { UserContactEntity } from '../user-contact.entity'
 import { UserContactEntityProps } from '../user-contact.entityprops'
 
 @Injectable()
-export class UserMapper implements Mapper<UserContactEntity, ContactRecord> {
+export class UserContactMapper
+  implements Mapper<UserContactEntity, ContactRecord>
+{
   fromPersistence(raw: ContactRecord): UserContactEntity {
     const props = new UserContactEntityProps()
 
@@ -34,8 +40,15 @@ export class UserMapper implements Mapper<UserContactEntity, ContactRecord> {
 
     props.behanceUrl = raw.props.ReDI_Behance_URL__c
     props.dribbbleUrl = raw.props.ReDI_Dribbble_URL__c
+    props.personalWebsite = raw.props.ReDI_Website_Portfolio__c
     props.stackOverflowUrl = raw.props.ReDI_Stack_Overflow_URL__c
+    props.twitterUrl = raw.props.ReDI_Twitter_URL__c
     props.postalMailingAddress = raw.props.CON_TP_Mailing_Address__c
+
+    props.howDidHearAboutRediKey = raw.props
+      .ReDI_First_Point_of_Contact_Talent_Pool__c as FirstPointOfTpContactOption
+    props.howDidHearAboutRediOtherText =
+      raw.props.ReDI_First_Point_of_Contact_Other_TP__c
 
     props.telephoneNumber = raw.props.MobilePhone
     props.createdAt = raw.props.CreatedDate
@@ -63,8 +76,15 @@ export class UserMapper implements Mapper<UserContactEntity, ContactRecord> {
 
     props.ReDI_Behance_URL__c = srcProps.behanceUrl
     props.ReDI_Dribbble_URL__c = srcProps.dribbbleUrl
+    props.ReDI_Website_Portfolio__c = srcProps.personalWebsite
     props.ReDI_Stack_Overflow_URL__c = srcProps.stackOverflowUrl
+    props.ReDI_Twitter_URL__c = srcProps.twitterUrl
     props.CON_TP_Mailing_Address__c = srcProps.postalMailingAddress
+
+    props.ReDI_First_Point_of_Contact_Talent_Pool__c =
+      srcProps.howDidHearAboutRediKey
+    props.ReDI_First_Point_of_Contact_Other_TP__c =
+      srcProps.howDidHearAboutRediOtherText
 
     props.MobilePhone = srcProps.telephoneNumber
     props.CreatedDate = srcProps.createdAt

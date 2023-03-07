@@ -35,10 +35,14 @@ export class TpCompanyProfilesService {
     }
   }
 
-  async patch(updateConProfileInput: TpCompanyProfilePatchInput) {
-    const existingEntity = await this.findOneById(updateConProfileInput.id)
+  async patch(updateTpCompanyProfileInput: TpCompanyProfilePatchInput) {
+    const existingEntity = await this.findOneById(
+      updateTpCompanyProfileInput.id
+    )
     const props = existingEntity.props
-    const updatesSanitized = deleteUndefinedProperties(updateConProfileInput)
+    const updatesSanitized = deleteUndefinedProperties(
+      updateTpCompanyProfileInput
+    )
     Object.entries(updatesSanitized).forEach(([key, value]) => {
       props[key] = value
     })

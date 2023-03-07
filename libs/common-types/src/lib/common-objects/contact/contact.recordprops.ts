@@ -13,6 +13,7 @@ export class ContactRecordProps implements RecordProps {
   ReDI_Gender_Pronouns__c?: string
   ReDI_Slack_Username__c?: string
   ReDI_Stack_Overflow_URL__c?: string
+  ReDI_Twitter_URL__c?: string
   ReDI_Website_Portfolio__c?: string
   LinkedIn_Profile__c?: string
   ReDI_GitHub_Profile__c?: string

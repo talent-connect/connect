@@ -172,6 +172,9 @@ export class SfApiTpCompanyProfilesService {
       'LastModifiedDate',
     ])
 
-    await this.repository.updateRecord('Account', cleanAccountProps)
+    await this.repository.updateRecord(
+      AccountRecord.metadata.SALESFORCE_OBJECT_NAME,
+      cleanAccountProps
+    )
   }
 }

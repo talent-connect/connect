@@ -1,7 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
-import { TpJobListingMapper } from '@talent-connect/common-types'
+import {
+  TpJobListingEntity,
+  TpJobListingMapper,
+} from '@talent-connect/common-types'
+import { deleteUndefinedProperties } from '@talent-connect/shared-utils'
 import { SfApiTpJobListingsService } from '../salesforce-api/sf-api-tp-job-listings.service'
 import { FindAllVisibleTpJobListingsArgs } from './args/find-all-visible-tp-jobseeker-profiles.args'
+import { TpJobListingPatchInput } from './dtos/tp-job-listing-patch.entityinput'
 
 @Injectable()
 export class TpJobListingsService {
@@ -64,5 +69,18 @@ export class TpJobListingsService {
     } else {
       throw new NotFoundException('TpJobListing not found with id: ' + id)
     }
+  }
+
+  async patch(input: TpJobListingPatchInput) {
+    const existingEntity = await this.findOne(input.id)
+    const props = existingEntity.props
+    const updatesSanitized = deleteUndefinedProperties(input)
+    Object.entries(updatesSanitized).forEach(([key, value]) => {
+      props[key] = value
+    })
+    const entityToPersist = TpJobListingEntity.create(props)
+    await this.api.updateTpJobListing(
+      this.mapper.toPersistence(entityToPersist)
+    )
   }
 }

@@ -1,8 +1,9 @@
-import { Module } from '@nestjs/common'
+import { CacheModule, Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { SfApiConMentoringSessionsService } from './sf-api-con-mentoring-sessions.service'
 import { SfApiConMentorshipMatchesService } from './sf-api-con-mentorship-matches.service'
 import { SfApiConProfilesService } from './sf-api-con-profiles.service'
+import { SfApiContactService } from './sf-api-contact.service'
 import { SfApiTpCompanyProfilesService } from './sf-api-tp-company-profiles.service'
 import { SfApiTpJobListingsService } from './sf-api-tp-job-listings.service'
 import { SfApiTpJobseekerProfilesService } from './sf-api-tp-jobseeker-profiles.service'
@@ -17,8 +18,9 @@ import { SfApiRepository } from './sf-api.repository'
     SfApiTpCompanyProfilesService,
     SfApiTpJobseekerProfilesService,
     SfApiTpJobListingsService,
+    SfApiContactService,
   ],
-  imports: [ConfigModule],
+  imports: [ConfigModule, CacheModule.register()],
   exports: [
     SfApiConProfilesService,
     SfApiConMentoringSessionsService,
@@ -28,6 +30,7 @@ import { SfApiRepository } from './sf-api.repository'
     SfApiTpCompanyProfilesService,
     SfApiTpJobseekerProfilesService,
     SfApiTpJobListingsService,
+    SfApiContactService,
   ],
 })
 export class SfApiModule {}

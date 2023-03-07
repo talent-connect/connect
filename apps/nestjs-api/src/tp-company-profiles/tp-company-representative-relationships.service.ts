@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 import {
   TpCompanyProfileMapper,
   TpCompanyRepresentativeRelationshipMapper,
-  UserMapper,
+  UserContactMapper,
 } from '@talent-connect/common-types'
 import { SfApiTpCompanyProfilesService } from '../salesforce-api/sf-api-tp-company-profiles.service'
 
@@ -12,7 +12,7 @@ export class TpCompanyRepresentativeRelationshipsService {
     private readonly sfService: SfApiTpCompanyProfilesService,
     private readonly tpCompanyProfileMapper: TpCompanyProfileMapper,
     private readonly tpCompanyRepresentativeRelationshipMapper: TpCompanyRepresentativeRelationshipMapper,
-    private readonly userMapper: UserMapper
+    private readonly userMapper: UserContactMapper
   ) {}
 
   async findCompanyRepresentativeRelationshipByUser(userId: string) {
