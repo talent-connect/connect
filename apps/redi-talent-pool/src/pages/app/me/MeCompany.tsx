@@ -3,6 +3,7 @@ import {
   CompanyTalentPoolState,
   MyTpDataQuery,
   useMyTpDataQuery,
+  usePatchTpCompanyProfileMutation,
 } from '@talent-connect/data-access'
 import {
   Button,
@@ -19,31 +20,15 @@ import { EditableJobPostings } from '../../../components/organisms/company-profi
 import { EditableNamePhotoLocation } from '../../../components/organisms/company-profile-editables/EditableNamePhotoLocation'
 import { LoggedIn } from '../../../components/templates'
 import { useIsBusy } from '../../../hooks/useIsBusy'
-import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
+import { queryClient } from '../../../services/api/api'
 import { OnboardingSteps } from './TpCompanyProfileOnboardingSteps'
 
 export function MeCompany() {
   const myData = useMyTpDataQuery()
 
-  const mutation = useTpCompanyProfileUpdateMutation() //TODO: replace
+  const mutation = usePatchTpCompanyProfileMutation()
 
   const [isJobPostingFormOpen, setIsJobPostingFormOpen] = useState(false)
-
-  // TODO: finish function
-  const onHideFromJobseekersCheckboxChange = () => {
-    // mutation.mutate({
-    //   ...profile,
-    //   isProfileVisibleToJobseekers: !profile.isProfileVisibleToJobseekers,
-    // })
-  }
-
-  // TODO: finish function
-  const onJobFair2023ParticipateChange = () => {
-    // mutation.mutate({
-    //   ...profile,
-    //   isJobFair2023Participant: !profile.isJobFair2023Participant,
-    // })
-  }
 
   const {
     companyRepresentativeRelationship: representativeRelationship,
@@ -51,6 +36,27 @@ export function MeCompany() {
     jobListings,
     userContact,
   } = myData.data.tpCurrentUserDataGet
+
+  const onHideFromJobseekersCheckboxChange = async () => {
+    await mutation.mutateAsync({
+      input: {
+        id: companyProfile.id,
+        isProfileVisibleToJobseekers:
+          !companyProfile.isProfileVisibleToJobseekers,
+      },
+    })
+    queryClient.invalidateQueries()
+  }
+
+  const onJobFair2023ParticipateChange = async () => {
+    await mutation.mutateAsync({
+      input: {
+        id: companyProfile.id,
+        isJobFair2023Participant: !companyProfile.isJobFair2023Participant,
+      },
+    })
+    queryClient.invalidateQueries()
+  }
 
   const isProfileApproved =
     companyProfile.state === CompanyTalentPoolState.ProfileApproved
@@ -156,9 +162,7 @@ function SendProfileForReviewButton() {
   const userContact = myData.data?.tpCurrentUserDataGet?.userContact
   const jobListings = myData.data?.tpCurrentUserDataGet?.jobListings
 
-  // const { data: profile } = useTpCompanyProfileQuery()
-  // const { data: jobListings } = useTpJobListingAllQuery()
-  const mutation = useTpCompanyProfileUpdateMutation()
+  const mutation = usePatchTpCompanyProfileMutation()
 
   const enabled =
     companyProfile?.state === CompanyTalentPoolState.DraftingProfile &&
@@ -175,11 +179,18 @@ function SendProfileForReviewButton() {
     return 'Your profile is currently being reviewed'
   }
 
-  const onClick = () => {
+  const onClick = async () => {
     if (!window.confirm('Would you like to submit your profile for review?'))
       return
 
-    mutation.mutate({ ...companyProfile, state: 'submitted-for-review' })
+    // TODO: we should have a use case for this change instead of this patch
+    await mutation.mutate({
+      input: {
+        id: companyProfile.id,
+        state: CompanyTalentPoolState.SubmittedForReview,
+      },
+    })
+    queryClient.invalidateQueries()
   }
 
   if (enabled) {

@@ -1,4 +1,7 @@
-import { useMyTpDataQuery } from '@talent-connect/data-access'
+import {
+  useMyTpDataQuery,
+  usePatchTpCompanyProfileMutation,
+} from '@talent-connect/data-access'
 import {
   Button,
   Caption,
@@ -8,7 +11,7 @@ import { TpCompanyProfile } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
 import { useEffect, useMemo, useState } from 'react'
 import { Content, Element } from 'react-bulma-components'
-import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
+import { useQueryClient } from 'react-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import { EditableDetailsCompanyProfilePropFragment } from './EditableDetails.generated'
@@ -113,10 +116,11 @@ function ModalForm({
   setIsEditing: (boolean) => void
   setIsFormDirty: (boolean) => void
 }) {
+  const queryClient = useQueryClient()
   const myData = useMyTpDataQuery()
   const { representedCompany: companyProfile } =
     myData?.data?.tpCurrentUserDataGet
-  const mutation = useTpCompanyProfileUpdateMutation()
+  const mutation = usePatchTpCompanyProfileMutation()
 
   const initialValues: Partial<TpCompanyProfile> = useMemo(
     () => ({
@@ -127,16 +131,22 @@ function ModalForm({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )
-  const onSubmit = (values: Partial<TpCompanyProfile>) => {
+  const onSubmit = (
+    values: Partial<EditableDetailsCompanyProfilePropFragment>
+  ) => {
     formik.setSubmitting(true)
-    mutation.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
-      },
-    })
+    mutation.mutate(
+      { input: { id: companyProfile.id, ...values } },
+      {
+        onSettled: () => {
+          formik.setSubmitting(false)
+        },
+        onSuccess: () => {
+          setIsEditing(false)
+          queryClient.invalidateQueries()
+        },
+      }
+    )
   }
   const formik = useFormik({
     initialValues,

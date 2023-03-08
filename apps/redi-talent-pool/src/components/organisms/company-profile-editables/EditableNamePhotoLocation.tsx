@@ -1,4 +1,7 @@
-import { useMyTpDataQuery } from '@talent-connect/data-access'
+import {
+  useMyTpDataQuery,
+  usePatchTpCompanyProfileMutation,
+} from '@talent-connect/data-access'
 import {
   Button,
   FormInput,
@@ -6,12 +9,11 @@ import {
   Heading,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
-import { TpCompanyProfile } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
 import { useEffect, useMemo, useState } from 'react'
 import { Columns, Content, Element } from 'react-bulma-components'
+import { useQueryClient } from 'react-query'
 import * as Yup from 'yup'
-import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import Avatar from '../Avatar'
@@ -26,12 +28,23 @@ export function EditableNamePhotoLocation({
   companyProfile,
   disableEditing,
 }: Props) {
-  const mutation = useTpCompanyProfileUpdateMutation()
+  const queryClient = useQueryClient()
+  const mutation = usePatchTpCompanyProfileMutation()
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
   const isLocationEmpty =
     EditableNamePhotoLocation.isSectionEmpty(companyProfile)
+
+  const onNewAvatarReady = async (newAvatarUrl: string) => {
+    await mutation.mutate({
+      input: {
+        id: companyProfile.id,
+        profileAvatarImageS3Key: newAvatarUrl,
+      },
+    })
+    queryClient.invalidateQueries()
+  }
 
   return (
     <Editable
@@ -45,7 +58,7 @@ export function EditableNamePhotoLocation({
             {companyProfile ? (
               <Avatar.Editable
                 profile={companyProfile}
-                profileSaveStart={mutation.mutate}
+                profileSaveStart={onNewAvatarReady}
                 callToActionText="Please add your company logo"
                 shape="square"
               />
@@ -122,29 +135,38 @@ function ModalForm({
   setIsEditing: (boolean) => void
   setIsFormDirty: (boolean) => void
 }) {
+  const queryClient = useQueryClient()
   const myData = useMyTpDataQuery()
   const { representedCompany: companyProfile } =
     myData?.data?.tpCurrentUserDataGet
-  const mutation = useTpCompanyProfileUpdateMutation()
-  const initialValues: Partial<TpCompanyProfile> = useMemo(
-    () => ({
-      companyName: companyProfile?.companyName ?? '',
-      location: companyProfile?.location ?? '',
-      tagline: companyProfile?.tagline ?? '',
-    }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  )
-  const onSubmit = (values: Partial<TpCompanyProfile>) => {
+  const mutation = usePatchTpCompanyProfileMutation()
+  console.log(myData)
+  const initialValues: Partial<EditableNamePhotoLocationProfilePropFragment> =
+    useMemo(
+      () => ({
+        companyName: companyProfile?.companyName ?? '',
+        location: companyProfile?.location ?? '',
+        tagline: companyProfile?.tagline ?? '',
+      }),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      []
+    )
+  const onSubmit = (
+    values: Partial<EditableNamePhotoLocationProfilePropFragment>
+  ) => {
     formik.setSubmitting(true)
-    mutation.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
-      },
-    })
+    mutation.mutate(
+      { input: { id: companyProfile.id, ...values } },
+      {
+        onSettled: () => {
+          formik.setSubmitting(false)
+        },
+        onSuccess: () => {
+          setIsEditing(false)
+          queryClient.invalidateQueries()
+        },
+      }
+    )
   }
   const formik = useFormik({
     initialValues,

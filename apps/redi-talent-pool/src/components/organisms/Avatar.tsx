@@ -26,9 +26,7 @@ interface AvatarProps {
 }
 interface AvatarEditable {
   profile: Partial<TpJobseekerProfile> | Partial<TpCompanyProfile>
-  profileSaveStart: (
-    profile: Partial<TpJobseekerProfile> | Partial<TpCompanyProfile>
-  ) => void
+  profileSaveStart: (newAvatarUrl: string) => void
   callToActionText?: string
   shape?: 'circle' | 'square'
 }
@@ -95,8 +93,7 @@ const AvatarEditable = ({
   const imgURL = profileAvatarImageS3Key
 
   const submitForm = async (values: FormikValues) => {
-    const profileMe = values as Partial<TpJobseekerProfile>
-    profileSaveStart({ ...profileMe, id: profile.id })
+    profileSaveStart(imgURL)
   }
 
   const initialValues: AvatarFormValues = {

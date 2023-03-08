@@ -42,6 +42,17 @@ export function EditableNamePhotoLocation({ profile, disableEditing }: Props) {
 
   const isLocationEmpty = EditableNamePhotoLocation.isSectionEmpty(profile)
 
+  //! TODO: FINISH!
+  const onNewAvatarReady = async (newAvatarUrl: string) => {
+    // await mutation.mutate({
+    //   input: {
+    //     id: companyProfile.id,
+    //     profileAvatarImageS3Key: newAvatarUrl,
+    //   },
+    // })
+    // queryClient.invalidateQueries()
+  }
+
   return (
     <Editable
       disableEditing={disableEditing}
@@ -54,7 +65,7 @@ export function EditableNamePhotoLocation({ profile, disableEditing }: Props) {
             {profile && !disableEditing ? (
               <Avatar.Editable
                 profile={profile}
-                profileSaveStart={mutation.mutate}
+                profileSaveStart={onNewAvatarReady}
               />
             ) : null}
             {profile && disableEditing ? <Avatar profile={profile} /> : null}

@@ -572,7 +572,10 @@ export type Mutation = {
   conProfileSignUp: OkIdResponseMutationOutputDto;
   createConMentoringSession: ConMentoringSession;
   patchConProfile: ConProfile;
+  tpCompanyProfilePatch: OkResponseMutationOutputDto;
   tpCompanyProfileSignUp: TpCompanyProfileSignUpInputOutputDto;
+  tpJobListingPatch: OkResponseMutationOutputDto;
+  userContactPatch: OkResponseMutationOutputDto;
 };
 
 
@@ -636,8 +639,23 @@ export type MutationPatchConProfileArgs = {
 };
 
 
+export type MutationTpCompanyProfilePatchArgs = {
+  tpCompanyProfilePatchInput: TpCompanyProfilePatchInput;
+};
+
+
 export type MutationTpCompanyProfileSignUpArgs = {
   input: TpCompanyProfileSignUpInputDto;
+};
+
+
+export type MutationTpJobListingPatchArgs = {
+  tpJobListingPatchInput: TpJobListingPatchInput;
+};
+
+
+export type MutationUserContactPatchArgs = {
+  userContactPatchInput: UserContactPatchInput;
 };
 
 export enum OccupationCategory {
@@ -800,6 +818,22 @@ export type TpCompanyProfile = {
   website?: Maybe<Scalars['String']>;
 };
 
+export type TpCompanyProfilePatchInput = {
+  about?: InputMaybe<Scalars['String']>;
+  companyName?: InputMaybe<Scalars['String']>;
+  id: Scalars['ID'];
+  industry?: InputMaybe<Scalars['String']>;
+  isJobFair2023Participant?: InputMaybe<Scalars['Boolean']>;
+  isProfileVisibleToJobseekers?: InputMaybe<Scalars['Boolean']>;
+  linkedInUrl?: InputMaybe<Scalars['String']>;
+  location?: InputMaybe<Scalars['String']>;
+  phoneNumber?: InputMaybe<Scalars['String']>;
+  profileAvatarImageS3Key?: InputMaybe<Scalars['String']>;
+  state?: InputMaybe<CompanyTalentPoolState>;
+  tagline?: InputMaybe<Scalars['String']>;
+  website?: InputMaybe<Scalars['String']>;
+};
+
 export type TpCompanyProfileSignUpInputDto = {
   companyIdOrName: Scalars['String'];
   firstName: Scalars['String'];
@@ -934,6 +968,19 @@ export type TpJobListing = {
   summary?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
+};
+
+export type TpJobListingPatchInput = {
+  employmentType?: InputMaybe<TpEmploymentType>;
+  id: Scalars['ID'];
+  idealTechnicalSkills?: InputMaybe<Array<TpTechnicalSkill>>;
+  isRemotePossible?: InputMaybe<Scalars['Boolean']>;
+  languageRequirements?: InputMaybe<Scalars['String']>;
+  location?: InputMaybe<Scalars['String']>;
+  relatesToPositions?: InputMaybe<Array<TpDesiredPosition>>;
+  salaryRange?: InputMaybe<Scalars['String']>;
+  summary?: InputMaybe<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']>;
 };
 
 export type TpJobseekerProfile = {
@@ -1144,6 +1191,27 @@ export type UserContact = {
   telephoneNumber?: Maybe<Scalars['String']>;
   twitterUrl?: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
+};
+
+export type UserContactPatchInput = {
+  behanceUrl?: InputMaybe<Scalars['String']>;
+  birthDate?: InputMaybe<Scalars['DateTime']>;
+  dribbbleUrl?: InputMaybe<Scalars['String']>;
+  firstName?: InputMaybe<Scalars['String']>;
+  gender?: InputMaybe<Gender>;
+  githubProfileUrl?: InputMaybe<Scalars['String']>;
+  howDidHearAboutRediKey?: InputMaybe<FirstPointOfTpContactOption>;
+  howDidHearAboutRediOtherText?: InputMaybe<Scalars['String']>;
+  id: Scalars['ID'];
+  lastName?: InputMaybe<Scalars['String']>;
+  linkedInProfileUrl?: InputMaybe<Scalars['String']>;
+  personalDescription?: InputMaybe<Scalars['String']>;
+  personalWebsite?: InputMaybe<Scalars['String']>;
+  postalMailingAddress?: InputMaybe<Scalars['String']>;
+  slackUsername?: InputMaybe<Scalars['String']>;
+  stackOverflowUrl?: InputMaybe<Scalars['String']>;
+  telephoneNumber?: InputMaybe<Scalars['String']>;
+  twitterUrl?: InputMaybe<Scalars['String']>;
 };
 
 export enum UserType {

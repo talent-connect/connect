@@ -1,0 +1,5 @@
+mutation patchUserContact($input: UserContactPatchInput!) {
+  userContactPatch(userContactPatchInput: $input) {
+    ok
+  }
+}

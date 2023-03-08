@@ -545,7 +545,10 @@ type Mutation {
   conProfileSignUp(input: ConProfileSignUpInput!): OkIdResponseMutationOutputDto!
   createConMentoringSession(createConMentoringSessionInput: CreateConMentoringSessionInput!): ConMentoringSession!
   patchConProfile(patchConProfileInput: UpdateConProfileInput!): ConProfile!
+  tpCompanyProfilePatch(tpCompanyProfilePatchInput: TpCompanyProfilePatchInput!): OkResponseMutationOutputDto!
   tpCompanyProfileSignUp(input: TpCompanyProfileSignUpInputDto!): TpCompanyProfileSignUpInputOutputDto!
+  tpJobListingPatch(tpJobListingPatchInput: TpJobListingPatchInput!): OkResponseMutationOutputDto!
+  userContactPatch(userContactPatchInput: UserContactPatchInput!): OkResponseMutationOutputDto!
 }
 
 enum OccupationCategory {
@@ -660,6 +663,22 @@ type TpCompanyProfile {
   state: CompanyTalentPoolState!
   tagline: String
   updatedAt: DateTime!
+  website: String
+}
+
+input TpCompanyProfilePatchInput {
+  about: String
+  companyName: String
+  id: ID!
+  industry: String
+  isJobFair2023Participant: Boolean
+  isProfileVisibleToJobseekers: Boolean
+  linkedInUrl: String
+  location: String
+  phoneNumber: String
+  profileAvatarImageS3Key: String
+  state: CompanyTalentPoolState
+  tagline: String
   website: String
 }
 
@@ -793,6 +812,19 @@ type TpJobListing {
   summary: String
   title: String
   updatedAt: DateTime!
+}
+
+input TpJobListingPatchInput {
+  employmentType: TpEmploymentType
+  id: ID!
+  idealTechnicalSkills: [TpTechnicalSkill!]
+  isRemotePossible: Boolean
+  languageRequirements: String
+  location: String
+  relatesToPositions: [TpDesiredPosition!]
+  salaryRange: String
+  summary: String
+  title: String
 }
 
 type TpJobseekerProfile {
@@ -1001,6 +1033,27 @@ type UserContact {
   telephoneNumber: String
   twitterUrl: String
   updatedAt: DateTime!
+}
+
+input UserContactPatchInput {
+  behanceUrl: String
+  birthDate: DateTime
+  dribbbleUrl: String
+  firstName: String
+  gender: Gender
+  githubProfileUrl: String
+  howDidHearAboutRediKey: FirstPointOfTpContactOption
+  howDidHearAboutRediOtherText: String
+  id: ID!
+  lastName: String
+  linkedInProfileUrl: String
+  personalDescription: String
+  personalWebsite: String
+  postalMailingAddress: String
+  slackUsername: String
+  stackOverflowUrl: String
+  telephoneNumber: String
+  twitterUrl: String
 }
 
 enum UserType {

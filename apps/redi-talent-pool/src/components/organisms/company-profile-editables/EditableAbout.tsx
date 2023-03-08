@@ -1,15 +1,16 @@
-import { useMyTpDataQuery } from '@talent-connect/data-access'
+import {
+  useMyTpDataQuery,
+  usePatchTpCompanyProfileMutation,
+} from '@talent-connect/data-access'
 import {
   Button,
   Caption,
   FormTextArea,
 } from '@talent-connect/shared-atomic-design-components'
-import { TpCompanyProfile } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
 import { useEffect, useMemo, useState } from 'react'
 import { Content, Element } from 'react-bulma-components'
 import ReactMarkdown from 'react-markdown'
-import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import { EditableAboutProfilePropFragment } from './EditableAbout.generated'
@@ -68,10 +69,12 @@ export function EditableAbout({ companyProfile, disableEditing }: Props) {
   )
 }
 
-EditableAbout.isSectionFilled = (profile: Partial<TpCompanyProfile>) =>
-  !!profile?.about
-EditableAbout.isSectionEmpty = (profile: Partial<TpCompanyProfile>) =>
-  !EditableAbout.isSectionFilled(profile)
+EditableAbout.isSectionFilled = (
+  profile: Partial<EditableAboutProfilePropFragment>
+) => !!profile?.about
+EditableAbout.isSectionEmpty = (
+  profile: Partial<EditableAboutProfilePropFragment>
+) => !EditableAbout.isSectionFilled(profile)
 
 function ModalForm({
   setIsEditing,
@@ -84,24 +87,27 @@ function ModalForm({
   const { representedCompany: companyProfile } =
     myData?.data?.tpCurrentUserDataGet
 
-  const mutation = useTpCompanyProfileUpdateMutation()
-  const initialValues: Partial<TpCompanyProfile> = useMemo(
+  const mutation = usePatchTpCompanyProfileMutation()
+  const initialValues: Partial<EditableAboutProfilePropFragment> = useMemo(
     () => ({
       about: companyProfile?.about ?? '',
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )
-  const onSubmit = (values: Partial<TpCompanyProfile>) => {
+  const onSubmit = (values: Partial<EditableAboutProfilePropFragment>) => {
     formik.setSubmitting(true)
-    mutation.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
-      },
-    })
+    mutation.mutate(
+      { input: { id: companyProfile.id, ...values } },
+      {
+        onSettled: () => {
+          formik.setSubmitting(false)
+        },
+        onSuccess: () => {
+          setIsEditing(false)
+        },
+      }
+    )
   }
   const formik = useFormik({
     initialValues,

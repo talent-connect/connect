@@ -14,6 +14,8 @@ export class TpCompanyProfilePatchInput extends IntersectionType(
   PickType(_TpCompanyProfileEntityProps, ['id'] as const),
   PartialType(
     PickType(_TpCompanyProfileEntityProps, [
+      // TODO: companies should not be able to change state directly - that should be done via a proper use case mutation
+      'state',
       'about',
       'companyName',
       'industry',
