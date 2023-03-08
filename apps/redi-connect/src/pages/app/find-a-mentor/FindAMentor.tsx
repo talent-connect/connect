@@ -48,17 +48,7 @@ function FindAMentor({ profile, profileSaveStart }: FindAMentorProps) {
   profile = ensureNoUndefinedArrayPropertiesInProfile(profile)
   const { Loading, isLoading, setLoading } = useLoading()
   const [allFetchedMentors, setAllFetchedMentors] = useState<RedProfile[]>([])
-  const [
-    {
-      nameQuery,
-      onlyFavorites,
-      mentoringTopics,
-      mentoringTopicsToolsAndFrameworks,
-      locations,
-      roles,
-    },
-    setQuery,
-  ] = useQueryParams({
+  const [queryParams, setQuery] = useQueryParams({
     nameQuery: withDefault(StringParam, undefined),
     onlyFavorites: withDefault(BooleanParam, undefined),
     mentoringTopics: withDefault(ArrayParam, []),
@@ -66,6 +56,15 @@ function FindAMentor({ profile, profileSaveStart }: FindAMentorProps) {
     locations: withDefault(ArrayParam, []),
     roles: withDefault(ArrayParam, []),
   })
+
+  const nameQuery = queryParams.nameQuery
+  const onlyFavorites = queryParams.onlyFavorites
+  const mentoringTopics =
+    queryParams.mentoringTopics as Array<MentoringTopicKey>
+  const mentoringTopicsToolsAndFrameworks =
+    queryParams.mentoringTopicsToolsAndFrameworks as Array<MentoringTopicKey>
+  const locations = queryParams.locations
+  const roles = queryParams.roles
 
   useEffect(() => {
     setLoading(true)
@@ -118,8 +117,9 @@ function FindAMentor({ profile, profileSaveStart }: FindAMentorProps) {
   }
 
   const isMenteeProfileComplete = ensureMenteeProfileIsComplete(profile)
-  
-  if (profile.userActivated !== true || !isMenteeProfileComplete) return <LoggedIn />
+
+  if (profile.userActivated !== true || !isMenteeProfileComplete)
+    return <LoggedIn />
 
   const eligibleMentors = allFetchedMentors
     .filter((mentor) => mentor.currentFreeMenteeSpots > 0)
@@ -550,7 +550,6 @@ function ensureNoUndefinedArrayPropertiesInProfile(mentor: RedProfile) {
     'mentee_secondaryRole_mentoringTopics',
     'mentee_toolsAndFrameworks_mentoringTopics',
   ]
-
 
   keys.forEach((key) => {
     if (mentor[key] === undefined) {
