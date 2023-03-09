@@ -17,7 +17,7 @@ export const formSelectStyles = {
   }),
   dropdownIndicator: (provided: any, state: any) => ({
     ...provided,
-    color: state.isFocused ? '#ea5b29' : '#a0a0a0',
+    transition: 'ease-in-out all 0.2s',
     transform: state.selectProps.menuIsOpen ? 'rotate(180deg)' : 'none',
     svg: {
       margin: '0 0.1rem',
