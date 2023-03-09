@@ -1,6 +1,6 @@
-import React from 'react'
 import _uniqueId from 'lodash/uniqueId'
-import { Form, Element } from 'react-bulma-components'
+import React from 'react'
+import { Element, Form } from 'react-bulma-components'
 import './Checkbox.scss'
 
 interface Props {

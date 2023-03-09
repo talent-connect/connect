@@ -1,18 +1,19 @@
-import React from 'react'
-import { FormSelect } from '@talent-connect/shared-atomic-design-components'
-import { Editable } from '@talent-connect/shared-atomic-design-components'
+import {
+  Editable,
+  FormSelect,
+} from '@talent-connect/shared-atomic-design-components'
 import { RedProfile } from '@talent-connect/shared-types'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
 
-import { profileSaveStart } from '../../redux/user/actions'
 import * as Yup from 'yup'
+import { profileSaveStart } from '../../redux/user/actions'
 
 import { FormikValues, useFormik } from 'formik'
 
 import { EDUCATION_LEVELS } from '@talent-connect/shared-config'
-import { ReadEducation } from '../molecules'
 import { objectEntries, objectKeys } from '@talent-connect/typescript-utilities'
+import { ReadEducation } from '../molecules'
 
 const formEducationLevels = objectEntries(EDUCATION_LEVELS).map(
   ([value, label]) => ({

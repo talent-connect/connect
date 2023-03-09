@@ -21,7 +21,7 @@
 
   &__image {
     img {
-      height: 9.5rem;
+      height: 9.5rem !important;
       overflow: hidden;
       object-fit: cover;
     }

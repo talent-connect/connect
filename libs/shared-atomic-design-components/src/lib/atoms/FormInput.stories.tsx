@@ -1,9 +1,8 @@
 import { Meta } from '@storybook/react/types-6-0'
 import { storybookTemplate } from '../helpers/StorybookTemplate'
-import { educationLevels } from '@talent-connect/shared-config'
 
-import FormInputComponent from './FormInput'
 import 'bulma/css/bulma.min.css'
+import FormInputComponent from './FormInput'
 
 enum inputType {
   EMAIL = 'email',

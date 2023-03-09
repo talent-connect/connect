@@ -1,4 +1,3 @@
-import { NavLink } from 'react-router-dom'
 import { CardTags, Icon } from '@talent-connect/shared-atomic-design-components'
 import { AWS_PROFILE_AVATARS_BUCKET_BASE_URL } from '@talent-connect/shared-config'
 import { TpJobseekerProfile } from '@talent-connect/shared-types'
@@ -8,8 +7,9 @@ import {
 } from '@talent-connect/talent-pool/config'
 import React from 'react'
 import { Card, Element, Tag } from 'react-bulma-components'
-import './JobseekerProfileCard.scss'
+import { NavLink } from 'react-router-dom'
 import placeholderImage from '../../assets/img-placeholder.png'
+import './JobseekerProfileCard.scss'
 interface JobseekerProfileCardProps {
   jobseekerProfile: Partial<TpJobseekerProfile>
   linkTo?: string
@@ -23,7 +23,6 @@ export function JobseekerProfileCard({
   toggleFavorite,
   isFavorite,
 }: JobseekerProfileCardProps) {
-
   const fullName = `${jobseekerProfile?.firstName} ${jobseekerProfile?.lastName}`
   const desiredPositions =
     jobseekerProfile?.desiredPositions

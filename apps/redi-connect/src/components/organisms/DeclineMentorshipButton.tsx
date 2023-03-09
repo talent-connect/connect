@@ -1,22 +1,18 @@
-import React, { useState } from 'react'
-import { connect } from 'react-redux'
-import { useHistory } from 'react-router-dom'
-import * as Yup from 'yup'
-import { useFormik } from 'formik'
-import { Content } from 'react-bulma-components'
 import {
-  FormTextArea,
   Button,
-  FormSelect,
   FormInput,
+  FormSelect,
+  FormTextArea,
+  Modal,
 } from '@talent-connect/shared-atomic-design-components'
-import { Modal } from '@talent-connect/shared-atomic-design-components'
-import {
-  matchesAcceptMentorshipStart,
-  matchesDeclineMentorshipStart,
-} from '../../redux/matches/actions'
-import { RedMatch } from '@talent-connect/shared-types'
 import { MENTOR_DECLINES_MENTORSHIP_REASON_FOR_DECLINING } from '@talent-connect/shared-config'
+import { RedMatch } from '@talent-connect/shared-types'
+import { useFormik } from 'formik'
+import { useState } from 'react'
+import { Content } from 'react-bulma-components'
+import { connect } from 'react-redux'
+import * as Yup from 'yup'
+import { matchesDeclineMentorshipStart } from '../../redux/matches/actions'
 
 interface DeclineMentorshipButtonProps {
   match: RedMatch

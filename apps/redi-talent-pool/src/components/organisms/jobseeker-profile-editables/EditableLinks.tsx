@@ -4,13 +4,8 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
-import React, { useEffect, useMemo, useState } from 'react'
-import {
-  Content,
-  Element,
-  Form,
-  Button as BulmaButton,
-} from 'react-bulma-components'
+import { useEffect, useMemo, useState } from 'react'
+import { Content, Element } from 'react-bulma-components'
 import { UseMutationResult, UseQueryResult } from 'react-query'
 import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
@@ -175,10 +170,10 @@ export function JobseekerFormSectionLinks({
     onSubmit,
     validateOnMount: true,
   })
-  useEffect(() => setIsFormDirty?.(formik.dirty), [
-    formik.dirty,
-    setIsFormDirty,
-  ])
+  useEffect(
+    () => setIsFormDirty?.(formik.dirty),
+    [formik.dirty, setIsFormDirty]
+  )
   return (
     <>
       <Element

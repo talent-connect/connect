@@ -1292,6 +1292,7 @@ const TpJobseekerProfileList = (props) => {
         <Datagrid expand={<TpJobseekerProfileListExpandPane />}>
           <TextField source="firstName" />
           <TextField source="lastName" />
+          <TextField source="currentlyEnrolledInCourse" />
           <TextField source="state" />
           <RecordCreatedAt />
           <ShowButton />

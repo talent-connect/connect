@@ -1,12 +1,11 @@
-import React from 'react'
+import {
+  Caption,
+  PipeList,
+  Placeholder,
+} from '@talent-connect/shared-atomic-design-components'
 import { RedProfile } from '@talent-connect/shared-types'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
-import {
-  Caption,
-  Placeholder,
-  PipeList,
-} from '@talent-connect/shared-atomic-design-components'
 
 interface Props {
   profile: RedProfile

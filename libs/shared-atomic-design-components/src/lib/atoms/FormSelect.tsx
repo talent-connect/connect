@@ -3,6 +3,7 @@ import { Form } from 'react-bulma-components'
 import { Icon } from '../atoms'
 import { get } from 'lodash'
 import { useFormik } from 'formik'
+
 import { formSelectStyles } from './FormSelect.styles'
 
 export const DropdownIndicator = (props: any) => (
@@ -71,8 +72,10 @@ function FormSelect(props: FormSelectProps) {
   }
 
   const handleOnBlur = (e: any) => {
-    e.target.name = name
-    handleBlur(e)
+    setTimeout(() => {
+      e.target.name = name
+      handleBlur(e)
+    })
   }
 
   const hasError = !!get(touched, name) && !!get(errors, name)

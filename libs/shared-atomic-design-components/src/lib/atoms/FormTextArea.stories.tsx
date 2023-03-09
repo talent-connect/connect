@@ -1,8 +1,8 @@
 import { Meta } from '@storybook/react/types-6-0'
 import { storybookTemplate } from '../helpers/StorybookTemplate'
 
-import FormTextAreaComponent from './FormTextArea'
 import 'bulma/css/bulma.min.css'
+import FormTextAreaComponent from './FormTextArea'
 
 export default {
   title: 'atoms/Formtextarea',

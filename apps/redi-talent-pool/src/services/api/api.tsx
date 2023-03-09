@@ -3,8 +3,8 @@ import {
   AccessToken,
   RedUser,
   TpCompanyProfile,
-  TpJobseekerCv,
   TpJobListing,
+  TpJobseekerCv,
   TpJobseekerProfile,
 } from '@talent-connect/shared-types'
 import axios from 'axios'

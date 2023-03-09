@@ -1,7 +1,5 @@
-import { Tooltip } from '@material-ui/core'
 import classnames from 'clsx'
-import React from 'react'
-import { useCallback } from 'react'
+import React, { useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import './TpMainNavItem.scss'
 

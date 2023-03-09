@@ -1,16 +1,16 @@
 import { subYears } from 'date-fns'
 
 import {
+  Editable,
   FormDatePicker,
   FormSelect,
 } from '@talent-connect/shared-atomic-design-components'
-import { Editable } from '@talent-connect/shared-atomic-design-components'
 import { RedProfile } from '@talent-connect/shared-types'
 import { connect } from 'react-redux'
 import { RootState } from '../../redux/types'
 
-import { profileSaveStart } from '../../redux/user/actions'
 import * as Yup from 'yup'
+import { profileSaveStart } from '../../redux/user/actions'
 
 import { FormikValues, useFormik } from 'formik'
 

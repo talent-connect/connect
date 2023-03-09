@@ -2,9 +2,8 @@ import {
   Button,
   RediTalentPoolLogo,
 } from '@talent-connect/shared-atomic-design-components'
-import classnames from 'classnames'
-import React, { useState } from 'react'
-import { Container, Element, Section } from 'react-bulma-components'
+import { useState } from 'react'
+import { Container, Element } from 'react-bulma-components'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 import { logout } from '../../services/api/api'

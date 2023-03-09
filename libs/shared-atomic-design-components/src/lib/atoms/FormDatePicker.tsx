@@ -1,26 +1,28 @@
-import React from 'react'
 import { Form } from 'react-bulma-components'
 import DatePicker from 'react-datepicker'
 import { Icon } from '../atoms'
 
 import 'react-datepicker/dist/react-datepicker.css'
 import './FormDatePicker.scss'
-import { get } from 'lodash'
 
 interface PickerTriggerProps {
   value?: string
   onClick?: () => void
 }
 
-const PickerTrigger = (placeholder: string) => ({
-  value,
-  onClick,
-}: PickerTriggerProps) => (
-  <div className="datepicker-trigger" onClick={onClick}>
-    <Form.Input id={value} value={value} placeholder={placeholder} />
-    <Icon icon="calendar" className="datepicker-trigger__icon" size="medium" />
-  </div>
-)
+const PickerTrigger =
+  (placeholder: string) =>
+  ({ value, onClick }: PickerTriggerProps) =>
+    (
+      <div className="datepicker-trigger" onClick={onClick}>
+        <Form.Input id={value} value={value} placeholder={placeholder} />
+        <Icon
+          icon="calendar"
+          className="datepicker-trigger__icon"
+          size="medium"
+        />
+      </div>
+    )
 
 interface FormDatePickerProps {
   name: string

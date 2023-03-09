@@ -1,9 +1,9 @@
 import { Meta } from '@storybook/react/types-6-0'
-import { storybookTemplate } from '../helpers/StorybookTemplate'
 import { educationLevels } from '@talent-connect/shared-config'
+import { storybookTemplate } from '../helpers/StorybookTemplate'
 
-import FormSelectComponent from './FormSelect'
 import 'bulma/css/bulma.min.css'
+import FormSelectComponent from './FormSelect'
 
 export default {
   title: 'atoms/Formselect',
