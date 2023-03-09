@@ -37,6 +37,8 @@ interface FormSelectProps {
   multiselect?: boolean,
   disabled?: boolean,
   closeMenuOnSelect?: boolean,
+  menuPortalTarget?: HTMLElement,
+  menuPosition?: string,
   formik: ReturnType<typeof useFormik>
 }
 
@@ -50,6 +52,8 @@ function FormSelect(props: FormSelectProps) {
     multiselect,
     disabled,
     closeMenuOnSelect,
+    menuPortalTarget,
+    menuPosition,
     formik: { values, setFieldTouched, setFieldValue, touched, errors, handleBlur, isSubmitting }
   } = props
 
@@ -96,8 +100,8 @@ function FormSelect(props: FormSelectProps) {
           isDisabled={isSubmitting || disabled}
           isMulti={multiselect}
           styles={formSelectStyles}
-          menuPortalTarget={document.body}
-          menuPosition="fixed"
+          menuPortalTarget={menuPortalTarget}
+          menuPosition={menuPosition}
           closeMenuOnSelect={closeMenuOnSelect}
         />
       </Form.Control>

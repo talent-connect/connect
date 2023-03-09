@@ -319,12 +319,16 @@ function ModalForm({
             multiselect
             placeholder="Start typing and select skills"
             closeMenuOnSelect={false}
+            menuPortalTarget={document.body}
+            menuPosition="fixed"
           />
           <FormSelect
             label="Employment type*"
             name="employmentType"
             items={formEmploymentType}
             formik={formik}
+            menuPortalTarget={document.body}
+            menuPosition="fixed"
           />
           <FormInput
             name="languageRequirements"

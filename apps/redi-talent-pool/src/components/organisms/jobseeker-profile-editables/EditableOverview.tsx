@@ -165,12 +165,16 @@ export function JobseekerFormSectionOverview({
         multiselect
         placeholder="Start typing and select positions"
         closeMenuOnSelect={false}
+        menuPortalTarget={document.body}
+        menuPosition="fixed"
       />
       {hideCurrentRediCourseField ? null : (
         <FormSelect
           label="Current ReDI course"
           name="currentlyEnrolledInCourse"
           items={formCourses}
+          menuPortalTarget={document.body}
+          menuPosition="fixed"
           formik={formik}
         />
       )}

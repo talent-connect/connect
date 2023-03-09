@@ -208,6 +208,8 @@ function ModalForm({
         name="federalState"
         label="Your place of residence (state)*"
         items={federalStatesOptions}
+        menuPortalTarget={document.body}
+        menuPosition="fixed"
         formik={formik}
       />
       <Checkbox.Form

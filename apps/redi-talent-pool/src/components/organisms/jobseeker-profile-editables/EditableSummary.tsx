@@ -190,6 +190,8 @@ export function JobseekerFormSectionSummary({
         multiselect
         placeholder="Start typing and select skills"
         closeMenuOnSelect={false}
+        menuPortalTarget={document.body}
+        menuPosition="fixed"
       />
       <FormTextArea
         label="About you* (100-600 characters)"

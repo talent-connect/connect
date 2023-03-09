@@ -314,11 +314,15 @@ export function JobseekerFormSectionImportantDetails({
             multiselect
             placeholder="Select desired employment types"
             closeMenuOnSelect={false}
+            menuPortalTarget={document.body}
+            menuPosition="fixed"
           />
           <FormSelect
             label="When are you available to start?*"
             name="availability"
             items={formAvailabilityOptions}
+            menuPortalTarget={document.body}
+            menuPosition="fixed"
             formik={formik}
           />
           {formik.values.availability === 'date' ? (
@@ -338,6 +342,8 @@ export function JobseekerFormSectionImportantDetails({
             label="What is your immigration status?"
             name="immigrationStatus"
             items={formImmigrationStatusOptions}
+            menuPortalTarget={document.body}
+            menuPosition="fixed"
             formik={formik}
           />
         </>

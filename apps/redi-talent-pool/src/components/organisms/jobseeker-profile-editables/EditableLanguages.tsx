@@ -251,12 +251,16 @@ export function JobseekerFormSectionLanguages({
                           name={`workingLanguages[${index}].language`}
                           label="Language*"
                           items={formLanguages}
+                          menuPortalTarget={document.body}
+                          menuPosition="fixed"
                           formik={formik}
                         />
                         <FormSelect
                           name={`workingLanguages[${index}].proficiencyLevelId`}
                           label="Level of proficiency*"
                           items={formLanguageProficiencyLevels}
+                          menuPortalTarget={document.body}
+                          menuPosition="fixed"
                           formik={formik}
                         />
                       </FormDraggableAccordion>

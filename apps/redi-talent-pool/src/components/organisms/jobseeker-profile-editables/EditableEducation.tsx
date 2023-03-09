@@ -363,6 +363,8 @@ export function JobseekerFormSectionEducation({
                               name={`education[${index}].startDateMonth`}
                               label="Started in month*"
                               items={formMonthsOptions}
+                              menuPortalTarget={document.body}
+                              menuPosition="fixed"
                               formik={formik}
                             />
                           </Columns.Column>
@@ -382,6 +384,8 @@ export function JobseekerFormSectionEducation({
                                 name={`education[${index}].endDateMonth`}
                                 label="Ended in month*"
                                 items={formMonthsOptions}
+                                menuPortalTarget={document.body}
+                                menuPosition="fixed"
                                 formik={formik}
                               />
                             </Columns.Column>

@@ -163,6 +163,8 @@ const MSessions = ({
                 name="minuteDuration"
                 placeholder="Add the duration of the session"
                 items={formMentoringSessionDurationOptions}
+                menuPortalTarget={document.body}
+                menuPosition="fixed"
                 formik={formik}
               />
             </form>
