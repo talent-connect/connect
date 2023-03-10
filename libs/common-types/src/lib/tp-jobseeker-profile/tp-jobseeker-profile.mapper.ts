@@ -2,17 +2,14 @@ import { Injectable } from '@nestjs/common'
 import { Mapper } from '../base-interfaces-types-classes'
 import {
   ContactRecordProps,
+  FederalState,
   Language,
   LanguageProficiencyLevel,
   TpDesiredPosition,
   TpEmploymentType,
   TpTechnicalSkill,
 } from '../common-objects'
-import {
-  FederalState,
-  JobseekerProfileStatus,
-  TpAvailabilityOption,
-} from './enums'
+import { JobseekerProfileStatus, TpAvailabilityOption } from './enums'
 import { TpJobseekerProfileEntity } from './tp-jobseeker-profile.entity'
 import {
   EducationRecord,

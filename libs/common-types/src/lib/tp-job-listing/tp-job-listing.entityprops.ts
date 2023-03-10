@@ -1,6 +1,7 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql'
 import { EntityProps } from '../base-interfaces-types-classes'
 import {
+  FederalState,
   TpDesiredPosition,
   TpEmploymentType,
   TpTechnicalSkill,
@@ -23,6 +24,8 @@ export class TpJobListingEntityProps implements EntityProps {
   languageRequirements?: string
   salaryRange?: string
   isRemotePossible?: boolean
+  @Field((type) => FederalState)
+  federalState?: FederalState
 
   @Field((type) => ID)
   companyProfileId: string

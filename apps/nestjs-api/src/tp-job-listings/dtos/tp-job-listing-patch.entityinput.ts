@@ -15,6 +15,7 @@ export class TpJobListingPatchInput extends IntersectionType(
   PartialType(
     PickType(_TpJobListingEntityProps, [
       'employmentType',
+      'federalState',
       'idealTechnicalSkills',
       'isRemotePossible',
       'languageRequirements',
@@ -23,6 +24,7 @@ export class TpJobListingPatchInput extends IntersectionType(
       'salaryRange',
       'summary',
       'title',
+      'federalState',
     ] as const)
   )
 ) {}

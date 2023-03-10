@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import {
+  FederalState,
   Mapper,
   TpDesiredPosition,
   TpEmploymentType,
@@ -32,6 +33,7 @@ export class TpJobListingMapper
     props.languageRequirements = raw.props.Language_Requirements__c
     props.salaryRange = raw.props.Salary_Range__c
     props.isRemotePossible = raw.props.Remote_Possible__c
+    props.federalState = raw.props.Federal_State__c as FederalState
 
     props.companyProfileId = raw.props.Account__c
 
@@ -62,6 +64,7 @@ export class TpJobListingMapper
     props.Language_Requirements__c = srcProps.languageRequirements
     props.Salary_Range__c = srcProps.salaryRange
     props.Remote_Possible__c = Boolean(srcProps.isRemotePossible)
+    props.Federal_State__c = srcProps.federalState
 
     props.Account__c = srcProps.companyProfileId
 

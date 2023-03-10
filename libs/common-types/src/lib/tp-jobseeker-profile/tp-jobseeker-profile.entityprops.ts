@@ -1,6 +1,7 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql'
 import { EntityProps } from '../base-interfaces-types-classes'
 import {
+  FederalState,
   Language,
   LanguageProficiencyLevel,
   TpDesiredPosition,
@@ -8,7 +9,6 @@ import {
   TpTechnicalSkill,
 } from '../common-objects'
 import {
-  FederalState,
   JobseekerProfileStatus,
   TpAvailabilityOption,
   TpEducationCertificationType,

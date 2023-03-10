@@ -29,6 +29,7 @@ export class TpJobListingRecord extends Record<TpJobListingRecordProps> {
       'Language_Requirements__c',
       'Salary_Range__c',
       'Remote_Possible__c',
+      'Federal_State__c',
 
       'Account__c',
       'Account__r.Name',

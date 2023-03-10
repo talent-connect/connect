@@ -1,5 +1,5 @@
 import { plainToClass, Type } from 'class-transformer'
-import { RecordProps } from '../base-interfaces-types-classes'
+import { PicklistValue, RecordProps } from '../base-interfaces-types-classes'
 
 export class TpJobListingRecordProps implements RecordProps {
   Id: string
@@ -13,6 +13,7 @@ export class TpJobListingRecordProps implements RecordProps {
   Language_Requirements__c?: string
   Salary_Range__c?: string
   Remote_Possible__c: boolean
+  Federal_State__c?: PicklistValue
 
   Account__c: string
 

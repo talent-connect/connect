@@ -574,6 +574,8 @@ export type Mutation = {
   patchConProfile: ConProfile;
   tpCompanyProfilePatch: OkResponseMutationOutputDto;
   tpCompanyProfileSignUp: TpCompanyProfileSignUpInputOutputDto;
+  tpJobListingCreate: OkResponseMutationOutputDto;
+  tpJobListingDelete: OkResponseMutationOutputDto;
   tpJobListingPatch: OkResponseMutationOutputDto;
   userContactPatch: OkResponseMutationOutputDto;
 };
@@ -646,6 +648,16 @@ export type MutationTpCompanyProfilePatchArgs = {
 
 export type MutationTpCompanyProfileSignUpArgs = {
   input: TpCompanyProfileSignUpInputDto;
+};
+
+
+export type MutationTpJobListingCreateArgs = {
+  tpJobListingCreateInput: TpJobListingCreateInput;
+};
+
+
+export type MutationTpJobListingDeleteArgs = {
+  tpJobListingDeleteInput: TpJobListingDeleteInput;
 };
 
 
@@ -957,6 +969,7 @@ export type TpJobListing = {
   companyProfileId: Scalars['ID'];
   createdAt: Scalars['DateTime'];
   employmentType?: Maybe<TpEmploymentType>;
+  federalState?: Maybe<FederalState>;
   id: Scalars['ID'];
   idealTechnicalSkills?: Maybe<Array<TpTechnicalSkill>>;
   isRemotePossible?: Maybe<Scalars['Boolean']>;
@@ -970,8 +983,26 @@ export type TpJobListing = {
   updatedAt: Scalars['DateTime'];
 };
 
+export type TpJobListingCreateInput = {
+  employmentType?: InputMaybe<TpEmploymentType>;
+  federalState?: InputMaybe<FederalState>;
+  idealTechnicalSkills?: InputMaybe<Array<TpTechnicalSkill>>;
+  isRemotePossible?: InputMaybe<Scalars['Boolean']>;
+  languageRequirements?: InputMaybe<Scalars['String']>;
+  location?: InputMaybe<Scalars['String']>;
+  relatesToPositions?: InputMaybe<Array<TpDesiredPosition>>;
+  salaryRange?: InputMaybe<Scalars['String']>;
+  summary?: InputMaybe<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']>;
+};
+
+export type TpJobListingDeleteInput = {
+  id: Scalars['ID'];
+};
+
 export type TpJobListingPatchInput = {
   employmentType?: InputMaybe<TpEmploymentType>;
+  federalState?: InputMaybe<FederalState>;
   id: Scalars['ID'];
   idealTechnicalSkills?: InputMaybe<Array<TpTechnicalSkill>>;
   isRemotePossible?: InputMaybe<Scalars['Boolean']>;

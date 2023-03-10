@@ -12,10 +12,14 @@ import {
   TpCompanyProfileEntityProps,
   TpJobListingEntityProps,
 } from '@talent-connect/common-types'
+import { CurrentUser } from '../auth/current-user.decorator'
+import { CurrentUserInfo } from '../auth/current-user.interface'
 import { GqlJwtAuthGuard } from '../auth/gql-jwt-auth.guard'
 import { TpCompanyProfilesService } from '../tp-company-profiles/tp-company-profiles.service'
 import { FindAllVisibleTpJobListingsArgs } from './args/find-all-visible-tp-jobseeker-profiles.args'
 import { FindOneTpJobListingArgs } from './args/find-one-tp-job-listing.args'
+import { TpJobListingCreateInput } from './dtos/tp-job-listing-create.entityinput'
+import { TpJobListingDeleteInput } from './dtos/tp-job-listing-delete.entityinput'
 import { TpJobListingPatchInput } from './dtos/tp-job-listing-patch.entityinput'
 import { TpJobListingsService } from './tp-job-listings.service'
 
@@ -54,11 +58,30 @@ export class TpJobListingsResolver {
   }
 
   //! TODO: Add auth
+  @Mutation(() => OkResponseMutationOutputDto, { name: 'tpJobListingCreate' })
+  async create(
+    @Args('tpJobListingCreateInput') input: TpJobListingCreateInput,
+    @CurrentUser() currentUser: CurrentUserInfo
+  ) {
+    await this.service.create(input, currentUser)
+    return { ok: true }
+  }
+
+  //! TODO: Add auth
   @Mutation(() => OkResponseMutationOutputDto, {
     name: 'tpJobListingPatch',
   })
   async patch(@Args('tpJobListingPatchInput') input: TpJobListingPatchInput) {
     await this.service.patch(input)
+    return { ok: true }
+  }
+
+  //! TODO: Add auth
+  @Mutation(() => OkResponseMutationOutputDto, { name: 'tpJobListingDelete' })
+  async delete(
+    @Args('tpJobListingDeleteInput') input: TpJobListingDeleteInput
+  ) {
+    await this.service.delete(input)
     return { ok: true }
   }
 }

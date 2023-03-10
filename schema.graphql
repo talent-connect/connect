@@ -547,6 +547,8 @@ type Mutation {
   patchConProfile(patchConProfileInput: UpdateConProfileInput!): ConProfile!
   tpCompanyProfilePatch(tpCompanyProfilePatchInput: TpCompanyProfilePatchInput!): OkResponseMutationOutputDto!
   tpCompanyProfileSignUp(input: TpCompanyProfileSignUpInputDto!): TpCompanyProfileSignUpInputOutputDto!
+  tpJobListingCreate(tpJobListingCreateInput: TpJobListingCreateInput!): OkResponseMutationOutputDto!
+  tpJobListingDelete(tpJobListingDeleteInput: TpJobListingDeleteInput!): OkResponseMutationOutputDto!
   tpJobListingPatch(tpJobListingPatchInput: TpJobListingPatchInput!): OkResponseMutationOutputDto!
   userContactPatch(userContactPatchInput: UserContactPatchInput!): OkResponseMutationOutputDto!
 }
@@ -801,6 +803,7 @@ type TpJobListing {
   companyProfileId: ID!
   createdAt: DateTime!
   employmentType: TpEmploymentType
+  federalState: FederalState
   id: ID!
   idealTechnicalSkills: [TpTechnicalSkill!]
   isRemotePossible: Boolean
@@ -814,8 +817,26 @@ type TpJobListing {
   updatedAt: DateTime!
 }
 
+input TpJobListingCreateInput {
+  employmentType: TpEmploymentType
+  federalState: FederalState
+  idealTechnicalSkills: [TpTechnicalSkill!]
+  isRemotePossible: Boolean
+  languageRequirements: String
+  location: String
+  relatesToPositions: [TpDesiredPosition!]
+  salaryRange: String
+  summary: String
+  title: String
+}
+
+input TpJobListingDeleteInput {
+  id: ID!
+}
+
 input TpJobListingPatchInput {
   employmentType: TpEmploymentType
+  federalState: FederalState
   id: ID!
   idealTechnicalSkills: [TpTechnicalSkill!]
   isRemotePossible: Boolean

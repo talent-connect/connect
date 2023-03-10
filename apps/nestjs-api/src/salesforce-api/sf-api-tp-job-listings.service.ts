@@ -20,7 +20,7 @@ export class SfApiTpJobListingsService {
     return jobListings
   }
 
-  async updateTpJobListing(record: TpJobListingRecord) {
+  async create(record: TpJobListingRecord) {
     const accountProps = record.props
 
     const cleanAccountProps = omit(accountProps, [
@@ -28,9 +28,33 @@ export class SfApiTpJobListingsService {
       'LastModifiedDate',
     ])
 
-    await this.repository.updateRecord(
+    const createResult = await this.repository.createRecord(
       TpJobListingRecord.metadata.SALESFORCE_OBJECT_NAME,
       cleanAccountProps
+    )
+
+    return createResult
+  }
+
+  async updateTpJobListing(record: TpJobListingRecord) {
+    const accountProps = record.props
+
+    const cleanAccountProps = omit(accountProps, [
+      'Account__c',
+      'CreatedDate',
+      'LastModifiedDate',
+    ])
+
+    return await this.repository.updateRecord(
+      TpJobListingRecord.metadata.SALESFORCE_OBJECT_NAME,
+      cleanAccountProps
+    )
+  }
+
+  async delete(record: TpJobListingRecord) {
+    await this.repository.deleteRecord(
+      TpJobListingRecord.metadata.SALESFORCE_OBJECT_NAME,
+      record.props.Id
     )
   }
 }
