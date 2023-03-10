@@ -1,4 +1,4 @@
-/* Keep me in sync with redi-connect-backend/lib/build-frontend-url.js */
+/* Keep me in sync with apps/api/lib/build-frontend-url.js */
 
 import { RediLocation } from '@talent-connect/shared-types'
 
