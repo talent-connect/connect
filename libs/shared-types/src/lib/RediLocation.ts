@@ -3,4 +3,5 @@ export type RediLocation =
   | 'hamburg'
   | 'munich'
   | 'nrw'
+  | 'cyberspace'
   | 'location-picker'
