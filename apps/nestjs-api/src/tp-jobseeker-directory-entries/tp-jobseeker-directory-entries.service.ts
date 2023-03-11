@@ -1,20 +1,20 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import {
   JobseekerProfileStatus,
-  TpJobseekerProfileMapper,
+  TpJobseekerDirectoryEntryMapper,
 } from '@talent-connect/common-types'
-import { SfApiTpJobseekerProfilesService } from '../salesforce-api/sf-api-tp-jobseeker-profiles.service'
-import { FindAllVisibleTpJobseekerProfilesArgs } from './args/find-all-visible-tp-jobseeker-profiles.args'
+import { SfApiTpJobseekerDirectoryEntriesService } from '../salesforce-api/sf-api-tp-jobseeker-directory-entries.service'
+import { FindAllVisibleTpJobseekerDirectoryEntriesArgs } from './args/find-all-visible-tp-jobseeker-directory-entries.args'
 
 @Injectable()
-export class TpJobseekerProfilesService {
+export class TpJobseekerDirectoryEntriesService {
   constructor(
-    private readonly api: SfApiTpJobseekerProfilesService,
-    private readonly mapper: TpJobseekerProfileMapper
+    private readonly api: SfApiTpJobseekerDirectoryEntriesService,
+    private readonly mapper: TpJobseekerDirectoryEntryMapper
   ) {}
 
   async findAll(filter: any = {}) {
-    const records = await this.api.findAllJobseekerProfiles(filter)
+    const records = await this.api.findAllJobseekerDirectoryEntries(filter)
 
     const entities = records.map((source) =>
       this.mapper.fromPersistence(source)
@@ -24,7 +24,7 @@ export class TpJobseekerProfilesService {
   }
 
   async findAllVisibleJobseekers(
-    _filter: FindAllVisibleTpJobseekerProfilesArgs
+    _filter: FindAllVisibleTpJobseekerDirectoryEntriesArgs
   ) {
     const filter: any = {
       Jobseeker_Profiles__r: {
@@ -86,7 +86,9 @@ export class TpJobseekerProfilesService {
     if (entities.length > 0) {
       return entities[0]
     } else {
-      throw new NotFoundException('TpJobseekerProfile not found with id: ' + id)
+      throw new NotFoundException(
+        'TpJobseekerDirectoryEntry not found with id: ' + id
+      )
     }
   }
 
@@ -97,7 +99,7 @@ export class TpJobseekerProfilesService {
     if (entities.length > 0) {
       return entities[0]
     } else {
-      throw new NotFoundException('TpJobseekerProfile not found')
+      throw new NotFoundException('TpJobseekerDirectoryEntry not found')
     }
   }
 }

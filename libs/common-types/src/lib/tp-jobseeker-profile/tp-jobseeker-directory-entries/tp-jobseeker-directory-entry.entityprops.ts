@@ -1,5 +1,5 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql'
-import { EntityProps } from '../base-interfaces-types-classes'
+import { EntityProps } from '../../base-interfaces-types-classes'
 import {
   FederalState,
   Language,
@@ -7,15 +7,15 @@ import {
   TpDesiredPosition,
   TpEmploymentType,
   TpTechnicalSkill,
-} from '../common-objects'
+} from '../../common-objects'
 import {
   JobseekerProfileStatus,
   TpAvailabilityOption,
   TpEducationCertificationType,
-} from './enums'
+} from '../enums'
 
-@ObjectType('TpJobseekerProfile')
-export class TpJobseekerProfileEntityProps implements EntityProps {
+@ObjectType('TpJobseekerDirectoryEntry')
+export class TpJobseekerDirectoryEntryEntityProps implements EntityProps {
   @Field((type) => ID)
   id: string
 

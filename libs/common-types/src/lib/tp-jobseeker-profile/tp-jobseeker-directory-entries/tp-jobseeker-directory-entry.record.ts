@@ -1,16 +1,16 @@
-import { Record, RecordMetadata } from '../base-interfaces-types-classes'
-import { TpJobseekerProfileRecordProps } from './tp-jobseeker-profile.recordprops'
+import { Record, RecordMetadata } from '../../base-interfaces-types-classes'
+import { TpJobseekerDirectoryEntryRecordProps } from './tp-jobseeker-directory-entry.recordprops'
 
-export class TpJobseekerProfileRecord extends Record<TpJobseekerProfileRecordProps> {
-  props: TpJobseekerProfileRecordProps
+export class TpJobseekerDirectoryEntryRecord extends Record<TpJobseekerDirectoryEntryRecordProps> {
+  props: TpJobseekerDirectoryEntryRecordProps
 
-  private constructor(props: TpJobseekerProfileRecordProps) {
+  private constructor(props: TpJobseekerDirectoryEntryRecordProps) {
     super(props)
   }
 
-  public static create(rawProps: TpJobseekerProfileRecordProps) {
-    const props = TpJobseekerProfileRecordProps.create(rawProps)
-    return new TpJobseekerProfileRecord(props)
+  public static create(rawProps: TpJobseekerDirectoryEntryRecordProps) {
+    const props = TpJobseekerDirectoryEntryRecordProps.create(rawProps)
+    return new TpJobseekerDirectoryEntryRecord(props)
   }
 
   public static metadata: RecordMetadata = {

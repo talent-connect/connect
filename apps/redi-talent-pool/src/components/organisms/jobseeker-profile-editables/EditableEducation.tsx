@@ -1,3 +1,5 @@
+import { TpJobseekerProfileEntityProps } from '@talent-connect/common-types'
+import { useMyTpDataQuery } from '@talent-connect/data-access'
 import {
   Button,
   Caption,
@@ -8,11 +10,7 @@ import {
   FormTextArea,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
-import {
-  EducationRecord,
-  TpJobseekerCv,
-  TpJobseekerProfile,
-} from '@talent-connect/shared-types'
+import { EducationRecord, TpJobseekerCv } from '@talent-connect/shared-types'
 import {
   certificationTypes,
   formMonthsOptions,
@@ -28,7 +26,6 @@ import { Subject } from 'rxjs'
 import { v4 as uuidv4 } from 'uuid'
 import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import { Location } from '../../molecules/Location'
@@ -42,7 +39,7 @@ function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
 }
 
 interface Props {
-  profile?: Partial<TpJobseekerProfile>
+  profile?: Partial<TpJobseekerProfileEntityProps>
   disableEditing?: boolean
 }
 
@@ -50,7 +47,9 @@ export function EditableEducation({
   profile: overridingProfile,
   disableEditing,
 }: Props) {
-  const queryHookResult = useTpJobseekerProfileQuery({
+  const myData = useMyTpDataQuery({}, { enabled: !disableEditing })
+
+  const queryHookResult = useTpJobseekerProfileEntityPropsQuery({
     enabled: !disableEditing,
   })
   if (overridingProfile) queryHookResult.data = overridingProfile
@@ -131,10 +130,12 @@ export function EditableEducation({
   )
 }
 
-EditableEducation.isSectionFilled = (profile: Partial<TpJobseekerProfile>) =>
-  profile?.education?.length > 0
-EditableEducation.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
-  !EditableEducation.isSectionFilled(profile)
+EditableEducation.isSectionFilled = (
+  profile: Partial<TpJobseekerProfileEntityProps>
+) => profile?.education?.length > 0
+EditableEducation.isSectionEmpty = (
+  profile: Partial<TpJobseekerProfileEntityProps>
+) => !EditableEducation.isSectionFilled(profile)
 
 function formatDate(month?: number, year?: number): string {
   if (year && !month) return String(year)
@@ -147,13 +148,13 @@ interface JobseekerFormSectionEducationeProps {
   setIsEditing: (boolean) => void
   setIsFormDirty?: (boolean) => void
   queryHookResult: UseQueryResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobseekerProfileEntityProps | TpJobseekerCv>,
     unknown
   >
   mutationHookResult: UseMutationResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobseekerProfileEntityProps | TpJobseekerCv>,
     unknown,
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobseekerProfileEntityProps | TpJobseekerCv>,
     unknown
   >
 }
@@ -169,13 +170,13 @@ export function JobseekerFormSectionEducation({
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
 
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(
+  const initialValues: Partial<TpJobseekerProfileEntityProps> = useMemo(
     () => ({
       education: profile?.education ?? [buildBlankEducationRecord()],
     }),
     [profile?.education]
   )
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
+  const onSubmit = (values: Partial<TpJobseekerProfileEntityProps>) => {
     formik.setSubmitting(true)
     mutation.mutate(values, {
       onSettled: () => {

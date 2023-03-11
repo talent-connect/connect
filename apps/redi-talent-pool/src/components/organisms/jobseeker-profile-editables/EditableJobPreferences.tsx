@@ -1,13 +1,11 @@
+import { TpJobseekerProfileEntityProps } from '@talent-connect/common-types'
 import {
   Button,
   Caption,
   FormDraggableAccordion,
   FormInput,
 } from '@talent-connect/shared-atomic-design-components'
-import {
-  HrSummit2021JobFairCompanyJobPreferenceRecord,
-  TpJobseekerProfile,
-} from '@talent-connect/shared-types'
+import { HrSummit2021JobFairCompanyJobPreferenceRecord } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
@@ -16,7 +14,6 @@ import { Subject } from 'rxjs'
 import { v4 as uuidv4 } from 'uuid'
 import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
@@ -29,7 +26,7 @@ function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
 }
 
 interface Props {
-  profile: Partial<TpJobseekerProfile>
+  profile: Partial<TpJobseekerProfileEntityProps>
   triggerModalSignal?: Subject<void>
 }
 
@@ -88,12 +85,12 @@ export function EditableJobPreferences({ profile, triggerModalSignal }: Props) {
 }
 
 EditableJobPreferences.isSectionFilled = (
-  profile: Partial<TpJobseekerProfile>
+  profile: Partial<TpJobseekerProfileEntityProps>
 ) =>
   profile?.hrSummit2021JobFairCompanyJobPreferences?.length === 4 &&
   validationSchema.isValidSync(profile)
 EditableJobPreferences.isSectionEmpty = (
-  profile: Partial<TpJobseekerProfile>
+  profile: Partial<TpJobseekerProfileEntityProps>
 ) => !EditableJobPreferences.isSectionFilled(profile)
 
 // TODO: put this one in config file
@@ -115,12 +112,12 @@ function ModalForm({
   setIsEditing: (boolean) => void
   setIsFormDirty: (boolean) => void
 }) {
-  const { data: profile } = useTpJobseekerProfileQuery()
+  const { data: profile } = useTpJobseekerProfileEntityPropsQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
 
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(
+  const initialValues: Partial<TpJobseekerProfileEntityProps> = useMemo(
     () => ({
       hrSummit2021JobFairCompanyJobPreferences:
         profile?.hrSummit2021JobFairCompanyJobPreferences ??
@@ -130,7 +127,7 @@ function ModalForm({
     []
   )
 
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
+  const onSubmit = (values: Partial<TpJobseekerProfileEntityProps>) => {
     formik.setSubmitting(true)
     mutation.mutate(values, {
       onSettled: () => {

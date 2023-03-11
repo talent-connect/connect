@@ -11,20 +11,19 @@ import {
   Heading,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
-import { TpJobseekerProfile } from '@talent-connect/shared-types'
 import { toPascalCaseAndTrim } from '@talent-connect/shared-utils'
 import { germanFederalStates } from '@talent-connect/talent-pool/config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
 
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 
+import { TpJobseekerProfileEntityProps } from '@talent-connect/common-types'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import Avatar from '../Avatar'
 
 interface Props {
-  profile: Partial<TpJobseekerProfile>
+  profile: Partial<TpJobseekerProfileEntityProps>
   disableEditing?: boolean
 }
 
@@ -115,10 +114,10 @@ export function EditableNamePhotoLocation({ profile, disableEditing }: Props) {
 }
 
 EditableNamePhotoLocation.isSectionFilled = (
-  profile: Partial<TpJobseekerProfile>
+  profile: Partial<TpJobseekerProfileEntityProps>
 ) => profile?.location
 EditableNamePhotoLocation.isSectionEmpty = (
-  profile: Partial<TpJobseekerProfile>
+  profile: Partial<TpJobseekerProfileEntityProps>
 ) => !EditableNamePhotoLocation.isSectionFilled(profile)
 
 const validationSchema = Yup.object({
@@ -139,9 +138,9 @@ function ModalForm({
   setIsEditing: (boolean) => void
   setIsFormDirty: (boolean) => void
 }) {
-  const { data: profile } = useTpJobseekerProfileQuery()
+  const { data: profile } = useTpJobseekerProfileEntityPropsQuery()
   const mutation = useTpjobseekerprofileUpdateMutation()
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(
+  const initialValues: Partial<TpJobseekerProfileEntityProps> = useMemo(
     () => ({
       firstName: profile?.firstName ?? '',
       lastName: profile?.lastName ?? '',
@@ -153,7 +152,7 @@ function ModalForm({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
+  const onSubmit = (values: Partial<TpJobseekerProfileEntityProps>) => {
     formik.setSubmitting(true)
     const transformedValues = validationSchema.cast(values)
     mutation.mutate(transformedValues, {

@@ -13,7 +13,7 @@ import { SfApiModule } from '../salesforce-api/sf-api.module'
 import { SalesforceRecordEventsListenerModule } from '../salesforce-record-events-listener/salesforce-record-events-listener.module'
 import { TpCompanyProfilesModule } from '../tp-company-profiles/tp-company-profiles.module'
 import { TpCurrentUserDataModule } from '../tp-current-user-data/tp-current-user-data.module'
-import { TpJobseekerProfilesModule } from '../tp-jobseeker-profiles/tp-jobseeker-profiles.module'
+import { TpJobseekerDirectoryEntriesModule } from '../tp-jobseeker-directory-entries/tp-jobseeker-directory-entries.module'
 import { UserContactModule } from '../user-contact/user-contact.module'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
@@ -40,7 +40,7 @@ import { AppService } from './app.service'
     ConMenteeFavoritedMentorsModule,
     ConProblemReportModule,
     TpCompanyProfilesModule,
-    TpJobseekerProfilesModule,
+    TpJobseekerDirectoryEntriesModule,
     TpCurrentUserDataModule,
     UserContactModule,
   ],

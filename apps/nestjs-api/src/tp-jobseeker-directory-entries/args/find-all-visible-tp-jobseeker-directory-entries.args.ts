@@ -8,12 +8,12 @@ import {
 } from '@talent-connect/common-types'
 
 @ArgsType()
-export class FindAllVisibleTpJobseekerProfilesArgs {
-  filter: FindAllVisibleTpJobseekerProfilesArgsFilter
+export class FindAllVisibleTpJobseekerDirectoryEntriesArgs {
+  filter: FindAllVisibleTpJobseekerDirectoryEntriesFilter
 }
 
-@InputType('FindAllVisibleTpJobseekerProfilesArgsFilter')
-class FindAllVisibleTpJobseekerProfilesArgsFilter {
+@InputType('FindAllVisibleTpJobseekerDirectoryEntriesFilter')
+class FindAllVisibleTpJobseekerDirectoryEntriesFilter {
   name?: string
   @Field((type) => [Language])
   desiredLanguages?: Language[]

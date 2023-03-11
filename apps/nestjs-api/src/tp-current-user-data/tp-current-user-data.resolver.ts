@@ -12,14 +12,14 @@ import { CurrentUserInfo } from '../auth/current-user.interface'
 import { GqlJwtAuthGuard } from '../auth/gql-jwt-auth.guard'
 import { TpCompanyRepresentativeRelationshipsService } from '../tp-company-profiles/tp-company-representative-relationships.service'
 import { TpJobListingsService } from '../tp-job-listings/tp-job-listings.service'
-import { TpJobseekerProfilesService } from '../tp-jobseeker-profiles/tp-jobseeker-profiles.service'
+import { TpJobseekerDirectoryEntriesService } from '../tp-jobseeker-directory-entries/tp-jobseeker-directory-entries.service'
 import { TpCurrentUserData } from './dto/find-current-user-data.dto'
 @UseGuards(GqlJwtAuthGuard)
 @Resolver(() => TpCurrentUserData)
 export class TpCurrentUserDataResolver {
   constructor(
     private readonly tpCompanyRepresentativeRelationshipsService: TpCompanyRepresentativeRelationshipsService,
-    private readonly jobseekerProfilesService: TpJobseekerProfilesService,
+    private readonly jobseekerDirectoryEntriesService: TpJobseekerDirectoryEntriesService,
     private readonly jobListingsService: TpJobListingsService
   ) {}
 
@@ -61,9 +61,10 @@ export class TpCurrentUserDataResolver {
   @ResolveField((of) => TpJobseekerProfileEntityProps)
   async jobseekerProfile(@CurrentUser() currentUser: CurrentUserInfo) {
     try {
-      const entity = await this.jobseekerProfilesService.findOneByUserId(
-        currentUser.userId
-      )
+      const entity =
+        await this.jobseekerDirectoryEntriesService.findOneByUserId(
+          currentUser.userId
+        )
       return entity.props
     } catch (err) {
       if (err instanceof NotFoundException) return null

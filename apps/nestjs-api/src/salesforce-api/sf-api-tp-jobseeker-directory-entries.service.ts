@@ -1,43 +1,60 @@
 import { Injectable } from '@nestjs/common'
-import { TpJobseekerProfileRecord } from '@talent-connect/common-types'
+import { TpJobseekerDirectoryEntryRecord } from '@talent-connect/common-types'
 import { isBoolean, isObject, isString } from 'lodash'
 import { SfApiRepository } from './sf-api.repository'
 
 @Injectable()
-export class SfApiTpJobseekerProfilesService {
+export class SfApiTpJobseekerDirectoryEntriesService {
   constructor(private readonly repository: SfApiRepository) {}
 
-  async findAllJobseekerProfiles(filter: any = {}) {
-    const jobseekerProfilesFilterCount =
+  async findAllJobseekerDirectoryEntries(filter: any = {}) {
+    const jobseekerDirectoryEntrysFilterCount =
       Object.keys(filter?.['Jobseeker_Profiles__r'] ?? {}).length ?? 0
     let subQueryClause = ''
-    if (jobseekerProfilesFilterCount > 0) {
+    if (jobseekerDirectoryEntrysFilterCount > 0) {
       subQueryClause =
         'WHERE ' +
-        buildJobseekerProfileSubQueryWhereClause(
+        buildJobseekerDirectoryEntrySubQueryWhereClause(
           filter?.['Jobseeker_Profiles__r']
         )
     }
     const rawRecords = await this.repository.findRecordsOfObject({
-      objectName: TpJobseekerProfileRecord.metadata.SALESFORCE_OBJECT_NAME,
-      objectFields: TpJobseekerProfileRecord.metadata.SALESFORCE_OBJECT_FIELDS,
-      childObjects: TpJobseekerProfileRecord.metadata.SALESFORCE_CHILD_OBJECTS,
+      objectName:
+        TpJobseekerDirectoryEntryRecord.metadata.SALESFORCE_OBJECT_NAME,
+      objectFields:
+        TpJobseekerDirectoryEntryRecord.metadata.SALESFORCE_OBJECT_FIELDS,
+      childObjects:
+        TpJobseekerDirectoryEntryRecord.metadata.SALESFORCE_CHILD_OBJECTS,
       rawWhereClause: `Id IN (SELECT Contact__c FROM Jobseeker_Profile__c ${subQueryClause})`,
       filter,
     })
-    const jobseekerProfileRecords = rawRecords.map((rawRecord) =>
-      TpJobseekerProfileRecord.create(rawRecord)
+    const jobseekerDirectoryEntryRecords = rawRecords.map((rawRecord) =>
+      TpJobseekerDirectoryEntryRecord.create(rawRecord)
     )
-    return jobseekerProfileRecords
+    return jobseekerDirectoryEntryRecords
+  }
+
+  async updateTpJobseekerDirectoryEntry(
+    record: TpJobseekerDirectoryEntryRecord
+  ) {
+    const tpJobseekerDirectoryEntryProps = record.props
+    const contactProps = record.props
+
+    // const updateResult = await this.repository.updateRecord(
+    //   TpJobseekerDirectoryEntryRecord.metadata.SALESFORCE_OBJECT_NAME,
+    //   record.Id,
+    //   record
+    // )
+    // return updateResult
   }
 }
 
-function buildJobseekerProfileSubQueryWhereClause(jobseekerProfileFilters: {
+function buildJobseekerDirectoryEntrySubQueryWhereClause(jobseekerDirectoryEntryFilters: {
   [key: string]: string
 }) {
   const conditions = []
-  // if (Object.entries(jobseekerProfileFilters).length > 0) whereClause +- 'WHERE '
-  for (const [key, value] of Object.entries(jobseekerProfileFilters)) {
+  // if (Object.entries(jobseekerDirectoryEntryFilters).length > 0) whereClause +- 'WHERE '
+  for (const [key, value] of Object.entries(jobseekerDirectoryEntryFilters)) {
     if (isString(value)) {
       conditions.push(`${key} = '${escapeSOQLString(value)}'`)
     } else if (isBoolean(value)) {

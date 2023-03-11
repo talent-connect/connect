@@ -1,31 +1,32 @@
-import { Injectable } from '@nestjs/common'
-import { Mapper } from '../base-interfaces-types-classes'
+import { Injectable, NotImplementedException } from '@nestjs/common'
+import { Mapper } from '../../base-interfaces-types-classes'
 import {
-  ContactRecordProps,
   FederalState,
   Language,
   LanguageProficiencyLevel,
   TpDesiredPosition,
   TpEmploymentType,
   TpTechnicalSkill,
-} from '../common-objects'
-import { JobseekerProfileStatus, TpAvailabilityOption } from './enums'
-import { TpJobseekerProfileEntity } from './tp-jobseeker-profile.entity'
+} from '../../common-objects'
+import { JobseekerProfileStatus, TpAvailabilityOption } from '../enums'
+import { TpJobseekerDirectoryEntryEntity } from './tp-jobseeker-directory-entry.entity'
 import {
   EducationRecord,
   ExperienceRecord,
   LanguageRecord,
-  TpJobseekerProfileEntityProps,
-} from './tp-jobseeker-profile.entityprops'
-import { TpJobseekerProfileRecord } from './tp-jobseeker-profile.record'
-import { TpJobseekerProfileRecordProps } from './tp-jobseeker-profile.recordprops'
+  TpJobseekerDirectoryEntryEntityProps,
+} from './tp-jobseeker-directory-entry.entityprops'
+import { TpJobseekerDirectoryEntryRecord } from './tp-jobseeker-directory-entry.record'
 
 @Injectable()
-export class TpJobseekerProfileMapper
-  implements Mapper<TpJobseekerProfileEntity, TpJobseekerProfileRecord>
+export class TpJobseekerDirectoryEntryMapper
+  implements
+    Mapper<TpJobseekerDirectoryEntryEntity, TpJobseekerDirectoryEntryRecord>
 {
-  fromPersistence(raw: TpJobseekerProfileRecord): TpJobseekerProfileEntity {
-    const props = new TpJobseekerProfileEntityProps()
+  fromPersistence(
+    raw: TpJobseekerDirectoryEntryRecord
+  ): TpJobseekerDirectoryEntryEntity {
+    const props = new TpJobseekerDirectoryEntryEntityProps()
 
     // Properties on SF Contact object
     props.userId = raw.props.Id
@@ -115,7 +116,7 @@ export class TpJobseekerProfileMapper
           props.experience.push(experienceRecord)
         } else {
           throw new Error(
-            '[TpJobseekerProfileMapper] Unknown Jobseeker_Line_Item__c RecordType'
+            '[TpJobseekerDirectoryEntryMapper] Unknown Jobseeker_Line_Item__c RecordType'
           )
         }
       }
@@ -139,56 +140,16 @@ export class TpJobseekerProfileMapper
     // The next ones are computed fields in Salesforce
     props.fullName = raw.props.Name
 
-    const entity = TpJobseekerProfileEntity.create(props)
+    const entity = TpJobseekerDirectoryEntryEntity.create(props)
 
     return entity
   }
 
   public toPersistence(
-    source: TpJobseekerProfileEntity
-  ): TpJobseekerProfileRecord {
-    const props = new TpJobseekerProfileRecordProps()
-    const srcProps = source.props
-
-    const Contact__r = new ContactRecordProps()
-    Contact__r.Id = srcProps.id
-    Contact__r.Id = srcProps.userId
-    Contact__r.ReDI_Email_Address__c = srcProps.email
-    Contact__r.FirstName = srcProps.firstName
-    Contact__r.LastName = srcProps.lastName
-    Contact__r.ReDI_Website_Portfolio__c = srcProps.personalWebsite
-    Contact__r.LinkedIn_Profile__c = srcProps.linkedInUrl
-    Contact__r.ReDI_GitHub_Profile__c = srcProps.githubUrl
-    Contact__r.ReDI_Behance_URL__c = srcProps.behanceUrl
-    Contact__r.ReDI_Dribbble_URL__c = srcProps.dribbbleUrl
-    Contact__r.ReDI_Stack_Overflow_URL__c = srcProps.stackOverflowUrl
-    Contact__r.CON_TP_Mailing_Address__c = srcProps.postalMailingAddress
-    Contact__r.MobilePhone = srcProps.telephoneNumber
-    Contact__r.ReDI_Gender_Pronouns__c = srcProps.genderPronouns
-    Contact__r.Loopback_User_ID__c = srcProps.loopbackUserId
-
-    // props.Contact__r = Contact__r
-
-    // props.ReDI_Location__c = srcProps.rediLocation
-    // props.ReDI_Course__c = srcProps.currentlyEnrolledInCourse
-    // props.Avatar_Image_URL__c = srcProps.profileAvatarImageS3Key
-    // props.Desired_Positions__c = srcProps.desiredPositions?.join(';')
-    // props.Location__c = srcProps.location
-    // props.Desired_Employment_Type__c = srcProps.desiredEmploymentType?.join(';')
-    // props.Availability__c = srcProps.availability
-    // props.Availability_Date__c = srcProps.ifAvailabilityIsDate_date
-    // props.About_Yourself__c = srcProps.aboutYourself
-    // props.Top_Skills__c = srcProps.topSkills?.join(';')
-    // props.Profile_Status__c = srcProps.state
-    // props.Is_Job_Fair_2022_Participant__c = srcProps.isJobFair2022Participant
-    // props.Is_Job_Fair_2023_Participant__c = srcProps.isJobFair2023Participant
-    // props.Is_Visible_to_Companies__c = srcProps.isProfileVisibleToCompanies
-    // props.Is_Hired__c = srcProps.isHired
-    // props.Federal_State__c = srcProps.federalState
-    // props.Willing_to_Relocate__c = srcProps.willingToRelocate
-
-    const record = TpJobseekerProfileRecord.create(props)
-
-    return record
+    source: TpJobseekerDirectoryEntryEntity
+  ): TpJobseekerDirectoryEntryRecord {
+    throw new NotImplementedException(
+      'TpJobseekerDirectoryEntryMapper.toPersistence() not implemented'
+    )
   }
 }

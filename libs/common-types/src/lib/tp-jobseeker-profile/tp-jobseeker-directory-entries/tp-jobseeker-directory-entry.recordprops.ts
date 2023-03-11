@@ -3,7 +3,7 @@ import {
   PicklistValue,
   PicklistValuesSemicolonSeparated,
   RecordProps,
-} from '../base-interfaces-types-classes'
+} from '../../base-interfaces-types-classes'
 
 class JobseekerLineItemsWrapper {
   @Type(() => JobseekerLineItem)
@@ -77,7 +77,7 @@ class JobseekerLanguageItem {
   @Type(() => LanguageWrapper)
   hed__Language__r: LanguageWrapper
 }
-export class TpJobseekerProfileRecordProps implements RecordProps {
+export class TpJobseekerDirectoryEntryRecordProps implements RecordProps {
   Id: string
 
   FirstName?: string
@@ -117,6 +117,6 @@ export class TpJobseekerProfileRecordProps implements RecordProps {
   Name: string // full name
 
   public static create(rawProps: any) {
-    return plainToClass(TpJobseekerProfileRecordProps, rawProps, {})
+    return plainToClass(TpJobseekerDirectoryEntryRecordProps, rawProps, {})
   }
 }

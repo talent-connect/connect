@@ -1,5 +1,9 @@
 import { Tooltip } from '@material-ui/core'
 import {
+  JobseekerProfileStatus,
+  TpJobseekerProfileEntityProps,
+} from '@talent-connect/common-types'
+import {
   Button,
   Checkbox,
   Icon,
@@ -9,8 +13,8 @@ import {
   TpJobseekerProfileState,
 } from '@talent-connect/shared-types'
 import classnames from 'clsx'
-import React, { useCallback, useRef } from 'react'
-import { Columns, Element, Notification, Content } from 'react-bulma-components'
+import { useCallback, useRef } from 'react'
+import { Columns, Content, Element, Notification } from 'react-bulma-components'
 import { Subject } from 'rxjs'
 import { EditableEducation } from '../../../components/organisms/jobseeker-profile-editables/EditableEducation'
 import { EditableImportantDetails } from '../../../components/organisms/jobseeker-profile-editables/EditableImportantDetails'
@@ -21,7 +25,6 @@ import { EditableNamePhotoLocation } from '../../../components/organisms/jobseek
 import { EditableOverview } from '../../../components/organisms/jobseeker-profile-editables/EditableOverview'
 import { EditableProfessionalExperience } from '../../../components/organisms/jobseeker-profile-editables/EditableProfessionalExperience'
 import { EditableSummary } from '../../../components/organisms/jobseeker-profile-editables/EditableSummary'
-import { EditableVisibility } from '../../../components/organisms/jobseeker-profile-editables/EditableVisibility'
 import { LoggedIn } from '../../../components/templates'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
@@ -156,15 +159,15 @@ const steps = [
 ]
 
 function determineCurrentStep(
-  profile: Partial<TpJobseekerProfile>
+  profile: Partial<TpJobseekerProfileEntityProps>
 ): [currentStep: number, stepStatus: 'todo' | 'pending' | 'complete'] {
-  if (profile.state === 'drafting-profile') {
+  if (profile.state === JobseekerProfileStatus.DRAFTING_PROFILE) {
     return isProfileComplete(profile) ? [2, 'todo'] : [1, 'todo']
   }
-  if (profile.state === 'submitted-for-review') {
+  if (profile.state === JobseekerProfileStatus.SUBMITTED_FOR_REVIEW) {
     return [3, 'pending']
   }
-  if (profile.state === 'profile-approved') {
+  if (profile.state === JobseekerProfileStatus.PROFILE_APPROVED) {
     return [3, 'complete']
   }
   // if (
@@ -240,7 +243,9 @@ export function OnboardingSteps() {
   )
 }
 
-function isProfileComplete(profile: Partial<TpJobseekerProfile>): boolean {
+function isProfileComplete(
+  profile: Partial<TpJobseekerProfileEntityProps>
+): boolean {
   const mostSectionsComplete = [
     EditableNamePhotoLocation.isSectionFilled,
     EditableOverview.isSectionFilled,

@@ -1,5 +1,5 @@
-import { TpJobseekerProfileEntityProps } from '.'
-import { Entity } from '../base-interfaces-types-classes'
+import { Entity } from '../../base-interfaces-types-classes'
+import { TpJobseekerProfileEntityProps } from './tp-jobseeker-profile.entityprops'
 
 export class TpJobseekerProfileEntity extends Entity<TpJobseekerProfileEntityProps> {
   private constructor(props: TpJobseekerProfileEntityProps) {

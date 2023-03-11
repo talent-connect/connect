@@ -1,3 +1,4 @@
+import { TpJobseekerProfileEntityProps } from '@talent-connect/common-types'
 import {
   Button,
   Caption,
@@ -9,11 +10,7 @@ import {
   FormTextArea,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
-import {
-  ExperienceRecord,
-  TpJobseekerCv,
-  TpJobseekerProfile,
-} from '@talent-connect/shared-types'
+import { ExperienceRecord, TpJobseekerCv } from '@talent-connect/shared-types'
 import { formMonthsOptions } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
 import moment from 'moment'
@@ -26,7 +23,7 @@ import { Subject } from 'rxjs'
 import { v4 as uuidv4 } from 'uuid'
 import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useTpJobseekerProfileEntityPropsQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import { Location } from '../../molecules/Location'
@@ -40,7 +37,7 @@ function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
 }
 
 interface Props {
-  profile?: Partial<TpJobseekerProfile>
+  profile?: Partial<TpJobseekerProfileEntityProps>
   disableEditing?: boolean
 }
 
@@ -48,7 +45,7 @@ export function EditableProfessionalExperience({
   profile: overridingProfile,
   disableEditing,
 }: Props) {
-  const queryHookResult = useTpJobseekerProfileQuery({
+  const queryHookResult = useTpJobseekerProfileEntityPropsQuery({
     enabled: !disableEditing,
   })
   if (overridingProfile) queryHookResult.data = overridingProfile
@@ -133,10 +130,10 @@ export function EditableProfessionalExperience({
 }
 
 EditableProfessionalExperience.isSectionFilled = (
-  profile: Partial<TpJobseekerProfile>
+  profile: Partial<TpJobseekerProfileEntityProps>
 ) => profile?.experience?.length > 0
 EditableProfessionalExperience.isSectionEmpty = (
-  profile: Partial<TpJobseekerProfile>
+  profile: Partial<TpJobseekerProfileEntityProps>
 ) => !EditableProfessionalExperience.isSectionFilled(profile)
 
 function formatDate(month?: number, year?: number): string {
@@ -150,13 +147,13 @@ interface JobseekerFormSectionProfessionalExperienceProps {
   setIsEditing: (boolean) => void
   setIsFormDirty?: (boolean) => void
   queryHookResult: UseQueryResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobseekerProfileEntityProps | TpJobseekerCv>,
     unknown
   >
   mutationHookResult: UseMutationResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobseekerProfileEntityProps | TpJobseekerCv>,
     unknown,
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobseekerProfileEntityProps | TpJobseekerCv>,
     unknown
   >
 }
@@ -172,13 +169,13 @@ export function JobseekerFormSectionProfessionalExperience({
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
 
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(
+  const initialValues: Partial<TpJobseekerProfileEntityProps> = useMemo(
     () => ({
       experience: profile?.experience ?? [buildBlankExperienceRecord()],
     }),
     [profile?.experience]
   )
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
+  const onSubmit = (values: Partial<TpJobseekerProfileEntityProps>) => {
     formik.setSubmitting(true)
     mutation.mutate(values, {
       onSettled: () => {

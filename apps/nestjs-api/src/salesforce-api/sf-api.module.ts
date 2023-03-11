@@ -6,7 +6,8 @@ import { SfApiConProfilesService } from './sf-api-con-profiles.service'
 import { SfApiContactService } from './sf-api-contact.service'
 import { SfApiTpCompanyProfilesService } from './sf-api-tp-company-profiles.service'
 import { SfApiTpJobListingsService } from './sf-api-tp-job-listings.service'
-import { SfApiTpJobseekerProfilesService } from './sf-api-tp-jobseeker-profiles.service'
+import { SfApiTpJobseekerDirectoryEntriesService } from './sf-api-tp-jobseeker-directory-entries.service'
+import { SfApiTpJobseekerProfileService } from './sf-api-tp-jobseeker-profile.service'
 import { SfApiRepository } from './sf-api.repository'
 
 @Module({
@@ -16,7 +17,8 @@ import { SfApiRepository } from './sf-api.repository'
     SfApiConMentorshipMatchesService,
     SfApiRepository,
     SfApiTpCompanyProfilesService,
-    SfApiTpJobseekerProfilesService,
+    SfApiTpJobseekerProfileService,
+    SfApiTpJobseekerDirectoryEntriesService,
     SfApiTpJobListingsService,
     SfApiContactService,
   ],
@@ -28,7 +30,8 @@ import { SfApiRepository } from './sf-api.repository'
     //! TODO: this was hack - remote this export
     SfApiRepository,
     SfApiTpCompanyProfilesService,
-    SfApiTpJobseekerProfilesService,
+    SfApiTpJobseekerProfileService,
+    SfApiTpJobseekerDirectoryEntriesService,
     SfApiTpJobListingsService,
     SfApiContactService,
   ],

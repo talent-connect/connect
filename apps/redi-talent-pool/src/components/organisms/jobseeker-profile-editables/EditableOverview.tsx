@@ -1,10 +1,11 @@
+import { TpJobseekerProfileEntityProps } from '@talent-connect/common-types'
 import {
   Button,
   Caption,
   FormSelect,
 } from '@talent-connect/shared-atomic-design-components'
 import { COURSES, REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
-import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
+import { TpJobseekerCv } from '@talent-connect/shared-types'
 import {
   desiredPositions,
   desiredPositionsIdToLabelMap,
@@ -15,12 +16,11 @@ import { Element, Tag } from 'react-bulma-components'
 import { UseMutationResult, UseQueryResult } from 'react-query'
 import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
 interface Props {
-  profile?: Partial<TpJobseekerProfile>
+  profile?: Partial<TpJobseekerProfileEntityProps>
   disableEditing?: boolean
 }
 
@@ -28,7 +28,7 @@ export function EditableOverview({
   profile: overridingProfile,
   disableEditing,
 }: Props) {
-  const queryHookResult = useTpJobseekerProfileQuery({
+  const queryHookResult = useTpJobseekerProfileEntityPropsQuery({
     enabled: !disableEditing,
   })
   if (overridingProfile) queryHookResult.data = overridingProfile
@@ -81,10 +81,12 @@ export function EditableOverview({
   )
 }
 
-EditableOverview.isSectionFilled = (profile: Partial<TpJobseekerProfile>) =>
-  profile?.desiredPositions?.length > 0
-EditableOverview.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
-  !EditableOverview.isSectionFilled(profile)
+EditableOverview.isSectionFilled = (
+  profile: Partial<TpJobseekerProfileEntityProps>
+) => profile?.desiredPositions?.length > 0
+EditableOverview.isSectionEmpty = (
+  profile: Partial<TpJobseekerProfileEntityProps>
+) => !EditableOverview.isSectionFilled(profile)
 
 const validationSchema = Yup.object({
   desiredPositions: Yup.array()
@@ -96,13 +98,13 @@ interface JobseekerFormSectionOverviewProps {
   setIsEditing: (boolean) => void
   setIsFormDirty?: (boolean) => void
   queryHookResult: UseQueryResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobseekerProfileEntityProps | TpJobseekerCv>,
     unknown
   >
   mutationHookResult: UseMutationResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobseekerProfileEntityProps | TpJobseekerCv>,
     unknown,
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobseekerProfileEntityProps | TpJobseekerCv>,
     unknown
   >
   hideCurrentRediCourseField?: boolean
@@ -117,7 +119,7 @@ export function JobseekerFormSectionOverview({
 }: JobseekerFormSectionOverviewProps) {
   const { data: profile } = queryHookResult
   const mutation = mutationHookResult
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(
+  const initialValues: Partial<TpJobseekerProfileEntityProps> = useMemo(
     () => ({
       desiredPositions: profile?.desiredPositions ?? [],
       currentlyEnrolledInCourse: profile?.currentlyEnrolledInCourse ?? '',
@@ -125,7 +127,7 @@ export function JobseekerFormSectionOverview({
     [profile?.currentlyEnrolledInCourse, profile?.desiredPositions]
   )
 
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
+  const onSubmit = (values: Partial<TpJobseekerProfileEntityProps>) => {
     formik.setSubmitting(true)
     mutation.mutate(values, {
       onSettled: () => {

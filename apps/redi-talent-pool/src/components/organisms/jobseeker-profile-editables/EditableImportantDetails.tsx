@@ -6,6 +6,7 @@ import { Content, Element } from 'react-bulma-components'
 import { UseMutationResult, UseQueryResult } from 'react-query'
 import * as Yup from 'yup'
 
+import { TpJobseekerProfileEntityProps } from '@talent-connect/common-types'
 import {
   Button,
   Caption,
@@ -15,7 +16,7 @@ import {
   FormTextArea,
   PipeList,
 } from '@talent-connect/shared-atomic-design-components'
-import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
+import { TpJobseekerCv } from '@talent-connect/shared-types'
 import {
   availabilityOptions,
   availabilityOptionsIdToLabelMap,
@@ -25,12 +26,11 @@ import {
   immigrationStatusOptionsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
 interface Props {
-  profile?: Partial<TpJobseekerProfile>
+  profile?: Partial<TpJobseekerProfileEntityProps>
   disableEditing?: boolean
   showFullAddress?: boolean
 }
@@ -40,7 +40,7 @@ export function EditableImportantDetails({
   disableEditing,
   showFullAddress,
 }: Props) {
-  const queryHookResult = useTpJobseekerProfileQuery({
+  const queryHookResult = useTpJobseekerProfileEntityPropsQuery({
     enabled: !disableEditing,
   })
   if (overridingProfile) queryHookResult.data = overridingProfile
@@ -176,7 +176,7 @@ export function EditableImportantDetails({
 }
 
 EditableImportantDetails.isSectionFilled = (
-  profile: Partial<TpJobseekerProfile>
+  profile: Partial<TpJobseekerProfileEntityProps>
 ) =>
   profile?.availability ||
   profile?.desiredEmploymentType?.length > 0 ||
@@ -184,7 +184,7 @@ EditableImportantDetails.isSectionFilled = (
   profile?.immigrationStatus ||
   profile?.postalMailingAddress
 EditableImportantDetails.isSectionEmpty = (
-  profile: Partial<TpJobseekerProfile>
+  profile: Partial<TpJobseekerProfileEntityProps>
 ) => !EditableImportantDetails.isSectionFilled(profile)
 
 const validationSchema = Yup.object({
@@ -198,13 +198,13 @@ interface JobseekerFormSectionImportantDetailsProps {
   setIsEditing: (boolean) => void
   setIsFormDirty?: (boolean) => void
   queryHookResult: UseQueryResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobseekerProfileEntityProps | TpJobseekerCv>,
     unknown
   >
   mutationHookResult: UseMutationResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobseekerProfileEntityProps | TpJobseekerCv>,
     unknown,
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobseekerProfileEntityProps | TpJobseekerCv>,
     unknown
   >
   // TODO: this is a slippery slope. When this form section is used in the
@@ -226,7 +226,7 @@ export function JobseekerFormSectionImportantDetails({
 }: JobseekerFormSectionImportantDetailsProps) {
   const { data: profile } = queryHookResult
   const mutation = mutationHookResult
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(
+  const initialValues: Partial<TpJobseekerProfileEntityProps> = useMemo(
     () => ({
       availability: profile?.availability ?? '',
       desiredEmploymentType: profile?.desiredEmploymentType ?? [],
@@ -250,7 +250,7 @@ export function JobseekerFormSectionImportantDetails({
       profile?.willingToRelocate,
     ]
   )
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
+  const onSubmit = (values: Partial<TpJobseekerProfileEntityProps>) => {
     formik.setSubmitting(true)
     mutation.mutate(values, {
       onSettled: () => {

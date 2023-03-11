@@ -1,3 +1,4 @@
+import { TpJobseekerProfileEntityProps } from '@talent-connect/common-types'
 import {
   Button,
   Caption,
@@ -5,7 +6,7 @@ import {
   FormSelect,
   FormTextArea,
 } from '@talent-connect/shared-atomic-design-components'
-import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
+import { TpJobseekerCv } from '@talent-connect/shared-types'
 import {
   topSkills,
   topSkillsIdToLabelMap,
@@ -16,12 +17,11 @@ import { Content, Element, Tag } from 'react-bulma-components'
 import { UseMutationResult, UseQueryResult } from 'react-query'
 import * as Yup from 'yup'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 
 interface Props {
-  profile?: Partial<TpJobseekerProfile>
+  profile?: Partial<TpJobseekerProfileEntityProps>
   disableEditing?: boolean
 }
 
@@ -29,7 +29,7 @@ export function EditableSummary({
   profile: overridingProfile,
   disableEditing,
 }: Props) {
-  const queryHookResult = useTpJobseekerProfileQuery({
+  const queryHookResult = useTpJobseekerProfileEntityPropsQuery({
     enabled: !disableEditing,
   })
   if (overridingProfile) queryHookResult.data = overridingProfile
@@ -94,10 +94,12 @@ export function EditableSummary({
   )
 }
 
-EditableSummary.isSectionFilled = (profile: Partial<TpJobseekerProfile>) =>
-  !!profile?.aboutYourself && profile?.topSkills?.length > 0
-EditableSummary.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
-  !EditableSummary.isSectionFilled(profile)
+EditableSummary.isSectionFilled = (
+  profile: Partial<TpJobseekerProfileEntityProps>
+) => !!profile?.aboutYourself && profile?.topSkills?.length > 0
+EditableSummary.isSectionEmpty = (
+  profile: Partial<TpJobseekerProfileEntityProps>
+) => !EditableSummary.isSectionFilled(profile)
 
 const formTopSkills = topSkills.map(({ id, label }) => ({
   value: id,
@@ -121,13 +123,13 @@ interface JobseekerFormSectionSummaryProps {
   setIsEditing: (boolean) => void
   setIsFormDirty?: (boolean) => void
   queryHookResult: UseQueryResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobseekerProfileEntityProps | TpJobseekerCv>,
     unknown
   >
   mutationHookResult: UseMutationResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobseekerProfileEntityProps | TpJobseekerCv>,
     unknown,
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    Partial<TpJobseekerProfileEntityProps | TpJobseekerCv>,
     unknown
   >
 }
@@ -140,14 +142,14 @@ export function JobseekerFormSectionSummary({
 }: JobseekerFormSectionSummaryProps) {
   const { data: profile } = queryHookResult
   const mutation = mutationHookResult
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(
+  const initialValues: Partial<TpJobseekerProfileEntityProps> = useMemo(
     () => ({
       aboutYourself: profile?.aboutYourself ? profile.aboutYourself : '',
       topSkills: profile?.topSkills ?? [],
     }),
     [profile?.aboutYourself, profile?.topSkills]
   )
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
+  const onSubmit = (values: Partial<TpJobseekerProfileEntityProps>) => {
     formik.setSubmitting(true)
     mutation.mutate(values, {
       onSettled: () => {
