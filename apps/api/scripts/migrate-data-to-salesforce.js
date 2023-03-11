@@ -1400,10 +1400,11 @@ function buildContact(redUser) {
   // allUsers = allUsers.filter(
   //   (u) => u.id.toString() === '613731c6e0624f069aa223d9'
   // )
-  console.log(allUsers)
+  // console.log(allUsers)
   allUsers = allUsers
     .map((u) => {
       u.email = u.email.toLocaleLowerCase()
+      if (u.rediLocation) u.rediLocation = u.rediLocation.toUpperCase()
       return u
     })
     .map((u) => {
@@ -1425,6 +1426,9 @@ function buildContact(redUser) {
           }
         })
       }
+      if (u.redProfile && u.redProfile.rediLocation) {
+        u.redProfile.rediLocation = u.redProfile.rediLocation.toUpperCase()
+      }
       return u
     })
     .map((u) => {
@@ -1436,6 +1440,10 @@ function buildContact(redUser) {
     })
     .map((u) => {
       if (u.tpJobseekerProfile) {
+        if (u.tpJobseekerProfile.rediLocation) {
+          u.tpJobseekerProfile.rediLocation =
+            u.tpJobseekerProfile.rediLocation.toUpperCase()
+        }
         u.tpJobseekerProfile.telephoneNumber = u.tpJobseekerProfile.phoneNumber
         delete u.tpJobseekerProfile.phoneNumber
         u.tpJobseekerProfile.linkedInProfileUrl =
