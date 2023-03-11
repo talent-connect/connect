@@ -5,5 +5,6 @@ export enum RediLocation {
   HAMBURG = 'HAMBURG',
   MUNICH = 'MUNICH',
   NRW = 'NRW',
+  CYBERSPACE = 'CYBERSPACE',
 }
 registerEnumType(RediLocation, { name: 'RediLocation' })

@@ -3,6 +3,7 @@ export const REDI_LOCATION_NAMES = {
   HAMBURG: 'Hamburg',
   MUNICH: 'Munich',
   NRW: 'NRW',
+  CYBERSPACE: 'Cyberspace',
 } as const
 
 export const CATEGORY_GROUPS = {
@@ -474,6 +475,41 @@ export const COURSES = [
     id: 'HAMBURG_ALUMNI',
     label: 'Alumni (I took a course in the past)',
     location: 'HAMBURG',
+  },
+  {
+    id: 'CYBERSPACE_DATA_ANALYTICS',
+    label: 'Data Analytics',
+    location: 'cyberspace',
+  },
+  {
+    id: 'CYBERSPACE_CYBERSECURITY_BEGINNERS',
+    label: 'Cybersecurity Beginners',
+    location: 'cyberspace',
+  },
+  {
+    id: 'CYBERSPACE_CYBERSECURITY_INTERMEDIATE',
+    label: 'Cybersecurity Intermediate',
+    location: 'cyberspace',
+  },
+  {
+    id: 'CYBERSPACE_CYBERSECURITY_ADVANCED',
+    label: 'Cybersecurity Advanced',
+    location: 'cyberspace',
+  },
+  {
+    id: 'CYBERSPACE_PYTHON_FOUNDATION',
+    label: 'Python Foundation',
+    location: 'cyberspace',
+  },
+  {
+    id: 'CYBERSPACE_UX_UI_BASICS',
+    label: 'UX/UI Design Basics',
+    location: 'cyberspace',
+  },
+  {
+    id: 'CYBERSPACE_ALUMNI',
+    label: 'Alumni (I took a course in the past)',
+    location: 'cyberspace',
   },
 ]
 export type CourseKey = typeof COURSES[number]['id']
