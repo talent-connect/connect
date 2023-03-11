@@ -1219,7 +1219,9 @@ async function insertAccountForCompanyProfileFn(p) {
             Language_Requirements__c: jobListing.languageRequirements,
             Salary_Range__c: jobListing.salaryRange,
             Remote_Possible__c: jobListing.isRemotePossible,
-            Federal_State__c: jobListing.federalState,
+            Federal_State__c: jobListing.federalState
+              ? jobListing.federalState.toUpperCase().replace(/-/g, '_')
+              : undefined,
             CreatedDate: jobListing.createdAt,
             LastModifiedDate: jobListing.updatedAt,
           }
