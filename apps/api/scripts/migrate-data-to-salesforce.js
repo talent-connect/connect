@@ -1444,6 +1444,12 @@ function buildContact(redUser) {
           u.tpJobseekerProfile.rediLocation =
             u.tpJobseekerProfile.rediLocation.toUpperCase()
         }
+        if (
+          u.tpJobseekerProfile.currentlyEnrolledInCourse &&
+          u.tpJobseekerProfile.currentlyEnrolledInCourse === 'alumni'
+        ) {
+          u.tpJobseekerProfile.currentlyEnrolledInCourse = 'BERLIN_ALUMNI'
+        }
         u.tpJobseekerProfile.telephoneNumber = u.tpJobseekerProfile.phoneNumber
         delete u.tpJobseekerProfile.phoneNumber
         u.tpJobseekerProfile.linkedInProfileUrl =
