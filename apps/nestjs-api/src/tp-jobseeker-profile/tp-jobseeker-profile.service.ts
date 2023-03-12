@@ -1,6 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
-import { TpJobseekerProfileMapper } from '@talent-connect/common-types'
+import {
+  TpJobseekerProfileEntity,
+  TpJobseekerProfileMapper,
+} from '@talent-connect/common-types'
+import { deleteUndefinedProperties } from '@talent-connect/shared-utils'
 import { SfApiTpJobseekerProfileService } from '../salesforce-api/sf-api-tp-jobseeker-profile.service'
+import { TpJobseekerProfilePatchInput } from './dto/tp-jobseeker-profile-patch.entityinput'
 
 @Injectable()
 export class TpJobseekerProfileService {
@@ -39,5 +44,16 @@ export class TpJobseekerProfileService {
     } else {
       throw new NotFoundException('TpJobseekerProfile not found')
     }
+  }
+
+  async patch(input: TpJobseekerProfilePatchInput) {
+    const existingEntity = await this.findOne(input.id)
+    const props = existingEntity.props
+    const updatesSanitized = deleteUndefinedProperties(input)
+    Object.entries(updatesSanitized).forEach(([key, value]) => {
+      props[key] = value
+    })
+    const entityToPersist = TpJobseekerProfileEntity.create(props)
+    await this.api.update(this.mapper.toPersistence(entityToPersist))
   }
 }

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { TpJobseekerProfileRecord } from '@talent-connect/common-types'
+import { omit } from 'lodash'
 import { SfApiRepository } from './sf-api.repository'
 
 @Injectable()
@@ -15,5 +16,16 @@ export class SfApiTpJobseekerProfileService {
       TpJobseekerProfileRecord.create(rawRecord)
     )
     return records
+  }
+
+  async update(record: TpJobseekerProfileRecord) {
+    const props = record.props
+
+    const cleanProps = omit(props, ['CreatedDate', 'LastModifiedDate'])
+
+    await this.repository.updateRecord(
+      TpJobseekerProfileRecord.metadata.SALESFORCE_OBJECT_NAME,
+      cleanProps
+    )
   }
 }

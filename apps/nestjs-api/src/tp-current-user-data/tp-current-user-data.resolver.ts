@@ -4,7 +4,7 @@ import {
   TpCompanyRepresentativeRelationshipEntityProps,
   TpCompanyRepresentativeRelationshipStatus,
   TpJobListingEntityProps,
-  TpJobseekerProfileEntityProps,
+  TpJobseekerDirectoryEntryEntityProps,
   UserContactEntityProps,
 } from '@talent-connect/common-types'
 import { CurrentUser } from '../auth/current-user.decorator'
@@ -58,8 +58,8 @@ export class TpCurrentUserDataResolver {
     }
   }
 
-  @ResolveField((of) => TpJobseekerProfileEntityProps)
-  async jobseekerProfile(@CurrentUser() currentUser: CurrentUserInfo) {
+  @ResolveField((of) => TpJobseekerDirectoryEntryEntityProps)
+  async tpJobseekerDirectoryEntry(@CurrentUser() currentUser: CurrentUserInfo) {
     try {
       const entity =
         await this.jobseekerDirectoryEntriesService.findOneByUserId(

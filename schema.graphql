@@ -262,7 +262,7 @@ input FindAllVisibleTpJobListingsArgsFilter {
   skills: [TpTechnicalSkill!]
 }
 
-input FindAllVisibleTpJobseekerProfilesArgsFilter {
+input FindAllVisibleTpJobseekerDirectoryEntriesFilter {
   desiredLanguages: [Language!]
   desiredPositions: [TpDesiredPosition!]
   employmentTypes: [TpEmploymentType!]
@@ -583,7 +583,7 @@ type Query {
   tpCurrentUserDataGet: TpCurrentUserData!
   tpJobListing(filter: FindOneTpJobListingArgsFilter!): TpJobListing!
   tpJobListings(filter: FindAllVisibleTpJobListingsArgsFilter!): [TpJobListing!]!
-  tpJobseekerProfiles(filter: FindAllVisibleTpJobseekerProfilesArgsFilter!): [TpJobseekerProfile!]!
+  tpJobseekerDirectoryEntries(filter: FindAllVisibleTpJobseekerDirectoryEntriesFilter!): [TpJobseekerDirectoryEntry!]!
 }
 
 enum RediCourse {
@@ -636,6 +636,7 @@ enum RediCourse {
 
 enum RediLocation {
   BERLIN
+  CYBERSPACE
   HAMBURG
   MUNICH
   NRW
@@ -723,6 +724,7 @@ type TpCurrentUserData {
   jobListings: [TpJobListing!]
   jobseekerProfile: TpJobseekerProfile
   representedCompany: TpCompanyProfile
+  tpJobseekerDirectoryEntry: TpJobseekerDirectoryEntry!
   userContact: UserContact!
 }
 
@@ -848,7 +850,7 @@ input TpJobListingPatchInput {
   title: String
 }
 
-type TpJobseekerProfile {
+type TpJobseekerDirectoryEntry {
   aboutYourself: String
   availability: TpAvailabilityOption
   behanceUrl: String
@@ -888,6 +890,29 @@ type TpJobseekerProfile {
   userId: String!
   willingToRelocate: Boolean!
   workingLanguages: [LanguageRecord!]
+}
+
+type TpJobseekerProfile {
+  aboutYourself: String
+  availability: TpAvailabilityOption
+  createdAt: DateTime!
+  currentlyEnrolledInCourse: String
+  desiredEmploymentType: [TpEmploymentType!]
+  desiredPositions: [TpDesiredPosition!]
+  federalState: FederalState
+  id: ID!
+  ifAvailabilityIsDate_date: DateTime
+  isHired: Boolean!
+  isJobFair2022Participant: Boolean!
+  isJobFair2023Participant: Boolean!
+  isProfileVisibleToCompanies: Boolean!
+  location: String
+  profileAvatarImageS3Key: String
+  rediLocation: String
+  state: JobseekerProfileStatus!
+  topSkills: [TpTechnicalSkill!]
+  updatedAt: DateTime!
+  willingToRelocate: Boolean!
 }
 
 enum TpTechnicalSkill {

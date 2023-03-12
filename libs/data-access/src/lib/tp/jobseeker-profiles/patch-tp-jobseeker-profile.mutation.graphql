@@ -1,5 +1,0 @@
-mutation patchTpJobseekerProfile($input: TpJobseekerProfilePatchInput!) {
-  tpJobseekerProfilePatch(tpJobseekerProfilePatchInput: $input) {
-    ok
-  }
-}

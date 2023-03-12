@@ -287,7 +287,7 @@ export type FindAllVisibleTpJobListingsArgsFilter = {
   skills?: InputMaybe<Array<TpTechnicalSkill>>;
 };
 
-export type FindAllVisibleTpJobseekerProfilesArgsFilter = {
+export type FindAllVisibleTpJobseekerDirectoryEntriesFilter = {
   desiredLanguages?: InputMaybe<Array<Language>>;
   desiredPositions?: InputMaybe<Array<TpDesiredPosition>>;
   employmentTypes?: InputMaybe<Array<TpEmploymentType>>;
@@ -703,7 +703,7 @@ export type Query = {
   tpCurrentUserDataGet: TpCurrentUserData;
   tpJobListing: TpJobListing;
   tpJobListings: Array<TpJobListing>;
-  tpJobseekerProfiles: Array<TpJobseekerProfile>;
+  tpJobseekerDirectoryEntries: Array<TpJobseekerDirectoryEntry>;
 };
 
 
@@ -743,8 +743,8 @@ export type QueryTpJobListingsArgs = {
 };
 
 
-export type QueryTpJobseekerProfilesArgs = {
-  filter: FindAllVisibleTpJobseekerProfilesArgsFilter;
+export type QueryTpJobseekerDirectoryEntriesArgs = {
+  filter: FindAllVisibleTpJobseekerDirectoryEntriesFilter;
 };
 
 export enum RediCourse {
@@ -797,6 +797,7 @@ export enum RediCourse {
 
 export enum RediLocation {
   Berlin = 'BERLIN',
+  Cyberspace = 'CYBERSPACE',
   Hamburg = 'HAMBURG',
   Munich = 'MUNICH',
   Nrw = 'NRW'
@@ -888,6 +889,7 @@ export type TpCurrentUserData = {
   jobListings?: Maybe<Array<TpJobListing>>;
   jobseekerProfile?: Maybe<TpJobseekerProfile>;
   representedCompany?: Maybe<TpCompanyProfile>;
+  tpJobseekerDirectoryEntry: TpJobseekerDirectoryEntry;
   userContact: UserContact;
 };
 
@@ -1014,8 +1016,8 @@ export type TpJobListingPatchInput = {
   title?: InputMaybe<Scalars['String']>;
 };
 
-export type TpJobseekerProfile = {
-  __typename?: 'TpJobseekerProfile';
+export type TpJobseekerDirectoryEntry = {
+  __typename?: 'TpJobseekerDirectoryEntry';
   aboutYourself?: Maybe<Scalars['String']>;
   availability?: Maybe<TpAvailabilityOption>;
   behanceUrl?: Maybe<Scalars['String']>;
@@ -1055,6 +1057,30 @@ export type TpJobseekerProfile = {
   userId: Scalars['String'];
   willingToRelocate: Scalars['Boolean'];
   workingLanguages?: Maybe<Array<LanguageRecord>>;
+};
+
+export type TpJobseekerProfile = {
+  __typename?: 'TpJobseekerProfile';
+  aboutYourself?: Maybe<Scalars['String']>;
+  availability?: Maybe<TpAvailabilityOption>;
+  createdAt: Scalars['DateTime'];
+  currentlyEnrolledInCourse?: Maybe<Scalars['String']>;
+  desiredEmploymentType?: Maybe<Array<TpEmploymentType>>;
+  desiredPositions?: Maybe<Array<TpDesiredPosition>>;
+  federalState?: Maybe<FederalState>;
+  id: Scalars['ID'];
+  ifAvailabilityIsDate_date?: Maybe<Scalars['DateTime']>;
+  isHired: Scalars['Boolean'];
+  isJobFair2022Participant: Scalars['Boolean'];
+  isJobFair2023Participant: Scalars['Boolean'];
+  isProfileVisibleToCompanies: Scalars['Boolean'];
+  location?: Maybe<Scalars['String']>;
+  profileAvatarImageS3Key?: Maybe<Scalars['String']>;
+  rediLocation?: Maybe<Scalars['String']>;
+  state: JobseekerProfileStatus;
+  topSkills?: Maybe<Array<TpTechnicalSkill>>;
+  updatedAt: Scalars['DateTime'];
+  willingToRelocate: Scalars['Boolean'];
 };
 
 export enum TpTechnicalSkill {

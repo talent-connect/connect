@@ -14,6 +14,7 @@ import { SalesforceRecordEventsListenerModule } from '../salesforce-record-event
 import { TpCompanyProfilesModule } from '../tp-company-profiles/tp-company-profiles.module'
 import { TpCurrentUserDataModule } from '../tp-current-user-data/tp-current-user-data.module'
 import { TpJobseekerDirectoryEntriesModule } from '../tp-jobseeker-directory-entries/tp-jobseeker-directory-entries.module'
+import { TpJobseekerProfileModule } from '../tp-jobseeker-profile/tp-jobseeker-profile.module'
 import { UserContactModule } from '../user-contact/user-contact.module'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
@@ -41,6 +42,7 @@ import { AppService } from './app.service'
     ConProblemReportModule,
     TpCompanyProfilesModule,
     TpJobseekerDirectoryEntriesModule,
+    TpJobseekerProfileModule,
     TpCurrentUserDataModule,
     UserContactModule,
   ],

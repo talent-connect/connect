@@ -1,7 +1,7 @@
 query loadVisibleJobseekerProfiles(
-  $filter: FindAllVisibleTpJobseekerProfilesArgsFilter!
+  $filter: FindAllVisibleTpJobseekerDirectoryEntriesFilter!
 ) {
-  tpJobseekerProfiles(filter: $filter) {
+  tpJobseekerDirectoryEntries(filter: $filter) {
     id
     fullName
     firstName

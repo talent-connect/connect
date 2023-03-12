@@ -1,4 +1,4 @@
-fragment AllTpJobseekerProfileFields on TpJobseekerProfile {
+fragment AllTpJobseekerDirectoryEntryFields on TpJobseekerDirectoryEntry {
   aboutYourself
   experience {
     city
