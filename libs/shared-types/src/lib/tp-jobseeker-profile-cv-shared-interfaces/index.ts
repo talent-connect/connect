@@ -1,5 +1,5 @@
-export * from './EducationRecord'
-export * from './ExperienceRecord'
 export * from './HrSummit2021JobFairCompanyJobPreferenceRecord'
 export * from './LanguageRecord'
 export * from './ProjectRecord'
+export * from './TpJobseekerProfileEducationRecord'
+export * from './TpJobseekerProfileExperienceRecord'

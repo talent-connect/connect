@@ -10,7 +10,10 @@ import {
   FormTextArea,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
-import { ExperienceRecord, TpJobseekerCv } from '@talent-connect/shared-types'
+import {
+  TpJobseekerCv,
+  TpJobseekerProfileExperienceRecord,
+} from '@talent-connect/shared-types'
 import { formMonthsOptions } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
 import moment from 'moment'
@@ -431,7 +434,7 @@ export function JobseekerFormSectionProfessionalExperience({
   )
 }
 
-function buildBlankExperienceRecord(): ExperienceRecord {
+function buildBlankExperienceRecord(): TpJobseekerProfileExperienceRecord {
   return {
     uuid: uuidv4(),
     title: '',

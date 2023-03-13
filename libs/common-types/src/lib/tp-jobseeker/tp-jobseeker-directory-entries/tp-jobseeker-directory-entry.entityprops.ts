@@ -2,17 +2,14 @@ import { Field, ID, ObjectType } from '@nestjs/graphql'
 import { EntityProps } from '../../base-interfaces-types-classes'
 import {
   FederalState,
-  Language,
-  LanguageProficiencyLevel,
   TpDesiredPosition,
   TpEmploymentType,
   TpTechnicalSkill,
 } from '../../common-objects'
-import {
-  JobseekerProfileStatus,
-  TpAvailabilityOption,
-  TpEducationCertificationType,
-} from '../enums'
+import { TpJobseekerProfileEducationRecordEntityProps } from '../common-objects/tp-jobseeker-profile-education-record.entityprops'
+import { TpJobseekerProfileExperienceRecordEntityProps } from '../common-objects/tp-jobseeker-profile-experience-record.entityprops'
+import { TpJobseekerProfileLanguageRecordEntityProps } from '../common-objects/tp-jobseeker-profile-language-record.entityprops'
+import { JobseekerProfileStatus, TpAvailabilityOption } from '../enums'
 
 @ObjectType('TpJobseekerDirectoryEntry')
 export class TpJobseekerDirectoryEntryEntityProps implements EntityProps {
@@ -63,58 +60,17 @@ export class TpJobseekerDirectoryEntryEntityProps implements EntityProps {
   federalState?: FederalState
   willingToRelocate: boolean
 
-  @Field((type) => [ExperienceRecord])
-  experience?: Array<ExperienceRecord>
-  @Field((type) => [EducationRecord])
-  education?: Array<EducationRecord>
+  @Field((type) => [TpJobseekerProfileExperienceRecordEntityProps])
+  experience?: Array<TpJobseekerProfileExperienceRecordEntityProps>
+  @Field((type) => [TpJobseekerProfileEducationRecordEntityProps])
+  education?: Array<TpJobseekerProfileEducationRecordEntityProps>
 
-  workingLanguages?: Array<LanguageRecord>
+  @Field((type) => [TpJobseekerProfileLanguageRecordEntityProps])
+  workingLanguages?: Array<TpJobseekerProfileLanguageRecordEntityProps>
 
   createdAt: Date
   updatedAt: Date
 
   // The next ones are computed fields in Salesforce
   fullName: string
-}
-
-@ObjectType('ExperienceRecord')
-export class ExperienceRecord {
-  uuid: string
-  city?: string
-  title?: string
-  country?: string
-  company?: string
-  description?: string
-  startDateMonth?: number
-  startDateYear?: number
-  endDateMonth?: number
-  endDateYear?: number
-  current?: boolean
-}
-
-@ObjectType('EducationRecord')
-export class EducationRecord {
-  uuid: string
-  institutionCity?: string
-  title?: string
-  institutionCountry?: string
-  institutionName?: string
-  description?: string
-  @Field((type) => TpEducationCertificationType)
-  certificationType?: string
-
-  startDateMonth?: number
-  startDateYear?: number
-  endDateMonth?: number
-  endDateYear?: number
-  current?: boolean
-}
-
-@ObjectType('LanguageRecord')
-export class LanguageRecord {
-  @Field((type) => Language)
-  language: Language
-
-  @Field((type) => LanguageProficiencyLevel)
-  proficiencyLevelId: LanguageProficiencyLevel
 }

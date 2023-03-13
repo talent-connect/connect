@@ -211,23 +211,10 @@ type EducationRecord {
   description: String
   endDateMonth: Float
   endDateYear: Float
+  id: ID!
   institutionCity: String
   institutionCountry: String
   institutionName: String
-  startDateMonth: Float
-  startDateYear: Float
-  title: String
-  uuid: String!
-}
-
-type ExperienceRecord {
-  city: String
-  company: String
-  country: String
-  current: Boolean
-  description: String
-  endDateMonth: Float
-  endDateYear: Float
   startDateMonth: Float
   startDateYear: Float
   title: String
@@ -461,6 +448,7 @@ enum LanguageProficiencyLevel {
 }
 
 type LanguageRecord {
+  id: ID!
   language: Language!
   proficiencyLevelId: LanguageProficiencyLevel!
 }
@@ -550,6 +538,7 @@ type Mutation {
   tpJobListingCreate(tpJobListingCreateInput: TpJobListingCreateInput!): OkResponseMutationOutputDto!
   tpJobListingDelete(tpJobListingDeleteInput: TpJobListingDeleteInput!): OkResponseMutationOutputDto!
   tpJobListingPatch(tpJobListingPatchInput: TpJobListingPatchInput!): OkResponseMutationOutputDto!
+  tpJobseekerProfilePatch(tpJobseekerProfilePatchInput: TpJobseekerProfilePatchInput!): OkResponseMutationOutputDto!
   userContactPatch(userContactPatchInput: UserContactPatchInput!): OkResponseMutationOutputDto!
 }
 
@@ -584,6 +573,7 @@ type Query {
   tpJobListing(filter: FindOneTpJobListingArgsFilter!): TpJobListing!
   tpJobListings(filter: FindAllVisibleTpJobListingsArgsFilter!): [TpJobListing!]!
   tpJobseekerDirectoryEntries(filter: FindAllVisibleTpJobseekerDirectoryEntriesFilter!): [TpJobseekerDirectoryEntry!]!
+  tpJobseekerProfile(id: ID): TpJobseekerProfile!
 }
 
 enum RediCourse {
@@ -861,7 +851,7 @@ type TpJobseekerDirectoryEntry {
   dribbbleUrl: String
   education: [EducationRecord!]
   email: String!
-  experience: [ExperienceRecord!]
+  experience: [TpJobseekerProfileExperienceRecord!]
   federalState: FederalState
   firstName: String!
   fullName: String!
@@ -913,6 +903,42 @@ type TpJobseekerProfile {
   topSkills: [TpTechnicalSkill!]
   updatedAt: DateTime!
   willingToRelocate: Boolean!
+}
+
+type TpJobseekerProfileExperienceRecord {
+  city: String
+  company: String
+  country: String
+  current: Boolean
+  description: String
+  endDateMonth: Float
+  endDateYear: Float
+  id: ID!
+  startDateMonth: Float
+  startDateYear: Float
+  title: String
+  uuid: String!
+}
+
+input TpJobseekerProfilePatchInput {
+  aboutYourself: String
+  availability: TpAvailabilityOption
+  currentlyEnrolledInCourse: String
+  desiredEmploymentType: [TpEmploymentType!]
+  desiredPositions: [TpDesiredPosition!]
+  federalState: FederalState
+  id: ID!
+  ifAvailabilityIsDate_date: DateTime
+  isHired: Boolean
+  isJobFair2022Participant: Boolean
+  isJobFair2023Participant: Boolean
+  isProfileVisibleToCompanies: Boolean
+  location: String
+  profileAvatarImageS3Key: String
+  rediLocation: String
+  state: JobseekerProfileStatus
+  topSkills: [TpTechnicalSkill!]
+  willingToRelocate: Boolean
 }
 
 enum TpTechnicalSkill {

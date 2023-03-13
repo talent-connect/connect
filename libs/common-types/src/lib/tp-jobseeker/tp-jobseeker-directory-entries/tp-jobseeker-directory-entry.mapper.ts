@@ -8,14 +8,12 @@ import {
   TpEmploymentType,
   TpTechnicalSkill,
 } from '../../common-objects'
+import { TpJobseekerProfileEducationRecordEntityProps } from '../common-objects/tp-jobseeker-profile-education-record.entityprops'
+import { TpJobseekerProfileExperienceRecordEntityProps } from '../common-objects/tp-jobseeker-profile-experience-record.entityprops'
+import { TpJobseekerProfileLanguageRecordEntityProps } from '../common-objects/tp-jobseeker-profile-language-record.entityprops'
 import { JobseekerProfileStatus, TpAvailabilityOption } from '../enums'
 import { TpJobseekerDirectoryEntryEntity } from './tp-jobseeker-directory-entry.entity'
-import {
-  EducationRecord,
-  ExperienceRecord,
-  LanguageRecord,
-  TpJobseekerDirectoryEntryEntityProps,
-} from './tp-jobseeker-directory-entry.entityprops'
+import { TpJobseekerDirectoryEntryEntityProps } from './tp-jobseeker-directory-entry.entityprops'
 import { TpJobseekerDirectoryEntryRecord } from './tp-jobseeker-directory-entry.record'
 
 @Injectable()
@@ -92,8 +90,13 @@ export class TpJobseekerDirectoryEntryMapper
       const records = raw.props.Jobseeker_Line_Items__r?.records
       for (let i = 0; i < records.length; i++) {
         const record = records[i]
-        let baseRecord = {} as ExperienceRecord | EducationRecord
+        let baseRecord = {} as
+          | TpJobseekerProfileExperienceRecordEntityProps
+          | TpJobseekerProfileEducationRecordEntityProps
+        baseRecord.id = record.Id
         baseRecord.uuid = String(record.Frontend_View_Index__c)
+        baseRecord.userId = raw.props.Id
+        baseRecord.tpJobseekerProfileId = jobseekerProfileRecord.Id
         baseRecord.title = record.Title__c
         baseRecord.description = record.Description__c
         baseRecord.startDateMonth = record.Start_Date_Month__c
@@ -102,14 +105,16 @@ export class TpJobseekerDirectoryEntryMapper
         baseRecord.endDateYear = record.End_Date_Year__c
         baseRecord.current = record.Current__c
         if (record.RecordType.DeveloperName === 'Education') {
-          const educationRecord = baseRecord as EducationRecord
+          const educationRecord =
+            baseRecord as TpJobseekerProfileEducationRecordEntityProps
           educationRecord.institutionCity = record.Institution_City__c
           educationRecord.institutionCountry = record.Institution_Country__c
           educationRecord.institutionName = record.Institution_Name__c
           educationRecord.certificationType = record.Certification_Type__c
           props.education.push(educationRecord)
         } else if (record.RecordType.DeveloperName === 'Experience') {
-          const experienceRecord = baseRecord as ExperienceRecord
+          const experienceRecord =
+            baseRecord as TpJobseekerProfileExperienceRecordEntityProps
           experienceRecord.city = record.City__c
           experienceRecord.country = record.Country__c
           experienceRecord.company = record.Company__c
@@ -128,7 +133,9 @@ export class TpJobseekerDirectoryEntryMapper
       const records = raw.props.hed__Contact_Languages__r?.records
       for (let i = 0; i < records.length; i++) {
         const record = records[i]
-        const workingLanguage: LanguageRecord = {
+        const workingLanguage: TpJobseekerProfileLanguageRecordEntityProps = {
+          id: record.Id,
+          userId: raw.props.Id,
           language: record.hed__Language__r.Slug__c as Language,
           proficiencyLevelId:
             record.hed__Fluency__c as LanguageProficiencyLevel,

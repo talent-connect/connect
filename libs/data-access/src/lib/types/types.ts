@@ -235,24 +235,10 @@ export type EducationRecord = {
   description?: Maybe<Scalars['String']>;
   endDateMonth?: Maybe<Scalars['Float']>;
   endDateYear?: Maybe<Scalars['Float']>;
+  id: Scalars['ID'];
   institutionCity?: Maybe<Scalars['String']>;
   institutionCountry?: Maybe<Scalars['String']>;
   institutionName?: Maybe<Scalars['String']>;
-  startDateMonth?: Maybe<Scalars['Float']>;
-  startDateYear?: Maybe<Scalars['Float']>;
-  title?: Maybe<Scalars['String']>;
-  uuid: Scalars['String'];
-};
-
-export type ExperienceRecord = {
-  __typename?: 'ExperienceRecord';
-  city?: Maybe<Scalars['String']>;
-  company?: Maybe<Scalars['String']>;
-  country?: Maybe<Scalars['String']>;
-  current?: Maybe<Scalars['Boolean']>;
-  description?: Maybe<Scalars['String']>;
-  endDateMonth?: Maybe<Scalars['Float']>;
-  endDateYear?: Maybe<Scalars['Float']>;
   startDateMonth?: Maybe<Scalars['Float']>;
   startDateYear?: Maybe<Scalars['Float']>;
   title?: Maybe<Scalars['String']>;
@@ -487,6 +473,7 @@ export enum LanguageProficiencyLevel {
 
 export type LanguageRecord = {
   __typename?: 'LanguageRecord';
+  id: Scalars['ID'];
   language: Language;
   proficiencyLevelId: LanguageProficiencyLevel;
 };
@@ -577,6 +564,7 @@ export type Mutation = {
   tpJobListingCreate: OkResponseMutationOutputDto;
   tpJobListingDelete: OkResponseMutationOutputDto;
   tpJobListingPatch: OkResponseMutationOutputDto;
+  tpJobseekerProfilePatch: OkResponseMutationOutputDto;
   userContactPatch: OkResponseMutationOutputDto;
 };
 
@@ -666,6 +654,11 @@ export type MutationTpJobListingPatchArgs = {
 };
 
 
+export type MutationTpJobseekerProfilePatchArgs = {
+  tpJobseekerProfilePatchInput: TpJobseekerProfilePatchInput;
+};
+
+
 export type MutationUserContactPatchArgs = {
   userContactPatchInput: UserContactPatchInput;
 };
@@ -704,6 +697,7 @@ export type Query = {
   tpJobListing: TpJobListing;
   tpJobListings: Array<TpJobListing>;
   tpJobseekerDirectoryEntries: Array<TpJobseekerDirectoryEntry>;
+  tpJobseekerProfile: TpJobseekerProfile;
 };
 
 
@@ -745,6 +739,11 @@ export type QueryTpJobListingsArgs = {
 
 export type QueryTpJobseekerDirectoryEntriesArgs = {
   filter: FindAllVisibleTpJobseekerDirectoryEntriesFilter;
+};
+
+
+export type QueryTpJobseekerProfileArgs = {
+  id?: InputMaybe<Scalars['ID']>;
 };
 
 export enum RediCourse {
@@ -1028,7 +1027,7 @@ export type TpJobseekerDirectoryEntry = {
   dribbbleUrl?: Maybe<Scalars['String']>;
   education?: Maybe<Array<EducationRecord>>;
   email: Scalars['String'];
-  experience?: Maybe<Array<ExperienceRecord>>;
+  experience?: Maybe<Array<TpJobseekerProfileExperienceRecord>>;
   federalState?: Maybe<FederalState>;
   firstName: Scalars['String'];
   fullName: Scalars['String'];
@@ -1081,6 +1080,43 @@ export type TpJobseekerProfile = {
   topSkills?: Maybe<Array<TpTechnicalSkill>>;
   updatedAt: Scalars['DateTime'];
   willingToRelocate: Scalars['Boolean'];
+};
+
+export type TpJobseekerProfileExperienceRecord = {
+  __typename?: 'TpJobseekerProfileExperienceRecord';
+  city?: Maybe<Scalars['String']>;
+  company?: Maybe<Scalars['String']>;
+  country?: Maybe<Scalars['String']>;
+  current?: Maybe<Scalars['Boolean']>;
+  description?: Maybe<Scalars['String']>;
+  endDateMonth?: Maybe<Scalars['Float']>;
+  endDateYear?: Maybe<Scalars['Float']>;
+  id: Scalars['ID'];
+  startDateMonth?: Maybe<Scalars['Float']>;
+  startDateYear?: Maybe<Scalars['Float']>;
+  title?: Maybe<Scalars['String']>;
+  uuid: Scalars['String'];
+};
+
+export type TpJobseekerProfilePatchInput = {
+  aboutYourself?: InputMaybe<Scalars['String']>;
+  availability?: InputMaybe<TpAvailabilityOption>;
+  currentlyEnrolledInCourse?: InputMaybe<Scalars['String']>;
+  desiredEmploymentType?: InputMaybe<Array<TpEmploymentType>>;
+  desiredPositions?: InputMaybe<Array<TpDesiredPosition>>;
+  federalState?: InputMaybe<FederalState>;
+  id: Scalars['ID'];
+  ifAvailabilityIsDate_date?: InputMaybe<Scalars['DateTime']>;
+  isHired?: InputMaybe<Scalars['Boolean']>;
+  isJobFair2022Participant?: InputMaybe<Scalars['Boolean']>;
+  isJobFair2023Participant?: InputMaybe<Scalars['Boolean']>;
+  isProfileVisibleToCompanies?: InputMaybe<Scalars['Boolean']>;
+  location?: InputMaybe<Scalars['String']>;
+  profileAvatarImageS3Key?: InputMaybe<Scalars['String']>;
+  rediLocation?: InputMaybe<Scalars['String']>;
+  state?: InputMaybe<JobseekerProfileStatus>;
+  topSkills?: InputMaybe<Array<TpTechnicalSkill>>;
+  willingToRelocate?: InputMaybe<Scalars['Boolean']>;
 };
 
 export enum TpTechnicalSkill {

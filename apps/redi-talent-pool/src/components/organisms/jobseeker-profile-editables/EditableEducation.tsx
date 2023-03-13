@@ -10,7 +10,10 @@ import {
   FormTextArea,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
-import { EducationRecord, TpJobseekerCv } from '@talent-connect/shared-types'
+import {
+  TpJobseekerCv,
+  TpJobseekerProfileEducationRecord,
+} from '@talent-connect/shared-types'
 import {
   certificationTypes,
   formMonthsOptions,
@@ -445,7 +448,7 @@ const formCertificationTypes = certificationTypes.map(({ id, label }) => ({
   label,
 }))
 
-function buildBlankEducationRecord(): EducationRecord {
+function buildBlankEducationRecord(): TpJobseekerProfileEducationRecord {
   return {
     uuid: uuidv4(),
     title: '',

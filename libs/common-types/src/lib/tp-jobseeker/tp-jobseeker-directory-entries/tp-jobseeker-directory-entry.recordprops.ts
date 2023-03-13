@@ -14,6 +14,7 @@ class JobseekerLineItem {
   RecordType: {
     DeveloperName: 'Experience' | 'Education'
   }
+  Id: string
   Frontend_View_Index__c: number
   Description__c?: string
   Institution_City__c?: string
@@ -73,6 +74,7 @@ class LanguageWrapper {
 }
 
 class JobseekerLanguageItem {
+  Id: string
   hed__Fluency__c: string
   @Type(() => LanguageWrapper)
   hed__Language__r: LanguageWrapper

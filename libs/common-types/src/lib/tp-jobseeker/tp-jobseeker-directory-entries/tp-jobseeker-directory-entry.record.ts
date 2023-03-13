@@ -39,12 +39,20 @@ export class TpJobseekerDirectoryEntryRecord extends Record<TpJobseekerDirectory
     SALESFORCE_CHILD_OBJECTS: [
       {
         name: 'hed__Contact_Languages__r',
-        fields: ['hed__Fluency__c', 'hed__Language__r.Slug__c'],
+        fields: [
+          'Id',
+          'hed__Contact__c',
+          'hed__Fluency__c',
+          'hed__Language__r.Slug__c',
+        ],
       },
       {
         name: 'Jobseeker_Line_Items__r',
         fields: [
           'RecordType.DeveloperName',
+          'Id',
+          'Contact__c',
+          'Jobseeker_Profile__c',
           'Frontend_View_Index__c',
           'Description__c',
           'Institution_City__c',

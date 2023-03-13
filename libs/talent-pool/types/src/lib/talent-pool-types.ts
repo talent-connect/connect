@@ -25,14 +25,14 @@ export interface TpProfile {
   availability?: string
   aboutYourself?: string
   topSkills?: string[]
-  experience?: ExperienceRecord[]
-  education?: EducationRecord[]
+  experience?: TpJobseekerProfileExperienceRecord[]
+  education?: TpJobseekerProfileEducationRecord[]
   createdAt?: Date
 }
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface CVFormData extends Partial<TpProfile> {}
 
-interface ExperienceRecord {
+interface TpJobseekerProfileExperienceRecord {
   title?: string
   company?: string
 
@@ -42,7 +42,7 @@ interface ExperienceRecord {
   description?: string
 }
 
-interface EducationRecord {
+interface TpJobseekerProfileEducationRecord {
   type?: string
   institutionName?: string
   startDate?: Date
