@@ -121,6 +121,9 @@ const coursesFlat = [
   ...coursesByLocation.nrw.map((cat) =>
     Object.assign(cat, { label: `NRW: ${cat.label}` })
   ),
+  ...coursesByLocation.cyberspace.map((cat) =>
+    Object.assign(cat, { label: `Cyberspace: ${cat.label}` })
+  ),
 ]
 
 const categoriesIdToLabelCleanMap = mapValues(
@@ -1157,6 +1160,7 @@ const RedMentoringSessionListAside = () => {
           <MenuItem value="hamburg">Hamburg</MenuItem>
           <MenuItem value="munich">Munich</MenuItem>
           <MenuItem value="nrw">NRW</MenuItem>
+          <MenuItem value="cyberspace">Cyberspace</MenuItem>
         </Select>
       </FormControl>
       <div>
