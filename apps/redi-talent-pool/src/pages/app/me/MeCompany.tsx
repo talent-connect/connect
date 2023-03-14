@@ -141,7 +141,7 @@ export function MeCompany() {
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'three-fifths' }}>
           <EditableNamePhotoLocation profile={profile} />
           {/* Hidden until the next Job Fair date announced */}
-          <div style={{ marginBottom: '1.5rem' }}>
+          {/* <div style={{ marginBottom: '1.5rem' }}>
             <Checkbox
               checked={profile.isJobFair2023Participant}
               customOnChange={onJobFair2023ParticipateChange}
@@ -149,7 +149,7 @@ export function MeCompany() {
               My company will attend the <strong>ReDI Job Fair</strong>{' '}
               happening on <strong>15/02/2023</strong>.
             </Checkbox>
-          </div>
+          </div> */}
           <EditableAbout profile={profile} />
         </Columns.Column>
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'two-fifths' }}>

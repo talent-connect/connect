@@ -210,7 +210,7 @@ export function BrowseJobseeker() {
           Remote Working Possible
         </div>
         {/* Hidden until the next Job Fair date announced */}
-        <div className="filters-inner filters__jobfair">
+        {/* <div className="filters-inner filters__jobfair">
           <Checkbox
             name="isJobFair2023Participant"
             checked={isJobFair2023Participant || false}
@@ -218,7 +218,7 @@ export function BrowseJobseeker() {
           >
             Attending ReDI Job Fair 2023
           </Checkbox>
-        </div>
+        </div> */}
       </div>
       <div className="active-filters">
         {(relatedPositions.length !== 0 ||

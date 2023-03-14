@@ -77,7 +77,7 @@ export function MeJobseeker() {
           </div>
           <EditableNamePhotoLocation profile={profile} />
           {/* Hidden until the next Job Fair date announced */}
-          <div style={{ marginBottom: '1.5rem' }}>
+          {/* <div style={{ marginBottom: '1.5rem' }}>
             <Checkbox
               checked={profile.isJobFair2023Participant}
               customOnChange={onJobFair2023ParticipateChange}
@@ -85,7 +85,7 @@ export function MeJobseeker() {
               I will attend the <b>ReDI Job Fair</b> happening on{' '}
               <b>15/02/2023</b>.
             </Checkbox>
-          </div>
+          </div> */}
           <EditableOverview profile={profile} />
           <EditableSummary profile={profile} />
           <EditableProfessionalExperience profile={profile} />
