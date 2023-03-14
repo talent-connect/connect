@@ -140,6 +140,7 @@ export function MeCompany() {
       <Columns className="is-6 is-variable">
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'three-fifths' }}>
           <EditableNamePhotoLocation profile={profile} />
+          {/* Hidden until the next Job Fair date announced */}
           <div style={{ marginBottom: '1.5rem' }}>
             <Checkbox
               checked={profile.isJobFair2023Participant}

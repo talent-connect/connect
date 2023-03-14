@@ -212,6 +212,7 @@ export function BrowseCompany() {
         </div>
       </div>
       <div className="filters">
+        {/* Hidden until the next Job Fair date announced */}
         <div className="filters-inner filters__jobfair">
           <Checkbox
             name="isJobFair2023Participant"

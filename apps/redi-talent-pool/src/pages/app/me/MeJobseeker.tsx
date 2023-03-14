@@ -76,6 +76,7 @@ export function MeJobseeker() {
             <OnboardingSteps />
           </div>
           <EditableNamePhotoLocation profile={profile} />
+          {/* Hidden until the next Job Fair date announced */}
           <div style={{ marginBottom: '1.5rem' }}>
             <Checkbox
               checked={profile.isJobFair2023Participant}
