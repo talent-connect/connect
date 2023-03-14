@@ -7,7 +7,7 @@ import { TpContactLanguageRecord } from './tp-contact-language.record'
 import { TpContactLanguageRecordProps } from './tp-contact-language.recordprops'
 
 @Injectable()
-export class TpJobseekerProfileMapper
+export class TpJobseekerProfileLanguageRecordMapper
   implements
     Mapper<TpJobseekerProfileLanguageRecordEntity, TpContactLanguageRecord>
 {

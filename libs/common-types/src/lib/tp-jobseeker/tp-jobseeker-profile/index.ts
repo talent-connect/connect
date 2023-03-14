@@ -1,3 +1,4 @@
+export * from './sub-objects'
 export * from './tp-jobseeker-profile.entity'
 export * from './tp-jobseeker-profile.entityprops'
 export * from './tp-jobseeker-profile.mapper'

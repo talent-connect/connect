@@ -7,6 +7,7 @@ import { SfApiContactService } from './sf-api-contact.service'
 import { SfApiTpCompanyProfilesService } from './sf-api-tp-company-profiles.service'
 import { SfApiTpJobListingsService } from './sf-api-tp-job-listings.service'
 import { SfApiTpJobseekerDirectoryEntriesService } from './sf-api-tp-jobseeker-directory-entries.service'
+import { SfApiTpJobseekerProfileEducationRecordsService } from './sf-api-tp-jobseeker-profile-education-records.service'
 import { SfApiTpJobseekerProfileService } from './sf-api-tp-jobseeker-profile.service'
 import { SfApiRepository } from './sf-api.repository'
 
@@ -21,6 +22,7 @@ import { SfApiRepository } from './sf-api.repository'
     SfApiTpJobseekerDirectoryEntriesService,
     SfApiTpJobListingsService,
     SfApiContactService,
+    SfApiTpJobseekerProfileEducationRecordsService,
   ],
   imports: [ConfigModule, CacheModule.register()],
   exports: [
@@ -34,6 +36,7 @@ import { SfApiRepository } from './sf-api.repository'
     SfApiTpJobseekerDirectoryEntriesService,
     SfApiTpJobListingsService,
     SfApiContactService,
+    SfApiTpJobseekerProfileEducationRecordsService,
   ],
 })
 export class SfApiModule {}
