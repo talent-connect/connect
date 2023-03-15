@@ -14,6 +14,8 @@ async function bootstrap() {
   app.setGlobalPrefix(globalPrefix)
   app.use(json({ limit: '1mb' }))
   app.use(urlencoded({ extended: true, limit: '1mb' }))
+  // TODO! Re-enable this? If we can set to a higher debug log level
+  // app.useLogger(SentryService.SentryServiceInstance())
   const port = process.env.PORT || 3333
   await app.listen(port)
   Logger.log(

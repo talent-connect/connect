@@ -17,6 +17,7 @@ export class SfApiTpContactLanguageRecordsService {
     const records = rawRecords.map((rawRecord) =>
       TpContactLanguageRecord.create(rawRecord)
     )
+    throw new Error('hey hey')
     return records
   }
 
