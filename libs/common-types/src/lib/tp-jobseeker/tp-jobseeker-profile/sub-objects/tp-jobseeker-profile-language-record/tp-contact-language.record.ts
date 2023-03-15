@@ -22,6 +22,7 @@ export class TpContactLanguageRecord extends Record<TpContactLanguageRecordProps
       'Id',
       'hed__Contact__c',
       'hed__Fluency__c',
+      'hed__Language__c',
       'hed__Language__r.Slug__c',
       'CreatedDate',
       'LastModifiedDate',

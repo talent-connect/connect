@@ -8,6 +8,7 @@ export class TpContactLanguageRecordProps implements RecordProps {
   hed__Language__r: {
     Slug__c: string
   }
+  hed__Language__c: string
   hed__Fluency__c: string
 
   @Type(() => Date)

@@ -23,7 +23,21 @@ export class SfApiTpContactLanguageRecordsService {
   async create(record: TpContactLanguageRecord) {
     const props = record.props
 
-    const cleanProps = omit(props, ['CreatedDate', 'LastModifiedDate'])
+    const hedLanguage = await this.repository.findRecordsOfObject({
+      objectName: '	hed__Language__c',
+      objectFields: ['Id'],
+      filter: {
+        Slug__c: props.hed__Language__r.Slug__c,
+      },
+    })
+    const hedLanguageId = hedLanguage[0].Id
+    props.hed__Language__c = hedLanguageId
+
+    const cleanProps = omit(props, [
+      'CreatedDate',
+      'LastModifiedDate',
+      'hed__Language__r',
+    ])
 
     const createResult = await this.repository.createRecord(
       TpContactLanguageRecord.metadata.SALESFORCE_OBJECT_NAME,
@@ -36,10 +50,21 @@ export class SfApiTpContactLanguageRecordsService {
   async update(record: TpContactLanguageRecord) {
     const props = record.props
 
+    const hedLanguage = await this.repository.findRecordsOfObject({
+      objectName: '	hed__Language__c',
+      objectFields: ['Id'],
+      filter: {
+        Slug__c: props.hed__Language__r.Slug__c,
+      },
+    })
+    const hedLanguageId = hedLanguage[0].Id
+    props.hed__Language__c = hedLanguageId
+
     const cleanProps = omit(props, [
       'CreatedDate',
       'LastModifiedDate',
-      'Contact__c',
+      'hed__Contact__c',
+      'hed__Language__r',
     ])
 
     return await this.repository.updateRecord(
