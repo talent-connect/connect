@@ -17,7 +17,7 @@ export class TpContactLanguageRecord extends Record<TpContactLanguageRecordProps
   }
 
   public static metadata: RecordMetadata = {
-    SALESFORCE_OBJECT_NAME: '',
+    SALESFORCE_OBJECT_NAME: 'hed__Contact_Language__c',
     SALESFORCE_OBJECT_FIELDS: [
       'Id',
       'hed__Contact__c',

@@ -7,10 +7,7 @@ import { SfApiRepository } from './sf-api.repository'
 export class SfApiTpContactLanguageRecordsService {
   constructor(private readonly repository: SfApiRepository) {}
 
-  async getAllJobseekerLineItemsWithRecordTypeLanguage(
-    filter: any = {}
-  ): Promise<TpContactLanguageRecord[]> {
-    filter['RecordType.DeveloperName'] = 'Language'
+  async getAll(filter: any = {}): Promise<TpContactLanguageRecord[]> {
     const rawRecords = await this.repository.findRecordsOfObject({
       objectName: TpContactLanguageRecord.metadata.SALESFORCE_OBJECT_NAME,
       objectFields: TpContactLanguageRecord.metadata.SALESFORCE_OBJECT_FIELDS,
@@ -39,7 +36,11 @@ export class SfApiTpContactLanguageRecordsService {
   async update(record: TpContactLanguageRecord) {
     const props = record.props
 
-    const cleanProps = omit(props, ['CreatedDate', 'LastModifiedDate'])
+    const cleanProps = omit(props, [
+      'CreatedDate',
+      'LastModifiedDate',
+      'Contact__c',
+    ])
 
     return await this.repository.updateRecord(
       TpContactLanguageRecord.metadata.SALESFORCE_OBJECT_NAME,

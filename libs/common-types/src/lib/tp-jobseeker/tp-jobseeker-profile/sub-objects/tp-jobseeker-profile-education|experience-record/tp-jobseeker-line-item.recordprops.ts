@@ -10,6 +10,7 @@ export class TpJobseekerLineItemRecordProps implements RecordProps {
   RecordType: {
     DeveloperName: 'Experience' | 'Education'
   }
+  RecordTypeId: string
   Frontend_View_Index__c: number
   Description__c?: string
   Institution_City__c?: string

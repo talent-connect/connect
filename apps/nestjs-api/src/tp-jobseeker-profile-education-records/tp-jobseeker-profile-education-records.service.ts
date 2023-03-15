@@ -38,7 +38,9 @@ export class TpJobseekerProfileEducationRecordsService {
     if (entities.length > 0) {
       return entities[0]
     } else {
-      throw new NotFoundException('TpJobseekerProfile not found with id: ' + id)
+      throw new NotFoundException(
+        'TpJobseekerProfileEducationRecord not found with id: ' + id
+      )
     }
   }
 

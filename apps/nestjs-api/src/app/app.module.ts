@@ -15,6 +15,8 @@ import { TpCompanyProfilesModule } from '../tp-company-profiles/tp-company-profi
 import { TpCurrentUserDataModule } from '../tp-current-user-data/tp-current-user-data.module'
 import { TpJobseekerDirectoryEntriesModule } from '../tp-jobseeker-directory-entries/tp-jobseeker-directory-entries.module'
 import { TpJobseekerProfileEducationRecordsModule } from '../tp-jobseeker-profile-education-records/tp-jobseeker-profile-education-records.module'
+import { TpJobseekerProfileExperienceRecordsModule } from '../tp-jobseeker-profile-experience-records/tp-jobseeker-profile-experience-records.module'
+import { TpJobseekerProfileLanguageRecordsModule } from '../tp-jobseeker-profile-language-records/tp-jobseeker-profile-language-records.module'
 import { TpJobseekerProfileModule } from '../tp-jobseeker-profile/tp-jobseeker-profile.module'
 import { UserContactModule } from '../user-contact/user-contact.module'
 import { AppController } from './app.controller'
@@ -47,6 +49,8 @@ import { AppService } from './app.service'
     TpCurrentUserDataModule,
     UserContactModule,
     TpJobseekerProfileEducationRecordsModule,
+    TpJobseekerProfileExperienceRecordsModule,
+    TpJobseekerProfileLanguageRecordsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

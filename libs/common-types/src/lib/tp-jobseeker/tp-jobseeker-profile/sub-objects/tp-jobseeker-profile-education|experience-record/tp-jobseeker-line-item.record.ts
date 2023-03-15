@@ -23,6 +23,7 @@ export class TpJobseekerLineItemRecord extends Record<TpJobseekerLineItemRecordP
       'Contact__c',
       'Jobseeker_Profile__c',
       'RecordType.DeveloperName',
+      'RecordTypeId',
       'Frontend_View_Index__c',
       'Description__c',
       'Institution_City__c',

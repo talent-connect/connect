@@ -8,6 +8,8 @@ import { SfApiTpCompanyProfilesService } from './sf-api-tp-company-profiles.serv
 import { SfApiTpJobListingsService } from './sf-api-tp-job-listings.service'
 import { SfApiTpJobseekerDirectoryEntriesService } from './sf-api-tp-jobseeker-directory-entries.service'
 import { SfApiTpJobseekerProfileEducationRecordsService } from './sf-api-tp-jobseeker-profile-education-records.service'
+import { SfApiTpJobseekerProfileExperienceRecordsService } from './sf-api-tp-jobseeker-profile-experience-records.service'
+import { SfApiTpContactLanguageRecordsService } from './sf-api-tp-jobseeker-profile-language-records.service'
 import { SfApiTpJobseekerProfileService } from './sf-api-tp-jobseeker-profile.service'
 import { SfApiRepository } from './sf-api.repository'
 
@@ -23,6 +25,8 @@ import { SfApiRepository } from './sf-api.repository'
     SfApiTpJobListingsService,
     SfApiContactService,
     SfApiTpJobseekerProfileEducationRecordsService,
+    SfApiTpJobseekerProfileExperienceRecordsService,
+    SfApiTpContactLanguageRecordsService,
   ],
   imports: [ConfigModule, CacheModule.register()],
   exports: [
@@ -37,6 +41,8 @@ import { SfApiRepository } from './sf-api.repository'
     SfApiTpJobListingsService,
     SfApiContactService,
     SfApiTpJobseekerProfileEducationRecordsService,
+    SfApiTpJobseekerProfileExperienceRecordsService,
+    SfApiTpContactLanguageRecordsService,
   ],
 })
 export class SfApiModule {}

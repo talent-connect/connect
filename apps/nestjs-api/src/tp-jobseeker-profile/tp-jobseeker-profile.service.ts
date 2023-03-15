@@ -37,7 +37,7 @@ export class TpJobseekerProfileService {
 
   async findOneByUserId(userId: string) {
     const entities = await this.findAll({
-      Id: userId,
+      Contact__c: userId,
     })
     if (entities.length > 0) {
       return entities[0]

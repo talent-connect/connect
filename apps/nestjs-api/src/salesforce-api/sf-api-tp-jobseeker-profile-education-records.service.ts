@@ -26,7 +26,18 @@ export class SfApiTpJobseekerProfileEducationRecordsService {
   async create(record: TpJobseekerLineItemRecord) {
     const props = record.props
 
-    const cleanProps = omit(props, ['CreatedDate', 'LastModifiedDate'])
+    const recordTypeId = await this.repository.findRecordIdOfObject(
+      TpJobseekerLineItemRecord.metadata.SALESFORCE_OBJECT_NAME,
+      props.RecordType.DeveloperName
+    )
+
+    props.RecordTypeId = recordTypeId
+
+    const cleanProps = omit(props, [
+      'CreatedDate',
+      'LastModifiedDate',
+      'RecordType',
+    ])
 
     const createResult = await this.repository.createRecord(
       TpJobseekerLineItemRecord.metadata.SALESFORCE_OBJECT_NAME,
@@ -39,7 +50,13 @@ export class SfApiTpJobseekerProfileEducationRecordsService {
   async update(record: TpJobseekerLineItemRecord) {
     const props = record.props
 
-    const cleanProps = omit(props, ['CreatedDate', 'LastModifiedDate'])
+    const cleanProps = omit(props, [
+      'CreatedDate',
+      'LastModifiedDate',
+      'RecordType',
+      'Jobseeker_Profile__c',
+      'Contact__c',
+    ])
 
     return await this.repository.updateRecord(
       TpJobseekerLineItemRecord.metadata.SALESFORCE_OBJECT_NAME,

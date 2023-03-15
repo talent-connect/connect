@@ -11,6 +11,7 @@ export class SfApiTpJobseekerProfileService {
     const rawRecords = await this.repository.findRecordsOfObject({
       objectName: TpJobseekerProfileRecord.metadata.SALESFORCE_OBJECT_NAME,
       objectFields: TpJobseekerProfileRecord.metadata.SALESFORCE_OBJECT_FIELDS,
+      filter,
     })
     const records = rawRecords.map((rawRecord) =>
       TpJobseekerProfileRecord.create(rawRecord)

@@ -47,6 +47,10 @@ export class TpJobseekerProfileEducationRecordMapper
 
     props.Id = source.props.id
 
+    props.RecordType = {
+      DeveloperName: 'Education',
+    }
+
     props.Id = source.props.id
     props.Frontend_View_Index__c = source.props.sortIndex
     props.Contact__c = source.props.userId
