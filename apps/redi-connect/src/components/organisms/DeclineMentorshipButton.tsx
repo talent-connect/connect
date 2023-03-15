@@ -93,8 +93,6 @@ const DeclineMentorshipButton = ({
               name="ifDeclinedByMentor_chosenReasonForDecline"
               label=""
               items={formDeclineOptions}
-              menuPortalTarget={document.body}
-              menuPosition="fixed"
               formik={formik}
             />
             {formik.values.ifDeclinedByMentor_chosenReasonForDecline ===
