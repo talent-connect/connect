@@ -1,10 +1,11 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql'
+import { Field, ID, Int, ObjectType } from '@nestjs/graphql'
 
 @ObjectType('TpJobseekerProfileExperienceRecord')
 export class TpJobseekerProfileExperienceRecordEntityProps {
   @Field((type) => ID)
   id: string
-  uuid: string
+  @Field((type) => Int)
+  sortIndex: number
   @Field((type) => ID)
   userId: string
   @Field((type) => ID)

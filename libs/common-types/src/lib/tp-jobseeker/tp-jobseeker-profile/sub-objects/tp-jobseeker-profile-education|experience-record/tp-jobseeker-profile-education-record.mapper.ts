@@ -17,7 +17,7 @@ export class TpJobseekerProfileEducationRecordMapper
 
     props.id = raw.props.Id
 
-    props.uuid = String(raw.props.Frontend_View_Index__c)
+    props.sortIndex = raw.props.Frontend_View_Index__c
     props.userId = raw.props.Contact__c
     props.tpJobseekerProfileId = raw.props.Jobseeker_Profile__c
     props.title = raw.props.Title__c
@@ -48,7 +48,7 @@ export class TpJobseekerProfileEducationRecordMapper
     props.Id = source.props.id
 
     props.Id = source.props.id
-    props.Frontend_View_Index__c = parseInt(source.props.uuid)
+    props.Frontend_View_Index__c = source.props.sortIndex
     props.Contact__c = source.props.userId
     props.Jobseeker_Profile__c = source.props.tpJobseekerProfileId
     props.Title__c = source.props.title

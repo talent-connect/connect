@@ -2,7 +2,7 @@ fragment AllTpJobseekerDirectoryEntryFields on TpJobseekerDirectoryEntry {
   aboutYourself
   experience {
     city
-    uuid
+    sortIndex
     company
     country
     current
@@ -54,7 +54,7 @@ fragment AllTpJobseekerDirectoryEntryFields on TpJobseekerDirectoryEntry {
   education {
     certificationType
     title
-    uuid
+    sortIndex
     current
     description
     endDateMonth

@@ -94,7 +94,7 @@ export class TpJobseekerDirectoryEntryMapper
           | TpJobseekerProfileExperienceRecordEntityProps
           | TpJobseekerProfileEducationRecordEntityProps
         baseRecord.id = record.Id
-        baseRecord.uuid = String(record.Frontend_View_Index__c)
+        baseRecord.sortIndex = record.Frontend_View_Index__c
         baseRecord.userId = raw.props.Id
         baseRecord.tpJobseekerProfileId = jobseekerProfileRecord.Id
         baseRecord.title = record.Title__c

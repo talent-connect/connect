@@ -205,22 +205,6 @@ enum EducationLevel {
   universityPhd
 }
 
-type EducationRecord {
-  certificationType: TpEducationCertificationType
-  current: Boolean
-  description: String
-  endDateMonth: Float
-  endDateYear: Float
-  id: ID!
-  institutionCity: String
-  institutionCountry: String
-  institutionName: String
-  startDateMonth: Float
-  startDateYear: Float
-  title: String
-  uuid: String!
-}
-
 enum FederalState {
   BADEN_WUERTTEMBERG
   BAYERN
@@ -447,12 +431,6 @@ enum LanguageProficiencyLevel {
   nativeOrBilingualProficiency
 }
 
-type LanguageRecord {
-  id: ID!
-  language: Language!
-  proficiencyLevelId: LanguageProficiencyLevel!
-}
-
 enum MentoringSessionDuration {
   MIN15
   MIN30
@@ -538,6 +516,9 @@ type Mutation {
   tpJobListingCreate(tpJobListingCreateInput: TpJobListingCreateInput!): OkResponseMutationOutputDto!
   tpJobListingDelete(tpJobListingDeleteInput: TpJobListingDeleteInput!): OkResponseMutationOutputDto!
   tpJobListingPatch(tpJobListingPatchInput: TpJobListingPatchInput!): OkResponseMutationOutputDto!
+  tpJobseekerProfileEducationRecordCreate(tpJobseekerProfileEducationRecordCreateInput: TpJobseekerProfileEducationRecordCreateInput!): OkResponseMutationOutputDto!
+  tpJobseekerProfileEducationRecordDelete(tpJobseekerProfileEducationRecordDeleteInput: TpJobseekerProfileEducationRecordDeleteInput!): OkResponseMutationOutputDto!
+  tpJobseekerProfileEducationRecordPatch(tpJobseekerProfileEducationRecordPatchInput: TpJobseekerProfileEducationRecordPatchInput!): OkResponseMutationOutputDto!
   tpJobseekerProfilePatch(tpJobseekerProfilePatchInput: TpJobseekerProfilePatchInput!): OkResponseMutationOutputDto!
   userContactPatch(userContactPatchInput: UserContactPatchInput!): OkResponseMutationOutputDto!
 }
@@ -574,6 +555,7 @@ type Query {
   tpJobListings(filter: FindAllVisibleTpJobListingsArgsFilter!): [TpJobListing!]!
   tpJobseekerDirectoryEntries(filter: FindAllVisibleTpJobseekerDirectoryEntriesFilter!): [TpJobseekerDirectoryEntry!]!
   tpJobseekerProfile(id: ID): TpJobseekerProfile!
+  tpJobseekerProfileEducationRecords: [TpJobseekerProfileEducationRecord!]!
 }
 
 enum RediCourse {
@@ -849,7 +831,7 @@ type TpJobseekerDirectoryEntry {
   desiredEmploymentType: [TpEmploymentType!]
   desiredPositions: [TpDesiredPosition!]
   dribbbleUrl: String
-  education: [EducationRecord!]
+  education: [TpJobseekerProfileEducationRecord!]
   email: String!
   experience: [TpJobseekerProfileExperienceRecord!]
   federalState: FederalState
@@ -879,7 +861,7 @@ type TpJobseekerDirectoryEntry {
   updatedAt: DateTime!
   userId: String!
   willingToRelocate: Boolean!
-  workingLanguages: [LanguageRecord!]
+  workingLanguages: [TpJobseekerProfileLanguageRecord!]
 }
 
 type TpJobseekerProfile {
@@ -905,19 +887,85 @@ type TpJobseekerProfile {
   willingToRelocate: Boolean!
 }
 
-type TpJobseekerProfileExperienceRecord {
-  city: String
-  company: String
-  country: String
+type TpJobseekerProfileEducationRecord {
+  certificationType: TpEducationCertificationType
+  createdAt: DateTime!
   current: Boolean
   description: String
   endDateMonth: Float
   endDateYear: Float
   id: ID!
+  institutionCity: String
+  institutionCountry: String
+  institutionName: String
+  sortIndex: Int!
   startDateMonth: Float
   startDateYear: Float
   title: String
-  uuid: String!
+  tpJobseekerProfileId: ID!
+  updatedAt: DateTime!
+  userId: ID!
+}
+
+input TpJobseekerProfileEducationRecordCreateInput {
+  certificationType: TpEducationCertificationType
+  current: Boolean
+  description: String
+  endDateMonth: Float
+  endDateYear: Float
+  institutionCity: String
+  institutionCountry: String
+  institutionName: String
+  sortIndex: Int
+  startDateMonth: Float
+  startDateYear: Float
+  title: String
+}
+
+input TpJobseekerProfileEducationRecordDeleteInput {
+  id: ID!
+}
+
+input TpJobseekerProfileEducationRecordPatchInput {
+  certificationType: TpEducationCertificationType
+  current: Boolean
+  description: String
+  endDateMonth: Float
+  endDateYear: Float
+  id: ID!
+  institutionCity: String
+  institutionCountry: String
+  institutionName: String
+  sortIndex: Int
+  startDateMonth: Float
+  startDateYear: Float
+  title: String
+}
+
+type TpJobseekerProfileExperienceRecord {
+  city: String
+  company: String
+  country: String
+  createdAt: DateTime!
+  current: Boolean
+  description: String
+  endDateMonth: Float
+  endDateYear: Float
+  id: ID!
+  sortIndex: Int!
+  startDateMonth: Float
+  startDateYear: Float
+  title: String
+  tpJobseekerProfileId: ID!
+  updatedAt: DateTime!
+  userId: ID!
+}
+
+type TpJobseekerProfileLanguageRecord {
+  id: ID!
+  language: Language!
+  proficiencyLevelId: LanguageProficiencyLevel!
+  userId: ID!
 }
 
 input TpJobseekerProfilePatchInput {

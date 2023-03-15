@@ -228,23 +228,6 @@ export enum EducationLevel {
   UniversityPhd = 'universityPhd'
 }
 
-export type EducationRecord = {
-  __typename?: 'EducationRecord';
-  certificationType?: Maybe<TpEducationCertificationType>;
-  current?: Maybe<Scalars['Boolean']>;
-  description?: Maybe<Scalars['String']>;
-  endDateMonth?: Maybe<Scalars['Float']>;
-  endDateYear?: Maybe<Scalars['Float']>;
-  id: Scalars['ID'];
-  institutionCity?: Maybe<Scalars['String']>;
-  institutionCountry?: Maybe<Scalars['String']>;
-  institutionName?: Maybe<Scalars['String']>;
-  startDateMonth?: Maybe<Scalars['Float']>;
-  startDateYear?: Maybe<Scalars['Float']>;
-  title?: Maybe<Scalars['String']>;
-  uuid: Scalars['String'];
-};
-
 export enum FederalState {
   BadenWuerttemberg = 'BADEN_WUERTTEMBERG',
   Bayern = 'BAYERN',
@@ -471,13 +454,6 @@ export enum LanguageProficiencyLevel {
   NativeOrBilingualProficiency = 'nativeOrBilingualProficiency'
 }
 
-export type LanguageRecord = {
-  __typename?: 'LanguageRecord';
-  id: Scalars['ID'];
-  language: Language;
-  proficiencyLevelId: LanguageProficiencyLevel;
-};
-
 export enum MentoringSessionDuration {
   Min15 = 'MIN15',
   Min30 = 'MIN30',
@@ -564,6 +540,9 @@ export type Mutation = {
   tpJobListingCreate: OkResponseMutationOutputDto;
   tpJobListingDelete: OkResponseMutationOutputDto;
   tpJobListingPatch: OkResponseMutationOutputDto;
+  tpJobseekerProfileEducationRecordCreate: OkResponseMutationOutputDto;
+  tpJobseekerProfileEducationRecordDelete: OkResponseMutationOutputDto;
+  tpJobseekerProfileEducationRecordPatch: OkResponseMutationOutputDto;
   tpJobseekerProfilePatch: OkResponseMutationOutputDto;
   userContactPatch: OkResponseMutationOutputDto;
 };
@@ -654,6 +633,21 @@ export type MutationTpJobListingPatchArgs = {
 };
 
 
+export type MutationTpJobseekerProfileEducationRecordCreateArgs = {
+  tpJobseekerProfileEducationRecordCreateInput: TpJobseekerProfileEducationRecordCreateInput;
+};
+
+
+export type MutationTpJobseekerProfileEducationRecordDeleteArgs = {
+  tpJobseekerProfileEducationRecordDeleteInput: TpJobseekerProfileEducationRecordDeleteInput;
+};
+
+
+export type MutationTpJobseekerProfileEducationRecordPatchArgs = {
+  tpJobseekerProfileEducationRecordPatchInput: TpJobseekerProfileEducationRecordPatchInput;
+};
+
+
 export type MutationTpJobseekerProfilePatchArgs = {
   tpJobseekerProfilePatchInput: TpJobseekerProfilePatchInput;
 };
@@ -698,6 +692,7 @@ export type Query = {
   tpJobListings: Array<TpJobListing>;
   tpJobseekerDirectoryEntries: Array<TpJobseekerDirectoryEntry>;
   tpJobseekerProfile: TpJobseekerProfile;
+  tpJobseekerProfileEducationRecords: Array<TpJobseekerProfileEducationRecord>;
 };
 
 
@@ -1025,7 +1020,7 @@ export type TpJobseekerDirectoryEntry = {
   desiredEmploymentType?: Maybe<Array<TpEmploymentType>>;
   desiredPositions?: Maybe<Array<TpDesiredPosition>>;
   dribbbleUrl?: Maybe<Scalars['String']>;
-  education?: Maybe<Array<EducationRecord>>;
+  education?: Maybe<Array<TpJobseekerProfileEducationRecord>>;
   email: Scalars['String'];
   experience?: Maybe<Array<TpJobseekerProfileExperienceRecord>>;
   federalState?: Maybe<FederalState>;
@@ -1055,7 +1050,7 @@ export type TpJobseekerDirectoryEntry = {
   updatedAt: Scalars['DateTime'];
   userId: Scalars['String'];
   willingToRelocate: Scalars['Boolean'];
-  workingLanguages?: Maybe<Array<LanguageRecord>>;
+  workingLanguages?: Maybe<Array<TpJobseekerProfileLanguageRecord>>;
 };
 
 export type TpJobseekerProfile = {
@@ -1082,20 +1077,88 @@ export type TpJobseekerProfile = {
   willingToRelocate: Scalars['Boolean'];
 };
 
-export type TpJobseekerProfileExperienceRecord = {
-  __typename?: 'TpJobseekerProfileExperienceRecord';
-  city?: Maybe<Scalars['String']>;
-  company?: Maybe<Scalars['String']>;
-  country?: Maybe<Scalars['String']>;
+export type TpJobseekerProfileEducationRecord = {
+  __typename?: 'TpJobseekerProfileEducationRecord';
+  certificationType?: Maybe<TpEducationCertificationType>;
+  createdAt: Scalars['DateTime'];
   current?: Maybe<Scalars['Boolean']>;
   description?: Maybe<Scalars['String']>;
   endDateMonth?: Maybe<Scalars['Float']>;
   endDateYear?: Maybe<Scalars['Float']>;
   id: Scalars['ID'];
+  institutionCity?: Maybe<Scalars['String']>;
+  institutionCountry?: Maybe<Scalars['String']>;
+  institutionName?: Maybe<Scalars['String']>;
+  sortIndex: Scalars['Int'];
   startDateMonth?: Maybe<Scalars['Float']>;
   startDateYear?: Maybe<Scalars['Float']>;
   title?: Maybe<Scalars['String']>;
-  uuid: Scalars['String'];
+  tpJobseekerProfileId: Scalars['ID'];
+  updatedAt: Scalars['DateTime'];
+  userId: Scalars['ID'];
+};
+
+export type TpJobseekerProfileEducationRecordCreateInput = {
+  certificationType?: InputMaybe<TpEducationCertificationType>;
+  current?: InputMaybe<Scalars['Boolean']>;
+  description?: InputMaybe<Scalars['String']>;
+  endDateMonth?: InputMaybe<Scalars['Float']>;
+  endDateYear?: InputMaybe<Scalars['Float']>;
+  institutionCity?: InputMaybe<Scalars['String']>;
+  institutionCountry?: InputMaybe<Scalars['String']>;
+  institutionName?: InputMaybe<Scalars['String']>;
+  sortIndex?: InputMaybe<Scalars['Int']>;
+  startDateMonth?: InputMaybe<Scalars['Float']>;
+  startDateYear?: InputMaybe<Scalars['Float']>;
+  title?: InputMaybe<Scalars['String']>;
+};
+
+export type TpJobseekerProfileEducationRecordDeleteInput = {
+  id: Scalars['ID'];
+};
+
+export type TpJobseekerProfileEducationRecordPatchInput = {
+  certificationType?: InputMaybe<TpEducationCertificationType>;
+  current?: InputMaybe<Scalars['Boolean']>;
+  description?: InputMaybe<Scalars['String']>;
+  endDateMonth?: InputMaybe<Scalars['Float']>;
+  endDateYear?: InputMaybe<Scalars['Float']>;
+  id: Scalars['ID'];
+  institutionCity?: InputMaybe<Scalars['String']>;
+  institutionCountry?: InputMaybe<Scalars['String']>;
+  institutionName?: InputMaybe<Scalars['String']>;
+  sortIndex?: InputMaybe<Scalars['Int']>;
+  startDateMonth?: InputMaybe<Scalars['Float']>;
+  startDateYear?: InputMaybe<Scalars['Float']>;
+  title?: InputMaybe<Scalars['String']>;
+};
+
+export type TpJobseekerProfileExperienceRecord = {
+  __typename?: 'TpJobseekerProfileExperienceRecord';
+  city?: Maybe<Scalars['String']>;
+  company?: Maybe<Scalars['String']>;
+  country?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  current?: Maybe<Scalars['Boolean']>;
+  description?: Maybe<Scalars['String']>;
+  endDateMonth?: Maybe<Scalars['Float']>;
+  endDateYear?: Maybe<Scalars['Float']>;
+  id: Scalars['ID'];
+  sortIndex: Scalars['Int'];
+  startDateMonth?: Maybe<Scalars['Float']>;
+  startDateYear?: Maybe<Scalars['Float']>;
+  title?: Maybe<Scalars['String']>;
+  tpJobseekerProfileId: Scalars['ID'];
+  updatedAt: Scalars['DateTime'];
+  userId: Scalars['ID'];
+};
+
+export type TpJobseekerProfileLanguageRecord = {
+  __typename?: 'TpJobseekerProfileLanguageRecord';
+  id: Scalars['ID'];
+  language: Language;
+  proficiencyLevelId: LanguageProficiencyLevel;
+  userId: Scalars['ID'];
 };
 
 export type TpJobseekerProfilePatchInput = {

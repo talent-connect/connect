@@ -25,7 +25,7 @@ export class TpJobseekerProfileEducationRecordPatchInput extends IntersectionTyp
       'startDateMonth',
       'startDateYear',
       'title',
-      'uuid',
+      'sortIndex',
     ] as const)
   )
 ) {}
