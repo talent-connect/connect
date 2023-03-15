@@ -12,18 +12,13 @@ import { TpJobseekerProfileEducationRecordCreateInput } from './dtos/tp-jobseeke
 import { TpJobseekerProfileEducationRecordDeleteInput } from './dtos/tp-jobseeker-profile-education-record-delete.entityinput'
 import { TpJobseekerProfileEducationRecordPatchInput } from './dtos/tp-jobseeker-profile-education-record-patch.entityinput'
 
-Injectable()
+@Injectable()
 export class TpJobseekerProfileEducationRecordsService {
   constructor(
     private readonly api: SfApiTpJobseekerProfileEducationRecordsService,
     private readonly mapper: TpJobseekerProfileEducationRecordMapper,
     private readonly tpJobseekerProfileService: TpJobseekerProfileService
-  ) {
-    console.log('constructing TpJobseekerProfileEducationRecordsService')
-    console.log(api)
-    console.log(mapper)
-    console.log(tpJobseekerProfileService)
-  }
+  ) {}
 
   async findAll(filter: any = {}) {
     const records =

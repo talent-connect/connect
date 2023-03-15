@@ -16,7 +16,6 @@ import { TpCurrentUserDataModule } from '../tp-current-user-data/tp-current-user
 import { TpJobseekerDirectoryEntriesModule } from '../tp-jobseeker-directory-entries/tp-jobseeker-directory-entries.module'
 import { TpJobseekerProfileEducationRecordsModule } from '../tp-jobseeker-profile-education-records/tp-jobseeker-profile-education-records.module'
 import { TpJobseekerProfileModule } from '../tp-jobseeker-profile/tp-jobseeker-profile.module'
-import { Testmodule } from '../tp-test/test.module'
 import { UserContactModule } from '../user-contact/user-contact.module'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
@@ -31,7 +30,6 @@ import { AppService } from './app.service'
       playground: true,
       debug: true,
     }),
-    Testmodule,
     EventEmitterModule.forRoot(),
     CacheModule.register(),
     EmailModule,
