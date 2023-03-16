@@ -1,7 +1,7 @@
+import { EducationRecord } from './tp-jobseeker-profile-cv-shared-interfaces/EducationRecord'
+import { ExperienceRecord } from './tp-jobseeker-profile-cv-shared-interfaces/ExperienceRecord'
 import { HrSummit2021JobFairCompanyJobPreferenceRecord } from './tp-jobseeker-profile-cv-shared-interfaces/HrSummit2021JobFairCompanyJobPreferenceRecord'
 import { LanguageRecord } from './tp-jobseeker-profile-cv-shared-interfaces/LanguageRecord'
-import { TpJobseekerProfileEducationRecord } from './tp-jobseeker-profile-cv-shared-interfaces/TpJobseekerProfileEducationRecord'
-import { TpJobseekerProfileExperienceRecord } from './tp-jobseeker-profile-cv-shared-interfaces/TpJobseekerProfileExperienceRecord'
 import { TpJobseekerProfileState } from './TpJobseekerProfileState'
 
 export type TpJobseekerProfile = {
@@ -38,8 +38,8 @@ export type TpJobseekerProfile = {
   immigrationStatus?: string
   aboutYourself?: string
   topSkills?: string[]
-  experience?: TpJobseekerProfileExperienceRecord[]
-  education?: TpJobseekerProfileEducationRecord[]
+  experience?: ExperienceRecord[]
+  education?: EducationRecord[]
 
   state: TpJobseekerProfileState
   willingToRelocate?: boolean

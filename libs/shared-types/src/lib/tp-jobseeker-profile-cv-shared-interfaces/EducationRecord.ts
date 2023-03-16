@@ -1,4 +1,4 @@
-export interface TpJobseekerProfileEducationRecord {
+export interface EducationRecord {
   uuid: string
   type?: string
   institutionCity?: string
