@@ -34,10 +34,10 @@ interface FormSelectProps {
   items?: FormSelectOption[]
   placeholder?: string
   label?: string
-  customOnChange?: () => void,
-  multiselect?: boolean,
-  disabled?: boolean,
-  closeMenuOnSelect?: boolean,
+  customOnChange?: () => void
+  multiselect?: boolean
+  disabled?: boolean
+  closeMenuOnSelect?: boolean
   formik: ReturnType<typeof useFormik>
 }
 
@@ -51,7 +51,15 @@ function FormSelect(props: FormSelectProps) {
     multiselect,
     disabled,
     closeMenuOnSelect,
-    formik: { values, setFieldTouched, setFieldValue, touched, errors, handleBlur, isSubmitting }
+    formik: {
+      values,
+      setFieldTouched,
+      setFieldValue,
+      touched,
+      errors,
+      handleBlur,
+      isSubmitting,
+    },
   } = props
 
   const handleOnChangeDefault = (option: any = []) => {
