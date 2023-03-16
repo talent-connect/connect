@@ -543,6 +543,12 @@ export type Mutation = {
   tpJobseekerProfileEducationRecordCreate: OkResponseMutationOutputDto;
   tpJobseekerProfileEducationRecordDelete: OkResponseMutationOutputDto;
   tpJobseekerProfileEducationRecordPatch: OkResponseMutationOutputDto;
+  tpJobseekerProfileExperienceRecordCreate: OkResponseMutationOutputDto;
+  tpJobseekerProfileExperienceRecordDelete: OkResponseMutationOutputDto;
+  tpJobseekerProfileExperienceRecordPatch: OkResponseMutationOutputDto;
+  tpJobseekerProfileLanguageRecordCreate: OkResponseMutationOutputDto;
+  tpJobseekerProfileLanguageRecordDelete: OkResponseMutationOutputDto;
+  tpJobseekerProfileLanguageRecordPatch: OkResponseMutationOutputDto;
   tpJobseekerProfilePatch: OkResponseMutationOutputDto;
   userContactPatch: OkResponseMutationOutputDto;
 };
@@ -648,6 +654,36 @@ export type MutationTpJobseekerProfileEducationRecordPatchArgs = {
 };
 
 
+export type MutationTpJobseekerProfileExperienceRecordCreateArgs = {
+  tpJobseekerProfileExperienceRecordCreateInput: TpJobseekerProfileExperienceRecordCreateInput;
+};
+
+
+export type MutationTpJobseekerProfileExperienceRecordDeleteArgs = {
+  tpJobseekerProfileExperienceRecordDeleteInput: TpJobseekerProfileExperienceRecordDeleteInput;
+};
+
+
+export type MutationTpJobseekerProfileExperienceRecordPatchArgs = {
+  tpJobseekerProfileExperienceRecordPatchInput: TpJobseekerProfileExperienceRecordPatchInput;
+};
+
+
+export type MutationTpJobseekerProfileLanguageRecordCreateArgs = {
+  tpJobseekerProfileLanguageRecordCreateInput: TpJobseekerProfileLanguageRecordCreateInput;
+};
+
+
+export type MutationTpJobseekerProfileLanguageRecordDeleteArgs = {
+  tpJobseekerProfileLanguageRecordDeleteInput: TpJobseekerProfileLanguageRecordDeleteInput;
+};
+
+
+export type MutationTpJobseekerProfileLanguageRecordPatchArgs = {
+  tpJobseekerProfileLanguageRecordPatchInput: TpJobseekerProfileLanguageRecordPatchInput;
+};
+
+
 export type MutationTpJobseekerProfilePatchArgs = {
   tpJobseekerProfilePatchInput: TpJobseekerProfilePatchInput;
 };
@@ -693,6 +729,8 @@ export type Query = {
   tpJobseekerDirectoryEntries: Array<TpJobseekerDirectoryEntry>;
   tpJobseekerProfile: TpJobseekerProfile;
   tpJobseekerProfileEducationRecords: Array<TpJobseekerProfileEducationRecord>;
+  tpJobseekerProfileExperienceRecords: Array<TpJobseekerProfileExperienceRecord>;
+  tpJobseekerProfileLanguageRecords: Array<TpJobseekerProfileLanguageRecord>;
 };
 
 
@@ -1153,12 +1191,60 @@ export type TpJobseekerProfileExperienceRecord = {
   userId: Scalars['ID'];
 };
 
+export type TpJobseekerProfileExperienceRecordCreateInput = {
+  city?: InputMaybe<Scalars['String']>;
+  company?: InputMaybe<Scalars['String']>;
+  country?: InputMaybe<Scalars['String']>;
+  current?: InputMaybe<Scalars['Boolean']>;
+  description?: InputMaybe<Scalars['String']>;
+  endDateMonth?: InputMaybe<Scalars['Float']>;
+  endDateYear?: InputMaybe<Scalars['Float']>;
+  sortIndex?: InputMaybe<Scalars['Int']>;
+  startDateMonth?: InputMaybe<Scalars['Float']>;
+  startDateYear?: InputMaybe<Scalars['Float']>;
+  title?: InputMaybe<Scalars['String']>;
+};
+
+export type TpJobseekerProfileExperienceRecordDeleteInput = {
+  id: Scalars['ID'];
+};
+
+export type TpJobseekerProfileExperienceRecordPatchInput = {
+  city?: InputMaybe<Scalars['String']>;
+  company?: InputMaybe<Scalars['String']>;
+  country?: InputMaybe<Scalars['String']>;
+  current?: InputMaybe<Scalars['Boolean']>;
+  description?: InputMaybe<Scalars['String']>;
+  endDateMonth?: InputMaybe<Scalars['Float']>;
+  endDateYear?: InputMaybe<Scalars['Float']>;
+  id: Scalars['ID'];
+  sortIndex?: InputMaybe<Scalars['Int']>;
+  startDateMonth?: InputMaybe<Scalars['Float']>;
+  startDateYear?: InputMaybe<Scalars['Float']>;
+  title?: InputMaybe<Scalars['String']>;
+};
+
 export type TpJobseekerProfileLanguageRecord = {
   __typename?: 'TpJobseekerProfileLanguageRecord';
   id: Scalars['ID'];
   language: Language;
   proficiencyLevelId: LanguageProficiencyLevel;
   userId: Scalars['ID'];
+};
+
+export type TpJobseekerProfileLanguageRecordCreateInput = {
+  language?: InputMaybe<Language>;
+  proficiencyLevelId?: InputMaybe<LanguageProficiencyLevel>;
+};
+
+export type TpJobseekerProfileLanguageRecordDeleteInput = {
+  id: Scalars['ID'];
+};
+
+export type TpJobseekerProfileLanguageRecordPatchInput = {
+  id: Scalars['ID'];
+  language?: InputMaybe<Language>;
+  proficiencyLevelId?: InputMaybe<LanguageProficiencyLevel>;
 };
 
 export type TpJobseekerProfilePatchInput = {

@@ -30,6 +30,10 @@ class JobseekerLineItem {
   City__c?: string
   Country__c?: string
   Company__c?: string
+  @Type(() => Date)
+  CreatedDate: Date
+  @Type(() => Date)
+  LastModifiedDate: Date
 }
 
 class JobseekerProfileItemWrapper {

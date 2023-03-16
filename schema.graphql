@@ -519,6 +519,12 @@ type Mutation {
   tpJobseekerProfileEducationRecordCreate(tpJobseekerProfileEducationRecordCreateInput: TpJobseekerProfileEducationRecordCreateInput!): OkResponseMutationOutputDto!
   tpJobseekerProfileEducationRecordDelete(tpJobseekerProfileEducationRecordDeleteInput: TpJobseekerProfileEducationRecordDeleteInput!): OkResponseMutationOutputDto!
   tpJobseekerProfileEducationRecordPatch(tpJobseekerProfileEducationRecordPatchInput: TpJobseekerProfileEducationRecordPatchInput!): OkResponseMutationOutputDto!
+  tpJobseekerProfileExperienceRecordCreate(tpJobseekerProfileExperienceRecordCreateInput: TpJobseekerProfileExperienceRecordCreateInput!): OkResponseMutationOutputDto!
+  tpJobseekerProfileExperienceRecordDelete(tpJobseekerProfileExperienceRecordDeleteInput: TpJobseekerProfileExperienceRecordDeleteInput!): OkResponseMutationOutputDto!
+  tpJobseekerProfileExperienceRecordPatch(tpJobseekerProfileExperienceRecordPatchInput: TpJobseekerProfileExperienceRecordPatchInput!): OkResponseMutationOutputDto!
+  tpJobseekerProfileLanguageRecordCreate(tpJobseekerProfileLanguageRecordCreateInput: TpJobseekerProfileLanguageRecordCreateInput!): OkResponseMutationOutputDto!
+  tpJobseekerProfileLanguageRecordDelete(tpJobseekerProfileLanguageRecordDeleteInput: TpJobseekerProfileLanguageRecordDeleteInput!): OkResponseMutationOutputDto!
+  tpJobseekerProfileLanguageRecordPatch(tpJobseekerProfileLanguageRecordPatchInput: TpJobseekerProfileLanguageRecordPatchInput!): OkResponseMutationOutputDto!
   tpJobseekerProfilePatch(tpJobseekerProfilePatchInput: TpJobseekerProfilePatchInput!): OkResponseMutationOutputDto!
   userContactPatch(userContactPatchInput: UserContactPatchInput!): OkResponseMutationOutputDto!
 }
@@ -556,6 +562,8 @@ type Query {
   tpJobseekerDirectoryEntries(filter: FindAllVisibleTpJobseekerDirectoryEntriesFilter!): [TpJobseekerDirectoryEntry!]!
   tpJobseekerProfile(id: ID): TpJobseekerProfile!
   tpJobseekerProfileEducationRecords: [TpJobseekerProfileEducationRecord!]!
+  tpJobseekerProfileExperienceRecords: [TpJobseekerProfileExperienceRecord!]!
+  tpJobseekerProfileLanguageRecords: [TpJobseekerProfileLanguageRecord!]!
 }
 
 enum RediCourse {
@@ -961,11 +969,59 @@ type TpJobseekerProfileExperienceRecord {
   userId: ID!
 }
 
+input TpJobseekerProfileExperienceRecordCreateInput {
+  city: String
+  company: String
+  country: String
+  current: Boolean
+  description: String
+  endDateMonth: Float
+  endDateYear: Float
+  sortIndex: Int
+  startDateMonth: Float
+  startDateYear: Float
+  title: String
+}
+
+input TpJobseekerProfileExperienceRecordDeleteInput {
+  id: ID!
+}
+
+input TpJobseekerProfileExperienceRecordPatchInput {
+  city: String
+  company: String
+  country: String
+  current: Boolean
+  description: String
+  endDateMonth: Float
+  endDateYear: Float
+  id: ID!
+  sortIndex: Int
+  startDateMonth: Float
+  startDateYear: Float
+  title: String
+}
+
 type TpJobseekerProfileLanguageRecord {
   id: ID!
   language: Language!
   proficiencyLevelId: LanguageProficiencyLevel!
   userId: ID!
+}
+
+input TpJobseekerProfileLanguageRecordCreateInput {
+  language: Language
+  proficiencyLevelId: LanguageProficiencyLevel
+}
+
+input TpJobseekerProfileLanguageRecordDeleteInput {
+  id: ID!
+}
+
+input TpJobseekerProfileLanguageRecordPatchInput {
+  id: ID!
+  language: Language
+  proficiencyLevelId: LanguageProficiencyLevel
 }
 
 input TpJobseekerProfilePatchInput {

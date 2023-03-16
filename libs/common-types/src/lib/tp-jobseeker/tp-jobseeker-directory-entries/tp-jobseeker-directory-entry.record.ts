@@ -68,6 +68,8 @@ export class TpJobseekerDirectoryEntryRecord extends Record<TpJobseekerDirectory
           'City__c',
           'Country__c',
           'Company__c',
+          'CreatedDate',
+          'LastModifiedDate',
         ],
       },
       {

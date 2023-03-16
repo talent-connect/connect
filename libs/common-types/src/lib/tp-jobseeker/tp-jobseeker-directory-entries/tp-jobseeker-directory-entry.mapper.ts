@@ -104,6 +104,8 @@ export class TpJobseekerDirectoryEntryMapper
         baseRecord.endDateMonth = record.End_Date_Month__c
         baseRecord.endDateYear = record.End_Date_Year__c
         baseRecord.current = record.Current__c
+        baseRecord.createdAt = record.CreatedDate
+        baseRecord.updatedAt = record.LastModifiedDate
         if (record.RecordType.DeveloperName === 'Education') {
           const educationRecord =
             baseRecord as TpJobseekerProfileEducationRecordEntityProps
