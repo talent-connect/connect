@@ -14,13 +14,13 @@ function Me() {
   const {
     tpCurrentUserDataGet: {
       companyRepresentativeRelationship,
-      jobseekerProfile,
+      tpJobseekerDirectoryEntry,
     },
   } = data
 
   // If the user has-a JobseekerProfile, we assume that user is a jobseeker, and show them the "me"
   // page for jobseekers
-  if (jobseekerProfile) return <MeJobseeker />
+  if (tpJobseekerDirectoryEntry) return <MeJobseeker />
 
   // If, on the other hadn, the user has-a CompanyRepresentativeRelationship, we assume that user is
   // company representative, and show them the "me" page for Companies
