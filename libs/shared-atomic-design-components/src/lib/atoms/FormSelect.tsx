@@ -110,6 +110,10 @@ function FormSelect(props: FormSelectProps) {
           menuPortalTarget={document.body}
           menuPosition="fixed"
           closeMenuOnSelect={closeMenuOnSelect}
+          closeMenuOnScroll={(e) => {
+            if ((e.target as Element).className === 'modal-card-body')
+              return true
+          }}
         />
       </Form.Control>
       <Form.Help color="danger" className={hasError ? 'help--show' : ''}>
