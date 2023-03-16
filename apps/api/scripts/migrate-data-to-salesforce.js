@@ -481,7 +481,6 @@ async function insertContactFn(p) {
             .toLocaleLowerCase()
             .replace(/(^\w|\s\w)/g, (m) => m.toUpperCase())
         : undefined,
-      ReDI_Birth_Date__c: p.contact.birthDate,
       LinkedIn_Profile__c: p.contact.linkedInProfileUrl,
       ReDI_Website_Portfolio__c: p.contact.personalWebsite,
       ReDI_GitHub_Profile__c: p.contact.githubProfileUrl,
@@ -537,7 +536,6 @@ async function insertContactFn(p) {
             .toLocaleLowerCase()
             .replace(/(^\w|\s\w)/g, (m) => m.toUpperCase())
         : undefined,
-      ReDI_Birth_Date__c: p.contact.birthDate,
       LinkedIn_Profile__c: p.contact.linkedInProfileUrl,
       ReDI_Website_Portfolio__c: p.contact.personalWebsite,
       ReDI_GitHub_Profile__c: p.contact.githubProfileUrl,
@@ -1329,7 +1327,6 @@ function buildContact(redUser) {
       'lastName',
       'contactEmail',
       'gender',
-      'birthDate',
       'linkedInProfileUrl',
       'githubProfileUrl',
       'slackUsername',
