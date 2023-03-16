@@ -23,7 +23,7 @@ const LoggedIn = ({ children, hideNavigation }: Props) => {
   const {
     tpCurrentUserDataGet: {
       representedCompany: companyProfile,
-      jobseekerProfile,
+      tpJobseekerDirectoryEntry,
     },
   } = data
 
@@ -45,7 +45,7 @@ const LoggedIn = ({ children, hideNavigation }: Props) => {
                 />
                 {companyProfile?.state ===
                   CompanyTalentPoolState.ProfileApproved ||
-                jobseekerProfile?.state ===
+                tpJobseekerDirectoryEntry?.state ===
                   JobseekerProfileStatus.ProfileApproved ? (
                   <TpMainNavItem
                     page="browse-page"
@@ -54,7 +54,7 @@ const LoggedIn = ({ children, hideNavigation }: Props) => {
                     isActive={location.pathname === '/app/browse'}
                   />
                 ) : null}
-                {jobseekerProfile ? (
+                {tpJobseekerDirectoryEntry ? (
                   <TpMainNavItem
                     page="cv-builder-page"
                     pageName="CV Builder"

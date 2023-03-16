@@ -1,9 +1,5 @@
 import { Tooltip } from '@material-ui/core'
 import {
-  JobseekerProfileStatus,
-  TpJobseekerProfileEntityProps,
-} from '@talent-connect/common-types'
-import {
   Button,
   Checkbox,
   Icon,
@@ -46,13 +42,13 @@ export function MeJobseeker() {
   const onHideFromCompaniesCheckboxChange = () =>
     mutation.mutate({
       ...profile,
-      isProfileVisibleToCompanies: !profile.isProfileVisibleToCompanies,
+      isProfileVisibleToCompanies: !profile?.isProfileVisibleToCompanies,
     })
 
   const onJobFair2023ParticipateChange = () =>
     mutation.mutate({
       ...profile,
-      isJobFair2023Participant: !profile.isJobFair2023Participant,
+      isJobFair2023Participant: !profile?.isJobFair2023Participant,
     })
 
   return (
@@ -82,7 +78,7 @@ export function MeJobseeker() {
           <EditableNamePhotoLocation profile={profile} />
           <div style={{ marginBottom: '1.5rem' }}>
             <Checkbox
-              checked={profile.isJobFair2023Participant}
+              checked={profile?.isJobFair2023Participant}
               customOnChange={onJobFair2023ParticipateChange}
             >
               I will attend the <b>ReDI Job Fair</b> happening on{' '}
@@ -106,7 +102,7 @@ export function MeJobseeker() {
           <EditableLanguages profile={profile} />
           <EditableLinks profile={profile} />
           <Checkbox
-            checked={!profile.isProfileVisibleToCompanies}
+            checked={!profile?.isProfileVisibleToCompanies}
             customOnChange={onHideFromCompaniesCheckboxChange}
           >
             Hide my profile from companies
@@ -159,15 +155,15 @@ const steps = [
 ]
 
 function determineCurrentStep(
-  profile: Partial<TpJobseekerProfileEntityProps>
+  profile: Partial<TpJobseekerProfile>
 ): [currentStep: number, stepStatus: 'todo' | 'pending' | 'complete'] {
-  if (profile.state === JobseekerProfileStatus.DRAFTING_PROFILE) {
+  if (profile?.state === 'drafting-profile') {
     return isProfileComplete(profile) ? [2, 'todo'] : [1, 'todo']
   }
-  if (profile.state === JobseekerProfileStatus.SUBMITTED_FOR_REVIEW) {
+  if (profile?.state === 'submitted-for-review') {
     return [3, 'pending']
   }
-  if (profile.state === JobseekerProfileStatus.PROFILE_APPROVED) {
+  if (profile?.state === 'profile-approved') {
     return [3, 'complete']
   }
   // if (
@@ -180,14 +176,16 @@ function determineCurrentStep(
   //   return [6, 'complete']
   // }
   if (
-    profile.state ===
+    profile?.state ===
     'job-preferences-shared-with-redi-awaiting-interview-match'
   ) {
     return [3, 'complete']
   }
-  if (profile.state === 'matched-for-interview') {
+  if (profile?.state === 'matched-for-interview') {
     return [3, 'complete']
   }
+
+  return [1, 'todo']
 }
 
 export function OnboardingSteps() {
@@ -243,9 +241,7 @@ export function OnboardingSteps() {
   )
 }
 
-function isProfileComplete(
-  profile: Partial<TpJobseekerProfileEntityProps>
-): boolean {
+function isProfileComplete(profile: Partial<TpJobseekerProfile>): boolean {
   const mostSectionsComplete = [
     EditableNamePhotoLocation.isSectionFilled,
     EditableOverview.isSectionFilled,
