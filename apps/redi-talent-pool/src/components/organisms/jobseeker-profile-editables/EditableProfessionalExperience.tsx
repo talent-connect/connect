@@ -1,3 +1,4 @@
+import { useMyTpDataQuery } from '@talent-connect/data-access'
 import {
   Button,
   Caption,
@@ -48,6 +49,10 @@ export function EditableProfessionalExperience({
   profile: overridingProfile,
   disableEditing,
 }: Props) {
+  const myData = useMyTpDataQuery(null, { enabled: !disableEditing })
+  const experienceRecords =
+    myData?.data?.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry?.experience
+
   const queryHookResult = useTpJobseekerProfileQuery({
     enabled: !disableEditing,
   })
@@ -77,7 +82,7 @@ export function EditableProfessionalExperience({
             Add your experience
           </EmptySectionPlaceholder>
         ) : (
-          profile?.experience?.map((item) => (
+          experienceRecords?.map((item) => (
             <div style={{ marginBottom: '2.8rem' }}>
               <div
                 style={{
@@ -283,7 +288,7 @@ export function JobseekerFormSectionProfessionalExperience({
       </Element>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="id">
-          {(provided, snapshot) => (
+          {(provided) => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
               {formik?.values?.experience.map((item, index) => (
                 <Draggable
@@ -291,7 +296,7 @@ export function JobseekerFormSectionProfessionalExperience({
                   draggableId={item.uuid}
                   index={index}
                 >
-                  {(provided, snapshot) => (
+                  {(provided) => (
                     <div
                       ref={provided.innerRef}
                       {...provided.draggableProps}
