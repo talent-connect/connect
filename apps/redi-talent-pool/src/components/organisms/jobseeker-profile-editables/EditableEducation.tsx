@@ -65,7 +65,7 @@ export function EditableEducation({
   if (overridingProfile) queryHookResult.data = overridingProfile
   const mutationHookResult = useTpjobseekerprofileUpdateMutation()
   const { data: profile } = queryHookResult
-  const [isEditing, setIsEditing] = useState(true)
+  const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
   const isEmpty = EditableEducation.isSectionEmpty(profile)
