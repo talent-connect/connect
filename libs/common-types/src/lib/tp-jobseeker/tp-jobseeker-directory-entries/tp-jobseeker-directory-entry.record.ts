@@ -36,6 +36,7 @@ export class TpJobseekerDirectoryEntryRecord extends Record<TpJobseekerDirectory
       'redi_Contact_Gender__c',
       'ReDI_Age__c',
     ],
+    // SALESFORCE_ORDER_BY: ['Frontend_View_Index__c'],
     SALESFORCE_CHILD_OBJECTS: [
       {
         name: 'hed__Contact_Languages__r',
@@ -45,6 +46,7 @@ export class TpJobseekerDirectoryEntryRecord extends Record<TpJobseekerDirectory
           'hed__Fluency__c',
           'hed__Language__r.Slug__c',
         ],
+        orderBy: ['hed__Language__r.Slug__c'],
       },
       {
         name: 'Jobseeker_Line_Items__r',
@@ -71,6 +73,7 @@ export class TpJobseekerDirectoryEntryRecord extends Record<TpJobseekerDirectory
           'CreatedDate',
           'LastModifiedDate',
         ],
+        orderBy: ['Frontend_View_Index__c', 'ASC'],
       },
       {
         name: 'Jobseeker_Profiles__r',

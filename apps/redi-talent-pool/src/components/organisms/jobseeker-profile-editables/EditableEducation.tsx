@@ -20,6 +20,7 @@ import {
   certificationTypes,
   formMonthsOptions,
 } from '@talent-connect/talent-pool/config'
+import { reorder } from '@talent-connect/typescript-utilities'
 import { useFormik } from 'formik'
 import { cloneDeep } from 'lodash'
 import moment from 'moment'
@@ -37,14 +38,6 @@ import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseeker
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import { Location } from '../../molecules/Location'
-
-function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
-  const result = Array.from(list)
-  const [removed] = result.splice(startIndex, 1)
-  result.splice(endIndex, 0, removed)
-
-  return result
-}
 
 interface Props {
   profile?: Partial<TpJobseekerProfile>
@@ -278,16 +271,6 @@ function JobseekerFormSectionEducation({
     queryClient.invalidateQueries()
     formik.setSubmitting(false)
     setIsEditing(false)
-
-    // formik.setSubmitting(true)
-    // mutation.mutate(values, {
-    //   onSettled: () => {
-    //     formik.setSubmitting(false)
-    //   },
-    //   onSuccess: () => {
-    //     setIsEditing(false)
-    //   },
-    // })
   }
 
   const validationSchema = Yup.object().shape({

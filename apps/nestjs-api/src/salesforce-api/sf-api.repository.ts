@@ -1,6 +1,9 @@
 import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { SalesforceMutationIdResult } from '@talent-connect/common-types'
+import {
+  OrderByTuple,
+  SalesforceMutationIdResult,
+} from '@talent-connect/common-types'
 import { Cache } from 'cache-manager'
 import * as jsforce from 'jsforce'
 import { omit, pick } from 'lodash'
@@ -68,6 +71,7 @@ export class SfApiRepository {
         objectFields,
         filter = {},
         limit = 5000,
+        orderBy,
         offset = 0,
         childObjects,
         rawWhereClause,
@@ -83,13 +87,22 @@ export class SfApiRepository {
         .sobject(objectName)
         .find({}, objectFields, { limit, offset })
         .where(baseObjectFilter)
+      if (orderBy) {
+        const [field, direction] = orderBy
+        let sortParameter = direction === 'ASC' || !direction ? '' : '-'
+        sortParameter += field
+        query = query.sort(sortParameter)
+      }
       if (childObjects) {
         childObjects.forEach((childObject) => {
-          query
-            .include(childObject.name)
-            .select(childObject.fields)
-            .where(childObjectFilters[childObject.name] ?? {})
-            .end()
+          let sub = query.include(childObject.name).select(childObject.fields)
+          if (childObject.orderBy) {
+            const [field, direction] = childObject.orderBy
+            let sortParameter = direction === 'ASC' || !direction ? '' : '-'
+            sortParameter += field
+            sub = sub.sort(sortParameter)
+          }
+          sub.where(childObjectFilters[childObject.name] ?? {}).end()
         })
       }
 
@@ -244,7 +257,8 @@ interface FindRecordsParams {
   objectFields: string[]
   filter?: any
   limit?: number
+  orderBy?: OrderByTuple
   offset?: number
-  childObjects?: { name: string; fields: string[] }[]
+  childObjects?: { name: string; fields: string[]; orderBy?: OrderByTuple }[]
   rawWhereClause?: string
 }

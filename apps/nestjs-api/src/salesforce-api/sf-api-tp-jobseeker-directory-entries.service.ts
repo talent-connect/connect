@@ -25,6 +25,7 @@ export class SfApiTpJobseekerDirectoryEntriesService {
         TpJobseekerDirectoryEntryRecord.metadata.SALESFORCE_OBJECT_FIELDS,
       childObjects:
         TpJobseekerDirectoryEntryRecord.metadata.SALESFORCE_CHILD_OBJECTS,
+      orderBy: TpJobseekerDirectoryEntryRecord.metadata.SALESFORCE_ORDER_BY,
       rawWhereClause: `Id IN (SELECT Contact__c FROM Jobseeker_Profile__c ${subQueryClause})`,
       filter,
     })

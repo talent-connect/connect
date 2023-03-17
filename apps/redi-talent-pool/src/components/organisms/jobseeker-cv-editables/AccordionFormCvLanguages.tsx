@@ -1,10 +1,26 @@
-import React from 'react'
+import {
+  Button,
+  FormDraggableAccordion,
+  FormSelect,
+  Icon,
+} from '@talent-connect/shared-atomic-design-components'
+import { LANGUAGES } from '@talent-connect/shared-config'
+import {
+  LanguageRecord,
+  TpJobseekerCv,
+  TpJobseekerProfile,
+} from '@talent-connect/shared-types'
+import { languageProficiencyLevels } from '@talent-connect/talent-pool/config'
+import { useFormik } from 'formik'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { Element } from 'react-bulma-components'
+import { UseMutationResult, UseQueryResult } from 'react-query'
 import { Subject } from 'rxjs'
+import { v4 as uuidv4 } from 'uuid'
+import * as Yup from 'yup'
 import { useTpjobseekerCvUpdateMutation } from '../../../react-query/use-tpjobseekercv-mutation'
 import { useTpJobseekerCvByIdQuery } from '../../../react-query/use-tpjobseekercv-query'
 import { AccordionForm } from '../../molecules/AccordionForm'
-import { JobseekerFormSectionLanguages } from '../jobseeker-profile-editables/EditableLanguages'
-
 interface Props {
   tpJobseekerCvId: string
   onClose: () => void
@@ -37,4 +53,190 @@ export function AccordionFormCvLanguages({
       />
     </AccordionForm>
   )
+}
+
+interface JobseekerFormSectionLanguagesProps {
+  setIsEditing: (boolean) => void
+  setIsFormDirty?: (boolean) => void
+  queryHookResult: UseQueryResult<
+    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    unknown
+  >
+  mutationHookResult: UseMutationResult<
+    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    unknown,
+    Partial<TpJobseekerProfile | TpJobseekerCv>,
+    unknown
+  >
+}
+
+// TODO: put this one in config file
+const MAX_LANGUAGES = 6
+
+const validationSchema = Yup.object({
+  workingLanguages: Yup.array()
+    .min(1)
+    .max(6)
+    .of(
+      Yup.object().shape({
+        language: Yup.string().required(
+          'Please select a language from the menu!'
+        ),
+        proficiencyLevelId: Yup.string().required(
+          'Please choose your level of proficiency!'
+        ),
+      })
+    ),
+})
+
+export function JobseekerFormSectionLanguages({
+  setIsEditing,
+  setIsFormDirty,
+  queryHookResult,
+  mutationHookResult,
+}: JobseekerFormSectionLanguagesProps) {
+  const { data: profile } = queryHookResult
+  const mutation = mutationHookResult
+
+  const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
+
+  const initialValues: Partial<TpJobseekerProfile> = useMemo(
+    () => ({
+      workingLanguages: profile?.workingLanguages ?? [
+        buildBlankLanguageRecord(),
+      ],
+    }),
+    [profile?.workingLanguages]
+  )
+  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
+    formik.setSubmitting(true)
+    mutation.mutate(values, {
+      onSettled: () => {
+        formik.setSubmitting(false)
+      },
+      onSuccess: () => {
+        setIsEditing(false)
+      },
+    })
+  }
+  const formik = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit,
+    enableReinitialize: true,
+  })
+  useEffect(
+    () => setIsFormDirty?.(formik.dirty),
+    [formik.dirty, setIsFormDirty]
+  )
+
+  const onAddLanguage = useCallback(() => {
+    if (formik.values.workingLanguages.length >= MAX_LANGUAGES)
+      return alert('You can have maximum six languages in your profile')
+    formik.setFieldValue('workingLanguages', [
+      ...formik.values.workingLanguages,
+      buildBlankLanguageRecord(),
+    ])
+
+    closeAllAccordionsSignalSubject.current.next()
+  }, [formik])
+
+  const onRemove = useCallback(
+    (language: string) => {
+      formik.setFieldValue(
+        'workingLanguages',
+        formik.values?.workingLanguages?.filter(
+          (lang) => lang.language !== language
+        )
+      )
+    },
+    [formik]
+  )
+
+  return (
+    <>
+      <Element
+        renderAs="p"
+        textSize={4}
+        responsive={{ mobile: { textSize: { value: 5 } } }}
+        className="oneandhalf-bs"
+      >
+        Specify any relevant languages you speak and your level of proficiency.
+        You can add up to six languages.
+      </Element>
+      {formik?.values?.workingLanguages?.map((item, index) => (
+        <FormDraggableAccordion
+          title={item.language ? item.language : 'Click me to add details'}
+          onRemove={() => onRemove(item.language)}
+          closeAccordionSignalSubject={closeAllAccordionsSignalSubject.current}
+        >
+          <FormSelect
+            name={`workingLanguages[${index}].language`}
+            label="Language*"
+            items={formLanguages}
+            {...formik}
+          />
+          <FormSelect
+            name={`workingLanguages[${index}].proficiencyLevelId`}
+            label="Level of proficiency*"
+            items={formLanguageProficiencyLevels}
+            {...formik}
+          />
+        </FormDraggableAccordion>
+      ))}
+
+      <div style={{ height: '30px' }} />
+
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          cursor: 'pointer',
+          marginBottom: '30px',
+        }}
+        onClick={onAddLanguage}
+      >
+        <Icon
+          icon="tpPlus"
+          style={{ width: '36px', height: '36px', marginRight: '20px' }}
+        />
+        Add another language
+      </div>
+
+      <Button
+        disabled={!formik.isValid || mutation.isLoading}
+        onClick={formik.submitForm}
+      >
+        Save
+      </Button>
+      <Button
+        simple
+        disabled={mutation.isLoading}
+        onClick={() => setIsEditing(false)}
+      >
+        Cancel
+      </Button>
+    </>
+  )
+}
+
+const formLanguages = Object.entries(LANGUAGES).map(([value, label]) => ({
+  value: label,
+  label,
+}))
+
+const formLanguageProficiencyLevels = languageProficiencyLevels.map(
+  ({ id, label }) => ({
+    value: id,
+    label,
+  })
+)
+
+function buildBlankLanguageRecord(): LanguageRecord {
+  return {
+    uuid: uuidv4(),
+    language: '',
+    proficiencyLevelId: '',
+  }
 }

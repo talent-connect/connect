@@ -18,5 +18,6 @@ export class TpJobseekerProfileExperienceRecordCreateInput extends PartialType(
     'startDateMonth',
     'startDateYear',
     'title',
+    'sortIndex',
   ] as const)
 ) {}

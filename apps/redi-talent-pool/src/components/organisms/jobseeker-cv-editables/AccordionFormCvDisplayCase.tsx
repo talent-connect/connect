@@ -1,9 +1,8 @@
-import React from 'react'
 import { Subject } from 'rxjs'
 import { useTpjobseekerCvUpdateMutation } from '../../../react-query/use-tpjobseekercv-mutation'
 import { useTpJobseekerCvByIdQuery } from '../../../react-query/use-tpjobseekercv-query'
 import { AccordionForm } from '../../molecules/AccordionForm'
-import { JobseekerFormSectionProfessionalExperience } from '../jobseeker-profile-editables/EditableProfessionalExperience'
+import { JobseekerFormSectionProfessionalExperience } from './AccordionFormCvProfessionalExperience'
 
 interface Props {
   tpJobseekerCvId: string

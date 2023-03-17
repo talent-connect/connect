@@ -24,6 +24,7 @@ import {
   FormTextArea,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
+import { reorder } from '@talent-connect/typescript-utilities'
 import { useFormik } from 'formik'
 import { Columns, Element } from 'react-bulma-components'
 import { v4 as uuidv4 } from 'uuid'
@@ -60,14 +61,6 @@ export function AccordionFormCvEducation({
       />
     </AccordionForm>
   )
-}
-
-function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
-  const result = Array.from(list)
-  const [removed] = result.splice(startIndex, 1)
-  result.splice(endIndex, 0, removed)
-
-  return result
 }
 
 interface JobseekerFormSectionEducationeProps {
