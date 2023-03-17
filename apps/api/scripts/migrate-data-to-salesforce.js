@@ -792,6 +792,7 @@ async function insertJobseekerProfileFn(p) {
       ? p.tpJobseekerProfile.federalState.toUpperCase().replace(/-/g, '_')
       : undefined,
     Willing_to_Relocate__c: p.tpJobseekerProfile.willingToRelocate,
+    Immigration_Status__c: p.tpJobseekerProfile.immigrationStatus,
 
     CreatedDate: p.tpJobseekerProfile.createdAt,
     LastModifiedDate: p.tpJobseekerProfile.updatedAt,
