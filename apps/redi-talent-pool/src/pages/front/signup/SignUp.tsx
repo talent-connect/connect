@@ -57,7 +57,7 @@ function buildValidationSchema(signupType: SignUpPageType['type']) {
       .transform(toPascalCaseAndTrim)
       .required('Your last name is required')
       .max(255),
-    contactEmail: Yup.string()
+    email: Yup.string()
       .email('Please enter a valid email')
       .required('Your email is required')
       .label('Email')

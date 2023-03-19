@@ -24,7 +24,7 @@ export class TpCompanyProfileMapper
     props.industry = raw.props.Industry
     props.website = raw.props.Website
     props.linkedInUrl = raw.props.ReDI_LinkedIn_Page__c
-    props.phoneNumber = raw.props.Phone
+    props.telephoneNumber = raw.props.Phone
     props.about = raw.props.Description
     props.state = raw.props.ReDI_Talent_Pool_State__c as CompanyTalentPoolState
     props.isProfileVisibleToJobseekers = raw.props.ReDI_Visible_to_Jobseekers__c
@@ -52,7 +52,7 @@ export class TpCompanyProfileMapper
     props.Industry = srcProps.industry
     props.Website = srcProps.website
     props.ReDI_LinkedIn_Page__c = srcProps.linkedInUrl
-    props.Phone = srcProps.phoneNumber
+    props.Phone = srcProps.telephoneNumber
     props.Description = srcProps.about
     props.ReDI_Talent_Pool_State__c = srcProps.state
     props.ReDI_Visible_to_Jobseekers__c = srcProps.isProfileVisibleToJobseekers

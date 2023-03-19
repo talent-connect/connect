@@ -23,7 +23,7 @@ export class TpCompanyProfilePatchInput extends IntersectionType(
       'isProfileVisibleToJobseekers',
       'linkedInUrl',
       'location',
-      'phoneNumber',
+      'telephoneNumber',
       'profileAvatarImageS3Key',
       'tagline',
       'website',

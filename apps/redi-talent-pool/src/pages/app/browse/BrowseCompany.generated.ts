@@ -8,12 +8,12 @@ export type LoadVisibleJobseekerProfilesQueryVariables = Types.Exact<{
 }>;
 
 
-export type LoadVisibleJobseekerProfilesQuery = { __typename?: 'Query', tpJobseekerDirectoryEntries: Array<{ __typename?: 'TpJobseekerDirectoryEntry', id: string, fullName: string, firstName: string, lastName: string, aboutYourself?: string | null, email: string }> };
+export type LoadVisibleJobseekerProfilesQuery = { __typename?: 'Query', tpJobseekerDirectoryEntriesVisible: Array<{ __typename?: 'TpJobseekerDirectoryEntry', id: string, fullName: string, firstName: string, lastName: string, aboutYourself?: string | null, email: string }> };
 
 
 export const LoadVisibleJobseekerProfilesDocument = `
     query loadVisibleJobseekerProfiles($filter: FindAllVisibleTpJobseekerDirectoryEntriesFilter!) {
-  tpJobseekerDirectoryEntries(filter: $filter) {
+  tpJobseekerDirectoryEntriesVisible(filter: $filter) {
     id
     fullName
     firstName

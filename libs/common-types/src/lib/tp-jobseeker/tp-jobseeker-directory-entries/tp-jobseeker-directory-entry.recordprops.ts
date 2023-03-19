@@ -66,6 +66,7 @@ class JobseekerProfileItem {
   Is_Hired__c: boolean
   Federal_State__c?: PicklistValue
   Willing_to_Relocate__c: boolean
+  Immigration_Status__c?: PicklistValue
 }
 
 class JobseekerLanguageItemsWrapper {

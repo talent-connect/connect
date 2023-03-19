@@ -3,6 +3,7 @@ import { Args, Query, Resolver } from '@nestjs/graphql'
 import { TpJobseekerDirectoryEntryEntityProps } from '@talent-connect/common-types'
 import { GqlJwtAuthGuard } from '../auth/gql-jwt-auth.guard'
 import { FindAllVisibleTpJobseekerDirectoryEntriesArgs } from './args/find-all-visible-tp-jobseeker-directory-entries.args'
+import { FindOneVisibleTpJobseekerDirectoryEntryArgs } from './args/find-one-visible-tp-jobseeker-directory-entry.args'
 import { TpJobseekerDirectoryEntriesService } from './tp-jobseeker-directory-entries.service'
 
 @UseGuards(GqlJwtAuthGuard)
@@ -10,9 +11,8 @@ import { TpJobseekerDirectoryEntriesService } from './tp-jobseeker-directory-ent
 export class TpJobseekerDirectoryEntriesResolver {
   constructor(private readonly service: TpJobseekerDirectoryEntriesService) {}
 
-  // //! TODO: Add auth
   @Query(() => [TpJobseekerDirectoryEntryEntityProps], {
-    name: 'tpJobseekerDirectoryEntries',
+    name: 'tpJobseekerDirectoryEntriesVisible',
   })
   async findAllVisible(
     @Args() args: FindAllVisibleTpJobseekerDirectoryEntriesArgs
@@ -22,13 +22,12 @@ export class TpJobseekerDirectoryEntriesResolver {
     return props
   }
 
-  // //! TODO: Add auth
-  //? THIS CALLS .findOne that looks up by contactId, not jobseekerprofileId. Fix that.
-  // @Query(() => [TpJobseekerDirectoryEntryEntityProps], {
-  //   name: 'tpJobseekerProfile',
-  // })
-  // async findOne(@Args('id') id: string) {
-  //   const entity = await this.service.findOne(id)
-  //   return entity.props
-  // }
+  @Query(() => TpJobseekerDirectoryEntryEntityProps, {
+    name: 'tpJobseekerDirectoryEntryVisible',
+  })
+  async findOne(@Args() args: FindOneVisibleTpJobseekerDirectoryEntryArgs) {
+    const entity = await this.service.findOneVisibleJobseeker(args)
+    const props = entity.props
+    return props
+  }
 }

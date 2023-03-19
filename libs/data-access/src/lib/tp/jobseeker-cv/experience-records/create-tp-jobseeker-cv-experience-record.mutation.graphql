@@ -1,0 +1,9 @@
+mutation tpJobseekerCvExperienceRecordCreate(
+  $input: TpJobseekerCvExperienceRecordCreateInput!
+) {
+  tpJobseekerCvExperienceRecordCreate(
+    tpJobseekerCvExperienceRecordCreateInput: $input
+  ) {
+    ok
+  }
+}

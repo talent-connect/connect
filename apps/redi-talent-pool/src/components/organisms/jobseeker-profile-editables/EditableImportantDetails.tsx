@@ -3,9 +3,13 @@ import isNil from 'lodash/isNil'
 import moment from 'moment'
 import { useEffect, useMemo, useState } from 'react'
 import { Content, Element } from 'react-bulma-components'
-import { UseMutationResult, UseQueryResult } from 'react-query'
 import * as Yup from 'yup'
 
+import {
+  useMyTpDataQuery,
+  usePatchUserContactMutation,
+  useTpJobseekerProfilePatchMutation,
+} from '@talent-connect/data-access'
 import {
   Button,
   Caption,
@@ -15,7 +19,6 @@ import {
   FormTextArea,
   PipeList,
 } from '@talent-connect/shared-atomic-design-components'
-import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
 import {
   availabilityOptions,
   availabilityOptionsIdToLabelMap,
@@ -24,28 +27,23 @@ import {
   immigrationStatusOptions,
   immigrationStatusOptionsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
-import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useQueryClient } from 'react-query'
+import { useIsBusy } from '../../../hooks/useIsBusy'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
+import { EditableImportantDetailsProfilePropFragment } from './EditableImportantDetails.generated'
 
 interface Props {
-  profile?: Partial<TpJobseekerProfile>
+  profile?: EditableImportantDetailsProfilePropFragment
   disableEditing?: boolean
   showFullAddress?: boolean
 }
 
 export function EditableImportantDetails({
-  profile: overridingProfile,
+  profile,
   disableEditing,
   showFullAddress,
 }: Props) {
-  const queryHookResult = useTpJobseekerProfileQuery({
-    enabled: !disableEditing,
-  })
-  if (overridingProfile) queryHookResult.data = overridingProfile
-  const mutationHookResult = useTpjobseekerprofileUpdateMutation()
-  const { data: profile } = queryHookResult
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
@@ -114,11 +112,11 @@ export function EditableImportantDetails({
               </div>
             ) : null}
 
-            {profile?.phoneNumber || profile?.contactEmail ? (
+            {profile?.telephoneNumber || profile?.email ? (
               <div>
                 <Caption>Contact</Caption>
                 <Content>
-                  {[profile?.phoneNumber, profile?.contactEmail].map(
+                  {[profile?.telephoneNumber, profile?.email].map(
                     (contactItem) => (contactItem ? <p>{contactItem}</p> : null)
                   )}
                 </Content>
@@ -166,8 +164,6 @@ export function EditableImportantDetails({
         <JobseekerFormSectionImportantDetails
           setIsEditing={setIsEditing}
           setIsFormDirty={setIsFormDirty}
-          queryHookResult={queryHookResult}
-          mutationHookResult={mutationHookResult}
         />
       }
       modalStyles={{ minHeight: '40rem' }}
@@ -176,15 +172,15 @@ export function EditableImportantDetails({
 }
 
 EditableImportantDetails.isSectionFilled = (
-  profile: Partial<TpJobseekerProfile>
+  profile: EditableImportantDetailsProfilePropFragment
 ) =>
   profile?.availability ||
   profile?.desiredEmploymentType?.length > 0 ||
-  profile?.phoneNumber ||
+  profile?.telephoneNumber ||
   profile?.immigrationStatus ||
   profile?.postalMailingAddress
 EditableImportantDetails.isSectionEmpty = (
-  profile: Partial<TpJobseekerProfile>
+  profile: EditableImportantDetailsProfilePropFragment
 ) => !EditableImportantDetails.isSectionFilled(profile)
 
 const validationSchema = Yup.object({
@@ -197,69 +193,68 @@ const validationSchema = Yup.object({
 interface JobseekerFormSectionImportantDetailsProps {
   setIsEditing: (boolean) => void
   setIsFormDirty?: (boolean) => void
-  queryHookResult: UseQueryResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
-    unknown
-  >
-  mutationHookResult: UseMutationResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
-    unknown,
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
-    unknown
-  >
-  // TODO: this is a slippery slope. When this form section is used in the
-  // Profiile Builder, we need all the below fields. In the CV Builder we
-  // only need these "contact details" fields. Instead of "customizing"
-  // from component, we should probably build a new component
-  // EditableContactDetails or something. Over the longer run, we might
-  // want to create one component per field and compose forms together
-  // elegantly.
   hideNonContactDetailsFields?: boolean
 }
 
-export function JobseekerFormSectionImportantDetails({
+function JobseekerFormSectionImportantDetails({
   setIsEditing,
   setIsFormDirty,
-  queryHookResult,
-  mutationHookResult,
   hideNonContactDetailsFields,
 }: JobseekerFormSectionImportantDetailsProps) {
-  const { data: profile } = queryHookResult
-  const mutation = mutationHookResult
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(
+  const queryClient = useQueryClient()
+  const myData = useMyTpDataQuery()
+  const profile = myData.data?.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry
+  const tpJobsekerProfileMutation = useTpJobseekerProfilePatchMutation()
+  const userContactMutation = usePatchUserContactMutation()
+  const isBusy = useIsBusy()
+
+  const initialValues: EditableImportantDetailsProfilePropFragment = useMemo(
     () => ({
-      availability: profile?.availability ?? '',
+      availability: profile?.availability ?? null,
       desiredEmploymentType: profile?.desiredEmploymentType ?? [],
-      contactEmail: profile?.contactEmail ?? '',
-      phoneNumber: profile?.phoneNumber ?? '',
-      postalMailingAddress: profile?.postalMailingAddress ?? '',
+      email: profile?.email ?? null,
+      telephoneNumber: profile?.telephoneNumber ?? null,
+      postalMailingAddress: profile?.postalMailingAddress ?? null,
       ifAvailabilityIsDate_date: profile?.ifAvailabilityIsDate_date
         ? new Date(profile.ifAvailabilityIsDate_date)
         : null,
-      immigrationStatus: profile?.immigrationStatus ?? '',
+      immigrationStatus: profile?.immigrationStatus ?? null,
       willingToRelocate: profile?.willingToRelocate,
     }),
     [
       profile?.availability,
-      profile?.contactEmail,
+      profile?.email,
       profile?.desiredEmploymentType,
       profile?.ifAvailabilityIsDate_date,
       profile?.immigrationStatus,
-      profile?.phoneNumber,
+      profile?.telephoneNumber,
       profile?.postalMailingAddress,
       profile?.willingToRelocate,
     ]
   )
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
+  const onSubmit = async (
+    values: EditableImportantDetailsProfilePropFragment
+  ) => {
     formik.setSubmitting(true)
-    mutation.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
+    const tpJobseekerUpdate = tpJobsekerProfileMutation.mutateAsync({
+      input: {
+        availability: values.availability,
+        desiredEmploymentType: values.desiredEmploymentType,
+        ifAvailabilityIsDate_date: values.ifAvailabilityIsDate_date,
+        immigrationStatus: values.immigrationStatus,
+        willingToRelocate: values.willingToRelocate,
       },
     })
+    const userContactUpdate = userContactMutation.mutateAsync({
+      input: {
+        telephoneNumber: values.telephoneNumber,
+        postalMailingAddress: values.postalMailingAddress,
+      },
+    })
+    await Promise.all([tpJobseekerUpdate, userContactUpdate])
+    queryClient.invalidateQueries()
+    formik.setSubmitting(false)
+    setIsEditing(false)
   }
   const formik = useFormik({
     initialValues,
@@ -285,13 +280,13 @@ export function JobseekerFormSectionImportantDetails({
         touch and see your work.
       </Element>
       <FormInput
-        name="contactEmail"
+        name="email"
         placeholder="awesome@gmail.com"
         label="Email*"
         {...formik}
       />
       <FormInput
-        name="phoneNumber"
+        name="telephoneNumber"
         placeholder="0176 01234567"
         label="Phone Number"
         {...formik}
@@ -342,17 +337,10 @@ export function JobseekerFormSectionImportantDetails({
         </>
       )}
 
-      <Button
-        disabled={!formik.isValid || mutation.isLoading}
-        onClick={formik.submitForm}
-      >
+      <Button disabled={!formik.isValid || isBusy} onClick={formik.submitForm}>
         Save
       </Button>
-      <Button
-        simple
-        disabled={mutation.isLoading}
-        onClick={() => setIsEditing(false)}
-      >
+      <Button simple disabled={isBusy} onClick={() => setIsEditing(false)}>
         Cancel
       </Button>
     </>

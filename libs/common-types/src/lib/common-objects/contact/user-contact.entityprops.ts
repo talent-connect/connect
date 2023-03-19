@@ -18,6 +18,7 @@ export class UserContactEntityProps implements EntityProps {
   linkedInProfileUrl?: string
   githubProfileUrl?: string
   slackUsername?: string
+  genderPronouns?: string
 
   postalMailingAddress?: string
   personalWebsite?: string

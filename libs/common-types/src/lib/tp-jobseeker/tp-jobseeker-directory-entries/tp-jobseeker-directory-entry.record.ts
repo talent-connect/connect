@@ -99,6 +99,7 @@ export class TpJobseekerDirectoryEntryRecord extends Record<TpJobseekerDirectory
           'Is_Hired__c',
           'Federal_State__c',
           'Willing_to_Relocate__c',
+          'Immigration_Status__c',
         ],
       },
     ],

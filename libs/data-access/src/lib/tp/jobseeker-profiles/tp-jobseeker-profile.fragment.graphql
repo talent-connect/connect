@@ -44,4 +44,5 @@ fragment AllTpJobseekerDirectoryEntryFields on TpJobseekerDirectoryEntry {
     ...AllTpJobseekerProfileEducationRecordFields
   }
   email
+  immigrationStatus
 }

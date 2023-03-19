@@ -16,7 +16,6 @@ import {
   FormTextArea,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
-import { TpJobseekerProfile } from '@talent-connect/shared-types'
 import { formMonthsOptions } from '@talent-connect/talent-pool/config'
 import { reorder } from '@talent-connect/typescript-utilities'
 import { useFormik } from 'formik'
@@ -31,28 +30,20 @@ import { Subject } from 'rxjs'
 import { v4 as uuidv4 } from 'uuid'
 import * as Yup from 'yup'
 import { useIsBusy } from '../../../hooks/useIsBusy'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import { Location } from '../../molecules/Location'
+import { EditableProfessionalExperienceProfilePropFragment } from './EditableProfessionalExperience.generated'
 interface Props {
-  profile?: Partial<TpJobseekerProfile>
+  profile?: EditableProfessionalExperienceProfilePropFragment
   disableEditing?: boolean
 }
-
 export function EditableProfessionalExperience({
-  profile: overridingProfile,
+  profile,
   disableEditing,
 }: Props) {
-  const myData = useMyTpDataQuery(null, { enabled: !disableEditing })
-  const experienceRecords =
-    myData?.data?.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry?.experience
+  const experienceRecords = profile?.experience
 
-  const queryHookResult = useTpJobseekerProfileQuery({
-    enabled: !disableEditing,
-  })
-  if (overridingProfile) queryHookResult.data = overridingProfile
-  const { data: profile } = queryHookResult
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
@@ -130,10 +121,10 @@ export function EditableProfessionalExperience({
 }
 
 EditableProfessionalExperience.isSectionFilled = (
-  profile: Partial<TpJobseekerProfile>
+  profile: EditableProfessionalExperienceProfilePropFragment
 ) => profile?.experience?.length > 0
 EditableProfessionalExperience.isSectionEmpty = (
-  profile: Partial<TpJobseekerProfile>
+  profile: EditableProfessionalExperienceProfilePropFragment
 ) => !EditableProfessionalExperience.isSectionFilled(profile)
 
 function formatDate(month?: number, year?: number): string {

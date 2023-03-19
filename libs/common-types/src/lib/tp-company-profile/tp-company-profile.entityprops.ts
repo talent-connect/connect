@@ -14,7 +14,7 @@ export class TpCompanyProfileEntityProps implements EntityProps {
   industry?: string
   website?: string
   linkedInUrl?: string
-  phoneNumber?: string
+  telephoneNumber?: string
   about?: string
   @Field((type) => CompanyTalentPoolState)
   state: CompanyTalentPoolState

@@ -7,7 +7,7 @@ fragment AllTpCompanyProfileFields on TpCompanyProfile {
   industry
   website
   linkedInUrl
-  phoneNumber
+  telephoneNumber
   about
   state
   isProfileVisibleToJobseekers

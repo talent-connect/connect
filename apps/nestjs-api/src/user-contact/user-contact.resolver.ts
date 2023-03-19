@@ -4,6 +4,8 @@ import {
   OkResponseMutationOutputDto,
   UserContactEntityProps,
 } from '@talent-connect/common-types'
+import { CurrentUser } from '../auth/current-user.decorator'
+import { CurrentUserInfo } from '../auth/current-user.interface'
 import { GqlJwtAuthGuard } from '../auth/gql-jwt-auth.guard'
 import { UserContactPatchInput } from './dtos/user-contact-patch.entityinput'
 import { UserContactService } from './user-contact.service'
@@ -15,8 +17,11 @@ export class UserContactResolver {
   @Mutation(() => OkResponseMutationOutputDto, {
     name: 'userContactPatch',
   })
-  async patch(@Args('userContactPatchInput') input: UserContactPatchInput) {
-    await this.service.patch(input)
+  async patch(
+    @Args('userContactPatchInput') input: UserContactPatchInput,
+    @CurrentUser() currentUser: CurrentUserInfo
+  ) {
+    await this.service.patch(input, currentUser)
     return { ok: true }
   }
 }

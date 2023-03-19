@@ -18,6 +18,10 @@ import { SfApiModule } from '../salesforce-api/sf-api.module'
 import { SalesforceRecordEventsListenerModule } from '../salesforce-record-events-listener/salesforce-record-events-listener.module'
 import { TpCompanyProfilesModule } from '../tp-company-profiles/tp-company-profiles.module'
 import { TpCurrentUserDataModule } from '../tp-current-user-data/tp-current-user-data.module'
+import { TpJobseekerCvEducationRecordsModule } from '../tp-jobseeker-cv-education-records/tp-jobseeker-cv-education-records.module'
+import { TpJobseekerCvExperienceRecordsModule } from '../tp-jobseeker-cv-experience-records/tp-jobseeker-cv-experience-records.module'
+import { TpJobseekerCvLanguageRecordsModule } from '../tp-jobseeker-cv-language-records/tp-jobseeker-cv-language-records.module'
+import { TpJobseekerCvModule } from '../tp-jobseeker-cv/tp-jobseeker-cv.module'
 import { TpJobseekerDirectoryEntriesModule } from '../tp-jobseeker-directory-entries/tp-jobseeker-directory-entries.module'
 import { TpJobseekerProfileEducationRecordsModule } from '../tp-jobseeker-profile-education-records/tp-jobseeker-profile-education-records.module'
 import { TpJobseekerProfileExperienceRecordsModule } from '../tp-jobseeker-profile-experience-records/tp-jobseeker-profile-experience-records.module'
@@ -63,6 +67,10 @@ import { AppService } from './app.service'
     TpJobseekerProfileEducationRecordsModule,
     TpJobseekerProfileExperienceRecordsModule,
     TpJobseekerProfileLanguageRecordsModule,
+    TpJobseekerCvModule,
+    TpJobseekerCvEducationRecordsModule,
+    TpJobseekerCvExperienceRecordsModule,
+    TpJobseekerCvLanguageRecordsModule,
   ],
   controllers: [AppController],
   providers: [

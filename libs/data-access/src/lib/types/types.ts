@@ -278,6 +278,10 @@ export type FindOneTpJobListingArgsFilter = {
   id: Scalars['ID'];
 };
 
+export type FindOneVisibleTpJobseekerDirectoryEntry = {
+  tpJobseekerProfileId: Scalars['ID'];
+};
+
 export enum FirstPointOfTpContactOption {
   AlreadyVolunteerAtRedi = 'ALREADY_VOLUNTEER_AT_REDI',
   Collegue = 'COLLEGUE',
@@ -293,6 +297,15 @@ export enum Gender {
   Female = 'Female',
   Male = 'Male',
   Other = 'Other'
+}
+
+export enum ImmigrationStatus {
+  EuBlueCardBlaueKarte = 'euBlueCardBlaueKarte',
+  EuCitizenshipOrUnlimitedResidencePermissionNiederlassungserlaubnis = 'euCitizenshipOrUnlimitedResidencePermissionNiederlassungserlaubnis',
+  SchengenVisa = 'schengenVisa',
+  StudentVisa = 'studentVisa',
+  TemporaryResidencePermissionAufenthaltstitel = 'temporaryResidencePermissionAufenthaltstitel',
+  VisaNationalvisumOrJobseekerVisum = 'visaNationalvisumOrJobseekerVisum'
 }
 
 export enum JobseekerProfileStatus {
@@ -726,7 +739,8 @@ export type Query = {
   tpCurrentUserDataGet: TpCurrentUserData;
   tpJobListing: TpJobListing;
   tpJobListings: Array<TpJobListing>;
-  tpJobseekerDirectoryEntries: Array<TpJobseekerDirectoryEntry>;
+  tpJobseekerDirectoryEntriesVisible: Array<TpJobseekerDirectoryEntry>;
+  tpJobseekerDirectoryEntryVisible: TpJobseekerDirectoryEntry;
   tpJobseekerProfile: TpJobseekerProfile;
   tpJobseekerProfileEducationRecords: Array<TpJobseekerProfileEducationRecord>;
   tpJobseekerProfileExperienceRecords: Array<TpJobseekerProfileExperienceRecord>;
@@ -770,8 +784,13 @@ export type QueryTpJobListingsArgs = {
 };
 
 
-export type QueryTpJobseekerDirectoryEntriesArgs = {
+export type QueryTpJobseekerDirectoryEntriesVisibleArgs = {
   filter: FindAllVisibleTpJobseekerDirectoryEntriesFilter;
+};
+
+
+export type QueryTpJobseekerDirectoryEntryVisibleArgs = {
+  filter: FindOneVisibleTpJobseekerDirectoryEntry;
 };
 
 
@@ -855,10 +874,10 @@ export type TpCompanyProfile = {
   isProfileVisibleToJobseekers: Scalars['Boolean'];
   linkedInUrl?: Maybe<Scalars['String']>;
   location?: Maybe<Scalars['String']>;
-  phoneNumber?: Maybe<Scalars['String']>;
   profileAvatarImageS3Key?: Maybe<Scalars['String']>;
   state: CompanyTalentPoolState;
   tagline?: Maybe<Scalars['String']>;
+  telephoneNumber?: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
   website?: Maybe<Scalars['String']>;
 };
@@ -872,10 +891,10 @@ export type TpCompanyProfilePatchInput = {
   isProfileVisibleToJobseekers?: InputMaybe<Scalars['Boolean']>;
   linkedInUrl?: InputMaybe<Scalars['String']>;
   location?: InputMaybe<Scalars['String']>;
-  phoneNumber?: InputMaybe<Scalars['String']>;
   profileAvatarImageS3Key?: InputMaybe<Scalars['String']>;
   state?: InputMaybe<CompanyTalentPoolState>;
   tagline?: InputMaybe<Scalars['String']>;
+  telephoneNumber?: InputMaybe<Scalars['String']>;
   website?: InputMaybe<Scalars['String']>;
 };
 
@@ -1068,6 +1087,7 @@ export type TpJobseekerDirectoryEntry = {
   githubUrl?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   ifAvailabilityIsDate_date?: Maybe<Scalars['DateTime']>;
+  immigrationStatus?: Maybe<ImmigrationStatus>;
   isHired: Scalars['Boolean'];
   isJobFair2022Participant: Scalars['Boolean'];
   isJobFair2023Participant: Scalars['Boolean'];
@@ -1102,6 +1122,7 @@ export type TpJobseekerProfile = {
   federalState?: Maybe<FederalState>;
   id: Scalars['ID'];
   ifAvailabilityIsDate_date?: Maybe<Scalars['DateTime']>;
+  immigrationStatus?: Maybe<ImmigrationStatus>;
   isHired: Scalars['Boolean'];
   isJobFair2022Participant: Scalars['Boolean'];
   isJobFair2023Participant: Scalars['Boolean'];
@@ -1254,8 +1275,8 @@ export type TpJobseekerProfilePatchInput = {
   desiredEmploymentType?: InputMaybe<Array<TpEmploymentType>>;
   desiredPositions?: InputMaybe<Array<TpDesiredPosition>>;
   federalState?: InputMaybe<FederalState>;
-  id: Scalars['ID'];
   ifAvailabilityIsDate_date?: InputMaybe<Scalars['DateTime']>;
+  immigrationStatus?: InputMaybe<ImmigrationStatus>;
   isHired?: InputMaybe<Scalars['Boolean']>;
   isJobFair2022Participant?: InputMaybe<Scalars['Boolean']>;
   isJobFair2023Participant?: InputMaybe<Scalars['Boolean']>;
@@ -1418,6 +1439,7 @@ export type UserContact = {
   email: Scalars['String'];
   firstName: Scalars['String'];
   gender?: Maybe<Gender>;
+  genderPronouns?: Maybe<Scalars['String']>;
   githubProfileUrl?: Maybe<Scalars['String']>;
   howDidHearAboutRediKey?: Maybe<FirstPointOfTpContactOption>;
   howDidHearAboutRediOtherText?: Maybe<Scalars['String']>;
@@ -1441,10 +1463,10 @@ export type UserContactPatchInput = {
   dribbbleUrl?: InputMaybe<Scalars['String']>;
   firstName?: InputMaybe<Scalars['String']>;
   gender?: InputMaybe<Gender>;
+  genderPronouns?: InputMaybe<Scalars['String']>;
   githubProfileUrl?: InputMaybe<Scalars['String']>;
   howDidHearAboutRediKey?: InputMaybe<FirstPointOfTpContactOption>;
   howDidHearAboutRediOtherText?: InputMaybe<Scalars['String']>;
-  id: Scalars['ID'];
   lastName?: InputMaybe<Scalars['String']>;
   linkedInProfileUrl?: InputMaybe<Scalars['String']>;
   personalDescription?: InputMaybe<Scalars['String']>;

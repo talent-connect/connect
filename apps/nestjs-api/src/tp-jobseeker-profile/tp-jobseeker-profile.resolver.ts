@@ -4,6 +4,8 @@ import {
   OkResponseMutationOutputDto,
   TpJobseekerProfileEntityProps,
 } from '@talent-connect/common-types'
+import { CurrentUser } from '../auth/current-user.decorator'
+import { CurrentUserInfo } from '../auth/current-user.interface'
 import { GqlJwtAuthGuard } from '../auth/gql-jwt-auth.guard'
 import { FindOneTpJobseekerProfileArgs } from './args/find-one-tp-jobseeker-profile.args'
 import { TpJobseekerProfilePatchInput } from './dto/tp-jobseeker-profile-patch.entityinput'
@@ -29,9 +31,10 @@ export class TpJobseekerProfileResolver {
     name: 'tpJobseekerProfilePatch',
   })
   async patch(
-    @Args('tpJobseekerProfilePatchInput') input: TpJobseekerProfilePatchInput
+    @Args('tpJobseekerProfilePatchInput') input: TpJobseekerProfilePatchInput,
+    @CurrentUser() currentUser: CurrentUserInfo
   ) {
-    await this.service.patch(input)
+    await this.service.patch(input, currentUser)
     return { ok: true }
   }
 }

@@ -1,7 +1,12 @@
-import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
+import {
+  TpJobseekerDirectoryEntry,
+  useTpJobseekerDirectoryEntriesFindOneVisibleQuery,
+} from '@talent-connect/data-access'
+import { TpJobseekerCv } from '@talent-connect/shared-types'
 import React from 'react'
 import { Columns } from 'react-bulma-components'
 import { useParams } from 'react-router-dom'
+import placeholderImage from '../../../assets/img-placeholder.png'
 import ProfileDownloadButton from '../../../components/molecules/ProfileDownloadButton'
 import { EditableEducation } from '../../../components/organisms/jobseeker-profile-editables/EditableEducation'
 import { EditableImportantDetails } from '../../../components/organisms/jobseeker-profile-editables/EditableImportantDetails'
@@ -12,16 +17,30 @@ import { EditableOverview } from '../../../components/organisms/jobseeker-profil
 import { EditableProfessionalExperience } from '../../../components/organisms/jobseeker-profile-editables/EditableProfessionalExperience'
 import { EditableSummary } from '../../../components/organisms/jobseeker-profile-editables/EditableSummary'
 import { LoggedIn } from '../../../components/templates'
-import { convertProfileToCv } from '../../../pages/app/cv-builder/cv-list/CvListPage'
-import { useTpJobseekerProfileByIdQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { convertProfileToCv } from '../cv-builder/cv-list/CvListPage'
 
 export function JobseekerProfile() {
   const { tpJobseekerProfileId }: { tpJobseekerProfileId: string } = useParams()
-  const { data: jobseekerProfile, isSuccess: profileLoadSuccess } =
-    useTpJobseekerProfileByIdQuery(tpJobseekerProfileId)
+  const jobseekerProfileQuery =
+    useTpJobseekerDirectoryEntriesFindOneVisibleQuery({
+      input: { tpJobseekerProfileId },
+    })
+  const jobseekerProfile =
+    jobseekerProfileQuery?.data?.tpJobseekerDirectoryEntryVisible
+  const profileLoadSuccess = jobseekerProfileQuery.isSuccess
+
   const [cvData, setCvData] = React.useState<
     Partial<TpJobseekerCv> | undefined
   >(undefined)
+
+  React.useEffect(() => {
+    if (profileLoadSuccess) {
+      const profileAvatarImageS3Key = jobseekerProfile.profileAvatarImageS3Key
+        ? jobseekerProfile.profileAvatarImageS3Key
+        : placeholderImage
+      setCvData(getTpProfileCvData(jobseekerProfile, profileAvatarImageS3Key))
+    }
+  }, [profileLoadSuccess, jobseekerProfile])
 
   return (
     <LoggedIn>
@@ -51,7 +70,7 @@ export function JobseekerProfile() {
 }
 
 function getTpProfileCvData(
-  jobseekerProfile: Partial<TpJobseekerProfile>,
+  jobseekerProfile: TpJobseekerDirectoryEntry,
   profileAvatarImageS3Key: string
 ) {
   var cvData = convertProfileToCv(jobseekerProfile)

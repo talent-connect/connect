@@ -2,11 +2,13 @@ import { Field, ID, ObjectType } from '@nestjs/graphql'
 import { EntityProps } from '../../base-interfaces-types-classes'
 import {
   FederalState,
+  ImmigrationStatus,
   TpDesiredPosition,
   TpEmploymentType,
   TpTechnicalSkill,
 } from '../../common-objects'
-import { JobseekerProfileStatus, TpAvailabilityOption } from '../enums'
+import { TpAvailabilityOption } from '../../tp-common-objects'
+import { JobseekerProfileStatus } from '../enums'
 
 @ObjectType('TpJobseekerProfile')
 export class TpJobseekerProfileEntityProps implements EntityProps {
@@ -37,6 +39,8 @@ export class TpJobseekerProfileEntityProps implements EntityProps {
   @Field((type) => FederalState)
   federalState?: FederalState
   willingToRelocate: boolean
+  @Field((type) => ImmigrationStatus)
+  immigrationStatus?: ImmigrationStatus
 
   createdAt: Date
   updatedAt: Date

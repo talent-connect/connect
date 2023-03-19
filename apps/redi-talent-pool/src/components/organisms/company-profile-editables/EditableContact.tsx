@@ -71,11 +71,11 @@ export function EditableContact({
                 </Content>
               </div>
             ) : null}
-            {companyProfile.phoneNumber ? (
+            {companyProfile.telephoneNumber ? (
               <div>
                 <Caption>Phone</Caption>
                 <Content>
-                  <p>{companyProfile?.phoneNumber}</p>
+                  <p>{companyProfile?.telephoneNumber}</p>
                 </Content>
               </div>
             ) : null}
@@ -110,7 +110,7 @@ EditableContact.isSectionFilled = (
   userContact?.firstName ||
   userContact?.lastName ||
   userContact?.email ||
-  companyProfile?.phoneNumber
+  companyProfile?.telephoneNumber
 EditableContact.isSectionEmpty = (
   companyProfile: EditableContactCompanyProfilePropFragment,
   userContact: EditableContactUserContactPropFragment
@@ -125,7 +125,7 @@ const validationSchema = Yup.object({
     .transform(toPascalCaseAndTrim)
     .required('Your last name is required')
     .max(255),
-  phoneNumber: Yup.string().max(255).label('Phone Number'),
+  telephoneNumber: Yup.string().max(255).label('Phone Number'),
 })
 
 function ModalForm({
@@ -145,7 +145,7 @@ function ModalForm({
     () => ({
       firstName: userContact?.firstName ?? '',
       lastName: userContact?.lastName ?? '',
-      phoneNumber: companyProfile?.phoneNumber ?? '',
+      telephoneNumber: companyProfile?.telephoneNumber ?? '',
       email: userContact?.email ?? '',
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -201,7 +201,7 @@ function ModalForm({
         disabled
       />
       <FormInput
-        name="phoneNumber"
+        name="telephoneNumber"
         placeholder="0176 01234567"
         label="Phone Number"
         {...formik}

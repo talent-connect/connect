@@ -30,6 +30,7 @@ export class TpJobseekerProfileRecordProps implements RecordProps {
   Is_Hired__c: boolean
   Federal_State__c?: PicklistValue
   Willing_to_Relocate__c: boolean
+  Immigration_Status__c?: PicklistValue
 
   public static create(rawProps: any) {
     return plainToClass(TpJobseekerProfileRecordProps, rawProps, {})

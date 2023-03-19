@@ -13,12 +13,13 @@ import { Box, Columns, Content, Section } from 'react-bulma-components'
 import { useTpjobseekerCvCreateMutation } from '../../../../react-query/use-tpjobseekercv-mutation'
 import { useTpJobseekerCvQuery } from '../../../../react-query/use-tpjobseekercv-query'
 
-import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
+import { TpJobseekerCv } from '@talent-connect/shared-types'
 import { EmptySectionPlaceholder } from '../../../../components/molecules/EmptySectionPlaceholder'
 import { LoggedIn } from '../../../../components/templates'
 import { useTpJobseekerProfileQuery } from '../../../../react-query/use-tpjobseekerprofile-query'
 import CvListItem from './CvListItem'
 
+import { TpJobseekerDirectoryEntry } from '@talent-connect/data-access'
 import './CvListPage.scss'
 
 function CvListPage() {
@@ -178,14 +179,14 @@ function CvListPage() {
 export default CvListPage
 
 export function convertProfileToCv(
-  profile: Partial<TpJobseekerProfile>
+  profile: TpJobseekerDirectoryEntry
 ): Partial<TpJobseekerCv> {
   return {
     firstName: profile.firstName,
     lastName: profile.lastName,
-    contactEmail: profile.contactEmail,
+    email: profile.email,
     desiredPositions: profile.desiredPositions,
-    phoneNumber: profile.phoneNumber,
+    telephoneNumber: profile.telephoneNumber,
     postalMailingAddress: profile.postalMailingAddress,
     personalWebsite: profile.personalWebsite,
     githubUrl: profile.githubUrl,

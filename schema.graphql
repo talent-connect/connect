@@ -255,6 +255,10 @@ input FindOneTpJobListingArgsFilter {
   id: ID!
 }
 
+input FindOneVisibleTpJobseekerDirectoryEntry {
+  tpJobseekerProfileId: ID!
+}
+
 enum FirstPointOfTpContactOption {
   ALREADY_VOLUNTEER_AT_REDI
   COLLEGUE
@@ -270,6 +274,15 @@ enum Gender {
   Female
   Male
   Other
+}
+
+enum ImmigrationStatus {
+  euBlueCardBlaueKarte
+  euCitizenshipOrUnlimitedResidencePermissionNiederlassungserlaubnis
+  schengenVisa
+  studentVisa
+  temporaryResidencePermissionAufenthaltstitel
+  visaNationalvisumOrJobseekerVisum
 }
 
 enum JobseekerProfileStatus {
@@ -559,7 +572,8 @@ type Query {
   tpCurrentUserDataGet: TpCurrentUserData!
   tpJobListing(filter: FindOneTpJobListingArgsFilter!): TpJobListing!
   tpJobListings(filter: FindAllVisibleTpJobListingsArgsFilter!): [TpJobListing!]!
-  tpJobseekerDirectoryEntries(filter: FindAllVisibleTpJobseekerDirectoryEntriesFilter!): [TpJobseekerDirectoryEntry!]!
+  tpJobseekerDirectoryEntriesVisible(filter: FindAllVisibleTpJobseekerDirectoryEntriesFilter!): [TpJobseekerDirectoryEntry!]!
+  tpJobseekerDirectoryEntryVisible(filter: FindOneVisibleTpJobseekerDirectoryEntry!): TpJobseekerDirectoryEntry!
   tpJobseekerProfile(id: ID): TpJobseekerProfile!
   tpJobseekerProfileEducationRecords: [TpJobseekerProfileEducationRecord!]!
   tpJobseekerProfileExperienceRecords: [TpJobseekerProfileExperienceRecord!]!
@@ -641,10 +655,10 @@ type TpCompanyProfile {
   isProfileVisibleToJobseekers: Boolean!
   linkedInUrl: String
   location: String
-  phoneNumber: String
   profileAvatarImageS3Key: String
   state: CompanyTalentPoolState!
   tagline: String
+  telephoneNumber: String
   updatedAt: DateTime!
   website: String
 }
@@ -658,10 +672,10 @@ input TpCompanyProfilePatchInput {
   isProfileVisibleToJobseekers: Boolean
   linkedInUrl: String
   location: String
-  phoneNumber: String
   profileAvatarImageS3Key: String
   state: CompanyTalentPoolState
   tagline: String
+  telephoneNumber: String
   website: String
 }
 
@@ -849,6 +863,7 @@ type TpJobseekerDirectoryEntry {
   githubUrl: String
   id: ID!
   ifAvailabilityIsDate_date: DateTime
+  immigrationStatus: ImmigrationStatus
   isHired: Boolean!
   isJobFair2022Participant: Boolean!
   isJobFair2023Participant: Boolean!
@@ -882,6 +897,7 @@ type TpJobseekerProfile {
   federalState: FederalState
   id: ID!
   ifAvailabilityIsDate_date: DateTime
+  immigrationStatus: ImmigrationStatus
   isHired: Boolean!
   isJobFair2022Participant: Boolean!
   isJobFair2023Participant: Boolean!
@@ -1031,8 +1047,8 @@ input TpJobseekerProfilePatchInput {
   desiredEmploymentType: [TpEmploymentType!]
   desiredPositions: [TpDesiredPosition!]
   federalState: FederalState
-  id: ID!
   ifAvailabilityIsDate_date: DateTime
+  immigrationStatus: ImmigrationStatus
   isHired: Boolean
   isJobFair2022Participant: Boolean
   isJobFair2023Participant: Boolean
@@ -1194,6 +1210,7 @@ type UserContact {
   email: String!
   firstName: String!
   gender: Gender
+  genderPronouns: String
   githubProfileUrl: String
   howDidHearAboutRediKey: FirstPointOfTpContactOption
   howDidHearAboutRediOtherText: String
@@ -1217,10 +1234,10 @@ input UserContactPatchInput {
   dribbbleUrl: String
   firstName: String
   gender: Gender
+  genderPronouns: String
   githubProfileUrl: String
   howDidHearAboutRediKey: FirstPointOfTpContactOption
   howDidHearAboutRediOtherText: String
-  id: ID!
   lastName: String
   linkedInProfileUrl: String
   personalDescription: String

@@ -4,6 +4,7 @@ import {
   TpJobseekerProfileMapper,
 } from '@talent-connect/common-types'
 import { deleteUndefinedProperties } from '@talent-connect/shared-utils'
+import { CurrentUserInfo } from '../auth/current-user.interface'
 import { SfApiTpJobseekerProfileService } from '../salesforce-api/sf-api-tp-jobseeker-profile.service'
 import { TpJobseekerProfilePatchInput } from './dto/tp-jobseeker-profile-patch.entityinput'
 
@@ -46,8 +47,11 @@ export class TpJobseekerProfileService {
     }
   }
 
-  async patch(input: TpJobseekerProfilePatchInput) {
-    const existingEntity = await this.findOne(input.id)
+  async patch(
+    input: TpJobseekerProfilePatchInput,
+    currentUser: CurrentUserInfo
+  ) {
+    const existingEntity = await this.findOneByUserId(currentUser.userId)
     const props = existingEntity.props
     const updatesSanitized = deleteUndefinedProperties(input)
     Object.entries(updatesSanitized).forEach(([key, value]) => {

@@ -33,6 +33,8 @@ export class UserContactMapper
       props.gender = undefined
     }
 
+    props.genderPronouns = raw.props.ReDI_Gender_Pronouns__c
+
     props.birthDate = raw.props.ReDI_Birth_Date__c
     props.linkedInProfileUrl = raw.props.LinkedIn_Profile__c
     props.githubProfileUrl = raw.props.ReDI_GitHub_Profile__c
@@ -69,6 +71,7 @@ export class UserContactMapper
     props.FirstName = srcProps.firstName
     props.LastName = srcProps.lastName
     props.redi_Contact_Gender__c = srcProps.gender
+    props.ReDI_Gender_Pronouns__c = srcProps.genderPronouns
     props.ReDI_Birth_Date__c = srcProps.birthDate
     props.LinkedIn_Profile__c = srcProps.linkedInProfileUrl
     props.ReDI_GitHub_Profile__c = srcProps.githubProfileUrl

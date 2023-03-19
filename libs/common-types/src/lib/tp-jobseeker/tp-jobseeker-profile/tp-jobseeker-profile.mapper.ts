@@ -2,11 +2,13 @@ import { Injectable } from '@nestjs/common'
 import { Mapper } from '../../base-interfaces-types-classes'
 import {
   FederalState,
+  ImmigrationStatus,
   TpDesiredPosition,
   TpEmploymentType,
   TpTechnicalSkill,
 } from '../../common-objects'
-import { JobseekerProfileStatus, TpAvailabilityOption } from '../enums'
+import { TpAvailabilityOption } from '../../tp-common-objects'
+import { JobseekerProfileStatus } from '../enums'
 import { TpJobseekerProfileEntity } from './tp-jobseeker-profile.entity'
 import { TpJobseekerProfileEntityProps } from './tp-jobseeker-profile.entityprops'
 import { TpJobseekerProfileRecord } from './tp-jobseeker-profile.record'
@@ -44,6 +46,9 @@ export class TpJobseekerProfileMapper
     props.isHired = raw.props.Is_Hired__c
     props.federalState = raw.props.Federal_State__c as FederalState
     props.willingToRelocate = raw.props.Willing_to_Relocate__c
+    props.immigrationStatus = raw.props.Immigration_Status__c as unknown as
+      | ImmigrationStatus
+      | undefined
 
     props.updatedAt = raw.props.LastModifiedDate
     props.createdAt = raw.props.CreatedDate
@@ -80,6 +85,8 @@ export class TpJobseekerProfileMapper
     props.Is_Hired__c = source.props.isHired
     props.Federal_State__c = source.props.federalState
     props.Willing_to_Relocate__c = source.props.willingToRelocate
+    props.Immigration_Status__c = source.props.immigrationStatus as unknown as
+      | string
 
     const record = TpJobseekerProfileRecord.create(props)
 

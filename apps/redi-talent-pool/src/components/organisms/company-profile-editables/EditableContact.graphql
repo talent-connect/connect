@@ -1,5 +1,5 @@
 fragment EditableContactCompanyProfileProp on TpCompanyProfile {
-  phoneNumber
+  telephoneNumber
 }
 fragment EditableContactUserContactProp on UserContact {
   firstName

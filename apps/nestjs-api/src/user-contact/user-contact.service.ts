@@ -4,6 +4,7 @@ import {
   UserContactMapper,
 } from '@talent-connect/common-types'
 import { deleteUndefinedProperties } from '@talent-connect/shared-utils'
+import { CurrentUserInfo } from '../auth/current-user.interface'
 import { SfApiContactService } from '../salesforce-api/sf-api-contact.service'
 import { UserContactPatchInput } from './dtos/user-contact-patch.entityinput'
 
@@ -35,8 +36,8 @@ export class UserContactService {
     }
   }
 
-  async patch(input: UserContactPatchInput) {
-    const existingEntity = await this.findOneById(input.id)
+  async patch(input: UserContactPatchInput, currentUser: CurrentUserInfo) {
+    const existingEntity = await this.findOneById(currentUser.userId)
     const props = existingEntity.props
     const updatesSanitized = deleteUndefinedProperties(input)
     Object.entries(updatesSanitized).forEach(([key, value]) => {

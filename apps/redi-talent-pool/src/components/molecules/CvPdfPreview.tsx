@@ -267,8 +267,8 @@ export const CVPDF = ({
     workingLanguages,
     experience,
     education,
-    phoneNumber,
-    contactEmail,
+    telephoneNumber,
+    email,
     postalMailingAddress,
 
     personalWebsite,
@@ -372,13 +372,10 @@ export const CVPDF = ({
               <View style={styles.contactDivider}>
                 <View style={styles.contactDividerLeft}>
                   <Text style={styles.ContactPhoneNumber}>
-                    {concatenateToMultiline([phoneNumber])}
+                    {concatenateToMultiline([telephoneNumber])}
                   </Text>
                   <Text style={styles.ContactListItem}>
-                    {concatenateToMultiline([
-                      contactEmail,
-                      postalMailingAddress,
-                    ])}
+                    {concatenateToMultiline([email, postalMailingAddress])}
                   </Text>
                 </View>
                 <View style={styles.contactDividerRight}>

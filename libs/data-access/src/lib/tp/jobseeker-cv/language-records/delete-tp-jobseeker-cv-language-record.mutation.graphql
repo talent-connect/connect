@@ -1,0 +1,9 @@
+mutation tpJobseekerCvLanguageRecordDelete(
+  $input: TpJobseekerCvLanguageRecordDeleteInput!
+) {
+  tpJobseekerCvLanguageRecordDelete(
+    tpJobseekerCvLanguageRecordDeleteInput: $input
+  ) {
+    ok
+  }
+}

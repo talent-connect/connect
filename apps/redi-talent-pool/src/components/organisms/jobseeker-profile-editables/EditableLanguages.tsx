@@ -12,7 +12,6 @@ import {
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
 import { LANGUAGES } from '@talent-connect/shared-config'
-import { TpJobseekerProfile } from '@talent-connect/shared-types'
 import {
   languageProficiencyLevels,
   languageProficiencyLevelsIdToLabelMap,
@@ -25,31 +24,18 @@ import { Subject } from 'rxjs'
 import { v4 as uuidv4 } from 'uuid'
 import * as Yup from 'yup'
 import { useIsBusy } from '../../../hooks/useIsBusy'
-import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
+import { EditableLanguagesProfilePropFragment } from './EditableLanguages.generated'
 
 interface Props {
-  profile?: Partial<TpJobseekerProfile>
+  profile?: EditableLanguagesProfilePropFragment
   disableEditing?: boolean
 }
 
-export function EditableLanguages({
-  profile: overridingProfile,
-  disableEditing,
-}: Props) {
-  const myData = useMyTpDataQuery(null, { enabled: !disableEditing })
-  const langaugeRecords =
-    myData?.data?.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry
-      ?.workingLanguages
+export function EditableLanguages({ profile, disableEditing }: Props) {
+  const langaugeRecords = profile?.workingLanguages
 
-  const queryHookResult = useTpJobseekerProfileQuery({
-    enabled: !disableEditing,
-  })
-  if (overridingProfile) queryHookResult.data = overridingProfile
-  const mutationHookResult = useTpjobseekerprofileUpdateMutation()
-  const { data: profile } = queryHookResult
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
@@ -96,10 +82,12 @@ export function EditableLanguages({
   )
 }
 
-EditableLanguages.isSectionFilled = (profile: Partial<TpJobseekerProfile>) =>
-  profile?.workingLanguages?.length > 0
-EditableLanguages.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
-  !EditableLanguages.isSectionFilled(profile)
+EditableLanguages.isSectionFilled = (
+  profile: EditableLanguagesProfilePropFragment
+) => profile?.workingLanguages?.length > 0
+EditableLanguages.isSectionEmpty = (
+  profile: EditableLanguagesProfilePropFragment
+) => !EditableLanguages.isSectionFilled(profile)
 
 // TODO: put this one in config file
 const MAX_LANGUAGES = 6

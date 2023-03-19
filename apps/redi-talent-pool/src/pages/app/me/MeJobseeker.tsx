@@ -1,20 +1,20 @@
 import { Tooltip } from '@material-ui/core'
 import {
+  JobseekerProfileStatus,
+  TpJobseekerDirectoryEntry,
+  useMyTpDataQuery,
+  useTpJobseekerProfilePatchMutation,
+} from '@talent-connect/data-access'
+import {
   Button,
   Checkbox,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
-import {
-  TpJobseekerProfile,
-  TpJobseekerProfileState,
-} from '@talent-connect/shared-types'
 import classnames from 'clsx'
-import { useCallback, useRef } from 'react'
+import { useCallback } from 'react'
 import { Columns, Content, Element, Notification } from 'react-bulma-components'
-import { Subject } from 'rxjs'
 import { EditableEducation } from '../../../components/organisms/jobseeker-profile-editables/EditableEducation'
 import { EditableImportantDetails } from '../../../components/organisms/jobseeker-profile-editables/EditableImportantDetails'
-import { EditableJobPreferences } from '../../../components/organisms/jobseeker-profile-editables/EditableJobPreferences'
 import { EditableLanguages } from '../../../components/organisms/jobseeker-profile-editables/EditableLanguages'
 import { EditableLinks } from '../../../components/organisms/jobseeker-profile-editables/EditableLinks'
 import { EditableNamePhotoLocation } from '../../../components/organisms/jobseeker-profile-editables/EditableNamePhotoLocation'
@@ -22,8 +22,6 @@ import { EditableOverview } from '../../../components/organisms/jobseeker-profil
 import { EditableProfessionalExperience } from '../../../components/organisms/jobseeker-profile-editables/EditableProfessionalExperience'
 import { EditableSummary } from '../../../components/organisms/jobseeker-profile-editables/EditableSummary'
 import { LoggedIn } from '../../../components/templates'
-import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { ReactComponent as ChecklistActiveImage } from './checklist-item-active.svg'
 import { ReactComponent as ChecklistImage } from './checklist-item.svg'
 import { ReactComponent as CheckmarkBorderOnlyImage } from './checkmark-border-only.svg'
@@ -32,28 +30,26 @@ import './MeJobseeker.scss'
 import { ReactComponent as StepPendingImage } from './pending.svg'
 
 export function MeJobseeker() {
-  const { data: profile } = useTpJobseekerProfileQuery()
-  const mutation = useTpjobseekerprofileUpdateMutation()
+  const myData = useMyTpDataQuery()
+  const profile = myData?.data?.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry
 
-  const currentStep = determineCurrentStep(profile)
-
-  const openJobPreferencesModalSignalRef = useRef(new Subject<void>())
+  const mutation = useTpJobseekerProfilePatchMutation()
 
   const onHideFromCompaniesCheckboxChange = () =>
     mutation.mutate({
-      ...profile,
-      isProfileVisibleToCompanies: !profile?.isProfileVisibleToCompanies,
+      input: {
+        isProfileVisibleToCompanies: !profile?.isProfileVisibleToCompanies,
+      },
     })
 
   const onJobFair2023ParticipateChange = () =>
     mutation.mutate({
-      ...profile,
-      isJobFair2023Participant: !profile?.isJobFair2023Participant,
+      input: { isJobFair2023Participant: !profile?.isJobFair2023Participant },
     })
 
   return (
     <LoggedIn>
-      {profile?.state === 'profile-approved' ? (
+      {profile?.state === JobseekerProfileStatus.ProfileApproved ? (
         <Notification className="account-not-active double-bs">
           <Icon
             className="account-not-active__icon"
@@ -107,12 +103,6 @@ export function MeJobseeker() {
           >
             Hide my profile from companies
           </Checkbox>
-          {/* {currentStep[0] >= 4 ? (
-            <EditableJobPreferences
-              profile={profile}
-              triggerModalSignal={openJobPreferencesModalSignalRef.current}
-            />
-          ) : null} */}
         </Columns.Column>
       </Columns>
     </LoggedIn>
@@ -122,25 +112,18 @@ export function MeJobseeker() {
 const CallToActionButton = ({
   profile,
 }: {
-  profile: Partial<TpJobseekerProfile>
+  profile?: Pick<TpJobseekerDirectoryEntry, 'state'>
 }) => {
   return (
     <>
       {profile &&
       profile.state &&
       [
-        TpJobseekerProfileState['drafting-profile'],
-        TpJobseekerProfileState['submitted-for-review'],
-      ].includes(profile.state as any) ? (
+        JobseekerProfileStatus.DraftingProfile,
+        JobseekerProfileStatus.SubmittedForReview,
+      ].includes(profile.state) ? (
         <SendProfileForReviewButton />
       ) : null}
-      {/* {profile &&
-      profile.state &&
-      [
-        TpJobseekerProfileState['profile-approved-awaiting-job-preferences'],
-      ].includes(profile.state as any) ? (
-        <SendJobPreferencesForReviewButton />
-      ) : null} */}
     </>
   )
 }
@@ -149,39 +132,18 @@ const steps = [
   { number: 1, label: 'Complete your profile' },
   { number: 2, label: 'Send profile to ReDI' },
   { number: 3, label: 'Profile approval' },
-  // { number: 4, label: 'Input your job preferences' },
-  // { number: 5, label: 'Share your preferences with ReDI' },
-  // { number: 6, label: 'Interview match' },
 ]
 
 function determineCurrentStep(
-  profile: Partial<TpJobseekerProfile>
+  profile: TpJobseekerDirectoryEntry
 ): [currentStep: number, stepStatus: 'todo' | 'pending' | 'complete'] {
-  if (profile?.state === 'drafting-profile') {
+  if (profile?.state === JobseekerProfileStatus.DraftingProfile) {
     return isProfileComplete(profile) ? [2, 'todo'] : [1, 'todo']
   }
-  if (profile?.state === 'submitted-for-review') {
+  if (profile?.state === JobseekerProfileStatus.SubmittedForReview) {
     return [3, 'pending']
   }
-  if (profile?.state === 'profile-approved') {
-    return [3, 'complete']
-  }
-  // if (
-  //   profile.state ===
-  //   'job-preferences-shared-with-redi-awaiting-interview-match'
-  // ) {
-  //   return [6, 'pending']
-  // }
-  // if (profile.state === 'matched-for-interview') {
-  //   return [6, 'complete']
-  // }
-  if (
-    profile?.state ===
-    'job-preferences-shared-with-redi-awaiting-interview-match'
-  ) {
-    return [3, 'complete']
-  }
-  if (profile?.state === 'matched-for-interview') {
+  if (profile?.state === JobseekerProfileStatus.ProfileApproved) {
     return [3, 'complete']
   }
 
@@ -189,7 +151,8 @@ function determineCurrentStep(
 }
 
 export function OnboardingSteps() {
-  const { data: profile } = useTpJobseekerProfileQuery()
+  const myData = useMyTpDataQuery()
+  const profile = myData?.data?.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry
 
   const currentStep = determineCurrentStep(profile)
 
@@ -241,7 +204,7 @@ export function OnboardingSteps() {
   )
 }
 
-function isProfileComplete(profile: Partial<TpJobseekerProfile>): boolean {
+function isProfileComplete(profile: TpJobseekerDirectoryEntry): boolean {
   const mostSectionsComplete = [
     EditableNamePhotoLocation.isSectionFilled,
     EditableOverview.isSectionFilled,
@@ -258,24 +221,22 @@ function isProfileComplete(profile: Partial<TpJobseekerProfile>): boolean {
   return mostSectionsComplete && experienceOrEducationSectionComplete
 }
 
-function areJobPreferencesInputted(
-  profile: Partial<TpJobseekerProfile>
-): boolean {
-  return EditableJobPreferences.isSectionFilled(profile)
-}
-
 function SendProfileForReviewButton() {
-  const { data: profile } = useTpJobseekerProfileQuery()
-  const mutation = useTpjobseekerprofileUpdateMutation()
+  const myData = useMyTpDataQuery()
+  const profile = myData.data?.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry
+  const mutation = useTpJobseekerProfilePatchMutation()
 
   const enabled =
-    profile?.state === 'drafting-profile' && isProfileComplete(profile)
+    profile?.state === JobseekerProfileStatus.DraftingProfile &&
+    isProfileComplete(profile)
 
   const onClick = useCallback(() => {
     if (!window.confirm('Would you like to submit your profile for review?'))
       return
 
-    mutation.mutate({ ...profile, state: 'submitted-for-review' })
+    mutation.mutate({
+      input: { state: JobseekerProfileStatus.SubmittedForReview },
+    })
   }, [mutation, profile])
 
   if (enabled) {
@@ -286,37 +247,6 @@ function SendProfileForReviewButton() {
         <span>
           <Button disabled style={{ pointerEvents: 'none' }}>
             Send profile to review
-          </Button>
-        </span>
-      </Tooltip>
-    )
-  }
-}
-
-function SendJobPreferencesForReviewButton() {
-  const { data: profile } = useTpJobseekerProfileQuery()
-  const mutation = useTpjobseekerprofileUpdateMutation()
-
-  const enabled =
-    profile?.state === 'profile-approved' &&
-    EditableJobPreferences.isSectionFilled(profile)
-
-  const onClick = useCallback(() => {
-    if (!window.confirm('Are you ready to share your job preferences?')) return
-
-    mutation.mutate({
-      ...profile,
-    })
-  }, [mutation, profile])
-
-  if (enabled) {
-    return <Button onClick={onClick}>Share your job preferences</Button>
-  } else {
-    return (
-      <Tooltip title="You need to input your job preferences before you can share them with us and get matched for an interview">
-        <span>
-          <Button disabled style={{ pointerEvents: 'none' }}>
-            Share your job preferences
           </Button>
         </span>
       </Tooltip>

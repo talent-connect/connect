@@ -15,7 +15,6 @@ import {
   FormTextArea,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
-import { TpJobseekerProfile } from '@talent-connect/shared-types'
 import {
   certificationTypes,
   formMonthsOptions,
@@ -33,37 +32,25 @@ import { Subject } from 'rxjs'
 import { v4 as uuidv4 } from 'uuid'
 import * as Yup from 'yup'
 import { useIsBusy } from '../../../hooks/useIsBusy'
-import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import { Location } from '../../molecules/Location'
+import { EditableEducationProfilePropFragment } from './EditableEducation.generated'
 
 interface Props {
-  profile?: Partial<TpJobseekerProfile>
+  profile?: EditableEducationProfilePropFragment
   disableEditing?: boolean
 }
 
-export function EditableEducation({
-  profile: overridingProfile,
-  disableEditing,
-}: Props) {
-  const myData = useMyTpDataQuery(null, { enabled: !disableEditing })
-  const educationRecords =
-    myData?.data?.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry?.education
-
-  const queryHookResult = useTpJobseekerProfileQuery({
-    enabled: !disableEditing,
-  })
-  if (overridingProfile) queryHookResult.data = overridingProfile
-  const mutationHookResult = useTpjobseekerprofileUpdateMutation()
-  const { data: profile } = queryHookResult
+export function EditableEducation({ profile, disableEditing }: Props) {
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
   const isEmpty = EditableEducation.isSectionEmpty(profile)
 
   if (disableEditing && isEmpty) return null
+
+  const educationRecords = profile?.education
 
   return (
     <Editable
@@ -131,10 +118,12 @@ export function EditableEducation({
   )
 }
 
-EditableEducation.isSectionFilled = (profile: Partial<TpJobseekerProfile>) =>
-  profile?.education?.length > 0
-EditableEducation.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
-  !EditableEducation.isSectionFilled(profile)
+EditableEducation.isSectionFilled = (
+  profile: EditableEducationProfilePropFragment
+) => profile?.education?.length > 0
+EditableEducation.isSectionEmpty = (
+  profile: EditableEducationProfilePropFragment
+) => !EditableEducation.isSectionFilled(profile)
 
 function formatDate(month?: number, year?: number): string {
   if (year && !month) return String(year)

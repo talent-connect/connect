@@ -1,0 +1,48 @@
+fragment AllTpJobseekerDirectoryEntryFields on TpJobseekerDirectoryEntry {
+  aboutYourself
+  experience {
+    ...AllTpJobseekerCvExperienceRecordFields
+  }
+  federalState
+  firstName
+  fullName
+  genderPronouns
+  githubUrl
+  id
+  ifAvailabilityIsDate_date
+  isHired
+  isJobFair2022Participant
+  isJobFair2023Participant
+  availability
+  isProfileVisibleToCompanies
+  lastName
+  linkedInUrl
+  location
+  loopbackUserId
+  personalWebsite
+  postalMailingAddress
+  profileAvatarImageS3Key
+  rediLocation
+  behanceUrl
+  stackOverflowUrl
+  state
+  telephoneNumber
+  topSkills
+  twitterUrl
+  updatedAt
+  userId
+  willingToRelocate
+  workingLanguages {
+    ...AllTpJobseekerCvLanguageRecordFields
+  }
+  createdAt
+  currentlyEnrolledInCourse
+  desiredEmploymentType
+  desiredPositions
+  dribbbleUrl
+  education {
+    ...AllTpJobseekerCvEducationRecordFields
+  }
+  email
+  immigrationStatus
+}

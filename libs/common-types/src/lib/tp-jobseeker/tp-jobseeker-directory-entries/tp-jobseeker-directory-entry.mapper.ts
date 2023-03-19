@@ -2,16 +2,18 @@ import { Injectable, NotImplementedException } from '@nestjs/common'
 import { Mapper } from '../../base-interfaces-types-classes'
 import {
   FederalState,
+  ImmigrationStatus,
   Language,
   LanguageProficiencyLevel,
   TpDesiredPosition,
   TpEmploymentType,
   TpTechnicalSkill,
 } from '../../common-objects'
+import { TpAvailabilityOption } from '../../tp-common-objects'
 import { TpJobseekerProfileEducationRecordEntityProps } from '../common-objects/tp-jobseeker-profile-education-record.entityprops'
 import { TpJobseekerProfileExperienceRecordEntityProps } from '../common-objects/tp-jobseeker-profile-experience-record.entityprops'
 import { TpJobseekerProfileLanguageRecordEntityProps } from '../common-objects/tp-jobseeker-profile-language-record.entityprops'
-import { JobseekerProfileStatus, TpAvailabilityOption } from '../enums'
+import { JobseekerProfileStatus } from '../enums'
 import { TpJobseekerDirectoryEntryEntity } from './tp-jobseeker-directory-entry.entity'
 import { TpJobseekerDirectoryEntryEntityProps } from './tp-jobseeker-directory-entry.entityprops'
 import { TpJobseekerDirectoryEntryRecord } from './tp-jobseeker-directory-entry.record'
@@ -79,6 +81,15 @@ export class TpJobseekerDirectoryEntryMapper
     props.isHired = jobseekerProfileRecord.Is_Hired__c
     props.federalState = jobseekerProfileRecord.Federal_State__c as FederalState
     props.willingToRelocate = jobseekerProfileRecord.Willing_to_Relocate__c
+    //! TODO: this "as unknown as OneType | undefined" was needed to get around TS
+    // errors. It's very strange that simply "as ImmigrationStatus" wasn't possible...
+    // just take a look at all the casting goinn on above here. Resolve this issue,
+    // and simultaneously fix the mapping in both toPersistence and fromPersistence
+    // in this mappe rand the tp-jobseeker-profile.mapper.ts.
+    props.immigrationStatus =
+      jobseekerProfileRecord.Immigration_Status__c as unknown as
+        | ImmigrationStatus
+        | undefined
 
     props.updatedAt = jobseekerProfileRecord.LastModifiedDate
     props.createdAt = jobseekerProfileRecord.CreatedDate

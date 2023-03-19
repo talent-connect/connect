@@ -1,33 +1,28 @@
 import {
+  useMyTpDataQuery,
+  usePatchUserContactMutation,
+  useTpJobseekerProfilePatchMutation,
+} from '@talent-connect/data-access'
+import {
   Button,
   FormInput,
 } from '@talent-connect/shared-atomic-design-components'
-import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
 import { useEffect, useMemo, useState } from 'react'
 import { Content, Element } from 'react-bulma-components'
-import { UseMutationResult, UseQueryResult } from 'react-query'
+import { useQueryClient } from 'react-query'
 import * as Yup from 'yup'
-import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useIsBusy } from '../../../hooks/useIsBusy'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
+import { EditableLinksProfilePropFragment } from './EditableLinks.generated'
 
 interface Props {
-  profile?: Partial<TpJobseekerProfile>
+  profile?: EditableLinksProfilePropFragment
   disableEditing?: boolean
 }
 
-export function EditableLinks({
-  profile: overridingProfile,
-  disableEditing,
-}: Props) {
-  const queryHookResult = useTpJobseekerProfileQuery({
-    enabled: !disableEditing,
-  })
-  if (overridingProfile) queryHookResult.data = overridingProfile
-  const mutationHookResult = useTpjobseekerprofileUpdateMutation()
-  const { data: profile } = queryHookResult
+export function EditableLinks({ profile, disableEditing }: Props) {
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
@@ -72,8 +67,6 @@ export function EditableLinks({
         <JobseekerFormSectionLinks
           setIsEditing={setIsEditing}
           setIsFormDirty={setIsFormDirty}
-          queryHookResult={queryHookResult}
-          mutationHookResult={mutationHookResult}
         />
       }
       modalStyles={{ minHeight: 700 }}
@@ -81,7 +74,9 @@ export function EditableLinks({
   )
 }
 
-function buildAllLinksArray(profile: Partial<TpJobseekerProfile>): string[] {
+function buildAllLinksArray(
+  profile: EditableLinksProfilePropFragment
+): string[] {
   return [
     profile?.personalWebsite,
     profile?.githubUrl,
@@ -93,9 +88,9 @@ function buildAllLinksArray(profile: Partial<TpJobseekerProfile>): string[] {
   ]
 }
 
-EditableLinks.isSectionFilled = (profile: Partial<TpJobseekerProfile>) =>
+EditableLinks.isSectionFilled = (profile: EditableLinksProfilePropFragment) =>
   buildAllLinksArray(profile).some((p) => p)
-EditableLinks.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
+EditableLinks.isSectionEmpty = (profile: EditableLinksProfilePropFragment) =>
   !EditableLinks.isSectionFilled(profile)
 
 const validationSchema = Yup.object({
@@ -111,28 +106,20 @@ const validationSchema = Yup.object({
 interface JobseekerFormSectionLinksProps {
   setIsEditing: (boolean) => void
   setIsFormDirty?: (boolean) => void
-  queryHookResult: UseQueryResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
-    unknown
-  >
-  mutationHookResult: UseMutationResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
-    unknown,
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
-    unknown
-  >
 }
 
 export function JobseekerFormSectionLinks({
   setIsEditing,
   setIsFormDirty,
-  queryHookResult,
-  mutationHookResult,
 }: JobseekerFormSectionLinksProps) {
-  const { data: profile } = queryHookResult
-  const mutation = mutationHookResult
+  const queryClient = useQueryClient()
+  const myData = useMyTpDataQuery()
+  const profile = myData.data?.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry
+  const tpJobsekerProfileMutation = useTpJobseekerProfilePatchMutation()
+  const userContactMutation = usePatchUserContactMutation()
+  const isBusy = useIsBusy()
 
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(
+  const initialValues: EditableLinksProfilePropFragment = useMemo(
     () => ({
       personalWebsite: profile?.personalWebsite ?? '',
       githubUrl: profile?.githubUrl ?? '',
@@ -152,16 +139,22 @@ export function JobseekerFormSectionLinks({
       profile?.twitterUrl,
     ]
   )
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
+  const onSubmit = async (values: EditableLinksProfilePropFragment) => {
     formik.setSubmitting(true)
-    mutation.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
+    await userContactMutation.mutate({
+      input: {
+        personalWebsite: values.personalWebsite,
+        githubProfileUrl: values.githubUrl,
+        linkedInProfileUrl: values.linkedInUrl,
+        twitterUrl: values.twitterUrl,
+        behanceUrl: values.behanceUrl,
+        stackOverflowUrl: values.stackOverflowUrl,
+        dribbbleUrl: values.dribbbleUrl,
       },
     })
+    queryClient.invalidateQueries()
+    formik.setSubmitting(false)
+    setIsEditing(false)
   }
   const formik = useFormik({
     initialValues,
@@ -228,17 +221,10 @@ export function JobseekerFormSectionLinks({
         {...formik}
       />
 
-      <Button
-        disabled={!formik.isValid || mutation.isLoading}
-        onClick={formik.submitForm}
-      >
+      <Button disabled={!formik.isValid || isBusy} onClick={formik.submitForm}>
         Save
       </Button>
-      <Button
-        simple
-        disabled={mutation.isLoading}
-        onClick={() => setIsEditing(false)}
-      >
+      <Button simple disabled={isBusy} onClick={() => setIsEditing(false)}>
         Cancel
       </Button>
     </>

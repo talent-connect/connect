@@ -5,6 +5,7 @@ import {
 } from '@talent-connect/common-types'
 import { SfApiTpJobseekerDirectoryEntriesService } from '../salesforce-api/sf-api-tp-jobseeker-directory-entries.service'
 import { FindAllVisibleTpJobseekerDirectoryEntriesArgs } from './args/find-all-visible-tp-jobseeker-directory-entries.args'
+import { FindOneVisibleTpJobseekerDirectoryEntryArgs } from './args/find-one-visible-tp-jobseeker-directory-entry.args'
 
 @Injectable()
 export class TpJobseekerDirectoryEntriesService {
@@ -21,6 +22,29 @@ export class TpJobseekerDirectoryEntriesService {
     )
 
     return entities
+  }
+
+  async findOneVisibleJobseeker(
+    _filter: FindOneVisibleTpJobseekerDirectoryEntryArgs
+  ) {
+    const filter: any = {
+      Jobseeker_Profiles__r: {
+        Profile_Status__c: JobseekerProfileStatus.PROFILE_APPROVED,
+        Is_Visible_to_Companies__c: true,
+        Id: _filter.filter.tpJobseekerProfileId,
+      },
+    }
+
+    const entities = await this.findAll(filter)
+
+    if (entities.length > 0) {
+      return entities[0]
+    } else {
+      throw new NotFoundException(
+        'TpJobseekerDirectoryEntry not found with id: ' +
+          _filter.filter.tpJobseekerProfileId
+      )
+    }
   }
 
   async findAllVisibleJobseekers(
