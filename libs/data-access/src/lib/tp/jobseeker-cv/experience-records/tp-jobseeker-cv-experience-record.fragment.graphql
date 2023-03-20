@@ -1,18 +1,17 @@
 fragment AllTpJobseekerCvExperienceRecordFields on TpJobseekerCvExperienceRecord {
   city
-  sortIndex
+  startDateMonth
+  startDateYear
+  title
+  tpJobseekerCvId
+  updatedAt
   company
   country
+  createdAt
   current
   description
   endDateMonth
   endDateYear
-  startDateMonth
-  startDateYear
-  title
-  createdAt
   id
-  tpJobseekerCvId
-  updatedAt
-  userId
+  sortIndex
 }

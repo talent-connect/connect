@@ -132,7 +132,7 @@ function formatDate(month?: number, year?: number): string {
   return ''
 }
 
-interface JobseekerFormSectionEducationeProps {
+interface JobseekerFormSectionEducationProps {
   setIsEditing: (boolean) => void
   setIsFormDirty?: (boolean) => void
 }
@@ -159,7 +159,7 @@ interface FormValues {
 function JobseekerFormSectionEducation({
   setIsEditing,
   setIsFormDirty,
-}: JobseekerFormSectionEducationeProps) {
+}: JobseekerFormSectionEducationProps) {
   const queryClient = useQueryClient()
   const myData = useMyTpDataQuery()
   const patchMutation = useTpJobseekerProfileEducationRecordPatchMutation()
@@ -170,10 +170,16 @@ function JobseekerFormSectionEducation({
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
 
+  const educationRecords =
+    myData?.data?.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry?.education
+
   const initialValues: FormValues = useMemo(() => {
+    if (!educationRecords || educationRecords?.length === 0) {
+      return {
+        education: [buildBlankEducationRecord()],
+      }
+    }
     // TODO: we should rather use structuredClone or a polyfill thereof at some future point
-    const educationRecords =
-      myData?.data?.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry?.education
     const educationRecordsMonthsYearsAsStrings = educationRecords?.map(
       (educationRecord) => {
         return {
@@ -186,11 +192,10 @@ function JobseekerFormSectionEducation({
       }
     )
     return {
-      education: cloneDeep(educationRecordsMonthsYearsAsStrings) ?? [
-        buildBlankEducationRecord(),
-      ],
+      education: cloneDeep(educationRecordsMonthsYearsAsStrings),
     }
-  }, [myData?.data?.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry?.education])
+  }, [educationRecords])
+
   const onSubmit = async (values: FormValues) => {
     // We need to run the mutation tpJobseekerProfileEducationRecordCreate
     const newRecords = values.education.filter((record) =>

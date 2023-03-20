@@ -1,5 +1,12 @@
 import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined'
 import {
+  useFindAllTpJobseekerCvEducationRecordsQuery,
+  useFindAllTpJobseekerCvExperienceRecordsQuery,
+  useFindAllTpJobseekerCvLanguageRecordsQuery,
+  useFindOneTpJobseekerCvQuery,
+  useMyTpDataQuery,
+} from '@talent-connect/data-access'
+import {
   Button,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
@@ -17,8 +24,6 @@ import { AccordionFormCvName } from '../../../../components/organisms/jobseeker-
 import { AccordionFormCvProfessionalExperience } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvProfessionalExperience'
 import { AccordionFormCvSummary } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvSummary'
 import { LoggedIn } from '../../../../components/templates'
-import { useTpJobseekerCvByIdQuery } from '../../../../react-query/use-tpjobseekercv-query'
-import { useTpJobseekerProfileQuery } from '../../../../react-query/use-tpjobseekerprofile-query'
 import './CvDetailPage.scss'
 
 function InlineButton() {
@@ -50,14 +55,18 @@ function CvDetailPage() {
   const history = useHistory()
   const { id: cvId } = useParams<ParamTypes>()
 
-  const { data: profile, isSuccess: profileLoadSuccess } =
-    useTpJobseekerProfileQuery()
-  const { data: cvData, isSuccess: cvLoadSuccess } = useTpJobseekerCvByIdQuery(
-    cvId,
-    {
-      enabled: profileLoadSuccess,
-    }
+  const myTpDataQuery = useMyTpDataQuery()
+  const profile =
+    myTpDataQuery.data.tpCurrentUserDataGet.tpJobseekerDirectoryEntry
+  const profileLoadSuccess = myTpDataQuery.isSuccess
+
+  const cvDataQuery = useFindOneTpJobseekerCvQuery(
+    { id: cvId },
+    { enabled: profileLoadSuccess }
   )
+  const cvData = cvDataQuery.data?.tpJobseekerCv
+  const cvLoadSuccess = cvDataQuery.isSuccess
+
   if (profileLoadSuccess && cvLoadSuccess) {
     cvData.profileAvatarImageS3Key = profile.profileAvatarImageS3Key
       ? profile.profileAvatarImageS3Key
@@ -74,6 +83,21 @@ function CvDetailPage() {
     const elementWidth = containerNode?.clientWidth
     setCvPreviewElementWidth(elementWidth)
   }, [])
+
+  const cvExperienceRecordsQuery =
+    useFindAllTpJobseekerCvExperienceRecordsQuery({ tpJobseekerCvId: cvId })
+  const cvExperienceRecords =
+    cvExperienceRecordsQuery.data?.tpJobseekerCvExperienceRecords
+  const cvEducationRecordsQuery = useFindAllTpJobseekerCvEducationRecordsQuery({
+    tpJobseekerCvId: cvId,
+  })
+  const cvEducationRecords =
+    cvEducationRecordsQuery.data?.tpJobseekerCvEducationRecords
+  const cvLanguageRecordsQuery = useFindAllTpJobseekerCvLanguageRecordsQuery({
+    tpJobseekerCvId: cvId,
+  })
+  const languageRecords =
+    cvLanguageRecordsQuery.data?.tpJobseekerCvLanguageRecords
 
   const pdfWidthToHeightRatio = 1.414 // A4 page ratio
   const cvContainerHeight = cvPreviewElementWidth * pdfWidthToHeightRatio
@@ -136,13 +160,6 @@ function CvDetailPage() {
                 closeAllAccordionsSignalSubjectRef.current
               }
             />
-            {/* <AccordionFormCvDisplayCase
-              tpJobseekerCvId={cvId}
-              onClose={onClose}
-              closeAccordionSignalSubject={
-                closeAllAccordionsSignalSubjectRef.current
-              }
-            /> */}
             <AccordionFormCvImportantDetails
               tpJobseekerCvId={cvId}
               onClose={onClose}
@@ -175,6 +192,9 @@ function CvDetailPage() {
             >
               <CVPDFPreviewMemoized
                 cvData={cvData}
+                cvExperienceRecords={cvExperienceRecords}
+                cvEducationRecords={cvEducationRecords}
+                languageRecords={languageRecords}
                 pdfHeightPx={cvContainerHeight}
                 pdfWidthPx={cvPreviewElementWidth}
               />

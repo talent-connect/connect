@@ -9,7 +9,12 @@ import {
   usePDF,
   View,
 } from '@react-pdf/renderer'
-import { TpJobseekerCv } from '@talent-connect/shared-types'
+import {
+  TpJobseekerCv,
+  TpJobseekerCvEducationRecord,
+  TpJobseekerCvExperienceRecord,
+  TpJobseekerCvLanguageRecord,
+} from '@talent-connect/data-access'
 import {
   desiredPositionsIdToLabelMap,
   languageProficiencyLevelsIdToLabelMap,
@@ -256,7 +261,7 @@ function isVeryLongEducationLine(education) {
   )
 }
 
-export const CVPDF = ({
+export function CVPDF({
   cvData: {
     firstName,
     lastName,
@@ -264,13 +269,9 @@ export const CVPDF = ({
     profileAvatarImageS3Key,
     aboutYourself,
     topSkills,
-    workingLanguages,
-    experience,
-    education,
     telephoneNumber,
     email,
     postalMailingAddress,
-
     personalWebsite,
     githubUrl,
     linkedInUrl,
@@ -279,9 +280,15 @@ export const CVPDF = ({
     stackOverflowUrl,
     dribbbleUrl,
   },
+  cvExperienceRecords: experience,
+  cvEducationRecords: education,
+  languageRecords: workingLanguages,
 }: {
-  cvData: Partial<TpJobseekerCv>
-}) => {
+  cvData: TpJobseekerCv
+  cvExperienceRecords: Array<TpJobseekerCvExperienceRecord>
+  cvEducationRecords: Array<TpJobseekerCvEducationRecord>
+  languageRecords: Array<TpJobseekerCvLanguageRecord>
+}) {
   return (
     <Document title={`${firstName}_${lastName}_CV.pdf`}>
       <Page size="A4" style={styles.page}>
@@ -402,7 +409,7 @@ export const CVPDF = ({
               <Text style={styles.contentHeading}>Work Experience</Text>
               {experience
                 ?.filter((item) => {
-                  const { uuid, ...all } = item
+                  const { id, ...all } = item
                   const vals = Object.values(all)
                   return vals.some((val) => val)
                 })
@@ -459,7 +466,7 @@ export const CVPDF = ({
               <Text style={styles.contentHeading}>Education</Text>
               {education
                 ?.filter((item) => {
-                  const { uuid, ...all } = item
+                  const { id, ...all } = item
                   const vals = Object.values(all)
                   return vals.some((val) => val)
                 })
@@ -555,20 +562,33 @@ const getNodeTopPosition = (xPath: string) => {
 }
 
 interface CVPDFPreviewProps {
-  cvData: Partial<TpJobseekerCv>
+  cvData: TpJobseekerCv
+  cvExperienceRecords: Array<TpJobseekerCvExperienceRecord>
+  cvEducationRecords: Array<TpJobseekerCvEducationRecord>
+  languageRecords: Array<TpJobseekerCvLanguageRecord>
   pdfHeightPx: number
   pdfWidthPx: number
 }
 
 export const CVPDFPreview = ({
   cvData,
+  cvExperienceRecords,
+  cvEducationRecords,
+  languageRecords,
   pdfHeightPx,
   pdfWidthPx,
 }: CVPDFPreviewProps) =>
   //pdfWidthPx: number
   {
     const [instance, updateInstance] = usePDF({
-      document: <CVPDF cvData={cvData} />,
+      document: (
+        <CVPDF
+          cvData={cvData}
+          cvExperienceRecords={cvExperienceRecords}
+          cvEducationRecords={cvEducationRecords}
+          languageRecords={languageRecords}
+        />
+      ),
     })
 
     useEffect(() => updateInstance(), [cvData, updateInstance])

@@ -1,12 +1,6 @@
-import {
-  TpJobseekerDirectoryEntry,
-  useTpJobseekerDirectoryEntriesFindOneVisibleQuery,
-} from '@talent-connect/data-access'
-import { TpJobseekerCv } from '@talent-connect/shared-types'
-import React from 'react'
+import { useTpJobseekerDirectoryEntriesFindOneVisibleQuery } from '@talent-connect/data-access'
 import { Columns } from 'react-bulma-components'
 import { useParams } from 'react-router-dom'
-import placeholderImage from '../../../assets/img-placeholder.png'
 import ProfileDownloadButton from '../../../components/molecules/ProfileDownloadButton'
 import { EditableEducation } from '../../../components/organisms/jobseeker-profile-editables/EditableEducation'
 import { EditableImportantDetails } from '../../../components/organisms/jobseeker-profile-editables/EditableImportantDetails'
@@ -17,7 +11,6 @@ import { EditableOverview } from '../../../components/organisms/jobseeker-profil
 import { EditableProfessionalExperience } from '../../../components/organisms/jobseeker-profile-editables/EditableProfessionalExperience'
 import { EditableSummary } from '../../../components/organisms/jobseeker-profile-editables/EditableSummary'
 import { LoggedIn } from '../../../components/templates'
-import { convertProfileToCv } from '../cv-builder/cv-list/CvListPage'
 
 export function JobseekerProfile() {
   const { tpJobseekerProfileId }: { tpJobseekerProfileId: string } = useParams()
@@ -28,19 +21,6 @@ export function JobseekerProfile() {
   const jobseekerProfile =
     jobseekerProfileQuery?.data?.tpJobseekerDirectoryEntryVisible
   const profileLoadSuccess = jobseekerProfileQuery.isSuccess
-
-  const [cvData, setCvData] = React.useState<
-    Partial<TpJobseekerCv> | undefined
-  >(undefined)
-
-  React.useEffect(() => {
-    if (profileLoadSuccess) {
-      const profileAvatarImageS3Key = jobseekerProfile.profileAvatarImageS3Key
-        ? jobseekerProfile.profileAvatarImageS3Key
-        : placeholderImage
-      setCvData(getTpProfileCvData(jobseekerProfile, profileAvatarImageS3Key))
-    }
-  }, [profileLoadSuccess, jobseekerProfile])
 
   return (
     <LoggedIn>
@@ -63,19 +43,10 @@ export function JobseekerProfile() {
           <EditableLanguages profile={jobseekerProfile} disableEditing />
           <EditableLinks profile={jobseekerProfile} disableEditing />
         </Columns.Column>
-        <ProfileDownloadButton cvData={cvData} />
+        <ProfileDownloadButton profile={jobseekerProfile} />
       </Columns>
     </LoggedIn>
   )
-}
-
-function getTpProfileCvData(
-  jobseekerProfile: TpJobseekerDirectoryEntry,
-  profileAvatarImageS3Key: string
-) {
-  var cvData = convertProfileToCv(jobseekerProfile)
-  cvData.profileAvatarImageS3Key = profileAvatarImageS3Key
-  return cvData
 }
 
 export default JobseekerProfile

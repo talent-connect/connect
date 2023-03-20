@@ -553,6 +553,18 @@ export type Mutation = {
   tpJobListingCreate: OkResponseMutationOutputDto;
   tpJobListingDelete: OkResponseMutationOutputDto;
   tpJobListingPatch: OkResponseMutationOutputDto;
+  tpJobseekerCvCreate: OkIdResponseMutationOutputDto;
+  tpJobseekerCvDelete: OkResponseMutationOutputDto;
+  tpJobseekerCvEducationRecordCreate: OkResponseMutationOutputDto;
+  tpJobseekerCvEducationRecordDelete: OkResponseMutationOutputDto;
+  tpJobseekerCvEducationRecordPatch: OkResponseMutationOutputDto;
+  tpJobseekerCvExperienceRecordCreate: OkResponseMutationOutputDto;
+  tpJobseekerCvExperienceRecordDelete: OkResponseMutationOutputDto;
+  tpJobseekerCvExperienceRecordPatch: OkResponseMutationOutputDto;
+  tpJobseekerCvLanguageRecordCreate: OkResponseMutationOutputDto;
+  tpJobseekerCvLanguageRecordDelete: OkResponseMutationOutputDto;
+  tpJobseekerCvLanguageRecordPatch: OkResponseMutationOutputDto;
+  tpJobseekerCvPatch: OkResponseMutationOutputDto;
   tpJobseekerProfileEducationRecordCreate: OkResponseMutationOutputDto;
   tpJobseekerProfileEducationRecordDelete: OkResponseMutationOutputDto;
   tpJobseekerProfileEducationRecordPatch: OkResponseMutationOutputDto;
@@ -652,6 +664,66 @@ export type MutationTpJobListingPatchArgs = {
 };
 
 
+export type MutationTpJobseekerCvCreateArgs = {
+  tpJobseekerCvCreateInput: TpJobseekerCvCreateInput;
+};
+
+
+export type MutationTpJobseekerCvDeleteArgs = {
+  tpJobseekerCvDeleteInput: TpJobseekerCvDeleteInput;
+};
+
+
+export type MutationTpJobseekerCvEducationRecordCreateArgs = {
+  tpJobseekerCvEducationRecordCreateInput: TpJobseekerCvEducationRecordCreateInput;
+};
+
+
+export type MutationTpJobseekerCvEducationRecordDeleteArgs = {
+  tpJobseekerCvEducationRecordDeleteInput: TpJobseekerCvEducationRecordDeleteInput;
+};
+
+
+export type MutationTpJobseekerCvEducationRecordPatchArgs = {
+  tpJobseekerCvEducationRecordPatchInput: TpJobseekerCvEducationRecordPatchInput;
+};
+
+
+export type MutationTpJobseekerCvExperienceRecordCreateArgs = {
+  tpJobseekerCvExperienceRecordCreateInput: TpJobseekerCvExperienceRecordCreateInput;
+};
+
+
+export type MutationTpJobseekerCvExperienceRecordDeleteArgs = {
+  tpJobseekerCvExperienceRecordDeleteInput: TpJobseekerCvExperienceRecordDeleteInput;
+};
+
+
+export type MutationTpJobseekerCvExperienceRecordPatchArgs = {
+  tpJobseekerCvExperienceRecordPatchInput: TpJobseekerCvExperienceRecordPatchInput;
+};
+
+
+export type MutationTpJobseekerCvLanguageRecordCreateArgs = {
+  tpJobseekerCvLanguageRecordCreateInput: TpJobseekerCvLanguageRecordCreateInput;
+};
+
+
+export type MutationTpJobseekerCvLanguageRecordDeleteArgs = {
+  tpJobseekerCvLanguageRecordDeleteInput: TpJobseekerCvLanguageRecordDeleteInput;
+};
+
+
+export type MutationTpJobseekerCvLanguageRecordPatchArgs = {
+  tpJobseekerCvLanguageRecordPatchInput: TpJobseekerCvLanguageRecordPatchInput;
+};
+
+
+export type MutationTpJobseekerCvPatchArgs = {
+  tpJobseekerCvPatchInput: TpJobseekerCvPatchInput;
+};
+
+
 export type MutationTpJobseekerProfileEducationRecordCreateArgs = {
   tpJobseekerProfileEducationRecordCreateInput: TpJobseekerProfileEducationRecordCreateInput;
 };
@@ -739,6 +811,11 @@ export type Query = {
   tpCurrentUserDataGet: TpCurrentUserData;
   tpJobListing: TpJobListing;
   tpJobListings: Array<TpJobListing>;
+  tpJobseekerCv: TpJobseekerCv;
+  tpJobseekerCvEducationRecords: Array<TpJobseekerCvEducationRecord>;
+  tpJobseekerCvExperienceRecords: Array<TpJobseekerCvExperienceRecord>;
+  tpJobseekerCvLanguageRecords: Array<TpJobseekerCvLanguageRecord>;
+  tpJobseekerCvs: Array<TpJobseekerCv>;
   tpJobseekerDirectoryEntriesVisible: Array<TpJobseekerDirectoryEntry>;
   tpJobseekerDirectoryEntryVisible: TpJobseekerDirectoryEntry;
   tpJobseekerProfile: TpJobseekerProfile;
@@ -781,6 +858,26 @@ export type QueryTpJobListingArgs = {
 
 export type QueryTpJobListingsArgs = {
   filter: FindAllVisibleTpJobListingsArgsFilter;
+};
+
+
+export type QueryTpJobseekerCvArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+};
+
+
+export type QueryTpJobseekerCvEducationRecordsArgs = {
+  tpJobseekerCvId?: InputMaybe<Scalars['ID']>;
+};
+
+
+export type QueryTpJobseekerCvExperienceRecordsArgs = {
+  tpJobseekerCvId?: InputMaybe<Scalars['ID']>;
+};
+
+
+export type QueryTpJobseekerCvLanguageRecordsArgs = {
+  tpJobseekerCvId?: InputMaybe<Scalars['ID']>;
 };
 
 
@@ -1065,6 +1162,199 @@ export type TpJobListingPatchInput = {
   salaryRange?: InputMaybe<Scalars['String']>;
   summary?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
+};
+
+export type TpJobseekerCv = {
+  __typename?: 'TpJobseekerCv';
+  aboutYourself?: Maybe<Scalars['String']>;
+  availability?: Maybe<TpAvailabilityOption>;
+  behanceUrl?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  cvName: Scalars['String'];
+  desiredEmploymentType?: Maybe<Array<TpEmploymentType>>;
+  desiredPositions?: Maybe<Array<TpDesiredPosition>>;
+  dribbbleUrl?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  firstName?: Maybe<Scalars['String']>;
+  githubUrl?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  ifAvailabilityIsDate_date?: Maybe<Scalars['DateTime']>;
+  immigrationStatus?: Maybe<ImmigrationStatus>;
+  lastName?: Maybe<Scalars['String']>;
+  linkedInUrl?: Maybe<Scalars['String']>;
+  location?: Maybe<Scalars['String']>;
+  personalWebsite?: Maybe<Scalars['String']>;
+  postalMailingAddress?: Maybe<Scalars['String']>;
+  profileAvatarImageS3Key?: Maybe<Scalars['String']>;
+  stackOverflowUrl?: Maybe<Scalars['String']>;
+  telephoneNumber?: Maybe<Scalars['String']>;
+  topSkills?: Maybe<Array<TpTechnicalSkill>>;
+  twitterUrl?: Maybe<Scalars['String']>;
+  updatedAt: Scalars['DateTime'];
+  userId: Scalars['ID'];
+  willingToRelocate: Scalars['Boolean'];
+};
+
+export type TpJobseekerCvCreateInput = {
+  aboutYourself?: InputMaybe<Scalars['String']>;
+  cvName?: InputMaybe<Scalars['String']>;
+  desiredPositions?: InputMaybe<Array<TpDesiredPosition>>;
+  email?: InputMaybe<Scalars['String']>;
+  firstName?: InputMaybe<Scalars['String']>;
+  lastName?: InputMaybe<Scalars['String']>;
+  postalMailingAddress?: InputMaybe<Scalars['String']>;
+  telephoneNumber?: InputMaybe<Scalars['String']>;
+  topSkills?: InputMaybe<Array<TpTechnicalSkill>>;
+};
+
+export type TpJobseekerCvDeleteInput = {
+  id: Scalars['ID'];
+};
+
+export type TpJobseekerCvEducationRecord = {
+  __typename?: 'TpJobseekerCvEducationRecord';
+  certificationType?: Maybe<TpEducationCertificationType>;
+  createdAt: Scalars['DateTime'];
+  current?: Maybe<Scalars['Boolean']>;
+  description?: Maybe<Scalars['String']>;
+  endDateMonth?: Maybe<Scalars['Float']>;
+  endDateYear?: Maybe<Scalars['Float']>;
+  id: Scalars['ID'];
+  institutionCity?: Maybe<Scalars['String']>;
+  institutionCountry?: Maybe<Scalars['String']>;
+  institutionName?: Maybe<Scalars['String']>;
+  sortIndex: Scalars['Int'];
+  startDateMonth?: Maybe<Scalars['Float']>;
+  startDateYear?: Maybe<Scalars['Float']>;
+  title?: Maybe<Scalars['String']>;
+  tpJobseekerCvId: Scalars['ID'];
+  updatedAt: Scalars['DateTime'];
+};
+
+export type TpJobseekerCvEducationRecordCreateInput = {
+  certificationType?: InputMaybe<TpEducationCertificationType>;
+  current?: InputMaybe<Scalars['Boolean']>;
+  description?: InputMaybe<Scalars['String']>;
+  endDateMonth?: InputMaybe<Scalars['Float']>;
+  endDateYear?: InputMaybe<Scalars['Float']>;
+  institutionCity?: InputMaybe<Scalars['String']>;
+  institutionCountry?: InputMaybe<Scalars['String']>;
+  institutionName?: InputMaybe<Scalars['String']>;
+  sortIndex?: InputMaybe<Scalars['Int']>;
+  startDateMonth?: InputMaybe<Scalars['Float']>;
+  startDateYear?: InputMaybe<Scalars['Float']>;
+  title?: InputMaybe<Scalars['String']>;
+  tpJobseekerCvId: Scalars['ID'];
+};
+
+export type TpJobseekerCvEducationRecordDeleteInput = {
+  id: Scalars['ID'];
+};
+
+export type TpJobseekerCvEducationRecordPatchInput = {
+  certificationType?: InputMaybe<TpEducationCertificationType>;
+  current?: InputMaybe<Scalars['Boolean']>;
+  description?: InputMaybe<Scalars['String']>;
+  endDateMonth?: InputMaybe<Scalars['Float']>;
+  endDateYear?: InputMaybe<Scalars['Float']>;
+  id: Scalars['ID'];
+  institutionCity?: InputMaybe<Scalars['String']>;
+  institutionCountry?: InputMaybe<Scalars['String']>;
+  institutionName?: InputMaybe<Scalars['String']>;
+  sortIndex?: InputMaybe<Scalars['Int']>;
+  startDateMonth?: InputMaybe<Scalars['Float']>;
+  startDateYear?: InputMaybe<Scalars['Float']>;
+  title?: InputMaybe<Scalars['String']>;
+};
+
+export type TpJobseekerCvExperienceRecord = {
+  __typename?: 'TpJobseekerCvExperienceRecord';
+  city?: Maybe<Scalars['String']>;
+  company?: Maybe<Scalars['String']>;
+  country?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  current?: Maybe<Scalars['Boolean']>;
+  description?: Maybe<Scalars['String']>;
+  endDateMonth?: Maybe<Scalars['Float']>;
+  endDateYear?: Maybe<Scalars['Float']>;
+  id: Scalars['ID'];
+  sortIndex: Scalars['Int'];
+  startDateMonth?: Maybe<Scalars['Float']>;
+  startDateYear?: Maybe<Scalars['Float']>;
+  title?: Maybe<Scalars['String']>;
+  tpJobseekerCvId: Scalars['ID'];
+  updatedAt: Scalars['DateTime'];
+};
+
+export type TpJobseekerCvExperienceRecordCreateInput = {
+  city?: InputMaybe<Scalars['String']>;
+  company?: InputMaybe<Scalars['String']>;
+  country?: InputMaybe<Scalars['String']>;
+  current?: InputMaybe<Scalars['Boolean']>;
+  description?: InputMaybe<Scalars['String']>;
+  endDateMonth?: InputMaybe<Scalars['Float']>;
+  endDateYear?: InputMaybe<Scalars['Float']>;
+  sortIndex?: InputMaybe<Scalars['Int']>;
+  startDateMonth?: InputMaybe<Scalars['Float']>;
+  startDateYear?: InputMaybe<Scalars['Float']>;
+  title?: InputMaybe<Scalars['String']>;
+  tpJobseekerCvId: Scalars['ID'];
+};
+
+export type TpJobseekerCvExperienceRecordDeleteInput = {
+  id: Scalars['ID'];
+};
+
+export type TpJobseekerCvExperienceRecordPatchInput = {
+  city?: InputMaybe<Scalars['String']>;
+  company?: InputMaybe<Scalars['String']>;
+  country?: InputMaybe<Scalars['String']>;
+  current?: InputMaybe<Scalars['Boolean']>;
+  description?: InputMaybe<Scalars['String']>;
+  endDateMonth?: InputMaybe<Scalars['Float']>;
+  endDateYear?: InputMaybe<Scalars['Float']>;
+  id: Scalars['ID'];
+  sortIndex?: InputMaybe<Scalars['Int']>;
+  startDateMonth?: InputMaybe<Scalars['Float']>;
+  startDateYear?: InputMaybe<Scalars['Float']>;
+  title?: InputMaybe<Scalars['String']>;
+};
+
+export type TpJobseekerCvLanguageRecord = {
+  __typename?: 'TpJobseekerCvLanguageRecord';
+  id: Scalars['ID'];
+  language: Language;
+  proficiencyLevelId: LanguageProficiencyLevel;
+  tpJobseekerCvId: Scalars['ID'];
+};
+
+export type TpJobseekerCvLanguageRecordCreateInput = {
+  language?: InputMaybe<Language>;
+  proficiencyLevelId?: InputMaybe<LanguageProficiencyLevel>;
+  tpJobseekerCvId: Scalars['ID'];
+};
+
+export type TpJobseekerCvLanguageRecordDeleteInput = {
+  id: Scalars['ID'];
+};
+
+export type TpJobseekerCvLanguageRecordPatchInput = {
+  id: Scalars['ID'];
+  language?: InputMaybe<Language>;
+  proficiencyLevelId?: InputMaybe<LanguageProficiencyLevel>;
+};
+
+export type TpJobseekerCvPatchInput = {
+  aboutYourself?: InputMaybe<Scalars['String']>;
+  cvName?: InputMaybe<Scalars['String']>;
+  desiredPositions?: InputMaybe<Array<TpDesiredPosition>>;
+  email?: InputMaybe<Scalars['String']>;
+  firstName?: InputMaybe<Scalars['String']>;
+  id: Scalars['ID'];
+  lastName?: InputMaybe<Scalars['String']>;
+  postalMailingAddress?: InputMaybe<Scalars['String']>;
+  telephoneNumber?: InputMaybe<Scalars['String']>;
+  topSkills?: InputMaybe<Array<TpTechnicalSkill>>;
 };
 
 export type TpJobseekerDirectoryEntry = {

@@ -1,6 +1,7 @@
 import { UseGuards } from '@nestjs/common'
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 import {
+  OkIdResponseMutationOutputDto,
   OkResponseMutationOutputDto,
   TpJobseekerCvEntityProps,
 } from '@talent-connect/common-types'
@@ -41,7 +42,7 @@ export class TpJobseekerCvResolver {
   }
 
   //! TODO: Add auth
-  @Mutation(() => OkResponseMutationOutputDto, {
+  @Mutation(() => OkIdResponseMutationOutputDto, {
     name: 'tpJobseekerCvCreate',
   })
   async create(
@@ -49,8 +50,8 @@ export class TpJobseekerCvResolver {
     input: TpJobseekerCvCreateInput,
     @CurrentUser() currentUser: CurrentUserInfo
   ) {
-    await this.service.create(input, currentUser)
-    return { ok: true }
+    const result = await this.service.create(input, currentUser)
+    return { ok: true, id: result.id }
   }
 
   //! TODO: Add auth

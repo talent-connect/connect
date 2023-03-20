@@ -1,48 +1,29 @@
-fragment AllTpJobseekerDirectoryEntryFields on TpJobseekerDirectoryEntry {
+fragment AllTpJobseekerCvFields on TpJobseekerCv {
   aboutYourself
-  experience {
-    ...AllTpJobseekerCvExperienceRecordFields
-  }
-  federalState
-  firstName
-  fullName
-  genderPronouns
   githubUrl
   id
   ifAvailabilityIsDate_date
-  isHired
-  isJobFair2022Participant
-  isJobFair2023Participant
-  availability
-  isProfileVisibleToCompanies
+  immigrationStatus
   lastName
   linkedInUrl
   location
-  loopbackUserId
   personalWebsite
   postalMailingAddress
   profileAvatarImageS3Key
-  rediLocation
-  behanceUrl
+  availability
   stackOverflowUrl
-  state
   telephoneNumber
   topSkills
   twitterUrl
   updatedAt
   userId
   willingToRelocate
-  workingLanguages {
-    ...AllTpJobseekerCvLanguageRecordFields
-  }
+  behanceUrl
   createdAt
-  currentlyEnrolledInCourse
+  cvName
   desiredEmploymentType
   desiredPositions
   dribbbleUrl
-  education {
-    ...AllTpJobseekerCvEducationRecordFields
-  }
   email
-  immigrationStatus
+  firstName
 }

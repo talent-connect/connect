@@ -56,7 +56,7 @@ export class TpJobseekerCvService {
     props.userId = currentUser.userId
 
     const entityToPersist = TpJobseekerCvEntity.create(props)
-    await this.api.create(this.mapper.toPersistence(entityToPersist))
+    return await this.api.create(this.mapper.toPersistence(entityToPersist))
   }
 
   async patch(input: TpJobseekerCvPatchInput, currentUser: CurrentUserInfo) {

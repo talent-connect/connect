@@ -1,7 +1,13 @@
 fragment AllTpJobseekerCvEducationRecordFields on TpJobseekerCvEducationRecord {
+  id
   certificationType
-  title
   sortIndex
+  startDateMonth
+  startDateYear
+  title
+  tpJobseekerCvId
+  updatedAt
+  createdAt
   current
   description
   endDateMonth
@@ -9,11 +15,4 @@ fragment AllTpJobseekerCvEducationRecordFields on TpJobseekerCvEducationRecord {
   institutionCity
   institutionCountry
   institutionName
-  startDateMonth
-  startDateYear
-  createdAt
-  id
-  tpJobseekerCvId
-  updatedAt
-  userId
 }

@@ -1,24 +1,20 @@
 import {
+  TpJobseekerCv,
+  useFindOneTpJobseekerCvQuery,
+  useTpJobseekerCvPatchMutation,
+} from '@talent-connect/data-access'
+import {
   Button,
-  FormDatePicker,
   FormInput,
-  FormSelect,
   FormTextArea,
 } from '@talent-connect/shared-atomic-design-components'
-import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
-import {
-  availabilityOptions,
-  employmentTypes,
-  immigrationStatusOptions,
-} from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
 import { useEffect, useMemo } from 'react'
 import { Element } from 'react-bulma-components'
-import { UseMutationResult, UseQueryResult } from 'react-query'
+import { useQueryClient } from 'react-query'
 import { Subject } from 'rxjs'
 import * as Yup from 'yup'
-import { useTpjobseekerCvUpdateMutation } from '../../../react-query/use-tpjobseekercv-mutation'
-import { useTpJobseekerCvByIdQuery } from '../../../react-query/use-tpjobseekercv-query'
+import { useIsBusy } from '../../../hooks/useIsBusy'
 import { AccordionForm } from '../../molecules/AccordionForm'
 interface Props {
   tpJobseekerCvId: string
@@ -35,21 +31,16 @@ export function AccordionFormCvImportantDetails({
     parentOnCloseCallback()
   }
 
-  const queryHookResult = useTpJobseekerCvByIdQuery(tpJobseekerCvId)
-  const mutationHookResult = useTpjobseekerCvUpdateMutation(tpJobseekerCvId)
-
   return (
     <AccordionForm
       title="Contact"
       closeAccordionSignalSubject={closeAccordionSignalSubject}
     >
       <JobseekerFormSectionImportantDetails
-        hideNonContactDetailsFields
+        tpJobseekerCvId={tpJobseekerCvId}
         setIsEditing={(isEditing) => {
           onClose()
         }}
-        queryHookResult={queryHookResult}
-        mutationHookResult={mutationHookResult}
       />
     </AccordionForm>
   )
@@ -62,71 +53,49 @@ const validationSchema = Yup.object({
   ),
 })
 interface JobseekerFormSectionImportantDetailsProps {
+  tpJobseekerCvId: string
   setIsEditing: (boolean) => void
   setIsFormDirty?: (boolean) => void
-  queryHookResult: UseQueryResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
-    unknown
-  >
-  mutationHookResult: UseMutationResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
-    unknown,
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
-    unknown
-  >
-  // TODO: this is a slippery slope. When this form section is used in the
-  // Profiile Builder, we need all the below fields. In the CV Builder we
-  // only need these "contact details" fields. Instead of "customizing"
-  // from component, we should probably build a new component
-  // EditableContactDetails or something. Over the longer run, we might
-  // want to create one component per field and compose forms together
-  // elegantly.
-  hideNonContactDetailsFields?: boolean
 }
 
+type FormValues = Pick<
+  TpJobseekerCv,
+  'email' | 'telephoneNumber' | 'postalMailingAddress'
+>
+
 function JobseekerFormSectionImportantDetails({
+  tpJobseekerCvId,
   setIsEditing,
   setIsFormDirty,
-  queryHookResult,
-  mutationHookResult,
-  hideNonContactDetailsFields,
 }: JobseekerFormSectionImportantDetailsProps) {
-  const { data: profile } = queryHookResult
-  const mutation = mutationHookResult
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(
+  const queryClient = useQueryClient()
+  const cvQuery = useFindOneTpJobseekerCvQuery({ id: tpJobseekerCvId })
+  const cvMutation = useTpJobseekerCvPatchMutation()
+  const isBusy = useIsBusy()
+
+  const cv = cvQuery?.data?.tpJobseekerCv
+
+  const initialValues: FormValues = useMemo(
     () => ({
-      availability: profile?.availability ?? '',
-      desiredEmploymentType: profile?.desiredEmploymentType ?? [],
-      email: profile?.email ?? '',
-      telephoneNumber: profile?.telephoneNumber ?? '',
-      postalMailingAddress: profile?.postalMailingAddress ?? '',
-      ifAvailabilityIsDate_date: profile?.ifAvailabilityIsDate_date
-        ? new Date(profile.ifAvailabilityIsDate_date)
-        : null,
-      immigrationStatus: profile?.immigrationStatus ?? '',
-      willingToRelocate: profile?.willingToRelocate,
+      email: cv?.email ?? '',
+      telephoneNumber: cv?.telephoneNumber ?? '',
+      postalMailingAddress: cv?.postalMailingAddress ?? '',
     }),
-    [
-      profile?.availability,
-      profile?.email,
-      profile?.desiredEmploymentType,
-      profile?.ifAvailabilityIsDate_date,
-      profile?.immigrationStatus,
-      profile?.telephoneNumber,
-      profile?.postalMailingAddress,
-      profile?.willingToRelocate,
-    ]
+    [cv?.email, cv?.telephoneNumber, cv?.postalMailingAddress]
   )
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
+  const onSubmit = async (values: FormValues) => {
     formik.setSubmitting(true)
-    mutation.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
+    cvMutation.mutateAsync({
+      input: {
+        id: tpJobseekerCvId,
+        email: values.email,
+        telephoneNumber: values.telephoneNumber,
+        postalMailingAddress: values.postalMailingAddress,
       },
     })
+    formik.setSubmitting(false)
+    setIsEditing(false)
+    queryClient.invalidateQueries()
   }
   const formik = useFormik({
     initialValues,
@@ -170,75 +139,13 @@ function JobseekerFormSectionImportantDetails({
         placeholder={`Max Mustermann,\nBerlinstraße 123,\n12345 Berlin,\nGermany`}
         formik={formik}
       />
-      {hideNonContactDetailsFields ? null : (
-        <>
-          <FormSelect
-            label="What kind of employment are you looking for?*"
-            name="desiredEmploymentType"
-            items={formDesiredEmploymentType}
-            {...formik}
-            multiselect
-            placeholder="Select desired employment types"
-            closeMenuOnSelect={false}
-          />
-          <FormSelect
-            label="When are you available to start?*"
-            name="availability"
-            items={formAvailabilityOptions}
-            {...formik}
-          />
-          {formik.values.availability === 'date' ? (
-            <FormDatePicker
-              placeholder="Select your date"
-              name="ifAvailabilityIsDate_date"
-              dateFormat="dd MMMM yyyy"
-              minDate={new Date()}
-              showMonthDropdown
-              showYearDropdown
-              dropdownMode="select"
-              isClearable
-              {...formik}
-            />
-          ) : null}
-          <FormSelect
-            label="What is your immigration status?"
-            name="immigrationStatus"
-            items={formImmigrationStatusOptions}
-            {...formik}
-          />
-        </>
-      )}
 
-      <Button
-        disabled={!formik.isValid || mutation.isLoading}
-        onClick={formik.submitForm}
-      >
+      <Button disabled={!formik.isValid || isBusy} onClick={formik.submitForm}>
         Save
       </Button>
-      <Button
-        simple
-        disabled={mutation.isLoading}
-        onClick={() => setIsEditing(false)}
-      >
+      <Button simple disabled={isBusy} onClick={() => setIsEditing(false)}>
         Cancel
       </Button>
     </>
   )
 }
-
-const formAvailabilityOptions = availabilityOptions.map(({ id, label }) => ({
-  value: id,
-  label,
-}))
-
-const formDesiredEmploymentType = employmentTypes.map(({ id, label }) => ({
-  value: id,
-  label,
-}))
-
-const formImmigrationStatusOptions = immigrationStatusOptions.map(
-  ({ id, label }) => ({
-    value: id,
-    label,
-  })
-)

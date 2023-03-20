@@ -1,20 +1,10 @@
 import {
-  EducationRecord,
-  TpJobseekerCv,
-  TpJobseekerProfile,
-} from '@talent-connect/shared-types'
-import {
-  certificationTypes,
-  formMonthsOptions,
-} from '@talent-connect/talent-pool/config'
-import { useCallback, useEffect, useMemo, useRef } from 'react'
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
-import { UseMutationResult, UseQueryResult } from 'react-query'
-import { Subject } from 'rxjs'
-import { useTpjobseekerCvUpdateMutation } from '../../../react-query/use-tpjobseekercv-mutation'
-import { useTpJobseekerCvByIdQuery } from '../../../react-query/use-tpjobseekercv-query'
-import { AccordionForm } from '../../molecules/AccordionForm'
-
+  TpJobseekerCvEducationRecord,
+  useFindAllTpJobseekerCvEducationRecordsQuery,
+  useTpJobseekerCvEducationRecordCreateMutation,
+  useTpJobseekerCvEducationRecordDeleteMutation,
+  useTpJobseekerCvEducationRecordPatchMutation,
+} from '@talent-connect/data-access'
 import {
   Button,
   Checkbox,
@@ -24,11 +14,22 @@ import {
   FormTextArea,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
+import {
+  certificationTypes,
+  formMonthsOptions,
+} from '@talent-connect/talent-pool/config'
 import { reorder } from '@talent-connect/typescript-utilities'
 import { useFormik } from 'formik'
+import { cloneDeep } from 'lodash'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Columns, Element } from 'react-bulma-components'
+import { useQueryClient } from 'react-query'
+import { Subject } from 'rxjs'
 import { v4 as uuidv4 } from 'uuid'
 import * as Yup from 'yup'
+import { useIsBusy } from '../../../hooks/useIsBusy'
+import { AccordionForm } from '../../molecules/AccordionForm'
 interface Props {
   tpJobseekerCvId: string
   onClose: () => void
@@ -44,68 +45,158 @@ export function AccordionFormCvEducation({
     parentOnCloseCallback()
   }
 
-  const queryHookResult = useTpJobseekerCvByIdQuery(tpJobseekerCvId)
-  const mutationHookResult = useTpjobseekerCvUpdateMutation(tpJobseekerCvId)
-
   return (
     <AccordionForm
       title="Education"
       closeAccordionSignalSubject={closeAccordionSignalSubject}
     >
       <JobseekerFormSectionEducation
+        tpJobseekerCvId={tpJobseekerCvId}
         setIsEditing={(isEditing) => {
           onClose()
         }}
-        queryHookResult={queryHookResult}
-        mutationHookResult={mutationHookResult}
       />
     </AccordionForm>
   )
 }
 
-interface JobseekerFormSectionEducationeProps {
+type FormEducationRecord = Omit<
+  TpJobseekerCvEducationRecord,
+  | 'createdAt'
+  | 'updatedAt'
+  | 'tpJobseekerCvId'
+  | 'startDateMonth'
+  | 'startDateYear'
+  | 'endDateMonth'
+  | 'endDateYear'
+> & {
+  startDateMonth?: string
+  startDateYear?: string
+  endDateMonth?: string
+  endDateYear?: string
+}
+
+interface FormValues {
+  education: Array<FormEducationRecord>
+}
+
+interface JobseekerFormSectionEducationProps {
+  tpJobseekerCvId: string
   setIsEditing: (boolean) => void
   setIsFormDirty?: (boolean) => void
-  queryHookResult: UseQueryResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
-    unknown
-  >
-  mutationHookResult: UseMutationResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
-    unknown,
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
-    unknown
-  >
 }
 
 function JobseekerFormSectionEducation({
+  tpJobseekerCvId,
   setIsEditing,
   setIsFormDirty,
-  queryHookResult,
-  mutationHookResult,
-}: JobseekerFormSectionEducationeProps) {
-  const { data: profile } = queryHookResult
+}: JobseekerFormSectionEducationProps) {
+  const queryClient = useQueryClient()
+  const educationRecordsQuery = useFindAllTpJobseekerCvEducationRecordsQuery({
+    tpJobseekerCvId,
+  })
+  const patchMutation = useTpJobseekerCvEducationRecordPatchMutation()
+  const deleteMutation = useTpJobseekerCvEducationRecordDeleteMutation()
+  const createMutation = useTpJobseekerCvEducationRecordCreateMutation()
+  const removedRecords = useRef<Array<string>>([])
+  const isBusy = useIsBusy()
 
-  const mutation = mutationHookResult
+  const educationRecords =
+    educationRecordsQuery.data?.tpJobseekerCvEducationRecords
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
 
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(
-    () => ({
-      education: profile?.education ?? [buildBlankEducationRecord()],
-    }),
-    [profile?.education]
-  )
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
-    formik.setSubmitting(true)
-    mutation.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
-      },
+  const initialValues: FormValues = useMemo(() => {
+    if (!educationRecords || educationRecords?.length === 0) {
+      return { education: [buildBlankEducationRecord()] }
+    }
+    // TODO: we should rather use structuredClone or a polyfill thereof at some future point
+    const educationRecordsMonthsYearsAsStrings = educationRecords?.map(
+      (educationRecord) => {
+        return {
+          ...educationRecord,
+          startDateMonth: educationRecord.startDateMonth?.toString(),
+          startDateYear: educationRecord.startDateYear?.toString(),
+          endDateMonth: educationRecord.endDateMonth?.toString(),
+          endDateYear: educationRecord.endDateYear?.toString(),
+        }
+      }
+    )
+    return {
+      education: cloneDeep(educationRecordsMonthsYearsAsStrings),
+    }
+  }, [educationRecords])
+
+  const onSubmit = async (values: FormValues) => {
+    // We need to run the mutation tpJobseekerProfileEducationRecordCreate
+    const newRecords = values.education.filter((record) =>
+      record.id.includes('NEW')
+    )
+
+    // We need to run the mutation tpJobseekerProfileEducationRecordPatch
+    const existingRecords = values.education.filter(
+      (record) => !record.id.includes('NEW')
+    )
+
+    const deletedRecords = removedRecords.current
+
+    const createRecordPromises = newRecords.map((record) => {
+      return createMutation.mutateAsync({
+        input: {
+          tpJobseekerCvId,
+          certificationType: record.certificationType,
+          current: record.current,
+          description: record.description,
+          endDateMonth: parseInt(record.endDateMonth),
+          endDateYear: parseInt(record.endDateYear),
+          institutionCity: record.institutionCity,
+          institutionCountry: record.institutionCountry,
+          institutionName: record.institutionName,
+          sortIndex: record.sortIndex,
+          startDateMonth: parseInt(record.startDateMonth),
+          startDateYear: parseInt(record.startDateYear),
+          title: record.title,
+        },
+      })
     })
+
+    const patchRecordPromises = existingRecords.map((record) => {
+      return patchMutation.mutateAsync({
+        input: {
+          id: record.id,
+          certificationType: record.certificationType,
+          current: record.current,
+          description: record.description,
+          endDateMonth: parseInt(record.endDateMonth),
+          endDateYear: parseInt(record.endDateYear),
+          institutionCity: record.institutionCity,
+          institutionCountry: record.institutionCountry,
+          institutionName: record.institutionName,
+          sortIndex: record.sortIndex,
+          startDateMonth: parseInt(record.startDateMonth),
+          startDateYear: parseInt(record.startDateYear),
+          title: record.title,
+        },
+      })
+    })
+
+    const deleteRecordPromises = deletedRecords.map((recordId) => {
+      return deleteMutation.mutateAsync({
+        input: {
+          id: recordId,
+        },
+      })
+    })
+
+    formik.setSubmitting(true)
+    await Promise.all([
+      ...createRecordPromises,
+      ...patchRecordPromises,
+      ...deleteRecordPromises,
+    ])
+    queryClient.invalidateQueries()
+    formik.setSubmitting(false)
+    setIsEditing(false)
   }
 
   const validationSchema = Yup.object().shape({
@@ -162,9 +253,14 @@ function JobseekerFormSectionEducation({
   )
 
   const onClickAddEducation = useCallback(() => {
+    const allSortIndexes = formik.values.education.map(
+      (record) => record.sortIndex
+    )
+    const highestSortIndex = Math.max(...allSortIndexes)
+    const newSortIndex = highestSortIndex + 1
     formik.setFieldValue('education', [
       ...formik.values.education,
-      buildBlankEducationRecord(),
+      buildBlankEducationRecord(newSortIndex),
     ])
 
     closeAllAccordionsSignalSubject.current.next()
@@ -180,16 +276,26 @@ function JobseekerFormSectionEducation({
         result.destination.index
       )
 
-      formik.setFieldValue('education', reorderedEducation)
+      const withCorrectSortIndexes = reorderedEducation.map(
+        (record, index) => ({
+          ...record,
+          sortIndex: index,
+        })
+      )
+
+      formik.setFieldValue('education', withCorrectSortIndexes)
     },
     [formik]
   )
 
   const onRemove = useCallback(
-    (uuid: string) => {
+    (id: string) => {
+      if (!id.includes('NEW')) {
+        removedRecords.current.push(id)
+      }
       formik.setFieldValue(
         'education',
-        formik.values?.education?.filter((item) => item.uuid !== uuid)
+        formik.values?.education?.filter((item) => item.id !== id)
       )
     },
     [formik]
@@ -210,11 +316,7 @@ function JobseekerFormSectionEducation({
           {(provided, snapshot) => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
               {formik?.values?.education.map((item, index) => (
-                <Draggable
-                  key={item.uuid}
-                  draggableId={item.uuid}
-                  index={index}
-                >
+                <Draggable key={item.id} draggableId={item.id} index={index}>
                   {(provided, snapshot) => (
                     <div
                       ref={provided.innerRef}
@@ -225,7 +327,7 @@ function JobseekerFormSectionEducation({
                         title={
                           item.title ? item.title : 'Click me to add details'
                         }
-                        onRemove={() => onRemove(item.uuid)}
+                        onRemove={() => onRemove(item.id)}
                         closeAccordionSignalSubject={
                           closeAllAccordionsSignalSubject.current
                         }
@@ -344,16 +446,12 @@ function JobseekerFormSectionEducation({
       </div>
 
       <Button
-        disabled={!formik.isValid || mutation.isLoading}
+        disabled={!formik.isValid || isBusy}
         onClick={formik.handleSubmit}
       >
         Save
       </Button>
-      <Button
-        simple
-        disabled={mutation.isLoading}
-        onClick={() => setIsEditing(false)}
-      >
+      <Button simple disabled={isBusy} onClick={() => setIsEditing(false)}>
         Cancel
       </Button>
     </>
@@ -365,19 +463,20 @@ const formCertificationTypes = certificationTypes.map(({ id, label }) => ({
   label,
 }))
 
-function buildBlankEducationRecord(): EducationRecord {
+function buildBlankEducationRecord(sortIndex: number = 1): FormEducationRecord {
   return {
-    uuid: uuidv4(),
+    id: `NEW-${uuidv4()}`,
     title: '',
     institutionName: '',
     description: '',
     institutionCity: '',
     institutionCountry: '',
-    certificationType: '',
+    certificationType: undefined,
     startDateMonth: undefined,
     startDateYear: undefined,
     endDateMonth: undefined,
     endDateYear: undefined,
     current: false,
+    sortIndex,
   }
 }

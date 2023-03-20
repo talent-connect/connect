@@ -1,19 +1,22 @@
 import {
+  TpJobseekerCv,
+  useFindOneTpJobseekerCvQuery,
+  useTpJobseekerCvPatchMutation,
+} from '@talent-connect/data-access'
+import {
   Button,
   FaqItem,
   FormSelect,
   FormTextArea,
 } from '@talent-connect/shared-atomic-design-components'
-import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
 import { topSkills } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
 import { useEffect, useMemo } from 'react'
 import { Element } from 'react-bulma-components'
-import { UseMutationResult, UseQueryResult } from 'react-query'
+import { useQueryClient } from 'react-query'
 import { Subject } from 'rxjs'
 import * as Yup from 'yup'
-import { useTpjobseekerCvUpdateMutation } from '../../../react-query/use-tpjobseekercv-mutation'
-import { useTpJobseekerCvByIdQuery } from '../../../react-query/use-tpjobseekercv-query'
+import { useIsBusy } from '../../../hooks/useIsBusy'
 import { AccordionForm } from '../../molecules/AccordionForm'
 import { summaryTips } from '../jobseeker-profile-editables/EditableSummary'
 interface Props {
@@ -31,20 +34,16 @@ export function AccordionFormCvSummary({
     parentOnCloseCallback()
   }
 
-  const queryHookResult = useTpJobseekerCvByIdQuery(tpJobseekerCvId)
-  const mutationHookResult = useTpjobseekerCvUpdateMutation(tpJobseekerCvId)
-
   return (
     <AccordionForm
       title="About you and skills"
       closeAccordionSignalSubject={closeAccordionSignalSubject}
     >
       <JobseekerFormSectionSummary
+        tpJobseekerCvId={tpJobseekerCvId}
         setIsEditing={(isEditing) => {
           onClose()
         }}
-        queryHookResult={queryHookResult}
-        mutationHookResult={mutationHookResult}
       />
     </AccordionForm>
   )
@@ -69,45 +68,44 @@ const validationSchema = Yup.object({
 })
 
 interface JobseekerFormSectionSummaryProps {
+  tpJobseekerCvId: string
   setIsEditing: (boolean) => void
   setIsFormDirty?: (boolean) => void
-  queryHookResult: UseQueryResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
-    unknown
-  >
-  mutationHookResult: UseMutationResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
-    unknown,
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
-    unknown
-  >
 }
 
+type FormValues = Pick<TpJobseekerCv, 'aboutYourself' | 'topSkills'>
+
 export function JobseekerFormSectionSummary({
+  tpJobseekerCvId,
   setIsEditing,
   setIsFormDirty,
-  queryHookResult,
-  mutationHookResult,
 }: JobseekerFormSectionSummaryProps) {
-  const { data: profile } = queryHookResult
-  const mutation = mutationHookResult
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(
+  const queryClient = useQueryClient()
+  const cvQuery = useFindOneTpJobseekerCvQuery({ id: tpJobseekerCvId })
+  const cvMutation = useTpJobseekerCvPatchMutation()
+  const isBusy = useIsBusy()
+
+  const cv = cvQuery?.data?.tpJobseekerCv
+
+  const initialValues: FormValues = useMemo(
     () => ({
-      aboutYourself: profile?.aboutYourself ? profile.aboutYourself : '',
-      topSkills: profile?.topSkills ?? [],
+      aboutYourself: cv?.aboutYourself ? cv.aboutYourself : '',
+      topSkills: cv?.topSkills ?? [],
     }),
-    [profile?.aboutYourself, profile?.topSkills]
+    [cv?.aboutYourself, cv?.topSkills]
   )
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
+  const onSubmit = (values: FormValues) => {
     formik.setSubmitting(true)
-    mutation.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
+    cvMutation.mutateAsync({
+      input: {
+        id: tpJobseekerCvId,
+        aboutYourself: values.aboutYourself,
+        topSkills: values.topSkills,
       },
     })
+    formik.setSubmitting(false)
+    setIsEditing(false)
+    queryClient.invalidateQueries()
   }
   const formik = useFormik({
     initialValues,
@@ -155,17 +153,10 @@ export function JobseekerFormSectionSummary({
         answer={summaryTips}
       />
 
-      <Button
-        disabled={!formik.isValid || mutation.isLoading}
-        onClick={formik.submitForm}
-      >
+      <Button disabled={!formik.isValid || isBusy} onClick={formik.submitForm}>
         Save
       </Button>
-      <Button
-        simple
-        disabled={mutation.isLoading}
-        onClick={() => setIsEditing(false)}
-      >
+      <Button simple disabled={isBusy} onClick={() => setIsEditing(false)}>
         Cancel
       </Button>
     </>

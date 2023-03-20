@@ -173,10 +173,16 @@ export function JobseekerFormSectionProfessionalExperience({
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
 
+  const experienceRecords =
+    myData?.data?.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry?.experience
+
   const initialValues: FormValues = useMemo(() => {
+    if (!experienceRecords || experienceRecords.length === 0) {
+      return {
+        experience: [buildBlankExperienceRecord()],
+      }
+    }
     // TODO: we should rather use structuredClone or a polyfill thereof at some future point
-    const experienceRecords =
-      myData?.data?.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry?.experience
     const experienceRecordsMonthsYearsAsStrings = experienceRecords?.map(
       (experienceRecord) => {
         return {
@@ -189,13 +195,9 @@ export function JobseekerFormSectionProfessionalExperience({
       }
     )
     return {
-      experience: cloneDeep(experienceRecordsMonthsYearsAsStrings) ?? [
-        buildBlankExperienceRecord(),
-      ],
+      experience: cloneDeep(experienceRecordsMonthsYearsAsStrings),
     }
-  }, [
-    myData?.data?.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry?.experience,
-  ])
+  }, [experienceRecords])
   const onSubmit = async (values: FormValues) => {
     // We need to run the mutation tpJobseekerProfileExperienceRecordCreate
     const newRecords = values.experience.filter((record) =>

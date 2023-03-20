@@ -529,6 +529,18 @@ type Mutation {
   tpJobListingCreate(tpJobListingCreateInput: TpJobListingCreateInput!): OkResponseMutationOutputDto!
   tpJobListingDelete(tpJobListingDeleteInput: TpJobListingDeleteInput!): OkResponseMutationOutputDto!
   tpJobListingPatch(tpJobListingPatchInput: TpJobListingPatchInput!): OkResponseMutationOutputDto!
+  tpJobseekerCvCreate(tpJobseekerCvCreateInput: TpJobseekerCvCreateInput!): OkIdResponseMutationOutputDto!
+  tpJobseekerCvDelete(tpJobseekerCvDeleteInput: TpJobseekerCvDeleteInput!): OkResponseMutationOutputDto!
+  tpJobseekerCvEducationRecordCreate(tpJobseekerCvEducationRecordCreateInput: TpJobseekerCvEducationRecordCreateInput!): OkResponseMutationOutputDto!
+  tpJobseekerCvEducationRecordDelete(tpJobseekerCvEducationRecordDeleteInput: TpJobseekerCvEducationRecordDeleteInput!): OkResponseMutationOutputDto!
+  tpJobseekerCvEducationRecordPatch(tpJobseekerCvEducationRecordPatchInput: TpJobseekerCvEducationRecordPatchInput!): OkResponseMutationOutputDto!
+  tpJobseekerCvExperienceRecordCreate(tpJobseekerCvExperienceRecordCreateInput: TpJobseekerCvExperienceRecordCreateInput!): OkResponseMutationOutputDto!
+  tpJobseekerCvExperienceRecordDelete(tpJobseekerCvExperienceRecordDeleteInput: TpJobseekerCvExperienceRecordDeleteInput!): OkResponseMutationOutputDto!
+  tpJobseekerCvExperienceRecordPatch(tpJobseekerCvExperienceRecordPatchInput: TpJobseekerCvExperienceRecordPatchInput!): OkResponseMutationOutputDto!
+  tpJobseekerCvLanguageRecordCreate(tpJobseekerCvLanguageRecordCreateInput: TpJobseekerCvLanguageRecordCreateInput!): OkResponseMutationOutputDto!
+  tpJobseekerCvLanguageRecordDelete(tpJobseekerCvLanguageRecordDeleteInput: TpJobseekerCvLanguageRecordDeleteInput!): OkResponseMutationOutputDto!
+  tpJobseekerCvLanguageRecordPatch(tpJobseekerCvLanguageRecordPatchInput: TpJobseekerCvLanguageRecordPatchInput!): OkResponseMutationOutputDto!
+  tpJobseekerCvPatch(tpJobseekerCvPatchInput: TpJobseekerCvPatchInput!): OkResponseMutationOutputDto!
   tpJobseekerProfileEducationRecordCreate(tpJobseekerProfileEducationRecordCreateInput: TpJobseekerProfileEducationRecordCreateInput!): OkResponseMutationOutputDto!
   tpJobseekerProfileEducationRecordDelete(tpJobseekerProfileEducationRecordDeleteInput: TpJobseekerProfileEducationRecordDeleteInput!): OkResponseMutationOutputDto!
   tpJobseekerProfileEducationRecordPatch(tpJobseekerProfileEducationRecordPatchInput: TpJobseekerProfileEducationRecordPatchInput!): OkResponseMutationOutputDto!
@@ -572,6 +584,11 @@ type Query {
   tpCurrentUserDataGet: TpCurrentUserData!
   tpJobListing(filter: FindOneTpJobListingArgsFilter!): TpJobListing!
   tpJobListings(filter: FindAllVisibleTpJobListingsArgsFilter!): [TpJobListing!]!
+  tpJobseekerCv(id: ID): TpJobseekerCv!
+  tpJobseekerCvEducationRecords(tpJobseekerCvId: ID): [TpJobseekerCvEducationRecord!]!
+  tpJobseekerCvExperienceRecords(tpJobseekerCvId: ID): [TpJobseekerCvExperienceRecord!]!
+  tpJobseekerCvLanguageRecords(tpJobseekerCvId: ID): [TpJobseekerCvLanguageRecord!]!
+  tpJobseekerCvs: [TpJobseekerCv!]!
   tpJobseekerDirectoryEntriesVisible(filter: FindAllVisibleTpJobseekerDirectoryEntriesFilter!): [TpJobseekerDirectoryEntry!]!
   tpJobseekerDirectoryEntryVisible(filter: FindOneVisibleTpJobseekerDirectoryEntry!): TpJobseekerDirectoryEntry!
   tpJobseekerProfile(id: ID): TpJobseekerProfile!
@@ -842,6 +859,195 @@ input TpJobListingPatchInput {
   salaryRange: String
   summary: String
   title: String
+}
+
+type TpJobseekerCv {
+  aboutYourself: String
+  availability: TpAvailabilityOption
+  behanceUrl: String
+  createdAt: DateTime!
+  cvName: String!
+  desiredEmploymentType: [TpEmploymentType!]
+  desiredPositions: [TpDesiredPosition!]
+  dribbbleUrl: String
+  email: String
+  firstName: String
+  githubUrl: String
+  id: ID!
+  ifAvailabilityIsDate_date: DateTime
+  immigrationStatus: ImmigrationStatus
+  lastName: String
+  linkedInUrl: String
+  location: String
+  personalWebsite: String
+  postalMailingAddress: String
+  profileAvatarImageS3Key: String
+  stackOverflowUrl: String
+  telephoneNumber: String
+  topSkills: [TpTechnicalSkill!]
+  twitterUrl: String
+  updatedAt: DateTime!
+  userId: ID!
+  willingToRelocate: Boolean!
+}
+
+input TpJobseekerCvCreateInput {
+  aboutYourself: String
+  cvName: String
+  desiredPositions: [TpDesiredPosition!]
+  email: String
+  firstName: String
+  lastName: String
+  postalMailingAddress: String
+  telephoneNumber: String
+  topSkills: [TpTechnicalSkill!]
+}
+
+input TpJobseekerCvDeleteInput {
+  id: ID!
+}
+
+type TpJobseekerCvEducationRecord {
+  certificationType: TpEducationCertificationType
+  createdAt: DateTime!
+  current: Boolean
+  description: String
+  endDateMonth: Float
+  endDateYear: Float
+  id: ID!
+  institutionCity: String
+  institutionCountry: String
+  institutionName: String
+  sortIndex: Int!
+  startDateMonth: Float
+  startDateYear: Float
+  title: String
+  tpJobseekerCvId: ID!
+  updatedAt: DateTime!
+}
+
+input TpJobseekerCvEducationRecordCreateInput {
+  certificationType: TpEducationCertificationType
+  current: Boolean
+  description: String
+  endDateMonth: Float
+  endDateYear: Float
+  institutionCity: String
+  institutionCountry: String
+  institutionName: String
+  sortIndex: Int
+  startDateMonth: Float
+  startDateYear: Float
+  title: String
+  tpJobseekerCvId: ID!
+}
+
+input TpJobseekerCvEducationRecordDeleteInput {
+  id: ID!
+}
+
+input TpJobseekerCvEducationRecordPatchInput {
+  certificationType: TpEducationCertificationType
+  current: Boolean
+  description: String
+  endDateMonth: Float
+  endDateYear: Float
+  id: ID!
+  institutionCity: String
+  institutionCountry: String
+  institutionName: String
+  sortIndex: Int
+  startDateMonth: Float
+  startDateYear: Float
+  title: String
+}
+
+type TpJobseekerCvExperienceRecord {
+  city: String
+  company: String
+  country: String
+  createdAt: DateTime!
+  current: Boolean
+  description: String
+  endDateMonth: Float
+  endDateYear: Float
+  id: ID!
+  sortIndex: Int!
+  startDateMonth: Float
+  startDateYear: Float
+  title: String
+  tpJobseekerCvId: ID!
+  updatedAt: DateTime!
+}
+
+input TpJobseekerCvExperienceRecordCreateInput {
+  city: String
+  company: String
+  country: String
+  current: Boolean
+  description: String
+  endDateMonth: Float
+  endDateYear: Float
+  sortIndex: Int
+  startDateMonth: Float
+  startDateYear: Float
+  title: String
+  tpJobseekerCvId: ID!
+}
+
+input TpJobseekerCvExperienceRecordDeleteInput {
+  id: ID!
+}
+
+input TpJobseekerCvExperienceRecordPatchInput {
+  city: String
+  company: String
+  country: String
+  current: Boolean
+  description: String
+  endDateMonth: Float
+  endDateYear: Float
+  id: ID!
+  sortIndex: Int
+  startDateMonth: Float
+  startDateYear: Float
+  title: String
+}
+
+type TpJobseekerCvLanguageRecord {
+  id: ID!
+  language: Language!
+  proficiencyLevelId: LanguageProficiencyLevel!
+  tpJobseekerCvId: ID!
+}
+
+input TpJobseekerCvLanguageRecordCreateInput {
+  language: Language
+  proficiencyLevelId: LanguageProficiencyLevel
+  tpJobseekerCvId: ID!
+}
+
+input TpJobseekerCvLanguageRecordDeleteInput {
+  id: ID!
+}
+
+input TpJobseekerCvLanguageRecordPatchInput {
+  id: ID!
+  language: Language
+  proficiencyLevelId: LanguageProficiencyLevel
+}
+
+input TpJobseekerCvPatchInput {
+  aboutYourself: String
+  cvName: String
+  desiredPositions: [TpDesiredPosition!]
+  email: String
+  firstName: String
+  id: ID!
+  lastName: String
+  postalMailingAddress: String
+  telephoneNumber: String
+  topSkills: [TpTechnicalSkill!]
 }
 
 type TpJobseekerDirectoryEntry {

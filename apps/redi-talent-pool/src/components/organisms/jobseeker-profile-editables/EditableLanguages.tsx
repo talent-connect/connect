@@ -17,6 +17,7 @@ import {
   languageProficiencyLevelsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
+import { cloneDeep } from 'lodash'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Content, Element } from 'react-bulma-components'
 import { useQueryClient } from 'react-query'
@@ -133,18 +134,20 @@ export function JobseekerFormSectionLanguages({
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
 
-  const initialValues: FormValues = useMemo(() => {
-    // TODO: we should rather use structuredClone or a polyfill thereof at some future point
-    const languagesRecords =
-      myData?.data?.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry
-        ?.workingLanguages
-    return {
-      workingLanguages: languagesRecords ?? [buildBlankLanguageRecord()],
-    }
-  }, [
+  const workingLanguages =
     myData?.data?.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry
-      ?.workingLanguages,
-  ])
+      ?.workingLanguages
+
+  const initialValues: FormValues = useMemo(() => {
+    if (!workingLanguages || workingLanguages?.length === 0) {
+      return { workingLanguages: [buildBlankLanguageRecord()] }
+    }
+    // TODO: we should rather use structuredClone or a polyfill thereof at some future point
+    return {
+      workingLanguages: cloneDeep(workingLanguages),
+    }
+  }, [workingLanguages])
+
   const onSubmit = async (values: FormValues) => {
     // We need to run the mutation tpJobseekerProfileLanguageRecordCreate
     const newRecords = values.workingLanguages.filter((record) =>
@@ -195,6 +198,7 @@ export function JobseekerFormSectionLanguages({
     formik.setSubmitting(false)
     setIsEditing(false)
   }
+
   const formik = useFormik({
     initialValues,
     validationSchema,

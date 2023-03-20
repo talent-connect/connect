@@ -1,4 +1,11 @@
 import {
+  TpJobseekerCvExperienceRecord,
+  useFindAllTpJobseekerCvExperienceRecordsQuery,
+  useTpJobseekerCvExperienceRecordCreateMutation,
+  useTpJobseekerCvExperienceRecordDeleteMutation,
+  useTpJobseekerCvExperienceRecordPatchMutation,
+} from '@talent-connect/data-access'
+import {
   Button,
   Checkbox,
   FaqItem,
@@ -8,23 +15,18 @@ import {
   FormTextArea,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
-import {
-  ExperienceRecord,
-  TpJobseekerCv,
-  TpJobseekerProfile,
-} from '@talent-connect/shared-types'
 import { formMonthsOptions } from '@talent-connect/talent-pool/config'
 import { reorder } from '@talent-connect/typescript-utilities'
 import { useFormik } from 'formik'
+import { cloneDeep } from 'lodash'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Columns, Element } from 'react-bulma-components'
-import { UseMutationResult, UseQueryResult } from 'react-query'
+import { useQueryClient } from 'react-query'
 import { Subject } from 'rxjs'
 import { v4 as uuidv4 } from 'uuid'
 import * as Yup from 'yup'
-import { useTpjobseekerCvUpdateMutation } from '../../../react-query/use-tpjobseekercv-mutation'
-import { useTpJobseekerCvByIdQuery } from '../../../react-query/use-tpjobseekercv-query'
+import { useIsBusy } from '../../../hooks/useIsBusy'
 import { AccordionForm } from '../../molecules/AccordionForm'
 import {
   rolesAndResponsibilitiesAnswer,
@@ -46,52 +48,156 @@ export function AccordionFormCvProfessionalExperience({
     parentOnCloseCallback()
   }
 
-  const queryHookResult = useTpJobseekerCvByIdQuery(tpJobseekerCvId)
-  const mutationHookResult = useTpjobseekerCvUpdateMutation(tpJobseekerCvId)
-
   return (
     <AccordionForm
       title="Work experience"
       closeAccordionSignalSubject={closeAccordionSignalSubject}
     >
       <JobseekerFormSectionProfessionalExperience
+        tpJobseekerCvId={tpJobseekerCvId}
         setIsEditing={(isEditing) => {
           onClose()
         }}
-        queryHookResult={queryHookResult}
-        mutationHookResult={mutationHookResult}
       />
     </AccordionForm>
   )
 }
 
+type FormExperienceRecord = Omit<
+  TpJobseekerCvExperienceRecord,
+  | 'createdAt'
+  | 'updatedAt'
+  | 'tpJobseekerCvId'
+  | 'startDateMonth'
+  | 'startDateYear'
+  | 'endDateMonth'
+  | 'endDateYear'
+> & {
+  startDateMonth?: string
+  startDateYear?: string
+  endDateMonth?: string
+  endDateYear?: string
+}
+
+interface FormValues {
+  experience: Array<FormExperienceRecord>
+}
+
+export interface JobseekerFormSectionProfessionalExperienceProps {
+  tpJobseekerCvId: string
+  setIsEditing: (boolean) => void
+  setIsFormDirty?: (boolean) => void
+}
+
 export function JobseekerFormSectionProfessionalExperience({
+  tpJobseekerCvId,
   setIsEditing,
   setIsFormDirty,
-  queryHookResult,
-  mutationHookResult,
 }: JobseekerFormSectionProfessionalExperienceProps) {
-  const { data: profile } = queryHookResult
-  const mutation = mutationHookResult
+  const queryClient = useQueryClient()
+  const experienceRecordsQuery = useFindAllTpJobseekerCvExperienceRecordsQuery({
+    tpJobseekerCvId,
+  })
+  const patchMutation = useTpJobseekerCvExperienceRecordPatchMutation()
+  const deleteMutation = useTpJobseekerCvExperienceRecordDeleteMutation()
+  const createMutation = useTpJobseekerCvExperienceRecordCreateMutation()
+  const removedRecords = useRef<Array<string>>([])
+  const isBusy = useIsBusy()
+
+  const experienceRecords =
+    experienceRecordsQuery.data?.tpJobseekerCvExperienceRecords
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
 
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(
-    () => ({
-      experience: profile?.experience ?? [buildBlankExperienceRecord()],
-    }),
-    [profile?.experience]
-  )
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
-    formik.setSubmitting(true)
-    mutation.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
-      },
+  const initialValues: FormValues = useMemo(() => {
+    if (!experienceRecords || experienceRecords?.length === 0) {
+      return { experience: [buildBlankExperienceRecord()] }
+    }
+    // TODO: we should rather use structuredClone or a polyfill thereof at some future point
+    const experienceRecordsMonthsYearsAsStrings = experienceRecords?.map(
+      (experienceRecord) => {
+        return {
+          ...experienceRecord,
+          startDateMonth: experienceRecord.startDateMonth?.toString(),
+          startDateYear: experienceRecord.startDateYear?.toString(),
+          endDateMonth: experienceRecord.endDateMonth?.toString(),
+          endDateYear: experienceRecord.endDateYear?.toString(),
+        }
+      }
+    )
+    return {
+      experience: cloneDeep(experienceRecordsMonthsYearsAsStrings),
+    }
+  }, [experienceRecords])
+
+  const onSubmit = async (values: FormValues) => {
+    // We need to run the mutation tpJobseekerProfileExperienceRecordCreate
+    const newRecords = values.experience.filter((record) =>
+      record.id.includes('NEW')
+    )
+
+    // We need to run the mutation tpJobseekerProfileExperienceRecordPatch
+    const existingRecords = values.experience.filter(
+      (record) => !record.id.includes('NEW')
+    )
+
+    const deletedRecords = removedRecords.current
+
+    const createRecordPromises = newRecords.map((record) => {
+      return createMutation.mutateAsync({
+        input: {
+          tpJobseekerCvId,
+          current: record.current,
+          description: record.description,
+          endDateMonth: parseInt(record.endDateMonth),
+          endDateYear: parseInt(record.endDateYear),
+          city: record.city,
+          country: record.country,
+          company: record.company,
+          sortIndex: record.sortIndex,
+          startDateMonth: parseInt(record.startDateMonth),
+          startDateYear: parseInt(record.startDateYear),
+          title: record.title,
+        },
+      })
     })
+
+    const patchRecordPromises = existingRecords.map((record) => {
+      return patchMutation.mutateAsync({
+        input: {
+          id: record.id,
+          current: record.current,
+          description: record.description,
+          endDateMonth: parseInt(record.endDateMonth),
+          endDateYear: parseInt(record.endDateYear),
+          city: record.city,
+          country: record.country,
+          company: record.company,
+          sortIndex: record.sortIndex,
+          startDateMonth: parseInt(record.startDateMonth),
+          startDateYear: parseInt(record.startDateYear),
+          title: record.title,
+        },
+      })
+    })
+
+    const deleteRecordPromises = deletedRecords.map((recordId) => {
+      return deleteMutation.mutateAsync({
+        input: {
+          id: recordId,
+        },
+      })
+    })
+
+    formik.setSubmitting(true)
+    await Promise.all([
+      ...createRecordPromises,
+      ...patchRecordPromises,
+      ...deleteRecordPromises,
+    ])
+    queryClient.invalidateQueries()
+    formik.setSubmitting(false)
+    setIsEditing(false)
   }
 
   const validationSchema = Yup.object().shape({
@@ -143,10 +249,16 @@ export function JobseekerFormSectionProfessionalExperience({
   )
 
   const onClickAddExperience = useCallback(() => {
+    const allSortIndexes = formik.values.experience.map(
+      (record) => record.sortIndex
+    )
+    const highestSortIndex = Math.max(...allSortIndexes)
+    const newSortIndex = highestSortIndex + 1
     formik.setFieldValue('experience', [
       ...formik.values.experience,
-      buildBlankExperienceRecord(),
+      buildBlankExperienceRecord(newSortIndex),
     ])
+
     closeAllAccordionsSignalSubject.current.next()
   }, [formik])
 
@@ -160,16 +272,26 @@ export function JobseekerFormSectionProfessionalExperience({
         result.destination.index
       )
 
-      formik.setFieldValue('experience', reorderedExperience)
+      const withCorrectSortIndexes = reorderedExperience.map(
+        (record, index) => ({
+          ...record,
+          sortIndex: index,
+        })
+      )
+
+      formik.setFieldValue('experience', withCorrectSortIndexes)
     },
     [formik]
   )
 
   const onRemove = useCallback(
-    (uuid: string) => {
+    (id: string) => {
+      if (!id.includes('NEW')) {
+        removedRecords.current.push(id)
+      }
       formik.setFieldValue(
         'experience',
-        formik.values?.experience?.filter((item) => item.uuid !== uuid)
+        formik.values?.experience?.filter((item) => item.id !== id)
       )
     },
     [formik]
@@ -190,11 +312,7 @@ export function JobseekerFormSectionProfessionalExperience({
           {(provided) => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
               {formik?.values?.experience.map((item, index) => (
-                <Draggable
-                  key={item.uuid}
-                  draggableId={item.uuid}
-                  index={index}
-                >
+                <Draggable key={item.id} draggableId={item.id} index={index}>
                   {(provided) => (
                     <div
                       ref={provided.innerRef}
@@ -205,7 +323,7 @@ export function JobseekerFormSectionProfessionalExperience({
                         title={
                           item.title ? item.title : 'Click me to add details'
                         }
-                        onRemove={() => onRemove(item.uuid)}
+                        onRemove={() => onRemove(item.id)}
                         closeAccordionSignalSubject={
                           closeAllAccordionsSignalSubject.current
                         }
@@ -322,40 +440,23 @@ export function JobseekerFormSectionProfessionalExperience({
       </div>
 
       <Button
-        disabled={!formik.isValid || mutation.isLoading}
+        disabled={!formik.isValid || isBusy}
         onClick={formik.handleSubmit}
       >
         Save
       </Button>
-      <Button
-        simple
-        disabled={mutation.isLoading}
-        onClick={() => setIsEditing(false)}
-      >
+      <Button simple disabled={isBusy} onClick={() => setIsEditing(false)}>
         Cancel
       </Button>
     </>
   )
 }
 
-export interface JobseekerFormSectionProfessionalExperienceProps {
-  setIsEditing: (boolean) => void
-  setIsFormDirty?: (boolean) => void
-  queryHookResult: UseQueryResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
-    unknown
-  >
-  mutationHookResult: UseMutationResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
-    unknown,
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
-    unknown
-  >
-}
-
-export function buildBlankExperienceRecord(): ExperienceRecord {
+export function buildBlankExperienceRecord(
+  sortIndex: number = 1
+): FormExperienceRecord {
   return {
-    uuid: uuidv4(),
+    id: `NEW-${uuidv4()}`,
     title: '',
     company: '',
     city: '',
@@ -366,5 +467,6 @@ export function buildBlankExperienceRecord(): ExperienceRecord {
     endDateMonth: undefined,
     endDateYear: undefined,
     current: false,
+    sortIndex,
   }
 }
