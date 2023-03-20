@@ -1,4 +1,4 @@
-/* Keep me in sync with redi-connect-backend/lib/build-frontend-url.js */
+/* Keep me in sync with apps/api/lib/build-frontend-url.js */
 
 import { RediLocation } from '@talent-connect/shared-types'
 
@@ -10,6 +10,8 @@ export function buildFrontendUrl(env: string, rediLocation: RediLocation) {
   } else if (env === 'production' && rediLocation === 'munich') {
     return 'https://connect.munich.redi-school.org'
   } else if (env === 'production' && rediLocation === 'nrw') {
+    return 'https://connect.nrw.redi-school.org'
+  } else if (env === 'production' && rediLocation === 'cyberspace') {
     return 'https://connect.nrw.redi-school.org'
   } else if (env === 'demonstration') {
     return 'https://app.demo.connect.redi-school.org'
