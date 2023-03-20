@@ -9,6 +9,9 @@
   "properties": {
     "createdAt": {
       "type": "date"
+    },
+    "expiresAt": {
+      "type": "date"
     }
   },
   "validations": [],

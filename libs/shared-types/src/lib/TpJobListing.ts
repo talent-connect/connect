@@ -16,5 +16,6 @@ export type TpJobListing = {
   tpCompanyProfile?: TpCompanyProfile
 
   createdAt: Date
+  expiresAt?: Date
   updatedAt: Date
 }

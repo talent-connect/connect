@@ -327,6 +327,8 @@ export async function fetchAllTpJobListingsUsingFilters({
   const filterFederalStates =
     federalStates?.length !== 0 ? { inq: federalStates } : undefined
 
+  const currentDate = new Date()
+
   return http(
     `${API_URL}/tpJobListings?filter=${JSON.stringify({
       where: {
@@ -334,6 +336,7 @@ export async function fetchAllTpJobListingsUsingFilters({
         //   like: 'Carlotta3',
         //   options: 'i',
         // },
+        or: [{ expiresAt: { gt: currentDate } }, { exists: false }],
         and: [
           {
             relatesToPositions: filterRelatedPositions,
@@ -369,6 +372,7 @@ export async function fetchAllTpJobListingsUsingFilters({
 
 export async function fetchAllTpJobListings(): Promise<Array<TpJobListing>> {
   const userId = getAccessTokenFromLocalStorage().userId
+  const currentDate = new Date()
   const resp = await http(`${API_URL}/redUsers/${userId}/tpJobListings`)
 
   // TODO: remove the `.filter()`. It

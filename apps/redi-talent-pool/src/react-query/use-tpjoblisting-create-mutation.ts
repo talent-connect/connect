@@ -7,6 +7,7 @@ export function useTpJobListingCreateMutation() {
   return useMutation(createCurrentUserTpJobListing, {
     onSuccess: (data) => {
       queryClient.invalidateQueries(['allTpJobListings'])
+      queryClient.invalidateQueries(['activeTpJobListings'])
     },
   })
 }

@@ -14,10 +14,16 @@ const DOMPurify = createDOMPurify(window)
 module.exports = function (TpJobListing) {
   TpJobListing.observe('before save', function updateTimestamp(ctx, next) {
     const currentDate = new Date()
+    const expiryDate = new Date()
+    // MVP expiry date defaults to 30 days in the future
+    expiryDate.setDate(expiryDate.getDate() + 30)
 
     if (ctx.instance) {
       if (ctx.isNewInstance) {
         ctx.instance.createdAt = currentDate
+        if (ctx.instance.expiresAt === null){
+          ctx.instance.expiresAt = expiryDate
+        }
       }
       ctx.instance.updatedAt = new Date()
       ctx.instance.summary = DOMPurify.sanitize(ctx.instance.summary)
