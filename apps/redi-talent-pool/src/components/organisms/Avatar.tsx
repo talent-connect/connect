@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useState, useRef } from 'react'
 import { FormikValues, useFormik } from 'formik'
 import classnames from 'classnames'
 import * as Yup from 'yup'
@@ -116,10 +116,8 @@ const AvatarEditable = ({
   const [zoom, setZoom] = useState(1)
   const [minZoom, setMinZoom] = useState(1)
 
-  // This is how to keep functions in React state: https://stackoverflow.com/questions/55621212/is-it-possible-to-react-usestate-in-react
-  const [nextFn, setNextFn] = useState(() => (croppedImgFile) => {
-    return
-  })
+  const nextFnRef = useRef(null)
+
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null)
 
   const { profileAvatarImageS3Key } = profile
@@ -145,7 +143,6 @@ const AvatarEditable = ({
   }, [])
 
   const onUploadStart = async (file, next) => {
-    // Alert the user that the file is too big if the file size is more than 1MB
     let imageDataUrl = ''
     let imageWidth = 0
     let imageHeight = 0
@@ -170,7 +167,7 @@ const AvatarEditable = ({
       setImageFileName(file.name)
 
       // Storing next function passed by react-s3-uploader to be called in another function (onSaveClick)
-      setNextFn(() => (croppedImgFile) => next(croppedImgFile))
+      nextFnRef.current = next
       setShowCropperModal(true)
     }
 
@@ -201,11 +198,11 @@ const AvatarEditable = ({
       )) as BlobPart
       const croppedImgFile = new File([croppedImage], imageFileName)
 
-      nextFn(croppedImgFile)
+      nextFnRef.current(croppedImgFile)
     } catch (e) {
       console.error(e)
     }
-  }, [imageSrc, imageFileName, croppedAreaPixels, nextFn])
+  }, [imageSrc, imageFileName, croppedAreaPixels, nextFnRef])
 
   const onUploadFinish = (result: any) => {
     formik.setFieldValue('profileAvatarImageS3Key', result.fileKey)
