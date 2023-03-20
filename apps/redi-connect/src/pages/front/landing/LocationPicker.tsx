@@ -27,6 +27,7 @@ const LOCATIONS: Array<keyof typeof REDI_LOCATION_NAMES> = [
   'munich',
   'nrw',
   'hamburg',
+  'cyberspace',
 ]
 
 export default function LocationPicker() {

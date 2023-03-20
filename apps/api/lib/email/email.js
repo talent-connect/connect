@@ -566,6 +566,7 @@ const formatLocationName = (locationIdentifier) => {
     hamburg: 'Hamburg',
     munich: 'Munich',
     nrw: 'NRW',
+    cyberspace: 'Cyberspace'
   }[locationIdentifier]
 }
 
