@@ -2,7 +2,6 @@ import {
   DecoratedHeadline,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
-import React from 'react'
 import {
   Columns,
   Container,

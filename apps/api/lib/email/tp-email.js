@@ -206,7 +206,7 @@ const sendTpCompanyProfileSubmittedForReviewEmail = ({ companyName }) => {
   )
 
   return sendMjmlEmailFactory({
-    to: 'birgit@redi-school.org',
+    to: ['birgit@redi-school.org', 'janis@redi-school.org'],
     subject: 'New company in Talent Pool',
     html,
   })

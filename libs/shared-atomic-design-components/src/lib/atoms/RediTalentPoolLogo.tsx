@@ -1,8 +1,6 @@
-import React from 'react'
 import { Element } from 'react-bulma-components'
 import { NavLink } from 'react-router-dom'
 import { ReactComponent as RediTalentPoolLogo } from '../../assets/images/talent-pool-logo.svg'
-import { ReactComponent as RediTalentPoolLogoMobile } from '../../assets/images/talent-pool-logo.svg'
 
 const RediConnectLogo = () => {
   return (

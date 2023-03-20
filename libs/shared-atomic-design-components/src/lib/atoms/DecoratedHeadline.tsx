@@ -1,4 +1,3 @@
-import React from 'react'
 import { Element } from 'react-bulma-components'
 import Heading from '../atoms/Heading'
 import './DecoratedHeadline.scss'

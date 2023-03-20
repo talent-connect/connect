@@ -107,6 +107,19 @@ const validationSchema = Yup.object({
         ),
       })
     ),
+  workingLanguages: Yup.array()
+    .min(1)
+    .max(6)
+    .of(
+      Yup.object().shape({
+        language: Yup.string().required(
+          'Please select a language from the menu!'
+        ),
+        proficiencyLevelId: Yup.string().required(
+          'Please choose your level of proficiency!'
+        ),
+      })
+    ),
 })
 
 interface JobseekerFormSectionLanguagesProps {

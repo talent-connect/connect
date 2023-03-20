@@ -70,8 +70,10 @@ function FormSelect(props: any) {
   }
 
   const handleOnBlur = (e: any) => {
-    e.target.name = name
-    handleBlur(e)
+    setTimeout(() => {
+      e.target.name = name
+      handleBlur(e)
+    })
   }
 
   const hasError = !!get(touched, name) && !!get(errors, name)

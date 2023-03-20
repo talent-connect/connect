@@ -167,6 +167,10 @@ export function JobseekerFormSectionLinks({
     () => setIsFormDirty?.(formik.dirty),
     [formik.dirty, setIsFormDirty]
   )
+  useEffect(
+    () => setIsFormDirty?.(formik.dirty),
+    [formik.dirty, setIsFormDirty]
+  )
   return (
     <>
       <Element

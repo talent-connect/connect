@@ -1,20 +1,19 @@
-import React from 'react'
-import classnames from 'classnames'
-import {
-  Section,
-  Container,
-  Element,
-  Heading,
-  Content,
-  Columns,
-} from 'react-bulma-components'
-import { useTranslation } from 'react-i18next'
-import './RediHeroLanding.scss'
 import {
   Icon,
   SVGImage,
   SVGTypes,
 } from '@talent-connect/shared-atomic-design-components'
+import classnames from 'classnames'
+import {
+  Columns,
+  Container,
+  Content,
+  Element,
+  Heading,
+  Section,
+} from 'react-bulma-components'
+import { useTranslation } from 'react-i18next'
+import './RediHeroLanding.scss'
 
 interface Props {
   type: 'mentor' | 'mentee'
