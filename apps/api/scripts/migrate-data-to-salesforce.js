@@ -552,6 +552,7 @@ async function insertContactFn(p) {
         : undefined,
       ReDI_First_Point_of_Contact_Other_TP__c:
         p.contact.howDidHearAboutRediOtherText,
+      ReDI_Gender_Pronouns__c: p.contact.genderPronouns,
     })
     let result
     try {
