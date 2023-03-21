@@ -22,6 +22,7 @@ const sendTpResetPasswordEmailTemplate = fs.readFileSync(
   ),
   'utf-8'
 )
+
 const sendTpResetPasswordEmailParsed = mjml2html(
   sendTpResetPasswordEmailTemplate,
   {
@@ -249,7 +250,7 @@ export const sendTpCompanyProfileSubmittedForReviewEmail = ({
   )
 
   return sendMjmlEmailFactory({
-    to: 'birgit@redi-school.org',
+    to: ['birgit@redi-school.org', 'janis@redi-school.org'],
     subject: 'New company in Talent Pool',
     html,
   })

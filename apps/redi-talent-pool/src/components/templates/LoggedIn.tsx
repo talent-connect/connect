@@ -18,14 +18,11 @@ interface Props {
 }
 
 const LoggedIn = ({ children, hideNavigation }: Props) => {
-  const { data } = useMyTpDataQuery()
+  const myTpData = useMyTpDataQuery()
 
-  const {
-    tpCurrentUserDataGet: {
-      representedCompany: companyProfile,
-      tpJobseekerDirectoryEntry,
-    },
-  } = data
+  const companyProfile = myTpData.data?.tpCurrentUserDataGet?.representedCompany
+  const tpJobseekerDirectoryEntry =
+    myTpData.data?.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry
 
   const isBusy = useIsBusy()
 

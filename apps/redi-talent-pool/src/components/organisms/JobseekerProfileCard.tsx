@@ -1,5 +1,4 @@
 import { CardTags, Icon } from '@talent-connect/shared-atomic-design-components'
-import { TpJobseekerProfile } from '@talent-connect/shared-types'
 import {
   desiredPositionsIdToLabelMap,
   topSkillsIdToLabelMap,
@@ -8,9 +7,10 @@ import React from 'react'
 import { Card, Element, Tag } from 'react-bulma-components'
 import { NavLink } from 'react-router-dom'
 import placeholderImage from '../../assets/img-placeholder.png'
+import { JobseekerProfileCardJobseekerProfilePropFragment } from './JobseekerProfileCard.generated'
 import './JobseekerProfileCard.scss'
 interface JobseekerProfileCardProps {
-  jobseekerProfile: Partial<TpJobseekerProfile>
+  jobseekerProfile: JobseekerProfileCardJobseekerProfilePropFragment
   linkTo?: string
   isFavorite?: boolean
   toggleFavorite?: (id: string) => void
@@ -22,7 +22,7 @@ export function JobseekerProfileCard({
   toggleFavorite,
   isFavorite,
 }: JobseekerProfileCardProps) {
-  const fullName = `${jobseekerProfile?.firstName} ${jobseekerProfile?.lastName}`
+  const fullName = jobseekerProfile?.fullName
   const desiredPositions =
     jobseekerProfile?.desiredPositions
       ?.map((position) => desiredPositionsIdToLabelMap[position])

@@ -26,12 +26,16 @@ import {
 } from '@talent-connect/talent-pool/config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
 
+import {
+  FederalState,
+  Language,
+  TpDesiredPosition,
+  TpEmploymentType,
+  TpTechnicalSkill,
+  useTpJobseekerDirectoryEntriesFindAllVisibleQuery,
+} from '@talent-connect/data-access'
 import { JobseekerProfileCard } from '../../../components/organisms/JobseekerProfileCard'
 import { LoggedIn } from '../../../components/templates'
-
-import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
-import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
-import { useBrowseTpJobseekerProfilesQuery } from '../../../react-query/use-tpjobseekerprofile-query'
 
 const germanFederalStatesOptions = objectEntries(germanFederalStates).map(
   ([value, label]) => ({
@@ -51,38 +55,40 @@ export function BrowseCompany() {
     onlyFavorites: withDefault(BooleanParam, undefined),
     isJobFair2023Participant: withDefault(BooleanParam, undefined),
   })
-  const {
-    name,
-    desiredLanguages,
-    desiredPositions,
-    employmentTypes,
-    skills,
-    federalStates,
-    onlyFavorites,
-    isJobFair2023Participant,
-  } = query
+  const name = query.name
+  const desiredLanguages = query.desiredLanguages as Language[]
+  const desiredPositions = query.desiredPositions as TpDesiredPosition[]
+  const employmentTypes = query.employmentTypes as TpEmploymentType[]
+  const skills = query.skills as TpTechnicalSkill[]
+  const federalStates = query.federalStates as FederalState[]
+  const onlyFavorites = query.onlyFavorites
+  const isJobFair2023Participant = query.isJobFair2023Participant
 
-  const { data: jobseekerProfiles } = useBrowseTpJobseekerProfilesQuery({
-    name,
-    desiredLanguages,
-    desiredPositions,
-    employmentTypes,
-    skills,
-    federalStates,
-    isJobFair2023Participant,
-  })
+  const jobseekerProfilesQuery =
+    useTpJobseekerDirectoryEntriesFindAllVisibleQuery({
+      input: {
+        name,
+        desiredLanguages,
+        desiredPositions,
+        employmentTypes,
+        skills,
+        federalStates,
+        isJobFair2023Participant,
+      },
+    })
+  const jobseekerProfiles =
+    jobseekerProfilesQuery.data?.tpJobseekerDirectoryEntriesVisible
 
-  const { data: companyProfile } = useTpCompanyProfileQuery()
-  const tpCompanyProfileUpdateMutation = useTpCompanyProfileUpdateMutation()
+  // const { data: companyProfile } = useTpCompanyProfileQuery()
+  // const tpCompanyProfileUpdateMutation = useTpCompanyProfileUpdateMutation()
 
   const handleFavoriteJobseeker = (value) => {
-    const newFavorites = !companyProfile.favouritedTpJobseekerIds
-      ? [value]
-      : toggleValueInArray(companyProfile.favouritedTpJobseekerIds, value)
-
-    tpCompanyProfileUpdateMutation.mutate({
-      favouritedTpJobseekerIds: newFavorites,
-    })
+    // const newFavorites = !companyProfile.favouritedTpJobseekerIds
+    //   ? [value]
+    //   : toggleValueInArray(companyProfile.favouritedTpJobseekerIds, value)
+    // tpCompanyProfileUpdateMutation.mutate({
+    //   favouritedTpJobseekerIds: newFavorites,
+    // })
   }
 
   const toggleOnlyFavoritesFilter = () => {
@@ -302,9 +308,11 @@ export function BrowseCompany() {
       </div>
       <Columns>
         {jobseekerProfiles?.map((profile) => {
-          const isFavorite = companyProfile.favouritedTpJobseekerIds?.includes(
-            profile.id
-          )
+          const isFavorite = false
+          //! LAUNCH
+          // const isFavorite = companyProfile.favouritedTpJobseekerIds?.includes(
+          //   profile.id
+          // )
 
           if (!isFavorite && onlyFavorites) return
 

@@ -3,7 +3,7 @@ import {
   TpCompanyProfileEntityProps,
   TpCompanyRepresentativeRelationshipEntityProps,
   TpJobListingEntityProps,
-  TpJobseekerProfileEntityProps,
+  TpJobseekerDirectoryEntryEntityProps,
   UserContactEntityProps,
 } from '@talent-connect/common-types'
 
@@ -15,8 +15,8 @@ export class TpCurrentUserData {
   @Field((type) => TpCompanyRepresentativeRelationshipEntityProps)
   companyRepresentativeRelationship?: TpCompanyRepresentativeRelationshipEntityProps
 
-  @Field((type) => TpJobseekerProfileEntityProps)
-  jobseekerProfile?: TpJobseekerProfileEntityProps
+  @Field((type) => TpJobseekerDirectoryEntryEntityProps)
+  tpJobseekerDirectoryEntry?: TpJobseekerDirectoryEntryEntityProps
 
   @Field((type) => [TpJobListingEntityProps])
   jobListings?: Array<TpJobListingEntityProps>

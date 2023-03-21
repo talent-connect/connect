@@ -1035,9 +1035,8 @@ export type TpCurrentUserData = {
   __typename?: 'TpCurrentUserData';
   companyRepresentativeRelationship?: Maybe<TpCompanyRepresentativeRelationship>;
   jobListings?: Maybe<Array<TpJobListing>>;
-  jobseekerProfile?: Maybe<TpJobseekerProfile>;
   representedCompany?: Maybe<TpCompanyProfile>;
-  tpJobseekerDirectoryEntry: TpJobseekerDirectoryEntry;
+  tpJobseekerDirectoryEntry?: Maybe<TpJobseekerDirectoryEntry>;
   userContact: UserContact;
 };
 

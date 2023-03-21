@@ -733,9 +733,8 @@ enum TpCompanyRepresentativeRelationshipStatus {
 type TpCurrentUserData {
   companyRepresentativeRelationship: TpCompanyRepresentativeRelationship
   jobListings: [TpJobListing!]
-  jobseekerProfile: TpJobseekerProfile
   representedCompany: TpCompanyProfile
-  tpJobseekerDirectoryEntry: TpJobseekerDirectoryEntry!
+  tpJobseekerDirectoryEntry: TpJobseekerDirectoryEntry
   userContact: UserContact!
 }
 
