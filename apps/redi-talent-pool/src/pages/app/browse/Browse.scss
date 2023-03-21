@@ -112,29 +112,12 @@
     transition: $transition;
     margin-right: 0.3rem;
 
-      path {
-        fill: $redi-orange-dark;
-      }
-
-      &:hover {
-        transform: scale(1.2);
-      }
-  }
-
-  &--active {
-    background-color: $input-hover-border-color;
-    color: white;
-  }
-}
-
-.filter-remote {
-  @include filter-box;
-
-  & svg {
-    font-size: 1.2rem;
-    margin-right: 0.5em;
     path {
       fill: $redi-orange-dark;
+    }
+
+    &:hover {
+      transform: scale(1.2);
     }
   }
 

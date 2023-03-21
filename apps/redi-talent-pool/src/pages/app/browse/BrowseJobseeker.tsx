@@ -30,7 +30,6 @@ import { LoggedIn } from '../../../components/templates'
 import { JobListingCard } from '../../../components/organisms/JobListingCard'
 import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 import { objectEntries } from '@talent-connect/typescript-utilities'
-import { Home, HomeOutlined } from '@material-ui/icons'
 
 export function BrowseJobseeker() {
   const [companyName, setCompanyName] = useState('')
@@ -202,12 +201,14 @@ export function BrowseJobseeker() {
         </div>
       </div>
       <div className="filters">
-        <div
-          className="filters-inner filter-remote"
-          onClick={toggleRemoteAvailableFilter}
-        >
-          {isRemotePossible ? <Home /> : <HomeOutlined />}
-          Remote Working Possible
+        <div className="filters-inner">
+          <Checkbox
+            name="isRemotePossible"
+            checked={isRemotePossible || false}
+            handleChange={toggleRemoteAvailableFilter}
+          >
+            Remote Working Possible
+          </Checkbox>
         </div>
         {/* Hidden until the next Job Fair date announced */}
         {/* <div className="filters-inner filters__jobfair">
