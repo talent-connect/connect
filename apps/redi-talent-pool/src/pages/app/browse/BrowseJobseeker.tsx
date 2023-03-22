@@ -22,18 +22,26 @@ import {
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 
-import { useBrowseTpJobListingsQuery } from '../../../react-query/use-tpjoblisting-all-query'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
-
 import { Home, HomeOutlined } from '@material-ui/icons'
+import {
+  FederalState,
+  JobseekerProfileStatus,
+  TpDesiredPosition,
+  TpEmploymentType,
+  TpTechnicalSkill,
+  useMyTpDataQuery,
+  useTpJobListingFindAllVisibleQuery,
+} from '@talent-connect/data-access'
 import { objectEntries } from '@talent-connect/typescript-utilities'
+import { Redirect } from 'react-router-dom'
 import { JobListingCard } from '../../../components/organisms/JobListingCard'
 import { LoggedIn } from '../../../components/templates'
-import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
 
 export function BrowseJobseeker() {
   const [companyName, setCompanyName] = useState('')
-  const { data: currentJobseekerProfile } = useTpJobseekerProfileQuery()
+  const myTpData = useMyTpDataQuery()
+  const currentJobseekerProfile =
+    myTpData.data?.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry
 
   const [query, setQuery] = useQueryParams({
     relatedPositions: withDefault(ArrayParam, []),
@@ -43,41 +51,38 @@ export function BrowseJobseeker() {
     onlyFavorites: withDefault(BooleanParam, undefined),
     isRemotePossible: withDefault(BooleanParam, undefined),
   })
-  const {
-    relatedPositions,
-    idealTechnicalSkills,
-    employmentType,
-    federalStates,
-    onlyFavorites,
-    isRemotePossible,
-  } = query
+  const relatedPositions = query.relatedPositions as TpDesiredPosition[]
+  const idealTechnicalSkills = query.idealTechnicalSkills as TpTechnicalSkill[]
+  const employmentType = query.employmentType as TpEmploymentType[]
+  const federalStates = query.federalStates as FederalState[]
+  const onlyFavorites = query.onlyFavorites
+  const isRemotePossible = query.isRemotePossible
 
-  const { data: jobseekerProfile } = useTpJobseekerProfileQuery()
-  const tpjobseekerprofileUpdateMutation = useTpjobseekerprofileUpdateMutation()
-
-  const { data: jobListings } = useBrowseTpJobListingsQuery({
-    relatedPositions,
-    idealTechnicalSkills,
-    employmentType,
-    federalStates,
-    isRemotePossible,
+  const jobListingsQuery = useTpJobListingFindAllVisibleQuery({
+    input: {
+      relatesToPositions: relatedPositions,
+      skills: idealTechnicalSkills,
+      employmentTypes: employmentType,
+      federalStates,
+      isRemotePossible,
+    },
   })
+  const jobListings = jobListingsQuery.data?.tpJobListings
 
   const handleFavoriteJobListing = (value) => {
-    const newFavorites = !jobseekerProfile.favouritedTpJobListingIds
-      ? [value]
-      : toggleValueInArray(jobseekerProfile.favouritedTpJobListingIds, value)
-
-    tpjobseekerprofileUpdateMutation.mutate({
-      favouritedTpJobListingIds: newFavorites,
-    })
+    //   const newFavorites = !jobseekerProfile.favouritedTpJobListingIds
+    //     ? [value]
+    //     : toggleValueInArray(jobseekerProfile.favouritedTpJobListingIds, value)
+    //   tpjobseekerprofileUpdateMutation.mutate({
+    //     favouritedTpJobListingIds: newFavorites,
+    //   })
   }
 
   const toggleOnlyFavoritesFilter = () => {
-    setQuery((latestQuery) => ({
-      ...latestQuery,
-      onlyFavorites: onlyFavorites ? undefined : true,
-    }))
+    // setQuery((latestQuery) => ({
+    //   ...latestQuery,
+    //   onlyFavorites: onlyFavorites ? undefined : true,
+    // }))
   }
 
   const toggleRemoteAvailableFilter = () => {
@@ -101,7 +106,13 @@ export function BrowseJobseeker() {
     }))
   }
 
-  if (currentJobseekerProfile?.state !== 'profile-approved') return null
+  // Redirect to homepage if user is not supposed to be browsing yet
+  if (
+    currentJobseekerProfile &&
+    currentJobseekerProfile?.state !== JobseekerProfileStatus.ProfileApproved
+  ) {
+    return <Redirect to="/" />
+  }
 
   return (
     <LoggedIn>
@@ -248,17 +259,18 @@ export function BrowseJobseeker() {
       <Columns>
         {jobListings
           ?.filter((jobListing) =>
-            jobListing.tpCompanyProfile.companyName
+            jobListing.companyName
               .toLowerCase()
               .includes(companyName.toLowerCase())
           )
           .map((jobListing) => {
-            const isFavorite =
-              jobseekerProfile.favouritedTpJobListingIds?.includes(
-                jobListing.id
-              )
+            //! LAUNCH
+            const isFavorite = false
+            //   jobseekerProfile.favouritedTpJobListingIds?.includes(
+            //     jobListing.id
+            //   )
 
-            if (!isFavorite && onlyFavorites) return
+            // if (!isFavorite && onlyFavorites) return
 
             return (
               <Columns.Column mobile={{ size: 12 }} tablet={{ size: 6 }}>

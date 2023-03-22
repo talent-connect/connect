@@ -178,7 +178,7 @@ export default function SignUp() {
           'agreesWithCodeOfConduct',
           'gaveGdprConsent',
         ])
-
+        console.log('hello')
         await signUpJobseeker(values.email, values.password, cleanProfile)
       }
 

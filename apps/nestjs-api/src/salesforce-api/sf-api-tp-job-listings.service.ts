@@ -12,6 +12,7 @@ export class SfApiTpJobListingsService {
       objectName: TpJobListingRecord.metadata.SALESFORCE_OBJECT_NAME,
       objectFields: TpJobListingRecord.metadata.SALESFORCE_OBJECT_FIELDS,
       childObjects: TpJobListingRecord.metadata.SALESFORCE_CHILD_OBJECTS,
+      orderBy: TpJobListingRecord.metadata.SALESFORCE_ORDER_BY,
       filter,
     })
     const jobListings = rawRecords.map((rawRecord) =>

@@ -35,7 +35,11 @@ export class SfApiTpJobseekerCvService {
   async update(record: TpJobseekerCvRecord) {
     const props = record.props
 
-    const cleanProps = omit(props, ['CreatedDate', 'LastModifiedDate'])
+    const cleanProps = omit(props, [
+      'CreatedDate',
+      'LastModifiedDate',
+      'Contact__c',
+    ])
 
     await this.repository.updateRecord(
       TpJobseekerCvRecord.metadata.SALESFORCE_OBJECT_NAME,

@@ -85,7 +85,7 @@ function JobseekerFormSectionImportantDetails({
   )
   const onSubmit = async (values: FormValues) => {
     formik.setSubmitting(true)
-    cvMutation.mutateAsync({
+    await cvMutation.mutateAsync({
       input: {
         id: tpJobseekerCvId,
         email: values.email,

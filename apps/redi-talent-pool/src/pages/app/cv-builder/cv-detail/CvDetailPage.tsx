@@ -57,7 +57,7 @@ function CvDetailPage() {
 
   const myTpDataQuery = useMyTpDataQuery()
   const profile =
-    myTpDataQuery.data.tpCurrentUserDataGet.tpJobseekerDirectoryEntry
+    myTpDataQuery.data?.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry
   const profileLoadSuccess = myTpDataQuery.isSuccess
 
   const cvDataQuery = useFindOneTpJobseekerCvQuery(

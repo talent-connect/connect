@@ -74,9 +74,9 @@ function Form({ tpJobseekerCvId, setIsEditing, setIsFormDirty }: FormProps) {
     }),
     [cv?.firstName, cv?.lastName]
   )
-  const onSubmit = (values: FormValues) => {
+  const onSubmit = async (values: FormValues) => {
     formik.setSubmitting(true)
-    cvMutation.mutateAsync({
+    await cvMutation.mutateAsync({
       input: {
         id: tpJobseekerCvId,
         firstName: values.firstName,

@@ -94,9 +94,9 @@ export function JobseekerFormSectionSummary({
     }),
     [cv?.aboutYourself, cv?.topSkills]
   )
-  const onSubmit = (values: FormValues) => {
+  const onSubmit = async (values: FormValues) => {
     formik.setSubmitting(true)
-    cvMutation.mutateAsync({
+    await cvMutation.mutateAsync({
       input: {
         id: tpJobseekerCvId,
         aboutYourself: values.aboutYourself,
