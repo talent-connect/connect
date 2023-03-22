@@ -265,6 +265,16 @@ export function BrowseJobseeker() {
                 }
               />
             ))}
+            {(federalStates as string[]).map((id) => (
+              <FilterTag
+                key={id}
+                id={id}
+                label={germanFederalStates[id]}
+                onClickHandler={(item) =>
+                  toggleFilters(federalStates, 'federalStates', item)
+                }
+              />
+            ))}
             {isJobFair2023Participant && (
               <FilterTag
                 key="redi-job-fair-2022-filter"
