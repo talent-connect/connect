@@ -1,16 +1,18 @@
-import { useMyTpDataQuery } from '@talent-connect/data-access'
+import {
+  useMyTpDataQuery,
+  usePatchTpCompanyProfileMutation,
+  usePatchUserContactMutation,
+} from '@talent-connect/data-access'
 import {
   Button,
   Caption,
   FormInput,
 } from '@talent-connect/shared-atomic-design-components'
-import { TpCompanyProfile } from '@talent-connect/shared-types'
 import { toPascalCaseAndTrim } from '@talent-connect/shared-utils'
 import { useFormik } from 'formik'
 import { useEffect, useMemo, useState } from 'react'
 import { Content, Element } from 'react-bulma-components'
 import * as Yup from 'yup'
-import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import {
@@ -128,6 +130,9 @@ const validationSchema = Yup.object({
   telephoneNumber: Yup.string().max(255).label('Phone Number'),
 })
 
+type FormValues = EditableContactCompanyProfilePropFragment &
+  Omit<EditableContactUserContactPropFragment, 'email'>
+
 function ModalForm({
   setIsEditing,
   setIsFormDirty,
@@ -139,29 +144,35 @@ function ModalForm({
   const { userContact, representedCompany: companyProfile } =
     myData?.data?.tpCurrentUserDataGet
 
-  const mutation = useTpCompanyProfileUpdateMutation()
-  const initialValues: EditableContactCompanyProfilePropFragment &
-    EditableContactUserContactPropFragment = useMemo(
+  const companyProfileMutation = usePatchTpCompanyProfileMutation()
+  const userContactMutation = usePatchUserContactMutation()
+
+  const initialValues: FormValues = useMemo(
     () => ({
       firstName: userContact?.firstName ?? '',
       lastName: userContact?.lastName ?? '',
       telephoneNumber: companyProfile?.telephoneNumber ?? '',
-      email: userContact?.email ?? '',
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )
-  const onSubmit = (values: Partial<TpCompanyProfile>) => {
+  const onSubmit = async (values: FormValues) => {
     formik.setSubmitting(true)
     const transformedValues = validationSchema.cast(values)
-    mutation.mutate(transformedValues, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
+    const pendingCompanyProfilePatch = companyProfileMutation.mutateAsync({
+      input: {
+        id: companyProfile.id,
+        telephoneNumber: transformedValues.telephoneNumber,
       },
     })
+    const pendingUserContactPatch = userContactMutation.mutateAsync({
+      input: {
+        firstName: transformedValues.firstName,
+        lastName: transformedValues.lastName,
+      },
+    })
+    formik.setSubmitting(false)
+    setIsEditing(false)
   }
   const formik = useFormik({
     initialValues,
