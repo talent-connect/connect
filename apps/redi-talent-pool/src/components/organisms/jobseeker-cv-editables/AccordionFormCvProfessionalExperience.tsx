@@ -198,6 +198,7 @@ export function JobseekerFormSectionProfessionalExperience({
     queryClient.invalidateQueries()
     formik.setSubmitting(false)
     setIsEditing(false)
+    removedRecords.current = []
   }
 
   const validationSchema = Yup.object().shape({

@@ -265,6 +265,7 @@ function JobseekerFormSectionEducation({
     queryClient.invalidateQueries()
     formik.setSubmitting(false)
     setIsEditing(false)
+    removedRecords.current = []
   }
 
   const validationSchema = Yup.object().shape({

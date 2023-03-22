@@ -50,6 +50,8 @@ export class TpJobseekerProfileMapper
       | ImmigrationStatus
       | undefined
 
+    props.userId = raw.props.Contact__c
+
     props.updatedAt = raw.props.LastModifiedDate
     props.createdAt = raw.props.CreatedDate
 
@@ -87,6 +89,8 @@ export class TpJobseekerProfileMapper
     props.Willing_to_Relocate__c = source.props.willingToRelocate
     props.Immigration_Status__c = source.props.immigrationStatus as unknown as
       | string
+
+    props.Contact__c = source.props.userId
 
     const record = TpJobseekerProfileRecord.create(props)
 

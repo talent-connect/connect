@@ -551,6 +551,7 @@ type Mutation {
   tpJobseekerProfileLanguageRecordDelete(tpJobseekerProfileLanguageRecordDeleteInput: TpJobseekerProfileLanguageRecordDeleteInput!): OkResponseMutationOutputDto!
   tpJobseekerProfileLanguageRecordPatch(tpJobseekerProfileLanguageRecordPatchInput: TpJobseekerProfileLanguageRecordPatchInput!): OkResponseMutationOutputDto!
   tpJobseekerProfilePatch(tpJobseekerProfilePatchInput: TpJobseekerProfilePatchInput!): OkResponseMutationOutputDto!
+  tpJobseekerProfileSignUp(input: TpJobseekerProfileSignUpDto!): OkResponseMutationOutputDto!
   userContactPatch(userContactPatchInput: UserContactPatchInput!): OkResponseMutationOutputDto!
 }
 
@@ -1054,7 +1055,7 @@ type TpJobseekerDirectoryEntry {
   availability: TpAvailabilityOption
   behanceUrl: String
   createdAt: DateTime!
-  currentlyEnrolledInCourse: String
+  currentlyEnrolledInCourse: RediCourse
   desiredEmploymentType: [TpEmploymentType!]
   desiredPositions: [TpDesiredPosition!]
   dribbbleUrl: String
@@ -1096,7 +1097,7 @@ type TpJobseekerProfile {
   aboutYourself: String
   availability: TpAvailabilityOption
   createdAt: DateTime!
-  currentlyEnrolledInCourse: String
+  currentlyEnrolledInCourse: RediCourse
   desiredEmploymentType: [TpEmploymentType!]
   desiredPositions: [TpDesiredPosition!]
   federalState: FederalState
@@ -1109,10 +1110,11 @@ type TpJobseekerProfile {
   isProfileVisibleToCompanies: Boolean!
   location: String
   profileAvatarImageS3Key: String
-  rediLocation: String
+  rediLocation: RediLocation
   state: JobseekerProfileStatus!
   topSkills: [TpTechnicalSkill!]
   updatedAt: DateTime!
+  userId: ID!
   willingToRelocate: Boolean!
 }
 
@@ -1248,7 +1250,7 @@ input TpJobseekerProfileLanguageRecordPatchInput {
 input TpJobseekerProfilePatchInput {
   aboutYourself: String
   availability: TpAvailabilityOption
-  currentlyEnrolledInCourse: String
+  currentlyEnrolledInCourse: RediCourse
   desiredEmploymentType: [TpEmploymentType!]
   desiredPositions: [TpDesiredPosition!]
   federalState: FederalState
@@ -1260,10 +1262,17 @@ input TpJobseekerProfilePatchInput {
   isProfileVisibleToCompanies: Boolean
   location: String
   profileAvatarImageS3Key: String
-  rediLocation: String
+  rediLocation: RediLocation
   state: JobseekerProfileStatus
   topSkills: [TpTechnicalSkill!]
   willingToRelocate: Boolean
+}
+
+input TpJobseekerProfileSignUpDto {
+  currentlyEnrolledInCourse: RediCourse!
+  firstName: String!
+  lastName: String!
+  rediLocation: RediLocation!
 }
 
 enum TpTechnicalSkill {

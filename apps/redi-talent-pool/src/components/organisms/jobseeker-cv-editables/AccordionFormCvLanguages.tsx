@@ -165,6 +165,7 @@ export function JobseekerFormSectionLanguages({
     queryClient.invalidateQueries()
     formik.setSubmitting(false)
     setIsEditing(false)
+    removedRecords.current = []
   }
 
   const formik = useFormik({
@@ -190,12 +191,13 @@ export function JobseekerFormSectionLanguages({
   }, [formik])
 
   const onRemove = useCallback(
-    (language: string) => {
+    (id: string) => {
+      if (!id.includes('NEW')) {
+        removedRecords.current.push(id)
+      }
       formik.setFieldValue(
         'workingLanguages',
-        formik.values?.workingLanguages?.filter(
-          (lang) => lang.language !== language
-        )
+        formik.values?.workingLanguages?.filter((lang) => lang.id !== id)
       )
     },
     [formik]
@@ -215,7 +217,7 @@ export function JobseekerFormSectionLanguages({
       {formik?.values?.workingLanguages?.map((item, index) => (
         <FormDraggableAccordion
           title={item.language ? item.language : 'Click me to add details'}
-          onRemove={() => onRemove(item.language)}
+          onRemove={() => onRemove(item.id)}
           closeAccordionSignalSubject={closeAllAccordionsSignalSubject.current}
         >
           <FormSelect

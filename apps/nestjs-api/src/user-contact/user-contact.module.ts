@@ -7,6 +7,6 @@ import { UserContactService } from './user-contact.service'
 @Module({
   providers: [UserContactService, UserContactResolver, UserContactMapper],
   imports: [SfApiModule],
-  exports: [],
+  exports: [UserContactService],
 })
 export class UserContactModule {}

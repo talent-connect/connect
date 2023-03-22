@@ -10,6 +10,13 @@ export type SignUpCompanyMutationVariables = Types.Exact<{
 
 export type SignUpCompanyMutation = { __typename?: 'Mutation', tpCompanyProfileSignUp: { __typename?: 'TpCompanyProfileSignUpInputOutputDto', ok: boolean } };
 
+export type SignUpJobseekerMutationVariables = Types.Exact<{
+  input: Types.TpJobseekerProfileSignUpDto;
+}>;
+
+
+export type SignUpJobseekerMutation = { __typename?: 'Mutation', tpJobseekerProfileSignUp: { __typename?: 'OkResponseMutationOutputDto', ok: boolean } };
+
 
 export const SignUpCompanyDocument = `
     mutation signUpCompany($input: TpCompanyProfileSignUpInputDto!) {
@@ -25,5 +32,21 @@ export const useSignUpCompanyMutation = <
     useMutation<SignUpCompanyMutation, TError, SignUpCompanyMutationVariables, TContext>(
       ['signUpCompany'],
       (variables?: SignUpCompanyMutationVariables) => fetcher<SignUpCompanyMutation, SignUpCompanyMutationVariables>(SignUpCompanyDocument, variables)(),
+      options
+    );
+export const SignUpJobseekerDocument = `
+    mutation signUpJobseeker($input: TpJobseekerProfileSignUpDto!) {
+  tpJobseekerProfileSignUp(input: $input) {
+    ok
+  }
+}
+    `;
+export const useSignUpJobseekerMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<SignUpJobseekerMutation, TError, SignUpJobseekerMutationVariables, TContext>) =>
+    useMutation<SignUpJobseekerMutation, TError, SignUpJobseekerMutationVariables, TContext>(
+      ['signUpJobseeker'],
+      (variables?: SignUpJobseekerMutationVariables) => fetcher<SignUpJobseekerMutation, SignUpJobseekerMutationVariables>(SignUpJobseekerDocument, variables)(),
       options
     );

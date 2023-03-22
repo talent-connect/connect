@@ -11,6 +11,7 @@ import { useFormik } from 'formik'
 import { useEffect, useMemo, useState } from 'react'
 import { Content, Element } from 'react-bulma-components'
 import ReactMarkdown from 'react-markdown'
+import { useQueryClient } from 'react-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import { EditableAboutProfilePropFragment } from './EditableAbout.generated'
@@ -83,6 +84,7 @@ function ModalForm({
   setIsEditing: (boolean) => void
   setIsFormDirty: (boolean) => void
 }) {
+  const queryClient = useQueryClient()
   const myData = useMyTpDataQuery()
   const { representedCompany: companyProfile } =
     myData?.data?.tpCurrentUserDataGet
@@ -95,19 +97,14 @@ function ModalForm({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )
-  const onSubmit = (values: Partial<EditableAboutProfilePropFragment>) => {
+  const onSubmit = async (
+    values: Partial<EditableAboutProfilePropFragment>
+  ) => {
     formik.setSubmitting(true)
-    mutation.mutate(
-      { input: { id: companyProfile.id, ...values } },
-      {
-        onSettled: () => {
-          formik.setSubmitting(false)
-        },
-        onSuccess: () => {
-          setIsEditing(false)
-        },
-      }
-    )
+    await mutation.mutateAsync({ input: { id: companyProfile.id, ...values } })
+    formik.setSubmitting(false)
+    setIsEditing(false)
+    queryClient.invalidateQueries()
   }
   const formik = useFormik({
     initialValues,

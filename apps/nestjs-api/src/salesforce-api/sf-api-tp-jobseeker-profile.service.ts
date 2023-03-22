@@ -19,10 +19,25 @@ export class SfApiTpJobseekerProfileService {
     return records
   }
 
-  async update(record: TpJobseekerProfileRecord) {
+  async create(record: TpJobseekerProfileRecord) {
     const props = record.props
 
     const cleanProps = omit(props, ['CreatedDate', 'LastModifiedDate'])
+
+    await this.repository.createRecord(
+      TpJobseekerProfileRecord.metadata.SALESFORCE_OBJECT_NAME,
+      cleanProps
+    )
+  }
+
+  async update(record: TpJobseekerProfileRecord) {
+    const props = record.props
+
+    const cleanProps = omit(props, [
+      'CreatedDate',
+      'LastModifiedDate',
+      'Contact__c',
+    ])
 
     await this.repository.updateRecord(
       TpJobseekerProfileRecord.metadata.SALESFORCE_OBJECT_NAME,

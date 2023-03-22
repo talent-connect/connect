@@ -31,6 +31,7 @@ import {
   useTpJobseekerCvLanguageRecordCreateMutation,
   useTpJobseekerCvPatchMutation,
 } from '@talent-connect/data-access'
+import { useQueryClient } from 'react-query'
 import { CVPDF } from '../../../../components/molecules/CvPdfPreview'
 import { CvListItemMoreOptionsMenu } from './CvListItemMoreOptionsMenu'
 
@@ -95,6 +96,7 @@ const CvListItem = (props: CvListItemProps) => {
   const createMutation = useTpJobseekerCvCreateMutation()
   const updateMutation = useTpJobseekerCvPatchMutation()
   const deleteMutation = useTpJobseekerCvDeleteMutation()
+  const queryClient = useQueryClient()
 
   const cvJobseekerExperienceRecordsQuery =
     useFindAllTpJobseekerCvExperienceRecordsQuery({ tpJobseekerCvId: props.id })
@@ -129,8 +131,9 @@ const CvListItem = (props: CvListItemProps) => {
     history.push(`/app/cv-builder/${props.id}`)
   }
 
-  const handleDelete = (): void => {
-    deleteMutation.mutate({ input: { id: props.id } })
+  const handleDelete = async () => {
+    await deleteMutation.mutateAsync({ input: { id: props.id } })
+    queryClient.invalidateQueries()
   }
 
   const handleRename = (): void => {

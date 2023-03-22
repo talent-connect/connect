@@ -3,10 +3,12 @@ import { EntityProps } from '../../base-interfaces-types-classes'
 import {
   FederalState,
   ImmigrationStatus,
+  RediLocation,
   TpDesiredPosition,
   TpEmploymentType,
   TpTechnicalSkill,
 } from '../../common-objects'
+import { RediCourse } from '../../con-profile'
 import { TpAvailabilityOption } from '../../tp-common-objects'
 import { JobseekerProfileStatus } from '../enums'
 
@@ -17,7 +19,9 @@ export class TpJobseekerProfileEntityProps implements EntityProps {
 
   location?: string
 
+  @Field(() => RediLocation)
   rediLocation?: string
+  @Field(() => RediCourse)
   currentlyEnrolledInCourse?: string
   profileAvatarImageS3Key?: string
   @Field((type) => [TpDesiredPosition])
@@ -41,6 +45,9 @@ export class TpJobseekerProfileEntityProps implements EntityProps {
   willingToRelocate: boolean
   @Field((type) => ImmigrationStatus)
   immigrationStatus?: ImmigrationStatus
+
+  @Field(() => ID)
+  userId: string
 
   createdAt: Date
   updatedAt: Date

@@ -575,6 +575,7 @@ export type Mutation = {
   tpJobseekerProfileLanguageRecordDelete: OkResponseMutationOutputDto;
   tpJobseekerProfileLanguageRecordPatch: OkResponseMutationOutputDto;
   tpJobseekerProfilePatch: OkResponseMutationOutputDto;
+  tpJobseekerProfileSignUp: OkResponseMutationOutputDto;
   userContactPatch: OkResponseMutationOutputDto;
 };
 
@@ -771,6 +772,11 @@ export type MutationTpJobseekerProfileLanguageRecordPatchArgs = {
 
 export type MutationTpJobseekerProfilePatchArgs = {
   tpJobseekerProfilePatchInput: TpJobseekerProfilePatchInput;
+};
+
+
+export type MutationTpJobseekerProfileSignUpArgs = {
+  input: TpJobseekerProfileSignUpDto;
 };
 
 
@@ -1362,7 +1368,7 @@ export type TpJobseekerDirectoryEntry = {
   availability?: Maybe<TpAvailabilityOption>;
   behanceUrl?: Maybe<Scalars['String']>;
   createdAt: Scalars['DateTime'];
-  currentlyEnrolledInCourse?: Maybe<Scalars['String']>;
+  currentlyEnrolledInCourse?: Maybe<RediCourse>;
   desiredEmploymentType?: Maybe<Array<TpEmploymentType>>;
   desiredPositions?: Maybe<Array<TpDesiredPosition>>;
   dribbbleUrl?: Maybe<Scalars['String']>;
@@ -1405,7 +1411,7 @@ export type TpJobseekerProfile = {
   aboutYourself?: Maybe<Scalars['String']>;
   availability?: Maybe<TpAvailabilityOption>;
   createdAt: Scalars['DateTime'];
-  currentlyEnrolledInCourse?: Maybe<Scalars['String']>;
+  currentlyEnrolledInCourse?: Maybe<RediCourse>;
   desiredEmploymentType?: Maybe<Array<TpEmploymentType>>;
   desiredPositions?: Maybe<Array<TpDesiredPosition>>;
   federalState?: Maybe<FederalState>;
@@ -1418,10 +1424,11 @@ export type TpJobseekerProfile = {
   isProfileVisibleToCompanies: Scalars['Boolean'];
   location?: Maybe<Scalars['String']>;
   profileAvatarImageS3Key?: Maybe<Scalars['String']>;
-  rediLocation?: Maybe<Scalars['String']>;
+  rediLocation?: Maybe<RediLocation>;
   state: JobseekerProfileStatus;
   topSkills?: Maybe<Array<TpTechnicalSkill>>;
   updatedAt: Scalars['DateTime'];
+  userId: Scalars['ID'];
   willingToRelocate: Scalars['Boolean'];
 };
 
@@ -1560,7 +1567,7 @@ export type TpJobseekerProfileLanguageRecordPatchInput = {
 export type TpJobseekerProfilePatchInput = {
   aboutYourself?: InputMaybe<Scalars['String']>;
   availability?: InputMaybe<TpAvailabilityOption>;
-  currentlyEnrolledInCourse?: InputMaybe<Scalars['String']>;
+  currentlyEnrolledInCourse?: InputMaybe<RediCourse>;
   desiredEmploymentType?: InputMaybe<Array<TpEmploymentType>>;
   desiredPositions?: InputMaybe<Array<TpDesiredPosition>>;
   federalState?: InputMaybe<FederalState>;
@@ -1572,10 +1579,17 @@ export type TpJobseekerProfilePatchInput = {
   isProfileVisibleToCompanies?: InputMaybe<Scalars['Boolean']>;
   location?: InputMaybe<Scalars['String']>;
   profileAvatarImageS3Key?: InputMaybe<Scalars['String']>;
-  rediLocation?: InputMaybe<Scalars['String']>;
+  rediLocation?: InputMaybe<RediLocation>;
   state?: InputMaybe<JobseekerProfileStatus>;
   topSkills?: InputMaybe<Array<TpTechnicalSkill>>;
   willingToRelocate?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type TpJobseekerProfileSignUpDto = {
+  currentlyEnrolledInCourse: RediCourse;
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  rediLocation: RediLocation;
 };
 
 export enum TpTechnicalSkill {

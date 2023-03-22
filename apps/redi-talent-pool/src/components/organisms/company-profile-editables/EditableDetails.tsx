@@ -131,22 +131,14 @@ function ModalForm({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )
-  const onSubmit = (
+  const onSubmit = async (
     values: Partial<EditableDetailsCompanyProfilePropFragment>
   ) => {
     formik.setSubmitting(true)
-    mutation.mutate(
-      { input: { id: companyProfile.id, ...values } },
-      {
-        onSettled: () => {
-          formik.setSubmitting(false)
-        },
-        onSuccess: () => {
-          setIsEditing(false)
-          queryClient.invalidateQueries()
-        },
-      }
-    )
+    await mutation.mutateAsync({ input: { id: companyProfile.id, ...values } })
+    formik.setSubmitting(false)
+    setIsEditing(false)
+    queryClient.invalidateQueries()
   }
   const formik = useFormik({
     initialValues,

@@ -38,5 +38,6 @@ export class TpJobseekerCvLineItemRecord extends Record<TpJobseekerCvLineItemRec
       'CreatedDate',
       'LastModifiedDate',
     ],
+    SALESFORCE_ORDER_BY: ['Frontend_View_Index__c', 'ASC'],
   }
 }

@@ -37,7 +37,7 @@ export function EditableNamePhotoLocation({
     EditableNamePhotoLocation.isSectionEmpty(companyProfile)
 
   const onNewAvatarReady = async (newAvatarUrl: string) => {
-    await mutation.mutate({
+    await mutation.mutateAsync({
       input: {
         id: companyProfile.id,
         profileAvatarImageS3Key: newAvatarUrl,
@@ -151,22 +151,14 @@ function ModalForm({
       // eslint-disable-next-line react-hooks/exhaustive-deps
       []
     )
-  const onSubmit = (
+  const onSubmit = async (
     values: Partial<EditableNamePhotoLocationProfilePropFragment>
   ) => {
     formik.setSubmitting(true)
-    mutation.mutate(
-      { input: { id: companyProfile.id, ...values } },
-      {
-        onSettled: () => {
-          formik.setSubmitting(false)
-        },
-        onSuccess: () => {
-          setIsEditing(false)
-          queryClient.invalidateQueries()
-        },
-      }
-    )
+    await mutation.mutateAsync({ input: { id: companyProfile.id, ...values } })
+    formik.setSubmitting(false)
+    setIsEditing(false)
+    queryClient.invalidateQueries()
   }
   const formik = useFormik({
     initialValues,

@@ -107,7 +107,7 @@ function JobseekerFormSectionOverview({
   const initialValues: EditableOverviewProfilePropFragment = useMemo(
     () => ({
       desiredPositions: profile?.desiredPositions ?? [],
-      currentlyEnrolledInCourse: profile?.currentlyEnrolledInCourse ?? '',
+      currentlyEnrolledInCourse: profile?.currentlyEnrolledInCourse ?? null,
     }),
     [profile?.currentlyEnrolledInCourse, profile?.desiredPositions]
   )

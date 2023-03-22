@@ -3,3 +3,8 @@ mutation signUpCompany($input: TpCompanyProfileSignUpInputDto!) {
     ok
   }
 }
+mutation signUpJobseeker($input: TpJobseekerProfileSignUpDto!) {
+  tpJobseekerProfileSignUp(input: $input) {
+    ok
+  }
+}

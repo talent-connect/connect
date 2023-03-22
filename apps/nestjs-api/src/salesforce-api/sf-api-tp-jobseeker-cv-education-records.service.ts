@@ -18,6 +18,7 @@ export class SfApiTpJobseekerCvEducationRecordsService {
       childObjects:
         TpJobseekerCvLineItemRecord.metadata.SALESFORCE_CHILD_OBJECTS,
       filter,
+      orderBy: TpJobseekerCvLineItemRecord.metadata.SALESFORCE_ORDER_BY,
     })
     const records = rawRecords.map((rawRecord) =>
       TpJobseekerCvLineItemRecord.create(rawRecord)

@@ -11,8 +11,8 @@ import {
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
 import classnames from 'clsx'
-import { useCallback } from 'react'
 import { Columns, Content, Element, Notification } from 'react-bulma-components'
+import { useQueryClient } from 'react-query'
 import { EditableEducation } from '../../../components/organisms/jobseeker-profile-editables/EditableEducation'
 import { EditableImportantDetails } from '../../../components/organisms/jobseeker-profile-editables/EditableImportantDetails'
 import { EditableLanguages } from '../../../components/organisms/jobseeker-profile-editables/EditableLanguages'
@@ -30,22 +30,27 @@ import './MeJobseeker.scss'
 import { ReactComponent as StepPendingImage } from './pending.svg'
 
 export function MeJobseeker() {
+  const queryClient = useQueryClient()
   const myData = useMyTpDataQuery()
   const profile = myData?.data?.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry
 
   const mutation = useTpJobseekerProfilePatchMutation()
 
-  const onHideFromCompaniesCheckboxChange = () =>
-    mutation.mutate({
+  const onHideFromCompaniesCheckboxChange = async () => {
+    await mutation.mutateAsync({
       input: {
         isProfileVisibleToCompanies: !profile?.isProfileVisibleToCompanies,
       },
     })
+    queryClient.invalidateQueries()
+  }
 
-  const onJobFair2023ParticipateChange = () =>
-    mutation.mutate({
+  const onJobFair2023ParticipateChange = async () => {
+    await mutation.mutateAsync({
       input: { isJobFair2023Participant: !profile?.isJobFair2023Participant },
     })
+    queryClient.invalidateQueries()
+  }
 
   return (
     <LoggedIn>
@@ -222,6 +227,7 @@ function isProfileComplete(profile: TpJobseekerDirectoryEntry): boolean {
 }
 
 function SendProfileForReviewButton() {
+  const queryClient = useQueryClient()
   const myData = useMyTpDataQuery()
   const profile = myData.data?.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry
   const mutation = useTpJobseekerProfilePatchMutation()
@@ -230,14 +236,15 @@ function SendProfileForReviewButton() {
     profile?.state === JobseekerProfileStatus.DraftingProfile &&
     isProfileComplete(profile)
 
-  const onClick = useCallback(() => {
+  const onClick = async () => {
     if (!window.confirm('Would you like to submit your profile for review?'))
       return
 
-    mutation.mutate({
+    await mutation.mutateAsync({
       input: { state: JobseekerProfileStatus.SubmittedForReview },
     })
-  }, [mutation, profile])
+    queryClient.invalidateQueries()
+  }
 
   if (enabled) {
     return <Button onClick={onClick}>Send profile to review</Button>

@@ -24,5 +24,6 @@ export class TpJobseekerCvLanguageRecord extends Record<TpJobseekerCvLanguageRec
       'CreatedDate',
       'LastModifiedDate',
     ],
+    SALESFORCE_ORDER_BY: ['Language__r.Slug__c'],
   }
 }

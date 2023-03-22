@@ -354,11 +354,8 @@ export function CVPDF({
               <Text style={styles.contentHeading}>Languages</Text>
               <View style={styles.ContentList}>
                 {workingLanguages?.map(
-                  ({ language, proficiencyLevelId }, index) => (
-                    <Text
-                      key={`language_${index}`}
-                      style={styles.ContentListItem}
-                    >
+                  ({ language, proficiencyLevelId, id }, index) => (
+                    <Text key={`language_${id}`} style={styles.ContentListItem}>
                       {language} -{' '}
                       {
                         languageProficiencyLevelsIdToLabelMap[

@@ -14,6 +14,7 @@ import {
 } from '@talent-connect/shared-types'
 import { getCroppedImg } from '@talent-connect/shared-utils'
 
+import { useQueryClient } from 'react-query'
 import placeholderImage from '../../assets/img-placeholder.png'
 import { ReactComponent as UploadImage } from '../../assets/uploadImage.svg'
 import './Avatar.scss'
@@ -76,6 +77,7 @@ const AvatarEditable = ({
   callToActionText = 'Add your picture',
   shape = 'circle',
 }: AvatarEditable) => {
+  const queryClient = useQueryClient()
   const [showCropperModal, setShowCropperModal] = useState(false)
   const [imageSrc, setImageSrc] = useState(null)
   const [imageFileName, setImageFileName] = useState('')
@@ -93,7 +95,11 @@ const AvatarEditable = ({
   const imgURL = profileAvatarImageS3Key
 
   const submitForm = async (values: FormikValues) => {
-    profileSaveStart(imgURL)
+    await profileSaveStart(
+      'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/' +
+        values.profileAvatarImageS3Key
+    )
+    queryClient.invalidateQueries()
   }
 
   const initialValues: AvatarFormValues = {

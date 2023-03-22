@@ -10,15 +10,11 @@ import {
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
 import { COURSES, REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
-import {
-  TpCompanyProfile,
-  TpJobseekerProfile,
-} from '@talent-connect/shared-types'
+import { TpCompanyProfile } from '@talent-connect/shared-types'
 import { toPascalCaseAndTrim } from '@talent-connect/shared-utils'
 import { howDidHearAboutRediOptions } from '@talent-connect/talent-pool/config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
-import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
-import omit from 'lodash/omit'
+import { FormikHelpers as FormikActions, useFormik } from 'formik'
 import { useMemo, useState } from 'react'
 
 import { Columns, Content, Form, Notification } from 'react-bulma-components'
@@ -26,9 +22,12 @@ import { Link, useParams } from 'react-router-dom'
 import * as Yup from 'yup'
 import TpTeaser from '../../../components/molecules/TpTeaser'
 import AccountOperation from '../../../components/templates/AccountOperation'
-import { signUpJobseeker, signUpLoopback } from '../../../services/api/api'
+import { signUpLoopback } from '../../../services/api/api'
 import { history } from '../../../services/history/history'
-import { useSignUpCompanyMutation } from './SignUp.generated'
+import {
+  useSignUpCompanyMutation,
+  useSignUpJobseekerMutation,
+} from './SignUp.generated'
 
 const formRediLocations = objectEntries(REDI_LOCATION_NAMES).map(
   ([id, label]) => ({
@@ -109,25 +108,13 @@ type SignUpPageType = {
   type: 'jobseeker' | 'company'
 }
 
-export interface SignUpFormValues {
-  // TODO: Make this into an enum/type in shared confif/types
-  state?: string
-  email: string
-  password: string
-  passwordConfirm: string
-  companyNameOrId?: string
-  firstName: string
-  lastName: string
-  agreesWithCodeOfConduct?: boolean
-  jobseeker_currentlyEnrolledInCourse?: string
-}
-
 export default function SignUp() {
   const signUpCompanyMutation = useSignUpCompanyMutation()
+  const signUpJobseekerMutation = useSignUpJobseekerMutation()
 
   const { type } = useParams<SignUpPageType>()
 
-  const initialValues: SignUpFormValues = useMemo(
+  const initialValues: any = useMemo(
     () => ({
       email: '',
       password: '',
@@ -139,7 +126,7 @@ export default function SignUp() {
   )
   if (type === 'jobseeker') {
     initialValues.state = 'drafting-profile'
-    initialValues.jobseeker_currentlyEnrolledInCourse = ''
+    initialValues.currentlyEnrolledInCourse = ''
     initialValues.agreesWithCodeOfConduct = false
   }
   if (type === 'company') {
@@ -155,31 +142,25 @@ export default function SignUp() {
 
   const [loopbackSubmitError, setLoopbackSubmitError] = useState(null)
 
-  const submitForm = async (
-    values: FormikValues,
-    actions: FormikActions<SignUpFormValues>
-  ) => {
+  const submitForm = async (values: any, actions: FormikActions<any>) => {
     try {
       setLoopbackSubmitError(null)
       await signUpLoopback(values.email, values.password)
 
       if (type === 'jobseeker') {
-        const transformedValues =
+        const transformedValues: any =
           buildValidationSchema('jobseeker').cast(values)
-        const profile = transformedValues as Partial<TpJobseekerProfile>
-        profile.isProfileVisibleToCompanies = true
-
-        // TODO: this needs to be done in a smarter way, like iterating over the TpJobseekerProfile definition or something
-        const cleanProfile:
-          | Partial<TpJobseekerProfile>
-          | Partial<TpCompanyProfile> = omit(profile, [
-          'password',
-          'passwordConfirm',
-          'agreesWithCodeOfConduct',
-          'gaveGdprConsent',
-        ])
-        console.log('hello')
-        await signUpJobseeker(values.email, values.password, cleanProfile)
+        console.log(transformedValues)
+        await signUpJobseekerMutation.mutateAsync({
+          input: {
+            firstName: transformedValues.firstName,
+            lastName: transformedValues.lastName,
+            currentlyEnrolledInCourse:
+              transformedValues.currentlyEnrolledInCourse,
+            rediLocation: transformedValues.rediLocation,
+          },
+        })
+        history.push(`/app/me`)
       }
 
       if (type === 'company') {
@@ -203,9 +184,9 @@ export default function SignUp() {
             firstPointOfContactOther: values.howDidHearAboutRediOtherText,
           },
         })
+        history.push(`/front/signup-complete`)
       }
       actions.setSubmitting(false)
-      history.push(`/front/signup-complete`)
     } catch (error) {
       actions.setSubmitting(false)
       if (

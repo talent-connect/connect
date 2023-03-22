@@ -10,8 +10,6 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import { Box, Columns, Content, Section } from 'react-bulma-components'
 
-import { useTpJobseekerCvQuery } from '../../../../react-query/use-tpjobseekercv-query'
-
 import { EmptySectionPlaceholder } from '../../../../components/molecules/EmptySectionPlaceholder'
 import { LoggedIn } from '../../../../components/templates'
 import CvListItem from './CvListItem'
@@ -19,6 +17,7 @@ import CvListItem from './CvListItem'
 import {
   TpJobseekerCvCreateInput,
   TpJobseekerDirectoryEntry,
+  useFindAllTpJobseekerCvsQuery,
   useMyTpDataQuery,
   useTpJobseekerCvCreateMutation,
 } from '@talent-connect/data-access'
@@ -33,8 +32,8 @@ function CvListPage() {
   const myTpData = useMyTpDataQuery()
   const profile =
     myTpData?.data?.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry
-  const myCvsQuery = useTpJobseekerCvQuery()
-  const cvList = myCvsQuery?.data
+  const myCvsQuery = useFindAllTpJobseekerCvsQuery()
+  const cvList = myCvsQuery.data?.tpJobseekerCvs
 
   const createMutation = useTpJobseekerCvCreateMutation()
 

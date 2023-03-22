@@ -15,6 +15,7 @@ export class SfApiTpJobseekerCvLanguageRecordsService {
       childObjects:
         TpJobseekerCvLanguageRecord.metadata.SALESFORCE_CHILD_OBJECTS,
       filter,
+      orderBy: TpJobseekerCvLanguageRecord.metadata.SALESFORCE_ORDER_BY,
     })
     const records = rawRecords.map((rawRecord) =>
       TpJobseekerCvLanguageRecord.create(rawRecord)
@@ -26,7 +27,7 @@ export class SfApiTpJobseekerCvLanguageRecordsService {
     const props = record.props
 
     const language = await this.repository.findRecordsOfObject({
-      objectName: '	_Language__c',
+      objectName: '	hed__Language__c',
       objectFields: ['Id'],
       filter: {
         Slug__c: props.Language__r.Slug__c,
@@ -53,7 +54,7 @@ export class SfApiTpJobseekerCvLanguageRecordsService {
     const props = record.props
 
     const language = await this.repository.findRecordsOfObject({
-      objectName: '	Language__c',
+      objectName: 'hed__Language__c',
       objectFields: ['Id'],
       filter: {
         Slug__c: props.Language__r.Slug__c,
@@ -66,6 +67,7 @@ export class SfApiTpJobseekerCvLanguageRecordsService {
       'CreatedDate',
       'LastModifiedDate',
       'Jobseeker_CV__c',
+      'Language__r',
     ])
 
     return await this.repository.updateRecord(

@@ -141,7 +141,7 @@ export function JobseekerFormSectionLinks({
   )
   const onSubmit = async (values: EditableLinksProfilePropFragment) => {
     formik.setSubmitting(true)
-    await userContactMutation.mutate({
+    await userContactMutation.mutateAsync({
       input: {
         personalWebsite: values.personalWebsite,
         githubProfileUrl: values.githubUrl,

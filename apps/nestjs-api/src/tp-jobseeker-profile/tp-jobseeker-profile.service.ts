@@ -1,18 +1,23 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import {
+  JobseekerProfileStatus,
   TpJobseekerProfileEntity,
+  TpJobseekerProfileEntityProps,
   TpJobseekerProfileMapper,
 } from '@talent-connect/common-types'
 import { deleteUndefinedProperties } from '@talent-connect/shared-utils'
 import { CurrentUserInfo } from '../auth/current-user.interface'
 import { SfApiTpJobseekerProfileService } from '../salesforce-api/sf-api-tp-jobseeker-profile.service'
+import { UserContactService } from '../user-contact/user-contact.service'
 import { TpJobseekerProfilePatchInput } from './dto/tp-jobseeker-profile-patch.entityinput'
+import { TpJobseekerProfileSignUpMutationDto } from './dto/tp-jobseeker-profile-sign-up.mutation-dtos'
 
 @Injectable()
 export class TpJobseekerProfileService {
   constructor(
     private readonly api: SfApiTpJobseekerProfileService,
-    private readonly mapper: TpJobseekerProfileMapper
+    private readonly mapper: TpJobseekerProfileMapper,
+    private readonly userContactService: UserContactService
   ) {}
 
   async findAll(filter: any = {}) {
@@ -59,5 +64,27 @@ export class TpJobseekerProfileService {
     })
     const entityToPersist = TpJobseekerProfileEntity.create(props)
     await this.api.update(this.mapper.toPersistence(entityToPersist))
+  }
+
+  async signUp(
+    input: TpJobseekerProfileSignUpMutationDto,
+    currentUser: CurrentUserInfo
+  ) {
+    this.userContactService.patch(
+      {
+        firstName: input.firstName,
+        lastName: input.lastName,
+      },
+      currentUser
+    )
+
+    const newEntityProps = new TpJobseekerProfileEntityProps()
+    newEntityProps.userId = currentUser.userId
+    newEntityProps.rediLocation = input.rediLocation
+    newEntityProps.currentlyEnrolledInCourse = input.currentlyEnrolledInCourse
+    newEntityProps.state = JobseekerProfileStatus.DRAFTING_PROFILE
+
+    const entityToPersist = TpJobseekerProfileEntity.create(newEntityProps)
+    await this.api.create(this.mapper.toPersistence(entityToPersist))
   }
 }

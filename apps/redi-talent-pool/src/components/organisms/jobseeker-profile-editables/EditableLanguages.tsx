@@ -197,6 +197,7 @@ export function JobseekerFormSectionLanguages({
     queryClient.invalidateQueries()
     formik.setSubmitting(false)
     setIsEditing(false)
+    removedRecords.current = []
   }
 
   const formik = useFormik({

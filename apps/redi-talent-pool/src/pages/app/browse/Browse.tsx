@@ -1,19 +1,20 @@
-import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useMyTpDataQuery } from '@talent-connect/data-access'
+import { LoggedIn } from '../../../components/templates'
 import './Browse.scss'
 import { BrowseCompany } from './BrowseCompany'
 import { BrowseJobseeker } from './BrowseJobseeker'
 
 function Browse() {
-  const { data: jobseekerProfile } = useTpJobseekerProfileQuery({
-    retry: false,
-  })
-  const { data: companyProfile } = useTpCompanyProfileQuery({ retry: false })
+  const myTpData = useMyTpDataQuery()
+  const jobseekerProfile =
+    myTpData?.data?.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry
+  const companyProfile =
+    myTpData?.data?.tpCurrentUserDataGet?.representedCompany
 
   if (jobseekerProfile) return <BrowseJobseeker />
   if (companyProfile) return <BrowseCompany />
 
-  return null
+  return <LoggedIn></LoggedIn>
 }
 
 export default Browse

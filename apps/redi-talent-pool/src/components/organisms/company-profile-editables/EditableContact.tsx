@@ -12,7 +12,9 @@ import { toPascalCaseAndTrim } from '@talent-connect/shared-utils'
 import { useFormik } from 'formik'
 import { useEffect, useMemo, useState } from 'react'
 import { Content, Element } from 'react-bulma-components'
+import { useQueryClient } from 'react-query'
 import * as Yup from 'yup'
+import { useIsBusy } from '../../../hooks/useIsBusy'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import {
@@ -140,12 +142,13 @@ function ModalForm({
   setIsEditing: (boolean) => void
   setIsFormDirty: (boolean) => void
 }) {
+  const queryClient = useQueryClient()
   const myData = useMyTpDataQuery()
   const { userContact, representedCompany: companyProfile } =
     myData?.data?.tpCurrentUserDataGet
-
   const companyProfileMutation = usePatchTpCompanyProfileMutation()
   const userContactMutation = usePatchUserContactMutation()
+  const isBusy = useIsBusy()
 
   const initialValues: FormValues = useMemo(
     () => ({
@@ -171,6 +174,8 @@ function ModalForm({
         lastName: transformedValues.lastName,
       },
     })
+    await Promise.all([pendingCompanyProfilePatch, pendingUserContactPatch])
+    queryClient.invalidateQueries()
     formik.setSubmitting(false)
     setIsEditing(false)
   }
@@ -218,17 +223,10 @@ function ModalForm({
         {...formik}
       />
 
-      <Button
-        disabled={!formik.isValid || mutation.isLoading}
-        onClick={formik.submitForm}
-      >
+      <Button disabled={!formik.isValid || isBusy} onClick={formik.submitForm}>
         Save
       </Button>
-      <Button
-        simple
-        disabled={mutation.isLoading}
-        onClick={() => setIsEditing(false)}
-      >
+      <Button simple disabled={isBusy} onClick={() => setIsEditing(false)}>
         Cancel
       </Button>
     </>

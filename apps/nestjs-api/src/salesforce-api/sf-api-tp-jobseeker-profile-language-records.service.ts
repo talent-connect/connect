@@ -13,6 +13,7 @@ export class SfApiTpContactLanguageRecordsService {
       objectFields: TpContactLanguageRecord.metadata.SALESFORCE_OBJECT_FIELDS,
       childObjects: TpContactLanguageRecord.metadata.SALESFORCE_CHILD_OBJECTS,
       filter,
+      orderBy: TpContactLanguageRecord.metadata.SALESFORCE_ORDER_BY,
     })
     const records = rawRecords.map((rawRecord) =>
       TpContactLanguageRecord.create(rawRecord)
