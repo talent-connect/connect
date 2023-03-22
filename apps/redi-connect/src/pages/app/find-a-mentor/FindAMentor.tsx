@@ -5,6 +5,7 @@ import {
   Heading,
   Icon,
   SearchField,
+  Checkbox,
 } from '@talent-connect/shared-atomic-design-components'
 import { FilterDropdown } from '@talent-connect/shared-atomic-design-components'
 import { ProfileCard } from '../../../components/organisms'
@@ -168,14 +169,16 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
         Available mentors ({mentors.length})
       </Heading>
       <div className="filters">
-        <SearchField
-          defaultValue={name}
-          valueChange={setName}
-          placeholder="Search by name"
-        />
+        <div className="filters-inner">
+          <SearchField
+            defaultValue={name}
+            valueChange={setName}
+            placeholder="Search by name"
+          />
+        </div>
       </div>
       <div className="filters">
-        <div className="filters-wrapper">
+        <div className="filters-inner">
           <FilterDropdown
             items={filterCategories}
             className="filters__dropdown"
@@ -192,18 +195,8 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
             selected={languages}
             onChange={(item) => toggleFilters(languages, 'languages', item)}
           />
-          <div className="filter-favourites" onClick={setFavorites}>
-            <Icon
-              icon={showFavorites ? 'heartFilled' : 'heart'}
-              className="filter-favourites__icon"
-              space="right"
-            />
-            Only Favorites
-          </div>
         </div>
-      </div>
-      <div className="active-filters">
-        <div className="location-filter-wrapper">
+        <div className="filters-inner">
           <FilterDropdown
             items={filterRediLocations}
             className="filters__dropdown"
@@ -212,7 +205,24 @@ const FindAMentor = ({ profile, profileSaveStart }: FindAMentorProps) => {
             onChange={(item) => toggleFilters(locations, 'locations', item)}
           />
         </div>
-
+      </div>
+      <div className="filters">
+        <div className="filters-inner filter-favourites">
+          <Checkbox
+            name="onlyFavorites"
+            checked={onlyFavorites || false}
+            handleChange={setFavorites}
+          >
+            Only Favorites
+          </Checkbox>
+          <Icon
+            icon="heartFilled"
+            className="filter-favourites__icon"
+            size="small"
+          />
+        </div>
+      </div>
+      <div className="active-filters">
         {(topics.length !== 0 ||
           languages.length !== 0 ||
           locations.length !== 0) && (

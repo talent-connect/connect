@@ -177,17 +177,6 @@ export function BrowseJobseeker() {
             }
           />
         </div>
-        <div
-          className="filters-inner filter-favourites"
-          onClick={toggleOnlyFavoritesFilter}
-        >
-          <Icon
-            icon={onlyFavorites ? 'heartFilled' : 'heart'}
-            className="filter-favourites__icon"
-            space="right"
-          />
-          Only Favorites
-        </div>
         <div className="filters-inner">
           <FilterDropdown
             items={germanFederalStatesOptions}
@@ -199,6 +188,7 @@ export function BrowseJobseeker() {
             }
           />
         </div>
+        <div className="filters-inner"></div>
       </div>
       <div className="filters">
         <div className="filters-inner">
@@ -210,16 +200,30 @@ export function BrowseJobseeker() {
             Remote Working Possible
           </Checkbox>
         </div>
-        {/* Hidden until the next Job Fair date announced */}
-        {/* <div className="filters-inner filters__jobfair">
+        <div className="filters-inner filter-favourites">
+          <Checkbox
+            name="onlyFavorites"
+            checked={onlyFavorites || false}
+            handleChange={toggleOnlyFavoritesFilter}
+          >
+            Only Favorites
+          </Checkbox>
+          <Icon
+            icon="heartFilled"
+            className="filter-favourites__icon"
+            size="small"
+          />
+        </div>
+        <div className="filters-inner">
+          {/* Hidden until the next Job Fair date announced
           <Checkbox
             name="isJobFair2023Participant"
             checked={isJobFair2023Participant || false}
             handleChange={toggleJobFair2023Filter}
           >
             Attending ReDI Job Fair 2023
-          </Checkbox>
-        </div> */}
+          </Checkbox> */}
+        </div>
       </div>
       <div className="active-filters">
         {(relatedPositions.length !== 0 ||

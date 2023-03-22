@@ -213,7 +213,7 @@ export function BrowseCompany() {
       </div>
       <div className="filters">
         {/* Hidden until the next Job Fair date announced */}
-        {/* <div className="filters-inner filters__jobfair">
+        {/* <div className="filters-inner">
           <Checkbox
             name="isJobFair2023Participant"
             checked={isJobFair2023Participant || false}
@@ -222,17 +222,19 @@ export function BrowseCompany() {
             Attending ReDI Job Fair 2023
           </Checkbox>
         </div> */}
-        <div
-          className="filters-inner filter-favourites"
-          onClick={toggleOnlyFavoritesFilter}
-        >
+        <div className="filters-inner filter-favourites">
+          <Checkbox
+            name="onlyFavorites"
+            checked={onlyFavorites || false}
+            handleChange={toggleOnlyFavoritesFilter}
+          >
+            Only Favorites
+          </Checkbox>
           <Icon
-            icon={onlyFavorites ? 'heartFilled' : 'heart'}
-            size="medium"
+            icon="heartFilled"
             className="filter-favourites__icon"
-            space="right"
+            size="small"
           />
-          Only Favorites
         </div>
       </div>
       <div className="active-filters">

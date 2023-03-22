@@ -2,20 +2,15 @@
 @import '_variables.scss';
 
 .filters {
-  display: block;
-  width: 100%;
-  margin-bottom: 0.5rem;
   @include tablet() {
     display: flex;
     margin-bottom: 1.5rem;
   }
 
   &__dropdown {
-    margin-bottom: 0.5rem;
     @include tablet() {
       flex-grow: 1;
       flex-basis: 0;
-      margin: 0 1rem 0 0;
     }
   }
 }
@@ -24,21 +19,16 @@
   @include tablet() {
     display: flex;
     flex-grow: 1;
-  }
-}
+    flex-basis: 0;
+    margin: 0 1rem 0 0;
 
-.location-filter-wrapper {
-  margin-bottom: 1.5rem;
-  @include tablet() {
-    margin-bottom: 0;
+    &:last-child {
+      margin: 0;
+    }
   }
-}
 
-.location-filter-wrapper,
-.filters-wrapper {
-  width: 100%;
-  @include tablet() {
-    width: 42%;
+  @include mobile() {
+    margin-bottom: 1rem;
   }
 }
 
@@ -74,35 +64,14 @@
 
   .tag {
     margin: 0 0.5rem 0.5rem 0;
-    @include tablet() {
-      margin: 1rem 0.5rem 1rem 0;
-    }
   }
 }
 
 .filter-favourites {
   display: flex;
-  height: $control-height;
-  border: 1px solid $input-border-color;
-  box-shadow: $input-shadow;
-  border-radius: $radius;
   align-items: center;
-  padding: 0 1rem;
-  cursor: pointer;
-
-  &:hover {
-    border-color: $input-hover-border-color;
-  }
 
   &__icon {
-    font-size: 1.2rem;
-    path {
-      fill: $redi-orange-dark;
-    }
-  }
-
-  &--active {
-    background-color: $input-hover-border-color;
-    color: white;
+    margin-left: 0.3rem;
   }
 }
