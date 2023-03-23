@@ -1,12 +1,7 @@
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo'
 import { CacheModule, Module } from '@nestjs/common'
-import { APP_INTERCEPTOR } from '@nestjs/core'
 import { EventEmitterModule } from '@nestjs/event-emitter'
 import { GraphQLModule } from '@nestjs/graphql'
-import {
-  GraphqlInterceptor,
-  SentryModule,
-} from '@travelerdev/nestjs-sentry-graphql'
 import { AuthModule } from '../auth/auth.module'
 import { ConMenteeFavoritedMentorsModule } from '../con-mentee-favorited-mentors/con-mentee-favorited-mentors.module'
 import { ConMentoringSessionsModule } from '../con-mentoring-sessions/con-mentoring-sessions.module'
@@ -33,13 +28,6 @@ import { AppService } from './app.service'
 
 @Module({
   imports: [
-    SentryModule.forRoot({
-      dsn: 'https://257e31f5f7d64850a10857fe626853b6@o4504842693836800.ingest.sentry.io/4504842714284032',
-      debug: true, //! TODO: turn off for prod?
-      environment: 'dev', //! TODO: customize to actual env
-      release: 'some_release', //! TODO add me
-      logLevels: ['debug'],
-    }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       // autoSchemaFile: join(__dirname, '..', '..', 'schema.gql'),
@@ -73,12 +61,6 @@ import { AppService } from './app.service'
     TpJobseekerCvLanguageRecordsModule,
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-    {
-      provide: APP_INTERCEPTOR,
-      useFactory: () => new GraphqlInterceptor(),
-    },
-  ],
+  providers: [AppService],
 })
 export class AppModule {}
