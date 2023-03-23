@@ -18,7 +18,12 @@ export class TpJobseekerDirectoryEntriesResolver {
     @Args() args: FindAllVisibleTpJobseekerDirectoryEntriesArgs
   ) {
     const entities = await this.service.findAllVisibleJobseekers(args)
-    const props = entities.map((entity) => entity.props)
+    const sorted = entities.sort((a, b) => {
+      if (a.props.updatedAt > b.props.updatedAt) return -1
+      if (a.props.updatedAt < b.props.updatedAt) return 1
+      return 0
+    })
+    const props = sorted.map((entity) => entity.props)
     return props
   }
 

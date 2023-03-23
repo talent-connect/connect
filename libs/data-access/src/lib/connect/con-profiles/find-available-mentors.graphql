@@ -9,5 +9,6 @@ query findAvailableMentors($filter: FindConProfilesArgsFilter!) {
     fullName
     rediLocation
     profileAvatarImageS3Key
+    optOutOfMenteesFromOtherRediLocation
   }
 }

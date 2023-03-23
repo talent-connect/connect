@@ -12,6 +12,7 @@ export class SfApiConMentoringSessionsService {
       objectName: ConMentoringSessionRecord.metadata.SALESFORCE_OBJECT_NAME,
       objectFields: ConMentoringSessionRecord.metadata.SALESFORCE_OBJECT_FIELDS,
       filter,
+      orderBy: ConMentoringSessionRecord.metadata.SALESFORCE_ORDER_BY,
     })
     const conMentoringSessionsRecord = rawRecords.map((rawRecord) =>
       ConMentoringSessionRecord.create(rawRecord)

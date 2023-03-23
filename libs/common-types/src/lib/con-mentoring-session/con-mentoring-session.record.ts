@@ -24,5 +24,6 @@ export class ConMentoringSessionRecord extends Record<ConMentoringSessionRecordP
       'CreatedDate',
       'LastModifiedDate',
     ],
+    SALESFORCE_ORDER_BY: ['Date__c', 'ASC'],
   }
 }

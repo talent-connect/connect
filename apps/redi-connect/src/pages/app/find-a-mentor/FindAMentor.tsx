@@ -176,7 +176,13 @@ const FindAMentor = () => {
   )
     return <LoggedIn />
 
-  const mentors = mentorsQuery.data?.conProfilesAvailableMentors
+  // This logic filters away mentors that have have opted out of being
+  // receiving application form mentees from other locations
+  const mentors = mentorsQuery.data?.conProfilesAvailableMentors.filter(
+    (mentor) =>
+      !mentor.optOutOfMenteesFromOtherRediLocation ||
+      mentor.rediLocation === myProfileQuery.data?.conProfile?.rediLocation
+  )
 
   return (
     <LoggedIn>

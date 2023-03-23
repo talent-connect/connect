@@ -16,6 +16,7 @@ export class SfApiConProfilesService {
       objectName: ConProfileRecord.metadata.SALESFORCE_OBJECT_NAME,
       objectFields: ConProfileRecord.metadata.SALESFORCE_OBJECT_FIELDS,
       filter,
+      orderBy: ConProfileRecord.metadata.SALESFORCE_ORDER_BY,
     })
     const conProfilesRecord = rawRecords.map((rawRecord) =>
       ConProfileRecord.create(rawRecord)

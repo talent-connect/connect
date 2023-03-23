@@ -36,7 +36,10 @@ export class TpJobseekerDirectoryEntryRecord extends Record<TpJobseekerDirectory
       'redi_Contact_Gender__c',
       'ReDI_Age__c',
     ],
-    // SALESFORCE_ORDER_BY: ['Frontend_View_Index__c'],
+    // NOTE: special case here: TpJobseekerDirectoryEntry is as of writing sorted
+    // by LastModifiedDate of the jobseeker profile. Achieveing this within this
+    // query would be very tricky, if not impossible (most recent first). This is
+    // done in the TpJobseekerDirectoryEntriesResolver.
     SALESFORCE_CHILD_OBJECTS: [
       {
         name: 'hed__Contact_Languages__r',
