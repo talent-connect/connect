@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common'
+import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { EventEmitter2 } from '@nestjs/event-emitter'
+import { Cache } from 'cache-manager'
 import * as jsforce from 'jsforce'
 import { ChannelToEventMap } from './channel-to-event-map'
 import { EventMappers } from './event-mappers'
@@ -17,7 +18,8 @@ export class SalesforceRecordEventsListenerService {
 
   constructor(
     private readonly configService: ConfigService,
-    private eventEmitter: EventEmitter2
+    private eventEmitter: EventEmitter2,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache
   ) {
     this.loginUrl = this.configService.get<string>(
       'NX_SALESFORCE_API_LOGIN_URL'
@@ -78,6 +80,9 @@ export class SalesforceRecordEventsListenerService {
       const subscription = client.subscribe(channel, (externalEventPayload) => {
         const internalEventPayload = EventMappers[event](externalEventPayload)
         this.eventEmitter.emit(event, internalEventPayload)
+        // A notification SF means data changed, so we clear the SF cache.
+        // TODO: this is coupled - we should rather use some kind of event here
+        this.cacheManager.reset()
       })
     })
   }

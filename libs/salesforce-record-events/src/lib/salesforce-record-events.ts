@@ -3,4 +3,10 @@ export class SalesforceRecordEvents {
     'ConProfileStatusChanged'
   )
   public static readonly ConProfileCreated = Symbol('ConProfileCreated')
+  public static readonly TpJobseekerProfileStatusChanged = Symbol(
+    'TpJobseekerProfileStatusChanged'
+  )
+  public static readonly TpAccountTalentPoolStatusChanged = Symbol(
+    'TpAccountTalentPoolStatusChanged'
+  )
 }

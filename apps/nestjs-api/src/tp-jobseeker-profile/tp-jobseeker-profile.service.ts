@@ -7,6 +7,7 @@ import {
 } from '@talent-connect/common-types'
 import { deleteUndefinedProperties } from '@talent-connect/shared-utils'
 import { CurrentUserInfo } from '../auth/current-user.interface'
+import { EmailService } from '../email/email.service'
 import { SfApiTpJobseekerProfileService } from '../salesforce-api/sf-api-tp-jobseeker-profile.service'
 import { UserContactService } from '../user-contact/user-contact.service'
 import { TpJobseekerProfilePatchInput } from './dto/tp-jobseeker-profile-patch.entityinput'
@@ -17,7 +18,8 @@ export class TpJobseekerProfileService {
   constructor(
     private readonly api: SfApiTpJobseekerProfileService,
     private readonly mapper: TpJobseekerProfileMapper,
-    private readonly userContactService: UserContactService
+    private readonly userContactService: UserContactService,
+    private readonly emailService: EmailService
   ) {}
 
   async findAll(filter: any = {}) {
@@ -86,5 +88,10 @@ export class TpJobseekerProfileService {
 
     const entityToPersist = TpJobseekerProfileEntity.create(newEntityProps)
     await this.api.create(this.mapper.toPersistence(entityToPersist))
+
+    this.emailService.sendJobseekerSignupCompleteEmail({
+      recipient: currentUser.userProps.email,
+      firstName: input.firstName,
+    })
   }
 }

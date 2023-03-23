@@ -1,7 +1,7 @@
 import { useMyTpDataQuery } from '@talent-connect/data-access'
 import { Button, Loader } from '@talent-connect/shared-atomic-design-components'
 import { Columns, Content, Form } from 'react-bulma-components'
-import { useHistory } from 'react-router'
+import { useHistory } from 'react-router-dom'
 import TpTeaser from '../../../components/molecules/TpTeaser'
 import AccountOperation from '../../../components/templates/AccountOperation'
 

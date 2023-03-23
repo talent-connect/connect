@@ -150,7 +150,6 @@ export default function SignUp() {
       if (type === 'jobseeker') {
         const transformedValues: any =
           buildValidationSchema('jobseeker').cast(values)
-        console.log(transformedValues)
         await signUpJobseekerMutation.mutateAsync({
           input: {
             firstName: transformedValues.firstName,

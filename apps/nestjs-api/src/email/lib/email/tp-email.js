@@ -132,19 +132,15 @@ const convertTemplateToHtml = (rediLocation, templateString) => {
 //   })
 // }
 
-export const sendTpJobseekerjobseekerProfileApprovedInstructToSubmitJobPreferencesEmail =
-  ({ recipient, firstName }) => {
-    const emailParsed = convertTemplateToHtml(
-      null,
-      'jobseeker-profile-approved-instruct-to-submit-job-preferences'
-    )
-    const html = emailParsed.replace(/\${firstName}/g, firstName)
-    return sendMjmlEmailFactory({
-      to: recipient,
-      subject: 'Talent Pool: your profile is approved! ReDI for the next step?',
-      html: html,
-    })
-  }
+export const sendJobseekerProfileApprovedEmail = ({ recipient, firstName }) => {
+  const emailParsed = convertTemplateToHtml(null, 'jobseeker-profile-approved')
+  const html = emailParsed.replace(/\${firstName}/g, firstName)
+  return sendMjmlEmailFactory({
+    to: recipient,
+    subject: 'Talent Pool: your profile is approved! ReDI for the next step?',
+    html: html,
+  })
+}
 
 export const sendTpJobseekerjobseekerProfileNotApprovedYet = ({
   recipient,

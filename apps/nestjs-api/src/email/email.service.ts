@@ -1,26 +1,28 @@
 import { Injectable } from '@nestjs/common'
 import {
-  sendReportProblemEmail,
-  sendMentorCancelledMentorshipNotificationEmail,
-  sendToMentorConfirmationOfMentorshipCancelled,
   sendMenteePendingReviewAcceptedEmail,
-  sendMentorPendingReviewAcceptedEmail,
-  sendPendingReviewDeclinedEmail,
-  sendMentorshipRequestReceivedEmail,
-  sendMentorshipCompletionEmailToMentor,
-  sendMentorshipCompletionEmailToMentee,
-  sendMentorshipAcceptedEmail,
-  sendMentorshipDeclinedEmail,
-  sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted,
-  sendMentoringSessionLoggedEmail,
   sendMenteeSignupCompleteEmail,
+  sendMentorCancelledMentorshipNotificationEmail,
+  sendMentoringSessionLoggedEmail,
+  sendMentorPendingReviewAcceptedEmail,
+  sendMentorshipAcceptedEmail,
+  sendMentorshipCompletionEmailToMentee,
+  sendMentorshipCompletionEmailToMentor,
+  sendMentorshipDeclinedEmail,
+  sendMentorshipRequestReceivedEmail,
   sendMentorSignupCompleteEmail,
+  sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted,
+  sendPendingReviewDeclinedEmail,
+  sendReportProblemEmail,
+  sendToMentorConfirmationOfMentorshipCancelled,
 } from './lib/email/email'
 
 import {
-  sendCompanySignupForNewCompanyCompleteEmail,
   sendCompanySignupForExistingCompanyCompleteEmail,
+  sendCompanySignupForNewCompanyCompleteEmail,
+  sendJobseekerProfileApprovedEmail,
   sendJobseekerSignupCompleteEmail,
+  sendTpCompanyProfileApprovedEmail,
 } from './lib/email/tp-email'
 
 @Injectable()
@@ -95,5 +97,11 @@ export class EmailService {
   }
   sendJobseekerSignupCompleteEmail(params) {
     return sendJobseekerSignupCompleteEmail(params).subscribe()
+  }
+  sendTpCompanyProfileApprovedEmail(params) {
+    return sendTpCompanyProfileApprovedEmail(params).subscribe()
+  }
+  sendJobseekerProfileApprovedEmail(params) {
+    return sendJobseekerProfileApprovedEmail(params).subscribe()
   }
 }

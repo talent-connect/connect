@@ -1,6 +1,7 @@
 import { get } from 'lodash'
 import { Form } from 'react-bulma-components'
 import Select, { components } from 'react-select'
+import CreatableSelect from 'react-select/creatable'
 import { Icon } from '../atoms'
 import { formSelectStyles } from './FormSelect.styles'
 
@@ -40,7 +41,12 @@ function FormSelect(props: any) {
     errors,
     disabled,
     closeMenuOnSelect,
+    creatable = false,
+    customOnCreate,
+    isLoading,
   } = props
+
+  const SelectComponent = creatable ? CreatableSelect : Select
 
   const handleOnChangeDefault = (option: any = []) => {
     // option is null when clearing the select
@@ -78,6 +84,7 @@ function FormSelect(props: any) {
 
   const hasError = !!get(touched, name) && !!get(errors, name)
   const handleOnChange = customOnChange || handleOnChangeDefault
+  const handleOnCreate = customOnCreate || handleOnCreateDefault
 
   // If multiselect is true, we need to convert the values to an array of objects
   // with the value and label properties. Otherwise, we check if the value is already
@@ -98,7 +105,7 @@ function FormSelect(props: any) {
     <Form.Field>
       {label && <Form.Label size="small">{label}</Form.Label>}
       <Form.Control>
-        <Select
+        <SelectComponent
           value={selectedValues}
           components={{ DropdownIndicator, ClearIndicator, MultiValueRemove }}
           options={items}
@@ -111,6 +118,14 @@ function FormSelect(props: any) {
           menuPortalTarget={document.body}
           menuPosition="fixed"
           closeMenuOnSelect={closeMenuOnSelect}
+          isLoading={isLoading}
+          {...(creatable
+            ? {
+                isValidNewOption: handleIsValidNewOption,
+                onCreateOption: handleOnCreate,
+                isClearable: true,
+              }
+            : {})}
         />
       </Form.Control>
       <Form.Help color="danger" className={hasError ? 'help--show' : ''}>
