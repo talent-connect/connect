@@ -39,6 +39,7 @@ export class TpCompanyProfilesSalesforceEventHandlerService {
       )
 
     companyRepresentatives.forEach((recipient) => {
+      // TODO: add a condition here to only send the email to APPROVED representatives
       this.emailService.sendTpCompanyProfileApprovedEmail({
         recipient: recipient.props.email,
         firstName: recipient.props.firstName,
