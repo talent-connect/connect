@@ -105,10 +105,10 @@ export function MeCompany() {
       isProfileVisibleToJobseekers: !profile.isProfileVisibleToJobseekers,
     })
 
-  const onJobFair2023ParticipateChange = () =>
+  const onJobFairJuly2023ParticipateChange = () =>
     mutation.mutate({
       ...profile,
-      isJobFair2023Participant: !profile.isJobFair2023Participant,
+      isJobFairJuly2023Participant: !profile.isJobFairJuly2023Participant,
     })
 
   return (
@@ -143,7 +143,7 @@ export function MeCompany() {
           {/* Hidden until the next Job Fair date announced */}
           {/* <div style={{ marginBottom: '1.5rem' }}>
             <Checkbox
-              checked={profile.isJobFair2023Participant}
+              checked={profile.isJobFairJuly2023Participant}
               customOnChange={onJobFair2023ParticipateChange}
             >
               My company will attend the <strong>ReDI Job Fair</strong>{' '}

@@ -42,7 +42,7 @@ export function BrowseJobseeker() {
     federalStates: withDefault(ArrayParam, []),
     onlyFavorites: withDefault(BooleanParam, undefined),
     isRemotePossible: withDefault(BooleanParam, undefined),
-    isJobFair2023Participant: withDefault(BooleanParam, undefined),
+    isJobFairJuly2023Participant: withDefault(BooleanParam, undefined),
   })
   const {
     relatedPositions,
@@ -51,7 +51,7 @@ export function BrowseJobseeker() {
     federalStates,
     onlyFavorites,
     isRemotePossible,
-    isJobFair2023Participant,
+    isJobFairJuly2023Participant,
   } = query
 
   const { data: jobseekerProfile } = useTpJobseekerProfileQuery()
@@ -63,7 +63,7 @@ export function BrowseJobseeker() {
     employmentType,
     federalStates,
     isRemotePossible,
-    isJobFair2023Participant,
+    isJobFairJuly2023Participant,
   })
 
   const handleFavoriteJobListing = (value) => {
@@ -98,8 +98,8 @@ export function BrowseJobseeker() {
   const toggleJobFair2023Filter = () =>
     setQuery((latestQuery) => ({
       ...latestQuery,
-      isJobFair2023Participant:
-        isJobFair2023Participant === undefined ? true : undefined,
+      isJobFairJuly2023Participant:
+        isJobFairJuly2023Participant === undefined ? true : undefined,
     }))
 
   const clearFilters = () => {
@@ -108,7 +108,7 @@ export function BrowseJobseeker() {
       idealTechnicalSkills: [],
       employmentType: [],
       federalStates: [],
-      isJobFair2023Participant: undefined,
+      isJobFairJuly2023Participant: undefined,
     }))
   }
 
@@ -217,8 +217,8 @@ export function BrowseJobseeker() {
         <div className="filters-inner">
           {/* Hidden until the next Job Fair date announced
           <Checkbox
-            name="isJobFair2023Participant"
-            checked={isJobFair2023Participant || false}
+            name="isJobFairJuly2023Participant"
+            checked={isJobFairJuly2023Participant || false}
             handleChange={toggleJobFair2023Filter}
           >
             Attending ReDI Job Fair 2023
@@ -275,7 +275,7 @@ export function BrowseJobseeker() {
                 }
               />
             ))}
-            {isJobFair2023Participant && (
+            {isJobFairJuly2023Participant && (
               <FilterTag
                 key="redi-job-fair-2022-filter"
                 id="redi-job-fair-2022-filter"
