@@ -18,6 +18,7 @@ import { TpJobseekerCvExperienceRecordsModule } from '../tp-jobseeker-cv-experie
 import { TpJobseekerCvLanguageRecordsModule } from '../tp-jobseeker-cv-language-records/tp-jobseeker-cv-language-records.module'
 import { TpJobseekerCvModule } from '../tp-jobseeker-cv/tp-jobseeker-cv.module'
 import { TpJobseekerDirectoryEntriesModule } from '../tp-jobseeker-directory-entries/tp-jobseeker-directory-entries.module'
+import { TpJobseekerFavoritedJobListingsModule } from '../tp-jobseeker-favorited-job-listings/tp-jobseeker-favorited-job-listings.module'
 import { TpJobseekerProfileEducationRecordsModule } from '../tp-jobseeker-profile-education-records/tp-jobseeker-profile-education-records.module'
 import { TpJobseekerProfileExperienceRecordsModule } from '../tp-jobseeker-profile-experience-records/tp-jobseeker-profile-experience-records.module'
 import { TpJobseekerProfileLanguageRecordsModule } from '../tp-jobseeker-profile-language-records/tp-jobseeker-profile-language-records.module'
@@ -59,6 +60,7 @@ import { AppService } from './app.service'
     TpJobseekerCvEducationRecordsModule,
     TpJobseekerCvExperienceRecordsModule,
     TpJobseekerCvLanguageRecordsModule,
+    TpJobseekerFavoritedJobListingsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

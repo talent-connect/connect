@@ -565,6 +565,8 @@ export type Mutation = {
   tpJobseekerCvLanguageRecordDelete: OkResponseMutationOutputDto;
   tpJobseekerCvLanguageRecordPatch: OkResponseMutationOutputDto;
   tpJobseekerCvPatch: OkResponseMutationOutputDto;
+  tpJobseekerFavoritedJobListingCreate: TpJobseekerFavoritedJobListingCreateMutationOutputDto;
+  tpJobseekerFavoritedJobListingDelete: TpJobseekerFavoritedJobListingDeleteMutationOutputDto;
   tpJobseekerProfileEducationRecordCreate: OkResponseMutationOutputDto;
   tpJobseekerProfileEducationRecordDelete: OkResponseMutationOutputDto;
   tpJobseekerProfileEducationRecordPatch: OkResponseMutationOutputDto;
@@ -725,6 +727,16 @@ export type MutationTpJobseekerCvPatchArgs = {
 };
 
 
+export type MutationTpJobseekerFavoritedJobListingCreateArgs = {
+  input: TpJobseekerFavoritedJobListingCreateMutationInputDto;
+};
+
+
+export type MutationTpJobseekerFavoritedJobListingDeleteArgs = {
+  input: TpJobseekerFavoritedJobListingDeleteMutationInputDto;
+};
+
+
 export type MutationTpJobseekerProfileEducationRecordCreateArgs = {
   tpJobseekerProfileEducationRecordCreateInput: TpJobseekerProfileEducationRecordCreateInput;
 };
@@ -824,6 +836,7 @@ export type Query = {
   tpJobseekerCvs: Array<TpJobseekerCv>;
   tpJobseekerDirectoryEntriesVisible: Array<TpJobseekerDirectoryEntry>;
   tpJobseekerDirectoryEntryVisible: TpJobseekerDirectoryEntry;
+  tpJobseekerFavoritedJobListings: Array<TpJobseekerFavoritedJobListing>;
   tpJobseekerProfile: TpJobseekerProfile;
   tpJobseekerProfileEducationRecords: Array<TpJobseekerProfileEducationRecord>;
   tpJobseekerProfileExperienceRecords: Array<TpJobseekerProfileExperienceRecord>;
@@ -1404,6 +1417,33 @@ export type TpJobseekerDirectoryEntry = {
   userId: Scalars['String'];
   willingToRelocate: Scalars['Boolean'];
   workingLanguages?: Maybe<Array<TpJobseekerProfileLanguageRecord>>;
+};
+
+export type TpJobseekerFavoritedJobListing = {
+  __typename?: 'TpJobseekerFavoritedJobListing';
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  tpJobListingId: Scalars['ID'];
+  tpJobseekerProfileId: Scalars['ID'];
+  updatedAt: Scalars['DateTime'];
+};
+
+export type TpJobseekerFavoritedJobListingCreateMutationInputDto = {
+  tpJoblistingId: Scalars['String'];
+};
+
+export type TpJobseekerFavoritedJobListingCreateMutationOutputDto = {
+  __typename?: 'TpJobseekerFavoritedJobListingCreateMutationOutputDto';
+  ok: Scalars['Boolean'];
+};
+
+export type TpJobseekerFavoritedJobListingDeleteMutationInputDto = {
+  tpJobListingId: Scalars['String'];
+};
+
+export type TpJobseekerFavoritedJobListingDeleteMutationOutputDto = {
+  __typename?: 'TpJobseekerFavoritedJobListingDeleteMutationOutputDto';
+  ok: Scalars['Boolean'];
 };
 
 export type TpJobseekerProfile = {

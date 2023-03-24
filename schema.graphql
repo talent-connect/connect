@@ -541,6 +541,8 @@ type Mutation {
   tpJobseekerCvLanguageRecordDelete(tpJobseekerCvLanguageRecordDeleteInput: TpJobseekerCvLanguageRecordDeleteInput!): OkResponseMutationOutputDto!
   tpJobseekerCvLanguageRecordPatch(tpJobseekerCvLanguageRecordPatchInput: TpJobseekerCvLanguageRecordPatchInput!): OkResponseMutationOutputDto!
   tpJobseekerCvPatch(tpJobseekerCvPatchInput: TpJobseekerCvPatchInput!): OkResponseMutationOutputDto!
+  tpJobseekerFavoritedJobListingCreate(input: TpJobseekerFavoritedJobListingCreateMutationInputDto!): TpJobseekerFavoritedJobListingCreateMutationOutputDto!
+  tpJobseekerFavoritedJobListingDelete(input: TpJobseekerFavoritedJobListingDeleteMutationInputDto!): TpJobseekerFavoritedJobListingDeleteMutationOutputDto!
   tpJobseekerProfileEducationRecordCreate(tpJobseekerProfileEducationRecordCreateInput: TpJobseekerProfileEducationRecordCreateInput!): OkResponseMutationOutputDto!
   tpJobseekerProfileEducationRecordDelete(tpJobseekerProfileEducationRecordDeleteInput: TpJobseekerProfileEducationRecordDeleteInput!): OkResponseMutationOutputDto!
   tpJobseekerProfileEducationRecordPatch(tpJobseekerProfileEducationRecordPatchInput: TpJobseekerProfileEducationRecordPatchInput!): OkResponseMutationOutputDto!
@@ -592,6 +594,7 @@ type Query {
   tpJobseekerCvs: [TpJobseekerCv!]!
   tpJobseekerDirectoryEntriesVisible(filter: FindAllVisibleTpJobseekerDirectoryEntriesFilter!): [TpJobseekerDirectoryEntry!]!
   tpJobseekerDirectoryEntryVisible(filter: FindOneVisibleTpJobseekerDirectoryEntry!): TpJobseekerDirectoryEntry!
+  tpJobseekerFavoritedJobListings: [TpJobseekerFavoritedJobListing!]!
   tpJobseekerProfile(id: ID): TpJobseekerProfile!
   tpJobseekerProfileEducationRecords: [TpJobseekerProfileEducationRecord!]!
   tpJobseekerProfileExperienceRecords: [TpJobseekerProfileExperienceRecord!]!
@@ -1091,6 +1094,30 @@ type TpJobseekerDirectoryEntry {
   userId: String!
   willingToRelocate: Boolean!
   workingLanguages: [TpJobseekerProfileLanguageRecord!]
+}
+
+type TpJobseekerFavoritedJobListing {
+  createdAt: DateTime!
+  id: ID!
+  tpJobListingId: ID!
+  tpJobseekerProfileId: ID!
+  updatedAt: DateTime!
+}
+
+input TpJobseekerFavoritedJobListingCreateMutationInputDto {
+  tpJoblistingId: String!
+}
+
+type TpJobseekerFavoritedJobListingCreateMutationOutputDto {
+  ok: Boolean!
+}
+
+input TpJobseekerFavoritedJobListingDeleteMutationInputDto {
+  tpJobListingId: String!
+}
+
+type TpJobseekerFavoritedJobListingDeleteMutationOutputDto {
+  ok: Boolean!
 }
 
 type TpJobseekerProfile {

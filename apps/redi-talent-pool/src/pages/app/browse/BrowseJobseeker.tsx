@@ -33,15 +33,26 @@ import {
   useTpJobListingFindAllVisibleQuery,
 } from '@talent-connect/data-access'
 import { objectEntries } from '@talent-connect/typescript-utilities'
+import { useQueryClient } from 'react-query'
 import { Redirect } from 'react-router-dom'
 import { JobListingCard } from '../../../components/organisms/JobListingCard'
 import { LoggedIn } from '../../../components/templates'
+import {
+  useTpJobListingMarkAsFavouriteMutation,
+  useTpJobListingUnfavouriteMutation,
+  useTpJobseekerFavouritedJobListingsQuery,
+} from './BrowseJobseeker.generated'
 
 export function BrowseJobseeker() {
+  const queryClient = useQueryClient()
   const [companyName, setCompanyName] = useState('')
   const myTpData = useMyTpDataQuery()
   const currentJobseekerProfile =
     myTpData.data?.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry
+  const favouritedTpJobListingsQuery =
+    useTpJobseekerFavouritedJobListingsQuery()
+  const markAsFavouriteMutation = useTpJobListingMarkAsFavouriteMutation()
+  const unfavouriteMutation = useTpJobListingUnfavouriteMutation()
 
   const [query, setQuery] = useQueryParams({
     relatedPositions: withDefault(ArrayParam, []),
@@ -69,20 +80,28 @@ export function BrowseJobseeker() {
   })
   const jobListings = jobListingsQuery.data?.tpJobListings
 
-  const handleFavoriteJobListing = (value) => {
-    //   const newFavorites = !jobseekerProfile.favouritedTpJobListingIds
-    //     ? [value]
-    //     : toggleValueInArray(jobseekerProfile.favouritedTpJobListingIds, value)
-    //   tpjobseekerprofileUpdateMutation.mutate({
-    //     favouritedTpJobListingIds: newFavorites,
-    //   })
+  const handleFavoriteJobListing = async (tpJobListingId: string) => {
+    const isFavorite =
+      favouritedTpJobListingsQuery.data?.tpJobseekerFavoritedJobListings
+        ?.map((p) => p.tpJobListingId)
+        ?.includes(tpJobListingId)
+    if (isFavorite) {
+      await unfavouriteMutation.mutateAsync({
+        input: { tpJobListingId: tpJobListingId },
+      })
+    } else {
+      await markAsFavouriteMutation.mutateAsync({
+        input: { tpJoblistingId: tpJobListingId },
+      })
+    }
+    queryClient.invalidateQueries()
   }
 
   const toggleOnlyFavoritesFilter = () => {
-    // setQuery((latestQuery) => ({
-    //   ...latestQuery,
-    //   onlyFavorites: onlyFavorites ? undefined : true,
-    // }))
+    setQuery((latestQuery) => ({
+      ...latestQuery,
+      onlyFavorites: onlyFavorites ? undefined : true,
+    }))
   }
 
   const toggleRemoteAvailableFilter = () => {
@@ -263,14 +282,21 @@ export function BrowseJobseeker() {
               .toLowerCase()
               .includes(companyName.toLowerCase())
           )
+          .filter((jobListing) => {
+            if (!onlyFavorites) return true
+            const isFavorite =
+              favouritedTpJobListingsQuery.data?.tpJobseekerFavoritedJobListings
+                ?.map((p) => p.tpJobListingId)
+                ?.includes(jobListing.id)
+            return isFavorite
+          })
           .map((jobListing) => {
-            //! LAUNCH
-            const isFavorite = false
-            //   jobseekerProfile.favouritedTpJobListingIds?.includes(
-            //     jobListing.id
-            //   )
+            const isFavorite =
+              favouritedTpJobListingsQuery.data?.tpJobseekerFavoritedJobListings
+                ?.map((p) => p.tpJobListingId)
+                ?.includes(jobListing.id)
 
-            // if (!isFavorite && onlyFavorites) return
+            if (!isFavorite && onlyFavorites) return
 
             return (
               <Columns.Column mobile={{ size: 12 }} tablet={{ size: 6 }}>
