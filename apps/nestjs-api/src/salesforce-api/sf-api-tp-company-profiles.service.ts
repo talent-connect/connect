@@ -152,6 +152,7 @@ export class SfApiTpCompanyProfilesService {
         AccountId: accountId,
         Roles: { $in: ['TALENT_POOL_COMPANY_REPRESENTATIVE'] },
       },
+      orderBy: AccountContactRecord.metadata.SALESFORCE_ORDER_BY,
     })
     const accountContacts = rawAccountContactRecords.map((rawRecord) =>
       AccountContactRecord.create(rawRecord)

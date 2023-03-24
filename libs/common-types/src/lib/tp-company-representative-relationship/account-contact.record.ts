@@ -28,5 +28,6 @@ export class AccountContactRecord extends Record<AccountContactRecordProps> {
         (field) => `Contact.${field}`
       ),
     ],
+    SALESFORCE_ORDER_BY: ['CreatedDate', 'ASC'],
   }
 }
