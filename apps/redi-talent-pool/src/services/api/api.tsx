@@ -168,9 +168,11 @@ export async function fetchAllTpJobseekerProfiles({
           { desiredPositions: filterDesiredPositions },
           { desiredEmploymentType: filterEmploymentTypes },
           { topSkills: filterTopSkills },
-          { federalState: filterFederalStates },
           {
-            or: [{ willingToRelocate: true }],
+            or: [
+              { federalStates: filterFederalStates },
+              { willingToRelocate: true },
+            ],
           },
           { ...filterJobFair2023Participant },
         ],
