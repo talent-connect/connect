@@ -11,4 +11,24 @@ query loadVisibleJobseekerProfiles(
   }
 }
 
-# mutation tpJobListingMarkAsFavourite($input: )
+query tpCompanyFavouritedJobseekerProfiles {
+  tpCompanyFavoritedJobseekerProfiles {
+    favoritedTpJobseekerProfileId
+  }
+}
+
+mutation tpCompanyMarkJobseekerAsFavourite(
+  $input: TpCompanyFavoritedJobseekerProfileCreateMutationInputDto!
+) {
+  tpCompanyFavoritedJobseekerProfileCreate(input: $input) {
+    ok
+  }
+}
+
+mutation tpCompanyUnmarkJobseekerAsFavourite(
+  $input: TpCompanyFavoritedJobseekerProfileDeleteMutationInputDto!
+) {
+  tpCompanyFavoritedJobseekerProfileDelete(input: $input) {
+    ok
+  }
+}

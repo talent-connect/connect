@@ -11,6 +11,7 @@ import { ConProfilesModule } from '../con-profiles/con-profiles.module'
 import { EmailModule } from '../email/email.module'
 import { SfApiModule } from '../salesforce-api/sf-api.module'
 import { SalesforceRecordEventsListenerModule } from '../salesforce-record-events-listener/salesforce-record-events-listener.module'
+import { TpCompanyFavoritedJobseekerProfilesModule } from '../tp-company-favorited-jobseeker-profiles/tp-company-favorited-jobseeker-profiles.module'
 import { TpCompanyProfilesModule } from '../tp-company-profiles/tp-company-profiles.module'
 import { TpCurrentUserDataModule } from '../tp-current-user-data/tp-current-user-data.module'
 import { TpJobseekerCvEducationRecordsModule } from '../tp-jobseeker-cv-education-records/tp-jobseeker-cv-education-records.module'
@@ -61,6 +62,7 @@ import { AppService } from './app.service'
     TpJobseekerCvExperienceRecordsModule,
     TpJobseekerCvLanguageRecordsModule,
     TpJobseekerFavoritedJobListingsModule,
+    TpCompanyFavoritedJobseekerProfilesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

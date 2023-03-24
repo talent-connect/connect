@@ -1320,6 +1320,38 @@ function insertJobseekerFavoriteJobListing(o) {
   )
 }
 
+async function insertCompanyFavoriteJobseekerProfileFn({
+  companyId,
+  jobseekerProfileId,
+}) {
+  const loopbackId = companyId + jobseekerProfileId
+  try {
+    await conn.sobject('Company_Favorited_Jobseeker_Profile__c').create({
+      Loopback_Original_ID__c: loopbackId,
+      Account__c: companyId,
+      Favorited_Jobseeker_Profile__c: jobseekerProfileId,
+    })
+  } catch (err) {
+    // INSERTION EXCEPTION CAUGHT
+    const idMatch = err.message.match(/([a-zA-Z0-9]{15})/g)
+    if (idMatch && idMatch[0]) {
+    } else {
+      console.log('JobseekerFavoriteListing insertion error:', err)
+      throw err
+    }
+  }
+}
+function insertCompanyFavoriteJobseekerProfile(o) {
+  return of(o).pipe(
+    switchMap(
+      (x) => from(insertCompanyFavoriteJobseekerProfileFn(o)),
+      () => o
+    ),
+    retryWithDelay(DELAY, RETRIES),
+    onErrorLogAndResumeNext()
+  )
+}
+
 function buildContact(redUser) {
   const u = redUser
 
@@ -1545,8 +1577,6 @@ function buildContact(redUser) {
   const allConMentoringSessions = await RedMentoringSession.find().map((p) =>
     p.toJSON()
   )
-  const allTpJobseekerCvs = await TpJobseekerCv.find().map((p) => p.toJSON())
-
   console.log('We have:')
   console.log('users', allUsers.length)
 
@@ -1565,10 +1595,6 @@ function buildContact(redUser) {
   console.log(
     'tpJobsekeerProfiles',
     allUsers.map((p) => p.tpJobseekerProfile).filter((p) => p).length
-  )
-  console.log(
-    'tpJobsekeerCvs',
-    allUsers.map((p) => p.tpJobseekerCv).filter((p) => p).length
   )
 
   await conn.login(USERNAME, `${PASSWORD}${SECURITY_TOKEN}`)
@@ -1721,6 +1747,29 @@ function buildContact(redUser) {
     }
   })
 
+  const companyFavouritedJobseekerProfilesToInsert = []
+  allUsers.forEach((u) => {
+    if (u.tpCompanyProfile && u.tpCompanyProfile.favouritedTpJobseekerIds) {
+      u.tpCompanyProfile.favouritedTpJobseekerIds.forEach(
+        (tpJobseekerProfileId) => {
+          if (
+            TPCOMPANYPROFILE_SFACCOUNT[u.tpCompanyProfile.id.toString()] &&
+            TPJOBSEEKERPROFILE_SFJOBSEEKERPROFILE[
+              tpJobseekerProfileId.toString()
+            ]
+          ) {
+            companyFavouritedJobseekerProfilesToInsert.push([
+              TPCOMPANYPROFILE_SFACCOUNT[u.tpCompanyProfile.id.toString()],
+              TPJOBSEEKERPROFILE_SFJOBSEEKERPROFILE[
+                tpJobseekerProfileId.toString()
+              ],
+            ])
+          }
+        }
+      )
+    }
+  })
+
   await from(menteeFavoritedMentorsToInsert)
     .pipe(
       tap((p) => console.log('inserting favourite mentor', p)),
@@ -1737,6 +1786,22 @@ function buildContact(redUser) {
       mergeMap(
         ([jobseekerId, jobListingId]) =>
           insertJobseekerFavoriteJobListing({ jobseekerId, jobListingId }),
+        CONCURRENCY
+      )
+    )
+    .toPromise()
+
+  await from(companyFavouritedJobseekerProfilesToInsert)
+    .pipe(
+      tap((p) =>
+        console.log("insert company's favourited jobseeker profile", p)
+      ),
+      mergeMap(
+        ([companyId, jobseekerProfileId]) =>
+          insertCompanyFavoriteJobseekerProfile({
+            companyId,
+            jobseekerProfileId,
+          }),
         CONCURRENCY
       )
     )

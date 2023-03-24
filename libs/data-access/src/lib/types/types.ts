@@ -548,6 +548,8 @@ export type Mutation = {
   conProfileSignUp: OkIdResponseMutationOutputDto;
   createConMentoringSession: ConMentoringSession;
   patchConProfile: ConProfile;
+  tpCompanyFavoritedJobseekerProfileCreate: TpCompanyFavoritedJobseekerProfileCreateMutationOutputDto;
+  tpCompanyFavoritedJobseekerProfileDelete: TpCompanyFavoritedJobseekerProfileDeleteMutationOutputDto;
   tpCompanyProfilePatch: OkResponseMutationOutputDto;
   tpCompanyProfileSignUp: TpCompanyProfileSignUpInputOutputDto;
   tpJobListingCreate: OkResponseMutationOutputDto;
@@ -639,6 +641,16 @@ export type MutationCreateConMentoringSessionArgs = {
 
 export type MutationPatchConProfileArgs = {
   patchConProfileInput: UpdateConProfileInput;
+};
+
+
+export type MutationTpCompanyFavoritedJobseekerProfileCreateArgs = {
+  input: TpCompanyFavoritedJobseekerProfileCreateMutationInputDto;
+};
+
+
+export type MutationTpCompanyFavoritedJobseekerProfileDeleteArgs = {
+  input: TpCompanyFavoritedJobseekerProfileDeleteMutationInputDto;
 };
 
 
@@ -824,6 +836,7 @@ export type Query = {
   conProfilesAvailableMentors: Array<ConProfile>;
   myConProfile: ConProfile;
   publicTpCompanyProfiles: Array<TpCompanyProfile>;
+  tpCompanyFavoritedJobseekerProfiles: Array<TpCompanyFavoritedJobseekerProfile>;
   tpCompanyProfile: TpCompanyProfile;
   tpCompanyProfiles: Array<TpCompanyProfile>;
   tpCurrentUserDataGet: TpCurrentUserData;
@@ -977,6 +990,33 @@ export enum TpAvailabilityOption {
   ThreeMonthNotice = 'threeMonthNotice',
   TwoMonthNotice = 'twoMonthNotice'
 }
+
+export type TpCompanyFavoritedJobseekerProfile = {
+  __typename?: 'TpCompanyFavoritedJobseekerProfile';
+  createdAt: Scalars['DateTime'];
+  favoritedTpJobseekerProfileId: Scalars['ID'];
+  id: Scalars['ID'];
+  tpCompanyProfileId: Scalars['ID'];
+  updatedAt: Scalars['DateTime'];
+};
+
+export type TpCompanyFavoritedJobseekerProfileCreateMutationInputDto = {
+  tpJobseekerProfileId: Scalars['String'];
+};
+
+export type TpCompanyFavoritedJobseekerProfileCreateMutationOutputDto = {
+  __typename?: 'TpCompanyFavoritedJobseekerProfileCreateMutationOutputDto';
+  ok: Scalars['Boolean'];
+};
+
+export type TpCompanyFavoritedJobseekerProfileDeleteMutationInputDto = {
+  tpJobseekerProfileId: Scalars['String'];
+};
+
+export type TpCompanyFavoritedJobseekerProfileDeleteMutationOutputDto = {
+  __typename?: 'TpCompanyFavoritedJobseekerProfileDeleteMutationOutputDto';
+  ok: Scalars['Boolean'];
+};
 
 export type TpCompanyProfile = {
   __typename?: 'TpCompanyProfile';

@@ -524,6 +524,8 @@ type Mutation {
   conProfileSignUp(input: ConProfileSignUpInput!): OkIdResponseMutationOutputDto!
   createConMentoringSession(createConMentoringSessionInput: CreateConMentoringSessionInput!): ConMentoringSession!
   patchConProfile(patchConProfileInput: UpdateConProfileInput!): ConProfile!
+  tpCompanyFavoritedJobseekerProfileCreate(input: TpCompanyFavoritedJobseekerProfileCreateMutationInputDto!): TpCompanyFavoritedJobseekerProfileCreateMutationOutputDto!
+  tpCompanyFavoritedJobseekerProfileDelete(input: TpCompanyFavoritedJobseekerProfileDeleteMutationInputDto!): TpCompanyFavoritedJobseekerProfileDeleteMutationOutputDto!
   tpCompanyProfilePatch(tpCompanyProfilePatchInput: TpCompanyProfilePatchInput!): OkResponseMutationOutputDto!
   tpCompanyProfileSignUp(input: TpCompanyProfileSignUpInputDto!): TpCompanyProfileSignUpInputOutputDto!
   tpJobListingCreate(tpJobListingCreateInput: TpJobListingCreateInput!): OkResponseMutationOutputDto!
@@ -582,6 +584,7 @@ type Query {
   conProfilesAvailableMentors(filter: FindConProfilesArgsFilter!): [ConProfile!]!
   myConProfile: ConProfile!
   publicTpCompanyProfiles: [TpCompanyProfile!]!
+  tpCompanyFavoritedJobseekerProfiles: [TpCompanyFavoritedJobseekerProfile!]!
   tpCompanyProfile(id: ID): TpCompanyProfile!
   tpCompanyProfiles: [TpCompanyProfile!]!
   tpCurrentUserDataGet: TpCurrentUserData!
@@ -663,6 +666,30 @@ enum TpAvailabilityOption {
   oneMonthNotice
   threeMonthNotice
   twoMonthNotice
+}
+
+type TpCompanyFavoritedJobseekerProfile {
+  createdAt: DateTime!
+  favoritedTpJobseekerProfileId: ID!
+  id: ID!
+  tpCompanyProfileId: ID!
+  updatedAt: DateTime!
+}
+
+input TpCompanyFavoritedJobseekerProfileCreateMutationInputDto {
+  tpJobseekerProfileId: String!
+}
+
+type TpCompanyFavoritedJobseekerProfileCreateMutationOutputDto {
+  ok: Boolean!
+}
+
+input TpCompanyFavoritedJobseekerProfileDeleteMutationInputDto {
+  tpJobseekerProfileId: String!
+}
+
+type TpCompanyFavoritedJobseekerProfileDeleteMutationOutputDto {
+  ok: Boolean!
 }
 
 type TpCompanyProfile {

@@ -94,7 +94,9 @@ export function BrowseJobseeker() {
         input: { tpJoblistingId: tpJobListingId },
       })
     }
-    queryClient.invalidateQueries()
+    queryClient.invalidateQueries(
+      useTpJobseekerFavouritedJobListingsQuery.getKey()
+    )
   }
 
   const toggleOnlyFavoritesFilter = () => {

@@ -34,8 +34,14 @@ import {
   TpTechnicalSkill,
   useTpJobseekerDirectoryEntriesFindAllVisibleQuery,
 } from '@talent-connect/data-access'
+import { useQueryClient } from 'react-query'
 import { JobseekerProfileCard } from '../../../components/organisms/JobseekerProfileCard'
 import { LoggedIn } from '../../../components/templates'
+import {
+  useTpCompanyFavouritedJobseekerProfilesQuery,
+  useTpCompanyMarkJobseekerAsFavouriteMutation,
+  useTpCompanyUnmarkJobseekerAsFavouriteMutation,
+} from './BrowseCompany.generated'
 
 const germanFederalStatesOptions = objectEntries(germanFederalStates).map(
   ([value, label]) => ({
@@ -45,6 +51,8 @@ const germanFederalStatesOptions = objectEntries(germanFederalStates).map(
 )
 
 export function BrowseCompany() {
+  const queryClient = useQueryClient()
+
   const [query, setQuery] = useQueryParams({
     name: withDefault(StringParam, ''),
     desiredLanguages: withDefault(ArrayParam, []),
@@ -79,16 +87,30 @@ export function BrowseCompany() {
   const jobseekerProfiles =
     jobseekerProfilesQuery.data?.tpJobseekerDirectoryEntriesVisible
 
-  // const { data: companyProfile } = useTpCompanyProfileQuery()
-  // const tpCompanyProfileUpdateMutation = useTpCompanyProfileUpdateMutation()
+  const favoritedJobseekersQuery =
+    useTpCompanyFavouritedJobseekerProfilesQuery()
+  const favouriteJobseekerMutation =
+    useTpCompanyMarkJobseekerAsFavouriteMutation()
+  const unfavouriteJobseekerMutation =
+    useTpCompanyUnmarkJobseekerAsFavouriteMutation()
 
-  const handleFavoriteJobseeker = (value) => {
-    // const newFavorites = !companyProfile.favouritedTpJobseekerIds
-    //   ? [value]
-    //   : toggleValueInArray(companyProfile.favouritedTpJobseekerIds, value)
-    // tpCompanyProfileUpdateMutation.mutate({
-    //   favouritedTpJobseekerIds: newFavorites,
-    // })
+  const handleFavoriteJobseeker = async (tpJobseekerProfileId: string) => {
+    const isFavorite =
+      favoritedJobseekersQuery.data?.tpCompanyFavoritedJobseekerProfiles
+        ?.map((p) => p.favoritedTpJobseekerProfileId)
+        ?.includes(tpJobseekerProfileId)
+    if (isFavorite) {
+      await unfavouriteJobseekerMutation.mutateAsync({
+        input: { tpJobseekerProfileId: tpJobseekerProfileId },
+      })
+    } else {
+      await favouriteJobseekerMutation.mutateAsync({
+        input: { tpJobseekerProfileId: tpJobseekerProfileId },
+      })
+    }
+    queryClient.invalidateQueries(
+      useTpCompanyFavouritedJobseekerProfilesQuery.getKey()
+    )
   }
 
   const toggleOnlyFavoritesFilter = () => {
@@ -307,31 +329,39 @@ export function BrowseCompany() {
         )}
       </div>
       <Columns>
-        {jobseekerProfiles?.map((profile) => {
-          const isFavorite = false
-          //! LAUNCH
-          // const isFavorite = companyProfile.favouritedTpJobseekerIds?.includes(
-          //   profile.id
-          // )
+        {jobseekerProfiles
+          ?.filter((profile) => {
+            if (!onlyFavorites) return true
+            const isFavorite =
+              favoritedJobseekersQuery.data?.tpCompanyFavoritedJobseekerProfiles
+                ?.map((p) => p.favoritedTpJobseekerProfileId)
+                ?.includes(profile.id)
+            return isFavorite
+          })
+          .map((profile) => {
+            const isFavorite =
+              favoritedJobseekersQuery.data?.tpCompanyFavoritedJobseekerProfiles
+                ?.map((p) => p.favoritedTpJobseekerProfileId)
+                ?.includes(profile.id)
 
-          if (!isFavorite && onlyFavorites) return
+            if (!isFavorite && onlyFavorites) return
 
-          return (
-            <Columns.Column
-              mobile={{ size: 12 }}
-              tablet={{ size: 6 }}
-              desktop={{ size: 4 }}
-            >
-              <JobseekerProfileCard
-                key={profile.id}
-                jobseekerProfile={profile}
-                linkTo={`/app/jobseeker-profile/${profile.id}`}
-                toggleFavorite={handleFavoriteJobseeker}
-                isFavorite={isFavorite}
-              />
-            </Columns.Column>
-          )
-        })}
+            return (
+              <Columns.Column
+                mobile={{ size: 12 }}
+                tablet={{ size: 6 }}
+                desktop={{ size: 4 }}
+              >
+                <JobseekerProfileCard
+                  key={profile.id}
+                  jobseekerProfile={profile}
+                  linkTo={`/app/jobseeker-profile/${profile.id}`}
+                  toggleFavorite={handleFavoriteJobseeker}
+                  isFavorite={isFavorite}
+                />
+              </Columns.Column>
+            )
+          })}
       </Columns>
     </LoggedIn>
   )
