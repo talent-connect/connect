@@ -558,12 +558,12 @@ export const RED_MATCH_STATUSES = {
 } as const
 
 export const MENTORSHIP_MATCH_STATUS_LABELS: any = {
-  applied: 'Pending',
-  accepted: 'Accepted',
-  completed: 'Accepted',
-  cancelled: 'Cancelled',
-  'declined-by-mentor': 'Declined',
-  'invalidated-as-other-mentor-accepted': 'Cancelled',
+  APPLIED: 'Pending',
+  ACCEPTED: 'Accepted',
+  COMPLETED: 'Accepted',
+  CANCELLED: 'Cancelled',
+  DECLINED_BY_MENTOR: 'Declined',
+  INVALIDATED_AS_OTHER_MENTOR_ACCEPTED: 'Cancelled',
 }
 
 export const API_URL = process.env.NX_API_URL
