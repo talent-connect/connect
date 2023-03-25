@@ -202,7 +202,7 @@ const AvatarEditable = ({
     } catch (e) {
       console.error(e)
     }
-  }, [imageSrc, imageFileName, croppedAreaPixels, nextFnRef])
+  }, [imageSrc, imageFileName, croppedAreaPixels])
 
   const onUploadFinish = (result: any) => {
     formik.setFieldValue('profileAvatarImageS3Key', result.fileKey)
