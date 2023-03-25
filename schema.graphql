@@ -531,6 +531,7 @@ type Mutation {
   tpJobListingCreate(tpJobListingCreateInput: TpJobListingCreateInput!): OkResponseMutationOutputDto!
   tpJobListingDelete(tpJobListingDeleteInput: TpJobListingDeleteInput!): OkResponseMutationOutputDto!
   tpJobListingPatch(tpJobListingPatchInput: TpJobListingPatchInput!): OkResponseMutationOutputDto!
+  tpJobseekerCreateFromCurrentUserJobseekerProfile(input: TpJobseekerCvCreateFromCurrentUserJobseekerProfileInput!): OkIdResponseMutationOutputDto!
   tpJobseekerCvCreate(tpJobseekerCvCreateInput: TpJobseekerCvCreateInput!): OkIdResponseMutationOutputDto!
   tpJobseekerCvDelete(tpJobseekerCvDeleteInput: TpJobseekerCvDeleteInput!): OkResponseMutationOutputDto!
   tpJobseekerCvEducationRecordCreate(tpJobseekerCvEducationRecordCreateInput: TpJobseekerCvEducationRecordCreateInput!): OkResponseMutationOutputDto!
@@ -919,6 +920,10 @@ type TpJobseekerCv {
   updatedAt: DateTime!
   userId: ID!
   willingToRelocate: Boolean!
+}
+
+input TpJobseekerCvCreateFromCurrentUserJobseekerProfileInput {
+  cvName: String
 }
 
 input TpJobseekerCvCreateInput {

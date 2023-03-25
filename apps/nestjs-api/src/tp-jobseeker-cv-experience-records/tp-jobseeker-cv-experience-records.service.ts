@@ -5,9 +5,7 @@ import {
   TpJobseekerCvExperienceRecordMapper,
 } from '@talent-connect/common-types'
 import { deleteUndefinedProperties } from '@talent-connect/shared-utils'
-import { CurrentUserInfo } from '../auth/current-user.interface'
 import { SfApiTpJobseekerCvExperienceRecordsService } from '../salesforce-api/sf-api-tp-jobseeker-cv-experience-records.service'
-import { TpJobseekerCvService } from '../tp-jobseeker-cv/tp-jobseeker-cv.service'
 import { TpJobseekerCvExperienceRecordCreateInput } from './dtos/tp-jobseeker-cv-experience-record-create.entityinput'
 import { TpJobseekerCvExperienceRecordDeleteInput } from './dtos/tp-jobseeker-cv-experience-record-delete.entityinput'
 import { TpJobseekerCvExperienceRecordPatchInput } from './dtos/tp-jobseeker-cv-experience-record-patch.entityinput'
@@ -16,8 +14,7 @@ import { TpJobseekerCvExperienceRecordPatchInput } from './dtos/tp-jobseeker-cv-
 export class TpJobseekerCvExperienceRecordsService {
   constructor(
     private readonly api: SfApiTpJobseekerCvExperienceRecordsService,
-    private readonly mapper: TpJobseekerCvExperienceRecordMapper,
-    private readonly tpJobseekerCvService: TpJobseekerCvService
+    private readonly mapper: TpJobseekerCvExperienceRecordMapper
   ) {}
 
   async findAll(filter: any = {}) {
@@ -44,21 +41,17 @@ export class TpJobseekerCvExperienceRecordsService {
     }
   }
 
-  async create(
-    input: TpJobseekerCvExperienceRecordCreateInput,
-    user: CurrentUserInfo
-  ) {
+  async createFromInput(input: TpJobseekerCvExperienceRecordCreateInput) {
     const props = new TpJobseekerCvExperienceRecordEntityProps()
     Object.assign(props, input)
 
-    const currentUserJobseekerCv =
-      await this.tpJobseekerCvService.findOneByUserId(user.userId)
-
-    props.tpJobseekerCvId = currentUserJobseekerCv.props.id
-
     const entityToPersist = TpJobseekerCvExperienceRecordEntity.create(props)
-    const recordToPersist = this.mapper.toPersistence(entityToPersist)
 
+    return await this.create(entityToPersist)
+  }
+
+  async create(entity: TpJobseekerCvExperienceRecordEntity) {
+    const recordToPersist = this.mapper.toPersistence(entity)
     return await this.api.create(recordToPersist)
   }
 

@@ -1,3 +1,4 @@
+export * from './create-tp-jobseeker-cv.mutation-from-current-user-jobseeker-profile.generated'
 export * from './create-tp-jobseeker-cv.mutation.generated'
 export * from './delete-tp-jobseeker-cv.mutation.generated'
 export * from './education-records'

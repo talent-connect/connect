@@ -555,6 +555,7 @@ export type Mutation = {
   tpJobListingCreate: OkResponseMutationOutputDto;
   tpJobListingDelete: OkResponseMutationOutputDto;
   tpJobListingPatch: OkResponseMutationOutputDto;
+  tpJobseekerCreateFromCurrentUserJobseekerProfile: OkIdResponseMutationOutputDto;
   tpJobseekerCvCreate: OkIdResponseMutationOutputDto;
   tpJobseekerCvDelete: OkResponseMutationOutputDto;
   tpJobseekerCvEducationRecordCreate: OkResponseMutationOutputDto;
@@ -676,6 +677,11 @@ export type MutationTpJobListingDeleteArgs = {
 
 export type MutationTpJobListingPatchArgs = {
   tpJobListingPatchInput: TpJobListingPatchInput;
+};
+
+
+export type MutationTpJobseekerCreateFromCurrentUserJobseekerProfileArgs = {
+  input: TpJobseekerCvCreateFromCurrentUserJobseekerProfileInput;
 };
 
 
@@ -1251,6 +1257,10 @@ export type TpJobseekerCv = {
   updatedAt: Scalars['DateTime'];
   userId: Scalars['ID'];
   willingToRelocate: Scalars['Boolean'];
+};
+
+export type TpJobseekerCvCreateFromCurrentUserJobseekerProfileInput = {
+  cvName?: InputMaybe<Scalars['String']>;
 };
 
 export type TpJobseekerCvCreateInput = {

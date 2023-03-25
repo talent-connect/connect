@@ -12,6 +12,6 @@ import { TpJobseekerProfileEducationRecordsService } from './tp-jobseeker-profil
     TpJobseekerProfileEducationRecordsService,
   ],
   imports: [SfApiModule, TpJobseekerProfileModule],
-  exports: [],
+  exports: [TpJobseekerProfileEducationRecordsService],
 })
 export class TpJobseekerProfileEducationRecordsModule {}

@@ -37,6 +37,44 @@ export class TpCompanyProfileSignUpUseCase {
     input: TpCompanyProfileSignUpMutationInputDto,
     currentUser: CurrentUserInfo
   ): Promise<TpCompanyProfileSignUpMutationOutputDto> {
+    const [companyEntity, contactRecord] = await Promise.all([
+      this.findOrCreateCompanyByName(
+        input.companyIdOrName,
+        input.operationType
+      ),
+      this.updateCurrentUserContact(input, currentUser),
+    ])
+
+    await this.createAccountContactRelationship(
+      input,
+      companyEntity,
+      currentUser
+    )
+
+    switch (input.operationType) {
+      case TpCompanyProfileSignUpOperationType.NEW_COMPANY:
+        this.emailService.sendCompanySignupForNewCompanyCompleteEmail({
+          recipient: currentUser.userProps.email,
+          firstName: contactRecord.props.FirstName,
+        })
+        break
+
+      case TpCompanyProfileSignUpOperationType.EXISTING_COMPANY:
+        this.emailService.sendCompanySignupForExistingCompanyCompleteEmail({
+          recipient: currentUser.userProps.email,
+          firstName: contactRecord.props.FirstName,
+          companyName: companyEntity.props.companyName,
+        })
+        break
+    }
+
+    return { ok: true }
+  }
+
+  async findOrCreateCompanyByName(
+    companyIdOrName: string,
+    operationType: TpCompanyProfileSignUpOperationType
+  ): Promise<TpCompanyProfileEntity> {
     let companyEntity: TpCompanyProfileEntity
 
     console.log(
@@ -45,11 +83,10 @@ export class TpCompanyProfileSignUpUseCase {
     )
 
     if (
-      input.operationType ===
-      TpCompanyProfileSignUpOperationType.EXISTING_COMPANY
+      operationType === TpCompanyProfileSignUpOperationType.EXISTING_COMPANY
     ) {
       companyEntity = await this.tpCompanyProfilesSerivce.findOneById(
-        input.companyIdOrName
+        companyIdOrName
       )
 
       console.log(
@@ -59,7 +96,7 @@ export class TpCompanyProfileSignUpUseCase {
       )
     } else {
       const accountRecord = await this.sfService.createAccountWithName(
-        input.companyIdOrName
+        companyIdOrName
       )
       companyEntity = this.mapper.fromPersistence(accountRecord)
       console.log(
@@ -69,6 +106,13 @@ export class TpCompanyProfileSignUpUseCase {
       )
     }
 
+    return companyEntity
+  }
+
+  async updateCurrentUserContact(
+    input: TpCompanyProfileSignUpMutationInputDto,
+    currentUser: CurrentUserInfo
+  ) {
     const contactRecordProps = new ContactRecordProps()
     contactRecordProps.Id = currentUser.userId
     contactRecordProps.FirstName = input.firstName
@@ -95,9 +139,17 @@ export class TpCompanyProfileSignUpUseCase {
       contactRecord.props.Id
     )
 
+    return contactRecord
+  }
+
+  async createAccountContactRelationship(
+    input: TpCompanyProfileSignUpMutationInputDto,
+    companyEntity: TpCompanyProfileEntity,
+    currentUser: CurrentUserInfo
+  ) {
     const accountContactRecordProps = new AccountContactRecordProps()
     accountContactRecordProps.AccountId = companyEntity.props.id
-    accountContactRecordProps.ContactId = contactRecord.props.Id
+    accountContactRecordProps.ContactId = currentUser.userId
     accountContactRecordProps.Roles = 'TALENT_POOL_COMPANY_REPRESENTATIVE'
     accountContactRecordProps.ReDI_Company_Representative_Status__c =
       input.operationType ===
@@ -114,24 +166,5 @@ export class TpCompanyProfileSignUpUseCase {
       'created accountcontact record',
       accountContactRecordCreationResult.id
     )
-
-    switch (input.operationType) {
-      case TpCompanyProfileSignUpOperationType.NEW_COMPANY:
-        this.emailService.sendCompanySignupForNewCompanyCompleteEmail({
-          recipient: currentUser.userProps.email,
-          firstName: contactRecord.props.FirstName,
-        })
-        break
-
-      case TpCompanyProfileSignUpOperationType.EXISTING_COMPANY:
-        this.emailService.sendCompanySignupForExistingCompanyCompleteEmail({
-          recipient: currentUser.userProps.email,
-          firstName: contactRecord.props.FirstName,
-          companyName: companyEntity.props.companyName,
-        })
-        break
-    }
-
-    return { ok: true }
   }
 }

@@ -5,9 +5,7 @@ import {
   TpJobseekerCvLanguageRecordMapper,
 } from '@talent-connect/common-types'
 import { deleteUndefinedProperties } from '@talent-connect/shared-utils'
-import { CurrentUserInfo } from '../auth/current-user.interface'
 import { SfApiTpJobseekerCvLanguageRecordsService } from '../salesforce-api/sf-api-tp-jobseeker-cv-language-records.service'
-import { TpJobseekerCvService } from '../tp-jobseeker-cv/tp-jobseeker-cv.service'
 import { TpJobseekerCvLanguageRecordCreateInput } from './dtos/tp-jobseeker-cv-language-record-create.entityinput'
 import { TpJobseekerCvLanguageRecordDeleteInput } from './dtos/tp-jobseeker-cv-language-record-delete.entityinput'
 import { TpJobseekerCvLanguageRecordPatchInput } from './dtos/tp-jobseeker-cv-language-record-patch.entityinput'
@@ -16,8 +14,7 @@ import { TpJobseekerCvLanguageRecordPatchInput } from './dtos/tp-jobseeker-cv-la
 export class TpJobseekerCvLanguageRecordsService {
   constructor(
     private readonly api: SfApiTpJobseekerCvLanguageRecordsService,
-    private readonly mapper: TpJobseekerCvLanguageRecordMapper,
-    private readonly tpJobseekerCvService: TpJobseekerCvService
+    private readonly mapper: TpJobseekerCvLanguageRecordMapper
   ) {}
 
   async findAll(filter: any = {}) {
@@ -43,16 +40,17 @@ export class TpJobseekerCvLanguageRecordsService {
     }
   }
 
-  async create(
-    input: TpJobseekerCvLanguageRecordCreateInput,
-    user: CurrentUserInfo
-  ) {
+  async createFromInput(input: TpJobseekerCvLanguageRecordCreateInput) {
     const props = new TpJobseekerCvLanguageRecordEntityProps()
     Object.assign(props, input)
 
     const entityToPersist = TpJobseekerCvLanguageRecordEntity.create(props)
-    const recordToPersist = this.mapper.toPersistence(entityToPersist)
 
+    return await this.create(entityToPersist)
+  }
+
+  async create(entity: TpJobseekerCvLanguageRecordEntity) {
+    const recordToPersist = this.mapper.toPersistence(entity)
     return await this.api.create(recordToPersist)
   }
 

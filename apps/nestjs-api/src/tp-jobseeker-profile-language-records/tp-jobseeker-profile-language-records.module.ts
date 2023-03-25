@@ -12,6 +12,6 @@ import { TpJobseekerProfileLanguageRecordsService } from './tp-jobseeker-profile
     TpJobseekerProfileLanguageRecordsService,
   ],
   imports: [SfApiModule, TpJobseekerProfileModule],
-  exports: [],
+  exports: [TpJobseekerProfileLanguageRecordsService],
 })
 export class TpJobseekerProfileLanguageRecordsModule {}

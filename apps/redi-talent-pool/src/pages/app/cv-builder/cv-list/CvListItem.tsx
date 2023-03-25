@@ -6,6 +6,7 @@
 
 import { PDFDownloadLink } from '@react-pdf/renderer'
 import { format as formatDate } from 'date-fns'
+import { omit } from 'lodash'
 import React from 'react'
 import { useHistory } from 'react-router-dom'
 
@@ -127,7 +128,7 @@ const CvListItem = (props: CvListItemProps) => {
     setShowCvNameModal(true)
   }
 
-  const handleEditClick = (): void => {
+  const handleEditClick = () => {
     history.push(`/app/cv-builder/${props.id}`)
   }
 
@@ -136,11 +137,13 @@ const CvListItem = (props: CvListItemProps) => {
     queryClient.invalidateQueries()
   }
 
-  const handleRename = (): void => {
+  const handleRename = async () => {
     if (newCvName !== props.name) {
-      updateMutation
-        .mutateAsync({ input: { id: props.id, cvName: newCvName } })
-        .then(() => setShowCvNameModal(false))
+      await updateMutation.mutateAsync({
+        input: { id: props.id, cvName: newCvName },
+      })
+      setShowCvNameModal(false)
+      queryClient.invalidateQueries()
     }
   }
 
@@ -153,7 +156,10 @@ const CvListItem = (props: CvListItemProps) => {
       cvJobseekerLanguageRecordsQuery.isSuccess
     if (!allCvRecordsLoaded) return // TODO: we just "bail out" here, but better would be a "defer until all records are loaded" approach
     const newCvResult = createMutation.mutateAsync({
-      input: { ...cvData, cvName: `${props.name} - Duplicate` },
+      input: {
+        ...omit(cvData, 'id', 'updatedAt', 'createdAt', 'userId'),
+        cvName: `${props.name} - Duplicate`,
+      },
     })
     const newCvId = (await newCvResult).tpJobseekerCvCreate.id
     const newCvExperienceRecordsPromises =
@@ -161,7 +167,7 @@ const CvListItem = (props: CvListItemProps) => {
         (record) =>
           createCvJobseekerExperienceRecordMutation.mutateAsync({
             input: {
-              ...record,
+              ...omit(record, 'id', 'updatedAt', 'createdAt', 'userId'),
               tpJobseekerCvId: newCvId,
             },
           })
@@ -171,7 +177,7 @@ const CvListItem = (props: CvListItemProps) => {
         (record) =>
           createCvJobseekerEducationRecordMutation.mutateAsync({
             input: {
-              ...record,
+              ...omit(record, 'id', 'updatedAt', 'createdAt', 'userId'),
               tpJobseekerCvId: newCvId,
             },
           })
@@ -181,7 +187,7 @@ const CvListItem = (props: CvListItemProps) => {
         (record) =>
           createCvJobseekerLanguageRecordMutation.mutateAsync({
             input: {
-              ...record,
+              ...omit(record, 'id', 'updatedAt', 'createdAt', 'userId'),
               tpJobseekerCvId: newCvId,
             },
           })
@@ -191,6 +197,7 @@ const CvListItem = (props: CvListItemProps) => {
       ...newCvEducationRecordsPromises,
       ...newCvLanguageRecordsPromises,
     ])
+    queryClient.invalidateQueries()
   }
 
   return (

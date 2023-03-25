@@ -4,8 +4,6 @@ import {
   OkResponseMutationOutputDto,
   TpJobseekerCvEducationRecordEntityProps,
 } from '@talent-connect/common-types'
-import { CurrentUser } from '../auth/current-user.decorator'
-import { CurrentUserInfo } from '../auth/current-user.interface'
 import { GqlJwtAuthGuard } from '../auth/gql-jwt-auth.guard'
 import { FindAllTpJobseekerCvEducationRecordsArgs } from './args/find-all-tp-jobseeker-cv-education-records.args'
 import { TpJobseekerCvEducationRecordCreateInput } from './dtos/tp-jobseeker-cv-education-record-create.entityinput'
@@ -35,10 +33,9 @@ export class TpJobseekerCvEducationRecordResolver {
   })
   async create(
     @Args('tpJobseekerCvEducationRecordCreateInput')
-    input: TpJobseekerCvEducationRecordCreateInput,
-    @CurrentUser() currentUser: CurrentUserInfo
+    input: TpJobseekerCvEducationRecordCreateInput
   ) {
-    await this.service.create(input, currentUser)
+    await this.service.createFromInput(input)
     return { ok: true }
   }
 

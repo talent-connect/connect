@@ -8,13 +8,27 @@ class _TpJobseekerCvEntityProps extends TpJobseekerCvEntityProps {}
 export class TpJobseekerCvCreateInput extends PartialType(
   PickType(_TpJobseekerCvEntityProps, [
     'aboutYourself',
+    'availability',
+    'behanceUrl',
     'cvName',
+    'desiredEmploymentType',
     'desiredPositions',
+    'dribbbleUrl',
     'email',
     'firstName',
+    'githubUrl',
+    'ifAvailabilityIsDate_date',
+    'immigrationStatus',
     'lastName',
+    'linkedInUrl',
+    'location',
+    'personalWebsite',
     'postalMailingAddress',
+    'profileAvatarImageS3Key',
+    'stackOverflowUrl',
     'telephoneNumber',
     'topSkills',
+    'twitterUrl',
+    'willingToRelocate',
   ] as const)
 ) {}

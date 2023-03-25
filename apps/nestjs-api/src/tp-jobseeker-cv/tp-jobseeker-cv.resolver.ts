@@ -9,6 +9,7 @@ import { CurrentUser } from '../auth/current-user.decorator'
 import { CurrentUserInfo } from '../auth/current-user.interface'
 import { GqlJwtAuthGuard } from '../auth/gql-jwt-auth.guard'
 import { FindOneTpJobseekerCvArgs } from './args/find-one-tp-jobseeker-cv.args'
+import { TpJobseekerCvCreateFromCurrentUserJobseekerProfileInput } from './dto/tp-jobseeker-cv-create-from-current-user-jobseeker-profile.entityinput'
 import { TpJobseekerCvCreateInput } from './dto/tp-jobseeker-cv-create.entityinput'
 import { TpJobseekerCvDeleteInput } from './dto/tp-jobseeker-cv-delete.entityinput'
 import { TpJobseekerCvPatchInput } from './dto/tp-jobseeker-cv-patch.entityinput'
@@ -51,6 +52,22 @@ export class TpJobseekerCvResolver {
     @CurrentUser() currentUser: CurrentUserInfo
   ) {
     const result = await this.service.create(input, currentUser)
+    return { ok: true, id: result.id }
+  }
+
+  //! TODO: Add auth
+  @Mutation(() => OkIdResponseMutationOutputDto, {
+    name: 'tpJobseekerCreateFromCurrentUserJobseekerProfile',
+  })
+  async createFromCurrentUserJobseekerProfile(
+    @Args('input')
+    input: TpJobseekerCvCreateFromCurrentUserJobseekerProfileInput,
+    @CurrentUser() currentUser: CurrentUserInfo
+  ) {
+    const result = await this.service.createFromCurrentUserJobseekerProfile(
+      input,
+      currentUser
+    )
     return { ok: true, id: result.id }
   }
 

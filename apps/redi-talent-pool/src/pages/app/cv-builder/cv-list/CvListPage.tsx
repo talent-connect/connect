@@ -19,7 +19,7 @@ import {
   TpJobseekerDirectoryEntry,
   useFindAllTpJobseekerCvsQuery,
   useMyTpDataQuery,
-  useTpJobseekerCvCreateMutation,
+  useTpJobseekerCvCreateFromCurrentUserJobseekerProfileMutation,
 } from '@talent-connect/data-access'
 import './CvListPage.scss'
 
@@ -35,7 +35,8 @@ function CvListPage() {
   const myCvsQuery = useFindAllTpJobseekerCvsQuery()
   const cvList = myCvsQuery.data?.tpJobseekerCvs
 
-  const createMutation = useTpJobseekerCvCreateMutation()
+  const createMutation =
+    useTpJobseekerCvCreateFromCurrentUserJobseekerProfileMutation()
 
   const setFocusOnRef = (ref: HTMLInputElement) => ref?.focus()
 
@@ -52,10 +53,12 @@ function CvListPage() {
 
   const handleCreateNewCv = async () => {
     const result = await createMutation.mutateAsync({
-      input: { ...convertProfileToNewCv(profile), cvName: newCvName },
+      input: { cvName: newCvName },
     })
     toggleCvNameModal(false)
-    history.push(`/app/cv-builder/${result.tpJobseekerCvCreate.id}`)
+    history.push(
+      `/app/cv-builder/${result.tpJobseekerCreateFromCurrentUserJobseekerProfile.id}`
+    )
   }
 
   /**
@@ -182,7 +185,7 @@ function CvListPage() {
 
 export default CvListPage
 
-export function convertProfileToNewCv(
+function convertProfileToNewCv(
   profile: TpJobseekerDirectoryEntry
 ): TpJobseekerCvCreateInput {
   return {

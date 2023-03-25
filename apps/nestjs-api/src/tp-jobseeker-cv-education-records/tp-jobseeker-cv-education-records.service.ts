@@ -5,9 +5,7 @@ import {
   TpJobseekerCvEducationRecordMapper,
 } from '@talent-connect/common-types'
 import { deleteUndefinedProperties } from '@talent-connect/shared-utils'
-import { CurrentUserInfo } from '../auth/current-user.interface'
 import { SfApiTpJobseekerCvEducationRecordsService } from '../salesforce-api/sf-api-tp-jobseeker-cv-education-records.service'
-import { TpJobseekerCvService } from '../tp-jobseeker-cv/tp-jobseeker-cv.service'
 import { TpJobseekerCvEducationRecordCreateInput } from './dtos/tp-jobseeker-cv-education-record-create.entityinput'
 import { TpJobseekerCvEducationRecordDeleteInput } from './dtos/tp-jobseeker-cv-education-record-delete.entityinput'
 import { TpJobseekerCvEducationRecordPatchInput } from './dtos/tp-jobseeker-cv-education-record-patch.entityinput'
@@ -16,8 +14,7 @@ import { TpJobseekerCvEducationRecordPatchInput } from './dtos/tp-jobseeker-cv-e
 export class TpJobseekerCvEducationRecordsService {
   constructor(
     private readonly api: SfApiTpJobseekerCvEducationRecordsService,
-    private readonly mapper: TpJobseekerCvEducationRecordMapper,
-    private readonly tpJobseekerCvService: TpJobseekerCvService
+    private readonly mapper: TpJobseekerCvEducationRecordMapper
   ) {}
 
   async findAll(filter: any = {}) {
@@ -44,21 +41,17 @@ export class TpJobseekerCvEducationRecordsService {
     }
   }
 
-  async create(
-    input: TpJobseekerCvEducationRecordCreateInput,
-    user: CurrentUserInfo
-  ) {
+  async createFromInput(input: TpJobseekerCvEducationRecordCreateInput) {
     const props = new TpJobseekerCvEducationRecordEntityProps()
     Object.assign(props, input)
 
-    const currentUserJobseekerCv =
-      await this.tpJobseekerCvService.findOneByUserId(user.userId)
-
-    props.tpJobseekerCvId = currentUserJobseekerCv.props.id
-
     const entityToPersist = TpJobseekerCvEducationRecordEntity.create(props)
-    const recordToPersist = this.mapper.toPersistence(entityToPersist)
 
+    return await this.create(entityToPersist)
+  }
+
+  async create(entity: TpJobseekerCvEducationRecordEntity) {
+    const recordToPersist = this.mapper.toPersistence(entity)
     return await this.api.create(recordToPersist)
   }
 
