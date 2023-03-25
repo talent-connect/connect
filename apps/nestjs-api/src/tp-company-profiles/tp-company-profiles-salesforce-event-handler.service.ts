@@ -27,11 +27,12 @@ export class TpCompanyProfilesSalesforceEventHandlerService {
       payload.tpCompanyProfileId
     )
 
-    const isNewStatusApproved =
-      payload.newStatus === CompanyTalentPoolState.PROFILE_APPROVED
+    const isStatusChangedToApproved =
+      payload.newStatus === CompanyTalentPoolState.PROFILE_APPROVED &&
+      payload.oldStatus !== CompanyTalentPoolState.PROFILE_APPROVED
 
     // if the new status is not approved, we don't need to do anything else
-    if (!isNewStatusApproved) return
+    if (!isStatusChangedToApproved) return
 
     const companyRepresentatives =
       await this.companyRepresentativesService.findCompanyRepresentativesByCompany(
