@@ -51,7 +51,7 @@ function FormSelect(props: any) {
   const handleOnChangeDefault = (option: any = []) => {
     // option is null when clearing the select
     if (!option) {
-      setFieldValue(name, '', true)
+      setFieldValue(name, multiselect ? [] : '', true)
     } else {
       setFieldValue(
         name,

@@ -112,9 +112,9 @@ function JobseekerFormSectionOverview({
     [profile?.currentlyEnrolledInCourse, profile?.desiredPositions]
   )
 
-  const onSubmit = (values: EditableOverviewProfilePropFragment) => {
+  const onSubmit = async (values: EditableOverviewProfilePropFragment) => {
     formik.setSubmitting(true)
-    tpJobsekerProfileMutation.mutateAsync({
+    await tpJobsekerProfileMutation.mutateAsync({
       input: {
         desiredPositions: values.desiredPositions,
         currentlyEnrolledInCourse: values.currentlyEnrolledInCourse,
