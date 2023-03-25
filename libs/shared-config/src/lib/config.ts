@@ -479,37 +479,37 @@ export const COURSES = [
   {
     id: 'CYBERSPACE_DATA_ANALYTICS',
     label: 'Data Analytics',
-    location: 'cyberspace',
+    location: 'CYBERSPACE',
   },
   {
     id: 'CYBERSPACE_CYBERSECURITY_BEGINNERS',
     label: 'Cybersecurity Beginners',
-    location: 'cyberspace',
+    location: 'CYBERSPACE',
   },
   {
     id: 'CYBERSPACE_CYBERSECURITY_INTERMEDIATE',
     label: 'Cybersecurity Intermediate',
-    location: 'cyberspace',
+    location: 'CYBERSPACE',
   },
   {
     id: 'CYBERSPACE_CYBERSECURITY_ADVANCED',
     label: 'Cybersecurity Advanced',
-    location: 'cyberspace',
+    location: 'CYBERSPACE',
   },
   {
     id: 'CYBERSPACE_PYTHON_FOUNDATION',
     label: 'Python Foundation',
-    location: 'cyberspace',
+    location: 'CYBERSPACE',
   },
   {
     id: 'CYBERSPACE_UX_UI_BASICS',
     label: 'UX/UI Design Basics',
-    location: 'cyberspace',
+    location: 'CYBERSPACE',
   },
   {
     id: 'CYBERSPACE_ALUMNI',
     label: 'Alumni (I took a course in the past)',
-    location: 'cyberspace',
+    location: 'CYBERSPACE',
   },
 ]
 export type CourseKey = typeof COURSES[number]['id']
