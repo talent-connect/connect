@@ -7,7 +7,6 @@ import {
 } from 'use-query-params'
 
 import {
-  Checkbox,
   FilterDropdown,
   Icon,
   SearchField,
@@ -240,7 +239,7 @@ export function BrowseCompany() {
         </div>
       </div>
       <div className="filters">
-        <div className="filters-inner filters__jobfair">
+        {/* <div className="filters-inner filters__jobfair">
           <Checkbox
             name="isJobFair2023Participant"
             checked={isJobFair2023Participant || false}
@@ -248,7 +247,7 @@ export function BrowseCompany() {
           >
             Attending ReDI Job Fair 2023
           </Checkbox>
-        </div>
+        </div> */}
         <div
           className="filters-inner filter-favourites"
           onClick={toggleOnlyFavoritesFilter}

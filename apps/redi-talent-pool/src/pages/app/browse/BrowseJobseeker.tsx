@@ -210,6 +210,14 @@ export function BrowseJobseeker() {
           Only Favorites
         </div>
         <div className="filters-inner">
+          {/* Hidden until the next Job Fair date announced
+          <Checkbox
+            name="isJobFair2023Participant"
+            checked={isJobFair2023Participant || false}
+            handleChange={toggleJobFair2023Filter}
+          >
+            Attending ReDI Job Fair 2023
+          </Checkbox> */}
           <FilterDropdown
             items={germanFederalStatesOptions}
             className="filters__dropdown"
