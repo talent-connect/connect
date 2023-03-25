@@ -1,5 +1,5 @@
-query myMatches($status: MentorshipMatchStatus) {
-  conMentorshipMatches(status: $status) {
+query myMatches {
+  conMentorshipMatches {
     id
     applicationText
     expectationText

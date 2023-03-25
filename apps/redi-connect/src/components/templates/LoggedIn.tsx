@@ -1,6 +1,5 @@
 import {
   ConnectProfileStatus,
-  MentorshipMatchStatus,
   useConMatchMarkMentorshipAcceptedNotificationDismissedMutation,
   useLoadMyProfileQuery,
   useMyMatchesQuery,
@@ -45,9 +44,7 @@ function LoggedIn({ children }: Props) {
   const queryClient = useQueryClient()
   const loopbackUserId = getAccessTokenFromLocalStorage().userId
   const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
-  const myMatchesQuery = useMyMatchesQuery({
-    status: MentorshipMatchStatus.Accepted,
-  })
+  const myMatchesQuery = useMyMatchesQuery()
   const conMatchMarkMentorshipAcceptedNotificationDismissedMutation =
     useConMatchMarkMentorshipAcceptedNotificationDismissedMutation()
 

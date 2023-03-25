@@ -580,7 +580,7 @@ type Query {
   conMenteeFavoritedMentors: [ConMenteeFavoritedMentor!]!
   conMentoringSessions: [ConMentoringSession!]!
   conMentorshipMatch(id: ID!): ConMentorshipMatch!
-  conMentorshipMatches(status: MentorshipMatchStatus): [ConMentorshipMatch!]!
+  conMentorshipMatches: [ConMentorshipMatch!]!
   conProfile(id: ID, loopbackUserId: ID): ConProfile!
   conProfilesAvailableMentors(filter: FindConProfilesArgsFilter!): [ConProfile!]!
   myConProfile: ConProfile!
@@ -928,14 +928,28 @@ input TpJobseekerCvCreateFromCurrentUserJobseekerProfileInput {
 
 input TpJobseekerCvCreateInput {
   aboutYourself: String
+  availability: TpAvailabilityOption
+  behanceUrl: String
   cvName: String
+  desiredEmploymentType: [TpEmploymentType!]
   desiredPositions: [TpDesiredPosition!]
+  dribbbleUrl: String
   email: String
   firstName: String
+  githubUrl: String
+  ifAvailabilityIsDate_date: DateTime
+  immigrationStatus: ImmigrationStatus
   lastName: String
+  linkedInUrl: String
+  location: String
+  personalWebsite: String
   postalMailingAddress: String
+  profileAvatarImageS3Key: String
+  stackOverflowUrl: String
   telephoneNumber: String
   topSkills: [TpTechnicalSkill!]
+  twitterUrl: String
+  willingToRelocate: Boolean
 }
 
 input TpJobseekerCvDeleteInput {

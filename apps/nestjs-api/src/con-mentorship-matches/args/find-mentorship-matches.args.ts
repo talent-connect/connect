@@ -1,8 +1,4 @@
-import { ArgsType, Field, ID } from '@nestjs/graphql'
-import { MentorshipMatchStatus } from '@talent-connect/common-types'
+import { ArgsType } from '@nestjs/graphql'
 
 @ArgsType()
-export class FindMentorshipMatchesArgs {
-  @Field((of) => MentorshipMatchStatus)
-  status?: MentorshipMatchStatus
-}
+export class FindMentorshipMatchesArgs {}

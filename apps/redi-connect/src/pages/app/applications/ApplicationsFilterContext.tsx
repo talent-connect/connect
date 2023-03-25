@@ -60,7 +60,7 @@ export const ApplicationsFilterContextProvider = ({
         return item.status === MentorshipMatchStatus.Applied
       } else if (activeFilter === 'accepted') {
         return (
-          item.status === MentorshipMatchStatus.Applied ||
+          item.status === MentorshipMatchStatus.Accepted ||
           item.status === MentorshipMatchStatus.Completed
         )
       } else if (activeFilter === 'declined') {

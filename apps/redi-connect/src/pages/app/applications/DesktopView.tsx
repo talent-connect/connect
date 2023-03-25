@@ -27,6 +27,8 @@ const DesktopView = ({ applicants }: Props) => {
     hasCancelledApplications,
   } = useContext(ApplicationsFilterContext)
 
+  console.log(filteredAndSortedApplications)
+
   return (
     <div className="desktop-tabs">
       <div className="tabs-menu">

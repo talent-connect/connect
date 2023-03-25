@@ -1,7 +1,4 @@
-import {
-  MentorshipMatchStatus,
-  useMyMatchesQuery,
-} from '@talent-connect/data-access'
+import { useMyMatchesQuery } from '@talent-connect/data-access'
 import { Heading } from '@talent-connect/shared-atomic-design-components'
 import { Columns, Content } from 'react-bulma-components'
 import { Redirect } from 'react-router-dom'
@@ -9,9 +6,7 @@ import { ProfileCard } from '../../../components/organisms'
 import LoggedIn from '../../../components/templates/LoggedIn'
 
 function MentorshipList() {
-  const myMatchesQuery = useMyMatchesQuery({
-    status: MentorshipMatchStatus.Accepted,
-  })
+  const myMatchesQuery = useMyMatchesQuery()
 
   if (!myMatchesQuery.isSuccess) return null
 

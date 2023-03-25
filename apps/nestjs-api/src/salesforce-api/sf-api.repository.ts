@@ -8,6 +8,11 @@ import { Cache } from 'cache-manager'
 import * as jsforce from 'jsforce'
 import { omit, pick } from 'lodash'
 const async = require('async')
+const readline = require('readline')
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+})
 
 @Injectable()
 export class SfApiRepository {
@@ -43,6 +48,13 @@ export class SfApiRepository {
       clientId: this.clientId,
       clientSecret: this.clientSecret,
       maxRequest: 100,
+    })
+
+    process.stdin.on('keypress', (str, key) => {
+      if (key.name === 'c') {
+        cacheManager.reset()
+        console.log(SfApiRepository.name, 'Cache cleared')
+      }
     })
   }
 

@@ -868,11 +868,6 @@ export type QueryConMentorshipMatchArgs = {
 };
 
 
-export type QueryConMentorshipMatchesArgs = {
-  status?: InputMaybe<MentorshipMatchStatus>;
-};
-
-
 export type QueryConProfileArgs = {
   id?: InputMaybe<Scalars['ID']>;
   loopbackUserId?: InputMaybe<Scalars['ID']>;
@@ -1265,14 +1260,28 @@ export type TpJobseekerCvCreateFromCurrentUserJobseekerProfileInput = {
 
 export type TpJobseekerCvCreateInput = {
   aboutYourself?: InputMaybe<Scalars['String']>;
+  availability?: InputMaybe<TpAvailabilityOption>;
+  behanceUrl?: InputMaybe<Scalars['String']>;
   cvName?: InputMaybe<Scalars['String']>;
+  desiredEmploymentType?: InputMaybe<Array<TpEmploymentType>>;
   desiredPositions?: InputMaybe<Array<TpDesiredPosition>>;
+  dribbbleUrl?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
   firstName?: InputMaybe<Scalars['String']>;
+  githubUrl?: InputMaybe<Scalars['String']>;
+  ifAvailabilityIsDate_date?: InputMaybe<Scalars['DateTime']>;
+  immigrationStatus?: InputMaybe<ImmigrationStatus>;
   lastName?: InputMaybe<Scalars['String']>;
+  linkedInUrl?: InputMaybe<Scalars['String']>;
+  location?: InputMaybe<Scalars['String']>;
+  personalWebsite?: InputMaybe<Scalars['String']>;
   postalMailingAddress?: InputMaybe<Scalars['String']>;
+  profileAvatarImageS3Key?: InputMaybe<Scalars['String']>;
+  stackOverflowUrl?: InputMaybe<Scalars['String']>;
   telephoneNumber?: InputMaybe<Scalars['String']>;
   topSkills?: InputMaybe<Array<TpTechnicalSkill>>;
+  twitterUrl?: InputMaybe<Scalars['String']>;
+  willingToRelocate?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type TpJobseekerCvDeleteInput = {

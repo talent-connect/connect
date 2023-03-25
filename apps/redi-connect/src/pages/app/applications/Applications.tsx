@@ -1,6 +1,5 @@
 import {
   ConnectProfileStatus,
-  MentorshipMatchStatus,
   useLoadMyProfileQuery,
 } from '@talent-connect/data-access'
 import { Heading } from '@talent-connect/shared-atomic-design-components'
@@ -19,48 +18,48 @@ function Applications() {
   const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
   const history = useHistory()
 
-  if (!myProfileQuery.isSuccess) return null
+  const profile = myProfileQuery.data?.conProfile
 
-  const profile = myProfileQuery.data.conProfile
-
-  if (profile.profileStatus !== ConnectProfileStatus.Approved)
+  if (profile?.profileStatus !== ConnectProfileStatus?.Approved)
     return <LoggedIn />
 
-  if (mentorshipMatchesQuery.isLoading) return null
+  // if (mentorshipMatchesQuery.isLoading) return null
 
-  const applicants = mentorshipMatchesQuery.data?.conMentorshipMatches?.filter(
-    (match) => match.status === MentorshipMatchStatus.Applied
-  )
+  const applicants = mentorshipMatchesQuery.data?.conMentorshipMatches
 
   return (
     <LoggedIn>
       <Heading subtitle size="small" className="double-bs">
         Applications
       </Heading>
-      {applicants.length === 0 ? (
-        <Content italic>
-          {profile.userType === 'MENTEE' && (
-            <>
-              You have not applied for a mentor yet.{' '}
-              <a onClick={() => history.push('/app/find-a-mentor')}>
-                Find your mentor here.
-              </a>
-            </>
-          )}
-          {profile.userType === 'MENTOR' && (
-            <>
-              You currently have no mentee applications. To increase your
-              chances of receiving an application, make sure that your profile
-              is up-to-date, informative and friendly.
-            </>
-          )}
-        </Content>
-      ) : (
-        <ApplicationsFilterContextProvider>
-          <DesktopView applicants={applicants} />
+      {applicants?.length !== undefined && (
+        <>
+          {applicants.length === 0 ? (
+            <Content italic>
+              {profile.userType === 'MENTEE' && (
+                <>
+                  You have not applied for a mentor yet.{' '}
+                  <a onClick={() => history.push('/app/find-a-mentor')}>
+                    Find your mentor here.
+                  </a>
+                </>
+              )}
+              {profile.userType === 'MENTOR' && (
+                <>
+                  You currently have no mentee applications. To increase your
+                  chances of receiving an application, make sure that your
+                  profile is up-to-date, informative and friendly.
+                </>
+              )}
+            </Content>
+          ) : (
+            <ApplicationsFilterContextProvider>
+              <DesktopView applicants={applicants} />
 
-          <MobileView />
-        </ApplicationsFilterContextProvider>
+              <MobileView />
+            </ApplicationsFilterContextProvider>
+          )}
+        </>
       )}
     </LoggedIn>
   )

@@ -25,9 +25,7 @@ export interface MentorshipRouteParams {
 }
 
 function Mentorship() {
-  const myAcceptedMatchesQuery = useMyMatchesQuery({
-    status: MentorshipMatchStatus.Accepted,
-  })
+  const myAcceptedMatchesQuery = useMyMatchesQuery()
   const loopbackUserId = getAccessTokenFromLocalStorage().userId
   const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
 
