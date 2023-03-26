@@ -1433,7 +1433,7 @@ function buildContact(redUser) {
       'tpJobListings',
     ],
   }).map((u) => u.toJSON())
-  // allUsers = _.slice(allUsers, 1000 + 440)
+  allUsers = _.slice(allUsers, 1500 + 500)
   // allUsers = allUsers.filter(
   //   (u) => u.id.toString() === '613731c6e0624f069aa223d9'
   // )
@@ -1647,25 +1647,25 @@ function buildContact(redUser) {
       //       }
       //     }),
 
-      // // ! Jobseeker profiles
-      // mergeMap(
-      //   (u) => (u.tpJobseekerProfile ? insertJobseekerProfile(u) : of(u)),
-      //   CONCURRENCY
-      // ),
-      // tap((u) => {
-      //   if (u.tpJobseekerProfile) {
-      //     console.log(
-      //       'Inserted Jobseeker Profile #',
-      //       u.tpJobseekerProfile.sfJobseekerProfileId
-      //     )
-      //   }
-      // }),
-      // tap((u) => {
-      //   if (u.tpJobseekerProfile) {
-      //     TPJOBSEEKERPROFILE_SFJOBSEEKERPROFILE[u.tpJobseekerProfile.id] =
-      //       u.tpJobseekerProfile.sfJobseekerProfileId
-      //   }
-      // }),
+      // ! Jobseeker profiles
+      mergeMap(
+        (u) => (u.tpJobseekerProfile ? insertJobseekerProfile(u) : of(u)),
+        CONCURRENCY
+      ),
+      tap((u) => {
+        if (u.tpJobseekerProfile) {
+          console.log(
+            'Inserted Jobseeker Profile #',
+            u.tpJobseekerProfile.sfJobseekerProfileId
+          )
+        }
+      }),
+      tap((u) => {
+        if (u.tpJobseekerProfile) {
+          TPJOBSEEKERPROFILE_SFJOBSEEKERPROFILE[u.tpJobseekerProfile.id] =
+            u.tpJobseekerProfile.sfJobseekerProfileId
+        }
+      }),
 
       // ! Company profiles
       mergeMap(
@@ -1751,28 +1751,28 @@ function buildContact(redUser) {
   //   }
   // })
 
-  // const companyFavouritedJobseekerProfilesToInsert = []
-  // allUsers.forEach((u) => {
-  //   if (u.tpCompanyProfile && u.tpCompanyProfile.favouritedTpJobseekerIds) {
-  //     u.tpCompanyProfile.favouritedTpJobseekerIds.forEach(
-  //       (tpJobseekerProfileId) => {
-  //         if (
-  //           TPCOMPANYPROFILE_SFACCOUNT[u.tpCompanyProfile.id.toString()] &&
-  //           TPJOBSEEKERPROFILE_SFJOBSEEKERPROFILE[
-  //             tpJobseekerProfileId.toString()
-  //           ]
-  //         ) {
-  //           companyFavouritedJobseekerProfilesToInsert.push([
-  //             TPCOMPANYPROFILE_SFACCOUNT[u.tpCompanyProfile.id.toString()],
-  //             TPJOBSEEKERPROFILE_SFJOBSEEKERPROFILE[
-  //               tpJobseekerProfileId.toString()
-  //             ],
-  //           ])
-  //         }
-  //       }
-  //     )
-  //   }
-  // })
+  const companyFavouritedJobseekerProfilesToInsert = []
+  allUsers.forEach((u) => {
+    if (u.tpCompanyProfile && u.tpCompanyProfile.favouritedTpJobseekerIds) {
+      u.tpCompanyProfile.favouritedTpJobseekerIds.forEach(
+        (tpJobseekerProfileId) => {
+          if (
+            TPCOMPANYPROFILE_SFACCOUNT[u.tpCompanyProfile.id.toString()] &&
+            TPJOBSEEKERPROFILE_SFJOBSEEKERPROFILE[
+              tpJobseekerProfileId.toString()
+            ]
+          ) {
+            companyFavouritedJobseekerProfilesToInsert.push([
+              TPCOMPANYPROFILE_SFACCOUNT[u.tpCompanyProfile.id.toString()],
+              TPJOBSEEKERPROFILE_SFJOBSEEKERPROFILE[
+                tpJobseekerProfileId.toString()
+              ],
+            ])
+          }
+        }
+      )
+    }
+  })
 
   // await from(menteeFavoritedMentorsToInsert)
   //   .pipe(
@@ -1795,21 +1795,21 @@ function buildContact(redUser) {
   //   )
   //   .toPromise()
 
-  // await from(companyFavouritedJobseekerProfilesToInsert)
-  //   .pipe(
-  //     tap((p) =>
-  //       console.log("inserting company's favourited jobseeker profile", p)
-  //     ),
-  //     mergeMap(
-  //       ([companyId, jobseekerProfileId]) =>
-  //         insertCompanyFavoriteJobseekerProfile({
-  //           companyId,
-  //           jobseekerProfileId,
-  //         }),
-  //       CONCURRENCY
-  //     )
-  //   )
-  //   .toPromise()
+  await from(companyFavouritedJobseekerProfilesToInsert)
+    .pipe(
+      tap((p) =>
+        console.log("inserting company's favourited jobseeker profile", p)
+      ),
+      mergeMap(
+        ([companyId, jobseekerProfileId]) =>
+          insertCompanyFavoriteJobseekerProfile({
+            companyId,
+            jobseekerProfileId,
+          }),
+        CONCURRENCY
+      )
+    )
+    .toPromise()
 
   // fs.writeFileSync(
   //   './REDUSER_SFCONTACT.json',
