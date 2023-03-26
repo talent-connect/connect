@@ -49,20 +49,7 @@
       "permission": "DENY"
     },
     {
-      "accessType": "WRITE",
-      "principalType": "ROLE",
-      "principalId": "mentor",
-      "permission": "ALLOW"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "$authenticated",
-      "permission": "ALLOW",
-      "property": "find"
-    },
-    {
-      "accessType": "*",
+      "accessType": "READ",
       "principalType": "ROLE",
       "principalId": "admin",
       "permission": "ALLOW"

@@ -1,5 +1,6 @@
 overwrite: true
 schema: 'http://localhost:3333/graphql'
+# schema: 'https://connect-nestjs-api.redi-school.org/graphql'
 #documents: 'apps/redi-connect/src/**/*.graphql'
 documents: ['libs/**/*.graphql', 'apps/**/*.graphql']
 generates:

@@ -36,102 +36,11 @@
       "permission": "DENY"
     },
     {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "$authenticated",
-      "permission": "ALLOW",
-      "property": "find"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "$authenticated",
-      "permission": "ALLOW",
-      "property": "findOne"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "$authenticated",
-      "permission": "ALLOW",
-      "property": "findById"
-    },
-    {
-      "accessType": "WRITE",
-      "principalType": "ROLE",
-      "principalId": "$owner",
-      "permission": "ALLOW",
-      "property": "*"
-    },
-    {
-      "accessType": "*",
+      "accessType": "READ",
       "principalType": "ROLE",
       "principalId": "admin",
       "permission": "ALLOW"
     }
   ],
-  "methods": {
-    "pendingReviewDoAccept": {
-      "accepts": [
-        {
-          "arg": "data",
-          "type": "object",
-          "http": {
-            "source": "body"
-          }
-        },
-        {
-          "arg": "options",
-          "type": "object",
-          "http": "optionsFromRequest"
-        }
-      ],
-      "returns": [
-        {
-          "arg": "tpJobseekerProfile",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/pendingReviewDoAccept",
-          "verb": "post"
-        }
-      ]
-    },
-    "pendingReviewDoDecline": {
-      "accepts": [
-        {
-          "arg": "data",
-          "type": "object",
-          "http": {
-            "source": "body"
-          }
-        },
-        {
-          "arg": "options",
-          "type": "object",
-          "http": "optionsFromRequest"
-        }
-      ],
-      "returns": [
-        {
-          "arg": "tpJobseekerProfile",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/pendingReviewDoDecline",
-          "verb": "post"
-        }
-      ]
-    }
-  }
+  "methods": {}
 }
