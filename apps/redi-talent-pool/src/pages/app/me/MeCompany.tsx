@@ -3,12 +3,12 @@ import {
   CompanyTalentPoolState,
   MyTpDataQuery,
   useMyTpDataQuery,
-  usePatchTpCompanyProfileMutation
+  usePatchTpCompanyProfileMutation,
 } from '@talent-connect/data-access'
 import {
   Button,
   Checkbox,
-  Icon
+  Icon,
 } from '@talent-connect/shared-atomic-design-components'
 import { AllTpCompanyProfileFieldsFragment } from 'libs/data-access/src/lib/tp/company-profiles/tp-company-profile.fragment.generated'
 import { useState } from 'react'
@@ -100,7 +100,7 @@ export function MeCompany() {
               happening on <strong>15/02/2023</strong>.
             </Checkbox>
           </div> */}
-          <EditableAbout comapnyProfile={companyProfile} />
+          <EditableAbout companyProfile={companyProfile} />
         </Columns.Column>
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'two-fifths' }}>
           <div className="is-hidden-mobile">
