@@ -326,6 +326,7 @@ export interface TpJobListingFilters {
   employmentType: string[]
   federalStates: string[]
   isRemotePossible: boolean
+  isJobFair2023Participant: boolean
 }
 
 export async function fetchAllTpJobListingsUsingFilters({
@@ -334,6 +335,7 @@ export async function fetchAllTpJobListingsUsingFilters({
   employmentType,
   federalStates,
   isRemotePossible,
+  isJobFair2023Participant,
 }: TpJobListingFilters): Promise<Array<TpJobListing>> {
   const filterRelatedPositions =
     relatedPositions && relatedPositions.length !== 0
@@ -381,6 +383,15 @@ export async function fetchAllTpJobListingsUsingFilters({
           listing.tpCompanyProfile?.isProfileVisibleToJobseekers &&
           listing.tpCompanyProfile.state === 'profile-approved'
       )
+      .filter((listing) => {
+        if (isJobFair2023Participant) {
+          const isPostedByCompanyJobFair2023Participant =
+            listing.tpCompanyProfile?.isJobFair2023Participant
+
+          return isPostedByCompanyJobFair2023Participant
+        }
+        return true
+      })
   )
 }
 

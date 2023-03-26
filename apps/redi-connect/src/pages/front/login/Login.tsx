@@ -14,7 +14,7 @@ import {
 import { Columns, Form, Content, Notification } from 'react-bulma-components'
 import { capitalize } from 'lodash'
 import { RediLocation } from '@talent-connect/shared-types'
-import { buildFrontendUrl } from '../../../utils/build-frontend-url'
+import { buildFrontendUrl } from '@talent-connect/shared-utils'
 import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import {
   Button,

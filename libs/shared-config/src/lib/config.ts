@@ -474,7 +474,7 @@ export const COURSES = [
   {
     id: 'HAMBURG_ALUMNI',
     label: 'Alumni (I took a course in the past)',
-    location: 'HAMBURG',
+    location: 'hamburg',
   },
   {
     id: 'CYBERSPACE_DATA_ANALYTICS',

@@ -3,14 +3,14 @@ import classnames from 'classnames'
 import {
   Button,
   Heading,
-  SVGImage,
+  SVGImage
 } from '@talent-connect/shared-atomic-design-components'
 import {
   Columns,
   Container,
   Content,
   Element,
-  Section,
+  Section
 } from 'react-bulma-components'
 import { useTranslation } from 'react-i18next'
 import { ReactComponent as Deloitte } from '../../../assets/images/deloitte.svg'

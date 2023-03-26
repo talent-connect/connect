@@ -3,13 +3,13 @@ import {
   BooleanParam,
   StringParam,
   useQueryParams,
-  withDefault,
+  withDefault
 } from 'use-query-params'
 
 import {
   FilterDropdown,
   Icon,
-  SearchField,
+  SearchField
 } from '@talent-connect/shared-atomic-design-components'
 import { Columns, Element, Tag } from 'react-bulma-components'
 
@@ -21,7 +21,7 @@ import {
   employmentTypesIdToLabelMap,
   germanFederalStates,
   topSkills,
-  topSkillsIdToLabelMap,
+  topSkillsIdToLabelMap
 } from '@talent-connect/talent-pool/config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
 
@@ -31,7 +31,7 @@ import {
   TpDesiredPosition,
   TpEmploymentType,
   TpTechnicalSkill,
-  useTpJobseekerDirectoryEntriesFindAllVisibleQuery,
+  useTpJobseekerDirectoryEntriesFindAllVisibleQuery
 } from '@talent-connect/data-access'
 import { useQueryClient } from 'react-query'
 import { JobseekerProfileCard } from '../../../components/organisms/JobseekerProfileCard'
@@ -39,7 +39,7 @@ import { LoggedIn } from '../../../components/templates'
 import {
   useTpCompanyFavouritedJobseekerProfilesQuery,
   useTpCompanyMarkJobseekerAsFavouriteMutation,
-  useTpCompanyUnmarkJobseekerAsFavouriteMutation,
+  useTpCompanyUnmarkJobseekerAsFavouriteMutation
 } from './BrowseCompany.generated'
 
 const germanFederalStatesOptions = objectEntries(germanFederalStates).map(
@@ -239,6 +239,7 @@ export function BrowseCompany() {
         </div>
       </div>
       <div className="filters">
+        {/* Hidden until the next Job Fair date announced */}
         {/* <div className="filters-inner filters__jobfair">
           <Checkbox
             name="isJobFair2023Participant"
