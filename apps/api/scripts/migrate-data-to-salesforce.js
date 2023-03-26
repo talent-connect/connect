@@ -1433,7 +1433,7 @@ function buildContact(redUser) {
       'tpJobListings',
     ],
   }).map((u) => u.toJSON())
-  allUsers = _.slice(allUsers, 1500 + 500)
+  // allUsers = _.slice(allUsers, 1500 + 500)
   // allUsers = allUsers.filter(
   //   (u) => u.id.toString() === '613731c6e0624f069aa223d9'
   // )
@@ -1625,27 +1625,27 @@ function buildContact(redUser) {
         }
       }),
 
-      //     // ! ReDI Conenct Profiles
-      //     mergeMap(
-      //       (u) => (u.redProfile ? insertConnectProfile(u) : of(u)),
-      //       CONCURRENCY
-      //     ),
-      //     tap(
-      //       (u) =>
-      //         u.redProfile &&
-      //         console.log(
-      //           'Inserted ReDI Connect Profile #',
-      //           u.redProfile.sfConnectProfileId
-      //         )
-      //     ),
-      //     tap((u) => {
-      //       if (u.redProfile) {
-      //         REDPROFILE_SFREDICONNECTPROFILE[u.redProfile.id] =
-      //           u.redProfile.sfConnectProfileId
-      //         REDPROFILE_SFCONTACT[u.redProfile.id] = u.contact.sfContactId
-      //         REDUSER_SFCONTACT[u.id] = u.contact.sfContactId
-      //       }
-      //     }),
+      // ! ReDI Conenct Profiles
+      mergeMap(
+        (u) => (u.redProfile ? insertConnectProfile(u) : of(u)),
+        CONCURRENCY
+      ),
+      tap(
+        (u) =>
+          u.redProfile &&
+          console.log(
+            'Inserted ReDI Connect Profile #',
+            u.redProfile.sfConnectProfileId
+          )
+      ),
+      tap((u) => {
+        if (u.redProfile) {
+          REDPROFILE_SFREDICONNECTPROFILE[u.redProfile.id] =
+            u.redProfile.sfConnectProfileId
+          REDPROFILE_SFCONTACT[u.redProfile.id] = u.contact.sfContactId
+          REDUSER_SFCONTACT[u.id] = u.contact.sfContactId
+        }
+      }),
 
       // ! Jobseeker profiles
       mergeMap(
@@ -1683,6 +1683,7 @@ function buildContact(redUser) {
         }
       }),
       tap((u) => {
+        //! DO NOT UNCOMMENT: THIS DOESN'T WORK!
         // if (u.tpCompanyProfile) {
         //   TPCOMPANYPROFILE_SFACCOUNT[u.tpCompanyProfile.id] =
         //     u.tpCompanyProfile.sfAccountId
@@ -1694,62 +1695,62 @@ function buildContact(redUser) {
     )
     .toPromise()
 
-  // const allCVs = _.flatten(allUsers.map((u) => u.tpJobseekerCv))
+  const allCVs = _.flatten(allUsers.map((u) => u.tpJobseekerCv))
 
-  // await from(allCVs)
-  //   .pipe(
-  //     // ! CVs
-  //     filter((cv) => REDUSER_SFCONTACT[cv.redUserId]),
-  //     mergeMap((u) => insertJobseekerCv(u), Math.floor(CONCURRENCY / 2)),
-  //     tap((cv) => console.log('Inserted CV #', cv.sfCvId)),
+  await from(allCVs)
+    .pipe(
+      // ! CVs
+      filter((cv) => REDUSER_SFCONTACT[cv.redUserId]),
+      mergeMap((u) => insertJobseekerCv(u), Math.floor(CONCURRENCY / 2)),
+      tap((cv) => console.log('Inserted CV #', cv.sfCvId)),
 
-  //     scan((acc, curr) => acc + 1, 0),
-  //     tap(console.log)
-  //   )
-  //   .toPromise()
+      scan((acc, curr) => acc + 1, 0),
+      tap(console.log)
+    )
+    .toPromise()
 
-  // const menteeFavoritedMentorsToInsert = []
-  // allUsers.forEach((u) => {
-  //   if (u.redProfile && u.redProfile.favouritedRedProfileIds) {
-  //     u.redProfile.favouritedRedProfileIds.forEach((mentorProfileId) => {
-  //       if (
-  //         REDPROFILE_SFREDICONNECTPROFILE[u.redProfile.id.toString()] &&
-  //         REDPROFILE_SFREDICONNECTPROFILE[mentorProfileId.toString()]
-  //       ) {
-  //         menteeFavoritedMentorsToInsert.push([
-  //           REDPROFILE_SFREDICONNECTPROFILE[u.redProfile.id.toString()],
-  //           REDPROFILE_SFREDICONNECTPROFILE[mentorProfileId.toString()],
-  //         ])
-  //       }
-  //     })
-  //   }
-  // })
+  const menteeFavoritedMentorsToInsert = []
+  allUsers.forEach((u) => {
+    if (u.redProfile && u.redProfile.favouritedRedProfileIds) {
+      u.redProfile.favouritedRedProfileIds.forEach((mentorProfileId) => {
+        if (
+          REDPROFILE_SFREDICONNECTPROFILE[u.redProfile.id.toString()] &&
+          REDPROFILE_SFREDICONNECTPROFILE[mentorProfileId.toString()]
+        ) {
+          menteeFavoritedMentorsToInsert.push([
+            REDPROFILE_SFREDICONNECTPROFILE[u.redProfile.id.toString()],
+            REDPROFILE_SFREDICONNECTPROFILE[mentorProfileId.toString()],
+          ])
+        }
+      })
+    }
+  })
 
-  // const jobseekerFavoritedJobListingsToInsert = []
-  // allUsers.forEach((u) => {
-  //   if (
-  //     u.tpJobseekerProfile &&
-  //     u.tpJobseekerProfile.favouritedTpJobListingIds
-  //   ) {
-  //     u.tpJobseekerProfile.favouritedTpJobListingIds.forEach(
-  //       (tpJobListingId) => {
-  //         if (
-  //           TPJOBSEEKERPROFILE_SFJOBSEEKERPROFILE[
-  //             u.tpJobseekerProfile.id.toString()
-  //           ] &&
-  //           TPJOBLISTING_SFJOBLISTING[tpJobListingId.toString()]
-  //         ) {
-  //           jobseekerFavoritedJobListingsToInsert.push([
-  //             TPJOBSEEKERPROFILE_SFJOBSEEKERPROFILE[
-  //               u.tpJobseekerProfile.id.toString()
-  //             ],
-  //             TPJOBLISTING_SFJOBLISTING[tpJobListingId.toString()],
-  //           ])
-  //         }
-  //       }
-  //     )
-  //   }
-  // })
+  const jobseekerFavoritedJobListingsToInsert = []
+  allUsers.forEach((u) => {
+    if (
+      u.tpJobseekerProfile &&
+      u.tpJobseekerProfile.favouritedTpJobListingIds
+    ) {
+      u.tpJobseekerProfile.favouritedTpJobListingIds.forEach(
+        (tpJobListingId) => {
+          if (
+            TPJOBSEEKERPROFILE_SFJOBSEEKERPROFILE[
+              u.tpJobseekerProfile.id.toString()
+            ] &&
+            TPJOBLISTING_SFJOBLISTING[tpJobListingId.toString()]
+          ) {
+            jobseekerFavoritedJobListingsToInsert.push([
+              TPJOBSEEKERPROFILE_SFJOBSEEKERPROFILE[
+                u.tpJobseekerProfile.id.toString()
+              ],
+              TPJOBLISTING_SFJOBLISTING[tpJobListingId.toString()],
+            ])
+          }
+        }
+      )
+    }
+  })
 
   const companyFavouritedJobseekerProfilesToInsert = []
   allUsers.forEach((u) => {
@@ -1774,26 +1775,26 @@ function buildContact(redUser) {
     }
   })
 
-  // await from(menteeFavoritedMentorsToInsert)
-  //   .pipe(
-  //     tap((p) => console.log('inserting favourite mentor', p)),
-  //     mergeMap(
-  //       ([menteeId, mentorId]) => insertFavouriteMentor({ menteeId, mentorId }),
-  //       CONCURRENCY
-  //     )
-  //   )
-  //   .toPromise()
+  await from(menteeFavoritedMentorsToInsert)
+    .pipe(
+      tap((p) => console.log('inserting favourite mentor', p)),
+      mergeMap(
+        ([menteeId, mentorId]) => insertFavouriteMentor({ menteeId, mentorId }),
+        CONCURRENCY
+      )
+    )
+    .toPromise()
 
-  // await from(jobseekerFavoritedJobListingsToInsert)
-  //   .pipe(
-  //     tap((p) => console.log('inserting jobseekers favourited joblisting', p)),
-  //     mergeMap(
-  //       ([jobseekerId, jobListingId]) =>
-  //         insertJobseekerFavoriteJobListing({ jobseekerId, jobListingId }),
-  //       CONCURRENCY
-  //     )
-  //   )
-  //   .toPromise()
+  await from(jobseekerFavoritedJobListingsToInsert)
+    .pipe(
+      tap((p) => console.log('inserting jobseekers favourited joblisting', p)),
+      mergeMap(
+        ([jobseekerId, jobListingId]) =>
+          insertJobseekerFavoriteJobListing({ jobseekerId, jobListingId }),
+        CONCURRENCY
+      )
+    )
+    .toPromise()
 
   await from(companyFavouritedJobseekerProfilesToInsert)
     .pipe(
@@ -1811,58 +1812,58 @@ function buildContact(redUser) {
     )
     .toPromise()
 
-  // fs.writeFileSync(
-  //   './REDUSER_SFCONTACT.json',
-  //   JSON.stringify(REDUSER_SFCONTACT)
-  // )
-  // fs.writeFileSync(
-  //   './REDPROFILE_SFCONTACT.json',
-  //   JSON.stringify(REDPROFILE_SFCONTACT)
-  // )
-  // fs.writeFileSync(
-  //   './REDPROFILE_SFREDICONNECTPROFILE.json',
-  //   JSON.stringify(REDPROFILE_SFREDICONNECTPROFILE)
-  // )
-  // fs.writeFileSync(
-  //   './TPCOMPANYPROFILE_SFACCOUNT.json',
-  //   JSON.stringify(TPCOMPANYPROFILE_SFACCOUNT)
-  // )
-  // fs.writeFileSync(
-  //   './TPJOBSEEKERPROFILE_SFJOBSEEKERPROFILE.json',
-  //   JSON.stringify(TPJOBSEEKERPROFILE_SFJOBSEEKERPROFILE)
-  // )
-  // fs.writeFileSync(
-  //   './TPJOBLISTING_SFJOBLISTING.json',
-  //   JSON.stringify(TPJOBLISTING_SFJOBLISTING)
-  // )
+  fs.writeFileSync(
+    './REDUSER_SFCONTACT.json',
+    JSON.stringify(REDUSER_SFCONTACT)
+  )
+  fs.writeFileSync(
+    './REDPROFILE_SFCONTACT.json',
+    JSON.stringify(REDPROFILE_SFCONTACT)
+  )
+  fs.writeFileSync(
+    './REDPROFILE_SFREDICONNECTPROFILE.json',
+    JSON.stringify(REDPROFILE_SFREDICONNECTPROFILE)
+  )
+  fs.writeFileSync(
+    './TPCOMPANYPROFILE_SFACCOUNT.json',
+    JSON.stringify(TPCOMPANYPROFILE_SFACCOUNT)
+  )
+  fs.writeFileSync(
+    './TPJOBSEEKERPROFILE_SFJOBSEEKERPROFILE.json',
+    JSON.stringify(TPJOBSEEKERPROFILE_SFJOBSEEKERPROFILE)
+  )
+  fs.writeFileSync(
+    './TPJOBLISTING_SFJOBLISTING.json',
+    JSON.stringify(TPJOBLISTING_SFJOBLISTING)
+  )
 
-  // await from(allConMentoringSessions)
-  //   .pipe(
-  //     filter((p) => p.mentorId && p.menteeId),
-  //     filter(
-  //       (p) =>
-  //         REDPROFILE_SFCONTACT[p.mentorId] && REDPROFILE_SFCONTACT[p.menteeId]
-  //     ),
-  //     mergeMap((p) => insertMentoringSession(p), CONCURRENCY / 2),
-  //     tap((p) => console.log('Inserted Mentoring Session #', p.sfId)),
-  //     scan((acc, curr) => acc + 1, 0),
-  //     tap(console.log)
-  //   )
-  //   .toPromise()
+  await from(allConMentoringSessions)
+    .pipe(
+      filter((p) => p.mentorId && p.menteeId),
+      filter(
+        (p) =>
+          REDPROFILE_SFCONTACT[p.mentorId] && REDPROFILE_SFCONTACT[p.menteeId]
+      ),
+      mergeMap((p) => insertMentoringSession(p), CONCURRENCY / 2),
+      tap((p) => console.log('Inserted Mentoring Session #', p.sfId)),
+      scan((acc, curr) => acc + 1, 0),
+      tap(console.log)
+    )
+    .toPromise()
 
-  // await from(allConMatches)
-  //   .pipe(
-  //     filter((p) => p.mentorId && p.menteeId),
-  //     filter(
-  //       (p) =>
-  //         REDPROFILE_SFCONTACT[p.mentorId] && REDPROFILE_SFCONTACT[p.menteeId]
-  //     ),
-  //     mergeMap((p) => insertMatch(p), 5),
-  //     tap((p) => console.log('Inserted Match #', p.sfId)),
-  //     scan((acc, curr) => acc + 1, 0),
-  //     tap(console.log)
-  //   )
-  //   .toPromise()
+  await from(allConMatches)
+    .pipe(
+      filter((p) => p.mentorId && p.menteeId),
+      filter(
+        (p) =>
+          REDPROFILE_SFCONTACT[p.mentorId] && REDPROFILE_SFCONTACT[p.menteeId]
+      ),
+      mergeMap((p) => insertMatch(p), 5),
+      tap((p) => console.log('Inserted Match #', p.sfId)),
+      scan((acc, curr) => acc + 1, 0),
+      tap(console.log)
+    )
+    .toPromise()
 
   console.log('phou!')
 })()
