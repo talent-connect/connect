@@ -1,0 +1,5 @@
+query findOneTpJobseekerCv($id: ID!) {
+  tpJobseekerCv(id: $id) {
+    ...AllTpJobseekerCvFields
+  }
+}

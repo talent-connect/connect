@@ -1,0 +1,9 @@
+mutation tpJobseekerCvEducationRecordPatch(
+  $input: TpJobseekerCvEducationRecordPatchInput!
+) {
+  tpJobseekerCvEducationRecordPatch(
+    tpJobseekerCvEducationRecordPatchInput: $input
+  ) {
+    ok
+  }
+}

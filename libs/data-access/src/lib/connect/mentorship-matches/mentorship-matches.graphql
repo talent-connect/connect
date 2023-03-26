@@ -1,0 +1,74 @@
+query myMatches {
+  conMentorshipMatches {
+    id
+    applicationText
+    expectationText
+    mentee {
+      id
+      fullName
+      firstName
+      lastName
+      languages
+      categories
+      rediLocation
+      profileAvatarImageS3Key
+    }
+    mentor {
+      id
+      fullName
+      firstName
+      lastName
+      languages
+      categories
+      rediLocation
+      profileAvatarImageS3Key
+    }
+    mentorReplyMessageOnAccept
+    hasMenteeDismissedMentorshipApplicationAcceptedNotification
+  }
+}
+
+query findMatch($id: ID!) {
+  conMentorshipMatch(id: $id) {
+    id
+    applicationText
+    expectationText
+    status
+    mentee {
+      ...conProfileFields
+    }
+    mentor {
+      ...conProfileFields
+    }
+    mentoringSessions {
+      id
+      date
+      minuteDuration
+    }
+  }
+}
+
+fragment conProfileFields on ConProfile {
+  userId
+  id
+  fullName
+  firstName
+  lastName
+  email
+  languages
+  categories
+  rediLocation
+  profileAvatarImageS3Key
+  email
+  telephoneNumber
+  linkedInProfileUrl
+  slackUsername
+}
+
+mutation conMatchMarkMentorshipAcceptedNotificationDismissed($id: String!) {
+  conMatchMarkMentorshipAcceptedNotificationDismissed(
+    conMentorshipMatchId: $id
+  ) {
+    ok
+  }
+}

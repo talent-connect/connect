@@ -1,0 +1,5 @@
+export * from './create-tp-jobseeker-cv-education-record.mutation.generated'
+export * from './delete-tp-jobseeker-cv-education-record.mutation.generated'
+export * from './find-all-tp-jobseeker-cv-education-records.query.generated'
+export * from './patch-tp-jobseeker-cv-education-record.mutation.generated'
+export * from './tp-jobseeker-cv-education-record.fragment.generated'

@@ -50,7 +50,7 @@ export function AccordionForm({
           'accordion-form__answer--show': isOpen,
         })}
       >
-        {children}
+        {isOpen ? children : null}
       </Element>
     </div>
   )

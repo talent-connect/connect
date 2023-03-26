@@ -1,0 +1,21 @@
+# Write your query or mutation here
+query loadMyProfile($loopbackUserId: ID!) {
+  conProfile(loopbackUserId: $loopbackUserId) {
+    ...AllConProfileFields
+    mentorshipMatches {
+      ...AllConMentorshipMatchFields
+      mentor {
+        ...AllConProfileFields
+      }
+      mentee {
+        ...AllConProfileFields
+      }
+    }
+  }
+}
+
+mutation patchMyProfile($input: UpdateConProfileInput!) {
+  patchConProfile(patchConProfileInput: $input) {
+    ...AllConProfileFields
+  }
+}

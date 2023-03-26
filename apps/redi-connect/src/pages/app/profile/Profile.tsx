@@ -1,85 +1,77 @@
-import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
-import { getHasReachedMenteeLimit } from '../../../redux/user/selectors'
-import { useParams, useHistory } from 'react-router'
-import { RootState } from '../../../redux/types'
-import { Columns, Element, Notification, Content } from 'react-bulma-components'
+import {
+  MentorshipMatchStatus,
+  useLoadMyProfileQuery,
+  UserType,
+} from '@talent-connect/data-access'
 import {
   Button,
   Heading,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
+import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
+import { Columns, Content, Element, Notification } from 'react-bulma-components'
+import { useHistory, useParams } from 'react-router-dom'
 import {
   ReadAbout,
-  ReadMentoringTopics,
-  ReadEducation,
   ReadContactDetails,
-  ReadSocialMedia,
+  ReadEducation,
   ReadLanguages,
+  ReadMentoringTopics,
+  ReadOccupation,
   ReadPersonalDetail,
   ReadRediClass,
-  ReadOccupation,
+  ReadSocialMedia,
 } from '../../../components/molecules'
 import {
   ApplyForMentor,
   Avatar,
   ConfirmMentorship,
 } from '../../../components/organisms'
-import { LoggedIn } from '../../../components/templates'
-import { RedProfile } from '@talent-connect/shared-types'
-import { profilesFetchOneStart } from '../../../redux/profiles/actions'
-import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
-import './Profile.scss'
 import DeclineMentorshipButton from '../../../components/organisms/DeclineMentorshipButton'
+import { LoggedIn } from '../../../components/templates'
+import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
+import { useProfilePageQueryQuery } from './Profile.generated'
+import './Profile.scss'
 
 interface RouteParams {
   profileId: string
 }
 
-interface ProfileProps {
-  profile: RedProfile | undefined
-  currentUser: RedProfile | undefined
-  hasReachedMenteeLimit: boolean
-  profilesFetchOneStart: Function
-}
-
-function Profile({
-  profile,
-  currentUser,
-  hasReachedMenteeLimit,
-  profilesFetchOneStart,
-}: ProfileProps) {
+function Profile() {
   const { profileId } = useParams<RouteParams>()
+  const profileQuery = useProfilePageQueryQuery({ id: profileId })
+  const myProfileQuery = useLoadMyProfileQuery({
+    loopbackUserId: getAccessTokenFromLocalStorage().userId,
+  })
   const history = useHistory()
 
-  useEffect(() => {
-    profilesFetchOneStart(profileId)
-  }, [profilesFetchOneStart, profileId])
+  if (!profileQuery.isSuccess || !myProfileQuery.isSuccess) return null
 
-  const currentUserIsMentor = currentUser && currentUser.userType === 'mentor'
+  const myProfile = myProfileQuery.data.conProfile
+  const profile = profileQuery.data.conProfile
 
-  const currentUserIsMentee = currentUser && currentUser.userType === 'mentee'
+  const currentUserIsMentor = myProfile.userType === UserType.Mentor
+  const currentUserIsMentee = myProfile.userType === UserType.Mentee
 
-  const isAcceptedMatch =
-    profile &&
-    profile.redMatchesWithCurrentUser &&
-    profile.redMatchesWithCurrentUser[0] &&
-    profile.redMatchesWithCurrentUser[0].status === 'accepted'
+  const myMatchWithThisProfile = myProfile.mentorshipMatches.find(
+    (match) => match.mentee.id === profileId || match.mentor.id === profileId
+  )
+
+  const isAcceptedMatch = Boolean(
+    myMatchWithThisProfile?.status === MentorshipMatchStatus.Accepted
+  )
 
   const hasOpenApplication =
-    profile && profile.numberOfPendingApplicationWithCurrentUser > 0
+    myMatchWithThisProfile?.status === MentorshipMatchStatus.Applied
 
   const userCanApplyForMentorship =
-    !isAcceptedMatch &&
-    currentUserIsMentee &&
-    profile &&
-    profile.numberOfPendingApplicationWithCurrentUser === 0
+    !isAcceptedMatch && currentUserIsMentee && !hasOpenApplication
 
   const contactInfoAvailable =
     profile &&
     (profile.firstName ||
       profile.lastName ||
-      profile.contactEmail ||
+      profile.email ||
       profile.telephoneNumber ||
       profile.linkedInProfileUrl ||
       profile.githubProfileUrl ||
@@ -87,17 +79,9 @@ function Profile({
 
   const shouldHidePrivateContactInfo = currentUserIsMentee && !isAcceptedMatch
 
-  const match =
-    profile &&
-    profile.userType === 'mentee' &&
-    profile.redMatchesWithCurrentUser &&
-    profile.redMatchesWithCurrentUser[
-      profile.redMatchesWithCurrentUser.length - 1
-    ]
-
   return (
     <LoggedIn>
-      {hasOpenApplication && (
+      {currentUserIsMentee && hasOpenApplication && (
         <Notification>
           Awesome, your application has been sent. If you want to read it later
           on you can find it in{' '}
@@ -117,20 +101,21 @@ function Profile({
 
         {userCanApplyForMentorship && (
           <Columns.Column className="is-narrow">
-            <ApplyForMentor />
+            <ApplyForMentor mentor={profile} />
           </Columns.Column>
         )}
 
-        {match && match.status === 'applied' && (
-          <Columns.Column className="is-narrow">
-            <ConfirmMentorship
-              match={match}
-              menteeName={profile && profile.firstName}
-              hasReachedMenteeLimit={hasReachedMenteeLimit}
-            />
-            <DeclineMentorshipButton match={match} />
-          </Columns.Column>
-        )}
+        {myMatchWithThisProfile &&
+          currentUserIsMentor &&
+          myMatchWithThisProfile.status === MentorshipMatchStatus.Applied && (
+            <Columns.Column className="is-narrow">
+              <ConfirmMentorship
+                match={myMatchWithThisProfile}
+                menteeName={profile && profile.firstName}
+              />
+              <DeclineMentorshipButton match={myMatchWithThisProfile} />
+            </Columns.Column>
+          )}
       </Columns>
 
       {profile && (
@@ -140,9 +125,7 @@ function Profile({
               <Avatar profile={profile} />
             </Columns.Column>
             <Columns.Column size={9}>
-              <Heading>
-                {profile.firstName} {profile.lastName}
-              </Heading>
+              <Heading>{profile.fullName}</Heading>
               <Element className="location-tag">
                 <Icon icon="mapPin" className="icon-align" />
                 <Content size="medium" renderAs="p">
@@ -235,15 +218,5 @@ function Profile({
     </LoggedIn>
   )
 }
-const mapStateToProps = (state: RootState) => ({
-  profile: state.profiles.oneProfile,
-  currentUser: state.user.profile,
-  hasReachedMenteeLimit: getHasReachedMenteeLimit(state.user),
-})
 
-const mapDispatchToProps = (dispatch: any) => ({
-  profilesFetchOneStart: (profileId: string) =>
-    dispatch(profilesFetchOneStart(profileId)),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Profile)
+export default Profile

@@ -1,0 +1,5 @@
+fragment ReadContactDetailsProfileProp on ConProfile {
+  fullName
+  email
+  telephoneNumber
+}

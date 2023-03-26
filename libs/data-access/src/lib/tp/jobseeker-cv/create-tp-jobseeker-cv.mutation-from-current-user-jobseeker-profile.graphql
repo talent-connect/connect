@@ -1,0 +1,8 @@
+mutation tpJobseekerCvCreateFromCurrentUserJobseekerProfile(
+  $input: TpJobseekerCvCreateFromCurrentUserJobseekerProfileInput!
+) {
+  tpJobseekerCreateFromCurrentUserJobseekerProfile(input: $input) {
+    id
+    ok
+  }
+}

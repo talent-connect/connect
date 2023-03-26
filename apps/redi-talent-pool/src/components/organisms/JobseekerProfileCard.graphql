@@ -1,0 +1,8 @@
+fragment JobseekerProfileCardJobseekerProfileProp on TpJobseekerDirectoryEntry {
+  id
+  fullName
+  desiredPositions
+  topSkills
+  profileAvatarImageS3Key
+  isHired
+}

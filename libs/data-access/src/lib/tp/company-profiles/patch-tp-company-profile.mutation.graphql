@@ -1,0 +1,5 @@
+mutation patchTpCompanyProfile($input: TpCompanyProfilePatchInput!) {
+  tpCompanyProfilePatch(tpCompanyProfilePatchInput: $input) {
+    ok
+  }
+}

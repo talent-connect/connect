@@ -1,4 +1,11 @@
 import {
+  TpJobseekerProfileLanguageRecord,
+  useMyTpDataQuery,
+  useTpJobseekerProfileLanguageRecordCreateMutation,
+  useTpJobseekerProfileLanguageRecordDeleteMutation,
+  useTpJobseekerProfileLanguageRecordPatchMutation,
+} from '@talent-connect/data-access'
+import {
   Button,
   FormDraggableAccordion,
   FormSelect,
@@ -6,50 +13,30 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import { LANGUAGES } from '@talent-connect/shared-config'
 import {
-  LanguageRecord,
-  TpJobseekerCv,
-  TpJobseekerProfile,
-} from '@talent-connect/shared-types'
-import {
   languageProficiencyLevels,
   languageProficiencyLevelsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
+import { cloneDeep } from 'lodash'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Content, Element } from 'react-bulma-components'
-import { UseMutationResult, UseQueryResult } from 'react-query'
+import { useQueryClient } from 'react-query'
 import { Subject } from 'rxjs'
 import { v4 as uuidv4 } from 'uuid'
 import * as Yup from 'yup'
-import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useIsBusy } from '../../../hooks/useIsBusy'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
-
-function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
-  const result = Array.from(list)
-  const [removed] = result.splice(startIndex, 1)
-  result.splice(endIndex, 0, removed)
-
-  return result
-}
+import { EditableLanguagesProfilePropFragment } from './EditableLanguages.generated'
 
 interface Props {
-  profile?: Partial<TpJobseekerProfile>
+  profile?: EditableLanguagesProfilePropFragment
   disableEditing?: boolean
 }
 
-export function EditableLanguages({
-  profile: overridingProfile,
-  disableEditing,
-}: Props) {
-  const queryHookResult = useTpJobseekerProfileQuery({
-    enabled: !disableEditing,
-  })
-  if (overridingProfile) queryHookResult.data = overridingProfile
-  const mutationHookResult = useTpjobseekerprofileUpdateMutation()
-  const { data: profile } = queryHookResult
+export function EditableLanguages({ profile, disableEditing }: Props) {
+  const langaugeRecords = profile?.workingLanguages
+
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
@@ -74,14 +61,12 @@ export function EditableLanguages({
           </EmptySectionPlaceholder>
         ) : (
           <Content>
-            {profile?.workingLanguages?.map(
-              ({ language, proficiencyLevelId }, idx) => (
-                <p key={idx}>
-                  {language} -{' '}
-                  {languageProficiencyLevelsIdToLabelMap[proficiencyLevelId]}
-                </p>
-              )
-            )}
+            {langaugeRecords?.map(({ language, proficiencyLevelId }, idx) => (
+              <p key={idx}>
+                {language} -{' '}
+                {languageProficiencyLevelsIdToLabelMap[proficiencyLevelId]}
+              </p>
+            ))}
           </Content>
         )
       }
@@ -91,8 +76,6 @@ export function EditableLanguages({
         <JobseekerFormSectionLanguages
           setIsEditing={setIsEditing}
           setIsFormDirty={setIsFormDirty}
-          queryHookResult={queryHookResult}
-          mutationHookResult={mutationHookResult}
         />
       }
       modalStyles={{ minHeight: 700 }}
@@ -100,10 +83,12 @@ export function EditableLanguages({
   )
 }
 
-EditableLanguages.isSectionFilled = (profile: Partial<TpJobseekerProfile>) =>
-  profile?.workingLanguages?.length > 0
-EditableLanguages.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
-  !EditableLanguages.isSectionFilled(profile)
+EditableLanguages.isSectionFilled = (
+  profile: EditableLanguagesProfilePropFragment
+) => profile?.workingLanguages?.length > 0
+EditableLanguages.isSectionEmpty = (
+  profile: EditableLanguagesProfilePropFragment
+) => !EditableLanguages.isSectionFilled(profile)
 
 // TODO: put this one in config file
 const MAX_LANGUAGES = 6
@@ -127,48 +112,94 @@ const validationSchema = Yup.object({
 interface JobseekerFormSectionLanguagesProps {
   setIsEditing: (boolean) => void
   setIsFormDirty?: (boolean) => void
-  queryHookResult: UseQueryResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
-    unknown
-  >
-  mutationHookResult: UseMutationResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
-    unknown,
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
-    unknown
-  >
+}
+
+type FormLanguageRecord = Omit<TpJobseekerProfileLanguageRecord, 'userId'>
+
+interface FormValues {
+  workingLanguages: Array<FormLanguageRecord>
 }
 
 export function JobseekerFormSectionLanguages({
   setIsEditing,
   setIsFormDirty,
-  queryHookResult,
-  mutationHookResult,
 }: JobseekerFormSectionLanguagesProps) {
-  const { data: profile } = queryHookResult
-  const mutation = mutationHookResult
+  const queryClient = useQueryClient()
+  const myData = useMyTpDataQuery()
+  const patchMutation = useTpJobseekerProfileLanguageRecordPatchMutation()
+  const deleteMutation = useTpJobseekerProfileLanguageRecordDeleteMutation()
+  const createMutation = useTpJobseekerProfileLanguageRecordCreateMutation()
+  const removedRecords = useRef<Array<string>>([])
+  const isBusy = useIsBusy()
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
 
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(
-    () => ({
-      workingLanguages: profile?.workingLanguages ?? [
-        buildBlankLanguageRecord(),
-      ],
-    }),
-    [profile?.workingLanguages]
-  )
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
-    formik.setSubmitting(true)
-    mutation.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
-      },
+  const workingLanguages =
+    myData?.data?.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry
+      ?.workingLanguages
+
+  const initialValues: FormValues = useMemo(() => {
+    if (!workingLanguages || workingLanguages?.length === 0) {
+      return { workingLanguages: [buildBlankLanguageRecord()] }
+    }
+    // TODO: we should rather use structuredClone or a polyfill thereof at some future point
+    return {
+      workingLanguages: cloneDeep(workingLanguages),
+    }
+  }, [workingLanguages])
+
+  const onSubmit = async (values: FormValues) => {
+    // We need to run the mutation tpJobseekerProfileLanguageRecordCreate
+    const newRecords = values.workingLanguages.filter((record) =>
+      record.id.includes('NEW')
+    )
+
+    // We need to run the mutation tpJobseekerProfileLanguageRecordPatch
+    const existingRecords = values.workingLanguages.filter(
+      (record) => !record.id.includes('NEW')
+    )
+
+    const deletedRecords = removedRecords.current
+
+    const createRecordPromises = newRecords.map((record) => {
+      return createMutation.mutateAsync({
+        input: {
+          language: record.language,
+          proficiencyLevelId: record.proficiencyLevelId,
+        },
+      })
     })
+
+    const patchRecordPromises = existingRecords.map((record) => {
+      return patchMutation.mutateAsync({
+        input: {
+          id: record.id,
+          language: record.language,
+          proficiencyLevelId: record.proficiencyLevelId,
+        },
+      })
+    })
+
+    const deleteRecordPromises = deletedRecords.map((recordId) => {
+      return deleteMutation.mutateAsync({
+        input: {
+          id: recordId,
+        },
+      })
+    })
+
+    formik.setSubmitting(true)
+    await Promise.all([
+      ...createRecordPromises,
+      ...patchRecordPromises,
+      ...deleteRecordPromises,
+    ])
+    queryClient.invalidateQueries()
+    formik.setSubmitting(false)
+    setIsEditing(false)
+    removedRecords.current = []
   }
+
   const formik = useFormik({
     initialValues,
     validationSchema,
@@ -178,21 +209,6 @@ export function JobseekerFormSectionLanguages({
   useEffect(
     () => setIsFormDirty?.(formik.dirty),
     [formik.dirty, setIsFormDirty]
-  )
-
-  const onDragEnd = useCallback(
-    (result: any) => {
-      if (!result.destination) return
-
-      const reorderedWorkingLanguages = reorder(
-        formik.values.workingLanguages,
-        result.source.index,
-        result.destination.index
-      )
-
-      formik.setFieldValue('workingLanguages', reorderedWorkingLanguages)
-    },
-    [formik]
   )
 
   const onAddLanguage = useCallback(() => {
@@ -229,55 +245,26 @@ export function JobseekerFormSectionLanguages({
         Specify any relevant languages you speak and your level of proficiency.
         You can add up to six languages.
       </Element>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="id">
-          {(provided, snapshot) => (
-            <div {...provided.droppableProps} ref={provided.innerRef}>
-              {formik?.values?.workingLanguages?.map((item, index) => (
-                <Draggable
-                  key={item.uuid}
-                  draggableId={item.uuid}
-                  index={index}
-                >
-                  {(provided, snapshot) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                    >
-                      <FormDraggableAccordion
-                        title={
-                          item.language
-                            ? item.language
-                            : 'Click me to add details'
-                        }
-                        onRemove={() => onRemove(item.language)}
-                        closeAccordionSignalSubject={
-                          closeAllAccordionsSignalSubject.current
-                        }
-                      >
-                        <FormSelect
-                          name={`workingLanguages[${index}].language`}
-                          label="Language*"
-                          items={formLanguages}
-                          {...formik}
-                        />
-                        <FormSelect
-                          name={`workingLanguages[${index}].proficiencyLevelId`}
-                          label="Level of proficiency*"
-                          items={formLanguageProficiencyLevels}
-                          {...formik}
-                        />
-                      </FormDraggableAccordion>
-                    </div>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
+      {formik?.values?.workingLanguages?.map((item, index) => (
+        <FormDraggableAccordion
+          title={item.language ? item.language : 'Click me to add details'}
+          onRemove={() => onRemove(item.language)}
+          closeAccordionSignalSubject={closeAllAccordionsSignalSubject.current}
+        >
+          <FormSelect
+            name={`workingLanguages[${index}].language`}
+            label="Language*"
+            items={formLanguages}
+            {...formik}
+          />
+          <FormSelect
+            name={`workingLanguages[${index}].proficiencyLevelId`}
+            label="Level of proficiency*"
+            items={formLanguageProficiencyLevels}
+            {...formik}
+          />
+        </FormDraggableAccordion>
+      ))}
 
       <div style={{ height: '30px' }} />
 
@@ -298,17 +285,10 @@ export function JobseekerFormSectionLanguages({
         Add another language
       </div>
 
-      <Button
-        disabled={!formik.isValid || mutation.isLoading}
-        onClick={formik.submitForm}
-      >
+      <Button disabled={!formik.isValid || isBusy} onClick={formik.submitForm}>
         Save
       </Button>
-      <Button
-        simple
-        disabled={mutation.isLoading}
-        onClick={() => setIsEditing(false)}
-      >
+      <Button simple disabled={isBusy} onClick={() => setIsEditing(false)}>
         Cancel
       </Button>
     </>
@@ -327,10 +307,10 @@ const formLanguageProficiencyLevels = languageProficiencyLevels.map(
   })
 )
 
-function buildBlankLanguageRecord(): LanguageRecord {
+function buildBlankLanguageRecord(): FormLanguageRecord {
   return {
-    uuid: uuidv4(),
-    language: '',
-    proficiencyLevelId: '',
+    id: `NEW-${uuidv4()}`,
+    language: null,
+    proficiencyLevelId: null,
   }
 }

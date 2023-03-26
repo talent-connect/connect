@@ -1,10 +1,6 @@
-import React from 'react'
-
-import { Router } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
-import { store } from '../../redux/store'
-import { UserActionType } from '../../redux/user/types'
-import { isLoggedIn } from '../auth/auth'
+import React from 'react'
+import { Router } from 'react-router-dom'
 
 const history = createBrowserHistory()
 

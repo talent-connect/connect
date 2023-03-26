@@ -1,20 +1,18 @@
-import React, { useState } from 'react'
-import { useHistory } from 'react-router'
+import { UserType } from '@talent-connect/data-access'
 import {
   Button,
-  FormTextArea,
   Checkbox,
+  FormTextArea,
+  Modal,
 } from '@talent-connect/shared-atomic-design-components'
-import { Modal } from '@talent-connect/shared-atomic-design-components'
-import { useFormik, FormikHelpers } from 'formik'
-import * as Yup from 'yup'
-import { reportProblem } from '../../services/api/api'
-import {
-  FormSubmitResult,
-  RedProblemReportDto,
-  UserType,
-} from '@talent-connect/shared-types'
+import { FormSubmitResult } from '@talent-connect/shared-types'
+import { FormikHelpers, useFormik } from 'formik'
+import { useState } from 'react'
 import { Content } from 'react-bulma-components'
+import { useQueryClient } from 'react-query'
+import { useHistory } from 'react-router-dom'
+import * as Yup from 'yup'
+import { useReportProblemMutation } from './ReportProblem.generated'
 import './ReportProblem.scss'
 
 export interface ReportProblemProps {
@@ -44,11 +42,13 @@ const validationSchema = Yup.object({
 })
 
 const ReportProblem = ({ redProfileId, type }: ReportProblemProps) => {
+  const queryClient = useQueryClient()
+  const reportProblemMutation = useReportProblemMutation()
   const [showProblemDialog, setShowProblemDialog] = useState(false)
   const [submitResult, setSubmitResult] =
     useState<FormSubmitResult>('notSubmitted')
   const history = useHistory()
-  const isMentor = type === 'mentor'
+  const isMentor = type === UserType.Mentor
 
   const submitForm = async (
     values: FormValues,
@@ -64,21 +64,19 @@ const ReportProblem = ({ redProfileId, type }: ReportProblemProps) => {
     }
     setSubmitResult('submitting')
     try {
-      const report: RedProblemReportDto = {
-        problemDescription: values.problemDescription,
-        reportType:
-          type === 'mentee'
-            ? 'mentor-report-about-mentee'
-            : 'mentee-report-about-mentor',
-        reporteeId: redProfileId,
-        ifFromMentor_cancelMentorshipImmediately:
-          isMentor && isCancelImmediately,
-      }
-      await reportProblem(report)
+      await reportProblemMutation.mutateAsync({
+        input: {
+          problemDescription: values.problemDescription,
+          reporteeProfileId: redProfileId,
+          ifFromMentor_cancelMentorshipImmediately:
+            isMentor && isCancelImmediately,
+        },
+      })
       setSubmitResult('success')
       setShowProblemDialog(false)
       actions.resetForm()
-      if (isCancelImmediately) history.push('/app/mentorships/')
+      queryClient.invalidateQueries()
+      if (isCancelImmediately) history.push('/app/me')
     } catch (err) {
       setSubmitResult('error')
     }

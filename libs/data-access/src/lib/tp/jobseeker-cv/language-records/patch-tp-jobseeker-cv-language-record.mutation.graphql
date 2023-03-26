@@ -1,0 +1,9 @@
+mutation tpJobseekerCvLanguageRecordPatch(
+  $input: TpJobseekerCvLanguageRecordPatchInput!
+) {
+  tpJobseekerCvLanguageRecordPatch(
+    tpJobseekerCvLanguageRecordPatchInput: $input
+  ) {
+    ok
+  }
+}

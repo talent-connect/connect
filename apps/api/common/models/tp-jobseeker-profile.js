@@ -99,14 +99,14 @@ module.exports = function (TpJobseekerProfile) {
       // TODO: the next two else-if blocks can definitely be DRY-ed. Merge them.
     }
 
-    if (
-      ctx.options &&
-      ctx.options.currentUser &&
-      ctx.options.currentUser.email === 'cloud-accounts@redi-school.org'
-    ) {
-    } else {
-      delete ctx.data.administratorInternalComment
-    }
+    // if (
+    //   ctx.options &&
+    //   ctx.options.currentUser &&
+    //   ctx.options.currentUser.email === 'cloud-accounts@redi-school.org'
+    // ) {
+    // } else {
+    //   delete ctx.data.administratorInternalComment
+    // }
 
     next()
   })

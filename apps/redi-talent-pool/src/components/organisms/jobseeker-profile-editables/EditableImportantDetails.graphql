@@ -1,0 +1,10 @@
+fragment EditableImportantDetailsProfileProp on TpJobseekerDirectoryEntry {
+  desiredEmploymentType
+  availability
+  telephoneNumber
+  postalMailingAddress
+  immigrationStatus
+  ifAvailabilityIsDate_date
+  email
+  willingToRelocate
+}

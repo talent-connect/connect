@@ -1,0 +1,34 @@
+query loadVisibleJobseekerProfiles(
+  $filter: FindAllVisibleTpJobseekerDirectoryEntriesFilter!
+) {
+  tpJobseekerDirectoryEntriesVisible(filter: $filter) {
+    id
+    fullName
+    firstName
+    lastName
+    aboutYourself
+    email
+  }
+}
+
+query tpCompanyFavouritedJobseekerProfiles {
+  tpCompanyFavoritedJobseekerProfiles {
+    favoritedTpJobseekerProfileId
+  }
+}
+
+mutation tpCompanyMarkJobseekerAsFavourite(
+  $input: TpCompanyFavoritedJobseekerProfileCreateMutationInputDto!
+) {
+  tpCompanyFavoritedJobseekerProfileCreate(input: $input) {
+    ok
+  }
+}
+
+mutation tpCompanyUnmarkJobseekerAsFavourite(
+  $input: TpCompanyFavoritedJobseekerProfileDeleteMutationInputDto!
+) {
+  tpCompanyFavoritedJobseekerProfileDelete(input: $input) {
+    ok
+  }
+}

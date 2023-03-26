@@ -14,11 +14,37 @@ import {
   purgeAllSessionData,
   saveAccessTokenToLocalStorage,
   saveRedUserToLocalStorage,
+  setGraphQlClientAuthHeader,
 } from '../auth/auth'
 import { history } from '../history/history'
 import { http } from '../http/http'
 
-export const queryClient = new QueryClient()
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      cacheTime: 5 * 60 * 1000,
+
+      //! TODO: Investigate which one of the following or combination thereof is ideal
+      // docs here: https://react-query-v3.tanstack.com/guides/important-defaults
+      // staleTime: 5 * 60 * 1000,
+      refetchOnMount: false,
+    },
+  },
+})
+
+export const signUpLoopback = async (email: string, password: string) => {
+  email = email.toLowerCase()
+  const userResponse = await http(`${API_URL}/redUsers`, {
+    method: 'post',
+    data: {
+      email,
+      password,
+    },
+  })
+  const accessToken = await login(email, password)
+  saveAccessTokenToLocalStorage(accessToken)
+}
 
 export const signUpJobseeker = async (
   email: string,
@@ -85,6 +111,8 @@ export const login = async (
     },
   })
   const accessToken = loginResp.data as AccessToken
+  saveAccessTokenToLocalStorage(accessToken)
+  setGraphQlClientAuthHeader(accessToken)
   return accessToken
 }
 
@@ -319,7 +347,7 @@ export async function fetchAllTpJobListingsUsingFilters({
       ? { inq: idealTechnicalSkills }
       : undefined
 
-  const filterDesiredEmploymentTypeOptions =
+  const filterEmploymentTypeOptions =
     employmentType && employmentType.length !== 0
       ? { inq: employmentType }
       : undefined
@@ -338,7 +366,7 @@ export async function fetchAllTpJobListingsUsingFilters({
           {
             relatesToPositions: filterRelatedPositions,
             idealTechnicalSkills: filterIdealTechnicalSkills,
-            employmentType: filterDesiredEmploymentTypeOptions,
+            employmentType: filterEmploymentTypeOptions,
             federalState: filterFederalStates,
             isRemotePossible,
           },

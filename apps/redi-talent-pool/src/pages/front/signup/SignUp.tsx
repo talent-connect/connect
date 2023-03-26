@@ -1,11 +1,7 @@
-import React, { useMemo, useState } from 'react'
-import { useParams } from 'react-router'
-import { Link } from 'react-router-dom'
-import omit from 'lodash/omit'
-import * as Yup from 'yup'
-import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
-import { Columns, Content, Form, Notification } from 'react-bulma-components'
-
+import {
+  TpCompanyProfileSignUpOperationType,
+  useListAllTpCompanyNamesQuery,
+} from '@talent-connect/data-access'
 import {
   Button,
   Checkbox,
@@ -14,19 +10,24 @@ import {
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
 import { COURSES, REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
+import { TpCompanyProfile } from '@talent-connect/shared-types'
 import { toPascalCaseAndTrim } from '@talent-connect/shared-utils'
-import {
-  TpJobseekerProfile,
-  TpCompanyProfile,
-} from '@talent-connect/shared-types'
-
 import { howDidHearAboutRediOptions } from '@talent-connect/talent-pool/config'
+import { objectEntries } from '@talent-connect/typescript-utilities'
+import { FormikHelpers as FormikActions, useFormik } from 'formik'
+import { useMemo, useState } from 'react'
 
+import { Columns, Content, Form, Notification } from 'react-bulma-components'
+import { Link, useParams } from 'react-router-dom'
+import * as Yup from 'yup'
 import TpTeaser from '../../../components/molecules/TpTeaser'
 import AccountOperation from '../../../components/templates/AccountOperation'
-import { signUpCompany, signUpJobseeker } from '../../../services/api/api'
+import { signUpLoopback } from '../../../services/api/api'
 import { history } from '../../../services/history/history'
-import { objectEntries } from '@talent-connect/typescript-utilities'
+import {
+  useSignUpCompanyMutation,
+  useSignUpJobseekerMutation,
+} from './SignUp.generated'
 
 const formRediLocations = objectEntries(REDI_LOCATION_NAMES).map(
   ([id, label]) => ({
@@ -55,7 +56,7 @@ function buildValidationSchema(signupType: SignUpPageType['type']) {
       .transform(toPascalCaseAndTrim)
       .required('Your last name is required')
       .max(255),
-    contactEmail: Yup.string()
+    email: Yup.string()
       .email('Please enter a valid email')
       .required('Your email is required')
       .label('Email')
@@ -88,7 +89,7 @@ function buildValidationSchema(signupType: SignUpPageType['type']) {
   if (signupType === 'company') {
     return Yup.object({
       ...baseSchema,
-      companyName: Yup.string()
+      companyNameOrId: Yup.string()
         .required('Your company name is required')
         .max(255),
       howDidHearAboutRediKey: Yup.string().required('This field is required'),
@@ -107,25 +108,15 @@ type SignUpPageType = {
   type: 'jobseeker' | 'company'
 }
 
-export interface SignUpFormValues {
-  // TODO: Make this into an enum/type in shared confif/types
-  state?: string
-  contactEmail: string
-  password: string
-  passwordConfirm: string
-  companyName?: string
-  firstName: string
-  lastName: string
-  agreesWithCodeOfConduct?: boolean
-  jobseeker_currentlyEnrolledInCourse?: string
-}
-
 export default function SignUp() {
+  const signUpCompanyMutation = useSignUpCompanyMutation()
+  const signUpJobseekerMutation = useSignUpJobseekerMutation()
+
   const { type } = useParams<SignUpPageType>()
 
-  const initialValues: SignUpFormValues = useMemo(
+  const initialValues: any = useMemo(
     () => ({
-      contactEmail: '',
+      email: '',
       password: '',
       passwordConfirm: '',
       firstName: '',
@@ -135,65 +126,66 @@ export default function SignUp() {
   )
   if (type === 'jobseeker') {
     initialValues.state = 'drafting-profile'
-    initialValues.jobseeker_currentlyEnrolledInCourse = ''
+    initialValues.currentlyEnrolledInCourse = ''
     initialValues.agreesWithCodeOfConduct = false
   }
   if (type === 'company') {
-    initialValues.companyName = ''
+    initialValues.companyNameOrId = ''
     initialValues.state = 'drafting-profile'
   }
 
-  const [submitError, setSubmitError] = useState(null)
-  const submitForm = async (
-    values: FormikValues,
-    actions: FormikActions<SignUpFormValues>
-  ) => {
-    setSubmitError(null)
+  const {
+    data: tpCompanyNames,
+    isLoading: isLoadingTpCompanyNames,
+    isSuccess: isSuccessTpCompanyNames,
+  } = useListAllTpCompanyNamesQuery({}, { enabled: type === 'company' })
 
-    let profile
+  const [loopbackSubmitError, setLoopbackSubmitError] = useState(null)
 
+  const submitForm = async (values: any, actions: FormikActions<any>) => {
     try {
+      setLoopbackSubmitError(null)
+      await signUpLoopback(values.email, values.password)
+
       if (type === 'jobseeker') {
-        const transformedValues =
+        const transformedValues: any =
           buildValidationSchema('jobseeker').cast(values)
-        const profile = transformedValues as Partial<TpJobseekerProfile>
-        profile.isProfileVisibleToCompanies = true
-
-        // TODO: this needs to be done in a smarter way, like iterating over the TpJobseekerProfile definition or something
-        const cleanProfile:
-          | Partial<TpJobseekerProfile>
-          | Partial<TpCompanyProfile> = omit(profile, [
-          'password',
-          'passwordConfirm',
-          'agreesWithCodeOfConduct',
-          'gaveGdprConsent',
-        ])
-
-        await signUpJobseeker(
-          values.contactEmail,
-          values.password,
-          cleanProfile
-        )
+        await signUpJobseekerMutation.mutateAsync({
+          input: {
+            firstName: transformedValues.firstName,
+            lastName: transformedValues.lastName,
+            currentlyEnrolledInCourse:
+              transformedValues.currentlyEnrolledInCourse,
+            rediLocation: transformedValues.rediLocation,
+          },
+        })
+        history.push(`/app/me`)
       }
+
       if (type === 'company') {
         const transformedValues = buildValidationSchema('company').cast(values)
         const profile = transformedValues as Partial<TpCompanyProfile>
         profile.isProfileVisibleToJobseekers = true
 
-        // TODO: this needs to be done in a smarter way, like iterating over the TpJobseekerProfile definition or something
-        const cleanProfile:
-          | Partial<TpJobseekerProfile>
-          | Partial<TpCompanyProfile> = omit(profile, [
-          'password',
-          'passwordConfirm',
-          'agreesWithCodeOfConduct',
-          'gaveGdprConsent',
-        ])
+        const isExistingCompany = tpCompanyNames?.publicTpCompanyProfiles.some(
+          (company) => company.id === values.companyNameOrId
+        )
 
-        await signUpCompany(values.contactEmail, values.password, cleanProfile)
+        await signUpCompanyMutation.mutateAsync({
+          input: {
+            companyIdOrName: values.companyNameOrId,
+            firstName: values.firstName,
+            lastName: values.lastName,
+            operationType: isExistingCompany
+              ? TpCompanyProfileSignUpOperationType.ExistingCompany
+              : TpCompanyProfileSignUpOperationType.NewCompany,
+            firstPointOfContact: values.howDidHearAboutRediKey,
+            firstPointOfContactOther: values.howDidHearAboutRediOtherText,
+          },
+        })
+        history.push(`/front/signup-complete`)
       }
       actions.setSubmitting(false)
-      history.push(`/front/signup-email-verification`)
     } catch (error) {
       actions.setSubmitting(false)
       if (
@@ -201,9 +193,9 @@ export default function SignUp() {
           'uniqueness'
         )
       ) {
-        return setSubmitError('user-already-exists')
+        return setLoopbackSubmitError('user-already-exists')
       }
-      return setSubmitError('generic')
+      return setLoopbackSubmitError('generic')
     }
   }
 
@@ -230,7 +222,7 @@ export default function SignUp() {
             Got a ReDI Connect user account? You can log in with the same
             username and password <Link to="/front/login">here</Link>.
           </Content>
-          {submitError === 'user-already-exists' && (
+          {loopbackSubmitError === 'user-already-exists' && (
             <Notification color="info" className="is-light">
               You already have an account. Please{' '}
               <Link to="/front/login">log in</Link>.
@@ -238,9 +230,21 @@ export default function SignUp() {
           )}
           <form onSubmit={(e) => e.preventDefault()} className="form">
             {type === 'company' ? (
-              <FormInput
-                name="companyName"
+              <FormSelect
+                name="companyNameOrId"
                 placeholder="Your company name"
+                items={
+                  isSuccessTpCompanyNames
+                    ? tpCompanyNames?.publicTpCompanyProfiles.map(
+                        (company) => ({
+                          label: company.companyName,
+                          value: company.id,
+                        })
+                      )
+                    : []
+                }
+                creatable
+                isLoading={isLoadingTpCompanyNames}
                 {...formik}
               />
             ) : null}
@@ -258,7 +262,7 @@ export default function SignUp() {
             />
 
             <FormInput
-              name="contactEmail"
+              name="email"
               type="email"
               placeholder="Your Email"
               {...formik}
@@ -354,9 +358,9 @@ export default function SignUp() {
             </Checkbox.Form>
             <Form.Help
               color="danger"
-              className={submitError ? 'help--show' : ''}
+              className={loopbackSubmitError ? 'help--show' : ''}
             >
-              {submitError === 'generic' &&
+              {loopbackSubmitError === 'generic' &&
                 'An error occurred, please try again.'}
             </Form.Help>
             <Form.Field>

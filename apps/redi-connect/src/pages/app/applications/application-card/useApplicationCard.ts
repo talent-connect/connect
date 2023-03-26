@@ -1,11 +1,14 @@
+import {
+  AllConProfileFieldsFragment,
+  UserType,
+} from '@talent-connect/data-access'
 import { useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { RedMatch, RedProfile } from '@talent-connect/shared-types'
-import { getRedProfileFromLocalStorage } from '../../../../services/auth/auth'
+import { ApplicationCardApplicationPropFragment } from '../../../../components/organisms/ApplicationCard.generated'
 
 interface ApplicationCardProps {
-  application: RedMatch
-  currentUser: RedProfile
+  application: ApplicationCardApplicationPropFragment
+  currentUser: AllConProfileFieldsFragment
 }
 
 export const useApplicationCard = ({
@@ -13,12 +16,13 @@ export const useApplicationCard = ({
   currentUser,
 }: ApplicationCardProps) => {
   const history = useHistory()
-  const profile = getRedProfileFromLocalStorage()
   const [showDetails, setShowDetails] = useState<boolean>(false)
   const applicationDate = new Date(application.createdAt || '')
   const applicationUser =
-    profile.userType === 'mentee' ? application.mentor : application.mentee
-  const currentUserIsMentor = currentUser?.userType === 'mentor'
+    currentUser.userType === UserType.Mentee
+      ? application.mentor
+      : application.mentee
+  const currentUserIsMentor = currentUser?.userType === UserType.Mentor
 
   return {
     history,

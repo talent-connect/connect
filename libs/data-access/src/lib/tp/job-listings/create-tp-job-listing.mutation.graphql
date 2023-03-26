@@ -1,0 +1,5 @@
+mutation tpJobListingCreate($input: TpJobListingCreateInput!) {
+  tpJobListingCreate(tpJobListingCreateInput: $input) {
+    ok
+  }
+}

@@ -6,57 +6,57 @@ import './MediaIcons.scss'
 const icons: Array<SocialMediaIcon> = [
   {
     icon: 'fb',
-    berlin: 'https://www.facebook.com/redischool/',
-    hamburg: 'https://www.facebook.com/redischool/',
-    munich: 'https://www.facebook.com/redimunich/',
-    nrw: 'https://www.facebook.com/redischoolnrw/',
-    cyberspace: 'https://www.facebook.com/redischoolcyberspace/',
+    BERLIN: 'https://www.facebook.com/redischool/',
+    HAMBURG: 'https://www.facebook.com/redischool/',
+    MUNICH: 'https://www.facebook.com/redimunich/',
+    NRW: 'https://www.facebook.com/redischoolnrw/',
+    CYBERSPACE: 'https://www.facebook.com/redischoolcyberspace/',
   },
   {
     icon: 'meetup',
-    berlin: 'https://www.meetup.com/en-AU/ReDI-school/',
-    hamburg: 'https://www.meetup.com/en-AU/ReDI-school/',
-    munich: 'https://www.meetup.com/Tech-Talks-Hosted-by-ReDI-School-Munich/',
-    nrw: 'https://www.meetup.com/ReDI-School-NRW/',
-    cyberspace: 'https://www.meetup.com/ReDI-School-Cyberspace/',
+    BERLIN: 'https://www.meetup.com/en-AU/ReDI-school/',
+    HAMBURG: 'https://www.meetup.com/en-AU/ReDI-school/',
+    MUNICH: 'https://www.meetup.com/Tech-Talks-Hosted-by-ReDI-School-Munich/',
+    NRW: 'https://www.meetup.com/ReDI-School-NRW/',
+    CYBERSPACE: 'https://www.meetup.com/ReDI-School-Cyberspace/',
   },
   {
     icon: 'instagram',
-    berlin: 'https://www.instagram.com/redischoolberlin/',
-    hamburg: 'https://www.instagram.com/redischoolberlin/',
-    munich: 'https://www.instagram.com/redimunich/',
-    nrw: 'https://www.instagram.com/redischoolberlin/',
-    cyberspace: 'https://www.instagram.com/redischoolcyberspace/',
+    BERLIN: 'https://www.instagram.com/redischoolberlin/',
+    HAMBURG: 'https://www.instagram.com/redischoolberlin/',
+    MUNICH: 'https://www.instagram.com/redimunich/',
+    NRW: 'https://www.instagram.com/redischoolberlin/',
+    CYBERSPACE: 'https://www.instagram.com/redischoolcyberspace/',
   },
   {
     icon: 'linkedin',
-    berlin:
+    BERLIN:
       'https://www.linkedin.com/school/redi-school-of-digital-integration/',
-    hamburg:
+    HAMBURG:
       'https://www.linkedin.com/school/redi-school-of-digital-integration/',
-    munich:
+    MUNICH:
       'https://www.linkedin.com/school/redi-school-of-digital-integration/',
-    nrw: 'https://www.linkedin.com/school/redi-school-of-digital-integration/',
-    cyberspace:
+    NRW: 'https://www.linkedin.com/school/redi-school-of-digital-integration/',
+    CYBERSPACE:
       'https://www.linkedin.com/school/redi-school-of-digital-integration/',
   },
   {
     icon: 'twitter',
-    berlin: 'https://twitter.com/redischool?lang=en',
-    hamburg: 'https://twitter.com/redischool?lang=en',
-    munich: 'https://twitter.com/redischool?lang=en',
-    nrw: 'https://twitter.com/redischool?lang=en',
-    cyberspace: 'https://twitter.com/redischool?lang=en',
+    BERLIN: 'https://twitter.com/redischool?lang=en',
+    HAMBURG: 'https://twitter.com/redischool?lang=en',
+    MUNICH: 'https://twitter.com/redischool?lang=en',
+    NRW: 'https://twitter.com/redischool?lang=en',
+    CYBERSPACE: 'https://twitter.com/redischool?lang=en',
   },
 ]
 
 interface SocialMediaIcon {
   icon: IconProps['icon']
-  berlin: string
-  hamburg: string
-  munich: string
-  nrw: string
-  cyberspace: string
+  BERLIN: string
+  HAMBURG: string
+  MUNICH: string
+  NRW: string
+  CYBERSPACE: string
 }
 
 const SocialMediaIcons = () => (
@@ -64,7 +64,7 @@ const SocialMediaIcons = () => (
     {icons.map((item: SocialMediaIcon) => (
       <li key={item.icon}>
         <a
-          href={item[envRediLocation()] || item['berlin']}
+          href={item[envRediLocation()] || item['BERLIN']}
           target="_blank"
           rel="noopener noreferrer"
         >

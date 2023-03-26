@@ -1,0 +1,18 @@
+fragment AllTpJobseekerProfileExperienceRecordFields on TpJobseekerProfileExperienceRecord {
+  city
+  sortIndex
+  company
+  country
+  current
+  description
+  endDateMonth
+  endDateYear
+  startDateMonth
+  startDateYear
+  title
+  createdAt
+  id
+  tpJobseekerProfileId
+  updatedAt
+  userId
+}

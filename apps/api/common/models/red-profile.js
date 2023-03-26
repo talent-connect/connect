@@ -108,14 +108,14 @@ module.exports = function (RedProfile) {
     if (!ctx.data.categories) ctx.data.categories = []
 
     // Strip away RedProfile.administratorInternalComment if user is NOT cloud-accounts@redi-school.org
-    if (
-      ctx.options &&
-      ctx.options.currentUser &&
-      ctx.options.currentUser.email === 'cloud-accounts@redi-school.org'
-    ) {
-    } else {
-      delete ctx.data.administratorInternalComment
-    }
+    // if (
+    //   ctx.options &&
+    //   ctx.options.currentUser &&
+    //   ctx.options.currentUser.email === 'cloud-accounts@redi-school.org'
+    // ) {
+    // } else {
+    //   delete ctx.data.administratorInternalComment
+    // }
 
     // If favouritedRedProfileIds[] isn't set, set it. But delete it if the accessing user doesn't own it.
     ctx.data.favouritedRedProfileIds = ctx.data.favouritedRedProfileIds || []
@@ -124,7 +124,7 @@ module.exports = function (RedProfile) {
     const isRedProfileOwnedByCurrentUser =
       currentUserRedProfileId &&
       currentUserRedProfileId === ctx.data.id.toString()
-    if (!isRedProfileOwnedByCurrentUser) delete ctx.data.favouritedRedProfileIds
+    // if (!isRedProfileOwnedByCurrentUser) delete ctx.data.favouritedRedProfileIds
 
     if (ctx.data && ctx.data.userType === 'mentor') {
       // In case RedProfile belongs to a mentor, add "computed properties"

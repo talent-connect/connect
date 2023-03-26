@@ -1,16 +1,16 @@
+import { useLoadMyProfileQuery } from '@talent-connect/data-access'
 import {
   Caption,
   Placeholder,
 } from '@talent-connect/shared-atomic-design-components'
 import { MENTEE_OCCUPATION_CATEGORY } from '@talent-connect/shared-config'
-import { RedProfile } from '@talent-connect/shared-types'
 import { objectEntries } from '@talent-connect/typescript-utilities'
 import { Content } from 'react-bulma-components'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
+import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
+import { ReadOccupationProfilePropFragment } from './ReadOccupation.generated'
 
 interface Props {
-  profile: RedProfile
+  profile: ReadOccupationProfilePropFragment
   shortInfo?: boolean
 }
 
@@ -40,10 +40,8 @@ const ReadOccupation = ({ profile, shortInfo }: Props) => {
     )
   }
 
-  const isMentee =
-    userType === 'mentee' || userType === 'public-sign-up-mentee-pending-review'
-  const isMentor =
-    userType === 'mentor' || userType === 'public-sign-up-mentor-pending-review'
+  const isMentee = userType === 'MENTEE'
+  const isMentor = userType === 'MENTOR'
 
   return (
     <>
@@ -90,11 +88,14 @@ const ReadOccupation = ({ profile, shortInfo }: Props) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile as RedProfile,
-})
-
 export default {
-  Me: connect(mapStateToProps, {})(ReadOccupation),
+  Me: () => {
+    const loopbackUserId = getAccessTokenFromLocalStorage().userId
+    const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
+
+    if (!myProfileQuery.isSuccess) return null
+
+    return <ReadOccupation profile={myProfileQuery.data.conProfile} />
+  },
   Some: ({ profile }: Props) => <ReadOccupation profile={profile} shortInfo />,
 }

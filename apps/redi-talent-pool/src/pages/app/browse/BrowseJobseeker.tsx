@@ -4,14 +4,13 @@ import {
   ArrayParam,
   BooleanParam,
   useQueryParams,
-  withDefault,
+  withDefault
 } from 'use-query-params'
 
 import {
-  Checkbox,
   FilterDropdown,
   Icon,
-  SearchField,
+  SearchField
 } from '@talent-connect/shared-atomic-design-components'
 import {
   desiredPositions,
@@ -20,21 +19,40 @@ import {
   employmentTypesIdToLabelMap,
   germanFederalStates,
   topSkills,
-  topSkillsIdToLabelMap,
+  topSkillsIdToLabelMap
 } from '@talent-connect/talent-pool/config'
 
-import { useBrowseTpJobListingsQuery } from '../../../react-query/use-tpjoblisting-all-query'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
-
-import { LoggedIn } from '../../../components/templates'
-import { JobListingCard } from '../../../components/organisms/JobListingCard'
-import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { objectEntries } from '@talent-connect/typescript-utilities'
 import { Home, HomeOutlined } from '@material-ui/icons'
+import {
+  FederalState,
+  JobseekerProfileStatus,
+  TpDesiredPosition,
+  TpEmploymentType,
+  TpTechnicalSkill,
+  useMyTpDataQuery,
+  useTpJobListingFindAllVisibleQuery
+} from '@talent-connect/data-access'
+import { objectEntries } from '@talent-connect/typescript-utilities'
+import { useQueryClient } from 'react-query'
+import { Redirect } from 'react-router-dom'
+import { JobListingCard } from '../../../components/organisms/JobListingCard'
+import { LoggedIn } from '../../../components/templates'
+import {
+  useTpJobListingMarkAsFavouriteMutation,
+  useTpJobListingUnfavouriteMutation,
+  useTpJobseekerFavouritedJobListingsQuery
+} from './BrowseJobseeker.generated'
 
 export function BrowseJobseeker() {
+  const queryClient = useQueryClient()
   const [companyName, setCompanyName] = useState('')
-  const { data: currentJobseekerProfile } = useTpJobseekerProfileQuery()
+  const myTpData = useMyTpDataQuery()
+  const currentJobseekerProfile =
+    myTpData.data?.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry
+  const favouritedTpJobListingsQuery =
+    useTpJobseekerFavouritedJobListingsQuery()
+  const markAsFavouriteMutation = useTpJobListingMarkAsFavouriteMutation()
+  const unfavouriteMutation = useTpJobListingUnfavouriteMutation()
 
   const [query, setQuery] = useQueryParams({
     relatedPositions: withDefault(ArrayParam, []),
@@ -45,36 +63,41 @@ export function BrowseJobseeker() {
     isRemotePossible: withDefault(BooleanParam, undefined),
     isJobFair2023Participant: withDefault(BooleanParam, undefined),
   })
-  const {
-    relatedPositions,
-    idealTechnicalSkills,
-    employmentType,
-    federalStates,
-    onlyFavorites,
-    isRemotePossible,
-    isJobFair2023Participant,
-  } = query
+  const relatedPositions = query.relatedPositions as TpDesiredPosition[]
+  const idealTechnicalSkills = query.idealTechnicalSkills as TpTechnicalSkill[]
+  const employmentType = query.employmentType as TpEmploymentType[]
+  const federalStates = query.federalStates as FederalState[]
+  const onlyFavorites = query.onlyFavorites
+  const isRemotePossible = query.isRemotePossible
 
-  const { data: jobseekerProfile } = useTpJobseekerProfileQuery()
-  const tpjobseekerprofileUpdateMutation = useTpjobseekerprofileUpdateMutation()
-
-  const { data: jobListings } = useBrowseTpJobListingsQuery({
-    relatedPositions,
-    idealTechnicalSkills,
-    employmentType,
-    federalStates,
-    isRemotePossible,
-    isJobFair2023Participant,
+  const jobListingsQuery = useTpJobListingFindAllVisibleQuery({
+    input: {
+      relatesToPositions: relatedPositions,
+      skills: idealTechnicalSkills,
+      employmentTypes: employmentType,
+      federalStates,
+      isRemotePossible,
+    },
   })
+  const jobListings = jobListingsQuery.data?.tpJobListings
 
-  const handleFavoriteJobListing = (value) => {
-    const newFavorites = !jobseekerProfile.favouritedTpJobListingIds
-      ? [value]
-      : toggleValueInArray(jobseekerProfile.favouritedTpJobListingIds, value)
-
-    tpjobseekerprofileUpdateMutation.mutate({
-      favouritedTpJobListingIds: newFavorites,
-    })
+  const handleFavoriteJobListing = async (tpJobListingId: string) => {
+    const isFavorite =
+      favouritedTpJobListingsQuery.data?.tpJobseekerFavoritedJobListings
+        ?.map((p) => p.tpJobListingId)
+        ?.includes(tpJobListingId)
+    if (isFavorite) {
+      await unfavouriteMutation.mutateAsync({
+        input: { tpJobListingId: tpJobListingId },
+      })
+    } else {
+      await markAsFavouriteMutation.mutateAsync({
+        input: { tpJoblistingId: tpJobListingId },
+      })
+    }
+    queryClient.invalidateQueries(
+      useTpJobseekerFavouritedJobListingsQuery.getKey()
+    )
   }
 
   const toggleOnlyFavoritesFilter = () => {
@@ -96,12 +119,12 @@ export function BrowseJobseeker() {
     setQuery((latestQuery) => ({ ...latestQuery, [filterName]: newFilters }))
   }
 
-  const toggleJobFair2023Filter = () =>
-    setQuery((latestQuery) => ({
-      ...latestQuery,
-      isJobFair2023Participant:
-        isJobFair2023Participant === undefined ? true : undefined,
-    }))
+  // const toggleJobFair2023Filter = () =>
+  //   setQuery((latestQuery) => ({
+  //     ...latestQuery,
+  //     isJobFair2023Participant:
+  //       isJobFair2023Participant === undefined ? true : undefined,
+  //   }))
 
   const clearFilters = () => {
     setQuery((latestQuery) => ({
@@ -113,7 +136,13 @@ export function BrowseJobseeker() {
     }))
   }
 
-  if (currentJobseekerProfile?.state !== 'profile-approved') return null
+  // Redirect to homepage if user is not supposed to be browsing yet
+  if (
+    currentJobseekerProfile &&
+    currentJobseekerProfile?.state !== JobseekerProfileStatus.ProfileApproved
+  ) {
+    return <Redirect to="/" />
+  }
 
   return (
     <LoggedIn>
@@ -190,6 +219,14 @@ export function BrowseJobseeker() {
           Only Favorites
         </div>
         <div className="filters-inner">
+          {/* Hidden until the next Job Fair date announced
+          <Checkbox
+            name="isJobFair2023Participant"
+            checked={isJobFair2023Participant || false}
+            handleChange={toggleJobFair2023Filter}
+          >
+            Attending ReDI Job Fair 2023
+          </Checkbox> */}
           <FilterDropdown
             items={germanFederalStatesOptions}
             className="filters__dropdown"
@@ -260,14 +297,14 @@ export function BrowseJobseeker() {
                 }
               />
             ))}
-            {isJobFair2023Participant && (
+            {/* {isJobFair2023Participant && (
               <FilterTag
                 key="redi-job-fair-2022-filter"
                 id="redi-job-fair-2022-filter"
                 label="Attending ReDI Job Fair 2023"
                 onClickHandler={toggleJobFair2023Filter}
               />
-            )}
+            )} */}
             <span className="active-filters__clear-all" onClick={clearFilters}>
               Delete all filters
               <Icon icon="cancel" size="small" space="left" />
@@ -278,15 +315,23 @@ export function BrowseJobseeker() {
       <Columns>
         {jobListings
           ?.filter((jobListing) =>
-            jobListing.tpCompanyProfile.companyName
+            jobListing.companyName
               .toLowerCase()
               .includes(companyName.toLowerCase())
           )
+          .filter((jobListing) => {
+            if (!onlyFavorites) return true
+            const isFavorite =
+              favouritedTpJobListingsQuery.data?.tpJobseekerFavoritedJobListings
+                ?.map((p) => p.tpJobListingId)
+                ?.includes(jobListing.id)
+            return isFavorite
+          })
           .map((jobListing) => {
             const isFavorite =
-              jobseekerProfile.favouritedTpJobListingIds?.includes(
-                jobListing.id
-              )
+              favouritedTpJobListingsQuery.data?.tpJobseekerFavoritedJobListings
+                ?.map((p) => p.tpJobListingId)
+                ?.includes(jobListing.id)
 
             if (!isFavorite && onlyFavorites) return
 
@@ -294,7 +339,7 @@ export function BrowseJobseeker() {
               <Columns.Column mobile={{ size: 12 }} tablet={{ size: 6 }}>
                 <JobListingCard
                   key={jobListing.id}
-                  jobListing={jobListing}
+                  jobListing={jobListing as unknown as any}
                   toggleFavorite={handleFavoriteJobListing}
                   isFavorite={isFavorite}
                   linkTo={`/app/job-listing/${jobListing.id}`}

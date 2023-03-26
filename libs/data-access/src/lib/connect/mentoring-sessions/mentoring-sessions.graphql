@@ -1,0 +1,5 @@
+mutation createMentoringSession($input: CreateConMentoringSessionInput!) {
+  createConMentoringSession(createConMentoringSessionInput: $input) {
+    id
+  }
+}

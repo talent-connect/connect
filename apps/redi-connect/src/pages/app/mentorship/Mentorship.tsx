@@ -1,55 +1,58 @@
-import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
-import { useParams, useHistory, Redirect } from 'react-router'
 import {
-  Heading,
+  MentorshipMatchStatus,
+  useFindMatchQuery,
+  useLoadMyProfileQuery,
+  useMyMatchesQuery,
+} from '@talent-connect/data-access'
+import {
   Button,
+  Heading,
 } from '@talent-connect/shared-atomic-design-components'
+import { Columns, Content } from 'react-bulma-components'
+import { useHistory, useParams } from 'react-router-dom'
 import {
-  ProfileCard,
+  CompleteMentorship,
   MContacts,
   MSessions,
+  ProfileCard,
   ReportProblem,
-  CompleteMentorship,
 } from '../../../components/organisms'
-import { Columns, Content } from 'react-bulma-components'
-import { RootState } from '../../../redux/types'
-import { RedProfile } from '@talent-connect/shared-types'
 import { LoggedIn } from '../../../components/templates'
-import { useLoading } from '../../../hooks/WithLoading'
-import { getMatches } from '../../../redux/matches/selectors'
-import { RedMatch } from '@talent-connect/shared-types'
-import { matchesFetchStart } from '../../../redux/matches/actions'
+import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
 
-interface RouteParams {
-  profileId: string
-}
-interface MentorshipProps {
-  currentUser?: RedProfile
-  matches: RedMatch[]
+export interface MentorshipRouteParams {
+  matchId: string
 }
 
-const Mentorship = ({ currentUser, matches }: MentorshipProps) => {
-  const { profileId } = useParams<RouteParams>()
+function Mentorship() {
+  const myAcceptedMatchesQuery = useMyMatchesQuery()
+  const loopbackUserId = getAccessTokenFromLocalStorage().userId
+  const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
+
+  const { matchId } = useParams<MentorshipRouteParams>()
+  const findMatchQuery = useFindMatchQuery({ id: matchId })
   const history = useHistory()
-  const currentUserIsMentor = currentUser?.userType === 'mentor'
-  const currentUserIsMentee = currentUser?.userType === 'mentee'
-  const currentMatch = matches.find((match) => match.id === profileId)
-  const profile =
-    currentMatch && currentMatch[currentUserIsMentor ? 'mentee' : 'mentor']
+
+  if (!findMatchQuery.isSuccess) return null
+  if (!myProfileQuery.isSuccess) return null
+  if (!myAcceptedMatchesQuery.isSuccess) return null
+
+  const myProfile = myProfileQuery.data.conProfile
+  const myUserType = myProfile.userType
+  const viewMatch = findMatchQuery.data.conMentorshipMatch
+  const myActiveMatches = myAcceptedMatchesQuery.data.conMentorshipMatches
+
+  const currentUserIsMentee = myUserType === 'MENTEE'
+  const currentUserIsMentor = myUserType === 'MENTOR'
+  const currentMatch = findMatchQuery.data.conMentorshipMatch
+  const viewProfile = currentMatch[currentUserIsMentor ? 'mentee' : 'mentor']
   const pageHeading = currentUserIsMentor
-    ? `Mentorship with ${profile?.firstName} ${profile?.lastName}`
+    ? `Mentorship with ${viewProfile.fullName}`
     : 'My Mentorship'
-
-  useEffect(() => {
-    if (!profile) matchesFetchStart()
-  }, [profile])
-
-  if (!profile) return <Redirect to={'/app/mentorships/'} />
 
   return (
     <LoggedIn>
-      {matches.length > 1 && (
+      {myActiveMatches.length > 1 && (
         <Columns>
           <Columns.Column>
             <Button onClick={() => history.push('/app/mentorships/')} simple>
@@ -68,9 +71,10 @@ const Mentorship = ({ currentUser, matches }: MentorshipProps) => {
         </Columns.Column>
 
         <Columns.Column className="is-narrow">
-          {currentMatch &&
-            currentMatch.status === 'accepted' &&
-            currentUserIsMentor && <CompleteMentorship match={currentMatch} />}
+          {viewMatch.status === MentorshipMatchStatus.Accepted &&
+            currentUserIsMentor && (
+              <CompleteMentorship mentorshipMatchId={currentMatch.id} />
+            )}
         </Columns.Column>
       </Columns>
       {currentUserIsMentee && (
@@ -80,49 +84,33 @@ const Mentorship = ({ currentUser, matches }: MentorshipProps) => {
           responsive={{ mobile: { hide: { value: true } } }}
         >
           Below you can see your ongoing mentorship with your mentor{' '}
-          <strong>
-            {profile?.firstName} {profile?.lastName}
-          </strong>
-          .
+          <strong>{viewProfile.fullName}</strong>.
         </Content>
       )}
 
       <Columns>
         <Columns.Column size={4}>
           <ProfileCard
-            profile={profile}
-            linkTo={`/app/mentorships/profile/${profile.id}`}
+            profile={viewProfile}
+            linkTo={`/app/mentorships/profile/${viewProfile.id}`}
           />
-          <MContacts
-            profile={profile as RedProfile}
-            className="is-hidden-tablet"
-          />
+          <MContacts profile={viewProfile} className="is-hidden-tablet" />
           <MSessions
-            sessions={profile?.redMentoringSessionsWithCurrentUser}
-            menteeId={profile.id}
+            sessions={viewMatch.mentoringSessions}
+            menteeId={viewProfile.userId}
             editable={currentUserIsMentor}
           />
-          {currentUser && (
-            <ReportProblem
-              type={currentUser.userType}
-              redProfileId={profile.id}
-            />
-          )}
+          <ReportProblem
+            type={myProfile.userType}
+            redProfileId={viewProfile.id}
+          />
         </Columns.Column>
         <Columns.Column size={8}>
-          <MContacts
-            profile={profile as RedProfile}
-            className="is-hidden-mobile"
-          />
+          <MContacts profile={viewProfile} className="is-hidden-mobile" />
         </Columns.Column>
       </Columns>
     </LoggedIn>
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  currentUser: state.user.profile,
-  matches: getMatches(state.matches),
-})
-
-export default connect(mapStateToProps, null)(Mentorship)
+export default Mentorship

@@ -1,0 +1,24 @@
+fragment AllUserContactFields on UserContact {
+  id
+  behanceUrl
+  lastName
+  linkedInProfileUrl
+  loopbackUserId
+  personalDescription
+  personalWebsite
+  postalMailingAddress
+  slackUsername
+  stackOverflowUrl
+  telephoneNumber
+  birthDate
+  twitterUrl
+  updatedAt
+  createdAt
+  dribbbleUrl
+  email
+  firstName
+  gender
+  githubProfileUrl
+  howDidHearAboutRediKey
+  howDidHearAboutRediOtherText
+}

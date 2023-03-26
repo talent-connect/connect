@@ -1,0 +1,17 @@
+fragment AllTpCompanyProfileFields on TpCompanyProfile {
+  id
+  profileAvatarImageS3Key
+  companyName
+  location
+  tagline
+  industry
+  website
+  linkedInUrl
+  telephoneNumber
+  about
+  state
+  isProfileVisibleToJobseekers
+  isJobFair2023Participant
+  createdAt
+  updatedAt
+}

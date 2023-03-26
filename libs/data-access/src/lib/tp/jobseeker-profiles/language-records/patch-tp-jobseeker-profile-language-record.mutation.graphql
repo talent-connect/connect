@@ -1,0 +1,9 @@
+mutation tpJobseekerProfileLanguageRecordPatch(
+  $input: TpJobseekerProfileLanguageRecordPatchInput!
+) {
+  tpJobseekerProfileLanguageRecordPatch(
+    tpJobseekerProfileLanguageRecordPatchInput: $input
+  ) {
+    ok
+  }
+}

@@ -1,0 +1,5 @@
+query findAllTpJobseekerCvExperienceRecords($tpJobseekerCvId: ID!) {
+  tpJobseekerCvExperienceRecords(tpJobseekerCvId: $tpJobseekerCvId) {
+    ...AllTpJobseekerCvExperienceRecordFields
+  }
+}

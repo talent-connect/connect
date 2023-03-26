@@ -1,0 +1,19 @@
+fragment AllTpJobseekerProfileEducationRecordFields on TpJobseekerProfileEducationRecord {
+  certificationType
+  title
+  sortIndex
+  current
+  description
+  endDateMonth
+  endDateYear
+  institutionCity
+  institutionCountry
+  institutionName
+  startDateMonth
+  startDateYear
+  createdAt
+  id
+  tpJobseekerProfileId
+  updatedAt
+  userId
+}

@@ -1,3 +1,4 @@
+import { graphqlClient } from '@talent-connect/data-access'
 import { AccessToken, RedUser } from '@talent-connect/shared-types'
 import { queryClient } from '../api/api'
 
@@ -23,6 +24,10 @@ export const getAccessTokenFromLocalStorage = (): AccessToken =>
 
 export const saveAccessTokenToLocalStorage = (accessToken: AccessToken) => {
   window.localStorage.setItem('accessToken', JSON.stringify(accessToken))
+}
+
+export function setGraphQlClientAuthHeader(accessToken: AccessToken) {
+  graphqlClient.setHeader('Authorization', `Bearer ${accessToken.jwtToken}`)
 }
 
 export const purgeAllSessionData = () => {
