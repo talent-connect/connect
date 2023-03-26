@@ -75,7 +75,7 @@ const { lang } = require('moment')
 
 const DELAY = 2000
 const RETRIES = 3
-const CONCURRENCY = 5 // 50 generally works, with only a few (< 10) errors. For actual data migration, use a low value, such as 15.
+const CONCURRENCY = 8 // 50 generally works, with only a few (< 10) errors. For actual data migration, use a low value, such as 15.
 
 // const LOCAL_CONTACT_RECORD_TYPE = '0121i000000HMq9AAG'
 // const LOCAL_CONNECT_PROFILE_MENTOR_RECORD_TYPE = '0129X0000001EXBQA2'
@@ -1130,7 +1130,10 @@ async function insertAccountForCompanyProfileFn(p) {
       throw err
     }
   }
-  TPCOMPANYPROFILE_SFACCOUNT[p.tpCompanyProfile.id] = accountResult.id
+  TPCOMPANYPROFILE_SFACCOUNT[p.tpCompanyProfile.id.toString()] =
+    accountResult.id
+  console.log('TPCOMPANYPROFILE_SFACCOUNT')
+  console.log(TPCOMPANYPROFILE_SFACCOUNT[p.tpCompanyProfile.id.toString()])
 
   /* Either insert a new AccountContactRelation or update the existing one */
   let accountContact = {
@@ -1644,25 +1647,25 @@ function buildContact(redUser) {
       //       }
       //     }),
 
-      // ! Jobseeker profiles
-      mergeMap(
-        (u) => (u.tpJobseekerProfile ? insertJobseekerProfile(u) : of(u)),
-        CONCURRENCY
-      ),
-      tap((u) => {
-        if (u.tpJobseekerProfile) {
-          console.log(
-            'Inserted Jobseeker Profile #',
-            u.tpJobseekerProfile.sfJobseekerProfileId
-          )
-        }
-      }),
-      tap((u) => {
-        if (u.tpJobseekerProfile) {
-          TPJOBSEEKERPROFILE_SFJOBSEEKERPROFILE[u.tpJobseekerProfile.id] =
-            u.tpJobseekerProfile.sfJobseekerProfileId
-        }
-      }),
+      // // ! Jobseeker profiles
+      // mergeMap(
+      //   (u) => (u.tpJobseekerProfile ? insertJobseekerProfile(u) : of(u)),
+      //   CONCURRENCY
+      // ),
+      // tap((u) => {
+      //   if (u.tpJobseekerProfile) {
+      //     console.log(
+      //       'Inserted Jobseeker Profile #',
+      //       u.tpJobseekerProfile.sfJobseekerProfileId
+      //     )
+      //   }
+      // }),
+      // tap((u) => {
+      //   if (u.tpJobseekerProfile) {
+      //     TPJOBSEEKERPROFILE_SFJOBSEEKERPROFILE[u.tpJobseekerProfile.id] =
+      //       u.tpJobseekerProfile.sfJobseekerProfileId
+      //   }
+      // }),
 
       // ! Company profiles
       mergeMap(
@@ -1748,28 +1751,28 @@ function buildContact(redUser) {
   //   }
   // })
 
-  const companyFavouritedJobseekerProfilesToInsert = []
-  allUsers.forEach((u) => {
-    if (u.tpCompanyProfile && u.tpCompanyProfile.favouritedTpJobseekerIds) {
-      u.tpCompanyProfile.favouritedTpJobseekerIds.forEach(
-        (tpJobseekerProfileId) => {
-          if (
-            TPCOMPANYPROFILE_SFACCOUNT[u.tpCompanyProfile.id.toString()] &&
-            TPJOBSEEKERPROFILE_SFJOBSEEKERPROFILE[
-              tpJobseekerProfileId.toString()
-            ]
-          ) {
-            companyFavouritedJobseekerProfilesToInsert.push([
-              TPCOMPANYPROFILE_SFACCOUNT[u.tpCompanyProfile.id.toString()],
-              TPJOBSEEKERPROFILE_SFJOBSEEKERPROFILE[
-                tpJobseekerProfileId.toString()
-              ],
-            ])
-          }
-        }
-      )
-    }
-  })
+  // const companyFavouritedJobseekerProfilesToInsert = []
+  // allUsers.forEach((u) => {
+  //   if (u.tpCompanyProfile && u.tpCompanyProfile.favouritedTpJobseekerIds) {
+  //     u.tpCompanyProfile.favouritedTpJobseekerIds.forEach(
+  //       (tpJobseekerProfileId) => {
+  //         if (
+  //           TPCOMPANYPROFILE_SFACCOUNT[u.tpCompanyProfile.id.toString()] &&
+  //           TPJOBSEEKERPROFILE_SFJOBSEEKERPROFILE[
+  //             tpJobseekerProfileId.toString()
+  //           ]
+  //         ) {
+  //           companyFavouritedJobseekerProfilesToInsert.push([
+  //             TPCOMPANYPROFILE_SFACCOUNT[u.tpCompanyProfile.id.toString()],
+  //             TPJOBSEEKERPROFILE_SFJOBSEEKERPROFILE[
+  //               tpJobseekerProfileId.toString()
+  //             ],
+  //           ])
+  //         }
+  //       }
+  //     )
+  //   }
+  // })
 
   // await from(menteeFavoritedMentorsToInsert)
   //   .pipe(
