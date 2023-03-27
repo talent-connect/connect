@@ -1,5 +1,5 @@
-query myMatches {
-  conMentorshipMatches {
+query myMatches($filter: FindMentorshipMatchesArgsFilter) {
+  conMentorshipMatches(filter: $filter) {
     id
     applicationText
     expectationText

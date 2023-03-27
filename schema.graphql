@@ -251,6 +251,10 @@ input FindConProfilesArgsFilter {
   name: String
 }
 
+input FindMentorshipMatchesArgsFilter {
+  status: MentorshipMatchStatus
+}
+
 input FindOneTpJobListingArgsFilter {
   id: ID!
 }
@@ -580,7 +584,7 @@ type Query {
   conMenteeFavoritedMentors: [ConMenteeFavoritedMentor!]!
   conMentoringSessions: [ConMentoringSession!]!
   conMentorshipMatch(id: ID!): ConMentorshipMatch!
-  conMentorshipMatches: [ConMentorshipMatch!]!
+  conMentorshipMatches(filter: FindMentorshipMatchesArgsFilter): [ConMentorshipMatch!]!
   conProfile(id: ID, loopbackUserId: ID): ConProfile!
   conProfilesAvailableMentors(filter: FindConProfilesArgsFilter!): [ConProfile!]!
   myConProfile: ConProfile!

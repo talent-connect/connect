@@ -274,6 +274,10 @@ export type FindConProfilesArgsFilter = {
   name?: InputMaybe<Scalars['String']>;
 };
 
+export type FindMentorshipMatchesArgsFilter = {
+  status?: InputMaybe<MentorshipMatchStatus>;
+};
+
 export type FindOneTpJobListingArgsFilter = {
   id: Scalars['ID'];
 };
@@ -865,6 +869,11 @@ export type Query = {
 
 export type QueryConMentorshipMatchArgs = {
   id: Scalars['ID'];
+};
+
+
+export type QueryConMentorshipMatchesArgs = {
+  filter?: InputMaybe<FindMentorshipMatchesArgsFilter>;
 };
 
 

@@ -76,6 +76,10 @@ export class ConMentorshipMatchesResolver {
         { 'Mentee__r.Loopback_User_ID__c': user.loopbackUserId },
       ],
     }
+    if (args?.filter?.status) {
+      filter.Status__c = args.filter.status
+    }
+
     const entities = await this.conMentorshipMatchesService.findAll(filter)
     const props = entities.map((entity) => entity.props)
     return props

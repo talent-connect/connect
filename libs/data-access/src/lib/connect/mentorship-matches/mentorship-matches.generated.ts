@@ -3,7 +3,9 @@ import * as Types from '@talent-connect/data-access';
 
 import { useQuery, useMutation, UseQueryOptions, UseMutationOptions } from 'react-query';
 import { fetcher } from '@talent-connect/data-access';
-export type MyMatchesQueryVariables = Types.Exact<{ [key: string]: never; }>;
+export type MyMatchesQueryVariables = Types.Exact<{
+  filter?: Types.InputMaybe<Types.FindMentorshipMatchesArgsFilter>;
+}>;
 
 
 export type MyMatchesQuery = { __typename?: 'Query', conMentorshipMatches: Array<{ __typename?: 'ConMentorshipMatch', id: string, applicationText?: string | null, expectationText?: string | null, mentorReplyMessageOnAccept?: string | null, hasMenteeDismissedMentorshipApplicationAcceptedNotification?: boolean | null, mentee: { __typename?: 'ConProfile', id: string, fullName: string, firstName: string, lastName: string, languages?: Array<Types.Language> | null, categories: Array<Types.MentoringTopic>, rediLocation: Types.RediLocation, profileAvatarImageS3Key?: string | null }, mentor: { __typename?: 'ConProfile', id: string, fullName: string, firstName: string, lastName: string, languages?: Array<Types.Language> | null, categories: Array<Types.MentoringTopic>, rediLocation: Types.RediLocation, profileAvatarImageS3Key?: string | null } }> };
@@ -43,8 +45,8 @@ export const ConProfileFieldsFragmentDoc = `
 }
     `;
 export const MyMatchesDocument = `
-    query myMatches {
-  conMentorshipMatches {
+    query myMatches($filter: FindMentorshipMatchesArgsFilter) {
+  conMentorshipMatches(filter: $filter) {
     id
     applicationText
     expectationText

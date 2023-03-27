@@ -1,6 +1,9 @@
 import { GraphQLClient } from 'graphql-request'
 
-const endpoint = 'https://connect-nestjs-api.redi-school.org/graphql'
+const endpoint =
+  process.env.NODE_ENV === 'production'
+    ? 'https://connect-nestjs-api.redi-school.org/graphql'
+    : 'http://localhost:3333/graphql'
 
 export const graphqlClient = new GraphQLClient(endpoint, {
   // headers: {
