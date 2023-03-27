@@ -46,6 +46,9 @@ const SideMenu = () => {
     (match) => match.status === MentorshipMatchStatus.Accepted
   )
   const hasNoActiveMentorship = !hasActiveMentorship
+  const firstActiveMentorshipId = profile?.mentorshipMatches?.find(
+    (match) => match.status === MentorshipMatchStatus.Accepted
+  )?.id
 
   const pendingApplicationsCount = profile?.mentorshipMatches?.filter(
     (match) => match.status === MentorshipMatchStatus.Applied
@@ -65,8 +68,14 @@ const SideMenu = () => {
         </MenuItem>
       )}
 
-      {((isMentor && isActivated) || (isMentee && hasActiveMentorship)) && (
+      {isMentor && isActivated && (
         <MenuItem url="/app/mentorships/">
+          <Mentorship className="side-menu__icon" />
+          My Mentorship
+        </MenuItem>
+      )}
+      {isMentee && hasActiveMentorship && (
+        <MenuItem url={`/app/mentorships/${firstActiveMentorshipId}`}>
           <Mentorship className="side-menu__icon" />
           My Mentorship
         </MenuItem>

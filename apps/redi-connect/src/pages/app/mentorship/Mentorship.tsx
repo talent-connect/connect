@@ -3,6 +3,7 @@ import {
   useFindMatchQuery,
   useLoadMyProfileQuery,
   useMyMatchesQuery,
+  UserType,
 } from '@talent-connect/data-access'
 import {
   Button,
@@ -42,8 +43,8 @@ function Mentorship() {
   const viewMatch = findMatchQuery.data.conMentorshipMatch
   const myActiveMatches = myAcceptedMatchesQuery.data.conMentorshipMatches
 
-  const currentUserIsMentee = myUserType === 'MENTEE'
-  const currentUserIsMentor = myUserType === 'MENTOR'
+  const currentUserIsMentee = myUserType === UserType.Mentee
+  const currentUserIsMentor = myUserType === UserType.Mentor
   const currentMatch = findMatchQuery.data.conMentorshipMatch
   const viewProfile = currentMatch[currentUserIsMentor ? 'mentee' : 'mentor']
   const pageHeading = currentUserIsMentor
@@ -52,7 +53,7 @@ function Mentorship() {
 
   return (
     <LoggedIn>
-      {myActiveMatches.length > 1 && (
+      {myActiveMatches.length > 1 && currentUserIsMentor && (
         <Columns>
           <Columns.Column>
             <Button onClick={() => history.push('/app/mentorships/')} simple>
