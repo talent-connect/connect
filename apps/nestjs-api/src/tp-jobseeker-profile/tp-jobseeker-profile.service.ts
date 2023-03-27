@@ -72,7 +72,7 @@ export class TpJobseekerProfileService {
     input: TpJobseekerProfileSignUpMutationDto,
     currentUser: CurrentUserInfo
   ) {
-    this.userContactService.patch(
+    await this.userContactService.patch(
       {
         firstName: input.firstName,
         lastName: input.lastName,
