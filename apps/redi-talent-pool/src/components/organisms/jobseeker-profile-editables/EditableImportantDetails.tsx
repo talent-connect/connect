@@ -284,6 +284,7 @@ function JobseekerFormSectionImportantDetails({
         placeholder="awesome@gmail.com"
         label="Email*"
         {...formik}
+        disabled
       />
       <FormInput
         name="telephoneNumber"
