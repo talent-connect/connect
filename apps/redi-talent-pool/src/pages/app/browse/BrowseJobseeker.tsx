@@ -4,13 +4,14 @@ import {
   ArrayParam,
   BooleanParam,
   useQueryParams,
-  withDefault
+  withDefault,
 } from 'use-query-params'
 
 import {
+  Checkbox,
   FilterDropdown,
   Icon,
-  SearchField
+  SearchField,
 } from '@talent-connect/shared-atomic-design-components'
 import {
   desiredPositions,
@@ -19,10 +20,9 @@ import {
   employmentTypesIdToLabelMap,
   germanFederalStates,
   topSkills,
-  topSkillsIdToLabelMap
+  topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 
-import { Home, HomeOutlined } from '@material-ui/icons'
 import {
   FederalState,
   JobseekerProfileStatus,
@@ -30,7 +30,7 @@ import {
   TpEmploymentType,
   TpTechnicalSkill,
   useMyTpDataQuery,
-  useTpJobListingFindAllVisibleQuery
+  useTpJobListingFindAllVisibleQuery,
 } from '@talent-connect/data-access'
 import { objectEntries } from '@talent-connect/typescript-utilities'
 import { useQueryClient } from 'react-query'
@@ -40,7 +40,7 @@ import { LoggedIn } from '../../../components/templates'
 import {
   useTpJobListingMarkAsFavouriteMutation,
   useTpJobListingUnfavouriteMutation,
-  useTpJobseekerFavouritedJobListingsQuery
+  useTpJobseekerFavouritedJobListingsQuery,
 } from './BrowseJobseeker.generated'
 
 export function BrowseJobseeker() {
@@ -61,7 +61,7 @@ export function BrowseJobseeker() {
     federalStates: withDefault(ArrayParam, []),
     onlyFavorites: withDefault(BooleanParam, undefined),
     isRemotePossible: withDefault(BooleanParam, undefined),
-    isJobFair2023Participant: withDefault(BooleanParam, undefined),
+    // isJobFairJuly2023Participant: withDefault(BooleanParam, undefined),
   })
   const relatedPositions = query.relatedPositions as TpDesiredPosition[]
   const idealTechnicalSkills = query.idealTechnicalSkills as TpTechnicalSkill[]
@@ -119,11 +119,11 @@ export function BrowseJobseeker() {
     setQuery((latestQuery) => ({ ...latestQuery, [filterName]: newFilters }))
   }
 
-  // const toggleJobFair2023Filter = () =>
+  // const toggleJobFairJuly2023Filter = () =>
   //   setQuery((latestQuery) => ({
   //     ...latestQuery,
-  //     isJobFair2023Participant:
-  //       isJobFair2023Participant === undefined ? true : undefined,
+  //     isJobFairJuly2023Participant:
+  //       isJobFairJuly2023Participant === undefined ? true : undefined,
   //   }))
 
   const clearFilters = () => {
@@ -132,7 +132,7 @@ export function BrowseJobseeker() {
       idealTechnicalSkills: [],
       employmentType: [],
       federalStates: [],
-      isJobFair2023Participant: undefined,
+      // isJobFairJuly2023Participant: undefined,
     }))
   }
 
@@ -207,26 +207,7 @@ export function BrowseJobseeker() {
             }
           />
         </div>
-        <div
-          className="filters-inner filter-favourites"
-          onClick={toggleOnlyFavoritesFilter}
-        >
-          <Icon
-            icon={onlyFavorites ? 'heartFilled' : 'heart'}
-            className="filter-favourites__icon"
-            space="right"
-          />
-          Only Favorites
-        </div>
         <div className="filters-inner">
-          {/* Hidden until the next Job Fair date announced
-          <Checkbox
-            name="isJobFair2023Participant"
-            checked={isJobFair2023Participant || false}
-            handleChange={toggleJobFair2023Filter}
-          >
-            Attending ReDI Job Fair 2023
-          </Checkbox> */}
           <FilterDropdown
             items={germanFederalStatesOptions}
             className="filters__dropdown"
@@ -237,25 +218,42 @@ export function BrowseJobseeker() {
             }
           />
         </div>
+        <div className="filters-inner"></div>
       </div>
       <div className="filters">
-        <div
-          className="filters-inner filter-remote"
-          onClick={toggleRemoteAvailableFilter}
-        >
-          {isRemotePossible ? <Home /> : <HomeOutlined />}
-          Remote Working Possible
-        </div>
-        {/* Hidden until the next Job Fair date announced */}
-        {/* <div className="filters-inner filters__jobfair">
+        <div className="filters-inner">
           <Checkbox
-            name="isJobFair2023Participant"
-            checked={isJobFair2023Participant || false}
-            handleChange={toggleJobFair2023Filter}
+            name="isRemotePossible"
+            checked={isRemotePossible || false}
+            handleChange={toggleRemoteAvailableFilter}
+          >
+            Remote Working Possible
+          </Checkbox>
+        </div>
+        <div className="filters-inner filter-favourites">
+          <Checkbox
+            name="onlyFavorites"
+            checked={onlyFavorites || false}
+            handleChange={toggleOnlyFavoritesFilter}
+          >
+            Only Favorites
+          </Checkbox>
+          <Icon
+            icon="heartFilled"
+            className="filter-favourites__icon"
+            size="small"
+          />
+        </div>
+        <div className="filters-inner">
+          {/* Hidden until the next Job Fair date announced */}
+          {/* <Checkbox
+            name="isJobFairJuly2023Participant"
+            checked={isJobFairJuly2023Participant || false}
+            handleChange={toggleJobFairJuly2023Filter}
           >
             Attending ReDI Job Fair 2023
-          </Checkbox>
-        </div> */}
+          </Checkbox> */}
+        </div>
       </div>
       <div className="active-filters">
         {(relatedPositions.length !== 0 ||
@@ -297,12 +295,22 @@ export function BrowseJobseeker() {
                 }
               />
             ))}
-            {/* {isJobFair2023Participant && (
+            {(federalStates as string[]).map((id) => (
+              <FilterTag
+                key={id}
+                id={id}
+                label={germanFederalStates[id]}
+                onClickHandler={(item) =>
+                  toggleFilters(federalStates, 'federalStates', item)
+                }
+              />
+            ))}
+            {/* {isJobFairJuly2023Participant && (
               <FilterTag
                 key="redi-job-fair-2022-filter"
                 id="redi-job-fair-2022-filter"
                 label="Attending ReDI Job Fair 2023"
-                onClickHandler={toggleJobFair2023Filter}
+                onClickHandler={toggleJobFairJuly2023Filter}
               />
             )} */}
             <span className="active-filters__clear-all" onClick={clearFilters}>

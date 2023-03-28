@@ -48,15 +48,15 @@ export function MeCompany() {
     queryClient.invalidateQueries()
   }
 
-  const onJobFair2023ParticipateChange = async () => {
-    await mutation.mutateAsync({
-      input: {
-        id: companyProfile.id,
-        isJobFair2023Participant: !companyProfile.isJobFair2023Participant,
-      },
-    })
-    queryClient.invalidateQueries()
-  }
+  // const onJobFairJuly2023ParticipateChange = async () => {
+  //   await mutation.mutateAsync({
+  //     input: {
+  //       id: companyProfile.id,
+  //       isJobFairJuly2023Participant: !companyProfile.isJobFairJuly2023Participant,
+  //     },
+  //   })
+  //   queryClient.invalidateQueries()
+  // }
 
   const isProfileApproved =
     companyProfile.state === CompanyTalentPoolState.ProfileApproved
@@ -93,8 +93,8 @@ export function MeCompany() {
           {/* Hidden until the next Job Fair date announced */}
           {/* <div style={{ marginBottom: '1.5rem' }}>
             <Checkbox
-              checked={companyProfile.isJobFair2023Participant}
-              customOnChange={onJobFair2023ParticipateChange}
+              checked={companyProfile.isJobFairJuly2023Participant}
+              customOnChange={onJobFairJuly2023ParticipateChange}
             >
               My company will attend the <strong>ReDI Job Fair</strong>{' '}
               happening on <strong>15/02/2023</strong>.

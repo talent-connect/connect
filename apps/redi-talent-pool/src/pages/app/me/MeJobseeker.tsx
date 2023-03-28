@@ -3,12 +3,12 @@ import {
   JobseekerProfileStatus,
   TpJobseekerDirectoryEntry,
   useMyTpDataQuery,
-  useTpJobseekerProfilePatchMutation
+  useTpJobseekerProfilePatchMutation,
 } from '@talent-connect/data-access'
 import {
   Button,
   Checkbox,
-  Icon
+  Icon,
 } from '@talent-connect/shared-atomic-design-components'
 import classnames from 'clsx'
 import { Columns, Content, Element, Notification } from 'react-bulma-components'
@@ -45,12 +45,14 @@ export function MeJobseeker() {
     queryClient.invalidateQueries()
   }
 
-  const onJobFair2023ParticipateChange = async () => {
-    await mutation.mutateAsync({
-      input: { isJobFair2023Participant: !profile?.isJobFair2023Participant },
-    })
-    queryClient.invalidateQueries()
-  }
+  // const onJobFairJuly2023ParticipateChange = async () => {
+  //   await mutation.mutateAsync({
+  //     input: {
+  //       isJobFairJuly2023Participant: !profile?.isJobFairJuly2023Participant,
+  //     },
+  //   })
+  //   queryClient.invalidateQueries()
+  // }
 
   return (
     <LoggedIn>
@@ -80,8 +82,8 @@ export function MeJobseeker() {
           {/* Hidden until the next Job Fair date announced */}
           {/* <div style={{ marginBottom: '1.5rem' }}>
             <Checkbox
-              checked={profile?.isJobFair2023Participant}
-              customOnChange={onJobFair2023ParticipateChange}
+              checked={profile?.isJobFairJuly2023Participant}
+              customOnChange={onJobFairJuly2023ParticipateChange}
             >
               I will attend the <b>ReDI Job Fair</b> happening on{' '}
               <b>15/02/2023</b>.
