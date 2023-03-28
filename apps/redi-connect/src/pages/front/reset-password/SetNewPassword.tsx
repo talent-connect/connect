@@ -16,8 +16,8 @@ import { RouteComponentProps } from 'react-router'
 import { showNotification } from '../../../components/AppNotification'
 import { setPassword } from '../../../services/api/api'
 import {
+  purgeAllSessionData,
   saveAccessTokenToLocalStorage,
-  setGraphQlClientAuthHeader,
 } from '../../../services/auth/auth'
 import { history } from '../../../services/history/history'
 
@@ -56,7 +56,6 @@ export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
       try {
         accessToken = JSON.parse(accessTokenStr)
         saveAccessTokenToLocalStorage(accessToken)
-        setGraphQlClientAuthHeader(accessToken)
       } catch (err) {
         return setErrorMsg(
           'Sorry, there seems to have been an error. Please try to reset your password again, or contact career@redi-school.org for assistance.'
@@ -72,11 +71,15 @@ export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
   ) => {
     try {
       await setPassword(values.password)
-      showNotification("Your new password is set and you're logged in :)", {
-        variant: 'success',
-        autoHideDuration: 8000,
-      })
-      history.push('/app/me')
+      showNotification(
+        'Your new password is set. Please log in using the new password :)',
+        {
+          variant: 'success',
+          autoHideDuration: 10000,
+        }
+      )
+      purgeAllSessionData()
+      history.push('/front/login')
     } catch (err) {
       setFormError('Invalid username or password')
     }

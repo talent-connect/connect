@@ -65,11 +65,14 @@ export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
   ) => {
     try {
       await setPassword(values.password)
-      showNotification("Your new password is set and you're logged in :)", {
-        variant: 'success',
-        autoHideDuration: 8000,
-      })
-      history.push('/app/me')
+      showNotification(
+        'Your new password is set. Please log in using the new password :)',
+        {
+          variant: 'success',
+          autoHideDuration: 10000,
+        }
+      )
+      history.push('/front/login')
     } catch (err) {
       setFormError('Invalid username or password')
     }
