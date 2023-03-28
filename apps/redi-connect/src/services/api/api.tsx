@@ -50,7 +50,11 @@ export const requestResetPasswordEmail = async (email: string) => {
   email = email.toLowerCase()
   await axios(`${API_URL}/redUsers/requestResetPasswordEmail`, {
     method: 'post',
-    data: { email, redproduct: 'CON' },
+    data: {
+      email,
+      redproduct: 'CON',
+      redilocation: process.env.NX_REDI_CONNECT_REDI_LOCATION,
+    },
   })
 }
 
