@@ -362,12 +362,13 @@ export async function fetchAllTpJobListingsUsingFilters({
 
 export async function fetchAllTpJobListings(): Promise<Array<TpJobListing>> {
   const userId = getAccessTokenFromLocalStorage().userId
-  return http(
-    `${API_URL}/redUsers/${userId}/tpJobListings?filter=${JSON.stringify({
-      order: 'createdAt DESC',
-      limit: 0,
-    })}`
-  ).then((resp) => resp.data)
+  const resp = await http(`${API_URL}/redUsers/${userId}/tpJobListings`)
+
+  // TODO: remove the `.filter()`. It
+  // was inserted temporarily for the "dummy" job listings we created for HR Summit
+  // 2021. Once the event is over, they can be removed from database completely.
+  // Reason for filter here is so companies don't see these dummy job listings.
+  return resp.data.filter((listing) => !listing.dummy)
 }
 
 export async function fetchOneTpJobListingOfCurrentUser(
