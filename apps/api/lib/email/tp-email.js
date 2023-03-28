@@ -13,13 +13,7 @@ const { buildBackendUrl } = require('../build-backend-url')
 const { sendMjmlEmailFactory } = require('./email')
 
 const sendTpResetPasswordEmailTemplate = fs.readFileSync(
-  path.resolve(
-    __dirname,
-    'assets',
-    'email',
-    'tp-templates',
-    'reset-password.mjml'
-  ),
+  path.resolve(__dirname, 'tp-templates', 'reset-password.mjml'),
   'utf-8'
 )
 
