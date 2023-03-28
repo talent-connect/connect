@@ -1,0 +1,45 @@
+<mjml>
+  <mj-include path="../templates/head.mjml" />
+  <mj-body mj-class="body">
+    <mj-wrapper background-color="#F0F0F0">
+      <mj-section />
+      <mj-section css-class="section">
+        <mj-column>
+          <mj-text mj-class="headline"
+            >Talent Pool: Your profile is approved! ReDI for the next
+            step?</mj-text
+          >
+          <mj-divider mj-class="divider-top" css-class="divider" />
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >Dear ${firstName},</mj-text
+          >
+          <mj-text mj-class="text paragraph"
+            >Congratulations - your company profile has been approved!</mj-text
+          >
+          <mj-text mj-class="text paragraph"
+            >Now you are able to browse through our ReDI jobseekers to look for
+            people who could match the criteria of your job opening. Please feel
+            free to contact them through the email address they provided. You
+            can always add new job listings to your company profile when
+            relevant.</mj-text
+          >
+          <mj-text mj-class="text paragraph"
+            >If you have any questions in the process or want to schedule a
+            personal onboarding session, please don’t hesitate to reach
+            out.</mj-text
+          >
+          <mj-text mj-class="text paragraph"
+            >Please remember, by accepting our terms and conditions you also
+            commit to reporting back in case you hire one of our ReDI talents.
+            We love success stories, so make sure to let us know!</mj-text
+          >
+          <mj-text mj-class="text paragraph">Happy talent scouting!</mj-text>
+          <mj-text mj-class="text">Best,</mj-text>
+          <mj-text mj-class="text">Janis</mj-text>
+        </mj-column>
+      </mj-section>
+      <mj-include path="../templates/footer.janis.mjml" />
+      <mj-section />
+    </mj-wrapper>
+  </mj-body>
+</mjml>

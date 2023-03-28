@@ -1,19 +1,19 @@
+import { useLoadMyProfileQuery } from '@talent-connect/data-access'
 import {
   Caption,
   Placeholder,
 } from '@talent-connect/shared-atomic-design-components'
 import { EDUCATION_LEVELS } from '@talent-connect/shared-config'
-import { RedProfile } from '@talent-connect/shared-types'
 import { Content } from 'react-bulma-components'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
+import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
+import { ReadEducationProfilePropFragment } from './ReadEducation.generated'
 
 interface Props {
-  profile: RedProfile
+  profile: ReadEducationProfilePropFragment
   shortInfo?: boolean
 }
 
-const ReadEducation = ({ profile, shortInfo }: Props) => {
+function ReadEducation({ profile, shortInfo }: Props) {
   const { mentee_highestEducationLevel } = profile
 
   if (!mentee_highestEducationLevel) {
@@ -34,11 +34,14 @@ const ReadEducation = ({ profile, shortInfo }: Props) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile as RedProfile,
-})
-
 export default {
-  Me: connect(mapStateToProps, {})(ReadEducation),
+  Me: () => {
+    const loopbackUserId = getAccessTokenFromLocalStorage().userId
+    const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
+
+    if (!myProfileQuery.isSuccess) return null
+
+    return <ReadEducation profile={myProfileQuery.data.conProfile} />
+  },
   Some: ({ profile }: Props) => <ReadEducation profile={profile} shortInfo />,
 }

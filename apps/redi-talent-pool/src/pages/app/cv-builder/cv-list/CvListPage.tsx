@@ -2,23 +2,25 @@ import React from 'react'
 import { useHistory } from 'react-router-dom'
 
 import {
-  Heading,
   Button,
-  Modal,
   FormInput,
+  Heading,
   Icon,
+  Modal,
 } from '@talent-connect/shared-atomic-design-components'
-import { Section, Columns, Content, Box } from 'react-bulma-components'
+import { Box, Columns, Content, Section } from 'react-bulma-components'
 
-import { useTpjobseekerCvCreateMutation } from '../../../../react-query/use-tpjobseekercv-mutation'
-import { useTpJobseekerCvQuery } from '../../../../react-query/use-tpjobseekercv-query'
-
-import { LoggedIn } from '../../../../components/templates'
 import { EmptySectionPlaceholder } from '../../../../components/molecules/EmptySectionPlaceholder'
+import { LoggedIn } from '../../../../components/templates'
 import CvListItem from './CvListItem'
-import { useTpJobseekerProfileQuery } from '../../../../react-query/use-tpjobseekerprofile-query'
-import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
 
+import {
+  TpJobseekerCvCreateInput,
+  TpJobseekerDirectoryEntry,
+  useFindAllTpJobseekerCvsQuery,
+  useMyTpDataQuery,
+  useTpJobseekerCvCreateFromCurrentUserJobseekerProfileMutation,
+} from '@talent-connect/data-access'
 import './CvListPage.scss'
 
 function CvListPage() {
@@ -27,9 +29,14 @@ function CvListPage() {
 
   const history = useHistory()
 
-  const { data: profile } = useTpJobseekerProfileQuery()
-  const { data: cvList } = useTpJobseekerCvQuery()
-  const createMutation = useTpjobseekerCvCreateMutation()
+  const myTpData = useMyTpDataQuery()
+  const profile =
+    myTpData?.data?.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry
+  const myCvsQuery = useFindAllTpJobseekerCvsQuery()
+  const cvList = myCvsQuery.data?.tpJobseekerCvs
+
+  const createMutation =
+    useTpJobseekerCvCreateFromCurrentUserJobseekerProfileMutation()
 
   const setFocusOnRef = (ref: HTMLInputElement) => ref?.focus()
 
@@ -44,13 +51,14 @@ function CvListPage() {
   const handleCvNameChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setNewCvName(e.target.value)
 
-  const handleCreateNewCv = (): void => {
-    createMutation
-      .mutateAsync({ ...convertProfileToCv(profile), cvName: newCvName })
-      .then((data) => {
-        toggleCvNameModal(false)
-        if (data?.id) history.push(`/app/cv-builder/${data.id}`)
-      })
+  const handleCreateNewCv = async () => {
+    const result = await createMutation.mutateAsync({
+      input: { cvName: newCvName },
+    })
+    toggleCvNameModal(false)
+    history.push(
+      `/app/cv-builder/${result.tpJobseekerCreateFromCurrentUserJobseekerProfile.id}`
+    )
   }
 
   /**
@@ -177,28 +185,17 @@ function CvListPage() {
 
 export default CvListPage
 
-export function convertProfileToCv(
-  profile: Partial<TpJobseekerProfile>
-): Partial<TpJobseekerCv> {
+function convertProfileToNewCv(
+  profile: TpJobseekerDirectoryEntry
+): TpJobseekerCvCreateInput {
   return {
+    aboutYourself: profile.aboutYourself,
+    desiredPositions: profile.desiredPositions,
+    email: profile.email,
     firstName: profile.firstName,
     lastName: profile.lastName,
-    contactEmail: profile.contactEmail,
-    desiredPositions: profile.desiredPositions,
-    phoneNumber: profile.phoneNumber,
     postalMailingAddress: profile.postalMailingAddress,
-    personalWebsite: profile.personalWebsite,
-    githubUrl: profile.githubUrl,
-    linkedInUrl: profile.linkedInUrl,
-    twitterUrl: profile.twitterUrl,
-    behanceUrl: profile.behanceUrl,
-    stackOverflowUrl: profile.stackOverflowUrl,
-    dribbbleUrl: profile.dribbbleUrl,
-    workingLanguages: profile.workingLanguages,
-    aboutYourself: profile.aboutYourself,
+    telephoneNumber: profile.telephoneNumber,
     topSkills: profile.topSkills,
-    experience: profile.experience,
-    education: profile.education,
-    projects: profile.projects,
   }
 }

@@ -1,11 +1,15 @@
+import {
+  ConnectProfileStatus,
+  MentorshipMatchStatus,
+  useLoadMyProfileQuery,
+  UserType,
+} from '@talent-connect/data-access'
 import { ReactNode } from 'react'
-import { useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { ReactComponent as Applications } from '../../assets/images/applications.svg'
 import { ReactComponent as Mentorship } from '../../assets/images/mentorship.svg'
 import { ReactComponent as Profile } from '../../assets/images/profile.svg'
-import { RootState } from '../../redux/types'
-import { getRedProfileFromLocalStorage } from '../../services/auth/auth'
+import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 import './SideMenu.scss'
 
 interface MenuItemProps {
@@ -20,27 +24,35 @@ const MenuItem = ({ url, children }: MenuItemProps) => (
       className="side-menu__item__link"
       activeClassName="side-menu__item__link--active"
     >
-      {children}
+      <>{children}</>
     </NavLink>
   </li>
 )
 
 const SideMenu = () => {
-  const profile = getRedProfileFromLocalStorage()
-  const isActivatedMentor =
-    profile.userType === 'mentor' && profile.userActivated
-  const isActivatedMentee =
-    profile.userType === 'mentee' && profile.userActivated
-  const isMentee =
-    isActivatedMentee ||
-    profile.userType === 'public-sign-up-mentee-pending-review'
-  const isMenteeWithoutMentor =
-    isMentee && !profile.ifUserIsMentee_hasActiveMentor
-  const isMenteeWithMentor =
-    isActivatedMentee && profile.ifUserIsMentee_hasActiveMentor
-  const pendingApplicationsCount = useSelector(
-    (state: RootState) => state.user.profile.currentApplicantCount
+  const loopbackUserId = getAccessTokenFromLocalStorage().userId
+  const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
+  const profile = myProfileQuery.data?.conProfile
+
+  const isMentor = profile?.userType === UserType.Mentor
+  const isMentee = profile?.userType === UserType.Mentee
+
+  const isActivated = profile?.profileStatus === ConnectProfileStatus.Approved
+  const isNotPending = profile?.profileStatus !== ConnectProfileStatus.Pending
+
+  const isActivatedMentor = isMentor && isActivated
+
+  const hasActiveMentorship = profile?.mentorshipMatches?.some(
+    (match) => match.status === MentorshipMatchStatus.Accepted
   )
+  const hasNoActiveMentorship = !hasActiveMentorship
+  const firstActiveMentorshipId = profile?.mentorshipMatches?.find(
+    (match) => match.status === MentorshipMatchStatus.Accepted
+  )?.id
+
+  const pendingApplicationsCount = profile?.mentorshipMatches?.filter(
+    (match) => match.status === MentorshipMatchStatus.Applied
+  ).length
 
   return (
     <ul className="side-menu">
@@ -49,15 +61,21 @@ const SideMenu = () => {
         My Profile
       </MenuItem>
 
-      {isMenteeWithoutMentor && (
+      {isMentee && isActivated && hasNoActiveMentorship && (
         <MenuItem url="/app/find-a-mentor/">
           <Mentorship className="side-menu__icon" />
           Find a mentor
         </MenuItem>
       )}
 
-      {(isActivatedMentor || isMenteeWithMentor) && (
+      {isMentor && isActivated && (
         <MenuItem url="/app/mentorships/">
+          <Mentorship className="side-menu__icon" />
+          My Mentorship
+        </MenuItem>
+      )}
+      {isMentee && hasActiveMentorship && (
+        <MenuItem url={`/app/mentorships/${firstActiveMentorshipId}`}>
           <Mentorship className="side-menu__icon" />
           My Mentorship
         </MenuItem>

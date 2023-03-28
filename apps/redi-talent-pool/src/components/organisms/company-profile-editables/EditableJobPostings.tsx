@@ -1,40 +1,45 @@
 import {
+  AllTpJobListingFieldsFragment,
+  useMyTpDataQuery,
+  useTpJobListingCreateMutation,
+  useTpJobListingDeleteMutation,
+  useTpJobListingPatchMutation,
+} from '@talent-connect/data-access'
+import {
   Button,
+  Checkbox,
   FormInput,
   FormSelect,
   Heading,
   Icon,
   Modal,
-  Checkbox,
   TextEditor,
 } from '@talent-connect/shared-atomic-design-components'
-import { TpJobListing, TpJobseekerProfile } from '@talent-connect/shared-types'
+import { TpJobListing } from '@talent-connect/shared-types'
 import {
   desiredPositions,
   employmentTypes,
   germanFederalStates,
   topSkills,
 } from '@talent-connect/talent-pool/config'
+import { objectEntries } from '@talent-connect/typescript-utilities'
 import { useFormik } from 'formik'
-import { useCallback, useState, useEffect } from 'react'
+import { pick } from 'lodash'
+import { useCallback, useEffect, useState } from 'react'
 import { Columns, Element } from 'react-bulma-components'
+import { useQueryClient } from 'react-query'
 import * as Yup from 'yup'
-import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
-import { useTpJobListingAllQuery } from '../../../react-query/use-tpjoblisting-all-query'
-import { useTpJobListingCreateMutation } from '../../../react-query/use-tpjoblisting-create-mutation'
-import { useTpJobListingDeleteMutation } from '../../../react-query/use-tpjoblisting-delete-mutation'
-import { useTpJobListingOneOfCurrentUserQuery } from '../../../react-query/use-tpjoblisting-one-query'
-import { useTpJobListingUpdateMutation } from '../../../react-query/use-tpjoblisting-update-mutation'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import { JobListingCard } from '../JobListingCard'
+import { useLoadModalFormJobListingDataQuery } from './EditableJobPostings.generated'
 import JobPlaceholderCardUrl from './job-placeholder-card.svg'
-import { objectEntries } from '@talent-connect/typescript-utilities'
 
 export function EditableJobPostings({
   isJobPostingFormOpen,
   setIsJobPostingFormOpen,
 }) {
-  const { data: jobListings } = useTpJobListingAllQuery()
+  const myData = useMyTpDataQuery()
+  const jobListings = myData.data?.tpCurrentUserDataGet?.jobListings
   const [isEditing, setIsEditing] = useState(false)
   const [idOfTpJobListingBeingEdited, setIdOfTpJobListingBeingEdited] =
     useState<string | null>(null) // null = "new"
@@ -173,46 +178,82 @@ function ModalForm({
   setIsEditing,
   tpJobListingId,
 }: ModalFormProps) {
-  const { data } = useTpJobListingOneOfCurrentUserQuery(tpJobListingId)
-  const { data: currentUserTpCompanyProfile } = useTpCompanyProfileQuery()
-  const jobListing = tpJobListingId
-    ? data
-    : buildBlankJobListing(currentUserTpCompanyProfile?.id)
+  const queryClient = useQueryClient()
+  const jobListingToBeEditedQuery = useLoadModalFormJobListingDataQuery(
+    { id: tpJobListingId },
+    { enabled: Boolean(tpJobListingId) && isEditing }
+  )
+  const myDataQuery = useMyTpDataQuery()
 
   const createMutation = useTpJobListingCreateMutation()
-  const updateMutation = useTpJobListingUpdateMutation(tpJobListingId)
+  const updateMutation = useTpJobListingPatchMutation()
   const deleteMutation = useTpJobListingDeleteMutation()
 
-  const onSubmit = (values: Partial<TpJobseekerProfile>, { resetForm }) => {
+  let jobListing = null
+  if (isEditing) {
+    if (tpJobListingId && jobListingToBeEditedQuery.isSuccess) {
+      jobListing = jobListingToBeEditedQuery.data.tpJobListing
+    }
+    if (!tpJobListingId) {
+      jobListing = buildBlankJobListing(
+        myDataQuery.data.tpCurrentUserDataGet.representedCompany.id
+      )
+    }
+  }
+
+  const onSubmit = (
+    values: Partial<AllTpJobListingFieldsFragment>,
+    { resetForm }
+  ) => {
     if (tpJobListingId === null) {
       // create new
       formik.setSubmitting(true)
-      createMutation.mutate(values, {
-        onSettled: () => {
-          formik.setSubmitting(false)
-        },
-        onSuccess: () => {
-          setIsEditing(false)
-          resetForm()
-        },
-      })
+      createMutation.mutate(
+        { input: values },
+        {
+          onSettled: () => {
+            formik.setSubmitting(false)
+          },
+          onSuccess: () => {
+            setIsEditing(false)
+            resetForm()
+            queryClient.invalidateQueries()
+          },
+        }
+      )
     } else {
       // update existing
       formik.setSubmitting(true)
-      updateMutation.mutate(values, {
-        onSettled: () => {
-          formik.setSubmitting(false)
-        },
-        onSuccess: () => {
-          setIsEditing(false)
-          resetForm()
-        },
-      })
+      updateMutation.mutate(
+        { input: { id: tpJobListingId, ...values } },
+        {
+          onSettled: () => {
+            formik.setSubmitting(false)
+          },
+          onSuccess: () => {
+            setIsEditing(false)
+            resetForm()
+            queryClient.invalidateQueries()
+          },
+        }
+      )
     }
   }
 
   const formik = useFormik({
-    initialValues: jobListing,
+    initialValues: pick(
+      jobListing,
+      'title',
+      'location',
+      'summary',
+      'relatesToPositions',
+      'idealTechnicalSkills',
+      'employmentType',
+      'languageRequirements',
+      'isRemotePossible',
+      'federalState',
+      'salaryRange'
+    ),
     onSubmit,
     validationSchema,
     enableReinitialize: true,
@@ -222,11 +263,15 @@ function ModalForm({
     if (
       window.confirm('Are you certain you wish to delete this job posting?')
     ) {
-      deleteMutation.mutate(tpJobListingId, {
-        onSuccess: () => {
-          setIsEditing(false)
-        },
-      })
+      deleteMutation.mutate(
+        { input: { id: tpJobListingId } },
+        {
+          onSuccess: () => {
+            queryClient.invalidateQueries()
+            setIsEditing(false)
+          },
+        }
+      )
       setIsEditing(false)
     }
   }, [deleteMutation, setIsEditing, tpJobListingId])

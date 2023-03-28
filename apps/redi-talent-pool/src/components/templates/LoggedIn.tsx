@@ -1,10 +1,12 @@
+import {
+  CompanyTalentPoolState,
+  JobseekerProfileStatus,
+  useMyTpDataQuery,
+} from '@talent-connect/data-access'
 import { Loader } from '@talent-connect/shared-atomic-design-components'
 import { ReactNode } from 'react'
 import { Columns, Container } from 'react-bulma-components'
-import { useLocation } from 'react-router'
 import { useIsBusy } from '../../hooks/useIsBusy'
-import { useTpCompanyProfileQuery } from '../../react-query/use-tpcompanyprofile-query'
-import { useTpJobseekerProfileQuery } from '../../react-query/use-tpjobseekerprofile-query'
 import { TpMainNavItem } from '../molecules/TpMainNavItem'
 import { Navbar } from '../organisms'
 import Footer from '../organisms/Footer'
@@ -16,12 +18,13 @@ interface Props {
 }
 
 const LoggedIn = ({ children, hideNavigation }: Props) => {
+  const myTpData = useMyTpDataQuery()
+
+  const companyProfile = myTpData.data?.tpCurrentUserDataGet?.representedCompany
+  const tpJobseekerDirectoryEntry =
+    myTpData.data?.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry
+
   const isBusy = useIsBusy()
-  const location = useLocation()
-  const { data: jobseekerProfile } = useTpJobseekerProfileQuery({
-    retry: false,
-  })
-  const { data: companyProfile } = useTpCompanyProfileQuery({ retry: false })
 
   return (
     <>
@@ -37,8 +40,10 @@ const LoggedIn = ({ children, hideNavigation }: Props) => {
                   to="/app/me"
                   isActive={location.pathname === '/app/me'}
                 />
-                {companyProfile?.state === 'profile-approved' ||
-                jobseekerProfile?.state === 'profile-approved' ? (
+                {companyProfile?.state ===
+                  CompanyTalentPoolState.ProfileApproved ||
+                tpJobseekerDirectoryEntry?.state ===
+                  JobseekerProfileStatus.ProfileApproved ? (
                   <TpMainNavItem
                     page="browse-page"
                     pageName="Browse"
@@ -46,7 +51,7 @@ const LoggedIn = ({ children, hideNavigation }: Props) => {
                     isActive={location.pathname === '/app/browse'}
                   />
                 ) : null}
-                {jobseekerProfile ? (
+                {tpJobseekerDirectoryEntry ? (
                   <TpMainNavItem
                     page="cv-builder-page"
                     pageName="CV Builder"

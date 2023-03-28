@@ -1,15 +1,23 @@
+import { useLoadMyProfileQuery } from '@talent-connect/data-access'
 import { useContext } from 'react'
-import { RedMatch } from '@talent-connect/shared-types'
+import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
 import ApplicationCard from './application-card/ApplicationCard'
-import FilterButton from './FilterButton'
+import { ApplicationsPageApplicationFragment } from './Applications.generated'
 import { ApplicationsFilterContext } from './ApplicationsFilterContext'
 import './DesktopView.scss'
+import FilterButton from './FilterButton'
 
 interface Props {
-  applicants: RedMatch[]
+  applicants: ApplicationsPageApplicationFragment[]
 }
 
 const DesktopView = ({ applicants }: Props) => {
+  const loopbackUserId = getAccessTokenFromLocalStorage().userId
+  const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
+
+  const hasReachedMenteeLimit =
+    myProfileQuery.data.conProfile.doesNotHaveAvailableMentorshipSlot
+
   const {
     filteredAndSortedApplications,
     pendingApplications,
@@ -18,6 +26,8 @@ const DesktopView = ({ applicants }: Props) => {
     hasDeclinedApplications,
     hasCancelledApplications,
   } = useContext(ApplicationsFilterContext)
+
+  console.log(filteredAndSortedApplications)
 
   return (
     <div className="desktop-tabs">
@@ -52,7 +62,11 @@ const DesktopView = ({ applicants }: Props) => {
       </div>
       <div>
         {filteredAndSortedApplications.map((application) => (
-          <ApplicationCard key={application.id} application={application} />
+          <ApplicationCard
+            key={application.id}
+            application={application}
+            hasReachedMenteeLimit={hasReachedMenteeLimit}
+          />
         ))}
       </div>
     </div>

@@ -1,11 +1,16 @@
 import {
+  TpJobseekerDirectoryEntry,
+  useMyTpDataQuery,
+  usePatchUserContactMutation,
+  useTpJobseekerProfilePatchMutation,
+} from '@talent-connect/data-access'
+import {
   Button,
   Caption,
   FaqItem,
   FormSelect,
   FormTextArea,
 } from '@talent-connect/shared-atomic-design-components'
-import { TpJobseekerCv, TpJobseekerProfile } from '@talent-connect/shared-types'
 import {
   topSkills,
   topSkillsIdToLabelMap,
@@ -13,28 +18,19 @@ import {
 import { useFormik } from 'formik'
 import { useEffect, useMemo, useState } from 'react'
 import { Content, Element, Tag } from 'react-bulma-components'
-import { UseMutationResult, UseQueryResult } from 'react-query'
+import { useQueryClient } from 'react-query'
 import * as Yup from 'yup'
-import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useIsBusy } from '../../../hooks/useIsBusy'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
+import { EditableSummaryProfilePropFragment } from './EditableSummary.generated'
 
 interface Props {
-  profile?: Partial<TpJobseekerProfile>
+  profile?: EditableSummaryProfilePropFragment
   disableEditing?: boolean
 }
 
-export function EditableSummary({
-  profile: overridingProfile,
-  disableEditing,
-}: Props) {
-  const queryHookResult = useTpJobseekerProfileQuery({
-    enabled: !disableEditing,
-  })
-  if (overridingProfile) queryHookResult.data = overridingProfile
-  const mutationHookResult = useTpjobseekerprofileUpdateMutation()
-  const { data: profile } = queryHookResult
+export function EditableSummary({ profile, disableEditing }: Props) {
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
@@ -85,8 +81,6 @@ export function EditableSummary({
         <JobseekerFormSectionSummary
           setIsEditing={setIsEditing}
           setIsFormDirty={setIsFormDirty}
-          queryHookResult={queryHookResult}
-          mutationHookResult={mutationHookResult}
         />
       }
       modalStyles={{ minHeight: 700 }}
@@ -94,10 +88,12 @@ export function EditableSummary({
   )
 }
 
-EditableSummary.isSectionFilled = (profile: Partial<TpJobseekerProfile>) =>
-  !!profile?.aboutYourself && profile?.topSkills?.length > 0
-EditableSummary.isSectionEmpty = (profile: Partial<TpJobseekerProfile>) =>
-  !EditableSummary.isSectionFilled(profile)
+EditableSummary.isSectionFilled = (
+  profile: Pick<TpJobseekerDirectoryEntry, 'aboutYourself' | 'topSkills'>
+) => !!profile?.aboutYourself && profile?.topSkills?.length > 0
+EditableSummary.isSectionEmpty = (
+  profile: Pick<TpJobseekerDirectoryEntry, 'aboutYourself' | 'topSkills'>
+) => !EditableSummary.isSectionFilled(profile)
 
 const formTopSkills = topSkills.map(({ id, label }) => ({
   value: id,
@@ -120,44 +116,39 @@ const validationSchema = Yup.object({
 interface JobseekerFormSectionSummaryProps {
   setIsEditing: (boolean) => void
   setIsFormDirty?: (boolean) => void
-  queryHookResult: UseQueryResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
-    unknown
-  >
-  mutationHookResult: UseMutationResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
-    unknown,
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
-    unknown
-  >
 }
 
-export function JobseekerFormSectionSummary({
+function JobseekerFormSectionSummary({
   setIsEditing,
   setIsFormDirty,
-  queryHookResult,
-  mutationHookResult,
 }: JobseekerFormSectionSummaryProps) {
-  const { data: profile } = queryHookResult
-  const mutation = mutationHookResult
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(
+  const queryClient = useQueryClient()
+  const myData = useMyTpDataQuery()
+  const profile = myData.data?.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry
+  const tpJobsekerProfileMutation = useTpJobseekerProfilePatchMutation()
+  const userContactMutation = usePatchUserContactMutation()
+  const isBusy = useIsBusy()
+
+  const initialValues: EditableSummaryProfilePropFragment = useMemo(
     () => ({
       aboutYourself: profile?.aboutYourself ? profile.aboutYourself : '',
       topSkills: profile?.topSkills ?? [],
     }),
     [profile?.aboutYourself, profile?.topSkills]
   )
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
+  const onSubmit = async (values: EditableSummaryProfilePropFragment) => {
     formik.setSubmitting(true)
-    mutation.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
+    await tpJobsekerProfileMutation.mutateAsync({
+      input: {
+        aboutYourself: values.aboutYourself,
+        topSkills: values.topSkills,
       },
     })
+    queryClient.invalidateQueries()
+    formik.setSubmitting(false)
+    setIsEditing(false)
   }
+
   const formik = useFormik({
     initialValues,
     validationSchema,
@@ -204,24 +195,17 @@ export function JobseekerFormSectionSummary({
         answer={summaryTips}
       />
 
-      <Button
-        disabled={!formik.isValid || mutation.isLoading}
-        onClick={formik.submitForm}
-      >
+      <Button disabled={!formik.isValid || isBusy} onClick={formik.submitForm}>
         Save
       </Button>
-      <Button
-        simple
-        disabled={mutation.isLoading}
-        onClick={() => setIsEditing(false)}
-      >
+      <Button simple disabled={isBusy} onClick={() => setIsEditing(false)}>
         Cancel
       </Button>
     </>
   )
 }
 
-const summaryTips = `Write not more than 3-4 sentences.
+export const summaryTips = `Write not more than 3-4 sentences.
 <br /><br />
 Make sure you talk about:<br />
 1. Who are you? - Include your professional title and past relevant experiences or education with key functions.

@@ -9,6 +9,7 @@ import PreFooter from '../../../components/organisms/PreFooter'
 
 export default function Home() {
   const { t } = useTranslation()
+
   return (
     <Landing>
       <Hero />
@@ -26,3 +27,25 @@ export default function Home() {
     </Landing>
   )
 }
+
+// schema: http://localhost:3333/graphql
+// documents: './src/**/*.tsx'
+// generates:
+//   ./graphql/generated.ts:
+//     plugins:
+//       - typescript
+//       - typescript-operations
+//       - typescript-react-query
+//     config:
+//       fetcher: fetch
+
+// # src/generated/graphql.ts:
+// #   plugins:
+// #     - 'typescript'
+// #     - 'typescript-operations'
+// #     - typescript-react-query
+// #   config:
+// #     fetcher: fetch
+// # ./graphql.schema.json:
+// #   plugins:
+// #     - 'introspection'

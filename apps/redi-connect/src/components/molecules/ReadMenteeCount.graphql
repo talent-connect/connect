@@ -1,0 +1,5 @@
+fragment ReadMenteeCountProfileProp on ConProfile {
+  menteeCountCapacity
+  optOutOfMenteesFromOtherRediLocation
+  rediLocation
+}

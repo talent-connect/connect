@@ -20,23 +20,16 @@ const sendTpResetPasswordEmailTemplate = fs.readFileSync(
 const sendTpResetPasswordEmailParsed = mjml2html(
   sendTpResetPasswordEmailTemplate,
   {
-    filePath: path.resolve(__dirname, 'tp-templates'),
+    filePath: path.resolve(__dirname, 'templates'),
   }
 )
 
-const sendTpResetPasswordEmail = ({
-  recipient,
-  firstName,
-  accessToken,
-  rediLocation,
-}) => {
+const sendTpResetPasswordEmail = ({ recipient, accessToken }) => {
   const resetPasswordUrl = `${buildTpFrontendUrl(
-    process.env.NODE_ENV,
-    rediLocation
+    process.env.NODE_ENV
   )}/front/reset-password/set-new-password/${accessToken}`
   const rediEmailAdress = 'career@redi-school.org'
   const html = sendTpResetPasswordEmailParsed.html
-    .replace(/\${firstName}/g, firstName)
     .replace(/\${resetPasswordUrl}/g, resetPasswordUrl)
     .replace(/\${rediEmailAdress}/g, rediEmailAdress)
     .replace(/\${emailAdress}/g, recipient)

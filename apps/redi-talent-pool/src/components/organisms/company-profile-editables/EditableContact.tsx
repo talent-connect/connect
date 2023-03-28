@@ -1,29 +1,42 @@
 import {
+  useMyTpDataQuery,
+  usePatchTpCompanyProfileMutation,
+  usePatchUserContactMutation,
+} from '@talent-connect/data-access'
+import {
   Button,
   Caption,
   FormInput,
 } from '@talent-connect/shared-atomic-design-components'
-import { TpCompanyProfile } from '@talent-connect/shared-types'
 import { toPascalCaseAndTrim } from '@talent-connect/shared-utils'
 import { useFormik } from 'formik'
+import { useEffect, useMemo, useState } from 'react'
+import { Content, Element } from 'react-bulma-components'
+import { useQueryClient } from 'react-query'
 import * as Yup from 'yup'
-import React, { useEffect, useMemo, useState } from 'react'
-import { Columns, Content, Element } from 'react-bulma-components'
-import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
-import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
+import { useIsBusy } from '../../../hooks/useIsBusy'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
+import {
+  EditableContactCompanyProfilePropFragment,
+  EditableContactUserContactPropFragment,
+} from './EditableContact.generated'
 
 interface Props {
-  profile: Partial<TpCompanyProfile>
+  companyProfile: EditableContactCompanyProfilePropFragment
+  userContact: EditableContactUserContactPropFragment
   disableEditing?: boolean
 }
 
-export function EditableContact({ profile, disableEditing }: Props) {
+export function EditableContact({
+  companyProfile,
+  userContact,
+  disableEditing,
+}: Props) {
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
-  const isEmpty = EditableContact.isSectionEmpty(profile)
+  const isEmpty = EditableContact.isSectionEmpty(companyProfile, userContact)
 
   if (disableEditing && isEmpty) return null
 
@@ -52,29 +65,29 @@ export function EditableContact({ profile, disableEditing }: Props) {
               gridRowGap: '32px',
             }}
           >
-            {profile?.firstName || profile?.lastName ? (
+            {userContact?.firstName || userContact?.lastName ? (
               <div>
                 <Caption>Name</Caption>
                 <Content>
                   <p>
-                    {profile?.firstName} {profile?.lastName}
+                    {userContact?.firstName} {userContact?.lastName}
                   </p>
                 </Content>
               </div>
             ) : null}
-            {profile.phoneNumber ? (
+            {companyProfile.telephoneNumber ? (
               <div>
                 <Caption>Phone</Caption>
                 <Content>
-                  <p>{profile?.phoneNumber}</p>
+                  <p>{companyProfile?.telephoneNumber}</p>
                 </Content>
               </div>
             ) : null}
-            {profile.contactEmail ? (
+            {userContact.email ? (
               <div>
                 <Caption>E-mail</Caption>
                 <Content>
-                  <p>{profile?.contactEmail}</p>
+                  <p>{userContact.email}</p>
                 </Content>
               </div>
             ) : null}
@@ -94,13 +107,18 @@ export function EditableContact({ profile, disableEditing }: Props) {
   )
 }
 
-EditableContact.isSectionFilled = (profile: Partial<TpCompanyProfile>) =>
-  profile?.firstName ||
-  profile?.lastName ||
-  profile?.contactEmail ||
-  profile?.phoneNumber
-EditableContact.isSectionEmpty = (profile: Partial<TpCompanyProfile>) =>
-  !EditableContact.isSectionFilled(profile)
+EditableContact.isSectionFilled = (
+  companyProfile: EditableContactCompanyProfilePropFragment,
+  userContact: EditableContactUserContactPropFragment
+) =>
+  userContact?.firstName ||
+  userContact?.lastName ||
+  userContact?.email ||
+  companyProfile?.telephoneNumber
+EditableContact.isSectionEmpty = (
+  companyProfile: EditableContactCompanyProfilePropFragment,
+  userContact: EditableContactUserContactPropFragment
+) => !EditableContact.isSectionFilled(companyProfile, userContact)
 
 const validationSchema = Yup.object({
   firstName: Yup.string()
@@ -111,9 +129,11 @@ const validationSchema = Yup.object({
     .transform(toPascalCaseAndTrim)
     .required('Your last name is required')
     .max(255),
-  contactEmail: Yup.string().email().required().label('E-mail'),
-  phoneNumber: Yup.string().max(255).label('Phone Number'),
+  telephoneNumber: Yup.string().max(255).label('Phone Number'),
 })
+
+type FormValues = EditableContactCompanyProfilePropFragment &
+  Omit<EditableContactUserContactPropFragment, 'email'>
 
 function ModalForm({
   setIsEditing,
@@ -122,29 +142,42 @@ function ModalForm({
   setIsEditing: (boolean) => void
   setIsFormDirty: (boolean) => void
 }) {
-  const { data: profile } = useTpCompanyProfileQuery()
-  const mutation = useTpCompanyProfileUpdateMutation()
-  const initialValues: Partial<TpCompanyProfile> = useMemo(
+  const queryClient = useQueryClient()
+  const myData = useMyTpDataQuery()
+  const { userContact, representedCompany: companyProfile } =
+    myData?.data?.tpCurrentUserDataGet
+  const companyProfileMutation = usePatchTpCompanyProfileMutation()
+  const userContactMutation = usePatchUserContactMutation()
+  const isBusy = useIsBusy()
+
+  const initialValues: FormValues = useMemo(
     () => ({
-      firstName: profile?.firstName ?? '',
-      lastName: profile?.lastName ?? '',
-      contactEmail: profile?.contactEmail ?? '',
-      phoneNumber: profile?.phoneNumber ?? '',
+      firstName: userContact?.firstName ?? '',
+      lastName: userContact?.lastName ?? '',
+      telephoneNumber: companyProfile?.telephoneNumber ?? '',
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )
-  const onSubmit = (values: Partial<TpCompanyProfile>) => {
+  const onSubmit = async (values: FormValues) => {
     formik.setSubmitting(true)
     const transformedValues = validationSchema.cast(values)
-    mutation.mutate(transformedValues, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
+    const pendingCompanyProfilePatch = companyProfileMutation.mutateAsync({
+      input: {
+        id: companyProfile.id,
+        telephoneNumber: transformedValues.telephoneNumber,
       },
     })
+    const pendingUserContactPatch = userContactMutation.mutateAsync({
+      input: {
+        firstName: transformedValues.firstName,
+        lastName: transformedValues.lastName,
+      },
+    })
+    await Promise.all([pendingCompanyProfilePatch, pendingUserContactPatch])
+    queryClient.invalidateQueries()
+    formik.setSubmitting(false)
+    setIsEditing(false)
   }
   const formik = useFormik({
     initialValues,
@@ -177,29 +210,23 @@ function ModalForm({
         {...formik}
       />
       <FormInput
-        name="contactEmail"
+        name="email"
         placeholder="your.name@company.com"
         label="E-mail*"
         {...formik}
+        disabled
       />
       <FormInput
-        name="phoneNumber"
+        name="telephoneNumber"
         placeholder="0176 01234567"
         label="Phone Number"
         {...formik}
       />
 
-      <Button
-        disabled={!formik.isValid || mutation.isLoading}
-        onClick={formik.submitForm}
-      >
+      <Button disabled={!formik.isValid || isBusy} onClick={formik.submitForm}>
         Save
       </Button>
-      <Button
-        simple
-        disabled={mutation.isLoading}
-        onClick={() => setIsEditing(false)}
-      >
+      <Button simple disabled={isBusy} onClick={() => setIsEditing(false)}>
         Cancel
       </Button>
     </>

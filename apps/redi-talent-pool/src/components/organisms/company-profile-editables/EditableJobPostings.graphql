@@ -1,0 +1,5 @@
+query loadModalFormJobListingData($id: ID!) {
+  tpJobListing(filter: { id: $id }) {
+    ...AllTpJobListingFields
+  }
+}

@@ -1,0 +1,7 @@
+mutation completeMentorship(
+  $input: ConMentorshipMatchesCompleteMentorshipInputDto!
+) {
+  conMentorshipMatchesCompleteMentorship(input: $input) {
+    ok
+  }
+}

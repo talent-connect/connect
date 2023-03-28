@@ -1,0 +1,14 @@
+fragment ConfirmMentorshipMatchProp on ConMentorshipMatch {
+  ...AllConMentorshipMatchFields
+  mentee {
+    firstName
+  }
+}
+
+mutation acceptMentorship(
+  $input: ConMentorshipMatchesAcceptMentorshipInputDto!
+) {
+  conMentorshipMatchesAcceptMentorship(input: $input) {
+    ok
+  }
+}

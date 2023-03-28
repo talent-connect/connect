@@ -1,0 +1,17 @@
+fragment AllTpJobseekerCvExperienceRecordFields on TpJobseekerCvExperienceRecord {
+  city
+  startDateMonth
+  startDateYear
+  title
+  tpJobseekerCvId
+  updatedAt
+  company
+  country
+  createdAt
+  current
+  description
+  endDateMonth
+  endDateYear
+  id
+  sortIndex
+}

@@ -1,0 +1,1546 @@
+enum CompanyTalentPoolState {
+  DRAFTING_PROFILE
+  PROFILE_APPROVED
+  SUBMITTED_FOR_REVIEW
+}
+
+type ConMenteeFavoritedMentor {
+  createdAt: DateTime!
+  id: ID!
+  menteeId: ID!
+  mentorId: ID!
+  updatedAt: DateTime!
+}
+
+input ConMenteeFavoritedMentorCreateMutationInputDto {
+  mentorId: String!
+}
+
+type ConMenteeFavoritedMentorCreateMutationOutputDto {
+  ok: Boolean!
+}
+
+input ConMenteeFavoritedMentorDeleteMutationInputDto {
+  mentorId: String!
+}
+
+type ConMenteeFavoritedMentorDeleteMutationOutputDto {
+  ok: Boolean!
+}
+
+type ConMentoringSession {
+  createdAt: DateTime!
+  date: DateTime!
+  id: ID!
+  menteeId: ID!
+  mentorId: ID!
+  minuteDuration: MentoringSessionDuration!
+  updatedAt: DateTime!
+}
+
+type ConMentorshipMatch {
+  applicationText: String
+  createdAt: DateTime!
+  expectationText: String
+  hasMenteeDismissedMentorshipApplicationAcceptedNotification: Boolean
+  id: ID!
+  ifDeclinedByMentor_chosenReasonForDecline: String
+  ifDeclinedByMentor_dateTime: DateTime
+  ifDeclinedByMentor_ifReasonIsOther_freeText: String
+  ifDeclinedByMentor_optionalMessageToMentee: String
+  matchMadeActiveOn: DateTime
+  mentee: ConProfile!
+  menteeId: String!
+  mentor: ConProfile!
+  mentorId: String!
+  mentorMessageOnComplete: String
+  mentorReplyMessageOnAccept: String
+  mentoringSessions: [ConMentoringSession!]!
+  status: MentorshipMatchStatus!
+  updatedAt: DateTime!
+}
+
+input ConMentorshipMatchesAcceptMentorshipInputDto {
+  mentorReplyMessageOnAccept: String!
+  mentorshipMatchId: String!
+}
+
+type ConMentorshipMatchesAcceptMentorshipOutputDto {
+  id: String!
+  ok: Boolean!
+}
+
+input ConMentorshipMatchesApplyForMentorshipInputDto {
+  applicationText: String!
+  expectationText: String!
+  mentorId: String!
+}
+
+type ConMentorshipMatchesApplyForMentorshipOutputDto {
+  id: String!
+  ok: Boolean!
+}
+
+input ConMentorshipMatchesCompleteMentorshipInputDto {
+  mentorMessageOnComplete: String!
+  mentorshipMatchId: String!
+}
+
+type ConMentorshipMatchesCompleteMentorshipOutputDto {
+  id: String!
+  ok: Boolean!
+}
+
+input ConMentorshipMatchesDeclineMentorshipInputDto {
+  ifDeclinedByMentor_chosenReasonForDecline: DeclineReason!
+  ifDeclinedByMentor_ifReasonIsOther_freeText: String!
+  ifDeclinedByMentor_optionalMessageToMentee: String!
+  mentorshipMatchId: String!
+}
+
+type ConMentorshipMatchesDeclineMentorshipOutputDto {
+  id: String!
+  ok: Boolean!
+}
+
+input ConMentorshipMatchesMarkAsDismissedInputDto {
+  conMentorshipMatchId: String!
+}
+
+type ConMentorshipMatchesMarkAsDismissedOutputDto {
+  id: String!
+  ok: Boolean!
+}
+
+type ConProfile {
+  age: Float
+  birthDate: DateTime
+  categories: [MentoringTopic!]!
+  createdAt: DateTime!
+  doesNotHaveAvailableMentorshipSlot: Boolean!
+  email: String!
+  expectations: String
+  firstName: String!
+  fullName: String!
+  gender: Gender
+  githubProfileUrl: String
+  id: ID!
+  languages: [Language!]
+  lastName: String!
+  linkedInProfileUrl: String
+  loopbackUserId: String!
+  menteeCountCapacity: Int
+  mentee_currentlyEnrolledInCourse: RediCourse
+  mentee_highestEducationLevel: EducationLevel
+  mentee_occupationCategoryId: OccupationCategory
+  mentee_occupationJob_placeOfEmployment: String
+  mentee_occupationJob_position: String
+  mentee_occupationLookingForJob_what: String
+  mentee_occupationOther_description: String
+  mentee_occupationStudent_studyName: String
+  mentee_occupationStudent_studyPlace: String
+  mentor_occupation: String
+  mentor_workPlace: String
+  mentoringSessions: [ConMentoringSession!]!
+  mentorshipMatches: [ConMentorshipMatch!]!
+  optOutOfMenteesFromOtherRediLocation: Boolean!
+  personalDescription: String
+  profileAvatarImageS3Key: String
+  profileStatus: ConnectProfileStatus!
+  rediLocation: RediLocation!
+  slackUsername: String
+  telephoneNumber: String
+  updatedAt: DateTime!
+  userActivatedAt: DateTime
+  userId: String!
+  userType: UserType!
+}
+
+input ConProfileSignUpInput {
+  email: String!
+  firstName: String!
+  lastName: String!
+  mentee_currentlyEnrolledInCourse: RediCourse
+  rediLocation: RediLocation!
+  userType: UserType!
+}
+
+enum ConnectProfileStatus {
+  APPROVED
+  DEACTIVATED
+  PENDING
+  REJECTED
+}
+
+input CreateConMentoringSessionInput {
+  date: DateTime!
+  menteeId: ID!
+  minuteDuration: MentoringSessionDuration!
+}
+
+input CreateConProblemReportInput {
+  ifFromMentor_cancelMentorshipImmediately: Boolean
+  problemDescription: String!
+  reporteeProfileId: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+enum DeclineReason {
+  anotherMentorMoreSuitable
+  notEnoughTimeNowToBeMentor
+  notRightExpertise
+  other
+}
+
+enum EducationLevel {
+  apprenticeship
+  highSchool
+  middleSchool
+  universityBachelor
+  universityMaster
+  universityPhd
+}
+
+enum FederalState {
+  BADEN_WUERTTEMBERG
+  BAYERN
+  BERLIN
+  BRANDENBURG
+  BREMEN
+  HAMBURG
+  HESSEN
+  MECKLENBURG_VORPOMMERN
+  NIEDERSACHSEN
+  NORDRHEIN_WESTFALEN
+  OUTSIDE_GERMANY
+  RHEINLAND_PFALZ
+  SAARLAND
+  SACHSEN
+  SACHSEN_ANHALT
+  SCHLESWIG_HOLSTEIN
+  THUERINGEN
+}
+
+input FindAllVisibleTpJobListingsArgsFilter {
+  employmentTypes: [TpEmploymentType!]
+  federalStates: [FederalState!]
+  isRemotePossible: Boolean
+  relatesToPositions: [TpDesiredPosition!]
+  skills: [TpTechnicalSkill!]
+}
+
+input FindAllVisibleTpJobseekerDirectoryEntriesFilter {
+  desiredLanguages: [Language!]
+  desiredPositions: [TpDesiredPosition!]
+  employmentTypes: [TpEmploymentType!]
+  federalStates: [FederalState!]
+  isJobFair2022Participant: Boolean
+  isJobFair2023Participant: Boolean
+  name: String
+  skills: [TpTechnicalSkill!]
+}
+
+input FindConProfilesArgsFilter {
+  categories: [MentoringTopic!]
+  languages: [Language!]
+  locations: [RediLocation!]
+  name: String
+}
+
+input FindMentorshipMatchesArgsFilter {
+  status: MentorshipMatchStatus
+}
+
+input FindOneTpJobListingArgsFilter {
+  id: ID!
+}
+
+input FindOneVisibleTpJobseekerDirectoryEntry {
+  tpJobseekerProfileId: ID!
+}
+
+enum FirstPointOfTpContactOption {
+  ALREADY_VOLUNTEER_AT_REDI
+  COLLEGUE
+  INTERNET_SEARCH
+  OTHER
+  REDI_STUDENT_ALUMNI
+  REDI_TEAM_MEMBER
+  REDI_WEBSITE
+  SOCIAL_MEDIA
+}
+
+enum Gender {
+  Female
+  Male
+  Other
+}
+
+enum ImmigrationStatus {
+  euBlueCardBlaueKarte
+  euCitizenshipOrUnlimitedResidencePermissionNiederlassungserlaubnis
+  schengenVisa
+  studentVisa
+  temporaryResidencePermissionAufenthaltstitel
+  visaNationalvisumOrJobseekerVisum
+}
+
+enum JobseekerProfileStatus {
+  DRAFTING_PROFILE
+  PROFILE_APPROVED
+  SUBMITTED_FOR_REVIEW
+}
+
+enum Language {
+  Afrikaans
+  Albanian
+  Amharic
+  Arabic
+  Aramaic
+  Armenian
+  Assamese
+  Aymara
+  Azerbaijani
+  Balochi
+  Bamanankan
+  BashkortBashkir
+  Basque
+  Belarusan
+  Bengali
+  Bhojpuri
+  Bislama
+  Bosnian
+  Brahui
+  Bulgarian
+  Burmese
+  Cantonese
+  Catalan
+  Cebuano
+  Chechen
+  Cherokee
+  Croatian
+  Czech
+  Dakota
+  Danish
+  Dari
+  Dholuo
+  Dutch
+  English
+  Esperanto
+  Estonian
+  Ewe
+  Finnish
+  French
+  Georgian
+  German
+  Gikuyu
+  Greek
+  Guarani
+  Gujarati
+  HaitianCreole
+  Hausa
+  Hawaiian
+  HawaiianCreole
+  Hebrew
+  Hiligaynon
+  Hindi
+  Hungarian
+  Icelandic
+  Igbo
+  Ilocano
+  IndonesianBahasaIndonesia
+  InuitInupiaq
+  IrishGaelic
+  Italian
+  Japanese
+  Jarai
+  Javanese
+  Kabyle
+  Kannada
+  Kashmiri
+  Kazakh
+  Khmer
+  Khoekhoe
+  Kiche
+  Korean
+  Kurdish
+  Kyrgyz
+  Lao
+  Latin
+  Latvian
+  Lingala
+  Lithuanian
+  Macedonian
+  Maithili
+  Malagasy
+  MalayBahasaMelayu
+  Malayalam
+  MandarinChinese
+  Marathi
+  Mende
+  Mongolian
+  Nahuatl
+  Navajo
+  Nepali
+  Norwegian
+  Ojibwa
+  Oriya
+  Oromo
+  Pashto
+  Persian
+  Polish
+  Portuguese
+  Punjabi
+  Quechua
+  Romani
+  Romanian
+  Russian
+  Rwanda
+  Samoan
+  Sanskrit
+  Serbian
+  Shona
+  Sindhi
+  Sinhala
+  Slovak
+  Slovene
+  Somali
+  Spanish
+  Swahili
+  Swedish
+  Tachelhit
+  Tagalog
+  Tajiki
+  Tamil
+  Tatar
+  Telugu
+  Thai
+  TibeticLanguages
+  Tigrigna
+  TokPisin
+  Turkish
+  Turkmen
+  Ukrainian
+  Urdu
+  Uyghur
+  Uzbek
+  Vietnamese
+  Warlpiri
+  Welsh
+  Wolof
+  Xhosa
+  Yakut
+  Yiddish
+  Yoruba
+  Yucatec
+  Zapotec
+  Zulu
+}
+
+enum LanguageProficiencyLevel {
+  elementaryProficiency
+  fullWorkingProficiency
+  limitedWorkingProficiency
+  nativeOrBilingualProficiency
+}
+
+enum MentoringSessionDuration {
+  MIN15
+  MIN30
+  MIN45
+  MIN60
+  MIN75
+  MIN90
+  MIN105
+  MIN120
+  MIN135
+  MIN150
+  MIN165
+  MIN180
+}
+
+enum MentoringTopic {
+  basicGerman
+  basicProgrammingSkills
+  blockchain
+  buildingProfessionalNetwork
+  businessDevelopment
+  businessGerman
+  careerOrientationAndPlanning
+  codingChallengePreparation
+  computerNetworking
+  dataAnalytics
+  devOpsCloud
+  digitalMarketing
+  dontKnowYet
+  english
+  entrepreneurship
+  freelancing
+  friendAndHelp
+  graphicDesign
+  htmlCss
+  internshipOrWorkingStudent
+  interviewPreparation
+  iot
+  java
+  javascript
+  jobApplicationsCvPreparationEnglish
+  jobApplicationsCvPreparationGerman
+  jobSearch
+  machineLearning
+  mobileDevelopmentAndroid
+  mobileDevelopmentIos
+  motivationAndEncouragement
+  productManagement
+  projectManagement
+  python
+  qualityAssurance
+  react
+  sales
+  salesforce
+  userExperienceDesign
+  userInterfaceDesign
+}
+
+enum MentorshipMatchStatus {
+  ACCEPTED
+  APPLIED
+  CANCELLED
+  COMPLETED
+  DECLINED_BY_MENTOR
+  INVALIDATED_AS_OTHER_MENTOR_ACCEPTED
+}
+
+type Mutation {
+  conMatchMarkMentorshipAcceptedNotificationDismissed(conMentorshipMatchId: String!): OkResponseMutationOutputDto!
+  conMenteeFavoritedMentorCreate(input: ConMenteeFavoritedMentorCreateMutationInputDto!): ConMenteeFavoritedMentorCreateMutationOutputDto!
+  conMenteeFavoritedMentorDelete(input: ConMenteeFavoritedMentorDeleteMutationInputDto!): ConMenteeFavoritedMentorDeleteMutationOutputDto!
+  conMentorshipMatchesAcceptMentorship(input: ConMentorshipMatchesAcceptMentorshipInputDto!): ConMentorshipMatchesAcceptMentorshipOutputDto!
+  conMentorshipMatchesApplyForMentorship(input: ConMentorshipMatchesApplyForMentorshipInputDto!): ConMentorshipMatchesApplyForMentorshipOutputDto!
+  conMentorshipMatchesCompleteMentorship(input: ConMentorshipMatchesCompleteMentorshipInputDto!): ConMentorshipMatchesCompleteMentorshipOutputDto!
+  conMentorshipMatchesDeclineMentorship(input: ConMentorshipMatchesDeclineMentorshipInputDto!): ConMentorshipMatchesDeclineMentorshipOutputDto!
+  conMentorshipMatchesMarkAsDismissed(input: ConMentorshipMatchesMarkAsDismissedInputDto!): ConMentorshipMatchesMarkAsDismissedOutputDto!
+  conProblemReportCreate(input: CreateConProblemReportInput!): OkResponseMutationOutputDto!
+  conProfileSignUp(input: ConProfileSignUpInput!): OkIdResponseMutationOutputDto!
+  createConMentoringSession(createConMentoringSessionInput: CreateConMentoringSessionInput!): ConMentoringSession!
+  patchConProfile(patchConProfileInput: UpdateConProfileInput!): ConProfile!
+  tpCompanyFavoritedJobseekerProfileCreate(input: TpCompanyFavoritedJobseekerProfileCreateMutationInputDto!): TpCompanyFavoritedJobseekerProfileCreateMutationOutputDto!
+  tpCompanyFavoritedJobseekerProfileDelete(input: TpCompanyFavoritedJobseekerProfileDeleteMutationInputDto!): TpCompanyFavoritedJobseekerProfileDeleteMutationOutputDto!
+  tpCompanyProfilePatch(tpCompanyProfilePatchInput: TpCompanyProfilePatchInput!): OkResponseMutationOutputDto!
+  tpCompanyProfileSignUp(input: TpCompanyProfileSignUpInputDto!): TpCompanyProfileSignUpInputOutputDto!
+  tpJobListingCreate(tpJobListingCreateInput: TpJobListingCreateInput!): OkResponseMutationOutputDto!
+  tpJobListingDelete(tpJobListingDeleteInput: TpJobListingDeleteInput!): OkResponseMutationOutputDto!
+  tpJobListingPatch(tpJobListingPatchInput: TpJobListingPatchInput!): OkResponseMutationOutputDto!
+  tpJobseekerCreateFromCurrentUserJobseekerProfile(input: TpJobseekerCvCreateFromCurrentUserJobseekerProfileInput!): OkIdResponseMutationOutputDto!
+  tpJobseekerCvCreate(tpJobseekerCvCreateInput: TpJobseekerCvCreateInput!): OkIdResponseMutationOutputDto!
+  tpJobseekerCvDelete(tpJobseekerCvDeleteInput: TpJobseekerCvDeleteInput!): OkResponseMutationOutputDto!
+  tpJobseekerCvEducationRecordCreate(tpJobseekerCvEducationRecordCreateInput: TpJobseekerCvEducationRecordCreateInput!): OkResponseMutationOutputDto!
+  tpJobseekerCvEducationRecordDelete(tpJobseekerCvEducationRecordDeleteInput: TpJobseekerCvEducationRecordDeleteInput!): OkResponseMutationOutputDto!
+  tpJobseekerCvEducationRecordPatch(tpJobseekerCvEducationRecordPatchInput: TpJobseekerCvEducationRecordPatchInput!): OkResponseMutationOutputDto!
+  tpJobseekerCvExperienceRecordCreate(tpJobseekerCvExperienceRecordCreateInput: TpJobseekerCvExperienceRecordCreateInput!): OkResponseMutationOutputDto!
+  tpJobseekerCvExperienceRecordDelete(tpJobseekerCvExperienceRecordDeleteInput: TpJobseekerCvExperienceRecordDeleteInput!): OkResponseMutationOutputDto!
+  tpJobseekerCvExperienceRecordPatch(tpJobseekerCvExperienceRecordPatchInput: TpJobseekerCvExperienceRecordPatchInput!): OkResponseMutationOutputDto!
+  tpJobseekerCvLanguageRecordCreate(tpJobseekerCvLanguageRecordCreateInput: TpJobseekerCvLanguageRecordCreateInput!): OkResponseMutationOutputDto!
+  tpJobseekerCvLanguageRecordDelete(tpJobseekerCvLanguageRecordDeleteInput: TpJobseekerCvLanguageRecordDeleteInput!): OkResponseMutationOutputDto!
+  tpJobseekerCvLanguageRecordPatch(tpJobseekerCvLanguageRecordPatchInput: TpJobseekerCvLanguageRecordPatchInput!): OkResponseMutationOutputDto!
+  tpJobseekerCvPatch(tpJobseekerCvPatchInput: TpJobseekerCvPatchInput!): OkResponseMutationOutputDto!
+  tpJobseekerFavoritedJobListingCreate(input: TpJobseekerFavoritedJobListingCreateMutationInputDto!): TpJobseekerFavoritedJobListingCreateMutationOutputDto!
+  tpJobseekerFavoritedJobListingDelete(input: TpJobseekerFavoritedJobListingDeleteMutationInputDto!): TpJobseekerFavoritedJobListingDeleteMutationOutputDto!
+  tpJobseekerProfileEducationRecordCreate(tpJobseekerProfileEducationRecordCreateInput: TpJobseekerProfileEducationRecordCreateInput!): OkResponseMutationOutputDto!
+  tpJobseekerProfileEducationRecordDelete(tpJobseekerProfileEducationRecordDeleteInput: TpJobseekerProfileEducationRecordDeleteInput!): OkResponseMutationOutputDto!
+  tpJobseekerProfileEducationRecordPatch(tpJobseekerProfileEducationRecordPatchInput: TpJobseekerProfileEducationRecordPatchInput!): OkResponseMutationOutputDto!
+  tpJobseekerProfileExperienceRecordCreate(tpJobseekerProfileExperienceRecordCreateInput: TpJobseekerProfileExperienceRecordCreateInput!): OkResponseMutationOutputDto!
+  tpJobseekerProfileExperienceRecordDelete(tpJobseekerProfileExperienceRecordDeleteInput: TpJobseekerProfileExperienceRecordDeleteInput!): OkResponseMutationOutputDto!
+  tpJobseekerProfileExperienceRecordPatch(tpJobseekerProfileExperienceRecordPatchInput: TpJobseekerProfileExperienceRecordPatchInput!): OkResponseMutationOutputDto!
+  tpJobseekerProfileLanguageRecordCreate(tpJobseekerProfileLanguageRecordCreateInput: TpJobseekerProfileLanguageRecordCreateInput!): OkResponseMutationOutputDto!
+  tpJobseekerProfileLanguageRecordDelete(tpJobseekerProfileLanguageRecordDeleteInput: TpJobseekerProfileLanguageRecordDeleteInput!): OkResponseMutationOutputDto!
+  tpJobseekerProfileLanguageRecordPatch(tpJobseekerProfileLanguageRecordPatchInput: TpJobseekerProfileLanguageRecordPatchInput!): OkResponseMutationOutputDto!
+  tpJobseekerProfilePatch(tpJobseekerProfilePatchInput: TpJobseekerProfilePatchInput!): OkResponseMutationOutputDto!
+  tpJobseekerProfileSignUp(input: TpJobseekerProfileSignUpDto!): OkResponseMutationOutputDto!
+  userContactPatch(userContactPatchInput: UserContactPatchInput!): OkResponseMutationOutputDto!
+}
+
+enum OccupationCategory {
+  job
+  lookingForJob
+  other
+  student
+}
+
+type OkIdResponseMutationOutputDto {
+  id: String!
+  ok: Boolean!
+}
+
+type OkResponseMutationOutputDto {
+  ok: Boolean!
+}
+
+type Query {
+  conMenteeFavoritedMentors: [ConMenteeFavoritedMentor!]!
+  conMentoringSessions: [ConMentoringSession!]!
+  conMentorshipMatch(id: ID!): ConMentorshipMatch!
+  conMentorshipMatches(filter: FindMentorshipMatchesArgsFilter): [ConMentorshipMatch!]!
+  conProfile(id: ID, loopbackUserId: ID): ConProfile!
+  conProfilesAvailableMentors(filter: FindConProfilesArgsFilter!): [ConProfile!]!
+  myConProfile: ConProfile!
+  publicTpCompanyProfiles: [TpCompanyProfile!]!
+  tpCompanyFavoritedJobseekerProfiles: [TpCompanyFavoritedJobseekerProfile!]!
+  tpCompanyProfile(id: ID): TpCompanyProfile!
+  tpCompanyProfiles: [TpCompanyProfile!]!
+  tpCurrentUserDataGet: TpCurrentUserData!
+  tpJobListing(filter: FindOneTpJobListingArgsFilter!): TpJobListing!
+  tpJobListings(filter: FindAllVisibleTpJobListingsArgsFilter!): [TpJobListing!]!
+  tpJobseekerCv(id: ID): TpJobseekerCv!
+  tpJobseekerCvEducationRecords(tpJobseekerCvId: ID): [TpJobseekerCvEducationRecord!]!
+  tpJobseekerCvExperienceRecords(tpJobseekerCvId: ID): [TpJobseekerCvExperienceRecord!]!
+  tpJobseekerCvLanguageRecords(tpJobseekerCvId: ID): [TpJobseekerCvLanguageRecord!]!
+  tpJobseekerCvs: [TpJobseekerCv!]!
+  tpJobseekerDirectoryEntriesVisible(filter: FindAllVisibleTpJobseekerDirectoryEntriesFilter!): [TpJobseekerDirectoryEntry!]!
+  tpJobseekerDirectoryEntryVisible(filter: FindOneVisibleTpJobseekerDirectoryEntry!): TpJobseekerDirectoryEntry!
+  tpJobseekerFavoritedJobListings: [TpJobseekerFavoritedJobListing!]!
+  tpJobseekerProfile(id: ID): TpJobseekerProfile!
+  tpJobseekerProfileEducationRecords: [TpJobseekerProfileEducationRecord!]!
+  tpJobseekerProfileExperienceRecords: [TpJobseekerProfileExperienceRecord!]!
+  tpJobseekerProfileLanguageRecords: [TpJobseekerProfileLanguageRecord!]!
+}
+
+enum RediCourse {
+  BERLIN_ALUMNI
+  BERLIN_CODING_FUNDAMENTALS
+  BERLIN_CYBERSECURITY
+  BERLIN_DATA_ANALYTICS
+  BERLIN_DATA_CIRCLE
+  BERLIN_DIGITAL_LITERACY_PROGRAM
+  BERLIN_HTML_CSS
+  BERLIN_INTRO_TO_COMPUTER_SCIENCE
+  BERLIN_JAVASCRIPT
+  BERLIN_JAVA_CIRCLE
+  BERLIN_PROGRAMMING_WITH_JAVA
+  BERLIN_PYTHON_FOUNDATION
+  BERLIN_REACT
+  BERLIN_SALESFORCE_FUNDAMENTALS
+  BERLIN_UX_UI_BASICS
+  BERLIN_UX_UI_INTERMEDIATE
+  HAMBURG_ALUMNI
+  HAMBURG_HTML_CSS
+  HAMBURG_INTERNET_OF_THINGS
+  HAMBURG_INTRO_TO_CS
+  HAMBURG_UX_UI_DESIGN_BASIS
+  MUNICH_ALUMNI
+  MUNICH_BACK_END_DEVELOPMENT
+  MUNICH_DATA_ANALYTICS
+  MUNICH_DIGITAL_LITERACY_PROGRAM
+  MUNICH_FRONT_END_DEVELOPMENT_HTML_CSS
+  MUNICH_FRONT_END_DEVELOPMENT_JAVASCRIPT
+  MUNICH_INTRODUCTION_TO_COMPUTER_SCIENCE_HYBRID
+  MUNICH_INTRODUCTION_TO_COMPUTER_SCIENCE_ONLINE
+  MUNICH_INTRODUCTION_TO_COMPUTER_SCIENCE_UKR
+  MUNICH_PYTHON_INTERMEDIATE_HYBRID
+  MUNICH_PYTHON_INTERMEDIATE_ONLINE
+  MUNICH_UX_UI_DESIGN
+  NRW_ALUMNI
+  NRW_CLOUD_COMPUTING
+  NRW_DATA_ANALYTICS
+  NRW_HTML_AND_CSS
+  NRW_INFRASTRUCTURE_BASICS
+  NRW_INTERNET_OF_THINGS
+  NRW_INTRODUCTION_TO_PYTHON
+  NRW_JAVASCRIPT
+  NRW_MACHINE_LEARNING
+  NRW_REACT
+  NRW_UX_UI_DESIGN_BASICS
+  NRW_UX_UI_DESIGN_INTERMEDIATE
+}
+
+enum RediLocation {
+  BERLIN
+  CYBERSPACE
+  HAMBURG
+  MUNICH
+  NRW
+}
+
+enum TpAvailabilityOption {
+  date
+  immediately
+  oneMonthNotice
+  threeMonthNotice
+  twoMonthNotice
+}
+
+type TpCompanyFavoritedJobseekerProfile {
+  createdAt: DateTime!
+  favoritedTpJobseekerProfileId: ID!
+  id: ID!
+  tpCompanyProfileId: ID!
+  updatedAt: DateTime!
+}
+
+input TpCompanyFavoritedJobseekerProfileCreateMutationInputDto {
+  tpJobseekerProfileId: String!
+}
+
+type TpCompanyFavoritedJobseekerProfileCreateMutationOutputDto {
+  ok: Boolean!
+}
+
+input TpCompanyFavoritedJobseekerProfileDeleteMutationInputDto {
+  tpJobseekerProfileId: String!
+}
+
+type TpCompanyFavoritedJobseekerProfileDeleteMutationOutputDto {
+  ok: Boolean!
+}
+
+type TpCompanyProfile {
+  about: String
+  companyName: String!
+  companyRepresentatives: [UserContact!]!
+  createdAt: DateTime!
+  id: ID!
+  industry: String
+  isJobFair2023Participant: Boolean!
+  isProfileVisibleToJobseekers: Boolean!
+  linkedInUrl: String
+  location: String
+  profileAvatarImageS3Key: String
+  state: CompanyTalentPoolState!
+  tagline: String
+  telephoneNumber: String
+  updatedAt: DateTime!
+  website: String
+}
+
+input TpCompanyProfilePatchInput {
+  about: String
+  companyName: String
+  id: ID!
+  industry: String
+  isJobFair2023Participant: Boolean
+  isProfileVisibleToJobseekers: Boolean
+  linkedInUrl: String
+  location: String
+  profileAvatarImageS3Key: String
+  state: CompanyTalentPoolState
+  tagline: String
+  telephoneNumber: String
+  website: String
+}
+
+input TpCompanyProfileSignUpInputDto {
+  companyIdOrName: String!
+  firstName: String!
+  firstPointOfContact: FirstPointOfTpContactOption!
+  firstPointOfContactOther: String
+  lastName: String!
+  operationType: TpCompanyProfileSignUpOperationType!
+}
+
+type TpCompanyProfileSignUpInputOutputDto {
+  ok: Boolean!
+}
+
+enum TpCompanyProfileSignUpOperationType {
+  EXISTING_COMPANY
+  NEW_COMPANY
+}
+
+type TpCompanyRepresentativeRelationship {
+  createdAt: DateTime!
+  id: ID!
+  status: TpCompanyRepresentativeRelationshipStatus!
+  tpCompanyProfileId: String!
+  updatedAt: DateTime!
+  userId: String!
+}
+
+enum TpCompanyRepresentativeRelationshipStatus {
+  APPROVED
+  DEACTIVATED
+  PENDING
+  REJECTED
+}
+
+type TpCurrentUserData {
+  companyRepresentativeRelationship: TpCompanyRepresentativeRelationship
+  jobListings: [TpJobListing!]
+  representedCompany: TpCompanyProfile
+  tpJobseekerDirectoryEntry: TpJobseekerDirectoryEntry
+  userContact: UserContact!
+}
+
+enum TpDesiredPosition {
+  administrativeAssistant
+  agileScrumCoach
+  azureSpecialist
+  backendDeveloper
+  blockchainDeveloper
+  businessAnalyst
+  cloudEngineer
+  cloudSpecialist
+  dataAnalyst
+  dataScientist
+  devOpsSpecialist
+  digitalMarketer
+  embeddedSystemsEngineer
+  frontendDeveloper
+  fullstackDeveloper
+  hardwareDeveloper
+  iotDeveloper
+  itAdministrator
+  itSpecialist
+  itSupportTechnician
+  javaDeveloper
+  linuxSystemAdministrator
+  marketingAssistant
+  mobileDeveloperAndroid
+  mobileDeveloperIos
+  nodeJsDeveloper
+  operationsManager
+  productDesigner
+  productManager
+  projectAssistant
+  projectManager
+  pythonDeveloper
+  qaEngineer
+  reactDeveloper
+  requirementsEngineer
+  salesManager
+  salesforceAdministrator
+  securityAdministrator
+  seoManager
+  systemEngineer
+  technicalArchitect
+  uiDesigner
+  uiDeveloper
+  uiUxDesigner
+  usabilityengineer
+  userResearcher
+  uxDesigner
+}
+
+enum TpEducationCertificationType {
+  confirmationOfAttendance
+  other
+  professionalCertification
+  rediSchoolCourse
+  universityDegreeDiploma
+}
+
+enum TpEmploymentType {
+  Internship
+  apprenticeshipAusbildung
+  contract
+  dualStudyBachelor
+  dualStudyMaster
+  freelance
+  fullTime
+  partTime
+  traineeship
+  werkstudium
+}
+
+type TpJobListing {
+  companyName: String!
+  companyProfile: TpCompanyProfile!
+  companyProfileId: ID!
+  createdAt: DateTime!
+  employmentType: TpEmploymentType
+  federalState: FederalState
+  id: ID!
+  idealTechnicalSkills: [TpTechnicalSkill!]
+  isRemotePossible: Boolean
+  languageRequirements: String
+  location: String
+  profileAvatarImageS3Key: String
+  relatesToPositions: [TpDesiredPosition!]
+  salaryRange: String
+  summary: String
+  title: String
+  updatedAt: DateTime!
+}
+
+input TpJobListingCreateInput {
+  employmentType: TpEmploymentType
+  federalState: FederalState
+  idealTechnicalSkills: [TpTechnicalSkill!]
+  isRemotePossible: Boolean
+  languageRequirements: String
+  location: String
+  relatesToPositions: [TpDesiredPosition!]
+  salaryRange: String
+  summary: String
+  title: String
+}
+
+input TpJobListingDeleteInput {
+  id: ID!
+}
+
+input TpJobListingPatchInput {
+  employmentType: TpEmploymentType
+  federalState: FederalState
+  id: ID!
+  idealTechnicalSkills: [TpTechnicalSkill!]
+  isRemotePossible: Boolean
+  languageRequirements: String
+  location: String
+  relatesToPositions: [TpDesiredPosition!]
+  salaryRange: String
+  summary: String
+  title: String
+}
+
+type TpJobseekerCv {
+  aboutYourself: String
+  availability: TpAvailabilityOption
+  behanceUrl: String
+  createdAt: DateTime!
+  cvName: String!
+  desiredEmploymentType: [TpEmploymentType!]
+  desiredPositions: [TpDesiredPosition!]
+  dribbbleUrl: String
+  email: String
+  firstName: String
+  githubUrl: String
+  id: ID!
+  ifAvailabilityIsDate_date: DateTime
+  immigrationStatus: ImmigrationStatus
+  lastName: String
+  linkedInUrl: String
+  location: String
+  personalWebsite: String
+  postalMailingAddress: String
+  profileAvatarImageS3Key: String
+  stackOverflowUrl: String
+  telephoneNumber: String
+  topSkills: [TpTechnicalSkill!]
+  twitterUrl: String
+  updatedAt: DateTime!
+  userId: ID!
+  willingToRelocate: Boolean!
+}
+
+input TpJobseekerCvCreateFromCurrentUserJobseekerProfileInput {
+  cvName: String
+}
+
+input TpJobseekerCvCreateInput {
+  aboutYourself: String
+  availability: TpAvailabilityOption
+  behanceUrl: String
+  cvName: String
+  desiredEmploymentType: [TpEmploymentType!]
+  desiredPositions: [TpDesiredPosition!]
+  dribbbleUrl: String
+  email: String
+  firstName: String
+  githubUrl: String
+  ifAvailabilityIsDate_date: DateTime
+  immigrationStatus: ImmigrationStatus
+  lastName: String
+  linkedInUrl: String
+  location: String
+  personalWebsite: String
+  postalMailingAddress: String
+  profileAvatarImageS3Key: String
+  stackOverflowUrl: String
+  telephoneNumber: String
+  topSkills: [TpTechnicalSkill!]
+  twitterUrl: String
+  willingToRelocate: Boolean
+}
+
+input TpJobseekerCvDeleteInput {
+  id: ID!
+}
+
+type TpJobseekerCvEducationRecord {
+  certificationType: TpEducationCertificationType
+  createdAt: DateTime!
+  current: Boolean
+  description: String
+  endDateMonth: Float
+  endDateYear: Float
+  id: ID!
+  institutionCity: String
+  institutionCountry: String
+  institutionName: String
+  sortIndex: Int!
+  startDateMonth: Float
+  startDateYear: Float
+  title: String
+  tpJobseekerCvId: ID!
+  updatedAt: DateTime!
+}
+
+input TpJobseekerCvEducationRecordCreateInput {
+  certificationType: TpEducationCertificationType
+  current: Boolean
+  description: String
+  endDateMonth: Float
+  endDateYear: Float
+  institutionCity: String
+  institutionCountry: String
+  institutionName: String
+  sortIndex: Int
+  startDateMonth: Float
+  startDateYear: Float
+  title: String
+  tpJobseekerCvId: ID!
+}
+
+input TpJobseekerCvEducationRecordDeleteInput {
+  id: ID!
+}
+
+input TpJobseekerCvEducationRecordPatchInput {
+  certificationType: TpEducationCertificationType
+  current: Boolean
+  description: String
+  endDateMonth: Float
+  endDateYear: Float
+  id: ID!
+  institutionCity: String
+  institutionCountry: String
+  institutionName: String
+  sortIndex: Int
+  startDateMonth: Float
+  startDateYear: Float
+  title: String
+}
+
+type TpJobseekerCvExperienceRecord {
+  city: String
+  company: String
+  country: String
+  createdAt: DateTime!
+  current: Boolean
+  description: String
+  endDateMonth: Float
+  endDateYear: Float
+  id: ID!
+  sortIndex: Int!
+  startDateMonth: Float
+  startDateYear: Float
+  title: String
+  tpJobseekerCvId: ID!
+  updatedAt: DateTime!
+}
+
+input TpJobseekerCvExperienceRecordCreateInput {
+  city: String
+  company: String
+  country: String
+  current: Boolean
+  description: String
+  endDateMonth: Float
+  endDateYear: Float
+  sortIndex: Int
+  startDateMonth: Float
+  startDateYear: Float
+  title: String
+  tpJobseekerCvId: ID!
+}
+
+input TpJobseekerCvExperienceRecordDeleteInput {
+  id: ID!
+}
+
+input TpJobseekerCvExperienceRecordPatchInput {
+  city: String
+  company: String
+  country: String
+  current: Boolean
+  description: String
+  endDateMonth: Float
+  endDateYear: Float
+  id: ID!
+  sortIndex: Int
+  startDateMonth: Float
+  startDateYear: Float
+  title: String
+}
+
+type TpJobseekerCvLanguageRecord {
+  id: ID!
+  language: Language!
+  proficiencyLevelId: LanguageProficiencyLevel!
+  tpJobseekerCvId: ID!
+}
+
+input TpJobseekerCvLanguageRecordCreateInput {
+  language: Language
+  proficiencyLevelId: LanguageProficiencyLevel
+  tpJobseekerCvId: ID!
+}
+
+input TpJobseekerCvLanguageRecordDeleteInput {
+  id: ID!
+}
+
+input TpJobseekerCvLanguageRecordPatchInput {
+  id: ID!
+  language: Language
+  proficiencyLevelId: LanguageProficiencyLevel
+}
+
+input TpJobseekerCvPatchInput {
+  aboutYourself: String
+  cvName: String
+  desiredPositions: [TpDesiredPosition!]
+  email: String
+  firstName: String
+  id: ID!
+  lastName: String
+  postalMailingAddress: String
+  telephoneNumber: String
+  topSkills: [TpTechnicalSkill!]
+}
+
+type TpJobseekerDirectoryEntry {
+  aboutYourself: String
+  availability: TpAvailabilityOption
+  behanceUrl: String
+  createdAt: DateTime!
+  currentlyEnrolledInCourse: RediCourse
+  desiredEmploymentType: [TpEmploymentType!]
+  desiredPositions: [TpDesiredPosition!]
+  dribbbleUrl: String
+  education: [TpJobseekerProfileEducationRecord!]
+  email: String!
+  experience: [TpJobseekerProfileExperienceRecord!]
+  federalState: FederalState
+  firstName: String!
+  fullName: String!
+  genderPronouns: String
+  githubUrl: String
+  id: ID!
+  ifAvailabilityIsDate_date: DateTime
+  immigrationStatus: ImmigrationStatus
+  isHired: Boolean!
+  isJobFair2022Participant: Boolean!
+  isJobFair2023Participant: Boolean!
+  isProfileVisibleToCompanies: Boolean!
+  lastName: String!
+  linkedInUrl: String
+  location: String
+  loopbackUserId: String!
+  personalWebsite: String
+  postalMailingAddress: String
+  profileAvatarImageS3Key: String
+  rediLocation: String
+  stackOverflowUrl: String
+  state: JobseekerProfileStatus!
+  telephoneNumber: String
+  topSkills: [TpTechnicalSkill!]
+  twitterUrl: String
+  updatedAt: DateTime!
+  userId: String!
+  willingToRelocate: Boolean!
+  workingLanguages: [TpJobseekerProfileLanguageRecord!]
+}
+
+type TpJobseekerFavoritedJobListing {
+  createdAt: DateTime!
+  id: ID!
+  tpJobListingId: ID!
+  tpJobseekerProfileId: ID!
+  updatedAt: DateTime!
+}
+
+input TpJobseekerFavoritedJobListingCreateMutationInputDto {
+  tpJoblistingId: String!
+}
+
+type TpJobseekerFavoritedJobListingCreateMutationOutputDto {
+  ok: Boolean!
+}
+
+input TpJobseekerFavoritedJobListingDeleteMutationInputDto {
+  tpJobListingId: String!
+}
+
+type TpJobseekerFavoritedJobListingDeleteMutationOutputDto {
+  ok: Boolean!
+}
+
+type TpJobseekerProfile {
+  aboutYourself: String
+  availability: TpAvailabilityOption
+  createdAt: DateTime!
+  currentlyEnrolledInCourse: RediCourse
+  desiredEmploymentType: [TpEmploymentType!]
+  desiredPositions: [TpDesiredPosition!]
+  federalState: FederalState
+  id: ID!
+  ifAvailabilityIsDate_date: DateTime
+  immigrationStatus: ImmigrationStatus
+  isHired: Boolean!
+  isJobFair2022Participant: Boolean!
+  isJobFair2023Participant: Boolean!
+  isProfileVisibleToCompanies: Boolean!
+  location: String
+  profileAvatarImageS3Key: String
+  rediLocation: RediLocation
+  state: JobseekerProfileStatus!
+  topSkills: [TpTechnicalSkill!]
+  updatedAt: DateTime!
+  userId: ID!
+  willingToRelocate: Boolean!
+}
+
+type TpJobseekerProfileEducationRecord {
+  certificationType: TpEducationCertificationType
+  createdAt: DateTime!
+  current: Boolean
+  description: String
+  endDateMonth: Float
+  endDateYear: Float
+  id: ID!
+  institutionCity: String
+  institutionCountry: String
+  institutionName: String
+  sortIndex: Int!
+  startDateMonth: Float
+  startDateYear: Float
+  title: String
+  tpJobseekerProfileId: ID!
+  updatedAt: DateTime!
+  userId: ID!
+}
+
+input TpJobseekerProfileEducationRecordCreateInput {
+  certificationType: TpEducationCertificationType
+  current: Boolean
+  description: String
+  endDateMonth: Float
+  endDateYear: Float
+  institutionCity: String
+  institutionCountry: String
+  institutionName: String
+  sortIndex: Int
+  startDateMonth: Float
+  startDateYear: Float
+  title: String
+}
+
+input TpJobseekerProfileEducationRecordDeleteInput {
+  id: ID!
+}
+
+input TpJobseekerProfileEducationRecordPatchInput {
+  certificationType: TpEducationCertificationType
+  current: Boolean
+  description: String
+  endDateMonth: Float
+  endDateYear: Float
+  id: ID!
+  institutionCity: String
+  institutionCountry: String
+  institutionName: String
+  sortIndex: Int
+  startDateMonth: Float
+  startDateYear: Float
+  title: String
+}
+
+type TpJobseekerProfileExperienceRecord {
+  city: String
+  company: String
+  country: String
+  createdAt: DateTime!
+  current: Boolean
+  description: String
+  endDateMonth: Float
+  endDateYear: Float
+  id: ID!
+  sortIndex: Int!
+  startDateMonth: Float
+  startDateYear: Float
+  title: String
+  tpJobseekerProfileId: ID!
+  updatedAt: DateTime!
+  userId: ID!
+}
+
+input TpJobseekerProfileExperienceRecordCreateInput {
+  city: String
+  company: String
+  country: String
+  current: Boolean
+  description: String
+  endDateMonth: Float
+  endDateYear: Float
+  sortIndex: Int
+  startDateMonth: Float
+  startDateYear: Float
+  title: String
+}
+
+input TpJobseekerProfileExperienceRecordDeleteInput {
+  id: ID!
+}
+
+input TpJobseekerProfileExperienceRecordPatchInput {
+  city: String
+  company: String
+  country: String
+  current: Boolean
+  description: String
+  endDateMonth: Float
+  endDateYear: Float
+  id: ID!
+  sortIndex: Int
+  startDateMonth: Float
+  startDateYear: Float
+  title: String
+}
+
+type TpJobseekerProfileLanguageRecord {
+  id: ID!
+  language: Language!
+  proficiencyLevelId: LanguageProficiencyLevel!
+  userId: ID!
+}
+
+input TpJobseekerProfileLanguageRecordCreateInput {
+  language: Language
+  proficiencyLevelId: LanguageProficiencyLevel
+}
+
+input TpJobseekerProfileLanguageRecordDeleteInput {
+  id: ID!
+}
+
+input TpJobseekerProfileLanguageRecordPatchInput {
+  id: ID!
+  language: Language
+  proficiencyLevelId: LanguageProficiencyLevel
+}
+
+input TpJobseekerProfilePatchInput {
+  aboutYourself: String
+  availability: TpAvailabilityOption
+  currentlyEnrolledInCourse: RediCourse
+  desiredEmploymentType: [TpEmploymentType!]
+  desiredPositions: [TpDesiredPosition!]
+  federalState: FederalState
+  ifAvailabilityIsDate_date: DateTime
+  immigrationStatus: ImmigrationStatus
+  isHired: Boolean
+  isJobFair2022Participant: Boolean
+  isJobFair2023Participant: Boolean
+  isProfileVisibleToCompanies: Boolean
+  location: String
+  profileAvatarImageS3Key: String
+  rediLocation: RediLocation
+  state: JobseekerProfileStatus
+  topSkills: [TpTechnicalSkill!]
+  willingToRelocate: Boolean
+}
+
+input TpJobseekerProfileSignUpDto {
+  currentlyEnrolledInCourse: RediCourse!
+  firstName: String!
+  lastName: String!
+  rediLocation: RediLocation!
+}
+
+enum TpTechnicalSkill {
+  adobeCreativeSuite
+  adobePhotoshop
+  agileMethodology
+  applicationOperation
+  artificialIntellegence
+  aspNet
+  atlassianConfluence
+  atlassianJira
+  atlassianSuite
+  aws
+  balsamiqMockup
+  bpmn
+  c
+  cPlusPlus
+  cad
+  camunda
+  cloudApplications
+  cloudComputing
+  conceptDevelopment
+  crm
+  css
+  customerService
+  customerSupport
+  dataAnalysis
+  databaseDesign
+  designThinking
+  devOps
+  domainDrivenDesign
+  domainModelling
+  embeddedSystems
+  figma
+  git
+  googleCloudPlatform
+  graphicDesign
+  hardware
+  hpAlm
+  hpQualityCenter
+  html
+  illustrator
+  informationArchitecture
+  interactionDesign
+  invision
+  iot
+  itServiceManagement
+  itil
+  java
+  javaScript
+  kafka
+  kanban
+  leanPrinciples
+  linux
+  macOsServer
+  microsoftAzure
+  microsoftOffice
+  netFramework
+  networkAdministration
+  networkDesign
+  networkSecurity
+  nodeJs
+  operationsManagement
+  oracleDatabase
+  php
+  problemSolving
+  processModelling
+  processOptimization
+  productDevelopment
+  productManagement
+  programManagement
+  projectManagement
+  prototyping
+  python
+  qualitativeResearch
+  qualityAssurance
+  qualityManagement
+  quantitativeResearch
+  rProgrammingLanguage
+  reactJs
+  requirementsAnalysis
+  responsiveWebDesign
+  salesforce
+  sapProducts
+  scrum
+  sketch
+  sketching
+  softwareArchitecture
+  softwareDevelopmentLifecycle
+  sql
+  teamLeadership
+  technicalSupport
+  testing
+  troubleshooting
+  typography
+  uml
+  usabilityTesting
+  userCenteredDesign
+  userExperience
+  userStoryMapping
+  visualBasic
+  vmWare
+  webApplications
+  webDesign
+  webDevelopment
+  webServices
+  windowsServer
+  wireframes
+  xRay
+  xml
+  zephyr
+}
+
+input UpdateConProfileInput {
+  birthDate: DateTime
+  categories: [MentoringTopic!]
+  expectations: String
+  firstName: String
+  gender: Gender
+  githubProfileUrl: String
+  id: ID!
+  languages: [Language!]
+  lastName: String
+  linkedInProfileUrl: String
+  menteeCountCapacity: Int
+  mentee_currentlyEnrolledInCourse: RediCourse
+  mentee_highestEducationLevel: EducationLevel
+  mentee_occupationCategoryId: OccupationCategory
+  mentee_occupationJob_placeOfEmployment: String
+  mentee_occupationJob_position: String
+  mentee_occupationLookingForJob_what: String
+  mentee_occupationOther_description: String
+  mentee_occupationStudent_studyName: String
+  mentee_occupationStudent_studyPlace: String
+  mentor_occupation: String
+  mentor_workPlace: String
+  optOutOfMenteesFromOtherRediLocation: Boolean
+  personalDescription: String
+  profileAvatarImageS3Key: String
+  slackUsername: String
+  telephoneNumber: String
+}
+
+type UserContact {
+  behanceUrl: String
+  birthDate: DateTime
+  createdAt: DateTime!
+  dribbbleUrl: String
+  email: String!
+  firstName: String!
+  gender: Gender
+  genderPronouns: String
+  githubProfileUrl: String
+  howDidHearAboutRediKey: FirstPointOfTpContactOption
+  howDidHearAboutRediOtherText: String
+  id: ID!
+  lastName: String!
+  linkedInProfileUrl: String
+  loopbackUserId: String!
+  personalDescription: String
+  personalWebsite: String
+  postalMailingAddress: String
+  slackUsername: String
+  stackOverflowUrl: String
+  telephoneNumber: String
+  twitterUrl: String
+  updatedAt: DateTime!
+}
+
+input UserContactPatchInput {
+  behanceUrl: String
+  birthDate: DateTime
+  dribbbleUrl: String
+  firstName: String
+  gender: Gender
+  genderPronouns: String
+  githubProfileUrl: String
+  howDidHearAboutRediKey: FirstPointOfTpContactOption
+  howDidHearAboutRediOtherText: String
+  lastName: String
+  linkedInProfileUrl: String
+  personalDescription: String
+  personalWebsite: String
+  postalMailingAddress: String
+  slackUsername: String
+  stackOverflowUrl: String
+  telephoneNumber: String
+  twitterUrl: String
+}
+
+enum UserType {
+  MENTEE
+  MENTOR
+}

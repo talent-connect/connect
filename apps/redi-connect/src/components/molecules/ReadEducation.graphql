@@ -1,0 +1,3 @@
+fragment ReadEducationProfileProp on ConProfile {
+  mentee_highestEducationLevel
+}

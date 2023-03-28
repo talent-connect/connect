@@ -1,6 +1,7 @@
 export type RediLocation =
-  | 'berlin'
-  | 'hamburg'
-  | 'munich'
-  | 'nrw'
+  | 'BERLIN'
+  | 'HAMBURG'
+  | 'MUNICH'
+  | 'NRW'
+  | 'CYBERSPACE'
   | 'location-picker'

@@ -1,0 +1,9 @@
+mutation tpJobseekerProfileEducationRecordPatch(
+  $input: TpJobseekerProfileEducationRecordPatchInput!
+) {
+  tpJobseekerProfileEducationRecordPatch(
+    tpJobseekerProfileEducationRecordPatchInput: $input
+  ) {
+    ok
+  }
+}

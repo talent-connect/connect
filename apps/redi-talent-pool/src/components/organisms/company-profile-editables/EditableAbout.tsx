@@ -1,27 +1,30 @@
 import {
+  useMyTpDataQuery,
+  usePatchTpCompanyProfileMutation,
+} from '@talent-connect/data-access'
+import {
   Button,
   Caption,
   FormTextArea,
 } from '@talent-connect/shared-atomic-design-components'
-import { TpCompanyProfile } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
-import React, { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Content, Element } from 'react-bulma-components'
 import ReactMarkdown from 'react-markdown'
-import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
-import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
+import { useQueryClient } from 'react-query'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
+import { EditableAboutProfilePropFragment } from './EditableAbout.generated'
 
 interface Props {
-  profile: Partial<TpCompanyProfile>
+  companyProfile: EditableAboutProfilePropFragment
   disableEditing?: boolean
 }
-export function EditableAbout({ profile, disableEditing }: Props) {
+export function EditableAbout({ companyProfile, disableEditing }: Props) {
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
-  const isEmpty = EditableAbout.isSectionEmpty(profile)
+  const isEmpty = EditableAbout.isSectionEmpty(companyProfile)
 
   return (
     <Editable
@@ -42,7 +45,7 @@ export function EditableAbout({ profile, disableEditing }: Props) {
                   ),
                 }}
               >
-                {profile?.about?.replace(/\n/g, `\n\n`)}
+                {companyProfile?.about?.replace(/\n/g, `\n\n`)}
               </ReactMarkdown>
             ) : (
               <EmptySectionPlaceholder
@@ -67,10 +70,12 @@ export function EditableAbout({ profile, disableEditing }: Props) {
   )
 }
 
-EditableAbout.isSectionFilled = (profile: Partial<TpCompanyProfile>) =>
-  !!profile?.about
-EditableAbout.isSectionEmpty = (profile: Partial<TpCompanyProfile>) =>
-  !EditableAbout.isSectionFilled(profile)
+EditableAbout.isSectionFilled = (
+  profile: Partial<EditableAboutProfilePropFragment>
+) => !!profile?.about
+EditableAbout.isSectionEmpty = (
+  profile: Partial<EditableAboutProfilePropFragment>
+) => !EditableAbout.isSectionFilled(profile)
 
 function ModalForm({
   setIsEditing,
@@ -79,25 +84,27 @@ function ModalForm({
   setIsEditing: (boolean) => void
   setIsFormDirty: (boolean) => void
 }) {
-  const { data: profile } = useTpCompanyProfileQuery()
-  const mutation = useTpCompanyProfileUpdateMutation()
-  const initialValues: Partial<TpCompanyProfile> = useMemo(
+  const queryClient = useQueryClient()
+  const myData = useMyTpDataQuery()
+  const { representedCompany: companyProfile } =
+    myData?.data?.tpCurrentUserDataGet
+
+  const mutation = usePatchTpCompanyProfileMutation()
+  const initialValues: Partial<EditableAboutProfilePropFragment> = useMemo(
     () => ({
-      about: profile?.about ?? '',
+      about: companyProfile?.about ?? '',
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )
-  const onSubmit = (values: Partial<TpCompanyProfile>) => {
+  const onSubmit = async (
+    values: Partial<EditableAboutProfilePropFragment>
+  ) => {
     formik.setSubmitting(true)
-    mutation.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
-      },
-    })
+    await mutation.mutateAsync({ input: { id: companyProfile.id, ...values } })
+    formik.setSubmitting(false)
+    setIsEditing(false)
+    queryClient.invalidateQueries()
   }
   const formik = useFormik({
     initialValues,

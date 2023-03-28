@@ -1,15 +1,15 @@
 import {
+  useLoadMyProfileQuery,
+  usePatchMyProfileMutation,
+} from '@talent-connect/data-access'
+import {
   Editable,
   FormInput,
 } from '@talent-connect/shared-atomic-design-components'
-import { RedProfile } from '@talent-connect/shared-types'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
-
-import * as Yup from 'yup'
-import { profileSaveStart } from '../../redux/user/actions'
-
 import { FormikValues, useFormik } from 'formik'
+import { useQueryClient } from 'react-query'
+import * as Yup from 'yup'
+import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 import { ReadSocialMedia } from '../molecules'
 
 export interface SocialMediaFormValues {
@@ -19,18 +19,39 @@ export interface SocialMediaFormValues {
 }
 
 const validationSchema = Yup.object({
-  linkedInProfileUrl: Yup.string().max(255).url().label('LinkedIn Profile'),
-  githubProfileUrl: Yup.string().max(255).url().label('Github Profile'),
-  slackUsername: Yup.string().max(255).label('Slack username'),
+  linkedInProfileUrl: Yup.string()
+    .nullable()
+    .max(255)
+    .url()
+    .label('LinkedIn Profile'),
+  githubProfileUrl: Yup.string()
+    .nullable()
+    .max(255)
+    .url()
+    .label('Github Profile'),
+  slackUsername: Yup.string().nullable().max(255).label('Slack username'),
 })
 
 // props: FormikProps<AboutFormValues>
-const EditableSocialMedia = ({ profile, profileSaveStart }: any) => {
-  const { id, linkedInProfileUrl, githubProfileUrl, slackUsername } = profile
+function EditableSocialMedia() {
+  const loopbackUserId = getAccessTokenFromLocalStorage().userId
+  const queryClient = useQueryClient()
+  const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
+  const patchMyProfileMutation = usePatchMyProfileMutation()
+
+  const profile = myProfileQuery.data?.conProfile
+
+  const linkedInProfileUrl = profile?.linkedInProfileUrl
+  const githubProfileUrl = profile?.githubProfileUrl
+  const slackUsername = profile?.slackUsername
 
   const submitForm = async (values: FormikValues) => {
-    const profileSocialMedia = values as Partial<RedProfile>
-    profileSaveStart({ ...profileSocialMedia, id })
+    const mutationResult = await patchMyProfileMutation.mutateAsync({
+      input: { id: profile.id, ...values },
+    })
+    queryClient.setQueryData(useLoadMyProfileQuery.getKey({ loopbackUserId }), {
+      conProfile: mutationResult.patchConProfile,
+    })
   }
 
   const initialValues: SocialMediaFormValues = {
@@ -45,6 +66,8 @@ const EditableSocialMedia = ({ profile, profileSaveStart }: any) => {
     validationSchema,
     onSubmit: submitForm,
   })
+
+  if (!myProfileQuery.isSuccess) return null
 
   return (
     <Editable
@@ -76,13 +99,4 @@ const EditableSocialMedia = ({ profile, profileSaveStart }: any) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile,
-})
-
-const mapDispatchToProps = (dispatch: any) => ({
-  profileSaveStart: (profile: Partial<RedProfile>) =>
-    dispatch(profileSaveStart(profile)),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(EditableSocialMedia)
+export default EditableSocialMedia

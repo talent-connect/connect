@@ -1,0 +1,6 @@
+fragment EditableDetailsCompanyProfileProp on TpCompanyProfile {
+  website
+  industry
+  website
+  linkedInUrl
+}

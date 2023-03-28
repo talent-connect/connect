@@ -1,36 +1,35 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import { Columns, Content, Heading } from 'react-bulma-components'
-import moment from 'moment'
 import classnames from 'classnames'
+import moment from 'moment'
+import { Columns, Content, Heading } from 'react-bulma-components'
 
-import { RootState } from '../../../../redux/types'
-import { getHasReachedMenteeLimit } from '../../../../redux/user/selectors'
-import { RedMatch, RedProfile } from '@talent-connect/shared-types'
 import {
-  REDI_LOCATION_NAMES,
-  MENTORSHIP_MATCH_STATUS_LABELS,
-} from '@talent-connect/shared-config'
+  MentorshipMatchStatus,
+  useLoadMyProfileQuery,
+} from '@talent-connect/data-access'
 import { Icon } from '@talent-connect/shared-atomic-design-components'
 import {
+  MENTORSHIP_MATCH_STATUS_LABELS,
+  REDI_LOCATION_NAMES,
+} from '@talent-connect/shared-config'
+import {
   Avatar,
-  ConfirmMentorship,
   DeclineMentorshipButton,
 } from '../../../../components/organisms'
-import { useApplicationCard } from './useApplicationCard'
+import { ApplicationCardApplicationPropFragment } from '../../../../components/organisms/ApplicationCard.generated'
+import { getAccessTokenFromLocalStorage } from '../../../../services/auth/auth'
 import './MobileApplicationCard.scss'
+import { useApplicationCard } from './useApplicationCard'
 
 interface Props {
-  application: RedMatch & { createdAt?: string }
-  hasReachedMenteeLimit: boolean
-  currentUser?: RedProfile
+  application: ApplicationCardApplicationPropFragment
 }
 
-const MobileApplicationCard = ({
-  application,
-  hasReachedMenteeLimit,
-  currentUser,
-}: Props) => {
+function MobileApplicationCard({ application }: Props) {
+  const loopbackUserId = getAccessTokenFromLocalStorage().userId
+  const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
+
+  const currentUser = myProfileQuery.data.conProfile
+
   const {
     history,
     showDetails,
@@ -47,7 +46,7 @@ const MobileApplicationCard = ({
     <>
       <div
         className={
-          application.status !== 'applied'
+          application.status !== MentorshipMatchStatus.Applied
             ? 'mobile-application-card'
             : 'mobile-application-card-pending'
         }
@@ -69,9 +68,7 @@ const MobileApplicationCard = ({
                   )
                 }
               >
-                <p>
-                  {applicationUser.firstName} {applicationUser.lastName}
-                </p>
+                <p>{applicationUser.fullName}</p>
               </span>
             )}
             {applicationUser && (
@@ -86,7 +83,7 @@ const MobileApplicationCard = ({
           >
             <p
               className={
-                application.status === 'applied'
+                application.status === MentorshipMatchStatus.Applied
                   ? 'application-card-pending__status'
                   : null
               }
@@ -137,16 +134,11 @@ const MobileApplicationCard = ({
             <Content>{application.expectationText}</Content>
           </>
         )}
-        {currentUserIsMentor && application.status === 'applied' ? (
+        {currentUserIsMentor &&
+        application.status === MentorshipMatchStatus.Applied ? (
           <div className="action-buttons">
             <div>
               <DeclineMentorshipButton match={application} />
-            </div>
-            <div>
-              <ConfirmMentorship
-                match={application}
-                hasReachedMenteeLimit={hasReachedMenteeLimit}
-              />
             </div>
           </div>
         ) : null}
@@ -155,9 +147,4 @@ const MobileApplicationCard = ({
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  currentUser: state.user.profile,
-  hasReachedMenteeLimit: getHasReachedMenteeLimit(state.user),
-})
-
-export default connect(mapStateToProps)(MobileApplicationCard)
+export default MobileApplicationCard

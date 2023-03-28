@@ -1,0 +1,56 @@
+<mjml>
+  <mj-include path="./head.mjml" />
+  <mj-body mj-class="body">
+    <mj-wrapper background-color="#F0F0F0">
+      <mj-section />
+      <mj-section css-class="section">
+        <mj-column>
+          <mj-text mj-class="headline"
+            >How’s the mentorship with ${menteeFirstName} going?</mj-text
+          >
+          <mj-divider mj-class="divider-top" css-class="divider" />
+
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >Hi ${mentorFirstName},</mj-text
+          >
+          <mj-text mj-class="text paragraph" 
+            >We are happy to see that you and ${menteeFirstName} had a
+            mentorship match on ${matchMadeActiveOn}!</mj-text
+          >
+          <mj-text mj-class="text paragraph" 
+            >Until now, we haven’t seen you log any mentoring sessions on the
+            platform. We wanted to check in whether you and ${menteeFirstName}
+            have started your mentorship already.</mj-text
+          >
+          <mj-text mj-class="text paragraph" 
+            >If you have already met, please log the mentoring sessions that
+            you’ve had. If you have not yet met for the first time, please
+            remember to log the sessions once you start meeting. You will
+            receive a <strong>certificate of completion</strong> when finishing
+            this mentorship but only if you logged
+            <strong>at least four sessions</strong> with your mentee in ReDI
+            Connect.</mj-text
+          >
+          <mj-text mj-class="text paragraph" 
+            >You can log your sessions on the ‘My Mentorship’ page on your ReDI
+            Connect account.</mj-text
+          >
+          <mj-text mj-class="text paragraph" 
+            ><a href="${logMentoringSessionUrl}" class="text-link"
+              >Log mentoring sessions here</a
+            ></mj-text
+          >
+          <mj-text mj-class="text paragraph" 
+            >We are so happy to have you as a mentor and please reach out if you
+            have any questions.</mj-text
+          >
+
+          <mj-text mj-class="text">All the best,</mj-text>
+          <mj-text mj-class="text">Your ReDI Career Support Team</mj-text>
+        </mj-column>
+      </mj-section>
+      <mj-include path="./footer.career.support.team.mjml" />
+      <mj-section />
+    </mj-wrapper>
+  </mj-body>
+</mjml>

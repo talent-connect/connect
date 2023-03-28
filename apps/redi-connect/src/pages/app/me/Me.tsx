@@ -1,55 +1,50 @@
-import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
-import { RootState } from '../../../redux/types'
-import { profileFetchStart } from '../../../redux/user/actions'
+import { Heading } from '@talent-connect/shared-atomic-design-components'
 import { Columns, Content, Element } from 'react-bulma-components'
-import {
-  Heading,
-  Loader,
-} from '@talent-connect/shared-atomic-design-components'
 import {
   Avatar,
   EditableAbout,
   EditableContactDetails,
   EditableEducation,
   EditableLanguages,
+  EditableMenteeCount,
   EditableMentoringTopics,
   EditableOccupation,
   EditablePersonalDetail,
   EditableRediClass,
   EditableSocialMedia,
-  EditableMenteeCount,
 } from '../../../components/organisms'
 
 import { LoggedIn } from '../../../components/templates'
+import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
+
+import { useLoadMyProfileQuery, UserType } from '@talent-connect/data-access'
 // CHECK OUT THE LOADER
 
-const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
-  useEffect(() => {
-    profileFetchStart()
-  }, [profileFetchStart])
+function Me() {
+  const myProfileResult = useLoadMyProfileQuery(
+    {
+      loopbackUserId: getAccessTokenFromLocalStorage().userId,
+    },
+    { onSuccess: () => console.log('Me loaded it') }
+  )
 
-  if (loading) return <Loader loading={true} />
+  // TODO: insert proper error handling here and elsewhere. We should cover cases where we
+  // get values usch as myProfileResult.isError. Perhaps we-ure the error boundary logic
+  // that Eric has been looking into.
 
-  const userIsMentee =
-    profile.userType === 'mentee' ||
-    profile.userType === 'public-sign-up-mentee-pending-review'
+  const conProfile = myProfileResult?.data?.conProfile
 
-  const userIsMentor =
-    profile.userType === 'mentor' ||
-    profile.userType === 'public-sign-up-mentor-pending-review'
+  const userIsMentee = conProfile?.userType === UserType.Mentee
+  const userIsMentor = conProfile?.userType === UserType.Mentor
 
   return (
     <LoggedIn>
-      {saveResult === 'error' && <>An error occurred, please try again.</>}
-      {saveResult === 'submitting' && <Loader loading={true} />}
-
       <Columns vCentered breakpoint="mobile" className="oneandhalf-bs">
         <Columns.Column size={3}>
           <Avatar.Editable />
         </Columns.Column>
         <Columns.Column size={8}>
-          <Heading>Hi, {profile.firstName}</Heading>
+          <Heading>Hi, {conProfile?.firstName}</Heading>
           <Content
             size="medium"
             renderAs="p"
@@ -78,7 +73,6 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
       <Element className="block-separator">
         <EditableMentoringTopics />
       </Element>
-
       {userIsMentor && (
         <Element className="block-separator">
           <Columns>
@@ -141,14 +135,4 @@ const Me = ({ loading, saveResult, profileFetchStart, profile }: any) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  saveResult: state.user.saveResult,
-  loading: state.user.loading,
-  profile: state.user.profile,
-})
-
-const mapDispatchToProps = (dispatch: any) => ({
-  profileFetchStart: () => dispatch(profileFetchStart()),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Me)
+export default Me

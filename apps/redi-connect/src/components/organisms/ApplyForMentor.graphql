@@ -1,0 +1,13 @@
+fragment ApplyForMentorMentorProp on ConProfile {
+  id
+  fullName
+  firstName
+}
+
+mutation applyForMentorship(
+  $input: ConMentorshipMatchesApplyForMentorshipInputDto!
+) {
+  conMentorshipMatchesApplyForMentorship(input: $input) {
+    ok
+  }
+}

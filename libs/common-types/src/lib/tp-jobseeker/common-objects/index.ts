@@ -1,0 +1,6 @@
+export * from './tp-jobseeker-profile-education-record.entity'
+export * from './tp-jobseeker-profile-education-record.entityprops'
+export * from './tp-jobseeker-profile-experience-record.entity'
+export * from './tp-jobseeker-profile-experience-record.entityprops'
+export * from './tp-jobseeker-profile-language-record.entity'
+export * from './tp-jobseeker-profile-language-record.entityprops'

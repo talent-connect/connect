@@ -1,8 +1,9 @@
-import Select, { components } from 'react-select'
-import { Form } from 'react-bulma-components'
-import { Icon } from '../atoms'
-import { get } from 'lodash'
 import { useFormik } from 'formik'
+import { get } from 'lodash'
+import { Form } from 'react-bulma-components'
+import Select, { components } from 'react-select'
+import CreatableSelect from 'react-select/creatable'
+import { Icon } from '../atoms'
 
 import { formSelectStyles } from './FormSelect.styles'
 
@@ -38,6 +39,9 @@ interface FormSelectProps {
   multiselect?: boolean
   disabled?: boolean
   closeMenuOnSelect?: boolean
+  creatable?: boolean
+  customOnCreate?: () => void
+  isLoading?: boolean
   formik: ReturnType<typeof useFormik>
 }
 
@@ -51,6 +55,9 @@ function FormSelect(props: FormSelectProps) {
     multiselect,
     disabled,
     closeMenuOnSelect,
+    creatable = false,
+    customOnCreate,
+    isLoading,
     formik: {
       values,
       setFieldTouched,
@@ -62,17 +69,33 @@ function FormSelect(props: FormSelectProps) {
     },
   } = props
 
+  const SelectComponent = creatable ? CreatableSelect : Select
+
   const handleOnChangeDefault = (option: any = []) => {
-    setFieldValue(
-      name,
-      multiselect
-        ? option
-          ? option.map((item: any) => item.value)
-          : []
-        : option.value,
-      true
-    )
+    // option is null when clearing the select
+    if (!option) {
+      setFieldValue(name, multiselect ? [] : '', true)
+    } else {
+      setFieldValue(
+        name,
+        multiselect
+          ? option
+            ? option.map((item: any) => item.value)
+            : []
+          : option.value,
+        true
+      )
+    }
     setFieldTouched(name, true, false)
+  }
+
+  const handleOnCreateDefault = (inputValue: string) => {
+    setFieldValue(name, inputValue, true)
+    setFieldTouched(name, true, false)
+  }
+
+  const handleIsValidNewOption = (inputValue: string) => {
+    return !items.find((item: any) => item.label === inputValue)
   }
 
   const handleOnBlur = (e: any) => {
@@ -84,7 +107,11 @@ function FormSelect(props: FormSelectProps) {
 
   const hasError = !!get(touched, name) && !!get(errors, name)
   const handleOnChange = customOnChange || handleOnChangeDefault
+  const handleOnCreate = customOnCreate || handleOnCreateDefault
 
+  // If multiselect is true, we need to convert the values to an array of objects
+  // with the value and label properties. Otherwise, we check if the value is already
+  // in the items. If not (case of creatable select), we set the selecter value manually
   const selectedValues = multiselect
     ? get(values, name)
         ?.map((selValue: any) =>
@@ -92,12 +119,16 @@ function FormSelect(props: FormSelectProps) {
         )
         .flat()
     : items.find((item: any) => item.value === get(values, name))
+    ? items.find((item: any) => item.value === get(values, name))
+    : get(values, name)
+    ? { label: get(values, name) }
+    : undefined
 
   return (
     <Form.Field>
       {label && <Form.Label size="small">{label}</Form.Label>}
       <Form.Control>
-        <Select
+        <SelectComponent
           value={selectedValues}
           components={{ DropdownIndicator, ClearIndicator, MultiValueRemove }}
           options={items}
@@ -114,6 +145,14 @@ function FormSelect(props: FormSelectProps) {
             if ((e.target as Element).className === 'modal-card-body')
               return true
           }}
+          isLoading={isLoading}
+          {...(creatable
+            ? {
+                isValidNewOption: handleIsValidNewOption,
+                onCreateOption: handleOnCreate,
+                isClearable: true,
+              }
+            : {})}
         />
       </Form.Control>
       <Form.Help color="danger" className={hasError ? 'help--show' : ''}>

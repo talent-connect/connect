@@ -1,32 +1,30 @@
-import React from 'react'
-import Landing from '../../../components/templates/Landing'
 import classnames from 'classnames'
 
-import { useTranslation } from 'react-i18next'
 import {
-  Section,
-  Container,
-  Element,
-  Columns,
-  Content,
-} from 'react-bulma-components'
-import {
-  Heading,
   Button,
-  SVGImage,
+  Heading,
+  SVGImage
 } from '@talent-connect/shared-atomic-design-components'
-import { ReactComponent as RediLogo } from '../../../assets/images/logo.svg'
+import {
+  Columns,
+  Container,
+  Content,
+  Element,
+  Section
+} from 'react-bulma-components'
+import { useTranslation } from 'react-i18next'
 import { ReactComponent as Deloitte } from '../../../assets/images/deloitte.svg'
+import { ReactComponent as RediLogo } from '../../../assets/images/logo.svg'
 
-import '../../../components/organisms/Navbar.scss'
 import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
-import { objectEntries } from '@talent-connect/typescript-utilities'
+import '../../../components/organisms/Navbar.scss'
 
 const LOCATIONS: Array<keyof typeof REDI_LOCATION_NAMES> = [
-  'berlin',
-  'munich',
-  'nrw',
-  'hamburg',
+  'BERLIN',
+  'MUNICH',
+  'NRW',
+  'HAMBURG',
+  'CYBERSPACE',
 ]
 
 export default function LocationPicker() {

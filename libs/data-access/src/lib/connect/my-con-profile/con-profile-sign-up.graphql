@@ -1,0 +1,5 @@
+mutation conProfileSignUp($input: ConProfileSignUpInput!) {
+  conProfileSignUp(input: $input) {
+    id
+  }
+}

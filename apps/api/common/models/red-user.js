@@ -12,6 +12,9 @@ const {
   sendTpResetPasswordEmail,
 } = require('../../lib/email/tp-email')
 
+const jwt = require('jsonwebtoken')
+const { CONTEXT } = require('@nestjs/graphql')
+
 module.exports = function (RedUser) {
   RedUser.observe('before save', function updateTimestamp(ctx, next) {
     if (ctx.instance) {
@@ -21,6 +24,13 @@ module.exports = function (RedUser) {
       ctx.data.updatedAt = new Date()
     }
     next()
+  })
+
+  // Hook for sending verification email
+  RedUser.observe('after save', async function (context, next) {
+    if (process.env.NODE_ENV === 'seeding') return next()
+    // Onky continue if this is a brand new user
+    if (!context.isNewInstance) return next()
   })
 
   RedUser.afterRemote('confirm', async function (ctx, inst, next) {
@@ -76,10 +86,12 @@ module.exports = function (RedUser) {
   RedUser.requestResetPasswordEmail = function (body, cb) {
     const email = body.email
     const redproduct = body.redproduct
+    const redilocation = body.redilocation
     RedUser.resetPassword(
       {
         email,
         redproduct,
+        redilocation,
       },
       function (err) {
         if (err) return cb(err)
@@ -97,41 +109,20 @@ module.exports = function (RedUser) {
     const accessToken = encodeURIComponent(JSON.stringify(info.accessToken))
     const email = info.user.email
     const redproduct = info.options.redproduct
+    const rediLocation = info.options.redilocation
 
-    const redUserInst = await RedUser.findById(info.user.id, {
-      include: ['redProfile', 'tpJobseekerProfile', 'tpCompanyProfile'],
-    })
+    const redUserInst = await RedUser.findById(info.user.id)
     const redUser = redUserInst.toJSON()
-
-    const userSignedUpWithCon = !!redUser.redProfile
-    const userSignedUpWithTpAndIsJobseeker = !!redUser.tpJobseekerProfile
-    const userSignedUpWithTpAndIsCompany = !!redUser.tpCompanyProfile
-
-    let firstName
-    let rediLocation
-
-    if (userSignedUpWithCon) {
-      firstName = redUser.redProfile.firstName
-      rediLocation = redUser.redProfile.rediLocation
-    }
-    if (userSignedUpWithTpAndIsJobseeker) {
-      firstName = redUser.tpJobseekerProfile.firstName
-    }
-    if (userSignedUpWithTpAndIsCompany) {
-      firstName = redUser.tpCompanyProfile.firstName
-    }
 
     if (redproduct === 'CON') {
       sendResetPasswordEmail({
         recipient: email,
-        firstName,
         accessToken,
         rediLocation,
       }).subscribe()
     } else if (redproduct === 'TP') {
       sendTpResetPasswordEmail({
         recipient: email,
-        firstName,
         accessToken,
       }).subscribe()
     }
@@ -148,6 +139,16 @@ module.exports = function (RedUser) {
    * product profile.
    */
   RedUser.afterRemote('login', async function (ctx, loginOutput, next) {
+    const email = ctx.req.body.email
+    const jwtToken = jwt.sign(
+      { ...loginOutput.toJSON(), email },
+      process.env.NX_JWT_SECRET,
+      {
+        expiresIn: '7d',
+      }
+    )
+    ctx.result.jwtToken = jwtToken
+
     const redProduct = ctx.req.headers.redproduct // either CON or TP
     switch (redProduct) {
       case 'CON':

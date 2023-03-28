@@ -1,0 +1,19 @@
+query myTpData {
+  tpCurrentUserDataGet {
+    companyRepresentativeRelationship {
+      ...AllCompanyRepresentativeRelationshipFields
+    }
+    representedCompany {
+      ...AllTpCompanyProfileFields
+    }
+    tpJobseekerDirectoryEntry {
+      ...AllTpJobseekerDirectoryEntryFields
+    }
+    jobListings {
+      ...AllTpJobListingFields
+    }
+    userContact {
+      ...AllUserContactFields
+    }
+  }
+}

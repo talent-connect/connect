@@ -11,20 +11,25 @@ import {
   Heading,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
-import { TpJobseekerProfile } from '@talent-connect/shared-types'
 import { toPascalCaseAndTrim } from '@talent-connect/shared-utils'
 import { germanFederalStates } from '@talent-connect/talent-pool/config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
 
-import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
-
+import {
+  TpJobseekerDirectoryEntry,
+  useMyTpDataQuery,
+  usePatchUserContactMutation,
+  useTpJobseekerProfilePatchMutation,
+} from '@talent-connect/data-access'
+import { useQueryClient } from 'react-query'
+import { useIsBusy } from '../../../hooks/useIsBusy'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import Avatar from '../Avatar'
+import { EditableNamePhotoLocationJobseekerProfilePropFragment } from './EditableNamePhotoLocation.generated'
 
 interface Props {
-  profile: Partial<TpJobseekerProfile>
+  profile: EditableNamePhotoLocationJobseekerProfilePropFragment
   disableEditing?: boolean
 }
 
@@ -36,11 +41,21 @@ const federalStatesOptions = objectEntries(germanFederalStates).map(
 )
 
 export function EditableNamePhotoLocation({ profile, disableEditing }: Props) {
-  const mutation = useTpjobseekerprofileUpdateMutation()
+  const queryClient = useQueryClient()
+  const patchJobseekerProfileMutation = useTpJobseekerProfilePatchMutation()
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
   const isLocationEmpty = EditableNamePhotoLocation.isSectionEmpty(profile)
+
+  const onNewAvatarReady = async (newAvatarUrl: string) => {
+    await patchJobseekerProfileMutation.mutateAsync({
+      input: {
+        profileAvatarImageS3Key: newAvatarUrl,
+      },
+    })
+    queryClient.invalidateQueries()
+  }
 
   return (
     <Editable
@@ -54,7 +69,7 @@ export function EditableNamePhotoLocation({ profile, disableEditing }: Props) {
             {profile && !disableEditing ? (
               <Avatar.Editable
                 profile={profile}
-                profileSaveStart={mutation.mutate}
+                profileSaveStart={onNewAvatarReady}
               />
             ) : null}
             {profile && disableEditing ? <Avatar profile={profile} /> : null}
@@ -104,10 +119,10 @@ export function EditableNamePhotoLocation({ profile, disableEditing }: Props) {
 }
 
 EditableNamePhotoLocation.isSectionFilled = (
-  profile: Partial<TpJobseekerProfile>
+  profile: Pick<TpJobseekerDirectoryEntry, 'location'>
 ) => profile?.location
 EditableNamePhotoLocation.isSectionEmpty = (
-  profile: Partial<TpJobseekerProfile>
+  profile: Pick<TpJobseekerDirectoryEntry, 'location'>
 ) => !EditableNamePhotoLocation.isSectionFilled(profile)
 
 const validationSchema = Yup.object({
@@ -128,31 +143,48 @@ function ModalForm({
   setIsEditing: (boolean) => void
   setIsFormDirty: (boolean) => void
 }) {
-  const { data: profile } = useTpJobseekerProfileQuery()
-  const mutation = useTpjobseekerprofileUpdateMutation()
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(
-    () => ({
-      firstName: profile?.firstName ?? '',
-      lastName: profile?.lastName ?? '',
-      genderPronouns: profile?.genderPronouns ?? '',
-      location: profile?.location ?? '',
-      federalState: profile?.federalState ?? '',
-      willingToRelocate: profile?.willingToRelocate,
-    }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  )
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
+  const queryClient = useQueryClient()
+  const myData = useMyTpDataQuery()
+  const profile = myData.data?.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry
+  const tpJobsekerProfileMutation = useTpJobseekerProfilePatchMutation()
+  const userContactMutation = usePatchUserContactMutation()
+  const isBusy = useIsBusy()
+
+  const initialValues: EditableNamePhotoLocationJobseekerProfilePropFragment =
+    useMemo(
+      () => ({
+        firstName: profile?.firstName ?? null,
+        lastName: profile?.lastName ?? null,
+        genderPronouns: profile?.genderPronouns ?? null,
+        location: profile?.location ?? null,
+        federalState: profile?.federalState ?? null,
+        willingToRelocate: profile?.willingToRelocate,
+      }),
+      []
+    )
+  const onSubmit = async (
+    values: EditableNamePhotoLocationJobseekerProfilePropFragment
+  ) => {
     formik.setSubmitting(true)
     const transformedValues = validationSchema.cast(values)
-    mutation.mutate(transformedValues, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
+    const userContactUpdate = userContactMutation.mutateAsync({
+      input: {
+        firstName: transformedValues.firstName,
+        lastName: transformedValues.lastName,
+        genderPronouns: values.genderPronouns,
       },
     })
+    const tpJobseekerUpdate = tpJobsekerProfileMutation.mutateAsync({
+      input: {
+        location: values.location,
+        federalState: values.federalState,
+        willingToRelocate: values.willingToRelocate,
+      },
+    })
+    await Promise.all([userContactUpdate, tpJobseekerUpdate])
+    queryClient.invalidateQueries()
+    formik.setSubmitting(false)
+    setIsEditing(false)
   }
   const formik = useFormik({
     initialValues,
@@ -213,17 +245,10 @@ function ModalForm({
       >
         I am willing to relocate for a new job
       </Checkbox.Form>
-      <Button
-        disabled={!formik.isValid || mutation.isLoading}
-        onClick={formik.submitForm}
-      >
+      <Button disabled={!formik.isValid || isBusy} onClick={formik.submitForm}>
         Save
       </Button>
-      <Button
-        simple
-        disabled={mutation.isLoading}
-        onClick={() => setIsEditing(false)}
-      >
+      <Button simple disabled={isBusy} onClick={() => setIsEditing(false)}>
         Cancel
       </Button>
     </>

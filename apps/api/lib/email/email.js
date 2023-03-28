@@ -8,9 +8,9 @@ const fs = require('fs')
 const path = require('path')
 
 const config = {
-  accessKeyId: process.env.EMAILER_AWS_ACCESS_KEY,
-  secretAccessKey: process.env.EMAILER_AWS_SECRET_KEY,
-  region: process.env.EMAILER_AWS_REGION,
+  accessKeyId: process.env.NX_EMAILER_AWS_ACCESS_KEY,
+  secretAccessKey: process.env.NX_EMAILER_AWS_SECRET_KEY,
+  region: process.env.NX_EMAILER_AWS_REGION,
 }
 const { buildFrontendUrl } = require('../build-frontend-url')
 const { buildBackendUrl } = require('../build-backend-url')
@@ -29,7 +29,8 @@ const sendMjmlEmail = Rx.bindNodeCallback(
   transporter.sendMail.bind(transporter)
 )
 const sendEmailFactory = (to, subject, body, rediLocation) => {
-  let toSanitized = isProductionOrDemonstration() ? to : ''
+  // let toSanitized = isProductionOrDemonstration() ? to : ''
+  let toSanitized = to
   if (process.env.DEV_MODE_EMAIL_RECIPIENT) {
     toSanitized = process.env.DEV_MODE_EMAIL_RECIPIENT
   }
@@ -55,7 +56,8 @@ const sendEmailFactory = (to, subject, body, rediLocation) => {
   })
 }
 const sendMjmlEmailFactory = ({ to, subject, html }) => {
-  let toSanitized = isProductionOrDemonstration() ? to : ''
+  // let toSanitized = isProductionOrDemonstration() ? to : ''
+  let toSanitized = to
   if (process.env.DEV_MODE_EMAIL_RECIPIENT) {
     toSanitized = process.env.DEV_MODE_EMAIL_RECIPIENT
   }
@@ -70,6 +72,7 @@ const sendMjmlEmailFactory = ({ to, subject, html }) => {
 }
 
 function buildSubjectLine(subject, env) {
+  return subject
   switch (env) {
     case 'production':
       return subject
@@ -82,13 +85,7 @@ function buildSubjectLine(subject, env) {
   }
 }
 
-const sendReportProblemEmailTemplate = fs.readFileSync(
-  path.resolve(__dirname, 'templates', 'send-problem-report.mjml'),
-  'utf-8'
-)
-const sendReportProblemEmailParsed = mjml2html(sendReportProblemEmailTemplate, {
-  filePath: path.resolve(__dirname, 'templates'),
-})
+const sendReportProblemEmailParsed = ''
 
 const sendReportProblemEmail = ({ sendingUserEmail, message }) => {
   const html = sendReportProblemEmailParsed.html
@@ -108,20 +105,13 @@ const sendResetPasswordEmailTemplate = fs.readFileSync(
 const sendResetPasswordEmailParsed = mjml2html(sendResetPasswordEmailTemplate, {
   filePath: path.resolve(__dirname, 'templates'),
 })
-
-const sendResetPasswordEmail = ({
-  recipient,
-  firstName,
-  accessToken,
-  rediLocation,
-}) => {
+const sendResetPasswordEmail = ({ recipient, accessToken, rediLocation }) => {
   const resetPasswordUrl = `${buildFrontendUrl(
     process.env.NODE_ENV,
     rediLocation
   )}/front/reset-password/set-new-password/${accessToken}`
   const rediEmailAdress = 'career@redi-school.org'
   const html = sendResetPasswordEmailParsed.html
-    .replace(/\${firstName}/g, firstName)
     .replace(/\${resetPasswordUrl}/g, resetPasswordUrl)
     .replace(/\${rediEmailAdress}/g, rediEmailAdress)
     .replace(/\${emailAdress}/g, recipient)
@@ -566,6 +556,7 @@ const formatLocationName = (locationIdentifier) => {
     hamburg: 'Hamburg',
     munich: 'Munich',
     nrw: 'NRW',
+    cyberspace: 'Cyberspace',
   }[locationIdentifier]
 }
 

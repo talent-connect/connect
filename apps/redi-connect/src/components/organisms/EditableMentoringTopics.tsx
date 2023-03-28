@@ -1,19 +1,21 @@
 import {
+  MentoringTopic,
+  useLoadMyProfileQuery,
+  usePatchMyProfileMutation,
+} from '@talent-connect/data-access'
+import {
   Checkbox,
   Editable,
 } from '@talent-connect/shared-atomic-design-components'
-import { RedProfile } from '@talent-connect/shared-types'
-import groupBy from 'lodash/groupBy'
-import { Columns, Content, Element, Heading } from 'react-bulma-components'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
-
-import * as Yup from 'yup'
-import { profileSaveStart } from '../../redux/user/actions'
-
 import { CATEGORIES, CATEGORY_GROUPS } from '@talent-connect/shared-config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
 import { FormikValues, useFormik } from 'formik'
+import { omit } from 'lodash'
+import groupBy from 'lodash/groupBy'
+import { Columns, Content, Element, Heading } from 'react-bulma-components'
+import { useQueryClient } from 'react-query'
+import * as Yup from 'yup'
+import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 import { ReadMentoringTopics } from '../molecules'
 
 export type UserType =
@@ -24,7 +26,7 @@ export type UserType =
 
 export interface MentoringFormValues {
   isMentor: boolean
-  categories: string[]
+  categories: MentoringTopic[]
 }
 
 const MAX_MENTORING_TOPICS_IF_USER_IS_MENTEE = 4
@@ -42,24 +44,29 @@ const categoriesByGroup = groupBy(CATEGORIES, (category) => category.group)
 
 const formCategoryGroups = objectEntries(CATEGORY_GROUPS)
 
-interface Props {
-  profile: RedProfile | undefined
-  profileSaveStart: Function
-}
+function EditableMentoringTopics() {
+  const loopbackUserId = getAccessTokenFromLocalStorage().userId
+  const queryClient = useQueryClient()
+  const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
+  const patchMyProfileMutation = usePatchMyProfileMutation()
 
-const EditableMentoringTopics = ({ profile, profileSaveStart }: Props) => {
-  const { id, userType, categories } = profile as RedProfile
+  const profile = myProfileQuery.data?.conProfile
+
+  const userType = profile?.userType
+  const categories = profile?.categories
 
   const submitForm = async (values: FormikValues) => {
-    const profileMentoring = values as Partial<RedProfile>
-    profileSaveStart({ ...profileMentoring, id })
+    const cleanValues = omit(values, ['isMentor'])
+    const mutationResult = await patchMyProfileMutation.mutateAsync({
+      input: { id: profile.id, ...cleanValues },
+    })
+    queryClient.setQueryData(useLoadMyProfileQuery.getKey({ loopbackUserId }), {
+      conProfile: mutationResult.patchConProfile,
+    })
   }
 
-  const isMentor =
-    userType === 'mentor' || userType === 'public-sign-up-mentor-pending-review'
-
   const initialValues: MentoringFormValues = {
-    isMentor,
+    isMentor: userType === 'MENTOR',
     categories: categories || [],
   }
 
@@ -85,6 +92,8 @@ const EditableMentoringTopics = ({ profile, profileSaveStart }: Props) => {
     formik.setFieldTouched('categories', true, false)
   }
 
+  if (!myProfileQuery.isSuccess) return null
+
   return (
     <Editable
       title="Mentoring Topics"
@@ -95,7 +104,7 @@ const EditableMentoringTopics = ({ profile, profileSaveStart }: Props) => {
       className="mentoring"
     >
       <Content>
-        {isMentor
+        {userType === 'MENTOR'
           ? 'Select at least one topic where you would like to support mentees.'
           : 'You can select between 1 and up to 4 topics.'}
       </Content>
@@ -161,16 +170,4 @@ const CategoryGroup = ({
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile,
-})
-
-const mapDispatchToProps = (dispatch: any) => ({
-  profileSaveStart: (profile: Partial<RedProfile>) =>
-    dispatch(profileSaveStart(profile)),
-})
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EditableMentoringTopics)
+export default EditableMentoringTopics

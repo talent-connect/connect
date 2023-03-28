@@ -1,0 +1,5 @@
+query ProfilePageQuery($id: ID!) {
+  conProfile(id: $id) {
+    ...AllConProfileFields
+  }
+}

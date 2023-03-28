@@ -1,0 +1,4 @@
+fragment EditableOverviewProfileProp on TpJobseekerDirectoryEntry {
+  desiredPositions
+  currentlyEnrolledInCourse
+}

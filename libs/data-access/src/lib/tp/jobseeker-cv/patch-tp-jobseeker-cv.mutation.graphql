@@ -1,0 +1,5 @@
+mutation tpJobseekerCvPatch($input: TpJobseekerCvPatchInput!) {
+  tpJobseekerCvPatch(tpJobseekerCvPatchInput: $input) {
+    ok
+  }
+}

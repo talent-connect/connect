@@ -5,5 +5,23 @@
     "./lib/shared-atomic-design-components",
     "./libs/shared-types"
   ],
-  "typescript.preferences.importModuleSpecifier": "project-relative"
+  "typescript.preferences.importModuleSpecifier": "project-relative",
+  "emeraldwalk.runonsave": {
+    "commands": [
+      {
+        "match": "\\.graphql$",
+        "cmd": "yarn graphql:codegen"
+      }
+    ]
+  },
+  "editor.codeActionsOnSave": { "source.organizeImports": true },
+  "explorer.fileNesting.patterns": {
+    "*.ts": "${capture}.js, ${capture}.typegen.ts, ${capture}.graphql, ${capture}.generated.ts",
+    "*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
+    "*.jsx": "${capture}.js",
+    "*.tsx": "${capture}.ts, ${capture}.typegen.ts, ${capture}.graphql, ${capture}.generated.ts, ${capture}.scss",
+    "tsconfig.json": "tsconfig.*.json",
+    "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml",
+    "*.graphql": "${capture}.generated.ts"
+  }
 }

@@ -1,0 +1,5 @@
+mutation tpJobListingDelete($input: TpJobListingDeleteInput!) {
+  tpJobListingDelete(tpJobListingDeleteInput: $input) {
+    ok
+  }
+}

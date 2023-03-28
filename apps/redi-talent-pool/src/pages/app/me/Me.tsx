@@ -1,17 +1,37 @@
-import React from 'react'
-import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useMyTpDataQuery } from '@talent-connect/data-access'
+import { Loader } from '@talent-connect/shared-atomic-design-components'
+import { useHistory } from 'react-router-dom'
 import { MeCompany } from './MeCompany'
 import { MeJobseeker } from './MeJobseeker'
 
 function Me() {
-  const { data: jobseekerProfile } = useTpJobseekerProfileQuery({
-    retry: false,
-  })
-  const { data: companyProfile } = useTpCompanyProfileQuery({ retry: false })
+  const { data, isLoading } = useMyTpDataQuery()
 
-  if (jobseekerProfile) return <MeJobseeker />
-  if (companyProfile) return <MeCompany />
+  const history = useHistory()
+
+  if (isLoading) return <Loader loading />
+
+  const {
+    tpCurrentUserDataGet: {
+      companyRepresentativeRelationship,
+      tpJobseekerDirectoryEntry,
+    },
+  } = data
+
+  // If the user has-a JobseekerProfile, we assume that user is a jobseeker, and show them the "me"
+  // page for jobseekers
+  if (tpJobseekerDirectoryEntry) return <MeJobseeker />
+
+  // If, on the other hadn, the user has-a CompanyRepresentativeRelationship, we assume that user is
+  // company representative, and show them the "me" page for Companies
+  switch (companyRepresentativeRelationship?.status) {
+    case 'PENDING':
+    case 'REJECTED':
+    case 'DEACTIVATED':
+      history.push('/front/signup-complete')
+    case 'APPROVED':
+      return <MeCompany />
+  }
 
   return null
 }

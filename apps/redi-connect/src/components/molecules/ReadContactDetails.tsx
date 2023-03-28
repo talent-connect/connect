@@ -1,39 +1,38 @@
+import { useLoadMyProfileQuery } from '@talent-connect/data-access'
 import { Caption } from '@talent-connect/shared-atomic-design-components'
-import { RedProfile } from '@talent-connect/shared-types'
 import { Content } from 'react-bulma-components'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
+import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
+import { ReadContactDetailsProfilePropFragment } from './ReadContactDetails.generated'
 
 interface Props {
-  profile: RedProfile
+  profile: ReadContactDetailsProfilePropFragment
   shortInfo?: boolean
 }
 
 const ReadContactDetails = ({ profile, shortInfo }: Props) => {
-  const { firstName, lastName, contactEmail, telephoneNumber } = profile
+  const { fullName, email, telephoneNumber } = profile
 
   return (
     <>
       {shortInfo && <Caption>Contact Details</Caption>}
       <Content>
-        {contactEmail && <p>{contactEmail}</p>}
-        {!shortInfo && (firstName || lastName) && (
-          <p>
-            {firstName} {lastName}
-          </p>
-        )}
+        {email && <p>{email}</p>}
+        {!shortInfo && fullName && <p>{fullName}</p>}
         {telephoneNumber && <p>{telephoneNumber}</p>}
       </Content>
     </>
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile as RedProfile,
-})
-
 export default {
-  Me: connect(mapStateToProps, {})(ReadContactDetails),
+  Me: () => {
+    const loopbackUserId = getAccessTokenFromLocalStorage().userId
+    const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
+
+    if (!myProfileQuery.isSuccess) return null
+
+    return <ReadContactDetails profile={myProfileQuery.data.conProfile} />
+  },
   Some: ({ profile }: Props) => (
     <ReadContactDetails profile={profile} shortInfo />
   ),

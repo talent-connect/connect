@@ -4,31 +4,37 @@
  * must be standardized within the project.
  */
 
-import React from 'react'
-import { format as formatDate } from 'date-fns'
-import { useHistory } from 'react-router-dom'
 import { PDFDownloadLink } from '@react-pdf/renderer'
+import { format as formatDate } from 'date-fns'
+import { omit } from 'lodash'
+import React from 'react'
+import { useHistory } from 'react-router-dom'
 
+import { Chip } from '@material-ui/core'
 import {
-  Modal,
-  FormInput,
   Button,
+  FormInput,
+  Modal,
 } from '@talent-connect/shared-atomic-design-components'
 import { Box, Content } from 'react-bulma-components'
-import { Chip } from '@material-ui/core'
-import { AWS_PROFILE_AVATARS_BUCKET_BASE_URL } from '@talent-connect/shared-config'
 import placeholderImage from '../../../../assets/img-placeholder.png'
 
-import { useTpJobseekerCvByIdQuery } from '../../../../react-query/use-tpjobseekercv-query'
 import {
-  useTpjobseekerCvCreateMutation,
-  useTpjobseekerCvDeleteMutation,
-  useTpjobseekerCvUpdateMutation,
-} from '../../../../react-query/use-tpjobseekercv-mutation'
-
-import { CvListItemMoreOptionsMenu } from './CvListItemMoreOptionsMenu'
+  useFindAllTpJobseekerCvEducationRecordsQuery,
+  useFindAllTpJobseekerCvExperienceRecordsQuery,
+  useFindAllTpJobseekerCvLanguageRecordsQuery,
+  useFindOneTpJobseekerCvQuery,
+  useMyTpDataQuery,
+  useTpJobseekerCvCreateMutation,
+  useTpJobseekerCvDeleteMutation,
+  useTpJobseekerCvEducationRecordCreateMutation,
+  useTpJobseekerCvExperienceRecordCreateMutation,
+  useTpJobseekerCvLanguageRecordCreateMutation,
+  useTpJobseekerCvPatchMutation,
+} from '@talent-connect/data-access'
+import { useQueryClient } from 'react-query'
 import { CVPDF } from '../../../../components/molecules/CvPdfPreview'
-import { useTpJobseekerProfileQuery } from '../../../../react-query/use-tpjobseekerprofile-query'
+import { CvListItemMoreOptionsMenu } from './CvListItemMoreOptionsMenu'
 
 const CREATED_AT_DATE_FORMAT = 'dd.MM.yyyy'
 
@@ -80,25 +86,38 @@ const CvListItem = (props: CvListItemProps) => {
 
   const history = useHistory()
 
-  const { data: cvData, isSuccess: cvLoadSuccess } = useTpJobseekerCvByIdQuery(
-    props.id
-  )
-  const {
-    data: profileData,
-    isSuccess: profileLoadSuccess,
-  } = useTpJobseekerProfileQuery()
+  const cvQuery = useFindOneTpJobseekerCvQuery({ id: props.id })
+  const cvData = cvQuery.data?.tpJobseekerCv
+  const cvLoadSuccess = cvQuery.isSuccess
+  const myTpData = useMyTpDataQuery()
+  const profileData =
+    myTpData?.data?.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry
+  const profileLoadSuccess = myTpData.isSuccess
 
-  const createMutation = useTpjobseekerCvCreateMutation()
-  const updateMutation = useTpjobseekerCvUpdateMutation(props.id)
-  const deleteMutation = useTpjobseekerCvDeleteMutation(props.id)
+  const createMutation = useTpJobseekerCvCreateMutation()
+  const updateMutation = useTpJobseekerCvPatchMutation()
+  const deleteMutation = useTpJobseekerCvDeleteMutation()
+  const queryClient = useQueryClient()
+
+  const cvJobseekerExperienceRecordsQuery =
+    useFindAllTpJobseekerCvExperienceRecordsQuery({ tpJobseekerCvId: props.id })
+  const cvJobseekerEducationRecordsQuery =
+    useFindAllTpJobseekerCvEducationRecordsQuery({ tpJobseekerCvId: props.id })
+  const cvJobseekerLanguageRecordsQuery =
+    useFindAllTpJobseekerCvLanguageRecordsQuery({ tpJobseekerCvId: props.id })
+  const createCvJobseekerExperienceRecordMutation =
+    useTpJobseekerCvExperienceRecordCreateMutation()
+  const createCvJobseekerEducationRecordMutation =
+    useTpJobseekerCvEducationRecordCreateMutation()
+  const createCvJobseekerLanguageRecordMutation =
+    useTpJobseekerCvLanguageRecordCreateMutation()
 
   const setFocusOnRef = (ref: HTMLInputElement) => ref?.focus()
 
   React.useEffect(() => {
     if (profileLoadSuccess && cvLoadSuccess) {
       cvData.profileAvatarImageS3Key = profileData.profileAvatarImageS3Key
-        ? AWS_PROFILE_AVATARS_BUCKET_BASE_URL +
-          profileData.profileAvatarImageS3Key
+        ? profileData.profileAvatarImageS3Key
         : placeholderImage
 
       setProfileImageLoaded(true)
@@ -109,30 +128,76 @@ const CvListItem = (props: CvListItemProps) => {
     setShowCvNameModal(true)
   }
 
-  const handleEditClick = (): void => {
+  const handleEditClick = () => {
     history.push(`/app/cv-builder/${props.id}`)
   }
 
-  const handleDelete = (): void => {
-    deleteMutation.mutate()
+  const handleDelete = async () => {
+    await deleteMutation.mutateAsync({ input: { id: props.id } })
+    queryClient.invalidateQueries()
   }
 
-  const handleRename = (): void => {
+  const handleRename = async () => {
     if (newCvName !== props.name) {
-      updateMutation
-        .mutateAsync({ cvName: newCvName })
-        .then(() => setShowCvNameModal(false))
+      await updateMutation.mutateAsync({
+        input: { id: props.id, cvName: newCvName },
+      })
+      setShowCvNameModal(false)
+      queryClient.invalidateQueries()
     }
   }
 
-  const handleDuplicate = (): void => {
-    createMutation.mutate({
-      ...cvData,
-      id: undefined,
-      createdAt: undefined,
-      updatedAt: undefined,
-      cvName: `${props.name} - Duplicate`,
+  // Clumsy duplicate. First we duplicate the CV, then we duplicate each of
+  // the associated records... experience, education and language.
+  const handleDuplicate = async () => {
+    const allCvRecordsLoaded =
+      cvJobseekerExperienceRecordsQuery.isSuccess &&
+      cvJobseekerEducationRecordsQuery.isSuccess &&
+      cvJobseekerLanguageRecordsQuery.isSuccess
+    if (!allCvRecordsLoaded) return // TODO: we just "bail out" here, but better would be a "defer until all records are loaded" approach
+    const newCvResult = createMutation.mutateAsync({
+      input: {
+        ...omit(cvData, 'id', 'updatedAt', 'createdAt', 'userId'),
+        cvName: `${props.name} - Duplicate`,
+      },
     })
+    const newCvId = (await newCvResult).tpJobseekerCvCreate.id
+    const newCvExperienceRecordsPromises =
+      cvJobseekerExperienceRecordsQuery.data?.tpJobseekerCvExperienceRecords.map(
+        (record) =>
+          createCvJobseekerExperienceRecordMutation.mutateAsync({
+            input: {
+              ...omit(record, 'id', 'updatedAt', 'createdAt', 'userId'),
+              tpJobseekerCvId: newCvId,
+            },
+          })
+      )
+    const newCvEducationRecordsPromises =
+      cvJobseekerEducationRecordsQuery.data?.tpJobseekerCvEducationRecords.map(
+        (record) =>
+          createCvJobseekerEducationRecordMutation.mutateAsync({
+            input: {
+              ...omit(record, 'id', 'updatedAt', 'createdAt', 'userId'),
+              tpJobseekerCvId: newCvId,
+            },
+          })
+      )
+    const newCvLanguageRecordsPromises =
+      cvJobseekerLanguageRecordsQuery.data?.tpJobseekerCvLanguageRecords.map(
+        (record) =>
+          createCvJobseekerLanguageRecordMutation.mutateAsync({
+            input: {
+              ...omit(record, 'id', 'updatedAt', 'createdAt', 'userId'),
+              tpJobseekerCvId: newCvId,
+            },
+          })
+      )
+    await Promise.all([
+      ...newCvExperienceRecordsPromises,
+      ...newCvEducationRecordsPromises,
+      ...newCvLanguageRecordsPromises,
+    ])
+    queryClient.invalidateQueries()
   }
 
   return (
@@ -153,7 +218,23 @@ const CvListItem = (props: CvListItemProps) => {
           <CvListItemChip label="Edit" onClick={handleEditClick} />
           {cvData && (
             <PDFDownloadLink
-              document={<CVPDF cvData={cvData} />}
+              document={
+                <CVPDF
+                  cvData={cvData}
+                  cvExperienceRecords={
+                    cvJobseekerExperienceRecordsQuery.data
+                      ?.tpJobseekerCvExperienceRecords
+                  }
+                  cvEducationRecords={
+                    cvJobseekerEducationRecordsQuery.data
+                      ?.tpJobseekerCvEducationRecords
+                  }
+                  languageRecords={
+                    cvJobseekerLanguageRecordsQuery.data
+                      ?.tpJobseekerCvLanguageRecords
+                  }
+                />
+              }
               fileName={`${cvData?.firstName}_${cvData?.lastName}_CV.pdf`}
             >
               {({ blob, url, loading, error }) =>
