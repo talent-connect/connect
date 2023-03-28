@@ -1,21 +1,19 @@
 import {
+  useLoadMyProfileQuery,
+  usePatchMyProfileMutation,
+  UserType,
+} from '@talent-connect/data-access'
+import {
   Editable,
   FormTextArea,
 } from '@talent-connect/shared-atomic-design-components'
-import { RedProfile, UserType } from '@talent-connect/shared-types'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
-import { profileSaveStart } from '../../redux/user/actions'
-
-import * as Yup from 'yup'
-
 import { FormikValues, useFormik } from 'formik'
+import { useQueryClient } from 'react-query'
+import * as Yup from 'yup'
+import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 import { ReadAbout } from '../molecules'
 
-import { assertUnreachable } from '@talent-connect/shared-utils'
-
 export interface AboutFormValues {
-  userType: UserType
   personalDescription: string
   expectations: string
 }
@@ -31,16 +29,28 @@ const validationSchema = Yup.object({
     .label('Personal description'),
 })
 // props: FormikProps<AboutFormValues>
-const EditableAbout = ({ profile, profileSaveStart }: any) => {
-  const { id, userType, personalDescription, expectations } = profile
+function EditableAbout() {
+  const loopbackUserId = getAccessTokenFromLocalStorage().userId
+  const queryClient = useQueryClient()
+  const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
+  const patchMyProfileMutation = usePatchMyProfileMutation()
+
+  const profile = myProfileQuery.data?.conProfile
+
+  const userType = profile?.userType
+  const personalDescription = profile?.personalDescription
+  const expectations = profile?.expectations
 
   const submitForm = async (values: FormikValues) => {
-    const profileAbout = values as Partial<RedProfile>
-    profileSaveStart({ ...profileAbout, id })
+    const mutationResult = await patchMyProfileMutation.mutateAsync({
+      input: { id: profile.id, ...values },
+    })
+    queryClient.setQueryData(useLoadMyProfileQuery.getKey({ loopbackUserId }), {
+      conProfile: mutationResult.patchConProfile,
+    })
   }
 
   const initialValues: AboutFormValues = {
-    userType,
     personalDescription,
     expectations,
   }
@@ -51,6 +61,8 @@ const EditableAbout = ({ profile, profileSaveStart }: any) => {
     validationSchema,
     onSubmit: submitForm,
   })
+
+  if (!myProfileQuery.isSuccess) return null
 
   return (
     <Editable
@@ -82,43 +94,28 @@ const EditableAbout = ({ profile, profileSaveStart }: any) => {
 
 const expectationsFieldLabel = (userType: UserType): string => {
   switch (userType) {
-    case 'mentee':
-    case 'public-sign-up-mentee-pending-review':
-    case 'public-sign-up-mentee-rejected':
+    case 'MENTEE':
       return 'What do you expect from a mentorship and which short- to medium-term goals would you like to achieve in about 5-6 mentoring sessions?'
 
-    case 'mentor':
-    case 'public-sign-up-mentor-pending-review':
-    case 'public-sign-up-mentor-rejected':
+    case 'MENTOR':
       return 'Feel free to share how you can best support your mentees and any expectations you may have towards them'
-  }
 
-  return assertUnreachable(userType)
+    default:
+      return null
+  }
 }
 
 const expectationsFieldPlaceholder = (userType: UserType): string => {
   switch (userType) {
-    case 'mentee':
-    case 'public-sign-up-mentee-pending-review':
-    case 'public-sign-up-mentee-rejected':
+    case 'MENTEE':
       return 'Support with finding a job, get better with my tech skills, build a portfolio, etc.'
 
-    case 'mentor':
-    case 'public-sign-up-mentor-pending-review':
-    case 'public-sign-up-mentor-rejected':
+    case 'MENTOR':
       return 'Providing career or technical support, expecting commitment, etc.'
-  }
 
-  return assertUnreachable(userType)
+    default:
+      return null
+  }
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile,
-})
-
-const mapDispatchToProps = (dispatch: any) => ({
-  profileSaveStart: (profile: Partial<RedProfile>) =>
-    dispatch(profileSaveStart(profile)),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(EditableAbout)
+export default EditableAbout

@@ -1,9 +1,10 @@
 # Connect
 
-You'll find two sister products in this repository:
+You'll find three sister products in this repository:
 
 - ReDI Connect, a tool to connect mentees to mentors, deployed to https://connect.redi-school.org
 - ReDI Talent Pool, a tool to connect jobseekers to companies and get jobs, deployed to https://talent-pool.redi-school.org
+- Christos
 
 Both are created, run and managed by [ReDI School of Digital Integration](https://www.redi-school.org). We're a non-profit school in Germany (in Berlin, Hamburg, Munich and NRW) with a community of hundreds of professionals from the digital industry volunteering to teach and mentor students. Our students are tech-interested locals and newcomers to Germany.
 
@@ -23,13 +24,15 @@ Both are created, run and managed by [ReDI School of Digital Integration](https:
    $ db.dropDatabase()
    ```
 
-   Then run `yarn seed` in project root to seed the database.
+   ~~Then run `yarn seed` in project root to seed the database.~~
 
 6. Run `yarn start:all` to boot all apps, _or_ a subset of apps using the `start:x` commands in package.json.
 
    It'll take a while and lots of warnings will show until everything's booted.
 
-7. See the [Onboarding Checklist](https://github.com/talent-connect/connect/wiki#onboarding-checklist) in our Wiki.
+7. If you don't have environment variables set up, talk to @ericbolikowski to get these. The NestJS backend will not work without them.
+
+8. See the [Onboarding Checklist](https://github.com/talent-connect/connect/wiki#onboarding-checklist) in our Wiki.
 
 You can open these in your browser:
 
@@ -38,19 +41,31 @@ You can open these in your browser:
 - Admin panel: http://localhost:3001
 - ReDI Connect Location Picker: http://localhost:3002
 - API/backend: http://localhost:3003, Swagger: http://localhost:3003/explorer
+- NestJS/new backend: http://localhost:3333, GraphiQL: http://localhost:3333/graphql
 
-Set environment variable `DEV_MODE_EMAIL_RECIPIENT=your-own-email-address@gmail.com` and it'll override the default recipient and send to that instead (e.g. `DEV_MODE_EMAIL_RECIPIENT=your-own-email-address@gmail.com yarn start:all`).
-
-All features will run correctly locally with two exceptions:
-
-1. AWS SES (Simple Email Service) used for transactional emails (sign-up confirmation, verification, event notifications etc)
-2. AWS S3 to store avatar images uploaded by users.
-
-You need an AWS access/secret key for the above - write to @ericbolikowski to get these, then put them into your environment file (`apps/api/.env`).
+Set environment variable `NX_DEV_MODE_EMAIL_RECIPIENT=your-own-email-address@gmail.com` in `apps/nestjs-api/.env.local` and it'll override the default recipient and send to that. You won't be receving any emails otherwise.
 
 We use [Nx Dev Tools](https://nx.dev/) to manage this monorepo. Find all the apps/products under `apps/` and all libraries they consume under `libs/`.
 
 Use trunk-based branching - create feature/bugfix/docs/refactor/blabla branches directly off `master` and file PRs to merge back into `master`. Name branches `<type>/short-hyphenated-title`, where `type` is `feat`, `fix`, `docs`, `style`, `refactor`, `test` or `chore`.
+
+## Note on how to use the GraphiQL playground
+
+The GraphiQL playground is a tool that allows you to test the GraphQL API. It is available at http://localhost:3333/graphql.
+
+The playground is a great tool to test the API, but it is not meant to be used in production. It is a development tool only.
+
+Use it to view all the available GraphQL queries and mutations. Most queries and mutations require authentication. To authenticate, you need to provide a valid JWT token. You can get a valid JWT token by logging in to the ReDI Connect application. Use your browser's developer tools to view network requests. Once you are logged in, find the `POST /api/redUsers/login` request. There, copy the `jwtToken`. Then, in the GraphiQL playground, click on the `HTTP HEADERS` tab. Paste the following:
+
+```
+{
+  "Authorization": "Bearer <your-jwt-token>"
+}
+```
+
+Alternatively, use Loopback's Swagger (http://localhost:3003) to manually send a login request, and copy the JWT token from the response.
+
+See this Loom video for a demo: https://www.loom.com/share/b2328a7ec6054afebb8249ea59ef2f18
 
 ## Getting started for designers
 

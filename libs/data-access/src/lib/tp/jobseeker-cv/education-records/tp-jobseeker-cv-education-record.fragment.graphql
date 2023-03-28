@@ -1,0 +1,18 @@
+fragment AllTpJobseekerCvEducationRecordFields on TpJobseekerCvEducationRecord {
+  id
+  certificationType
+  sortIndex
+  startDateMonth
+  startDateYear
+  title
+  tpJobseekerCvId
+  updatedAt
+  createdAt
+  current
+  description
+  endDateMonth
+  endDateYear
+  institutionCity
+  institutionCountry
+  institutionName
+}

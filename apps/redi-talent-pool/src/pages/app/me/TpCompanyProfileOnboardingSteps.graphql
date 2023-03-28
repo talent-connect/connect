@@ -1,0 +1,3 @@
+fragment TpCompanyProfileOnboardigStepsProfileProp on TpCompanyProfile {
+  state
+}

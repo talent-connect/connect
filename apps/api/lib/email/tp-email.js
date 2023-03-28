@@ -12,17 +12,7 @@ const { buildBackendUrl } = require('../build-backend-url')
 
 const { sendMjmlEmailFactory } = require('./email')
 
-const sendTpResetPasswordEmailTemplate = fs.readFileSync(
-  path.resolve(__dirname, 'tp-templates', 'reset-password.mjml'),
-  'utf-8'
-)
-
-const sendTpResetPasswordEmailParsed = mjml2html(
-  sendTpResetPasswordEmailTemplate,
-  {
-    filePath: path.resolve(__dirname, 'tp-templates'),
-  }
-)
+const sendTpResetPasswordEmailParsed = ''
 
 const sendTpResetPasswordEmail = ({
   recipient,

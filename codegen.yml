@@ -1,0 +1,27 @@
+overwrite: true
+schema: 'http://localhost:3333/graphql'
+# schema: 'https://connect-nestjs-api.redi-school.org/graphql'
+#documents: 'apps/redi-connect/src/**/*.graphql'
+documents: ['libs/**/*.graphql', 'apps/**/*.graphql']
+generates:
+  libs/data-access/src/lib/types/types.ts:
+    - add:
+        content: '// THIS FILE IS GENERATED, DO NOT EDIT!'
+    - 'typescript'
+  /:
+    preset: near-operation-file
+    presetConfig:
+      extension: .generated.ts
+      baseTypesPath: '~@talent-connect/data-access'
+    plugins:
+      - add:
+          content: '// THIS FILE IS GENERATED, DO NOT EDIT!'
+      - typescript-operations
+      - typescript-react-query:
+          exposeQueryKeys: true
+    config:
+      withHooks: true
+      fetcher: '@talent-connect/data-access#fetcher'
+  ./schema.graphql:
+    plugins:
+      - schema-ast

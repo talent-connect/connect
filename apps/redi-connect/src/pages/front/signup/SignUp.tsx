@@ -1,12 +1,9 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
 import AccountOperation from '../../../components/templates/AccountOperation'
-import { useParams } from 'react-router'
-import { Link } from 'react-router-dom'
 
 import * as Yup from 'yup'
 
-import { FormikValues, FormikHelpers as FormikActions, useFormik } from 'formik'
-import omit from 'lodash/omit'
 import {
   Button,
   Checkbox,
@@ -14,18 +11,25 @@ import {
   FormSelect,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
+import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
 
 import Teaser from '../../../components/molecules/Teaser'
 
-import { Columns, Content, Form } from 'react-bulma-components'
+import { Columns, Content, Form, Notification } from 'react-bulma-components'
 
-import { signUp } from '../../../services/api/api'
-import { Extends, RedProfile } from '@talent-connect/shared-types'
+import {
+  RediCourse,
+  RediLocation,
+  useConProfileSignUpMutation,
+  UserType,
+} from '@talent-connect/data-access'
+import { COURSES } from '@talent-connect/shared-config'
 import { toPascalCaseAndTrim } from '@talent-connect/shared-utils'
+import { signUpLoopback } from '../../../services/api/api'
 import { history } from '../../../services/history/history'
-import { courses } from '../../../config/config'
+import { envRediLocation } from '../../../utils/env-redi-location'
 
-const formCourses = courses.map((course) => ({
+const formCourses = COURSES.map((course) => ({
   value: course.id,
   label: course.label,
 }))
@@ -39,7 +43,7 @@ export const validationSchema = Yup.object({
     .transform(toPascalCaseAndTrim)
     .required('Your last name is required')
     .max(255),
-  contactEmail: Yup.string()
+  email: Yup.string()
     .email('Please enter a valid email')
     .required('Your email is required')
     .label('Email')
@@ -57,7 +61,7 @@ export const validationSchema = Yup.object({
     is: 'public-sign-up-mentee-pending-review',
     then: Yup.string()
       .required('Please select current ReDI course')
-      .oneOf(courses.map((level) => level.id))
+      .oneOf(COURSES.map((level) => level.id))
       .label('Currently enrolled in course'),
   }),
 })
@@ -66,70 +70,68 @@ type SignUpPageType = {
   type: 'mentor' | 'mentee'
 }
 
-type SignUpUserType = Extends<
-  RedProfile['userType'],
-  | 'public-sign-up-mentee-pending-review'
-  | 'public-sign-up-mentor-pending-review'
->
-
 export interface SignUpFormValues {
-  userType: SignUpUserType
+  userType: UserType
   gaveGdprConsent: boolean
-  contactEmail: string
+  email: string
   password: string
   passwordConfirm: string
   firstName: string
   lastName: string
   agreesWithCodeOfConduct: boolean
-  mentee_currentlyEnrolledInCourse: string
+  mentee_currentlyEnrolledInCourse?: RediCourse
 }
 
 export default function SignUp() {
+  const signUpMutation = useConProfileSignUpMutation()
   const { type } = useParams<SignUpPageType>()
 
-  // we may consider removing the backend types from frontend
-  const userType: SignUpUserType =
-    type === 'mentee'
-      ? 'public-sign-up-mentee-pending-review'
-      : 'public-sign-up-mentor-pending-review'
-
   const initialValues: SignUpFormValues = {
-    userType,
+    userType: type.toUpperCase() as UserType,
     gaveGdprConsent: false,
-    contactEmail: '',
+    email: '',
     password: '',
     passwordConfirm: '',
     firstName: '',
     lastName: '',
     agreesWithCodeOfConduct: false,
-    mentee_currentlyEnrolledInCourse: '',
+    mentee_currentlyEnrolledInCourse: undefined,
   }
 
-  const [submitError, setSubmitError] = useState(false)
+  const [loopbackSubmitError, setLoopbackSubmitError] = useState<string | null>(
+    null
+  )
   const submitForm = async (
     values: FormikValues,
     actions: FormikActions<SignUpFormValues>
   ) => {
-    setSubmitError(false)
-    const transformedValues = validationSchema.cast(values)
-    const profile = transformedValues as Partial<RedProfile>
-    // TODO: this needs to be done in a smarter way, like iterating over the RedProfile definition or something
-    const cleanProfile: Partial<RedProfile> = omit(profile, [
-      'password',
-      'passwordConfirm',
-      'agreesWithCodeOfConduct',
-      'gaveGdprConsent',
-    ])
-    cleanProfile.userActivated = false
-    cleanProfile.signupSource = 'public-sign-up'
-    cleanProfile.menteeCountCapacity = 1
+    setLoopbackSubmitError(null)
     try {
-      await signUp(values.contactEmail, values.password, cleanProfile)
+      await signUpLoopback(values.email, values.password)
+      await signUpMutation.mutateAsync({
+        input: {
+          email: values.email,
+          firstName: values.firstName,
+          lastName: values.lastName,
+          userType: type.toUpperCase() as UserType,
+          rediLocation: envRediLocation() as RediLocation,
+          mentee_currentlyEnrolledInCourse:
+            values.mentee_currentlyEnrolledInCourse,
+        },
+      })
       actions.setSubmitting(false)
-      history.push(`/front/signup-email-verification/${cleanProfile.userType}`)
+      history.push(`/front/signup-complete/${type}`)
     } catch (error) {
       actions.setSubmitting(false)
-      setSubmitError(Boolean(error))
+      if (
+        error?.response?.data?.error?.details?.codes?.email.includes(
+          'uniqueness'
+        )
+      ) {
+        setLoopbackSubmitError('user-already-exists')
+      } else {
+        setLoopbackSubmitError('generic')
+      }
     }
   }
 
@@ -158,6 +160,12 @@ export default function SignUp() {
               username and password <Link to="/front/login">here</Link>.
             </Content>
           )}
+          {loopbackSubmitError === 'user-already-exists' ? (
+            <Notification color="info" className="is-light">
+              You already have an account. Please{' '}
+              <Link to="/front/login">log in</Link>.
+            </Notification>
+          ) : null}
 
           <form onSubmit={(e) => e.preventDefault()} className="form">
             <FormInput
@@ -173,7 +181,7 @@ export default function SignUp() {
             />
 
             <FormInput
-              name="contactEmail"
+              name="email"
               type="email"
               placeholder="Your Email"
               {...formik}
@@ -234,12 +242,14 @@ export default function SignUp() {
                 Data Protection
               </a>
             </Checkbox.Form>
-            <Form.Help
-              color="danger"
-              className={submitError ? 'help--show' : ''}
-            >
-              {submitError && 'An error occurred, please try again.'}
-            </Form.Help>
+            {loopbackSubmitError !== 'user-already-exists' &&
+            (loopbackSubmitError || signUpMutation.isError) ? (
+              <Form.Help color="danger" className="help--show">
+                An error occurred, please try again.
+                {signUpMutation.isError ? 'yes' : 'no'}
+              </Form.Help>
+            ) : null}
+
             <Form.Field>
               <Form.Control>
                 <Button

@@ -5,17 +5,16 @@ import {
   FormTextArea,
   Modal,
 } from '@talent-connect/shared-atomic-design-components'
-import { FormSubmitResult, RedProfile } from '@talent-connect/shared-types'
 import { Content, Form } from 'react-bulma-components'
 
-import { FormikHelpers as FormikActions, useFormik } from 'formik'
+import { useFormik } from 'formik'
 import { useState } from 'react'
+import { useQueryClient } from 'react-query'
 import * as Yup from 'yup'
-import { requestMentorship } from '../../services/api/api'
-
-import { connect } from 'react-redux'
-import { profilesFetchOneStart } from '../../redux/profiles/actions'
-import { RootState } from '../../redux/types'
+import {
+  ApplyForMentorMentorPropFragment,
+  useApplyForMentorshipMutation,
+} from './ApplyForMentor.generated'
 
 interface ConnectionRequestFormValues {
   applicationText: string
@@ -47,30 +46,26 @@ const validationSchema = Yup.object({
 })
 
 interface Props {
-  mentor: RedProfile
-  profilesFetchOneStart: Function
+  mentor: ApplyForMentorMentorPropFragment
 }
 
-const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
-  const [submitResult, setSubmitResult] =
-    useState<FormSubmitResult>('notSubmitted')
+const ApplyForMentor = ({ mentor }: Props) => {
+  const queryClient = useQueryClient()
+  const applyForMentorshipMutation = useApplyForMentorshipMutation()
+
   const [show, setShow] = useState(false)
-  const submitForm = async (
-    values: ConnectionRequestFormValues,
-    actions: FormikActions<ConnectionRequestFormValues>
-  ) => {
-    setSubmitResult('submitting')
-    try {
-      await requestMentorship(
-        values.applicationText,
-        values.expectationText,
-        mentor.id
-      )
-      setShow(false)
-      profilesFetchOneStart(mentor.id)
-    } catch (error) {
-      setSubmitResult('error')
-    }
+  const submitForm = async (values: ConnectionRequestFormValues) => {
+    await applyForMentorshipMutation.mutateAsync({
+      input: {
+        applicationText: values.applicationText,
+        expectationText: values.expectationText,
+        mentorId: mentor.id,
+      },
+    })
+    setTimeout(() => {
+      queryClient.invalidateQueries()
+    }, 100)
+    setShow(false)
   }
 
   const formik = useFormik({
@@ -91,20 +86,19 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
       <Modal
         show={show}
         stateFn={setShow}
-        title={`Application to ${mentor.firstName} ${mentor.lastName}`}
+        title={`Application to ${mentor.fullName}`}
       >
         <Modal.Body>
           <form>
-            {submitResult === 'success' && (
+            {applyForMentorshipMutation.isSuccess && (
               <>Your application was successfully submitted.</>
             )}
-            {submitResult !== 'success' && (
+            {!applyForMentorshipMutation.isSuccess && (
               <>
                 <Content>
                   <p>
-                    Want to apply to {mentor.firstName} {mentor.lastName}?
-                    Great! Next step is to write about your Motivation and
-                    Expectation below.
+                    Want to apply to {mentor.fullName}? Great! Next step is to
+                    write about your Motivation and Expectation below.
                   </p>
                 </Content>
                 <Caption>Motivation </Caption>
@@ -142,9 +136,11 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
 
                 <Form.Help
                   color="danger"
-                  className={submitResult === 'error' ? 'help--show' : ''}
+                  className={
+                    applyForMentorshipMutation.isError ? 'help--show' : ''
+                  }
                 >
-                  {submitResult === 'error' &&
+                  {applyForMentorshipMutation.isError &&
                     'An error occurred, please try again.'}
                 </Form.Help>
 
@@ -178,13 +174,4 @@ const ApplyForMentor = ({ mentor, profilesFetchOneStart }: Props) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  mentor: state.profiles.oneProfile as RedProfile,
-})
-
-const mapDispatchToProps = (dispatch: any) => ({
-  profilesFetchOneStart: (profileId: string) =>
-    dispatch(profilesFetchOneStart(profileId)),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(ApplyForMentor)
+export default ApplyForMentor

@@ -1,0 +1,9 @@
+mutation tpJobseekerProfileExperienceRecordPatch(
+  $input: TpJobseekerProfileExperienceRecordPatchInput!
+) {
+  tpJobseekerProfileExperienceRecordPatch(
+    tpJobseekerProfileExperienceRecordPatchInput: $input
+  ) {
+    ok
+  }
+}

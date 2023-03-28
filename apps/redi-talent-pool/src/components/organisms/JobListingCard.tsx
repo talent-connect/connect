@@ -1,16 +1,15 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
 import { Card, Element } from 'react-bulma-components'
+import { NavLink } from 'react-router-dom'
 
 import { CardTags, Icon } from '@talent-connect/shared-atomic-design-components'
-import { AWS_PROFILE_AVATARS_BUCKET_BASE_URL } from '@talent-connect/shared-config'
-import { TpJobListing } from '@talent-connect/shared-types'
 import { topSkillsIdToLabelMap } from '@talent-connect/talent-pool/config'
 // import placeholderImage from '../../assets/images/img-placeholder.png'
 import './JobListingCard.scss'
+import { JobListingCardJobListingPropFragment } from './jobseeker-profile-editables/JobListingCard.generated'
 
 interface JobListingCardProps {
-  jobListing: Partial<TpJobListing>
+  jobListing: JobListingCardJobListingPropFragment
   isFavorite?: boolean
   toggleFavorite?: (id: string) => void
   linkTo?: string
@@ -27,18 +26,15 @@ export function JobListingCard({
   const jobTitle = jobListing?.title
   const idealTechnicalSkills = jobListing?.idealTechnicalSkills
 
-  const companyName = jobListing?.tpCompanyProfile?.companyName
-  const companyAvatarImage =
-    jobListing?.tpCompanyProfile?.profileAvatarImageS3Key
+  const companyName = jobListing?.companyName
+  const companyAvatarImage = jobListing?.profileAvatarImageS3Key
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.preventDefault()
     toggleFavorite && toggleFavorite(jobListing.id)
   }
 
-  const imgSrc = companyAvatarImage
-    ? AWS_PROFILE_AVATARS_BUCKET_BASE_URL + companyAvatarImage
-    : null
+  const imgSrc = companyAvatarImage ? companyAvatarImage : null
 
   return (
     <NavLink to={linkTo} onClick={onClick} className="job-posting-link">

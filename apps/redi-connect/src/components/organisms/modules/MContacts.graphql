@@ -1,0 +1,6 @@
+fragment MContactsProfileProp on ConProfile {
+  email
+  telephoneNumber
+  linkedInProfileUrl
+  slackUsername
+}

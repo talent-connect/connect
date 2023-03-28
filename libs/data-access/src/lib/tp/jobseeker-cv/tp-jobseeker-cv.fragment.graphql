@@ -1,0 +1,29 @@
+fragment AllTpJobseekerCvFields on TpJobseekerCv {
+  aboutYourself
+  githubUrl
+  id
+  ifAvailabilityIsDate_date
+  immigrationStatus
+  lastName
+  linkedInUrl
+  location
+  personalWebsite
+  postalMailingAddress
+  profileAvatarImageS3Key
+  availability
+  stackOverflowUrl
+  telephoneNumber
+  topSkills
+  twitterUrl
+  updatedAt
+  userId
+  willingToRelocate
+  behanceUrl
+  createdAt
+  cvName
+  desiredEmploymentType
+  desiredPositions
+  dribbbleUrl
+  email
+  firstName
+}

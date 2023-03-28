@@ -1,62 +1,68 @@
-import { Content } from 'react-bulma-components'
+import {
+  ConnectProfileStatus,
+  useLoadMyProfileQuery,
+} from '@talent-connect/data-access'
 import { Heading } from '@talent-connect/shared-atomic-design-components'
-import LoggedIn from '../../../components/templates/LoggedIn'
-import { RootState } from '../../../redux/types'
-import { getApplicants } from '../../../redux/matches/selectors'
-import { connect } from 'react-redux'
-import { RedMatch } from '@talent-connect/shared-types'
+import { Content } from 'react-bulma-components'
 import { useHistory } from 'react-router-dom'
-import { getRedProfileFromLocalStorage } from '../../../services/auth/auth'
-import MobileView from './MobileView'
-import DesktopView from './DesktopView'
+import LoggedIn from '../../../components/templates/LoggedIn'
+import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
+import { useGetMentorshipMatchesQuery } from './Applications.generated'
 import { ApplicationsFilterContextProvider } from './ApplicationsFilterContext'
+import DesktopView from './DesktopView'
+import MobileView from './MobileView'
 
-interface Props {
-  applicants: RedMatch[]
-}
-
-const Applications = ({ applicants }: Props) => {
+function Applications() {
+  const mentorshipMatchesQuery = useGetMentorshipMatchesQuery()
+  const loopbackUserId = getAccessTokenFromLocalStorage().userId
+  const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
   const history = useHistory()
-  const profile = getRedProfileFromLocalStorage()
 
-  if (profile.userActivated !== true) return <LoggedIn />
+  const profile = myProfileQuery.data?.conProfile
+
+  if (profile?.profileStatus !== ConnectProfileStatus?.Approved)
+    return <LoggedIn />
+
+  // if (mentorshipMatchesQuery.isLoading) return null
+
+  const applicants = mentorshipMatchesQuery.data?.conMentorshipMatches
 
   return (
     <LoggedIn>
       <Heading subtitle size="small" className="double-bs">
         Applications
       </Heading>
-      {applicants.length === 0 ? (
-        <Content italic>
-          {profile.userType === 'mentee' && (
-            <>
-              You have not applied for a mentor yet.{' '}
-              <a onClick={() => history.push('/app/find-a-mentor')}>
-                Find your mentor here.
-              </a>
-            </>
-          )}
-          {profile.userType === 'mentor' && (
-            <>
-              You currently have no mentee applications. To increase your
-              chances of receiving an application, make sure that your profile
-              is up-to-date, informative and friendly.
-            </>
-          )}
-        </Content>
-      ) : (
-        <ApplicationsFilterContextProvider>
-          <DesktopView applicants={applicants} />
+      {applicants?.length !== undefined && (
+        <>
+          {applicants.length === 0 ? (
+            <Content italic>
+              {profile.userType === 'MENTEE' && (
+                <>
+                  You have not applied for a mentor yet.{' '}
+                  <a onClick={() => history.push('/app/find-a-mentor')}>
+                    Find your mentor here.
+                  </a>
+                </>
+              )}
+              {profile.userType === 'MENTOR' && (
+                <>
+                  You currently have no mentee applications. To increase your
+                  chances of receiving an application, make sure that your
+                  profile is up-to-date, informative and friendly.
+                </>
+              )}
+            </Content>
+          ) : (
+            <ApplicationsFilterContextProvider>
+              <DesktopView applicants={applicants} />
 
-          <MobileView />
-        </ApplicationsFilterContextProvider>
+              <MobileView />
+            </ApplicationsFilterContextProvider>
+          )}
+        </>
       )}
     </LoggedIn>
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  applicants: getApplicants(state.matches),
-})
-
-export default connect(mapStateToProps, null)(Applications)
+export default Applications

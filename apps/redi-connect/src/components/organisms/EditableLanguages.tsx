@@ -1,22 +1,22 @@
 import {
+  useLoadMyProfileQuery,
+  usePatchMyProfileMutation,
+} from '@talent-connect/data-access'
+import {
   Editable,
   FormSelect,
 } from '@talent-connect/shared-atomic-design-components'
-import { RedProfile } from '@talent-connect/shared-types'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
-
-import * as Yup from 'yup'
-import { profileSaveStart } from '../../redux/user/actions'
-
-import { FormikValues, useFormik } from 'formik'
-
 import { LANGUAGES } from '@talent-connect/shared-config'
+import { objectEntries } from '@talent-connect/typescript-utilities'
+import { FormikValues, useFormik } from 'formik'
+import { useQueryClient } from 'react-query'
+import * as Yup from 'yup'
+import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 import { ReadLanguages } from '../molecules'
 
-const formLanguages = LANGUAGES.map((language) => ({
-  value: language,
-  label: language,
+const formLanguages = objectEntries(LANGUAGES).map(([value, label]) => ({
+  value,
+  label,
 }))
 
 export interface LanguagesFormValues {
@@ -28,12 +28,23 @@ const validationSchema = Yup.object({
 })
 
 // props: FormikProps<AboutFormValues>
-const EditableLanguages = ({ profile, profileSaveStart }: any) => {
-  const { id, languages } = profile
+function EditableLanguages() {
+  const loopbackUserId = getAccessTokenFromLocalStorage().userId
+  const queryClient = useQueryClient()
+  const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
+  const patchMyProfileMutation = usePatchMyProfileMutation()
+
+  const profile = myProfileQuery.data?.conProfile
+
+  const languages = profile?.languages
 
   const submitForm = async (values: FormikValues) => {
-    const languagesContacts = values as Partial<RedProfile>
-    profileSaveStart({ ...languagesContacts, id })
+    const mutationResult = await patchMyProfileMutation.mutateAsync({
+      input: { id: profile.id, ...values },
+    })
+    queryClient.setQueryData(useLoadMyProfileQuery.getKey({ loopbackUserId }), {
+      conProfile: mutationResult.patchConProfile,
+    })
   }
 
   const initialValues: LanguagesFormValues = {
@@ -46,6 +57,8 @@ const EditableLanguages = ({ profile, profileSaveStart }: any) => {
     validationSchema,
     onSubmit: submitForm,
   })
+
+  if (!myProfileQuery.isSuccess) return null
 
   return (
     <Editable
@@ -67,13 +80,4 @@ const EditableLanguages = ({ profile, profileSaveStart }: any) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile,
-})
-
-const mapDispatchToProps = (dispatch: any) => ({
-  profileSaveStart: (profile: Partial<RedProfile>) =>
-    dispatch(profileSaveStart(profile)),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(EditableLanguages)
+export default EditableLanguages

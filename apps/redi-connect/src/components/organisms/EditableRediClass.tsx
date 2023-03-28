@@ -1,17 +1,16 @@
 import {
+  useLoadMyProfileQuery,
+  usePatchMyProfileMutation,
+} from '@talent-connect/data-access'
+import {
   Editable,
   FormSelect,
 } from '@talent-connect/shared-atomic-design-components'
-import { RedProfile } from '@talent-connect/shared-types'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
-
-import * as Yup from 'yup'
-import { profileSaveStart } from '../../redux/user/actions'
-
 import { FormikValues, useFormik } from 'formik'
-
+import { useQueryClient } from 'react-query'
+import * as Yup from 'yup'
 import { courses } from '../../config/config'
+import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 import { ReadRediClass } from '../molecules'
 
 const formCourses = courses.map((course) => ({
@@ -30,13 +29,24 @@ const validationSchema = Yup.object({
     .label('Currently enrolled in course'),
 })
 
-// props: FormikProps<AboutFormValues>
-const EditableRediClass = ({ profile, profileSaveStart }: any) => {
-  const { id, mentee_currentlyEnrolledInCourse } = profile
+function EditableRediClass() {
+  const loopbackUserId = getAccessTokenFromLocalStorage().userId
+  const queryClient = useQueryClient()
+  const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
+  const patchMyProfileMutation = usePatchMyProfileMutation()
+
+  const profile = myProfileQuery.data?.conProfile
+
+  const mentee_currentlyEnrolledInCourse =
+    profile?.mentee_currentlyEnrolledInCourse
 
   const submitForm = async (values: FormikValues) => {
-    const rediClass = values as Partial<RedProfile>
-    profileSaveStart({ ...rediClass, id })
+    const mutationResult = await patchMyProfileMutation.mutateAsync({
+      input: { id: profile.id, ...values },
+    })
+    queryClient.setQueryData(useLoadMyProfileQuery.getKey({ loopbackUserId }), {
+      conProfile: mutationResult.patchConProfile,
+    })
   }
 
   const initialValues: RediClassFormValues = {
@@ -49,6 +59,8 @@ const EditableRediClass = ({ profile, profileSaveStart }: any) => {
     validationSchema,
     onSubmit: submitForm,
   })
+
+  if (!myProfileQuery.isSuccess) return null
 
   return (
     <Editable
@@ -68,13 +80,4 @@ const EditableRediClass = ({ profile, profileSaveStart }: any) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile,
-})
-
-const mapDispatchToProps = (dispatch: any) => ({
-  profileSaveStart: (profile: Partial<RedProfile>) =>
-    dispatch(profileSaveStart(profile)),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(EditableRediClass)
+export default EditableRediClass

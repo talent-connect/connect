@@ -8,8 +8,12 @@ import * as Yup from 'yup'
 
 import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
 import { history } from '../../../services/history/history'
-import { setPassword, fetchSaveRedProfile } from '../../../services/api/api'
-import { saveAccessTokenToLocalStorage } from '../../../services/auth/auth'
+import { setPassword } from '../../../services/api/api'
+import {
+  getAccessTokenFromLocalStorage,
+  saveAccessTokenToLocalStorage,
+  setGraphQlClientAuthHeader,
+} from '../../../services/auth/auth'
 import { RouteComponentProps } from 'react-router'
 import { showNotification } from '../../../components/AppNotification'
 import {
@@ -17,6 +21,7 @@ import {
   FormInput,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
+import { useLoadMyProfileQuery } from '@talent-connect/data-access'
 
 interface SetNewPasswordValues {
   password: string
@@ -43,6 +48,8 @@ interface RouteParams {
 }
 
 export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
+  const loopbackUserId = getAccessTokenFromLocalStorage().userId
+  const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
   const [formError, setFormError] = useState<string>('')
   const [errorMsg, setErrorMsg] = useState<string>('')
 
@@ -53,19 +60,13 @@ export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
       try {
         accessToken = JSON.parse(accessTokenStr)
         saveAccessTokenToLocalStorage(accessToken)
-        console.log('savetoken')
+        setGraphQlClientAuthHeader(accessToken)
       } catch (err) {
-        console.log('savetoken errp')
         return setErrorMsg(
           'Sorry, there seems to have been an error. Please try to reset your password again, or contact career@redi-school.org for assistance.'
         )
       }
-      try {
-        await fetchSaveRedProfile(accessToken)
-        console.log('saveprofile')
-      } catch (err) {
-        console.log('saveprofile error')
-
+      if (myProfileQuery.isError) {
         return setErrorMsg(
           'Sorry, the link you used seems to have expired. Please contact career@redi-school.org to receive a new one.'
         )

@@ -1,0 +1,9 @@
+mutation tpJobseekerCvLanguageRecordCreate(
+  $input: TpJobseekerCvLanguageRecordCreateInput!
+) {
+  tpJobseekerCvLanguageRecordCreate(
+    tpJobseekerCvLanguageRecordCreateInput: $input
+  ) {
+    ok
+  }
+}

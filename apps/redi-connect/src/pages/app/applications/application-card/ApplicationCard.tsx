@@ -1,36 +1,41 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import { Columns, Content, Heading } from 'react-bulma-components'
-import moment from 'moment'
 import classnames from 'classnames'
+import moment from 'moment'
+import { Columns, Content, Heading } from 'react-bulma-components'
 
-import { RootState } from '../../../../redux/types'
-import { getHasReachedMenteeLimit } from '../../../../redux/user/selectors'
-import { RedMatch, RedProfile } from '@talent-connect/shared-types'
 import {
-  REDI_LOCATION_NAMES,
-  MENTORSHIP_MATCH_STATUS_LABELS,
-} from '@talent-connect/shared-config'
+  AllConProfileFieldsFragment,
+  MentorshipMatchStatus,
+  useLoadMyProfileQuery,
+} from '@talent-connect/data-access'
 import { Icon } from '@talent-connect/shared-atomic-design-components'
+import {
+  MENTORSHIP_MATCH_STATUS_LABELS,
+  REDI_LOCATION_NAMES,
+} from '@talent-connect/shared-config'
 import {
   Avatar,
   ConfirmMentorship,
   DeclineMentorshipButton,
 } from '../../../../components/organisms'
-import { useApplicationCard } from './useApplicationCard'
+import { getAccessTokenFromLocalStorage } from '../../../../services/auth/auth'
+import { ApplicationsPageApplicationFragment } from '../Applications.generated'
 import './ApplicationCard.scss'
+import { useApplicationCard } from './useApplicationCard'
 
 interface Props {
-  application: RedMatch & { createdAt?: string }
+  application: ApplicationsPageApplicationFragment
   hasReachedMenteeLimit: boolean
-  currentUser?: RedProfile
+  currentUser?: AllConProfileFieldsFragment
 }
 
-const ApplicationCard = ({
-  application,
-  hasReachedMenteeLimit,
-  currentUser,
-}: Props) => {
+const ApplicationCard = ({ application }: Props) => {
+  const loopbackUserId = getAccessTokenFromLocalStorage().userId
+  const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
+
+  const hasReachedMenteeLimit =
+    myProfileQuery.data.conProfile.doesNotHaveAvailableMentorshipSlot
+  const currentUser = myProfileQuery.data.conProfile
+
   const {
     history,
     showDetails,
@@ -47,7 +52,7 @@ const ApplicationCard = ({
     <>
       <div
         className={
-          application.status !== 'applied'
+          application.status !== MentorshipMatchStatus.Applied
             ? 'application-card'
             : 'application-card-pending'
         }
@@ -61,9 +66,7 @@ const ApplicationCard = ({
           <Columns.Column size={3} textAlignment="left">
             {applicationUser && (
               <>
-                <p>
-                  {applicationUser.firstName} {applicationUser.lastName}
-                </p>
+                <p>{applicationUser.fullName}</p>
                 <p>{REDI_LOCATION_NAMES[applicationUser.rediLocation]}</p>
               </>
             )}
@@ -90,7 +93,7 @@ const ApplicationCard = ({
 
           <Columns.Column
             className={
-              application.status === 'applied'
+              application.status === MentorshipMatchStatus.Applied
                 ? 'application-card-pending__status'
                 : null
             }
@@ -141,12 +144,10 @@ const ApplicationCard = ({
             <Content>{application.expectationText}</Content>
           </>
         )}
-        {currentUserIsMentor && application.status === 'applied' ? (
+        {currentUserIsMentor &&
+        application.status === MentorshipMatchStatus.Applied ? (
           <>
-            <ConfirmMentorship
-              match={application}
-              hasReachedMenteeLimit={hasReachedMenteeLimit}
-            />
+            <ConfirmMentorship match={application} />
             <DeclineMentorshipButton match={application} />
           </>
         ) : null}
@@ -155,9 +156,4 @@ const ApplicationCard = ({
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  currentUser: state.user.profile,
-  hasReachedMenteeLimit: getHasReachedMenteeLimit(state.user),
-})
-
-export default connect(mapStateToProps)(ApplicationCard)
+export default ApplicationCard

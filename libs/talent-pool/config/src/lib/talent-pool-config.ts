@@ -628,19 +628,21 @@ export const yearsOfRelevantExperienceOptions: DropdownOptions = [
   { id: '20OrMore', label: '20 or more years' },
 ]
 
-export const desiredEmploymentTypeOptions = [
+export const employmentTypes = [
   { id: 'partTime', label: 'Part-time employment' },
   { id: 'fullTime', label: 'Full-time employment' },
   { id: 'werkstudium', label: 'Werkstudent*in (working student position)' },
   { id: 'Internship', label: 'Internship' },
   { id: 'apprenticeshipAusbildung', label: 'Apprenticeship (Ausbildung)' },
+  { id: 'freelance', label: 'Freelance' },
+  { id: 'contract', label: 'Contract' },
   { id: 'traineeship', label: 'Traineeship' },
   { id: 'dualStudyBachelor', label: 'Dual Study Bachelor' },
   { id: 'dualStudyMaster', label: 'Dual Study Master' },
 ]
 
-export const desiredEmploymentTypeOptionsIdToLabelMap = mapValues(
-  keyBy(desiredEmploymentTypeOptions, 'id'),
+export const employmentTypesIdToLabelMap = mapValues(
+  keyBy(employmentTypes, 'id'),
   'label'
 )
 
@@ -716,52 +718,33 @@ export const formMonthsOptions = Object.entries(formMonths).map(
   })
 )
 
-export const employmentTypes: DropdownOptions = [
-  { id: 'partTimeEmployment', label: 'Part-time employment' },
-  { id: 'fullTimeEmployment', label: 'Full-time employment' },
-  { id: 'werkstudium', label: 'Werkstudent*in (working student position)' },
-  { id: 'internship', label: 'Internship' },
-  { id: 'apprenticeship', label: 'Apprenticeship (Ausbildung)' },
-  { id: 'selfEmployed', label: 'Self-employed' },
-  { id: 'freelance', label: 'Freelance' },
-  { id: 'contract', label: 'Contract' },
-  { id: 'traineeship', label: 'Traineeship' },
-  { id: 'dualStudyBachelor', label: 'Dual Study Bachelor' },
-  { id: 'dualStudyMaster', label: 'Dual Study Master' },
-]
-
-export const employmentTypesIdToLabelMap = mapValues(
-  keyBy(employmentTypes, 'id'),
-  'label'
-)
-
 export const howDidHearAboutRediOptions = {
-  'redi-team-member': 'ReDI Team Member',
-  'redi-student-alumni': 'Redi Student/Alumni',
-  'redi-website': 'ReDI Website',
-  collegue: 'A Colleague',
-  'already-volunteer-at-redi': 'I am a volunteer at ReDI School',
-  'internet-search': 'Internet Search',
-  'social-media': 'Social Media',
-  other: 'Other',
+  REDI_TEAM_MEMBER: 'ReDI Team Member',
+  REDI_STUDENT_ALUMNI: 'Redi Student/Alumni',
+  REDI_WEBSITE: 'ReDI Website',
+  COLLEGUE: 'A Colleague',
+  ALREADY_VOLUNTEER_AT_REDI: 'I am a volunteer at ReDI School',
+  INTERNET_SEARCH: 'Internet Search',
+  SOCIAL_MEDIA: 'Social Media',
+  OTHER: 'Other',
 } as const
 
 export const germanFederalStates = {
-  'baden-wuerttemberg': 'Baden-Württemberg',
-  bayern: 'Bayern',
-  berlin: 'Berlin',
-  brandenburg: 'Brandenburg',
-  bremen: 'Bremen',
-  hamburg: 'Hamburg',
-  hessen: 'Hessen',
-  'mecklenburg-vorpommern': 'Mecklenburg-Vorpommern',
-  niedersachsen: 'Niedersachsen',
-  'nordrhein-westfalen': 'Nordrhein-Westfalen',
-  'rheinland-pfalz': 'Rheinland-Pfalz',
-  saarland: 'Saarland',
-  sachsen: 'Sachsen',
-  'sachsen-anhalt': 'Sachsen-Anhalt',
-  'schleswig-holstein': 'Schleswig-Holstein',
-  thueringen: 'Thüringen',
-  'outside-germany': 'Outside Germany',
+  BADEN_WUERTTEMBERG: 'Baden-Württemberg',
+  BAYERN: 'Bayern',
+  BERLIN: 'Berlin',
+  BRANDENBURG: 'Brandenburg',
+  BREMEN: 'Bremen',
+  HAMBURG: 'Hamburg',
+  HESSEN: 'Hessen',
+  MECKLENBURG_VORPOMMERN: 'Mecklenburg-Vorpommern',
+  NIEDERSACHSEN: 'Niedersachsen',
+  NORDRHEIN_WESTFALEN: 'Nordrhein-Westfalen',
+  RHEINLAND_PFALZ: 'Rheinland-Pfalz',
+  SAARLAND: 'Saarland',
+  SACHSEN: 'Sachsen',
+  SACHSEN_ANHALT: 'Sachsen-Anhalt',
+  SCHLESWIG_HOLSTEIN: 'Schleswig-Holstein',
+  THUERINGEN: 'Thüringen',
+  OUTSIDE_GERMANY: 'Outside Germany',
 } as const

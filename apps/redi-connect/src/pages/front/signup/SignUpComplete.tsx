@@ -1,14 +1,12 @@
-import React from 'react'
-import AccountOperation from '../../../components/templates/AccountOperation'
-import { ReactComponent as WelcomeIllustration } from '../../../assets/images/welcome-user.svg'
-import { Columns, Form, Content } from 'react-bulma-components'
-import { useHistory, useParams } from 'react-router'
-import { UserType } from '@talent-connect/shared-types'
+import { UserType } from '@talent-connect/data-access'
 import {
-  Heading,
   Button,
+  Heading,
 } from '@talent-connect/shared-atomic-design-components'
+import { Columns, Content, Form } from 'react-bulma-components'
+import { useHistory, useParams } from 'react-router-dom'
 import { Teaser } from '../../../components/molecules'
+import AccountOperation from '../../../components/templates/AccountOperation'
 
 type RouteParams = {
   userType: UserType
@@ -30,22 +28,26 @@ export default function SignUpComplete() {
         <Columns.Column size={5} offset={1}>
           <Heading border="bottomLeft">Meet the team</Heading>
           <Content size="large" renderAs="div">
-            <p>Your email address was successfully verified!</p>
-            {userType === 'public-sign-up-mentor-pending-review' && (
+            <p>Thank you for signing up!</p>
+            {userType === UserType.Mentor && (
               <>
-                <p style={{textAlign: 'justify'}}>
-                Now, we would like to get to know you better. We regularly
-                organize mentor onboardings in small groups.{' '}
+                <p>
+                  Now, we would like to get to know you better. We regularly
+                  organize mentor onboardings in small groups.{' '}
                   <a href="https://calendly.com/hadeertalentsucess/redi-connect-mentors-onboarding">
                     <strong>
-                      Please book yourself in for one of the open 30-minute slots.
+                      Please book yourself in for one of the open 30-minute
+                      slots.
                     </strong>
                   </a>
                 </p>
-                <p style={{textAlign: 'justify'}}>If you are a ReDI partner, your profile will be activated automatically - you don't have to select a date!</p>
+                <p style={{ textAlign: 'justify' }}>
+                  If you are a ReDI partner, your profile will be activated
+                  automatically - you don't have to select a date!
+                </p>
               </>
             )}
-            {userType === 'public-sign-up-mentee-pending-review' && (
+            {userType === UserType.Mentee && (
               <>
                 <p>
                   Your next step is to watch a short onboarding tutorial to get

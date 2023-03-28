@@ -1,0 +1,9 @@
+mutation tpJobseekerProfileLanguageRecordCreate(
+  $input: TpJobseekerProfileLanguageRecordCreateInput!
+) {
+  tpJobseekerProfileLanguageRecordCreate(
+    tpJobseekerProfileLanguageRecordCreateInput: $input
+  ) {
+    ok
+  }
+}

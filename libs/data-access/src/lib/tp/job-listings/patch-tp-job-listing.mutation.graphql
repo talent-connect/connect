@@ -1,0 +1,5 @@
+mutation tpJobListingPatch($input: TpJobListingPatchInput!) {
+  tpJobListingPatch(tpJobListingPatchInput: $input) {
+    ok
+  }
+}

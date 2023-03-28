@@ -1,0 +1,21 @@
+mutation favoriteMentor(
+  $input: ConMenteeFavoritedMentorCreateMutationInputDto!
+) {
+  conMenteeFavoritedMentorCreate(input: $input) {
+    ok
+  }
+}
+
+mutation unfavoriteMentor(
+  $input: ConMenteeFavoritedMentorDeleteMutationInputDto!
+) {
+  conMenteeFavoritedMentorDelete(input: $input) {
+    ok
+  }
+}
+
+query listFavoriteMentors {
+  conMenteeFavoritedMentors {
+    mentorId
+  }
+}

@@ -1,0 +1,8 @@
+fragment AllCompanyRepresentativeRelationshipFields on TpCompanyRepresentativeRelationship {
+  id
+  tpCompanyProfileId
+  userId
+  status
+  createdAt
+  updatedAt
+}
