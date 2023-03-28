@@ -14,19 +14,13 @@ const { sendMjmlEmailFactory } = require('./email')
 
 const sendTpResetPasswordEmailParsed = ''
 
-const sendTpResetPasswordEmail = ({
-  recipient,
-  firstName,
-  accessToken,
-  rediLocation,
-}) => {
+const sendTpResetPasswordEmail = ({ recipient, accessToken, rediLocation }) => {
   const resetPasswordUrl = `${buildTpFrontendUrl(
     process.env.NODE_ENV,
     rediLocation
   )}/front/reset-password/set-new-password/${accessToken}`
   const rediEmailAdress = 'career@redi-school.org'
   const html = sendTpResetPasswordEmailParsed.html
-    .replace(/\${firstName}/g, firstName)
     .replace(/\${resetPasswordUrl}/g, resetPasswordUrl)
     .replace(/\${rediEmailAdress}/g, rediEmailAdress)
     .replace(/\${emailAdress}/g, recipient)

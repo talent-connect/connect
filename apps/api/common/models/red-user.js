@@ -86,10 +86,12 @@ module.exports = function (RedUser) {
   RedUser.requestResetPasswordEmail = function (body, cb) {
     const email = body.email
     const redproduct = body.redproduct
+    const redilocation = body.redilocation
     RedUser.resetPassword(
       {
         email,
         redproduct,
+        redilocation,
       },
       function (err) {
         if (err) return cb(err)
@@ -107,41 +109,20 @@ module.exports = function (RedUser) {
     const accessToken = encodeURIComponent(JSON.stringify(info.accessToken))
     const email = info.user.email
     const redproduct = info.options.redproduct
+    const rediLocation = info.options.redilocation
 
-    const redUserInst = await RedUser.findById(info.user.id, {
-      include: ['redProfile', 'tpJobseekerProfile', 'tpCompanyProfile'],
-    })
+    const redUserInst = await RedUser.findById(info.user.id)
     const redUser = redUserInst.toJSON()
-
-    const userSignedUpWithCon = !!redUser.redProfile
-    const userSignedUpWithTpAndIsJobseeker = !!redUser.tpJobseekerProfile
-    const userSignedUpWithTpAndIsCompany = !!redUser.tpCompanyProfile
-
-    let firstName
-    let rediLocation
-
-    if (userSignedUpWithCon) {
-      firstName = redUser.redProfile.firstName
-      rediLocation = redUser.redProfile.rediLocation
-    }
-    if (userSignedUpWithTpAndIsJobseeker) {
-      firstName = redUser.tpJobseekerProfile.firstName
-    }
-    if (userSignedUpWithTpAndIsCompany) {
-      firstName = redUser.tpCompanyProfile.firstName
-    }
 
     if (redproduct === 'CON') {
       sendResetPasswordEmail({
         recipient: email,
-        firstName,
         accessToken,
         rediLocation,
       }).subscribe()
     } else if (redproduct === 'TP') {
       sendTpResetPasswordEmail({
         recipient: email,
-        firstName,
         accessToken,
       }).subscribe()
     }
