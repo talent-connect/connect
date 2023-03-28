@@ -20,7 +20,7 @@ const sendTpResetPasswordEmailTemplate = fs.readFileSync(
 const sendTpResetPasswordEmailParsed = mjml2html(
   sendTpResetPasswordEmailTemplate,
   {
-    filePath: path.resolve(__dirname, 'assets', 'email', 'templates'),
+    filePath: path.resolve(__dirname, 'templates'),
   }
 )
 
