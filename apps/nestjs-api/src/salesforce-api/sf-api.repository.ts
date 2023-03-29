@@ -160,7 +160,7 @@ export class SfApiRepository {
 
       result.on('end', async () => {
         console.log('[SfApiRepository]', `Found ${records.length} records`)
-        await this.cacheManager.set(cacheKey, records, 60 * 10)
+        await this.cacheManager.set(cacheKey, records, 60 * 5)
         callback(records)
       })
 
