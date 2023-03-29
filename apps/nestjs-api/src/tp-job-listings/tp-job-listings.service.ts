@@ -32,7 +32,9 @@ export class TpJobListingsService {
   }
 
   async findAllVisibleJobListings(_filter: FindAllVisibleTpJobListingsArgs) {
-    const filter: any = {}
+    const filter: any = {
+      ['Account__r.ReDI_Visible_to_Jobseekers__c']: true,
+    }
     if (_filter.filter.relatesToPositions?.length > 0) {
       filter.Relates_to_Positions__c = {
         $includes: _filter.filter.relatesToPositions,
