@@ -133,6 +133,7 @@
     "react-dom": "17.0.2",
     "react-easy-crop": "^4.4.0",
     "react-i18next": "^11.4.0",
+    "react-image-file-resizer": "^0.4.8",
     "react-markdown": "^6.0.2",
     "react-pdf": "^5.2.0",
     "react-query": "^3.15.0",

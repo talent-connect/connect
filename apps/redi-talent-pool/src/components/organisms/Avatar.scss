@@ -140,3 +140,13 @@
 .reactEasyCrop_Container {
   top: 73px;
 }
+
+.zoom-icons-container {
+  float: right;
+}
+
+@media screen and (max-width: 768px) {
+  .button-atom {
+    width: unset;
+  }
+}

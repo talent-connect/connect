@@ -1,6 +1,4 @@
-import classnames from 'classnames'
 import { FormikValues, useFormik } from 'formik'
-import { useCallback, useState } from 'react'
 import { Element } from 'react-bulma-components'
 import Cropper from 'react-easy-crop'
 import ReactS3Uploader from 'react-s3-uploader'
@@ -18,6 +16,15 @@ import { useQueryClient } from 'react-query'
 import placeholderImage from '../../assets/img-placeholder.png'
 import { ReactComponent as UploadImage } from '../../assets/uploadImage.svg'
 import './Avatar.scss'
+
+import { IconButton, Tooltip } from '@material-ui/core'
+import { ZoomIn, ZoomOut, ZoomOutMap } from '@material-ui/icons'
+import classnames from 'classnames'
+import { useCallback, useRef, useState } from 'react'
+import Resizer from 'react-image-file-resizer'
+
+const MAX_FILE_SIZE = 1000000
+const CROPPER_CONTAINER_HEIGHT = 450
 
 interface AvatarProps {
   profile: {
@@ -63,13 +70,31 @@ const Avatar = ({ profile, shape = 'circle' }: AvatarProps) => {
   )
 }
 
-function readFile(file) {
+function readFile(file): Promise<string | ArrayBuffer> {
   return new Promise((resolve) => {
     const reader = new FileReader()
     reader.addEventListener('load', () => resolve(reader.result), false)
     reader.readAsDataURL(file)
   })
 }
+
+const resizeFile = (
+  file,
+  width,
+  height
+): Promise<string | Blob | File | ProgressEvent<FileReader>> =>
+  new Promise((resolve) => {
+    Resizer.imageFileResizer(
+      file,
+      width,
+      height,
+      'JPEG',
+      100,
+      0,
+      (value) => resolve(value),
+      'base64'
+    )
+  })
 
 const AvatarEditable = ({
   profile,
@@ -82,13 +107,15 @@ const AvatarEditable = ({
   const [imageSrc, setImageSrc] = useState(null)
   const [imageFileName, setImageFileName] = useState('')
 
+  const [isUploading, setIsUploading] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState(0)
+
   const [crop, setCrop] = useState({ x: 0, y: 0 })
   const [zoom, setZoom] = useState(1)
+  const [minZoom, setMinZoom] = useState(1)
 
-  // This is how to keep functions in React state: https://stackoverflow.com/questions/55621212/is-it-possible-to-react-usestate-in-react
-  const [nextFn, setNextFn] = useState(() => (croppedImgFile) => {
-    return
-  })
+  const nextFnRef = useRef(null)
+
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null)
 
   const { profileAvatarImageS3Key } = profile
@@ -117,36 +144,76 @@ const AvatarEditable = ({
   }, [])
 
   const onUploadStart = async (file, next) => {
-    const imageDataUrl = await readFile(file)
+    let imageDataUrl = ''
+    let imageWidth = 0
+    let imageHeight = 0
 
-    setImageSrc(imageDataUrl)
-    setImageFileName(file.name)
+    const image = new Image()
 
-    // Storing next function passed by react-s3-uploader to be called in another function (onSaveClick)
-    setNextFn(() => (croppedImgFile) => next(croppedImgFile))
+    image.onload = async function () {
+      imageWidth = image.width
+      imageHeight = image.height
 
-    setShowCropperModal(true)
+      if (file.size > MAX_FILE_SIZE) {
+        const resizeRatio = Math.sqrt(MAX_FILE_SIZE / file.size)
+        const newWidth = Math.round(imageWidth * resizeRatio)
+        const newHeight = Math.round(imageHeight * resizeRatio)
+
+        imageDataUrl = (await resizeFile(file, newWidth, newHeight)) as string
+      } else {
+        imageDataUrl = (await readFile(file)) as string
+      }
+
+      setImageSrc(imageDataUrl)
+      setImageFileName(file.name)
+
+      // Storing next function passed by react-s3-uploader to be called in another function (onSaveClick)
+      nextFnRef.current = next
+      setShowCropperModal(true)
+    }
+
+    image.src = URL.createObjectURL(file)
+  }
+
+  const onZoomIn = () => {
+    setZoom(zoom + 0.1)
+  }
+
+  const onZoomOut = () => {
+    if (zoom <= minZoom) return
+    setZoom(zoom - 0.1)
+  }
+
+  const onZoomReset = () => {
+    setZoom(1)
+    setCrop({ x: 0, y: 0 })
   }
 
   const onSaveClick = useCallback(async () => {
     try {
+      setIsUploading(true)
+
       const croppedImage = (await getCroppedImg(
         imageSrc,
         croppedAreaPixels
       )) as BlobPart
       const croppedImgFile = new File([croppedImage], imageFileName)
 
-      nextFn(croppedImgFile)
+      nextFnRef.current(croppedImgFile)
     } catch (e) {
       console.error(e)
     }
-  }, [imageSrc, imageFileName, croppedAreaPixels, nextFn])
+  }, [imageSrc, imageFileName, croppedAreaPixels])
 
   const onUploadFinish = (result: any) => {
     formik.setFieldValue('profileAvatarImageS3Key', result.fileKey)
     formik.handleSubmit()
 
+    setIsUploading(false)
     setShowCropperModal(false)
+    setMinZoom(1)
+    setZoom(1)
+    setUploadProgress(0)
   }
 
   return (
@@ -197,32 +264,73 @@ const AvatarEditable = ({
         uploadRequestHeaders={{ 'x-amz-acl': 'public-read' }}
         onError={(c: any) => console.log(c)}
         preprocess={onUploadStart}
+        onProgress={setUploadProgress}
         onFinish={onUploadFinish}
         contentDisposition="auto"
       />
 
       <Modal
-        styles={{
-          height: 600,
-        }}
         show={showCropperModal && imageSrc}
         stateFn={setShowCropperModal}
         title="Crop your profile picture"
       >
-        <Modal.Body>
+        <Modal.Body
+          style={{
+            padding: 0,
+            height: CROPPER_CONTAINER_HEIGHT,
+          }}
+        >
           <Cropper
+            style={{
+              containerStyle: {
+                position: 'relative',
+                height: '100%',
+              },
+            }}
             image={imageSrc}
             crop={crop}
             aspect={1 / 1}
             zoom={zoom}
+            minZoom={minZoom}
             showGrid={false}
             onCropChange={setCrop}
             onCropComplete={onCropComplete}
             onZoomChange={setZoom}
+            onMediaLoaded={(mediaSize) => {
+              if (mediaSize.naturalHeight < mediaSize.naturalWidth) {
+                setMinZoom(
+                  (mediaSize.naturalHeight / mediaSize.naturalWidth) * 0.9
+                )
+              } else {
+                setMinZoom(
+                  (mediaSize.naturalWidth / mediaSize.naturalHeight) * 0.9
+                )
+              }
+            }}
+            restrictPosition={false}
           />
         </Modal.Body>
         <Modal.Foot>
-          <Button onClick={onSaveClick}>Save</Button>
+          <Button onClick={onSaveClick} disabled={isUploading}>
+            {isUploading ? 'Uploading... ' + uploadProgress + '%' : 'Save'}
+          </Button>
+          <div className="zoom-icons-container">
+            <Tooltip title="Zoom In" placement="top">
+              <IconButton onClick={onZoomIn} aria-label="zoom in">
+                <ZoomIn />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Zoom Out" placement="top">
+              <IconButton onClick={onZoomOut} aria-label="zoom out">
+                <ZoomOut />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Reset Zoom" placement="top">
+              <IconButton onClick={onZoomReset} aria-label="reset zoom">
+                <ZoomOutMap />
+              </IconButton>
+            </Tooltip>
+          </div>
         </Modal.Foot>
       </Modal>
     </div>
