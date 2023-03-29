@@ -1,4 +1,4 @@
-import { Language } from '@talent-connect/shared-config'
+import { LanguageKey } from '@talent-connect/shared-config'
 
 export interface TpProfile {
   id: string
@@ -19,21 +19,20 @@ export interface TpProfile {
   stackOverflowUrl?: string
   dribbbleUrl?: string
 
-  workingLanguages?: Language[]
+  workingLanguages?: LanguageKey[]
   yearsOfRelevantExperience?: string
   desiredEmploymentType?: string
   availability?: string
   aboutYourself?: string
   topSkills?: string[]
-  experience?: ExperienceRecord[]
-  education?: EducationRecord[]
-  projects?: ProjectRecord[]
+  experience?: TpJobseekerProfileExperienceRecord[]
+  education?: TpJobseekerProfileEducationRecord[]
   createdAt?: Date
 }
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface CVFormData extends Partial<TpProfile> {}
 
-interface ExperienceRecord {
+interface TpJobseekerProfileExperienceRecord {
   title?: string
   company?: string
 
@@ -43,19 +42,13 @@ interface ExperienceRecord {
   description?: string
 }
 
-interface EducationRecord {
+interface TpJobseekerProfileEducationRecord {
   type?: string
   institutionName?: string
   startDate?: Date
   endDate?: Date
   current?: boolean
   description?: string
-}
-
-interface ProjectRecord {
-  title?: string
-  description?: string
-  link?: string
 }
 
 export interface DropdownOption {

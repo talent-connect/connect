@@ -1,7 +1,7 @@
 /* Keep me in sync with redi-connect-front/src/lib/build-frontend-url.ts */
 
 module.exports = {
-  buildTpFrontendUrl: function (env, rediLocation) {
+  buildTpFrontendUrl: function (env) {
     if (env === 'production') {
       return 'https://talent-pool.redi-school.org'
     } else if (env === 'demonstration') {

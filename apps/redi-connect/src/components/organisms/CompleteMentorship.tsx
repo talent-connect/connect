@@ -3,19 +3,15 @@ import {
   FormTextArea,
   Modal,
 } from '@talent-connect/shared-atomic-design-components'
-import { RedMatch } from '@talent-connect/shared-types'
 import { useFormik } from 'formik'
 import { useState } from 'react'
 import { Content } from 'react-bulma-components'
-import { connect } from 'react-redux'
-import { matchesMarkAsComplete } from '../../redux/matches/actions'
+import { useQueryClient } from 'react-query'
+import { useHistory } from 'react-router-dom'
+import { useCompleteMentorshipMutation } from './CompleteMentorship.generated'
 
 interface CompleteMentorshipProps {
-  match: RedMatch
-  matchesMarkAsComplete: (
-    redMatchId: string,
-    mentorMessageOnComplete: string
-  ) => void
+  mentorshipMatchId: string
 }
 
 interface CompleteMentorshipFormValues {
@@ -26,16 +22,22 @@ const initialValues = {
   mentorMessageOnComplete: '',
 }
 
-const CompleteMentorship = ({
-  match,
-  matchesMarkAsComplete,
-}: CompleteMentorshipProps) => {
+const CompleteMentorship = ({ mentorshipMatchId }: CompleteMentorshipProps) => {
+  const queryClient = useQueryClient()
+  const history = useHistory()
+  const completeMentorshipMutation = useCompleteMentorshipMutation()
   const [isModalActive, setModalActive] = useState(false)
 
   const submitForm = async (values: CompleteMentorshipFormValues) => {
     try {
-      matchesMarkAsComplete(match.id, values.mentorMessageOnComplete)
+      await completeMentorshipMutation.mutateAsync({
+        input: {
+          mentorshipMatchId,
+          mentorMessageOnComplete: values.mentorMessageOnComplete,
+        },
+      })
       setModalActive(false)
+      history.replace('/app/applications')
     } catch (error) {
       console.log('error ', error)
     }
@@ -95,11 +97,4 @@ const CompleteMentorship = ({
   )
 }
 
-const mapDispatchToProps = (dispatch: any) => ({
-  matchesMarkAsComplete: (
-    redMatchId: string,
-    mentorMessageOnComplete: string
-  ) => dispatch(matchesMarkAsComplete(redMatchId, mentorMessageOnComplete)),
-})
-
-export default connect(null, mapDispatchToProps)(CompleteMentorship)
+export default CompleteMentorship

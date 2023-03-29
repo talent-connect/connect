@@ -1,0 +1,7 @@
+fragment JobListingCardJobListingProp on TpJobListing {
+  id
+  title
+  idealTechnicalSkills
+  companyName
+  profileAvatarImageS3Key
+}

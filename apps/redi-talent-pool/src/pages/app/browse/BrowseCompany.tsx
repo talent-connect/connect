@@ -16,22 +16,32 @@ import { Columns, Element, Tag } from 'react-bulma-components'
 
 import { LANGUAGES } from '@talent-connect/shared-config'
 import {
-  desiredEmploymentTypeOptions,
-  desiredEmploymentTypeOptionsIdToLabelMap,
   desiredPositions,
   desiredPositionsIdToLabelMap,
+  employmentTypes,
+  employmentTypesIdToLabelMap,
   germanFederalStates,
   topSkills,
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
 
+import {
+  FederalState,
+  Language,
+  TpDesiredPosition,
+  TpEmploymentType,
+  TpTechnicalSkill,
+  useTpJobseekerDirectoryEntriesFindAllVisibleQuery,
+} from '@talent-connect/data-access'
+import { useQueryClient } from 'react-query'
 import { JobseekerProfileCard } from '../../../components/organisms/JobseekerProfileCard'
 import { LoggedIn } from '../../../components/templates'
-
-import { useTpCompanyProfileUpdateMutation } from '../../../react-query/use-tpcompanyprofile-mutation'
-import { useTpCompanyProfileQuery } from '../../../react-query/use-tpcompanyprofile-query'
-import { useBrowseTpJobseekerProfilesQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import {
+  useTpCompanyFavouritedJobseekerProfilesQuery,
+  useTpCompanyMarkJobseekerAsFavouriteMutation,
+  useTpCompanyUnmarkJobseekerAsFavouriteMutation,
+} from './BrowseCompany.generated'
 
 const germanFederalStatesOptions = objectEntries(germanFederalStates).map(
   ([value, label]) => ({
@@ -41,6 +51,8 @@ const germanFederalStatesOptions = objectEntries(germanFederalStates).map(
 )
 
 export function BrowseCompany() {
+  const queryClient = useQueryClient()
+
   const [query, setQuery] = useQueryParams({
     name: withDefault(StringParam, ''),
     desiredLanguages: withDefault(ArrayParam, []),
@@ -49,40 +61,56 @@ export function BrowseCompany() {
     skills: withDefault(ArrayParam, []),
     federalStates: withDefault(ArrayParam, []),
     onlyFavorites: withDefault(BooleanParam, undefined),
-    isJobFair2023Participant: withDefault(BooleanParam, undefined),
+    // isJobFairJuly2023Participant: withDefault(BooleanParam, undefined),
   })
-  const {
-    name,
-    desiredLanguages,
-    desiredPositions,
-    employmentTypes,
-    skills,
-    federalStates,
-    onlyFavorites,
-    isJobFair2023Participant,
-  } = query
+  const name = query.name
+  const desiredLanguages = query.desiredLanguages as Language[]
+  const desiredPositions = query.desiredPositions as TpDesiredPosition[]
+  const employmentTypes = query.employmentTypes as TpEmploymentType[]
+  const skills = query.skills as TpTechnicalSkill[]
+  const federalStates = query.federalStates as FederalState[]
+  const onlyFavorites = query.onlyFavorites
+  // const isJobFairJuly2023Participant = query.isJobFairJuly2023Participant
 
-  const { data: jobseekerProfiles } = useBrowseTpJobseekerProfilesQuery({
-    name,
-    desiredLanguages,
-    desiredPositions,
-    employmentTypes,
-    skills,
-    federalStates,
-    isJobFair2023Participant,
-  })
-
-  const { data: companyProfile } = useTpCompanyProfileQuery()
-  const tpCompanyProfileUpdateMutation = useTpCompanyProfileUpdateMutation()
-
-  const handleFavoriteJobseeker = (value) => {
-    const newFavorites = !companyProfile.favouritedTpJobseekerIds
-      ? [value]
-      : toggleValueInArray(companyProfile.favouritedTpJobseekerIds, value)
-
-    tpCompanyProfileUpdateMutation.mutate({
-      favouritedTpJobseekerIds: newFavorites,
+  const jobseekerProfilesQuery =
+    useTpJobseekerDirectoryEntriesFindAllVisibleQuery({
+      input: {
+        name,
+        desiredLanguages,
+        desiredPositions,
+        employmentTypes,
+        skills,
+        federalStates,
+        // isJobFairJuly2023Participant,
+      },
     })
+  const jobseekerProfiles =
+    jobseekerProfilesQuery.data?.tpJobseekerDirectoryEntriesVisible
+
+  const favoritedJobseekersQuery =
+    useTpCompanyFavouritedJobseekerProfilesQuery()
+  const favouriteJobseekerMutation =
+    useTpCompanyMarkJobseekerAsFavouriteMutation()
+  const unfavouriteJobseekerMutation =
+    useTpCompanyUnmarkJobseekerAsFavouriteMutation()
+
+  const handleFavoriteJobseeker = async (tpJobseekerProfileId: string) => {
+    const isFavorite =
+      favoritedJobseekersQuery.data?.tpCompanyFavoritedJobseekerProfiles
+        ?.map((p) => p.favoritedTpJobseekerProfileId)
+        ?.includes(tpJobseekerProfileId)
+    if (isFavorite) {
+      await unfavouriteJobseekerMutation.mutateAsync({
+        input: { tpJobseekerProfileId: tpJobseekerProfileId },
+      })
+    } else {
+      await favouriteJobseekerMutation.mutateAsync({
+        input: { tpJobseekerProfileId: tpJobseekerProfileId },
+      })
+    }
+    queryClient.invalidateQueries(
+      useTpCompanyFavouritedJobseekerProfilesQuery.getKey()
+    )
   }
 
   const toggleOnlyFavoritesFilter = () => {
@@ -97,12 +125,12 @@ export function BrowseCompany() {
     setQuery((latestQuery) => ({ ...latestQuery, [filterName]: newFilters }))
   }
 
-  const toggleJobFair2023Filter = () =>
-    setQuery((latestQuery) => ({
-      ...latestQuery,
-      isJobFair2023Participant:
-        isJobFair2023Participant === undefined ? true : undefined,
-    }))
+  // const toggleJobFairJuly2023Filter = () =>
+  //   setQuery((latestQuery) => ({
+  //     ...latestQuery,
+  //     isJobFairJuly2023Participant:
+  //       isJobFairJuly2023Participant === undefined ? true : undefined,
+  //   }))
 
   const setName = (value) => {
     setQuery((latestQuery) => ({ ...latestQuery, name: value || undefined }))
@@ -116,7 +144,7 @@ export function BrowseCompany() {
       desiredPositions: [],
       employmentTypes: [],
       federalStates: [],
-      isJobFair2023Participant: undefined,
+      // isJobFairJuly2023Participant: undefined,
     }))
   }
 
@@ -125,8 +153,8 @@ export function BrowseCompany() {
     skills.length !== 0 ||
     desiredPositions.length !== 0 ||
     federalStates.length !== 0 ||
-    employmentTypes.length !== 0 ||
-    isJobFair2023Participant
+    employmentTypes.length !== 0
+  //  || isJobFairJuly2023Participant
 
   return (
     <LoggedIn>
@@ -213,26 +241,28 @@ export function BrowseCompany() {
       </div>
       <div className="filters">
         {/* Hidden until the next Job Fair date announced */}
-        {/* <div className="filters-inner filters__jobfair">
+        {/* <div className="filters-inner">
           <Checkbox
-            name="isJobFair2023Participant"
-            checked={isJobFair2023Participant || false}
-            handleChange={toggleJobFair2023Filter}
+            name="isJobFairJuly2023Participant"
+            checked={isJobFairJuly2023Participant || false}
+            handleChange={toggleJobFairJuly2023Filter}
           >
             Attending ReDI Job Fair 2023
           </Checkbox>
         </div> */}
-        <div
-          className="filters-inner filter-favourites"
-          onClick={toggleOnlyFavoritesFilter}
-        >
+        <div className="filters-inner filter-favourites">
+          <Checkbox
+            name="onlyFavorites"
+            checked={onlyFavorites || false}
+            handleChange={toggleOnlyFavoritesFilter}
+          >
+            Only Favorites
+          </Checkbox>
           <Icon
-            icon={onlyFavorites ? 'heartFilled' : 'heart'}
-            size="medium"
+            icon="heartFilled"
             className="filter-favourites__icon"
-            space="right"
+            size="small"
           />
-          Only Favorites
         </div>
       </div>
       <div className="active-filters">
@@ -270,7 +300,7 @@ export function BrowseCompany() {
               <FilterTag
                 key={id}
                 id={id}
-                label={desiredEmploymentTypeOptionsIdToLabelMap[id]}
+                label={employmentTypesIdToLabelMap[id]}
                 onClickHandler={(item) =>
                   toggleFilters(employmentTypes, 'employmentTypes', item)
                 }
@@ -286,14 +316,14 @@ export function BrowseCompany() {
                 }
               />
             ))}
-            {isJobFair2023Participant && (
+            {/* {isJobFairJuly2023Participant && (
               <FilterTag
                 key="redi-job-fair-2022-filter"
                 id="redi-job-fair-2022-filter"
                 label="Attending ReDI Job Fair 2023"
-                onClickHandler={toggleJobFair2023Filter}
+                onClickHandler={toggleJobFairJuly2023Filter}
               />
-            )}
+            )} */}
             <span className="active-filters__clear-all" onClick={clearFilters}>
               Delete all filters
               <Icon icon="cancel" size="small" space="left" />
@@ -302,29 +332,39 @@ export function BrowseCompany() {
         )}
       </div>
       <Columns>
-        {jobseekerProfiles?.map((profile) => {
-          const isFavorite = companyProfile.favouritedTpJobseekerIds?.includes(
-            profile.id
-          )
+        {jobseekerProfiles
+          ?.filter((profile) => {
+            if (!onlyFavorites) return true
+            const isFavorite =
+              favoritedJobseekersQuery.data?.tpCompanyFavoritedJobseekerProfiles
+                ?.map((p) => p.favoritedTpJobseekerProfileId)
+                ?.includes(profile.id)
+            return isFavorite
+          })
+          .map((profile) => {
+            const isFavorite =
+              favoritedJobseekersQuery.data?.tpCompanyFavoritedJobseekerProfiles
+                ?.map((p) => p.favoritedTpJobseekerProfileId)
+                ?.includes(profile.id)
 
-          if (!isFavorite && onlyFavorites) return
+            if (!isFavorite && onlyFavorites) return
 
-          return (
-            <Columns.Column
-              mobile={{ size: 12 }}
-              tablet={{ size: 6 }}
-              desktop={{ size: 4 }}
-            >
-              <JobseekerProfileCard
-                key={profile.id}
-                jobseekerProfile={profile}
-                linkTo={`/app/jobseeker-profile/${profile.id}`}
-                toggleFavorite={handleFavoriteJobseeker}
-                isFavorite={isFavorite}
-              />
-            </Columns.Column>
-          )
-        })}
+            return (
+              <Columns.Column
+                mobile={{ size: 12 }}
+                tablet={{ size: 6 }}
+                desktop={{ size: 4 }}
+              >
+                <JobseekerProfileCard
+                  key={profile.id}
+                  jobseekerProfile={profile}
+                  linkTo={`/app/jobseeker-profile/${profile.id}`}
+                  toggleFavorite={handleFavoriteJobseeker}
+                  isFavorite={isFavorite}
+                />
+              </Columns.Column>
+            )
+          })}
       </Columns>
     </LoggedIn>
   )
@@ -335,16 +375,16 @@ const desiredPositionsOptions = desiredPositions.map(({ id, label }) => ({
   value: id,
   label,
 }))
-const employmentTypesOptions = desiredEmploymentTypeOptions.map(
-  ({ id, label }) => ({
-    value: id,
+const employmentTypesOptions = employmentTypes.map(({ id, label }) => ({
+  value: id,
+  label,
+}))
+const desiredLanguagesOptions = Object.entries(LANGUAGES).map(
+  ([value, label]) => ({
+    value,
     label,
   })
 )
-const desiredLanguagesOptions = LANGUAGES.map((language) => ({
-  value: language,
-  label: language,
-}))
 
 interface FilterTagProps {
   id: string

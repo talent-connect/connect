@@ -1,0 +1,9 @@
+fragment EditableNamePhotoLocationJobseekerProfileProp on TpJobseekerDirectoryEntry {
+  firstName
+  lastName
+  genderPronouns
+  location
+  federalState
+  willingToRelocate
+  profileAvatarImageS3Key
+}

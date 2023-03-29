@@ -1,0 +1,9 @@
+mutation tpJobseekerProfileLanguageRecordDelete(
+  $input: TpJobseekerProfileLanguageRecordDeleteInput!
+) {
+  tpJobseekerProfileLanguageRecordDelete(
+    tpJobseekerProfileLanguageRecordDeleteInput: $input
+  ) {
+    ok
+  }
+}

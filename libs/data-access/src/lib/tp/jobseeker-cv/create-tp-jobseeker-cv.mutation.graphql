@@ -1,0 +1,6 @@
+mutation tpJobseekerCvCreate($input: TpJobseekerCvCreateInput!) {
+  tpJobseekerCvCreate(tpJobseekerCvCreateInput: $input) {
+    id
+    ok
+  }
+}

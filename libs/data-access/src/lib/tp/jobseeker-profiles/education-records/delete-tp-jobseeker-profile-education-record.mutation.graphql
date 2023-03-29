@@ -1,0 +1,9 @@
+mutation tpJobseekerProfileEducationRecordDelete(
+  $input: TpJobseekerProfileEducationRecordDeleteInput!
+) {
+  tpJobseekerProfileEducationRecordDelete(
+    tpJobseekerProfileEducationRecordDeleteInput: $input
+  ) {
+    ok
+  }
+}

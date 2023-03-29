@@ -1,0 +1,62 @@
+<mjml>
+  <mj-include path="../templates/head.mjml" />
+  <mj-body mj-class="body">
+    <mj-wrapper background-color="#F0F0F0">
+      <mj-section />
+      <mj-section css-class="section">
+        <mj-column>
+          <mj-text mj-class="headline"
+            >The approval of your profile is pending
+          </mj-text>
+          <mj-divider mj-class="divider-top" css-class="divider" />
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >Dear ${firstName},</mj-text
+          >
+          <mj-text mj-class="text paragraph"
+            >We have not approved your profile yet. We want to help you to be
+            able to show the best of you to the companies attending our Job
+            Fair!</mj-text
+          >
+          <mj-text mj-class="text paragraph"
+            >Please, go back to your profile and review it!</mj-text
+          >
+          <mj-text mj-class="text">Here are some suggestions for you:</mj-text>
+          <mj-text mj-class="text paragraph">
+            <ul>
+              <li>look for spelling mistakes</li>
+              <li>
+                make sure you have added relevant information in ALL sections
+                <br />(This includes all that could showcase how you meet the
+                requirements for the job roles you have selected, nice to have
+                skills, experience and all that can make you stand out from the
+                crowd and highlight your strengths for the positions you have in
+                mind)
+              </li>
+
+              <li>
+                Have a clear brief description in ABOUT ME section: tell who are
+                you, what is your background , what are you looking for, what
+                can you offer to a company
+              </li>
+              <li>
+                Add you education and certificates - all relevant aspects for
+                the future job or internship
+              </li>
+            </ul>
+          </mj-text>
+          <mj-text mj-class="text paragraph"
+            >As soon as you are done updating your profile, please
+            <strong
+              >send your profile to us for review <em>over again</em></strong
+            >
+            by using the button in your profile.
+          </mj-text>
+          <mj-text mj-class="text">Best,</mj-text>
+          <mj-text mj-class="text">Paulina</mj-text>
+        </mj-column>
+      </mj-section>
+      <mj-include path="../templates/footer.berlin.paulina.mjml" />
+      <mj-section />
+    </mj-wrapper>
+  </mj-body>
+</mjml>

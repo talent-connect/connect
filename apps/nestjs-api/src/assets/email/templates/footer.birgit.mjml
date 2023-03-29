@@ -1,0 +1,50 @@
+<mj-section css-class="section">
+  <mj-column mj-class="column" width="100%">
+    <mj-divider mj-class="divider-bottom" />
+    <mj-table padding="0">
+      <tr>
+        <td class="table-cell table-img" rowspan="4">
+          <img
+            src="https://redi-connect-email-assets.s3.eu-west-1.amazonaws.com/birgit-small.jpeg"
+            width="52px"
+          />
+        </td>
+        <td class="table-cell table-headline td-mobile" colspan="2">
+          Birgit Köbl
+        </td>
+      </tr>
+      <tr>
+        <td class="table-cell td-mobile">Head of Partnerships</td>
+        <td class="table-cell td-mobile hide-cell-mobile" style="mso-hide: all">
+          ReDI School of Digital Integration
+        </td>
+      </tr>
+      <tr>
+        <td class="table-cell td-mobile hide-cell-mobile" style="mso-hide: all">
+          Balanstraße 73, Haus 21A, 3. Stock, 81541 München
+        </td>
+      </tr>
+      <tr>
+        <td class="table-cell td-mobile margin-link">
+          <a href="mailto:birgit@redi-school.org" class="text-link"
+            >birgit@redi-school.org</a
+          >
+        </td>
+        <td class="table-cell td-mobile hide-cell-desktop">
+          ReDI School of Digital Integration
+        </td>
+        <td class="table-cell td-mobile hide-cell-desktop">
+          Balanstraße 73, Haus 21A, 3. Stock, 81541 München
+        </td>
+        <td class="table-cell td-mobile">
+          <a
+            href="https://www.redi-school.org"
+            class="text-link"
+            target="_blank"
+            >www.redi-school.org</a
+          >
+        </td>
+      </tr>
+    </mj-table>
+  </mj-column>
+</mj-section>

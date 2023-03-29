@@ -1,0 +1,5 @@
+export * from './create-tp-jobseeker-cv-language-record.mutation.generated'
+export * from './delete-tp-jobseeker-cv-language-record.mutation.generated'
+export * from './find-all-tp-jobseeker-cv-language-records.query.generated'
+export * from './patch-tp-jobseeker-cv-language-record.mutation.generated'
+export * from './tp-jobseeker-cv-language-record.fragment.generated'

@@ -1,14 +1,14 @@
+import { useLoadMyProfileQuery } from '@talent-connect/data-access'
 import {
   Caption,
   PipeList,
   Placeholder,
 } from '@talent-connect/shared-atomic-design-components'
-import { RedProfile } from '@talent-connect/shared-types'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
+import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
+import { ReadLanguagesProfilePropFragment } from './ReadLanguages.generated'
 
 interface Props {
-  profile: RedProfile
+  profile: ReadLanguagesProfilePropFragment
 }
 
 const Me = ({ profile }: Props) => {
@@ -31,11 +31,14 @@ const Some = ({ profile }: Props) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile as RedProfile,
-})
-
 export default {
-  Me: connect(mapStateToProps, {})(Me),
+  Me: () => {
+    const loopbackUserId = getAccessTokenFromLocalStorage().userId
+    const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
+
+    if (!myProfileQuery.isSuccess) return null
+
+    return <Me profile={myProfileQuery.data.conProfile} />
+  },
   Some: ({ profile }: Props) => <Some profile={profile} />,
 }

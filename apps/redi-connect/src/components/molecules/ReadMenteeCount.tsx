@@ -1,14 +1,18 @@
+import { ConProfile, useLoadMyProfileQuery } from '@talent-connect/data-access'
 import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
-import { RedProfile } from '@talent-connect/shared-types'
 import { Content } from 'react-bulma-components'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
+import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 
 interface Props {
-  profile: RedProfile
+  profile: Pick<
+    ConProfile,
+    | 'menteeCountCapacity'
+    | 'optOutOfMenteesFromOtherRediLocation'
+    | 'rediLocation'
+  >
 }
 
-const Me = ({ profile }: Props) => {
+function Me({ profile }: Props) {
   const {
     menteeCountCapacity,
     optOutOfMenteesFromOtherRediLocation,
@@ -34,10 +38,13 @@ const Me = ({ profile }: Props) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile as RedProfile,
-})
-
 export default {
-  Me: connect(mapStateToProps, {})(Me),
+  Me: () => {
+    const loopbackUserId = getAccessTokenFromLocalStorage().userId
+    const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
+
+    if (!myProfileQuery.isSuccess) return null
+
+    return <Me profile={myProfileQuery.data.conProfile} />
+  },
 }

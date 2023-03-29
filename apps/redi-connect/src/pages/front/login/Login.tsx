@@ -2,14 +2,14 @@ import React, { useState, useCallback } from 'react'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import Teaser from '../../../components/molecules/Teaser'
 import * as Yup from 'yup'
-import { Link } from 'react-router-dom'
+import { Link, Redirect, useHistory } from 'react-router-dom'
 import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
-import { history } from '../../../services/history/history'
-import { login, fetchSaveRedProfile } from '../../../services/api/api'
+import { login } from '../../../services/api/api'
 import {
   saveAccessTokenToLocalStorage,
-  getRedProfileFromLocalStorage,
   purgeAllSessionData,
+  setGraphQlClientAuthHeader,
+  getAccessTokenFromLocalStorage,
 } from '../../../services/auth/auth'
 import { Columns, Form, Content, Notification } from 'react-bulma-components'
 import { capitalize } from 'lodash'
@@ -21,6 +21,8 @@ import {
   FormInput,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
+import { useLoadMyProfileQuery } from '@talent-connect/data-access'
+import { envRediLocation } from '../../../utils/env-redi-location'
 
 interface LoginFormValues {
   username: string
@@ -38,36 +40,39 @@ const validationSchema = Yup.object({
 })
 
 export default function Login() {
-  const [loginError, setLoginError] = useState<string>('')
-  const [isWrongRediLocationError, setIsWrongRediLocationError] =
-    useState<boolean>(false)
+  const history = useHistory()
+  const accessToken = getAccessTokenFromLocalStorage()
+  const loopbackUserId = accessToken?.userId ?? ''
+  const [stateLoopbackUserId, setStateLoopbackUserId] = useState(loopbackUserId)
+  const myProfileQuery = useLoadMyProfileQuery(
+    { loopbackUserId: stateLoopbackUserId },
+    { enabled: Boolean(stateLoopbackUserId) }
+  )
 
-  const submitForm = useCallback((values, actions) => {
-    ;(async (values: FormikValues, actions: FormikActions<LoginFormValues>) => {
-      const formValues = values as LoginFormValues
-      try {
-        const accessToken = await login(
-          formValues.username,
-          formValues.password
-        )
-        saveAccessTokenToLocalStorage(accessToken)
-        const redProfile = await fetchSaveRedProfile(accessToken)
-        if (
-          redProfile.rediLocation !==
-          (process.env.NX_REDI_CONNECT_REDI_LOCATION as RediLocation)
-        ) {
-          setIsWrongRediLocationError(true)
-          purgeAllSessionData()
-          return
-        }
-        actions.setSubmitting(false)
-        history.push('/app/me')
-      } catch (err) {
-        actions.setSubmitting(false)
-        setLoginError('You entered an incorrect email, password, or both.')
-      }
-    })(values, actions)
-  }, [])
+  const [loginError, setLoginError] = useState<string>('')
+
+  const isWrongRediLocationError =
+    myProfileQuery.isSuccess &&
+    myProfileQuery.data.conProfile.rediLocation !== envRediLocation()
+
+  if (isWrongRediLocationError) {
+    purgeAllSessionData()
+  }
+
+  const submitForm = async () => {
+    try {
+      const accessToken = await login(
+        formik.values.username,
+        formik.values.password
+      )
+      setStateLoopbackUserId(accessToken.userId)
+      formik.setSubmitting(false)
+      history.push('/app/me')
+    } catch (err) {
+      formik.setSubmitting(false)
+      setLoginError('You entered an incorrect email, password, or both.')
+    }
+  }
 
   const formik = useFormik({
     initialValues,
@@ -107,17 +112,14 @@ export default function Login() {
               </strong>
               , but your account is linked to ReDI Connect{' '}
               <strong>
-                {capitalize(getRedProfileFromLocalStorage().rediLocation)}
+                {capitalize(myProfileQuery.data.conProfile.rediLocation)}
               </strong>
               . To access ReDI Connect{' '}
-              <strong>
-                {capitalize(getRedProfileFromLocalStorage().rediLocation)}
-              </strong>
-              , go{' '}
+              <strong>{myProfileQuery.data.conProfile.rediLocation}</strong>, go{' '}
               <a
                 href={buildFrontendUrl(
                   process.env.NODE_ENV,
-                  getRedProfileFromLocalStorage().rediLocation
+                  myProfileQuery.data.conProfile.rediLocation
                 )}
               >
                 here

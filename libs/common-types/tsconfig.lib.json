@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../dist/out-tsc",
+    "declaration": true,
+    "types": []
+  },
+  "include": [
+    "**/*.ts",
+    "../../apps/nestjs-api/src/tp-company-profiles/use-cases/tp-company-profile-sign-up.mutation-dtos.ts",
+    "../../apps/nestjs-api/src/tp-company-profiles/use-cases/tp-company-profile-sign-up-operation-type.enum.ts"
+  ],
+  "exclude": ["**/*.spec.ts"]
+}

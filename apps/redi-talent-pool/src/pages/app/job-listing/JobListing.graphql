@@ -1,0 +1,11 @@
+query findOneJobListing($filter: FindOneTpJobListingArgsFilter!) {
+  tpJobListing(filter: $filter) {
+    ...AllTpJobListingFields
+    companyProfile {
+      ...AllTpCompanyProfileFields
+      companyRepresentatives {
+        ...AllUserContactFields
+      }
+    }
+  }
+}

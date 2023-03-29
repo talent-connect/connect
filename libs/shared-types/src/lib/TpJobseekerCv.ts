@@ -1,7 +1,6 @@
 import { EducationRecord } from './tp-jobseeker-profile-cv-shared-interfaces/EducationRecord'
 import { ExperienceRecord } from './tp-jobseeker-profile-cv-shared-interfaces/ExperienceRecord'
 import { LanguageRecord } from './tp-jobseeker-profile-cv-shared-interfaces/LanguageRecord'
-import { ProjectRecord } from './tp-jobseeker-profile-cv-shared-interfaces/ProjectRecord'
 
 export type TpJobseekerCv = {
   id: string
@@ -40,7 +39,6 @@ export type TpJobseekerCv = {
   topSkills?: string[]
   experience?: ExperienceRecord[]
   education?: EducationRecord[]
-  projects?: ProjectRecord[]
 
   createdAt: Date
   updatedAt: Date

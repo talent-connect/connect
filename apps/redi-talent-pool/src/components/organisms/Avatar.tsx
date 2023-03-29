@@ -1,42 +1,40 @@
-import { useCallback, useState, useRef } from 'react'
 import { FormikValues, useFormik } from 'formik'
-import classnames from 'classnames'
-import * as Yup from 'yup'
+import { Element } from 'react-bulma-components'
 import Cropper from 'react-easy-crop'
 import ReactS3Uploader from 'react-s3-uploader'
-import { Element } from 'react-bulma-components'
+import * as Yup from 'yup'
 
 import { Button, Modal } from '@talent-connect/shared-atomic-design-components'
-import {
-  AWS_PROFILE_AVATARS_BUCKET_BASE_URL,
-  S3_UPLOAD_SIGN_URL,
-} from '@talent-connect/shared-config'
+import { S3_UPLOAD_SIGN_URL } from '@talent-connect/shared-config'
 import {
   TpCompanyProfile,
   TpJobseekerProfile,
 } from '@talent-connect/shared-types'
 import { getCroppedImg } from '@talent-connect/shared-utils'
 
+import { useQueryClient } from 'react-query'
 import placeholderImage from '../../assets/img-placeholder.png'
 import { ReactComponent as UploadImage } from '../../assets/uploadImage.svg'
 import './Avatar.scss'
 
-import Resizer from 'react-image-file-resizer'
-import { ZoomIn, ZoomOut, ZoomOutMap } from '@material-ui/icons'
 import { IconButton, Tooltip } from '@material-ui/core'
+import { ZoomIn, ZoomOut, ZoomOutMap } from '@material-ui/icons'
+import classnames from 'classnames'
+import { useCallback, useRef, useState } from 'react'
+import Resizer from 'react-image-file-resizer'
 
 const MAX_FILE_SIZE = 1000000
 const CROPPER_CONTAINER_HEIGHT = 450
 
 interface AvatarProps {
-  profile: Partial<TpJobseekerProfile> | Partial<TpCompanyProfile>
+  profile: {
+    profileAvatarImageS3Key?: string
+  }
   shape?: 'circle' | 'square'
 }
 interface AvatarEditable {
   profile: Partial<TpJobseekerProfile> | Partial<TpCompanyProfile>
-  profileSaveStart: (
-    profile: Partial<TpJobseekerProfile> | Partial<TpCompanyProfile>
-  ) => void
+  profileSaveStart: (newAvatarUrl: string) => void
   callToActionText?: string
   shape?: 'circle' | 'square'
 }
@@ -52,7 +50,7 @@ const validationSchema = Yup.object({
 const Avatar = ({ profile, shape = 'circle' }: AvatarProps) => {
   const { profileAvatarImageS3Key } = profile
   const imgSrc = profileAvatarImageS3Key
-    ? AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
+    ? profileAvatarImageS3Key
     : placeholderImage
 
   return (
@@ -64,7 +62,6 @@ const Avatar = ({ profile, shape = 'circle' }: AvatarProps) => {
     >
       <img
         src={imgSrc}
-        alt={`${profile.firstName} ${profile.lastName}`}
         className={classnames('avatar__image', {
           'avatar__image--square': shape === 'square',
         })}
@@ -105,6 +102,7 @@ const AvatarEditable = ({
   callToActionText = 'Add your picture',
   shape = 'circle',
 }: AvatarEditable) => {
+  const queryClient = useQueryClient()
   const [showCropperModal, setShowCropperModal] = useState(false)
   const [imageSrc, setImageSrc] = useState(null)
   const [imageFileName, setImageFileName] = useState('')
@@ -121,11 +119,14 @@ const AvatarEditable = ({
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null)
 
   const { profileAvatarImageS3Key } = profile
-  const imgURL = AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
+  const imgURL = profileAvatarImageS3Key
 
   const submitForm = async (values: FormikValues) => {
-    const profileMe = values as Partial<TpJobseekerProfile>
-    profileSaveStart({ ...profileMe, id: profile.id })
+    await profileSaveStart(
+      'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/' +
+        values.profileAvatarImageS3Key
+    )
+    queryClient.invalidateQueries()
   }
 
   const initialValues: AvatarFormValues = {
@@ -226,7 +227,6 @@ const AvatarEditable = ({
         <>
           <img
             src={imgURL}
-            alt={`${profile.firstName} ${profile.lastName}`}
             className={classnames('avatar__image', {
               'avatar__image--square': shape === 'square',
             })}

@@ -1,16 +1,19 @@
 import {
+  ConProfile,
+  useLoadMyProfileQuery,
+  UserType,
+} from '@talent-connect/data-access'
+import {
   Caption,
   CardTags,
   CardTagsProps,
   Placeholder,
 } from '@talent-connect/shared-atomic-design-components'
 import { CATEGORIES_MAP } from '@talent-connect/shared-config'
-import { RedProfile } from '@talent-connect/shared-types'
-import { connect } from 'react-redux'
-import { RootState } from '../../redux/types'
+import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 
 interface ReadMentoringProps {
-  profile: RedProfile
+  profile: Pick<ConProfile, 'categories' | 'userType'>
   caption?: boolean
 }
 
@@ -23,10 +26,19 @@ export const ProfileTags = ({ items, shortList }: CardTagsProps) => (
 )
 
 const ReadMentoringTopics = ({ profile, caption }: ReadMentoringProps) => {
-  const { categories } = profile
+  const { categories, userType } = profile
 
-  if (!categories?.length && !caption)
+  const showPlaceholderCaption = !categories?.length && !caption
+
+  if (showPlaceholderCaption && userType === UserType.Mentee)
     return <Placeholder>Please pick up to four mentoring topics.</Placeholder>
+
+  if (showPlaceholderCaption && userType === UserType.Mentor)
+    return (
+      <Placeholder>
+        Please pick topics where you believe you can support you future mentee.
+      </Placeholder>
+    )
 
   return (
     <>
@@ -36,12 +48,15 @@ const ReadMentoringTopics = ({ profile, caption }: ReadMentoringProps) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  profile: state.user.profile as RedProfile,
-})
-
 export default {
-  Me: connect(mapStateToProps, {})(ReadMentoringTopics),
+  Me: () => {
+    const loopbackUserId = getAccessTokenFromLocalStorage().userId
+    const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
+
+    if (!myProfileQuery.isSuccess) return null
+
+    return <ReadMentoringTopics profile={myProfileQuery.data.conProfile} />
+  },
   Some: ({ profile }: ReadMentoringProps) => (
     <ReadMentoringTopics profile={profile} caption />
   ),

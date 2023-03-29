@@ -6,12 +6,16 @@ const { bindNodeCallback, from } = Rx
 const { RedUser } = app.models
 
 const findUsers = bindNodeCallback(RedUser.find.bind(RedUser))
-const setPassword = redUserInst =>
+const setPassword = (redUserInst) =>
   bindNodeCallback(redUserInst.setPassword.bind(redUserInst))
 
 findUsers()
   .pipe(
-    switchMap(redUsers => from(redUsers)),
-    mergeMap(redUserInst => setPassword(redUserInst)('yalla'), 20)
+    switchMap((redUsers) => from(redUsers)),
+    mergeMap((redUserInst) => setPassword(redUserInst)('yalla'), 10)
   )
-  .subscribe(console.log, err => console.log(err), () => console.log('done'))
+  .subscribe(
+    console.log,
+    (err) => console.log(err),
+    () => console.log('done')
+  )

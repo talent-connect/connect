@@ -1,0 +1,14 @@
+fragment DeclineMentorshipButtonMatchProp on ConMentorshipMatch {
+  ...AllConMentorshipMatchFields
+  mentee {
+    firstName
+  }
+}
+
+mutation declineMentorship(
+  $input: ConMentorshipMatchesDeclineMentorshipInputDto!
+) {
+  conMentorshipMatchesDeclineMentorship(input: $input) {
+    ok
+  }
+}

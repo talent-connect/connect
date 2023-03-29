@@ -1,4 +1,11 @@
 import {
+  TpJobseekerProfileExperienceRecord,
+  useMyTpDataQuery,
+  useTpJobseekerProfileExperienceRecordCreateMutation,
+  useTpJobseekerProfileExperienceRecordDeleteMutation,
+  useTpJobseekerProfileExperienceRecordPatchMutation,
+} from '@talent-connect/data-access'
+import {
   Button,
   Caption,
   Checkbox,
@@ -9,51 +16,34 @@ import {
   FormTextArea,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
-import {
-  ExperienceRecord,
-  TpJobseekerCv,
-  TpJobseekerProfile,
-} from '@talent-connect/shared-types'
 import { formMonthsOptions } from '@talent-connect/talent-pool/config'
+import { reorder } from '@talent-connect/typescript-utilities'
 import { useFormik } from 'formik'
+import { cloneDeep } from 'lodash'
 import moment from 'moment'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { Columns, Content, Element } from 'react-bulma-components'
 import ReactMarkdown from 'react-markdown'
-import { UseMutationResult, UseQueryResult } from 'react-query'
+import { useQueryClient } from 'react-query'
 import { Subject } from 'rxjs'
 import { v4 as uuidv4 } from 'uuid'
 import * as Yup from 'yup'
-import { useTpjobseekerprofileUpdateMutation } from '../../../react-query/use-tpjobseekerprofile-mutation'
-import { useTpJobseekerProfileQuery } from '../../../react-query/use-tpjobseekerprofile-query'
+import { useIsBusy } from '../../../hooks/useIsBusy'
 import { Editable } from '../../molecules/Editable'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import { Location } from '../../molecules/Location'
-
-function reorder<T>(list: Array<T>, startIndex: number, endIndex: number) {
-  const result = Array.from(list)
-  const [removed] = result.splice(startIndex, 1)
-  result.splice(endIndex, 0, removed)
-
-  return result
-}
-
+import { EditableProfessionalExperienceProfilePropFragment } from './EditableProfessionalExperience.generated'
 interface Props {
-  profile?: Partial<TpJobseekerProfile>
+  profile?: EditableProfessionalExperienceProfilePropFragment
   disableEditing?: boolean
 }
-
 export function EditableProfessionalExperience({
-  profile: overridingProfile,
+  profile,
   disableEditing,
 }: Props) {
-  const queryHookResult = useTpJobseekerProfileQuery({
-    enabled: !disableEditing,
-  })
-  if (overridingProfile) queryHookResult.data = overridingProfile
-  const mutationHookResult = useTpjobseekerprofileUpdateMutation()
-  const { data: profile } = queryHookResult
+  const experienceRecords = profile?.experience
+
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
 
@@ -77,7 +67,7 @@ export function EditableProfessionalExperience({
             Add your experience
           </EmptySectionPlaceholder>
         ) : (
-          profile?.experience?.map((item) => (
+          experienceRecords?.map((item) => (
             <div style={{ marginBottom: '2.8rem' }}>
               <div
                 style={{
@@ -123,8 +113,6 @@ export function EditableProfessionalExperience({
         <JobseekerFormSectionProfessionalExperience
           setIsEditing={setIsEditing}
           setIsFormDirty={setIsFormDirty}
-          queryHookResult={queryHookResult}
-          mutationHookResult={mutationHookResult}
         />
       }
       modalStyles={{ minHeight: 700 }}
@@ -133,10 +121,10 @@ export function EditableProfessionalExperience({
 }
 
 EditableProfessionalExperience.isSectionFilled = (
-  profile: Partial<TpJobseekerProfile>
+  profile: EditableProfessionalExperienceProfilePropFragment
 ) => profile?.experience?.length > 0
 EditableProfessionalExperience.isSectionEmpty = (
-  profile: Partial<TpJobseekerProfile>
+  profile: EditableProfessionalExperienceProfilePropFragment
 ) => !EditableProfessionalExperience.isSectionFilled(profile)
 
 function formatDate(month?: number, year?: number): string {
@@ -146,48 +134,138 @@ function formatDate(month?: number, year?: number): string {
   return ''
 }
 
-interface JobseekerFormSectionProfessionalExperienceProps {
+export interface JobseekerFormSectionProfessionalExperienceProps {
   setIsEditing: (boolean) => void
   setIsFormDirty?: (boolean) => void
-  queryHookResult: UseQueryResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
-    unknown
-  >
-  mutationHookResult: UseMutationResult<
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
-    unknown,
-    Partial<TpJobseekerProfile | TpJobseekerCv>,
-    unknown
-  >
+}
+
+type FormExperienceRecord = Omit<
+  TpJobseekerProfileExperienceRecord,
+  | 'createdAt'
+  | 'updatedAt'
+  | 'tpJobseekerProfileId'
+  | 'userId'
+  | 'startDateMonth'
+  | 'startDateYear'
+  | 'endDateMonth'
+  | 'endDateYear'
+> & {
+  startDateMonth?: string
+  startDateYear?: string
+  endDateMonth?: string
+  endDateYear?: string
+}
+interface FormValues {
+  experience: Array<FormExperienceRecord>
 }
 
 export function JobseekerFormSectionProfessionalExperience({
   setIsEditing,
   setIsFormDirty,
-  queryHookResult,
-  mutationHookResult,
 }: JobseekerFormSectionProfessionalExperienceProps) {
-  const { data: profile } = queryHookResult
-  const mutation = mutationHookResult
+  const queryClient = useQueryClient()
+  const myData = useMyTpDataQuery()
+  const patchMutation = useTpJobseekerProfileExperienceRecordPatchMutation()
+  const deleteMutation = useTpJobseekerProfileExperienceRecordDeleteMutation()
+  const createMutation = useTpJobseekerProfileExperienceRecordCreateMutation()
+  const removedRecords = useRef<Array<string>>([])
+  const isBusy = useIsBusy()
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
 
-  const initialValues: Partial<TpJobseekerProfile> = useMemo(
-    () => ({
-      experience: profile?.experience ?? [buildBlankExperienceRecord()],
-    }),
-    [profile?.experience]
-  )
-  const onSubmit = (values: Partial<TpJobseekerProfile>) => {
-    formik.setSubmitting(true)
-    mutation.mutate(values, {
-      onSettled: () => {
-        formik.setSubmitting(false)
-      },
-      onSuccess: () => {
-        setIsEditing(false)
-      },
+  const experienceRecords =
+    myData?.data?.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry?.experience
+
+  const initialValues: FormValues = useMemo(() => {
+    if (!experienceRecords || experienceRecords.length === 0) {
+      return {
+        experience: [buildBlankExperienceRecord()],
+      }
+    }
+    // TODO: we should rather use structuredClone or a polyfill thereof at some future point
+    const experienceRecordsMonthsYearsAsStrings = experienceRecords?.map(
+      (experienceRecord) => {
+        return {
+          ...experienceRecord,
+          startDateMonth: experienceRecord.startDateMonth?.toString(),
+          startDateYear: experienceRecord.startDateYear?.toString(),
+          endDateMonth: experienceRecord.endDateMonth?.toString(),
+          endDateYear: experienceRecord.endDateYear?.toString(),
+        }
+      }
+    )
+    return {
+      experience: cloneDeep(experienceRecordsMonthsYearsAsStrings),
+    }
+  }, [experienceRecords])
+  const onSubmit = async (values: FormValues) => {
+    // We need to run the mutation tpJobseekerProfileExperienceRecordCreate
+    const newRecords = values.experience.filter((record) =>
+      record.id.includes('NEW')
+    )
+
+    // We need to run the mutation tpJobseekerProfileExperienceRecordPatch
+    const existingRecords = values.experience.filter(
+      (record) => !record.id.includes('NEW')
+    )
+
+    const deletedRecords = removedRecords.current
+
+    const createRecordPromises = newRecords.map((record) => {
+      return createMutation.mutateAsync({
+        input: {
+          city: record.city,
+          company: record.company,
+          country: record.country,
+          current: record.current,
+          description: record.description,
+          endDateMonth: parseInt(record.endDateMonth),
+          endDateYear: parseInt(record.endDateYear),
+          sortIndex: record.sortIndex,
+          startDateMonth: parseInt(record.startDateMonth),
+          startDateYear: parseInt(record.startDateYear),
+          title: record.title,
+        },
+      })
     })
+
+    const patchRecordPromises = existingRecords.map((record) => {
+      return patchMutation.mutateAsync({
+        input: {
+          id: record.id,
+          city: record.city,
+          company: record.company,
+          country: record.country,
+          current: record.current,
+          description: record.description,
+          endDateMonth: parseInt(record.endDateMonth),
+          endDateYear: parseInt(record.endDateYear),
+          sortIndex: record.sortIndex,
+          startDateMonth: parseInt(record.startDateMonth),
+          startDateYear: parseInt(record.startDateYear),
+          title: record.title,
+        },
+      })
+    })
+
+    const deleteRecordPromises = deletedRecords.map((recordId) => {
+      return deleteMutation.mutateAsync({
+        input: {
+          id: recordId,
+        },
+      })
+    })
+
+    formik.setSubmitting(true)
+    await Promise.all([
+      ...createRecordPromises,
+      ...patchRecordPromises,
+      ...deleteRecordPromises,
+    ])
+    queryClient.invalidateQueries()
+    formik.setSubmitting(false)
+    setIsEditing(false)
+    removedRecords.current = []
   }
 
   const validationSchema = Yup.object().shape({
@@ -239,9 +317,15 @@ export function JobseekerFormSectionProfessionalExperience({
   )
 
   const onClickAddExperience = useCallback(() => {
+    const allSortIndexes = formik.values.experience.map(
+      (record) => record.sortIndex
+    )
+    const highestSortIndex = Math.max(...allSortIndexes)
+    const newSortIndex = highestSortIndex + 1
+
     formik.setFieldValue('experience', [
       ...formik.values.experience,
-      buildBlankExperienceRecord(),
+      buildBlankExperienceRecord(newSortIndex),
     ])
     closeAllAccordionsSignalSubject.current.next()
   }, [formik])
@@ -256,16 +340,26 @@ export function JobseekerFormSectionProfessionalExperience({
         result.destination.index
       )
 
-      formik.setFieldValue('experience', reorderedExperience)
+      const withCorrectSortIndexes = reorderedExperience.map(
+        (record, index) => ({
+          ...record,
+          sortIndex: index,
+        })
+      )
+
+      formik.setFieldValue('experience', withCorrectSortIndexes)
     },
     [formik]
   )
 
   const onRemove = useCallback(
-    (uuid: string) => {
+    (id: string) => {
+      if (!id.includes('NEW')) {
+        removedRecords.current.push(id)
+      }
       formik.setFieldValue(
         'experience',
-        formik.values?.experience?.filter((item) => item.uuid !== uuid)
+        formik.values?.experience?.filter((item) => item.id !== id)
       )
     },
     [formik]
@@ -283,15 +377,11 @@ export function JobseekerFormSectionProfessionalExperience({
       </Element>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="id">
-          {(provided, snapshot) => (
+          {(provided) => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
               {formik?.values?.experience.map((item, index) => (
-                <Draggable
-                  key={item.uuid}
-                  draggableId={item.uuid}
-                  index={index}
-                >
-                  {(provided, snapshot) => (
+                <Draggable key={item.id} draggableId={item.id} index={index}>
+                  {(provided) => (
                     <div
                       ref={provided.innerRef}
                       {...provided.draggableProps}
@@ -301,7 +391,7 @@ export function JobseekerFormSectionProfessionalExperience({
                         title={
                           item.title ? item.title : 'Click me to add details'
                         }
-                        onRemove={() => onRemove(item.uuid)}
+                        onRemove={() => onRemove(item.id)}
                         closeAccordionSignalSubject={
                           closeAllAccordionsSignalSubject.current
                         }
@@ -418,25 +508,23 @@ export function JobseekerFormSectionProfessionalExperience({
       </div>
 
       <Button
-        disabled={!formik.isValid || mutation.isLoading}
+        disabled={!formik.isValid || isBusy}
         onClick={formik.handleSubmit}
       >
         Save
       </Button>
-      <Button
-        simple
-        disabled={mutation.isLoading}
-        onClick={() => setIsEditing(false)}
-      >
+      <Button simple disabled={isBusy} onClick={() => setIsEditing(false)}>
         Cancel
       </Button>
     </>
   )
 }
 
-function buildBlankExperienceRecord(): ExperienceRecord {
+export function buildBlankExperienceRecord(
+  sortIndex: number = 1
+): FormExperienceRecord {
   return {
-    uuid: uuidv4(),
+    id: `NEW-${uuidv4()}`,
     title: '',
     company: '',
     city: '',
@@ -447,17 +535,18 @@ function buildBlankExperienceRecord(): ExperienceRecord {
     endDateMonth: undefined,
     endDateYear: undefined,
     current: false,
+    sortIndex,
   }
 }
 
-const rolesAndResponsibilitiesPlaceholderText = `Example:
+export const rolesAndResponsibilitiesPlaceholderText = `Example:
 
 • Supported the Visual Studio Team by creating wireframes using storyboarding and customer mapping.
 • Validated design decisions by conducting remote usability, resulted in an increase of conversion rate by 10%.`
 
-const rolesAndResponsibilitiesQuestion =
+export const rolesAndResponsibilitiesQuestion =
   'Our tips for writing Roles and Responsibilities'
-const rolesAndResponsibilitiesAnswer = `• Write a list of 2-3 bullet points.<br />
+export const rolesAndResponsibilitiesAnswer = `• Write a list of 2-3 bullet points.<br />
 • Begin sentences with action verbs, such as designed, created, provided, resolved, etc.<br />
 • Focus on skills and accomplishments.<br />
 • Quantify as much information as you can. (Example: Resolved customer complaints. --> Resolved customer complaints, answering approximately 200 calls per week.`

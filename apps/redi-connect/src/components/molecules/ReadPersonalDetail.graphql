@@ -1,0 +1,5 @@
+fragment ReadPersonalDetailProfileProp on ConProfile {
+  gender
+  birthDate
+  age
+}

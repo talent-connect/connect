@@ -1,14 +1,14 @@
-import React from 'react'
 import axios from 'axios'
 import has from 'lodash/has'
 import includes from 'lodash/includes'
+import React from 'react'
 
-import { history } from '../history/history'
 import {
   getAccessTokenFromLocalStorage,
   isLoggedIn,
   purgeAllSessionData,
 } from '../auth/auth'
+import { history } from '../history/history'
 
 export const nonLoggedInHttp = axios.create()
 
@@ -48,7 +48,7 @@ http.interceptors.response.use(
         `/front/login?goto=${encodeURIComponent(history.location.pathname)}`
       )
     } else {
-      history.push('/error/4xx')
+      throw err
     }
   }
 )

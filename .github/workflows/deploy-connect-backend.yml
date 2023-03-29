@@ -4,21 +4,26 @@ on:
   push:
     branches:
       - master
-    paths:
-      - 'redi-connect-backend/**'
-      - '.github/workflows/deploy-connect-backend.yml'
+      - salesforce-integration
+      - chore/reinstate-terraform-for-azure-migration
+      - chore/latest-terraform-greek-god-awesome-stuff-terrastos
+
+#    paths:
+#      - 'apps/nestjs-api/**'
+#      - '.github/workflows/deploy-connect-backend.yml'
 
 jobs:
   deploy-staging:
-    if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
+    #    TODO uncomment when you merge on master
+    #    if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
     environment:
       name: staging
-      url: https://app-staging-redi.azurewebsites.net
+      url: https://api-staging-redos.azurewebsites.net
     runs-on: ubuntu-latest
     env:
       AZURE_CONTAINER_REGISTRY: ${{ secrets.REGISTRY_NAME }}.azurecr.io
-      AZURE_IMAGE_NAME_WITH_TAG: ${{ secrets.REGISTRY_NAME }}.azurecr.io/rediconnect-backend:${{ github.sha }}
-      AZURE_IMAGE_NAME_WITH_LATEST_TAG: ${{ secrets.REGISTRY_NAME }}.azurecr.io/rediconnect-backend:latest
+      AZURE_IMAGE_NAME_WITH_SHA_TAG: ${{ secrets.REGISTRY_NAME }}.azurecr.io/red-platform-backend:${{ github.sha }}
+      AZURE_IMAGE_NAME_WITH_LATEST_TAG: ${{ secrets.REGISTRY_NAME }}.azurecr.io/red-platform-backend:latest
 
     steps:
       - uses: actions/checkout@master
@@ -35,14 +40,14 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - run: |
-          docker build redi-connect-backend -t ${{ env.AZURE_IMAGE_NAME_WITH_TAG }} -t ${{ env.AZURE_IMAGE_NAME_WITH_LATEST_TAG }}
-          docker push ${{ env.AZURE_IMAGE_NAME_WITH_TAG }}
+          DOCKER_BUILDKIT=1 docker build -t ${{ env.AZURE_IMAGE_NAME_WITH_SHA_TAG }} -t ${{ env.AZURE_IMAGE_NAME_WITH_LATEST_TAG }} .
+          docker push ${{ env.AZURE_IMAGE_NAME_WITH_SHA_TAG }}
           docker push ${{ env.AZURE_IMAGE_NAME_WITH_LATEST_TAG }}
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
-          app-name: app-staging-redi
+          app-name: api-staging-redos
           images: ${{ env.AZURE_IMAGE_NAME_WITH_LATEST_TAG }}
 
       - name: Azure logout
@@ -50,16 +55,17 @@ jobs:
           az logout
 
   deploy-production:
-    if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
+    #    TODO uncomment when you merge on master
+    #    if: contains(github.ref, 'heads/master') # we want to apply the tf changes only on the `master` branch
     needs: [deploy-staging]
     environment:
       name: production
-      url: https://app-prod-redi.azurewebsites.net
+      url: https://api-prod-redos.azurewebsites.net
     runs-on: ubuntu-latest
     env:
       AZURE_CONTAINER_REGISTRY: ${{ secrets.REGISTRY_NAME }}.azurecr.io
-      AZURE_IMAGE_NAME_WITH_TAG: ${{ secrets.REGISTRY_NAME }}.azurecr.io/rediconnect-backend:${{ github.sha }}
-      AZURE_IMAGE_NAME_WITH_LATEST_TAG: ${{ secrets.REGISTRY_NAME }}.azurecr.io/rediconnect-backend:latest
+      AZURE_IMAGE_NAME_WITH_SHA_TAG: ${{ secrets.REGISTRY_NAME }}.azurecr.io/red-platform-backend:${{ github.sha }}
+      AZURE_IMAGE_NAME_WITH_LATEST_TAG: ${{ secrets.REGISTRY_NAME }}.azurecr.io/red-platform-backend:latest
 
     steps:
       - uses: actions/checkout@master
@@ -76,14 +82,14 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - run: |
-          docker build redi-connect-backend -t ${{ env.AZURE_IMAGE_NAME_WITH_TAG }} -t ${{ env.AZURE_IMAGE_NAME_WITH_LATEST_TAG }}
-          docker push ${{ env.AZURE_IMAGE_NAME_WITH_TAG }}
+          docker build -t ${{ env.AZURE_IMAGE_NAME_WITH_SHA_TAG }} -t ${{ env.AZURE_IMAGE_NAME_WITH_LATEST_TAG }} .
+          docker push ${{ env.AZURE_IMAGE_NAME_WITH_SHA_TAG }}
           docker push ${{ env.AZURE_IMAGE_NAME_WITH_LATEST_TAG }}
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
-          app-name: app-prod-redi
+          app-name: api-prod-redos
           images: ${{ env.AZURE_IMAGE_NAME_WITH_LATEST_TAG }}
 
       - name: Azure logout

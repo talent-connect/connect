@@ -4,7 +4,7 @@ import {
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
 import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Columns, Content, Form } from 'react-bulma-components'
 import { RouteComponentProps } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -50,9 +50,7 @@ export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
       try {
         accessToken = JSON.parse(accessTokenStr)
         saveAccessTokenToLocalStorage(accessToken)
-        console.log('savetoken')
       } catch (err) {
-        console.log('savetoken errp')
         return setErrorMsg(
           'Sorry, there seems to have been an error. Please try to reset your password again, or contact career@redi-school.org for assistance.'
         )
@@ -67,11 +65,14 @@ export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
   ) => {
     try {
       await setPassword(values.password)
-      showNotification("Your new password is set and you're logged in :)", {
-        variant: 'success',
-        autoHideDuration: 8000,
-      })
-      history.push('/app/me')
+      showNotification(
+        'Your new password is set. Please log in using the new password :)',
+        {
+          variant: 'success',
+          autoHideDuration: 10000,
+        }
+      )
+      history.push('/front/login')
     } catch (err) {
       setFormError('Invalid username or password')
     }

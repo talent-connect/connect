@@ -1,21 +1,18 @@
 import { Icon, PipeList } from '@talent-connect/shared-atomic-design-components'
 import React from 'react'
 import { Card, Element } from 'react-bulma-components'
-import { NavLink } from 'react-router-dom'
 
-import {
-  AWS_PROFILE_AVATARS_BUCKET_BASE_URL,
-  REDI_LOCATION_NAMES,
-} from '@talent-connect/shared-config'
+import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
+import { NavLink } from 'react-router-dom'
 
 import placeholderImage from '../../assets/images/img-placeholder.png'
 import './ProfileCard.scss'
 
-import { RedProfile } from '@talent-connect/shared-types'
 import { ReadMentoringTopics } from '../molecules'
+import { ProfileCardProfilePropFragment } from './ProfileCard.generated'
 
 interface ProfileCardProps {
-  profile: RedProfile
+  profile: ProfileCardProfilePropFragment
   linkTo?: string
   isFavorite?: boolean
   toggleFavorite?: (id: string) => void
@@ -28,8 +25,7 @@ const ProfileCard = ({
   isFavorite,
 }: ProfileCardProps) => {
   const {
-    firstName,
-    lastName,
+    fullName,
     languages,
     categories,
     rediLocation,
@@ -42,7 +38,7 @@ const ProfileCard = ({
   }
 
   const imgSrc = profileAvatarImageS3Key
-    ? AWS_PROFILE_AVATARS_BUCKET_BASE_URL + profileAvatarImageS3Key
+    ? profileAvatarImageS3Key
     : placeholderImage
 
   return (
@@ -51,7 +47,7 @@ const ProfileCard = ({
         <Card.Image
           className="profile-card__image"
           src={imgSrc}
-          alt={`${firstName} ${lastName}`}
+          alt={`${fullName}`}
         />
         <Card.Content>
           {toggleFavorite && (
@@ -69,7 +65,7 @@ const ProfileCard = ({
             textSize={4}
             className="profile-card__name"
           >
-            {firstName} {lastName}
+            {fullName}
           </Element>
           <Element key="location" renderAs="span" className="content">
             {REDI_LOCATION_NAMES[rediLocation]}

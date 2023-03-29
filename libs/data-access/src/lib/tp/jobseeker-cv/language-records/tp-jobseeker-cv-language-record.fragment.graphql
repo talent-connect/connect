@@ -1,0 +1,6 @@
+fragment AllTpJobseekerCvLanguageRecordFields on TpJobseekerCvLanguageRecord {
+  id
+  language
+  proficiencyLevelId
+  tpJobseekerCvId
+}

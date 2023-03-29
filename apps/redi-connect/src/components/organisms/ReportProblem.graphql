@@ -1,0 +1,5 @@
+mutation reportProblem($input: CreateConProblemReportInput!) {
+  conProblemReportCreate(input: $input) {
+    ok
+  }
+}

@@ -1,22 +1,25 @@
-import React, { useState, useEffect } from 'react'
-import AccountOperation from '../../../components/templates/AccountOperation'
-import Teaser from '../../../components/molecules/Teaser'
+import { useEffect, useState } from 'react'
 import { Columns, Content, Form } from 'react-bulma-components'
 import { Link } from 'react-router-dom'
+import Teaser from '../../../components/molecules/Teaser'
+import AccountOperation from '../../../components/templates/AccountOperation'
 
 import * as Yup from 'yup'
 
-import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
-import { history } from '../../../services/history/history'
-import { setPassword, fetchSaveRedProfile } from '../../../services/api/api'
-import { saveAccessTokenToLocalStorage } from '../../../services/auth/auth'
-import { RouteComponentProps } from 'react-router'
-import { showNotification } from '../../../components/AppNotification'
 import {
   Button,
   FormInput,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
+import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
+import { RouteComponentProps } from 'react-router'
+import { showNotification } from '../../../components/AppNotification'
+import { setPassword } from '../../../services/api/api'
+import {
+  purgeAllSessionData,
+  saveAccessTokenToLocalStorage,
+} from '../../../services/auth/auth'
+import { history } from '../../../services/history/history'
 
 interface SetNewPasswordValues {
   password: string
@@ -53,21 +56,9 @@ export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
       try {
         accessToken = JSON.parse(accessTokenStr)
         saveAccessTokenToLocalStorage(accessToken)
-        console.log('savetoken')
       } catch (err) {
-        console.log('savetoken errp')
         return setErrorMsg(
           'Sorry, there seems to have been an error. Please try to reset your password again, or contact career@redi-school.org for assistance.'
-        )
-      }
-      try {
-        await fetchSaveRedProfile(accessToken)
-        console.log('saveprofile')
-      } catch (err) {
-        console.log('saveprofile error')
-
-        return setErrorMsg(
-          'Sorry, the link you used seems to have expired. Please contact career@redi-school.org to receive a new one.'
         )
       }
     }
@@ -80,11 +71,15 @@ export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
   ) => {
     try {
       await setPassword(values.password)
-      showNotification("Your new password is set and you're logged in :)", {
-        variant: 'success',
-        autoHideDuration: 8000,
-      })
-      history.push('/app/me')
+      showNotification(
+        'Your new password is set. Please log in using the new password :)',
+        {
+          variant: 'success',
+          autoHideDuration: 10000,
+        }
+      )
+      purgeAllSessionData()
+      history.push('/front/login')
     } catch (err) {
       setFormError('Invalid username or password')
     }

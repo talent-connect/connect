@@ -1,0 +1,9 @@
+fragment EditableLinksProfileProp on TpJobseekerDirectoryEntry {
+  personalWebsite
+  githubUrl
+  linkedInUrl
+  twitterUrl
+  behanceUrl
+  stackOverflowUrl
+  dribbbleUrl
+}

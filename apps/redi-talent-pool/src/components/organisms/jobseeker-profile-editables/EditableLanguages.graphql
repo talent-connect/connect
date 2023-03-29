@@ -1,0 +1,5 @@
+fragment EditableLanguagesProfileProp on TpJobseekerDirectoryEntry {
+  workingLanguages {
+    ...AllTpJobseekerProfileLanguageRecordFields
+  }
+}

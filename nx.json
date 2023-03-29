@@ -17,56 +17,9 @@
         "cacheableOperations": [],
         "accessToken": "YTA4ZjEzZTctYTc5NS00OWIwLWFiOTQtOGM5YTJkNThjMDM1fHJlYWQtd3JpdGU=",
         "canTrackAnalytics": false,
-        "showUsageWarnings": true
+        "showUsageWarnings": true,
+        "parallel": 1
       }
-    }
-  },
-  "projects": {
-    "admin-panel": {
-      "tags": []
-    },
-    "admin-panel-e2e": {
-      "tags": [],
-      "implicitDependencies": ["admin-panel"]
-    },
-    "api": {
-      "tags": [],
-      "implicitDependencies": []
-    },
-    "redi-connect": {
-      "tags": []
-    },
-    "redi-connect-e2e": {
-      "tags": [],
-      "implicitDependencies": ["redi-connect"]
-    },
-    "redi-talent-pool": {
-      "tags": []
-    },
-    "redi-talent-pool-e2e": {
-      "tags": [],
-      "implicitDependencies": ["redi-talent-pool"]
-    },
-    "shared-atomic-design-components": {
-      "tags": []
-    },
-    "shared-config": {
-      "tags": []
-    },
-    "shared-types": {
-      "tags": []
-    },
-    "shared-utils": {
-      "tags": []
-    },
-    "talent-pool-config": {
-      "tags": []
-    },
-    "talent-pool-types": {
-      "tags": []
-    },
-    "typescript-utilities": {
-      "tags": []
     }
   },
   "targetDependencies": {
@@ -76,5 +29,25 @@
         "projects": "dependencies"
       }
     ]
-  }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/react"
+  },
+  "generators": {
+    "@nrwl/react": {
+      "application": {
+        "style": "scss",
+        "linter": "eslint",
+        "babel": true
+      },
+      "component": {
+        "style": "scss"
+      },
+      "library": {
+        "style": "scss",
+        "linter": "eslint"
+      }
+    }
+  },
+  "defaultProject": "redi-connect"
 }

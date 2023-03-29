@@ -1,15 +1,13 @@
 import { useContext } from 'react'
-import { useSelector } from 'react-redux'
 
-import { RootState } from '../../../redux/types'
-import {
-  Button,
-  SelectDropdown,
-} from '@talent-connect/shared-atomic-design-components'
+import { useLoadMyProfileQuery, UserType } from '@talent-connect/data-access'
+import { Button } from '@talent-connect/shared-atomic-design-components'
+import SelectDropdown from '../../../../../../libs/shared-atomic-design-components/src/lib/atoms/SelectDropdown'
+import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
 import MobileApplicationCard from './application-card/MobileApplicationCard'
 import {
-  ApplicationsFilterContext,
   ActiveFilterType,
+  ApplicationsFilterContext,
 } from './ApplicationsFilterContext'
 import './MobileView.scss'
 
@@ -21,8 +19,8 @@ const applicationStatuses = [
 ]
 
 const MobileView = () => {
-  const profile = useSelector((state: RootState) => state.user.profile)
-  const isMentor = profile.userType === 'mentor'
+  const loopbackUserId = getAccessTokenFromLocalStorage().userId
+  const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
 
   const {
     activeFilter,
@@ -34,6 +32,12 @@ const MobileView = () => {
     hasDeclinedApplications,
     hasCancelledApplications,
   } = useContext(ApplicationsFilterContext)
+
+  if (!myProfileQuery.isSuccess) return null
+
+  const profile = myProfileQuery.data.conProfile
+
+  const isMentor = profile.userType === UserType.Mentor
 
   const activeFilterValue =
     activeFilter === 'all'

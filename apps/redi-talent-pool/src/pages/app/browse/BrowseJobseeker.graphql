@@ -1,0 +1,21 @@
+query tpJobseekerFavouritedJobListings {
+  tpJobseekerFavoritedJobListings {
+    tpJobListingId
+  }
+}
+
+mutation tpJobListingMarkAsFavourite(
+  $input: TpJobseekerFavoritedJobListingCreateMutationInputDto!
+) {
+  tpJobseekerFavoritedJobListingCreate(input: $input) {
+    ok
+  }
+}
+
+mutation tpJobListingUnfavourite(
+  $input: TpJobseekerFavoritedJobListingDeleteMutationInputDto!
+) {
+  tpJobseekerFavoritedJobListingDelete(input: $input) {
+    ok
+  }
+}

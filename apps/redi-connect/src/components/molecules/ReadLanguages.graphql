@@ -1,0 +1,3 @@
+fragment ReadLanguagesProfileProp on ConProfile {
+  languages
+}

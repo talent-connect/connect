@@ -1,0 +1,9 @@
+mutation tpJobseekerProfileEducationRecordCreate(
+  $input: TpJobseekerProfileEducationRecordCreateInput!
+) {
+  tpJobseekerProfileEducationRecordCreate(
+    tpJobseekerProfileEducationRecordCreateInput: $input
+  ) {
+    ok
+  }
+}

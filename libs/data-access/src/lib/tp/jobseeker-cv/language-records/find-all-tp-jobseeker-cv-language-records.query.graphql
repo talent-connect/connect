@@ -1,0 +1,5 @@
+query findAllTpJobseekerCvLanguageRecords($tpJobseekerCvId: ID!) {
+  tpJobseekerCvLanguageRecords(tpJobseekerCvId: $tpJobseekerCvId) {
+    ...AllTpJobseekerCvLanguageRecordFields
+  }
+}

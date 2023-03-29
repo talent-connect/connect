@@ -1,8 +1,8 @@
 import { Module } from '@talent-connect/shared-atomic-design-components'
-import { RedProfile } from '@talent-connect/shared-types'
 import classnames from 'classnames'
 import { ReactNode } from 'react'
 
+import { MContactsProfilePropFragment } from './MContacts.generated'
 import './MContacts.scss'
 
 interface ContactRow {
@@ -18,13 +18,12 @@ const ContactRow = ({ label, children }: ContactRow) =>
   ) : null
 
 interface MContact {
-  profile: RedProfile
+  profile: MContactsProfilePropFragment
   className?: string
 }
 
 const MContacts = ({ profile, className }: MContact) => {
-  const { contactEmail, telephoneNumber, linkedInProfileUrl, slackUsername } =
-    profile
+  const { email, telephoneNumber, linkedInProfileUrl, slackUsername } = profile
 
   return (
     <Module
@@ -32,7 +31,7 @@ const MContacts = ({ profile, className }: MContact) => {
       className={classnames('m-contacts', { [`${className}`]: className })}
     >
       <ContactRow label="Email">
-        {contactEmail && <a href={`mailto:${contactEmail}`}>{contactEmail}</a>}
+        {email && <a href={`mailto:${email}`}>{email}</a>}
       </ContactRow>
       <ContactRow label="Phone">{telephoneNumber}</ContactRow>
       <ContactRow label="LinkedIn">
