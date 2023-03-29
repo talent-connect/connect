@@ -12,6 +12,7 @@ export class SfApiTpJobseekerCvService {
       objectName: TpJobseekerCvRecord.metadata.SALESFORCE_OBJECT_NAME,
       objectFields: TpJobseekerCvRecord.metadata.SALESFORCE_OBJECT_FIELDS,
       filter,
+      orderBy: TpJobseekerCvRecord.metadata.SALESFORCE_ORDER_BY,
     })
     const records = rawRecords.map((rawRecord) =>
       TpJobseekerCvRecord.create(rawRecord)

@@ -44,5 +44,6 @@ export class TpJobseekerCvRecord extends Record<TpJobseekerCvRecordProps> {
       'CreatedDate',
       'LastModifiedDate',
     ],
+    SALESFORCE_ORDER_BY: ['CreatedDate', 'DESC'],
   }
 }
