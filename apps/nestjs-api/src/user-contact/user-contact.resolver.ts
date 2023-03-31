@@ -14,6 +14,7 @@ import { UserContactService } from './user-contact.service'
 @Resolver(() => UserContactEntityProps)
 export class UserContactResolver {
   constructor(private readonly service: UserContactService) {}
+
   @Mutation(() => OkResponseMutationOutputDto, {
     name: 'userContactPatch',
   })
