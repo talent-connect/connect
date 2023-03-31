@@ -31,6 +31,8 @@ export class TpJobseekerCvEducationRecordMapper
     props.institutionName = raw.props.Institution_Name__c
     props.certificationType = raw.props.Certification_Type__c
 
+    props.userId = raw.props.Jobseeker_CV_Contact__c
+
     props.updatedAt = raw.props.LastModifiedDate
     props.createdAt = raw.props.CreatedDate
 

@@ -4,6 +4,8 @@ import {
   OkResponseMutationOutputDto,
   TpJobseekerCvEducationRecordEntityProps,
 } from '@talent-connect/common-types'
+import { CurrentUser } from '../auth/current-user.decorator'
+import { CurrentUserInfo } from '../auth/current-user.interface'
 import { GqlJwtAuthGuard } from '../auth/gql-jwt-auth.guard'
 import { FindAllTpJobseekerCvEducationRecordsArgs } from './args/find-all-tp-jobseeker-cv-education-records.args'
 import { TpJobseekerCvEducationRecordCreateInput } from './dtos/tp-jobseeker-cv-education-record-create.entityinput'
@@ -19,9 +21,13 @@ export class TpJobseekerCvEducationRecordResolver {
   @Query(() => [TpJobseekerCvEducationRecordEntityProps], {
     name: 'tpJobseekerCvEducationRecords',
   })
-  async findAll(@Args() args: FindAllTpJobseekerCvEducationRecordsArgs) {
+  async findAll(
+    @Args() args: FindAllTpJobseekerCvEducationRecordsArgs,
+    @CurrentUser() currentUser: CurrentUserInfo
+  ) {
     const entities = await this.service.findAll({
       Jobseeker_CV__c: args.tpJobseekerCvId,
+      Jobseeker_CV_Contact__c: currentUser.userId,
     })
     const props = entities.map((entity) => entity.props)
     return props
