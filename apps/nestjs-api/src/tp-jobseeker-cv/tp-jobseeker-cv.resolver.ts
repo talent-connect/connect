@@ -36,7 +36,6 @@ export class TpJobseekerCvResolver {
     return props
   }
 
-  // //! TODO: Add auth
   @Query(() => TpJobseekerCvEntityProps, {
     name: 'tpJobseekerCv',
   })
@@ -46,7 +45,6 @@ export class TpJobseekerCvResolver {
     return props
   }
 
-  //! TODO: Add auth
   @Mutation(() => OkIdResponseMutationOutputDto, {
     name: 'tpJobseekerCvCreate',
   })
@@ -59,7 +57,6 @@ export class TpJobseekerCvResolver {
     return { ok: true, id: result.id }
   }
 
-  //! TODO: Add auth
   @Mutation(() => OkIdResponseMutationOutputDto, {
     name: 'tpJobseekerCreateFromCurrentUserJobseekerProfile',
   })
@@ -76,7 +73,6 @@ export class TpJobseekerCvResolver {
     return { ok: true, id: result.id }
   }
 
-  //! TODO: Add auth
   @Mutation(() => OkResponseMutationOutputDto, {
     name: 'tpJobseekerCvPatch',
   })
@@ -88,15 +84,15 @@ export class TpJobseekerCvResolver {
     return { ok: true }
   }
 
-  //! TODO: Add auth
   @Mutation(() => OkResponseMutationOutputDto, {
     name: 'tpJobseekerCvDelete',
   })
   async delete(
     @Args('tpJobseekerCvDeleteInput')
-    input: TpJobseekerCvDeleteInput
+    input: TpJobseekerCvDeleteInput,
+    @CurrentUser() currentUser: CurrentUserInfo
   ) {
-    await this.writeService.delete(input)
+    await this.writeService.delete(input, currentUser)
     return { ok: true }
   }
 }

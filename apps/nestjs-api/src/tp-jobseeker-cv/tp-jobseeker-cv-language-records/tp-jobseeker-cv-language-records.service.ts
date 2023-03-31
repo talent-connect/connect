@@ -71,8 +71,18 @@ export class TpJobseekerCvLanguageRecordsService {
     return await this.api.create(recordToPersist)
   }
 
-  async patch(input: TpJobseekerCvLanguageRecordPatchInput) {
+  async patch(
+    input: TpJobseekerCvLanguageRecordPatchInput,
+    currentUser: CurrentUserInfo
+  ) {
     const existingEntity = await this.findOne(input.id)
+
+    if (existingEntity.props.userId !== currentUser.userId) {
+      throw new UnauthorizedException(
+        'You are not authorized to update this TpJobseekerCvLanguageRecord'
+      )
+    }
+
     const props = existingEntity.props
     const updatesSanitized = deleteUndefinedProperties(input)
     Object.entries(updatesSanitized).forEach(([key, value]) => {
@@ -82,8 +92,18 @@ export class TpJobseekerCvLanguageRecordsService {
     await this.api.update(this.mapper.toPersistence(entityToPersist))
   }
 
-  async delete(input: TpJobseekerCvLanguageRecordDeleteInput) {
+  async delete(
+    input: TpJobseekerCvLanguageRecordDeleteInput,
+    currentUser: CurrentUserInfo
+  ) {
     const existingEntity = await this.findOne(input.id)
+
+    if (existingEntity.props.userId !== currentUser.userId) {
+      throw new UnauthorizedException(
+        'You are not authorized to update this TpJobseekerCvLanguageRecord'
+      )
+    }
+
     const recordToDelete = this.mapper.toPersistence(existingEntity)
     await this.api.delete(recordToDelete)
   }

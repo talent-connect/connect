@@ -33,7 +33,6 @@ export class TpJobseekerCvEducationRecordResolver {
     return props
   }
 
-  //! TODO: Add auth
   @Mutation(() => OkResponseMutationOutputDto, {
     name: 'tpJobseekerCvEducationRecordCreate',
   })
@@ -52,9 +51,10 @@ export class TpJobseekerCvEducationRecordResolver {
   })
   async patch(
     @Args('tpJobseekerCvEducationRecordPatchInput')
-    input: TpJobseekerCvEducationRecordPatchInput
+    input: TpJobseekerCvEducationRecordPatchInput,
+    @CurrentUser() currentUser: CurrentUserInfo
   ) {
-    await this.service.patch(input)
+    await this.service.patch(input, currentUser)
     return { ok: true }
   }
 
@@ -64,9 +64,10 @@ export class TpJobseekerCvEducationRecordResolver {
   })
   async delete(
     @Args('tpJobseekerCvEducationRecordDeleteInput')
-    input: TpJobseekerCvEducationRecordDeleteInput
+    input: TpJobseekerCvEducationRecordDeleteInput,
+    @CurrentUser() currentUser: CurrentUserInfo
   ) {
-    await this.service.delete(input)
+    await this.service.delete(input, currentUser)
     return { ok: true }
   }
 }

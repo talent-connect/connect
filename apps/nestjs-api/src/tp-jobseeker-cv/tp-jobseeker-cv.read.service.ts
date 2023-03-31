@@ -40,4 +40,13 @@ export class TpJobseekerCvReadService {
       throw new NotFoundException('TpJobseekerCv not found')
     }
   }
+
+  async findOneByFilter(filter: { [key: string]: any }) {
+    const entities = await this.findAll(filter)
+    if (entities.length > 0) {
+      return entities[0]
+    } else {
+      throw new NotFoundException('TpJobseekerCv not found')
+    }
+  }
 }

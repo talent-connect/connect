@@ -4,6 +4,7 @@ import {
   TpCompanyProfileMapper,
 } from '@talent-connect/common-types'
 import { deleteUndefinedProperties } from '@talent-connect/shared-utils'
+import { CurrentUserInfo } from '../auth/current-user.interface'
 import { SfApiTpCompanyProfilesService } from '../salesforce-api/sf-api-tp-company-profiles.service'
 import { TpCompanyProfilePatchInput } from './dtos/tp-company-profile-patch.entityinput'
 
@@ -35,9 +36,12 @@ export class TpCompanyProfilesService {
     }
   }
 
-  async patch(updateTpCompanyProfileInput: TpCompanyProfilePatchInput) {
-    const existingEntity = await this.findOneById(
-      updateTpCompanyProfileInput.id
+  async patch(
+    updateTpCompanyProfileInput: TpCompanyProfilePatchInput,
+    currentUser: CurrentUserInfo
+  ) {
+    const existingEntity = await this.findCompanyRepresentedByUser(
+      currentUser.userId
     )
     const props = existingEntity.props
     const updatesSanitized = deleteUndefinedProperties(
@@ -50,5 +54,16 @@ export class TpCompanyProfilesService {
     await this.sfService.updateTpCompanyProfile(
       this.mapper.toPersistence(entityToPersist)
     )
+  }
+
+  // TODO: this same method exists in TpCompanyRepresentativesService.
+  // We can't use that class as a dependency here because it would
+  // create a circular dependency. Refactor to solve for that.
+  async findCompanyRepresentedByUser(userId: string) {
+    const record = await this.sfService.getCompanyRepresentedByUser(userId)
+
+    const entity = this.mapper.fromPersistence(record)
+
+    return entity
   }
 }

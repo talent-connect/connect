@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, UnauthorizedException } from '@nestjs/common'
 import {
   TpJobseekerCvEducationRecordEntity,
   TpJobseekerCvEducationRecordEntityProps,
@@ -115,9 +115,10 @@ export class TpJobseekerCvWriteService {
   }
 
   async patch(input: TpJobseekerCvPatchInput, currentUser: CurrentUserInfo) {
-    const existingEntity = await this.tpJobseekerCvReadService.findOneByUserId(
-      currentUser.userId
-    )
+    const existingEntity = await this.tpJobseekerCvReadService.findOneByFilter({
+      Id: input.id,
+      Contact__c: currentUser.userId,
+    })
     const props = existingEntity.props
     const updatesSanitized = deleteUndefinedProperties(input)
     Object.entries(updatesSanitized).forEach(([key, value]) => {
@@ -127,8 +128,13 @@ export class TpJobseekerCvWriteService {
     await this.api.update(this.mapper.toPersistence(entityToPersist))
   }
 
-  async delete(input: TpJobseekerCvDeleteInput) {
+  async delete(input: TpJobseekerCvDeleteInput, currentUser: CurrentUserInfo) {
     const existingEntity = await this.tpJobseekerCvReadService.findOne(input.id)
+
+    if (existingEntity.props.userId !== currentUser.userId) {
+      throw new UnauthorizedException('You are not allowed to delete this CV')
+    }
+
     const recordToDelete = this.mapper.toPersistence(existingEntity)
     await this.api.delete(recordToDelete)
   }

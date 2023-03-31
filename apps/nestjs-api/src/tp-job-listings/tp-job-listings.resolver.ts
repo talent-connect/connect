@@ -31,7 +31,6 @@ export class TpJobListingsResolver {
     private readonly tpCompanyProfilesService: TpCompanyProfilesService
   ) {}
 
-  // //! TODO: Add auth
   @Query(() => [TpJobListingEntityProps], {
     name: 'tpJobListings',
   })
@@ -57,7 +56,6 @@ export class TpJobListingsResolver {
     return entity.props
   }
 
-  //! TODO: Add auth
   @Mutation(() => OkResponseMutationOutputDto, { name: 'tpJobListingCreate' })
   async create(
     @Args('tpJobListingCreateInput') input: TpJobListingCreateInput,
@@ -71,17 +69,21 @@ export class TpJobListingsResolver {
   @Mutation(() => OkResponseMutationOutputDto, {
     name: 'tpJobListingPatch',
   })
-  async patch(@Args('tpJobListingPatchInput') input: TpJobListingPatchInput) {
-    await this.service.patch(input)
+  async patch(
+    @Args('tpJobListingPatchInput') input: TpJobListingPatchInput,
+    @CurrentUser() currentUser: CurrentUserInfo
+  ) {
+    await this.service.patch(input, currentUser)
     return { ok: true }
   }
 
   //! TODO: Add auth
   @Mutation(() => OkResponseMutationOutputDto, { name: 'tpJobListingDelete' })
   async delete(
-    @Args('tpJobListingDeleteInput') input: TpJobListingDeleteInput
+    @Args('tpJobListingDeleteInput') input: TpJobListingDeleteInput,
+    @CurrentUser() currentUser: CurrentUserInfo
   ) {
-    await this.service.delete(input)
+    await this.service.delete(input, currentUser)
     return { ok: true }
   }
 }

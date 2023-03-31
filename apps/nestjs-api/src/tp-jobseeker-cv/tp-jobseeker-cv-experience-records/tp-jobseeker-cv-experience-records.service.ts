@@ -72,8 +72,18 @@ export class TpJobseekerCvExperienceRecordsService {
     return await this.api.create(recordToPersist)
   }
 
-  async patch(input: TpJobseekerCvExperienceRecordPatchInput) {
+  async patch(
+    input: TpJobseekerCvExperienceRecordPatchInput,
+    currentUser: CurrentUserInfo
+  ) {
     const existingEntity = await this.findOne(input.id)
+
+    if (existingEntity.props.userId !== currentUser.userId) {
+      throw new UnauthorizedException(
+        'You are not authorized to update this TpJobseekerCvExperienceRecord'
+      )
+    }
+
     const props = existingEntity.props
     const updatesSanitized = deleteUndefinedProperties(input)
     Object.entries(updatesSanitized).forEach(([key, value]) => {
@@ -83,8 +93,18 @@ export class TpJobseekerCvExperienceRecordsService {
     await this.api.update(this.mapper.toPersistence(entityToPersist))
   }
 
-  async delete(input: TpJobseekerCvExperienceRecordDeleteInput) {
+  async delete(
+    input: TpJobseekerCvExperienceRecordDeleteInput,
+    currentUser: CurrentUserInfo
+  ) {
     const existingEntity = await this.findOne(input.id)
+
+    if (existingEntity.props.userId !== currentUser.userId) {
+      throw new UnauthorizedException(
+        'You are not authorized to update this TpJobseekerCvExperienceRecord'
+      )
+    }
+
     const recordToDelete = this.mapper.toPersistence(existingEntity)
     await this.api.delete(recordToDelete)
   }
