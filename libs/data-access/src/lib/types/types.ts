@@ -839,7 +839,6 @@ export type OkResponseMutationOutputDto = {
 export type Query = {
   __typename?: 'Query';
   conMenteeFavoritedMentors: Array<ConMenteeFavoritedMentor>;
-  conMentoringSessions: Array<ConMentoringSession>;
   conMentorshipMatch: ConMentorshipMatch;
   conMentorshipMatches: Array<ConMentorshipMatch>;
   conProfile: ConProfile;
@@ -1315,6 +1314,7 @@ export type TpJobseekerCvEducationRecord = {
   title?: Maybe<Scalars['String']>;
   tpJobseekerCvId: Scalars['ID'];
   updatedAt: Scalars['DateTime'];
+  userId: Scalars['String'];
 };
 
 export type TpJobseekerCvEducationRecordCreateInput = {
@@ -1370,6 +1370,7 @@ export type TpJobseekerCvExperienceRecord = {
   title?: Maybe<Scalars['String']>;
   tpJobseekerCvId: Scalars['ID'];
   updatedAt: Scalars['DateTime'];
+  userId: Scalars['String'];
 };
 
 export type TpJobseekerCvExperienceRecordCreateInput = {
@@ -1412,6 +1413,7 @@ export type TpJobseekerCvLanguageRecord = {
   language: Language;
   proficiencyLevelId: LanguageProficiencyLevel;
   tpJobseekerCvId: Scalars['ID'];
+  userId: Scalars['String'];
 };
 
 export type TpJobseekerCvLanguageRecordCreateInput = {

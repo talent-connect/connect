@@ -4,9 +4,9 @@ import {
   OkResponseMutationOutputDto,
   TpJobseekerCvExperienceRecordEntityProps,
 } from '@talent-connect/common-types'
-import { CurrentUser } from '../auth/current-user.decorator'
-import { CurrentUserInfo } from '../auth/current-user.interface'
-import { GqlJwtAuthGuard } from '../auth/gql-jwt-auth.guard'
+import { CurrentUser } from '../../auth/current-user.decorator'
+import { CurrentUserInfo } from '../../auth/current-user.interface'
+import { GqlJwtAuthGuard } from '../../auth/gql-jwt-auth.guard'
 import { FindAllTpJobseekerCvExperienceRecordsArgs } from '../tp-jobseeker-cv-language-records/args/find-all-tp-jobseeker-cv-language-records.args'
 import { TpJobseekerCvExperienceRecordCreateInput } from './dtos/tp-jobseeker-cv-experience-record-create.entityinput'
 import { TpJobseekerCvExperienceRecordDeleteInput } from './dtos/tp-jobseeker-cv-experience-record-delete.entityinput'
@@ -41,9 +41,10 @@ export class TpJobseekerCvExperienceRecordResolver {
   })
   async create(
     @Args('tpJobseekerCvExperienceRecordCreateInput')
-    input: TpJobseekerCvExperienceRecordCreateInput
+    input: TpJobseekerCvExperienceRecordCreateInput,
+    @CurrentUser() currentUser: CurrentUserInfo
   ) {
-    await this.service.createFromInput(input)
+    await this.service.createFromInput(input, currentUser)
     return { ok: true }
   }
 

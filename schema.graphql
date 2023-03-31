@@ -582,7 +582,6 @@ type OkResponseMutationOutputDto {
 
 type Query {
   conMenteeFavoritedMentors: [ConMenteeFavoritedMentor!]!
-  conMentoringSessions: [ConMentoringSession!]!
   conMentorshipMatch(id: ID!): ConMentorshipMatch!
   conMentorshipMatches(filter: FindMentorshipMatchesArgsFilter): [ConMentorshipMatch!]!
   conProfile(id: ID, loopbackUserId: ID): ConProfile!
@@ -977,6 +976,7 @@ type TpJobseekerCvEducationRecord {
   title: String
   tpJobseekerCvId: ID!
   updatedAt: DateTime!
+  userId: String!
 }
 
 input TpJobseekerCvEducationRecordCreateInput {
@@ -1031,6 +1031,7 @@ type TpJobseekerCvExperienceRecord {
   title: String
   tpJobseekerCvId: ID!
   updatedAt: DateTime!
+  userId: String!
 }
 
 input TpJobseekerCvExperienceRecordCreateInput {
@@ -1072,6 +1073,7 @@ type TpJobseekerCvLanguageRecord {
   language: Language!
   proficiencyLevelId: LanguageProficiencyLevel!
   tpJobseekerCvId: ID!
+  userId: String!
 }
 
 input TpJobseekerCvLanguageRecordCreateInput {

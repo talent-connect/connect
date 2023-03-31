@@ -13,12 +13,16 @@ import { TpJobseekerCvCreateFromCurrentUserJobseekerProfileInput } from './dto/t
 import { TpJobseekerCvCreateInput } from './dto/tp-jobseeker-cv-create.entityinput'
 import { TpJobseekerCvDeleteInput } from './dto/tp-jobseeker-cv-delete.entityinput'
 import { TpJobseekerCvPatchInput } from './dto/tp-jobseeker-cv-patch.entityinput'
-import { TpJobseekerCvService } from './tp-jobseeker-cv.service'
+import { TpJobseekerCvReadService } from './tp-jobseeker-cv.read.service'
+import { TpJobseekerCvWriteService } from './tp-jobseeker-cv.write.service'
 
 @UseGuards(GqlJwtAuthGuard)
 @Resolver(() => TpJobseekerCvEntityProps)
 export class TpJobseekerCvResolver {
-  constructor(private readonly service: TpJobseekerCvService) {}
+  constructor(
+    private readonly writeService: TpJobseekerCvWriteService,
+    private readonly readService: TpJobseekerCvReadService
+  ) {}
 
   @Query(() => [TpJobseekerCvEntityProps], {
     name: 'tpJobseekerCvs',
@@ -27,7 +31,7 @@ export class TpJobseekerCvResolver {
     const filter = {
       Contact__c: currentUser.userId,
     }
-    const entities = await this.service.findAll(filter)
+    const entities = await this.readService.findAll(filter)
     const props = entities.map((entity) => entity.props)
     return props
   }
@@ -37,7 +41,7 @@ export class TpJobseekerCvResolver {
     name: 'tpJobseekerCv',
   })
   async findOne(@Args() args: FindOneTpJobseekerCvArgs) {
-    const entity = await this.service.findOne(args.id)
+    const entity = await this.readService.findOne(args.id)
     const props = entity.props
     return props
   }
@@ -51,7 +55,7 @@ export class TpJobseekerCvResolver {
     input: TpJobseekerCvCreateInput,
     @CurrentUser() currentUser: CurrentUserInfo
   ) {
-    const result = await this.service.create(input, currentUser)
+    const result = await this.writeService.create(input, currentUser)
     return { ok: true, id: result.id }
   }
 
@@ -64,10 +68,11 @@ export class TpJobseekerCvResolver {
     input: TpJobseekerCvCreateFromCurrentUserJobseekerProfileInput,
     @CurrentUser() currentUser: CurrentUserInfo
   ) {
-    const result = await this.service.createFromCurrentUserJobseekerProfile(
-      input,
-      currentUser
-    )
+    const result =
+      await this.writeService.createFromCurrentUserJobseekerProfile(
+        input,
+        currentUser
+      )
     return { ok: true, id: result.id }
   }
 
@@ -79,7 +84,7 @@ export class TpJobseekerCvResolver {
     @Args('tpJobseekerCvPatchInput') input: TpJobseekerCvPatchInput,
     @CurrentUser() currentUser: CurrentUserInfo
   ) {
-    await this.service.patch(input, currentUser)
+    await this.writeService.patch(input, currentUser)
     return { ok: true }
   }
 
@@ -91,7 +96,7 @@ export class TpJobseekerCvResolver {
     @Args('tpJobseekerCvDeleteInput')
     input: TpJobseekerCvDeleteInput
   ) {
-    await this.service.delete(input)
+    await this.writeService.delete(input)
     return { ok: true }
   }
 }

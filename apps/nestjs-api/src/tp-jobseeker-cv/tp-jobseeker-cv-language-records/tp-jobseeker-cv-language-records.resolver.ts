@@ -4,9 +4,9 @@ import {
   OkResponseMutationOutputDto,
   TpJobseekerCvLanguageRecordEntityProps,
 } from '@talent-connect/common-types'
-import { CurrentUser } from '../auth/current-user.decorator'
-import { CurrentUserInfo } from '../auth/current-user.interface'
-import { GqlJwtAuthGuard } from '../auth/gql-jwt-auth.guard'
+import { CurrentUser } from '../../auth/current-user.decorator'
+import { CurrentUserInfo } from '../../auth/current-user.interface'
+import { GqlJwtAuthGuard } from '../../auth/gql-jwt-auth.guard'
 import { FindAllTpJobseekerCvLanguageRecordsArgs } from '../tp-jobseeker-cv-experience-records/args/find-all-tp-jobseeker-cv-experience-records.args'
 import { TpJobseekerCvLanguageRecordCreateInput } from './dtos/tp-jobseeker-cv-language-record-create.entityinput'
 import { TpJobseekerCvLanguageRecordDeleteInput } from './dtos/tp-jobseeker-cv-language-record-delete.entityinput'
@@ -24,7 +24,7 @@ export class TpJobseekerCvLanguageRecordResolver {
   async findAll(
     @Args() args: FindAllTpJobseekerCvLanguageRecordsArgs,
     @CurrentUser() currentUser: CurrentUserInfo
-  ) {
+  ): Promise<any> {
     const entities = await this.service.findAll({
       Jobseeker_CV__c: args.tpJobseekerCvId,
       Jobseeker_CV_Contact__c: currentUser.userId,

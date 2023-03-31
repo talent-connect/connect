@@ -15,4 +15,5 @@ fragment AllTpJobseekerCvEducationRecordFields on TpJobseekerCvEducationRecord {
   institutionCity
   institutionCountry
   institutionName
+  userId
 }

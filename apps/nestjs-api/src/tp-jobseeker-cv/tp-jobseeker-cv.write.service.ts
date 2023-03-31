@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import {
   TpJobseekerCvEducationRecordEntity,
   TpJobseekerCvEducationRecordEntityProps,
@@ -18,9 +18,6 @@ import {
 import { deleteUndefinedProperties } from '@talent-connect/shared-utils'
 import { CurrentUserInfo } from '../auth/current-user.interface'
 import { SfApiTpJobseekerCvService } from '../salesforce-api/sf-api-tp-jobseeker-cv.service'
-import { TpJobseekerCvEducationRecordsService } from '../tp-jobseeker-cv-education-records/tp-jobseeker-cv-education-records.service'
-import { TpJobseekerCvExperienceRecordsService } from '../tp-jobseeker-cv-experience-records/tp-jobseeker-cv-experience-records.service'
-import { TpJobseekerCvLanguageRecordsService } from '../tp-jobseeker-cv-language-records/tp-jobseeker-cv-language-records.service'
 import { TpJobseekerProfileEducationRecordsService } from '../tp-jobseeker-profile-education-records/tp-jobseeker-profile-education-records.service'
 import { TpJobseekerProfileExperienceRecordsService } from '../tp-jobseeker-profile-experience-records/tp-jobseeker-profile-experience-records.service'
 import { TpJobseekerProfileLanguageRecordsService } from '../tp-jobseeker-profile-language-records/tp-jobseeker-profile-language-records.service'
@@ -28,11 +25,16 @@ import { TpJobseekerProfileService } from '../tp-jobseeker-profile/tp-jobseeker-
 import { TpJobseekerCvCreateInput } from './dto/tp-jobseeker-cv-create.entityinput'
 import { TpJobseekerCvDeleteInput } from './dto/tp-jobseeker-cv-delete.entityinput'
 import { TpJobseekerCvPatchInput } from './dto/tp-jobseeker-cv-patch.entityinput'
+import { TpJobseekerCvEducationRecordsService } from './tp-jobseeker-cv-education-records/tp-jobseeker-cv-education-records.service'
+import { TpJobseekerCvExperienceRecordsService } from './tp-jobseeker-cv-experience-records/tp-jobseeker-cv-experience-records.service'
+import { TpJobseekerCvLanguageRecordsService } from './tp-jobseeker-cv-language-records/tp-jobseeker-cv-language-records.service'
+import { TpJobseekerCvReadService } from './tp-jobseeker-cv.read.service'
 
 @Injectable()
-export class TpJobseekerCvService {
+export class TpJobseekerCvWriteService {
   constructor(
     private readonly api: SfApiTpJobseekerCvService,
+    private readonly tpJobseekerCvReadService: TpJobseekerCvReadService,
     private readonly tpJobseekerProfileService: TpJobseekerProfileService,
     private readonly tpJobseekerProfileEducationRecordsService: TpJobseekerProfileEducationRecordsService,
     private readonly tpJobseekerProfileExperienceRecordsService: TpJobseekerProfileExperienceRecordsService,
@@ -42,38 +44,6 @@ export class TpJobseekerCvService {
     private readonly tpJobseekerCvLanguageRecordsService: TpJobseekerCvLanguageRecordsService,
     private readonly mapper: TpJobseekerCvMapper
   ) {}
-
-  async findAll(filter: any = {}) {
-    const records = await this.api.findAll(filter)
-
-    const entities = records.map((source) =>
-      this.mapper.fromPersistence(source)
-    )
-
-    return entities
-  }
-
-  async findOne(id: string) {
-    const entities = await this.findAll({
-      Id: id,
-    })
-    if (entities.length > 0) {
-      return entities[0]
-    } else {
-      throw new NotFoundException('TpJobseekerCv not found with id: ' + id)
-    }
-  }
-
-  async findOneByUserId(userId: string) {
-    const entities = await this.findAll({
-      Contact__c: userId,
-    })
-    if (entities.length > 0) {
-      return entities[0]
-    } else {
-      throw new NotFoundException('TpJobseekerCv not found')
-    }
-  }
 
   async create(input: TpJobseekerCvCreateInput, currentUser: CurrentUserInfo) {
     const props = new TpJobseekerCvEntityProps()
@@ -145,7 +115,9 @@ export class TpJobseekerCvService {
   }
 
   async patch(input: TpJobseekerCvPatchInput, currentUser: CurrentUserInfo) {
-    const existingEntity = await this.findOneByUserId(currentUser.userId)
+    const existingEntity = await this.tpJobseekerCvReadService.findOneByUserId(
+      currentUser.userId
+    )
     const props = existingEntity.props
     const updatesSanitized = deleteUndefinedProperties(input)
     Object.entries(updatesSanitized).forEach(([key, value]) => {
@@ -156,7 +128,7 @@ export class TpJobseekerCvService {
   }
 
   async delete(input: TpJobseekerCvDeleteInput) {
-    const existingEntity = await this.findOne(input.id)
+    const existingEntity = await this.tpJobseekerCvReadService.findOne(input.id)
     const recordToDelete = this.mapper.toPersistence(existingEntity)
     await this.api.delete(recordToDelete)
   }
