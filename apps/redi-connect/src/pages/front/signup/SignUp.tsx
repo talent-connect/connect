@@ -25,11 +25,15 @@ import {
 } from '@talent-connect/data-access'
 import { COURSES } from '@talent-connect/shared-config'
 import { toPascalCaseAndTrim } from '@talent-connect/shared-utils'
+import { courses } from '../../../config/config'
 import { signUpLoopback } from '../../../services/api/api'
 import { history } from '../../../services/history/history'
 import { envRediLocation } from '../../../utils/env-redi-location'
 
-const formCourses = COURSES.map((course) => ({
+const formCourses = COURSES.filter((course) => {
+  const courseLocation = course.location as RediLocation
+  return courseLocation === envRediLocation()
+}).map((course) => ({
   value: course.id,
   label: course.label,
 }))
@@ -61,7 +65,7 @@ export const validationSchema = Yup.object({
     is: 'public-sign-up-mentee-pending-review',
     then: Yup.string()
       .required('Please select current ReDI course')
-      .oneOf(COURSES.map((level) => level.id))
+      .oneOf(courses.map((level) => level.id))
       .label('Currently enrolled in course'),
   }),
 })

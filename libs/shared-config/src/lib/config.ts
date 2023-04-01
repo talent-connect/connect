@@ -325,13 +325,11 @@ export const COURSES = [
     location: 'BERLIN',
   },
   { id: 'BERLIN_JAVA_CIRCLE', label: 'Java Circle', location: 'BERLIN' },
-  { id: 'BERLIN_JAVA_CIRCLE', label: 'Java Circle', location: 'BERLIN' },
   {
     id: 'BERLIN_PYTHON_FOUNDATION',
     label: 'Python Foundation',
     location: 'BERLIN',
   },
-  { id: 'BERLIN_DATA_ANALYTICS', label: 'Data Analytics', location: 'BERLIN' },
   { id: 'BERLIN_DATA_ANALYTICS', label: 'Data Analytics', location: 'BERLIN' },
   {
     id: 'BERLIN_SALESFORCE_FUNDAMENTALS',
