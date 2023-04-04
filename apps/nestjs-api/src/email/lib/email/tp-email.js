@@ -12,47 +12,6 @@ const { buildBackendUrl } = require('../build-backend-url')
 
 const { sendMjmlEmailFactory } = require('./email')
 
-const sendTpResetPasswordEmailTemplate = fs.readFileSync(
-  path.resolve(
-    __dirname,
-    'assets',
-    'email',
-    'tp-templates',
-    'reset-password.mjml'
-  ),
-  'utf-8'
-)
-
-const sendTpResetPasswordEmailParsed = mjml2html(
-  sendTpResetPasswordEmailTemplate,
-  {
-    filePath: path.resolve(__dirname, 'assets', 'email', 'templates'),
-  }
-)
-
-export const sendTpResetPasswordEmail = ({
-  recipient,
-  firstName,
-  accessToken,
-  rediLocation,
-}) => {
-  const resetPasswordUrl = `${buildTpFrontendUrl(
-    process.env.NODE_ENV,
-    rediLocation
-  )}/front/reset-password/set-new-password/${accessToken}`
-  const rediEmailAdress = 'career@redi-school.org'
-  const html = sendTpResetPasswordEmailParsed.html
-    .replace(/\${firstName}/g, firstName)
-    .replace(/\${resetPasswordUrl}/g, resetPasswordUrl)
-    .replace(/\${rediEmailAdress}/g, rediEmailAdress)
-    .replace(/\${emailAdress}/g, recipient)
-  return sendMjmlEmailFactory({
-    to: recipient,
-    subject: 'Password Reset for ReDI Talent Pool',
-    html: html,
-  })
-}
-
 const convertTemplateToHtml = (rediLocation, templateString) => {
   const convertTemplate = fs.readFileSync(
     path.resolve(
