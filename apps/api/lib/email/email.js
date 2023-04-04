@@ -29,8 +29,7 @@ const sendMjmlEmail = Rx.bindNodeCallback(
   transporter.sendMail.bind(transporter)
 )
 const sendEmailFactory = (to, subject, body, rediLocation) => {
-  // let toSanitized = isProductionOrDemonstration() ? to : ''
-  let toSanitized = to
+  let toSanitized = isProductionOrDemonstration() ? to : ''
   if (process.env.DEV_MODE_EMAIL_RECIPIENT) {
     toSanitized = process.env.DEV_MODE_EMAIL_RECIPIENT
   }
@@ -56,8 +55,7 @@ const sendEmailFactory = (to, subject, body, rediLocation) => {
   })
 }
 const sendMjmlEmailFactory = ({ to, subject, html }) => {
-  // let toSanitized = isProductionOrDemonstration() ? to : ''
-  let toSanitized = to
+  let toSanitized = isProductionOrDemonstration() ? to : ''
   if (process.env.DEV_MODE_EMAIL_RECIPIENT) {
     toSanitized = process.env.DEV_MODE_EMAIL_RECIPIENT
   }
@@ -72,7 +70,6 @@ const sendMjmlEmailFactory = ({ to, subject, html }) => {
 }
 
 function buildSubjectLine(subject, env) {
-  return subject
   switch (env) {
     case 'production':
       return subject
