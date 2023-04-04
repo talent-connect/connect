@@ -29,7 +29,7 @@ export class TpCompanyProfilesSalesforceEventHandlerService {
 
     const isStatusChangedToApproved =
       payload.newStatus === CompanyTalentPoolState.PROFILE_APPROVED &&
-      payload.oldStatus !== CompanyTalentPoolState.PROFILE_APPROVED
+      payload.oldStatus !== payload.newStatus
 
     // if the new status is not approved, we don't need to do anything else
     if (!isStatusChangedToApproved) return
