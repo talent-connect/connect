@@ -27,11 +27,12 @@ export class TpJobseekerProfileSalesforceEventHandlerService {
       payload.tpJobseekerProfileId
     )
 
-    const isNewStatusApproved =
-      payload.newStatus === JobseekerProfileStatus.PROFILE_APPROVED
+    const didStatusChangeIntoApproved =
+      payload.newStatus === JobseekerProfileStatus.PROFILE_APPROVED &&
+      payload.oldStatus !== payload.newStatus
 
     // if the new status is not approved, we don't need to do anything else
-    if (!isNewStatusApproved) return
+    if (!didStatusChangeIntoApproved) return
 
     const jobseekerProfile = await this.service.findOne(
       payload.tpJobseekerProfileId
