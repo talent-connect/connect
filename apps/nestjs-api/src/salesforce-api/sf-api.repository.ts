@@ -53,7 +53,15 @@ export class SfApiRepository {
     process.stdin.on('keypress', (str, key) => {
       if (key.name === 'c') {
         cacheManager.reset()
-        console.log(SfApiRepository.name, 'Cache cleared')
+        console.log(`\n`, `[${SfApiRepository.name}]`, 'Cache cleared')
+      }
+      if (key.name === 'e') {
+        console.log(
+          `\n`,
+          `[${SfApiRepository.name}]`,
+          'current environment is',
+          process.env.NODE_ENV
+        )
       }
     })
   }

@@ -25,8 +25,6 @@ const { default: clsx } = require('clsx')
 
 var app = (module.exports = loopback())
 
-const sendAllReminderEmails = require('../daily-cronjob-reminder-email/index.js')
-
 app.start = function () {
   // start the web server
   return app.listen(function () {

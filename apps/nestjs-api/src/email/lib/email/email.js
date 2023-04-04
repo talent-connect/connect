@@ -55,8 +55,7 @@ export const sendEmailFactory = (to, subject, body, rediLocation) => {
   })
 }
 export const sendMjmlEmailFactory = ({ to, subject, html }) => {
-  // let toSanitized = isProductionOrDemonstration() ? to : ''
-  const toSanitized = to
+  let toSanitized = isProductionOrDemonstration() ? to : ''
   if (process.env.NX_DEV_MODE_EMAIL_RECIPIENT) {
     toSanitized = process.env.NX_DEV_MODE_EMAIL_RECIPIENT
   }
@@ -71,7 +70,6 @@ export const sendMjmlEmailFactory = ({ to, subject, html }) => {
 }
 
 function buildSubjectLine(subject, env) {
-  return subject
   switch (env) {
     case 'production':
       return subject
@@ -105,46 +103,6 @@ export const sendReportProblemEmail = ({ sendingUserEmail, message }) => {
   return sendMjmlEmailFactory({
     to: 'career@redi-school.org',
     subject: 'New problem report',
-    html: html,
-  })
-}
-
-const sendResetPasswordEmailTemplate = fs.readFileSync(
-  path.resolve(
-    __dirname,
-    'assets',
-    'email',
-    'templates',
-    'reset-password.mjml'
-  ),
-  'utf-8'
-)
-export const sendResetPasswordEmailParsed = mjml2html(
-  sendResetPasswordEmailTemplate,
-  {
-    filePath: path.resolve(__dirname, 'assets', 'email', 'templates'),
-  }
-)
-
-export const sendResetPasswordEmail = ({
-  recipient,
-  firstName,
-  accessToken,
-  rediLocation,
-}) => {
-  const resetPasswordUrl = `${buildFrontendUrl(
-    process.env.NODE_ENV,
-    rediLocation
-  )}/front/reset-password/set-new-password/${accessToken}`
-  const rediEmailAdress = 'career@redi-school.org'
-  const html = sendResetPasswordEmailParsed.html
-    .replace(/\${firstName}/g, firstName)
-    .replace(/\${resetPasswordUrl}/g, resetPasswordUrl)
-    .replace(/\${rediEmailAdress}/g, rediEmailAdress)
-    .replace(/\${emailAdress}/g, recipient)
-  return sendMjmlEmailFactory({
-    to: recipient,
-    subject: 'Password Reset for ReDI Connect',
     html: html,
   })
 }
