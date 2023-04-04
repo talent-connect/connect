@@ -272,7 +272,6 @@ const sendEmailToUserWithTpJobseekerProfileSigningUpToCon = ({
   recipient,
   firstName,
 }) => {
-  console.log(recipient, firstName)
   const emailParsed = convertTemplateToHtml(
     null,
     `schedule-onboarding-call-for-tp-jobseeker-signed-up-as-mentee`
