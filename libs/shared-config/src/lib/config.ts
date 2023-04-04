@@ -385,9 +385,6 @@ export const COURSES = [
     label: 'UX/UI Design Intermediate',
     location: 'NRW',
   },
-  { id: 'NRW_HTML_AND_CSS', label: 'HTML and CSS', location: 'NRW' },
-  { id: 'NRW_JAVASCRIPT', label: 'JavaScript', location: 'NRW' },
-  { id: 'NRW_REACT', label: 'React', location: 'NRW' },
   {
     id: 'NRW_INFRASTRUCTURE_BASICS',
     label: 'Infrastructure Basics',
@@ -409,7 +406,6 @@ export const COURSES = [
     label: 'Introduction to Computer Science (Online)',
     location: 'MUNICH',
   },
-  { id: 'NRW_CLOUD_COMPUTING', label: 'Cloud Computing', location: 'NRW' },
   {
     id: 'MUNICH_INTRODUCTION_TO_COMPUTER_SCIENCE_HYBRID',
     label: 'Introduction to Computer Science (Hybrid)',
@@ -472,7 +468,7 @@ export const COURSES = [
   {
     id: 'HAMBURG_ALUMNI',
     label: 'Alumni (I took a course in the past)',
-    location: 'hamburg',
+    location: 'HAMBURG',
   },
   {
     id: 'CYBERSPACE_DATA_ANALYTICS',

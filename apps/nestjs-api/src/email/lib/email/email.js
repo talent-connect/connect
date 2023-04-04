@@ -56,7 +56,7 @@ export const sendEmailFactory = (to, subject, body, rediLocation) => {
 }
 export const sendMjmlEmailFactory = ({ to, subject, html }) => {
   // let toSanitized = isProductionOrDemonstration() ? to : ''
-  const toSanitized = to
+  let toSanitized = to
   if (process.env.NX_DEV_MODE_EMAIL_RECIPIENT) {
     toSanitized = process.env.NX_DEV_MODE_EMAIL_RECIPIENT
   }
