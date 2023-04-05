@@ -55,7 +55,7 @@ function AvatarEditable() {
   const onUploadSuccess = async (result: any) => {
     const profileAvatarImageS3Key = result.fileKey
     const mutationResult = await patchMyProfileMutation.mutateAsync({
-      input: { id: profile.id, profileAvatarImageS3Key },
+      input: { profileAvatarImageS3Key },
     })
     queryClient.setQueryData(
       useLoadMyProfileQuery.getKey({

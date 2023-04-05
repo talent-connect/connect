@@ -129,16 +129,6 @@ export type ConMentorshipMatchesDeclineMentorshipOutputDto = {
   ok: Scalars['Boolean'];
 };
 
-export type ConMentorshipMatchesMarkAsDismissedInputDto = {
-  conMentorshipMatchId: Scalars['String'];
-};
-
-export type ConMentorshipMatchesMarkAsDismissedOutputDto = {
-  __typename?: 'ConMentorshipMatchesMarkAsDismissedOutputDto';
-  id: Scalars['String'];
-  ok: Scalars['Boolean'];
-};
-
 export type ConProfile = {
   __typename?: 'ConProfile';
   age?: Maybe<Scalars['Float']>;
@@ -547,7 +537,6 @@ export type Mutation = {
   conMentorshipMatchesApplyForMentorship: ConMentorshipMatchesApplyForMentorshipOutputDto;
   conMentorshipMatchesCompleteMentorship: ConMentorshipMatchesCompleteMentorshipOutputDto;
   conMentorshipMatchesDeclineMentorship: ConMentorshipMatchesDeclineMentorshipOutputDto;
-  conMentorshipMatchesMarkAsDismissed: ConMentorshipMatchesMarkAsDismissedOutputDto;
   conProblemReportCreate: OkResponseMutationOutputDto;
   conProfileSignUp: OkIdResponseMutationOutputDto;
   createConMentoringSession: ConMentoringSession;
@@ -621,11 +610,6 @@ export type MutationConMentorshipMatchesCompleteMentorshipArgs = {
 
 export type MutationConMentorshipMatchesDeclineMentorshipArgs = {
   input: ConMentorshipMatchesDeclineMentorshipInputDto;
-};
-
-
-export type MutationConMentorshipMatchesMarkAsDismissedArgs = {
-  input: ConMentorshipMatchesMarkAsDismissedInputDto;
 };
 
 
@@ -1057,7 +1041,6 @@ export type TpCompanyProfile = {
 export type TpCompanyProfilePatchInput = {
   about?: InputMaybe<Scalars['String']>;
   companyName?: InputMaybe<Scalars['String']>;
-  id: Scalars['ID'];
   industry?: InputMaybe<Scalars['String']>;
   isJobFair2023Participant?: InputMaybe<Scalars['Boolean']>;
   isProfileVisibleToJobseekers?: InputMaybe<Scalars['Boolean']>;
@@ -1827,7 +1810,6 @@ export type UpdateConProfileInput = {
   firstName?: InputMaybe<Scalars['String']>;
   gender?: InputMaybe<Gender>;
   githubProfileUrl?: InputMaybe<Scalars['String']>;
-  id: Scalars['ID'];
   languages?: InputMaybe<Array<Language>>;
   lastName?: InputMaybe<Scalars['String']>;
   linkedInProfileUrl?: InputMaybe<Scalars['String']>;

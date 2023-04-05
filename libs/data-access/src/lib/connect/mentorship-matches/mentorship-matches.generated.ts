@@ -8,7 +8,7 @@ export type MyMatchesQueryVariables = Types.Exact<{
 }>;
 
 
-export type MyMatchesQuery = { __typename?: 'Query', conMentorshipMatches: Array<{ __typename?: 'ConMentorshipMatch', id: string, applicationText?: string | null, expectationText?: string | null, mentorReplyMessageOnAccept?: string | null, hasMenteeDismissedMentorshipApplicationAcceptedNotification?: boolean | null, mentee: { __typename?: 'ConProfile', id: string, fullName: string, firstName: string, lastName: string, languages?: Array<Types.Language> | null, categories: Array<Types.MentoringTopic>, rediLocation: Types.RediLocation, profileAvatarImageS3Key?: string | null }, mentor: { __typename?: 'ConProfile', id: string, fullName: string, firstName: string, lastName: string, languages?: Array<Types.Language> | null, categories: Array<Types.MentoringTopic>, rediLocation: Types.RediLocation, profileAvatarImageS3Key?: string | null } }> };
+export type MyMatchesQuery = { __typename?: 'Query', conMentorshipMatches: Array<{ __typename?: 'ConMentorshipMatch', id: string, applicationText?: string | null, expectationText?: string | null, mentorReplyMessageOnAccept?: string | null, hasMenteeDismissedMentorshipApplicationAcceptedNotification?: boolean | null, status: Types.MentorshipMatchStatus, mentee: { __typename?: 'ConProfile', id: string, fullName: string, firstName: string, lastName: string, languages?: Array<Types.Language> | null, categories: Array<Types.MentoringTopic>, rediLocation: Types.RediLocation, profileAvatarImageS3Key?: string | null }, mentor: { __typename?: 'ConProfile', id: string, fullName: string, firstName: string, lastName: string, languages?: Array<Types.Language> | null, categories: Array<Types.MentoringTopic>, rediLocation: Types.RediLocation, profileAvatarImageS3Key?: string | null } }> };
 
 export type FindMatchQueryVariables = Types.Exact<{
   id: Types.Scalars['ID'];
@@ -72,6 +72,7 @@ export const MyMatchesDocument = `
     }
     mentorReplyMessageOnAccept
     hasMenteeDismissedMentorshipApplicationAcceptedNotification
+    status
   }
 }
     `;

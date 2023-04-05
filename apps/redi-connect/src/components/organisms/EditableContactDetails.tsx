@@ -47,7 +47,7 @@ export function EditableContactDetails() {
     const transformedValues = validationSchema.cast(values)
     const cleanValues = omit(transformedValues, ['email'])
     const mutationResult = await patchMyProfileMutation.mutateAsync({
-      input: { id: profile.id, ...cleanValues },
+      input: cleanValues,
     })
     queryClient.setQueryData(useLoadMyProfileQuery.getKey({ loopbackUserId }), {
       conProfile: mutationResult.patchConProfile,

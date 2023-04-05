@@ -103,15 +103,6 @@ type ConMentorshipMatchesDeclineMentorshipOutputDto {
   ok: Boolean!
 }
 
-input ConMentorshipMatchesMarkAsDismissedInputDto {
-  conMentorshipMatchId: String!
-}
-
-type ConMentorshipMatchesMarkAsDismissedOutputDto {
-  id: String!
-  ok: Boolean!
-}
-
 type ConProfile {
   age: Float
   birthDate: DateTime
@@ -523,7 +514,6 @@ type Mutation {
   conMentorshipMatchesApplyForMentorship(input: ConMentorshipMatchesApplyForMentorshipInputDto!): ConMentorshipMatchesApplyForMentorshipOutputDto!
   conMentorshipMatchesCompleteMentorship(input: ConMentorshipMatchesCompleteMentorshipInputDto!): ConMentorshipMatchesCompleteMentorshipOutputDto!
   conMentorshipMatchesDeclineMentorship(input: ConMentorshipMatchesDeclineMentorshipInputDto!): ConMentorshipMatchesDeclineMentorshipOutputDto!
-  conMentorshipMatchesMarkAsDismissed(input: ConMentorshipMatchesMarkAsDismissedInputDto!): ConMentorshipMatchesMarkAsDismissedOutputDto!
   conProblemReportCreate(input: CreateConProblemReportInput!): OkResponseMutationOutputDto!
   conProfileSignUp(input: ConProfileSignUpInput!): OkIdResponseMutationOutputDto!
   createConMentoringSession(createConMentoringSessionInput: CreateConMentoringSessionInput!): ConMentoringSession!
@@ -725,7 +715,6 @@ type TpCompanyProfile {
 input TpCompanyProfilePatchInput {
   about: String
   companyName: String
-  id: ID!
   industry: String
   isJobFair2023Participant: Boolean
   isProfileVisibleToJobseekers: Boolean
@@ -1479,7 +1468,6 @@ input UpdateConProfileInput {
   firstName: String
   gender: Gender
   githubProfileUrl: String
-  id: ID!
   languages: [Language!]
   lastName: String
   linkedInProfileUrl: String
