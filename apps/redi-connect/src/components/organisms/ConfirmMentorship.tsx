@@ -6,6 +6,7 @@ import {
 import { useFormik } from 'formik'
 import { useState } from 'react'
 import { Content } from 'react-bulma-components'
+import { useQueryClient } from 'react-query'
 import { useHistory } from 'react-router-dom'
 import * as Yup from 'yup'
 import {
@@ -37,6 +38,7 @@ const validationSchema = Yup.object({
 })
 
 const ConfirmMentorship = ({ match }: ConfirmMentorshipProps) => {
+  const queryClient = useQueryClient()
   const acceptMentorshipMutation = useAcceptMentorshipMutation()
   const [isModalActive, setModalActive] = useState(false)
   const history = useHistory()
@@ -52,6 +54,7 @@ const ConfirmMentorship = ({ match }: ConfirmMentorshipProps) => {
       })
       setModalActive(false)
       history.push(`/app/mentorships/${match.id}`)
+      queryClient.invalidateQueries()
     } catch (error) {
       console.log('error ', error)
     }
