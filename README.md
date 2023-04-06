@@ -18,15 +18,13 @@ After you've set up `.env`, make sure to update `NX_DEV_MODE_EMAIL_RECIPIENT` to
 2. Make sure you're running the _v14.17.6_ version of Node locally when you're running the backend server and checkout to a new branch. To do this, you can use [nvm](https://github.com/nvm-sh/nvm#node-version-manager), which allows you to select different versions of Node via the command line. Alternatively, we have added support for [Volta](https://docs.volta.sh/guide/understanding). So if you choose, you can use Volta, which sets project-defined tools automatically.
 3. Run `yarn` in project root to install dependencies.
 4. Run `yarn start:all` to boot all apps, _or_ a subset of apps using the `start:x` commands in package.json.
-
-   It'll take a while and lots of warnings will show until everything's booted.
-
 5. See the [Onboarding Checklist](https://github.com/talent-connect/connect/wiki#onboarding-checklist) in our Wiki.
 
 You can open these in your browser:
 
 - ReDI Talent Pool: http://localhost:2999
 - ReDI Connect: http://localhost:3000
+- Salesforce login: https://test.salesforce.com/ (get credentials from @katamatata, @helloanil or @ericbolikowski)
 - Loopback API: http://localhost:3003, Swagger: http://localhost:3003/explorer
 - NestJS API: http://localhost:3333, GraphiQL: http://localhost:3333/graphql
 
