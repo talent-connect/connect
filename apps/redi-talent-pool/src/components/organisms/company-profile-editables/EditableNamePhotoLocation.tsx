@@ -39,7 +39,6 @@ export function EditableNamePhotoLocation({
   const onNewAvatarReady = async (newAvatarUrl: string) => {
     await mutation.mutateAsync({
       input: {
-        id: companyProfile.id,
         profileAvatarImageS3Key: newAvatarUrl,
       },
     })

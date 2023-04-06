@@ -101,7 +101,7 @@ function ModalForm({
     values: Partial<EditableAboutProfilePropFragment>
   ) => {
     formik.setSubmitting(true)
-    await mutation.mutateAsync({ input: { id: companyProfile.id, ...values } })
+    await mutation.mutateAsync({ input: values })
     formik.setSubmitting(false)
     setIsEditing(false)
     queryClient.invalidateQueries()
