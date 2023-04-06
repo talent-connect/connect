@@ -60,7 +60,10 @@ function LoggedIn({ children }: Props) {
   const match =
     myMatchesQuery.isSuccess &&
     myMatchesQuery.data?.conMentorshipMatches.length > 0 &&
-    myMatchesQuery.data?.conMentorshipMatches[0]
+    myMatchesQuery.data?.conMentorshipMatches.sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    )[0]
   const profile = myProfileQuery.data?.conProfile
 
   const { t } = useTranslation()

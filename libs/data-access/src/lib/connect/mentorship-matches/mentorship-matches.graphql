@@ -26,6 +26,7 @@ query myMatches($filter: FindMentorshipMatchesArgsFilter) {
     mentorReplyMessageOnAccept
     hasMenteeDismissedMentorshipApplicationAcceptedNotification
     status
+    createdAt
   }
 }
 
