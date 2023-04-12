@@ -317,11 +317,10 @@ export const EDUCATION_LEVELS = {
 export type EducationLevelKey = keyof typeof EDUCATION_LEVELS
 
 export const COURSES = [
-  { id: 'BERLIN_CYBERSECURITY', label: 'CyberSecurity', location: 'BERLIN' },
   { id: 'BERLIN_DATA_CIRCLE', label: 'Data Circle', location: 'BERLIN' },
   {
-    id: 'BERLIN_PROGRAMMING_WITH_JAVA',
-    label: 'Programming with Java',
+    id: 'BERLIN_INTRO_TO_JAVA',
+    label: 'Intro to Java',
     location: 'BERLIN',
   },
   { id: 'BERLIN_JAVA_CIRCLE', label: 'Java Circle', location: 'BERLIN' },
@@ -344,17 +343,6 @@ export const COURSES = [
   { id: 'BERLIN_HTML_CSS', label: 'HTML & CSS', location: 'BERLIN' },
   { id: 'BERLIN_JAVASCRIPT', label: 'JavaScript', location: 'BERLIN' },
   { id: 'BERLIN_REACT', label: 'React', location: 'BERLIN' },
-  { id: 'BERLIN_UX_UI_BASICS', label: 'UX/UI Basics', location: 'BERLIN' },
-  {
-    id: 'BERLIN_UX_UI_INTERMEDIATE',
-    label: 'UX/UI Intermediate',
-    location: 'BERLIN',
-  },
-  {
-    id: 'BERLIN_CODING_FUNDAMENTALS',
-    label: 'Coding Fundamentals',
-    location: 'BERLIN',
-  },
   {
     id: 'BERLIN_DIGITAL_LITERACY_PROGRAM',
     label: 'Digital Literacy Program',
@@ -427,6 +415,11 @@ export const COURSES = [
     location: 'MUNICH',
   },
   {
+    id: 'MUNICH_PYTHON_INTERMEDIATE_UKR',
+    label: 'Python Intermediate (UKR)',
+    location: 'MUNICH',
+  },
+  {
     id: 'MUNICH_FRONT_END_DEVELOPMENT_HTML_CSS',
     label: 'Front-End Development (HTML/CSS)',
     location: 'MUNICH',
@@ -436,8 +429,27 @@ export const COURSES = [
     label: 'Front-End Development (JavaScript)',
     location: 'MUNICH',
   },
-  { id: 'MUNICH_UX_UI_DESIGN', label: 'UX/UI Design', location: 'MUNICH' },
+  {
+    id: 'MUNICH_FRONT_END_DEVELOPMENT_REACT',
+    label: 'Front-End Development (React)',
+    location: 'MUNICH',
+  },
+  {
+    id: 'MUNICH_UX_UI_DESIGN_BASICS',
+    label: 'UX/UI Design Basics',
+    location: 'MUNICH',
+  },
+  {
+    id: 'MUNICH_UX_UI_DESIGN_INTERMEDIATE',
+    label: 'UX/UI Design Intermediate',
+    location: 'MUNICH',
+  },
   { id: 'MUNICH_DATA_ANALYTICS', label: 'Data Analytics', location: 'MUNICH' },
+  {
+    id: 'MUNICH_DATA_STRUCTURE_AND_ALGORITHMS',
+    label: 'Data Structure and Algorithms',
+    location: 'MUNICH',
+  },
   {
     id: 'MUNICH_BACK_END_DEVELOPMENT',
     label: 'Back-End Development',
@@ -453,16 +465,31 @@ export const COURSES = [
     label: 'Alumni (I took a course in the past)',
     location: 'MUNICH',
   },
-  { id: 'HAMBURG_INTRO_TO_CS', label: 'Intro to CS', location: 'HAMBURG' },
-  { id: 'HAMBURG_HTML_CSS', label: 'HTML/CSS', location: 'HAMBURG' },
   {
-    id: 'HAMBURG_UX_UI_DESIGN_BASIS',
-    label: 'UX/UI Design Basis',
+    id: 'HAMBURG_CLOUD_COMPUTING',
+    label: 'Cloud Computing',
     location: 'HAMBURG',
   },
   {
-    id: 'HAMBURG_INTERNET_OF_THINGS',
-    label: 'Internet of Things',
+    id: 'HAMBURG_INTRO_TO_COMPUTER_SCIENCE',
+    label: 'Intro to Computer Science',
+    location: 'HAMBURG',
+  },
+  { id: 'HAMBURG_JAVASCRIPT', label: 'JavaScript', location: 'HAMBURG' },
+  { id: 'HAMBURG_HTML_CSS', label: 'HTML/CSS', location: 'HAMBURG' },
+  {
+    id: 'HAMBURG_PYTHON_INTERMEDIATE',
+    label: 'Python Intermediate',
+    location: 'HAMBURG',
+  },
+  {
+    id: 'HAMBURG_UX_UI_DESIGN_BASICS',
+    label: 'UX/UI Design Basics',
+    location: 'HAMBURG',
+  },
+  {
+    id: 'HAMBURG_UX_UI_DESIGN_INTERMEDIATE',
+    label: 'UX/UI Design Intermediate',
     location: 'HAMBURG',
   },
   {
