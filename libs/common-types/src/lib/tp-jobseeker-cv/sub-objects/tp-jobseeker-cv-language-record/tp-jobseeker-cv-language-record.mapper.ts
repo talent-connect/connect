@@ -22,6 +22,8 @@ export class TpJobseekerCvLanguageRecordMapper
     props.language = raw.props.Language__r.Slug__c as Language
     props.proficiencyLevelId = raw.props.Fluency__c as LanguageProficiencyLevel
 
+    props.userId = raw.props.Jobseeker_CV_Contact__c
+
     const entity = TpJobseekerCvLanguageRecordEntity.create(props)
 
     return entity

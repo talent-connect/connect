@@ -72,6 +72,7 @@ type FormExperienceRecord = Omit<
   | 'startDateYear'
   | 'endDateMonth'
   | 'endDateYear'
+  | 'userId'
 > & {
   startDateMonth?: string
   startDateYear?: string

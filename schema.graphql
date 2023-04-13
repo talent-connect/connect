@@ -103,15 +103,6 @@ type ConMentorshipMatchesDeclineMentorshipOutputDto {
   ok: Boolean!
 }
 
-input ConMentorshipMatchesMarkAsDismissedInputDto {
-  conMentorshipMatchId: String!
-}
-
-type ConMentorshipMatchesMarkAsDismissedOutputDto {
-  id: String!
-  ok: Boolean!
-}
-
 type ConProfile {
   age: Float
   birthDate: DateTime
@@ -523,7 +514,6 @@ type Mutation {
   conMentorshipMatchesApplyForMentorship(input: ConMentorshipMatchesApplyForMentorshipInputDto!): ConMentorshipMatchesApplyForMentorshipOutputDto!
   conMentorshipMatchesCompleteMentorship(input: ConMentorshipMatchesCompleteMentorshipInputDto!): ConMentorshipMatchesCompleteMentorshipOutputDto!
   conMentorshipMatchesDeclineMentorship(input: ConMentorshipMatchesDeclineMentorshipInputDto!): ConMentorshipMatchesDeclineMentorshipOutputDto!
-  conMentorshipMatchesMarkAsDismissed(input: ConMentorshipMatchesMarkAsDismissedInputDto!): ConMentorshipMatchesMarkAsDismissedOutputDto!
   conProblemReportCreate(input: CreateConProblemReportInput!): OkResponseMutationOutputDto!
   conProfileSignUp(input: ConProfileSignUpInput!): OkIdResponseMutationOutputDto!
   createConMentoringSession(createConMentoringSessionInput: CreateConMentoringSessionInput!): ConMentoringSession!
@@ -582,7 +572,6 @@ type OkResponseMutationOutputDto {
 
 type Query {
   conMenteeFavoritedMentors: [ConMenteeFavoritedMentor!]!
-  conMentoringSessions: [ConMentoringSession!]!
   conMentorshipMatch(id: ID!): ConMentorshipMatch!
   conMentorshipMatches(filter: FindMentorshipMatchesArgsFilter): [ConMentorshipMatch!]!
   conProfile(id: ID, loopbackUserId: ID): ConProfile!
@@ -726,7 +715,6 @@ type TpCompanyProfile {
 input TpCompanyProfilePatchInput {
   about: String
   companyName: String
-  id: ID!
   industry: String
   isJobFair2023Participant: Boolean
   isProfileVisibleToJobseekers: Boolean
@@ -984,6 +972,7 @@ type TpJobseekerCvEducationRecord {
   title: String
   tpJobseekerCvId: ID!
   updatedAt: DateTime!
+  userId: String!
 }
 
 input TpJobseekerCvEducationRecordCreateInput {
@@ -1038,6 +1027,7 @@ type TpJobseekerCvExperienceRecord {
   title: String
   tpJobseekerCvId: ID!
   updatedAt: DateTime!
+  userId: String!
 }
 
 input TpJobseekerCvExperienceRecordCreateInput {
@@ -1079,6 +1069,7 @@ type TpJobseekerCvLanguageRecord {
   language: Language!
   proficiencyLevelId: LanguageProficiencyLevel!
   tpJobseekerCvId: ID!
+  userId: String!
 }
 
 input TpJobseekerCvLanguageRecordCreateInput {
@@ -1477,7 +1468,6 @@ input UpdateConProfileInput {
   firstName: String
   gender: Gender
   githubProfileUrl: String
-  id: ID!
   languages: [Language!]
   lastName: String
   linkedInProfileUrl: String

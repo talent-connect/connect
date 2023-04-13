@@ -20,6 +20,8 @@ export class TpJobseekerCvExperienceRecordEntityProps {
   endDateYear?: number
   current?: boolean
 
+  userId: string
+
   createdAt: Date
   updatedAt: Date
 }

@@ -35,6 +35,7 @@ export class TpJobseekerCvLineItemRecord extends Record<TpJobseekerCvLineItemRec
       'City__c',
       'Country__c',
       'Company__c',
+      'Jobseeker_CV_Contact__c',
       'CreatedDate',
       'LastModifiedDate',
     ],

@@ -78,7 +78,10 @@ const validationSchema = Yup.object({
     ),
 })
 
-type FormLanguageRecord = Omit<TpJobseekerCvLanguageRecord, 'tpJobseekerCvId'>
+type FormLanguageRecord = Omit<
+  TpJobseekerCvLanguageRecord,
+  'tpJobseekerCvId' | 'userId'
+>
 
 interface FormValues {
   workingLanguages: Array<FormLanguageRecord>

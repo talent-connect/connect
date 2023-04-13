@@ -20,13 +20,12 @@ import {
   languageProficiencyLevelsIdToLabelMap,
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
-import { isEqual } from 'lodash'
 import moment from 'moment'
 import React, { useEffect } from 'react'
 import {
+  pdfjs,
   Document as ReactPDFDocument,
   Page as ReactPDFPage,
-  pdfjs,
 } from 'react-pdf/dist/esm/entry.webpack'
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`
@@ -565,6 +564,7 @@ interface CVPDFPreviewProps {
   languageRecords: Array<TpJobseekerCvLanguageRecord>
   pdfHeightPx: number
   pdfWidthPx: number
+  triggerRenderOnChangeOfThisCounter: number
 }
 
 export const CVPDFPreview = ({
@@ -642,7 +642,9 @@ export const CVPDFPreview = ({
 
 export const CVPDFPreviewMemoized = React.memo(
   CVPDFPreview,
-  (prevProps, nextProps) => isEqual(prevProps, nextProps)
+  (prevProps, nextProps) =>
+    prevProps.triggerRenderOnChangeOfThisCounter ===
+    nextProps.triggerRenderOnChangeOfThisCounter
 )
 
 export default CVPDFPreview

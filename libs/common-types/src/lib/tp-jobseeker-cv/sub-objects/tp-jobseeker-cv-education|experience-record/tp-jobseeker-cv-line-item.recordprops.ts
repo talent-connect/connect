@@ -26,6 +26,9 @@ export class TpJobseekerCvLineItemRecordProps implements RecordProps {
   Country__c?: string
   Company__c?: string
 
+  // Computed field
+  Jobseeker_CV_Contact__c: string
+
   @Type(() => Date)
   CreatedDate: Date
   @Type(() => Date)

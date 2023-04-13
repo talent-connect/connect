@@ -4,7 +4,9 @@ import {
   OkResponseMutationOutputDto,
   TpJobseekerCvLanguageRecordEntityProps,
 } from '@talent-connect/common-types'
-import { GqlJwtAuthGuard } from '../auth/gql-jwt-auth.guard'
+import { CurrentUser } from '../../auth/current-user.decorator'
+import { CurrentUserInfo } from '../../auth/current-user.interface'
+import { GqlJwtAuthGuard } from '../../auth/gql-jwt-auth.guard'
 import { FindAllTpJobseekerCvLanguageRecordsArgs } from '../tp-jobseeker-cv-experience-records/args/find-all-tp-jobseeker-cv-experience-records.args'
 import { TpJobseekerCvLanguageRecordCreateInput } from './dtos/tp-jobseeker-cv-language-record-create.entityinput'
 import { TpJobseekerCvLanguageRecordDeleteInput } from './dtos/tp-jobseeker-cv-language-record-delete.entityinput'
@@ -19,9 +21,13 @@ export class TpJobseekerCvLanguageRecordResolver {
   @Query(() => [TpJobseekerCvLanguageRecordEntityProps], {
     name: 'tpJobseekerCvLanguageRecords',
   })
-  async findAll(@Args() args: FindAllTpJobseekerCvLanguageRecordsArgs) {
+  async findAll(
+    @Args() args: FindAllTpJobseekerCvLanguageRecordsArgs,
+    @CurrentUser() currentUser: CurrentUserInfo
+  ): Promise<any> {
     const entities = await this.service.findAll({
       Jobseeker_CV__c: args.tpJobseekerCvId,
+      Jobseeker_CV_Contact__c: currentUser.userId,
     })
     const props = entities.map((entity) => entity.props)
     return props
@@ -33,9 +39,10 @@ export class TpJobseekerCvLanguageRecordResolver {
   })
   async create(
     @Args('tpJobseekerCvLanguageRecordCreateInput')
-    input: TpJobseekerCvLanguageRecordCreateInput
+    input: TpJobseekerCvLanguageRecordCreateInput,
+    @CurrentUser() currentUser: CurrentUserInfo
   ) {
-    await this.service.createFromInput(input)
+    await this.service.createFromInput(input, currentUser)
     return { ok: true }
   }
 
@@ -45,9 +52,10 @@ export class TpJobseekerCvLanguageRecordResolver {
   })
   async patch(
     @Args('tpJobseekerCvLanguageRecordPatchInput')
-    input: TpJobseekerCvLanguageRecordPatchInput
+    input: TpJobseekerCvLanguageRecordPatchInput,
+    @CurrentUser() currentUser: CurrentUserInfo
   ) {
-    await this.service.patch(input)
+    await this.service.patch(input, currentUser)
     return { ok: true }
   }
 
@@ -57,9 +65,10 @@ export class TpJobseekerCvLanguageRecordResolver {
   })
   async delete(
     @Args('tpJobseekerCvLanguageRecordDeleteInput')
-    input: TpJobseekerCvLanguageRecordDeleteInput
+    input: TpJobseekerCvLanguageRecordDeleteInput,
+    @CurrentUser() currentUser: CurrentUserInfo
   ) {
-    await this.service.delete(input)
+    await this.service.delete(input, currentUser)
     return { ok: true }
   }
 }

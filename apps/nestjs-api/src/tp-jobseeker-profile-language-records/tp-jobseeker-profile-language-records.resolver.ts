@@ -49,9 +49,10 @@ export class TpJobseekerProfileLanguageRecordResolver {
   })
   async patch(
     @Args('tpJobseekerProfileLanguageRecordPatchInput')
-    input: TpJobseekerProfileLanguageRecordPatchInput
+    input: TpJobseekerProfileLanguageRecordPatchInput,
+    @CurrentUser() currentUser: CurrentUserInfo
   ) {
-    await this.service.patch(input)
+    await this.service.patch(input, currentUser)
     return { ok: true }
   }
 
@@ -61,9 +62,10 @@ export class TpJobseekerProfileLanguageRecordResolver {
   })
   async delete(
     @Args('tpJobseekerProfileLanguageRecordDeleteInput')
-    input: TpJobseekerProfileLanguageRecordDeleteInput
+    input: TpJobseekerProfileLanguageRecordDeleteInput,
+    @CurrentUser() currentUser: CurrentUserInfo
   ) {
-    await this.service.delete(input)
+    await this.service.delete(input, currentUser)
     return { ok: true }
   }
 }

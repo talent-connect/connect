@@ -38,6 +38,7 @@ const CompleteMentorship = ({ mentorshipMatchId }: CompleteMentorshipProps) => {
       })
       setModalActive(false)
       history.replace('/app/applications')
+      queryClient.invalidateQueries()
     } catch (error) {
       console.log('error ', error)
     }

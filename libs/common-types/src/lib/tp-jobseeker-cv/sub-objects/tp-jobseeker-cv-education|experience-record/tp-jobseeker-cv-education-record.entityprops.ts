@@ -24,6 +24,8 @@ export class TpJobseekerCvEducationRecordEntityProps {
   endDateYear?: number
   current?: boolean
 
+  userId: string
+
   createdAt: Date
   updatedAt: Date
 }

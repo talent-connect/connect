@@ -53,9 +53,17 @@ function Profile() {
   const currentUserIsMentor = myProfile.userType === UserType.Mentor
   const currentUserIsMentee = myProfile.userType === UserType.Mentee
 
-  const myMatchWithThisProfile = myProfile.mentorshipMatches.find(
-    (match) => match.mentee.id === profileId || match.mentor.id === profileId
-  )
+  // If any match exists between this mentee and mentor, get the most recent one.
+  // This is an edge case, but it is possible for a mentee to apply to the same
+  // mentor more than once.
+  const myMatchWithThisProfile = myProfile.mentorshipMatches
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    )
+    .find(
+      (match) => match.mentee.id === profileId || match.mentor.id === profileId
+    )
 
   const isAcceptedMatch = Boolean(
     myMatchWithThisProfile?.status === MentorshipMatchStatus.Accepted

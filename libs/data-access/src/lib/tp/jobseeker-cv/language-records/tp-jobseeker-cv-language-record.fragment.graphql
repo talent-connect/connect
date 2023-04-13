@@ -3,4 +3,5 @@ fragment AllTpJobseekerCvLanguageRecordFields on TpJobseekerCvLanguageRecord {
   language
   proficiencyLevelId
   tpJobseekerCvId
+  userId
 }

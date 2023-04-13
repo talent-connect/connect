@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common'
 import {
   TpJobseekerProfileLanguageRecordEntity,
   TpJobseekerProfileLanguageRecordEntityProps,
@@ -58,8 +62,18 @@ export class TpJobseekerProfileLanguageRecordsService {
     return await this.api.create(recordToPersist)
   }
 
-  async patch(input: TpJobseekerProfileLanguageRecordPatchInput) {
+  async patch(
+    input: TpJobseekerProfileLanguageRecordPatchInput,
+    currentUser: CurrentUserInfo
+  ) {
     const existingEntity = await this.findOne(input.id)
+
+    if (existingEntity.props.userId !== currentUser.userId) {
+      throw new UnauthorizedException(
+        'You are not authorized to update this record'
+      )
+    }
+
     const props = existingEntity.props
     const updatesSanitized = deleteUndefinedProperties(input)
     Object.entries(updatesSanitized).forEach(([key, value]) => {
@@ -69,8 +83,18 @@ export class TpJobseekerProfileLanguageRecordsService {
     await this.api.update(this.mapper.toPersistence(entityToPersist))
   }
 
-  async delete(input: TpJobseekerProfileLanguageRecordDeleteInput) {
+  async delete(
+    input: TpJobseekerProfileLanguageRecordDeleteInput,
+    currentUser: CurrentUserInfo
+  ) {
     const existingEntity = await this.findOne(input.id)
+
+    if (existingEntity.props.userId !== currentUser.userId) {
+      throw new UnauthorizedException(
+        'You are not authorized to update this record'
+      )
+    }
+
     const recordToDelete = this.mapper.toPersistence(existingEntity)
     await this.api.delete(recordToDelete)
   }

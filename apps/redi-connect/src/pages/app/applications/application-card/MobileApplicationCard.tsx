@@ -13,6 +13,7 @@ import {
 } from '@talent-connect/shared-config'
 import {
   Avatar,
+  ConfirmMentorship,
   DeclineMentorshipButton,
 } from '../../../../components/organisms'
 import { ApplicationCardApplicationPropFragment } from '../../../../components/organisms/ApplicationCard.generated'
@@ -138,6 +139,7 @@ function MobileApplicationCard({ application }: Props) {
         application.status === MentorshipMatchStatus.Applied ? (
           <div className="action-buttons">
             <div>
+              <ConfirmMentorship match={application} />
               <DeclineMentorshipButton match={application} />
             </div>
           </div>

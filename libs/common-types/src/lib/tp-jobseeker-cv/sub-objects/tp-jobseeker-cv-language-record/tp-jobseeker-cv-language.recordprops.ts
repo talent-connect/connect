@@ -11,6 +11,9 @@ export class TpJobseekerCvLanguageRecordProps implements RecordProps {
   Language__c: string
   Fluency__c: string
 
+  // Computed field
+  Jobseeker_CV_Contact__c: string
+
   @Type(() => Date)
   CreatedDate: Date
   @Type(() => Date)

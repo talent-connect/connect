@@ -1,4 +1,4 @@
-import { UseGuards } from '@nestjs/common'
+import { UnauthorizedException, UseGuards } from '@nestjs/common'
 import {
   Args,
   Mutation,
@@ -37,10 +37,6 @@ import {
   ConMentorshipMatchesDeclineMentorshipInputDto,
   ConMentorshipMatchesDeclineMentorshipOutputDto,
 } from './dto/con-mentorship-matches-decline-mentorship.mutation-dtos'
-import {
-  ConMentorshipMatchesMarkAsDismissedInputDto,
-  ConMentorshipMatchesMarkAsDismissedOutputDto,
-} from './dto/con-mentorship-matches-mark-as-dismissed.mutation-dtos'
 
 @UseGuards(GqlJwtAuthGuard)
 @Resolver(() => ConMentorshipMatchEntityProps)
@@ -52,28 +48,17 @@ export class ConMentorshipMatchesResolver {
     private readonly conMentoringSessionsService: ConMentoringSessionsService
   ) {}
 
-  // @Mutation(() => ConMentorshipMatch)
-  // createConMentorshipMatch(
-  //   @Args('createConMentorshipMatchInput')
-  //   createConMentorshipMatchInput: CreateConMentorshipMatchInput
-  // ) {
-  //   return this.conMentorshipMatchesService.create(
-  //     createConMentorshipMatchInput
-  //   )
-  // }
-
-  //! TODO: Add auth
   @Query(() => [ConMentorshipMatchEntityProps], {
     name: 'conMentorshipMatches',
   })
   async findAll(
-    @CurrentUser() user: CurrentUserInfo,
-    @Args() args: FindMentorshipMatchesArgs
+    @Args() args: FindMentorshipMatchesArgs,
+    @CurrentUser() currentUser: CurrentUserInfo
   ) {
     const filter: any = {
       $or: [
-        { 'Mentor__r.Loopback_User_ID__c': user.loopbackUserId },
-        { 'Mentee__r.Loopback_User_ID__c': user.loopbackUserId },
+        { 'Mentor__r.Loopback_User_ID__c': currentUser.loopbackUserId },
+        { 'Mentee__r.Loopback_User_ID__c': currentUser.loopbackUserId },
       ],
     }
     if (args?.filter?.status) {
@@ -87,13 +72,13 @@ export class ConMentorshipMatchesResolver {
 
   @Query(() => ConMentorshipMatchEntityProps, { name: 'conMentorshipMatch' })
   async findOne(
-    @CurrentUser() user: CurrentUserInfo,
-    @Args() args: FindOneMentorshipMatchArgs
+    @Args() args: FindOneMentorshipMatchArgs,
+    @CurrentUser() currentUser: CurrentUserInfo
   ) {
     const filter: any = {
       $or: [
-        { 'Mentor__r.Loopback_User_ID__c': user.loopbackUserId },
-        { 'Mentee__r.Loopback_User_ID__c': user.loopbackUserId },
+        { 'Mentor__r.Loopback_User_ID__c': currentUser.loopbackUserId },
+        { 'Mentee__r.Loopback_User_ID__c': currentUser.loopbackUserId },
       ],
       Id: args.id,
     }
@@ -101,13 +86,18 @@ export class ConMentorshipMatchesResolver {
     return entity.props
   }
 
-  //! TODO: Add auth
   @Mutation(() => OkResponseMutationOutputDto, {
     name: 'conMatchMarkMentorshipAcceptedNotificationDismissed',
   })
   async patch(
-    @Args('conMentorshipMatchId', { type: () => String }) id: string
+    @Args('conMentorshipMatchId', { type: () => String }) id: string,
+    @CurrentUser() currentUser: CurrentUserInfo
   ) {
+    const entity = await this.conMentorshipMatchesService.findOneById(id)
+    if (entity.props.menteeId !== currentUser.userId) {
+      throw new UnauthorizedException('You are not the mentee of this match')
+    }
+
     await this.conMentorshipMatchesService.patch(id, {
       hasMenteeDismissedMentorshipApplicationAcceptedNotification: true,
     })
@@ -119,7 +109,6 @@ export class ConMentorshipMatchesResolver {
   //   return this.conMentorshipMatchesService.remove(id)
   // }
 
-  //! TODO: Add auth
   @ResolveField((of) => ConProfileEntityProps)
   async mentee(
     @Parent() conMentorshipMatch: ConMentorshipMatchEntityProps
@@ -133,7 +122,6 @@ export class ConMentorshipMatchesResolver {
     return entity.props
   }
 
-  //! TODO: Add auth
   @ResolveField((of) => ConProfileEntityProps)
   async mentor(
     @Parent() conMentorshipMatch: ConMentorshipMatchEntityProps
@@ -150,12 +138,12 @@ export class ConMentorshipMatchesResolver {
   @ResolveField((of) => [ConMentoringSessionEntityProps])
   async mentoringSessions(
     @Parent() parent: ConMentorshipMatchEntityProps,
-    @CurrentUser() user: CurrentUserInfo
+    @CurrentUser() currentUser: CurrentUserInfo
   ) {
     const filter = {
       $or: [
-        { 'Mentor__r.Loopback_User_ID__c': user.loopbackUserId },
-        { 'Mentee__r.Loopback_User_ID__c': user.loopbackUserId },
+        { 'Mentor__r.Loopback_User_ID__c': currentUser.loopbackUserId },
+        { 'Mentee__r.Loopback_User_ID__c': currentUser.loopbackUserId },
       ],
       Mentor__c: parent.mentorId,
       Mentee__c: parent.menteeId,
@@ -168,8 +156,16 @@ export class ConMentorshipMatchesResolver {
     name: 'conMentorshipMatchesAcceptMentorship',
   })
   async acceptMentorship(
-    @Args('input') input: ConMentorshipMatchesAcceptMentorshipInputDto
+    @Args('input') input: ConMentorshipMatchesAcceptMentorshipInputDto,
+    @CurrentUser() currentUser: CurrentUserInfo
   ) {
+    const entity = await this.conMentorshipMatchesService.findOneById(
+      input.mentorshipMatchId
+    )
+    if (entity.props.mentorId !== currentUser.userId) {
+      throw new UnauthorizedException('You are not the mentor of this match')
+    }
+
     const result = await this.conMentorshipMatchesService.acceptMentorship(
       input
     )
@@ -181,8 +177,16 @@ export class ConMentorshipMatchesResolver {
     name: 'conMentorshipMatchesDeclineMentorship',
   })
   async declineMentorship(
-    @Args('input') input: ConMentorshipMatchesDeclineMentorshipInputDto
+    @Args('input') input: ConMentorshipMatchesDeclineMentorshipInputDto,
+    @CurrentUser() currentUser: CurrentUserInfo
   ) {
+    const entity = await this.conMentorshipMatchesService.findOneById(
+      input.mentorshipMatchId
+    )
+    if (entity.props.mentorId !== currentUser.userId) {
+      throw new UnauthorizedException('You are not the mentor of this match')
+    }
+
     const result = await this.conMentorshipMatchesService.declineMentorship(
       input
     )
@@ -194,8 +198,16 @@ export class ConMentorshipMatchesResolver {
     name: 'conMentorshipMatchesCompleteMentorship',
   })
   async completeMentorship(
-    @Args('input') input: ConMentorshipMatchesCompleteMentorshipInputDto
+    @Args('input') input: ConMentorshipMatchesCompleteMentorshipInputDto,
+    @CurrentUser() currentUser: CurrentUserInfo
   ) {
+    const entity = await this.conMentorshipMatchesService.findOneById(
+      input.mentorshipMatchId
+    )
+    if (entity.props.mentorId !== currentUser.userId) {
+      throw new UnauthorizedException('You are not the mentor of this match')
+    }
+
     const result = await this.conMentorshipMatchesService.completeMentorship(
       input
     )
@@ -207,25 +219,13 @@ export class ConMentorshipMatchesResolver {
     name: 'conMentorshipMatchesApplyForMentorship',
   })
   async applyForMentorship(
-    @CurrentUser() user: CurrentUserInfo,
-    @Args('input') input: ConMentorshipMatchesApplyForMentorshipInputDto
+    @Args('input') input: ConMentorshipMatchesApplyForMentorshipInputDto,
+    @CurrentUser() currentUser: CurrentUserInfo
   ) {
     const result = await this.conMentorshipMatchesService.applyForMentorship(
-      user.userId,
+      currentUser.userId,
       input
     )
-
-    return { ok: true, id: result.id }
-  }
-
-  @Mutation(() => ConMentorshipMatchesMarkAsDismissedOutputDto, {
-    name: 'conMentorshipMatchesMarkAsDismissed',
-  })
-  async markAsDismissed(
-    @CurrentUser() user: CurrentUserInfo,
-    @Args('input') input: ConMentorshipMatchesMarkAsDismissedInputDto
-  ) {
-    const result = await this.conMentorshipMatchesService.markAsDismissed(input)
 
     return { ok: true, id: result.id }
   }

@@ -164,7 +164,6 @@ function ModalForm({
     const transformedValues = validationSchema.cast(values)
     const pendingCompanyProfilePatch = companyProfileMutation.mutateAsync({
       input: {
-        id: companyProfile.id,
         telephoneNumber: transformedValues.telephoneNumber,
       },
     })

@@ -1,5 +1,6 @@
 import {
   ConnectProfileStatus,
+  MentorshipMatchStatus,
   useConMatchMarkMentorshipAcceptedNotificationDismissedMutation,
   useLoadMyProfileQuery,
   useMyMatchesQuery,
@@ -59,15 +60,19 @@ function LoggedIn({ children }: Props) {
   const match =
     myMatchesQuery.isSuccess &&
     myMatchesQuery.data?.conMentorshipMatches.length > 0 &&
-    myMatchesQuery.data?.conMentorshipMatches[0]
+    myMatchesQuery.data?.conMentorshipMatches.sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    )[0]
   const profile = myProfileQuery.data?.conProfile
 
   const { t } = useTranslation()
 
-  const isNewMatch =
+  const isNewAcceptedMatch =
     profile?.userType === 'MENTEE' &&
     match &&
-    !match?.hasMenteeDismissedMentorshipApplicationAcceptedNotification
+    !match?.hasMenteeDismissedMentorshipApplicationAcceptedNotification &&
+    match.status === MentorshipMatchStatus.Accepted
 
   const handleModalClose = async (redMatchId: string) => {
     await conMatchMarkMentorshipAcceptedNotificationDismissedMutation.mutateAsync(
@@ -124,9 +129,9 @@ function LoggedIn({ children }: Props) {
                     })}
                   </RediNotification>
                 )}
-              {match && isNewMatch && (
+              {match && isNewAcceptedMatch && (
                 <Modal
-                  show={isNewMatch}
+                  show={isNewAcceptedMatch}
                   confirm
                   title="You’ve got a mentor match!"
                 >
