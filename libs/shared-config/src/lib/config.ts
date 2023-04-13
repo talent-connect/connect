@@ -475,8 +475,8 @@ export const COURSES = [
     label: 'Intro to Computer Science',
     location: 'HAMBURG',
   },
-  { id: 'HAMBURG_JAVASCRIPT', label: 'JavaScript', location: 'HAMBURG' },
   { id: 'HAMBURG_HTML_CSS', label: 'HTML/CSS', location: 'HAMBURG' },
+  { id: 'HAMBURG_JAVASCRIPT', label: 'JavaScript', location: 'HAMBURG' },
   {
     id: 'HAMBURG_PYTHON_INTERMEDIATE',
     label: 'Python Intermediate',
