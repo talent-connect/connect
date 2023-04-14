@@ -979,7 +979,7 @@ export enum RediCourse {
   MunichPythonIntermediateHybrid = 'MUNICH_PYTHON_INTERMEDIATE_HYBRID',
   MunichPythonIntermediateOnline = 'MUNICH_PYTHON_INTERMEDIATE_ONLINE',
   MunichPythonIntermediateUkr = 'MUNICH_PYTHON_INTERMEDIATE_UKR',
-  MunichUxUiDesign = 'MUNICH_UX_UI_DESIGN',
+  MunichUxUiDesignBasics = 'MUNICH_UX_UI_DESIGN_BASICS',
   MunichUxUiDesignIntermediate = 'MUNICH_UX_UI_DESIGN_INTERMEDIATE',
   NrwAlumni = 'NRW_ALUMNI',
   NrwCloudComputing = 'NRW_CLOUD_COMPUTING',
