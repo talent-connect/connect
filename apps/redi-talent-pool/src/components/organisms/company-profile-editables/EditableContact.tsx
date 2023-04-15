@@ -133,7 +133,7 @@ const validationSchema = Yup.object({
 })
 
 type FormValues = EditableContactCompanyProfilePropFragment &
-  Omit<EditableContactUserContactPropFragment, 'email'>
+  EditableContactUserContactPropFragment
 
 function ModalForm({
   setIsEditing,
@@ -144,8 +144,8 @@ function ModalForm({
 }) {
   const queryClient = useQueryClient()
   const myData = useMyTpDataQuery()
-  const { userContact, representedCompany: companyProfile } =
-    myData?.data?.tpCurrentUserDataGet
+  const companyProfile = myData?.data?.tpCurrentUserDataGet?.representedCompany
+  const userContact = myData?.data?.tpCurrentUserDataGet?.userContact
   const companyProfileMutation = usePatchTpCompanyProfileMutation()
   const userContactMutation = usePatchUserContactMutation()
   const isBusy = useIsBusy()
@@ -155,6 +155,7 @@ function ModalForm({
       firstName: userContact?.firstName ?? '',
       lastName: userContact?.lastName ?? '',
       telephoneNumber: companyProfile?.telephoneNumber ?? '',
+      email: userContact?.email ?? '',
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
