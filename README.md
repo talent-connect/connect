@@ -1,49 +1,36 @@
 # Connect
 
-You'll find three sister products in this repository:
+You'll find two sister products in this repository:
 
 - ReDI Connect, a tool to connect mentees to mentors, deployed to https://connect.redi-school.org
 - ReDI Talent Pool, a tool to connect jobseekers to companies and get jobs, deployed to https://talent-pool.redi-school.org
-- Christos
 
 Both are created, run and managed by [ReDI School of Digital Integration](https://www.redi-school.org). We're a non-profit school in Germany (in Berlin, Hamburg, Munich and NRW) with a community of hundreds of professionals from the digital industry volunteering to teach and mentor students. Our students are tech-interested locals and newcomers to Germany.
 
 ## Getting started for developers
 
+First of all, ReDI Connect / Talent Pool connect to a Salesforce instance via the nestjs-api app. You'll need to set a number of environment variables in your `.env` file to make the Salesforce connection work. Reach out to @helloanil, @katamatata or @ericbolikowski to get set up.
+
+After you've set up `.env`, make sure to update `NX_DEV_MODE_EMAIL_RECIPIENT` to your own email address to receive emails from the platform.
+
 1. Make sure [MongoDB](https://docs.mongodb.com/manual/installation/) is installed on your computer.
 2. Make sure you're running the _v14.17.6_ version of Node locally when you're running the backend server and checkout to a new branch. To do this, you can use [nvm](https://github.com/nvm-sh/nvm#node-version-manager), which allows you to select different versions of Node via the command line. Alternatively, we have added support for [Volta](https://docs.volta.sh/guide/understanding). So if you choose, you can use Volta, which sets project-defined tools automatically.
-3. Request information for environment variables from @ericbolikowski.
-4. Run `yarn` in project root to install dependencies.
-5. If you're re-seeding, drop the database files: `rm -rf mongodb-data/*` and run `yarn seed` to seed the database.
-
-   Alternatively, you can drop the database in the MongoDB Shell - [mongo](https://www.mongodb.com/docs/v4.4/mongo/) or [mongosh](https://www.mongodb.com/docs/mongodb-shell/). In a new terminal window run the following:
-
-   ```
-   $ mongo
-   $ use mongodb
-   $ db.dropDatabase()
-   ```
-
-   ~~Then run `yarn seed` in project root to seed the database.~~
-
-6. Run `yarn start:all` to boot all apps, _or_ a subset of apps using the `start:x` commands in package.json.
-
-   It'll take a while and lots of warnings will show until everything's booted.
-
-7. If you don't have environment variables set up, talk to @ericbolikowski to get these. The NestJS backend will not work without them.
-
-8. See the [Onboarding Checklist](https://github.com/talent-connect/connect/wiki#onboarding-checklist) in our Wiki.
+3. Run `yarn` in project root to install dependencies.
+4. Run `yarn start:all` to boot all apps, _or_ a subset of apps using the `start:x` commands in package.json.
+5. See the [Onboarding Checklist](https://github.com/talent-connect/connect/wiki#onboarding-checklist) in our Wiki.
 
 You can open these in your browser:
 
 - ReDI Talent Pool: http://localhost:2999
 - ReDI Connect: http://localhost:3000
-- Admin panel: http://localhost:3001
-- ReDI Connect Location Picker: http://localhost:3002
-- API/backend: http://localhost:3003, Swagger: http://localhost:3003/explorer
-- NestJS/new backend: http://localhost:3333, GraphiQL: http://localhost:3333/graphql
+- Salesforce login: https://test.salesforce.com/ (get credentials from @katamatata, @helloanil or @ericbolikowski)
+- Loopback API: http://localhost:3003, Swagger: http://localhost:3003/explorer
+- NestJS API: http://localhost:3333, GraphiQL: http://localhost:3333/graphql
 
-Set environment variable `NX_DEV_MODE_EMAIL_RECIPIENT=your-own-email-address@gmail.com` in `apps/nestjs-api/.env.local` and it'll override the default recipient and send to that. You won't be receving any emails otherwise.
+6. If you're using VsCode, make sure you:
+
+   - Enable file nesting (setting `explorer.fileNesting.enabled`) to collapse React component `.graphql`, `.generated.ts` and `.scss` files. This makes it easier to use the file explorer.
+   - Install the [Run on Save](https://marketplace.visualstudio.com/items?itemName=emeraldwalk.RunOnSave) extension to automatically generate react-query hooks when saving .graphql files. This will speed up your development so you don't need to manually run `yarn graphql:codegen`.
 
 We use [Nx Dev Tools](https://nx.dev/) to manage this monorepo. Find all the apps/products under `apps/` and all libraries they consume under `libs/`.
 
@@ -66,6 +53,56 @@ Use it to view all the available GraphQL queries and mutations. Most queries and
 Alternatively, use Loopback's Swagger (http://localhost:3003) to manually send a login request, and copy the JWT token from the response.
 
 See this Loom video for a demo: https://www.loom.com/share/b2328a7ec6054afebb8249ea59ef2f18
+
+## More about GraphQL & data models
+
+### Code generation
+
+TL;DR: run nestjs-api + `yarn graphql:codegen` to update react-query hooks after changing nestjs entity models or any .graphql file. Install [VsCode “Run on Save” extension](https://marketplace.visualstudio.com/items?itemName=emeraldwalk.RunOnSave) to automatize codegen (for .graphql files).
+
+Note: in case code generation doesn’t work, it might be because the nestjs-api app is not running. Make sure that it is in a running state.
+
+We use `graphql-codegen` to generate react-query hooks (queries and mutations). To run the code generation, first ensure the nestjs-api is running, then execute `yarn graphql:codegen`.
+
+To auto-run the codegen after changes to `.graphql` files, install this VsCode “Run on Save” extension: [https://marketplace.visualstudio.com/items?itemName=emeraldwalk.RunOnSave](https://marketplace.visualstudio.com/items?itemName=emeraldwalk.RunOnSave). The repository’s VsCode config (in `.vscode/settings.json`) is already set up to enable this.
+
+### Visualize the entire GraphQL schema
+
+1. Copy the contents of `schema.graphql` in the project root folder. If you want to ensure it’s 100% up to date, first start NestJS (`yarn start:alone:nestjs-api`), then run `yarn graphql:codegen`
+2. Open GraphQL Voyager: [https://ivangoncharov.github.io/graphql-voyager/](https://ivangoncharov.github.io/graphql-voyager/)
+3. Click Change Schema > SDL > paste the file in > Display.
+
+### Where and how are data model schemas defined?
+
+Schemas for data models (e.g. `ConProfile`, `ConMentoringSession`, `TpJobseekerProfile` and `TpJobListing`) are defined in two places:
+
+1. **Visually, in Salesforce**: Salesforce provides an _Object Manager_ to set up Objects and their properties (e.g. `firstName`, `birthDate`, etc.), through a web admin interface. Talk to Eric/Anil/Manu for access.
+2. **In code, in the `common-types` library:** see the repository folder `libs/common-types/src/lib`
+
+Each data model in the `common-types` folder is represented by a Typescript class. Every data model has two representations:
+
+1. As represented in the **salesforce domain**: when the file name or class name ends with `Record`, the model’s structure, property names and property types reflect how the data model is. The term **Record** is chosen since it’s standard terminology in Salesforce. _Record_ is just Salesforce’s way of saying _row_ or _instance_.
+2. As represented in the **core domain**: when the file name or class name ends with `Entity`, the model follows a simpler and flatter structure, the same one that was used for years before CON and TP data were migrated to Salesforce. We use the term **Entity** as it implies a “thing”, such as a jobseeker’s profile, a mentor<>mentee match, a logged mentoring session, and so forth.
+
+There are two important reasons why data models have two representations:
+
+1. Salesforce enforces a certain complexity in its data models. For instance, the suffix `__c` is automatically added to the name of any property we define on a model/object. There are also nested objects within objects.
+2. For years, CON and TP data lived in a MongoDB database, with a simple and effective data model structure that suited our needs. After migrating all the data to Salesforce, we essentially had two choices: update all code to access data using Salesforce’s names for objects and properties, or create a wrapper / abstraction to maintain our “core” domain models as they’ve been. We chose the latter.
+
+To convert data from one domain representation to another, we use **Mapper** classes. Look for file names ending in `.mapper`.
+
+Our `nestjs-api` thereafter uses GraphQL and code generation (codegen) to defining types (both TS types and GraphQL object tpyes) in various places. You can think of this as the data models “bubbling up” from the back-end:
+
+1. All our data models, or entities, start in the `libs/common-types/src/lib` folder, as typescript classes
+2. NestJS analyzes all classes with the decorator `@ObjectType()`
+3. NestJS generates a GraphQL schema, containing all our entities in the shape of object types
+4. The command `yarn graphql:codegen` uses the `graphql-codegen` tool to read the schema. It then generates Typescript types (see `libs/data-access/src/lib/types/types.ts`). It also scans all `.graphql` files for queries and mutations, and creates `react-query` queries and mutations stored in `.generated.ts` files right next to the `.graphql` file.
+
+## What responsibilities are still carried by Loopback?
+
+- Authenticate users
+- Store credentials in its linked MongoDB database
+- Create signed urls for uploading assets to S3
 
 ## Getting started for designers
 

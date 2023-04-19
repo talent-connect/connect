@@ -14,7 +14,7 @@ import {
 } from '@talent-connect/shared-atomic-design-components'
 import { FormikHelpers, useFormik } from 'formik'
 import moment from 'moment'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Content, Element } from 'react-bulma-components'
 import { useQueryClient } from 'react-query'
 import { useParams } from 'react-router-dom'
@@ -104,6 +104,12 @@ const MSessions = ({ sessions, menteeId, editable }: MSessions) => {
     validationSchema,
     onSubmit: submitForm,
   })
+
+  useEffect(() => {
+    if (showAddSession) {
+      formik.resetForm()
+    }
+  }, [showAddSession])
 
   return (
     <Module

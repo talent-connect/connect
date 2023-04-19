@@ -58,7 +58,7 @@ function EditableMentoringTopics() {
   const submitForm = async (values: FormikValues) => {
     const cleanValues = omit(values, ['isMentor'])
     const mutationResult = await patchMyProfileMutation.mutateAsync({
-      input: { id: profile.id, ...cleanValues },
+      input: cleanValues,
     })
     queryClient.setQueryData(useLoadMyProfileQuery.getKey({ loopbackUserId }), {
       conProfile: mutationResult.patchConProfile,

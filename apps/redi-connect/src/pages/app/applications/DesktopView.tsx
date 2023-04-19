@@ -1,11 +1,11 @@
 import { useLoadMyProfileQuery } from '@talent-connect/data-access'
 import { useContext } from 'react'
 import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
-import ApplicationCard from './application-card/ApplicationCard'
 import { ApplicationsPageApplicationFragment } from './Applications.generated'
 import { ApplicationsFilterContext } from './ApplicationsFilterContext'
 import './DesktopView.scss'
 import FilterButton from './FilterButton'
+import ApplicationCard from './application-card/ApplicationCard'
 
 interface Props {
   applicants: ApplicationsPageApplicationFragment[]
@@ -26,8 +26,6 @@ const DesktopView = ({ applicants }: Props) => {
     hasDeclinedApplications,
     hasCancelledApplications,
   } = useContext(ApplicationsFilterContext)
-
-  console.log(filteredAndSortedApplications)
 
   return (
     <div className="desktop-tabs">

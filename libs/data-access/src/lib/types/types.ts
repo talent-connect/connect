@@ -129,16 +129,6 @@ export type ConMentorshipMatchesDeclineMentorshipOutputDto = {
   ok: Scalars['Boolean'];
 };
 
-export type ConMentorshipMatchesMarkAsDismissedInputDto = {
-  conMentorshipMatchId: Scalars['String'];
-};
-
-export type ConMentorshipMatchesMarkAsDismissedOutputDto = {
-  __typename?: 'ConMentorshipMatchesMarkAsDismissedOutputDto';
-  id: Scalars['String'];
-  ok: Scalars['Boolean'];
-};
-
 export type ConProfile = {
   __typename?: 'ConProfile';
   age?: Maybe<Scalars['Float']>;
@@ -547,7 +537,6 @@ export type Mutation = {
   conMentorshipMatchesApplyForMentorship: ConMentorshipMatchesApplyForMentorshipOutputDto;
   conMentorshipMatchesCompleteMentorship: ConMentorshipMatchesCompleteMentorshipOutputDto;
   conMentorshipMatchesDeclineMentorship: ConMentorshipMatchesDeclineMentorshipOutputDto;
-  conMentorshipMatchesMarkAsDismissed: ConMentorshipMatchesMarkAsDismissedOutputDto;
   conProblemReportCreate: OkResponseMutationOutputDto;
   conProfileSignUp: OkIdResponseMutationOutputDto;
   createConMentoringSession: ConMentoringSession;
@@ -621,11 +610,6 @@ export type MutationConMentorshipMatchesCompleteMentorshipArgs = {
 
 export type MutationConMentorshipMatchesDeclineMentorshipArgs = {
   input: ConMentorshipMatchesDeclineMentorshipInputDto;
-};
-
-
-export type MutationConMentorshipMatchesMarkAsDismissedArgs = {
-  input: ConMentorshipMatchesMarkAsDismissedInputDto;
 };
 
 
@@ -839,7 +823,6 @@ export type OkResponseMutationOutputDto = {
 export type Query = {
   __typename?: 'Query';
   conMenteeFavoritedMentors: Array<ConMenteeFavoritedMentor>;
-  conMentoringSessions: Array<ConMentoringSession>;
   conMentorshipMatch: ConMentorshipMatch;
   conMentorshipMatches: Array<ConMentorshipMatch>;
   conProfile: ConProfile;
@@ -939,21 +922,17 @@ export type QueryTpJobseekerProfileArgs = {
 
 export enum RediCourse {
   BerlinAlumni = 'BERLIN_ALUMNI',
-  BerlinCodingFundamentals = 'BERLIN_CODING_FUNDAMENTALS',
-  BerlinCybersecurity = 'BERLIN_CYBERSECURITY',
   BerlinDataAnalytics = 'BERLIN_DATA_ANALYTICS',
   BerlinDataCircle = 'BERLIN_DATA_CIRCLE',
   BerlinDigitalLiteracyProgram = 'BERLIN_DIGITAL_LITERACY_PROGRAM',
   BerlinHtmlCss = 'BERLIN_HTML_CSS',
   BerlinIntroToComputerScience = 'BERLIN_INTRO_TO_COMPUTER_SCIENCE',
+  BerlinIntroToJava = 'BERLIN_INTRO_TO_JAVA',
   BerlinJavascript = 'BERLIN_JAVASCRIPT',
   BerlinJavaCircle = 'BERLIN_JAVA_CIRCLE',
-  BerlinProgrammingWithJava = 'BERLIN_PROGRAMMING_WITH_JAVA',
   BerlinPythonFoundation = 'BERLIN_PYTHON_FOUNDATION',
   BerlinReact = 'BERLIN_REACT',
   BerlinSalesforceFundamentals = 'BERLIN_SALESFORCE_FUNDAMENTALS',
-  BerlinUxUiBasics = 'BERLIN_UX_UI_BASICS',
-  BerlinUxUiIntermediate = 'BERLIN_UX_UI_INTERMEDIATE',
   CyberspaceAlumni = 'CYBERSPACE_ALUMNI',
   CyberspaceCybersecurityAdvanced = 'CYBERSPACE_CYBERSECURITY_ADVANCED',
   CyberspaceCybersecurityBeginners = 'CYBERSPACE_CYBERSECURITY_BEGINNERS',
@@ -962,22 +941,29 @@ export enum RediCourse {
   CyberspacePythonFoundation = 'CYBERSPACE_PYTHON_FOUNDATION',
   CyberspaceUxUiBasics = 'CYBERSPACE_UX_UI_BASICS',
   HamburgAlumni = 'HAMBURG_ALUMNI',
+  HamburgCloudComputing = 'HAMBURG_CLOUD_COMPUTING',
   HamburgHtmlCss = 'HAMBURG_HTML_CSS',
-  HamburgInternetOfThings = 'HAMBURG_INTERNET_OF_THINGS',
-  HamburgIntroToCs = 'HAMBURG_INTRO_TO_CS',
-  HamburgUxUiDesignBasis = 'HAMBURG_UX_UI_DESIGN_BASIS',
+  HamburgIntroToComputerScience = 'HAMBURG_INTRO_TO_COMPUTER_SCIENCE',
+  HamburgJavascript = 'HAMBURG_JAVASCRIPT',
+  HamburgPythonIntermediate = 'HAMBURG_PYTHON_INTERMEDIATE',
+  HamburgUxUiDesignBasics = 'HAMBURG_UX_UI_DESIGN_BASICS',
+  HamburgUxUiDesignIntermediate = 'HAMBURG_UX_UI_DESIGN_INTERMEDIATE',
   MunichAlumni = 'MUNICH_ALUMNI',
   MunichBackEndDevelopment = 'MUNICH_BACK_END_DEVELOPMENT',
   MunichDataAnalytics = 'MUNICH_DATA_ANALYTICS',
+  MunichDataStructureAndAlgorithms = 'MUNICH_DATA_STRUCTURE_AND_ALGORITHMS',
   MunichDigitalLiteracyProgram = 'MUNICH_DIGITAL_LITERACY_PROGRAM',
   MunichFrontEndDevelopmentHtmlCss = 'MUNICH_FRONT_END_DEVELOPMENT_HTML_CSS',
   MunichFrontEndDevelopmentJavascript = 'MUNICH_FRONT_END_DEVELOPMENT_JAVASCRIPT',
+  MunichFrontEndDevelopmentReact = 'MUNICH_FRONT_END_DEVELOPMENT_REACT',
   MunichIntroductionToComputerScienceHybrid = 'MUNICH_INTRODUCTION_TO_COMPUTER_SCIENCE_HYBRID',
   MunichIntroductionToComputerScienceOnline = 'MUNICH_INTRODUCTION_TO_COMPUTER_SCIENCE_ONLINE',
   MunichIntroductionToComputerScienceUkr = 'MUNICH_INTRODUCTION_TO_COMPUTER_SCIENCE_UKR',
   MunichPythonIntermediateHybrid = 'MUNICH_PYTHON_INTERMEDIATE_HYBRID',
   MunichPythonIntermediateOnline = 'MUNICH_PYTHON_INTERMEDIATE_ONLINE',
-  MunichUxUiDesign = 'MUNICH_UX_UI_DESIGN',
+  MunichPythonIntermediateUkr = 'MUNICH_PYTHON_INTERMEDIATE_UKR',
+  MunichUxUiDesignBasics = 'MUNICH_UX_UI_DESIGN_BASICS',
+  MunichUxUiDesignIntermediate = 'MUNICH_UX_UI_DESIGN_INTERMEDIATE',
   NrwAlumni = 'NRW_ALUMNI',
   NrwCloudComputing = 'NRW_CLOUD_COMPUTING',
   NrwDataAnalytics = 'NRW_DATA_ANALYTICS',
@@ -1058,7 +1044,6 @@ export type TpCompanyProfile = {
 export type TpCompanyProfilePatchInput = {
   about?: InputMaybe<Scalars['String']>;
   companyName?: InputMaybe<Scalars['String']>;
-  id: Scalars['ID'];
   industry?: InputMaybe<Scalars['String']>;
   isJobFair2023Participant?: InputMaybe<Scalars['Boolean']>;
   isProfileVisibleToJobseekers?: InputMaybe<Scalars['Boolean']>;
@@ -1322,6 +1307,7 @@ export type TpJobseekerCvEducationRecord = {
   title?: Maybe<Scalars['String']>;
   tpJobseekerCvId: Scalars['ID'];
   updatedAt: Scalars['DateTime'];
+  userId: Scalars['String'];
 };
 
 export type TpJobseekerCvEducationRecordCreateInput = {
@@ -1377,6 +1363,7 @@ export type TpJobseekerCvExperienceRecord = {
   title?: Maybe<Scalars['String']>;
   tpJobseekerCvId: Scalars['ID'];
   updatedAt: Scalars['DateTime'];
+  userId: Scalars['String'];
 };
 
 export type TpJobseekerCvExperienceRecordCreateInput = {
@@ -1419,6 +1406,7 @@ export type TpJobseekerCvLanguageRecord = {
   language: Language;
   proficiencyLevelId: LanguageProficiencyLevel;
   tpJobseekerCvId: Scalars['ID'];
+  userId: Scalars['String'];
 };
 
 export type TpJobseekerCvLanguageRecordCreateInput = {
@@ -1825,7 +1813,6 @@ export type UpdateConProfileInput = {
   firstName?: InputMaybe<Scalars['String']>;
   gender?: InputMaybe<Gender>;
   githubProfileUrl?: InputMaybe<Scalars['String']>;
-  id: Scalars['ID'];
   languages?: InputMaybe<Array<Language>>;
   lastName?: InputMaybe<Scalars['String']>;
   linkedInProfileUrl?: InputMaybe<Scalars['String']>;

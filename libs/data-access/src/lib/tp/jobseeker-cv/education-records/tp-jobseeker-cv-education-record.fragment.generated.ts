@@ -1,7 +1,7 @@
 // THIS FILE IS GENERATED, DO NOT EDIT!
 import * as Types from '@talent-connect/data-access';
 
-export type AllTpJobseekerCvEducationRecordFieldsFragment = { __typename?: 'TpJobseekerCvEducationRecord', id: string, certificationType?: Types.TpEducationCertificationType | null, sortIndex: number, startDateMonth?: number | null, startDateYear?: number | null, title?: string | null, tpJobseekerCvId: string, updatedAt: any, createdAt: any, current?: boolean | null, description?: string | null, endDateMonth?: number | null, endDateYear?: number | null, institutionCity?: string | null, institutionCountry?: string | null, institutionName?: string | null };
+export type AllTpJobseekerCvEducationRecordFieldsFragment = { __typename?: 'TpJobseekerCvEducationRecord', id: string, certificationType?: Types.TpEducationCertificationType | null, sortIndex: number, startDateMonth?: number | null, startDateYear?: number | null, title?: string | null, tpJobseekerCvId: string, updatedAt: any, createdAt: any, current?: boolean | null, description?: string | null, endDateMonth?: number | null, endDateYear?: number | null, institutionCity?: string | null, institutionCountry?: string | null, institutionName?: string | null, userId: string };
 
 export const AllTpJobseekerCvEducationRecordFieldsFragmentDoc = `
     fragment AllTpJobseekerCvEducationRecordFields on TpJobseekerCvEducationRecord {
@@ -21,5 +21,6 @@ export const AllTpJobseekerCvEducationRecordFieldsFragmentDoc = `
   institutionCity
   institutionCountry
   institutionName
+  userId
 }
     `;

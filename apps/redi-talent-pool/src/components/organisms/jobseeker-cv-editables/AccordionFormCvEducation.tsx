@@ -69,6 +69,7 @@ type FormEducationRecord = Omit<
   | 'startDateYear'
   | 'endDateMonth'
   | 'endDateYear'
+  | 'userId'
 > & {
   startDateMonth?: string
   startDateYear?: string

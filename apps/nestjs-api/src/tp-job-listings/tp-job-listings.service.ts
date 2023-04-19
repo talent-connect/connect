@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common'
 import {
   TpJobListingEntity,
   TpJobListingEntityProps,
@@ -95,8 +99,22 @@ export class TpJobListingsService {
     return await this.api.create(recordToPersist)
   }
 
-  async patch(input: TpJobListingPatchInput) {
+  async patch(input: TpJobListingPatchInput, currentUser: CurrentUserInfo) {
     const existingEntity = await this.findOne(input.id)
+
+    const companyRepresentedByUser =
+      await this.tpCompanyRepresentativeRelationshipService.findCompanyRepresentedByUser(
+        currentUser.userId
+      )
+
+    if (
+      existingEntity.props.companyProfileId != companyRepresentedByUser.props.id
+    ) {
+      throw new UnauthorizedException(
+        'You are not authorized to edit this job listing.'
+      )
+    }
+
     const props = existingEntity.props
     const updatesSanitized = deleteUndefinedProperties(input)
     Object.entries(updatesSanitized).forEach(([key, value]) => {
@@ -108,8 +126,21 @@ export class TpJobListingsService {
     )
   }
 
-  async delete(input: TpJobListingDeleteInput) {
+  async delete(input: TpJobListingDeleteInput, currentUser: CurrentUserInfo) {
     const existingEntity = await this.findOne(input.id)
+    const companyRepresentedByUser =
+      await this.tpCompanyRepresentativeRelationshipService.findCompanyRepresentedByUser(
+        currentUser.userId
+      )
+
+    if (
+      existingEntity.props.companyProfileId != companyRepresentedByUser.props.id
+    ) {
+      throw new UnauthorizedException(
+        'You are not authorized to edit this job listing.'
+      )
+    }
+
     const recordToDelete = this.mapper.toPersistence(existingEntity)
     await this.api.delete(recordToDelete)
   }

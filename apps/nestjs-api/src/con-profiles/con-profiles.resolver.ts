@@ -95,10 +95,12 @@ export class ConProfilesResolver {
   //! TODO: Add auth
   @Mutation(() => ConProfileEntityProps, { name: 'patchConProfile' })
   async patch(
-    @Args('patchConProfileInput') patchConProfileInput: PatchConProfileInput
+    @Args('patchConProfileInput') patchConProfileInput: PatchConProfileInput,
+    @CurrentUser() currentUser: CurrentUserInfo
   ) {
     const updatedEntity = await this.conProfilesService.update(
-      patchConProfileInput
+      patchConProfileInput,
+      currentUser
     )
     return updatedEntity.props
   }

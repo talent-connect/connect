@@ -40,7 +40,6 @@ export function MeCompany() {
   const onHideFromJobseekersCheckboxChange = async () => {
     await mutation.mutateAsync({
       input: {
-        id: companyProfile.id,
         isProfileVisibleToJobseekers:
           !companyProfile.isProfileVisibleToJobseekers,
       },
@@ -187,7 +186,6 @@ function SendProfileForReviewButton() {
     // TODO: we should have a use case for this change instead of this patch
     await mutation.mutate({
       input: {
-        id: companyProfile.id,
         state: CompanyTalentPoolState.SubmittedForReview,
       },
     })

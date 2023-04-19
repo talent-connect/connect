@@ -4,7 +4,9 @@ import {
   OkResponseMutationOutputDto,
   TpJobseekerCvEducationRecordEntityProps,
 } from '@talent-connect/common-types'
-import { GqlJwtAuthGuard } from '../auth/gql-jwt-auth.guard'
+import { CurrentUser } from '../../auth/current-user.decorator'
+import { CurrentUserInfo } from '../../auth/current-user.interface'
+import { GqlJwtAuthGuard } from '../../auth/gql-jwt-auth.guard'
 import { FindAllTpJobseekerCvEducationRecordsArgs } from './args/find-all-tp-jobseeker-cv-education-records.args'
 import { TpJobseekerCvEducationRecordCreateInput } from './dtos/tp-jobseeker-cv-education-record-create.entityinput'
 import { TpJobseekerCvEducationRecordDeleteInput } from './dtos/tp-jobseeker-cv-education-record-delete.entityinput'
@@ -19,23 +21,27 @@ export class TpJobseekerCvEducationRecordResolver {
   @Query(() => [TpJobseekerCvEducationRecordEntityProps], {
     name: 'tpJobseekerCvEducationRecords',
   })
-  async findAll(@Args() args: FindAllTpJobseekerCvEducationRecordsArgs) {
+  async findAll(
+    @Args() args: FindAllTpJobseekerCvEducationRecordsArgs,
+    @CurrentUser() currentUser: CurrentUserInfo
+  ) {
     const entities = await this.service.findAll({
       Jobseeker_CV__c: args.tpJobseekerCvId,
+      Jobseeker_CV_Contact__c: currentUser.userId,
     })
     const props = entities.map((entity) => entity.props)
     return props
   }
 
-  //! TODO: Add auth
   @Mutation(() => OkResponseMutationOutputDto, {
     name: 'tpJobseekerCvEducationRecordCreate',
   })
   async create(
     @Args('tpJobseekerCvEducationRecordCreateInput')
-    input: TpJobseekerCvEducationRecordCreateInput
+    input: TpJobseekerCvEducationRecordCreateInput,
+    @CurrentUser() currentUser: CurrentUserInfo
   ) {
-    await this.service.createFromInput(input)
+    await this.service.createFromInput(input, currentUser)
     return { ok: true }
   }
 
@@ -45,9 +51,10 @@ export class TpJobseekerCvEducationRecordResolver {
   })
   async patch(
     @Args('tpJobseekerCvEducationRecordPatchInput')
-    input: TpJobseekerCvEducationRecordPatchInput
+    input: TpJobseekerCvEducationRecordPatchInput,
+    @CurrentUser() currentUser: CurrentUserInfo
   ) {
-    await this.service.patch(input)
+    await this.service.patch(input, currentUser)
     return { ok: true }
   }
 
@@ -57,9 +64,10 @@ export class TpJobseekerCvEducationRecordResolver {
   })
   async delete(
     @Args('tpJobseekerCvEducationRecordDeleteInput')
-    input: TpJobseekerCvEducationRecordDeleteInput
+    input: TpJobseekerCvEducationRecordDeleteInput,
+    @CurrentUser() currentUser: CurrentUserInfo
   ) {
-    await this.service.delete(input)
+    await this.service.delete(input, currentUser)
     return { ok: true }
   }
 }

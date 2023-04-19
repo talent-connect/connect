@@ -34,7 +34,6 @@ export class TpCompanyProfilesResolver {
     private readonly tpCompanyRepresentativeRelationshipsService: TpCompanyRepresentativeRelationshipsService
   ) {}
 
-  //! TODO: Add auth
   @Query(() => [TpCompanyProfileEntityProps], {
     name: 'tpCompanyProfiles',
   })
@@ -44,7 +43,6 @@ export class TpCompanyProfilesResolver {
     return props
   }
 
-  //! TODO: Add auth
   @Query(() => TpCompanyProfileEntityProps, {
     name: 'tpCompanyProfile',
   })
@@ -66,14 +64,14 @@ export class TpCompanyProfilesResolver {
     return props
   }
 
-  //! TODO: Add auth
   @Mutation(() => OkResponseMutationOutputDto, {
     name: 'tpCompanyProfilePatch',
   })
   async patch(
-    @Args('tpCompanyProfilePatchInput') input: TpCompanyProfilePatchInput
+    @Args('tpCompanyProfilePatchInput') input: TpCompanyProfilePatchInput,
+    @CurrentUser() user: CurrentUserInfo
   ) {
-    await this.tpCompanyProfilesService.patch(input)
+    await this.tpCompanyProfilesService.patch(input, user)
     return { ok: true }
   }
 

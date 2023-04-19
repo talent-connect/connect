@@ -1,11 +1,17 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common'
 import {
   TpJobseekerCvExperienceRecordEntity,
   TpJobseekerCvExperienceRecordEntityProps,
   TpJobseekerCvExperienceRecordMapper,
 } from '@talent-connect/common-types'
 import { deleteUndefinedProperties } from '@talent-connect/shared-utils'
-import { SfApiTpJobseekerCvExperienceRecordsService } from '../salesforce-api/sf-api-tp-jobseeker-cv-experience-records.service'
+import { CurrentUserInfo } from '../../auth/current-user.interface'
+import { SfApiTpJobseekerCvExperienceRecordsService } from '../../salesforce-api/sf-api-tp-jobseeker-cv-experience-records.service'
+import { TpJobseekerCvReadService } from '../tp-jobseeker-cv.read.service'
 import { TpJobseekerCvExperienceRecordCreateInput } from './dtos/tp-jobseeker-cv-experience-record-create.entityinput'
 import { TpJobseekerCvExperienceRecordDeleteInput } from './dtos/tp-jobseeker-cv-experience-record-delete.entityinput'
 import { TpJobseekerCvExperienceRecordPatchInput } from './dtos/tp-jobseeker-cv-experience-record-patch.entityinput'
@@ -14,7 +20,8 @@ import { TpJobseekerCvExperienceRecordPatchInput } from './dtos/tp-jobseeker-cv-
 export class TpJobseekerCvExperienceRecordsService {
   constructor(
     private readonly api: SfApiTpJobseekerCvExperienceRecordsService,
-    private readonly mapper: TpJobseekerCvExperienceRecordMapper
+    private readonly mapper: TpJobseekerCvExperienceRecordMapper,
+    private readonly cvReadService: TpJobseekerCvReadService
   ) {}
 
   async findAll(filter: any = {}) {
@@ -41,7 +48,17 @@ export class TpJobseekerCvExperienceRecordsService {
     }
   }
 
-  async createFromInput(input: TpJobseekerCvExperienceRecordCreateInput) {
+  async createFromInput(
+    input: TpJobseekerCvExperienceRecordCreateInput,
+    currentUser: CurrentUserInfo
+  ) {
+    const cv = await this.cvReadService.findOne(input.tpJobseekerCvId)
+    if (cv.props.userId !== currentUser.userId) {
+      throw new UnauthorizedException(
+        'You are not authorized to create a TpJobseekerCvLanguageRecord for this CV'
+      )
+    }
+
     const props = new TpJobseekerCvExperienceRecordEntityProps()
     Object.assign(props, input)
 
@@ -55,8 +72,18 @@ export class TpJobseekerCvExperienceRecordsService {
     return await this.api.create(recordToPersist)
   }
 
-  async patch(input: TpJobseekerCvExperienceRecordPatchInput) {
+  async patch(
+    input: TpJobseekerCvExperienceRecordPatchInput,
+    currentUser: CurrentUserInfo
+  ) {
     const existingEntity = await this.findOne(input.id)
+
+    if (existingEntity.props.userId !== currentUser.userId) {
+      throw new UnauthorizedException(
+        'You are not authorized to update this TpJobseekerCvExperienceRecord'
+      )
+    }
+
     const props = existingEntity.props
     const updatesSanitized = deleteUndefinedProperties(input)
     Object.entries(updatesSanitized).forEach(([key, value]) => {
@@ -66,8 +93,18 @@ export class TpJobseekerCvExperienceRecordsService {
     await this.api.update(this.mapper.toPersistence(entityToPersist))
   }
 
-  async delete(input: TpJobseekerCvExperienceRecordDeleteInput) {
+  async delete(
+    input: TpJobseekerCvExperienceRecordDeleteInput,
+    currentUser: CurrentUserInfo
+  ) {
     const existingEntity = await this.findOne(input.id)
+
+    if (existingEntity.props.userId !== currentUser.userId) {
+      throw new UnauthorizedException(
+        'You are not authorized to update this TpJobseekerCvExperienceRecord'
+      )
+    }
+
     const recordToDelete = this.mapper.toPersistence(existingEntity)
     await this.api.delete(recordToDelete)
   }

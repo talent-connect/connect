@@ -39,7 +39,6 @@ export function EditableNamePhotoLocation({
   const onNewAvatarReady = async (newAvatarUrl: string) => {
     await mutation.mutateAsync({
       input: {
-        id: companyProfile.id,
         profileAvatarImageS3Key: newAvatarUrl,
       },
     })
@@ -137,8 +136,7 @@ function ModalForm({
 }) {
   const queryClient = useQueryClient()
   const myData = useMyTpDataQuery()
-  const { representedCompany: companyProfile } =
-    myData?.data?.tpCurrentUserDataGet
+  const companyProfile = myData?.data?.tpCurrentUserDataGet?.representedCompany
   const mutation = usePatchTpCompanyProfileMutation()
   console.log(myData)
   const initialValues: Partial<EditableNamePhotoLocationProfilePropFragment> =
@@ -155,7 +153,7 @@ function ModalForm({
     values: Partial<EditableNamePhotoLocationProfilePropFragment>
   ) => {
     formik.setSubmitting(true)
-    await mutation.mutateAsync({ input: { id: companyProfile.id, ...values } })
+    await mutation.mutateAsync({ input: values })
     formik.setSubmitting(false)
     setIsEditing(false)
     queryClient.invalidateQueries()

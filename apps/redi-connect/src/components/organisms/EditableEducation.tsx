@@ -43,7 +43,7 @@ function EditableEducation() {
 
   const submitForm = async (values: FormikValues) => {
     const mutationResult = await patchMyProfileMutation.mutateAsync({
-      input: { id: profile.id, ...values },
+      input: values,
     })
     queryClient.setQueryData(useLoadMyProfileQuery.getKey({ loopbackUserId }), {
       conProfile: mutationResult.patchConProfile,

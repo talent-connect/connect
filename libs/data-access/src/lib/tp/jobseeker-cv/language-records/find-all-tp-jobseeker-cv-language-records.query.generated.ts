@@ -9,7 +9,7 @@ export type FindAllTpJobseekerCvLanguageRecordsQueryVariables = Types.Exact<{
 }>;
 
 
-export type FindAllTpJobseekerCvLanguageRecordsQuery = { __typename?: 'Query', tpJobseekerCvLanguageRecords: Array<{ __typename?: 'TpJobseekerCvLanguageRecord', id: string, language: Types.Language, proficiencyLevelId: Types.LanguageProficiencyLevel, tpJobseekerCvId: string }> };
+export type FindAllTpJobseekerCvLanguageRecordsQuery = { __typename?: 'Query', tpJobseekerCvLanguageRecords: Array<{ __typename?: 'TpJobseekerCvLanguageRecord', id: string, language: Types.Language, proficiencyLevelId: Types.LanguageProficiencyLevel, tpJobseekerCvId: string, userId: string }> };
 
 
 export const FindAllTpJobseekerCvLanguageRecordsDocument = `
