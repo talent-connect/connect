@@ -14,11 +14,15 @@ export const defaultConfig: BrowserOptions = {
 }
 
 export function initSentry(appName: AppName, config = defaultConfig) {
+  const dsn = {
+    con: process.env.NX_CON_SENTRY_DSN,
+    tp: process.env.NX_TP_SENTRY_DSN,
+  }[appName]
+
+  if (!dsn) throw new Error('DSN is undefined')
+
   Sentry.init({
-    dsn:
-      appName === 'con'
-        ? process.env.NX_CON_SENTRY_DSN
-        : process.env.NX_TP_SENTRY_DSN,
+    dsn,
     ...defaultConfig,
     ...config,
   })
