@@ -74,7 +74,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     )
 
     return {
-      loopbackUserId: payload.userId,
+      loopbackUserId: userEntity.props.loopbackUserId,
       userId: userEntity.props.id,
       userProps: userEntity.props,
     }
