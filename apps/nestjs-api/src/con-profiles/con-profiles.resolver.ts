@@ -98,7 +98,7 @@ export class ConProfilesResolver {
     @Args('patchConProfileInput') patchConProfileInput: PatchConProfileInput,
     @CurrentUser() currentUser: CurrentUserInfo
   ) {
-    const updatedEntity = await this.conProfilesService.update(
+    const updatedEntity = await this.conProfilesService.patch(
       patchConProfileInput,
       currentUser
     )

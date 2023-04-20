@@ -96,7 +96,7 @@ export class ConProfilesService {
     }
   }
 
-  async update(
+  async patch(
     updateConProfileInput: PatchConProfileInput,
     currentUser: CurrentUserInfo
   ) {
@@ -109,15 +109,16 @@ export class ConProfilesService {
       props[key] = value
     })
     const entityToPersist = ConProfileEntity.create(props)
+
+    return this.update(entityToPersist)
+  }
+
+  async update(entity: ConProfileEntity) {
     const persistedObject = await this.api.updateConProfile(
-      this.mapper.toPersistence(entityToPersist)
+      this.mapper.toPersistence(entity)
     )
     const updatedEntity = this.mapper.fromPersistence(persistedObject)
 
     return updatedEntity
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} conProfile`
   }
 }

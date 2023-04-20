@@ -1,6 +1,10 @@
 import { Injectable } from '@nestjs/common'
 import { OnEvent } from '@nestjs/event-emitter'
-import { ConnectProfileStatus, UserType } from '@talent-connect/common-types'
+import {
+  ConProfileEntity,
+  ConnectProfileStatus,
+  UserType,
+} from '@talent-connect/common-types'
 import {
   ConProfileCreatedInternalEventDto,
   ConProfileStatusChangedInternalEventDto,
@@ -31,6 +35,14 @@ export class ConProfilesSalesforceEventHandlerService {
     const isStatusPendingToRejected =
       payload.oldStatus === ConnectProfileStatus.PENDING &&
       payload.newStatus === ConnectProfileStatus.REJECTED
+
+    if (isStatusPendingToApproved) {
+      const conProfile = await this.service.findOneById(payload.conProfileId)
+      const updatedConProfileProps = Object.assign({}, conProfile.props, {
+        userActivatedAt: new Date().toISOString(),
+      })
+      await this.service.update(ConProfileEntity.create(updatedConProfileProps))
+    }
 
     const conProfile = await this.service.findOneById(payload.conProfileId)
     switch (conProfile.props.userType) {
