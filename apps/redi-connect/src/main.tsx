@@ -1,9 +1,11 @@
+import { initSentry } from '@talent-connect/shared-utils'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
-import './styles/main.scss'
 // import i18n (needs to be bundled ;))
 import './services/i18n/i18n'
+import './styles/main.scss'
+
 // Needed for datepicker in <LogMentoringSessionDialog>
 
 // uncomment this to see wasted/unnecessary renders of your components
@@ -11,6 +13,8 @@ import './services/i18n/i18n'
 // const whyDidYouRender = require('@welldone-software/why-did-you-render');
 // whyDidYouRender(React, {include: [/.*/]});
 // }
+
+initSentry('con')
 
 ReactDOM.render(
   <React.StrictMode>

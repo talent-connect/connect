@@ -1,3 +1,4 @@
+import { initSentry } from '@talent-connect/shared-utils'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
@@ -11,6 +12,8 @@ import './services/i18n/i18n'
 // const whyDidYouRender = require('@welldone-software/why-did-you-render');
 // whyDidYouRender(React, {include: [/.*/]});
 // }
+
+initSentry('tp')
 
 ReactDOM.render(
   <React.StrictMode>
