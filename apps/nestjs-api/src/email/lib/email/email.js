@@ -323,18 +323,9 @@ export const sendEmailToUserWithTpJobseekerProfileSigningUpToCon = ({
 // }
 
 export const sendMenteeSignupCompleteEmail = ({ recipient, firstName, rediLocation }) => {
-  if (rediLocation === 'CYBERSPACE') {
-    const html = convertTemplateToHtml(null, 'signup-complete-mentee-cyberspace').replace(
-      /\${firstName}/g,
-      firstName
-    )
-    return sendMjmlEmailFactory({
-      to: recipient,
-      subject: 'Sign-up complete!',
-      html,
-    })
-  }
-  const html = convertTemplateToHtml(null, 'signup-complete-mentee').replace(
+  const templateFile = rediLocation === 'CYBERSPACE' ? 'signup-complete-mentee-cyberspace' : 'signup-complete-mentee'
+  
+  const html = convertTemplateToHtml(null, templateFile).replace(
     /\${firstName}/g,
     firstName
   )

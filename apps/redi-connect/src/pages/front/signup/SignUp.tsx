@@ -164,7 +164,8 @@ export default function SignUp() {
               {/* Got a ReDI Talent Pool user account? You can log in with the same
               username and password <Link to="/front/login">here</Link>. */}
               Got a ReDI Talent Pool user account? To log in with the same username 
-              and password get in contact with @Kate in ReDI Slack or write an e-mail to kateryna@redi-school.org.
+              and password get in contact with @Kate in ReDI Slack or write an e-mail 
+              <a href="mailto:kateryna@redi-school.org"> here</a>.
             </Content>
           )}
           {loopbackSubmitError === 'user-already-exists' ? (
