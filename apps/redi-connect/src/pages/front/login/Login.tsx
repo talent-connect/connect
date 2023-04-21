@@ -1,27 +1,24 @@
-import React, { useState, useCallback } from 'react'
-import AccountOperation from '../../../components/templates/AccountOperation'
-import Teaser from '../../../components/molecules/Teaser'
-import * as Yup from 'yup'
-import { Link, Redirect, useHistory } from 'react-router-dom'
-import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
-import { login } from '../../../services/api/api'
-import {
-  saveAccessTokenToLocalStorage,
-  purgeAllSessionData,
-  setGraphQlClientAuthHeader,
-  getAccessTokenFromLocalStorage,
-} from '../../../services/auth/auth'
-import { Columns, Form, Content, Notification } from 'react-bulma-components'
-import { capitalize } from 'lodash'
-import { RediLocation } from '@talent-connect/shared-types'
-import { buildFrontendUrl } from '@talent-connect/shared-utils'
-import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
+import { useLoadMyProfileQuery } from '@talent-connect/data-access'
 import {
   Button,
   FormInput,
-  Heading,
+  Heading
 } from '@talent-connect/shared-atomic-design-components'
-import { useLoadMyProfileQuery } from '@talent-connect/data-access'
+import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
+import { RediLocation } from '@talent-connect/shared-types'
+import { buildFrontendUrl } from '@talent-connect/shared-utils'
+import { useFormik } from 'formik'
+import { capitalize } from 'lodash'
+import { useState } from 'react'
+import { Columns, Content, Form, Notification } from 'react-bulma-components'
+import { Link, useHistory } from 'react-router-dom'
+import * as Yup from 'yup'
+import Teaser from '../../../components/molecules/Teaser'
+import AccountOperation from '../../../components/templates/AccountOperation'
+import { login } from '../../../services/api/api'
+import {
+  getAccessTokenFromLocalStorage, purgeAllSessionData
+} from '../../../services/auth/auth'
 import { envRediLocation } from '../../../utils/env-redi-location'
 
 interface LoginFormValues {
@@ -96,8 +93,11 @@ export default function Login() {
             Enter your email and password below.
           </Content>
           <Content size="small" renderAs="p">
-            Got a ReDI Talent Pool user account? You can use the same username
-            and password here.
+            {/* Commented and replaced with different text until the cross-platform log-in feature is implemented. */}
+            {/* Got a ReDI Talent Pool user account? You can use the same username
+            and password here. */}
+            Got a ReDI Talent Pool user account? To log in with the same username 
+            and password get in contact with @Kate in ReDI Slack or write an e-mail to kateryna@redi-school.org.
           </Content>
 
           {isWrongRediLocationError && (
