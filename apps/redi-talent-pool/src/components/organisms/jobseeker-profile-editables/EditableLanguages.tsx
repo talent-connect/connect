@@ -161,39 +161,35 @@ export function JobseekerFormSectionLanguages({
 
     const deletedRecords = removedRecords.current
 
-    const createRecordPromises = newRecords.map((record) => {
-      return createMutation.mutateAsync({
+    for (const record of newRecords) {
+      await createMutation.mutateAsync({
         input: {
           language: record.language,
           proficiencyLevelId: record.proficiencyLevelId,
         },
       })
-    })
+    }
 
-    const patchRecordPromises = existingRecords.map((record) => {
-      return patchMutation.mutateAsync({
+    for (const record of existingRecords) {
+      await patchMutation.mutateAsync({
         input: {
           id: record.id,
           language: record.language,
           proficiencyLevelId: record.proficiencyLevelId,
         },
       })
-    })
+    }
 
-    const deleteRecordPromises = deletedRecords.map((recordId) => {
-      return deleteMutation.mutateAsync({
+    for (const recordId of deletedRecords) {
+      await deleteMutation.mutateAsync({
         input: {
           id: recordId,
         },
       })
-    })
+    }
 
     formik.setSubmitting(true)
-    await Promise.all([
-      ...createRecordPromises,
-      ...patchRecordPromises,
-      ...deleteRecordPromises,
-    ])
+
     queryClient.invalidateQueries()
     formik.setSubmitting(false)
     setIsEditing(false)
