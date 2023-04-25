@@ -81,8 +81,9 @@
           <mj-text mj-class="text paragraph" 
             >In case of any questions, you can
             <strong>message Josefa on Slack</strong> or send us an
-            <strong>email</strong> at
-            <strong>josefa@redi-school.org</strong> or <strong>cyberspace@redi-school.org</strong>.</mj-text
+            <strong>e-mail</strong> at 
+            <a href="mailto:josefa@redi-school.org" class="text-link">josefa@redi-school.org</a> 
+            or <a href="mailto:cyberspace@redi-school.org" class="text-link">cyberspace@redi-school.org</a>.</mj-text
           >
           <mj-text mj-class="text paragraph" 
             >We’re looking forward to getting to know you soon!
