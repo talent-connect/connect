@@ -266,13 +266,16 @@ export const sendMentorPendingReviewAcceptedEmail = ({
 export const sendEmailToUserWithTpJobseekerProfileSigningUpToCon = ({
   recipient,
   firstName,
+  rediLocation,
 }) => {
-  console.log(recipient, firstName)
-  const emailParsed = convertTemplateToHtml(
-    null,
-    `schedule-onboarding-call-for-tp-jobseeker-signed-up-as-mentee`
+  const templateFile = rediLocation === 'CYBERSPACE' 
+  ? 'schedule-onboarding-call-for-tp-jobseeker-signed-up-as-mentee-cyberspace' 
+  : 'schedule-onboarding-call-for-tp-jobseeker-signed-up-as-mentee'
+
+  const html = convertTemplateToHtml(null, templateFile).replace(
+    /\${firstName}/g, 
+    firstName
   )
-  const html = emailParsed.replace(/\${firstName}/g, firstName)
   return sendMjmlEmailFactory({
     to: recipient,
     subject: 'Thanks for signing up to ReDI Connect!',
@@ -323,7 +326,9 @@ export const sendEmailToUserWithTpJobseekerProfileSigningUpToCon = ({
 // }
 
 export const sendMenteeSignupCompleteEmail = ({ recipient, firstName, rediLocation }) => {
-  const templateFile = rediLocation === 'CYBERSPACE' ? 'signup-complete-mentee-cyberspace' : 'signup-complete-mentee'
+  const templateFile = rediLocation === 'CYBERSPACE' 
+  ? 'signup-complete-mentee-cyberspace' 
+  : 'signup-complete-mentee'
   
   const html = convertTemplateToHtml(null, templateFile).replace(
     /\${firstName}/g,
