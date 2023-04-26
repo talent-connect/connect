@@ -1,0 +1,68 @@
+<mjml>
+  <mj-include path="./head.mjml" />
+  <mj-body mj-class="body">
+    <mj-wrapper background-color="#F0F0F0">
+      <mj-section />
+      <mj-section css-class="section">
+        <mj-column>
+          <mj-text mj-class="headline">Hi ${menteeFirstName}, start applying for 
+          mentors! :) </mj-text>
+          <mj-divider mj-class="divider-top" css-class="divider" />
+          <mj-text mj-class="text" padding="0 0 20px 0">Hi ${menteeFirstName},</mj-text>
+          <mj-text mj-class="text paragraph"
+            >You are receiving this email because you had your activation call a few days 
+            ago but have not yet applied to any mentor on ReDI Connect. As mentioned in 
+            the call, <strong>you should apply for at least one mentor for your profile to stay 
+            active</strong>.</mj-text
+          >
+          <mj-text mj-class="text paragraph"
+            >We always think of ReDI Connect as a means to an end, not an end in itself, 
+            meaning that ReDI Connect is a tool to connect you with mentors. Therefore, to 
+            make the most out of the tool, you should take the initiative and start 
+            applying.</mj-text
+          >
+          <mj-text mj-class="text paragraph"
+            >This is what you need to do now:</mj-text
+          >
+          <mj-text mj-class="text paragraph" 
+            >1. If you have not done so already, please complete your profile on
+            ReDI Connect (Most important: clear expectations and goals. Nice to have: 
+            a picture and a link to your LinkedIn profile). This helps future mentors 
+            understand whether you two can be a good match.</mj-text
+          >
+          <mj-text mj-class="text paragraph"
+            >2. When you are done, please start searching for a mentor on the platform 
+            (under 'Find a mentor'). You can send an application message to a mentor 
+            directly through their profile. You can apply to as many mentors as you find 
+            interesting, but remember that you can only have one mentor at a time, and the 
+            one who accepts you first will become your mentor.</mj-text
+          >
+          <mj-text mj-class="text paragraph" 
+            >3. You should receive an answer from at least one of the mentors within one week. 
+            This, however, varies from one mentor to another. As a general rule, if you need 
+            a match as soon as possible, apply for several mentors to increase the chances 
+            of a quick match.
+          </mj-text>
+          <mj-text mj-class="text paragraph" 
+            >Do you have any questions? Unsure how to choose a mentor based on your current 
+            needs, or need any support to write the application? Please contact 
+            <strong>Josefa</strong> <a href="mailto:josefa@redi-school.org" 
+            class="text-link">here</a>.</mj-text
+          >
+          <mj-text mj-class="text paragraph" 
+            >If you have already applied for a mentor, please check under
+            'Applications' whether your application has been successfully sent. Can’t find your 
+            application there? Please get in touch with us.</mj-text
+          >
+          <mj-text mj-class="text paragraph" 
+            >We are looking forward to seeing you matched with a mentor soon!</mj-text
+          >
+          <mj-text mj-class="text">All the best,</mj-text>
+          <mj-text mj-class="text">Your ReDI Career Support Team</mj-text>
+        </mj-column>
+      </mj-section>
+      <mj-include path="./footer.career.support.team.mjml" />
+      <mj-section />
+    </mj-wrapper>
+  </mj-body>
+</mjml>
