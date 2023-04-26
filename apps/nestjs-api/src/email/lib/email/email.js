@@ -386,12 +386,13 @@ export const sendMentoringSessionLoggedEmail = ({
 export const sendMenteeReminderToApplyToMentorEmail = ({
   recipient,
   menteeFirstName,
+  rediLocation
 }) => {
-  const sendMenteeReminderToApplyToMentorEmailParsed = convertTemplateToHtml(
-    null,
-    'apply-to-mentor-reminder-for-mentee'
-  )
-  const html = sendMenteeReminderToApplyToMentorEmailParsed.replace(
+  const templateFile = rediLocation === 'CYBERSPACE' 
+  ? 'apply-to-mentor-reminder-for-mentee-cyberspace' 
+  : 'apply-to-mentor-reminder-for-mentee'
+
+  const html = convertTemplateToHtml(null,templateFile).replace(
     /\${menteeFirstName}/g,
     menteeFirstName
   )
