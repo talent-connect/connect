@@ -68,7 +68,7 @@
             target="_blank"
             width="358px"
             css-class="button-desktop"
-            href="https://calendly.com/josefa_cyberspace/30min"
+            href="https://calendly.com/josefa_cyberspace/redi-connect-mentees-activation-call-cyberspace-only"
           />
           <mj-image
             src="https://redi-connect-email-assets.s3.eu-west-1.amazonaws.com/schedule-activation-call-now-button.png"
@@ -76,7 +76,7 @@
             padding="10px 0 30px 0"
             target="_blank"
             css-class="button-mobile"
-            href="https://calendly.com/josefa_cyberspace/30min"
+            href="https://calendly.com/josefa_cyberspace/redi-connect-mentees-activation-call-cyberspace-only"
           />
           <mj-text mj-class="text paragraph" 
             >In case of any questions, you can
