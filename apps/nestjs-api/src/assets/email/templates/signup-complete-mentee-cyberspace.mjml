@@ -49,8 +49,8 @@
           />
           <mj-text mj-class="text paragraph" 
             >Your <strong>final step</strong> after watching this video will be
-            your <strong>activation call</strong> with our Mentorship Community
-            Manager, <strong>Hadeer</strong>, who will be happy to answer any
+            your <strong>activation call</strong> with our Cyberspace Career
+            Manager, <strong>Josefa</strong>, who will be happy to answer any
             remaining questions and will then activate your account - only then
             will you be able to fully use the platform and search for a
             mentor.</mj-text
@@ -68,7 +68,7 @@
             target="_blank"
             width="358px"
             css-class="button-desktop"
-            href="https://calendly.com/hadeertalentsucess/redi-connect-mentees-activation-call"
+            href="https://calendly.com/josefa_cyberspace/30min"
           />
           <mj-image
             src="https://redi-connect-email-assets.s3.eu-west-1.amazonaws.com/schedule-activation-call-now-button.png"
@@ -76,13 +76,14 @@
             padding="10px 0 30px 0"
             target="_blank"
             css-class="button-mobile"
-            href="https://calendly.com/hadeertalentsucess/redi-connect-mentees-activation-call"
+            href="https://calendly.com/josefa_cyberspace/30min"
           />
-           <mj-text mj-class="text paragraph" 
+          <mj-text mj-class="text paragraph" 
             >In case of any questions, you can
-            <strong>message Hadeer on Slack</strong> or send us an
-            <strong>e-mail</strong> at
-            <a href="mailto:career@redi-school.or" class="text-link">career@redi-school.org</a>.</mj-text
+            <strong>message Josefa on Slack</strong> or send us an
+            <strong>e-mail</strong> at 
+            <a href="mailto:josefa@redi-school.org" class="text-link">josefa@redi-school.org</a> 
+            or <a href="mailto:cyberspace@redi-school.org" class="text-link">cyberspace@redi-school.org</a>.</mj-text
           >
           <mj-text mj-class="text paragraph" 
             >We’re looking forward to getting to know you soon!

@@ -17,8 +17,6 @@ export function buildFrontendUrl(env, rediLocation) {
     return 'https://app.staging.connect.redi-school.org'
   } else if (env === 'development') {
     return 'http://127.0.0.1:3000'
-  } else if (env === 'development') {
-    return 'http://127.0.0.1:3000'
   } else {
     return 'http://127.0.0.1:3000'
   }

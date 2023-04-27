@@ -266,13 +266,16 @@ export const sendMentorPendingReviewAcceptedEmail = ({
 export const sendEmailToUserWithTpJobseekerProfileSigningUpToCon = ({
   recipient,
   firstName,
+  rediLocation,
 }) => {
-  console.log(recipient, firstName)
-  const emailParsed = convertTemplateToHtml(
-    null,
-    `schedule-onboarding-call-for-tp-jobseeker-signed-up-as-mentee`
+  const templateFile = rediLocation === 'CYBERSPACE' 
+  ? 'schedule-onboarding-call-for-tp-jobseeker-signed-up-as-mentee-cyberspace' 
+  : 'schedule-onboarding-call-for-tp-jobseeker-signed-up-as-mentee'
+
+  const html = convertTemplateToHtml(null, templateFile).replace(
+    /\${firstName}/g, 
+    firstName
   )
-  const html = emailParsed.replace(/\${firstName}/g, firstName)
   return sendMjmlEmailFactory({
     to: recipient,
     subject: 'Thanks for signing up to ReDI Connect!',
@@ -322,8 +325,12 @@ export const sendEmailToUserWithTpJobseekerProfileSigningUpToCon = ({
 //   })
 // }
 
-export const sendMenteeSignupCompleteEmail = ({ recipient, firstName }) => {
-  const html = convertTemplateToHtml(null, 'signup-complete-mentee').replace(
+export const sendMenteeSignupCompleteEmail = ({ recipient, firstName, rediLocation }) => {
+  const templateFile = rediLocation === 'CYBERSPACE' 
+  ? 'signup-complete-mentee-cyberspace' 
+  : 'signup-complete-mentee'
+  
+  const html = convertTemplateToHtml(null, templateFile).replace(
     /\${firstName}/g,
     firstName
   )
@@ -379,12 +386,13 @@ export const sendMentoringSessionLoggedEmail = ({
 export const sendMenteeReminderToApplyToMentorEmail = ({
   recipient,
   menteeFirstName,
+  rediLocation
 }) => {
-  const sendMenteeReminderToApplyToMentorEmailParsed = convertTemplateToHtml(
-    null,
-    'apply-to-mentor-reminder-for-mentee'
-  )
-  const html = sendMenteeReminderToApplyToMentorEmailParsed.replace(
+  const templateFile = rediLocation === 'CYBERSPACE' 
+  ? 'apply-to-mentor-reminder-for-mentee-cyberspace' 
+  : 'apply-to-mentor-reminder-for-mentee'
+
+  const html = convertTemplateToHtml(null,templateFile).replace(
     /\${menteeFirstName}/g,
     menteeFirstName
   )

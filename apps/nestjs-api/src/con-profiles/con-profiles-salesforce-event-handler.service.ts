@@ -1,14 +1,10 @@
 import { Injectable } from '@nestjs/common'
 import { OnEvent } from '@nestjs/event-emitter'
-import {
-  ConProfileEntity,
-  ConnectProfileStatus,
-  UserType,
-} from '@talent-connect/common-types'
+import { ConnectProfileStatus, ConProfileEntity, UserType } from '@talent-connect/common-types'
 import {
   ConProfileCreatedInternalEventDto,
   ConProfileStatusChangedInternalEventDto,
-  SalesforceRecordEvents,
+  SalesforceRecordEvents
 } from '@talent-connect/salesforce-record-events'
 import { EmailService } from '../email/email.service'
 import { ConProfilesService } from './con-profiles.service'
@@ -91,6 +87,7 @@ export class ConProfilesSalesforceEventHandlerService {
         this.emailService.sendMenteeSignupCompleteEmail({
           recipient: conProfile.props.email,
           firstName: conProfile.props.firstName,
+          rediLocation: conProfile.props.rediLocation
         })
         break
 
