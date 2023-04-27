@@ -4,6 +4,7 @@ import {
   PipeList,
   Placeholder,
 } from '@talent-connect/shared-atomic-design-components'
+import { LANGUAGES } from '@talent-connect/shared-config'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
 import { ReadLanguagesProfilePropFragment } from './ReadLanguages.generated'
 
@@ -13,11 +14,12 @@ interface Props {
 
 const Me = ({ profile }: Props) => {
   const { languages } = profile
+  const viewLanguages = languages?.map((value) => LANGUAGES[value])
 
   if (!languages)
     return <Placeholder>Input languages you speak here.</Placeholder>
 
-  return <PipeList items={languages} />
+  return <PipeList items={viewLanguages} />
 }
 
 const Some = ({ profile }: Props) => {

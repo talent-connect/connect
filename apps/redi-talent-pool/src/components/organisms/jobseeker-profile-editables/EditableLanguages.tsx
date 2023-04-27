@@ -35,7 +35,7 @@ interface Props {
 }
 
 export function EditableLanguages({ profile, disableEditing }: Props) {
-  const langaugeRecords = profile?.workingLanguages
+  const languageRecords = profile?.workingLanguages
 
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
@@ -61,9 +61,9 @@ export function EditableLanguages({ profile, disableEditing }: Props) {
           </EmptySectionPlaceholder>
         ) : (
           <Content>
-            {langaugeRecords?.map(({ language, proficiencyLevelId }, idx) => (
+            {languageRecords?.map(({ language, proficiencyLevelId }, idx) => (
               <p key={idx}>
-                {language} -{' '}
+                {LANGUAGES[language]} -{' '}
                 {languageProficiencyLevelsIdToLabelMap[proficiencyLevelId]}
               </p>
             ))}
@@ -149,12 +149,10 @@ export function JobseekerFormSectionLanguages({
   }, [workingLanguages])
 
   const onSubmit = async (values: FormValues) => {
-    // We need to run the mutation tpJobseekerProfileLanguageRecordCreate
     const newRecords = values.workingLanguages.filter((record) =>
       record.id.includes('NEW')
     )
 
-    // We need to run the mutation tpJobseekerProfileLanguageRecordPatch
     const existingRecords = values.workingLanguages.filter(
       (record) => !record.id.includes('NEW')
     )
@@ -243,7 +241,9 @@ export function JobseekerFormSectionLanguages({
       </Element>
       {formik?.values?.workingLanguages?.map((item, index) => (
         <FormDraggableAccordion
-          title={item.language ? item.language : 'Click me to add details'}
+          title={
+            item.language ? LANGUAGES[item.language] : 'Click me to add details'
+          }
           onRemove={() => onRemove(item.language)}
           closeAccordionSignalSubject={closeAllAccordionsSignalSubject.current}
         >
@@ -292,9 +292,10 @@ export function JobseekerFormSectionLanguages({
 }
 
 const formLanguages = Object.entries(LANGUAGES).map(([value, label]) => ({
-  value: label,
+  value,
   label,
 }))
+console.log(formLanguages)
 
 const formLanguageProficiencyLevels = languageProficiencyLevels.map(
   ({ id, label }) => ({

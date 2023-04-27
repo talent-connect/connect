@@ -15,6 +15,7 @@ import {
   TpJobseekerCvExperienceRecord,
   TpJobseekerCvLanguageRecord,
 } from '@talent-connect/data-access'
+import { LANGUAGES } from '@talent-connect/shared-config'
 import {
   desiredPositionsIdToLabelMap,
   languageProficiencyLevelsIdToLabelMap,
@@ -355,7 +356,7 @@ export function CVPDF({
                 {workingLanguages?.map(
                   ({ language, proficiencyLevelId, id }, index) => (
                     <Text key={`language_${id}`} style={styles.ContentListItem}>
-                      {language} -{' '}
+                      {LANGUAGES[language]} -{' '}
                       {
                         languageProficiencyLevelsIdToLabelMap[
                           proficiencyLevelId
