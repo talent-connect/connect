@@ -78,7 +78,10 @@ const validationSchema = Yup.object({
     ),
 })
 
-type FormLanguageRecord = Omit<TpJobseekerCvLanguageRecord, 'tpJobseekerCvId'>
+type FormLanguageRecord = Omit<
+  TpJobseekerCvLanguageRecord,
+  'tpJobseekerCvId' | 'userId'
+>
 
 interface FormValues {
   workingLanguages: Array<FormLanguageRecord>
@@ -216,7 +219,9 @@ export function JobseekerFormSectionLanguages({
       </Element>
       {formik?.values?.workingLanguages?.map((item, index) => (
         <FormDraggableAccordion
-          title={item.language ? item.language : 'Click me to add details'}
+          title={
+            item.language ? LANGUAGES[item.language] : 'Click me to add details'
+          }
           onRemove={() => onRemove(item.id)}
           closeAccordionSignalSubject={closeAllAccordionsSignalSubject.current}
         >
@@ -265,7 +270,7 @@ export function JobseekerFormSectionLanguages({
 }
 
 const formLanguages = Object.entries(LANGUAGES).map(([value, label]) => ({
-  value: label,
+  value,
   label,
 }))
 

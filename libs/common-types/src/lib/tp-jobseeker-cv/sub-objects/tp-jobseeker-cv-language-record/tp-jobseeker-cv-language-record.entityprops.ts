@@ -13,4 +13,6 @@ export class TpJobseekerCvLanguageRecordEntityProps {
 
   @Field((type) => LanguageProficiencyLevel)
   proficiencyLevelId: LanguageProficiencyLevel
+
+  userId: string
 }

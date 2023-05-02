@@ -1,5 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
 import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common'
+import {
+  CompanyTalentPoolState,
   TpJobListingEntity,
   TpJobListingEntityProps,
   TpJobListingMapper,
@@ -32,7 +37,11 @@ export class TpJobListingsService {
   }
 
   async findAllVisibleJobListings(_filter: FindAllVisibleTpJobListingsArgs) {
-    const filter: any = {}
+    const filter: any = {
+      ['Account__r.ReDI_Visible_to_Jobseekers__c']: true,
+      ['Account__r.ReDI_Talent_Pool_State__c']:
+        CompanyTalentPoolState.PROFILE_APPROVED,
+    }
     if (_filter.filter.relatesToPositions?.length > 0) {
       filter.Relates_to_Positions__c = {
         $includes: _filter.filter.relatesToPositions,
@@ -93,8 +102,22 @@ export class TpJobListingsService {
     return await this.api.create(recordToPersist)
   }
 
-  async patch(input: TpJobListingPatchInput) {
+  async patch(input: TpJobListingPatchInput, currentUser: CurrentUserInfo) {
     const existingEntity = await this.findOne(input.id)
+
+    const companyRepresentedByUser =
+      await this.tpCompanyRepresentativeRelationshipService.findCompanyRepresentedByUser(
+        currentUser.userId
+      )
+
+    if (
+      existingEntity.props.companyProfileId != companyRepresentedByUser.props.id
+    ) {
+      throw new UnauthorizedException(
+        'You are not authorized to edit this job listing.'
+      )
+    }
+
     const props = existingEntity.props
     const updatesSanitized = deleteUndefinedProperties(input)
     Object.entries(updatesSanitized).forEach(([key, value]) => {
@@ -106,8 +129,21 @@ export class TpJobListingsService {
     )
   }
 
-  async delete(input: TpJobListingDeleteInput) {
+  async delete(input: TpJobListingDeleteInput, currentUser: CurrentUserInfo) {
     const existingEntity = await this.findOne(input.id)
+    const companyRepresentedByUser =
+      await this.tpCompanyRepresentativeRelationshipService.findCompanyRepresentedByUser(
+        currentUser.userId
+      )
+
+    if (
+      existingEntity.props.companyProfileId != companyRepresentedByUser.props.id
+    ) {
+      throw new UnauthorizedException(
+        'You are not authorized to edit this job listing.'
+      )
+    }
+
     const recordToDelete = this.mapper.toPersistence(existingEntity)
     await this.api.delete(recordToDelete)
   }

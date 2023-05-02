@@ -1,4 +1,3 @@
-import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined'
 import {
   useFindAllTpJobseekerCvEducationRecordsQuery,
   useFindAllTpJobseekerCvExperienceRecordsQuery,
@@ -10,7 +9,7 @@ import {
   Button,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
-import React, { useCallback, useRef } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Box, Columns, Content, Section } from 'react-bulma-components'
 import { useHistory, useParams } from 'react-router-dom'
 import { Subject } from 'rxjs'
@@ -24,28 +23,8 @@ import { AccordionFormCvName } from '../../../../components/organisms/jobseeker-
 import { AccordionFormCvProfessionalExperience } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvProfessionalExperience'
 import { AccordionFormCvSummary } from '../../../../components/organisms/jobseeker-cv-editables/AccordionFormCvSummary'
 import { LoggedIn } from '../../../../components/templates'
+import { useIsBusy } from '../../../../hooks/useIsBusy'
 import './CvDetailPage.scss'
-
-function InlineButton() {
-  return (
-    <Button
-      style={{
-        transform: 'scale(0.5)',
-        marginLeft: -24,
-        marginRight: -16,
-        pointerEvents: 'none',
-      }}
-    >
-      Start
-    </Button>
-  )
-}
-
-function InlinePencilIcon() {
-  return (
-    <CreateOutlinedIcon style={{ color: '#EA5B25', margin: '0 12px -5px' }} />
-  )
-}
 
 interface ParamTypes {
   id: string
@@ -54,6 +33,7 @@ interface ParamTypes {
 function CvDetailPage() {
   const history = useHistory()
   const { id: cvId } = useParams<ParamTypes>()
+  const isBusy = useIsBusy()
 
   const myTpDataQuery = useMyTpDataQuery()
   const profile =
@@ -107,6 +87,15 @@ function CvDetailPage() {
     []
   )
   const closeAllAccordionsSignalSubjectRef = useRef(new Subject<void>())
+
+  const [
+    triggerRenderOnChangeOfThisCounter,
+    setTriggerRenderOnChangeOfThisCounter,
+  ] = useState(0)
+
+  useEffect(() => {
+    setTriggerRenderOnChangeOfThisCounter((counter) => counter + 1)
+  }, [isBusy])
 
   return (
     <LoggedIn hideNavigation>
@@ -197,6 +186,9 @@ function CvDetailPage() {
                 languageRecords={languageRecords}
                 pdfHeightPx={cvContainerHeight}
                 pdfWidthPx={cvPreviewElementWidth}
+                triggerRenderOnChangeOfThisCounter={
+                  triggerRenderOnChangeOfThisCounter
+                }
               />
             </Box>
           )}

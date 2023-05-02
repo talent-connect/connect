@@ -19,7 +19,7 @@ import {
 import { formMonthsOptions } from '@talent-connect/talent-pool/config'
 import { reorder } from '@talent-connect/typescript-utilities'
 import { useFormik } from 'formik'
-import { cloneDeep } from 'lodash'
+import { cloneDeep, isNumber } from 'lodash'
 import moment from 'moment'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
@@ -128,9 +128,11 @@ EditableProfessionalExperience.isSectionEmpty = (
 ) => !EditableProfessionalExperience.isSectionFilled(profile)
 
 function formatDate(month?: number, year?: number): string {
-  if (year && !month) return String(year)
-  if (year && month) return moment().month(month).year(year).format('MMMM YYYY')
-  if (!year && month) return moment().month(month).format('MMMM')
+  if (isNumber(year) && !isNumber(month)) return String(year)
+  if (isNumber(year) && isNumber(month))
+    return moment().month(month).year(year).format('MMMM YYYY')
+  if (!isNumber(year) && isNumber(month))
+    return moment().month(month).format('MMMM')
   return ''
 }
 

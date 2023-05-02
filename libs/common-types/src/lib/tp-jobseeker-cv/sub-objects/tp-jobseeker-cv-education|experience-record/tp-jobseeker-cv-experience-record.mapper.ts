@@ -18,7 +18,6 @@ export class TpJobseekerCvExperienceRecordMapper
     props.id = raw.props.Id
 
     props.sortIndex = raw.props.Frontend_View_Index__c
-    props
     props.tpJobseekerCvId = raw.props.Jobseeker_CV__c
     props.title = raw.props.Title__c
     props.description = raw.props.Description__c
@@ -30,6 +29,8 @@ export class TpJobseekerCvExperienceRecordMapper
     props.city = raw.props.City__c
     props.country = raw.props.Country__c
     props.company = raw.props.Company__c
+
+    props.userId = raw.props.Jobseeker_CV_Contact__c
 
     props.updatedAt = raw.props.LastModifiedDate
     props.createdAt = raw.props.CreatedDate

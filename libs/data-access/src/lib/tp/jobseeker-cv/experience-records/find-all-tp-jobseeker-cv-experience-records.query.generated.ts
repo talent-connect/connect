@@ -9,7 +9,7 @@ export type FindAllTpJobseekerCvExperienceRecordsQueryVariables = Types.Exact<{
 }>;
 
 
-export type FindAllTpJobseekerCvExperienceRecordsQuery = { __typename?: 'Query', tpJobseekerCvExperienceRecords: Array<{ __typename?: 'TpJobseekerCvExperienceRecord', city?: string | null, startDateMonth?: number | null, startDateYear?: number | null, title?: string | null, tpJobseekerCvId: string, updatedAt: any, company?: string | null, country?: string | null, createdAt: any, current?: boolean | null, description?: string | null, endDateMonth?: number | null, endDateYear?: number | null, id: string, sortIndex: number }> };
+export type FindAllTpJobseekerCvExperienceRecordsQuery = { __typename?: 'Query', tpJobseekerCvExperienceRecords: Array<{ __typename?: 'TpJobseekerCvExperienceRecord', city?: string | null, startDateMonth?: number | null, startDateYear?: number | null, title?: string | null, tpJobseekerCvId: string, updatedAt: any, company?: string | null, country?: string | null, createdAt: any, current?: boolean | null, description?: string | null, endDateMonth?: number | null, endDateYear?: number | null, id: string, sortIndex: number, userId: string }> };
 
 
 export const FindAllTpJobseekerCvExperienceRecordsDocument = `

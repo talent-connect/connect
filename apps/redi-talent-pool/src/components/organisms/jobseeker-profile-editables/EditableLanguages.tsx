@@ -35,7 +35,7 @@ interface Props {
 }
 
 export function EditableLanguages({ profile, disableEditing }: Props) {
-  const langaugeRecords = profile?.workingLanguages
+  const languageRecords = profile?.workingLanguages
 
   const [isEditing, setIsEditing] = useState(false)
   const [isFormDirty, setIsFormDirty] = useState(false)
@@ -61,9 +61,9 @@ export function EditableLanguages({ profile, disableEditing }: Props) {
           </EmptySectionPlaceholder>
         ) : (
           <Content>
-            {langaugeRecords?.map(({ language, proficiencyLevelId }, idx) => (
+            {languageRecords?.map(({ language, proficiencyLevelId }, idx) => (
               <p key={idx}>
-                {language} -{' '}
+                {LANGUAGES[language]} -{' '}
                 {languageProficiencyLevelsIdToLabelMap[proficiencyLevelId]}
               </p>
             ))}
@@ -149,51 +149,45 @@ export function JobseekerFormSectionLanguages({
   }, [workingLanguages])
 
   const onSubmit = async (values: FormValues) => {
-    // We need to run the mutation tpJobseekerProfileLanguageRecordCreate
     const newRecords = values.workingLanguages.filter((record) =>
       record.id.includes('NEW')
     )
 
-    // We need to run the mutation tpJobseekerProfileLanguageRecordPatch
     const existingRecords = values.workingLanguages.filter(
       (record) => !record.id.includes('NEW')
     )
 
     const deletedRecords = removedRecords.current
 
-    const createRecordPromises = newRecords.map((record) => {
-      return createMutation.mutateAsync({
+    for (const record of newRecords) {
+      await createMutation.mutateAsync({
         input: {
           language: record.language,
           proficiencyLevelId: record.proficiencyLevelId,
         },
       })
-    })
+    }
 
-    const patchRecordPromises = existingRecords.map((record) => {
-      return patchMutation.mutateAsync({
+    for (const record of existingRecords) {
+      await patchMutation.mutateAsync({
         input: {
           id: record.id,
           language: record.language,
           proficiencyLevelId: record.proficiencyLevelId,
         },
       })
-    })
+    }
 
-    const deleteRecordPromises = deletedRecords.map((recordId) => {
-      return deleteMutation.mutateAsync({
+    for (const recordId of deletedRecords) {
+      await deleteMutation.mutateAsync({
         input: {
           id: recordId,
         },
       })
-    })
+    }
 
     formik.setSubmitting(true)
-    await Promise.all([
-      ...createRecordPromises,
-      ...patchRecordPromises,
-      ...deleteRecordPromises,
-    ])
+
     queryClient.invalidateQueries()
     formik.setSubmitting(false)
     setIsEditing(false)
@@ -247,7 +241,9 @@ export function JobseekerFormSectionLanguages({
       </Element>
       {formik?.values?.workingLanguages?.map((item, index) => (
         <FormDraggableAccordion
-          title={item.language ? item.language : 'Click me to add details'}
+          title={
+            item.language ? LANGUAGES[item.language] : 'Click me to add details'
+          }
           onRemove={() => onRemove(item.language)}
           closeAccordionSignalSubject={closeAllAccordionsSignalSubject.current}
         >
@@ -296,9 +292,10 @@ export function JobseekerFormSectionLanguages({
 }
 
 const formLanguages = Object.entries(LANGUAGES).map(([value, label]) => ({
-  value: label,
+  value,
   label,
 }))
+console.log(formLanguages)
 
 const formLanguageProficiencyLevels = languageProficiencyLevels.map(
   ({ id, label }) => ({

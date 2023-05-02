@@ -53,7 +53,15 @@ export class SfApiRepository {
     process.stdin.on('keypress', (str, key) => {
       if (key.name === 'c') {
         cacheManager.reset()
-        console.log(SfApiRepository.name, 'Cache cleared')
+        console.log(`\n`, `[${SfApiRepository.name}]`, 'Cache cleared')
+      }
+      if (key.name === 'e') {
+        console.log(
+          `\n`,
+          `[${SfApiRepository.name}]`,
+          'current environment is',
+          process.env.NODE_ENV
+        )
       }
     })
   }
@@ -160,7 +168,7 @@ export class SfApiRepository {
 
       result.on('end', async () => {
         console.log('[SfApiRepository]', `Found ${records.length} records`)
-        await this.cacheManager.set(cacheKey, records, 60 * 10)
+        await this.cacheManager.set(cacheKey, records, 60 * 5)
         callback(records)
       })
 

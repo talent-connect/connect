@@ -107,46 +107,6 @@ export const sendReportProblemEmail = ({ sendingUserEmail, message }) => {
   })
 }
 
-const sendResetPasswordEmailTemplate = fs.readFileSync(
-  path.resolve(
-    __dirname,
-    'assets',
-    'email',
-    'templates',
-    'reset-password.mjml'
-  ),
-  'utf-8'
-)
-export const sendResetPasswordEmailParsed = mjml2html(
-  sendResetPasswordEmailTemplate,
-  {
-    filePath: path.resolve(__dirname, 'assets', 'email', 'templates'),
-  }
-)
-
-export const sendResetPasswordEmail = ({
-  recipient,
-  firstName,
-  accessToken,
-  rediLocation,
-}) => {
-  const resetPasswordUrl = `${buildFrontendUrl(
-    process.env.NODE_ENV,
-    rediLocation
-  )}/front/reset-password/set-new-password/${accessToken}`
-  const rediEmailAdress = 'career@redi-school.org'
-  const html = sendResetPasswordEmailParsed.html
-    .replace(/\${firstName}/g, firstName)
-    .replace(/\${resetPasswordUrl}/g, resetPasswordUrl)
-    .replace(/\${rediEmailAdress}/g, rediEmailAdress)
-    .replace(/\${emailAdress}/g, recipient)
-  return sendMjmlEmailFactory({
-    to: recipient,
-    subject: 'Password Reset for ReDI Connect',
-    html: html,
-  })
-}
-
 export const sendPendingReviewDeclinedEmail = ({
   recipient,
   firstName,
@@ -306,13 +266,16 @@ export const sendMentorPendingReviewAcceptedEmail = ({
 export const sendEmailToUserWithTpJobseekerProfileSigningUpToCon = ({
   recipient,
   firstName,
+  rediLocation,
 }) => {
-  console.log(recipient, firstName)
-  const emailParsed = convertTemplateToHtml(
-    null,
-    `schedule-onboarding-call-for-tp-jobseeker-signed-up-as-mentee`
+  const templateFile = rediLocation === 'CYBERSPACE' 
+  ? 'schedule-onboarding-call-for-tp-jobseeker-signed-up-as-mentee-cyberspace' 
+  : 'schedule-onboarding-call-for-tp-jobseeker-signed-up-as-mentee'
+
+  const html = convertTemplateToHtml(null, templateFile).replace(
+    /\${firstName}/g, 
+    firstName
   )
-  const html = emailParsed.replace(/\${firstName}/g, firstName)
   return sendMjmlEmailFactory({
     to: recipient,
     subject: 'Thanks for signing up to ReDI Connect!',
@@ -362,8 +325,12 @@ export const sendEmailToUserWithTpJobseekerProfileSigningUpToCon = ({
 //   })
 // }
 
-export const sendMenteeSignupCompleteEmail = ({ recipient, firstName }) => {
-  const html = convertTemplateToHtml(null, 'signup-complete-mentee').replace(
+export const sendMenteeSignupCompleteEmail = ({ recipient, firstName, rediLocation }) => {
+  const templateFile = rediLocation === 'CYBERSPACE' 
+  ? 'signup-complete-mentee-cyberspace' 
+  : 'signup-complete-mentee'
+  
+  const html = convertTemplateToHtml(null, templateFile).replace(
     /\${firstName}/g,
     firstName
   )
@@ -419,12 +386,13 @@ export const sendMentoringSessionLoggedEmail = ({
 export const sendMenteeReminderToApplyToMentorEmail = ({
   recipient,
   menteeFirstName,
+  rediLocation
 }) => {
-  const sendMenteeReminderToApplyToMentorEmailParsed = convertTemplateToHtml(
-    null,
-    'apply-to-mentor-reminder-for-mentee'
-  )
-  const html = sendMenteeReminderToApplyToMentorEmailParsed.replace(
+  const templateFile = rediLocation === 'CYBERSPACE' 
+  ? 'apply-to-mentor-reminder-for-mentee-cyberspace' 
+  : 'apply-to-mentor-reminder-for-mentee'
+
+  const html = convertTemplateToHtml(null,templateFile).replace(
     /\${menteeFirstName}/g,
     menteeFirstName
   )

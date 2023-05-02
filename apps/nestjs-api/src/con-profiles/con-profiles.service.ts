@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import {
-  ConnectProfileStatus,
   ConProfileEntity,
   ConProfileMapper,
+  ConnectProfileStatus,
   UserType,
 } from '@talent-connect/common-types'
 import { deleteUndefinedProperties } from '@talent-connect/shared-utils'
@@ -96,23 +96,29 @@ export class ConProfilesService {
     }
   }
 
-  async update(updateConProfileInput: PatchConProfileInput) {
-    const existingEntity = await this.findOneById(updateConProfileInput.id)
+  async patch(
+    updateConProfileInput: PatchConProfileInput,
+    currentUser: CurrentUserInfo
+  ) {
+    const existingEntity = await this.findOneByLoopbackUserId(
+      currentUser.loopbackUserId
+    )
     const props = existingEntity.props
     const updatesSanitized = deleteUndefinedProperties(updateConProfileInput)
     Object.entries(updatesSanitized).forEach(([key, value]) => {
       props[key] = value
     })
     const entityToPersist = ConProfileEntity.create(props)
+
+    return this.update(entityToPersist)
+  }
+
+  async update(entity: ConProfileEntity) {
     const persistedObject = await this.api.updateConProfile(
-      this.mapper.toPersistence(entityToPersist)
+      this.mapper.toPersistence(entity)
     )
     const updatedEntity = this.mapper.fromPersistence(persistedObject)
 
     return updatedEntity
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} conProfile`
   }
 }

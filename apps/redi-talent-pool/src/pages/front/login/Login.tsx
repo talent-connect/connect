@@ -1,10 +1,10 @@
 import {
   Button,
   FormInput,
-  Heading,
+  Heading
 } from '@talent-connect/shared-atomic-design-components'
 import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
-import React, { useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Columns, Content, Form } from 'react-bulma-components'
 import { Link } from 'react-router-dom'
 import * as Yup from 'yup'
@@ -72,8 +72,12 @@ export default function Login() {
             Enter your email and password below.
           </Content>
           <Content size="small" renderAs="p">
-            Got a ReDI Connect user account? You can use the same username and
-            password here.
+            {/* Commented and replaced with different text until the cross-platform log-in feature is implemented. */}
+            {/* Got a ReDI Connect user account? You can use the same username and
+            password here. */}
+            Got a ReDI Connect user account? To log in with the same username 
+            and password get in contact with @Kate in ReDI Slack or write an e-mail  
+            <a href="mailto:kateryna@redi-school.org"> here</a>.
           </Content>
 
           <form onSubmit={(e) => e.preventDefault()}>

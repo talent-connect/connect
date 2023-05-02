@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common'
 import { OnEvent } from '@nestjs/event-emitter'
-import { ConnectProfileStatus, UserType } from '@talent-connect/common-types'
+import { ConnectProfileStatus, ConProfileEntity, UserType } from '@talent-connect/common-types'
 import {
   ConProfileCreatedInternalEventDto,
   ConProfileStatusChangedInternalEventDto,
-  SalesforceRecordEvents,
+  SalesforceRecordEvents
 } from '@talent-connect/salesforce-record-events'
 import { EmailService } from '../email/email.service'
 import { ConProfilesService } from './con-profiles.service'
@@ -31,6 +31,14 @@ export class ConProfilesSalesforceEventHandlerService {
     const isStatusPendingToRejected =
       payload.oldStatus === ConnectProfileStatus.PENDING &&
       payload.newStatus === ConnectProfileStatus.REJECTED
+
+    if (isStatusPendingToApproved) {
+      const conProfile = await this.service.findOneById(payload.conProfileId)
+      const updatedConProfileProps = Object.assign({}, conProfile.props, {
+        userActivatedAt: new Date().toISOString(),
+      })
+      await this.service.update(ConProfileEntity.create(updatedConProfileProps))
+    }
 
     const conProfile = await this.service.findOneById(payload.conProfileId)
     switch (conProfile.props.userType) {
@@ -79,6 +87,7 @@ export class ConProfilesSalesforceEventHandlerService {
         this.emailService.sendMenteeSignupCompleteEmail({
           recipient: conProfile.props.email,
           firstName: conProfile.props.firstName,
+          rediLocation: conProfile.props.rediLocation
         })
         break
 

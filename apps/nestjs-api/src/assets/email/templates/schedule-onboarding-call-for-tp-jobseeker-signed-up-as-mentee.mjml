@@ -81,7 +81,7 @@
             >In case of any questions, you can
             <strong>message Hadeer on Slack</strong> or send us an
             <strong>e-mail</strong> at
-            <strong>career@redischool.org</strong>.</mj-text
+            <a href="mailto:career@redi-school.or" class="text-link">career@redi-school.org</a>.</mj-text
           >
           <mj-text mj-class="text paragraph" 
             >We’re looking forward to getting to know you soon!

@@ -21,6 +21,7 @@ export class TpJobseekerCvLanguageRecord extends Record<TpJobseekerCvLanguageRec
       'Fluency__c',
       'Language__c',
       'Language__r.Slug__c',
+      'Jobseeker_CV_Contact__c',
       'CreatedDate',
       'LastModifiedDate',
     ],

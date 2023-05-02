@@ -131,7 +131,7 @@ function EditableOccupation() {
   const submitForm = async (values: FormikValues) => {
     const cleanValues = omit(values, ['userType'])
     const mutationResult = await patchMyProfileMutation.mutateAsync({
-      input: { id: profile.id, ...cleanValues },
+      input: cleanValues,
     })
     queryClient.setQueryData(useLoadMyProfileQuery.getKey({ loopbackUserId }), {
       conProfile: mutationResult.patchConProfile,

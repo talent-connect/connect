@@ -10,13 +10,17 @@ import {
   useUnfavoriteMentorMutation,
 } from '@talent-connect/data-access'
 import {
+  Checkbox,
   FilterDropdown,
   Heading,
   Icon,
   SearchField,
-  Checkbox,
 } from '@talent-connect/shared-atomic-design-components'
-import { CATEGORIES, REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
+import {
+  CATEGORIES,
+  LANGUAGES,
+  REDI_LOCATION_NAMES,
+} from '@talent-connect/shared-config'
 import { objectKeys } from '@talent-connect/typescript-utilities'
 import { useEffect, useState } from 'react'
 import { Columns, Content, Tag } from 'react-bulma-components'
@@ -38,6 +42,11 @@ import { toggleValueInArray } from './utils'
 const filterCategories = CATEGORIES.map((category) => ({
   value: category.id,
   label: category.label,
+}))
+
+const filterLanguages = Object.keys(Language).map((language) => ({
+  value: language,
+  label: LANGUAGES[language],
 }))
 
 interface FilterTagProps {
@@ -144,24 +153,6 @@ const FindAMentor = () => {
       locations: [],
     }))
   }
-
-  const [filterLanguages, setFilterLanguages] = useState([])
-  useEffect(() => {
-    if (mentorsQuery?.data?.conProfilesAvailableMentors?.length > 0)
-      setFilterLanguages(
-        Array.from(
-          new Set(
-            mentorsQuery.data.conProfilesAvailableMentors
-              .map((mentor) => mentor.languages || [])
-              .flat()
-              .sort()
-          )
-        ).map((language) => ({
-          value: language,
-          label: language,
-        }))
-      )
-  }, [mentorsQuery.data?.conProfilesAvailableMentors])
 
   const filterRediLocations = objectKeys(REDI_LOCATION_NAMES).map(
     (location) => ({

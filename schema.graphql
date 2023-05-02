@@ -103,15 +103,6 @@ type ConMentorshipMatchesDeclineMentorshipOutputDto {
   ok: Boolean!
 }
 
-input ConMentorshipMatchesMarkAsDismissedInputDto {
-  conMentorshipMatchId: String!
-}
-
-type ConMentorshipMatchesMarkAsDismissedOutputDto {
-  id: String!
-  ok: Boolean!
-}
-
 type ConProfile {
   age: Float
   birthDate: DateTime
@@ -523,7 +514,6 @@ type Mutation {
   conMentorshipMatchesApplyForMentorship(input: ConMentorshipMatchesApplyForMentorshipInputDto!): ConMentorshipMatchesApplyForMentorshipOutputDto!
   conMentorshipMatchesCompleteMentorship(input: ConMentorshipMatchesCompleteMentorshipInputDto!): ConMentorshipMatchesCompleteMentorshipOutputDto!
   conMentorshipMatchesDeclineMentorship(input: ConMentorshipMatchesDeclineMentorshipInputDto!): ConMentorshipMatchesDeclineMentorshipOutputDto!
-  conMentorshipMatchesMarkAsDismissed(input: ConMentorshipMatchesMarkAsDismissedInputDto!): ConMentorshipMatchesMarkAsDismissedOutputDto!
   conProblemReportCreate(input: CreateConProblemReportInput!): OkResponseMutationOutputDto!
   conProfileSignUp(input: ConProfileSignUpInput!): OkIdResponseMutationOutputDto!
   createConMentoringSession(createConMentoringSessionInput: CreateConMentoringSessionInput!): ConMentoringSession!
@@ -582,7 +572,6 @@ type OkResponseMutationOutputDto {
 
 type Query {
   conMenteeFavoritedMentors: [ConMenteeFavoritedMentor!]!
-  conMentoringSessions: [ConMentoringSession!]!
   conMentorshipMatch(id: ID!): ConMentorshipMatch!
   conMentorshipMatches(filter: FindMentorshipMatchesArgsFilter): [ConMentorshipMatch!]!
   conProfile(id: ID, loopbackUserId: ID): ConProfile!
@@ -611,38 +600,48 @@ type Query {
 
 enum RediCourse {
   BERLIN_ALUMNI
-  BERLIN_CODING_FUNDAMENTALS
-  BERLIN_CYBERSECURITY
   BERLIN_DATA_ANALYTICS
   BERLIN_DATA_CIRCLE
   BERLIN_DIGITAL_LITERACY_PROGRAM
   BERLIN_HTML_CSS
   BERLIN_INTRO_TO_COMPUTER_SCIENCE
+  BERLIN_INTRO_TO_JAVA
   BERLIN_JAVASCRIPT
   BERLIN_JAVA_CIRCLE
-  BERLIN_PROGRAMMING_WITH_JAVA
   BERLIN_PYTHON_FOUNDATION
   BERLIN_REACT
   BERLIN_SALESFORCE_FUNDAMENTALS
-  BERLIN_UX_UI_BASICS
-  BERLIN_UX_UI_INTERMEDIATE
+  CYBERSPACE_ALUMNI
+  CYBERSPACE_CYBERSECURITY_ADVANCED
+  CYBERSPACE_CYBERSECURITY_BEGINNERS
+  CYBERSPACE_CYBERSECURITY_INTERMEDIATE
+  CYBERSPACE_DATA_ANALYTICS
+  CYBERSPACE_PYTHON_FOUNDATION
+  CYBERSPACE_UX_UI_BASICS
   HAMBURG_ALUMNI
+  HAMBURG_CLOUD_COMPUTING
   HAMBURG_HTML_CSS
-  HAMBURG_INTERNET_OF_THINGS
-  HAMBURG_INTRO_TO_CS
-  HAMBURG_UX_UI_DESIGN_BASIS
+  HAMBURG_INTRO_TO_COMPUTER_SCIENCE
+  HAMBURG_JAVASCRIPT
+  HAMBURG_PYTHON_INTERMEDIATE
+  HAMBURG_UX_UI_DESIGN_BASICS
+  HAMBURG_UX_UI_DESIGN_INTERMEDIATE
   MUNICH_ALUMNI
   MUNICH_BACK_END_DEVELOPMENT
   MUNICH_DATA_ANALYTICS
+  MUNICH_DATA_STRUCTURE_AND_ALGORITHMS
   MUNICH_DIGITAL_LITERACY_PROGRAM
   MUNICH_FRONT_END_DEVELOPMENT_HTML_CSS
   MUNICH_FRONT_END_DEVELOPMENT_JAVASCRIPT
+  MUNICH_FRONT_END_DEVELOPMENT_REACT
   MUNICH_INTRODUCTION_TO_COMPUTER_SCIENCE_HYBRID
   MUNICH_INTRODUCTION_TO_COMPUTER_SCIENCE_ONLINE
   MUNICH_INTRODUCTION_TO_COMPUTER_SCIENCE_UKR
   MUNICH_PYTHON_INTERMEDIATE_HYBRID
   MUNICH_PYTHON_INTERMEDIATE_ONLINE
-  MUNICH_UX_UI_DESIGN
+  MUNICH_PYTHON_INTERMEDIATE_UKR
+  MUNICH_UX_UI_DESIGN_BASICS
+  MUNICH_UX_UI_DESIGN_INTERMEDIATE
   NRW_ALUMNI
   NRW_CLOUD_COMPUTING
   NRW_DATA_ANALYTICS
@@ -719,7 +718,6 @@ type TpCompanyProfile {
 input TpCompanyProfilePatchInput {
   about: String
   companyName: String
-  id: ID!
   industry: String
   isJobFair2023Participant: Boolean
   isProfileVisibleToJobseekers: Boolean
@@ -977,6 +975,7 @@ type TpJobseekerCvEducationRecord {
   title: String
   tpJobseekerCvId: ID!
   updatedAt: DateTime!
+  userId: String!
 }
 
 input TpJobseekerCvEducationRecordCreateInput {
@@ -1031,6 +1030,7 @@ type TpJobseekerCvExperienceRecord {
   title: String
   tpJobseekerCvId: ID!
   updatedAt: DateTime!
+  userId: String!
 }
 
 input TpJobseekerCvExperienceRecordCreateInput {
@@ -1072,6 +1072,7 @@ type TpJobseekerCvLanguageRecord {
   language: Language!
   proficiencyLevelId: LanguageProficiencyLevel!
   tpJobseekerCvId: ID!
+  userId: String!
 }
 
 input TpJobseekerCvLanguageRecordCreateInput {
@@ -1470,7 +1471,6 @@ input UpdateConProfileInput {
   firstName: String
   gender: Gender
   githubProfileUrl: String
-  id: ID!
   languages: [Language!]
   lastName: String
   linkedInProfileUrl: String

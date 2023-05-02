@@ -9,7 +9,7 @@ import {
   Checkbox,
   FormInput,
   FormSelect,
-  Heading,
+  Heading
 } from '@talent-connect/shared-atomic-design-components'
 import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
 
@@ -21,15 +21,19 @@ import {
   RediCourse,
   RediLocation,
   useConProfileSignUpMutation,
-  UserType,
+  UserType
 } from '@talent-connect/data-access'
 import { COURSES } from '@talent-connect/shared-config'
 import { toPascalCaseAndTrim } from '@talent-connect/shared-utils'
+import { courses } from '../../../config/config'
 import { signUpLoopback } from '../../../services/api/api'
 import { history } from '../../../services/history/history'
 import { envRediLocation } from '../../../utils/env-redi-location'
 
-const formCourses = COURSES.map((course) => ({
+const formCourses = COURSES.filter((course) => {
+  const courseLocation = course.location as RediLocation
+  return courseLocation === envRediLocation()
+}).map((course) => ({
   value: course.id,
   label: course.label,
 }))
@@ -61,7 +65,7 @@ export const validationSchema = Yup.object({
     is: 'public-sign-up-mentee-pending-review',
     then: Yup.string()
       .required('Please select current ReDI course')
-      .oneOf(COURSES.map((level) => level.id))
+      .oneOf(courses.map((level) => level.id))
       .label('Currently enrolled in course'),
   }),
 })
@@ -156,8 +160,12 @@ export default function SignUp() {
           <Heading border="bottomLeft">Sign-up</Heading>
           {type === 'mentee' && (
             <Content size="small" renderAs="p">
-              Got a ReDI Talent Pool user account? You can log in with the same
-              username and password <Link to="/front/login">here</Link>.
+              {/* Commented and replaced with different text until the cross-platform log-in feature is implemented. */}
+              {/* Got a ReDI Talent Pool user account? You can log in with the same
+              username and password <Link to="/front/login">here</Link>. */}
+              Got a ReDI Talent Pool user account? To log in with the same username 
+              and password get in contact with @Kate in ReDI Slack or write an e-mail 
+              <a href="mailto:kateryna@redi-school.org"> here</a>.
             </Content>
           )}
           {loopbackSubmitError === 'user-already-exists' ? (

@@ -55,7 +55,11 @@ function AvatarEditable() {
   const onUploadSuccess = async (result: any) => {
     const profileAvatarImageS3Key = result.fileKey
     const mutationResult = await patchMyProfileMutation.mutateAsync({
-      input: { id: profile.id, profileAvatarImageS3Key },
+      input: {
+        profileAvatarImageS3Key:
+          'https://s3-eu-west-1.amazonaws.com/redi-connect-profile-avatars/' +
+          profileAvatarImageS3Key,
+      },
     })
     queryClient.setQueryData(
       useLoadMyProfileQuery.getKey({

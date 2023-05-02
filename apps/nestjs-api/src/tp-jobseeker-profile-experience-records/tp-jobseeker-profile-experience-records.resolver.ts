@@ -49,9 +49,10 @@ export class TpJobseekerProfileExperienceRecordResolver {
   })
   async patch(
     @Args('tpJobseekerProfileExperienceRecordPatchInput')
-    input: TpJobseekerProfileExperienceRecordPatchInput
+    input: TpJobseekerProfileExperienceRecordPatchInput,
+    @CurrentUser() currentUser: CurrentUserInfo
   ) {
-    await this.service.patch(input)
+    await this.service.patch(input, currentUser)
     return { ok: true }
   }
 
@@ -61,9 +62,10 @@ export class TpJobseekerProfileExperienceRecordResolver {
   })
   async delete(
     @Args('tpJobseekerProfileExperienceRecordDeleteInput')
-    input: TpJobseekerProfileExperienceRecordDeleteInput
+    input: TpJobseekerProfileExperienceRecordDeleteInput,
+    @CurrentUser() currentUser: CurrentUserInfo
   ) {
-    await this.service.delete(input)
+    await this.service.delete(input, currentUser)
     return { ok: true }
   }
 }
