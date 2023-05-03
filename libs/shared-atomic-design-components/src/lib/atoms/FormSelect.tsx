@@ -124,6 +124,11 @@ function FormSelect(props: FormSelectProps) {
     ? { label: get(values, name) }
     : undefined
 
+  const handleScroll = (e) => {
+    if ((e.target as Element).className === 'modal-card-body' || e.target === document)
+              return true
+  }
+
   return (
     <Form.Field>
       {label && <Form.Label size="small">{label}</Form.Label>}
@@ -141,10 +146,11 @@ function FormSelect(props: FormSelectProps) {
           menuPortalTarget={document.body}
           menuPosition="fixed"
           closeMenuOnSelect={closeMenuOnSelect}
-          closeMenuOnScroll={(e) => {
-            if ((e.target as Element).className === 'modal-card-body')
-              return true
-          }}
+          closeMenuOnScroll={handleScroll}
+          // closeMenuOnScroll={(e) => {
+          //   if ((e.target as Element).className === 'modal-card-body' || e.target === document)
+          //     return true
+          // }}
           isLoading={isLoading}
           {...(creatable
             ? {
