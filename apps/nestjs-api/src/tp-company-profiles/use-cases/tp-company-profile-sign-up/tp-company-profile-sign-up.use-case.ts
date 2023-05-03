@@ -40,7 +40,8 @@ export class TpCompanyProfileSignUpUseCase {
     const [companyEntity, contactRecord] = await Promise.all([
       this.findOrCreateCompanyByName(
         input.companyIdOrName,
-        input.operationType
+        input.operationType,
+        input.isMicrosoftPartner
       ),
       this.updateCurrentUserContact(input, currentUser),
     ])
@@ -73,7 +74,8 @@ export class TpCompanyProfileSignUpUseCase {
 
   async findOrCreateCompanyByName(
     companyIdOrName: string,
-    operationType: TpCompanyProfileSignUpOperationType
+    operationType: TpCompanyProfileSignUpOperationType,
+    isMicrosoftPartner: boolean
   ): Promise<TpCompanyProfileEntity> {
     let companyEntity: TpCompanyProfileEntity
 
@@ -95,8 +97,9 @@ export class TpCompanyProfileSignUpUseCase {
         companyEntity.props.id
       )
     } else {
-      const accountRecord = await this.sfService.createAccountWithName(
-        companyIdOrName
+      const accountRecord = await this.sfService.createAccount(
+        companyIdOrName,
+        isMicrosoftPartner
       )
       companyEntity = this.mapper.fromPersistence(accountRecord)
       console.log(
