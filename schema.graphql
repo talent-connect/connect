@@ -735,6 +735,7 @@ input TpCompanyProfileSignUpInputDto {
   firstName: String!
   firstPointOfContact: FirstPointOfTpContactOption!
   firstPointOfContactOther: String
+  isMicrosoftPartner: Boolean!
   lastName: String!
   operationType: TpCompanyProfileSignUpOperationType!
 }
