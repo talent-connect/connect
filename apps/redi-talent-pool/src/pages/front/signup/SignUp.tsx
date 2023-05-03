@@ -189,6 +189,7 @@ export default function SignUp() {
               : TpCompanyProfileSignUpOperationType.NewCompany,
             firstPointOfContact: values.howDidHearAboutRediKey,
             firstPointOfContactOther: values.howDidHearAboutRediOtherText,
+            isMicrosoftPartner: values.isMicrosoftPartner,
           },
         })
         history.push(`/front/signup-complete`)
