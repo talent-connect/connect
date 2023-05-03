@@ -15,6 +15,8 @@ export class TpCompanyProfileSignUpMutationInputDto {
   @Field((type) => FirstPointOfTpContactOption)
   firstPointOfContact: FirstPointOfTpContactOption
   firstPointOfContactOther?: string
+
+  isMicrosoftPartner: boolean
 }
 
 @ObjectType('TpCompanyProfileSignUpInputOutputDto')

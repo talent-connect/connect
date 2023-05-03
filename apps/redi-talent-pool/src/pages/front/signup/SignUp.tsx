@@ -1,13 +1,13 @@
 import {
   TpCompanyProfileSignUpOperationType,
-  useListAllTpCompanyNamesQuery
+  useListAllTpCompanyNamesQuery,
 } from '@talent-connect/data-access'
 import {
   Button,
   Checkbox,
   FormInput,
   FormSelect,
-  Heading
+  Heading,
 } from '@talent-connect/shared-atomic-design-components'
 import { COURSES, REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import { TpCompanyProfile } from '@talent-connect/shared-types'
@@ -26,7 +26,7 @@ import { signUpLoopback } from '../../../services/api/api'
 import { history } from '../../../services/history/history'
 import {
   useSignUpCompanyMutation,
-  useSignUpJobseekerMutation
+  useSignUpJobseekerMutation,
 } from './SignUp.generated'
 
 const formRediLocations = objectEntries(REDI_LOCATION_NAMES).map(
@@ -136,13 +136,25 @@ export default function SignUp() {
 
   const {
     data: tpCompanyNames,
-    isLoading: isLoadingTpCompanyNames,
-    isSuccess: isSuccessTpCompanyNames,
+    isLoading: isTpCompanyNamesLoading,
+    isSuccess: isTpCompanyNamesSuccess,
   } = useListAllTpCompanyNamesQuery({}, { enabled: type === 'company' })
+
+  const formik = useFormik({
+    enableReinitialize: true,
+    initialValues: initialValues,
+    validationSchema: buildValidationSchema(type as SignUpPageType['type']),
+    onSubmit: submitForm,
+  })
+
+  const isExistingCompany = tpCompanyNames?.publicTpCompanyProfiles.some(
+    (company) => company.id === formik.values.companyNameOrId
+  )
+  const isNewCompany = !isExistingCompany
 
   const [loopbackSubmitError, setLoopbackSubmitError] = useState(null)
 
-  const submitForm = async (values: any, actions: FormikActions<any>) => {
+  async function submitForm(values: any, actions: FormikActions<any>) {
     try {
       setLoopbackSubmitError(null)
       await signUpLoopback(values.email, values.password)
@@ -166,10 +178,6 @@ export default function SignUp() {
         const transformedValues = buildValidationSchema('company').cast(values)
         const profile = transformedValues as Partial<TpCompanyProfile>
         profile.isProfileVisibleToJobseekers = true
-
-        const isExistingCompany = tpCompanyNames?.publicTpCompanyProfiles.some(
-          (company) => company.id === values.companyNameOrId
-        )
 
         await signUpCompanyMutation.mutateAsync({
           input: {
@@ -199,13 +207,6 @@ export default function SignUp() {
     }
   }
 
-  const formik = useFormik({
-    enableReinitialize: true,
-    initialValues: initialValues,
-    validationSchema: buildValidationSchema(type as SignUpPageType['type']),
-    onSubmit: submitForm,
-  })
-
   return (
     <AccountOperation>
       <Columns>
@@ -222,8 +223,9 @@ export default function SignUp() {
             {/* Commented and replaced with different text until the cross-platform log-in feature is implemented. */}
             {/* Got a ReDI Connect user account? You can log in with the same
             username and password <Link to="/front/login">here</Link>. */}
-            Got a ReDI Connect user account? To log in with the same username 
-            and password get in contact with @Kate in ReDI Slack or write an e-mail 
+            Got a ReDI Connect user account? To log in with the same username
+            and password get in contact with @Kate in ReDI Slack or write an
+            e-mail
             <a href="mailto:kateryna@redi-school.org"> here</a>.
           </Content>
           {loopbackSubmitError === 'user-already-exists' && (
@@ -238,7 +240,7 @@ export default function SignUp() {
                 name="companyNameOrId"
                 placeholder="Your company name"
                 items={
-                  isSuccessTpCompanyNames
+                  isTpCompanyNamesSuccess
                     ? tpCompanyNames?.publicTpCompanyProfiles.map(
                         (company) => ({
                           label: company.companyName,
@@ -248,7 +250,7 @@ export default function SignUp() {
                     : []
                 }
                 creatable
-                isLoading={isLoadingTpCompanyNames}
+                isLoading={isTpCompanyNamesLoading}
                 {...formik}
               />
             ) : null}
@@ -345,6 +347,16 @@ export default function SignUp() {
                 ) : null}
               </>
             ) : null}
+
+            {type === 'company' && isNewCompany && (
+              <Checkbox.Form
+                name="isMicrosoftPartner"
+                checked={formik.values.isMicrosoftPartner}
+                {...formik}
+              >
+                I am a Microsoft Partner{' '}
+              </Checkbox.Form>
+            )}
 
             <Checkbox.Form
               name="gaveGdprConsent"
