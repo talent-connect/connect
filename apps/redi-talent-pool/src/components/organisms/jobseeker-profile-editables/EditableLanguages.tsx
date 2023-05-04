@@ -149,6 +149,8 @@ export function JobseekerFormSectionLanguages({
   }, [workingLanguages])
 
   const onSubmit = async (values: FormValues) => {
+    const deletedRecords = removedRecords.current
+
     const newRecords = values.workingLanguages.filter((record) =>
       record.id.includes('NEW')
     )
@@ -157,7 +159,13 @@ export function JobseekerFormSectionLanguages({
       (record) => !record.id.includes('NEW')
     )
 
-    const deletedRecords = removedRecords.current
+    for (const recordId of deletedRecords) {
+      await deleteMutation.mutateAsync({
+        input: {
+          id: recordId,
+        },
+      })
+    }
 
     for (const record of newRecords) {
       await createMutation.mutateAsync({
@@ -174,14 +182,6 @@ export function JobseekerFormSectionLanguages({
           id: record.id,
           language: record.language,
           proficiencyLevelId: record.proficiencyLevelId,
-        },
-      })
-    }
-
-    for (const recordId of deletedRecords) {
-      await deleteMutation.mutateAsync({
-        input: {
-          id: recordId,
         },
       })
     }
@@ -217,13 +217,14 @@ export function JobseekerFormSectionLanguages({
   }, [formik])
 
   const onRemove = useCallback(
-    (language: string) => {
+    (language: any) => {
       formik.setFieldValue(
         'workingLanguages',
-        formik.values?.workingLanguages?.filter(
-          (lang) => lang.language !== language
-        )
+        formik.values?.workingLanguages?.filter((lang) => lang.id !== language)
       )
+      if (!language.includes('NEW')) {
+        removedRecords.current.push(language)
+      }
     },
     [formik]
   )
@@ -244,7 +245,7 @@ export function JobseekerFormSectionLanguages({
           title={
             item.language ? LANGUAGES[item.language] : 'Click me to add details'
           }
-          onRemove={() => onRemove(item.language)}
+          onRemove={() => onRemove(item.id)}
           closeAccordionSignalSubject={closeAllAccordionsSignalSubject.current}
         >
           <FormSelect
