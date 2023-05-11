@@ -144,7 +144,7 @@ module.exports = function (RedUser) {
       { ...loginOutput.toJSON(), email },
       process.env.NX_JWT_SECRET,
       {
-        expiresIn: '7d',
+        expiresIn: '21d',
       }
     )
     ctx.result.jwtToken = jwtToken
