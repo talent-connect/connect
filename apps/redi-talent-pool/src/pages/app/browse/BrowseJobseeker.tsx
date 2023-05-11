@@ -154,7 +154,8 @@ export function BrowseJobseeker() {
         className="is-flex-grow-1"
         style={{ flexGrow: 1 }}
       >
-        Browse open Job Listings
+        Browse open Job Listings{' '}
+        {jobListings?.length ? `(${jobListings.length})` : ''}
       </Element>
       <Element
         renderAs="p"

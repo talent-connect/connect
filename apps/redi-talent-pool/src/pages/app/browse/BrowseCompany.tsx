@@ -166,6 +166,7 @@ export function BrowseCompany() {
         style={{ flexGrow: 1 }}
       >
         Browse our Talent Pool
+        {jobseekerProfiles?.length ? ` (${jobseekerProfiles.length})` : ''}
       </Element>
       <Element
         renderAs="p"
