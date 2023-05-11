@@ -45,14 +45,14 @@ export function MeJobseeker() {
     queryClient.invalidateQueries()
   }
 
-  // const onJobFairJuly2023ParticipateChange = async () => {
-  //   await mutation.mutateAsync({
-  //     input: {
-  //       isJobFairJuly2023Participant: !profile?.isJobFairJuly2023Participant,
-  //     },
-  //   })
-  //   queryClient.invalidateQueries()
-  // }
+  const onJobFair2023ParticipateChange = async () => {
+    await mutation.mutateAsync({
+      input: {
+        isJobFair2023Participant: !profile?.isJobFair2023Participant,
+      },
+    })
+    queryClient.invalidateQueries()
+  }
 
   return (
     <LoggedIn>
@@ -79,16 +79,16 @@ export function MeJobseeker() {
             <OnboardingSteps />
           </div>
           <EditableNamePhotoLocation profile={profile} />
-          {/* Hidden until the next Job Fair date announced */}
-          {/* <div style={{ marginBottom: '1.5rem' }}>
+          {/* Hide after Job Fair */}
+          <div style={{ marginBottom: '1.5rem' }}>
             <Checkbox
-              checked={profile?.isJobFairJuly2023Participant}
-              customOnChange={onJobFairJuly2023ParticipateChange}
+              checked={profile?.isJobFair2023Participant}
+              customOnChange={onJobFair2023ParticipateChange}
             >
-              I will attend the <b>ReDI Job Fair</b> happening on{' '}
-              <b>15/02/2023</b>.
+              I will attend the <b>ReDI Summer Job Fair in Berlin</b> on{' '}
+              <b>30/06/2023</b>.
             </Checkbox>
-          </div> */}
+          </div>
           <EditableOverview profile={profile} />
           <EditableSummary profile={profile} />
           <EditableProfessionalExperience profile={profile} />
