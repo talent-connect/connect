@@ -16,6 +16,8 @@ export class AccountRecordProps implements RecordProps {
   ReDI_Talent_Pool_State__c: string
   ReDI_Visible_to_Jobseekers__c: boolean
   ReDI_Is_Job_Fair_2023_Participant__c: boolean
+  ReDI_Joins_Berlin_23_Summer_Job_Fair__c: boolean
+  ReDI_Joins_Munich_23_Summer_Job_Fair__c: boolean
 
   @Type(() => Date)
   CreatedDate: Date

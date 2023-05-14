@@ -42,6 +42,10 @@ export class TpJobseekerProfileMapper
     props.state = raw.props.Profile_Status__c as JobseekerProfileStatus
     props.isJobFair2022Participant = raw.props.Is_Job_Fair_2022_Participant__c
     props.isJobFair2023Participant = raw.props.Is_Job_Fair_2023_Participant__c
+    props.joinsBerlin23SummerJobFair =
+      raw.props.Joins_Berlin_23_Summer_Job_Fair__c
+    props.joinsMunich23SummerJobFair =
+      raw.props.Joins_Munich_23_Summer_Job_Fair__c
     props.isProfileVisibleToCompanies = raw.props.Is_Visible_to_Companies__c
     props.isHired = raw.props.Is_Hired__c
     props.federalState = raw.props.Federal_State__c as FederalState
@@ -83,6 +87,10 @@ export class TpJobseekerProfileMapper
       source.props.isJobFair2022Participant
     props.Is_Job_Fair_2023_Participant__c =
       source.props.isJobFair2023Participant
+    props.Joins_Berlin_23_Summer_Job_Fair__c =
+      source.props.joinsBerlin23SummerJobFair
+    props.Joins_Munich_23_Summer_Job_Fair__c =
+      source.props.joinsMunich23SummerJobFair
     props.Is_Visible_to_Companies__c = source.props.isProfileVisibleToCompanies
     props.Is_Hired__c = source.props.isHired
     props.Federal_State__c = source.props.federalState
