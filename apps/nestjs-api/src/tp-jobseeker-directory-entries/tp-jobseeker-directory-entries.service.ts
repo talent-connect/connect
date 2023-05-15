@@ -86,11 +86,11 @@ export class TpJobseekerDirectoryEntriesService {
       filter.Jobseeker_Profiles__r.Is_Job_Fair_2023_Participant__c = true
     }
     if (_filter.filter.joinsBerlin23SummerJobFair) {
-      filter.ReDI_Joins_Berlin_23_Summer_Job_Fair__c =
+      filter.Jobseeker_Profiles__r.Joins_Berlin_23_Summer_Job_Fair__c =
         _filter.filter.joinsBerlin23SummerJobFair
     }
     if (_filter.filter.joinsMunich23SummerJobFair) {
-      filter.ReDI_Joins_Munich_23_Summer_Job_Fair__c =
+      filter.Jobseeker_Profiles__r.Joins_Munich_23_Summer_Job_Fair__c =
         _filter.filter.joinsMunich23SummerJobFair
     }
 
