@@ -349,6 +349,21 @@ export const COURSES = [
     location: 'BERLIN',
   },
   {
+    id: 'BERLIN_CODING_FUNDAMENTALS',
+    label: 'Coding Fundamentals',
+    location: 'BERLIN',
+  },
+  {
+    id: 'BERLIN_UX_UI_DESIGN_BASICS',
+    label: 'UX/UI Design Basics',
+    location: 'BERLIN',
+  },
+  {
+    id: 'BERLIN_UX_UI_DESIGN_INTERMEDIATE',
+    label: 'UX/UI Design Intermediate',
+    location: 'BERLIN',
+  },
+  {
     id: 'BERLIN_ALUMNI',
     label: 'Alumni (I took a course in the past)',
     location: 'BERLIN',

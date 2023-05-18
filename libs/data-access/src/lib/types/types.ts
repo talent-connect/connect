@@ -922,6 +922,7 @@ export type QueryTpJobseekerProfileArgs = {
 
 export enum RediCourse {
   BerlinAlumni = 'BERLIN_ALUMNI',
+  BerlinCodingFundamentals = 'BERLIN_CODING_FUNDAMENTALS',
   BerlinDataAnalytics = 'BERLIN_DATA_ANALYTICS',
   BerlinDataCircle = 'BERLIN_DATA_CIRCLE',
   BerlinDigitalLiteracyProgram = 'BERLIN_DIGITAL_LITERACY_PROGRAM',
@@ -933,6 +934,8 @@ export enum RediCourse {
   BerlinPythonFoundation = 'BERLIN_PYTHON_FOUNDATION',
   BerlinReact = 'BERLIN_REACT',
   BerlinSalesforceFundamentals = 'BERLIN_SALESFORCE_FUNDAMENTALS',
+  BerlinUxUiDesignBasics = 'BERLIN_UX_UI_DESIGN_BASICS',
+  BerlinUxUiDesignIntermediate = 'BERLIN_UX_UI_DESIGN_INTERMEDIATE',
   CyberspaceAlumni = 'CYBERSPACE_ALUMNI',
   CyberspaceCybersecurityAdvanced = 'CYBERSPACE_CYBERSECURITY_ADVANCED',
   CyberspaceCybersecurityBeginners = 'CYBERSPACE_CYBERSECURITY_BEGINNERS',
