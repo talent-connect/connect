@@ -922,6 +922,7 @@ export type QueryTpJobseekerProfileArgs = {
 
 export enum RediCourse {
   BerlinAlumni = 'BERLIN_ALUMNI',
+  BerlinCodingFundamentals = 'BERLIN_CODING_FUNDAMENTALS',
   BerlinDataAnalytics = 'BERLIN_DATA_ANALYTICS',
   BerlinDataCircle = 'BERLIN_DATA_CIRCLE',
   BerlinDigitalLiteracyProgram = 'BERLIN_DIGITAL_LITERACY_PROGRAM',
@@ -933,6 +934,8 @@ export enum RediCourse {
   BerlinPythonFoundation = 'BERLIN_PYTHON_FOUNDATION',
   BerlinReact = 'BERLIN_REACT',
   BerlinSalesforceFundamentals = 'BERLIN_SALESFORCE_FUNDAMENTALS',
+  BerlinUxUiDesignBasics = 'BERLIN_UX_UI_DESIGN_BASICS',
+  BerlinUxUiDesignIntermediate = 'BERLIN_UX_UI_DESIGN_INTERMEDIATE',
   CyberspaceAlumni = 'CYBERSPACE_ALUMNI',
   CyberspaceCybersecurityAdvanced = 'CYBERSPACE_CYBERSECURITY_ADVANCED',
   CyberspaceCybersecurityBeginners = 'CYBERSPACE_CYBERSECURITY_BEGINNERS',
@@ -953,6 +956,8 @@ export enum RediCourse {
   MunichDataAnalytics = 'MUNICH_DATA_ANALYTICS',
   MunichDataStructureAndAlgorithms = 'MUNICH_DATA_STRUCTURE_AND_ALGORITHMS',
   MunichDigitalLiteracyProgram = 'MUNICH_DIGITAL_LITERACY_PROGRAM',
+  MunichFrontEndDevelopmentFulltimeEng = 'MUNICH_FRONT_END_DEVELOPMENT_FULLTIME_ENG',
+  MunichFrontEndDevelopmentFulltimeGer = 'MUNICH_FRONT_END_DEVELOPMENT_FULLTIME_GER',
   MunichFrontEndDevelopmentHtmlCss = 'MUNICH_FRONT_END_DEVELOPMENT_HTML_CSS',
   MunichFrontEndDevelopmentJavascript = 'MUNICH_FRONT_END_DEVELOPMENT_JAVASCRIPT',
   MunichFrontEndDevelopmentReact = 'MUNICH_FRONT_END_DEVELOPMENT_REACT',
@@ -974,6 +979,7 @@ export enum RediCourse {
   NrwJavascript = 'NRW_JAVASCRIPT',
   NrwMachineLearning = 'NRW_MACHINE_LEARNING',
   NrwReact = 'NRW_REACT',
+  NrwSocialMediaMarketing = 'NRW_SOCIAL_MEDIA_MARKETING',
   NrwUxUiDesignBasics = 'NRW_UX_UI_DESIGN_BASICS',
   NrwUxUiDesignIntermediate = 'NRW_UX_UI_DESIGN_INTERMEDIATE'
 }

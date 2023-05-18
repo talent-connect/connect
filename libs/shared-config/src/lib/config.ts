@@ -349,6 +349,21 @@ export const COURSES = [
     location: 'BERLIN',
   },
   {
+    id: 'BERLIN_CODING_FUNDAMENTALS',
+    label: 'Coding Fundamentals',
+    location: 'BERLIN',
+  },
+  {
+    id: 'BERLIN_UX_UI_DESIGN_BASICS',
+    label: 'UX/UI Design Basics',
+    location: 'BERLIN',
+  },
+  {
+    id: 'BERLIN_UX_UI_DESIGN_INTERMEDIATE',
+    label: 'UX/UI Design Intermediate',
+    location: 'BERLIN',
+  },
+  {
     id: 'BERLIN_ALUMNI',
     label: 'Alumni (I took a course in the past)',
     location: 'BERLIN',
@@ -382,6 +397,11 @@ export const COURSES = [
   {
     id: 'NRW_INTERNET_OF_THINGS',
     label: 'Internet of Things',
+    location: 'NRW',
+  },
+  {
+    id: 'NRW_SOCIAL_MEDIA_MARKETING',
+    label: 'Social Media Marketing',
     location: 'NRW',
   },
   {
@@ -432,6 +452,16 @@ export const COURSES = [
   {
     id: 'MUNICH_FRONT_END_DEVELOPMENT_REACT',
     label: 'Front-End Development (React)',
+    location: 'MUNICH',
+  },
+  {
+    id: 'MUNICH_FRONT_END_DEVELOPMENT_FULLTIME_ENG',
+    label: 'Front-End Development full-time (ENG)',
+    location: 'MUNICH',
+  },
+  {
+    id: 'MUNICH_FRONT_END_DEVELOPMENT_FULLTIME_GER',
+    label: 'Front-End Development full-time (GER)',
     location: 'MUNICH',
   },
   {
