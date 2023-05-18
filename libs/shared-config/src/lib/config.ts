@@ -400,6 +400,11 @@ export const COURSES = [
     location: 'NRW',
   },
   {
+    id: 'NRW_SOCIAL_MEDIA_MARKETING',
+    label: 'Social Media Marketing',
+    location: 'NRW',
+  },
+  {
     id: 'NRW_ALUMNI',
     label: 'Alumni (I took a course in the past)',
     location: 'NRW',
@@ -447,6 +452,16 @@ export const COURSES = [
   {
     id: 'MUNICH_FRONT_END_DEVELOPMENT_REACT',
     label: 'Front-End Development (React)',
+    location: 'MUNICH',
+  },
+  {
+    id: 'MUNICH_FRONT_END_DEVELOPMENT_FULLTIME_ENG',
+    label: 'Front-End Development full-time (ENG)',
+    location: 'MUNICH',
+  },
+  {
+    id: 'MUNICH_FRONT_END_DEVELOPMENT_FULLTIME_GER',
+    label: 'Front-End Development full-time (GER)',
     location: 'MUNICH',
   },
   {
