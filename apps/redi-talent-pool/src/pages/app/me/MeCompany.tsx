@@ -47,11 +47,19 @@ export function MeCompany() {
     queryClient.invalidateQueries()
   }
 
-  const onJobFair2023ParticipateChange = async () => {
+  const onBerlin23SummerJobFairParticipateChange = async () => {
     await mutation.mutateAsync({
       input: {
-        // id: companyProfile.id,
-        isJobFair2023Participant: !companyProfile.isJobFair2023Participant,
+        joinsBerlin23SummerJobFair: !companyProfile.joinsBerlin23SummerJobFair,
+      },
+    })
+    queryClient.invalidateQueries()
+  }
+
+  const onMunich23SummerJobFairParticipateChange = async () => {
+    await mutation.mutateAsync({
+      input: {
+        joinsMunich23SummerJobFair: !companyProfile.joinsMunich23SummerJobFair,
       },
     })
     queryClient.invalidateQueries()
@@ -92,11 +100,18 @@ export function MeCompany() {
           {/* Hide after Job Fair */}
           <div style={{ marginBottom: '1.5rem' }}>
             <Checkbox
-              checked={companyProfile.isJobFair2023Participant}
-              customOnChange={onJobFair2023ParticipateChange}
+              checked={companyProfile.joinsBerlin23SummerJobFair}
+              customOnChange={onBerlin23SummerJobFairParticipateChange}
             >
-              My company will attend the <strong>ReDI Job Fair</strong>{' '}
-              happening on <strong>15/02/2023</strong>.
+              My company will attend <b>ReDI Summer Job Fair in Berlin</b> on{' '}
+              <b>30/06/2023</b>.
+            </Checkbox>
+            <Checkbox
+              checked={companyProfile.joinsMunich23SummerJobFair}
+              customOnChange={onMunich23SummerJobFairParticipateChange}
+            >
+              My company will attend <b>ReDI Summer Job Fair in Munich</b> on{' '}
+              <b>10/07/2023</b>.
             </Checkbox>
           </div>
           <EditableAbout companyProfile={companyProfile} />

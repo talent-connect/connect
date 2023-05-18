@@ -45,10 +45,19 @@ export function MeJobseeker() {
     queryClient.invalidateQueries()
   }
 
-  const onJobFair2023ParticipateChange = async () => {
+  const onBerlin23SummerJobFairParticipateChange = async () => {
     await mutation.mutateAsync({
       input: {
-        isJobFair2023Participant: !profile?.isJobFair2023Participant,
+        joinsBerlin23SummerJobFair: !profile?.joinsBerlin23SummerJobFair,
+      },
+    })
+    queryClient.invalidateQueries()
+  }
+
+  const onMunich23SummerJobFairParticipateChange = async () => {
+    await mutation.mutateAsync({
+      input: {
+        joinsMunich23SummerJobFair: !profile?.joinsMunich23SummerJobFair,
       },
     })
     queryClient.invalidateQueries()
@@ -82,11 +91,18 @@ export function MeJobseeker() {
           {/* Hide after Job Fair */}
           <div style={{ marginBottom: '1.5rem' }}>
             <Checkbox
-              checked={profile?.isJobFair2023Participant}
-              customOnChange={onJobFair2023ParticipateChange}
+              checked={profile?.joinsBerlin23SummerJobFair}
+              customOnChange={onBerlin23SummerJobFairParticipateChange}
             >
-              I will attend the <b>ReDI Summer Job Fair in Berlin</b> on{' '}
+              I will attend <b>ReDI Summer Job Fair in Berlin</b> on{' '}
               <b>30/06/2023</b>.
+            </Checkbox>
+            <Checkbox
+              checked={profile?.joinsMunich23SummerJobFair}
+              customOnChange={onMunich23SummerJobFairParticipateChange}
+            >
+              I will attend <b>ReDI Summer Job Fair in Munich</b> on{' '}
+              <b>10/07/2023</b>.
             </Checkbox>
           </div>
           <EditableOverview profile={profile} />
@@ -122,18 +138,14 @@ const CallToActionButton = ({
 }: {
   profile?: Pick<TpJobseekerDirectoryEntry, 'state'>
 }) => {
-  return (
-    <>
-      {profile &&
-      profile.state &&
-      [
-        JobseekerProfileStatus.DraftingProfile,
-        JobseekerProfileStatus.SubmittedForReview,
-      ].includes(profile.state) ? (
-        <SendProfileForReviewButton />
-      ) : null}
-    </>
-  )
+  return profile &&
+    profile.state &&
+    [
+      JobseekerProfileStatus.DraftingProfile,
+      JobseekerProfileStatus.SubmittedForReview,
+    ].includes(profile.state) ? (
+    <SendProfileForReviewButton />
+  ) : null
 }
 
 const steps = [

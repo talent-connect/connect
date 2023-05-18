@@ -61,7 +61,8 @@ export function BrowseJobseeker() {
     federalStates: withDefault(ArrayParam, []),
     onlyFavorites: withDefault(BooleanParam, undefined),
     isRemotePossible: withDefault(BooleanParam, undefined),
-    isJobFair2023Participant: withDefault(BooleanParam, undefined),
+    joinsBerlin23SummerJobFair: withDefault(BooleanParam, undefined),
+    joinsMunich23SummerJobFair: withDefault(BooleanParam, undefined),
   })
   const relatedPositions = query.relatedPositions as TpDesiredPosition[]
   const idealTechnicalSkills = query.idealTechnicalSkills as TpTechnicalSkill[]
@@ -69,7 +70,8 @@ export function BrowseJobseeker() {
   const federalStates = query.federalStates as FederalState[]
   const onlyFavorites = query.onlyFavorites
   const isRemotePossible = query.isRemotePossible
-  const isJobFair2023Participant = query.isJobFair2023Participant
+  const joinsBerlin23SummerJobFair = query.joinsBerlin23SummerJobFair
+  const joinsMunich23SummerJobFair = query.joinsMunich23SummerJobFair
 
   const jobListingsQuery = useTpJobListingFindAllVisibleQuery({
     input: {
@@ -120,20 +122,29 @@ export function BrowseJobseeker() {
     setQuery((latestQuery) => ({ ...latestQuery, [filterName]: newFilters }))
   }
 
-  const toggleJobFair2023Filter = () =>
+  const toggleBerlin23SummerJobFairFilter = () =>
     setQuery((latestQuery) => ({
       ...latestQuery,
-      isJobFair2023Participant:
-        isJobFair2023Participant === undefined ? true : undefined,
+      joinsBerlin23SummerJobFair:
+        joinsBerlin23SummerJobFair === undefined ? true : undefined,
+    }))
+
+  const toggleMunich23SummerJobFairFilter = () =>
+    setQuery((latestQuery) => ({
+      ...latestQuery,
+      joinsMunich23SummerJobFair:
+        joinsMunich23SummerJobFair === undefined ? true : undefined,
     }))
 
   const clearFilters = () => {
     setQuery((latestQuery) => ({
       ...latestQuery,
+      relatedPositions: [],
       idealTechnicalSkills: [],
       employmentType: [],
       federalStates: [],
-      isJobFair2023Participant: undefined,
+      joinsBerlin23SummerJobFair: undefined,
+      joinsMunich23SummerJobFair: undefined,
     }))
   }
 
@@ -246,16 +257,29 @@ export function BrowseJobseeker() {
             size="small"
           />
         </div>
+        <div className="filters-inner"></div>
+      </div>
+      <div className="filters">
         <div className="filters-inner">
           {/* Hide after Job Fair */}
           <Checkbox
-            name="isJobFair2023Participant"
-            checked={isJobFair2023Participant || false}
-            handleChange={toggleJobFair2023Filter}
+            name="joinsBerlin23SummerJobFair"
+            checked={joinsBerlin23SummerJobFair || false}
+            handleChange={toggleBerlin23SummerJobFairFilter}
           >
-            Attending ReDI Job Fair 2023
+            ReDI Berlin Summer Job Fair 2023
           </Checkbox>
         </div>
+        <div className="filters-inner">
+          <Checkbox
+            name="joinsMunich23SummerJobFair"
+            checked={joinsMunich23SummerJobFair || false}
+            handleChange={toggleMunich23SummerJobFairFilter}
+          >
+            ReDI Munich Summer Job Fair 2023
+          </Checkbox>
+        </div>
+        <div className="filters-inner"></div>
       </div>
       <div className="active-filters">
         {(relatedPositions.length !== 0 ||
@@ -307,12 +331,20 @@ export function BrowseJobseeker() {
                 }
               />
             ))}
-            {isJobFair2023Participant && (
+            {joinsBerlin23SummerJobFair && (
               <FilterTag
-                key="redi-job-fair-2022-filter"
-                id="redi-job-fair-2022-filter"
-                label="Attending ReDI Job Fair 2023"
-                onClickHandler={toggleJobFair2023Filter}
+                key="redi-berlin-summer-job-fair-2023-filter"
+                id="redi-berlin-summer-job-fair-2023-filter"
+                label="ReDI Berlin Summer Job Fair 2023"
+                onClickHandler={toggleBerlin23SummerJobFairFilter}
+              />
+            )}
+            {joinsMunich23SummerJobFair && (
+              <FilterTag
+                key="redi-munich-summer-job-fair-2023-filter"
+                id="redi-munich-summer-job-fair-2023-filter"
+                label="ReDI Munich Summer Job Fair 2023"
+                onClickHandler={toggleMunich23SummerJobFairFilter}
               />
             )}
             <span className="active-filters__clear-all" onClick={clearFilters}>
