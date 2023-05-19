@@ -41,7 +41,6 @@ export class TpJobListingsService {
       ['Account__r.ReDI_Visible_to_Jobseekers__c']: true,
       ['Account__r.ReDI_Talent_Pool_State__c']:
         CompanyTalentPoolState.PROFILE_APPROVED,
-      // ['Account__r.ReDI_Joins_Berlin_23_Summer_Job_Fair__c']: true,
     }
     if (_filter.filter.relatesToPositions?.length > 0) {
       filter.Relates_to_Positions__c = {
@@ -67,11 +66,11 @@ export class TpJobListingsService {
       filter.Remote_Possible__c = true
     }
     if (_filter.filter.joinsBerlin23SummerJobFair) {
-      filter.Account__r.ReDI_Joins_Berlin_23_Summer_Job_Fair__c =
+      filter['Account__r.ReDI_Joins_Berlin_23_Summer_Job_Fair__c'] =
         _filter.filter.joinsBerlin23SummerJobFair
     }
     if (_filter.filter.joinsMunich23SummerJobFair) {
-      filter.Account__r.ReDI_Joins_Munich_23_Summer_Job_Fair__c =
+      filter['Account__r.ReDI_Joins_Munich_23_Summer_Job_Fair__c'] =
         _filter.filter.joinsMunich23SummerJobFair
     }
 

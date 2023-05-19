@@ -862,8 +862,6 @@ type TpJobListing {
   id: ID!
   idealTechnicalSkills: [TpTechnicalSkill!]
   isRemotePossible: Boolean
-  joinsBerlin23SummerJobFair: Boolean!
-  joinsMunich23SummerJobFair: Boolean!
   languageRequirements: String
   location: String
   profileAvatarImageS3Key: String

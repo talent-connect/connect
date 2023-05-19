@@ -145,10 +145,20 @@ export function BrowseJobseeker() {
       idealTechnicalSkills: [],
       employmentType: [],
       federalStates: [],
+      isRemotePossible: undefined,
       joinsBerlin23SummerJobFair: undefined,
       joinsMunich23SummerJobFair: undefined,
     }))
   }
+
+  const shouldShowFilters =
+    relatedPositions.length !== 0 ||
+    idealTechnicalSkills.length !== 0 ||
+    employmentType.length !== 0 ||
+    federalStates.length !== 0 ||
+    isRemotePossible ||
+    joinsBerlin23SummerJobFair ||
+    joinsMunich23SummerJobFair
 
   // Redirect to homepage if user is not supposed to be browsing yet
   if (
@@ -283,11 +293,9 @@ export function BrowseJobseeker() {
         </div>
         <div className="filters-inner"></div>
       </div>
+
       <div className="active-filters">
-        {(relatedPositions.length !== 0 ||
-          idealTechnicalSkills.length !== 0 ||
-          employmentType.length !== 0 ||
-          federalStates.length !== 0) && (
+        {shouldShowFilters && (
           <>
             {(relatedPositions as string[]).map((catId) => (
               <FilterTag
@@ -333,6 +341,14 @@ export function BrowseJobseeker() {
                 }
               />
             ))}
+            {isRemotePossible && (
+              <FilterTag
+                key="remote-working-possible"
+                id="remote-working-possible"
+                label="Remote Working Possible"
+                onClickHandler={toggleRemoteAvailableFilter}
+              />
+            )}
             {joinsBerlin23SummerJobFair && (
               <FilterTag
                 key="redi-berlin-summer-job-fair-2023-filter"

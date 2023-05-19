@@ -25,8 +25,6 @@ export class TpJobListingRecordProps implements RecordProps {
   Account__r: {
     Name: string
     ReDI_Avatar_Image_URL__c?: string
-    ReDI_Joins_Berlin_23_Summer_Job_Fair__c: boolean
-    ReDI_Joins_Munich_23_Summer_Job_Fair__c: boolean
   }
 
   public static create(rawProps: any) {

@@ -1192,8 +1192,6 @@ export type TpJobListing = {
   id: Scalars['ID'];
   idealTechnicalSkills?: Maybe<Array<TpTechnicalSkill>>;
   isRemotePossible?: Maybe<Scalars['Boolean']>;
-  joinsBerlin23SummerJobFair: Scalars['Boolean'];
-  joinsMunich23SummerJobFair: Scalars['Boolean'];
   languageRequirements?: Maybe<Scalars['String']>;
   location?: Maybe<Scalars['String']>;
   profileAvatarImageS3Key?: Maybe<Scalars['String']>;
