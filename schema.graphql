@@ -220,6 +220,8 @@ input FindAllVisibleTpJobListingsArgsFilter {
   employmentTypes: [TpEmploymentType!]
   federalStates: [FederalState!]
   isRemotePossible: Boolean
+  joinsBerlin23SummerJobFair: Boolean
+  joinsMunich23SummerJobFair: Boolean
   relatesToPositions: [TpDesiredPosition!]
   skills: [TpTechnicalSkill!]
 }
@@ -860,6 +862,8 @@ type TpJobListing {
   id: ID!
   idealTechnicalSkills: [TpTechnicalSkill!]
   isRemotePossible: Boolean
+  joinsBerlin23SummerJobFair: Boolean!
+  joinsMunich23SummerJobFair: Boolean!
   languageRequirements: String
   location: String
   profileAvatarImageS3Key: String

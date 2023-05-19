@@ -34,6 +34,8 @@ export class TpJobListingRecord extends Record<TpJobListingRecordProps> {
       'Account__c',
       'Account__r.Name',
       'Account__r.ReDI_Avatar_Image_URL__c',
+      'Account__r.ReDI_Joins_Berlin_23_Summer_Job_Fair__c',
+      'Account__r.ReDI_Joins_Munich_23_Summer_Job_Fair__c',
     ],
     SALESFORCE_ORDER_BY: ['CreatedDate', 'DESC'],
   }

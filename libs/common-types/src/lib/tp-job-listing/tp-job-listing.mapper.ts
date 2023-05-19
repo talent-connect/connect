@@ -43,6 +43,10 @@ export class TpJobListingMapper
     props.companyName = raw.props.Account__r.Name
     props.profileAvatarImageS3Key =
       raw.props.Account__r.ReDI_Avatar_Image_URL__c
+    props.joinsBerlin23SummerJobFair =
+      raw.props.Account__r.ReDI_Joins_Berlin_23_Summer_Job_Fair__c
+    props.joinsMunich23SummerJobFair =
+      raw.props.Account__r.ReDI_Joins_Munich_23_Summer_Job_Fair__c
 
     const entity = TpJobListingEntity.create(props)
 
@@ -67,6 +71,10 @@ export class TpJobListingMapper
     props.Federal_State__c = srcProps.federalState
 
     props.Account__c = srcProps.companyProfileId
+    props.Account__r.ReDI_Joins_Berlin_23_Summer_Job_Fair__c =
+      srcProps.joinsBerlin23SummerJobFair
+    props.Account__r.ReDI_Joins_Munich_23_Summer_Job_Fair__c =
+      srcProps.joinsMunich23SummerJobFair
 
     const record = TpJobListingRecord.create(props)
 

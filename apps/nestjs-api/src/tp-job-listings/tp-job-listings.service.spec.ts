@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { TpJobListingsService } from './tp-jobseeker-profiles.service'
+// import { TpJobListingsService } from './tp-jobseeker-profiles.service'
+import { TpJobListingsService } from './tp-job-listings.service'
 
 describe('TpJobListingsService', () => {
   let service: TpJobListingsService

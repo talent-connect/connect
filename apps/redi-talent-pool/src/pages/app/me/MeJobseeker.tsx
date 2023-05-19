@@ -93,6 +93,7 @@ export function MeJobseeker() {
             <Checkbox
               checked={profile?.joinsBerlin23SummerJobFair}
               customOnChange={onBerlin23SummerJobFairParticipateChange}
+              disabled={profile?.joinsMunich23SummerJobFair}
             >
               I will attend <b>ReDI Summer Job Fair in Berlin</b> on{' '}
               <b>30/06/2023</b>.
@@ -100,6 +101,7 @@ export function MeJobseeker() {
             <Checkbox
               checked={profile?.joinsMunich23SummerJobFair}
               customOnChange={onMunich23SummerJobFairParticipateChange}
+              disabled={profile?.joinsBerlin23SummerJobFair}
             >
               I will attend <b>ReDI Summer Job Fair in Munich</b> on{' '}
               <b>10/07/2023</b>.

@@ -80,6 +80,8 @@ export function BrowseJobseeker() {
       employmentTypes: employmentType,
       federalStates,
       isRemotePossible,
+      joinsBerlin23SummerJobFair,
+      joinsMunich23SummerJobFair,
     },
   })
   const jobListings = jobListingsQuery.data?.tpJobListings

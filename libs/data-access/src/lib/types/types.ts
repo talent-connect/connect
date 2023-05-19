@@ -242,6 +242,8 @@ export type FindAllVisibleTpJobListingsArgsFilter = {
   employmentTypes?: InputMaybe<Array<TpEmploymentType>>;
   federalStates?: InputMaybe<Array<FederalState>>;
   isRemotePossible?: InputMaybe<Scalars['Boolean']>;
+  joinsBerlin23SummerJobFair?: InputMaybe<Scalars['Boolean']>;
+  joinsMunich23SummerJobFair?: InputMaybe<Scalars['Boolean']>;
   relatesToPositions?: InputMaybe<Array<TpDesiredPosition>>;
   skills?: InputMaybe<Array<TpTechnicalSkill>>;
 };
@@ -1190,6 +1192,8 @@ export type TpJobListing = {
   id: Scalars['ID'];
   idealTechnicalSkills?: Maybe<Array<TpTechnicalSkill>>;
   isRemotePossible?: Maybe<Scalars['Boolean']>;
+  joinsBerlin23SummerJobFair: Scalars['Boolean'];
+  joinsMunich23SummerJobFair: Scalars['Boolean'];
   languageRequirements?: Maybe<Scalars['String']>;
   location?: Maybe<Scalars['String']>;
   profileAvatarImageS3Key?: Maybe<Scalars['String']>;
