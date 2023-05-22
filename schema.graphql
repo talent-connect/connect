@@ -220,6 +220,8 @@ input FindAllVisibleTpJobListingsArgsFilter {
   employmentTypes: [TpEmploymentType!]
   federalStates: [FederalState!]
   isRemotePossible: Boolean
+  joinsBerlin23SummerJobFair: Boolean
+  joinsMunich23SummerJobFair: Boolean
   relatesToPositions: [TpDesiredPosition!]
   skills: [TpTechnicalSkill!]
 }
@@ -231,6 +233,8 @@ input FindAllVisibleTpJobseekerDirectoryEntriesFilter {
   federalStates: [FederalState!]
   isJobFair2022Participant: Boolean
   isJobFair2023Participant: Boolean
+  joinsBerlin23SummerJobFair: Boolean
+  joinsMunich23SummerJobFair: Boolean
   name: String
   skills: [TpTechnicalSkill!]
 }
@@ -711,6 +715,8 @@ type TpCompanyProfile {
   industry: String
   isJobFair2023Participant: Boolean!
   isProfileVisibleToJobseekers: Boolean!
+  joinsBerlin23SummerJobFair: Boolean!
+  joinsMunich23SummerJobFair: Boolean!
   linkedInUrl: String
   location: String
   profileAvatarImageS3Key: String
@@ -727,6 +733,8 @@ input TpCompanyProfilePatchInput {
   industry: String
   isJobFair2023Participant: Boolean
   isProfileVisibleToJobseekers: Boolean
+  joinsBerlin23SummerJobFair: Boolean
+  joinsMunich23SummerJobFair: Boolean
   linkedInUrl: String
   location: String
   profileAvatarImageS3Key: String
@@ -1135,6 +1143,8 @@ type TpJobseekerDirectoryEntry {
   isJobFair2022Participant: Boolean!
   isJobFair2023Participant: Boolean!
   isProfileVisibleToCompanies: Boolean!
+  joinsBerlin23SummerJobFair: Boolean!
+  joinsMunich23SummerJobFair: Boolean!
   lastName: String!
   linkedInUrl: String
   location: String
@@ -1193,6 +1203,8 @@ type TpJobseekerProfile {
   isJobFair2022Participant: Boolean!
   isJobFair2023Participant: Boolean!
   isProfileVisibleToCompanies: Boolean!
+  joinsBerlin23SummerJobFair: Boolean!
+  joinsMunich23SummerJobFair: Boolean!
   location: String
   profileAvatarImageS3Key: String
   rediLocation: RediLocation
@@ -1345,6 +1357,8 @@ input TpJobseekerProfilePatchInput {
   isJobFair2022Participant: Boolean
   isJobFair2023Participant: Boolean
   isProfileVisibleToCompanies: Boolean
+  joinsBerlin23SummerJobFair: Boolean
+  joinsMunich23SummerJobFair: Boolean
   location: String
   profileAvatarImageS3Key: String
   rediLocation: RediLocation

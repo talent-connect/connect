@@ -61,7 +61,8 @@ export function BrowseCompany() {
     skills: withDefault(ArrayParam, []),
     federalStates: withDefault(ArrayParam, []),
     onlyFavorites: withDefault(BooleanParam, undefined),
-    // isJobFairJuly2023Participant: withDefault(BooleanParam, undefined),
+    joinsBerlin23SummerJobFair: withDefault(BooleanParam, undefined),
+    joinsMunich23SummerJobFair: withDefault(BooleanParam, undefined),
   })
   const name = query.name
   const desiredLanguages = query.desiredLanguages as Language[]
@@ -70,7 +71,8 @@ export function BrowseCompany() {
   const skills = query.skills as TpTechnicalSkill[]
   const federalStates = query.federalStates as FederalState[]
   const onlyFavorites = query.onlyFavorites
-  // const isJobFairJuly2023Participant = query.isJobFairJuly2023Participant
+  const joinsBerlin23SummerJobFair = query.joinsBerlin23SummerJobFair
+  const joinsMunich23SummerJobFair = query.joinsMunich23SummerJobFair
 
   const jobseekerProfilesQuery =
     useTpJobseekerDirectoryEntriesFindAllVisibleQuery({
@@ -81,7 +83,8 @@ export function BrowseCompany() {
         employmentTypes,
         skills,
         federalStates,
-        // isJobFairJuly2023Participant,
+        joinsBerlin23SummerJobFair,
+        joinsMunich23SummerJobFair,
       },
     })
   const jobseekerProfiles =
@@ -125,12 +128,19 @@ export function BrowseCompany() {
     setQuery((latestQuery) => ({ ...latestQuery, [filterName]: newFilters }))
   }
 
-  // const toggleJobFairJuly2023Filter = () =>
-  //   setQuery((latestQuery) => ({
-  //     ...latestQuery,
-  //     isJobFairJuly2023Participant:
-  //       isJobFairJuly2023Participant === undefined ? true : undefined,
-  //   }))
+  const toggleBerlin23SummerJobFairFilter = () =>
+    setQuery((latestQuery) => ({
+      ...latestQuery,
+      joinsBerlin23SummerJobFair:
+        joinsBerlin23SummerJobFair === undefined ? true : undefined,
+    }))
+
+  const toggleMunich23SummerJobFairFilter = () =>
+    setQuery((latestQuery) => ({
+      ...latestQuery,
+      joinsMunich23SummerJobFair:
+        joinsMunich23SummerJobFair === undefined ? true : undefined,
+    }))
 
   const setName = (value) => {
     setQuery((latestQuery) => ({ ...latestQuery, name: value || undefined }))
@@ -144,7 +154,8 @@ export function BrowseCompany() {
       desiredPositions: [],
       employmentTypes: [],
       federalStates: [],
-      // isJobFairJuly2023Participant: undefined,
+      joinsBerlin23SummerJobFair: undefined,
+      joinsMunich23SummerJobFair: undefined,
     }))
   }
 
@@ -153,8 +164,9 @@ export function BrowseCompany() {
     skills.length !== 0 ||
     desiredPositions.length !== 0 ||
     federalStates.length !== 0 ||
-    employmentTypes.length !== 0
-  //  || isJobFairJuly2023Participant
+    employmentTypes.length !== 0 ||
+    joinsBerlin23SummerJobFair ||
+    joinsMunich23SummerJobFair
 
   return (
     <LoggedIn>
@@ -241,16 +253,6 @@ export function BrowseCompany() {
         </div>
       </div>
       <div className="filters">
-        {/* Hidden until the next Job Fair date announced */}
-        {/* <div className="filters-inner">
-          <Checkbox
-            name="isJobFairJuly2023Participant"
-            checked={isJobFairJuly2023Participant || false}
-            handleChange={toggleJobFairJuly2023Filter}
-          >
-            Attending ReDI Job Fair 2023
-          </Checkbox>
-        </div> */}
         <div className="filters-inner filter-favourites">
           <Checkbox
             name="onlyFavorites"
@@ -265,7 +267,27 @@ export function BrowseCompany() {
             size="small"
           />
         </div>
+        {/* Hide after Job Fair */}
+        <div className="filters-inner">
+          <Checkbox
+            name="joinsBerlin23SummerJobFair"
+            checked={joinsBerlin23SummerJobFair || false}
+            handleChange={toggleBerlin23SummerJobFairFilter}
+          >
+            ReDI Berlin Summer Job Fair 2023
+          </Checkbox>
+        </div>
+        <div className="filters-inner">
+          <Checkbox
+            name="joinsMunich23SummerJobFair"
+            checked={joinsMunich23SummerJobFair || false}
+            handleChange={toggleMunich23SummerJobFairFilter}
+          >
+            ReDI Munich Summer Job Fair 2023
+          </Checkbox>
+        </div>
       </div>
+
       <div className="active-filters">
         {shouldShowFilters && (
           <>
@@ -317,14 +339,22 @@ export function BrowseCompany() {
                 }
               />
             ))}
-            {/* {isJobFairJuly2023Participant && (
+            {joinsBerlin23SummerJobFair && (
               <FilterTag
-                key="redi-job-fair-2022-filter"
-                id="redi-job-fair-2022-filter"
-                label="Attending ReDI Job Fair 2023"
-                onClickHandler={toggleJobFairJuly2023Filter}
+                key="redi-berlin-summer-job-fair-2023-filter"
+                id="redi-berlin-summer-job-fair-2023-filter"
+                label="ReDI Berlin Summer Job Fair 2023"
+                onClickHandler={toggleBerlin23SummerJobFairFilter}
               />
-            )} */}
+            )}
+            {joinsMunich23SummerJobFair && (
+              <FilterTag
+                key="redi-munich-summer-job-fair-2023-filter"
+                id="redi-munich-summer-job-fair-2023-filter"
+                label="ReDI Munich Summer Job Fair 2023"
+                onClickHandler={toggleMunich23SummerJobFairFilter}
+              />
+            )}
             <span className="active-filters__clear-all" onClick={clearFilters}>
               Delete all filters
               <Icon icon="cancel" size="small" space="left" />

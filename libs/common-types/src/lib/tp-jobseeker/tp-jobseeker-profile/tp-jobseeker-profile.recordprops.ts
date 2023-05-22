@@ -26,6 +26,8 @@ export class TpJobseekerProfileRecordProps implements RecordProps {
   Profile_Status__c: PicklistValue
   Is_Job_Fair_2022_Participant__c: boolean
   Is_Job_Fair_2023_Participant__c: boolean
+  Joins_Berlin_23_Summer_Job_Fair__c: boolean
+  Joins_Munich_23_Summer_Job_Fair__c: boolean
   Is_Visible_to_Companies__c: boolean
   Is_Hired__c: boolean
   Federal_State__c?: PicklistValue

@@ -78,6 +78,10 @@ export class TpJobseekerDirectoryEntryMapper
       jobseekerProfileRecord.Is_Job_Fair_2022_Participant__c
     props.isJobFair2023Participant =
       jobseekerProfileRecord.Is_Job_Fair_2023_Participant__c
+    props.joinsBerlin23SummerJobFair =
+      jobseekerProfileRecord.Joins_Berlin_23_Summer_Job_Fair__c
+    props.joinsMunich23SummerJobFair =
+      jobseekerProfileRecord.Joins_Munich_23_Summer_Job_Fair__c
     props.isProfileVisibleToCompanies =
       jobseekerProfileRecord.Is_Visible_to_Companies__c
     props.isHired = jobseekerProfileRecord.Is_Hired__c

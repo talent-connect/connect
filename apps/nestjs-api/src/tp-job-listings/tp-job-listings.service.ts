@@ -65,6 +65,14 @@ export class TpJobListingsService {
     if (_filter.filter.isRemotePossible) {
       filter.Remote_Possible__c = true
     }
+    if (_filter.filter.joinsBerlin23SummerJobFair) {
+      filter['Account__r.ReDI_Joins_Berlin_23_Summer_Job_Fair__c'] =
+        _filter.filter.joinsBerlin23SummerJobFair
+    }
+    if (_filter.filter.joinsMunich23SummerJobFair) {
+      filter['Account__r.ReDI_Joins_Munich_23_Summer_Job_Fair__c'] =
+        _filter.filter.joinsMunich23SummerJobFair
+    }
 
     return await this.findAll(filter)
   }

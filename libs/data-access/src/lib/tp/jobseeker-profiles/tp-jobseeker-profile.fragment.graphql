@@ -13,6 +13,8 @@ fragment AllTpJobseekerDirectoryEntryFields on TpJobseekerDirectoryEntry {
   isHired
   isJobFair2022Participant
   isJobFair2023Participant
+  joinsBerlin23SummerJobFair
+  joinsMunich23SummerJobFair
   availability
   isProfileVisibleToCompanies
   lastName

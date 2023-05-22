@@ -27,4 +27,6 @@ class FindAllVisibleTpJobseekerDirectoryEntriesFilter {
   federalStates?: FederalState[]
   isJobFair2022Participant?: boolean
   isJobFair2023Participant?: boolean
+  joinsBerlin23SummerJobFair?: boolean
+  joinsMunich23SummerJobFair?: boolean
 }

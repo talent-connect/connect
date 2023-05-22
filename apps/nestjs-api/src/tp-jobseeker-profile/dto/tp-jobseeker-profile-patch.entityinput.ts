@@ -17,6 +17,8 @@ export class TpJobseekerProfilePatchInput extends PartialType(
     'isHired',
     'isJobFair2022Participant',
     'isJobFair2023Participant',
+    'joinsBerlin23SummerJobFair',
+    'joinsMunich23SummerJobFair',
     'isProfileVisibleToCompanies',
     'location',
     'profileAvatarImageS3Key',
