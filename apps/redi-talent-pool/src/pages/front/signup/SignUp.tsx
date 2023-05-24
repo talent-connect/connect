@@ -1,13 +1,13 @@
 import {
   TpCompanyProfileSignUpOperationType,
-  useListAllTpCompanyNamesQuery,
+  useListAllTpCompanyNamesQuery
 } from '@talent-connect/data-access'
 import {
   Button,
   Checkbox,
   FormInput,
   FormSelect,
-  Heading,
+  Heading
 } from '@talent-connect/shared-atomic-design-components'
 import { COURSES, REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import { TpCompanyProfile } from '@talent-connect/shared-types'
@@ -26,7 +26,7 @@ import { signUpLoopback } from '../../../services/api/api'
 import { history } from '../../../services/history/history'
 import {
   useSignUpCompanyMutation,
-  useSignUpJobseekerMutation,
+  useSignUpJobseekerMutation
 } from './SignUp.generated'
 
 const formRediLocations = objectEntries(REDI_LOCATION_NAMES).map(
@@ -121,6 +121,7 @@ export default function SignUp() {
       passwordConfirm: '',
       firstName: '',
       lastName: '',
+      isMicrosoftPartner: false
     }),
     []
   )
@@ -132,6 +133,7 @@ export default function SignUp() {
   if (type === 'company') {
     initialValues.companyNameOrId = ''
     initialValues.state = 'drafting-profile'
+    initialValues.isMicrosoftPartner = false
   }
 
   const {
