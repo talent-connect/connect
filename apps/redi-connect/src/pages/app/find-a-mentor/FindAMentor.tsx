@@ -25,6 +25,7 @@ import { objectKeys } from '@talent-connect/typescript-utilities'
 import { useEffect, useState } from 'react'
 import { Columns, Content, Tag } from 'react-bulma-components'
 import { useQueryClient } from 'react-query'
+import { useHistory } from 'react-router-dom'
 import {
   ArrayParam,
   BooleanParam,
@@ -77,6 +78,7 @@ const FindAMentor = () => {
   const unfavoriteMentorMutation = useUnfavoriteMentorMutation()
 
   const { Loading, isLoading } = useLoading()
+  const history = useHistory()
 
   const [showFavorites, setShowFavorites] = useState<boolean>(false)
   const [query, setQuery] = useQueryParams({
@@ -160,6 +162,17 @@ const FindAMentor = () => {
       label: REDI_LOCATION_NAMES[location as RediLocation] as string,
     })
   )
+
+  const menteeHasAnActiveMatch =
+    myProfileQuery.data?.conProfile?.userType === 'MENTEE' &&
+    myProfileQuery.data?.conProfile?.mentorshipMatches.length > 0 &&
+    myProfileQuery.data?.conProfile?.mentorshipMatches?.[0].status ===
+      'ACCEPTED'
+
+  if (menteeHasAnActiveMatch) {
+    const matchId = myProfileQuery.data?.conProfile?.mentorshipMatches?.[0].id
+    history.replace(`/app/mentorships/${matchId}`)
+  }
 
   if (
     myProfileQuery.data?.conProfile &&
