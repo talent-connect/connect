@@ -79,6 +79,7 @@ const FindAMentor = () => {
 
   const { Loading, isLoading } = useLoading()
   const history = useHistory()
+  const profile = myProfileQuery.data?.conProfile
 
   const [showFavorites, setShowFavorites] = useState<boolean>(false)
   const [query, setQuery] = useQueryParams({
@@ -107,11 +108,7 @@ const FindAMentor = () => {
       locations.length > 0 ||
       Boolean(name) ||
       onlyFavorites
-    setQuery(
-      hasQuery
-        ? query
-        : { ...query, topics: myProfileQuery.data?.conProfile.categories ?? [] }
-    )
+    setQuery(hasQuery ? query : { ...query, topics: profile?.categories ?? [] })
   }, [myProfileQuery.data])
 
   const toggleFilters = (filtersArr, filterName, item) => {
@@ -163,30 +160,25 @@ const FindAMentor = () => {
     })
   )
 
+  if (profile && profile?.profileStatus !== ConnectProfileStatus.Approved)
+    return <LoggedIn />
+
   const menteeHasAnActiveMatch =
-    myProfileQuery.data?.conProfile?.userType === 'MENTEE' &&
-    myProfileQuery.data?.conProfile?.mentorshipMatches.length > 0 &&
-    myProfileQuery.data?.conProfile?.mentorshipMatches?.[0].status ===
-      'ACCEPTED'
+    profile?.userType === 'MENTEE' &&
+    profile?.mentorshipMatches.length > 0 &&
+    profile?.mentorshipMatches?.[0].status === 'ACCEPTED'
 
   if (menteeHasAnActiveMatch) {
-    const matchId = myProfileQuery.data?.conProfile?.mentorshipMatches?.[0].id
+    const matchId = profile?.mentorshipMatches?.[0].id
     history.replace(`/app/mentorships/${matchId}`)
   }
-
-  if (
-    myProfileQuery.data?.conProfile &&
-    myProfileQuery.data?.conProfile?.profileStatus !==
-      ConnectProfileStatus.Approved
-  )
-    return <LoggedIn />
 
   // This logic filters away mentors that have have opted out of being
   // receiving application form mentees from other locations
   const mentors = mentorsQuery.data?.conProfilesAvailableMentors.filter(
     (mentor) =>
       !mentor.optOutOfMenteesFromOtherRediLocation ||
-      mentor.rediLocation === myProfileQuery.data?.conProfile?.rediLocation
+      mentor.rediLocation === profile?.rediLocation
   )
 
   return (
