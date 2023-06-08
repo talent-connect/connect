@@ -3,7 +3,7 @@ import * as Types from '@talent-connect/data-access';
 
 import { AllTpJobseekerCvEducationRecordFieldsFragmentDoc } from './tp-jobseeker-cv-education-record.fragment.generated';
 import { useQuery, UseQueryOptions } from 'react-query';
-import { fetcher } from '@talent-connect/data-access';
+import { fetcherForTp } from '@talent-connect/data-access';
 export type FindAllTpJobseekerCvEducationRecordsQueryVariables = Types.Exact<{
   tpJobseekerCvId: Types.Scalars['ID'];
 }>;
@@ -28,9 +28,10 @@ export const useFindAllTpJobseekerCvEducationRecordsQuery = <
     ) =>
     useQuery<FindAllTpJobseekerCvEducationRecordsQuery, TError, TData>(
       ['findAllTpJobseekerCvEducationRecords', variables],
-      fetcher<FindAllTpJobseekerCvEducationRecordsQuery, FindAllTpJobseekerCvEducationRecordsQueryVariables>(FindAllTpJobseekerCvEducationRecordsDocument, variables),
+      fetcherForTp<FindAllTpJobseekerCvEducationRecordsQuery, FindAllTpJobseekerCvEducationRecordsQueryVariables>(FindAllTpJobseekerCvEducationRecordsDocument, variables),
       options
     );
 
 useFindAllTpJobseekerCvEducationRecordsQuery.getKey = (variables: FindAllTpJobseekerCvEducationRecordsQueryVariables) => ['findAllTpJobseekerCvEducationRecords', variables];
+;
 ;

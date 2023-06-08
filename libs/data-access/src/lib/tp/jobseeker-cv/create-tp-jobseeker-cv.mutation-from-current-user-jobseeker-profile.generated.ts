@@ -2,7 +2,7 @@
 import * as Types from '@talent-connect/data-access';
 
 import { useMutation, UseMutationOptions } from 'react-query';
-import { fetcher } from '@talent-connect/data-access';
+import { fetcherForTp } from '@talent-connect/data-access';
 export type TpJobseekerCvCreateFromCurrentUserJobseekerProfileMutationVariables = Types.Exact<{
   input: Types.TpJobseekerCvCreateFromCurrentUserJobseekerProfileInput;
 }>;
@@ -25,6 +25,6 @@ export const useTpJobseekerCvCreateFromCurrentUserJobseekerProfileMutation = <
     >(options?: UseMutationOptions<TpJobseekerCvCreateFromCurrentUserJobseekerProfileMutation, TError, TpJobseekerCvCreateFromCurrentUserJobseekerProfileMutationVariables, TContext>) =>
     useMutation<TpJobseekerCvCreateFromCurrentUserJobseekerProfileMutation, TError, TpJobseekerCvCreateFromCurrentUserJobseekerProfileMutationVariables, TContext>(
       ['tpJobseekerCvCreateFromCurrentUserJobseekerProfile'],
-      (variables?: TpJobseekerCvCreateFromCurrentUserJobseekerProfileMutationVariables) => fetcher<TpJobseekerCvCreateFromCurrentUserJobseekerProfileMutation, TpJobseekerCvCreateFromCurrentUserJobseekerProfileMutationVariables>(TpJobseekerCvCreateFromCurrentUserJobseekerProfileDocument, variables)(),
+      (variables?: TpJobseekerCvCreateFromCurrentUserJobseekerProfileMutationVariables) => fetcherForTp<TpJobseekerCvCreateFromCurrentUserJobseekerProfileMutation, TpJobseekerCvCreateFromCurrentUserJobseekerProfileMutationVariables>(TpJobseekerCvCreateFromCurrentUserJobseekerProfileDocument, variables)(),
       options
-    );
+    ););

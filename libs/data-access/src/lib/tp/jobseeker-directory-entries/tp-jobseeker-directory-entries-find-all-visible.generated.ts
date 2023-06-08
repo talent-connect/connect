@@ -3,7 +3,7 @@ import * as Types from '@talent-connect/data-access';
 
 import { AllTpJobseekerDirectoryEntryFieldsFragmentDoc } from '../jobseeker-profiles/tp-jobseeker-profile.fragment.generated';
 import { useQuery, UseQueryOptions } from 'react-query';
-import { fetcher } from '@talent-connect/data-access';
+import { fetcherForTp } from '@talent-connect/data-access';
 export type TpJobseekerDirectoryEntriesFindAllVisibleQueryVariables = Types.Exact<{
   input: Types.FindAllVisibleTpJobseekerDirectoryEntriesFilter;
 }>;
@@ -28,9 +28,10 @@ export const useTpJobseekerDirectoryEntriesFindAllVisibleQuery = <
     ) =>
     useQuery<TpJobseekerDirectoryEntriesFindAllVisibleQuery, TError, TData>(
       ['tpJobseekerDirectoryEntriesFindAllVisible', variables],
-      fetcher<TpJobseekerDirectoryEntriesFindAllVisibleQuery, TpJobseekerDirectoryEntriesFindAllVisibleQueryVariables>(TpJobseekerDirectoryEntriesFindAllVisibleDocument, variables),
+      fetcherForTp<TpJobseekerDirectoryEntriesFindAllVisibleQuery, TpJobseekerDirectoryEntriesFindAllVisibleQueryVariables>(TpJobseekerDirectoryEntriesFindAllVisibleDocument, variables),
       options
     );
 
 useTpJobseekerDirectoryEntriesFindAllVisibleQuery.getKey = (variables: TpJobseekerDirectoryEntriesFindAllVisibleQueryVariables) => ['tpJobseekerDirectoryEntriesFindAllVisible', variables];
+;
 ;

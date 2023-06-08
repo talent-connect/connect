@@ -3,7 +3,7 @@ import * as Types from '@talent-connect/data-access';
 
 import { AllTpJobListingFieldsFragmentDoc } from '../../../../../../libs/data-access/src/lib/tp/job-listings/tp-job-listing.fragment.generated';
 import { useQuery, UseQueryOptions } from 'react-query';
-import { fetcher } from '@talent-connect/data-access';
+import { fetcherForTp } from '@talent-connect/data-access';
 export type LoadModalFormJobListingDataQueryVariables = Types.Exact<{
   id: Types.Scalars['ID'];
 }>;
@@ -28,9 +28,10 @@ export const useLoadModalFormJobListingDataQuery = <
     ) =>
     useQuery<LoadModalFormJobListingDataQuery, TError, TData>(
       ['loadModalFormJobListingData', variables],
-      fetcher<LoadModalFormJobListingDataQuery, LoadModalFormJobListingDataQueryVariables>(LoadModalFormJobListingDataDocument, variables),
+      fetcherForTp<LoadModalFormJobListingDataQuery, LoadModalFormJobListingDataQueryVariables>(LoadModalFormJobListingDataDocument, variables),
       options
     );
 
 useLoadModalFormJobListingDataQuery.getKey = (variables: LoadModalFormJobListingDataQueryVariables) => ['loadModalFormJobListingData', variables];
+;
 ;

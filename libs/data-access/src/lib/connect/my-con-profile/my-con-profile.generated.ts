@@ -4,7 +4,7 @@ import * as Types from '@talent-connect/data-access';
 import { AllConProfileFieldsFragmentDoc } from '../con-profiles/con-profile.fragment.generated';
 import { AllConMentorshipMatchFieldsFragmentDoc } from '../mentorship-matches/con-mentorship-match.fragment.generated';
 import { useQuery, useMutation, UseQueryOptions, UseMutationOptions } from 'react-query';
-import { fetcher } from '@talent-connect/data-access';
+import { fetcherForTp } from '@talent-connect/data-access';
 export type LoadMyProfileQueryVariables = Types.Exact<{
   loopbackUserId: Types.Scalars['ID'];
 }>;
@@ -46,7 +46,7 @@ export const useLoadMyProfileQuery = <
     ) =>
     useQuery<LoadMyProfileQuery, TError, TData>(
       ['loadMyProfile', variables],
-      fetcher<LoadMyProfileQuery, LoadMyProfileQueryVariables>(LoadMyProfileDocument, variables),
+      fetcherForTp<LoadMyProfileQuery, LoadMyProfileQueryVariables>(LoadMyProfileDocument, variables),
       options
     );
 
@@ -66,6 +66,6 @@ export const usePatchMyProfileMutation = <
     >(options?: UseMutationOptions<PatchMyProfileMutation, TError, PatchMyProfileMutationVariables, TContext>) =>
     useMutation<PatchMyProfileMutation, TError, PatchMyProfileMutationVariables, TContext>(
       ['patchMyProfile'],
-      (variables?: PatchMyProfileMutationVariables) => fetcher<PatchMyProfileMutation, PatchMyProfileMutationVariables>(PatchMyProfileDocument, variables)(),
+      (variables?: PatchMyProfileMutationVariables) => fetcherForTp<PatchMyProfileMutation, PatchMyProfileMutationVariables>(PatchMyProfileDocument, variables)(),
       options
-    );
+    ); );

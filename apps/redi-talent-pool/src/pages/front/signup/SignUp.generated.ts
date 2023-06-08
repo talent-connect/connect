@@ -2,7 +2,7 @@
 import * as Types from '@talent-connect/data-access';
 
 import { useMutation, UseMutationOptions } from 'react-query';
-import { fetcher } from '@talent-connect/data-access';
+import { fetcherForTp } from '@talent-connect/data-access';
 export type SignUpCompanyMutationVariables = Types.Exact<{
   input: Types.TpCompanyProfileSignUpInputDto;
 }>;
@@ -31,7 +31,7 @@ export const useSignUpCompanyMutation = <
     >(options?: UseMutationOptions<SignUpCompanyMutation, TError, SignUpCompanyMutationVariables, TContext>) =>
     useMutation<SignUpCompanyMutation, TError, SignUpCompanyMutationVariables, TContext>(
       ['signUpCompany'],
-      (variables?: SignUpCompanyMutationVariables) => fetcher<SignUpCompanyMutation, SignUpCompanyMutationVariables>(SignUpCompanyDocument, variables)(),
+      (variables?: SignUpCompanyMutationVariables) => fetcherForTp<SignUpCompanyMutation, SignUpCompanyMutationVariables>(SignUpCompanyDocument, variables)(),
       options
     );
 export const SignUpJobseekerDocument = `
@@ -47,6 +47,6 @@ export const useSignUpJobseekerMutation = <
     >(options?: UseMutationOptions<SignUpJobseekerMutation, TError, SignUpJobseekerMutationVariables, TContext>) =>
     useMutation<SignUpJobseekerMutation, TError, SignUpJobseekerMutationVariables, TContext>(
       ['signUpJobseeker'],
-      (variables?: SignUpJobseekerMutationVariables) => fetcher<SignUpJobseekerMutation, SignUpJobseekerMutationVariables>(SignUpJobseekerDocument, variables)(),
+      (variables?: SignUpJobseekerMutationVariables) => fetcherForTp<SignUpJobseekerMutation, SignUpJobseekerMutationVariables>(SignUpJobseekerDocument, variables)(),
       options
-    );
+    ); );

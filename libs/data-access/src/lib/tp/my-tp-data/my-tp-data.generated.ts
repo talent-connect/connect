@@ -7,7 +7,7 @@ import { AllTpJobseekerDirectoryEntryFieldsFragmentDoc } from '../jobseeker-prof
 import { AllTpJobListingFieldsFragmentDoc } from '../job-listings/tp-job-listing.fragment.generated';
 import { AllUserContactFieldsFragmentDoc } from '../../common/user-contact.generated';
 import { useQuery, UseQueryOptions } from 'react-query';
-import { fetcher } from '@talent-connect/data-access';
+import { fetcherForTp } from '@talent-connect/data-access';
 export type MyTpDataQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 
@@ -48,9 +48,10 @@ export const useMyTpDataQuery = <
     ) =>
     useQuery<MyTpDataQuery, TError, TData>(
       variables === undefined ? ['myTpData'] : ['myTpData', variables],
-      fetcher<MyTpDataQuery, MyTpDataQueryVariables>(MyTpDataDocument, variables),
+      fetcherForTp<MyTpDataQuery, MyTpDataQueryVariables>(MyTpDataDocument, variables),
       options
     );
 
 useMyTpDataQuery.getKey = (variables?: MyTpDataQueryVariables) => variables === undefined ? ['myTpData'] : ['myTpData', variables];
+;
 ;

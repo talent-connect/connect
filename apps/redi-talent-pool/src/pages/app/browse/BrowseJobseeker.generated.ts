@@ -2,7 +2,7 @@
 import * as Types from '@talent-connect/data-access';
 
 import { useQuery, useMutation, UseQueryOptions, UseMutationOptions } from 'react-query';
-import { fetcher } from '@talent-connect/data-access';
+import { fetcherForTp } from '@talent-connect/data-access';
 export type TpJobseekerFavouritedJobListingsQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 
@@ -39,7 +39,7 @@ export const useTpJobseekerFavouritedJobListingsQuery = <
     ) =>
     useQuery<TpJobseekerFavouritedJobListingsQuery, TError, TData>(
       variables === undefined ? ['tpJobseekerFavouritedJobListings'] : ['tpJobseekerFavouritedJobListings', variables],
-      fetcher<TpJobseekerFavouritedJobListingsQuery, TpJobseekerFavouritedJobListingsQueryVariables>(TpJobseekerFavouritedJobListingsDocument, variables),
+      fetcherForTp<TpJobseekerFavouritedJobListingsQuery, TpJobseekerFavouritedJobListingsQueryVariables>(TpJobseekerFavouritedJobListingsDocument, variables),
       options
     );
 
@@ -59,7 +59,7 @@ export const useTpJobListingMarkAsFavouriteMutation = <
     >(options?: UseMutationOptions<TpJobListingMarkAsFavouriteMutation, TError, TpJobListingMarkAsFavouriteMutationVariables, TContext>) =>
     useMutation<TpJobListingMarkAsFavouriteMutation, TError, TpJobListingMarkAsFavouriteMutationVariables, TContext>(
       ['tpJobListingMarkAsFavourite'],
-      (variables?: TpJobListingMarkAsFavouriteMutationVariables) => fetcher<TpJobListingMarkAsFavouriteMutation, TpJobListingMarkAsFavouriteMutationVariables>(TpJobListingMarkAsFavouriteDocument, variables)(),
+      (variables?: TpJobListingMarkAsFavouriteMutationVariables) => fetcherForTp<TpJobListingMarkAsFavouriteMutation, TpJobListingMarkAsFavouriteMutationVariables>(TpJobListingMarkAsFavouriteDocument, variables)(),
       options
     );
 export const TpJobListingUnfavouriteDocument = `
@@ -75,6 +75,6 @@ export const useTpJobListingUnfavouriteMutation = <
     >(options?: UseMutationOptions<TpJobListingUnfavouriteMutation, TError, TpJobListingUnfavouriteMutationVariables, TContext>) =>
     useMutation<TpJobListingUnfavouriteMutation, TError, TpJobListingUnfavouriteMutationVariables, TContext>(
       ['tpJobListingUnfavourite'],
-      (variables?: TpJobListingUnfavouriteMutationVariables) => fetcher<TpJobListingUnfavouriteMutation, TpJobListingUnfavouriteMutationVariables>(TpJobListingUnfavouriteDocument, variables)(),
+      (variables?: TpJobListingUnfavouriteMutationVariables) => fetcherForTp<TpJobListingUnfavouriteMutation, TpJobListingUnfavouriteMutationVariables>(TpJobListingUnfavouriteDocument, variables)(),
       options
-    );
+    );  );

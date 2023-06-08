@@ -2,7 +2,7 @@
 import * as Types from '@talent-connect/data-access';
 
 import { useMutation, UseMutationOptions } from 'react-query';
-import { fetcher } from '@talent-connect/data-access';
+import { fetcherForTp } from '@talent-connect/data-access';
 export type ReportProblemMutationVariables = Types.Exact<{
   input: Types.CreateConProblemReportInput;
 }>;
@@ -24,6 +24,6 @@ export const useReportProblemMutation = <
     >(options?: UseMutationOptions<ReportProblemMutation, TError, ReportProblemMutationVariables, TContext>) =>
     useMutation<ReportProblemMutation, TError, ReportProblemMutationVariables, TContext>(
       ['reportProblem'],
-      (variables?: ReportProblemMutationVariables) => fetcher<ReportProblemMutation, ReportProblemMutationVariables>(ReportProblemDocument, variables)(),
+      (variables?: ReportProblemMutationVariables) => fetcherForTp<ReportProblemMutation, ReportProblemMutationVariables>(ReportProblemDocument, variables)(),
       options
-    );
+    ););

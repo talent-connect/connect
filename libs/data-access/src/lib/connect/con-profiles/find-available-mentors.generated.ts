@@ -2,7 +2,7 @@
 import * as Types from '@talent-connect/data-access';
 
 import { useQuery, UseQueryOptions } from 'react-query';
-import { fetcher } from '@talent-connect/data-access';
+import { fetcherForTp } from '@talent-connect/data-access';
 export type FindAvailableMentorsQueryVariables = Types.Exact<{
   filter: Types.FindConProfilesArgsFilter;
 }>;
@@ -36,9 +36,10 @@ export const useFindAvailableMentorsQuery = <
     ) =>
     useQuery<FindAvailableMentorsQuery, TError, TData>(
       ['findAvailableMentors', variables],
-      fetcher<FindAvailableMentorsQuery, FindAvailableMentorsQueryVariables>(FindAvailableMentorsDocument, variables),
+      fetcherForTp<FindAvailableMentorsQuery, FindAvailableMentorsQueryVariables>(FindAvailableMentorsDocument, variables),
       options
     );
 
 useFindAvailableMentorsQuery.getKey = (variables: FindAvailableMentorsQueryVariables) => ['findAvailableMentors', variables];
+;
 ;

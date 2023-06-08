@@ -2,7 +2,7 @@
 import * as Types from '@talent-connect/data-access';
 
 import { useMutation, UseMutationOptions } from 'react-query';
-import { fetcher } from '@talent-connect/data-access';
+import { fetcherForTp } from '@talent-connect/data-access';
 export type TpJobseekerCvExperienceRecordDeleteMutationVariables = Types.Exact<{
   input: Types.TpJobseekerCvExperienceRecordDeleteInput;
 }>;
@@ -26,6 +26,6 @@ export const useTpJobseekerCvExperienceRecordDeleteMutation = <
     >(options?: UseMutationOptions<TpJobseekerCvExperienceRecordDeleteMutation, TError, TpJobseekerCvExperienceRecordDeleteMutationVariables, TContext>) =>
     useMutation<TpJobseekerCvExperienceRecordDeleteMutation, TError, TpJobseekerCvExperienceRecordDeleteMutationVariables, TContext>(
       ['tpJobseekerCvExperienceRecordDelete'],
-      (variables?: TpJobseekerCvExperienceRecordDeleteMutationVariables) => fetcher<TpJobseekerCvExperienceRecordDeleteMutation, TpJobseekerCvExperienceRecordDeleteMutationVariables>(TpJobseekerCvExperienceRecordDeleteDocument, variables)(),
+      (variables?: TpJobseekerCvExperienceRecordDeleteMutationVariables) => fetcherForTp<TpJobseekerCvExperienceRecordDeleteMutation, TpJobseekerCvExperienceRecordDeleteMutationVariables>(TpJobseekerCvExperienceRecordDeleteDocument, variables)(),
       options
-    );
+    ););

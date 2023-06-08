@@ -3,7 +3,7 @@ import * as Types from '@talent-connect/data-access';
 
 import { AllTpJobListingFieldsFragmentDoc } from './tp-job-listing.fragment.generated';
 import { useQuery, UseQueryOptions } from 'react-query';
-import { fetcher } from '@talent-connect/data-access';
+import { fetcherForTp } from '@talent-connect/data-access';
 export type TpJobListingFindAllVisibleQueryVariables = Types.Exact<{
   input: Types.FindAllVisibleTpJobListingsArgsFilter;
 }>;
@@ -28,9 +28,10 @@ export const useTpJobListingFindAllVisibleQuery = <
     ) =>
     useQuery<TpJobListingFindAllVisibleQuery, TError, TData>(
       ['tpJobListingFindAllVisible', variables],
-      fetcher<TpJobListingFindAllVisibleQuery, TpJobListingFindAllVisibleQueryVariables>(TpJobListingFindAllVisibleDocument, variables),
+      fetcherForTp<TpJobListingFindAllVisibleQuery, TpJobListingFindAllVisibleQueryVariables>(TpJobListingFindAllVisibleDocument, variables),
       options
     );
 
 useTpJobListingFindAllVisibleQuery.getKey = (variables: TpJobListingFindAllVisibleQueryVariables) => ['tpJobListingFindAllVisible', variables];
+;
 ;

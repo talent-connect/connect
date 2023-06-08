@@ -2,7 +2,7 @@
 import * as Types from '@talent-connect/data-access';
 
 import { useQuery, useMutation, UseQueryOptions, UseMutationOptions } from 'react-query';
-import { fetcher } from '@talent-connect/data-access';
+import { fetcherForTp } from '@talent-connect/data-access';
 export type MyMatchesQueryVariables = Types.Exact<{
   filter?: Types.InputMaybe<Types.FindMentorshipMatchesArgsFilter>;
 }>;
@@ -86,7 +86,7 @@ export const useMyMatchesQuery = <
     ) =>
     useQuery<MyMatchesQuery, TError, TData>(
       variables === undefined ? ['myMatches'] : ['myMatches', variables],
-      fetcher<MyMatchesQuery, MyMatchesQueryVariables>(MyMatchesDocument, variables),
+      fetcherForTp<MyMatchesQuery, MyMatchesQueryVariables>(MyMatchesDocument, variables),
       options
     );
 
@@ -123,7 +123,7 @@ export const useFindMatchQuery = <
     ) =>
     useQuery<FindMatchQuery, TError, TData>(
       ['findMatch', variables],
-      fetcher<FindMatchQuery, FindMatchQueryVariables>(FindMatchDocument, variables),
+      fetcherForTp<FindMatchQuery, FindMatchQueryVariables>(FindMatchDocument, variables),
       options
     );
 
@@ -143,6 +143,6 @@ export const useConMatchMarkMentorshipAcceptedNotificationDismissedMutation = <
     >(options?: UseMutationOptions<ConMatchMarkMentorshipAcceptedNotificationDismissedMutation, TError, ConMatchMarkMentorshipAcceptedNotificationDismissedMutationVariables, TContext>) =>
     useMutation<ConMatchMarkMentorshipAcceptedNotificationDismissedMutation, TError, ConMatchMarkMentorshipAcceptedNotificationDismissedMutationVariables, TContext>(
       ['conMatchMarkMentorshipAcceptedNotificationDismissed'],
-      (variables?: ConMatchMarkMentorshipAcceptedNotificationDismissedMutationVariables) => fetcher<ConMatchMarkMentorshipAcceptedNotificationDismissedMutation, ConMatchMarkMentorshipAcceptedNotificationDismissedMutationVariables>(ConMatchMarkMentorshipAcceptedNotificationDismissedDocument, variables)(),
+      (variables?: ConMatchMarkMentorshipAcceptedNotificationDismissedMutationVariables) => fetcherForTp<ConMatchMarkMentorshipAcceptedNotificationDismissedMutation, ConMatchMarkMentorshipAcceptedNotificationDismissedMutationVariables>(ConMatchMarkMentorshipAcceptedNotificationDismissedDocument, variables)(),
       options
-    );
+    );  );

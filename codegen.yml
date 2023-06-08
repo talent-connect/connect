@@ -8,7 +8,7 @@ generates:
     - add:
         content: '// THIS FILE IS GENERATED, DO NOT EDIT!'
     - 'typescript'
-  /:
+  /apps/:
     preset: near-operation-file
     presetConfig:
       extension: .generated.ts
@@ -22,6 +22,52 @@ generates:
     config:
       withHooks: true
       fetcher: '@talent-connect/data-access#fetcher'
+
+  /libs/data-access/src/lib/common:
+    preset: near-operation-file
+    presetConfig:
+      extension: .generated.ts
+      baseTypesPath: '~@talent-connect/data-access'
+    plugins:
+      - add:
+          content: '// THIS FILE IS GENERATED, DO NOT EDIT!'
+      - typescript-operations
+      - typescript-react-query:
+          exposeQueryKeys: true
+    config:
+      withHooks: true
+      fetcher: '@talent-connect/data-access#fetcher'
+
+  /libs/data-access/src/lib/connect:
+    preset: near-operation-file
+    presetConfig:
+      extension: .generated.ts
+      baseTypesPath: '~@talent-connect/data-access'
+    plugins:
+      - add:
+          content: '// THIS FILE IS GENERATED, DO NOT EDIT!'
+      - typescript-operations
+      - typescript-react-query:
+          exposeQueryKeys: true
+    config:
+      withHooks: true
+      fetcher: '@talent-connect/data-access#fetcherForCon'
+
+  /libs/data-access/src/lib/tp:
+    preset: near-operation-file
+    presetConfig:
+      extension: .generated.ts
+      baseTypesPath: '~@talent-connect/data-access'
+    plugins:
+      - add:
+          content: '// THIS FILE IS GENERATED, DO NOT EDIT!'
+      - typescript-operations
+      - typescript-react-query:
+          exposeQueryKeys: true
+    config:
+      withHooks: true
+      fetcher: '@talent-connect/data-access#fetcherForTp'
+
   ./schema.graphql:
     plugins:
       - schema-ast

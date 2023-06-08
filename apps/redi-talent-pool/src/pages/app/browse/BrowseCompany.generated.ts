@@ -2,7 +2,7 @@
 import * as Types from '@talent-connect/data-access';
 
 import { useQuery, useMutation, UseQueryOptions, UseMutationOptions } from 'react-query';
-import { fetcher } from '@talent-connect/data-access';
+import { fetcherForTp } from '@talent-connect/data-access';
 export type LoadVisibleJobseekerProfilesQueryVariables = Types.Exact<{
   filter: Types.FindAllVisibleTpJobseekerDirectoryEntriesFilter;
 }>;
@@ -51,7 +51,7 @@ export const useLoadVisibleJobseekerProfilesQuery = <
     ) =>
     useQuery<LoadVisibleJobseekerProfilesQuery, TError, TData>(
       ['loadVisibleJobseekerProfiles', variables],
-      fetcher<LoadVisibleJobseekerProfilesQuery, LoadVisibleJobseekerProfilesQueryVariables>(LoadVisibleJobseekerProfilesDocument, variables),
+      fetcherForTp<LoadVisibleJobseekerProfilesQuery, LoadVisibleJobseekerProfilesQueryVariables>(LoadVisibleJobseekerProfilesDocument, variables),
       options
     );
 
@@ -74,7 +74,7 @@ export const useTpCompanyFavouritedJobseekerProfilesQuery = <
     ) =>
     useQuery<TpCompanyFavouritedJobseekerProfilesQuery, TError, TData>(
       variables === undefined ? ['tpCompanyFavouritedJobseekerProfiles'] : ['tpCompanyFavouritedJobseekerProfiles', variables],
-      fetcher<TpCompanyFavouritedJobseekerProfilesQuery, TpCompanyFavouritedJobseekerProfilesQueryVariables>(TpCompanyFavouritedJobseekerProfilesDocument, variables),
+      fetcherForTp<TpCompanyFavouritedJobseekerProfilesQuery, TpCompanyFavouritedJobseekerProfilesQueryVariables>(TpCompanyFavouritedJobseekerProfilesDocument, variables),
       options
     );
 
@@ -94,7 +94,7 @@ export const useTpCompanyMarkJobseekerAsFavouriteMutation = <
     >(options?: UseMutationOptions<TpCompanyMarkJobseekerAsFavouriteMutation, TError, TpCompanyMarkJobseekerAsFavouriteMutationVariables, TContext>) =>
     useMutation<TpCompanyMarkJobseekerAsFavouriteMutation, TError, TpCompanyMarkJobseekerAsFavouriteMutationVariables, TContext>(
       ['tpCompanyMarkJobseekerAsFavourite'],
-      (variables?: TpCompanyMarkJobseekerAsFavouriteMutationVariables) => fetcher<TpCompanyMarkJobseekerAsFavouriteMutation, TpCompanyMarkJobseekerAsFavouriteMutationVariables>(TpCompanyMarkJobseekerAsFavouriteDocument, variables)(),
+      (variables?: TpCompanyMarkJobseekerAsFavouriteMutationVariables) => fetcherForTp<TpCompanyMarkJobseekerAsFavouriteMutation, TpCompanyMarkJobseekerAsFavouriteMutationVariables>(TpCompanyMarkJobseekerAsFavouriteDocument, variables)(),
       options
     );
 export const TpCompanyUnmarkJobseekerAsFavouriteDocument = `
@@ -110,6 +110,6 @@ export const useTpCompanyUnmarkJobseekerAsFavouriteMutation = <
     >(options?: UseMutationOptions<TpCompanyUnmarkJobseekerAsFavouriteMutation, TError, TpCompanyUnmarkJobseekerAsFavouriteMutationVariables, TContext>) =>
     useMutation<TpCompanyUnmarkJobseekerAsFavouriteMutation, TError, TpCompanyUnmarkJobseekerAsFavouriteMutationVariables, TContext>(
       ['tpCompanyUnmarkJobseekerAsFavourite'],
-      (variables?: TpCompanyUnmarkJobseekerAsFavouriteMutationVariables) => fetcher<TpCompanyUnmarkJobseekerAsFavouriteMutation, TpCompanyUnmarkJobseekerAsFavouriteMutationVariables>(TpCompanyUnmarkJobseekerAsFavouriteDocument, variables)(),
+      (variables?: TpCompanyUnmarkJobseekerAsFavouriteMutationVariables) => fetcherForTp<TpCompanyUnmarkJobseekerAsFavouriteMutation, TpCompanyUnmarkJobseekerAsFavouriteMutationVariables>(TpCompanyUnmarkJobseekerAsFavouriteDocument, variables)(),
       options
-    );
+    );   );
