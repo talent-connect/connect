@@ -1,11 +1,22 @@
-import { useLoadMyProfileQuery } from '@talent-connect/data-access'
+import {
+  LoadMyProfileDocument,
+  LoadMyProfileQuery,
+  LoadMyProfileQueryVariables,
+  MyTpDataDocument,
+  MyTpDataQuery,
+  MyTpDataQueryVariables,
+  RediLocation,
+  UserType,
+  fetcher,
+  useConProfileSignUpMutation,
+  useLoadMyProfileQuery,
+} from '@talent-connect/data-access'
 import {
   Button,
   FormInput,
-  Heading
+  Heading,
 } from '@talent-connect/shared-atomic-design-components'
 import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
-import { RediLocation } from '@talent-connect/shared-types'
 import { buildFrontendUrl } from '@talent-connect/shared-utils'
 import { useFormik } from 'formik'
 import { capitalize } from 'lodash'
@@ -17,7 +28,8 @@ import Teaser from '../../../components/molecules/Teaser'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import { login } from '../../../services/api/api'
 import {
-  getAccessTokenFromLocalStorage, purgeAllSessionData
+  getAccessTokenFromLocalStorage,
+  purgeAllSessionData,
 } from '../../../services/auth/auth'
 import { envRediLocation } from '../../../utils/env-redi-location'
 
@@ -36,6 +48,20 @@ const validationSchema = Yup.object({
   password: Yup.string().required().label('Password').max(255),
 })
 
+// This is copied directly from the file that contains the auto-codegenerated useMyTpDataQuery.
+// We have a need to use the underlying data fetcher function directly. If we were to use the
+// react queries directly, the logic inside of our component would be needlessly complex.
+// Believe us. We tried. (Kate, Eric, 9 June 2023)
+const myTpDataFetcher = fetcher<MyTpDataQuery, MyTpDataQueryVariables>(
+  MyTpDataDocument
+)
+// Same for the useLoadMyProfileQuery that loads CON data:
+const buildMyConProfileDataFetcher = () =>
+  fetcher<LoadMyProfileQuery, LoadMyProfileQueryVariables>(
+    LoadMyProfileDocument,
+    { loopbackUserId: getAccessTokenFromLocalStorage()?.userId }
+  )
+
 export default function Login() {
   const history = useHistory()
   const accessToken = getAccessTokenFromLocalStorage()
@@ -45,6 +71,7 @@ export default function Login() {
     { loopbackUserId: stateLoopbackUserId },
     { enabled: Boolean(stateLoopbackUserId) }
   )
+  const conProfileSignUpMutation = useConProfileSignUpMutation()
 
   const [loginError, setLoginError] = useState<string>('')
 
@@ -63,8 +90,40 @@ export default function Login() {
         formik.values.password
       )
       setStateLoopbackUserId(accessToken.userId)
-      formik.setSubmitting(false)
-      history.push('/app/me')
+
+      // Note: we have to "build" the con profile data fetcher here because it
+      // relies on the access token, which is not available until after the user
+      // has logged in.
+      const fetchMyConProfileOrFail = buildMyConProfileDataFetcher()
+      try {
+        await fetchMyConProfileOrFail()
+        return history.push('/app/me')
+      } catch (err) {
+        // If the user does not have a con profile, we will try to create one
+        // for them using the data from the TP.
+        // If the user does not have a TP profile, we will show them an error.
+        const tpUserData = await myTpDataFetcher()
+        const tpJobseekerDirectoryEntry =
+          tpUserData.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry
+        const userHasATpJobseekerProfile = Boolean(tpJobseekerDirectoryEntry)
+
+        if (userHasATpJobseekerProfile) {
+          await conProfileSignUpMutation.mutateAsync({
+            input: {
+              email: tpJobseekerDirectoryEntry.email,
+              firstName: tpJobseekerDirectoryEntry.firstName,
+              lastName: tpJobseekerDirectoryEntry.lastName,
+              userType: UserType.Mentee,
+              rediLocation: envRediLocation() as RediLocation,
+              mentee_currentlyEnrolledInCourse:
+                tpJobseekerDirectoryEntry.currentlyEnrolledInCourse,
+            },
+          })
+          return history.push(`/front/signup-complete/mentee`)
+        } else {
+          throw err
+        }
+      }
     } catch (err) {
       formik.setSubmitting(false)
       setLoginError('You entered an incorrect email, password, or both.')
@@ -96,8 +155,9 @@ export default function Login() {
             {/* Commented and replaced with different text until the cross-platform log-in feature is implemented. */}
             {/* Got a ReDI Talent Pool user account? You can use the same username
             and password here. */}
-            Got a ReDI Talent Pool user account? To log in with the same username 
-            and password get in contact with @Kate in ReDI Slack or write an e-mail 
+            Got a ReDI Talent Pool user account? To log in with the same
+            username and password get in contact with @Kate in ReDI Slack or
+            write an e-mail
             <a href="mailto:kateryna@redi-school.org"> here</a>.
           </Content>
 
