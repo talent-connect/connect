@@ -2,7 +2,7 @@
 import * as Types from '@talent-connect/data-access';
 
 import { useQuery, UseQueryOptions } from 'react-query';
-import { fetcherForTp } from '@talent-connect/data-access';
+import { fetcher } from '@talent-connect/data-access';
 export type FindConProfileQueryVariables = Types.Exact<{
   conProfileId: Types.Scalars['ID'];
 }>;
@@ -39,10 +39,9 @@ export const useFindConProfileQuery = <
     ) =>
     useQuery<FindConProfileQuery, TError, TData>(
       ['findConProfile', variables],
-      fetcherForTp<FindConProfileQuery, FindConProfileQueryVariables>(FindConProfileDocument, variables),
+      fetcher<FindConProfileQuery, FindConProfileQueryVariables>(FindConProfileDocument, variables),
       options
     );
 
 useFindConProfileQuery.getKey = (variables: FindConProfileQueryVariables) => ['findConProfile', variables];
-;
 ;

@@ -2,7 +2,7 @@
 import * as Types from '@talent-connect/data-access';
 
 import { useMutation, UseMutationOptions } from 'react-query';
-import { fetcherForTp } from '@talent-connect/data-access';
+import { fetcher } from '@talent-connect/data-access';
 export type TpJobseekerProfileLanguageRecordDeleteMutationVariables = Types.Exact<{
   input: Types.TpJobseekerProfileLanguageRecordDeleteInput;
 }>;
@@ -26,6 +26,6 @@ export const useTpJobseekerProfileLanguageRecordDeleteMutation = <
     >(options?: UseMutationOptions<TpJobseekerProfileLanguageRecordDeleteMutation, TError, TpJobseekerProfileLanguageRecordDeleteMutationVariables, TContext>) =>
     useMutation<TpJobseekerProfileLanguageRecordDeleteMutation, TError, TpJobseekerProfileLanguageRecordDeleteMutationVariables, TContext>(
       ['tpJobseekerProfileLanguageRecordDelete'],
-      (variables?: TpJobseekerProfileLanguageRecordDeleteMutationVariables) => fetcherForTp<TpJobseekerProfileLanguageRecordDeleteMutation, TpJobseekerProfileLanguageRecordDeleteMutationVariables>(TpJobseekerProfileLanguageRecordDeleteDocument, variables)(),
+      (variables?: TpJobseekerProfileLanguageRecordDeleteMutationVariables) => fetcher<TpJobseekerProfileLanguageRecordDeleteMutation, TpJobseekerProfileLanguageRecordDeleteMutationVariables>(TpJobseekerProfileLanguageRecordDeleteDocument, variables)(),
       options
-    ););
+    );

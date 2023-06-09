@@ -2,7 +2,7 @@
 import * as Types from '@talent-connect/data-access';
 
 import { useMutation, UseMutationOptions } from 'react-query';
-import { fetcherForTp } from '@talent-connect/data-access';
+import { fetcher } from '@talent-connect/data-access';
 export type PatchUserContactMutationVariables = Types.Exact<{
   input: Types.UserContactPatchInput;
 }>;
@@ -24,6 +24,6 @@ export const usePatchUserContactMutation = <
     >(options?: UseMutationOptions<PatchUserContactMutation, TError, PatchUserContactMutationVariables, TContext>) =>
     useMutation<PatchUserContactMutation, TError, PatchUserContactMutationVariables, TContext>(
       ['patchUserContact'],
-      (variables?: PatchUserContactMutationVariables) => fetcherForTp<PatchUserContactMutation, PatchUserContactMutationVariables>(PatchUserContactDocument, variables)(),
+      (variables?: PatchUserContactMutationVariables) => fetcher<PatchUserContactMutation, PatchUserContactMutationVariables>(PatchUserContactDocument, variables)(),
       options
-    ););
+    );

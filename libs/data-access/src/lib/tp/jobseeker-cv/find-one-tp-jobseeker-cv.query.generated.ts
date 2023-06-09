@@ -3,7 +3,7 @@ import * as Types from '@talent-connect/data-access';
 
 import { AllTpJobseekerCvFieldsFragmentDoc } from './tp-jobseeker-cv.fragment.generated';
 import { useQuery, UseQueryOptions } from 'react-query';
-import { fetcherForCon } from '@talent-connect/data-access';
+import { fetcher } from '@talent-connect/data-access';
 export type FindOneTpJobseekerCvQueryVariables = Types.Exact<{
   id: Types.Scalars['ID'];
 }>;
@@ -28,7 +28,7 @@ export const useFindOneTpJobseekerCvQuery = <
     ) =>
     useQuery<FindOneTpJobseekerCvQuery, TError, TData>(
       ['findOneTpJobseekerCv', variables],
-      fetcherForCon<FindOneTpJobseekerCvQuery, FindOneTpJobseekerCvQueryVariables>(FindOneTpJobseekerCvDocument, variables),
+      fetcher<FindOneTpJobseekerCvQuery, FindOneTpJobseekerCvQueryVariables>(FindOneTpJobseekerCvDocument, variables),
       options
     );
 

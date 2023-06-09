@@ -2,7 +2,7 @@
 import * as Types from '@talent-connect/data-access';
 
 import { useMutation, UseMutationOptions } from 'react-query';
-import { fetcherForTp } from '@talent-connect/data-access';
+import { fetcher } from '@talent-connect/data-access';
 export type PatchTpCompanyProfileMutationVariables = Types.Exact<{
   input: Types.TpCompanyProfilePatchInput;
 }>;
@@ -24,6 +24,6 @@ export const usePatchTpCompanyProfileMutation = <
     >(options?: UseMutationOptions<PatchTpCompanyProfileMutation, TError, PatchTpCompanyProfileMutationVariables, TContext>) =>
     useMutation<PatchTpCompanyProfileMutation, TError, PatchTpCompanyProfileMutationVariables, TContext>(
       ['patchTpCompanyProfile'],
-      (variables?: PatchTpCompanyProfileMutationVariables) => fetcherForTp<PatchTpCompanyProfileMutation, PatchTpCompanyProfileMutationVariables>(PatchTpCompanyProfileDocument, variables)(),
+      (variables?: PatchTpCompanyProfileMutationVariables) => fetcher<PatchTpCompanyProfileMutation, PatchTpCompanyProfileMutationVariables>(PatchTpCompanyProfileDocument, variables)(),
       options
-    ););
+    );

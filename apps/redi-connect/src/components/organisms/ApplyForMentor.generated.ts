@@ -2,7 +2,7 @@
 import * as Types from '@talent-connect/data-access';
 
 import { useMutation, UseMutationOptions } from 'react-query';
-import { fetcherForTp } from '@talent-connect/data-access';
+import { fetcher } from '@talent-connect/data-access';
 export type ApplyForMentorMentorPropFragment = { __typename?: 'ConProfile', id: string, fullName: string, firstName: string };
 
 export type ApplyForMentorshipMutationVariables = Types.Exact<{
@@ -32,6 +32,6 @@ export const useApplyForMentorshipMutation = <
     >(options?: UseMutationOptions<ApplyForMentorshipMutation, TError, ApplyForMentorshipMutationVariables, TContext>) =>
     useMutation<ApplyForMentorshipMutation, TError, ApplyForMentorshipMutationVariables, TContext>(
       ['applyForMentorship'],
-      (variables?: ApplyForMentorshipMutationVariables) => fetcherForTp<ApplyForMentorshipMutation, ApplyForMentorshipMutationVariables>(ApplyForMentorshipDocument, variables)(),
+      (variables?: ApplyForMentorshipMutationVariables) => fetcher<ApplyForMentorshipMutation, ApplyForMentorshipMutationVariables>(ApplyForMentorshipDocument, variables)(),
       options
-    ););
+    );

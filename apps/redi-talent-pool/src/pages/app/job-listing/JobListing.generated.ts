@@ -5,7 +5,7 @@ import { AllTpJobListingFieldsFragmentDoc } from '../../../../../../libs/data-ac
 import { AllTpCompanyProfileFieldsFragmentDoc } from '../../../../../../libs/data-access/src/lib/tp/company-profiles/tp-company-profile.fragment.generated';
 import { AllUserContactFieldsFragmentDoc } from '../../../../../../libs/data-access/src/lib/common/user-contact.generated';
 import { useQuery, UseQueryOptions } from 'react-query';
-import { fetcherForTp } from '@talent-connect/data-access';
+import { fetcher } from '@talent-connect/data-access';
 export type FindOneJobListingQueryVariables = Types.Exact<{
   filter: Types.FindOneTpJobListingArgsFilter;
 }>;
@@ -38,10 +38,9 @@ export const useFindOneJobListingQuery = <
     ) =>
     useQuery<FindOneJobListingQuery, TError, TData>(
       ['findOneJobListing', variables],
-      fetcherForTp<FindOneJobListingQuery, FindOneJobListingQueryVariables>(FindOneJobListingDocument, variables),
+      fetcher<FindOneJobListingQuery, FindOneJobListingQueryVariables>(FindOneJobListingDocument, variables),
       options
     );
 
 useFindOneJobListingQuery.getKey = (variables: FindOneJobListingQueryVariables) => ['findOneJobListing', variables];
-;
 ;

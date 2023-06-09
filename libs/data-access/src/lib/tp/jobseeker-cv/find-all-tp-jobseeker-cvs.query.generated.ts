@@ -3,7 +3,7 @@ import * as Types from '@talent-connect/data-access';
 
 import { AllTpJobseekerCvFieldsFragmentDoc } from './tp-jobseeker-cv.fragment.generated';
 import { useQuery, UseQueryOptions } from 'react-query';
-import { fetcherForTp } from '@talent-connect/data-access';
+import { fetcher } from '@talent-connect/data-access';
 export type FindAllTpJobseekerCvsQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 
@@ -26,10 +26,9 @@ export const useFindAllTpJobseekerCvsQuery = <
     ) =>
     useQuery<FindAllTpJobseekerCvsQuery, TError, TData>(
       variables === undefined ? ['findAllTpJobseekerCvs'] : ['findAllTpJobseekerCvs', variables],
-      fetcherForTp<FindAllTpJobseekerCvsQuery, FindAllTpJobseekerCvsQueryVariables>(FindAllTpJobseekerCvsDocument, variables),
+      fetcher<FindAllTpJobseekerCvsQuery, FindAllTpJobseekerCvsQueryVariables>(FindAllTpJobseekerCvsDocument, variables),
       options
     );
 
 useFindAllTpJobseekerCvsQuery.getKey = (variables?: FindAllTpJobseekerCvsQueryVariables) => variables === undefined ? ['findAllTpJobseekerCvs'] : ['findAllTpJobseekerCvs', variables];
-;
 ;

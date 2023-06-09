@@ -2,7 +2,7 @@
 import * as Types from '@talent-connect/data-access';
 
 import { useQuery, UseQueryOptions } from 'react-query';
-import { fetcherForTp } from '@talent-connect/data-access';
+import { fetcher } from '@talent-connect/data-access';
 export type ApplicationsPageApplicationFragment = { __typename?: 'ConMentorshipMatch', id: string, createdAt: any, status: Types.MentorshipMatchStatus, applicationText?: string | null, expectationText?: string | null, mentorId: string, menteeId: string, updatedAt: any, mentor: { __typename?: 'ConProfile', id: string, firstName: string, fullName: string, rediLocation: Types.RediLocation, profileAvatarImageS3Key?: string | null }, mentee: { __typename?: 'ConProfile', id: string, firstName: string, fullName: string, rediLocation: Types.RediLocation, profileAvatarImageS3Key?: string | null } };
 
 export type GetMentorshipMatchesQueryVariables = Types.Exact<{ [key: string]: never; }>;
@@ -52,10 +52,9 @@ export const useGetMentorshipMatchesQuery = <
     ) =>
     useQuery<GetMentorshipMatchesQuery, TError, TData>(
       variables === undefined ? ['getMentorshipMatches'] : ['getMentorshipMatches', variables],
-      fetcherForTp<GetMentorshipMatchesQuery, GetMentorshipMatchesQueryVariables>(GetMentorshipMatchesDocument, variables),
+      fetcher<GetMentorshipMatchesQuery, GetMentorshipMatchesQueryVariables>(GetMentorshipMatchesDocument, variables),
       options
     );
 
 useGetMentorshipMatchesQuery.getKey = (variables?: GetMentorshipMatchesQueryVariables) => variables === undefined ? ['getMentorshipMatches'] : ['getMentorshipMatches', variables];
-;
 ;

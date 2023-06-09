@@ -1,6 +1,5 @@
 export * from './company-profiles'
 export * from './company-representative-relationship'
-export * from './contact'
 export * from './job-listings'
 export * from './jobseeker-cv'
 export * from './jobseeker-directory-entries'

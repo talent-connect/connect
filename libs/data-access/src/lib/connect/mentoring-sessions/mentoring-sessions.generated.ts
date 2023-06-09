@@ -2,7 +2,7 @@
 import * as Types from '@talent-connect/data-access';
 
 import { useMutation, UseMutationOptions } from 'react-query';
-import { fetcherForTp } from '@talent-connect/data-access';
+import { fetcher } from '@talent-connect/data-access';
 export type CreateMentoringSessionMutationVariables = Types.Exact<{
   input: Types.CreateConMentoringSessionInput;
 }>;
@@ -24,6 +24,6 @@ export const useCreateMentoringSessionMutation = <
     >(options?: UseMutationOptions<CreateMentoringSessionMutation, TError, CreateMentoringSessionMutationVariables, TContext>) =>
     useMutation<CreateMentoringSessionMutation, TError, CreateMentoringSessionMutationVariables, TContext>(
       ['createMentoringSession'],
-      (variables?: CreateMentoringSessionMutationVariables) => fetcherForTp<CreateMentoringSessionMutation, CreateMentoringSessionMutationVariables>(CreateMentoringSessionDocument, variables)(),
+      (variables?: CreateMentoringSessionMutationVariables) => fetcher<CreateMentoringSessionMutation, CreateMentoringSessionMutationVariables>(CreateMentoringSessionDocument, variables)(),
       options
-    ););
+    );

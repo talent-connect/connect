@@ -46,26 +46,6 @@ export function fetcher<TData, TVariables>(
   }
 }
 
-export function fetcherForCon<TData, TVariables>(
-  query: string,
-  variables?: TVariables,
-  headers?: RequestInit['headers']
-) {
-  // if (!headers) headers = []
-  // headers.push(['Redi-Product', 'CON'])
-  return fetcher<TData, TVariables>(query, variables, headers)
-}
-
-export function fetcherForTp<TData, TVariables>(
-  query: string,
-  variables?: TVariables,
-  headers?: RequestInit['headers']
-) {
-  // if (!headers) headers = []
-  // headers.push(['Redi-Product', 'TP'])
-  return fetcher<TData, TVariables>(query, variables, headers)
-}
-
 // export type TestQueryVariables = Types.Exact<{ [key: string]: never }>
 
 // export type TestQuery = {

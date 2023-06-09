@@ -2,7 +2,7 @@
 import * as Types from '@talent-connect/data-access';
 
 import { useMutation, UseMutationOptions } from 'react-query';
-import { fetcherForTp } from '@talent-connect/data-access';
+import { fetcher } from '@talent-connect/data-access';
 export type CompleteMentorshipMutationVariables = Types.Exact<{
   input: Types.ConMentorshipMatchesCompleteMentorshipInputDto;
 }>;
@@ -24,6 +24,6 @@ export const useCompleteMentorshipMutation = <
     >(options?: UseMutationOptions<CompleteMentorshipMutation, TError, CompleteMentorshipMutationVariables, TContext>) =>
     useMutation<CompleteMentorshipMutation, TError, CompleteMentorshipMutationVariables, TContext>(
       ['completeMentorship'],
-      (variables?: CompleteMentorshipMutationVariables) => fetcherForTp<CompleteMentorshipMutation, CompleteMentorshipMutationVariables>(CompleteMentorshipDocument, variables)(),
+      (variables?: CompleteMentorshipMutationVariables) => fetcher<CompleteMentorshipMutation, CompleteMentorshipMutationVariables>(CompleteMentorshipDocument, variables)(),
       options
-    ););
+    );

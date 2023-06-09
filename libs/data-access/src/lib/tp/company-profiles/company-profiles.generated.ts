@@ -2,7 +2,7 @@
 import * as Types from '@talent-connect/data-access';
 
 import { useQuery, UseQueryOptions } from 'react-query';
-import { fetcherForTp } from '@talent-connect/data-access';
+import { fetcher } from '@talent-connect/data-access';
 export type ListAllTpCompanyNamesQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 
@@ -26,10 +26,9 @@ export const useListAllTpCompanyNamesQuery = <
     ) =>
     useQuery<ListAllTpCompanyNamesQuery, TError, TData>(
       variables === undefined ? ['listAllTpCompanyNames'] : ['listAllTpCompanyNames', variables],
-      fetcherForTp<ListAllTpCompanyNamesQuery, ListAllTpCompanyNamesQueryVariables>(ListAllTpCompanyNamesDocument, variables),
+      fetcher<ListAllTpCompanyNamesQuery, ListAllTpCompanyNamesQueryVariables>(ListAllTpCompanyNamesDocument, variables),
       options
     );
 
 useListAllTpCompanyNamesQuery.getKey = (variables?: ListAllTpCompanyNamesQueryVariables) => variables === undefined ? ['listAllTpCompanyNames'] : ['listAllTpCompanyNames', variables];
-;
 ;

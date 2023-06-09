@@ -2,7 +2,7 @@
 import * as Types from '@talent-connect/data-access';
 
 import { useMutation, UseMutationOptions } from 'react-query';
-import { fetcherForTp } from '@talent-connect/data-access';
+import { fetcher } from '@talent-connect/data-access';
 export type TpJobListingDeleteMutationVariables = Types.Exact<{
   input: Types.TpJobListingDeleteInput;
 }>;
@@ -24,6 +24,6 @@ export const useTpJobListingDeleteMutation = <
     >(options?: UseMutationOptions<TpJobListingDeleteMutation, TError, TpJobListingDeleteMutationVariables, TContext>) =>
     useMutation<TpJobListingDeleteMutation, TError, TpJobListingDeleteMutationVariables, TContext>(
       ['tpJobListingDelete'],
-      (variables?: TpJobListingDeleteMutationVariables) => fetcherForTp<TpJobListingDeleteMutation, TpJobListingDeleteMutationVariables>(TpJobListingDeleteDocument, variables)(),
+      (variables?: TpJobListingDeleteMutationVariables) => fetcher<TpJobListingDeleteMutation, TpJobListingDeleteMutationVariables>(TpJobListingDeleteDocument, variables)(),
       options
-    ););
+    );

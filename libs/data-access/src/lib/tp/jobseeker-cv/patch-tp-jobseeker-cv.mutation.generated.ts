@@ -2,7 +2,7 @@
 import * as Types from '@talent-connect/data-access';
 
 import { useMutation, UseMutationOptions } from 'react-query';
-import { fetcherForTp } from '@talent-connect/data-access';
+import { fetcher } from '@talent-connect/data-access';
 export type TpJobseekerCvPatchMutationVariables = Types.Exact<{
   input: Types.TpJobseekerCvPatchInput;
 }>;
@@ -24,6 +24,6 @@ export const useTpJobseekerCvPatchMutation = <
     >(options?: UseMutationOptions<TpJobseekerCvPatchMutation, TError, TpJobseekerCvPatchMutationVariables, TContext>) =>
     useMutation<TpJobseekerCvPatchMutation, TError, TpJobseekerCvPatchMutationVariables, TContext>(
       ['tpJobseekerCvPatch'],
-      (variables?: TpJobseekerCvPatchMutationVariables) => fetcherForTp<TpJobseekerCvPatchMutation, TpJobseekerCvPatchMutationVariables>(TpJobseekerCvPatchDocument, variables)(),
+      (variables?: TpJobseekerCvPatchMutationVariables) => fetcher<TpJobseekerCvPatchMutation, TpJobseekerCvPatchMutationVariables>(TpJobseekerCvPatchDocument, variables)(),
       options
-    ););
+    );

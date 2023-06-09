@@ -2,7 +2,7 @@
 import * as Types from '@talent-connect/data-access';
 
 import { useMutation, UseMutationOptions } from 'react-query';
-import { fetcherForTp } from '@talent-connect/data-access';
+import { fetcher } from '@talent-connect/data-access';
 export type ConProfileSignUpMutationVariables = Types.Exact<{
   input: Types.ConProfileSignUpInput;
 }>;
@@ -24,6 +24,6 @@ export const useConProfileSignUpMutation = <
     >(options?: UseMutationOptions<ConProfileSignUpMutation, TError, ConProfileSignUpMutationVariables, TContext>) =>
     useMutation<ConProfileSignUpMutation, TError, ConProfileSignUpMutationVariables, TContext>(
       ['conProfileSignUp'],
-      (variables?: ConProfileSignUpMutationVariables) => fetcherForTp<ConProfileSignUpMutation, ConProfileSignUpMutationVariables>(ConProfileSignUpDocument, variables)(),
+      (variables?: ConProfileSignUpMutationVariables) => fetcher<ConProfileSignUpMutation, ConProfileSignUpMutationVariables>(ConProfileSignUpDocument, variables)(),
       options
-    ););
+    );

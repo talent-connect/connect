@@ -2,7 +2,7 @@
 import * as Types from '@talent-connect/data-access';
 
 import { useMutation, UseMutationOptions } from 'react-query';
-import { fetcherForTp } from '@talent-connect/data-access';
+import { fetcher } from '@talent-connect/data-access';
 export type TpJobseekerProfileLanguageRecordPatchMutationVariables = Types.Exact<{
   input: Types.TpJobseekerProfileLanguageRecordPatchInput;
 }>;
@@ -26,6 +26,6 @@ export const useTpJobseekerProfileLanguageRecordPatchMutation = <
     >(options?: UseMutationOptions<TpJobseekerProfileLanguageRecordPatchMutation, TError, TpJobseekerProfileLanguageRecordPatchMutationVariables, TContext>) =>
     useMutation<TpJobseekerProfileLanguageRecordPatchMutation, TError, TpJobseekerProfileLanguageRecordPatchMutationVariables, TContext>(
       ['tpJobseekerProfileLanguageRecordPatch'],
-      (variables?: TpJobseekerProfileLanguageRecordPatchMutationVariables) => fetcherForTp<TpJobseekerProfileLanguageRecordPatchMutation, TpJobseekerProfileLanguageRecordPatchMutationVariables>(TpJobseekerProfileLanguageRecordPatchDocument, variables)(),
+      (variables?: TpJobseekerProfileLanguageRecordPatchMutationVariables) => fetcher<TpJobseekerProfileLanguageRecordPatchMutation, TpJobseekerProfileLanguageRecordPatchMutationVariables>(TpJobseekerProfileLanguageRecordPatchDocument, variables)(),
       options
-    ););
+    );

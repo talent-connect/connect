@@ -2,7 +2,7 @@
 import * as Types from '@talent-connect/data-access';
 
 import { useMutation, useQuery, UseMutationOptions, UseQueryOptions } from 'react-query';
-import { fetcherForTp } from '@talent-connect/data-access';
+import { fetcher } from '@talent-connect/data-access';
 export type FavoriteMentorMutationVariables = Types.Exact<{
   input: Types.ConMenteeFavoritedMentorCreateMutationInputDto;
 }>;
@@ -36,7 +36,7 @@ export const useFavoriteMentorMutation = <
     >(options?: UseMutationOptions<FavoriteMentorMutation, TError, FavoriteMentorMutationVariables, TContext>) =>
     useMutation<FavoriteMentorMutation, TError, FavoriteMentorMutationVariables, TContext>(
       ['favoriteMentor'],
-      (variables?: FavoriteMentorMutationVariables) => fetcherForTp<FavoriteMentorMutation, FavoriteMentorMutationVariables>(FavoriteMentorDocument, variables)(),
+      (variables?: FavoriteMentorMutationVariables) => fetcher<FavoriteMentorMutation, FavoriteMentorMutationVariables>(FavoriteMentorDocument, variables)(),
       options
     );
 export const UnfavoriteMentorDocument = `
@@ -52,7 +52,7 @@ export const useUnfavoriteMentorMutation = <
     >(options?: UseMutationOptions<UnfavoriteMentorMutation, TError, UnfavoriteMentorMutationVariables, TContext>) =>
     useMutation<UnfavoriteMentorMutation, TError, UnfavoriteMentorMutationVariables, TContext>(
       ['unfavoriteMentor'],
-      (variables?: UnfavoriteMentorMutationVariables) => fetcherForTp<UnfavoriteMentorMutation, UnfavoriteMentorMutationVariables>(UnfavoriteMentorDocument, variables)(),
+      (variables?: UnfavoriteMentorMutationVariables) => fetcher<UnfavoriteMentorMutation, UnfavoriteMentorMutationVariables>(UnfavoriteMentorDocument, variables)(),
       options
     );
 export const ListFavoriteMentorsDocument = `
@@ -71,11 +71,9 @@ export const useListFavoriteMentorsQuery = <
     ) =>
     useQuery<ListFavoriteMentorsQuery, TError, TData>(
       variables === undefined ? ['listFavoriteMentors'] : ['listFavoriteMentors', variables],
-      fetcherForTp<ListFavoriteMentorsQuery, ListFavoriteMentorsQueryVariables>(ListFavoriteMentorsDocument, variables),
+      fetcher<ListFavoriteMentorsQuery, ListFavoriteMentorsQueryVariables>(ListFavoriteMentorsDocument, variables),
       options
     );
 
 useListFavoriteMentorsQuery.getKey = (variables?: ListFavoriteMentorsQueryVariables) => variables === undefined ? ['listFavoriteMentors'] : ['listFavoriteMentors', variables];
-;
-;
 ;

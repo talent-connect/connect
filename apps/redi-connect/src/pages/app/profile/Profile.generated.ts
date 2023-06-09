@@ -3,7 +3,7 @@ import * as Types from '@talent-connect/data-access';
 
 import { AllConProfileFieldsFragmentDoc } from '../../../../../../libs/data-access/src/lib/connect/con-profiles/con-profile.fragment.generated';
 import { useQuery, UseQueryOptions } from 'react-query';
-import { fetcherForTp } from '@talent-connect/data-access';
+import { fetcher } from '@talent-connect/data-access';
 export type ProfilePageQueryQueryVariables = Types.Exact<{
   id: Types.Scalars['ID'];
 }>;
@@ -28,10 +28,9 @@ export const useProfilePageQueryQuery = <
     ) =>
     useQuery<ProfilePageQueryQuery, TError, TData>(
       ['ProfilePageQuery', variables],
-      fetcherForTp<ProfilePageQueryQuery, ProfilePageQueryQueryVariables>(ProfilePageQueryDocument, variables),
+      fetcher<ProfilePageQueryQuery, ProfilePageQueryQueryVariables>(ProfilePageQueryDocument, variables),
       options
     );
 
 useProfilePageQueryQuery.getKey = (variables: ProfilePageQueryQueryVariables) => ['ProfilePageQuery', variables];
-;
 ;
