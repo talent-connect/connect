@@ -9,7 +9,6 @@ import {
   UserType,
   fetcher,
   useConProfileSignUpMutation,
-  useLoadMyProfileQuery,
 } from '@talent-connect/data-access'
 import {
   Button,
@@ -65,38 +64,35 @@ const buildMyConProfileDataFetcher = () =>
 export default function Login() {
   const history = useHistory()
   const accessToken = getAccessTokenFromLocalStorage()
-  const loopbackUserId = accessToken?.userId ?? ''
-  const [stateLoopbackUserId, setStateLoopbackUserId] = useState(loopbackUserId)
-  const myProfileQuery = useLoadMyProfileQuery(
-    { loopbackUserId: stateLoopbackUserId },
-    { enabled: Boolean(stateLoopbackUserId) }
-  )
   const conProfileSignUpMutation = useConProfileSignUpMutation()
 
   const [loginError, setLoginError] = useState<string>('')
-
-  const isWrongRediLocationError =
-    myProfileQuery.isSuccess &&
-    myProfileQuery.data.conProfile.rediLocation !== envRediLocation()
-
-  if (isWrongRediLocationError) {
-    purgeAllSessionData()
-  }
+  const [isWrongRediLocationError, setIsWrongRediLocationError] =
+    useState<boolean>(false)
+  const [conProfile, setConProfile] = useState<
+    LoadMyProfileQuery['conProfile'] | null
+  >(null)
 
   const submitForm = async () => {
     try {
-      const accessToken = await login(
-        formik.values.username,
-        formik.values.password
-      )
-      setStateLoopbackUserId(accessToken.userId)
+      await login(formik.values.username, formik.values.password)
 
       // Note: we have to "build" the con profile data fetcher here because it
       // relies on the access token, which is not available until after the user
       // has logged in.
       const fetchMyConProfileOrFail = buildMyConProfileDataFetcher()
       try {
-        await fetchMyConProfileOrFail()
+        const conProfile = await fetchMyConProfileOrFail()
+        const isWrongRediLocationError =
+          conProfile.conProfile.rediLocation !== envRediLocation()
+
+        if (isWrongRediLocationError) {
+          purgeAllSessionData()
+          setIsWrongRediLocationError(true)
+          setConProfile(conProfile.conProfile)
+          return
+        }
+
         return history.push('/app/me')
       } catch (err) {
         // If the user does not have a con profile, we will try to create one
@@ -172,15 +168,12 @@ export default function Login() {
                 }
               </strong>
               , but your account is linked to ReDI Connect{' '}
-              <strong>
-                {capitalize(myProfileQuery.data.conProfile.rediLocation)}
-              </strong>
-              . To access ReDI Connect{' '}
-              <strong>{myProfileQuery.data.conProfile.rediLocation}</strong>, go{' '}
+              <strong>{capitalize(conProfile?.rediLocation)}</strong>. To access
+              ReDI Connect <strong>{conProfile?.rediLocation}</strong>, go{' '}
               <a
                 href={buildFrontendUrl(
                   process.env.NODE_ENV,
-                  myProfileQuery.data.conProfile.rediLocation
+                  conProfile?.rediLocation
                 )}
               >
                 here
