@@ -1,11 +1,11 @@
 import {
+  fetcher,
   LoadMyProfileDocument,
   LoadMyProfileQuery,
   LoadMyProfileQueryVariables,
   MyTpDataDocument,
   MyTpDataQuery,
   MyTpDataQueryVariables,
-  fetcher,
 } from '@talent-connect/data-access'
 import {
   Button,
@@ -75,21 +75,25 @@ export default function Login() {
           saveAccessTokenToLocalStorage(accessToken)
 
           const tpUserData = await myTpDataFetcher()
+
+          const userHasATpProfile =
+            Boolean(
+              tpUserData.tpCurrentUserDataGet.tpJobseekerDirectoryEntry
+            ) || Boolean(tpUserData.tpCurrentUserDataGet.representedCompany)
+
+          if (userHasATpProfile) {
+            return history.push('/app/me')
+          }
+
           // Note: we have to "build" the con profile data fetcher here because it
           // relies on the access token, which is not available until after the user
           // has logged in.
           const myConProfileDataFetcher = buildMyConProfileDataFetcher()
           const conUserData = await myConProfileDataFetcher()
-          const userHasATpProfile =
-            Boolean(
-              tpUserData.tpCurrentUserDataGet.tpJobseekerDirectoryEntry
-            ) || Boolean(tpUserData.tpCurrentUserDataGet.representedCompany)
+
           const userDoesNotHaveTpProfile = !userHasATpProfile
           const userHasConProfile = Boolean(conUserData.conProfile)
 
-          if (userHasATpProfile) {
-            return history.push('/app/me')
-          }
           if (userDoesNotHaveTpProfile && userHasConProfile) {
             await tpJobseekerSignupMutation.mutateAsync({
               input: {
