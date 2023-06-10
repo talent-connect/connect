@@ -1,4 +1,5 @@
 import {
+  fetcher,
   LoadMyProfileDocument,
   LoadMyProfileQuery,
   LoadMyProfileQueryVariables,
@@ -6,9 +7,8 @@ import {
   MyTpDataQuery,
   MyTpDataQueryVariables,
   RediLocation,
-  UserType,
-  fetcher,
   useConProfileSignUpMutation,
+  UserType,
 } from '@talent-connect/data-access'
 import {
   Button,
@@ -63,15 +63,17 @@ const buildMyConProfileDataFetcher = () =>
 
 export default function Login() {
   const history = useHistory()
-  const accessToken = getAccessTokenFromLocalStorage()
   const conProfileSignUpMutation = useConProfileSignUpMutation()
 
   const [loginError, setLoginError] = useState<string>('')
   const [isWrongRediLocationError, setIsWrongRediLocationError] =
     useState<boolean>(false)
+
   const [conProfile, setConProfile] = useState<
     LoadMyProfileQuery['conProfile'] | null
   >(null)
+  const [tpProfileLocation, setTpProfileLocation] =
+    useState<RediLocation | null>(null)
 
   const submitForm = async () => {
     try {
@@ -104,13 +106,26 @@ export default function Login() {
         const userHasATpJobseekerProfile = Boolean(tpJobseekerDirectoryEntry)
 
         if (userHasATpJobseekerProfile) {
+          const isWrongRediLocationError =
+            tpJobseekerDirectoryEntry.rediLocation !== envRediLocation()
+
+          if (isWrongRediLocationError) {
+            purgeAllSessionData()
+            setIsWrongRediLocationError(true)
+            setTpProfileLocation(
+              tpJobseekerDirectoryEntry.rediLocation as RediLocation
+            )
+            return
+          }
+
           await conProfileSignUpMutation.mutateAsync({
             input: {
               email: tpJobseekerDirectoryEntry.email,
               firstName: tpJobseekerDirectoryEntry.firstName,
               lastName: tpJobseekerDirectoryEntry.lastName,
               userType: UserType.Mentee,
-              rediLocation: envRediLocation() as RediLocation,
+              rediLocation:
+                tpJobseekerDirectoryEntry.rediLocation as RediLocation,
               mentee_currentlyEnrolledInCourse:
                 tpJobseekerDirectoryEntry.currentlyEnrolledInCourse,
             },
@@ -168,12 +183,18 @@ export default function Login() {
                 }
               </strong>
               , but your account is linked to ReDI Connect{' '}
-              <strong>{capitalize(conProfile?.rediLocation)}</strong>. To access
-              ReDI Connect <strong>{conProfile?.rediLocation}</strong>, go{' '}
+              <strong>
+                {capitalize(conProfile?.rediLocation || tpProfileLocation)}
+              </strong>
+              . To access ReDI Connect{' '}
+              <strong>
+                {capitalize(conProfile?.rediLocation || tpProfileLocation)}
+              </strong>
+              , go{' '}
               <a
                 href={buildFrontendUrl(
                   process.env.NODE_ENV,
-                  conProfile?.rediLocation
+                  conProfile?.rediLocation || tpProfileLocation
                 )}
               >
                 here
