@@ -1,13 +1,13 @@
 import {
   TpCompanyProfileSignUpOperationType,
-  useListAllTpCompanyNamesQuery
+  useListAllTpCompanyNamesQuery,
 } from '@talent-connect/data-access'
 import {
   Button,
   Checkbox,
   FormInput,
   FormSelect,
-  Heading
+  Heading,
 } from '@talent-connect/shared-atomic-design-components'
 import { COURSES, REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import { TpCompanyProfile } from '@talent-connect/shared-types'
@@ -26,7 +26,7 @@ import { signUpLoopback } from '../../../services/api/api'
 import { history } from '../../../services/history/history'
 import {
   useSignUpCompanyMutation,
-  useSignUpJobseekerMutation
+  useSignUpJobseekerMutation,
 } from './SignUp.generated'
 
 const formRediLocations = objectEntries(REDI_LOCATION_NAMES).map(
@@ -121,7 +121,7 @@ export default function SignUp() {
       passwordConfirm: '',
       firstName: '',
       lastName: '',
-      isMicrosoftPartner: false
+      isMicrosoftPartner: false,
     }),
     []
   )
@@ -223,13 +223,8 @@ export default function SignUp() {
         <Columns.Column size={5} offset={1}>
           <Heading border="bottomLeft">Sign-up</Heading>
           <Content size="small" renderAs="p">
-            {/* Commented and replaced with different text until the cross-platform log-in feature is implemented. */}
-            {/* Got a ReDI Connect user account? You can log in with the same
-            username and password <Link to="/front/login">here</Link>. */}
-            Got a ReDI Connect user account? To log in with the same username
-            and password get in contact with @Kate in ReDI Slack or write an
-            e-mail
-            <a href="mailto:kateryna@redi-school.org"> here</a>.
+            Got a ReDI Connect user account? You can log in with the same
+            username and password <Link to="/front/login">here</Link>.
           </Content>
           {loopbackSubmitError === 'user-already-exists' && (
             <Notification color="info" className="is-light">

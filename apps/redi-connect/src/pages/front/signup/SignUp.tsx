@@ -9,7 +9,7 @@ import {
   Checkbox,
   FormInput,
   FormSelect,
-  Heading
+  Heading,
 } from '@talent-connect/shared-atomic-design-components'
 import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
 
@@ -21,7 +21,7 @@ import {
   RediCourse,
   RediLocation,
   useConProfileSignUpMutation,
-  UserType
+  UserType,
 } from '@talent-connect/data-access'
 import { COURSES } from '@talent-connect/shared-config'
 import { toPascalCaseAndTrim } from '@talent-connect/shared-utils'
@@ -160,12 +160,8 @@ export default function SignUp() {
           <Heading border="bottomLeft">Sign-up</Heading>
           {type === 'mentee' && (
             <Content size="small" renderAs="p">
-              {/* Commented and replaced with different text until the cross-platform log-in feature is implemented. */}
-              {/* Got a ReDI Talent Pool user account? You can log in with the same
-              username and password <Link to="/front/login">here</Link>. */}
-              Got a ReDI Talent Pool user account? To log in with the same username 
-              and password get in contact with @Kate in ReDI Slack or write an e-mail 
-              <a href="mailto:kateryna@redi-school.org"> here</a>.
+              Got a ReDI Talent Pool user account? You can log in with the same
+              username and password <Link to="/front/login">here</Link>.
             </Content>
           )}
           {loopbackSubmitError === 'user-already-exists' ? (

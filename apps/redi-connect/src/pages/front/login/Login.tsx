@@ -163,13 +163,8 @@ export default function Login() {
             Enter your email and password below.
           </Content>
           <Content size="small" renderAs="p">
-            {/* Commented and replaced with different text until the cross-platform log-in feature is implemented. */}
-            {/* Got a ReDI Talent Pool user account? You can use the same username
-            and password here. */}
-            Got a ReDI Talent Pool user account? To log in with the same
-            username and password get in contact with @Kate in ReDI Slack or
-            write an e-mail
-            <a href="mailto:kateryna@redi-school.org"> here</a>.
+            Got a ReDI Talent Pool user account? You can use the same username
+            and password here.
           </Content>
 
           {isWrongRediLocationError && (
