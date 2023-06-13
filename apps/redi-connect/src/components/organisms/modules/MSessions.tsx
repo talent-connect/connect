@@ -52,7 +52,7 @@ const initialFormValues: FormValues = {
 }
 
 const validationSchema = Yup.object({
-  date: Yup.date().required().label('Date'),
+  date: Yup.date().max(new Date()).required().label('Date'),
   minuteDuration: Yup.string()
     .required('Please select the duration of the session.')
     .oneOf(
@@ -169,7 +169,7 @@ const MSessions = ({ sessions, menteeId, editable }: MSessions) => {
           <Modal.Foot>
             <Button
               onClick={() => formik.handleSubmit()}
-              disabled={!(formik.dirty && formik.isValid)}
+              disabled={!formik.isValid}
             >
               Add Session
             </Button>
