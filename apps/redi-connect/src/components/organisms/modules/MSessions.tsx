@@ -138,11 +138,13 @@ const MSessions = ({ sessions, menteeId, editable }: MSessions) => {
 
       {editable && (
         <Modal
+          styles={{ overflow: 'unset' }} // This is needed to be able to show the datepicker outside the modal
           show={showAddSession}
           stateFn={setShowAddSession}
           title="Log a new mentoring session"
         >
-          <Modal.Body>
+          {/** overflow: 'unset' is needed to be able to show the datepicker outside the modal */}
+          <Modal.Body style={{ overflow: 'unset' }}>
             {/* <Content>Please write a few words about why you feel uncertain about your mentorship and which issues you are experiencing? </Content> */}
             <form>
               {createSessionMutation.isError ? (
@@ -150,6 +152,7 @@ const MSessions = ({ sessions, menteeId, editable }: MSessions) => {
               ) : null}
 
               <FormDatePicker
+                maxDate={new Date()}
                 label="When did the mentoring session take place?"
                 name="date"
                 placeholder="Add the correct date"
