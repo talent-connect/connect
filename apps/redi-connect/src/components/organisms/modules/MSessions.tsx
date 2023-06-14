@@ -145,7 +145,6 @@ const MSessions = ({ sessions, menteeId, editable }: MSessions) => {
         >
           {/** overflow: 'unset' is needed to be able to show the datepicker outside the modal */}
           <Modal.Body style={{ overflow: 'unset' }}>
-            {/* <Content>Please write a few words about why you feel uncertain about your mentorship and which issues you are experiencing? </Content> */}
             <form>
               {createSessionMutation.isError ? (
                 <>An error occurred, please try again.</>
