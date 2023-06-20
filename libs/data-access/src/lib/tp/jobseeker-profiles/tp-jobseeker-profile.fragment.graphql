@@ -38,7 +38,6 @@ fragment AllTpJobseekerDirectoryEntryFields on TpJobseekerDirectoryEntry {
     ...AllTpJobseekerProfileLanguageRecordFields
   }
   createdAt
-  currentlyEnrolledInCourse
   desiredEmploymentType
   desiredPositions
   dribbbleUrl

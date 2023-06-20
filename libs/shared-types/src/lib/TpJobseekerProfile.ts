@@ -9,7 +9,6 @@ export type TpJobseekerProfile = {
   firstName: string
   lastName: string
   contactEmail: string
-  currentlyEnrolledInCourse: string
 
   genderPronouns?: string
 

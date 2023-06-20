@@ -1459,7 +1459,6 @@ export type TpJobseekerDirectoryEntry = {
   availability?: Maybe<TpAvailabilityOption>;
   behanceUrl?: Maybe<Scalars['String']>;
   createdAt: Scalars['DateTime'];
-  currentlyEnrolledInCourse?: Maybe<RediCourse>;
   desiredEmploymentType?: Maybe<Array<TpEmploymentType>>;
   desiredPositions?: Maybe<Array<TpDesiredPosition>>;
   dribbbleUrl?: Maybe<Scalars['String']>;
@@ -1531,7 +1530,6 @@ export type TpJobseekerProfile = {
   aboutYourself?: Maybe<Scalars['String']>;
   availability?: Maybe<TpAvailabilityOption>;
   createdAt: Scalars['DateTime'];
-  currentlyEnrolledInCourse?: Maybe<RediCourse>;
   desiredEmploymentType?: Maybe<Array<TpEmploymentType>>;
   desiredPositions?: Maybe<Array<TpDesiredPosition>>;
   federalState?: Maybe<FederalState>;
@@ -1689,7 +1687,6 @@ export type TpJobseekerProfileLanguageRecordPatchInput = {
 export type TpJobseekerProfilePatchInput = {
   aboutYourself?: InputMaybe<Scalars['String']>;
   availability?: InputMaybe<TpAvailabilityOption>;
-  currentlyEnrolledInCourse?: InputMaybe<RediCourse>;
   desiredEmploymentType?: InputMaybe<Array<TpEmploymentType>>;
   desiredPositions?: InputMaybe<Array<TpDesiredPosition>>;
   federalState?: InputMaybe<FederalState>;
@@ -1710,7 +1707,6 @@ export type TpJobseekerProfilePatchInput = {
 };
 
 export type TpJobseekerProfileSignUpDto = {
-  currentlyEnrolledInCourse: RediCourse;
   firstName: Scalars['String'];
   lastName: Scalars['String'];
   rediLocation: RediLocation;

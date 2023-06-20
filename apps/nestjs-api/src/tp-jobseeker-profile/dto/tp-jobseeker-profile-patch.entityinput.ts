@@ -9,7 +9,6 @@ export class TpJobseekerProfilePatchInput extends PartialType(
   PickType(_TpJobseekerProfileEntityProps, [
     'aboutYourself',
     'availability',
-    'currentlyEnrolledInCourse',
     'desiredEmploymentType',
     'desiredPositions',
     'federalState',

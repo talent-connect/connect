@@ -5,9 +5,8 @@ import {
   ImmigrationStatus,
   TpDesiredPosition,
   TpEmploymentType,
-  TpTechnicalSkill,
+  TpTechnicalSkill
 } from '../../common-objects'
-import { RediCourse } from '../../con-profile'
 import { TpAvailabilityOption } from '../../tp-common-objects'
 import { TpJobseekerProfileEducationRecordEntityProps } from '../common-objects/tp-jobseeker-profile-education-record.entityprops'
 import { TpJobseekerProfileExperienceRecordEntityProps } from '../common-objects/tp-jobseeker-profile-experience-record.entityprops'
@@ -41,8 +40,6 @@ export class TpJobseekerDirectoryEntryEntityProps implements EntityProps {
   location?: string
 
   rediLocation?: string
-  @Field(() => RediCourse)
-  currentlyEnrolledInCourse?: RediCourse
   profileAvatarImageS3Key?: string
   @Field((type) => [TpDesiredPosition])
   desiredPositions?: Array<TpDesiredPosition>

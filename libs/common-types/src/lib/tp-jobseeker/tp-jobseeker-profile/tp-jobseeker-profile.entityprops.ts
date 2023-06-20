@@ -6,9 +6,8 @@ import {
   RediLocation,
   TpDesiredPosition,
   TpEmploymentType,
-  TpTechnicalSkill,
+  TpTechnicalSkill
 } from '../../common-objects'
-import { RediCourse } from '../../con-profile'
 import { TpAvailabilityOption } from '../../tp-common-objects'
 import { JobseekerProfileStatus } from '../enums'
 
@@ -21,8 +20,6 @@ export class TpJobseekerProfileEntityProps implements EntityProps {
 
   @Field(() => RediLocation)
   rediLocation?: string
-  @Field(() => RediCourse)
-  currentlyEnrolledInCourse?: string
   profileAvatarImageS3Key?: string
   @Field((type) => [TpDesiredPosition])
   desiredPositions?: Array<TpDesiredPosition>

@@ -7,9 +7,8 @@ import {
   LanguageProficiencyLevel,
   TpDesiredPosition,
   TpEmploymentType,
-  TpTechnicalSkill,
+  TpTechnicalSkill
 } from '../../common-objects'
-import { RediCourse } from '../../con-profile'
 import { TpAvailabilityOption } from '../../tp-common-objects'
 import { TpJobseekerProfileEducationRecordEntityProps } from '../common-objects/tp-jobseeker-profile-education-record.entityprops'
 import { TpJobseekerProfileExperienceRecordEntityProps } from '../common-objects/tp-jobseeker-profile-experience-record.entityprops'
@@ -51,8 +50,6 @@ export class TpJobseekerDirectoryEntryMapper
     props.id = jobseekerProfileRecord.Id
 
     props.rediLocation = jobseekerProfileRecord.ReDI_Location__c
-    props.currentlyEnrolledInCourse =
-      jobseekerProfileRecord.ReDI_Course__c as RediCourse
     props.profileAvatarImageS3Key = jobseekerProfileRecord.Avatar_Image_URL__c
     props.desiredPositions =
       (jobseekerProfileRecord.Desired_Positions__c?.split(
