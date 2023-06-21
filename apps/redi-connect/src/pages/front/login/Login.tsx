@@ -126,8 +126,6 @@ export default function Login() {
               userType: UserType.Mentee,
               rediLocation:
                 tpJobseekerDirectoryEntry.rediLocation as RediLocation,
-              mentee_currentlyEnrolledInCourse:
-                tpJobseekerDirectoryEntry.currentlyEnrolledInCourse,
             },
           })
           return history.push(`/front/signup-complete/mentee`)

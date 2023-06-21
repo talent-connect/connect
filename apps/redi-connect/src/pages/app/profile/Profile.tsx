@@ -1,12 +1,12 @@
 import {
   MentorshipMatchStatus,
   useLoadMyProfileQuery,
-  UserType,
+  UserType
 } from '@talent-connect/data-access'
 import {
   Button,
   Heading,
-  Icon,
+  Icon
 } from '@talent-connect/shared-atomic-design-components'
 import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import { Columns, Content, Element, Notification } from 'react-bulma-components'
@@ -18,14 +18,12 @@ import {
   ReadLanguages,
   ReadMentoringTopics,
   ReadOccupation,
-  ReadPersonalDetail,
-  ReadRediClass,
-  ReadSocialMedia,
+  ReadPersonalDetail, ReadSocialMedia
 } from '../../../components/molecules'
 import {
   ApplyForMentor,
   Avatar,
-  ConfirmMentorship,
+  ConfirmMentorship
 } from '../../../components/organisms'
 import DeclineMentorshipButton from '../../../components/organisms/DeclineMentorshipButton'
 import { LoggedIn } from '../../../components/templates'
@@ -205,14 +203,16 @@ function Profile() {
                   </Columns.Column>
                 )}
                 <Columns.Column>
-                  <ReadRediClass.Some profile={profile} />
+                  {/* Commented until we implement it using the data available in Salesforce */}
+                  {/* <ReadRediClass.Some profile={profile} /> */}
+                  <ReadOccupation.Some profile={profile} />
                 </Columns.Column>
               </Columns>
             </Element>
           )}
 
-          {(profile.mentor_occupation ||
-            profile.mentee_occupationCategoryId) && (
+          {profile.mentor_occupation && (
+          // || profile.mentee_occupationCategoryId) 
             <Element className="block-separator">
               <Columns>
                 <Columns.Column>
