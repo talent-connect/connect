@@ -1,3 +1,0 @@
-fragment ReadRediClassProfileProp on ConProfile {
-  mentee_currentlyEnrolledInCourse
-}

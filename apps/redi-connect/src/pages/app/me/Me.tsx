@@ -9,7 +9,8 @@ import {
   EditableMenteeCount,
   EditableMentoringTopics,
   EditableOccupation,
-  EditablePersonalDetail, EditableSocialMedia
+  EditablePersonalDetail,
+  EditableSocialMedia,
 } from '../../../components/organisms'
 
 import { LoggedIn } from '../../../components/templates'
@@ -117,7 +118,7 @@ function Me() {
             </Columns.Column>
             <Columns.Column size={6}>
               {/* Commented until we implement it using the data available in Salesforce */}
-              {/* <EditableRediClass /> */}
+              {/* <ReadRediClass.Me /> */}
               <EditableOccupation />
             </Columns.Column>
           </Columns>

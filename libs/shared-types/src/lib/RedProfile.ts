@@ -5,7 +5,6 @@ import { SignupSource } from './SignupSource'
 import { RediLocation } from './RediLocation'
 import {
   CategoryKey,
-  CourseKey,
   EducationLevelKey,
   GenderKey,
   LanguageKey,
@@ -32,7 +31,6 @@ export type RedProfile = {
   mentee_occupationLookingForJob_what: string
   mentee_occupationOther_description: string
   mentee_highestEducationLevel: EducationLevelKey
-  mentee_currentlyEnrolledInCourse: CourseKey
   profileAvatarImageS3Key: string
   firstName: string
   lastName: string
