@@ -1,7 +1,7 @@
 import { UserType } from '@talent-connect/data-access'
 import {
   Button,
-  Heading,
+  Heading
 } from '@talent-connect/shared-atomic-design-components'
 import { Columns, Content, Form } from 'react-bulma-components'
 import { useHistory, useParams } from 'react-router-dom'
@@ -34,7 +34,7 @@ export default function SignUpComplete() {
                 <p>
                   Now, we would like to get to know you better. We regularly
                   organize mentor onboardings in small groups.{' '}
-                  <a href="https://calendly.com/hadeertalentsucess/redi-connect-mentors-onboarding">
+                  <a href="https://calendly.com/hadeertalentsucess/mentors-onboarding-session">
                     <strong>
                       Please book yourself in for one of the open 30-minute
                       slots.

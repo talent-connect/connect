@@ -31,7 +31,7 @@
             target="_blank"
             width="358px"
             css-class="button-desktop"
-            href="https://calendly.com/hadeertalentsucess/redi-connect-mentors-onboarding"
+            href="https://calendly.com/hadeertalentsucess/mentors-onboarding-session"
           />
           <mj-image
             src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/schedule-meeting-small.png"
@@ -39,7 +39,7 @@
             padding="10px 0 30px 0"
             target="_blank"
             css-class="button-mobile"
-            href="https://calendly.com/hadeertalentsucess/redi-connect-mentors-onboarding"
+            href="https://calendly.com/hadeertalentsucess/mentors-onboarding-session"
           />
           <mj-text mj-class="text paragraph" 
             >We’re looking forward to getting to know you soon!</mj-text
