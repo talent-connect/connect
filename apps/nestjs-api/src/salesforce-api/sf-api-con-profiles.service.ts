@@ -1,9 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import {
-  ConProfileRecord,
-  RediCourse,
-  UserType,
-} from '@talent-connect/common-types'
+import { ConProfileRecord, UserType } from '@talent-connect/common-types'
 import { omit } from 'lodash'
 import { SfApiRepository } from './sf-api.repository'
 
@@ -37,7 +33,6 @@ export class SfApiConProfilesService {
     profileStatus: string
     loopbackUserId: string
     userType: UserType
-    mentee_currentlyEnrolledInCourse: RediCourse
     menteeCountCapacity: number
   }) {
     const upsertContactResult = await this.repository.updateRecord('Contact', {

@@ -39,5 +39,5 @@
 
 export default {
   Me: () => null,
-  Some: ({ profile }: Props) => null,
+  Some: ({ profile }: any) => null,
 }

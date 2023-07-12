@@ -2,12 +2,7 @@ import { Field, ID, Int, ObjectType } from '@nestjs/graphql'
 import { EntityProps } from '../base-interfaces-types-classes'
 import { Language, RediLocation } from '../common-objects'
 import { Gender } from '../common-objects/contact/enums/gender.enum'
-import {
-  EducationLevel,
-  OccupationCategory,
-  RediCourse,
-  UserType,
-} from './enums'
+import { EducationLevel, OccupationCategory, UserType } from './enums'
 import { ConnectProfileStatus } from './enums/connect-profile-status.enum'
 import { MentoringTopic } from './enums/mentoring-topic.enum'
 

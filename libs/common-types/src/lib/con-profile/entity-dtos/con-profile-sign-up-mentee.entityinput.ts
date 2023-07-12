@@ -1,5 +1,4 @@
-import { InputType, Int, Field } from '@nestjs/graphql'
-import { RediCourse } from '../enums'
+import { InputType } from '@nestjs/graphql'
 
 @InputType('ConProfileSignUpMenteeInput')
 export class ConProfileSignUpMenteeInput {
