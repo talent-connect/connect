@@ -5,7 +5,7 @@ import {
   ImmigrationStatus,
   TpDesiredPosition,
   TpEmploymentType,
-  TpTechnicalSkill,
+  TpTechnicalSkill
 } from '../../common-objects'
 import { TpAvailabilityOption } from '../../tp-common-objects'
 import { JobseekerProfileStatus } from '../enums'
@@ -24,7 +24,6 @@ export class TpJobseekerProfileMapper
     props.id = raw.props.Id
 
     props.rediLocation = raw.props.ReDI_Location__c
-    props.currentlyEnrolledInCourse = raw.props.ReDI_Course__c
     props.profileAvatarImageS3Key = raw.props.Avatar_Image_URL__c
     props.desiredPositions =
       (raw.props.Desired_Positions__c?.split(';') as TpDesiredPosition[]) ??
@@ -72,7 +71,6 @@ export class TpJobseekerProfileMapper
     props.Id = source.props.id
 
     props.ReDI_Location__c = source.props.rediLocation
-    props.ReDI_Course__c = source.props.currentlyEnrolledInCourse
     props.Avatar_Image_URL__c = source.props.profileAvatarImageS3Key
     props.Desired_Positions__c = source.props?.desiredPositions?.join(';')
     props.Location__c = source.props.location

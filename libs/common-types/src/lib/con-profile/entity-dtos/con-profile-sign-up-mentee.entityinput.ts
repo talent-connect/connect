@@ -6,6 +6,4 @@ export class ConProfileSignUpMenteeInput {
   email: string
   firstName: string
   lastName: string
-  @Field((type) => RediCourse)
-  mentee_currentlyEnrolledInCourse: RediCourse
 }

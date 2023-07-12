@@ -1124,7 +1124,6 @@ type TpJobseekerDirectoryEntry {
   availability: TpAvailabilityOption
   behanceUrl: String
   createdAt: DateTime!
-  currentlyEnrolledInCourse: RediCourse
   desiredEmploymentType: [TpEmploymentType!]
   desiredPositions: [TpDesiredPosition!]
   dribbbleUrl: String
@@ -1192,7 +1191,6 @@ type TpJobseekerProfile {
   aboutYourself: String
   availability: TpAvailabilityOption
   createdAt: DateTime!
-  currentlyEnrolledInCourse: RediCourse
   desiredEmploymentType: [TpEmploymentType!]
   desiredPositions: [TpDesiredPosition!]
   federalState: FederalState
@@ -1347,7 +1345,6 @@ input TpJobseekerProfileLanguageRecordPatchInput {
 input TpJobseekerProfilePatchInput {
   aboutYourself: String
   availability: TpAvailabilityOption
-  currentlyEnrolledInCourse: RediCourse
   desiredEmploymentType: [TpEmploymentType!]
   desiredPositions: [TpDesiredPosition!]
   federalState: FederalState
@@ -1368,7 +1365,6 @@ input TpJobseekerProfilePatchInput {
 }
 
 input TpJobseekerProfileSignUpDto {
-  currentlyEnrolledInCourse: RediCourse!
   firstName: String!
   lastName: String!
   rediLocation: RediLocation!

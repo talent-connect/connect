@@ -10,7 +10,6 @@ import {
   EditableMentoringTopics,
   EditableOccupation,
   EditablePersonalDetail,
-  EditableRediClass,
   EditableSocialMedia,
 } from '../../../components/organisms'
 
@@ -118,19 +117,21 @@ function Me() {
               </Element>
             </Columns.Column>
             <Columns.Column size={6}>
-              <EditableRediClass />
+              {/* Commented until we implement it using the data available in Salesforce */}
+              {/* <ReadRediClass.Me /> */}
+              <EditableOccupation />
             </Columns.Column>
           </Columns>
         </Element>
       )}
 
-      <Element className="block-separator">
+      {/* <Element className="block-separator">
         <Columns>
           <Columns.Column size={6}>
             <EditableOccupation />
           </Columns.Column>
         </Columns>
-      </Element>
+      </Element> */}
     </LoggedIn>
   )
 }

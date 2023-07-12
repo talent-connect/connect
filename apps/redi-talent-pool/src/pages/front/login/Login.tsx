@@ -99,8 +99,6 @@ export default function Login() {
               input: {
                 firstName: conUserData.conProfile.firstName,
                 lastName: conUserData.conProfile.lastName,
-                currentlyEnrolledInCourse:
-                  conUserData.conProfile.mentee_currentlyEnrolledInCourse,
                 rediLocation: conUserData.conProfile.rediLocation,
               },
             })

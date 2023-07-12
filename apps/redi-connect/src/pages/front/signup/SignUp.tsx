@@ -8,7 +8,6 @@ import {
   Button,
   Checkbox,
   FormInput,
-  FormSelect,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
 import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
@@ -18,25 +17,14 @@ import Teaser from '../../../components/molecules/Teaser'
 import { Columns, Content, Form, Notification } from 'react-bulma-components'
 
 import {
-  RediCourse,
   RediLocation,
   useConProfileSignUpMutation,
   UserType,
 } from '@talent-connect/data-access'
-import { COURSES } from '@talent-connect/shared-config'
 import { toPascalCaseAndTrim } from '@talent-connect/shared-utils'
-import { courses } from '../../../config/config'
 import { signUpLoopback } from '../../../services/api/api'
 import { history } from '../../../services/history/history'
 import { envRediLocation } from '../../../utils/env-redi-location'
-
-const formCourses = COURSES.filter((course) => {
-  const courseLocation = course.location as RediLocation
-  return courseLocation === envRediLocation()
-}).map((course) => ({
-  value: course.id,
-  label: course.label,
-}))
 
 export const validationSchema = Yup.object({
   firstName: Yup.string()
@@ -61,13 +49,6 @@ export const validationSchema = Yup.object({
     .oneOf([Yup.ref('password')], 'Passwords do not match'),
   agreesWithCodeOfConduct: Yup.boolean().required().oneOf([true]),
   gaveGdprConsent: Yup.boolean().required().oneOf([true]),
-  mentee_currentlyEnrolledInCourse: Yup.string().when('userType', {
-    is: 'public-sign-up-mentee-pending-review',
-    then: Yup.string()
-      .required('Please select current ReDI course')
-      .oneOf(courses.map((level) => level.id))
-      .label('Currently enrolled in course'),
-  }),
 })
 
 type SignUpPageType = {
@@ -83,7 +64,6 @@ export interface SignUpFormValues {
   firstName: string
   lastName: string
   agreesWithCodeOfConduct: boolean
-  mentee_currentlyEnrolledInCourse?: RediCourse
 }
 
 export default function SignUp() {
@@ -99,7 +79,6 @@ export default function SignUp() {
     firstName: '',
     lastName: '',
     agreesWithCodeOfConduct: false,
-    mentee_currentlyEnrolledInCourse: undefined,
   }
 
   const [loopbackSubmitError, setLoopbackSubmitError] = useState<string | null>(
@@ -119,8 +98,6 @@ export default function SignUp() {
           lastName: values.lastName,
           userType: type.toUpperCase() as UserType,
           rediLocation: envRediLocation() as RediLocation,
-          mentee_currentlyEnrolledInCourse:
-            values.mentee_currentlyEnrolledInCourse,
         },
       })
       actions.setSubmitting(false)
@@ -204,16 +181,6 @@ export default function SignUp() {
               placeholder="Repeat your password"
               {...formik}
             />
-
-            {type === 'mentee' && (
-              <FormSelect
-                label="Current ReDI Course"
-                name="mentee_currentlyEnrolledInCourse"
-                placeholder="Choose your ReDI Course"
-                items={formCourses}
-                {...formik}
-              />
-            )}
 
             <Checkbox.Form
               name="agreesWithCodeOfConduct"

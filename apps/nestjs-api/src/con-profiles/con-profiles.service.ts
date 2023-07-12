@@ -31,7 +31,6 @@ export class ConProfilesService {
       profileStatus: ConnectProfileStatus.PENDING,
       rediLocation: input.rediLocation,
       userType: input.userType,
-      mentee_currentlyEnrolledInCourse: input.mentee_currentlyEnrolledInCourse,
       menteeCountCapacity: input.userType === UserType.MENTOR ? 1 : 0,
     })
   }

@@ -57,7 +57,6 @@ export class SfApiConProfilesService {
         Profile_Status__c: data.profileStatus,
         ReDI_Location__c: data.rediLocation,
         RecordTypeId: recordTypeId,
-        ReDI_Course__c: data.mentee_currentlyEnrolledInCourse,
         total_mentee_capacity__c: data.menteeCountCapacity,
       }
     )

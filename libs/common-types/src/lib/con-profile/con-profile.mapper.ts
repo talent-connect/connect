@@ -12,7 +12,6 @@ import {
   Mapper,
   MentoringTopic,
   OccupationCategory,
-  RediCourse,
   RediLocation,
   UserType,
 } from '@talent-connect/common-types'
@@ -46,8 +45,6 @@ export class ConProfileMapper
       raw.props.Main_Occupation_Other__c
     props.mentee_highestEducationLevel = raw.props
       .Education__c as EducationLevel
-    props.mentee_currentlyEnrolledInCourse = raw.props
-      .ReDI_Course__c as RediCourse
     props.profileAvatarImageS3Key = raw.props.Avatar_Image_URL__c
 
     props.firstName = String(raw.props.Contact__r.FirstName)
@@ -128,7 +125,6 @@ export class ConProfileMapper
     props.Desired_Job__c = srcProps.mentee_occupationLookingForJob_what
     props.Main_Occupation_Other__c = srcProps.mentee_occupationOther_description
     props.Education__c = srcProps.mentee_highestEducationLevel
-    props.ReDI_Course__c = srcProps.mentee_currentlyEnrolledInCourse
     props.Avatar_Image_URL__c = srcProps.profileAvatarImageS3Key
 
     props.Languages__c = srcProps.languages?.join(';')

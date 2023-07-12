@@ -18,7 +18,6 @@ export class PatchConProfileInput extends PartialType(
     'mentee_occupationLookingForJob_what',
     'mentee_occupationOther_description',
     'mentee_highestEducationLevel',
-    'mentee_currentlyEnrolledInCourse',
     'profileAvatarImageS3Key',
     'firstName',
     'lastName',

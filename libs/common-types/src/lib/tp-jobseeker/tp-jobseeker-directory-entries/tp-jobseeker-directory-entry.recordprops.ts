@@ -2,7 +2,7 @@ import { plainToClass, Type } from 'class-transformer'
 import {
   PicklistValue,
   PicklistValuesSemicolonSeparated,
-  RecordProps,
+  RecordProps
 } from '../../base-interfaces-types-classes'
 
 class JobseekerLineItemsWrapper {
@@ -49,7 +49,6 @@ class JobseekerProfileItem {
   LastModifiedDate: Date
 
   ReDI_Location__c?: PicklistValue
-  ReDI_Course__c?: PicklistValue
   Avatar_Image_URL__c?: string
   Desired_Positions__c?: PicklistValuesSemicolonSeparated
   Location__c?: string

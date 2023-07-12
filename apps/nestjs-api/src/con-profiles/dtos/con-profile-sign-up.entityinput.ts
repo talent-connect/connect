@@ -11,5 +11,4 @@ export class ConProfileSignUpInput extends PickType(_ConProfileEntityProps, [
   'lastName',
   'userType',
   'rediLocation',
-  'mentee_currentlyEnrolledInCourse',
 ] as const) {}

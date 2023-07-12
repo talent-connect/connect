@@ -21,7 +21,6 @@ export class TpJobseekerProfileRecord extends Record<TpJobseekerProfileRecordPro
       'LastModifiedDate',
       'Name',
       'ReDI_Location__c',
-      'ReDI_Course__c',
       'Avatar_Image_URL__c',
       'Desired_Positions__c',
       'Location__c',

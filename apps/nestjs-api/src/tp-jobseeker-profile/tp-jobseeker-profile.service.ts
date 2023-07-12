@@ -3,7 +3,7 @@ import {
   JobseekerProfileStatus,
   TpJobseekerProfileEntity,
   TpJobseekerProfileEntityProps,
-  TpJobseekerProfileMapper,
+  TpJobseekerProfileMapper
 } from '@talent-connect/common-types'
 import { deleteUndefinedProperties } from '@talent-connect/shared-utils'
 import { CurrentUserInfo } from '../auth/current-user.interface'
@@ -83,7 +83,6 @@ export class TpJobseekerProfileService {
     const newEntityProps = new TpJobseekerProfileEntityProps()
     newEntityProps.userId = currentUser.userId
     newEntityProps.rediLocation = input.rediLocation
-    newEntityProps.currentlyEnrolledInCourse = input.currentlyEnrolledInCourse
     newEntityProps.state = JobseekerProfileStatus.DRAFTING_PROFILE
 
     const entityToPersist = TpJobseekerProfileEntity.create(newEntityProps)
