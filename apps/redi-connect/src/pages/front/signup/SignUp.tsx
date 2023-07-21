@@ -25,6 +25,7 @@ import { toPascalCaseAndTrim } from '@talent-connect/shared-utils'
 import { signUpLoopback } from '../../../services/api/api'
 import { history } from '../../../services/history/history'
 import { envRediLocation } from '../../../utils/env-redi-location'
+import { SignUpPageType } from './signup-page.type'
 
 export const validationSchema = Yup.object({
   firstName: Yup.string()
@@ -51,10 +52,6 @@ export const validationSchema = Yup.object({
   gaveGdprConsent: Yup.boolean().required().oneOf([true]),
 })
 
-type SignUpPageType = {
-  type: 'mentor' | 'mentee'
-}
-
 export interface SignUpFormValues {
   userType: UserType
   gaveGdprConsent: boolean
@@ -68,7 +65,7 @@ export interface SignUpFormValues {
 
 export default function SignUp() {
   const signUpMutation = useConProfileSignUpMutation()
-  const { type } = useParams<SignUpPageType>()
+  const { type } = useParams() as unknown as { type: SignUpPageType }
 
   const initialValues: SignUpFormValues = {
     userType: type.toUpperCase() as UserType,

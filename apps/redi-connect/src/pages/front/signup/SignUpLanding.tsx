@@ -1,23 +1,24 @@
-import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
-import { Content, Columns, Element } from 'react-bulma-components'
-import AccountOperation from '../../../components/templates/AccountOperation'
-import Teaser from '../../../components/molecules/Teaser'
 import {
   Button,
   Heading,
   SVGImage,
+  SVGImages,
 } from '@talent-connect/shared-atomic-design-components'
-import { SVGImages } from '@talent-connect/shared-atomic-design-components'
 import classnames from 'classnames'
+import { useState } from 'react'
+import { Columns, Content, Element } from 'react-bulma-components'
+import { useHistory } from 'react-router-dom'
+import Teaser from '../../../components/molecules/Teaser'
+import AccountOperation from '../../../components/templates/AccountOperation'
 import './SignUpLanding.scss'
+import { SignUpPageType } from './signup-page.type'
 
 const SignUpLanding = () => {
   const [selectedType, setSelectedType] = useState('')
   const history = useHistory()
 
-  const renderType = (name: string) => {
-    const type = name.toLowerCase() as SVGImages
+  const renderType = (pageType: SignUpPageType) => {
+    const type = pageType as SVGImages
 
     return (
       <div
@@ -29,7 +30,7 @@ const SignUpLanding = () => {
       >
         <SVGImage image={type} />
         <Element className="signup__type__name" renderAs="p">
-          {name}
+          {pageType}
         </Element>
       </div>
     )
@@ -52,8 +53,8 @@ const SignUpLanding = () => {
             <strong>mentee</strong>?
           </Content>
           <div className="signup">
-            {renderType('Mentee')}
-            {renderType('Mentor')}
+            {renderType('mentee')}
+            {renderType('mentor')}
           </div>
           <Button
             fullWidth
