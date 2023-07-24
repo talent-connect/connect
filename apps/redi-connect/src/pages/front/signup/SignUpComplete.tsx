@@ -13,7 +13,7 @@ import { SignUpPageType, SignUpPageTypes } from './signup-page.type'
 export default function SignUpComplete() {
   const history = useHistory()
   const rediLocation = envRediLocation() as RediLocation
-  const { type } = useParams() as unknown as { type: SignUpPageType }
+  const { userType } = useParams() as unknown as { userType: SignUpPageType }
 
   return (
     <AccountOperation>
@@ -28,7 +28,7 @@ export default function SignUpComplete() {
           <Heading border="bottomLeft">Meet the team</Heading>
           <Content size="large" renderAs="div">
             <p>Thank you for signing up!</p>
-            {type === SignUpPageTypes.mentor && (
+            {userType === SignUpPageTypes.mentor && (
               <>
                 <p style={{ textAlign: 'justify' }}>
                   Now, we would like to get to know you better. We regularly
@@ -46,7 +46,7 @@ export default function SignUpComplete() {
                 </p>
               </>
             )}
-            {type === SignUpPageTypes.mentee && (
+            {userType === SignUpPageTypes.mentee && (
               <>
                 <p style={{ textAlign: 'justify' }}>
                   Your next step is to watch a short onboarding tutorial to get
