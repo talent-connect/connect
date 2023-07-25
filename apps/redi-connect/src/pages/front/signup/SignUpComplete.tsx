@@ -1,20 +1,19 @@
-import { UserType } from '@talent-connect/data-access'
+import { RediLocation } from '@talent-connect/data-access'
 import {
   Button,
-  Heading
+  Heading,
 } from '@talent-connect/shared-atomic-design-components'
 import { Columns, Content, Form } from 'react-bulma-components'
 import { useHistory, useParams } from 'react-router-dom'
 import { Teaser } from '../../../components/molecules'
 import AccountOperation from '../../../components/templates/AccountOperation'
-
-type RouteParams = {
-  userType: UserType
-}
+import { envRediLocation } from '../../../utils/env-redi-location'
+import { SignUpPageType, SignUpPageTypes } from './signup-page.type'
 
 export default function SignUpComplete() {
   const history = useHistory()
-  const { userType } = useParams<RouteParams>() as RouteParams
+  const rediLocation = envRediLocation() as RediLocation
+  const { userType } = useParams() as unknown as { userType: SignUpPageType }
 
   return (
     <AccountOperation>
@@ -29,9 +28,9 @@ export default function SignUpComplete() {
           <Heading border="bottomLeft">Meet the team</Heading>
           <Content size="large" renderAs="div">
             <p>Thank you for signing up!</p>
-            {userType === UserType.Mentor && (
+            {userType === SignUpPageTypes.mentor && (
               <>
-                <p>
+                <p style={{ textAlign: 'justify' }}>
                   Now, we would like to get to know you better. We regularly
                   organize mentor onboardings in small groups.{' '}
                   <a href="https://calendly.com/hadeertalentsucess/mentors-onboarding-session">
@@ -47,9 +46,9 @@ export default function SignUpComplete() {
                 </p>
               </>
             )}
-            {userType === UserType.Mentee && (
+            {userType === SignUpPageTypes.mentee && (
               <>
-                <p>
+                <p style={{ textAlign: 'justify' }}>
                   Your next step is to watch a short onboarding tutorial to get
                   a good overview of the mentorship program and how our matching
                   platform ReDI Connect works.
@@ -68,17 +67,19 @@ export default function SignUpComplete() {
                   </a>
                 </p>
 
-                <p>
+                <p style={{ textAlign: 'justify' }}>
                   Your <strong>final step</strong> after watching this video
-                  will be your activation call with our team.
-                </p>
-                <p>
+                  will be your activation call with our team -{' '}
                   <a
-                    href="https://calendly.com/hadeertalentsucess/redi-connect-mentees-activation-call"
+                    href={
+                      rediLocation === 'CYBERSPACE'
+                        ? 'https://calendly.com/josefa_cyberspace/redi-connect-mentees-activation-call-cyberspace-only'
+                        : 'https://calendly.com/hadeertalentsucess/redi-connect-mentees-activation-call'
+                    }
                     target="_blank"
                     rel="noreferrer"
                   >
-                    Schedule your activation call now
+                    schedule your activation call now
                   </a>
                   .
                 </p>
