@@ -267,8 +267,8 @@ export function BrowseCompany() {
             size="small"
           />
         </div>
-        {/* Hide after Job Fair */}
-        <div className="filters-inner">
+        {/* Hidden until the next Job Fair date announced */}
+        {/* <div className="filters-inner">
           <Checkbox
             name="joinsBerlin23SummerJobFair"
             checked={joinsBerlin23SummerJobFair || false}
@@ -285,7 +285,7 @@ export function BrowseCompany() {
           >
             ReDI Munich Summer Job Fair 2023
           </Checkbox>
-        </div>
+        </div> */}
       </div>
 
       <div className="active-filters">

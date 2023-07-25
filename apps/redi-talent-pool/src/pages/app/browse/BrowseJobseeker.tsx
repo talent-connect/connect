@@ -271,9 +271,9 @@ export function BrowseJobseeker() {
         </div>
         <div className="filters-inner"></div>
       </div>
-      <div className="filters">
+      {/* Hidden until the next Job Fair date announced */}
+      {/* <div className="filters">
         <div className="filters-inner">
-          {/* Hide after Job Fair */}
           <Checkbox
             name="joinsBerlin23SummerJobFair"
             checked={joinsBerlin23SummerJobFair || false}
@@ -292,7 +292,7 @@ export function BrowseJobseeker() {
           </Checkbox>
         </div>
         <div className="filters-inner"></div>
-      </div>
+      </div> */}
 
       <div className="active-filters">
         {shouldShowFilters && (

@@ -22,11 +22,11 @@ import { EditableOverview } from '../../../components/organisms/jobseeker-profil
 import { EditableProfessionalExperience } from '../../../components/organisms/jobseeker-profile-editables/EditableProfessionalExperience'
 import { EditableSummary } from '../../../components/organisms/jobseeker-profile-editables/EditableSummary'
 import { LoggedIn } from '../../../components/templates'
+import './MeJobseeker.scss'
 import { ReactComponent as ChecklistActiveImage } from './checklist-item-active.svg'
 import { ReactComponent as ChecklistImage } from './checklist-item.svg'
 import { ReactComponent as CheckmarkBorderOnlyImage } from './checkmark-border-only.svg'
 import { ReactComponent as CheckmarkImage } from './checkmark.svg'
-import './MeJobseeker.scss'
 import { ReactComponent as StepPendingImage } from './pending.svg'
 
 export function MeJobseeker() {
@@ -88,8 +88,8 @@ export function MeJobseeker() {
             <OnboardingSteps />
           </div>
           <EditableNamePhotoLocation profile={profile} />
-          {/* Hide after Job Fair */}
-          <div style={{ marginBottom: '1.5rem' }}>
+          {/* Hidden until the next Job Fair date announced */}
+          {/* <div style={{ marginBottom: '1.5rem' }}>
             <Checkbox
               checked={profile?.joinsBerlin23SummerJobFair}
               customOnChange={onBerlin23SummerJobFairParticipateChange}
@@ -106,7 +106,7 @@ export function MeJobseeker() {
               I will attend <b>ReDI Summer Job Fair in Munich</b> on{' '}
               <b>10/07/2023</b>.
             </Checkbox>
-          </div>
+          </div> */}
           <EditableOverview profile={profile} />
           <EditableSummary profile={profile} />
           <EditableProfessionalExperience profile={profile} />
