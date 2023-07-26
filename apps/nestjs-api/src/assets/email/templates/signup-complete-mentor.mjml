@@ -44,6 +44,8 @@
           <mj-text mj-class="text paragraph" 
             >We’re looking forward to getting to know you soon!</mj-text
           >
+          <mj-text mj-class="text paragraph">If you did not register for our platform, please let us know immediately by replying to this email.
+          </mj-text>
 
           <mj-text mj-class="text">All the best,</mj-text>
           <mj-text mj-class="text">Your ReDI Career Support Team</mj-text>
