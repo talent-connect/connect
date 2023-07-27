@@ -97,8 +97,8 @@ export function MeCompany() {
       <Columns className="is-6 is-variable">
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'three-fifths' }}>
           <EditableNamePhotoLocation companyProfile={companyProfile} />
-          {/* Hide after Job Fair */}
-          <div style={{ marginBottom: '1.5rem' }}>
+          {/* Hidden until the next Job Fair date announced */}
+          {/* <div style={{ marginBottom: '1.5rem' }}>
             <Checkbox
               checked={companyProfile.joinsBerlin23SummerJobFair}
               customOnChange={onBerlin23SummerJobFairParticipateChange}
@@ -113,7 +113,7 @@ export function MeCompany() {
               My company will attend <b>ReDI Summer Job Fair in Munich</b> on{' '}
               <b>10/07/2023</b>.
             </Checkbox>
-          </div>
+          </div> */}
           <EditableAbout companyProfile={companyProfile} />
         </Columns.Column>
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'two-fifths' }}>
