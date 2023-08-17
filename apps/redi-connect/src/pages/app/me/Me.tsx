@@ -125,13 +125,15 @@ function Me() {
         </Element>
       )}
 
-      {/* <Element className="block-separator">
-        <Columns>
-          <Columns.Column size={6}>
-            <EditableOccupation />
-          </Columns.Column>
-        </Columns>
-      </Element> */}
+      {userIsMentor && (
+        <Element className="block-separator">
+          <Columns>
+            <Columns.Column size={6}>
+              <EditableOccupation />
+            </Columns.Column>
+          </Columns>
+        </Element>
+      )}
     </LoggedIn>
   )
 }
