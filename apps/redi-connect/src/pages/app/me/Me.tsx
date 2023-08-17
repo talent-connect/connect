@@ -125,6 +125,7 @@ function Me() {
         </Element>
       )}
 
+      {/* When ReDI course is re-implemented, remove userIsMentor condition from here & EditableOccupation component above */}
       {userIsMentor && (
         <Element className="block-separator">
           <Columns>
