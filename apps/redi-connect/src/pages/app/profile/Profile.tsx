@@ -1,12 +1,12 @@
 import {
   MentorshipMatchStatus,
   useLoadMyProfileQuery,
-  UserType
+  UserType,
 } from '@talent-connect/data-access'
 import {
   Button,
   Heading,
-  Icon
+  Icon,
 } from '@talent-connect/shared-atomic-design-components'
 import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import { Columns, Content, Element, Notification } from 'react-bulma-components'
@@ -18,12 +18,13 @@ import {
   ReadLanguages,
   ReadMentoringTopics,
   ReadOccupation,
-  ReadPersonalDetail, ReadSocialMedia
+  ReadPersonalDetail,
+  ReadSocialMedia,
 } from '../../../components/molecules'
 import {
   ApplyForMentor,
   Avatar,
-  ConfirmMentorship
+  ConfirmMentorship,
 } from '../../../components/organisms'
 import DeclineMentorshipButton from '../../../components/organisms/DeclineMentorshipButton'
 import { LoggedIn } from '../../../components/templates'
@@ -212,7 +213,8 @@ function Profile() {
           )}
 
           {profile.mentor_occupation && (
-          // || profile.mentee_occupationCategoryId) 
+            // When ReDI course is re-implemented, uncomment this & remove ReadOccupation component above
+            // || profile.mentee_occupationCategoryId)
             <Element className="block-separator">
               <Columns>
                 <Columns.Column>
