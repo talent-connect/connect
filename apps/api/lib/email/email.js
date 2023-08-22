@@ -14,6 +14,7 @@ const config = {
 }
 const { buildFrontendUrl } = require('../build-frontend-url')
 const { buildBackendUrl } = require('../build-backend-url')
+const { ConsoleLogger } = require('@nestjs/common')
 
 const ses = new aws.SES(config)
 
@@ -106,8 +107,50 @@ const sendResetPasswordEmail = ({ recipient, accessToken, rediLocation }) => {
   })
 }
 
+const sendVerificationEmailTemplate = fs.readFileSync(
+  path.resolve(__dirname, 'templates', 'validate-email-address.mjml'),
+  'utf-8'
+)
+const sendVerificationEmailTemplateParsed = mjml2html(
+  sendVerificationEmailTemplate,
+  {
+    filePath: path.resolve(__dirname, 'templates'),
+  }
+)
+console.log('************ BLABLABLA **********')
+console.log()
+console.log()
+console.log()
+console.log(sendVerificationEmailTemplateParsed)
+const sendVerificationEmail = ({
+  recipient,
+  redUserId,
+  firstName,
+  verificationToken,
+  rediLocation,
+}) => {
+  const verificationSuccessPageUrl = `${buildFrontendUrl(
+    process.env.NODE_ENV,
+    rediLocation
+  )}/front/signup-complete/`
+  const verificationUrl = `${buildBackendUrl(
+    process.env.NODE_ENV
+  )}/api/redUsers/confirm?uid=${redUserId}&token=${verificationToken}&redirect=${encodeURI(
+    verificationSuccessPageUrl
+  )}`
+  const html = sendVerificationEmailTemplateParsed.html
+    .replace(/\${firstName}/g, firstName)
+    .replace(/\${verificationUrl}/g, verificationUrl)
+  return sendMjmlEmailFactory({
+    to: recipient,
+    subject: 'Verify your email address!',
+    html: html,
+  })
+}
+
 module.exports = {
   sendResetPasswordEmail,
   sendEmailFactory,
   sendMjmlEmailFactory,
+  sendVerificationEmail,
 }

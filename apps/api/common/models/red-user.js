@@ -4,6 +4,7 @@ const {
   sendResetPasswordEmail,
   sendMenteeRequestAppointmentEmail,
   sendMentorRequestAppointmentEmail,
+  sendVerificationEmail,
 } = require('../../lib/email/email')
 
 const {
@@ -31,6 +32,34 @@ module.exports = function (RedUser) {
     if (process.env.NODE_ENV === 'seeding') return next()
     // Onky continue if this is a brand new user
     if (!context.isNewInstance) return next()
+
+    const redUserInst = await RedUser.findById(context.instance.id)
+    const redUser = redUserInst.toJSON()
+
+    var verifyOptions = {
+      type: 'email',
+      mailer: {
+        send: async (verifyOptions, context, cb) => {
+          sendVerificationEmail({
+            recipient: verifyOptions.to,
+            redUserId: redUser.id,
+            // firstName: redProfile.firstName,
+            firstName: 'test',
+            verificationToken: verifyOptions.verificationToken,
+            // rediLocation: redProfile.rediLocation,
+            rediLocation: 'berlin',
+          }).subscribe()
+        },
+      },
+      to: redUser.email,
+      from: 'dummy@dummy.com',
+    }
+
+    redUserInst.verify(verifyOptions, function (err, response) {
+      console.log(err)
+      console.log(response)
+      next()
+    })
   })
 
   RedUser.afterRemote('confirm', async function (ctx, inst, next) {
