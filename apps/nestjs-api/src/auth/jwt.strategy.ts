@@ -26,6 +26,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   //! TODO: access this data properly via a service, not via the sf repository...
   async validate(payload: any): Promise<CurrentUserInfo> {
+    if (!payload.isEmailVerified)
+      throw UnauthorizedException('Email not verified')
     const loopbackUserId = payload.userId
     const email = payload.email
     //! TODO: introduce caching here, this is a lot of simple loolups

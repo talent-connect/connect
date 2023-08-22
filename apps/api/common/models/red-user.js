@@ -170,7 +170,15 @@ module.exports = function (RedUser) {
   RedUser.afterRemote('login', async function (ctx, loginOutput, next) {
     const email = ctx.req.body.email
     const jwtToken = jwt.sign(
-      { ...loginOutput.toJSON(), email },
+      {
+        ...loginOutput.toJSON(),
+        email,
+        isEmailVerified: true,
+        // Information from the sign up process
+        firstName: 'Kate',
+        lastName: 'Voronina',
+        rediLocation: 'berlin',
+      },
       process.env.NX_JWT_SECRET,
       {
         expiresIn: '21d',
