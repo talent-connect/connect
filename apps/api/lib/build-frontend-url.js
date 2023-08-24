@@ -17,9 +17,9 @@ module.exports = {
     } else if (env === 'staging') {
       return 'https://app.staging.connect.redi-school.org'
     } else if (env === 'development') {
-      return 'http://127.0.0.1:3000'
+      return 'http://localhost:3000'
     } else {
-      return 'http://127.0.0.1:3000'
+      return 'http://localhost:3000'
     }
   },
 }

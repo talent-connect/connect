@@ -87,18 +87,23 @@ export default function SignUp() {
   ) => {
     setLoopbackSubmitError(null)
     try {
-      await signUpLoopback(values.email, values.password)
-      await signUpMutation.mutateAsync({
-        input: {
-          email: values.email,
-          firstName: values.firstName,
-          lastName: values.lastName,
-          userType: type.toUpperCase() as UserType,
-          rediLocation: envRediLocation() as RediLocation,
-        },
+      await signUpLoopback(values.email, values.password, {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        userType: type.toUpperCase() as UserType,
+        rediLocation: envRediLocation() as RediLocation,
       })
+      // await signUpMutation.mutateAsync({
+      //   input: {
+      //     email: values.email,
+      //     firstName: values.firstName,
+      //     lastName: values.lastName,
+      //     userType: type.toUpperCase() as UserType,
+      //     rediLocation: envRediLocation() as RediLocation,
+      //   },
+      // })
       actions.setSubmitting(false)
-      history.push(`/front/signup-complete/${type}`)
+      history.push(`/front/signup-email-verification`)
     } catch (error) {
       actions.setSubmitting(false)
       if (

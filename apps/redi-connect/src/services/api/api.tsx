@@ -10,13 +10,18 @@ import {
 import { history } from '../history/history'
 import { http } from '../http/http'
 
-export const signUpLoopback = async (email: string, password: string) => {
+export const signUpLoopback = async (
+  email: string,
+  password: string,
+  extraData: { [key: string]: string }
+) => {
   email = email.toLowerCase()
   const userResponse = await http(`${API_URL}/redUsers`, {
     method: 'post',
     data: {
       email,
       password,
+      ...extraData,
     },
   })
   const accessToken = await login(email, password)

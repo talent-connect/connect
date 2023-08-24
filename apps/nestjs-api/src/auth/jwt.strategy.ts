@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { PassportStrategy } from '@nestjs/passport'
 import {
@@ -26,8 +26,20 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   //! TODO: access this data properly via a service, not via the sf repository...
   async validate(payload: any): Promise<CurrentUserInfo> {
-    if (!payload.isEmailVerified)
-      throw UnauthorizedException('Email not verified')
+    // Require all requests to come from a user with a
+    // verified email address. The incoming payload is a
+    // JWT token that was created and signed by Loopback.
+    if (!payload.emailVerified) {
+      throw new UnauthorizedException('Email not verified')
+    }
+
+    // At this stage, the user has a verified email address, but can be in one of the following states:
+    // is a mentor with/without a redi connect profile
+    // is a mentee with/without a redi connect profile
+    // is a jobseeker with/without a jobseeker profile
+    // is a company rep with/without a company profile / accountcontactrelation
+    // So, we need to run that on their behalf.
+
     const loopbackUserId = payload.userId
     const email = payload.email
     //! TODO: introduce caching here, this is a lot of simple loolups

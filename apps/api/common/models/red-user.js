@@ -62,55 +62,55 @@ module.exports = function (RedUser) {
     })
   })
 
-  RedUser.afterRemote('confirm', async function (ctx, inst, next) {
-    const redUserInst = await RedUser.findById(ctx.args.uid, {
-      include: ['redProfile', 'tpJobseekerProfile', 'tpCompanyProfile'],
-    })
-    const redUser = redUserInst.toJSON()
+  // RedUser.afterRemote('confirm', async function (ctx, inst, next) {
+  //   const redUserInst = await RedUser.findById(ctx.args.uid, {
+  //     include: ['redProfile', 'tpJobseekerProfile', 'tpCompanyProfile'],
+  //   })
+  //   const redUser = redUserInst.toJSON()
 
-    const userSignedUpWithCon = !!redUser.redProfile
-    const userSignedUpWithTpAndIsJobseeker = !!redUser.tpJobseekerProfile
-    const userSignedUpWithTpAndIsCompany = !!redUser.tpCompanyProfile
+  //   const userSignedUpWithCon = !!redUser.redProfile
+  //   const userSignedUpWithTpAndIsJobseeker = !!redUser.tpJobseekerProfile
+  //   const userSignedUpWithTpAndIsCompany = !!redUser.tpCompanyProfile
 
-    if (userSignedUpWithCon) {
-      const userType = redUser.redProfile.userType
+  //   if (userSignedUpWithCon) {
+  //     const userType = redUser.redProfile.userType
 
-      switch (userType) {
-        case 'public-sign-up-mentee-pending-review':
-          await sendMenteeRequestAppointmentEmail({
-            recipient: redUser.email,
-            firstName: redUser.redProfile.firstName,
-            rediLocation: redUser.redProfile.rediLocation,
-          }).toPromise()
-          return
+  //     switch (userType) {
+  //       case 'public-sign-up-mentee-pending-review':
+  //         await sendMenteeRequestAppointmentEmail({
+  //           recipient: redUser.email,
+  //           firstName: redUser.redProfile.firstName,
+  //           rediLocation: redUser.redProfile.rediLocation,
+  //         }).toPromise()
+  //         return
 
-        case 'public-sign-up-mentor-pending-review':
-          await sendMentorRequestAppointmentEmail({
-            recipient: redUser.email,
-            firstName: redUser.redProfile.firstName,
-            rediLocation: redUser.redProfile.rediLocation,
-          }).toPromise()
-          return
+  //       case 'public-sign-up-mentor-pending-review':
+  //         await sendMentorRequestAppointmentEmail({
+  //           recipient: redUser.email,
+  //           firstName: redUser.redProfile.firstName,
+  //           rediLocation: redUser.redProfile.rediLocation,
+  //         }).toPromise()
+  //         return
 
-        default:
-          throw new Error('Invalid user type')
-      }
-    }
+  //       default:
+  //         throw new Error('Invalid user type')
+  //     }
+  //   }
 
-    if (userSignedUpWithTpAndIsJobseeker) {
-      await sendTpJobseekerEmailVerificationSuccessfulEmail({
-        recipient: redUser.email,
-        firstName: redUser.tpJobseekerProfile.firstName,
-      }).toPromise()
-    }
+  //   if (userSignedUpWithTpAndIsJobseeker) {
+  //     await sendTpJobseekerEmailVerificationSuccessfulEmail({
+  //       recipient: redUser.email,
+  //       firstName: redUser.tpJobseekerProfile.firstName,
+  //     }).toPromise()
+  //   }
 
-    if (userSignedUpWithTpAndIsCompany) {
-      await sendTpCompanyEmailVerificationSuccessfulEmail({
-        recipient: redUser.email,
-        firstName: redUser.tpCompanyProfile.firstName,
-      }).toPromise()
-    }
-  })
+  //   if (userSignedUpWithTpAndIsCompany) {
+  //     await sendTpCompanyEmailVerificationSuccessfulEmail({
+  //       recipient: redUser.email,
+  //       firstName: redUser.tpCompanyProfile.firstName,
+  //     }).toPromise()
+  //   }
+  // })
 
   RedUser.requestResetPasswordEmail = function (body, cb) {
     const email = body.email
@@ -169,21 +169,11 @@ module.exports = function (RedUser) {
    */
   RedUser.afterRemote('login', async function (ctx, loginOutput, next) {
     const email = ctx.req.body.email
-    const jwtToken = jwt.sign(
-      {
-        ...loginOutput.toJSON(),
-        email,
-        isEmailVerified: true,
-        // Information from the sign up process
-        firstName: 'Kate',
-        lastName: 'Voronina',
-        rediLocation: 'berlin',
-      },
-      process.env.NX_JWT_SECRET,
-      {
-        expiresIn: '21d',
-      }
-    )
+    const redUserId = loginOutput.userId
+    const redUserInst = await RedUser.findById(redUserId)
+    const redUser = redUserInst.toJSON()
+
+    const jwtToken = generateJwtToken(redUser)
     ctx.result.jwtToken = jwtToken
 
     const redProduct = ctx.req.headers.redproduct // either CON or TP
@@ -286,6 +276,28 @@ module.exports = function (RedUser) {
 
     return conRedProfile
   }
+}
+
+function generateJwtToken(redUser) {
+  return jwt.sign(
+    {
+      email: redUser.email,
+      emailVerified: redUser.emailVerified,
+      firstName: redUser.firstName,
+      lastName: redUser.lastName,
+      rediLocation: redUser.rediLocation,
+      userType: redUser.userType,
+      companyNameOrId: redUser.companyNameOrId,
+      howDidHearAboutRediKey: redUser.howDidHearAboutRediKey,
+      howDidHearAboutRediOtherText: redUser.howDidHearAboutRediOtherText,
+      isMicrosoftPartner: redUser.isMicrosoftPartner,
+      operationType: redUser.operationType,
+    },
+    process.env.NX_JWT_SECRET,
+    {
+      expiresIn: '21d',
+    }
+  )
 }
 
 function determineRediLocationByCourse(course) {

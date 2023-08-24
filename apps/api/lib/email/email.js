@@ -31,8 +31,8 @@ const sendMjmlEmail = Rx.bindNodeCallback(
 )
 const sendEmailFactory = (to, subject, body, rediLocation) => {
   let toSanitized = isProductionOrDemonstration() ? to : ''
-  if (process.env.DEV_MODE_EMAIL_RECIPIENT) {
-    toSanitized = process.env.DEV_MODE_EMAIL_RECIPIENT
+  if (process.env.NX_DEV_MODE_EMAIL_RECIPIENT) {
+    toSanitized = process.env.NX_DEV_MODE_EMAIL_RECIPIENT
   }
   let sender = 'career@redi-school.org'
   return sendEmail({
@@ -57,8 +57,8 @@ const sendEmailFactory = (to, subject, body, rediLocation) => {
 }
 const sendMjmlEmailFactory = ({ to, subject, html }) => {
   let toSanitized = isProductionOrDemonstration() ? to : ''
-  if (process.env.DEV_MODE_EMAIL_RECIPIENT) {
-    toSanitized = process.env.DEV_MODE_EMAIL_RECIPIENT
+  if (process.env.NX_DEV_MODE_EMAIL_RECIPIENT) {
+    toSanitized = process.env.NX_DEV_MODE_EMAIL_RECIPIENT
   }
   let sender = 'career@redi-school.org'
   return sendMjmlEmail({
@@ -117,11 +117,6 @@ const sendVerificationEmailTemplateParsed = mjml2html(
     filePath: path.resolve(__dirname, 'templates'),
   }
 )
-console.log('************ BLABLABLA **********')
-console.log()
-console.log()
-console.log()
-console.log(sendVerificationEmailTemplateParsed)
 const sendVerificationEmail = ({
   recipient,
   redUserId,
