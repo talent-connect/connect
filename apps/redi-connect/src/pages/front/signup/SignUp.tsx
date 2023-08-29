@@ -93,15 +93,6 @@ export default function SignUp() {
         userType: type.toUpperCase() as UserType,
         rediLocation: envRediLocation() as RediLocation,
       })
-      // await signUpMutation.mutateAsync({
-      //   input: {
-      //     email: values.email,
-      //     firstName: values.firstName,
-      //     lastName: values.lastName,
-      //     userType: type.toUpperCase() as UserType,
-      //     rediLocation: envRediLocation() as RediLocation,
-      //   },
-      // })
       actions.setSubmitting(false)
       history.push(`/front/signup-email-verification`)
     } catch (error) {

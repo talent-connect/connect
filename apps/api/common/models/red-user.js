@@ -60,56 +60,6 @@ module.exports = function (RedUser) {
     })
   })
 
-  // RedUser.afterRemote('confirm', async function (ctx, inst, next) {
-  //   const redUserInst = await RedUser.findById(ctx.args.uid, {
-  //     include: ['redProfile', 'tpJobseekerProfile', 'tpCompanyProfile'],
-  //   })
-  //   const redUser = redUserInst.toJSON()
-
-  //   const userSignedUpWithCon = !!redUser.redProfile
-  //   const userSignedUpWithTpAndIsJobseeker = !!redUser.tpJobseekerProfile
-  //   const userSignedUpWithTpAndIsCompany = !!redUser.tpCompanyProfile
-
-  //   if (userSignedUpWithCon) {
-  //     const userType = redUser.redProfile.userType
-
-  //     switch (userType) {
-  //       case 'public-sign-up-mentee-pending-review':
-  //         await sendMenteeRequestAppointmentEmail({
-  //           recipient: redUser.email,
-  //           firstName: redUser.redProfile.firstName,
-  //           rediLocation: redUser.redProfile.rediLocation,
-  //         }).toPromise()
-  //         return
-
-  //       case 'public-sign-up-mentor-pending-review':
-  //         await sendMentorRequestAppointmentEmail({
-  //           recipient: redUser.email,
-  //           firstName: redUser.redProfile.firstName,
-  //           rediLocation: redUser.redProfile.rediLocation,
-  //         }).toPromise()
-  //         return
-
-  //       default:
-  //         throw new Error('Invalid user type')
-  //     }
-  //   }
-
-  //   if (userSignedUpWithTpAndIsJobseeker) {
-  //     await sendTpJobseekerEmailVerificationSuccessfulEmail({
-  //       recipient: redUser.email,
-  //       firstName: redUser.tpJobseekerProfile.firstName,
-  //     }).toPromise()
-  //   }
-
-  //   if (userSignedUpWithTpAndIsCompany) {
-  //     await sendTpCompanyEmailVerificationSuccessfulEmail({
-  //       recipient: redUser.email,
-  //       firstName: redUser.tpCompanyProfile.firstName,
-  //     }).toPromise()
-  //   }
-  // })
-
   RedUser.requestResetPasswordEmail = function (body, cb) {
     const email = body.email
     const redproduct = body.redproduct
