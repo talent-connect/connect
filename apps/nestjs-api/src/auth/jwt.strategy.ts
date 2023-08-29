@@ -33,14 +33,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       throw new UnauthorizedException('Email not verified')
     }
 
-    // At this stage, the user has a verified email address, but can be in one of the following states:
-    // is a mentor with/without a redi connect profile
-    // is a mentee with/without a redi connect profile
-    // is a jobseeker with/without a jobseeker profile
-    // is a company rep with/without a company profile / accountcontactrelation
-    // So, we need to run that on their behalf.
+    const { email, loopbackUserId, firstName, lastName } = payload
 
-    const { email, userId, loopbackUserId, firstName, lastName } = payload
+    if (!email || !loopbackUserId) {
+      throw new UnauthorizedException('User data missing from JWT token')
+    }
+
     //! TODO: introduce caching here, this is a lot of simple loolups
     // for something that will never change. Can DataLoader fix it?
     let contactRecord: ContactRecordProps = null
@@ -61,7 +59,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
           FirstName: firstName,
           LastName: lastName,
           ReDI_Email_Address__c: email,
-          Loopback_User_ID__c: userId,
+          Loopback_User_ID__c: loopbackUserId,
         }
       )
       contactRecords = await this.salesforceRepository.findRecordsOfObject({

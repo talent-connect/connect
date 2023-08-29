@@ -44,10 +44,8 @@ module.exports = function (RedUser) {
             recipient: verifyOptions.to,
             redUserId: redUser.id,
             firstName: redUser.firstName,
-            // firstName: 'test',
             verificationToken: verifyOptions.verificationToken,
-            // rediLocation: redProfile.rediLocation,
-            rediLocation: 'berlin',
+            rediLocation: redUser.rediLocation,
           }).subscribe()
         },
       },
@@ -281,6 +279,7 @@ module.exports = function (RedUser) {
 function generateJwtToken(redUser) {
   return jwt.sign(
     {
+      loopbackUserId: redUser.id,
       email: redUser.email,
       emailVerified: redUser.emailVerified,
       firstName: redUser.firstName,
