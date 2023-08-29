@@ -16,7 +16,7 @@ import {
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
 import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
-import { buildFrontendUrl } from '@talent-connect/shared-utils'
+import { buildFrontendUrl, decodeJwt } from '@talent-connect/shared-utils'
 import { useFormik } from 'formik'
 import { capitalize } from 'lodash'
 import { useState } from 'react'
@@ -99,38 +99,72 @@ export default function Login() {
       } catch (err) {
         // If the user does not have a con profile, we will try to create one
         // for them using the data from the TP.
-        // If the user does not have a TP profile, we will show them an error.
-        const tpUserData = await myTpDataFetcher()
-        const tpJobseekerDirectoryEntry =
-          tpUserData.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry
-        const userHasATpJobseekerProfile = Boolean(tpJobseekerDirectoryEntry)
+        try {
+          const tpUserData = await myTpDataFetcher()
+          const tpJobseekerDirectoryEntry =
+            tpUserData.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry
+          const userHasATpJobseekerProfile = Boolean(tpJobseekerDirectoryEntry)
 
-        if (userHasATpJobseekerProfile) {
-          const isWrongRediLocationError =
-            tpJobseekerDirectoryEntry.rediLocation !== envRediLocation()
+          if (userHasATpJobseekerProfile) {
+            const isWrongRediLocationError =
+              tpJobseekerDirectoryEntry.rediLocation !== envRediLocation()
 
-          if (isWrongRediLocationError) {
-            purgeAllSessionData()
-            setIsWrongRediLocationError(true)
-            setTpProfileLocation(
-              tpJobseekerDirectoryEntry.rediLocation as RediLocation
+            if (isWrongRediLocationError) {
+              purgeAllSessionData()
+              setIsWrongRediLocationError(true)
+              setTpProfileLocation(
+                tpJobseekerDirectoryEntry.rediLocation as RediLocation
+              )
+              return
+            }
+
+            await conProfileSignUpMutation.mutateAsync({
+              input: {
+                email: tpJobseekerDirectoryEntry.email,
+                firstName: tpJobseekerDirectoryEntry.firstName,
+                lastName: tpJobseekerDirectoryEntry.lastName,
+                userType: UserType.Mentee,
+                rediLocation:
+                  tpJobseekerDirectoryEntry.rediLocation as RediLocation,
+              },
+            })
+            return history.push(
+              `/front/signup-email-verification-success/mentee`
             )
-            return
+          } else {
+            throw err
           }
+        } catch (err) {
+          try {
+            const accessToken = getAccessTokenFromLocalStorage()
+            const { email, firstName, lastName, userType, rediLocation } =
+              decodeJwt(accessToken.jwtToken) as { [key: string]: string }
+            await conProfileSignUpMutation.mutateAsync({
+              input: {
+                email: email,
+                firstName: firstName,
+                lastName: lastName,
+                userType: userType as UserType,
+                rediLocation: rediLocation as RediLocation,
+              },
+            })
+            return history.push(
+              `/front/signup-complete/${userType.toLowerCase()}`
+            )
+          } catch (err) {
+            // The user has no TP profile, so we assume that they have just signed up via the CON
+            // login form, and that they have a RedUser in Loobpack/MongoDB, and that the JWT token
+            // in localStorage contains the data from RedUser which contains the data from the CON
+            // sign-up page. We now want to use this to create a CON profile for them.
 
-          await conProfileSignUpMutation.mutateAsync({
-            input: {
-              email: tpJobseekerDirectoryEntry.email,
-              firstName: tpJobseekerDirectoryEntry.firstName,
-              lastName: tpJobseekerDirectoryEntry.lastName,
-              userType: UserType.Mentee,
-              rediLocation:
-                tpJobseekerDirectoryEntry.rediLocation as RediLocation,
-            },
-          })
-          return history.push(`/front/signup-complete/mentee`)
-        } else {
-          throw err
+            // If we reach this place, it means that the user does not have a TP
+            // profile nor do the have data in their JWT token from the CON sign-up,
+            // OR, something went wrong on the server. In that case, show them an error message.
+            formik.setSubmitting(false)
+            setLoginError(
+              'Something unexpected happened, please try again or contact the ReDI Career Support Team at career@redi-school.org'
+            )
+          }
         }
       }
     } catch (err) {

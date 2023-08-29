@@ -43,8 +43,8 @@ module.exports = function (RedUser) {
           sendVerificationEmail({
             recipient: verifyOptions.to,
             redUserId: redUser.id,
-            // firstName: redProfile.firstName,
-            firstName: 'test',
+            firstName: redUser.firstName,
+            // firstName: 'test',
             verificationToken: verifyOptions.verificationToken,
             // rediLocation: redProfile.rediLocation,
             rediLocation: 'berlin',

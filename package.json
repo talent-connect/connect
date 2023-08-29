@@ -227,5 +227,9 @@
   "volta": {
     "node": "14.17.6",
     "yarn": "1.22.11"
+  },
+  "browser": {
+    "crypto": false,
+    "stream": false
   }
 }

@@ -30,6 +30,12 @@ const SignUpEmailVerification = lazy(
       /* webpackChunkName: "SignUpEmailVerification", webpackPreload: true */ '../pages/front/signup/SignUpEmailVerification'
     )
 )
+const SignUpEmailVerificationSuccess = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "SignUpEmailVerificationSuccess", webpackPreload: true */ '../pages/front/signup/SignUpEmailVerificationSuccess'
+    )
+)
 const SignUpComplete = lazy(
   () =>
     import(
@@ -74,7 +80,12 @@ export const routes__loggedOut: RouteDefinition[] = [
     exact: true,
   },
   {
-    path: '/front/signup-complete',
+    path: '/front/signup-email-verification-success',
+    component: SignUpEmailVerificationSuccess,
+    exact: true,
+  },
+  {
+    path: '/front/signup',
     component: SignUpComplete,
     exact: true,
   },

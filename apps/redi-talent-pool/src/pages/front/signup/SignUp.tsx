@@ -181,7 +181,7 @@ export default function SignUp() {
             isMicrosoftPartner: values.isMicrosoftPartner,
           },
         })
-        history.push(`/front/signup-complete`)
+        history.push(`/front/signup-email-verification-success`)
       }
       actions.setSubmitting(false)
     } catch (error) {

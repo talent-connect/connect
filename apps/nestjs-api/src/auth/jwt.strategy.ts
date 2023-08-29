@@ -40,8 +40,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     // is a company rep with/without a company profile / accountcontactrelation
     // So, we need to run that on their behalf.
 
-    const loopbackUserId = payload.userId
-    const email = payload.email
+    const { email, userId, loopbackUserId, firstName, lastName } = payload
     //! TODO: introduce caching here, this is a lot of simple loolups
     // for something that will never change. Can DataLoader fix it?
     let contactRecord: ContactRecordProps = null
@@ -59,10 +58,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       const createContactResult = await this.salesforceRepository.createRecord(
         ContactRecord.metadata.SALESFORCE_OBJECT_NAME,
         {
-          FirstName: 'CON/TP Contact in creation',
-          LastName: email,
+          FirstName: firstName,
+          LastName: lastName,
           ReDI_Email_Address__c: email,
-          Loopback_User_ID__c: payload.userId,
+          Loopback_User_ID__c: userId,
         }
       )
       contactRecords = await this.salesforceRepository.findRecordsOfObject({

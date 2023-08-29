@@ -127,7 +127,7 @@ const sendVerificationEmail = ({
   const verificationSuccessPageUrl = `${buildFrontendUrl(
     process.env.NODE_ENV,
     rediLocation
-  )}/front/signup-complete/`
+  )}/front/signup-email-verification-success/`
   const verificationUrl = `${buildBackendUrl(
     process.env.NODE_ENV
   )}/api/redUsers/confirm?uid=${redUserId}&token=${verificationToken}&redirect=${encodeURI(

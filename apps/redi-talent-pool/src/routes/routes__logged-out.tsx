@@ -1,8 +1,8 @@
-import { RouteDefinition } from './index'
 import { lazy } from 'react'
 import Home from '../pages/front/landing/Home'
 import { RequestResetPasswordEmail } from '../pages/front/reset-password/RequestResetPasswordEmail'
 import { SetNewPassword } from '../pages/front/reset-password/SetNewPassword'
+import { RouteDefinition } from './index'
 const Login = lazy(
   () =>
     import(
@@ -51,7 +51,7 @@ export const routes__loggedOut: RouteDefinition[] = [
     exact: true,
   },
   {
-    path: '/front/signup-complete',
+    path: '/front/signup-email-verification-success',
     component: SignUpComplete,
     exact: true,
   },
