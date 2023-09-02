@@ -121,7 +121,6 @@ type ConProfile {
   linkedInProfileUrl: String
   loopbackUserId: String!
   menteeCountCapacity: Int
-  mentee_currentlyEnrolledInCourse: RediCourse
   mentee_highestEducationLevel: EducationLevel
   mentee_occupationCategoryId: OccupationCategory
   mentee_occupationJob_placeOfEmployment: String
@@ -151,7 +150,6 @@ input ConProfileSignUpInput {
   email: String!
   firstName: String!
   lastName: String!
-  mentee_currentlyEnrolledInCourse: RediCourse
   rediLocation: RediLocation!
   userType: UserType!
 }
@@ -511,51 +509,139 @@ enum MentorshipMatchStatus {
 }
 
 type Mutation {
-  conMatchMarkMentorshipAcceptedNotificationDismissed(conMentorshipMatchId: String!): OkResponseMutationOutputDto!
-  conMenteeFavoritedMentorCreate(input: ConMenteeFavoritedMentorCreateMutationInputDto!): ConMenteeFavoritedMentorCreateMutationOutputDto!
-  conMenteeFavoritedMentorDelete(input: ConMenteeFavoritedMentorDeleteMutationInputDto!): ConMenteeFavoritedMentorDeleteMutationOutputDto!
-  conMentorshipMatchesAcceptMentorship(input: ConMentorshipMatchesAcceptMentorshipInputDto!): ConMentorshipMatchesAcceptMentorshipOutputDto!
-  conMentorshipMatchesApplyForMentorship(input: ConMentorshipMatchesApplyForMentorshipInputDto!): ConMentorshipMatchesApplyForMentorshipOutputDto!
-  conMentorshipMatchesCompleteMentorship(input: ConMentorshipMatchesCompleteMentorshipInputDto!): ConMentorshipMatchesCompleteMentorshipOutputDto!
-  conMentorshipMatchesDeclineMentorship(input: ConMentorshipMatchesDeclineMentorshipInputDto!): ConMentorshipMatchesDeclineMentorshipOutputDto!
-  conProblemReportCreate(input: CreateConProblemReportInput!): OkResponseMutationOutputDto!
-  conProfileSignUp(input: ConProfileSignUpInput!): OkIdResponseMutationOutputDto!
-  createConMentoringSession(createConMentoringSessionInput: CreateConMentoringSessionInput!): ConMentoringSession!
+  conMatchMarkMentorshipAcceptedNotificationDismissed(
+    conMentorshipMatchId: String!
+  ): OkResponseMutationOutputDto!
+  conMenteeFavoritedMentorCreate(
+    input: ConMenteeFavoritedMentorCreateMutationInputDto!
+  ): ConMenteeFavoritedMentorCreateMutationOutputDto!
+  conMenteeFavoritedMentorDelete(
+    input: ConMenteeFavoritedMentorDeleteMutationInputDto!
+  ): ConMenteeFavoritedMentorDeleteMutationOutputDto!
+  conMentorshipMatchesAcceptMentorship(
+    input: ConMentorshipMatchesAcceptMentorshipInputDto!
+  ): ConMentorshipMatchesAcceptMentorshipOutputDto!
+  conMentorshipMatchesApplyForMentorship(
+    input: ConMentorshipMatchesApplyForMentorshipInputDto!
+  ): ConMentorshipMatchesApplyForMentorshipOutputDto!
+  conMentorshipMatchesCompleteMentorship(
+    input: ConMentorshipMatchesCompleteMentorshipInputDto!
+  ): ConMentorshipMatchesCompleteMentorshipOutputDto!
+  conMentorshipMatchesDeclineMentorship(
+    input: ConMentorshipMatchesDeclineMentorshipInputDto!
+  ): ConMentorshipMatchesDeclineMentorshipOutputDto!
+  conProblemReportCreate(
+    input: CreateConProblemReportInput!
+  ): OkResponseMutationOutputDto!
+  conProfileSignUp(
+    input: ConProfileSignUpInput!
+  ): OkIdResponseMutationOutputDto!
+  createConMentoringSession(
+    createConMentoringSessionInput: CreateConMentoringSessionInput!
+  ): ConMentoringSession!
   patchConProfile(patchConProfileInput: UpdateConProfileInput!): ConProfile!
-  tpCompanyFavoritedJobseekerProfileCreate(input: TpCompanyFavoritedJobseekerProfileCreateMutationInputDto!): TpCompanyFavoritedJobseekerProfileCreateMutationOutputDto!
-  tpCompanyFavoritedJobseekerProfileDelete(input: TpCompanyFavoritedJobseekerProfileDeleteMutationInputDto!): TpCompanyFavoritedJobseekerProfileDeleteMutationOutputDto!
-  tpCompanyProfilePatch(tpCompanyProfilePatchInput: TpCompanyProfilePatchInput!): OkResponseMutationOutputDto!
-  tpCompanyProfileSignUp(input: TpCompanyProfileSignUpInputDto!): TpCompanyProfileSignUpInputOutputDto!
-  tpJobListingCreate(tpJobListingCreateInput: TpJobListingCreateInput!): OkResponseMutationOutputDto!
-  tpJobListingDelete(tpJobListingDeleteInput: TpJobListingDeleteInput!): OkResponseMutationOutputDto!
-  tpJobListingPatch(tpJobListingPatchInput: TpJobListingPatchInput!): OkResponseMutationOutputDto!
-  tpJobseekerCreateFromCurrentUserJobseekerProfile(input: TpJobseekerCvCreateFromCurrentUserJobseekerProfileInput!): OkIdResponseMutationOutputDto!
-  tpJobseekerCvCreate(tpJobseekerCvCreateInput: TpJobseekerCvCreateInput!): OkIdResponseMutationOutputDto!
-  tpJobseekerCvDelete(tpJobseekerCvDeleteInput: TpJobseekerCvDeleteInput!): OkResponseMutationOutputDto!
-  tpJobseekerCvEducationRecordCreate(tpJobseekerCvEducationRecordCreateInput: TpJobseekerCvEducationRecordCreateInput!): OkResponseMutationOutputDto!
-  tpJobseekerCvEducationRecordDelete(tpJobseekerCvEducationRecordDeleteInput: TpJobseekerCvEducationRecordDeleteInput!): OkResponseMutationOutputDto!
-  tpJobseekerCvEducationRecordPatch(tpJobseekerCvEducationRecordPatchInput: TpJobseekerCvEducationRecordPatchInput!): OkResponseMutationOutputDto!
-  tpJobseekerCvExperienceRecordCreate(tpJobseekerCvExperienceRecordCreateInput: TpJobseekerCvExperienceRecordCreateInput!): OkResponseMutationOutputDto!
-  tpJobseekerCvExperienceRecordDelete(tpJobseekerCvExperienceRecordDeleteInput: TpJobseekerCvExperienceRecordDeleteInput!): OkResponseMutationOutputDto!
-  tpJobseekerCvExperienceRecordPatch(tpJobseekerCvExperienceRecordPatchInput: TpJobseekerCvExperienceRecordPatchInput!): OkResponseMutationOutputDto!
-  tpJobseekerCvLanguageRecordCreate(tpJobseekerCvLanguageRecordCreateInput: TpJobseekerCvLanguageRecordCreateInput!): OkResponseMutationOutputDto!
-  tpJobseekerCvLanguageRecordDelete(tpJobseekerCvLanguageRecordDeleteInput: TpJobseekerCvLanguageRecordDeleteInput!): OkResponseMutationOutputDto!
-  tpJobseekerCvLanguageRecordPatch(tpJobseekerCvLanguageRecordPatchInput: TpJobseekerCvLanguageRecordPatchInput!): OkResponseMutationOutputDto!
-  tpJobseekerCvPatch(tpJobseekerCvPatchInput: TpJobseekerCvPatchInput!): OkResponseMutationOutputDto!
-  tpJobseekerFavoritedJobListingCreate(input: TpJobseekerFavoritedJobListingCreateMutationInputDto!): TpJobseekerFavoritedJobListingCreateMutationOutputDto!
-  tpJobseekerFavoritedJobListingDelete(input: TpJobseekerFavoritedJobListingDeleteMutationInputDto!): TpJobseekerFavoritedJobListingDeleteMutationOutputDto!
-  tpJobseekerProfileEducationRecordCreate(tpJobseekerProfileEducationRecordCreateInput: TpJobseekerProfileEducationRecordCreateInput!): OkResponseMutationOutputDto!
-  tpJobseekerProfileEducationRecordDelete(tpJobseekerProfileEducationRecordDeleteInput: TpJobseekerProfileEducationRecordDeleteInput!): OkResponseMutationOutputDto!
-  tpJobseekerProfileEducationRecordPatch(tpJobseekerProfileEducationRecordPatchInput: TpJobseekerProfileEducationRecordPatchInput!): OkResponseMutationOutputDto!
-  tpJobseekerProfileExperienceRecordCreate(tpJobseekerProfileExperienceRecordCreateInput: TpJobseekerProfileExperienceRecordCreateInput!): OkResponseMutationOutputDto!
-  tpJobseekerProfileExperienceRecordDelete(tpJobseekerProfileExperienceRecordDeleteInput: TpJobseekerProfileExperienceRecordDeleteInput!): OkResponseMutationOutputDto!
-  tpJobseekerProfileExperienceRecordPatch(tpJobseekerProfileExperienceRecordPatchInput: TpJobseekerProfileExperienceRecordPatchInput!): OkResponseMutationOutputDto!
-  tpJobseekerProfileLanguageRecordCreate(tpJobseekerProfileLanguageRecordCreateInput: TpJobseekerProfileLanguageRecordCreateInput!): OkResponseMutationOutputDto!
-  tpJobseekerProfileLanguageRecordDelete(tpJobseekerProfileLanguageRecordDeleteInput: TpJobseekerProfileLanguageRecordDeleteInput!): OkResponseMutationOutputDto!
-  tpJobseekerProfileLanguageRecordPatch(tpJobseekerProfileLanguageRecordPatchInput: TpJobseekerProfileLanguageRecordPatchInput!): OkResponseMutationOutputDto!
-  tpJobseekerProfilePatch(tpJobseekerProfilePatchInput: TpJobseekerProfilePatchInput!): OkResponseMutationOutputDto!
-  tpJobseekerProfileSignUp(input: TpJobseekerProfileSignUpDto!): OkResponseMutationOutputDto!
-  userContactPatch(userContactPatchInput: UserContactPatchInput!): OkResponseMutationOutputDto!
+  tpCompanyFavoritedJobseekerProfileCreate(
+    input: TpCompanyFavoritedJobseekerProfileCreateMutationInputDto!
+  ): TpCompanyFavoritedJobseekerProfileCreateMutationOutputDto!
+  tpCompanyFavoritedJobseekerProfileDelete(
+    input: TpCompanyFavoritedJobseekerProfileDeleteMutationInputDto!
+  ): TpCompanyFavoritedJobseekerProfileDeleteMutationOutputDto!
+  tpCompanyProfilePatch(
+    tpCompanyProfilePatchInput: TpCompanyProfilePatchInput!
+  ): OkResponseMutationOutputDto!
+  tpCompanyProfileSignUp(
+    input: TpCompanyProfileSignUpInputDto!
+  ): TpCompanyProfileSignUpInputOutputDto!
+  tpJobListingCreate(
+    tpJobListingCreateInput: TpJobListingCreateInput!
+  ): OkResponseMutationOutputDto!
+  tpJobListingDelete(
+    tpJobListingDeleteInput: TpJobListingDeleteInput!
+  ): OkResponseMutationOutputDto!
+  tpJobListingPatch(
+    tpJobListingPatchInput: TpJobListingPatchInput!
+  ): OkResponseMutationOutputDto!
+  tpJobseekerCreateFromCurrentUserJobseekerProfile(
+    input: TpJobseekerCvCreateFromCurrentUserJobseekerProfileInput!
+  ): OkIdResponseMutationOutputDto!
+  tpJobseekerCvCreate(
+    tpJobseekerCvCreateInput: TpJobseekerCvCreateInput!
+  ): OkIdResponseMutationOutputDto!
+  tpJobseekerCvDelete(
+    tpJobseekerCvDeleteInput: TpJobseekerCvDeleteInput!
+  ): OkResponseMutationOutputDto!
+  tpJobseekerCvEducationRecordCreate(
+    tpJobseekerCvEducationRecordCreateInput: TpJobseekerCvEducationRecordCreateInput!
+  ): OkResponseMutationOutputDto!
+  tpJobseekerCvEducationRecordDelete(
+    tpJobseekerCvEducationRecordDeleteInput: TpJobseekerCvEducationRecordDeleteInput!
+  ): OkResponseMutationOutputDto!
+  tpJobseekerCvEducationRecordPatch(
+    tpJobseekerCvEducationRecordPatchInput: TpJobseekerCvEducationRecordPatchInput!
+  ): OkResponseMutationOutputDto!
+  tpJobseekerCvExperienceRecordCreate(
+    tpJobseekerCvExperienceRecordCreateInput: TpJobseekerCvExperienceRecordCreateInput!
+  ): OkResponseMutationOutputDto!
+  tpJobseekerCvExperienceRecordDelete(
+    tpJobseekerCvExperienceRecordDeleteInput: TpJobseekerCvExperienceRecordDeleteInput!
+  ): OkResponseMutationOutputDto!
+  tpJobseekerCvExperienceRecordPatch(
+    tpJobseekerCvExperienceRecordPatchInput: TpJobseekerCvExperienceRecordPatchInput!
+  ): OkResponseMutationOutputDto!
+  tpJobseekerCvLanguageRecordCreate(
+    tpJobseekerCvLanguageRecordCreateInput: TpJobseekerCvLanguageRecordCreateInput!
+  ): OkResponseMutationOutputDto!
+  tpJobseekerCvLanguageRecordDelete(
+    tpJobseekerCvLanguageRecordDeleteInput: TpJobseekerCvLanguageRecordDeleteInput!
+  ): OkResponseMutationOutputDto!
+  tpJobseekerCvLanguageRecordPatch(
+    tpJobseekerCvLanguageRecordPatchInput: TpJobseekerCvLanguageRecordPatchInput!
+  ): OkResponseMutationOutputDto!
+  tpJobseekerCvPatch(
+    tpJobseekerCvPatchInput: TpJobseekerCvPatchInput!
+  ): OkResponseMutationOutputDto!
+  tpJobseekerFavoritedJobListingCreate(
+    input: TpJobseekerFavoritedJobListingCreateMutationInputDto!
+  ): TpJobseekerFavoritedJobListingCreateMutationOutputDto!
+  tpJobseekerFavoritedJobListingDelete(
+    input: TpJobseekerFavoritedJobListingDeleteMutationInputDto!
+  ): TpJobseekerFavoritedJobListingDeleteMutationOutputDto!
+  tpJobseekerProfileEducationRecordCreate(
+    tpJobseekerProfileEducationRecordCreateInput: TpJobseekerProfileEducationRecordCreateInput!
+  ): OkResponseMutationOutputDto!
+  tpJobseekerProfileEducationRecordDelete(
+    tpJobseekerProfileEducationRecordDeleteInput: TpJobseekerProfileEducationRecordDeleteInput!
+  ): OkResponseMutationOutputDto!
+  tpJobseekerProfileEducationRecordPatch(
+    tpJobseekerProfileEducationRecordPatchInput: TpJobseekerProfileEducationRecordPatchInput!
+  ): OkResponseMutationOutputDto!
+  tpJobseekerProfileExperienceRecordCreate(
+    tpJobseekerProfileExperienceRecordCreateInput: TpJobseekerProfileExperienceRecordCreateInput!
+  ): OkResponseMutationOutputDto!
+  tpJobseekerProfileExperienceRecordDelete(
+    tpJobseekerProfileExperienceRecordDeleteInput: TpJobseekerProfileExperienceRecordDeleteInput!
+  ): OkResponseMutationOutputDto!
+  tpJobseekerProfileExperienceRecordPatch(
+    tpJobseekerProfileExperienceRecordPatchInput: TpJobseekerProfileExperienceRecordPatchInput!
+  ): OkResponseMutationOutputDto!
+  tpJobseekerProfileLanguageRecordCreate(
+    tpJobseekerProfileLanguageRecordCreateInput: TpJobseekerProfileLanguageRecordCreateInput!
+  ): OkResponseMutationOutputDto!
+  tpJobseekerProfileLanguageRecordDelete(
+    tpJobseekerProfileLanguageRecordDeleteInput: TpJobseekerProfileLanguageRecordDeleteInput!
+  ): OkResponseMutationOutputDto!
+  tpJobseekerProfileLanguageRecordPatch(
+    tpJobseekerProfileLanguageRecordPatchInput: TpJobseekerProfileLanguageRecordPatchInput!
+  ): OkResponseMutationOutputDto!
+  tpJobseekerProfilePatch(
+    tpJobseekerProfilePatchInput: TpJobseekerProfilePatchInput!
+  ): OkResponseMutationOutputDto!
+  tpJobseekerProfileSignUp(
+    input: TpJobseekerProfileSignUpDto!
+  ): OkResponseMutationOutputDto!
+  userContactPatch(
+    userContactPatchInput: UserContactPatchInput!
+  ): OkResponseMutationOutputDto!
 }
 
 enum OccupationCategory {
@@ -577,9 +663,13 @@ type OkResponseMutationOutputDto {
 type Query {
   conMenteeFavoritedMentors: [ConMenteeFavoritedMentor!]!
   conMentorshipMatch(id: ID!): ConMentorshipMatch!
-  conMentorshipMatches(filter: FindMentorshipMatchesArgsFilter): [ConMentorshipMatch!]!
+  conMentorshipMatches(
+    filter: FindMentorshipMatchesArgsFilter
+  ): [ConMentorshipMatch!]!
   conProfile(id: ID, loopbackUserId: ID): ConProfile!
-  conProfilesAvailableMentors(filter: FindConProfilesArgsFilter!): [ConProfile!]!
+  conProfilesAvailableMentors(
+    filter: FindConProfilesArgsFilter!
+  ): [ConProfile!]!
   myConProfile: ConProfile!
   publicTpCompanyProfiles: [TpCompanyProfile!]!
   tpCompanyFavoritedJobseekerProfiles: [TpCompanyFavoritedJobseekerProfile!]!
@@ -587,83 +677,31 @@ type Query {
   tpCompanyProfiles: [TpCompanyProfile!]!
   tpCurrentUserDataGet: TpCurrentUserData!
   tpJobListing(filter: FindOneTpJobListingArgsFilter!): TpJobListing!
-  tpJobListings(filter: FindAllVisibleTpJobListingsArgsFilter!): [TpJobListing!]!
+  tpJobListings(
+    filter: FindAllVisibleTpJobListingsArgsFilter!
+  ): [TpJobListing!]!
   tpJobseekerCv(id: ID): TpJobseekerCv!
-  tpJobseekerCvEducationRecords(tpJobseekerCvId: ID): [TpJobseekerCvEducationRecord!]!
-  tpJobseekerCvExperienceRecords(tpJobseekerCvId: ID): [TpJobseekerCvExperienceRecord!]!
-  tpJobseekerCvLanguageRecords(tpJobseekerCvId: ID): [TpJobseekerCvLanguageRecord!]!
+  tpJobseekerCvEducationRecords(
+    tpJobseekerCvId: ID
+  ): [TpJobseekerCvEducationRecord!]!
+  tpJobseekerCvExperienceRecords(
+    tpJobseekerCvId: ID
+  ): [TpJobseekerCvExperienceRecord!]!
+  tpJobseekerCvLanguageRecords(
+    tpJobseekerCvId: ID
+  ): [TpJobseekerCvLanguageRecord!]!
   tpJobseekerCvs: [TpJobseekerCv!]!
-  tpJobseekerDirectoryEntriesVisible(filter: FindAllVisibleTpJobseekerDirectoryEntriesFilter!): [TpJobseekerDirectoryEntry!]!
-  tpJobseekerDirectoryEntryVisible(filter: FindOneVisibleTpJobseekerDirectoryEntry!): TpJobseekerDirectoryEntry!
+  tpJobseekerDirectoryEntriesVisible(
+    filter: FindAllVisibleTpJobseekerDirectoryEntriesFilter!
+  ): [TpJobseekerDirectoryEntry!]!
+  tpJobseekerDirectoryEntryVisible(
+    filter: FindOneVisibleTpJobseekerDirectoryEntry!
+  ): TpJobseekerDirectoryEntry!
   tpJobseekerFavoritedJobListings: [TpJobseekerFavoritedJobListing!]!
   tpJobseekerProfile(id: ID): TpJobseekerProfile!
   tpJobseekerProfileEducationRecords: [TpJobseekerProfileEducationRecord!]!
   tpJobseekerProfileExperienceRecords: [TpJobseekerProfileExperienceRecord!]!
   tpJobseekerProfileLanguageRecords: [TpJobseekerProfileLanguageRecord!]!
-}
-
-enum RediCourse {
-  BERLIN_ALUMNI
-  BERLIN_CODING_FUNDAMENTALS
-  BERLIN_DATA_ANALYTICS
-  BERLIN_DATA_CIRCLE
-  BERLIN_DIGITAL_LITERACY_PROGRAM
-  BERLIN_HTML_CSS
-  BERLIN_INTRO_TO_COMPUTER_SCIENCE
-  BERLIN_INTRO_TO_JAVA
-  BERLIN_JAVASCRIPT
-  BERLIN_JAVA_CIRCLE
-  BERLIN_PYTHON_FOUNDATION
-  BERLIN_REACT
-  BERLIN_SALESFORCE_FUNDAMENTALS
-  BERLIN_UX_UI_DESIGN_BASICS
-  BERLIN_UX_UI_DESIGN_INTERMEDIATE
-  CYBERSPACE_ALUMNI
-  CYBERSPACE_CYBERSECURITY_ADVANCED
-  CYBERSPACE_CYBERSECURITY_BEGINNERS
-  CYBERSPACE_CYBERSECURITY_INTERMEDIATE
-  CYBERSPACE_DATA_ANALYTICS
-  CYBERSPACE_PYTHON_FOUNDATION
-  CYBERSPACE_UX_UI_BASICS
-  HAMBURG_ALUMNI
-  HAMBURG_CLOUD_COMPUTING
-  HAMBURG_HTML_CSS
-  HAMBURG_INTRO_TO_COMPUTER_SCIENCE
-  HAMBURG_JAVASCRIPT
-  HAMBURG_PYTHON_INTERMEDIATE
-  HAMBURG_UX_UI_DESIGN_BASICS
-  HAMBURG_UX_UI_DESIGN_INTERMEDIATE
-  MUNICH_ALUMNI
-  MUNICH_BACK_END_DEVELOPMENT
-  MUNICH_DATA_ANALYTICS
-  MUNICH_DATA_STRUCTURE_AND_ALGORITHMS
-  MUNICH_DIGITAL_LITERACY_PROGRAM
-  MUNICH_FRONT_END_DEVELOPMENT_FULLTIME_ENG
-  MUNICH_FRONT_END_DEVELOPMENT_FULLTIME_GER
-  MUNICH_FRONT_END_DEVELOPMENT_HTML_CSS
-  MUNICH_FRONT_END_DEVELOPMENT_JAVASCRIPT
-  MUNICH_FRONT_END_DEVELOPMENT_REACT
-  MUNICH_INTRODUCTION_TO_COMPUTER_SCIENCE_HYBRID
-  MUNICH_INTRODUCTION_TO_COMPUTER_SCIENCE_ONLINE
-  MUNICH_INTRODUCTION_TO_COMPUTER_SCIENCE_UKR
-  MUNICH_PYTHON_INTERMEDIATE_HYBRID
-  MUNICH_PYTHON_INTERMEDIATE_ONLINE
-  MUNICH_PYTHON_INTERMEDIATE_UKR
-  MUNICH_UX_UI_DESIGN_BASICS
-  MUNICH_UX_UI_DESIGN_INTERMEDIATE
-  NRW_ALUMNI
-  NRW_CLOUD_COMPUTING
-  NRW_DATA_ANALYTICS
-  NRW_HTML_AND_CSS
-  NRW_INFRASTRUCTURE_BASICS
-  NRW_INTERNET_OF_THINGS
-  NRW_INTRODUCTION_TO_PYTHON
-  NRW_JAVASCRIPT
-  NRW_MACHINE_LEARNING
-  NRW_REACT
-  NRW_SOCIAL_MEDIA_MARKETING
-  NRW_UX_UI_DESIGN_BASICS
-  NRW_UX_UI_DESIGN_INTERMEDIATE
 }
 
 enum RediLocation {
@@ -1492,7 +1530,6 @@ input UpdateConProfileInput {
   lastName: String
   linkedInProfileUrl: String
   menteeCountCapacity: Int
-  mentee_currentlyEnrolledInCourse: RediCourse
   mentee_highestEducationLevel: EducationLevel
   mentee_occupationCategoryId: OccupationCategory
   mentee_occupationJob_placeOfEmployment: String

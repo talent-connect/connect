@@ -1,27 +1,22 @@
-import { useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
-import AccountOperation from '../../../components/templates/AccountOperation'
-
-import * as Yup from 'yup'
-
+import {
+  RediLocation,
+  useConProfileSignUpMutation,
+  UserType,
+} from '@talent-connect/data-access'
 import {
   Button,
   Checkbox,
   FormInput,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
-import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
-
-import Teaser from '../../../components/molecules/Teaser'
-
-import { Columns, Content, Form, Notification } from 'react-bulma-components'
-
-import {
-  RediLocation,
-  useConProfileSignUpMutation,
-  UserType,
-} from '@talent-connect/data-access'
 import { toPascalCaseAndTrim } from '@talent-connect/shared-utils'
+import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
+import { useState } from 'react'
+import { Columns, Content, Form, Notification } from 'react-bulma-components'
+import { Link, useParams } from 'react-router-dom'
+import * as Yup from 'yup'
+import Teaser from '../../../components/molecules/Teaser'
+import AccountOperation from '../../../components/templates/AccountOperation'
 import { signUpLoopback } from '../../../services/api/api'
 import { history } from '../../../services/history/history'
 import { envRediLocation } from '../../../utils/env-redi-location'
@@ -61,6 +56,8 @@ export interface SignUpFormValues {
   firstName: string
   lastName: string
   agreesWithCodeOfConduct: boolean
+  mentor_isPartnershipMentor?: boolean
+  mentor_workPlace?: string
 }
 
 export default function SignUp() {
@@ -95,6 +92,12 @@ export default function SignUp() {
           lastName: values.lastName,
           userType: type.toUpperCase() as UserType,
           rediLocation: envRediLocation() as RediLocation,
+          ...(type === 'mentor'
+            ? {
+                mentor_isPartnershipMentor: values.mentor_isPartnershipMentor,
+                mentor_workPlace: values.mentor_workPlace,
+              }
+            : {}),
         },
       })
       actions.setSubmitting(false)
@@ -178,6 +181,25 @@ export default function SignUp() {
               placeholder="Repeat your password"
               {...formik}
             />
+
+            {type === 'mentor' && (
+              <>
+                <Checkbox.Form
+                  name="mentor_isPartnershipMentor"
+                  checked={formik.values.mentor_isPartnershipMentor}
+                  className="submit-spacer"
+                  {...formik}
+                >
+                  My employer is in a mentorship partnership with ReDI School
+                </Checkbox.Form>
+
+                <FormInput
+                  name="mentor_workPlace"
+                  placeholder="Which company are you working for?"
+                  {...formik}
+                />
+              </>
+            )}
 
             <Checkbox.Form
               name="agreesWithCodeOfConduct"
