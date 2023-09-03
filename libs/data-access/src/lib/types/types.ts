@@ -156,6 +156,7 @@ export type ConProfile = {
   mentee_occupationOther_description?: Maybe<Scalars['String']>;
   mentee_occupationStudent_studyName?: Maybe<Scalars['String']>;
   mentee_occupationStudent_studyPlace?: Maybe<Scalars['String']>;
+  mentor_isPartnershipMentor?: Maybe<Scalars['Boolean']>;
   mentor_occupation?: Maybe<Scalars['String']>;
   mentor_workPlace?: Maybe<Scalars['String']>;
   mentoringSessions: Array<ConMentoringSession>;
@@ -177,6 +178,8 @@ export type ConProfileSignUpInput = {
   email: Scalars['String'];
   firstName: Scalars['String'];
   lastName: Scalars['String'];
+  mentor_isPartnershipMentor?: InputMaybe<Scalars['Boolean']>;
+  mentor_workPlace?: InputMaybe<Scalars['String']>;
   rediLocation: RediLocation;
   userType: UserType;
 };
