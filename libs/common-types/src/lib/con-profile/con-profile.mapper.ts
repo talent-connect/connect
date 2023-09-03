@@ -113,6 +113,7 @@ export class ConProfileMapper
     props.Profile_Status__c = srcProps.profileStatus
     // props.RecordType.DeveloperName = srcProps.RecordType.userType
     props.ReDI_Location__c = srcProps.rediLocation
+    props.Partnership_Mentor__c = srcProps.mentor_isPartnershipMentor
     props.Occupation__c = srcProps.mentor_occupation
     props.Work_Place__c = srcProps.mentor_workPlace
     props.Expectations__c = srcProps.expectations
