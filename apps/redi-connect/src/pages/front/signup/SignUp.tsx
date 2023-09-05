@@ -73,6 +73,7 @@ export default function SignUp() {
     firstName: '',
     lastName: '',
     agreesWithCodeOfConduct: false,
+    mentor_isPartnershipMentor: false,
   }
 
   const [loopbackSubmitError, setLoopbackSubmitError] = useState<string | null>(
