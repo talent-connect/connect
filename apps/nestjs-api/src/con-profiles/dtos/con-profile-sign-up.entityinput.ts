@@ -7,8 +7,6 @@ class _ConProfileEntityProps extends ConProfileEntityProps {}
 @InputType('ConProfileSignUpInput')
 export class ConProfileSignUpInput extends PickType(_ConProfileEntityProps, [
   'email',
-  'firstName',
-  'lastName',
   'userType',
   'rediLocation',
 ] as const) {}

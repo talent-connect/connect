@@ -141,8 +141,6 @@ export default function Login() {
         await conProfileSignUpMutation.mutateAsync({
           input: {
             email: tpJobseekerDirectoryEntry.email,
-            firstName: tpJobseekerDirectoryEntry.firstName,
-            lastName: tpJobseekerDirectoryEntry.lastName,
             userType: UserType.Mentee,
             rediLocation:
               tpJobseekerDirectoryEntry.rediLocation as RediLocation,
@@ -167,8 +165,6 @@ export default function Login() {
       await conProfileSignUpMutation.mutateAsync({
         input: {
           email: email,
-          firstName: firstName,
-          lastName: lastName,
           userType: userType as UserType,
           rediLocation: rediLocation as RediLocation,
         },

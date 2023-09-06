@@ -148,7 +148,6 @@ export type ConProfile = {
   linkedInProfileUrl?: Maybe<Scalars['String']>;
   loopbackUserId: Scalars['String'];
   menteeCountCapacity?: Maybe<Scalars['Int']>;
-  mentee_currentlyEnrolledInCourse?: Maybe<RediCourse>;
   mentee_highestEducationLevel?: Maybe<EducationLevel>;
   mentee_occupationCategoryId?: Maybe<OccupationCategory>;
   mentee_occupationJob_placeOfEmployment?: Maybe<Scalars['String']>;
@@ -176,9 +175,6 @@ export type ConProfile = {
 
 export type ConProfileSignUpInput = {
   email: Scalars['String'];
-  firstName: Scalars['String'];
-  lastName: Scalars['String'];
-  mentee_currentlyEnrolledInCourse?: InputMaybe<RediCourse>;
   rediLocation: RediLocation;
   userType: UserType;
 };
@@ -923,70 +919,6 @@ export type QueryTpJobseekerDirectoryEntryVisibleArgs = {
 export type QueryTpJobseekerProfileArgs = {
   id?: InputMaybe<Scalars['ID']>;
 };
-
-export enum RediCourse {
-  BerlinAlumni = 'BERLIN_ALUMNI',
-  BerlinCodingFundamentals = 'BERLIN_CODING_FUNDAMENTALS',
-  BerlinDataAnalytics = 'BERLIN_DATA_ANALYTICS',
-  BerlinDataCircle = 'BERLIN_DATA_CIRCLE',
-  BerlinDigitalLiteracyProgram = 'BERLIN_DIGITAL_LITERACY_PROGRAM',
-  BerlinHtmlCss = 'BERLIN_HTML_CSS',
-  BerlinIntroToComputerScience = 'BERLIN_INTRO_TO_COMPUTER_SCIENCE',
-  BerlinIntroToJava = 'BERLIN_INTRO_TO_JAVA',
-  BerlinJavascript = 'BERLIN_JAVASCRIPT',
-  BerlinJavaCircle = 'BERLIN_JAVA_CIRCLE',
-  BerlinPythonFoundation = 'BERLIN_PYTHON_FOUNDATION',
-  BerlinReact = 'BERLIN_REACT',
-  BerlinSalesforceFundamentals = 'BERLIN_SALESFORCE_FUNDAMENTALS',
-  BerlinUxUiDesignBasics = 'BERLIN_UX_UI_DESIGN_BASICS',
-  BerlinUxUiDesignIntermediate = 'BERLIN_UX_UI_DESIGN_INTERMEDIATE',
-  CyberspaceAlumni = 'CYBERSPACE_ALUMNI',
-  CyberspaceCybersecurityAdvanced = 'CYBERSPACE_CYBERSECURITY_ADVANCED',
-  CyberspaceCybersecurityBeginners = 'CYBERSPACE_CYBERSECURITY_BEGINNERS',
-  CyberspaceCybersecurityIntermediate = 'CYBERSPACE_CYBERSECURITY_INTERMEDIATE',
-  CyberspaceDataAnalytics = 'CYBERSPACE_DATA_ANALYTICS',
-  CyberspacePythonFoundation = 'CYBERSPACE_PYTHON_FOUNDATION',
-  CyberspaceUxUiBasics = 'CYBERSPACE_UX_UI_BASICS',
-  HamburgAlumni = 'HAMBURG_ALUMNI',
-  HamburgCloudComputing = 'HAMBURG_CLOUD_COMPUTING',
-  HamburgHtmlCss = 'HAMBURG_HTML_CSS',
-  HamburgIntroToComputerScience = 'HAMBURG_INTRO_TO_COMPUTER_SCIENCE',
-  HamburgJavascript = 'HAMBURG_JAVASCRIPT',
-  HamburgPythonIntermediate = 'HAMBURG_PYTHON_INTERMEDIATE',
-  HamburgUxUiDesignBasics = 'HAMBURG_UX_UI_DESIGN_BASICS',
-  HamburgUxUiDesignIntermediate = 'HAMBURG_UX_UI_DESIGN_INTERMEDIATE',
-  MunichAlumni = 'MUNICH_ALUMNI',
-  MunichBackEndDevelopment = 'MUNICH_BACK_END_DEVELOPMENT',
-  MunichDataAnalytics = 'MUNICH_DATA_ANALYTICS',
-  MunichDataStructureAndAlgorithms = 'MUNICH_DATA_STRUCTURE_AND_ALGORITHMS',
-  MunichDigitalLiteracyProgram = 'MUNICH_DIGITAL_LITERACY_PROGRAM',
-  MunichFrontEndDevelopmentFulltimeEng = 'MUNICH_FRONT_END_DEVELOPMENT_FULLTIME_ENG',
-  MunichFrontEndDevelopmentFulltimeGer = 'MUNICH_FRONT_END_DEVELOPMENT_FULLTIME_GER',
-  MunichFrontEndDevelopmentHtmlCss = 'MUNICH_FRONT_END_DEVELOPMENT_HTML_CSS',
-  MunichFrontEndDevelopmentJavascript = 'MUNICH_FRONT_END_DEVELOPMENT_JAVASCRIPT',
-  MunichFrontEndDevelopmentReact = 'MUNICH_FRONT_END_DEVELOPMENT_REACT',
-  MunichIntroductionToComputerScienceHybrid = 'MUNICH_INTRODUCTION_TO_COMPUTER_SCIENCE_HYBRID',
-  MunichIntroductionToComputerScienceOnline = 'MUNICH_INTRODUCTION_TO_COMPUTER_SCIENCE_ONLINE',
-  MunichIntroductionToComputerScienceUkr = 'MUNICH_INTRODUCTION_TO_COMPUTER_SCIENCE_UKR',
-  MunichPythonIntermediateHybrid = 'MUNICH_PYTHON_INTERMEDIATE_HYBRID',
-  MunichPythonIntermediateOnline = 'MUNICH_PYTHON_INTERMEDIATE_ONLINE',
-  MunichPythonIntermediateUkr = 'MUNICH_PYTHON_INTERMEDIATE_UKR',
-  MunichUxUiDesignBasics = 'MUNICH_UX_UI_DESIGN_BASICS',
-  MunichUxUiDesignIntermediate = 'MUNICH_UX_UI_DESIGN_INTERMEDIATE',
-  NrwAlumni = 'NRW_ALUMNI',
-  NrwCloudComputing = 'NRW_CLOUD_COMPUTING',
-  NrwDataAnalytics = 'NRW_DATA_ANALYTICS',
-  NrwHtmlAndCss = 'NRW_HTML_AND_CSS',
-  NrwInfrastructureBasics = 'NRW_INFRASTRUCTURE_BASICS',
-  NrwInternetOfThings = 'NRW_INTERNET_OF_THINGS',
-  NrwIntroductionToPython = 'NRW_INTRODUCTION_TO_PYTHON',
-  NrwJavascript = 'NRW_JAVASCRIPT',
-  NrwMachineLearning = 'NRW_MACHINE_LEARNING',
-  NrwReact = 'NRW_REACT',
-  NrwSocialMediaMarketing = 'NRW_SOCIAL_MEDIA_MARKETING',
-  NrwUxUiDesignBasics = 'NRW_UX_UI_DESIGN_BASICS',
-  NrwUxUiDesignIntermediate = 'NRW_UX_UI_DESIGN_INTERMEDIATE'
-}
 
 export enum RediLocation {
   Berlin = 'BERLIN',
@@ -1834,7 +1766,6 @@ export type UpdateConProfileInput = {
   lastName?: InputMaybe<Scalars['String']>;
   linkedInProfileUrl?: InputMaybe<Scalars['String']>;
   menteeCountCapacity?: InputMaybe<Scalars['Int']>;
-  mentee_currentlyEnrolledInCourse?: InputMaybe<RediCourse>;
   mentee_highestEducationLevel?: InputMaybe<EducationLevel>;
   mentee_occupationCategoryId?: InputMaybe<OccupationCategory>;
   mentee_occupationJob_placeOfEmployment?: InputMaybe<Scalars['String']>;

@@ -47,7 +47,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       objectName: ContactRecord.metadata.SALESFORCE_OBJECT_NAME,
       objectFields: ContactRecord.metadata.SALESFORCE_OBJECT_FIELDS,
       filter: {
-        Loopback_User_ID__c: loopbackUserId,
+        // Loopback_User_ID__c: loopbackUserId,
         ReDI_Email_Address__c: email,
       },
     })
@@ -70,6 +70,16 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       contactRecord = contactRecords[0]
     } else {
       contactRecord = contactRecords[0]
+      if (!contactRecord.Loopback_User_ID__c) {
+        await this.salesforceRepository.updateRecord(
+          ContactRecord.metadata.SALESFORCE_OBJECT_NAME,
+          {
+            Id: contactRecord.Id,
+            Loopback_User_ID__c: loopbackUserId,
+          }
+        )
+        contactRecord.Loopback_User_ID__c = loopbackUserId
+      }
     }
 
     this.salesforceRepository.updateRecord(
