@@ -33,11 +33,6 @@ export class SfApiConProfilesService {
     userType: UserType
     menteeCountCapacity: number
   }) {
-    // const upsertContactResult = await this.repository.updateRecord('Contact', {
-    //   Id: data.userId,
-    //   FirstName: data.firstName,
-    //   LastName: data.lastName,
-    // })
     const recordTypeId = await this.repository.findRecordIdOfObject(
       ConProfileRecord.metadata.SALESFORCE_OBJECT_NAME,
       data.userType
