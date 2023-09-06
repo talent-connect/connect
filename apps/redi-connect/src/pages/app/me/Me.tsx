@@ -49,7 +49,7 @@ function Me() {
             renderAs="p"
             responsive={{ mobile: { hide: { value: true } } }}
           >
-            {`Please fill out your profile. Let potential ${
+            {`Please please fill out your profile. Let potential ${
               userIsMentee ? 'mentors' : 'mentees'
             } know a little bit more about you, so you can find the perfect fit. If you have filled out your profile: Great! Make sure you keep it up to date.`}
           </Content>
