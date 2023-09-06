@@ -45,6 +45,11 @@ export const validationSchema = Yup.object({
     .oneOf([Yup.ref('password')], 'Passwords do not match'),
   agreesWithCodeOfConduct: Yup.boolean().required().oneOf([true]),
   gaveGdprConsent: Yup.boolean().required().oneOf([true]),
+  mentor_isPartnershipMentor: Yup.boolean(),
+  mentor_workPlace: Yup.string().when('mentor_isPartnershipMentor', {
+    is: true,
+    then: (schema) => schema.required('Please enter the company name').max(255),
+  }),
 })
 
 export interface SignUpFormValues {
@@ -124,6 +129,8 @@ export default function SignUp() {
     onSubmit: submitForm,
   })
 
+  const isPartnershipMentor = formik.values.mentor_isPartnershipMentor === true
+
   return (
     <AccountOperation>
       <Columns vCentered>
@@ -184,28 +191,26 @@ export default function SignUp() {
             />
 
             {type === 'mentor' && (
-              <>
-                <Checkbox.Form
-                  name="mentor_isPartnershipMentor"
-                  checked={formik.values.mentor_isPartnershipMentor}
-                  className="submit-spacer"
-                  {...formik}
-                >
-                  My employer is in a mentorship partnership with ReDI School
-                </Checkbox.Form>
-
-                <FormInput
-                  name="mentor_workPlace"
-                  placeholder="Which company are you working for?"
-                  {...formik}
-                />
-              </>
+              <Checkbox.Form
+                name="mentor_isPartnershipMentor"
+                checked={formik.values.mentor_isPartnershipMentor}
+                className="submit-spacer"
+                {...formik}
+              >
+                My employer is in a mentorship partnership with ReDI School
+              </Checkbox.Form>
+            )}
+            {type === 'mentor' && isPartnershipMentor && (
+              <FormInput
+                name="mentor_workPlace"
+                placeholder="Which company are you working for?"
+                {...formik}
+              />
             )}
 
             <Checkbox.Form
               name="agreesWithCodeOfConduct"
               checked={formik.values.agreesWithCodeOfConduct}
-              className="submit-spacer"
               {...formik}
             >
               I agree to the{' '}
