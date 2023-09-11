@@ -51,7 +51,7 @@ function Me() {
           >
             {`Please fill out your profile and keep it up to date. Let potential ${
               userIsMentee ? 'mentors' : 'mentees'
-            } know a little bit more about you, so you can find the perfect fit. *Our tip:* Having a picture could increase your chance of getting matched.`}
+            } know a little bit more about you, so you can find the perfect fit. <strong>Our tip:</strong> Having a picture could increase your chance of getting matched.`}
           </Content>
         </Columns.Column>
       </Columns>
@@ -62,7 +62,7 @@ function Me() {
         <Content size="medium" renderAs="p">
           {`Please fill out your profile and keep it up to date. Let potential ${
             userIsMentee ? 'mentors' : 'mentees'
-          } know a little bit more about you, so you can find the perfect fit. *Our tip:* Having a picture could increase your chance of getting matched.`}
+          } know a little bit more about you, so you can find the perfect fit. <strong>Our tip:</strong> Having a picture could increase your chance of getting matched.`}
         </Content>
       </Element>
       <Element className="block-separator">
