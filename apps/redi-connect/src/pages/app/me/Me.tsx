@@ -49,9 +49,9 @@ function Me() {
             renderAs="p"
             responsive={{ mobile: { hide: { value: true } } }}
           >
-            {`Please fill out your profile. Let potential ${
+            {`Please fill out your profile and keep it up to date. Let potential ${
               userIsMentee ? 'mentors' : 'mentees'
-            } know a little bit more about you, so you can find the perfect fit. If you have filled out your profile: Great! Make sure you keep it up to date.`}
+            } know a little bit more about you, so you can find the perfect fit. <strong>Our tip:</strong> Having a picture could increase your chance of getting matched.`}
           </Content>
         </Columns.Column>
       </Columns>
@@ -60,9 +60,9 @@ function Me() {
         responsive={{ tablet: { hide: { value: true } } }}
       >
         <Content size="medium" renderAs="p">
-          {`Please fill out your profile. Let potential ${
+          {`Please fill out your profile and keep it up to date. Let potential ${
             userIsMentee ? 'mentors' : 'mentees'
-          } know a little bit more about you, so you can find the perfect fit. If you have filled out your profile: Great! Make sure you keep it up to date.`}
+          } know a little bit more about you, so you can find the perfect fit. <strong>Our tip:</strong> Having a picture could increase your chance of getting matched.`}
         </Content>
       </Element>
       <Element className="block-separator">
