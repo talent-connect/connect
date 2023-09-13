@@ -5,8 +5,7 @@ on:
     branches:
       - master
       - salesforce-integration
-      - chore/reinstate-terraform-for-azure-migration
-      - chore/latest-terraform-greek-god-awesome-stuff-terrastos
+      - infra/eric-christos-greek-god-working-on-infra
 #    paths:
 #      - 'apps/redi-connect/**'
 #      - 'libs/**'
