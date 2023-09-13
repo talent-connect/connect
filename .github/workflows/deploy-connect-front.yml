@@ -40,12 +40,12 @@ jobs:
       url: https://cdn-endpoint-front-berlin-staging-redos.azureedge.net
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
         with:
           node-version: 12.x
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         id: yarn-cache
         with:
           path: '**/node_modules'
@@ -89,12 +89,12 @@ jobs:
       url: https://cdn-endpoint-front-tp-staging-redos.azureedge.net
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
         with:
           node-version: 12.x
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         id: yarn-cache
         with:
           path: '**/node_modules'
@@ -139,12 +139,12 @@ jobs:
       url: https://cdn-endpoint-front-berlin-prod-redos.azureedge.net
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
         with:
           node-version: 12.x
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         id: yarn-cache
         with:
           path: '**/node_modules'
@@ -185,12 +185,12 @@ jobs:
       url: https://cdn-endpoint-front-tp-prod-redos.azureedge.net
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
         with:
           node-version: 12.x
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         id: yarn-cache
         with:
           path: '**/node_modules'
