@@ -69,7 +69,7 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az storage blob upload-batch --overwrite --account-name "frontberlinstagingredos" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
+            az storage blob upload-batch --overwrite --account-name "frontberlinstagingredos" --auth-mode login -d '$web' -s ./dist/apps/redi-connect
 
       - name: Purge pre-loaded content for the CDN endpoint
         uses: azure/CLI@v1
