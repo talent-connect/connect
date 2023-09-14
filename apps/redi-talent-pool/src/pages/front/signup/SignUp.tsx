@@ -1,4 +1,5 @@
 import {
+  FirstPointOfTpContactOption,
   TpCompanyProfileSignUpOperationType,
   useListAllTpCompanyNamesQuery,
 } from '@talent-connect/data-access'
@@ -86,7 +87,8 @@ function buildValidationSchema(signupType: SignUpPageType['type']) {
       howDidHearAboutRediOtherText: Yup.string().when(
         'howDidHearAboutRediKey',
         {
-          is: (howDidHearAboutRediKey) => howDidHearAboutRediKey === 'other',
+          is: (howDidHearAboutRediKey) =>
+            howDidHearAboutRediKey === FirstPointOfTpContactOption.Other,
           then: Yup.string().required('This field is required'),
         }
       ),
@@ -310,7 +312,8 @@ export default function SignUp() {
                   items={howDidHearAboutRediOptionsEntries}
                   {...formik}
                 />
-                {formik.values.howDidHearAboutRediKey === 'other' ? (
+                {formik.values.howDidHearAboutRediKey ===
+                FirstPointOfTpContactOption.Other ? (
                   <FormInput
                     name="howDidHearAboutRediOtherText"
                     placeholder="Please tell us how you heard about ReDI Talent Pool"
