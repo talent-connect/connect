@@ -4,13 +4,14 @@ const {
   sendResetPasswordEmail,
   sendMenteeRequestAppointmentEmail,
   sendMentorRequestAppointmentEmail,
-  sendVerificationEmail,
+  sendConVerificationEmail,
 } = require('../../lib/email/email')
 
 const {
   sendTpJobseekerEmailVerificationSuccessfulEmail,
   sendTpCompanyEmailVerificationSuccessfulEmail,
   sendTpResetPasswordEmail,
+  sendTpVerificationEmail,
 } = require('../../lib/email/tp-email')
 
 const jwt = require('jsonwebtoken')
@@ -36,22 +37,47 @@ module.exports = function (RedUser) {
     const redUserInst = await RedUser.findById(context.instance.id)
     const redUser = redUserInst.toJSON()
 
-    var verifyOptions = {
-      type: 'email',
-      mailer: {
-        send: async (verifyOptions, context, cb) => {
-          sendVerificationEmail({
-            recipient: verifyOptions.to,
-            redUserId: redUser.id,
-            firstName: redUser.firstName,
-            verificationToken: verifyOptions.verificationToken,
-            rediLocation: redUser.rediLocation,
-          }).subscribe()
-        },
-      },
-      to: redUser.email,
-      from: 'dummy@dummy.com',
-    }
+    var verifyOptions = (() => {
+      switch (redUser.productSignupSource) {
+        case 'CON':
+          return {
+            type: 'email',
+            mailer: {
+              send: async (verifyOptions, context, cb) => {
+                sendConVerificationEmail({
+                  recipient: verifyOptions.to,
+                  redUserId: redUser.id,
+                  firstName: redUser.firstName,
+                  verificationToken: verifyOptions.verificationToken,
+                  rediLocation: redUser.rediLocation,
+                }).subscribe()
+              },
+            },
+            to: redUser.email,
+            from: 'dummy@dummy.com',
+          }
+        case 'TP':
+          return {
+            type: 'email',
+            mailer: {
+              send: async (verifyOptions, context, cb) => {
+                sendTpVerificationEmail({
+                  recipient: verifyOptions.to,
+                  redUserId: redUser.id,
+                  firstName: redUser.firstName,
+                  verificationToken: verifyOptions.verificationToken,
+                }).subscribe()
+              },
+            },
+            to: redUser.email,
+            from: 'dummy@dummy.com',
+          }
+        default:
+          throw new Error(
+            'Unknown productSignupSource in RedUser.before save hook'
+          )
+      }
+    })()
 
     redUserInst.verify(verifyOptions, function (err, response) {
       console.log(err)
@@ -241,6 +267,7 @@ function generateJwtToken(redUser) {
       howDidHearAboutRediOtherText: redUser.howDidHearAboutRediOtherText,
       isMicrosoftPartner: redUser.isMicrosoftPartner,
       operationType: redUser.operationType,
+      productSignupSource: redUser.productSignupSource,
     },
     process.env.NX_JWT_SECRET,
     {

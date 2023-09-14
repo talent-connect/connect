@@ -24,10 +24,6 @@ import TpTeaser from '../../../components/molecules/TpTeaser'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import { signUpLoopback } from '../../../services/api/api'
 import { history } from '../../../services/history/history'
-import {
-  useSignUpCompanyMutation,
-  useSignUpJobseekerMutation,
-} from './SignUp.generated'
 
 const formRediLocations = objectEntries(REDI_LOCATION_NAMES).map(
   ([id, label]) => ({
@@ -99,9 +95,6 @@ type SignUpPageType = {
 }
 
 export default function SignUp() {
-  const signUpCompanyMutation = useSignUpCompanyMutation()
-  const signUpJobseekerMutation = useSignUpJobseekerMutation()
-
   const { type } = useParams<SignUpPageType>()
 
   const initialValues: any = useMemo(
@@ -148,17 +141,15 @@ export default function SignUp() {
   async function submitForm(values: any, actions: FormikActions<any>) {
     try {
       setLoopbackSubmitError(null)
-      await signUpLoopback(values.email, values.password)
 
       if (type === 'jobseeker') {
         const transformedValues: any =
           buildValidationSchema('jobseeker').cast(values)
-        await signUpJobseekerMutation.mutateAsync({
-          input: {
-            firstName: transformedValues.firstName,
-            lastName: transformedValues.lastName,
-            rediLocation: transformedValues.rediLocation,
-          },
+        await signUpLoopback(values.email, values.password, {
+          firstName: transformedValues.firstName,
+          lastName: transformedValues.lastName,
+          rediLocation: transformedValues.rediLocation,
+          productSignupSource: 'TP',
         })
         history.push(`/app/me`)
       }
@@ -168,18 +159,17 @@ export default function SignUp() {
         const profile = transformedValues as Partial<TpCompanyProfile>
         profile.isProfileVisibleToJobseekers = true
 
-        await signUpCompanyMutation.mutateAsync({
-          input: {
-            companyIdOrName: values.companyNameOrId,
-            firstName: values.firstName,
-            lastName: values.lastName,
-            operationType: isExistingCompany
-              ? TpCompanyProfileSignUpOperationType.ExistingCompany
-              : TpCompanyProfileSignUpOperationType.NewCompany,
-            firstPointOfContact: values.howDidHearAboutRediKey,
-            firstPointOfContactOther: values.howDidHearAboutRediOtherText,
-            isMicrosoftPartner: values.isMicrosoftPartner,
-          },
+        await signUpLoopback(values.email, values.password, {
+          companyIdOrName: values.companyNameOrId,
+          firstName: values.firstName,
+          lastName: values.lastName,
+          operationType: isExistingCompany
+            ? TpCompanyProfileSignUpOperationType.ExistingCompany
+            : TpCompanyProfileSignUpOperationType.NewCompany,
+          firstPointOfContact: values.howDidHearAboutRediKey,
+          firstPointOfContactOther: values.howDidHearAboutRediOtherText,
+          isMicrosoftPartner: values.isMicrosoftPartner,
+          productSignupSource: 'TP',
         })
         history.push(`/front/signup-email-verification-success`)
       }

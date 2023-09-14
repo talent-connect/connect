@@ -16,11 +16,7 @@ import Teaser from '../../../components/molecules/Teaser'
 
 import { Columns, Content, Form, Notification } from 'react-bulma-components'
 
-import {
-  RediLocation,
-  useConProfileSignUpMutation,
-  UserType,
-} from '@talent-connect/data-access'
+import { RediLocation, UserType } from '@talent-connect/data-access'
 import { toPascalCaseAndTrim } from '@talent-connect/shared-utils'
 import { signUpLoopback } from '../../../services/api/api'
 import { history } from '../../../services/history/history'
@@ -64,7 +60,6 @@ export interface SignUpFormValues {
 }
 
 export default function SignUp() {
-  const signUpMutation = useConProfileSignUpMutation()
   const { type } = useParams() as unknown as { type: SignUpPageType }
 
   const initialValues: SignUpFormValues = {
@@ -92,6 +87,7 @@ export default function SignUp() {
         lastName: values.lastName,
         userType: type.toUpperCase() as UserType,
         rediLocation: envRediLocation() as RediLocation,
+        productSignupSource: 'CON',
       })
       actions.setSubmitting(false)
       history.push(`/front/signup-email-verification`)
@@ -207,10 +203,9 @@ export default function SignUp() {
               </a>
             </Checkbox.Form>
             {loopbackSubmitError !== 'user-already-exists' &&
-            (loopbackSubmitError || signUpMutation.isError) ? (
+            loopbackSubmitError ? (
               <Form.Help color="danger" className="help--show">
                 An error occurred, please try again.
-                {signUpMutation.isError ? 'yes' : 'no'}
               </Form.Help>
             ) : null}
 

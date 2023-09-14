@@ -117,7 +117,7 @@ const sendVerificationEmailTemplateParsed = mjml2html(
     filePath: path.resolve(__dirname, 'templates'),
   }
 )
-const sendVerificationEmail = ({
+const sendConVerificationEmail = ({
   recipient,
   redUserId,
   firstName,
@@ -147,5 +147,5 @@ module.exports = {
   sendResetPasswordEmail,
   sendEmailFactory,
   sendMjmlEmailFactory,
-  sendVerificationEmail,
+  sendConVerificationEmail,
 }
