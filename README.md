@@ -146,8 +146,8 @@ We use `pm2` on the production server to manage our two nodejs servers, `loopbac
 
 If you ever need to configure/start the servers from "scratch", here's how to do it:
 
-- [All the environment variables] pm2 restart --name loopback --log /home/ubuntu/loopback.log --max-memory-restart 250M /home/ubuntu/connect/apps/api/server/server.js
-- [All the environment variables] pm2 start --name nestjs-api --log /home/ubuntu/nestjs-api.log --max-memory-restart 500M connect/dist/apps/nestjs-api/main.js
+- `[All the environment variables] pm2 restart --name loopback --log /home/ubuntu/loopback.log --max-memory-restart 250M /home/ubuntu/connect/apps/api/server/server.js`
+- `[All the environment variables] pm2 start --name nestjs-api --log /home/ubuntu/nestjs-api.log --max-memory-restart 500M connect/dist/apps/nestjs-api/main.js`
 
 **If you need to _update the environment variables_**, run the above command with `restart` instead of `start`, and also add the `--update-env` flag.
 
