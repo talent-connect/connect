@@ -30,6 +30,7 @@ export class ConProfileMapper
     props.userType = raw.props.RecordType.DeveloperName as UserType
     props.loopbackUserId = raw.props.Contact__r.Loopback_User_ID__c
     props.rediLocation = raw.props.ReDI_Location__c as RediLocation
+    props.mentor_isPartnershipMentor = raw.props.Partnership_Mentor__c
     props.mentor_occupation = raw.props.Occupation__c
     props.mentor_workPlace = raw.props.Work_Place__c
     props.expectations = raw.props.Expectations__c
