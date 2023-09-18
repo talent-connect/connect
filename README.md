@@ -136,6 +136,21 @@ ReDI Connect and ReDI Talent Pool are two React front-ends that use a Express/Lo
 This diagram shows the current system architecture of both platforms:
 ![Architecture](https://user-images.githubusercontent.com/51786805/144653051-c8be1ee0-26da-42e0-b119-4d0d07754d79.png)
 
+## Production server administration
+
+We use `pm2` on the production server to manage our two nodejs servers, `loopback` and `nestjs-api`.
+
+- Run `pm2 monit` for an overview of the two servers and their logs. Run `pm2 status` for a quick status of the servers.
+- **NOTE:** pm2 will automatically boot nestjs-api and loopback on server restart.
+- To start/stop servers, run `pm2 start <server-name>` or `pm2 stop <server-name>`. To restart, run `pm2 restart <server-name>`. You don't need to include environment variables or various other flags, pm2 has this configuration "saved" since the first boot.
+
+If you ever need to configure/start the servers from "scratch", here's how to do it:
+
+- [All the environment variables] pm2 restart --name loopback --log /home/ubuntu/loopback.log --max-memory-restart 250M /home/ubuntu/connect/apps/api/server/server.js
+- [All the environment variables] pm2 start --name nestjs-api --log /home/ubuntu/nestjs-api.log --max-memory-restart 500M connect/dist/apps/nestjs-api/main.js
+
+**If you need to _update the environment variables_**, run the above command with `restart` instead of `start`, and also add the `--update-env` flag.
+
 # Nx out-of-the-box docs
 
 All the below is written by Nx.
