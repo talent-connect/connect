@@ -45,14 +45,12 @@ const validationSchema = Yup.object({
     }),
   mentor_workPlace: Yup.string()
     .nullable()
-    .when('userType', {
-      is: 'MENTOR',
-      then: (schema) => schema.max(255).label('Work place'),
-    })
-    .when('mentor_isPartnershipMentor', {
-      is: true,
+    .when(['userType', 'mentor_isPartnershipMentor'], {
+      is: (userType, mentor_isPartnershipMentor) =>
+        userType === 'MENTOR' && mentor_isPartnershipMentor,
       then: (schema) =>
         schema.required('Please enter the company name').max(255),
+      otherwise: (schema) => schema.max(255),
     }),
   mentee_occupationCategoryId: Yup.string()
     .nullable()
@@ -150,7 +148,7 @@ function EditableOccupation() {
     userType,
     mentor_occupation,
     mentor_workPlace,
-    mentor_isPartnershipMentor: false,
+    mentor_isPartnershipMentor,
     mentee_occupationCategoryId,
     mentee_occupationJob_placeOfEmployment,
     mentee_occupationJob_position,
@@ -195,7 +193,7 @@ function EditableOccupation() {
           />
           <Checkbox.Form
             name="mentor_isPartnershipMentor"
-            checked={mentor_isPartnershipMentor}
+            checked={formik.values.mentor_isPartnershipMentor}
             {...formik}
           >
             My employer is in a mentorship partnership with ReDI School
