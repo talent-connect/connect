@@ -1779,6 +1779,7 @@ export type UpdateConProfileInput = {
   mentee_occupationOther_description?: InputMaybe<Scalars['String']>;
   mentee_occupationStudent_studyName?: InputMaybe<Scalars['String']>;
   mentee_occupationStudent_studyPlace?: InputMaybe<Scalars['String']>;
+  mentor_isPartnershipMentor?: InputMaybe<Scalars['Boolean']>;
   mentor_occupation?: InputMaybe<Scalars['String']>;
   mentor_workPlace?: InputMaybe<Scalars['String']>;
   optOutOfMenteesFromOtherRediLocation?: InputMaybe<Scalars['Boolean']>;

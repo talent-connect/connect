@@ -1437,6 +1437,7 @@ input UpdateConProfileInput {
   mentee_occupationOther_description: String
   mentee_occupationStudent_studyName: String
   mentee_occupationStudent_studyPlace: String
+  mentor_isPartnershipMentor: Boolean
   mentor_occupation: String
   mentor_workPlace: String
   optOutOfMenteesFromOtherRediLocation: Boolean
