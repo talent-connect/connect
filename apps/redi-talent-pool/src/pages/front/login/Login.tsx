@@ -6,12 +6,14 @@ import {
   MyTpDataDocument,
   MyTpDataQuery,
   MyTpDataQueryVariables,
+  RediLocation,
 } from '@talent-connect/data-access'
 import {
   Button,
   FormInput,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
+import { decodeJwt } from '@talent-connect/shared-utils'
 import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
 import { useCallback, useState } from 'react'
 import { Columns, Content, Form } from 'react-bulma-components'
@@ -25,7 +27,10 @@ import {
   saveAccessTokenToLocalStorage,
 } from '../../../services/auth/auth'
 import { history } from '../../../services/history/history'
-import { useSignUpJobseekerMutation } from '../signup/SignUp.generated'
+import {
+  useSignUpCompanyMutation,
+  useSignUpJobseekerMutation,
+} from '../signup/SignUp.generated'
 
 interface LoginFormValues {
   username: string
@@ -59,6 +64,7 @@ const buildMyConProfileDataFetcher = () =>
 export default function Login() {
   const [loginError, setLoginError] = useState<string>('')
   const tpJobseekerSignupMutation = useSignUpJobseekerMutation()
+  const tpCompanySignupMutation = useSignUpCompanyMutation()
 
   const submitForm = useCallback(
     (values, actions) => {
@@ -67,6 +73,19 @@ export default function Login() {
         actions: FormikActions<LoginFormValues>
       ) => {
         const formValues = values as LoginFormValues
+
+        const accessToken = await login(
+          formValues.username,
+          formValues.password
+        )
+        saveAccessTokenToLocalStorage(accessToken)
+
+        const handler = new PostLoginSuccessHandler({
+          tpJobseekerSignupMutation,
+          tpCompanySignupMutation,
+        })
+        await handler.handle()
+
         try {
           const accessToken = await login(
             formValues.username,
@@ -186,4 +205,118 @@ export default function Login() {
       </Columns>
     </AccountOperation>
   )
+}
+
+class PostLoginSuccessHandler {
+  constructor(private readonly context: PostLoginSuccessHandlerContext) {}
+
+  public async handle(): Promise<void> {
+    try {
+      await this.runUseCaseUserHasTpProfileOrFail()
+    } catch (err) {
+      // Do nothing, continue
+    }
+
+    try {
+      await this.runUseCaseCreateTpProfileFromConProfileOrFail()
+    } catch (err) {
+      // Do nothing, continue
+    }
+
+    try {
+      await this.runUseCaseUserJustSignedUpCreateTpProfileOrFail()
+    } catch (err) {
+      // Do nothing, continue
+    }
+  }
+
+  private async runUseCaseUserHasTpProfileOrFail(): Promise<void> {
+    const tpUserData = await myTpDataFetcher()
+    const userHasATpProfile =
+      Boolean(tpUserData.tpCurrentUserDataGet.tpJobseekerDirectoryEntry) ||
+      Boolean(tpUserData.tpCurrentUserDataGet.representedCompany)
+
+    if (userHasATpProfile) {
+      return history.push('/app/me')
+    }
+
+    throw new Error('User does not have a TP profile')
+  }
+
+  private async runUseCaseCreateTpProfileFromConProfileOrFail(): Promise<void> {
+    const myConProfileDataFetcher = buildMyConProfileDataFetcher()
+    const conUserData = await myConProfileDataFetcher()
+
+    const userDoesNotHaveTpProfile = true
+    const userHasConProfile = Boolean(conUserData.conProfile)
+
+    if (userDoesNotHaveTpProfile && userHasConProfile) {
+      await this.context.tpJobseekerSignupMutation.mutateAsync({
+        input: {
+          firstName: conUserData.conProfile.firstName,
+          lastName: conUserData.conProfile.lastName,
+          rediLocation: conUserData.conProfile.rediLocation,
+        },
+      })
+      return history.push('/app/me')
+    }
+
+    throw new Error('User does not have a CON profile')
+  }
+
+  private async runUseCaseUserJustSignedUpCreateTpProfileOrFail(): Promise<void> {
+    const accessToken = getAccessTokenFromLocalStorage()
+    const { tpSignupType, ...data } = decodeJwt(accessToken?.jwtToken) as {
+      [key: string]: string
+    }
+
+    switch (tpSignupType) {
+      case 'jobseeker':
+        await this.context.tpJobseekerSignupMutation.mutateAsync({
+          input: {
+            rediLocation: data.rediLocation as RediLocation,
+          },
+        })
+        return history.push('/app/me')
+
+      case 'company':
+        await this.context.tpCompanySignupMutation.mutateAsync({
+          input: {
+            companyName: data.companyName,
+            rediLocation: data.rediLocation as RediLocation,
+          },
+        })
+        return history.push('/app/me')
+
+      default:
+        throw new Error('Invalid tpSignupType')
+    }
+
+    const userHasATpJobseekerProfile = Boolean(email)
+    if (userHasATpJobseekerProfile) {
+      const isWrongRediLocationError = rediLocation !== envRediLocation()
+
+      if (isWrongRediLocationError) {
+        purgeAllSessionData()
+        setIsWrongRediLocationError(true)
+        setTpProfileLocation(rediLocation as RediLocation)
+        return
+      }
+
+      await this.context.tpJobseekerSignupMutation.mutateAsync({
+        input: {
+          email,
+          userType: UserType.Mentee,
+          rediLocation: rediLocation as RediLocation,
+        },
+      })
+      return history.push(`/front/signup-email-verification-success/mentee`)
+    }
+
+    throw new Error('User does not have a TP jobseeker profile')
+  }
+}
+interface PostLoginSuccessHandlerContext {
+  tpJobseekerSignupMutation: ReturnType<typeof useSignUpJobseekerMutation>
+  tpCompanySignupMutation: ReturnType<typeof useSignUpCompanyMutation>
 }

@@ -150,6 +150,7 @@ export default function SignUp() {
           lastName: transformedValues.lastName,
           rediLocation: transformedValues.rediLocation,
           productSignupSource: 'TP',
+          tpSignupType: 'jobseeker',
         })
         history.push(`/app/me`)
       }
@@ -170,6 +171,7 @@ export default function SignUp() {
           firstPointOfContactOther: values.howDidHearAboutRediOtherText,
           isMicrosoftPartner: values.isMicrosoftPartner,
           productSignupSource: 'TP',
+          tpSignupType: 'company',
         })
         history.push(`/front/signup-email-verification-success`)
       }

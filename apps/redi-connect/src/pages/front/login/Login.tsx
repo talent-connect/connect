@@ -159,7 +159,7 @@ export default function Login() {
       // in localStorage contains the data from RedUser which contains the data from the CON
       // sign-up page. We now want to use this to create a CON profile for them.
       const accessToken = getAccessTokenFromLocalStorage()
-      const { email, firstName, lastName, userType, rediLocation } = decodeJwt(
+      const { email, userType, rediLocation } = decodeJwt(
         accessToken.jwtToken
       ) as { [key: string]: string }
       await conProfileSignUpMutation.mutateAsync({

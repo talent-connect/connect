@@ -1297,8 +1297,6 @@ input TpJobseekerProfilePatchInput {
 }
 
 input TpJobseekerProfileSignUpDto {
-  firstName: String!
-  lastName: String!
   rediLocation: RediLocation!
 }
 

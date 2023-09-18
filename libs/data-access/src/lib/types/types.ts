@@ -1639,8 +1639,6 @@ export type TpJobseekerProfilePatchInput = {
 };
 
 export type TpJobseekerProfileSignUpDto = {
-  firstName: Scalars['String'];
-  lastName: Scalars['String'];
   rediLocation: RediLocation;
 };
 

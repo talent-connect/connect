@@ -3,7 +3,7 @@ import {
   JobseekerProfileStatus,
   TpJobseekerProfileEntity,
   TpJobseekerProfileEntityProps,
-  TpJobseekerProfileMapper
+  TpJobseekerProfileMapper,
 } from '@talent-connect/common-types'
 import { deleteUndefinedProperties } from '@talent-connect/shared-utils'
 import { CurrentUserInfo } from '../auth/current-user.interface'
@@ -72,14 +72,6 @@ export class TpJobseekerProfileService {
     input: TpJobseekerProfileSignUpMutationDto,
     currentUser: CurrentUserInfo
   ) {
-    await this.userContactService.patch(
-      {
-        firstName: input.firstName,
-        lastName: input.lastName,
-      },
-      currentUser
-    )
-
     const newEntityProps = new TpJobseekerProfileEntityProps()
     newEntityProps.userId = currentUser.userId
     newEntityProps.rediLocation = input.rediLocation
@@ -90,7 +82,7 @@ export class TpJobseekerProfileService {
 
     this.emailService.sendJobseekerSignupCompleteEmail({
       recipient: currentUser.userProps.email,
-      firstName: input.firstName,
+      firstName: currentUser.userProps.firstName,
     })
   }
 }
