@@ -203,7 +203,14 @@ class PostLoginSuccessHandler {
     const userHasATpProfile =
       Boolean(tpUserData.tpCurrentUserDataGet.tpJobseekerDirectoryEntry) ||
       Boolean(tpUserData.tpCurrentUserDataGet.representedCompany)
+    const userIsPendingRepresentative = Boolean(
+      tpUserData.tpCurrentUserDataGet.companyRepresentativeRelationship
+        ?.status === 'PENDING'
+    )
 
+    if (userHasATpProfile && userIsPendingRepresentative) {
+      return history.push('/front/signup-complete')
+    }
     if (userHasATpProfile) {
       return history.push('/app/me')
     }
