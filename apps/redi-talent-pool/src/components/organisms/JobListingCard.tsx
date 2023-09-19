@@ -1,10 +1,10 @@
 import React from 'react'
-import { Card, Element } from 'react-bulma-components'
+import { Columns, Card, Element } from 'react-bulma-components'
 import { NavLink } from 'react-router-dom'
 
 import { CardTags, Icon } from '@talent-connect/shared-atomic-design-components'
 import { topSkillsIdToLabelMap } from '@talent-connect/talent-pool/config'
-// import placeholderImage from '../../assets/images/img-placeholder.png'
+//import placeholderImage from '../../assets/images/img-placeholder.png'
 import './JobListingCard.scss'
 import { JobListingCardJobListingPropFragment } from './jobseeker-profile-editables/JobListingCard.generated'
 
@@ -39,12 +39,7 @@ export function JobListingCard({
   return (
     <NavLink to={linkTo} onClick={onClick} className="job-posting-link">
       <Card className="job-posting-card">
-        <Card.Image
-          className="job-posting-card__image"
-          src={imgSrc}
-          alt={jobTitle}
-        />
-        <Card.Content>
+        <Card.Content className="job-posting-card__content">
           {toggleFavorite && (
             <div
               className="job-posting-card__favorite"
@@ -56,29 +51,41 @@ export function JobListingCard({
               />
             </div>
           )}
-          <Element
-            key="name"
-            renderAs="h3"
-            textWeight="bold"
-            textSize={4}
-            className="job-posting-card__job-title"
-          >
-            {jobTitle}
-          </Element>
-          <Element
-            className="content job-posting-card__company-name"
-            key="location"
-            renderAs="div"
-          >
-            {companyName}
-          </Element>
-          {idealTechnicalSkills?.length > 0 ? (
-            <CardTags
-              items={idealTechnicalSkills}
-              shortList
-              formatter={(skill: string) => topSkillsIdToLabelMap[skill]}
-            />
-          ) : null}
+          <Columns>
+            <Columns.Column size={3}>
+              <Element
+                renderAs="img"
+                className="job-posting-card__image"
+                src={imgSrc}
+                alt={jobTitle}
+              ></Element>
+            </Columns.Column>
+            <Columns.Column size={9}>
+              <Element
+                key="name"
+                renderAs="h3"
+                textWeight="bold"
+                textSize={4}
+                className="job-posting-card__job-title"
+              >
+                {jobTitle}
+              </Element>
+              <Element
+                className="content job-posting-card__company-name"
+                key="company"
+                renderAs="div"
+              >
+                {companyName}
+              </Element>
+              {idealTechnicalSkills?.length > 0 ? (
+                <CardTags
+                  items={idealTechnicalSkills}
+                  shortList
+                  formatter={(skill: string) => topSkillsIdToLabelMap[skill]}
+                />
+              ) : null}
+            </Columns.Column>
+          </Columns>
         </Card.Content>
       </Card>
     </NavLink>

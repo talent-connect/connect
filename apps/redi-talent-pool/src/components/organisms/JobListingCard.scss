@@ -6,8 +6,8 @@
 
 .job-posting-card {
   border-radius: 4px;
-  height: 24.5rem;
   overflow: hidden;
+  padding: 32px;
 
   &:hover {
     box-shadow: $card-shadow-hover;
@@ -26,11 +26,10 @@
   }
 
   &__image {
-    img {
-      height: 9.5rem;
-      overflow: hidden;
-      object-fit: contain;
-    }
+    max-height: 136px;
+    max-width: 136px;
+    overflow: hidden;
+    object-fit: contain;
   }
 
   &__favorite {
@@ -52,5 +51,3 @@
     }
   }
 }
-
-
