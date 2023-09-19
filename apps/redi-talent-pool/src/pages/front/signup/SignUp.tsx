@@ -75,7 +75,7 @@ function buildValidationSchema(signupType: SignUpPageType['type']) {
   if (signupType === 'company') {
     return Yup.object({
       ...baseSchema,
-      companyNameOrId: Yup.string()
+      companyIdOrName: Yup.string()
         .required('Your company name is required')
         .max(255),
       howDidHearAboutRediKey: Yup.string().required('This field is required'),
@@ -113,7 +113,7 @@ export default function SignUp() {
     initialValues.agreesWithCodeOfConduct = false
   }
   if (type === 'company') {
-    initialValues.companyNameOrId = ''
+    initialValues.companyIdOrName = ''
     initialValues.state = 'drafting-profile'
     initialValues.isMicrosoftPartner = false
   }
@@ -132,7 +132,7 @@ export default function SignUp() {
   })
 
   const isExistingCompany = tpCompanyNames?.publicTpCompanyProfiles.some(
-    (company) => company.id === formik.values.companyNameOrId
+    (company) => company.id === formik.values.companyIdOrName
   )
   const isNewCompany = !isExistingCompany
 
@@ -152,7 +152,7 @@ export default function SignUp() {
           productSignupSource: 'TP',
           tpSignupType: 'jobseeker',
         })
-        history.push(`/app/me`)
+        history.push(`/front/signup-email-verification`)
       }
 
       if (type === 'company') {
@@ -161,7 +161,7 @@ export default function SignUp() {
         profile.isProfileVisibleToJobseekers = true
 
         await signUpLoopback(values.email, values.password, {
-          companyIdOrName: values.companyNameOrId,
+          companyIdOrName: values.companyIdOrName,
           firstName: values.firstName,
           lastName: values.lastName,
           operationType: isExistingCompany
@@ -173,7 +173,7 @@ export default function SignUp() {
           productSignupSource: 'TP',
           tpSignupType: 'company',
         })
-        history.push(`/front/signup-email-verification-success`)
+        history.push(`/front/signup-email-verification`)
       }
       actions.setSubmitting(false)
     } catch (error) {
@@ -214,7 +214,7 @@ export default function SignUp() {
           <form onSubmit={(e) => e.preventDefault()} className="form">
             {type === 'company' ? (
               <FormSelect
-                name="companyNameOrId"
+                name="companyIdOrName"
                 placeholder="Your company name"
                 items={
                   isTpCompanyNamesSuccess

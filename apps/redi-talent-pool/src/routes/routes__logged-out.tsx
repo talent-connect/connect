@@ -51,16 +51,16 @@ export const routes__loggedOut: RouteDefinition[] = [
     component: Login,
     exact: true,
   },
-  // {
-  //   path: '/front/signup-email-verification',
-  //   component: SignUpEmailVerification,
-  //   exact: true,
-  // },
-  // {
-  //   path: '/front/signup-email-verification-success',
-  //   component: SignUpComplete,
-  //   exact: true,
-  // },
+  {
+    path: '/front/signup-email-verification',
+    component: SignUpEmailVerification,
+    exact: true,
+  },
+  {
+    path: '/front/signup-complete',
+    component: SignUpComplete,
+    exact: true,
+  },
   {
     path: '/front/signup-email-verification-success',
     component: SignUpEmailVerificationSuccess,
