@@ -175,21 +175,18 @@ class PostLoginSuccessHandler {
 
   public async handle(failureCallback: () => void): Promise<void> {
     try {
-      debugger
       return await this.runUseCaseUserHasTpProfileOrFail()
     } catch (err) {
       // Do nothing, continue
     }
 
     try {
-      debugger
       return await this.runUseCaseCreateTpProfileFromConProfileOrFail()
     } catch (err) {
       // Do nothing, continue
     }
 
     try {
-      debugger
       return await this.runUseCaseUserJustSignedUpCreateTpProfileOrFail()
     } catch (err) {
       // Do nothing, continue
