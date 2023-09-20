@@ -25,7 +25,7 @@ export default function SignUpComplete() {
           <Teaser.IllustrationOnly />
         </Columns.Column>
         <Columns.Column size={5} offset={1}>
-          <Heading border="bottomLeft">Email verified!</Heading>
+          <Heading border="bottomLeft">Sign-up complete!</Heading>
           <Content size="large" renderAs="div">
             {userType === SignUpPageTypes.mentor && (
               <>
