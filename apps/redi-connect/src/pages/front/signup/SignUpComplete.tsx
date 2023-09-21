@@ -30,18 +30,25 @@ export default function SignUpComplete() {
             {userType === SignUpPageTypes.mentor && (
               <>
                 <p style={{ textAlign: 'justify' }}>
-                  Now, we would like to get to know you better. We regularly
-                  organize mentor onboardings in small groups.{' '}
-                  <a href="https://calendly.com/hadeertalentsucess/mentors-onboarding-session">
-                    <strong>
-                      Please book yourself in for one of the open 30-minute
-                      slots.
-                    </strong>
-                  </a>
+                  Now, we would like to get to know you better.
                 </p>
                 <p style={{ textAlign: 'justify' }}>
-                  If you are a ReDI partner, your profile will be activated
-                  automatically - you don't have to select a date!
+                  Your next step is to{' '}
+                  <a
+                    href="https://calendly.com/hadeertalentsucess/mentors-onboarding-session"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    schedule a quick onboarding session
+                  </a>
+                  . It's the final step before you can kick off your journey as
+                  a mentor!{' '}
+                </p>
+                <p style={{ textAlign: 'justify' }}>
+                  In the meantime, please go to your account and{' '}
+                  <strong>complete your profile information</strong>. This step
+                  is super important because it helps students get to know you
+                  better and understand how you can support them.
                 </p>
               </>
             )}
@@ -88,10 +95,18 @@ export default function SignUpComplete() {
           <Form.Field className="submit-spacer">
             <Form.Control>
               <Button onClick={() => history.push('/app/me')}>
-                Continue to profile
+                Continue to your profile
               </Button>
             </Form.Control>
           </Form.Field>
+          <Content size="small" renderAs="p">
+            Do you have questions? Feel free to contact us{' '}
+            <a href="mailto:career@redi-school.org">here</a> or visit our{' '}
+            <a href="https://www.redi-school.org/" target="__blank">
+              ReDI school website
+            </a>{' '}
+            for more information.
+          </Content>
         </Columns.Column>
       </Columns>
     </AccountOperation>

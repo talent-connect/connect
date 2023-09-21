@@ -12,18 +12,14 @@
             >Hi ${firstName},</mj-text
           >
           <mj-text mj-class="text paragraph"
-            >Thank you for signing up!</mj-text
+            >Great news - you're officially signed up!</mj-text
           >
           <mj-text mj-class="text paragraph"
-            >Your next step is to book a quick onboarding session.
-            This is the last step before you can get started as a
-            <strong>mentor</strong>.
+            >Your next step is to <strong>schedule a quick onboarding session</strong>. During this session, you'll get 
+            to meet our Mentorship Program Manager and dive deeper into how our Mentorship Program works. 
+            It's the final step before you can kick off your journey as a <strong>mentor</strong>!
           </mj-text>
-          <mj-text mj-class="text paragraph" 
-            >We regularly organize mentor onboardings in small groups.
-            Please, book yourself in for one of the open 30-minute
-            slots.</mj-text
-          >
+          
           <mj-image
             src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/schedule-meeting-large.png"
             align="center"
@@ -41,8 +37,17 @@
             css-class="button-mobile"
             href="https://calendly.com/hadeertalentsucess/mentors-onboarding-session"
           />
+          
           <mj-text mj-class="text paragraph" 
-            >We’re looking forward to getting to know you soon!</mj-text
+            >While you're at it, please take a moment to <a
+              href="https://connect.redi-school.org/"
+              class="text-link"
+              >log into your account</a> and <strong>fill out your profile</strong>. 
+            This step is super important because it helps students get to know you better and understand 
+            how you can support them.</mj-text>
+
+          <mj-text mj-class="text paragraph" 
+            >We can't wait to get to know you better and welcome you into our community!</mj-text
           >
           
           <mj-text mj-class="text">All the best,</mj-text>
