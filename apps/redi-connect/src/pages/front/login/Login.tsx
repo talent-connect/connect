@@ -146,7 +146,7 @@ export default function Login() {
               tpJobseekerDirectoryEntry.rediLocation as RediLocation,
           },
         })
-        return history.push(`/front/signup-email-verification-success/mentee`)
+        return history.push('/front/signup-complete/mentee')
       }
     } catch (err) {
       // Do nothing, continue
