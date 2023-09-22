@@ -82,13 +82,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       }
     }
 
-    // this.salesforceRepository.updateRecord(
-    //   ContactRecord.metadata.SALESFORCE_OBJECT_NAME,
-    //   {
-    //     Id: contactRecord.Id,
-    //     ReDI_CON_TP_User_Last_Active_On__c: new Date().toISOString(),
-    //   }
-    // )
+    this.salesforceRepository.updateRecord(
+      ContactRecord.metadata.SALESFORCE_OBJECT_NAME,
+      {
+        Id: contactRecord.Id,
+        ReDI_CON_TP_User_Last_Active_On__c: new Date().toISOString(),
+      }
+    )
 
     const userEntity = this.userMapper.fromPersistence(
       ContactRecord.create(contactRecord)
