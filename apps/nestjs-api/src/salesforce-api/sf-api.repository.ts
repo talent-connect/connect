@@ -194,14 +194,37 @@ export class SfApiRepository {
     record: T
   ): Promise<SalesforceMutationIdResult> {
     await this.connect()
-    const createResult = await this.connection
-      .sobject(objectName)
-      .create(record)
-    console.log(
-      `[SfApiRepository] CREATEd ${objectName} record with id ${createResult.id}`
-    )
-    await this.cacheManager.reset()
-    return createResult
+    let retryCount = 0
+    const maxRetries = 3
+    const backoffTime = 1000 // 1 second
+    const createRecordWithRetry = async () => {
+      try {
+        const createResult = await this.connection
+          .sobject(objectName)
+          .create(record)
+        console.log(
+          `[SfApiRepository] CREATEd ${objectName} record with id ${createResult.id}`
+        )
+        await this.cacheManager.reset()
+        return createResult
+      } catch (error) {
+        if (retryCount < maxRetries) {
+          retryCount++
+          const backoff = backoffTime * Math.pow(2, retryCount)
+          console.log(
+            `[SfApiRepository] Retrying createRecord for ${objectName} in ${backoff}ms`
+          )
+          await new Promise((resolve) => setTimeout(resolve, backoff))
+          return createRecordWithRetry()
+        } else {
+          console.log(
+            `[SfApiRepository] Failed to create ${objectName} record after ${maxRetries} retries`
+          )
+          throw error
+        }
+      }
+    }
+    return createRecordWithRetry()
   }
 
   async updateRecord<T>(
@@ -209,14 +232,37 @@ export class SfApiRepository {
     record: T
   ): Promise<SalesforceMutationIdResult> {
     await this.connect()
-    const updateResult = await this.connection
-      .sobject(objectName)
-      .update(record)
-    console.log(
-      `[SfApiRepository] UPDATEd ${objectName} record with id ${updateResult.id}`
-    )
-    await this.cacheManager.reset()
-    return updateResult
+    let retryCount = 0
+    const maxRetries = 3
+    const backoffTime = 1000 // 1 second
+    const updateRecordWithRetry = async () => {
+      try {
+        const updateResult = await this.connection
+          .sobject(objectName)
+          .update(record)
+        console.log(
+          `[SfApiRepository] UPDATEd ${objectName} record with id ${updateResult.id}`
+        )
+        await this.cacheManager.reset()
+        return updateResult
+      } catch (error) {
+        if (retryCount < maxRetries) {
+          retryCount++
+          const backoff = backoffTime * Math.pow(2, retryCount)
+          console.log(
+            `[SfApiRepository] Retrying updateRecord for ${objectName} in ${backoff}ms`
+          )
+          await new Promise((resolve) => setTimeout(resolve, backoff))
+          return updateRecordWithRetry()
+        } else {
+          console.log(
+            `[SfApiRepository] Failed to update ${objectName} record after ${maxRetries} retries`
+          )
+          throw error
+        }
+      }
+    }
+    return updateRecordWithRetry()
   }
 
   async deleteRecord<T>(objectName: string, recordId: string): Promise<void> {
