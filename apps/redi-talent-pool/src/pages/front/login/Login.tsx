@@ -258,7 +258,7 @@ class PostLoginSuccessHandler {
             rediLocation: data.rediLocation as RediLocation,
           },
         })
-        return history.push('/app/signup-complete')
+        return history.push('/front/signup-complete')
 
       case 'company':
         await this.context.tpCompanySignupMutation.mutateAsync({
