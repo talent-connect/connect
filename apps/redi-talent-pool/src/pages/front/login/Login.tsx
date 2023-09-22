@@ -19,6 +19,7 @@ import { useCallback, useState } from 'react'
 import { Columns, Content, Form } from 'react-bulma-components'
 import { Link } from 'react-router-dom'
 import * as Yup from 'yup'
+import { showNotification } from '../../../components/AppNotification'
 import TpTeaser from '../../../components/molecules/TpTeaser'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import { login } from '../../../services/api/api'
@@ -79,6 +80,16 @@ export default function Login() {
           formValues.password
         )
         saveAccessTokenToLocalStorage(accessToken)
+
+        const jwtToken = decodeJwt(accessToken.jwtToken)
+        if (!jwtToken.emailVerified) {
+          formik.setSubmitting(false)
+          showNotification(
+            'Please verify your email address first. Check your inbox.',
+            { variant: 'error', autoHideDuration: 8000 }
+          )
+          return
+        }
 
         const handler = new PostLoginSuccessHandler({
           tpJobseekerSignupMutation,

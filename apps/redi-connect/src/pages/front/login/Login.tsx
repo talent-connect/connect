@@ -23,6 +23,7 @@ import { useState } from 'react'
 import { Columns, Content, Form, Notification } from 'react-bulma-components'
 import { Link, useHistory } from 'react-router-dom'
 import * as Yup from 'yup'
+import { showNotification } from '../../../components/AppNotification'
 import Teaser from '../../../components/molecules/Teaser'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import { login } from '../../../services/api/api'
@@ -82,6 +83,16 @@ export default function Login() {
     } catch (err) {
       formik.setSubmitting(false)
       setLoginError('You entered an incorrect email, password, or both.')
+      return
+    }
+
+    const jwtToken = decodeJwt(getAccessTokenFromLocalStorage().jwtToken)
+    if (!jwtToken.emailVerified) {
+      formik.setSubmitting(false)
+      showNotification(
+        'Please verify your email address first. Check your inbox.',
+        { variant: 'error', autoHideDuration: 8000 }
+      )
       return
     }
 
