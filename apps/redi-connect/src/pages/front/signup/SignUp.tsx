@@ -95,22 +95,13 @@ export default function SignUp() {
         userType: type.toUpperCase() as UserType,
         rediLocation: envRediLocation() as RediLocation,
         productSignupSource: 'CON',
-      await signUpLoopback(values.email, values.password)
-      await signUpMutation.mutateAsync({
-        input: {
-          email: values.email,
-          firstName: values.firstName,
-          lastName: values.lastName,
-          userType: type.toUpperCase() as UserType,
-          rediLocation: envRediLocation() as RediLocation,
-          ...(type === 'mentor'
-            ? {
-                mentor_isPartnershipMentor: values.mentor_isPartnershipMentor,
-                mentor_workPlace: values.mentor_workPlace,
-              }
-            : {}),
-        },
-      })
+        ...(type === 'mentor'
+          ? {
+              mentor_isPartnershipMentor: values.mentor_isPartnershipMentor,
+              mentor_workPlace: values.mentor_workPlace,
+            }
+          : {}),
+        })
       actions.setSubmitting(false)
       history.push(`/front/signup-email-verification`)
     } catch (error) {

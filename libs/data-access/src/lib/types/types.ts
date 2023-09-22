@@ -176,8 +176,6 @@ export type ConProfile = {
 
 export type ConProfileSignUpInput = {
   email: Scalars['String'];
-  firstName: Scalars['String'];
-  lastName: Scalars['String'];
   mentor_isPartnershipMentor?: InputMaybe<Scalars['Boolean']>;
   mentor_workPlace?: InputMaybe<Scalars['String']>;
   rediLocation: RediLocation;
