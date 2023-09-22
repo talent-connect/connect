@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { PassportStrategy } from '@nestjs/passport'
 import {
@@ -26,8 +26,19 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   //! TODO: access this data properly via a service, not via the sf repository...
   async validate(payload: any): Promise<CurrentUserInfo> {
-    const loopbackUserId = payload.userId
-    const email = payload.email
+    // Require all requests to come from a user with a
+    // verified email address. The incoming payload is a
+    // JWT token that was created and signed by Loopback.
+    if (!payload.emailVerified) {
+      throw new UnauthorizedException('Email not verified')
+    }
+
+    const { email, loopbackUserId, firstName, lastName } = payload
+
+    if (!email || !loopbackUserId) {
+      throw new UnauthorizedException('User data missing from JWT token')
+    }
+
     //! TODO: introduce caching here, this is a lot of simple loolups
     // for something that will never change. Can DataLoader fix it?
     let contactRecord: ContactRecordProps = null
@@ -36,7 +47,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       objectName: ContactRecord.metadata.SALESFORCE_OBJECT_NAME,
       objectFields: ContactRecord.metadata.SALESFORCE_OBJECT_FIELDS,
       filter: {
-        Loopback_User_ID__c: loopbackUserId,
+        // Loopback_User_ID__c: loopbackUserId,
         ReDI_Email_Address__c: email,
       },
     })
@@ -45,10 +56,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       const createContactResult = await this.salesforceRepository.createRecord(
         ContactRecord.metadata.SALESFORCE_OBJECT_NAME,
         {
-          FirstName: 'CON/TP Contact in creation',
-          LastName: email,
+          FirstName: firstName,
+          LastName: lastName,
           ReDI_Email_Address__c: email,
-          Loopback_User_ID__c: payload.userId,
+          Loopback_User_ID__c: loopbackUserId,
         }
       )
       contactRecords = await this.salesforceRepository.findRecordsOfObject({
@@ -59,6 +70,16 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       contactRecord = contactRecords[0]
     } else {
       contactRecord = contactRecords[0]
+      if (!contactRecord.Loopback_User_ID__c) {
+        await this.salesforceRepository.updateRecord(
+          ContactRecord.metadata.SALESFORCE_OBJECT_NAME,
+          {
+            Id: contactRecord.Id,
+            Loopback_User_ID__c: loopbackUserId,
+          }
+        )
+        contactRecord.Loopback_User_ID__c = loopbackUserId
+      }
     }
 
     this.salesforceRepository.updateRecord(

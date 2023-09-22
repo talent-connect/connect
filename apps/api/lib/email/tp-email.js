@@ -39,6 +39,42 @@ const sendTpResetPasswordEmail = ({ recipient, accessToken }) => {
     html: html,
   })
 }
+
+const sendVerificationEmailTemplate = fs.readFileSync(
+  path.resolve(__dirname, 'tp-templates', 'validate-email-address.mjml'),
+  'utf-8'
+)
+const sendVerificationEmailTemplateParsed = mjml2html(
+  sendVerificationEmailTemplate,
+  {
+    filePath: path.resolve(__dirname, 'templates'),
+  }
+)
+const sendTpVerificationEmail = ({
+  recipient,
+  redUserId,
+  firstName,
+  verificationToken,
+}) => {
+  const verificationSuccessPageUrl = `${buildTpFrontendUrl(
+    process.env.NODE_ENV
+  )}/front/signup-email-verification-success/`
+  const verificationUrl = `${buildBackendUrl(
+    process.env.NODE_ENV
+  )}/api/redUsers/confirm?uid=${redUserId}&token=${verificationToken}&redirect=${encodeURI(
+    verificationSuccessPageUrl
+  )}`
+  const html = sendVerificationEmailTemplateParsed.html
+    .replace(/\${firstName}/g, firstName)
+    .replace(/\${verificationUrl}/g, verificationUrl)
+  return sendMjmlEmailFactory({
+    to: recipient,
+    subject: 'Verify your email address!',
+    html: html,
+  })
+}
+
 module.exports = {
   sendTpResetPasswordEmail,
+  sendTpVerificationEmail,
 }

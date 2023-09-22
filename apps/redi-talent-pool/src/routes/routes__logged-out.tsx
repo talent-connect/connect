@@ -1,8 +1,8 @@
-import { RouteDefinition } from './index'
 import { lazy } from 'react'
 import Home from '../pages/front/landing/Home'
 import { RequestResetPasswordEmail } from '../pages/front/reset-password/RequestResetPasswordEmail'
 import { SetNewPassword } from '../pages/front/reset-password/SetNewPassword'
+import { RouteDefinition } from './index'
 const Login = lazy(
   () =>
     import(
@@ -25,6 +25,12 @@ const SignUpEmailVerification = lazy(
   () =>
     import(
       /* webpackChunkName: "SignUpEmailVerification", webpackPreload: true */ '../pages/front/signup/SignUpEmailVerification'
+    )
+)
+const SignUpEmailVerificationSuccess = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "SignUpEmailVerificationSuccess", webpackPreload: true */ '../pages/front/signup/SignUpEmailVerificationSuccess'
     )
 )
 const SignUpComplete = lazy(
@@ -53,6 +59,11 @@ export const routes__loggedOut: RouteDefinition[] = [
   {
     path: '/front/signup-complete',
     component: SignUpComplete,
+    exact: true,
+  },
+  {
+    path: '/front/signup-email-verification-success',
+    component: SignUpEmailVerificationSuccess,
     exact: true,
   },
   {

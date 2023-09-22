@@ -6,12 +6,14 @@ import {
   MyTpDataDocument,
   MyTpDataQuery,
   MyTpDataQueryVariables,
+  RediLocation,
 } from '@talent-connect/data-access'
 import {
   Button,
   FormInput,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
+import { decodeJwt } from '@talent-connect/shared-utils'
 import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
 import { useCallback, useState } from 'react'
 import { Columns, Content, Form } from 'react-bulma-components'
@@ -25,7 +27,10 @@ import {
   saveAccessTokenToLocalStorage,
 } from '../../../services/auth/auth'
 import { history } from '../../../services/history/history'
-import { useSignUpJobseekerMutation } from '../signup/SignUp.generated'
+import {
+  useSignUpCompanyMutation,
+  useSignUpJobseekerMutation,
+} from '../signup/SignUp.generated'
 
 interface LoginFormValues {
   username: string
@@ -59,6 +64,7 @@ const buildMyConProfileDataFetcher = () =>
 export default function Login() {
   const [loginError, setLoginError] = useState<string>('')
   const tpJobseekerSignupMutation = useSignUpJobseekerMutation()
+  const tpCompanySignupMutation = useSignUpCompanyMutation()
 
   const submitForm = useCallback(
     (values, actions) => {
@@ -67,50 +73,24 @@ export default function Login() {
         actions: FormikActions<LoginFormValues>
       ) => {
         const formValues = values as LoginFormValues
-        try {
-          const accessToken = await login(
-            formValues.username,
-            formValues.password
-          )
-          saveAccessTokenToLocalStorage(accessToken)
 
-          const tpUserData = await myTpDataFetcher()
+        const accessToken = await login(
+          formValues.username,
+          formValues.password
+        )
+        saveAccessTokenToLocalStorage(accessToken)
 
-          const userHasATpProfile =
-            Boolean(
-              tpUserData.tpCurrentUserDataGet.tpJobseekerDirectoryEntry
-            ) || Boolean(tpUserData.tpCurrentUserDataGet.representedCompany)
-
-          if (userHasATpProfile) {
-            return history.push('/app/me')
-          }
-
-          // Note: we have to "build" the con profile data fetcher here because it
-          // relies on the access token, which is not available until after the user
-          // has logged in.
-          const myConProfileDataFetcher = buildMyConProfileDataFetcher()
-          const conUserData = await myConProfileDataFetcher()
-
-          const userDoesNotHaveTpProfile = !userHasATpProfile
-          const userHasConProfile = Boolean(conUserData.conProfile)
-
-          if (userDoesNotHaveTpProfile && userHasConProfile) {
-            await tpJobseekerSignupMutation.mutateAsync({
-              input: {
-                firstName: conUserData.conProfile.firstName,
-                lastName: conUserData.conProfile.lastName,
-                rediLocation: conUserData.conProfile.rediLocation,
-              },
-            })
-            return history.push('/app/me')
-          }
-        } catch (err) {
+        const handler = new PostLoginSuccessHandler({
+          tpJobseekerSignupMutation,
+          tpCompanySignupMutation,
+        })
+        await handler.handle(() => {
           actions.setSubmitting(false)
           setLoginError('You entered an incorrect email, password, or both.')
-        }
+        })
       })(values, actions)
     },
-    [tpJobseekerSignupMutation]
+    [tpCompanySignupMutation, tpJobseekerSignupMutation]
   )
 
   const formik = useFormik({
@@ -176,7 +156,9 @@ export default function Login() {
               <Button
                 fullWidth
                 onClick={formik.submitForm}
-                disabled={!(formik.dirty && formik.isValid)}
+                disabled={
+                  !(formik.dirty && formik.isValid) || formik.isSubmitting
+                }
               >
                 Log in
               </Button>
@@ -186,4 +168,105 @@ export default function Login() {
       </Columns>
     </AccountOperation>
   )
+}
+
+class PostLoginSuccessHandler {
+  constructor(private readonly context: PostLoginSuccessHandlerContext) {}
+
+  public async handle(failureCallback: () => void): Promise<void> {
+    try {
+      return await this.runUseCaseUserHasTpProfileOrFail()
+    } catch (err) {
+      // Do nothing, continue
+    }
+
+    try {
+      return await this.runUseCaseCreateTpProfileFromConProfileOrFail()
+    } catch (err) {
+      // Do nothing, continue
+    }
+
+    try {
+      return await this.runUseCaseUserJustSignedUpCreateTpProfileOrFail()
+    } catch (err) {
+      // Do nothing, continue
+    }
+
+    failureCallback()
+  }
+
+  private async runUseCaseUserHasTpProfileOrFail(): Promise<void> {
+    const tpUserData = await myTpDataFetcher()
+    const userHasATpProfile =
+      Boolean(tpUserData.tpCurrentUserDataGet.tpJobseekerDirectoryEntry) ||
+      Boolean(tpUserData.tpCurrentUserDataGet.representedCompany)
+    const userIsPendingRepresentative = Boolean(
+      tpUserData.tpCurrentUserDataGet.companyRepresentativeRelationship
+        ?.status === 'PENDING'
+    )
+
+    if (userHasATpProfile && userIsPendingRepresentative) {
+      return history.push('/front/signup-complete')
+    }
+    if (userHasATpProfile) {
+      return history.push('/app/me')
+    }
+
+    throw new Error('User does not have a TP profile')
+  }
+
+  private async runUseCaseCreateTpProfileFromConProfileOrFail(): Promise<void> {
+    const myConProfileDataFetcher = buildMyConProfileDataFetcher()
+    const conUserData = await myConProfileDataFetcher()
+
+    const userDoesNotHaveTpProfile = true
+    const userHasConProfile = Boolean(conUserData.conProfile)
+
+    if (userDoesNotHaveTpProfile && userHasConProfile) {
+      await this.context.tpJobseekerSignupMutation.mutateAsync({
+        input: {
+          rediLocation: conUserData.conProfile.rediLocation,
+        },
+      })
+      return history.push('/app/me')
+    }
+
+    throw new Error('User does not have a CON profile')
+  }
+
+  private async runUseCaseUserJustSignedUpCreateTpProfileOrFail(): Promise<void> {
+    const accessToken = getAccessTokenFromLocalStorage()
+    const { tpSignupType, ...data } = decodeJwt(accessToken?.jwtToken) as {
+      [key: string]: any
+    }
+
+    switch (tpSignupType) {
+      case 'jobseeker':
+        await this.context.tpJobseekerSignupMutation.mutateAsync({
+          input: {
+            rediLocation: data.rediLocation as RediLocation,
+          },
+        })
+        return history.push('/app/signup-complete')
+
+      case 'company':
+        await this.context.tpCompanySignupMutation.mutateAsync({
+          input: {
+            operationType: data.operationType,
+            companyIdOrName: data.companyIdOrName,
+            firstPointOfContact: data.firstPointOfContact,
+            firstPointOfContactOther: data.firstPointOfContactOther,
+            isMicrosoftPartner: data.isMicrosoftPartner,
+          },
+        })
+        return history.push('/front/signup-complete')
+
+      default:
+        throw new Error('Invalid tpSignupType')
+    }
+  }
+}
+interface PostLoginSuccessHandlerContext {
+  tpJobseekerSignupMutation: ReturnType<typeof useSignUpJobseekerMutation>
+  tpCompanySignupMutation: ReturnType<typeof useSignUpCompanyMutation>
 }

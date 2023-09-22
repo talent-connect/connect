@@ -118,8 +118,6 @@ export class TpCompanyProfileSignUpUseCase {
   ) {
     const contactRecordProps = new ContactRecordProps()
     contactRecordProps.Id = currentUser.userId
-    contactRecordProps.FirstName = input.firstName
-    contactRecordProps.LastName = input.lastName
     contactRecordProps.ReDI_First_Point_of_Contact_Other_TP__c =
       input.firstPointOfContactOther
     contactRecordProps.ReDI_First_Point_of_Contact_Talent_Pool__c =
