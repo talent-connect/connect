@@ -1,7 +1,6 @@
 import {
   RediLocation,
-  useConProfileSignUpMutation,
-  UserType,
+  UserType
 } from '@talent-connect/data-access'
 import {
   Button,
@@ -13,6 +12,7 @@ import { toPascalCaseAndTrim } from '@talent-connect/shared-utils'
 import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
 import { useState } from 'react'
 import { Columns, Content, Form, Notification } from 'react-bulma-components'
+
 import { Link, useParams } from 'react-router-dom'
 import * as Yup from 'yup'
 import Teaser from '../../../components/molecules/Teaser'
@@ -66,7 +66,6 @@ export interface SignUpFormValues {
 }
 
 export default function SignUp() {
-  const signUpMutation = useConProfileSignUpMutation()
   const { type } = useParams() as unknown as { type: SignUpPageType }
 
   const initialValues: SignUpFormValues = {
@@ -90,6 +89,12 @@ export default function SignUp() {
   ) => {
     setLoopbackSubmitError(null)
     try {
+      await signUpLoopback(values.email, values.password, {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        userType: type.toUpperCase() as UserType,
+        rediLocation: envRediLocation() as RediLocation,
+        productSignupSource: 'CON',
       await signUpLoopback(values.email, values.password)
       await signUpMutation.mutateAsync({
         input: {
@@ -107,7 +112,7 @@ export default function SignUp() {
         },
       })
       actions.setSubmitting(false)
-      history.push(`/front/signup-complete/${type}`)
+      history.push(`/front/signup-email-verification`)
     } catch (error) {
       actions.setSubmitting(false)
       if (
@@ -239,10 +244,9 @@ export default function SignUp() {
               </a>
             </Checkbox.Form>
             {loopbackSubmitError !== 'user-already-exists' &&
-            (loopbackSubmitError || signUpMutation.isError) ? (
+            loopbackSubmitError ? (
               <Form.Help color="danger" className="help--show">
                 An error occurred, please try again.
-                {signUpMutation.isError ? 'yes' : 'no'}
               </Form.Help>
             ) : null}
 

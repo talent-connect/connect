@@ -14,6 +14,7 @@ const config = {
 }
 const { buildFrontendUrl } = require('../build-frontend-url')
 const { buildBackendUrl } = require('../build-backend-url')
+const { ConsoleLogger } = require('@nestjs/common')
 
 const ses = new aws.SES(config)
 
@@ -30,8 +31,8 @@ const sendMjmlEmail = Rx.bindNodeCallback(
 )
 const sendEmailFactory = (to, subject, body, rediLocation) => {
   let toSanitized = isProductionOrDemonstration() ? to : ''
-  if (process.env.DEV_MODE_EMAIL_RECIPIENT) {
-    toSanitized = process.env.DEV_MODE_EMAIL_RECIPIENT
+  if (process.env.NX_DEV_MODE_EMAIL_RECIPIENT) {
+    toSanitized = process.env.NX_DEV_MODE_EMAIL_RECIPIENT
   }
   let sender = 'career@redi-school.org'
   return sendEmail({
@@ -56,8 +57,8 @@ const sendEmailFactory = (to, subject, body, rediLocation) => {
 }
 const sendMjmlEmailFactory = ({ to, subject, html }) => {
   let toSanitized = isProductionOrDemonstration() ? to : ''
-  if (process.env.DEV_MODE_EMAIL_RECIPIENT) {
-    toSanitized = process.env.DEV_MODE_EMAIL_RECIPIENT
+  if (process.env.NX_DEV_MODE_EMAIL_RECIPIENT) {
+    toSanitized = process.env.NX_DEV_MODE_EMAIL_RECIPIENT
   }
   let sender = 'career@redi-school.org'
   return sendMjmlEmail({
@@ -106,8 +107,45 @@ const sendResetPasswordEmail = ({ recipient, accessToken, rediLocation }) => {
   })
 }
 
+const sendVerificationEmailTemplate = fs.readFileSync(
+  path.resolve(__dirname, 'templates', 'validate-email-address.mjml'),
+  'utf-8'
+)
+const sendVerificationEmailTemplateParsed = mjml2html(
+  sendVerificationEmailTemplate,
+  {
+    filePath: path.resolve(__dirname, 'templates'),
+  }
+)
+const sendConVerificationEmail = ({
+  recipient,
+  redUserId,
+  firstName,
+  verificationToken,
+  rediLocation,
+}) => {
+  const verificationSuccessPageUrl = `${buildFrontendUrl(
+    process.env.NODE_ENV,
+    rediLocation
+  )}/front/signup-email-verification-success/`
+  const verificationUrl = `${buildBackendUrl(
+    process.env.NODE_ENV
+  )}/api/redUsers/confirm?uid=${redUserId}&token=${verificationToken}&redirect=${encodeURI(
+    verificationSuccessPageUrl
+  )}`
+  const html = sendVerificationEmailTemplateParsed.html
+    .replace(/\${firstName}/g, firstName)
+    .replace(/\${verificationUrl}/g, verificationUrl)
+  return sendMjmlEmailFactory({
+    to: recipient,
+    subject: 'Verify your email address!',
+    html: html,
+  })
+}
+
 module.exports = {
   sendResetPasswordEmail,
   sendEmailFactory,
   sendMjmlEmailFactory,
+  sendConVerificationEmail,
 }

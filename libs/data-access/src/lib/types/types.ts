@@ -1009,11 +1009,9 @@ export type TpCompanyProfilePatchInput = {
 
 export type TpCompanyProfileSignUpInputDto = {
   companyIdOrName: Scalars['String'];
-  firstName: Scalars['String'];
   firstPointOfContact: FirstPointOfTpContactOption;
   firstPointOfContactOther?: InputMaybe<Scalars['String']>;
   isMicrosoftPartner: Scalars['Boolean'];
-  lastName: Scalars['String'];
   operationType: TpCompanyProfileSignUpOperationType;
 };
 
@@ -1644,8 +1642,6 @@ export type TpJobseekerProfilePatchInput = {
 };
 
 export type TpJobseekerProfileSignUpDto = {
-  firstName: Scalars['String'];
-  lastName: Scalars['String'];
   rediLocation: RediLocation;
 };
 

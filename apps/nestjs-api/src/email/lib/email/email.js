@@ -268,12 +268,13 @@ export const sendEmailToUserWithTpJobseekerProfileSigningUpToCon = ({
   firstName,
   rediLocation,
 }) => {
-  const templateFile = rediLocation === 'CYBERSPACE' 
-  ? 'schedule-onboarding-call-for-tp-jobseeker-signed-up-as-mentee-cyberspace' 
-  : 'schedule-onboarding-call-for-tp-jobseeker-signed-up-as-mentee'
+  const templateFile =
+    rediLocation === 'CYBERSPACE'
+      ? 'schedule-onboarding-call-for-tp-jobseeker-signed-up-as-mentee-cyberspace'
+      : 'schedule-onboarding-call-for-tp-jobseeker-signed-up-as-mentee'
 
   const html = convertTemplateToHtml(null, templateFile).replace(
-    /\${firstName}/g, 
+    /\${firstName}/g,
     firstName
   )
   return sendMjmlEmailFactory({
@@ -304,7 +305,7 @@ export const sendEmailToUserWithTpJobseekerProfileSigningUpToCon = ({
 //   const verificationSuccessPageUrl = `${buildFrontendUrl(
 //     process.env.NODE_ENV,
 //     rediLocation
-//   )}/front/signup-complete/${signupType}`
+//   )}/front/signup-email-verification-success/${signupType}`
 //   const verificationUrl = `${buildBackendUrl(
 //     process.env.NODE_ENV
 //   )}/api/redUsers/confirm?uid=${redUserId}&token=${verificationToken}&redirect=${encodeURI(
@@ -325,11 +326,16 @@ export const sendEmailToUserWithTpJobseekerProfileSigningUpToCon = ({
 //   })
 // }
 
-export const sendMenteeSignupCompleteEmail = ({ recipient, firstName, rediLocation }) => {
-  const templateFile = rediLocation === 'CYBERSPACE' 
-  ? 'signup-complete-mentee-cyberspace' 
-  : 'signup-complete-mentee'
-  
+export const sendMenteeSignupCompleteEmail = ({
+  recipient,
+  firstName,
+  rediLocation,
+}) => {
+  const templateFile =
+    rediLocation === 'CYBERSPACE'
+      ? 'signup-complete-mentee-cyberspace'
+      : 'signup-complete-mentee'
+
   const html = convertTemplateToHtml(null, templateFile).replace(
     /\${firstName}/g,
     firstName
@@ -386,13 +392,14 @@ export const sendMentoringSessionLoggedEmail = ({
 export const sendMenteeReminderToApplyToMentorEmail = ({
   recipient,
   menteeFirstName,
-  rediLocation
+  rediLocation,
 }) => {
-  const templateFile = rediLocation === 'CYBERSPACE' 
-  ? 'apply-to-mentor-reminder-for-mentee-cyberspace' 
-  : 'apply-to-mentor-reminder-for-mentee'
+  const templateFile =
+    rediLocation === 'CYBERSPACE'
+      ? 'apply-to-mentor-reminder-for-mentee-cyberspace'
+      : 'apply-to-mentor-reminder-for-mentee'
 
-  const html = convertTemplateToHtml(null,templateFile).replace(
+  const html = convertTemplateToHtml(null, templateFile).replace(
     /\${menteeFirstName}/g,
     menteeFirstName
   )

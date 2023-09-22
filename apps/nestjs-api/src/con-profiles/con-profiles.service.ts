@@ -25,8 +25,6 @@ export class ConProfilesService {
   ): Promise<string> {
     return await this.api.createConProfileForSignUp({
       userId: user.userId,
-      firstName: input.firstName,
-      lastName: input.lastName,
       loopbackUserId: user.loopbackUserId,
       profileStatus: ConnectProfileStatus.PENDING,
       rediLocation: input.rediLocation,

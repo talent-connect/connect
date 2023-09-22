@@ -1,4 +1,5 @@
 import {
+  FirstPointOfTpContactOption,
   TpCompanyProfileSignUpOperationType,
   useListAllTpCompanyNamesQuery,
 } from '@talent-connect/data-access'
@@ -24,10 +25,6 @@ import TpTeaser from '../../../components/molecules/TpTeaser'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import { signUpLoopback } from '../../../services/api/api'
 import { history } from '../../../services/history/history'
-import {
-  useSignUpCompanyMutation,
-  useSignUpJobseekerMutation,
-} from './SignUp.generated'
 
 const formRediLocations = objectEntries(REDI_LOCATION_NAMES).map(
   ([id, label]) => ({
@@ -79,14 +76,15 @@ function buildValidationSchema(signupType: SignUpPageType['type']) {
   if (signupType === 'company') {
     return Yup.object({
       ...baseSchema,
-      companyNameOrId: Yup.string()
+      companyIdOrName: Yup.string()
         .required('Your company name is required')
         .max(255),
       howDidHearAboutRediKey: Yup.string().required('This field is required'),
       howDidHearAboutRediOtherText: Yup.string().when(
         'howDidHearAboutRediKey',
         {
-          is: (howDidHearAboutRediKey) => howDidHearAboutRediKey === 'other',
+          is: (howDidHearAboutRediKey) =>
+            howDidHearAboutRediKey === FirstPointOfTpContactOption.Other,
           then: Yup.string().required('This field is required'),
         }
       ),
@@ -99,9 +97,6 @@ type SignUpPageType = {
 }
 
 export default function SignUp() {
-  const signUpCompanyMutation = useSignUpCompanyMutation()
-  const signUpJobseekerMutation = useSignUpJobseekerMutation()
-
   const { type } = useParams<SignUpPageType>()
 
   const initialValues: any = useMemo(
@@ -120,7 +115,7 @@ export default function SignUp() {
     initialValues.agreesWithCodeOfConduct = false
   }
   if (type === 'company') {
-    initialValues.companyNameOrId = ''
+    initialValues.companyIdOrName = ''
     initialValues.state = 'drafting-profile'
     initialValues.isMicrosoftPartner = false
   }
@@ -139,7 +134,7 @@ export default function SignUp() {
   })
 
   const isExistingCompany = tpCompanyNames?.publicTpCompanyProfiles.some(
-    (company) => company.id === formik.values.companyNameOrId
+    (company) => company.id === formik.values.companyIdOrName
   )
   const isNewCompany = !isExistingCompany
 
@@ -148,19 +143,18 @@ export default function SignUp() {
   async function submitForm(values: any, actions: FormikActions<any>) {
     try {
       setLoopbackSubmitError(null)
-      await signUpLoopback(values.email, values.password)
 
       if (type === 'jobseeker') {
         const transformedValues: any =
           buildValidationSchema('jobseeker').cast(values)
-        await signUpJobseekerMutation.mutateAsync({
-          input: {
-            firstName: transformedValues.firstName,
-            lastName: transformedValues.lastName,
-            rediLocation: transformedValues.rediLocation,
-          },
+        await signUpLoopback(values.email, values.password, {
+          firstName: transformedValues.firstName,
+          lastName: transformedValues.lastName,
+          rediLocation: transformedValues.rediLocation,
+          productSignupSource: 'TP',
+          tpSignupType: 'jobseeker',
         })
-        history.push(`/app/me`)
+        history.push(`/front/signup-email-verification`)
       }
 
       if (type === 'company') {
@@ -168,20 +162,20 @@ export default function SignUp() {
         const profile = transformedValues as Partial<TpCompanyProfile>
         profile.isProfileVisibleToJobseekers = true
 
-        await signUpCompanyMutation.mutateAsync({
-          input: {
-            companyIdOrName: values.companyNameOrId,
-            firstName: values.firstName,
-            lastName: values.lastName,
-            operationType: isExistingCompany
-              ? TpCompanyProfileSignUpOperationType.ExistingCompany
-              : TpCompanyProfileSignUpOperationType.NewCompany,
-            firstPointOfContact: values.howDidHearAboutRediKey,
-            firstPointOfContactOther: values.howDidHearAboutRediOtherText,
-            isMicrosoftPartner: values.isMicrosoftPartner,
-          },
+        await signUpLoopback(values.email, values.password, {
+          companyIdOrName: values.companyIdOrName,
+          firstName: values.firstName,
+          lastName: values.lastName,
+          operationType: isExistingCompany
+            ? TpCompanyProfileSignUpOperationType.ExistingCompany
+            : TpCompanyProfileSignUpOperationType.NewCompany,
+          firstPointOfContact: values.howDidHearAboutRediKey,
+          firstPointOfContactOther: values.howDidHearAboutRediOtherText,
+          isMicrosoftPartner: values.isMicrosoftPartner,
+          productSignupSource: 'TP',
+          tpSignupType: 'company',
         })
-        history.push(`/front/signup-complete`)
+        history.push(`/front/signup-email-verification`)
       }
       actions.setSubmitting(false)
     } catch (error) {
@@ -222,7 +216,7 @@ export default function SignUp() {
           <form onSubmit={(e) => e.preventDefault()} className="form">
             {type === 'company' ? (
               <FormSelect
-                name="companyNameOrId"
+                name="companyIdOrName"
                 placeholder="Your company name"
                 items={
                   isTpCompanyNamesSuccess
@@ -310,7 +304,8 @@ export default function SignUp() {
                   items={howDidHearAboutRediOptionsEntries}
                   {...formik}
                 />
-                {formik.values.howDidHearAboutRediKey === 'other' ? (
+                {formik.values.howDidHearAboutRediKey ===
+                FirstPointOfTpContactOption.Other ? (
                   <FormInput
                     name="howDidHearAboutRediOtherText"
                     placeholder="Please tell us how you heard about ReDI Talent Pool"

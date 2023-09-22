@@ -48,7 +48,7 @@ const convertTemplateToHtml = (rediLocation, templateString) => {
 //   const verificationSuccessPageUrl = `${buildTpFrontendUrl(
 //     process.env.NODE_ENV,
 //     rediLocation
-//   )}/front/signup-complete/jobseeker`
+//   )}/front/signup-email-verification-success/jobseeker`
 //   const verificationUrl = `${buildBackendUrl(
 //     process.env.NODE_ENV
 //   )}/api/redUsers/confirm?uid=${redUserId}&token=${verificationToken}&redirect=${encodeURI(
@@ -134,7 +134,7 @@ export const sendTpJobseekerjobseekerProfileNotApprovedYet = ({
 //   const verificationSuccessPageUrl = `${buildTpFrontendUrl(
 //     process.env.NODE_ENV,
 //     rediLocation
-//   )}/front/signup-complete/company`
+//   )}/front/signup-email-verification-success/company`
 //   const verificationUrl = `${buildBackendUrl(
 //     process.env.NODE_ENV
 //   )}/api/redUsers/confirm?uid=${redUserId}&token=${verificationToken}&redirect=${encodeURI(

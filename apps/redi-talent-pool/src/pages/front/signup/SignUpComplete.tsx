@@ -1,5 +1,9 @@
 import { useMyTpDataQuery } from '@talent-connect/data-access'
-import { Button, Loader } from '@talent-connect/shared-atomic-design-components'
+import {
+  Button,
+  Heading,
+  Loader,
+} from '@talent-connect/shared-atomic-design-components'
 import { Columns, Content, Form } from 'react-bulma-components'
 import { useHistory } from 'react-router-dom'
 import TpTeaser from '../../../components/molecules/TpTeaser'
@@ -13,6 +17,9 @@ export default function SignUpComplete() {
   const representativeStatus =
     myTpUserData?.tpCurrentUserDataGet?.companyRepresentativeRelationship
       ?.status
+
+  const companyRepresentative =
+    myTpUserData?.tpCurrentUserDataGet?.companyRepresentativeRelationship
 
   if (isLoading) {
     return <Loader loading />
@@ -28,11 +35,12 @@ export default function SignUpComplete() {
           <TpTeaser.IllustrationOnly />
         </Columns.Column>
         <Columns.Column size={5} offset={2}>
+          <Heading border="bottomLeft">Sign-up complete!</Heading>
           <Content size="large" renderAs="div">
             <p>Thank you for signing up!</p>
             {representativeStatus === 'PENDING' ? (
               <>
-                <p>
+                <p style={{ textAlign: 'justify' }}>
                   You've requested to represent a company already signed up on
                   Talent Pool,{' '}
                   {
@@ -41,12 +49,10 @@ export default function SignUpComplete() {
                   }
                   !
                 </p>
-                <p>
+                <p style={{ textAlign: 'justify' }}>
                   We'll contact the existing representatives to validate and
-                  approve your request. Thank you for your patience.
-                </p>
-                <p>
-                  Once we've handled your request, we'll send you another email.
+                  approve your request. Once we've handled your request, we'll
+                  send you another email. Thank you for your patience!
                 </p>
               </>
             ) : (
@@ -64,7 +70,17 @@ export default function SignUpComplete() {
           ) : null}
           <Content size="small" renderAs="p">
             Do you have questions? Feel free to contact us{' '}
-            <a href="mailto:paulina@redi-school.org">here</a> or visit our{' '}
+            <a
+              href={
+                companyRepresentative
+                  ? 'mailto:partner@redi-school.org'
+                  : 'mailto:career@redi-school.org'
+              }
+            >
+              {' '}
+              here{' '}
+            </a>{' '}
+            or visit our{' '}
             <a href="https://www.redi-school.org/" target="__blank">
               ReDI school website
             </a>{' '}

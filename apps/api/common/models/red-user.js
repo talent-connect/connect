@@ -4,12 +4,14 @@ const {
   sendResetPasswordEmail,
   sendMenteeRequestAppointmentEmail,
   sendMentorRequestAppointmentEmail,
+  sendConVerificationEmail,
 } = require('../../lib/email/email')
 
 const {
   sendTpJobseekerEmailVerificationSuccessfulEmail,
   sendTpCompanyEmailVerificationSuccessfulEmail,
   sendTpResetPasswordEmail,
+  sendTpVerificationEmail,
 } = require('../../lib/email/tp-email')
 
 const jwt = require('jsonwebtoken')
@@ -31,56 +33,57 @@ module.exports = function (RedUser) {
     if (process.env.NODE_ENV === 'seeding') return next()
     // Onky continue if this is a brand new user
     if (!context.isNewInstance) return next()
-  })
 
-  RedUser.afterRemote('confirm', async function (ctx, inst, next) {
-    const redUserInst = await RedUser.findById(ctx.args.uid, {
-      include: ['redProfile', 'tpJobseekerProfile', 'tpCompanyProfile'],
-    })
+    const redUserInst = await RedUser.findById(context.instance.id)
     const redUser = redUserInst.toJSON()
 
-    const userSignedUpWithCon = !!redUser.redProfile
-    const userSignedUpWithTpAndIsJobseeker = !!redUser.tpJobseekerProfile
-    const userSignedUpWithTpAndIsCompany = !!redUser.tpCompanyProfile
-
-    if (userSignedUpWithCon) {
-      const userType = redUser.redProfile.userType
-
-      switch (userType) {
-        case 'public-sign-up-mentee-pending-review':
-          await sendMenteeRequestAppointmentEmail({
-            recipient: redUser.email,
-            firstName: redUser.redProfile.firstName,
-            rediLocation: redUser.redProfile.rediLocation,
-          }).toPromise()
-          return
-
-        case 'public-sign-up-mentor-pending-review':
-          await sendMentorRequestAppointmentEmail({
-            recipient: redUser.email,
-            firstName: redUser.redProfile.firstName,
-            rediLocation: redUser.redProfile.rediLocation,
-          }).toPromise()
-          return
-
+    var verifyOptions = (() => {
+      switch (redUser.productSignupSource) {
+        case 'CON':
+          return {
+            type: 'email',
+            mailer: {
+              send: async (verifyOptions, context, cb) => {
+                sendConVerificationEmail({
+                  recipient: verifyOptions.to,
+                  redUserId: redUser.id,
+                  firstName: redUser.firstName,
+                  verificationToken: verifyOptions.verificationToken,
+                  rediLocation: redUser.rediLocation,
+                }).subscribe()
+              },
+            },
+            to: redUser.email,
+            from: 'dummy@dummy.com',
+          }
+        case 'TP':
+          return {
+            type: 'email',
+            mailer: {
+              send: async (verifyOptions, context, cb) => {
+                sendTpVerificationEmail({
+                  recipient: verifyOptions.to,
+                  redUserId: redUser.id,
+                  firstName: redUser.firstName,
+                  verificationToken: verifyOptions.verificationToken,
+                }).subscribe()
+              },
+            },
+            to: redUser.email,
+            from: 'dummy@dummy.com',
+          }
         default:
-          throw new Error('Invalid user type')
+          throw new Error(
+            'Unknown productSignupSource in RedUser.before save hook'
+          )
       }
-    }
+    })()
 
-    if (userSignedUpWithTpAndIsJobseeker) {
-      await sendTpJobseekerEmailVerificationSuccessfulEmail({
-        recipient: redUser.email,
-        firstName: redUser.tpJobseekerProfile.firstName,
-      }).toPromise()
-    }
-
-    if (userSignedUpWithTpAndIsCompany) {
-      await sendTpCompanyEmailVerificationSuccessfulEmail({
-        recipient: redUser.email,
-        firstName: redUser.tpCompanyProfile.firstName,
-      }).toPromise()
-    }
+    redUserInst.verify(verifyOptions, function (err, response) {
+      console.log(err)
+      console.log(response)
+      next()
+    })
   })
 
   RedUser.requestResetPasswordEmail = function (body, cb) {
@@ -140,13 +143,11 @@ module.exports = function (RedUser) {
    */
   RedUser.afterRemote('login', async function (ctx, loginOutput, next) {
     const email = ctx.req.body.email
-    const jwtToken = jwt.sign(
-      { ...loginOutput.toJSON(), email },
-      process.env.NX_JWT_SECRET,
-      {
-        expiresIn: '21d',
-      }
-    )
+    const redUserId = loginOutput.userId
+    const redUserInst = await RedUser.findById(redUserId)
+    const redUser = redUserInst.toJSON()
+
+    const jwtToken = generateJwtToken(redUser)
     ctx.result.jwtToken = jwtToken
 
     const redProduct = ctx.req.headers.redproduct // either CON or TP
@@ -249,6 +250,33 @@ module.exports = function (RedUser) {
 
     return conRedProfile
   }
+}
+
+function generateJwtToken(redUser) {
+  return jwt.sign(
+    {
+      loopbackUserId: redUser.id,
+      email: redUser.email,
+      emailVerified: redUser.emailVerified,
+      firstName: redUser.firstName,
+      lastName: redUser.lastName,
+      rediLocation: redUser.rediLocation,
+      userType: redUser.userType,
+      companyIdOrName: redUser.companyIdOrName,
+      howDidHearAboutRediKey: redUser.howDidHearAboutRediKey,
+      howDidHearAboutRediOtherText: redUser.howDidHearAboutRediOtherText,
+      isMicrosoftPartner: redUser.isMicrosoftPartner,
+      firstPointOfContact: redUser.firstPointOfContact,
+      firstPointOfContactOther: redUser.firstPointOfContactOther,
+      operationType: redUser.operationType,
+      productSignupSource: redUser.productSignupSource,
+      tpSignupType: redUser.tpSignupType,
+    },
+    process.env.NX_JWT_SECRET,
+    {
+      expiresIn: '21d',
+    }
+  )
 }
 
 function determineRediLocationByCourse(course) {

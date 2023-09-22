@@ -370,7 +370,7 @@ export const MENTORSHIP_MATCH_STATUS_LABELS: any = {
 
 export const API_URL = process.env.NX_API_URL
   ? process.env.NX_API_URL
-  : 'http://127.0.0.1:3003/api'
+  : 'http://localhost:3003/api'
 export const S3_UPLOAD_SIGN_URL = process.env.NX_S3_UPLOAD_SIGN_URL
   ? process.env.NX_S3_UPLOAD_SIGN_URL
-  : 'http://127.0.0.1:3003/s3/sign'
+  : 'http://localhost:3003/s3/sign'

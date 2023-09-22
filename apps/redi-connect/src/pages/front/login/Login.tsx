@@ -16,13 +16,14 @@ import {
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
 import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
-import { buildFrontendUrl } from '@talent-connect/shared-utils'
+import { buildFrontendUrl, decodeJwt } from '@talent-connect/shared-utils'
 import { useFormik } from 'formik'
 import { capitalize } from 'lodash'
 import { useState } from 'react'
 import { Columns, Content, Form, Notification } from 'react-bulma-components'
 import { Link, useHistory } from 'react-router-dom'
 import * as Yup from 'yup'
+import { showNotification } from '../../../components/AppNotification'
 import Teaser from '../../../components/molecules/Teaser'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import { login } from '../../../services/api/api'
@@ -76,66 +77,120 @@ export default function Login() {
     useState<RediLocation | null>(null)
 
   const submitForm = async () => {
+    // LOG THE USER IN VIA LOOPBACK
     try {
       await login(formik.values.username, formik.values.password)
+    } catch (err) {
+      formik.setSubmitting(false)
+      setLoginError('You entered an incorrect email, password, or both.')
+      return
+    }
 
-      // Note: we have to "build" the con profile data fetcher here because it
-      // relies on the access token, which is not available until after the user
-      // has logged in.
-      const fetchMyConProfileOrFail = buildMyConProfileDataFetcher()
-      try {
-        const conProfile = await fetchMyConProfileOrFail()
+    const jwtToken = decodeJwt(getAccessTokenFromLocalStorage().jwtToken)
+    if (!jwtToken.emailVerified) {
+      formik.setSubmitting(false)
+      showNotification(
+        'Please verify your email address first. Check your inbox.',
+        { variant: 'error', autoHideDuration: 8000 }
+      )
+      return
+    }
+
+    // GET THEIR CON PROFILE FROM SALESFORCE
+    try {
+      // Load "outside" of react-query to avoid having to build
+      // a complex logic adhering to the rules-of-hooks.
+      const myProfileResult = await fetcher<
+        LoadMyProfileQuery,
+        LoadMyProfileQueryVariables
+      >(LoadMyProfileDocument, {
+        loopbackUserId: getAccessTokenFromLocalStorage().userId,
+      })()
+
+      // TODO: insert proper error handling here and elsewhere. We should cover cases where we
+      // get values usch as myProfileResult.isError. Perhaps we-ure the error boundary logic
+      // that Eric has been looking into.
+
+      const conProfile = myProfileResult?.conProfile
+      const isWrongRediLocationError =
+        conProfile.rediLocation !== envRediLocation()
+
+      if (isWrongRediLocationError) {
+        purgeAllSessionData()
+        setIsWrongRediLocationError(true)
+        setConProfile(conProfile)
+        return
+      }
+
+      return history.push('/app/me')
+    } catch (err) {
+      // Do nothing
+    }
+
+    // IF NO CON PROFILE, TRY TO CREATE ONE FROM TP
+    // If the user does not have a con profile, we will try to create one
+    // for them using the data from the TP.
+    try {
+      const tpUserData = await myTpDataFetcher()
+      const tpJobseekerDirectoryEntry =
+        tpUserData.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry
+      const userHasATpJobseekerProfile = Boolean(tpJobseekerDirectoryEntry)
+
+      if (userHasATpJobseekerProfile) {
         const isWrongRediLocationError =
-          conProfile.conProfile.rediLocation !== envRediLocation()
+          tpJobseekerDirectoryEntry.rediLocation !== envRediLocation()
 
         if (isWrongRediLocationError) {
           purgeAllSessionData()
           setIsWrongRediLocationError(true)
-          setConProfile(conProfile.conProfile)
+          setTpProfileLocation(
+            tpJobseekerDirectoryEntry.rediLocation as RediLocation
+          )
           return
         }
 
-        return history.push('/app/me')
-      } catch (err) {
-        // If the user does not have a con profile, we will try to create one
-        // for them using the data from the TP.
-        // If the user does not have a TP profile, we will show them an error.
-        const tpUserData = await myTpDataFetcher()
-        const tpJobseekerDirectoryEntry =
-          tpUserData.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry
-        const userHasATpJobseekerProfile = Boolean(tpJobseekerDirectoryEntry)
-
-        if (userHasATpJobseekerProfile) {
-          const isWrongRediLocationError =
-            tpJobseekerDirectoryEntry.rediLocation !== envRediLocation()
-
-          if (isWrongRediLocationError) {
-            purgeAllSessionData()
-            setIsWrongRediLocationError(true)
-            setTpProfileLocation(
-              tpJobseekerDirectoryEntry.rediLocation as RediLocation
-            )
-            return
-          }
-
-          await conProfileSignUpMutation.mutateAsync({
-            input: {
-              email: tpJobseekerDirectoryEntry.email,
-              firstName: tpJobseekerDirectoryEntry.firstName,
-              lastName: tpJobseekerDirectoryEntry.lastName,
-              userType: UserType.Mentee,
-              rediLocation:
-                tpJobseekerDirectoryEntry.rediLocation as RediLocation,
-            },
-          })
-          return history.push(`/front/signup-complete/mentee`)
-        } else {
-          throw err
-        }
+        await conProfileSignUpMutation.mutateAsync({
+          input: {
+            email: tpJobseekerDirectoryEntry.email,
+            userType: UserType.Mentee,
+            rediLocation:
+              tpJobseekerDirectoryEntry.rediLocation as RediLocation,
+          },
+        })
+        return history.push('/front/signup-complete/mentee')
       }
     } catch (err) {
+      // Do nothing, continue
+    }
+
+    // IF NO CON PROFILE AND NO TP PROFILE, TRY TO CREATE ONE FROM JWT
+    try {
+      // The user has no TP profile, so we assume that they have just signed up via the CON
+      // login form, and that they have a RedUser in Loobpack/MongoDB, and that the JWT token
+      // in localStorage contains the data from RedUser which contains the data from the CON
+      // sign-up page. We now want to use this to create a CON profile for them.
+      const accessToken = getAccessTokenFromLocalStorage()
+      const { email, userType, rediLocation } = decodeJwt(
+        accessToken.jwtToken
+      ) as { [key: string]: string }
+      await conProfileSignUpMutation.mutateAsync({
+        input: {
+          email: email,
+          userType: userType as UserType,
+          rediLocation: rediLocation as RediLocation,
+        },
+      })
+      return history.push(`/front/signup-complete/${userType.toLowerCase()}`)
+    } catch (err) {
+      // IF NO CON PROFILE AND NO TP PROFILE AND NO JWT, SHOW ERROR
+      // If we reach this place, it means that the user does not have a TP
+      // profile nor do the have data in their JWT token from the CON sign-up,
+      // OR, something went wrong on the server. In that case, show them an error message.
       formik.setSubmitting(false)
-      setLoginError('You entered an incorrect email, password, or both.')
+      setLoginError(
+        'Something unexpected happened, please try again or contact the ReDI Career Support Team at career@redi-school.org'
+      )
+      return
     }
   }
 
@@ -233,7 +288,9 @@ export default function Login() {
               <Button
                 fullWidth
                 onClick={formik.submitForm}
-                disabled={!(formik.dirty && formik.isValid)}
+                disabled={
+                  !(formik.dirty && formik.isValid) || formik.isSubmitting
+                }
               >
                 Log in
               </Button>

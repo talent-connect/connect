@@ -149,8 +149,6 @@ type ConProfile {
 
 input ConProfileSignUpInput {
   email: String!
-  firstName: String!
-  lastName: String!
   mentor_isPartnershipMentor: Boolean
   mentor_workPlace: String
   rediLocation: RediLocation!
@@ -683,11 +681,9 @@ input TpCompanyProfilePatchInput {
 
 input TpCompanyProfileSignUpInputDto {
   companyIdOrName: String!
-  firstName: String!
   firstPointOfContact: FirstPointOfTpContactOption!
   firstPointOfContactOther: String
   isMicrosoftPartner: Boolean!
-  lastName: String!
   operationType: TpCompanyProfileSignUpOperationType!
 }
 
@@ -1302,8 +1298,6 @@ input TpJobseekerProfilePatchInput {
 }
 
 input TpJobseekerProfileSignUpDto {
-  firstName: String!
-  lastName: String!
   rediLocation: RediLocation!
 }
 
