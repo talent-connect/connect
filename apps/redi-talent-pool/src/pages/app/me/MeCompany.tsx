@@ -199,7 +199,7 @@ function SendProfileForReviewButton() {
       return
 
     // TODO: we should have a use case for this change instead of this patch
-    await mutation.mutate({
+    await mutation.mutateAsync({
       input: {
         state: CompanyTalentPoolState.SubmittedForReview,
       },
