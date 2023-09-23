@@ -1,7 +1,4 @@
-import {
-  RediLocation,
-  UserType
-} from '@talent-connect/data-access'
+import { RediLocation, UserType } from '@talent-connect/data-access'
 import {
   Button,
   Checkbox,
@@ -12,7 +9,6 @@ import { toPascalCaseAndTrim } from '@talent-connect/shared-utils'
 import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
 import { useState } from 'react'
 import { Columns, Content, Form, Notification } from 'react-bulma-components'
-
 import { Link, useParams } from 'react-router-dom'
 import * as Yup from 'yup'
 import Teaser from '../../../components/molecules/Teaser'
@@ -101,7 +97,7 @@ export default function SignUp() {
               mentor_workPlace: values.mentor_workPlace,
             }
           : {}),
-        })
+      })
       actions.setSubmitting(false)
       history.push(`/front/signup-email-verification`)
     } catch (error) {
