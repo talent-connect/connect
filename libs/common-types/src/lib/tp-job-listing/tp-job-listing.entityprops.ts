@@ -5,6 +5,7 @@ import {
   TpDesiredPosition,
   TpEmploymentType,
   TpTechnicalSkill,
+  TpJobListingStatus,
 } from '../common-objects'
 
 @ObjectType('TpJobListing')
@@ -12,6 +13,8 @@ export class TpJobListingEntityProps implements EntityProps {
   @Field((type) => ID)
   id: string
 
+  @Field((type) => TpJobListingStatus)
+  status?: string
   title?: string
   location?: string
   summary?: string
@@ -32,6 +35,7 @@ export class TpJobListingEntityProps implements EntityProps {
 
   createdAt: Date
   updatedAt: Date
+  expiresAt: Date
 
   // These are included from the Company Profile (SF: Account)
   companyName: string

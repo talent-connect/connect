@@ -19,7 +19,9 @@ export class TpJobListingRecord extends Record<TpJobListingRecordProps> {
       'Id',
       'CreatedDate',
       'LastModifiedDate',
+      'Expiration_Date__c',
 
+      'Status__c',
       'Title__c',
       'Location__c',
       'Summary__c',

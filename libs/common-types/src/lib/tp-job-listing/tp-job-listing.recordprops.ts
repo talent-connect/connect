@@ -4,6 +4,7 @@ import { PicklistValue, RecordProps } from '../base-interfaces-types-classes'
 export class TpJobListingRecordProps implements RecordProps {
   Id: string
 
+  Status__c?: PicklistValue
   Title__c?: string
   Location__c?: string
   Summary__c?: string
@@ -21,6 +22,8 @@ export class TpJobListingRecordProps implements RecordProps {
   CreatedDate: Date
   @Type(() => Date)
   LastModifiedDate: Date
+  @Type(() => Date)
+  Expiration_Date__c: Date
 
   Account__r: {
     Name: string

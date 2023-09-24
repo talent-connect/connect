@@ -1124,6 +1124,7 @@ export type TpJobListing = {
   companyProfileId: Scalars['ID'];
   createdAt: Scalars['DateTime'];
   employmentType?: Maybe<TpEmploymentType>;
+  expiresAt: Scalars['DateTime'];
   federalState?: Maybe<FederalState>;
   id: Scalars['ID'];
   idealTechnicalSkills?: Maybe<Array<TpTechnicalSkill>>;
@@ -1133,6 +1134,7 @@ export type TpJobListing = {
   profileAvatarImageS3Key?: Maybe<Scalars['String']>;
   relatesToPositions?: Maybe<Array<TpDesiredPosition>>;
   salaryRange?: Maybe<Scalars['String']>;
+  status?: Maybe<Scalars['String']>;
   summary?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTime'];

@@ -794,6 +794,7 @@ type TpJobListing {
   companyProfileId: ID!
   createdAt: DateTime!
   employmentType: TpEmploymentType
+  expiresAt: DateTime!
   federalState: FederalState
   id: ID!
   idealTechnicalSkills: [TpTechnicalSkill!]
@@ -803,6 +804,7 @@ type TpJobListing {
   profileAvatarImageS3Key: String
   relatesToPositions: [TpDesiredPosition!]
   salaryRange: String
+  status: String
   summary: String
   title: String
   updatedAt: DateTime!

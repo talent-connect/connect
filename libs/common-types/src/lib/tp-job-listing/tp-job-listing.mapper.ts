@@ -20,6 +20,7 @@ export class TpJobListingMapper
 
     props.id = raw.props.Id
 
+    props.status = raw.props.Status__c
     props.title = raw.props.Title__c
     props.location = raw.props.Location__c
     props.summary = raw.props.Summary__c
@@ -39,6 +40,7 @@ export class TpJobListingMapper
 
     props.createdAt = raw.props.CreatedDate
     props.updatedAt = raw.props.LastModifiedDate
+    props.expiresAt = raw.props.Expiration_Date__c
 
     props.companyName = raw.props.Account__r.Name
     props.profileAvatarImageS3Key =
@@ -55,6 +57,7 @@ export class TpJobListingMapper
 
     props.Id = srcProps.id
 
+    props.Status__c = srcProps.status
     props.Title__c = srcProps.title
     props.Location__c = srcProps.location
     props.Summary__c = srcProps.summary
@@ -67,6 +70,8 @@ export class TpJobListingMapper
     props.Federal_State__c = srcProps.federalState
 
     props.Account__c = srcProps.companyProfileId
+
+    props.Expiration_Date__c = srcProps.expiresAt
 
     const record = TpJobListingRecord.create(props)
 

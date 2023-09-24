@@ -29,6 +29,7 @@ function Me() {
     case 'REJECTED':
     case 'DEACTIVATED':
       history.push('/front/signup-email-verification-success')
+      break
     case 'APPROVED':
       return <MeCompany />
   }
