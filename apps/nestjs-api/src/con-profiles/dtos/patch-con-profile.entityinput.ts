@@ -9,6 +9,7 @@ export class PatchConProfileInput extends PartialType(
   PickType(_ConProfileEntityProps, [
     'mentor_occupation',
     'mentor_workPlace',
+    'mentor_isPartnershipMentor',
     'expectations',
     'mentee_occupationCategoryId',
     'mentee_occupationJob_placeOfEmployment',

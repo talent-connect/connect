@@ -129,6 +129,7 @@ type ConProfile {
   mentee_occupationOther_description: String
   mentee_occupationStudent_studyName: String
   mentee_occupationStudent_studyPlace: String
+  mentor_isPartnershipMentor: Boolean
   mentor_occupation: String
   mentor_workPlace: String
   mentoringSessions: [ConMentoringSession!]!
@@ -148,6 +149,8 @@ type ConProfile {
 
 input ConProfileSignUpInput {
   email: String!
+  mentor_isPartnershipMentor: Boolean
+  mentor_workPlace: String
   rediLocation: RediLocation!
   userType: UserType!
 }
@@ -1428,6 +1431,7 @@ input UpdateConProfileInput {
   mentee_occupationOther_description: String
   mentee_occupationStudent_studyName: String
   mentee_occupationStudent_studyPlace: String
+  mentor_isPartnershipMentor: Boolean
   mentor_occupation: String
   mentor_workPlace: String
   optOutOfMenteesFromOtherRediLocation: Boolean

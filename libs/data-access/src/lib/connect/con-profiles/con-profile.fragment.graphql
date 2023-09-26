@@ -25,6 +25,7 @@ fragment AllConProfileFields on ConProfile {
   mentee_occupationOther_description
   mentee_occupationStudent_studyName
   mentee_occupationStudent_studyPlace
+  mentor_isPartnershipMentor
   mentor_occupation
   mentor_workPlace
   optOutOfMenteesFromOtherRediLocation
