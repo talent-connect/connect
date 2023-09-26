@@ -95,7 +95,6 @@ export class ConProfilesSalesforceEventHandlerService {
         this.emailService.sendMentorSignupCompleteEmail({
           recipient: conProfile.props.email,
           firstName: conProfile.props.firstName,
-          isPartnershipMentor: conProfile.props.mentor_isPartnershipMentor,
         })
         break
     }

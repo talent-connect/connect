@@ -23,7 +23,6 @@ const ReadOccupation = ({ profile, shortInfo }: Props) => {
     userType,
     mentor_occupation,
     mentor_workPlace,
-    mentor_isPartnershipMentor,
     mentee_occupationCategoryId,
     mentee_occupationJob_placeOfEmployment,
     mentee_occupationJob_position,
@@ -52,9 +51,6 @@ const ReadOccupation = ({ profile, shortInfo }: Props) => {
           <>
             <p>{mentor_occupation}</p>
             <p>{mentor_workPlace}</p>
-            {mentor_isPartnershipMentor && (
-              <p>My employer is in a mentorship partnership with ReDI School</p>
-            )}
           </>
         )}
         {isMentee && (

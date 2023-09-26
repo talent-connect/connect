@@ -36,7 +36,6 @@ export class ConProfileRecordProps implements RecordProps {
   Study_Place__c?: string
   Work_Place__c?: string
   total_mentee_capacity__c?: number
-  Partnership_Mentor__c?: boolean
 
   Active_Mentorship_Matches_Mentee__c: number
   Active_Mentorship_Matches_Mentor__c: number
