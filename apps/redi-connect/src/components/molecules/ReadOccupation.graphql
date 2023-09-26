@@ -2,7 +2,6 @@ fragment ReadOccupationProfileProp on ConProfile {
   userType
   mentor_occupation
   mentor_workPlace
-  mentor_isPartnershipMentor
   mentee_occupationCategoryId
   mentee_occupationJob_placeOfEmployment
   mentee_occupationJob_position

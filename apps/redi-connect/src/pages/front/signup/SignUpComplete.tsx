@@ -1,7 +1,4 @@
-import {
-  RediLocation,
-  useLoadMyProfileQuery,
-} from '@talent-connect/data-access'
+import { RediLocation } from '@talent-connect/data-access'
 import {
   Button,
   Heading,
@@ -10,7 +7,6 @@ import { Columns, Content, Form } from 'react-bulma-components'
 import { useHistory, useParams } from 'react-router-dom'
 import { Teaser } from '../../../components/molecules'
 import AccountOperation from '../../../components/templates/AccountOperation'
-import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
 import { envRediLocation } from '../../../utils/env-redi-location'
 import { SignUpPageType, SignUpPageTypes } from './signup-page.type'
 
@@ -18,11 +14,6 @@ export default function SignUpComplete() {
   const history = useHistory()
   const rediLocation = envRediLocation() as RediLocation
   const { userType } = useParams() as unknown as { userType: SignUpPageType }
-
-  const loopbackUserId = getAccessTokenFromLocalStorage().userId
-  const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
-  const isPartnershipMentor =
-    myProfileQuery.data?.conProfile.mentor_isPartnershipMentor === true
 
   return (
     <AccountOperation>
@@ -36,17 +27,7 @@ export default function SignUpComplete() {
         <Columns.Column size={5} offset={1}>
           <Heading border="bottomLeft">Sign-up complete!</Heading>
           <Content size="large" renderAs="div">
-            {userType === SignUpPageTypes.mentor && isPartnershipMentor ? (
-              <>
-                <p style={{ textAlign: 'justify' }}>
-                  Thank you for signing up!{' '}
-                </p>{' '}
-                <p>
-                  Please go to your account and{' '}
-                  <strong>complete your profile information</strong>.
-                </p>
-              </>
-            ) : (
+            {userType === SignUpPageTypes.mentor && (
               <>
                 <p style={{ textAlign: 'justify' }}>
                   Now, we would like to get to know you better.
@@ -71,7 +52,6 @@ export default function SignUpComplete() {
                 </p>
               </>
             )}
-
             {userType === SignUpPageTypes.mentee && (
               <>
                 <p style={{ textAlign: 'justify' }}>

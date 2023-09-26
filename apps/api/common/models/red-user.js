@@ -271,8 +271,6 @@ function generateJwtToken(redUser) {
       operationType: redUser.operationType,
       productSignupSource: redUser.productSignupSource,
       tpSignupType: redUser.tpSignupType,
-      mentor_isPartnershipMentor: redUser.mentor_isPartnershipMentor,
-      mentor_workPlace: redUser.mentor_workPlace,
     },
     process.env.NX_JWT_SECRET,
     {

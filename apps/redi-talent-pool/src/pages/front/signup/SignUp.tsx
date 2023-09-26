@@ -17,6 +17,7 @@ import { howDidHearAboutRediOptions } from '@talent-connect/talent-pool/config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
 import { FormikHelpers as FormikActions, useFormik } from 'formik'
 import { useMemo, useState } from 'react'
+
 import { Columns, Content, Form, Notification } from 'react-bulma-components'
 import { Link, useParams } from 'react-router-dom'
 import * as Yup from 'yup'
