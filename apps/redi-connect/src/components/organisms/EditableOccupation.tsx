@@ -4,6 +4,7 @@ import {
   UserType,
 } from '@talent-connect/data-access'
 import {
+  Checkbox,
   Editable,
   FormInput,
   FormSelect,
@@ -25,6 +26,7 @@ export interface OccupationFormValues {
   userType: UserType
   mentor_occupation: string
   mentor_workPlace: string
+  mentor_isPartnershipMentor?: boolean
   mentee_occupationCategoryId: string
   mentee_occupationJob_placeOfEmployment: string
   mentee_occupationJob_position: string
@@ -43,9 +45,12 @@ const validationSchema = Yup.object({
     }),
   mentor_workPlace: Yup.string()
     .nullable()
-    .when('userType', {
-      is: 'MENTOR',
-      then: (schema) => schema.max(255).label('Work place'),
+    .when(['userType', 'mentor_isPartnershipMentor'], {
+      is: (userType, mentor_isPartnershipMentor) =>
+        userType === 'MENTOR' && mentor_isPartnershipMentor,
+      then: (schema) =>
+        schema.required('Please enter the company name').max(255),
+      otherwise: (schema) => schema.max(255),
     }),
   mentee_occupationCategoryId: Yup.string()
     .nullable()
@@ -112,6 +117,7 @@ function EditableOccupation() {
   const userType = profile?.userType
   const mentor_occupation = profile?.mentor_occupation
   const mentor_workPlace = profile?.mentor_workPlace
+  const mentor_isPartnershipMentor = profile?.mentor_isPartnershipMentor
   const mentee_occupationCategoryId = profile?.mentee_occupationCategoryId
   const mentee_occupationJob_placeOfEmployment =
     profile?.mentee_occupationJob_placeOfEmployment
@@ -142,6 +148,7 @@ function EditableOccupation() {
     userType,
     mentor_occupation,
     mentor_workPlace,
+    mentor_isPartnershipMentor,
     mentee_occupationCategoryId,
     mentee_occupationJob_placeOfEmployment,
     mentee_occupationJob_position,
@@ -184,6 +191,13 @@ function EditableOccupation() {
             placeholder="Company"
             {...formik}
           />
+          <Checkbox.Form
+            name="mentor_isPartnershipMentor"
+            checked={formik.values.mentor_isPartnershipMentor}
+            {...formik}
+          >
+            My employer is in a mentorship partnership with ReDI School
+          </Checkbox.Form>
         </>
       )}
 

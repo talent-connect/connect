@@ -347,8 +347,13 @@ export const sendMenteeSignupCompleteEmail = ({
   })
 }
 
-export const sendMentorSignupCompleteEmail = ({ recipient, firstName }) => {
-  const html = convertTemplateToHtml(null, 'signup-complete-mentor').replace(
+export const sendMentorSignupCompleteEmail = ({ recipient, firstName, isPartnershipMentor }) => {
+  const templateFile =
+  isPartnershipMentor === true
+      ? 'signup-complete-mentor-partnership'
+      : 'signup-complete-mentor'
+  
+  const html = convertTemplateToHtml(null, templateFile).replace(
     /\${firstName}/g,
     firstName
   )
