@@ -1,8 +1,3 @@
-import { RedMatch } from './RedMatch'
-import { RedMentoringSession } from './RedMentoringSession'
-import { UserType } from './UserType'
-import { SignupSource } from './SignupSource'
-import { RediLocation } from './RediLocation'
 import {
   CategoryKey,
   EducationLevelKey,
@@ -10,6 +5,11 @@ import {
   LanguageKey,
   MenteeOccupationCategoryKey,
 } from '@talent-connect/shared-config'
+import { RediLocation } from './RediLocation'
+import { RedMatch } from './RedMatch'
+import { RedMentoringSession } from './RedMentoringSession'
+import { SignupSource } from './SignupSource'
+import { UserType } from './UserType'
 
 export type RedProfile = {
   id: string
@@ -18,6 +18,7 @@ export type RedProfile = {
   signupSource: SignupSource //! DEPRECATE
   mentor_occupation: string
   mentor_workPlace: string
+  mentor_isPartnershipMentor: boolean
   expectations: string
   mentor_ifTypeForm_submittedAt: Date //! DEPRECATE
   mentee_ifTypeForm_preferredMentorSex: 'male' | 'female' | 'none' //! DEPRECATE

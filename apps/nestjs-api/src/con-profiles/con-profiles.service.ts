@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import {
+  ConnectProfileStatus,
   ConProfileEntity,
   ConProfileMapper,
-  ConnectProfileStatus,
   UserType,
 } from '@talent-connect/common-types'
 import { deleteUndefinedProperties } from '@talent-connect/shared-utils'
@@ -30,6 +30,8 @@ export class ConProfilesService {
       rediLocation: input.rediLocation,
       userType: input.userType,
       menteeCountCapacity: input.userType === UserType.MENTOR ? 1 : 0,
+      mentor_isPartnershipMentor: input.mentor_isPartnershipMentor,
+      mentor_workPlace: input.mentor_workPlace,
     })
   }
 

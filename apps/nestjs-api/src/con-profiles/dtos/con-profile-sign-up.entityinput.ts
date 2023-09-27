@@ -9,4 +9,6 @@ export class ConProfileSignUpInput extends PickType(_ConProfileEntityProps, [
   'email',
   'userType',
   'rediLocation',
+  'mentor_workPlace',
+  'mentor_isPartnershipMentor',
 ] as const) {}
