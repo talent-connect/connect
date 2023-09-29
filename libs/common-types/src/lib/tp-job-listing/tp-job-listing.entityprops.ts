@@ -4,8 +4,8 @@ import {
   FederalState,
   TpDesiredPosition,
   TpEmploymentType,
-  TpTechnicalSkill,
   TpJobListingStatus,
+  TpTechnicalSkill,
 } from '../common-objects'
 
 @ObjectType('TpJobListing')
@@ -14,7 +14,7 @@ export class TpJobListingEntityProps implements EntityProps {
   id: string
 
   @Field((type) => TpJobListingStatus)
-  status?: string
+  status?: TpJobListingStatus
   title?: string
   location?: string
   summary?: string
