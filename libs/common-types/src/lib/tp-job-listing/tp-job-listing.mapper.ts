@@ -8,6 +8,7 @@ import {
   TpJobListingEntityProps,
   TpJobListingRecord,
   TpJobListingRecordProps,
+  TpJobListingStatus,
   TpTechnicalSkill,
 } from '@talent-connect/common-types'
 
@@ -20,7 +21,7 @@ export class TpJobListingMapper
 
     props.id = raw.props.Id
 
-    props.status = raw.props.Status__c
+    props.status = raw.props.Status__c as TpJobListingStatus
     props.title = raw.props.Title__c
     props.location = raw.props.Location__c
     props.summary = raw.props.Summary__c
