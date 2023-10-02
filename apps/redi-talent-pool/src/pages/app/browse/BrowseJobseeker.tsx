@@ -42,6 +42,7 @@ import {
   useTpJobListingUnfavouriteMutation,
   useTpJobseekerFavouritedJobListingsQuery,
 } from './BrowseJobseeker.generated'
+import moment from 'moment'
 
 export function BrowseJobseeker() {
   const queryClient = useQueryClient()
@@ -403,6 +404,7 @@ export function BrowseJobseeker() {
                   toggleFavorite={handleFavoriteJobListing}
                   isFavorite={isFavorite}
                   linkTo={`/app/job-listing/${jobListing.id}`}
+                  timeFooter={moment(jobListing.createdAt).fromNow()}
                 />
               </Columns.Column>
             )

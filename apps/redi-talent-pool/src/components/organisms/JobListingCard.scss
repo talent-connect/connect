@@ -2,41 +2,43 @@
 
 .job-posting-link:hover {
   text-decoration: none;
+  padding: 0;
 }
 
 .job-posting-card {
   border-radius: 4px;
   overflow: hidden;
   padding: 32px;
-
   &:hover {
     box-shadow: $card-shadow-hover;
   }
 
   &__job-title {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     font-weight: 500;
     font-size: 14px;
     line-height: 24px;
     letter-spacing: 1.25px;
+    width: 600px;
   }
 
   &__company-name {
-    margin-top: 5px;
     color: $grey;
   }
 
   &__image {
-    max-height: 136px;
-    max-width: 136px;
+    height: 136px;
+    width: 136px;
+    padding: 10px;
     overflow: hidden;
     object-fit: contain;
+    border-radius: 100%;
   }
 
   &__favorite {
-    padding: 0.5rem;
-    position: absolute;
-    top: 0.3rem;
-    right: 0.4rem;
+    text-align: right;
 
     &__icon {
       transition: $transition;
@@ -49,5 +51,35 @@
         transform: scale(1.2);
       }
     }
+  }
+
+  &__timeFooterBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    padding-left: 40px;
+  }
+
+  &__firstColumn {
+    padding: 0;
+  }
+
+  &__middleColumn {
+    padding: 0;
+    padding-left: 40px;
+  }
+
+  &__lastColumn {
+    padding: 0;
+  }
+
+  &__columns {
+    gap: 0;
+    margin: 0;
+  }
+
+  &__content {
+    padding: 0;
   }
 }

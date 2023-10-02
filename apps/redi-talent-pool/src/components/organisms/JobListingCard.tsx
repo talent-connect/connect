@@ -13,6 +13,7 @@ interface JobListingCardProps {
   isFavorite?: boolean
   toggleFavorite?: (id: string) => void
   linkTo?: string
+  timeFooter?: string
   onClick?: (e: React.MouseEvent) => void
 }
 
@@ -22,12 +23,15 @@ export function JobListingCard({
   isFavorite,
   linkTo = '#',
   onClick,
+  timeFooter,
 }: JobListingCardProps) {
   const jobTitle = jobListing?.title
   const idealTechnicalSkills = jobListing?.idealTechnicalSkills
 
   const companyName = jobListing?.companyName
   const companyAvatarImage = jobListing?.profileAvatarImageS3Key
+  const location = jobListing.location
+  const remote = jobListing.isRemotePossible
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -40,19 +44,11 @@ export function JobListingCard({
     <NavLink to={linkTo} onClick={onClick} className="job-posting-link">
       <Card className="job-posting-card">
         <Card.Content className="job-posting-card__content">
-          {toggleFavorite && (
-            <div
-              className="job-posting-card__favorite"
-              onClick={handleFavoriteClick}
+          <Columns className="job-posting-card__columns">
+            <Columns.Column
+              className="job-posting-card__firstColumn"
+              class="is-narrow"
             >
-              <Icon
-                icon={isFavorite ? 'heartFilled' : 'heart'}
-                className="job-posting-card__favorite__icon"
-              />
-            </div>
-          )}
-          <Columns>
-            <Columns.Column size={3}>
               <Element
                 renderAs="img"
                 className="job-posting-card__image"
@@ -60,7 +56,7 @@ export function JobListingCard({
                 alt={jobTitle}
               ></Element>
             </Columns.Column>
-            <Columns.Column size={9}>
+            <Columns.Column className="job-posting-card__middleColumn">
               <Element
                 key="name"
                 renderAs="h3"
@@ -77,13 +73,56 @@ export function JobListingCard({
               >
                 {companyName}
               </Element>
+              <Element
+                className="content job-posting-card__location"
+                key="location"
+                renderAs="div"
+              >
+                {location}
+                {remote ? ' | Remote' : ''}
+              </Element>
+
               {idealTechnicalSkills?.length > 0 ? (
-                <CardTags
-                  items={idealTechnicalSkills}
-                  shortList
-                  formatter={(skill: string) => topSkillsIdToLabelMap[skill]}
-                />
+                <Element renderAs="div">
+                  {' '}
+                  <CardTags
+                    items={idealTechnicalSkills}
+                    shortList
+                    formatter={(skill: string) => topSkillsIdToLabelMap[skill]}
+                  />
+                </Element>
               ) : null}
+            </Columns.Column>
+            <Columns.Column
+              className="job-posting-card__lastColumn"
+              class="is-narrow"
+            >
+              <Element
+                className="content job-posting-card__timeFooterBox"
+                key="company"
+                renderAs="div"
+              >
+                {toggleFavorite && (
+                  <div
+                    className="job-posting-card__favorite"
+                    onClick={handleFavoriteClick}
+                  >
+                    <Icon
+                      icon={isFavorite ? 'heartFilled' : 'heart'}
+                      className="job-posting-card__favorite__icon"
+                    />
+                  </div>
+                )}
+                {timeFooter && (
+                  <Element
+                    className="content job-posting-card__timeFooter"
+                    key="company"
+                    renderAs="div"
+                  >
+                    {timeFooter}
+                  </Element>
+                )}
+              </Element>
             </Columns.Column>
           </Columns>
         </Card.Content>
