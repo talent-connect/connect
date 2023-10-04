@@ -31,66 +31,6 @@ const convertTemplateToHtml = (rediLocation, templateString) => {
   return parsedTemplate.html
 }
 
-/**
- * This function was used for email verification. It was commented out when we
- * migrated to Salesforce and decided to deactivate email verification to save
- * time. We might want to reactivate it in the future.
- */
-
-// export const sendTpJobseekerVerificationEmail = ({
-//   recipient,
-//   redUserId,
-//   firstName,
-//   userType: signupType,
-//   verificationToken,
-//   rediLocation,
-// }) => {
-//   const verificationSuccessPageUrl = `${buildTpFrontendUrl(
-//     process.env.NODE_ENV,
-//     rediLocation
-//   )}/front/signup-email-verification-success/jobseeker`
-//   const verificationUrl = `${buildBackendUrl(
-//     process.env.NODE_ENV
-//   )}/api/redUsers/confirm?uid=${redUserId}&token=${verificationToken}&redirect=${encodeURI(
-//     verificationSuccessPageUrl
-//   )}`
-//   const sendTpJobseekerVerificationEmailParsed = convertTemplateToHtml(
-//     null,
-//     `jobseeker-validate-email-address`
-//   )
-//   const html = sendTpJobseekerVerificationEmailParsed
-//     .replace(/\${firstName}/g, firstName)
-//     .replace(/\${verificationUrl}/g, verificationUrl)
-//   return sendMjmlEmailFactory({
-//     to: recipient,
-//     subject: 'Verify your email address!',
-//     html: html,
-//   })
-// }
-
-/**
- * This function was used for email verification. It was commented out when we
- * migrated to Salesforce and decided to deactivate email verification to save
- * time. We might want to reactivate it in the future.
- */
-
-// export const sendTpJobseekerEmailVerificationSuccessfulEmail = ({
-//   recipient,
-//   firstName,
-// }) => {
-//   const sendTpJobseekerEmailVerificationSuccessfulEmailParsed =
-//     convertTemplateToHtml(null, 'jobseeker-validate-email-address-successful')
-//   const html = sendTpJobseekerEmailVerificationSuccessfulEmailParsed.replace(
-//     /\${firstName}/g,
-//     firstName
-//   )
-//   return sendMjmlEmailFactory({
-//     to: recipient,
-//     subject: 'Your email has been verified for Talent Pool',
-//     html: html,
-//   })
-// }
-
 export const sendJobseekerProfileApprovedEmail = ({ recipient, firstName }) => {
   const emailParsed = convertTemplateToHtml(null, 'jobseeker-profile-approved')
   const html = emailParsed.replace(/\${firstName}/g, firstName)
@@ -101,78 +41,21 @@ export const sendJobseekerProfileApprovedEmail = ({ recipient, firstName }) => {
   })
 }
 
-export const sendTpJobseekerjobseekerProfileNotApprovedYet = ({
-  recipient,
-  firstName,
-}) => {
-  const emailParsed = convertTemplateToHtml(
-    null,
-    'jobseeker-profile-not-approved-yet'
-  )
-  const html = emailParsed.replace(/\${firstName}/g, firstName)
-  return sendMjmlEmailFactory({
-    to: recipient,
-    subject: 'The approval of your profile is pending',
-    html: html,
-  })
-}
+/* The code for sending this email wasn't re-implemented when we migrated to Salesforce. 
+We might want to do this in the future. */
 
-/**
- * This function was used for email verification. It was commented out when we
- * migrated to Salesforce and decided to deactivate email verification to save
- * time. We might want to reactivate it in the future.
- */
-
-// export const sendTpCompanyVerificationEmail = ({
+// export const sendTpJobseekerjobseekerProfileNotApprovedYet = ({
 //   recipient,
-//   redUserId,
 //   firstName,
-//   userType: signupType,
-//   verificationToken,
-//   rediLocation,
 // }) => {
-//   const verificationSuccessPageUrl = `${buildTpFrontendUrl(
-//     process.env.NODE_ENV,
-//     rediLocation
-//   )}/front/signup-email-verification-success/company`
-//   const verificationUrl = `${buildBackendUrl(
-//     process.env.NODE_ENV
-//   )}/api/redUsers/confirm?uid=${redUserId}&token=${verificationToken}&redirect=${encodeURI(
-//     verificationSuccessPageUrl
-//   )}`
-//   const sendTpCompanyVerificationEmailParsed = convertTemplateToHtml(
+//   const emailParsed = convertTemplateToHtml(
 //     null,
-//     `company-validate-email-address`
+//     'jobseeker-profile-not-approved-yet'
 //   )
-//   const html = sendTpCompanyVerificationEmailParsed
-//     .replace(/\${firstName}/g, firstName)
-//     .replace(/\${verificationUrl}/g, verificationUrl)
+//   const html = emailParsed.replace(/\${firstName}/g, firstName)
 //   return sendMjmlEmailFactory({
 //     to: recipient,
-//     subject: 'Verify your email address!',
-//     html: html,
-//   })
-// }
-
-/**
- * This function was used for email verification. It was commented out when we
- * migrated to Salesforce and decided to deactivate email verification to save
- * time. We might want to reactivate it in the future.
- */
-
-// export const sendTpCompanyEmailVerificationSuccessfulEmail = ({
-//   recipient,
-//   firstName,
-// }) => {
-//   const tpLandingPageUrl = buildTpFrontendUrl(process.env.NODE_ENV)
-//   const sendTpCompanyEmailVerificationSuccessfulEmailParsed =
-//     convertTemplateToHtml(null, 'company-validate-email-address-successful')
-//   const html = sendTpCompanyEmailVerificationSuccessfulEmailParsed
-//     .replace(/\${firstName}/g, firstName)
-//     .replace(/\${tpLandingPageUrl}/g, tpLandingPageUrl)
-//   return sendMjmlEmailFactory({
-//     to: recipient,
-//     subject: 'Your email has been verified for Talent Pool',
+//     subject: 'The approval of your profile is pending',
 //     html: html,
 //   })
 // }
@@ -190,24 +73,6 @@ export const sendTpCompanyProfileApprovedEmail = ({ recipient, firstName }) => {
     to: recipient,
     subject: 'Your company profile has been approved for Talent Pool',
     html: html,
-  })
-}
-
-export const sendTpCompanyProfileSubmittedForReviewEmail = ({
-  companyName,
-}) => {
-  const sendTpCompanyProfileSubmittedForReviewEmailParsed =
-    convertTemplateToHtml(null, 'company-profile-submitted-for-review')
-
-  const html = sendTpCompanyProfileSubmittedForReviewEmailParsed.replace(
-    /\${companyName}/g,
-    companyName
-  )
-
-  return sendMjmlEmailFactory({
-    to: ['birgit@redi-school.org', 'janis@redi-school.org'],
-    subject: 'New company in Talent Pool',
-    html,
   })
 }
 
