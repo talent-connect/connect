@@ -14,11 +14,11 @@ ENV NODE_ENV=${NODE_ENV}
 
 WORKDIR /app
 
-RUN yarn global add pm2
+# RUN yarn global add pm2
 COPY package.json ./
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
 
 EXPOSE 3333
-# CMD ["node", "dist/apps/nestjs-api/main"]
-CMD ["pm2", "start", "--name", "nestjs-api", "--update-env", "--max-memory-restart", "500M", "dist/apps/nestjs-api/main.js"]
+CMD ["node", "dist/apps/nestjs-api/main"]
+# CMD ["pm2", "start", "--name", "nestjs-api", "--update-env", "--max-memory-restart", "500M", "dist/apps/nestjs-api/main.js"]
