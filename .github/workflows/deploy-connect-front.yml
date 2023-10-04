@@ -118,7 +118,7 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az storage blob upload-batch --account-name "fronttpstagingredos" --auth-mode key -d '$web' -s ./dist/apps/redi-talent-pool
+            az storage blob upload-batch --overwrite --account-name "fronttpstagingredos" --auth-mode key -d '$web' -s ./dist/apps/redi-talent-pool
 
       - name: Purge pre-loaded content for the CDN endpoint
         uses: azure/CLI@v1
@@ -167,7 +167,7 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az storage blob upload-batch --account-name "frontberlinprodredos" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
+            az storage blob upload-batch ---overwrite -account-name "frontberlinprodredos" --auth-mode key -d '$web' -s ./dist/apps/redi-connect
       - name: Purge pre-loaded content for the CDN endpoint
         uses: azure/CLI@v1
         with:
@@ -213,7 +213,7 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az storage blob upload-batch --account-name "fronttpprodredos" --auth-mode key -d '$web' -s ./dist/apps/redi-talent-pool
+            az storage blob upload-batch ---overwrite -account-name "fronttpprodredos" --auth-mode key -d '$web' -s ./dist/apps/redi-talent-pool
       - name: Purge pre-loaded content for the CDN endpoint
         uses: azure/CLI@v1
         with:
