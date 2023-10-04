@@ -27,6 +27,7 @@
   @include mobile() {
     width: calc(100% - 0.5rem);
     justify-content: center;
+    color: $black;
 
     + .button-atom {
       margin-top: 1rem;
