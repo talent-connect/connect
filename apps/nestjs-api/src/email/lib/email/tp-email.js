@@ -42,7 +42,7 @@ export const sendJobseekerProfileApprovedEmail = ({ recipient, firstName }) => {
 }
 
 /* The code for sending this email wasn't re-implemented when we migrated to Salesforce. 
-We might want to do this in the future. */
+We might want to re-implement it in Salesforce in the future. */
 
 // export const sendTpJobseekerjobseekerProfileNotApprovedYet = ({
 //   recipient,

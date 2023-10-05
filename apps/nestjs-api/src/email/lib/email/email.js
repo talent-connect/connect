@@ -216,27 +216,6 @@ export const sendMentorPendingReviewAcceptedEmail = ({
   })
 }
 
-export const sendEmailToUserWithTpJobseekerProfileSigningUpToCon = ({
-  recipient,
-  firstName,
-  rediLocation,
-}) => {
-  const templateFile =
-    rediLocation === 'CYBERSPACE'
-      ? 'schedule-onboarding-call-for-tp-jobseeker-signed-up-as-mentee-cyberspace'
-      : 'schedule-onboarding-call-for-tp-jobseeker-signed-up-as-mentee'
-
-  const html = convertTemplateToHtml(null, templateFile).replace(
-    /\${firstName}/g,
-    firstName
-  )
-  return sendMjmlEmailFactory({
-    to: recipient,
-    subject: 'Thanks for signing up to ReDI Connect!',
-    html: html,
-  })
-}
-
 export const sendMenteeSignupCompleteEmail = ({
   recipient,
   firstName,
@@ -309,26 +288,29 @@ export const sendMentoringSessionLoggedEmail = ({
   })
 }
 
-export const sendMenteeReminderToApplyToMentorEmail = ({
-  recipient,
-  menteeFirstName,
-  rediLocation,
-}) => {
-  const templateFile =
-    rediLocation === 'CYBERSPACE'
-      ? 'apply-to-mentor-reminder-for-mentee-cyberspace'
-      : 'apply-to-mentor-reminder-for-mentee'
+/* The code for sending this reminder wasn't re-implemented when we migrated to Salesforce. 
+It should be re-implemented in Salesforce and then removed. */
 
-  const html = convertTemplateToHtml(null, templateFile).replace(
-    /\${menteeFirstName}/g,
-    menteeFirstName
-  )
-  return sendMjmlEmailFactory({
-    to: recipient,
-    subject: 'Have you checked out or amazing mentors yet?',
-    html: html,
-  })
-}
+// export const sendMenteeReminderToApplyToMentorEmail = ({
+//   recipient,
+//   menteeFirstName,
+//   rediLocation,
+// }) => {
+//   const templateFile =
+//     rediLocation === 'CYBERSPACE'
+//       ? 'apply-to-mentor-reminder-for-mentee-cyberspace'
+//       : 'apply-to-mentor-reminder-for-mentee'
+
+//   const html = convertTemplateToHtml(null, templateFile).replace(
+//     /\${menteeFirstName}/g,
+//     menteeFirstName
+//   )
+//   return sendMjmlEmailFactory({
+//     to: recipient,
+//     subject: 'Have you checked out or amazing mentors yet?',
+//     html: html,
+//   })
+// }
 
 export const sendMentorCancelledMentorshipNotificationEmail = ({
   recipient,
