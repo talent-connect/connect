@@ -258,12 +258,16 @@ export const sendMenteeSignupCompleteEmail = ({
   })
 }
 
-export const sendMentorSignupCompleteEmail = ({ recipient, firstName, isPartnershipMentor }) => {
+export const sendMentorSignupCompleteEmail = ({
+  recipient,
+  firstName,
+  isPartnershipMentor,
+}) => {
   const templateFile =
-  isPartnershipMentor === true
+    isPartnershipMentor === true
       ? 'signup-complete-mentor-partnership'
       : 'signup-complete-mentor'
-  
+
   const html = convertTemplateToHtml(null, templateFile).replace(
     /\${firstName}/g,
     firstName
