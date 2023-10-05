@@ -36,41 +36,42 @@ export default function SignUpComplete() {
         <Columns.Column size={5} offset={1}>
           <Heading border="bottomLeft">Sign-up complete!</Heading>
           <Content size="large" renderAs="div">
-            {userType === SignUpPageTypes.mentor && isPartnershipMentor ? (
-              <>
-                <p style={{ textAlign: 'justify' }}>
-                  Thank you for signing up!{' '}
-                </p>{' '}
-                <p>
-                  Please go to your account and{' '}
-                  <strong>complete your profile information</strong>.
-                </p>
-              </>
-            ) : (
-              <>
-                <p style={{ textAlign: 'justify' }}>
-                  Now, we would like to get to know you better.
-                </p>
-                <p style={{ textAlign: 'justify' }}>
-                  Your next step is to{' '}
-                  <a
-                    href="https://calendly.com/hadeertalentsucess/mentors-onboarding-session"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    schedule a quick onboarding session
-                  </a>
-                  . It's the final step before you can kick off your journey as
-                  a mentor!{' '}
-                </p>
-                <p style={{ textAlign: 'justify' }}>
-                  In the meantime, please go to your account and{' '}
-                  <strong>complete your profile information</strong>. This step
-                  is super important because it helps students get to know you
-                  better and understand how you can support them.
-                </p>
-              </>
-            )}
+            {userType === SignUpPageTypes.mentor &&
+              (isPartnershipMentor ? (
+                <>
+                  <p style={{ textAlign: 'justify' }}>
+                    Thank you for signing up!{' '}
+                  </p>
+                  <p>
+                    Please go to your account and{' '}
+                    <strong>complete your profile information</strong>.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p style={{ textAlign: 'justify' }}>
+                    Now, we would like to get to know you better.
+                  </p>
+                  <p style={{ textAlign: 'justify' }}>
+                    Your next step is to{' '}
+                    <a
+                      href="https://calendly.com/hadeertalentsucess/mentors-onboarding-session"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      schedule a quick onboarding session
+                    </a>
+                    . It's the final step before you can kick off your journey
+                    as a mentor!{' '}
+                  </p>
+                  <p style={{ textAlign: 'justify' }}>
+                    In the meantime, please go to your account and{' '}
+                    <strong>complete your profile information</strong>. This
+                    step is super important because it helps students get to
+                    know you better and understand how you can support them.
+                  </p>
+                </>
+              ))}
 
             {userType === SignUpPageTypes.mentee && (
               <>
