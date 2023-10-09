@@ -23,10 +23,7 @@ import { showNotification } from '../../../components/AppNotification'
 import TpTeaser from '../../../components/molecules/TpTeaser'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import { login } from '../../../services/api/api'
-import {
-  getAccessTokenFromLocalStorage,
-  saveAccessTokenToLocalStorage,
-} from '../../../services/auth/auth'
+import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
 import { history } from '../../../services/history/history'
 import {
   useSignUpCompanyMutation,
@@ -75,13 +72,15 @@ export default function Login() {
       ) => {
         const formValues = values as LoginFormValues
 
-        const accessToken = await login(
-          formValues.username,
-          formValues.password
-        )
-        saveAccessTokenToLocalStorage(accessToken)
+        try {
+          await login(formValues.username, formValues.password)
+        } catch (err) {
+          formik.setSubmitting(false)
+          setLoginError('You entered an incorrect email, password, or both.')
+          return
+        }
 
-        const jwtToken = decodeJwt(accessToken.jwtToken)
+        const jwtToken = decodeJwt(getAccessTokenFromLocalStorage().jwtToken)
         if (!jwtToken.emailVerified) {
           formik.setSubmitting(false)
           showNotification(
