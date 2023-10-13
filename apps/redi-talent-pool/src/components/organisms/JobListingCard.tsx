@@ -81,7 +81,6 @@ export function JobListingCard({
 
               {idealTechnicalSkills?.length > 0 ? (
                 <Element renderAs="div">
-                  {' '}
                   <CardTags
                     items={idealTechnicalSkills}
                     shortList

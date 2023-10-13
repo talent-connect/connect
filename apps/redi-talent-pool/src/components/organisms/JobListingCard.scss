@@ -77,6 +77,18 @@
     padding: 0;
     padding-left: 40px;
     max-width: 600px;
+
+    & .tags {
+      flex-wrap: nowrap;
+
+      & .tag {
+        margin: 0;
+      }
+
+      &__last-row {
+        width: max-content;
+      }
+    }
   }
 
   &__lastColumn {
