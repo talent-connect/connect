@@ -21,7 +21,14 @@
     font-size: 14px;
     line-height: 24px;
     letter-spacing: 1.25px;
-    width: 600px;
+  }
+
+  &__location {
+    //temp until shorten location logic is ready
+    max-width: 200px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   &__company-name {
@@ -57,6 +64,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    align-items: flex-end;
     height: 100%;
     padding-left: 40px;
   }
@@ -68,6 +76,7 @@
   &__middleColumn {
     padding: 0;
     padding-left: 40px;
+    max-width: 600px;
   }
 
   &__lastColumn {
@@ -75,7 +84,7 @@
   }
 
   &__columns {
-    gap: 0;
+    // gap: 0;
     margin: 0;
   }
 

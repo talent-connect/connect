@@ -45,10 +45,7 @@ export function JobListingCard({
       <Card className="job-posting-card">
         <Card.Content className="job-posting-card__content">
           <Columns className="job-posting-card__columns">
-            <Columns.Column
-              className="job-posting-card__firstColumn"
-              class="is-narrow"
-            >
+            <Columns.Column className="job-posting-card__firstColumn is-narrow">
               <Element
                 renderAs="img"
                 className="job-posting-card__image"
@@ -69,14 +66,14 @@ export function JobListingCard({
               <Element
                 className="content job-posting-card__company-name"
                 key="company"
-                renderAs="div"
+                renderAs="p"
               >
                 {companyName}
               </Element>
               <Element
                 className="content job-posting-card__location"
                 key="location"
-                renderAs="div"
+                renderAs="p"
               >
                 {location}
                 {remote ? ' | Remote' : ''}
@@ -93,10 +90,7 @@ export function JobListingCard({
                 </Element>
               ) : null}
             </Columns.Column>
-            <Columns.Column
-              className="job-posting-card__lastColumn"
-              class="is-narrow"
-            >
+            <Columns.Column className="job-posting-card__lastColumn">
               <Element
                 className="content job-posting-card__timeFooterBox"
                 key="company"
@@ -117,7 +111,7 @@ export function JobListingCard({
                   <Element
                     className="content job-posting-card__timeFooter"
                     key="company"
-                    renderAs="div"
+                    renderAs="p"
                   >
                     {timeFooter}
                   </Element>
