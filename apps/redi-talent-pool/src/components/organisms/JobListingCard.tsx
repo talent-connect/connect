@@ -7,6 +7,7 @@ import { topSkillsIdToLabelMap } from '@talent-connect/talent-pool/config'
 //import placeholderImage from '../../assets/images/img-placeholder.png'
 import './JobListingCard.scss'
 import { JobListingCardJobListingPropFragment } from './jobseeker-profile-editables/JobListingCard.generated'
+import LocationIcon from '../../assets/images/Location.svg'
 
 interface JobListingCardProps {
   jobListing: JobListingCardJobListingPropFragment
@@ -15,6 +16,33 @@ interface JobListingCardProps {
   linkTo?: string
   timeFooter?: string
   onClick?: (e: React.MouseEvent) => void
+}
+
+const CardLocation = ({ location, remote }) => {
+  const locationArr = location.split(',')
+  const newLocationsString =
+    locationArr.length > 3
+      ? locationArr.slice(0, 3).join(',') + '...'
+      : location
+
+  return (
+    <Element
+      className="content job-posting-card__location"
+      key="location"
+      renderAs="p"
+      size={1}
+    >
+      <Element
+        key="locationIcon"
+        renderAs="img"
+        src={LocationIcon}
+        alt="Location"
+        className="content job-posting-card__locationIcon"
+      />
+      {newLocationsString}
+      {remote ? ' | Remote' : ''}
+    </Element>
+  )
 }
 
 export function JobListingCard({
@@ -70,15 +98,7 @@ export function JobListingCard({
               >
                 {companyName}
               </Element>
-              <Element
-                className="content job-posting-card__location"
-                key="location"
-                renderAs="p"
-              >
-                {location}
-                {remote ? ' | Remote' : ''}
-              </Element>
-
+              <CardLocation location={location} remote={remote} />
               {idealTechnicalSkills?.length > 0 ? (
                 <Element renderAs="div">
                   <CardTags

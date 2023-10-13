@@ -23,16 +23,14 @@
     letter-spacing: 1.25px;
   }
 
-  &__location {
-    //temp until shorten location logic is ready
-    max-width: 200px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-
   &__company-name {
     color: $grey;
+  }
+
+  &__location {
+    &__locationIcon {
+      align-self: center;
+    }
   }
 
   &__image {
