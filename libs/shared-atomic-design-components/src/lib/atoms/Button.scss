@@ -27,6 +27,7 @@
   @include mobile() {
     width: calc(100% - 0.5rem);
     justify-content: center;
+    color: $black;
 
     + .button-atom {
       margin-top: 1rem;
@@ -51,10 +52,7 @@
     margin-right: 0.5rem;
     padding: 0 1.5rem;
 
-    // margin-bottom: .5rem;
-
-    &:after {
-      content: '';
+    .button-after {
       transform: translateZ(-1px);
       position: absolute;
       top: 0.375rem;
@@ -62,10 +60,10 @@
       width: calc(100% + 4px);
       height: calc(100% + 4px);
       background-color: $redi-orange-light;
-    }
 
-    &:hover::after {
-      background-color: $redi-orange;
+      &:hover {
+        background-color: $redi-orange;
+      }
     }
 
     &:active {
@@ -80,7 +78,7 @@
     &:disabled {
       color: $grey-dark;
 
-      &:after {
+      .button-after {
         background-color: $grey-light;
       }
     }

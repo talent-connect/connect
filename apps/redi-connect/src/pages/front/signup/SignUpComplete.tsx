@@ -1,4 +1,7 @@
-import { RediLocation } from '@talent-connect/data-access'
+import {
+  RediLocation,
+  useLoadMyProfileQuery,
+} from '@talent-connect/data-access'
 import {
   Button,
   Heading,
@@ -7,6 +10,7 @@ import { Columns, Content, Form } from 'react-bulma-components'
 import { useHistory, useParams } from 'react-router-dom'
 import { Teaser } from '../../../components/molecules'
 import AccountOperation from '../../../components/templates/AccountOperation'
+import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
 import { envRediLocation } from '../../../utils/env-redi-location'
 import { SignUpPageType, SignUpPageTypes } from './signup-page.type'
 
@@ -14,6 +18,11 @@ export default function SignUpComplete() {
   const history = useHistory()
   const rediLocation = envRediLocation() as RediLocation
   const { userType } = useParams() as unknown as { userType: SignUpPageType }
+
+  const loopbackUserId = getAccessTokenFromLocalStorage().userId
+  const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
+  const isPartnershipMentor =
+    myProfileQuery.data?.conProfile.mentor_isPartnershipMentor === true
 
   return (
     <AccountOperation>
@@ -27,31 +36,43 @@ export default function SignUpComplete() {
         <Columns.Column size={5} offset={1}>
           <Heading border="bottomLeft">Sign-up complete!</Heading>
           <Content size="large" renderAs="div">
-            {userType === SignUpPageTypes.mentor && (
-              <>
-                <p style={{ textAlign: 'justify' }}>
-                  Now, we would like to get to know you better.
-                </p>
-                <p style={{ textAlign: 'justify' }}>
-                  Your next step is to{' '}
-                  <a
-                    href="https://calendly.com/hadeertalentsucess/mentors-onboarding-session"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    schedule a quick onboarding session
-                  </a>
-                  . It's the final step before you can kick off your journey as
-                  a mentor!{' '}
-                </p>
-                <p style={{ textAlign: 'justify' }}>
-                  In the meantime, please go to your account and{' '}
-                  <strong>complete your profile information</strong>. This step
-                  is super important because it helps students get to know you
-                  better and understand how you can support them.
-                </p>
-              </>
-            )}
+            {userType === SignUpPageTypes.mentor &&
+              (isPartnershipMentor ? (
+                <>
+                  <p style={{ textAlign: 'justify' }}>
+                    Thank you for signing up!{' '}
+                  </p>
+                  <p>
+                    Please go to your account and{' '}
+                    <strong>complete your profile information</strong>.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p style={{ textAlign: 'justify' }}>
+                    Now, we would like to get to know you better.
+                  </p>
+                  <p style={{ textAlign: 'justify' }}>
+                    Your next step is to{' '}
+                    <a
+                      href="https://calendly.com/hadeertalentsucess/mentors-onboarding-session"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      schedule a quick onboarding session
+                    </a>
+                    . It's the final step before you can kick off your journey
+                    as a mentor!{' '}
+                  </p>
+                  <p style={{ textAlign: 'justify' }}>
+                    In the meantime, please go to your account and{' '}
+                    <strong>complete your profile information</strong>. This
+                    step is super important because it helps students get to
+                    know you better and understand how you can support them.
+                  </p>
+                </>
+              ))}
+
             {userType === SignUpPageTypes.mentee && (
               <>
                 <p style={{ textAlign: 'justify' }}>

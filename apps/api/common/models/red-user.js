@@ -2,14 +2,10 @@
 
 const {
   sendResetPasswordEmail,
-  sendMenteeRequestAppointmentEmail,
-  sendMentorRequestAppointmentEmail,
   sendConVerificationEmail,
 } = require('../../lib/email/email')
 
 const {
-  sendTpJobseekerEmailVerificationSuccessfulEmail,
-  sendTpCompanyEmailVerificationSuccessfulEmail,
   sendTpResetPasswordEmail,
   sendTpVerificationEmail,
 } = require('../../lib/email/tp-email')
@@ -31,7 +27,7 @@ module.exports = function (RedUser) {
   // Hook for sending verification email
   RedUser.observe('after save', async function (context, next) {
     if (process.env.NODE_ENV === 'seeding') return next()
-    // Onky continue if this is a brand new user
+    // Only continue if this is a brand new user
     if (!context.isNewInstance) return next()
 
     const redUserInst = await RedUser.findById(context.instance.id)
@@ -271,6 +267,8 @@ function generateJwtToken(redUser) {
       operationType: redUser.operationType,
       productSignupSource: redUser.productSignupSource,
       tpSignupType: redUser.tpSignupType,
+      mentor_isPartnershipMentor: redUser.mentor_isPartnershipMentor,
+      mentor_workPlace: redUser.mentor_workPlace,
     },
     process.env.NX_JWT_SECRET,
     {

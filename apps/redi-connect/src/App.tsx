@@ -16,12 +16,13 @@ import {
   isLoggedIn,
   setGraphQlClientAuthHeader,
 } from './services/auth/auth'
-import { history, Router } from './services/history/history'
+import { Router, history } from './services/history/history'
 import { envRediLocation } from './utils/env-redi-location'
 import { useConfetti } from './utils/useConfetti'
 
 function App() {
   useConfetti({ keybind: 'm i r i a m a l w a y s r e d i' })
+  useConfetti({ keybind: 'a s y a a l w a y s r e d i' })
 
   switch (envRediLocation()) {
     case 'location-picker':

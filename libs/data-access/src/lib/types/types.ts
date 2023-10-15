@@ -156,6 +156,7 @@ export type ConProfile = {
   mentee_occupationOther_description?: Maybe<Scalars['String']>;
   mentee_occupationStudent_studyName?: Maybe<Scalars['String']>;
   mentee_occupationStudent_studyPlace?: Maybe<Scalars['String']>;
+  mentor_isPartnershipMentor?: Maybe<Scalars['Boolean']>;
   mentor_occupation?: Maybe<Scalars['String']>;
   mentor_workPlace?: Maybe<Scalars['String']>;
   mentoringSessions: Array<ConMentoringSession>;
@@ -175,6 +176,8 @@ export type ConProfile = {
 
 export type ConProfileSignUpInput = {
   email: Scalars['String'];
+  mentor_isPartnershipMentor?: InputMaybe<Scalars['Boolean']>;
+  mentor_workPlace?: InputMaybe<Scalars['String']>;
   rediLocation: RediLocation;
   userType: UserType;
 };
@@ -1772,6 +1775,7 @@ export type UpdateConProfileInput = {
   mentee_occupationOther_description?: InputMaybe<Scalars['String']>;
   mentee_occupationStudent_studyName?: InputMaybe<Scalars['String']>;
   mentee_occupationStudent_studyPlace?: InputMaybe<Scalars['String']>;
+  mentor_isPartnershipMentor?: InputMaybe<Scalars['Boolean']>;
   mentor_occupation?: InputMaybe<Scalars['String']>;
   mentor_workPlace?: InputMaybe<Scalars['String']>;
   optOutOfMenteesFromOtherRediLocation?: InputMaybe<Scalars['Boolean']>;

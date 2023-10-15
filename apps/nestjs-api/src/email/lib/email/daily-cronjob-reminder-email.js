@@ -29,6 +29,9 @@ const convertTemplateToHtml = (templateIdentifier) => {
   return parsedTemplate.html
 }
 
+/* None of the below reminders are being sent after we migrated to Salesforce. 
+We might want to re-implement them in Salesforce in the future.*/
+
 export function sendNoMentoringSessionLoggedYetEmailToMentor({
   recipient,
   menteeFirstName,
