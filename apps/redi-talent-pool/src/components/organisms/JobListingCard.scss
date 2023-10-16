@@ -1,4 +1,5 @@
 @import '_variables.scss';
+@import '~bulma/sass/utilities/_all';
 
 .job-posting-link:hover {
   text-decoration: none;
@@ -11,6 +12,9 @@
   padding: 32px;
   &:hover {
     box-shadow: $card-shadow-hover;
+  }
+  @include mobile() {
+    padding: 24px;
   }
 
   &__job-title {
@@ -28,9 +32,7 @@
   }
 
   &__location {
-    &__locationIcon {
-      align-self: center;
-    }
+    margin-bottom: 24px;
   }
 
   &__image {
@@ -40,6 +42,15 @@
     overflow: hidden;
     object-fit: contain;
     border-radius: 100%;
+
+    @include mobile() {
+      height: 112px;
+      width: 112px;
+      padding: 6px;
+      overflow: hidden;
+      object-fit: contain;
+      border-radius: 100%;
+    }
   }
 
   &__favorite {
@@ -54,6 +65,25 @@
 
       &:hover {
         transform: scale(1.2);
+      }
+    }
+
+    @include mobile() {
+      padding: 0;
+      position: absolute;
+      top: 24px;
+      right: 24px;
+
+      &__icon {
+        transition: $transition;
+
+        path {
+          fill: $redi-orange-dark;
+        }
+
+        &:hover {
+          transform: scale(1.2);
+        }
       }
     }
   }
@@ -78,6 +108,7 @@
 
     & .tags {
       flex-wrap: nowrap;
+      margin-bottom: 0;
 
       & .tag {
         margin: 0;
@@ -87,15 +118,41 @@
         width: max-content;
       }
     }
+
+    @include mobile() {
+      padding: 0;
+      flex-wrap: wrap;
+      height: max-content;
+      max-width: 350px;
+
+      & .tags {
+        margin-bottom: 0;
+
+        & .tag {
+          margin: 0;
+        }
+
+        // &__last-row {
+        //   width: max-content;
+        // }
+      }
+    }
   }
 
   &__lastColumn {
     padding: 0;
+    @include mobile() {
+      padding-top: 16px;
+    }
   }
 
   &__columns {
     // gap: 0;
     margin: 0;
+
+    @include mobile() {
+      flex-direction: column;
+    }
   }
 
   &__content {

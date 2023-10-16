@@ -72,7 +72,7 @@ export function JobListingCard({
     <NavLink to={linkTo} onClick={onClick} className="job-posting-link">
       <Card className="job-posting-card">
         <Card.Content className="job-posting-card__content">
-          <Columns className="job-posting-card__columns">
+          <Columns breakpoint="mobile" className="job-posting-card__columns">
             <Columns.Column className="job-posting-card__firstColumn is-narrow">
               <Element
                 renderAs="img"
