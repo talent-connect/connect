@@ -22,17 +22,45 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     font-weight: 500;
-    font-size: 14px;
+    font-size: 20px;
     line-height: 24px;
     letter-spacing: 1.25px;
+
+    @include mobile() {
+      font-family: Avenir;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 800;
+      line-height: 21px;
+    }
   }
 
   &__company-name {
     color: $grey;
+    font-size: 14px;
   }
 
   &__location {
-    margin-bottom: 24px;
+    &-container {
+      display: flex;
+      flex-direction: row;
+      align-items: baseline;
+      margin: 0;
+    }
+
+    &-icon {
+      margin: 0;
+      height: 16px;
+    }
+
+    &-text {
+      margin-bottom: 16px;
+      color: var(--grey, #a0a0a0);
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 350;
+      line-height: normal;
+    }
   }
 
   &__image {
@@ -111,7 +139,7 @@
       margin-bottom: 0;
 
       & .tag {
-        margin: 0;
+        margin-bottom: 0;
       }
 
       &__last-row {
@@ -119,11 +147,15 @@
       }
     }
 
+    @include tablet-only() {
+      max-width: 330px;
+    }
+
     @include mobile() {
       padding: 0;
       flex-wrap: wrap;
       height: max-content;
-      max-width: 350px;
+      max-width: 330px;
 
       & .tags {
         margin-bottom: 0;
@@ -131,23 +163,19 @@
         & .tag {
           margin: 0;
         }
-
-        // &__last-row {
-        //   width: max-content;
-        // }
       }
     }
   }
 
   &__lastColumn {
     padding: 0;
+
     @include mobile() {
       padding-top: 16px;
     }
   }
 
   &__columns {
-    // gap: 0;
     margin: 0;
 
     @include mobile() {

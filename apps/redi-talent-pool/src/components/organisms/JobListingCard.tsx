@@ -27,20 +27,26 @@ const CardLocation = ({ location, remote }) => {
 
   return (
     <Element
-      className="content job-posting-card__location"
-      key="location"
-      renderAs="p"
-      size={1}
+      key="locationIcon"
+      renderAs="div"
+      className="content job-posting-card__location-container"
     >
       <Element
         key="locationIcon"
         renderAs="img"
         src={LocationIcon}
         alt="Location"
-        className="content job-posting-card__locationIcon"
+        className="content job-posting-card__location-icon"
       />
-      {newLocationsString}
-      {remote ? ' | Remote' : ''}
+      <Element
+        className="content job-posting-card__location-text"
+        key="location"
+        renderAs="p"
+        size={1}
+      >
+        {newLocationsString}
+        {remote ? ' | Remote' : ''}
+      </Element>
     </Element>
   )
 }
@@ -72,7 +78,7 @@ export function JobListingCard({
     <NavLink to={linkTo} onClick={onClick} className="job-posting-link">
       <Card className="job-posting-card">
         <Card.Content className="job-posting-card__content">
-          <Columns breakpoint="mobile" className="job-posting-card__columns">
+          <Columns className="job-posting-card__columns">
             <Columns.Column className="job-posting-card__firstColumn is-narrow">
               <Element
                 renderAs="img"
@@ -81,10 +87,13 @@ export function JobListingCard({
                 alt={jobTitle}
               ></Element>
             </Columns.Column>
-            <Columns.Column className="job-posting-card__middleColumn">
+            <Columns.Column
+              className="job-posting-card__middleColumn"
+              breakpoint="mobile"
+            >
               <Element
                 key="name"
-                renderAs="h3"
+                renderAs="h4"
                 textWeight="bold"
                 textSize={4}
                 className="job-posting-card__job-title"
