@@ -1,12 +1,12 @@
-import { useState } from 'react'
-import { Columns, Element, Tag } from 'react-bulma-components'
 import {
-  ArrayParam,
-  BooleanParam,
-  useQueryParams,
-  withDefault,
-} from 'use-query-params'
-
+  FederalState,
+  JobseekerProfileStatus,
+  TpDesiredPosition,
+  TpEmploymentType,
+  TpTechnicalSkill,
+  useMyTpDataQuery,
+  useTpJobListingFindAllVisibleQuery,
+} from '@talent-connect/data-access'
 import {
   Checkbox,
   FilterDropdown,
@@ -22,20 +22,18 @@ import {
   topSkills,
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
-
-import {
-  FederalState,
-  JobseekerProfileStatus,
-  TpDesiredPosition,
-  TpEmploymentType,
-  TpTechnicalSkill,
-  useMyTpDataQuery,
-  useTpJobListingFindAllVisibleQuery,
-} from '@talent-connect/data-access'
 import { objectEntries } from '@talent-connect/typescript-utilities'
+import { useState } from 'react'
+import { Columns, Element, Tag } from 'react-bulma-components'
 import { useQueryClient } from 'react-query'
 import { Redirect } from 'react-router-dom'
-import { JobListingCard } from '../../../components/organisms/JobListingCard'
+import {
+  ArrayParam,
+  BooleanParam,
+  useQueryParams,
+  withDefault,
+} from 'use-query-params'
+import { BrowseJobListingCard } from '../../../components/organisms/job-listing-card/BrowseJobListingCard'
 import { LoggedIn } from '../../../components/templates'
 import {
   useTpJobListingMarkAsFavouriteMutation,
@@ -397,7 +395,7 @@ export function BrowseJobseeker() {
 
             return (
               <Columns.Column mobile={{ size: 12 }} tablet={{ size: 6 }}>
-                <JobListingCard
+                <BrowseJobListingCard
                   key={jobListing.id}
                   jobListing={jobListing as unknown as any}
                   toggleFavorite={handleFavoriteJobListing}

@@ -1127,7 +1127,7 @@ export type TpJobListing = {
   companyProfileId: Scalars['ID'];
   createdAt: Scalars['DateTime'];
   employmentType?: Maybe<TpEmploymentType>;
-  expiresAt: Scalars['DateTime'];
+  expiresAt?: Maybe<Scalars['DateTime']>;
   federalState?: Maybe<FederalState>;
   id: Scalars['ID'];
   idealTechnicalSkills?: Maybe<Array<TpTechnicalSkill>>;
@@ -1137,7 +1137,7 @@ export type TpJobListing = {
   profileAvatarImageS3Key?: Maybe<Scalars['String']>;
   relatesToPositions?: Maybe<Array<TpDesiredPosition>>;
   salaryRange?: Maybe<Scalars['String']>;
-  status?: Maybe<Scalars['String']>;
+  status?: Maybe<TpJobListingStatus>;
   summary?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
@@ -1162,6 +1162,7 @@ export type TpJobListingDeleteInput = {
 
 export type TpJobListingPatchInput = {
   employmentType?: InputMaybe<TpEmploymentType>;
+  expiresAt?: InputMaybe<Scalars['DateTime']>;
   federalState?: InputMaybe<FederalState>;
   id: Scalars['ID'];
   idealTechnicalSkills?: InputMaybe<Array<TpTechnicalSkill>>;
@@ -1170,9 +1171,15 @@ export type TpJobListingPatchInput = {
   location?: InputMaybe<Scalars['String']>;
   relatesToPositions?: InputMaybe<Array<TpDesiredPosition>>;
   salaryRange?: InputMaybe<Scalars['String']>;
+  status?: InputMaybe<TpJobListingStatus>;
   summary?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
 };
+
+export enum TpJobListingStatus {
+  Active = 'ACTIVE',
+  Expired = 'EXPIRED'
+}
 
 export type TpJobseekerCv = {
   __typename?: 'TpJobseekerCv';

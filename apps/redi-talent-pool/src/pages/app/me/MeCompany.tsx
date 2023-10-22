@@ -18,6 +18,7 @@ import { EditableContact } from '../../../components/organisms/company-profile-e
 import { EditableDetails } from '../../../components/organisms/company-profile-editables/EditableDetails'
 import { EditableJobPostings } from '../../../components/organisms/company-profile-editables/EditableJobPostings'
 import { EditableNamePhotoLocation } from '../../../components/organisms/company-profile-editables/EditableNamePhotoLocation'
+import { ExpiredJobListings } from '../../../components/organisms/ExpiredJobListings'
 import { LoggedIn } from '../../../components/templates'
 import { useIsBusy } from '../../../hooks/useIsBusy'
 import { queryClient } from '../../../services/api/api'
@@ -149,6 +150,7 @@ export function MeCompany() {
         isJobPostingFormOpen={isJobPostingFormOpen}
         setIsJobPostingFormOpen={setIsJobPostingFormOpen}
       />
+      <ExpiredJobListings />
     </LoggedIn>
   )
 }

@@ -35,7 +35,7 @@ export class TpJobListingEntityProps implements EntityProps {
 
   createdAt: Date
   updatedAt: Date
-  expiresAt: Date
+  expiresAt?: Date
 
   // These are included from the Company Profile (SF: Account)
   companyName: string

@@ -797,7 +797,7 @@ type TpJobListing {
   companyProfileId: ID!
   createdAt: DateTime!
   employmentType: TpEmploymentType
-  expiresAt: DateTime!
+  expiresAt: DateTime
   federalState: FederalState
   id: ID!
   idealTechnicalSkills: [TpTechnicalSkill!]
@@ -807,7 +807,7 @@ type TpJobListing {
   profileAvatarImageS3Key: String
   relatesToPositions: [TpDesiredPosition!]
   salaryRange: String
-  status: String
+  status: TpJobListingStatus
   summary: String
   title: String
   updatedAt: DateTime!
@@ -832,6 +832,7 @@ input TpJobListingDeleteInput {
 
 input TpJobListingPatchInput {
   employmentType: TpEmploymentType
+  expiresAt: DateTime
   federalState: FederalState
   id: ID!
   idealTechnicalSkills: [TpTechnicalSkill!]
@@ -840,8 +841,14 @@ input TpJobListingPatchInput {
   location: String
   relatesToPositions: [TpDesiredPosition!]
   salaryRange: String
+  status: TpJobListingStatus
   summary: String
   title: String
+}
+
+enum TpJobListingStatus {
+  ACTIVE
+  EXPIRED
 }
 
 type TpJobseekerCv {

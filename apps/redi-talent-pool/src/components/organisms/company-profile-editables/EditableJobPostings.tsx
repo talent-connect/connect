@@ -1,5 +1,6 @@
 import {
   AllTpJobListingFieldsFragment,
+  TpJobListingStatus,
   useMyTpDataQuery,
   useTpJobListingCreateMutation,
   useTpJobListingDeleteMutation,
@@ -30,7 +31,7 @@ import { Columns, Element } from 'react-bulma-components'
 import { useQueryClient } from 'react-query'
 import * as Yup from 'yup'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
-import { JobListingCard } from '../JobListingCard'
+import { EditableJobListingCard } from '../job-listing-card/EditableJobListingCard'
 import { useLoadModalFormJobListingDataQuery } from './EditableJobPostings.generated'
 import JobPlaceholderCardUrl from './job-placeholder-card.svg'
 
@@ -39,7 +40,9 @@ export function EditableJobPostings({
   setIsJobPostingFormOpen,
 }) {
   const myData = useMyTpDataQuery()
-  const jobListings = myData.data?.tpCurrentUserDataGet?.jobListings
+  const jobListings = myData.data?.tpCurrentUserDataGet?.jobListings?.filter(
+    (jobListing) => jobListing.status === TpJobListingStatus.Active
+  )
   const [isEditing, setIsEditing] = useState(false)
   const [idOfTpJobListingBeingEdited, setIdOfTpJobListingBeingEdited] =
     useState<string | null>(null) // null = "new"
@@ -125,9 +128,12 @@ export function EditableJobPostings({
           ) : (
             <Columns>
               {jobListings?.map((jobListing) => (
-                <Columns.Column mobile={{ size: 12 }} tablet={{ size: 6 }}>
-                  <JobListingCard
-                    key={jobListing.id}
+                <Columns.Column
+                  key={jobListing.id}
+                  mobile={{ size: 12 }}
+                  tablet={{ size: 6 }}
+                >
+                  <EditableJobListingCard
                     jobListing={jobListing}
                     onClick={(e) => handleStartEditingClick(jobListing.id, e)}
                   />

@@ -1,0 +1,13 @@
+.job-posting-card {
+  &__editable {
+    height: 100% !important;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.job-posting-link:hover {
+  text-decoration: none;
+}

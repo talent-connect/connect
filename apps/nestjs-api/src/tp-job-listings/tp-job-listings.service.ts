@@ -8,6 +8,7 @@ import {
   TpJobListingEntity,
   TpJobListingEntityProps,
   TpJobListingMapper,
+  TpJobListingStatus,
 } from '@talent-connect/common-types'
 import { deleteUndefinedProperties } from '@talent-connect/shared-utils'
 import { CurrentUserInfo } from '../auth/current-user.interface'
@@ -38,6 +39,7 @@ export class TpJobListingsService {
 
   async findAllVisibleJobListings(_filter: FindAllVisibleTpJobListingsArgs) {
     const filter: any = {
+      Status__c: TpJobListingStatus.ACTIVE,
       ['Account__r.ReDI_Visible_to_Jobseekers__c']: true,
       ['Account__r.ReDI_Talent_Pool_State__c']:
         CompanyTalentPoolState.PROFILE_APPROVED,
@@ -103,7 +105,6 @@ export class TpJobListingsService {
         user.userId
       )
     props.companyProfileId = companyRepresentedByUser.props.id
-    props.expiresAt = new Date(new Date().setMonth(new Date().getMonth() + 6))
 
     const entityToPersist = TpJobListingEntity.create(props)
     const recordToPersist = this.mapper.toPersistence(entityToPersist)

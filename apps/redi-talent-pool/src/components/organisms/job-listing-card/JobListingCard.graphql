@@ -4,4 +4,5 @@ fragment JobListingCardJobListingProp on TpJobListing {
   idealTechnicalSkills
   companyName
   profileAvatarImageS3Key
+  status
 }

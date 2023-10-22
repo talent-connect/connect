@@ -1,7 +1,9 @@
+import { TpJobListingStatus } from '@talent-connect/common-types'
 import { TpCompanyProfile } from './TpCompanyProfile'
 
 export type TpJobListing = {
   id: string
+  status: TpJobListingStatus
   title?: string
   location?: string
   summary?: string
