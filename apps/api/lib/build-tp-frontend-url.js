@@ -9,9 +9,9 @@ module.exports = {
     } else if (env === 'staging') {
       return 'https://app.staging.talent-pool.redi-school.org'
     } else if (env === 'development') {
-      return 'http://127.0.0.1:2999'
+      return 'http://localhost:2999'
     } else {
-      return 'http://127.0.0.1:2999'
+      return 'http://localhost:2999'
     }
   },
 }

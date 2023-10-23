@@ -27,19 +27,14 @@ export class SfApiConProfilesService {
 
   async createConProfileForSignUp(data: {
     userId: string
-    firstName: string
-    lastName: string
     rediLocation: string
     profileStatus: string
     loopbackUserId: string
     userType: UserType
     menteeCountCapacity: number
+    mentor_isPartnershipMentor?: boolean
+    mentor_workPlace?: string
   }) {
-    const upsertContactResult = await this.repository.updateRecord('Contact', {
-      Id: data.userId,
-      FirstName: data.firstName,
-      LastName: data.lastName,
-    })
     const recordTypeId = await this.repository.findRecordIdOfObject(
       ConProfileRecord.metadata.SALESFORCE_OBJECT_NAME,
       data.userType
@@ -53,6 +48,8 @@ export class SfApiConProfilesService {
         ReDI_Location__c: data.rediLocation,
         RecordTypeId: recordTypeId,
         total_mentee_capacity__c: data.menteeCountCapacity,
+        Partnership_Mentor__c: data.mentor_isPartnershipMentor,
+        Work_Place__c: data.mentor_workPlace,
       }
     )
 

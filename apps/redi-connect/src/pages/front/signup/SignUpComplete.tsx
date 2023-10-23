@@ -1,4 +1,7 @@
-import { RediLocation } from '@talent-connect/data-access'
+import {
+  RediLocation,
+  useLoadMyProfileQuery,
+} from '@talent-connect/data-access'
 import {
   Button,
   Heading,
@@ -7,6 +10,7 @@ import { Columns, Content, Form } from 'react-bulma-components'
 import { useHistory, useParams } from 'react-router-dom'
 import { Teaser } from '../../../components/molecules'
 import AccountOperation from '../../../components/templates/AccountOperation'
+import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
 import { envRediLocation } from '../../../utils/env-redi-location'
 import { SignUpPageType, SignUpPageTypes } from './signup-page.type'
 
@@ -14,6 +18,11 @@ export default function SignUpComplete() {
   const history = useHistory()
   const rediLocation = envRediLocation() as RediLocation
   const { userType } = useParams() as unknown as { userType: SignUpPageType }
+
+  const loopbackUserId = getAccessTokenFromLocalStorage().userId
+  const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
+  const isPartnershipMentor =
+    myProfileQuery.data?.conProfile.mentor_isPartnershipMentor === true
 
   return (
     <AccountOperation>
@@ -25,27 +34,45 @@ export default function SignUpComplete() {
           <Teaser.IllustrationOnly />
         </Columns.Column>
         <Columns.Column size={5} offset={1}>
-          <Heading border="bottomLeft">Meet the team</Heading>
+          <Heading border="bottomLeft">Sign-up complete!</Heading>
           <Content size="large" renderAs="div">
-            <p>Thank you for signing up!</p>
-            {userType === SignUpPageTypes.mentor && (
-              <>
-                <p style={{ textAlign: 'justify' }}>
-                  Now, we would like to get to know you better. We regularly
-                  organize mentor onboardings in small groups.{' '}
-                  <a href="https://calendly.com/hadeertalentsucess/mentors-onboarding-session">
-                    <strong>
-                      Please book yourself in for one of the open 30-minute
-                      slots.
-                    </strong>
-                  </a>
-                </p>
-                <p style={{ textAlign: 'justify' }}>
-                  If you are a ReDI partner, your profile will be activated
-                  automatically - you don't have to select a date!
-                </p>
-              </>
-            )}
+            {userType === SignUpPageTypes.mentor &&
+              (isPartnershipMentor ? (
+                <>
+                  <p style={{ textAlign: 'justify' }}>
+                    Thank you for signing up!{' '}
+                  </p>
+                  <p>
+                    Please go to your account and{' '}
+                    <strong>complete your profile information</strong>.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p style={{ textAlign: 'justify' }}>
+                    Now, we would like to get to know you better.
+                  </p>
+                  <p style={{ textAlign: 'justify' }}>
+                    Your next step is to{' '}
+                    <a
+                      href="https://calendly.com/hadeertalentsucess/mentors-onboarding-session"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      schedule a quick onboarding session
+                    </a>
+                    . It's the final step before you can kick off your journey
+                    as a mentor!{' '}
+                  </p>
+                  <p style={{ textAlign: 'justify' }}>
+                    In the meantime, please go to your account and{' '}
+                    <strong>complete your profile information</strong>. This
+                    step is super important because it helps students get to
+                    know you better and understand how you can support them.
+                  </p>
+                </>
+              ))}
+
             {userType === SignUpPageTypes.mentee && (
               <>
                 <p style={{ textAlign: 'justify' }}>
@@ -88,13 +115,13 @@ export default function SignUpComplete() {
           </Content>
           <Form.Field className="submit-spacer">
             <Form.Control>
-              <Button onClick={() => history.push('/home')}>
-                Return to ReDI Connect Website
+              <Button onClick={() => history.push('/app/me')}>
+                Continue to your profile
               </Button>
             </Form.Control>
           </Form.Field>
           <Content size="small" renderAs="p">
-            Do you have questions? Feel free to contact our team{' '}
+            Do you have questions? Feel free to contact us{' '}
             <a href="mailto:career@redi-school.org">here</a> or visit our{' '}
             <a href="https://www.redi-school.org/" target="__blank">
               ReDI school website

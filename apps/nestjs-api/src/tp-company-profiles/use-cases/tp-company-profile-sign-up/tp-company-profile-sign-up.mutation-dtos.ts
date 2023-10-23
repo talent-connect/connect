@@ -4,9 +4,6 @@ import { TpCompanyProfileSignUpOperationType } from './tp-company-profile-sign-u
 
 @InputType('TpCompanyProfileSignUpInputDto')
 export class TpCompanyProfileSignUpMutationInputDto {
-  firstName: string
-  lastName: string
-
   @Field((type) => TpCompanyProfileSignUpOperationType)
   operationType: TpCompanyProfileSignUpOperationType
   // company id if operationType = EXISTING_COMPANY,

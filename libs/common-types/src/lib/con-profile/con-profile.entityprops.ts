@@ -18,6 +18,7 @@ export class ConProfileEntityProps implements EntityProps {
   rediLocation: RediLocation
   mentor_occupation?: string
   mentor_workPlace?: string
+  mentor_isPartnershipMentor?: boolean
   expectations?: string
   @Field((type) => OccupationCategory)
   mentee_occupationCategoryId?: OccupationCategory
