@@ -10,18 +10,6 @@
     "defaultBase": "master"
   },
   "npmScope": "talent-connect",
-  "tasksRunnerOptions": {
-    "default": {
-      "runner": "@nrwl/nx-cloud",
-      "options": {
-        "cacheableOperations": [],
-        "accessToken": "YTA4ZjEzZTctYTc5NS00OWIwLWFiOTQtOGM5YTJkNThjMDM1fHJlYWQtd3JpdGU=",
-        "canTrackAnalytics": false,
-        "showUsageWarnings": true,
-        "parallel": 1
-      }
-    }
-  },
   "targetDependencies": {
     "build": [
       {
