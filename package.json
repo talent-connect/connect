@@ -114,7 +114,7 @@
     "i18next-http-backend": "^1.0.8",
     "jsdom": "^21.1.0",
     "jsforce": "^1.11.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "lodash": "^4.17.19",
     "loopback": "^3.25.1",
     "loopback-boot": "^2.6.5",
