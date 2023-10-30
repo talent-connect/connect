@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom'
+import './BrowseJobListingCard.scss'
 import { JobListingCard, JobListingCardProps } from './JobListingCard'
 
 interface BrowseJobListingCardProps extends JobListingCardProps {
