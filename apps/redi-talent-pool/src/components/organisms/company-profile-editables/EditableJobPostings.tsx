@@ -125,7 +125,7 @@ export function EditableJobPostings({
           ) : (
             <Columns>
               {jobListings?.map((jobListing) => (
-                <Columns.Column mobile={{ size: 12 }} tablet={{ size: 6 }}>
+                <Columns.Column size={12}>
                   <JobListingCard
                     key={jobListing.id}
                     jobListing={jobListing}
