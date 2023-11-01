@@ -26,28 +26,17 @@ const CardLocation = ({ location, remote }) => {
       : location
 
   return (
-    <Element
-      key="locationIcon"
-      renderAs="div"
-      className="content job-posting-card__location-container"
-    >
-      <Element
-        key="locationIcon"
-        renderAs="img"
+    <div className="content job-posting-card__location-container">
+      <img
         src={LocationIcon}
         alt="Location"
         className="content job-posting-card__location-icon"
       />
-      <Element
-        className="content job-posting-card__location-text"
-        key="location"
-        renderAs="p"
-        size={1}
-      >
+      <p className="content job-posting-card__location-text">
         {newLocationsString}
         {remote ? ' | Remote' : ''}
-      </Element>
-    </Element>
+      </p>
+    </div>
   )
 }
 
@@ -59,13 +48,14 @@ export function JobListingCard({
   onClick,
   timeFooter,
 }: JobListingCardProps) {
-  const jobTitle = jobListing?.title
-  const idealTechnicalSkills = jobListing?.idealTechnicalSkills
-
-  const companyName = jobListing?.companyName
-  const companyAvatarImage = jobListing?.profileAvatarImageS3Key
-  const location = jobListing.location
-  const remote = jobListing.isRemotePossible
+  const {
+    title: jobTitle,
+    idealTechnicalSkills,
+    companyName,
+    location,
+    isRemotePossible: remote,
+    profileAvatarImageS3Key: companyAvatarImage,
+  } = jobListing
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -80,50 +70,33 @@ export function JobListingCard({
         <Card.Content className="job-posting-card__content">
           <Columns className="job-posting-card__columns">
             <Columns.Column className="job-posting-card__firstColumn is-narrow">
-              <Element
-                renderAs="img"
+              <img
                 className="job-posting-card__image"
                 src={imgSrc}
                 alt={jobTitle}
-              ></Element>
+              ></img>
             </Columns.Column>
             <Columns.Column
               className="job-posting-card__middleColumn"
               breakpoint="mobile"
             >
-              <Element
-                key="name"
-                renderAs="h4"
-                textWeight="bold"
-                textSize={4}
-                className="job-posting-card__job-title"
-              >
-                {jobTitle}
-              </Element>
-              <Element
-                className="content job-posting-card__company-name"
-                key="company"
-                renderAs="p"
-              >
+              <h4 className="job-posting-card__job-title">{jobTitle}</h4>
+              <p className="content job-posting-card__company-name">
                 {companyName}
-              </Element>
+              </p>
               <CardLocation location={location} remote={remote} />
               {idealTechnicalSkills?.length > 0 ? (
-                <Element renderAs="div">
+                <div>
                   <CardTags
                     items={idealTechnicalSkills}
                     shortList
                     formatter={(skill: string) => topSkillsIdToLabelMap[skill]}
                   />
-                </Element>
+                </div>
               ) : null}
             </Columns.Column>
             <Columns.Column className="job-posting-card__lastColumn">
-              <Element
-                className="content job-posting-card__timeFooterBox"
-                key="company"
-                renderAs="div"
-              >
+              <div className="content job-posting-card__timeFooterBox">
                 {toggleFavorite && (
                   <div
                     className="job-posting-card__favorite"
@@ -136,15 +109,11 @@ export function JobListingCard({
                   </div>
                 )}
                 {timeFooter && (
-                  <Element
-                    className="content job-posting-card__timeFooter"
-                    key="company"
-                    renderAs="p"
-                  >
+                  <p className="content job-posting-card__timeFooter">
                     {timeFooter}
-                  </Element>
+                  </p>
                 )}
-              </Element>
+              </div>
             </Columns.Column>
           </Columns>
         </Card.Content>
