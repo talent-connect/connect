@@ -21,10 +21,11 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    font-weight: 500;
+    color: var(--black, #000);
+    font-family: Avenir;
     font-size: 20px;
-    line-height: 24px;
-    letter-spacing: 1.25px;
+    font-style: normal;
+    font-weight: 800;
 
     @include mobile() {
       font-family: Avenir;
@@ -36,30 +37,23 @@
   }
 
   &__company-name {
-    color: $grey;
+    color: var(--grey, #a0a0a0);
+    font-family: Avenir;
     font-size: 14px;
+    font-style: normal;
+    font-weight: 800;
   }
 
   &__location {
     &-container {
       display: flex;
-      flex-direction: row;
-      align-items: baseline;
-      margin: 0;
-    }
-
-    &-icon {
-      margin: 0;
-      height: 16px;
     }
 
     &-text {
-      margin-bottom: 16px;
       color: var(--grey, #a0a0a0);
       font-size: 12px;
       font-style: normal;
       font-weight: 350;
-      line-height: normal;
     }
   }
 
@@ -68,7 +62,7 @@
     width: 136px;
     padding: 10px;
     overflow: hidden;
-    object-fit: contain;
+
     border-radius: 100%;
 
     @include mobile() {
@@ -185,5 +179,14 @@
 
   &__content {
     padding: 0;
+  }
+
+  &__timeFooter {
+    color: var(--grey, #a0a0a0);
+    font-family: Avenir;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 350;
+    line-height: normal;
   }
 }
