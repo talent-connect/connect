@@ -796,6 +796,7 @@ type TpJobListing {
   companyProfile: TpCompanyProfile!
   companyProfileId: ID!
   createdAt: DateTime!
+  createdByCompanyRepresentative: ID
   employmentType: TpEmploymentType
   federalState: FederalState
   id: ID!

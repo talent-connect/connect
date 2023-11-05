@@ -16,7 +16,7 @@ export class TpJobListingRecordProps implements RecordProps {
   Federal_State__c?: PicklistValue
 
   Account__c: string
-  Created_By_Company_Representative__c: string
+  Created_By_Company_Representative__c: string | undefined
 
   //  CreatedById: any
 

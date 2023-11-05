@@ -1126,6 +1126,7 @@ export type TpJobListing = {
   companyProfile: TpCompanyProfile;
   companyProfileId: Scalars['ID'];
   createdAt: Scalars['DateTime'];
+  createdByCompanyRepresentative?: Maybe<Scalars['ID']>;
   employmentType?: Maybe<TpEmploymentType>;
   federalState?: Maybe<FederalState>;
   id: Scalars['ID'];
