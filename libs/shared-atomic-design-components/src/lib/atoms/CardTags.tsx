@@ -20,7 +20,6 @@ const CardTag = ({ children, className }: CardTagProps) => (
       size="normal"
       textWeight="bold"
       responsive={{ tablet: { hide: { value: true } } }}
-      rounded
     >
       {children}
     </Tag>
@@ -29,7 +28,6 @@ const CardTag = ({ children, className }: CardTagProps) => (
       size="medium"
       textWeight="bold"
       responsive={{ mobile: { hide: { value: true } } }}
-      rounded
     >
       {children}
     </Tag>
