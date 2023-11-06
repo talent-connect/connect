@@ -404,7 +404,6 @@ export function BrowseJobseeker() {
                   toggleFavorite={handleFavoriteJobListing}
                   isFavorite={isFavorite}
                   linkTo={`/app/job-listing/${jobListing.id}`}
-                  timeFooter={moment(jobListing.createdAt).fromNow()}
                 />
               </Columns.Column>
             )

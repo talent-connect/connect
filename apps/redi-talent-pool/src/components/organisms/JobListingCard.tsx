@@ -14,7 +14,7 @@ interface JobListingCardProps {
   isFavorite?: boolean
   toggleFavorite?: (id: string) => void
   linkTo?: string
-  timeFooter?: string
+
   onClick?: (e: React.MouseEvent) => void
 }
 
@@ -46,7 +46,6 @@ export function JobListingCard({
   isFavorite,
   linkTo = '#',
   onClick,
-  timeFooter,
 }: JobListingCardProps) {
   const {
     title: jobTitle,
@@ -107,11 +106,6 @@ export function JobListingCard({
                       className="job-posting-card__favorite__icon"
                     />
                   </div>
-                )}
-                {timeFooter && (
-                  <p className="content job-posting-card__timeFooter">
-                    {timeFooter}
-                  </p>
                 )}
               </div>
             </Columns.Column>
