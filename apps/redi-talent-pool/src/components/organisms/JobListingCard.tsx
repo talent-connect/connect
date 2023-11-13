@@ -26,13 +26,13 @@ const CardLocation = ({ location, remote }) => {
       : location
 
   return (
-    <div className="content job-posting-card__location-container">
+    <div className="job-posting-card__location-container">
       <img
         src={LocationIcon}
         alt="Location"
-        className="content job-posting-card__location-icon"
+        className="job-posting-card__location-icon"
       />
-      <p className="content job-posting-card__location-text">
+      <p className="job-posting-card__location-text">
         {newLocationsString}
         {remote ? ' | Remote' : ''}
       </p>
@@ -80,9 +80,7 @@ export function JobListingCard({
               breakpoint="mobile"
             >
               <h4 className="job-posting-card__job-title">{jobTitle}</h4>
-              <p className="content job-posting-card__company-name">
-                {companyName}
-              </p>
+              <p className="job-posting-card__company-name">{companyName}</p>
               <CardLocation location={location} remote={remote} />
               {idealTechnicalSkills?.length > 0 ? (
                 <div>
@@ -95,7 +93,7 @@ export function JobListingCard({
               ) : null}
             </Columns.Column>
             <Columns.Column className="job-posting-card__lastColumn">
-              <div className="content job-posting-card__timeFooterBox">
+              <div className="job-posting-card__timeFooterBox">
                 {toggleFavorite && (
                   <div
                     className="job-posting-card__favorite"
