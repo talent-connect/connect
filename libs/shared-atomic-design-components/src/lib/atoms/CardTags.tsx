@@ -14,9 +14,24 @@ interface CardTagProps {
 }
 
 const CardTag = ({ children, className }: CardTagProps) => (
-  <Tag className={className} size="medium" textWeight="bold" rounded>
-    {children}
-  </Tag>
+  <>
+    <Tag
+      className={className}
+      size="normal"
+      textWeight="bold"
+      responsive={{ tablet: { hide: { value: true } } }}
+    >
+      {children}
+    </Tag>
+    <Tag
+      className={className}
+      size="medium"
+      textWeight="bold"
+      responsive={{ mobile: { hide: { value: true } } }}
+    >
+      {children}
+    </Tag>
+  </>
 )
 
 const CardTags = ({ items, shortList, formatter }: CardTagsProps) => {

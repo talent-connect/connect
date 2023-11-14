@@ -42,6 +42,7 @@ import {
   useTpJobListingUnfavouriteMutation,
   useTpJobseekerFavouritedJobListingsQuery,
 } from './BrowseJobseeker.generated'
+import moment from 'moment'
 
 export function BrowseJobseeker() {
   const queryClient = useQueryClient()
@@ -396,10 +397,10 @@ export function BrowseJobseeker() {
             if (!isFavorite && onlyFavorites) return
 
             return (
-              <Columns.Column mobile={{ size: 12 }} tablet={{ size: 6 }}>
+              <Columns.Column size={12}>
                 <JobListingCard
                   key={jobListing.id}
-                  jobListing={jobListing as unknown as any}
+                  jobListing={jobListing}
                   toggleFavorite={handleFavoriteJobListing}
                   isFavorite={isFavorite}
                   linkTo={`/app/job-listing/${jobListing.id}`}
