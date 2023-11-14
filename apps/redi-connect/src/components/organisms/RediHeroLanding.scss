@@ -56,12 +56,20 @@
     @include desktop() {
       margin: 0 auto;
       max-width: 70%;
+      padding-bottom: 1.5rem;
     }
+    @include mobile() {
+      padding-bottom: 1.5rem;
+    }
+    @include tablet() {
+      padding-bottom: 1.5rem;
+      }
   }
 
   &__illustration {
     @include desktop() {
       position: absolute;
+      max-height: 15rem;
 
       &--mentor {
         right: -5rem;
