@@ -8,6 +8,7 @@ import {
   TpJobListingEntity,
   TpJobListingEntityProps,
   TpJobListingMapper,
+  TpJobListingStatus,
 } from '@talent-connect/common-types'
 import { deleteUndefinedProperties } from '@talent-connect/shared-utils'
 import { CurrentUserInfo } from '../auth/current-user.interface'
@@ -41,6 +42,7 @@ export class TpJobListingsService {
       ['Account__r.ReDI_Visible_to_Jobseekers__c']: true,
       ['Account__r.ReDI_Talent_Pool_State__c']:
         CompanyTalentPoolState.PROFILE_APPROVED,
+      Status__c: TpJobListingStatus.ACTIVE,
     }
     if (_filter.filter.relatesToPositions?.length > 0) {
       filter.Relates_to_Positions__c = {

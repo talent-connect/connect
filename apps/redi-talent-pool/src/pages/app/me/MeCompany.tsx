@@ -2,6 +2,7 @@ import { Tooltip } from '@material-ui/core'
 import {
   CompanyTalentPoolState,
   MyTpDataQuery,
+  TpJobListingStatus,
   useMyTpDataQuery,
   usePatchTpCompanyProfileMutation,
 } from '@talent-connect/data-access'
@@ -18,6 +19,7 @@ import { EditableContact } from '../../../components/organisms/company-profile-e
 import { EditableDetails } from '../../../components/organisms/company-profile-editables/EditableDetails'
 import { EditableJobPostings } from '../../../components/organisms/company-profile-editables/EditableJobPostings'
 import { EditableNamePhotoLocation } from '../../../components/organisms/company-profile-editables/EditableNamePhotoLocation'
+import { ExpiredJobListings } from '../../../components/organisms/ExpiredJobListings'
 import { LoggedIn } from '../../../components/templates'
 import { useIsBusy } from '../../../hooks/useIsBusy'
 import { queryClient } from '../../../services/api/api'
@@ -36,6 +38,13 @@ export function MeCompany() {
     jobListings,
     userContact,
   } = myData.data.tpCurrentUserDataGet
+
+  const activeJobListings = jobListings?.filter(
+    (jobListing) => jobListing.status !== TpJobListingStatus.Expired
+  )
+  const expiredJobListings = jobListings?.filter(
+    (jobListing) => jobListing.status === TpJobListingStatus.Expired
+  )
 
   const onHideFromJobseekersCheckboxChange = async () => {
     await mutation.mutateAsync({
@@ -146,9 +155,13 @@ export function MeCompany() {
         </Columns.Column>
       </Columns>
       <EditableJobPostings
+        jobListings={activeJobListings}
         isJobPostingFormOpen={isJobPostingFormOpen}
         setIsJobPostingFormOpen={setIsJobPostingFormOpen}
       />
+      {expiredJobListings?.length > 0 && (
+        <ExpiredJobListings jobListings={expiredJobListings} />
+      )}
     </LoggedIn>
   )
 }
