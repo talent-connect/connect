@@ -1,11 +1,11 @@
 import classnames from 'clsx'
 import { Element } from 'react-bulma-components'
 
-import { ReactComponent as ChecklistActiveImage } from './checklist-item-active.svg'
-import { ReactComponent as ChecklistImage } from './checklist-item.svg'
-import { ReactComponent as CheckmarkBorderOnlyImage } from './checkmark-border-only.svg'
-import { ReactComponent as CheckmarkImage } from './checkmark.svg'
-import { ReactComponent as StepPendingImage } from './pending.svg'
+import { ReactComponent as ChecklistActiveImage } from '../../../assets/checklist-item-active.svg'
+import { ReactComponent as ChecklistImage } from '../../../assets/checklist-item.svg'
+import { ReactComponent as CheckmarkBorderOnlyImage } from '../../../assets/checkmark-border-only.svg'
+import { ReactComponent as CheckmarkImage } from '../../../assets/checkmark.svg'
+import { ReactComponent as StepPendingImage } from '../../../assets/pending.svg'
 
 import { CompanyTalentPoolState } from '@talent-connect/data-access'
 import { TpCompanyProfileOnboardigStepsProfilePropFragment } from './TpCompanyProfileOnboardingSteps.generated'
