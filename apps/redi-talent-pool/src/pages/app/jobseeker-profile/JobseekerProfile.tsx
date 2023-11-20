@@ -16,7 +16,7 @@ function JobseekerProfile() {
   } = data
 
   const profileIsThatOfCurrentUser =
-    tpJobseekerProfileId === tpJobseekerDirectoryEntry.id
+    tpJobseekerProfileId === tpJobseekerDirectoryEntry?.id
 
   if (profileIsThatOfCurrentUser) return <JobseekerProfileForJobseekerEyes />
   else return <JobseekerProfileForCompanyEyes />
