@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom'
 
 import { CardTags, Icon } from '@talent-connect/shared-atomic-design-components'
 import { topSkillsIdToLabelMap } from '@talent-connect/talent-pool/config'
-//import placeholderImage from '../../assets/images/img-placeholder.png'
+import placeholderImage from '../../assets/images/company-placeholder-img.svg'
 import './JobListingCard.scss'
 import { JobListingCardJobListingPropFragment } from './jobseeker-profile-editables/JobListingCard.generated'
 import LocationIcon from '../../assets/images/Location.svg'
@@ -61,7 +61,7 @@ export function JobListingCard({
     toggleFavorite && toggleFavorite(jobListing.id)
   }
 
-  const imgSrc = companyAvatarImage ? companyAvatarImage : null
+  const imgSrc = companyAvatarImage ? companyAvatarImage : placeholderImage
 
   return (
     <NavLink to={linkTo} onClick={onClick} className="job-posting-link">
@@ -83,7 +83,7 @@ export function JobListingCard({
               <p className="job-posting-card__company-name">{companyName}</p>
               <CardLocation location={location} remote={remote} />
               {idealTechnicalSkills?.length > 0 ? (
-                <div>
+                <div className="job-posting-card__card-tags">
                   <CardTags
                     items={idealTechnicalSkills}
                     shortList
@@ -92,7 +92,7 @@ export function JobListingCard({
                 </div>
               ) : null}
             </Columns.Column>
-            <Columns.Column className="job-posting-card__lastColumn">
+            <Columns.Column className="job-posting-card__lastColumn ">
               <div className="job-posting-card__timeFooterBox">
                 {toggleFavorite && (
                   <div
