@@ -165,6 +165,10 @@ const validationSchema = Yup.object().shape({
   languageRequirements: Yup.string().required(
     'Please specify the language requirement(s)'
   ),
+  firstName: Yup.string().matches(/^[a-zA-Z]+$/, 'First name must contain only letters').required('First name is required'),
+  lastName: Yup.string().matches(/^[a-zA-Z]+$/, 'Last name must contain only letters').required('Last name is required'),
+  email: Yup.string().email('Invalid email address').required('Email is required'),
+  phoneNumber: Yup.string().matches(/^[0-9+]+$/, 'Phone number must contain only numbers')
 })
 
 interface ModalFormProps {
@@ -417,10 +421,6 @@ function ModalForm({
             label="Contact's First Name"
             placeholder="John"
             name="firstName"
-            value={formik.values.firstName}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.firstName && formik.errors.firstName}
             {...formik}
           />
           <FormInput
