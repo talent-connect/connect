@@ -13,6 +13,11 @@ import {
 import classnames from 'clsx'
 import { Columns, Content, Element, Notification } from 'react-bulma-components'
 import { useQueryClient } from 'react-query'
+import { ReactComponent as ChecklistActiveImage } from '../../../assets/checklist-item-active.svg'
+import { ReactComponent as ChecklistImage } from '../../../assets/checklist-item.svg'
+import { ReactComponent as CheckmarkBorderOnlyImage } from '../../../assets/checkmark-border-only.svg'
+import { ReactComponent as CheckmarkImage } from '../../../assets/checkmark.svg'
+import { ReactComponent as StepPendingImage } from '../../../assets/pending.svg'
 import { EditableEducation } from '../../../components/organisms/jobseeker-profile-editables/EditableEducation'
 import { EditableImportantDetails } from '../../../components/organisms/jobseeker-profile-editables/EditableImportantDetails'
 import { EditableLanguages } from '../../../components/organisms/jobseeker-profile-editables/EditableLanguages'
@@ -22,14 +27,9 @@ import { EditableOverview } from '../../../components/organisms/jobseeker-profil
 import { EditableProfessionalExperience } from '../../../components/organisms/jobseeker-profile-editables/EditableProfessionalExperience'
 import { EditableSummary } from '../../../components/organisms/jobseeker-profile-editables/EditableSummary'
 import { LoggedIn } from '../../../components/templates'
-import './MeJobseeker.scss'
-import { ReactComponent as ChecklistActiveImage } from './checklist-item-active.svg'
-import { ReactComponent as ChecklistImage } from './checklist-item.svg'
-import { ReactComponent as CheckmarkBorderOnlyImage } from './checkmark-border-only.svg'
-import { ReactComponent as CheckmarkImage } from './checkmark.svg'
-import { ReactComponent as StepPendingImage } from './pending.svg'
+import './JobseekerProfileForJobseekerEyes.scss'
 
-export function MeJobseeker() {
+export function JobseekerProfileForJobseekerEyes() {
   const queryClient = useQueryClient()
   const myData = useMyTpDataQuery()
   const profile = myData?.data?.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry
