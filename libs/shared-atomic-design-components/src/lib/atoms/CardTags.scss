@@ -1,13 +1,12 @@
+@import '_variables.scss';
+@import '~bulma/sass/utilities/_all';
+
 .tags {
   margin-top: 1rem;
 
   .tag {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-
-    display: inline-block;
     line-height: 2rem;
+    width: fit-content;
 
     &--rest {
       flex-shrink: 0;
@@ -16,6 +15,6 @@
 
   &__last-row {
     display: flex;
-    width: 100%;
+    // width: max-content;
   }
 }
