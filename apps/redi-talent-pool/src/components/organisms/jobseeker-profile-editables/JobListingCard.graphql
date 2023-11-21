@@ -4,4 +4,8 @@ fragment JobListingCardJobListingProp on TpJobListing {
   idealTechnicalSkills
   companyName
   profileAvatarImageS3Key
+  createdAt
+  federalState
+  location
+  isRemotePossible
 }

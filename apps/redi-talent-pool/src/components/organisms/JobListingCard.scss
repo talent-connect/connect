@@ -1,43 +1,82 @@
 @import '_variables.scss';
+@import '~bulma/sass/utilities/_all';
 
 .job-posting-link:hover {
   text-decoration: none;
+  padding: 0;
 }
 
 .job-posting-card {
   border-radius: 4px;
-  height: 24.5rem;
   overflow: hidden;
-
+  padding: 32px;
   &:hover {
     box-shadow: $card-shadow-hover;
   }
+  @include mobile() {
+    padding: 24px;
+  }
 
   &__job-title {
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 24px;
-    letter-spacing: 1.25px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: var(--black, #000);
+    font-family: Avenir;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 800;
+
+    @include mobile() {
+      font-family: Avenir;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 800;
+      line-height: 21px;
+    }
   }
 
   &__company-name {
-    margin-top: 5px;
-    color: $grey;
+    color: var(--grey, #a0a0a0);
+    font-family: Avenir;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 800;
+  }
+
+  &__location {
+    &-container {
+      display: flex;
+    }
+
+    &-text {
+      color: var(--grey, #a0a0a0);
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 350;
+    }
   }
 
   &__image {
-    img {
-      height: 9.5rem;
+    height: 136px;
+    width: 136px;
+    padding: 10px;
+    overflow: hidden;
+
+    border-radius: 100%;
+
+    @include mobile() {
+      height: 112px;
+      width: 112px;
+      padding: 6px;
       overflow: hidden;
       object-fit: contain;
+      border-radius: 100%;
     }
   }
 
   &__favorite {
-    padding: 0.5rem;
-    position: absolute;
-    top: 0.3rem;
-    right: 0.4rem;
+    text-align: right;
 
     &__icon {
       transition: $transition;
@@ -50,7 +89,104 @@
         transform: scale(1.2);
       }
     }
+
+    @include mobile() {
+      padding: 0;
+      position: absolute;
+      top: 24px;
+      right: 24px;
+
+      &__icon {
+        transition: $transition;
+
+        path {
+          fill: $redi-orange-dark;
+        }
+
+        &:hover {
+          transform: scale(1.2);
+        }
+      }
+    }
+  }
+
+  &__timeFooterBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 100%;
+    padding-left: 40px;
+  }
+
+  &__firstColumn {
+    padding: 0;
+  }
+
+  &__middleColumn {
+    padding: 0;
+    padding-left: 40px;
+    max-width: 600px;
+
+    & .tags {
+      flex-wrap: nowrap;
+      margin-bottom: 0;
+
+      & .tag {
+        margin-bottom: 0;
+      }
+
+      &__last-row {
+        width: max-content;
+      }
+    }
+
+    @include tablet-only() {
+      max-width: 330px;
+    }
+
+    @include mobile() {
+      padding: 0;
+      flex-wrap: wrap;
+      height: max-content;
+      max-width: 330px;
+
+      & .tags {
+        margin-bottom: 0;
+
+        & .tag {
+          margin: 0;
+        }
+      }
+    }
+  }
+
+  &__lastColumn {
+    padding: 0;
+
+    @include mobile() {
+      padding-top: 16px;
+    }
+  }
+
+  &__columns {
+    margin: 0;
+
+    @include mobile() {
+      flex-direction: column;
+    }
+  }
+
+  &__content {
+    padding: 0;
+  }
+
+  &__timeFooter {
+    color: var(--grey, #a0a0a0);
+    font-family: Avenir;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 350;
+    line-height: normal;
   }
 }
-
-

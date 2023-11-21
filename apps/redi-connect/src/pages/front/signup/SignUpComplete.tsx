@@ -59,7 +59,7 @@ export default function SignUpComplete() {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      schedule a quick onboarding session
+                      schedule a quick
                     </a>
                     . It's the final step before you can kick off your journey
                     as a mentor!{' '}
