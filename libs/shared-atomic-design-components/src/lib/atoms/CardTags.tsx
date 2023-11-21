@@ -18,7 +18,6 @@ const CardTag = ({ children, className }: CardTagProps) => (
     <Tag
       className={className}
       size="normal"
-      textWeight="bold"
       responsive={{ tablet: { hide: { value: true } } }}
     >
       {children}
@@ -26,7 +25,6 @@ const CardTag = ({ children, className }: CardTagProps) => (
     <Tag
       className={className}
       size="medium"
-      textWeight="bold"
       responsive={{ mobile: { hide: { value: true } } }}
     >
       {children}
