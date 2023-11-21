@@ -29,11 +29,14 @@ export class TpJobListingEntityProps implements EntityProps {
 
   @Field((type) => ID)
   companyProfileId: string
-  @Field((type) => ID)
-  createdByCompanyRepresentative?: string
   //  createdBy: any
   createdAt: Date
   updatedAt: Date
+
+  firstName?: string
+  lastName?: string
+  email?: string
+  phoneNumber?: string
 
   // These are included from the Company Profile (SF: Account)
   companyName: string

@@ -796,14 +796,17 @@ type TpJobListing {
   companyProfile: TpCompanyProfile!
   companyProfileId: ID!
   createdAt: DateTime!
-  createdByCompanyRepresentative: ID
+  email: String
   employmentType: TpEmploymentType
   federalState: FederalState
+  firstName: String
   id: ID!
   idealTechnicalSkills: [TpTechnicalSkill!]
   isRemotePossible: Boolean
   languageRequirements: String
+  lastName: String
   location: String
+  phoneNumber: String
   profileAvatarImageS3Key: String
   relatesToPositions: [TpDesiredPosition!]
   salaryRange: String
@@ -813,12 +816,16 @@ type TpJobListing {
 }
 
 input TpJobListingCreateInput {
+  email: String
   employmentType: TpEmploymentType
   federalState: FederalState
+  firstName: String
   idealTechnicalSkills: [TpTechnicalSkill!]
   isRemotePossible: Boolean
   languageRequirements: String
+  lastName: String
   location: String
+  phoneNumber: String
   relatesToPositions: [TpDesiredPosition!]
   salaryRange: String
   summary: String
@@ -830,13 +837,17 @@ input TpJobListingDeleteInput {
 }
 
 input TpJobListingPatchInput {
+  email: String
   employmentType: TpEmploymentType
   federalState: FederalState
+  firstName: String
   id: ID!
   idealTechnicalSkills: [TpTechnicalSkill!]
   isRemotePossible: Boolean
   languageRequirements: String
+  lastName: String
   location: String
+  phoneNumber: String
   relatesToPositions: [TpDesiredPosition!]
   salaryRange: String
   summary: String

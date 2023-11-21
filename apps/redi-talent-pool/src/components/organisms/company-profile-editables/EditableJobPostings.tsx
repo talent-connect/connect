@@ -184,7 +184,7 @@ function ModalForm({
     { enabled: Boolean(tpJobListingId) && isEditing }
   )
   const myDataQuery = useMyTpDataQuery()
-
+  const userContact = myDataQuery.data?.tpCurrentUserDataGet.userContact
   const createMutation = useTpJobListingCreateMutation()
   const updateMutation = useTpJobListingPatchMutation()
   const deleteMutation = useTpJobListingDeleteMutation()
@@ -240,8 +240,11 @@ function ModalForm({
     }
   }
 
-  const formik = useFormik({
-    initialValues: pick(
+
+  let initialFormValues;
+  if (tpJobListingId) {
+    // Editing existing job posting
+    initialFormValues = pick(
       jobListing,
       'title',
       'location',
@@ -252,12 +255,39 @@ function ModalForm({
       'languageRequirements',
       'isRemotePossible',
       'federalState',
-      'salaryRange'
-    ),
+      'salaryRange',
+      'firstName',
+      'lastName',
+      'email',
+      'phoneNumber'
+    );
+  } else {
+    // Creating new job posting - use userContact for prefilling
+    initialFormValues = {
+      title: '',
+      location: '',
+      summary: '',
+      relatesToPositions: [],
+      idealTechnicalSkills: [],
+      employmentType: '',
+      languageRequirements: '',
+      isRemotePossible: false,
+      federalState: '',
+      salaryRange: '',
+      firstName: userContact?.firstName || '',
+      lastName: userContact?.lastName || '',
+      email: userContact?.email || '',
+      phoneNumber: userContact?.telephoneNumber || ''
+    };
+  }
+
+  const formik = useFormik({
+    initialValues: initialFormValues,
     onSubmit,
     validationSchema,
-    enableReinitialize: true,
-  })
+    enableReinitialize: true
+  });
+
 
   const handleDelete = useCallback(() => {
     if (
@@ -383,7 +413,34 @@ function ModalForm({
             name="salaryRange"
             {...formik}
           />
-
+          <FormInput
+            label="Contact's First Name"
+            placeholder="John"
+            name="firstName"
+            value={formik.values.firstName}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.firstName && formik.errors.firstName}
+            {...formik}
+          />
+          <FormInput
+            label="Contact's Last Name"
+            placeholder="Doe"
+            name="lastName"
+            {...formik}
+          />
+          <FormInput
+            label="Contact's Email"
+            placeholder="johndoe@example.com"
+            name="email"
+            {...formik}
+          />
+          <FormInput
+            label="Contact's Phone Number"
+            placeholder="0049123456789"
+            name="phoneNumber"
+            {...formik}
+          />
           <div style={{ height: '30px' }} />
 
           <div style={{ display: 'flex' }}>

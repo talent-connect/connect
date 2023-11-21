@@ -25,6 +25,10 @@ export class TpJobListingPatchInput extends IntersectionType(
       'summary',
       'title',
       'federalState',
+      'firstName',
+      'lastName',
+      'phoneNumber',
+      'email'
     ] as const)
   )
 ) {}

@@ -36,16 +36,16 @@ export class TpJobListingMapper
     props.federalState = raw.props.Federal_State__c as FederalState
 
     props.companyProfileId = raw.props.Account__c
-    props.createdByCompanyRepresentative =
-      raw.props.Created_By_Company_Representative__c
-
     props.createdAt = raw.props.CreatedDate
     props.updatedAt = raw.props.LastModifiedDate
 
     props.companyName = raw.props.Account__r.Name
     props.profileAvatarImageS3Key =
       raw.props.Account__r.ReDI_Avatar_Image_URL__c
-
+    props.firstName = raw.props.First_Name__c
+    props.lastName = raw.props.Last_Name__c
+    props.email = raw.props.Email__c
+    props.phoneNumber = raw.props.Phone_Number__c
     const entity = TpJobListingEntity.create(props)
 
     return entity
@@ -67,10 +67,11 @@ export class TpJobListingMapper
     props.Salary_Range__c = srcProps.salaryRange
     props.Remote_Possible__c = Boolean(srcProps.isRemotePossible)
     props.Federal_State__c = srcProps.federalState
-
+    props.First_Name__c = srcProps.firstName
+    props.Last_Name__c = srcProps.lastName
+    props.Email__c = srcProps.email
+    props.Phone_Number__c = srcProps.phoneNumber
     props.Account__c = srcProps.companyProfileId
-    props.Created_By_Company_Representative__c =
-      srcProps.createdByCompanyRepresentative
     const record = TpJobListingRecord.create(props)
 
     return record

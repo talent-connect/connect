@@ -18,4 +18,9 @@ export type TpJobListing = {
 
   createdAt: Date
   updatedAt: Date
+
+  firstName: string
+  lastName: string
+  email: string
+  phoneNumber: string
 }

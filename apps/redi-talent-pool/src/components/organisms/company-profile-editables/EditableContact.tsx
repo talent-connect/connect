@@ -91,6 +91,14 @@ export function EditableContact({
                 </Content>
               </div>
             ) : null}
+            {userContact.telephoneNumber ? (
+              <div>
+                <Caption>Phone Number</Caption>
+                <Content>
+                  <p>{userContact.telephoneNumber}</p>
+                </Content>
+              </div>
+            ) : null}
           </div>
         )
       }

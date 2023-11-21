@@ -103,7 +103,6 @@ export class TpJobListingsService {
         user.userId
       )
     props.companyProfileId = companyRepresentedByUser.props.id
-    props.createdByCompanyRepresentative = user.userId
 
     const entityToPersist = TpJobListingEntity.create(props)
     const recordToPersist = this.mapper.toPersistence(entityToPersist)

@@ -16,8 +16,6 @@ export class TpJobListingRecordProps implements RecordProps {
   Federal_State__c?: PicklistValue
 
   Account__c: string
-  Created_By_Company_Representative__c: string | undefined
-
   //  CreatedById: any
 
   @Type(() => Date)
@@ -29,6 +27,11 @@ export class TpJobListingRecordProps implements RecordProps {
     Name: string
     ReDI_Avatar_Image_URL__c?: string
   }
+
+  First_Name__c?: string
+  Last_Name__c?: string
+  Phone_Number__c?: string
+  Email__c?: string
 
   public static create(rawProps: any) {
     return plainToClass(TpJobListingRecordProps, rawProps, {})

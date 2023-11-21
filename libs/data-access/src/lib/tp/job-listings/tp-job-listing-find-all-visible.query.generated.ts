@@ -9,7 +9,7 @@ export type TpJobListingFindAllVisibleQueryVariables = Types.Exact<{
 }>;
 
 
-export type TpJobListingFindAllVisibleQuery = { __typename?: 'Query', tpJobListings: Array<{ __typename?: 'TpJobListing', createdAt: any, title?: string | null, updatedAt: any, employmentType?: Types.TpEmploymentType | null, id: string, idealTechnicalSkills?: Array<Types.TpTechnicalSkill> | null, isRemotePossible?: boolean | null, languageRequirements?: string | null, location?: string | null, relatesToPositions?: Array<Types.TpDesiredPosition> | null, salaryRange?: string | null, summary?: string | null, companyProfileId: string, companyName: string, profileAvatarImageS3Key?: string | null, federalState?: Types.FederalState | null, createdByCompanyRepresentative?: string | null }> };
+export type TpJobListingFindAllVisibleQuery = { __typename?: 'Query', tpJobListings: Array<{ __typename?: 'TpJobListing', createdAt: any, title?: string | null, updatedAt: any, employmentType?: Types.TpEmploymentType | null, id: string, idealTechnicalSkills?: Array<Types.TpTechnicalSkill> | null, isRemotePossible?: boolean | null, languageRequirements?: string | null, location?: string | null, relatesToPositions?: Array<Types.TpDesiredPosition> | null, salaryRange?: string | null, summary?: string | null, companyProfileId: string, companyName: string, profileAvatarImageS3Key?: string | null, federalState?: Types.FederalState | null, firstName?: string | null, lastName?: string | null, email?: string | null, phoneNumber?: string | null }> };
 
 
 export const TpJobListingFindAllVisibleDocument = `

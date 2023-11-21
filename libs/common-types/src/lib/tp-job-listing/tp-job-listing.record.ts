@@ -30,11 +30,13 @@ export class TpJobListingRecord extends Record<TpJobListingRecordProps> {
       'Salary_Range__c',
       'Remote_Possible__c',
       'Federal_State__c',
-      'Created_By_Company_Representative__c',
-
       'Account__c',
       'Account__r.Name',
       'Account__r.ReDI_Avatar_Image_URL__c',
+      'First_Name__c',
+      'Last_Name__c',
+      'Email__c',
+      'Phone_Number__c'
     ],
     SALESFORCE_ORDER_BY: ['CreatedDate', 'DESC'],
   }

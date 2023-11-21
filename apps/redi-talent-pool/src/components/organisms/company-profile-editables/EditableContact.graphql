@@ -5,4 +5,5 @@ fragment EditableContactUserContactProp on UserContact {
   firstName
   lastName
   email
+  telephoneNumber
 }

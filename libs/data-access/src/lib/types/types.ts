@@ -1126,14 +1126,17 @@ export type TpJobListing = {
   companyProfile: TpCompanyProfile;
   companyProfileId: Scalars['ID'];
   createdAt: Scalars['DateTime'];
-  createdByCompanyRepresentative?: Maybe<Scalars['ID']>;
+  email?: Maybe<Scalars['String']>;
   employmentType?: Maybe<TpEmploymentType>;
   federalState?: Maybe<FederalState>;
+  firstName?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   idealTechnicalSkills?: Maybe<Array<TpTechnicalSkill>>;
   isRemotePossible?: Maybe<Scalars['Boolean']>;
   languageRequirements?: Maybe<Scalars['String']>;
+  lastName?: Maybe<Scalars['String']>;
   location?: Maybe<Scalars['String']>;
+  phoneNumber?: Maybe<Scalars['String']>;
   profileAvatarImageS3Key?: Maybe<Scalars['String']>;
   relatesToPositions?: Maybe<Array<TpDesiredPosition>>;
   salaryRange?: Maybe<Scalars['String']>;
@@ -1143,12 +1146,16 @@ export type TpJobListing = {
 };
 
 export type TpJobListingCreateInput = {
+  email?: InputMaybe<Scalars['String']>;
   employmentType?: InputMaybe<TpEmploymentType>;
   federalState?: InputMaybe<FederalState>;
+  firstName?: InputMaybe<Scalars['String']>;
   idealTechnicalSkills?: InputMaybe<Array<TpTechnicalSkill>>;
   isRemotePossible?: InputMaybe<Scalars['Boolean']>;
   languageRequirements?: InputMaybe<Scalars['String']>;
+  lastName?: InputMaybe<Scalars['String']>;
   location?: InputMaybe<Scalars['String']>;
+  phoneNumber?: InputMaybe<Scalars['String']>;
   relatesToPositions?: InputMaybe<Array<TpDesiredPosition>>;
   salaryRange?: InputMaybe<Scalars['String']>;
   summary?: InputMaybe<Scalars['String']>;
@@ -1160,13 +1167,17 @@ export type TpJobListingDeleteInput = {
 };
 
 export type TpJobListingPatchInput = {
+  email?: InputMaybe<Scalars['String']>;
   employmentType?: InputMaybe<TpEmploymentType>;
   federalState?: InputMaybe<FederalState>;
+  firstName?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
   idealTechnicalSkills?: InputMaybe<Array<TpTechnicalSkill>>;
   isRemotePossible?: InputMaybe<Scalars['Boolean']>;
   languageRequirements?: InputMaybe<Scalars['String']>;
+  lastName?: InputMaybe<Scalars['String']>;
   location?: InputMaybe<Scalars['String']>;
+  phoneNumber?: InputMaybe<Scalars['String']>;
   relatesToPositions?: InputMaybe<Array<TpDesiredPosition>>;
   salaryRange?: InputMaybe<Scalars['String']>;
   summary?: InputMaybe<Scalars['String']>;

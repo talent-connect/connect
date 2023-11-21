@@ -26,7 +26,6 @@ export function JobListing() {
   })
 
   const jobListing = jobListingQuery.data?.tpJobListing
-
   return (
     <LoggedIn>
       <div style={{ display: 'flex' }}>
@@ -171,7 +170,7 @@ export function JobListing() {
                 </div>
 
                 <div>
-                  <Caption>Salary range</Caption>
+                  <Caption>Salary Range</Caption>
                   <Content>
                     {jobListing?.salaryRange ? jobListing.salaryRange : 'N/A'}
                   </Content>
@@ -208,7 +207,12 @@ export function JobListing() {
           />
           <EditableContact
             companyProfile={jobListing?.companyProfile}
-            userContact={jobListing?.companyProfile.companyRepresentatives[0]}
+            userContact={{
+              firstName: jobListing?.firstName,
+              lastName: jobListing?.lastName,
+              email: jobListing?.email,
+              telephoneNumber: jobListing?.phoneNumber
+            }}
             disableEditing
           />
         </Columns.Column>
