@@ -194,7 +194,7 @@
         gap: 8px;
       }
 
-      @include until(900px) {
+      @include until(950px) {
         max-width: 415px;
         flex-wrap: wrap;
       }
