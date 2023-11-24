@@ -67,23 +67,20 @@ export function JobListingCard({
     <NavLink to={linkTo} onClick={onClick} className="job-posting-link">
       <Card className="job-posting-card">
         <Card.Content className="job-posting-card__content">
-          <Columns className="job-posting-card__columns">
-            <Columns.Column className="job-posting-card__firstColumn is-narrow">
+          <div className="job-posting-card__columns">
+            <div className="job-posting-card__firstColumn is-narrow">
               <img
                 className="job-posting-card__image"
                 src={imgSrc}
                 alt={jobTitle}
               ></img>
-            </Columns.Column>
-            <Columns.Column
-              className="job-posting-card__middleColumn"
-              breakpoint="mobile"
-            >
+            </div>
+            <div className="job-posting-card__middleColumn">
               <h4 className="job-posting-card__job-title">{jobTitle}</h4>
               <p className="job-posting-card__company-name">{companyName}</p>
               <CardLocation location={location} remote={remote} />
               {idealTechnicalSkills?.length > 0 ? (
-                <div className="job-posting-card__card-tags">
+                <div>
                   <CardTags
                     items={idealTechnicalSkills}
                     shortList
@@ -91,8 +88,8 @@ export function JobListingCard({
                   />
                 </div>
               ) : null}
-            </Columns.Column>
-            <Columns.Column className="job-posting-card__lastColumn ">
+            </div>
+            <div className="job-posting-card__lastColumn">
               <div className="job-posting-card__timeFooterBox">
                 {toggleFavorite && (
                   <div
@@ -106,8 +103,8 @@ export function JobListingCard({
                   </div>
                 )}
               </div>
-            </Columns.Column>
-          </Columns>
+            </div>
+          </div>
         </Card.Content>
       </Card>
     </NavLink>
