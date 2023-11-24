@@ -1,20 +1,64 @@
 @import '_variables.scss';
 @import '~bulma/sass/utilities/_all';
 
-.tags {
-  margin-top: 1rem;
+.wrapper {
+  &__desktop {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
 
-  .tag {
-    line-height: 2rem;
-    width: fit-content;
-
-    &--rest {
-      flex-shrink: 0;
+    @include mobile {
+      display: none;
     }
   }
 
-  &__last-row {
+  &__mobile {
     display: flex;
-    // width: max-content;
+    gap: 8px;
+    flex-wrap: wrap;
+
+    @include tablet {
+      display: none;
+    }
+  }
+}
+
+.chip {
+  display: flex;
+  height: 32px;
+  padding: 6px 12px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+
+  text-wrap: nowrap;
+  border-radius: 8px;
+  background: var(--redi-orange-extra-light, #ffeae2);
+
+  color: var(--redi-orange, #ff7d55);
+  font-family: Avenir LT Std;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 150%; /* 21px */
+
+  @include mobile {
+    display: flex;
+    height: 24px;
+    padding: 6px 12px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+
+    border-radius: 6px;
+    background: var(--redi-orange-extra-light, #ffeae2);
+
+    color: var(--redi-orange, #ff7d55);
+    font-family: Avenir LT Std;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 150%; /* 18px */
   }
 }
