@@ -1,7 +1,4 @@
-import {
-  TpJobListingStatus,
-  useTpJobListingPatchMutation,
-} from '@talent-connect/data-access'
+import { useTpJobListingPatchMutation } from '@talent-connect/data-access'
 import { Button } from '@talent-connect/shared-atomic-design-components'
 import { formatDistance } from 'date-fns'
 import { Columns, Element } from 'react-bulma-components'
@@ -14,12 +11,12 @@ export function ExpiredJobListings({ jobListings }) {
   const updateMutation = useTpJobListingPatchMutation()
   const queryClient = useQueryClient()
 
-  const onReactivateCTAClick = (joblistingId) => {
+  const onReactivateCTAClick = (jobListingId) => {
     updateMutation.mutate(
       {
         input: {
-          id: joblistingId,
-          status: TpJobListingStatus.Active,
+          id: jobListingId,
+          // TODO: expiresAt should be set at Backend side
           expiresAt: new Date().setMonth(new Date().getMonth() + 6),
         },
       },

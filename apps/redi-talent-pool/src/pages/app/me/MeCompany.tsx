@@ -40,7 +40,7 @@ export function MeCompany() {
   } = myData.data.tpCurrentUserDataGet
 
   const activeJobListings = jobListings?.filter(
-    (jobListing) => jobListing.status !== TpJobListingStatus.Expired
+    (jobListing) => jobListing.status === TpJobListingStatus.Active
   )
   const expiredJobListings = jobListings?.filter(
     (jobListing) => jobListing.status === TpJobListingStatus.Expired

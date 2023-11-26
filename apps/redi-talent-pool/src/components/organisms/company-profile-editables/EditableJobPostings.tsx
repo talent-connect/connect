@@ -74,7 +74,7 @@ export function EditableJobPostings({
   }
 
   const renderTimestamp = (expiresAt) =>
-    `Expires in ${formatDistance(new Date(expiresAt), new Date(), {
+    `Expires ${formatDistance(new Date(expiresAt), new Date(), {
       addSuffix: true,
     })}`
 
