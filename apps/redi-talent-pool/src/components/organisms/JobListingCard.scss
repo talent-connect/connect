@@ -181,12 +181,10 @@
     padding: 0;
   }
 
-  &__timeFooter {
-    color: var(--grey, #a0a0a0);
-    font-family: Avenir;
+  &__timestamp {
+    margin-top: auto;
     font-size: 12px;
-    font-style: normal;
-    font-weight: 350;
-    line-height: normal;
+    font-weight: 400;
+    color: var(--grey, #a0a0a0);
   }
 }

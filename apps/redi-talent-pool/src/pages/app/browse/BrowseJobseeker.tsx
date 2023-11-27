@@ -1,12 +1,12 @@
-import { useState } from 'react'
-import { Columns, Element, Tag } from 'react-bulma-components'
 import {
-  ArrayParam,
-  BooleanParam,
-  useQueryParams,
-  withDefault,
-} from 'use-query-params'
-
+  FederalState,
+  JobseekerProfileStatus,
+  TpDesiredPosition,
+  TpEmploymentType,
+  TpTechnicalSkill,
+  useMyTpDataQuery,
+  useTpJobListingFindAllVisibleQuery,
+} from '@talent-connect/data-access'
 import {
   Checkbox,
   FilterDropdown,
@@ -22,19 +22,18 @@ import {
   topSkills,
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
-
-import {
-  FederalState,
-  JobseekerProfileStatus,
-  TpDesiredPosition,
-  TpEmploymentType,
-  TpTechnicalSkill,
-  useMyTpDataQuery,
-  useTpJobListingFindAllVisibleQuery,
-} from '@talent-connect/data-access'
 import { objectEntries } from '@talent-connect/typescript-utilities'
+import { formatDistance } from 'date-fns'
+import { useState } from 'react'
+import { Columns, Element, Tag } from 'react-bulma-components'
 import { useQueryClient } from 'react-query'
 import { Redirect } from 'react-router-dom'
+import {
+  ArrayParam,
+  BooleanParam,
+  useQueryParams,
+  withDefault,
+} from 'use-query-params'
 import { JobListingCard } from '../../../components/organisms/JobListingCard'
 import { LoggedIn } from '../../../components/templates'
 import {
@@ -42,7 +41,6 @@ import {
   useTpJobListingUnfavouriteMutation,
   useTpJobseekerFavouritedJobListingsQuery,
 } from './BrowseJobseeker.generated'
-import moment from 'moment'
 
 export function BrowseJobseeker() {
   const queryClient = useQueryClient()
@@ -167,6 +165,22 @@ export function BrowseJobseeker() {
     currentJobseekerProfile?.state !== JobseekerProfileStatus.ProfileApproved
   ) {
     return <Redirect to="/" />
+  }
+
+  const renderFavoriteCTA = (joblistingId, isFavorite) => {
+    const handleFavoriteClick = (e: React.MouseEvent) => {
+      e.preventDefault()
+      handleFavoriteJobListing(joblistingId)
+    }
+
+    return (
+      <div className="job-posting-card__favorite" onClick={handleFavoriteClick}>
+        <Icon
+          icon={isFavorite ? 'heartFilled' : 'heart'}
+          className="job-posting-card__favorite__icon"
+        />
+      </div>
+    )
   }
 
   return (
@@ -401,9 +415,15 @@ export function BrowseJobseeker() {
                 <JobListingCard
                   key={jobListing.id}
                   jobListing={jobListing}
-                  toggleFavorite={handleFavoriteJobListing}
-                  isFavorite={isFavorite}
                   linkTo={`/app/job-listing/${jobListing.id}`}
+                  renderCTA={() => renderFavoriteCTA(jobListing.id, isFavorite)}
+                  timestamp={formatDistance(
+                    new Date(jobListing.updatedAt),
+                    new Date(),
+                    {
+                      addSuffix: true,
+                    }
+                  )}
                 />
               </Columns.Column>
             )
