@@ -53,6 +53,7 @@
   }
 
   &__text {
+    padding-bottom: 1.5rem;
     @include desktop() {
       margin: 0 auto;
       max-width: 70%;
@@ -62,10 +63,11 @@
   &__illustration {
     @include desktop() {
       position: absolute;
+      max-height: 15rem;
 
       &--mentor {
-        right: -5rem;
-        top: 5rem;
+        right: -4rem;
+        top:2.5rem;
       }
 
       &--mentee {
