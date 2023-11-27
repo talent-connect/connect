@@ -58,7 +58,6 @@ export class TpJobListingMapper
 
     props.Id = srcProps.id
 
-    props.Status__c = srcProps.status
     props.Title__c = srcProps.title
     props.Location__c = srcProps.location
     props.Summary__c = srcProps.summary

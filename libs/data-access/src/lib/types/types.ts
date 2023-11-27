@@ -1171,7 +1171,6 @@ export type TpJobListingPatchInput = {
   location?: InputMaybe<Scalars['String']>;
   relatesToPositions?: InputMaybe<Array<TpDesiredPosition>>;
   salaryRange?: InputMaybe<Scalars['String']>;
-  status?: InputMaybe<TpJobListingStatus>;
   summary?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
 };

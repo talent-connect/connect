@@ -841,7 +841,6 @@ input TpJobListingPatchInput {
   location: String
   relatesToPositions: [TpDesiredPosition!]
   salaryRange: String
-  status: TpJobListingStatus
   summary: String
   title: String
 }
