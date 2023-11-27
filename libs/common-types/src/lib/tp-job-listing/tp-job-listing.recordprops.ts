@@ -4,7 +4,7 @@ import { PicklistValue, RecordProps } from '../base-interfaces-types-classes'
 export class TpJobListingRecordProps implements RecordProps {
   Id: string
 
-  Status__c?: PicklistValue
+  Status__c?: string
   Title__c?: string
   Location__c?: string
   Summary__c?: string
