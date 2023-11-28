@@ -181,5 +181,10 @@
     font-size: 12px;
     font-weight: 400;
     color: var(--grey, #a0a0a0);
+    white-space: nowrap;
+
+    @include mobile() {
+      margin-top: 16px;
+    }
   }
 }
