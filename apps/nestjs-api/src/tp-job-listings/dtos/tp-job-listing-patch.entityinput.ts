@@ -25,6 +25,7 @@ export class TpJobListingPatchInput extends IntersectionType(
       'summary',
       'title',
       'federalState',
+      'expiresAt',
     ] as const)
   )
 ) {}

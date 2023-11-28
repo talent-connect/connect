@@ -175,4 +175,11 @@
       right: 24px;
     }
   }
+
+  &__timestamp {
+    margin-top: auto;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--grey, #a0a0a0);
+  }
 }
