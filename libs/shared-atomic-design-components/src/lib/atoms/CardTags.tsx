@@ -51,7 +51,7 @@ const CardTags = ({ items, shortList, formatter }: CardTagsProps) => {
       for (let i = 0; i < chipWidths.length; i++) {
         totalWidth += chipWidths[i]
 
-        if (totalWidth - gapSize <= parentWidth) {
+        if (totalWidth <= parentWidth) {
           visibleChipsCount = i + 1
         } else {
           break
