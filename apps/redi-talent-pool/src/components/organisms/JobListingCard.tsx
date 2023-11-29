@@ -80,7 +80,6 @@ export function JobListingCard({
               <div>
                 <CardTags
                   items={idealTechnicalSkills}
-                  shortList
                   formatter={(skill: string) => topSkillsIdToLabelMap[skill]}
                 />
               </div>
