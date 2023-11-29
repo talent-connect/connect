@@ -75,10 +75,6 @@ const CardTags = ({
     }
   }, [formatter, items])
 
-  // useEffect(() => {
-
-  // }, [isMobile])
-
   return isMobile || showMobileTags ? (
     <div className="wrapper__mobile" ref={parentRefMobile}>
       {items.map((chip) => (
