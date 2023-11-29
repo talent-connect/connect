@@ -1,31 +1,32 @@
-import { Tag } from 'react-bulma-components'
 import './CardTags.scss'
 import React, { useState, useEffect } from 'react'
-import { debounce, throttle } from 'lodash'
+import { debounce } from 'lodash'
+import { useMediaQuery } from '@material-ui/core'
+
 export interface CardTagsProps {
   items: string[]
-  shortList?: boolean
   formatter?: (item: string) => string
+  showMobileTags?: boolean
 }
 
-interface CardTagProps {
-  children: string
-  className?: string
-  key: string
-}
-
-const CardTags = ({ items, shortList, formatter }: CardTagsProps) => {
+const CardTags = ({
+  items,
+  formatter,
+  showMobileTags = false,
+}: CardTagsProps) => {
   const [visibleChips, setVisibleChips] = useState([])
   const [remainingChips, setRemainingChips] = useState([])
 
-  const parentRef = React.useRef<HTMLDivElement>()
+  const parentRefDesktop = React.useRef<HTMLDivElement>()
+  const parentRefMobile = React.useRef<HTMLDivElement>()
+
+  const isMobile = useMediaQuery('(max-width:768px)')
 
   useEffect(() => {
     const formattedItems = items.map(formatter)
 
     const calculateChips = () => {
-      console.log('calculating wowwwwww')
-      const parentWidth = parentRef.current?.offsetWidth
+      const parentWidth = parentRefDesktop.current?.offsetWidth
       const gapSize = 16 // Adjust this based on the design (16px gap)
       const sidePadding = 12 // Adjust this based on the design (12px padding each side )
       const chipTotalMargin = 2 * sidePadding + gapSize
@@ -36,11 +37,11 @@ const CardTags = ({ items, shortList, formatter }: CardTagsProps) => {
         chipSpan.classList.add('chip')
         chipSpan.innerHTML = chip
 
-        parentRef.current.appendChild(chipSpan)
-        console.log('text', chip, chipSpan.offsetWidth)
+        parentRefDesktop.current.appendChild(chipSpan)
+
         const width = chipSpan.offsetWidth + chipTotalMargin
 
-        parentRef.current.removeChild(chipSpan)
+        parentRefDesktop.current.removeChild(chipSpan)
 
         return width
       })
@@ -74,27 +75,29 @@ const CardTags = ({ items, shortList, formatter }: CardTagsProps) => {
     }
   }, [formatter, items])
 
-  return (
-    <>
-      <div className="wrapper__mobile">
-        {items.map((chip) => (
-          <p key={chip} className="chip">
-            {formatter(chip)}
-          </p>
-        ))}
-      </div>
+  // useEffect(() => {
 
-      <div className="wrapper__desktop" ref={parentRef}>
-        {visibleChips.map((chip) => (
-          <p key={chip} className="chip">
-            {chip}
-          </p>
-        ))}
-        {remainingChips.length > 0 && (
-          <p className="chip">+{remainingChips.length}</p>
-        )}
-      </div>
-    </>
+  // }, [isMobile])
+
+  return isMobile || showMobileTags ? (
+    <div className="wrapper__mobile" ref={parentRefMobile}>
+      {items.map((chip) => (
+        <p key={chip} className="chip">
+          {formatter(chip)}
+        </p>
+      ))}
+    </div>
+  ) : (
+    <div className="wrapper__desktop" ref={parentRefDesktop}>
+      {visibleChips.map((chip) => (
+        <p key={chip} className="chip">
+          {chip}
+        </p>
+      ))}
+      {remainingChips.length > 0 && (
+        <p className="chip">+{remainingChips.length}</p>
+      )}
+    </div>
   )
 }
 
