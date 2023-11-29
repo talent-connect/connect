@@ -6,20 +6,12 @@
     display: flex;
     align-items: flex-start;
     gap: 16px;
-
-    @include mobile {
-      display: none;
-    }
   }
 
   &__mobile {
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
-
-    @include tablet {
-      display: none;
-    }
   }
 }
 
@@ -44,21 +36,8 @@
   line-height: 150%; /* 21px */
 
   @include mobile {
-    display: flex;
     height: 24px;
-    padding: 6px 12px;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-
     border-radius: 6px;
-    background: var(--redi-orange-extra-light, #ffeae2);
-
-    color: var(--redi-orange, #ff7d55);
-    font-family: Avenir LT Std;
     font-size: 12px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 150%; /* 18px */
   }
 }
