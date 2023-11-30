@@ -53,7 +53,7 @@ export function JobListing() {
             at {jobListing?.companyProfile.companyName}
           </Element>
           <Caption>
-            Posted {moment(jobListing?.createdAt).format('DD.MM.YYYY')}
+            Last updated {moment(jobListing?.updatedAt).format('DD.MM.YYYY')}
           </Caption>
           <div
             style={{
