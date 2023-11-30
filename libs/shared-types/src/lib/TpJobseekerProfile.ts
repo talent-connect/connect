@@ -15,7 +15,7 @@ export type TpJobseekerProfile = {
   profileAvatarImageS3Key: string
 
   desiredPositions?: string[]
-  profileImage?: string // TODO: delete me. I'm only used in the CV bukder prototype
+  profileImage?: string // TODO: delete me. I'm only used in the CV builder prototype
   phoneNumber?: string
   postalMailingAddress?: string
   location?: string
@@ -48,7 +48,6 @@ export type TpJobseekerProfile = {
   gaveGdprConsentAt: Date
 
   hrSummit2021JobFairCompanyJobPreferences?: HrSummit2021JobFairCompanyJobPreferenceRecord[]
-  isJobFair2023Participant?: boolean
 
   isProfileVisibleToCompanies: boolean
   isHired: boolean

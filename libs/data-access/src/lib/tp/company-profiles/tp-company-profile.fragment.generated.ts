@@ -1,7 +1,7 @@
 // THIS FILE IS GENERATED, DO NOT EDIT!
 import * as Types from '@talent-connect/data-access';
 
-export type AllTpCompanyProfileFieldsFragment = { __typename?: 'TpCompanyProfile', id: string, profileAvatarImageS3Key?: string | null, companyName: string, location?: string | null, tagline?: string | null, industry?: string | null, website?: string | null, linkedInUrl?: string | null, telephoneNumber?: string | null, about?: string | null, state: Types.CompanyTalentPoolState, isProfileVisibleToJobseekers: boolean, isJobFair2023Participant: boolean, joinsBerlin23SummerJobFair: boolean, joinsMunich23SummerJobFair: boolean, createdAt: any, updatedAt: any };
+export type AllTpCompanyProfileFieldsFragment = { __typename?: 'TpCompanyProfile', id: string, profileAvatarImageS3Key?: string | null, companyName: string, location?: string | null, tagline?: string | null, industry?: string | null, website?: string | null, linkedInUrl?: string | null, telephoneNumber?: string | null, about?: string | null, state: Types.CompanyTalentPoolState, isProfileVisibleToJobseekers: boolean, joinsDusseldorf24WinterJobFair?: boolean | null, joinsMunich24WinterJobFair?: boolean | null, createdAt: any, updatedAt: any };
 
 export const AllTpCompanyProfileFieldsFragmentDoc = `
     fragment AllTpCompanyProfileFields on TpCompanyProfile {
@@ -17,9 +17,8 @@ export const AllTpCompanyProfileFieldsFragmentDoc = `
   about
   state
   isProfileVisibleToJobseekers
-  isJobFair2023Participant
-  joinsBerlin23SummerJobFair
-  joinsMunich23SummerJobFair
+  joinsDusseldorf24WinterJobFair
+  joinsMunich24WinterJobFair
   createdAt
   updatedAt
 }

@@ -25,8 +25,6 @@ class FindAllVisibleTpJobseekerDirectoryEntriesFilter {
   skills?: TpTechnicalSkill[]
   @Field((type) => [FederalState])
   federalStates?: FederalState[]
-  isJobFair2022Participant?: boolean
-  isJobFair2023Participant?: boolean
-  joinsBerlin23SummerJobFair?: boolean
-  joinsMunich23SummerJobFair?: boolean
+  joinsDusseldorf24WinterJobFair?: boolean
+  joinsMunich24WinterJobFair?: boolean
 }
