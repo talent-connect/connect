@@ -1,18 +1,15 @@
-import React, { useState } from 'react'
-import Landing from '../../components/templates/Landing'
 import {
-  Section,
-  Container,
-  Columns,
-  Element,
   Heading as BulmaHeading,
+  Columns,
+  Container,
+  Section,
 } from 'react-bulma-components'
 import { useTranslation } from 'react-i18next'
-import classnames from 'classnames'
-import './Faqs.scss'
+import Landing from '../../components/templates/Landing'
+
 import {
-  Heading,
   FaqItem,
+  Heading,
 } from '@talent-connect/shared-atomic-design-components'
 
 const Faqs = () => {
