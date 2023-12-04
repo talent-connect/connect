@@ -2,18 +2,15 @@ import './CardTags.scss'
 import React, { useState, useEffect } from 'react'
 import { debounce } from 'lodash'
 import { useMediaQuery } from '@material-ui/core'
+import { log } from 'console'
 
 export interface CardTagsProps {
   items: string[]
+  shortList?: boolean
   formatter?: (item: string) => string
-  showMobileTags?: boolean
 }
 
-const CardTags = ({
-  items,
-  formatter,
-  showMobileTags = false,
-}: CardTagsProps) => {
+const CardTags = ({ items, shortList = false, formatter }: CardTagsProps) => {
   const [visibleChips, setVisibleChips] = useState([])
   const [remainingChips, setRemainingChips] = useState([])
 
@@ -21,6 +18,10 @@ const CardTags = ({
   const parentRefMobile = React.useRef<HTMLDivElement>()
 
   const isMobile = useMediaQuery('(max-width:768px)')
+
+  const additionalTagsCount = items.length - 3
+  const itemsShowMobile = items.map(formatter).slice(0, 3)
+  const hasAdditionalTags = (shortList || isMobile) && additionalTagsCount > 0
 
   useEffect(() => {
     const formattedItems = items.map(formatter)
@@ -75,13 +76,27 @@ const CardTags = ({
     }
   }, [formatter, items])
 
-  return isMobile || showMobileTags ? (
+  return isMobile || shortList ? (
     <div className="wrapper__mobile" ref={parentRefMobile}>
-      {items.map((chip) => (
-        <p key={chip} className="chip">
-          {formatter(chip)}
-        </p>
-      ))}
+      {itemsShowMobile.map((chip, i) => {
+        const currentTag = (
+          <p key={chip} className="chip">
+            {chip}
+          </p>
+        )
+        const isLastVisibleTag = i === 2
+
+        return hasAdditionalTags && isLastVisibleTag ? (
+          <div className="wrapper__mobile last_row" key={chip}>
+            {currentTag}
+            <p key={`restNr-${i}`} className="chip">
+              {'+' + additionalTagsCount}
+            </p>
+          </div>
+        ) : (
+          currentTag
+        )
+      })}
     </div>
   ) : (
     <div className="wrapper__desktop" ref={parentRefDesktop}>
@@ -96,5 +111,4 @@ const CardTags = ({
     </div>
   )
 }
-
 export default CardTags
