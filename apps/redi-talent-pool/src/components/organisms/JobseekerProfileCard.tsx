@@ -80,7 +80,7 @@ export function JobseekerProfileCard({
           {topSkills?.length > 0 ? (
             <CardTags
               items={topSkills}
-              showMobileTags
+              shortList
               formatter={(skill: string) => topSkillsIdToLabelMap[skill]}
             />
           ) : null}
