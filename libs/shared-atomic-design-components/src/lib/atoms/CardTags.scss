@@ -1,43 +1,63 @@
 @import '_variables.scss';
-@import '~bulma/sass/utilities/_all';
 
 .wrapper {
   &__desktop {
     display: flex;
     align-items: flex-start;
     gap: 16px;
+
+    .chip {
+      display: flex;
+      height: 32px;
+      padding: 3px 12px;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: nowrap;
+
+      text-wrap: nowrap;
+      border-radius: 8px;
+      background: var(--redi-orange-extra-light, #ffeae2);
+
+      color: var(--redi-orange, #ff7d55);
+      font-family: Avenir LT Std;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 150%; /* 21px */
+    }
   }
 
   &__mobile {
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
-  }
-}
 
-.chip {
-  display: flex;
-  height: 32px;
-  padding: 6px 12px;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: nowrap;
+    .last_row {
+      width: 100%;
+    }
 
-  text-wrap: nowrap;
-  border-radius: 8px;
-  background: var(--redi-orange-extra-light, #ffeae2);
+    .chip {
+      display: inline-block;
+      height: 24px;
+      padding: 3px 12px;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
 
-  color: var(--redi-orange, #ff7d55);
-  font-family: Avenir LT Std;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 150%; /* 21px */
+      border-radius: 6px;
+      background: var(--redi-orange-extra-light, #ffeae2);
 
-  @include mobile {
-    height: 24px;
-    border-radius: 6px;
-    font-size: 12px;
+      color: var(--redi-orange, #ff7d55);
+      font-family: Avenir LT Std;
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 150%; /* 21px */
+    }
   }
 }
