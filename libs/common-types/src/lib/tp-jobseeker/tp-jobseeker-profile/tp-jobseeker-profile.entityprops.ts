@@ -34,7 +34,7 @@ export class TpJobseekerProfileEntityProps implements EntityProps {
   @Field((type) => JobseekerProfileStatus)
   state: JobseekerProfileStatus
   joinsDusseldorf24WinterJobFair?: boolean
-  joinsMunich24WinterJobFair?: boolean
+  joinsMunich24SummerJobFair?: boolean
   isProfileVisibleToCompanies: boolean
   isHired: boolean
   @Field((type) => FederalState)

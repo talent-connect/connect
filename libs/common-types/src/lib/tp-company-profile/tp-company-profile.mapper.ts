@@ -30,8 +30,8 @@ export class TpCompanyProfileMapper
     props.isProfileVisibleToJobseekers = raw.props.ReDI_Visible_to_Jobseekers__c
     props.joinsDusseldorf24WinterJobFair =
       raw.props.ReDI_Joins_Dusseldorf_24_Winter_Job_Fair__c
-    props.joinsMunich24WinterJobFair =
-      raw.props.ReDI_Joins_Munich_24_Winter_Job_Fair__c
+    props.joinsMunich24SummerJobFair =
+      raw.props.ReDI_Joins_Munich_24_Summer_Job_Fair__c
 
     props.createdAt = raw.props.CreatedDate
     props.updatedAt = raw.props.LastModifiedDate
@@ -60,8 +60,8 @@ export class TpCompanyProfileMapper
     props.ReDI_Visible_to_Jobseekers__c = srcProps.isProfileVisibleToJobseekers
     props.ReDI_Joins_Dusseldorf_24_Winter_Job_Fair__c =
       srcProps.joinsDusseldorf24WinterJobFair
-    props.ReDI_Joins_Munich_24_Winter_Job_Fair__c =
-      srcProps.joinsMunich24WinterJobFair
+    props.ReDI_Joins_Munich_24_Summer_Job_Fair__c =
+      srcProps.joinsMunich24SummerJobFair
 
     props.CreatedDate = srcProps.createdAt
     props.LastModifiedDate = srcProps.updatedAt

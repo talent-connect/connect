@@ -73,8 +73,8 @@ export class TpJobseekerDirectoryEntryMapper
       jobseekerProfileRecord.Profile_Status__c as JobseekerProfileStatus
     props.joinsDusseldorf24WinterJobFair =
       jobseekerProfileRecord.Joins_Dusseldorf_24_Winter_Job_Fair__c
-    props.joinsMunich24WinterJobFair =
-      jobseekerProfileRecord.Joins_Munich_24_Winter_Job_Fair__c
+    props.joinsMunich24SummerJobFair =
+      jobseekerProfileRecord.Joins_Munich_24_Summer_Job_Fair__c
     props.isProfileVisibleToCompanies =
       jobseekerProfileRecord.Is_Visible_to_Companies__c
     props.isHired = jobseekerProfileRecord.Is_Hired__c

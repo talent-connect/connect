@@ -59,7 +59,7 @@ export function BrowseCompany() {
     federalStates: withDefault(ArrayParam, []),
     onlyFavorites: withDefault(BooleanParam, undefined),
     joinsDusseldorf24WinterJobFair: withDefault(BooleanParam, undefined),
-    // joinsMunich24WinterJobFair: withDefault(BooleanParam, undefined),
+    // joinsMunich24SummerJobFair: withDefault(BooleanParam, undefined),
   })
   const name = query.name
   const desiredLanguages = query.desiredLanguages as Language[]
@@ -69,7 +69,7 @@ export function BrowseCompany() {
   const federalStates = query.federalStates as FederalState[]
   const onlyFavorites = query.onlyFavorites
   const joinsDusseldorf24WinterJobFair = query.joinsDusseldorf24WinterJobFair
-  // const joinsMunich24WinterJobFair = query.joinsMunich24WinterJobFair
+  // const joinsMunich24SummerJobFair = query.joinsMunich24SummerJobFair
 
   const jobseekerProfilesQuery =
     useTpJobseekerDirectoryEntriesFindAllVisibleQuery({
@@ -81,7 +81,7 @@ export function BrowseCompany() {
         skills,
         federalStates,
         joinsDusseldorf24WinterJobFair,
-        // joinsMunich24WinterJobFair,
+        // joinsMunich24SummerJobFair,
       },
     })
   const jobseekerProfiles =
@@ -132,11 +132,11 @@ export function BrowseCompany() {
         joinsDusseldorf24WinterJobFair === undefined ? true : undefined,
     }))
 
-  // const toggleMunich24WinterJobFairFilter = () =>
+  // const toggleMunich24SummerJobFairFilter = () =>
   //   setQuery((latestQuery) => ({
   //     ...latestQuery,
-  //     joinsMunich24WinterJobFair:
-  //       joinsMunich24WinterJobFair === undefined ? true : undefined,
+  //     joinsMunich24SummerJobFair:
+  //       joinsMunich24SummerJobFair === undefined ? true : undefined,
   //   }))
 
   const setName = (value) => {
@@ -152,7 +152,7 @@ export function BrowseCompany() {
       employmentTypes: [],
       federalStates: [],
       joinsDusseldorf24WinterJobFair: undefined,
-      // joinsMunich24WinterJobFair: undefined,
+      // joinsMunich24SummerJobFair: undefined,
     }))
   }
 
@@ -163,7 +163,7 @@ export function BrowseCompany() {
     federalStates.length !== 0 ||
     employmentTypes.length !== 0 ||
     joinsDusseldorf24WinterJobFair
-  // || joinsMunich24WinterJobFair
+  // || joinsMunich24SummerJobFair
 
   return (
     <LoggedIn>
@@ -277,9 +277,9 @@ export function BrowseCompany() {
         {/* Hidden until the next Job Fair date announced */}
         {/* <div className="filters-inner">
           <Checkbox
-            name="joinsMunich24WinterJobFair"
-            checked={joinsMunich24WinterJobFair || false}
-            handleChange={toggleMunich24WinterJobFairFilter}
+            name="joinsMunich24SummerJobFair"
+            checked={joinsMunich24SummerJobFair || false}
+            handleChange={toggleMunich24SummerJobFairFilter}
           >
             ReDI Munich Winter Job Fair 2024
           </Checkbox>
@@ -345,12 +345,12 @@ export function BrowseCompany() {
                 onClickHandler={toggleDusseldorf24WinterJobFairFilter}
               />
             )}
-            {/* {joinsMunich24WinterJobFair && (
+            {/* {joinsMunich24SummerJobFair && (
               <FilterTag
                 key="redi-munich-winter-job-fair-2024-filter"
                 id="redi-munich-winter-job-fair-2024-filter"
                 label="ReDI Munich Winter Job Fair 2024"
-                onClickHandler={toggleMunich24WinterJobFairFilter}
+                onClickHandler={toggleMunich24SummerJobFairFilter}
               />
             )} */}
             <span className="active-filters__clear-all" onClick={clearFilters}>

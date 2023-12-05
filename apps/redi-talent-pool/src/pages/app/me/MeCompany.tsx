@@ -67,10 +67,10 @@ export function MeCompany() {
   }
 
   // Hidden until the new date announced
-  // const onMunich24WinterJobFairParticipateChange = async () => {
+  // const onMunich24SummerJobFairParticipateChange = async () => {
   //   await mutation.mutateAsync({
   //     input: {
-  //       joinsMunich24WinterJobFair: !companyProfile.joinsMunich24WinterJobFair,
+  //       joinsMunich24SummerJobFair: !companyProfile.joinsMunich24SummerJobFair,
   //     },
   //   })
   //   queryClient.invalidateQueries()
@@ -118,8 +118,8 @@ export function MeCompany() {
             </Checkbox>
             {/* Hidden until the next Job Fair date announced */}
             {/* <Checkbox
-              checked={companyProfile.joinsMunich24WinterJobFair}
-              customOnChange={onMunich24WinterJobFairParticipateChange}
+              checked={companyProfile.joinsMunich24SummerJobFair}
+              customOnChange={onMunich24SummerJobFairParticipateChange}
             >
               My company will attend the <b>ReDI Winter Job Fair in Munich</b>{' '}
               on <b>22/02/2024</b>.

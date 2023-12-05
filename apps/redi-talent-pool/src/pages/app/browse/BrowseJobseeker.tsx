@@ -61,7 +61,7 @@ export function BrowseJobseeker() {
     onlyFavorites: withDefault(BooleanParam, undefined),
     isRemotePossible: withDefault(BooleanParam, undefined),
     joinsDusseldorf24WinterJobFair: withDefault(BooleanParam, undefined),
-    // joinsMunich24WinterJobFair: withDefault(BooleanParam, undefined),
+    // joinsMunich24SummerJobFair: withDefault(BooleanParam, undefined),
   })
   const relatedPositions = query.relatedPositions as TpDesiredPosition[]
   const idealTechnicalSkills = query.idealTechnicalSkills as TpTechnicalSkill[]
@@ -70,7 +70,7 @@ export function BrowseJobseeker() {
   const onlyFavorites = query.onlyFavorites
   const isRemotePossible = query.isRemotePossible
   const joinsDusseldorf24WinterJobFair = query.joinsDusseldorf24WinterJobFair
-  // const joinsMunich24WinterJobFair = query.joinsMunich24WinterJobFair
+  // const joinsMunich24SummerJobFair = query.joinsMunich24SummerJobFair
 
   const jobListingsQuery = useTpJobListingFindAllVisibleQuery({
     input: {
@@ -80,7 +80,7 @@ export function BrowseJobseeker() {
       federalStates,
       isRemotePossible,
       joinsDusseldorf24WinterJobFair,
-      // joinsMunich24WinterJobFair,
+      // joinsMunich24SummerJobFair,
     },
   })
   const jobListings = jobListingsQuery.data?.tpJobListings
@@ -131,11 +131,11 @@ export function BrowseJobseeker() {
     }))
 
   // Hidden until the new date announced
-  // const toggleMunich24WinterJobFairFilter = () =>
+  // const toggleMunich24SummerJobFairFilter = () =>
   //   setQuery((latestQuery) => ({
   //     ...latestQuery,
-  //     joinsMunich24WinterJobFair:
-  //       joinsMunich24WinterJobFair === undefined ? true : undefined,
+  //     joinsMunich24SummerJobFair:
+  //       joinsMunich24SummerJobFair === undefined ? true : undefined,
   //   }))
 
   const clearFilters = () => {
@@ -147,7 +147,7 @@ export function BrowseJobseeker() {
       federalStates: [],
       isRemotePossible: undefined,
       joinsDusseldorf24WinterJobFair: undefined,
-      // joinsMunich24WinterJobFair: undefined,
+      // joinsMunich24SummerJobFair: undefined,
     }))
   }
 
@@ -158,7 +158,7 @@ export function BrowseJobseeker() {
     federalStates.length !== 0 ||
     isRemotePossible ||
     joinsDusseldorf24WinterJobFair
-  // || joinsMunich24WinterJobFair
+  // || joinsMunich24SummerJobFair
 
   // Redirect to homepage if user is not supposed to be browsing yet
   if (
@@ -300,8 +300,8 @@ export function BrowseJobseeker() {
       {/* <div className="filters-inner"> */}
       {/* <Checkbox
             name="joinsMuich24WinterJobFair"
-            checked={joinsMunich24WinterJobFair || false}
-            handleChange={toggleMunich24WinterJobFairFilter}
+            checked={joinsMunich24SummerJobFair || false}
+            handleChange={toggleMunich24SummerJobFairFilter}
           >
             ReDI Munich Winter Job Fair 2024
           </Checkbox> */}
@@ -372,12 +372,12 @@ export function BrowseJobseeker() {
                 onClickHandler={toggleDusseldorf24WinterJobFair}
               />
             )}
-            {/* {joinsMunich24WinterJobFair && (
+            {/* {joinsMunich24SummerJobFair && (
               <FilterTag
                 key="redi-munich-winter-job-fair-2024-filter"
                 id="redi-munich-winter-job-fair-2024-filter"
                 label="ReDI Munich Winter Job Fair 2024"
-                onClickHandler={toggleMunich24WinterJobFairFilter}
+                onClickHandler={toggleMunich24SummerJobFairFilter}
               />
             )} */}
             <span className="active-filters__clear-all" onClick={clearFilters}>

@@ -56,10 +56,10 @@ export function JobseekerProfileForJobseekerEyes() {
   }
 
   // Hidden until the new date announced
-  // const onMunich24WinterJobFairParticipateChange = async () => {
+  // const onMunich24SummerJobFairParticipateChange = async () => {
   //   await mutation.mutateAsync({
   //     input: {
-  //       joinsMunich24WinterJobFair: !profile?.joinsMunich24WinterJobFair,
+  //       joinsMunich24SummerJobFair: !profile?.joinsMunich24SummerJobFair,
   //     },
   //   })
   //   queryClient.invalidateQueries()
@@ -94,15 +94,15 @@ export function JobseekerProfileForJobseekerEyes() {
             <Checkbox
               checked={profile?.joinsDusseldorf24WinterJobFair}
               customOnChange={onDusseldorf24WinterJobFairParticipateChange}
-              disabled={profile?.joinsMunich24WinterJobFair}
+              disabled={profile?.joinsMunich24SummerJobFair}
             >
               I will attend the <b>ReDI Winter Job Fair in Düsseldorf</b> on{' '}
               <b>02/02/2024</b>.
             </Checkbox>
             {/* Hidden until the next Job Fair date announced */}
             {/* <Checkbox
-              checked={profile?.joinsMunich24WinterJobFair}
-              customOnChange={onMunich24WinterJobFairParticipateChange}
+              checked={profile?.joinsMunich24SummerJobFair}
+              customOnChange={onMunich24SummerJobFairParticipateChange}
               disabled={profile?.joinsDusseldorf24WinterJobFair}
             >
               I will attend the <b>ReDI Winter Job Fair in Munich</b> on{' '}
