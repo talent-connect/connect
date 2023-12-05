@@ -219,8 +219,8 @@ input FindAllVisibleTpJobListingsArgsFilter {
   employmentTypes: [TpEmploymentType!]
   federalStates: [FederalState!]
   isRemotePossible: Boolean
-  joinsBerlin23SummerJobFair: Boolean
-  joinsMunich23SummerJobFair: Boolean
+  joinsDusseldorf24WinterJobFair: Boolean
+  joinsMunich24WinterJobFair: Boolean
   relatesToPositions: [TpDesiredPosition!]
   skills: [TpTechnicalSkill!]
 }
@@ -230,10 +230,8 @@ input FindAllVisibleTpJobseekerDirectoryEntriesFilter {
   desiredPositions: [TpDesiredPosition!]
   employmentTypes: [TpEmploymentType!]
   federalStates: [FederalState!]
-  isJobFair2022Participant: Boolean
-  isJobFair2023Participant: Boolean
-  joinsBerlin23SummerJobFair: Boolean
-  joinsMunich23SummerJobFair: Boolean
+  joinsDusseldorf24WinterJobFair: Boolean
+  joinsMunich24WinterJobFair: Boolean
   name: String
   skills: [TpTechnicalSkill!]
 }
@@ -648,10 +646,9 @@ type TpCompanyProfile {
   createdAt: DateTime!
   id: ID!
   industry: String
-  isJobFair2023Participant: Boolean!
   isProfileVisibleToJobseekers: Boolean!
-  joinsBerlin23SummerJobFair: Boolean!
-  joinsMunich23SummerJobFair: Boolean!
+  joinsDusseldorf24WinterJobFair: Boolean
+  joinsMunich24WinterJobFair: Boolean
   linkedInUrl: String
   location: String
   profileAvatarImageS3Key: String
@@ -666,10 +663,9 @@ input TpCompanyProfilePatchInput {
   about: String
   companyName: String
   industry: String
-  isJobFair2023Participant: Boolean
   isProfileVisibleToJobseekers: Boolean
-  joinsBerlin23SummerJobFair: Boolean
-  joinsMunich23SummerJobFair: Boolean
+  joinsDusseldorf24WinterJobFair: Boolean
+  joinsMunich24WinterJobFair: Boolean
   linkedInUrl: String
   location: String
   profileAvatarImageS3Key: String
@@ -1080,11 +1076,9 @@ type TpJobseekerDirectoryEntry {
   ifAvailabilityIsDate_date: DateTime
   immigrationStatus: ImmigrationStatus
   isHired: Boolean!
-  isJobFair2022Participant: Boolean!
-  isJobFair2023Participant: Boolean!
   isProfileVisibleToCompanies: Boolean!
-  joinsBerlin23SummerJobFair: Boolean!
-  joinsMunich23SummerJobFair: Boolean!
+  joinsDusseldorf24WinterJobFair: Boolean
+  joinsMunich24WinterJobFair: Boolean
   lastName: String!
   linkedInUrl: String
   location: String
@@ -1139,11 +1133,9 @@ type TpJobseekerProfile {
   ifAvailabilityIsDate_date: DateTime
   immigrationStatus: ImmigrationStatus
   isHired: Boolean!
-  isJobFair2022Participant: Boolean!
-  isJobFair2023Participant: Boolean!
   isProfileVisibleToCompanies: Boolean!
-  joinsBerlin23SummerJobFair: Boolean!
-  joinsMunich23SummerJobFair: Boolean!
+  joinsDusseldorf24WinterJobFair: Boolean
+  joinsMunich24WinterJobFair: Boolean
   location: String
   profileAvatarImageS3Key: String
   rediLocation: RediLocation
@@ -1292,11 +1284,9 @@ input TpJobseekerProfilePatchInput {
   ifAvailabilityIsDate_date: DateTime
   immigrationStatus: ImmigrationStatus
   isHired: Boolean
-  isJobFair2022Participant: Boolean
-  isJobFair2023Participant: Boolean
   isProfileVisibleToCompanies: Boolean
-  joinsBerlin23SummerJobFair: Boolean
-  joinsMunich23SummerJobFair: Boolean
+  joinsDusseldorf24WinterJobFair: Boolean
+  joinsMunich24WinterJobFair: Boolean
   location: String
   profileAvatarImageS3Key: String
   rediLocation: RediLocation

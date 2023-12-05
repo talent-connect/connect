@@ -7,7 +7,7 @@ import {
   LanguageProficiencyLevel,
   TpDesiredPosition,
   TpEmploymentType,
-  TpTechnicalSkill
+  TpTechnicalSkill,
 } from '../../common-objects'
 import { TpAvailabilityOption } from '../../tp-common-objects'
 import { TpJobseekerProfileEducationRecordEntityProps } from '../common-objects/tp-jobseeker-profile-education-record.entityprops'
@@ -71,14 +71,10 @@ export class TpJobseekerDirectoryEntryMapper
       ) as TpTechnicalSkill[]) ?? undefined
     props.state =
       jobseekerProfileRecord.Profile_Status__c as JobseekerProfileStatus
-    props.isJobFair2022Participant =
-      jobseekerProfileRecord.Is_Job_Fair_2022_Participant__c
-    props.isJobFair2023Participant =
-      jobseekerProfileRecord.Is_Job_Fair_2023_Participant__c
-    props.joinsBerlin23SummerJobFair =
-      jobseekerProfileRecord.Joins_Berlin_23_Summer_Job_Fair__c
-    props.joinsMunich23SummerJobFair =
-      jobseekerProfileRecord.Joins_Munich_23_Summer_Job_Fair__c
+    props.joinsDusseldorf24WinterJobFair =
+      jobseekerProfileRecord.Joins_Dusseldorf_24_Winter_Job_Fair__c
+    props.joinsMunich24WinterJobFair =
+      jobseekerProfileRecord.Joins_Munich_24_Winter_Job_Fair__c
     props.isProfileVisibleToCompanies =
       jobseekerProfileRecord.Is_Visible_to_Companies__c
     props.isHired = jobseekerProfileRecord.Is_Hired__c
@@ -104,7 +100,7 @@ export class TpJobseekerDirectoryEntryMapper
       const records = raw.props.Jobseeker_Line_Items__r?.records
       for (let i = 0; i < records.length; i++) {
         const record = records[i]
-        let baseRecord = {} as
+        const baseRecord = {} as
           | TpJobseekerProfileExperienceRecordEntityProps
           | TpJobseekerProfileEducationRecordEntityProps
         baseRecord.id = record.Id

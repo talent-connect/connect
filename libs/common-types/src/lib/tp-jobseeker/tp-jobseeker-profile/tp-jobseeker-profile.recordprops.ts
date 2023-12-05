@@ -2,7 +2,7 @@ import { plainToClass, Type } from 'class-transformer'
 import {
   PicklistValue,
   PicklistValuesSemicolonSeparated,
-  RecordProps
+  RecordProps,
 } from '../../base-interfaces-types-classes'
 
 export class TpJobseekerProfileRecordProps implements RecordProps {
@@ -23,10 +23,8 @@ export class TpJobseekerProfileRecordProps implements RecordProps {
   About_Yourself__c?: string
   Top_Skills__c?: PicklistValuesSemicolonSeparated
   Profile_Status__c: PicklistValue
-  Is_Job_Fair_2022_Participant__c: boolean
-  Is_Job_Fair_2023_Participant__c: boolean
-  Joins_Berlin_23_Summer_Job_Fair__c: boolean
-  Joins_Munich_23_Summer_Job_Fair__c: boolean
+  Joins_Dusseldorf_24_Winter_Job_Fair__c?: boolean
+  Joins_Munich_24_Winter_Job_Fair__c?: boolean
   Is_Visible_to_Companies__c: boolean
   Is_Hired__c: boolean
   Federal_State__c?: PicklistValue

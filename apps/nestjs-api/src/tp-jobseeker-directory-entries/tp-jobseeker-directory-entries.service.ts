@@ -79,19 +79,13 @@ export class TpJobseekerDirectoryEntriesService {
         $in: _filter.filter.federalStates,
       }
     }
-    if (_filter.filter.isJobFair2022Participant) {
-      filter.Jobseeker_Profiles__r.Is_Job_Fair_2022_Participant__c = true
+    if (_filter.filter.joinsDusseldorf24WinterJobFair) {
+      filter.Jobseeker_Profiles__r.Joins_Dusseldorf_24_Winter_Job_Fair__c =
+        _filter.filter.joinsDusseldorf24WinterJobFair
     }
-    if (_filter.filter.isJobFair2023Participant) {
-      filter.Jobseeker_Profiles__r.Is_Job_Fair_2023_Participant__c = true
-    }
-    if (_filter.filter.joinsBerlin23SummerJobFair) {
-      filter.Jobseeker_Profiles__r.Joins_Berlin_23_Summer_Job_Fair__c =
-        _filter.filter.joinsBerlin23SummerJobFair
-    }
-    if (_filter.filter.joinsMunich23SummerJobFair) {
-      filter.Jobseeker_Profiles__r.Joins_Munich_23_Summer_Job_Fair__c =
-        _filter.filter.joinsMunich23SummerJobFair
+    if (_filter.filter.joinsMunich24WinterJobFair) {
+      filter.Jobseeker_Profiles__r.Joins_Munich_24_Winter_Job_Fair__c =
+        _filter.filter.joinsMunich24WinterJobFair
     }
 
     const entities = await this.findAll(filter)
