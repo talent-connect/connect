@@ -270,7 +270,7 @@ export function BrowseCompany() {
             checked={joinsDusseldorf24WinterJobFair || false}
             handleChange={toggleDusseldorf24WinterJobFairFilter}
           >
-            Attending ReDI Düsseldorf Winter Job Fair 2024
+            ReDI Düsseldorf Winter Job Fair 2024
           </Checkbox>
         </div>
         <div className="filters-inner"></div>
@@ -281,7 +281,7 @@ export function BrowseCompany() {
             checked={joinsMunich24WinterJobFair || false}
             handleChange={toggleMunich24WinterJobFairFilter}
           >
-            Attending ReDI Munich Winter Job Fair 2024
+            ReDI Munich Winter Job Fair 2024
           </Checkbox>
         </div> */}
       </div>
