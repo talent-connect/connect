@@ -6,7 +6,7 @@ import {
   RediLocation,
   TpDesiredPosition,
   TpEmploymentType,
-  TpTechnicalSkill
+  TpTechnicalSkill,
 } from '../../common-objects'
 import { TpAvailabilityOption } from '../../tp-common-objects'
 import { JobseekerProfileStatus } from '../enums'
@@ -33,10 +33,8 @@ export class TpJobseekerProfileEntityProps implements EntityProps {
   topSkills?: Array<TpTechnicalSkill>
   @Field((type) => JobseekerProfileStatus)
   state: JobseekerProfileStatus
-  isJobFair2022Participant: boolean
-  isJobFair2023Participant: boolean
-  joinsBerlin23SummerJobFair: boolean
-  joinsMunich23SummerJobFair: boolean
+  joinsDusseldorf24WinterJobFair?: boolean
+  joinsMunich24SummerJobFair?: boolean
   isProfileVisibleToCompanies: boolean
   isHired: boolean
   @Field((type) => FederalState)

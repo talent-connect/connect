@@ -11,10 +11,8 @@ fragment AllTpJobseekerDirectoryEntryFields on TpJobseekerDirectoryEntry {
   id
   ifAvailabilityIsDate_date
   isHired
-  isJobFair2022Participant
-  isJobFair2023Participant
-  joinsBerlin23SummerJobFair
-  joinsMunich23SummerJobFair
+  joinsDusseldorf24WinterJobFair
+  joinsMunich24SummerJobFair
   availability
   isProfileVisibleToCompanies
   lastName

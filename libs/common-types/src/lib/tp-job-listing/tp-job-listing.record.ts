@@ -19,7 +19,9 @@ export class TpJobListingRecord extends Record<TpJobListingRecordProps> {
       'Id',
       'CreatedDate',
       'LastModifiedDate',
+      'Expires_At__c',
 
+      'Status__c',
       'Title__c',
       'Location__c',
       'Summary__c',
@@ -38,6 +40,6 @@ export class TpJobListingRecord extends Record<TpJobListingRecordProps> {
       'Email__c',
       'Phone_Number__c'
     ],
-    SALESFORCE_ORDER_BY: ['CreatedDate', 'DESC'],
+    SALESFORCE_ORDER_BY: ['LastModifiedDate', 'DESC'],
   }
 }

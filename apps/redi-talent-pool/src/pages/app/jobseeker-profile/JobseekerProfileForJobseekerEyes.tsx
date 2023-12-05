@@ -45,23 +45,25 @@ export function JobseekerProfileForJobseekerEyes() {
     queryClient.invalidateQueries()
   }
 
-  const onBerlin23SummerJobFairParticipateChange = async () => {
+  const onDusseldorf24WinterJobFairParticipateChange = async () => {
     await mutation.mutateAsync({
       input: {
-        joinsBerlin23SummerJobFair: !profile?.joinsBerlin23SummerJobFair,
+        joinsDusseldorf24WinterJobFair:
+          !profile?.joinsDusseldorf24WinterJobFair,
       },
     })
     queryClient.invalidateQueries()
   }
 
-  const onMunich23SummerJobFairParticipateChange = async () => {
-    await mutation.mutateAsync({
-      input: {
-        joinsMunich23SummerJobFair: !profile?.joinsMunich23SummerJobFair,
-      },
-    })
-    queryClient.invalidateQueries()
-  }
+  // Hidden until the new date announced
+  // const onMunich24SummerJobFairParticipateChange = async () => {
+  //   await mutation.mutateAsync({
+  //     input: {
+  //       joinsMunich24SummerJobFair: !profile?.joinsMunich24SummerJobFair,
+  //     },
+  //   })
+  //   queryClient.invalidateQueries()
+  // }
 
   return (
     <LoggedIn>
@@ -88,25 +90,25 @@ export function JobseekerProfileForJobseekerEyes() {
             <OnboardingSteps />
           </div>
           <EditableNamePhotoLocation profile={profile} />
-          {/* Hidden until the next Job Fair date announced */}
-          {/* <div style={{ marginBottom: '1.5rem' }}>
+          <div style={{ marginBottom: '1.5rem' }}>
             <Checkbox
-              checked={profile?.joinsBerlin23SummerJobFair}
-              customOnChange={onBerlin23SummerJobFairParticipateChange}
-              disabled={profile?.joinsMunich23SummerJobFair}
+              checked={profile?.joinsDusseldorf24WinterJobFair}
+              customOnChange={onDusseldorf24WinterJobFairParticipateChange}
+              disabled={profile?.joinsMunich24SummerJobFair}
             >
-              I will attend <b>ReDI Summer Job Fair in Berlin</b> on{' '}
-              <b>30/06/2023</b>.
+              I will attend the <b>ReDI Winter Job Fair in Düsseldorf</b> on{' '}
+              <b>02/02/2024</b>.
             </Checkbox>
-            <Checkbox
-              checked={profile?.joinsMunich23SummerJobFair}
-              customOnChange={onMunich23SummerJobFairParticipateChange}
-              disabled={profile?.joinsBerlin23SummerJobFair}
+            {/* Hidden until the next Job Fair date announced */}
+            {/* <Checkbox
+              checked={profile?.joinsMunich24SummerJobFair}
+              customOnChange={onMunich24SummerJobFairParticipateChange}
+              disabled={profile?.joinsDusseldorf24WinterJobFair}
             >
-              I will attend <b>ReDI Summer Job Fair in Munich</b> on{' '}
-              <b>10/07/2023</b>.
-            </Checkbox>
-          </div> */}
+              I will attend the <b>ReDI Winter Job Fair in Munich</b> on{' '}
+              <b>22/02/2024</b>.
+            </Checkbox> */}
+          </div>
           <EditableOverview profile={profile} />
           <EditableSummary profile={profile} />
           <EditableProfessionalExperience profile={profile} />

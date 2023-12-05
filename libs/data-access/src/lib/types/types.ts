@@ -11,7 +11,6 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
   DateTime: any;
 };
 
@@ -241,8 +240,8 @@ export type FindAllVisibleTpJobListingsArgsFilter = {
   employmentTypes?: InputMaybe<Array<TpEmploymentType>>;
   federalStates?: InputMaybe<Array<FederalState>>;
   isRemotePossible?: InputMaybe<Scalars['Boolean']>;
-  joinsBerlin23SummerJobFair?: InputMaybe<Scalars['Boolean']>;
-  joinsMunich23SummerJobFair?: InputMaybe<Scalars['Boolean']>;
+  joinsDusseldorf24WinterJobFair?: InputMaybe<Scalars['Boolean']>;
+  joinsMunich24SummerJobFair?: InputMaybe<Scalars['Boolean']>;
   relatesToPositions?: InputMaybe<Array<TpDesiredPosition>>;
   skills?: InputMaybe<Array<TpTechnicalSkill>>;
 };
@@ -252,10 +251,8 @@ export type FindAllVisibleTpJobseekerDirectoryEntriesFilter = {
   desiredPositions?: InputMaybe<Array<TpDesiredPosition>>;
   employmentTypes?: InputMaybe<Array<TpEmploymentType>>;
   federalStates?: InputMaybe<Array<FederalState>>;
-  isJobFair2022Participant?: InputMaybe<Scalars['Boolean']>;
-  isJobFair2023Participant?: InputMaybe<Scalars['Boolean']>;
-  joinsBerlin23SummerJobFair?: InputMaybe<Scalars['Boolean']>;
-  joinsMunich23SummerJobFair?: InputMaybe<Scalars['Boolean']>;
+  joinsDusseldorf24WinterJobFair?: InputMaybe<Scalars['Boolean']>;
+  joinsMunich24SummerJobFair?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
   skills?: InputMaybe<Array<TpTechnicalSkill>>;
 };
@@ -974,10 +971,9 @@ export type TpCompanyProfile = {
   createdAt: Scalars['DateTime'];
   id: Scalars['ID'];
   industry?: Maybe<Scalars['String']>;
-  isJobFair2023Participant: Scalars['Boolean'];
   isProfileVisibleToJobseekers: Scalars['Boolean'];
-  joinsBerlin23SummerJobFair: Scalars['Boolean'];
-  joinsMunich23SummerJobFair: Scalars['Boolean'];
+  joinsDusseldorf24WinterJobFair?: Maybe<Scalars['Boolean']>;
+  joinsMunich24SummerJobFair?: Maybe<Scalars['Boolean']>;
   linkedInUrl?: Maybe<Scalars['String']>;
   location?: Maybe<Scalars['String']>;
   profileAvatarImageS3Key?: Maybe<Scalars['String']>;
@@ -992,10 +988,9 @@ export type TpCompanyProfilePatchInput = {
   about?: InputMaybe<Scalars['String']>;
   companyName?: InputMaybe<Scalars['String']>;
   industry?: InputMaybe<Scalars['String']>;
-  isJobFair2023Participant?: InputMaybe<Scalars['Boolean']>;
   isProfileVisibleToJobseekers?: InputMaybe<Scalars['Boolean']>;
-  joinsBerlin23SummerJobFair?: InputMaybe<Scalars['Boolean']>;
-  joinsMunich23SummerJobFair?: InputMaybe<Scalars['Boolean']>;
+  joinsDusseldorf24WinterJobFair?: InputMaybe<Scalars['Boolean']>;
+  joinsMunich24SummerJobFair?: InputMaybe<Scalars['Boolean']>;
   linkedInUrl?: InputMaybe<Scalars['String']>;
   location?: InputMaybe<Scalars['String']>;
   profileAvatarImageS3Key?: InputMaybe<Scalars['String']>;
@@ -1128,6 +1123,7 @@ export type TpJobListing = {
   createdAt: Scalars['DateTime'];
   email?: Maybe<Scalars['String']>;
   employmentType?: Maybe<TpEmploymentType>;
+  expiresAt?: Maybe<Scalars['DateTime']>;
   federalState?: Maybe<FederalState>;
   firstName?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
@@ -1140,6 +1136,7 @@ export type TpJobListing = {
   profileAvatarImageS3Key?: Maybe<Scalars['String']>;
   relatesToPositions?: Maybe<Array<TpDesiredPosition>>;
   salaryRange?: Maybe<Scalars['String']>;
+  status?: Maybe<TpJobListingStatus>;
   summary?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
@@ -1169,6 +1166,7 @@ export type TpJobListingDeleteInput = {
 export type TpJobListingPatchInput = {
   email?: InputMaybe<Scalars['String']>;
   employmentType?: InputMaybe<TpEmploymentType>;
+  expiresAt?: InputMaybe<Scalars['DateTime']>;
   federalState?: InputMaybe<FederalState>;
   firstName?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
@@ -1183,6 +1181,11 @@ export type TpJobListingPatchInput = {
   summary?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
 };
+
+export enum TpJobListingStatus {
+  Active = 'ACTIVE',
+  Expired = 'EXPIRED'
+}
 
 export type TpJobseekerCv = {
   __typename?: 'TpJobseekerCv';
@@ -1419,11 +1422,9 @@ export type TpJobseekerDirectoryEntry = {
   ifAvailabilityIsDate_date?: Maybe<Scalars['DateTime']>;
   immigrationStatus?: Maybe<ImmigrationStatus>;
   isHired: Scalars['Boolean'];
-  isJobFair2022Participant: Scalars['Boolean'];
-  isJobFair2023Participant: Scalars['Boolean'];
   isProfileVisibleToCompanies: Scalars['Boolean'];
-  joinsBerlin23SummerJobFair: Scalars['Boolean'];
-  joinsMunich23SummerJobFair: Scalars['Boolean'];
+  joinsDusseldorf24WinterJobFair?: Maybe<Scalars['Boolean']>;
+  joinsMunich24SummerJobFair?: Maybe<Scalars['Boolean']>;
   lastName: Scalars['String'];
   linkedInUrl?: Maybe<Scalars['String']>;
   location?: Maybe<Scalars['String']>;
@@ -1482,11 +1483,9 @@ export type TpJobseekerProfile = {
   ifAvailabilityIsDate_date?: Maybe<Scalars['DateTime']>;
   immigrationStatus?: Maybe<ImmigrationStatus>;
   isHired: Scalars['Boolean'];
-  isJobFair2022Participant: Scalars['Boolean'];
-  isJobFair2023Participant: Scalars['Boolean'];
   isProfileVisibleToCompanies: Scalars['Boolean'];
-  joinsBerlin23SummerJobFair: Scalars['Boolean'];
-  joinsMunich23SummerJobFair: Scalars['Boolean'];
+  joinsDusseldorf24WinterJobFair?: Maybe<Scalars['Boolean']>;
+  joinsMunich24SummerJobFair?: Maybe<Scalars['Boolean']>;
   location?: Maybe<Scalars['String']>;
   profileAvatarImageS3Key?: Maybe<Scalars['String']>;
   rediLocation?: Maybe<RediLocation>;
@@ -1638,11 +1637,9 @@ export type TpJobseekerProfilePatchInput = {
   ifAvailabilityIsDate_date?: InputMaybe<Scalars['DateTime']>;
   immigrationStatus?: InputMaybe<ImmigrationStatus>;
   isHired?: InputMaybe<Scalars['Boolean']>;
-  isJobFair2022Participant?: InputMaybe<Scalars['Boolean']>;
-  isJobFair2023Participant?: InputMaybe<Scalars['Boolean']>;
   isProfileVisibleToCompanies?: InputMaybe<Scalars['Boolean']>;
-  joinsBerlin23SummerJobFair?: InputMaybe<Scalars['Boolean']>;
-  joinsMunich23SummerJobFair?: InputMaybe<Scalars['Boolean']>;
+  joinsDusseldorf24WinterJobFair?: InputMaybe<Scalars['Boolean']>;
+  joinsMunich24SummerJobFair?: InputMaybe<Scalars['Boolean']>;
   location?: InputMaybe<Scalars['String']>;
   profileAvatarImageS3Key?: InputMaybe<Scalars['String']>;
   rediLocation?: InputMaybe<RediLocation>;

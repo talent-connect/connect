@@ -11,9 +11,8 @@ fragment AllTpCompanyProfileFields on TpCompanyProfile {
   about
   state
   isProfileVisibleToJobseekers
-  isJobFair2023Participant
-  joinsBerlin23SummerJobFair
-  joinsMunich23SummerJobFair
+  joinsDusseldorf24WinterJobFair
+  joinsMunich24SummerJobFair
   createdAt
   updatedAt
 }

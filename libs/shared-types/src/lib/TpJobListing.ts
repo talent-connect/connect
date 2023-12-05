@@ -1,6 +1,7 @@
 import { TpCompanyProfile } from './TpCompanyProfile'
 
 export type TpJobListing = {
+  status: string
   id: string
   title?: string
   location?: string
@@ -18,6 +19,7 @@ export type TpJobListing = {
 
   createdAt: Date
   updatedAt: Date
+  expiresAt?: Date
 
   firstName: string
   lastName: string

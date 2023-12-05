@@ -23,6 +23,7 @@ import {
   topSkills,
 } from '@talent-connect/talent-pool/config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
+import { formatDistance } from 'date-fns'
 import { useFormik } from 'formik'
 import { pick } from 'lodash'
 import { useCallback, useEffect, useState } from 'react'
@@ -35,11 +36,10 @@ import { useLoadModalFormJobListingDataQuery } from './EditableJobPostings.gener
 import JobPlaceholderCardUrl from './job-placeholder-card.svg'
 
 export function EditableJobPostings({
+  jobListings,
   isJobPostingFormOpen,
   setIsJobPostingFormOpen,
 }) {
-  const myData = useMyTpDataQuery()
-  const jobListings = myData.data?.tpCurrentUserDataGet?.jobListings
   const [isEditing, setIsEditing] = useState(false)
   const [idOfTpJobListingBeingEdited, setIdOfTpJobListingBeingEdited] =
     useState<string | null>(null) // null = "new"
@@ -72,6 +72,11 @@ export function EditableJobPostings({
     e.preventDefault()
     startEditing(id)
   }
+
+  const renderTimestamp = (expiresAt) =>
+    `Expires ${formatDistance(new Date(expiresAt), new Date(), {
+      addSuffix: true,
+    })}`
 
   return (
     <>
@@ -130,6 +135,7 @@ export function EditableJobPostings({
                     key={jobListing.id}
                     jobListing={jobListing}
                     onClick={(e) => handleStartEditingClick(jobListing.id, e)}
+                    timestamp={renderTimestamp(jobListing.expiresAt)}
                   />
                 </Columns.Column>
               ))}

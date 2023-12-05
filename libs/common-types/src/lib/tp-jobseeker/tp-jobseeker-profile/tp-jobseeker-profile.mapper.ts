@@ -5,7 +5,7 @@ import {
   ImmigrationStatus,
   TpDesiredPosition,
   TpEmploymentType,
-  TpTechnicalSkill
+  TpTechnicalSkill,
 } from '../../common-objects'
 import { TpAvailabilityOption } from '../../tp-common-objects'
 import { JobseekerProfileStatus } from '../enums'
@@ -39,12 +39,10 @@ export class TpJobseekerProfileMapper
     props.topSkills =
       (raw.props.Top_Skills__c?.split(';') as TpTechnicalSkill[]) ?? undefined
     props.state = raw.props.Profile_Status__c as JobseekerProfileStatus
-    props.isJobFair2022Participant = raw.props.Is_Job_Fair_2022_Participant__c
-    props.isJobFair2023Participant = raw.props.Is_Job_Fair_2023_Participant__c
-    props.joinsBerlin23SummerJobFair =
-      raw.props.Joins_Berlin_23_Summer_Job_Fair__c
-    props.joinsMunich23SummerJobFair =
-      raw.props.Joins_Munich_23_Summer_Job_Fair__c
+    props.joinsDusseldorf24WinterJobFair =
+      raw.props.Joins_Dusseldorf_24_Winter_Job_Fair__c
+    props.joinsMunich24SummerJobFair =
+      raw.props.Joins_Munich_24_Summer_Job_Fair__c
     props.isProfileVisibleToCompanies = raw.props.Is_Visible_to_Companies__c
     props.isHired = raw.props.Is_Hired__c
     props.federalState = raw.props.Federal_State__c as FederalState
@@ -81,14 +79,10 @@ export class TpJobseekerProfileMapper
     props.About_Yourself__c = source.props.aboutYourself
     props.Top_Skills__c = source.props?.topSkills?.join(';')
     props.Profile_Status__c = source.props.state
-    props.Is_Job_Fair_2022_Participant__c =
-      source.props.isJobFair2022Participant
-    props.Is_Job_Fair_2023_Participant__c =
-      source.props.isJobFair2023Participant
-    props.Joins_Berlin_23_Summer_Job_Fair__c =
-      source.props.joinsBerlin23SummerJobFair
-    props.Joins_Munich_23_Summer_Job_Fair__c =
-      source.props.joinsMunich23SummerJobFair
+    props.Joins_Dusseldorf_24_Winter_Job_Fair__c =
+      source.props.joinsDusseldorf24WinterJobFair
+    props.Joins_Munich_24_Summer_Job_Fair__c =
+      source.props.joinsMunich24SummerJobFair
     props.Is_Visible_to_Companies__c = source.props.isProfileVisibleToCompanies
     props.Is_Hired__c = source.props.isHired
     props.Federal_State__c = source.props.federalState

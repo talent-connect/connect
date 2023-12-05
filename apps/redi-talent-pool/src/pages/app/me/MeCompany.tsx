@@ -2,6 +2,7 @@ import { Tooltip } from '@material-ui/core'
 import {
   CompanyTalentPoolState,
   MyTpDataQuery,
+  TpJobListingStatus,
   useMyTpDataQuery,
   usePatchTpCompanyProfileMutation,
 } from '@talent-connect/data-access'
@@ -13,6 +14,7 @@ import {
 import { AllTpCompanyProfileFieldsFragment } from 'libs/data-access/src/lib/tp/company-profiles/tp-company-profile.fragment.generated'
 import { useState } from 'react'
 import { Columns, Content, Notification } from 'react-bulma-components'
+import { ExpiredJobListings } from '../../../components/organisms/ExpiredJobListings'
 import { EditableAbout } from '../../../components/organisms/company-profile-editables/EditableAbout'
 import { EditableContact } from '../../../components/organisms/company-profile-editables/EditableContact'
 import { EditableDetails } from '../../../components/organisms/company-profile-editables/EditableDetails'
@@ -37,6 +39,13 @@ export function MeCompany() {
     userContact,
   } = myData.data.tpCurrentUserDataGet
 
+  const activeJobListings = jobListings?.filter(
+    (jobListing) => jobListing.status === TpJobListingStatus.Active
+  )
+  const expiredJobListings = jobListings?.filter(
+    (jobListing) => jobListing.status === TpJobListingStatus.Expired
+  )
+
   const onHideFromJobseekersCheckboxChange = async () => {
     await mutation.mutateAsync({
       input: {
@@ -47,23 +56,25 @@ export function MeCompany() {
     queryClient.invalidateQueries()
   }
 
-  const onBerlin23SummerJobFairParticipateChange = async () => {
+  const onDusseldorf24WinterJobFairParticipateChange = async () => {
     await mutation.mutateAsync({
       input: {
-        joinsBerlin23SummerJobFair: !companyProfile.joinsBerlin23SummerJobFair,
+        joinsDusseldorf24WinterJobFair:
+          !companyProfile.joinsDusseldorf24WinterJobFair,
       },
     })
     queryClient.invalidateQueries()
   }
 
-  const onMunich23SummerJobFairParticipateChange = async () => {
-    await mutation.mutateAsync({
-      input: {
-        joinsMunich23SummerJobFair: !companyProfile.joinsMunich23SummerJobFair,
-      },
-    })
-    queryClient.invalidateQueries()
-  }
+  // Hidden until the new date announced
+  // const onMunich24SummerJobFairParticipateChange = async () => {
+  //   await mutation.mutateAsync({
+  //     input: {
+  //       joinsMunich24SummerJobFair: !companyProfile.joinsMunich24SummerJobFair,
+  //     },
+  //   })
+  //   queryClient.invalidateQueries()
+  // }
 
   const isProfileApproved =
     companyProfile.state === CompanyTalentPoolState.ProfileApproved
@@ -97,23 +108,23 @@ export function MeCompany() {
       <Columns className="is-6 is-variable">
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'three-fifths' }}>
           <EditableNamePhotoLocation companyProfile={companyProfile} />
-          {/* Hidden until the next Job Fair date announced */}
-          {/* <div style={{ marginBottom: '1.5rem' }}>
+          <div style={{ marginBottom: '1.5rem' }}>
             <Checkbox
-              checked={companyProfile.joinsBerlin23SummerJobFair}
-              customOnChange={onBerlin23SummerJobFairParticipateChange}
+              checked={companyProfile.joinsDusseldorf24WinterJobFair}
+              customOnChange={onDusseldorf24WinterJobFairParticipateChange}
             >
-              My company will attend <b>ReDI Summer Job Fair in Berlin</b> on{' '}
-              <b>30/06/2023</b>.
+              My company will attend the{' '}
+              <b>ReDI Winter Job Fair in Düsseldorf</b> on <b>02/02/2024</b>.
             </Checkbox>
-            <Checkbox
-              checked={companyProfile.joinsMunich23SummerJobFair}
-              customOnChange={onMunich23SummerJobFairParticipateChange}
+            {/* Hidden until the next Job Fair date announced */}
+            {/* <Checkbox
+              checked={companyProfile.joinsMunich24SummerJobFair}
+              customOnChange={onMunich24SummerJobFairParticipateChange}
             >
-              My company will attend <b>ReDI Summer Job Fair in Munich</b> on{' '}
-              <b>10/07/2023</b>.
-            </Checkbox>
-          </div> */}
+              My company will attend the <b>ReDI Winter Job Fair in Munich</b>{' '}
+              on <b>22/02/2024</b>.
+            </Checkbox> */}
+          </div>
           <EditableAbout companyProfile={companyProfile} />
         </Columns.Column>
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'two-fifths' }}>
@@ -146,9 +157,13 @@ export function MeCompany() {
         </Columns.Column>
       </Columns>
       <EditableJobPostings
+        jobListings={activeJobListings}
         isJobPostingFormOpen={isJobPostingFormOpen}
         setIsJobPostingFormOpen={setIsJobPostingFormOpen}
       />
+      {expiredJobListings?.length > 0 && (
+        <ExpiredJobListings jobListings={expiredJobListings} />
+      )}
     </LoggedIn>
   )
 }

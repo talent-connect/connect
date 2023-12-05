@@ -28,7 +28,8 @@ export class TpJobListingPatchInput extends IntersectionType(
       'firstName',
       'lastName',
       'phoneNumber',
-      'email'
+      'email',
+      'expiresAt',
     ] as const)
   )
 ) {}
