@@ -171,10 +171,12 @@ const validationSchema = Yup.object().shape({
   languageRequirements: Yup.string().required(
     'Please specify the language requirement(s)'
   ),
-  firstName: Yup.string().matches(/^[a-zA-Z]+$/, 'First name must contain only letters').required('First name is required'),
-  lastName: Yup.string().matches(/^[a-zA-Z]+$/, 'Last name must contain only letters').required('Last name is required'),
-  email: Yup.string().email('Invalid email address').required('Email is required'),
-  phoneNumber: Yup.string().matches(/^[0-9+]+$/, 'Phone number must contain only numbers')
+  firstName: Yup.string().required('First name is required'),
+  lastName: Yup.string().required('Last name is required'),
+  email: Yup.string()
+    .email('Invalid email address')
+    .required('Email is required'),
+  phoneNumber: Yup.string().required('Phone number is required'),
 })
 
 interface ModalFormProps {
@@ -250,8 +252,7 @@ function ModalForm({
     }
   }
 
-
-  let initialFormValues;
+  let initialFormValues
   if (tpJobListingId) {
     // Editing existing job posting
     initialFormValues = pick(
@@ -270,7 +271,7 @@ function ModalForm({
       'lastName',
       'email',
       'phoneNumber'
-    );
+    )
   } else {
     // Creating new job posting - use userContact for prefilling
     initialFormValues = {
@@ -287,17 +288,16 @@ function ModalForm({
       firstName: userContact?.firstName || '',
       lastName: userContact?.lastName || '',
       email: userContact?.email || '',
-      phoneNumber: userContact?.telephoneNumber || ''
-    };
+      phoneNumber: userContact?.telephoneNumber || '',
+    }
   }
 
   const formik = useFormik({
     initialValues: initialFormValues,
     onSubmit,
     validationSchema,
-    enableReinitialize: true
-  });
-
+    enableReinitialize: true,
+  })
 
   const handleDelete = useCallback(() => {
     if (
