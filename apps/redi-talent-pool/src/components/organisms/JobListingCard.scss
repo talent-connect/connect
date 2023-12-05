@@ -19,14 +19,12 @@
 
   &__columns {
     display: flex;
+    max-height: 136px;
 
     @include mobile() {
       flex-direction: column;
+      max-height: fit-content;
     }
-  }
-
-  &__content {
-    padding: 0;
   }
 
   &__firstColumn {
@@ -113,7 +111,7 @@
   &__location {
     &-container {
       display: flex;
-      margin-bottom: 42px;
+      margin-bottom: 34px;
 
       @include mobile {
         margin-bottom: 16px;
