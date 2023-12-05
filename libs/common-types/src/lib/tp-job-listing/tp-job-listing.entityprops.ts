@@ -32,7 +32,7 @@ export class TpJobListingEntityProps implements EntityProps {
 
   @Field((type) => ID)
   companyProfileId: string
-  //  createdBy: any
+
   createdAt: Date
   updatedAt: Date
   expiresAt?: Date
