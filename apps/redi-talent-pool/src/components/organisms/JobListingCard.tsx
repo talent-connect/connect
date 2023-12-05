@@ -61,40 +61,36 @@ export function JobListingCard({
 
   const InnerCard = () => (
     <Card className="job-posting-card">
-      <Card.Content className="job-posting-card__content">
-        <div className="job-posting-card__columns">
-          <div className="job-posting-card__firstColumn is-narrow">
-            <img
-              className="job-posting-card__image"
-              src={imgSrc}
-              alt={jobTitle}
-            ></img>
-          </div>
-          <div className="job-posting-card__middleColumn">
-            <h4 className="job-posting-card__job-title">{jobTitle}</h4>
-            <p className="content job-posting-card__company-name">
-              {companyName}
-            </p>
-            <CardLocation location={location} remote={remote} />
-            {idealTechnicalSkills?.length > 0 ? (
-              <div>
-                <CardTags
-                  items={idealTechnicalSkills}
-                  formatter={(skill: string) => topSkillsIdToLabelMap[skill]}
-                />
-              </div>
-            ) : null}
-          </div>
-          <div className="job-posting-card__lastColumn">
-            <div className="content job-posting-card__timeFooterBox">
-              {renderCTA && renderCTA()}
-              {timestamp && (
-                <div className="job-posting-card__timestamp">{timestamp}</div>
-              )}
+      <div className="job-posting-card__columns">
+        <div className="job-posting-card__firstColumn is-narrow">
+          <img
+            className="job-posting-card__image"
+            src={imgSrc}
+            alt={jobTitle}
+          ></img>
+        </div>
+        <div className="job-posting-card__middleColumn">
+          <p className="job-posting-card__job-title">{jobTitle}</p>
+          <p className="job-posting-card__company-name">{companyName}</p>
+          <CardLocation location={location} remote={remote} />
+          {idealTechnicalSkills?.length > 0 ? (
+            <div>
+              <CardTags
+                items={idealTechnicalSkills}
+                formatter={(skill: string) => topSkillsIdToLabelMap[skill]}
+              />
             </div>
+          ) : null}
+        </div>
+        <div className="job-posting-card__lastColumn">
+          <div className="job-posting-card__timeFooterBox">
+            {renderCTA && renderCTA()}
+            {timestamp && (
+              <div className="job-posting-card__timestamp">{timestamp}</div>
+            )}
           </div>
         </div>
-      </Card.Content>
+      </div>
     </Card>
   )
 
