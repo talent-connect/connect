@@ -71,9 +71,9 @@ export class TpJobListingsService {
       filter['Account__r.ReDI_Joins_Dusseldorf_24_Winter_Job_Fair__c'] =
         _filter.filter.joinsDusseldorf24WinterJobFair
     }
-    if (_filter.filter.joinsMunich24WinterJobFair) {
-      filter['Account__r.ReDI_Joins_Munich_24_Winter_Job_Fair__c'] =
-        _filter.filter.joinsMunich24WinterJobFair
+    if (_filter.filter.joinsMunich24SummerJobFair) {
+      filter['Account__r.ReDI_Joins_Munich_24_Summer_Job_Fair__c'] =
+        _filter.filter.joinsMunich24SummerJobFair
     }
 
     return await this.findAll(filter)

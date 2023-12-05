@@ -12,7 +12,7 @@ fragment AllTpCompanyProfileFields on TpCompanyProfile {
   state
   isProfileVisibleToJobseekers
   joinsDusseldorf24WinterJobFair
-  joinsMunich24WinterJobFair
+  joinsMunich24SummerJobFair
   createdAt
   updatedAt
 }

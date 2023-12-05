@@ -27,5 +27,5 @@ class FindAllVisibleTpJobListingsArgsFilter {
 
   isRemotePossible?: boolean
   joinsDusseldorf24WinterJobFair?: boolean
-  joinsMunich24WinterJobFair?: boolean
+  joinsMunich24SummerJobFair?: boolean
 }

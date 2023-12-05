@@ -55,14 +55,15 @@ export function JobseekerProfileForJobseekerEyes() {
     queryClient.invalidateQueries()
   }
 
-  const onMunich24WinterJobFairParticipateChange = async () => {
-    await mutation.mutateAsync({
-      input: {
-        joinsMunich24WinterJobFair: !profile?.joinsMunich24WinterJobFair,
-      },
-    })
-    queryClient.invalidateQueries()
-  }
+  // Hidden until the new date announced
+  // const onMunich24SummerJobFairParticipateChange = async () => {
+  //   await mutation.mutateAsync({
+  //     input: {
+  //       joinsMunich24SummerJobFair: !profile?.joinsMunich24SummerJobFair,
+  //     },
+  //   })
+  //   queryClient.invalidateQueries()
+  // }
 
   return (
     <LoggedIn>
@@ -89,24 +90,24 @@ export function JobseekerProfileForJobseekerEyes() {
             <OnboardingSteps />
           </div>
           <EditableNamePhotoLocation profile={profile} />
-          {/* Hidden until the next Job Fair date announced */}
           <div style={{ marginBottom: '1.5rem' }}>
             <Checkbox
               checked={profile?.joinsDusseldorf24WinterJobFair}
               customOnChange={onDusseldorf24WinterJobFairParticipateChange}
-              disabled={profile?.joinsMunich24WinterJobFair}
+              disabled={profile?.joinsMunich24SummerJobFair}
             >
               I will attend the <b>ReDI Winter Job Fair in Düsseldorf</b> on{' '}
               <b>02/02/2024</b>.
             </Checkbox>
-            <Checkbox
-              checked={profile?.joinsMunich24WinterJobFair}
-              customOnChange={onMunich24WinterJobFairParticipateChange}
+            {/* Hidden until the next Job Fair date announced */}
+            {/* <Checkbox
+              checked={profile?.joinsMunich24SummerJobFair}
+              customOnChange={onMunich24SummerJobFairParticipateChange}
               disabled={profile?.joinsDusseldorf24WinterJobFair}
             >
               I will attend the <b>ReDI Winter Job Fair in Munich</b> on{' '}
               <b>22/02/2024</b>.
-            </Checkbox>
+            </Checkbox> */}
           </div>
           <EditableOverview profile={profile} />
           <EditableSummary profile={profile} />
