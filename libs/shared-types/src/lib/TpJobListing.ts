@@ -21,8 +21,8 @@ export type TpJobListing = {
   updatedAt: Date
   expiresAt?: Date
 
-  contactFirstName: string
-  contactLastName: string
-  contactEmailAddress: string
-  contactPhoneNumber: string
+  contactFirstName?: string
+  contactLastName?: string
+  contactEmailAddress?: string
+  contactPhoneNumber?: string
 }

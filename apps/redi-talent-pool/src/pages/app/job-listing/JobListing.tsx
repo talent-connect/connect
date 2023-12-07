@@ -208,10 +208,10 @@ export function JobListing() {
           <EditableContact
             companyProfile={jobListing?.companyProfile}
             userContact={{
-              firstName: jobListing?.firstName,
-              lastName: jobListing?.lastName,
-              email: jobListing?.email,
-              telephoneNumber: jobListing?.phoneNumber
+              firstName: jobListing?.contactFirstName,
+              lastName: jobListing?.contactLastName,
+              email: jobListing?.contactEmailAddress,
+              telephoneNumber: jobListing?.contactPhoneNumber,
             }}
             disableEditing
           />

@@ -1121,10 +1121,10 @@ export type TpJobListing = {
   companyName: Scalars['String'];
   companyProfile: TpCompanyProfile;
   companyProfileId: Scalars['ID'];
-  contactEmailAddress: Scalars['String'];
-  contactFirstName: Scalars['String'];
-  contactLastName: Scalars['String'];
-  contactPhoneNumber: Scalars['String'];
+  contactEmailAddress?: Maybe<Scalars['String']>;
+  contactFirstName?: Maybe<Scalars['String']>;
+  contactLastName?: Maybe<Scalars['String']>;
+  contactPhoneNumber?: Maybe<Scalars['String']>;
   createdAt: Scalars['DateTime'];
   employmentType?: Maybe<TpEmploymentType>;
   expiresAt?: Maybe<Scalars['DateTime']>;

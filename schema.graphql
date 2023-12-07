@@ -791,10 +791,10 @@ type TpJobListing {
   companyName: String!
   companyProfile: TpCompanyProfile!
   companyProfileId: ID!
-  contactEmailAddress: String!
-  contactFirstName: String!
-  contactLastName: String!
-  contactPhoneNumber: String!
+  contactEmailAddress: String
+  contactFirstName: String
+  contactLastName: String
+  contactPhoneNumber: String
   createdAt: DateTime!
   employmentType: TpEmploymentType
   expiresAt: DateTime
