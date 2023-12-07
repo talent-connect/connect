@@ -75,14 +75,6 @@ export function EditableContact({
                 </Content>
               </div>
             ) : null}
-            {companyProfile.telephoneNumber ? (
-              <div>
-                <Caption>Phone</Caption>
-                <Content>
-                  <p>{companyProfile?.telephoneNumber}</p>
-                </Content>
-              </div>
-            ) : null}
             {userContact.email ? (
               <div>
                 <Caption>E-mail</Caption>
