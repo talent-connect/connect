@@ -171,12 +171,12 @@ const validationSchema = Yup.object().shape({
   languageRequirements: Yup.string().required(
     'Please specify the language requirement(s)'
   ),
-  firstName: Yup.string().required('First name is required'),
-  lastName: Yup.string().required('Last name is required'),
-  email: Yup.string()
+  contactFirstName: Yup.string().required('First name is required'),
+  contactLastName: Yup.string().required('Last name is required'),
+  contactPhoneNumber: Yup.string().required('Phone number is required'),
+  contactEmailAddress: Yup.string()
     .email('Invalid email address')
     .required('Email is required'),
-  phoneNumber: Yup.string().required('Phone number is required'),
 })
 
 interface ModalFormProps {
@@ -197,6 +197,7 @@ function ModalForm({
   )
   const myDataQuery = useMyTpDataQuery()
   const userContact = myDataQuery.data?.tpCurrentUserDataGet.userContact
+  const companyData = myDataQuery.data?.tpCurrentUserDataGet.representedCompany
   const createMutation = useTpJobListingCreateMutation()
   const updateMutation = useTpJobListingPatchMutation()
   const deleteMutation = useTpJobListingDeleteMutation()
@@ -267,10 +268,10 @@ function ModalForm({
       'isRemotePossible',
       'federalState',
       'salaryRange',
-      'firstName',
-      'lastName',
-      'email',
-      'phoneNumber'
+      'contactFirstName',
+      'contactLastName',
+      'contactPhoneNumber',
+      'contactEmailAddress'
     )
   } else {
     // Creating new job posting - use userContact for prefilling
@@ -285,10 +286,10 @@ function ModalForm({
       isRemotePossible: false,
       federalState: '',
       salaryRange: '',
-      firstName: userContact?.firstName || '',
-      lastName: userContact?.lastName || '',
-      email: userContact?.email || '',
-      phoneNumber: userContact?.telephoneNumber || '',
+      contactFirstName: userContact?.firstName || '',
+      contactLastName: userContact?.lastName || '',
+      contactEmailAddress: userContact?.email || '',
+      contactPhoneNumber: companyData?.telephoneNumber || '',
     }
   }
 
@@ -327,7 +328,12 @@ function ModalForm({
     >
       {formik.values && (
         <Modal.Body>
-          <Element renderAs="h4" textTransform="uppercase" textSize={6}>
+          <Element
+            renderAs="h4"
+            textTransform="uppercase"
+            textSize={6}
+            className="oneandhalf-bs"
+          >
             Publish job postings on Talent Pool
           </Element>
           <Heading size="medium" border="bottomLeft">
@@ -423,28 +429,36 @@ function ModalForm({
             name="salaryRange"
             {...formik}
           />
+          <Element
+            renderAs="h4"
+            textTransform="uppercase"
+            textSize={8}
+            className="oneandhalf-bs"
+          >
+            Contact Details
+          </Element>
           <FormInput
-            label="Contact's First Name"
+            label="First Name*"
             placeholder="John"
-            name="firstName"
+            name="contactFirstName"
             {...formik}
           />
           <FormInput
-            label="Contact's Last Name"
+            label="Last Name*"
             placeholder="Doe"
-            name="lastName"
+            name="contactLastName"
             {...formik}
           />
           <FormInput
-            label="Contact's Email"
+            label="Email*"
             placeholder="johndoe@example.com"
-            name="email"
+            name="contactEmailAddress"
             {...formik}
           />
           <FormInput
-            label="Contact's Phone Number"
+            label="Phone Number*"
             placeholder="0049123456789"
-            name="phoneNumber"
+            name="contactPhoneNumber"
             {...formik}
           />
           <div style={{ height: '30px' }} />

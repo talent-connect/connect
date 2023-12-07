@@ -31,10 +31,10 @@ export class TpJobListingRecordProps implements RecordProps {
     ReDI_Avatar_Image_URL__c?: string
   }
 
-  First_Name__c?: string
-  Last_Name__c?: string
-  Phone_Number__c?: string
-  Email__c?: string
+  Contact_First_Name__c: string
+  Contact_Last_Name__c: string
+  Contact_Phone_Number__c: string
+  Contact_Email_Address__c: string
 
   public static create(rawProps: any) {
     return plainToClass(TpJobListingRecordProps, rawProps, {})

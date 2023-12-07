@@ -11,6 +11,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
   DateTime: any;
 };
 
@@ -1120,19 +1121,19 @@ export type TpJobListing = {
   companyName: Scalars['String'];
   companyProfile: TpCompanyProfile;
   companyProfileId: Scalars['ID'];
+  contactEmailAddress: Scalars['String'];
+  contactFirstName: Scalars['String'];
+  contactLastName: Scalars['String'];
+  contactPhoneNumber: Scalars['String'];
   createdAt: Scalars['DateTime'];
-  email?: Maybe<Scalars['String']>;
   employmentType?: Maybe<TpEmploymentType>;
   expiresAt?: Maybe<Scalars['DateTime']>;
   federalState?: Maybe<FederalState>;
-  firstName?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   idealTechnicalSkills?: Maybe<Array<TpTechnicalSkill>>;
   isRemotePossible?: Maybe<Scalars['Boolean']>;
   languageRequirements?: Maybe<Scalars['String']>;
-  lastName?: Maybe<Scalars['String']>;
   location?: Maybe<Scalars['String']>;
-  phoneNumber?: Maybe<Scalars['String']>;
   profileAvatarImageS3Key?: Maybe<Scalars['String']>;
   relatesToPositions?: Maybe<Array<TpDesiredPosition>>;
   salaryRange?: Maybe<Scalars['String']>;
@@ -1143,16 +1144,16 @@ export type TpJobListing = {
 };
 
 export type TpJobListingCreateInput = {
-  email?: InputMaybe<Scalars['String']>;
+  contactEmailAddress?: InputMaybe<Scalars['String']>;
+  contactFirstName?: InputMaybe<Scalars['String']>;
+  contactLastName?: InputMaybe<Scalars['String']>;
+  contactPhoneNumber?: InputMaybe<Scalars['String']>;
   employmentType?: InputMaybe<TpEmploymentType>;
   federalState?: InputMaybe<FederalState>;
-  firstName?: InputMaybe<Scalars['String']>;
   idealTechnicalSkills?: InputMaybe<Array<TpTechnicalSkill>>;
   isRemotePossible?: InputMaybe<Scalars['Boolean']>;
   languageRequirements?: InputMaybe<Scalars['String']>;
-  lastName?: InputMaybe<Scalars['String']>;
   location?: InputMaybe<Scalars['String']>;
-  phoneNumber?: InputMaybe<Scalars['String']>;
   relatesToPositions?: InputMaybe<Array<TpDesiredPosition>>;
   salaryRange?: InputMaybe<Scalars['String']>;
   summary?: InputMaybe<Scalars['String']>;
@@ -1164,18 +1165,18 @@ export type TpJobListingDeleteInput = {
 };
 
 export type TpJobListingPatchInput = {
-  email?: InputMaybe<Scalars['String']>;
+  contactEmailAddress?: InputMaybe<Scalars['String']>;
+  contactFirstName?: InputMaybe<Scalars['String']>;
+  contactLastName?: InputMaybe<Scalars['String']>;
+  contactPhoneNumber?: InputMaybe<Scalars['String']>;
   employmentType?: InputMaybe<TpEmploymentType>;
   expiresAt?: InputMaybe<Scalars['DateTime']>;
   federalState?: InputMaybe<FederalState>;
-  firstName?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
   idealTechnicalSkills?: InputMaybe<Array<TpTechnicalSkill>>;
   isRemotePossible?: InputMaybe<Scalars['Boolean']>;
   languageRequirements?: InputMaybe<Scalars['String']>;
-  lastName?: InputMaybe<Scalars['String']>;
   location?: InputMaybe<Scalars['String']>;
-  phoneNumber?: InputMaybe<Scalars['String']>;
   relatesToPositions?: InputMaybe<Array<TpDesiredPosition>>;
   salaryRange?: InputMaybe<Scalars['String']>;
   summary?: InputMaybe<Scalars['String']>;

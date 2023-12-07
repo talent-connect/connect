@@ -2,7 +2,7 @@ import { InputType, PartialType, PickType } from '@nestjs/graphql'
 import { TpJobListingEntityProps } from '@talent-connect/common-types'
 
 @InputType({ isAbstract: true })
-class _TpJobListingEntityProps extends TpJobListingEntityProps { }
+class _TpJobListingEntityProps extends TpJobListingEntityProps {}
 
 @InputType('TpJobListingCreateInput')
 export class TpJobListingCreateInput extends PartialType(
@@ -17,9 +17,9 @@ export class TpJobListingCreateInput extends PartialType(
     'summary',
     'title',
     'federalState',
-    'firstName',
-    'lastName',
-    'phoneNumber',
-    'email'
+    'contactFirstName',
+    'contactLastName',
+    'contactPhoneNumber',
+    'contactEmailAddress',
   ] as const)
-) { }
+) {}
