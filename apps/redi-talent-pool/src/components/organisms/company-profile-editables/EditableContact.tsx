@@ -75,6 +75,14 @@ export function EditableContact({
                 </Content>
               </div>
             ) : null}
+            {!userContact.telephoneNumber && companyProfile.telephoneNumber ? (
+              <div>
+                <Caption>Company Phone</Caption>
+                <Content>
+                  <p>{companyProfile?.telephoneNumber}</p>
+                </Content>
+              </div>
+            ) : null}
             {userContact.email ? (
               <div>
                 <Caption>E-mail</Caption>
@@ -219,7 +227,7 @@ function ModalForm({
       <FormInput
         name="telephoneNumber"
         placeholder="0176 01234567"
-        label="Phone Number"
+        label="Company Phone Number"
         {...formik}
       />
 

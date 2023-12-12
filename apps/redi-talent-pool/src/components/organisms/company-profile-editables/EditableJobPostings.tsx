@@ -25,7 +25,6 @@ import {
 import { objectEntries } from '@talent-connect/typescript-utilities'
 import { formatDistance } from 'date-fns'
 import { useFormik } from 'formik'
-import { pick } from 'lodash'
 import { useCallback, useEffect, useState } from 'react'
 import { Columns, Element } from 'react-bulma-components'
 import { useQueryClient } from 'react-query'
@@ -255,24 +254,16 @@ function ModalForm({
 
   let initialFormValues
   if (tpJobListingId) {
-    // Editing existing job posting
-    initialFormValues = pick(
-      jobListing,
-      'title',
-      'location',
-      'summary',
-      'relatesToPositions',
-      'idealTechnicalSkills',
-      'employmentType',
-      'languageRequirements',
-      'isRemotePossible',
-      'federalState',
-      'salaryRange',
-      'contactFirstName',
-      'contactLastName',
-      'contactPhoneNumber',
-      'contactEmailAddress'
-    )
+    // This is a bit of a hack, but it works for now.
+    // We need to make sure initialFormValues have string
+    // contact info otherwise Yup validation errors are weird.
+    initialFormValues = {
+      ...jobListing,
+      contactFirstName: jobListing?.contactFirstName || '',
+      contactLastName: jobListing?.contactLastName || '',
+      contactEmailAddress: jobListing?.contactEmailAddress || '',
+      contactPhoneNumber: jobListing?.contactPhoneNumber || '',
+    }
   } else {
     // Creating new job posting - use userContact for prefilling
     initialFormValues = {
@@ -435,7 +426,7 @@ function ModalForm({
             textSize={8}
             className="oneandhalf-bs"
           >
-            Contact Details
+            Point of Contact for this role
           </Element>
           <FormInput
             label="First Name*"
