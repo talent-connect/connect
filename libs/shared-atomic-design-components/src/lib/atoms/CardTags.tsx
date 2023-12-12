@@ -10,39 +10,29 @@ export interface CardTagsProps {
   formatter?: (item: string) => string
 }
 
-const CardTags = ({ items, shortList = false, formatter }: CardTagsProps) => {
+const SinglelineTags = ({ items }: { items: CardTagsProps['items'] }) => {
   const [visibleChips, setVisibleChips] = useState([])
   const [remainingChips, setRemainingChips] = useState([])
-
   const parentRefDesktop = React.useRef<HTMLDivElement>()
-  const parentRefMobile = React.useRef<HTMLDivElement>()
-
-  const isMobile = useMediaQuery('(max-width:768px)')
-
-  const additionalTagsCount = items.length - 3
-  const itemsShowMobile = items.map(formatter).slice(0, 3)
-  const hasAdditionalTags = (shortList || isMobile) && additionalTagsCount > 0
 
   useEffect(() => {
-    const formattedItems = items.map(formatter)
-
     const calculateChips = () => {
       const parentWidth = parentRefDesktop.current?.offsetWidth
       const gapSize = 16 // Adjust this based on the design (16px gap)
       const sidePadding = 12 // Adjust this based on the design (12px padding each side )
       const chipTotalMargin = 2 * sidePadding + gapSize
 
-      const chipWidths = formattedItems.map((chip) => {
+      const chipWidths = items.map((chip) => {
         const chipSpan = document.createElement('span')
         chipSpan.style.visibility = 'hidden'
         chipSpan.classList.add('chip')
         chipSpan.innerHTML = chip
 
-        parentRefDesktop.current.appendChild(chipSpan)
+        parentRefDesktop.current?.appendChild(chipSpan)
 
         const width = chipSpan.offsetWidth + chipTotalMargin
 
-        parentRefDesktop.current.removeChild(chipSpan)
+        parentRefDesktop.current?.removeChild(chipSpan)
 
         return width
       })
@@ -60,8 +50,8 @@ const CardTags = ({ items, shortList = false, formatter }: CardTagsProps) => {
         }
       }
 
-      setVisibleChips(formattedItems.slice(0, visibleChipsCount))
-      setRemainingChips(formattedItems.slice(visibleChipsCount))
+      setVisibleChips(items.slice(0, visibleChipsCount))
+      setRemainingChips(items.slice(visibleChipsCount))
     }
 
     const throttledCalculateChips = debounce(calculateChips, 100)
@@ -74,11 +64,29 @@ const CardTags = ({ items, shortList = false, formatter }: CardTagsProps) => {
     return () => {
       window.removeEventListener('resize', throttledCalculateChips)
     }
-  }, [formatter, items])
+  }, [items])
+  return (
+    <div className="wrapper__desktop" ref={parentRefDesktop}>
+      {visibleChips.map((chip) => (
+        <p key={chip} className="chip">
+          {chip}
+        </p>
+      ))}
+      {remainingChips.length > 0 && (
+        <p className="chip">+{remainingChips.length}</p>
+      )}
+    </div>
+  )
+}
 
-  return isMobile || shortList ? (
-    <div className="wrapper__mobile" ref={parentRefMobile}>
-      {itemsShowMobile.map((chip, i) => {
+const MultilineTags = ({ items }: { items: CardTagsProps['items'] }) => {
+  const additionalTagsCount = items.length - 3
+  const shortItemsList = items.slice(0, 3)
+  const hasAdditionalTags = additionalTagsCount > 0
+
+  return (
+    <div className="wrapper__mobile">
+      {shortItemsList.map((chip, i) => {
         const currentTag = (
           <p key={chip} className="chip">
             {chip}
@@ -98,17 +106,17 @@ const CardTags = ({ items, shortList = false, formatter }: CardTagsProps) => {
         )
       })}
     </div>
+  )
+}
+
+const CardTags = ({ items, shortList = false, formatter }: CardTagsProps) => {
+  const isMobile = useMediaQuery('(max-width:768px)')
+  const formattedItems = formatter ? items.map(formatter) : items
+
+  return isMobile || shortList ? (
+    <MultilineTags items={formattedItems} />
   ) : (
-    <div className="wrapper__desktop" ref={parentRefDesktop}>
-      {visibleChips.map((chip) => (
-        <p key={chip} className="chip">
-          {chip}
-        </p>
-      ))}
-      {remainingChips.length > 0 && (
-        <p className="chip">+{remainingChips.length}</p>
-      )}
-    </div>
+    <SinglelineTags items={formattedItems} />
   )
 }
 export default CardTags
