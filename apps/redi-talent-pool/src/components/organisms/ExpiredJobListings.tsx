@@ -37,7 +37,11 @@ export function ExpiredJobListings({ jobListings }) {
 
   const renderReactivateCTA = (jobListingId) => {
     return (
-      <Button simple onClick={() => onReactivateCTAClick(jobListingId)}>
+      <Button
+        simple
+        onClick={() => onReactivateCTAClick(jobListingId)}
+        className="__reactivate"
+      >
         Reactivate
       </Button>
     )
