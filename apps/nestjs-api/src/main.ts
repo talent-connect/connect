@@ -10,6 +10,8 @@ import { AppModule } from './app/app.module'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
+  if (process.env.NODE_ENV !== 'production') app.enableCors()
+
   const globalPrefix = 'api'
   app.setGlobalPrefix(globalPrefix)
   app.use(json({ limit: '1mb' }))
