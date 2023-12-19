@@ -38,41 +38,121 @@
     `npm run build`. -->
     <title>ReDI Connect</title>
 
-    <!--HotJar-->
-    <!-- Hotjar Tracking Code for connect.redi-school.org -->
+    <!-- CookieConsent resources-->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@v3.0.0-rc.17/dist/cookieconsent.css"
+    />
+    <script src="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@v3.0.0-rc.17/dist/cookieconsent.umd.js"></script>
+
+    <!-- Trigger CookieConsent popover and only enable HotJar and Google Analytics if approved-->
     <script async defer>
-      ;(function (h, o, t, j, a, r) {
-        h.hj =
-          h.hj ||
-          function () {
-            ;(h.hj.q = h.hj.q || []).push(arguments)
+      window.addEventListener('load', () => {
+        setupCookieConsent()
+      })
+
+      function setupCookieConsent() {
+        CookieConsent.run({
+          categories: {
+            necessary: {
+              enabled: true, // this category is enabled by default
+              readOnly: true, // this category cannot be disabled
+            },
+            analytics: {},
+          },
+
+          language: {
+            default: 'en',
+            translations: {
+              en: {
+                consentModal: {
+                  title: 'Welcome to ReDI Connect.',
+                  description:
+                    'To create the best mentoring experience on ReDI Connect, we use cookies. These cookies are crucial for the smooth operation of our platform and provide insights into how you engage with mentoring content.<br /><br /><em>Your Choices Matter:</em><br /> Click "Accept all" to allow the use of all cookies. If you prefer a personalized approach, select "Cookie Preferences" to manage your preferences.',
+                  acceptAllBtn: 'Accept all',
+                  acceptNecessaryBtn: 'Reject all',
+                  showPreferencesBtn: 'Manage Cookie Preferences',
+                },
+                preferencesModal: {
+                  title: 'Manage cookie preferences',
+                  acceptAllBtn: 'Accept all',
+                  acceptNecessaryBtn: 'Reject all',
+                  savePreferencesBtn: 'Accept current selection',
+                  closeIconLabel: 'Close modal',
+                  sections: [
+                    {
+                      title: 'Somebody said ... cookies?',
+                      description: 'I want one!',
+                    },
+                    {
+                      title: 'Strictly Necessary cookies',
+                      description:
+                        'These cookies are essential for the proper functioning of the website and cannot be disabled.',
+
+                      //this field will generate a toggle linked to the 'necessary' category
+                      linkedCategory: 'necessary',
+                    },
+                    {
+                      title: 'Performance and Analytics',
+                      description:
+                        'These cookies collect information about how you use our website. All of the data is anonymized and cannot be used to identify you.',
+                      linkedCategory: 'analytics',
+                    },
+                    {
+                      title: 'More information',
+                      description:
+                        'For any queries in relation to my policy on cookies and your choices, please <a href="#contact-page">contact us</a>',
+                    },
+                  ],
+                },
+              },
+            },
+          },
+
+          onConsent: (consentData) => {
+            const allowsAnalytics =
+              consentData.cookie.categories.includes('analytics')
+            if (allowsAnalytics) {
+              initHotjar()
+              initGoogleAnalytics()
+            }
+          },
+        })
+      }
+      function initHotjar() {
+        ;(function (h, o, t, j, a, r) {
+          h.hj =
+            h.hj ||
+            function () {
+              ;(h.hj.q = h.hj.q || []).push(arguments)
+            }
+          h._hjSettings = {
+            hjid: 1322938,
+            hjsv: 6,
           }
-        h._hjSettings = {
-          hjid: 1322938,
-          hjsv: 6,
+          a = o.getElementsByTagName('head')[0]
+          r = o.createElement('script')
+          r.async = 1
+          r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv
+          a.appendChild(r)
+        })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=')
+      }
+      function initGoogleAnalytics() {
+        window.dataLayer = window.dataLayer || []
+
+        function gtag() {
+          dataLayer.push(arguments)
         }
-        a = o.getElementsByTagName('head')[0]
-        r = o.createElement('script')
-        r.async = 1
-        r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv
-        a.appendChild(r)
-      })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=')
+        gtag('js', new Date())
+
+        gtag('config', 'UA-140306226-1')
+      }
     </script>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
+
     <script
       async
       src="https://www.googletagmanager.com/gtag/js?id=UA-140306226-1"
     ></script>
-    <script async defer>
-      window.dataLayer = window.dataLayer || []
-
-      function gtag() {
-        dataLayer.push(arguments)
-      }
-      gtag('js', new Date())
-
-      gtag('config', 'UA-140306226-1')
-    </script>
   </head>
 
   <body>
