@@ -26,12 +26,13 @@ import * as Yup from 'yup'
 import { showNotification } from '../../../components/AppNotification'
 import Teaser from '../../../components/molecules/Teaser'
 import AccountOperation from '../../../components/templates/AccountOperation'
-import { login } from '../../../services/api/api'
+import { getEntraLoginUrl, login } from '../../../services/api/api'
 import {
   getAccessTokenFromLocalStorage,
   purgeAllSessionData,
 } from '../../../services/auth/auth'
 import { envRediLocation } from '../../../utils/env-redi-location'
+import './Login.scss'
 
 interface LoginFormValues {
   username: string
@@ -75,6 +76,14 @@ export default function Login() {
   >(null)
   const [tpProfileLocation, setTpProfileLocation] =
     useState<RediLocation | null>(null)
+
+  const loginWithEntraId = async () => {
+    try {
+      const url = await getEntraLoginUrl()
+    } catch (err) {
+      setLoginError('Could not log in with Entra')
+    }
+  }
 
   const submitForm = async () => {
     // LOG THE USER IN VIA LOOPBACK
@@ -291,15 +300,6 @@ export default function Login() {
               </Link>
             </Form.Field>
 
-            <Form.Field
-              className="submit-link submit-link--pre"
-              textTransform="uppercase"
-            >
-              <Link to="/front/login/entra-login">
-                Login with Microsoft
-              </Link>
-            </Form.Field>
-
             <Form.Field className="submit-spacer">
               <Button
                 fullWidth
@@ -312,6 +312,7 @@ export default function Login() {
               </Button>
             </Form.Field>
           </form>
+          <Button className="entra-id-login-button" onClick={() => loginWithEntraId()}>Log in with Microsoft</Button>
         </Columns.Column>
       </Columns>
     </AccountOperation>
