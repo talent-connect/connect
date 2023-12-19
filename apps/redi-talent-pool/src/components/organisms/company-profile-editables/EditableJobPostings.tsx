@@ -25,6 +25,7 @@ import {
 import { objectEntries } from '@talent-connect/typescript-utilities'
 import { formatDistance } from 'date-fns'
 import { useFormik } from 'formik'
+import { defaults, pick } from 'lodash'
 import { useCallback, useEffect, useState } from 'react'
 import { Columns, Element } from 'react-bulma-components'
 import { useQueryClient } from 'react-query'
@@ -172,7 +173,7 @@ const validationSchema = Yup.object().shape({
   ),
   contactFirstName: Yup.string().required('First name is required'),
   contactLastName: Yup.string().required('Last name is required'),
-  contactPhoneNumber: Yup.string().required('Phone number is required'),
+  contactPhoneNumber: Yup.string(),
   contactEmailAddress: Yup.string()
     .email('Invalid email address')
     .required('Email is required'),
@@ -197,6 +198,7 @@ function ModalForm({
   const myDataQuery = useMyTpDataQuery()
   const userContact = myDataQuery.data?.tpCurrentUserDataGet.userContact
   const companyData = myDataQuery.data?.tpCurrentUserDataGet.representedCompany
+
   const createMutation = useTpJobListingCreateMutation()
   const updateMutation = useTpJobListingPatchMutation()
   const deleteMutation = useTpJobListingDeleteMutation()
@@ -217,6 +219,7 @@ function ModalForm({
     values: Partial<AllTpJobListingFieldsFragment>,
     { resetForm }
   ) => {
+    console.log({ values })
     if (tpJobListingId === null) {
       // create new
       formik.setSubmitting(true)
@@ -252,40 +255,50 @@ function ModalForm({
     }
   }
 
-  let initialFormValues
-  if (tpJobListingId) {
-    // This is a bit of a hack, but it works for now.
-    // We need to make sure initialFormValues have string
-    // contact info otherwise Yup validation errors are weird.
-    initialFormValues = {
-      ...jobListing,
-      contactFirstName: jobListing?.contactFirstName || '',
-      contactLastName: jobListing?.contactLastName || '',
-      contactEmailAddress: jobListing?.contactEmailAddress || '',
-      contactPhoneNumber: jobListing?.contactPhoneNumber || '',
-    }
-  } else {
-    // Creating new job posting - use userContact for prefilling
-    initialFormValues = {
-      title: '',
-      location: '',
-      summary: '',
-      relatesToPositions: [],
-      idealTechnicalSkills: [],
-      employmentType: '',
-      languageRequirements: '',
-      isRemotePossible: false,
-      federalState: '',
-      salaryRange: '',
-      contactFirstName: userContact?.firstName || '',
-      contactLastName: userContact?.lastName || '',
-      contactEmailAddress: userContact?.email || '',
-      contactPhoneNumber: companyData?.telephoneNumber || '',
-    }
-  }
+  const initialValues = pick(
+    jobListing,
+    'title',
+    'location',
+    'summary',
+    'relatesToPositions',
+    'idealTechnicalSkills',
+    'employmentType',
+    'languageRequirements',
+    'isRemotePossible',
+    'federalState',
+    'salaryRange',
+    'contactFirstName',
+    'contactLastName',
+    'contactPhoneNumber',
+    'contactEmailAddress'
+  )
+
+  /**
+   * Setting initial values for contact details from user contact.
+   * Note: Since 'defaults' function doesn't work with null values,
+   * we need to also set initial values for these values to empty strings
+   * in the net step.
+   */
+  defaults(initialValues, {
+    contactFirstName: userContact?.firstName,
+    contactLastName: userContact?.lastName,
+    contactPhoneNumber: companyData.telephoneNumber,
+    contactEmailAddress: userContact?.email,
+  })
+
+  /**
+   * Need to set initial values for these values to empty strings
+   * Initial values for a new joblisting will be an empty string but
+   * for an existing joblisting it will be null, which will break the
+   * formik form validation
+   */
+  initialValues.contactFirstName = initialValues.contactFirstName ?? ''
+  initialValues.contactLastName = initialValues.contactLastName ?? ''
+  initialValues.contactPhoneNumber = initialValues.contactPhoneNumber ?? ''
+  initialValues.contactEmailAddress = initialValues.contactEmailAddress ?? ''
 
   const formik = useFormik({
-    initialValues: initialFormValues,
+    initialValues,
     onSubmit,
     validationSchema,
     enableReinitialize: true,
@@ -447,7 +460,7 @@ function ModalForm({
             {...formik}
           />
           <FormInput
-            label="Phone Number*"
+            label="Phone Number"
             placeholder="0049123456789"
             name="contactPhoneNumber"
             {...formik}
