@@ -1,8 +1,8 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Post } from '@nestjs/common';
 
 @Controller('auth')
 export class AuthEntraIdController {
-  @Get('entra-id')
+  @Post('entra-id')
   entraId() {
     return 'test'
   }

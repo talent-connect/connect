@@ -368,6 +368,9 @@ export const MENTORSHIP_MATCH_STATUS_LABELS: any = {
   INVALIDATED_AS_OTHER_MENTOR_ACCEPTED: 'Cancelled',
 }
 
+export const NEST_API_URL = process.env.NX_NEST_API_URL
+  ? process.env.NX_NEST_API_URL
+  : 'http://localhost:3333/api'
 export const API_URL = process.env.NX_API_URL
   ? process.env.NX_API_URL
   : 'http://localhost:3003/api'

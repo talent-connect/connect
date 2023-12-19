@@ -1,11 +1,11 @@
-import { API_URL } from '@talent-connect/shared-config'
+import { API_URL, NEST_API_URL } from '@talent-connect/shared-config'
 import { AccessToken } from '@talent-connect/shared-types'
 import axios from 'axios'
 import {
   getAccessTokenFromLocalStorage,
   purgeAllSessionData,
   saveAccessTokenToLocalStorage,
-  setGraphQlClientAuthHeader,
+  setGraphQlClientAuthHeader
 } from '../auth/auth'
 import { history } from '../history/history'
 import { http } from '../http/http'
@@ -49,6 +49,15 @@ export const login = async (
 export const logout = () => {
   purgeAllSessionData()
   history.push('/front/home')
+}
+
+export const getEntraLoginUrl = async (): Promise<string> => {
+  const res =  await http(`${NEST_API_URL}/auth/entra-id`, {
+    method: 'post',
+    data: {},
+  })
+
+  return res.data
 }
 
 export const requestResetPasswordEmail = async (email: string) => {
