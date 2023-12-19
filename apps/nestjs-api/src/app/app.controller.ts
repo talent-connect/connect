@@ -14,4 +14,9 @@ export class AppController {
   getData(@CurrentUser() user: CurrentUserInfo) {
     return this.appService.getData()
   }
+
+  @Get('open')
+  getOpenData() {
+    return 'hello stuart!'
+  }
 }

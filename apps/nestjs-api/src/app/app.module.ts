@@ -2,6 +2,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo'
 import { CacheModule, Module } from '@nestjs/common'
 import { EventEmitterModule } from '@nestjs/event-emitter'
 import { GraphQLModule } from '@nestjs/graphql'
+import { AuthBlablaModule } from '../auth-blabla/auth-blabla.module'
 import { AuthModule } from '../auth/auth.module'
 import { ConMenteeFavoritedMentorsModule } from '../con-mentee-favorited-mentors/con-mentee-favorited-mentors.module'
 import { ConMentoringSessionsModule } from '../con-mentoring-sessions/con-mentoring-sessions.module'
@@ -57,6 +58,7 @@ import { AppService } from './app.service'
     TpJobseekerCvModule,
     TpJobseekerFavoritedJobListingsModule,
     TpCompanyFavoritedJobseekerProfilesModule,
+    AuthBlablaModule,
   ],
   controllers: [AppController],
   providers: [AppService],
