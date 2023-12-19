@@ -291,6 +291,15 @@ export default function Login() {
               </Link>
             </Form.Field>
 
+            <Form.Field
+              className="submit-link submit-link--pre"
+              textTransform="uppercase"
+            >
+              <Link to="/front/login/entra-login">
+                Login with Microsoft
+              </Link>
+            </Form.Field>
+
             <Form.Field className="submit-spacer">
               <Button
                 fullWidth
