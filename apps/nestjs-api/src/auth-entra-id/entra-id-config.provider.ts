@@ -5,21 +5,20 @@ import { EntraIdLoginOptions } from './entra-id-login-options.interface'
 
 @Injectable()
 export class EntraIdConfigProvider {
-  readonly options: EntraIdLoginOptions
-  readonly msalConfig: msal.Configuration
+  private readonly options: EntraIdLoginOptions
+  private readonly msalConfig: msal.Configuration
 
   constructor(configService: ConfigService) {
     this.options = {
       scopes: [],
       redirectUri: configService.get<string>('NX_ENTRA_ID_FRONTEND_URI') + '/front/login',
       successRedirect: configService.get<string>('NX_ENTRA_ID_FRONTEND_URI') + '/front/login/entra-login',
+      cloudInstance: configService.get<string>('NX_ENTRA_ID_CLOUD_INSTANCE'),
     }
     this.msalConfig = {
       auth: {
         clientId: configService.get<string>('NX_ENTRA_ID_CLIENT_ID'), // 'Application (client) ID' of app registration in Azure portal - this value is a GUID
-        authority: configService.get<string>(
-          'NX_ENTRA_ID_CLOUD_INSTANCE' + '/consumers'
-        ), // Full directory URL, in the form of https://login.microsoftonline.com/<tenant>
+        authority: configService.get<string>('NX_ENTRA_ID_CLOUD_INSTANCE') + '/consumers', // Full directory URL, in the form of https://login.microsoftonline.com/<tenant>
         clientSecret: configService.get<string>('NX_ENTRA_ID_CLIENT_SECRET'), // Client secret generated from the app registration in Azure portal
       },
       system: {
@@ -35,5 +34,13 @@ export class EntraIdConfigProvider {
         },
       },
     }
+  }
+
+  getMsalConfig(): msal.Configuration {
+    return {auth: { ...this.msalConfig.auth }, system: { ...this.msalConfig.system }}
+  }
+
+  getOptions(): EntraIdLoginOptions {
+    return {...this.options}
   }
 }

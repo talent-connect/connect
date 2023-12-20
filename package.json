@@ -85,6 +85,7 @@
     "@nestjs/jwt": "^8.0.0",
     "@nestjs/passport": "^8.2.1",
     "@nestjs/platform-express": "^8.0.0",
+    "@nestjs/axios": "^3.0.1",
     "@react-pdf/renderer": "2.0.15",
     "@sentry/node": "^7.43.0",
     "@sentry/react": "^7.47.0",
