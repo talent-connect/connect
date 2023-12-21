@@ -51,13 +51,8 @@ export const logout = () => {
   history.push('/front/home')
 }
 
-export const getEntraLoginUrl = async (): Promise<string> => {
-  const res =  await http(`${NEST_API_URL}/auth/entra-id`, {
-    method: 'post',
-    data: {},
-  })
-
-  return res.data
+export const entraLoginUrl = (): string => {
+  return `${NEST_API_URL}/auth/entra-id`
 }
 
 export const requestResetPasswordEmail = async (email: string) => {

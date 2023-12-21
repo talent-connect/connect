@@ -26,7 +26,7 @@ import * as Yup from 'yup'
 import { showNotification } from '../../../components/AppNotification'
 import Teaser from '../../../components/molecules/Teaser'
 import AccountOperation from '../../../components/templates/AccountOperation'
-import { getEntraLoginUrl, login } from '../../../services/api/api'
+import { login } from '../../../services/api/api'
 import {
   getAccessTokenFromLocalStorage,
   purgeAllSessionData,
@@ -77,9 +77,9 @@ export default function Login() {
   const [tpProfileLocation, setTpProfileLocation] =
     useState<RediLocation | null>(null)
 
-  const loginWithEntraId = async () => {
+  const loginWithEntraId = () => {
     try {
-      const url = await getEntraLoginUrl()
+      history.push('/front/login/entra-redirect')
     } catch (err) {
       setLoginError('Could not log in with Entra')
     }

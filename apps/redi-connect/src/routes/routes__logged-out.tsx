@@ -5,6 +5,7 @@ import Mentee from '../pages/front/landing/Mentee'
 import Mentor from '../pages/front/landing/Mentor'
 import { RequestResetPasswordEmail } from '../pages/front/reset-password/RequestResetPasswordEmail'
 import { SetNewPassword } from '../pages/front/reset-password/SetNewPassword'
+import { entraLoginUrl } from '../services/api/api'
 import { RouteDefinition } from './index'
 const Login = lazy(
   () =>
@@ -78,6 +79,14 @@ export const routes__loggedOut: RouteDefinition[] = [
   {
     path: '/front/login/entra-login',
     component: EntraLogin,
+    exact: true,
+  },
+  {
+    path: '/front/login/entra-redirect',
+    component: () => {
+      window.location.href = entraLoginUrl()
+      return null
+    },
     exact: true,
   },
   {

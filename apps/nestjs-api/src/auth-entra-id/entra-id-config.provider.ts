@@ -5,14 +5,14 @@ import { EntraIdLoginOptions } from './entra-id-login-options.interface'
 
 @Injectable()
 export class EntraIdConfigProvider {
-  private readonly options: EntraIdLoginOptions
-  private readonly msalConfig: msal.Configuration
+  readonly options: EntraIdLoginOptions
+  readonly msalConfig: msal.Configuration
 
   constructor(configService: ConfigService) {
     this.options = {
       scopes: [],
-      redirectUri: configService.get<string>('NX_ENTRA_ID_FRONTEND_URI') + '/front/login',
-      successRedirect: configService.get<string>('NX_ENTRA_ID_FRONTEND_URI') + '/front/login/entra-login',
+      redirectUri: configService.get<string>('NX_NESTJS_API_URI') + '/auth/entra-redirect', // to backend
+      successRedirect: configService.get<string>('NX_FRONTEND_URI') + '/front/login/entra-login', // to frontend
       cloudInstance: configService.get<string>('NX_ENTRA_ID_CLOUD_INSTANCE'),
     }
     this.msalConfig = {
@@ -34,13 +34,5 @@ export class EntraIdConfigProvider {
         },
       },
     }
-  }
-
-  getMsalConfig(): msal.Configuration {
-    return {auth: { ...this.msalConfig.auth }, system: { ...this.msalConfig.system }}
-  }
-
-  getOptions(): EntraIdLoginOptions {
-    return {...this.options}
   }
 }
