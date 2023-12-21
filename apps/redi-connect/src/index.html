@@ -58,7 +58,9 @@
               enabled: true, // this category is enabled by default
               readOnly: true, // this category cannot be disabled
             },
-            analytics: {},
+            analytics: {
+              enabled: true,
+            },
           },
 
           language: {
@@ -66,7 +68,7 @@
             translations: {
               en: {
                 consentModal: {
-                  title: 'Welcome to ReDI Connect.',
+                  title: '🍪 Cookie Information: Welcome to ReDI Connect.',
                   description:
                     'To create the best mentoring experience on ReDI Connect, we use cookies. These cookies are crucial for the smooth operation of our platform and provide insights into how you engage with mentoring content.<br /><br /><em>Your Choices Matter:</em><br /> Click "Accept all" to allow the use of all cookies. If you prefer a personalized approach, select "Cookie Preferences" to manage your preferences.',
                   acceptAllBtn: 'Accept all',
@@ -81,8 +83,8 @@
                   closeIconLabel: 'Close modal',
                   sections: [
                     {
-                      title: 'Somebody said ... cookies?',
-                      description: 'I want one!',
+                      description:
+                        'At ReDI School, we value your privacy and strive to provide you with control over your online experience. Please customize your cookie settings below to align with your preferences.',
                     },
                     {
                       title: 'Strictly Necessary cookies',
@@ -95,13 +97,8 @@
                     {
                       title: 'Performance and Analytics',
                       description:
-                        'These cookies collect information about how you use our website. All of the data is anonymized and cannot be used to identify you.',
+                        'Enable these cookies to help us improve our platform by collecting and reporting information on how you use it. The data is anonymized and cannot be used to identify you.',
                       linkedCategory: 'analytics',
-                    },
-                    {
-                      title: 'More information',
-                      description:
-                        'For any queries in relation to my policy on cookies and your choices, please <a href="#contact-page">contact us</a>',
                     },
                   ],
                 },
