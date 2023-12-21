@@ -122,7 +122,9 @@ export default function Login() {
         return
       }
 
-      return history.push('/app/me')
+      const urlParams = new URLSearchParams(window.location.search)
+      const goto = urlParams.get('goto') ?? '/app/me'
+      return history.push(goto)
     } catch (err) {
       // Do nothing
     }

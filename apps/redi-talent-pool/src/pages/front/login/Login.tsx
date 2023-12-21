@@ -219,7 +219,9 @@ class PostLoginSuccessHandler {
       return history.push('/front/signup-complete')
     }
     if (userHasATpProfile) {
-      return history.push('/app/me')
+      const urlParams = new URLSearchParams(window.location.search)
+      const goto = urlParams.get('goto') ?? '/app/me'
+      return history.push(goto)
     }
 
     throw new Error('User does not have a TP profile')
