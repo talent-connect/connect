@@ -1,4 +1,5 @@
 import {
+  AuthorizationCodeRequest,
   ClientApplication,
   ConfidentialClientApplication,
   Configuration,
@@ -7,13 +8,16 @@ import {
 import { HttpService } from '@nestjs/axios'
 import { Injectable } from '@nestjs/common'
 import { AxiosError, AxiosRequestConfig } from 'axios'
+import { NextFunction, Request, Response } from 'express'
 import { firstValueFrom } from 'rxjs'
 import { catchError } from 'rxjs/operators'
 import { EntraIdConfigProvider } from './entra-id-config.provider'
+import { VerificationData } from './verification-data.interface'
 
 @Injectable()
 export class EntraIdService {
-  cryptoProvider = new CryptoProvider()
+  readonly verifierCookieName = 'entra_id_verifier'
+  private readonly cryptoProvider = new CryptoProvider()
 
   constructor(
     private readonly configProvider: EntraIdConfigProvider,
@@ -26,6 +30,60 @@ export class EntraIdService {
     return new Promise((resolve) => {
       return resolve(new ConfidentialClientApplication(config))
     })
+  }
+
+  async handleAuthRedirect(req: Request, res: Response, next: NextFunction) {
+    const body = req.body
+    if (!body.state || !body.code) {
+      console.error('malformed request body from entra id')
+      throw 'could not log in'
+    }
+
+    if (!(this.verifierCookieName in req.cookies)) {
+      throw 'missing verification data'
+    }
+
+    try {
+      const verificationData = this.decodeObject(
+        req.cookies[this.verifierCookieName]
+      ) as VerificationData
+
+      verificationData.code = body.code
+
+      const authCodeRequest: AuthorizationCodeRequest = {
+        scopes: verificationData.scopes,
+        redirectUri: verificationData.redirectUri,
+        state: verificationData.state,
+        codeVerifier: verificationData.codeVerifier,
+        code: body.code,
+      }
+
+      const clientApplication = await this.getClientApplication()
+
+      // throws error if verification is false
+      const tokenResponse = await clientApplication.acquireTokenByCode(
+        authCodeRequest,
+        req.body
+      )
+      const decryptedState = this.decodeObject(body.state)
+      // TODO - do legacy salesforce validation and add these values to token
+
+      res.redirect(this.configProvider.options.successRedirect)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  encodeObject(o: object): string {
+    return this.cryptoProvider.base64Encode(JSON.stringify(o))
+  }
+
+  decodeObject(s: string): object {
+    return JSON.parse(this.cryptoProvider.base64Decode(s))
+  }
+
+  async generatePkceCodes() {
+    return await this.cryptoProvider.generatePkceCodes()
   }
 
   private async prepareConfig(): Promise<Configuration> {
