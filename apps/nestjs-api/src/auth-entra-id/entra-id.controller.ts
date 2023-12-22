@@ -6,20 +6,22 @@ import { EntraIdLoginMiddleware } from './entra-id-login.middleware';
 export class EntraIdController {
   constructor(private readonly entraIdService: EntraIdLoginMiddleware) {}
 
+  // empty route to trigger the entra-id auth middleware
   @Get('entra-id')
-  entraId(@Req() req: Request, @Res() res: Response, @Next() next: NextFunction) {
+  entraId() {
     return ''
   }
 
   @Get('entra-redirect')
   redirectGet(@Req() req: Request, @Res() res: Response, @Next() next: NextFunction) {
-    console.log('get entra-redirect', req)
+    console.log('get entra-redirect', req.body)
     return ''
   }
 
   @Post('entra-redirect')
-  redirect(@Req() req: Request, @Res() res: Response, @Next() next: NextFunction) {
-    console.log('post entra-redirect', req)
+  redirectPost(@Req() req: Request, @Res() res: Response, @Next() next: NextFunction) {
+    
+    console.log('post entra-redirect', req.body)
     return ''
   }
 }
