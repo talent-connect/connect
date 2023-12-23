@@ -77,6 +77,7 @@ export default function Login() {
   const [tpProfileLocation, setTpProfileLocation] =
     useState<RediLocation | null>(null)
 
+  const entraIdLoginEnabled = process.env.NX_ENTRA_ID_ENABLED
   const loginWithEntraId = () => {
     try {
       history.push('/front/login/entra-redirect')
@@ -313,7 +314,14 @@ export default function Login() {
               </Button>
             </Form.Field>
           </form>
-          <Button className="entra-id-login-button" onClick={() => loginWithEntraId()}>Log in with Microsoft</Button>
+          {entraIdLoginEnabled && (
+            <Button
+              className="entra-id-login-button"
+              onClick={() => loginWithEntraId()}
+            >
+              Log in with Microsoft
+            </Button>
+          )}
         </Columns.Column>
       </Columns>
     </AccountOperation>
