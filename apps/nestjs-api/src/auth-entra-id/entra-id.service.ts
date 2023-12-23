@@ -1,4 +1,5 @@
 import {
+  AuthenticationResult,
   AuthorizationCodeRequest,
   ClientApplication,
   ConfidentialClientApplication,
@@ -44,30 +45,13 @@ export class EntraIdService {
     }
 
     try {
-      const verificationData = this.decodeObject(
-        req.cookies[this.verifierCookieName]
-      ) as VerificationData
-
-      verificationData.code = body.code
-
-      const authCodeRequest: AuthorizationCodeRequest = {
-        scopes: verificationData.scopes,
-        redirectUri: verificationData.redirectUri,
-        state: verificationData.state,
-        codeVerifier: verificationData.codeVerifier,
-        code: body.code,
-      }
-
-      const clientApplication = await this.getClientApplication()
-
-      // throws error if verification is false
-      const tokenResponse = await clientApplication.acquireTokenByCode(
-        authCodeRequest,
-        req.body
-      )
+      const tokenResponse = await this.verifyToken(req, res)
       const decryptedState = this.decodeObject(body.state)
-      // TODO - do legacy salesforce validation and add these values to token
 
+      /**
+       * TODO - do legacy salesforce validation and add these values to token
+       * for now, we'll just return to the success redirect page
+       */
       res.redirect(this.configProvider.options.successRedirect)
     } catch (error) {
       next(error)
@@ -84,6 +68,27 @@ export class EntraIdService {
 
   async generatePkceCodes() {
     return await this.cryptoProvider.generatePkceCodes()
+  }
+
+  private async verifyToken(req: Request, res: Response): Promise<AuthenticationResult> {
+    const verificationData = this.decodeObject(
+      req.cookies[this.verifierCookieName]
+    ) as VerificationData
+
+    res.clearCookie(this.verifierCookieName)
+
+    const authCodeRequest: AuthorizationCodeRequest = {
+      scopes: verificationData.scopes,
+      redirectUri: verificationData.redirectUri,
+      state: verificationData.state,
+      codeVerifier: verificationData.codeVerifier,
+      code: req.body.code,
+    }
+
+    const clientApplication = await this.getClientApplication()
+
+    // throws error if verification is false
+    return clientApplication.acquireTokenByCode(authCodeRequest, req.body)
   }
 
   private async prepareConfig(): Promise<Configuration> {

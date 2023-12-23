@@ -81,7 +81,8 @@ export default function Login() {
     try {
       history.push('/front/login/entra-redirect')
     } catch (err) {
-      setLoginError('Could not log in with Entra')
+      console.error(err)
+      setLoginError('Could not log in with microsoft')
     }
   }
 

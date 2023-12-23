@@ -12,15 +12,8 @@ export class EntraIdController {
     return ''
   }
 
-  @Get('entra-redirect')
-  redirectGet(@Req() req: Request, @Res() res: Response, @Next() next: NextFunction) {
-    console.log('get entra-redirect', req.body)
-    return ''
-  }
-
   @Post('entra-redirect')
   redirectPost(@Req() req: Request, @Res() res: Response, @Next() next: NextFunction) {
-    
     this.entraIdService.handleAuthRedirect(req, res, next)
     return ''
   }

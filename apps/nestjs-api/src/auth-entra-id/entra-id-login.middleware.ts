@@ -1,5 +1,4 @@
 import { AuthorizationUrlRequest, ResponseMode } from '@azure/msal-node'
-
 import { Injectable, NestMiddleware } from '@nestjs/common'
 import { NextFunction, Request, Response } from 'express'
 import { EntraIdConfigProvider } from './entra-id-config.provider'
@@ -23,27 +22,13 @@ export class EntraIdLoginMiddleware implements NestMiddleware {
   }
 
   private async redirectToAuthCodeUrl(res: Response, next: NextFunction) {
-    // Generate PKCE Codes before starting the authorization flow
     const { verifier, challenge } = await this.idService.generatePkceCodes()
 
-    const verificationData = {
-      ...this.authorizationUrlRequestParams,
-      code: '',
-      codeVerifier: verifier
-    } as VerificationData
-
-    res.cookie(this.idService.verifierCookieName, this.idService.encodeObject(verificationData))
-
-    const authCodeUrlRequest = {
-      ...this.authorizationUrlRequestParams,
-      responseMode: ResponseMode.FORM_POST, // recommended for confidential clients
-      codeChallenge: challenge,
-      codeChallengeMethod: 'S256',
-    }
+    this.storeVerificationCookie(verifier, res)
 
     const clientApplication = await this.idService.getClientApplication()
     clientApplication
-      .getAuthCodeUrl(authCodeUrlRequest)
+      .getAuthCodeUrl(this.prepareAuthCodeUrlRequest(challenge))
       .then((url) => res.redirect(url))
       .catch((err) => {
         console.error(err)
@@ -51,15 +36,39 @@ export class EntraIdLoginMiddleware implements NestMiddleware {
       })
   }
 
+  private storeVerificationCookie(verifier: string, res: Response) {
+    const verificationData = {
+      ...this.authorizationUrlRequestParams,
+      code: '',
+      codeVerifier: verifier,
+    } as VerificationData
+
+    res.cookie(
+      this.idService.verifierCookieName,
+      this.idService.encodeObject(verificationData),
+      { maxAge: 2 * 60 * 60, httpOnly: true }
+    )
+  }
+
+  private prepareAuthCodeUrlRequest(
+    challenge: string
+  ): AuthorizationUrlRequest {
+    return {
+      ...this.authorizationUrlRequestParams,
+      responseMode: ResponseMode.FORM_POST, // recommended for confidential clients
+      codeChallenge: challenge,
+      codeChallengeMethod: 'S256',
+    }
+  }
+
   private prepareAuthCodeRequestParams(): AuthorizationUrlRequest {
-    const options = this.configProvider.options
     /**
      * MSAL Node library allows you to pass your custom state as state parameter in the Request object.
      * The state parameter can also be used to encode information of the app's state before redirect.
      * You can pass the user's state in the app, such as the page or view they were on, as input to this parameter.
      */
     const state: string = this.idService.encodeObject({
-      successRedirect: options.successRedirect || '/',
+      successRedirect: this.configProvider.options.successRedirect || '/',
     })
 
     return {
@@ -69,8 +78,8 @@ export class EntraIdLoginMiddleware implements NestMiddleware {
        * By default, MSAL Node will add OIDC scopes to the auth code url request. For more information, visit:
        * https://docs.microsoft.com/azure/active-directory/develop/v2-permissions-and-consent#openid-connect-scopes
        */
-      scopes: options.scopes || [],
-      redirectUri: options.redirectUri,
+      scopes: this.configProvider.options.scopes || [],
+      redirectUri: this.configProvider.options.redirectUri,
     }
   }
 }
