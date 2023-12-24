@@ -6,7 +6,7 @@ import {
 } from '@talent-connect/common-types'
 import { Cache } from 'cache-manager'
 import * as jsforce from 'jsforce'
-import { omit, pick } from 'lodash'
+import { isArray, omit, pick } from 'lodash'
 const async = require('async')
 const readline = require('readline')
 const rl = readline.createInterface({
@@ -107,12 +107,23 @@ export class SfApiRepository {
         .sobject(objectName)
         .find({}, objectFields, { limit, offset })
         .where(baseObjectFilter)
+
       if (orderBy) {
-        const [field, direction] = orderBy
-        let sortParameter = direction === 'ASC' || !direction ? '' : '-'
-        sortParameter += field
-        query = query.sort(sortParameter)
+        // To support multiple orderBy with backwards compatibility,
+        // we allow orderBy to be a single tuple but convert it to an array of tuples.
+        const orderByArr = isArray(orderBy) ? orderBy : [orderBy]
+
+        // Loop through all orderBy tuples and add them to the query.
+        if (orderByArr.length > 0) {
+          orderByArr.forEach((orderByTuple) => {
+            const [field, direction] = orderByTuple
+            let sortParameter = direction === 'ASC' || !direction ? '' : '-'
+            sortParameter += field
+            query = query.sort(sortParameter)
+          })
+        }
       }
+
       if (childObjects) {
         childObjects.forEach((childObject) => {
           let sub = query.include(childObject.name).select(childObject.fields)
@@ -158,9 +169,9 @@ export class SfApiRepository {
 
       console.log(`[SfApiRepository] Executing SOQL: ${soql}`)
 
-      let records = []
+      const records = []
 
-      let result = this.connection.query(soql)
+      const result = this.connection.query(soql)
 
       result.on('record', function (record) {
         records.push(record)
@@ -323,8 +334,12 @@ interface FindRecordsParams {
   objectFields: string[]
   filter?: any
   limit?: number
-  orderBy?: OrderByTuple
+  orderBy?: OrderByTuple | OrderByTuple[]
   offset?: number
-  childObjects?: { name: string; fields: string[]; orderBy?: OrderByTuple }[]
+  childObjects?: {
+    name: string
+    fields: string[]
+    orderBy?: OrderByTuple | OrderByTuple[]
+  }[]
   rawWhereClause?: string
 }

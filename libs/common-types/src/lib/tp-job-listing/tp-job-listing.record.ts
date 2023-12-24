@@ -37,6 +37,9 @@ export class TpJobListingRecord extends Record<TpJobListingRecordProps> {
       'Account__r.Name',
       'Account__r.ReDI_Avatar_Image_URL__c',
     ],
-    SALESFORCE_ORDER_BY: ['LastModifiedDate', 'DESC'],
+    SALESFORCE_ORDER_BY: [
+      ['LastModifiedDate', 'DESC'],
+      ['Account__r.Career_Partner__c', 'DESC'],
+    ],
   }
 }
