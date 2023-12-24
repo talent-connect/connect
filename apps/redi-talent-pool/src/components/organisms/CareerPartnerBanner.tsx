@@ -30,10 +30,8 @@ const CareerPartnerBanner: React.FC<CareerPartnerBannerProps> = ({
         </span>
       </div>
       <div className="career-partner-banner-bottom">
-        <p>
-          Your job postings get top visibility for jobseekers. Thanks for being
-          part of our thriving community!
-        </p>
+        Your job postings get top visibility for jobseekers. Thanks for being
+        part of our thriving community!
       </div>
     </div>
   )
