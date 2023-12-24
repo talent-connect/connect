@@ -4,6 +4,7 @@ import { ReactComponent as Account } from '../../assets/images/account.svg'
 import { ReactComponent as ArrowLeft } from '../../assets/images/arrow-left.svg'
 import { ReactComponent as ArrowRight } from '../../assets/images/arrow-right.svg'
 import { ReactComponent as Arrow } from '../../assets/images/arrow-step.svg'
+import { ReactComponent as BadgeCP } from '../../assets/images/badge-cp.svg'
 import { ReactComponent as Calendar } from '../../assets/images/calendar.svg'
 import { ReactComponent as Cancel } from '../../assets/images/cancel.svg'
 import { ReactComponent as Career } from '../../assets/images/career.svg'
@@ -28,7 +29,6 @@ import { ReactComponent as Plus } from '../../assets/images/plus.svg'
 import { ReactComponent as Search } from '../../assets/images/search.svg'
 import { ReactComponent as TpPlus } from '../../assets/images/tp-plus.svg'
 import { ReactComponent as Twitter } from '../../assets/images/twitter.svg'
-
 import './Icon.scss'
 
 export interface IconProps {
@@ -37,6 +37,7 @@ export interface IconProps {
     | 'arrowRight'
     | 'hamburger'
     | 'account'
+    | 'careerPartnerBadge'
     | 'check'
     | 'edit'
     | 'cancel'
@@ -72,6 +73,7 @@ const Icons = {
   arrowLeft: ArrowLeft,
   arrowRight: ArrowRight,
   account: Account,
+  careerPartnerBadge: BadgeCP,
   hamburger: Hamburger,
   check: Checkmark,
   edit: Edit,

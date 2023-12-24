@@ -14,12 +14,13 @@ import {
 import { AllTpCompanyProfileFieldsFragment } from 'libs/data-access/src/lib/tp/company-profiles/tp-company-profile.fragment.generated'
 import { useState } from 'react'
 import { Columns, Content, Notification } from 'react-bulma-components'
-import { ExpiredJobListings } from '../../../components/organisms/ExpiredJobListings'
+import CareerPartnerBanner from '../../../components/organisms/CareerPartnerBanner'
 import { EditableAbout } from '../../../components/organisms/company-profile-editables/EditableAbout'
 import { EditableContact } from '../../../components/organisms/company-profile-editables/EditableContact'
 import { EditableDetails } from '../../../components/organisms/company-profile-editables/EditableDetails'
 import { EditableJobPostings } from '../../../components/organisms/company-profile-editables/EditableJobPostings'
 import { EditableNamePhotoLocation } from '../../../components/organisms/company-profile-editables/EditableNamePhotoLocation'
+import { ExpiredJobListings } from '../../../components/organisms/ExpiredJobListings'
 import { LoggedIn } from '../../../components/templates'
 import { useIsBusy } from '../../../hooks/useIsBusy'
 import { queryClient } from '../../../services/api/api'
@@ -125,6 +126,10 @@ export function MeCompany() {
               on <b>22/02/2024</b>.
             </Checkbox> */}
           </div>
+          <CareerPartnerBanner
+            partnerSince={companyProfile.createdAt}
+            jobsPosted={jobListings?.length ?? 0}
+          />
           <EditableAbout companyProfile={companyProfile} />
         </Columns.Column>
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'two-fifths' }}>
