@@ -61,7 +61,12 @@
   &-bottom {
     padding-top: 16px;
 
-    font-size: 13.5px;
-    line-height: 20px; /* 148.148% */
+    font-size: 16px;
+    line-height: 25px; /* 156.25% */
+
+    @media (max-width: 768px) {
+      font-size: 13.5px;
+      line-height: 20px; /* 148.148% */
+    }
   }
 }
