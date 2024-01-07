@@ -317,7 +317,7 @@ export default function Login() {
           {entraIdLoginEnabled && (
             <Button
               className="entra-id-login-button"
-              onClick={() => loginWithEntraId()}
+              onClick={loginWithEntraId}
             >
               Log in with Microsoft
             </Button>
