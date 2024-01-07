@@ -28,9 +28,7 @@ export class EntraIdService {
   async getClientApplication(): Promise<ClientApplication> {
     const config = await this.prepareConfig()
 
-    return new Promise((resolve) => {
-      return resolve(new ConfidentialClientApplication(config))
-    })
+    return new ConfidentialClientApplication(config)
   }
 
   async handleAuthRedirect(req: Request, res: Response, next: NextFunction) {
