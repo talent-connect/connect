@@ -1,4 +1,4 @@
-import { API_URL, NEST_API_URL } from '@talent-connect/shared-config'
+import { API_URL } from '@talent-connect/shared-config'
 import { AccessToken } from '@talent-connect/shared-types'
 import axios from 'axios'
 import {
@@ -49,10 +49,6 @@ export const login = async (
 export const logout = () => {
   purgeAllSessionData()
   history.push('/front/home')
-}
-
-export const entraLoginUrl = (): string => {
-  return `${NEST_API_URL}/auth/entra-id`
 }
 
 export const requestResetPasswordEmail = async (email: string) => {
