@@ -1,7 +1,7 @@
 import { NEST_API_URL } from '@talent-connect/shared-config'
 import { GraphQLClient } from 'graphql-request'
 
-export const graphqlClient = new GraphQLClient(NEST_API_URL, {
+export const graphqlClient = new GraphQLClient(`${NEST_API_URL}/graphql`, {
   // headers: {
   //   authorization: 'Bearer MY_TOKEN',
   // },

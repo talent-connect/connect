@@ -369,8 +369,8 @@ export const MENTORSHIP_MATCH_STATUS_LABELS: any = {
 }
 
 export const NEST_API_URL = process.env.NODE_ENV === 'production'
-  ? 'https://connect-nestjs-api.redi-school.org/graphql'
-  : 'http://localhost:3333/graphql'
+  ? 'https://connect-nestjs-api.redi-school.org'
+  : 'http://localhost:3333'
 export const API_URL = process.env.NX_API_URL
   ? process.env.NX_API_URL
   : 'http://localhost:3003/api'

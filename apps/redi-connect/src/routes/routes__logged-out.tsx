@@ -84,7 +84,7 @@ export const routes__loggedOut: RouteDefinition[] = [
   {
     path: '/front/login/entra-redirect',
     component: () => {
-      window.location.href = `${NEST_API_URL}/auth/entra-id`
+      window.location.href = `${NEST_API_URL}/api/auth/entra-id`
       return null
     },
     exact: true,

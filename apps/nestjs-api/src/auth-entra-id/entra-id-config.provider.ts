@@ -1,6 +1,7 @@
 import msal, { LogLevel } from '@azure/msal-node'
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import { NEST_API_URL } from '@talent-connect/shared-config'
 import { EntraIdLoginOptions } from './entra-id-login-options.interface'
 
 @Injectable()
@@ -11,7 +12,7 @@ export class EntraIdConfigProvider {
   constructor(configService: ConfigService) {
     this.options = {
       scopes: [],
-      redirectUri: configService.get<string>('NX_NESTJS_API_URI') + '/auth/entra-redirect', // to backend
+      redirectUri: `${NEST_API_URL}/api/auth/entra-redirect`, // to backend
       successRedirect: configService.get<string>('NX_FRONTEND_URI') + '/front/login/entra-login', // to frontend
       cloudInstance: configService.get<string>('NX_ENTRA_ID_CLOUD_INSTANCE'),
     }
