@@ -98,13 +98,15 @@ function LoggedIn({ children }: Props) {
               className="column--main-content"
             >
               {profile?.userType === 'MENTEE' &&
-                profile?.profileStatus === ConnectProfileStatus.Pending && (
+                profile?.profileStatus ===
+                  ConnectProfileStatus.DraftingProfile && (
                   <RediNotification>
                     {t('loggedInArea.profile.notification.pendingMentee')}
                   </RediNotification>
                 )}
               {profile?.userType === 'MENTOR' &&
-                profile?.profileStatus === ConnectProfileStatus.Pending && (
+                profile?.profileStatus ===
+                  ConnectProfileStatus.DraftingProfile && (
                   <RediNotification>
                     {t('loggedInArea.profile.notification.pendingMentor')}
                   </RediNotification>
