@@ -179,6 +179,7 @@
     font-weight: 400;
     color: var(--grey, #a0a0a0);
     white-space: nowrap;
+    height: 16px;
 
     @include mobile() {
       margin-top: 16px;
