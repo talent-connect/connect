@@ -9,7 +9,7 @@ import { ReactComponent as StepPendingImage } from '../../../assets/pending.svg'
 
 import { CompanyTalentPoolState } from '@talent-connect/data-access'
 import { TpCompanyProfileOnboardigStepsProfilePropFragment } from './TpCompanyProfileOnboardingSteps.generated'
-
+import './TpCompanyProfileOnboardingSteps.scss'
 const steps = [
   { number: 1, label: 'Complete your profile' },
   { number: 2, label: 'Post a job' },
