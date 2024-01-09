@@ -53,8 +53,8 @@ export function OnboardingSteps({
   )
 
   return (
-    <div className="onboarding-steps">
-      <div className="onboarding-steps--header">
+    <div className="company-onboarding-steps">
+      <div className="company-onboarding-steps--header">
         <Element
           renderAs="h4"
           textAlignment="centered"
@@ -68,7 +68,7 @@ export function OnboardingSteps({
       {steps.map((step, index) => (
         <div
           key={index}
-          className={classnames('onboarding-steps--item', {
+          className={classnames('company-onboarding-steps--item', {
             'current-step': step.number === currentStep[0],
             'completed-step': step.number < currentStep[0],
           })}
