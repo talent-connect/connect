@@ -186,7 +186,8 @@ export enum ConnectProfileStatus {
   Approved = 'APPROVED',
   Deactivated = 'DEACTIVATED',
   Pending = 'PENDING',
-  Rejected = 'REJECTED'
+  Rejected = 'REJECTED',
+  SubmittedForReview = 'SUBMITTED_FOR_REVIEW'
 }
 
 export type CreateConMentoringSessionInput = {
@@ -252,9 +253,6 @@ export type FindAllVisibleTpJobseekerDirectoryEntriesFilter = {
   desiredPositions?: InputMaybe<Array<TpDesiredPosition>>;
   employmentTypes?: InputMaybe<Array<TpEmploymentType>>;
   federalStates?: InputMaybe<Array<FederalState>>;
-  isJobFair2022Participant?: InputMaybe<Scalars['Boolean']>;
-  isJobFair2023Participant?: InputMaybe<Scalars['Boolean']>;
-  joinsBerlin23SummerJobFair?: InputMaybe<Scalars['Boolean']>;
   joinsDusseldorf24WinterJobFair?: InputMaybe<Scalars['Boolean']>;
   joinsMunich24SummerJobFair?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;

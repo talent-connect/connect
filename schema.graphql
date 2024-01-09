@@ -160,6 +160,7 @@ enum ConnectProfileStatus {
   DEACTIVATED
   PENDING
   REJECTED
+  SUBMITTED_FOR_REVIEW
 }
 
 input CreateConMentoringSessionInput {
@@ -230,9 +231,6 @@ input FindAllVisibleTpJobseekerDirectoryEntriesFilter {
   desiredPositions: [TpDesiredPosition!]
   employmentTypes: [TpEmploymentType!]
   federalStates: [FederalState!]
-  isJobFair2022Participant: Boolean
-  isJobFair2023Participant: Boolean
-  joinsBerlin23SummerJobFair: Boolean
   joinsDusseldorf24WinterJobFair: Boolean
   joinsMunich24SummerJobFair: Boolean
   name: String
