@@ -230,9 +230,6 @@ input FindAllVisibleTpJobseekerDirectoryEntriesFilter {
   desiredPositions: [TpDesiredPosition!]
   employmentTypes: [TpEmploymentType!]
   federalStates: [FederalState!]
-  isJobFair2022Participant: Boolean
-  isJobFair2023Participant: Boolean
-  joinsBerlin23SummerJobFair: Boolean
   joinsDusseldorf24WinterJobFair: Boolean
   joinsMunich24SummerJobFair: Boolean
   name: String
@@ -800,6 +797,7 @@ type TpJobListing {
   federalState: FederalState
   id: ID!
   idealTechnicalSkills: [TpTechnicalSkill!]
+  isFromCareerPartner: Boolean!
   isRemotePossible: Boolean
   languageRequirements: String
   location: String

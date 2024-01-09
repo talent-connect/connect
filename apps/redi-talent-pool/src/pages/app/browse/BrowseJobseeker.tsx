@@ -36,6 +36,7 @@ import {
 } from 'use-query-params'
 import { JobListingCard } from '../../../components/organisms/JobListingCard'
 import { LoggedIn } from '../../../components/templates'
+import { careerPartnerSortFn } from '../../../utils/sort-job-listings'
 import {
   useTpJobListingMarkAsFavouriteMutation,
   useTpJobListingUnfavouriteMutation,
@@ -83,7 +84,14 @@ export function BrowseJobseeker() {
       // joinsMunich24SummerJobFair,
     },
   })
-  const jobListings = jobListingsQuery.data?.tpJobListings
+
+  /**
+   * This sorting has to be done here because of several reasons:
+   * - Backend currently supports only sorting by one field, which is used for sorting by date
+   * - All fetch job listing queries are using one findAll query, which means this sort would have unexpected side effects
+   */
+  const jobListings =
+    jobListingsQuery.data?.tpJobListings.sort(careerPartnerSortFn)
 
   const handleFavoriteJobListing = async (tpJobListingId: string) => {
     const isFavorite =
