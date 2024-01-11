@@ -126,10 +126,12 @@ export function MeCompany() {
               on <b>22/02/2024</b>.
             </Checkbox> */}
           </div>
-          <CareerPartnerBanner
-            partnerSince={companyProfile.createdAt}
-            jobsPosted={jobListings?.length ?? 0}
-          />
+          {companyProfile.isCareerPartner ? (
+            <CareerPartnerBanner
+              partnerSince={new Date(2024, 0, 1)} // Passing a date in 2024. The Day and Month are ignored
+              jobsPosted={jobListings?.length ?? 0}
+            />
+          ) : null}
           <EditableAbout companyProfile={companyProfile} />
         </Columns.Column>
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'two-fifths' }}>

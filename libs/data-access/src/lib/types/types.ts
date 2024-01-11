@@ -972,6 +972,7 @@ export type TpCompanyProfile = {
   createdAt: Scalars['DateTime'];
   id: Scalars['ID'];
   industry?: Maybe<Scalars['String']>;
+  isCareerPartner: Scalars['Boolean'];
   isProfileVisibleToJobseekers: Scalars['Boolean'];
   joinsDusseldorf24WinterJobFair?: Maybe<Scalars['Boolean']>;
   joinsMunich24SummerJobFair?: Maybe<Scalars['Boolean']>;

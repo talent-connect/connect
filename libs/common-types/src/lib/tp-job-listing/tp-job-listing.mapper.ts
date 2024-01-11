@@ -46,7 +46,7 @@ export class TpJobListingMapper
     props.companyName = raw.props.Account__r.Name
     props.profileAvatarImageS3Key =
       raw.props.Account__r.ReDI_Avatar_Image_URL__c
-    props.isFromCareerPartner = raw.props.Account__r.Career_Partner__c
+    props.isFromCareerPartner = raw.props.Account__r.ReDI_Career_Partner__c
 
     const entity = TpJobListingEntity.create(props)
 

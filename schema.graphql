@@ -646,6 +646,7 @@ type TpCompanyProfile {
   createdAt: DateTime!
   id: ID!
   industry: String
+  isCareerPartner: Boolean!
   isProfileVisibleToJobseekers: Boolean!
   joinsDusseldorf24WinterJobFair: Boolean
   joinsMunich24SummerJobFair: Boolean
