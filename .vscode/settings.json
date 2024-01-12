@@ -14,7 +14,9 @@
       }
     ]
   },
-  "editor.codeActionsOnSave": { "source.organizeImports": true },
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  },
   "explorer.fileNesting.patterns": {
     "*.ts": "${capture}.js, ${capture}.typegen.ts, ${capture}.graphql, ${capture}.generated.ts",
     "*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
@@ -23,5 +25,9 @@
     "tsconfig.json": "tsconfig.*.json",
     "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml",
     "*.graphql": "${capture}.generated.ts"
-  }
+  },
+  "cSpell.words": [
+    "entra",
+    "msal"
+  ]
 }

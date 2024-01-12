@@ -32,6 +32,7 @@ import {
   purgeAllSessionData,
 } from '../../../services/auth/auth'
 import { envRediLocation } from '../../../utils/env-redi-location'
+import './Login.scss'
 
 interface LoginFormValues {
   username: string
@@ -75,6 +76,16 @@ export default function Login() {
   >(null)
   const [tpProfileLocation, setTpProfileLocation] =
     useState<RediLocation | null>(null)
+
+  const entraIdLoginEnabled = process.env.NX_ENTRA_ID_ENABLED
+  const loginWithEntraId = () => {
+    try {
+      history.push('/front/login/entra-redirect')
+    } catch (err) {
+      console.error(err)
+      setLoginError('Could not log in with microsoft')
+    }
+  }
 
   const submitForm = async () => {
     // LOG THE USER IN VIA LOOPBACK
@@ -307,6 +318,14 @@ export default function Login() {
               </Button>
             </Form.Field>
           </form>
+          {entraIdLoginEnabled && (
+            <Button
+              className="entra-id-login-button"
+              onClick={loginWithEntraId}
+            >
+              Log in with Microsoft
+            </Button>
+          )}
         </Columns.Column>
       </Columns>
     </AccountOperation>

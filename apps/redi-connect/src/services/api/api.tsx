@@ -5,7 +5,7 @@ import {
   getAccessTokenFromLocalStorage,
   purgeAllSessionData,
   saveAccessTokenToLocalStorage,
-  setGraphQlClientAuthHeader,
+  setGraphQlClientAuthHeader
 } from '../auth/auth'
 import { history } from '../history/history'
 import { http } from '../http/http'

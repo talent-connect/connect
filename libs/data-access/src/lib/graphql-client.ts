@@ -1,11 +1,7 @@
+import { NEST_API_URL } from '@talent-connect/shared-config'
 import { GraphQLClient } from 'graphql-request'
 
-const endpoint =
-  process.env.NODE_ENV === 'production'
-    ? 'https://connect-nestjs-api.redi-school.org/graphql'
-    : 'http://localhost:3333/graphql'
-
-export const graphqlClient = new GraphQLClient(endpoint, {
+export const graphqlClient = new GraphQLClient(`${NEST_API_URL}/graphql`, {
   // headers: {
   //   authorization: 'Bearer MY_TOKEN',
   // },

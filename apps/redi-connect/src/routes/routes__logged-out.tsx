@@ -1,3 +1,4 @@
+import { NEST_API_URL } from '@talent-connect/shared-config'
 import { lazy } from 'react'
 import Faqs from '../pages/front/Faqs'
 import Home from '../pages/front/landing/Home'
@@ -10,6 +11,12 @@ const Login = lazy(
   () =>
     import(
       /* webpackChunkName: "Login", webpackPreload: true */ '../pages/front/login/Login'
+    )
+)
+const EntraLogin = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "EntraLogin", webpackPreload: true */ '../pages/front/login/EntraLogin'
     )
 )
 const SignUpLanding = lazy(
@@ -67,6 +74,19 @@ export const routes__loggedOut: RouteDefinition[] = [
   {
     path: '/front/login',
     component: Login,
+    exact: true,
+  },
+  {
+    path: '/front/login/entra-login',
+    component: EntraLogin,
+    exact: true,
+  },
+  {
+    path: '/front/login/entra-redirect',
+    component: () => {
+      window.location.href = `${NEST_API_URL}/api/auth/entra-id`
+      return null
+    },
     exact: true,
   },
   {

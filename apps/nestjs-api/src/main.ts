@@ -7,13 +7,17 @@ import { Logger } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { json, urlencoded } from 'express'
 import { AppModule } from './app/app.module'
+import cookieParser from 'cookie-parser'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
+  if (process.env.NODE_ENV !== 'production') app.enableCors()
+
   const globalPrefix = 'api'
   app.setGlobalPrefix(globalPrefix)
   app.use(json({ limit: '1mb' }))
   app.use(urlencoded({ extended: true, limit: '1mb' }))
+  app.use(cookieParser())
   // TODO! Re-enable this? If we can set to a higher debug log level
   // app.useLogger(SentryService.SentryServiceInstance())
   const port = process.env.PORT || 3333
