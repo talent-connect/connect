@@ -17,4 +17,5 @@ fragment AllTpJobListingFields on TpJobListing {
   companyName
   profileAvatarImageS3Key
   federalState
+  isFromCareerPartner
 }

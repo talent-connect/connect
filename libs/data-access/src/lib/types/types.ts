@@ -252,9 +252,6 @@ export type FindAllVisibleTpJobseekerDirectoryEntriesFilter = {
   desiredPositions?: InputMaybe<Array<TpDesiredPosition>>;
   employmentTypes?: InputMaybe<Array<TpEmploymentType>>;
   federalStates?: InputMaybe<Array<FederalState>>;
-  isJobFair2022Participant?: InputMaybe<Scalars['Boolean']>;
-  isJobFair2023Participant?: InputMaybe<Scalars['Boolean']>;
-  joinsBerlin23SummerJobFair?: InputMaybe<Scalars['Boolean']>;
   joinsDusseldorf24WinterJobFair?: InputMaybe<Scalars['Boolean']>;
   joinsMunich24SummerJobFair?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
@@ -975,6 +972,7 @@ export type TpCompanyProfile = {
   createdAt: Scalars['DateTime'];
   id: Scalars['ID'];
   industry?: Maybe<Scalars['String']>;
+  isCareerPartner: Scalars['Boolean'];
   isProfileVisibleToJobseekers: Scalars['Boolean'];
   joinsDusseldorf24WinterJobFair?: Maybe<Scalars['Boolean']>;
   joinsMunich24SummerJobFair?: Maybe<Scalars['Boolean']>;
@@ -1130,6 +1128,7 @@ export type TpJobListing = {
   federalState?: Maybe<FederalState>;
   id: Scalars['ID'];
   idealTechnicalSkills?: Maybe<Array<TpTechnicalSkill>>;
+  isFromCareerPartner: Scalars['Boolean'];
   isRemotePossible?: Maybe<Scalars['Boolean']>;
   languageRequirements?: Maybe<Scalars['String']>;
   location?: Maybe<Scalars['String']>;

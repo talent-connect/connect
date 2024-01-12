@@ -1,0 +1,72 @@
+.career-partner-banner {
+  display: flex;
+  flex-direction: column;
+
+  justify-content: space-between;
+
+  margin: 48px 0;
+  padding: 24px;
+
+  @media (max-width: 768px) {
+    margin: 32px 0;
+    padding: 12px;
+  }
+
+  border-radius: 8px;
+  background: var(--grey-ultra-light, #f5f5f5);
+
+  &-top {
+    display: flex;
+    justify-content: space-between;
+
+    padding-bottom: 16px;
+    border-bottom: 1px solid black;
+
+    > * {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      &:not(:last-child) {
+        border-right: 1px solid black;
+      }
+
+      .career-partner-badge-icon {
+        margin-right: 16px;
+
+        @media (max-width: 768px) {
+          margin-right: 12px;
+        }
+      }
+    }
+
+    .career-partner-since,
+    .career-partner-jobs-posted {
+      padding: 0 48px;
+      @media (max-width: 768px) {
+        padding: 0 24px;
+      }
+
+      text-transform: uppercase;
+      font-feature-settings: 'clig' off, 'liga' off;
+      font-size: 10px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 20px; /* 200% */
+      letter-spacing: 2px;
+      text-align: center;
+    }
+  }
+
+  &-bottom {
+    padding-top: 16px;
+
+    font-size: 16px;
+    line-height: 25px; /* 156.25% */
+
+    @media (max-width: 768px) {
+      font-size: 13.5px;
+      line-height: 20px; /* 148.148% */
+    }
+  }
+}
