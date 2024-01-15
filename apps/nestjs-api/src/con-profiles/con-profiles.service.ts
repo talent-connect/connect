@@ -1,11 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import {
-  ConnectProfileStatus,
   ConProfileEntity,
   ConProfileMapper,
+  ConnectProfileStatus,
   UserType,
 } from '@talent-connect/common-types'
 import { deleteUndefinedProperties } from '@talent-connect/shared-utils'
+import { groupBy } from 'lodash'
 import { CurrentUserInfo } from '../auth/current-user.interface'
 import { SfApiConProfilesService } from '../salesforce-api/sf-api-con-profiles.service'
 import { FindConProfilesArgs } from './args/find-con-profiles.args'
@@ -38,11 +39,58 @@ export class ConProfilesService {
   async findAll(filter: any = {}) {
     const persistedRecords = await this.api.getAllConProfiles(filter)
 
-    const entities: ConProfileEntity[] = persistedRecords.map((source) =>
+    let entities: ConProfileEntity[] = persistedRecords.map((source) =>
       this.mapper.fromPersistence(source)
     )
 
+    entities = this.whenMultipleProfilesExcludeDeactivatedOnes(entities)
+
     return entities
+  }
+
+  whenMultipleProfilesExcludeDeactivatedOnes(profiles: ConProfileEntity[]) {
+    const groupedProfiles = groupBy(profiles, (profile) => profile.props.userId)
+    for (const key in groupedProfiles) {
+      let profileGroup = groupedProfiles[key].sort((a, b) => {
+        // Sort by createdDate, so that the most recent profile is first
+        return (
+          new Date(b.props.createdAt).getTime() -
+          new Date(a.props.createdAt).getTime()
+        )
+      })
+
+      let selectedProfile: ConProfileEntity
+
+      for (const profile of profileGroup) {
+        if (!selectedProfile) {
+          selectedProfile = profile
+          return
+        }
+        if (
+          selectedProfile.props.profileStatus ===
+            ConnectProfileStatus.DEACTIVATED &&
+          profile.props.profileStatus !== ConnectProfileStatus.DEACTIVATED
+        ) {
+          selectedProfile = profile
+          return
+        }
+      }
+
+      let deactivatedProfilePreviouslyFound = false
+      profileGroup = profileGroup.filter((profile) => {
+        const isThisProfileDeactivated =
+          profile.props.profileStatus === ConnectProfileStatus.DEACTIVATED
+        if (isThisProfileDeactivated && deactivatedProfilePreviouslyFound) {
+          return false
+        }
+        if (isThisProfileDeactivated) {
+          deactivatedProfilePreviouslyFound = true
+        }
+        return true
+      })
+    }
+
+    return Array.from(profileMap.values())
   }
 
   async findAllAvailableMentors(_filter: FindConProfilesArgs) {
