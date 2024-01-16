@@ -18,4 +18,8 @@ fragment AllTpJobListingFields on TpJobListing {
   profileAvatarImageS3Key
   federalState
   isFromCareerPartner
+  contactFirstName
+  contactLastName
+  contactEmailAddress
+  contactPhoneNumber
 }
