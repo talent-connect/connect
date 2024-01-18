@@ -1,3 +1,4 @@
+import { ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material'
 import {
   AllTpJobListingFieldsFragment,
   useMyTpDataQuery,
@@ -27,13 +28,144 @@ import { formatDistance } from 'date-fns'
 import { useFormik } from 'formik'
 import { defaults, pick } from 'lodash'
 import { useCallback, useEffect, useState } from 'react'
-import { Columns, Element } from 'react-bulma-components'
+import { Columns, Content, Element } from 'react-bulma-components'
 import { useQueryClient } from 'react-query'
 import * as Yup from 'yup'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import { JobListingCard } from '../JobListingCard'
 import { useLoadModalFormJobListingDataQuery } from './EditableJobPostings.generated'
 import JobPlaceholderCardUrl from './job-placeholder-card.svg'
+
+function DropdownMenuButton() {
+  const [anchorEl, setAnchorEl] = useState(null)
+  const open = Boolean(anchorEl)
+
+  const handleOpen = (e: React.MouseEvent) => {
+    setAnchorEl(e.currentTarget)
+    // setIsMenuOpen((menuOpen) => !menuOpen)
+    e.stopPropagation()
+    e.preventDefault()
+    return false
+  }
+
+  const handleClose = () => setAnchorEl(null)
+
+  return (
+    <div>
+      <div onClick={handleOpen}>
+        <Icon
+          icon="ellipsis"
+          className="job-posting-card__ellipsis__icon"
+          size="large"
+        />
+        {/* {isMenuOpen && (
+          <div
+            style={{
+              position: 'relative', // Add this line
+              top: 'calc(100% + 10px)',
+              left: 0,
+              backgroundColor: 'white',
+              padding: '10px',
+              boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+            }}
+          >
+            <button>Edit</button>
+            <button>Copy link</button>
+            <button>Reactivate</button>
+            <button>Delete</button>
+          </div>
+        )} */}
+      </div>
+      {/* {isMenuOpen && (
+        <div style={{ position: 'relative', top: '10px' }}>float</div>
+      )} */}
+      <Menu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
+        <Content style={{ width: '180px' }}>
+          <MenuItem>
+            <ListItemText>
+              <Content>
+                <p>Edit</p>
+              </Content>
+            </ListItemText>
+            <ListItemIcon style={{ minWidth: '24px' }}>
+              <Icon icon="editLightGrey" />
+            </ListItemIcon>
+          </MenuItem>
+          <MenuItem>
+            <ListItemText>
+              <Content>
+                <p>Copy link</p>
+              </Content>
+            </ListItemText>
+            <ListItemIcon style={{ minWidth: '24px' }}>
+              <Icon icon="link" />
+            </ListItemIcon>
+          </MenuItem>
+          <MenuItem>
+            <ListItemText>
+              <Content>
+                <p>Reactivate</p>
+              </Content>
+            </ListItemText>
+            <ListItemIcon style={{ minWidth: '24px' }}>
+              <Icon icon="refresh" />
+            </ListItemIcon>
+          </MenuItem>
+          <MenuItem>
+            <ListItemText>
+              <Content>
+                <p> Delete</p>
+              </Content>
+            </ListItemText>
+            <ListItemIcon style={{ minWidth: '24px' }}>
+              <Icon icon="delete" />
+            </ListItemIcon>
+          </MenuItem>
+        </Content>
+      </Menu>
+      {/* <Popover
+        id="simple-menu"
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handlePopoverClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+      >
+        <Content style={{ padding: 10, minWidth: 120 }}>
+          <Content
+            marginless
+            style={{ borderBottom: '1px solid #DADADA', cursor: 'pointer' }}
+            onClick={null}
+          >
+            Delete
+          </Content>
+          <Content
+            marginless
+            style={{ borderBottom: '1px solid #DADADA', cursor: 'pointer' }}
+            onClick={null}
+          >
+            Rename
+          </Content>
+          <Content style={{ cursor: 'pointer' }} onClick={null}>
+            Duplicate
+          </Content>
+        </Content>
+      </Popover> */}
+    </div>
+  )
+}
 
 export function EditableJobPostings({
   jobListings,
@@ -134,8 +266,9 @@ export function EditableJobPostings({
                   <JobListingCard
                     key={jobListing.id}
                     jobListing={jobListing}
-                    onClick={(e) => handleStartEditingClick(jobListing.id, e)}
+                    // onClick={(e) => handleStartEditingClick(jobListing.id, e)}
                     timestamp={renderTimestamp(jobListing.expiresAt)}
+                    renderCTA={() => <DropdownMenuButton />}
                   />
                 </Columns.Column>
               ))}
@@ -219,7 +352,6 @@ function ModalForm({
     values: Partial<AllTpJobListingFieldsFragment>,
     { resetForm }
   ) => {
-    console.log({ values })
     if (tpJobListingId === null) {
       // create new
       formik.setSubmitting(true)

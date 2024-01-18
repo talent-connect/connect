@@ -173,6 +173,16 @@
     }
   }
 
+  &__ellipsis {
+    &__icon {
+      &:hover {
+        background-color: $redi-orange-extra-light;
+        border-radius: 50%;
+        transform: scale(1.2);
+      }
+    }
+  }
+
   &__timestamp {
     margin-top: auto;
     font-size: 12px;
