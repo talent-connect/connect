@@ -1,4 +1,4 @@
-import { Tooltip } from '@material-ui/core'
+import { Tooltip } from '@mui/material'
 import {
   CompanyTalentPoolState,
   MyTpDataQuery,
@@ -15,12 +15,12 @@ import { AllTpCompanyProfileFieldsFragment } from 'libs/data-access/src/lib/tp/c
 import { useState } from 'react'
 import { Columns, Content, Notification } from 'react-bulma-components'
 import CareerPartnerBanner from '../../../components/organisms/CareerPartnerBanner'
+import { ExpiredJobListings } from '../../../components/organisms/ExpiredJobListings'
 import { EditableAbout } from '../../../components/organisms/company-profile-editables/EditableAbout'
 import { EditableContact } from '../../../components/organisms/company-profile-editables/EditableContact'
 import { EditableDetails } from '../../../components/organisms/company-profile-editables/EditableDetails'
 import { EditableJobPostings } from '../../../components/organisms/company-profile-editables/EditableJobPostings'
 import { EditableNamePhotoLocation } from '../../../components/organisms/company-profile-editables/EditableNamePhotoLocation'
-import { ExpiredJobListings } from '../../../components/organisms/ExpiredJobListings'
 import { LoggedIn } from '../../../components/templates'
 import { useIsBusy } from '../../../hooks/useIsBusy'
 import { queryClient } from '../../../services/api/api'
