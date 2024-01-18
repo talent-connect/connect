@@ -36,7 +36,14 @@ import { JobListingCard } from '../JobListingCard'
 import { useLoadModalFormJobListingDataQuery } from './EditableJobPostings.generated'
 import JobPlaceholderCardUrl from './job-placeholder-card.svg'
 
-function DropdownMenuButton() {
+interface DropdownMenuButtonProps {
+  onEdit: () => void
+  onCopyLink: () => void
+  onReactivate: () => void
+  onDelete: () => void
+}
+
+function DropdownMenuButton(props: DropdownMenuButtonProps) {
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
 
@@ -50,6 +57,13 @@ function DropdownMenuButton() {
 
   const handleClose = () => setAnchorEl(null)
 
+  const menuItems = [
+    ['Edit', props.onEdit, 'editLightGrey'],
+    ['Copy link', props.onCopyLink, 'link'],
+    ['Reactivate', props.onReactivate, 'refresh'],
+    ['Delete', props.onDelete, 'delete'],
+  ] as const
+
   return (
     <div>
       <div onClick={handleOpen}>
@@ -58,27 +72,7 @@ function DropdownMenuButton() {
           className="job-posting-card__ellipsis__icon"
           size="large"
         />
-        {/* {isMenuOpen && (
-          <div
-            style={{
-              position: 'relative', // Add this line
-              top: 'calc(100% + 10px)',
-              left: 0,
-              backgroundColor: 'white',
-              padding: '10px',
-              boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
-            }}
-          >
-            <button>Edit</button>
-            <button>Copy link</button>
-            <button>Reactivate</button>
-            <button>Delete</button>
-          </div>
-        )} */}
       </div>
-      {/* {isMenuOpen && (
-        <div style={{ position: 'relative', top: '10px' }}>float</div>
-      )} */}
       <Menu
         anchorEl={anchorEl}
         open={open}
@@ -87,82 +81,20 @@ function DropdownMenuButton() {
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
         <Content style={{ width: '180px' }}>
-          <MenuItem>
-            <ListItemText>
-              <Content>
-                <p>Edit</p>
-              </Content>
-            </ListItemText>
-            <ListItemIcon style={{ minWidth: '24px' }}>
-              <Icon icon="editLightGrey" />
-            </ListItemIcon>
-          </MenuItem>
-          <MenuItem>
-            <ListItemText>
-              <Content>
-                <p>Copy link</p>
-              </Content>
-            </ListItemText>
-            <ListItemIcon style={{ minWidth: '24px' }}>
-              <Icon icon="link" />
-            </ListItemIcon>
-          </MenuItem>
-          <MenuItem>
-            <ListItemText>
-              <Content>
-                <p>Reactivate</p>
-              </Content>
-            </ListItemText>
-            <ListItemIcon style={{ minWidth: '24px' }}>
-              <Icon icon="refresh" />
-            </ListItemIcon>
-          </MenuItem>
-          <MenuItem>
-            <ListItemText>
-              <Content>
-                <p> Delete</p>
-              </Content>
-            </ListItemText>
-            <ListItemIcon style={{ minWidth: '24px' }}>
-              <Icon icon="delete" />
-            </ListItemIcon>
-          </MenuItem>
+          {menuItems.map(([label, onClick, icon]) => (
+            <MenuItem onClick={onClick}>
+              <ListItemText>
+                <Content>
+                  <p>{label}</p>
+                </Content>
+              </ListItemText>
+              <ListItemIcon style={{ minWidth: '24px' }}>
+                <Icon icon={icon} />
+              </ListItemIcon>
+            </MenuItem>
+          ))}
         </Content>
       </Menu>
-      {/* <Popover
-        id="simple-menu"
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handlePopoverClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
-      >
-        <Content style={{ padding: 10, minWidth: 120 }}>
-          <Content
-            marginless
-            style={{ borderBottom: '1px solid #DADADA', cursor: 'pointer' }}
-            onClick={null}
-          >
-            Delete
-          </Content>
-          <Content
-            marginless
-            style={{ borderBottom: '1px solid #DADADA', cursor: 'pointer' }}
-            onClick={null}
-          >
-            Rename
-          </Content>
-          <Content style={{ cursor: 'pointer' }} onClick={null}>
-            Duplicate
-          </Content>
-        </Content>
-      </Popover> */}
     </div>
   )
 }
@@ -262,13 +194,26 @@ export function EditableJobPostings({
           ) : (
             <Columns>
               {jobListings?.map((jobListing) => (
-                <Columns.Column size={12}>
+                <Columns.Column size={12} key={jobListing.id}>
                   <JobListingCard
                     key={jobListing.id}
                     jobListing={jobListing}
                     // onClick={(e) => handleStartEditingClick(jobListing.id, e)}
                     timestamp={renderTimestamp(jobListing.expiresAt)}
-                    renderCTA={() => <DropdownMenuButton />}
+                    renderCTA={() => (
+                      <DropdownMenuButton
+                        onEdit={() => startEditing(jobListing.id)}
+                        onCopyLink={() => {
+                          return null
+                        }}
+                        onReactivate={() => {
+                          return null
+                        }}
+                        onDelete={() => {
+                          return null
+                        }}
+                      />
+                    )}
                   />
                 </Columns.Column>
               ))}
