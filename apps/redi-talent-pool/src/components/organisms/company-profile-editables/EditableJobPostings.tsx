@@ -25,6 +25,7 @@ import {
 
 import { CardContextMenu } from '../../../components/molecules/CardContextMenu'
 
+import { TALENT_POOL_URL } from '@talent-connect/shared-config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
 import { formatDistance } from 'date-fns'
 import { useFormik } from 'formik'
@@ -56,7 +57,11 @@ export function EditableJobPostings({ jobListings }) {
   }, [])
 
   const copyUrl = useCallback((id: string) => {
-    window.navigator.clipboard.writeText('hello' + id)
+    // Keep in sync with routes__logged-in.tsx:
+    // TODO: use a shared function/constant
+    window.navigator.clipboard.writeText(
+      TALENT_POOL_URL + '/app/job-listing/' + id
+    )
     showNotification('Link copied to clipboard')
   }, [])
 
