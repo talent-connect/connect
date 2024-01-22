@@ -68,7 +68,6 @@ export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
       showNotification(
         'Your new password is set. Please log in using the new password :)',
         {
-          variant: 'success',
           autoHideDuration: 10000,
         }
       )

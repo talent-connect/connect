@@ -85,7 +85,7 @@ export default function Login() {
           formik.setSubmitting(false)
           showNotification(
             'Please verify your email address first. Check your inbox.',
-            { variant: 'error', autoHideDuration: 8000 }
+            { autoHideDuration: 8000 }
           )
           return
         }

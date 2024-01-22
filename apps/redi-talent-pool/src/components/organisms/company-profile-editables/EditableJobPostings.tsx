@@ -1,4 +1,3 @@
-import { ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material'
 import {
   AllTpJobListingFieldsFragment,
   useMyTpDataQuery,
@@ -23,94 +22,30 @@ import {
   germanFederalStates,
   topSkills,
 } from '@talent-connect/talent-pool/config'
+
+import { CardContextMenu } from '../../../components/molecules/CardContextMenu'
+
 import { objectEntries } from '@talent-connect/typescript-utilities'
 import { formatDistance } from 'date-fns'
 import { useFormik } from 'formik'
 import { defaults, pick } from 'lodash'
-import { useCallback, useEffect, useState } from 'react'
-import { Columns, Content, Element } from 'react-bulma-components'
+import { useCallback, useState } from 'react'
+import { Columns, Element } from 'react-bulma-components'
 import { useQueryClient } from 'react-query'
 import * as Yup from 'yup'
+import { showNotification } from '../../AppNotification'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
+import { LightModal } from '../../molecules/LightModal'
 import { JobListingCard } from '../JobListingCard'
 import { useLoadModalFormJobListingDataQuery } from './EditableJobPostings.generated'
 import JobPlaceholderCardUrl from './job-placeholder-card.svg'
 
-interface DropdownMenuButtonProps {
-  onEdit: () => void
-  onCopyLink: () => void
-  onReactivate: () => void
-  onDelete: () => void
-}
+export function EditableJobPostings({ jobListings }) {
+  const queryClient = useQueryClient()
 
-function DropdownMenuButton(props: DropdownMenuButtonProps) {
-  const [anchorEl, setAnchorEl] = useState(null)
-  const open = Boolean(anchorEl)
-
-  const handleOpen = (e: React.MouseEvent) => {
-    setAnchorEl(e.currentTarget)
-    // setIsMenuOpen((menuOpen) => !menuOpen)
-    e.stopPropagation()
-    e.preventDefault()
-    return false
-  }
-
-  const handleClose = () => setAnchorEl(null)
-
-  const menuItems = [
-    ['Edit', props.onEdit, 'editLightGrey'],
-    ['Copy link', props.onCopyLink, 'link'],
-    ['Reactivate', props.onReactivate, 'refresh'],
-    ['Delete', props.onDelete, 'delete'],
-  ] as const
-
-  return (
-    <div>
-      <div onClick={handleOpen}>
-        <Icon
-          icon="ellipsis"
-          className="job-posting-card__ellipsis__icon"
-          size="large"
-        />
-      </div>
-      <Menu
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      >
-        <Content style={{ width: '180px' }}>
-          {menuItems.map(([label, onClick, icon]) => (
-            <MenuItem onClick={onClick}>
-              <ListItemText>
-                <Content>
-                  <p>{label}</p>
-                </Content>
-              </ListItemText>
-              <ListItemIcon style={{ minWidth: '24px' }}>
-                <Icon icon={icon} />
-              </ListItemIcon>
-            </MenuItem>
-          ))}
-        </Content>
-      </Menu>
-    </div>
-  )
-}
-
-export function EditableJobPostings({
-  jobListings,
-  isJobPostingFormOpen,
-  setIsJobPostingFormOpen,
-}) {
   const [isEditing, setIsEditing] = useState(false)
   const [idOfTpJobListingBeingEdited, setIdOfTpJobListingBeingEdited] =
     useState<string | null>(null) // null = "new"
-
-  const hasJobListings = jobListings?.length > 0
-  const isEmpty = !hasJobListings
-
   const startAdding = useCallback(() => {
     setIdOfTpJobListingBeingEdited(null) // means "new"
     setIsEditing(true)
@@ -120,22 +55,34 @@ export function EditableJobPostings({
     setIsEditing(true)
   }, [])
 
-  useEffect(() => {
-    if (isJobPostingFormOpen) {
-      setIsEditing(true)
-    }
-  }, [isJobPostingFormOpen])
+  const copyUrl = useCallback((id: string) => {
+    window.navigator.clipboard.writeText('hello' + id)
+    showNotification('Link copied to clipboard')
+  }, [])
 
-  useEffect(() => {
-    if (!isEditing) {
-      setIsJobPostingFormOpen(false)
-    }
-  }, [isEditing, setIsJobPostingFormOpen])
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const handleDeleteModalClose = useCallback(
+    () => setIsDeleteModalOpen(false),
+    []
+  )
+  const deleteMutation = useTpJobListingDeleteMutation()
+  const handleDelete = useCallback(
+    (id: string) => {
+      handleDeleteModalClose()
+      deleteMutation.mutate(
+        { input: { id } },
+        {
+          onSuccess: () => {
+            queryClient.invalidateQueries()
+          },
+        }
+      )
+    },
+    [deleteMutation, handleDeleteModalClose, queryClient]
+  )
 
-  const handleStartEditingClick = (id, e: React.MouseEvent) => {
-    e.preventDefault()
-    startEditing(id)
-  }
+  const hasJobListings = jobListings?.length > 0
+  const isEmpty = !hasJobListings
 
   const renderTimestamp = (expiresAt) =>
     `Expires ${formatDistance(new Date(expiresAt), new Date(), {
@@ -201,18 +148,35 @@ export function EditableJobPostings({
                     // onClick={(e) => handleStartEditingClick(jobListing.id, e)}
                     timestamp={renderTimestamp(jobListing.expiresAt)}
                     renderCTA={() => (
-                      <DropdownMenuButton
-                        onEdit={() => startEditing(jobListing.id)}
-                        onCopyLink={() => {
-                          return null
-                        }}
-                        onReactivate={() => {
-                          return null
-                        }}
-                        onDelete={() => {
-                          return null
-                        }}
-                      />
+                      <CardContextMenu
+                        menuItems={[
+                          {
+                            label: 'Edit',
+                            onClick: () => startEditing(jobListing.id),
+                            icon: 'editLightGrey',
+                          },
+                          {
+                            label: 'Copy link',
+                            onClick: () => copyUrl(jobListing.id),
+                            icon: 'link',
+                          },
+                          {
+                            label: 'Delete',
+                            onClick: () => setIsDeleteModalOpen(true),
+                            icon: 'delete',
+                          },
+                        ]}
+                      >
+                        <LightModal
+                          isOpen={isDeleteModalOpen}
+                          handleClose={handleDeleteModalClose}
+                          headline="Delete job posting"
+                          message="You will loose all the information entered for this job posting."
+                          ctaLabel="Delete"
+                          ctaOnClick={() => handleDelete(jobListing.id)}
+                          cancelLabel="Keep it"
+                        />
+                      </CardContextMenu>
                     )}
                   />
                 </Columns.Column>
@@ -279,7 +243,6 @@ function ModalForm({
 
   const createMutation = useTpJobListingCreateMutation()
   const updateMutation = useTpJobListingPatchMutation()
-  const deleteMutation = useTpJobListingDeleteMutation()
 
   let jobListing = null
   if (isEditing) {
@@ -380,23 +343,6 @@ function ModalForm({
     validationSchema,
     enableReinitialize: true,
   })
-
-  const handleDelete = useCallback(() => {
-    if (
-      window.confirm('Are you certain you wish to delete this job posting?')
-    ) {
-      deleteMutation.mutate(
-        { input: { id: tpJobListingId } },
-        {
-          onSuccess: () => {
-            queryClient.invalidateQueries()
-            setIsEditing(false)
-          },
-        }
-      )
-      setIsEditing(false)
-    }
-  }, [deleteMutation, setIsEditing, tpJobListingId])
 
   if (!formik.values) return null
 
@@ -560,15 +506,6 @@ function ModalForm({
                 Cancel
               </Button>
             </div>
-            {tpJobListingId ? (
-              <Button
-                simple
-                disabled={updateMutation.isLoading}
-                onClick={handleDelete}
-              >
-                Delete
-              </Button>
-            ) : null}
           </div>
         </Modal.Body>
       )}

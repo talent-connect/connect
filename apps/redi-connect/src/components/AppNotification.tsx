@@ -1,17 +1,9 @@
 import { makeStyles } from '@material-ui/core'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
-import CloseIcon from '@mui/icons-material/Close'
 import ErrorIcon from '@mui/icons-material/Error'
 import InfoIcon from '@mui/icons-material/Info'
 import WarningIcon from '@mui/icons-material/Warning'
-import {
-  IconButton,
-  Slide,
-  Snackbar,
-  SnackbarContent,
-  Theme,
-  colors,
-} from '@mui/material'
+import { Slide, Snackbar, SnackbarContent, Theme, colors } from '@mui/material'
 import clsx from 'clsx'
 import { useEffect, useState } from 'react'
 import { Subject } from 'rxjs'
@@ -126,16 +118,6 @@ export function AppNotification() {
             {state && state.message}
           </span>
         }
-        action={[
-          <IconButton
-            key="close"
-            aria-label="close"
-            color="inherit"
-            onClick={hide}
-          >
-            <CloseIcon className={styleClasses.icon} />
-          </IconButton>,
-        ]}
       />
     </Snackbar>
   )

@@ -12,7 +12,6 @@ import {
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
 import { AllTpCompanyProfileFieldsFragment } from 'libs/data-access/src/lib/tp/company-profiles/tp-company-profile.fragment.generated'
-import { useState } from 'react'
 import { Columns, Content, Notification } from 'react-bulma-components'
 import CareerPartnerBanner from '../../../components/organisms/CareerPartnerBanner'
 import { ExpiredJobListings } from '../../../components/organisms/ExpiredJobListings'
@@ -22,7 +21,6 @@ import { EditableDetails } from '../../../components/organisms/company-profile-e
 import { EditableJobPostings } from '../../../components/organisms/company-profile-editables/EditableJobPostings'
 import { EditableNamePhotoLocation } from '../../../components/organisms/company-profile-editables/EditableNamePhotoLocation'
 import { LoggedIn } from '../../../components/templates'
-import { useIsBusy } from '../../../hooks/useIsBusy'
 import { queryClient } from '../../../services/api/api'
 import { OnboardingSteps } from './TpCompanyProfileOnboardingSteps'
 
@@ -30,8 +28,6 @@ export function MeCompany() {
   const myData = useMyTpDataQuery()
 
   const mutation = usePatchTpCompanyProfileMutation()
-
-  const [isJobPostingFormOpen, setIsJobPostingFormOpen] = useState(false)
 
   const {
     companyRepresentativeRelationship: representativeRelationship,
@@ -93,7 +89,6 @@ export function MeCompany() {
           <Content size="small">
             <strong>Great, your profile is approved!</strong> You can now{' '}
             <span
-              onClick={() => setIsJobPostingFormOpen(true)}
               style={{
                 textDecoration: 'underline',
                 fontWeight: 800,
@@ -163,11 +158,7 @@ export function MeCompany() {
           </Checkbox>
         </Columns.Column>
       </Columns>
-      <EditableJobPostings
-        jobListings={activeJobListings}
-        isJobPostingFormOpen={isJobPostingFormOpen}
-        setIsJobPostingFormOpen={setIsJobPostingFormOpen}
-      />
+      <EditableJobPostings jobListings={activeJobListings} />
       {expiredJobListings?.length > 0 && (
         <ExpiredJobListings jobListings={expiredJobListings} />
       )}
@@ -192,7 +183,6 @@ function isProfileComplete(
 }
 
 function SendProfileForReviewButton() {
-  const isBusy = useIsBusy()
   const myData = useMyTpDataQuery()
 
   const companyProfile = myData.data?.tpCurrentUserDataGet?.representedCompany

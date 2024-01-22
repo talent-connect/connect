@@ -1,11 +1,16 @@
-import { useTpJobListingPatchMutation } from '@talent-connect/data-access'
-import { Button } from '@talent-connect/shared-atomic-design-components'
+import {
+  useTpJobListingDeleteMutation,
+  useTpJobListingPatchMutation,
+} from '@talent-connect/data-access'
 import { formatDistance } from 'date-fns'
+import { useCallback, useState } from 'react'
 import { Columns, Element } from 'react-bulma-components'
 import { useQueryClient } from 'react-query'
+import { CardContextMenu } from '../molecules/CardContextMenu'
 import { EmptySectionPlaceholder } from '../molecules/EmptySectionPlaceholder'
-import JobPlaceholderCardUrl from './company-profile-editables/job-placeholder-card.svg'
+import { LightModal } from '../molecules/LightModal'
 import { JobListingCard } from './JobListingCard'
+import JobPlaceholderCardUrl from './company-profile-editables/job-placeholder-card.svg'
 
 export function ExpiredJobListings({ jobListings }) {
   const updateMutation = useTpJobListingPatchMutation()
@@ -28,24 +33,33 @@ export function ExpiredJobListings({ jobListings }) {
     )
   }
 
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const handleDeleteModalClose = useCallback(
+    () => setIsDeleteModalOpen(false),
+    []
+  )
+  const deleteMutation = useTpJobListingDeleteMutation()
+  const handleDelete = useCallback(
+    (id: string) => {
+      handleDeleteModalClose()
+      deleteMutation.mutate(
+        { input: { id } },
+        {
+          onSuccess: () => {
+            queryClient.invalidateQueries()
+          },
+        }
+      )
+    },
+    [deleteMutation, handleDeleteModalClose, queryClient]
+  )
+
   const isEmpty = jobListings?.length === 0
 
   const renderTimestamp = (expiresAt) =>
     `Expired ${formatDistance(new Date(expiresAt), new Date(), {
       addSuffix: true,
     })}`
-
-  const renderReactivateCTA = (jobListingId) => {
-    return (
-      <Button
-        simple
-        onClick={() => onReactivateCTAClick(jobListingId)}
-        className="__reactivate"
-      >
-        Reactivate
-      </Button>
-    )
-  }
 
   return (
     <div className="profile-section">
@@ -87,7 +101,32 @@ export function ExpiredJobListings({ jobListings }) {
                 <JobListingCard
                   key={jobListing.id}
                   jobListing={jobListing}
-                  renderCTA={() => renderReactivateCTA(jobListing.id)}
+                  renderCTA={() => (
+                    <CardContextMenu
+                      menuItems={[
+                        {
+                          label: 'Reactivate',
+                          onClick: () => onReactivateCTAClick(jobListing.id),
+                          icon: 'refresh',
+                        },
+                        {
+                          label: 'Delete',
+                          onClick: () => setIsDeleteModalOpen(true),
+                          icon: 'delete',
+                        },
+                      ]}
+                    >
+                      <LightModal
+                        isOpen={isDeleteModalOpen}
+                        handleClose={handleDeleteModalClose}
+                        headline="Delete job posting"
+                        message="You will loose all the information entered for this job posting."
+                        ctaLabel="Delete"
+                        ctaOnClick={() => handleDelete(jobListing.id)}
+                        cancelLabel="Keep it"
+                      />
+                    </CardContextMenu>
+                  )}
                   timestamp={renderTimestamp(jobListing.expiresAt)}
                 />
               </Columns.Column>
