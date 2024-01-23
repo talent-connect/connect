@@ -9,7 +9,7 @@ import { ReactComponent as StepPendingImage } from '../../../assets/pending.svg'
 
 import { CompanyTalentPoolState } from '@talent-connect/data-access'
 import { TpCompanyProfileOnboardigStepsProfilePropFragment } from './TpCompanyProfileOnboardingSteps.generated'
-
+import './TpCompanyProfileOnboardingSteps.scss'
 const steps = [
   { number: 1, label: 'Complete your profile' },
   { number: 2, label: 'Post a job' },
@@ -53,8 +53,8 @@ export function OnboardingSteps({
   )
 
   return (
-    <div className="onboarding-steps">
-      <div className="onboarding-steps--header">
+    <div className="company-onboarding-steps">
+      <div className="company-onboarding-steps--header">
         <Element
           renderAs="h4"
           textAlignment="centered"
@@ -68,7 +68,7 @@ export function OnboardingSteps({
       {steps.map((step, index) => (
         <div
           key={index}
-          className={classnames('onboarding-steps--item', {
+          className={classnames('company-onboarding-steps--item', {
             'current-step': step.number === currentStep[0],
             'completed-step': step.number < currentStep[0],
           })}

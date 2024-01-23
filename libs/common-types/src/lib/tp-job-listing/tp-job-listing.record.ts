@@ -39,6 +39,7 @@ export class TpJobListingRecord extends Record<TpJobListingRecordProps> {
       'Contact_Last_Name__c',
       'Contact_Email_Address__c',
       'Contact_Phone_Number__c',
+      'Account__r.ReDI_Career_Partner__c',
     ],
     SALESFORCE_ORDER_BY: ['LastModifiedDate', 'DESC'],
   }

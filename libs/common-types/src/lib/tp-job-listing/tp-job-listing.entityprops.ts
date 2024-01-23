@@ -45,4 +45,5 @@ export class TpJobListingEntityProps implements EntityProps {
   // These are included from the Company Profile (SF: Account)
   companyName: string
   profileAvatarImageS3Key?: string
+  isFromCareerPartner: boolean
 }

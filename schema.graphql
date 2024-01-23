@@ -646,6 +646,7 @@ type TpCompanyProfile {
   createdAt: DateTime!
   id: ID!
   industry: String
+  isCareerPartner: Boolean!
   isProfileVisibleToJobseekers: Boolean!
   joinsDusseldorf24WinterJobFair: Boolean
   joinsMunich24SummerJobFair: Boolean
@@ -801,6 +802,7 @@ type TpJobListing {
   federalState: FederalState
   id: ID!
   idealTechnicalSkills: [TpTechnicalSkill!]
+  isFromCareerPartner: Boolean!
   isRemotePossible: Boolean
   languageRequirements: String
   location: String

@@ -49,6 +49,8 @@ export class TpJobListingMapper
     props.contactLastName = raw.props.Contact_Last_Name__c
     props.contactPhoneNumber = raw.props.Contact_Phone_Number__c
     props.contactEmailAddress = raw.props.Contact_Email_Address__c
+    props.isFromCareerPartner = raw.props.Account__r.ReDI_Career_Partner__c
+
     const entity = TpJobListingEntity.create(props)
 
     return entity

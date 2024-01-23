@@ -972,6 +972,7 @@ export type TpCompanyProfile = {
   createdAt: Scalars['DateTime'];
   id: Scalars['ID'];
   industry?: Maybe<Scalars['String']>;
+  isCareerPartner: Scalars['Boolean'];
   isProfileVisibleToJobseekers: Scalars['Boolean'];
   joinsDusseldorf24WinterJobFair?: Maybe<Scalars['Boolean']>;
   joinsMunich24SummerJobFair?: Maybe<Scalars['Boolean']>;
@@ -1131,6 +1132,7 @@ export type TpJobListing = {
   federalState?: Maybe<FederalState>;
   id: Scalars['ID'];
   idealTechnicalSkills?: Maybe<Array<TpTechnicalSkill>>;
+  isFromCareerPartner: Scalars['Boolean'];
   isRemotePossible?: Maybe<Scalars['Boolean']>;
   languageRequirements?: Maybe<Scalars['String']>;
   location?: Maybe<Scalars['String']>;

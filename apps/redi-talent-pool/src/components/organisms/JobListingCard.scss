@@ -17,22 +17,69 @@
     padding: 24px;
   }
 
+  &__columns {
+    display: flex;
+    max-height: 136px;
+
+    @include mobile() {
+      flex-direction: column;
+      max-height: fit-content;
+    }
+  }
+
+  &__firstColumn {
+    padding: 0;
+    margin: 0;
+    flex-shrink: 0;
+
+    @include mobile {
+      margin-bottom: 16px;
+    }
+  }
+
+  &__image {
+    height: 136px;
+    width: 136px;
+    overflow: hidden;
+    border-radius: 100%;
+
+    @include mobile() {
+      height: 112px;
+      width: 112px;
+    }
+  }
+
+  &__middleColumn {
+    padding: 0;
+    padding-left: 40px;
+    max-width: 750px;
+    flex-grow: 4;
+    flex-shrink: 1;
+
+    @include mobile {
+      padding: 0;
+    }
+  }
+
   &__job-title {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
     color: var(--black, #000);
-    font-family: Avenir;
-    font-size: 20px;
+    font-family: Avenir LT Std;
+    font-size: 16px;
     font-style: normal;
-    font-weight: 800;
+    font-weight: 700;
 
     @include mobile() {
+      color: var(--black, #000);
+
+      /* Desktop/Body Text Small SemiBold */
       font-family: Avenir;
       font-size: 14px;
       font-style: normal;
       font-weight: 800;
-      line-height: 21px;
+      line-height: 150%; /* 21px */
     }
   }
 
@@ -42,42 +89,77 @@
     font-size: 14px;
     font-style: normal;
     font-weight: 800;
+    line-height: 150%;
+    margin-top: 2px;
+    margin-bottom: 8px;
+
+    @include mobile() {
+      color: var(--grey, #a0a0a0);
+
+      /* Desktop/Body Text Micro SemiBold */
+      font-family: Avenir;
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 800;
+      line-height: 150%; /* 18px */
+
+      margin-top: 4px;
+      margin-bottom: 6px;
+    }
   }
 
   &__location {
     &-container {
       display: flex;
+      margin-bottom: 33px;
+      height: 16px;
+
+      @include mobile {
+        margin-bottom: 16px;
+      }
+    }
+
+    &-icon {
+      position: relative;
+      left: -3px;
     }
 
     &-text {
       color: var(--grey, #a0a0a0);
+      /* Desktop/Body Text Micro Regular */
+      font-family: Avenir;
       font-size: 12px;
       font-style: normal;
       font-weight: 350;
+      line-height: normal;
+
+      @include mobile() {
+        color: var(--grey, #a0a0a0);
+        font-family: Avenir;
+        font-size: 11px;
+        font-style: normal;
+        font-weight: 350;
+        line-height: normal;
+      }
     }
   }
 
-  &__image {
-    height: 136px;
-    width: 136px;
-    padding: 10px;
-    overflow: hidden;
+  &__lastColumn {
+    padding: 0;
+    align-items: end;
+    padding-left: 40px;
+  }
 
-    border-radius: 100%;
-
-    @include mobile() {
-      height: 112px;
-      width: 112px;
-      padding: 6px;
-      overflow: hidden;
-      object-fit: contain;
-      border-radius: 100%;
-    }
+  &__timeFooterBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 100%;
+    width: auto;
   }
 
   &__favorite {
-    text-align: right;
-
     &__icon {
       transition: $transition;
 
@@ -91,94 +173,10 @@
     }
 
     @include mobile() {
-      padding: 0;
       position: absolute;
       top: 24px;
       right: 24px;
-
-      &__icon {
-        transition: $transition;
-
-        path {
-          fill: $redi-orange-dark;
-        }
-
-        &:hover {
-          transform: scale(1.2);
-        }
-      }
     }
-  }
-
-  &__timeFooterBox {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-end;
-    height: 100%;
-    padding-left: 40px;
-  }
-
-  &__firstColumn {
-    padding: 0;
-  }
-
-  &__middleColumn {
-    padding: 0;
-    padding-left: 40px;
-    max-width: 600px;
-
-    & .tags {
-      flex-wrap: nowrap;
-      margin-bottom: 0;
-
-      & .tag {
-        margin-bottom: 0;
-      }
-
-      &__last-row {
-        width: max-content;
-      }
-    }
-
-    @include tablet-only() {
-      max-width: 330px;
-    }
-
-    @include mobile() {
-      padding: 0;
-      flex-wrap: wrap;
-      height: max-content;
-      max-width: 330px;
-
-      & .tags {
-        margin-bottom: 0;
-
-        & .tag {
-          margin: 0;
-        }
-      }
-    }
-  }
-
-  &__lastColumn {
-    padding: 0;
-
-    @include mobile() {
-      padding-top: 16px;
-    }
-  }
-
-  &__columns {
-    margin: 0;
-
-    @include mobile() {
-      flex-direction: column;
-    }
-  }
-
-  &__content {
-    padding: 0;
   }
 
   &__timestamp {
@@ -186,5 +184,19 @@
     font-size: 12px;
     font-weight: 400;
     color: var(--grey, #a0a0a0);
+    white-space: nowrap;
+    height: 16px;
+
+    @include mobile() {
+      margin-top: 16px;
+    }
+  }
+}
+
+@include mobile {
+  .__reactivate {
+    position: absolute;
+    top: 24px;
+    right: 24px;
   }
 }
