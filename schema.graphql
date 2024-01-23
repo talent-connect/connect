@@ -792,6 +792,10 @@ type TpJobListing {
   companyName: String!
   companyProfile: TpCompanyProfile!
   companyProfileId: ID!
+  contactEmailAddress: String
+  contactFirstName: String
+  contactLastName: String
+  contactPhoneNumber: String
   createdAt: DateTime!
   employmentType: TpEmploymentType
   expiresAt: DateTime
@@ -812,6 +816,10 @@ type TpJobListing {
 }
 
 input TpJobListingCreateInput {
+  contactEmailAddress: String
+  contactFirstName: String
+  contactLastName: String
+  contactPhoneNumber: String
   employmentType: TpEmploymentType
   federalState: FederalState
   idealTechnicalSkills: [TpTechnicalSkill!]
@@ -829,6 +837,10 @@ input TpJobListingDeleteInput {
 }
 
 input TpJobListingPatchInput {
+  contactEmailAddress: String
+  contactFirstName: String
+  contactLastName: String
+  contactPhoneNumber: String
   employmentType: TpEmploymentType
   expiresAt: DateTime
   federalState: FederalState

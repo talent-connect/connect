@@ -25,7 +25,7 @@ export class TpJobListingsService {
     private readonly api: SfApiTpJobListingsService,
     private readonly tpCompanyRepresentativeRelationshipService: TpCompanyRepresentativeRelationshipsService,
     private readonly mapper: TpJobListingMapper
-  ) {}
+  ) { }
 
   async findAll(filter: any = {}) {
     const records = await this.api.getAll(filter)
