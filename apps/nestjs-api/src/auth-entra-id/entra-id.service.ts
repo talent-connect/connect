@@ -12,6 +12,7 @@ import { AxiosError, AxiosRequestConfig } from 'axios'
 import { NextFunction, Request, Response } from 'express'
 import { firstValueFrom } from 'rxjs'
 import { catchError } from 'rxjs/operators'
+import { SfApiContactService } from '../salesforce-api/sf-api-contact.service'
 import { EntraIdConfigProvider } from './entra-id-config.provider'
 import { VerificationData } from './verification-data.interface'
 
@@ -22,7 +23,8 @@ export class EntraIdService {
 
   constructor(
     private readonly configProvider: EntraIdConfigProvider,
-    private readonly httpService: HttpService
+    private readonly httpService: HttpService,
+    private readonly contactService: SfApiContactService,
   ) {}
 
   async getClientApplication(): Promise<ClientApplication> {
@@ -45,12 +47,36 @@ export class EntraIdService {
     try {
       const tokenResponse = await this.verifyToken(req, res)
       const decryptedState = this.decodeObject(body.state)
+      const email = tokenResponse.account.username
+
+      const contactRecord = await this.contactService.getContactByEmail(email)
+
+  //     const token: JwtToken = {
+  //       loopbackUserId: contactRecord.props.Loopback_User_ID__c,
+  //       email,
+  //       emailVerified: true,
+  //       firstName: contactRecord.props.FirstName,
+  //       lastName: contactRecord.props.LastName,
+  //       rediLocation: string
+  // userType: string
+  // companyIdOrName: string
+  // howDidHearAboutRediKey: string
+  // howDidHearAboutRediOtherText: string
+  // isMicrosoftPartner: boolean
+  // firstPointOfContact: string | null
+  // firstPointOfContactOther: string | null
+  // operationType: string
+  // productSignupSource: string
+  // tpSignupType: string
+  // mentor_isPartnershipMentor: boolean
+  // mentor_workPlace: string
+  //     }
 
       /**
        * TODO - do legacy salesforce validation and add these values to token
        * for now, we'll just return to the success redirect page
        */
-      res.redirect(this.configProvider.options.successRedirect)
+      res.redirect(decryptedState['successRedirect'])
     } catch (error) {
       next(error)
     }

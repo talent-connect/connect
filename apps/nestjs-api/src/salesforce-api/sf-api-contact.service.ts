@@ -7,7 +7,7 @@ import { SfApiRepository } from './sf-api.repository'
 export class SfApiContactService {
   constructor(private readonly repository: SfApiRepository) {}
 
-  async getAllConctacts(filter: any = {}): Promise<ContactRecord[]> {
+  async getAllContacts(filter: any = {}): Promise<ContactRecord[]> {
     const rawRecords = await this.repository.findRecordsOfObject({
       objectName: ContactRecord.metadata.SALESFORCE_OBJECT_NAME,
       objectFields: ContactRecord.metadata.SALESFORCE_OBJECT_FIELDS,
@@ -20,7 +20,14 @@ export class SfApiContactService {
   }
 
   async getContact(id: string): Promise<ContactRecord> {
-    const contactRecord = await this.getAllConctacts({ Id: id })
+    const contactRecord = await this.getAllContacts({ Id: id })
+    return contactRecord[0]
+  }
+
+  async getContactByEmail(email: string): Promise<ContactRecord> {
+    const contactRecord = await this.getAllContacts({
+      ReDI_Email_Address__c: email,
+    })
     return contactRecord[0]
   }
 

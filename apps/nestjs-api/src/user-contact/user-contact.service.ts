@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import {
-  UserContactEntity,
-  UserContactMapper,
+    UserContactEntity,
+    UserContactMapper,
 } from '@talent-connect/common-types'
 import { deleteUndefinedProperties } from '@talent-connect/shared-utils'
 import { CurrentUserInfo } from '../auth/current-user.interface'
@@ -16,7 +16,7 @@ export class UserContactService {
   ) {}
 
   async findAll(filter: any = {}) {
-    const records = await this.api.getAllConctacts(filter)
+    const records = await this.api.getAllContacts(filter)
 
     const entities: UserContactEntity[] = records.map((source) =>
       this.mapper.fromPersistence(source)
