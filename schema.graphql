@@ -647,6 +647,7 @@ type TpCompanyProfile {
   createdAt: DateTime!
   id: ID!
   industry: String
+  isCareerPartner: Boolean!
   isProfileVisibleToJobseekers: Boolean!
   joinsDusseldorf24WinterJobFair: Boolean
   joinsMunich24SummerJobFair: Boolean
@@ -792,12 +793,17 @@ type TpJobListing {
   companyName: String!
   companyProfile: TpCompanyProfile!
   companyProfileId: ID!
+  contactEmailAddress: String
+  contactFirstName: String
+  contactLastName: String
+  contactPhoneNumber: String
   createdAt: DateTime!
   employmentType: TpEmploymentType
   expiresAt: DateTime
   federalState: FederalState
   id: ID!
   idealTechnicalSkills: [TpTechnicalSkill!]
+  isFromCareerPartner: Boolean!
   isRemotePossible: Boolean
   languageRequirements: String
   location: String
@@ -811,6 +817,10 @@ type TpJobListing {
 }
 
 input TpJobListingCreateInput {
+  contactEmailAddress: String
+  contactFirstName: String
+  contactLastName: String
+  contactPhoneNumber: String
   employmentType: TpEmploymentType
   federalState: FederalState
   idealTechnicalSkills: [TpTechnicalSkill!]
@@ -828,6 +838,10 @@ input TpJobListingDeleteInput {
 }
 
 input TpJobListingPatchInput {
+  contactEmailAddress: String
+  contactFirstName: String
+  contactLastName: String
+  contactPhoneNumber: String
   employmentType: TpEmploymentType
   expiresAt: DateTime
   federalState: FederalState

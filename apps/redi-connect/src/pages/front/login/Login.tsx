@@ -81,6 +81,7 @@ export default function Login() {
     try {
       await login(formik.values.username, formik.values.password)
     } catch (err) {
+      console.log(err)
       formik.setSubmitting(false)
       setLoginError('You entered an incorrect email, password, or both.')
       return
@@ -122,9 +123,11 @@ export default function Login() {
         return
       }
 
-      return history.push('/app/me')
+      const urlParams = new URLSearchParams(window.location.search)
+      const goto = urlParams.get('goto') ?? '/app/me'
+      return history.push(goto)
     } catch (err) {
-      // Do nothing
+      console.log(err)
     }
 
     // IF NO CON PROFILE, TRY TO CREATE ONE FROM TP
@@ -160,7 +163,7 @@ export default function Login() {
         return history.push('/front/signup-complete/mentee')
       }
     } catch (err) {
-      // Do nothing, continue
+      console.log(err)
     }
 
     // IF NO CON PROFILE AND NO TP PROFILE, TRY TO CREATE ONE FROM JWT
@@ -193,6 +196,7 @@ export default function Login() {
       // If we reach this place, it means that the user does not have a TP
       // profile nor do the have data in their JWT token from the CON sign-up,
       // OR, something went wrong on the server. In that case, show them an error message.
+      console.log(err)
       formik.setSubmitting(false)
       setLoginError(
         'Something unexpected happened, please try again or contact the ReDI Career Support Team at career@redi-school.org'

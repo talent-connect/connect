@@ -158,9 +158,9 @@ export class SfApiRepository {
 
       console.log(`[SfApiRepository] Executing SOQL: ${soql}`)
 
-      let records = []
+      const records = []
 
-      let result = this.connection.query(soql)
+      const result = this.connection.query(soql)
 
       result.on('record', function (record) {
         records.push(record)

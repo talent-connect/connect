@@ -16,8 +16,14 @@ export type TpJobListing = {
 
   tpCompanyProfileId?: string
   tpCompanyProfile?: TpCompanyProfile
+  isFromCareerPartner: boolean
 
   createdAt: Date
   updatedAt: Date
   expiresAt?: Date
+
+  contactFirstName?: string
+  contactLastName?: string
+  contactEmailAddress?: string
+  contactPhoneNumber?: string
 }

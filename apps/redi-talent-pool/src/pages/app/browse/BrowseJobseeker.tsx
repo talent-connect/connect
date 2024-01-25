@@ -36,6 +36,7 @@ import {
 } from 'use-query-params'
 import { JobListingCard } from '../../../components/organisms/JobListingCard'
 import { LoggedIn } from '../../../components/templates'
+import { careerPartnerSortFn } from '../../../utils/sort-job-listings'
 import {
   useTpJobListingMarkAsFavouriteMutation,
   useTpJobListingUnfavouriteMutation,
@@ -83,7 +84,14 @@ export function BrowseJobseeker() {
       // joinsMunich24SummerJobFair,
     },
   })
-  const jobListings = jobListingsQuery.data?.tpJobListings
+
+  /**
+   * This sorting has to be done here because of several reasons:
+   * - Backend currently supports only sorting by one field, which is used for sorting by date
+   * - All fetch job listing queries are using one findAll query, which means this sort would have unexpected side effects
+   */
+  const jobListings =
+    jobListingsQuery.data?.tpJobListings.sort(careerPartnerSortFn)
 
   const handleFavoriteJobListing = async (tpJobListingId: string) => {
     const isFavorite =
@@ -411,19 +419,18 @@ export function BrowseJobseeker() {
             if (!isFavorite && onlyFavorites) return
 
             return (
-              <Columns.Column size={12}>
+              <Columns.Column key={jobListing.id} size={12}>
                 <JobListingCard
-                  key={jobListing.id}
                   jobListing={jobListing}
                   linkTo={`/app/job-listing/${jobListing.id}`}
                   renderCTA={() => renderFavoriteCTA(jobListing.id, isFavorite)}
-                  timestamp={formatDistance(
+                  timestamp={`Last updated ${formatDistance(
                     new Date(jobListing.updatedAt),
                     new Date(),
                     {
                       addSuffix: true,
                     }
-                  )}
+                  )}`}
                 />
               </Columns.Column>
             )
