@@ -1,8 +1,6 @@
 import { Box, Dialog } from '@mui/material'
-import {
-  Button,
-  Heading,
-} from '@talent-connect/shared-atomic-design-components'
+import { Button } from '@talent-connect/shared-atomic-design-components'
+import { Element } from 'react-bulma-components'
 
 interface ModalProps {
   isOpen: boolean
@@ -25,13 +23,29 @@ export function LightModal({
 }: ModalProps) {
   return (
     <Dialog open={isOpen} onClose={handleClose}>
-      <Box sx={{ padding: '4em' }}>
-        <Heading>{headline}</Heading>
+      <Box sx={{ padding: '24px 32px' }}>
+        <Element
+          renderAs="p"
+          textSize={4}
+          responsive={{ mobile: { textSize: { value: 5 } } }}
+          style={{ marginBottom: '1rem' }}
+        >
+          <strong>{headline}</strong>
+        </Element>
         <p>{message}</p>
-        <Button simple onClick={ctaOnClick}>
-          {ctaLabel}
-        </Button>
-        {cancelLabel && <Button onClick={handleClose}>{cancelLabel}</Button>}
+
+        <div
+          style={{ marginTop: '1rem', display: 'flex', justifyContent: 'end' }}
+        >
+          <Button simple onClick={ctaOnClick}>
+            {ctaLabel}
+          </Button>
+          {cancelLabel && (
+            <Button simple onClick={handleClose}>
+              {cancelLabel}
+            </Button>
+          )}
+        </div>
       </Box>
     </Dialog>
   )

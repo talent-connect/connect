@@ -119,8 +119,8 @@ export function ExpiredJobListings({ jobListings }) {
                       <LightModal
                         isOpen={isDeleteModalOpen}
                         handleClose={handleDeleteModalClose}
-                        headline="Delete job posting"
-                        message="You will loose all the information entered for this job posting."
+                        headline="Delete job posting?"
+                        message="You will lose all the information entered for this job posting."
                         ctaLabel="Delete"
                         ctaOnClick={() => handleDelete(jobListing.id)}
                         cancelLabel="Keep it"

@@ -65,7 +65,7 @@ export function EditableJobPostings({ jobListings }) {
     showNotification('Link copied to clipboard')
   }, [])
 
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(true)
   const handleDeleteModalClose = useCallback(
     () => setIsDeleteModalOpen(false),
     []
@@ -175,8 +175,8 @@ export function EditableJobPostings({ jobListings }) {
                         <LightModal
                           isOpen={isDeleteModalOpen}
                           handleClose={handleDeleteModalClose}
-                          headline="Delete job posting"
-                          message="You will loose all the information entered for this job posting."
+                          headline="Delete job posting?"
+                          message="You will lose all the information entered for this job posting."
                           ctaLabel="Delete"
                           ctaOnClick={() => handleDelete(jobListing.id)}
                           cancelLabel="Keep it"
