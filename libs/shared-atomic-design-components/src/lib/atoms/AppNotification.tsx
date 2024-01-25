@@ -19,7 +19,7 @@ export const showNotification = (
 ) => {
   // console.log('show', message)
   const finalOptions: AppNotificationOptions = {
-    autoHideDuration: 5000,
+    autoHideDuration: 3000,
     ...options,
   }
   subjectShowNotification.next({ ...finalOptions, message })
@@ -27,9 +27,11 @@ export const showNotification = (
 
 export function AppNotification() {
   const [state, setState] = useState<AppNotificationState>(null)
+  const [key, setKey] = useState(0)
 
   const show = useCallback((options: SubjectShowNotification) => {
     console.log('yo')
+    setKey((prevKey) => prevKey + 1)
     setState({ ...options })
   }, [])
 
@@ -41,11 +43,12 @@ export function AppNotification() {
     return () => {
       subscriptionShow.unsubscribe()
     }
-  }, [])
+  }, [show])
 
   return (
     <div>
       <Snackbar
+        key={key}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'center',

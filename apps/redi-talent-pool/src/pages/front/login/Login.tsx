@@ -12,6 +12,7 @@ import {
   Button,
   FormInput,
   Heading,
+  showNotification,
 } from '@talent-connect/shared-atomic-design-components'
 import { decodeJwt } from '@talent-connect/shared-utils'
 import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
@@ -19,7 +20,6 @@ import { useCallback, useState } from 'react'
 import { Columns, Content, Form } from 'react-bulma-components'
 import { Link } from 'react-router-dom'
 import * as Yup from 'yup'
-import { showNotification } from '../../../components/AppNotification'
 import TpTeaser from '../../../components/molecules/TpTeaser'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import { login } from '../../../services/api/api'

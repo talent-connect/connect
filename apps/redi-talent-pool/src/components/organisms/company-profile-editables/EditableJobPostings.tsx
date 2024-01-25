@@ -14,6 +14,7 @@ import {
   Icon,
   Modal,
   TextEditor,
+  showNotification,
 } from '@talent-connect/shared-atomic-design-components'
 import { TpJobListing } from '@talent-connect/shared-types'
 import {
@@ -34,7 +35,6 @@ import { useCallback, useState } from 'react'
 import { Columns, Element } from 'react-bulma-components'
 import { useQueryClient } from 'react-query'
 import * as Yup from 'yup'
-import { showNotification } from '../../AppNotification'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
 import { LightModal } from '../../molecules/LightModal'
 import { JobListingCard } from '../JobListingCard'

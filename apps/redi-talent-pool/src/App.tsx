@@ -1,10 +1,12 @@
-import { Loader } from '@talent-connect/shared-atomic-design-components'
+import {
+  AppNotification,
+  Loader,
+} from '@talent-connect/shared-atomic-design-components'
 import { Suspense, useEffect } from 'react'
 import { QueryClientProvider, useQueryClient } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 import { Route, useLocation } from 'react-router-dom'
 import { QueryParamProvider } from 'use-query-params'
-import AppNotification from './components/AppNotification'
 import { Routes } from './components/Routes'
 import { queryClient } from './services/api/api'
 import {
@@ -12,7 +14,7 @@ import {
   isLoggedIn,
   setGraphQlClientAuthHeader,
 } from './services/auth/auth'
-import { history, Router } from './services/history/history'
+import { Router, history } from './services/history/history'
 
 if (isLoggedIn()) {
   setGraphQlClientAuthHeader(getAccessTokenFromLocalStorage())
