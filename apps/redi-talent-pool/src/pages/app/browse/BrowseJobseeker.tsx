@@ -416,19 +416,18 @@ export function BrowseJobseeker() {
             if (!isFavorite && onlyFavorites) return
 
             return (
-              <Columns.Column size={12}>
+              <Columns.Column key={jobListing.id} size={12}>
                 <JobListingCard
-                  key={jobListing.id}
                   jobListing={jobListing}
                   linkTo={`/app/job-listing/${jobListing.id}`}
                   renderCTA={() => renderFavoriteCTA(jobListing.id, isFavorite)}
-                  timestamp={formatDistance(
+                  timestamp={`Last updated ${formatDistance(
                     new Date(jobListing.updatedAt),
                     new Date(),
                     {
                       addSuffix: true,
                     }
-                  )}
+                  )}`}
                 />
               </Columns.Column>
             )

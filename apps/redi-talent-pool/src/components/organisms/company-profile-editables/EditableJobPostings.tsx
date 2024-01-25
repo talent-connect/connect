@@ -284,6 +284,7 @@ function ModalForm({
     values: Partial<AllTpJobListingFieldsFragment>,
     { resetForm }
   ) => {
+    console.log({ values })
     if (tpJobListingId === null) {
       // create new
       formik.setSubmitting(true)

@@ -54,14 +54,15 @@ export const sendEmailFactory = (to, subject, body, rediLocation) => {
     },
   })
 }
-export const sendMjmlEmailFactory = ({ to, subject, html }) => {
+export const sendMjmlEmailFactory = ({ sender, to, subject, html }) => {
   let toSanitized = isProductionOrDemonstration() ? to : ''
+
   if (process.env.NX_DEV_MODE_EMAIL_RECIPIENT) {
     toSanitized = process.env.NX_DEV_MODE_EMAIL_RECIPIENT
   }
-  let sender = 'career@redi-school.org'
+
   return sendMjmlEmail({
-    from: sender,
+    from: sender ?? 'career@redi-school.org',
     to: toSanitized,
     bcc: ['career@redi-school.org'],
     subject: buildSubjectLine(subject, process.env.NODE_ENV),
