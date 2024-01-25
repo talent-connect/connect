@@ -38,7 +38,8 @@ const SideMenu = () => {
   const isMentee = profile?.userType === UserType.Mentee
 
   const isActivated = profile?.profileStatus === ConnectProfileStatus.Approved
-  const isNotPending = profile?.profileStatus !== ConnectProfileStatus.Pending
+  const isNotDrafting =
+    profile?.profileStatus !== ConnectProfileStatus.DraftingProfile
 
   const isActivatedMentor = isMentor && isActivated
 

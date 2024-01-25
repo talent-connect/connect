@@ -185,8 +185,9 @@ export type ConProfileSignUpInput = {
 export enum ConnectProfileStatus {
   Approved = 'APPROVED',
   Deactivated = 'DEACTIVATED',
-  Pending = 'PENDING',
-  Rejected = 'REJECTED'
+  DraftingProfile = 'DRAFTING_PROFILE',
+  Rejected = 'REJECTED',
+  SubmittedForReview = 'SUBMITTED_FOR_REVIEW'
 }
 
 export type CreateConMentoringSessionInput = {

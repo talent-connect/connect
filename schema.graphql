@@ -158,8 +158,9 @@ input ConProfileSignUpInput {
 enum ConnectProfileStatus {
   APPROVED
   DEACTIVATED
-  PENDING
+  DRAFTING_PROFILE
   REJECTED
+  SUBMITTED_FOR_REVIEW
 }
 
 input CreateConMentoringSessionInput {
