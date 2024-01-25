@@ -1,5 +1,8 @@
-import { Heading } from '@talent-connect/shared-atomic-design-components'
-import { Columns, Content, Element } from 'react-bulma-components'
+import {
+  Heading,
+  OnboardingSteps,
+} from '@talent-connect/shared-atomic-design-components'
+import { Columns, Element } from 'react-bulma-components'
 import {
   Avatar,
   EditableAbout,
@@ -32,9 +35,17 @@ function Me() {
   // that Eric has been looking into.
 
   const conProfile = myProfileResult?.data?.conProfile
+  console.log('conProfile', conProfile)
 
   const userIsMentee = conProfile?.userType === UserType.Mentee
   const userIsMentor = conProfile?.userType === UserType.Mentor
+
+  const steps = [
+    'Fill out your profile',
+    'Send profile for review',
+    'Await profile approval',
+    `You're all set!`,
+  ]
 
   return (
     <LoggedIn>
@@ -43,29 +54,13 @@ function Me() {
           <Avatar.Editable />
         </Columns.Column>
         <Columns.Column size={8}>
-          <Heading>Hi, {conProfile?.firstName}</Heading>
-          <Content
-            size="medium"
-            renderAs="p"
-            responsive={{ mobile: { hide: { value: true } } }}
-          >
-            Please fill out your profile and keep it up to date. Let potential{' '}
-            {userIsMentee ? 'mentors' : 'mentees'} know a little bit more about
-            you, so you can find the perfect fit. <strong>Our tip:</strong>{' '}
-            Having a picture could increase your chance of getting matched.
-          </Content>
+          <Heading>
+            {conProfile?.firstName} {conProfile?.lastName}
+          </Heading>
         </Columns.Column>
       </Columns>
-      <Element
-        className="block-separator"
-        responsive={{ tablet: { hide: { value: true } } }}
-      >
-        <Content size="medium" renderAs="p">
-          Please fill out your profile and keep it up to date. Let potential{' '}
-          {userIsMentee ? 'mentors' : 'mentees'} know a little bit more about
-          you, so you can find the perfect fit. <strong>Our tip:</strong> Having
-          a picture could increase your chance of getting matched.
-        </Content>
+      <Element>
+        <OnboardingSteps steps={steps} profile={conProfile} />
       </Element>
       <Element className="block-separator">
         <EditableAbout />

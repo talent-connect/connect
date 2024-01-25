@@ -97,7 +97,7 @@ function LoggedIn({ children }: Props) {
               desktop={{ size: 9, offset: 1 }}
               className="column--main-content"
             >
-              {profile?.userType === 'MENTEE' &&
+              {/* {profile?.userType === 'MENTEE' &&
                 profile?.profileStatus === ConnectProfileStatus.Pending && (
                   <RediNotification>
                     {t('loggedInArea.profile.notification.pendingMentee')}
@@ -108,7 +108,7 @@ function LoggedIn({ children }: Props) {
                   <RediNotification>
                     {t('loggedInArea.profile.notification.pendingMentor')}
                   </RediNotification>
-                )}
+                )} */}
               {profile?.userType === 'MENTEE' &&
                 profile?.profileStatus === ConnectProfileStatus.Deactivated && (
                   <RediNotification>
