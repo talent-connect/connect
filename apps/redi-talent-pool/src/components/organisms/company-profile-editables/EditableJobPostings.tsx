@@ -26,6 +26,7 @@ import {
 
 import { CardContextMenu } from '../../../components/molecules/CardContextMenu'
 
+import { Tooltip } from '@mui/material'
 import { TALENT_POOL_URL } from '@talent-connect/shared-config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
 import { formatDistance } from 'date-fns'
@@ -42,8 +43,6 @@ import { useLoadModalFormJobListingDataQuery } from './EditableJobPostings.gener
 import JobPlaceholderCardUrl from './job-placeholder-card.svg'
 
 export function EditableJobPostings({ jobListings }) {
-  const queryClient = useQueryClient()
-
   const [isEditing, setIsEditing] = useState(false)
   const [idOfTpJobListingBeingEdited, setIdOfTpJobListingBeingEdited] =
     useState<string | null>(null) // null = "new"
@@ -56,43 +55,8 @@ export function EditableJobPostings({ jobListings }) {
     setIsEditing(true)
   }, [])
 
-  const copyUrl = useCallback((id: string) => {
-    // Keep in sync with routes__logged-in.tsx:
-    // TODO: use a shared function/constant
-    window.navigator.clipboard.writeText(
-      TALENT_POOL_URL + '/app/job-listing/' + id
-    )
-    showNotification('Link copied to clipboard')
-  }, [])
-
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(true)
-  const handleDeleteModalClose = useCallback(
-    () => setIsDeleteModalOpen(false),
-    []
-  )
-  const deleteMutation = useTpJobListingDeleteMutation()
-  const handleDelete = useCallback(
-    (id: string) => {
-      handleDeleteModalClose()
-      deleteMutation.mutate(
-        { input: { id } },
-        {
-          onSuccess: () => {
-            queryClient.invalidateQueries()
-          },
-        }
-      )
-    },
-    [deleteMutation, handleDeleteModalClose, queryClient]
-  )
-
   const hasJobListings = jobListings?.length > 0
   const isEmpty = !hasJobListings
-
-  const renderTimestamp = (expiresAt) =>
-    `Expires ${formatDistance(new Date(expiresAt), new Date(), {
-      addSuffix: true,
-    })}`
 
   return (
     <>
@@ -144,49 +108,10 @@ export function EditableJobPostings({ jobListings }) {
               </div>
             </EmptySectionPlaceholder>
           ) : (
-            <Columns>
-              {jobListings?.map((jobListing) => (
-                <Columns.Column size={12} key={jobListing.id}>
-                  <JobListingCard
-                    key={jobListing.id}
-                    jobListing={jobListing}
-                    // onClick={(e) => handleStartEditingClick(jobListing.id, e)}
-                    timestamp={renderTimestamp(jobListing.expiresAt)}
-                    renderCTA={() => (
-                      <CardContextMenu
-                        menuItems={[
-                          {
-                            label: 'Edit',
-                            onClick: () => startEditing(jobListing.id),
-                            icon: 'editLightGrey',
-                          },
-                          {
-                            label: 'Copy link',
-                            onClick: () => copyUrl(jobListing.id),
-                            icon: 'link',
-                          },
-                          {
-                            label: 'Delete',
-                            onClick: () => setIsDeleteModalOpen(true),
-                            icon: 'delete',
-                          },
-                        ]}
-                      >
-                        <LightModal
-                          isOpen={isDeleteModalOpen}
-                          handleClose={handleDeleteModalClose}
-                          headline="Delete job posting?"
-                          message="You will lose all the information entered for this job posting."
-                          ctaLabel="Delete"
-                          ctaOnClick={() => handleDelete(jobListing.id)}
-                          cancelLabel="Keep it"
-                        />
-                      </CardContextMenu>
-                    )}
-                  />
-                </Columns.Column>
-              ))}
-            </Columns>
+            <JobListingCards
+              jobListings={jobListings}
+              startEditing={startEditing}
+            />
           )}
         </div>
       </div>
@@ -230,6 +155,100 @@ interface ModalFormProps {
   tpJobListingId: string
   isEditing: boolean
   setIsEditing: (boolean) => void
+}
+
+function JobListingCards({ jobListings, startEditing }) {
+  const queryClient = useQueryClient()
+
+  const renderTimestamp = (expiresAt) =>
+    `Expires ${formatDistance(new Date(expiresAt), new Date(), {
+      addSuffix: true,
+    })}`
+
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const handleDeleteModalClose = useCallback(
+    () => setIsDeleteModalOpen(false),
+    []
+  )
+  const deleteMutation = useTpJobListingDeleteMutation()
+  const handleDelete = useCallback(
+    (id: string) => {
+      handleDeleteModalClose()
+      deleteMutation.mutate(
+        { input: { id } },
+        {
+          onSuccess: () => {
+            queryClient.invalidateQueries()
+          },
+        }
+      )
+    },
+    [deleteMutation, handleDeleteModalClose, queryClient]
+  )
+
+  const copyUrl = useCallback((id: string) => {
+    // Keep in sync with routes__logged-in.tsx:
+    // TODO: use a shared function/constant
+    window.navigator.clipboard.writeText(
+      TALENT_POOL_URL + '/app/job-listing/' + id
+    )
+    showNotification('Link copied to clipboard')
+  }, [])
+
+  return (
+    <Columns>
+      {jobListings?.map((jobListing) => (
+        <Columns.Column size={12} key={jobListing.id}>
+          <JobListingCard
+            key={jobListing.id}
+            jobListing={jobListing}
+            // onClick={(e) => handleStartEditingClick(jobListing.id, e)}
+            timestamp={renderTimestamp(jobListing.expiresAt)}
+            renderCTA={() => (
+              <Tooltip
+                title="You can copy the job posting link here"
+                placement="top"
+                arrow
+              >
+                {/* Acceptable hack: Tooltip doesn't trigger correctly unless child wrapped in <spam> */}
+                <span>
+                  <CardContextMenu
+                    menuItems={[
+                      {
+                        label: 'Edit',
+                        onClick: () => startEditing(jobListing.id),
+                        icon: 'editLightGrey',
+                      },
+                      {
+                        label: 'Copy link',
+                        onClick: () => copyUrl(jobListing.id),
+                        icon: 'link',
+                      },
+                      {
+                        label: 'Delete',
+                        onClick: () => setIsDeleteModalOpen(true),
+                        icon: 'delete',
+                      },
+                    ]}
+                  >
+                    <LightModal
+                      isOpen={isDeleteModalOpen}
+                      handleClose={handleDeleteModalClose}
+                      headline="Delete job posting?"
+                      message="You will lose all the information entered for this job posting."
+                      ctaLabel="Delete"
+                      ctaOnClick={() => handleDelete(jobListing.id)}
+                      cancelLabel="Keep it"
+                    />
+                  </CardContextMenu>
+                </span>
+              </Tooltip>
+            )}
+          />
+        </Columns.Column>
+      ))}
+    </Columns>
+  )
 }
 
 function ModalForm({

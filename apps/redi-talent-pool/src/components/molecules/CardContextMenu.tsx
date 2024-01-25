@@ -16,9 +16,6 @@ export function CardContextMenu({ menuItems, children }: CardContextMenuProps) {
 
   const handleOpen = (e: React.MouseEvent) => {
     setAnchorEl(e.currentTarget)
-    e.stopPropagation()
-    e.preventDefault()
-    return false
   }
 
   const handleClose = () => setAnchorEl(null)
