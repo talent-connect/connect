@@ -117,7 +117,7 @@ function LoggedIn({ children }: Props) {
                     {t('loggedInArea.profile.notification.deactivatedMentee', {
                       name: profile.firstName,
                       email:
-                        '<a href="mailto:paulina@redi-school.org">paulina@red-school.org</a>',
+                        '<a href="mailto:career@redi-school.org">career@redi-school.org</a>',
                     })}
                   </RediNotification>
                 )}
@@ -127,7 +127,7 @@ function LoggedIn({ children }: Props) {
                     {t('loggedInArea.profile.notification.deactivatedMentor', {
                       name: profile?.firstName,
                       email:
-                        '<a href="mailto:miriam@redi-school.org">miriam@redi-school.org</a>',
+                        '<a href="mailto:career@redi-school.org">career@redi-school.org</a>',
                     })}
                   </RediNotification>
                 )}

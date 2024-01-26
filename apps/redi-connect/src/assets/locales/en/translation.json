@@ -63,7 +63,7 @@
             "answer": "Follow these four steps: 1. Fill in the sign-up form to provide some first information on your ReDI Connect profile. 2. Prospective mentors and mentees will meet one of our team menbers, so we can get to know you better and activate your profile. 3. Complete your profile as much as possible to allow for a great match. 4. Mentees (students) can now browse through the available mentor profiles. They look for the ones that best fit their needs and start applying to mentors. Mentors wait for applications. When they receive an application, they let the student know as soon as possible, whether they are ReDI for this mentorship match."
           },
           {
-            "question": "Why do I have to meet with someone from the ReDI Career Support Team before I can start?",
+            "question": "Why do I have to meet with someone from the ReDI Talent Success Team before I can start?",
             "answer": "At ReDI we like to keep a close community spirit and create a welcoming and safe space for everyone. This means that we like to know everyone personally. In these personal meetings with one of our team members, we like to get to know you better and get an understanding of your motivation to be a part of ReDI Connect. This way we hope to realize our credo of 'using technology to break down barriers and connect the leaders of tomorrow.'"
           },
           {
@@ -126,11 +126,11 @@
           },
           {
             "question": "Am I ready to get a mentor?",
-            "answer": "If you are not sure, whether it is the right time for you to get a mentor, just sign up and schedule a meeting with Paulina . She will discuss with you the best options for you at this stage. Setting your professional goals will help you decide which are the more relevant areas where you would like to to have some support during your mentoring sessions."
+            "answer": "If you are not sure, whether it is the right time for you to get a mentor, just sign up and schedule a meeting with our Mentorship Community Manager, <strong>Hadeer</strong>. She will discuss with you the best options for you at this stage. Setting your professional goals will help you decide which are the more relevant areas where you would like to to have some support during your mentoring sessions."
           },
           {
             "question": "How do I find the right mentor?",
-            "answer": "Make sure your profile reflects your needs and explains what you would like to get out of the mentorship. When looking for mentor profiles, use the filters to see the most relevant profiles. If you are still unsure which mentor to contact, you can also reach out to someone from our Career Support Team (<a href='mailto:career@redi-school.org'>career@redi-school.org</a>) to check out together which mentor could be a good fit."
+            "answer": "Make sure your profile reflects your needs and explains what you would like to get out of the mentorship. When looking for mentor profiles, use the filters to see the most relevant profiles. If you are still unsure which mentor to contact, you can also reach out to someone from our ReDI Talent Success Team (<a href='mailto:career@redi-school.org'>career@redi-school.org</a>) to check out together which mentor could be a good fit."
           },
           {
             "question": "What happens after I've sent an application?",
@@ -187,8 +187,8 @@
       "notification": {
         "pendingMentor": "<strong>Thanks for signing up!</strong> We are reviewing your profile and will send you an email once we're done. Students will be able to apply to become your mentee once your account is active.",
         "pendingMentee": "<strong>Thanks for signing up!</strong> Please schedule a time for an activation session with us. You find the link in the email you received. You’ll be able to find a mentor once your account is active.",
-        "deactivatedMentee": "Dear {{ name }}, your ReDI Connect profile has been deactivated by the Career Support Team. This could be for a number of reasons. If you think this has been done by mistake, please contact Paulina at {{ email }}. Thank you!",
-        "deactivatedMentor": "Dear {{ name }}, your ReDI Connect profile has been deactivated by the Career Support Team. Likely you have not been active for a while. This means you are not visible to prospective mentees. If you want to become active as a mentor again, please contact {{ email }}. Speak soon!"
+        "deactivatedMentee": "Dear {{ name }}, your ReDI Connect profile has been deactivated by the ReDI Talent Success Team. This could be for a number of reasons. If you think this has been done by mistake, please contact us at {{ email }}. Thank you!",
+        "deactivatedMentor": "Dear {{ name }}, your ReDI Connect profile has been deactivated by the ReDI Talent Success Team. Likely you have not been active for a while. This means you are not visible to prospective mentees. If you want to become active as a mentor again, please contact {{ email }}. Speak soon!"
       }
     }
   },
