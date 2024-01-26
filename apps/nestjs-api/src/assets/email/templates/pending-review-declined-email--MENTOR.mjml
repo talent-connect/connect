@@ -15,7 +15,7 @@
           <mj-text mj-class="text paragraph"
             >Unfortunately, your profile has not been approved. Most likely this
             has been discussed with you in your conversation with one of our
-            Career Support team members.
+            ReDI Talent Success team members.
           </mj-text>
           <mj-text mj-class="text paragraph"
             >If you feel like this has been done without your knowledge, please
@@ -25,7 +25,7 @@
             >, so we can get in touch with you.</mj-text
           >
           <mj-text mj-class="text"
-            >Best,<br />Your Career Support Team at ReDI School</mj-text
+            All the best,<br />Your ReDI Talent Success Team</mj-text
           >
         </mj-column>
       </mj-section>

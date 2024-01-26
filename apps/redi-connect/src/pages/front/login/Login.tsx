@@ -199,7 +199,7 @@ export default function Login() {
       console.log(err)
       formik.setSubmitting(false)
       setLoginError(
-        'Something unexpected happened, please try again or contact the ReDI Career Support Team at career@redi-school.org'
+        'Something unexpected happened, please try again or contact the ReDI Talent Success Team at career@redi-school.org'
       )
       return
     }
