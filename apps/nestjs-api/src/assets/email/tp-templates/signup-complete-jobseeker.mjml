@@ -25,8 +25,8 @@
             >We are excited to get to know you soon!</mj-text
             >
             
-          <mj-text mj-class="text">Best,</mj-text>
-          <mj-text mj-class="text">ReDI Talent Success & Career Support Team</mj-text>
+          <mj-text mj-class="text">All the best,</mj-text>
+          <mj-text mj-class="text">ReDI Talent Success Team</mj-text>
         </mj-column>
       </mj-section>
       <mj-include path="../templates/footer.career.support.team-tp.mjml" />

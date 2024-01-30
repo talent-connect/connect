@@ -16,17 +16,18 @@
 
       <tr>
         <td class="table-cell td-mobile">
-          Career Partnerships Manager<br/>
-          <a href="mailto:janis@redi-school.org" class="text-link">
-            janis@redi-school.org
+          Career Partnerships Manager<br />
+          <a href="mailto:partner@redi-school.org" class="text-link">
+            partner@redi-school.org
           </a>
-          <br/><br/>
+          <br /><br />
           ReDI School of Digital Integration<br />
           <a
             href="https://www.redi-school.org"
             class="text-link"
             target="_blank"
-            >www.redi-school.org</a>
+            >www.redi-school.org</a
+          >
         </td>
       </tr>
     </mj-table>

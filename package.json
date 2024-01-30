@@ -110,7 +110,7 @@
     "dompurify": "^3.0.0",
     "dotenv": "10.0.0",
     "formik": "^2.1.4",
-    "graphql": "^16.4.0",
+    "graphql": "^16.8.1",
     "graphql-request": "^4.2.0",
     "helmet": "^3.10.0",
     "i18next": "^19.4.4",

@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import {
-  ConnectProfileStatus,
   ConProfileEntity,
   ConProfileMapper,
+  ConnectProfileStatus,
   UserType,
 } from '@talent-connect/common-types'
 import { deleteUndefinedProperties } from '@talent-connect/shared-utils'
@@ -26,7 +26,7 @@ export class ConProfilesService {
     return await this.api.createConProfileForSignUp({
       userId: user.userId,
       loopbackUserId: user.loopbackUserId,
-      profileStatus: ConnectProfileStatus.PENDING,
+      profileStatus: ConnectProfileStatus.DRAFTING_PROFILE,
       rediLocation: input.rediLocation,
       userType: input.userType,
       menteeCountCapacity: input.userType === UserType.MENTOR ? 1 : 0,
