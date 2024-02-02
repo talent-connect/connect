@@ -184,7 +184,10 @@ export function BrowseJobseeker() {
 
     return (
       <div className="job-posting-card__favorite" onClick={handleFavoriteClick}>
-        <Icon icon="ellipsis" className="job-posting-card__favorite__icon" />
+        <Icon
+          icon={isFavorite ? 'heartFilled' : 'heart'}
+          className="job-posting-card__favorite__icon"
+        />
       </div>
     )
   }
