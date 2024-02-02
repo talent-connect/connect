@@ -21,6 +21,7 @@ import { EditableDetails } from '../../../components/organisms/company-profile-e
 import { EditableJobPostings } from '../../../components/organisms/company-profile-editables/EditableJobPostings'
 import { EditableNamePhotoLocation } from '../../../components/organisms/company-profile-editables/EditableNamePhotoLocation'
 import { LoggedIn } from '../../../components/templates'
+import { useIsBusy } from '../../../hooks/useIsBusy'
 import { queryClient } from '../../../services/api/api'
 import { OnboardingSteps } from './TpCompanyProfileOnboardingSteps'
 
@@ -183,6 +184,7 @@ function isProfileComplete(
 }
 
 function SendProfileForReviewButton() {
+  const isBusy = useIsBusy()
   const myData = useMyTpDataQuery()
 
   const companyProfile = myData.data?.tpCurrentUserDataGet?.representedCompany
@@ -192,6 +194,7 @@ function SendProfileForReviewButton() {
   const mutation = usePatchTpCompanyProfileMutation()
 
   const enabled =
+    !isBusy &&
     companyProfile?.state === CompanyTalentPoolState.DraftingProfile &&
     isProfileComplete(companyProfile, userContact) &&
     jobListings?.length > 0
