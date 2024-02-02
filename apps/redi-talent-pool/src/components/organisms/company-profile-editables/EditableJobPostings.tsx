@@ -55,8 +55,7 @@ export function EditableJobPostings({ jobListings }) {
     setIsEditing(true)
   }, [])
 
-  const hasJobListings = jobListings?.length > 0
-  const isEmpty = !hasJobListings
+  const isEmpty = !jobListings || jobListings.length === 0
 
   return (
     <>
