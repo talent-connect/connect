@@ -202,7 +202,7 @@ function JobListingCards({ jobListings, startEditing }) {
                 placement="top"
                 arrow
               >
-                {/* Acceptable hack: Tooltip doesn't trigger correctly unless child wrapped in <spam> */}
+                {/* Acceptable hack: Tooltip doesn't trigger correctly unless child wrapped in <span> */}
                 <span>
                   <CardContextMenu
                     menuItems={[
