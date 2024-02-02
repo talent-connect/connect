@@ -17,7 +17,6 @@ export const showNotification = (
   message: string,
   options?: Optional<AppNotificationOptions>
 ) => {
-  // console.log('show', message)
   const finalOptions: AppNotificationOptions = {
     autoHideDuration: 3000,
     ...options,
@@ -30,12 +29,9 @@ export function AppNotification() {
   const [key, setKey] = useState(0)
 
   const show = useCallback((options: SubjectShowNotification) => {
-    console.log('yo')
     setKey((prevKey) => prevKey + 1)
     setState({ ...options })
   }, [])
-
-  console.log('state', state)
 
   useEffect(() => {
     const subscriptionShow = subjectShowNotification.subscribe(show)
@@ -45,25 +41,25 @@ export function AppNotification() {
     }
   }, [show])
 
+  // Note: without key prop the snackbar would only appear once. Unsure exactly why it works
+  // when it's present, best guess it helps uniquely identify the different snackbars.
   return (
-    <div>
-      <Snackbar
-        key={key}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        TransitionComponent={(props) => <Slide {...props} direction="up" />}
-        open={!!state}
-        autoHideDuration={state ? state.autoHideDuration : 0}
-        onClose={() => setState(null)}
-      >
-        <SnackbarContent
-          message={<span>{state && state.message}</span>}
-          style={{ padding: '.6em 1.3em', minWidth: 'unset' }}
-        />
-      </Snackbar>
-    </div>
+    <Snackbar
+      key={key}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'center',
+      }}
+      TransitionComponent={(props) => <Slide {...props} direction="up" />}
+      open={!!state}
+      autoHideDuration={state ? state.autoHideDuration : 0}
+      onClose={() => setState(null)}
+    >
+      <SnackbarContent
+        message={<span>{state && state.message}</span>}
+        style={{ padding: '.6em 1.3em', minWidth: 'unset' }}
+      />
+    </Snackbar>
   )
 }
 
