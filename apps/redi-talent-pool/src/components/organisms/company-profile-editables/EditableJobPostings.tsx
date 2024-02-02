@@ -160,11 +160,6 @@ interface ModalFormProps {
 function JobListingCards({ jobListings, startEditing }) {
   const queryClient = useQueryClient()
 
-  const renderTimestamp = (expiresAt) =>
-    `Expires ${formatDistance(new Date(expiresAt), new Date(), {
-      addSuffix: true,
-    })}`
-
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const handleDeleteModalClose = useCallback(
     () => setIsDeleteModalOpen(false),
@@ -573,3 +568,8 @@ const federalStatesOptions = objectEntries(germanFederalStates).map(
     label,
   })
 )
+
+const renderTimestamp = (expiresAt) =>
+  `Expires ${formatDistance(new Date(expiresAt), new Date(), {
+    addSuffix: true,
+  })}`
