@@ -200,9 +200,7 @@ function JobListingCards({ jobListings, startEditing }) {
       {jobListings?.map((jobListing) => (
         <Columns.Column size={12} key={jobListing.id}>
           <JobListingCard
-            key={jobListing.id}
             jobListing={jobListing}
-            // onClick={(e) => handleStartEditingClick(jobListing.id, e)}
             timestamp={renderTimestamp(jobListing.expiresAt)}
             renderCTA={() => (
               <Tooltip
