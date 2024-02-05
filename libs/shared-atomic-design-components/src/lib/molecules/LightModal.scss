@@ -1,4 +1,18 @@
 @import '../styles/variables';
 
 .light-modal {
+  &__button {
+    text-transform: none;
+    letter-spacing: normal;
+    padding: 0 0 0 2.5rem;
+  }
+  &__primary-button {
+    color: $redi-orange;
+    &:hover {
+      color: $redi-orange-dark;
+    }
+  }
+  &__secondary-button {
+    color: $grey;
+  }
 }

@@ -40,11 +40,21 @@ export default function LightModal({
           style={{ marginTop: '1rem', display: 'flex', justifyContent: 'end' }}
         >
           {cancelLabel && (
-            <Button simple onClick={handleClose}>
+            <Button
+              simple
+              size="large"
+              onClick={handleClose}
+              className="light-modal__button light-modal__secondary-button"
+            >
               {cancelLabel}
             </Button>
           )}
-          <Button simple onClick={ctaOnClick}>
+          <Button
+            simple
+            size="large"
+            onClick={ctaOnClick}
+            className="light-modal__button light-modal__primary-button"
+          >
             {ctaLabel}
           </Button>
         </div>
