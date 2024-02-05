@@ -12,6 +12,7 @@ import {
   FormSelect,
   Heading,
   Icon,
+  LightModal,
   Modal,
   TextEditor,
   showNotification,
@@ -37,7 +38,6 @@ import { Columns, Element } from 'react-bulma-components'
 import { useQueryClient } from 'react-query'
 import * as Yup from 'yup'
 import { EmptySectionPlaceholder } from '../../molecules/EmptySectionPlaceholder'
-import { LightModal } from '../../molecules/LightModal'
 import { JobListingCard } from '../JobListingCard'
 import { useLoadModalFormJobListingDataQuery } from './EditableJobPostings.generated'
 import JobPlaceholderCardUrl from './job-placeholder-card.svg'

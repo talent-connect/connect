@@ -2,6 +2,8 @@ import { Box, Dialog } from '@mui/material'
 import { Button } from '@talent-connect/shared-atomic-design-components'
 import { Element } from 'react-bulma-components'
 
+import './LightModal.scss'
+
 interface ModalProps {
   isOpen: boolean
   handleClose: () => void
@@ -12,7 +14,7 @@ interface ModalProps {
   cancelLabel?: string
 }
 
-export function LightModal({
+export default function LightModal({
   isOpen,
   handleClose,
   headline,
@@ -22,7 +24,7 @@ export function LightModal({
   cancelLabel,
 }: ModalProps) {
   return (
-    <Dialog open={isOpen} onClose={handleClose}>
+    <Dialog open={isOpen} onClose={handleClose} className="light-modal">
       <Box sx={{ padding: '24px 32px' }}>
         <Element
           renderAs="p"
@@ -37,14 +39,14 @@ export function LightModal({
         <div
           style={{ marginTop: '1rem', display: 'flex', justifyContent: 'end' }}
         >
-          <Button simple onClick={ctaOnClick}>
-            {ctaLabel}
-          </Button>
           {cancelLabel && (
             <Button simple onClick={handleClose}>
               {cancelLabel}
             </Button>
           )}
+          <Button simple onClick={ctaOnClick}>
+            {ctaLabel}
+          </Button>
         </div>
       </Box>
     </Dialog>

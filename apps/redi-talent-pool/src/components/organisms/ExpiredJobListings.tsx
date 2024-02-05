@@ -2,13 +2,13 @@ import {
   useTpJobListingDeleteMutation,
   useTpJobListingPatchMutation,
 } from '@talent-connect/data-access'
+import { LightModal } from '@talent-connect/shared-atomic-design-components'
 import { formatDistance } from 'date-fns'
 import { useCallback, useState } from 'react'
 import { Columns, Element } from 'react-bulma-components'
 import { useQueryClient } from 'react-query'
 import { CardContextMenu } from '../molecules/CardContextMenu'
 import { EmptySectionPlaceholder } from '../molecules/EmptySectionPlaceholder'
-import { LightModal } from '../molecules/LightModal'
 import { JobListingCard } from './JobListingCard'
 import JobPlaceholderCardUrl from './company-profile-editables/job-placeholder-card.svg'
 
