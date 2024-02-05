@@ -33,9 +33,10 @@ export function ExpiredJobListings({ jobListings }) {
     )
   }
 
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [deleteModalOpenForJobPostingId, setDeleteModalOpenForJobPostingId] =
+    useState<string | null>(null)
   const handleDeleteModalClose = useCallback(
-    () => setIsDeleteModalOpen(false),
+    () => setDeleteModalOpenForJobPostingId(null),
     []
   )
   const deleteMutation = useTpJobListingDeleteMutation()
@@ -111,13 +112,16 @@ export function ExpiredJobListings({ jobListings }) {
                         },
                         {
                           label: 'Delete',
-                          onClick: () => setIsDeleteModalOpen(true),
+                          onClick: () =>
+                            setDeleteModalOpenForJobPostingId(jobListing.id),
                           icon: 'delete',
                         },
                       ]}
                     >
                       <LightModal
-                        isOpen={isDeleteModalOpen}
+                        isOpen={
+                          deleteModalOpenForJobPostingId === jobListing.id
+                        }
                         handleClose={handleDeleteModalClose}
                         headline="Delete job posting?"
                         message="You will lose all the information entered for this job posting."
