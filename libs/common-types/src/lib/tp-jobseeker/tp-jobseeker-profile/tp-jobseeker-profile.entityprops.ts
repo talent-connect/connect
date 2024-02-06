@@ -33,7 +33,6 @@ export class TpJobseekerProfileEntityProps implements EntityProps {
   topSkills?: Array<TpTechnicalSkill>
   @Field((type) => JobseekerProfileStatus)
   state: JobseekerProfileStatus
-  joinsDusseldorf24WinterJobFair?: boolean
   joinsMunich24SummerJobFair?: boolean
   isProfileVisibleToCompanies: boolean
   isHired: boolean

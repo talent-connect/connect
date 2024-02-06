@@ -12,7 +12,6 @@ fragment AllTpCompanyProfileFields on TpCompanyProfile {
   state
   isProfileVisibleToJobseekers
   isCareerPartner
-  joinsDusseldorf24WinterJobFair
   joinsMunich24SummerJobFair
   createdAt
   updatedAt

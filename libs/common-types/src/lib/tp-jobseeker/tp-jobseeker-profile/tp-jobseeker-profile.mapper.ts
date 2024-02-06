@@ -39,8 +39,6 @@ export class TpJobseekerProfileMapper
     props.topSkills =
       (raw.props.Top_Skills__c?.split(';') as TpTechnicalSkill[]) ?? undefined
     props.state = raw.props.Profile_Status__c as JobseekerProfileStatus
-    props.joinsDusseldorf24WinterJobFair =
-      raw.props.Joins_Dusseldorf_24_Winter_Job_Fair__c
     props.joinsMunich24SummerJobFair =
       raw.props.Joins_Munich_24_Summer_Job_Fair__c
     props.isProfileVisibleToCompanies = raw.props.Is_Visible_to_Companies__c
@@ -79,8 +77,6 @@ export class TpJobseekerProfileMapper
     props.About_Yourself__c = source.props.aboutYourself
     props.Top_Skills__c = source.props?.topSkills?.join(';')
     props.Profile_Status__c = source.props.state
-    props.Joins_Dusseldorf_24_Winter_Job_Fair__c =
-      source.props.joinsDusseldorf24WinterJobFair
     props.Joins_Munich_24_Summer_Job_Fair__c =
       source.props.joinsMunich24SummerJobFair
     props.Is_Visible_to_Companies__c = source.props.isProfileVisibleToCompanies
