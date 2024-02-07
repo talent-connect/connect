@@ -57,16 +57,6 @@ export function MeCompany() {
     queryClient.invalidateQueries()
   }
 
-  const onDusseldorf24WinterJobFairParticipateChange = async () => {
-    await mutation.mutateAsync({
-      input: {
-        joinsDusseldorf24WinterJobFair:
-          !companyProfile.joinsDusseldorf24WinterJobFair,
-      },
-    })
-    queryClient.invalidateQueries()
-  }
-
   // Hidden until the new date announced
   // const onMunich24SummerJobFairParticipateChange = async () => {
   //   await mutation.mutateAsync({
@@ -110,13 +100,6 @@ export function MeCompany() {
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'three-fifths' }}>
           <EditableNamePhotoLocation companyProfile={companyProfile} />
           <div style={{ marginBottom: '1.5rem' }}>
-            <Checkbox
-              checked={companyProfile.joinsDusseldorf24WinterJobFair}
-              customOnChange={onDusseldorf24WinterJobFairParticipateChange}
-            >
-              My company will attend the{' '}
-              <b>ReDI Winter Job Fair in Düsseldorf</b> on <b>02/02/2024</b>.
-            </Checkbox>
             {/* Hidden until the next Job Fair date announced */}
             {/* <Checkbox
               checked={companyProfile.joinsMunich24SummerJobFair}
