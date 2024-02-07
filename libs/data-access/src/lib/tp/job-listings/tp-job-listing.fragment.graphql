@@ -22,4 +22,8 @@ fragment AllTpJobListingFields on TpJobListing {
   contactEmailAddress
   contactPhoneNumber
   isFromCareerPartner
+  contactFirstName
+  contactLastName
+  contactEmailAddress
+  contactPhoneNumber
 }

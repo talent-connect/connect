@@ -2,6 +2,7 @@ import {
   Button,
   FormInput,
   Heading,
+  showNotification,
 } from '@talent-connect/shared-atomic-design-components'
 import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
 import { useEffect, useState } from 'react'
@@ -9,7 +10,6 @@ import { Columns, Content, Form } from 'react-bulma-components'
 import { RouteComponentProps } from 'react-router'
 import { Link } from 'react-router-dom'
 import * as Yup from 'yup'
-import { showNotification } from '../../../components/AppNotification'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import { setPassword } from '../../../services/api/api'
 import { saveAccessTokenToLocalStorage } from '../../../services/auth/auth'
@@ -68,7 +68,6 @@ export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
       showNotification(
         'Your new password is set. Please log in using the new password :)',
         {
-          variant: 'success',
           autoHideDuration: 10000,
         }
       )
