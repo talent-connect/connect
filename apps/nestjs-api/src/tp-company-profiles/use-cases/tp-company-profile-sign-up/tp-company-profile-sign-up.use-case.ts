@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import {
   AccountContactRecord,
+  AccountRecord,
   ContactRecord,
   ContactRecordProps,
   TpCompanyProfileEntity,
@@ -50,7 +51,8 @@ export class TpCompanyProfileSignUpUseCase {
     await this.upsertAccountContactRelationship(
       input,
       companyEntity,
-      currentUser
+      currentUser,
+      contactRecord
     )
 
     switch (input.operationType) {
@@ -147,7 +149,8 @@ export class TpCompanyProfileSignUpUseCase {
   async upsertAccountContactRelationship(
     input: TpCompanyProfileSignUpMutationInputDto,
     companyEntity: TpCompanyProfileEntity,
-    currentUser: CurrentUserInfo
+    currentUser: CurrentUserInfo,
+    contactRecord: ContactRecord
   ) {
     console.log('stop here')
     const accountContactRecords = await this.sfApi.findRecordsOfObject({
@@ -201,11 +204,30 @@ export class TpCompanyProfileSignUpUseCase {
 
     /**
      * Updating the contact's Account from Household account to the Company account
+     * and deleting the unassigned Household account
      */
-    const contactRecordProps = new ContactRecordProps()
-    contactRecordProps.Id = currentUser.userId
-    contactRecordProps.AccountId = companyEntity.props.id
+    const householdAccountIdToBeDeleted = contactRecord.props.AccountId
 
-    await this.sfService.updateContact(ContactRecord.create(contactRecordProps))
+    const newContactRecordProps = new ContactRecordProps()
+    newContactRecordProps.Id = currentUser.userId
+    newContactRecordProps.AccountId = companyEntity.props.id
+
+    await this.sfService.updateContact(
+      ContactRecord.create(newContactRecordProps)
+    )
+    await this.cleanUpUnassignedHouseholdAccount(householdAccountIdToBeDeleted)
+  }
+
+  async cleanUpUnassignedHouseholdAccount(recordId: string) {
+    await this.sfApi.deleteRecord(
+      AccountRecord.metadata.SALESFORCE_OBJECT_NAME,
+      recordId
+    )
+
+    console.log(
+      '[TpCompanyProfileSignUpUseCase]',
+      'deleted household account record',
+      recordId
+    )
   }
 }
