@@ -20,7 +20,9 @@ function ReadPersonalDetail({ profile, caption }: Props) {
   if (age) detailsList.push(`${age} years old`)
 
   if (!gender && !age)
-    return <Placeholder>Input your gender and date of birth.</Placeholder>
+    // Age is temporary disabled until datepicker returns only date (not datetime).
+    // Update this placeholder back to 'Input your gender and date of birth', when datepicker is enabled.
+    return <Placeholder>Input your gender.</Placeholder>
 
   return (
     <>

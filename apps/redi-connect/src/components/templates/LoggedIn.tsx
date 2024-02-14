@@ -121,7 +121,7 @@ function LoggedIn({ children }: Props) {
                 <Modal
                   show={isNewAcceptedMatch}
                   confirm
-                  title="You’ve got a mentor match!"
+                  title="You've got a mentor match!"
                 >
                   <Modal.Body>
                     <Content>

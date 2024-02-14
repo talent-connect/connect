@@ -132,7 +132,7 @@ function Profile() {
               <Avatar profile={profile} />
             </Columns.Column>
             <Columns.Column size={9}>
-              <Heading>{profile.fullName}</Heading>
+              <Heading size="medium">{profile.fullName}</Heading>
               <Element className="location-tag">
                 <Icon icon="mapPin" className="icon-align" />
                 <Content size="medium" renderAs="p">

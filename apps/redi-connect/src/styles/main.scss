@@ -174,3 +174,27 @@ a:hover {
     flex-shrink: 0;
   }
 }
+
+.stepper-card {
+  padding: $stepper-card-padding;
+  margin-bottom: 2rem;
+  border-radius: $stepper-card-border-radius;
+  border: $stepper-card-border;
+  background: $stepper-card-background-color;
+  box-shadow: $stepper-card-box-shadow;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  &__steps {
+    margin: 1rem 0;
+  }
+
+  &__message {
+    border-radius: $stepper-message-border-radius;
+    padding: $stepper-message-padding;
+  }
+}

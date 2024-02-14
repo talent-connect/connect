@@ -71,7 +71,7 @@ function EditableSocialMedia() {
 
   return (
     <Editable
-      title="Social Media"
+      title="Social Media (optional)"
       onSave={() => formik.handleSubmit()}
       onClose={() => formik.resetForm()}
       savePossible={formik.dirty && formik.isValid}
