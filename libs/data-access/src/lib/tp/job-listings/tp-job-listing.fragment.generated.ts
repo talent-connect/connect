@@ -28,5 +28,9 @@ export const AllTpJobListingFieldsFragmentDoc = `
   contactEmailAddress
   contactPhoneNumber
   isFromCareerPartner
+  contactFirstName
+  contactLastName
+  contactEmailAddress
+  contactPhoneNumber
 }
     `;

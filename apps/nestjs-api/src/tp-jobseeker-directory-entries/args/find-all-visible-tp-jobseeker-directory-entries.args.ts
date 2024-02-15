@@ -26,5 +26,4 @@ class FindAllVisibleTpJobseekerDirectoryEntriesFilter {
   @Field((type) => [FederalState])
   federalStates?: FederalState[]
   joinsMunich24SummerJobFair?: boolean
-  joinsDusseldorf24WinterJobFair?: boolean
 }
