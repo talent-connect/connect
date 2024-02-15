@@ -46,4 +46,32 @@
       font-size: 12px;
     }
   }
+
+  &__profile {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    flex-wrap: wrap;
+
+    .chip {
+      display: inline-block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      line-height: 200%;
+      max-width: 100%;
+    }
+    .last_row {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      gap: 8px;
+      max-width: 100%;
+
+      .plus {
+        overflow: visible;
+      }
+    }
+  }
 }

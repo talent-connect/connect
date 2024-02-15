@@ -109,12 +109,42 @@ const MultilineTags = ({ items }: { items: CardTagsProps['items'] }) => {
   )
 }
 
+const MultilineTagsBig = ({ items }: { items: CardTagsProps['items'] }) => {
+  const additionalTagsCount = items.length - 3
+  const shortItemsList = items.slice(0, 3)
+  const hasAdditionalTags = additionalTagsCount > 0
+
+  return (
+    <div className="wrapper__profile">
+      {shortItemsList.map((chip, i) => {
+        const currentTag = (
+          <p key={chip} className="chip">
+            {chip}
+          </p>
+        )
+        const isLastVisibleTag = i === 2
+
+        return hasAdditionalTags && isLastVisibleTag ? (
+          <div className="wrapper__profile last_row" key={chip}>
+            {currentTag}
+            <p key={`restNr-${i}`} className="chip plus">
+              {'+' + additionalTagsCount}
+            </p>
+          </div>
+        ) : (
+          currentTag
+        )
+      })}
+    </div>
+  )
+}
+
 const CardTags = ({ items, shortList = false, formatter }: CardTagsProps) => {
   const isMobile = useMediaQuery('(max-width:768px)')
   const formattedItems = formatter ? items.map(formatter) : items
 
   return isMobile || shortList ? (
-    <MultilineTags items={formattedItems} />
+    <MultilineTagsBig items={formattedItems} />
   ) : (
     <SinglelineTags items={formattedItems} />
   )
