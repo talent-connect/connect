@@ -67,7 +67,7 @@ function Me() {
   const isMentor = userType === UserType.Mentor
   const isCorporateMentor = isMentor && mentor_isPartnershipMentor
   const commonChecks =
-    personalDescription !== null && categories !== null && languages !== null
+    personalDescription !== null && categories.length > 0 && languages !== null
 
   const isMenteeProfileComplete =
     isMentee && commonChecks && mentee_occupationCategoryId !== null

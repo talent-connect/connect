@@ -1,6 +1,7 @@
 import { Box, Step, StepLabel, Stepper } from '@mui/material'
 import { ConnectProfileStatus } from '@talent-connect/data-access'
 import { Caption, Icon } from '@talent-connect/shared-atomic-design-components'
+import classnames from 'clsx'
 import { useState } from 'react'
 import { Content, Notification } from 'react-bulma-components'
 import './OnboardingSteps.scss'
@@ -27,7 +28,7 @@ const OnboardingSteps = ({
   return (
     !isStepperHidden && (
       <div className="stepper-card">
-        <div className="stepper-card__header">
+        <div className="stepper-card--header">
           <Caption>
             Hi, {profile.firstName}! Let's complete these steps:
           </Caption>
@@ -38,7 +39,7 @@ const OnboardingSteps = ({
           )}
         </div>
 
-        <Box sx={{ width: '100%' }} className="stepper-card__steps">
+        <Box sx={{ width: '100%' }} className="stepper-card--steps">
           <Stepper activeStep={currentStep} alternativeLabel>
             {STEPS.map((step) => (
               <Step key={step.name}>
@@ -48,7 +49,14 @@ const OnboardingSteps = ({
           </Stepper>
         </Box>
 
-        <Notification className="stepper-card__message">
+        <Notification
+          className={classnames('stepper-card--message', {
+            'bubble-first': currentStep === 0,
+            'bubble-second': currentStep === 1,
+            'bubble-third': currentStep === 2,
+            'bubble-fourth': currentStep === 3,
+          })}
+        >
           {isMentor ? (
             <>
               {isCorporateMentor &&
