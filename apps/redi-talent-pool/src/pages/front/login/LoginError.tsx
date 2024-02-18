@@ -1,17 +1,14 @@
-import { RediLocation } from '@talent-connect/data-access'
 import {
   Button,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
 import { Columns, Content, Form } from 'react-bulma-components'
 import { useHistory } from 'react-router-dom'
-import { Teaser } from '../../../components/molecules'
-import AccountOperation from '../../../components/templates/AccountOperation'
-import { envRediLocation } from '../../../utils/env-redi-location'
+import { Teaser } from '../../../../../redi-connect/src/components/molecules'
+import AccountOperation from '../../../../../redi-connect/src/components/templates/AccountOperation'
 
-export default function SignUpEmailVerificationSuccess() {
+export default function LoginError() {
   const history = useHistory()
-  const rediLocation = envRediLocation() as RediLocation
 
   return (
     <AccountOperation>
@@ -23,16 +20,21 @@ export default function SignUpEmailVerificationSuccess() {
           <Teaser.IllustrationOnly />
         </Columns.Column>
         <Columns.Column size={5} offset={1}>
-          <Heading border="bottomLeft">Email verified!</Heading>
+          <Heading border="bottomLeft">Changes to Your Platform Access</Heading>
           <Content size="large" renderAs="div">
-            <p>Thank you for verifying your email!</p>
-            <p>Now, please log in.</p>
+            <p>
+              Oops! It seems like your access to the platform has changed. If
+              you believe this is a mistake or have any questions, please reach
+              out to Janis at{' '}
+              <a href="mailto:partner@redi-school.org">
+                partner@redi-school.org
+              </a>
+              . We're here to help!
+            </p>
           </Content>
           <Form.Field className="submit-spacer">
             <Form.Control>
-              <Button onClick={() => history.push('/front/login')}>
-                Log in
-              </Button>
+              <Button onClick={() => history.push('/')}>Go Back</Button>
             </Form.Control>
           </Form.Field>
         </Columns.Column>
