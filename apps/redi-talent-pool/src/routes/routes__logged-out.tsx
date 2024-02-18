@@ -64,7 +64,7 @@ export const routes__loggedOut: RouteDefinition[] = [
     exact: true,
   },
   {
-    path: '/front/login-error',
+    path: '/front/login-result',
     component: LoginError,
     exact: true,
   },

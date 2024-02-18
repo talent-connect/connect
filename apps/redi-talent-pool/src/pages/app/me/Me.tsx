@@ -28,7 +28,7 @@ function Me() {
       break
     case 'REJECTED':
     case 'DEACTIVATED':
-      history.push('/front/login-error')
+      history.push('/front/login-result')
       break
     case 'APPROVED':
       return <MeCompany />
