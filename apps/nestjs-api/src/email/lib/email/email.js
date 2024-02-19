@@ -171,19 +171,24 @@ export const sendMenteePendingReviewAcceptedEmail = ({
   firstName,
   rediLocation,
 }) => {
-  const homePageUrl = `${buildFrontendUrl(
+  const loginPageUrl = `${buildFrontendUrl(
     process.env.NODE_ENV,
     rediLocation
   )}/front/login/`
-  const sendMenteePendingReviewAcceptedEmailParsed = convertTemplateToHtml(
-    null,
-    'welcome-to-redi-mentee'
-  )
-  const html = sendMenteePendingReviewAcceptedEmailParsed
+  const faqPageUrl = `${buildFrontendUrl(
+    process.env.NODE_ENV,
+    rediLocation
+  )}/front/faq/`
+
+  const templateFile =
+    rediLocation === 'CYBERSPACE'
+      ? 'welcome-to-redi-mentee-cyberspace'
+      : 'welcome-to-redi-mentee'
+
+  const html = convertTemplateToHtml(null, templateFile)
     .replace(/\${firstName}/g, firstName)
-    .replace(/\${mentorOrMentee}/g, 'mentee')
-    .replace(/\${mentorOrMenteeOpposite}/g, 'mentor')
-    .replace(/\${homePageUrl}/g, homePageUrl)
+    .replace(/\${loginPageUrl}/g, loginPageUrl)
+    .replace(/\${faqPageUrl}/g, faqPageUrl)
 
   return sendMjmlEmailFactory({
     to: recipient,
@@ -197,7 +202,7 @@ export const sendMentorPendingReviewAcceptedEmail = ({
   firstName,
   rediLocation,
 }) => {
-  const homePageUrl = `${buildFrontendUrl(
+  const loginPageUrl = `${buildFrontendUrl(
     process.env.NODE_ENV,
     rediLocation
   )}/front/login/`
@@ -209,7 +214,7 @@ export const sendMentorPendingReviewAcceptedEmail = ({
     .replace(/\${firstName}/g, firstName)
     .replace(/\${mentorOrMentee}/g, 'mentor')
     .replace(/\${mentorOrMenteeOpposite}/g, 'mentee')
-    .replace(/\${homePageUrl}/g, homePageUrl)
+    .replace(/\${loginPageUrl}/g, loginPageUrl)
   return sendMjmlEmailFactory({
     to: recipient,
     subject: 'Your ReDI Connect profile is now activated!',
@@ -222,15 +227,19 @@ export const sendMenteeSignupCompleteEmail = ({
   firstName,
   rediLocation,
 }) => {
+  const loginPageUrl = `${buildFrontendUrl(
+    process.env.NODE_ENV,
+    rediLocation
+  )}/front/login/`
+
   const templateFile =
     rediLocation === 'CYBERSPACE'
       ? 'signup-complete-mentee-cyberspace'
       : 'signup-complete-mentee'
 
-  const html = convertTemplateToHtml(null, templateFile).replace(
-    /\${firstName}/g,
-    firstName
-  )
+  const html = convertTemplateToHtml(null, templateFile)
+    .replace(/\${firstName}/g, firstName)
+    .replace(/\${loginPageUrl}/g, loginPageUrl)
   return sendMjmlEmailFactory({
     to: recipient,
     subject: 'Sign-up complete!',
@@ -242,16 +251,21 @@ export const sendMentorSignupCompleteEmail = ({
   recipient,
   firstName,
   isPartnershipMentor,
+  rediLocation,
 }) => {
+  const loginPageUrl = `${buildFrontendUrl(
+    process.env.NODE_ENV,
+    rediLocation
+  )}/front/login/`
+
   const templateFile =
     isPartnershipMentor === true
       ? 'signup-complete-mentor-partnership'
       : 'signup-complete-mentor'
 
-  const html = convertTemplateToHtml(null, templateFile).replace(
-    /\${firstName}/g,
-    firstName
-  )
+  const html = convertTemplateToHtml(null, templateFile)
+    .replace(/\${firstName}/g, firstName)
+    .replace(/\${loginPageUrl}/g, loginPageUrl)
   return sendMjmlEmailFactory({
     to: recipient,
     subject: 'Sign-up complete!',
