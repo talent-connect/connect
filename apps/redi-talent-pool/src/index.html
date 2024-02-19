@@ -129,7 +129,6 @@
               initHotjar()
               initGoogleAnalytics()
               initSentry()
-              initGoogleFontsApi()
             }
           },
         })
@@ -161,13 +160,6 @@
       }
       function initSentry() {
         window.initSentry?.('tp')
-      }
-      function initGoogleFontsApi() {
-        const linkElement = document.createElement('link')
-        linkElement.rel = 'stylesheet'
-        linkElement.href =
-          'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap'
-        document.head.append(linkElement)
       }
     </script>
 
