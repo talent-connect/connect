@@ -33,7 +33,7 @@ import {
   useQueryParams,
   withDefault,
 } from 'use-query-params'
-import { ProfileCard } from '../../../components/organisms'
+import { ProfileCard } from '../../../../../../libs/shared-atomic-design-components/src/lib/atoms/ProfileCard'
 import { LoggedIn } from '../../../components/templates'
 import { useLoading } from '../../../hooks/WithLoading'
 import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
