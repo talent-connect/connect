@@ -8,7 +8,9 @@
           <mj-text mj-class="headline">Welcome to ReDI Connect!</mj-text>
           <mj-divider mj-class="divider-top" css-class="divider" />
 
-          <mj-text mj-class="text">Hi ${firstName},</mj-text>
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >Hi ${firstName},</mj-text
+          >
           <mj-text mj-class="text paragraph"
             >We are happy to now officially welcome you as a mentor to ReDI
             Connect!</mj-text

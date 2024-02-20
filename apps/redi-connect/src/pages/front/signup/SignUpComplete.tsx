@@ -87,13 +87,11 @@ export default function SignUpComplete() {
                 </p>
 
                 <p style={{ textAlign: 'justify' }}>
-                  After watching the video, please click on{' '}
-                  <strong>"Continue to your profile"</strong> and complete all
-                  the steps from the stepper at the top of your profile page.
-                  After sending your profile for review, you will need to wait a
-                  bit until our Mentorship Program Manager approves it. Once
-                  approved, you will be able to find a mentor and start your
-                  mentorship journey immediately.
+                  After watching the video, click{' '}
+                  <strong>"Continue to your profile"</strong> and complete the
+                  steps in the top stepper. Once you've sent your profile for
+                  review, our Mentorship Program Manager will approve it. Then,
+                  you can find a mentor and start your journey right away.
                 </p>
               </>
             )}
