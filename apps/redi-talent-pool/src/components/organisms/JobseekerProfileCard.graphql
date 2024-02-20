@@ -5,4 +5,5 @@ fragment JobseekerProfileCardJobseekerProfileProp on TpJobseekerDirectoryEntry {
   topSkills
   profileAvatarImageS3Key
   isHired
+  workingLanguages
 }

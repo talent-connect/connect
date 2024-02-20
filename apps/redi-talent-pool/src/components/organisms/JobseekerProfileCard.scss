@@ -5,24 +5,31 @@
 }
 
 .jobseeker-profile-card {
+  display: flex;
+  flex-direction: column;
   border-radius: 4px;
-  height: 24.5rem;
+  height: 461px;
+  width: 340px;
   overflow: hidden;
+  padding: 32px;
+  gap: 24px;
+  font-family: Avenir;
+  font-weight: 800;
 
   &:hover {
     box-shadow: $card-shadow-hover;
   }
 
-  &__job-title {
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 24px;
-    letter-spacing: 1.25px;
+  &__name {
+    font-size: 20px;
+    height: 29px;
+    color: #000000;
   }
 
-  &__company-name {
-    margin-top: 5px;
-    color: $grey;
+  &__position {
+    font-size: 14px;
+    height: 19px;
+    color: #a0a0a0;
   }
 
   &__hired-tag {
@@ -35,28 +42,17 @@
   }
 
   &__image {
-    .image {
-      display: flex;
-      justify-content: center;
-    }
-
-    img {
-      width: 9.5rem;
-      height: 9.5rem;
-      overflow: hidden;
-      object-fit: contain;
-
-      border: 2px solid $redi-orange-dark;
-      border-radius: 50%;
-      box-shadow: 2px 0 15px 0 rgba(255, 92, 31, 0.34);
-    }
+    width: 136px;
+    height: 136px;
+    overflow: hidden;
+    object-fit: contain;
+    border-radius: 50%;
   }
 
   &__favorite {
-    padding: 0.5rem;
     position: absolute;
-    top: 0.3rem;
-    right: 0.4rem;
+    top: 32px;
+    right: 32px;
 
     &__icon {
       transition: $transition;
