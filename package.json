@@ -97,7 +97,7 @@
     "apollo-server-express": "^3.6.7",
     "async": "^3.2.3",
     "aws-sdk": "^2.418.0",
-    "axios": "^0.21.1",
+    "axios": "^0.28.0",
     "browserify-zlib": "^0.2.0",
     "bulma-checkradio": "^1.1.1",
     "cache-manager": "^4.0.0",
