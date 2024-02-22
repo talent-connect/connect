@@ -52,18 +52,9 @@
             >
             and complete all the steps from the stepper at the top of your
             profile page. After sending your profile for review, you will need
-            to wait a bit until our Mentorship Program Manager,
-            <strong>Hadeer</strong>, approves it. Once approved, you will be
-            able to find a mentor and start your mentorship journey
-            immediately.</mj-text
-          >
-          <mj-text mj-class="text paragraph"
-            >In case of any questions, you can
-            <strong>message Hadeer on Slack</strong> or send us an
-            <strong>e-mail</strong> at
-            <a href="mailto:career@redi-school.org" class="text-link"
-              >career@redi-school.org</a
-            >.</mj-text
+            to wait a bit until our Mentorship Program Manager approves it. Once
+            approved, you will be able to find a mentor and start your
+            mentorship journey immediately.</mj-text
           >
           <mj-text mj-class="text paragraph"
             >We’re looking forward to getting to know you soon!

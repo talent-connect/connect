@@ -19,10 +19,8 @@ import { ReactComponent as StepProgressImage } from '../../assets/images/step-pr
 const QontoConnector = styled(StepConnector)(() => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
     top: 15,
-    left: 'calc(-100% + 45px)',
-    right: 'calc(100% + 0px)',
-    // left: 'calc(-100% + 32px)';
-    // right: 'calc(100% - 12px)';
+    left: 'calc(-100% + 0px)',
+    right: 'calc(100% - 10px)',
   },
   [`&.${stepConnectorClasses.active}`]: {
     [`& .${stepConnectorClasses.line}`]: {
@@ -36,8 +34,7 @@ const QontoConnector = styled(StepConnector)(() => ({
   },
   [`& .${stepConnectorClasses.line}`]: {
     borderColor: '#dadada',
-    borderTopWidth: 3,
-    borderRadius: 1,
+    borderTopWidth: 4,
   },
 }))
 
@@ -74,10 +71,13 @@ const OnboardingSteps = ({
   return (
     !isStepperHidden && (
       <div className="stepper-card">
-        <div className="stepper-card--header">
-          <Caption>
-            Hi, {profile.firstName}! Let's complete these steps:
-          </Caption>
+        <div className="stepper-card--header-wrapper">
+          <div className="stepper-card--header">
+            <Caption>
+              Hi, {profile.firstName}! Let's complete these steps:
+            </Caption>
+          </div>
+
           {isApprovedProfile && (
             <div className="icon__button-small" onClick={hideStepper}>
               <Icon icon="cancel" size="small" />
@@ -85,27 +85,35 @@ const OnboardingSteps = ({
           )}
         </div>
 
-        <Box sx={{ width: '100%' }} className="stepper-card--steps">
+        <div className="stepper-card--steps">
           <Stepper
             activeStep={currentStep}
             alternativeLabel
             connector={<QontoConnector />}
           >
             {STEPS.map((step, index) => (
-              <Step key={step.name}>
+              <Step
+                key={step.name}
+                sx={{
+                  '&:not(:first-child)': {
+                    marginLeft: 3.5,
+                  },
+                  '& .MuiStepLabel-iconContainer.MuiStepLabel-alternativeLabel':
+                    { zIndex: 1 },
+                }}
+              >
                 <StepLabel
                   StepIconComponent={CustomStepIcon}
                   sx={{
                     alignItems: 'flex-start',
-                    // '& .MuiStepLabel-labelContainer.MuiStepLabel-alternativeLabel':
-                    //   {
-                    //     textAlign: 'left',
-                    //     fontFamily: 'Avenir LT Std',
-                    //     fontWeight: 700,
-                    //   },
-                    '& .MuiStepLabel-alternativeLabel': {
+                    '& .MuiStepLabel-label': {
                       textAlign: 'left',
                       fontFamily: 'Avenir LT Std',
+                    },
+                    '& .MuiStepLabel-label.Mui-active': {
+                      fontWeight: 700,
+                    },
+                    '& .MuiStepLabel-label.Mui-completed': {
                       fontWeight: 700,
                     },
                   }}
@@ -113,17 +121,18 @@ const OnboardingSteps = ({
                   <Typography
                     sx={{
                       color: '#a0a0a0',
-                      fontSize: 14,
+                      fontSize: 12,
+                      fontFamily: 'Avenir LT Std',
                     }}
                   >
-                    Step {index + 1}
+                    {index === 3 ? 'Done!' : `Step ${index + 1}`}
                   </Typography>
                   {step.name}
                 </StepLabel>
               </Step>
             ))}
           </Stepper>
-        </Box>
+        </div>
 
         <Notification
           className={classnames('stepper-card--message', {
