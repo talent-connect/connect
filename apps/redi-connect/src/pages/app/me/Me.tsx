@@ -1,3 +1,4 @@
+// import { usePatchMyProfileMutation } from '@talent-connect/data-access'
 import {
   Button,
   Heading,
@@ -5,6 +6,7 @@ import {
   OnboardingSteps,
 } from '@talent-connect/shared-atomic-design-components'
 import { Columns, Content, Element } from 'react-bulma-components'
+// import { useQueryClient } from 'react-query'
 import {
   Avatar,
   EditableAbout,
@@ -32,6 +34,8 @@ import { useLoading } from '../../../hooks/WithLoading'
 import './Me.scss'
 
 function Me() {
+  // const queryClient = useQueryClient()
+  // const patchMyProfileMutation = usePatchMyProfileMutation()
   const { Loading, isLoading } = useLoading()
   const myProfileResult = useLoadMyProfileQuery(
     {
@@ -95,6 +99,16 @@ function Me() {
     }
   }
   const currentStep = defineCurrentStep(profileStatus)
+
+  const onClick = async () => {
+    if (!window.confirm('Would you like to submit your profile for review?'))
+      return
+
+    // await patchMyProfileMutation.mutateAsync({
+    //   input: { profileStatus: ConnectProfileStatus.SubmittedForReview },
+    // })
+    // queryClient.invalidateQueries()
+  }
 
   return (
     <LoggedIn>
@@ -196,6 +210,7 @@ function Me() {
       {isDraftingProfile && (
         <Element className="block-separator" textAlignment="right">
           <Button
+            onClick={onClick}
             disabled={!isReadyToSubmit}
             style={!isReadyToSubmit ? { pointerEvents: 'none' } : null}
           >

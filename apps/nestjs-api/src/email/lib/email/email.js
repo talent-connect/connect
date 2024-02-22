@@ -180,12 +180,7 @@ export const sendMenteePendingReviewAcceptedEmail = ({
     rediLocation
   )}/front/faq/`
 
-  const templateFile =
-    rediLocation === 'CYBERSPACE'
-      ? 'welcome-to-redi-mentee-cyberspace'
-      : 'welcome-to-redi-mentee'
-
-  const html = convertTemplateToHtml(null, templateFile)
+  const html = convertTemplateToHtml(null, 'welcome-to-redi-mentee')
     .replace(/\${firstName}/g, firstName)
     .replace(/\${loginPageUrl}/g, loginPageUrl)
     .replace(/\${faqPageUrl}/g, faqPageUrl)
@@ -232,12 +227,7 @@ export const sendMenteeSignupCompleteEmail = ({
     rediLocation
   )}/front/login/`
 
-  const templateFile =
-    rediLocation === 'CYBERSPACE'
-      ? 'signup-complete-mentee-cyberspace'
-      : 'signup-complete-mentee'
-
-  const html = convertTemplateToHtml(null, templateFile)
+  const html = convertTemplateToHtml(null, 'signup-complete-mentee')
     .replace(/\${firstName}/g, firstName)
     .replace(/\${loginPageUrl}/g, loginPageUrl)
   return sendMjmlEmailFactory({
