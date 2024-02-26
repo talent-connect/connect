@@ -19,6 +19,11 @@ export type PatchMyProfileMutationVariables = Types.Exact<{
 
 export type PatchMyProfileMutation = { __typename?: 'Mutation', patchConProfile: { __typename?: 'ConProfile', userId: string, age?: number | null, birthDate?: any | null, categories: Array<Types.MentoringTopic>, createdAt: any, doesNotHaveAvailableMentorshipSlot: boolean, email: string, expectations?: string | null, firstName: string, fullName: string, gender?: Types.Gender | null, githubProfileUrl?: string | null, id: string, languages?: Array<Types.Language> | null, lastName: string, linkedInProfileUrl?: string | null, loopbackUserId: string, menteeCountCapacity?: number | null, mentee_highestEducationLevel?: Types.EducationLevel | null, mentee_occupationCategoryId?: Types.OccupationCategory | null, mentee_occupationJob_placeOfEmployment?: string | null, mentee_occupationJob_position?: string | null, mentee_occupationLookingForJob_what?: string | null, mentee_occupationOther_description?: string | null, mentee_occupationStudent_studyName?: string | null, mentee_occupationStudent_studyPlace?: string | null, mentor_isPartnershipMentor?: boolean | null, mentor_occupation?: string | null, mentor_workPlace?: string | null, optOutOfMenteesFromOtherRediLocation: boolean, personalDescription?: string | null, profileAvatarImageS3Key?: string | null, profileStatus: Types.ConnectProfileStatus, rediLocation: Types.RediLocation, slackUsername?: string | null, telephoneNumber?: string | null, updatedAt: any, userActivatedAt?: any | null, userType: Types.UserType } };
 
+export type ConProfileSubmitForReviewMutationVariables = Types.Exact<{ [key: string]: never; }>;
+
+
+export type ConProfileSubmitForReviewMutation = { __typename?: 'Mutation', conProfileSubmitForReview: { __typename?: 'ConProfile', userId: string, age?: number | null, birthDate?: any | null, categories: Array<Types.MentoringTopic>, createdAt: any, doesNotHaveAvailableMentorshipSlot: boolean, email: string, expectations?: string | null, firstName: string, fullName: string, gender?: Types.Gender | null, githubProfileUrl?: string | null, id: string, languages?: Array<Types.Language> | null, lastName: string, linkedInProfileUrl?: string | null, loopbackUserId: string, menteeCountCapacity?: number | null, mentee_highestEducationLevel?: Types.EducationLevel | null, mentee_occupationCategoryId?: Types.OccupationCategory | null, mentee_occupationJob_placeOfEmployment?: string | null, mentee_occupationJob_position?: string | null, mentee_occupationLookingForJob_what?: string | null, mentee_occupationOther_description?: string | null, mentee_occupationStudent_studyName?: string | null, mentee_occupationStudent_studyPlace?: string | null, mentor_isPartnershipMentor?: boolean | null, mentor_occupation?: string | null, mentor_workPlace?: string | null, optOutOfMenteesFromOtherRediLocation: boolean, personalDescription?: string | null, profileAvatarImageS3Key?: string | null, profileStatus: Types.ConnectProfileStatus, rediLocation: Types.RediLocation, slackUsername?: string | null, telephoneNumber?: string | null, updatedAt: any, userActivatedAt?: any | null, userType: Types.UserType } };
+
 
 export const LoadMyProfileDocument = `
     query loadMyProfile($loopbackUserId: ID!) {
@@ -67,5 +72,21 @@ export const usePatchMyProfileMutation = <
     useMutation<PatchMyProfileMutation, TError, PatchMyProfileMutationVariables, TContext>(
       ['patchMyProfile'],
       (variables?: PatchMyProfileMutationVariables) => fetcher<PatchMyProfileMutation, PatchMyProfileMutationVariables>(PatchMyProfileDocument, variables)(),
+      options
+    );
+export const ConProfileSubmitForReviewDocument = `
+    mutation conProfileSubmitForReview {
+  conProfileSubmitForReview {
+    ...AllConProfileFields
+  }
+}
+    ${AllConProfileFieldsFragmentDoc}`;
+export const useConProfileSubmitForReviewMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<ConProfileSubmitForReviewMutation, TError, ConProfileSubmitForReviewMutationVariables, TContext>) =>
+    useMutation<ConProfileSubmitForReviewMutation, TError, ConProfileSubmitForReviewMutationVariables, TContext>(
+      ['conProfileSubmitForReview'],
+      (variables?: ConProfileSubmitForReviewMutationVariables) => fetcher<ConProfileSubmitForReviewMutation, ConProfileSubmitForReviewMutationVariables>(ConProfileSubmitForReviewDocument, variables)(),
       options
     );

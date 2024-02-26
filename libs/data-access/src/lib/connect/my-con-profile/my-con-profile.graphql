@@ -19,3 +19,9 @@ mutation patchMyProfile($input: UpdateConProfileInput!) {
     ...AllConProfileFields
   }
 }
+
+mutation conProfileSubmitForReview {
+  conProfileSubmitForReview {
+    ...AllConProfileFields
+  }
+}

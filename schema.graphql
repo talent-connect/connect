@@ -516,6 +516,7 @@ type Mutation {
   conMentorshipMatchesDeclineMentorship(input: ConMentorshipMatchesDeclineMentorshipInputDto!): ConMentorshipMatchesDeclineMentorshipOutputDto!
   conProblemReportCreate(input: CreateConProblemReportInput!): OkResponseMutationOutputDto!
   conProfileSignUp(input: ConProfileSignUpInput!): OkIdResponseMutationOutputDto!
+  conProfileSubmitForReview: ConProfile!
   createConMentoringSession(createConMentoringSessionInput: CreateConMentoringSessionInput!): ConMentoringSession!
   patchConProfile(patchConProfileInput: UpdateConProfileInput!): ConProfile!
   tpCompanyFavoritedJobseekerProfileCreate(input: TpCompanyFavoritedJobseekerProfileCreateMutationInputDto!): TpCompanyFavoritedJobseekerProfileCreateMutationOutputDto!

@@ -5,7 +5,7 @@ import {
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
 import { Columns, Content, Element } from 'react-bulma-components'
-// import { useQueryClient } from 'react-query'
+import { useQueryClient } from 'react-query'
 import {
   Avatar,
   EditableAbout,
@@ -25,6 +25,7 @@ import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
 import {
   ConnectProfileStatus,
   UserType,
+  useConProfileSubmitForReviewMutation,
   useLoadMyProfileQuery,
 } from '@talent-connect/data-access'
 import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
@@ -34,8 +35,8 @@ import './Me.scss'
 import OnboardingSteps from './OnboardingSteps'
 
 function Me() {
-  // const queryClient = useQueryClient()
-  // const patchMyProfileMutation = usePatchMyProfileMutation()
+  const queryClient = useQueryClient()
+  const submitProfileForReviewMutation = useConProfileSubmitForReviewMutation()
   const { Loading, isLoading } = useLoading()
   const myProfileResult = useLoadMyProfileQuery(
     {
@@ -104,10 +105,15 @@ function Me() {
     if (!window.confirm('Would you like to submit your profile for review?'))
       return
 
-    // await patchMyProfileMutation.mutateAsync({
-    //   input: { profileStatus: ConnectProfileStatus.SubmittedForReview },
-    // })
-    // queryClient.invalidateQueries()
+    const mutationResult = await submitProfileForReviewMutation.mutateAsync({})
+    queryClient.setQueryData(
+      useLoadMyProfileQuery.getKey({
+        loopbackUserId: getAccessTokenFromLocalStorage().userId,
+      }),
+      {
+        conProfile: mutationResult.conProfileSubmitForReview,
+      }
+    )
   }
 
   return (

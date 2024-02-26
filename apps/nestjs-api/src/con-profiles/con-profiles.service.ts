@@ -120,4 +120,22 @@ export class ConProfilesService {
 
     return updatedEntity
   }
+
+  async submitForReview(currentUser: CurrentUserInfo) {
+    const existingEntity = await this.findOneByLoopbackUserId(
+      currentUser.loopbackUserId
+    )
+    const props = existingEntity.props
+
+    if (
+      existingEntity.props.profileStatus ===
+      ConnectProfileStatus.DRAFTING_PROFILE
+    ) {
+      props.profileStatus = ConnectProfileStatus.SUBMITTED_FOR_REVIEW
+    }
+
+    const entityToPersist = ConProfileEntity.create(props)
+
+    return this.update(entityToPersist)
+  }
 }
