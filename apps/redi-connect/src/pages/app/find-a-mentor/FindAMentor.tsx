@@ -153,12 +153,29 @@ const FindAMentor = () => {
     }))
   }
 
-  const filterRediLocations = objectKeys(REDI_LOCATION_NAMES).map(
-    (location) => ({
+  const filterRediLocations = objectKeys(REDI_LOCATION_NAMES)
+    .filter((location) => {
+      if (!profile) return false
+      const currentUserWithRediSweden = [RediLocation.Malmo].includes(
+        profile?.rediLocation
+      )
+      const currentUserWithRediGermany = [
+        RediLocation.Berlin,
+        RediLocation.Cyberspace,
+        RediLocation.Hamburg,
+        RediLocation.Munich,
+        RediLocation.Nrw,
+      ].includes(profile?.rediLocation)
+      if (location === RediLocation.Malmo && currentUserWithRediSweden)
+        return true
+      if (location !== RediLocation.Malmo && currentUserWithRediGermany)
+        return true
+      return false
+    })
+    .map((location) => ({
       value: location,
       label: REDI_LOCATION_NAMES[location as RediLocation] as string,
-    })
-  )
+    }))
 
   if (profile && profile?.profileStatus !== ConnectProfileStatus.Approved)
     return <LoggedIn />
