@@ -45,7 +45,6 @@ module.exports = function (RedUser) {
                   redUserId: redUser.id,
                   firstName: redUser.firstName,
                   verificationToken: verifyOptions.verificationToken,
-                  rediLocation: redUser.rediLocation,
                 }).subscribe()
               },
             },
@@ -85,12 +84,10 @@ module.exports = function (RedUser) {
   RedUser.requestResetPasswordEmail = function (body, cb) {
     const email = body.email
     const redproduct = body.redproduct
-    const redilocation = body.redilocation
     RedUser.resetPassword(
       {
         email,
         redproduct,
-        redilocation,
       },
       function (err) {
         if (err) return cb(err)
@@ -108,7 +105,6 @@ module.exports = function (RedUser) {
     const accessToken = encodeURIComponent(JSON.stringify(info.accessToken))
     const email = info.user.email
     const redproduct = info.options.redproduct
-    const rediLocation = info.options.redilocation
 
     const redUserInst = await RedUser.findById(info.user.id)
     const redUser = redUserInst.toJSON()
@@ -117,7 +113,6 @@ module.exports = function (RedUser) {
       sendResetPasswordEmail({
         recipient: email,
         accessToken,
-        rediLocation,
       }).subscribe()
     } else if (redproduct === 'TP') {
       sendTpResetPasswordEmail({
@@ -286,6 +281,9 @@ function determineRediLocationByCourse(course) {
   }
   if (course.includes('NRW')) {
     return 'nrw'
+  }
+  if (course.includes('MALMO')) {
+    return 'malmo'
   }
   if (course.includes('alumni')) {
     return null

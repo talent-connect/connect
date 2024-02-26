@@ -1,7 +1,4 @@
-import {
-  RediLocation,
-  useLoadMyProfileQuery,
-} from '@talent-connect/data-access'
+import { useLoadMyProfileQuery } from '@talent-connect/data-access'
 import {
   Button,
   Heading,
@@ -11,16 +8,16 @@ import { useHistory, useParams } from 'react-router-dom'
 import { Teaser } from '../../../components/molecules'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
-import { envRediLocation } from '../../../utils/env-redi-location'
 import { SignUpPageType, SignUpPageTypes } from './signup-page.type'
 
 export default function SignUpComplete() {
   const history = useHistory()
-  const rediLocation = envRediLocation() as RediLocation
   const { userType } = useParams() as unknown as { userType: SignUpPageType }
 
   const loopbackUserId = getAccessTokenFromLocalStorage().userId
   const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
+
+  const rediLocation = myProfileQuery.data?.conProfile.rediLocation
   const isPartnershipMentor =
     myProfileQuery.data?.conProfile.mentor_isPartnershipMentor === true
 

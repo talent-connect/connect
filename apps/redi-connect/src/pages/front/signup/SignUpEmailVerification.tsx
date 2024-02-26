@@ -1,9 +1,7 @@
-import React from 'react'
-import AccountOperation from '../../../components/templates/AccountOperation'
+import { Heading } from '@talent-connect/shared-atomic-design-components'
 import { Columns, Content } from 'react-bulma-components'
 import Teaser from '../../../components/molecules/Teaser'
-import { Heading } from '@talent-connect/shared-atomic-design-components'
-import { envRediLocation } from '../../../utils/env-redi-location'
+import AccountOperation from '../../../components/templates/AccountOperation'
 
 const SignUpEmailVerification = () => (
   <AccountOperation>

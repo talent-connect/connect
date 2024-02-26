@@ -15,7 +15,6 @@ import Teaser from '../../../components/molecules/Teaser'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import { signUpLoopback } from '../../../services/api/api'
 import { history } from '../../../services/history/history'
-import { envRediLocation } from '../../../utils/env-redi-location'
 import { SignUpPageType } from './signup-page.type'
 
 export const validationSchema = Yup.object({
@@ -89,7 +88,8 @@ export default function SignUp() {
         firstName: values.firstName,
         lastName: values.lastName,
         userType: type.toUpperCase() as UserType,
-        rediLocation: envRediLocation() as RediLocation,
+        // TODO: KATE, pass in the value from a location picker here, just like in TP
+        rediLocation: 'BERLIN' as RediLocation,
         productSignupSource: 'CON',
         ...(type === 'mentor'
           ? {

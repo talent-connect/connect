@@ -29,7 +29,7 @@ const sendEmail = Rx.bindNodeCallback(ses.sendEmail.bind(ses))
 const sendMjmlEmail = Rx.bindNodeCallback(
   transporter.sendMail.bind(transporter)
 )
-const sendEmailFactory = (to, subject, body, rediLocation) => {
+const sendEmailFactory = (to, subject, body) => {
   let toSanitized = isProductionOrDemonstration() ? to : ''
   if (process.env.NX_DEV_MODE_EMAIL_RECIPIENT) {
     toSanitized = process.env.NX_DEV_MODE_EMAIL_RECIPIENT
@@ -90,10 +90,9 @@ const sendResetPasswordEmailTemplate = fs.readFileSync(
 const sendResetPasswordEmailParsed = mjml2html(sendResetPasswordEmailTemplate, {
   filePath: path.resolve(__dirname, 'templates'),
 })
-const sendResetPasswordEmail = ({ recipient, accessToken, rediLocation }) => {
+const sendResetPasswordEmail = ({ recipient, accessToken }) => {
   const resetPasswordUrl = `${buildFrontendUrl(
-    process.env.NODE_ENV,
-    rediLocation
+    process.env.NODE_ENV
   )}/front/reset-password/set-new-password/${accessToken}`
   const rediEmailAdress = 'career@redi-school.org'
   const html = sendResetPasswordEmailParsed.html
@@ -122,11 +121,9 @@ const sendConVerificationEmail = ({
   redUserId,
   firstName,
   verificationToken,
-  rediLocation,
 }) => {
   const verificationSuccessPageUrl = `${buildFrontendUrl(
-    process.env.NODE_ENV,
-    rediLocation
+    process.env.NODE_ENV
   )}/front/signup-email-verification-success/`
   const verificationUrl = `${buildBackendUrl(
     process.env.NODE_ENV

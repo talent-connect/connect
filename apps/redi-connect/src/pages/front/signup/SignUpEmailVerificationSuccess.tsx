@@ -1,4 +1,3 @@
-import { RediLocation } from '@talent-connect/data-access'
 import {
   Button,
   Heading,
@@ -7,11 +6,9 @@ import { Columns, Content, Form } from 'react-bulma-components'
 import { useHistory } from 'react-router-dom'
 import { Teaser } from '../../../components/molecules'
 import AccountOperation from '../../../components/templates/AccountOperation'
-import { envRediLocation } from '../../../utils/env-redi-location'
 
 export default function SignUpComplete() {
   const history = useHistory()
-  const rediLocation = envRediLocation() as RediLocation
 
   return (
     <AccountOperation>

@@ -58,7 +58,6 @@ export const requestResetPasswordEmail = async (email: string) => {
     data: {
       email,
       redproduct: 'CON',
-      redilocation: process.env.NX_REDI_CONNECT_REDI_LOCATION,
     },
   })
 }

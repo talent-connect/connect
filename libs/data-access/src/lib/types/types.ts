@@ -252,9 +252,6 @@ export type FindAllVisibleTpJobseekerDirectoryEntriesFilter = {
   desiredPositions?: InputMaybe<Array<TpDesiredPosition>>;
   employmentTypes?: InputMaybe<Array<TpEmploymentType>>;
   federalStates?: InputMaybe<Array<FederalState>>;
-  isJobFair2022Participant?: InputMaybe<Scalars['Boolean']>;
-  isJobFair2023Participant?: InputMaybe<Scalars['Boolean']>;
-  joinsBerlin23SummerJobFair?: InputMaybe<Scalars['Boolean']>;
   joinsDusseldorf24WinterJobFair?: InputMaybe<Scalars['Boolean']>;
   joinsMunich24SummerJobFair?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
@@ -928,6 +925,7 @@ export enum RediLocation {
   Berlin = 'BERLIN',
   Cyberspace = 'CYBERSPACE',
   Hamburg = 'HAMBURG',
+  Malmo = 'MALMO',
   Munich = 'MUNICH',
   Nrw = 'NRW'
 }

@@ -493,6 +493,7 @@ const formatLocationName = (locationIdentifier) => {
   return {
     BERLIN: 'Berlin',
     HAMBURG: 'Hamburg',
+    MALMO: 'Malmö',
     MUNICH: 'Munich',
     NRW: 'NRW',
     CYBERSPACE: 'Cyberspace',
