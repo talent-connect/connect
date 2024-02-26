@@ -1,0 +1,40 @@
+@import '~bulma/sass/utilities/_all';
+@import '_variables.scss';
+
+.vertical {
+  &--step {
+    .MuiStepLabel-iconContainer {
+      z-index: 1;
+      align-self: self-start;
+    }
+  }
+
+  &--label {
+    .MuiStepLabel-label {
+      font-family: $family-primary;
+    }
+    .MuiStepLabel-label.Mui-active {
+      font-weight: $weight-bold;
+    }
+    .MuiStepLabel-label.Mui-completed {
+      font-weight: $weight-bold;
+    }
+  }
+
+  &--message {
+    border-radius: $mobile-stepper-message-border-radius !important;
+    padding: $mobile-stepper-message-padding !important;
+    position: relative;
+    margin-top: 1.5rem;
+
+    &::after {
+      top: -30px;
+      left: 28px;
+      position: absolute;
+      content: '';
+      border-width: 16px 12px;
+      border-style: solid;
+      border-color: transparent transparent #f5f5f5 transparent;
+    }
+  }
+}

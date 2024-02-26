@@ -3,7 +3,6 @@ import {
   Button,
   Heading,
   Icon,
-  OnboardingSteps,
 } from '@talent-connect/shared-atomic-design-components'
 import { Columns, Content, Element } from 'react-bulma-components'
 // import { useQueryClient } from 'react-query'
@@ -32,6 +31,7 @@ import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import { useLoading } from '../../../hooks/WithLoading'
 // CHECK OUT THE LOADER
 import './Me.scss'
+import OnboardingSteps from './OnboardingSteps'
 
 function Me() {
   // const queryClient = useQueryClient()
