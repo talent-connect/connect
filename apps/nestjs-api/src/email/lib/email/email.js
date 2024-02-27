@@ -178,9 +178,14 @@ export const sendMenteePendingReviewAcceptedEmail = ({
   const faqPageUrl = `${buildFrontendUrl(
     process.env.NODE_ENV,
     rediLocation
-  )}/front/faq/`
+  )}/faq/`
 
-  const html = convertTemplateToHtml(null, 'welcome-to-redi-mentee')
+  const templateFile =
+    rediLocation === 'CYBERSPACE'
+      ? 'welcome-to-redi-mentee-cyberspace'
+      : 'welcome-to-redi-mentee'
+
+  const html = convertTemplateToHtml(null, templateFile)
     .replace(/\${firstName}/g, firstName)
     .replace(/\${loginPageUrl}/g, loginPageUrl)
     .replace(/\${faqPageUrl}/g, faqPageUrl)
