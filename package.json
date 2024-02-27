@@ -129,7 +129,7 @@
     "luxon": "^2.0.2",
     "mjml": "^4.6.3",
     "moment": "^2.29.2",
-    "nodemailer": "^6.4.8",
+    "nodemailer": "^6.9.9",
     "passport": "^0.5.2",
     "passport-jwt": "^4.0.0",
     "query-string": "^7.0.0",
