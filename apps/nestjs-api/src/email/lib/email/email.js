@@ -207,7 +207,7 @@ export const sendMentorPendingReviewAcceptedEmail = ({
     rediLocation
   )}/front/login/`
   const sendMentorPendingReviewAcceptedEmailParsed = convertTemplateToHtml(
-    rediLocation,
+    null,
     'welcome-to-redi-mentor'
   )
   const html = sendMentorPendingReviewAcceptedEmailParsed
