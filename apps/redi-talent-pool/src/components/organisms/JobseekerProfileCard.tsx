@@ -1,13 +1,11 @@
-import { CardTags, Icon } from '@talent-connect/shared-atomic-design-components'
 import {
   desiredPositionsIdToLabelMap,
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
-import React from 'react'
 import placeholderImage from '../../assets/img-placeholder.png'
 import { JobseekerProfileCardJobseekerProfilePropFragment } from './JobseekerProfileCard.generated'
 import './JobseekerProfileCard.scss'
-import { ProfileCard } from '../../../../../libs/shared-atomic-design-components/src/lib/atoms/ProfileCard'
+import { NewProfileCard } from '../../../../../libs/shared-atomic-design-components/src/lib/molecules/NewProfileCard'
 
 interface JobseekerProfileCardProps {
   jobseekerProfile: JobseekerProfileCardJobseekerProfilePropFragment
@@ -22,12 +20,36 @@ export function JobseekerProfileCard({
   toggleFavorite,
   isFavorite,
 }: JobseekerProfileCardProps) {
+  const {
+    id,
+    profileAvatarImageS3Key,
+    fullName,
+    desiredPositions,
+    location,
+    workingLanguages,
+    topSkills,
+    isHired,
+  } = jobseekerProfile
+
+  const subheader = desiredPositions
+    ?.map((position) => desiredPositionsIdToLabelMap[position])
+    .join(', ')
+
+  const languages = workingLanguages?.map(({ language }) => language)
+  const tags = topSkills.map((skill) => topSkillsIdToLabelMap[skill])
+  const avatar = profileAvatarImageS3Key || placeholderImage
+
   return (
-    <ProfileCard
-      profile={jobseekerProfile}
-      linkTo={linkTo}
-      isFavorite={isFavorite}
-      toggleFavorite={toggleFavorite}
-    />
+    <div className="jobSeeker-profile-card-wrapper">
+      <NewProfileCard
+        profile={{ id, avatar, fullName, location, languages }}
+        subheader={subheader}
+        tags={tags}
+        topChip={isHired ? 'Hired!' : ''}
+        linkTo={linkTo}
+        isFavorite={isFavorite}
+        toggleFavorite={toggleFavorite}
+      />
+    </div>
   )
 }
