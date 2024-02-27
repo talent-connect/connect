@@ -1,4 +1,5 @@
 @import '_variables.scss';
+@import '~bulma/sass/utilities/_all';
 
 .chip {
   display: flex;
@@ -27,26 +28,6 @@
     gap: 16px;
   }
 
-  &__mobile {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-
-    .last_row {
-      width: 100%;
-    }
-
-    .chip {
-      display: inline-block;
-      height: 24px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      border-radius: 6px;
-      font-size: 12px;
-    }
-  }
-
   &__profile {
     display: flex;
     flex-direction: column;
@@ -71,6 +52,15 @@
 
       .plus {
         overflow: visible;
+      }
+    }
+
+    @include mobile() {
+      .chip {
+        line-height: normal;
+        height: 24px;
+        border-radius: 6px;
+        font-size: 12px;
       }
     }
   }
