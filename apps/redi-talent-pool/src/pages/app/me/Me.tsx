@@ -24,9 +24,12 @@ function Me() {
 
   switch (companyRepresentativeRelationship?.status) {
     case 'PENDING':
+      history.push('/front/signup-complete')
+      break
     case 'REJECTED':
     case 'DEACTIVATED':
-      history.push('/front/signup-email-verification-success')
+      history.push('/front/login-result')
+      break
     case 'APPROVED':
       return <MeCompany />
   }

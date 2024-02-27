@@ -1,7 +1,7 @@
-import './CardTags.scss'
-import React, { useState, useEffect } from 'react'
+import { useMediaQuery } from '@mui/material'
 import { debounce } from 'lodash'
-import { useMediaQuery } from '@material-ui/core'
+import React, { useEffect, useState } from 'react'
+import './CardTags.scss'
 
 export interface CardTagsProps {
   items: string[]

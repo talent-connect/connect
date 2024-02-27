@@ -1,4 +1,7 @@
-import { Loader } from '@talent-connect/shared-atomic-design-components'
+import {
+  AppNotification,
+  Loader,
+} from '@talent-connect/shared-atomic-design-components'
 import { Suspense } from 'react'
 import {
   QueryClient,
@@ -8,7 +11,6 @@ import {
 } from 'react-query'
 import { Route } from 'react-router-dom'
 import { QueryParamProvider } from 'use-query-params'
-import AppNotification from './components/AppNotification'
 import { Routes } from './components/Routes'
 import LocationPicker from './pages/front/landing/LocationPicker'
 import {

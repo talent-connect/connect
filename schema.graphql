@@ -220,7 +220,6 @@ input FindAllVisibleTpJobListingsArgsFilter {
   employmentTypes: [TpEmploymentType!]
   federalStates: [FederalState!]
   isRemotePossible: Boolean
-  joinsDusseldorf24WinterJobFair: Boolean
   joinsMunich24SummerJobFair: Boolean
   relatesToPositions: [TpDesiredPosition!]
   skills: [TpTechnicalSkill!]
@@ -231,7 +230,6 @@ input FindAllVisibleTpJobseekerDirectoryEntriesFilter {
   desiredPositions: [TpDesiredPosition!]
   employmentTypes: [TpEmploymentType!]
   federalStates: [FederalState!]
-  joinsDusseldorf24WinterJobFair: Boolean
   joinsMunich24SummerJobFair: Boolean
   name: String
   skills: [TpTechnicalSkill!]
@@ -649,7 +647,6 @@ type TpCompanyProfile {
   industry: String
   isCareerPartner: Boolean!
   isProfileVisibleToJobseekers: Boolean!
-  joinsDusseldorf24WinterJobFair: Boolean
   joinsMunich24SummerJobFair: Boolean
   linkedInUrl: String
   location: String
@@ -666,7 +663,6 @@ input TpCompanyProfilePatchInput {
   companyName: String
   industry: String
   isProfileVisibleToJobseekers: Boolean
-  joinsDusseldorf24WinterJobFair: Boolean
   joinsMunich24SummerJobFair: Boolean
   linkedInUrl: String
   location: String
@@ -1092,7 +1088,6 @@ type TpJobseekerDirectoryEntry {
   immigrationStatus: ImmigrationStatus
   isHired: Boolean!
   isProfileVisibleToCompanies: Boolean!
-  joinsDusseldorf24WinterJobFair: Boolean
   joinsMunich24SummerJobFair: Boolean
   lastName: String!
   linkedInUrl: String
@@ -1149,7 +1144,6 @@ type TpJobseekerProfile {
   immigrationStatus: ImmigrationStatus
   isHired: Boolean!
   isProfileVisibleToCompanies: Boolean!
-  joinsDusseldorf24WinterJobFair: Boolean
   joinsMunich24SummerJobFair: Boolean
   location: String
   profileAvatarImageS3Key: String
@@ -1300,7 +1294,6 @@ input TpJobseekerProfilePatchInput {
   immigrationStatus: ImmigrationStatus
   isHired: Boolean
   isProfileVisibleToCompanies: Boolean
-  joinsDusseldorf24WinterJobFair: Boolean
   joinsMunich24SummerJobFair: Boolean
   location: String
   profileAvatarImageS3Key: String
