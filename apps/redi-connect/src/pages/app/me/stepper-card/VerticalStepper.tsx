@@ -28,6 +28,7 @@ const QontoConnector = styled(StepConnector)(() => ({
     borderLeftWidth: 4,
     marginLeft: 2,
     minHeight: 32,
+    marginTop: '-7px',
   },
 }))
 
@@ -70,6 +71,9 @@ const VerticalStepper = ({
               marginLeft: '14px',
               paddingRight: 0,
               marginTop: '-7px',
+              '&.MuiStepContent-last': {
+                borderLeft: 'none',
+              },
             }}
           >
             <Notification className="vertical--message">

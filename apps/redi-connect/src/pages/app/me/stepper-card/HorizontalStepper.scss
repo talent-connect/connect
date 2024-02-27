@@ -43,18 +43,18 @@
   }
 
   &--message.bubble-first:after {
-    @include bubble(85px); // update this & below values later using calc()?
+    @include bubble(30px);
   }
 
   &--message.bubble-second:after {
-    @include bubble(280px);
+    @include bubble(calc(50% - 130px));
   }
 
   &--message.bubble-third:after {
-    @include bubble(480px);
+    @include bubble(calc(50% + 30px));
   }
 
   &--message.bubble-fourth:after {
-    @include bubble(680px);
+    @include bubble(calc(100% - 130px));
   }
 }

@@ -1,8 +1,9 @@
 import { useMediaQuery, useTheme } from '@mui/material'
 import { StepIconProps } from '@mui/material/StepIcon'
 import { ConnectProfileStatus } from '@talent-connect/data-access'
-import { Caption, Icon } from '@talent-connect/shared-atomic-design-components'
+import { Icon } from '@talent-connect/shared-atomic-design-components'
 import { useState } from 'react'
+import { Element } from 'react-bulma-components'
 import './OnboardingSteps.scss'
 import { STEPS } from './OnboardingStepsConstant'
 import HorizontalStepper from './stepper-card/HorizontalStepper'
@@ -50,9 +51,14 @@ const OnboardingSteps = ({
       <div className="stepper-card">
         <div className="stepper-card--header-wrapper">
           <div className="stepper-card--header">
-            <Caption>
+            <Element
+              renderAs="h3"
+              textSize={isMobile ? '6' : '5'}
+              textWeight="bold"
+              textTransform="uppercase"
+            >
               Hi, {profile.firstName}! Let's complete these steps:
-            </Caption>
+            </Element>
           </div>
 
           {isApprovedProfile && (
