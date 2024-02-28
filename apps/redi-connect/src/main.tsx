@@ -29,3 +29,5 @@ console.log(
   ', and for environment:',
   process.env.NODE_ENV
 )
+
+console.log('hello from christos and eric')
