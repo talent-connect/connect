@@ -180,15 +180,11 @@ export const sendMenteePendingReviewAcceptedEmail = ({
     rediLocation
   )}/faq/`
 
-  const templateFile =
-    rediLocation === 'CYBERSPACE'
-      ? 'welcome-to-redi-mentee-cyberspace'
-      : 'welcome-to-redi-mentee'
-
-  const html = convertTemplateToHtml(null, templateFile)
+  const html = convertTemplateToHtml(rediLocation, 'welcome-to-redi-mentee')
     .replace(/\${firstName}/g, firstName)
     .replace(/\${loginPageUrl}/g, loginPageUrl)
     .replace(/\${faqPageUrl}/g, faqPageUrl)
+
 
   return sendMjmlEmailFactory({
     to: recipient,
