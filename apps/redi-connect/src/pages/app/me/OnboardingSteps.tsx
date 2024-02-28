@@ -1,5 +1,4 @@
 import { useMediaQuery, useTheme } from '@mui/material'
-import { StepIconProps } from '@mui/material/StepIcon'
 import { ConnectProfileStatus } from '@talent-connect/data-access'
 import { Icon } from '@talent-connect/shared-atomic-design-components'
 import { useState } from 'react'
@@ -13,16 +12,11 @@ import { ReactComponent as StepDisabledImage } from '../../../../../../libs/shar
 import { ReactComponent as StepDoneImage } from '../../../../../../libs/shared-atomic-design-components/src/assets/images/step-done.svg'
 import { ReactComponent as StepProgressImage } from '../../../../../../libs/shared-atomic-design-components/src/assets/images/step-progress.svg'
 
-const getCustomStepIcon = (props: StepIconProps) => {
-  const { active, completed } = props
+const getCustomStepIcon = ({ active, completed, currentStep }) => {
+  if (active)
+    return currentStep === 3 ? <StepDoneImage /> : <StepProgressImage />
 
-  return (
-    <>
-      {active && <StepProgressImage />}
-      {completed && !active && <StepDoneImage />}
-      {!active && !completed && <StepDisabledImage />}
-    </>
-  )
+  return completed ? <StepDoneImage /> : <StepDisabledImage />
 }
 
 const OnboardingSteps = ({
@@ -43,7 +37,15 @@ const OnboardingSteps = ({
   const hideStepper = () => {
     setIsStepperHidden(true)
     localStorage.setItem('isStepperHidden', 'true')
-    console.log('Stepper is hidden for good')
+  }
+
+  const stepperProps = {
+    currentStep,
+    isMentor,
+    isCorporateMentor,
+    customStepIcon: ({ active, completed }) =>
+      getCustomStepIcon({ active, completed, currentStep }),
+    steps: STEPS,
   }
 
   return (
@@ -70,21 +72,9 @@ const OnboardingSteps = ({
 
         <div className="stepper-card--steps">
           {isMobile ? (
-            <VerticalStepper
-              currentStep={currentStep}
-              isMentor={isMentor}
-              isCorporateMentor={isCorporateMentor}
-              customStepIcon={getCustomStepIcon}
-              steps={STEPS}
-            />
+            <VerticalStepper {...stepperProps} />
           ) : (
-            <HorizontalStepper
-              currentStep={currentStep}
-              isMentor={isMentor}
-              isCorporateMentor={isCorporateMentor}
-              customStepIcon={getCustomStepIcon}
-              steps={STEPS}
-            />
+            <HorizontalStepper {...stepperProps} />
           )}
         </div>
       </div>
