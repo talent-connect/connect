@@ -7,7 +7,7 @@ import classnames from 'clsx'
 import { Content, Notification } from 'react-bulma-components'
 import './HorizontalStepper.scss'
 
-const QontoConnector = styled(StepConnector)(() => ({
+const CustomStepConnector = styled(StepConnector)(() => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
     top: 15,
     left: 'calc(-100% + 0px)',
@@ -33,6 +33,7 @@ const HorizontalStepper = ({
   currentStep,
   isMentor,
   isCorporateMentor,
+  isCyberspaceMentee,
   customStepIcon,
   steps,
 }) => {
@@ -41,7 +42,7 @@ const HorizontalStepper = ({
       <Stepper
         activeStep={currentStep}
         alternativeLabel
-        connector={<QontoConnector />}
+        connector={<CustomStepConnector />}
       >
         {steps.map((step, index) => (
           <Step key={step.name} className="horizontal--step">
@@ -88,9 +89,17 @@ const HorizontalStepper = ({
             )}
           </>
         ) : (
-          <Content size="small" renderAs="p">
-            {steps[currentStep].message.mentee}
-          </Content>
+          <>
+            {isCyberspaceMentee ? (
+              <Content size="small" renderAs="p">
+                {steps[currentStep].message.menteeCyberspace}
+              </Content>
+            ) : (
+              <Content size="small" renderAs="p">
+                {steps[currentStep].message.mentee}
+              </Content>
+            )}
+          </>
         )}
       </Notification>
     </>

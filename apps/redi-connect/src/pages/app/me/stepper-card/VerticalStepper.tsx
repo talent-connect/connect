@@ -12,7 +12,7 @@ import { styled } from '@mui/material/styles'
 import { Content, Notification } from 'react-bulma-components'
 import './VerticalStepper.scss'
 
-const QontoConnector = styled(StepConnector)(() => ({
+const CustomStepConnector = styled(StepConnector)(() => ({
   [`&.${stepConnectorClasses.active}`]: {
     [`& .${stepConnectorClasses.lineVertical}`]: {
       borderColor: '#84c5d2',
@@ -36,13 +36,14 @@ const VerticalStepper = ({
   currentStep,
   isMentor,
   isCorporateMentor,
+  isCyberspaceMentee,
   customStepIcon,
   steps,
 }) => {
   return (
     <Stepper
       activeStep={currentStep}
-      connector={<QontoConnector />}
+      connector={<CustomStepConnector />}
       orientation="vertical"
     >
       {steps.map((step, index) => (
@@ -91,9 +92,17 @@ const VerticalStepper = ({
                   )}
                 </>
               ) : (
-                <Content size="small" renderAs="p">
-                  {steps[currentStep].message.mentee}
-                </Content>
+                <>
+                  {isCyberspaceMentee ? (
+                    <Content size="small" renderAs="p">
+                      {steps[currentStep].message.menteeCyberspace}
+                    </Content>
+                  ) : (
+                    <Content size="small" renderAs="p">
+                      {steps[currentStep].message.mentee}
+                    </Content>
+                  )}
+                </>
               )}
             </Notification>
           </StepContent>

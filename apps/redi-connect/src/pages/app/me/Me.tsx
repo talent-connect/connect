@@ -24,6 +24,7 @@ import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
 
 import {
   ConnectProfileStatus,
+  RediLocation,
   UserType,
   useConProfileSubmitForReviewMutation,
   useLoadMyProfileQuery,
@@ -33,6 +34,23 @@ import { useLoading } from '../../../hooks/WithLoading'
 // CHECK OUT THE LOADER
 import './Me.scss'
 import OnboardingSteps from './OnboardingSteps'
+
+// We controll the stepper by passing the current step index (zero-based) as the activeStep prop
+const defineCurrentStep = (
+  profileStatus: ConnectProfileStatus,
+  isProfileComplete: boolean
+) => {
+  switch (profileStatus) {
+    case ConnectProfileStatus.DraftingProfile:
+      return isProfileComplete ? 1 : 0
+    case ConnectProfileStatus.SubmittedForReview:
+      return 2
+    case ConnectProfileStatus.Approved:
+      return 3
+    default:
+      return 0
+  }
+}
 
 function Me() {
   const queryClient = useQueryClient()
@@ -66,19 +84,25 @@ function Me() {
     mentor_workPlace,
     rediLocation,
   } = conProfile
-  console.log('conProfile', conProfile)
 
   const isMentee = userType === UserType.Mentee
+  const isCyberspaceMentee =
+    isMentee && rediLocation === RediLocation.Cyberspace
   const isMentor = userType === UserType.Mentor
   const isCorporateMentor = isMentor && mentor_isPartnershipMentor
-  const commonChecks =
-    personalDescription !== null && categories.length > 0 && languages !== null
 
   const isMenteeProfileComplete =
-    isMentee && commonChecks && mentee_occupationCategoryId !== null
+    isMentee &&
+    personalDescription !== null &&
+    categories.length > 0 &&
+    languages !== null &&
+    mentee_occupationCategoryId !== null
+
   const isMentorProfileComplete =
     isMentor &&
-    commonChecks &&
+    personalDescription !== null &&
+    categories.length > 0 &&
+    languages !== null &&
     menteeCountCapacity !== null &&
     mentor_workPlace !== null
 
@@ -86,22 +110,9 @@ function Me() {
   const isDraftingProfile =
     profileStatus === ConnectProfileStatus.DraftingProfile
 
-  // We controll the stepper by passing the current step index (zero-based) as the activeStep prop
-  const defineCurrentStep = (profileStatus) => {
-    switch (profileStatus) {
-      case ConnectProfileStatus.DraftingProfile:
-        return isReadyToSubmit ? 1 : 0
-      case ConnectProfileStatus.SubmittedForReview:
-        return 2
-      case ConnectProfileStatus.Approved:
-        return 3
-      default:
-        return 0
-    }
-  }
-  const currentStep = defineCurrentStep(profileStatus)
+  const currentStep = defineCurrentStep(profileStatus, isReadyToSubmit)
 
-  const onClick = async () => {
+  const submitProfileForReview = async () => {
     if (!window.confirm('Would you like to submit your profile for review?'))
       return
 
@@ -140,6 +151,7 @@ function Me() {
           profile={conProfile}
           isMentor={isMentor}
           isCorporateMentor={isCorporateMentor}
+          isCyberspaceMentee={isCyberspaceMentee}
         />
       </Element>
       <Element className="block-separator">
@@ -216,7 +228,7 @@ function Me() {
       {isDraftingProfile && (
         <Element className="block-separator" textAlignment="right">
           <Button
-            onClick={onClick}
+            onClick={submitProfileForReview}
             disabled={!isReadyToSubmit}
             style={!isReadyToSubmit ? { pointerEvents: 'none' } : null}
           >

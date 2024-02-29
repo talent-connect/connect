@@ -32,6 +32,9 @@ import { ReactComponent as Meetup } from '../../assets/images/meetup.svg'
 import { ReactComponent as Plus } from '../../assets/images/plus.svg'
 import { ReactComponent as Refresh } from '../../assets/images/refresh.svg'
 import { ReactComponent as Search } from '../../assets/images/search.svg'
+import { ReactComponent as StepDisabled } from '../../assets/images/step-disabled.svg'
+import { ReactComponent as StepDone } from '../../assets/images/step-done.svg'
+import { ReactComponent as StepProgress } from '../../assets/images/step-progress.svg'
 import { ReactComponent as TpPlus } from '../../assets/images/tp-plus.svg'
 import { ReactComponent as Twitter } from '../../assets/images/twitter.svg'
 import './Icon.scss'
@@ -71,6 +74,9 @@ const Icons = {
   linkedin: Linkedin,
   loader: Loader,
   mapPin: MapPin,
+  stepDisabled: StepDisabled,
+  stepProgress: StepProgress,
+  stepDone: StepDone,
 } as const
 
 type IconKey = keyof typeof Icons

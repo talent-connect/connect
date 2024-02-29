@@ -1,6 +1,9 @@
 @import '~bulma/sass/utilities/_all';
 @import '_variables.scss';
 
+$mobile-stepper-message-border-radius: 5px;
+$mobile-stepper-message-padding: 0.8rem;
+
 .vertical {
   &--step {
     .MuiStepLabel-iconContainer {

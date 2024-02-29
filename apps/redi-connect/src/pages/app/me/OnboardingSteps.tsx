@@ -4,19 +4,23 @@ import { Icon } from '@talent-connect/shared-atomic-design-components'
 import { useState } from 'react'
 import { Element } from 'react-bulma-components'
 import './OnboardingSteps.scss'
-import { STEPS } from './OnboardingStepsConstant'
+import { STEPS } from './config'
 import HorizontalStepper from './stepper-card/HorizontalStepper'
 import VerticalStepper from './stepper-card/VerticalStepper'
 
-import { ReactComponent as StepDisabledImage } from '../../../../../../libs/shared-atomic-design-components/src/assets/images/step-disabled.svg'
-import { ReactComponent as StepDoneImage } from '../../../../../../libs/shared-atomic-design-components/src/assets/images/step-done.svg'
-import { ReactComponent as StepProgressImage } from '../../../../../../libs/shared-atomic-design-components/src/assets/images/step-progress.svg'
-
 const getCustomStepIcon = ({ active, completed, currentStep }) => {
   if (active)
-    return currentStep === 3 ? <StepDoneImage /> : <StepProgressImage />
+    return currentStep === 3 ? (
+      <Icon icon="stepDone" size="large" />
+    ) : (
+      <Icon icon="stepProgress" size="large" />
+    )
 
-  return completed ? <StepDoneImage /> : <StepDisabledImage />
+  return completed ? (
+    <Icon icon="stepDone" size="large" />
+  ) : (
+    <Icon icon="stepDisabled" size="large" />
+  )
 }
 
 const OnboardingSteps = ({
@@ -24,6 +28,7 @@ const OnboardingSteps = ({
   profile,
   isMentor,
   isCorporateMentor,
+  isCyberspaceMentee,
 }) => {
   const [isStepperHidden, setIsStepperHidden] = useState(
     localStorage.getItem('isStepperHidden') || false
@@ -43,6 +48,7 @@ const OnboardingSteps = ({
     currentStep,
     isMentor,
     isCorporateMentor,
+    isCyberspaceMentee,
     customStepIcon: ({ active, completed }) =>
       getCustomStepIcon({ active, completed, currentStep }),
     steps: STEPS,

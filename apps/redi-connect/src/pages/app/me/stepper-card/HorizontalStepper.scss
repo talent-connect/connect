@@ -1,6 +1,9 @@
 @import '~bulma/sass/utilities/_all';
 @import '_variables.scss';
 
+$desktop-stepper-message-border-radius: 6px;
+$desktop-stepper-message-padding: 1rem 1.5rem;
+
 @mixin bubble($left) {
   top: -30px;
   left: $left;
