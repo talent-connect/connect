@@ -69,7 +69,7 @@ const EditablePersonalDetail = () => {
 
   return (
     <Editable
-      title="Personal Details"
+      title="Personal Details (optional)"
       onSave={() => formik.handleSubmit()}
       onClose={() => formik.resetForm()}
       savePossible={formik.dirty && formik.isValid}

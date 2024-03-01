@@ -539,6 +539,7 @@ export type Mutation = {
   conMentorshipMatchesDeclineMentorship: ConMentorshipMatchesDeclineMentorshipOutputDto;
   conProblemReportCreate: OkResponseMutationOutputDto;
   conProfileSignUp: OkIdResponseMutationOutputDto;
+  conProfileSubmitForReview: ConProfile;
   createConMentoringSession: ConMentoringSession;
   patchConProfile: ConProfile;
   tpCompanyFavoritedJobseekerProfileCreate: TpCompanyFavoritedJobseekerProfileCreateMutationOutputDto;

@@ -1,0 +1,62 @@
+@import '~bulma/sass/utilities/_all';
+@import '_variables.scss';
+
+$stepper-card-border: 1px solid $grey-extra-light;
+$stepper-card-background-color: $white;
+$stepper-card-box-shadow: 0px 3px 12px 5px rgba(0, 0, 0, 0.02),
+  0px 1px 5px 2px rgba(0, 0, 0, 0.03);
+$desktop-stepper-card-border-radius: 12px;
+$stepper-card-padding: 1.5rem;
+
+$mobile-stepper-card-border-radius: 10px;
+
+.stepper-card {
+  padding: $stepper-card-padding;
+  margin-bottom: 2rem;
+  border-radius: $desktop-stepper-card-border-radius;
+  border: $stepper-card-border;
+  background: $stepper-card-background-color;
+  box-shadow: $stepper-card-box-shadow;
+
+  &--header-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &--header {
+    padding-left: 8px;
+
+    @include mobile() {
+      padding-left: 0;
+    }
+  }
+
+  &--steps {
+    margin: 1.5rem 0;
+  }
+
+  @include mobile() {
+    border-radius: $mobile-stepper-card-border-radius;
+  }
+}
+
+.icon__button-small {
+  cursor: pointer;
+  width: 2rem;
+  height: 2rem;
+  padding: 0.5rem;
+  margin: -0.5rem 0;
+  border-radius: 50%;
+  transition: $transition;
+
+  .icon {
+    path {
+      fill: $black;
+    }
+  }
+
+  &:hover {
+    background-color: $grey-extra-light;
+  }
+}

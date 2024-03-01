@@ -65,7 +65,7 @@ function EditableEducation() {
 
   return (
     <Editable
-      title="Highest Education"
+      title="Highest Education (optional)"
       onSave={() => formik.handleSubmit()}
       onClose={() => formik.resetForm()}
       savePossible={formik.dirty && formik.isValid}

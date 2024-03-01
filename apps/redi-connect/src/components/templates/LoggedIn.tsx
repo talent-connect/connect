@@ -98,20 +98,6 @@ function LoggedIn({ children }: Props) {
               className="column--main-content"
             >
               {profile?.userType === 'MENTEE' &&
-                profile?.profileStatus ===
-                  ConnectProfileStatus.DraftingProfile && (
-                  <RediNotification>
-                    {t('loggedInArea.profile.notification.pendingMentee')}
-                  </RediNotification>
-                )}
-              {profile?.userType === 'MENTOR' &&
-                profile?.profileStatus ===
-                  ConnectProfileStatus.DraftingProfile && (
-                  <RediNotification>
-                    {t('loggedInArea.profile.notification.pendingMentor')}
-                  </RediNotification>
-                )}
-              {profile?.userType === 'MENTEE' &&
                 profile?.profileStatus === ConnectProfileStatus.Deactivated && (
                   <RediNotification>
                     {t('loggedInArea.profile.notification.deactivatedMentee', {
@@ -135,7 +121,7 @@ function LoggedIn({ children }: Props) {
                 <Modal
                   show={isNewAcceptedMatch}
                   confirm
-                  title="You’ve got a mentor match!"
+                  title="You've got a mentor match!"
                 >
                   <Modal.Body>
                     <Content>

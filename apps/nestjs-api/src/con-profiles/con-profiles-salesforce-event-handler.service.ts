@@ -29,14 +29,14 @@ export class ConProfilesSalesforceEventHandlerService {
       payload.conProfileId
     )
 
-    const isStatusDraftingToApproved =
-      payload.oldStatus === ConnectProfileStatus.DRAFTING_PROFILE &&
+    const isStatusSubmittedForReviewToApproved =
+      payload.oldStatus === ConnectProfileStatus.SUBMITTED_FOR_REVIEW &&
       payload.newStatus === ConnectProfileStatus.APPROVED
     const isStatusDraftingToRejected =
       payload.oldStatus === ConnectProfileStatus.DRAFTING_PROFILE &&
       payload.newStatus === ConnectProfileStatus.REJECTED
 
-    if (isStatusDraftingToApproved) {
+    if (isStatusSubmittedForReviewToApproved) {
       const conProfile = await this.service.findOneById(payload.conProfileId)
       const updatedConProfileProps = Object.assign({}, conProfile.props, {
         userActivatedAt: new Date().toISOString(),
@@ -47,7 +47,7 @@ export class ConProfilesSalesforceEventHandlerService {
     const conProfile = await this.service.findOneById(payload.conProfileId)
     switch (conProfile.props.userType) {
       case UserType.MENTEE:
-        if (isStatusDraftingToApproved)
+        if (isStatusSubmittedForReviewToApproved)
           this.emailService.sendMenteePendingReviewAcceptedEmail({
             recipient: conProfile.props.email,
             firstName: conProfile.props.firstName,
@@ -62,7 +62,7 @@ export class ConProfilesSalesforceEventHandlerService {
         break
 
       case UserType.MENTOR:
-        if (isStatusDraftingToApproved)
+        if (isStatusSubmittedForReviewToApproved)
           this.emailService.sendMentorPendingReviewAcceptedEmail({
             recipient: conProfile.props.email,
             firstName: conProfile.props.firstName,
