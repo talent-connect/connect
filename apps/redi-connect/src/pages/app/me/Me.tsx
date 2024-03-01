@@ -24,7 +24,6 @@ import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
 
 import {
   ConnectProfileStatus,
-  RediLocation,
   UserType,
   useConProfileSubmitForReviewMutation,
   useLoadMyProfileQuery,
@@ -34,23 +33,6 @@ import { useLoading } from '../../../hooks/WithLoading'
 // CHECK OUT THE LOADER
 import './Me.scss'
 import OnboardingSteps from './OnboardingSteps'
-
-// We controll the stepper by passing the current step index (zero-based) as the activeStep prop
-const defineCurrentStep = (
-  profileStatus: ConnectProfileStatus,
-  isProfileComplete: boolean
-) => {
-  switch (profileStatus) {
-    case ConnectProfileStatus.DraftingProfile:
-      return isProfileComplete ? 1 : 0
-    case ConnectProfileStatus.SubmittedForReview:
-      return 2
-    case ConnectProfileStatus.Approved:
-      return 3
-    default:
-      return 0
-  }
-}
 
 function Me() {
   const queryClient = useQueryClient()
@@ -86,8 +68,6 @@ function Me() {
   } = conProfile
 
   const isMentee = userType === UserType.Mentee
-  const isCyberspaceMentee =
-    isMentee && rediLocation === RediLocation.Cyberspace
   const isMentor = userType === UserType.Mentor
   const isCorporateMentor = isMentor && mentor_isPartnershipMentor
 
@@ -151,7 +131,6 @@ function Me() {
           profile={conProfile}
           isMentor={isMentor}
           isCorporateMentor={isCorporateMentor}
-          isCyberspaceMentee={isCyberspaceMentee}
         />
       </Element>
       <Element className="block-separator">
@@ -241,3 +220,20 @@ function Me() {
 }
 
 export default Me
+
+// We controll the stepper by passing the current step index (zero-based) as the activeStep prop
+const defineCurrentStep = (
+  profileStatus: ConnectProfileStatus,
+  isProfileComplete: boolean
+) => {
+  switch (profileStatus) {
+    case ConnectProfileStatus.DraftingProfile:
+      return isProfileComplete ? 1 : 0
+    case ConnectProfileStatus.SubmittedForReview:
+      return 2
+    case ConnectProfileStatus.Approved:
+      return 3
+    default:
+      return 0
+  }
+}

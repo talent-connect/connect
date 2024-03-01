@@ -3,8 +3,9 @@ import { ConProfile, ConnectProfileStatus } from '@talent-connect/data-access'
 import { Icon } from '@talent-connect/shared-atomic-design-components'
 import { useState } from 'react'
 import { Element } from 'react-bulma-components'
+
 import './OnboardingSteps.scss'
-import { STEPS } from './config'
+import { ONBOARDING_STEPS } from './onboarding-steps-config'
 import HorizontalStepper from './stepper-card/HorizontalStepper'
 import VerticalStepper from './stepper-card/VerticalStepper'
 
@@ -27,10 +28,9 @@ export type CurrentStepType = 0 | 1 | 2 | 3
 
 interface OnboardingStepsProps {
   currentStep: CurrentStepType
-  profile: Pick<ConProfile, 'profileStatus' | 'firstName'>
+  profile: Pick<ConProfile, 'profileStatus' | 'firstName' | 'rediLocation'>
   isMentor: boolean
   isCorporateMentor: boolean
-  isCyberspaceMentee: boolean
 }
 
 const OnboardingSteps = ({
@@ -38,7 +38,6 @@ const OnboardingSteps = ({
   profile,
   isMentor,
   isCorporateMentor,
-  isCyberspaceMentee,
 }: OnboardingStepsProps) => {
   const [isStepperHidden, setIsStepperHidden] = useState(
     localStorage.getItem('isStepperHidden') || false
@@ -49,6 +48,8 @@ const OnboardingSteps = ({
   const isApprovedProfile =
     profile.profileStatus === ConnectProfileStatus.Approved
 
+  const rediLocation = profile.rediLocation
+
   const hideStepper = () => {
     setIsStepperHidden(true)
     localStorage.setItem('isStepperHidden', 'true')
@@ -58,10 +59,10 @@ const OnboardingSteps = ({
     currentStep,
     isMentor,
     isCorporateMentor,
-    isCyberspaceMentee,
+    rediLocation,
     customStepIcon: ({ active, completed }) =>
       getCustomStepIcon({ active, completed, currentStep }),
-    steps: STEPS,
+    steps: ONBOARDING_STEPS,
   }
 
   return (

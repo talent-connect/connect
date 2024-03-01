@@ -3,6 +3,7 @@ import StepConnector, {
   stepConnectorClasses,
 } from '@mui/material/StepConnector'
 import { styled } from '@mui/material/styles'
+import { RediLocation } from '@talent-connect/data-access'
 import classnames from 'clsx'
 import { Content, Notification } from 'react-bulma-components'
 import { CurrentStepType } from '../OnboardingSteps'
@@ -33,7 +34,9 @@ const CustomStepConnector = styled(StepConnector)(() => ({
 type Step = {
   name: string
   message: {
-    [key: string]: JSX.Element
+    mentee: (rediLocation: RediLocation) => React.ReactNode
+    mentor: React.ReactNode
+    corporateMentor?: React.ReactNode
   }
 }
 
@@ -47,7 +50,7 @@ interface HorizontalStepperProps {
   currentStep: CurrentStepType
   isMentor: boolean
   isCorporateMentor: boolean
-  isCyberspaceMentee: boolean
+  rediLocation: RediLocation
   customStepIcon: CustomStepIconFunction
   steps: Step[]
 }
@@ -56,7 +59,7 @@ const HorizontalStepper = ({
   currentStep,
   isMentor,
   isCorporateMentor,
-  isCyberspaceMentee,
+  rediLocation,
   customStepIcon,
   steps,
 }: HorizontalStepperProps) => {
@@ -112,17 +115,9 @@ const HorizontalStepper = ({
             )}
           </>
         ) : (
-          <>
-            {isCyberspaceMentee ? (
-              <Content size="small" renderAs="p">
-                {steps[currentStep].message.menteeCyberspace}
-              </Content>
-            ) : (
-              <Content size="small" renderAs="p">
-                {steps[currentStep].message.mentee}
-              </Content>
-            )}
-          </>
+          <Content size="small" renderAs="p">
+            {steps[currentStep].message.mentee(rediLocation)}
+          </Content>
         )}
       </Notification>
     </>
