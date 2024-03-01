@@ -72,7 +72,7 @@ const OnboardingSteps = ({
           <div className="stepper-card--header">
             <Element
               renderAs="h3"
-              textSize={isMobile ? '6' : '5'}
+              textSize={isMobile ? 6 : 5}
               textWeight="bold"
               textTransform="uppercase"
             >
