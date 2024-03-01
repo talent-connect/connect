@@ -1,5 +1,5 @@
 import { useMediaQuery, useTheme } from '@mui/material'
-import { ConnectProfileStatus } from '@talent-connect/data-access'
+import { ConProfile, ConnectProfileStatus } from '@talent-connect/data-access'
 import { Icon } from '@talent-connect/shared-atomic-design-components'
 import { useState } from 'react'
 import { Element } from 'react-bulma-components'
@@ -23,13 +23,23 @@ const getCustomStepIcon = ({ active, completed, currentStep }) => {
   )
 }
 
+export type CurrentStepType = 0 | 1 | 2 | 3
+
+interface OnboardingStepsProps {
+  currentStep: CurrentStepType
+  profile: Pick<ConProfile, 'profileStatus' | 'firstName'>
+  isMentor: boolean
+  isCorporateMentor: boolean
+  isCyberspaceMentee: boolean
+}
+
 const OnboardingSteps = ({
   currentStep,
   profile,
   isMentor,
   isCorporateMentor,
   isCyberspaceMentee,
-}) => {
+}: OnboardingStepsProps) => {
   const [isStepperHidden, setIsStepperHidden] = useState(
     localStorage.getItem('isStepperHidden') || false
   )

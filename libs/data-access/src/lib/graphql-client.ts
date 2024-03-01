@@ -21,7 +21,7 @@ const handleUnauthorizedError = (error: any) => {
 
       if (extensionResponse?.statusCode === 401) {
         alert('Your session has expired. Please log in again.')
-        window.localStorage.clear()
+        window.localStorage.removeItem('postSalesforceMigrationAccessToken')
         window.location.replace('/front/login')
       }
     }

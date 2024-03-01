@@ -10,6 +10,8 @@ import StepConnector, {
 } from '@mui/material/StepConnector'
 import { styled } from '@mui/material/styles'
 import { Content, Notification } from 'react-bulma-components'
+import { CurrentStepType } from '../OnboardingSteps'
+import { CustomStepIconFunction } from './HorizontalStepper'
 import './VerticalStepper.scss'
 
 const CustomStepConnector = styled(StepConnector)(() => ({
@@ -32,6 +34,22 @@ const CustomStepConnector = styled(StepConnector)(() => ({
   },
 }))
 
+type Step = {
+  name: string
+  message: {
+    [key: string]: JSX.Element
+  }
+}
+
+interface VerticalStepperProps {
+  currentStep: CurrentStepType
+  isMentor: boolean
+  isCorporateMentor: boolean
+  isCyberspaceMentee: boolean
+  customStepIcon: CustomStepIconFunction
+  steps: Step[]
+}
+
 const VerticalStepper = ({
   currentStep,
   isMentor,
@@ -39,7 +57,7 @@ const VerticalStepper = ({
   isCyberspaceMentee,
   customStepIcon,
   steps,
-}) => {
+}: VerticalStepperProps) => {
   return (
     <Stepper
       activeStep={currentStep}
