@@ -782,6 +782,7 @@ enum TpEmploymentType {
   freelance
   fullTime
   partTime
+  projectBased
   traineeship
   werkstudium
 }

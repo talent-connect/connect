@@ -1111,6 +1111,7 @@ export enum TpEmploymentType {
   Freelance = 'freelance',
   FullTime = 'fullTime',
   PartTime = 'partTime',
+  ProjectBased = 'projectBased',
   Traineeship = 'traineeship',
   Werkstudium = 'werkstudium'
 }
