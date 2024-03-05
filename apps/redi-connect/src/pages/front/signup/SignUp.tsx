@@ -102,7 +102,6 @@ export default function SignUp() {
         firstName: values.firstName,
         lastName: values.lastName,
         userType: type.toUpperCase() as UserType,
-        // TODO: KATE, pass in the value from a location picker here, just like in TP
         rediLocation: values.rediLocation,
         productSignupSource: 'CON',
         ...(type === 'mentor'

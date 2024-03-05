@@ -27,7 +27,7 @@ export class ConProfilesService {
     return await this.api.createConProfileForSignUp({
       userId: user.userId,
       loopbackUserId: user.loopbackUserId,
-      profileStatus: ConnectProfileStatus.PENDING,
+      profileStatus: ConnectProfileStatus.DRAFTING_PROFILE,
       rediLocation: input.rediLocation,
       userType: input.userType,
       menteeCountCapacity: input.userType === UserType.MENTOR ? 1 : 0,
@@ -164,5 +164,23 @@ export class ConProfilesService {
     const updatedEntity = this.mapper.fromPersistence(persistedObject)
 
     return updatedEntity
+  }
+
+  async submitForReview(currentUser: CurrentUserInfo) {
+    const existingEntity = await this.findOneByLoopbackUserId(
+      currentUser.loopbackUserId
+    )
+    const props = existingEntity.props
+
+    if (
+      existingEntity.props.profileStatus ===
+      ConnectProfileStatus.DRAFTING_PROFILE
+    ) {
+      props.profileStatus = ConnectProfileStatus.SUBMITTED_FOR_REVIEW
+    }
+
+    const entityToPersist = ConProfileEntity.create(props)
+
+    return this.update(entityToPersist)
   }
 }

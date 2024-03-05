@@ -12,8 +12,10 @@ import {
   FormSelect,
   Heading,
   Icon,
+  LightModal,
   Modal,
   TextEditor,
+  showNotification,
 } from '@talent-connect/shared-atomic-design-components'
 import { TpJobListing } from '@talent-connect/shared-types'
 import {
@@ -22,11 +24,16 @@ import {
   germanFederalStates,
   topSkills,
 } from '@talent-connect/talent-pool/config'
+
+import { CardContextMenu } from '../../../components/molecules/CardContextMenu'
+
+import { Tooltip } from '@mui/material'
+import { TALENT_POOL_URL } from '@talent-connect/shared-config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
 import { formatDistance } from 'date-fns'
 import { useFormik } from 'formik'
-import { pick } from 'lodash'
-import { useCallback, useEffect, useState } from 'react'
+import { defaults, pick } from 'lodash'
+import { useCallback, useState } from 'react'
 import { Columns, Element } from 'react-bulma-components'
 import { useQueryClient } from 'react-query'
 import * as Yup from 'yup'
@@ -35,18 +42,10 @@ import { JobListingCard } from '../JobListingCard'
 import { useLoadModalFormJobListingDataQuery } from './EditableJobPostings.generated'
 import JobPlaceholderCardUrl from './job-placeholder-card.svg'
 
-export function EditableJobPostings({
-  jobListings,
-  isJobPostingFormOpen,
-  setIsJobPostingFormOpen,
-}) {
+export function EditableJobPostings({ jobListings }) {
   const [isEditing, setIsEditing] = useState(false)
   const [idOfTpJobListingBeingEdited, setIdOfTpJobListingBeingEdited] =
     useState<string | null>(null) // null = "new"
-
-  const hasJobListings = jobListings?.length > 0
-  const isEmpty = !hasJobListings
-
   const startAdding = useCallback(() => {
     setIdOfTpJobListingBeingEdited(null) // means "new"
     setIsEditing(true)
@@ -56,27 +55,7 @@ export function EditableJobPostings({
     setIsEditing(true)
   }, [])
 
-  useEffect(() => {
-    if (isJobPostingFormOpen) {
-      setIsEditing(true)
-    }
-  }, [isJobPostingFormOpen])
-
-  useEffect(() => {
-    if (!isEditing) {
-      setIsJobPostingFormOpen(false)
-    }
-  }, [isEditing, setIsJobPostingFormOpen])
-
-  const handleStartEditingClick = (id, e: React.MouseEvent) => {
-    e.preventDefault()
-    startEditing(id)
-  }
-
-  const renderTimestamp = (expiresAt) =>
-    `Expires ${formatDistance(new Date(expiresAt), new Date(), {
-      addSuffix: true,
-    })}`
+  const isEmpty = !jobListings || jobListings.length === 0
 
   return (
     <>
@@ -128,18 +107,10 @@ export function EditableJobPostings({
               </div>
             </EmptySectionPlaceholder>
           ) : (
-            <Columns>
-              {jobListings?.map((jobListing) => (
-                <Columns.Column size={12}>
-                  <JobListingCard
-                    key={jobListing.id}
-                    jobListing={jobListing}
-                    onClick={(e) => handleStartEditingClick(jobListing.id, e)}
-                    timestamp={renderTimestamp(jobListing.expiresAt)}
-                  />
-                </Columns.Column>
-              ))}
-            </Columns>
+            <JobListingCards
+              jobListings={jobListings}
+              startEditing={startEditing}
+            />
           )}
         </div>
       </div>
@@ -171,12 +142,107 @@ const validationSchema = Yup.object().shape({
   languageRequirements: Yup.string().required(
     'Please specify the language requirement(s)'
   ),
+  contactFirstName: Yup.string().required('First name is required'),
+  contactLastName: Yup.string().required('Last name is required'),
+  contactPhoneNumber: Yup.string(),
+  contactEmailAddress: Yup.string()
+    .email('Invalid email address')
+    .required('Email is required'),
 })
 
 interface ModalFormProps {
   tpJobListingId: string
   isEditing: boolean
   setIsEditing: (boolean) => void
+}
+
+function JobListingCards({ jobListings, startEditing }) {
+  const queryClient = useQueryClient()
+
+  const [deleteModalOpenForJobPostingId, setDeleteModalOpenForJobPostingId] =
+    useState<string | null>(null)
+  const handleDeleteModalClose = useCallback(
+    () => setDeleteModalOpenForJobPostingId(null),
+    []
+  )
+  const deleteMutation = useTpJobListingDeleteMutation()
+  const handleDelete = useCallback(
+    (id: string) => {
+      handleDeleteModalClose()
+      deleteMutation.mutate(
+        { input: { id } },
+        {
+          onSuccess: () => {
+            queryClient.invalidateQueries()
+          },
+        }
+      )
+    },
+    [deleteMutation, handleDeleteModalClose, queryClient]
+  )
+
+  const copyUrl = useCallback((id: string) => {
+    // Keep in sync with routes__logged-in.tsx:
+    // TODO: use a shared function/constant
+    window.navigator.clipboard.writeText(
+      TALENT_POOL_URL + '/app/job-listing/' + id
+    )
+    showNotification('Link copied to clipboard')
+  }, [])
+
+  return (
+    <Columns>
+      {jobListings?.map((jobListing) => (
+        <Columns.Column size={12} key={jobListing.id}>
+          <JobListingCard
+            jobListing={jobListing}
+            timestamp={renderTimestamp(jobListing.expiresAt)}
+            renderCTA={() => (
+              <Tooltip
+                title="You can copy the job posting link here"
+                placement="top"
+                arrow
+              >
+                {/* Acceptable hack: Tooltip doesn't trigger correctly unless child wrapped in <span> */}
+                <span>
+                  <CardContextMenu
+                    menuItems={[
+                      {
+                        label: 'Edit',
+                        onClick: () => startEditing(jobListing.id),
+                        icon: 'editLightGrey',
+                      },
+                      {
+                        label: 'Copy link',
+                        onClick: () => copyUrl(jobListing.id),
+                        icon: 'link',
+                      },
+                      {
+                        label: 'Delete',
+                        onClick: () =>
+                          setDeleteModalOpenForJobPostingId(jobListing.id),
+                        icon: 'delete',
+                      },
+                    ]}
+                  >
+                    <LightModal
+                      isOpen={deleteModalOpenForJobPostingId === jobListing.id}
+                      handleClose={handleDeleteModalClose}
+                      headline="Delete job posting?"
+                      message="You will lose all the information entered for this job posting."
+                      ctaLabel="Delete"
+                      ctaOnClick={() => handleDelete(jobListing.id)}
+                      cancelLabel="Keep it"
+                    />
+                  </CardContextMenu>
+                </span>
+              </Tooltip>
+            )}
+          />
+        </Columns.Column>
+      ))}
+    </Columns>
+  )
 }
 
 function ModalForm({
@@ -190,10 +256,11 @@ function ModalForm({
     { enabled: Boolean(tpJobListingId) && isEditing }
   )
   const myDataQuery = useMyTpDataQuery()
+  const userContact = myDataQuery.data?.tpCurrentUserDataGet.userContact
+  const companyData = myDataQuery.data?.tpCurrentUserDataGet.representedCompany
 
   const createMutation = useTpJobListingCreateMutation()
   const updateMutation = useTpJobListingPatchMutation()
-  const deleteMutation = useTpJobListingDeleteMutation()
 
   let jobListing = null
   if (isEditing) {
@@ -211,6 +278,7 @@ function ModalForm({
     values: Partial<AllTpJobListingFieldsFragment>,
     { resetForm }
   ) => {
+    console.log({ values })
     if (tpJobListingId === null) {
       // create new
       formik.setSubmitting(true)
@@ -246,41 +314,54 @@ function ModalForm({
     }
   }
 
+  const initialValues = pick(
+    jobListing,
+    'title',
+    'location',
+    'summary',
+    'relatesToPositions',
+    'idealTechnicalSkills',
+    'employmentType',
+    'languageRequirements',
+    'isRemotePossible',
+    'federalState',
+    'salaryRange',
+    'contactFirstName',
+    'contactLastName',
+    'contactPhoneNumber',
+    'contactEmailAddress'
+  )
+
+  /**
+   * Setting initial values for contact details from user contact.
+   * Note: Since 'defaults' function doesn't work with null values,
+   * we need to also set initial values for these values to empty strings
+   * in the net step.
+   */
+  defaults(initialValues, {
+    contactFirstName: userContact?.firstName,
+    contactLastName: userContact?.lastName,
+    contactPhoneNumber: companyData.telephoneNumber,
+    contactEmailAddress: userContact?.email,
+  })
+
+  /**
+   * Need to set initial values for these values to empty strings
+   * Initial values for a new joblisting will be an empty string but
+   * for an existing joblisting it will be null, which will break the
+   * formik form validation
+   */
+  initialValues.contactFirstName = initialValues.contactFirstName ?? ''
+  initialValues.contactLastName = initialValues.contactLastName ?? ''
+  initialValues.contactPhoneNumber = initialValues.contactPhoneNumber ?? ''
+  initialValues.contactEmailAddress = initialValues.contactEmailAddress ?? ''
+
   const formik = useFormik({
-    initialValues: pick(
-      jobListing,
-      'title',
-      'location',
-      'summary',
-      'relatesToPositions',
-      'idealTechnicalSkills',
-      'employmentType',
-      'languageRequirements',
-      'isRemotePossible',
-      'federalState',
-      'salaryRange'
-    ),
+    initialValues,
     onSubmit,
     validationSchema,
     enableReinitialize: true,
   })
-
-  const handleDelete = useCallback(() => {
-    if (
-      window.confirm('Are you certain you wish to delete this job posting?')
-    ) {
-      deleteMutation.mutate(
-        { input: { id: tpJobListingId } },
-        {
-          onSuccess: () => {
-            queryClient.invalidateQueries()
-            setIsEditing(false)
-          },
-        }
-      )
-      setIsEditing(false)
-    }
-  }, [deleteMutation, setIsEditing, tpJobListingId])
 
   if (!formik.values) return null
 
@@ -293,7 +374,12 @@ function ModalForm({
     >
       {formik.values && (
         <Modal.Body>
-          <Element renderAs="h4" textTransform="uppercase" textSize={6}>
+          <Element
+            renderAs="h4"
+            textTransform="uppercase"
+            textSize={6}
+            className="oneandhalf-bs"
+          >
             Publish job postings on Talent Pool
           </Element>
           <Heading size="medium" border="bottomLeft">
@@ -389,7 +475,38 @@ function ModalForm({
             name="salaryRange"
             {...formik}
           />
-
+          <Element
+            renderAs="h4"
+            textTransform="uppercase"
+            textSize={8}
+            className="oneandhalf-bs"
+          >
+            Point of Contact for this role
+          </Element>
+          <FormInput
+            label="First Name*"
+            placeholder="John"
+            name="contactFirstName"
+            {...formik}
+          />
+          <FormInput
+            label="Last Name*"
+            placeholder="Doe"
+            name="contactLastName"
+            {...formik}
+          />
+          <FormInput
+            label="Email*"
+            placeholder="johndoe@example.com"
+            name="contactEmailAddress"
+            {...formik}
+          />
+          <FormInput
+            label="Phone Number"
+            placeholder="0049123456789"
+            name="contactPhoneNumber"
+            {...formik}
+          />
           <div style={{ height: '30px' }} />
 
           <div style={{ display: 'flex' }}>
@@ -408,15 +525,6 @@ function ModalForm({
                 Cancel
               </Button>
             </div>
-            {tpJobListingId ? (
-              <Button
-                simple
-                disabled={updateMutation.isLoading}
-                onClick={handleDelete}
-              >
-                Delete
-              </Button>
-            ) : null}
           </div>
         </Modal.Body>
       )}
@@ -461,3 +569,8 @@ const federalStatesOptions = objectEntries(germanFederalStates).map(
     label,
   })
 )
+
+const renderTimestamp = (expiresAt) =>
+  `Expires ${formatDistance(new Date(expiresAt), new Date(), {
+    addSuffix: true,
+  })}`

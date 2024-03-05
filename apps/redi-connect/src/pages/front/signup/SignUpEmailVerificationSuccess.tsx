@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom'
 import { Teaser } from '../../../components/molecules'
 import AccountOperation from '../../../components/templates/AccountOperation'
 
-export default function SignUpComplete() {
+export default function SignUpEmailVerificationSuccess() {
   const history = useHistory()
 
   return (

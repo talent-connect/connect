@@ -47,25 +47,17 @@ export default function SignUpComplete() {
               ) : (
                 <>
                   <p style={{ textAlign: 'justify' }}>
-                    Now, we would like to get to know you better.
+                    Thank you for signing up!{' '}
                   </p>
                   <p style={{ textAlign: 'justify' }}>
-                    Your next step is to{' '}
-                    <a
-                      href="https://calendly.com/hadeertalentsucess/mentors-onboarding-session"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      schedule a quick
-                    </a>
-                    . It's the final step before you can kick off your journey
-                    as a mentor!{' '}
+                    Please click on <strong>"Continue to your profile"</strong>{' '}
+                    and complete all the steps from the stepper at the top of
+                    your profile page.
                   </p>
                   <p style={{ textAlign: 'justify' }}>
-                    In the meantime, please go to your account and{' '}
-                    <strong>complete your profile information</strong>. This
-                    step is super important because it helps students get to
-                    know you better and understand how you can support them.
+                    After sending your profile for review and having an
+                    onboarding call with our Mentorship Program Manager, your
+                    profile will become visible to mentees.
                   </p>
                 </>
               ))}
@@ -92,20 +84,11 @@ export default function SignUpComplete() {
                 </p>
 
                 <p style={{ textAlign: 'justify' }}>
-                  Your <strong>final step</strong> after watching this video
-                  will be your activation call with our team -{' '}
-                  <a
-                    href={
-                      rediLocation === 'CYBERSPACE'
-                        ? 'https://calendly.com/josefa_cyberspace/redi-connect-mentees-activation-call-cyberspace-only'
-                        : 'https://calendly.com/hadeertalentsucess/redi-connect-mentees-activation-call'
-                    }
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    schedule your activation call now
-                  </a>
-                  .
+                  After watching the video, click{' '}
+                  <strong>"Continue to your profile"</strong> and complete the
+                  steps in the top stepper. Once you've sent your profile for
+                  review, our Mentorship Program Manager will approve it. Then,
+                  you can find a mentor and start your journey right away.
                 </p>
               </>
             )}

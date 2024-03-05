@@ -1,5 +1,11 @@
-import { Heading } from '@talent-connect/shared-atomic-design-components'
+// import { usePatchMyProfileMutation } from '@talent-connect/data-access'
+import {
+  Button,
+  Heading,
+  Icon,
+} from '@talent-connect/shared-atomic-design-components'
 import { Columns, Content, Element } from 'react-bulma-components'
+import { useQueryClient } from 'react-query'
 import {
   Avatar,
   EditableAbout,
@@ -16,10 +22,22 @@ import {
 import { LoggedIn } from '../../../components/templates'
 import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
 
-import { useLoadMyProfileQuery, UserType } from '@talent-connect/data-access'
+import {
+  ConnectProfileStatus,
+  UserType,
+  useConProfileSubmitForReviewMutation,
+  useLoadMyProfileQuery,
+} from '@talent-connect/data-access'
+import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
+import { useLoading } from '../../../hooks/WithLoading'
 // CHECK OUT THE LOADER
+import './Me.scss'
+import OnboardingSteps from './OnboardingSteps'
 
 function Me() {
+  const queryClient = useQueryClient()
+  const submitProfileForReviewMutation = useConProfileSubmitForReviewMutation()
+  const { Loading, isLoading } = useLoading()
   const myProfileResult = useLoadMyProfileQuery(
     {
       loopbackUserId: getAccessTokenFromLocalStorage().userId,
@@ -32,9 +50,62 @@ function Me() {
   // that Eric has been looking into.
 
   const conProfile = myProfileResult?.data?.conProfile
+  if (!conProfile) return <Loading />
 
-  const userIsMentee = conProfile?.userType === UserType.Mentee
-  const userIsMentor = conProfile?.userType === UserType.Mentor
+  const {
+    userType,
+    firstName,
+    lastName,
+    mentor_isPartnershipMentor,
+    profileStatus,
+    personalDescription,
+    languages,
+    mentee_occupationCategoryId,
+    categories,
+    menteeCountCapacity,
+    mentor_workPlace,
+    rediLocation,
+  } = conProfile
+
+  const isMentee = userType === UserType.Mentee
+  const isMentor = userType === UserType.Mentor
+  const isCorporateMentor = isMentor && mentor_isPartnershipMentor
+
+  const isMenteeProfileComplete =
+    isMentee &&
+    personalDescription !== null &&
+    categories.length > 0 &&
+    languages !== null &&
+    mentee_occupationCategoryId !== null
+
+  const isMentorProfileComplete =
+    isMentor &&
+    personalDescription !== null &&
+    categories.length > 0 &&
+    languages !== null &&
+    menteeCountCapacity !== null &&
+    mentor_workPlace !== null
+
+  const isReadyToSubmit = isMenteeProfileComplete || isMentorProfileComplete
+  const isDraftingProfile =
+    profileStatus === ConnectProfileStatus.DraftingProfile
+
+  const currentStep = defineCurrentStep(profileStatus, isReadyToSubmit)
+
+  const submitProfileForReview = async () => {
+    if (!window.confirm('Would you like to submit your profile for review?'))
+      return
+
+    const mutationResult = await submitProfileForReviewMutation.mutateAsync({})
+    queryClient.setQueryData(
+      useLoadMyProfileQuery.getKey({
+        loopbackUserId: getAccessTokenFromLocalStorage().userId,
+      }),
+      {
+        conProfile: mutationResult.conProfileSubmitForReview,
+      }
+    )
+  }
 
   return (
     <LoggedIn>
@@ -43,29 +114,24 @@ function Me() {
           <Avatar.Editable />
         </Columns.Column>
         <Columns.Column size={8}>
-          <Heading>Hi, {conProfile?.firstName}</Heading>
-          <Content
-            size="medium"
-            renderAs="p"
-            responsive={{ mobile: { hide: { value: true } } }}
-          >
-            Please fill out your profile and keep it up to date. Let potential{' '}
-            {userIsMentee ? 'mentors' : 'mentees'} know a little bit more about
-            you, so you can find the perfect fit. <strong>Our tip:</strong>{' '}
-            Having a picture could increase your chance of getting matched.
-          </Content>
+          <Heading size="medium">
+            {firstName} {lastName}
+          </Heading>
+          <Element className="location-tag">
+            <Icon icon="mapPin" className="icon-align" />
+            <Content size="medium" renderAs="p">
+              {REDI_LOCATION_NAMES[rediLocation]}
+            </Content>
+          </Element>
         </Columns.Column>
       </Columns>
-      <Element
-        className="block-separator"
-        responsive={{ tablet: { hide: { value: true } } }}
-      >
-        <Content size="medium" renderAs="p">
-          Please fill out your profile and keep it up to date. Let potential{' '}
-          {userIsMentee ? 'mentors' : 'mentees'} know a little bit more about
-          you, so you can find the perfect fit. <strong>Our tip:</strong> Having
-          a picture could increase your chance of getting matched.
-        </Content>
+      <Element>
+        <OnboardingSteps
+          currentStep={currentStep}
+          profile={conProfile}
+          isMentor={isMentor}
+          isCorporateMentor={isCorporateMentor}
+        />
       </Element>
       <Element className="block-separator">
         <EditableAbout />
@@ -74,7 +140,7 @@ function Me() {
       <Element className="block-separator">
         <EditableMentoringTopics />
       </Element>
-      {userIsMentor && (
+      {isMentor && (
         <Element className="block-separator">
           <Columns>
             <Columns.Column size={12}>
@@ -110,7 +176,7 @@ function Me() {
         </Columns>
       </Element>
 
-      {userIsMentee && (
+      {isMentee && (
         <Element className="block-separator">
           <Columns>
             <Columns.Column size={6}>
@@ -127,8 +193,8 @@ function Me() {
         </Element>
       )}
 
-      {/* When ReDI course is re-implemented, remove userIsMentor condition from here & EditableOccupation component above */}
-      {userIsMentor && (
+      {/* When ReDI course is re-implemented, remove isMentor condition from here & EditableOccupation component above */}
+      {isMentor && (
         <Element className="block-separator">
           <Columns>
             <Columns.Column size={6}>
@@ -137,8 +203,37 @@ function Me() {
           </Columns>
         </Element>
       )}
+
+      {isDraftingProfile && (
+        <Element className="block-separator" textAlignment="right">
+          <Button
+            onClick={submitProfileForReview}
+            disabled={!isReadyToSubmit}
+            style={!isReadyToSubmit ? { pointerEvents: 'none' } : null}
+          >
+            Send profile to review
+          </Button>
+        </Element>
+      )}
     </LoggedIn>
   )
 }
 
 export default Me
+
+// We controll the stepper by passing the current step index (zero-based) as the activeStep prop
+const defineCurrentStep = (
+  profileStatus: ConnectProfileStatus,
+  isProfileComplete: boolean
+) => {
+  switch (profileStatus) {
+    case ConnectProfileStatus.DraftingProfile:
+      return isProfileComplete ? 1 : 0
+    case ConnectProfileStatus.SubmittedForReview:
+      return 2
+    case ConnectProfileStatus.Approved:
+      return 3
+    default:
+      return 0
+  }
+}

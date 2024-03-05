@@ -37,9 +37,9 @@
             course if you get hired!</mj-text
           >
 
-          <mj-text mj-class="text">Best wishes,</mj-text>
+          <mj-text mj-class="text">All the best,</mj-text>
           <mj-text mj-class="text"
-            >ReDI Talent Success & Career Support Team</mj-text
+            >ReDI Talent Success Team</mj-text
           >
         </mj-column>
       </mj-section>

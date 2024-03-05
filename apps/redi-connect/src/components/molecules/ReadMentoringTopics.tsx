@@ -36,7 +36,7 @@ const ReadMentoringTopics = ({ profile, caption }: ReadMentoringProps) => {
   if (showPlaceholderCaption && userType === UserType.Mentor)
     return (
       <Placeholder>
-        Please pick topics where you believe you can support you future mentee.
+        Please pick topics where you believe you can support your future mentee.
       </Placeholder>
     )
 

@@ -10,7 +10,7 @@ import { omit } from 'lodash'
 import React from 'react'
 import { useHistory } from 'react-router-dom'
 
-import { Chip } from '@material-ui/core'
+import { Chip } from '@mui/material'
 import {
   Button,
   FormInput,

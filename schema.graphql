@@ -158,8 +158,9 @@ input ConProfileSignUpInput {
 enum ConnectProfileStatus {
   APPROVED
   DEACTIVATED
-  PENDING
+  DRAFTING_PROFILE
   REJECTED
+  SUBMITTED_FOR_REVIEW
 }
 
 input CreateConMentoringSessionInput {
@@ -219,7 +220,6 @@ input FindAllVisibleTpJobListingsArgsFilter {
   employmentTypes: [TpEmploymentType!]
   federalStates: [FederalState!]
   isRemotePossible: Boolean
-  joinsDusseldorf24WinterJobFair: Boolean
   joinsMunich24SummerJobFair: Boolean
   relatesToPositions: [TpDesiredPosition!]
   skills: [TpTechnicalSkill!]
@@ -230,7 +230,6 @@ input FindAllVisibleTpJobseekerDirectoryEntriesFilter {
   desiredPositions: [TpDesiredPosition!]
   employmentTypes: [TpEmploymentType!]
   federalStates: [FederalState!]
-  joinsDusseldorf24WinterJobFair: Boolean
   joinsMunich24SummerJobFair: Boolean
   name: String
   skills: [TpTechnicalSkill!]
@@ -517,6 +516,7 @@ type Mutation {
   conMentorshipMatchesDeclineMentorship(input: ConMentorshipMatchesDeclineMentorshipInputDto!): ConMentorshipMatchesDeclineMentorshipOutputDto!
   conProblemReportCreate(input: CreateConProblemReportInput!): OkResponseMutationOutputDto!
   conProfileSignUp(input: ConProfileSignUpInput!): OkIdResponseMutationOutputDto!
+  conProfileSubmitForReview: ConProfile!
   createConMentoringSession(createConMentoringSessionInput: CreateConMentoringSessionInput!): ConMentoringSession!
   patchConProfile(patchConProfileInput: UpdateConProfileInput!): ConProfile!
   tpCompanyFavoritedJobseekerProfileCreate(input: TpCompanyFavoritedJobseekerProfileCreateMutationInputDto!): TpCompanyFavoritedJobseekerProfileCreateMutationOutputDto!
@@ -647,8 +647,8 @@ type TpCompanyProfile {
   createdAt: DateTime!
   id: ID!
   industry: String
+  isCareerPartner: Boolean!
   isProfileVisibleToJobseekers: Boolean!
-  joinsDusseldorf24WinterJobFair: Boolean
   joinsMunich24SummerJobFair: Boolean
   linkedInUrl: String
   location: String
@@ -665,7 +665,6 @@ input TpCompanyProfilePatchInput {
   companyName: String
   industry: String
   isProfileVisibleToJobseekers: Boolean
-  joinsDusseldorf24WinterJobFair: Boolean
   joinsMunich24SummerJobFair: Boolean
   linkedInUrl: String
   location: String
@@ -784,6 +783,7 @@ enum TpEmploymentType {
   freelance
   fullTime
   partTime
+  projectBased
   traineeship
   werkstudium
 }
@@ -792,12 +792,17 @@ type TpJobListing {
   companyName: String!
   companyProfile: TpCompanyProfile!
   companyProfileId: ID!
+  contactEmailAddress: String
+  contactFirstName: String
+  contactLastName: String
+  contactPhoneNumber: String
   createdAt: DateTime!
   employmentType: TpEmploymentType
   expiresAt: DateTime
   federalState: FederalState
   id: ID!
   idealTechnicalSkills: [TpTechnicalSkill!]
+  isFromCareerPartner: Boolean!
   isRemotePossible: Boolean
   languageRequirements: String
   location: String
@@ -811,6 +816,10 @@ type TpJobListing {
 }
 
 input TpJobListingCreateInput {
+  contactEmailAddress: String
+  contactFirstName: String
+  contactLastName: String
+  contactPhoneNumber: String
   employmentType: TpEmploymentType
   federalState: FederalState
   idealTechnicalSkills: [TpTechnicalSkill!]
@@ -828,6 +837,10 @@ input TpJobListingDeleteInput {
 }
 
 input TpJobListingPatchInput {
+  contactEmailAddress: String
+  contactFirstName: String
+  contactLastName: String
+  contactPhoneNumber: String
   employmentType: TpEmploymentType
   expiresAt: DateTime
   federalState: FederalState
@@ -1078,7 +1091,6 @@ type TpJobseekerDirectoryEntry {
   immigrationStatus: ImmigrationStatus
   isHired: Boolean!
   isProfileVisibleToCompanies: Boolean!
-  joinsDusseldorf24WinterJobFair: Boolean
   joinsMunich24SummerJobFair: Boolean
   lastName: String!
   linkedInUrl: String
@@ -1135,7 +1147,6 @@ type TpJobseekerProfile {
   immigrationStatus: ImmigrationStatus
   isHired: Boolean!
   isProfileVisibleToCompanies: Boolean!
-  joinsDusseldorf24WinterJobFair: Boolean
   joinsMunich24SummerJobFair: Boolean
   location: String
   profileAvatarImageS3Key: String
@@ -1286,7 +1297,6 @@ input TpJobseekerProfilePatchInput {
   immigrationStatus: ImmigrationStatus
   isHired: Boolean
   isProfileVisibleToCompanies: Boolean
-  joinsDusseldorf24WinterJobFair: Boolean
   joinsMunich24SummerJobFair: Boolean
   location: String
   profileAvatarImageS3Key: String

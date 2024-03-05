@@ -31,5 +31,5 @@ export function setGraphQlClientAuthHeader(accessToken: AccessToken) {
 }
 
 export const purgeAllSessionData = () => {
-  window.localStorage.clear()
+  window.localStorage.removeItem('postSalesforceMigrationAccessToken')
 }

@@ -10,10 +10,10 @@ import {
   Button,
   FormInput,
   Heading,
+  showNotification,
 } from '@talent-connect/shared-atomic-design-components'
 import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
 import { RouteComponentProps } from 'react-router'
-import { showNotification } from '../../../components/AppNotification'
 import { setPassword } from '../../../services/api/api'
 import {
   purgeAllSessionData,
@@ -74,7 +74,6 @@ export const SetNewPassword = (props: RouteComponentProps<RouteParams>) => {
       showNotification(
         'Your new password is set. Please log in using the new password :)',
         {
-          variant: 'success',
           autoHideDuration: 10000,
         }
       )

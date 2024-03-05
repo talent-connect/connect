@@ -4,7 +4,6 @@ import {
 } from '@talent-connect/data-access'
 import {
   Button,
-  Caption,
   FormTextArea,
 } from '@talent-connect/shared-atomic-design-components'
 import { useFormik } from 'formik'
@@ -34,32 +33,29 @@ export function EditableAbout({ companyProfile, disableEditing }: Props) {
       setIsEditing={setIsEditing}
       title="About"
       readComponent={
-        <>
-          <Caption>Summary</Caption>
-          <Content>
-            {!isEmpty ? (
-              <ReactMarkdown
-                components={{
-                  p: ({ children }) => (
-                    <p style={{ marginBottom: '0' }}>{children}</p>
-                  ),
-                }}
-              >
-                {companyProfile?.about?.replace(/\n/g, `\n\n`)}
-              </ReactMarkdown>
-            ) : (
-              <EmptySectionPlaceholder
-                height="tall"
-                onClick={() => setIsEditing(true)}
-              >
-                Tell us about the company
-              </EmptySectionPlaceholder>
-            )}
-          </Content>
-        </>
+        <Content>
+          {!isEmpty ? (
+            <ReactMarkdown
+              components={{
+                p: ({ children }) => (
+                  <p style={{ marginBottom: '0' }}>{children}</p>
+                ),
+              }}
+            >
+              {companyProfile?.about?.replace(/\n/g, `\n\n`)}
+            </ReactMarkdown>
+          ) : (
+            <EmptySectionPlaceholder
+              height="tall"
+              onClick={() => setIsEditing(true)}
+            >
+              Tell us about the company
+            </EmptySectionPlaceholder>
+          )}
+        </Content>
       }
-      modalTitle="About"
-      modalHeadline="Summary"
+      modalTitle=""
+      modalHeadline="About"
       modalBody={
         <ModalForm
           setIsEditing={setIsEditing}

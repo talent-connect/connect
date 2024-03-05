@@ -36,6 +36,7 @@ import {
 } from 'use-query-params'
 import { JobListingCard } from '../../../components/organisms/JobListingCard'
 import { LoggedIn } from '../../../components/templates'
+import { careerPartnerSortFn } from '../../../utils/sort-job-listings'
 import {
   useTpJobListingMarkAsFavouriteMutation,
   useTpJobListingUnfavouriteMutation,
@@ -60,7 +61,6 @@ export function BrowseJobseeker() {
     federalStates: withDefault(ArrayParam, []),
     onlyFavorites: withDefault(BooleanParam, undefined),
     isRemotePossible: withDefault(BooleanParam, undefined),
-    joinsDusseldorf24WinterJobFair: withDefault(BooleanParam, undefined),
     // joinsMunich24SummerJobFair: withDefault(BooleanParam, undefined),
   })
   const relatedPositions = query.relatedPositions as TpDesiredPosition[]
@@ -69,7 +69,6 @@ export function BrowseJobseeker() {
   const federalStates = query.federalStates as FederalState[]
   const onlyFavorites = query.onlyFavorites
   const isRemotePossible = query.isRemotePossible
-  const joinsDusseldorf24WinterJobFair = query.joinsDusseldorf24WinterJobFair
   // const joinsMunich24SummerJobFair = query.joinsMunich24SummerJobFair
 
   const jobListingsQuery = useTpJobListingFindAllVisibleQuery({
@@ -79,11 +78,17 @@ export function BrowseJobseeker() {
       employmentTypes: employmentType,
       federalStates,
       isRemotePossible,
-      joinsDusseldorf24WinterJobFair,
       // joinsMunich24SummerJobFair,
     },
   })
-  const jobListings = jobListingsQuery.data?.tpJobListings
+
+  /**
+   * This sorting has to be done here because of several reasons:
+   * - Backend currently supports only sorting by one field, which is used for sorting by date
+   * - All fetch job listing queries are using one findAll query, which means this sort would have unexpected side effects
+   */
+  const jobListings =
+    jobListingsQuery.data?.tpJobListings.sort(careerPartnerSortFn)
 
   const handleFavoriteJobListing = async (tpJobListingId: string) => {
     const isFavorite =
@@ -123,13 +128,6 @@ export function BrowseJobseeker() {
     setQuery((latestQuery) => ({ ...latestQuery, [filterName]: newFilters }))
   }
 
-  const toggleDusseldorf24WinterJobFair = () =>
-    setQuery((latestQuery) => ({
-      ...latestQuery,
-      joinsDusseldorf24WinterJobFair:
-        joinsDusseldorf24WinterJobFair === undefined ? true : undefined,
-    }))
-
   // Hidden until the new date announced
   // const toggleMunich24SummerJobFairFilter = () =>
   //   setQuery((latestQuery) => ({
@@ -146,7 +144,6 @@ export function BrowseJobseeker() {
       employmentType: [],
       federalStates: [],
       isRemotePossible: undefined,
-      joinsDusseldorf24WinterJobFair: undefined,
       // joinsMunich24SummerJobFair: undefined,
     }))
   }
@@ -156,8 +153,7 @@ export function BrowseJobseeker() {
     idealTechnicalSkills.length !== 0 ||
     employmentType.length !== 0 ||
     federalStates.length !== 0 ||
-    isRemotePossible ||
-    joinsDusseldorf24WinterJobFair
+    isRemotePossible
   // || joinsMunich24SummerJobFair
 
   // Redirect to homepage if user is not supposed to be browsing yet
@@ -285,15 +281,8 @@ export function BrowseJobseeker() {
             size="small"
           />
         </div>
-        <div className="filters-inner">
-          <Checkbox
-            name="joinsDuesseldorf24WinterJobFair"
-            checked={joinsDusseldorf24WinterJobFair || false}
-            handleChange={toggleDusseldorf24WinterJobFair}
-          >
-            ReDI Düsseldorf Winter Job Fair 2024
-          </Checkbox>
-        </div>
+        {/* Next Div is to keep three filters sizing for two checkboxes. Remove if necessary */}
+        <div className="filters-inner"></div>
       </div>
       {/* Hidden until the next Job Fair date announced */}
       {/* <div className="filters"> */}
@@ -306,7 +295,6 @@ export function BrowseJobseeker() {
             ReDI Munich Winter Job Fair 2024
           </Checkbox> */}
       {/* </div> */}
-      {/* <div className="filters-inner"></div> */}
       {/* </div> */}
 
       <div className="active-filters">
@@ -364,14 +352,6 @@ export function BrowseJobseeker() {
                 onClickHandler={toggleRemoteAvailableFilter}
               />
             )}
-            {joinsDusseldorf24WinterJobFair && (
-              <FilterTag
-                key="redi-dusseldorf-winter-job-fair-2024-filter"
-                id="redi-dusseldorf-winter-job-fair-2024-filter"
-                label="ReDI Düsseldorf Winter Job Fair 2024"
-                onClickHandler={toggleDusseldorf24WinterJobFair}
-              />
-            )}
             {/* {joinsMunich24SummerJobFair && (
               <FilterTag
                 key="redi-munich-winter-job-fair-2024-filter"
@@ -411,19 +391,18 @@ export function BrowseJobseeker() {
             if (!isFavorite && onlyFavorites) return
 
             return (
-              <Columns.Column size={12}>
+              <Columns.Column key={jobListing.id} size={12}>
                 <JobListingCard
-                  key={jobListing.id}
                   jobListing={jobListing}
                   linkTo={`/app/job-listing/${jobListing.id}`}
                   renderCTA={() => renderFavoriteCTA(jobListing.id, isFavorite)}
-                  timestamp={formatDistance(
+                  timestamp={`Last updated ${formatDistance(
                     new Date(jobListing.updatedAt),
                     new Date(),
                     {
                       addSuffix: true,
                     }
-                  )}
+                  )}`}
                 />
               </Columns.Column>
             )

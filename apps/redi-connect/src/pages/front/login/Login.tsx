@@ -14,6 +14,7 @@ import {
   Button,
   FormInput,
   Heading,
+  showNotification,
 } from '@talent-connect/shared-atomic-design-components'
 import { decodeJwt } from '@talent-connect/shared-utils'
 import { useFormik } from 'formik'
@@ -21,7 +22,6 @@ import { useState } from 'react'
 import { Columns, Content, Form } from 'react-bulma-components'
 import { Link, useHistory } from 'react-router-dom'
 import * as Yup from 'yup'
-import { showNotification } from '../../../components/AppNotification'
 import Teaser from '../../../components/molecules/Teaser'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import { login } from '../../../services/api/api'
@@ -61,6 +61,7 @@ export default function Login() {
     try {
       await login(formik.values.username, formik.values.password)
     } catch (err) {
+      console.log(err)
       formik.setSubmitting(false)
       setLoginError('You entered an incorrect email, password, or both.')
       return
@@ -71,7 +72,7 @@ export default function Login() {
       formik.setSubmitting(false)
       showNotification(
         'Please verify your email address first. Check your inbox.',
-        { variant: 'error', autoHideDuration: 8000 }
+        { autoHideDuration: 8000 }
       )
       return
     }
@@ -92,7 +93,7 @@ export default function Login() {
       // that Eric has been looking into.
       return history.push('/app/me')
     } catch (err) {
-      // Do nothing
+      console.log(err)
     }
 
     // IF NO CON PROFILE, TRY TO CREATE ONE FROM TP
@@ -116,7 +117,7 @@ export default function Login() {
         return history.push('/front/signup-complete/mentee')
       }
     } catch (err) {
-      // Do nothing, continue
+      console.log(err)
     }
 
     // IF NO CON PROFILE AND NO TP PROFILE, TRY TO CREATE ONE FROM JWT
@@ -149,9 +150,10 @@ export default function Login() {
       // If we reach this place, it means that the user does not have a TP
       // profile nor do the have data in their JWT token from the CON sign-up,
       // OR, something went wrong on the server. In that case, show them an error message.
+      console.log(err)
       formik.setSubmitting(false)
       setLoginError(
-        'Something unexpected happened, please try again or contact the ReDI Career Support Team at career@redi-school.org'
+        'Something unexpected happened, please try again or contact the ReDI Talent Success Team at career@redi-school.org'
       )
       return
     }

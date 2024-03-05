@@ -1,4 +1,4 @@
-import { Tooltip } from '@material-ui/core'
+import { Tooltip } from '@mui/material'
 import {
   CompanyTalentPoolState,
   MyTpDataQuery,
@@ -12,8 +12,8 @@ import {
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
 import { AllTpCompanyProfileFieldsFragment } from 'libs/data-access/src/lib/tp/company-profiles/tp-company-profile.fragment.generated'
-import { useState } from 'react'
 import { Columns, Content, Notification } from 'react-bulma-components'
+import CareerPartnerBanner from '../../../components/organisms/CareerPartnerBanner'
 import { ExpiredJobListings } from '../../../components/organisms/ExpiredJobListings'
 import { EditableAbout } from '../../../components/organisms/company-profile-editables/EditableAbout'
 import { EditableContact } from '../../../components/organisms/company-profile-editables/EditableContact'
@@ -29,8 +29,6 @@ export function MeCompany() {
   const myData = useMyTpDataQuery()
 
   const mutation = usePatchTpCompanyProfileMutation()
-
-  const [isJobPostingFormOpen, setIsJobPostingFormOpen] = useState(false)
 
   const {
     companyRepresentativeRelationship: representativeRelationship,
@@ -51,16 +49,6 @@ export function MeCompany() {
       input: {
         isProfileVisibleToJobseekers:
           !companyProfile.isProfileVisibleToJobseekers,
-      },
-    })
-    queryClient.invalidateQueries()
-  }
-
-  const onDusseldorf24WinterJobFairParticipateChange = async () => {
-    await mutation.mutateAsync({
-      input: {
-        joinsDusseldorf24WinterJobFair:
-          !companyProfile.joinsDusseldorf24WinterJobFair,
       },
     })
     queryClient.invalidateQueries()
@@ -92,7 +80,6 @@ export function MeCompany() {
           <Content size="small">
             <strong>Great, your profile is approved!</strong> You can now{' '}
             <span
-              onClick={() => setIsJobPostingFormOpen(true)}
               style={{
                 textDecoration: 'underline',
                 fontWeight: 800,
@@ -109,13 +96,6 @@ export function MeCompany() {
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'three-fifths' }}>
           <EditableNamePhotoLocation companyProfile={companyProfile} />
           <div style={{ marginBottom: '1.5rem' }}>
-            <Checkbox
-              checked={companyProfile.joinsDusseldorf24WinterJobFair}
-              customOnChange={onDusseldorf24WinterJobFairParticipateChange}
-            >
-              My company will attend the{' '}
-              <b>ReDI Winter Job Fair in Düsseldorf</b> on <b>02/02/2024</b>.
-            </Checkbox>
             {/* Hidden until the next Job Fair date announced */}
             {/* <Checkbox
               checked={companyProfile.joinsMunich24SummerJobFair}
@@ -125,6 +105,12 @@ export function MeCompany() {
               on <b>22/02/2024</b>.
             </Checkbox> */}
           </div>
+          {companyProfile.isCareerPartner ? (
+            <CareerPartnerBanner
+              partnerSince={new Date(2024, 0, 1)} // Passing a date in 2024. The Day and Month are ignored
+              jobsPosted={jobListings?.length ?? 0}
+            />
+          ) : null}
           <EditableAbout companyProfile={companyProfile} />
         </Columns.Column>
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'two-fifths' }}>
@@ -156,11 +142,7 @@ export function MeCompany() {
           </Checkbox>
         </Columns.Column>
       </Columns>
-      <EditableJobPostings
-        jobListings={activeJobListings}
-        isJobPostingFormOpen={isJobPostingFormOpen}
-        setIsJobPostingFormOpen={setIsJobPostingFormOpen}
-      />
+      <EditableJobPostings jobListings={activeJobListings} />
       {expiredJobListings?.length > 0 && (
         <ExpiredJobListings jobListings={expiredJobListings} />
       )}
@@ -195,6 +177,7 @@ function SendProfileForReviewButton() {
   const mutation = usePatchTpCompanyProfileMutation()
 
   const enabled =
+    !isBusy &&
     companyProfile?.state === CompanyTalentPoolState.DraftingProfile &&
     isProfileComplete(companyProfile, userContact) &&
     jobListings?.length > 0

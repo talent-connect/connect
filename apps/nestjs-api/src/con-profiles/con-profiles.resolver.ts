@@ -111,6 +111,14 @@ export class ConProfilesResolver {
     return updatedEntity.props
   }
 
+  @Mutation(() => ConProfileEntityProps, { name: 'conProfileSubmitForReview' })
+  async submitForReview(@CurrentUser() currentUser: CurrentUserInfo) {
+    const updatedEntity = await this.conProfilesService.submitForReview(
+      currentUser
+    )
+    return updatedEntity.props
+  }
+
   // @Mutation(() => ConProfileEntity)
   // removeConProfile(@Args('id', { type: () => Int }) id: number) {
   //   return this.conProfilesService.remove(id)

@@ -12,22 +12,22 @@
             >Hi ${firstName},</mj-text
           >
           <mj-text mj-class="text paragraph"
-            >We are very happy to welcome you as a mentor to ReDI
+            >We are happy to now officially welcome you as a mentor to ReDI
             Connect!</mj-text
           >
           <mj-text mj-class="text paragraph"
-            >Thank you again for having made the time to meet for our onboarding
-            session.</mj-text
-          >
-          <mj-text mj-class="text paragraph">What are your next steps?</mj-text>
-          <mj-text mj-class="text paragraph"
-            >Please complete your personal profile, if you haven’t done so
-            already. This way your future mentee will get a good idea of what
-            kind of support you can offer, so that the two of you will be a
-            great match!
+            >Thank you again for filling out all the required information on
+            ReDI Connect and having made time to meet for our onboarding
+            session.
           </mj-text>
+          <mj-text mj-class="text paragraph">
+            Your profile has been approved. Students can now apply to be your
+            mentee. You're all set to make a difference as a mentor! Make sure
+            you keep your profile up to date.
+          </mj-text>
+
           <mj-text mj-class="text paragraph"
-            >To complete your ReDI Connect profile, login here:</mj-text
+            >To log in to your profile, you can click here:</mj-text
           >
           <mj-image
             src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/signin-web.png"
@@ -36,7 +36,7 @@
             target="_blank"
             width="158px"
             css-class="button-desktop"
-            href="${homePageUrl}"
+            href="${loginPageUrl}"
           />
           <mj-image
             src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/signin-mobile.png"
@@ -44,27 +44,18 @@
             padding="10px 0 30px 0"
             target="_blank"
             css-class="button-mobile"
-            href="${homePageUrl}"
+            href="${loginPageUrl}"
           />
           <mj-text mj-class="text paragraph"
-            >While you’re waiting for an application from a mentee, please join
-            our group for mentors on
-            <a href="https://www.linkedin.com/groups/8733859/" class="text-link"
-              >LinkedIn</a
-            >
-            and our
+            >While you're waiting for an application from a mentee, we will add
+            you to the private mentors Slack channel
             <a
-              href="https://join.slack.com/t/redi-school/shared_invite/zt-yx95a42f-jserxMHtnXxdKtmQzdTAAg"
+              href="https://redi-school.slack.com/archives/CGJFBLBH6"
               class="text-link"
-              >ReDI slack space</a
-            >.
-          </mj-text>
-          <mj-text mj-class="text paragraph"
-            >We will add you to the private mentors Slack channel where we post
-            updates and mentor event invites and you can connect with other ReDI
-            mentors. Please feel free to also join any of the open channels,
-            such as #events_and_workshops for updates on general ReDI
-            events.</mj-text
+              >#mentors_and_careertrainers</a
+            >
+            where we post updates and mentor event invites and you can connect
+            with other ReDI mentors.</mj-text
           >
           <mj-text mj-class="text paragraph"
             >If you have any questions or feedback at any point, feel free to
@@ -75,7 +66,7 @@
           >
 
           <mj-text mj-class="text">All the best,</mj-text>
-          <mj-text mj-class="text">Your ReDI Career Support Team</mj-text>
+          <mj-text mj-class="text">Your ReDI Talent Success Team</mj-text>
         </mj-column>
       </mj-section>
       <mj-include path="./footer.career.support.team.mjml" />

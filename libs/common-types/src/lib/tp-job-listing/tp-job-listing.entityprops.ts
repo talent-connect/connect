@@ -37,7 +37,13 @@ export class TpJobListingEntityProps implements EntityProps {
   updatedAt: Date
   expiresAt?: Date
 
+  contactFirstName?: string
+  contactLastName?: string
+  contactPhoneNumber?: string
+  contactEmailAddress?: string
+
   // These are included from the Company Profile (SF: Account)
   companyName: string
   profileAvatarImageS3Key?: string
+  isFromCareerPartner: boolean
 }
