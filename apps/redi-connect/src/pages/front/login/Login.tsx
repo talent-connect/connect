@@ -49,22 +49,12 @@ const validationSchema = Yup.object({
 const myTpDataFetcher = fetcher<MyTpDataQuery, MyTpDataQueryVariables>(
   MyTpDataDocument
 )
-// Same for the useLoadMyProfileQuery that loads CON data:
-const buildMyConProfileDataFetcher = () =>
-  fetcher<LoadMyProfileQuery, LoadMyProfileQueryVariables>(
-    LoadMyProfileDocument,
-    { loopbackUserId: getAccessTokenFromLocalStorage()?.userId }
-  )
 
 export default function Login() {
   const history = useHistory()
   const conProfileSignUpMutation = useConProfileSignUpMutation()
 
   const [loginError, setLoginError] = useState<string>('')
-
-  const [conProfile, setConProfile] = useState<
-    LoadMyProfileQuery['conProfile'] | null
-  >(null)
 
   const submitForm = async () => {
     // LOG THE USER IN VIA LOOPBACK
@@ -90,12 +80,12 @@ export default function Login() {
     try {
       // Load "outside" of react-query to avoid having to build
       // a complex logic adhering to the rules-of-hooks.
-      const myProfileResult = await fetcher<
-        LoadMyProfileQuery,
-        LoadMyProfileQueryVariables
-      >(LoadMyProfileDocument, {
-        loopbackUserId: getAccessTokenFromLocalStorage().userId,
-      })()
+      await fetcher<LoadMyProfileQuery, LoadMyProfileQueryVariables>(
+        LoadMyProfileDocument,
+        {
+          loopbackUserId: getAccessTokenFromLocalStorage().userId,
+        }
+      )()
 
       // TODO: insert proper error handling here and elsewhere. We should cover cases where we
       // get values usch as myProfileResult.isError. Perhaps we-ure the error boundary logic
