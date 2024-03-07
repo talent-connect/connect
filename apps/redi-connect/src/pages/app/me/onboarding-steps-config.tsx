@@ -12,7 +12,7 @@ export const ONBOARDING_STEPS = [
           perfect match.
         </>
       ),
-      mentor: (
+      mentor: (rediLocation?: RediLocation) => (
         <>
           <strong>Go ahead and fill out your profile below.</strong> Make sure
           you complete all the required fields (everything but the optional
@@ -33,7 +33,7 @@ export const ONBOARDING_STEPS = [
           later.
         </>
       ),
-      mentor: (
+      mentor: (rediLocation?: RediLocation) => (
         <>
           <strong>Awesome!</strong> You've completed all the required fields.
           Click the button at the bottom of this page to submit your profile.
@@ -53,13 +53,17 @@ export const ONBOARDING_STEPS = [
           you'll be able to find a mentor.
         </>
       ),
-      mentor: (
+      mentor: (rediLocation?: RediLocation) => (
         <>
           <strong>Thanks for sending us your profile!</strong> We're reviewing
           it and will email you once it's done. While you're waiting, pick a
           time for your{' '}
           <a
-            href="https://calendly.com/hadeertalentsucess/mentors-onboarding-session?month=2024-02"
+            href={
+              rediLocation === RediLocation.Malmo
+                ? 'https://calendar.app.google/zQJr8PJsNF2arm236'
+                : 'https://calendly.com/hadeertalentsucess/mentors-onboarding-session?month=2024-02'
+            }
             target="__blank"
           >
             onboarding call
@@ -91,11 +95,23 @@ export const ONBOARDING_STEPS = [
           <a href="/faq" target="_blank" rel="noreferrer">
             FAQ
           </a>
-          , <a href="mailto:career@redi-school.org">contact us</a> or{' '}
+          ,{' '}
+          <a
+            href={
+              rediLocation === RediLocation.Malmo
+                ? 'mailto:career.sweden@redi-school.org'
+                : 'mailto:career@redi-school.org'
+            }
+          >
+            contact us
+          </a>{' '}
+          or{' '}
           <a
             href={
               rediLocation === RediLocation.Cyberspace
                 ? 'https://calendly.com/josefa_cyberspace/redi-connect-consultancy-call-only-for-cyberspace'
+                : rediLocation === RediLocation.Malmo
+                ? 'https://calendar.app.google/zQJr8PJsNF2arm236'
                 : 'https://calendly.com/hadeertalentsucess/consultancy-call?month=2024-02'
             }
             target="_blank"
@@ -106,7 +122,7 @@ export const ONBOARDING_STEPS = [
           with our Mentorship Program Manager.
         </>
       ),
-      mentor: (
+      mentor: (rediLocation?: RediLocation) => (
         <>
           <strong>Congratulations!</strong> Your profile has been approved.
           Students can now apply to be your mentee. You're all set to make a

@@ -1,4 +1,7 @@
-import { useLoadMyProfileQuery } from '@talent-connect/data-access'
+import {
+  RediLocation,
+  useLoadMyProfileQuery,
+} from '@talent-connect/data-access'
 import {
   Button,
   Heading,
@@ -17,7 +20,8 @@ export default function SignUpComplete() {
   const loopbackUserId = getAccessTokenFromLocalStorage().userId
   const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
 
-  const rediLocation = myProfileQuery.data?.conProfile.rediLocation
+  const isMalmoLocation =
+    myProfileQuery.data?.conProfile.rediLocation === RediLocation.Malmo
   const isPartnershipMentor =
     myProfileQuery.data?.conProfile.mentor_isPartnershipMentor === true
 
@@ -102,8 +106,24 @@ export default function SignUpComplete() {
           </Form.Field>
           <Content size="small" renderAs="p">
             Do you have questions? Feel free to contact us{' '}
-            <a href="mailto:career@redi-school.org">here</a> or visit our{' '}
-            <a href="https://www.redi-school.org/" target="__blank">
+            <a
+              href={
+                isMalmoLocation
+                  ? 'mailto:career.sweden@redi-school.org'
+                  : 'mailto:career@redi-school.org'
+              }
+            >
+              here
+            </a>{' '}
+            or visit our{' '}
+            <a
+              href={
+                isMalmoLocation
+                  ? 'https://www.redi-school.org/redi-school-malmo'
+                  : 'https://www.redi-school.org/'
+              }
+              target="__blank"
+            >
               ReDI school website
             </a>{' '}
             for more information.
