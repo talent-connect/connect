@@ -153,6 +153,8 @@ const FindAMentor = () => {
     }))
   }
 
+  const isMalmoLocation = profile?.rediLocation === RediLocation.Malmo
+
   const filterRediLocations = objectKeys(REDI_LOCATION_NAMES)
     .filter((location) => {
       if (!profile) return false
@@ -231,15 +233,17 @@ const FindAMentor = () => {
             onChange={(item) => toggleFilters(languages, 'languages', item)}
           />
         </div>
-        <div className="filters-inner">
-          <FilterDropdown
-            items={filterRediLocations}
-            className="filters__dropdown"
-            label="Location"
-            selected={locations}
-            onChange={(item) => toggleFilters(locations, 'locations', item)}
-          />
-        </div>
+        {!isMalmoLocation && (
+          <div className="filters-inner">
+            <FilterDropdown
+              items={filterRediLocations}
+              className="filters__dropdown"
+              label="Location"
+              selected={locations}
+              onChange={(item) => toggleFilters(locations, 'locations', item)}
+            />
+          </div>
+        )}
       </div>
       <div className="filters">
         <div className="filters-inner filter-favourites">
