@@ -112,9 +112,10 @@ export const sendPendingReviewDeclinedEmail = ({
   recipient,
   firstName,
   userType,
+  rediLocation,
 }) => {
   const sendPendingReviewDeclinedEmailParsed = convertTemplateToHtml(
-    null,
+    rediLocation,
     `pending-review-declined-email--${userType}`
   )
 
@@ -150,15 +151,13 @@ const convertTemplateToHtml = (rediLocation, templateString) => {
 
 export const sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted =
   ({ recipient, mentorName, menteeName, rediLocation }) => {
-    const rediEmailAdress = 'career@redi-school.org'
     const sendMenteePendingReviewAcceptedEmailParsed = convertTemplateToHtml(
-      null,
+      rediLocation,
       'expired-notification-application'
     )
     const html = sendMenteePendingReviewAcceptedEmailParsed
       .replace(/\${mentorName}/g, mentorName)
       .replace(/\${menteeName}/g, menteeName)
-      .replace(/\${rediEmailAdress}/g, rediEmailAdress)
     return sendMjmlEmailFactory({
       to: recipient,
       subject: `${menteeName}’s mentee application to you has expired!`,
@@ -185,7 +184,6 @@ export const sendMenteePendingReviewAcceptedEmail = ({
     .replace(/\${loginPageUrl}/g, loginPageUrl)
     .replace(/\${faqPageUrl}/g, faqPageUrl)
 
-
   return sendMjmlEmailFactory({
     to: recipient,
     subject: 'Your ReDI Connect profile is now activated!',
@@ -203,13 +201,11 @@ export const sendMentorPendingReviewAcceptedEmail = ({
     rediLocation
   )}/front/login/`
   const sendMentorPendingReviewAcceptedEmailParsed = convertTemplateToHtml(
-    null,
+    rediLocation,
     'welcome-to-redi-mentor'
   )
   const html = sendMentorPendingReviewAcceptedEmailParsed
     .replace(/\${firstName}/g, firstName)
-    .replace(/\${mentorOrMentee}/g, 'mentor')
-    .replace(/\${mentorOrMenteeOpposite}/g, 'mentee')
     .replace(/\${loginPageUrl}/g, loginPageUrl)
   return sendMjmlEmailFactory({
     to: recipient,
@@ -228,7 +224,7 @@ export const sendMenteeSignupCompleteEmail = ({
     rediLocation
   )}/front/login/`
 
-  const html = convertTemplateToHtml(null, 'signup-complete-mentee')
+  const html = convertTemplateToHtml(rediLocation, 'signup-complete-mentee')
     .replace(/\${firstName}/g, firstName)
     .replace(/\${loginPageUrl}/g, loginPageUrl)
   return sendMjmlEmailFactory({
@@ -254,7 +250,7 @@ export const sendMentorSignupCompleteEmail = ({
       ? 'signup-complete-mentor-partnership'
       : 'signup-complete-mentor'
 
-  const html = convertTemplateToHtml(null, templateFile)
+  const html = convertTemplateToHtml(rediLocation, templateFile)
     .replace(/\${firstName}/g, firstName)
     .replace(/\${loginPageUrl}/g, loginPageUrl)
   return sendMjmlEmailFactory({
@@ -275,7 +271,7 @@ export const sendMentoringSessionLoggedEmail = ({
     rediLocation
   )}/front/login`
   const sendMentoringSessionLoggedEmailParsed = convertTemplateToHtml(
-    null,
+    rediLocation,
     'mentoring-session-logged-email'
   )
   const html = sendMentoringSessionLoggedEmailParsed
@@ -324,7 +320,7 @@ export const sendMentorCancelledMentorshipNotificationEmail = ({
   rediLocation,
 }) => {
   const sendMentorCancelledMentorshipNotificationEmailParsed =
-    convertTemplateToHtml(null, 'mentorship-cancelation-email-mentee')
+    convertTemplateToHtml(rediLocation, 'mentorship-cancelation-email-mentee')
   const html = sendMentorCancelledMentorshipNotificationEmailParsed.replace(
     /\${firstName}/g,
     firstName
@@ -343,7 +339,7 @@ export const sendToMentorConfirmationOfMentorshipCancelled = ({
   rediLocation,
 }) => {
   const sendMentorCancelledMentorshipNotificationEmailParsed =
-    convertTemplateToHtml(null, 'mentorship-cancelation-email-mentor')
+    convertTemplateToHtml(rediLocation, 'mentorship-cancelation-email-mentor')
   const html = sendMentorCancelledMentorshipNotificationEmailParsed
     .replace(/\${mentorFirstName}/g, mentorFirstName)
     .replace(/\${menteeFullName}/g, menteeFullName)
@@ -358,9 +354,10 @@ export const sendMentorshipCompletionEmailToMentor = ({
   recipient,
   mentorFirstName,
   menteeFirstName,
+  rediLocation,
 }) => {
   const sendMentorshipCompletionEmailToMentorParsed = convertTemplateToHtml(
-    null,
+    rediLocation,
     'complete-mentorship-for-mentor'
   )
   const html = sendMentorshipCompletionEmailToMentorParsed
@@ -377,9 +374,10 @@ export const sendMentorshipCompletionEmailToMentee = ({
   recipient,
   mentorFirstName,
   menteeFirstName,
+  rediLocation,
 }) => {
   const sendMentorshipCompletionEmailToMenteeParsed = convertTemplateToHtml(
-    null,
+    rediLocation,
     'complete-mentorship-for-mentee'
   )
   const html = sendMentorshipCompletionEmailToMenteeParsed
@@ -398,13 +396,14 @@ export const sendMentorshipRequestReceivedEmail = ({
   menteeFullName,
   menteeRediLocation,
   mentorRediLocation,
+  rediLocation,
 }) => {
   const loginUrl = `${buildFrontendUrl(
     process.env.NODE_ENV,
     mentorRediLocation
   )}/front/login`
   const sendMentorshipRequestReceivedEmailParsed = convertTemplateToHtml(
-    null,
+    rediLocation,
     'mentorship-request-email'
   )
   const html = sendMentorshipRequestReceivedEmailParsed
@@ -429,15 +428,13 @@ export const sendMentorshipAcceptedEmail = ({
   mentorReplyMessageOnAccept,
   rediLocation,
 }) => {
-  const rediEmailAdress = 'career@redi-school.org'
   const sendMentorshipAcceptedEmailParsed = convertTemplateToHtml(
-    null,
+    rediLocation,
     'mentorship-acceptance-email'
   )
   const html = sendMentorshipAcceptedEmailParsed
     .replace(/\${mentorName}/g, mentorName)
     .replace(/\${menteeName}/g, menteeName)
-    .replace(/\${rediEmailAdress}/g, rediEmailAdress)
     .replace(/\${mentorReplyMessageOnAccept}/g, mentorReplyMessageOnAccept)
   return sendMjmlEmailFactory({
     to: recipient,
@@ -467,6 +464,7 @@ export const sendMentorshipDeclinedEmail = ({
   ifDeclinedByMentor_chosenReasonForDecline,
   ifDeclinedByMentor_ifReasonIsOther_freeText,
   ifDeclinedByMentor_optionalMessageToMentee,
+  rediLocation,
 }) => {
   let reasonForDecline = mentorDeclinesMentorshipReasonForDecliningOptions.find(
     (option) => option.id === ifDeclinedByMentor_chosenReasonForDecline
@@ -476,8 +474,11 @@ export const sendMentorshipDeclinedEmail = ({
       ifDeclinedByMentor_ifReasonIsOther_freeText
   }
 
-  const parsed = convertTemplateToHtml(null, 'mentorship-decline-email')
-  const html = parsed
+  const sendMentorshipDeclinedEmailParsed = convertTemplateToHtml(
+    rediLocation,
+    'mentorship-decline-email'
+  )
+  const html = sendMentorshipDeclinedEmailParsed
     .replace(/\${mentorName}/g, mentorName)
     .replace(/\${menteeName}/g, menteeName)
     .replace(/\${reasonForDecline}/g, reasonForDecline)
