@@ -63,11 +63,6 @@ export class ConProfilesService {
       filter['Contact__r.Name'] = { $like: `%${_filter.filter.name}%` }
     if (_filter.filter.categories?.length > 0)
       filter.Mentoring_Topics__c = { $includes: _filter.filter.categories }
-    if (_filter.filter.locations?.length > 0) {
-      filter.ReDI_Location__c = { $in: _filter.filter.locations }
-    } else {
-      filter.ReDI_Location__c = { $in: [] }
-    }
     if (_filter.filter.languages?.length > 0)
       filter.Languages__c = { $includes: _filter.filter.languages }
 
@@ -88,6 +83,16 @@ export class ConProfilesService {
     const currentUserBelongsToRediGermany = germanyLocations.includes(
       currentUserConProfile.props.rediLocation
     )
+    if (_filter.filter.locations?.length > 0) {
+      filter.ReDI_Location__c = { $in: _filter.filter.locations }
+    } else {
+      if (currentUserBelongsToRediSweden) {
+        filter.ReDI_Location__c = { $in: swedenLocations }
+      } else if (currentUserBelongsToRediGermany) {
+        filter.ReDI_Location__c = { $in: germanyLocations }
+      }
+    }
+
     if (currentUserBelongsToRediSweden) {
       filter.ReDI_Location__c.$in = filter.ReDI_Location__c.$in.filter(
         (location) => swedenLocations.includes(location)
