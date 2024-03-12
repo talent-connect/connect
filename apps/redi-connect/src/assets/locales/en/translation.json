@@ -55,7 +55,7 @@
         "title": "General",
         "qAndAs": [
           {
-            "question": "What is ReDI’s definition of mentorship?",
+            "question": "What is ReDI's definition of mentorship?",
             "answer": "A definition that some ReDI mentors came up with is the following: “A mentor is a trusted sparring partner for the mentee whose task is to provide more or less structured guidance for the mentee’s individual development and learning process by empowering the mentee to learn about and to gain control over their very own resources. Although goals are very individual on a concrete level, a general goal of mentorship could be summed up as enabling the mentee to better cope with their topics using their own resources in the future.”"
           },
           {
@@ -76,7 +76,11 @@
           },
           {
             "question": "How does the matching process work?",
-            "answer": "Everyone on ReDI Connect creates a profile with information about them. However, only the mentees are able to see the mentors’ profiles, not the other way around. Mentees browse mentor profiles and apply to the ones that have the expertise or experience they need. Only once a mentor receives an application, they will see that person’s profile. Mentors review applications from mentees and decide if they can help them based on the student’s profile and application message. Once a mentor accepts an application, it’s a match!"
+            "answer": "Everyone on ReDI Connect creates a profile with information about them. However, only the mentees are able to see the mentors' profiles, not the other way around. Mentees browse mentor profiles and apply to the ones that have the expertise or experience they need. Only once a mentor receives an application, they will see that person’s profile. Mentors review applications from mentees and decide if they can help them based on the student’s profile and application message. Once a mentor accepts an application, it’s a match!"
+          },
+          {
+            "question": "If I have any questions, whom should I contact?",
+            "answer": "If you are from <strong>ReDI School Germany</strong>, then please use the following email addresses: </br> General: <a href='mailto:career@redi-school.org'>career@redi-school.org</a> </br> Mentorship Program: <a href='mailto:hadeer@redi-school.org'>hadeer@redi-school.org</a> </br>Mentorship Program for Cyberspace: <a href='mailto:josefa@redi-school.org'>josefa@redi-school.org</a></br></br>If you are from <strong>ReDI School Malmö</strong>, then please use the following email addresses:</br>General: <a href='mailto:malmo@redi-school.org'>malmo@redi-school.org</a></br>General career: <a href='mailto:career.sweden@redi-school.org'>career.sweden@redi-school.org</a></br>Mentorship Program Manager: <a href='mailto:alice.r@redi-school.org'>alice.r@redi-school.org</a>"
           }
         ]
       },
@@ -89,7 +93,7 @@
           },
           {
             "question": "Am I ReDI to become a mentor?",
-            "answer": "If you are unsure, don’t worry, you can always sign up and schedule a call with someone from our team to learn more about the program and decide together if it is a good time for you to become a mentor."
+            "answer": "If you are unsure, don't worry, you can always sign up and schedule a call with someone from our team to learn more about the program and decide together if it is a good time for you to become a mentor."
           },
           {
             "question": "How do I pick the mentoring topics in my profile?",
