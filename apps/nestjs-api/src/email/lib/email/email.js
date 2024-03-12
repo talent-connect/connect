@@ -327,7 +327,7 @@ export const sendMentorCancelledMentorshipNotificationEmail = ({
   )
   return sendMjmlEmailFactory({
     to: recipient,
-    subject: 'Your mentor has quit your connection',
+    subject: 'Important Update: ReDI Mentorship Cancellation',
     html: html,
   })
 }
@@ -345,7 +345,7 @@ export const sendToMentorConfirmationOfMentorshipCancelled = ({
     .replace(/\${menteeFullName}/g, menteeFullName)
   return sendMjmlEmailFactory({
     to: recipient,
-    subject: `Your mentorship of ${menteeFullName} has ben cancelled`,
+    subject: `Important Update: ReDI Mentorship Cancellation`,
     html: html,
   })
 }

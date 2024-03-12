@@ -6,30 +6,29 @@
       <mj-section css-class="section">
         <mj-column>
           <mj-text mj-class="headline"
-            >Your mentorship of ${menteeFullName} has been cancelled</mj-text
+            >Important Update: ReDI Mentorship Cancellation</mj-text
           >
           <mj-divider mj-class="divider-top" css-class="divider" />
-          <mj-text mj-class="text" padding="0 0 20px 0">Dear ${mentorFirstName},</mj-text>
-          <mj-text mj-class="text paragraph"
-            >we have processed your request to cancel your mentorship of mentee
-            ${menteeFullName}. We have informed the mentee as well. Now other mentees
-            are able to apply to the spot that freed up.</mj-text
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >Dear ${mentorFirstName},</mj-text
           >
-          <mj-text mj-class="text paragraph" 
-            >It would be great if you could let us know why you have decided to
-            cancel the mentorship so we know how to make the mentorship program
-            even better. Simply write us an
-            <a
-              href="mailto:career.sweden@redi-school.org?subject=Cancelation of Mentorship"
-              class="text-link"
-              >email</a
-            >.</mj-text
+          <mj-text mj-class="text paragraph"
+            >we have processed your request to cancel your mentorship with
+            ${menteeFullName}, and we've notified the mentee accordingly. This
+            opens up an opportunity for other mentees to apply for the available
+            spot.
+          </mj-text>
+          <mj-text mj-class="text paragraph"
+            >We value your feedback and would appreciate it if you could share
+            the reason behind your decision to cancel the mentorship. Your input
+            will help us enhance the mentorship program for the future. Please
+            feel free to reach out to us via email.</mj-text
           >
           <mj-text mj-class="text">All the best,</mj-text>
           <mj-text mj-class="text">ReDI Malmö Team</mj-text>
         </mj-column>
       </mj-section>
-     <mj-include path="./footer.malmo.team.mjml" />
+      <mj-include path="./footer.malmo.team.mjml" />
       <mj-section />
     </mj-wrapper>
   </mj-body>
