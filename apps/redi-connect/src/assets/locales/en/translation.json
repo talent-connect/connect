@@ -21,10 +21,6 @@
         "name": "FAQ"
       },
       {
-        "url": "mailto:career@redi-school.org",
-        "name": "Contact us"
-      },
-      {
         "url": "https://www.redi-school.org",
         "name": "ReDI School"
       }
@@ -46,7 +42,7 @@
   },
   "preFooter": {
     "headline": "Want to get in touch?",
-    "content": "If you have questions or just want to say hello, please do not hesitate to contact us!"
+    "content": "If you have questions or just want to say hello, feel free to contact a member of our ReDI Talent Success Team at <a href='mailto:career@redi-school.org'>career@redi-school.org</a> (for ReDI Schools in Germany) or <a href='mailto:career.sweden@redi-school.org'>career.sweden@redi-school.org</a> (for ReDI School in Sweden)."
   },
   "faq": {
     "headline": "Frequently asked questions",
