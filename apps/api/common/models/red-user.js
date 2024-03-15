@@ -45,6 +45,7 @@ module.exports = function (RedUser) {
                   redUserId: redUser.id,
                   firstName: redUser.firstName,
                   verificationToken: verifyOptions.verificationToken,
+                  rediLocation: redUser.rediLocation,
                 }).subscribe()
               },
             },
@@ -113,6 +114,7 @@ module.exports = function (RedUser) {
       sendResetPasswordEmail({
         recipient: email,
         accessToken,
+        rediLocation: redUser.rediLocation,
       }).subscribe()
     } else if (redproduct === 'TP') {
       sendTpResetPasswordEmail({

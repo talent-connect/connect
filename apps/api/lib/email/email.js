@@ -90,15 +90,25 @@ const sendResetPasswordEmailTemplate = fs.readFileSync(
 const sendResetPasswordEmailParsed = mjml2html(sendResetPasswordEmailTemplate, {
   filePath: path.resolve(__dirname, 'templates'),
 })
-const sendResetPasswordEmail = ({ recipient, accessToken }) => {
+const sendResetPasswordEmail = ({ recipient, accessToken, rediLocation }) => {
   const resetPasswordUrl = `${buildFrontendUrl(
     process.env.NODE_ENV
   )}/front/reset-password/set-new-password/${accessToken}`
-  const rediEmailAdress = 'career@redi-school.org'
+
+  const isMalmoLocation = rediLocation === 'MALMO'
+  const rediEmailAddress = isMalmoLocation
+    ? 'career.sweden@redi-school.org'
+    : 'career@redi-school.org'
+
+  const rediSignature = isMalmoLocation
+    ? 'ReDI Malmö Team'
+    : 'Your ReDI Talent Success Team'
+
   const html = sendResetPasswordEmailParsed.html
     .replace(/\${resetPasswordUrl}/g, resetPasswordUrl)
-    .replace(/\${rediEmailAdress}/g, rediEmailAdress)
-    .replace(/\${emailAdress}/g, recipient)
+    .replace(/\${rediEmailAddress}/g, rediEmailAddress)
+    .replace(/\${emailAddress}/g, recipient)
+    .replace(/\${rediSignature}/g, rediSignature)
   return sendMjmlEmailFactory({
     to: recipient,
     subject: 'Password Reset for ReDI Connect',
@@ -121,18 +131,27 @@ const sendConVerificationEmail = ({
   redUserId,
   firstName,
   verificationToken,
+  rediLocation,
 }) => {
   const verificationSuccessPageUrl = `${buildFrontendUrl(
     process.env.NODE_ENV
   )}/front/signup-email-verification-success/`
+
   const verificationUrl = `${buildBackendUrl(
     process.env.NODE_ENV
   )}/api/redUsers/confirm?uid=${redUserId}&token=${verificationToken}&redirect=${encodeURI(
     verificationSuccessPageUrl
   )}`
+
+  const isMalmoLocation = rediLocation === 'MALMO'
+  const rediSignature = isMalmoLocation
+    ? 'ReDI Malmö Team'
+    : 'Your ReDI Talent Success Team'
+
   const html = sendVerificationEmailTemplateParsed.html
     .replace(/\${firstName}/g, firstName)
     .replace(/\${verificationUrl}/g, verificationUrl)
+    .replace(/\${rediSignature}/g, rediSignature)
   return sendMjmlEmailFactory({
     to: recipient,
     subject: 'Verify your email address!',
