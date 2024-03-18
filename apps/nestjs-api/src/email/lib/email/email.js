@@ -99,9 +99,6 @@ function buildSubjectLine(subject, env) {
   }
 }
 
-const getTemplateSpecificToLocation = (rediLocation) =>
-  rediLocation === 'MALMO' ? '.malmo' : ''
-
 const convertTemplateToHtml = (rediLocation, templateString) => {
   const defaultTemplateFileName = `${templateString}.mjml`
   const locationSpecificTemplateFileName = `${templateString}.${rediLocation}.mjml`
