@@ -166,12 +166,11 @@ export const sendReportProblemEmail = ({
 export const sendPendingReviewDeclinedEmail = ({
   recipient,
   firstName,
-  userType,
   rediLocation,
 }) => {
   const sendPendingReviewDeclinedEmailParsed = convertTemplateToHtml(
     rediLocation,
-    `pending-review-declined-email--${userType}`
+    'pending-review-declined-email'
   )
 
   const html = sendPendingReviewDeclinedEmailParsed.replace(
