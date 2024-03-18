@@ -103,20 +103,34 @@ const getTemplateSpecificToLocation = (rediLocation) =>
   rediLocation === 'MALMO' ? '.malmo' : ''
 
 const convertTemplateToHtml = (rediLocation, templateString) => {
-  const convertTemplate = fs.readFileSync(
-    path.resolve(
-      __dirname,
-      'assets',
-      'email',
-      'templates',
-      `${templateString}${getTemplateSpecificToLocation(rediLocation)}.mjml`
-    ),
-    'utf-8'
+  const defaultTemplateFileName = `${templateString}.mjml`
+  const locationSpecificTemplateFileName = `${templateString}.${rediLocation}.mjml`
+  const template = getMostSpecificTemplate(
+    locationSpecificTemplateFileName,
+    defaultTemplateFileName
   )
-  const parsedTemplate = mjml2html(convertTemplate, {
+  const parsedTemplate = mjml2html(template, {
     filePath: path.resolve(__dirname, 'assets', 'email', 'templates'),
   })
   return parsedTemplate.html
+}
+
+const getMostSpecificTemplate = (
+  locationSpecificTemplateFileName,
+  defaultTemplateFileName
+) => {
+  try {
+    return getTemplateContentsOrFail(locationSpecificTemplateFileName)
+  } catch (error) {
+    return getTemplateContentsOrFail(defaultTemplateFileName)
+  }
+}
+
+const getTemplateContentsOrFail = (templateFileName) => {
+  return fs.readFileSync(
+    path.resolve(__dirname, 'assets', 'email', 'templates', templateFileName),
+    'utf-8'
+  )
 }
 
 const sendReportProblemEmailTemplate = fs.readFileSync(
