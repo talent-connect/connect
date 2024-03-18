@@ -102,6 +102,7 @@ export class ConProfilesSalesforceEventHandlerService {
           recipient: conProfile.props.email,
           firstName: conProfile.props.firstName,
           isPartnershipMentor: conProfile.props.mentor_isPartnershipMentor,
+          rediLocation: conProfile.props.rediLocation,
         })
         break
     }
