@@ -69,6 +69,7 @@ const sendEmailFactory = (to, subject, body, rediLocation) => {
     },
   })
 }
+
 const sendMjmlEmailFactory = ({ to, subject, html, rediLocation }) => {
   let toSanitized = isProductionOrDemonstration() ? to : ''
   if (process.env.NX_DEV_MODE_EMAIL_RECIPIENT) {
@@ -106,6 +107,7 @@ const sendResetPasswordEmailTemplate = fs.readFileSync(
 const sendResetPasswordEmailParsed = mjml2html(sendResetPasswordEmailTemplate, {
   filePath: path.resolve(__dirname, 'templates'),
 })
+
 const sendResetPasswordEmail = ({ recipient, accessToken, rediLocation }) => {
   const resetPasswordUrl = `${buildFrontendUrl(
     process.env.NODE_ENV

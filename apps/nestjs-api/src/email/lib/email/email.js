@@ -28,17 +28,31 @@ export const sendEmail = Rx.bindNodeCallback(ses.sendEmail.bind(ses))
 export const sendMjmlEmail = Rx.bindNodeCallback(
   transporter.sendMail.bind(transporter)
 )
+
+const getSenderDetails = (rediLocation) => {
+  const isMalmoLocation = rediLocation === 'MALMO'
+  const senderName = isMalmoLocation
+    ? 'ReDI Malmö Team'
+    : 'ReDI Talent Success Team'
+  const senderEmail = isMalmoLocation
+    ? 'career.sweden@redi-school.org'
+    : 'career@redi-school.org'
+  return { senderName, senderEmail }
+}
+
 export const sendEmailFactory = (to, subject, body, rediLocation) => {
   let toSanitized = isProductionOrDemonstration() ? to : ''
   if (process.env.NX_DEV_MODE_EMAIL_RECIPIENT) {
     toSanitized = process.env.NX_DEV_MODE_EMAIL_RECIPIENT
   }
-  let sender = 'career@redi-school.org'
+
+  const { senderName, senderEmail } = getSenderDetails(rediLocation)
+
   return sendEmail({
-    Source: sender,
+    Source: `${senderName} <${senderEmail}>`,
     Destination: {
       ToAddresses: [toSanitized],
-      BccAddresses: ['career@redi-school.org'],
+      BccAddresses: [`${senderName} <${senderEmail}>`],
     },
     Message: {
       Body: {
@@ -54,17 +68,19 @@ export const sendEmailFactory = (to, subject, body, rediLocation) => {
     },
   })
 }
-export const sendMjmlEmailFactory = ({ sender, to, subject, html }) => {
-  let toSanitized = isProductionOrDemonstration() ? to : ''
 
+export const sendMjmlEmailFactory = ({ to, subject, html, rediLocation }) => {
+  let toSanitized = isProductionOrDemonstration() ? to : ''
   if (process.env.NX_DEV_MODE_EMAIL_RECIPIENT) {
     toSanitized = process.env.NX_DEV_MODE_EMAIL_RECIPIENT
   }
 
+  const { senderName, senderEmail } = getSenderDetails(rediLocation)
+
   return sendMjmlEmail({
-    from: sender ?? 'career@redi-school.org',
+    from: `${senderName} <${senderEmail}>`,
     to: toSanitized,
-    bcc: ['career@redi-school.org'],
+    bcc: [`${senderName} <${senderEmail}>`],
     subject: buildSubjectLine(subject, process.env.NODE_ENV),
     html: html,
   })
@@ -83,6 +99,26 @@ function buildSubjectLine(subject, env) {
   }
 }
 
+const getTemplateSpecificToLocation = (rediLocation) =>
+  rediLocation === 'MALMO' ? '.malmo' : ''
+
+const convertTemplateToHtml = (rediLocation, templateString) => {
+  const convertTemplate = fs.readFileSync(
+    path.resolve(
+      __dirname,
+      'assets',
+      'email',
+      'templates',
+      `${templateString}${getTemplateSpecificToLocation(rediLocation)}.mjml`
+    ),
+    'utf-8'
+  )
+  const parsedTemplate = mjml2html(convertTemplate, {
+    filePath: path.resolve(__dirname, 'assets', 'email', 'templates'),
+  })
+  return parsedTemplate.html
+}
+
 const sendReportProblemEmailTemplate = fs.readFileSync(
   path.resolve(
     __dirname,
@@ -97,14 +133,22 @@ const sendReportProblemEmailParsed = mjml2html(sendReportProblemEmailTemplate, {
   filePath: path.resolve(__dirname, 'assets', 'email', 'templates'),
 })
 
-export const sendReportProblemEmail = ({ sendingUserEmail, message }) => {
+export const sendReportProblemEmail = ({
+  sendingUserEmail,
+  message,
+  rediLocation,
+}) => {
+  const { senderEmail, senderName } = getSenderDetails(rediLocation)
+  const careerTeamEmail = `${senderName} <${senderEmail}>`
+
   const html = sendReportProblemEmailParsed.html
     .replace(/\${sendingUserEmail}/g, sendingUserEmail)
     .replace(/\${message}/g, message)
   return sendMjmlEmailFactory({
-    to: 'career@redi-school.org',
+    to: careerTeamEmail,
     subject: 'New problem report',
     html: html,
+    rediLocation,
   })
 }
 
@@ -127,26 +171,8 @@ export const sendPendingReviewDeclinedEmail = ({
     to: recipient,
     subject: 'ReDI Connect: Your user registration was declined',
     html: html,
+    rediLocation,
   })
-}
-
-const convertTemplateToHtml = (rediLocation, templateString) => {
-  const convertTemplate = fs.readFileSync(
-    path.resolve(
-      __dirname,
-      'assets',
-      'email',
-      'templates',
-      `${templateString}${
-        rediLocation ? `.${rediLocation.toLowerCase()}` : ''
-      }.mjml`
-    ),
-    'utf-8'
-  )
-  const parsedTemplate = mjml2html(convertTemplate, {
-    filePath: path.resolve(__dirname, 'assets', 'email', 'templates'),
-  })
-  return parsedTemplate.html
 }
 
 export const sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMentorAccepted =
@@ -162,6 +188,7 @@ export const sendNotificationToMentorThatPendingApplicationExpiredSinceOtherMent
       to: recipient,
       subject: `${menteeName}’s mentee application to you has expired!`,
       html: html,
+      rediLocation,
     })
   }
 
@@ -188,6 +215,7 @@ export const sendMenteePendingReviewAcceptedEmail = ({
     to: recipient,
     subject: 'Your ReDI Connect profile is now activated!',
     html: html,
+    rediLocation,
   })
 }
 
@@ -211,6 +239,7 @@ export const sendMentorPendingReviewAcceptedEmail = ({
     to: recipient,
     subject: 'Your ReDI Connect profile is now activated!',
     html: html,
+    rediLocation,
   })
 }
 
@@ -231,6 +260,7 @@ export const sendMenteeSignupCompleteEmail = ({
     to: recipient,
     subject: 'Sign-up complete!',
     html,
+    rediLocation,
   })
 }
 
@@ -257,6 +287,7 @@ export const sendMentorSignupCompleteEmail = ({
     to: recipient,
     subject: 'Sign-up complete!',
     html,
+    rediLocation,
   })
 }
 
@@ -329,6 +360,7 @@ export const sendMentorCancelledMentorshipNotificationEmail = ({
     to: recipient,
     subject: 'Important Update: ReDI Mentorship Cancellation',
     html: html,
+    rediLocation,
   })
 }
 
@@ -347,6 +379,7 @@ export const sendToMentorConfirmationOfMentorshipCancelled = ({
     to: recipient,
     subject: `Important Update: ReDI Mentorship Cancellation`,
     html: html,
+    rediLocation,
   })
 }
 
@@ -367,6 +400,7 @@ export const sendMentorshipCompletionEmailToMentor = ({
     to: recipient,
     subject: `Your mentorship with ${menteeFirstName} is completed!`,
     html: html,
+    rediLocation,
   })
 }
 
@@ -387,6 +421,7 @@ export const sendMentorshipCompletionEmailToMentee = ({
     to: recipient,
     subject: `Your mentorship with ${mentorFirstName} is completed!`,
     html: html,
+    rediLocation,
   })
 }
 
@@ -418,6 +453,7 @@ export const sendMentorshipRequestReceivedEmail = ({
     to: recipient,
     subject: `You have received an application from ${menteeFullName}!`,
     html: html,
+    rediLocation,
   })
 }
 
@@ -440,6 +476,7 @@ export const sendMentorshipAcceptedEmail = ({
     to: recipient,
     subject: `Congratulations! Mentor ${mentorName} has accepted your application, ${menteeName}!`,
     html: html,
+    rediLocation,
   })
 }
 
@@ -493,6 +530,7 @@ export const sendMentorshipDeclinedEmail = ({
       mentorName
     ),
     html: html,
+    rediLocation,
   })
 }
 
