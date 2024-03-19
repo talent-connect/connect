@@ -15,7 +15,7 @@
           >
           <mj-text mj-class="text paragraph"
             >You have received a mentee application from ${menteeFullName} from
-            ${locationNameFormatted}!
+            ReDI ${locationNameFormatted}!
           </mj-text>
           <mj-text mj-class="text paragraph"
             >Please log into ReDI Connect to review this application as soon as

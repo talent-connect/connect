@@ -13,7 +13,7 @@
           >
 
           <mj-text mj-class="text paragraph"
-            >Unfortunately ${mentorName} cannot accept your mentorship
+            >Unfortunately, ${mentorName} cannot accept your mentorship
             application at this time.</mj-text
           >
           <mj-text mj-class="text paragraph"

@@ -440,12 +440,11 @@ export const sendMentorshipRequestReceivedEmail = ({
   mentorName,
   menteeFullName,
   menteeRediLocation,
-  mentorRediLocation,
   rediLocation,
 }) => {
   const loginUrl = `${buildFrontendUrl(
     process.env.NODE_ENV,
-    mentorRediLocation
+    rediLocation
   )}/front/login`
   const sendMentorshipRequestReceivedEmailParsed = convertTemplateToHtml(
     rediLocation,
