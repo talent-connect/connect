@@ -33,7 +33,8 @@ import {
   useQueryParams,
   withDefault,
 } from 'use-query-params'
-import { ProfileCard } from '../../../components/organisms'
+
+import { MentorProfileCard } from '../../../components/organisms/MentorProfileCard'
 import { LoggedIn } from '../../../components/templates'
 import { useLoading } from '../../../hooks/WithLoading'
 import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
@@ -312,9 +313,14 @@ const FindAMentor = () => {
           if (!isFavorite && showFavorites) return
 
           return (
-            <Columns.Column size={4} key={mentor.id}>
-              <ProfileCard
-                profile={mentor}
+            <Columns.Column
+              mobile={{ size: 12 }}
+              tablet={{ size: 6 }}
+              desktop={{ size: 4 }}
+              key={mentor.id}
+            >
+              <MentorProfileCard
+                mentorProfile={mentor}
                 linkTo={`/app/find-a-mentor/profile/${mentor.id}`}
                 toggleFavorite={() => toggleFavorite(mentor.id)}
                 isFavorite={isFavorite}

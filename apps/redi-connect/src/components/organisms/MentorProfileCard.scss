@@ -1,10 +1,10 @@
 @import '_variables.scss';
 @import '~bulma/sass/utilities/_all';
 
-.jobSeeker-profile-card-wrapper {
-  height: 514px;
+.mentor-profile-card-wrapper {
+  height: 464px;
 
   @include mobile() {
-    height: 384px;
+    height: 361px;
   }
 }
