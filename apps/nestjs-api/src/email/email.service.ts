@@ -27,15 +27,6 @@ import {
 
 @Injectable()
 export class EmailService {
-  constructor() {
-    // console.log('sending email to eric')
-    // this.sendMenteePendingReviewAcceptedEmail({
-    //   recipient: 'eric@binarylights.com',
-    //   firstName: 'Eric',
-    //   rediLocation: 'cyberspace',
-    // })
-  }
-
   sendReportProblemEmail(params) {
     return sendReportProblemEmail(params).subscribe()
   }
