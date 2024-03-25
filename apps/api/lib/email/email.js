@@ -30,6 +30,7 @@ const sendMjmlEmail = Rx.bindNodeCallback(
   transporter.sendMail.bind(transporter)
 )
 
+// TODO: I'm a duplicate of getSenderDetails in apps/nestjs-api/src/email/lib/email/email.js, keep me in sync
 const getSenderDetails = (rediLocation) => {
   const isMalmoLocation = rediLocation === 'MALMO'
   const senderName = isMalmoLocation
