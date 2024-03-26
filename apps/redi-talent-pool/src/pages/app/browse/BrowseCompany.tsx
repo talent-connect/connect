@@ -150,8 +150,8 @@ export function BrowseCompany() {
     skills.length !== 0 ||
     desiredPositions.length !== 0 ||
     federalStates.length !== 0 ||
-    employmentTypes.length !== 0
-  // || joinsMunich24SummerJobFair
+    employmentTypes.length !== 0 ||
+    joinsMunich24SummerJobFair
 
   return (
     <LoggedIn>
