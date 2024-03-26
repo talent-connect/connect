@@ -54,15 +54,14 @@ export function MeCompany() {
     queryClient.invalidateQueries()
   }
 
-  // Hidden until the new date announced
-  // const onMunich24SummerJobFairParticipateChange = async () => {
-  //   await mutation.mutateAsync({
-  //     input: {
-  //       joinsMunich24SummerJobFair: !companyProfile.joinsMunich24SummerJobFair,
-  //     },
-  //   })
-  //   queryClient.invalidateQueries()
-  // }
+  const onMunich24SummerJobFairParticipateChange = async () => {
+    await mutation.mutateAsync({
+      input: {
+        joinsMunich24SummerJobFair: !companyProfile.joinsMunich24SummerJobFair,
+      },
+    })
+    queryClient.invalidateQueries()
+  }
 
   const isProfileApproved =
     companyProfile.state === CompanyTalentPoolState.ProfileApproved
@@ -96,14 +95,13 @@ export function MeCompany() {
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'three-fifths' }}>
           <EditableNamePhotoLocation companyProfile={companyProfile} />
           <div style={{ marginBottom: '1.5rem' }}>
-            {/* Hidden until the next Job Fair date announced */}
-            {/* <Checkbox
+            <Checkbox
               checked={companyProfile.joinsMunich24SummerJobFair}
               customOnChange={onMunich24SummerJobFairParticipateChange}
             >
-              My company will attend the <b>ReDI Winter Job Fair in Munich</b>{' '}
-              on <b>22/02/2024</b>.
-            </Checkbox> */}
+              My company will attend the <b>ReDI Summer Job Fair in Munich</b>{' '}
+              on <b>01/07/2024</b>.
+            </Checkbox>
           </div>
           {companyProfile.isCareerPartner ? (
             <CareerPartnerBanner

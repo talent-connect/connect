@@ -61,7 +61,7 @@ export function BrowseJobseeker() {
     federalStates: withDefault(ArrayParam, []),
     onlyFavorites: withDefault(BooleanParam, undefined),
     isRemotePossible: withDefault(BooleanParam, undefined),
-    // joinsMunich24SummerJobFair: withDefault(BooleanParam, undefined),
+    joinsMunich24SummerJobFair: withDefault(BooleanParam, undefined),
   })
   const relatedPositions = query.relatedPositions as TpDesiredPosition[]
   const idealTechnicalSkills = query.idealTechnicalSkills as TpTechnicalSkill[]
@@ -69,7 +69,7 @@ export function BrowseJobseeker() {
   const federalStates = query.federalStates as FederalState[]
   const onlyFavorites = query.onlyFavorites
   const isRemotePossible = query.isRemotePossible
-  // const joinsMunich24SummerJobFair = query.joinsMunich24SummerJobFair
+  const joinsMunich24SummerJobFair = query.joinsMunich24SummerJobFair
 
   const jobListingsQuery = useTpJobListingFindAllVisibleQuery({
     input: {
@@ -78,7 +78,7 @@ export function BrowseJobseeker() {
       employmentTypes: employmentType,
       federalStates,
       isRemotePossible,
-      // joinsMunich24SummerJobFair,
+      joinsMunich24SummerJobFair,
     },
   })
 
@@ -128,13 +128,12 @@ export function BrowseJobseeker() {
     setQuery((latestQuery) => ({ ...latestQuery, [filterName]: newFilters }))
   }
 
-  // Hidden until the new date announced
-  // const toggleMunich24SummerJobFairFilter = () =>
-  //   setQuery((latestQuery) => ({
-  //     ...latestQuery,
-  //     joinsMunich24SummerJobFair:
-  //       joinsMunich24SummerJobFair === undefined ? true : undefined,
-  //   }))
+  const toggleMunich24SummerJobFairFilter = () =>
+    setQuery((latestQuery) => ({
+      ...latestQuery,
+      joinsMunich24SummerJobFair:
+        joinsMunich24SummerJobFair === undefined ? true : undefined,
+    }))
 
   const clearFilters = () => {
     setQuery((latestQuery) => ({
@@ -144,7 +143,7 @@ export function BrowseJobseeker() {
       employmentType: [],
       federalStates: [],
       isRemotePossible: undefined,
-      // joinsMunich24SummerJobFair: undefined,
+      joinsMunich24SummerJobFair: undefined,
     }))
   }
 
@@ -153,8 +152,8 @@ export function BrowseJobseeker() {
     idealTechnicalSkills.length !== 0 ||
     employmentType.length !== 0 ||
     federalStates.length !== 0 ||
-    isRemotePossible
-  // || joinsMunich24SummerJobFair
+    isRemotePossible ||
+    joinsMunich24SummerJobFair
 
   // Redirect to homepage if user is not supposed to be browsing yet
   if (
@@ -281,21 +280,16 @@ export function BrowseJobseeker() {
             size="small"
           />
         </div>
-        {/* Next Div is to keep three filters sizing for two checkboxes. Remove if necessary */}
-        <div className="filters-inner"></div>
-      </div>
-      {/* Hidden until the next Job Fair date announced */}
-      {/* <div className="filters"> */}
-      {/* <div className="filters-inner"> */}
-      {/* <Checkbox
+        <div className="filters-inner">
+          <Checkbox
             name="joinsMuich24WinterJobFair"
             checked={joinsMunich24SummerJobFair || false}
             handleChange={toggleMunich24SummerJobFairFilter}
           >
-            ReDI Munich Winter Job Fair 2024
-          </Checkbox> */}
-      {/* </div> */}
-      {/* </div> */}
+            ReDI Munich Summer Job Fair 2024
+          </Checkbox>
+        </div>
+      </div>
 
       <div className="active-filters">
         {shouldShowFilters && (
@@ -352,14 +346,14 @@ export function BrowseJobseeker() {
                 onClickHandler={toggleRemoteAvailableFilter}
               />
             )}
-            {/* {joinsMunich24SummerJobFair && (
+            {joinsMunich24SummerJobFair && (
               <FilterTag
                 key="redi-munich-winter-job-fair-2024-filter"
                 id="redi-munich-winter-job-fair-2024-filter"
                 label="ReDI Munich Winter Job Fair 2024"
                 onClickHandler={toggleMunich24SummerJobFairFilter}
               />
-            )} */}
+            )}
             <span className="active-filters__clear-all" onClick={clearFilters}>
               Delete all filters
               <Icon icon="cancel" size="small" space="left" />
