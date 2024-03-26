@@ -318,9 +318,9 @@ export function BrowseCompany() {
             ))}
             {joinsMunich24SummerJobFair && (
               <FilterTag
-                key="redi-munich-winter-job-fair-2024-filter"
-                id="redi-munich-winter-job-fair-2024-filter"
-                label="ReDI Munich Winter Job Fair 2024"
+                key="redi-munich-summer-job-fair-2024-filter"
+                id="redi-munich-summer-job-fair-2024-filter"
+                label="ReDI Munich Summer Job Fair 2024"
                 onClickHandler={toggleMunich24SummerJobFairFilter}
               />
             )}
