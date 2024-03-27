@@ -39,7 +39,7 @@ type Step = {
   name: string
   message: {
     mentee: (rediLocation: RediLocation) => React.ReactNode
-    mentor: React.ReactNode
+    mentor: (rediLocation: RediLocation) => React.ReactNode
     corporateMentor?: React.ReactNode
   }
 }
@@ -108,7 +108,7 @@ const VerticalStepper = ({
                     </Content>
                   ) : (
                     <Content size="small" renderAs="p">
-                      {steps[currentStep].message.mentor}
+                      {steps[currentStep].message.mentor(rediLocation)}
                     </Content>
                   )}
                 </>

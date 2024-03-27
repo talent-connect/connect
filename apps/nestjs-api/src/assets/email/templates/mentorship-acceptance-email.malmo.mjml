@@ -26,9 +26,9 @@
           >
           <mj-text mj-class="text paragraph"
             >If you have any questions, you can always email us (<a
-              href="mailto:career@redi-school.org"
+              href="mailto:career.sweden@redi-school.org"
               class="text-link"
-              >career@redi-school.org</a
+              >career.sweden@redi-school.org</a
             >) or message us on Slack.</mj-text
           >
           <mj-text mj-class="text paragraph"
@@ -37,10 +37,10 @@
           >
 
           <mj-text mj-class="text">All the best,</mj-text>
-          <mj-text mj-class="text">Your ReDI Talent Success Team</mj-text>
+          <mj-text mj-class="text">ReDI Malmö Team</mj-text>
         </mj-column>
       </mj-section>
-      <mj-include path="./footer.career.support.team.mjml" />
+      <mj-include path="./footer.malmo.team.mjml" />
       <mj-section />
     </mj-wrapper>
   </mj-body>

@@ -1,0 +1,57 @@
+<mjml>
+  <mj-include path="./head.mjml" />
+  <mj-body>
+    <mj-section css-class="section">
+      <mj-column mj-class="column" width="100%">
+        <mj-divider mj-class="divider-bottom" />
+        <mj-table padding="0">
+          <tr>
+            <td class="table-cell table-img" rowspan="4">
+              <img
+                src="https://redi-connect-email-assets.s3.eu-west-1.amazonaws.com/redi-logo.jpeg"
+                width="52px"
+              />
+            </td>
+            <td class="table-cell table-headline td-mobile" colspan="1">
+              ReDI Malmö Team
+            </td>
+          </tr>
+
+          <tr>
+            <td class="table-cell td-mobile">
+              General -
+              <a href="mailto:malmo@redi-school.org" class="text-link"
+                >malmo@redi-school.org</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <td class="table-cell td-mobile">
+              General career -
+              <a href="mailto:career.sweden@redi-school.org" class="text-link"
+                >career.sweden@redi-school.org</a
+              >
+              <br />
+              Mentorship Program Manager -
+              <a href="mailto:alice.r@redi-school.org" class="text-link"
+              >alice.r@redi-school.org</a>
+              <br /><br />
+              <strong>Visiting address:</strong><br />
+              ReDI School of Digital Integration Malmö<br />
+              Minc, Anckargripsgatan 3, 211 19 Malmö, Sweden
+              <br /><br />
+              <strong>Official address:</strong><br />
+              Fläderbärsgatan 18, 212 29 Malmö, Sweden<br />
+              <a
+                href="https://www.redi-school.org/redi-school-malmo"
+                class="text-link"
+                target="_blank"
+                >https://www.redi-school.org/redi-school-malmo</a
+              >
+            </td>
+          </tr></mj-table
+        >
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

@@ -29,17 +29,32 @@ const sendEmail = Rx.bindNodeCallback(ses.sendEmail.bind(ses))
 const sendMjmlEmail = Rx.bindNodeCallback(
   transporter.sendMail.bind(transporter)
 )
+
+// TODO: I'm a duplicate of getSenderDetails in apps/nestjs-api/src/email/lib/email/email.js, keep me in sync
+const getSenderDetails = (rediLocation) => {
+  const isMalmoLocation = rediLocation === 'MALMO'
+  const senderName = isMalmoLocation
+    ? 'ReDI Malmö Team'
+    : 'ReDI Talent Success Team'
+  const senderEmail = isMalmoLocation
+    ? 'career.sweden@redi-school.org'
+    : 'career@redi-school.org'
+  return { senderName, senderEmail }
+}
+
 const sendEmailFactory = (to, subject, body, rediLocation) => {
   let toSanitized = isProductionOrDemonstration() ? to : ''
   if (process.env.NX_DEV_MODE_EMAIL_RECIPIENT) {
     toSanitized = process.env.NX_DEV_MODE_EMAIL_RECIPIENT
   }
-  let sender = 'career@redi-school.org'
+
+  const { senderName, senderEmail } = getSenderDetails(rediLocation)
+
   return sendEmail({
-    Source: sender,
+    Source: `${senderName} <${senderEmail}>`,
     Destination: {
       ToAddresses: [toSanitized],
-      BccAddresses: ['career@redi-school.org'],
+      BccAddresses: [`${senderName} <${senderEmail}>`],
     },
     Message: {
       Body: {
@@ -55,16 +70,19 @@ const sendEmailFactory = (to, subject, body, rediLocation) => {
     },
   })
 }
-const sendMjmlEmailFactory = ({ to, subject, html }) => {
+
+const sendMjmlEmailFactory = ({ to, subject, html, rediLocation }) => {
   let toSanitized = isProductionOrDemonstration() ? to : ''
   if (process.env.NX_DEV_MODE_EMAIL_RECIPIENT) {
     toSanitized = process.env.NX_DEV_MODE_EMAIL_RECIPIENT
   }
-  let sender = 'career@redi-school.org'
+
+  const { senderName, senderEmail } = getSenderDetails(rediLocation)
+
   return sendMjmlEmail({
-    from: sender,
+    from: `${senderName} <${senderEmail}>`,
     to: toSanitized,
-    bcc: ['career@redi-school.org'],
+    bcc: [`${senderName} <${senderEmail}>`],
     subject: buildSubjectLine(subject, process.env.NODE_ENV),
     html: html,
   })
@@ -90,20 +108,24 @@ const sendResetPasswordEmailTemplate = fs.readFileSync(
 const sendResetPasswordEmailParsed = mjml2html(sendResetPasswordEmailTemplate, {
   filePath: path.resolve(__dirname, 'templates'),
 })
+
 const sendResetPasswordEmail = ({ recipient, accessToken, rediLocation }) => {
   const resetPasswordUrl = `${buildFrontendUrl(
-    process.env.NODE_ENV,
-    rediLocation
+    process.env.NODE_ENV
   )}/front/reset-password/set-new-password/${accessToken}`
-  const rediEmailAdress = 'career@redi-school.org'
+
+  const { senderEmail, senderName } = getSenderDetails(rediLocation)
+
   const html = sendResetPasswordEmailParsed.html
     .replace(/\${resetPasswordUrl}/g, resetPasswordUrl)
-    .replace(/\${rediEmailAdress}/g, rediEmailAdress)
-    .replace(/\${emailAdress}/g, recipient)
+    .replace(/\${rediEmailAddress}/g, senderEmail)
+    .replace(/\${emailAddress}/g, recipient)
+    .replace(/\${rediSignature}/g, senderName)
   return sendMjmlEmailFactory({
     to: recipient,
     subject: 'Password Reset for ReDI Connect',
     html: html,
+    rediLocation: rediLocation,
   })
 }
 
@@ -125,21 +147,26 @@ const sendConVerificationEmail = ({
   rediLocation,
 }) => {
   const verificationSuccessPageUrl = `${buildFrontendUrl(
-    process.env.NODE_ENV,
-    rediLocation
+    process.env.NODE_ENV
   )}/front/signup-email-verification-success/`
+
   const verificationUrl = `${buildBackendUrl(
     process.env.NODE_ENV
   )}/api/redUsers/confirm?uid=${redUserId}&token=${verificationToken}&redirect=${encodeURI(
     verificationSuccessPageUrl
   )}`
+
+  const { senderName } = getSenderDetails(rediLocation)
+
   const html = sendVerificationEmailTemplateParsed.html
     .replace(/\${firstName}/g, firstName)
     .replace(/\${verificationUrl}/g, verificationUrl)
+    .replace(/\${rediSignature}/g, senderName)
   return sendMjmlEmailFactory({
     to: recipient,
     subject: 'Verify your email address!',
     html: html,
+    rediLocation: rediLocation,
   })
 }
 

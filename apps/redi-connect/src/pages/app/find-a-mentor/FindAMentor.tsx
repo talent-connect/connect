@@ -154,12 +154,31 @@ const FindAMentor = () => {
     }))
   }
 
-  const filterRediLocations = objectKeys(REDI_LOCATION_NAMES).map(
-    (location) => ({
+  const isMalmoLocation = profile?.rediLocation === RediLocation.Malmo
+
+  const filterRediLocations = objectKeys(REDI_LOCATION_NAMES)
+    .filter((location) => {
+      if (!profile) return false
+      const currentUserWithRediSweden = [RediLocation.Malmo].includes(
+        profile?.rediLocation
+      )
+      const currentUserWithRediGermany = [
+        RediLocation.Berlin,
+        RediLocation.Cyberspace,
+        RediLocation.Hamburg,
+        RediLocation.Munich,
+        RediLocation.Nrw,
+      ].includes(profile?.rediLocation)
+      if (location === RediLocation.Malmo && currentUserWithRediSweden)
+        return true
+      if (location !== RediLocation.Malmo && currentUserWithRediGermany)
+        return true
+      return false
+    })
+    .map((location) => ({
       value: location,
       label: REDI_LOCATION_NAMES[location as RediLocation] as string,
-    })
-  )
+    }))
 
   if (profile && profile?.profileStatus !== ConnectProfileStatus.Approved)
     return <LoggedIn />
@@ -215,15 +234,17 @@ const FindAMentor = () => {
             onChange={(item) => toggleFilters(languages, 'languages', item)}
           />
         </div>
-        <div className="filters-inner">
-          <FilterDropdown
-            items={filterRediLocations}
-            className="filters__dropdown"
-            label="Location"
-            selected={locations}
-            onChange={(item) => toggleFilters(locations, 'locations', item)}
-          />
-        </div>
+        {!isMalmoLocation && (
+          <div className="filters-inner">
+            <FilterDropdown
+              items={filterRediLocations}
+              className="filters__dropdown"
+              label="Location"
+              selected={locations}
+              onChange={(item) => toggleFilters(locations, 'locations', item)}
+            />
+          </div>
+        )}
       </div>
       <div className="filters">
         <div className="filters-inner filter-favourites">

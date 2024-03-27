@@ -58,6 +58,7 @@ export class ConProfilesSalesforceEventHandlerService {
             recipient: conProfile.props.email,
             firstName: conProfile.props.firstName,
             userType: conProfile.props.userType,
+            rediLocation: conProfile.props.rediLocation,
           })
         break
 
@@ -73,6 +74,7 @@ export class ConProfilesSalesforceEventHandlerService {
             recipient: conProfile.props.email,
             firstName: conProfile.props.firstName,
             userType: conProfile.props.userType,
+            rediLocation: conProfile.props.rediLocation,
           })
         break
     }
@@ -100,6 +102,7 @@ export class ConProfilesSalesforceEventHandlerService {
           recipient: conProfile.props.email,
           firstName: conProfile.props.firstName,
           isPartnershipMentor: conProfile.props.mentor_isPartnershipMentor,
+          rediLocation: conProfile.props.rediLocation,
         })
         break
     }
